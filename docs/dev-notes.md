@@ -5,6 +5,11 @@
 ## Input
 
 ## Window
+- 1.1: рамку снимает `WindowController` в `Game.Platform.Windows`: стиль `WS_POPUP | WS_VISIBLE` и `SetWindowPos` с размером полоски. Вызывается из `GameStartup` (Bootstrap) после загрузки сцены, только в сборке: в редакторе окно Unity не трогаем.
+- Своё окно ищем через `EnumWindows` по PID и классу `UnityWndClass`, а не через `GetActiveWindow`: при старте окно может быть не активным.
+- Под IL2CPP колбэк для WinAPI должен быть статическим методом с `[MonoPInvokeCallback]`, замыкания не маршалятся. Поэтому состояние поиска лежит в статических полях.
+- Размер 480×140 пока задан константами в `GameStartup`, их же `ProjectConfigurator` пишет в Player Settings (стартовый размер, без изменения размера). В фазе 11 размер уедет в настройки.
+- Проверка без глаз: PowerShell с `GetWindowLongPtr` и `GetWindowRect` по `MainWindowHandle` запущенного exe. На 1.1 стиль `0x94000000` (без `WS_CAPTION`), окно и клиентская область 480×140.
 
 ## Core
 - Слои сборок (0.3): Core → Platform.Windows, Presentation, Net → Bootstrap → Editor. Ссылаться можно только на слой ниже, соседей по слою не связываем. Это проверяет `Game.Architecture.Tests` по файлам asmdef и по скомпилированной Core (нет ссылок на `Unity*`). Новую сборку в `Assets/Game` нужно добавить в таблицу слоёв теста, иначе он упадёт.
