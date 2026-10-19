@@ -33,5 +33,6 @@
 - Input System остался из шаблона: он нужен для ввода в редакторе (2.13), а в сборке ввод идёт через Raw Input.
 - Настройки игрока задаёт код, а не ручная правка: `Game/Apply Project Settings` (`ProjectConfigurator`) — IL2CPP, .NET Standard, Windows x64, работа в фоне, оконный режим, имя продукта «Endless Knights», компания `EndlessKnights` (по имени репозитория). Сборка: `Game/Build Windows` или батч-режим `-executeMethod Game.Editor.WindowsBuild.Build`, exe в `Builds/Windows`.
 - Для IL2CPP нужен Visual Studio с набором «Разработка классических приложений на C++» и Windows SDK; без него сборка падает с `ToolchainNotFoundException`. Первая сборка IL2CPP идёт около 3 минут.
+- `build.ps1` в корне (0.5): `powershell -ExecutionPolicy Bypass -File build.ps1` собирает exe, с `-Tests` сначала гоняет EditMode-тесты. Unity ищется по версии из `ProjectVersion.txt` в папке Unity Hub, другой путь задаётся `-UnityPath` или переменной `UNITY_EDITOR`. Логи и результаты тестов в `Builds/Logs`. Пока открыт редактор с этим проектом, батч-режим Unity не запустится.
 
 ## Art
