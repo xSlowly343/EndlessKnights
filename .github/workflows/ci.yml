@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: powershell -NoProfile -ExecutionPolicy Bypass -Command ". '{0}'"
+
+jobs:
+  core-tests:
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          clean: false
+      - name: Run Game.Core tests
+        run: dotnet test Tools/CoreBuild/Game.Core.Tests/Game.Core.Tests.csproj --nologo
+
+  unity:
+    runs-on: [self-hosted, unity]
+    needs: core-tests
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          clean: false
+          lfs: true
+      - name: Unity tests and Windows build
+        run: ./build.ps1 -Tests
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unity-logs
+          path: Builds/Logs
