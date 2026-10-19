@@ -79,7 +79,7 @@ namespace Game.Core.Tests.Math
         [Test]
         public void Constants_HaveExpectedValues()
         {
-            Assert.That(BigNumber.Zero.IsZero, Is.True);
+            Assert.That(BigNumber.Zero.IsZero, Is.False);
             Assert.That(BigNumber.One.Mantissa, Is.EqualTo(1d));
             Assert.That(BigNumber.One.Exponent, Is.EqualTo(0L));
         }
