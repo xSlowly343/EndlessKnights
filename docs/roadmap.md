@@ -14,7 +14,7 @@
 ## Фаза 0. Подготовка
 | ID | Задача | Готово, когда | Быстрый тест | После |
 |---|---|---|---|---|
-| 0.1 | Репозиторий: Git + LFS, `.gitignore` для Unity, README | Репозиторий создан, LFS отслеживает арт | [C] `git lfs track` показывает *.png, *.blend… | — |
+| ✅ 0.1 | Репозиторий: Git + LFS, `.gitignore` для Unity, README | Репозиторий создан, LFS отслеживает арт | [C] `git lfs track` показывает *.png, *.blend… | — |
 | 0.2 | Unity 6.3 LTS проект, 2D URP, Windows x64, IL2CPP | Пустая сцена собирается в exe | [C] сборка из командной строки без ошибок | 0.1 |
 | 0.3 | Сборки asmdef: Core, Platform.Windows, Presentation, Net, Bootstrap, тесты | Зависимости только сверху вниз | [A] пустой тест в Core.Tests зелёный; Core не ссылается на UnityEngine | 0.2 |
 | 0.4 | CI: сборка и тесты на каждый PR (GitHub Actions + GameCI или локальный скрипт) | PR показывает статус | [C] PR с падающим тестом красный | 0.3 |
