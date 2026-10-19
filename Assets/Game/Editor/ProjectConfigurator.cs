@@ -1,3 +1,4 @@
+using Game.Bootstrap;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
@@ -19,6 +20,10 @@ namespace Game.Editor
             PlayerSettings.runInBackground = true;
             PlayerSettings.visibleInBackground = true;
             PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
+            PlayerSettings.defaultIsNativeResolution = false;
+            PlayerSettings.defaultScreenWidth = GameStartup.StripWidth;
+            PlayerSettings.defaultScreenHeight = GameStartup.StripHeight;
+            PlayerSettings.resizableWindow = false;
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
             AssetDatabase.SaveAssets();
         }
