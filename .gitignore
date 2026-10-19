@@ -63,3 +63,8 @@ steam_appid.txt
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+!/Tools/**/*.csproj
+/Tools/**/[Bb]in/
+/Tools/**/[Oo]bj/
+/Tools/**/TestResults/
