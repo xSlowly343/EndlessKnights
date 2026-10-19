@@ -1,0 +1,19 @@
+{
+    "name": "Game.Platform.Windows",
+    "rootNamespace": "Game.Platform.Windows",
+    "references": [
+        "Game.Core"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

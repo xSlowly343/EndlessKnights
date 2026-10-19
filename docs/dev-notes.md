@@ -7,6 +7,9 @@
 ## Window
 
 ## Core
+- Слои сборок (0.3): Core → Platform.Windows, Presentation, Net → Bootstrap → Editor. Ссылаться можно только на слой ниже, соседей по слою не связываем. Это проверяет `Game.Architecture.Tests` по файлам asmdef и по скомпилированной Core (нет ссылок на `Unity*`). Новую сборку в `Assets/Game` нужно добавить в таблицу слоёв теста, иначе он упадёт.
+- Пустые asmdef Unity не компилирует, поэтому сборки без кода появятся в Test Runner и в решении только с первым файлом.
+- `Game.Platform.Windows` собирается только для редактора и Windows x64, в нём разрешён `unsafe` под P/Invoke.
 - `Game.Core` собирается и тестируется без Unity: `Tools/test-core.ps1` (проекты в `Tools/CoreBuild`). Исходники лежат в `Assets/Game/Core` и `Assets/Tests/Core.Tests`, csproj только подключают их. Это даёт быстрые тесты до установки Unity и пригодится для CI (0.4) и сервера.
 - Сборка Core ограничена тем, что умеет Unity 6: `netstandard2.1` и C# 9. Если в Core появится API новее, сборка упадёт раньше, чем в Unity. `Nullable` включён через `csc.rsp` рядом с asmdef.
 - Предупреждения в Core считаются ошибками.
