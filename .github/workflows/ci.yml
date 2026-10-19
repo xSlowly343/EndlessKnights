@@ -9,6 +9,10 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: powershell -NoProfile -ExecutionPolicy Bypass -Command ". '{0}'"
+
 jobs:
   core-tests:
     runs-on: [self-hosted, windows]
@@ -17,7 +21,6 @@ jobs:
         with:
           clean: false
       - name: Run Game.Core tests
-        shell: powershell
         run: dotnet test Tools/CoreBuild/Game.Core.Tests/Game.Core.Tests.csproj --nologo
 
   unity:
@@ -29,7 +32,6 @@ jobs:
           clean: false
           lfs: true
       - name: Unity tests and Windows build
-        shell: powershell
         run: ./build.ps1 -Tests
       - name: Upload logs
         if: always()
