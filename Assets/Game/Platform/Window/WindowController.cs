@@ -34,6 +34,12 @@ namespace Game.Platform.Windows.Window
                 NativeMethods.SwpNoMove | NativeMethods.SwpNoZOrder | NativeMethods.SwpNoActivate | NativeMethods.SwpFrameChanged | NativeMethods.SwpShowWindow);
         }
 
+        public void MakeBackgroundTransparent()
+        {
+            var margins = NativeMethods.Margins.WholeWindow;
+            NativeMethods.DwmExtendFrameIntoClientArea(_window, ref margins);
+        }
+
         [MonoPInvokeCallback(typeof(NativeMethods.EnumWindowsProc))]
         private static bool MatchOwnWindow(IntPtr window, IntPtr parameter)
         {

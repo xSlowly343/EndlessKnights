@@ -2,6 +2,7 @@ using Game.Bootstrap;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Game.Editor
 {
@@ -24,6 +25,9 @@ namespace Game.Editor
             PlayerSettings.defaultScreenWidth = GameStartup.StripWidth;
             PlayerSettings.defaultScreenHeight = GameStartup.StripHeight;
             PlayerSettings.resizableWindow = false;
+            PlayerSettings.useFlipModelSwapchain = false;
+            PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false);
+            PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { GraphicsDeviceType.Direct3D11 });
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
             AssetDatabase.SaveAssets();
         }
