@@ -15,6 +15,17 @@ namespace Game.Platform.Windows.Window
         public const uint SwpFrameChanged = 0x0020;
         public const uint SwpShowWindow = 0x0040;
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Margins
+        {
+            public int Left;
+            public int Right;
+            public int Top;
+            public int Bottom;
+
+            public static Margins WholeWindow => new Margins { Left = -1, Right = -1, Top = -1, Bottom = -1 };
+        }
+
         public delegate bool EnumWindowsProc(IntPtr window, IntPtr parameter);
 
         [DllImport("user32.dll")]
@@ -32,5 +43,8 @@ namespace Game.Platform.Windows.Window
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetWindowPos(IntPtr window, IntPtr insertAfter, int x, int y, int width, int height, uint flags);
+
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmExtendFrameIntoClientArea(IntPtr window, ref Margins margins);
     }
 }
