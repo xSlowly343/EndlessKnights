@@ -65,6 +65,15 @@ namespace Game.Platform.Windows.Window
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetCursorPos(out Point point);
 
+        public const uint MonitorDefaultToNearest = 0x00000002;
+        public const int MdtEffectiveDpi = 0;
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr MonitorFromRect(ref Rect rect, uint flags);
+
+        [DllImport("shcore.dll")]
+        public static extern int GetDpiForMonitor(IntPtr monitor, int dpiType, out uint dpiX, out uint dpiY);
+
         [DllImport("shell32.dll")]
         public static extern UIntPtr SHAppBarMessage(uint message, ref AppBarData data);
 
