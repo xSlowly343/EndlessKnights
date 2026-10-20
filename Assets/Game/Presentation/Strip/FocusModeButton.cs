@@ -27,6 +27,15 @@ namespace Game.Presentation.Strip
             return button;
         }
 
+        public bool IsUnderPointer()
+        {
+            var mouse = Mouse.current;
+            if (mouse == null)
+                return false;
+            Vector2 worldPoint = _camera.ScreenToWorldPoint(mouse.position.ReadValue());
+            return _collider.OverlapPoint(worldPoint);
+        }
+
         public void ShowNoFocus(bool noFocus)
         {
             _renderer.color = noFocus ? NoFocusColor : NormalColor;
@@ -38,8 +47,7 @@ namespace Game.Presentation.Strip
             if (mouse == null || !mouse.leftButton.wasPressedThisFrame)
                 return;
 
-            Vector2 worldPoint = _camera.ScreenToWorldPoint(mouse.position.ReadValue());
-            if (_collider.OverlapPoint(worldPoint))
+            if (IsUnderPointer())
                 Clicked?.Invoke();
         }
     }
