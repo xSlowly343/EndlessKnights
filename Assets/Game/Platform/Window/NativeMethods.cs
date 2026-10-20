@@ -54,6 +54,17 @@ namespace Game.Platform.Windows.Window
             public IntPtr Parameter;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Point
+        {
+            public int X;
+            public int Y;
+        }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetCursorPos(out Point point);
+
         [DllImport("shell32.dll")]
         public static extern UIntPtr SHAppBarMessage(uint message, ref AppBarData data);
 

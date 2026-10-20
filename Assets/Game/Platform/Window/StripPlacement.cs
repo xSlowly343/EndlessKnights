@@ -4,18 +4,27 @@ namespace Game.Platform.Windows.Window
 {
     public static class StripPlacement
     {
-        public static ScreenRect NextToTaskbar(TaskbarEdge edge, ScreenRect taskbar, int width, int height, int gap)
+        public static bool IsHorizontal(TaskbarEdge edge) => edge == TaskbarEdge.Bottom || edge == TaskbarEdge.Top;
+
+        public static int ClampOffset(TaskbarEdge edge, ScreenRect taskbar, int width, int height, int offset)
         {
+            var room = IsHorizontal(edge) ? taskbar.Width - width : taskbar.Height - height;
+            return Math.Max(0, Math.Min(offset, room));
+        }
+
+        public static ScreenRect NextToTaskbar(TaskbarEdge edge, ScreenRect taskbar, int width, int height, int gap, int offset)
+        {
+            var along = ClampOffset(edge, taskbar, width, height, offset);
             switch (edge)
             {
                 case TaskbarEdge.Bottom:
-                    return Sized(taskbar.Right - width, taskbar.Top - gap - height, width, height);
+                    return Sized(taskbar.Left + along, taskbar.Top - gap - height, width, height);
                 case TaskbarEdge.Top:
-                    return Sized(taskbar.Right - width, taskbar.Bottom + gap, width, height);
+                    return Sized(taskbar.Left + along, taskbar.Bottom + gap, width, height);
                 case TaskbarEdge.Left:
-                    return Sized(taskbar.Right + gap, taskbar.Bottom - height, width, height);
+                    return Sized(taskbar.Right + gap, taskbar.Top + along, width, height);
                 case TaskbarEdge.Right:
-                    return Sized(taskbar.Left - gap - width, taskbar.Bottom - height, width, height);
+                    return Sized(taskbar.Left - gap - width, taskbar.Top + along, width, height);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(edge), edge, null);
             }

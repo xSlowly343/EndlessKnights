@@ -8,6 +8,8 @@ namespace Game.Platform.Tests
         private const int Width = 480;
         private const int Height = 140;
 
+        private static readonly ScreenRect BottomTaskbar = new ScreenRect(0, 1032, 1920, 1080);
+
         private static void AssertRect(ScreenRect actual, int left, int top)
         {
             Assert.That(actual.Left, Is.EqualTo(left));
@@ -17,15 +19,12 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void BottomTaskbar_StripSitsOnTopOfItAtTheRight()
+        public void BottomTaskbar_StripSitsOnTopOfItAtTheLeftByDefault()
         {
-            var taskbar = new ScreenRect(0, 1032, 1920, 1080);
+            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, BottomTaskbar, Width, Height, 0, 0);
 
-            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, taskbar, Width, Height, 0);
-
-            AssertRect(strip, 1440, 892);
-            Assert.That(strip.Bottom, Is.EqualTo(taskbar.Top));
-            Assert.That(strip.Right, Is.EqualTo(taskbar.Right));
+            AssertRect(strip, 0, 892);
+            Assert.That(strip.Bottom, Is.EqualTo(BottomTaskbar.Top));
         }
 
         [Test]
@@ -33,39 +32,64 @@ namespace Game.Platform.Tests
         {
             var taskbar = new ScreenRect(0, 0, 1920, 48);
 
-            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Top, taskbar, Width, Height, 0);
+            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Top, taskbar, Width, Height, 0, 0);
 
-            AssertRect(strip, 1440, 48);
+            AssertRect(strip, 0, 48);
         }
 
         [Test]
-        public void LeftTaskbar_StripSitsToTheRightAtTheBottom()
+        public void LeftTaskbar_StripSitsToTheRightAtTheTop()
         {
             var taskbar = new ScreenRect(0, 0, 62, 1080);
 
-            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Left, taskbar, Width, Height, 0);
+            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Left, taskbar, Width, Height, 0, 0);
 
-            AssertRect(strip, 62, 940);
+            AssertRect(strip, 62, 0);
         }
 
         [Test]
-        public void RightTaskbar_StripSitsToTheLeftAtTheBottom()
+        public void RightTaskbar_StripSitsToTheLeftAtTheTop()
         {
             var taskbar = new ScreenRect(1858, 0, 1920, 1080);
 
-            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Right, taskbar, Width, Height, 0);
+            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Right, taskbar, Width, Height, 0, 0);
 
-            AssertRect(strip, 1378, 940);
+            AssertRect(strip, 1378, 0);
         }
 
         [Test]
         public void GapMovesStripAwayFromTaskbar()
         {
-            var taskbar = new ScreenRect(0, 1032, 1920, 1080);
+            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, BottomTaskbar, Width, Height, 10, 0);
 
-            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, taskbar, Width, Height, 10);
+            Assert.That(strip.Bottom, Is.EqualTo(BottomTaskbar.Top - 10));
+        }
 
-            Assert.That(strip.Bottom, Is.EqualTo(taskbar.Top - 10));
+        [Test]
+        public void OffsetSlidesStripAlongHorizontalTaskbar()
+        {
+            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, BottomTaskbar, Width, Height, 0, 700);
+
+            AssertRect(strip, 700, 892);
+        }
+
+        [Test]
+        public void OffsetSlidesStripAlongVerticalTaskbar()
+        {
+            var taskbar = new ScreenRect(0, 0, 62, 1080);
+
+            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Left, taskbar, Width, Height, 0, 300);
+
+            AssertRect(strip, 62, 300);
+        }
+
+        [TestCase(-50, 0)]
+        [TestCase(5000, 1440)]
+        public void OffsetIsClampedToTaskbarLength(int offset, int expectedLeft)
+        {
+            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, BottomTaskbar, Width, Height, 0, offset);
+
+            Assert.That(strip.Left, Is.EqualTo(expectedLeft));
         }
 
         [Test]
@@ -73,9 +97,9 @@ namespace Game.Platform.Tests
         {
             var taskbar = new ScreenRect(1920, 1392, 4480, 1440);
 
-            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, taskbar, Width, Height, 0);
+            var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, taskbar, Width, Height, 0, 0);
 
-            AssertRect(strip, 4000, 1252);
+            AssertRect(strip, 1920, 1252);
         }
     }
 }
