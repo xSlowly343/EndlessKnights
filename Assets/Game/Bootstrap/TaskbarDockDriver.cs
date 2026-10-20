@@ -11,11 +11,15 @@ namespace Game.Bootstrap
         private const int GapToTaskbar = 0;
         private const int DefaultOffsetAlongTaskbar = 0;
 
+        private static readonly StripSize BaseStripSize = new StripSize(GameStartup.StripWidth, GameStartup.StripHeight);
+
         private readonly StripDrag _drag = new StripDrag();
         private WindowController _window = null!;
         private FocusModeButton _focusButton = null!;
         private TaskbarEdge _dockedEdge;
         private ScreenRect _dockedTaskbar;
+        private uint _dockedDpi;
+        private StripSize _size = BaseStripSize;
         private bool _isDocked;
         private int _offset = DefaultOffsetAlongTaskbar;
         private float _nextCheckTime;
@@ -25,7 +29,7 @@ namespace Game.Bootstrap
             var driver = focusButton.gameObject.AddComponent<TaskbarDockDriver>();
             driver._window = window;
             driver._focusButton = focusButton;
-            driver.DockIfTaskbarMoved();
+            driver.DockIfTaskbarChanged();
         }
 
         private void Update()
@@ -35,7 +39,7 @@ namespace Game.Bootstrap
             if (Time.unscaledTime < _nextCheckTime)
                 return;
             _nextCheckTime = Time.unscaledTime + CheckIntervalSeconds;
-            DockIfTaskbarMoved();
+            DockIfTaskbarChanged();
         }
 
         private void HandleDrag()
@@ -63,26 +67,29 @@ namespace Game.Bootstrap
 
         private void MoveAlongTaskbar(int offset)
         {
-            _offset = StripPlacement.ClampOffset(_dockedEdge, _dockedTaskbar, GameStartup.StripWidth, GameStartup.StripHeight, offset);
+            _offset = StripPlacement.ClampOffset(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, offset);
             PlaceNextToTaskbar();
         }
 
-        private void DockIfTaskbarMoved()
+        private void DockIfTaskbarChanged()
         {
             if (!Taskbar.TryGetPosition(out var edge, out var taskbar))
                 return;
-            if (_isDocked && edge == _dockedEdge && taskbar.Equals(_dockedTaskbar))
+            var dpi = MonitorDpi.ForRect(taskbar);
+            if (_isDocked && edge == _dockedEdge && taskbar.Equals(_dockedTaskbar) && dpi == _dockedDpi)
                 return;
 
             _dockedEdge = edge;
             _dockedTaskbar = taskbar;
+            _dockedDpi = dpi;
+            _size = BaseStripSize.ScaledFor(dpi);
             _isDocked = true;
             PlaceNextToTaskbar();
         }
 
         private void PlaceNextToTaskbar()
         {
-            _window.PlaceAt(StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, GameStartup.StripWidth, GameStartup.StripHeight, GapToTaskbar, _offset));
+            _window.PlaceAt(StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, GapToTaskbar, _offset));
         }
     }
 }
