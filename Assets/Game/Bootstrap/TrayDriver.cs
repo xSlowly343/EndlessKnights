@@ -1,5 +1,6 @@
 using Game.Platform.Windows.Tray;
 using Game.Platform.Windows.Window;
+using Game.Presentation.Strip;
 using UnityEngine;
 
 namespace Game.Bootstrap
@@ -39,6 +40,7 @@ namespace Game.Bootstrap
             GamePause.Set(_state.Paused);
             _clickThrough.Enabled = _state.ClickThrough;
             _window.SetAlwaysOnTop(_state.AlwaysOnTop);
+            FrameRateLimit.Apply(_state.FrameRate);
         }
 
         private void OnDestroy()

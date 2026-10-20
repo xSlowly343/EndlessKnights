@@ -19,6 +19,7 @@ namespace Game.Bootstrap
         private static void Start()
         {
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+            FrameRateLimit.Apply(TrayMenuState.DefaultFrameRate);
 
             var camera = Camera.main;
             if (camera == null)
