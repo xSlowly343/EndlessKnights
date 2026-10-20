@@ -76,6 +76,11 @@ namespace Game.Platform.Windows.Window
                 NativeMethods.SetForegroundWindow(_lastOtherForeground);
         }
 
+        public void SetHidden(bool hidden)
+        {
+            NativeMethods.ShowWindow(_window, hidden ? NativeMethods.SwHide : NativeMethods.SwShowNoActivate);
+        }
+
         public bool TryGetBounds(out ScreenRect bounds)
         {
             var found = NativeMethods.GetWindowRect(_window, out var rect);

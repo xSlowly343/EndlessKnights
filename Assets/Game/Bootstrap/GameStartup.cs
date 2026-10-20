@@ -38,6 +38,7 @@ namespace Game.Bootstrap
                 return;
             TaskbarDockDriver.Attach(focusButton, window);
             ClickThroughDriver.Attach(focusButton.gameObject, window, camera);
+            FullscreenDriver.Attach(focusButton.gameObject, window);
         }
 
         private static Vector2 TopRightCorner(Camera camera, float margin)

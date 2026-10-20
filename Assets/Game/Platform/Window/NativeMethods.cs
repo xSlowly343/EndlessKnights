@@ -116,6 +116,16 @@ namespace Game.Platform.Windows.Window
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr window, out Rect rect);
 
+        public const int SwHide = 0;
+        public const int SwShowNoActivate = 4;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool ShowWindow(IntPtr window, int command);
+
+        [DllImport("shell32.dll")]
+        public static extern int SHQueryUserNotificationState(out int state);
+
         [DllImport("dwmapi.dll")]
         public static extern int DwmExtendFrameIntoClientArea(IntPtr window, ref Margins margins);
     }
