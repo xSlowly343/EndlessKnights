@@ -17,6 +17,7 @@ namespace Game.Presentation.Strip
             renderer.sprite = Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), PixelsPerUnit);
             renderer.color = color;
             square.transform.localScale = new Vector3(size, size, 1f);
+            square.AddComponent<BoxCollider2D>();
             return square;
         }
     }

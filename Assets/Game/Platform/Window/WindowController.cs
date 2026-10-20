@@ -14,6 +14,7 @@ namespace Game.Platform.Windows.Window
 
         private readonly IntPtr _window;
         private IntPtr _lastOtherForeground;
+        private bool _clickThrough;
 
         private WindowController(IntPtr window)
         {
@@ -73,6 +74,30 @@ namespace Game.Platform.Windows.Window
         {
             if (_lastOtherForeground != IntPtr.Zero)
                 NativeMethods.SetForegroundWindow(_lastOtherForeground);
+        }
+
+        public bool TryGetBounds(out ScreenRect bounds)
+        {
+            var found = NativeMethods.GetWindowRect(_window, out var rect);
+            bounds = new ScreenRect(rect.Left, rect.Top, rect.Right, rect.Bottom);
+            return found;
+        }
+
+        public void SetClickThrough(bool enabled)
+        {
+            if (enabled == _clickThrough)
+                return;
+            _clickThrough = enabled;
+            const long clickThroughStyles = NativeMethods.WsExTransparent | NativeMethods.WsExLayered;
+            if (enabled)
+            {
+                UpdateExStyle(clickThroughStyles, 0L);
+                NativeMethods.SetLayeredWindowAttributes(_window, 0, byte.MaxValue, NativeMethods.LwaAlpha);
+            }
+            else
+            {
+                UpdateExStyle(0L, clickThroughStyles);
+            }
         }
 
         private void UpdateExStyle(long add, long remove)
