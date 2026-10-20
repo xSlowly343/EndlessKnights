@@ -55,13 +55,13 @@ namespace Game.Bootstrap
             FocusModeDriver.Attach(focusButton, window);
             if (window == null)
                 return;
-            TaskbarDockDriver.Attach(focusButton, window);
+            var dock = TaskbarDockDriver.Attach(focusButton, window);
             var clickThrough = ClickThroughDriver.Attach(focusButton.gameObject, window, camera);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 
             var tray = TrayIcon.Create(Application.productName);
             if (tray != null)
-                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing);
+                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock);
         }
 
         private static Vector2 TopRightCorner(Camera camera, float margin)
