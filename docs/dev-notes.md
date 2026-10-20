@@ -3,6 +3,7 @@
 Все заметки, решения и объяснения «почему так» по модулям. В коде заметок нет (см. CLAUDE.md).
 
 ## Input
+- 2.1: `IInputSource`, `InputSnapshot` и `FakeInputSource` лежат в `Game.Core.Input` (чистый C#). `InputSnapshot` — неизменяемая структура с полями из engine-spec §3, все параметры конструктора необязательные, `Empty` = `default`. `FakeInputSource` нужен для тестов и headless-симуляции (5.10): методы накапливают счётчики, `Drain` отдаёт их и обнуляет, а `SecondsSinceLastInput`, `RhythmCv`, `Suppressed` — состояние, а не счётчики, и после `Drain` остаются. Enter, Backspace и пробел в фейке считаются и как обычное нажатие (`KeyDowns`), так будет и в `RawInputService`.
 
 ## Window
 - 1.1: рамку снимает `WindowController` в `Game.Platform.Windows`: стиль `WS_POPUP | WS_VISIBLE` и `SetWindowPos` с размером полоски. Вызывается из `GameStartup` (Bootstrap) после загрузки сцены, только в сборке: в редакторе окно Unity не трогаем.
