@@ -21,9 +21,11 @@ namespace Game.Platform.Windows.Window
             _window = window;
         }
 
-        public static WindowController? FindOwnWindow()
+        public static WindowController? FindOwnWindow() => FindWindowOfProcess((uint)Process.GetCurrentProcess().Id);
+
+        public static WindowController? FindWindowOfProcess(uint processId)
         {
-            _searchedProcessId = (uint)Process.GetCurrentProcess().Id;
+            _searchedProcessId = processId;
             _foundWindow = IntPtr.Zero;
             NativeMethods.EnumWindows(MatchOwnWindow, IntPtr.Zero);
             return _foundWindow == IntPtr.Zero ? null : new WindowController(_foundWindow);
@@ -79,6 +81,12 @@ namespace Game.Platform.Windows.Window
         {
             if (_lastOtherForeground != IntPtr.Zero)
                 NativeMethods.SetForegroundWindow(_lastOtherForeground);
+        }
+
+        public void ShowAndActivate()
+        {
+            NativeMethods.ShowWindow(_window, NativeMethods.SwShowNoActivate);
+            NativeMethods.SetForegroundWindow(_window);
         }
 
         public void SetHidden(bool hidden)

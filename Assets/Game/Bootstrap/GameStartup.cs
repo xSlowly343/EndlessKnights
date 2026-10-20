@@ -1,3 +1,4 @@
+using Game.Platform.Windows.Instance;
 using Game.Platform.Windows.Tray;
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
@@ -15,9 +16,25 @@ namespace Game.Bootstrap
         private const float FocusButtonSize = 1.6f;
         private const float FocusButtonMargin = 1.2f;
 
+        private static bool _isSecondInstance;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void EnsureSingleInstance()
+        {
+            if (Application.isEditor || SingleInstance.TryClaim())
+                return;
+
+            _isSecondInstance = true;
+            SingleInstance.ActivateRunningInstance();
+            Application.Quit();
+        }
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Start()
         {
+            if (_isSecondInstance)
+                return;
+
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
 
             var camera = Camera.main;
