@@ -15,6 +15,7 @@ namespace Game.Platform.Windows.Window
         public const long WsExTransparent = 0x00000020L;
         public const uint LwaAlpha = 0x00000002;
         public static readonly IntPtr HwndTopmost = new IntPtr(-1);
+        public static readonly IntPtr HwndNoTopmost = new IntPtr(-2);
         public const long WsPopup = 0x80000000L;
         public const long WsVisible = 0x10000000L;
         public const uint SwpNoSize = 0x0001;

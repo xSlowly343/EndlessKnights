@@ -44,7 +44,12 @@ namespace Game.Platform.Windows.Window
 
         public void KeepOnTop()
         {
-            NativeMethods.SetWindowPos(_window, NativeMethods.HwndTopmost, 0, 0, 0, 0,
+            SetAlwaysOnTop(true);
+        }
+
+        public void SetAlwaysOnTop(bool onTop)
+        {
+            NativeMethods.SetWindowPos(_window, onTop ? NativeMethods.HwndTopmost : NativeMethods.HwndNoTopmost, 0, 0, 0, 0,
                 NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate);
         }
 
