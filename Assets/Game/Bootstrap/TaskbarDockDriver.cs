@@ -24,12 +24,13 @@ namespace Game.Bootstrap
         private int _offset = DefaultOffsetAlongTaskbar;
         private float _nextCheckTime;
 
-        public static void Attach(FocusModeButton focusButton, WindowController window)
+        public static TaskbarDockDriver Attach(FocusModeButton focusButton, WindowController window)
         {
             var driver = focusButton.gameObject.AddComponent<TaskbarDockDriver>();
             driver._window = window;
             driver._focusButton = focusButton;
             driver.DockIfTaskbarChanged();
+            return driver;
         }
 
         private void Update()
@@ -69,6 +70,12 @@ namespace Game.Bootstrap
         {
             _offset = StripPlacement.ClampOffset(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, offset);
             PlaceNextToTaskbar();
+        }
+
+        public void ForceRedock()
+        {
+            _isDocked = false;
+            DockIfTaskbarChanged();
         }
 
         private void DockIfTaskbarChanged()

@@ -32,7 +32,7 @@ namespace Game.Bootstrap
 
             _hidden = hide;
             _window.SetHidden(hide);
-            RenderPause.Set(hide);
+            RenderPause.Set(RenderPauseReason.Fullscreen, hide);
         }
     }
 }

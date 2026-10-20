@@ -99,6 +99,16 @@ namespace Game.Platform.Windows.Tray
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool Shell_NotifyIcon(uint message, ref NotifyIconData data);
 
+        public const uint NotifyForThisSession = 0;
+
+        [DllImport("wtsapi32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool WTSRegisterSessionNotification(IntPtr window, uint flags);
+
+        [DllImport("wtsapi32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool WTSUnRegisterSessionNotification(IntPtr window);
+
         [DllImport("user32.dll")]
         public static extern IntPtr CreatePopupMenu();
 

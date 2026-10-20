@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using AOT;
+using Game.Platform.Windows.Power;
 using UnityEngine;
 
 namespace Game.Platform.Windows.Tray
@@ -15,6 +16,7 @@ namespace Game.Platform.Windows.Tray
 
         private static readonly TrayNativeMethods.WindowProcedure Procedure = HandleMessage;
         private static readonly Queue<TrayCommand> PendingCommands = new Queue<TrayCommand>();
+        private static readonly Queue<SystemEvent> PendingSystemEvents = new Queue<SystemEvent>();
         private static TrayMenuState _menuState = TrayMenuState.Default;
         private static bool _classRegistered;
 
@@ -63,6 +65,7 @@ namespace Game.Platform.Windows.Tray
                 return null;
             }
 
+            TrayNativeMethods.WTSRegisterSessionNotification(window, TrayNativeMethods.NotifyForThisSession);
             return new TrayIcon(window);
         }
 
@@ -82,6 +85,17 @@ namespace Game.Platform.Windows.Tray
             return true;
         }
 
+        public bool TryTakeSystemEvent(out SystemEvent systemEvent)
+        {
+            if (PendingSystemEvents.Count == 0)
+            {
+                systemEvent = default;
+                return false;
+            }
+            systemEvent = PendingSystemEvents.Dequeue();
+            return true;
+        }
+
         public void Dispose()
         {
             if (_disposed)
@@ -89,6 +103,7 @@ namespace Game.Platform.Windows.Tray
             _disposed = true;
             var data = NotifyData(_window);
             TrayNativeMethods.Shell_NotifyIcon(TrayNativeMethods.NimDelete, ref data);
+            TrayNativeMethods.WTSUnRegisterSessionNotification(_window);
             TrayNativeMethods.DestroyWindow(_window);
         }
 
@@ -127,6 +142,9 @@ namespace Game.Platform.Windows.Tray
                     PendingCommands.Enqueue((TrayCommand)id);
                 return IntPtr.Zero;
             }
+
+            if (SystemEventDecoder.TryDecode(message, wParam.ToInt64(), out var systemEvent))
+                PendingSystemEvents.Enqueue(systemEvent);
 
             return TrayNativeMethods.DefWindowProc(window, message, wParam, lParam);
         }
