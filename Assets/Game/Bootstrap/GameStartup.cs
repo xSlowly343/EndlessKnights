@@ -34,6 +34,8 @@ namespace Game.Bootstrap
 
             var focusButton = FocusModeButton.Create(camera, TopRightCorner(camera, FocusButtonMargin), FocusButtonSize);
             FocusModeDriver.Attach(focusButton, window);
+            if (window != null)
+                TaskbarDockDriver.Attach(focusButton.gameObject, window);
         }
 
         private static Vector2 TopRightCorner(Camera camera, float margin)

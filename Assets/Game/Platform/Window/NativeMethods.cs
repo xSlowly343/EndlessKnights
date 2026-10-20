@@ -32,6 +32,31 @@ namespace Game.Platform.Windows.Window
             public static Margins WholeWindow => new Margins { Left = -1, Right = -1, Top = -1, Bottom = -1 };
         }
 
+        public const uint AbmGetTaskbarPos = 0x00000005;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Rect
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct AppBarData
+        {
+            public uint Size;
+            public IntPtr Window;
+            public uint CallbackMessage;
+            public uint Edge;
+            public Rect Bounds;
+            public IntPtr Parameter;
+        }
+
+        [DllImport("shell32.dll")]
+        public static extern UIntPtr SHAppBarMessage(uint message, ref AppBarData data);
+
         public delegate bool EnumWindowsProc(IntPtr window, IntPtr parameter);
 
         [DllImport("user32.dll")]
