@@ -1,6 +1,5 @@
 using Game.Platform.Windows.Tray;
 using Game.Platform.Windows.Window;
-using Game.Presentation.Strip;
 using UnityEngine;
 
 namespace Game.Bootstrap
@@ -10,14 +9,16 @@ namespace Game.Bootstrap
         private TrayIcon _tray = null!;
         private WindowController _window = null!;
         private ClickThroughDriver _clickThrough = null!;
+        private FramePacingDriver _framePacing = null!;
         private TrayMenuState _state = TrayMenuState.Default;
 
-        public static void Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough)
+        public static void Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough, FramePacingDriver framePacing)
         {
             var driver = host.AddComponent<TrayDriver>();
             driver._tray = tray;
             driver._window = window;
             driver._clickThrough = clickThrough;
+            driver._framePacing = framePacing;
             tray.ShowState(driver._state);
         }
 
@@ -40,7 +41,7 @@ namespace Game.Bootstrap
             GamePause.Set(_state.Paused);
             _clickThrough.Enabled = _state.ClickThrough;
             _window.SetAlwaysOnTop(_state.AlwaysOnTop);
-            FrameRateLimit.Apply(_state.FrameRate);
+            _framePacing.SetFrameRate(_state.FrameRate);
         }
 
         private void OnDestroy()

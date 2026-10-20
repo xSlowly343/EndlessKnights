@@ -19,7 +19,6 @@ namespace Game.Bootstrap
         private static void Start()
         {
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
-            FrameRateLimit.Apply(TrayMenuState.DefaultFrameRate);
 
             var camera = Camera.main;
             if (camera == null)
@@ -35,6 +34,7 @@ namespace Game.Bootstrap
             window?.KeepOnTop();
 
             var focusButton = FocusModeButton.Create(camera, TopRightCorner(camera, FocusButtonMargin), FocusButtonSize);
+            var framePacing = FramePacingDriver.Attach(focusButton.gameObject, TrayMenuState.DefaultFrameRate);
             FocusModeDriver.Attach(focusButton, window);
             if (window == null)
                 return;
@@ -44,7 +44,7 @@ namespace Game.Bootstrap
 
             var tray = TrayIcon.Create(Application.productName);
             if (tray != null)
-                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough);
+                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing);
         }
 
         private static Vector2 TopRightCorner(Camera camera, float margin)
