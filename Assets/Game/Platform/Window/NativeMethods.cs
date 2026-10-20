@@ -7,6 +7,9 @@ namespace Game.Platform.Windows.Window
     internal static class NativeMethods
     {
         public const int GwlStyle = -16;
+        public const int GwlExStyle = -20;
+        public const long WsExToolWindow = 0x00000080L;
+        public const long WsExAppWindow = 0x00040000L;
         public static readonly IntPtr HwndTopmost = new IntPtr(-1);
         public const long WsPopup = 0x80000000L;
         public const long WsVisible = 0x10000000L;
@@ -38,6 +41,9 @@ namespace Game.Platform.Windows.Window
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern int GetClassName(IntPtr window, StringBuilder className, int maxCount);
+
+        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtrW")]
+        public static extern IntPtr GetWindowLongPtr(IntPtr window, int index);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLongPtrW")]
         public static extern IntPtr SetWindowLongPtr(IntPtr window, int index, IntPtr value);
