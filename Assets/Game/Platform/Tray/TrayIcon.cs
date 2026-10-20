@@ -9,7 +9,7 @@ namespace Game.Platform.Windows.Tray
 {
     public sealed class TrayIcon : IDisposable
     {
-        private const string WindowClassName = "EndlessKnightsTray";
+        public const string WindowClassName = "EndlessKnightsTray";
         private const uint IconId = 1;
         private const uint CallbackMessage = TrayNativeMethods.WmApp + 1;
 
