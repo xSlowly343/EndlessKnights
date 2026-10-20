@@ -9,7 +9,7 @@ namespace Game.Presentation.Strip
         private const float CharacterSize = 0.25f;
 
         private TextMesh _text = null!;
-        private int _shownKeyDowns = -1;
+        private (int Keys, int Enter, int Backspace, int Space) _shown = (-1, 0, 0, 0);
 
         public static InputDebugOverlay Create(Vector2 position)
         {
@@ -24,16 +24,17 @@ namespace Game.Presentation.Strip
             text.color = Color.white;
             var overlay = host.AddComponent<InputDebugOverlay>();
             overlay._text = text;
-            overlay.Show(0);
+            overlay.Show(0, 0, 0, 0);
             return overlay;
         }
 
-        public void Show(int totalKeyDowns)
+        public void Show(int totalKeyDowns, int enterDowns, int backspaceDowns, int spaceDowns)
         {
-            if (totalKeyDowns == _shownKeyDowns)
+            var counts = (totalKeyDowns, enterDowns, backspaceDowns, spaceDowns);
+            if (counts == _shown)
                 return;
-            _shownKeyDowns = totalKeyDowns;
-            _text.text = "keys " + totalKeyDowns;
+            _shown = counts;
+            _text.text = $"keys {totalKeyDowns}  enter {enterDowns}  bksp {backspaceDowns}  space {spaceDowns}";
         }
     }
 }
