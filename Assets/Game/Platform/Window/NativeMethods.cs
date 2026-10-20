@@ -11,6 +11,9 @@ namespace Game.Platform.Windows.Window
         public const long WsExToolWindow = 0x00000080L;
         public const long WsExAppWindow = 0x00040000L;
         public const long WsExNoActivate = 0x08000000L;
+        public const long WsExLayered = 0x00080000L;
+        public const long WsExTransparent = 0x00000020L;
+        public const uint LwaAlpha = 0x00000002;
         public static readonly IntPtr HwndTopmost = new IntPtr(-1);
         public const long WsPopup = 0x80000000L;
         public const long WsVisible = 0x10000000L;
@@ -104,6 +107,14 @@ namespace Game.Platform.Windows.Window
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr window);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetLayeredWindowAttributes(IntPtr window, uint colorKey, byte alpha, uint flags);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowRect(IntPtr window, out Rect rect);
 
         [DllImport("dwmapi.dll")]
         public static extern int DwmExtendFrameIntoClientArea(IntPtr window, ref Margins margins);

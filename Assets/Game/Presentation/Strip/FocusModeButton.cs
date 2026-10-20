@@ -22,7 +22,7 @@ namespace Game.Presentation.Strip
             icon.transform.position = position;
             var button = icon.AddComponent<FocusModeButton>();
             button._renderer = icon.GetComponent<SpriteRenderer>();
-            button._collider = icon.AddComponent<BoxCollider2D>();
+            button._collider = icon.GetComponent<BoxCollider2D>();
             button._camera = camera;
             return button;
         }
