@@ -35,6 +35,12 @@ namespace Game.Platform.Windows.Window
                 NativeMethods.SwpNoMove | NativeMethods.SwpNoZOrder | NativeMethods.SwpNoActivate | NativeMethods.SwpFrameChanged | NativeMethods.SwpShowWindow);
         }
 
+        public void PlaceAt(ScreenRect rect)
+        {
+            NativeMethods.SetWindowPos(_window, IntPtr.Zero, rect.Left, rect.Top, rect.Width, rect.Height,
+                NativeMethods.SwpNoZOrder | NativeMethods.SwpNoActivate);
+        }
+
         public void KeepOnTop()
         {
             NativeMethods.SetWindowPos(_window, NativeMethods.HwndTopmost, 0, 0, 0, 0,
