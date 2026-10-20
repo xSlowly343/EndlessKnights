@@ -7,8 +7,10 @@ namespace Game.Platform.Windows.Window
     internal static class NativeMethods
     {
         public const int GwlStyle = -16;
+        public static readonly IntPtr HwndTopmost = new IntPtr(-1);
         public const long WsPopup = 0x80000000L;
         public const long WsVisible = 0x10000000L;
+        public const uint SwpNoSize = 0x0001;
         public const uint SwpNoMove = 0x0002;
         public const uint SwpNoZOrder = 0x0004;
         public const uint SwpNoActivate = 0x0010;

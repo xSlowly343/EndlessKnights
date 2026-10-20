@@ -34,6 +34,12 @@ namespace Game.Platform.Windows.Window
                 NativeMethods.SwpNoMove | NativeMethods.SwpNoZOrder | NativeMethods.SwpNoActivate | NativeMethods.SwpFrameChanged | NativeMethods.SwpShowWindow);
         }
 
+        public void KeepOnTop()
+        {
+            NativeMethods.SetWindowPos(_window, NativeMethods.HwndTopmost, 0, 0, 0, 0,
+                NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate);
+        }
+
         public void MakeBackgroundTransparent()
         {
             var margins = NativeMethods.Margins.WholeWindow;
