@@ -40,6 +40,13 @@ namespace Game.Platform.Windows.Window
                 NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate);
         }
 
+        public void ShowInTaskbar()
+        {
+            var exStyle = NativeMethods.GetWindowLongPtr(_window, NativeMethods.GwlExStyle).ToInt64();
+            exStyle = (exStyle | NativeMethods.WsExAppWindow) & ~NativeMethods.WsExToolWindow;
+            NativeMethods.SetWindowLongPtr(_window, NativeMethods.GwlExStyle, new IntPtr(exStyle));
+        }
+
         public void MakeBackgroundTransparent()
         {
             var margins = NativeMethods.Margins.WholeWindow;
