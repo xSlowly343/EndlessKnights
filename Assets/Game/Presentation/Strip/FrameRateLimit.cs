@@ -4,10 +4,10 @@ namespace Game.Presentation.Strip
 {
     public static class FrameRateLimit
     {
-        public static void Apply(int framesPerSecond)
+        public static void DisableEngineLimit()
         {
             QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = framesPerSecond;
+            Application.targetFrameRate = -1;
         }
     }
 }
