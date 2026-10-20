@@ -13,6 +13,7 @@ namespace Game.Platform.Windows.Window
         private static IntPtr _foundWindow;
 
         private readonly IntPtr _window;
+        private IntPtr _lastOtherForeground;
 
         private WindowController(IntPtr window)
         {
@@ -40,10 +41,38 @@ namespace Game.Platform.Windows.Window
                 NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate);
         }
 
+        public bool IsForeground => NativeMethods.GetForegroundWindow() == _window;
+
         public void ShowInTaskbar()
         {
+            UpdateExStyle(NativeMethods.WsExAppWindow, NativeMethods.WsExToolWindow);
+        }
+
+        public void SetNoActivate(bool enabled)
+        {
+            if (enabled)
+                UpdateExStyle(NativeMethods.WsExNoActivate, 0L);
+            else
+                UpdateExStyle(0L, NativeMethods.WsExNoActivate);
+        }
+
+        public void RememberOtherForeground()
+        {
+            var foreground = NativeMethods.GetForegroundWindow();
+            if (foreground != IntPtr.Zero && foreground != _window)
+                _lastOtherForeground = foreground;
+        }
+
+        public void ReturnFocusToLastOtherWindow()
+        {
+            if (_lastOtherForeground != IntPtr.Zero)
+                NativeMethods.SetForegroundWindow(_lastOtherForeground);
+        }
+
+        private void UpdateExStyle(long add, long remove)
+        {
             var exStyle = NativeMethods.GetWindowLongPtr(_window, NativeMethods.GwlExStyle).ToInt64();
-            exStyle = (exStyle | NativeMethods.WsExAppWindow) & ~NativeMethods.WsExToolWindow;
+            exStyle = (exStyle | add) & ~remove;
             NativeMethods.SetWindowLongPtr(_window, NativeMethods.GwlExStyle, new IntPtr(exStyle));
         }
 
