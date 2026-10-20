@@ -4,6 +4,11 @@
 
 ## Input
 - 2.1: `IInputSource`, `InputSnapshot` и `FakeInputSource` лежат в `Game.Core.Input` (чистый C#). `InputSnapshot` — неизменяемая структура с полями из engine-spec §3, все параметры конструктора необязательные, `Empty` = `default`. `FakeInputSource` нужен для тестов и headless-симуляции (5.10): методы накапливают счётчики, `Drain` отдаёт их и обнуляет, а `SecondsSinceLastInput`, `RhythmCv`, `Suppressed` — состояние, а не счётчики, и после `Drain` остаются. Enter, Backspace и пробел в фейке считаются и как обычное нажатие (`KeyDowns`), так будет и в `RawInputService`.
+- 2.2: `RawInputService` (Platform/Input) — свой фоновый поток, своё message-only окно (`HWND_MESSAGE`, класс `EndlessKnightsRawInput`) и свой цикл `GetMessage`. В оконную процедуру Unity не лезем. Клавиатура регистрируется с `RIDEV_INPUTSINK`, поэтому события приходят, когда в фокусе любое другое окно.
+- `WM_INPUT` читаем через `GetRawInputData` в заранее выделенный неуправляемый буфер (1 КБ), без аллокаций на событие. Смещения x64: заголовок 24 байта (`dwType` @0, `hDevice` @8), у клавиатуры `Flags` @26. Коды клавиш из буфера пока не читаем вовсе.
+- Счётчики в `InputCounters` через `Interlocked`, `Drain` забирает их `Interlocked.Exchange`. Колбэк окна статический с `[MonoPInvokeCallback]`, состояние в статических полях (как у трея).
+- Raw Input в процессе один на тип устройства: регистрация клавиатуры нашим окном перехватывает её у Unity. Unity клавиатура в сборке не нужна. Мышь (2.7) так же перехватит мышь у Input System — проверить, что кнопка фокуса и перетаскивание не сломаются.
+- Отладочная надпись `keys N` в левом нижнем углу полоски (`InputDebugOverlay`, встроенный `TextMesh` со шрифтом `LegacyRuntime.ttf`, без TextMeshPro). `InputDebugDriver` забирает снимок раз в 100 мс. Это временный оверлей до настоящего интерфейса (фаза 6).
 
 ## Window
 - 1.1: рамку снимает `WindowController` в `Game.Platform.Windows`: стиль `WS_POPUP | WS_VISIBLE` и `SetWindowPos` с размером полоски. Вызывается из `GameStartup` (Bootstrap) после загрузки сцены, только в сборке: в редакторе окно Unity не трогаем.
