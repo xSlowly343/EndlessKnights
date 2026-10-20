@@ -13,9 +13,11 @@ namespace Game.Platform.Windows.Input
         private const int BufferSize = 1024;
         private const int HeaderSize = 24;
         private const int KeyboardFlagsOffset = HeaderSize + 2;
+        private const int KeyboardVirtualKeyOffset = HeaderSize + 6;
 
         private static readonly RawInputNativeMethods.WindowProcedure Procedure = HandleMessage;
         private static readonly InputCounters Counters = new InputCounters();
+        private static readonly KeyboardEventFilter Keyboard = new KeyboardEventFilter();
         private static IntPtr _buffer;
 
         private readonly Thread _thread;
@@ -133,8 +135,8 @@ namespace Game.Platform.Windows.Input
                 return;
 
             var flags = (ushort)Marshal.ReadInt16(_buffer, KeyboardFlagsOffset);
-            if (KeyboardEventFilter.IsKeyDown(flags))
-                Counters.AddKeyDown();
+            var virtualKey = (ushort)Marshal.ReadInt16(_buffer, KeyboardVirtualKeyOffset);
+            Counters.AddKey(Keyboard.Process(virtualKey, flags));
         }
     }
 }
