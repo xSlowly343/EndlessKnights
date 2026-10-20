@@ -11,15 +11,25 @@ namespace Game.Bootstrap
         private Camera _camera = null!;
         private bool _passingClicks;
 
-        public static void Attach(GameObject host, WindowController window, Camera camera)
+        public bool Enabled { get; set; } = true;
+
+        public static ClickThroughDriver Attach(GameObject host, WindowController window, Camera camera)
         {
             var driver = host.AddComponent<ClickThroughDriver>();
             driver._window = window;
             driver._camera = camera;
+            return driver;
         }
 
         private void Update()
         {
+            if (!Enabled)
+            {
+                _passingClicks = false;
+                _window.SetClickThrough(false);
+                return;
+            }
+
             if (!_window.TryGetBounds(out var bounds) || !ScreenCursor.TryGetPosition(out var x, out var y))
                 return;
 

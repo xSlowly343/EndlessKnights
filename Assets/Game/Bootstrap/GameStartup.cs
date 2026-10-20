@@ -1,3 +1,4 @@
+using Game.Platform.Windows.Tray;
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
 using UnityEngine;
@@ -37,8 +38,12 @@ namespace Game.Bootstrap
             if (window == null)
                 return;
             TaskbarDockDriver.Attach(focusButton, window);
-            ClickThroughDriver.Attach(focusButton.gameObject, window, camera);
+            var clickThrough = ClickThroughDriver.Attach(focusButton.gameObject, window, camera);
             FullscreenDriver.Attach(focusButton.gameObject, window);
+
+            var tray = TrayIcon.Create(Application.productName);
+            if (tray != null)
+                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough);
         }
 
         private static Vector2 TopRightCorner(Camera camera, float margin)
