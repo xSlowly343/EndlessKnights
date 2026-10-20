@@ -12,6 +12,7 @@ namespace Game.Platform.Windows.Input
         private const string WindowClassName = "EndlessKnightsRawInput";
         private const int BufferSize = 1024;
         private const int HeaderSize = 24;
+        private const int DeviceOffset = 8;
         private const int KeyboardFlagsOffset = HeaderSize + 2;
         private const int KeyboardVirtualKeyOffset = HeaderSize + 6;
 
@@ -132,6 +133,8 @@ namespace Game.Platform.Windows.Input
 
             var type = (uint)Marshal.ReadInt32(_buffer, 0);
             if (type != RawInputNativeMethods.RimTypeKeyboard)
+                return;
+            if (InjectedInputFilter.IsInjected(Marshal.ReadIntPtr(_buffer, DeviceOffset)))
                 return;
 
             var flags = (ushort)Marshal.ReadInt16(_buffer, KeyboardFlagsOffset);
