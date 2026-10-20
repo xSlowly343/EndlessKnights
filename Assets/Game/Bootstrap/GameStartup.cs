@@ -25,6 +25,7 @@ namespace Game.Bootstrap
             var window = WindowController.FindOwnWindow();
             window?.MakeBorderless(StripWidth, StripHeight);
             window?.MakeBackgroundTransparent();
+            window?.KeepOnTop();
         }
     }
 }
