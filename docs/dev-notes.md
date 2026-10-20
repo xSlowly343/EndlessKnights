@@ -41,6 +41,7 @@
 
 ## Tools и MCP
 - CI (`.github/workflows/ci.yml`) идёт на self-hosted runner `HOME-PC` на ПК Сергея (`C:ctions-runner`, метки `unity`, `windows`; запуск через `run.cmd`, автозапуск через файл в папке «Автозагрузка»). Сначала тесты Core через dotnet, потом `build.ps1 -Tests`: EditMode-тесты Unity и сборка IL2CPP. Логи Unity прикладываются к прогону как артефакт `unity-logs`. Пока ПК выключен, прогоны ждут в очереди.
+- `actions/checkout` с `lfs: true` на нашем runner оставлял вместо PNG LFS-указатель, и Unity не находил иконку. Поэтому в CI отдельный шаг `git lfs pull`.
 - `checkout` с `clean: false`, чтобы не стирать `Library` между прогонами, иначе каждый прогон заново импортирует проект.
 - Проект на **Unity 6000.6.6f1** вместо 6.3 LTS из engine-spec: Сергей поставил 6.6, решили остаться на ней (19.10.2026). Переход на следующую LTS с 6.6 простой, откат на 6.3 не нужен.
 - Проект создан из встроенного шаблона `2d-cross-platform` (URP 2D Renderer, `Assets/Settings`). Лишние пакеты шаблона убраны из `manifest.json`: tilemap, spriteshape, aseprite, psdimporter, animation, timeline, visual scripting, Rider, collab, обучающий фреймворк. 2D Animation вернём, только если понадобятся кости (engine-spec §1).
