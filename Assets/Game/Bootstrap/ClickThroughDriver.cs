@@ -1,7 +1,6 @@
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Game.Bootstrap
 {
@@ -9,13 +8,15 @@ namespace Game.Bootstrap
     {
         private WindowController _window = null!;
         private Camera _camera = null!;
+        private PointerInput _pointer = null!;
         private bool _passingClicks;
 
         public bool Enabled { get; set; } = true;
 
-        public static ClickThroughDriver Attach(GameObject host, WindowController window, Camera camera)
+        public static ClickThroughDriver Attach(GameObject host, WindowController window, Camera camera, PointerInput pointer)
         {
             var driver = host.AddComponent<ClickThroughDriver>();
+            driver._pointer = pointer;
             driver._window = window;
             driver._camera = camera;
             return driver;
@@ -34,8 +35,7 @@ namespace Game.Bootstrap
                 return;
 
             var overSprite = StripHitTest.IsSpriteAt(_camera, bounds.Left, bounds.Top, bounds.Width, bounds.Height, x, y);
-            var mouse = Mouse.current;
-            var buttonHeld = mouse != null && mouse.leftButton.isPressed;
+            var buttonHeld = _pointer.Held;
 
             _passingClicks = ClickThroughPolicy.ShouldPassClicks(overSprite, buttonHeld, _passingClicks);
             _window.SetClickThrough(_passingClicks);

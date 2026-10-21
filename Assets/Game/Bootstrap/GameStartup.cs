@@ -52,15 +52,18 @@ namespace Game.Bootstrap
             window?.ShowInTaskbar();
             window?.KeepOnTop();
 
-            var focusButton = FocusModeButton.Create(camera, TopRightCorner(camera, FocusButtonMargin), FocusButtonSize);
+            var focusButton = FocusModeButton.Create(TopRightCorner(camera, FocusButtonMargin), FocusButtonSize);
             var framePacing = FramePacingDriver.Attach(focusButton.gameObject, TrayMenuState.DefaultFrameRate);
             FocusModeDriver.Attach(focusButton, window);
             if (window == null)
                 return;
-            var dock = TaskbarDockDriver.Attach(focusButton, window);
+            var host = focusButton.gameObject;
+            var pointer = PointerInput.Attach(host);
+            var dock = TaskbarDockDriver.Attach(host, window);
+            StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock);
             var rawInput = RawInputService.Start();
             InputDebugDriver.Attach(focusButton.gameObject, rawInput, InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin)));
-            var clickThrough = ClickThroughDriver.Attach(focusButton.gameObject, window, camera);
+            var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 
             var tray = TrayIcon.Create(Application.productName);

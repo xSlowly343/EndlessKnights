@@ -15,10 +15,16 @@ namespace Game.Platform.Windows.Input
         private const int DeviceOffset = 8;
         private const int KeyboardFlagsOffset = HeaderSize + 2;
         private const int KeyboardVirtualKeyOffset = HeaderSize + 6;
+        private const int MouseFlagsOffset = HeaderSize;
+        private const int MouseLastXOffset = HeaderSize + 12;
+        private const int MouseLastYOffset = HeaderSize + 16;
+        private const int PointerSpeedRefreshMilliseconds = 5000;
 
         private static readonly RawInputNativeMethods.WindowProcedure Procedure = HandleMessage;
         private static readonly InputCounters Counters = new InputCounters();
         private static readonly KeyboardEventFilter Keyboard = new KeyboardEventFilter();
+        private static readonly MouseMotion Mouse = new MouseMotion();
+        private static int _pointerSpeedCheckedAt = int.MinValue;
         private static IntPtr _buffer;
 
         private readonly Thread _thread;
@@ -96,6 +102,13 @@ namespace Game.Platform.Windows.Input
                     Usage = RawInputNativeMethods.UsageKeyboard,
                     Flags = RawInputNativeMethods.RideVInputSink,
                     Target = window
+                },
+                new RawInputNativeMethods.RawInputDevice
+                {
+                    UsagePage = RawInputNativeMethods.UsagePageGeneric,
+                    Usage = RawInputNativeMethods.UsageMouse,
+                    Flags = RawInputNativeMethods.RideVInputSink,
+                    Target = window
                 }
             };
             return RawInputNativeMethods.RegisterRawInputDevices(devices, (uint)devices.Length, (uint)Marshal.SizeOf<RawInputNativeMethods.RawInputDevice>());
@@ -131,15 +144,44 @@ namespace Game.Platform.Windows.Input
             if (RawInputNativeMethods.GetRawInputData(rawInput, RawInputNativeMethods.RidInput, _buffer, ref size, HeaderSize) == uint.MaxValue)
                 return;
 
-            var type = (uint)Marshal.ReadInt32(_buffer, 0);
-            if (type != RawInputNativeMethods.RimTypeKeyboard)
-                return;
             if (InjectedInputFilter.IsInjected(Marshal.ReadIntPtr(_buffer, DeviceOffset)))
                 return;
 
+            var type = (uint)Marshal.ReadInt32(_buffer, 0);
+            if (type == RawInputNativeMethods.RimTypeKeyboard)
+                ReadKeyboard();
+            else if (type == RawInputNativeMethods.RimTypeMouse)
+                ReadMouse();
+        }
+
+        private static void ReadKeyboard()
+        {
             var flags = (ushort)Marshal.ReadInt16(_buffer, KeyboardFlagsOffset);
             var virtualKey = (ushort)Marshal.ReadInt16(_buffer, KeyboardVirtualKeyOffset);
             Counters.AddKey(Keyboard.Process(virtualKey, flags));
+        }
+
+        private static void ReadMouse()
+        {
+            RefreshPointerSpeed();
+            var flags = (ushort)Marshal.ReadInt16(_buffer, MouseFlagsOffset);
+            var lastX = Marshal.ReadInt32(_buffer, MouseLastXOffset);
+            var lastY = Marshal.ReadInt32(_buffer, MouseLastYOffset);
+            var virtualDesktop = (flags & MouseMotion.VirtualDesktop) != 0;
+            var width = RawInputNativeMethods.GetSystemMetrics(virtualDesktop ? RawInputNativeMethods.SmCxVirtualScreen : RawInputNativeMethods.SmCxScreen);
+            var height = RawInputNativeMethods.GetSystemMetrics(virtualDesktop ? RawInputNativeMethods.SmCyVirtualScreen : RawInputNativeMethods.SmCyScreen);
+            Counters.AddMouseDistance(Mouse.DistancePx(flags, lastX, lastY, width, height));
+        }
+
+        private static void RefreshPointerSpeed()
+        {
+            var now = Environment.TickCount;
+            if (now - _pointerSpeedCheckedAt < PointerSpeedRefreshMilliseconds)
+                return;
+            _pointerSpeedCheckedAt = now;
+            Mouse.SetPointerSpeed(RawInputNativeMethods.SystemParametersInfo(RawInputNativeMethods.SpiGetMouseSpeed, 0, out var speed, 0)
+                ? speed
+                : MouseMotion.DefaultPointerSpeed);
         }
     }
 }
