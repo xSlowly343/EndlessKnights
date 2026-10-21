@@ -56,7 +56,11 @@ namespace Game.Bootstrap
             var framePacing = FramePacingDriver.Attach(focusButton.gameObject, TrayMenuState.DefaultFrameRate);
             FocusModeDriver.Attach(focusButton, window);
             if (window == null)
+            {
+                var editorInput = UnityInputSource.Attach(focusButton.gameObject);
+                InputDebugDriver.Attach(focusButton.gameObject, editorInput, InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin)));
                 return;
+            }
             var host = focusButton.gameObject;
             var pointer = PointerInput.Attach(host);
             var dock = TaskbarDockDriver.Attach(host, window);
