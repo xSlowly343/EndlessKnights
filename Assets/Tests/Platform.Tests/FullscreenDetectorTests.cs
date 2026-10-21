@@ -5,7 +5,6 @@ namespace Game.Platform.Tests
 {
     public class FullscreenDetectorTests
     {
-        [TestCase(UserNotificationState.Busy)]
         [TestCase(UserNotificationState.RunningFullscreenDirect3D)]
         [TestCase(UserNotificationState.PresentationMode)]
         public void HidesForFullscreenStates(UserNotificationState state)
@@ -13,6 +12,7 @@ namespace Game.Platform.Tests
             Assert.That(FullscreenDetector.ShouldHideStrip(state), Is.True);
         }
 
+        [TestCase(UserNotificationState.Busy)]
         [TestCase(UserNotificationState.NotPresent)]
         [TestCase(UserNotificationState.AcceptsNotifications)]
         [TestCase(UserNotificationState.QuietTime)]
