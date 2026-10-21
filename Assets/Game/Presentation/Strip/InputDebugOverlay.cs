@@ -42,7 +42,7 @@ namespace Game.Presentation.Strip
             _text.text =
                 $"keys {totals.Keys}  enter {totals.Enter}  bksp {totals.Backspace}  space {totals.Space}\n" +
                 $"mouse {totals.MousePx} px  flicks {totals.Flicks}  circles {totals.Circles}\n" +
-                $"clicks L{totals.LeftClicks} R{totals.RightClicks} M{totals.MiddleClicks}  wheel {totals.WheelTicks}  rhythm {totals.RhythmCv:0.00}";
+                $"clicks L{totals.LeftClicks} R{totals.RightClicks} M{totals.MiddleClicks}  wheel {totals.WheelTicks}  rhythm {totals.RhythmCv:0.00}" + (totals.Suppressed ? "  PAUSED" : string.Empty);
         }
     }
 }

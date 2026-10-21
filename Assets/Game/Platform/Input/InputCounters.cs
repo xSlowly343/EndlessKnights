@@ -71,7 +71,7 @@ namespace Game.Platform.Windows.Input
         public void SetRhythm(float coefficientOfVariation) =>
             Interlocked.Exchange(ref _rhythmCvBits, System.BitConverter.SingleToInt32Bits(coefficientOfVariation));
 
-        public InputSnapshot Drain(long nowMilliseconds = 0)
+        public InputSnapshot Drain(long nowMilliseconds = 0, bool suppressed = false)
         {
             var lastInput = Interlocked.Read(ref _lastInputMilliseconds);
             var secondsSinceLastInput = lastInput == long.MinValue ? 0d : (nowMilliseconds - lastInput) / 1000d;
@@ -88,7 +88,8 @@ namespace Game.Platform.Windows.Input
                 flicks: Interlocked.Exchange(ref _flicks, 0),
                 circleTurns: (float)(Interlocked.Exchange(ref _circleMilliTurns, 0L) / MilliPerTurn),
                 secondsSinceLastInput: secondsSinceLastInput < 0 ? 0d : secondsSinceLastInput,
-                rhythmCv: System.BitConverter.Int32BitsToSingle(Volatile.Read(ref _rhythmCvBits)));
+                rhythmCv: System.BitConverter.Int32BitsToSingle(Volatile.Read(ref _rhythmCvBits)),
+                suppressed: suppressed);
         }
     }
 }

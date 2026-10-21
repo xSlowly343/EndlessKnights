@@ -17,6 +17,7 @@ namespace Game.Presentation.Strip
         public int Flicks;
         public int Circles;
         public float RhythmCv;
+        public bool Suppressed;
 
         private double _mouseDistance;
         private float _circleTurns;
@@ -37,13 +38,14 @@ namespace Game.Presentation.Strip
             MousePx = (int)_mouseDistance;
             Circles = (int)_circleTurns;
             RhythmCv = snapshot.RhythmCv;
+            Suppressed = snapshot.Suppressed;
         }
 
         public bool Equals(InputTotals other) =>
             Keys == other.Keys && Enter == other.Enter && Backspace == other.Backspace && Space == other.Space
             && LeftClicks == other.LeftClicks && RightClicks == other.RightClicks && MiddleClicks == other.MiddleClicks
             && WheelTicks == other.WheelTicks && MousePx == other.MousePx && Flicks == other.Flicks && Circles == other.Circles
-            && System.Math.Abs(RhythmCv - other.RhythmCv) < 0.005f;
+            && System.Math.Abs(RhythmCv - other.RhythmCv) < 0.005f && Suppressed == other.Suppressed;
 
         public override bool Equals(object? obj) => obj is InputTotals other && Equals(other);
         public override int GetHashCode() => HashCode.Combine(Keys, LeftClicks, MousePx, Flicks, Circles);
