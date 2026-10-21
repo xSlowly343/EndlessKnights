@@ -12,6 +12,24 @@ namespace Game.Bootstrap
 
         public static string Read(string fileName) => File.ReadAllText(PathOf(fileName));
 
+        public static GameDataStore? TryLoadAll()
+        {
+            try
+            {
+                return new GameDataStore(Read);
+            }
+            catch (ContentException error)
+            {
+                Debug.LogError(error.Message);
+                return null;
+            }
+            catch (IOException error)
+            {
+                Debug.LogError(error.Message);
+                return null;
+            }
+        }
+
         public static InputCaps? TryLoadInputCaps()
         {
             try

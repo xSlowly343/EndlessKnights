@@ -36,6 +36,7 @@ namespace Game.Core.Content
         public int EnemiesPerStage { get; }
         public double BossTimerSeconds { get; }
         public int BiomeLength { get; }
+        public System.Collections.Generic.IReadOnlyList<string> Biomes => _biomes;
 
         public static StageTable Load(string json)
         {

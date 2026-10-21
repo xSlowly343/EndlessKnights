@@ -57,6 +57,9 @@ namespace Game.Bootstrap
             FocusModeDriver.Attach(focusButton, window);
             if (window == null)
             {
+                var editorData = GameDataFiles.TryLoadAll();
+                if (editorData != null)
+                    GameDataHotReload.Attach(focusButton.gameObject, editorData);
                 var editorInput = UnityInputSource.Attach(focusButton.gameObject);
                 InputDebugDriver.Attach(focusButton.gameObject, editorInput, InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin)));
                 return;
