@@ -1,4 +1,6 @@
 using Game.Core.Input;
+using Game.Platform.Windows.Input;
+using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
 using UnityEngine;
 
@@ -10,18 +12,18 @@ namespace Game.Bootstrap
 
         private IInputSource _source = null!;
         private InputDebugOverlay _overlay = null!;
-        private int _totalKeyDowns;
-        private int _enterDowns;
-        private int _backspaceDowns;
-        private int _spaceDowns;
-        private double _mouseDistancePx;
+        private RawInputService? _rawInput;
+        private WindowController? _window;
+        private InputTotals _totals;
         private float _nextDrainTime;
 
-        public static void Attach(GameObject host, IInputSource source, InputDebugOverlay overlay)
+        public static void Attach(GameObject host, IInputSource source, InputDebugOverlay overlay, RawInputService? rawInput = null, WindowController? window = null)
         {
             var driver = host.AddComponent<InputDebugDriver>();
             driver._source = source;
             driver._overlay = overlay;
+            driver._rawInput = rawInput;
+            driver._window = window;
         }
 
         private void Update()
@@ -30,13 +32,11 @@ namespace Game.Bootstrap
                 return;
             _nextDrainTime = Time.unscaledTime + DrainIntervalSeconds;
 
-            var snapshot = _source.Drain();
-            _totalKeyDowns += snapshot.KeyDowns;
-            _enterDowns += snapshot.EnterDowns;
-            _backspaceDowns += snapshot.BackspaceDowns;
-            _spaceDowns += snapshot.SpaceDowns;
-            _mouseDistancePx += snapshot.MouseDistancePx;
-            _overlay.Show(_totalKeyDowns, _enterDowns, _backspaceDowns, _spaceDowns, (int)_mouseDistancePx);
+            if (_rawInput != null && _window != null && _window.TryGetBounds(out var bounds))
+                _rawInput.SetOwnWindowBounds(bounds);
+
+            _totals.Add(_source.Drain());
+            _overlay.Show(_totals);
         }
     }
 }

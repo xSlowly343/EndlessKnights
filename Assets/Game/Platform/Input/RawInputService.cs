@@ -1,9 +1,11 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Threading;
+using Game.Platform.Windows.Window;
 using AOT;
 using Game.Core.Input;
-using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Game.Platform.Windows.Input
 {
@@ -16,6 +18,8 @@ namespace Game.Platform.Windows.Input
         private const int KeyboardFlagsOffset = HeaderSize + 2;
         private const int KeyboardVirtualKeyOffset = HeaderSize + 6;
         private const int MouseFlagsOffset = HeaderSize;
+        private const int MouseButtonFlagsOffset = HeaderSize + 4;
+        private const int MouseButtonDataOffset = HeaderSize + 6;
         private const int MouseLastXOffset = HeaderSize + 12;
         private const int MouseLastYOffset = HeaderSize + 16;
         private const int PointerSpeedRefreshMilliseconds = 5000;
@@ -24,6 +28,13 @@ namespace Game.Platform.Windows.Input
         private static readonly InputCounters Counters = new InputCounters();
         private static readonly KeyboardEventFilter Keyboard = new KeyboardEventFilter();
         private static readonly MouseMotion Mouse = new MouseMotion();
+        private static readonly FlickDetector Flicks = new FlickDetector();
+        private static readonly CircleDetector Circles = new CircleDetector();
+        private static readonly JigglerFilter Jiggler = new JigglerFilter();
+        private static readonly RhythmMeter Rhythm = new RhythmMeter();
+        private static readonly WheelAccumulator Wheel = new WheelAccumulator();
+        private static readonly OwnWindowArea OwnWindow = new OwnWindowArea();
+        private static readonly Stopwatch Clock = Stopwatch.StartNew();
         private static int _pointerSpeedCheckedAt = int.MinValue;
         private static IntPtr _buffer;
 
@@ -45,7 +56,9 @@ namespace Game.Platform.Windows.Input
 
         public bool IsRunning => _started && _thread.IsAlive;
 
-        public InputSnapshot Drain() => Counters.Drain();
+        public InputSnapshot Drain() => Counters.Drain(Clock.ElapsedMilliseconds);
+
+        public void SetOwnWindowBounds(ScreenRect bounds) => OwnWindow.Set(bounds);
 
         public void Dispose()
         {
@@ -158,7 +171,11 @@ namespace Game.Platform.Windows.Input
         {
             var flags = (ushort)Marshal.ReadInt16(_buffer, KeyboardFlagsOffset);
             var virtualKey = (ushort)Marshal.ReadInt16(_buffer, KeyboardVirtualKeyOffset);
-            Counters.AddKey(Keyboard.Process(virtualKey, flags));
+            var keyClass = Keyboard.Process(virtualKey, flags);
+            if (keyClass == KeyClass.None)
+                return;
+            Counters.AddKey(keyClass);
+            RecordRhythmicEvent();
         }
 
         private static void ReadMouse()
@@ -170,8 +187,50 @@ namespace Game.Platform.Windows.Input
             var virtualDesktop = (flags & MouseMotion.VirtualDesktop) != 0;
             var width = RawInputNativeMethods.GetSystemMetrics(virtualDesktop ? RawInputNativeMethods.SmCxVirtualScreen : RawInputNativeMethods.SmCxScreen);
             var height = RawInputNativeMethods.GetSystemMetrics(virtualDesktop ? RawInputNativeMethods.SmCyVirtualScreen : RawInputNativeMethods.SmCyScreen);
-            Counters.AddMouseDistance(Mouse.DistancePx(flags, lastX, lastY, width, height));
+            var now = Clock.ElapsedMilliseconds;
+            var (dx, dy) = Mouse.DeltaPx(flags, lastX, lastY, width, height);
+            if (dx != 0 || dy != 0)
+                TrackMovement(dx, dy, now);
+
+            var buttons = MouseButtons.Decode(
+                (ushort)Marshal.ReadInt16(_buffer, MouseButtonFlagsOffset),
+                Marshal.ReadInt16(_buffer, MouseButtonDataOffset));
+            if (buttons.AnyClick && !IsCursorOverOwnWindow())
+            {
+                Counters.AddClicks(buttons);
+                RecordRhythmicEvent();
+            }
+            if (buttons.WheelDelta != 0)
+            {
+                Counters.AddWheelTicks(Wheel.AddDelta(buttons.WheelDelta));
+                Counters.MarkInput(now);
+            }
         }
+
+        private static void TrackMovement(double dx, double dy, long now)
+        {
+            var distance = Math.Sqrt(dx * dx + dy * dy);
+            var accepted = Jiggler.Add(dx, dy, now);
+            if (accepted > 0)
+            {
+                Counters.AddMouseDistance(accepted);
+                Counters.MarkInput(now);
+            }
+            if (Flicks.Add(distance, now))
+                Counters.AddFlick();
+            Counters.AddCircleTurns(Circles.Add(dx, dy, now));
+        }
+
+        private static void RecordRhythmicEvent()
+        {
+            var now = Clock.ElapsedMilliseconds;
+            Counters.MarkInput(now);
+            Rhythm.Record(now);
+            Counters.SetRhythm(Rhythm.CoefficientOfVariation());
+        }
+
+        private static bool IsCursorOverOwnWindow() =>
+            RawInputNativeMethods.GetCursorPos(out var point) && OwnWindow.Contains(point.X, point.Y);
 
         private static void RefreshPointerSpeed()
         {

@@ -1,3 +1,4 @@
+using Game.Core.Input;
 using UnityEngine;
 
 namespace Game.Presentation.Strip
@@ -9,7 +10,7 @@ namespace Game.Presentation.Strip
         private const float CharacterSize = 0.25f;
 
         private TextMesh _text = null!;
-        private (int Keys, int Enter, int Backspace, int Space, int MousePx) _shown = (-1, 0, 0, 0, 0);
+        private InputTotals _shown;
 
         public static InputDebugOverlay Create(Vector2 position)
         {
@@ -24,17 +25,24 @@ namespace Game.Presentation.Strip
             text.color = Color.white;
             var overlay = host.AddComponent<InputDebugOverlay>();
             overlay._text = text;
-            overlay.Show(0, 0, 0, 0, 0);
+            overlay.Render(default);
             return overlay;
         }
 
-        public void Show(int totalKeyDowns, int enterDowns, int backspaceDowns, int spaceDowns, int mousePx)
+        public void Show(InputTotals totals)
         {
-            var counts = (totalKeyDowns, enterDowns, backspaceDowns, spaceDowns, mousePx);
-            if (counts == _shown)
+            if (totals.Equals(_shown))
                 return;
-            _shown = counts;
-            _text.text = $"keys {totalKeyDowns}  enter {enterDowns}  bksp {backspaceDowns}  space {spaceDowns}\nmouse {mousePx} px";
+            Render(totals);
+        }
+
+        private void Render(InputTotals totals)
+        {
+            _shown = totals;
+            _text.text =
+                $"keys {totals.Keys}  enter {totals.Enter}  bksp {totals.Backspace}  space {totals.Space}\n" +
+                $"mouse {totals.MousePx} px  flicks {totals.Flicks}  circles {totals.Circles}\n" +
+                $"clicks L{totals.LeftClicks} R{totals.RightClicks} M{totals.MiddleClicks}  wheel {totals.WheelTicks}  rhythm {totals.RhythmCv:0.00}";
         }
     }
 }

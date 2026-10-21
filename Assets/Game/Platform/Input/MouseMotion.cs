@@ -29,19 +29,25 @@ namespace Game.Platform.Windows.Input
 
         public double DistancePx(ushort flags, int lastX, int lastY, int screenWidth, int screenHeight)
         {
+            var (dx, dy) = DeltaPx(flags, lastX, lastY, screenWidth, screenHeight);
+            return Length(dx, dy);
+        }
+
+        public (double Dx, double Dy) DeltaPx(ushort flags, int lastX, int lastY, int screenWidth, int screenHeight)
+        {
             if ((flags & MoveAbsolute) == 0)
             {
                 _hasAbsolutePoint = false;
-                return Length(lastX, lastY) * _pointerSpeedFactor;
+                return (lastX * _pointerSpeedFactor, lastY * _pointerSpeedFactor);
             }
 
             var x = lastX / AbsoluteRange * screenWidth;
             var y = lastY / AbsoluteRange * screenHeight;
-            var distance = _hasAbsolutePoint ? Length(x - _lastAbsoluteX, y - _lastAbsoluteY) : 0.0;
+            var delta = _hasAbsolutePoint ? (x - _lastAbsoluteX, y - _lastAbsoluteY) : (0.0, 0.0);
             _lastAbsoluteX = x;
             _lastAbsoluteY = y;
             _hasAbsolutePoint = true;
-            return distance;
+            return delta;
         }
 
         private static double Length(double dx, double dy) => Math.Sqrt(dx * dx + dy * dy);
