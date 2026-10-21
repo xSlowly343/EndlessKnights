@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "enemies": [
+    { "id": "goblin_giant", "biome": "green_hills", "type": "normal", "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "enemy_goblin_giant" },
+    { "id": "boar_colossus", "biome": "green_hills", "type": "normal", "hpMultiplier": 1.2, "goldMultiplier": 1.1, "sprite": "enemy_boar_colossus" },
+    { "id": "ent", "biome": "green_hills", "type": "normal", "hpMultiplier": 1.3, "goldMultiplier": 1.2, "sprite": "enemy_ent" },
+    { "id": "mushroom_golem", "biome": "green_hills", "type": "normal", "hpMultiplier": 0.9, "goldMultiplier": 0.9, "sprite": "enemy_mushroom_golem" },
+    { "id": "overgrown_wolf", "biome": "green_hills", "type": "normal", "hpMultiplier": 0.8, "goldMultiplier": 0.9, "sprite": "enemy_overgrown_wolf" },
+    { "id": "giant_slime", "biome": "green_hills", "type": "normal", "hpMultiplier": 1.1, "goldMultiplier": 1.0, "sprite": "enemy_giant_slime" },
+    { "id": "boar_king", "biome": "green_hills", "type": "boss", "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_boar_king" },
+    {
+      "id": "ancient_ent",
+      "biome": "green_hills",
+      "type": "guardian",
+      "hpMultiplier": 1.5,
+      "goldMultiplier": 2.0,
+      "sprite": "guardian_ancient_ent",
+      "modifiers": [
+        { "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Keyboard"] }
+      ]
+    }
+  ]
+}
