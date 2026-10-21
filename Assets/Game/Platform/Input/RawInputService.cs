@@ -35,6 +35,10 @@ namespace Game.Platform.Windows.Input
         private static readonly WheelAccumulator Wheel = new WheelAccumulator();
         private static readonly OwnWindowArea OwnWindow = new OwnWindowArea();
         private static readonly Stopwatch Clock = Stopwatch.StartNew();
+        private static readonly InputSuppression Suppression = new InputSuppression(InputBlacklist.Default());
+        private static readonly Func<string?> ForegroundExecutable = ForegroundProcess.ExecutablePath;
+        private static volatile bool _paused;
+        private static volatile bool _suppressed;
         private static int _pointerSpeedCheckedAt = int.MinValue;
         private static IntPtr _buffer;
 
@@ -56,9 +60,13 @@ namespace Game.Platform.Windows.Input
 
         public bool IsRunning => _started && _thread.IsAlive;
 
-        public InputSnapshot Drain() => Counters.Drain(Clock.ElapsedMilliseconds);
+        public InputSnapshot Drain() => Counters.Drain(Clock.ElapsedMilliseconds, _paused || _suppressed);
 
         public void SetOwnWindowBounds(ScreenRect bounds) => OwnWindow.Set(bounds);
+
+        public void SetPaused(bool paused) => _paused = paused;
+
+        public bool IsSuppressed => _suppressed;
 
         public void Dispose()
         {
@@ -158,6 +166,11 @@ namespace Game.Platform.Windows.Input
                 return;
 
             if (InjectedInputFilter.IsInjected(Marshal.ReadIntPtr(_buffer, DeviceOffset)))
+                return;
+
+            Suppression.Paused = _paused;
+            _suppressed = Suppression.IsSuppressed(Clock.ElapsedMilliseconds, ForegroundExecutable);
+            if (_suppressed)
                 return;
 
             var type = (uint)Marshal.ReadInt32(_buffer, 0);

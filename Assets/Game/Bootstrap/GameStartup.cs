@@ -68,7 +68,7 @@ namespace Game.Bootstrap
 
             var tray = TrayIcon.Create(Application.productName);
             if (tray != null)
-                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock);
+                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput);
         }
 
         private static Vector2 BottomLeftCorner(Camera camera, float margin)
