@@ -92,6 +92,19 @@ namespace Game.Platform.Windows.Input
         [DllImport("user32.dll")]
         public static extern uint GetRawInputData(IntPtr rawInput, uint command, IntPtr data, ref uint size, uint headerSize);
 
+        public const uint SpiGetMouseSpeed = 0x0070;
+        public const int SmCxScreen = 0;
+        public const int SmCyScreen = 1;
+        public const int SmCxVirtualScreen = 78;
+        public const int SmCyVirtualScreen = 79;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SystemParametersInfo(uint action, uint param, out int value, uint winIni);
+
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(int index);
+
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr GetModuleHandle(string? moduleName);
     }

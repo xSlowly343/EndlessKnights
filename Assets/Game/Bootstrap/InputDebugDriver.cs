@@ -14,6 +14,7 @@ namespace Game.Bootstrap
         private int _enterDowns;
         private int _backspaceDowns;
         private int _spaceDowns;
+        private double _mouseDistancePx;
         private float _nextDrainTime;
 
         public static void Attach(GameObject host, IInputSource source, InputDebugOverlay overlay)
@@ -34,7 +35,8 @@ namespace Game.Bootstrap
             _enterDowns += snapshot.EnterDowns;
             _backspaceDowns += snapshot.BackspaceDowns;
             _spaceDowns += snapshot.SpaceDowns;
-            _overlay.Show(_totalKeyDowns, _enterDowns, _backspaceDowns, _spaceDowns);
+            _mouseDistancePx += snapshot.MouseDistancePx;
+            _overlay.Show(_totalKeyDowns, _enterDowns, _backspaceDowns, _spaceDowns, (int)_mouseDistancePx);
         }
     }
 }
