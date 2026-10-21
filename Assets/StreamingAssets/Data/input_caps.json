@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "keys": { "fullRatePerSecond": 8, "diminishingUntilPerSecond": 15 },
+  "clicks": { "fullRatePerSecond": 10, "diminishingUntilPerSecond": 16 },
+  "mouse": { "maxPxPerSecond": 3000 },
+  "detection": {
+    "flick": { "windowMs": 80, "speedPxPerSecond": 4000 },
+    "circle": { "minStepPx": 2, "pauseMs": 300 },
+    "jiggler": { "windowMs": 250, "minDisplacementPx": 8 },
+    "rhythm": { "intervals": 200, "maxIntervalMs": 2000 }
+  }
+}

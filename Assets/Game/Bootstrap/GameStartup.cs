@@ -65,7 +65,7 @@ namespace Game.Bootstrap
             var pointer = PointerInput.Attach(host);
             var dock = TaskbarDockDriver.Attach(host, window);
             StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock);
-            var rawInput = RawInputService.Start();
+            var rawInput = RawInputService.Start(GameDataFiles.TryLoadInputCaps()?.Detection);
             InputDebugDriver.Attach(focusButton.gameObject, rawInput, InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin)), rawInput, window);
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer);
             FullscreenDriver.Attach(focusButton.gameObject, window);

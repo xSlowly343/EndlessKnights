@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using Game.Platform.Windows.Window;
 using AOT;
+using Game.Core.Content;
 using Game.Core.Input;
 using Debug = UnityEngine.Debug;
 
@@ -28,10 +29,10 @@ namespace Game.Platform.Windows.Input
         private static readonly InputCounters Counters = new InputCounters();
         private static readonly KeyboardEventFilter Keyboard = new KeyboardEventFilter();
         private static readonly MouseMotion Mouse = new MouseMotion();
-        private static readonly FlickDetector Flicks = new FlickDetector();
-        private static readonly CircleDetector Circles = new CircleDetector();
-        private static readonly JigglerFilter Jiggler = new JigglerFilter();
-        private static readonly RhythmMeter Rhythm = new RhythmMeter();
+        private static FlickDetector Flicks = new FlickDetector();
+        private static CircleDetector Circles = new CircleDetector();
+        private static JigglerFilter Jiggler = new JigglerFilter();
+        private static RhythmMeter Rhythm = new RhythmMeter();
         private static readonly WheelAccumulator Wheel = new WheelAccumulator();
         private static readonly OwnWindowArea OwnWindow = new OwnWindowArea();
         private static readonly Stopwatch Clock = Stopwatch.StartNew();
@@ -51,11 +52,21 @@ namespace Game.Platform.Windows.Input
             _thread = new Thread(Run) { IsBackground = true, Name = "RawInput" };
         }
 
-        public static RawInputService Start()
+        public static RawInputService Start(InputDetection? detection = null)
         {
+            if (detection != null)
+                Configure(detection);
             var service = new RawInputService();
             service._thread.Start();
             return service;
+        }
+
+        private static void Configure(InputDetection detection)
+        {
+            Flicks = new FlickDetector(detection.FlickWindowMs, detection.FlickSpeedPxPerSecond);
+            Circles = new CircleDetector(detection.CircleMinStepPx, detection.CirclePauseMs);
+            Jiggler = new JigglerFilter(detection.JigglerWindowMs, detection.JigglerMinDisplacementPx);
+            Rhythm = new RhythmMeter(detection.RhythmIntervals, detection.RhythmMaxIntervalMs);
         }
 
         public bool IsRunning => _started && _thread.IsAlive;
