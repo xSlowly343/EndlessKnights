@@ -4,8 +4,9 @@ namespace Game.Presentation.Strip
 {
     public static class StripHitTest
     {
-        public static bool IsSpriteAt(Camera camera, int windowLeft, int windowTop, int windowWidth, int windowHeight, int cursorX, int cursorY)
+        public static bool TryGetWorldPoint(Camera camera, int windowLeft, int windowTop, int windowWidth, int windowHeight, int cursorX, int cursorY, out Vector2 worldPoint)
         {
+            worldPoint = default;
             if (windowWidth <= 0 || windowHeight <= 0)
                 return false;
 
@@ -18,8 +19,14 @@ namespace Game.Presentation.Strip
                 clientX * (float)camera.pixelWidth / windowWidth,
                 (windowHeight - clientY) * (float)camera.pixelHeight / windowHeight,
                 0f);
-            Vector2 worldPoint = camera.ScreenToWorldPoint(screenPoint);
-            return Physics2D.OverlapPoint(worldPoint) != null;
+            worldPoint = camera.ScreenToWorldPoint(screenPoint);
+            return true;
         }
+
+        public static bool IsSpriteAt(Vector2 worldPoint) => Physics2D.OverlapPoint(worldPoint) != null;
+
+        public static bool IsSpriteAt(Camera camera, int windowLeft, int windowTop, int windowWidth, int windowHeight, int cursorX, int cursorY) =>
+            TryGetWorldPoint(camera, windowLeft, windowTop, windowWidth, windowHeight, cursorX, cursorY, out var worldPoint)
+            && IsSpriteAt(worldPoint);
     }
 }

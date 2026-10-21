@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Game.Presentation.Strip
 {
@@ -11,11 +10,10 @@ namespace Game.Presentation.Strip
 
         private SpriteRenderer _renderer = null!;
         private Collider2D _collider = null!;
-        private Camera _camera = null!;
 
         public event Action? Clicked;
 
-        public static FocusModeButton Create(Camera camera, Vector2 position, float size)
+        public static FocusModeButton Create(Vector2 position, float size)
         {
             var icon = PlaceholderSquare.Create(NormalColor, size);
             icon.name = "FocusModeButton";
@@ -23,32 +21,16 @@ namespace Game.Presentation.Strip
             var button = icon.AddComponent<FocusModeButton>();
             button._renderer = icon.GetComponent<SpriteRenderer>();
             button._collider = icon.GetComponent<BoxCollider2D>();
-            button._camera = camera;
             return button;
         }
 
-        public bool IsUnderPointer()
-        {
-            var mouse = Mouse.current;
-            if (mouse == null)
-                return false;
-            Vector2 worldPoint = _camera.ScreenToWorldPoint(mouse.position.ReadValue());
-            return _collider.OverlapPoint(worldPoint);
-        }
+        public bool Contains(Vector2 worldPoint) => _collider.OverlapPoint(worldPoint);
+
+        public void Click() => Clicked?.Invoke();
 
         public void ShowNoFocus(bool noFocus)
         {
             _renderer.color = noFocus ? NoFocusColor : NormalColor;
-        }
-
-        private void Update()
-        {
-            var mouse = Mouse.current;
-            if (mouse == null || !mouse.leftButton.wasPressedThisFrame)
-                return;
-
-            if (IsUnderPointer())
-                Clicked?.Invoke();
         }
     }
 }

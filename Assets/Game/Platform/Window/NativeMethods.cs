@@ -127,6 +127,12 @@ namespace Game.Platform.Windows.Window
         [DllImport("shell32.dll")]
         public static extern int SHQueryUserNotificationState(out int state);
 
+        [DllImport("user32.dll")]
+        public static extern short GetAsyncKeyState(int virtualKey);
+
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(int index);
+
         [DllImport("dwmapi.dll")]
         public static extern int DwmExtendFrameIntoClientArea(IntPtr window, ref Margins margins);
     }
