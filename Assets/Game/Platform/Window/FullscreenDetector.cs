@@ -10,8 +10,7 @@ namespace Game.Platform.Windows.Window
         }
 
         public static bool ShouldHideStrip(UserNotificationState state) =>
-            state == UserNotificationState.Busy
-            || state == UserNotificationState.RunningFullscreenDirect3D
+            state == UserNotificationState.RunningFullscreenDirect3D
             || state == UserNotificationState.PresentationMode;
     }
 }
