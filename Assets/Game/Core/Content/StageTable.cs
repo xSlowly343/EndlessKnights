@@ -1,0 +1,114 @@
+using System.Collections.Generic;
+using Game.Core.Math;
+
+namespace Game.Core.Content
+{
+    public sealed class StageTable
+    {
+        public const string FileName = "stages.json";
+        public const int SupportedVersion = 1;
+
+        private readonly ExponentialCurve _enemyHp;
+        private readonly ExponentialCurve _gold;
+        private readonly int _wallPeriod;
+        private readonly int _wallZoneLength;
+        private readonly double _wallRate;
+        private readonly double _bossHpMultiplier;
+        private readonly double _bossGoldMultiplier;
+        private readonly string[] _biomes;
+
+        private StageTable(ExponentialCurve enemyHp, ExponentialCurve gold, int wallPeriod, int wallZoneLength, double wallRate,
+            int enemiesPerStage, double bossHpMultiplier, double bossTimerSeconds, double bossGoldMultiplier, int biomeLength, string[] biomes)
+        {
+            _enemyHp = enemyHp;
+            _gold = gold;
+            _wallPeriod = wallPeriod;
+            _wallZoneLength = wallZoneLength;
+            _wallRate = wallRate;
+            EnemiesPerStage = enemiesPerStage;
+            _bossHpMultiplier = bossHpMultiplier;
+            BossTimerSeconds = bossTimerSeconds;
+            _bossGoldMultiplier = bossGoldMultiplier;
+            BiomeLength = biomeLength;
+            _biomes = biomes;
+        }
+
+        public int EnemiesPerStage { get; }
+        public double BossTimerSeconds { get; }
+        public int BiomeLength { get; }
+
+        public static StageTable Load(string json)
+        {
+            var root = ContentNode.Root(json, FileName);
+            var version = root.Field("version").AsInt(1);
+            if (version != SupportedVersion)
+                throw root.Field("version").Error($"version {version} is not supported, expected {SupportedVersion}");
+
+            var wall = root.Field("softWall");
+            var period = wall.Field("period").AsInt(1);
+            var zoneLength = wall.Field("zoneLength").AsInt(0);
+            if (zoneLength >= period)
+                throw wall.Field("zoneLength").Error($"must be shorter than period ({period})");
+
+            var enemyHp = ExponentialCurve.Read(root.Field("enemyHp"));
+            var wallRate = wall.Field("rate").AsNumber(1.0, 100.0);
+            if (wallRate < enemyHp.Rate)
+                throw wall.Field("rate").Error("must not be lower than enemyHp.rate, otherwise the wall makes enemies weaker");
+
+            var boss = root.Field("boss");
+            var biomes = new List<string>();
+            foreach (var biome in root.Field("biomes").Items())
+                biomes.Add(biome.AsString());
+            if (biomes.Count == 0)
+                throw root.Field("biomes").Error("at least one biome is required");
+
+            return new StageTable(
+                enemyHp,
+                ExponentialCurve.Read(root.Field("gold")),
+                period,
+                zoneLength,
+                wallRate,
+                root.Field("enemiesPerStage").AsInt(1, 1000),
+                boss.Field("hpMultiplier").AsNumber(1.0, 1e6),
+                boss.Field("timerSeconds").AsNumber(1.0, 3600.0),
+                boss.Field("goldMultiplier").AsNumber(1.0, 1e6),
+                root.Field("biomeLength").AsInt(1),
+                biomes.ToArray());
+        }
+
+        public BigNumber EnemyHp(long stage)
+        {
+            var walls = WallStagesUpTo(stage) - WallStagesUpTo(1);
+            var normal = stage - 1 - walls;
+            var log10 = System.Math.Log10(_enemyHp.Base) + normal * System.Math.Log10(_enemyHp.Rate) + walls * System.Math.Log10(_wallRate);
+            return ExponentialCurve.FromLog10(log10);
+        }
+
+        public BigNumber BossHp(long stage) => EnemyHp(stage) * _bossHpMultiplier;
+
+        public BigNumber EnemyGold(long stage) => _gold.At(stage);
+
+        public BigNumber BossGold(long stage) => EnemyGold(stage) * _bossGoldMultiplier;
+
+        public bool IsInSoftWall(long stage)
+        {
+            if (_wallZoneLength == 0)
+                return false;
+            var position = stage % _wallPeriod;
+            return position == 0 || position > _wallPeriod - _wallZoneLength;
+        }
+
+        public string Biome(long stage) => _biomes[(int)((stage - 1) / BiomeLength % _biomes.Length)];
+
+        public bool IsBiomeGuardian(long stage) => stage % BiomeLength == 0;
+
+        private long WallStagesUpTo(long stage)
+        {
+            if (_wallZoneLength == 0)
+                return 0;
+            var full = stage / _wallPeriod * _wallZoneLength;
+            var partial = System.Math.Max(0, stage % _wallPeriod - (_wallPeriod - _wallZoneLength));
+            return full + partial;
+        }
+    }
+}
