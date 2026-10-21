@@ -109,6 +109,9 @@
 ## Net
 
 ## Data и баланс
+- 4.1: JSON читаем своим парсером в Core (`Game.Core.Content.Json.JsonParser`), без `JsonUtility` и Newtonsoft: Core не зависит от Unity, а нужны понятные ошибки. Парсер строгий: без комментариев и висячих запятых, повтор поля — ошибка.
+- Чтение данных идёт через `ContentNode`: `Field("hp")`, `Items()`, `AsNumber(min, max)`, `AsInt`, `AsString`, `AsBool`, `HasField`. Каждый узел помнит файл и путь, поэтому любая ошибка звучит как `stages.json: stages[3].hp: expected a number, got a string`, а синтаксическая — с номером строки и столбца. Числа в сообщениях всегда с точкой (`InvariantCulture`), независимо от языка Windows.
+- Ошибки — `ContentException` (FileName, FieldPath, Problem). Загрузка данных при старте должна показать это сообщение человеку, а не молча подставить ноль.
 
 ## Save
 
