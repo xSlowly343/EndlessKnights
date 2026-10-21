@@ -105,6 +105,17 @@ namespace Game.Platform.Windows.Input
         [DllImport("user32.dll")]
         public static extern int GetSystemMetrics(int index);
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Point
+        {
+            public int X;
+            public int Y;
+        }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetCursorPos(out Point point);
+
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr GetModuleHandle(string? moduleName);
     }

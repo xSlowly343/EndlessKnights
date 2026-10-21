@@ -16,7 +16,7 @@ namespace Game.Bootstrap
         private const float PlaceholderSize = 4f;
         private const float FocusButtonSize = 1.6f;
         private const float FocusButtonMargin = 1.2f;
-        private const float InputOverlayMargin = 0.4f;
+        private const float InputOverlayMargin = 0.3f;
 
         private static bool _isSecondInstance;
 
@@ -62,7 +62,7 @@ namespace Game.Bootstrap
             var dock = TaskbarDockDriver.Attach(host, window);
             StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock);
             var rawInput = RawInputService.Start();
-            InputDebugDriver.Attach(focusButton.gameObject, rawInput, InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin)));
+            InputDebugDriver.Attach(focusButton.gameObject, rawInput, InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin)), rawInput, window);
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 
