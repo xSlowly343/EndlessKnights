@@ -11,6 +11,15 @@ namespace Game.Core.Content
             DiminishingUntilPerSecond = diminishingUntilPerSecond;
         }
 
+        public double MaxEffectivePerSecond => System.Math.Sqrt(FullRatePerSecond * DiminishingUntilPerSecond);
+
+        public double Effective(double ratePerSecond)
+        {
+            if (ratePerSecond <= FullRatePerSecond)
+                return System.Math.Max(0, ratePerSecond);
+            return System.Math.Min(System.Math.Sqrt(FullRatePerSecond * ratePerSecond), MaxEffectivePerSecond);
+        }
+
         public static RateCap Read(ContentNode node)
         {
             var full = node.Field("fullRatePerSecond").AsNumber(0.1, 1000);
