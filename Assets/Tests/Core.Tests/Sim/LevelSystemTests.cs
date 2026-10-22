@@ -1,9 +1,12 @@
+using System.Linq;
 using Game.Core.Clock;
 using Game.Core.Content;
+using Game.Core.Content.Tree;
 using Game.Core.Input;
 using Game.Core.Save;
 using Game.Core.Sim;
 using Game.Core.Stats;
+using Game.Core.Tests.Content;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Sim
@@ -101,7 +104,53 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(state: new GameState { RecordStage = 5000, HighestStage = 1 });
 
             Assert.That(loop.Levels.GuardianPoints, Is.EqualTo(Rules.MaxGuardianPoints));
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(1 + Rules.MaxGuardianPoints));
+            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(1 + Rules.MaxGuardianPoints + loop.Levels.MilestonePoints));
+        }
+
+        [Test]
+        public void InputMilestonesGivePointsStepByStep()
+        {
+            var keys = TestWorld.Data.TreePoints.Ladders.Single(l => l.Counter == PointCounter.Keys);
+            var state = new GameState();
+            state.TotalInput.Keys = (ulong)keys.Steps[1];
+
+            var loop = TestWorld.Loop(state: state);
+
+            Assert.That(loop.Levels.MilestonePoints, Is.EqualTo(2));
+            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(1 + 2));
+        }
+
+        [Test]
+        public void EveryLadderStepCountsOnce()
+        {
+            var state = new GameState { Prestiges = 1000, RecordStage = 100_000 };
+            state.TotalInput.Keys = ulong.MaxValue / 2;
+            state.TotalInput.LeftClicks = ulong.MaxValue / 4;
+            state.TotalInput.MouseMeters = 1e12;
+
+            var loop = TestWorld.Loop(state: state);
+
+            Assert.That(loop.Levels.MilestonePoints, Is.EqualTo(TestWorld.Data.TreePoints.MaxPoints));
+        }
+
+        [Test]
+        public void TrackedSourcesGiveTheirShareOfTheHundredAndEightyPoints()
+        {
+            var points = Rules.MaxLevel - 1 + Rules.MaxGuardianPoints + TestWorld.Data.TreePoints.MaxPoints;
+
+            Assert.That(points, Is.EqualTo(146));
+        }
+
+        [TestCase("\"counter\": \"keys\"", "\"counter\": \"steps\"", "unknown counter 'steps'")]
+        [TestCase("[1, 10, 50, 100, 500]", "[1, 10, 5]", "steps must grow")]
+        [TestCase("[1, 10, 50, 100, 500]", "[]", "a ladder needs at least one step")]
+        public void BrokenLaddersAreReported(string original, string broken, string message)
+        {
+            var json = TestData.ReadGameDataFile(TreePointRules.FileName).Replace(original, broken);
+
+            var error = Assert.Throws<ContentException>(() => TreePointRules.Load(json))!;
+
+            Assert.That(error.Message, Does.Contain(message));
         }
 
         [Test]

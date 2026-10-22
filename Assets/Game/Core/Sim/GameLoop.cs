@@ -45,7 +45,7 @@ namespace Game.Core.Sim
             _energy = new EnergySystem(data.Combat.Energy, state, hero);
             _combat = new CombatSystem(data.Combat, hero, state, Events);
             _loot = new LootSystem(data.Stages, hero, state, Events);
-            _levels = new LevelSystem(data.Combat.Hero, data.Stages, state, Events);
+            _levels = new LevelSystem(data.Combat.Hero, data.Stages, data.TreePoints, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot, _levels);
             _combat.OnKill(_stage);
             _skills = new SkillSystem(state, Events, _energy, _combat, hero);
@@ -225,7 +225,7 @@ namespace Game.Core.Sim
             _combat.UseRules(data.Combat);
             _stage.UseData(data.Stages, data.Enemies);
             _loot.UseData(data.Stages);
-            _levels.UseData(data.Combat.Hero, data.Stages);
+            _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
             _book.UseRules(data.SkillBook);

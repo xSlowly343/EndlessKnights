@@ -21,11 +21,11 @@
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },
   "hero": {
-    "maxLevel": 40,
-    "experience": { "curve": "exp", "base": 20, "rate": 1.2 },
+    "maxLevel": 100,
+    "experience": { "curve": "exp", "base": 20, "rate": 1.08 },
     "xpPerKill": 1,
     "bossXpMultiplier": 10,
-    "maxGuardianPoints": 6
+    "maxGuardianPoints": 20
   },
   "strikeUpgrade": {
     "cost": { "curve": "exp", "base": 10, "rate": 1.08 },
