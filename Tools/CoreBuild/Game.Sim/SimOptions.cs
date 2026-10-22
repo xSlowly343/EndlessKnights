@@ -8,7 +8,7 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class typist|bard] [--seed 1] [--damage 1] [--stop-after-fails 0] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class typist|bard] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
@@ -18,6 +18,9 @@ namespace Game.Sim
         public ulong Seed { get; private set; } = 1;
         public int StopAfterFails { get; private set; }
         public double DamageMultiplier { get; private set; } = 1;
+        public int Days { get; private set; }
+        public double ActiveHours { get; private set; } = 2;
+        public double StuckMinutes { get; private set; } = Game.Core.Sim.Headless.PlayerSimulation.DefaultStuckMinutes;
         public string? DataFolder { get; private set; }
         public string? OutFile { get; private set; }
 
@@ -39,6 +42,9 @@ namespace Game.Sim
                     case "--seed": options.Seed = ulong.Parse(value, CultureInfo.InvariantCulture); break;
                     case "--damage": options.DamageMultiplier = Number(value); break;
                     case "--stop-after-fails": options.StopAfterFails = int.Parse(value, CultureInfo.InvariantCulture); break;
+                    case "--days": options.Days = int.Parse(value, CultureInfo.InvariantCulture); break;
+                    case "--active-hours": options.ActiveHours = Number(value); break;
+                    case "--stuck-minutes": options.StuckMinutes = Number(value); break;
                     case "--data": options.DataFolder = value; break;
                     case "--out": options.OutFile = value; break;
                     default: throw new ArgumentException($"unknown option {args[i]}");

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Game.Core.Content;
@@ -35,6 +36,8 @@ namespace Game.Sim
             }
 
             var profile = new BotProfile(options.KeysPerSecond, options.ClicksPerSecond, options.MousePxPerSecond);
+            if (options.Days > 0)
+                return RunPlayer(data, profile, options);
             var watch = System.Diagnostics.Stopwatch.StartNew();
             var result = new Simulation(data, profile, options.HeroClass, options.Seed, options.DamageMultiplier).Run(options.Hours * 3600, options.StopAfterFails);
             watch.Stop();
@@ -55,6 +58,37 @@ namespace Game.Sim
                 result.FinalStage, result.HighestStage, StageRecord.Number(result.GoldEarned), result.BossFails, result.Stuck ? ", stuck" : string.Empty,
                 watch.Elapsed.TotalSeconds));
             return 0;
+        }
+
+        private static int RunPlayer(GameData data, BotProfile profile, SimOptions options)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var days = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes).Run(options.Days, options.ActiveHours);
+            watch.Stop();
+
+            if (options.OutFile == null)
+            {
+                WriteDays(Console.Out, days);
+            }
+            else
+            {
+                using var file = new StreamWriter(options.OutFile);
+                WriteDays(file, days);
+            }
+
+            var last = days[days.Count - 1];
+            Console.Error.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                "{0} days x {1:0.##} h active, {2} at {3:0.#} keys/s, {4:0.#} clicks/s: record stage {5}, level {6}, prestiges {7}, artifacts {8}; simulated in {9:0.00} s",
+                days.Count, options.ActiveHours, options.HeroClass, options.KeysPerSecond, options.ClicksPerSecond,
+                last.RecordStage, last.HeroLevel, last.Prestiges, last.Artifacts, watch.Elapsed.TotalSeconds));
+            return 0;
+        }
+
+        private static void WriteDays(TextWriter output, IReadOnlyList<DayRecord> days)
+        {
+            output.WriteLine(DayRecord.CsvHeader);
+            foreach (var day in days)
+                output.WriteLine(day.ToCsv());
         }
 
         private static void WriteCsv(TextWriter output, SimulationResult result)
