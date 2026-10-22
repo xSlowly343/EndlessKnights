@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "unlockCost": { "curve": "exp", "base": 10, "rate": 2 },
+  "levelCost": { "curve": "exp", "base": 5, "rate": 1.25 },
+  "allDamagePerLevel": 0.02,
+  "artifacts": [
+    {
+      "id": "typewriter",
+      "name": { "ru": "Печатная машинка", "en": "Typewriter" },
+      "perLevel": [{ "stat": "damage", "kind": "increased", "value": 0.10, "tags": ["Keyboard"] }]
+    },
+    {
+      "id": "wind_compass",
+      "name": { "ru": "Компас ветра", "en": "Wind Compass" },
+      "perLevel": [{ "stat": "damage", "kind": "increased", "value": 0.10, "tags": ["Mouse"] }]
+    },
+    {
+      "id": "archer_lens",
+      "name": { "ru": "Линза Стрелка", "en": "Archer's Lens" },
+      "perLevel": [{ "stat": "critMultiplier", "kind": "increased", "value": 0.05, "tags": ["Click"] }]
+    },
+    {
+      "id": "hourglass",
+      "name": { "ru": "Песочные часы", "en": "Hourglass" },
+      "perLevel": [{ "stat": "bossTimerSeconds", "kind": "flat", "value": 2 }]
+    },
+    {
+      "id": "colossus_purse",
+      "name": { "ru": "Кошель Колосса", "en": "Colossus Purse" },
+      "perLevel": [{ "stat": "gold", "kind": "increased", "value": 0.10, "tags": ["Gold"] }]
+    }
+  ]
+}

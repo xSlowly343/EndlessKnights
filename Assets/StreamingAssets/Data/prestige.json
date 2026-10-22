@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "minStage": 30,
+  "echo": { "k": 10, "goldBase": 5000, "power": 0.5 },
+  "highlightGain": 1.0
+}

@@ -33,7 +33,7 @@ namespace Game.Core.Tests.Content
             GameData? reloaded = null;
             store.Reloaded += data => reloaded = data;
 
-            files[StageTable.FileName] = files[StageTable.FileName].Replace("\"timerSeconds\": 90", "\"timerSeconds\": 45");
+            files[StageTable.FileName] = files[StageTable.FileName].Replace("\"timerSeconds\": 30", "\"timerSeconds\": 45");
 
             Assert.That(store.TryReload(), Is.True);
             Assert.That(store.Current.Stages.BossTimerSeconds, Is.EqualTo(45));

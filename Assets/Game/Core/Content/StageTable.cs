@@ -18,7 +18,7 @@ namespace Game.Core.Content
         private readonly string[] _biomes;
 
         private StageTable(ExponentialCurve enemyHp, ExponentialCurve gold, int wallPeriod, int wallZoneLength, double wallRate,
-            int enemiesPerStage, double bossHpMultiplier, double bossTimerSeconds, double bossGoldMultiplier, int biomeLength, string[] biomes)
+            int enemiesPerStage, double bossHpMultiplier, double bossTimerSeconds, double bossTimerMaxSeconds, double bossGoldMultiplier, int bossRetryAfterKills, int biomeLength, string[] biomes)
         {
             _enemyHp = enemyHp;
             _gold = gold;
@@ -28,13 +28,17 @@ namespace Game.Core.Content
             EnemiesPerStage = enemiesPerStage;
             _bossHpMultiplier = bossHpMultiplier;
             BossTimerSeconds = bossTimerSeconds;
+            BossTimerMaxSeconds = bossTimerMaxSeconds;
             _bossGoldMultiplier = bossGoldMultiplier;
+            BossRetryAfterKills = bossRetryAfterKills;
             BiomeLength = biomeLength;
             _biomes = biomes;
         }
 
         public int EnemiesPerStage { get; }
         public double BossTimerSeconds { get; }
+        public double BossTimerMaxSeconds { get; }
+        public int BossRetryAfterKills { get; }
         public int BiomeLength { get; }
         public System.Collections.Generic.IReadOnlyList<string> Biomes => _biomes;
 
@@ -57,6 +61,10 @@ namespace Game.Core.Content
                 throw wall.Field("rate").Error("must not be lower than enemyHp.rate, otherwise the wall makes enemies weaker");
 
             var boss = root.Field("boss");
+            var timerSeconds = boss.Field("timerSeconds").AsNumber(1.0, 3600.0);
+            var timerMaxSeconds = boss.Field("timerMaxSeconds").AsNumber(1.0, 3600.0);
+            if (timerMaxSeconds < timerSeconds)
+                throw boss.Field("timerMaxSeconds").Error($"must not be lower than timerSeconds ({timerSeconds})");
             var biomes = new List<string>();
             foreach (var biome in root.Field("biomes").Items())
                 biomes.Add(biome.AsString());
@@ -71,8 +79,10 @@ namespace Game.Core.Content
                 wallRate,
                 root.Field("enemiesPerStage").AsInt(1, 1000),
                 boss.Field("hpMultiplier").AsNumber(1.0, 1e6),
-                boss.Field("timerSeconds").AsNumber(1.0, 3600.0),
+                timerSeconds,
+                timerMaxSeconds,
                 boss.Field("goldMultiplier").AsNumber(1.0, 1e6),
+                boss.Field("retryAfterKills").AsInt(1, 1000),
                 root.Field("biomeLength").AsInt(1),
                 biomes.ToArray());
         }
@@ -84,6 +94,8 @@ namespace Game.Core.Content
             var log10 = System.Math.Log10(_enemyHp.Base) + normal * System.Math.Log10(_enemyHp.Rate) + walls * System.Math.Log10(_wallRate);
             return ExponentialCurve.FromLog10(log10);
         }
+
+        public double BossTimer(double bonusSeconds) => System.Math.Min(BossTimerMaxSeconds, System.Math.Max(1, BossTimerSeconds + bonusSeconds));
 
         public BigNumber BossHp(long stage) => EnemyHp(stage) * _bossHpMultiplier;
 

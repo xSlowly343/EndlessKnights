@@ -42,6 +42,12 @@ namespace Game.Core.Stats
             return (baseValue + totals.Flat) * (totals.IncreasedMultiplier * totals.MoreMultiplier);
         }
 
+        public double Value(StatId stat, double baseValue, StatTags tags = StatTags.None)
+        {
+            var totals = TotalsFor(stat, tags);
+            return (baseValue + totals.Flat) * totals.IncreasedMultiplier * totals.MoreMultiplier;
+        }
+
         private Totals TotalsFor(StatId stat, StatTags tags)
         {
             var key = (stat, tags);

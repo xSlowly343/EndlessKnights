@@ -11,7 +11,7 @@ namespace Game.Core.Tests.Content
   ""enemiesPerStage"": 10,
   ""enemyHp"": { ""curve"": ""exp"", ""base"": 20, ""rate"": 1.08 },
   ""softWall"": { ""period"": 100, ""zoneLength"": 10, ""rate"": 1.2 },
-  ""boss"": { ""hpMultiplier"": 6, ""timerSeconds"": 90, ""goldMultiplier"": 5 },
+  ""boss"": { ""hpMultiplier"": 6, ""timerSeconds"": 30, ""timerMaxSeconds"": 90, ""goldMultiplier"": 5, ""retryAfterKills"": 10 },
   ""gold"": { ""curve"": ""exp"", ""base"": 4, ""rate"": 1.07 },
   ""biomeLength"": 50,
   ""biomes"": [""green_hills"", ""sand_ruins""]
@@ -105,7 +105,7 @@ namespace Game.Core.Tests.Content
         [TestCase("\"rate\": 1.2", "\"rate\": 1.01", "softWall.rate: must not be lower than enemyHp.rate")]
         [TestCase("\"curve\": \"exp\", \"base\": 4", "\"curve\": \"cubic\", \"base\": 4", "gold.curve: unsupported curve 'cubic'")]
         [TestCase("[\"green_hills\", \"sand_ruins\"]", "[]", "biomes: at least one biome is required")]
-        [TestCase("\"timerSeconds\": 90", "\"timerSeconds\": \"90\"", "boss.timerSeconds: expected a number, got a string")]
+        [TestCase("\"timerSeconds\": 30", "\"timerSeconds\": \"30\"", "boss.timerSeconds: expected a number, got a string")]
         public void BrokenFieldsAreReportedByPath(string original, string broken, string message)
         {
             var json = Valid.Replace(original, broken);

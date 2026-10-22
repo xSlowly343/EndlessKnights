@@ -1,0 +1,56 @@
+{
+  "checksum": "6c1a236b363dc4a7aab03fa997a92d46dac86c38f4ad1d4d35bb9fa79388e9a8",
+  "payload": {
+    "clock": {
+      "bootId": 42,
+      "highestWallUnixMs": 1761134400000,
+      "monotonicMs": 5400000,
+      "wallUnixMs": 1761134400000
+    },
+    "savedAt": 1761134400000,
+    "state": {
+      "carry": {
+        "clicks": 0,
+        "keys": 0,
+        "mousePx": 6.661338147750939E-13
+      },
+      "enemy": {
+        "hp": "2.4486539268351972e3",
+        "id": "boar_king",
+        "maxHp": "3.8304539268351925e3",
+        "type": "boss"
+      },
+      "gold": {
+        "runEarned": "1.814501873863374e4",
+        "wallet": "1.814501873863374e4"
+      },
+      "hero": {
+        "class": "bard",
+        "combo": 0,
+        "comboIdleTicks": 0,
+        "energy": 100,
+        "focus": 3,
+        "focusMultiplier": 3,
+        "idleTicks": 0,
+        "macroRhythmTicks": 0,
+        "notes": 4
+      },
+      "recentDps": "2.053065257653951e2",
+      "rng": [
+        "b51f2386e62cbbb2",
+        "cf162a39160a810b"
+      ],
+      "stage": {
+        "bossFailsInARow": 0,
+        "bossTicksLeft": 841,
+        "current": 46,
+        "farmKills": 0,
+        "farming": false,
+        "highest": 46,
+        "kills": 10
+      },
+      "tick": 6000
+    },
+    "version": 1
+  }
+}

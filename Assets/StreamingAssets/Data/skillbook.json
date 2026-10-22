@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "slots": { "base": 3, "unlockAfterStages": [100, 200] },
+  "sockets": { "base": 1, "recordStages": [50, 250], "rebirths": 2, "max": 5, "attributePerColoredSupport": 15 },
+  "startingGems": {
+    "swordsman": ["stenography", "lull", "cast_on_enter"],
+    "bard": ["march", "lull", "cast_on_enter"],
+    "barbarian": ["stenography", "lull", "cast_on_enter"],
+    "ranger": ["stenography", "lull", "cast_on_enter"],
+    "sorcerer": ["stenography", "lull", "cast_on_enter"],
+    "witch": ["stenography", "lull", "cast_on_enter"],
+    "priest": ["stenography", "lull", "cast_on_enter"],
+    "alchemist": ["stenography", "lull", "cast_on_enter"],
+    "wanderer": ["stenography", "lull", "cast_on_enter"]
+  }
+}

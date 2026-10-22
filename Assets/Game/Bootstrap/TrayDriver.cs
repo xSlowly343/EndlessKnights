@@ -16,10 +16,11 @@ namespace Game.Bootstrap
         private FramePacingDriver _framePacing = null!;
         private TaskbarDockDriver _dock = null!;
         private RawInputService? _rawInput;
+        private InputDebugOverlay _inputDebug = null!;
         private readonly SleepTracker _sleep = new SleepTracker();
         private TrayMenuState _state = TrayMenuState.Default;
 
-        public static void Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough, FramePacingDriver framePacing, TaskbarDockDriver dock, RawInputService? rawInput)
+        public static void Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough, FramePacingDriver framePacing, TaskbarDockDriver dock, RawInputService? rawInput, InputDebugOverlay inputDebug)
         {
             var driver = host.AddComponent<TrayDriver>();
             driver._tray = tray;
@@ -28,7 +29,9 @@ namespace Game.Bootstrap
             driver._framePacing = framePacing;
             driver._dock = dock;
             driver._rawInput = rawInput;
+            driver._inputDebug = inputDebug;
             tray.ShowState(driver._state);
+            inputDebug.SetVisible(driver._state.ShowInputDebug);
         }
 
         private void Update()
@@ -54,6 +57,7 @@ namespace Game.Bootstrap
             _clickThrough.Enabled = _state.ClickThrough;
             _window.SetAlwaysOnTop(_state.AlwaysOnTop);
             _framePacing.SetFrameRate(_state.FrameRate);
+            _inputDebug.SetVisible(_state.ShowInputDebug);
         }
 
         private void Handle(SystemEvent systemEvent)

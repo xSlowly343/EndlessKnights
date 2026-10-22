@@ -2,6 +2,7 @@
 *.cs text diff=csharp
 *.md text
 *.json text
+Assets/Tests/Core.Tests/Save/Fixtures/*.json -text
 *.asmdef text
 *.shader text
 *.hlsl text
