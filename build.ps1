@@ -21,6 +21,9 @@ function Invoke-Unity([string[]]$Arguments, [string]$LogName) {
 }
 
 if (-not $UnityPath) { $UnityPath = Find-UnityEditor }
+if (Get-Process -Name 'EndlessKnights' -ErrorAction SilentlyContinue) {
+    throw 'EndlessKnights.exe is running and locks the build folder. Close the game (tray -> Exit) and run the build again.'
+}
 New-Item -ItemType Directory -Force $logDirectory | Out-Null
 
 if ($Tests) {

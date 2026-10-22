@@ -14,6 +14,7 @@ namespace Game.Bootstrap
         private GameLoop _loop = null!;
         private BattleView _view = null!;
         private GameData _data = null!;
+        private int _bossTotalTicks = 1;
 
         public GameLoop Loop => _loop;
 
@@ -57,7 +58,11 @@ namespace Game.Bootstrap
                         break;
                     case GameEventKind.EnemySpawned:
                     case GameEventKind.BossStarted:
+                        _bossTotalTicks = System.Math.Max(1, _loop.State.BossTicksLeft);
                         _view.ShowEnemy(_loop.State.EnemyType == EnemyType.Boss, _loop.State.EnemyType == EnemyType.Guardian);
+                        break;
+                    case GameEventKind.BossFailed:
+                        _view.Retreat();
                         break;
                 }
             }
@@ -76,6 +81,7 @@ namespace Game.Bootstrap
                 _data.Stages.EnemiesPerStage,
                 hpFraction,
                 state.BossTicksLeft / (double)GameLoop.TicksPerSecond,
+                state.BossTicksLeft / (double)_bossTotalTicks,
                 bossFight,
                 FocusFraction(state.Focus),
                 state.Energy / _data.Combat.Energy.Max,
