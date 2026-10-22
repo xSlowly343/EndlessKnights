@@ -21,6 +21,7 @@ namespace Game.Core.Sim
         private readonly LootSystem _loot;
         private readonly DpsMeter _dps;
         private readonly SkillSystem _skills;
+        private readonly TriggerSystem _triggers;
         private double _pendingSeconds;
 
         public GameLoop(GameData data, IInputSource input, GameState state, StatSheet hero)
@@ -37,6 +38,7 @@ namespace Game.Core.Sim
             _combat.OnKill(_stage);
             _skills = new SkillSystem(state, Events, _energy, _combat, hero);
             _combat.OnKeyHit(_skills);
+            _triggers = new TriggerSystem(state, _skills);
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _stage.EnsureEnemy();
         }
@@ -97,6 +99,7 @@ namespace Game.Core.Sim
             _focus.Tick(input);
             _energy.Tick(input);
             _skills.Tick(input, idleTicksBefore);
+            _triggers.Tick(input);
             _stage.Tick();
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);

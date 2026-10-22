@@ -1,0 +1,80 @@
+{
+  "checksum": "f7179bae11433528a81567af8c9525648965c8f0e7ceebf73be647490a757945",
+  "payload": {
+    "clock": {
+      "bootId": 43,
+      "highestWallUnixMs": 1761200000000,
+      "monotonicMs": 7200000,
+      "wallUnixMs": 1761200000000
+    },
+    "savedAt": 1761200000000,
+    "state": {
+      "carry": {
+        "clicks": 0,
+        "keys": 0,
+        "mousePx": 0
+      },
+      "chainDamage": "4.8e2",
+      "enemy": {
+        "hp": "9.14475070187462e2",
+        "id": "boar_king",
+        "maxHp": "2.0694750701874627e3",
+        "type": "boss"
+      },
+      "gold": {
+        "runEarned": "1.023054947567491e4",
+        "wallet": "1.023054947567491e4"
+      },
+      "hero": {
+        "class": "typist",
+        "combo": 2100,
+        "comboIdleTicks": 1,
+        "energy": 100,
+        "focus": 3,
+        "focusMultiplier": 3,
+        "idleTicks": 1,
+        "macroRhythmTicks": 0,
+        "notes": 0
+      },
+      "recentDps": "1.3047295209210128e2",
+      "rng": [
+        "bb0ba71bf35f55b2",
+        "c08e3e504f483d0c"
+      ],
+      "skills": [
+        {
+          "activeTicks": 0,
+          "cooldownTicks": 221,
+          "gem": "stenography",
+          "hitsLeft": 18,
+          "trigger": "cast_on_enter"
+        },
+        {
+          "activeTicks": 0,
+          "cooldownTicks": 0,
+          "gem": "march",
+          "hitsLeft": 0,
+          "trigger": null
+        },
+        {
+          "activeTicks": 0,
+          "cooldownTicks": 0,
+          "gem": "lull",
+          "hitsLeft": 0,
+          "trigger": null
+        }
+      ],
+      "stage": {
+        "bossFailsInARow": 0,
+        "bossTicksLeft": 847,
+        "current": 38,
+        "farmKills": 0,
+        "farming": false,
+        "highest": 38,
+        "kills": 10
+      },
+      "tick": 4000
+    },
+    "version": 2
+  }
+}

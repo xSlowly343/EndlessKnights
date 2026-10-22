@@ -15,6 +15,8 @@ namespace Game.Core.Tests.Sim
                 input.PressKeys(1 + tick % 2);
                 input.ClickLeft(tick % 3 == 0 ? 1 : 0);
                 input.MoveMouse(150);
+                if (tick % 37 == 0)
+                    input.PressEnter();
                 loop.Tick();
                 loop.Events.Clear();
             }
@@ -35,7 +37,11 @@ namespace Game.Core.Tests.Sim
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1000));
             var start = TestWorld.Data.Stages.BiomeLength - 5;
-            return (TestWorld.Loop(input, new GameState { Class = heroClass, Stage = start, HighestStage = start }, hero), input);
+            var loop = TestWorld.Loop(input, new GameState { Class = heroClass, Stage = start, HighestStage = start }, hero);
+            loop.Skills.Equip(TestWorld.Data.Gems["stenography"], TestWorld.Data.Gems["cast_on_enter"]);
+            loop.Skills.Equip(TestWorld.Data.Gems["march"]);
+            loop.Skills.Equip(TestWorld.Data.Gems["lull"]);
+            return (loop, input);
         }
 
         [TestCase(HeroClass.Typist)]
