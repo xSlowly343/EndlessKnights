@@ -43,14 +43,47 @@ namespace Game.Core.Sim
                 SpawnNext();
         }
 
+        public void Tick()
+        {
+            if (!_state.FightingBoss || !_state.EnemyAlive)
+                return;
+            _state.BossTicksLeft--;
+            if (_state.BossTicksLeft > 0)
+                return;
+
+            _events.Add(GameEvent.ForEnemy(GameEventKind.BossFailed, _state.Tick, _state.Stage, _state.Enemy));
+            _state.Farming = true;
+            _state.FarmKills = 0;
+            _state.BossFailsInARow++;
+            SpawnNormal();
+        }
+
+        public bool RequestBossFight()
+        {
+            if (!_state.Farming || _state.FightingBoss)
+                return false;
+            _state.Farming = false;
+            SpawnBoss();
+            return true;
+        }
+
         public void OnEnemyKilled()
         {
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             if (_state.FightingBoss)
                 AdvanceStage();
+            else if (_state.Farming)
+                CountFarmKill();
             else if (_state.KillsOnStage < _stages.EnemiesPerStage)
                 _state.KillsOnStage++;
             SpawnNext();
+        }
+
+        private void CountFarmKill()
+        {
+            _state.FarmKills++;
+            if (_state.FarmKills >= _stages.BossRetryAfterKills)
+                _state.Farming = false;
         }
 
         private void AdvanceStage()
@@ -58,13 +91,15 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossDefeated, _state.Tick, _state.Stage, _state.Enemy));
             _state.Stage++;
             _state.KillsOnStage = 0;
+            _state.Farming = false;
+            _state.BossFailsInARow = 0;
             if (_state.Stage > _state.HighestStage)
                 _state.HighestStage = _state.Stage;
         }
 
         private void SpawnNext()
         {
-            if (_state.KillsOnStage >= _stages.EnemiesPerStage)
+            if (!_state.Farming && _state.KillsOnStage >= _stages.EnemiesPerStage)
                 SpawnBoss();
             else
                 SpawnNormal();
@@ -85,6 +120,7 @@ namespace Game.Core.Sim
             var guardian = _stages.IsBiomeGuardian(stage);
             var enemy = guardian ? _guardians[biome] ?? _bosses[biome] : _bosses[biome];
             Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * Multiplier(enemy));
+            _state.BossTicksLeft = (int)System.Math.Round(_stages.BossTimerSeconds * GameLoop.TicksPerSecond);
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossStarted, _state.Tick, stage, enemy));
         }
 

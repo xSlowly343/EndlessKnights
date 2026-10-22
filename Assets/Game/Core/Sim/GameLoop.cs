@@ -32,6 +32,7 @@ namespace Game.Core.Sim
 
         public StatSheet Hero { get; }
         public CombatSystem Combat => _combat;
+        public StageSystem Stages => _stage;
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -72,6 +73,7 @@ namespace Game.Core.Sim
         {
             LastInput = _input.Drain();
             var input = _inputRules.Apply(LastInput);
+            _stage.Tick();
             _combat.Tick(input);
             State.Tick++;
         }

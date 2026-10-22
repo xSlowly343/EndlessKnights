@@ -11,7 +11,7 @@ namespace Game.Core.Tests.Content
   ""enemiesPerStage"": 10,
   ""enemyHp"": { ""curve"": ""exp"", ""base"": 20, ""rate"": 1.08 },
   ""softWall"": { ""period"": 100, ""zoneLength"": 10, ""rate"": 1.2 },
-  ""boss"": { ""hpMultiplier"": 6, ""timerSeconds"": 90, ""goldMultiplier"": 5 },
+  ""boss"": { ""hpMultiplier"": 6, ""timerSeconds"": 90, ""goldMultiplier"": 5, ""retryAfterKills"": 10 },
   ""gold"": { ""curve"": ""exp"", ""base"": 4, ""rate"": 1.07 },
   ""biomeLength"": 50,
   ""biomes"": [""green_hills"", ""sand_ruins""]

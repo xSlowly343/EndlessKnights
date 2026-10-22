@@ -18,7 +18,7 @@ namespace Game.Core.Content
         private readonly string[] _biomes;
 
         private StageTable(ExponentialCurve enemyHp, ExponentialCurve gold, int wallPeriod, int wallZoneLength, double wallRate,
-            int enemiesPerStage, double bossHpMultiplier, double bossTimerSeconds, double bossGoldMultiplier, int biomeLength, string[] biomes)
+            int enemiesPerStage, double bossHpMultiplier, double bossTimerSeconds, double bossGoldMultiplier, int bossRetryAfterKills, int biomeLength, string[] biomes)
         {
             _enemyHp = enemyHp;
             _gold = gold;
@@ -29,12 +29,14 @@ namespace Game.Core.Content
             _bossHpMultiplier = bossHpMultiplier;
             BossTimerSeconds = bossTimerSeconds;
             _bossGoldMultiplier = bossGoldMultiplier;
+            BossRetryAfterKills = bossRetryAfterKills;
             BiomeLength = biomeLength;
             _biomes = biomes;
         }
 
         public int EnemiesPerStage { get; }
         public double BossTimerSeconds { get; }
+        public int BossRetryAfterKills { get; }
         public int BiomeLength { get; }
         public System.Collections.Generic.IReadOnlyList<string> Biomes => _biomes;
 
@@ -73,6 +75,7 @@ namespace Game.Core.Content
                 boss.Field("hpMultiplier").AsNumber(1.0, 1e6),
                 boss.Field("timerSeconds").AsNumber(1.0, 3600.0),
                 boss.Field("goldMultiplier").AsNumber(1.0, 1e6),
+                boss.Field("retryAfterKills").AsInt(1, 1000),
                 root.Field("biomeLength").AsInt(1),
                 biomes.ToArray());
         }
