@@ -35,7 +35,7 @@ namespace Game.Core.Build
                 return AllocationResult.UnknownNode;
             if (IsAllocated(tree, nodeId))
                 return AllocationResult.AlreadyAllocated;
-            if (node.Locked || node.Type == TreeNodeType.Start)
+            if (node.Locked)
                 return AllocationResult.Locked;
             if (PointsLeft <= 0)
                 return AllocationResult.NoPoints;

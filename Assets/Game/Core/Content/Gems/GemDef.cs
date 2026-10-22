@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Core.Stats;
 
 namespace Game.Core.Content.Gems
@@ -5,8 +6,9 @@ namespace Game.Core.Content.Gems
     public sealed class GemDef
     {
         public GemDef(string id, GemKind kind, GemColor color, string nameRu, string nameEn, StatTags tags,
-            SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null)
+            SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null, IReadOnlyDictionary<string, double>? requires = null)
         {
+            Requires = requires ?? new Dictionary<string, double>();
             Id = id;
             Kind = kind;
             Color = color;
@@ -27,5 +29,6 @@ namespace Game.Core.Content.Gems
         public SkillDef? Skill { get; }
         public TriggerDef? Trigger { get; }
         public string? SupportEffect { get; }
+        public IReadOnlyDictionary<string, double> Requires { get; }
     }
 }

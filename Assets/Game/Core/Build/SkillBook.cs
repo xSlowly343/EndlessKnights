@@ -1,4 +1,6 @@
 using Game.Core.Content.Gems;
+using Game.Core.Content.Tree;
+using Game.Core.Stats;
 using Game.Core.Sim;
 
 namespace Game.Core.Build
@@ -7,14 +9,30 @@ namespace Game.Core.Build
     {
         private readonly GameState _state;
         private readonly SkillSystem _skills;
+        private readonly StatSheet _hero;
         private SkillBookRules _rules;
 
-        public SkillBook(SkillBookRules rules, GameState state, SkillSystem skills)
+        public SkillBook(SkillBookRules rules, GameState state, SkillSystem skills, StatSheet hero)
         {
             _rules = rules;
             _state = state;
             _skills = skills;
+            _hero = hero;
         }
+
+        public double Attribute(string attribute) => _hero.Value(PassiveTree.AttributeStat(attribute), 0);
+
+        public bool MeetsRequirements(GemDef gem)
+        {
+            foreach (var requirement in gem.Requires)
+            {
+                if (Attribute(requirement.Key) < requirement.Value)
+                    return false;
+            }
+            return true;
+        }
+
+        public int ColoredSupportLimit(string attribute) => (int)System.Math.Floor(Attribute(attribute) / _rules.AttributePerColoredSupport);
 
         public void UseRules(SkillBookRules rules) => _rules = rules;
 
@@ -44,6 +62,8 @@ namespace Game.Core.Build
                 return BookResult.WrongKind;
             if (FreeCopies(skill) <= 0)
                 return BookResult.NotOwned;
+            if (!MeetsRequirements(skill))
+                return BookResult.AttributesTooLow;
             if (_state.Skills.Count >= SlotCount)
                 return BookResult.NoFreeSlot;
             _skills.Equip(skill);
@@ -67,6 +87,8 @@ namespace Game.Core.Build
             var slot = _state.Skills[index];
             if (trigger != null && !ReferenceEquals(slot.Trigger, trigger) && FreeCopies(trigger) <= 0)
                 return BookResult.NotOwned;
+            if (trigger != null && !MeetsRequirements(trigger))
+                return BookResult.AttributesTooLow;
             slot.Trigger = trigger;
             return BookResult.Done;
         }

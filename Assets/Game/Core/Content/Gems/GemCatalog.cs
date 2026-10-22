@@ -75,14 +75,20 @@ namespace Game.Core.Content.Gems
             var tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None;
             var nameRu = name.Field("ru").AsString();
             var nameEn = name.Field("en").AsString();
+            var requires = new Dictionary<string, double>(StringComparer.Ordinal);
+            if (node.HasField("requires"))
+            {
+                foreach (var attribute in node.Field("requires").FieldNames())
+                    requires[attribute] = node.Field("requires").Field(attribute).AsNumber(0, 10000);
+            }
             switch (kind)
             {
                 case GemKind.Skill:
-                    return new GemDef(id, kind, color, nameRu, nameEn, tags, skill: ReadSkill(node));
+                    return new GemDef(id, kind, color, nameRu, nameEn, tags, skill: ReadSkill(node), requires: requires);
                 case GemKind.Trigger:
-                    return new GemDef(id, kind, color, nameRu, nameEn, tags, trigger: ReadTrigger(node));
+                    return new GemDef(id, kind, color, nameRu, nameEn, tags, trigger: ReadTrigger(node), requires: requires);
                 default:
-                    return new GemDef(id, kind, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString());
+                    return new GemDef(id, kind, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(), requires: requires);
             }
         }
 

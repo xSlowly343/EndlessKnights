@@ -6,6 +6,7 @@ namespace Game.Core.Build
         NotOwned,
         WrongKind,
         NoFreeSlot,
-        NoSuchSlot
+        NoSuchSlot,
+        AttributesTooLow
     }
 }

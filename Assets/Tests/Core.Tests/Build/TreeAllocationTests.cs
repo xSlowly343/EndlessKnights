@@ -102,9 +102,21 @@ namespace Game.Core.Tests.Build
                 loop.AllocateNode(id);
 
             Assert.That(loop.AllocateNode("t_jewel"), Is.EqualTo(AllocationResult.Locked));
-            Assert.That(loop.AllocateNode("hermit_start"), Is.EqualTo(AllocationResult.Locked));
+            Assert.That(loop.AllocateNode("hermit_start"), Is.EqualTo(AllocationResult.NotConnected));
             Assert.That(loop.AllocateNode("no_such_node"), Is.EqualTo(AllocationResult.UnknownNode));
             Assert.That(loop.AllocateNode("unstoppable"), Is.EqualTo(AllocationResult.AlreadyAllocated));
+        }
+
+        [Test]
+        public void OtherClassStartsArePassableNodes()
+        {
+            var loop = Typist(4);
+
+            loop.AllocateNode("t_attr_1", attribute: "tempo");
+            loop.AllocateNode("c_attr_tempo", attribute: "tempo");
+
+            Assert.That(loop.AllocateNode("hermit_start"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("c_attr_reach", attribute: "reach"), Is.EqualTo(AllocationResult.Allocated));
         }
 
         [Test]
