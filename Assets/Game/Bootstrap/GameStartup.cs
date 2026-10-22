@@ -1,3 +1,4 @@
+using Game.Core.Input;
 using Game.Platform.Windows.Input;
 using Game.Platform.Windows.Instance;
 using Game.Platform.Windows.Tray;
@@ -13,7 +14,6 @@ namespace Game.Bootstrap
         public const int StripWidth = 480;
         public const int StripHeight = 140;
 
-        private const float PlaceholderSize = 4f;
         private const float FocusButtonSize = 1.6f;
         private const float FocusButtonMargin = 1.2f;
         private const float InputOverlayMargin = 0.3f;
@@ -47,7 +47,6 @@ namespace Game.Bootstrap
 
             TransparentCamera.Apply(camera);
             StripCamera.FitStripOnly(camera);
-            PlaceholderSquare.Create(new Color(1f, 0.55f, 0.1f), PlaceholderSize).transform.position = StripSpace.Centre;
 
             var window = Application.isEditor ? null : WindowController.FindOwnWindow();
             window?.MakeBorderless(StripWidth, StripHeight);
@@ -55,29 +54,36 @@ namespace Game.Bootstrap
             window?.ShowInTaskbar();
             window?.KeepOnTop();
 
-            var focusButton = FocusModeButton.Create(StripSpace.TopRight(FocusButtonMargin), FocusButtonSize);
+            var focusButton = FocusModeButton.Create(StripSpace.BottomRight(FocusButtonMargin), FocusButtonSize);
             var framePacing = FramePacingDriver.Attach(focusButton.gameObject, TrayMenuState.DefaultFrameRate);
             FocusModeDriver.Attach(focusButton, window);
             if (window == null)
             {
                 var editorData = GameDataFiles.TryLoadAll();
-                if (editorData != null)
-                    GameDataHotReload.Attach(focusButton.gameObject, editorData);
-                var editorInput = UnityInputSource.Attach(focusButton.gameObject);
+                var editorInput = new ObservedInputSource(UnityInputSource.Attach(focusButton.gameObject));
                 InputDebugDriver.Attach(focusButton.gameObject, editorInput, InputDebugOverlay.Create(StripSpace.BottomLeft(InputOverlayMargin)));
+                if (editorData == null)
+                    return;
+                var editorBattle = BattleDriver.Attach(focusButton.gameObject, editorData.Current, editorInput);
+                editorData.Reloaded += editorBattle.UseData;
+                GameDataHotReload.Attach(focusButton.gameObject, editorData);
                 return;
             }
             var host = focusButton.gameObject;
             var pointer = PointerInput.Attach(host);
             var dock = TaskbarDockDriver.Attach(host, window);
             StripCameraDriver.Attach(host, camera, dock);
-            var menuButton = StripButton.Create("MenuButton", MenuButtonColor, StripSpace.TopRight(FocusButtonMargin) - new Vector2(FocusButtonSize + MenuButtonGap, 0f), new Vector2(FocusButtonSize, FocusButtonSize));
+            var menuButton = StripButton.Create("MenuButton", MenuButtonColor, StripSpace.BottomRight(FocusButtonMargin) - new Vector2(FocusButtonSize + MenuButtonGap, 0f), new Vector2(FocusButtonSize, FocusButtonSize));
             var panels = PanelView.Create();
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
             StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
-            var rawInput = RawInputService.Start(GameDataFiles.TryLoadInputCaps()?.Detection);
+            var data = GameDataFiles.TryLoadAll();
+            var rawInput = RawInputService.Start(data?.Current.InputCaps.Detection);
+            var observedInput = new ObservedInputSource(rawInput);
             var inputDebug = InputDebugOverlay.Create(StripSpace.BottomLeft(InputOverlayMargin));
-            InputDebugDriver.Attach(focusButton.gameObject, rawInput, inputDebug, rawInput, window);
+            InputDebugDriver.Attach(focusButton.gameObject, observedInput, inputDebug, rawInput, window);
+            if (data != null)
+                BattleDriver.Attach(host, data.Current, observedInput);
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 

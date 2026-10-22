@@ -15,7 +15,7 @@ namespace Game.Platform.Tests
             Assert.That(state.ClickThrough, Is.True);
             Assert.That(state.AlwaysOnTop, Is.True);
             Assert.That(state.FrameRate, Is.EqualTo(60));
-            Assert.That(state.ShowInputDebug, Is.True);
+            Assert.That(state.ShowInputDebug, Is.False);
         }
 
         [TestCase(TrayCommand.TogglePause)]
@@ -44,7 +44,7 @@ namespace Game.Platform.Tests
 
             Assert.That(after.FrameRate, Is.EqualTo(frameRate));
             Assert.That(after.ClickThrough, Is.True);
-            Assert.That(after.ShowInputDebug, Is.True);
+            Assert.That(after.ShowInputDebug, Is.False);
         }
 
         [Test]
@@ -59,13 +59,13 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void InputDebugToggleHidesAndShowsAgain()
+        public void InputDebugToggleShowsAndHidesAgain()
         {
             var hidden = TrayMenuState.Default.Apply(TrayCommand.ToggleInputDebug);
             var shown = hidden.Apply(TrayCommand.ToggleInputDebug);
 
-            Assert.That(hidden.ShowInputDebug, Is.False);
-            Assert.That(shown.ShowInputDebug, Is.True);
+            Assert.That(hidden.ShowInputDebug, Is.True);
+            Assert.That(shown.ShowInputDebug, Is.False);
         }
 
         [Test]
