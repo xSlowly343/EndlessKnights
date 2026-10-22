@@ -16,9 +16,10 @@ namespace Game.Core.Save
                         JsonEdit.Set(hero, "keyHits", JsonValue.Of(0))))),
             new SaveMigration(3, "hero level and record stage (phase 10)", payload =>
                 JsonEdit.Update(payload, "state", state =>
-                    JsonEdit.Update(JsonEdit.Update(state, "hero", hero =>
+                    JsonEdit.Update(JsonEdit.Update(JsonEdit.Update(state, "hero", hero =>
                         JsonEdit.Set(JsonEdit.Set(hero, "level", JsonValue.Of(1)), "xp", JsonValue.Of(0))), "stage", stage =>
-                        JsonEdit.Set(stage, "record", stage.Fields["highest"])))));
+                        JsonEdit.Set(stage, "record", stage.Fields["highest"])), "tree", tree =>
+                        JsonEdit.Set(tree, "lastFreeResetUnixMs", JsonValue.Of(0))))));
 
         private static JsonValue EmptyTree(JsonValue heroClass) =>
             JsonValue.Object(new Dictionary<string, JsonValue>

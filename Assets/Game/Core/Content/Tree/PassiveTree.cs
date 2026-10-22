@@ -23,11 +23,12 @@ namespace Game.Core.Content.Tree
         private readonly Dictionary<string, TreeNodeDef> _byId;
         private readonly Dictionary<string, TreeNodeDef> _startByClass;
 
-        private PassiveTree(List<TreeNodeDef> nodes, IReadOnlyList<string> attributes, int linkCount)
+        private PassiveTree(List<TreeNodeDef> nodes, IReadOnlyList<string> attributes, int linkCount, RespecRules respec)
         {
             Nodes = nodes;
             Attributes = attributes;
             LinkCount = linkCount;
+            Respec = respec;
             _byId = new Dictionary<string, TreeNodeDef>(StringComparer.Ordinal);
             _startByClass = new Dictionary<string, TreeNodeDef>(StringComparer.Ordinal);
             foreach (var node in nodes)
@@ -41,12 +42,34 @@ namespace Game.Core.Content.Tree
         public IReadOnlyList<TreeNodeDef> Nodes { get; }
         public IReadOnlyList<string> Attributes { get; }
         public int LinkCount { get; }
+        public RespecRules Respec { get; }
 
         public TreeNodeDef this[string id] => _byId[id];
 
         public bool TryGet(string id, out TreeNodeDef node) => _byId.TryGetValue(id, out node!);
 
         public TreeNodeDef? StartOf(string className) => _startByClass.TryGetValue(className, out var start) ? start : null;
+
+        public int DepthFrom(TreeNodeDef start, TreeNodeDef target)
+        {
+            var depth = new Dictionary<TreeNodeDef, int> { [start] = 0 };
+            var queue = new Queue<TreeNodeDef>();
+            queue.Enqueue(start);
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                if (ReferenceEquals(node, target))
+                    return depth[node];
+                foreach (var next in node.Neighbours)
+                {
+                    if (depth.ContainsKey(next))
+                        continue;
+                    depth[next] = depth[node] + 1;
+                    queue.Enqueue(next);
+                }
+            }
+            return -1;
+        }
 
         public static StatId AttributeStat(string attribute) => new StatId(attribute);
 
@@ -79,7 +102,7 @@ namespace Game.Core.Content.Tree
 
             var links = ReadLinks(root.Field("links"), byId);
             RequireConnected(root.Field("links"), nodes);
-            return new PassiveTree(nodes, attributes, links);
+            return new PassiveTree(nodes, attributes, links, RespecRules.Read(root.Field("respec")));
         }
 
         private static TreeNodeDef ReadNode(ContentNode node)

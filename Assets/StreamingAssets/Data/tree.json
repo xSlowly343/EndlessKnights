@@ -1,6 +1,7 @@
 {
   "version": 1,
   "attributes": ["tempo", "reach", "precision"],
+  "respec": { "cost": { "curve": "exp", "base": 50, "rate": 1.3 }, "levelRate": 1.1, "attributeShare": 0.5, "freeFullResetHours": 24 },
   "nodes": [
     {"id": "hermit_start", "type": "start", "x": 0.0, "y": 0.0, "name": {"ru": "Старт Отшельника", "en": "Hermit Start"}, "class": "hermit"},
     {"id": "c_attr_tempo", "type": "attribute", "x": 0.0, "y": 1.2, "name": {"ru": "Атрибут", "en": "Attribute"}, "amount": 5},

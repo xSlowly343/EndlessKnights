@@ -1,6 +1,7 @@
 using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Input;
+using Game.Core.Math;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
@@ -94,6 +95,33 @@ namespace Game.Core.Sim
             if (result == AllocationResult.Allocated)
                 RebuildTree();
             return result;
+        }
+
+        public BigNumber? RefundCost(string nodeId) => State.Tree.RefundCost(_data.Tree, nodeId, State.HeroLevel);
+
+        public RefundResult RefundNode(string nodeId)
+        {
+            var cost = RefundCost(nodeId);
+            if (cost == null)
+                return RefundResult.NotAllocated;
+            if (!State.Tree.CanRemove(_data.Tree, nodeId))
+                return RefundResult.BreaksPath;
+            if (State.Gold < cost.Value)
+                return RefundResult.NotEnoughGold;
+            State.Gold -= cost.Value;
+            State.Tree.Remove(nodeId);
+            RebuildTree();
+            return RefundResult.Refunded;
+        }
+
+        public RefundResult FreeFullReset(long nowUnixMs)
+        {
+            if (!State.Tree.FreeResetReady(_data.Tree, nowUnixMs))
+                return RefundResult.NotYet;
+            State.Tree.Clear();
+            State.Tree.LastFreeResetUnixMs = nowUnixMs;
+            RebuildTree();
+            return RefundResult.Refunded;
         }
 
         public bool ChangeMastery(string nodeId, int option)

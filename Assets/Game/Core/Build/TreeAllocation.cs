@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Game.Core.Content.Tree;
+using Game.Core.Math;
 using Game.Core.Stats;
 
 namespace Game.Core.Build
@@ -18,6 +19,7 @@ namespace Game.Core.Build
 
         public string StartClass { get; }
         public int PointsEarned { get; set; }
+        public long LastFreeResetUnixMs { get; set; }
         public IReadOnlyCollection<string> Allocated => _allocated;
         public IReadOnlyDictionary<string, string> AttributeChoices => _attributes;
         public IReadOnlyDictionary<string, int> MasteryChoices => _masteries;
@@ -63,6 +65,51 @@ namespace Game.Core.Build
                 return false;
             _masteries[nodeId] = option;
             return true;
+        }
+
+        public BigNumber? RefundCost(PassiveTree tree, string nodeId, int heroLevel)
+        {
+            var start = tree.StartOf(StartClass);
+            if (start == null || !_allocated.Contains(nodeId) || !tree.TryGet(nodeId, out var node))
+                return null;
+            return tree.Respec.NodeCost(tree.DepthFrom(start, node), heroLevel, node.Type == TreeNodeType.Attribute);
+        }
+
+        public bool CanRemove(PassiveTree tree, string nodeId)
+        {
+            var start = tree.StartOf(StartClass);
+            if (start == null || !_allocated.Contains(nodeId))
+                return false;
+            var reached = new HashSet<string>(StringComparer.Ordinal) { start.Id };
+            var queue = new Queue<TreeNodeDef>();
+            queue.Enqueue(start);
+            while (queue.Count > 0)
+            {
+                foreach (var next in queue.Dequeue().Neighbours)
+                {
+                    if (next.Id == nodeId || !_allocated.Contains(next.Id) || !reached.Add(next.Id))
+                        continue;
+                    queue.Enqueue(next);
+                }
+            }
+            return reached.Count == _allocated.Count;
+        }
+
+        public void Remove(string nodeId)
+        {
+            _allocated.Remove(nodeId);
+            _attributes.Remove(nodeId);
+            _masteries.Remove(nodeId);
+        }
+
+        public bool FreeResetReady(PassiveTree tree, long nowUnixMs) =>
+            nowUnixMs - LastFreeResetUnixMs >= tree.Respec.FreeFullResetHours * 3_600_000;
+
+        public void Clear()
+        {
+            _allocated.Clear();
+            _attributes.Clear();
+            _masteries.Clear();
         }
 
         public void Restore(string nodeId, string? attribute, int? masteryOption)

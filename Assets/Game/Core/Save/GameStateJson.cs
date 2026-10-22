@@ -139,12 +139,17 @@ namespace Game.Core.Save
             return Object(
                 ("startClass", JsonValue.Of(tree.StartClass)),
                 ("pointsEarned", JsonValue.Of(tree.PointsEarned)),
+                ("lastFreeResetUnixMs", JsonValue.Of(tree.LastFreeResetUnixMs)),
                 ("allocated", JsonValue.Array(nodes)));
         }
 
         private static TreeAllocation ReadTree(ContentNode node)
         {
-            var tree = new TreeAllocation(node.Field("startClass").AsString()) { PointsEarned = node.Field("pointsEarned").AsInt(0) };
+            var tree = new TreeAllocation(node.Field("startClass").AsString())
+            {
+                PointsEarned = node.Field("pointsEarned").AsInt(0),
+                LastFreeResetUnixMs = node.Field("lastFreeResetUnixMs").AsLong()
+            };
             foreach (var item in node.Field("allocated").Items())
             {
                 tree.Restore(
