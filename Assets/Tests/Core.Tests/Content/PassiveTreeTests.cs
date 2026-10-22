@@ -20,13 +20,13 @@ namespace Game.Core.Tests.Content
         {
             var tree = PassiveTree.Load(RealFile());
 
-            Assert.That(tree.Nodes.Count, Is.GreaterThan(550));
+            Assert.That(tree.Nodes.Count, Is.GreaterThan(1500));
             Assert.That(Count(tree, TreeNodeType.Start), Is.EqualTo(9));
-            Assert.That(Count(tree, TreeNodeType.Keystone), Is.EqualTo(20));
-            Assert.That(Count(tree, TreeNodeType.Notable), Is.GreaterThanOrEqualTo(50));
-            Assert.That(Count(tree, TreeNodeType.Mastery), Is.EqualTo(40));
-            Assert.That(Count(tree, TreeNodeType.Jewel), Is.EqualTo(16));
-            Assert.That(Count(tree, TreeNodeType.Attribute), Is.GreaterThanOrEqualTo(16));
+            Assert.That(Count(tree, TreeNodeType.Keystone), Is.EqualTo(24));
+            Assert.That(Count(tree, TreeNodeType.Notable), Is.GreaterThanOrEqualTo(150));
+            Assert.That(Count(tree, TreeNodeType.Mastery), Is.GreaterThanOrEqualTo(100));
+            Assert.That(Count(tree, TreeNodeType.Jewel), Is.EqualTo(24));
+            Assert.That(Count(tree, TreeNodeType.Attribute), Is.GreaterThanOrEqualTo(150));
         }
 
         [Test]
@@ -198,7 +198,8 @@ namespace Game.Core.Tests.Content
         [Test]
         public void TreeMustBeOnePiece()
         {
-            var error = Assert.Throws<ContentException>(() => PassiveTree.Load(RealFile().Replace("    [\"swordsman_to_k1_1\", \"swordsman_keystone_1\"],\n", "")))!;
+            var cut = System.Text.RegularExpressions.Regex.Replace(RealFile(), "    \\[\"[a-z_0-9]+\", \"swordsman_keystone_1\"\\],\n", "");
+            var error = Assert.Throws<ContentException>(() => PassiveTree.Load(cut))!;
 
             Assert.That(error.Message, Does.Contain("node 'swordsman_keystone_1' cannot be reached"));
         }

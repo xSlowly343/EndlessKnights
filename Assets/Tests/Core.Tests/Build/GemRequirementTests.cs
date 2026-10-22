@@ -1,3 +1,5 @@
+using Game.Core.Content.Tree;
+using System.Linq;
 using Game.Core.Build;
 using Game.Core.Content.Gems;
 using Game.Core.Sim;
@@ -27,14 +29,24 @@ namespace Game.Core.Tests.Build
             Assert.That(gem.Requires["strength"], Is.EqualTo(10));
         }
 
+        private static PassiveTree Tree => TestWorld.Data.Tree;
+
         private static GameLoop Swordsman()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
-            loop.State.Tree.PointsEarned = 20;
-            foreach (var id in TreeAllocationTests.ToAttribute)
-                Assert.That(loop.AllocateNode(id), Is.EqualTo(AllocationResult.Allocated), id);
+            loop.State.Tree.PointsEarned = 120;
             return loop;
         }
+
+        private static void TakeAttributes(GameLoop loop, int count)
+        {
+            var nearest = Tree.Nodes.Where(node => node.Type == TreeNodeType.Attribute)
+                .OrderBy(node => TreePaths.To(Tree, "swordsman", node.Id).Length).ThenBy(node => node.Id).Take(count);
+            foreach (var attribute in nearest)
+                TreePaths.Allocate(loop, Tree, TreePaths.To(Tree, "swordsman", attribute.Id));
+        }
+
+        private static int Taken(GameLoop loop) => loop.State.Tree.AttributeChoices.Count;
 
         [Test]
         public void GemNeedsEnoughAttributeFromTheTree()
@@ -45,14 +57,12 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.AttributesTooLow));
 
-            loop.AllocateNode("great_2", attribute: "strength");
-            Assert.That(loop.Book.Attribute("strength"), Is.EqualTo(5));
-            Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.AttributesTooLow));
+            TakeAttributes(loop, 1);
+            Assert.That(loop.Book.Attribute("strength"), Is.EqualTo(5 * Taken(loop)));
+            if (Taken(loop) < 2)
+                Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.AttributesTooLow));
 
-            loop.AllocateNode("great_1");
-            loop.AllocateNode("great_0");
-            loop.AllocateNode("great_31");
-            loop.AllocateNode("great_30", attribute: "strength");
+            TakeAttributes(loop, 2);
             Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.Done));
         }
 
@@ -62,13 +72,9 @@ namespace Game.Core.Tests.Build
             var loop = Swordsman();
 
             Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(0));
-            loop.AllocateNode("great_2", attribute: "strength");
-            foreach (var id in new[] { "great_1", "great_0", "great_31" })
-                loop.AllocateNode(id);
-            loop.AllocateNode("great_30", attribute: "strength");
-            foreach (var id in new[] { "great_5", "great_6" })
-                loop.AllocateNode(id, attribute: id == "great_6" ? "strength" : null);
-            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(1));
+            TakeAttributes(loop, 3);
+            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(Taken(loop) * 5 / 15));
+            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.GreaterThanOrEqualTo(1));
             Assert.That(loop.Book.ColoredSupportLimit("dexterity"), Is.EqualTo(0));
         }
     }

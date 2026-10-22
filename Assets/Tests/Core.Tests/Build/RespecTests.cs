@@ -1,3 +1,4 @@
+using System.Linq;
 using Game.Core.Build;
 using Game.Core.Clock;
 using Game.Core.Math;
@@ -16,7 +17,7 @@ namespace Game.Core.Tests.Build
         private static GameLoop Typist(params string[] path)
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
-            loop.State.Tree.PointsEarned = 46;
+            loop.State.Tree.PointsEarned = 120;
             foreach (var step in path)
             {
                 var parts = step.Split('=');
@@ -43,9 +44,11 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NodeHoldingThePathCannotBeRefunded()
         {
-            var loop = Typist("swordsman_ring_5", "swordsman_to_w1_1", "swordsman_to_w1_2");
+            var path = TreePaths.To(TestWorld.Data.Tree, "swordsman", "swordsman_w1_notable");
+            var loop = Typist();
+            TreePaths.Allocate(loop, TestWorld.Data.Tree, path.Take(3));
 
-            Assert.That(loop.RefundNode("swordsman_to_w1_1"), Is.EqualTo(RefundResult.BreaksPath));
+            Assert.That(loop.RefundNode(path[1]), Is.EqualTo(RefundResult.BreaksPath));
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(3));
         }
 
@@ -61,14 +64,17 @@ namespace Game.Core.Tests.Build
         [Test]
         public void DeeperNodesCostMoreAndAttributesCostHalf()
         {
-            var loop = Typist(System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(
-                new[] { "swordsman_ring_5", "swordsman_to_w1_1", "swordsman_to_w1_2" },
-                System.Linq.Enumerable.Append(TreeAllocationTests.ToAttribute, TreeAllocationTests.FirstAttribute + "=dexterity"))));
+            var path = TreePaths.To(TestWorld.Data.Tree, "swordsman", "swordsman_w1_notable");
+            var toAttribute = TreeAllocationTests.ToAttribute;
+            var loop = Typist();
+            TreePaths.Allocate(loop, TestWorld.Data.Tree, path);
+            TreePaths.Allocate(loop, TestWorld.Data.Tree, toAttribute);
+            loop.AllocateNode(TreeAllocationTests.FirstAttribute, attribute: "dexterity");
 
-            var shallow = loop.RefundCost("swordsman_ring_5")!.Value;
-            var deep = loop.RefundCost("swordsman_to_w1_2")!.Value;
+            var shallow = loop.RefundCost(path[0])!.Value;
+            var deep = loop.RefundCost(path[2])!.Value;
             var attribute = loop.RefundCost(TreeAllocationTests.FirstAttribute)!.Value;
-            var plainAtSameDepth = TestWorld.Data.Tree.Respec.NodeCost(TreeAllocationTests.ToAttribute.Length + 1, 1, attribute: false);
+            var plainAtSameDepth = TestWorld.Data.Tree.Respec.NodeCost(toAttribute.Length + 1, 1, attribute: false);
 
             Assert.That(deep, Is.GreaterThan(shallow));
             Assert.That((deep / shallow).ToDouble(), Is.EqualTo(System.Math.Pow(1.3, 2)).Within(1e-9));

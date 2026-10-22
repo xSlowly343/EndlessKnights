@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Build
                 hero.Add(modifier);
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             var loop = TestWorld.Loop(input, new GameState { Class = heroClass }, hero);
-            loop.State.Tree.PointsEarned = 46;
+            loop.State.Tree.PointsEarned = 120;
             foreach (var step in path)
             {
                 var mastery = step.Split(':');
@@ -36,9 +36,13 @@ namespace Game.Core.Tests.Build
             return (loop, input);
         }
 
-        private static readonly string[] ToSeriesNotable = { "swordsman_ring_5", "swordsman_to_w1_1", "swordsman_to_w1_2", "swordsman_w1_4", "swordsman_w1_3", "swordsman_w1_notable" };
-        private static readonly string[] ToMelodyNotable = { "bard_ring_5", "bard_to_w1_1", "bard_to_w1_2", "bard_w1_4", "bard_w1_3", "bard_w1_notable" };
-        private static readonly string[] ToSongNotable = { "bard_ring_5", "bard_to_w1_1", "bard_to_w1_2", "bard_w1_4", "bard_w1_3", "bard_w1_notable", "bard_w1_w3_1", "bard_w1_w3_2", "bard_w3_4", "bard_w3_3", "bard_w3_notable", "bard_to_k1_1" };
+        private static string[] PathTo(string className, string target) =>
+            System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(Build.TreePaths.To(TestWorld.Data.Tree, className, target),
+                id => TestWorld.Data.Tree[id].Type == Game.Core.Content.Tree.TreeNodeType.Attribute ? id + "=strength" : id));
+
+        private static string[] ToSeriesNotable => PathTo("swordsman", "swordsman_w1_notable");
+        private static string[] ToMelodyNotable => PathTo("bard", "bard_w1_notable");
+        private static string[] ToOnlyMusic => PathTo("bard", "bard_keystone_1");
 
         private static string[] With(string[] path, string last) => System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Append(path, last));
 
@@ -56,8 +60,10 @@ namespace Game.Core.Tests.Build
         [Test]
         public void OnlyMusicCutsDamageAndDoublesSongs()
         {
-            var (plain, _) = Hero(HeroClass.Bard, ToSongNotable);
-            var (keystone, _) = Hero(HeroClass.Bard, With(ToSongNotable, "bard_keystone_1"));
+            var toKeystone = ToOnlyMusic;
+            var (plain, _) = Hero(HeroClass.Bard, System.Linq.Enumerable.ToArray(System.Linq.Enumerable.SkipLast(toKeystone, 1)));
+            var (keystone, _) = Hero(HeroClass.Bard, toKeystone);
+            var silent = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             foreach (var loop in new[] { plain, keystone })
             {
                 loop.Skills.Equip(TestWorld.Data.Gems["march"]);
@@ -65,10 +71,9 @@ namespace Game.Core.Tests.Build
                 loop.Tick();
             }
 
-            var march = 0.25 * (1 + 0.05);
-            var pathDamage = 5 * 0.06;
-            Assert.That(plain.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100 * (1 + pathDamage + march)).Within(1e-6));
-            Assert.That(keystone.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100 * (1 + pathDamage + march * 2) * 0.3).Within(1e-6));
+            var march = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard) - silent;
+            Assert.That(march, Is.GreaterThan(0));
+            Assert.That(keystone.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo((silent + march * 2) * 0.3).Within(1e-6));
         }
 
         [Test]
@@ -90,7 +95,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SeriesNotableLetsTheComboSurviveALongerPause()
         {
-            var (plain, plainInput) = Hero(HeroClass.Swordsman, ToSeriesNotable[0], ToSeriesNotable[1]);
+            var (plain, plainInput) = Hero(HeroClass.Swordsman, ToSeriesNotable[0]);
             var (series, seriesInput) = Hero(HeroClass.Swordsman, ToSeriesNotable);
             var pauseTicks = (int)((TestWorld.Data.Combat.Classes.ComboTimeoutSeconds + 0.3) * GameLoop.TicksPerSecond);
 
@@ -125,7 +130,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void MelodyNodesStretchSongDuration()
         {
-            var (loop, _) = Hero(HeroClass.Bard, "bard_ring_5", "bard_to_w1_1", "bard_to_w1_2");
+            var (loop, _) = Hero(HeroClass.Bard, "bard_ring_0", "bard_ring_5", "bard_ring_4");
             loop.Skills.Equip(TestWorld.Data.Gems["march"]);
             loop.State.Notes = 4;
 

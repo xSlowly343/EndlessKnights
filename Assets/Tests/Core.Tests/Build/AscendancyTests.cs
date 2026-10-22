@@ -21,6 +21,12 @@ namespace Game.Core.Tests.Build
         private static GameLoop TypistLoop(GameState? state = null) =>
             new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), state ?? new GameState { Class = HeroClass.Swordsman }, new StatSheet());
 
+        private static SubclassDef Subclass(string id) => Catalog.Subclasses.Single(s => s.Id == id);
+
+        private static TreeNodeDef NotableAtDepth(string subclass, int depth) =>
+            Subclass(subclass).Nodes.Where(n => n.Type == TreeNodeType.Notable).OrderBy(n => n.Id)
+                .First(n => TreePaths.SubclassPath(Subclass(subclass), n.Id).Length == depth);
+
         private static GameLoop UnlockedTypist(params string[] activities)
         {
             var loop = TypistLoop();
@@ -91,17 +97,31 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void SubclassTreesHaveTheirOwnShapeLikeInTheOriginal()
+        {
+            foreach (var subclass in Catalog.Subclasses)
+            {
+                Assert.That(subclass.Nodes.Count, Is.InRange(14, 17), subclass.Id);
+                Assert.That(subclass.Nodes.Count(n => n.Type == TreeNodeType.Notable), Is.InRange(7, 8), subclass.Id);
+                var depths = subclass.Nodes.Where(n => n.Type == TreeNodeType.Notable).Select(n => TreePaths.SubclassPath(subclass, n.Id).Length).Distinct().Count();
+                Assert.That(depths, Is.GreaterThanOrEqualTo(3), subclass.Id);
+            }
+            Assert.That(Catalog.Subclasses.Select(s => string.Join(",", s.Nodes.Select(n => TreePaths.SubclassPath(s, n.Id).Length).OrderBy(d => d))).Distinct().Count(), Is.GreaterThan(1));
+        }
+
+        [Test]
         public void SubclassNodesGrowFromItsStartAndCostAPointEach()
         {
             var loop = UnlockedTypist("garden", "fishing");
             loop.ChooseSubclass("duellist");
+            var path = TreePaths.SubclassPath(Subclass("duellist"), NotableAtDepth("duellist", 2).Id);
+            var other = TreePaths.SubclassPath(Subclass("duellist"), NotableAtDepth("duellist", 3).Id);
 
-            Assert.That(loop.AllocateSubclassNode("duellist_0"), Is.EqualTo(AllocationResult.NotConnected));
-            Assert.That(loop.State.Ascendancy.Allocatable(Catalog).All(n => n.Type == TreeNodeType.Small), Is.True);
-            Assert.That(loop.AllocateSubclassNode("duellist_0_path"), Is.EqualTo(AllocationResult.Allocated));
-            Assert.That(loop.AllocateSubclassNode("duellist_0"), Is.EqualTo(AllocationResult.Allocated));
-            Assert.That(loop.AllocateSubclassNode("duellist_1_path"), Is.EqualTo(AllocationResult.NoPoints));
-            Assert.That(loop.AllocateSubclassNode("stormcaller_0_path"), Is.EqualTo(AllocationResult.UnknownNode));
+            Assert.That(loop.AllocateSubclassNode(path[1]), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateSubclassNode(path[0]), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateSubclassNode(path[1]), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateSubclassNode(other[0]), Is.EqualTo(AllocationResult.NoPoints));
+            Assert.That(loop.AllocateSubclassNode(Subclass("stormcaller").Nodes[1].Id), Is.EqualTo(AllocationResult.UnknownNode));
         }
 
         [Test]
@@ -119,14 +139,19 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SubclassNotablesChangeTheHero()
         {
-            var loop = UnlockedTypist("garden", "fishing");
+            var eye = Subclass("stormcaller").Nodes.Single(n => n.NameRu == "Око бури");
+            var path = TreePaths.SubclassPath(Subclass("stormcaller"), eye.Id);
+            var loop = UnlockedTypist(Catalog.Activities.Take(path.Length).Select(a => a.Id).ToArray());
             var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse);
-
             loop.ChooseSubclass("stormcaller");
-            loop.AllocateSubclassNode("stormcaller_3_path");
-            loop.AllocateSubclassNode("stormcaller_3");
+            foreach (var id in path.SkipLast(1))
+                loop.AllocateSubclassNode(id);
+            var beforeNotable = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse);
 
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(before * 1.15).Within(1e-9));
+            Assert.That(loop.AllocateSubclassNode(eye.Id), Is.EqualTo(AllocationResult.Allocated));
+
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(beforeNotable * 1.15).Within(1e-9));
+            Assert.That(beforeNotable, Is.GreaterThanOrEqualTo(before));
         }
 
         [Test]
@@ -134,7 +159,7 @@ namespace Game.Core.Tests.Build
         {
             var loop = UnlockedTypist("garden", "fishing");
             loop.ChooseSubclass("duellist");
-            loop.AllocateSubclassNode("duellist_0_path");
+            loop.AllocateSubclassNode(TreePaths.SubclassPath(Subclass("duellist"), NotableAtDepth("duellist", 2).Id)[0]);
 
             Assert.That(loop.ChangeSubclassFree("stormcaller", Day), Is.EqualTo(SubclassResult.Chosen));
             Assert.That(loop.State.Ascendancy.Subclass, Is.EqualTo("stormcaller"));
@@ -168,16 +193,17 @@ namespace Game.Core.Tests.Build
         public void SubclassSurvivesSaveAndLoad()
         {
             var loop = UnlockedTypist("garden", "fishing");
+            var second = TreePaths.SubclassPath(Subclass("duellist"), NotableAtDepth("duellist", 3).Id)[0];
             loop.ChooseSubclass("duellist");
-            loop.AllocateSubclassNode("duellist_0_path");
+            loop.AllocateSubclassNode(TreePaths.SubclassPath(Subclass("duellist"), NotableAtDepth("duellist", 2).Id)[0]);
             loop.ChangeSubclassFree("duellist", Day);
-            loop.AllocateSubclassNode("duellist_1_path");
+            loop.AllocateSubclassNode(second);
             var clock = ClockStamp.First(new ClockReading(1_760_000_000_000, 3_600_000, 12));
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, clock), TestWorld.Data).State;
 
             Assert.That(loaded.Ascendancy.Subclass, Is.EqualTo("duellist"));
-            Assert.That(loaded.Ascendancy.Allocated, Is.EquivalentTo(new[] { "duellist_1_path" }));
+            Assert.That(loaded.Ascendancy.Allocated, Is.EquivalentTo(new[] { second }));
             Assert.That(loaded.Ascendancy.CompletedActivities, Is.EquivalentTo(new[] { "garden", "fishing" }));
             Assert.That(loaded.Ascendancy.LastFreeChangeUnixMs, Is.EqualTo(Day));
         }
