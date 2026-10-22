@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Game.Platform.Windows.Input
 {
@@ -9,7 +8,7 @@ namespace Game.Platform.Windows.Input
         private const uint QueryLimitedInformation = 0x1000;
         private const int PathCapacity = 1024;
 
-        private static readonly StringBuilder PathBuffer = new StringBuilder(PathCapacity);
+        private static readonly char[] PathBuffer = new char[PathCapacity];
 
         public static string? ExecutablePath()
         {
@@ -22,9 +21,8 @@ namespace Game.Platform.Windows.Input
                 return null;
             try
             {
-                PathBuffer.Clear();
                 var size = (uint)PathCapacity;
-                return QueryFullProcessImageName(process, 0, PathBuffer, ref size) ? PathBuffer.ToString() : null;
+                return QueryFullProcessImageName(process, 0, PathBuffer, ref size) ? new string(PathBuffer, 0, (int)size) : null;
             }
             finally
             {
@@ -43,7 +41,7 @@ namespace Game.Platform.Windows.Input
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool QueryFullProcessImageName(IntPtr process, uint flags, StringBuilder path, ref uint size);
+        private static extern bool QueryFullProcessImageName(IntPtr process, uint flags, [Out] char[] path, ref uint size);
 
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

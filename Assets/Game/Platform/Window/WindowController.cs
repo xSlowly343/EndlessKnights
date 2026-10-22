@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Text;
 using AOT;
 
 namespace Game.Platform.Windows.Window
@@ -143,9 +142,9 @@ namespace Game.Platform.Windows.Window
 
         private static bool IsUnityWindow(IntPtr window)
         {
-            var className = new StringBuilder(64);
-            NativeMethods.GetClassName(window, className, className.Capacity);
-            return className.ToString() == UnityWindowClass;
+            var className = new char[64];
+            var length = NativeMethods.GetClassName(window, className, className.Length);
+            return length > 0 && new string(className, 0, length) == UnityWindowClass;
         }
     }
 }

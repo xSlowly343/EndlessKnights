@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Game.Platform.Windows.Window
 {
@@ -103,7 +102,7 @@ namespace Game.Platform.Windows.Window
         public static extern uint GetWindowThreadProcessId(IntPtr window, out uint processId);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern int GetClassName(IntPtr window, StringBuilder className, int maxCount);
+        public static extern int GetClassName(IntPtr window, [Out] char[] className, int maxCount);
 
         [DllImport("user32.dll", EntryPoint = "GetWindowLongPtrW")]
         public static extern IntPtr GetWindowLongPtr(IntPtr window, int index);

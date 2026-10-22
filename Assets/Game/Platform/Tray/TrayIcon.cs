@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 using AOT;
 using Game.Platform.Windows.Power;
 using UnityEngine;
@@ -109,9 +108,9 @@ namespace Game.Platform.Windows.Tray
 
         private static string ExecutablePath()
         {
-            var path = new StringBuilder(1024);
-            TrayNativeMethods.GetModuleFileName(IntPtr.Zero, path, (uint)path.Capacity);
-            return path.ToString();
+            var path = new char[1024];
+            var length = TrayNativeMethods.GetModuleFileName(IntPtr.Zero, path, (uint)path.Length);
+            return new string(path, 0, (int)System.Math.Min(length, (uint)path.Length));
         }
 
         private static TrayNativeMethods.NotifyIconData NotifyData(IntPtr window) => new TrayNativeMethods.NotifyIconData
