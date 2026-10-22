@@ -38,6 +38,19 @@ namespace Game.Core.Sim
             return _state.Skills.Count - 1;
         }
 
+        public void Unequip(int index)
+        {
+            RemoveAura(_state.Skills[index]);
+            _state.Skills.RemoveAt(index);
+        }
+
+        public void Move(int from, int to)
+        {
+            var slot = _state.Skills[from];
+            _state.Skills.RemoveAt(from);
+            _state.Skills.Insert(to, slot);
+        }
+
         public void UseGems(GemCatalog gems)
         {
             foreach (var slot in _state.Skills)

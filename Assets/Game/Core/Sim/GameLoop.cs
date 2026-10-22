@@ -26,6 +26,7 @@ namespace Game.Core.Sim
         private readonly SkillSystem _skills;
         private readonly TriggerSystem _triggers;
         private readonly ModifierLayer _treeLayer;
+        private readonly SkillBook _book;
         private GameData _data;
         private double _pendingSeconds;
 
@@ -46,6 +47,7 @@ namespace Game.Core.Sim
             _skills = new SkillSystem(state, Events, _energy, _combat, hero);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills);
+            _book = new SkillBook(data.SkillBook, state, _skills);
             _treeLayer = new ModifierLayer(hero);
             RebuildTree();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
@@ -60,6 +62,7 @@ namespace Game.Core.Sim
         public LootSystem Loot => _loot;
         public SkillSystem Skills => _skills;
         public LevelSystem Levels => _levels;
+        public SkillBook Book => _book;
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -150,6 +153,7 @@ namespace Game.Core.Sim
             _levels.UseData(data.Combat.Hero, data.Stages);
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
+            _book.UseRules(data.SkillBook);
             RebuildTree();
         }
 

@@ -30,6 +30,12 @@ namespace Game.Core.Content
             return new ContentNode(child, FileName, Child(name));
         }
 
+        public IReadOnlyCollection<string> FieldNames()
+        {
+            RequireKind(JsonKind.Object, "an object");
+            return new List<string>(_value.Fields.Keys);
+        }
+
         public bool HasField(string name) => _value.Kind == JsonKind.Object && _value.Fields.ContainsKey(name);
 
         public IReadOnlyList<ContentNode> Items()

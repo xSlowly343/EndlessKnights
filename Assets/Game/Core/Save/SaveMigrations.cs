@@ -7,27 +7,9 @@ namespace Game.Core.Save
     public sealed class SaveMigrations
     {
         public static readonly SaveMigrations Default = new SaveMigrations(4,
-            new SaveMigration(1, "skill slots and chain damage (phase 8)", payload =>
-                JsonEdit.Update(payload, "state", state =>
-                    JsonEdit.Set(JsonEdit.Set(state, "skills", JsonValue.Array(new JsonValue[0])), "chainDamage", JsonValue.Of("0e0")))),
-            new SaveMigration(2, "passive tree (phase 9)", payload =>
-                JsonEdit.Update(payload, "state", state =>
-                    JsonEdit.Update(JsonEdit.Set(state, "tree", EmptyTree(state.Fields["hero"].Fields["class"])), "hero", hero =>
-                        JsonEdit.Set(hero, "keyHits", JsonValue.Of(0))))),
-            new SaveMigration(3, "hero level and record stage (phase 10)", payload =>
-                JsonEdit.Update(payload, "state", state =>
-                    JsonEdit.Update(JsonEdit.Update(JsonEdit.Update(state, "hero", hero =>
-                        JsonEdit.Set(JsonEdit.Set(hero, "level", JsonValue.Of(1)), "xp", JsonValue.Of(0))), "stage", stage =>
-                        JsonEdit.Set(stage, "record", stage.Fields["highest"])), "tree", tree =>
-                        JsonEdit.Set(tree, "lastFreeResetUnixMs", JsonValue.Of(0))))));
-
-        private static JsonValue EmptyTree(JsonValue heroClass) =>
-            JsonValue.Object(new Dictionary<string, JsonValue>
-            {
-                ["startClass"] = heroClass,
-                ["pointsEarned"] = JsonValue.Of(0),
-                ["allocated"] = JsonValue.Array(new JsonValue[0])
-            });
+            new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
+            new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
+            new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)));
 
         private readonly SaveMigration[] _steps;
 
@@ -59,6 +41,42 @@ namespace Game.Core.Save
             for (var version = fromVersion; version < CurrentVersion; version++)
                 upgraded = JsonEdit.Set(_steps[version - 1].Upgrade(upgraded), "version", JsonValue.Of(version + 1));
             return upgraded;
+        }
+
+        private static JsonValue StateToVersion2(JsonValue state) =>
+            JsonEdit.Set(JsonEdit.Set(state, "skills", JsonValue.Array(new JsonValue[0])), "chainDamage", JsonValue.Of("0e0"));
+
+        private static JsonValue StateToVersion3(JsonValue state)
+        {
+            var tree = JsonValue.Object(new Dictionary<string, JsonValue>
+            {
+                ["startClass"] = state.Fields["hero"].Fields["class"],
+                ["pointsEarned"] = JsonValue.Of(0),
+                ["allocated"] = JsonValue.Array(new JsonValue[0])
+            });
+            var withTree = JsonEdit.Set(state, "tree", tree);
+            return JsonEdit.Update(withTree, "hero", hero => JsonEdit.Set(hero, "keyHits", JsonValue.Of(0)));
+        }
+
+        private static JsonValue StateToVersion4(JsonValue state)
+        {
+            var hero = JsonEdit.Set(JsonEdit.Set(state.Fields["hero"], "level", JsonValue.Of(1)), "xp", JsonValue.Of(0));
+            var stage = JsonEdit.Set(state.Fields["stage"], "record", state.Fields["stage"].Fields["highest"]);
+            var tree = JsonEdit.Set(state.Fields["tree"], "lastFreeResetUnixMs", JsonValue.Of(0));
+            var upgraded = JsonEdit.Set(JsonEdit.Set(JsonEdit.Set(state, "hero", hero), "stage", stage), "tree", tree);
+            return JsonEdit.Set(upgraded, "ownedGems", JsonValue.Array(EquippedGems(state.Fields["skills"])));
+        }
+
+        private static JsonValue[] EquippedGems(JsonValue skills)
+        {
+            var owned = new List<JsonValue>();
+            foreach (var slot in skills.Items)
+            {
+                owned.Add(slot.Fields["gem"]);
+                if (slot.Fields["trigger"].Kind == JsonKind.String)
+                    owned.Add(slot.Fields["trigger"]);
+            }
+            return owned.ToArray();
         }
     }
 }

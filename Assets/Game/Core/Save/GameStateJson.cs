@@ -55,6 +55,7 @@ namespace Game.Core.Save
                     ("runEarned", SaveValues.Of(state.RunGoldEarned)))),
                 ("recentDps", SaveValues.Of(state.RecentDps)),
                 ("skills", JsonValue.Array(WriteSkills(state))),
+                ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
                 ("tree", WriteTree(state.Tree)),
                 ("chainDamage", SaveValues.Of(state.ChainDamage)),
                 ("carry", Object(
@@ -117,6 +118,11 @@ namespace Game.Core.Save
                 SaveValues.ReadBigNumber(enemy.Field("maxHp")));
             state.EnemyHp = SaveValues.ReadBigNumber(enemy.Field("hp"));
             ReadSkills(node.Field("skills"), gems, state);
+            foreach (var id in node.Field("ownedGems").Items())
+            {
+                if (gems.TryGet(id.AsString(), out var gem))
+                    state.OwnedGems.Add(gem);
+            }
             state.Tree = ReadTree(node.Field("tree"));
             return state;
         }
@@ -158,6 +164,14 @@ namespace Game.Core.Save
                     item.HasField("option") ? item.Field("option").AsInt(0) : (int?)null);
             }
             return tree;
+        }
+
+        private static JsonValue[] WriteOwnedGems(GameState state)
+        {
+            var ids = new JsonValue[state.OwnedGems.Count];
+            for (var i = 0; i < ids.Length; i++)
+                ids[i] = JsonValue.Of(state.OwnedGems[i].Id);
+            return ids;
         }
 
         private static JsonValue[] WriteSkills(GameState state)

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Game.Core.Build;
 using Game.Core.Content;
+using Game.Core.Content.Gems;
 using Game.Core.Math;
 
 namespace Game.Core.Sim
@@ -51,6 +52,7 @@ namespace Game.Core.Sim
         public long MacroRhythmTicks { get; set; }
 
         public List<SkillSlot> Skills { get; } = new List<SkillSlot>();
+        public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
         public BigNumber ChainDamage { get; set; }
 
         public long KeyHits { get; set; }
