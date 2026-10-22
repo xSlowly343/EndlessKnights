@@ -73,6 +73,8 @@ namespace Game.Core.Sim
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
         public InputSnapshot LastInput { get; private set; }
+        public InputStats SessionInput { get; } = new InputStats();
+        public double MetersPerPixel { get; set; } = InputStats.DefaultMetersPerPixel;
         public bool Paused { get; set; }
 
         public int Advance(double seconds)
@@ -194,6 +196,8 @@ namespace Game.Core.Sim
         public void Tick()
         {
             LastInput = _input.Drain();
+            SessionInput.Add(LastInput, MetersPerPixel);
+            State.TotalInput.Add(LastInput, MetersPerPixel);
             var raw = _inputRules.Apply(LastInput);
             var input = raw.WithMouse(raw.MousePx * System.Math.Max(0, Hero.Value(CombatStats.MouseDistance, 1, StatTags.Mouse)));
             var idleTicksBefore = State.IdleTicks;

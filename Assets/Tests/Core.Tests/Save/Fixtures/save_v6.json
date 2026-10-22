@@ -1,0 +1,132 @@
+{
+  "checksum": "d613eea34794b026ed5f2adcebc83722cc008948c10caf8fe88a068fccbfb1e3",
+  "payload": {
+    "clock": {
+      "bootId": 45,
+      "highestWallUnixMs": 1761400000000,
+      "monotonicMs": 9900000,
+      "wallUnixMs": 1761400000000
+    },
+    "savedAt": 1761400000000,
+    "state": {
+      "artifacts": [
+        {
+          "id": "wind_compass",
+          "level": 1
+        }
+      ],
+      "carry": {
+        "clicks": 0,
+        "keys": 0,
+        "mousePx": 0
+      },
+      "chainDamage": "0e0",
+      "enemy": {
+        "hp": "2.0000000000000004e1",
+        "id": "goblin_giant",
+        "maxHp": "2.0000000000000004e1",
+        "type": "normal"
+      },
+      "gold": {
+        "runEarned": "0e0",
+        "wallet": "0e0"
+      },
+      "hero": {
+        "class": "typist",
+        "combo": 10000,
+        "comboIdleTicks": 1,
+        "energy": 100,
+        "focus": 3,
+        "focusMultiplier": 3,
+        "idleTicks": 0,
+        "keyHits": 10000,
+        "level": 15,
+        "macroRhythmTicks": 0,
+        "notes": 0,
+        "xp": 19.081535451135835
+      },
+      "inputStats": {
+        "keys": "10000",
+        "leftClicks": "4000",
+        "middleClicks": "0",
+        "mouseMeters": 476.25000000014404,
+        "rightClicks": "0"
+      },
+      "ownedGems": [
+        "stenography",
+        "lull",
+        "cast_on_enter"
+      ],
+      "presets": {
+        "active": 1,
+        "otherSkills": [
+          {
+            "gem": "stenography",
+            "trigger": "cast_on_enter"
+          },
+          {
+            "gem": "lull",
+            "trigger": null
+          }
+        ],
+        "otherTree": {
+          "allocated": [
+            {
+              "id": "t_pen_1"
+            },
+            {
+              "id": "t_pen_2"
+            },
+            {
+              "id": "t_pen_3"
+            }
+          ],
+          "lastFreeResetUnixMs": 0,
+          "pointsEarned": 16,
+          "startClass": "typist"
+        }
+      },
+      "prestige": {
+        "count": 1,
+        "echo": "1.21e2",
+        "echoEarned": "3.1e1"
+      },
+      "recentDps": "2.165654852744968e2",
+      "rng": [
+        "ee0f876767dd2d00",
+        "78313e265ac1a12f"
+      ],
+      "skills": [
+        {
+          "activeTicks": 0,
+          "cooldownTicks": 0,
+          "gem": "lull",
+          "hitsLeft": 0,
+          "trigger": null
+        }
+      ],
+      "stage": {
+        "bossFailsInARow": 0,
+        "bossTicksLeft": 378,
+        "current": 1,
+        "farmKills": 0,
+        "farming": false,
+        "highest": 1,
+        "kills": 0,
+        "record": 61
+      },
+      "tick": 20000,
+      "tree": {
+        "allocated": [
+          {
+            "id": "t_heavy_1"
+          }
+        ],
+        "lastFreeResetUnixMs": 0,
+        "pointsEarned": 16,
+        "startClass": "typist"
+      }
+    },
+    "version": 6
+  }
+}

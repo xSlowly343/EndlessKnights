@@ -59,6 +59,12 @@ namespace Game.Core.Save
                     ("echoEarned", SaveValues.Of(state.EchoEarned)),
                     ("count", JsonValue.Of(state.Prestiges)))),
                 ("artifacts", JsonValue.Array(WriteArtifacts(state))),
+                ("inputStats", Object(
+                    ("keys", JsonValue.Of(state.TotalInput.Keys.ToString(System.Globalization.CultureInfo.InvariantCulture))),
+                    ("leftClicks", JsonValue.Of(state.TotalInput.LeftClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
+                    ("rightClicks", JsonValue.Of(state.TotalInput.RightClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
+                    ("middleClicks", JsonValue.Of(state.TotalInput.MiddleClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
+                    ("mouseMeters", JsonValue.Of(state.TotalInput.MouseMeters)))),
                 ("skills", JsonValue.Array(WriteSkills(state))),
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
                 ("tree", WriteTree(state.Tree)),
@@ -136,6 +142,12 @@ namespace Game.Core.Save
                     state.OwnedGems.Add(gem);
             }
             state.Tree = ReadTree(node.Field("tree"));
+            var input = node.Field("inputStats");
+            state.TotalInput.Keys = ReadCount(input.Field("keys"));
+            state.TotalInput.LeftClicks = ReadCount(input.Field("leftClicks"));
+            state.TotalInput.RightClicks = ReadCount(input.Field("rightClicks"));
+            state.TotalInput.MiddleClicks = ReadCount(input.Field("middleClicks"));
+            state.TotalInput.MouseMeters = input.Field("mouseMeters").AsNumber(0, 1e15);
             var presets = node.Field("presets");
             state.ActivePreset = presets.Field("active").AsInt(0, 1);
             state.OtherPreset = new BuildPreset(ReadTree(presets.Field("otherTree")));
@@ -191,6 +203,13 @@ namespace Game.Core.Save
                     item.HasField("option") ? item.Field("option").AsInt(0) : (int?)null);
             }
             return tree;
+        }
+
+        private static ulong ReadCount(ContentNode node)
+        {
+            if (!ulong.TryParse(node.AsString(), System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var count))
+                throw node.Error($"'{node.AsString()}' is not a whole count");
+            return count;
         }
 
         private static JsonValue[] WritePresetSkills(BuildPreset preset)

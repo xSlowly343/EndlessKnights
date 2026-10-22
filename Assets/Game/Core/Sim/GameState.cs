@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
+using Game.Core.Input;
 using Game.Core.Math;
 
 namespace Game.Core.Sim
@@ -57,6 +58,7 @@ namespace Game.Core.Sim
 
         public List<SkillSlot> Skills { get; } = new List<SkillSlot>();
         public int ActivePreset { get; set; }
+        public InputStats TotalInput { get; } = new InputStats();
 
         private BuildPreset? _otherPreset;
 

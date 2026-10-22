@@ -63,6 +63,20 @@ namespace Game.Core.Tests.Save
         }
 
         [Test]
+        public void SixthVersionSaveWithPrestigePresetsAndStatsStillLoads()
+        {
+            var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v6.json"), TestWorld.Data);
+
+            Assert.That(save.StoredVersion, Is.EqualTo(6));
+            Assert.That(save.State.Prestiges, Is.EqualTo(1));
+            Assert.That(save.State.RecordStage, Is.EqualTo(61));
+            Assert.That(save.State.Artifacts.Count, Is.EqualTo(1));
+            Assert.That(save.State.ActivePreset, Is.EqualTo(1));
+            Assert.That(save.State.OtherPreset.Tree.PointsSpent, Is.EqualTo(3));
+            Assert.That(save.State.TotalInput.Keys, Is.EqualTo(10000));
+        }
+
+        [Test]
         public void OldSaveCanBePlayedAndSavedAgainInTheCurrentVersion()
         {
             var save = SaveCodec.Decode(OldSave(), TestWorld.Data);

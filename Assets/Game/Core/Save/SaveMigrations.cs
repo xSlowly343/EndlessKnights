@@ -11,7 +11,7 @@ namespace Game.Core.Save
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
             new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
             new SaveMigration(4, "prestige and artifacts (phase 10)", payload => JsonEdit.Update(payload, "state", StateToVersion5)),
-            new SaveMigration(5, "two build presets (phase 10)", payload => JsonEdit.Update(payload, "state", StateToVersion6)));
+            new SaveMigration(5, "two build presets and input stats (phases 10-11)", payload => JsonEdit.Update(payload, "state", StateToVersion6)));
 
         private readonly SaveMigration[] _steps;
 
@@ -95,7 +95,15 @@ namespace Game.Core.Save
                 ["otherTree"] = otherTree,
                 ["otherSkills"] = JsonValue.Array(new JsonValue[0])
             });
-            return JsonEdit.Set(state, "presets", presets);
+            var inputStats = JsonValue.Object(new Dictionary<string, JsonValue>
+            {
+                ["keys"] = JsonValue.Of("0"),
+                ["leftClicks"] = JsonValue.Of("0"),
+                ["rightClicks"] = JsonValue.Of("0"),
+                ["middleClicks"] = JsonValue.Of("0"),
+                ["mouseMeters"] = JsonValue.Of(0)
+            });
+            return JsonEdit.Set(JsonEdit.Set(state, "presets", presets), "inputStats", inputStats);
         }
 
         private static JsonValue[] EquippedGems(JsonValue skills)
