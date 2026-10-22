@@ -75,6 +75,19 @@ namespace Game.Platform.Windows.Window
         [DllImport("user32.dll")]
         public static extern IntPtr MonitorFromRect(ref Rect rect, uint flags);
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MonitorInfo
+        {
+            public uint Size;
+            public Rect Monitor;
+            public Rect Work;
+            public uint Flags;
+        }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetMonitorInfo(IntPtr monitor, ref MonitorInfo info);
+
         [DllImport("shcore.dll")]
         public static extern int GetDpiForMonitor(IntPtr monitor, int dpiType, out uint dpiX, out uint dpiY);
 

@@ -82,6 +82,7 @@ namespace Game.Platform.Windows.Tray
             foreach (var command in FrameRateCommands)
                 items.Add(TrayMenuItem.Toggle(command, $"Лимит {(int)command} FPS", state.FrameRate == (int)command));
             items.Add(TrayMenuItem.Separator());
+            items.Add(TrayMenuItem.Action(TrayCommand.TogglePanel, "Меню игры"));
             items.Add(TrayMenuItem.Action(TrayCommand.Exit, "Выход"));
             return items;
         }

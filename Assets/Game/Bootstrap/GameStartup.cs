@@ -17,6 +17,8 @@ namespace Game.Bootstrap
         private const float FocusButtonSize = 1.6f;
         private const float FocusButtonMargin = 1.2f;
         private const float InputOverlayMargin = 0.3f;
+        private const float MenuButtonGap = 0.4f;
+        private static readonly Color MenuButtonColor = new Color(0.8f, 0.2f, 0.2f);
 
         private static bool _isSecondInstance;
 
@@ -44,7 +46,8 @@ namespace Game.Bootstrap
                 return;
 
             TransparentCamera.Apply(camera);
-            PlaceholderSquare.Create(new Color(1f, 0.55f, 0.1f), PlaceholderSize);
+            StripCamera.FitStripOnly(camera);
+            PlaceholderSquare.Create(new Color(1f, 0.55f, 0.1f), PlaceholderSize).transform.position = StripSpace.Centre;
 
             var window = Application.isEditor ? null : WindowController.FindOwnWindow();
             window?.MakeBorderless(StripWidth, StripHeight);
@@ -52,7 +55,7 @@ namespace Game.Bootstrap
             window?.ShowInTaskbar();
             window?.KeepOnTop();
 
-            var focusButton = FocusModeButton.Create(TopRightCorner(camera, FocusButtonMargin), FocusButtonSize);
+            var focusButton = FocusModeButton.Create(StripSpace.TopRight(FocusButtonMargin), FocusButtonSize);
             var framePacing = FramePacingDriver.Attach(focusButton.gameObject, TrayMenuState.DefaultFrameRate);
             FocusModeDriver.Attach(focusButton, window);
             if (window == null)
@@ -61,38 +64,26 @@ namespace Game.Bootstrap
                 if (editorData != null)
                     GameDataHotReload.Attach(focusButton.gameObject, editorData);
                 var editorInput = UnityInputSource.Attach(focusButton.gameObject);
-                InputDebugDriver.Attach(focusButton.gameObject, editorInput, InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin)));
+                InputDebugDriver.Attach(focusButton.gameObject, editorInput, InputDebugOverlay.Create(StripSpace.BottomLeft(InputOverlayMargin)));
                 return;
             }
             var host = focusButton.gameObject;
             var pointer = PointerInput.Attach(host);
             var dock = TaskbarDockDriver.Attach(host, window);
-            StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock);
+            StripCameraDriver.Attach(host, camera, dock);
+            var menuButton = StripButton.Create("MenuButton", MenuButtonColor, StripSpace.TopRight(FocusButtonMargin) - new Vector2(FocusButtonSize + MenuButtonGap, 0f), new Vector2(FocusButtonSize, FocusButtonSize));
+            var panels = PanelView.Create();
+            var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
+            StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
             var rawInput = RawInputService.Start(GameDataFiles.TryLoadInputCaps()?.Detection);
-            var inputDebug = InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin));
+            var inputDebug = InputDebugOverlay.Create(StripSpace.BottomLeft(InputOverlayMargin));
             InputDebugDriver.Attach(focusButton.gameObject, rawInput, inputDebug, rawInput, window);
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 
             var tray = TrayIcon.Create(Application.productName);
             if (tray != null)
-                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug);
-        }
-
-        private static Vector2 BottomLeftCorner(Camera camera, float margin)
-        {
-            var halfHeight = camera.orthographicSize;
-            var halfWidth = halfHeight * StripWidth / StripHeight;
-            var centre = (Vector2)camera.transform.position;
-            return centre + new Vector2(-halfWidth + margin, -halfHeight + margin);
-        }
-
-        private static Vector2 TopRightCorner(Camera camera, float margin)
-        {
-            var halfHeight = camera.orthographicSize;
-            var halfWidth = halfHeight * StripWidth / StripHeight;
-            var centre = (Vector2)camera.transform.position;
-            return centre + new Vector2(halfWidth - margin, halfHeight - margin);
+                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug, panelMode);
         }
     }
 }

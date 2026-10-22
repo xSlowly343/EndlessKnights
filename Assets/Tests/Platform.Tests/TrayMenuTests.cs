@@ -79,9 +79,9 @@ namespace Game.Platform.Tests
             Assert.That(commands.Select(item => item.Command), Is.EqualTo(new[]
             {
                 TrayCommand.TogglePause, TrayCommand.ToggleClickThrough, TrayCommand.ToggleAlwaysOnTop, TrayCommand.ToggleInputDebug,
-                TrayCommand.FrameRate30, TrayCommand.FrameRate60, TrayCommand.FrameRate144, TrayCommand.Exit
+                TrayCommand.FrameRate30, TrayCommand.FrameRate60, TrayCommand.FrameRate144, TrayCommand.TogglePanel, TrayCommand.Exit
             }));
-            Assert.That(commands.Select(item => item.IsChecked), Is.EqualTo(new[] { true, false, true, false, false, false, true, false }));
+            Assert.That(commands.Select(item => item.IsChecked), Is.EqualTo(new[] { true, false, true, false, false, false, true, false, false }));
             Assert.That(items.Count(item => item.IsSeparator), Is.EqualTo(2));
         }
     }
