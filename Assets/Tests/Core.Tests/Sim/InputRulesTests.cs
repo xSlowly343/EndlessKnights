@@ -79,9 +79,18 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void MouseIsCutAtMaxSpeed()
         {
-            var perSecond = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(mouseDistancePx: 1000));
+            var caps = RealCaps();
+            var perSecond = EffectivePerSecond(new InputRules(caps), 10, tick => new InputSnapshot(mouseDistancePx: (float)caps.MaxMousePxPerSecond));
 
-            Assert.That(perSecond, Is.EqualTo(3000).Within(1e-6));
+            Assert.That(perSecond, Is.EqualTo(caps.MaxMousePxPerSecond).Within(1e-3));
+        }
+
+        [Test]
+        public void WheelAndAllButtonsShareTheClickCap()
+        {
+            var perSecond = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(leftClicks: 1, rightClicks: 1, middleClicks: 1, wheelTicks: 5));
+
+            Assert.That(perSecond, Is.EqualTo(System.Math.Sqrt(10 * 16)).Within(1e-6));
         }
 
         [Test]

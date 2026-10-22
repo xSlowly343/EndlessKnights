@@ -23,16 +23,17 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void RightClicksAndWheelGiveNoEnergy()
+        public void AllMouseButtonsAndWheelGiveEnergyLikeClicks()
         {
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input);
 
-            input.ClickRight(3);
-            input.ScrollWheel(5);
+            input.ClickRight();
+            input.ClickMiddle();
+            input.ScrollWheel(1);
             loop.Tick();
 
-            Assert.That(loop.State.Energy, Is.EqualTo(0));
+            Assert.That(loop.State.Energy, Is.EqualTo(3 * Rules.PerClick).Within(1e-9));
         }
 
         [Test]

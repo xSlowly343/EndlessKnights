@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Content
             Assert.That(caps.Keys.FullRatePerSecond, Is.EqualTo(8));
             Assert.That(caps.Keys.DiminishingUntilPerSecond, Is.EqualTo(15));
             Assert.That(caps.Clicks.FullRatePerSecond, Is.EqualTo(10));
-            Assert.That(caps.MaxMousePxPerSecond, Is.EqualTo(3000));
+            Assert.That(caps.MaxMousePxPerSecond, Is.EqualTo(19000));
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace Game.Core.Tests.Content
         }
 
         [TestCase("\"diminishingUntilPerSecond\": 15", "\"diminishingUntilPerSecond\": 5", "keys.diminishingUntilPerSecond: must not be lower than fullRatePerSecond (8)")]
-        [TestCase("\"maxPxPerSecond\": 3000", "\"maxPxPerSecond\": 0", "mouse.maxPxPerSecond: 0 is outside the allowed range")]
+        [TestCase("\"maxPxPerSecond\": 19000", "\"maxPxPerSecond\": 0", "mouse.maxPxPerSecond: 0 is outside the allowed range")]
         [TestCase("\"intervals\": 200", "\"intervals\": 2", "detection.rhythm.intervals: 2 is outside the allowed range")]
         [TestCase("\"windowMs\": 80", "\"windowMs\": \"fast\"", "detection.flick.windowMs: expected a number, got a string")]
         public void BrokenCapsAreReportedByPath(string original, string broken, string message)

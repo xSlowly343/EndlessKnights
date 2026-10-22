@@ -147,6 +147,19 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void AnyMouseButtonAndWheelGiveNotes()
+        {
+            var (bard, input) = Hero(HeroClass.Bard);
+
+            input.ClickRight();
+            input.ClickMiddle();
+            input.ScrollWheel(1);
+            bard.Tick();
+
+            Assert.That(bard.State.Notes, Is.EqualTo(3));
+        }
+
+        [Test]
         public void TypistGetsNoNotesAndKeysGiveNoNotes()
         {
             var (typist, typistInput) = Hero(HeroClass.Typist);
@@ -155,8 +168,6 @@ namespace Game.Core.Tests.Sim
 
             var (bard, bardInput) = Hero(HeroClass.Bard);
             Keys(bard, bardInput, 5);
-            bardInput.ClickRight(2);
-            bard.Tick();
 
             Assert.That(typist.State.Notes, Is.EqualTo(0));
             Assert.That(bard.State.Notes, Is.EqualTo(0));

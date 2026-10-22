@@ -30,7 +30,8 @@ namespace Game.Core.Sim
             }
 
             var keys = Scale(snapshot.KeyDowns, _keys.PushAndGetRate(snapshot.KeyDowns), _caps.Keys);
-            var clicks = Scale(snapshot.LeftClicks, _clicks.PushAndGetRate(snapshot.LeftClicks), _caps.Clicks);
+            var rawClicks = MouseButtonHits(snapshot);
+            var clicks = Scale(rawClicks, _clicks.PushAndGetRate(rawClicks), _caps.Clicks);
             var mouseRate = _mouse.PushAndGetRate(snapshot.MouseDistancePx);
             var mouse = mouseRate > _caps.MaxMousePxPerSecond
                 ? snapshot.MouseDistancePx * (_caps.MaxMousePxPerSecond / mouseRate)
@@ -48,6 +49,9 @@ namespace Game.Core.Sim
                 snapshot.CircleTurns,
                 snapshot.RhythmCv);
         }
+
+        private static int MouseButtonHits(in InputSnapshot snapshot) =>
+            snapshot.LeftClicks + snapshot.RightClicks + snapshot.MiddleClicks + snapshot.WheelTicks;
 
         private static double Scale(double amount, double ratePerSecond, in RateCap cap)
         {

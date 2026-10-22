@@ -71,15 +71,18 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void RightAndMiddleClicksAreNotHits()
+        public void EveryMouseButtonAndWheelTickIsAClickHit()
         {
             var (loop, input) = LoopWithEnemy(1000);
 
-            input.ClickRight(3);
-            input.ClickMiddle(2);
+            input.ClickRight();
+            input.ClickMiddle();
+            input.ScrollWheel(1);
             loop.Tick();
 
-            Assert.That(loop.Events.Count, Is.EqualTo(0));
+            Assert.That(loop.Events.CountOf(GameEventKind.Damage), Is.EqualTo(3));
+            for (var i = 0; i < loop.Events.Count; i++)
+                Assert.That(loop.Events[i].Source, Is.EqualTo(DamageSource.Click));
         }
 
         [Test]

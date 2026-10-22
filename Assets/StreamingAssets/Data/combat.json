@@ -3,17 +3,17 @@
   "hits": {
     "keyboard": { "damage": 10 },
     "click": { "damage": 6 },
-    "mouse": { "damage": 4, "pxPerHit": 400 }
+    "mouse": { "damage": 3.4, "pxPerHit": 1000 }
   },
   "focus": {
     "min": 1,
     "max": 3,
     "perEvent": 0.02,
-    "mousePxPerEvent": 200,
+    "mousePxPerEvent": 1500,
     "resetAfterIdleSeconds": 3,
     "macroRhythm": { "cvBelow": 0.05, "afterSeconds": 60 }
   },
-  "energy": { "perKey": 1, "perClick": 1, "mousePxPerPoint": 200, "max": 100 },
+  "energy": { "perKey": 1, "perClick": 1, "mousePxPerPoint": 1500, "max": 100 },
   "crit": { "chance": 0.05, "multiplier": 2 },
   "classes": {
     "typist": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 25, "strikeMultiplier": 3 } },

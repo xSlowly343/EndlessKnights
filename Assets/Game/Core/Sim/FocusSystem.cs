@@ -49,7 +49,7 @@ namespace Game.Core.Sim
         }
 
         private double Events(in EffectiveInput input) =>
-            input.Keys + input.Clicks + input.RightClicks + input.MiddleClicks + input.MousePx / _rules.MousePxPerEvent;
+            input.Keys + input.Clicks + input.MousePx / _rules.MousePxPerEvent;
 
         private double Clamp(double focus) => System.Math.Min(_rules.Max, System.Math.Max(_rules.Min, focus));
 
