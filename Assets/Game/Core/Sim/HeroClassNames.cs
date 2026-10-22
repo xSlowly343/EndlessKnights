@@ -7,8 +7,15 @@ namespace Game.Core.Sim
     {
         public static readonly IReadOnlyDictionary<string, HeroClass> ByName = new Dictionary<string, HeroClass>(StringComparer.Ordinal)
         {
-            ["typist"] = HeroClass.Typist,
-            ["bard"] = HeroClass.Bard
+            ["swordsman"] = HeroClass.Swordsman,
+            ["bard"] = HeroClass.Bard,
+            ["barbarian"] = HeroClass.Barbarian,
+            ["ranger"] = HeroClass.Ranger,
+            ["sorcerer"] = HeroClass.Sorcerer,
+            ["witch"] = HeroClass.Witch,
+            ["priest"] = HeroClass.Priest,
+            ["alchemist"] = HeroClass.Alchemist,
+            ["wanderer"] = HeroClass.Wanderer
         };
 
         public static string Of(HeroClass heroClass)

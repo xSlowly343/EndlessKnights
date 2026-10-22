@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Build
         private static AscendancyCatalog Catalog => TestWorld.Data.Ascendancy;
 
         private static GameLoop TypistLoop(GameState? state = null) =>
-            new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), state ?? new GameState { Class = HeroClass.Typist }, new StatSheet());
+            new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), state ?? new GameState { Class = HeroClass.Swordsman }, new StatSheet());
 
         private static GameLoop UnlockedTypist(params string[] activities)
         {
@@ -33,14 +33,14 @@ namespace Game.Core.Tests.Build
         public void EveryPlayableClassHasThreeSubclassesAndEightActivitiesGivePoints()
         {
             Assert.That(Catalog.MaxPoints, Is.EqualTo(8));
-            foreach (var heroClass in new[] { "typist", "bard", "hermit" })
+            foreach (var heroClass in HeroClassNames.ByName.Keys)
                 Assert.That(Catalog.SubclassesOf(heroClass).Count, Is.EqualTo(3), heroClass);
         }
 
         [Test]
         public void OpenNotablesTakeAllPointsButNotEveryNotable()
         {
-            foreach (var subclass in Catalog.Subclasses.Where(s => s.Id != "summoner"))
+            foreach (var subclass in Catalog.Subclasses)
             {
                 var notables = subclass.Nodes.Count(n => n.Type == TreeNodeType.Notable);
                 var open = subclass.Nodes.Count(n => n.Type == TreeNodeType.Notable && !n.Locked);
@@ -55,13 +55,13 @@ namespace Game.Core.Tests.Build
             var loop = TypistLoop();
 
             Assert.That(loop.State.Ascendancy.Unlocked(Catalog), Is.False);
-            Assert.That(loop.ChooseSubclass("berserker"), Is.EqualTo(SubclassResult.Locked));
+            Assert.That(loop.ChooseSubclass("duellist"), Is.EqualTo(SubclassResult.Locked));
         }
 
         [Test]
         public void FirstGuardianAndFirstPrestigeCountAsActivities()
         {
-            var state = new GameState { Class = HeroClass.Typist, RecordStage = TestWorld.Data.Stages.BiomeLength + 1, Prestiges = 1 };
+            var state = new GameState { Class = HeroClass.Swordsman, RecordStage = TestWorld.Data.Stages.BiomeLength + 1, Prestiges = 1 };
 
             var loop = TypistLoop(state);
 
@@ -86,32 +86,34 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.ChooseSubclass("skald"), Is.EqualTo(SubclassResult.WrongClass));
             Assert.That(loop.ChooseSubclass("nobody"), Is.EqualTo(SubclassResult.UnknownSubclass));
-            Assert.That(loop.ChooseSubclass("berserker"), Is.EqualTo(SubclassResult.Chosen));
-            Assert.That(loop.ChooseSubclass("stenographer"), Is.EqualTo(SubclassResult.AlreadyChosen));
+            Assert.That(loop.ChooseSubclass("duellist"), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(loop.ChooseSubclass("stormcaller"), Is.EqualTo(SubclassResult.AlreadyChosen));
         }
 
         [Test]
         public void SubclassNodesGrowFromItsStartAndCostAPointEach()
         {
             var loop = UnlockedTypist("garden", "fishing");
-            loop.ChooseSubclass("berserker");
+            loop.ChooseSubclass("duellist");
 
-            Assert.That(loop.AllocateSubclassNode("bers_carnage"), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateSubclassNode("duellist_0"), Is.EqualTo(AllocationResult.NotConnected));
             Assert.That(loop.State.Ascendancy.Allocatable(Catalog).All(n => n.Type == TreeNodeType.Small), Is.True);
-            Assert.That(loop.AllocateSubclassNode("bers_carnage_path"), Is.EqualTo(AllocationResult.Allocated));
-            Assert.That(loop.AllocateSubclassNode("bers_carnage"), Is.EqualTo(AllocationResult.Allocated));
-            Assert.That(loop.AllocateSubclassNode("bers_crave_path"), Is.EqualTo(AllocationResult.NoPoints));
-            Assert.That(loop.AllocateSubclassNode("steno_shorthand_path"), Is.EqualTo(AllocationResult.UnknownNode));
+            Assert.That(loop.AllocateSubclassNode("duellist_0_path"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateSubclassNode("duellist_0"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateSubclassNode("duellist_1_path"), Is.EqualTo(AllocationResult.NoPoints));
+            Assert.That(loop.AllocateSubclassNode("stormcaller_0_path"), Is.EqualTo(AllocationResult.UnknownNode));
         }
 
         [Test]
-        public void NotablesWaitingForTheirMechanicAreLocked()
+        public void NotablesWaitingForTheirMechanicCanBeLocked()
         {
-            var loop = UnlockedTypist("garden", "fishing");
-            loop.ChooseSubclass("berserker");
-            loop.AllocateSubclassNode("bers_headsman_path");
+            var catalog = AscendancyCatalog.Load(Valid.Replace("\"id\": \"s_notable\", \"type\": \"notable\"", "\"id\": \"s_notable\", \"type\": \"notable\", \"locked\": true"));
+            var state = new AscendancyState();
+            state.Complete("a");
+            state.Choose(catalog, "swordsman", "s");
 
-            Assert.That(loop.AllocateSubclassNode("bers_headsman"), Is.EqualTo(AllocationResult.Locked));
+            Assert.That(state.Allocate(catalog, "s_small"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(state.Allocate(catalog, "s_notable"), Is.EqualTo(AllocationResult.Locked));
         }
 
         [Test]
@@ -120,36 +122,36 @@ namespace Game.Core.Tests.Build
             var loop = UnlockedTypist("garden", "fishing");
             var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse);
 
-            loop.ChooseSubclass("berserker");
-            loop.AllocateSubclassNode("bers_carnage_path");
-            loop.AllocateSubclassNode("bers_carnage");
+            loop.ChooseSubclass("stormcaller");
+            loop.AllocateSubclassNode("stormcaller_3_path");
+            loop.AllocateSubclassNode("stormcaller_3");
 
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(before * 1.4).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(before * 1.15).Within(1e-9));
         }
 
         [Test]
         public void FreeChangeOnceADayResetsTheSubclassNodes()
         {
             var loop = UnlockedTypist("garden", "fishing");
-            loop.ChooseSubclass("berserker");
-            loop.AllocateSubclassNode("bers_carnage_path");
+            loop.ChooseSubclass("duellist");
+            loop.AllocateSubclassNode("duellist_0_path");
 
-            Assert.That(loop.ChangeSubclassFree("stenographer", Day), Is.EqualTo(SubclassResult.Chosen));
-            Assert.That(loop.State.Ascendancy.Subclass, Is.EqualTo("stenographer"));
+            Assert.That(loop.ChangeSubclassFree("stormcaller", Day), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(loop.State.Ascendancy.Subclass, Is.EqualTo("stormcaller"));
             Assert.That(loop.State.Ascendancy.Allocated, Is.Empty);
-            Assert.That(loop.ChangeSubclassFree("berserker", Day + Day / 2), Is.EqualTo(SubclassResult.NotYet));
-            Assert.That(loop.ChangeSubclassFree("berserker", 2 * Day), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(loop.ChangeSubclassFree("duellist", Day + Day / 2), Is.EqualTo(SubclassResult.NotYet));
+            Assert.That(loop.ChangeSubclassFree("duellist", 2 * Day), Is.EqualTo(SubclassResult.Chosen));
         }
 
         [Test]
         public void PaidChangeHasNoCooldown()
         {
             var loop = UnlockedTypist("garden");
-            loop.ChooseSubclass("berserker");
-            loop.ChangeSubclassFree("stenographer", Day);
+            loop.ChooseSubclass("duellist");
+            loop.ChangeSubclassFree("stormcaller", Day);
 
-            Assert.That(loop.ChangeSubclassPaid("calligrapher"), Is.EqualTo(SubclassResult.Chosen));
-            Assert.That(loop.ChangeSubclassPaid("berserker"), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(loop.ChangeSubclassPaid("shade"), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(loop.ChangeSubclassPaid("duellist"), Is.EqualTo(SubclassResult.Chosen));
             Assert.That(Catalog.CrystalChangeCost, Is.GreaterThan(0));
         }
 
@@ -158,24 +160,24 @@ namespace Game.Core.Tests.Build
         {
             var loop = UnlockedTypist("garden");
 
-            Assert.That(loop.ChangeSubclassFree("berserker", Day), Is.EqualTo(SubclassResult.NotChosen));
-            Assert.That(loop.ChangeSubclassPaid("berserker"), Is.EqualTo(SubclassResult.NotChosen));
+            Assert.That(loop.ChangeSubclassFree("duellist", Day), Is.EqualTo(SubclassResult.NotChosen));
+            Assert.That(loop.ChangeSubclassPaid("duellist"), Is.EqualTo(SubclassResult.NotChosen));
         }
 
         [Test]
         public void SubclassSurvivesSaveAndLoad()
         {
             var loop = UnlockedTypist("garden", "fishing");
-            loop.ChooseSubclass("berserker");
-            loop.AllocateSubclassNode("bers_carnage_path");
-            loop.ChangeSubclassFree("berserker", Day);
-            loop.AllocateSubclassNode("bers_crave_path");
+            loop.ChooseSubclass("duellist");
+            loop.AllocateSubclassNode("duellist_0_path");
+            loop.ChangeSubclassFree("duellist", Day);
+            loop.AllocateSubclassNode("duellist_1_path");
             var clock = ClockStamp.First(new ClockReading(1_760_000_000_000, 3_600_000, 12));
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, clock), TestWorld.Data).State;
 
-            Assert.That(loaded.Ascendancy.Subclass, Is.EqualTo("berserker"));
-            Assert.That(loaded.Ascendancy.Allocated, Is.EquivalentTo(new[] { "bers_crave_path" }));
+            Assert.That(loaded.Ascendancy.Subclass, Is.EqualTo("duellist"));
+            Assert.That(loaded.Ascendancy.Allocated, Is.EquivalentTo(new[] { "duellist_1_path" }));
             Assert.That(loaded.Ascendancy.CompletedActivities, Is.EquivalentTo(new[] { "garden", "fishing" }));
             Assert.That(loaded.Ascendancy.LastFreeChangeUnixMs, Is.EqualTo(Day));
         }
@@ -194,7 +196,7 @@ namespace Game.Core.Tests.Build
   ""activities"": [{ ""id"": ""a"", ""name"": { ""ru"": ""А"", ""en"": ""A"" } }],
   ""change"": { ""freeEveryHours"": 24, ""crystalCost"": 100 },
   ""subclasses"": [
-    { ""id"": ""s"", ""class"": ""typist"", ""name"": { ""ru"": ""С"", ""en"": ""S"" },
+    { ""id"": ""s"", ""class"": ""swordsman"", ""name"": { ""ru"": ""С"", ""en"": ""S"" },
       ""nodes"": [
         { ""id"": ""s_start"", ""type"": ""start"", ""x"": 0, ""y"": 0, ""name"": { ""ru"": ""С"", ""en"": ""S"" } },
         { ""id"": ""s_small"", ""type"": ""small"", ""x"": 0, ""y"": 1, ""name"": { ""ru"": ""М"", ""en"": ""M"" } },
@@ -230,7 +232,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SubclassClassMustStartOnTheTree()
         {
-            var catalog = AscendancyCatalog.Load(Valid.Replace("\"class\": \"typist\"", "\"class\": \"pirate\""));
+            var catalog = AscendancyCatalog.Load(Valid.Replace("\"class\": \"swordsman\"", "\"class\": \"pirate\""));
 
             var error = Assert.Throws<ContentException>(() => catalog.RequireClassesAndIds(TestWorld.Data.Tree))!;
 
@@ -240,7 +242,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SubclassNodeIdsMustNotRepeatTreeIds()
         {
-            var catalog = AscendancyCatalog.Load(Valid.Replace("s_notable", "t_pen_1"));
+            var catalog = AscendancyCatalog.Load(Valid.Replace("s_notable", "swordsman_ring_1"));
 
             var error = Assert.Throws<ContentException>(() => catalog.RequireClassesAndIds(TestWorld.Data.Tree))!;
 

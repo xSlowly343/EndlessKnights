@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.Loop(state: new GameState
             {
-                Class = HeroClass.Typist,
+                Class = HeroClass.Swordsman,
                 Stage = stage,
                 HighestStage = stage,
                 RecordStage = stage,
@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = AtStage(45, 80000);
             loop.State.OwnedGems.Add(TestWorld.Data.Gems["lull"]);
-            loop.AllocateNode("t_pen_1");
+            loop.AllocateNode("swordsman_ring_1");
             var gain = loop.Prestige.EchoGain;
 
             Assert.That(loop.Prestige.TryPrestige(), Is.True);

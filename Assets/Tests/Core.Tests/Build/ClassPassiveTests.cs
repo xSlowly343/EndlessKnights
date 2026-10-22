@@ -16,43 +16,42 @@ namespace Game.Core.Tests.Build
             new GameLoop(TestWorld.Real, new FakeInputSource(), state, hero ?? new StatSheet());
 
         [Test]
-        public void TypistStartGivesKeyboardDamageAndFocusGrowth()
+        public void SwordsmanStartGivesSeriesAndCritChance()
         {
-            var loop = Real(new GameState { Class = HeroClass.Typist });
+            var loop = Real(new GameState { Class = HeroClass.Swordsman });
 
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(115).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.FocusGain, 1), Is.EqualTo(1.10).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Click), Is.EqualTo(100));
+            Assert.That(loop.Hero.Value(CombatStats.CritChance, 1, StatTags.Keyboard), Is.EqualTo(1.10).Within(1e-9));
+            Assert.That(loop.Hero.Value(new StatId("seriesGain"), 1), Is.EqualTo(1.15).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100));
         }
 
         [Test]
-        public void BardStartGivesStrongerLongerAurasAndClickDamage()
+        public void BardStartGivesStrongerLongerSongsAndPartyShare()
         {
             var loop = Real(new GameState { Class = HeroClass.Bard });
 
             Assert.That(loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura), Is.EqualTo(1.10).Within(1e-9));
             Assert.That(loop.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1.10).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Click), Is.EqualTo(110).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100));
+            Assert.That(loop.Hero.Value(new StatId("partyContribution"), 0), Is.EqualTo(0.05).Within(1e-9));
         }
 
         [Test]
-        public void HermitStartRewardsIdleAndOfflinePlay()
+        public void WandererStartGivesALittleOfEverything()
         {
-            var loop = Real(new GameState { Tree = new TreeAllocation("hermit") });
+            var loop = Real(new GameState { Class = HeroClass.Wanderer });
 
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Idle), Is.EqualTo(125).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.OfflineGold, 1), Is.EqualTo(1.15).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.IdleStartSeconds, 0, StatTags.Idle), Is.EqualTo(-5));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(105).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Click), Is.EqualTo(105).Within(1e-9));
+            Assert.That(loop.Hero.Value(new StatId("damagePerSector"), 0), Is.EqualTo(0.03).Within(1e-9));
         }
 
         [Test]
         public void OnlyTheOwnStartGivesItsPassive()
         {
             var tree = TestWorld.Real.Tree;
-            var typist = new TreeAllocation("typist").Modifiers(tree);
+            var swordsman = new TreeAllocation("swordsman").Modifiers(tree);
 
-            Assert.That(typist, Is.EquivalentTo(tree.StartOf("typist")!.Modifiers));
+            Assert.That(swordsman, Is.EquivalentTo(tree.StartOf("swordsman")!.Modifiers));
         }
 
         [Test]
@@ -92,7 +91,7 @@ namespace Game.Core.Tests.Build
             hero.Add(new Modifier(CombatStats.ComboTimeoutSeconds, ModifierKind.Flat, 0.5));
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Typist }), hero);
+            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Swordsman }), hero);
             loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Normal, BigNumber.Create(1, 40));
             var rules = TestWorld.Data.Combat.Classes;
 

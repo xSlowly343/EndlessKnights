@@ -17,7 +17,7 @@ namespace Game.Core.Content
 
         public static ClassRules Read(ContentNode node)
         {
-            var combo = node.Field("typist").Field("combo");
+            var combo = node.Field("swordsman").Field("combo");
             return new ClassRules(
                 combo.Field("timeoutSeconds").AsNumber(0.1, 60),
                 combo.Field("strikeEvery").AsInt(1, 10000),

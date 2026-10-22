@@ -97,7 +97,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TypistHasNoNotesSoMarchNeverPlays()
         {
-            var (loop, input, hero) = Bard(new GameState { Class = HeroClass.Typist });
+            var (loop, input, hero) = Bard(new GameState { Class = HeroClass.Swordsman });
 
             Click(loop, input, 8);
 

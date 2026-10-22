@@ -13,181 +13,517 @@
   "change": {"freeEveryHours": 24, "crystalCost": 100},
   "subclasses": [
     {
-      "id": "stenographer", "class": "typist", "name": {"ru": "Стенограф", "en": "Stenographer"},
+      "id": "berserker", "class": "barbarian", "name": {"ru": "Берсерк", "en": "Berserker"}, "blurb": "Ярость, добивание, риск",
       "nodes": [
-        {"id": "stenographer_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Стенограф", "en": "Stenographer"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
-        {"id": "steno_shorthand_path", "type": "small", "x": 0, "y": -100, "name": {"ru": "Быстрая рука", "en": "Quick Hand"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
-        {"id": "steno_shorthand", "type": "notable", "x": 0, "y": -200, "name": {"ru": "Скоропись", "en": "Shorthand"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.2, "tags": ["Keyboard"]}, {"stat": "comboTimeoutSeconds", "kind": "flat", "value": 0.5, "tags": ["Keyboard"]}]},
-        {"id": "steno_line_strike_path", "type": "small", "x": 87, "y": -50, "name": {"ru": "Серия", "en": "Streak"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 0.2, "tags": ["Keyboard"]}]},
-        {"id": "steno_line_strike", "type": "notable", "x": 173, "y": -100, "name": {"ru": "Удар строки", "en": "Line Strike"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 1.0, "tags": ["Keyboard"]}]},
-        {"id": "steno_no_step_back_path", "type": "small", "x": 87, "y": 50, "name": {"ru": "Ровный темп", "en": "Even Pace"}, "modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 1}]},
-        {"id": "steno_no_step_back", "type": "notable", "x": 173, "y": 100, "name": {"ru": "Ни шагу назад", "en": "No Step Back"}, "modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 3}, {"stat": "focusMax", "kind": "flat", "value": 0.5}]},
-        {"id": "steno_fluent_fingers_path", "type": "small", "x": 0, "y": 100, "name": {"ru": "Разгон", "en": "Warm-up"}, "modifiers": [{"stat": "focusGain", "kind": "increased", "value": 0.06}]},
-        {"id": "steno_fluent_fingers", "type": "notable", "x": 0, "y": 200, "name": {"ru": "Беглые пальцы", "en": "Fluent Fingers"}, "modifiers": [{"stat": "focusGain", "kind": "more", "value": 0.3}]},
-        {"id": "steno_echo_path", "type": "small", "x": -87, "y": 50, "name": {"ru": "Отзвук", "en": "Resonance"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
-        {"id": "steno_echo", "type": "notable", "x": -173, "y": 100, "name": {"ru": "Эхо строки", "en": "Line Echo"}, "modifiers": [{"stat": "keyEchoEvery", "kind": "flat", "value": 20}, {"stat": "keyEchoStrikes", "kind": "flat", "value": 5}], "locked": true},
-        {"id": "steno_polymath_path", "type": "small", "x": -87, "y": -50, "name": {"ru": "Широкий кругозор", "en": "Broad View"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}]},
-        {"id": "steno_polymath", "type": "notable", "x": -173, "y": -100, "name": {"ru": "Многознание", "en": "Polymath"}, "modifiers": [{"stat": "damagePerMastery", "kind": "flat", "value": 0.03}], "locked": true}
+        {"id": "berserker_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Берсерк", "en": "Berserker"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15}]},
+        {"id": "berserker_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Берсерк", "en": "Berserker"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "berserker_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Аспект резни", "en": "Aspect of Carnage"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.4}, {"stat": "focusGain", "kind": "more", "value": -0.2}]},
+        {"id": "berserker_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Берсерк", "en": "Berserker"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "berserker_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Жажда бойни", "en": "Crave the Slaughter"}, "modifiers": [{"stat": "focusMax", "kind": "flat", "value": 1}]},
+        {"id": "berserker_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Берсерк", "en": "Berserker"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "berserker_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Ярость на исходе", "en": "Last-Second Rage"}, "modifiers": [{"stat": "damageAtBossTimerEnd", "kind": "more", "value": 0.5}]},
+        {"id": "berserker_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Берсерк", "en": "Berserker"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "berserker_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Палач", "en": "Headsman"}, "modifiers": [{"stat": "cullThreshold", "kind": "flat", "value": 0.15}]},
+        {"id": "berserker_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Берсерк", "en": "Berserker"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "berserker_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Кровавый замах", "en": "Bloody Swing"}, "modifiers": [{"stat": "windupGain", "kind": "increased", "value": 0.4}]},
+        {"id": "berserker_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Берсерк", "en": "Berserker"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "berserker_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Боевой клич", "en": "War Cry"}, "modifiers": [{"stat": "crushMultiplier", "kind": "flat", "value": 2}]}
       ],
-      "links": [["stenographer_start", "steno_shorthand_path"], ["steno_shorthand_path", "steno_shorthand"], ["stenographer_start", "steno_line_strike_path"], ["steno_line_strike_path", "steno_line_strike"], ["stenographer_start", "steno_no_step_back_path"], ["steno_no_step_back_path", "steno_no_step_back"], ["stenographer_start", "steno_fluent_fingers_path"], ["steno_fluent_fingers_path", "steno_fluent_fingers"], ["stenographer_start", "steno_echo_path"], ["steno_echo_path", "steno_echo"], ["stenographer_start", "steno_polymath_path"], ["steno_polymath_path", "steno_polymath"]]
+      "links": [["berserker_start", "berserker_0_path"], ["berserker_0_path", "berserker_0"], ["berserker_start", "berserker_1_path"], ["berserker_1_path", "berserker_1"], ["berserker_start", "berserker_2_path"], ["berserker_2_path", "berserker_2"], ["berserker_start", "berserker_3_path"], ["berserker_3_path", "berserker_3"], ["berserker_start", "berserker_4_path"], ["berserker_4_path", "berserker_4"], ["berserker_start", "berserker_5_path"], ["berserker_5_path", "berserker_5"]]
     },
     {
-      "id": "berserker", "class": "typist", "name": {"ru": "Берсерк", "en": "Berserker"},
+      "id": "chieftain", "class": "barbarian", "name": {"ru": "Вождь", "en": "Chieftain"}, "blurb": "Тотемы предков бьют вместе с героем",
       "nodes": [
-        {"id": "berserker_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Берсерк", "en": "Berserker"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
-        {"id": "bers_carnage_path", "type": "small", "x": 0, "y": -100, "name": {"ru": "Ярость", "en": "Rage"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
-        {"id": "bers_carnage", "type": "notable", "x": 0, "y": -200, "name": {"ru": "Аспект резни", "en": "Aspect of Carnage"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.4}, {"stat": "focusGain", "kind": "more", "value": -0.2}]},
-        {"id": "bers_crave_path", "type": "small", "x": 78, "y": -62, "name": {"ru": "Кровь кипит", "en": "Boiling Blood"}, "modifiers": [{"stat": "focusMax", "kind": "flat", "value": 0.25}]},
-        {"id": "bers_crave", "type": "notable", "x": 156, "y": -125, "name": {"ru": "Жажда бойни", "en": "Crave the Slaughter"}, "modifiers": [{"stat": "focusMax", "kind": "flat", "value": 1.0}, {"stat": "focusResetSeconds", "kind": "flat", "value": 2}]},
-        {"id": "bers_rite_path", "type": "small", "x": 97, "y": 22, "name": {"ru": "Неистовство", "en": "Frenzy"}, "modifiers": [{"stat": "focusGain", "kind": "increased", "value": 0.08}]},
-        {"id": "bers_rite", "type": "notable", "x": 195, "y": 45, "name": {"ru": "Обряд разрушения", "en": "Rite of Ruin"}, "modifiers": [{"stat": "focusGain", "kind": "increased", "value": 0.5}, {"stat": "focusResetSeconds", "kind": "flat", "value": -1}]},
-        {"id": "bers_bloody_crit_path", "type": "small", "x": 43, "y": 90, "name": {"ru": "Тяжёлый удар", "en": "Heavy Blow"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.15, "tags": ["Keyboard"]}]},
-        {"id": "bers_bloody_crit", "type": "notable", "x": 87, "y": 180, "name": {"ru": "Кровавый крит", "en": "Bloody Crit"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.3, "tags": ["Keyboard"]}, {"stat": "critMultiplier", "kind": "flat", "value": 0.75, "tags": ["Keyboard"]}]},
-        {"id": "bers_headsman_path", "type": "small", "x": -43, "y": 90, "name": {"ru": "Добивание", "en": "Finishing"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
-        {"id": "bers_headsman", "type": "notable", "x": -87, "y": 180, "name": {"ru": "Палач", "en": "Headsman"}, "modifiers": [{"stat": "cullThreshold", "kind": "flat", "value": 0.15}], "locked": true},
-        {"id": "bers_last_rage_path", "type": "small", "x": -97, "y": 22, "name": {"ru": "Последний рубеж", "en": "Last Stand"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
-        {"id": "bers_last_rage", "type": "notable", "x": -195, "y": 45, "name": {"ru": "Ярость на исходе", "en": "Last-Second Rage"}, "modifiers": [{"stat": "damageAtBossTimerEnd", "kind": "more", "value": 0.5}], "locked": true},
-        {"id": "bers_bane_path", "type": "small", "x": -78, "y": -62, "name": {"ru": "Охота", "en": "Hunt"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
-        {"id": "bers_bane", "type": "notable", "x": -156, "y": -125, "name": {"ru": "Гроза легенд", "en": "Bane of Legends"}, "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.2}, {"stat": "damageAfterKill", "kind": "increased", "value": 0.1}], "locked": true}
+        {"id": "chieftain_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Вождь", "en": "Chieftain"}, "modifiers": [{"stat": "totemCount", "kind": "flat", "value": 1}]},
+        {"id": "chieftain_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Вождь", "en": "Chieftain"}, "modifiers": [{"stat": "totemCount", "kind": "flat", "value": 0.3}]},
+        {"id": "chieftain_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Духи предков", "en": "Ancestor Spirits"}, "modifiers": [{"stat": "totemCount", "kind": "flat", "value": 1}]},
+        {"id": "chieftain_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Вождь", "en": "Chieftain"}, "modifiers": [{"stat": "totemCount", "kind": "flat", "value": 0.3}]},
+        {"id": "chieftain_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Тотемный столб", "en": "Totem Pole"}, "modifiers": [{"stat": "totemDamage", "kind": "increased", "value": 0.4}]},
+        {"id": "chieftain_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Вождь", "en": "Chieftain"}, "modifiers": [{"stat": "totemCount", "kind": "flat", "value": 0.3}]},
+        {"id": "chieftain_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Голос рода", "en": "Voice of the Clan"}, "modifiers": [{"stat": "partyDamage", "kind": "increased", "value": 0.05}]},
+        {"id": "chieftain_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Вождь", "en": "Chieftain"}, "modifiers": [{"stat": "totemCount", "kind": "flat", "value": 0.3}]},
+        {"id": "chieftain_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Огонь племени", "en": "Tribal Fire"}, "modifiers": [{"stat": "burnDamage", "kind": "increased", "value": 0.3}]},
+        {"id": "chieftain_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Вождь", "en": "Chieftain"}, "modifiers": [{"stat": "totemCount", "kind": "flat", "value": 0.3}]},
+        {"id": "chieftain_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Сила земли", "en": "Earth Strength"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.15}]},
+        {"id": "chieftain_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Вождь", "en": "Chieftain"}, "modifiers": [{"stat": "totemCount", "kind": "flat", "value": 0.3}]},
+        {"id": "chieftain_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Ритуал", "en": "Ritual"}, "modifiers": [{"stat": "totemCrushShare", "kind": "flat", "value": 0.5}]}
       ],
-      "links": [["berserker_start", "bers_carnage_path"], ["bers_carnage_path", "bers_carnage"], ["berserker_start", "bers_crave_path"], ["bers_crave_path", "bers_crave"], ["berserker_start", "bers_rite_path"], ["bers_rite_path", "bers_rite"], ["berserker_start", "bers_bloody_crit_path"], ["bers_bloody_crit_path", "bers_bloody_crit"], ["berserker_start", "bers_headsman_path"], ["bers_headsman_path", "bers_headsman"], ["berserker_start", "bers_last_rage_path"], ["bers_last_rage_path", "bers_last_rage"], ["berserker_start", "bers_bane_path"], ["bers_bane_path", "bers_bane"]]
+      "links": [["chieftain_start", "chieftain_0_path"], ["chieftain_0_path", "chieftain_0"], ["chieftain_start", "chieftain_1_path"], ["chieftain_1_path", "chieftain_1"], ["chieftain_start", "chieftain_2_path"], ["chieftain_2_path", "chieftain_2"], ["chieftain_start", "chieftain_3_path"], ["chieftain_3_path", "chieftain_3"], ["chieftain_start", "chieftain_4_path"], ["chieftain_4_path", "chieftain_4"], ["chieftain_start", "chieftain_5_path"], ["chieftain_5_path", "chieftain_5"]]
     },
     {
-      "id": "calligrapher", "class": "typist", "name": {"ru": "Каллиграф", "en": "Calligrapher"},
+      "id": "colossus", "class": "barbarian", "name": {"ru": "Колосс", "en": "Colossus"}, "blurb": "Оглушения и урон по боссам",
       "nodes": [
-        {"id": "calligrapher_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Каллиграф", "en": "Calligrapher"}, "modifiers": [{"stat": "enterDamage", "kind": "increased", "value": 0.2}]},
-        {"id": "calli_full_stop_path", "type": "small", "x": 0, "y": -100, "name": {"ru": "Нажим", "en": "Pressure"}, "modifiers": [{"stat": "enterDamage", "kind": "increased", "value": 0.15}]},
-        {"id": "calli_full_stop", "type": "notable", "x": 0, "y": -200, "name": {"ru": "Точка", "en": "Full Stop"}, "modifiers": [{"stat": "enterDamage", "kind": "increased", "value": 1.0}]},
-        {"id": "calli_red_line_path", "type": "small", "x": 87, "y": -50, "name": {"ru": "Красивый почерк", "en": "Fine Hand"}, "modifiers": [{"stat": "enterDamage", "kind": "increased", "value": 0.15}]},
-        {"id": "calli_red_line", "type": "notable", "x": 173, "y": -100, "name": {"ru": "Красная строка", "en": "Indented Line"}, "modifiers": [{"stat": "enterDamage", "kind": "more", "value": 0.5}, {"stat": "damage", "kind": "more", "value": -0.1, "tags": ["Keyboard"]}]},
-        {"id": "calli_fair_copy_path", "type": "small", "x": 87, "y": 50, "name": {"ru": "Аккуратность", "en": "Neatness"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
-        {"id": "calli_fair_copy", "type": "notable", "x": 173, "y": 100, "name": {"ru": "Чистовик", "en": "Fair Copy"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.5, "tags": ["Keyboard"]}, {"stat": "critMultiplier", "kind": "flat", "value": 0.5, "tags": ["Keyboard"]}]},
-        {"id": "calli_ink_path", "type": "small", "x": 0, "y": 100, "name": {"ru": "Чернильница", "en": "Inkwell"}, "modifiers": [{"stat": "energyGain", "kind": "increased", "value": 0.08, "tags": ["Keyboard"]}]},
-        {"id": "calli_ink", "type": "notable", "x": 0, "y": 200, "name": {"ru": "Энергия пера", "en": "Pen Energy"}, "modifiers": [{"stat": "energyGain", "kind": "increased", "value": 0.3, "tags": ["Keyboard"]}]},
-        {"id": "calli_paragraph_path", "type": "small", "x": -87, "y": 50, "name": {"ru": "Абзац", "en": "Paragraph"}, "modifiers": [{"stat": "enterDamage", "kind": "increased", "value": 0.15}]},
-        {"id": "calli_paragraph", "type": "notable", "x": -173, "y": 100, "name": {"ru": "Абзац", "en": "Paragraph Break"}, "modifiers": [{"stat": "focusOnEnter", "kind": "flat", "value": 0.2}], "locked": true},
-        {"id": "calli_signature_path", "type": "small", "x": -87, "y": -50, "name": {"ru": "Росчерк", "en": "Flourish"}, "modifiers": [{"stat": "enterDamage", "kind": "increased", "value": 0.15}]},
-        {"id": "calli_signature", "type": "notable", "x": -173, "y": -100, "name": {"ru": "Подпись", "en": "Signature"}, "modifiers": [{"stat": "enterAlwaysCrits", "kind": "flat", "value": 1}], "locked": true}
+        {"id": "colossus_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Колосс", "en": "Colossus"}, "modifiers": [{"stat": "staggerBonus", "kind": "increased", "value": 0.3}]},
+        {"id": "colossus_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Колосс", "en": "Colossus"}, "modifiers": [{"stat": "staggerBonus", "kind": "increased", "value": 0.09}]},
+        {"id": "colossus_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Неподвижная гора", "en": "Unmoving Mountain"}, "modifiers": [{"stat": "staggerSeconds", "kind": "flat", "value": 2}]},
+        {"id": "colossus_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Колосс", "en": "Colossus"}, "modifiers": [{"stat": "staggerBonus", "kind": "increased", "value": 0.09}]},
+        {"id": "colossus_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Погибель великанов", "en": "Giantsbane"}, "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.3}]},
+        {"id": "colossus_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Колосс", "en": "Colossus"}, "modifiers": [{"stat": "staggerBonus", "kind": "increased", "value": 0.09}]},
+        {"id": "colossus_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Трещина", "en": "Fissure"}, "modifiers": [{"stat": "staggerBonus", "kind": "more", "value": 0.25}]},
+        {"id": "colossus_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Колосс", "en": "Colossus"}, "modifiers": [{"stat": "staggerBonus", "kind": "increased", "value": 0.09}]},
+        {"id": "colossus_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Землетряс", "en": "Quake"}, "modifiers": [{"stat": "crushCleave", "kind": "flat", "value": 0.5}]},
+        {"id": "colossus_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Колосс", "en": "Colossus"}, "modifiers": [{"stat": "staggerBonus", "kind": "increased", "value": 0.09}]},
+        {"id": "colossus_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Каменная кожа", "en": "Stone Skin"}, "modifiers": [{"stat": "windupGain", "kind": "increased", "value": 0.25}]},
+        {"id": "colossus_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Колосс", "en": "Colossus"}, "modifiers": [{"stat": "staggerBonus", "kind": "increased", "value": 0.09}]},
+        {"id": "colossus_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Опора", "en": "Pillar"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.15}]}
       ],
-      "links": [["calligrapher_start", "calli_full_stop_path"], ["calli_full_stop_path", "calli_full_stop"], ["calligrapher_start", "calli_red_line_path"], ["calli_red_line_path", "calli_red_line"], ["calligrapher_start", "calli_fair_copy_path"], ["calli_fair_copy_path", "calli_fair_copy"], ["calligrapher_start", "calli_ink_path"], ["calli_ink_path", "calli_ink"], ["calligrapher_start", "calli_paragraph_path"], ["calli_paragraph_path", "calli_paragraph"], ["calligrapher_start", "calli_signature_path"], ["calli_signature_path", "calli_signature"]]
+      "links": [["colossus_start", "colossus_0_path"], ["colossus_0_path", "colossus_0"], ["colossus_start", "colossus_1_path"], ["colossus_1_path", "colossus_1"], ["colossus_start", "colossus_2_path"], ["colossus_2_path", "colossus_2"], ["colossus_start", "colossus_3_path"], ["colossus_3_path", "colossus_3"], ["colossus_start", "colossus_4_path"], ["colossus_4_path", "colossus_4"], ["colossus_start", "colossus_5_path"], ["colossus_5_path", "colossus_5"]]
     },
     {
-      "id": "conductor", "class": "bard", "name": {"ru": "Дирижёр", "en": "Conductor"},
+      "id": "duellist", "class": "swordsman", "name": {"ru": "Дуэлянт", "en": "Duellist"}, "blurb": "Финишеры и дуэли с боссами",
       "nodes": [
-        {"id": "conductor_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Дирижёр", "en": "Conductor"}, "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.1}]},
-        {"id": "cond_orchestra_path", "type": "small", "x": 0, "y": -100, "name": {"ru": "Партитура", "en": "Score"}, "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.06}]},
-        {"id": "cond_orchestra", "type": "notable", "x": 0, "y": -200, "name": {"ru": "Оркестр", "en": "Orchestra"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 1}]},
-        {"id": "cond_endless_path", "type": "small", "x": 87, "y": -50, "name": {"ru": "Фермата", "en": "Fermata"}, "modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.1}]},
-        {"id": "cond_endless", "type": "notable", "x": 173, "y": -100, "name": {"ru": "Мелодия без конца", "en": "Endless Melody"}, "modifiers": [{"stat": "auraDuration", "kind": "more", "value": 1.0}]},
-        {"id": "cond_hall_path", "type": "small", "x": 87, "y": 50, "name": {"ru": "Взмах палочки", "en": "Baton"}, "modifiers": [{"stat": "auraAllyEffect", "kind": "increased", "value": 0.08}]},
-        {"id": "cond_hall", "type": "notable", "x": 173, "y": 100, "name": {"ru": "Повелитель зала", "en": "Master of the Hall"}, "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.15}, {"stat": "auraAllyEffect", "kind": "increased", "value": 0.15}]},
-        {"id": "cond_short_tune_path", "type": "small", "x": 0, "y": 100, "name": {"ru": "Темп", "en": "Tempo"}, "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.06}]},
-        {"id": "cond_short_tune", "type": "notable", "x": 0, "y": 200, "name": {"ru": "Короткий напев", "en": "Short Tune"}, "modifiers": [{"stat": "melodyNotes", "kind": "flat", "value": -1}]},
-        {"id": "cond_awakening_path", "type": "small", "x": -87, "y": 50, "name": {"ru": "Ансамбль", "en": "Ensemble"}, "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.06}]},
-        {"id": "cond_awakening", "type": "notable", "x": -173, "y": 100, "name": {"ru": "Ритуал пробуждения", "en": "Ritual of Awakening"}, "modifiers": [{"stat": "damagePerActiveAura", "kind": "more", "value": 0.03}], "locked": true},
-        {"id": "cond_tailwind_path", "type": "small", "x": -87, "y": -50, "name": {"ru": "Ветер", "en": "Wind"}, "modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.1}]},
-        {"id": "cond_tailwind", "type": "notable", "x": -173, "y": -100, "name": {"ru": "Попутный ветер", "en": "Tailwind"}, "modifiers": [{"stat": "auraEffectPerSkillStack", "kind": "increased", "value": 0.05}], "locked": true}
+        {"id": "duellist_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Дуэлянт", "en": "Duellist"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 0.3}]},
+        {"id": "duellist_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Дуэлянт", "en": "Duellist"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 0.09}]},
+        {"id": "duellist_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Последний удар", "en": "Final Blow"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 1.0}]},
+        {"id": "duellist_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Дуэлянт", "en": "Duellist"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 0.09}]},
+        {"id": "duellist_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Вызов", "en": "Challenge"}, "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.3}]},
+        {"id": "duellist_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Дуэлянт", "en": "Duellist"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 0.09}]},
+        {"id": "duellist_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Парирование", "en": "Riposte"}, "modifiers": [{"stat": "doubleStrike", "kind": "flat", "value": 0.1}]},
+        {"id": "duellist_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Дуэлянт", "en": "Duellist"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 0.09}]},
+        {"id": "duellist_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Мастер клинка", "en": "Blade Master"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.8}]},
+        {"id": "duellist_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Дуэлянт", "en": "Duellist"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 0.09}]},
+        {"id": "duellist_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Слава арены", "en": "Glory of the Arena"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.3, "tags": ["Gold"]}]},
+        {"id": "duellist_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Дуэлянт", "en": "Duellist"}, "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 0.09}]},
+        {"id": "duellist_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Стойка", "en": "Stance"}, "modifiers": [{"stat": "comboTimeoutSeconds", "kind": "flat", "value": 1}]}
       ],
-      "links": [["conductor_start", "cond_orchestra_path"], ["cond_orchestra_path", "cond_orchestra"], ["conductor_start", "cond_endless_path"], ["cond_endless_path", "cond_endless"], ["conductor_start", "cond_hall_path"], ["cond_hall_path", "cond_hall"], ["conductor_start", "cond_short_tune_path"], ["cond_short_tune_path", "cond_short_tune"], ["conductor_start", "cond_awakening_path"], ["cond_awakening_path", "cond_awakening"], ["conductor_start", "cond_tailwind_path"], ["cond_tailwind_path", "cond_tailwind"]]
+      "links": [["duellist_start", "duellist_0_path"], ["duellist_0_path", "duellist_0"], ["duellist_start", "duellist_1_path"], ["duellist_1_path", "duellist_1"], ["duellist_start", "duellist_2_path"], ["duellist_2_path", "duellist_2"], ["duellist_start", "duellist_3_path"], ["duellist_3_path", "duellist_3"], ["duellist_start", "duellist_4_path"], ["duellist_4_path", "duellist_4"], ["duellist_start", "duellist_5_path"], ["duellist_5_path", "duellist_5"]]
     },
     {
-      "id": "skald", "class": "bard", "name": {"ru": "Скальд", "en": "Skald"},
+      "id": "stormcaller", "class": "swordsman", "name": {"ru": "Буревестник", "en": "Stormcaller"}, "blurb": "Молнии по цепи",
       "nodes": [
-        {"id": "skald_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Скальд", "en": "Skald"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}]},
-        {"id": "skald_steady_voice_path", "type": "small", "x": 0, "y": -100, "name": {"ru": "Сильный голос", "en": "Strong Voice"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}]},
-        {"id": "skald_steady_voice", "type": "notable", "x": 0, "y": -200, "name": {"ru": "Ровный голос", "en": "Steady Voice"}, "modifiers": [{"stat": "auraEffect", "kind": "more", "value": -0.3}, {"stat": "damage", "kind": "more", "value": 0.4}]},
-        {"id": "skald_ringing_blow_path", "type": "small", "x": 78, "y": -62, "name": {"ru": "Звон", "en": "Ring"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1, "tags": ["Click"]}]},
-        {"id": "skald_ringing_blow", "type": "notable", "x": 156, "y": -125, "name": {"ru": "Звонкий удар", "en": "Ringing Blow"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.4, "tags": ["Click"]}, {"stat": "critMultiplier", "kind": "flat", "value": 0.5, "tags": ["Click"]}]},
-        {"id": "skald_battle_song_path", "type": "small", "x": 97, "y": 22, "name": {"ru": "Боевой клич", "en": "War Cry"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}]},
-        {"id": "skald_battle_song", "type": "notable", "x": 195, "y": 45, "name": {"ru": "Боевая песнь", "en": "Battle Song"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Click"]}, {"stat": "energyGain", "kind": "increased", "value": 0.2, "tags": ["Click"]}]},
-        {"id": "skald_string_fight_path", "type": "small", "x": 43, "y": 90, "name": {"ru": "Струны", "en": "Strings"}, "modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.08}]},
-        {"id": "skald_string_fight", "type": "notable", "x": 87, "y": 180, "name": {"ru": "Струнный бой", "en": "String Fight"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.15, "tags": ["Click"]}, {"stat": "auraDuration", "kind": "increased", "value": 0.2}]},
-        {"id": "skald_war_song_path", "type": "small", "x": -43, "y": 90, "name": {"ru": "Ритм", "en": "Rhythm"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}]},
-        {"id": "skald_war_song", "type": "notable", "x": -87, "y": 180, "name": {"ru": "Песня войны", "en": "Song of War"}, "modifiers": [{"stat": "damagePerRecentNote", "kind": "increased", "value": 0.02}], "locked": true},
-        {"id": "skald_struck_string_path", "type": "small", "x": -97, "y": 22, "name": {"ru": "Удар по струне", "en": "Pluck"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}]},
-        {"id": "skald_struck_string", "type": "notable", "x": -195, "y": 45, "name": {"ru": "Ударная струна", "en": "Struck String"}, "modifiers": [{"stat": "clickAfterMelodyMultiplier", "kind": "flat", "value": 5}], "locked": true},
-        {"id": "skald_mark_path", "type": "small", "x": -78, "y": -62, "name": {"ru": "Взгляд", "en": "Gaze"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1, "tags": ["Click"]}]},
-        {"id": "skald_mark", "type": "notable", "x": -156, "y": -125, "name": {"ru": "Метка скальда", "en": "Skald's Mark"}, "modifiers": [{"stat": "markDamageTaken", "kind": "increased", "value": 0.15}], "locked": true}
+        {"id": "stormcaller_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Буревестник", "en": "Stormcaller"}, "modifiers": [{"stat": "chainShare", "kind": "flat", "value": 0.15}]},
+        {"id": "stormcaller_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Буревестник", "en": "Stormcaller"}, "modifiers": [{"stat": "chainShare", "kind": "flat", "value": 0.045}]},
+        {"id": "stormcaller_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Цепная молния", "en": "Chain Lightning"}, "modifiers": [{"stat": "chainShare", "kind": "flat", "value": 0.3}]},
+        {"id": "stormcaller_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Буревестник", "en": "Stormcaller"}, "modifiers": [{"stat": "chainShare", "kind": "flat", "value": 0.045}]},
+        {"id": "stormcaller_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Гроза", "en": "Thunderstorm"}, "modifiers": [{"stat": "squallHits", "kind": "flat", "value": 5}]},
+        {"id": "stormcaller_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Буревестник", "en": "Stormcaller"}, "modifiers": [{"stat": "chainShare", "kind": "flat", "value": 0.045}]},
+        {"id": "stormcaller_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Разряд", "en": "Discharge"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.4}]},
+        {"id": "stormcaller_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Буревестник", "en": "Stormcaller"}, "modifiers": [{"stat": "chainShare", "kind": "flat", "value": 0.045}]},
+        {"id": "stormcaller_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Око бури", "en": "Eye of the Storm"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.15}]},
+        {"id": "stormcaller_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Буревестник", "en": "Stormcaller"}, "modifiers": [{"stat": "chainShare", "kind": "flat", "value": 0.045}]},
+        {"id": "stormcaller_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Статика", "en": "Static"}, "modifiers": [{"stat": "seriesGain", "kind": "increased", "value": 0.4}]},
+        {"id": "stormcaller_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Буревестник", "en": "Stormcaller"}, "modifiers": [{"stat": "chainShare", "kind": "flat", "value": 0.045}]},
+        {"id": "stormcaller_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Громоотвод", "en": "Lightning Rod"}, "modifiers": [{"stat": "chainTargets", "kind": "flat", "value": 1}]}
       ],
-      "links": [["skald_start", "skald_steady_voice_path"], ["skald_steady_voice_path", "skald_steady_voice"], ["skald_start", "skald_ringing_blow_path"], ["skald_ringing_blow_path", "skald_ringing_blow"], ["skald_start", "skald_battle_song_path"], ["skald_battle_song_path", "skald_battle_song"], ["skald_start", "skald_string_fight_path"], ["skald_string_fight_path", "skald_string_fight"], ["skald_start", "skald_war_song_path"], ["skald_war_song_path", "skald_war_song"], ["skald_start", "skald_struck_string_path"], ["skald_struck_string_path", "skald_struck_string"], ["skald_start", "skald_mark_path"], ["skald_mark_path", "skald_mark"]]
+      "links": [["stormcaller_start", "stormcaller_0_path"], ["stormcaller_0_path", "stormcaller_0"], ["stormcaller_start", "stormcaller_1_path"], ["stormcaller_1_path", "stormcaller_1"], ["stormcaller_start", "stormcaller_2_path"], ["stormcaller_2_path", "stormcaller_2"], ["stormcaller_start", "stormcaller_3_path"], ["stormcaller_3_path", "stormcaller_3"], ["stormcaller_start", "stormcaller_4_path"], ["stormcaller_4_path", "stormcaller_4"], ["stormcaller_start", "stormcaller_5_path"], ["stormcaller_5_path", "stormcaller_5"]]
     },
     {
-      "id": "minstrel", "class": "bard", "name": {"ru": "Менестрель", "en": "Minstrel"},
+      "id": "shade", "class": "swordsman", "name": {"ru": "Тень", "en": "Shade"}, "blurb": "Криты и удар в спину",
       "nodes": [
-        {"id": "minstrel_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Менестрель", "en": "Minstrel"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1, "tags": ["Gold"]}]},
-        {"id": "minst_coin_hymn_path", "type": "small", "x": 0, "y": -100, "name": {"ru": "Звон монет", "en": "Coin Jingle"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.08, "tags": ["Gold"]}]},
-        {"id": "minst_coin_hymn", "type": "notable", "x": 0, "y": -200, "name": {"ru": "Гимн монет", "en": "Hymn of Coins"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.25, "tags": ["Gold"]}]},
-        {"id": "minst_party_voice_path", "type": "small", "x": 87, "y": -50, "name": {"ru": "Подпевка", "en": "Sing-along"}, "modifiers": [{"stat": "partyContribution", "kind": "flat", "value": 0.03}]},
-        {"id": "minst_party_voice", "type": "notable", "x": 173, "y": -100, "name": {"ru": "Голос пати", "en": "Voice of the Party"}, "modifiers": [{"stat": "partyContribution", "kind": "flat", "value": 0.15}]},
-        {"id": "minst_campfire_path", "type": "small", "x": 87, "y": 50, "name": {"ru": "Тепло", "en": "Warmth"}, "modifiers": [{"stat": "auraAllyEffect", "kind": "increased", "value": 0.08}]},
-        {"id": "minst_campfire", "type": "notable", "x": 173, "y": 100, "name": {"ru": "Общий костёр", "en": "Shared Campfire"}, "modifiers": [{"stat": "auraAllyEffect", "kind": "increased", "value": 0.3}]},
-        {"id": "minst_wandering_path", "type": "small", "x": 0, "y": 100, "name": {"ru": "Дорога", "en": "Road"}, "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.06}]},
-        {"id": "minst_wandering", "type": "notable", "x": 0, "y": 200, "name": {"ru": "Бродячий оркестр", "en": "Wandering Band"}, "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.2}, {"stat": "auraDuration", "kind": "increased", "value": 0.2}]},
-        {"id": "minst_night_concert_path", "type": "small", "x": -87, "y": 50, "name": {"ru": "Ночлег", "en": "Lodging"}, "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.06}]},
-        {"id": "minst_night_concert", "type": "notable", "x": -173, "y": 100, "name": {"ru": "Ночной концерт", "en": "Night Concert"}, "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.2}]},
-        {"id": "minst_clan_purse_path", "type": "small", "x": -87, "y": -50, "name": {"ru": "Шляпа по кругу", "en": "Passing the Hat"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.08, "tags": ["Gold"]}]},
-        {"id": "minst_clan_purse", "type": "notable", "x": -173, "y": -100, "name": {"ru": "Кошель клана", "en": "Clan Purse"}, "modifiers": [{"stat": "goldSharedWithParty", "kind": "flat", "value": 0.1}], "locked": true}
+        {"id": "shade_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Тень", "en": "Shade"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.2}]},
+        {"id": "shade_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Тень", "en": "Shade"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.06}]},
+        {"id": "shade_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Из тени", "en": "From the Shadows"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 1.0}]},
+        {"id": "shade_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Тень", "en": "Shade"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.06}]},
+        {"id": "shade_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Удар в спину", "en": "Backstab"}, "modifiers": [{"stat": "firstHitMultiplier", "kind": "flat", "value": 3}]},
+        {"id": "shade_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Тень", "en": "Shade"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.06}]},
+        {"id": "shade_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Добивание", "en": "Execute"}, "modifiers": [{"stat": "cullThreshold", "kind": "flat", "value": 0.1}]},
+        {"id": "shade_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Тень", "en": "Shade"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.06}]},
+        {"id": "shade_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Яд на клинке", "en": "Poisoned Blade"}, "modifiers": [{"stat": "dotDamage", "kind": "increased", "value": 0.4}]},
+        {"id": "shade_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Тень", "en": "Shade"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.06}]},
+        {"id": "shade_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Неуловимый", "en": "Elusive"}, "modifiers": [{"stat": "critChance", "kind": "more", "value": 0.25}]},
+        {"id": "shade_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Тень", "en": "Shade"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.06}]},
+        {"id": "shade_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Тихий шаг", "en": "Silent Step"}, "modifiers": [{"stat": "comboTimeoutSeconds", "kind": "flat", "value": 0.5}]}
       ],
-      "links": [["minstrel_start", "minst_coin_hymn_path"], ["minst_coin_hymn_path", "minst_coin_hymn"], ["minstrel_start", "minst_party_voice_path"], ["minst_party_voice_path", "minst_party_voice"], ["minstrel_start", "minst_campfire_path"], ["minst_campfire_path", "minst_campfire"], ["minstrel_start", "minst_wandering_path"], ["minst_wandering_path", "minst_wandering"], ["minstrel_start", "minst_night_concert_path"], ["minst_night_concert_path", "minst_night_concert"], ["minstrel_start", "minst_clan_purse_path"], ["minst_clan_purse_path", "minst_clan_purse"]]
+      "links": [["shade_start", "shade_0_path"], ["shade_0_path", "shade_0"], ["shade_start", "shade_1_path"], ["shade_1_path", "shade_1"], ["shade_start", "shade_2_path"], ["shade_2_path", "shade_2"], ["shade_start", "shade_3_path"], ["shade_3_path", "shade_3"], ["shade_start", "shade_4_path"], ["shade_4_path", "shade_4"], ["shade_start", "shade_5_path"], ["shade_5_path", "shade_5"]]
     },
     {
-      "id": "summoner", "class": "hermit", "name": {"ru": "Призыватель", "en": "Summoner"},
+      "id": "sniper", "class": "ranger", "name": {"ru": "Снайпер", "en": "Sniper"}, "blurb": "Редкие сверх-выстрелы",
       "nodes": [
-        {"id": "summoner_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Призыватель", "en": "Summoner"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Idle"]}]},
-        {"id": "summ_retinue_path", "type": "small", "x": 0, "y": -100, "name": {"ru": "Зов", "en": "Call"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Minion"]}]},
-        {"id": "summ_retinue", "type": "notable", "x": 0, "y": -200, "name": {"ru": "Свита", "en": "Retinue"}, "modifiers": [{"stat": "minionCount", "kind": "flat", "value": 1}, {"stat": "damage", "kind": "more", "value": 0.2, "tags": ["Minion"]}], "locked": true},
-        {"id": "summ_unholy_path", "type": "small", "x": 87, "y": -50, "name": {"ru": "Тёмная сила", "en": "Dark Power"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Minion"]}]},
-        {"id": "summ_unholy", "type": "notable", "x": 173, "y": -100, "name": {"ru": "Нечестивая мощь", "en": "Unholy Might"}, "modifiers": [{"stat": "minionFrenzyMultiplier", "kind": "flat", "value": 2}], "locked": true},
-        {"id": "summ_sacrifice_path", "type": "small", "x": 87, "y": 50, "name": {"ru": "Подношение", "en": "Offering"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Minion"]}]},
-        {"id": "summ_sacrifice", "type": "notable", "x": 173, "y": 100, "name": {"ru": "Жертва", "en": "Sacrifice"}, "modifiers": [{"stat": "damageAfterMinionDeath", "kind": "increased", "value": 0.1}], "locked": true},
-        {"id": "summ_silent_army_path", "type": "small", "x": 0, "y": 100, "name": {"ru": "Тишина", "en": "Silence"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Idle"]}]},
-        {"id": "summ_silent_army", "type": "notable", "x": 0, "y": 200, "name": {"ru": "Армия тишины", "en": "Silent Army"}, "modifiers": [{"stat": "idleMinionsPerMinute", "kind": "flat", "value": 1}], "locked": true},
-        {"id": "summ_legion_path", "type": "small", "x": -87, "y": 50, "name": {"ru": "Призраки", "en": "Phantoms"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Minion"]}]},
-        {"id": "summ_legion", "type": "notable", "x": -173, "y": 100, "name": {"ru": "Призрачный легион", "en": "Phantom Legion"}, "modifiers": [{"stat": "minionChainShare", "kind": "flat", "value": 0.5}], "locked": true},
-        {"id": "summ_soul_bond_path", "type": "small", "x": -87, "y": -50, "name": {"ru": "Связь", "en": "Bond"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Idle"]}]},
-        {"id": "summ_soul_bond", "type": "notable", "x": -173, "y": -100, "name": {"ru": "Связь душ", "en": "Soul Bond"}, "modifiers": [{"stat": "minionDamageFromIdle", "kind": "flat", "value": 0.5}], "locked": true}
+        {"id": "sniper_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Снайпер", "en": "Sniper"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.5}]},
+        {"id": "sniper_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Снайпер", "en": "Sniper"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.15}]},
+        {"id": "sniper_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Затаив дыхание", "en": "Held Breath"}, "modifiers": [{"stat": "aimMax", "kind": "flat", "value": 5}]},
+        {"id": "sniper_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Снайпер", "en": "Sniper"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.15}]},
+        {"id": "sniper_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Точно в цель", "en": "Bullseye"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 1.5}]},
+        {"id": "sniper_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Снайпер", "en": "Sniper"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.15}]},
+        {"id": "sniper_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Холодный расчёт", "en": "Cold Calculation"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.5}]},
+        {"id": "sniper_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Снайпер", "en": "Sniper"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.15}]},
+        {"id": "sniper_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Одна стрела", "en": "One Arrow"}, "modifiers": [{"stat": "volleyDamage", "kind": "more", "value": 0.5}]},
+        {"id": "sniper_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Снайпер", "en": "Sniper"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.15}]},
+        {"id": "sniper_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Метка охотника", "en": "Hunter's Mark"}, "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.25}]},
+        {"id": "sniper_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Снайпер", "en": "Sniper"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.15}]},
+        {"id": "sniper_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Терпение", "en": "Patience"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.15}]}
       ],
-      "links": [["summoner_start", "summ_retinue_path"], ["summ_retinue_path", "summ_retinue"], ["summoner_start", "summ_unholy_path"], ["summ_unholy_path", "summ_unholy"], ["summoner_start", "summ_sacrifice_path"], ["summ_sacrifice_path", "summ_sacrifice"], ["summoner_start", "summ_silent_army_path"], ["summ_silent_army_path", "summ_silent_army"], ["summoner_start", "summ_legion_path"], ["summ_legion_path", "summ_legion"], ["summoner_start", "summ_soul_bond_path"], ["summ_soul_bond_path", "summ_soul_bond"]]
+      "links": [["sniper_start", "sniper_0_path"], ["sniper_0_path", "sniper_0"], ["sniper_start", "sniper_1_path"], ["sniper_1_path", "sniper_1"], ["sniper_start", "sniper_2_path"], ["sniper_2_path", "sniper_2"], ["sniper_start", "sniper_3_path"], ["sniper_3_path", "sniper_3"], ["sniper_start", "sniper_4_path"], ["sniper_4_path", "sniper_4"], ["sniper_start", "sniper_5_path"], ["sniper_5_path", "sniper_5"]]
     },
     {
-      "id": "treasurer", "class": "hermit", "name": {"ru": "Казначей", "en": "Treasurer"},
+      "id": "beastmaster", "class": "ranger", "name": {"ru": "Зверолов", "en": "Beastmaster"}, "blurb": "Зверь-спутник бьёт сам",
       "nodes": [
-        {"id": "treasurer_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Казначей", "en": "Treasurer"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1, "tags": ["Gold"]}]},
-        {"id": "treas_golden_hand_path", "type": "small", "x": 0, "y": -100, "name": {"ru": "Монета", "en": "Coin"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.08, "tags": ["Gold"]}]},
-        {"id": "treas_golden_hand", "type": "notable", "x": 0, "y": -200, "name": {"ru": "Золотая рука", "en": "Golden Hand"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.25, "tags": ["Gold"]}, {"stat": "damage", "kind": "more", "value": -0.1}]},
-        {"id": "treas_night_shift_path", "type": "small", "x": 78, "y": -62, "name": {"ru": "Ночной счёт", "en": "Night Ledger"}, "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.08}]},
-        {"id": "treas_night_shift", "type": "notable", "x": 156, "y": -125, "name": {"ru": "Ночная смена", "en": "Night Shift"}, "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.3}, {"stat": "offlineCapHours", "kind": "flat", "value": 2}]},
-        {"id": "treas_buyer_path", "type": "small", "x": 97, "y": 22, "name": {"ru": "Торг", "en": "Haggling"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.08, "tags": ["Gold"]}]},
-        {"id": "treas_buyer", "type": "notable", "x": 195, "y": 45, "name": {"ru": "Скупщик", "en": "Buyer"}, "modifiers": [{"stat": "gold", "kind": "more", "value": 0.15, "tags": ["Gold"]}]},
-        {"id": "treas_long_count_path", "type": "small", "x": 43, "y": 90, "name": {"ru": "Книга учёта", "en": "Ledger"}, "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.08}]},
-        {"id": "treas_long_count", "type": "notable", "x": 87, "y": 180, "name": {"ru": "Долгий счёт", "en": "Long Count"}, "modifiers": [{"stat": "offlineCapHours", "kind": "flat", "value": 1}, {"stat": "offlineGold", "kind": "increased", "value": 0.1}]},
-        {"id": "treas_gem_sense_path", "type": "small", "x": -43, "y": 90, "name": {"ru": "Нюх", "en": "Nose"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.08, "tags": ["Gold"]}]},
-        {"id": "treas_gem_sense", "type": "notable", "x": -87, "y": 180, "name": {"ru": "Чутьё на гемы", "en": "Gem Sense"}, "modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.2}], "locked": true},
-        {"id": "treas_interest_path", "type": "small", "x": -97, "y": 22, "name": {"ru": "Вклад", "en": "Deposit"}, "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.08}]},
-        {"id": "treas_interest", "type": "notable", "x": -195, "y": 45, "name": {"ru": "Проценты", "en": "Interest"}, "modifiers": [{"stat": "goldPerOfflineHour", "kind": "increased", "value": 0.01}], "locked": true},
-        {"id": "treas_thrift_path", "type": "small", "x": -78, "y": -62, "name": {"ru": "Бережливость", "en": "Thrift"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.08, "tags": ["Gold"]}]},
-        {"id": "treas_thrift", "type": "notable", "x": -156, "y": -125, "name": {"ru": "Бережливость", "en": "Frugality"}, "modifiers": [{"stat": "respecCost", "kind": "more", "value": -0.5}], "locked": true}
+        {"id": "beastmaster_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Зверолов", "en": "Beastmaster"}, "modifiers": [{"stat": "petDamage", "kind": "increased", "value": 0.2}]},
+        {"id": "beastmaster_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Зверолов", "en": "Beastmaster"}, "modifiers": [{"stat": "petDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "beastmaster_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Верный волк", "en": "Loyal Wolf"}, "modifiers": [{"stat": "petCount", "kind": "flat", "value": 1}]},
+        {"id": "beastmaster_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Зверолов", "en": "Beastmaster"}, "modifiers": [{"stat": "petDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "beastmaster_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Стая", "en": "Pack"}, "modifiers": [{"stat": "petDamage", "kind": "increased", "value": 0.4}]},
+        {"id": "beastmaster_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Зверолов", "en": "Beastmaster"}, "modifiers": [{"stat": "petDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "beastmaster_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Ловчий", "en": "Trapper"}, "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}]},
+        {"id": "beastmaster_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Зверолов", "en": "Beastmaster"}, "modifiers": [{"stat": "petDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "beastmaster_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Дикий зов", "en": "Wild Call"}, "modifiers": [{"stat": "petAttackSpeed", "kind": "increased", "value": 0.3}]},
+        {"id": "beastmaster_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Зверолов", "en": "Beastmaster"}, "modifiers": [{"stat": "petDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "beastmaster_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Охотничья тропа", "en": "Hunting Trail"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.2, "tags": ["Gold"]}]},
+        {"id": "beastmaster_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Зверолов", "en": "Beastmaster"}, "modifiers": [{"stat": "petDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "beastmaster_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Единство", "en": "Bond"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.15}]}
       ],
-      "links": [["treasurer_start", "treas_golden_hand_path"], ["treas_golden_hand_path", "treas_golden_hand"], ["treasurer_start", "treas_night_shift_path"], ["treas_night_shift_path", "treas_night_shift"], ["treasurer_start", "treas_buyer_path"], ["treas_buyer_path", "treas_buyer"], ["treasurer_start", "treas_long_count_path"], ["treas_long_count_path", "treas_long_count"], ["treasurer_start", "treas_gem_sense_path"], ["treas_gem_sense_path", "treas_gem_sense"], ["treasurer_start", "treas_interest_path"], ["treas_interest_path", "treas_interest"], ["treasurer_start", "treas_thrift_path"], ["treas_thrift_path", "treas_thrift"]]
+      "links": [["beastmaster_start", "beastmaster_0_path"], ["beastmaster_0_path", "beastmaster_0"], ["beastmaster_start", "beastmaster_1_path"], ["beastmaster_1_path", "beastmaster_1"], ["beastmaster_start", "beastmaster_2_path"], ["beastmaster_2_path", "beastmaster_2"], ["beastmaster_start", "beastmaster_3_path"], ["beastmaster_3_path", "beastmaster_3"], ["beastmaster_start", "beastmaster_4_path"], ["beastmaster_4_path", "beastmaster_4"], ["beastmaster_start", "beastmaster_5_path"], ["beastmaster_5_path", "beastmaster_5"]]
     },
     {
-      "id": "ascetic", "class": "hermit", "name": {"ru": "Аскет", "en": "Ascetic"},
+      "id": "marksman", "class": "ranger", "name": {"ru": "Стрелок", "en": "Marksman"}, "blurb": "Много стрел и залпов",
       "nodes": [
-        {"id": "ascetic_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Аскет", "en": "Ascetic"}, "modifiers": [{"stat": "idleStartSeconds", "kind": "flat", "value": -3}]},
-        {"id": "asc_deep_silence_path", "type": "small", "x": 0, "y": -100, "name": {"ru": "Покой", "en": "Calm"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Idle"]}]},
-        {"id": "asc_deep_silence", "type": "notable", "x": 0, "y": -200, "name": {"ru": "Глубокая тишина", "en": "Deep Silence"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.3, "tags": ["Idle"]}]},
-        {"id": "asc_quick_calm_path", "type": "small", "x": 87, "y": -50, "name": {"ru": "Дыхание", "en": "Breath"}, "modifiers": [{"stat": "idleStartSeconds", "kind": "flat", "value": -3}]},
-        {"id": "asc_quick_calm", "type": "notable", "x": 173, "y": -100, "name": {"ru": "Быстрый покой", "en": "Quick Calm"}, "modifiers": [{"stat": "idleStartSeconds", "kind": "flat", "value": -15}]},
-        {"id": "asc_eternal_sleep_path", "type": "small", "x": 87, "y": 50, "name": {"ru": "Сон", "en": "Sleep"}, "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.06}]},
-        {"id": "asc_eternal_sleep", "type": "notable", "x": 173, "y": 100, "name": {"ru": "Вечный сон", "en": "Eternal Sleep"}, "modifiers": [{"stat": "offlineCapHours", "kind": "flat", "value": 2}]},
-        {"id": "asc_focus_path", "type": "small", "x": 0, "y": 100, "name": {"ru": "Взгляд внутрь", "en": "Inner Sight"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1, "tags": ["Idle"]}]},
-        {"id": "asc_focus", "type": "notable", "x": 0, "y": 200, "name": {"ru": "Сосредоточенность", "en": "Concentration"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.4, "tags": ["Idle"]}, {"stat": "critMultiplier", "kind": "flat", "value": 0.5, "tags": ["Idle"]}]},
-        {"id": "asc_natures_patience_path", "type": "small", "x": -87, "y": 50, "name": {"ru": "Корни", "en": "Roots"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Idle"]}]},
-        {"id": "asc_natures_patience", "type": "notable", "x": -173, "y": 100, "name": {"ru": "Терпение природы", "en": "Nature's Patience"}, "modifiers": [{"stat": "vineDoubleDamage", "kind": "flat", "value": 0.02}], "locked": true},
-        {"id": "asc_awakening_path", "type": "small", "x": -87, "y": -50, "name": {"ru": "Рассвет", "en": "Dawn"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Idle"]}]},
-        {"id": "asc_awakening", "type": "notable", "x": -173, "y": -100, "name": {"ru": "Пробуждение", "en": "Awakening"}, "modifiers": [{"stat": "damageAfterIdle", "kind": "more", "value": 0.5}], "locked": true}
+        {"id": "marksman_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Стрелок", "en": "Marksman"}, "modifiers": [{"stat": "volleyEvery", "kind": "flat", "value": -1}]},
+        {"id": "marksman_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Стрелок", "en": "Marksman"}, "modifiers": [{"stat": "volleyEvery", "kind": "flat", "value": -0.3}]},
+        {"id": "marksman_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Град стрел", "en": "Hail of Arrows"}, "modifiers": [{"stat": "volleyEvery", "kind": "flat", "value": -2}]},
+        {"id": "marksman_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Стрелок", "en": "Marksman"}, "modifiers": [{"stat": "volleyEvery", "kind": "flat", "value": -0.3}]},
+        {"id": "marksman_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Веер", "en": "Fan"}, "modifiers": [{"stat": "volleySplash", "kind": "flat", "value": 0.3}]},
+        {"id": "marksman_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Стрелок", "en": "Marksman"}, "modifiers": [{"stat": "volleyEvery", "kind": "flat", "value": -0.3}]},
+        {"id": "marksman_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Тяжёлые наконечники", "en": "Heavy Heads"}, "modifiers": [{"stat": "volleyDamage", "kind": "more", "value": 0.3}]},
+        {"id": "marksman_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Стрелок", "en": "Marksman"}, "modifiers": [{"stat": "volleyEvery", "kind": "flat", "value": -0.3}]},
+        {"id": "marksman_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Быстрая рука", "en": "Quick Hand"}, "modifiers": [{"stat": "doubleStrike", "kind": "flat", "value": 0.15}]},
+        {"id": "marksman_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Стрелок", "en": "Marksman"}, "modifiers": [{"stat": "volleyEvery", "kind": "flat", "value": -0.3}]},
+        {"id": "marksman_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Сквозь строй", "en": "Through the Ranks"}, "modifiers": [{"stat": "pierceShare", "kind": "flat", "value": 0.3}]},
+        {"id": "marksman_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Стрелок", "en": "Marksman"}, "modifiers": [{"stat": "volleyEvery", "kind": "flat", "value": -0.3}]},
+        {"id": "marksman_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Колчан без дна", "en": "Bottomless Quiver"}, "modifiers": [{"stat": "volleyChainTargets", "kind": "flat", "value": 1}]}
       ],
-      "links": [["ascetic_start", "asc_deep_silence_path"], ["asc_deep_silence_path", "asc_deep_silence"], ["ascetic_start", "asc_quick_calm_path"], ["asc_quick_calm_path", "asc_quick_calm"], ["ascetic_start", "asc_eternal_sleep_path"], ["asc_eternal_sleep_path", "asc_eternal_sleep"], ["ascetic_start", "asc_focus_path"], ["asc_focus_path", "asc_focus"], ["ascetic_start", "asc_natures_patience_path"], ["asc_natures_patience_path", "asc_natures_patience"], ["ascetic_start", "asc_awakening_path"], ["asc_awakening_path", "asc_awakening"]]
+      "links": [["marksman_start", "marksman_0_path"], ["marksman_0_path", "marksman_0"], ["marksman_start", "marksman_1_path"], ["marksman_1_path", "marksman_1"], ["marksman_start", "marksman_2_path"], ["marksman_2_path", "marksman_2"], ["marksman_start", "marksman_3_path"], ["marksman_3_path", "marksman_3"], ["marksman_start", "marksman_4_path"], ["marksman_4_path", "marksman_4"], ["marksman_start", "marksman_5_path"], ["marksman_5_path", "marksman_5"]]
+    },
+    {
+      "id": "conductor", "class": "bard", "name": {"ru": "Дирижёр", "en": "Conductor"}, "blurb": "Больше песен одновременно",
+      "nodes": [
+        {"id": "conductor_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Дирижёр", "en": "Conductor"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 1}]},
+        {"id": "conductor_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Дирижёр", "en": "Conductor"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 0.3}]},
+        {"id": "conductor_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Оркестр", "en": "Orchestra"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 1}]},
+        {"id": "conductor_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Дирижёр", "en": "Conductor"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 0.3}]},
+        {"id": "conductor_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Мелодия без конца", "en": "Endless Melody"}, "modifiers": [{"stat": "auraDuration", "kind": "more", "value": 1.0}]},
+        {"id": "conductor_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Дирижёр", "en": "Conductor"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 0.3}]},
+        {"id": "conductor_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Повелитель зала", "en": "Master of the Hall"}, "modifiers": [{"stat": "auraAllyEffect", "kind": "increased", "value": 0.3}]},
+        {"id": "conductor_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Дирижёр", "en": "Conductor"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 0.3}]},
+        {"id": "conductor_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Короткий напев", "en": "Short Tune"}, "modifiers": [{"stat": "melodyNotes", "kind": "flat", "value": -1}]},
+        {"id": "conductor_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Дирижёр", "en": "Conductor"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 0.3}]},
+        {"id": "conductor_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Ритуал пробуждения", "en": "Ritual of Awakening"}, "modifiers": [{"stat": "partyDamage", "kind": "increased", "value": 0.1}]},
+        {"id": "conductor_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Дирижёр", "en": "Conductor"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 0.3}]},
+        {"id": "conductor_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Попутный ветер", "en": "Tailwind"}, "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.25}]}
+      ],
+      "links": [["conductor_start", "conductor_0_path"], ["conductor_0_path", "conductor_0"], ["conductor_start", "conductor_1_path"], ["conductor_1_path", "conductor_1"], ["conductor_start", "conductor_2_path"], ["conductor_2_path", "conductor_2"], ["conductor_start", "conductor_3_path"], ["conductor_3_path", "conductor_3"], ["conductor_start", "conductor_4_path"], ["conductor_4_path", "conductor_4"], ["conductor_start", "conductor_5_path"], ["conductor_5_path", "conductor_5"]]
+    },
+    {
+      "id": "skald", "class": "bard", "name": {"ru": "Скальд", "en": "Skald"}, "blurb": "Песни слабее, но бьёт сам",
+      "nodes": [
+        {"id": "skald_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Скальд", "en": "Skald"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15}]},
+        {"id": "skald_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Скальд", "en": "Skald"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "skald_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Ровный голос", "en": "Steady Voice"}, "modifiers": [{"stat": "auraEffect", "kind": "more", "value": -0.3}, {"stat": "damage", "kind": "more", "value": 0.4}]},
+        {"id": "skald_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Скальд", "en": "Skald"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "skald_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Боевая песнь", "en": "Battle Song"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.4}]},
+        {"id": "skald_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Скальд", "en": "Skald"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "skald_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Ударная струна", "en": "Struck String"}, "modifiers": [{"stat": "songStrikeMultiplier", "kind": "flat", "value": 5}]},
+        {"id": "skald_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Скальд", "en": "Skald"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "skald_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Звонкий удар", "en": "Ringing Blow"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.4}]},
+        {"id": "skald_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Скальд", "en": "Skald"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "skald_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Песня войны", "en": "Song of War"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.8}]},
+        {"id": "skald_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Скальд", "en": "Skald"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "skald_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Сага", "en": "Saga"}, "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.3}]}
+      ],
+      "links": [["skald_start", "skald_0_path"], ["skald_0_path", "skald_0"], ["skald_start", "skald_1_path"], ["skald_1_path", "skald_1"], ["skald_start", "skald_2_path"], ["skald_2_path", "skald_2"], ["skald_start", "skald_3_path"], ["skald_3_path", "skald_3"], ["skald_start", "skald_4_path"], ["skald_4_path", "skald_4"], ["skald_start", "skald_5_path"], ["skald_5_path", "skald_5"]]
+    },
+    {
+      "id": "minstrel", "class": "bard", "name": {"ru": "Менестрель", "en": "Minstrel"}, "blurb": "Золото и бонусы пати",
+      "nodes": [
+        {"id": "minstrel_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Менестрель", "en": "Minstrel"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.1}]},
+        {"id": "minstrel_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Менестрель", "en": "Minstrel"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.03}]},
+        {"id": "minstrel_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Гимн монет", "en": "Hymn of Coins"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.3}]},
+        {"id": "minstrel_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Менестрель", "en": "Minstrel"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.03}]},
+        {"id": "minstrel_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Голос пати", "en": "Voice of the Party"}, "modifiers": [{"stat": "partyContribution", "kind": "flat", "value": 0.15}]},
+        {"id": "minstrel_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Менестрель", "en": "Minstrel"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.03}]},
+        {"id": "minstrel_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Общий костёр", "en": "Shared Campfire"}, "modifiers": [{"stat": "auraAllyEffect", "kind": "increased", "value": 0.3}]},
+        {"id": "minstrel_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Менестрель", "en": "Minstrel"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.03}]},
+        {"id": "minstrel_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Ночной концерт", "en": "Night Concert"}, "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.3}]},
+        {"id": "minstrel_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Менестрель", "en": "Minstrel"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.03}]},
+        {"id": "minstrel_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Кошель клана", "en": "Clan Purse"}, "modifiers": [{"stat": "goldSharedWithParty", "kind": "flat", "value": 0.1}]},
+        {"id": "minstrel_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Менестрель", "en": "Minstrel"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.03}]},
+        {"id": "minstrel_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Бродячий оркестр", "en": "Wandering Band"}, "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.2}]}
+      ],
+      "links": [["minstrel_start", "minstrel_0_path"], ["minstrel_0_path", "minstrel_0"], ["minstrel_start", "minstrel_1_path"], ["minstrel_1_path", "minstrel_1"], ["minstrel_start", "minstrel_2_path"], ["minstrel_2_path", "minstrel_2"], ["minstrel_start", "minstrel_3_path"], ["minstrel_3_path", "minstrel_3"], ["minstrel_start", "minstrel_4_path"], ["minstrel_4_path", "minstrel_4"], ["minstrel_start", "minstrel_5_path"], ["minstrel_5_path", "minstrel_5"]]
+    },
+    {
+      "id": "pyromancer", "class": "sorcerer", "name": {"ru": "Пиромант", "en": "Pyromancer"}, "blurb": "Вспышки сильнее и по всей очереди",
+      "nodes": [
+        {"id": "pyromancer_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Пиромант", "en": "Pyromancer"}, "modifiers": [{"stat": "flareSplash", "kind": "flat", "value": 0.2}]},
+        {"id": "pyromancer_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Пиромант", "en": "Pyromancer"}, "modifiers": [{"stat": "flareSplash", "kind": "flat", "value": 0.06}]},
+        {"id": "pyromancer_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Извержение", "en": "Eruption"}, "modifiers": [{"stat": "flareMultiplier", "kind": "flat", "value": 2}]},
+        {"id": "pyromancer_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Пиромант", "en": "Pyromancer"}, "modifiers": [{"stat": "flareSplash", "kind": "flat", "value": 0.06}]},
+        {"id": "pyromancer_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Лава", "en": "Lava"}, "modifiers": [{"stat": "burnDamage", "kind": "increased", "value": 0.4}]},
+        {"id": "pyromancer_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Пиромант", "en": "Pyromancer"}, "modifiers": [{"stat": "flareSplash", "kind": "flat", "value": 0.06}]},
+        {"id": "pyromancer_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Феникс", "en": "Phoenix"}, "modifiers": [{"stat": "heatKeptAfterFlare", "kind": "flat", "value": 0.5}]},
+        {"id": "pyromancer_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Пиромант", "en": "Pyromancer"}, "modifiers": [{"stat": "flareSplash", "kind": "flat", "value": 0.06}]},
+        {"id": "pyromancer_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Кальдера", "en": "Caldera"}, "modifiers": [{"stat": "heatThreshold", "kind": "flat", "value": -3}]},
+        {"id": "pyromancer_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Пиромант", "en": "Pyromancer"}, "modifiers": [{"stat": "flareSplash", "kind": "flat", "value": 0.06}]},
+        {"id": "pyromancer_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Обсидиан", "en": "Obsidian"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.8}]},
+        {"id": "pyromancer_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Пиромант", "en": "Pyromancer"}, "modifiers": [{"stat": "flareSplash", "kind": "flat", "value": 0.06}]},
+        {"id": "pyromancer_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Жерло", "en": "Vent"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.15}]}
+      ],
+      "links": [["pyromancer_start", "pyromancer_0_path"], ["pyromancer_0_path", "pyromancer_0"], ["pyromancer_start", "pyromancer_1_path"], ["pyromancer_1_path", "pyromancer_1"], ["pyromancer_start", "pyromancer_2_path"], ["pyromancer_2_path", "pyromancer_2"], ["pyromancer_start", "pyromancer_3_path"], ["pyromancer_3_path", "pyromancer_3"], ["pyromancer_start", "pyromancer_4_path"], ["pyromancer_4_path", "pyromancer_4"], ["pyromancer_start", "pyromancer_5_path"], ["pyromancer_5_path", "pyromancer_5"]]
+    },
+    {
+      "id": "necromancer", "class": "sorcerer", "name": {"ru": "Некромант", "en": "Necromancer"}, "blurb": "Убийства поднимают костяных слуг",
+      "nodes": [
+        {"id": "necromancer_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Некромант", "en": "Necromancer"}, "modifiers": [{"stat": "minionCount", "kind": "flat", "value": 1}]},
+        {"id": "necromancer_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Некромант", "en": "Necromancer"}, "modifiers": [{"stat": "minionCount", "kind": "flat", "value": 0.3}]},
+        {"id": "necromancer_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Легион", "en": "Legion"}, "modifiers": [{"stat": "minionCount", "kind": "flat", "value": 2}]},
+        {"id": "necromancer_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Некромант", "en": "Necromancer"}, "modifiers": [{"stat": "minionCount", "kind": "flat", "value": 0.3}]},
+        {"id": "necromancer_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Нечестивая мощь", "en": "Unholy Might"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.3, "tags": ["Minion"]}]},
+        {"id": "necromancer_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Некромант", "en": "Necromancer"}, "modifiers": [{"stat": "minionCount", "kind": "flat", "value": 0.3}]},
+        {"id": "necromancer_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Костяной взрыв", "en": "Bone Burst"}, "modifiers": [{"stat": "sacrificeBlast", "kind": "increased", "value": 0.5}]},
+        {"id": "necromancer_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Некромант", "en": "Necromancer"}, "modifiers": [{"stat": "minionCount", "kind": "flat", "value": 0.3}]},
+        {"id": "necromancer_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Армия тишины", "en": "Silent Army"}, "modifiers": [{"stat": "idleMinions", "kind": "flat", "value": 1}]},
+        {"id": "necromancer_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Некромант", "en": "Necromancer"}, "modifiers": [{"stat": "minionCount", "kind": "flat", "value": 0.3}]},
+        {"id": "necromancer_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Призрачный легион", "en": "Phantom Legion"}, "modifiers": [{"stat": "minionChainShare", "kind": "flat", "value": 0.5}]},
+        {"id": "necromancer_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Некромант", "en": "Necromancer"}, "modifiers": [{"stat": "minionCount", "kind": "flat", "value": 0.3}]},
+        {"id": "necromancer_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Повелитель мёртвых", "en": "Lord of the Dead"}, "modifiers": [{"stat": "minionSpeed", "kind": "increased", "value": 0.3}]}
+      ],
+      "links": [["necromancer_start", "necromancer_0_path"], ["necromancer_0_path", "necromancer_0"], ["necromancer_start", "necromancer_1_path"], ["necromancer_1_path", "necromancer_1"], ["necromancer_start", "necromancer_2_path"], ["necromancer_2_path", "necromancer_2"], ["necromancer_start", "necromancer_3_path"], ["necromancer_3_path", "necromancer_3"], ["necromancer_start", "necromancer_4_path"], ["necromancer_4_path", "necromancer_4"], ["necromancer_start", "necromancer_5_path"], ["necromancer_5_path", "necromancer_5"]]
+    },
+    {
+      "id": "elementalist", "class": "sorcerer", "name": {"ru": "Стихийник", "en": "Elementalist"}, "blurb": "Чередует огонь, лёд и молнию",
+      "nodes": [
+        {"id": "elementalist_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Стихийник", "en": "Elementalist"}, "modifiers": [{"stat": "elementCycle", "kind": "flat", "value": 1}]},
+        {"id": "elementalist_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Стихийник", "en": "Elementalist"}, "modifiers": [{"stat": "elementCycle", "kind": "flat", "value": 0.3}]},
+        {"id": "elementalist_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Лёд", "en": "Ice"}, "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.25}]},
+        {"id": "elementalist_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Стихийник", "en": "Elementalist"}, "modifiers": [{"stat": "elementCycle", "kind": "flat", "value": 0.3}]},
+        {"id": "elementalist_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Молния", "en": "Lightning"}, "modifiers": [{"stat": "chainShare", "kind": "flat", "value": 0.25}]},
+        {"id": "elementalist_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Стихийник", "en": "Elementalist"}, "modifiers": [{"stat": "elementCycle", "kind": "flat", "value": 0.3}]},
+        {"id": "elementalist_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Равновесие", "en": "Equilibrium"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.2}]},
+        {"id": "elementalist_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Стихийник", "en": "Elementalist"}, "modifiers": [{"stat": "elementCycle", "kind": "flat", "value": 0.3}]},
+        {"id": "elementalist_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Мастер стихий", "en": "Element Master"}, "modifiers": [{"stat": "flareMultiplier", "kind": "flat", "value": 1}]},
+        {"id": "elementalist_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Стихийник", "en": "Elementalist"}, "modifiers": [{"stat": "elementCycle", "kind": "flat", "value": 0.3}]},
+        {"id": "elementalist_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Призма", "en": "Prism"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.4}]},
+        {"id": "elementalist_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Стихийник", "en": "Elementalist"}, "modifiers": [{"stat": "elementCycle", "kind": "flat", "value": 0.3}]},
+        {"id": "elementalist_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Сердце бури", "en": "Storm Heart"}, "modifiers": [{"stat": "energyGain", "kind": "increased", "value": 0.25}]}
+      ],
+      "links": [["elementalist_start", "elementalist_0_path"], ["elementalist_0_path", "elementalist_0"], ["elementalist_start", "elementalist_1_path"], ["elementalist_1_path", "elementalist_1"], ["elementalist_start", "elementalist_2_path"], ["elementalist_2_path", "elementalist_2"], ["elementalist_start", "elementalist_3_path"], ["elementalist_3_path", "elementalist_3"], ["elementalist_start", "elementalist_4_path"], ["elementalist_4_path", "elementalist_4"], ["elementalist_start", "elementalist_5_path"], ["elementalist_5_path", "elementalist_5"]]
+    },
+    {
+      "id": "hexblade", "class": "witch", "name": {"ru": "Проклинательница", "en": "Hexblade"}, "blurb": "Проклятия сильнее и шире",
+      "nodes": [
+        {"id": "hexblade_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Проклинательница", "en": "Hexblade"}, "modifiers": [{"stat": "curseEffect", "kind": "increased", "value": 0.2}]},
+        {"id": "hexblade_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Проклинательница", "en": "Hexblade"}, "modifiers": [{"stat": "curseEffect", "kind": "increased", "value": 0.06}]},
+        {"id": "hexblade_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Знак мастера", "en": "Master's Sign"}, "modifiers": [{"stat": "curseEffect", "kind": "more", "value": 0.5}]},
+        {"id": "hexblade_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Проклинательница", "en": "Hexblade"}, "modifiers": [{"stat": "curseEffect", "kind": "increased", "value": 0.06}]},
+        {"id": "hexblade_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Двойное проклятие", "en": "Twin Hex"}, "modifiers": [{"stat": "cursesOnEnemy", "kind": "flat", "value": 1}]},
+        {"id": "hexblade_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Проклинательница", "en": "Hexblade"}, "modifiers": [{"stat": "curseEffect", "kind": "increased", "value": 0.06}]},
+        {"id": "hexblade_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Порча клана", "en": "Clan Hex"}, "modifiers": [{"stat": "curseClanShare", "kind": "flat", "value": 1}]},
+        {"id": "hexblade_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Проклинательница", "en": "Hexblade"}, "modifiers": [{"stat": "curseEffect", "kind": "increased", "value": 0.06}]},
+        {"id": "hexblade_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Вечные проклятия", "en": "Eternal Hexes"}, "modifiers": [{"stat": "curseSeconds", "kind": "flat", "value": 30}]},
+        {"id": "hexblade_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Проклинательница", "en": "Hexblade"}, "modifiers": [{"stat": "curseEffect", "kind": "increased", "value": 0.06}]},
+        {"id": "hexblade_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Слабость", "en": "Weakness"}, "modifiers": [{"stat": "hexPerHit", "kind": "increased", "value": 0.4}]},
+        {"id": "hexblade_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Проклинательница", "en": "Hexblade"}, "modifiers": [{"stat": "curseEffect", "kind": "increased", "value": 0.06}]},
+        {"id": "hexblade_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Сглаз", "en": "Evil Eye"}, "modifiers": [{"stat": "doomedCritChance", "kind": "increased", "value": 0.3}]}
+      ],
+      "links": [["hexblade_start", "hexblade_0_path"], ["hexblade_0_path", "hexblade_0"], ["hexblade_start", "hexblade_1_path"], ["hexblade_1_path", "hexblade_1"], ["hexblade_start", "hexblade_2_path"], ["hexblade_2_path", "hexblade_2"], ["hexblade_start", "hexblade_3_path"], ["hexblade_3_path", "hexblade_3"], ["hexblade_start", "hexblade_4_path"], ["hexblade_4_path", "hexblade_4"], ["hexblade_start", "hexblade_5_path"], ["hexblade_5_path", "hexblade_5"]]
+    },
+    {
+      "id": "chronomancer", "class": "witch", "name": {"ru": "Хрономантка", "en": "Chronomancer"}, "blurb": "Отложенный урон «Рок» и эхо ударов",
+      "nodes": [
+        {"id": "chronomancer_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Хрономантка", "en": "Chronomancer"}, "modifiers": [{"stat": "doomShare", "kind": "flat", "value": 0.1}]},
+        {"id": "chronomancer_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Хрономантка", "en": "Chronomancer"}, "modifiers": [{"stat": "doomShare", "kind": "flat", "value": 0.03}]},
+        {"id": "chronomancer_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Рок", "en": "Doom"}, "modifiers": [{"stat": "doomShare", "kind": "flat", "value": 0.2}]},
+        {"id": "chronomancer_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Хрономантка", "en": "Chronomancer"}, "modifiers": [{"stat": "doomShare", "kind": "flat", "value": 0.03}]},
+        {"id": "chronomancer_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Эхо", "en": "Echo"}, "modifiers": [{"stat": "echoChance", "kind": "flat", "value": 0.15}]},
+        {"id": "chronomancer_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Хрономантка", "en": "Chronomancer"}, "modifiers": [{"stat": "doomShare", "kind": "flat", "value": 0.03}]},
+        {"id": "chronomancer_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Петля времени", "en": "Time Loop"}, "modifiers": [{"stat": "echoChance", "kind": "flat", "value": 0.15}]},
+        {"id": "chronomancer_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Хрономантка", "en": "Chronomancer"}, "modifiers": [{"stat": "doomShare", "kind": "flat", "value": 0.03}]},
+        {"id": "chronomancer_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Предначертание", "en": "Fate"}, "modifiers": [{"stat": "doomMultiplier", "kind": "flat", "value": 1}]},
+        {"id": "chronomancer_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Хрономантка", "en": "Chronomancer"}, "modifiers": [{"stat": "doomShare", "kind": "flat", "value": 0.03}]},
+        {"id": "chronomancer_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Песочные часы", "en": "Hourglass"}, "modifiers": [{"stat": "doomSeconds", "kind": "flat", "value": -2}]},
+        {"id": "chronomancer_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Хрономантка", "en": "Chronomancer"}, "modifiers": [{"stat": "doomShare", "kind": "flat", "value": 0.03}]},
+        {"id": "chronomancer_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Конец эпохи", "en": "End of an Era"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.15}]}
+      ],
+      "links": [["chronomancer_start", "chronomancer_0_path"], ["chronomancer_0_path", "chronomancer_0"], ["chronomancer_start", "chronomancer_1_path"], ["chronomancer_1_path", "chronomancer_1"], ["chronomancer_start", "chronomancer_2_path"], ["chronomancer_2_path", "chronomancer_2"], ["chronomancer_start", "chronomancer_3_path"], ["chronomancer_3_path", "chronomancer_3"], ["chronomancer_start", "chronomancer_4_path"], ["chronomancer_4_path", "chronomancer_4"], ["chronomancer_start", "chronomancer_5_path"], ["chronomancer_5_path", "chronomancer_5"]]
+    },
+    {
+      "id": "occultist", "class": "witch", "name": {"ru": "Оккультистка", "en": "Occultist"}, "blurb": "Проклятия сами наносят урон",
+      "nodes": [
+        {"id": "occultist_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Оккультистка", "en": "Occultist"}, "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.2}]},
+        {"id": "occultist_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Оккультистка", "en": "Occultist"}, "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "occultist_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Тёмный пакт", "en": "Dark Pact"}, "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.5}]},
+        {"id": "occultist_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Оккультистка", "en": "Occultist"}, "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "occultist_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Жатва душ", "en": "Soul Harvest"}, "modifiers": [{"stat": "curseDamage", "kind": "more", "value": 0.25}]},
+        {"id": "occultist_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Оккультистка", "en": "Occultist"}, "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "occultist_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Мрак", "en": "Gloom"}, "modifiers": [{"stat": "curseSeconds", "kind": "flat", "value": 10}]},
+        {"id": "occultist_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Оккультистка", "en": "Occultist"}, "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "occultist_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Ведьмин огонь", "en": "Witchfire"}, "modifiers": [{"stat": "burnDamage", "kind": "increased", "value": 0.4}]},
+        {"id": "occultist_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Оккультистка", "en": "Occultist"}, "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "occultist_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Запретное знание", "en": "Forbidden Lore"}, "modifiers": [{"stat": "intelligence", "kind": "flat", "value": 30}]},
+        {"id": "occultist_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Оккультистка", "en": "Occultist"}, "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "occultist_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Проклятый дар", "en": "Cursed Gift"}, "modifiers": [{"stat": "partyDamage", "kind": "increased", "value": 0.05}]}
+      ],
+      "links": [["occultist_start", "occultist_0_path"], ["occultist_0_path", "occultist_0"], ["occultist_start", "occultist_1_path"], ["occultist_1_path", "occultist_1"], ["occultist_start", "occultist_2_path"], ["occultist_2_path", "occultist_2"], ["occultist_start", "occultist_3_path"], ["occultist_3_path", "occultist_3"], ["occultist_start", "occultist_4_path"], ["occultist_4_path", "occultist_4"], ["occultist_start", "occultist_5_path"], ["occultist_5_path", "occultist_5"]]
+    },
+    {
+      "id": "hierophant", "class": "priest", "name": {"ru": "Иерофант", "en": "Hierophant"}, "blurb": "Святилища усиливают благословения пати",
+      "nodes": [
+        {"id": "hierophant_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Иерофант", "en": "Hierophant"}, "modifiers": [{"stat": "blessingEffect", "kind": "increased", "value": 0.15}]},
+        {"id": "hierophant_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Иерофант", "en": "Hierophant"}, "modifiers": [{"stat": "blessingEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "hierophant_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Святилище", "en": "Sanctuary"}, "modifiers": [{"stat": "concurrentBlessings", "kind": "flat", "value": 1}]},
+        {"id": "hierophant_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Иерофант", "en": "Hierophant"}, "modifiers": [{"stat": "blessingEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "hierophant_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Таинство", "en": "Sacrament"}, "modifiers": [{"stat": "blessingEffect", "kind": "more", "value": 0.3}]},
+        {"id": "hierophant_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Иерофант", "en": "Hierophant"}, "modifiers": [{"stat": "blessingEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "hierophant_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Неугасимая лампада", "en": "Undying Lamp"}, "modifiers": [{"stat": "blessingSeconds", "kind": "flat", "value": 20}]},
+        {"id": "hierophant_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Иерофант", "en": "Hierophant"}, "modifiers": [{"stat": "blessingEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "hierophant_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Десятина", "en": "Tithe"}, "modifiers": [{"stat": "blessingCost", "kind": "increased", "value": -0.3}]},
+        {"id": "hierophant_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Иерофант", "en": "Hierophant"}, "modifiers": [{"stat": "blessingEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "hierophant_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Литургия", "en": "Liturgy"}, "modifiers": [{"stat": "partyEnergy", "kind": "increased", "value": 0.25}]},
+        {"id": "hierophant_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Иерофант", "en": "Hierophant"}, "modifiers": [{"stat": "blessingEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "hierophant_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Глас пророка", "en": "Prophet's Voice"}, "modifiers": [{"stat": "partyContribution", "kind": "flat", "value": 0.15}]}
+      ],
+      "links": [["hierophant_start", "hierophant_0_path"], ["hierophant_0_path", "hierophant_0"], ["hierophant_start", "hierophant_1_path"], ["hierophant_1_path", "hierophant_1"], ["hierophant_start", "hierophant_2_path"], ["hierophant_2_path", "hierophant_2"], ["hierophant_start", "hierophant_3_path"], ["hierophant_3_path", "hierophant_3"], ["hierophant_start", "hierophant_4_path"], ["hierophant_4_path", "hierophant_4"], ["hierophant_start", "hierophant_5_path"], ["hierophant_5_path", "hierophant_5"]]
+    },
+    {
+      "id": "paladin", "class": "priest", "name": {"ru": "Паладин", "en": "Paladin"}, "blurb": "Благословения слабее, но бьёт сам",
+      "nodes": [
+        {"id": "paladin_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Паладин", "en": "Paladin"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15}]},
+        {"id": "paladin_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Паладин", "en": "Paladin"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "paladin_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Карающий молот", "en": "Hammer of Wrath"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.4}, {"stat": "blessingEffect", "kind": "more", "value": -0.3}]},
+        {"id": "paladin_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Паладин", "en": "Paladin"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "paladin_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Священный гнев", "en": "Holy Wrath"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.4}]},
+        {"id": "paladin_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Паладин", "en": "Paladin"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "paladin_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Освящённый клинок", "en": "Consecrated Blade"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.8}]},
+        {"id": "paladin_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Паладин", "en": "Paladin"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "paladin_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Щит веры", "en": "Shield of Faith"}, "modifiers": [{"stat": "blessingSeconds", "kind": "flat", "value": 10}]},
+        {"id": "paladin_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Паладин", "en": "Paladin"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "paladin_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Крестовый поход", "en": "Crusade"}, "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.3}]},
+        {"id": "paladin_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Паладин", "en": "Paladin"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.045}]},
+        {"id": "paladin_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Знамя", "en": "Banner"}, "modifiers": [{"stat": "partyDamage", "kind": "increased", "value": 0.05}]}
+      ],
+      "links": [["paladin_start", "paladin_0_path"], ["paladin_0_path", "paladin_0"], ["paladin_start", "paladin_1_path"], ["paladin_1_path", "paladin_1"], ["paladin_start", "paladin_2_path"], ["paladin_2_path", "paladin_2"], ["paladin_start", "paladin_3_path"], ["paladin_3_path", "paladin_3"], ["paladin_start", "paladin_4_path"], ["paladin_4_path", "paladin_4"], ["paladin_start", "paladin_5_path"], ["paladin_5_path", "paladin_5"]]
+    },
+    {
+      "id": "seer", "class": "priest", "name": {"ru": "Пророк", "en": "Seer"}, "blurb": "Удача и находки пати",
+      "nodes": [
+        {"id": "seer_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Пророк", "en": "Seer"}, "modifiers": [{"stat": "partyCritChance", "kind": "increased", "value": 0.1}]},
+        {"id": "seer_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Пророк", "en": "Seer"}, "modifiers": [{"stat": "partyCritChance", "kind": "increased", "value": 0.03}]},
+        {"id": "seer_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Предвидение", "en": "Foresight"}, "modifiers": [{"stat": "partyCritChance", "kind": "increased", "value": 0.3}]},
+        {"id": "seer_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Пророк", "en": "Seer"}, "modifiers": [{"stat": "partyCritChance", "kind": "increased", "value": 0.03}]},
+        {"id": "seer_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Знамение", "en": "Omen"}, "modifiers": [{"stat": "partyCritMultiplier", "kind": "flat", "value": 0.5}]},
+        {"id": "seer_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Пророк", "en": "Seer"}, "modifiers": [{"stat": "partyCritChance", "kind": "increased", "value": 0.03}]},
+        {"id": "seer_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Дар находок", "en": "Gift of Finding"}, "modifiers": [{"stat": "partyGemDrop", "kind": "increased", "value": 0.2}]},
+        {"id": "seer_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Пророк", "en": "Seer"}, "modifiers": [{"stat": "partyCritChance", "kind": "increased", "value": 0.03}]},
+        {"id": "seer_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Чудо", "en": "Miracle"}, "modifiers": [{"stat": "luckyRolls", "kind": "flat", "value": 1}]},
+        {"id": "seer_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Пророк", "en": "Seer"}, "modifiers": [{"stat": "partyCritChance", "kind": "increased", "value": 0.03}]},
+        {"id": "seer_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Ясный взор", "en": "Clear Sight"}, "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.4}]},
+        {"id": "seer_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Пророк", "en": "Seer"}, "modifiers": [{"stat": "partyCritChance", "kind": "increased", "value": 0.03}]},
+        {"id": "seer_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Пророчество", "en": "Prophecy"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.15}]}
+      ],
+      "links": [["seer_start", "seer_0_path"], ["seer_0_path", "seer_0"], ["seer_start", "seer_1_path"], ["seer_1_path", "seer_1"], ["seer_start", "seer_2_path"], ["seer_2_path", "seer_2"], ["seer_start", "seer_3_path"], ["seer_3_path", "seer_3"], ["seer_start", "seer_4_path"], ["seer_4_path", "seer_4"], ["seer_start", "seer_5_path"], ["seer_5_path", "seer_5"]]
+    },
+    {
+      "id": "plague_doctor", "class": "alchemist", "name": {"ru": "Чумной доктор", "en": "Plague Doctor"}, "blurb": "Яды и эпидемия",
+      "nodes": [
+        {"id": "plague_doctor_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Чумной доктор", "en": "Plague Doctor"}, "modifiers": [{"stat": "dotDamage", "kind": "increased", "value": 0.2}]},
+        {"id": "plague_doctor_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Чумной доктор", "en": "Plague Doctor"}, "modifiers": [{"stat": "dotDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "plague_doctor_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Мор", "en": "Pestilence"}, "modifiers": [{"stat": "dotSpread", "kind": "flat", "value": 0.5}]},
+        {"id": "plague_doctor_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Чумной доктор", "en": "Plague Doctor"}, "modifiers": [{"stat": "dotDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "plague_doctor_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Язвы", "en": "Sores"}, "modifiers": [{"stat": "dotStacks", "kind": "flat", "value": 30}]},
+        {"id": "plague_doctor_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Чумной доктор", "en": "Plague Doctor"}, "modifiers": [{"stat": "dotDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "plague_doctor_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Миазмы", "en": "Miasma"}, "modifiers": [{"stat": "dotDamage", "kind": "more", "value": 0.3}]},
+        {"id": "plague_doctor_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Чумной доктор", "en": "Plague Doctor"}, "modifiers": [{"stat": "dotDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "plague_doctor_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Носитель", "en": "Carrier"}, "modifiers": [{"stat": "corrosionPerHit", "kind": "increased", "value": 0.3}]},
+        {"id": "plague_doctor_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Чумной доктор", "en": "Plague Doctor"}, "modifiers": [{"stat": "dotDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "plague_doctor_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Тухлый воздух", "en": "Foul Air"}, "modifiers": [{"stat": "dotDuration", "kind": "increased", "value": 0.5}]},
+        {"id": "plague_doctor_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Чумной доктор", "en": "Plague Doctor"}, "modifiers": [{"stat": "dotDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "plague_doctor_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Лекарство", "en": "Cure"}, "modifiers": [{"stat": "partyDamage", "kind": "increased", "value": 0.05}]}
+      ],
+      "links": [["plague_doctor_start", "plague_doctor_0_path"], ["plague_doctor_0_path", "plague_doctor_0"], ["plague_doctor_start", "plague_doctor_1_path"], ["plague_doctor_1_path", "plague_doctor_1"], ["plague_doctor_start", "plague_doctor_2_path"], ["plague_doctor_2_path", "plague_doctor_2"], ["plague_doctor_start", "plague_doctor_3_path"], ["plague_doctor_3_path", "plague_doctor_3"], ["plague_doctor_start", "plague_doctor_4_path"], ["plague_doctor_4_path", "plague_doctor_4"], ["plague_doctor_start", "plague_doctor_5_path"], ["plague_doctor_5_path", "plague_doctor_5"]]
+    },
+    {
+      "id": "bombardier", "class": "alchemist", "name": {"ru": "Подрывник", "en": "Bombardier"}, "blurb": "Бомбы: разъедание взрывается",
+      "nodes": [
+        {"id": "bombardier_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Подрывник", "en": "Bombardier"}, "modifiers": [{"stat": "bombDamage", "kind": "increased", "value": 0.2}]},
+        {"id": "bombardier_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Подрывник", "en": "Bombardier"}, "modifiers": [{"stat": "bombDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "bombardier_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Пороховая бочка", "en": "Powder Keg"}, "modifiers": [{"stat": "bombDamage", "kind": "more", "value": 0.4}]},
+        {"id": "bombardier_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Подрывник", "en": "Bombardier"}, "modifiers": [{"stat": "bombDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "bombardier_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Цепная реакция", "en": "Chain Reaction"}, "modifiers": [{"stat": "bombSplash", "kind": "flat", "value": 0.3}]},
+        {"id": "bombardier_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Подрывник", "en": "Bombardier"}, "modifiers": [{"stat": "bombDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "bombardier_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Короткий фитиль", "en": "Short Fuse"}, "modifiers": [{"stat": "bombEvery", "kind": "flat", "value": -5}]},
+        {"id": "bombardier_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Подрывник", "en": "Bombardier"}, "modifiers": [{"stat": "bombDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "bombardier_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Едкий взрыв", "en": "Caustic Blast"}, "modifiers": [{"stat": "corrosionMax", "kind": "flat", "value": 10}]},
+        {"id": "bombardier_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Подрывник", "en": "Bombardier"}, "modifiers": [{"stat": "bombDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "bombardier_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Динамит", "en": "Dynamite"}, "modifiers": [{"stat": "critMultiplier", "kind": "flat", "value": 0.8}]},
+        {"id": "bombardier_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Подрывник", "en": "Bombardier"}, "modifiers": [{"stat": "bombDamage", "kind": "increased", "value": 0.06}]},
+        {"id": "bombardier_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Сапёр", "en": "Sapper"}, "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.3}]}
+      ],
+      "links": [["bombardier_start", "bombardier_0_path"], ["bombardier_0_path", "bombardier_0"], ["bombardier_start", "bombardier_1_path"], ["bombardier_1_path", "bombardier_1"], ["bombardier_start", "bombardier_2_path"], ["bombardier_2_path", "bombardier_2"], ["bombardier_start", "bombardier_3_path"], ["bombardier_3_path", "bombardier_3"], ["bombardier_start", "bombardier_4_path"], ["bombardier_4_path", "bombardier_4"], ["bombardier_start", "bombardier_5_path"], ["bombardier_5_path", "bombardier_5"]]
+    },
+    {
+      "id": "potion_master", "class": "alchemist", "name": {"ru": "Мастер зелий", "en": "Potion Master"}, "blurb": "Зелья для всей пати",
+      "nodes": [
+        {"id": "potion_master_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Мастер зелий", "en": "Potion Master"}, "modifiers": [{"stat": "potionEffect", "kind": "increased", "value": 0.15}]},
+        {"id": "potion_master_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Мастер зелий", "en": "Potion Master"}, "modifiers": [{"stat": "potionEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "potion_master_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Зелье силы", "en": "Potion of Strength"}, "modifiers": [{"stat": "partyDamage", "kind": "increased", "value": 0.08}]},
+        {"id": "potion_master_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Мастер зелий", "en": "Potion Master"}, "modifiers": [{"stat": "potionEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "potion_master_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Зелье удачи", "en": "Potion of Luck"}, "modifiers": [{"stat": "partyCritChance", "kind": "increased", "value": 0.15}]},
+        {"id": "potion_master_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Мастер зелий", "en": "Potion Master"}, "modifiers": [{"stat": "potionEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "potion_master_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Эликсир", "en": "Elixir"}, "modifiers": [{"stat": "potionSeconds", "kind": "flat", "value": 20}]},
+        {"id": "potion_master_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Мастер зелий", "en": "Potion Master"}, "modifiers": [{"stat": "potionEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "potion_master_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Золотая настойка", "en": "Gold Tincture"}, "modifiers": [{"stat": "partyGold", "kind": "increased", "value": 0.2}]},
+        {"id": "potion_master_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Мастер зелий", "en": "Potion Master"}, "modifiers": [{"stat": "potionEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "potion_master_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Большой котёл", "en": "Big Cauldron"}, "modifiers": [{"stat": "concurrentPotions", "kind": "flat", "value": 1}]},
+        {"id": "potion_master_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Мастер зелий", "en": "Potion Master"}, "modifiers": [{"stat": "potionEffect", "kind": "increased", "value": 0.045}]},
+        {"id": "potion_master_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Великий алхимик", "en": "Grand Alchemist"}, "modifiers": [{"stat": "corrosionMax", "kind": "flat", "value": 10}]}
+      ],
+      "links": [["potion_master_start", "potion_master_0_path"], ["potion_master_0_path", "potion_master_0"], ["potion_master_start", "potion_master_1_path"], ["potion_master_1_path", "potion_master_1"], ["potion_master_start", "potion_master_2_path"], ["potion_master_2_path", "potion_master_2"], ["potion_master_start", "potion_master_3_path"], ["potion_master_3_path", "potion_master_3"], ["potion_master_start", "potion_master_4_path"], ["potion_master_4_path", "potion_master_4"], ["potion_master_start", "potion_master_5_path"], ["potion_master_5_path", "potion_master_5"]]
+    },
+    {
+      "id": "hermit", "class": "wanderer", "name": {"ru": "Отшельник", "en": "Hermit"}, "blurb": "Сила в бездействии и офлайне",
+      "nodes": [
+        {"id": "hermit_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Отшельник", "en": "Hermit"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Idle"]}]},
+        {"id": "hermit_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Отшельник", "en": "Hermit"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.06, "tags": ["Idle"]}]},
+        {"id": "hermit_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Глубокая тишина", "en": "Deep Silence"}, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.3, "tags": ["Idle"]}]},
+        {"id": "hermit_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Отшельник", "en": "Hermit"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.06, "tags": ["Idle"]}]},
+        {"id": "hermit_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Быстрый покой", "en": "Quick Calm"}, "modifiers": [{"stat": "idleStartSeconds", "kind": "flat", "value": -15}]},
+        {"id": "hermit_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Отшельник", "en": "Hermit"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.06, "tags": ["Idle"]}]},
+        {"id": "hermit_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Вечный сон", "en": "Eternal Sleep"}, "modifiers": [{"stat": "offlineCapHours", "kind": "flat", "value": 2}]},
+        {"id": "hermit_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Отшельник", "en": "Hermit"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.06, "tags": ["Idle"]}]},
+        {"id": "hermit_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Ночная смена", "en": "Night Shift"}, "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.3}]},
+        {"id": "hermit_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Отшельник", "en": "Hermit"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.06, "tags": ["Idle"]}]},
+        {"id": "hermit_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Терпение природы", "en": "Nature's Patience"}, "modifiers": [{"stat": "vineDoubleDamage", "kind": "flat", "value": 0.02}]},
+        {"id": "hermit_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Отшельник", "en": "Hermit"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.06, "tags": ["Idle"]}]},
+        {"id": "hermit_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Пробуждение", "en": "Awakening"}, "modifiers": [{"stat": "damageAfterIdle", "kind": "more", "value": 0.5}]}
+      ],
+      "links": [["hermit_start", "hermit_0_path"], ["hermit_0_path", "hermit_0"], ["hermit_start", "hermit_1_path"], ["hermit_1_path", "hermit_1"], ["hermit_start", "hermit_2_path"], ["hermit_2_path", "hermit_2"], ["hermit_start", "hermit_3_path"], ["hermit_3_path", "hermit_3"], ["hermit_start", "hermit_4_path"], ["hermit_4_path", "hermit_4"], ["hermit_start", "hermit_5_path"], ["hermit_5_path", "hermit_5"]]
+    },
+    {
+      "id": "mechanist", "class": "wanderer", "name": {"ru": "Механик", "en": "Mechanist"}, "blurb": "Рунные стражи бьют сами",
+      "nodes": [
+        {"id": "mechanist_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Механик", "en": "Mechanist"}, "modifiers": [{"stat": "constructMax", "kind": "flat", "value": 1}]},
+        {"id": "mechanist_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Механик", "en": "Mechanist"}, "modifiers": [{"stat": "constructMax", "kind": "flat", "value": 0.3}]},
+        {"id": "mechanist_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Сборочный цех", "en": "Assembly Line"}, "modifiers": [{"stat": "constructMax", "kind": "flat", "value": 2}]},
+        {"id": "mechanist_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Механик", "en": "Mechanist"}, "modifiers": [{"stat": "constructMax", "kind": "flat", "value": 0.3}]},
+        {"id": "mechanist_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Шестерни", "en": "Gears"}, "modifiers": [{"stat": "constructAttackSpeed", "kind": "increased", "value": 0.3}]},
+        {"id": "mechanist_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Механик", "en": "Mechanist"}, "modifiers": [{"stat": "constructMax", "kind": "flat", "value": 0.3}]},
+        {"id": "mechanist_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Экономный", "en": "Thrifty"}, "modifiers": [{"stat": "constructCost", "kind": "increased", "value": -0.3}]},
+        {"id": "mechanist_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Механик", "en": "Mechanist"}, "modifiers": [{"stat": "constructMax", "kind": "flat", "value": 0.3}]},
+        {"id": "mechanist_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Броня", "en": "Plating"}, "modifiers": [{"stat": "constructSeconds", "kind": "flat", "value": 15}]},
+        {"id": "mechanist_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Механик", "en": "Mechanist"}, "modifiers": [{"stat": "constructMax", "kind": "flat", "value": 0.3}]},
+        {"id": "mechanist_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Перегрузка", "en": "Overload"}, "modifiers": [{"stat": "constructDamage", "kind": "more", "value": 0.25}]},
+        {"id": "mechanist_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Механик", "en": "Mechanist"}, "modifiers": [{"stat": "constructMax", "kind": "flat", "value": 0.3}]},
+        {"id": "mechanist_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Чертёж", "en": "Blueprint"}, "modifiers": [{"stat": "energyGain", "kind": "increased", "value": 0.3}]}
+      ],
+      "links": [["mechanist_start", "mechanist_0_path"], ["mechanist_0_path", "mechanist_0"], ["mechanist_start", "mechanist_1_path"], ["mechanist_1_path", "mechanist_1"], ["mechanist_start", "mechanist_2_path"], ["mechanist_2_path", "mechanist_2"], ["mechanist_start", "mechanist_3_path"], ["mechanist_3_path", "mechanist_3"], ["mechanist_start", "mechanist_4_path"], ["mechanist_4_path", "mechanist_4"], ["mechanist_start", "mechanist_5_path"], ["mechanist_5_path", "mechanist_5"]]
+    },
+    {
+      "id": "treasurer", "class": "wanderer", "name": {"ru": "Казначей", "en": "Treasurer"}, "blurb": "Экономика",
+      "nodes": [
+        {"id": "treasurer_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Казначей", "en": "Treasurer"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.15, "tags": ["Gold"]}]},
+        {"id": "treasurer_0_path", "type": "small", "x": 0.0, "y": -1.0, "name": {"ru": "Казначей", "en": "Treasurer"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.045, "tags": ["Gold"]}]},
+        {"id": "treasurer_0", "type": "notable", "x": 0.0, "y": -2.0, "name": {"ru": "Золотая рука", "en": "Golden Hand"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.25, "tags": ["Gold"]}, {"stat": "damage", "kind": "more", "value": -0.1}]},
+        {"id": "treasurer_1_path", "type": "small", "x": 0.87, "y": -0.5, "name": {"ru": "Казначей", "en": "Treasurer"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.045, "tags": ["Gold"]}]},
+        {"id": "treasurer_1", "type": "notable", "x": 1.73, "y": -1.0, "name": {"ru": "Скупщик", "en": "Buyer"}, "modifiers": [{"stat": "gold", "kind": "more", "value": 0.15, "tags": ["Gold"]}]},
+        {"id": "treasurer_2_path", "type": "small", "x": 0.87, "y": 0.5, "name": {"ru": "Казначей", "en": "Treasurer"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.045, "tags": ["Gold"]}]},
+        {"id": "treasurer_2", "type": "notable", "x": 1.73, "y": 1.0, "name": {"ru": "Чутьё на гемы", "en": "Gem Sense"}, "modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.2}]},
+        {"id": "treasurer_3_path", "type": "small", "x": 0.0, "y": 1.0, "name": {"ru": "Казначей", "en": "Treasurer"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.045, "tags": ["Gold"]}]},
+        {"id": "treasurer_3", "type": "notable", "x": 0.0, "y": 2.0, "name": {"ru": "Проценты", "en": "Interest"}, "modifiers": [{"stat": "goldPerOfflineHour", "kind": "increased", "value": 0.01}]},
+        {"id": "treasurer_4_path", "type": "small", "x": -0.87, "y": 0.5, "name": {"ru": "Казначей", "en": "Treasurer"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.045, "tags": ["Gold"]}]},
+        {"id": "treasurer_4", "type": "notable", "x": -1.73, "y": 1.0, "name": {"ru": "Бережливость", "en": "Frugality"}, "modifiers": [{"stat": "respecCost", "kind": "more", "value": -0.5}]},
+        {"id": "treasurer_5_path", "type": "small", "x": -0.87, "y": -0.5, "name": {"ru": "Казначей", "en": "Treasurer"}, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.045, "tags": ["Gold"]}]},
+        {"id": "treasurer_5", "type": "notable", "x": -1.73, "y": -1.0, "name": {"ru": "Долгий счёт", "en": "Long Count"}, "modifiers": [{"stat": "offlineCapHours", "kind": "flat", "value": 1}]}
+      ],
+      "links": [["treasurer_start", "treasurer_0_path"], ["treasurer_0_path", "treasurer_0"], ["treasurer_start", "treasurer_1_path"], ["treasurer_1_path", "treasurer_1"], ["treasurer_start", "treasurer_2_path"], ["treasurer_2_path", "treasurer_2"], ["treasurer_start", "treasurer_3_path"], ["treasurer_3_path", "treasurer_3"], ["treasurer_start", "treasurer_4_path"], ["treasurer_4_path", "treasurer_4"], ["treasurer_start", "treasurer_5_path"], ["treasurer_5_path", "treasurer_5"]]
     }
   ]
 }

@@ -27,7 +27,7 @@ namespace Game.Core.Sim
         public double OnKeyHit(out HitFlags flags)
         {
             flags = HitFlags.None;
-            if (_state.Class != HeroClass.Typist)
+            if (_state.Class != HeroClass.Swordsman)
                 return 1;
 
             _state.Combo++;

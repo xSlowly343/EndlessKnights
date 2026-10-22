@@ -2,7 +2,14 @@ namespace Game.Core.Sim
 {
     public enum HeroClass
     {
-        Typist,
-        Bard
+        Swordsman,
+        Bard,
+        Barbarian,
+        Ranger,
+        Sorcerer,
+        Witch,
+        Priest,
+        Alchemist,
+        Wanderer
     }
 }

@@ -45,7 +45,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TypistComboGrowsWithEachKey()
         {
-            var (loop, input) = Hero(HeroClass.Typist);
+            var (loop, input) = Hero(HeroClass.Swordsman);
 
             Keys(loop, input, 7);
 
@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryNthKeyIsAComboStrike()
         {
-            var (loop, input) = Hero(HeroClass.Typist);
+            var (loop, input) = Hero(HeroClass.Swordsman);
 
             Keys(loop, input, Rules.ComboStrikeEvery - 1);
             var normal = LastHit(loop);
@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ComboSurvivesShortPausesAndBreaksOnLongOnes()
         {
-            var (loop, input) = Hero(HeroClass.Typist);
+            var (loop, input) = Hero(HeroClass.Swordsman);
             var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
             Keys(loop, input, 10);
 
@@ -87,7 +87,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClicksAndMouseDoNotKeepTheComboAlive()
         {
-            var (loop, input) = Hero(HeroClass.Typist);
+            var (loop, input) = Hero(HeroClass.Swordsman);
             var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
             Keys(loop, input, 5);
 
@@ -162,7 +162,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TypistGetsNoNotesAndKeysGiveNoNotes()
         {
-            var (typist, typistInput) = Hero(HeroClass.Typist);
+            var (typist, typistInput) = Hero(HeroClass.Swordsman);
             typistInput.ClickLeft(2);
             typist.Tick();
 

@@ -44,7 +44,7 @@ namespace Game.Core.Tests.Sim
             return (loop, input);
         }
 
-        [TestCase(HeroClass.Typist)]
+        [TestCase(HeroClass.Swordsman)]
         [TestCase(HeroClass.Bard)]
         public void CombatTicksDoNotAllocate(HeroClass heroClass)
         {

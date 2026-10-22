@@ -56,9 +56,9 @@ namespace Game.Core.Tests.Save
             Assert.That(save.StoredVersion, Is.EqualTo(4));
             Assert.That(save.State.Class, Is.EqualTo(HeroClass.Bard));
             Assert.That(save.State.HeroLevel, Is.EqualTo(15));
-            Assert.That(save.State.Tree.PointsSpent, Is.EqualTo(7));
-            Assert.That(save.State.Tree.MasteryChoices["melody_mastery"], Is.EqualTo(1));
-            Assert.That(save.State.Tree.AttributeChoices["b_attr_3"], Is.EqualTo("precision"));
+            Assert.That(save.State.Tree.StartClass, Is.EqualTo("bard"));
+            Assert.That(save.State.Tree.PointsSpent, Is.EqualTo(0));
+            Assert.That(save.State.Tree.MasteryChoices, Is.Empty);
             Assert.That(save.State.OwnedGems.Count, Is.EqualTo(3));
         }
 
@@ -72,8 +72,20 @@ namespace Game.Core.Tests.Save
             Assert.That(save.State.RecordStage, Is.EqualTo(61));
             Assert.That(save.State.Artifacts.Count, Is.EqualTo(1));
             Assert.That(save.State.ActivePreset, Is.EqualTo(1));
-            Assert.That(save.State.OtherPreset.Tree.PointsSpent, Is.EqualTo(3));
+            Assert.That(save.State.OtherPreset.Tree.PointsSpent, Is.EqualTo(0));
             Assert.That(save.State.TotalInput.Keys, Is.EqualTo(10000));
+        }
+
+        [Test]
+        public void TypistBecomesSwordsmanWithEmptyTreesOnTheLargeTree()
+        {
+            var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v6.json"), TestWorld.Data);
+
+            Assert.That(save.State.Class, Is.EqualTo(HeroClass.Swordsman));
+            Assert.That(save.State.Tree.StartClass, Is.EqualTo("swordsman"));
+            Assert.That(save.State.OtherPreset.Tree.StartClass, Is.EqualTo("swordsman"));
+            Assert.That(save.State.Tree.Allocated, Is.Empty);
+            Assert.That(save.State.Ascendancy.Subclass, Is.Null);
         }
 
         [Test]

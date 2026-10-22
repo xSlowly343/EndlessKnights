@@ -136,7 +136,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TypistStartsWithStenographyOnEnterAndLull()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Typist });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
 
             Assert.That(loop.Book.GrantStartingGems(), Is.True);
 
@@ -164,7 +164,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void OwnedGemsAreSaved()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Typist });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
             loop.Book.GrantStartingGems();
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;

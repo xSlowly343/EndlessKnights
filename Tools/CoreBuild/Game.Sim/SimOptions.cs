@@ -8,13 +8,13 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class typist|bard] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class swordsman|bard|barbarian|ranger|sorcerer|witch|priest|alchemist|wanderer] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
         public double MousePxPerSecond { get; private set; }
         public double Hours { get; private set; } = 1;
-        public HeroClass HeroClass { get; private set; } = HeroClass.Typist;
+        public HeroClass HeroClass { get; private set; } = HeroClass.Swordsman;
         public ulong Seed { get; private set; } = 1;
         public int StopAfterFails { get; private set; }
         public double DamageMultiplier { get; private set; } = 1;
@@ -57,12 +57,9 @@ namespace Game.Sim
 
         private static HeroClass Class(string value)
         {
-            switch (value.ToLowerInvariant())
-            {
-                case "typist": return HeroClass.Typist;
-                case "bard": return HeroClass.Bard;
-                default: throw new ArgumentException($"unknown class {value}, expected typist or bard");
-            }
+            if (HeroClassNames.ByName.TryGetValue(value.ToLowerInvariant(), out var heroClass))
+                return heroClass;
+            throw new ArgumentException($"unknown class {value}, expected one of: {string.Join(", ", HeroClassNames.ByName.Keys)}");
         }
     }
 }

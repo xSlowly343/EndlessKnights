@@ -22,7 +22,7 @@ namespace Game.Core.Sim.Headless
             _loop = loop;
             _stuckSecondsBeforePrestige = stuckMinutesBeforePrestige * 60;
             var heroClass = loop.State.Class;
-            _attribute = heroClass == HeroClass.Bard ? "precision" : "tempo";
+            _attribute = MainAttribute(heroClass);
             _score = new NodeScore(PlayedTags(heroClass), data.Tree.Attributes);
         }
 
@@ -39,6 +39,23 @@ namespace Game.Core.Sim.Headless
 
         private static StatTags PlayedTags(HeroClass heroClass) =>
             heroClass == HeroClass.Bard ? StatTags.Click | StatTags.Aura : StatTags.Keyboard;
+
+        private static string MainAttribute(HeroClass heroClass)
+        {
+            switch (heroClass)
+            {
+                case HeroClass.Ranger:
+                case HeroClass.Bard:
+                case HeroClass.Swordsman:
+                    return "dexterity";
+                case HeroClass.Sorcerer:
+                case HeroClass.Witch:
+                case HeroClass.Priest:
+                    return "intelligence";
+                default:
+                    return "strength";
+            }
+        }
 
         private void EquipOwnedSkills()
         {

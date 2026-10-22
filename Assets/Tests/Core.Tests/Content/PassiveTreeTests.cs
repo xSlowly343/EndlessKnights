@@ -12,30 +12,31 @@ namespace Game.Core.Tests.Content
 
         private static int Count(PassiveTree tree, TreeNodeType type) => tree.Nodes.Count(node => node.Type == type);
 
+        private static readonly string[] Classes = { "swordsman", "bard", "barbarian", "ranger", "sorcerer", "witch", "priest", "alchemist", "wanderer" };
+        private static readonly string[] RingClasses = { "swordsman", "bard", "barbarian", "ranger", "sorcerer", "witch", "priest", "alchemist" };
+
         [Test]
-        public void MvpTreeHasSeventyTwoNodesOfEveryType()
+        public void LargeTreeHasHundredsOfNodesOfEveryType()
         {
             var tree = PassiveTree.Load(RealFile());
 
-            Assert.That(tree.Nodes.Count, Is.EqualTo(72));
-            Assert.That(Count(tree, TreeNodeType.Start), Is.EqualTo(3));
-            Assert.That(Count(tree, TreeNodeType.Keystone), Is.EqualTo(2));
-            Assert.That(Count(tree, TreeNodeType.Notable), Is.EqualTo(8));
-            Assert.That(Count(tree, TreeNodeType.Mastery), Is.EqualTo(2));
-            Assert.That(Count(tree, TreeNodeType.Jewel), Is.EqualTo(2));
-            Assert.That(Count(tree, TreeNodeType.Attribute), Is.GreaterThanOrEqualTo(9));
-            Assert.That(Count(tree, TreeNodeType.Small), Is.GreaterThan(30));
+            Assert.That(tree.Nodes.Count, Is.GreaterThan(550));
+            Assert.That(Count(tree, TreeNodeType.Start), Is.EqualTo(9));
+            Assert.That(Count(tree, TreeNodeType.Keystone), Is.EqualTo(20));
+            Assert.That(Count(tree, TreeNodeType.Notable), Is.GreaterThanOrEqualTo(50));
+            Assert.That(Count(tree, TreeNodeType.Mastery), Is.EqualTo(40));
+            Assert.That(Count(tree, TreeNodeType.Jewel), Is.EqualTo(16));
+            Assert.That(Count(tree, TreeNodeType.Attribute), Is.GreaterThanOrEqualTo(16));
         }
 
         [Test]
-        public void StartsExistForTypistBardAndHermit()
+        public void EveryClassHasItsStart()
         {
             var tree = PassiveTree.Load(RealFile());
 
-            Assert.That(tree.StartOf("typist")!.Id, Is.EqualTo("typist_start"));
-            Assert.That(tree.StartOf("bard")!.Id, Is.EqualTo("bard_start"));
-            Assert.That(tree.StartOf("hermit")!.Id, Is.EqualTo("hermit_start"));
-            Assert.That(tree.StartOf("whirlwind"), Is.Null);
+            foreach (var className in Classes)
+                Assert.That(tree.StartOf(className)!.Id, Is.EqualTo(className + "_start"));
+            Assert.That(tree.StartOf("typist"), Is.Null);
         }
 
         [Test]
@@ -48,22 +49,29 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void KeystonesAndMasteriesMatchContentDraft()
+        public void EveryRingClassHasTwoKeystonesAndFourMasteries()
         {
             var tree = PassiveTree.Load(RealFile());
 
-            var oneHanded = tree["one_handed"];
-            Assert.That(oneHanded.Type, Is.EqualTo(TreeNodeType.Keystone));
-            Assert.That(oneHanded.Modifiers, Does.Contain(new Modifier(new StatId("damage"), ModifierKind.More, 1.0, StatTags.Keyboard)));
-            Assert.That(oneHanded.Modifiers, Does.Contain(new Modifier(new StatId("damage"), ModifierKind.More, -1.0, StatTags.Mouse)));
-            Assert.That(tree["pen_mastery"].Options.Count, Is.EqualTo(3));
-            Assert.That(tree["melody_mastery"].Options.Count, Is.EqualTo(3));
-            Assert.That(tree["only_music"].Type, Is.EqualTo(TreeNodeType.Keystone));
+            foreach (var className in RingClasses)
+            {
+                Assert.That(tree.Nodes.Count(node => node.Type == TreeNodeType.Keystone && node.Id.StartsWith(className + "_")), Is.EqualTo(2), className);
+                Assert.That(tree.Nodes.Count(node => node.Type == TreeNodeType.Mastery && node.Id.StartsWith(className + "_")), Is.EqualTo(4), className);
+            }
+            Assert.That(tree["bard_keystone_1"].Modifiers, Does.Contain(new Modifier(new StatId("auraEffect"), ModifierKind.More, 1.0)));
+            Assert.That(tree["swordsman_w1_mastery"].Options.Count, Is.EqualTo(3));
         }
 
-        [TestCase("typist")]
-        [TestCase("bard")]
-        [TestCase("hermit")]
+        [Test]
+        public void NoNodeGivesExperience()
+        {
+            var tree = PassiveTree.Load(RealFile());
+
+            var modifiers = tree.Nodes.SelectMany(node => node.Modifiers.Concat(node.Options.SelectMany(option => option)));
+            Assert.That(modifiers.Any(modifier => modifier.Stat.Name == "heroXp"), Is.False);
+        }
+
+        [TestCaseSource(nameof(Classes))]
         public void EveryClassReachesEveryNodeWithoutCrossingAnotherStart(string className)
         {
             var tree = PassiveTree.Load(RealFile());
@@ -85,9 +93,7 @@ namespace Game.Core.Tests.Content
             Assert.That(missing, Is.Empty);
         }
 
-        [TestCase("typist")]
-        [TestCase("bard")]
-        [TestCase("hermit")]
+        [TestCaseSource(nameof(Classes))]
         public void RoadsRunAroundEveryStart(string className)
         {
             var tree = PassiveTree.Load(RealFile());
@@ -108,8 +114,7 @@ namespace Game.Core.Tests.Content
             Assert.That(reached, Is.EquivalentTo(around), "every exit of a start is linked to the others without the start itself");
         }
 
-        [TestCase("typist")]
-        [TestCase("bard")]
+        [TestCaseSource(nameof(RingClasses))]
         public void NoRoadFromTheCentreRunsIntoAClassStart(string className)
         {
             var tree = PassiveTree.Load(RealFile());
@@ -121,13 +126,13 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void HermitReachesTheOtherSectorsInAFewSteps()
+        public void WandererReachesEveryClassRingInAFewSteps()
         {
             var tree = PassiveTree.Load(RealFile());
-            var hermit = tree.StartOf("hermit")!;
-            var depth = new System.Collections.Generic.Dictionary<TreeNodeDef, int> { [hermit] = 0 };
+            var wanderer = tree.StartOf("wanderer")!;
+            var depth = new System.Collections.Generic.Dictionary<TreeNodeDef, int> { [wanderer] = 0 };
             var queue = new System.Collections.Generic.Queue<TreeNodeDef>();
-            queue.Enqueue(hermit);
+            queue.Enqueue(wanderer);
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
@@ -140,19 +145,19 @@ namespace Game.Core.Tests.Content
                 }
             }
 
-            foreach (var exit in new[] { "t_pen_1", "t_combo_1", "t_heavy_1", "b_attr_3", "b_ensemble_1" })
-                Assert.That(depth[tree[exit]], Is.LessThanOrEqualTo(4), exit);
+            foreach (var className in RingClasses)
+                Assert.That(depth[tree[className + "_ring_3"]], Is.LessThanOrEqualTo(14), className);
         }
 
         [Test]
-        public void HermitStartSitsInsideAnInnerRing()
+        public void WandererStartSitsInsideAnInnerRing()
         {
             var tree = PassiveTree.Load(RealFile());
-            var hermit = tree.StartOf("hermit")!;
+            var wanderer = tree.StartOf("wanderer")!;
 
-            Assert.That(hermit.Neighbours.Count, Is.EqualTo(5));
-            foreach (var ringNode in hermit.Neighbours)
-                Assert.That(ringNode.Neighbours.Count(n => hermit.Neighbours.Contains(n)), Is.EqualTo(2), ringNode.Id);
+            Assert.That(wanderer.Neighbours.Count, Is.EqualTo(6));
+            foreach (var ringNode in wanderer.Neighbours)
+                Assert.That(ringNode.Neighbours.Count(n => wanderer.Neighbours.Contains(n)), Is.EqualTo(2), ringNode.Id);
         }
 
         [Test]
@@ -174,13 +179,13 @@ namespace Game.Core.Tests.Content
             var tree = PassiveTree.Load(RealFile());
 
             Assert.That(tree.Nodes.Where(node => node.Type == TreeNodeType.Attribute).All(node => node.AttributeAmount == 5), Is.True);
-            Assert.That(tree.Attributes, Is.EqualTo(new[] { "tempo", "reach", "precision" }));
+            Assert.That(tree.Attributes, Is.EqualTo(new[] { "strength", "dexterity", "intelligence" }));
         }
 
-        [TestCase("[\"t_pen_1\", \"t_pen_2\"]", "[\"t_pen_1\", \"nowhere\"]", "links[", "unknown node 'nowhere'")]
-        [TestCase("[\"t_pen_1\", \"t_pen_2\"]", "[\"t_pen_1\", \"t_pen_1\"]", "links[", "linked to itself")]
-        [TestCase("[\"t_pen_1\", \"t_pen_2\"]", "[\"t_pen_2\", \"t_pen_1\"], [\"t_pen_1\", \"t_pen_2\"]", "links[", "is listed twice")]
-        [TestCase("\"class\": \"bard\"", "\"class\": \"typist\"", "nodes[", "class 'typist' has two start nodes")]
+        [TestCase("[\"swordsman_start\", \"swordsman_ring_0\"]", "[\"swordsman_start\", \"nowhere\"]", "links[", "unknown node 'nowhere'")]
+        [TestCase("[\"swordsman_start\", \"swordsman_ring_0\"]", "[\"swordsman_start\", \"swordsman_start\"]", "links[", "linked to itself")]
+        [TestCase("[\"swordsman_start\", \"swordsman_ring_0\"]", "[\"swordsman_ring_0\", \"swordsman_start\"], [\"swordsman_start\", \"swordsman_ring_0\"]", "links[", "is listed twice")]
+        [TestCase("\"class\": \"bard\"", "\"class\": \"swordsman\"", "nodes[", "class 'swordsman' has two start nodes")]
         [TestCase("\"type\": \"keystone\"", "\"type\": \"legendary\"", "nodes[", "unknown node type 'legendary'")]
         public void BrokenTreeIsReportedByPath(string original, string broken, string path, string message)
         {
@@ -193,9 +198,9 @@ namespace Game.Core.Tests.Content
         [Test]
         public void TreeMustBeOnePiece()
         {
-            var error = Assert.Throws<ContentException>(() => PassiveTree.Load(RealFile().Replace("    [\"t_combo_small\", \"one_handed\"],\n", "")))!;
+            var error = Assert.Throws<ContentException>(() => PassiveTree.Load(RealFile().Replace("    [\"swordsman_to_k1_1\", \"swordsman_keystone_1\"],\n", "")))!;
 
-            Assert.That(error.Message, Does.Contain("node 'one_handed' cannot be reached"));
+            Assert.That(error.Message, Does.Contain("node 'swordsman_keystone_1' cannot be reached"));
         }
     }
 }

@@ -6,14 +6,21 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(8,
+        public static readonly SaveMigrations Default = new SaveMigrations(9,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
             new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
             new SaveMigration(4, "prestige and artifacts (phase 10)", payload => JsonEdit.Update(payload, "state", StateToVersion5)),
             new SaveMigration(5, "two build presets and input stats (phases 10-11)", payload => JsonEdit.Update(payload, "state", StateToVersion6)),
             new SaveMigration(6, "ascendancy subclasses", payload => JsonEdit.Update(payload, "state", StateToVersion7)),
-            new SaveMigration(7, "strike upgrades for gold (10.2)", payload => JsonEdit.Update(payload, "state", StateToVersion8)));
+            new SaveMigration(7, "strike upgrades for gold (10.2)", payload => JsonEdit.Update(payload, "state", StateToVersion8)),
+            new SaveMigration(8, "nine RPG classes and the large passive tree", payload => JsonEdit.Update(payload, "state", StateToVersion9)));
+
+        private static readonly IReadOnlyDictionary<string, string> RenamedClasses = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["typist"] = "swordsman",
+            ["hermit"] = "wanderer"
+        };
 
         private readonly SaveMigration[] _steps;
 
@@ -122,6 +129,21 @@ namespace Game.Core.Save
 
         private static JsonValue StateToVersion8(JsonValue state) =>
             JsonEdit.Update(state, "hero", hero => JsonEdit.Set(hero, "strikeLevel", JsonValue.Of(0)));
+
+        private static JsonValue StateToVersion9(JsonValue state)
+        {
+            var hero = JsonEdit.Update(state, "hero", h => JsonEdit.Update(h, "class", RenamedClass));
+            var tree = JsonEdit.Update(hero, "tree", EmptyTreeOfRenamedClass);
+            var presets = JsonEdit.Update(tree, "presets", p => JsonEdit.Update(p, "otherTree", EmptyTreeOfRenamedClass));
+            return JsonEdit.Update(presets, "ascendancy", a =>
+                JsonEdit.Set(JsonEdit.Set(a, "subclass", JsonValue.Null()), "allocated", JsonValue.Array(new JsonValue[0])));
+        }
+
+        private static JsonValue RenamedClass(JsonValue name) =>
+            RenamedClasses.TryGetValue(name.Text, out var renamed) ? JsonValue.Of(renamed) : name;
+
+        private static JsonValue EmptyTreeOfRenamedClass(JsonValue tree) =>
+            JsonEdit.Set(JsonEdit.Update(tree, "startClass", RenamedClass), "allocated", JsonValue.Array(new JsonValue[0]));
 
         private static JsonValue[] EquippedGems(JsonValue skills)
         {
