@@ -35,7 +35,7 @@ namespace Game.Core.Sim
             _loot = new LootSystem(data.Stages, hero, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot);
             _combat.OnKill(_stage);
-            _skills = new SkillSystem(state, Events, _energy, _combat.Class, hero);
+            _skills = new SkillSystem(state, Events, _energy, _combat, hero);
             _combat.OnKeyHit(_skills);
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _stage.EnsureEnemy();
@@ -93,9 +93,10 @@ namespace Game.Core.Sim
         {
             LastInput = _input.Drain();
             var input = _inputRules.Apply(LastInput);
+            var idleTicksBefore = State.IdleTicks;
             _focus.Tick(input);
             _energy.Tick(input);
-            _skills.Tick();
+            _skills.Tick(input, idleTicksBefore);
             _stage.Tick();
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);

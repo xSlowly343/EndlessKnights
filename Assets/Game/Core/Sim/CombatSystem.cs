@@ -36,6 +36,11 @@ namespace Game.Core.Sim
 
         public void OnKeyHit(IKeyHitListener keyHits) => _keyHits = keyHits;
 
+        public double BaseKeyDamage => _rules.KeyDamage;
+
+        public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
+            Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);
+
         public void Tick(in EffectiveInput input)
         {
             LastTickDamage = BigNumber.Zero;
@@ -49,15 +54,15 @@ namespace Game.Core.Sim
             for (var i = 0; i < keyHits; i++)
             {
                 var multiplier = _class.OnKeyHit(out var flags);
-                Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, multiplier);
+                Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
             }
             for (var i = 0; i < clickHits; i++)
             {
                 _class.OnClickHit();
-                Hit(DamageSource.Click, _rules.ClickDamage, StatTags.Click, HitFlags.None, 1);
+                Hit(DamageSource.Click, _rules.ClickDamage, StatTags.Click, HitFlags.None, _state.FocusMultiplier);
             }
             for (var i = 0; i < mouseHits; i++)
-                Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, 1);
+                Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier);
             _class.EndTick(keyHits);
         }
 
@@ -66,7 +71,7 @@ namespace Game.Core.Sim
             if (!_state.EnemyAlive)
                 return;
 
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (_state.FocusMultiplier * multiplier);
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * multiplier;
             if (damage.Sign <= 0)
                 return;
 

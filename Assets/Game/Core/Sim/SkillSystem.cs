@@ -11,15 +11,15 @@ namespace Game.Core.Sim
         private readonly GameState _state;
         private readonly EventQueue _events;
         private readonly EnergySystem _energy;
-        private readonly ClassMechanics _class;
+        private readonly CombatSystem _combat;
         private readonly StatSheet _hero;
 
-        public SkillSystem(GameState state, EventQueue events, EnergySystem energy, ClassMechanics classMechanics, StatSheet hero)
+        public SkillSystem(GameState state, EventQueue events, EnergySystem energy, CombatSystem combat, StatSheet hero)
         {
             _state = state;
             _events = events;
             _energy = energy;
-            _class = classMechanics;
+            _combat = combat;
             _hero = hero;
             foreach (var slot in _state.Skills)
             {
@@ -67,7 +67,7 @@ namespace Game.Core.Sim
             if (skill.EnergyCost > 0 && !_energy.TrySpend(skill.EnergyCost))
                 return CastResult.NotEnoughEnergy;
             if (skill.NoteCost > 0)
-                _class.SpendNotes(skill.NoteCost);
+                _combat.Class.SpendNotes(skill.NoteCost);
 
             var cooldown = skill.CooldownSeconds * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
             slot.CooldownTicks = Ticks(cooldown);
@@ -90,7 +90,7 @@ namespace Game.Core.Sim
             }
         }
 
-        public void Tick()
+        public void Tick(in EffectiveInput input, long idleTicksBefore)
         {
             for (var index = 0; index < _state.Skills.Count; index++)
             {
@@ -105,8 +105,30 @@ namespace Game.Core.Sim
                 }
                 if (slot.Def.NoteCost > 0 && _state.Notes >= slot.Def.NoteCost)
                     TryCast(index);
+                if (input.HasInput && slot.Def.Effect is IdleStrikeEffect strike)
+                    ReleaseIdleStrike(slot, strike, idleTicksBefore * GameLoop.TickSeconds);
             }
         }
+
+        public double IdleStrikeCharge(int index)
+        {
+            if (index < 0 || index >= _state.Skills.Count || !(_state.Skills[index].Def.Effect is IdleStrikeEffect strike) || !_state.Skills[index].Ready)
+                return 0;
+            var idleSeconds = _state.IdleTicks * GameLoop.TickSeconds;
+            return idleSeconds < strike.MinIdleSeconds ? 0 : ChargeMultiplier(strike, idleSeconds);
+        }
+
+        private void ReleaseIdleStrike(SkillSlot slot, IdleStrikeEffect strike, double idleSeconds)
+        {
+            if (!slot.Ready || idleSeconds < strike.MinIdleSeconds)
+                return;
+            slot.CooldownTicks = Ticks(slot.Def.CooldownSeconds);
+            _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
+            _combat.SkillHit(_combat.BaseKeyDamage, ChargeMultiplier(strike, idleSeconds), slot.Skill.Tags);
+        }
+
+        private static double ChargeMultiplier(IdleStrikeEffect strike, double idleSeconds) =>
+            strike.ChargePerSecond * System.Math.Min(idleSeconds, strike.MaxChargeSeconds);
 
         private void ApplyAura(SkillSlot slot)
         {
