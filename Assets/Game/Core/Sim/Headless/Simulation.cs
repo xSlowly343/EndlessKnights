@@ -11,19 +11,24 @@ namespace Game.Core.Sim.Headless
         private readonly BotProfile _profile;
         private readonly HeroClass _heroClass;
         private readonly ulong _seed;
+        private readonly double _damageMultiplier;
 
-        public Simulation(GameData data, BotProfile profile, HeroClass heroClass = HeroClass.Typist, ulong seed = 1)
+        public Simulation(GameData data, BotProfile profile, HeroClass heroClass = HeroClass.Typist, ulong seed = 1, double damageMultiplier = 1)
         {
             _data = data;
             _profile = profile;
             _heroClass = heroClass;
             _seed = seed;
+            _damageMultiplier = damageMultiplier;
         }
 
         public SimulationResult Run(double seconds, int stopAfterBossFailsInARow = 0)
         {
             var state = new GameState(_seed) { Class = _heroClass };
-            var loop = new GameLoop(_data, new BotInput(_profile, _seed ^ 0x5EEDUL), state, new StatSheet());
+            var hero = new StatSheet();
+            if (_damageMultiplier != 1)
+                hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, _damageMultiplier - 1));
+            var loop = new GameLoop(_data, new BotInput(_profile, _seed ^ 0x5EEDUL), state, hero);
             var records = new List<StageRecord>();
             var totalTicks = (long)System.Math.Round(seconds * GameLoop.TicksPerSecond);
             var stageStartTick = 0L;

@@ -36,7 +36,7 @@ namespace Game.Sim
 
             var profile = new BotProfile(options.KeysPerSecond, options.ClicksPerSecond, options.MousePxPerSecond);
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            var result = new Simulation(data, profile, options.HeroClass, options.Seed).Run(options.Hours * 3600, options.StopAfterFails);
+            var result = new Simulation(data, profile, options.HeroClass, options.Seed, options.DamageMultiplier).Run(options.Hours * 3600, options.StopAfterFails);
             watch.Stop();
 
             if (options.OutFile == null)

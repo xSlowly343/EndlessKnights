@@ -8,7 +8,7 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class typist|bard] [--seed 1] [--stop-after-fails 0] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class typist|bard] [--seed 1] [--damage 1] [--stop-after-fails 0] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
@@ -17,6 +17,7 @@ namespace Game.Sim
         public HeroClass HeroClass { get; private set; } = HeroClass.Typist;
         public ulong Seed { get; private set; } = 1;
         public int StopAfterFails { get; private set; }
+        public double DamageMultiplier { get; private set; } = 1;
         public string? DataFolder { get; private set; }
         public string? OutFile { get; private set; }
 
@@ -36,6 +37,7 @@ namespace Game.Sim
                     case "--hours": options.Hours = Number(value); break;
                     case "--class": options.HeroClass = Class(value); break;
                     case "--seed": options.Seed = ulong.Parse(value, CultureInfo.InvariantCulture); break;
+                    case "--damage": options.DamageMultiplier = Number(value); break;
                     case "--stop-after-fails": options.StopAfterFails = int.Parse(value, CultureInfo.InvariantCulture); break;
                     case "--data": options.DataFolder = value; break;
                     case "--out": options.OutFile = value; break;
