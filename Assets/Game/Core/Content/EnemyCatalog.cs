@@ -40,6 +40,8 @@ namespace Game.Core.Content
 
         public EnemyDef this[string id] => _byId[id];
 
+        public bool TryGet(string id, out EnemyDef enemy) => _byId.TryGetValue(id, out enemy!);
+
         public IReadOnlyList<EnemyDef> Normals(string biome) =>
             _normalsByBiome.TryGetValue(biome, out var normals) ? normals : (IReadOnlyList<EnemyDef>)Array.Empty<EnemyDef>();
 

@@ -41,7 +41,9 @@ namespace Game.Core.Sim
 
         public void EnsureEnemy()
         {
-            if (!_state.EnemyAlive)
+            if (_state.EnemyAlive)
+                ApplyEnemyModifiers(_state.Enemy);
+            else
                 SpawnNext();
         }
 

@@ -6,6 +6,8 @@ namespace Game.Core.Content
 {
     public readonly struct ContentNode
     {
+        private const double MaxExactInteger = 9007199254740992d;
+
         private readonly JsonValue _value;
 
         public ContentNode(JsonValue value, string fileName, string path)
@@ -60,6 +62,18 @@ namespace Game.Core.Content
                 throw Error($"expected a whole number, got {Invariant(number)}");
             return (int)number;
         }
+
+        public long AsLong(long min = long.MinValue, long max = long.MaxValue)
+        {
+            var number = AsNumber();
+            if (number != System.Math.Floor(number) || System.Math.Abs(number) > MaxExactInteger)
+                throw Error($"expected a whole number, got {Invariant(number)}");
+            if (number < min || number > max)
+                throw Error($"{Invariant(number)} is outside the allowed range {Invariant(min)}..{Invariant(max)}");
+            return (long)number;
+        }
+
+        public bool IsNull => _value.Kind == JsonKind.Null;
 
         public string AsString()
         {
