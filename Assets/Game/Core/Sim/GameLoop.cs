@@ -1,4 +1,6 @@
+using Game.Core.Content;
 using Game.Core.Input;
+using Game.Core.Stats;
 
 namespace Game.Core.Sim
 {
@@ -11,13 +13,21 @@ namespace Game.Core.Sim
         private const double TimeEpsilon = 1e-9;
 
         private readonly IInputSource _input;
+        private readonly InputRules _inputRules;
+        private readonly CombatSystem _combat;
         private double _pendingSeconds;
 
-        public GameLoop(IInputSource input, GameState state)
+        public GameLoop(GameData data, IInputSource input, GameState state, StatSheet hero)
         {
             _input = input;
             State = state;
+            Hero = hero;
+            _inputRules = new InputRules(data.InputCaps);
+            _combat = new CombatSystem(data.Combat, hero, state, Events);
         }
+
+        public StatSheet Hero { get; }
+        public CombatSystem Combat => _combat;
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -47,9 +57,17 @@ namespace Game.Core.Sim
             return ticks;
         }
 
+        public void UseData(GameData data)
+        {
+            _inputRules.UseCaps(data.InputCaps);
+            _combat.UseRules(data.Combat);
+        }
+
         public void Tick()
         {
             LastInput = _input.Drain();
+            var input = _inputRules.Apply(LastInput);
+            _combat.Tick(input);
             State.Tick++;
         }
     }

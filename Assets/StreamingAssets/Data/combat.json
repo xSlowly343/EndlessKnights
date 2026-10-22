@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "hits": {
+    "keyboard": { "damage": 10 },
+    "click": { "damage": 6 },
+    "mouse": { "damage": 4, "pxPerHit": 400 }
+  }
+}

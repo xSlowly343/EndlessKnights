@@ -10,7 +10,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TenTicksMakeOneSecond()
         {
-            var loop = new GameLoop(new FakeInputSource(), new GameState());
+            var loop = TestWorld.Loop();
 
             var ticks = loop.Advance(1.0);
 
@@ -22,8 +22,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TickRateDoesNotDependOnFrameRate()
         {
-            var at60 = new GameLoop(new FakeInputSource(), new GameState());
-            var at144 = new GameLoop(new FakeInputSource(), new GameState());
+            var at60 = TestWorld.Loop();
+            var at144 = TestWorld.Loop();
 
             for (var frame = 0; frame < 60 * 30; frame++)
                 at60.Advance(1.0 / 60);
@@ -37,7 +37,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SlowFramesRunSeveralTicksAtOnce()
         {
-            var loop = new GameLoop(new FakeInputSource(), new GameState());
+            var loop = TestWorld.Loop();
 
             Assert.That(loop.Advance(0.05), Is.EqualTo(0));
             Assert.That(loop.Advance(0.3), Is.EqualTo(3));
@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void LongHitchIsCappedInsteadOfFreezingTheGame()
         {
-            var loop = new GameLoop(new FakeInputSource(), new GameState());
+            var loop = TestWorld.Loop();
 
             var ticks = loop.Advance(3600);
 
@@ -58,7 +58,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PausedLoopDoesNotTick()
         {
-            var loop = new GameLoop(new FakeInputSource(), new GameState()) { Paused = true };
+            var loop = TestWorld.Loop();
+            loop.Paused = true;
 
             Assert.That(loop.Advance(5), Is.EqualTo(0));
             Assert.That(loop.State.Tick, Is.EqualTo(0));
@@ -71,7 +72,7 @@ namespace Game.Core.Tests.Sim
         public void EachTickDrainsInputOnce()
         {
             var input = new FakeInputSource();
-            var loop = new GameLoop(input, new GameState());
+            var loop = TestWorld.Loop(input);
 
             input.PressKeys(3);
             loop.Tick();
