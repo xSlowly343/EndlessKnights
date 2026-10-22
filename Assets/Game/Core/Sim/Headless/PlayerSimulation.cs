@@ -56,7 +56,7 @@ namespace Game.Core.Sim.Headless
                     if (tick % ActEveryTicks == 0)
                         Act(bot, state, ActEveryTicks * GameLoop.TickSeconds);
                 }
-                OfflineCalculator.Apply(state, offline.Simulate(state, offlineSeconds));
+                loop.ApplyOffline(offline.Simulate(state, offlineSeconds));
                 awaySeconds = offlineSeconds;
                 CountGold(state);
                 records.Add(Record(day, state, _goldTotal - goldBefore));

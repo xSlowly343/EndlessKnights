@@ -8,14 +8,16 @@ namespace Game.Core.Sim
         private readonly GameState _state;
         private readonly EventQueue _events;
         private readonly StageSystem _stages;
+        private readonly StrikeUpgradeSystem _upgrades;
         private PrestigeRules _rules;
 
-        public PrestigeSystem(PrestigeRules rules, GameState state, EventQueue events, StageSystem stages)
+        public PrestigeSystem(PrestigeRules rules, GameState state, EventQueue events, StageSystem stages, StrikeUpgradeSystem upgrades)
         {
             _rules = rules;
             _state = state;
             _events = events;
             _stages = stages;
+            _upgrades = upgrades;
         }
 
         public void UseRules(PrestigeRules rules) => _rules = rules;
@@ -59,6 +61,7 @@ namespace Game.Core.Sim
             _state.Gold = BigNumber.Zero;
             _state.RunGoldEarned = BigNumber.Zero;
             _state.ChainDamage = BigNumber.Zero;
+            _upgrades.Reset();
             _state.SpawnEnemy(null, Content.EnemyType.Normal, BigNumber.Zero);
             _stages.EnsureEnemy();
         }

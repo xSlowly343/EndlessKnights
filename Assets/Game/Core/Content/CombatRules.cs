@@ -5,7 +5,7 @@ namespace Game.Core.Content
         public const string FileName = "combat.json";
         public const int SupportedVersion = 1;
 
-        private CombatRules(double keyDamage, double clickDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, EnergyRules energy, double critChance, double critMultiplier, ClassRules classes, OfflineRules offline, HeroRules hero)
+        private CombatRules(double keyDamage, double clickDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, EnergyRules energy, double critChance, double critMultiplier, ClassRules classes, OfflineRules offline, HeroRules hero, StrikeUpgradeRules strikeUpgrade)
         {
             KeyDamage = keyDamage;
             ClickDamage = clickDamage;
@@ -18,6 +18,7 @@ namespace Game.Core.Content
             Classes = classes;
             Offline = offline;
             Hero = hero;
+            StrikeUpgrade = strikeUpgrade;
         }
 
         public double KeyDamage { get; }
@@ -31,6 +32,7 @@ namespace Game.Core.Content
         public ClassRules Classes { get; }
         public OfflineRules Offline { get; }
         public HeroRules Hero { get; }
+        public StrikeUpgradeRules StrikeUpgrade { get; }
 
         public static CombatRules Load(string json)
         {
@@ -53,7 +55,8 @@ namespace Game.Core.Content
                 crit.Field("multiplier").AsNumber(1, 1000),
                 ClassRules.Read(root.Field("classes")),
                 OfflineRules.Read(root.Field("offline")),
-                HeroRules.Read(root.Field("hero")));
+                HeroRules.Read(root.Field("hero")),
+                StrikeUpgradeRules.Read(root.Field("strikeUpgrade")));
         }
     }
 }

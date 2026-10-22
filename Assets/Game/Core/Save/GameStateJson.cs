@@ -26,6 +26,7 @@ namespace Game.Core.Save
                 ("hero", Object(
                     ("class", JsonValue.Of(HeroClassNames.Of(state.Class))),
                     ("level", JsonValue.Of(state.HeroLevel)),
+                    ("strikeLevel", JsonValue.Of(state.StrikeLevel)),
                     ("xp", JsonValue.Of(state.HeroXp)),
                     ("focus", JsonValue.Of(state.Focus)),
                     ("focusMultiplier", JsonValue.Of(state.FocusMultiplier)),
@@ -106,6 +107,7 @@ namespace Game.Core.Save
                 IdleTicks = hero.Field("idleTicks").AsLong(0),
                 MacroRhythmTicks = hero.Field("macroRhythmTicks").AsLong(0),
                 HeroLevel = hero.Field("level").AsInt(1),
+                StrikeLevel = hero.Field("strikeLevel").AsInt(0),
                 HeroXp = hero.Field("xp").AsNumber(0, 1e300),
                 Combo = hero.Field("combo").AsInt(0),
                 KeyHits = hero.Field("keyHits").AsLong(0),

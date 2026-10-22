@@ -34,6 +34,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(state.Ascendancy.Subclass, Is.Not.Null);
             Assert.That(state.Ascendancy.PointsLeft(TestWorld.Real.Ascendancy), Is.EqualTo(0));
             Assert.That(state.Skills, Is.Not.Empty);
+            Assert.That(state.StrikeLevel, Is.GreaterThan(0));
         }
 
         [Test]

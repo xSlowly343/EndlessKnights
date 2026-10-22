@@ -34,6 +34,7 @@ namespace Game.Core.Sim.Headless
             SpendSubclassPoints();
             PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
+            _loop.Upgrades.BuyMax();
         }
 
         private static StatTags PlayedTags(HeroClass heroClass) =>

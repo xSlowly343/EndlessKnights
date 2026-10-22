@@ -26,5 +26,10 @@
     "xpPerKill": 1,
     "bossXpMultiplier": 10,
     "maxGuardianPoints": 6
+  },
+  "strikeUpgrade": {
+    "cost": { "curve": "exp", "base": 10, "rate": 1.08 },
+    "damagePerLevel": 0.1,
+    "milestone": { "every": 25, "multiplier": 2 }
   }
 }

@@ -29,6 +29,18 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void ApplyingOfflineToARunningLoopBringsTheNextEnemy()
+        {
+            var loop = TestWorld.Loop(state: TestWorld.Classless(new GameState()));
+            var away = new OfflineCalculator(TestWorld.Data, loop.Hero).Simulate(loop.State, 600, BigNumber.FromDouble(50), fightGuardians: false);
+
+            loop.ApplyOffline(away);
+
+            Assert.That(loop.State.EnemyAlive, Is.True);
+            Assert.That(loop.State.Stage, Is.EqualTo(away.StageAfter));
+        }
+
+        [Test]
         public void OfflineTimeIsCapped()
         {
             var rules = TestWorld.Data.Combat.Offline;
