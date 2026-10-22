@@ -171,6 +171,8 @@ namespace Game.Core.Sim
 
         public void RebuildTree()
         {
+            State.Tree.DropUnreachable(_data.Tree);
+            State.OtherPreset.Tree.DropUnreachable(_data.Tree);
             _treeLayer.Set(State.Tree.Modifiers(_data.Tree));
             _skills.RefreshAuras();
         }

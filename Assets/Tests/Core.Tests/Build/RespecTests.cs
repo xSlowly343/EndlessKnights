@@ -43,7 +43,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NodeHoldingThePathCannotBeRefunded()
         {
-            var loop = Typist("t_pen_1", "t_pen_2", "t_pen_3");
+            var loop = Typist("t_pen_1", "t_pen_2", "fluent_writing");
 
             Assert.That(loop.RefundNode("t_pen_2"), Is.EqualTo(RefundResult.BreaksPath));
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(3));
@@ -52,24 +52,24 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NodeWithAnotherRouteCanBeRefunded()
         {
-            var loop = Typist("t_pen_1", "t_pen_2", "t_pen_3", "t_pen_4", "t_combo_1", "t_combo_2", "t_combo_3", "t_combo_4", "t_attr_2=tempo");
+            var loop = Typist("t_pen_1", "t_pen_2", "fluent_writing", "t_pen_3", "t_pen_4");
 
-            Assert.That(loop.RefundNode("t_pen_4"), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.RefundNode("t_pen_2"), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.State.Tree.IsAllocated(TestWorld.Data.Tree, "fluent_writing"), Is.True);
         }
 
         [Test]
         public void DeeperNodesCostMoreAndAttributesCostHalf()
         {
-            var loop = Typist("t_attr_1=tempo", "t_pen_1", "t_pen_2", "t_pen_3", "t_pen_4", "t_combo_1", "t_combo_2", "t_combo_3", "t_combo_4", "t_attr_2=reach");
+            var loop = Typist("t_pen_1", "t_pen_2", "fluent_writing", "t_attr_2=reach");
 
             var shallow = loop.RefundCost("t_pen_1")!.Value;
-            var deep = loop.RefundCost("t_pen_4")!.Value;
+            var deep = loop.RefundCost("fluent_writing")!.Value;
             var attribute = loop.RefundCost("t_attr_2")!.Value;
-            var sameDepthPlain = loop.RefundCost("t_combo_4")!.Value;
 
             Assert.That(deep, Is.GreaterThan(shallow));
-            Assert.That((deep / shallow).ToDouble(), Is.EqualTo(System.Math.Pow(1.3, 3)).Within(1e-9));
-            Assert.That((attribute / sameDepthPlain).ToDouble(), Is.EqualTo(0.5 * 1.3).Within(1e-9));
+            Assert.That((deep / shallow).ToDouble(), Is.EqualTo(System.Math.Pow(1.3, 2)).Within(1e-9));
+            Assert.That((attribute / deep).ToDouble(), Is.EqualTo(0.5).Within(1e-9));
         }
 
         [Test]

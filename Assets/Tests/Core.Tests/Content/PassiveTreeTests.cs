@@ -61,6 +61,41 @@ namespace Game.Core.Tests.Content
             Assert.That(tree["only_music"].Type, Is.EqualTo(TreeNodeType.Keystone));
         }
 
+        [TestCase("typist")]
+        [TestCase("bard")]
+        [TestCase("hermit")]
+        public void EveryClassReachesEveryNodeWithoutCrossingAnotherStart(string className)
+        {
+            var tree = PassiveTree.Load(RealFile());
+            var start = tree.StartOf(className)!;
+            var reached = new System.Collections.Generic.HashSet<TreeNodeDef> { start };
+            var queue = new System.Collections.Generic.Queue<TreeNodeDef>();
+            queue.Enqueue(start);
+            while (queue.Count > 0)
+            {
+                foreach (var next in queue.Dequeue().Neighbours)
+                {
+                    if (next.Type == TreeNodeType.Start || next.Locked || !reached.Add(next))
+                        continue;
+                    queue.Enqueue(next);
+                }
+            }
+
+            var missing = tree.Nodes.Where(node => node.Type != TreeNodeType.Start && !node.Locked && !reached.Contains(node)).Select(node => node.Id);
+            Assert.That(missing, Is.Empty);
+        }
+
+        [Test]
+        public void HermitStartSitsInsideAnInnerRing()
+        {
+            var tree = PassiveTree.Load(RealFile());
+            var hermit = tree.StartOf("hermit")!;
+
+            Assert.That(hermit.Neighbours.Count, Is.EqualTo(5));
+            foreach (var ringNode in hermit.Neighbours)
+                Assert.That(ringNode.Neighbours.Count(n => hermit.Neighbours.Contains(n)), Is.EqualTo(2), ringNode.Id);
+        }
+
         [Test]
         public void LinksGoBothWays()
         {
@@ -99,7 +134,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void TreeMustBeOnePiece()
         {
-            var error = Assert.Throws<ContentException>(() => PassiveTree.Load(RealFile().Replace("    [\"unstoppable\", \"one_handed\"],\n", "")))!;
+            var error = Assert.Throws<ContentException>(() => PassiveTree.Load(RealFile().Replace("    [\"t_combo_small\", \"one_handed\"],\n", "")))!;
 
             Assert.That(error.Message, Does.Contain("node 'one_handed' cannot be reached"));
         }

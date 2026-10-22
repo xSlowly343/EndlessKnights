@@ -57,7 +57,7 @@ namespace Game.Core.Tests.Build
         {
             var loop = Typist(5);
 
-            foreach (var id in new[] { "t_pen_1", "t_pen_2", "t_pen_3", "t_pen_4", "fluent_writing" })
+            foreach (var id in new[] { "t_pen_1", "t_pen_2", "fluent_writing", "t_pen_3", "t_pen_4" })
                 Assert.That(loop.AllocateNode(id), Is.EqualTo(AllocationResult.Allocated), id);
             Assert.That(loop.AllocateNode("pen_mastery", masteryOption: 0), Is.EqualTo(AllocationResult.NoPoints));
         }
@@ -102,21 +102,22 @@ namespace Game.Core.Tests.Build
                 loop.AllocateNode(id);
 
             Assert.That(loop.AllocateNode("t_jewel"), Is.EqualTo(AllocationResult.Locked));
-            Assert.That(loop.AllocateNode("hermit_start"), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateNode("hermit_start"), Is.EqualTo(AllocationResult.Locked));
             Assert.That(loop.AllocateNode("no_such_node"), Is.EqualTo(AllocationResult.UnknownNode));
             Assert.That(loop.AllocateNode("unstoppable"), Is.EqualTo(AllocationResult.AlreadyAllocated));
         }
 
         [Test]
-        public void OtherClassStartsArePassableNodes()
+        public void InnerRingGoesAroundTheHermitStart()
         {
             var loop = Typist(4);
 
             loop.AllocateNode("t_attr_1", attribute: "tempo");
             loop.AllocateNode("c_attr_tempo", attribute: "tempo");
 
-            Assert.That(loop.AllocateNode("hermit_start"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("hermit_start"), Is.EqualTo(AllocationResult.Locked));
             Assert.That(loop.AllocateNode("c_attr_reach", attribute: "reach"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("c_exit"), Is.EqualTo(AllocationResult.Allocated));
         }
 
         [Test]
@@ -126,7 +127,8 @@ namespace Game.Core.Tests.Build
             loop.State.Tree.PointsEarned = 1;
 
             Assert.That(loop.AllocateNode("t_pen_1"), Is.EqualTo(AllocationResult.NotConnected));
-            Assert.That(loop.AllocateNode("b_melody_1"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("b_melody_1"), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateNode("b_ensemble_1"), Is.EqualTo(AllocationResult.Allocated));
         }
 
         [Test]
@@ -145,6 +147,21 @@ namespace Game.Core.Tests.Build
             Assert.That(loaded.State.Tree.AttributeChoices["t_attr_1"], Is.EqualTo("tempo"));
             Assert.That(KeyDamage(loaded), Is.EqualTo(112).Within(1e-9));
             Assert.That(hero.Compute(PassiveTree.AttributeStat("tempo"), BigNumber.Zero).ToDouble(), Is.EqualTo(5));
+        }
+
+        [Test]
+        public void NodesCutOffByATreeChangeAreRefundedOnLoad()
+        {
+            var state = new GameState { Class = HeroClass.Typist };
+            state.Tree.Restore("t_pen_1", null, null);
+            state.Tree.Restore("t_pen_3", null, null);
+            state.Tree.Restore("removed_node", null, null);
+            state.OtherPreset.Tree.Restore("chorus", null, null);
+
+            var loop = TestWorld.Loop(state: state);
+
+            Assert.That(loop.State.Tree.Allocated, Is.EquivalentTo(new[] { "t_pen_1" }));
+            Assert.That(loop.State.OtherPreset.Tree.Allocated, Is.Empty);
         }
 
         [Test]

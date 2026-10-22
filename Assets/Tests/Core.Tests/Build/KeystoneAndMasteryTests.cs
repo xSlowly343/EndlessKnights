@@ -20,8 +20,11 @@ namespace Game.Core.Tests.Build
             loop.State.Tree.PointsEarned = 46;
             foreach (var step in path)
             {
-                var parts = step.Split(':');
-                var result = parts.Length == 2 ? loop.AllocateNode(parts[0], masteryOption: int.Parse(parts[1])) : loop.AllocateNode(step);
+                var mastery = step.Split(':');
+                var attribute = step.Split('=');
+                var result = mastery.Length == 2 ? loop.AllocateNode(mastery[0], masteryOption: int.Parse(mastery[1]))
+                    : attribute.Length == 2 ? loop.AllocateNode(attribute[0], attribute: attribute[1])
+                    : loop.AllocateNode(step);
                 Assert.That(result, Is.EqualTo(AllocationResult.Allocated), step);
             }
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 30));
@@ -30,9 +33,9 @@ namespace Game.Core.Tests.Build
         }
 
         private static readonly string[] ToOneHanded = { "t_combo_1", "t_combo_2", "t_combo_3", "t_combo_4", "t_combo_small", "unstoppable", "one_handed" };
-        private static readonly string[] ToPenMastery = { "t_pen_1", "t_pen_2", "t_pen_3", "t_pen_4", "fluent_writing" };
+        private static readonly string[] ToPenMastery = { "t_pen_1", "t_pen_2", "fluent_writing", "t_pen_3", "t_pen_4" };
         private static readonly string[] ToOnlyMusic = { "b_ensemble_1", "b_ensemble_2", "b_ensemble_3", "b_ensemble_4", "b_ensemble_small", "clan_voice", "only_music" };
-        private static readonly string[] ToMelodyMastery = { "b_melody_1", "b_melody_2", "b_melody_3", "b_melody_4", "chorus" };
+        private static readonly string[] ToMelodyMastery = { "b_attr_3=precision", "b_melody_1", "b_melody_2", "chorus", "b_melody_3" };
 
         private static string[] With(string[] path, string last) => System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Append(path, last));
 
@@ -142,7 +145,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void MelodyNodesStretchAuraDuration()
         {
-            var (loop, _) = Hero(HeroClass.Bard, "b_melody_1", "b_melody_2");
+            var (loop, _) = Hero(HeroClass.Bard, "b_attr_3=tempo", "b_melody_1", "b_melody_2");
             loop.Skills.Equip(TestWorld.Data.Gems["march"]);
             loop.State.Notes = 4;
 
@@ -155,7 +158,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EveryTenthKeyHitsFiveTimesHarder()
         {
-            var (typist, typistInput) = Hero(HeroClass.Typist, "t_heavy_1", "t_heavy_2", "t_heavy_3", "t_heavy_4", "t_heavy_small", "every_tenth");
+            var (typist, typistInput) = Hero(HeroClass.Typist, "t_heavy_1", "t_heavy_2", "every_tenth", "t_heavy_3", "t_heavy_4", "t_heavy_small");
 
             for (var i = 0; i < 10; i++)
             {
@@ -209,7 +212,7 @@ namespace Game.Core.Tests.Build
         {
             var (hermit, hermitInput) = Hero(HeroClass.Typist);
             hermit.State.Tree = new TreeAllocation("hermit") { PointsEarned = 10 };
-            foreach (var id in new[] { "c_silence_1", "c_silence_2", "c_silence_3", "c_silence_4", "quiet_strength" })
+            foreach (var id in new[] { "c_silence_1", "c_silence_2", "quiet_strength", "c_silence_3", "c_silence_4" })
                 Assert.That(hermit.AllocateNode(id), Is.EqualTo(AllocationResult.Allocated), id);
             hermit.Skills.Equip(TestWorld.Data.Gems["lull"]);
 

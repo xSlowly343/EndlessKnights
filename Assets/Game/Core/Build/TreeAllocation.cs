@@ -35,7 +35,7 @@ namespace Game.Core.Build
                 return AllocationResult.UnknownNode;
             if (IsAllocated(tree, nodeId))
                 return AllocationResult.AlreadyAllocated;
-            if (node.Locked)
+            if (node.Locked || node.Type == TreeNodeType.Start)
                 return AllocationResult.Locked;
             if (PointsLeft <= 0)
                 return AllocationResult.NoPoints;
@@ -93,6 +93,35 @@ namespace Game.Core.Build
                 }
             }
             return reached.Count == _allocated.Count;
+        }
+
+        public int DropUnreachable(PassiveTree tree)
+        {
+            var start = tree.StartOf(StartClass);
+            var reached = new HashSet<string>(StringComparer.Ordinal);
+            if (start != null)
+            {
+                var queue = new Queue<TreeNodeDef>();
+                queue.Enqueue(start);
+                while (queue.Count > 0)
+                {
+                    foreach (var next in queue.Dequeue().Neighbours)
+                    {
+                        if (!_allocated.Contains(next.Id) || next.Locked || next.Type == TreeNodeType.Start || !reached.Add(next.Id))
+                            continue;
+                        queue.Enqueue(next);
+                    }
+                }
+            }
+            var dropped = new List<string>();
+            foreach (var id in _allocated)
+            {
+                if (!reached.Contains(id))
+                    dropped.Add(id);
+            }
+            foreach (var id in dropped)
+                Remove(id);
+            return dropped.Count;
         }
 
         public void Remove(string nodeId)
