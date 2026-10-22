@@ -18,6 +18,7 @@ namespace Game.Core.Sim
         private readonly EnergySystem _energy;
         private readonly CombatSystem _combat;
         private readonly StageSystem _stage;
+        private readonly LootSystem _loot;
         private double _pendingSeconds;
 
         public GameLoop(GameData data, IInputSource input, GameState state, StatSheet hero)
@@ -29,7 +30,8 @@ namespace Game.Core.Sim
             _focus = new FocusSystem(data.Combat.Focus, state);
             _energy = new EnergySystem(data.Combat.Energy, state);
             _combat = new CombatSystem(data.Combat, hero, state, Events);
-            _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events);
+            _loot = new LootSystem(data.Stages, hero, state, Events);
+            _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot);
             _combat.OnKill(_stage);
             _stage.EnsureEnemy();
         }
@@ -39,6 +41,7 @@ namespace Game.Core.Sim
         public StageSystem Stages => _stage;
         public FocusSystem Focus => _focus;
         public EnergySystem Energy => _energy;
+        public LootSystem Loot => _loot;
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -75,6 +78,7 @@ namespace Game.Core.Sim
             _energy.UseRules(data.Combat.Energy);
             _combat.UseRules(data.Combat);
             _stage.UseData(data.Stages, data.Enemies);
+            _loot.UseData(data.Stages);
         }
 
         public void Tick()

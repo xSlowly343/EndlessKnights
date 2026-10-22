@@ -26,6 +26,9 @@ namespace Game.Core.Sim
         public BigNumber EnemyHp { get; set; }
         public BigNumber EnemyMaxHp { get; private set; }
 
+        public BigNumber Gold { get; set; }
+        public BigNumber RunGoldEarned { get; set; }
+
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;
         public double Energy { get; set; }
