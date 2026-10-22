@@ -5,7 +5,17 @@ namespace Game.Core.Sim
 {
     public sealed class GameState
     {
+        public GameState(ulong seed = 1)
+        {
+            Rng = new Rng(seed);
+        }
+
         public long Tick { get; set; }
+        public Rng Rng { get; set; }
+
+        public long Stage { get; set; } = 1;
+        public long HighestStage { get; set; } = 1;
+        public int KillsOnStage { get; set; }
 
         public EnemyDef? Enemy { get; private set; }
         public EnemyType EnemyType { get; private set; }
@@ -18,6 +28,7 @@ namespace Game.Core.Sim
 
         public double ElapsedSeconds => Tick * GameLoop.TickSeconds;
         public bool EnemyAlive => EnemyHp.Sign > 0;
+        public bool FightingBoss => EnemyType != EnemyType.Normal;
 
         public void SpawnEnemy(EnemyDef? enemy, EnemyType type, BigNumber hp)
         {

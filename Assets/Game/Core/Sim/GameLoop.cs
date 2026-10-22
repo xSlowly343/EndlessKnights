@@ -15,6 +15,7 @@ namespace Game.Core.Sim
         private readonly IInputSource _input;
         private readonly InputRules _inputRules;
         private readonly CombatSystem _combat;
+        private readonly StageSystem _stage;
         private double _pendingSeconds;
 
         public GameLoop(GameData data, IInputSource input, GameState state, StatSheet hero)
@@ -24,6 +25,9 @@ namespace Game.Core.Sim
             Hero = hero;
             _inputRules = new InputRules(data.InputCaps);
             _combat = new CombatSystem(data.Combat, hero, state, Events);
+            _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events);
+            _combat.OnKill(_stage);
+            _stage.EnsureEnemy();
         }
 
         public StatSheet Hero { get; }
@@ -61,6 +65,7 @@ namespace Game.Core.Sim
         {
             _inputRules.UseCaps(data.InputCaps);
             _combat.UseRules(data.Combat);
+            _stage.UseData(data.Stages, data.Enemies);
         }
 
         public void Tick()

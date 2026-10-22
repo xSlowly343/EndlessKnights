@@ -20,6 +20,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input, hero: hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(hp));
+            loop.Events.Clear();
             return (loop, input);
         }
 
