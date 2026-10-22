@@ -108,6 +108,18 @@ namespace Game.Core.Tests.Content
             Assert.That(reached, Is.EquivalentTo(around), "every exit of a start is linked to the others without the start itself");
         }
 
+        [TestCase("typist")]
+        [TestCase("bard")]
+        public void NoRoadFromTheCentreRunsIntoAClassStart(string className)
+        {
+            var tree = PassiveTree.Load(RealFile());
+            var start = tree.StartOf(className)!;
+            var startRadius = System.Math.Sqrt(start.X * start.X + start.Y * start.Y);
+
+            foreach (var exit in start.Neighbours)
+                Assert.That(System.Math.Sqrt(exit.X * exit.X + exit.Y * exit.Y), Is.GreaterThan(startRadius), exit.Id);
+        }
+
         [Test]
         public void HermitReachesTheOtherSectorsInAFewSteps()
         {

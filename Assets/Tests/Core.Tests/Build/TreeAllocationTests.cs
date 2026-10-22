@@ -78,6 +78,7 @@ namespace Game.Core.Tests.Build
         {
             var loop = Typist(3);
 
+            loop.AllocateNode("t_pen_1");
             Assert.That(loop.AllocateNode("t_attr_1"), Is.EqualTo(AllocationResult.ChoiceRequired));
             Assert.That(loop.AllocateNode("t_attr_1", attribute: "luck"), Is.EqualTo(AllocationResult.BadChoice));
             Assert.That(loop.AllocateNode("t_attr_1", attribute: "precision"), Is.EqualTo(AllocationResult.Allocated));
@@ -110,8 +111,9 @@ namespace Game.Core.Tests.Build
         [Test]
         public void InnerRingGoesAroundTheHermitStart()
         {
-            var loop = Typist(4);
+            var loop = Typist(5);
 
+            loop.AllocateNode("t_pen_1");
             loop.AllocateNode("t_attr_1", attribute: "tempo");
             loop.AllocateNode("c_attr_tempo", attribute: "tempo");
 
