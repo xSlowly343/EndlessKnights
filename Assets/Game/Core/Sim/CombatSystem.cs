@@ -12,6 +12,7 @@ namespace Game.Core.Sim
         private readonly ClassMechanics _class;
         private CombatRules _rules;
         private IKillHandler? _kills;
+        private IKeyHitListener? _keyHits;
 
         public CombatSystem(CombatRules rules, StatSheet hero, GameState state, EventQueue events)
         {
@@ -32,6 +33,8 @@ namespace Game.Core.Sim
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
+
+        public void OnKeyHit(IKeyHitListener keyHits) => _keyHits = keyHits;
 
         public void Tick(in EffectiveInput input)
         {
@@ -76,6 +79,8 @@ namespace Game.Core.Sim
             _state.EnemyHp -= damage;
             LastTickDamage += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
+            if (source == DamageSource.Keyboard)
+                _keyHits?.OnKeyHit(damage);
             if (_state.EnemyAlive)
                 return;
 

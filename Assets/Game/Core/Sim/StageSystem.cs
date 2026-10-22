@@ -134,6 +134,21 @@ namespace Game.Core.Sim
             _state.SpawnEnemy(enemy, type, hp);
             ApplyEnemyModifiers(enemy);
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemySpawned, _state.Tick, _state.Stage, enemy));
+            ApplyChainDamage();
+        }
+
+        private void ApplyChainDamage()
+        {
+            var damage = _state.ChainDamage;
+            if (damage.Sign <= 0)
+                return;
+            _state.ChainDamage = BigNumber.Zero;
+            _state.EnemyHp -= damage;
+            _events.Add(GameEvent.Damage(_state.Tick, damage, DamageSource.Skill, HitFlags.None));
+            if (_state.EnemyAlive)
+                return;
+            _state.EnemyHp = BigNumber.Zero;
+            OnEnemyKilled();
         }
 
         private void ApplyEnemyModifiers(EnemyDef? enemy)

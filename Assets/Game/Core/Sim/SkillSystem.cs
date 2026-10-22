@@ -1,11 +1,12 @@
 using System;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
+using Game.Core.Math;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
 {
-    public sealed class SkillSystem
+    public sealed class SkillSystem : IKeyHitListener
     {
         private readonly GameState _state;
         private readonly EventQueue _events;
@@ -61,8 +62,21 @@ namespace Game.Core.Sim
             var cooldown = skill.CooldownSeconds * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
             slot.CooldownTicks = Ticks(cooldown);
             slot.ActiveTicks = Ticks(skill.DurationSeconds);
+            if (skill.Effect is ChainHitsEffect chain)
+                slot.HitsLeft = chain.Hits;
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             return CastResult.Cast;
+        }
+
+        public void OnKeyHit(BigNumber damage)
+        {
+            foreach (var slot in _state.Skills)
+            {
+                if (slot.HitsLeft <= 0 || !(slot.Def.Effect is ChainHitsEffect chain))
+                    continue;
+                slot.HitsLeft--;
+                _state.ChainDamage += damage * chain.NextEnemyShare;
+            }
         }
 
         public void Tick()
