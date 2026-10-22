@@ -37,16 +37,7 @@ namespace Game.Bootstrap
                 return null;
             var result = new OfflineCalculator(_data, _loop.Hero).Simulate(_loop.State, awaySeconds);
             _loop.ApplyOffline(result);
-            if (result.Kills > 0)
-                _view.ShowNotice(OfflineText(result));
             return result;
-        }
-
-        private static string OfflineText(OfflineResult result)
-        {
-            var gold = NumberFormatter.Format(result.Gold, NumberFormatSettings.Default);
-            var stages = result.StageAfter > result.StageBefore ? $", этап {result.StageBefore} → {result.StageAfter}" : string.Empty;
-            return $"Пока тебя не было: +{gold} золота, {result.Kills} врагов{stages}";
         }
 
         public void UseData(GameData data)

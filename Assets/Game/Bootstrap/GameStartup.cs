@@ -1,4 +1,6 @@
 using Game.Core.Input;
+using Game.Core.Math;
+using Game.Core.Sim;
 using Game.Platform.Windows.Input;
 using Game.Platform.Windows.Instance;
 using Game.Platform.Windows.Tray;
@@ -87,7 +89,7 @@ namespace Game.Bootstrap
                 var save = SaveDriver.TryLoad(data.Current);
                 var battle = BattleDriver.Attach(host, data.Current, observedInput, save?.State);
                 if (save != null)
-                    battle.ApplyOffline(save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
+                    ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
             }
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer);
@@ -96,6 +98,13 @@ namespace Game.Bootstrap
             var tray = TrayIcon.Create(Application.productName);
             if (tray != null)
                 TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug, panelMode);
+        }
+
+        private static void ReportOffline(BattleDriver battle, PanelModeDriver panelMode, double awaySeconds)
+        {
+            var result = battle.ApplyOffline(awaySeconds);
+            if (result != null && OfflineReport.ShouldShow(awaySeconds, result))
+                panelMode.OpenReport(OfflineReport.Title, OfflineReport.Lines(awaySeconds, result, NumberFormatSettings.Default));
         }
     }
 }

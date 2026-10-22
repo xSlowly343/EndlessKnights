@@ -10,17 +10,28 @@ namespace Game.Presentation.Strip
         public const float PanelHeightPx = 560f;
         public const float GapPx = 16f;
         public const int PanelCount = 3;
+        public const float ReportHeightPx = 340f;
+        public const int MaxReportLines = 7;
 
         public static readonly float AreaWidthPx = PanelCount * PanelWidthPx + (PanelCount + 1) * GapPx;
         public static readonly float AreaHeightPx = PanelHeightPx + 2 * GapPx;
+        public static readonly float ReportAreaWidthPx = PanelWidthPx + 2 * GapPx;
+        public static readonly float ReportAreaHeightPx = ReportHeightPx + 2 * GapPx;
 
         private static readonly Color FrameColor = new Color(0.12f, 0.1f, 0.11f, 1f);
         private static readonly Color TitleColor = new Color(0.62f, 0.12f, 0.12f, 1f);
         private static readonly Color CloseColor = new Color(0.45f, 0.08f, 0.08f, 1f);
+        private static readonly Color ClaimColor = new Color(0.2f, 0.5f, 0.2f, 1f);
+        private static readonly Color LineColor = new Color(0.92f, 0.9f, 0.85f, 1f);
         private static readonly string[] Titles = { "Статистика", "Герой", "Дерево" };
 
         private readonly List<StripButton> _closeButtons = new List<StripButton>();
         private readonly List<StripButton> _bodies = new List<StripButton>();
+        private readonly List<TextMesh> _reportLines = new List<TextMesh>();
+        private Transform _report = null!;
+        private StripButton _reportBody = null!;
+        private StripButton _claimButton = null!;
+        private TextMesh _reportTitle = null!;
 
         public event Action? CloseRequested;
 
@@ -37,7 +48,18 @@ namespace Game.Presentation.Strip
 
         public void Show(bool aboveStrip)
         {
+            SetPanelsVisible(true);
             Arrange(aboveStrip);
+            gameObject.SetActive(true);
+        }
+
+        public void ShowReport(string title, IReadOnlyList<string> lines, bool aboveStrip)
+        {
+            SetPanelsVisible(false);
+            _reportTitle.text = title;
+            for (var i = 0; i < _reportLines.Count; i++)
+                _reportLines[i].text = i < lines.Count ? lines[i] : string.Empty;
+            ArrangeReport(aboveStrip);
             gameObject.SetActive(true);
         }
 
@@ -47,6 +69,13 @@ namespace Game.Presentation.Strip
         {
             if (!IsOpen)
                 return false;
+            if (_claimButton.Contains(worldPoint))
+            {
+                CloseRequested?.Invoke();
+                return true;
+            }
+            if (_reportBody.Contains(worldPoint))
+                return true;
             foreach (var close in _closeButtons)
             {
                 if (close.Contains(worldPoint))
@@ -78,6 +107,53 @@ namespace Game.Presentation.Strip
                 _bodies.Add(body);
                 _closeButtons.Add(close);
             }
+            BuildReport();
+        }
+
+        private void BuildReport()
+        {
+            _report = new GameObject("Report").transform;
+            _report.SetParent(transform, false);
+            _reportBody = StripButton.Create("Body", FrameColor, Vector2.zero, Vector2.one, _report);
+            _reportBody.GetComponent<SpriteRenderer>().sortingOrder = 5;
+            var titleBar = StripButton.Create("Title", TitleColor, Vector2.zero, Vector2.one, _report);
+            titleBar.GetComponent<SpriteRenderer>().sortingOrder = 6;
+            _claimButton = StripButton.Create("Claim", ClaimColor, Vector2.zero, Vector2.one, _report);
+            _claimButton.GetComponent<SpriteRenderer>().sortingOrder = 6;
+            _reportTitle = StripText.Create("TitleText", string.Empty, Vector2.zero, 0.22f, TextAnchor.MiddleCenter, Color.white, _report, 8);
+            StripText.Create("ClaimText", "Забрать", Vector2.zero, 0.22f, TextAnchor.MiddleCenter, Color.white, _report, 8);
+            for (var i = 0; i < MaxReportLines; i++)
+                _reportLines.Add(StripText.Create("Line " + i, string.Empty, Vector2.zero, 0.17f, TextAnchor.MiddleLeft, LineColor, _report, 8));
+        }
+
+        private void SetPanelsVisible(bool visible)
+        {
+            for (var i = 0; i < PanelCount; i++)
+                transform.GetChild(i).gameObject.SetActive(visible);
+            _report.gameObject.SetActive(!visible);
+        }
+
+        private void ArrangeReport(bool aboveStrip)
+        {
+            var pixelsPerUnit = StripSpace.BaseHeightPx / StripSpace.Height;
+            var width = PanelWidthPx / pixelsPerUnit;
+            var height = ReportHeightPx / pixelsPerUnit;
+            var gap = GapPx / pixelsPerUnit;
+            var titleHeight = 40f / pixelsPerUnit;
+            var lineHeight = 32f / pixelsPerUnit;
+            var claimSize = new Vector2(160f / pixelsPerUnit, 40f / pixelsPerUnit);
+            var bottom = aboveStrip ? StripSpace.Height + gap : -gap - height;
+            var centre = new Vector2(gap + width / 2f, bottom + height / 2f);
+            Place(_report.Find("Body"), centre, new Vector2(width, height));
+            var titleCentre = new Vector2(centre.x, bottom + height - titleHeight / 2f);
+            Place(_report.Find("Title"), titleCentre, new Vector2(width, titleHeight));
+            _report.Find("TitleText").position = titleCentre;
+            var claimCentre = new Vector2(centre.x, bottom + gap + claimSize.y / 2f);
+            Place(_report.Find("Claim"), claimCentre, claimSize);
+            _report.Find("ClaimText").position = claimCentre;
+            var firstLineY = bottom + height - titleHeight - gap - lineHeight / 2f;
+            for (var i = 0; i < _reportLines.Count; i++)
+                _reportLines[i].transform.position = new Vector2(2f * gap, firstLineY - i * lineHeight);
         }
 
         private void Arrange(bool aboveStrip)
