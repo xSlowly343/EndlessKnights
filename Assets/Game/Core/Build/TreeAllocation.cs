@@ -26,8 +26,18 @@ namespace Game.Core.Build
         public int PointsSpent => _allocated.Count;
         public int PointsLeft => PointsEarned - PointsSpent;
 
-        public bool IsAllocated(PassiveTree tree, string nodeId) =>
-            _allocated.Contains(nodeId) || string.Equals(tree.StartOf(StartClass)?.Id, nodeId, StringComparison.Ordinal);
+        public bool IsAllocated(PassiveTree tree, string nodeId) => _allocated.Contains(nodeId);
+
+        public IReadOnlyList<TreeNodeDef> Allocatable(PassiveTree tree)
+        {
+            var allocatable = new List<TreeNodeDef>();
+            foreach (var node in tree.Nodes)
+            {
+                if (!_allocated.Contains(node.Id) && !node.Locked && node.Type != TreeNodeType.Start && TouchesAllocated(node))
+                    allocatable.Add(node);
+            }
+            return allocatable;
+        }
 
         public AllocationResult Check(PassiveTree tree, string nodeId, string? attribute = null, int? masteryOption = null)
         {
@@ -39,7 +49,7 @@ namespace Game.Core.Build
                 return AllocationResult.Locked;
             if (PointsLeft <= 0)
                 return AllocationResult.NoPoints;
-            if (!TouchesAllocated(tree, node))
+            if (!TouchesAllocated(node))
                 return AllocationResult.NotConnected;
             return CheckChoice(tree, node, attribute, masteryOption);
         }
@@ -69,50 +79,21 @@ namespace Game.Core.Build
 
         public BigNumber? RefundCost(PassiveTree tree, string nodeId, int heroLevel)
         {
-            var start = tree.StartOf(StartClass);
-            if (start == null || !_allocated.Contains(nodeId) || !tree.TryGet(nodeId, out var node))
+            if (!_allocated.Contains(nodeId) || !tree.TryGet(nodeId, out var node))
                 return null;
-            return tree.Respec.NodeCost(tree.DepthFrom(start, node), heroLevel, node.Type == TreeNodeType.Attribute);
+            return tree.Respec.NodeCost(tree.DepthFromNearestStart(node), heroLevel, node.Type == TreeNodeType.Attribute);
         }
 
         public bool CanRemove(PassiveTree tree, string nodeId)
         {
-            var start = tree.StartOf(StartClass);
-            if (start == null || !_allocated.Contains(nodeId))
+            if (!_allocated.Contains(nodeId))
                 return false;
-            var reached = new HashSet<string>(StringComparer.Ordinal) { start.Id };
-            var queue = new Queue<TreeNodeDef>();
-            queue.Enqueue(start);
-            while (queue.Count > 0)
-            {
-                foreach (var next in queue.Dequeue().Neighbours)
-                {
-                    if (next.Id == nodeId || !_allocated.Contains(next.Id) || !reached.Add(next.Id))
-                        continue;
-                    queue.Enqueue(next);
-                }
-            }
-            return reached.Count == _allocated.Count;
+            return Rooted(tree, nodeId).Count == _allocated.Count - 1;
         }
 
         public int DropUnreachable(PassiveTree tree)
         {
-            var start = tree.StartOf(StartClass);
-            var reached = new HashSet<string>(StringComparer.Ordinal);
-            if (start != null)
-            {
-                var queue = new Queue<TreeNodeDef>();
-                queue.Enqueue(start);
-                while (queue.Count > 0)
-                {
-                    foreach (var next in queue.Dequeue().Neighbours)
-                    {
-                        if (!_allocated.Contains(next.Id) || next.Locked || next.Type == TreeNodeType.Start || !reached.Add(next.Id))
-                            continue;
-                        queue.Enqueue(next);
-                    }
-                }
-            }
+            var reached = Rooted(tree, null);
             var dropped = new List<string>();
             foreach (var id in _allocated)
             {
@@ -166,14 +147,35 @@ namespace Game.Core.Build
             return modifiers;
         }
 
-        private bool TouchesAllocated(PassiveTree tree, TreeNodeDef node)
+        private bool TouchesAllocated(TreeNodeDef node)
         {
             foreach (var neighbour in node.Neighbours)
             {
-                if (IsAllocated(tree, neighbour.Id))
+                if (_allocated.Count == 0 ? neighbour.Type == TreeNodeType.Start : _allocated.Contains(neighbour.Id))
                     return true;
             }
             return false;
+        }
+
+        private HashSet<string> Rooted(PassiveTree tree, string? without)
+        {
+            var reached = new HashSet<string>(StringComparer.Ordinal);
+            var queue = new Queue<TreeNodeDef>();
+            foreach (var id in _allocated)
+            {
+                if (id != without && tree.TryGet(id, out var node) && !node.Locked && node.Type != TreeNodeType.Start && PassiveTree.IsStartExit(node) && reached.Add(id))
+                    queue.Enqueue(node);
+            }
+            while (queue.Count > 0)
+            {
+                foreach (var next in queue.Dequeue().Neighbours)
+                {
+                    if (next.Id == without || !_allocated.Contains(next.Id) || next.Locked || next.Type == TreeNodeType.Start || !reached.Add(next.Id))
+                        continue;
+                    queue.Enqueue(next);
+                }
+            }
+            return reached;
         }
 
         private static AllocationResult CheckChoice(PassiveTree tree, TreeNodeDef node, string? attribute, int? masteryOption)

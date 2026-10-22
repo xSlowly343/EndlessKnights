@@ -1,3 +1,4 @@
+using System.Linq;
 using Game.Core.Build;
 using Game.Core.Clock;
 using Game.Core.Content.Tree;
@@ -24,13 +25,18 @@ namespace Game.Core.Tests.Build
         private static double KeyDamage(GameLoop loop) => loop.Hero.Compute(CombatStats.Damage, BigNumber.FromDouble(100), StatTags.Keyboard).ToDouble();
 
         [Test]
-        public void ClassStartIsAllocatedForFree()
+        public void FirstPointLightsUpTheNodesNextToEveryStart()
         {
-            var loop = Typist(0);
+            var loop = Typist(1);
 
-            Assert.That(loop.State.Tree.IsAllocated(Tree, "typist_start"), Is.True);
+            var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id).ToArray();
+
+            var expected = Tree.Nodes.Where(node => node.Type == TreeNodeType.Start).SelectMany(node => node.Neighbours)
+                .Where(node => !node.Locked).Select(node => node.Id).Distinct().OrderBy(id => id).ToArray();
+            Assert.That(offered, Is.EqualTo(expected));
+            Assert.That(offered, Does.Contain("t_pen_1").And.Contain("b_ensemble_1").And.Contain("c_attr_tempo"));
+            Assert.That(loop.State.Tree.IsAllocated(Tree, "typist_start"), Is.False);
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(0));
-            Assert.That(loop.State.Tree.IsAllocated(Tree, "bard_start"), Is.False);
         }
 
         [Test]
@@ -123,14 +129,39 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void BardStartsOnTheBorder()
+        public void AnyClassMayBeginNextToAnyStart()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Bard });
-            loop.State.Tree.PointsEarned = 1;
+            loop.State.Tree.PointsEarned = 2;
 
-            Assert.That(loop.AllocateNode("t_pen_1"), Is.EqualTo(AllocationResult.NotConnected));
-            Assert.That(loop.AllocateNode("b_melody_1"), Is.EqualTo(AllocationResult.NotConnected));
-            Assert.That(loop.AllocateNode("b_ensemble_1"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("t_combo_1"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("b_ensemble_1"), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateNode("t_combo_2"), Is.EqualTo(AllocationResult.Allocated));
+        }
+
+        [Test]
+        public void AfterTheFirstNodeOnlyItsNeighboursAreOffered()
+        {
+            var loop = Typist(5);
+            loop.AllocateNode("t_combo_1");
+
+            var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id);
+
+            Assert.That(offered, Is.EqualTo(new[] { "t_combo_2", "t_heavy_1", "t_pen_1" }));
+        }
+
+        [Test]
+        public void FirstNodeCanBeRefundedAndTheChoiceOpensAgain()
+        {
+            var loop = Typist(3);
+            loop.State.Gold = Game.Core.Math.BigNumber.FromDouble(1e9);
+            loop.AllocateNode("t_combo_1");
+            loop.AllocateNode("t_combo_2");
+
+            Assert.That(loop.RefundNode("t_combo_1"), Is.EqualTo(RefundResult.BreaksPath));
+            Assert.That(loop.RefundNode("t_combo_2"), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.RefundNode("t_combo_1"), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.State.Tree.Allocatable(Tree).Count, Is.GreaterThan(5));
         }
 
         [Test]

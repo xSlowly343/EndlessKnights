@@ -50,11 +50,27 @@ namespace Game.Core.Content.Tree
 
         public TreeNodeDef? StartOf(string className) => _startByClass.TryGetValue(className, out var start) ? start : null;
 
-        public int DepthFrom(TreeNodeDef start, TreeNodeDef target)
+        public static bool IsStartExit(TreeNodeDef node)
         {
-            var depth = new Dictionary<TreeNodeDef, int> { [start] = 0 };
+            foreach (var neighbour in node.Neighbours)
+            {
+                if (neighbour.Type == TreeNodeType.Start)
+                    return true;
+            }
+            return false;
+        }
+
+        public int DepthFromNearestStart(TreeNodeDef target)
+        {
+            var depth = new Dictionary<TreeNodeDef, int>();
             var queue = new Queue<TreeNodeDef>();
-            queue.Enqueue(start);
+            foreach (var node in Nodes)
+            {
+                if (node.Type != TreeNodeType.Start)
+                    continue;
+                depth[node] = 0;
+                queue.Enqueue(node);
+            }
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
@@ -62,7 +78,7 @@ namespace Game.Core.Content.Tree
                     return depth[node];
                 foreach (var next in node.Neighbours)
                 {
-                    if (depth.ContainsKey(next))
+                    if (depth.ContainsKey(next) || next.Type == TreeNodeType.Start)
                         continue;
                     depth[next] = depth[node] + 1;
                     queue.Enqueue(next);
