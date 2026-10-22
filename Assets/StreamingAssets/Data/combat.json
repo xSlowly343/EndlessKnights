@@ -13,5 +13,6 @@
     "resetAfterIdleSeconds": 3,
     "macroRhythm": { "cvBelow": 0.05, "afterSeconds": 60 }
   },
-  "energy": { "perKey": 1, "perClick": 1, "mousePxPerPoint": 200, "max": 100 }
+  "energy": { "perKey": 1, "perClick": 1, "mousePxPerPoint": 200, "max": 100 },
+  "crit": { "chance": 0.05, "multiplier": 2 }
 }

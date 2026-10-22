@@ -18,6 +18,8 @@ namespace Game.Core.Tests.Sim
         private static (GameLoop Loop, FakeInputSource Input) LoopWithEnemy(double hp, StatSheet? hero = null)
         {
             var input = new FakeInputSource();
+            hero ??= new StatSheet();
+            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             var loop = TestWorld.Loop(input, hero: hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(hp));
             loop.Events.Clear();

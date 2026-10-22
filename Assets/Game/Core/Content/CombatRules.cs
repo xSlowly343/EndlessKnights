@@ -5,7 +5,7 @@ namespace Game.Core.Content
         public const string FileName = "combat.json";
         public const int SupportedVersion = 1;
 
-        private CombatRules(double keyDamage, double clickDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, EnergyRules energy)
+        private CombatRules(double keyDamage, double clickDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, EnergyRules energy, double critChance, double critMultiplier)
         {
             KeyDamage = keyDamage;
             ClickDamage = clickDamage;
@@ -13,6 +13,8 @@ namespace Game.Core.Content
             MousePxPerHit = mousePxPerHit;
             Focus = focus;
             Energy = energy;
+            CritChance = critChance;
+            CritMultiplier = critMultiplier;
         }
 
         public double KeyDamage { get; }
@@ -21,6 +23,8 @@ namespace Game.Core.Content
         public double MousePxPerHit { get; }
         public FocusRules Focus { get; }
         public EnergyRules Energy { get; }
+        public double CritChance { get; }
+        public double CritMultiplier { get; }
 
         public static CombatRules Load(string json)
         {
@@ -31,13 +35,16 @@ namespace Game.Core.Content
 
             var hits = root.Field("hits");
             var mouse = hits.Field("mouse");
+            var crit = root.Field("crit");
             return new CombatRules(
                 hits.Field("keyboard").Field("damage").AsNumber(0, 1e6),
                 hits.Field("click").Field("damage").AsNumber(0, 1e6),
                 mouse.Field("damage").AsNumber(0, 1e6),
                 mouse.Field("pxPerHit").AsNumber(1, 1e6),
                 FocusRules.Read(root.Field("focus")),
-                EnergyRules.Read(root.Field("energy")));
+                EnergyRules.Read(root.Field("energy")),
+                crit.Field("chance").AsNumber(0, 1),
+                crit.Field("multiplier").AsNumber(1, 1000));
         }
     }
 }
