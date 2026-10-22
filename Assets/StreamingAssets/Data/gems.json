@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "levels": { "max": 20, "effectPerLevel": 0.02, "experience": { "curve": "exp", "base": 100, "rate": 1.3 } },
+  "gems": [
+    {
+      "id": "stenography",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Стенография", "en": "Stenography" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "energy": 40 },
+      "cooldownSeconds": 20,
+      "effect": { "type": "chainHits", "hits": 60, "nextEnemyShare": 0.5 }
+    },
+    {
+      "id": "march",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Марш", "en": "March" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "notes": 4 },
+      "cooldownSeconds": 0,
+      "durationSeconds": 30,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25 }] }
+    },
+    {
+      "id": "lull",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Затишье", "en": "Lull" },
+      "tags": ["Idle", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 60,
+      "effect": { "type": "idleStrike", "chargePerSecond": 0.05, "maxChargeSeconds": 60, "minIdleSeconds": 30 }
+    },
+    {
+      "id": "cast_on_enter",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при Enter", "en": "Cast on Enter" },
+      "condition": { "type": "enter" },
+      "cooldownMultiplier": 1.5
+    }
+  ]
+}

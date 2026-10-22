@@ -17,13 +17,6 @@ namespace Game.Core.Content
             ["guardian"] = EnemyType.Guardian
         };
 
-        private static readonly Dictionary<string, ModifierKind> Kinds = new Dictionary<string, ModifierKind>(StringComparer.Ordinal)
-        {
-            ["flat"] = ModifierKind.Flat,
-            ["increased"] = ModifierKind.Increased,
-            ["more"] = ModifierKind.More
-        };
-
         private readonly Dictionary<string, EnemyDef> _byId;
         private readonly Dictionary<string, List<EnemyDef>> _normalsByBiome;
 
@@ -95,7 +88,7 @@ namespace Game.Core.Content
             if (node.HasField("modifiers"))
             {
                 foreach (var modifier in node.Field("modifiers").Items())
-                    modifiers.Add(ReadModifier(modifier));
+                    modifiers.Add(ModifierReader.Read(modifier));
             }
 
             return new EnemyDef(
@@ -106,28 +99,6 @@ namespace Game.Core.Content
                 node.Field("goldMultiplier").AsNumber(0.0, 1e6),
                 node.Field("sprite").AsString(),
                 modifiers);
-        }
-
-        private static Modifier ReadModifier(ContentNode node)
-        {
-            var kindNode = node.Field("kind");
-            var kindName = kindNode.AsString();
-            if (!Kinds.TryGetValue(kindName, out var kind))
-                throw kindNode.Error($"unknown modifier kind '{kindName}', expected flat, increased or more");
-
-            var tags = StatTags.None;
-            if (node.HasField("tags"))
-            {
-                foreach (var tagNode in node.Field("tags").Items())
-                {
-                    var tagName = tagNode.AsString();
-                    if (!Enum.TryParse<StatTags>(tagName, false, out var tag) || tag == StatTags.None)
-                        throw tagNode.Error($"unknown tag '{tagName}'");
-                    tags |= tag;
-                }
-            }
-
-            return new Modifier(new StatId(node.Field("stat").AsString()), kind, node.Field("value").AsNumber(-1e6, 1e6), tags);
         }
     }
 }

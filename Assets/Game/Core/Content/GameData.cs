@@ -1,23 +1,26 @@
 using System;
+using Game.Core.Content.Gems;
 
 namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName };
 
-        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat)
+        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems)
         {
             Stages = stages;
             Enemies = enemies;
             InputCaps = inputCaps;
             Combat = combat;
+            Gems = gems;
         }
 
         public StageTable Stages { get; }
         public EnemyCatalog Enemies { get; }
         public InputCaps InputCaps { get; }
         public CombatRules Combat { get; }
+        public GemCatalog Gems { get; }
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -25,7 +28,13 @@ namespace Game.Core.Content
             var enemies = EnemyCatalog.Load(readFile(EnemyCatalog.FileName), stages.Biomes);
             var inputCaps = InputCaps.Load(readFile(InputCaps.FileName));
             var combat = CombatRules.Load(readFile(CombatRules.FileName));
-            return new GameData(stages, enemies, inputCaps, combat);
+            var gems = GemCatalog.Load(readFile(GemCatalog.FileName));
+            foreach (var gem in gems.All)
+            {
+                if (gem.Skill != null && gem.Skill.NoteCost > combat.Classes.NotesPerMelody)
+                    throw new ContentException(GemCatalog.FileName, gem.Id, $"costs {gem.Skill.NoteCost} notes, but a melody holds only {combat.Classes.NotesPerMelody} ({CombatRules.FileName})");
+            }
+            return new GameData(stages, enemies, inputCaps, combat, gems);
         }
     }
 }
