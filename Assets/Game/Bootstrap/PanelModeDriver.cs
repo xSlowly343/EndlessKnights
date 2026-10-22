@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
 using UnityEngine;
@@ -34,6 +35,13 @@ namespace Game.Bootstrap
             var pixelsPerUnitScale = _dock.StripHeightPx / StripSpace.BaseHeightPx;
             var layout = _dock.Expand((int)(PanelView.AreaWidthPx * pixelsPerUnitScale), (int)(PanelView.AreaHeightPx * pixelsPerUnitScale));
             _panels.Show(layout.PanelsAboveStrip);
+        }
+
+        public void OpenReport(string title, IReadOnlyList<string> lines)
+        {
+            var pixelsPerUnitScale = _dock.StripHeightPx / StripSpace.BaseHeightPx;
+            var layout = _dock.Expand((int)(PanelView.ReportAreaWidthPx * pixelsPerUnitScale), (int)(PanelView.ReportAreaHeightPx * pixelsPerUnitScale));
+            _panels.ShowReport(title, lines, layout.PanelsAboveStrip);
         }
 
         public void Close()
