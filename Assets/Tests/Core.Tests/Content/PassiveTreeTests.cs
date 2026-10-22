@@ -85,6 +85,53 @@ namespace Game.Core.Tests.Content
             Assert.That(missing, Is.Empty);
         }
 
+        [TestCase("typist")]
+        [TestCase("bard")]
+        [TestCase("hermit")]
+        public void RoadsRunAroundEveryStart(string className)
+        {
+            var tree = PassiveTree.Load(RealFile());
+            var start = tree.StartOf(className)!;
+            var around = start.Neighbours.ToList();
+            var reached = new System.Collections.Generic.HashSet<TreeNodeDef> { around[0] };
+            var queue = new System.Collections.Generic.Queue<TreeNodeDef>();
+            queue.Enqueue(around[0]);
+            while (queue.Count > 0)
+            {
+                foreach (var next in queue.Dequeue().Neighbours)
+                {
+                    if (around.Contains(next) && reached.Add(next))
+                        queue.Enqueue(next);
+                }
+            }
+
+            Assert.That(reached, Is.EquivalentTo(around), "every exit of a start is linked to the others without the start itself");
+        }
+
+        [Test]
+        public void HermitReachesTheOtherSectorsInAFewSteps()
+        {
+            var tree = PassiveTree.Load(RealFile());
+            var hermit = tree.StartOf("hermit")!;
+            var depth = new System.Collections.Generic.Dictionary<TreeNodeDef, int> { [hermit] = 0 };
+            var queue = new System.Collections.Generic.Queue<TreeNodeDef>();
+            queue.Enqueue(hermit);
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                foreach (var next in node.Neighbours)
+                {
+                    if (next.Type == TreeNodeType.Start || depth.ContainsKey(next))
+                        continue;
+                    depth[next] = depth[node] + 1;
+                    queue.Enqueue(next);
+                }
+            }
+
+            foreach (var exit in new[] { "t_pen_1", "t_combo_1", "t_heavy_1", "b_attr_3", "b_ensemble_1" })
+                Assert.That(depth[tree[exit]], Is.LessThanOrEqualTo(4), exit);
+        }
+
         [Test]
         public void HermitStartSitsInsideAnInnerRing()
         {

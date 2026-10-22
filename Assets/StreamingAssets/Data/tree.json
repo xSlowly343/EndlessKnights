@@ -36,10 +36,10 @@
     {"id": "t_heavy_small", "type": "small", "x": -2.29, "y": 4.4, "name": {"ru": "Тяжёлая рука", "en": "Heavy Hand"}, "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.01, "tags": ["Keyboard"]}]},
     {"id": "t_attr_2", "type": "attribute", "x": 1.29, "y": 6.63, "name": {"ru": "Атрибут", "en": "Attribute"}, "amount": 5},
     {"id": "t_attr_3", "type": "attribute", "x": -1.29, "y": 6.63, "name": {"ru": "Атрибут", "en": "Attribute"}, "amount": 5},
-    {"id": "t_jewel", "type": "jewel", "x": -0.88, "y": 4.31, "name": {"ru": "Гнездо самоцвета", "en": "Jewel Socket"}, "locked": true},
+    {"id": "t_jewel", "type": "jewel", "x": 0.73, "y": 5.2, "name": {"ru": "Гнездо самоцвета", "en": "Jewel Socket"}, "locked": true},
     {"id": "b_attr_1", "type": "attribute", "x": -2.17, "y": 1.25, "name": {"ru": "Атрибут", "en": "Attribute"}, "amount": 5},
     {"id": "bard_start", "type": "start", "x": -2.94, "y": 1.7, "name": {"ru": "Старт Барда", "en": "Bard Start"}, "class": "bard"},
-    {"id": "b_attr_3", "type": "attribute", "x": -3.13, "y": 2.72, "name": {"ru": "Атрибут", "en": "Attribute"}, "amount": 5},
+    {"id": "b_attr_3", "type": "attribute", "x": -2.99, "y": 2.88, "name": {"ru": "Атрибут", "en": "Attribute"}, "amount": 5},
     {"id": "b_melody_1", "type": "small", "x": -3.91, "y": 3.22, "name": {"ru": "Мелодия", "en": "Melody"}, "modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.08}]},
     {"id": "b_melody_2", "type": "small", "x": -4.9, "y": 3.15, "name": {"ru": "Мелодия", "en": "Melody"}, "modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.08}]},
     {"id": "chorus", "type": "notable", "x": -5.28, "y": 4.08, "name": {"ru": "Хор", "en": "Chorus"}, "modifiers": [{"stat": "concurrentAuras", "kind": "flat", "value": 1}]},
@@ -166,6 +166,13 @@
     ["p_precision_6", "tr_precision_bard"],
     ["tr_precision_bard", "clan_voice"],
     ["b_melody_4", "tr_bard_tempo"],
-    ["tr_bard_tempo", "t_heavy_3"]
+    ["tr_bard_tempo", "t_heavy_3"],
+    ["t_attr_1", "t_pen_1"],
+    ["t_pen_1", "t_combo_1"],
+    ["t_combo_1", "t_heavy_1"],
+    ["t_heavy_1", "t_attr_1"],
+    ["b_attr_1", "b_attr_3"],
+    ["b_attr_3", "b_ensemble_1"],
+    ["b_ensemble_1", "b_attr_1"]
   ]
 }
