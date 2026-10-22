@@ -20,6 +20,10 @@ namespace Game.Core.Tests.Content
             Assert.That(rules.Focus.Max, Is.EqualTo(3));
             Assert.That(rules.Focus.PerEvent, Is.EqualTo(0.02));
             Assert.That(rules.Focus.ResetAfterIdleSeconds, Is.EqualTo(3));
+            Assert.That(rules.Energy.PerKey, Is.EqualTo(1));
+            Assert.That(rules.Energy.PerClick, Is.EqualTo(1));
+            Assert.That(rules.Energy.MousePxPerPoint, Is.EqualTo(200));
+            Assert.That(rules.Energy.Max, Is.EqualTo(100));
         }
 
         [TestCase("\"version\": 1", "\"version\": 2", "version: version 2 is not supported, expected 1")]

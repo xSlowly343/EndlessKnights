@@ -12,5 +12,6 @@
     "mousePxPerEvent": 200,
     "resetAfterIdleSeconds": 3,
     "macroRhythm": { "cvBelow": 0.05, "afterSeconds": 60 }
-  }
+  },
+  "energy": { "perKey": 1, "perClick": 1, "mousePxPerPoint": 200, "max": 100 }
 }

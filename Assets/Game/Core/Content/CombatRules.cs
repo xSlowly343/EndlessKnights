@@ -5,13 +5,14 @@ namespace Game.Core.Content
         public const string FileName = "combat.json";
         public const int SupportedVersion = 1;
 
-        private CombatRules(double keyDamage, double clickDamage, double mouseDamage, double mousePxPerHit, FocusRules focus)
+        private CombatRules(double keyDamage, double clickDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, EnergyRules energy)
         {
             KeyDamage = keyDamage;
             ClickDamage = clickDamage;
             MouseDamage = mouseDamage;
             MousePxPerHit = mousePxPerHit;
             Focus = focus;
+            Energy = energy;
         }
 
         public double KeyDamage { get; }
@@ -19,6 +20,7 @@ namespace Game.Core.Content
         public double MouseDamage { get; }
         public double MousePxPerHit { get; }
         public FocusRules Focus { get; }
+        public EnergyRules Energy { get; }
 
         public static CombatRules Load(string json)
         {
@@ -34,7 +36,8 @@ namespace Game.Core.Content
                 hits.Field("click").Field("damage").AsNumber(0, 1e6),
                 mouse.Field("damage").AsNumber(0, 1e6),
                 mouse.Field("pxPerHit").AsNumber(1, 1e6),
-                FocusRules.Read(root.Field("focus")));
+                FocusRules.Read(root.Field("focus")),
+                EnergyRules.Read(root.Field("energy")));
         }
     }
 }

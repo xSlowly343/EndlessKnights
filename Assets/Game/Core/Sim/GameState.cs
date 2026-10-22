@@ -28,6 +28,7 @@ namespace Game.Core.Sim
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;
+        public double Energy { get; set; }
         public long IdleTicks { get; set; }
         public long MacroRhythmTicks { get; set; }
 

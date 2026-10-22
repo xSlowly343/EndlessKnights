@@ -15,6 +15,7 @@ namespace Game.Core.Sim
         private readonly IInputSource _input;
         private readonly InputRules _inputRules;
         private readonly FocusSystem _focus;
+        private readonly EnergySystem _energy;
         private readonly CombatSystem _combat;
         private readonly StageSystem _stage;
         private double _pendingSeconds;
@@ -26,6 +27,7 @@ namespace Game.Core.Sim
             Hero = hero;
             _inputRules = new InputRules(data.InputCaps);
             _focus = new FocusSystem(data.Combat.Focus, state);
+            _energy = new EnergySystem(data.Combat.Energy, state);
             _combat = new CombatSystem(data.Combat, hero, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events);
             _combat.OnKill(_stage);
@@ -36,6 +38,7 @@ namespace Game.Core.Sim
         public CombatSystem Combat => _combat;
         public StageSystem Stages => _stage;
         public FocusSystem Focus => _focus;
+        public EnergySystem Energy => _energy;
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -69,6 +72,7 @@ namespace Game.Core.Sim
         {
             _inputRules.UseCaps(data.InputCaps);
             _focus.UseRules(data.Combat.Focus);
+            _energy.UseRules(data.Combat.Energy);
             _combat.UseRules(data.Combat);
             _stage.UseData(data.Stages, data.Enemies);
         }
@@ -78,6 +82,7 @@ namespace Game.Core.Sim
             LastInput = _input.Drain();
             var input = _inputRules.Apply(LastInput);
             _focus.Tick(input);
+            _energy.Tick(input);
             _stage.Tick();
             _combat.Tick(input);
             State.Tick++;
