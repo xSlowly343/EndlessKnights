@@ -41,7 +41,7 @@
 | +% эффекта и длительности аур | Aura Effect, Skill Effect Duration | +5% эффекта | ● `auraEffect`, `auraDuration` |
 | + к атрибуту | +30 to Strength | +10 Темпа | ● атрибуты |
 | +% атрибута | «8% increased Dexterity» (Utmost Swiftness) | +4% Темпа | ◐ `increased` к атрибуту |
-| +% опыта героя | Experience gain | +3% опыта | ◐ `heroXp` |
+| +% шанса гема | Item Quantity | +4% шанса выпадения гема | ◐ `gemDrop` |
 
 ### 2.2. Условия «пока…» и «недавно»
 
