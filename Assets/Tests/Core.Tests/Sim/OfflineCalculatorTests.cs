@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Sim
 
         [TestCase(6, 0, 1)]
         [TestCase(0, 8, 1)]
-        [TestCase(3, 0, 0.4)]
+        [TestCase(3, 0, 0.5)]
         [TestCase(4, 2, 2)]
         public void MatchesHeadlessSimulationWithinTenPercent(double keys, double clicks, double hours)
         {
