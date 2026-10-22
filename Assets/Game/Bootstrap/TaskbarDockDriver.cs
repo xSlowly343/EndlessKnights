@@ -1,3 +1,4 @@
+using System;
 using Game.Platform.Windows.Window;
 using UnityEngine;
 
@@ -20,6 +21,14 @@ namespace Game.Bootstrap
         private bool _isDocked;
         private int _offset = DefaultOffsetAlongTaskbar;
         private float _nextCheckTime;
+        private bool _expanded;
+        private int _panelWidthPx;
+        private int _panelHeightPx;
+
+        public event Action<PanelLayout, int>? Placed;
+
+        public PanelLayout Layout { get; private set; }
+        public int StripHeightPx => _size.Height;
 
         public static TaskbarDockDriver Attach(GameObject host, WindowController window)
         {
@@ -37,9 +46,25 @@ namespace Game.Bootstrap
             DockIfTaskbarChanged();
         }
 
+        public PanelLayout Expand(int panelWidthPx, int panelHeightPx)
+        {
+            _expanded = true;
+            _panelWidthPx = panelWidthPx;
+            _panelHeightPx = panelHeightPx;
+            _drag.Release();
+            PlaceNextToTaskbar();
+            return Layout;
+        }
+
+        public void Collapse()
+        {
+            _expanded = false;
+            PlaceNextToTaskbar();
+        }
+
         public void BeginDrag()
         {
-            if (_isDocked && TryGetCursorAlongTaskbar(out var pressedAt))
+            if (_isDocked && !_expanded && TryGetCursorAlongTaskbar(out var pressedAt))
                 _drag.Press(pressedAt, _offset);
         }
 
@@ -90,7 +115,12 @@ namespace Game.Bootstrap
 
         private void PlaceNextToTaskbar()
         {
-            _window.PlaceAt(StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, GapToTaskbar, _offset));
+            var strip = StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, GapToTaskbar, _offset);
+            Layout = _expanded && MonitorWorkArea.TryGet(strip, out var workArea)
+                ? PanelLayout.Expanded(strip, workArea, _dockedEdge, _panelWidthPx, _panelHeightPx)
+                : PanelLayout.Collapsed(strip);
+            _window.PlaceAt(Layout.Window);
+            Placed?.Invoke(Layout, _size.Height);
         }
     }
 }

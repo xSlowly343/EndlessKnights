@@ -11,8 +11,10 @@ namespace Game.Bootstrap
         private Camera _camera = null!;
         private FocusModeButton _focusButton = null!;
         private TaskbarDockDriver _dock = null!;
+        private StripButton _menuButton = null!;
+        private PanelView _panels = null!;
 
-        public static void Attach(GameObject host, PointerInput pointer, WindowController window, Camera camera, FocusModeButton focusButton, TaskbarDockDriver dock)
+        public static void Attach(GameObject host, PointerInput pointer, WindowController window, Camera camera, FocusModeButton focusButton, TaskbarDockDriver dock, StripButton menuButton, PanelView panels)
         {
             var router = host.AddComponent<StripPointerRouter>();
             router._pointer = pointer;
@@ -20,6 +22,8 @@ namespace Game.Bootstrap
             router._camera = camera;
             router._focusButton = focusButton;
             router._dock = dock;
+            router._menuButton = menuButton;
+            router._panels = panels;
         }
 
         private void Update()
@@ -39,7 +43,11 @@ namespace Game.Bootstrap
             if (!StripHitTest.TryGetWorldPoint(_camera, bounds.Left, bounds.Top, bounds.Width, bounds.Height, _pointer.X, _pointer.Y, out var worldPoint))
                 return;
 
-            if (_focusButton.Contains(worldPoint))
+            if (_panels.TryClick(worldPoint))
+                return;
+            if (_menuButton.Contains(worldPoint))
+                _menuButton.Click();
+            else if (_focusButton.Contains(worldPoint))
                 _focusButton.Click();
             else if (StripHitTest.IsSpriteAt(worldPoint))
                 _dock.BeginDrag();

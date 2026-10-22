@@ -17,10 +17,11 @@ namespace Game.Bootstrap
         private TaskbarDockDriver _dock = null!;
         private RawInputService? _rawInput;
         private InputDebugOverlay _inputDebug = null!;
+        private PanelModeDriver? _panelMode;
         private readonly SleepTracker _sleep = new SleepTracker();
         private TrayMenuState _state = TrayMenuState.Default;
 
-        public static void Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough, FramePacingDriver framePacing, TaskbarDockDriver dock, RawInputService? rawInput, InputDebugOverlay inputDebug)
+        public static void Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough, FramePacingDriver framePacing, TaskbarDockDriver dock, RawInputService? rawInput, InputDebugOverlay inputDebug, PanelModeDriver? panelMode = null)
         {
             var driver = host.AddComponent<TrayDriver>();
             driver._tray = tray;
@@ -30,6 +31,7 @@ namespace Game.Bootstrap
             driver._dock = dock;
             driver._rawInput = rawInput;
             driver._inputDebug = inputDebug;
+            driver._panelMode = panelMode;
             tray.ShowState(driver._state);
             inputDebug.SetVisible(driver._state.ShowInputDebug);
         }
@@ -47,6 +49,11 @@ namespace Game.Bootstrap
             if (command == TrayCommand.Exit)
             {
                 Application.Quit();
+                return;
+            }
+            if (command == TrayCommand.TogglePanel)
+            {
+                _panelMode?.Toggle();
                 return;
             }
 
