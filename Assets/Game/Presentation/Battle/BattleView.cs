@@ -18,6 +18,7 @@ namespace Game.Presentation.Battle
         private const float GoldBumpSeconds = 0.15f;
         private const float RetreatSeconds = 1.2f;
         private const int MaxDots = 10;
+        private const float NoticeSeconds = 8f;
 
         private static readonly Vector2 HeroPosition = new Vector2(4.2f, 4.2f);
         private static readonly Vector2 EnemyPosition = new Vector2(26.5f, 4.2f);
@@ -52,6 +53,8 @@ namespace Game.Presentation.Battle
         private TextMesh _timerText = null!;
         private TextMesh _goldText = null!;
         private TextMesh _retreatText = null!;
+        private TextMesh _noticeText = null!;
+        private float _noticeAge = NoticeSeconds;
         private DamageNumbers _numbers = null!;
         private CoinBurst _coins = null!;
         private Color _enemyColor = EnemyColor;
@@ -97,6 +100,12 @@ namespace Game.Presentation.Battle
         }
 
         public void Retreat() => _retreatAge = 0f;
+
+        public void ShowNotice(string text)
+        {
+            _noticeText.text = text;
+            _noticeAge = 0f;
+        }
 
         public void Hit(BigNumber amount, bool crit)
         {
@@ -153,6 +162,8 @@ namespace Game.Presentation.Battle
             _goldText = StripText.Create("Gold", string.Empty, new Vector2(StripSpace.Width * 0.35f, StripSpace.Height - 2.2f), 0.18f, TextAnchor.UpperLeft, new Color(1f, 0.85f, 0.3f), _scene, 15);
             _retreatText = StripText.Create("Retreat", "Отступление", new Vector2(EnemyPosition.x, EnemyPosition.y), 0.25f, TextAnchor.MiddleCenter, new Color(1f, 0.4f, 0.3f), _scene, 25);
             _retreatText.gameObject.SetActive(false);
+            _noticeText = StripText.Create("Notice", string.Empty, new Vector2(StripSpace.Width / 2f, StripSpace.Height / 2f), 0.16f, TextAnchor.MiddleCenter, new Color(0.7f, 1f, 0.7f), _scene, 30);
+            _noticeText.gameObject.SetActive(false);
             _numbers = DamageNumbers.Create();
             _coins = CoinBurst.Create(new Vector2(StripSpace.Width * 0.35f + 0.6f, StripSpace.Height - 2.6f));
             _coins.CoinArrived += () => _goldBumpAge = 0f;
@@ -240,6 +251,16 @@ namespace Game.Presentation.Battle
             _goldBumpAge += delta;
             var bump = _goldBumpAge < GoldBumpSeconds ? 1f + 0.25f * Mathf.Sin(_goldBumpAge / GoldBumpSeconds * Mathf.PI) : 1f;
             _goldText.transform.localScale = new Vector3(bump, bump, 1f);
+
+            _noticeAge += delta;
+            var noticing = _noticeAge < NoticeSeconds;
+            _noticeText.gameObject.SetActive(noticing);
+            if (noticing)
+            {
+                var color = _noticeText.color;
+                color.a = Mathf.Clamp01((NoticeSeconds - _noticeAge) / 1.5f);
+                _noticeText.color = color;
+            }
 
             _retreatAge += delta;
             var retreating = _retreatAge < RetreatSeconds;

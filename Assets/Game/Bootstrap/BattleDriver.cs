@@ -18,14 +18,35 @@ namespace Game.Bootstrap
 
         public GameLoop Loop => _loop;
 
-        public static BattleDriver Attach(GameObject host, GameData data, IInputSource input)
+        public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Swordsman };
+
+        public static BattleDriver Attach(GameObject host, GameData data, IInputSource input, GameState? state = null)
         {
             var driver = host.AddComponent<BattleDriver>();
             driver._data = data;
-            var state = new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Swordsman };
-            driver._loop = new GameLoop(data, input, state, new StatSheet());
+            driver._loop = new GameLoop(data, input, state ?? NewRun(), new StatSheet());
             driver._view = BattleView.Create();
+            driver._bossTotalTicks = System.Math.Max(1, driver._loop.State.BossTicksLeft);
+            driver._view.ShowEnemy(driver._loop.State.EnemyType == EnemyType.Boss, driver._loop.State.EnemyType == EnemyType.Guardian);
             return driver;
+        }
+
+        public OfflineResult? ApplyOffline(double awaySeconds)
+        {
+            if (awaySeconds <= 0)
+                return null;
+            var result = new OfflineCalculator(_data, _loop.Hero).Simulate(_loop.State, awaySeconds);
+            _loop.ApplyOffline(result);
+            if (result.Kills > 0)
+                _view.ShowNotice(OfflineText(result));
+            return result;
+        }
+
+        private static string OfflineText(OfflineResult result)
+        {
+            var gold = NumberFormatter.Format(result.Gold, NumberFormatSettings.Default);
+            var stages = result.StageAfter > result.StageBefore ? $", этап {result.StageBefore} → {result.StageAfter}" : string.Empty;
+            return $"Пока тебя не было: +{gold} золота, {result.Kills} врагов{stages}";
         }
 
         public void UseData(GameData data)

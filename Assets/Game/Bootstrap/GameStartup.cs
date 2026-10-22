@@ -83,7 +83,13 @@ namespace Game.Bootstrap
             var inputDebug = InputDebugOverlay.Create(StripSpace.BottomLeft(InputOverlayMargin));
             InputDebugDriver.Attach(focusButton.gameObject, observedInput, inputDebug, rawInput, window);
             if (data != null)
-                BattleDriver.Attach(host, data.Current, observedInput);
+            {
+                var save = SaveDriver.TryLoad(data.Current);
+                var battle = BattleDriver.Attach(host, data.Current, observedInput, save?.State);
+                if (save != null)
+                    battle.ApplyOffline(save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
+                SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
+            }
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 
