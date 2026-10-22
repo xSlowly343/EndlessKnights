@@ -22,9 +22,9 @@ namespace Game.Core.Save
             return "{\n  \"checksum\": \"" + Checksum(payload) + "\",\n  " + PayloadMarker + payload + "\n}\n";
         }
 
-        public static SaveFile Decode(string text, EnemyCatalog enemies) => Decode(text, enemies, SaveMigrations.Default);
+        public static SaveFile Decode(string text, GameData data) => Decode(text, data, SaveMigrations.Default);
 
-        public static SaveFile Decode(string text, EnemyCatalog enemies, SaveMigrations migrations)
+        public static SaveFile Decode(string text, GameData data, SaveMigrations migrations)
         {
             var root = ContentNode.Root(text, FileName);
             var expected = root.Field("checksum").AsString();
@@ -37,7 +37,7 @@ namespace Game.Core.Save
                 throw stored.Field("version").Error($"version {version} is newer than this game ({migrations.CurrentVersion})");
 
             var payload = new ContentNode(migrations.Upgrade(JsonParser.Parse(PayloadText(text, root), FileName), version), FileName, "payload");
-            return new SaveFile(version, ReadClock(payload.Field("clock")), GameStateJson.Read(payload.Field("state"), enemies));
+            return new SaveFile(version, ReadClock(payload.Field("clock")), GameStateJson.Read(payload.Field("state"), data.Enemies, data.Gems));
         }
 
         private static JsonValue Payload(int version, ClockStamp clock, GameState state) =>

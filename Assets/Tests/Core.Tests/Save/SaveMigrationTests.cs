@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Save
         [Test]
         public void FirstReleasedSaveStillLoads()
         {
-            var save = SaveCodec.Decode(OldSave(), TestWorld.Data.Enemies);
+            var save = SaveCodec.Decode(OldSave(), TestWorld.Data);
 
             Assert.That(save.StoredVersion, Is.EqualTo(1));
             Assert.That(save.State.Class, Is.EqualTo(HeroClass.Bard));
@@ -29,18 +29,20 @@ namespace Game.Core.Tests.Save
             Assert.That(save.State.Enemy!.Id, Is.EqualTo("boar_king"));
             Assert.That(save.State.Gold.ToDouble(), Is.EqualTo(18145.01873863374).Within(1e-6));
             Assert.That(save.SavedAtUnixMs, Is.EqualTo(1761134400000));
+            Assert.That(save.State.Skills, Is.Empty);
+            Assert.That(save.State.ChainDamage.IsZero, Is.True);
         }
 
         [Test]
         public void OldSaveCanBePlayedAndSavedAgainInTheCurrentVersion()
         {
-            var save = SaveCodec.Decode(OldSave(), TestWorld.Data.Enemies);
+            var save = SaveCodec.Decode(OldSave(), TestWorld.Data);
             var savedTick = save.State.Tick;
             var loop = TestWorld.Loop(state: save.State);
             for (var i = 0; i < 100; i++)
                 loop.Tick();
 
-            var again = SaveCodec.Decode(SaveCodec.Encode(loop.State, save.Clock), TestWorld.Data.Enemies);
+            var again = SaveCodec.Decode(SaveCodec.Encode(loop.State, save.Clock), TestWorld.Data);
 
             Assert.That(again.StoredVersion, Is.EqualTo(SaveCodec.CurrentVersion));
             Assert.That(again.State.Tick, Is.EqualTo(savedTick + 100));
@@ -50,15 +52,17 @@ namespace Game.Core.Tests.Save
         public void MigrationsRunInOrderUpToTheCurrentVersion()
         {
             var calls = "";
+            var real = SaveMigrations.Default.Steps[0];
             var migrations = new SaveMigrations(3,
-                new SaveMigration(2, "second", payload => { calls += "2"; return payload; }),
-                new SaveMigration(1, "double wallet", payload => { calls += "1"; return DoubleWallet(payload); }));
+                new SaveMigration(2, "double wallet", payload => { calls += "2"; return DoubleWallet(payload); }),
+                new SaveMigration(1, real.Description, payload => { calls += "1"; return real.Upgrade(payload); }));
 
-            var save = SaveCodec.Decode(OldSave(), TestWorld.Data.Enemies, migrations);
+            var save = SaveCodec.Decode(OldSave(), TestWorld.Data, migrations);
 
             Assert.That(calls, Is.EqualTo("12"));
             Assert.That(save.StoredVersion, Is.EqualTo(1));
             Assert.That(save.State.Gold.ToDouble(), Is.EqualTo(36290.0374772675).Within(1e-6));
+            Assert.That(save.State.Skills, Is.Empty);
         }
 
         [Test]
@@ -104,7 +108,7 @@ namespace Game.Core.Tests.Save
             var migrations = new SaveMigrations(2, new SaveMigration(1, "drop stage", payload =>
                 JsonEdit.Update(payload, "state", state => JsonEdit.Remove(state, "stage"))));
 
-            var error = Assert.Throws<ContentException>(() => SaveCodec.Decode(OldSave(), TestWorld.Data.Enemies, migrations))!;
+            var error = Assert.Throws<ContentException>(() => SaveCodec.Decode(OldSave(), TestWorld.Data, migrations))!;
 
             Assert.That(error.Message, Does.Contain("save.json: payload.state: required field 'stage' is missing"));
         }

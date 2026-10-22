@@ -37,7 +37,7 @@ namespace Game.Core.Tests.Save
             }
         }
 
-        private static SaveFile RoundTrip(GameState state) => SaveCodec.Decode(SaveCodec.Encode(state, Clock), TestWorld.Data.Enemies);
+        private static SaveFile RoundTrip(GameState state) => SaveCodec.Decode(SaveCodec.Encode(state, Clock), TestWorld.Data);
 
         [TestCase(HeroClass.Typist)]
         [TestCase(HeroClass.Bard)]
@@ -76,7 +76,7 @@ namespace Game.Core.Tests.Save
         {
             var clock = ClockStamp.First(new ClockReading(1_760_000_000_000, 99, 3, serverUnixMs: 1_760_000_000_500)).Next(new ClockReading(1_750_000_000_000, 120, 3));
 
-            var loaded = SaveCodec.Decode(SaveCodec.Encode(new GameState(), clock), TestWorld.Data.Enemies);
+            var loaded = SaveCodec.Decode(SaveCodec.Encode(new GameState(), clock), TestWorld.Data);
 
             Assert.That(loaded.Clock.Reading.WallUnixMs, Is.EqualTo(1_750_000_000_000));
             Assert.That(loaded.Clock.HighestWallUnixMs, Is.EqualTo(1_760_000_000_000));
@@ -88,7 +88,7 @@ namespace Game.Core.Tests.Save
         [Test]
         public void AwayTimeComesFromTheSavedClock()
         {
-            var loaded = SaveCodec.Decode(SaveCodec.Encode(new GameState(), Clock), TestWorld.Data.Enemies);
+            var loaded = SaveCodec.Decode(SaveCodec.Encode(new GameState(), Clock), TestWorld.Data);
 
             var away = loaded.AwayTime(new ClockReading(Clock.Reading.WallUnixMs + 7_200_000, Clock.Reading.MonotonicMs + 7_200_000, Clock.Reading.BootId));
 
@@ -126,7 +126,7 @@ namespace Game.Core.Tests.Save
             var text = SaveCodec.Encode(PlayedLoop(HeroClass.Typist, 500).State, Clock);
             var edited = text.Replace("\"current\": ", "\"current\": 9");
 
-            var error = Assert.Throws<ContentException>(() => SaveCodec.Decode(edited, TestWorld.Data.Enemies))!;
+            var error = Assert.Throws<ContentException>(() => SaveCodec.Decode(edited, TestWorld.Data))!;
 
             Assert.That(error.Message, Does.Contain("save.json: checksum: does not match"));
         }
@@ -136,18 +136,18 @@ namespace Game.Core.Tests.Save
         {
             var text = SaveCodec.Encode(PlayedLoop(HeroClass.Typist, 500).State, Clock);
 
-            Assert.Throws<ContentException>(() => SaveCodec.Decode(text.Substring(0, text.Length / 2), TestWorld.Data.Enemies));
+            Assert.Throws<ContentException>(() => SaveCodec.Decode(text.Substring(0, text.Length / 2), TestWorld.Data));
         }
 
         [Test]
         public void SaveFromNewerGameIsRejected()
         {
-            var text = SaveCodec.Encode(new GameState(), Clock).Replace("\"version\": 1", "\"version\": 99");
+            var text = SaveCodec.Encode(new GameState(), Clock).Replace("\"version\": " + SaveCodec.CurrentVersion, "\"version\": 99");
             var payloadStart = text.IndexOf("\"payload\": ") + "\"payload\": ".Length;
             var payload = text.Substring(payloadStart, text.LastIndexOf('}') - payloadStart).TrimEnd();
             var resigned = ReplaceChecksum(text, payload);
 
-            var error = Assert.Throws<ContentException>(() => SaveCodec.Decode(resigned, TestWorld.Data.Enemies))!;
+            var error = Assert.Throws<ContentException>(() => SaveCodec.Decode(resigned, TestWorld.Data))!;
 
             Assert.That(error.Message, Does.Contain("payload.version: version 99 is newer"));
         }

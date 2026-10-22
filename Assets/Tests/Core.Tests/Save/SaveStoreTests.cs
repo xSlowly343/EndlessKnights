@@ -29,7 +29,7 @@ namespace Game.Core.Tests.Save
 
         private static string SaveAtTick(long tick) => SaveCodec.Encode(new GameState { Tick = tick }, Clock);
 
-        private static SaveFile Decode(string text) => SaveCodec.Decode(text, TestWorld.Data.Enemies);
+        private static SaveFile Decode(string text) => SaveCodec.Decode(text, TestWorld.Data);
 
         [Test]
         public void WrittenSaveLoadsBack()

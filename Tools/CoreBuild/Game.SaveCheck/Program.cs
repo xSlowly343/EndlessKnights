@@ -38,7 +38,7 @@ namespace Game.SaveCheck
 
         private static void WriteForever(GameData data, SaveStore store)
         {
-            var previous = store.Load(text => SaveCodec.Decode(text, data.Enemies));
+            var previous = store.Load(text => SaveCodec.Decode(text, data));
             var state = previous.Save?.State ?? new GameState();
             var loop = new GameLoop(data, new BotInput(new BotProfile(6, 2, 800), (ulong)state.Tick + 1), state, new StatSheet());
             var clock = ClockStamp.First(Now());
@@ -53,7 +53,7 @@ namespace Game.SaveCheck
 
         private static int Check(GameData data, SaveStore store)
         {
-            var result = store.Load(text => SaveCodec.Decode(text, data.Enemies));
+            var result = store.Load(text => SaveCodec.Decode(text, data));
             foreach (var problem in result.Problems)
                 Console.WriteLine("skipped " + problem);
             if (!result.Found)

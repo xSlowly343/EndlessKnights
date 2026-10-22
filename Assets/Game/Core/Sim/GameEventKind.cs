@@ -9,6 +9,8 @@ namespace Game.Core.Sim
         BossDefeated,
         BossFailed,
         GoldGained,
-        MelodyReady
+        MelodyReady,
+        SkillCast,
+        AuraChanged
     }
 }

@@ -1,4 +1,5 @@
 using Game.Core.Content;
+using Game.Core.Content.Gems;
 using Game.Core.Math;
 
 namespace Game.Core.Sim
@@ -12,9 +13,11 @@ namespace Game.Core.Sim
         public readonly HitFlags Flags;
         public readonly long Stage;
         public readonly EnemyDef? Enemy;
+        public readonly GemDef? Gem;
 
-        private GameEvent(GameEventKind kind, long tick, BigNumber amount, DamageSource source, HitFlags flags, long stage, EnemyDef? enemy)
+        private GameEvent(GameEventKind kind, long tick, BigNumber amount, DamageSource source, HitFlags flags, long stage, EnemyDef? enemy, GemDef? gem = null)
         {
+            Gem = gem;
             Kind = kind;
             Tick = tick;
             Amount = amount;
@@ -34,6 +37,9 @@ namespace Game.Core.Sim
 
         public static GameEvent ForStage(GameEventKind kind, long tick, long stage) =>
             new GameEvent(kind, tick, BigNumber.Zero, DamageSource.None, HitFlags.None, stage, null);
+
+        public static GameEvent ForSkill(GameEventKind kind, long tick, GemDef gem) =>
+            new GameEvent(kind, tick, BigNumber.Zero, DamageSource.None, HitFlags.None, 0, null, gem);
 
         public static GameEvent Gold(long tick, BigNumber amount, long stage) =>
             new GameEvent(GameEventKind.GoldGained, tick, amount, DamageSource.None, HitFlags.None, stage, null);

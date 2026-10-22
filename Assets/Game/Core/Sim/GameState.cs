@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Core.Content;
 using Game.Core.Math;
 
@@ -36,6 +37,9 @@ namespace Game.Core.Sim
         public double Energy { get; set; }
         public long IdleTicks { get; set; }
         public long MacroRhythmTicks { get; set; }
+
+        public List<SkillSlot> Skills { get; } = new List<SkillSlot>();
+        public BigNumber ChainDamage { get; set; }
 
         public int Combo { get; set; }
         public long ComboIdleTicks { get; set; }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content;
+using Game.Core.Content.Gems;
 using Game.Core.Content.Json;
 using Game.Core.Math;
 using Game.Core.Sim;
@@ -54,13 +55,15 @@ namespace Game.Core.Save
                     ("wallet", SaveValues.Of(state.Gold)),
                     ("runEarned", SaveValues.Of(state.RunGoldEarned)))),
                 ("recentDps", SaveValues.Of(state.RecentDps)),
+                ("skills", JsonValue.Array(WriteSkills(state))),
+                ("chainDamage", SaveValues.Of(state.ChainDamage)),
                 ("carry", Object(
                     ("keys", JsonValue.Of(state.KeyCarry)),
                     ("clicks", JsonValue.Of(state.ClickCarry)),
                     ("mousePx", JsonValue.Of(state.MouseCarryPx)))));
         }
 
-        public static GameState Read(ContentNode node, EnemyCatalog enemies)
+        public static GameState Read(ContentNode node, EnemyCatalog enemies, GemCatalog gems)
         {
             var rng = node.Field("rng").Items();
             if (rng.Count != 2)
@@ -98,6 +101,7 @@ namespace Game.Core.Save
                 Gold = SaveValues.ReadBigNumber(gold.Field("wallet")),
                 RunGoldEarned = SaveValues.ReadBigNumber(gold.Field("runEarned")),
                 RecentDps = SaveValues.ReadBigNumber(node.Field("recentDps")),
+                ChainDamage = SaveValues.ReadBigNumber(node.Field("chainDamage")),
                 KeyCarry = carry.Field("keys").AsNumber(0, 1e6),
                 ClickCarry = carry.Field("clicks").AsNumber(0, 1e6),
                 MouseCarryPx = carry.Field("mousePx").AsNumber(0, 1e9)
@@ -108,7 +112,43 @@ namespace Game.Core.Save
             state.SpawnEnemy(ReadEnemyDef(enemy.Field("id"), enemies), SaveValues.ReadEnum(enemy.Field("type"), EnemyTypes),
                 SaveValues.ReadBigNumber(enemy.Field("maxHp")));
             state.EnemyHp = SaveValues.ReadBigNumber(enemy.Field("hp"));
+            ReadSkills(node.Field("skills"), gems, state);
             return state;
+        }
+
+        private static JsonValue[] WriteSkills(GameState state)
+        {
+            var skills = new JsonValue[state.Skills.Count];
+            for (var i = 0; i < skills.Length; i++)
+            {
+                var slot = state.Skills[i];
+                skills[i] = Object(
+                    ("gem", JsonValue.Of(slot.Skill.Id)),
+                    ("trigger", slot.Trigger == null ? JsonValue.Null() : JsonValue.Of(slot.Trigger.Id)),
+                    ("cooldownTicks", JsonValue.Of(slot.CooldownTicks)),
+                    ("activeTicks", JsonValue.Of(slot.ActiveTicks)),
+                    ("hitsLeft", JsonValue.Of(slot.HitsLeft)));
+            }
+            return skills;
+        }
+
+        private static void ReadSkills(ContentNode node, GemCatalog gems, GameState state)
+        {
+            foreach (var item in node.Items())
+            {
+                if (!gems.TryGet(item.Field("gem").AsString(), out var skill) || skill.Skill == null)
+                    continue;
+                var triggerNode = item.Field("trigger");
+                GemDef? trigger = null;
+                if (!triggerNode.IsNull && gems.TryGet(triggerNode.AsString(), out var found) && found.Trigger != null)
+                    trigger = found;
+                state.Skills.Add(new SkillSlot(skill, trigger)
+                {
+                    CooldownTicks = item.Field("cooldownTicks").AsInt(0),
+                    ActiveTicks = item.Field("activeTicks").AsInt(0),
+                    HitsLeft = item.Field("hitsLeft").AsInt(0)
+                });
+            }
         }
 
         private static EnemyDef? ReadEnemyDef(ContentNode id, EnemyCatalog enemies)

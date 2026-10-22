@@ -50,6 +50,8 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public void SpendNotes(int notes) => _state.Notes = System.Math.Max(0, _state.Notes - notes);
+
         public void EndTick(int keyHits)
         {
             if (keyHits > 0 || _state.Combo == 0)

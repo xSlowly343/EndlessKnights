@@ -20,6 +20,7 @@ namespace Game.Core.Sim
         private readonly StageSystem _stage;
         private readonly LootSystem _loot;
         private readonly DpsMeter _dps;
+        private readonly SkillSystem _skills;
         private double _pendingSeconds;
 
         public GameLoop(GameData data, IInputSource input, GameState state, StatSheet hero)
@@ -34,6 +35,7 @@ namespace Game.Core.Sim
             _loot = new LootSystem(data.Stages, hero, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot);
             _combat.OnKill(_stage);
+            _skills = new SkillSystem(state, Events, _energy, _combat.Class);
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _stage.EnsureEnemy();
         }
@@ -44,6 +46,7 @@ namespace Game.Core.Sim
         public FocusSystem Focus => _focus;
         public EnergySystem Energy => _energy;
         public LootSystem Loot => _loot;
+        public SkillSystem Skills => _skills;
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -82,6 +85,7 @@ namespace Game.Core.Sim
             _stage.UseData(data.Stages, data.Enemies);
             _loot.UseData(data.Stages);
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
+            _skills.UseGems(data.Gems);
         }
 
         public void Tick()
@@ -90,6 +94,7 @@ namespace Game.Core.Sim
             var input = _inputRules.Apply(LastInput);
             _focus.Tick(input);
             _energy.Tick(input);
+            _skills.Tick();
             _stage.Tick();
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);
