@@ -12,7 +12,7 @@ namespace Game.Core.Save
     public static class SaveCodec
     {
         public const string FileName = "save.json";
-        public const int CurrentVersion = 1;
+        public static int CurrentVersion => SaveMigrations.Default.CurrentVersion;
 
         private const string PayloadMarker = "\"payload\": ";
 
@@ -22,18 +22,21 @@ namespace Game.Core.Save
             return "{\n  \"checksum\": \"" + Checksum(payload) + "\",\n  " + PayloadMarker + payload + "\n}\n";
         }
 
-        public static SaveFile Decode(string text, EnemyCatalog enemies)
+        public static SaveFile Decode(string text, EnemyCatalog enemies) => Decode(text, enemies, SaveMigrations.Default);
+
+        public static SaveFile Decode(string text, EnemyCatalog enemies, SaveMigrations migrations)
         {
             var root = ContentNode.Root(text, FileName);
             var expected = root.Field("checksum").AsString();
             if (!string.Equals(Checksum(PayloadText(text, root)), expected, StringComparison.Ordinal))
                 throw root.Field("checksum").Error("does not match the saved data, the file is damaged or was edited");
 
-            var payload = root.Field("payload");
-            var version = payload.Field("version").AsInt(1);
-            if (version > CurrentVersion)
-                throw payload.Field("version").Error($"version {version} is newer than this game ({CurrentVersion})");
+            var stored = root.Field("payload");
+            var version = stored.Field("version").AsInt(1);
+            if (version > migrations.CurrentVersion)
+                throw stored.Field("version").Error($"version {version} is newer than this game ({migrations.CurrentVersion})");
 
+            var payload = new ContentNode(migrations.Upgrade(JsonParser.Parse(PayloadText(text, root), FileName), version), FileName, "payload");
             return new SaveFile(version, ReadClock(payload.Field("clock")), GameStateJson.Read(payload.Field("state"), enemies));
         }
 

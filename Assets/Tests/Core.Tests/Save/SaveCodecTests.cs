@@ -82,7 +82,7 @@ namespace Game.Core.Tests.Save
             Assert.That(loaded.Clock.HighestWallUnixMs, Is.EqualTo(1_760_000_000_000));
             Assert.That(loaded.Clock.Reading.ServerUnixMs, Is.Null);
             Assert.That(loaded.SavedAtUnixMs, Is.EqualTo(1_750_000_000_000));
-            Assert.That(loaded.Version, Is.EqualTo(SaveCodec.CurrentVersion));
+            Assert.That(loaded.StoredVersion, Is.EqualTo(SaveCodec.CurrentVersion));
         }
 
         [Test]

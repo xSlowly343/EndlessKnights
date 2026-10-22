@@ -4,17 +4,21 @@ namespace Game.Core.Tests.Content
 {
     public static class TestData
     {
-        public static string ReadGameDataFile(string fileName)
+        public static string ReadGameDataFile(string fileName) => ReadAboveCurrentDirectory(Path.Combine("Assets", "StreamingAssets", "Data", fileName));
+
+        public static string ReadSaveFixture(string fileName) => ReadAboveCurrentDirectory(Path.Combine("Assets", "Tests", "Core.Tests", "Save", "Fixtures", fileName));
+
+        private static string ReadAboveCurrentDirectory(string relativePath)
         {
             var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
             while (directory != null)
             {
-                var candidate = Path.Combine(directory.FullName, "Assets", "StreamingAssets", "Data", fileName);
+                var candidate = Path.Combine(directory.FullName, relativePath);
                 if (File.Exists(candidate))
                     return File.ReadAllText(candidate);
                 directory = directory.Parent;
             }
-            throw new FileNotFoundException($"Game data file {fileName} not found above {Directory.GetCurrentDirectory()}");
+            throw new FileNotFoundException($"{relativePath} not found above {Directory.GetCurrentDirectory()}");
         }
     }
 }
