@@ -49,6 +49,20 @@ namespace Game.Core.Tests.Save
         }
 
         [Test]
+        public void FourthVersionSaveWithTreeAndLevelStillLoads()
+        {
+            var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v4.json"), TestWorld.Data);
+
+            Assert.That(save.StoredVersion, Is.EqualTo(4));
+            Assert.That(save.State.Class, Is.EqualTo(HeroClass.Bard));
+            Assert.That(save.State.HeroLevel, Is.EqualTo(15));
+            Assert.That(save.State.Tree.PointsSpent, Is.EqualTo(7));
+            Assert.That(save.State.Tree.MasteryChoices["melody_mastery"], Is.EqualTo(1));
+            Assert.That(save.State.Tree.AttributeChoices["b_attr_3"], Is.EqualTo("precision"));
+            Assert.That(save.State.OwnedGems.Count, Is.EqualTo(3));
+        }
+
+        [Test]
         public void OldSaveCanBePlayedAndSavedAgainInTheCurrentVersion()
         {
             var save = SaveCodec.Decode(OldSave(), TestWorld.Data);

@@ -1,0 +1,112 @@
+{
+  "checksum": "4248b6545134c6c3a06588046d1e780332ac58d8721bbffd214d0e6dc93885dd",
+  "payload": {
+    "clock": {
+      "bootId": 44,
+      "highestWallUnixMs": 1761300000000,
+      "monotonicMs": 9000000,
+      "wallUnixMs": 1761300000000
+    },
+    "savedAt": 1761300000000,
+    "state": {
+      "carry": {
+        "clicks": 0,
+        "keys": 0,
+        "mousePx": 0
+      },
+      "chainDamage": "0e0",
+      "enemy": {
+        "hp": "1.2685947637271526e3",
+        "id": null,
+        "maxHp": "2.551094763727154e3",
+        "type": "normal"
+      },
+      "gold": {
+        "runEarned": "6.271199655153239e4",
+        "wallet": "6.271199655153239e4"
+      },
+      "hero": {
+        "class": "bard",
+        "combo": 0,
+        "comboIdleTicks": 0,
+        "energy": 100,
+        "focus": 3,
+        "focusMultiplier": 3,
+        "idleTicks": 1,
+        "keyHits": 10000,
+        "level": 15,
+        "macroRhythmTicks": 0,
+        "notes": 3,
+        "xp": 82.08153545113584
+      },
+      "ownedGems": [
+        "march",
+        "lull",
+        "cast_on_enter"
+      ],
+      "recentDps": "2.7501157178898428e2",
+      "rng": [
+        "96bd0ad029487b00",
+        "6b28bef78ab03635"
+      ],
+      "skills": [
+        {
+          "activeTicks": 291,
+          "cooldownTicks": 0,
+          "gem": "march",
+          "hitsLeft": 0,
+          "trigger": null
+        },
+        {
+          "activeTicks": 0,
+          "cooldownTicks": 0,
+          "gem": "lull",
+          "hitsLeft": 0,
+          "trigger": null
+        }
+      ],
+      "stage": {
+        "bossFailsInARow": 0,
+        "bossTicksLeft": 386,
+        "current": 64,
+        "farmKills": 0,
+        "farming": false,
+        "highest": 64,
+        "kills": 6,
+        "record": 64
+      },
+      "tick": 20000,
+      "tree": {
+        "allocated": [
+          {
+            "attribute": "precision",
+            "id": "b_attr_3"
+          },
+          {
+            "id": "b_melody_1"
+          },
+          {
+            "id": "b_melody_2"
+          },
+          {
+            "id": "b_melody_3"
+          },
+          {
+            "id": "b_melody_4"
+          },
+          {
+            "id": "chorus"
+          },
+          {
+            "id": "melody_mastery",
+            "option": 1
+          }
+        ],
+        "lastFreeResetUnixMs": 0,
+        "pointsEarned": 16,
+        "startClass": "bard"
+      }
+    },
+    "version": 4
+  }
+}
