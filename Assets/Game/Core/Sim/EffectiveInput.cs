@@ -28,6 +28,9 @@ namespace Game.Core.Sim
             RhythmCv = rhythmCv;
         }
 
+        public EffectiveInput WithMouse(double mousePx) =>
+            new EffectiveInput(Keys, EnterDowns, Clicks, RightClicks, MiddleClicks, WheelTicks, mousePx, Flicks, CircleTurns, RhythmCv);
+
         public bool HasInput =>
             Keys > 0 || Clicks > 0 || RightClicks > 0 || MiddleClicks > 0 || WheelTicks > 0 || MousePx > 0;
     }

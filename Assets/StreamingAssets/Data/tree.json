@@ -35,7 +35,7 @@
     {"id": "t_attr_2", "type": "attribute", "x": 1.14, "y": 5.89, "name": {"ru": "Атрибут", "en": "Attribute"}, "amount": 5},
     {"id": "t_attr_3", "type": "attribute", "x": -1.14, "y": 5.89, "name": {"ru": "Атрибут", "en": "Attribute"}, "amount": 5},
     {"id": "t_jewel", "type": "jewel", "x": 1.14, "y": 8.12, "name": {"ru": "Гнездо самоцвета", "en": "Jewel Socket"}, "locked": true},
-    {"id": "one_handed", "type": "keystone", "x": -1.17, "y": 8.32, "name": {"ru": "Однорукий", "en": "One-Handed"}, "modifiers": [{"stat": "damage", "kind": "more", "value": -1.0, "tags": ["Mouse"]}, {"stat": "mouseGain", "kind": "more", "value": -1.0}, {"stat": "damage", "kind": "more", "value": 1.0, "tags": ["Keyboard"]}]},
+    {"id": "one_handed", "type": "keystone", "x": -1.17, "y": 8.32, "name": {"ru": "Однорукий", "en": "One-Handed"}, "modifiers": [{"stat": "damage", "kind": "more", "value": -1.0, "tags": ["Mouse"]}, {"stat": "mouseDistance", "kind": "more", "value": -1.0}, {"stat": "damage", "kind": "more", "value": 1.0, "tags": ["Keyboard"]}]},
     {"id": "b_attr_1", "type": "attribute", "x": -2.17, "y": 1.25, "name": {"ru": "Атрибут", "en": "Attribute"}, "amount": 5},
     {"id": "bard_start", "type": "start", "x": -2.94, "y": 1.7, "name": {"ru": "Старт Барда", "en": "Bard Start"}, "class": "bard"},
     {"id": "b_melody_1", "type": "small", "x": -3.14, "y": 2.64, "name": {"ru": "Мелодия", "en": "Melody"}, "modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.08}]},

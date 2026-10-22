@@ -12,7 +12,8 @@ namespace Game.Core.Save
                     JsonEdit.Set(JsonEdit.Set(state, "skills", JsonValue.Array(new JsonValue[0])), "chainDamage", JsonValue.Of("0e0")))),
             new SaveMigration(2, "passive tree (phase 9)", payload =>
                 JsonEdit.Update(payload, "state", state =>
-                    JsonEdit.Set(state, "tree", EmptyTree(state.Fields["hero"].Fields["class"])))));
+                    JsonEdit.Update(JsonEdit.Set(state, "tree", EmptyTree(state.Fields["hero"].Fields["class"])), "hero", hero =>
+                        JsonEdit.Set(hero, "keyHits", JsonValue.Of(0))))));
 
         private static JsonValue EmptyTree(JsonValue heroClass) =>
             JsonValue.Object(new Dictionary<string, JsonValue>

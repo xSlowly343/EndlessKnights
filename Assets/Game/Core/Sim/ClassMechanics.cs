@@ -1,4 +1,5 @@
 using Game.Core.Content;
+using Game.Core.Stats;
 
 namespace Game.Core.Sim
 {
@@ -6,10 +7,12 @@ namespace Game.Core.Sim
     {
         private readonly GameState _state;
         private readonly EventQueue _events;
+        private readonly StatSheet _hero;
         private ClassRules _rules;
 
-        public ClassMechanics(ClassRules rules, GameState state, EventQueue events)
+        public ClassMechanics(ClassRules rules, GameState state, EventQueue events, StatSheet hero)
         {
+            _hero = hero;
             _rules = rules;
             _state = state;
             _events = events;
@@ -17,7 +20,9 @@ namespace Game.Core.Sim
 
         public void UseRules(ClassRules rules) => _rules = rules;
 
-        public bool MelodyReady => _state.Notes >= _rules.NotesPerMelody;
+        public int NotesPerMelody => System.Math.Max(1, (int)System.Math.Round(_rules.NotesPerMelody + _hero.Value(CombatStats.MelodyNotes, 0)));
+
+        public bool MelodyReady => _state.Notes >= NotesPerMelody;
 
         public double OnKeyHit(out HitFlags flags)
         {

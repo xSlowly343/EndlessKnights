@@ -62,16 +62,17 @@ namespace Game.Core.Sim
                 return CastResult.Passive;
             if (!slot.Ready)
                 return CastResult.OnCooldown;
-            if (skill.NoteCost > 0 && _state.Notes < skill.NoteCost)
+            var noteCost = NoteCost(skill);
+            if (noteCost > 0 && _state.Notes < noteCost)
                 return CastResult.NotEnoughNotes;
             if (skill.EnergyCost > 0 && !_energy.TrySpend(skill.EnergyCost))
                 return CastResult.NotEnoughEnergy;
-            if (skill.NoteCost > 0)
-                _combat.Class.SpendNotes(skill.NoteCost);
+            if (noteCost > 0)
+                _combat.Class.SpendNotes(noteCost);
 
             var cooldown = skill.CooldownSeconds * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
             slot.CooldownTicks = Ticks(cooldown);
-            slot.ActiveTicks = Ticks(skill.DurationSeconds);
+            slot.ActiveTicks = Ticks(skill.DurationSeconds * (skill.Effect is AuraEffect ? _hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura) : 1));
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
             ApplyAura(slot);
@@ -103,7 +104,7 @@ namespace Game.Core.Sim
                     if (slot.ActiveTicks == 0)
                         RemoveAura(slot);
                 }
-                if (slot.Def.NoteCost > 0 && _state.Notes >= slot.Def.NoteCost)
+                if (slot.Def.NoteCost > 0 && _state.Notes >= NoteCost(slot.Def))
                     TryCast(index);
                 if (input.HasInput && slot.Def.Effect is IdleStrikeEffect strike)
                     ReleaseIdleStrike(slot, strike, idleTicksBefore * GameLoop.TickSeconds);
@@ -115,17 +116,31 @@ namespace Game.Core.Sim
             if (index < 0 || index >= _state.Skills.Count || !(_state.Skills[index].Def.Effect is IdleStrikeEffect strike) || !_state.Skills[index].Ready)
                 return 0;
             var idleSeconds = _state.IdleTicks * GameLoop.TickSeconds;
-            return idleSeconds < strike.MinIdleSeconds ? 0 : ChargeMultiplier(strike, idleSeconds);
+            return idleSeconds < MinIdleSeconds(strike) ? 0 : ChargeMultiplier(strike, idleSeconds);
         }
 
         private void ReleaseIdleStrike(SkillSlot slot, IdleStrikeEffect strike, double idleSeconds)
         {
-            if (!slot.Ready || idleSeconds < strike.MinIdleSeconds)
+            if (!slot.Ready || idleSeconds < MinIdleSeconds(strike))
                 return;
             slot.CooldownTicks = Ticks(slot.Def.CooldownSeconds);
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             _combat.SkillHit(_combat.BaseKeyDamage, ChargeMultiplier(strike, idleSeconds), slot.Skill.Tags);
         }
+
+        public void RefreshAuras()
+        {
+            foreach (var slot in _state.Skills)
+            {
+                RemoveAura(slot);
+                if (slot.Active)
+                    ApplyAura(slot);
+            }
+        }
+
+        private int NoteCost(SkillDef skill) => skill.NoteCost <= 0 ? 0 : System.Math.Min(skill.NoteCost, _combat.Class.NotesPerMelody);
+
+        private double MinIdleSeconds(IdleStrikeEffect strike) => System.Math.Max(0, strike.MinIdleSeconds + _hero.Value(CombatStats.IdleStartSeconds, 0, StatTags.Idle));
 
         private static double ChargeMultiplier(IdleStrikeEffect strike, double idleSeconds) =>
             strike.ChargePerSecond * System.Math.Min(idleSeconds, strike.MaxChargeSeconds);
@@ -134,18 +149,24 @@ namespace Game.Core.Sim
         {
             if (slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura))
                 return;
+            var strength = _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
             for (var i = 0; i < aura.Modifiers.Count; i++)
-                _hero.Add(aura.Modifiers[i]);
+            {
+                var modifier = aura.Modifiers[i];
+                slot.AuraModifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * strength, modifier.Tags));
+            }
+            _hero.AddRange(slot.AuraModifiers);
             slot.AuraApplied = true;
             _events.Add(GameEvent.ForSkill(GameEventKind.AuraChanged, _state.Tick, slot.Skill));
         }
 
         private void RemoveAura(SkillSlot slot)
         {
-            if (!slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura))
+            if (!slot.AuraApplied)
                 return;
-            for (var i = 0; i < aura.Modifiers.Count; i++)
-                _hero.Remove(aura.Modifiers[i]);
+            for (var i = 0; i < slot.AuraModifiers.Count; i++)
+                _hero.Remove(slot.AuraModifiers[i]);
+            slot.AuraModifiers.Clear();
             slot.AuraApplied = false;
             _events.Add(GameEvent.ForSkill(GameEventKind.AuraChanged, _state.Tick, slot.Skill));
         }

@@ -50,6 +50,7 @@ namespace Game.Core.Sim
         public List<SkillSlot> Skills { get; } = new List<SkillSlot>();
         public BigNumber ChainDamage { get; set; }
 
+        public long KeyHits { get; set; }
         public int Combo { get; set; }
         public long ComboIdleTicks { get; set; }
         public int Notes { get; set; }

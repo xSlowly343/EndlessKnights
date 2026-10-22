@@ -55,6 +55,16 @@ namespace Game.Core.Build
             return AllocationResult.Allocated;
         }
 
+        public bool ChangeMastery(PassiveTree tree, string nodeId, int option)
+        {
+            if (!_allocated.Contains(nodeId) || !tree.TryGet(nodeId, out var node) || node.Type != TreeNodeType.Mastery)
+                return false;
+            if (option < 0 || option >= node.Options.Count)
+                return false;
+            _masteries[nodeId] = option;
+            return true;
+        }
+
         public void Restore(string nodeId, string? attribute, int? masteryOption)
         {
             _allocated.Add(nodeId);

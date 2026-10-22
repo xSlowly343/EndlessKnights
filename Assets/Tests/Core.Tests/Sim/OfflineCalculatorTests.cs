@@ -113,6 +113,19 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void OfflineGoldNodesOnlyBoostOfflineGold()
+        {
+            var hero = new StatSheet();
+            hero.Add(new Modifier(CombatStats.OfflineGold, ModifierKind.Increased, 0.08));
+
+            var plain = Calculator().Simulate(AtStage(5), 600, BigNumber.FromDouble(100), fightGuardians: false);
+            var boosted = Calculator(hero).Simulate(AtStage(5), 600, BigNumber.FromDouble(100), fightGuardians: false);
+
+            Assert.That((boosted.Gold / plain.Gold).ToDouble(), Is.EqualTo(1.08).Within(1e-9));
+            Assert.That(TestWorld.Loop(hero: hero).Loot.GoldFor(5, EnemyType.Normal, null), Is.EqualTo(TestWorld.Loop().Loot.GoldFor(5, EnemyType.Normal, null)));
+        }
+
+        [Test]
         public void ApplyMovesTheGameForwardAndLoopContinues()
         {
             var state = AtStage(3);

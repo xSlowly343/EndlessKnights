@@ -20,7 +20,7 @@ namespace Game.Core.Sim
             _hero = hero;
             _state = state;
             _events = events;
-            _class = new ClassMechanics(rules.Classes, state, events);
+            _class = new ClassMechanics(rules.Classes, state, events, hero);
         }
 
         public ClassMechanics Class => _class;
@@ -51,9 +51,12 @@ namespace Game.Core.Sim
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
             _state.MouseCarryPx = mouseCarry * _rules.MousePxPerHit;
 
+            var enterHits = System.Math.Min(input.EnterDowns, keyHits);
             for (var i = 0; i < keyHits; i++)
             {
-                var multiplier = _class.OnKeyHit(out var flags);
+                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags);
+                if (i < enterHits)
+                    multiplier *= _hero.Value(CombatStats.EnterDamage, 1, StatTags.Keyboard);
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
             }
             for (var i = 0; i < clickHits; i++)
@@ -91,6 +94,16 @@ namespace Game.Core.Sim
 
             _state.EnemyHp = BigNumber.Zero;
             _kills?.OnEnemyKilled();
+        }
+
+        private double HeavyStrike(ref HitFlags flags)
+        {
+            _state.KeyHits++;
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.KeyStrikeEvery, 0, StatTags.Keyboard));
+            if (every < 1 || _state.KeyHits % every != 0)
+                return 1;
+            flags |= HitFlags.HeavyStrike;
+            return System.Math.Max(1, _hero.Value(CombatStats.KeyStrikeMultiplier, 0, StatTags.Keyboard));
         }
 
         public double CritChance(StatTags tags)

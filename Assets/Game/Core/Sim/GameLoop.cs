@@ -34,8 +34,8 @@ namespace Game.Core.Sim
             State = state;
             Hero = hero;
             _inputRules = new InputRules(data.InputCaps);
-            _focus = new FocusSystem(data.Combat.Focus, state);
-            _energy = new EnergySystem(data.Combat.Energy, state);
+            _focus = new FocusSystem(data.Combat.Focus, state, hero);
+            _energy = new EnergySystem(data.Combat.Energy, state, hero);
             _combat = new CombatSystem(data.Combat, hero, state, Events);
             _loot = new LootSystem(data.Stages, hero, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot);
@@ -93,7 +93,19 @@ namespace Game.Core.Sim
             return result;
         }
 
-        public void RebuildTree() => _treeLayer.Set(State.Tree.Modifiers(_data.Tree));
+        public bool ChangeMastery(string nodeId, int option)
+        {
+            if (!State.Tree.ChangeMastery(_data.Tree, nodeId, option))
+                return false;
+            RebuildTree();
+            return true;
+        }
+
+        public void RebuildTree()
+        {
+            _treeLayer.Set(State.Tree.Modifiers(_data.Tree));
+            _skills.RefreshAuras();
+        }
 
         public void UseData(GameData data)
         {
@@ -112,7 +124,8 @@ namespace Game.Core.Sim
         public void Tick()
         {
             LastInput = _input.Drain();
-            var input = _inputRules.Apply(LastInput);
+            var raw = _inputRules.Apply(LastInput);
+            var input = raw.WithMouse(raw.MousePx * System.Math.Max(0, Hero.Value(CombatStats.MouseDistance, 1, StatTags.Mouse)));
             var idleTicksBefore = State.IdleTicks;
             _focus.Tick(input);
             _energy.Tick(input);

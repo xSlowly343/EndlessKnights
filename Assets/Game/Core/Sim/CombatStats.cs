@@ -8,5 +8,18 @@ namespace Game.Core.Sim
         public static readonly StatId CritChance = new StatId("critChance");
         public static readonly StatId CritMultiplier = new StatId("critMultiplier");
         public static readonly StatId Gold = new StatId("gold");
+        public static readonly StatId FocusGain = new StatId("focusGain");
+        public static readonly StatId FocusMax = new StatId("focusMax");
+        public static readonly StatId FocusResetSeconds = new StatId("focusResetSeconds");
+        public static readonly StatId MouseDistance = new StatId("mouseDistance");
+        public static readonly StatId EnergyGain = new StatId("energyGain");
+        public static readonly StatId EnterDamage = new StatId("enterDamage");
+        public static readonly StatId KeyStrikeEvery = new StatId("keyStrikeEvery");
+        public static readonly StatId KeyStrikeMultiplier = new StatId("keyStrikeMultiplier");
+        public static readonly StatId AuraDuration = new StatId("auraDuration");
+        public static readonly StatId AuraEffect = new StatId("auraEffect");
+        public static readonly StatId MelodyNotes = new StatId("melodyNotes");
+        public static readonly StatId IdleStartSeconds = new StatId("idleStartSeconds");
+        public static readonly StatId OfflineGold = new StatId("offlineGold");
     }
 }
