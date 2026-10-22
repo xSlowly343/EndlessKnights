@@ -1,19 +1,21 @@
 using System;
 using Game.Core.Content.Gems;
+using Game.Core.Content.Tree;
 
 namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, PassiveTree.FileName };
 
-        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems)
+        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, PassiveTree tree)
         {
             Stages = stages;
             Enemies = enemies;
             InputCaps = inputCaps;
             Combat = combat;
             Gems = gems;
+            Tree = tree;
         }
 
         public StageTable Stages { get; }
@@ -21,6 +23,7 @@ namespace Game.Core.Content
         public InputCaps InputCaps { get; }
         public CombatRules Combat { get; }
         public GemCatalog Gems { get; }
+        public PassiveTree Tree { get; }
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -34,7 +37,8 @@ namespace Game.Core.Content
                 if (gem.Skill != null && gem.Skill.NoteCost > combat.Classes.NotesPerMelody)
                     throw new ContentException(GemCatalog.FileName, gem.Id, $"costs {gem.Skill.NoteCost} notes, but a melody holds only {combat.Classes.NotesPerMelody} ({CombatRules.FileName})");
             }
-            return new GameData(stages, enemies, inputCaps, combat, gems);
+            var tree = PassiveTree.Load(readFile(PassiveTree.FileName));
+            return new GameData(stages, enemies, inputCaps, combat, gems, tree);
         }
     }
 }
