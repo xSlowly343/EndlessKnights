@@ -35,7 +35,7 @@ namespace Game.Core.Sim
             if (_state.Combo % _rules.ComboStrikeEvery != 0)
                 return 1;
             flags = HitFlags.ComboStrike;
-            return _rules.ComboStrikeMultiplier;
+            return _rules.ComboStrikeMultiplier + _hero.Value(CombatStats.ComboStrikeMultiplier, 0, StatTags.Keyboard);
         }
 
         public void OnClickHit()
@@ -62,7 +62,8 @@ namespace Game.Core.Sim
             if (keyHits > 0 || _state.Combo == 0)
                 return;
             _state.ComboIdleTicks++;
-            if (_state.ComboIdleTicks > System.Math.Round(_rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond))
+            var timeout = _rules.ComboTimeoutSeconds + _hero.Value(CombatStats.ComboTimeoutSeconds, 0, StatTags.Keyboard);
+            if (_state.ComboIdleTicks > System.Math.Round(timeout * GameLoop.TicksPerSecond))
             {
                 _state.Combo = 0;
                 _state.ComboIdleTicks = 0;

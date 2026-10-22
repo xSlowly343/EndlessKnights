@@ -26,14 +26,15 @@ namespace Game.Core.Build
         public int PointsSpent => _allocated.Count;
         public int PointsLeft => PointsEarned - PointsSpent;
 
-        public bool IsAllocated(PassiveTree tree, string nodeId) => _allocated.Contains(nodeId);
+        public bool IsAllocated(PassiveTree tree, string nodeId) =>
+            _allocated.Contains(nodeId) || string.Equals(tree.StartOf(StartClass)?.Id, nodeId, StringComparison.Ordinal);
 
         public IReadOnlyList<TreeNodeDef> Allocatable(PassiveTree tree)
         {
             var allocatable = new List<TreeNodeDef>();
             foreach (var node in tree.Nodes)
             {
-                if (!_allocated.Contains(node.Id) && !node.Locked && node.Type != TreeNodeType.Start && TouchesAllocated(node))
+                if (!_allocated.Contains(node.Id) && !node.Locked && node.Type != TreeNodeType.Start && TouchesAllocated(tree, node))
                     allocatable.Add(node);
             }
             return allocatable;
@@ -49,7 +50,7 @@ namespace Game.Core.Build
                 return AllocationResult.Locked;
             if (PointsLeft <= 0)
                 return AllocationResult.NoPoints;
-            if (!TouchesAllocated(node))
+            if (!TouchesAllocated(tree, node))
                 return AllocationResult.NotConnected;
             return CheckChoice(tree, node, attribute, masteryOption);
         }
@@ -81,7 +82,9 @@ namespace Game.Core.Build
         {
             if (!_allocated.Contains(nodeId) || !tree.TryGet(nodeId, out var node))
                 return null;
-            return tree.Respec.NodeCost(tree.DepthFromNearestStart(node), heroLevel, node.Type == TreeNodeType.Attribute);
+            var start = tree.StartOf(StartClass);
+            var depth = start == null ? tree.DepthFromNearestStart(node) : tree.DepthFrom(start, node);
+            return tree.Respec.NodeCost(depth, heroLevel, node.Type == TreeNodeType.Attribute);
         }
 
         public bool CanRemove(PassiveTree tree, string nodeId)
@@ -134,6 +137,9 @@ namespace Game.Core.Build
         public IReadOnlyList<Modifier> Modifiers(PassiveTree tree)
         {
             var modifiers = new List<Modifier>();
+            var start = tree.StartOf(StartClass);
+            if (start != null)
+                modifiers.AddRange(start.Modifiers);
             foreach (var id in _allocated)
             {
                 if (!tree.TryGet(id, out var node))
@@ -147,11 +153,22 @@ namespace Game.Core.Build
             return modifiers;
         }
 
-        private bool TouchesAllocated(TreeNodeDef node)
+        private bool TouchesAllocated(PassiveTree tree, TreeNodeDef node)
         {
             foreach (var neighbour in node.Neighbours)
             {
-                if (_allocated.Count == 0 ? neighbour.Type == TreeNodeType.Start : _allocated.Contains(neighbour.Id))
+                if (IsAllocated(tree, neighbour.Id))
+                    return true;
+            }
+            return false;
+        }
+
+        private bool IsOwnStartExit(PassiveTree tree, TreeNodeDef node)
+        {
+            var start = tree.StartOf(StartClass);
+            foreach (var neighbour in node.Neighbours)
+            {
+                if (ReferenceEquals(neighbour, start))
                     return true;
             }
             return false;
@@ -163,7 +180,7 @@ namespace Game.Core.Build
             var queue = new Queue<TreeNodeDef>();
             foreach (var id in _allocated)
             {
-                if (id != without && tree.TryGet(id, out var node) && !node.Locked && node.Type != TreeNodeType.Start && PassiveTree.IsStartExit(node) && reached.Add(id))
+                if (id != without && tree.TryGet(id, out var node) && !node.Locked && node.Type != TreeNodeType.Start && IsOwnStartExit(tree, node) && reached.Add(id))
                     queue.Enqueue(node);
             }
             while (queue.Count > 0)

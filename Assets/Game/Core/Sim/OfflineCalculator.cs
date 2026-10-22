@@ -26,7 +26,8 @@ namespace Game.Core.Sim
         public OfflineResult Simulate(GameState state, double seconds, BigNumber dps, bool fightGuardians)
         {
             var stages = _data.Stages;
-            var time = System.Math.Max(0, System.Math.Min(seconds, _data.Combat.Offline.CapSeconds));
+            var capSeconds = _data.Combat.Offline.CapSeconds + _hero.Value(CombatStats.OfflineCapHours, 0) * 3600;
+            var time = System.Math.Max(0, System.Math.Min(seconds, capSeconds));
             var used = time;
             var stage = state.Stage;
             var kills = state.Farming ? stages.EnemiesPerStage : System.Math.Min(state.KillsOnStage, stages.EnemiesPerStage);

@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Build
             loop.SwitchPreset();
             Assert.That(loop.State.ActivePreset, Is.EqualTo(0));
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(2));
-            Assert.That(KeyDamage(loop), Is.EqualTo(112).Within(1e-9));
+            Assert.That(KeyDamage(loop), Is.EqualTo(110).Within(1e-9));
             Assert.That(loop.State.Skills.Count, Is.EqualTo(2));
             Assert.That(loop.State.Skills[0].Trigger, Is.SameAs(TestWorld.Data.Gems["cast_on_enter"]));
 

@@ -87,6 +87,27 @@ namespace Game.Core.Content.Tree
             return -1;
         }
 
+        public int DepthFrom(TreeNodeDef start, TreeNodeDef target)
+        {
+            var depth = new Dictionary<TreeNodeDef, int> { [start] = 0 };
+            var queue = new Queue<TreeNodeDef>();
+            queue.Enqueue(start);
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                if (ReferenceEquals(node, target))
+                    return depth[node];
+                foreach (var next in node.Neighbours)
+                {
+                    if (depth.ContainsKey(next) || next.Type == TreeNodeType.Start)
+                        continue;
+                    depth[next] = depth[node] + 1;
+                    queue.Enqueue(next);
+                }
+            }
+            return -1;
+        }
+
         public static StatId AttributeStat(string attribute) => new StatId(attribute);
 
         public static PassiveTree Load(string json)

@@ -22,5 +22,8 @@ namespace Game.Core.Sim
         public static readonly StatId IdleStartSeconds = new StatId("idleStartSeconds");
         public static readonly StatId OfflineGold = new StatId("offlineGold");
         public static readonly StatId BossTimerSeconds = new StatId("bossTimerSeconds");
+        public static readonly StatId OfflineCapHours = new StatId("offlineCapHours");
+        public static readonly StatId ComboTimeoutSeconds = new StatId("comboTimeoutSeconds");
+        public static readonly StatId ComboStrikeMultiplier = new StatId("comboStrikeMultiplier");
     }
 }

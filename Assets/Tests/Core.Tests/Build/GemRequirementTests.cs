@@ -42,7 +42,8 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.Book.Attribute("tempo"), Is.EqualTo(5));
             Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.AttributesTooLow));
 
-            loop.AllocateNode("c_attr_tempo", attribute: "tempo");
+            loop.AllocateNode("t_pen_2");
+            loop.AllocateNode("t_attr_2", attribute: "tempo");
             Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.Done));
         }
 
@@ -55,8 +56,11 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.Book.ColoredSupportLimit("tempo"), Is.EqualTo(0));
             loop.AllocateNode("t_pen_1");
             loop.AllocateNode("t_attr_1", attribute: "tempo");
-            loop.AllocateNode("c_attr_tempo", attribute: "tempo");
-            loop.AllocateNode("c_attr_reach", attribute: "tempo");
+            loop.AllocateNode("t_pen_2");
+            loop.AllocateNode("t_attr_2", attribute: "tempo");
+            loop.AllocateNode("t_heavy_1");
+            loop.AllocateNode("t_heavy_2");
+            loop.AllocateNode("t_attr_3", attribute: "tempo");
             Assert.That(loop.Book.ColoredSupportLimit("tempo"), Is.EqualTo(1));
             Assert.That(loop.Book.ColoredSupportLimit("reach"), Is.EqualTo(0));
         }

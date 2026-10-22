@@ -25,18 +25,45 @@ namespace Game.Core.Tests.Build
         private static double KeyDamage(GameLoop loop) => loop.Hero.Compute(CombatStats.Damage, BigNumber.FromDouble(100), StatTags.Keyboard).ToDouble();
 
         [Test]
-        public void FirstPointLightsUpTheNodesNextToEveryStart()
+        public void ClassStartIsTakenForFreeAndOffersItsOwnExits()
         {
             var loop = Typist(1);
 
-            var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id).ToArray();
+            var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id);
 
-            var expected = Tree.Nodes.Where(node => node.Type == TreeNodeType.Start).SelectMany(node => node.Neighbours)
-                .Where(node => !node.Locked).Select(node => node.Id).Distinct().OrderBy(id => id).ToArray();
-            Assert.That(offered, Is.EqualTo(expected));
-            Assert.That(offered, Does.Contain("t_pen_1").And.Contain("b_ensemble_1").And.Contain("c_attr_tempo"));
-            Assert.That(loop.State.Tree.IsAllocated(Tree, "typist_start"), Is.False);
+            Assert.That(loop.State.Tree.IsAllocated(Tree, "typist_start"), Is.True);
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(0));
+            Assert.That(offered, Is.EqualTo(new[] { "t_combo_1", "t_heavy_1", "t_pen_1" }));
+        }
+
+        [Test]
+        public void OtherClassExitsAreNotOffered()
+        {
+            var loop = Typist(1);
+
+            Assert.That(loop.AllocateNode("b_ensemble_1"), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateNode("c_patience"), Is.EqualTo(AllocationResult.NotConnected));
+        }
+
+        [Test]
+        public void AfterANodeItsNeighboursJoinTheOffer()
+        {
+            var loop = Typist(5);
+            loop.AllocateNode("t_combo_1");
+
+            var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id);
+
+            Assert.That(offered, Is.EqualTo(new[] { "t_combo_2", "t_heavy_1", "t_pen_1" }));
+        }
+
+        [Test]
+        public void HermitBeginsAmongItsOwnNodes()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Tree = new TreeAllocation("hermit") { PointsEarned = 1 } });
+
+            var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id);
+
+            Assert.That(offered, Is.EqualTo(new[] { "c_hearth", "c_meditation", "c_patience", "c_silence_1", "c_stillness" }));
         }
 
         [Test]
@@ -76,7 +103,7 @@ namespace Game.Core.Tests.Build
             loop.AllocateNode("t_pen_1");
             loop.AllocateNode("t_pen_2");
 
-            Assert.That(KeyDamage(loop), Is.EqualTo(112).Within(1e-9));
+            Assert.That(KeyDamage(loop), Is.EqualTo(110).Within(1e-9));
         }
 
         [Test]
@@ -121,47 +148,11 @@ namespace Game.Core.Tests.Build
 
             loop.AllocateNode("t_pen_1");
             loop.AllocateNode("t_attr_1", attribute: "tempo");
-            loop.AllocateNode("c_attr_tempo", attribute: "tempo");
+            loop.AllocateNode("c_patience");
 
             Assert.That(loop.AllocateNode("hermit_start"), Is.EqualTo(AllocationResult.Locked));
-            Assert.That(loop.AllocateNode("c_attr_reach", attribute: "reach"), Is.EqualTo(AllocationResult.Allocated));
-            Assert.That(loop.AllocateNode("c_exit"), Is.EqualTo(AllocationResult.Allocated));
-        }
-
-        [Test]
-        public void AnyClassMayBeginNextToAnyStart()
-        {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Bard });
-            loop.State.Tree.PointsEarned = 2;
-
-            Assert.That(loop.AllocateNode("t_combo_1"), Is.EqualTo(AllocationResult.Allocated));
-            Assert.That(loop.AllocateNode("b_ensemble_1"), Is.EqualTo(AllocationResult.NotConnected));
-            Assert.That(loop.AllocateNode("t_combo_2"), Is.EqualTo(AllocationResult.Allocated));
-        }
-
-        [Test]
-        public void AfterTheFirstNodeOnlyItsNeighboursAreOffered()
-        {
-            var loop = Typist(5);
-            loop.AllocateNode("t_combo_1");
-
-            var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id);
-
-            Assert.That(offered, Is.EqualTo(new[] { "t_combo_2", "t_heavy_1", "t_pen_1" }));
-        }
-
-        [Test]
-        public void FirstNodeCanBeRefundedAndTheChoiceOpensAgain()
-        {
-            var loop = Typist(3);
-            loop.State.Gold = Game.Core.Math.BigNumber.FromDouble(1e9);
-            loop.AllocateNode("t_combo_1");
-            loop.AllocateNode("t_combo_2");
-
-            Assert.That(loop.RefundNode("t_combo_1"), Is.EqualTo(RefundResult.BreaksPath));
-            Assert.That(loop.RefundNode("t_combo_2"), Is.EqualTo(RefundResult.Refunded));
-            Assert.That(loop.RefundNode("t_combo_1"), Is.EqualTo(RefundResult.Refunded));
-            Assert.That(loop.State.Tree.Allocatable(Tree).Count, Is.GreaterThan(5));
+            Assert.That(loop.AllocateNode("c_meditation"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("c_hearth"), Is.EqualTo(AllocationResult.Allocated));
         }
 
         [Test]
@@ -178,7 +169,7 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loaded.State.Tree.PointsSpent, Is.EqualTo(3));
             Assert.That(loaded.State.Tree.AttributeChoices["t_attr_1"], Is.EqualTo("tempo"));
-            Assert.That(KeyDamage(loaded), Is.EqualTo(112).Within(1e-9));
+            Assert.That(KeyDamage(loaded), Is.EqualTo(110).Within(1e-9));
             Assert.That(hero.Compute(PassiveTree.AttributeStat("tempo"), BigNumber.Zero).ToDouble(), Is.EqualTo(5));
         }
 

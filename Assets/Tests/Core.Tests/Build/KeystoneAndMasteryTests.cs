@@ -83,8 +83,8 @@ namespace Game.Core.Tests.Build
 
             var plainDamage = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             var keystoneDamage = keystone.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
-            Assert.That(plainDamage, Is.EqualTo(100 * (1 + 0.25 * 1.03)).Within(1e-6));
-            Assert.That(keystoneDamage, Is.EqualTo(100 * (1 + 0.25 * 1.03 * 2) * 0.3).Within(1e-6));
+            Assert.That(plainDamage, Is.EqualTo(100 * (1 + 0.25 * 1.07)).Within(1e-6));
+            Assert.That(keystoneDamage, Is.EqualTo(100 * (1 + 0.25 * 1.07 * 2) * 0.3).Within(1e-6));
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace Game.Core.Tests.Build
             plainInput.PressEnter();
             plain.Tick();
 
-            Assert.That(Damage(enter, DamageSource.Keyboard) / Damage(plain, DamageSource.Keyboard), Is.EqualTo(1.25).Within(1e-6));
+            Assert.That(Damage(enter, DamageSource.Keyboard) / Damage(plain, DamageSource.Keyboard), Is.EqualTo((1 + 0.10 + 0.25) / (1 + 0.10)).Within(1e-6));
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace Game.Core.Tests.Build
             energyInput.PressKeys(1);
             energy.Tick();
 
-            Assert.That(energy.State.Energy, Is.EqualTo(1.1).Within(1e-9));
+            Assert.That(energy.State.Energy, Is.EqualTo(1 + 0.05 + 0.10).Within(1e-9));
         }
 
         [Test]
