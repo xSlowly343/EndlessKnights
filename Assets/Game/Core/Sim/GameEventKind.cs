@@ -12,6 +12,7 @@ namespace Game.Core.Sim
         MelodyReady,
         SkillCast,
         AuraChanged,
-        LevelUp
+        LevelUp,
+        Prestige
     }
 }

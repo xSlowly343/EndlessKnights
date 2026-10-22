@@ -27,6 +27,7 @@ namespace Game.Core.Sim
         private readonly TriggerSystem _triggers;
         private readonly ModifierLayer _treeLayer;
         private readonly SkillBook _book;
+        private readonly PrestigeSystem _prestige;
         private GameData _data;
         private double _pendingSeconds;
 
@@ -47,6 +48,7 @@ namespace Game.Core.Sim
             _skills = new SkillSystem(state, Events, _energy, _combat, hero);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills);
+            _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
             _treeLayer = new ModifierLayer(hero);
             RebuildTree();
@@ -63,6 +65,7 @@ namespace Game.Core.Sim
         public SkillSystem Skills => _skills;
         public LevelSystem Levels => _levels;
         public SkillBook Book => _book;
+        public PrestigeSystem Prestige => _prestige;
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -154,6 +157,7 @@ namespace Game.Core.Sim
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
             _book.UseRules(data.SkillBook);
+            _prestige.UseRules(data.Prestige);
             RebuildTree();
         }
 

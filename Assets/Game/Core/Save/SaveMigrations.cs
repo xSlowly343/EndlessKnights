@@ -6,10 +6,11 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(4,
+        public static readonly SaveMigrations Default = new SaveMigrations(5,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
-            new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)));
+            new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
+            new SaveMigration(4, "prestige and artifacts (phase 10)", payload => JsonEdit.Update(payload, "state", StateToVersion5)));
 
         private readonly SaveMigration[] _steps;
 
@@ -65,6 +66,17 @@ namespace Game.Core.Save
             var tree = JsonEdit.Set(state.Fields["tree"], "lastFreeResetUnixMs", JsonValue.Of(0));
             var upgraded = JsonEdit.Set(JsonEdit.Set(JsonEdit.Set(state, "hero", hero), "stage", stage), "tree", tree);
             return JsonEdit.Set(upgraded, "ownedGems", JsonValue.Array(EquippedGems(state.Fields["skills"])));
+        }
+
+        private static JsonValue StateToVersion5(JsonValue state)
+        {
+            var prestige = JsonValue.Object(new Dictionary<string, JsonValue>
+            {
+                ["echo"] = JsonValue.Of("0e0"),
+                ["echoEarned"] = JsonValue.Of("0e0"),
+                ["count"] = JsonValue.Of(0)
+            });
+            return JsonEdit.Set(JsonEdit.Set(state, "prestige", prestige), "artifacts", JsonValue.Array(new JsonValue[0]));
         }
 
         private static JsonValue[] EquippedGems(JsonValue skills)

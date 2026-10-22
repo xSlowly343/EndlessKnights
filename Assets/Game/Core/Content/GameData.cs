@@ -6,9 +6,9 @@ namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, PrestigeRules.FileName };
 
-        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree)
+        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, PrestigeRules prestige)
         {
             Stages = stages;
             Enemies = enemies;
@@ -17,6 +17,7 @@ namespace Game.Core.Content
             Gems = gems;
             Tree = tree;
             SkillBook = skillBook;
+            Prestige = prestige;
         }
 
         public StageTable Stages { get; }
@@ -26,6 +27,7 @@ namespace Game.Core.Content
         public GemCatalog Gems { get; }
         public PassiveTree Tree { get; }
         public SkillBookRules SkillBook { get; }
+        public PrestigeRules Prestige { get; }
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -41,7 +43,8 @@ namespace Game.Core.Content
             }
             var skillBook = SkillBookRules.Load(readFile(SkillBookRules.FileName), gems);
             var tree = PassiveTree.Load(readFile(PassiveTree.FileName));
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree);
+            var prestige = PrestigeRules.Load(readFile(PrestigeRules.FileName));
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, prestige);
         }
     }
 }

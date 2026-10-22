@@ -44,6 +44,9 @@ namespace Game.Core.Sim
         public BigNumber Gold { get; set; }
         public BigNumber RunGoldEarned { get; set; }
         public BigNumber RecentDps { get; set; }
+        public BigNumber Echo { get; set; }
+        public BigNumber EchoEarned { get; set; }
+        public int Prestiges { get; set; }
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;

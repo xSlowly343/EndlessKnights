@@ -41,7 +41,9 @@ namespace Game.Core.Sim
         public static GameEvent ForSkill(GameEventKind kind, long tick, GemDef gem) =>
             new GameEvent(kind, tick, BigNumber.Zero, DamageSource.None, HitFlags.None, 0, null, gem);
 
-        public static GameEvent Gold(long tick, BigNumber amount, long stage) =>
-            new GameEvent(GameEventKind.GoldGained, tick, amount, DamageSource.None, HitFlags.None, stage, null);
+        public static GameEvent Gold(long tick, BigNumber amount, long stage) => WithAmount(GameEventKind.GoldGained, tick, amount, stage);
+
+        public static GameEvent WithAmount(GameEventKind kind, long tick, BigNumber amount, long stage) =>
+            new GameEvent(kind, tick, amount, DamageSource.None, HitFlags.None, stage, null);
     }
 }
