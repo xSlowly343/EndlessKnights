@@ -88,6 +88,7 @@ namespace Game.Bootstrap
             {
                 var save = SaveDriver.TryLoad(data.Current);
                 var battle = BattleDriver.Attach(host, data.Current, observedInput, save?.State);
+                panels.Tree.Bind(battle.Loop, data.Current.Tree);
                 if (save != null)
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);

@@ -2,7 +2,9 @@
     "name": "Game.Editor",
     "rootNamespace": "Game.Editor",
     "references": [
-        "Game.Bootstrap"
+        "Game.Bootstrap",
+        "Game.Core",
+        "Game.Presentation"
     ],
     "includePlatforms": [
         "Editor"

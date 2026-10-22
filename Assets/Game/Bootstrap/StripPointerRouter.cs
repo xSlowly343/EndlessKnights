@@ -13,6 +13,7 @@ namespace Game.Bootstrap
         private TaskbarDockDriver _dock = null!;
         private StripButton _menuButton = null!;
         private PanelView _panels = null!;
+        private bool _panelCaptured;
 
         public static void Attach(GameObject host, PointerInput pointer, WindowController window, Camera camera, FocusModeButton focusButton, TaskbarDockDriver dock, StripButton menuButton, PanelView panels)
         {
@@ -31,20 +32,53 @@ namespace Game.Bootstrap
             if (_pointer.Pressed)
                 HandlePress();
             else if (_pointer.Released)
-                _dock.EndDrag();
+                HandleRelease();
             else if (_pointer.Held)
+                HandleHold();
+        }
+
+        private void HandleHold()
+        {
+            if (!_panelCaptured)
+            {
                 _dock.ContinueDrag();
+                return;
+            }
+            if (TryGetWorldPoint(out var worldPoint))
+                _panels.Drag(worldPoint);
+        }
+
+        private void HandleRelease()
+        {
+            if (!_panelCaptured)
+            {
+                _dock.EndDrag();
+                return;
+            }
+            _panelCaptured = false;
+            if (TryGetWorldPoint(out var worldPoint))
+                _panels.Release(worldPoint);
+            else
+                _panels.CancelPress();
+        }
+
+        private bool TryGetWorldPoint(out Vector2 worldPoint)
+        {
+            worldPoint = default;
+            return _window.TryGetBounds(out var bounds)
+                && StripHitTest.TryGetWorldPoint(_camera, bounds.Left, bounds.Top, bounds.Width, bounds.Height, _pointer.X, _pointer.Y, out worldPoint);
         }
 
         private void HandlePress()
         {
-            if (!_window.TryGetBounds(out var bounds))
-                return;
-            if (!StripHitTest.TryGetWorldPoint(_camera, bounds.Left, bounds.Top, bounds.Width, bounds.Height, _pointer.X, _pointer.Y, out var worldPoint))
+            if (!TryGetWorldPoint(out var worldPoint))
                 return;
 
             if (_panels.TryClick(worldPoint))
+            {
+                _panelCaptured = true;
                 return;
+            }
             if (_menuButton.Contains(worldPoint))
                 _menuButton.Click();
             else if (_focusButton.Contains(worldPoint))
