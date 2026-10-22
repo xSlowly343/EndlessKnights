@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Game.Presentation.Tree;
 using UnityEngine;
 
 namespace Game.Presentation.Strip
@@ -12,6 +13,7 @@ namespace Game.Presentation.Strip
         public const int PanelCount = 3;
         public const float ReportHeightPx = 340f;
         public const int MaxReportLines = 7;
+        private const int TreePanelIndex = 2;
 
         public static readonly float AreaWidthPx = PanelCount * PanelWidthPx + (PanelCount + 1) * GapPx;
         public static readonly float AreaHeightPx = PanelHeightPx + 2 * GapPx;
@@ -22,6 +24,7 @@ namespace Game.Presentation.Strip
         private static readonly Color TitleColor = new Color(0.62f, 0.12f, 0.12f, 1f);
         private static readonly Color CloseColor = new Color(0.45f, 0.08f, 0.08f, 1f);
         private static readonly Color ClaimColor = new Color(0.2f, 0.5f, 0.2f, 1f);
+        private static readonly Color ZoomColor = new Color(0.35f, 0.1f, 0.1f, 1f);
         private static readonly Color LineColor = new Color(0.92f, 0.9f, 0.85f, 1f);
         private static readonly string[] Titles = { "Статистика", "Герой", "Дерево" };
 
@@ -32,6 +35,11 @@ namespace Game.Presentation.Strip
         private StripButton _reportBody = null!;
         private StripButton _claimButton = null!;
         private TextMesh _reportTitle = null!;
+        private StripButton _zoomIn = null!;
+        private StripButton _zoomOut = null!;
+        private bool _treeCaptured;
+
+        public TreePanel Tree { get; private set; } = null!;
 
         public event Action? CloseRequested;
 
@@ -76,6 +84,16 @@ namespace Game.Presentation.Strip
             }
             if (_reportBody.Contains(worldPoint))
                 return true;
+            if (_zoomIn.Contains(worldPoint))
+            {
+                Tree.ZoomIn();
+                return true;
+            }
+            if (_zoomOut.Contains(worldPoint))
+            {
+                Tree.ZoomOut();
+                return true;
+            }
             foreach (var close in _closeButtons)
             {
                 if (close.Contains(worldPoint))
@@ -84,10 +102,35 @@ namespace Game.Presentation.Strip
                     return true;
                 }
             }
+            if (Tree.isActiveAndEnabled && Tree.TryPress(worldPoint))
+            {
+                _treeCaptured = true;
+                return true;
+            }
             foreach (var body in _bodies)
                 if (body.Contains(worldPoint))
                     return true;
             return false;
+        }
+
+        public void Drag(Vector2 worldPoint)
+        {
+            if (_treeCaptured)
+                Tree.Drag(worldPoint);
+        }
+
+        public void Release(Vector2 worldPoint)
+        {
+            if (!_treeCaptured)
+                return;
+            _treeCaptured = false;
+            Tree.Release(worldPoint);
+        }
+
+        public void CancelPress()
+        {
+            _treeCaptured = false;
+            Tree.CancelPress();
         }
 
         private void Build()
@@ -107,7 +150,20 @@ namespace Game.Presentation.Strip
                 _bodies.Add(body);
                 _closeButtons.Add(close);
             }
+            BuildTreeControls();
             BuildReport();
+        }
+
+        private void BuildTreeControls()
+        {
+            var panel = transform.GetChild(TreePanelIndex);
+            Tree = TreePanel.Create(panel);
+            _zoomOut = StripButton.Create("ZoomOut", ZoomColor, Vector2.zero, Vector2.one, panel);
+            _zoomOut.GetComponent<SpriteRenderer>().sortingOrder = 7;
+            _zoomIn = StripButton.Create("ZoomIn", ZoomColor, Vector2.zero, Vector2.one, panel);
+            _zoomIn.GetComponent<SpriteRenderer>().sortingOrder = 7;
+            StripText.Create("ZoomOutText", "−", Vector2.zero, 0.22f, TextAnchor.MiddleCenter, Color.white, panel, 8);
+            StripText.Create("ZoomInText", "+", Vector2.zero, 0.22f, TextAnchor.MiddleCenter, Color.white, panel, 8);
         }
 
         private void BuildReport()
@@ -178,6 +234,15 @@ namespace Game.Presentation.Strip
                 Place(panel.Find("Close"), closeCentre, new Vector2(closeSize, closeSize));
                 panel.Find("TitleText").position = titleCentre;
                 panel.Find("CloseText").position = closeCentre;
+                if (i != TreePanelIndex)
+                    continue;
+                var zoomOutCentre = new Vector2(left + closeSize, closeCentre.y);
+                var zoomInCentre = new Vector2(left + closeSize * 2.4f, closeCentre.y);
+                Place(panel.Find("ZoomOut"), zoomOutCentre, new Vector2(closeSize, closeSize));
+                Place(panel.Find("ZoomIn"), zoomInCentre, new Vector2(closeSize, closeSize));
+                panel.Find("ZoomOutText").position = zoomOutCentre;
+                panel.Find("ZoomInText").position = zoomInCentre;
+                Tree.Arrange(left, bottom, width, height - titleHeight, pixelsPerUnit);
             }
         }
 
