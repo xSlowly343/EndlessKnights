@@ -15,6 +15,7 @@ namespace Game.Core.Sim
         public int CooldownTicks { get; set; }
         public int ActiveTicks { get; set; }
         public int HitsLeft { get; set; }
+        public bool AuraApplied { get; set; }
 
         public SkillDef Def => Skill.Skill!;
         public bool Ready => CooldownTicks <= 0;

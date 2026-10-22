@@ -35,7 +35,7 @@ namespace Game.Core.Sim
             _loot = new LootSystem(data.Stages, hero, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot);
             _combat.OnKill(_stage);
-            _skills = new SkillSystem(state, Events, _energy, _combat.Class);
+            _skills = new SkillSystem(state, Events, _energy, _combat.Class, hero);
             _combat.OnKeyHit(_skills);
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _stage.EnsureEnemy();

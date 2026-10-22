@@ -12,13 +12,20 @@ namespace Game.Core.Sim
         private readonly EventQueue _events;
         private readonly EnergySystem _energy;
         private readonly ClassMechanics _class;
+        private readonly StatSheet _hero;
 
-        public SkillSystem(GameState state, EventQueue events, EnergySystem energy, ClassMechanics classMechanics)
+        public SkillSystem(GameState state, EventQueue events, EnergySystem energy, ClassMechanics classMechanics, StatSheet hero)
         {
             _state = state;
             _events = events;
             _energy = energy;
             _class = classMechanics;
+            _hero = hero;
+            foreach (var slot in _state.Skills)
+            {
+                if (slot.Active)
+                    ApplyAura(slot);
+            }
         }
 
         public int Equip(GemDef skill, GemDef? trigger = null)
@@ -35,10 +42,13 @@ namespace Game.Core.Sim
         {
             foreach (var slot in _state.Skills)
             {
+                RemoveAura(slot);
                 if (gems.TryGet(slot.Skill.Id, out var skill) && skill.Skill != null)
                     slot.Skill = skill;
                 if (slot.Trigger != null && gems.TryGet(slot.Trigger.Id, out var trigger) && trigger.Trigger != null)
                     slot.Trigger = trigger;
+                if (slot.Active)
+                    ApplyAura(slot);
             }
         }
 
@@ -64,6 +74,7 @@ namespace Game.Core.Sim
             slot.ActiveTicks = Ticks(skill.DurationSeconds);
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
+            ApplyAura(slot);
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             return CastResult.Cast;
         }
@@ -81,13 +92,40 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            foreach (var slot in _state.Skills)
+            for (var index = 0; index < _state.Skills.Count; index++)
             {
+                var slot = _state.Skills[index];
                 if (slot.CooldownTicks > 0)
                     slot.CooldownTicks--;
                 if (slot.ActiveTicks > 0)
+                {
                     slot.ActiveTicks--;
+                    if (slot.ActiveTicks == 0)
+                        RemoveAura(slot);
+                }
+                if (slot.Def.NoteCost > 0 && _state.Notes >= slot.Def.NoteCost)
+                    TryCast(index);
             }
+        }
+
+        private void ApplyAura(SkillSlot slot)
+        {
+            if (slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura))
+                return;
+            for (var i = 0; i < aura.Modifiers.Count; i++)
+                _hero.Add(aura.Modifiers[i]);
+            slot.AuraApplied = true;
+            _events.Add(GameEvent.ForSkill(GameEventKind.AuraChanged, _state.Tick, slot.Skill));
+        }
+
+        private void RemoveAura(SkillSlot slot)
+        {
+            if (!slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura))
+                return;
+            for (var i = 0; i < aura.Modifiers.Count; i++)
+                _hero.Remove(aura.Modifiers[i]);
+            slot.AuraApplied = false;
+            _events.Add(GameEvent.ForSkill(GameEventKind.AuraChanged, _state.Tick, slot.Skill));
         }
 
         private static int Ticks(double seconds) => (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);
