@@ -136,6 +136,33 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void BossTimerStopsAtItsCeiling()
+        {
+            var state = new GameState();
+            state.Artifacts["hourglass"] = 1000;
+            var hero = new StatSheet();
+            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e12));
+            var input = new Game.Core.Input.FakeInputSource();
+            var strong = TestWorld.Loop(input, state, hero);
+            for (var i = 0; i < TestWorld.Data.Stages.EnemiesPerStage; i++)
+            {
+                input.PressKeys(1);
+                strong.Tick();
+                strong.Tick();
+            }
+
+            Assert.That(strong.State.EnemyType, Is.EqualTo(EnemyType.Boss));
+            Assert.That(strong.State.BossSecondsLeft, Is.EqualTo(TestWorld.Data.Stages.BossTimerMaxSeconds).Within(0.11));
+        }
+
+        [Test]
+        public void RealBossTimerStartsAtThirtySecondsAndCapsAtNinety()
+        {
+            Assert.That(TestWorld.Real.Stages.BossTimerSeconds, Is.EqualTo(30));
+            Assert.That(TestWorld.Real.Stages.BossTimer(1000), Is.EqualTo(90));
+        }
+
+        [Test]
         public void ArtifactsSurvivePrestigeAndSave()
         {
             var loop = WithEcho(1e9);

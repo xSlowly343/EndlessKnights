@@ -68,7 +68,7 @@ namespace Game.Core.Sim
                 }
 
                 var boss = BossEnemy(stage, guardian, dps, goldMultiplier);
-                if (boss.Seconds > stages.BossTimerSeconds)
+                if (boss.Seconds > BossTimer)
                 {
                     stuckAtBoss = true;
                     farming = true;
@@ -113,13 +113,15 @@ namespace Game.Core.Sim
                 state.SpawnEnemy(null, EnemyType.Normal, BigNumber.Zero);
         }
 
+        private double BossTimer => _data.Stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
+
         private long FarmKills(double time, double killSeconds, bool retriesBoss)
         {
             if (!retriesBoss)
                 return (long)System.Math.Floor(time / killSeconds);
 
             var killsPerCycle = _data.Stages.BossRetryAfterKills;
-            var cycleSeconds = killsPerCycle * killSeconds + _data.Stages.BossTimerSeconds;
+            var cycleSeconds = killsPerCycle * killSeconds + BossTimer;
             var cycles = System.Math.Floor(time / cycleSeconds);
             var rest = time - cycles * cycleSeconds;
             var restKills = System.Math.Min(killsPerCycle, System.Math.Floor(rest / killSeconds));
