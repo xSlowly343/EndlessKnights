@@ -46,7 +46,7 @@ namespace Game.Core.Sim
             if (!_state.EnemyAlive)
                 return;
 
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags);
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * _state.FocusMultiplier;
             if (damage.Sign <= 0)
                 return;
 

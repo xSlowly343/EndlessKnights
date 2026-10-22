@@ -32,7 +32,7 @@ namespace Game.Core.Tests.Sim
             input.PressKeys(1);
             loop.Tick();
 
-            Assert.That(loop.State.EnemyHp.ToDouble(), Is.EqualTo(1000 - TestWorld.Data.Combat.KeyDamage).Within(1e-9));
+            Assert.That(loop.State.EnemyHp.ToDouble(), Is.EqualTo(1000 - TestWorld.Data.Combat.KeyDamage * loop.State.FocusMultiplier).Within(1e-9));
             Assert.That(loop.Events.CountOf(GameEventKind.Damage), Is.EqualTo(1));
             Assert.That(loop.Events[0].Source, Is.EqualTo(DamageSource.Keyboard));
         }
@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Sim
             input.MoveMouse((float)(rules.MousePxPerHit * 2));
             loop.Tick();
 
-            var expected = 1000 - rules.ClickDamage - 2 * rules.MouseDamage;
+            var expected = 1000 - (rules.ClickDamage + 2 * rules.MouseDamage) * loop.State.FocusMultiplier;
             Assert.That(loop.State.EnemyHp.ToDouble(), Is.EqualTo(expected).Within(1e-9));
             Assert.That(loop.Events.Count, Is.EqualTo(3));
         }
@@ -91,8 +91,21 @@ namespace Game.Core.Tests.Sim
             input.ClickLeft();
             loop.Tick();
 
-            Assert.That(loop.Events[0].Amount.ToDouble(), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 2).Within(1e-9));
-            Assert.That(loop.Events[1].Amount.ToDouble(), Is.EqualTo(TestWorld.Data.Combat.ClickDamage).Within(1e-9));
+            Assert.That(loop.Events[0].Amount.ToDouble(), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 2 * loop.State.FocusMultiplier).Within(1e-9));
+            Assert.That(loop.Events[1].Amount.ToDouble(), Is.EqualTo(TestWorld.Data.Combat.ClickDamage * loop.State.FocusMultiplier).Within(1e-9));
+        }
+
+        [Test]
+        public void FocusMultipliesDirectDamage()
+        {
+            var (loop, input) = LoopWithEnemy(1000);
+            loop.State.Focus = 2.5;
+
+            input.PressKeys(1);
+            loop.Tick();
+
+            Assert.That(loop.State.FocusMultiplier, Is.GreaterThan(2.5));
+            Assert.That(loop.Events[0].Amount.ToDouble(), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * loop.State.FocusMultiplier).Within(1e-9));
         }
 
         [Test]

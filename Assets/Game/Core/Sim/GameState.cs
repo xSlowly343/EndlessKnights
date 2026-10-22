@@ -26,6 +26,11 @@ namespace Game.Core.Sim
         public BigNumber EnemyHp { get; set; }
         public BigNumber EnemyMaxHp { get; private set; }
 
+        public double Focus { get; set; } = 1;
+        public double FocusMultiplier { get; set; } = 1;
+        public long IdleTicks { get; set; }
+        public long MacroRhythmTicks { get; set; }
+
         public double KeyCarry { get; set; }
         public double ClickCarry { get; set; }
         public double MouseCarryPx { get; set; }
