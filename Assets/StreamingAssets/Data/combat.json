@@ -19,5 +19,12 @@
     "typist": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 25, "strikeMultiplier": 3 } },
     "bard": { "notesPerMelody": 4 }
   },
-  "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 }
+  "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },
+  "hero": {
+    "maxLevel": 40,
+    "experience": { "curve": "exp", "base": 20, "rate": 1.2 },
+    "xpPerKill": 1,
+    "bossXpMultiplier": 10,
+    "maxGuardianPoints": 6
+  }
 }

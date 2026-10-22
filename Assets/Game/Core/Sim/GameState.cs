@@ -26,6 +26,9 @@ namespace Game.Core.Sim
 
         public long Stage { get; set; } = 1;
         public long HighestStage { get; set; } = 1;
+        public long RecordStage { get; set; } = 1;
+        public int HeroLevel { get; set; } = 1;
+        public double HeroXp { get; set; }
         public int KillsOnStage { get; set; }
         public int BossTicksLeft { get; set; }
         public bool Farming { get; set; }

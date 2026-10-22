@@ -20,6 +20,7 @@ namespace Game.Core.Sim
         private readonly CombatSystem _combat;
         private readonly StageSystem _stage;
         private readonly LootSystem _loot;
+        private readonly LevelSystem _levels;
         private readonly DpsMeter _dps;
         private readonly SkillSystem _skills;
         private readonly TriggerSystem _triggers;
@@ -38,7 +39,8 @@ namespace Game.Core.Sim
             _energy = new EnergySystem(data.Combat.Energy, state, hero);
             _combat = new CombatSystem(data.Combat, hero, state, Events);
             _loot = new LootSystem(data.Stages, hero, state, Events);
-            _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot);
+            _levels = new LevelSystem(data.Combat.Hero, data.Stages, state, Events);
+            _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot, _levels);
             _combat.OnKill(_stage);
             _skills = new SkillSystem(state, Events, _energy, _combat, hero);
             _combat.OnKeyHit(_skills);
@@ -56,6 +58,7 @@ namespace Game.Core.Sim
         public EnergySystem Energy => _energy;
         public LootSystem Loot => _loot;
         public SkillSystem Skills => _skills;
+        public LevelSystem Levels => _levels;
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -116,6 +119,7 @@ namespace Game.Core.Sim
             _combat.UseRules(data.Combat);
             _stage.UseData(data.Stages, data.Enemies);
             _loot.UseData(data.Stages);
+            _levels.UseData(data.Combat.Hero, data.Stages);
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
             RebuildTree();

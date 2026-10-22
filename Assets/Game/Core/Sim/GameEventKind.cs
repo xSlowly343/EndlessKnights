@@ -11,6 +11,7 @@ namespace Game.Core.Sim
         GoldGained,
         MelodyReady,
         SkillCast,
-        AuraChanged
+        AuraChanged,
+        LevelUp
     }
 }

@@ -11,18 +11,20 @@ namespace Game.Core.Sim
         private readonly GameState _state;
         private readonly EventQueue _events;
         private readonly LootSystem _loot;
+        private readonly LevelSystem _levels;
         private readonly Dictionary<string, EnemyDef?> _bosses = new Dictionary<string, EnemyDef?>();
         private readonly Dictionary<string, EnemyDef?> _guardians = new Dictionary<string, EnemyDef?>();
         private StageTable _stages = null!;
         private EnemyCatalog _enemies = null!;
         private IReadOnlyList<Modifier>? _appliedEnemyModifiers;
 
-        public StageSystem(StageTable stages, EnemyCatalog enemies, StatSheet hero, GameState state, EventQueue events, LootSystem loot)
+        public StageSystem(StageTable stages, EnemyCatalog enemies, StatSheet hero, GameState state, EventQueue events, LootSystem loot, LevelSystem levels)
         {
             _hero = hero;
             _state = state;
             _events = events;
             _loot = loot;
+            _levels = levels;
             UseData(stages, enemies);
         }
 
@@ -75,6 +77,7 @@ namespace Game.Core.Sim
         {
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy);
+            _levels.OnKill(_state.EnemyType);
             if (_state.FightingBoss)
                 AdvanceStage();
             else if (_state.Farming)
@@ -100,6 +103,7 @@ namespace Game.Core.Sim
             _state.BossFailsInARow = 0;
             if (_state.Stage > _state.HighestStage)
                 _state.HighestStage = _state.Stage;
+            _levels.OnStageReached(_state.Stage);
         }
 
         private void SpawnNext()
