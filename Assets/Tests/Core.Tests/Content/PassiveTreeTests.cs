@@ -198,7 +198,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void TreeMustBeOnePiece()
         {
-            var cut = System.Text.RegularExpressions.Regex.Replace(RealFile(), "    \\[\"[a-z_0-9]+\", \"swordsman_keystone_1\"\\],\n", "");
+            var cut = System.Text.RegularExpressions.Regex.Replace(RealFile(), "    \\[\"[a-z_0-9]+\", \"swordsman_keystone_1\"\\],\\r?\n", "");
             var error = Assert.Throws<ContentException>(() => PassiveTree.Load(cut))!;
 
             Assert.That(error.Message, Does.Contain("node 'swordsman_keystone_1' cannot be reached"));
