@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Game.Core.Content;
 
 namespace Game.Core.Save
@@ -10,8 +9,6 @@ namespace Game.Core.Save
     {
         public const int BackupCount = 3;
         public const double DefaultBackupRotationSeconds = 600;
-
-        private static readonly UTF8Encoding Utf8 = new UTF8Encoding(false);
 
         private readonly double _backupRotationSeconds;
 
@@ -29,16 +26,9 @@ namespace Game.Core.Save
 
         public void Write(string text)
         {
-            System.IO.Directory.CreateDirectory(Directory);
-            WriteDurably(TempPath, text);
-            if (!File.Exists(MainPath))
-            {
-                File.Move(TempPath, MainPath);
-                return;
-            }
-            if (ShouldRotateBackups())
+            if (File.Exists(MainPath) && ShouldRotateBackups())
                 RotateBackups();
-            File.Replace(TempPath, MainPath, BackupPath(1));
+            AtomicFile.Write(MainPath, text, BackupPath(1));
         }
 
         public SaveLoadResult Load(Func<string, SaveFile> decode)
@@ -52,7 +42,7 @@ namespace Game.Core.Save
                     continue;
                 try
                 {
-                    var save = decode(File.ReadAllText(path, Utf8));
+                    var save = decode(File.ReadAllText(path, AtomicFile.Utf8));
                     if (best == null || save.State.Tick > best.State.Tick)
                     {
                         best = save;
@@ -100,14 +90,6 @@ namespace Game.Core.Save
                     File.Delete(older);
                 File.Move(newer, older);
             }
-        }
-
-        private static void WriteDurably(string path, string text)
-        {
-            var bytes = Utf8.GetBytes(text);
-            using var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
-            stream.Write(bytes, 0, bytes.Length);
-            stream.Flush(true);
         }
     }
 }
