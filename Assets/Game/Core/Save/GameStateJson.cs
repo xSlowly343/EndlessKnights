@@ -53,6 +53,7 @@ namespace Game.Core.Save
                 ("gold", Object(
                     ("wallet", SaveValues.Of(state.Gold)),
                     ("runEarned", SaveValues.Of(state.RunGoldEarned)))),
+                ("recentDps", SaveValues.Of(state.RecentDps)),
                 ("carry", Object(
                     ("keys", JsonValue.Of(state.KeyCarry)),
                     ("clicks", JsonValue.Of(state.ClickCarry)),
@@ -96,6 +97,7 @@ namespace Game.Core.Save
                 BossFailsInARow = stage.Field("bossFailsInARow").AsInt(0),
                 Gold = SaveValues.ReadBigNumber(gold.Field("wallet")),
                 RunGoldEarned = SaveValues.ReadBigNumber(gold.Field("runEarned")),
+                RecentDps = SaveValues.ReadBigNumber(node.Field("recentDps")),
                 KeyCarry = carry.Field("keys").AsNumber(0, 1e6),
                 ClickCarry = carry.Field("clicks").AsNumber(0, 1e6),
                 MouseCarryPx = carry.Field("mousePx").AsNumber(0, 1e9)

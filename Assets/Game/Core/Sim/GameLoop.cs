@@ -19,6 +19,7 @@ namespace Game.Core.Sim
         private readonly CombatSystem _combat;
         private readonly StageSystem _stage;
         private readonly LootSystem _loot;
+        private readonly DpsMeter _dps;
         private double _pendingSeconds;
 
         public GameLoop(GameData data, IInputSource input, GameState state, StatSheet hero)
@@ -33,6 +34,7 @@ namespace Game.Core.Sim
             _loot = new LootSystem(data.Stages, hero, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot);
             _combat.OnKill(_stage);
+            _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _stage.EnsureEnemy();
         }
 
@@ -79,6 +81,7 @@ namespace Game.Core.Sim
             _combat.UseRules(data.Combat);
             _stage.UseData(data.Stages, data.Enemies);
             _loot.UseData(data.Stages);
+            _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
         }
 
         public void Tick()
@@ -89,6 +92,7 @@ namespace Game.Core.Sim
             _energy.Tick(input);
             _stage.Tick();
             _combat.Tick(input);
+            _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
         }
     }

@@ -23,6 +23,7 @@ namespace Game.Core.Sim
         }
 
         public ClassMechanics Class => _class;
+        public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
         {
@@ -34,6 +35,7 @@ namespace Game.Core.Sim
 
         public void Tick(in EffectiveInput input)
         {
+            LastTickDamage = BigNumber.Zero;
             var keyHits = TakeWhole(_state.KeyCarry + input.Keys, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var clickHits = TakeWhole(_state.ClickCarry + input.Clicks, out var clickCarry);
@@ -72,6 +74,7 @@ namespace Game.Core.Sim
             }
 
             _state.EnemyHp -= damage;
+            LastTickDamage += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
             if (_state.EnemyAlive)
                 return;

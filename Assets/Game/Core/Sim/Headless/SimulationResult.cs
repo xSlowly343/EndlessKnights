@@ -5,7 +5,8 @@ namespace Game.Core.Sim.Headless
 {
     public sealed class SimulationResult
     {
-        public SimulationResult(IReadOnlyList<StageRecord> stages, long finalStage, long highestStage, BigNumber goldEarned, int bossFails, double seconds, bool stuck)
+        public SimulationResult(IReadOnlyList<StageRecord> stages, long finalStage, long highestStage, BigNumber goldEarned, int bossFails, double seconds, bool stuck,
+            BigNumber damageDealt)
         {
             Stages = stages;
             FinalStage = finalStage;
@@ -14,6 +15,7 @@ namespace Game.Core.Sim.Headless
             BossFails = bossFails;
             Seconds = seconds;
             Stuck = stuck;
+            DamageDealt = damageDealt;
         }
 
         public IReadOnlyList<StageRecord> Stages { get; }
@@ -23,5 +25,7 @@ namespace Game.Core.Sim.Headless
         public int BossFails { get; }
         public double Seconds { get; }
         public bool Stuck { get; }
+        public BigNumber DamageDealt { get; }
+        public BigNumber AverageDps => Seconds > 0 ? DamageDealt / Seconds : BigNumber.Zero;
     }
 }

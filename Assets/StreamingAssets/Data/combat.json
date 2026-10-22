@@ -18,5 +18,6 @@
   "classes": {
     "typist": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 25, "strikeMultiplier": 3 } },
     "bard": { "notesPerMelody": 4 }
-  }
+  },
+  "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 }
 }

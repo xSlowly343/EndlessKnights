@@ -16,5 +16,7 @@ namespace Game.Core.Save
         public ClockStamp Clock { get; }
         public GameState State { get; }
         public long SavedAtUnixMs => Clock.Reading.WallUnixMs;
+
+        public TrustedElapsed AwayTime(ClockReading now) => TrustedElapsed.Between(Clock, now);
     }
 }

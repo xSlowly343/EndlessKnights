@@ -26,6 +26,8 @@ namespace Game.Core.Tests.Content
             Assert.That(rules.Energy.Max, Is.EqualTo(100));
             Assert.That(rules.CritChance, Is.EqualTo(0.05));
             Assert.That(rules.CritMultiplier, Is.EqualTo(2));
+            Assert.That(rules.Offline.CapHours, Is.EqualTo(8));
+            Assert.That(rules.Offline.DpsShare, Is.EqualTo(0.3));
         }
 
         [Test]

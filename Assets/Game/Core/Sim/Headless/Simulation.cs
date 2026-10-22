@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content;
+using Game.Core.Math;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim.Headless
@@ -30,6 +31,7 @@ namespace Game.Core.Sim.Headless
             var bossFails = 0;
             var totalBossFails = 0;
             var stuck = false;
+            var damage = BigNumber.Zero;
 
             for (var tick = 0L; tick < totalTicks && !stuck; tick++)
             {
@@ -39,6 +41,9 @@ namespace Game.Core.Sim.Headless
                     var gameEvent = loop.Events[i];
                     switch (gameEvent.Kind)
                     {
+                        case GameEventKind.Damage:
+                            damage += gameEvent.Amount;
+                            break;
                         case GameEventKind.BossStarted:
                             if (bossStartTick < 0)
                                 bossStartTick = gameEvent.Tick;
@@ -59,7 +64,7 @@ namespace Game.Core.Sim.Headless
                 loop.Events.Clear();
             }
 
-            return new SimulationResult(records, state.Stage, state.HighestStage, state.RunGoldEarned, totalBossFails, state.ElapsedSeconds, stuck);
+            return new SimulationResult(records, state.Stage, state.HighestStage, state.RunGoldEarned, totalBossFails, state.ElapsedSeconds, stuck, damage);
         }
 
         private StageRecord Record(in GameEvent defeated, GameState state, long stageStartTick, long bossStartTick, int bossFails)

@@ -86,6 +86,17 @@ namespace Game.Core.Tests.Save
         }
 
         [Test]
+        public void AwayTimeComesFromTheSavedClock()
+        {
+            var loaded = SaveCodec.Decode(SaveCodec.Encode(new GameState(), Clock), TestWorld.Data.Enemies);
+
+            var away = loaded.AwayTime(new ClockReading(Clock.Reading.WallUnixMs + 7_200_000, Clock.Reading.MonotonicMs + 7_200_000, Clock.Reading.BootId));
+
+            Assert.That(away.Seconds, Is.EqualTo(7200));
+            Assert.That(away.Source, Is.EqualTo(ElapsedSource.Monotonic));
+        }
+
+        [Test]
         public void HugeNumbersSurvive()
         {
             var state = new GameState { Gold = BigNumber.Create(1.2345678901234, 4321), RunGoldEarned = BigNumber.Create(9.87, 5000) };
