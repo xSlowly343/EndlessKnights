@@ -1,3 +1,4 @@
+using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Input;
 using Game.Core.Stats;
@@ -22,11 +23,14 @@ namespace Game.Core.Sim
         private readonly DpsMeter _dps;
         private readonly SkillSystem _skills;
         private readonly TriggerSystem _triggers;
+        private readonly ModifierLayer _treeLayer;
+        private GameData _data;
         private double _pendingSeconds;
 
         public GameLoop(GameData data, IInputSource input, GameState state, StatSheet hero)
         {
             _input = input;
+            _data = data;
             State = state;
             Hero = hero;
             _inputRules = new InputRules(data.InputCaps);
@@ -39,6 +43,8 @@ namespace Game.Core.Sim
             _skills = new SkillSystem(state, Events, _energy, _combat, hero);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills);
+            _treeLayer = new ModifierLayer(hero);
+            RebuildTree();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _stage.EnsureEnemy();
         }
@@ -79,8 +85,19 @@ namespace Game.Core.Sim
             return ticks;
         }
 
+        public AllocationResult AllocateNode(string nodeId, string? attribute = null, int? masteryOption = null)
+        {
+            var result = State.Tree.Allocate(_data.Tree, nodeId, attribute, masteryOption);
+            if (result == AllocationResult.Allocated)
+                RebuildTree();
+            return result;
+        }
+
+        public void RebuildTree() => _treeLayer.Set(State.Tree.Modifiers(_data.Tree));
+
         public void UseData(GameData data)
         {
+            _data = data;
             _inputRules.UseCaps(data.InputCaps);
             _focus.UseRules(data.Combat.Focus);
             _energy.UseRules(data.Combat.Energy);
@@ -89,6 +106,7 @@ namespace Game.Core.Sim
             _loot.UseData(data.Stages);
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
+            RebuildTree();
         }
 
         public void Tick()

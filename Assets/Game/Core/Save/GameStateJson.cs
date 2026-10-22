@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Json;
@@ -9,12 +10,6 @@ namespace Game.Core.Save
 {
     public static class GameStateJson
     {
-        private static readonly Dictionary<string, HeroClass> Classes = new Dictionary<string, HeroClass>
-        {
-            ["typist"] = HeroClass.Typist,
-            ["bard"] = HeroClass.Bard
-        };
-
         private static readonly Dictionary<string, EnemyType> EnemyTypes = new Dictionary<string, EnemyType>
         {
             ["normal"] = EnemyType.Normal,
@@ -29,7 +24,7 @@ namespace Game.Core.Save
                 ("tick", JsonValue.Of(state.Tick)),
                 ("rng", JsonValue.Array(new[] { SaveValues.Of(rng0), SaveValues.Of(rng1) })),
                 ("hero", Object(
-                    ("class", JsonValue.Of(SaveValues.NameOf(state.Class, Classes))),
+                    ("class", JsonValue.Of(HeroClassNames.Of(state.Class))),
                     ("focus", JsonValue.Of(state.Focus)),
                     ("focusMultiplier", JsonValue.Of(state.FocusMultiplier)),
                     ("energy", JsonValue.Of(state.Energy)),
@@ -56,6 +51,7 @@ namespace Game.Core.Save
                     ("runEarned", SaveValues.Of(state.RunGoldEarned)))),
                 ("recentDps", SaveValues.Of(state.RecentDps)),
                 ("skills", JsonValue.Array(WriteSkills(state))),
+                ("tree", WriteTree(state.Tree)),
                 ("chainDamage", SaveValues.Of(state.ChainDamage)),
                 ("carry", Object(
                     ("keys", JsonValue.Of(state.KeyCarry)),
@@ -82,7 +78,7 @@ namespace Game.Core.Save
             {
                 Tick = node.Field("tick").AsLong(0),
                 Rng = Rng.FromState(rng0, rng1),
-                Class = SaveValues.ReadEnum(hero.Field("class"), Classes),
+                Class = SaveValues.ReadEnum(hero.Field("class"), HeroClassNames.ByName),
                 Focus = hero.Field("focus").AsNumber(0, 1e6),
                 FocusMultiplier = hero.Field("focusMultiplier").AsNumber(0, 1e6),
                 Energy = hero.Field("energy").AsNumber(0, 1e9),
@@ -113,7 +109,42 @@ namespace Game.Core.Save
                 SaveValues.ReadBigNumber(enemy.Field("maxHp")));
             state.EnemyHp = SaveValues.ReadBigNumber(enemy.Field("hp"));
             ReadSkills(node.Field("skills"), gems, state);
+            state.Tree = ReadTree(node.Field("tree"));
             return state;
+        }
+
+        private static JsonValue WriteTree(TreeAllocation tree)
+        {
+            var ids = new List<string>(tree.Allocated);
+            ids.Sort(System.StringComparer.Ordinal);
+            var nodes = new JsonValue[ids.Count];
+            for (var i = 0; i < nodes.Length; i++)
+            {
+                var id = ids[i];
+                var fields = new Dictionary<string, JsonValue> { ["id"] = JsonValue.Of(id) };
+                if (tree.AttributeChoices.TryGetValue(id, out var attribute))
+                    fields["attribute"] = JsonValue.Of(attribute);
+                if (tree.MasteryChoices.TryGetValue(id, out var option))
+                    fields["option"] = JsonValue.Of(option);
+                nodes[i] = JsonValue.Object(fields);
+            }
+            return Object(
+                ("startClass", JsonValue.Of(tree.StartClass)),
+                ("pointsEarned", JsonValue.Of(tree.PointsEarned)),
+                ("allocated", JsonValue.Array(nodes)));
+        }
+
+        private static TreeAllocation ReadTree(ContentNode node)
+        {
+            var tree = new TreeAllocation(node.Field("startClass").AsString()) { PointsEarned = node.Field("pointsEarned").AsInt(0) };
+            foreach (var item in node.Field("allocated").Items())
+            {
+                tree.Restore(
+                    item.Field("id").AsString(),
+                    item.HasField("attribute") ? item.Field("attribute").AsString() : null,
+                    item.HasField("option") ? item.Field("option").AsInt(0) : (int?)null);
+            }
+            return tree;
         }
 
         private static JsonValue[] WriteSkills(GameState state)

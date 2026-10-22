@@ -6,10 +6,21 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(2,
+        public static readonly SaveMigrations Default = new SaveMigrations(3,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload =>
                 JsonEdit.Update(payload, "state", state =>
-                    JsonEdit.Set(JsonEdit.Set(state, "skills", JsonValue.Array(new JsonValue[0])), "chainDamage", JsonValue.Of("0e0")))));
+                    JsonEdit.Set(JsonEdit.Set(state, "skills", JsonValue.Array(new JsonValue[0])), "chainDamage", JsonValue.Of("0e0")))),
+            new SaveMigration(2, "passive tree (phase 9)", payload =>
+                JsonEdit.Update(payload, "state", state =>
+                    JsonEdit.Set(state, "tree", EmptyTree(state.Fields["hero"].Fields["class"])))));
+
+        private static JsonValue EmptyTree(JsonValue heroClass) =>
+            JsonValue.Object(new Dictionary<string, JsonValue>
+            {
+                ["startClass"] = heroClass,
+                ["pointsEarned"] = JsonValue.Of(0),
+                ["allocated"] = JsonValue.Array(new JsonValue[0])
+            });
 
         private readonly SaveMigration[] _steps;
 

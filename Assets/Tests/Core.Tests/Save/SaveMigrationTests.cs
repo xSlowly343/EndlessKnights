@@ -67,14 +67,16 @@ namespace Game.Core.Tests.Save
         public void MigrationsRunInOrderUpToTheCurrentVersion()
         {
             var calls = "";
-            var real = SaveMigrations.Default.Steps[0];
-            var migrations = new SaveMigrations(3,
-                new SaveMigration(2, "double wallet", payload => { calls += "2"; return DoubleWallet(payload); }),
-                new SaveMigration(1, real.Description, payload => { calls += "1"; return real.Upgrade(payload); }));
+            var steps = new System.Collections.Generic.List<SaveMigration>();
+            foreach (var real in SaveMigrations.Default.Steps)
+                steps.Add(new SaveMigration(real.FromVersion, real.Description, payload => { calls += real.FromVersion; return real.Upgrade(payload); }));
+            var last = SaveMigrations.Default.CurrentVersion;
+            steps.Insert(0, new SaveMigration(last, "double wallet", payload => { calls += last; return DoubleWallet(payload); }));
+            var migrations = new SaveMigrations(last + 1, steps.ToArray());
 
             var save = SaveCodec.Decode(OldSave(), TestWorld.Data, migrations);
 
-            Assert.That(calls, Is.EqualTo("12"));
+            Assert.That(calls, Is.EqualTo(string.Concat(System.Linq.Enumerable.Range(1, SaveMigrations.Default.CurrentVersion))));
             Assert.That(save.StoredVersion, Is.EqualTo(1));
             Assert.That(save.State.Gold.ToDouble(), Is.EqualTo(36290.0374772675).Within(1e-6));
             Assert.That(save.State.Skills, Is.Empty);

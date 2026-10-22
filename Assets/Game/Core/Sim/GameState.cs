@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Math;
 
@@ -14,6 +15,14 @@ namespace Game.Core.Sim
         public long Tick { get; set; }
         public Rng Rng { get; set; }
         public HeroClass Class { get; set; }
+
+        private TreeAllocation? _tree;
+
+        public TreeAllocation Tree
+        {
+            get => _tree ??= new TreeAllocation(HeroClassNames.Of(Class));
+            set => _tree = value;
+        }
 
         public long Stage { get; set; } = 1;
         public long HighestStage { get; set; } = 1;
