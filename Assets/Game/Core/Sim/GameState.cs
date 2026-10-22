@@ -12,6 +12,7 @@ namespace Game.Core.Sim
 
         public long Tick { get; set; }
         public Rng Rng { get; set; }
+        public HeroClass Class { get; set; }
 
         public long Stage { get; set; } = 1;
         public long HighestStage { get; set; } = 1;
@@ -34,6 +35,10 @@ namespace Game.Core.Sim
         public double Energy { get; set; }
         public long IdleTicks { get; set; }
         public long MacroRhythmTicks { get; set; }
+
+        public int Combo { get; set; }
+        public long ComboIdleTicks { get; set; }
+        public int Notes { get; set; }
 
         public double KeyCarry { get; set; }
         public double ClickCarry { get; set; }

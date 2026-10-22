@@ -14,5 +14,9 @@
     "macroRhythm": { "cvBelow": 0.05, "afterSeconds": 60 }
   },
   "energy": { "perKey": 1, "perClick": 1, "mousePxPerPoint": 200, "max": 100 },
-  "crit": { "chance": 0.05, "multiplier": 2 }
+  "crit": { "chance": 0.05, "multiplier": 2 },
+  "classes": {
+    "typist": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 25, "strikeMultiplier": 3 } },
+    "bard": { "notesPerMelody": 4 }
+  }
 }

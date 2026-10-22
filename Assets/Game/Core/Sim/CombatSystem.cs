@@ -9,6 +9,7 @@ namespace Game.Core.Sim
         private readonly StatSheet _hero;
         private readonly GameState _state;
         private readonly EventQueue _events;
+        private readonly ClassMechanics _class;
         private CombatRules _rules;
         private IKillHandler? _kills;
 
@@ -18,9 +19,16 @@ namespace Game.Core.Sim
             _hero = hero;
             _state = state;
             _events = events;
+            _class = new ClassMechanics(rules.Classes, state, events);
         }
 
-        public void UseRules(CombatRules rules) => _rules = rules;
+        public ClassMechanics Class => _class;
+
+        public void UseRules(CombatRules rules)
+        {
+            _rules = rules;
+            _class.UseRules(rules.Classes);
+        }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
 
@@ -34,23 +42,29 @@ namespace Game.Core.Sim
             _state.MouseCarryPx = mouseCarry * _rules.MousePxPerHit;
 
             for (var i = 0; i < keyHits; i++)
-                Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard);
+            {
+                var multiplier = _class.OnKeyHit(out var flags);
+                Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, multiplier);
+            }
             for (var i = 0; i < clickHits; i++)
-                Hit(DamageSource.Click, _rules.ClickDamage, StatTags.Click);
+            {
+                _class.OnClickHit();
+                Hit(DamageSource.Click, _rules.ClickDamage, StatTags.Click, HitFlags.None, 1);
+            }
             for (var i = 0; i < mouseHits; i++)
-                Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse);
+                Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, 1);
+            _class.EndTick(keyHits);
         }
 
-        private void Hit(DamageSource source, double baseDamage, StatTags tags)
+        private void Hit(DamageSource source, double baseDamage, StatTags tags, HitFlags flags, double multiplier)
         {
             if (!_state.EnemyAlive)
                 return;
 
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * _state.FocusMultiplier;
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (_state.FocusMultiplier * multiplier);
             if (damage.Sign <= 0)
                 return;
 
-            var flags = HitFlags.None;
             if (RollCrit(tags))
             {
                 damage *= CritMultiplier(tags);
