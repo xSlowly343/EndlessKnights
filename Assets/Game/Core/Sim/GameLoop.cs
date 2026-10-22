@@ -141,6 +141,32 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public void SwitchPreset()
+        {
+            var current = new BuildPreset(State.Tree);
+            foreach (var slot in State.Skills)
+                current.Skills.Add((slot.Skill, slot.Trigger));
+
+            var next = State.OtherPreset;
+            next.Tree.PointsEarned = State.Tree.PointsEarned;
+            while (State.Skills.Count > 0)
+                _skills.Unequip(State.Skills.Count - 1);
+            State.Tree = next.Tree;
+            State.OtherPreset = current;
+            State.ActivePreset = 1 - State.ActivePreset;
+            RebuildTree();
+
+            foreach (var (skill, trigger) in next.Skills)
+            {
+                if (_book.Equip(skill) != BookResult.Done)
+                    continue;
+                var index = State.Skills.Count - 1;
+                State.Skills[index].CooldownTicks = (int)System.Math.Round(skill.Skill!.CooldownSeconds * TicksPerSecond);
+                if (trigger != null)
+                    _book.SetTrigger(index, trigger);
+            }
+        }
+
         public void RebuildTree()
         {
             _treeLayer.Set(State.Tree.Modifiers(_data.Tree));

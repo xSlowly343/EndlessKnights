@@ -6,11 +6,12 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(5,
+        public static readonly SaveMigrations Default = new SaveMigrations(6,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
             new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
-            new SaveMigration(4, "prestige and artifacts (phase 10)", payload => JsonEdit.Update(payload, "state", StateToVersion5)));
+            new SaveMigration(4, "prestige and artifacts (phase 10)", payload => JsonEdit.Update(payload, "state", StateToVersion5)),
+            new SaveMigration(5, "two build presets (phase 10)", payload => JsonEdit.Update(payload, "state", StateToVersion6)));
 
         private readonly SaveMigration[] _steps;
 
@@ -77,6 +78,24 @@ namespace Game.Core.Save
                 ["count"] = JsonValue.Of(0)
             });
             return JsonEdit.Set(JsonEdit.Set(state, "prestige", prestige), "artifacts", JsonValue.Array(new JsonValue[0]));
+        }
+
+        private static JsonValue StateToVersion6(JsonValue state)
+        {
+            var otherTree = JsonValue.Object(new Dictionary<string, JsonValue>
+            {
+                ["startClass"] = state.Fields["tree"].Fields["startClass"],
+                ["pointsEarned"] = state.Fields["tree"].Fields["pointsEarned"],
+                ["lastFreeResetUnixMs"] = JsonValue.Of(0),
+                ["allocated"] = JsonValue.Array(new JsonValue[0])
+            });
+            var presets = JsonValue.Object(new Dictionary<string, JsonValue>
+            {
+                ["active"] = JsonValue.Of(0),
+                ["otherTree"] = otherTree,
+                ["otherSkills"] = JsonValue.Array(new JsonValue[0])
+            });
+            return JsonEdit.Set(state, "presets", presets);
         }
 
         private static JsonValue[] EquippedGems(JsonValue skills)

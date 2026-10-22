@@ -62,6 +62,10 @@ namespace Game.Core.Save
                 ("skills", JsonValue.Array(WriteSkills(state))),
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
                 ("tree", WriteTree(state.Tree)),
+                ("presets", Object(
+                    ("active", JsonValue.Of(state.ActivePreset)),
+                    ("otherTree", WriteTree(state.OtherPreset.Tree)),
+                    ("otherSkills", JsonValue.Array(WritePresetSkills(state.OtherPreset))))),
                 ("chainDamage", SaveValues.Of(state.ChainDamage)),
                 ("carry", Object(
                     ("keys", JsonValue.Of(state.KeyCarry)),
@@ -132,6 +136,19 @@ namespace Game.Core.Save
                     state.OwnedGems.Add(gem);
             }
             state.Tree = ReadTree(node.Field("tree"));
+            var presets = node.Field("presets");
+            state.ActivePreset = presets.Field("active").AsInt(0, 1);
+            state.OtherPreset = new BuildPreset(ReadTree(presets.Field("otherTree")));
+            foreach (var item in presets.Field("otherSkills").Items())
+            {
+                if (!gems.TryGet(item.Field("gem").AsString(), out var skill) || skill.Skill == null)
+                    continue;
+                var triggerNode = item.Field("trigger");
+                GemDef? trigger = null;
+                if (!triggerNode.IsNull && gems.TryGet(triggerNode.AsString(), out var found) && found.Trigger != null)
+                    trigger = found;
+                state.OtherPreset.Skills.Add((skill, trigger));
+            }
             foreach (var item in node.Field("artifacts").Items())
                 state.Artifacts[item.Field("id").AsString()] = item.Field("level").AsInt(1);
             return state;
@@ -174,6 +191,17 @@ namespace Game.Core.Save
                     item.HasField("option") ? item.Field("option").AsInt(0) : (int?)null);
             }
             return tree;
+        }
+
+        private static JsonValue[] WritePresetSkills(BuildPreset preset)
+        {
+            var items = new JsonValue[preset.Skills.Count];
+            for (var i = 0; i < items.Length; i++)
+            {
+                var (skill, trigger) = preset.Skills[i];
+                items[i] = Object(("gem", JsonValue.Of(skill.Id)), ("trigger", trigger == null ? JsonValue.Null() : JsonValue.Of(trigger.Id)));
+            }
+            return items;
         }
 
         private static JsonValue[] WriteArtifacts(GameState state)

@@ -56,6 +56,15 @@ namespace Game.Core.Sim
         public long MacroRhythmTicks { get; set; }
 
         public List<SkillSlot> Skills { get; } = new List<SkillSlot>();
+        public int ActivePreset { get; set; }
+
+        private BuildPreset? _otherPreset;
+
+        public BuildPreset OtherPreset
+        {
+            get => _otherPreset ??= new BuildPreset(new TreeAllocation(HeroClassNames.Of(Class)));
+            set => _otherPreset = value;
+        }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
         public BigNumber ChainDamage { get; set; }
 
