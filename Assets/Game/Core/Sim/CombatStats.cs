@@ -21,5 +21,6 @@ namespace Game.Core.Sim
         public static readonly StatId MelodyNotes = new StatId("melodyNotes");
         public static readonly StatId IdleStartSeconds = new StatId("idleStartSeconds");
         public static readonly StatId OfflineGold = new StatId("offlineGold");
+        public static readonly StatId BossTimerSeconds = new StatId("bossTimerSeconds");
     }
 }

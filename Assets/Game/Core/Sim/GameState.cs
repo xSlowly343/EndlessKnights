@@ -47,6 +47,7 @@ namespace Game.Core.Sim
         public BigNumber Echo { get; set; }
         public BigNumber EchoEarned { get; set; }
         public int Prestiges { get; set; }
+        public Dictionary<string, int> Artifacts { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;

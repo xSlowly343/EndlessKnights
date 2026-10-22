@@ -58,6 +58,7 @@ namespace Game.Core.Save
                     ("echo", SaveValues.Of(state.Echo)),
                     ("echoEarned", SaveValues.Of(state.EchoEarned)),
                     ("count", JsonValue.Of(state.Prestiges)))),
+                ("artifacts", JsonValue.Array(WriteArtifacts(state))),
                 ("skills", JsonValue.Array(WriteSkills(state))),
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
                 ("tree", WriteTree(state.Tree)),
@@ -131,6 +132,8 @@ namespace Game.Core.Save
                     state.OwnedGems.Add(gem);
             }
             state.Tree = ReadTree(node.Field("tree"));
+            foreach (var item in node.Field("artifacts").Items())
+                state.Artifacts[item.Field("id").AsString()] = item.Field("level").AsInt(1);
             return state;
         }
 
@@ -171,6 +174,16 @@ namespace Game.Core.Save
                     item.HasField("option") ? item.Field("option").AsInt(0) : (int?)null);
             }
             return tree;
+        }
+
+        private static JsonValue[] WriteArtifacts(GameState state)
+        {
+            var ids = new List<string>(state.Artifacts.Keys);
+            ids.Sort(System.StringComparer.Ordinal);
+            var items = new JsonValue[ids.Count];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = Object(("id", JsonValue.Of(ids[i])), ("level", JsonValue.Of(state.Artifacts[ids[i]])));
+            return items;
         }
 
         private static JsonValue[] WriteOwnedGems(GameState state)

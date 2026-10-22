@@ -129,7 +129,8 @@ namespace Game.Core.Sim
             var guardian = _stages.IsBiomeGuardian(stage);
             var enemy = guardian ? _guardians[biome] ?? _bosses[biome] : _bosses[biome];
             Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * Multiplier(enemy));
-            _state.BossTicksLeft = (int)System.Math.Round(_stages.BossTimerSeconds * GameLoop.TicksPerSecond);
+            var timer = System.Math.Max(1, _stages.BossTimerSeconds + _hero.Value(CombatStats.BossTimerSeconds, 0));
+            _state.BossTicksLeft = (int)System.Math.Round(timer * GameLoop.TicksPerSecond);
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossStarted, _state.Tick, stage, enemy));
         }
 
