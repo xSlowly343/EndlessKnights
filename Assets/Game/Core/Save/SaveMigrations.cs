@@ -6,12 +6,13 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(6,
+        public static readonly SaveMigrations Default = new SaveMigrations(7,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
             new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
             new SaveMigration(4, "prestige and artifacts (phase 10)", payload => JsonEdit.Update(payload, "state", StateToVersion5)),
-            new SaveMigration(5, "two build presets and input stats (phases 10-11)", payload => JsonEdit.Update(payload, "state", StateToVersion6)));
+            new SaveMigration(5, "two build presets and input stats (phases 10-11)", payload => JsonEdit.Update(payload, "state", StateToVersion6)),
+            new SaveMigration(6, "ascendancy subclasses", payload => JsonEdit.Update(payload, "state", StateToVersion7)));
 
         private readonly SaveMigration[] _steps;
 
@@ -104,6 +105,18 @@ namespace Game.Core.Save
                 ["mouseMeters"] = JsonValue.Of(0)
             });
             return JsonEdit.Set(JsonEdit.Set(state, "presets", presets), "inputStats", inputStats);
+        }
+
+        private static JsonValue StateToVersion7(JsonValue state)
+        {
+            var ascendancy = JsonValue.Object(new Dictionary<string, JsonValue>
+            {
+                ["subclass"] = JsonValue.Null(),
+                ["lastFreeChangeUnixMs"] = JsonValue.Of(0),
+                ["allocated"] = JsonValue.Array(new JsonValue[0]),
+                ["activities"] = JsonValue.Array(new JsonValue[0])
+            });
+            return JsonEdit.Set(state, "ascendancy", ascendancy);
         }
 
         private static JsonValue[] EquippedGems(JsonValue skills)

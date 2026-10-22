@@ -42,6 +42,7 @@ namespace Game.Core.Sim
             _state.Echo += gain;
             _state.EchoEarned += gain;
             _state.Prestiges++;
+            _state.Ascendancy.Complete(ActivityIds.FirstPrestige);
             _events.Add(GameEvent.WithAmount(GameEventKind.Prestige, _state.Tick, gain, _state.HighestStage));
             ResetRun();
             return true;

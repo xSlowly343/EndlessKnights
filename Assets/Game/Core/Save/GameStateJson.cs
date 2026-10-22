@@ -68,6 +68,7 @@ namespace Game.Core.Save
                 ("skills", JsonValue.Array(WriteSkills(state))),
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
                 ("tree", WriteTree(state.Tree)),
+                ("ascendancy", WriteAscendancy(state.Ascendancy)),
                 ("presets", Object(
                     ("active", JsonValue.Of(state.ActivePreset)),
                     ("otherTree", WriteTree(state.OtherPreset.Tree)),
@@ -142,6 +143,7 @@ namespace Game.Core.Save
                     state.OwnedGems.Add(gem);
             }
             state.Tree = ReadTree(node.Field("tree"));
+            state.Ascendancy = ReadAscendancy(node.Field("ascendancy"));
             var input = node.Field("inputStats");
             state.TotalInput.Keys = ReadCount(input.Field("keys"));
             state.TotalInput.LeftClicks = ReadCount(input.Field("leftClicks"));
@@ -186,6 +188,37 @@ namespace Game.Core.Save
                 ("pointsEarned", JsonValue.Of(tree.PointsEarned)),
                 ("lastFreeResetUnixMs", JsonValue.Of(tree.LastFreeResetUnixMs)),
                 ("allocated", JsonValue.Array(nodes)));
+        }
+
+        private static JsonValue WriteAscendancy(AscendancyState ascendancy) =>
+            Object(
+                ("subclass", ascendancy.Subclass == null ? JsonValue.Null() : JsonValue.Of(ascendancy.Subclass)),
+                ("lastFreeChangeUnixMs", JsonValue.Of(ascendancy.LastFreeChangeUnixMs)),
+                ("allocated", JsonValue.Array(SortedStrings(ascendancy.Allocated))),
+                ("activities", JsonValue.Array(SortedStrings(ascendancy.CompletedActivities))));
+
+        private static AscendancyState ReadAscendancy(ContentNode node)
+        {
+            var subclass = node.Field("subclass");
+            var allocated = new List<string>();
+            foreach (var item in node.Field("allocated").Items())
+                allocated.Add(item.AsString());
+            var activities = new List<string>();
+            foreach (var item in node.Field("activities").Items())
+                activities.Add(item.AsString());
+            var ascendancy = new AscendancyState { LastFreeChangeUnixMs = node.Field("lastFreeChangeUnixMs").AsLong() };
+            ascendancy.Restore(subclass.IsNull ? null : subclass.AsString(), allocated, activities);
+            return ascendancy;
+        }
+
+        private static JsonValue[] SortedStrings(IReadOnlyCollection<string> values)
+        {
+            var sorted = new List<string>(values);
+            sorted.Sort(System.StringComparer.Ordinal);
+            var items = new JsonValue[sorted.Count];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = JsonValue.Of(sorted[i]);
+            return items;
         }
 
         private static TreeAllocation ReadTree(ContentNode node)

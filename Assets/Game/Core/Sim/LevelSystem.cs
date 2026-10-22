@@ -53,6 +53,13 @@ namespace Game.Core.Sim
             SyncTreePoints();
         }
 
-        public void SyncTreePoints() => _state.Tree.PointsEarned = System.Math.Min(_state.HeroLevel, _rules.MaxLevel) + GuardianPoints;
+        public void SyncTreePoints()
+        {
+            _state.Tree.PointsEarned = System.Math.Min(_state.HeroLevel, _rules.MaxLevel) + GuardianPoints;
+            if (_state.RecordStage > _stages.BiomeLength)
+                _state.Ascendancy.Complete(ActivityIds.FirstGuardian);
+            if (_state.Prestiges > 0)
+                _state.Ascendancy.Complete(ActivityIds.FirstPrestige);
+        }
     }
 }

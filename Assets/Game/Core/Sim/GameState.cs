@@ -26,6 +26,8 @@ namespace Game.Core.Sim
             set => _tree = value;
         }
 
+        public AscendancyState Ascendancy { get; set; } = new AscendancyState();
+
         public long Stage { get; set; } = 1;
         public long HighestStage { get; set; } = 1;
         public long RecordStage { get; set; } = 1;

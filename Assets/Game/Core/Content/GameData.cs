@@ -6,9 +6,9 @@ namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName };
 
-        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, PrestigeRules prestige, ArtifactCatalog artifacts)
+        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts)
         {
             Stages = stages;
             Enemies = enemies;
@@ -16,6 +16,7 @@ namespace Game.Core.Content
             Combat = combat;
             Gems = gems;
             Tree = tree;
+            Ascendancy = ascendancy;
             SkillBook = skillBook;
             Prestige = prestige;
             Artifacts = artifacts;
@@ -27,6 +28,7 @@ namespace Game.Core.Content
         public CombatRules Combat { get; }
         public GemCatalog Gems { get; }
         public PassiveTree Tree { get; }
+        public AscendancyCatalog Ascendancy { get; }
         public SkillBookRules SkillBook { get; }
         public PrestigeRules Prestige { get; }
         public ArtifactCatalog Artifacts { get; }
@@ -45,9 +47,11 @@ namespace Game.Core.Content
             }
             var skillBook = SkillBookRules.Load(readFile(SkillBookRules.FileName), gems);
             var tree = PassiveTree.Load(readFile(PassiveTree.FileName));
+            var ascendancy = AscendancyCatalog.Load(readFile(AscendancyCatalog.FileName));
+            ascendancy.RequireClassesAndIds(tree);
             var prestige = PrestigeRules.Load(readFile(PrestigeRules.FileName));
             var artifacts = ArtifactCatalog.Load(readFile(ArtifactCatalog.FileName));
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, prestige, artifacts);
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, ascendancy, prestige, artifacts);
         }
     }
 }

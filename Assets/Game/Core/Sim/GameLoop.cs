@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Input;
@@ -135,6 +136,33 @@ namespace Game.Core.Sim
             return RefundResult.Refunded;
         }
 
+        public bool CompleteActivity(string activityId) =>
+            _data.Ascendancy.IsActivity(activityId) && State.Ascendancy.Complete(activityId);
+
+        public SubclassResult ChooseSubclass(string subclassId) =>
+            AfterSubclassChange(State.Ascendancy.Choose(_data.Ascendancy, State.Tree.StartClass, subclassId));
+
+        public SubclassResult ChangeSubclassFree(string subclassId, long nowUnixMs) =>
+            AfterSubclassChange(State.Ascendancy.ChangeFree(_data.Ascendancy, State.Tree.StartClass, subclassId, nowUnixMs));
+
+        public SubclassResult ChangeSubclassPaid(string subclassId) =>
+            AfterSubclassChange(State.Ascendancy.ChangePaid(_data.Ascendancy, State.Tree.StartClass, subclassId));
+
+        public AllocationResult AllocateSubclassNode(string nodeId)
+        {
+            var result = State.Ascendancy.Allocate(_data.Ascendancy, nodeId);
+            if (result == AllocationResult.Allocated)
+                RebuildTree();
+            return result;
+        }
+
+        private SubclassResult AfterSubclassChange(SubclassResult result)
+        {
+            if (result == SubclassResult.Chosen)
+                RebuildTree();
+            return result;
+        }
+
         public bool ChangeMastery(string nodeId, int option)
         {
             if (!State.Tree.ChangeMastery(_data.Tree, nodeId, option))
@@ -173,7 +201,9 @@ namespace Game.Core.Sim
         {
             State.Tree.DropUnreachable(_data.Tree);
             State.OtherPreset.Tree.DropUnreachable(_data.Tree);
-            _treeLayer.Set(State.Tree.Modifiers(_data.Tree));
+            var modifiers = new List<Modifier>(State.Tree.Modifiers(_data.Tree));
+            modifiers.AddRange(State.Ascendancy.Modifiers(_data.Ascendancy));
+            _treeLayer.Set(modifiers);
             _skills.RefreshAuras();
         }
 
