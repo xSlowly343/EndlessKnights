@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Game.Platform.Windows.Tray
 {
@@ -90,7 +89,7 @@ namespace Game.Platform.Windows.Tray
         public static extern IntPtr GetModuleHandle(string? moduleName);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        public static extern uint GetModuleFileName(IntPtr module, StringBuilder fileName, uint size);
+        public static extern uint GetModuleFileName(IntPtr module, [Out] char[] fileName, uint size);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr ExtractIcon(IntPtr instance, string exePath, uint index);
