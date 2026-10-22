@@ -6,7 +6,7 @@ namespace Game.Platform.Windows.Tray
     {
         public const int DefaultFrameRate = 60;
 
-        public static readonly TrayMenuState Default = new TrayMenuState(paused: false, clickThrough: true, alwaysOnTop: true, frameRate: DefaultFrameRate, showInputDebug: true);
+        public static readonly TrayMenuState Default = new TrayMenuState(paused: false, clickThrough: true, alwaysOnTop: true, frameRate: DefaultFrameRate, showInputDebug: false);
 
         public readonly bool Paused;
         public readonly bool ClickThrough;

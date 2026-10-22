@@ -12,5 +12,6 @@ namespace Game.Presentation.Strip
         public static Vector2 Centre => new Vector2(Width / 2f, Height / 2f);
         public static Vector2 TopRight(float margin) => new Vector2(Width - margin, Height - margin);
         public static Vector2 BottomLeft(float margin) => new Vector2(margin, margin);
+        public static Vector2 BottomRight(float margin) => new Vector2(Width - margin, margin);
     }
 }
