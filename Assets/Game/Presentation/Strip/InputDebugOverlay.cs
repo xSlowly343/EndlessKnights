@@ -29,6 +29,8 @@ namespace Game.Presentation.Strip
             return overlay;
         }
 
+        public void SetVisible(bool visible) => gameObject.SetActive(visible);
+
         public void Show(InputTotals totals)
         {
             if (totals.Equals(_shown))

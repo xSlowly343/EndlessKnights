@@ -69,13 +69,14 @@ namespace Game.Bootstrap
             var dock = TaskbarDockDriver.Attach(host, window);
             StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock);
             var rawInput = RawInputService.Start(GameDataFiles.TryLoadInputCaps()?.Detection);
-            InputDebugDriver.Attach(focusButton.gameObject, rawInput, InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin)), rawInput, window);
+            var inputDebug = InputDebugOverlay.Create(BottomLeftCorner(camera, InputOverlayMargin));
+            InputDebugDriver.Attach(focusButton.gameObject, rawInput, inputDebug, rawInput, window);
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 
             var tray = TrayIcon.Create(Application.productName);
             if (tray != null)
-                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput);
+                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug);
         }
 
         private static Vector2 BottomLeftCorner(Camera camera, float margin)

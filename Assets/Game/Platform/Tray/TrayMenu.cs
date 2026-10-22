@@ -6,19 +6,21 @@ namespace Game.Platform.Windows.Tray
     {
         public const int DefaultFrameRate = 60;
 
-        public static readonly TrayMenuState Default = new TrayMenuState(paused: false, clickThrough: true, alwaysOnTop: true, frameRate: DefaultFrameRate);
+        public static readonly TrayMenuState Default = new TrayMenuState(paused: false, clickThrough: true, alwaysOnTop: true, frameRate: DefaultFrameRate, showInputDebug: true);
 
         public readonly bool Paused;
         public readonly bool ClickThrough;
         public readonly bool AlwaysOnTop;
         public readonly int FrameRate;
+        public readonly bool ShowInputDebug;
 
-        public TrayMenuState(bool paused, bool clickThrough, bool alwaysOnTop, int frameRate)
+        public TrayMenuState(bool paused, bool clickThrough, bool alwaysOnTop, int frameRate, bool showInputDebug)
         {
             Paused = paused;
             ClickThrough = clickThrough;
             AlwaysOnTop = alwaysOnTop;
             FrameRate = frameRate;
+            ShowInputDebug = showInputDebug;
         }
 
         public TrayMenuState Apply(TrayCommand command)
@@ -26,15 +28,17 @@ namespace Game.Platform.Windows.Tray
             switch (command)
             {
                 case TrayCommand.TogglePause:
-                    return new TrayMenuState(!Paused, ClickThrough, AlwaysOnTop, FrameRate);
+                    return new TrayMenuState(!Paused, ClickThrough, AlwaysOnTop, FrameRate, ShowInputDebug);
                 case TrayCommand.ToggleClickThrough:
-                    return new TrayMenuState(Paused, !ClickThrough, AlwaysOnTop, FrameRate);
+                    return new TrayMenuState(Paused, !ClickThrough, AlwaysOnTop, FrameRate, ShowInputDebug);
                 case TrayCommand.ToggleAlwaysOnTop:
-                    return new TrayMenuState(Paused, ClickThrough, !AlwaysOnTop, FrameRate);
+                    return new TrayMenuState(Paused, ClickThrough, !AlwaysOnTop, FrameRate, ShowInputDebug);
+                case TrayCommand.ToggleInputDebug:
+                    return new TrayMenuState(Paused, ClickThrough, AlwaysOnTop, FrameRate, !ShowInputDebug);
                 case TrayCommand.FrameRate30:
                 case TrayCommand.FrameRate60:
                 case TrayCommand.FrameRate144:
-                    return new TrayMenuState(Paused, ClickThrough, AlwaysOnTop, (int)command);
+                    return new TrayMenuState(Paused, ClickThrough, AlwaysOnTop, (int)command, ShowInputDebug);
                 default:
                     return this;
             }
@@ -72,6 +76,7 @@ namespace Game.Platform.Windows.Tray
                 TrayMenuItem.Toggle(TrayCommand.TogglePause, "Пауза", state.Paused),
                 TrayMenuItem.Toggle(TrayCommand.ToggleClickThrough, "Клики насквозь", state.ClickThrough),
                 TrayMenuItem.Toggle(TrayCommand.ToggleAlwaysOnTop, "Поверх всех окон", state.AlwaysOnTop),
+                TrayMenuItem.Toggle(TrayCommand.ToggleInputDebug, "Отладка ввода", state.ShowInputDebug),
                 TrayMenuItem.Separator()
             };
             foreach (var command in FrameRateCommands)

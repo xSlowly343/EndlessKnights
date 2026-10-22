@@ -15,11 +15,13 @@ namespace Game.Platform.Tests
             Assert.That(state.ClickThrough, Is.True);
             Assert.That(state.AlwaysOnTop, Is.True);
             Assert.That(state.FrameRate, Is.EqualTo(60));
+            Assert.That(state.ShowInputDebug, Is.True);
         }
 
         [TestCase(TrayCommand.TogglePause)]
         [TestCase(TrayCommand.ToggleClickThrough)]
         [TestCase(TrayCommand.ToggleAlwaysOnTop)]
+        [TestCase(TrayCommand.ToggleInputDebug)]
         public void EachToggleFlipsOnlyItsOwnOption(TrayCommand command)
         {
             var before = TrayMenuState.Default;
@@ -29,6 +31,7 @@ namespace Game.Platform.Tests
             Assert.That(after.Paused, Is.EqualTo(command == TrayCommand.TogglePause ? !before.Paused : before.Paused));
             Assert.That(after.ClickThrough, Is.EqualTo(command == TrayCommand.ToggleClickThrough ? !before.ClickThrough : before.ClickThrough));
             Assert.That(after.AlwaysOnTop, Is.EqualTo(command == TrayCommand.ToggleAlwaysOnTop ? !before.AlwaysOnTop : before.AlwaysOnTop));
+            Assert.That(after.ShowInputDebug, Is.EqualTo(command == TrayCommand.ToggleInputDebug ? !before.ShowInputDebug : before.ShowInputDebug));
             Assert.That(after.FrameRate, Is.EqualTo(before.FrameRate));
         }
 
@@ -41,6 +44,7 @@ namespace Game.Platform.Tests
 
             Assert.That(after.FrameRate, Is.EqualTo(frameRate));
             Assert.That(after.ClickThrough, Is.True);
+            Assert.That(after.ShowInputDebug, Is.True);
         }
 
         [Test]
@@ -55,19 +59,29 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void InputDebugToggleHidesAndShowsAgain()
+        {
+            var hidden = TrayMenuState.Default.Apply(TrayCommand.ToggleInputDebug);
+            var shown = hidden.Apply(TrayCommand.ToggleInputDebug);
+
+            Assert.That(hidden.ShowInputDebug, Is.False);
+            Assert.That(shown.ShowInputDebug, Is.True);
+        }
+
+        [Test]
         public void MenuListsAllCommandsInOrderWithChecks()
         {
-            var state = new TrayMenuState(paused: true, clickThrough: false, alwaysOnTop: true, frameRate: 144);
+            var state = new TrayMenuState(paused: true, clickThrough: false, alwaysOnTop: true, frameRate: 144, showInputDebug: false);
 
             var items = TrayMenu.Items(state);
             var commands = items.Where(item => !item.IsSeparator).ToList();
 
             Assert.That(commands.Select(item => item.Command), Is.EqualTo(new[]
             {
-                TrayCommand.TogglePause, TrayCommand.ToggleClickThrough, TrayCommand.ToggleAlwaysOnTop,
+                TrayCommand.TogglePause, TrayCommand.ToggleClickThrough, TrayCommand.ToggleAlwaysOnTop, TrayCommand.ToggleInputDebug,
                 TrayCommand.FrameRate30, TrayCommand.FrameRate60, TrayCommand.FrameRate144, TrayCommand.Exit
             }));
-            Assert.That(commands.Select(item => item.IsChecked), Is.EqualTo(new[] { true, false, true, false, false, true, false }));
+            Assert.That(commands.Select(item => item.IsChecked), Is.EqualTo(new[] { true, false, true, false, false, false, true, false }));
             Assert.That(items.Count(item => item.IsSeparator), Is.EqualTo(2));
         }
     }
