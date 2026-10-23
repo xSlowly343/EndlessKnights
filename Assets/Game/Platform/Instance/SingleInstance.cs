@@ -7,7 +7,7 @@ namespace Game.Platform.Windows.Instance
 {
     public static class SingleInstance
     {
-        private const string MutexName = "Local\\EndlessKnights.SingleInstance";
+        private const string MutexName = "Local\\RiftWarden.SingleInstance";
         private const int ErrorAlreadyExists = 183;
 
         private static IntPtr _mutex;

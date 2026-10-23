@@ -1,5 +1,5 @@
 param(
-    [string]$ExePath = (Join-Path $PSScriptRoot '../Builds/Windows/EndlessKnights.exe'),
+    [string]$ExePath = (Join-Path $PSScriptRoot '../Builds/Windows/RiftWarden.exe'),
     [int]$WarmupSeconds = 10,
     [int]$SampleSeconds = 30,
     [int]$FrameRate = 0
@@ -18,7 +18,7 @@ $game = Start-Process -FilePath (Resolve-Path $ExePath) -PassThru
 try {
     Start-Sleep -Seconds $WarmupSeconds
     if ($FrameRate -gt 0) {
-        $tray = [CpuProbeNative]::FindWindow('EndlessKnightsTray', [NullString]::Value)
+        $tray = [CpuProbeNative]::FindWindow('RiftWardenTray', [NullString]::Value)
         [void][CpuProbeNative]::PostMessage($tray, 0x0111, [IntPtr]$FrameRate, [IntPtr]::Zero)
         Start-Sleep -Seconds 3
     }
