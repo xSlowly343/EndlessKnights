@@ -26,21 +26,22 @@ body{margin:0}
     </div>
     <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 4px; padding: 0 10px">
       <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: #2E3A58; color: #EEF2FF; font-family: inherit; font-size: 13px; font-weight: 500">Сумка</button>
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Сеты</button>
       <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Артефакты</button>
       <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Разбор</button>
       <div style="flex: 1"></div>
       <div style="font-size: 12px; color: #AEB9D6">28 / 60</div>
     </div>
-    <div style="flex: 1; min-height: 0; padding: 0 16px 10px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; position: relative">
+    <div style="flex: 1; min-height: 0; padding: 0 16px 8px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden">
       <div style="display: flex; gap: 6px; flex-wrap: wrap">
         <button type="button" style="height: 26px; padding: 0 12px; border-radius: 13px; border: 1px solid #F0B43C; background: #3A2E14; color: #FFE2A0; font-family: inherit; font-size: 12px">Все</button>
         <button type="button" style="height: 26px; padding: 0 12px; border-radius: 13px; border: 1px solid #3A4870; background: transparent; color: #D5DCEE; font-family: inherit; font-size: 12px">Оружие</button>
         <button type="button" style="height: 26px; padding: 0 12px; border-radius: 13px; border: 1px solid #3A4870; background: transparent; color: #D5DCEE; font-family: inherit; font-size: 12px">Броня</button>
-        <button type="button" style="height: 26px; padding: 0 12px; border-radius: 13px; border: 1px solid #3A4870; background: transparent; color: #D5DCEE; font-family: inherit; font-size: 12px">Украшения</button>
+        <button type="button" style="height: 26px; padding: 0 12px; border-radius: 13px; border: 1px solid #3A4870; background: transparent; color: #D5DCEE; font-family: inherit; font-size: 12px">Бижутерия</button>
         <button type="button" style="height: 26px; padding: 0 12px; border-radius: 13px; border: 1px solid #3A4870; background: transparent; color: #D5DCEE; font-family: inherit; font-size: 12px">Новые 3</button>
         <button type="button" style="height: 26px; padding: 0 12px; border-radius: 13px; border: 1px solid #3A4870; background: transparent; color: #D5DCEE; font-family: inherit; font-size: 12px">Лучше надетого</button>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px">
+      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
         <sc-for list="{{cells}}" as="c" hint-placeholder-count="21">
           <button type="button" aria-label="{{c.name}}" style="{{c.style}}">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="{{c.color}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{c.d}}"></path></svg>
@@ -50,26 +51,32 @@ body{margin:0}
           </button>
         </sc-for>
       </div>
-      <div style="border-radius: 12px; background: #26304A; border: 1px solid #FF9A3C; padding: 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 -8px 20px rgba(0,0,0,0.35)">
+      <div style="border-radius: 12px; background: #26304A; border: 1px solid #B07CFF; padding: 10px 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 -8px 20px rgba(0,0,0,0.35)">
         <div style="display: flex; align-items: center; gap: 10px">
-          <div style="width: 44px; height: 44px; border-radius: 8px; border: 2px solid #FF9A3C; background: #1B2236; display: flex; align-items: center; justify-content: center; flex: none">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF9A3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6L9 21l-6-6z M7 13l4 4"></path></svg>
+          <div style="width: 40px; height: 40px; border-radius: 8px; border: 2px solid #B07CFF; background: #1B2236; display: flex; align-items: center; justify-content: center; flex: none">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B07CFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21L18 6 M14 3c4 0 7 3 7 7l-5-2z M8 14l3 3"></path></svg>
           </div>
           <div style="flex: 1; min-width: 0">
-            <div style="font-weight: 700; font-size: 15px; color: #FFB870">Клинок Зари</div>
-            <div style="font-size: 12px; color: #AEB9D6">Оружие · легендарный · ур. 40</div>
+            <div style="font-weight: 700; font-size: 15px; color: #D2B4FF">Секира ярла</div>
+            <div style="font-size: 12px; color: #AEB9D6">Топор · Викинг 🔴 · эпическая · ур. 5</div>
           </div>
-          <div style="font-size: 11px; color: #AEB9D6; text-align: right">надето:<br>Меч стража</div>
+          <div style="font-size: 11px; color: #AEB9D6; text-align: right">в руках:<br>Катана · Маятник</div>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 4px; font-size: 13px">
-          <div style="display: flex; justify-content: space-between"><span>+18% урона удара</span><span style="color: #6FE39A">было +11%</span></div>
-          <div style="display: flex; justify-content: space-between"><span>+6% шанса крита</span><span style="color: #FF8A80">было +9%</span></div>
-          <div style="display: flex; justify-content: space-between"><span>+120 к Энергии</span><span style="color: #6FE39A">новое</span></div>
+        <div style="display: flex; flex-direction: column; gap: 3px; font-size: 12px">
+          <div style="color: #FFE2A0">+10% урона от клавиш · +1 Ярость за 20 ударов</div>
+          <div style="display: flex; justify-content: space-between"><span>+28% урона скиллов этого оружия <span style="color: #8A96B8">T5</span></span><span style="color: #6FE39A">новое</span></div>
+          <div style="display: flex; justify-content: space-between"><span>+20% урона от клавиш <span style="color: #8A96B8">T4</span></span><span style="color: #6FE39A">было +12%</span></div>
+          <div style="display: flex; justify-content: space-between"><span>−8% отката скиллов этого оружия <span style="color: #8A96B8">T4</span></span><span style="color: #FF8A80">было −10%</span></div>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; padding-top: 2px; font-size: 11px">
+            <span style="color: #6FE39A">Загорятся: Удар щитом, Ярость Одина, Боевой клич</span>
+            <span style="color: #FF8A80">Погаснут (вместо Маятника): Ускорение, Петля времени</span>
+          </div>
         </div>
-        <div style="display: flex; gap: 8px">
-          <button type="button" style="flex: 1; height: 34px; border-radius: 8px; border: 0; background: #F0B43C; color: #2A1C00; font-family: inherit; font-weight: 700; font-size: 13px; box-shadow: inset 0 -3px 0 #B47E1A">Надеть</button>
-          <button type="button" style="flex: 1; height: 34px; border-radius: 8px; border: 0; background: #3F6FD1; color: #FFFFFF; font-family: inherit; font-weight: 500; font-size: 13px; box-shadow: inset 0 -3px 0 #2A4E9A">В избранное</button>
-          <button type="button" style="flex: 1; height: 34px; border-radius: 8px; border: 1px solid #B02A2A; background: transparent; color: #FFB4B4; font-family: inherit; font-weight: 500; font-size: 13px">Разобрать</button>
+        <div style="display: flex; gap: 6px">
+          <button type="button" style="flex: 1; height: 32px; border-radius: 8px; border: 0; background: #F0B43C; color: #2A1C00; font-family: inherit; font-weight: 700; font-size: 12px; box-shadow: inset 0 -3px 0 #B47E1A">В правую руку</button>
+          <button type="button" style="flex: 1; height: 32px; border-radius: 8px; border: 0; background: #F0B43C; color: #2A1C00; font-family: inherit; font-weight: 700; font-size: 12px; box-shadow: inset 0 -3px 0 #B47E1A">В левую руку</button>
+          <button type="button" aria-label="В избранное" style="width: 36px; height: 32px; border-radius: 8px; border: 0; background: #3F6FD1; color: #FFFFFF; font-family: inherit; font-size: 14px; box-shadow: inset 0 -3px 0 #2A4E9A">★</button>
+          <button type="button" style="height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid #B02A2A; background: transparent; color: #FFB4B4; font-family: inherit; font-weight: 500; font-size: 12px">Разобрать</button>
         </div>
       </div>
     </div>
@@ -81,24 +88,29 @@ body{margin:0}
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":786}}'>
 class Component extends DCLogic {
   renderVals() {
-    const rarity = ['#9AA3B5', '#4FC277', '#5B9BFF', '#B07CFF', '#FF9A3C'];
+    const rarity = ['#9AA3B5', '#E6E9F0', '#4FC277', '#5B9BFF', '#B07CFF', '#FF9A3C', '#FF5A5A', '#3FE0D0', 'rift'];
+    const rainbow = 'linear-gradient(#22304A, #22304A) padding-box, linear-gradient(135deg, #FF5A5A, #F0B43C, #4FC277, #5B9BFF, #B07CFF) border-box';
     const icons = [
       { name: 'Оружие', d: 'M14 4h6v6L9 21l-6-6z M7 13l4 4' },
       { name: 'Шлем', d: 'M5 14a7 7 0 0 1 14 0v5H5z M12 7V4' },
       { name: 'Кольцо', d: 'M12 8a6 6 0 1 0 0 12a6 6 0 1 0 0-12 M10 4h4l-2 4z' },
       { name: 'Доспех', d: 'M6 4l6 2 6-2 2 6-3 2v8H7v-8l-3-2z' },
-      { name: 'Сапоги', d: 'M8 4h5v9l6 3v4H6v-6z' }
+      { name: 'Сапоги', d: 'M8 4h5v9l6 3v4H6v-6z' },
+      { name: 'Амулет', d: 'M6 3l6 8 6-8 M12 11a4 4 0 1 0 0 8a4 4 0 1 0 0-8' },
+      { name: 'Перчатки', d: 'M7 21v-9l-2-3 2-1 2 2V4h2v6h1V3h2v7h1V5h2v9l-2 7z' }
     ];
-    const rar = [2, 0, 1, 3, 0, 1, 4, 1, 0, 2, 1, 0, 3, 1, 2, 0, 1, 0, 2, 1, 0];
+    const rar = [3, 0, 2, 4, 1, 2, 4, 1, 0, 5, 2, 1, 6, 2, 3, 0, 7, 1, 3, 2, 8];
     const cells = rar.map((r, i) => {
       const ic = icons[(i * 3) % icons.length];
       const sel = i === 6;
+      const color = r === 8 ? '#FFFFFF' : rarity[r];
+      const border = r === 8 ? 'border: 2px solid transparent; background: ' + rainbow : 'background: #22304A; border: 2px solid ' + rarity[r];
       return {
-        name: ic.name,
-        d: ic.d,
-        color: rarity[r],
+        name: sel ? 'Оружие' : ic.name,
+        d: sel ? icons[0].d : ic.d,
+        color,
         isNew: i === 6 || i === 3 || i === 12,
-        style: 'position: relative; height: 54px; border-radius: 8px; padding: 0; display: flex; align-items: center; justify-content: center; background: #22304A; border: 2px solid ' + rarity[r] + (sel ? '; box-shadow: 0 0 0 2px #FFFFFF' : '')
+        style: 'position: relative; height: 54px; border-radius: 8px; padding: 0; display: flex; align-items: center; justify-content: center; ' + border + (sel ? '; box-shadow: 0 0 0 2px #FFFFFF' : '')
       };
     });
     return { cells };
