@@ -50,6 +50,13 @@ namespace Game.Bootstrap
                 return;
             _nextCheckTime = Time.unscaledTime + CheckIntervalSeconds;
             DockIfTaskbarChanged();
+            RestoreIfResized();
+        }
+
+        private void RestoreIfResized()
+        {
+            if (_isDocked && _window.TryGetBounds(out var bounds) && !bounds.Equals(Layout.Window))
+                PlaceNextToTaskbar();
         }
 
         public PanelLayout Expand(int panelWidthPx, int panelHeightPx)
