@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Рамки редкостей</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 480px; height: 560px; box-sizing: border-box; padding: 16px; display: flex; flex-direction: column; gap: 14px; border-radius: 12px; border: 1px solid #3A4870; background: #1B2236; font-family: Rubik, 'Segoe UI', sans-serif; color: #EEF2FF">
+  <section aria-label="Рамки редкостей" style="display: flex; flex-direction: column; gap: 8px">
+    <div style="font-size: 13px; font-weight: 700; color: #AEB9D6">Рамки: 11 редкостей и уникальная</div>
+    <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px 8px">
+      <sc-for list="{{rarities}}" as="r" hint-placeholder-count="12">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+          <button type="button" aria-label="{{r.name}}" style="{{r.style}}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{r.icon}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6L9 21l-6-6z M7 13l4 4"></path></svg>
+          </button>
+          <div style="font-size: 10px; line-height: 12px; color: #D5DCEE; text-align: center">{{r.num}} {{r.name}}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font-size: 11px; line-height: 15px; color: #AEB9D6">С Легендарной лёгкое свечение. Разломная переливается радугой, по Астральной плывут звёзды, Первозданная горит белым пламенем. У уникальной золотой узор поверх цвета редкости.</div>
+  </section>
+  <section aria-label="Метки на клетке сумки" style="display: flex; flex-direction: column; gap: 8px">
+    <div style="font-size: 13px; font-weight: 700; color: #AEB9D6">Метки на клетке сумки</div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+      <sc-for list="{{marks}}" as="m" hint-placeholder-count="4">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <button type="button" aria-label="{{m.label}}" style="position: relative; width: 48px; height: 48px; flex: none; border-radius: 8px; border: 2px solid #5B9BFF; background: #22304A; padding: 0; display: flex; align-items: center; justify-content: center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B9BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 14a7 7 0 0 1 14 0v5H5z M12 7V4"></path></svg>
+            <sc-if value="{{m.isNew}}" hint-placeholder-val="{{false}}">
+              <span style="position: absolute; top: 3px; right: 3px; width: 8px; height: 8px; border-radius: 50%; background: #FF4D4D"></span>
+            </sc-if>
+            <sc-if value="{{m.isSet}}" hint-placeholder-val="{{false}}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6FE39A" stroke-width="3" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 3px; bottom: 3px"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1 M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"></path></svg>
+            </sc-if>
+            <sc-if value="{{m.isFav}}" hint-placeholder-val="{{false}}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#F0B43C" aria-hidden="true" style="position: absolute; left: 3px; top: 3px"><path d="M12 3l2.8 5.8 6.2.9-4.5 4.4 1 6.2L12 17.4 6.5 20.3l1-6.2L3 9.7l6.2-.9z"></path></svg>
+            </sc-if>
+            <sc-if value="{{m.isBetter}}" hint-placeholder-val="{{false}}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6FE39A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; right: 3px; bottom: 3px"><path d="M12 19V5 M6 11l6-6 6 6"></path></svg>
+            </sc-if>
+          </button>
+          <div style="font-size: 11px; line-height: 13px; color: #D5DCEE">{{m.label}}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+  <section aria-label="Слот руки" style="display: flex; flex-direction: column; gap: 8px">
+    <div style="font-size: 13px; font-weight: 700; color: #AEB9D6">Слот руки на кукле</div>
+    <div style="display: flex; gap: 8px">
+      <button type="button" aria-label="Правая рука: Катана" style="flex: 1; height: 60px; border-radius: 8px; border: 2px solid #FF9A3C; background: #26304A; box-shadow: 0 0 6px #FF9A3C; font-family: inherit; padding: 4px 8px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; text-align: left">
+        <span style="font-size: 10px; color: #AEB9D6">Правая рука</span>
+        <span style="display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: #EEF2FF"><span style="width: 8px; height: 8px; border-radius: 50%; background: #FF6B5A"></span>Катана</span>
+        <span style="font-size: 10px; color: #FF9A3C">Легендарная</span>
+      </button>
+      <button type="button" aria-label="Левая рука: пусто" style="flex: 1; height: 60px; border-radius: 8px; border: 2px dashed #4A5677; background: #1F2840; font-family: inherit; padding: 4px 8px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; text-align: left">
+        <span style="font-size: 10px; color: #AEB9D6">Левая рука</span>
+        <span style="font-size: 12px; font-weight: 500; color: #D5DCEE">пусто</span>
+        <span style="font-size: 10px; color: #FF8A80">скиллы Часовщика погасли</span>
+      </button>
+    </div>
+    <div style="font-size: 11px; line-height: 15px; color: #AEB9D6">Точка — цвет гемов оружия. Скилл горит, если его тип оружия в любой руке. Пустая рука гасит скиллы снятого оружия в Книге.</div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const fill = '#22304A';
+    const box = 'width: 52px; height: 52px; border-radius: 8px; padding: 0; display: flex; align-items: center; justify-content: center; box-sizing: border-box; ';
+    const stars = ['20% 0', '100% 35%', '65% 100%', '0 70%']
+      .map((at) => 'radial-gradient(circle at ' + at + ', #FFFFFF 0 1px, transparent 2px) border-box').join(', ');
+    const plain = (c, glow) => 'border: 2px solid ' + c + '; background: ' + fill + (glow ? '; box-shadow: 0 0 6px ' + c : '');
+    const item = (num, name, style, icon) => ({ num, name, style: box + style, icon });
+    return {
+      rarities: [
+        item('1', 'Простая', plain('#9AA3B5'), '#9AA3B5'),
+        item('2', 'Добротная', plain('#E6E9F0'), '#E6E9F0'),
+        item('3', 'Необычная', plain('#4FC277'), '#4FC277'),
+        item('4', 'Редкая', plain('#5B9BFF'), '#5B9BFF'),
+        item('5', 'Эпическая', plain('#B07CFF'), '#B07CFF'),
+        item('6', 'Легендарная', plain('#FF9A3C', true), '#FF9A3C'),
+        item('7', 'Мифическая', plain('#FF5A5A', true), '#FF5A5A'),
+        item('8', 'Древняя', plain('#3FE0D0', true), '#3FE0D0'),
+        item('9', 'Разломная', 'border: 2px solid transparent; background: linear-gradient(' + fill + ', ' + fill + ') padding-box, linear-gradient(135deg, #FF5A5A, #F0B43C, #4FC277, #5B9BFF, #B07CFF) border-box; box-shadow: 0 0 6px rgba(240,180,60,0.45)', '#FFFFFF'),
+        item('10', 'Астральная', 'border: 3px solid transparent; background: linear-gradient(' + fill + ', ' + fill + ') padding-box, ' + stars + ', linear-gradient(#1E2370, #1E2370) border-box; box-shadow: 0 0 0 1px #5C66D6, 0 0 8px rgba(110,123,255,0.6)', '#B8C2FF'),
+        item('11', 'Первозданная', 'border: 2px solid #FFF4D6; background: ' + fill + '; box-shadow: 0 0 0 2px rgba(240,180,60,0.7), 0 0 12px rgba(255,244,214,0.8)', '#FFF4D6'),
+        item('', 'Уникальная', 'border: 3px solid transparent; background: linear-gradient(' + fill + ', ' + fill + ') padding-box, repeating-linear-gradient(45deg, #F0B43C 0 3px, #FF9A3C 3px 6px) border-box; box-shadow: 0 0 6px #FF9A3C', '#F0B43C')
+      ],
+      marks: [
+        { label: 'Новая', isNew: true },
+        { label: 'Сетовая', isSet: true },
+        { label: 'Избранное', isFav: true },
+        { label: 'Лучше надетой', isBetter: true }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
