@@ -93,7 +93,7 @@ namespace Game.Bootstrap
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
             }
-            var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer, panels, menuButton, focusButton);
+            var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer, panels, focusButton);
             FocusModeDriver.Attach(host, window, clickThrough);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 

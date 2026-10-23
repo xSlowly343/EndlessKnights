@@ -5,9 +5,12 @@ namespace Game.Bootstrap
 {
     public sealed class FocusModeDriver : MonoBehaviour
     {
+        private const float SettleSeconds = 0.5f;
+
         private readonly FocusMode _focusMode = new FocusMode();
         private WindowController _window = null!;
         private ClickThroughDriver _clickThrough = null!;
+        private float _observeAfter;
 
         public static void Attach(GameObject host, WindowController window, ClickThroughDriver clickThrough)
         {
@@ -22,14 +25,18 @@ namespace Game.Bootstrap
         private void Update()
         {
             _window.RememberOtherForeground();
-            _focusMode.Observe(_window.IsForeground);
+            if (Time.unscaledTime >= _observeAfter)
+                _focusMode.Observe(_window.IsForeground);
         }
 
         private void Apply(bool noFocus)
         {
             _window.SetNoActivate(noFocus);
             if (noFocus)
+            {
                 _window.ReturnFocusToLastOtherWindow();
+                _observeAfter = Time.unscaledTime + SettleSeconds;
+            }
             _clickThrough.Enabled = noFocus;
         }
     }

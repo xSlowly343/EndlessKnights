@@ -11,8 +11,6 @@ namespace Game.Bootstrap
         private Camera _camera = null!;
         private PointerInput _pointer = null!;
         private PanelView _panels = null!;
-        private StripButton _menuButton = null!;
-        private FocusModeButton _toggleButton = null!;
         private bool _passingClicks;
         private bool _enabled = true;
 
@@ -30,15 +28,13 @@ namespace Game.Bootstrap
             }
         }
 
-        public static ClickThroughDriver Attach(GameObject host, WindowController window, Camera camera, PointerInput pointer, PanelView panels, StripButton menuButton, FocusModeButton toggleButton)
+        public static ClickThroughDriver Attach(GameObject host, WindowController window, Camera camera, PointerInput pointer, PanelView panels, FocusModeButton toggleButton)
         {
             var driver = host.AddComponent<ClickThroughDriver>();
             driver._panels = panels;
             driver._pointer = pointer;
             driver._window = window;
             driver._camera = camera;
-            driver._menuButton = menuButton;
-            driver._toggleButton = toggleButton;
             toggleButton.Clicked += driver.Toggle;
             driver.Changed += toggleButton.ShowPassingClicks;
             toggleButton.ShowPassingClicks(driver.Enabled);
@@ -69,9 +65,7 @@ namespace Game.Bootstrap
         {
             if (_panels.IsOpen)
                 return StripHitTest.IsClickableAt(worldPoint);
-            if (PointerState.IsControlDown())
-                return StripHitTest.IsSpriteAt(worldPoint);
-            return _menuButton.Contains(worldPoint) || _toggleButton.Contains(worldPoint);
+            return PointerState.IsControlDown() && StripHitTest.IsSpriteAt(worldPoint);
         }
     }
 }
