@@ -37,7 +37,7 @@ namespace Game.Core.Save
                 throw stored.Field("version").Error($"version {version} is newer than this game ({migrations.CurrentVersion})");
 
             var payload = new ContentNode(migrations.Upgrade(JsonParser.Parse(PayloadText(text, root), FileName), version), FileName, "payload");
-            return new SaveFile(version, ReadClock(payload.Field("clock")), GameStateJson.Read(payload.Field("state"), data.Enemies, data.Gems));
+            return new SaveFile(version, ReadClock(payload.Field("clock")), GameStateJson.Read(payload.Field("state"), data.Enemies, data.Gems, data.Weapons));
         }
 
         private static JsonValue Payload(int version, ClockStamp clock, GameState state) =>

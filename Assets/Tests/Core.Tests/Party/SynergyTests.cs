@@ -28,6 +28,7 @@ namespace Game.Core.Tests.Party
         public void OwnMarkDoesNotWakeOwnResponse()
         {
             var loop = Hero(HeroClass.Voodoo);
+            TestWorld.ArmFor(loop, TestWorld.Data.Gems["voodoo_needle"]);
             loop.Skills.Equip(TestWorld.Data.Gems["voodoo_needle"]);
             loop.State.Resource = 100;
             loop.RequestCast(0);

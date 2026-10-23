@@ -3,6 +3,7 @@ using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Json;
+using Game.Core.Content.Weapons;
 using Game.Core.Math;
 using Game.Core.Sim;
 using Game.Core.Sim.Rift;
@@ -63,6 +64,7 @@ namespace Game.Core.Save
                     ("count", JsonValue.Of(state.Prestiges)))),
                 ("artifacts", JsonValue.Array(WriteArtifacts(state.Artifacts))),
                 ("rift", WriteRift(state.Rift)),
+                ("weapons", WriteWeapons(state.Weapons)),
                 ("inputStats", Object(
                     ("keys", JsonValue.Of(state.TotalInput.Keys.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("leftClicks", JsonValue.Of(state.TotalInput.LeftClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -86,7 +88,7 @@ namespace Game.Core.Save
                     ("mousePx", JsonValue.Of(state.MouseCarryPx)))));
         }
 
-        public static GameState Read(ContentNode node, EnemyCatalog enemies, GemCatalog gems)
+        public static GameState Read(ContentNode node, EnemyCatalog enemies, GemCatalog gems, WeaponCatalog weapons)
         {
             var rng = node.Field("rng").Items();
             if (rng.Count != 2)
@@ -174,8 +176,38 @@ namespace Game.Core.Save
             ReadArtifacts(node.Field("artifacts"), state.Artifacts);
             if (node.HasField("rift"))
                 ReadRift(node.Field("rift"), state.Rift);
+            if (node.HasField("weapons"))
+                ReadWeapons(node.Field("weapons"), weapons, state.Weapons);
             return state;
         }
+
+        private static JsonValue WriteWeapons(WeaponState weapons)
+        {
+            var bag = new JsonValue[weapons.Bag.Count];
+            for (var i = 0; i < bag.Length; i++)
+                bag[i] = JsonValue.Of(weapons.Bag[i].Id);
+            return Object(
+                ("starterGiven", JsonValue.Of(weapons.StarterGiven)),
+                ("right", weapons.Right == null ? JsonValue.Null() : JsonValue.Of(weapons.Right.Id)),
+                ("left", weapons.Left == null ? JsonValue.Null() : JsonValue.Of(weapons.Left.Id)),
+                ("bag", JsonValue.Array(bag)));
+        }
+
+        private static void ReadWeapons(ContentNode node, WeaponCatalog catalog, WeaponState weapons)
+        {
+            weapons.StarterGiven = node.Field("starterGiven").AsBool();
+            weapons.Right = ReadWeapon(node.Field("right"), catalog);
+            weapons.Left = ReadWeapon(node.Field("left"), catalog);
+            foreach (var item in node.Field("bag").Items())
+            {
+                var weapon = ReadWeapon(item, catalog);
+                if (weapon != null)
+                    weapons.Bag.Add(weapon);
+            }
+        }
+
+        private static WeaponBase? ReadWeapon(ContentNode node, WeaponCatalog catalog) =>
+            !node.IsNull && catalog.TryGetBase(node.AsString(), out var weapon) ? weapon : null;
 
         private static JsonValue WriteRift(RiftState rift) =>
             Object(

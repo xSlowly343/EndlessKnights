@@ -82,7 +82,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClickWhileOnCooldownDoesNothingAndTheFirstClickAfterCasts()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead, "shield_bash");
+            var (loop, input) = Hero(HeroClass.Viking, "shield_bash");
             input.ClickLeft();
             loop.Tick();
             var cooldown = loop.State.Skills[0].CooldownTicks;

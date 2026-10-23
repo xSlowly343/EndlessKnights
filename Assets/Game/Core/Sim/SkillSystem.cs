@@ -92,6 +92,8 @@ namespace Game.Core.Sim
             var skill = slot.Def;
             if (skill.IsPassive)
                 return CastResult.Passive;
+            if (!Armed(slot))
+                return CastResult.NoWeapon;
             if (!slot.Ready)
                 return CastResult.OnCooldown;
             if (skill.ResourceCost > 0 && !_resource.TrySpend(skill.ResourceCost))
@@ -156,7 +158,7 @@ namespace Game.Core.Sim
 
         private void ReleaseIdleStrike(SkillSlot slot, IdleStrikeEffect strike, double idleSeconds)
         {
-            if (!slot.Ready || idleSeconds < MinIdleSeconds(strike))
+            if (!slot.Ready || !Armed(slot) || idleSeconds < MinIdleSeconds(strike))
                 return;
             slot.StartCooldown(Ticks(slot.Def.CooldownSeconds));
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
@@ -168,10 +170,26 @@ namespace Game.Core.Sim
             foreach (var slot in _state.Skills)
             {
                 RemoveAura(slot);
-                if (slot.Active)
+                if (slot.Active && Armed(slot))
                     ApplyAura(slot);
             }
         }
+
+        public bool Armed(int index) => index >= 0 && index < _state.Skills.Count && Armed(_state.Skills[index]);
+
+        public void RefreshArmed()
+        {
+            foreach (var slot in _state.Skills)
+            {
+                if (!slot.Active || Armed(slot))
+                    continue;
+                slot.ActiveTicks = 0;
+                slot.HitsLeft = 0;
+                RemoveAura(slot);
+            }
+        }
+
+        private bool Armed(SkillSlot slot) => slot.Def.Weapon == null || _state.Weapons.Holds(slot.Def.Weapon);
 
         private double MinIdleSeconds(IdleStrikeEffect strike) => System.Math.Max(0, strike.MinIdleSeconds + _hero.Value(CombatStats.IdleStartSeconds, 0, StatTags.Idle));
 

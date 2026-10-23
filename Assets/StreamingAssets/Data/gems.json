@@ -5,6 +5,7 @@
     {
       "id": "shield_bash",
       "kind": "skill",
+      "weapon": "axe",
       "color": "red",
       "name": { "ru": "Удар щитом", "en": "Shield Bash" },
       "tags": ["Keyboard", "Skill"],
@@ -15,6 +16,7 @@
     {
       "id": "odins_fury",
       "kind": "skill",
+      "weapon": "axe",
       "color": "red",
       "name": { "ru": "Ярость Одина", "en": "Odin's Fury" },
       "tags": ["Keyboard", "Skill"],
@@ -25,6 +27,7 @@
     {
       "id": "song",
       "kind": "skill",
+      "weapon": "electric_guitar",
       "color": "red",
       "name": { "ru": "Песня", "en": "Song" },
       "tags": ["Aura", "Skill"],
@@ -36,6 +39,7 @@
     {
       "id": "guitar_solo",
       "kind": "skill",
+      "weapon": "electric_guitar",
       "color": "red",
       "name": { "ru": "Гитарное соло", "en": "Guitar Solo" },
       "tags": ["Aura", "Skill"],
@@ -69,6 +73,7 @@
     {
       "id": "voodoo_needle",
       "kind": "skill",
+      "weapon": "voodoo_doll",
       "color": "blue",
       "name": { "ru": "Игла в куклу", "en": "Needle in the Doll" },
       "tags": ["Skill"],

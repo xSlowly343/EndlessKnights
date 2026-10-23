@@ -2,6 +2,9 @@
   "version": 1,
   "languages": ["ru", "en"],
   "strings": {
+    "stat.rageEveryTwentyHits": { "ru": "Ярости за каждые 20 ударов", "en": "Rage every 20 hits" },
+    "stat.omenPerAllyHit": { "ru": "Знамений за удар союзника", "en": "Omens per ally hit" },
+    "stat.sandFromFastKills": { "ru": "Песка за быстрые убийства", "en": "Sand from fast kills" },
     "stat.damage": { "ru": "урон", "en": "damage" },
     "stat.resourceGain": { "ru": "накопление ресурса", "en": "resource gain" },
     "stat.keyHitLightning": { "ru": "молния от каждого удара", "en": "lightning on every hit" },

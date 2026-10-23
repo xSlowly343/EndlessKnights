@@ -29,6 +29,7 @@ namespace Game.Core.Tests.Party
 
             public int Equip(string gem)
             {
+                TestWorld.ArmFor(Loop, TestWorld.Data.Gems[gem]);
                 Loop.Skills.Equip(TestWorld.Data.Gems[gem]);
                 return Loop.State.Skills.Count - 1;
             }
@@ -80,6 +81,7 @@ namespace Game.Core.Tests.Party
         {
             var loop = TestWorld.Loop();
             var before = loop.Hero.Value(CombatStats.Damage, 1);
+            TestWorld.ArmFor(loop, TestWorld.Data.Gems["voodoo_needle"]);
             loop.Skills.Equip(TestWorld.Data.Gems["voodoo_needle"]);
             loop.State.Resource = 100;
 

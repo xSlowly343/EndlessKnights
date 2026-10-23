@@ -39,6 +39,7 @@ namespace Game.Core.Sim
         private readonly PartyBuffs _partyBuffs;
         private readonly SynergySystem _synergy;
         private readonly RiftSystem _rift;
+        private readonly WeaponSystem _weapons;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -60,6 +61,7 @@ namespace Game.Core.Sim
             _skills = new SkillSystem(state, Events, _resource, _combat, hero);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills);
+            _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
@@ -90,6 +92,7 @@ namespace Game.Core.Sim
         public PartyBuffs PartyBuffs => _partyBuffs;
         public SynergySystem Synergy => _synergy;
         public RiftSystem Rift => _rift;
+        public WeaponSystem Weapons => _weapons;
         public GameData Data => _data;
         public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
@@ -256,6 +259,7 @@ namespace Game.Core.Sim
             _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
+            _weapons.UseCatalog(data.Weapons);
             _book.UseRules(data.SkillBook);
             _prestige.UseRules(data.Prestige);
             _upgrades.UseRules(data.Combat.StrikeUpgrade);

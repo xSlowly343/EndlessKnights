@@ -119,7 +119,8 @@ namespace Game.Core.Content.Gems
                 foreach (var mark in node.Field("marks").Items())
                     marks.Add(mark.AsString());
             }
-            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks);
+            var weapon = node.HasField("weapon") ? node.Field("weapon").AsString() : null;
+            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks, weapon);
         }
 
         private static SkillEffect ReadEffect(ContentNode node)

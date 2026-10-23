@@ -6,6 +6,7 @@ namespace Game.Core.Sim
         NoSkill,
         Passive,
         OnCooldown,
-        NotEnoughResource
+        NotEnoughResource,
+        NoWeapon
     }
 }

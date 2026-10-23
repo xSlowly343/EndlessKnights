@@ -55,6 +55,7 @@ namespace Game.Core.Sim
         public int Prestiges { get; set; }
         public Dictionary<string, int> Artifacts { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
         public RiftState Rift { get; } = new RiftState();
+        public WeaponState Weapons { get; } = new WeaponState();
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;
