@@ -50,6 +50,13 @@ namespace Game.Bootstrap
                 return;
             _nextCheckTime = Time.unscaledTime + CheckIntervalSeconds;
             DockIfTaskbarChanged();
+            RestoreIfResized();
+        }
+
+        private void RestoreIfResized()
+        {
+            if (_isDocked && _window.TryGetBounds(out var bounds) && !bounds.Equals(Layout.Window))
+                PlaceNextToTaskbar();
         }
 
         public PanelLayout Expand(int panelWidthPx, int panelHeightPx)
@@ -143,9 +150,11 @@ namespace Game.Bootstrap
             PlaceNextToTaskbar();
         }
 
+        private int PlacedDepth => _expanded && !StripPlacement.IsHorizontal(_dockedEdge) ? 0 : _depth;
+
         private void PlaceNextToTaskbar()
         {
-            var strip = StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, GapToTaskbar, _offset, _expanded ? 0 : _depth);
+            var strip = StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, GapToTaskbar, _offset, PlacedDepth);
             Layout = _expanded && MonitorWorkArea.TryGet(strip, out var workArea)
                 ? PanelLayout.Expanded(strip, workArea, _dockedEdge, _panelWidthPx, _panelHeightPx)
                 : PanelLayout.Collapsed(strip);
