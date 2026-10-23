@@ -110,6 +110,31 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void ViewportResizedForTheWidePanelKeepsTheZoomAndShowsMoreAcross()
+        {
+            var viewport = new TreeViewport(Tree.Nodes, 464.0 / 250.0);
+            viewport.FocusOn(0, 0, 30);
+
+            viewport.Resize(944.0 / 290.0);
+
+            Assert.That(viewport.VisibleHeight, Is.EqualTo(30));
+            Assert.That(viewport.VisibleWidth, Is.EqualTo(30 * 944.0 / 290.0).Within(1e-9));
+        }
+
+        [Test]
+        public void ViewportResizeClampsAZoomedOutView()
+        {
+            var viewport = new TreeViewport(Tree.Nodes, 1);
+            var whole = viewport.VisibleHeight;
+
+            viewport.Resize(4);
+
+            Assert.That(viewport.VisibleHeight, Is.LessThanOrEqualTo(whole));
+            foreach (var node in Tree.Nodes)
+                Assert.That(System.Math.Abs(node.X - viewport.CentreX), Is.LessThanOrEqualTo(viewport.VisibleWidth / 2));
+        }
+
+        [Test]
         public void ViewportMapsTheCentreAndFindsTheNearestNode()
         {
             var viewport = new TreeViewport(Tree.Nodes, 1);

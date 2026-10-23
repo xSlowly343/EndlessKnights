@@ -6,7 +6,7 @@ namespace Game.Platform.Tests
     public class StripPlacementTests
     {
         private const int Width = 480;
-        private const int Height = 140;
+        private const int Height = 180;
 
         private static readonly ScreenRect BottomTaskbar = new ScreenRect(0, 1032, 1920, 1080);
 
@@ -23,7 +23,7 @@ namespace Game.Platform.Tests
         {
             var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, BottomTaskbar, Width, Height, 0, 0);
 
-            AssertRect(strip, 0, 892);
+            AssertRect(strip, 0, 852);
             Assert.That(strip.Bottom, Is.EqualTo(BottomTaskbar.Top));
         }
 
@@ -70,7 +70,7 @@ namespace Game.Platform.Tests
         {
             var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, BottomTaskbar, Width, Height, 0, 700);
 
-            AssertRect(strip, 700, 892);
+            AssertRect(strip, 700, 852);
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace Game.Platform.Tests
 
             var strip = StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, taskbar, Width, Height, 0, 0);
 
-            AssertRect(strip, 1920, 1252);
+            AssertRect(strip, 1920, 1212);
         }
     }
 }

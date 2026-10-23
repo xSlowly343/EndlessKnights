@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Game.Core.Ui;
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
 using UnityEngine;
@@ -10,6 +12,7 @@ namespace Game.Bootstrap
         private TaskbarDockDriver _dock = null!;
         private PanelView _panels = null!;
 
+        public PanelNavigator Navigator { get; private set; } = null!;
         public bool IsOpen => _panels.IsOpen;
 
         public static PanelModeDriver Attach(GameObject host, TaskbarDockDriver dock, PanelView panels, StripButton menuButton)
@@ -17,37 +20,77 @@ namespace Game.Bootstrap
             var driver = host.AddComponent<PanelModeDriver>();
             driver._dock = dock;
             driver._panels = panels;
-            menuButton.Clicked += driver.Toggle;
-            panels.CloseRequested += driver.Close;
+            driver.Navigator = new PanelNavigator();
+            driver.Wire(menuButton);
             return driver;
+        }
+
+        private void Wire(StripButton menuButton)
+        {
+            var navigator = Navigator;
+            menuButton.Clicked += Toggle;
+            _panels.TabPressed += navigator.SelectTab;
+            _panels.MorePressed += navigator.PressMore;
+            _panels.ClosePressed += navigator.Close;
+            _panels.PinPressed += navigator.TogglePin;
+            _panels.HeightPressed += navigator.ToggleHeight;
+            _panels.WidePressed += navigator.ToggleWide;
+            _panels.SubTabPressed += navigator.SelectSubTab;
+            _panels.ClaimPressed += Close;
+            navigator.Changed += Apply;
+            _dock.Placed += OnPlaced;
         }
 
         public void Toggle()
         {
-            if (_panels.IsOpen)
+            if (_panels.IsShowingReport)
                 Close();
             else
-                Open();
-        }
-
-        public void Open()
-        {
-            var pixelsPerUnitScale = _dock.StripHeightPx / StripSpace.BaseHeightPx;
-            var layout = _dock.Expand((int)(PanelView.AreaWidthPx * pixelsPerUnitScale), (int)(PanelView.AreaHeightPx * pixelsPerUnitScale));
-            _panels.Show(layout.PanelsAboveStrip);
+                Navigator.PressMenu();
         }
 
         public void OpenReport(string title, IReadOnlyList<string> lines)
         {
-            var pixelsPerUnitScale = _dock.StripHeightPx / StripSpace.BaseHeightPx;
-            var layout = _dock.Expand((int)(PanelView.ReportAreaWidthPx * pixelsPerUnitScale), (int)(PanelView.ReportAreaHeightPx * pixelsPerUnitScale));
-            _panels.ShowReport(title, lines, layout.PanelsAboveStrip);
+            Navigator.Close();
+            _panels.ShowReport(title, lines);
+            Expand(PanelView.ReportFrame);
         }
 
         public void Close()
         {
+            if (Navigator.IsOpen)
+            {
+                Navigator.Close();
+                return;
+            }
             _panels.Hide();
             _dock.Collapse();
         }
+
+        private void Apply()
+        {
+            if (!Navigator.IsOpen)
+            {
+                _panels.Hide();
+                _dock.Collapse();
+                return;
+            }
+            _panels.Show(Navigator);
+            Expand(Navigator.Frame);
+        }
+
+        private void Expand(PanelFrame frame)
+        {
+            var scale = DpiScale;
+            _dock.Expand(Mathf.RoundToInt(frame.WidthPx * scale), Mathf.RoundToInt(frame.AreaHeightPx * scale));
+        }
+
+        private void OnPlaced(PanelLayout layout, int stripHeightPx)
+        {
+            if (_panels.IsOpen)
+                _panels.Place(-layout.StripOffsetX / DpiScale, layout.PanelsAboveStrip);
+        }
+
+        private float DpiScale => Math.Max(1, _dock.StripHeightPx) / StripSpace.BaseHeightPx;
     }
 }

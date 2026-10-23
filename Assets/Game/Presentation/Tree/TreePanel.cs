@@ -10,19 +10,20 @@ namespace Game.Presentation.Tree
 {
     public sealed class TreePanel : MonoBehaviour
     {
-        public const float TreeHeightPx = 310f;
         public const float InfoLineHeightPx = 24f;
         public const float ButtonHeightPx = 30f;
         public const float MarginPx = 8f;
         public const int MaxActions = 4;
         public const int MaxInfoLines = 6;
+        public const int CompactInfoLines = 2;
+        public const float FullCardMinContentPx = 400f;
         private const int MaxLineLength = 50;
         private const float ClickSlopPx = 6f;
         private const float RefreshSeconds = 2f;
         private const double FirstViewHeight = 30;
         private const double PickRadiusShare = 0.03;
         private const double MinPickRadius = 0.6;
-        private const float DefaultAspect = (PanelView.PanelWidthPx - 2 * MarginPx) / (TreeHeightPx - MarginPx);
+        private const float DefaultAspect = 1.8f;
 
         private static readonly Color LineColor = new Color(0.92f, 0.9f, 0.85f, 1f);
         private static readonly Color ButtonColor = new Color(0.3f, 0.22f, 0.12f, 1f);
@@ -42,6 +43,7 @@ namespace Game.Presentation.Tree
         private TreeNodeLook[] _looks = System.Array.Empty<TreeNodeLook>();
         private Rect _treeArea;
         private float _pixelsPerUnit = 1f;
+        private int _visibleLines = MaxInfoLines;
         private bool _pressedInTree;
         private Vector2 _pressPoint;
         private Vector2 _lastDragPoint;
@@ -61,7 +63,7 @@ namespace Game.Presentation.Tree
             _tree = tree;
             _view = TreeView.Create(tree, transform);
             _looks = new TreeNodeLook[tree.Nodes.Count];
-            _viewport = new TreeViewport(tree.Nodes, DefaultAspect);
+            _viewport = new TreeViewport(tree.Nodes, _treeArea.height > 0f ? _treeArea.width / _treeArea.height : DefaultAspect);
             var start = tree.StartOf(loop.State.Tree.StartClass);
             if (start != null)
                 _viewport.FocusOn(start.X, start.Y, FirstViewHeight);
@@ -93,16 +95,20 @@ namespace Game.Presentation.Tree
         {
             _pixelsPerUnit = pixelsPerUnit;
             var margin = MarginPx / pixelsPerUnit;
-            var treeHeight = TreeHeightPx / pixelsPerUnit;
-            var top = bottom + height;
-            _treeArea = new Rect(left + margin, top - treeHeight, width - 2 * margin, treeHeight - margin);
             var lineHeight = InfoLineHeightPx / pixelsPerUnit;
+            var buttonHeight = ButtonHeightPx / pixelsPerUnit;
+            _visibleLines = height * pixelsPerUnit >= FullCardMinContentPx ? MaxInfoLines : CompactInfoLines;
+            var cardHeight = _visibleLines * lineHeight + buttonHeight + 3 * margin;
+            _treeArea = new Rect(left + margin, bottom + cardHeight, width - 2 * margin, height - cardHeight - margin);
+            _viewport?.Resize(_treeArea.width / _treeArea.height);
             var firstLineY = _treeArea.yMin - margin - lineHeight / 2f;
             for (var i = 0; i < _lines.Count; i++)
+            {
                 _lines[i].transform.position = new Vector2(left + 2 * margin, firstLineY - i * lineHeight);
+                _lines[i].gameObject.SetActive(i < _visibleLines);
+            }
             _hint.transform.position = new Vector2(_treeArea.center.x, _treeArea.center.y);
 
-            var buttonHeight = ButtonHeightPx / pixelsPerUnit;
             var buttonWidth = (width - 2 * margin - (MaxActions - 1) * margin) / MaxActions;
             var buttonY = bottom + margin + buttonHeight / 2f;
             for (var i = 0; i < MaxActions; i++)
