@@ -1,14 +1,15 @@
 using System;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Tree;
+using Game.Core.Party;
 
 namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName };
 
-        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts)
+        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party)
         {
             Stages = stages;
             Enemies = enemies;
@@ -21,6 +22,7 @@ namespace Game.Core.Content
             SkillBook = skillBook;
             Prestige = prestige;
             Artifacts = artifacts;
+            Party = party;
         }
 
         public StageTable Stages { get; }
@@ -34,6 +36,7 @@ namespace Game.Core.Content
         public SkillBookRules SkillBook { get; }
         public PrestigeRules Prestige { get; }
         public ArtifactCatalog Artifacts { get; }
+        public PartyRules Party { get; }
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -49,7 +52,8 @@ namespace Game.Core.Content
             ascendancy.RequireClassesAndIds(tree);
             var prestige = PrestigeRules.Load(readFile(PrestigeRules.FileName));
             var artifacts = ArtifactCatalog.Load(readFile(ArtifactCatalog.FileName));
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts);
+            var party = PartyRules.Load(readFile(PartyRules.FileName));
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party);
         }
     }
 }
