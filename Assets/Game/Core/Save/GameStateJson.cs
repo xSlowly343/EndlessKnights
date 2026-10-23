@@ -45,7 +45,8 @@ namespace Game.Core.Save
                     ("bossTicksLeft", JsonValue.Of(state.BossTicksLeft)),
                     ("farming", JsonValue.Of(state.Farming)),
                     ("farmKills", JsonValue.Of(state.FarmKills)),
-                    ("bossFailsInARow", JsonValue.Of(state.BossFailsInARow)))),
+                    ("bossFailsInARow", JsonValue.Of(state.BossFailsInARow)),
+                    ("bossBestFraction", JsonValue.Of(state.BossBestFraction)))),
                 ("enemy", Object(
                     ("id", state.Enemy == null ? JsonValue.Null() : JsonValue.Of(state.Enemy.Id)),
                     ("type", JsonValue.Of(SaveValues.NameOf(state.EnemyType, EnemyTypes))),
@@ -120,6 +121,7 @@ namespace Game.Core.Save
                 Farming = stage.Field("farming").AsBool(),
                 FarmKills = stage.Field("farmKills").AsInt(0),
                 BossFailsInARow = stage.Field("bossFailsInARow").AsInt(0),
+                BossBestFraction = stage.HasField("bossBestFraction") ? stage.Field("bossBestFraction").AsNumber(0, 1) : 0,
                 Gold = SaveValues.ReadBigNumber(gold.Field("wallet")),
                 RunGoldEarned = SaveValues.ReadBigNumber(gold.Field("runEarned")),
                 RecentDps = SaveValues.ReadBigNumber(node.Field("recentDps")),

@@ -58,6 +58,7 @@ namespace Game.Core.Sim
             _state.Farming = false;
             _state.FarmKills = 0;
             _state.BossFailsInARow = 0;
+            _state.BossBestFraction = 0;
             _state.Gold = BigNumber.Zero;
             _state.RunGoldEarned = BigNumber.Zero;
             _state.ChainDamage = BigNumber.Zero;

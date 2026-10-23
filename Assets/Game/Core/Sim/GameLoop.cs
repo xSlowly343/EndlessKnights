@@ -75,6 +75,7 @@ namespace Game.Core.Sim
         public PrestigeSystem Prestige => _prestige;
         public StrikeUpgradeSystem Upgrades => _upgrades;
         public ArtifactSystem Artifacts => _artifacts;
+        public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();

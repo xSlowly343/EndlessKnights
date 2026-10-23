@@ -61,6 +61,7 @@ namespace Game.Core.Sim
             _state.Farming = true;
             _state.FarmKills = 0;
             _state.BossFailsInARow++;
+            RecordBossFraction();
             SpawnNormal();
         }
 
@@ -87,6 +88,15 @@ namespace Game.Core.Sim
             SpawnNext();
         }
 
+        private void RecordBossFraction()
+        {
+            if (_state.EnemyMaxHp.Sign <= 0)
+                return;
+            var fraction = 1 - (_state.EnemyHp / _state.EnemyMaxHp).ToDouble();
+            if (fraction > _state.BossBestFraction)
+                _state.BossBestFraction = System.Math.Min(1, fraction);
+        }
+
         private void CountFarmKill()
         {
             _state.FarmKills++;
@@ -101,6 +111,7 @@ namespace Game.Core.Sim
             _state.KillsOnStage = 0;
             _state.Farming = false;
             _state.BossFailsInARow = 0;
+            _state.BossBestFraction = 0;
             if (_state.Stage > _state.HighestStage)
                 _state.HighestStage = _state.Stage;
             _levels.OnStageReached(_state.Stage);
