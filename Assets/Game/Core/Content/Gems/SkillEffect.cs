@@ -19,6 +19,16 @@ namespace Game.Core.Content.Gems
         public double NextEnemyShare { get; }
     }
 
+    public sealed class StrikeEffect : SkillEffect
+    {
+        public StrikeEffect(double multiplier)
+        {
+            Multiplier = multiplier;
+        }
+
+        public double Multiplier { get; }
+    }
+
     public sealed class AuraEffect : SkillEffect
     {
         public AuraEffect(IReadOnlyList<Modifier> modifiers)

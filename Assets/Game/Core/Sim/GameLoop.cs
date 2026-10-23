@@ -18,7 +18,7 @@ namespace Game.Core.Sim
         private readonly IInputSource _input;
         private readonly InputRules _inputRules;
         private readonly FocusSystem _focus;
-        private readonly EnergySystem _energy;
+        private readonly ResourceSystem _resource;
         private readonly CombatSystem _combat;
         private readonly StageSystem _stage;
         private readonly LootSystem _loot;
@@ -42,13 +42,13 @@ namespace Game.Core.Sim
             Hero = hero;
             _inputRules = new InputRules(data.InputCaps);
             _focus = new FocusSystem(data.Combat.Focus, state, hero);
-            _energy = new EnergySystem(data.Combat.Energy, state, hero);
+            _resource = new ResourceSystem(data.Combat.Resources, state, hero);
             _combat = new CombatSystem(data.Combat, hero, state, Events);
             _loot = new LootSystem(data.Stages, hero, state, Events);
             _levels = new LevelSystem(data.Combat.Hero, data.Stages, data.TreePoints, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot, _levels);
             _combat.OnKill(_stage);
-            _skills = new SkillSystem(state, Events, _energy, _combat, hero);
+            _skills = new SkillSystem(state, Events, _resource, _combat, hero);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills);
             _artifacts = new ArtifactSystem(data.Artifacts, state, hero);
@@ -65,7 +65,7 @@ namespace Game.Core.Sim
         public CombatSystem Combat => _combat;
         public StageSystem Stages => _stage;
         public FocusSystem Focus => _focus;
-        public EnergySystem Energy => _energy;
+        public ResourceSystem Resource => _resource;
         public LootSystem Loot => _loot;
         public SkillSystem Skills => _skills;
         public LevelSystem Levels => _levels;
@@ -221,7 +221,7 @@ namespace Game.Core.Sim
             _data = data;
             _inputRules.UseCaps(data.InputCaps);
             _focus.UseRules(data.Combat.Focus);
-            _energy.UseRules(data.Combat.Energy);
+            _resource.UseRules(data.Combat.Resources);
             _combat.UseRules(data.Combat);
             _stage.UseData(data.Stages, data.Enemies);
             _loot.UseData(data.Stages);
@@ -244,8 +244,9 @@ namespace Game.Core.Sim
             var input = raw.WithMouse(raw.MousePx * System.Math.Max(0, Hero.Value(CombatStats.MouseDistance, 1, StatTags.Mouse)));
             var idleTicksBefore = State.IdleTicks;
             _focus.Tick(input);
-            _energy.Tick(input);
+            _resource.Tick(input);
             _skills.Tick(input, idleTicksBefore);
+            _skills.CastFromButtons(input);
             _triggers.Tick(input);
             _stage.Tick();
             _combat.Tick(input);

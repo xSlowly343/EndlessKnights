@@ -9,7 +9,6 @@ namespace Game.Core.Sim
         BossDefeated,
         BossFailed,
         GoldGained,
-        MelodyReady,
         SkillCast,
         AuraChanged,
         LevelUp,

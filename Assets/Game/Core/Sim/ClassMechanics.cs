@@ -6,28 +6,22 @@ namespace Game.Core.Sim
     public sealed class ClassMechanics
     {
         private readonly GameState _state;
-        private readonly EventQueue _events;
         private readonly StatSheet _hero;
         private ClassRules _rules;
 
-        public ClassMechanics(ClassRules rules, GameState state, EventQueue events, StatSheet hero)
+        public ClassMechanics(ClassRules rules, GameState state, StatSheet hero)
         {
             _hero = hero;
             _rules = rules;
             _state = state;
-            _events = events;
         }
 
         public void UseRules(ClassRules rules) => _rules = rules;
 
-        public int NotesPerMelody => System.Math.Max(1, (int)System.Math.Round(_rules.NotesPerMelody + _hero.Value(CombatStats.MelodyNotes, 0)));
-
-        public bool MelodyReady => _state.Notes >= NotesPerMelody;
-
         public double OnKeyHit(out HitFlags flags)
         {
             flags = HitFlags.None;
-            if (_state.Class != HeroClass.Swordsman)
+            if (_state.Class != HeroClass.Ronin)
                 return 1;
 
             _state.Combo++;
@@ -37,25 +31,6 @@ namespace Game.Core.Sim
             flags = HitFlags.ComboStrike;
             return _rules.ComboStrikeMultiplier + _hero.Value(CombatStats.ComboStrikeMultiplier, 0, StatTags.Keyboard);
         }
-
-        public void OnClickHit()
-        {
-            if (_state.Class != HeroClass.Bard || MelodyReady)
-                return;
-            _state.Notes++;
-            if (MelodyReady)
-                _events.Add(GameEvent.ForStage(GameEventKind.MelodyReady, _state.Tick, _state.Stage));
-        }
-
-        public bool TryTakeMelody()
-        {
-            if (!MelodyReady)
-                return false;
-            _state.Notes = 0;
-            return true;
-        }
-
-        public void SpendNotes(int notes) => _state.Notes = System.Math.Max(0, _state.Notes - notes);
 
         public void EndTick(int keyHits)
         {

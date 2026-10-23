@@ -33,7 +33,7 @@ namespace Game.Core.Tests.Build
 
         private static GameLoop Swordsman()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
             loop.State.Tree.PointsEarned = 120;
             return loop;
         }
@@ -41,9 +41,9 @@ namespace Game.Core.Tests.Build
         private static void TakeAttributes(GameLoop loop, int count)
         {
             var nearest = Tree.Nodes.Where(node => node.Type == TreeNodeType.Attribute)
-                .OrderBy(node => TreePaths.To(Tree, "swordsman", node.Id).Length).ThenBy(node => node.Id).Take(count);
+                .OrderBy(node => TreePaths.To(Tree, "ronin", node.Id).Length).ThenBy(node => node.Id).Take(count);
             foreach (var attribute in nearest)
-                TreePaths.Allocate(loop, Tree, TreePaths.To(Tree, "swordsman", attribute.Id));
+                TreePaths.Allocate(loop, Tree, TreePaths.To(Tree, "ronin", attribute.Id));
         }
 
         private static int Taken(GameLoop loop) => loop.State.Tree.AttributeChoices.Count;

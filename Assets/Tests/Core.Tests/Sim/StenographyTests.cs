@@ -17,10 +17,10 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Bard }, hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Metalhead }, hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(enemyHp));
             var slot = loop.Skills.Equip(TestWorld.Data.Gems["stenography"]);
-            loop.State.Energy = 100;
+            loop.State.Resource = 100;
             loop.Events.Clear();
             return (loop, input, slot);
         }

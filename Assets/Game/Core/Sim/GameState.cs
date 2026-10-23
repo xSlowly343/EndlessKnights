@@ -55,7 +55,8 @@ namespace Game.Core.Sim
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;
-        public double Energy { get; set; }
+        public double Resource { get; set; }
+        public long KeylessTicks { get; set; }
         public long IdleTicks { get; set; }
         public long MacroRhythmTicks { get; set; }
 
@@ -76,10 +77,8 @@ namespace Game.Core.Sim
         public long KeyHits { get; set; }
         public int Combo { get; set; }
         public long ComboIdleTicks { get; set; }
-        public int Notes { get; set; }
 
         public double KeyCarry { get; set; }
-        public double ClickCarry { get; set; }
         public double MouseCarryPx { get; set; }
 
         public double ElapsedSeconds => Tick * GameLoop.TickSeconds;

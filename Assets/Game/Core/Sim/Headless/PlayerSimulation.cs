@@ -20,7 +20,7 @@ namespace Game.Core.Sim.Headless
         private BigNumber _goldSeen = BigNumber.Zero;
         private BigNumber _goldTotal = BigNumber.Zero;
 
-        public PlayerSimulation(GameData data, BotProfile profile, HeroClass heroClass = HeroClass.Swordsman, ulong seed = 1, double stuckMinutes = DefaultStuckMinutes)
+        public PlayerSimulation(GameData data, BotProfile profile, HeroClass heroClass = HeroClass.Viking, ulong seed = 1, double stuckMinutes = DefaultStuckMinutes)
         {
             _data = data;
             _profile = profile;

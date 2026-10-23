@@ -10,7 +10,7 @@ namespace Game.Core.Tests.Sim
         {
             var stages = TestWorld.Data.Stages;
 
-            var result = new Simulation(TestWorld.Data, new BotProfile(6), damageMultiplier: 30).Run(6 * 3600, stopAfterBossFailsInARow: 3);
+            var result = new Simulation(TestWorld.Data, new BotProfile(6), damageMultiplier: 210).Run(6 * 3600, stopAfterBossFailsInARow: 3);
 
             Assert.That(result.Stuck, Is.True);
             Assert.That(stages.IsInSoftWall(result.FinalStage), Is.True, $"stuck at {result.FinalStage}");
@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StagesSlowDownSharplyInsideTheWall()
         {
-            var result = new Simulation(TestWorld.Data, new BotProfile(6), damageMultiplier: 30).Run(6 * 3600, stopAfterBossFailsInARow: 3);
+            var result = new Simulation(TestWorld.Data, new BotProfile(6), damageMultiplier: 210).Run(6 * 3600, stopAfterBossFailsInARow: 3);
 
             StageRecord At(long stage)
             {
@@ -41,7 +41,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void GuardianWithKeyboardPenaltyStopsAWeakTypist()
         {
-            var result = new Simulation(TestWorld.Data, new BotProfile(3), damageMultiplier: 3).Run(4 * 3600, stopAfterBossFailsInARow: 3);
+            var result = new Simulation(TestWorld.Data, new BotProfile(3), damageMultiplier: 21).Run(4 * 3600, stopAfterBossFailsInARow: 3);
 
             Assert.That(result.Stuck, Is.True);
             Assert.That(TestWorld.Data.Stages.IsBiomeGuardian(result.FinalStage), Is.True, $"stuck at {result.FinalStage}");

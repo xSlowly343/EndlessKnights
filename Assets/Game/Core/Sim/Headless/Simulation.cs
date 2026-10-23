@@ -13,7 +13,7 @@ namespace Game.Core.Sim.Headless
         private readonly ulong _seed;
         private readonly double _damageMultiplier;
 
-        public Simulation(GameData data, BotProfile profile, HeroClass heroClass = HeroClass.Swordsman, ulong seed = 1, double damageMultiplier = 1)
+        public Simulation(GameData data, BotProfile profile, HeroClass heroClass = HeroClass.Viking, ulong seed = 1, double damageMultiplier = 1)
         {
             _data = data;
             _profile = profile;

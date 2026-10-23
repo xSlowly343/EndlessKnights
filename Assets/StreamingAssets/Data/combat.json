@@ -1,8 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "hits": {
     "keyboard": { "damage": 10 },
-    "click": { "damage": 6 },
     "mouse": { "damage": 3.4, "pxPerHit": 1000 }
   },
   "focus": {
@@ -13,11 +12,17 @@
     "resetAfterIdleSeconds": 3,
     "macroRhythm": { "cvBelow": 0.05, "afterSeconds": 60 }
   },
-  "energy": { "perKey": 1, "perClick": 1, "mousePxPerPoint": 1500, "max": 100 },
+  "resources": {
+    "max": 100,
+    "default": { "perKey": 1, "mousePxPerPoint": 1500 },
+    "classes": {
+      "viking": { "perKey": 2, "decay": { "perSecond": 10, "afterKeylessSeconds": 3, "mouseHolds": true } },
+      "metalhead": { "perKey": 1 }
+    }
+  },
   "crit": { "chance": 0.05, "multiplier": 2 },
   "classes": {
-    "swordsman": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 25, "strikeMultiplier": 3 } },
-    "bard": { "notesPerMelody": 4 }
+    "ronin": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 25, "strikeMultiplier": 3 } }
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },
   "hero": {

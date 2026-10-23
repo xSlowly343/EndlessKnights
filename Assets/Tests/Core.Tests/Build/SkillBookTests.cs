@@ -106,8 +106,8 @@ namespace Game.Core.Tests.Build
         {
             var loop = WithGems("march");
             loop.Book.Equip(Gem("march"));
-            loop.State.Notes = 4;
-            loop.Tick();
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(0);
             Assert.That(loop.State.Skills[0].Active, Is.True);
 
             Assert.That(loop.Book.Unequip(0), Is.EqualTo(BookResult.Done));
@@ -134,43 +134,55 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void TypistStartsWithStenographyOnEnterAndLull()
+        public void VikingStartsWithShieldBashOnLeftOdinsFuryOnRightAndLull()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
 
             Assert.That(loop.Book.GrantStartingGems(), Is.True);
 
             Assert.That(loop.State.OwnedGems.Count, Is.EqualTo(3));
-            Assert.That(loop.State.Skills.Count, Is.EqualTo(2));
-            Assert.That(loop.State.Skills[0].Skill, Is.SameAs(Gem("stenography")));
-            Assert.That(loop.State.Skills[0].Trigger, Is.SameAs(Gem("cast_on_enter")));
-            Assert.That(loop.State.Skills[1].Skill, Is.SameAs(Gem("lull")));
+            Assert.That(loop.State.Skills.Count, Is.EqualTo(3));
+            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("shield_bash")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("odins_fury")));
+            Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("lull")));
+            Assert.That(loop.State.Skills[0].Trigger, Is.Null);
             Assert.That(loop.Book.GrantStartingGems(), Is.False);
         }
 
         [Test]
-        public void BardStartsWithMarchAndLullAndKeepsTheTriggerInTheBag()
+        public void MetalheadStartsWithSongOnLeftAndGuitarSoloOnRight()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Bard });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Metalhead });
 
             loop.Book.GrantStartingGems();
 
-            Assert.That(loop.State.Skills.Count, Is.EqualTo(2));
-            Assert.That(loop.State.Skills[0].Skill, Is.SameAs(Gem("march")));
-            Assert.That(loop.State.Skills[0].Trigger, Is.Null);
-            Assert.That(loop.Book.FreeCopies(Gem("cast_on_enter")), Is.EqualTo(1));
+            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("song")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("guitar_solo")));
+        }
+
+        [Test]
+        public void EveryCharacterHasStartingSkillsOnBothButtons()
+        {
+            foreach (HeroClass heroClass in System.Enum.GetValues(typeof(HeroClass)))
+            {
+                var loop = TestWorld.Loop(state: new GameState { Class = heroClass });
+
+                loop.Book.GrantStartingGems();
+
+                Assert.That(loop.State.Skills.Count, Is.EqualTo(3), heroClass.ToString());
+            }
         }
 
         [Test]
         public void OwnedGemsAreSaved()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
             loop.Book.GrantStartingGems();
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;
 
             Assert.That(loaded.OwnedGems.Count, Is.EqualTo(3));
-            Assert.That(loaded.Skills[0].Trigger, Is.SameAs(Gem("cast_on_enter")));
+            Assert.That(loaded.Skills[1].Skill, Is.SameAs(Gem("odins_fury")));
         }
 
         [Test]

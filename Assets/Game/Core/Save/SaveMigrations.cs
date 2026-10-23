@@ -6,7 +6,7 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(9,
+        public static readonly SaveMigrations Default = new SaveMigrations(10,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
             new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
@@ -14,12 +14,31 @@ namespace Game.Core.Save
             new SaveMigration(5, "two build presets and input stats (phases 10-11)", payload => JsonEdit.Update(payload, "state", StateToVersion6)),
             new SaveMigration(6, "ascendancy subclasses", payload => JsonEdit.Update(payload, "state", StateToVersion7)),
             new SaveMigration(7, "strike upgrades for gold (10.2)", payload => JsonEdit.Update(payload, "state", StateToVersion8)),
-            new SaveMigration(8, "nine RPG classes and the large passive tree", payload => JsonEdit.Update(payload, "state", StateToVersion9)));
+            new SaveMigration(8, "nine RPG classes and the large passive tree", payload => JsonEdit.Update(payload, "state", StateToVersion9)),
+            new SaveMigration(9, "fourteen characters, class resources and the new passive tree", payload => JsonEdit.Update(payload, "state", StateToVersion10)));
 
         private static readonly IReadOnlyDictionary<string, string> RenamedClasses = new Dictionary<string, string>(StringComparer.Ordinal)
         {
             ["typist"] = "swordsman",
             ["hermit"] = "wanderer"
+        };
+
+        private static readonly IReadOnlyDictionary<string, string> Characters = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["barbarian"] = "viking",
+            ["swordsman"] = "ronin",
+            ["ranger"] = "amazon",
+            ["sorcerer"] = "stormweaver",
+            ["wanderer"] = "nomad",
+            ["bard"] = "metalhead",
+            ["priest"] = "oracle",
+            ["witch"] = "voodoo",
+            ["alchemist"] = "plague_doctor"
+        };
+
+        private static readonly IReadOnlyDictionary<string, string> RenamedSubclasses = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["plague_doctor"] = "plague_bringer"
         };
 
         private readonly SaveMigration[] _steps;
@@ -138,6 +157,39 @@ namespace Game.Core.Save
             return JsonEdit.Update(presets, "ascendancy", a =>
                 JsonEdit.Set(JsonEdit.Set(a, "subclass", JsonValue.Null()), "allocated", JsonValue.Array(new JsonValue[0])));
         }
+
+        private static JsonValue StateToVersion10(JsonValue state)
+        {
+            var hero = JsonEdit.Update(state, "hero", ToCharacterHero);
+            var tree = JsonEdit.Update(hero, "tree", EmptyTreeOfCharacter);
+            var presets = JsonEdit.Update(tree, "presets", p => JsonEdit.Update(p, "otherTree", EmptyTreeOfCharacter));
+            var carry = JsonEdit.Update(presets, "carry", c => JsonEdit.Remove(c, "clicks"));
+            return JsonEdit.Update(carry, "ascendancy", RenamedSubclass);
+        }
+
+        private static JsonValue RenamedSubclass(JsonValue ascendancy)
+        {
+            var subclass = ascendancy.Fields["subclass"];
+            if (subclass.Kind != JsonKind.String || !RenamedSubclasses.TryGetValue(subclass.Text, out var renamed))
+                return ascendancy;
+            var allocated = new List<JsonValue>();
+            foreach (var id in ascendancy.Fields["allocated"].Items)
+                allocated.Add(id.Text.StartsWith(subclass.Text + "_", StringComparison.Ordinal) ? JsonValue.Of(renamed + id.Text.Substring(subclass.Text.Length)) : id);
+            return JsonEdit.Set(JsonEdit.Set(ascendancy, "subclass", JsonValue.Of(renamed)), "allocated", JsonValue.Array(allocated));
+        }
+
+        private static JsonValue ToCharacterHero(JsonValue hero)
+        {
+            var renamed = JsonEdit.Update(hero, "class", Character);
+            var resource = JsonEdit.Set(renamed, "resource", hero.Fields["energy"]);
+            return JsonEdit.Remove(JsonEdit.Remove(JsonEdit.Set(resource, "keylessTicks", JsonValue.Of(0)), "energy"), "notes");
+        }
+
+        private static JsonValue Character(JsonValue name) =>
+            Characters.TryGetValue(name.Text, out var character) ? JsonValue.Of(character) : name;
+
+        private static JsonValue EmptyTreeOfCharacter(JsonValue tree) =>
+            JsonEdit.Set(JsonEdit.Update(tree, "startClass", Character), "allocated", JsonValue.Array(new JsonValue[0]));
 
         private static JsonValue RenamedClass(JsonValue name) =>
             RenamedClasses.TryGetValue(name.Text, out var renamed) ? JsonValue.Of(renamed) : name;

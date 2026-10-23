@@ -37,29 +37,29 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CastSpendsEnergyAndStartsCooldown()
+        public void CastSpendsResourceAndStartsCooldown()
         {
             var loop = TestWorld.Loop();
             var slot = loop.Skills.Equip(Gem("stenography"));
-            loop.State.Energy = 100;
+            loop.State.Resource = 100;
 
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
 
             var skill = Gem("stenography").Skill!;
-            Assert.That(loop.State.Energy, Is.EqualTo(100 - skill.EnergyCost));
+            Assert.That(loop.State.Resource, Is.EqualTo(100 - skill.ResourceCost));
             Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(skill.CooldownSeconds * GameLoop.TicksPerSecond));
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(1));
         }
 
         [Test]
-        public void CastIsRefusedWithoutEnergyAndKeepsEnergy()
+        public void CastIsRefusedWithoutResourceAndKeepsIt()
         {
             var loop = TestWorld.Loop();
             var slot = loop.Skills.Equip(Gem("stenography"));
-            loop.State.Energy = 10;
+            loop.State.Resource = 10;
 
-            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.NotEnoughEnergy));
-            Assert.That(loop.State.Energy, Is.EqualTo(10));
+            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.NotEnoughResource));
+            Assert.That(loop.State.Resource, Is.EqualTo(10));
             Assert.That(loop.State.Skills[slot].Ready, Is.True);
         }
 
@@ -68,15 +68,16 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.Loop();
             var slot = loop.Skills.Equip(Gem("stenography"));
-            loop.State.Energy = 100;
+            loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
             var cooldownTicks = loop.State.Skills[slot].CooldownTicks;
-            loop.State.Energy = 100;
 
             Idle(loop, cooldownTicks - 1);
+            loop.State.Resource = 100;
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.OnCooldown));
 
             Idle(loop, 1);
+            loop.State.Resource = 100;
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
         }
 
@@ -85,7 +86,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.Loop();
             var slot = loop.Skills.Equip(Gem("march"));
-            loop.State.Notes = 4;
+            loop.State.Resource = 100;
 
             loop.Skills.TryCast(slot);
             Assert.That(loop.State.Skills[slot].ActiveTicks, Is.EqualTo(Gem("march").Skill!.DurationSeconds * GameLoop.TicksPerSecond));
@@ -95,17 +96,17 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void NoteSkillNeedsNotesAndSpendsThem()
+        public void AuraSkillCostsResource()
         {
             var loop = TestWorld.Loop();
             var slot = loop.Skills.Equip(Gem("march"));
-            loop.State.Notes = 3;
+            loop.State.Resource = 29;
 
-            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.NotEnoughNotes));
+            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.NotEnoughResource));
 
-            loop.State.Notes = 4;
+            loop.State.Resource = 30;
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
-            Assert.That(loop.State.Notes, Is.EqualTo(0));
+            Assert.That(loop.State.Resource, Is.EqualTo(0));
         }
 
         [Test]
@@ -113,7 +114,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.Loop();
             var slot = loop.Skills.Equip(Gem("stenography"), Gem("cast_on_enter"));
-            loop.State.Energy = 100;
+            loop.State.Resource = 100;
 
             loop.Skills.TryCast(slot, triggered: true);
 
@@ -137,7 +138,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop();
             var slot = loop.Skills.Equip(Gem("stenography"), Gem("cast_on_enter"));
             loop.Skills.Equip(Gem("lull"));
-            loop.State.Energy = 100;
+            loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
             Idle(loop, 7);
 

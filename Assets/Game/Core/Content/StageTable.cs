@@ -15,10 +15,11 @@ namespace Game.Core.Content
         private readonly double _wallRate;
         private readonly double _bossHpMultiplier;
         private readonly double _bossGoldMultiplier;
+        private readonly double _hpPerExtraPlayer;
         private readonly string[] _biomes;
 
         private StageTable(ExponentialCurve enemyHp, ExponentialCurve gold, int wallPeriod, int wallZoneLength, double wallRate,
-            int enemiesPerStage, double bossHpMultiplier, double bossTimerSeconds, double bossTimerMaxSeconds, double bossGoldMultiplier, int bossRetryAfterKills, int biomeLength, string[] biomes)
+            int enemiesPerStage, double bossHpMultiplier, double bossTimerSeconds, double bossTimerMaxSeconds, double bossGoldMultiplier, int bossRetryAfterKills, double hpPerExtraPlayer, int biomeLength, string[] biomes)
         {
             _enemyHp = enemyHp;
             _gold = gold;
@@ -31,6 +32,7 @@ namespace Game.Core.Content
             BossTimerMaxSeconds = bossTimerMaxSeconds;
             _bossGoldMultiplier = bossGoldMultiplier;
             BossRetryAfterKills = bossRetryAfterKills;
+            _hpPerExtraPlayer = hpPerExtraPlayer;
             BiomeLength = biomeLength;
             _biomes = biomes;
         }
@@ -83,6 +85,7 @@ namespace Game.Core.Content
                 timerMaxSeconds,
                 boss.Field("goldMultiplier").AsNumber(1.0, 1e6),
                 boss.Field("retryAfterKills").AsInt(1, 1000),
+                root.Field("party").Field("hpPerExtraPlayer").AsNumber(0, 100),
                 root.Field("biomeLength").AsInt(1),
                 biomes.ToArray());
         }
@@ -98,6 +101,8 @@ namespace Game.Core.Content
         public double BossTimer(double bonusSeconds) => System.Math.Min(BossTimerMaxSeconds, System.Math.Max(1, BossTimerSeconds + bonusSeconds));
 
         public BigNumber BossHp(long stage) => EnemyHp(stage) * _bossHpMultiplier;
+
+        public double PartyHpMultiplier(int players) => 1 + _hpPerExtraPlayer * (System.Math.Max(1, players) - 1);
 
         public BigNumber EnemyGold(long stage) => _gold.At(stage);
 

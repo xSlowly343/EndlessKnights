@@ -42,11 +42,6 @@ namespace Game.Core.Content
             var inputCaps = InputCaps.Load(readFile(InputCaps.FileName));
             var combat = CombatRules.Load(readFile(CombatRules.FileName));
             var gems = GemCatalog.Load(readFile(GemCatalog.FileName));
-            foreach (var gem in gems.All)
-            {
-                if (gem.Skill != null && gem.Skill.NoteCost > combat.Classes.NotesPerMelody)
-                    throw new ContentException(GemCatalog.FileName, gem.Id, $"costs {gem.Skill.NoteCost} notes, but a melody holds only {combat.Classes.NotesPerMelody} ({CombatRules.FileName})");
-            }
             var skillBook = SkillBookRules.Load(readFile(SkillBookRules.FileName), gems);
             var tree = PassiveTree.Load(readFile(PassiveTree.FileName));
             var treePoints = TreePointRules.Load(readFile(TreePointRules.FileName));

@@ -39,8 +39,8 @@ namespace Game.Core.Tests.Save
 
         private static SaveFile RoundTrip(GameState state) => SaveCodec.Decode(SaveCodec.Encode(state, Clock), TestWorld.Data);
 
-        [TestCase(HeroClass.Swordsman)]
-        [TestCase(HeroClass.Bard)]
+        [TestCase(HeroClass.Ronin)]
+        [TestCase(HeroClass.Metalhead)]
         public void SaveThenLoadGivesEqualState(HeroClass heroClass)
         {
             var state = PlayedLoop(heroClass, 3000).State;
@@ -61,7 +61,7 @@ namespace Game.Core.Tests.Save
         public void LoadedGameContinuesExactlyLikeTheOriginal()
         {
             var input = new FakeInputSource();
-            var original = PlayedLoop(HeroClass.Swordsman, 2000, input);
+            var original = PlayedLoop(HeroClass.Ronin, 2000, input);
             var restoredInput = new FakeInputSource();
             var restored = TestWorld.Loop(restoredInput, RoundTrip(original.State).State);
 
@@ -123,7 +123,7 @@ namespace Game.Core.Tests.Save
         [Test]
         public void EditedSaveIsRejected()
         {
-            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Swordsman, 500).State, Clock);
+            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Ronin, 500).State, Clock);
             var edited = text.Replace("\"current\": ", "\"current\": 9");
 
             var error = Assert.Throws<ContentException>(() => SaveCodec.Decode(edited, TestWorld.Data))!;
@@ -134,7 +134,7 @@ namespace Game.Core.Tests.Save
         [Test]
         public void CutSaveIsRejected()
         {
-            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Swordsman, 500).State, Clock);
+            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Ronin, 500).State, Clock);
 
             Assert.Throws<ContentException>(() => SaveCodec.Decode(text.Substring(0, text.Length / 2), TestWorld.Data));
         }
@@ -167,12 +167,12 @@ namespace Game.Core.Tests.Save
         [Test]
         public void WriterAndParserAgree()
         {
-            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Bard, 300).State, Clock);
+            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Metalhead, 300).State, Clock);
 
             var parsed = JsonParser.Parse(text, SaveCodec.FileName);
 
             Assert.That(parsed.Fields.ContainsKey("checksum"), Is.True);
-            Assert.That(parsed.Fields["payload"].Fields["state"].Fields["hero"].Fields["class"].Text, Is.EqualTo("bard"));
+            Assert.That(parsed.Fields["payload"].Fields["state"].Fields["hero"].Fields["class"].Text, Is.EqualTo("metalhead"));
         }
 
         private static string ReplaceChecksum(string text, string payload)

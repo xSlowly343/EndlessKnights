@@ -30,13 +30,13 @@ namespace Game.Core.Save
                     ("xp", JsonValue.Of(state.HeroXp)),
                     ("focus", JsonValue.Of(state.Focus)),
                     ("focusMultiplier", JsonValue.Of(state.FocusMultiplier)),
-                    ("energy", JsonValue.Of(state.Energy)),
+                    ("resource", JsonValue.Of(state.Resource)),
+                    ("keylessTicks", JsonValue.Of(state.KeylessTicks)),
                     ("idleTicks", JsonValue.Of(state.IdleTicks)),
                     ("macroRhythmTicks", JsonValue.Of(state.MacroRhythmTicks)),
                     ("combo", JsonValue.Of(state.Combo)),
                     ("keyHits", JsonValue.Of(state.KeyHits)),
-                    ("comboIdleTicks", JsonValue.Of(state.ComboIdleTicks)),
-                    ("notes", JsonValue.Of(state.Notes)))),
+                    ("comboIdleTicks", JsonValue.Of(state.ComboIdleTicks)))),
                 ("stage", Object(
                     ("current", JsonValue.Of(state.Stage)),
                     ("highest", JsonValue.Of(state.HighestStage)),
@@ -77,7 +77,6 @@ namespace Game.Core.Save
                 ("chainDamage", SaveValues.Of(state.ChainDamage)),
                 ("carry", Object(
                     ("keys", JsonValue.Of(state.KeyCarry)),
-                    ("clicks", JsonValue.Of(state.ClickCarry)),
                     ("mousePx", JsonValue.Of(state.MouseCarryPx)))));
         }
 
@@ -103,7 +102,8 @@ namespace Game.Core.Save
                 Class = SaveValues.ReadEnum(hero.Field("class"), HeroClassNames.ByName),
                 Focus = hero.Field("focus").AsNumber(0, 1e6),
                 FocusMultiplier = hero.Field("focusMultiplier").AsNumber(0, 1e6),
-                Energy = hero.Field("energy").AsNumber(0, 1e9),
+                Resource = hero.Field("resource").AsNumber(0, 1e9),
+                KeylessTicks = hero.Field("keylessTicks").AsLong(0),
                 IdleTicks = hero.Field("idleTicks").AsLong(0),
                 MacroRhythmTicks = hero.Field("macroRhythmTicks").AsLong(0),
                 HeroLevel = hero.Field("level").AsInt(1),
@@ -112,7 +112,6 @@ namespace Game.Core.Save
                 Combo = hero.Field("combo").AsInt(0),
                 KeyHits = hero.Field("keyHits").AsLong(0),
                 ComboIdleTicks = hero.Field("comboIdleTicks").AsLong(0),
-                Notes = hero.Field("notes").AsInt(0),
                 Stage = stage.Field("current").AsLong(1),
                 HighestStage = stage.Field("highest").AsLong(1),
                 RecordStage = stage.Field("record").AsLong(1),
@@ -129,7 +128,6 @@ namespace Game.Core.Save
                 Prestiges = node.Field("prestige").Field("count").AsInt(0),
                 ChainDamage = SaveValues.ReadBigNumber(node.Field("chainDamage")),
                 KeyCarry = carry.Field("keys").AsNumber(0, 1e6),
-                ClickCarry = carry.Field("clicks").AsNumber(0, 1e6),
                 MouseCarryPx = carry.Field("mousePx").AsNumber(0, 1e9)
             };
             if (state.HighestStage < state.Stage)

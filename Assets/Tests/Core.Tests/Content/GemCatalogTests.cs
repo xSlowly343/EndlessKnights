@@ -13,11 +13,13 @@ namespace Game.Core.Tests.Content
         private static string WithExtraGem(string gemJson) => RealFile().Replace("\"gems\": [", "\"gems\": [\n    " + gemJson + ",");
 
         [Test]
-        public void MvpGemsAreThreeSkillsAndOneTrigger()
+        public void MvpGemsArePrototypeSkillsStartingSkillsAndOneTrigger()
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count, Is.EqualTo(4));
+            Assert.That(gems.All.Count, Is.EqualTo(8));
+            foreach (var id in new[] { "shield_bash", "odins_fury", "song", "guitar_solo" })
+                Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["stenography"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["march"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["lull"].Kind, Is.EqualTo(GemKind.Skill));
@@ -33,22 +35,56 @@ namespace Game.Core.Tests.Content
             Assert.That(gem.Color, Is.EqualTo(GemColor.Red));
             Assert.That(gem.NameRu, Is.EqualTo("Стенография"));
             Assert.That(gem.Tags, Is.EqualTo(StatTags.Keyboard | StatTags.Skill));
-            Assert.That(gem.Skill.EnergyCost, Is.EqualTo(40));
+            Assert.That(gem.Skill.ResourceCost, Is.EqualTo(40));
             Assert.That(gem.Skill.CooldownSeconds, Is.EqualTo(20));
             Assert.That(effect.Hits, Is.EqualTo(60));
             Assert.That(effect.NextEnemyShare, Is.EqualTo(0.5));
         }
 
         [Test]
-        public void MarchIsANoteAura()
+        public void MarchIsAnAuraPaidWithResource()
         {
             var skill = GemCatalog.Load(RealFile())["march"].Skill!;
             var aura = (AuraEffect)skill.Effect;
 
-            Assert.That(skill.NoteCost, Is.EqualTo(4));
-            Assert.That(skill.EnergyCost, Is.EqualTo(0));
+            Assert.That(skill.ResourceCost, Is.EqualTo(30));
             Assert.That(skill.DurationSeconds, Is.EqualTo(30));
             Assert.That(aura.Modifiers, Is.EqualTo(new[] { new Modifier(new StatId("damage"), ModifierKind.Increased, 0.25) }));
+        }
+
+        [Test]
+        public void VikingStartingSkillsMatchSkillsDoc()
+        {
+            var gems = GemCatalog.Load(RealFile());
+            var bash = gems["shield_bash"].Skill!;
+            var fury = gems["odins_fury"].Skill!;
+
+            Assert.That(bash.ResourceCost, Is.EqualTo(15));
+            Assert.That(bash.CooldownSeconds, Is.EqualTo(4));
+            Assert.That(((StrikeEffect)bash.Effect).Multiplier, Is.EqualTo(4));
+            Assert.That(fury.ResourceCost, Is.EqualTo(50));
+            Assert.That(fury.CooldownSeconds, Is.EqualTo(25));
+            Assert.That(((StrikeEffect)fury.Effect).Multiplier, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void MetalheadStartingSkillsMatchSkillsDoc()
+        {
+            var gems = GemCatalog.Load(RealFile());
+            var song = gems["song"].Skill!;
+            var solo = gems["guitar_solo"].Skill!;
+
+            Assert.That(song.ResourceCost, Is.EqualTo(30));
+            Assert.That(song.CooldownSeconds, Is.EqualTo(5));
+            Assert.That(song.DurationSeconds, Is.EqualTo(20));
+            Assert.That(((AuraEffect)song.Effect).Modifiers, Is.EqualTo(new[]
+            {
+                new Modifier(new StatId("damage"), ModifierKind.Increased, 0.15),
+                new Modifier(new StatId("gold"), ModifierKind.Increased, 0.10)
+            }));
+            Assert.That(solo.ResourceCost, Is.EqualTo(80));
+            Assert.That(solo.CooldownSeconds, Is.EqualTo(35));
+            Assert.That(solo.DurationSeconds, Is.EqualTo(10));
         }
 
         [Test]
@@ -93,10 +129,9 @@ namespace Game.Core.Tests.Content
             Assert.That(levels.Experience.At(2).ToDouble(), Is.GreaterThan(levels.Experience.At(1).ToDouble()));
         }
 
-        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"enter\" }, \"cooldownMultiplier\": 1 }", "gems[3].id: gem id 'lull' is used twice")]
+        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"enter\" }, \"cooldownMultiplier\": 1 }", "gems[7].id: gem id 'lull' is used twice")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"spell\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'spell'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"pink\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].color: unknown value 'pink'")]
-        [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": { \"energy\": 5, \"notes\": 2 }, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0].cost: a skill costs either energy or notes")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"fireball\" } }", "gems[0].effect.type: unknown skill effect 'fireball'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"trigger\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"sneeze\" }, \"cooldownMultiplier\": 1 }", "gems[0].condition.type: unknown value 'sneeze'")]
@@ -105,19 +140,6 @@ namespace Game.Core.Tests.Content
             var error = Assert.Throws<ContentException>(() => GemCatalog.Load(WithExtraGem(gem)))!;
 
             Assert.That(error.Message, Does.Contain("gems.json: " + message));
-        }
-
-        [Test]
-        public void NoteCostAboveMelodySizeIsRejected()
-        {
-            var files = new Dictionary<string, string>();
-            foreach (var name in GameData.FileNames)
-                files[name] = TestData.ReadGameDataFile(name);
-            files[GemCatalog.FileName] = files[GemCatalog.FileName].Replace("\"notes\": 4", "\"notes\": 9");
-
-            var error = Assert.Throws<ContentException>(() => GameData.Load(name => files[name]))!;
-
-            Assert.That(error.Message, Does.Contain("gems.json: march: costs 9 notes"));
         }
     }
 }

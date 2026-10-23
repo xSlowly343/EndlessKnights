@@ -20,7 +20,7 @@ namespace Game.Core.Sim
             _hero = hero;
             _state = state;
             _events = events;
-            _class = new ClassMechanics(rules.Classes, state, events, hero);
+            _class = new ClassMechanics(rules.Classes, state, hero);
         }
 
         public ClassMechanics Class => _class;
@@ -46,8 +46,6 @@ namespace Game.Core.Sim
             LastTickDamage = BigNumber.Zero;
             var keyHits = TakeWhole(_state.KeyCarry + input.Keys, out var keyCarry);
             _state.KeyCarry = keyCarry;
-            var clickHits = TakeWhole(_state.ClickCarry + input.Clicks, out var clickCarry);
-            _state.ClickCarry = clickCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
             _state.MouseCarryPx = mouseCarry * _rules.MousePxPerHit;
 
@@ -58,11 +56,7 @@ namespace Game.Core.Sim
                 if (i < enterHits)
                     multiplier *= _hero.Value(CombatStats.EnterDamage, 1, StatTags.Keyboard);
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
-            }
-            for (var i = 0; i < clickHits; i++)
-            {
-                _class.OnClickHit();
-                Hit(DamageSource.Click, _rules.ClickDamage, StatTags.Click, HitFlags.None, _state.FocusMultiplier);
+                KeyHitLightning();
             }
             for (var i = 0; i < mouseHits; i++)
                 Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier);
@@ -94,6 +88,13 @@ namespace Game.Core.Sim
 
             _state.EnemyHp = BigNumber.Zero;
             _kills?.OnEnemyKilled();
+        }
+
+        private void KeyHitLightning()
+        {
+            var share = _hero.Value(CombatStats.KeyHitLightning, 0, StatTags.Skill);
+            if (share > 0)
+                Hit(DamageSource.Skill, _rules.KeyDamage, StatTags.Skill, HitFlags.None, share);
         }
 
         private double HeavyStrike(ref HitFlags flags)
