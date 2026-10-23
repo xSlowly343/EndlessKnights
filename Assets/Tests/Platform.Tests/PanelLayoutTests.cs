@@ -37,6 +37,17 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void PanelGrowsAboveAStripLoweredOntoTheTaskbar()
+        {
+            var strip = new ScreenRect(0, 900, 480, 1080);
+
+            var layout = PanelLayout.Expanded(strip, WorkArea, TaskbarEdge.Bottom, PanelWidth, PanelArea);
+
+            Assert.That((layout.Window.Top, layout.Window.Bottom), Is.EqualTo((900 - PanelArea, 1080)));
+            Assert.That(layout.StripOffsetFromBottom, Is.EqualTo(0));
+        }
+
+        [Test]
         public void SinglePanelFollowsTheStripAlongTheTaskbar()
         {
             var strip = new ScreenRect(1440, 852, 1920, 1032);
