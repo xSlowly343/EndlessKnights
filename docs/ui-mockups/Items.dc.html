@@ -48,6 +48,9 @@ body{margin:0}
             <sc-if value="{{c.isNew}}" hint-placeholder-val="{{false}}">
               <span style="position: absolute; top: 3px; right: 3px; width: 8px; height: 8px; border-radius: 50%; background: #FF4D4D"></span>
             </sc-if>
+            <sc-if value="{{c.isSet}}" hint-placeholder-val="{{false}}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6FE39A" stroke-width="3" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 3px; bottom: 3px"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1 M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"></path></svg>
+            </sc-if>
           </button>
         </sc-for>
       </div>
@@ -88,8 +91,18 @@ body{margin:0}
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":786}}'>
 class Component extends DCLogic {
   renderVals() {
-    const rarity = ['#9AA3B5', '#E6E9F0', '#4FC277', '#5B9BFF', '#B07CFF', '#FF9A3C', '#FF5A5A', '#3FE0D0', 'rift'];
-    const rainbow = 'linear-gradient(#22304A, #22304A) padding-box, linear-gradient(135deg, #FF5A5A, #F0B43C, #4FC277, #5B9BFF, #B07CFF) border-box';
+    const rarity = ['#9AA3B5', '#E6E9F0', '#4FC277', '#5B9BFF', '#B07CFF', '#FF9A3C', '#FF5A5A', '#3FE0D0'];
+    const fill = '#22304A';
+    const stars = ['20% 0', '100% 35%', '65% 100%', '0 70%']
+      .map((at) => 'radial-gradient(circle at ' + at + ', #FFFFFF 0 1px, transparent 2px) border-box').join(', ');
+    const frame = (r, unique) => {
+      if (r === 8) return 'border: 2px solid transparent; background: linear-gradient(' + fill + ', ' + fill + ') padding-box, linear-gradient(135deg, #FF5A5A, #F0B43C, #4FC277, #5B9BFF, #B07CFF) border-box; box-shadow: 0 0 6px rgba(240,180,60,0.45)';
+      if (r === 9) return 'border: 3px solid transparent; background: linear-gradient(' + fill + ', ' + fill + ') padding-box, ' + stars + ', linear-gradient(#1E2370, #1E2370) border-box; box-shadow: 0 0 0 1px #5C66D6, 0 0 8px rgba(110,123,255,0.6)';
+      if (r === 10) return 'border: 2px solid #FFF4D6; background: ' + fill + '; box-shadow: 0 0 0 2px rgba(240,180,60,0.7), 0 0 12px rgba(255,244,214,0.8)';
+      if (unique) return 'border: 3px solid transparent; background: linear-gradient(' + fill + ', ' + fill + ') padding-box, repeating-linear-gradient(45deg, #F0B43C 0 3px, ' + rarity[r] + ' 3px 6px) border-box' + (r >= 5 ? '; box-shadow: 0 0 6px ' + rarity[r] : '');
+      return 'background: ' + fill + '; border: 2px solid ' + rarity[r] + (r >= 5 ? '; box-shadow: 0 0 6px ' + rarity[r] : '');
+    };
+    const iconColor = (r, unique) => unique ? '#F0B43C' : r === 8 ? '#FFFFFF' : r === 9 ? '#B8C2FF' : r === 10 ? '#FFF4D6' : rarity[r];
     const icons = [
       { name: 'Оружие', d: 'M14 4h6v6L9 21l-6-6z M7 13l4 4' },
       { name: 'Шлем', d: 'M5 14a7 7 0 0 1 14 0v5H5z M12 7V4' },
@@ -99,18 +112,21 @@ class Component extends DCLogic {
       { name: 'Амулет', d: 'M6 3l6 8 6-8 M12 11a4 4 0 1 0 0 8a4 4 0 1 0 0-8' },
       { name: 'Перчатки', d: 'M7 21v-9l-2-3 2-1 2 2V4h2v6h1V3h2v7h1V5h2v9l-2 7z' }
     ];
-    const rar = [3, 0, 2, 4, 1, 2, 4, 1, 0, 5, 2, 1, 6, 2, 3, 0, 7, 1, 3, 2, 8];
+    const rar = [3, 0, 2, 4, 1, 2, 4, 1, 0, 5, 2, 1, 6, 9, 3, 0, 7, 1, 3, 10, 8];
+    const uniques = [9];
+    const sets = [0, 14];
     const cells = rar.map((r, i) => {
       const ic = icons[(i * 3) % icons.length];
       const sel = i === 6;
-      const color = r === 8 ? '#FFFFFF' : rarity[r];
-      const border = r === 8 ? 'border: 2px solid transparent; background: ' + rainbow : 'background: #22304A; border: 2px solid ' + rarity[r];
+      const unique = uniques.includes(i);
+      const look = frame(r, unique);
       return {
         name: sel ? 'Оружие' : ic.name,
         d: sel ? icons[0].d : ic.d,
-        color,
+        color: iconColor(r, unique),
         isNew: i === 6 || i === 3 || i === 12,
-        style: 'position: relative; height: 54px; border-radius: 8px; padding: 0; display: flex; align-items: center; justify-content: center; ' + border + (sel ? '; box-shadow: 0 0 0 2px #FFFFFF' : '')
+        isSet: sets.includes(i),
+        style: 'position: relative; height: 54px; border-radius: 8px; padding: 0; display: flex; align-items: center; justify-content: center; box-sizing: border-box; ' + (sel ? look.replace(/; box-shadow: [^;]*$/, '') + '; box-shadow: 0 0 0 2px #FFFFFF' : look)
       };
     });
     return { cells };

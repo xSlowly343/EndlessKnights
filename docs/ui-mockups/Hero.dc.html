@@ -94,10 +94,13 @@ class Component extends DCLogic {
       simple: '#9AA3B5', sturdy: '#E6E9F0', uncommon: '#4FC277', rare: '#5B9BFF', epic: '#B07CFF',
       legend: '#FF9A3C', mythic: '#FF5A5A', ancient: '#3FE0D0'
     };
+    const glowing = ['legend', 'mythic', 'ancient'];
     const rainbow = 'linear-gradient(#26304A, #26304A) padding-box, linear-gradient(135deg, #FF5A5A, #F0B43C, #4FC277, #5B9BFF, #B07CFF) border-box';
-    const frame = (r) => r === 'rift'
-      ? 'border: 2px solid transparent; background: ' + rainbow
-      : 'border: 2px solid ' + rarity[r] + '; background: #26304A';
+    const frame = (r) => {
+      if (r === 'rift') return 'border: 2px solid transparent; background: ' + rainbow + '; box-shadow: 0 0 6px rgba(240,180,60,0.45)';
+      const base = 'border: 2px solid ' + rarity[r] + '; background: #26304A';
+      return glowing.includes(r) ? base + '; box-shadow: 0 0 6px ' + rarity[r] : base;
+    };
     const slot = (name, r) => ({
       name,
       style: 'width: 56px; height: 56px; border-radius: 8px; ' + frame(r) + '; color: #D5DCEE; font-family: inherit; font-size: 11px; padding: 0'
