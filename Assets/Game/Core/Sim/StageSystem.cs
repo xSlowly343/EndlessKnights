@@ -44,6 +44,9 @@ namespace Game.Core.Sim
         }
 
         public bool Linked { get; private set; }
+        public bool RaisesRecord { get; set; } = true;
+        public IBossListener? BossListener { get; set; }
+        public StageTable Table => _stages;
 
         public void EnsureEnemy()
         {
@@ -181,6 +184,8 @@ namespace Game.Core.Sim
         private void AdvanceStage()
         {
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossDefeated, _state.Tick, _state.Stage, _state.Enemy));
+            var type = _state.EnemyType;
+            var stageBefore = _state.Stage;
             _state.Stage++;
             _state.KillsOnStage = 0;
             _state.Farming = false;
@@ -188,7 +193,9 @@ namespace Game.Core.Sim
             _state.BossBestFraction = 0;
             if (_state.Stage > _state.HighestStage)
                 _state.HighestStage = _state.Stage;
-            _levels.OnStageReached(_state.Stage);
+            if (RaisesRecord)
+                _levels.OnStageReached(_state.Stage);
+            BossListener?.OnBossDefeated(type, stageBefore);
         }
 
         private void SpawnNext()

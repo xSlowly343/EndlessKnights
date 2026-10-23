@@ -1,6 +1,7 @@
 using System;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Tree;
+using Game.Core.Content.Rift;
 using Game.Core.Content.Synergy;
 using Game.Core.Party;
 using Game.Core.Text;
@@ -9,9 +10,9 @@ namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName };
 
-        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy)
+        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift)
         {
             Stages = stages;
             Enemies = enemies;
@@ -27,6 +28,7 @@ namespace Game.Core.Content
             Party = party;
             Strings = strings;
             Synergy = synergy;
+            Rift = rift;
             Tutorial = tutorial;
         }
 
@@ -45,6 +47,7 @@ namespace Game.Core.Content
         public TutorialRules Tutorial { get; }
         public StringTable Strings { get; }
         public SynergyRules Synergy { get; }
+        public RiftRules Rift { get; }
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -64,9 +67,11 @@ namespace Game.Core.Content
             var tutorial = TutorialRules.Load(readFile(TutorialRules.FileName));
             var synergy = SynergyRules.Load(readFile(SynergyRules.FileName));
             synergy.RequireGemMarks(gems);
+            var rift = RiftRules.Load(readFile(RiftRules.FileName));
+            rift.RequireMarks(synergy);
             var strings = StringTable.Load(readFile(StringTable.FileName));
             Texts.Use(strings);
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy);
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift);
         }
     }
 }

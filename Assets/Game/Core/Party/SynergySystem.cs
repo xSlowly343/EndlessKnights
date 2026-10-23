@@ -25,6 +25,8 @@ namespace Game.Core.Party
         private int _perMarkCount;
         private ulong _reactions;
         private ulong _constellations;
+        private int _favouredMarks;
+        private double _favouredBonus;
 
         public SynergySystem(SynergyRules rules, GameState state, StatSheet hero)
         {
@@ -40,6 +42,7 @@ namespace Game.Core.Party
         public int OwnMarks { get; private set; }
         public int AllyMarks { get; private set; }
         public int PerMarkCount => _perMarkCount;
+        public int FavouredMarks => _favouredMarks;
 
         public bool ResponseActive(int index) => (_responses & (1UL << index)) != 0;
         public bool ReactionActive(int index) => (_reactions & (1UL << index)) != 0;
@@ -54,6 +57,15 @@ namespace Game.Core.Party
             _responses = 0;
             _reactions = 0;
             _constellations = 0;
+            Rebuild();
+        }
+
+        public void SetFavoured(int marks, double bonus)
+        {
+            if (marks == _favouredMarks && bonus == _favouredBonus)
+                return;
+            _favouredMarks = marks;
+            _favouredBonus = bonus;
             Rebuild();
         }
 
@@ -226,12 +238,12 @@ namespace Game.Core.Party
             for (var i = 0; i < _rules.Responses.Count && i < 64; i++)
             {
                 if (ResponseActive(i))
-                    Add(_rules.Responses[i].Modifiers, _rules.Responses[i].PerMark ? _perMarkCount : 1);
+                    Add(_rules.Responses[i].Modifiers, ResponseTimes(_rules.Responses[i]));
             }
             for (var i = 0; i < _rules.Reactions.Count && i < 64; i++)
             {
                 if (ReactionActive(i))
-                    Add(_rules.Reactions[i].Modifiers, 1);
+                    Add(_rules.Reactions[i].Modifiers, Favour((1 << _rules.Reactions[i].First) | (1 << _rules.Reactions[i].Second)));
             }
             for (var i = 0; i < _rules.Constellations.Count && i < 64; i++)
             {
@@ -241,7 +253,16 @@ namespace Game.Core.Party
             _layer.Set(_buffer);
         }
 
-        private void Add(IReadOnlyList<Modifier> modifiers, int times)
+        private double ResponseTimes(SynergyResponse response)
+        {
+            var times = response.PerMark ? _perMarkCount : 1;
+            var marks = response.Mark == SynergyResponse.AnyMark ? AllyMarks : 1 << response.Mark;
+            return times * Favour(marks);
+        }
+
+        private double Favour(int marks) => (marks & _favouredMarks) != 0 ? 1 + _favouredBonus : 1;
+
+        private void Add(IReadOnlyList<Modifier> modifiers, double times)
         {
             for (var i = 0; i < modifiers.Count; i++)
             {

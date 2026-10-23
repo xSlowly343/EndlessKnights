@@ -14,6 +14,8 @@ namespace Game.Core.Content
             Rate = rate;
         }
 
+        public ExponentialCurve Scaled(double factor) => new ExponentialCurve(Base * factor, Rate);
+
         public BigNumber At(long level) => FromLog10(System.Math.Log10(Base) + (level - 1) * System.Math.Log10(Rate));
 
         public static BigNumber FromLog10(double log10)

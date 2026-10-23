@@ -23,6 +23,7 @@ npm test
 Скопировать `build/index.js` в папку модулей Nakama (`/nakama/data/modules`) и указать `runtime.js_entrypoint: "index.js"`.
 
 - RPC `party_create` (`{ "seed": "123" }`, сид необязателен) создаёт матч и отдаёт `{ "matchId": ... }`.
+- RPC `rift_window` (без аргументов) отдаёт `{ serverUnixMs, open, next, announced }`: открытое окно Разлома (или `null`), следующее окно и их модификаторы по `rift.json`.
 - Клиент входит в матч с метаданными `{ "playerNumber": "<SteamID64>" }`: это число попадает в `Roster`, по нему клиент находит свой слот.
 - Пакеты те же, что у `LoopbackTransport`: первый байт — вид сообщения, opCode равен ему же.
 - Состав отряда игрока пишется в хранилище: коллекция `party`, ключ `current`, `{ matchId, slot }`.

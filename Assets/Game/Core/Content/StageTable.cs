@@ -90,6 +90,10 @@ namespace Game.Core.Content
                 BossHintRules.Read(root.Field("bossHint")));
         }
 
+        public StageTable ForWorld(double hpMultiplier, int wallPeriod, int wallZoneLength, double wallRate, double bossTimerSeconds) =>
+            new StageTable(_enemyHp.Scaled(hpMultiplier), _gold, wallPeriod, wallZoneLength, System.Math.Max(wallRate, _enemyHp.Rate), EnemiesPerStage, _bossHpMultiplier,
+                bossTimerSeconds, bossTimerSeconds, _bossGoldMultiplier, BossRetryAfterKills, BiomeLength, _biomes, BossHint);
+
         public BigNumber EnemyHp(long stage)
         {
             var walls = WallStagesUpTo(stage) - WallStagesUpTo(1);

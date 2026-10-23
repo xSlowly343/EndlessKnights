@@ -4,6 +4,7 @@ using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Sim.Rift;
 
 namespace Game.Core.Sim
 {
@@ -53,6 +54,7 @@ namespace Game.Core.Sim
         public BigNumber EchoEarned { get; set; }
         public int Prestiges { get; set; }
         public Dictionary<string, int> Artifacts { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
+        public RiftState Rift { get; } = new RiftState();
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;

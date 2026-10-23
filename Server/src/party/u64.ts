@@ -80,9 +80,20 @@ const SplitMixGamma = u64FromDecimal("11400714819323198485");
 const SplitMixFirst = u64FromDecimal("13787848793156543929");
 const SplitMixSecond = u64FromDecimal("10723151780598845931");
 
-function partySeedFor(seed: string, enemyId: number): string {
-    let z = u64Add(u64FromDecimal(seed), u64Mul(SplitMixGamma, u64FromNumber(enemyId)));
+function u64ModSmall(value: U64, divisor: number): number {
+    let remainder = 0;
+    for (let i = 3; i >= 0; i--)
+        remainder = (remainder * 65536 + value[i]) % divisor;
+    return remainder;
+}
+
+function splitMixAt(seed: U64, index: number): U64 {
+    let z = u64Add(seed, u64Mul(SplitMixGamma, u64FromNumber(index)));
     z = u64Mul(u64Xor(z, u64ShiftRight(z, 30)), SplitMixFirst);
     z = u64Mul(u64Xor(z, u64ShiftRight(z, 27)), SplitMixSecond);
-    return u64ToDecimal(u64Xor(z, u64ShiftRight(z, 31)));
+    return u64Xor(z, u64ShiftRight(z, 31));
+}
+
+function partySeedFor(seed: string, enemyId: number): string {
+    return u64ToDecimal(splitMixAt(u64FromDecimal(seed), enemyId));
 }

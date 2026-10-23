@@ -5,5 +5,6 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
         const seed = partyDecimalOrNull(request.seed);
         return JSON.stringify({ matchId: rpcNk.matchCreate(PartyMatchName, seed ? { seed: seed } : {}) });
     });
+    initializer.registerRpc("rift_window", () => riftWindowReply(RiftServerRules, Date.now()));
     logger.info("party module loaded");
 }
