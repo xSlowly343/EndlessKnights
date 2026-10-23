@@ -34,7 +34,7 @@ namespace Game.Bootstrap
             if (!_window.TryGetBounds(out var bounds) || !ScreenCursor.TryGetPosition(out var x, out var y))
                 return;
 
-            var overSprite = StripHitTest.IsSpriteAt(_camera, bounds.Left, bounds.Top, bounds.Width, bounds.Height, x, y);
+            var overSprite = StripHitTest.IsClickableAt(_camera, bounds.Left, bounds.Top, bounds.Width, bounds.Height, x, y);
             var buttonHeld = _pointer.Held;
 
             _passingClicks = ClickThroughPolicy.ShouldPassClicks(overSprite, buttonHeld, _passingClicks);

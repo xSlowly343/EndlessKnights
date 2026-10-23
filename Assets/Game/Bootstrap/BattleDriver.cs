@@ -28,6 +28,7 @@ namespace Game.Bootstrap
             var driver = host.AddComponent<BattleDriver>();
             driver._data = data;
             driver._loop = new GameLoop(data, input, state ?? NewRun(), new StatSheet());
+            driver._loop.Book.GrantStartingGems();
             driver._view = BattleView.Create();
             driver._skillBar = SkillBarView.Create();
             driver._effects = SkillEffects.Create();

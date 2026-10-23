@@ -16,6 +16,7 @@ namespace Game.Presentation.Strip
             icon.transform.position = position;
             icon.transform.localScale = new Vector3(size, size, 1f);
             var button = icon.AddComponent<FocusModeButton>();
+            icon.AddComponent<StripClickable>();
             button._renderer = icon.AddComponent<SpriteRenderer>();
             button._renderer.sprite = StripIcons.Focus;
             button._collider = icon.AddComponent<BoxCollider2D>();
