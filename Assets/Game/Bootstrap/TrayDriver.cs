@@ -63,6 +63,7 @@ namespace Game.Bootstrap
             _rawInput?.SetPaused(_state.Paused);
             _clickThrough.Enabled = _state.ClickThrough;
             _window.SetAlwaysOnTop(_state.AlwaysOnTop);
+            _dock.AlwaysOnTop = _state.AlwaysOnTop;
             _framePacing.SetFrameRate(_state.FrameRate);
             _inputDebug.SetVisible(_state.ShowInputDebug);
         }

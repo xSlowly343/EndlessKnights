@@ -7,12 +7,14 @@ namespace Game.Bootstrap
     public sealed class TaskbarDockDriver : MonoBehaviour
     {
         private const float CheckIntervalSeconds = 1f;
+        private const float RaiseIntervalSeconds = 0.25f;
         private const int GapToTaskbar = 0;
         private const int DefaultOffsetAlongTaskbar = 0;
 
         private static readonly StripSize BaseStripSize = new StripSize(GameStartup.StripWidth, GameStartup.StripHeight);
 
         private readonly StripDrag _drag = new StripDrag();
+        private readonly StripDrag _depthDrag = new StripDrag();
         private WindowController _window = null!;
         private TaskbarEdge _dockedEdge;
         private ScreenRect _dockedTaskbar;
@@ -20,6 +22,8 @@ namespace Game.Bootstrap
         private StripSize _size = BaseStripSize;
         private bool _isDocked;
         private int _offset = DefaultOffsetAlongTaskbar;
+        private int _depth;
+        private float _nextRaiseTime;
         private float _nextCheckTime;
         private bool _expanded;
         private int _panelWidthPx;
@@ -28,6 +32,7 @@ namespace Game.Bootstrap
         public event Action<PanelLayout, int>? Placed;
 
         public PanelLayout Layout { get; private set; }
+        public bool AlwaysOnTop { get; set; } = true;
         public int StripHeightPx => _size.Height;
 
         public static TaskbarDockDriver Attach(GameObject host, WindowController window)
@@ -40,6 +45,7 @@ namespace Game.Bootstrap
 
         private void Update()
         {
+            RaiseOverTaskbar();
             if (Time.unscaledTime < _nextCheckTime)
                 return;
             _nextCheckTime = Time.unscaledTime + CheckIntervalSeconds;
@@ -52,6 +58,7 @@ namespace Game.Bootstrap
             _panelWidthPx = panelWidthPx;
             _panelHeightPx = panelHeightPx;
             _drag.Release();
+            _depthDrag.Release();
             PlaceNextToTaskbar();
             return Layout;
         }
@@ -64,31 +71,54 @@ namespace Game.Bootstrap
 
         public void BeginDrag()
         {
-            if (_isDocked && !_expanded && TryGetCursorAlongTaskbar(out var pressedAt))
-                _drag.Press(pressedAt, _offset);
+            if (!_isDocked || _expanded || !TryGetCursor(out var along, out var across))
+                return;
+            _drag.Press(along, _offset);
+            _depthDrag.Press(across * StripPlacement.DepthDirection(_dockedEdge), _depth);
         }
 
         public void ContinueDrag()
         {
-            if (_isDocked && TryGetCursorAlongTaskbar(out var cursor) && _drag.TryMove(cursor, out var offset))
-                MoveAlongTaskbar(offset);
+            if (!_isDocked || !TryGetCursor(out var along, out var across))
+                return;
+            var moved = false;
+            if (_drag.TryMove(along, out var offset))
+            {
+                _offset = StripPlacement.ClampOffset(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, offset);
+                moved = true;
+            }
+            if (_depthDrag.TryMove(across * StripPlacement.DepthDirection(_dockedEdge), out var depth))
+            {
+                _depth = StripPlacement.ClampDepth(_dockedEdge, _dockedTaskbar, depth);
+                moved = true;
+            }
+            if (moved)
+                PlaceNextToTaskbar();
         }
 
-        public void EndDrag() => _drag.Release();
-
-        private bool TryGetCursorAlongTaskbar(out int position)
+        public void EndDrag()
         {
-            position = 0;
+            _drag.Release();
+            _depthDrag.Release();
+        }
+
+        private bool TryGetCursor(out int along, out int across)
+        {
+            along = across = 0;
             if (!ScreenCursor.TryGetPosition(out var x, out var y))
                 return false;
-            position = StripPlacement.IsHorizontal(_dockedEdge) ? x : y;
+            var horizontal = StripPlacement.IsHorizontal(_dockedEdge);
+            along = horizontal ? x : y;
+            across = horizontal ? y : x;
             return true;
         }
 
-        private void MoveAlongTaskbar(int offset)
+        private void RaiseOverTaskbar()
         {
-            _offset = StripPlacement.ClampOffset(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, offset);
-            PlaceNextToTaskbar();
+            if (_depth <= 0 || !AlwaysOnTop || Time.unscaledTime < _nextRaiseTime)
+                return;
+            _nextRaiseTime = Time.unscaledTime + RaiseIntervalSeconds;
+            _window.SetAlwaysOnTop(true);
         }
 
         public void ForceRedock()
@@ -115,7 +145,7 @@ namespace Game.Bootstrap
 
         private void PlaceNextToTaskbar()
         {
-            var strip = StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, GapToTaskbar, _offset);
+            var strip = StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, GapToTaskbar, _offset, _expanded ? 0 : _depth);
             Layout = _expanded && MonitorWorkArea.TryGet(strip, out var workArea)
                 ? PanelLayout.Expanded(strip, workArea, _dockedEdge, _panelWidthPx, _panelHeightPx)
                 : PanelLayout.Collapsed(strip);
