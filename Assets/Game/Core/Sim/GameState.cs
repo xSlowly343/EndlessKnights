@@ -39,6 +39,7 @@ namespace Game.Core.Sim
         public bool Farming { get; set; }
         public int FarmKills { get; set; }
         public int BossFailsInARow { get; set; }
+        public double BossBestFraction { get; set; }
 
         public EnemyDef? Enemy { get; private set; }
         public EnemyType EnemyType { get; private set; }
@@ -73,6 +74,8 @@ namespace Game.Core.Sim
         }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
         public BigNumber ChainDamage { get; set; }
+        public HashSet<string> TutorialDone { get; } = new HashSet<string>(32, System.StringComparer.Ordinal);
+        public bool TutorialSkipped { get; set; }
 
         public long KeyHits { get; set; }
         public int Combo { get; set; }

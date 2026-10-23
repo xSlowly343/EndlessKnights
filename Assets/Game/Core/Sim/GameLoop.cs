@@ -3,6 +3,7 @@ using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Settings;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
@@ -32,6 +33,7 @@ namespace Game.Core.Sim
         private readonly PrestigeSystem _prestige;
         private readonly StrikeUpgradeSystem _upgrades;
         private readonly ArtifactSystem _artifacts;
+        private readonly TutorialSystem _tutorial;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -60,6 +62,7 @@ namespace Game.Core.Sim
             _treeLayer = new ModifierLayer(hero);
             RebuildTree();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
+            _tutorial = new TutorialSystem(data.Tutorial, state, _upgrades);
             _stage.EnsureEnemy();
         }
 
@@ -75,6 +78,8 @@ namespace Game.Core.Sim
         public PrestigeSystem Prestige => _prestige;
         public StrikeUpgradeSystem Upgrades => _upgrades;
         public ArtifactSystem Artifacts => _artifacts;
+        public TutorialSystem Tutorial => _tutorial;
+        public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -82,6 +87,8 @@ namespace Game.Core.Sim
         public InputStats SessionInput { get; } = new InputStats();
         public double MetersPerPixel { get; set; } = InputStats.DefaultMetersPerPixel;
         public bool Paused { get; set; }
+        public InputPermissions Permissions { get; set; } = InputPermissions.All;
+        public ITickHook? Hook { get; set; }
 
         public int Advance(double seconds)
         {
@@ -240,12 +247,15 @@ namespace Game.Core.Sim
             _prestige.UseRules(data.Prestige);
             _upgrades.UseRules(data.Combat.StrikeUpgrade);
             _artifacts.UseCatalog(data.Artifacts);
+            _tutorial.UseRules(data.Tutorial);
             RebuildTree();
         }
 
         public void Tick()
         {
-            LastInput = _input.Drain();
+            Hook?.BeforeTick();
+            var firstEvent = Events.Count;
+            LastInput = Permissions.Apply(_input.Drain());
             SessionInput.Add(LastInput, MetersPerPixel);
             State.TotalInput.Add(LastInput, MetersPerPixel);
             var raw = _inputRules.Apply(LastInput);
@@ -261,6 +271,8 @@ namespace Game.Core.Sim
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
+            _tutorial.Tick(LastInput, Events, firstEvent);
+            Hook?.AfterTick();
         }
 
         private void CastRequested()

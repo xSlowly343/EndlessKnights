@@ -8,7 +8,7 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class viking|ronin|amazon|stormweaver|nomad|metalhead|oracle|bannerbearer|voodoo|clockmaker|plague_doctor|moonshiner|gravedigger|captain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class viking|ronin|amazon|stormweaver|nomad|metalhead|oracle|bannerbearer|voodoo|clockmaker|plague_doctor|moonshiner|gravedigger|captain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--party viking,ronin,... | standard [--loss 0]] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
@@ -21,6 +21,9 @@ namespace Game.Sim
         public int Days { get; private set; }
         public double ActiveHours { get; private set; } = 2;
         public double StuckMinutes { get; private set; } = Game.Core.Sim.Headless.PlayerSimulation.DefaultStuckMinutes;
+        public IReadOnlyList<HeroClass>? Party { get; private set; }
+        public bool StandardParties { get; private set; }
+        public double Loss { get; private set; }
         public string? DataFolder { get; private set; }
         public string? OutFile { get; private set; }
 
@@ -45,12 +48,29 @@ namespace Game.Sim
                     case "--days": options.Days = int.Parse(value, CultureInfo.InvariantCulture); break;
                     case "--active-hours": options.ActiveHours = Number(value); break;
                     case "--stuck-minutes": options.StuckMinutes = Number(value); break;
+                    case "--party": options.ReadParty(value); break;
+                    case "--loss": options.Loss = Number(value); break;
                     case "--data": options.DataFolder = value; break;
                     case "--out": options.OutFile = value; break;
                     default: throw new ArgumentException($"unknown option {args[i]}");
                 }
             }
             return options;
+        }
+
+        private void ReadParty(string value)
+        {
+            if (value == "standard")
+            {
+                StandardParties = true;
+                return;
+            }
+            var classes = new List<HeroClass>();
+            foreach (var name in value.Split(','))
+                classes.Add(Class(name.Trim()));
+            if (classes.Count < 1 || classes.Count > Game.Core.Party.PartyRules.MaxSlots)
+                throw new ArgumentException($"a party has 1 to {Game.Core.Party.PartyRules.MaxSlots} members");
+            Party = classes;
         }
 
         private static double Number(string value) => double.Parse(value, NumberStyles.Float, CultureInfo.InvariantCulture);

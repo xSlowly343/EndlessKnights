@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Game.Core.Content;
+using Game.Core.Sim;
 using Game.Core.Sim.Headless;
 
 namespace Game.Sim
@@ -38,6 +39,8 @@ namespace Game.Sim
             var profile = new BotProfile(options.KeysPerSecond, options.ClicksPerSecond, options.MousePxPerSecond);
             if (options.Days > 0)
                 return RunPlayer(data, profile, options);
+            if (options.StandardParties || options.Party != null)
+                return RunParties(data, profile, options);
             var watch = System.Diagnostics.Stopwatch.StartNew();
             var result = new Simulation(data, profile, options.HeroClass, options.Seed, options.DamageMultiplier).Run(options.Hours * 3600, options.StopAfterFails);
             watch.Stop();
@@ -81,6 +84,39 @@ namespace Game.Sim
                 "{0} days x {1:0.##} h active, {2} at {3:0.#} keys/s, {4:0.#} clicks/s: record stage {5}, level {6}, prestiges {7}, artifacts {8}; simulated in {9:0.00} s",
                 days.Count, options.ActiveHours, options.HeroClass, options.KeysPerSecond, options.ClicksPerSecond,
                 last.RecordStage, last.HeroLevel, last.Prestiges, last.Artifacts, watch.Elapsed.TotalSeconds));
+            return 0;
+        }
+
+        private static readonly (string Name, HeroClass[] Classes)[] StandardParties =
+        {
+            ("solo", new[] { HeroClass.Viking }),
+            ("4 dd", new[] { HeroClass.Viking, HeroClass.Ronin, HeroClass.Amazon, HeroClass.Stormweaver }),
+            ("2 dd + 2 support", new[] { HeroClass.Viking, HeroClass.Ronin, HeroClass.Metalhead, HeroClass.Voodoo })
+        };
+
+        private static int RunParties(GameData data, BotProfile profile, SimOptions options)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var parties = options.StandardParties
+                ? StandardParties
+                : new[] { ("custom", new List<HeroClass>(options.Party!).ToArray()) };
+            using var file = options.OutFile == null ? null : new StreamWriter(options.OutFile);
+            var output = file ?? Console.Out;
+            output.WriteLine("scenario,class,final_stage,highest_stage,kills,boss_fails,party_kill_share,gold_earned,party_seconds_per_kill");
+            foreach (var (name, classes) in parties)
+            {
+                var result = new PartySimulation(data, profile, classes, options.Seed, options.Loss).Run(options.Hours * 3600);
+                foreach (var member in result.Members)
+                {
+                    output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6:0.###},{7},{8:0.###}",
+                        name, HeroClassNames.Of(member.HeroClass), member.FinalStage, member.HighestStage, member.Kills, member.BossFails,
+                        member.ShareOfKills, StageRecord.Number(member.GoldEarned), result.SecondsPerKill));
+                }
+            }
+            watch.Stop();
+            Console.Error.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                "{0} parties x {1:0.##} h at {2:0.#} keys/s, loss {3:0.##}; simulated in {4:0.00} s",
+                parties.Length, options.Hours, options.KeysPerSecond, options.Loss, watch.Elapsed.TotalSeconds));
             return 0;
         }
 

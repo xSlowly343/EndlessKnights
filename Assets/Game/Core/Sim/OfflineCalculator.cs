@@ -100,7 +100,10 @@ namespace Game.Core.Sim
         public static void Apply(GameState state, OfflineResult result)
         {
             if (result.StageAfter != result.StageBefore)
+            {
                 state.BossFailsInARow = 0;
+                state.BossBestFraction = 0;
+            }
             state.Stage = result.StageAfter;
             if (state.Stage > state.HighestStage)
                 state.HighestStage = state.Stage;

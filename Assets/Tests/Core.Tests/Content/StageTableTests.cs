@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Content
   ""enemyHp"": { ""curve"": ""exp"", ""base"": 20, ""rate"": 1.08 },
   ""softWall"": { ""period"": 100, ""zoneLength"": 10, ""rate"": 1.2 },
   ""boss"": { ""hpMultiplier"": 6, ""timerSeconds"": 30, ""timerMaxSeconds"": 90, ""goldMultiplier"": 5, ""retryAfterKills"": 10 },
-  ""party"": { ""hpPerExtraPlayer"": 1.0 },
+  ""bossHint"": { ""afterFails"": 3, ""roundPercent"": 5, ""maxPercent"": 1000 },
   ""gold"": { ""curve"": ""exp"", ""base"": 4, ""rate"": 1.07 },
   ""biomeLength"": 50,
   ""biomes"": [""green_hills"", ""sand_ruins""]
@@ -37,17 +37,6 @@ namespace Game.Core.Tests.Content
 
             Assert.That(table.EnemyHp(1).ToDouble(), Is.EqualTo(120).Within(1e-6));
             Assert.That(table.BossHp(1).ToDouble(), Is.EqualTo(840).Within(1e-6));
-        }
-
-        [Test]
-        public void PartyEnemyHpGrowsLinearlyWithPlayers()
-        {
-            var table = Table();
-
-            Assert.That(table.PartyHpMultiplier(1), Is.EqualTo(1));
-            Assert.That(table.PartyHpMultiplier(2), Is.EqualTo(2));
-            Assert.That(table.PartyHpMultiplier(4), Is.EqualTo(4));
-            Assert.That(table.PartyHpMultiplier(0), Is.EqualTo(1));
         }
 
         [Test]
