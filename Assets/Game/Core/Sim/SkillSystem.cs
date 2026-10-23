@@ -82,7 +82,7 @@ namespace Game.Core.Sim
                 return CastResult.NotEnoughResource;
 
             var cooldown = skill.CooldownSeconds * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
-            slot.CooldownTicks = Ticks(cooldown);
+            slot.StartCooldown(Ticks(cooldown));
             slot.ActiveTicks = Ticks(skill.DurationSeconds * (skill.Effect is AuraEffect ? _hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura) : 1));
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
@@ -142,7 +142,7 @@ namespace Game.Core.Sim
         {
             if (!slot.Ready || idleSeconds < MinIdleSeconds(strike))
                 return;
-            slot.CooldownTicks = Ticks(slot.Def.CooldownSeconds);
+            slot.StartCooldown(Ticks(slot.Def.CooldownSeconds));
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             _combat.SkillHit(_combat.BaseKeyDamage, ChargeMultiplier(strike, idleSeconds), slot.Skill.Tags);
         }

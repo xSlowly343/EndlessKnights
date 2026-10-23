@@ -12,6 +12,7 @@ namespace Game.Core.Sim
         public const int TicksPerSecond = 10;
         public const double TickSeconds = 1.0 / TicksPerSecond;
         public const int MaxCatchUpTicks = 50;
+        public const int MaxRequestedSlots = 64;
 
         private const double TimeEpsilon = 1e-9;
 
@@ -33,6 +34,7 @@ namespace Game.Core.Sim
         private readonly ArtifactSystem _artifacts;
         private GameData _data;
         private double _pendingSeconds;
+        private ulong _castRequests;
 
         public GameLoop(GameData data, IInputSource input, GameState state, StatSheet hero)
         {
@@ -139,6 +141,12 @@ namespace Game.Core.Sim
             return RefundResult.Refunded;
         }
 
+        public void RequestCast(int slotIndex)
+        {
+            if (slotIndex >= 0 && slotIndex < MaxRequestedSlots)
+                _castRequests |= 1UL << slotIndex;
+        }
+
         public void ApplyOffline(OfflineResult result)
         {
             OfflineCalculator.Apply(State, result);
@@ -200,7 +208,7 @@ namespace Game.Core.Sim
                 if (_book.Equip(skill) != BookResult.Done)
                     continue;
                 var index = State.Skills.Count - 1;
-                State.Skills[index].CooldownTicks = (int)System.Math.Round(skill.Skill!.CooldownSeconds * TicksPerSecond);
+                State.Skills[index].StartCooldown((int)System.Math.Round(skill.Skill!.CooldownSeconds * TicksPerSecond));
                 if (trigger != null)
                     _book.SetTrigger(index, trigger);
             }
@@ -247,11 +255,24 @@ namespace Game.Core.Sim
             _resource.Tick(input);
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
+            CastRequested();
             _triggers.Tick(input);
             _stage.Tick();
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
+        }
+
+        private void CastRequested()
+        {
+            for (var index = 0; _castRequests != 0; index++)
+            {
+                var bit = 1UL << index;
+                if ((_castRequests & bit) == 0)
+                    continue;
+                _castRequests &= ~bit;
+                _skills.TryCast(index);
+            }
         }
     }
 }

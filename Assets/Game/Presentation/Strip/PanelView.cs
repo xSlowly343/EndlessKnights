@@ -4,6 +4,7 @@ using Game.Core.Content.Tree;
 using Game.Core.Math;
 using Game.Core.Sim;
 using Game.Core.Ui;
+using Game.Presentation.Book;
 using Game.Presentation.Tree;
 using UnityEngine;
 
@@ -56,6 +57,7 @@ namespace Game.Presentation.Strip
         private Transform _frame = null!;
         private Transform _report = null!;
         private Transform _treeHost = null!;
+        private Transform _bookHost = null!;
         private StripButton _body = null!;
         private StripButton _handle = null!;
         private StripButton _titlePlate = null!;
@@ -83,11 +85,14 @@ namespace Game.Presentation.Strip
         private int _tabStripeIndex;
         private bool _treeShown;
         private bool _treeCaptured;
+        private bool _bookShown;
+        private bool _bookCaptured;
         private GameLoop? _loop;
         private string _shownGold = string.Empty;
         private float _sinceCurrency;
 
         public TreePanel Tree { get; private set; } = null!;
+        public BookPanel Book { get; private set; } = null!;
 
         public event Action<PanelSection>? TabPressed;
         public event Action? MorePressed;
@@ -114,6 +119,7 @@ namespace Game.Presentation.Strip
         {
             _loop = loop;
             Tree.Bind(loop, tree);
+            Book.Bind(loop);
         }
 
         public void Show(PanelNavigator navigator)
@@ -172,6 +178,11 @@ namespace Game.Presentation.Strip
                 _treeCaptured = true;
                 return true;
             }
+            if (_bookShown && Book.TryPress(worldPoint))
+            {
+                _bookCaptured = true;
+                return true;
+            }
             return _body.Contains(worldPoint);
         }
 
@@ -179,10 +190,17 @@ namespace Game.Presentation.Strip
         {
             if (_treeCaptured)
                 Tree.Drag(worldPoint);
+            if (_bookCaptured)
+                Book.Drag(worldPoint);
         }
 
         public void Release(Vector2 worldPoint)
         {
+            if (_bookCaptured)
+            {
+                _bookCaptured = false;
+                Book.Release(worldPoint);
+            }
             if (!_treeCaptured)
                 return;
             _treeCaptured = false;
@@ -192,7 +210,9 @@ namespace Game.Presentation.Strip
         public void CancelPress()
         {
             _treeCaptured = false;
+            _bookCaptured = false;
             Tree.CancelPress();
+            Book.CancelPress();
         }
 
         private bool TryClickReport(Vector2 worldPoint)
@@ -339,7 +359,9 @@ namespace Game.Presentation.Strip
             _zoomOut.gameObject.SetActive(zoomShown);
             _zoomInText.gameObject.SetActive(zoomShown);
             _zoomOutText.gameObject.SetActive(zoomShown);
-            var placeholder = !navigator.ShowingMore && !_treeShown;
+            _bookShown = !navigator.ShowingMore && navigator.Active == PanelSection.Book && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
+            _bookHost.gameObject.SetActive(_bookShown);
+            var placeholder = !navigator.ShowingMore && !_treeShown && !_bookShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -427,6 +449,7 @@ namespace Game.Presentation.Strip
                 _moreTexts[i].transform.position = centre;
             }
             Tree.Arrange(left, contentBottom, width, contentHeight, StripSpace.PixelsPerUnit);
+            Book.Arrange(left, contentBottom, width, contentHeight, StripSpace.PixelsPerUnit);
         }
 
         private void ArrangeReport(float leftPx, bool aboveStrip)
@@ -495,6 +518,8 @@ namespace Game.Presentation.Strip
             _placeholder = Text("Placeholder", 0.17f, TextAnchor.MiddleCenter, LineColor, _frame);
             _treeHost = Group("Tree", _frame);
             Tree = TreePanel.Create(_treeHost);
+            _bookHost = Group("Book", _frame);
+            Book = BookPanel.Create(_bookHost);
             BuildReport();
         }
 

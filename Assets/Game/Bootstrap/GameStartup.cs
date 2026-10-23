@@ -78,7 +78,7 @@ namespace Game.Bootstrap
             var menuButton = StripButton.Create("MenuButton", MenuButtonColor, MenuButtonPosition, Vector2.one * StripSpace.Units(StripButtonSizePx));
             var panels = PanelView.Create();
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
-            StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
+            var router = StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
             var data = GameDataFiles.TryLoadAll();
             var rawInput = RawInputService.Start(data?.Current.InputCaps.Detection);
             var observedInput = new ObservedInputSource(rawInput);
@@ -89,6 +89,7 @@ namespace Game.Bootstrap
                 var save = SaveDriver.TryLoad(data.Current);
                 var battle = BattleDriver.Attach(host, data.Current, observedInput, save?.State);
                 panels.Bind(battle.Loop, data.Current.Tree);
+                router.UseSkillBar(battle.SkillBar);
                 if (save != null)
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
