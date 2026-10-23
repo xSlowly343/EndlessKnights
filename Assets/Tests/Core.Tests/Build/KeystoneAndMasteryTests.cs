@@ -78,7 +78,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void MasteryNeedsAnOptionAndCanBeChanged()
         {
-            var (loop, _) = Hero(HeroClass.Ronin, ToSeriesNotable);
+            var (loop, _) = Hero(HeroClass.Ronin, PathTo("ronin", "ronin_resource_3"));
 
             Assert.That(loop.AllocateNode("ronin_resource_mastery"), Is.EqualTo(AllocationResult.ChoiceRequired));
             Assert.That(loop.AllocateNode("ronin_resource_mastery", masteryOption: 3), Is.EqualTo(AllocationResult.BadChoice));
