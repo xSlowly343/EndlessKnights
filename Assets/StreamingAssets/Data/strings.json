@@ -264,6 +264,12 @@
     "offline.stageMoved": { "ru": "Этап: {0} → {1}", "en": "Stage: {0} → {1}" },
     "offline.stage": { "ru": "Этап: {0}", "en": "Stage: {0}" },
     "offline.guardian": { "ru": "Дальше страж биома, его бьют вживую", "en": "The biome guardian is next, it must be fought live" },
-    "offline.stuck": { "ru": "Босс этапа пока сильнее, нужна прокачка", "en": "The stage boss is still stronger, you need to level up" }
+    "offline.stuck": { "ru": "Босс этапа пока сильнее, нужна прокачка", "en": "The stage boss is still stronger, you need to level up" },
+    "stats.session": { "ru": "Сессия", "en": "This session" },
+    "stats.allTime": { "ru": "Всё время", "en": "All time" },
+    "stats.keys": { "ru": "Нажатия клавиш", "en": "Key presses" },
+    "stats.clicks": { "ru": "Клики мыши", "en": "Mouse clicks" },
+    "stats.mouse": { "ru": "Расстояние мыши", "en": "Mouse distance" },
+    "stats.clicksHint": { "ru": "ЛКМ {0} · ПКМ {1} · СКМ {2}", "en": "LMB {0} · RMB {1} · MMB {2}" }
   }
 }
