@@ -14,12 +14,12 @@ namespace Game.Bootstrap
     public static class GameStartup
     {
         public const int StripWidth = 480;
-        public const int StripHeight = 140;
+        public const int StripHeight = 180;
 
-        private const float FocusButtonSize = 1.6f;
-        private const float FocusButtonMargin = 1.2f;
+        private const float StripButtonSizePx = 28f;
         private const float InputOverlayMargin = 0.3f;
-        private const float MenuButtonGap = 0.4f;
+        private static readonly Vector2 MenuButtonPosition = StripSpace.AtPx(455f, 20f);
+        private static readonly Vector2 FocusButtonPosition = StripSpace.AtPx(419f, 20f);
         private static readonly Color MenuButtonColor = new Color(0.8f, 0.2f, 0.2f);
 
         private static bool _isSecondInstance;
@@ -56,7 +56,7 @@ namespace Game.Bootstrap
             window?.ShowInTaskbar();
             window?.KeepOnTop();
 
-            var focusButton = FocusModeButton.Create(StripSpace.BottomRight(FocusButtonMargin), FocusButtonSize);
+            var focusButton = FocusModeButton.Create(FocusButtonPosition, StripSpace.Units(StripButtonSizePx));
             var framePacing = FramePacingDriver.Attach(focusButton.gameObject, TrayMenuState.DefaultFrameRate);
             FocusModeDriver.Attach(focusButton, window);
             if (window == null)
@@ -75,7 +75,7 @@ namespace Game.Bootstrap
             var pointer = PointerInput.Attach(host);
             var dock = TaskbarDockDriver.Attach(host, window);
             StripCameraDriver.Attach(host, camera, dock);
-            var menuButton = StripButton.Create("MenuButton", MenuButtonColor, StripSpace.BottomRight(FocusButtonMargin) - new Vector2(FocusButtonSize + MenuButtonGap, 0f), new Vector2(FocusButtonSize, FocusButtonSize));
+            var menuButton = StripButton.Create("MenuButton", MenuButtonColor, MenuButtonPosition, Vector2.one * StripSpace.Units(StripButtonSizePx));
             var panels = PanelView.Create();
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
             StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);

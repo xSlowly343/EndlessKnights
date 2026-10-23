@@ -5,12 +5,12 @@ namespace Game.Platform.Tests
 {
     public class StripSizeTests
     {
-        private static readonly StripSize Base = new StripSize(480, 140);
+        private static readonly StripSize Base = new StripSize(480, 180);
 
-        [TestCase(96u, 480, 140)]
-        [TestCase(120u, 600, 175)]
-        [TestCase(144u, 720, 210)]
-        [TestCase(192u, 960, 280)]
+        [TestCase(96u, 480, 180)]
+        [TestCase(120u, 600, 225)]
+        [TestCase(144u, 720, 270)]
+        [TestCase(192u, 960, 360)]
         public void ScalesWithMonitorDpi(uint dpi, int width, int height)
         {
             var scaled = Base.ScaledFor(dpi);
@@ -25,7 +25,7 @@ namespace Game.Platform.Tests
             var scaled = Base.ScaledFor(0u);
 
             Assert.That(scaled.Width, Is.EqualTo(480));
-            Assert.That(scaled.Height, Is.EqualTo(140));
+            Assert.That(scaled.Height, Is.EqualTo(180));
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace Game.Platform.Tests
 
             Assert.That(strip.Bottom, Is.EqualTo(taskbar.Top));
             Assert.That(strip.Width, Is.EqualTo(720));
-            Assert.That(strip.Height, Is.EqualTo(210));
+            Assert.That(strip.Height, Is.EqualTo(270));
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Game.Platform.Windows.Window
         public static PanelLayout Expanded(ScreenRect strip, ScreenRect workArea, TaskbarEdge edge, int panelWidth, int panelHeight)
         {
             var width = Math.Min(Math.Max(strip.Width, panelWidth), workArea.Width);
-            var left = Math.Max(workArea.Left, Math.Min(strip.Left, workArea.Right - width));
+            var left = Math.Max(workArea.Left, Math.Min(PreferredLeft(strip, workArea, width), workArea.Right - width));
 
             if (edge == TaskbarEdge.Top)
             {
@@ -34,6 +34,13 @@ namespace Game.Platform.Windows.Window
             var grownHeight = Math.Min(strip.Height + panelHeight, strip.Bottom - workArea.Top);
             var grown = new ScreenRect(left, strip.Bottom - grownHeight, left + width, strip.Bottom);
             return new PanelLayout(grown, strip.Left - left, 0, true);
+        }
+
+        private static int PreferredLeft(ScreenRect strip, ScreenRect workArea, int width)
+        {
+            var roomToTheLeft = strip.Right - workArea.Left;
+            var roomToTheRight = workArea.Right - strip.Left;
+            return roomToTheLeft >= roomToTheRight ? strip.Right - width : strip.Left;
         }
     }
 }

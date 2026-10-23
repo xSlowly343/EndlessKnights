@@ -13,7 +13,7 @@ namespace Game.Core.Build
         private readonly double _maxX;
         private readonly double _minY;
         private readonly double _maxY;
-        private readonly double _maxVisibleHeight;
+        private double _maxVisibleHeight;
 
         public TreeViewport(IReadOnlyList<TreeNodeDef> nodes, double aspect)
         {
@@ -31,13 +31,13 @@ namespace Game.Core.Build
             }
             if (nodes.Count == 0)
                 _minX = _maxX = _minY = _maxY = 0;
-            _maxVisibleHeight = System.Math.Max(MinVisibleHeight, System.Math.Max(_maxY - _minY, (_maxX - _minX) / aspect) * FitMargin);
+            _maxVisibleHeight = FitHeight(aspect);
             VisibleHeight = _maxVisibleHeight;
             CentreX = (_minX + _maxX) / 2;
             CentreY = (_minY + _maxY) / 2;
         }
 
-        public double Aspect { get; }
+        public double Aspect { get; private set; }
         public double CentreX { get; private set; }
         public double CentreY { get; private set; }
         public double VisibleHeight { get; private set; }
@@ -63,6 +63,13 @@ namespace Game.Core.Build
             VisibleHeight = Clamp(visibleHeight, MinVisibleHeight, _maxVisibleHeight);
         }
 
+        public void Resize(double aspect)
+        {
+            Aspect = aspect;
+            _maxVisibleHeight = FitHeight(aspect);
+            VisibleHeight = Clamp(VisibleHeight, MinVisibleHeight, _maxVisibleHeight);
+        }
+
         public static TreeNodeDef? NodeAt(IReadOnlyList<TreeNodeDef> nodes, double x, double y, double radius)
         {
             TreeNodeDef? best = null;
@@ -79,6 +86,9 @@ namespace Game.Core.Build
             }
             return best;
         }
+
+        private double FitHeight(double aspect) =>
+            System.Math.Max(MinVisibleHeight, System.Math.Max(_maxY - _minY, (_maxX - _minX) / aspect) * FitMargin);
 
         private static double Clamp(double value, double min, double max) => System.Math.Max(min, System.Math.Min(max, value));
     }
