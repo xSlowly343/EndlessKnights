@@ -53,6 +53,21 @@ namespace Game.Core.Party
         public uint EnemyId => _state.EnemyId;
         public double BarFull => _state.BarFull;
         public double PredictedBarLeft => InParty ? Predicted() : 0;
+        public RosterMessage Roster { get; private set; }
+        public EnemyKilledMessage LastBossKill { get; private set; }
+        public int BossKillsSeen { get; private set; }
+        public double DamageTaken => System.Math.Max(1, _state.DamageTaken);
+        public int OwnSlot => _ownSlot;
+
+        public ShownEffect EnemyEffect(int index)
+        {
+            var effect = _state.Effect(index);
+            if (!InParty || !effect.Active || _state.EnemyId != _localEnemyId)
+                return default;
+            effect.TicksLeft = (int)System.Math.Max(0, effect.TicksLeft - (_tick - _stateArrivalTick));
+            return effect;
+        }
+
         public bool InParty => Status == PartyLink.Linked || Status == PartyLink.NoSignal;
 
         public void UseRules(PartyRules rules) => _rules = rules;
@@ -134,6 +149,7 @@ namespace Game.Core.Party
 
         private void OnRoster(in RosterMessage roster)
         {
+            Roster = roster;
             _ownSlot = roster.SlotOf(_transport.LocalId);
             _inRoster = _ownSlot != PartyEncounter.NoSlot;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
@@ -181,6 +197,11 @@ namespace Game.Core.Party
 
         private void OnKilled(in EnemyKilledMessage killed)
         {
+            if (killed.EnemyKind == PartyEnemyKind.Boss && killed.EnemyId > LastBossKill.EnemyId)
+            {
+                LastBossKill = killed;
+                BossKillsSeen++;
+            }
             if (killed.EnemyId <= _rewardedUpTo)
                 return;
             if (killed.EnemyId != _localEnemyId)

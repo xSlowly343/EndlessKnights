@@ -10,6 +10,7 @@ namespace Game.Core.Party
         public long DisconnectedAtTick { get; internal set; }
         public int Weight { get; internal set; }
         public double EnemyShare { get; internal set; }
+        public byte HeroClass { get; internal set; }
 
         internal void Reset()
         {
@@ -21,6 +22,7 @@ namespace Game.Core.Party
             DisconnectedAtTick = 0;
             Weight = 0;
             EnemyShare = 0;
+            HeroClass = 0;
         }
     }
 }

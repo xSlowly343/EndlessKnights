@@ -120,6 +120,12 @@ namespace Game.Core.Party
                 _members[slot].LastInputTick = Tick;
         }
 
+        public void SetHeroClass(int slot, byte heroClass)
+        {
+            if (IsMember(slot))
+                _members[slot].HeroClass = heroClass;
+        }
+
         public void SetPeaceful(int slot, bool peaceful)
         {
             if (IsMember(slot))

@@ -196,6 +196,26 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AlliesSeeTheCurseIconAndEachOthersClass()
+        {
+            var rig = new Rig(2);
+            rig.Members[0].Loop.State.Class = HeroClass.Voodoo;
+            rig.Run(5);
+            var voodoo = rig.Members[0];
+            var friend = rig.Members[1].Client;
+
+            voodoo.Cast(voodoo.Equip("voodoo_needle"));
+            rig.Run(1);
+
+            var icon = friend.EnemyEffect(0);
+            Assert.That(icon.Id, Is.EqualTo(TestWorld.Data.Gems["voodoo_needle"].NetId));
+            Assert.That(icon.TicksLeft, Is.InRange(80, 100));
+            Assert.That(friend.EnemyEffect(1).Active, Is.False);
+            Assert.That(friend.DamageTaken, Is.EqualTo(1.15).Within(1e-9));
+            Assert.That(friend.Roster.HeroClass(voodoo.Client.OwnSlot), Is.EqualTo((byte)HeroClass.Voodoo));
+        }
+
+        [Test]
         public void OfferSurvivesTheWire()
         {
             var buffer = new byte[PartyCodec.MaxPacketBytes];

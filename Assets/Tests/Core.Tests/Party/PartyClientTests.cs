@@ -120,6 +120,23 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void BossKillKeepsEveryonesShare()
+        {
+            var rig = new Rig(5, 40);
+
+            rig.Run(60);
+
+            foreach (var player in rig.Players)
+            {
+                var kill = player.Client.LastBossKill;
+                Assert.That(player.Client.BossKillsSeen, Is.GreaterThan(0));
+                Assert.That(kill.EnemyKind, Is.EqualTo(PartyEnemyKind.Boss));
+                Assert.That(kill.Contribution(0) + kill.Contribution(1) + kill.Contribution(2) + kill.Contribution(3), Is.EqualTo(1).Within(1e-9));
+                Assert.That(kill.Contribution(player.Client.OwnSlot), Is.GreaterThan(0.2));
+            }
+        }
+
+        [Test]
         public void LinkedTicksDoNotAllocate()
         {
             var probeBefore = System.GC.GetAllocatedBytesForCurrentThread();

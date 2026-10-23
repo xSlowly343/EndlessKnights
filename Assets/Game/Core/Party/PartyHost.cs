@@ -49,8 +49,15 @@ namespace Game.Core.Party
         {
             var kind = PartyCodec.KindOf(_in, length);
             var slot = _encounter.SlotOf(from);
-            if (kind == PartyMessageKind.Hello && PartyCodec.TryDecode(_in, length, out HelloMessage _))
+            if (kind == PartyMessageKind.Hello && PartyCodec.TryDecode(_in, length, out HelloMessage hello))
+            {
                 slot = Welcome(from, slot);
+                if (slot != PartyEncounter.NoSlot && _encounter.Member(slot).HeroClass != hello.HeroClass)
+                {
+                    _encounter.SetHeroClass(slot, hello.HeroClass);
+                    _rosterChanged = true;
+                }
+            }
             if (slot == PartyEncounter.NoSlot)
                 return;
             Heard(slot);
