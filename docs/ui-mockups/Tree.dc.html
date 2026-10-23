@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Панель Дерево</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 480px; height: 786px; display: flex; flex-direction: column; gap: 6px; background: #0F2236; font-family: Rubik, 'Segoe UI', sans-serif; color: #EEF2FF">
+  <section aria-label="Панель" style="width: 480px; height: 600px; box-sizing: border-box; display: flex; flex-direction: column; border-radius: 12px; border: 1px solid #3A4870; background: #1B2236; overflow: hidden">
+    <div style="height: 46px; flex: none; position: relative; display: flex; align-items: center; gap: 10px; padding: 0 8px; box-sizing: border-box; border-bottom: 1px solid #3A4870">
+      <div style="position: absolute; left: 222px; top: 4px; width: 36px; height: 4px; border-radius: 2px; background: #4A5677"></div>
+      <div style="height: 30px; padding: 0 14px; display: flex; align-items: center; border-radius: 6px; background: #B02A2A; box-shadow: inset 0 -2px 0 #F0B43C; font-weight: 700; font-size: 15px">Дерево</div>
+      <div style="display: flex; align-items: center; gap: 4px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #F0B43C"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#F0B43C"></circle><circle cx="12" cy="12" r="5" fill="none" stroke="#9A6A12" stroke-width="2"></circle></svg>12.4K</div>
+      <div style="flex: 1"></div>
+      <button type="button" aria-label="Развернуть дерево" style="height: 30px; padding: 0 10px; border-radius: 6px; border: 0; background: #26304A; display: flex; align-items: center; gap: 6px; color: #D5DCEE; font-family: inherit; font-size: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D5DCEE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6 M20 4l-7 7 M10 20H4v-6 M4 20l7-7"></path></svg>Шире</button>
+      <button type="button" aria-label="Свернуть в полоску" style="width: 30px; height: 30px; border-radius: 6px; border: 0; background: #7A1E1E; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE4E4" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12 M18 6L6 18"></path></svg></button>
+    </div>
+    <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 4px; padding: 0 10px">
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: #2E3A58; color: #EEF2FF; font-family: inherit; font-size: 13px; font-weight: 500">Дерево</button>
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Подкласс</button>
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Самоцветы</button>
+      <div style="flex: 1"></div>
+      <label for="tree-search" style="height: 28px; width: 120px; border-radius: 14px; background: #121828; display: flex; align-items: center; gap: 6px; padding: 0 10px; box-sizing: border-box">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#AEB9D6" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14 M16 16l4 4"></path></svg>
+        <input id="tree-search" type="text" placeholder="крит, золото…" style="width: 80px; border: 0; background: transparent; color: #EEF2FF; font-family: inherit; font-size: 12px; outline: none">
+      </label>
+    </div>
+    <div style="flex: 1; min-height: 0; position: relative; overflow: hidden; background: #121828">
+      <sc-for list="{{edges}}" as="e" hint-placeholder-count="40">
+        <div style="{{e}}"></div>
+      </sc-for>
+      <sc-for list="{{nodes}}" as="n" hint-placeholder-count="60">
+        <div style="{{n}}"></div>
+      </sc-for>
+      <div style="position: absolute; left: 10px; top: 10px; height: 28px; padding: 0 12px; border-radius: 14px; background: rgba(27,34,54,0.92); display: flex; align-items: center; gap: 8px; font-size: 12px; color: #D5DCEE">
+        <span style="font-family: 'Lilita One', Rubik, sans-serif; font-size: 15px; color: #F0B43C">Очков: 4</span>
+        взято 31 / 1672
+      </div>
+      <div style="position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 6px">
+        <button type="button" aria-label="Приблизить" style="width: 32px; height: 32px; border-radius: 8px; border: 0; background: rgba(38,48,74,0.95); color: #EEF2FF; font-size: 18px; font-family: inherit">+</button>
+        <button type="button" aria-label="Отдалить" style="width: 32px; height: 32px; border-radius: 8px; border: 0; background: rgba(38,48,74,0.95); color: #EEF2FF; font-size: 18px; font-family: inherit">−</button>
+        <button type="button" aria-label="К моему пути" style="width: 32px; height: 32px; border-radius: 8px; border: 0; background: rgba(38,48,74,0.95); display: flex; align-items: center; justify-content: center; padding: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EEF2FF" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v4 M12 17v4 M3 12h4 M17 12h4 M12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6"></path></svg></button>
+      </div>
+      <div style="position: absolute; left: 10px; right: 10px; bottom: 10px; border-radius: 10px; background: rgba(27,34,54,0.96); border: 1px solid #3A4870; padding: 10px 12px; box-sizing: border-box; display: flex; align-items: center; gap: 12px">
+        <div style="width: 14px; height: 14px; border-radius: 50%; background: #1B2236; border: 2px solid #4FC277; flex: none"></div>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+          <div style="font-weight: 700; font-size: 14px; color: #8CE0A8">Шквал · малый узел</div>
+          <div style="font-size: 12px; color: #D5DCEE">+1 удар в серии Шквала</div>
+          <div style="font-size: 11px; color: #AEB9D6">Путь: 1 очко · вернуть потом за 50 золота</div>
+        </div>
+        <button type="button" style="height: 36px; padding: 0 18px; border-radius: 8px; border: 0; background: #F0B43C; color: #2A1C00; font-family: inherit; font-weight: 700; font-size: 14px; box-shadow: inset 0 -3px 0 #B47E1A">Взять</button>
+      </div>
+    </div>
+    <dc-import name="TabBar" active="tree" hint-size="480px,60px"></dc-import>
+  </section>
+  <dc-import name="Strip" variant="solo" show-zones="false" hint-size="480px,180px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":786}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const W = 478, H = 452, cx = 250, cy = 300;
+    let seed = 11;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+    const sectorColor = (a) => (a < -90 || a >= 150 ? '#E0574A' : a < 30 ? '#4FC277' : '#5B9BFF');
+    const pathA = -80;
+    const rings = [];
+    const all = [];
+    for (let k = 0; k < 9; k++) {
+      const r = 30 + k * 38;
+      const n = 6 + k * 6;
+      const ring = [];
+      for (let i = 0; i < n; i++) {
+        const t = (2 * Math.PI * i) / n + (rnd() - 0.5) * 0.12 + k * 0.17;
+        const x = cx + r * Math.cos(t);
+        const y = cy + r * Math.sin(t);
+        let a = (t * 180) / Math.PI;
+        a = ((a + 180) % 360 + 360) % 360 - 180;
+        const d = Math.abs(a - pathA);
+        const type = k === 6 && i % 9 === 0 ? 'key' : k >= 2 && i % 5 === 2 ? 'notable' : 'small';
+        let state = 'dim';
+        if (k >= 2 && k <= 4 && d < 22) state = 'taken';
+        else if ((k === 5 && d < 22) || (k >= 2 && k <= 4 && d < 32)) state = 'open';
+        const node = { k, x, y, a, type, state, color: sectorColor(a), t };
+        ring.push(node);
+        all.push(node);
+      }
+      rings.push(ring);
+    }
+    const inView = (p) => p.x > -20 && p.x < W + 20 && p.y > -20 && p.y < H + 20;
+    const edges = [];
+    const edge = (p, q) => {
+      if (!inView(p) && !inView(q)) return;
+      const dx = q.x - p.x, dy = q.y - p.y;
+      const len = Math.sqrt(dx * dx + dy * dy);
+      const deg = (Math.atan2(dy, dx) * 180) / Math.PI;
+      const on = p.state === 'taken' && q.state === 'taken';
+      const h = on ? 3 : 2;
+      const c = on ? '#F0B43C' : 'rgba(174,185,214,0.22)';
+      edges.push('position: absolute; left: ' + p.x.toFixed(1) + 'px; top: ' + (p.y - h / 2).toFixed(1) + 'px; width: ' + len.toFixed(1) + 'px; height: ' + h + 'px; background: ' + c + '; transform-origin: 0 50%; transform: rotate(' + deg.toFixed(1) + 'deg)' + (on ? '; box-shadow: 0 0 6px rgba(240,180,60,0.6)' : ''));
+    };
+    rings.forEach((ring, k) => {
+      ring.forEach((p, i) => {
+        const q = ring[(i + 1) % ring.length];
+        if (rnd() < 0.55 || (p.state === 'taken' && q.state === 'taken')) edge(p, q);
+        if (k > 0) {
+          let best = null, bd = 1e9;
+          rings[k - 1].forEach((o) => { const dd = (o.x - p.x) ** 2 + (o.y - p.y) ** 2; if (dd < bd) { bd = dd; best = o; } });
+          if (best) edge(best, p);
+        }
+      });
+    });
+    let selected = null;
+    all.forEach((p) => { if (!selected && p.state === 'open' && p.k === 5) selected = p; });
+    const nodes = [];
+    const center = 'position: absolute; left: ' + (cx - 13) + 'px; top: ' + (cy - 13) + 'px; width: 26px; height: 26px; border-radius: 50%; background: #E8E8F0; box-shadow: 0 0 0 3px #1B2236, 0 0 0 5px #E8E8F0';
+    nodes.push(center);
+    all.forEach((p) => {
+      if (!inView(p)) return;
+      const s = p.type === 'key' ? 22 : p.type === 'notable' ? 18 : 10;
+      let st = 'position: absolute; left: ' + (p.x - s / 2).toFixed(1) + 'px; top: ' + (p.y - s / 2).toFixed(1) + 'px; width: ' + s + 'px; height: ' + s + 'px; box-sizing: border-box; ';
+      st += p.type === 'key' ? 'border-radius: 4px; transform: rotate(45deg); ' : 'border-radius: 50%; ';
+      if (p.state === 'taken') st += 'background: ' + p.color + '; box-shadow: 0 0 8px ' + p.color;
+      else if (p.state === 'open') st += 'background: #1B2236; border: 2px solid ' + p.color + '; box-shadow: 0 0 6px ' + p.color;
+      else st += 'background: ' + p.color + '; opacity: 0.32';
+      if (p.type !== 'small' && p.state !== 'dim') st += '; outline: 2px solid #F0B43C; outline-offset: 1px';
+      if (p === selected) st += '; outline: 3px solid #FFFFFF; outline-offset: 3px';
+      nodes.push(st);
+    });
+    return { edges, nodes };
+  }
+}
+</script>
+</body>
+</html>

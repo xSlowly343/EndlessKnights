@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Панель Книга умений</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 480px; height: 786px; display: flex; flex-direction: column; gap: 6px; background: #0F2236; font-family: Rubik, 'Segoe UI', sans-serif; color: #EEF2FF">
+  <section aria-label="Панель" style="width: 480px; height: 600px; box-sizing: border-box; display: flex; flex-direction: column; border-radius: 12px; border: 1px solid #3A4870; background: #1B2236; overflow: hidden">
+    <div style="height: 46px; flex: none; position: relative; display: flex; align-items: center; gap: 10px; padding: 0 8px; box-sizing: border-box; border-bottom: 1px solid #3A4870">
+      <div style="position: absolute; left: 222px; top: 4px; width: 36px; height: 4px; border-radius: 2px; background: #4A5677"></div>
+      <div style="height: 30px; padding: 0 14px; display: flex; align-items: center; border-radius: 6px; background: #B02A2A; box-shadow: inset 0 -2px 0 #F0B43C; font-weight: 700; font-size: 15px">Книга умений</div>
+      <div style="display: flex; align-items: center; gap: 4px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #8FD3FF"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L5 14h6l-1 7 8-11h-6z" fill="#8FD3FF"></path></svg>62 / 100</div>
+      <div style="display: flex; align-items: center; gap: 4px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #C59BFF"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l7 7-7 13-7-13z" fill="#C59BFF"></path></svg>18</div>
+      <div style="flex: 1"></div>
+      <button type="button" aria-label="Закрепить" style="width: 30px; height: 30px; border-radius: 6px; border: 0; background: #26304A; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#AEB9D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3z M12 13v7"></path></svg></button>
+      <button type="button" aria-label="Свернуть в полоску" style="width: 30px; height: 30px; border-radius: 6px; border: 0; background: #7A1E1E; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE4E4" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12 M18 6L6 18"></path></svg></button>
+    </div>
+    <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 4px; padding: 0 10px">
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: #2E3A58; color: #EEF2FF; font-family: inherit; font-size: 13px; font-weight: 500">Скиллы</button>
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Цвета поддержек</button>
+      <div style="flex: 1"></div>
+      <div style="font-size: 12px; color: #AEB9D6">Слоты 3 / 5</div>
+    </div>
+    <div style="flex: 1; min-height: 0; padding: 0 12px 10px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="3">
+        <div style="height: 54px; border-radius: 8px; background: #26304A; display: flex; align-items: center; gap: 10px; padding: 0 10px; box-sizing: border-box">
+          <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex: none">
+            <div style="{{r.gem}}"></div>
+          </div>
+          <div style="width: 118px; flex: none; display: flex; flex-direction: column; gap: 4px">
+            <div style="font-weight: 700; font-size: 14px">{{r.name}}</div>
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #AEB9D6">{{r.lvl}}<div style="flex: 1; height: 4px; border-radius: 2px; background: #121828; overflow: hidden"><div style="{{r.xp}}"></div></div></div>
+          </div>
+          <div style="display: flex; gap: 5px; flex: 1">
+            <sc-for list="{{r.sockets}}" as="s" hint-placeholder-count="5">
+              <div style="{{s.style}}"></div>
+            </sc-for>
+          </div>
+          <div style="width: 1px; height: 30px; background: #3A4870"></div>
+          <div style="{{r.trig}}">{{r.trigText}}</div>
+        </div>
+      </sc-for>
+      <sc-for list="{{locked}}" as="l" hint-placeholder-count="2">
+        <div style="height: 40px; border-radius: 8px; border: 1px dashed #4A5677; display: flex; align-items: center; gap: 8px; padding: 0 12px; box-sizing: border-box; font-size: 12px; color: #AEB9D6">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#AEB9D6" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 11h12v9H6z M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+          {{l}}
+        </div>
+      </sc-for>
+      <div style="display: flex; align-items: center; gap: 6px; padding-top: 4px">
+        <div style="font-size: 13px; font-weight: 700">Сумка гемов</div>
+        <div style="flex: 1"></div>
+        <button type="button" style="height: 24px; padding: 0 10px; border-radius: 12px; border: 0; background: #2E3A58; color: #EEF2FF; font-family: inherit; font-size: 12px">Все 14</button>
+        <button type="button" style="height: 24px; padding: 0 10px; border-radius: 12px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 12px">Скиллы</button>
+        <button type="button" style="height: 24px; padding: 0 10px; border-radius: 12px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 12px">Поддержки</button>
+        <button type="button" style="height: 24px; padding: 0 10px; border-radius: 12px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 12px">Триггеры</button>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 6px">
+        <sc-for list="{{bag}}" as="g" hint-placeholder-count="18">
+          <div style="height: 42px; border-radius: 8px; background: #22304A; display: flex; align-items: center; justify-content: center">
+            <div style="{{g}}"></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size: 11px; color: #AEB9D6">Перетащите гем в гнездо. Наведение показывает «было → станет».</div>
+    </div>
+    <dc-import name="TabBar" active="book" hint-size="480px,60px"></dc-import>
+  </section>
+  <dc-import name="Strip" variant="solo" show-zones="false" hint-size="480px,180px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":786}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const col = { r: '#E0574A', g: '#4FC277', b: '#5B9BFF', w: '#E8E8F0' };
+    const diamond = (c, size) => 'width: ' + size + 'px; height: ' + size + 'px; transform: rotate(45deg); border-radius: 4px; background: ' + c + '; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35)';
+    const circle = (c) => 'width: 22px; height: 22px; border-radius: 50%; background: ' + c + '; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.3)';
+    const sock = (k) => {
+      if (k === 'empty') return { style: 'width: 22px; height: 22px; border-radius: 50%; box-sizing: border-box; border: 2px dashed #AEB9D6' };
+      if (k === 'lock') return { style: 'width: 22px; height: 22px; border-radius: 50%; background: #141A2B' };
+      return { style: circle(col[k]) };
+    };
+    const trig = (filled) => 'width: 46px; height: 30px; border-radius: 6px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 11px; ' + (filled ? 'background: #4A3A16; border: 1px solid #F0B43C; color: #FFE2A0' : 'border: 1px dashed #F0B43C; color: #F0B43C');
+    const row = (name, lvl, xp, c, sockets, t) => ({
+      name, lvl,
+      xp: 'width: ' + xp + '%; height: 4px; background: #F0B43C',
+      gem: diamond(col[c], 26),
+      sockets: sockets.map(sock),
+      trig: trig(!!t),
+      trigText: t || '+ триг.'
+    });
+    const bagDef = ['r', 'g', 'b', 'w', 'g', 'r', 'b', 'b', 'w', 'r', 'g', 'g', 'b', 'r'];
+    const bag = bagDef.map((c, i) => (i % 3 === 0 ? diamond(col[c], 18) : 'width: 20px; height: 20px; border-radius: 50%; background: ' + col[c]));
+    while (bag.length < 18) bag.push('width: 20px; height: 20px; border-radius: 50%; border: 1px dashed #4A5677');
+    return {
+      rows: [
+        row('Стенография', 'Ур. 4 ★', 30, 'r', ['r', 'w', 'empty', 'lock', 'lock'], 'Enter'),
+        row('Ураган', 'Ур. 13', 64, 'g', ['g', 'empty', 'lock', 'lock', 'lock'], ''),
+        row('Метка', 'Ур. 9', 12, 'b', ['b', 'r', 'lock', 'lock', 'lock'], 'Энергия')
+      ],
+      locked: ['Слот 4 откроется за стража 2-го биома (этап 100)', 'Слот 5 откроется за стража 4-го биома (этап 200)'],
+      bag
+    };
+  }
+}
+</script>
+</body>
+</html>

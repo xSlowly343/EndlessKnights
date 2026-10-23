@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Панель Отряд</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 480px; height: 786px; display: flex; flex-direction: column; gap: 6px; background: #0F2236; font-family: Rubik, 'Segoe UI', sans-serif; color: #EEF2FF">
+  <section aria-label="Панель" style="width: 480px; height: 600px; box-sizing: border-box; display: flex; flex-direction: column; border-radius: 12px; border: 1px solid #3A4870; background: #1B2236; overflow: hidden">
+    <div style="height: 46px; flex: none; position: relative; display: flex; align-items: center; gap: 10px; padding: 0 8px; box-sizing: border-box; border-bottom: 1px solid #3A4870">
+      <div style="position: absolute; left: 222px; top: 4px; width: 36px; height: 4px; border-radius: 2px; background: #4A5677"></div>
+      <div style="height: 30px; padding: 0 14px; display: flex; align-items: center; border-radius: 6px; background: #B02A2A; box-shadow: inset 0 -2px 0 #F0B43C; font-weight: 700; font-size: 15px">Отряд</div>
+      <div style="display: flex; align-items: center; gap: 4px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #FFB0C8"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" fill="#FFB0C8"></path></svg>Знаки дружбы 46</div>
+      <div style="flex: 1"></div>
+      <button type="button" aria-label="Закрепить" style="width: 30px; height: 30px; border-radius: 6px; border: 0; background: #26304A; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#AEB9D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3z M12 13v7"></path></svg></button>
+      <button type="button" aria-label="Свернуть в полоску" style="width: 30px; height: 30px; border-radius: 6px; border: 0; background: #7A1E1E; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE4E4" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12 M18 6L6 18"></path></svg></button>
+    </div>
+    <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 4px; padding: 0 10px">
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: #2E3A58; color: #EEF2FF; font-family: inherit; font-size: 13px; font-weight: 500">Отряд 3/4</button>
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Друзья</button>
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Клан</button>
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Поиск</button>
+    </div>
+    <div style="flex: 1; min-height: 0; padding: 0 12px 10px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px">
+      <div style="border-radius: 10px; background: #26304A; padding: 10px 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <div style="font-weight: 700; font-size: 14px">Король-кабан · общий босс</div>
+          <div style="flex: 1"></div>
+          <div style="font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #FFD7D7">21 с</div>
+        </div>
+        <div style="height: 12px; border-radius: 6px; background: #121828; overflow: hidden"><div style="width: 46%; height: 12px; background: #4FC277"></div></div>
+        <div style="font-size: 11px; color: #AEB9D6">Полоска в долях: каждый бьёт врага своего этапа, вклад считается от его HP</div>
+        <div style="display: flex; height: 8px; border-radius: 4px; overflow: hidden">
+          <div style="width: 41%; background: #3F6FD1"></div>
+          <div style="width: 34%; background: #4FC277"></div>
+          <div style="width: 25%; background: #B07CFF"></div>
+        </div>
+      </div>
+      <sc-for list="{{members}}" as="m" hint-placeholder-count="3">
+        <div style="height: 56px; border-radius: 10px; background: #22304A; display: flex; align-items: center; gap: 10px; padding: 0 10px; box-sizing: border-box">
+          <div style="{{m.avatar}}"></div>
+          <div style="width: 130px; flex: none; display: flex; flex-direction: column; gap: 2px">
+            <div style="font-weight: 700; font-size: 14px">{{m.name}}</div>
+            <div style="font-size: 11px; color: #AEB9D6">{{m.cls}}</div>
+          </div>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+            <div style="{{m.chip}}">{{m.status}}</div>
+            <div style="font-size: 11px; color: #D5DCEE; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{m.aura}}</div>
+          </div>
+          <div style="font-family: 'Lilita One', Rubik, sans-serif; font-size: 18px; color: {{m.color}}">{{m.share}}</div>
+        </div>
+      </sc-for>
+      <button type="button" style="height: 48px; border-radius: 10px; border: 1px dashed #4A5677; background: transparent; color: #D5DCEE; font-family: inherit; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D5DCEE" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14 M5 12h14"></path></svg>
+        Свободное место: пригласить друга из Steam
+      </button>
+      <div style="display: flex; gap: 8px">
+        <button type="button" style="flex: 1.4; height: 36px; border-radius: 8px; border: 0; background: #F0B43C; color: #2A1C00; font-family: inherit; font-weight: 700; font-size: 13px; box-shadow: inset 0 -3px 0 #B47E1A">Позвать на помощь</button>
+        <button type="button" style="flex: 1; height: 36px; border-radius: 8px; border: 0; background: #3F6FD1; color: #FFFFFF; font-family: inherit; font-weight: 500; font-size: 13px; box-shadow: inset 0 -3px 0 #2A4E9A">Связки</button>
+        <button type="button" style="flex: 1; height: 36px; border-radius: 8px; border: 1px solid #B02A2A; background: transparent; color: #FFB4B4; font-family: inherit; font-weight: 500; font-size: 13px">Покинуть</button>
+      </div>
+    </div>
+    <dc-import name="TabBar" active="coop" hint-size="480px,60px"></dc-import>
+  </section>
+  <dc-import name="Strip" variant="party" show-zones="false" hint-size="480px,180px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":786}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const chip = (bg, fg) => 'align-self: flex-start; padding: 1px 8px; border-radius: 9px; font-size: 11px; background: ' + bg + '; color: ' + fg;
+    const avatar = (c) => 'width: 36px; height: 36px; border-radius: 50%; flex: none; background: ' + c + '; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35)';
+    return {
+      members: [
+        { name: 'Вы', cls: 'Мечник · этап 37', status: 'бьёт', chip: chip('#1F4A33', '#BFF2D2'), aura: 'Шквал готов', share: '41%', color: '#8FB4FF', avatar: avatar('#3F6FD1') },
+        { name: 'Аня', cls: 'Бард · этап 112', status: 'бьёт', chip: chip('#1F4A33', '#BFF2D2'), aura: 'Песнь золота: +20% пати', share: '34%', color: '#8CE0A8', avatar: avatar('#4FC277') },
+        { name: 'Миша', cls: 'Ведьма · этап 64', status: 'отдыхает', chip: chip('#4A3A16', '#FFE2A0'), aura: 'Уязвимость: +15% по врагу', share: '25%', color: '#D2B4FF', avatar: avatar('#B07CFF') }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

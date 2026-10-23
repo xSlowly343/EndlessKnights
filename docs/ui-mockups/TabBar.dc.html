@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Нижний ряд вкладок</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<nav aria-label="Разделы" style="width: 480px; height: 60px; display: flex; box-sizing: border-box; background: #151B2C; border-top: 1px solid #3A4870; font-family: Rubik, 'Segoe UI', sans-serif">
+  <sc-for list="{{tabs}}" as="t" hint-placeholder-count="6">
+    <button type="button" aria-label="{{t.label}}" style="{{t.style}}">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{t.color}}" stroke-width="{{t.sw}}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.d}}"></path></svg>
+      <span style="font-size: 11px; font-weight: 500; color: {{t.color}}">{{t.label}}</span>
+      <sc-if value="{{t.dot}}" hint-placeholder-val="{{false}}">
+        <span style="position: absolute; top: 7px; right: 22px; width: 9px; height: 9px; border-radius: 50%; background: #FF4D4D; border: 2px solid #151B2C"></span>
+      </sc-if>
+    </button>
+  </sc-for>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["hero","book","tree","items","coop","more"],"default":"hero"},"$preview":{"width":480,"height":60}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? 'hero';
+    const defs = [
+      { id: 'hero', label: 'Герой', d: 'M5 14a7 7 0 0 1 14 0v5H5z M12 7V3 M5 14h14 M10 14v5' },
+      { id: 'book', label: 'Книга', d: 'M3 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H3z M21 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z', dot: false },
+      { id: 'tree', label: 'Дерево', d: 'M12 3a2 2 0 1 0 0 4a2 2 0 1 0 0-4 M12 7v4 M12 11l-6 5 M12 11l6 5 M6 16a2 2 0 1 0 0 4a2 2 0 1 0 0-4 M18 16a2 2 0 1 0 0 4a2 2 0 1 0 0-4', dot: true },
+      { id: 'items', label: 'Предметы', d: 'M7 8h10a2 2 0 0 1 2 2v10H5V10a2 2 0 0 1 2-2z M9 8V6a3 3 0 0 1 6 0v2 M9 14h6', dot: true },
+      { id: 'coop', label: 'Отряд', d: 'M9 11a3 3 0 1 0 0-6a3 3 0 1 0 0 6 M3 20a6 6 0 0 1 12 0 M16 11a3 3 0 1 0 0-6 M18 20a6 6 0 0 0-3-5.2', dot: true },
+      { id: 'more', label: 'Ещё', d: 'M5 12h.01 M12 12h.01 M19 12h.01', wide: true }
+    ];
+    const tabs = defs.map((t) => {
+      const on = t.id === active;
+      return {
+        label: t.label,
+        d: t.d,
+        dot: !!t.dot,
+        sw: t.wide ? 3.4 : 2,
+        color: on ? '#F0B43C' : '#AEB9D6',
+        style: 'flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: 0; padding: 0; cursor: pointer; font-family: inherit; background: ' + (on ? '#26304A' : 'transparent') + '; box-shadow: ' + (on ? 'inset 0 3px 0 #F0B43C' : 'none')
+      };
+    });
+    return { tabs };
+  }
+}
+</script>
+</body>
+</html>
