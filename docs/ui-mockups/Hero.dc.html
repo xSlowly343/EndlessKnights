@@ -33,24 +33,38 @@ body{margin:0}
       <button type="button" style="height: 28px; padding: 0 12px; border-radius: 14px; border: 1px solid #3F6FD1; background: #1F2B4A; color: #CFE0FF; font-family: inherit; font-size: 12px">Пресет: Рабочий</button>
     </div>
     <div style="flex: 1; min-height: 0; padding: 4px 16px 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
-      <div style="display: flex; gap: 12px; justify-content: center">
+      <div style="display: flex; gap: 10px; justify-content: center">
         <div style="display: flex; flex-direction: column; gap: 8px">
-          <sc-for list="{{left}}" as="s" hint-placeholder-count="4">
+          <sc-for list="{{armor}}" as="s" hint-placeholder-count="4">
             <button type="button" aria-label="{{s.name}}" style="{{s.style}}">{{s.name}}</button>
           </sc-for>
         </div>
-        <div style="width: 200px; height: 248px; border-radius: 10px; background: #26304A; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 12px 10px; box-sizing: border-box">
-          <div style="font-size: 12px; color: #AEB9D6">Сила 64 · Ловк 48 · Инт 12</div>
-          <div style="width: 96px; height: 120px; border-radius: 40px 40px 14px 14px; background: #3F6FD1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; box-sizing: border-box; font-size: 11px">портрет</div>
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px">
-            <div style="font-weight: 700; font-size: 16px">Мечник · ур. 42</div>
-            <div style="font-size: 12px; color: #AEB9D6">Вихри 3/5 · Шквал готов</div>
+        <div style="width: 212px; height: 248px; display: flex; flex-direction: column; gap: 8px">
+          <div style="flex: 1; border-radius: 10px; background: #26304A; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 8px 10px; box-sizing: border-box">
+            <div style="font-size: 12px; color: #AEB9D6">Сила 64 · Ловк 48 · Инт 12</div>
+            <div style="width: 72px; height: 84px; border-radius: 30px 30px 12px 12px; background: #3F6FD1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; box-sizing: border-box; font-size: 11px">портрет</div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1px">
+              <div style="font-weight: 700; font-size: 15px">Ронин · ур. 42</div>
+              <div style="font-size: 12px; color: #AEB9D6">Вихри 3/5 · Омнислэш готов</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <sc-for list="{{hands}}" as="h" hint-placeholder-count="2">
+              <button type="button" aria-label="{{h.hand}}: {{h.name}}" style="{{h.style}}">
+                <span style="font-size: 10px; color: #AEB9D6">{{h.hand}}</span>
+                <span style="display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: #EEF2FF"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{h.gem}}"></span>{{h.name}}</span>
+                <span style="font-size: 10px; color: {{h.rarityColor}}">{{h.rarity}}</span>
+              </button>
+            </sc-for>
           </div>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 8px">
-          <sc-for list="{{right}}" as="s" hint-placeholder-count="4">
-            <button type="button" aria-label="{{s.name}}" style="{{s.style}}">{{s.name}}</button>
-          </sc-for>
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center">
+          <div style="font-size: 10px; color: #AEB9D6; height: 12px; line-height: 12px">Бижутерия</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; padding: 6px; border-radius: 10px; border: 1px dashed #4A5677">
+            <sc-for list="{{jewelry}}" as="s" hint-placeholder-count="3">
+              <button type="button" aria-label="{{s.name}}" style="{{s.style}}">{{s.name}}</button>
+            </sc-for>
+          </div>
         </div>
       </div>
       <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
@@ -63,7 +77,7 @@ body{margin:0}
       </div>
       <div style="display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px; border-radius: 8px; background: #22304A; font-size: 12px; color: #D5DCEE">
         <span style="width: 8px; height: 8px; border-radius: 50%; background: #FF4D4D"></span>
-        Новое кольцо лучше надетого: +7% урона удара
+        Новый топор в левую руку: загорятся 3 скилла Викинга
         <div style="flex: 1"></div>
         <span style="color: #F0B43C; font-weight: 500">Сравнить</span>
       </div>
@@ -76,20 +90,39 @@ body{margin:0}
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":786}}'>
 class Component extends DCLogic {
   renderVals() {
-    const rarity = { common: '#9AA3B5', magic: '#4FC277', rare: '#5B9BFF', epic: '#B07CFF', legend: '#FF9A3C' };
+    const rarity = {
+      simple: '#9AA3B5', sturdy: '#E6E9F0', uncommon: '#4FC277', rare: '#5B9BFF', epic: '#B07CFF',
+      legend: '#FF9A3C', mythic: '#FF5A5A', ancient: '#3FE0D0'
+    };
+    const rainbow = 'linear-gradient(#26304A, #26304A) padding-box, linear-gradient(135deg, #FF5A5A, #F0B43C, #4FC277, #5B9BFF, #B07CFF) border-box';
+    const frame = (r) => r === 'rift'
+      ? 'border: 2px solid transparent; background: ' + rainbow
+      : 'border: 2px solid ' + rarity[r] + '; background: #26304A';
     const slot = (name, r) => ({
       name,
-      style: 'width: 56px; height: 56px; border-radius: 8px; border: 2px solid ' + rarity[r] + '; background: #26304A; color: #D5DCEE; font-family: inherit; font-size: 11px; padding: 0'
+      style: 'width: 56px; height: 56px; border-radius: 8px; ' + frame(r) + '; color: #D5DCEE; font-family: inherit; font-size: 11px; padding: 0'
+    });
+    const ring = (name, r) => ({
+      name,
+      style: 'width: 52px; height: 52px; border-radius: 50%; ' + frame(r) + '; color: #D5DCEE; font-family: inherit; font-size: 10px; padding: 0'
+    });
+    const hand = (handName, name, gem, r, rarityName) => ({
+      hand: handName, name, gem, rarity: rarityName, rarityColor: rarity[r],
+      style: 'flex: 1; height: 60px; border-radius: 8px; ' + frame(r) + '; font-family: inherit; padding: 4px 8px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; text-align: left'
     });
     return {
-      left: [slot('Шлем', 'rare'), slot('Доспех', 'magic'), slot('Перчатки', 'epic'), slot('Сапоги', 'common')],
-      right: [slot('Оружие', 'legend'), slot('Амулет', 'rare'), slot('Кольцо', 'magic'), slot('Кольцо', 'epic')],
+      armor: [slot('Шлем', 'rare'), slot('Доспех', 'uncommon'), slot('Перчатки', 'epic'), slot('Сапоги', 'sturdy')],
+      hands: [
+        hand('Правая рука', 'Катана', '#FF6B5A', 'legend', 'Легендарная'),
+        hand('Левая рука', 'Маятник', '#5B9BFF', 'epic', 'Эпическая')
+      ],
+      jewelry: [ring('Амулет', 'mythic'), ring('Кольцо', 'uncommon'), ring('Кольцо', 'rift')],
       stats: [
         { label: 'Урон за удар', value: '1.24K', color: '#EEF2FF' },
         { label: 'DPS сейчас', value: '8.9K', color: '#F0B43C' },
         { label: 'Крит', value: '18% ×2.5', color: '#EEF2FF' },
         { label: 'Фокус', value: '×2.1 / 3', color: '#FFB4A8' },
-        { label: 'Энергия', value: '62 / 100', color: '#8FD3FF' },
+        { label: 'Вихри', value: '3 / 5', color: '#8FD3FF' },
         { label: 'Золото', value: '+35%', color: '#F0B43C' }
       ]
     };
