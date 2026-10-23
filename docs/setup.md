@@ -9,7 +9,7 @@
 |---|---|---|---|
 | **Git for Windows 2.56** (Git LFS входит в установщик) | [git-scm.com](https://git-scm.com/install/windows), прямая: [Git-2.56.0.2-64-bit.exe](https://github.com/git-for-windows/git/releases/download/v2.56.0.windows.2/Git-2.56.0.2-64-bit.exe) | ~70 МБ | ~0.4 ГБ |
 | **Unity Hub** | [unity.com/download](https://unity.com/download) | ~0.1 ГБ | ~0.4 ГБ |
-| **Unity 6.3 LTS** (ставится через Hub) + модуль **Windows Build Support (IL2CPP)** | через Unity Hub → Installs → Install Editor → 6000.3 LTS | ~3–5 ГБ | **~6–10 ГБ** |
+| **Unity 6.6** (ставится через Hub) + модуль **Windows Build Support (IL2CPP)** | через Unity Hub → Installs → Install Editor → 6000.6.6f1 (версия проекта) | ~3–5 ГБ | **~6–10 ГБ** |
 | **Visual Studio 2026 Community** (текущая версия; Unity нужен VS 2019 или новее с C++) | [visualstudio.microsoft.com/downloads](https://visualstudio.microsoft.com/downloads/) | ~5–10 ГБ | **~15–25 ГБ** (Microsoft: обычная установка 20–50 ГБ) |
 | **Blender 5.2.2 LTS** (если Blender MCP стоит на 4.5 LTS, оставить её) | [blender-5.2.2-windows-x64.msi](https://www.blender.org/download/release/Blender5.2/blender-5.2.2-windows-x64.msi/) | 348 МБ | ~1 ГБ |
 | **uv** (для MCP for Unity) | `winget install --id=astral-sh.uv -e` ([документация](https://docs.astral.sh/uv/getting-started/installation/)) | ~20 МБ | ~0.1 ГБ |
@@ -27,7 +27,7 @@
 
 **Итого: ~30–45 ГБ** на программы и проект. Лучше держать **60 ГБ свободных на SSD**: Unity и Visual Studio заметно медленнее на HDD.
 
-**Порядок установки:** Git → Visual Studio (с наборами выше) → Unity Hub → Unity 6.3 LTS с модулем IL2CPP → Blender → uv → Claude Code → Steam → MCP for Unity (после создания проекта, roadmap 0.2).
+**Порядок установки:** Git → Visual Studio (с наборами выше) → Unity Hub → Unity 6.6 с модулем IL2CPP → Blender → uv → Claude Code → Steam → MCP for Unity (после создания проекта, roadmap 0.2).
 
 | Что ещё | Зачем | Примечание |
 |---|---|---|

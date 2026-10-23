@@ -1,6 +1,6 @@
 # Первое сообщение агенту (скопировать в чат)
 
-Привет! Мы делаем фоновую кооп-игру для Windows на Unity. Вся документация лежит в папке docs/, а правила работы — в CLAUDE.md в корне репозитория. Прочитай CLAUDE.md, затем docs/roadmap.md, docs/engine-spec.md и docs/setup.md (что должно быть установлено: Unity 6.3 LTS, Visual Studio, Git LFS). Unity MCP подключается по docs/mcp-setup.md.
+Привет! Мы делаем фоновую кооп-игру для Windows на Unity. Вся документация лежит в папке docs/, а правила работы — в CLAUDE.md в корне репозитория. Прочитай CLAUDE.md, затем docs/roadmap.md, docs/engine-spec.md и docs/setup.md (что должно быть установлено: Unity 6.6, Visual Studio, Git LFS). Unity MCP подключается по docs/mcp-setup.md.
 
 Порядок работы:
 1. Бери задачи из docs/roadmap.md строго по порядку, по одной. Начни с фазы 0 (задачи 0.1–0.6).

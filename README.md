@@ -1,11 +1,11 @@
-# Keystroke Titans (рабочее название)
+# Rift Warden
 
 Фоновая кооп-игра для Windows на Unity: бой идёт в маленькой полоске у панели задач, урон дают нажатия клавиш, движение мыши и клики в любых приложениях. Сеттинг — яркое фэнтези в духе Tap Titans 2, билды как в Path of Exile.
 
 ## С чего начать
 - `CLAUDE.md` — правила работы для ИИ-агента.
 - `docs/roadmap.md` — план задач с быстрыми тестами.
-- `docs/setup.md` — что установить: Git с LFS, Unity 6.3 LTS с модулем IL2CPP, Visual Studio.
+- `docs/setup.md` — что установить: Git с LFS, Unity 6.6 с модулем IL2CPP, Visual Studio.
 - `docs/concept.md` — дизайн игры целиком.
 
 ## Клонирование
