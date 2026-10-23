@@ -172,7 +172,7 @@ namespace Game.Core.Party
 
         public bool ApplyEnemyEffect(int effectId, double damageTaken, double seconds)
         {
-            if (damageTaken <= 0 || seconds <= 0 || !Started)
+            if (!(damageTaken > 0) || !(seconds > 0) || !Started)
                 return false;
             var ticks = Ticks(seconds);
             var free = NoSlot;

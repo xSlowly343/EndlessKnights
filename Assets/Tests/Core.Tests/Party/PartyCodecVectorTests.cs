@@ -1,0 +1,84 @@
+using System;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using Game.Core.Party;
+using Game.Core.Party.Wire;
+using Game.Core.Tests.Sim;
+using NUnit.Framework;
+
+namespace Game.Core.Tests.Party
+{
+    public class PartyCodecVectorTests
+    {
+        private static readonly string VectorPath = Path.Combine("Server", "test-vectors", "party-codec.json");
+        private readonly byte[] _buffer = new byte[PartyCodec.MaxPacketBytes];
+
+        [Test]
+        public void ServerCodecVectorsMatchTheCoreCodec()
+        {
+            var json = Build();
+            var path = PartyVectorTests.RepoFile(VectorPath);
+            if (Environment.GetEnvironmentVariable(PartyVectorTests.UpdateVariable) == "1")
+            {
+                File.WriteAllText(path, json);
+                Assert.Pass("vectors written to " + path);
+            }
+            Assert.That(File.Exists(path), Is.True, $"run the tests with {PartyVectorTests.UpdateVariable}=1 to create {VectorPath}");
+            Assert.That(File.ReadAllText(path).Replace("\r\n", "\n"), Is.EqualTo(json), $"vectors are stale, run the tests with {PartyVectorTests.UpdateVariable}=1");
+        }
+
+        private string Build()
+        {
+            var encounter = new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 777);
+            encounter.Join(76561198000000001UL);
+            encounter.Join(76561198000000002UL);
+            encounter.SetHeroClass(0, 9);
+            encounter.SetHeroClass(1, 6);
+            encounter.ApplyDamage(0, 1, 0.75);
+            encounter.ApplyEnemyEffect(-123456, 0.15, 10);
+            encounter.ApplyEnemyEffect(42, 0.25, 4);
+            for (var i = 0; i < 7; i++)
+                encounter.Advance();
+            encounter.SetPeaceful(1, true);
+
+            var builder = new StringBuilder("{\n  \"version\": 1,\n");
+            builder.Append("  \"seed\": \"777\",\n");
+            builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"damage 0 1 0.75\", \"effect -123456 0.15 10\", \"effect 42 0.25 4\", \"advance 7\", \"peaceful 1 true\"],\n");
+            builder.Append("  \"encode\": {\n");
+            builder.Append("    \"encounterState\": { \"sequence\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, EncounterStateMessage.Of(encounter, 5)))).Append("\" },\n");
+            builder.Append("    \"roster\": { \"version\": 3, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, RosterMessage.Of(encounter, 3)))).Append("\" },\n");
+            var killed = new PartyEvent(PartyEventKind.EnemyKilled, 12, 4, PartyEnemyKind.Boss, 0.625, 0.375);
+            builder.Append("    \"enemyKilled\": { \"tick\": 12, \"enemyId\": 4, \"enemyKind\": 1, \"shares\": [0.625, 0.375, 0, 0], \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, EnemyKilledMessage.Of(killed)))).Append("\" },\n");
+            builder.Append("    \"moment\": { \"kind\": 4, \"tick\": 300, \"enemyId\": 11, \"enemyKind\": 1, \"bossTicksLeft\": 0, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new EncounterMomentMessage { Kind = PartyEventKind.BossFailed, Tick = 300, EnemyId = 11, BossTicksLeft = 0 }))).Append("\" }\n");
+            builder.Append("  },\n  \"decode\": {\n");
+            builder.Append("    \"hello\": { \"heroClass\": 9, \"stage\": 1234567890123, \"sharePerSecondCap\": 2.5, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new HelloMessage { HeroClass = 9, Stage = 1234567890123, SharePerSecondCap = 2.5 }))).Append("\" },\n");
+            builder.Append("    \"damageBatch\": { \"sequence\": 17, \"enemyId\": 3, \"keys\": 0.5, \"mouse\": 0.25, \"skills\": 0.125, \"dot\": 0.0625, \"summons\": 0.03125, \"hits\": 9, \"crits\": 2, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new DamageBatchMessage { Sequence = 17, EnemyId = 3, Keys = 0.5, Mouse = 0.25, Skills = 0.125, Dot = 0.0625, Summons = 0.03125, Hits = 9, Crits = 2 }))).Append("\" },\n");
+            builder.Append("    \"castEffect\": { \"effectId\": -99, \"onEnemy\": true, \"strength\": 0.15, \"seconds\": 10, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new CastEffectMessage { EffectId = -99, OnEnemy = true, Strength = 0.15, Seconds = 10 }))).Append("\" },\n");
+            builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new PresenceMessage { Presence = PartyPresence.Peaceful, Stage = 77, Resource = 12.5f }))).Append("\" },\n");
+            var offer = new PartyOfferMessage { Slot = 0 };
+            offer.SetStat(0, 0.3);
+            offer.SetAura(0, new OfferedAura { GemNetId = 5, Strength = 1.5f, TicksLeft = 200 });
+            var relayed = offer;
+            relayed.Slot = 2;
+            builder.Append("    \"offerRelay\": { \"slot\": 2, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, offer)))
+                .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, relayed))).Append("\" }\n");
+            builder.Append("  }\n}\n");
+            return builder.ToString();
+        }
+
+        private string Hex(int length)
+        {
+            var text = new StringBuilder(length * 2);
+            for (var i = 0; i < length; i++)
+                text.Append(_buffer[i].ToString("x2", CultureInfo.InvariantCulture));
+            return text.ToString();
+        }
+    }
+}

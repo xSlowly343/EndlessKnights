@@ -14,6 +14,7 @@ namespace Game.Core.Party
         private readonly uint[] _lastSequence = new uint[PartyRules.MaxSlots];
         private readonly uint[] _lastEnemy = new uint[PartyRules.MaxSlots];
         private readonly double[] _lastTotal = new double[PartyRules.MaxSlots];
+        private readonly int[] _messagesThisSecond = new int[PartyRules.MaxSlots];
         private readonly PartyPresence[] _sentPresence = new PartyPresence[PartyRules.MaxSlots];
         private PartyRules _rules;
         private uint _stateSequence;
@@ -40,6 +41,8 @@ namespace Game.Core.Party
             while (_transport.TryReceive(_in, out var length, out var from))
                 Handle(from, length);
             _encounter.Advance();
+            if (_encounter.Tick % GameLoop.TicksPerSecond == 0)
+                System.Array.Clear(_messagesThisSecond, 0, _messagesThisSecond.Length);
             WatchSilence();
             WatchPresence();
             Flush();
@@ -58,7 +61,7 @@ namespace Game.Core.Party
                     _rosterChanged = true;
                 }
             }
-            if (slot == PartyEncounter.NoSlot)
+            if (slot == PartyEncounter.NoSlot || ++_messagesThisSecond[slot] > _rules.MaxMessagesPerSecond)
                 return;
             Heard(slot);
             switch (kind)

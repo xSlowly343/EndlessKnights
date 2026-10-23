@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Party
   ""maxMembers"": 4,
   ""hpPerExtraPlayer"": 1.0,
   ""presence"": { ""restAfterSeconds"": 180, ""disconnectGraceSeconds"": 30, ""rejoinWindowSeconds"": 300, ""silenceSeconds"": 6 },
-  ""packets"": { ""damageBatchSeconds"": 0.5, ""stateBroadcastSeconds"": 0.5, ""presenceSeconds"": 5 },
+  ""packets"": { ""damageBatchSeconds"": 0.5, ""stateBroadcastSeconds"": 0.5, ""presenceSeconds"": 5, ""maxMessagesPerSecond"": 40 },
   ""lateDamageSeconds"": 1.0,
   ""maxEnemyDamageTaken"": 1.0,
   ""buffs"": { ""selfShare"": 1.0, ""offerSeconds"": 1.0, ""stats"": [{ ""from"": ""partyDamage"", ""to"": ""damage"", ""kind"": ""increased"" }] }
