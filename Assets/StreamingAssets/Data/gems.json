@@ -3,12 +3,54 @@
   "levels": { "max": 20, "effectPerLevel": 0.02, "experience": { "curve": "exp", "base": 100, "rate": 1.3 } },
   "gems": [
     {
+      "id": "shield_bash",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Удар щитом", "en": "Shield Bash" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 4,
+      "effect": { "type": "strike", "multiplier": 4 }
+    },
+    {
+      "id": "odins_fury",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Ярость Одина", "en": "Odin's Fury" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 50 },
+      "cooldownSeconds": 25,
+      "effect": { "type": "strike", "multiplier": 5 }
+    },
+    {
+      "id": "song",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Песня", "en": "Song" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 5,
+      "durationSeconds": 20,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.15 }, { "stat": "gold", "kind": "increased", "value": 0.10 }] }
+    },
+    {
+      "id": "guitar_solo",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Гитарное соло", "en": "Guitar Solo" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 80 },
+      "cooldownSeconds": 35,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1.0, "tags": ["Aura"] }, { "stat": "keyHitLightning", "kind": "flat", "value": 0.2 }] }
+    },
+    {
       "id": "stenography",
       "kind": "skill",
       "color": "red",
       "name": { "ru": "Стенография", "en": "Stenography" },
       "tags": ["Keyboard", "Skill"],
-      "cost": { "energy": 40 },
+      "cost": { "resource": 40 },
       "cooldownSeconds": 20,
       "effect": { "type": "chainHits", "hits": 60, "nextEnemyShare": 0.5 }
     },
@@ -18,8 +60,8 @@
       "color": "blue",
       "name": { "ru": "Марш", "en": "March" },
       "tags": ["Aura", "Skill"],
-      "cost": { "notes": 4 },
-      "cooldownSeconds": 0,
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 5,
       "durationSeconds": 30,
       "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25 }] }
     },

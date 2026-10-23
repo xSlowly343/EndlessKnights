@@ -8,8 +8,8 @@ namespace Game.Editor
 {
     public static class ProjectConfigurator
     {
-        public const string CompanyName = "EndlessKnights";
-        public const string ProductName = "Endless Knights";
+        public const string CompanyName = "RiftWarden";
+        public const string ProductName = "Rift Warden";
         private const string AppIconPath = "Assets/Game/Art/Icons/AppIcon.png";
 
         [MenuItem("Game/Apply Project Settings")]

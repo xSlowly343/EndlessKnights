@@ -4,7 +4,6 @@ namespace Game.Core.Sim
     {
         None,
         Keyboard,
-        Click,
         Mouse,
         Skill
     }

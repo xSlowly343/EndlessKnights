@@ -106,17 +106,17 @@ namespace Game.Core.Build
             foreach (var gem in _state.OwnedGems)
             {
                 if (gem.Kind == GemKind.Trigger)
-                    AttachToFirstEnergySkill(gem);
+                    AttachToFirstPaidSkill(gem);
             }
             return true;
         }
 
-        private void AttachToFirstEnergySkill(GemDef trigger)
+        private void AttachToFirstPaidSkill(GemDef trigger)
         {
             for (var index = 0; index < _state.Skills.Count; index++)
             {
                 var slot = _state.Skills[index];
-                if (slot.Trigger == null && slot.Def.EnergyCost > 0)
+                if (slot.Trigger == null && slot.Def.ResourceCost > 0)
                 {
                     SetTrigger(index, trigger);
                     return;

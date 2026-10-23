@@ -41,6 +41,7 @@ namespace Game.Core.Sim
                 keys,
                 snapshot.EnterDowns,
                 clicks,
+                snapshot.LeftClicks,
                 snapshot.RightClicks,
                 snapshot.MiddleClicks,
                 snapshot.WheelTicks,
@@ -51,7 +52,7 @@ namespace Game.Core.Sim
         }
 
         private static int MouseButtonHits(in InputSnapshot snapshot) =>
-            snapshot.LeftClicks + snapshot.RightClicks + snapshot.MiddleClicks + snapshot.WheelTicks;
+            snapshot.LeftClicks + snapshot.RightClicks + snapshot.MiddleClicks;
 
         private static double Scale(double amount, double ratePerSecond, in RateCap cap)
         {

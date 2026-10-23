@@ -24,6 +24,40 @@ namespace Game.Core.Save
 
         public string BackupPath(int number) => MainPath + ".bak" + number;
 
+        public bool AdoptFrom(string previousDirectory)
+        {
+            if (HasAnySave() || !System.IO.Directory.Exists(previousDirectory))
+                return false;
+            var previous = new SaveStore(previousDirectory);
+            if (!previous.HasAnySave())
+                return false;
+            System.IO.Directory.CreateDirectory(Directory);
+            foreach (var (from, to) in previous.PairedCandidates(this))
+            {
+                if (File.Exists(from))
+                    File.Copy(from, to);
+            }
+            return true;
+        }
+
+        private bool HasAnySave()
+        {
+            foreach (var path in Candidates())
+            {
+                if (File.Exists(path))
+                    return true;
+            }
+            return false;
+        }
+
+        private IEnumerable<(string From, string To)> PairedCandidates(SaveStore target)
+        {
+            yield return (MainPath, target.MainPath);
+            yield return (TempPath, target.TempPath);
+            for (var number = 1; number <= BackupCount; number++)
+                yield return (BackupPath(number), target.BackupPath(number));
+        }
+
         public void Write(string text)
         {
             if (File.Exists(MainPath) && ShouldRotateBackups())

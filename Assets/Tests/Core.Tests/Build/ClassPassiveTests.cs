@@ -16,32 +16,40 @@ namespace Game.Core.Tests.Build
             new GameLoop(TestWorld.Real, new FakeInputSource(), state, hero ?? new StatSheet());
 
         [Test]
-        public void SwordsmanStartGivesSeriesAndCritChance()
+        public void RoninStartGivesLongerComboAndKeyCrits()
         {
-            var loop = Real(new GameState { Class = HeroClass.Swordsman });
+            var loop = Real(new GameState { Class = HeroClass.Ronin });
 
             Assert.That(loop.Hero.Value(CombatStats.CritChance, 1, StatTags.Keyboard), Is.EqualTo(1.10).Within(1e-9));
-            Assert.That(loop.Hero.Value(new StatId("seriesGain"), 1), Is.EqualTo(1.15).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.ComboTimeoutSeconds, 1), Is.EqualTo(1.20).Within(1e-9));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100));
         }
 
         [Test]
-        public void BardStartGivesStrongerLongerSongsAndPartyShare()
+        public void VikingStartGivesMoreRageAndKeyDamage()
         {
-            var loop = Real(new GameState { Class = HeroClass.Bard });
+            var loop = Real(new GameState { Class = HeroClass.Viking });
 
-            Assert.That(loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura), Is.EqualTo(1.10).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1.10).Within(1e-9));
-            Assert.That(loop.Hero.Value(new StatId("partyContribution"), 0), Is.EqualTo(0.05).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1.15).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(110).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(100));
         }
 
         [Test]
-        public void WandererStartGivesALittleOfEverything()
+        public void MetalheadStartGivesStrongerLongerSongs()
         {
-            var loop = Real(new GameState { Class = HeroClass.Wanderer });
+            var loop = Real(new GameState { Class = HeroClass.Metalhead });
 
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(105).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Click), Is.EqualTo(105).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura), Is.EqualTo(1.10).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1.10).Within(1e-9));
+        }
+
+        [Test]
+        public void NomadStartGivesALittleOfEverything()
+        {
+            var loop = Real(new GameState { Class = HeroClass.Nomad });
+
+            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1.05).Within(1e-9));
             Assert.That(loop.Hero.Value(new StatId("damagePerSector"), 0), Is.EqualTo(0.03).Within(1e-9));
         }
 
@@ -49,9 +57,9 @@ namespace Game.Core.Tests.Build
         public void OnlyTheOwnStartGivesItsPassive()
         {
             var tree = TestWorld.Real.Tree;
-            var swordsman = new TreeAllocation("swordsman").Modifiers(tree);
+            var ronin = new TreeAllocation("ronin").Modifiers(tree);
 
-            Assert.That(swordsman, Is.EquivalentTo(tree.StartOf("swordsman")!.Modifiers));
+            Assert.That(ronin, Is.EquivalentTo(tree.StartOf("ronin")!.Modifiers));
         }
 
         [Test]
@@ -91,7 +99,7 @@ namespace Game.Core.Tests.Build
             hero.Add(new Modifier(CombatStats.ComboTimeoutSeconds, ModifierKind.Flat, 0.5));
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Swordsman }), hero);
+            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Ronin }), hero);
             loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Normal, BigNumber.Create(1, 40));
             var rules = TestWorld.Data.Combat.Classes;
 

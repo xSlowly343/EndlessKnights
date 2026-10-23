@@ -22,8 +22,8 @@ function Invoke-Unity([string[]]$Arguments, [string]$LogName) {
 
 if (-not $UnityPath) { $UnityPath = Find-UnityEditor }
 $buildFolder = Join-Path $projectPath 'Builds'
-if (Get-Process -Name 'EndlessKnights' -ErrorAction SilentlyContinue | Where-Object { $_.Path -and $_.Path.StartsWith($buildFolder, [StringComparison]::OrdinalIgnoreCase) }) {
-    throw 'EndlessKnights.exe is running and locks the build folder. Close the game (tray -> Exit) and run the build again.'
+if (Get-Process -Name 'RiftWarden' -ErrorAction SilentlyContinue | Where-Object { $_.Path -and $_.Path.StartsWith($buildFolder, [StringComparison]::OrdinalIgnoreCase) }) {
+    throw 'RiftWarden.exe is running and locks the build folder. Close the game (tray -> Exit) and run the build again.'
 }
 New-Item -ItemType Directory -Force $logDirectory | Out-Null
 
@@ -35,4 +35,4 @@ if ($Tests) {
 
 $stopwatch = [Diagnostics.Stopwatch]::StartNew()
 Invoke-Unity @('-quit', '-executeMethod', 'Game.Editor.WindowsBuild.Build') 'build.log'
-Write-Host ("Build succeeded in {0:N0} s: {1}" -f $stopwatch.Elapsed.TotalSeconds, (Join-Path $projectPath 'Builds/Windows/EndlessKnights.exe'))
+Write-Host ("Build succeeded in {0:N0} s: {1}" -f $stopwatch.Elapsed.TotalSeconds, (Join-Path $projectPath 'Builds/Windows/RiftWarden.exe'))

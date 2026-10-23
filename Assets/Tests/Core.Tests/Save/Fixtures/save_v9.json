@@ -1,0 +1,122 @@
+{
+  "checksum": "bb502338e26f159ef032cf966b2195d8c5c9740e9bb1e859d6fbe22993d82f88",
+  "payload": {
+    "clock": {
+      "bootId": 46,
+      "highestWallUnixMs": 1761500000000,
+      "monotonicMs": 5000000,
+      "wallUnixMs": 1761500000000
+    },
+    "savedAt": 1761500000000,
+    "state": {
+      "artifacts": [],
+      "ascendancy": {
+        "activities": [],
+        "allocated": [],
+        "lastFreeChangeUnixMs": 0,
+        "subclass": null
+      },
+      "carry": {
+        "clicks": 0.5,
+        "keys": 0,
+        "mousePx": 0
+      },
+      "chainDamage": "0e0",
+      "enemy": {
+        "hp": "3.620753582799984e2",
+        "id": "mushroom_golem",
+        "maxHp": "3.620753582799984e2",
+        "type": "normal"
+      },
+      "gold": {
+        "runEarned": "0e0",
+        "wallet": "0e0"
+      },
+      "hero": {
+        "class": "bard",
+        "combo": 0,
+        "comboIdleTicks": 0,
+        "energy": 55,
+        "focus": 1,
+        "focusMultiplier": 1,
+        "idleTicks": 0,
+        "keyHits": 0,
+        "level": 12,
+        "macroRhythmTicks": 0,
+        "notes": 2,
+        "strikeLevel": 0,
+        "xp": 0
+      },
+      "inputStats": {
+        "keys": "0",
+        "leftClicks": "0",
+        "middleClicks": "0",
+        "mouseMeters": 0,
+        "rightClicks": "0"
+      },
+      "ownedGems": [
+        "march",
+        "lull",
+        "cast_on_enter"
+      ],
+      "presets": {
+        "active": 0,
+        "otherSkills": [],
+        "otherTree": {
+          "allocated": [],
+          "lastFreeResetUnixMs": 0,
+          "pointsEarned": 0,
+          "startClass": "bard"
+        }
+      },
+      "prestige": {
+        "count": 0,
+        "echo": "0e0",
+        "echoEarned": "0e0"
+      },
+      "recentDps": "0e0",
+      "rng": [
+        "044c3cd7f43c661c",
+        "95ab0cc7e9f0076f"
+      ],
+      "skills": [
+        {
+          "activeTicks": 0,
+          "cooldownTicks": 0,
+          "gem": "march",
+          "hitsLeft": 0,
+          "trigger": null
+        },
+        {
+          "activeTicks": 0,
+          "cooldownTicks": 0,
+          "gem": "lull",
+          "hitsLeft": 0,
+          "trigger": null
+        }
+      ],
+      "stage": {
+        "bossFailsInARow": 0,
+        "bossTicksLeft": 0,
+        "current": 40,
+        "farmKills": 0,
+        "farming": false,
+        "highest": 40,
+        "kills": 0,
+        "record": 40
+      },
+      "tick": 0,
+      "tree": {
+        "allocated": [
+          {
+            "id": "bard_ring_0"
+          }
+        ],
+        "lastFreeResetUnixMs": 0,
+        "pointsEarned": 11,
+        "startClass": "bard"
+      }
+    },
+    "version": 9
+  }
+}

@@ -32,10 +32,10 @@ namespace Game.Editor
 
             var store = GameDataFiles.TryLoadAll() ?? throw new InvalidOperationException("Game data did not load.");
             var data = store.Current;
-            var loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Swordsman }, new StatSheet());
+            var loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Viking }, new StatSheet());
             loop.State.Tree.PointsEarned = 5;
             loop.State.Gold = BigNumber.FromDouble(12345);
-            loop.AllocateNode("swordsman_ring_1");
+            loop.AllocateNode("ronin_ring_1");
 
             var panels = PanelView.Create();
             panels.Bind(loop, data.Tree);
@@ -43,7 +43,7 @@ namespace Game.Editor
             navigator.SelectTab(PanelSection.Tree);
             var frame = ShowPanel(panels, navigator);
 
-            var target = panels.Tree.WorldPointOf(data.Tree["swordsman_ring_1"]);
+            var target = panels.Tree.WorldPointOf(data.Tree["ronin_ring_1"]);
             panels.TryClick(target);
             panels.Release(target);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-tree.png"));

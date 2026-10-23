@@ -167,7 +167,7 @@ namespace Game.Core.Tests.Ui
 
             Assert.That(navigator.Bar[4], Is.EqualTo(PanelSection.Portal));
             Assert.That(navigator.More, Does.Contain(PanelSection.Party));
-            Assert.That(navigator.More, Does.Not.Contain(PanelSection.Portal));
+            Assert.That(navigator.More, Has.No.Member(PanelSection.Portal));
         }
 
         [Test]

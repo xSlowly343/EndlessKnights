@@ -38,19 +38,21 @@ namespace Game.Core.Sim.Headless
         }
 
         private static StatTags PlayedTags(HeroClass heroClass) =>
-            heroClass == HeroClass.Bard ? StatTags.Click | StatTags.Aura : StatTags.Keyboard;
+            heroClass == HeroClass.Metalhead ? StatTags.Keyboard | StatTags.Aura : StatTags.Keyboard;
 
         private static string MainAttribute(HeroClass heroClass)
         {
             switch (heroClass)
             {
-                case HeroClass.Ranger:
-                case HeroClass.Bard:
-                case HeroClass.Swordsman:
+                case HeroClass.Oracle:
+                case HeroClass.Amazon:
+                case HeroClass.Stormweaver:
+                case HeroClass.Captain:
                     return "dexterity";
-                case HeroClass.Sorcerer:
-                case HeroClass.Witch:
-                case HeroClass.Priest:
+                case HeroClass.Gravedigger:
+                case HeroClass.Clockmaker:
+                case HeroClass.Voodoo:
+                case HeroClass.Moonshiner:
                     return "intelligence";
                 default:
                     return "strength";
@@ -137,7 +139,7 @@ namespace Game.Core.Sim.Headless
                 case TreeNodeType.Mastery:
                     return BestOption(node);
                 default:
-                    return (_score.Of(node.Modifiers), 0);
+                    return (_score.Of(node.ModifiersFor(_loop.State.Tree.StartClass)), 0);
             }
         }
 
@@ -146,7 +148,7 @@ namespace Game.Core.Sim.Headless
             var best = (Score: double.MinValue, Option: 0);
             for (var i = 0; i < node.Options.Count; i++)
             {
-                var score = _score.Of(node.Options[i]);
+                var score = _score.Of(node.OptionFor(i, _loop.State.Tree.StartClass));
                 if (score > best.Score)
                     best = (score, i);
             }

@@ -8,7 +8,8 @@ namespace Game.Core.Stats
         private static readonly Dictionary<string, string> Labels = new Dictionary<string, string>
         {
             ["damage"] = "урон",
-            ["energyGain"] = "набор Энергии",
+            ["resourceGain"] = "накопление ресурса",
+            ["keyHitLightning"] = "молния от каждого удара",
             ["offlineGold"] = "золото офлайн",
             ["gold"] = "золото",
             ["comboTimeoutSeconds"] = "окно комбо",
@@ -43,7 +44,7 @@ namespace Game.Core.Stats
             ["windupGain"] = "набор Замаха",
             ["windupKeptAfterCrush"] = "Замах после Сокрушения",
             ["partyGold"] = "золото группы",
-            ["partyEnergy"] = "Энергия группы",
+            ["partyResource"] = "ресурс союзникам",
             ["partyDamage"] = "урон группы",
             ["partyCritChance"] = "шанс крита группы",
             ["partyCritMultiplier"] = "множитель крита группы",
@@ -77,9 +78,39 @@ namespace Game.Core.Stats
             ["damagePerSector"] = "урон за сектор",
             ["concurrentBlessings"] = "благословений одновременно",
             ["concurrentAuras"] = "аур одновременно",
-            ["melodyNotes"] = "нот в мелодии",
             ["arrowDamage"] = "урон стрел",
-            ["bossTimerSeconds"] = "таймер босса"
+            ["bossTimerSeconds"] = "таймер босса",
+            ["keyStrikeEvery"] = "нажатий до сильного удара",
+            ["keyStrikeMultiplier"] = "сила сильного удара",
+            ["rageBurnDelaySeconds"] = "задержка сгорания Ярости",
+            ["chainTargets"] = "целей цепной молнии",
+            ["overloadMultiplier"] = "сила Перегрузки",
+            ["overloadDisabled"] = "Перегрузка отключена",
+            ["songMouseSeconds"] = "продление Песни от мыши",
+            ["readingGain"] = "скорость чтения знаков",
+            ["auraReserve"] = "резерв аур",
+            ["bannerAuraBonus"] = "бонус аур у знамени",
+            ["flickCurseBonus"] = "бонус проклятий от росчерка",
+            ["bossTimerSlow"] = "замедление таймера босса",
+            ["skillCooldown"] = "перезарядка скиллов",
+            ["loopShare"] = "доля повтора Петли",
+            ["poisonStacks"] = "предел стаков яда",
+            ["pressureDecay"] = "сброс Давления",
+            ["overheatSeconds"] = "время Перегрева",
+            ["overheatDisabled"] = "Перегрев отключён",
+            ["minionCount"] = "призывов одновременно",
+            ["minionSpeed"] = "скорость призывов",
+            ["minionSeconds"] = "длительность призывов",
+            ["minionExplode"] = "взрыв призыва в конце",
+            ["cannonCount"] = "пушек одновременно",
+            ["resourceMax"] = "предел ресурса",
+            ["skillSlots"] = "слотов скиллов",
+            ["mouseCountsAsKeys"] = "мышь считается клавишами",
+            ["damagePerKill"] = "урон за убийство подряд",
+            ["idleKillPenalty"] = "потеря урона в Затишье",
+            ["critDamageBuff"] = "урон после крита",
+            ["firstHitsBonus"] = "урон первых ударов по врагу",
+            ["laterHitsPenalty"] = "урон следующих ударов"
         };
 
         private static readonly HashSet<string> FlatPercent = new HashSet<string>
@@ -87,7 +118,8 @@ namespace Game.Core.Stats
             "critChance", "critMultiplier", "comboStrikeMultiplier", "crushCleave", "crushMultiplier", "damagePerSector",
             "doomedCritChance", "doomedCritMultiplier", "dotSpread", "doubleStrike", "flareMultiplier", "flareSplash",
             "focusMax", "partyContribution", "partyCritChance", "partyCritMultiplier", "pierceShare", "volleySplash",
-            "windupKeptAfterCrush", "gemDrop"
+            "windupKeptAfterCrush", "gemDrop", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",
+            "laterHitsPenalty", "minionExplode"
         };
 
         private static readonly Dictionary<StatTags, string> TagLabels = new Dictionary<StatTags, string>

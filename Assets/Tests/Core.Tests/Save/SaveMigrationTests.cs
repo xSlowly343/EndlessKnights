@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Game.Core.Content;
 using Game.Core.Content.Json;
 using Game.Core.Save;
@@ -24,7 +25,7 @@ namespace Game.Core.Tests.Save
             var save = SaveCodec.Decode(OldSave(), TestWorld.Data);
 
             Assert.That(save.StoredVersion, Is.EqualTo(1));
-            Assert.That(save.State.Class, Is.EqualTo(HeroClass.Bard));
+            Assert.That(save.State.Class, Is.EqualTo(HeroClass.Metalhead));
             Assert.That(save.State.Stage, Is.EqualTo(46));
             Assert.That(save.State.Enemy!.Id, Is.EqualTo("boar_king"));
             Assert.That(save.State.Gold.ToDouble(), Is.EqualTo(18145.01873863374).Within(1e-6));
@@ -54,9 +55,9 @@ namespace Game.Core.Tests.Save
             var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v4.json"), TestWorld.Data);
 
             Assert.That(save.StoredVersion, Is.EqualTo(4));
-            Assert.That(save.State.Class, Is.EqualTo(HeroClass.Bard));
+            Assert.That(save.State.Class, Is.EqualTo(HeroClass.Metalhead));
             Assert.That(save.State.HeroLevel, Is.EqualTo(15));
-            Assert.That(save.State.Tree.StartClass, Is.EqualTo("bard"));
+            Assert.That(save.State.Tree.StartClass, Is.EqualTo("metalhead"));
             Assert.That(save.State.Tree.PointsSpent, Is.EqualTo(0));
             Assert.That(save.State.Tree.MasteryChoices, Is.Empty);
             Assert.That(save.State.OwnedGems.Count, Is.EqualTo(3));
@@ -81,11 +82,59 @@ namespace Game.Core.Tests.Save
         {
             var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v6.json"), TestWorld.Data);
 
-            Assert.That(save.State.Class, Is.EqualTo(HeroClass.Swordsman));
-            Assert.That(save.State.Tree.StartClass, Is.EqualTo("swordsman"));
-            Assert.That(save.State.OtherPreset.Tree.StartClass, Is.EqualTo("swordsman"));
+            Assert.That(save.State.Class, Is.EqualTo(HeroClass.Ronin));
+            Assert.That(save.State.Tree.StartClass, Is.EqualTo("ronin"));
+            Assert.That(save.State.OtherPreset.Tree.StartClass, Is.EqualTo("ronin"));
             Assert.That(save.State.Tree.Allocated, Is.Empty);
             Assert.That(save.State.Ascendancy.Subclass, Is.Null);
+        }
+
+        [Test]
+        public void BardSaveOpensAsMetalheadWithEnergyAsDrive()
+        {
+            var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v9.json"), TestWorld.Data);
+
+            Assert.That(save.StoredVersion, Is.EqualTo(9));
+            Assert.That(save.State.Class, Is.EqualTo(HeroClass.Metalhead));
+            Assert.That(save.State.Resource, Is.EqualTo(55));
+            Assert.That(save.State.Tree.StartClass, Is.EqualTo("metalhead"));
+            Assert.That(save.State.OtherPreset.Tree.StartClass, Is.EqualTo("metalhead"));
+            Assert.That(save.State.Tree.Allocated, Is.Empty);
+            Assert.That(save.State.Tree.PointsEarned, Is.EqualTo(11));
+            Assert.That(save.State.Skills[0].Skill.Id, Is.EqualTo("march"));
+            Assert.That(save.State.HeroLevel, Is.EqualTo(12));
+        }
+
+        [Test]
+        public void AlchemistSubclassPlagueDoctorBecomesPlaguebringer()
+        {
+            var payload = JsonParser.Parse(TestData.ReadSaveFixture("save_v9.json"), "save").Fields["payload"];
+            var alchemist = JsonEdit.Update(payload, "state", state => JsonEdit.Update(state, "ascendancy", a =>
+                JsonEdit.Set(JsonEdit.Set(a, "subclass", JsonValue.Of("plague_doctor")), "allocated", JsonValue.Array(new[] { JsonValue.Of("plague_doctor_1") }))));
+
+            var ascendancy = SaveMigrations.Default.Upgrade(alchemist, 9).Fields["state"].Fields["ascendancy"];
+
+            Assert.That(ascendancy.Fields["subclass"].Text, Is.EqualTo("plague_bringer"));
+            Assert.That(ascendancy.Fields["allocated"].Items.Single().Text, Is.EqualTo("plague_bringer_1"));
+        }
+
+        [TestCase("swordsman", HeroClass.Ronin)]
+        [TestCase("bard", HeroClass.Metalhead)]
+        [TestCase("barbarian", HeroClass.Viking)]
+        [TestCase("ranger", HeroClass.Amazon)]
+        [TestCase("sorcerer", HeroClass.Stormweaver)]
+        [TestCase("wanderer", HeroClass.Nomad)]
+        [TestCase("priest", HeroClass.Oracle)]
+        [TestCase("witch", HeroClass.Voodoo)]
+        [TestCase("alchemist", HeroClass.PlagueDoctor)]
+        public void EveryOldClassBecomesItsCharacter(string oldClass, HeroClass character)
+        {
+            var payload = JsonParser.Parse(TestData.ReadSaveFixture("save_v9.json"), "save").Fields["payload"];
+            var renamed = JsonEdit.Update(payload, "state", state => JsonEdit.Update(state, "hero", hero => JsonEdit.Set(hero, "class", JsonValue.Of(oldClass))));
+
+            var upgraded = SaveMigrations.Default.Upgrade(renamed, 9);
+
+            Assert.That(upgraded.Fields["state"].Fields["hero"].Fields["class"].Text, Is.EqualTo(HeroClassNames.Of(character)));
         }
 
         [Test]

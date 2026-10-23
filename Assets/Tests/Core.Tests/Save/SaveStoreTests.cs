@@ -138,5 +138,30 @@ namespace Game.Core.Tests.Save
             Assert.That(File.Exists(store.TempPath), Is.False);
             Assert.That(store.Load(Decode).Save!.State.Tick, Is.EqualTo(11));
         }
+
+        [Test]
+        public void SaveFromPreviousFolderIsCopiedOnce()
+        {
+            var previous = new SaveStore(Path.Combine(_directory, "old"));
+            previous.Write(SaveAtTick(30));
+            var store = new SaveStore(Path.Combine(_directory, "new"));
+
+            Assert.That(store.AdoptFrom(previous.Directory), Is.True);
+            Assert.That(store.Load(Decode).Save!.State.Tick, Is.EqualTo(30));
+            Assert.That(File.Exists(previous.MainPath), Is.True);
+
+            store.Write(SaveAtTick(31));
+            Assert.That(store.AdoptFrom(previous.Directory), Is.False);
+            Assert.That(store.Load(Decode).Save!.State.Tick, Is.EqualTo(31));
+        }
+
+        [Test]
+        public void NothingIsCopiedWithoutPreviousSave()
+        {
+            var store = new SaveStore(Path.Combine(_directory, "new"));
+
+            Assert.That(store.AdoptFrom(Path.Combine(_directory, "missing")), Is.False);
+            Assert.That(Directory.Exists(store.Directory), Is.False);
+        }
     }
 }

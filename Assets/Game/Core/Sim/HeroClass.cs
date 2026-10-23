@@ -2,14 +2,19 @@ namespace Game.Core.Sim
 {
     public enum HeroClass
     {
-        Swordsman,
-        Bard,
-        Barbarian,
-        Ranger,
-        Sorcerer,
-        Witch,
-        Priest,
-        Alchemist,
-        Wanderer
+        Viking,
+        Ronin,
+        Amazon,
+        Stormweaver,
+        Nomad,
+        Metalhead,
+        Oracle,
+        Bannerbearer,
+        Voodoo,
+        Clockmaker,
+        PlagueDoctor,
+        Moonshiner,
+        Gravedigger,
+        Captain
     }
 }

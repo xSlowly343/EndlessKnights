@@ -45,7 +45,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TypistComboGrowsWithEachKey()
         {
-            var (loop, input) = Hero(HeroClass.Swordsman);
+            var (loop, input) = Hero(HeroClass.Ronin);
 
             Keys(loop, input, 7);
 
@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryNthKeyIsAComboStrike()
         {
-            var (loop, input) = Hero(HeroClass.Swordsman);
+            var (loop, input) = Hero(HeroClass.Ronin);
 
             Keys(loop, input, Rules.ComboStrikeEvery - 1);
             var normal = LastHit(loop);
@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ComboSurvivesShortPausesAndBreaksOnLongOnes()
         {
-            var (loop, input) = Hero(HeroClass.Swordsman);
+            var (loop, input) = Hero(HeroClass.Ronin);
             var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
             Keys(loop, input, 10);
 
@@ -87,7 +87,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClicksAndMouseDoNotKeepTheComboAlive()
         {
-            var (loop, input) = Hero(HeroClass.Swordsman);
+            var (loop, input) = Hero(HeroClass.Ronin);
             var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
             Keys(loop, input, 5);
 
@@ -102,75 +102,14 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void BardHasNoCombo()
+        public void MetalheadHasNoCombo()
         {
-            var (loop, input) = Hero(HeroClass.Bard);
+            var (loop, input) = Hero(HeroClass.Metalhead);
 
             Keys(loop, input, Rules.ComboStrikeEvery);
 
             Assert.That(loop.State.Combo, Is.EqualTo(0));
             Assert.That((LastHit(loop).Flags & HitFlags.ComboStrike) == 0, Is.True);
-        }
-
-        [Test]
-        public void BardClicksAreNotesUntilMelodyIsReady()
-        {
-            var (loop, input) = Hero(HeroClass.Bard);
-
-            for (var i = 0; i < Rules.NotesPerMelody - 1; i++)
-            {
-                input.ClickLeft();
-                loop.Tick();
-                loop.Tick();
-            }
-            Assert.That(loop.State.Notes, Is.EqualTo(Rules.NotesPerMelody - 1));
-            Assert.That(loop.Combat.Class.MelodyReady, Is.False);
-
-            input.ClickLeft(3);
-            loop.Tick();
-
-            Assert.That(loop.State.Notes, Is.EqualTo(Rules.NotesPerMelody));
-            Assert.That(loop.Combat.Class.MelodyReady, Is.True);
-            Assert.That(loop.Events.CountOf(GameEventKind.MelodyReady), Is.EqualTo(1));
-        }
-
-        [Test]
-        public void TakingTheMelodyEmptiesNotes()
-        {
-            var (loop, input) = Hero(HeroClass.Bard);
-            input.ClickLeft(Rules.NotesPerMelody);
-            loop.Tick();
-
-            Assert.That(loop.Combat.Class.TryTakeMelody(), Is.True);
-            Assert.That(loop.State.Notes, Is.EqualTo(0));
-            Assert.That(loop.Combat.Class.TryTakeMelody(), Is.False);
-        }
-
-        [Test]
-        public void AnyMouseButtonAndWheelGiveNotes()
-        {
-            var (bard, input) = Hero(HeroClass.Bard);
-
-            input.ClickRight();
-            input.ClickMiddle();
-            input.ScrollWheel(1);
-            bard.Tick();
-
-            Assert.That(bard.State.Notes, Is.EqualTo(3));
-        }
-
-        [Test]
-        public void TypistGetsNoNotesAndKeysGiveNoNotes()
-        {
-            var (typist, typistInput) = Hero(HeroClass.Swordsman);
-            typistInput.ClickLeft(2);
-            typist.Tick();
-
-            var (bard, bardInput) = Hero(HeroClass.Bard);
-            Keys(bard, bardInput, 5);
-
-            Assert.That(typist.State.Notes, Is.EqualTo(0));
-            Assert.That(bard.State.Notes, Is.EqualTo(0));
         }
     }
 }

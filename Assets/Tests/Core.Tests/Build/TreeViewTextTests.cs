@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Build
 
         private static GameLoop Swordsman(int points)
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
             loop.State.Tree.PointsEarned = points;
             return loop;
         }
@@ -34,7 +34,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EveryTreeStatHasARussianLabel()
         {
-            var stats = Tree.Nodes.SelectMany(node => node.Modifiers.Concat(node.Options.SelectMany(option => option))).Select(modifier => modifier.Stat).Distinct();
+            var stats = Tree.Nodes.SelectMany(node => node.Modifiers.Concat(node.SharedModifiers).Concat(node.Options.Concat(node.SharedOptions).SelectMany(option => option)))
+                .Select(modifier => modifier.Stat).Distinct();
 
             Assert.That(stats.Where(stat => ModifierText.Label(stat) == stat.Name), Is.Empty);
         }
@@ -43,7 +44,7 @@ namespace Game.Core.Tests.Build
         public void OfferedNodeSaysItCanBeTakenAndOffersTake()
         {
             var loop = Swordsman(1);
-            var node = Tree["swordsman_ring_1"];
+            var node = Tree["ronin_ring_1"];
 
             var lines = TreeNodeText.Describe(Tree, loop.State.Tree, node, null, NumberFormatSettings.Default);
             var actions = TreeAction.For(Tree, loop.State.Tree, node);
@@ -57,7 +58,7 @@ namespace Game.Core.Tests.Build
         public void FarNodeIsNotConnectedAndHasNoActions()
         {
             var loop = Swordsman(1);
-            var node = Tree["bard_ring_0"];
+            var node = Tree["metalhead_ring_0"];
 
             Assert.That(TreeNodeText.Describe(Tree, loop.State.Tree, node, null, NumberFormatSettings.Default).Last(), Is.EqualTo("Нет связи со взятыми узлами"));
             Assert.That(TreeAction.For(Tree, loop.State.Tree, node), Is.Empty);
@@ -81,8 +82,8 @@ namespace Game.Core.Tests.Build
         public void TakenLeafCanBeRefundedAndShowsItsPrice()
         {
             var loop = Swordsman(1);
-            loop.AllocateNode("swordsman_ring_1");
-            var node = Tree["swordsman_ring_1"];
+            loop.AllocateNode("ronin_ring_1");
+            var node = Tree["ronin_ring_1"];
 
             var lines = TreeNodeText.Describe(Tree, loop.State.Tree, node, loop.RefundCost(node.Id), NumberFormatSettings.Default);
 
@@ -138,7 +139,7 @@ namespace Game.Core.Tests.Build
         public void ViewportMapsTheCentreAndFindsTheNearestNode()
         {
             var viewport = new TreeViewport(Tree.Nodes, 1);
-            var start = Tree["swordsman_start"];
+            var start = Tree["ronin_start"];
             viewport.FocusOn(start.X, start.Y, 10);
 
             var (x, y) = viewport.ToTree(0.5, 0.5);
@@ -147,6 +148,20 @@ namespace Game.Core.Tests.Build
             Assert.That(y, Is.EqualTo(start.Y).Within(1e-9));
             Assert.That(TreeViewport.NodeAt(Tree.Nodes, x + 0.1, y, 0.5), Is.SameAs(start));
             Assert.That(TreeViewport.NodeAt(Tree.Nodes, 1000, 1000, 0.5), Is.Null);
+        }
+
+        [Test]
+        public void DualNodeShowsBothLinesAndMarksTheOneThatWorks()
+        {
+            var node = Tree["viking_resource_0"];
+
+            var forRonin = TreeNodeText.Describe(Tree, Swordsman(1).State.Tree, node, null, NumberFormatSettings.Default);
+            var forViking = TreeNodeText.Describe(Tree, new Game.Core.Build.TreeAllocation("viking"), node, null, NumberFormatSettings.Default);
+
+            Assert.That(forRonin[1], Is.EqualTo(TreeNodeText.OwnPrefix + "+6% накопление ресурса"));
+            Assert.That(forRonin[2], Is.EqualTo(TreeNodeText.ActiveMark + TreeNodeText.SharedPrefix + "+2% накопление ресурса"));
+            Assert.That(forViking[1], Is.EqualTo(TreeNodeText.ActiveMark + TreeNodeText.OwnPrefix + "+6% накопление ресурса"));
+            Assert.That(forViking[2], Is.EqualTo(TreeNodeText.SharedPrefix + "+2% накопление ресурса"));
         }
     }
 }

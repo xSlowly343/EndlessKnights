@@ -12,7 +12,7 @@ namespace Game.Platform.Windows.Input
 {
     public sealed class RawInputService : IInputSource, IDisposable
     {
-        private const string WindowClassName = "EndlessKnightsRawInput";
+        private const string WindowClassName = "RiftWardenRawInput";
         private const int BufferSize = 1024;
         private const int HeaderSize = 24;
         private const int DeviceOffset = 8;

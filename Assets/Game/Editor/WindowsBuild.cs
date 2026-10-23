@@ -9,7 +9,7 @@ namespace Game.Editor
     public static class WindowsBuild
     {
         private const string OutputDirectory = "Builds/Windows";
-        private const string ExecutableName = "EndlessKnights.exe";
+        private const string ExecutableName = "RiftWarden.exe";
 
         [MenuItem("Game/Build Windows")]
         public static void Build()

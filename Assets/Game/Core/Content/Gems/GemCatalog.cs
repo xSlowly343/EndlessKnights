@@ -95,15 +95,12 @@ namespace Game.Core.Content.Gems
         private static SkillDef ReadSkill(ContentNode node)
         {
             var cost = node.Field("cost");
-            var energy = cost.HasField("energy") ? cost.Field("energy").AsNumber(0, 1e6) : 0;
-            var notes = cost.HasField("notes") ? cost.Field("notes").AsInt(1, 100) : 0;
-            if (energy > 0 && notes > 0)
-                throw cost.Error("a skill costs either energy or notes, not both");
+            var resource = cost.HasField("resource") ? cost.Field("resource").AsNumber(0, 1e6) : 0;
             var duration = node.HasField("durationSeconds") ? node.Field("durationSeconds").AsNumber(0, 3600) : 0;
             var effect = ReadEffect(node.Field("effect"));
             if (effect is AuraEffect && duration <= 0)
                 throw node.Error("an aura needs durationSeconds");
-            return new SkillDef(energy, notes, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect);
+            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect);
         }
 
         private static SkillEffect ReadEffect(ContentNode node)
@@ -113,6 +110,8 @@ namespace Game.Core.Content.Gems
             {
                 case "chainHits":
                     return new ChainHitsEffect(node.Field("hits").AsInt(1, 100000), node.Field("nextEnemyShare").AsNumber(0, 100));
+                case "strike":
+                    return new StrikeEffect(node.Field("multiplier").AsNumber(0, 1e6));
                 case "aura":
                     return new AuraEffect(ModifierReader.ReadList(node.Field("modifiers")));
                 case "idleStrike":
@@ -121,7 +120,7 @@ namespace Game.Core.Content.Gems
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, aura or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura or idleStrike");
             }
         }
 

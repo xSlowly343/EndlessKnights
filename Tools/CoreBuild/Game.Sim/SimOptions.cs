@@ -8,13 +8,13 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class swordsman|bard|barbarian|ranger|sorcerer|witch|priest|alchemist|wanderer] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class viking|ronin|amazon|stormweaver|nomad|metalhead|oracle|bannerbearer|voodoo|clockmaker|plague_doctor|moonshiner|gravedigger|captain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
         public double MousePxPerSecond { get; private set; }
         public double Hours { get; private set; } = 1;
-        public HeroClass HeroClass { get; private set; } = HeroClass.Swordsman;
+        public HeroClass HeroClass { get; private set; } = HeroClass.Viking;
         public ulong Seed { get; private set; } = 1;
         public int StopAfterFails { get; private set; }
         public double DamageMultiplier { get; private set; } = 1;

@@ -19,8 +19,7 @@ namespace Game.Core.Build
                     AddOptions(lines, allocation, node);
                     break;
                 default:
-                    foreach (var modifier in node.Modifiers)
-                        lines.Add(ModifierText.Describe(modifier));
+                    AddModifiers(lines, allocation, node);
                     break;
             }
             lines.Add(Status(tree, allocation, node, refundCost, format));
@@ -48,17 +47,48 @@ namespace Game.Core.Build
                 : $"{amount} к выбранному атрибуту";
         }
 
+        public const string ActiveMark = "> ";
+        public const string OwnPrefix = "Для класса: ";
+        public const string SharedPrefix = "Для остальных: ";
+
+        private static void AddModifiers(List<string> lines, TreeAllocation allocation, TreeNodeDef node)
+        {
+            if (!node.IsDual)
+            {
+                foreach (var modifier in node.Modifiers)
+                    lines.Add(ModifierText.Describe(modifier));
+                return;
+            }
+            var own = node.IsOwnFor(allocation.StartClass);
+            lines.Add(DualLine(own, OwnPrefix, node.Modifiers));
+            lines.Add(DualLine(!own, SharedPrefix, node.SharedModifiers));
+        }
+
+        private static string DualLine(bool active, string prefix, IReadOnlyList<Modifier> modifiers) =>
+            (active ? ActiveMark : string.Empty) + prefix + Join(modifiers);
+
+        private static string Join(IReadOnlyList<Modifier> modifiers)
+        {
+            var parts = new List<string>();
+            foreach (var modifier in modifiers)
+                parts.Add(ModifierText.Describe(modifier));
+            return parts.Count == 0 ? "ничего" : string.Join(", ", parts);
+        }
+
+        private static IReadOnlyList<Modifier> SharedOption(TreeNodeDef node, int option) =>
+            option < node.SharedOptions.Count ? node.SharedOptions[option] : System.Array.Empty<Modifier>();
+
         private static void AddOptions(List<string> lines, TreeAllocation allocation, TreeNodeDef node)
         {
             allocation.MasteryChoices.TryGetValue(node.Id, out var chosen);
             var taken = allocation.MasteryChoices.ContainsKey(node.Id);
+            var own = node.IsOwnFor(allocation.StartClass);
             for (var i = 0; i < node.Options.Count; i++)
             {
-                var parts = new List<string>();
-                foreach (var modifier in node.Options[i])
-                    parts.Add(ModifierText.Describe(modifier));
-                var mark = taken && chosen == i ? "> " : string.Empty;
-                lines.Add($"{mark}{i + 1}) {string.Join(", ", parts)}");
+                var mark = taken && chosen == i ? ActiveMark : string.Empty;
+                lines.Add($"{mark}{i + 1}) {Join(node.OptionFor(i, allocation.StartClass))}");
+                if (node.IsDual)
+                    lines.Add("   " + (own ? SharedPrefix + Join(SharedOption(node, i)) : OwnPrefix + Join(node.Options[i])));
             }
         }
 

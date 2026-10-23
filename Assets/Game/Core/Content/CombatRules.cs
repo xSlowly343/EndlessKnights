@@ -3,16 +3,15 @@ namespace Game.Core.Content
     public sealed class CombatRules
     {
         public const string FileName = "combat.json";
-        public const int SupportedVersion = 1;
+        public const int SupportedVersion = 2;
 
-        private CombatRules(double keyDamage, double clickDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, EnergyRules energy, double critChance, double critMultiplier, ClassRules classes, OfflineRules offline, HeroRules hero, StrikeUpgradeRules strikeUpgrade)
+        private CombatRules(double keyDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, ResourceRules resources, double critChance, double critMultiplier, ClassRules classes, OfflineRules offline, HeroRules hero, StrikeUpgradeRules strikeUpgrade)
         {
             KeyDamage = keyDamage;
-            ClickDamage = clickDamage;
             MouseDamage = mouseDamage;
             MousePxPerHit = mousePxPerHit;
             Focus = focus;
-            Energy = energy;
+            Resources = resources;
             CritChance = critChance;
             CritMultiplier = critMultiplier;
             Classes = classes;
@@ -22,11 +21,10 @@ namespace Game.Core.Content
         }
 
         public double KeyDamage { get; }
-        public double ClickDamage { get; }
         public double MouseDamage { get; }
         public double MousePxPerHit { get; }
         public FocusRules Focus { get; }
-        public EnergyRules Energy { get; }
+        public ResourceRules Resources { get; }
         public double CritChance { get; }
         public double CritMultiplier { get; }
         public ClassRules Classes { get; }
@@ -46,11 +44,10 @@ namespace Game.Core.Content
             var crit = root.Field("crit");
             return new CombatRules(
                 hits.Field("keyboard").Field("damage").AsNumber(0, 1e6),
-                hits.Field("click").Field("damage").AsNumber(0, 1e6),
                 mouse.Field("damage").AsNumber(0, 1e6),
                 mouse.Field("pxPerHit").AsNumber(1, 1e6),
                 FocusRules.Read(root.Field("focus")),
-                EnergyRules.Read(root.Field("energy")),
+                ResourceRules.Read(root.Field("resources")),
                 crit.Field("chance").AsNumber(0, 1),
                 crit.Field("multiplier").AsNumber(1, 1000),
                 ClassRules.Read(root.Field("classes")),

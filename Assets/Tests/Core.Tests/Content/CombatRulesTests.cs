@@ -13,17 +13,19 @@ namespace Game.Core.Tests.Content
             var rules = CombatRules.Load(RealFile());
 
             Assert.That(rules.KeyDamage, Is.EqualTo(10));
-            Assert.That(rules.ClickDamage, Is.EqualTo(6));
             Assert.That(rules.MouseDamage, Is.EqualTo(3.4));
             Assert.That(rules.MousePxPerHit, Is.EqualTo(1000));
             Assert.That(rules.Focus.Min, Is.EqualTo(1));
             Assert.That(rules.Focus.Max, Is.EqualTo(3));
             Assert.That(rules.Focus.PerEvent, Is.EqualTo(0.02));
             Assert.That(rules.Focus.ResetAfterIdleSeconds, Is.EqualTo(3));
-            Assert.That(rules.Energy.PerKey, Is.EqualTo(1));
-            Assert.That(rules.Energy.PerClick, Is.EqualTo(1));
-            Assert.That(rules.Energy.MousePxPerPoint, Is.EqualTo(1500));
-            Assert.That(rules.Energy.Max, Is.EqualTo(100));
+            Assert.That(rules.Resources.Max, Is.EqualTo(100));
+            Assert.That(rules.Resources.For("viking").PerKey, Is.EqualTo(2));
+            Assert.That(rules.Resources.For("viking").DecayPerSecond, Is.EqualTo(10));
+            Assert.That(rules.Resources.For("viking").DecayAfterKeylessSeconds, Is.EqualTo(3));
+            Assert.That(rules.Resources.For("viking").MouseHoldsDecay, Is.True);
+            Assert.That(rules.Resources.For("metalhead").PerKey, Is.EqualTo(1));
+            Assert.That(rules.Resources.For("metalhead").DecayPerSecond, Is.EqualTo(0));
             Assert.That(rules.CritChance, Is.EqualTo(0.05));
             Assert.That(rules.CritMultiplier, Is.EqualTo(2));
             Assert.That(rules.Offline.CapHours, Is.EqualTo(8));
@@ -31,30 +33,32 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void FastestMouseDealsFifteenPercentLessThanFastestClicking()
+        public void EveryResourceClassIsACharacter()
         {
             var rules = CombatRules.Load(RealFile());
-            var caps = InputCaps.Load(TestData.ReadGameDataFile(InputCaps.FileName));
 
-            var clicks = caps.Clicks.MaxEffectivePerSecond * rules.ClickDamage;
-            var mouse = caps.MaxMousePxPerSecond / rules.MousePxPerHit * rules.MouseDamage;
-
-            Assert.That(mouse / clicks, Is.EqualTo(0.85).Within(0.01));
+            foreach (var name in rules.Resources.Classes)
+                Assert.That(Game.Core.Sim.HeroClassNames.ByName.ContainsKey(name), Is.True, name);
         }
 
         [Test]
-        public void FastestMouseGivesAboutAsMuchEnergyAndFocusAsFastestClicking()
+        public void CharacterWithoutOwnResourceUsesTheDefault()
+        {
+            var rules = CombatRules.Load(RealFile());
+
+            Assert.That(rules.Resources.For("captain"), Is.SameAs(rules.Resources.Fallback));
+        }
+
+        [Test]
+        public void FastestMouseGivesAboutAsMuchFocusAsFastestClicking()
         {
             var rules = CombatRules.Load(RealFile());
             var caps = InputCaps.Load(TestData.ReadGameDataFile(InputCaps.FileName));
 
-            var clickEvents = caps.Clicks.MaxEffectivePerSecond;
-
-            Assert.That(caps.MaxMousePxPerSecond / rules.Energy.MousePxPerPoint, Is.EqualTo(clickEvents * rules.Energy.PerClick).Within(0.5));
-            Assert.That(caps.MaxMousePxPerSecond / rules.Focus.MousePxPerEvent, Is.EqualTo(clickEvents).Within(0.5));
+            Assert.That(caps.MaxMousePxPerSecond / rules.Focus.MousePxPerEvent, Is.EqualTo(caps.Clicks.MaxEffectivePerSecond).Within(0.5));
         }
 
-        [TestCase("\"version\": 1", "\"version\": 2", "version: version 2 is not supported, expected 1")]
+        [TestCase("\"version\": 2", "\"version\": 3", "version: version 3 is not supported, expected 2")]
         [TestCase("\"damage\": 10", "\"damage\": -1", "hits.keyboard.damage: -1 is outside the allowed range")]
         [TestCase("\"pxPerHit\": 1000", "\"pxPerHit\": 0", "hits.mouse.pxPerHit: 0 is outside the allowed range")]
         [TestCase("\"max\": 3", "\"max\": 0.5", "focus.max: must not be lower than min (1)")]

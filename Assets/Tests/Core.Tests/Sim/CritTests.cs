@@ -87,21 +87,21 @@ namespace Game.Core.Tests.Sim
         public void TaggedCritModifiersOnlyAffectTheirInput()
         {
             var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.Flat, 0.20, StatTags.Click));
-            hero.Add(new Modifier(CombatStats.CritMultiplier, ModifierKind.Flat, 0.5, StatTags.Click));
+            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.Flat, 0.20, StatTags.Mouse));
+            hero.Add(new Modifier(CombatStats.CritMultiplier, ModifierKind.Flat, 0.5, StatTags.Mouse));
             var loop = HitMany(hero, 7, input =>
             {
                 input.PressKeys(1);
-                input.ClickLeft();
+                input.MoveMouse((float)TestWorld.Data.Combat.MousePxPerHit);
             });
 
             var keys = Count(loop, DamageSource.Keyboard);
-            var clicks = Count(loop, DamageSource.Click);
+            var mouse = Count(loop, DamageSource.Mouse);
             var baseChance = TestWorld.Data.Combat.CritChance;
 
             Assert.That((double)keys.Crits / keys.Hits, Is.EqualTo(baseChance).Within(0.01));
-            Assert.That((double)clicks.Crits / clicks.Hits, Is.EqualTo(baseChance + 0.20).Within(0.02));
-            Assert.That(loop.Combat.CritMultiplier(StatTags.Click), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier + 0.5).Within(1e-9));
+            Assert.That((double)mouse.Crits / mouse.Hits, Is.EqualTo(baseChance + 0.20).Within(0.02));
+            Assert.That(loop.Combat.CritMultiplier(StatTags.Mouse), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier + 0.5).Within(1e-9));
             Assert.That(loop.Combat.CritMultiplier(StatTags.Keyboard), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier).Within(1e-9));
         }
 

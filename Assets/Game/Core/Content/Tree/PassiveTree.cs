@@ -7,7 +7,7 @@ namespace Game.Core.Content.Tree
     public sealed class PassiveTree
     {
         public const string FileName = "tree.json";
-        public const int SupportedVersion = 1;
+        public const int SupportedVersion = 2;
 
         private static readonly Dictionary<string, TreeNodeType> Types = new Dictionary<string, TreeNodeType>(StringComparer.Ordinal)
         {
@@ -19,6 +19,8 @@ namespace Game.Core.Content.Tree
             ["attribute"] = TreeNodeType.Attribute,
             ["start"] = TreeNodeType.Start
         };
+
+        private static readonly HashSet<string> Roles = new HashSet<string>(StringComparer.Ordinal) { "dd", "buffer", "debuffer", "dot", "summoner" };
 
         private readonly Dictionary<string, TreeNodeDef> _byId;
         private readonly Dictionary<string, TreeNodeDef> _startByClass;
@@ -128,7 +130,7 @@ namespace Game.Core.Content.Tree
             var classes = new HashSet<string>(StringComparer.Ordinal);
             foreach (var item in root.Field("nodes").Items())
             {
-                var node = ReadNode(item);
+                var node = ReadNode(item, attributes);
                 if (byId.ContainsKey(node.Id))
                     throw item.Field("id").Error($"node id '{node.Id}' is used twice");
                 if (node.StartClass != null && !classes.Add(node.StartClass))
@@ -137,12 +139,13 @@ namespace Game.Core.Content.Tree
                 nodes.Add(node);
             }
 
+            RequireStartForEveryZone(root.Field("nodes"), nodes, classes);
             var links = ReadLinks(root.Field("links"), byId);
             RequireConnected(root.Field("links"), nodes);
             return new PassiveTree(nodes, attributes, links, RespecRules.Read(root.Field("respec")));
         }
 
-        private static TreeNodeDef ReadNode(ContentNode node)
+        private static TreeNodeDef ReadNode(ContentNode node, List<string> attributes)
         {
             var typeNode = node.Field("type");
             if (!Types.TryGetValue(typeNode.AsString(), out var type))
@@ -161,12 +164,62 @@ namespace Game.Core.Content.Tree
             var amount = type == TreeNodeType.Attribute ? node.Field("amount").AsNumber(0.01, 1000) : 0;
             var startClass = type == TreeNodeType.Start ? node.Field("class").AsString() : null;
             var locked = node.HasField("locked") && node.Field("locked").AsBool();
+            var scope = ReadScope(node.Field("scope"), attributes);
+            if (startClass != null && scope != TreeNodeDef.ClassScopePrefix + startClass)
+                throw node.Field("scope").Error($"a start belongs to its own class, expected '{TreeNodeDef.ClassScopePrefix}{startClass}'");
+            var shared = node.HasField("sharedModifiers") ? ModifierReader.ReadList(node.Field("sharedModifiers")) : Array.Empty<Modifier>();
+            var sharedOptions = ReadSharedOptions(node, type, options.Count);
+            if ((shared.Count > 0 || sharedOptions.Count > 0) && !scope.StartsWith(TreeNodeDef.ClassScopePrefix, StringComparison.Ordinal))
+                throw node.Field("scope").Error("only a node of a class zone can have shared modifiers");
             var name = node.Field("name");
             return new TreeNodeDef(
                 node.Field("id").AsString(), type,
                 node.Field("x").AsNumber(-1000, 1000), node.Field("y").AsNumber(-1000, 1000),
                 name.Field("ru").AsString(), name.Field("en").AsString(),
-                modifiers, options, amount, startClass, locked);
+                modifiers, options, amount, startClass, locked, scope, shared, sharedOptions);
+        }
+
+        private static void RequireStartForEveryZone(ContentNode list, List<TreeNodeDef> nodes, HashSet<string> classes)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.ScopeClass != null && !classes.Contains(node.ScopeClass))
+                    throw list.Error($"node '{node.Id}' belongs to class '{node.ScopeClass}', which has no start on the tree");
+            }
+        }
+
+        private static string ReadScope(ContentNode scope, List<string> attributes)
+        {
+            var text = scope.AsString();
+            if (text == TreeNodeDef.CommonScope)
+                return text;
+            var colon = text.IndexOf(':');
+            var kind = colon < 0 ? text : text.Substring(0, colon);
+            var value = colon < 0 ? string.Empty : text.Substring(colon + 1);
+            var valid = kind switch
+            {
+                "class" => value.Length > 0,
+                "role" => Roles.Contains(value),
+                "sector" => attributes.Contains(value),
+                _ => false
+            };
+            if (!valid)
+                throw scope.Error($"unknown scope '{text}', expected common, class:<class>, role:<role> or sector:<attribute>");
+            return text;
+        }
+
+        private static IReadOnlyList<IReadOnlyList<Modifier>> ReadSharedOptions(ContentNode node, TreeNodeType type, int optionCount)
+        {
+            if (!node.HasField("sharedOptions"))
+                return Array.Empty<IReadOnlyList<Modifier>>();
+            if (type != TreeNodeType.Mastery)
+                throw node.Field("sharedOptions").Error("only a mastery has shared options");
+            var shared = new List<IReadOnlyList<Modifier>>();
+            foreach (var option in node.Field("sharedOptions").Items())
+                shared.Add(ModifierReader.ReadList(option));
+            if (shared.Count != optionCount)
+                throw node.Field("sharedOptions").Error($"a mastery needs one shared option for each of its {optionCount} options");
+            return shared;
         }
 
         private static int ReadLinks(ContentNode links, Dictionary<string, TreeNodeDef> byId)

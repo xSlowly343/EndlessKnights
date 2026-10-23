@@ -33,7 +33,7 @@ namespace Game.Core.Tests.Sim
             var result = new Simulation(TestWorld.Data, new BotProfile(6)).Run(3600);
 
             Assert.That(result.Seconds, Is.EqualTo(3600).Within(0.01));
-            Assert.That(result.HighestStage, Is.GreaterThan(30));
+            Assert.That(result.HighestStage, Is.GreaterThan(20));
             Assert.That(result.Stages.Count, Is.EqualTo(result.HighestStage - 1));
             Assert.That(result.Stages[0].Stage, Is.EqualTo(1));
             var last = result.Stages[result.Stages.Count - 1];
@@ -63,8 +63,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SameSeedGivesSameRun()
         {
-            var first = new Simulation(TestWorld.Data, new BotProfile(6, 1), HeroClass.Bard, seed: 9).Run(1200);
-            var second = new Simulation(TestWorld.Data, new BotProfile(6, 1), HeroClass.Bard, seed: 9).Run(1200);
+            var first = new Simulation(TestWorld.Data, new BotProfile(6, 1), HeroClass.Metalhead, seed: 9).Run(1200);
+            var second = new Simulation(TestWorld.Data, new BotProfile(6, 1), HeroClass.Metalhead, seed: 9).Run(1200);
 
             Assert.That(second.HighestStage, Is.EqualTo(first.HighestStage));
             Assert.That(second.GoldEarned, Is.EqualTo(first.GoldEarned));

@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Build
         private static AscendancyCatalog Catalog => TestWorld.Data.Ascendancy;
 
         private static GameLoop TypistLoop(GameState? state = null) =>
-            new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), state ?? new GameState { Class = HeroClass.Swordsman }, new StatSheet());
+            new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), state ?? new GameState { Class = HeroClass.Ronin }, new StatSheet());
 
         private static SubclassDef Subclass(string id) => Catalog.Subclasses.Single(s => s.Id == id);
 
@@ -36,12 +36,17 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void EveryPlayableClassHasThreeSubclassesAndEightActivitiesGivePoints()
+        public void EveryCharacterFromTheOldClassesHasThreeSubclassesAndEightActivitiesGivePoints()
         {
             Assert.That(Catalog.MaxPoints, Is.EqualTo(8));
             foreach (var heroClass in HeroClassNames.ByName.Keys)
-                Assert.That(Catalog.SubclassesOf(heroClass).Count, Is.EqualTo(3), heroClass);
+            {
+                var expected = System.Array.IndexOf(CharactersWithoutSubclassesYet, heroClass) >= 0 ? 0 : 3;
+                Assert.That(Catalog.SubclassesOf(heroClass).Count, Is.EqualTo(expected), heroClass);
+            }
         }
+
+        private static readonly string[] CharactersWithoutSubclassesYet = { "bannerbearer", "clockmaker", "moonshiner", "gravedigger", "captain" };
 
         [Test]
         public void OpenNotablesTakeAllPointsButNotEveryNotable()
@@ -67,7 +72,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void FirstGuardianAndFirstPrestigeCountAsActivities()
         {
-            var state = new GameState { Class = HeroClass.Swordsman, RecordStage = TestWorld.Data.Stages.BiomeLength + 1, Prestiges = 1 };
+            var state = new GameState { Class = HeroClass.Ronin, RecordStage = TestWorld.Data.Stages.BiomeLength + 1, Prestiges = 1 };
 
             var loop = TypistLoop(state);
 
@@ -130,7 +135,7 @@ namespace Game.Core.Tests.Build
             var catalog = AscendancyCatalog.Load(Valid.Replace("\"id\": \"s_notable\", \"type\": \"notable\"", "\"id\": \"s_notable\", \"type\": \"notable\", \"locked\": true"));
             var state = new AscendancyState();
             state.Complete("a");
-            state.Choose(catalog, "swordsman", "s");
+            state.Choose(catalog, "ronin", "s");
 
             Assert.That(state.Allocate(catalog, "s_small"), Is.EqualTo(AllocationResult.Allocated));
             Assert.That(state.Allocate(catalog, "s_notable"), Is.EqualTo(AllocationResult.Locked));
@@ -222,7 +227,7 @@ namespace Game.Core.Tests.Build
   ""activities"": [{ ""id"": ""a"", ""name"": { ""ru"": ""А"", ""en"": ""A"" } }],
   ""change"": { ""freeEveryHours"": 24, ""crystalCost"": 100 },
   ""subclasses"": [
-    { ""id"": ""s"", ""class"": ""swordsman"", ""name"": { ""ru"": ""С"", ""en"": ""S"" },
+    { ""id"": ""s"", ""class"": ""ronin"", ""name"": { ""ru"": ""С"", ""en"": ""S"" },
       ""nodes"": [
         { ""id"": ""s_start"", ""type"": ""start"", ""x"": 0, ""y"": 0, ""name"": { ""ru"": ""С"", ""en"": ""S"" } },
         { ""id"": ""s_small"", ""type"": ""small"", ""x"": 0, ""y"": 1, ""name"": { ""ru"": ""М"", ""en"": ""M"" } },
@@ -258,7 +263,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SubclassClassMustStartOnTheTree()
         {
-            var catalog = AscendancyCatalog.Load(Valid.Replace("\"class\": \"swordsman\"", "\"class\": \"pirate\""));
+            var catalog = AscendancyCatalog.Load(Valid.Replace("\"class\": \"ronin\"", "\"class\": \"pirate\""));
 
             var error = Assert.Throws<ContentException>(() => catalog.RequireClassesAndIds(TestWorld.Data.Tree))!;
 
@@ -268,7 +273,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SubclassNodeIdsMustNotRepeatTreeIds()
         {
-            var catalog = AscendancyCatalog.Load(Valid.Replace("s_notable", "swordsman_ring_1"));
+            var catalog = AscendancyCatalog.Load(Valid.Replace("s_notable", "ronin_ring_1"));
 
             var error = Assert.Throws<ContentException>(() => catalog.RequireClassesAndIds(TestWorld.Data.Tree))!;
 

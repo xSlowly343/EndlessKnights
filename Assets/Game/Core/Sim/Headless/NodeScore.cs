@@ -20,13 +20,12 @@ namespace Game.Core.Sim.Headless
             [CombatStats.ComboTimeoutSeconds.Name] = 0.1,
             [CombatStats.KeyStrikeMultiplier.Name] = 0.05,
             [CombatStats.EnterDamage.Name] = 0.1,
-            [CombatStats.EnergyGain.Name] = 0.1,
+            [CombatStats.ResourceGain.Name] = 0.1,
             [CombatStats.Gold.Name] = 0.15,
             [CombatStats.OfflineGold.Name] = 0.1,
             [CombatStats.OfflineCapHours.Name] = 0.05,
             [CombatStats.AuraEffect.Name] = 0.5,
             [CombatStats.AuraDuration.Name] = 0.2,
-            [CombatStats.MelodyNotes.Name] = -0.2,
             ["concurrentAuras"] = 0.3
         };
 

@@ -18,7 +18,7 @@ namespace Game.Bootstrap
 
         public GameLoop Loop => _loop;
 
-        public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Swordsman };
+        public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Viking };
 
         public static BattleDriver Attach(GameObject host, GameData data, IInputSource input, GameState? state = null)
         {
@@ -96,7 +96,7 @@ namespace Game.Bootstrap
                 state.BossTicksLeft / (double)_bossTotalTicks,
                 bossFight,
                 FocusFraction(state.Focus),
-                state.Energy / _data.Combat.Energy.Max,
+                state.Resource / _data.Combat.Resources.Max,
                 state.Gold);
         }
 

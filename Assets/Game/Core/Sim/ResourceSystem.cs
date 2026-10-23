@@ -1,0 +1,76 @@
+using Game.Core.Content;
+using Game.Core.Stats;
+
+namespace Game.Core.Sim
+{
+    public sealed class ResourceSystem
+    {
+        private readonly GameState _state;
+        private readonly StatSheet _hero;
+        private ResourceRules _rules;
+        private HeroClass _class;
+        private ClassResource _resource;
+
+        public ResourceSystem(ResourceRules rules, GameState state, StatSheet hero)
+        {
+            _rules = rules;
+            _state = state;
+            _hero = hero;
+            _class = state.Class;
+            _resource = rules.For(HeroClassNames.Of(state.Class));
+        }
+
+        public void UseRules(ResourceRules rules)
+        {
+            _rules = rules;
+            _resource = rules.For(HeroClassNames.Of(_class));
+        }
+
+        public double Max => _rules.Max;
+        public bool IsFull => _state.Resource >= _rules.Max;
+        public ClassResource Rules => Current;
+
+        private ClassResource Current
+        {
+            get
+            {
+                if (_class != _state.Class)
+                {
+                    _class = _state.Class;
+                    _resource = _rules.For(HeroClassNames.Of(_class));
+                }
+                return _resource;
+            }
+        }
+
+        public void Tick(in EffectiveInput input)
+        {
+            var resource = Current;
+            _state.KeylessTicks = input.Keys > 0 ? 0 : _state.KeylessTicks + 1;
+            var gained = input.Keys * resource.PerKey * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
+            if (resource.MousePxPerPoint > 0)
+                gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
+            var value = System.Math.Min(_rules.Max, _state.Resource + gained);
+            if (Decays(resource, input))
+                value -= resource.DecayPerSecond * GameLoop.TickSeconds;
+            _state.Resource = System.Math.Max(0, value);
+        }
+
+        public bool TrySpend(double amount)
+        {
+            if (amount < 0 || _state.Resource < amount)
+                return false;
+            _state.Resource -= amount;
+            return true;
+        }
+
+        private bool Decays(ClassResource resource, in EffectiveInput input)
+        {
+            if (resource.DecayPerSecond <= 0)
+                return false;
+            if (resource.MouseHoldsDecay && input.MousePx > 0)
+                return false;
+            return _state.KeylessTicks * GameLoop.TickSeconds > resource.DecayAfterKeylessSeconds;
+        }
+    }
+}

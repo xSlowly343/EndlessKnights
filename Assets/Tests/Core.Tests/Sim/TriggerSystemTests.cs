@@ -14,7 +14,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input);
             var slot = loop.Skills.Equip(Gem("stenography"), trigger);
-            loop.State.Energy = 100;
+            loop.State.Resource = 100;
             loop.Events.Clear();
             return (loop, input, slot);
         }
@@ -41,7 +41,7 @@ namespace Game.Core.Tests.Sim
             var skill = Gem("stenography").Skill!;
             var multiplier = Gem("cast_on_enter").Trigger!.CooldownMultiplier;
             Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(skill.CooldownSeconds * multiplier * GameLoop.TicksPerSecond));
-            Assert.That(loop.State.Energy, Is.EqualTo(TestWorld.Data.Combat.Energy.Max - skill.EnergyCost));
+            Assert.That(loop.State.Resource, Is.EqualTo(TestWorld.Data.Combat.Resources.Max - skill.ResourceCost));
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Sim
             input.PressEnter();
             loop.Tick();
             var cooldown = loop.State.Skills[slot].CooldownTicks;
-            loop.State.Energy = 100;
+            loop.State.Resource = 100;
 
             for (var i = 0; i < cooldown; i++)
             {
@@ -85,6 +85,7 @@ namespace Game.Core.Tests.Sim
             }
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(1));
 
+            loop.State.Resource = 100;
             input.PressEnter();
             loop.Tick();
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(2));
@@ -94,7 +95,7 @@ namespace Game.Core.Tests.Sim
         public void TriggerWithoutEnergyDoesNotCast()
         {
             var (loop, input, slot) = WithTrigger(Gem("cast_on_enter"));
-            loop.State.Energy = 0;
+            loop.State.Resource = 0;
 
             input.PressEnter();
             loop.Tick();
