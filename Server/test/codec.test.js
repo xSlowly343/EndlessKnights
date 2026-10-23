@@ -20,11 +20,11 @@ function scriptedEncounter() {
   const encounter = new party.PartyEncounter(party.PartyServerRules, vectors.seed);
   const numbers = ["0", "0", "0", "0"];
   for (const line of vectors.script) {
-    const [op, a, b, c] = line.split(" ");
+    const [op, a, b, c, d] = line.split(" ");
     if (op === "join") numbers[encounter.join(a)] = a;
     else if (op === "class") encounter.setHeroClass(Number(a), Number(b));
     else if (op === "damage") encounter.applyDamage(Number(a), Number(b), Number(c));
-    else if (op === "effect") encounter.applyEnemyEffect(Number(a), Number(b), Number(c));
+    else if (op === "effect") encounter.applyEnemyEffect(Number(a), Number(b), Number(c), d === undefined ? -1 : Number(d));
     else if (op === "advance") for (let i = 0; i < Number(a); i++) encounter.advance();
     else if (op === "peaceful") encounter.setPeaceful(Number(a), b === "true");
   }

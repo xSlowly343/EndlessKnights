@@ -109,7 +109,7 @@ namespace Game.Core.Party.Wire
             {
                 var effect = encounter.Effect(i);
                 if (effect.Active)
-                    message.SetEffect(shown++, new ShownEffect { Id = effect.Id, TicksLeft = effect.TicksLeft });
+                    message.SetEffect(shown++, new ShownEffect { Id = effect.Id, TicksLeft = effect.TicksLeft, Owner = effect.Owner });
             }
             return message;
         }

@@ -36,6 +36,7 @@ namespace Game.Core.Sim
         private readonly ArtifactSystem _artifacts;
         private readonly TutorialSystem _tutorial;
         private readonly PartyBuffs _partyBuffs;
+        private readonly SynergySystem _synergy;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -63,6 +64,7 @@ namespace Game.Core.Sim
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
+            _synergy = new SynergySystem(data.Synergy, state, hero);
             RebuildTree();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _tutorial = new TutorialSystem(data.Tutorial, state, _upgrades);
@@ -83,6 +85,7 @@ namespace Game.Core.Sim
         public ArtifactSystem Artifacts => _artifacts;
         public TutorialSystem Tutorial => _tutorial;
         public PartyBuffs PartyBuffs => _partyBuffs;
+        public SynergySystem Synergy => _synergy;
         public GameData Data => _data;
         public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
@@ -255,6 +258,7 @@ namespace Game.Core.Sim
             _artifacts.UseCatalog(data.Artifacts);
             _tutorial.UseRules(data.Tutorial);
             _partyBuffs.UseRules(data.Party.Buffs);
+            _synergy.UseRules(data.Synergy);
             RebuildTree();
         }
 
@@ -275,6 +279,7 @@ namespace Game.Core.Sim
             CastRequested();
             _triggers.Tick(input);
             _partyBuffs.Tick();
+            _synergy.Tick();
             _stage.Tick();
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);

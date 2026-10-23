@@ -216,6 +216,27 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void VoodooCurseWakesTheVikingResponseOverTheNetwork()
+        {
+            var rig = new Rig(2);
+            var voodoo = rig.Members[0];
+            var viking = rig.Members[1];
+            voodoo.Loop.State.Class = HeroClass.Voodoo;
+            viking.Loop.State.Class = HeroClass.Viking;
+            var rage = new StatId("rageGain");
+            rig.Run(5);
+            Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1));
+
+            voodoo.Cast(voodoo.Equip("voodoo_needle"));
+            rig.Run(1);
+
+            Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1.25).Within(1e-9));
+            Assert.That(voodoo.Loop.Hero.Value(new StatId("curseEffect"), 1), Is.EqualTo(1));
+            rig.Run(11);
+            Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1));
+        }
+
+        [Test]
         public void OfferSurvivesTheWire()
         {
             var buffer = new byte[PartyCodec.MaxPacketBytes];

@@ -113,7 +113,13 @@ namespace Game.Core.Content.Gems
                 throw node.Error("an aura needs durationSeconds");
             if (effect is EnemyDebuffEffect && duration <= 0)
                 throw node.Error("an enemy debuff needs durationSeconds");
-            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect);
+            var marks = new List<string>();
+            if (node.HasField("marks"))
+            {
+                foreach (var mark in node.Field("marks").Items())
+                    marks.Add(mark.AsString());
+            }
+            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks);
         }
 
         private static SkillEffect ReadEffect(ContentNode node)

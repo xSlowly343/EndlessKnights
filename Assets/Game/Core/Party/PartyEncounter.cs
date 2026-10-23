@@ -170,7 +170,7 @@ namespace Game.Core.Party
 
         public EnemyEffect Effect(int index) => _effects[index];
 
-        public bool ApplyEnemyEffect(int effectId, double damageTaken, double seconds)
+        public bool ApplyEnemyEffect(int effectId, double damageTaken, double seconds, int owner = NoSlot)
         {
             if (!(damageTaken > 0) || !(seconds > 0) || !Started)
                 return false;
@@ -184,6 +184,7 @@ namespace Game.Core.Party
                         return false;
                     _effects[i].DamageTaken = damageTaken;
                     _effects[i].TicksLeft = System.Math.Max(_effects[i].TicksLeft, ticks);
+                    _effects[i].Owner = owner;
                     return true;
                 }
                 if (free == NoSlot && !_effects[i].Active)
@@ -191,7 +192,7 @@ namespace Game.Core.Party
             }
             if (free == NoSlot)
                 return false;
-            _effects[free] = new EnemyEffect { Id = effectId, DamageTaken = damageTaken, TicksLeft = ticks };
+            _effects[free] = new EnemyEffect { Id = effectId, DamageTaken = damageTaken, TicksLeft = ticks, Owner = owner };
             return true;
         }
 

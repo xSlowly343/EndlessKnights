@@ -188,11 +188,13 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number):
             continue;
         w.int(effect.id);
         w.int(effect.ticksLeft);
+        w.byte(effect.owner >= 0 && effect.owner < PartyMaxSlots ? effect.owner : 255);
         shown++;
     }
     for (; shown < 4; shown++) {
         w.int(0);
         w.int(0);
+        w.byte(0);
     }
     return w.bytes();
 }

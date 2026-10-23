@@ -1,0 +1,263 @@
+using System.Collections.Generic;
+using Game.Core.Content.Synergy;
+using Game.Core.Sim;
+using Game.Core.Stats;
+
+namespace Game.Core.Party
+{
+    public sealed class SynergySystem
+    {
+        private const int Players = PartyRules.MaxSlots + 1;
+
+        private readonly GameState _state;
+        private readonly StatSheet _hero;
+        private readonly ModifierLayer _layer;
+        private readonly List<Modifier> _buffer = new List<Modifier>(64);
+        private readonly int[] _allyMarks = new int[PartyRules.MaxSlots];
+        private readonly HeroClass[] _allyClass = new HeroClass[PartyRules.MaxSlots];
+        private readonly bool[] _allyPresent = new bool[PartyRules.MaxSlots];
+        private readonly int[] _playerMarks = new int[Players];
+        private readonly HeroClass[] _playerClass = new HeroClass[Players];
+        private SynergyRules _rules;
+        private int[] _reactionTicks;
+        private int[] _reactionCooldown;
+        private ulong _responses;
+        private int _perMarkCount;
+        private ulong _reactions;
+        private ulong _constellations;
+
+        public SynergySystem(SynergyRules rules, GameState state, StatSheet hero)
+        {
+            _rules = rules;
+            _state = state;
+            _hero = hero;
+            _layer = new ModifierLayer(hero);
+            _reactionTicks = new int[rules.Reactions.Count];
+            _reactionCooldown = new int[rules.Reactions.Count];
+        }
+
+        public SynergyRules Rules => _rules;
+        public int OwnMarks { get; private set; }
+        public int AllyMarks { get; private set; }
+        public int PerMarkCount => _perMarkCount;
+
+        public bool ResponseActive(int index) => (_responses & (1UL << index)) != 0;
+        public bool ReactionActive(int index) => (_reactions & (1UL << index)) != 0;
+        public bool ConstellationActive(int index) => (_constellations & (1UL << index)) != 0;
+        public double ReactionCooldownSeconds(int index) => _reactionCooldown[index] * GameLoop.TickSeconds;
+
+        public void UseRules(SynergyRules rules)
+        {
+            _rules = rules;
+            _reactionTicks = new int[rules.Reactions.Count];
+            _reactionCooldown = new int[rules.Reactions.Count];
+            _responses = 0;
+            _reactions = 0;
+            _constellations = 0;
+            Rebuild();
+        }
+
+        public void SetAlly(int slot, bool present, HeroClass heroClass, int marks)
+        {
+            _allyPresent[slot] = present;
+            _allyClass[slot] = heroClass;
+            _allyMarks[slot] = present ? marks : 0;
+        }
+
+        public void ClearAllies()
+        {
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                SetAlly(slot, false, default, 0);
+        }
+
+        public void Tick()
+        {
+            var players = CollectPlayers();
+            var responses = ActiveResponses(out var perMarkCount);
+            var constellations = ActiveConstellations(players, out var noCooldown);
+            var reactions = TickReactions(players, noCooldown);
+            if (responses == _responses && perMarkCount == _perMarkCount && reactions == _reactions && constellations == _constellations)
+                return;
+            _responses = responses;
+            _perMarkCount = perMarkCount;
+            _reactions = reactions;
+            _constellations = constellations;
+            Rebuild();
+        }
+
+        private int CollectPlayers()
+        {
+            OwnMarks = OwnSkillMarks();
+            _playerMarks[0] = OwnMarks;
+            _playerClass[0] = _state.Class;
+            var players = 1;
+            var allies = 0;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (!_allyPresent[slot])
+                    continue;
+                _playerMarks[players] = _allyMarks[slot];
+                _playerClass[players] = _allyClass[slot];
+                allies |= _allyMarks[slot];
+                players++;
+            }
+            AllyMarks = allies;
+            return players;
+        }
+
+        private int OwnSkillMarks()
+        {
+            var marks = 0;
+            var skills = _state.Skills;
+            for (var i = 0; i < skills.Count; i++)
+            {
+                if (skills[i].Active)
+                    marks |= _rules.MaskOf(skills[i].Skill);
+            }
+            return marks;
+        }
+
+        private ulong ActiveResponses(out int perMarkCount)
+        {
+            perMarkCount = 0;
+            var active = 0UL;
+            var second = _hero.Value(_rules.SecondResponseStat, 0) >= 1;
+            var responses = _rules.Responses;
+            for (var i = 0; i < responses.Count && i < 64; i++)
+            {
+                var response = responses[i];
+                if (response.HeroClass != _state.Class || (response.Second && !second))
+                    continue;
+                if (response.Mark == SynergyResponse.AnyMark)
+                {
+                    var count = System.Math.Min(response.MaxMarks, BitCount(AllyMarks));
+                    if (count == 0)
+                        continue;
+                    if (response.PerMark)
+                        perMarkCount = count;
+                }
+                else if ((AllyMarks & (1 << response.Mark)) == 0)
+                    continue;
+                active |= 1UL << i;
+            }
+            return active;
+        }
+
+        private ulong ActiveConstellations(int players, out bool noCooldown)
+        {
+            noCooldown = false;
+            if (players < 2)
+                return 0;
+            var marks = OwnMarks | AllyMarks;
+            var active = 0UL;
+            var constellations = _rules.Constellations;
+            for (var i = 0; i < constellations.Count && i < 64; i++)
+            {
+                var constellation = constellations[i];
+                if ((marks & constellation.Marks) != constellation.Marks || !Assign(constellation, 0, 0, players))
+                    continue;
+                active |= 1UL << i;
+                noCooldown |= constellation.NoReactionCooldown;
+            }
+            return active;
+        }
+
+        private bool Assign(SynergyConstellation constellation, int requirement, int used, int players)
+        {
+            if (requirement == constellation.Members)
+                return true;
+            for (var player = 0; player < players; player++)
+            {
+                if ((used & (1 << player)) != 0 || !Fits(constellation, requirement, _playerClass[player]))
+                    continue;
+                if (Assign(constellation, requirement + 1, used | (1 << player), players))
+                    return true;
+            }
+            return false;
+        }
+
+        private bool Fits(SynergyConstellation constellation, int requirement, HeroClass heroClass)
+        {
+            if (requirement < constellation.Classes.Count)
+                return constellation.Classes[requirement] == heroClass;
+            return (constellation.RoleGroups[requirement - constellation.Classes.Count] & _rules.RoleMaskOf(heroClass)) != 0;
+        }
+
+        private ulong TickReactions(int players, bool noCooldown)
+        {
+            var active = 0UL;
+            var reactions = _rules.Reactions;
+            for (var i = 0; i < reactions.Count && i < 64; i++)
+            {
+                if (_reactionTicks[i] > 0)
+                    _reactionTicks[i]--;
+                if (_reactionCooldown[i] > 0)
+                    _reactionCooldown[i]--;
+                var reaction = reactions[i];
+                if (_reactionTicks[i] == 0 && (_reactionCooldown[i] == 0 || noCooldown) && Paired(reaction.First, reaction.Second, players))
+                {
+                    _reactionTicks[i] = Ticks(reaction.Seconds);
+                    _reactionCooldown[i] = Ticks(reaction.CooldownSeconds);
+                }
+                if (_reactionTicks[i] > 0)
+                    active |= 1UL << i;
+            }
+            return active;
+        }
+
+        private bool Paired(int first, int second, int players)
+        {
+            for (var a = 0; a < players; a++)
+            {
+                if ((_playerMarks[a] & (1 << first)) == 0)
+                    continue;
+                for (var b = 0; b < players; b++)
+                {
+                    if (b != a && (_playerMarks[b] & (1 << second)) != 0)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        private void Rebuild()
+        {
+            _buffer.Clear();
+            for (var i = 0; i < _rules.Responses.Count && i < 64; i++)
+            {
+                if (ResponseActive(i))
+                    Add(_rules.Responses[i].Modifiers, _rules.Responses[i].PerMark ? _perMarkCount : 1);
+            }
+            for (var i = 0; i < _rules.Reactions.Count && i < 64; i++)
+            {
+                if (ReactionActive(i))
+                    Add(_rules.Reactions[i].Modifiers, 1);
+            }
+            for (var i = 0; i < _rules.Constellations.Count && i < 64; i++)
+            {
+                if (ConstellationActive(i))
+                    Add(_rules.Constellations[i].Modifiers, 1);
+            }
+            _layer.Set(_buffer);
+        }
+
+        private void Add(IReadOnlyList<Modifier> modifiers, int times)
+        {
+            for (var i = 0; i < modifiers.Count; i++)
+            {
+                var modifier = modifiers[i];
+                _buffer.Add(times == 1 ? modifier : new Modifier(modifier.Stat, modifier.Kind, modifier.Value * times, modifier.Tags));
+            }
+        }
+
+        private static int BitCount(int mask)
+        {
+            var count = 0;
+            for (; mask != 0; mask &= mask - 1)
+                count++;
+            return count;
+        }
+
+        private static int Ticks(double seconds) => (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);
+    }
+}

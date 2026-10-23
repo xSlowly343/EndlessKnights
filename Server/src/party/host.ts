@@ -90,7 +90,7 @@ class PartyHost {
             case PartyMessageKind.CastEffect: {
                 const effect = partyDecodeCastEffect(data);
                 if (effect && effect.onEnemy)
-                    this.encounter.applyEnemyEffect(effect.effectId, effect.strength, effect.seconds);
+                    this.encounter.applyEnemyEffect(effect.effectId, effect.strength, effect.seconds, slot);
                 break;
             }
             case PartyMessageKind.PartyOffer: {

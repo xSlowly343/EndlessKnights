@@ -74,7 +74,7 @@ namespace Game.Core.Party
                     break;
                 case PartyMessageKind.CastEffect when PartyCodec.TryDecode(_in, length, out CastEffectMessage effect):
                     if (effect.OnEnemy)
-                        _encounter.ApplyEnemyEffect(effect.EffectId, effect.Strength, effect.Seconds);
+                        _encounter.ApplyEnemyEffect(effect.EffectId, effect.Strength, effect.Seconds, slot);
                     break;
                 case PartyMessageKind.PartyOffer when PartyCodec.TryDecode(_in, length, out PartyOfferMessage offer):
                     offer.Slot = (byte)slot;

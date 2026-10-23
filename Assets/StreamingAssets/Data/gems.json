@@ -42,6 +42,7 @@
       "cost": { "resource": 80 },
       "cooldownSeconds": 35,
       "durationSeconds": 10,
+      "marks": ["lightning"],
       "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1.0, "tags": ["Aura"] }, { "stat": "keyHitLightning", "kind": "flat", "value": 0.2 }] }
     },
     {
@@ -74,6 +75,7 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 5,
       "durationSeconds": 10,
+      "marks": ["curse"],
       "effect": { "type": "enemyDebuff", "damageTaken": 0.15 }
     },
     {

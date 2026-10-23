@@ -34,6 +34,7 @@ interface PartyEnemyEffect {
     id: number;
     damageTaken: number;
     ticksLeft: number;
+    owner: number;
 }
 
 const PartyMaxEffects = 16;
@@ -60,7 +61,7 @@ class PartyEncounter {
         for (let i = 0; i < PartyMaxSlots; i++)
             this.members.push(new PartyMember());
         for (let i = 0; i < PartyMaxEffects; i++)
-            this.effects.push({ id: 0, damageTaken: 0, ticksLeft: 0 });
+            this.effects.push({ id: 0, damageTaken: 0, ticksLeft: 0, owner: PartyNoSlot });
     }
 
     get started(): boolean { return this.enemyId !== 0; }
@@ -163,7 +164,7 @@ class PartyEncounter {
         return 1 + Math.min(this.rules.maxEnemyDamageTaken, total);
     }
 
-    applyEnemyEffect(effectId: number, damageTaken: number, seconds: number): boolean {
+    applyEnemyEffect(effectId: number, damageTaken: number, seconds: number, owner: number = PartyNoSlot): boolean {
         if (!(damageTaken > 0) || !(seconds > 0) || !this.started)
             return false;
         const ticks = partyTicks(seconds);
@@ -175,6 +176,7 @@ class PartyEncounter {
                     return false;
                 effect.damageTaken = damageTaken;
                 effect.ticksLeft = Math.max(effect.ticksLeft, ticks);
+                effect.owner = owner;
                 return true;
             }
             if (free === PartyNoSlot && !(effect.ticksLeft > 0))
@@ -182,7 +184,7 @@ class PartyEncounter {
         }
         if (free === PartyNoSlot)
             return false;
-        this.effects[free] = { id: effectId, damageTaken: damageTaken, ticksLeft: ticks };
+        this.effects[free] = { id: effectId, damageTaken: damageTaken, ticksLeft: ticks, owner: owner };
         return true;
     }
 

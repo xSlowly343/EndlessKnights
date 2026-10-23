@@ -101,7 +101,10 @@ namespace Game.Core.Party
             if (Status == PartyLink.Joining && _inRoster && _state.EnemyId != 0 && _stateArrivalTick >= _joinStartTick)
                 Link();
             if (InParty)
+            {
                 SyncEnemy();
+                ShareMarks();
+            }
         }
 
         public void AfterTick()
@@ -247,6 +250,7 @@ namespace Game.Core.Party
             _loop.Stages.Unlink();
             _loop.Skills.ShareEnemy(false);
             _loop.PartyBuffs.ClearAllies();
+            _loop.Synergy.ClearAllies();
         }
 
         private void GoSolo()
@@ -303,6 +307,35 @@ namespace Game.Core.Party
             }
             if (_loop.LastInput.HasAnyInput)
                 _hitsInBatch++;
+        }
+
+        private void ShareMarks()
+        {
+            var synergy = _loop.Synergy;
+            var rules = synergy.Rules;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                var present = slot != _ownSlot && Roster.Player(slot) != 0 && Roster.Presence(slot) != PartyPresence.Offline;
+                if (!present)
+                {
+                    synergy.SetAlly(slot, false, default, 0);
+                    continue;
+                }
+                var marks = 0;
+                var ally = _loop.PartyBuffs.Ally(slot);
+                for (var i = 0; i < ally.Auras.Length; i++)
+                {
+                    if (ally.Auras[i].Active)
+                        marks |= rules.MaskOf(ally.Auras[i].Gem!);
+                }
+                for (var i = 0; i < ShownEffect.MaxShown; i++)
+                {
+                    var effect = EnemyEffect(i);
+                    if (effect.Active && effect.Owner == slot && _loop.Data.Gems.TryGetByNetId(effect.Id, out var gem))
+                        marks |= rules.MaskOf(gem);
+                }
+                synergy.SetAlly(slot, true, (HeroClass)Roster.HeroClass(slot), marks);
+            }
         }
 
         private void WatchCasts()
