@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Полоска боя</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 480px; height: 180px; position: relative; overflow: hidden; box-sizing: border-box; border-radius: 10px; border: 1px solid rgba(238,242,255,0.14); background: #19213A; font-family: Rubik, 'Segoe UI', sans-serif; color: #EEF2FF">
+  <div style="position: absolute; left: 0; right: 0; top: 150px; height: 2px; background: #2E5A3A"></div>
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 30px; background: #22304A"></div>
+  <sc-if value="{{showZones}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 0; right: 0; top: 36px; height: 40px; background: rgba(240,180,60,0.08); border-top: 1px dashed rgba(240,180,60,0.4); border-bottom: 1px dashed rgba(240,180,60,0.4)"></div>
+    <div style="position: absolute; right: 8px; top: 40px; font-size: 11px; color: #F0B43C">цифры и эффекты</div>
+    <div style="position: absolute; left: 180px; top: 132px; font-size: 11px; color: #AEB9D6">сцена: герой, отряд, враг</div>
+  </sc-if>
+  <div style="position: absolute; left: 10px; right: 10px; top: 6px; height: 28px; display: flex; align-items: center; gap: 8px">
+    <div style="font-family: 'Lilita One', Rubik, sans-serif; font-size: 16px">Этап 37</div>
+    <div style="display: flex; gap: 3px">
+      <sc-for list="{{dots}}" as="d" hint-placeholder-count="10">
+        <div style="{{d.style}}"></div>
+      </sc-for>
+    </div>
+    <div style="flex: 1"></div>
+    <sc-for list="{{skills}}" as="s" hint-placeholder-count="3">
+      <button type="button" aria-label="{{s.name}}" style="{{s.style}}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EEF2FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{s.d}}"></path></svg>
+      </button>
+    </sc-for>
+    <div style="display: flex; align-items: center; gap: 4px; padding: 0 8px; height: 24px; border-radius: 12px; background: #5A1F28; font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #FFD7D7">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFD7D7" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M12 7v5l3 2"></path></svg>
+      18 с
+    </div>
+    <button type="button" aria-label="Открыть панель" style="width: 30px; height: 30px; border-radius: 8px; border: 1px solid #F0B43C; background: #2E3A58; display: flex; align-items: center; justify-content: center; padding: 0">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0B43C" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16 M4 12h16 M4 17h16"></path></svg>
+    </button>
+  </div>
+  <sc-if value="{{isParty}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 12px; top: 104px; width: 32px; height: 46px; border-radius: 14px 14px 6px 6px; background: #4FC277; opacity: 0.85"></div>
+    <div style="position: absolute; left: 34px; top: 104px; width: 32px; height: 46px; border-radius: 14px 14px 6px 6px; background: #B07CFF; opacity: 0.85"></div>
+    <div style="position: absolute; left: 12px; top: 80px; display: flex; gap: 4px">
+      <div style="padding: 1px 6px; border-radius: 8px; background: #2B5A3A; font-size: 11px; color: #DFF7E6">Песнь +20%</div>
+      <div style="padding: 1px 6px; border-radius: 8px; background: #46306E; font-size: 11px; color: #EDE2FF">Уязвимость</div>
+    </div>
+  </sc-if>
+  <div style="position: absolute; left: 60px; top: 84px; width: 50px; height: 66px; border-radius: 22px 22px 8px 8px; background: #3F6FD1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; box-sizing: border-box; font-size: 11px; color: #EEF2FF">герой</div>
+  <div style="position: absolute; left: 150px; top: 108px; width: 170px; height: 4px; border-radius: 2px; background: #8FD3FF; opacity: 0.7"></div>
+  <div style="position: absolute; left: 172px; top: 114px; font-size: 11px; color: #8FD3FF">след удара (вспышка 0.1–0.2 с)</div>
+  <div style="position: absolute; left: 210px; top: 48px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 18px; color: #FFFFFF">1 240</div>
+  <div style="position: absolute; left: 270px; top: 38px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 24px; color: #F0B43C">3 900 КРИТ</div>
+  <div style="position: absolute; right: 18px; top: 66px; width: 92px; height: 84px; border-radius: 34px 34px 10px 10px; background: #8C3B2E; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; box-sizing: border-box; font-size: 11px; color: #FFE4DC">Король-кабан</div>
+  <div style="position: absolute; left: 10px; right: 10px; bottom: 4px; height: 22px; display: flex; align-items: center; gap: 10px">
+    <div style="width: 96px; height: 10px; border-radius: 5px; background: #121828; overflow: hidden"><div style="width: 70%; height: 10px; background: #E0574A"></div></div>
+    <div style="font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #FFB4A8">×2.1</div>
+    <div style="flex: 1; height: 10px; border-radius: 5px; background: #121828; overflow: hidden"><div style="width: 62%; height: 10px; background: #4FC277"></div></div>
+    <div style="font-size: 12px; color: #D5DCEE">62%</div>
+    <div style="display: flex; align-items: center; gap: 4px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 15px; color: #F0B43C">
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#F0B43C"></circle><circle cx="12" cy="12" r="5" fill="none" stroke="#9A6A12" stroke-width="2"></circle></svg>
+      12.4K
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"variant":{"editor":"enum","options":["solo","party"],"default":"solo"},"showZones":{"editor":"boolean","default":true},"$preview":{"width":480,"height":180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dots = [];
+    for (let i = 0; i < 10; i++) {
+      const done = i < 4;
+      const boss = i === 9;
+      dots.push({ style: 'width: ' + (boss ? 9 : 6) + 'px; height: ' + (boss ? 9 : 6) + 'px; border-radius: 50%; background: ' + (done ? '#F0B43C' : boss ? '#B02A2A' : '#4A5677') });
+    }
+    const skill = (name, d, color, ready) => ({
+      name, d,
+      style: 'width: 28px; height: 28px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; border: 2px solid ' + color + '; background: ' + (ready ? '#2E3A58' : '#141A2B') + '; opacity: ' + (ready ? 1 : 0.6)
+    });
+    const zones = this.props.showZones;
+    return {
+      isParty: this.props.variant === 'party',
+      showZones: zones !== false && zones !== 'false',
+      dots,
+      skills: [
+        skill('Стенография', 'M13 3L5 14h6l-1 7 8-11h-6z', '#E0574A', true),
+        skill('Ураган', 'M4 12a8 8 0 1 0 8-8 M12 8a4 4 0 1 0 4 4', '#4FC277', false),
+        skill('Метка', 'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8', '#5B9BFF', true)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

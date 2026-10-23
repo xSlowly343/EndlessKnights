@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Рабочий стол с панелью</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#F0B43C}a:hover{color:#FFD27A}
+</style>
+</helmet>
+<div style="width: 1440px; height: 860px; position: relative; overflow: hidden; background: #0F2236; font-family: Rubik, 'Segoe UI', sans-serif; color: #EEF2FF">
+  <div style="position: absolute; left: 0; top: 0; width: 1440px; height: 812px; background: #10283F"></div>
+  <div style="position: absolute; left: 160px; top: 120px; width: 620px; height: 420px; border-radius: 10px; background: #E9EDF5; box-shadow: 0 10px 30px rgba(0,0,0,0.35); display: flex; flex-direction: column; overflow: hidden">
+    <div style="height: 32px; background: #D4DAE6; display: flex; align-items: center; padding: 0 12px; font-size: 13px; color: #2A3348">Рабочее приложение: текстовый редактор</div>
+    <div style="flex: 1; padding: 20px 24px; display: flex; flex-direction: column; gap: 10px">
+      <div style="height: 10px; width: 80%; background: #C3CAD8; border-radius: 4px"></div>
+      <div style="height: 10px; width: 92%; background: #C3CAD8; border-radius: 4px"></div>
+      <div style="height: 10px; width: 64%; background: #C3CAD8; border-radius: 4px"></div>
+      <div style="height: 10px; width: 86%; background: #C3CAD8; border-radius: 4px"></div>
+      <div style="height: 10px; width: 40%; background: #C3CAD8; border-radius: 4px"></div>
+    </div>
+  </div>
+  <div style="position: absolute; left: 24px; top: 24px; width: 430px; height: 600px; border: 2px dashed rgba(174,185,214,0.55); border-radius: 8px; box-sizing: border-box"></div>
+  <div style="position: absolute; left: 470px; top: 24px; width: 430px; height: 600px; border: 2px dashed rgba(174,185,214,0.55); border-radius: 8px; box-sizing: border-box"></div>
+  <div style="position: absolute; left: 916px; top: 24px; width: 430px; height: 600px; border: 2px dashed rgba(174,185,214,0.55); border-radius: 8px; box-sizing: border-box"></div>
+  <div style="position: absolute; left: 40px; top: 40px; padding: 6px 12px; border-radius: 6px; background: rgba(15,34,54,0.9); color: #D5DCEE; font-size: 14px">Было: «Статистика», «Герой», «Дерево», 1322×600</div>
+  <div style="position: absolute; left: 936px; top: 8px">
+    <dc-import name="Hero" hint-size="480px,786px"></dc-import>
+  </div>
+  <div style="position: absolute; left: 0; bottom: 0; width: 1440px; height: 48px; background: #0A1624; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; box-sizing: border-box">
+    <div style="display: flex; gap: 10px; align-items: center">
+      <div style="width: 28px; height: 28px; border-radius: 6px; background: #3F6FD1"></div>
+      <div style="width: 28px; height: 28px; border-radius: 6px; background: #26304A"></div>
+      <div style="width: 28px; height: 28px; border-radius: 6px; background: #26304A"></div>
+      <div style="width: 28px; height: 28px; border-radius: 6px; background: #26304A"></div>
+    </div>
+    <div style="font-size: 13px; color: #AEB9D6">04:24</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":860}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

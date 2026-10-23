@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Панель Герой</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 480px; height: 786px; display: flex; flex-direction: column; gap: 6px; background: #0F2236; font-family: Rubik, 'Segoe UI', sans-serif; color: #EEF2FF">
+  <section aria-label="Панель" style="width: 480px; height: 600px; box-sizing: border-box; display: flex; flex-direction: column; border-radius: 12px; border: 1px solid #3A4870; background: #1B2236; overflow: hidden">
+    <div style="height: 46px; flex: none; position: relative; display: flex; align-items: center; gap: 10px; padding: 0 8px; box-sizing: border-box; border-bottom: 1px solid #3A4870">
+      <div style="position: absolute; left: 222px; top: 4px; width: 36px; height: 4px; border-radius: 2px; background: #4A5677"></div>
+      <div style="height: 30px; padding: 0 14px; display: flex; align-items: center; border-radius: 6px; background: #B02A2A; box-shadow: inset 0 -2px 0 #F0B43C; font-weight: 700; font-size: 15px">Герой</div>
+      <div style="display: flex; align-items: center; gap: 4px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #F0B43C"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#F0B43C"></circle><circle cx="12" cy="12" r="5" fill="none" stroke="#9A6A12" stroke-width="2"></circle></svg>12.4K</div>
+      <div style="display: flex; align-items: center; gap: 4px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #8FD3FF"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z" fill="#8FD3FF"></path></svg>340</div>
+      <div style="display: flex; align-items: center; gap: 4px; font-family: 'Lilita One', Rubik, sans-serif; font-size: 14px; color: #C59BFF"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l7 7-7 13-7-13z" fill="#C59BFF"></path></svg>18</div>
+      <div style="flex: 1"></div>
+      <button type="button" aria-label="Закрепить" style="width: 30px; height: 30px; border-radius: 6px; border: 0; background: #26304A; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#AEB9D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3z M12 13v7"></path></svg></button>
+      <button type="button" aria-label="Свернуть в полоску" style="width: 30px; height: 30px; border-radius: 6px; border: 0; background: #7A1E1E; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE4E4" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12 M18 6L6 18"></path></svg></button>
+    </div>
+    <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 4px; padding: 0 10px">
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: #2E3A58; color: #EEF2FF; font-family: inherit; font-size: 13px; font-weight: 500">Обзор</button>
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Статы</button>
+      <button type="button" style="height: 28px; padding: 0 14px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px">Ввод</button>
+      <div style="flex: 1"></div>
+      <button type="button" style="height: 28px; padding: 0 12px; border-radius: 14px; border: 1px solid #3F6FD1; background: #1F2B4A; color: #CFE0FF; font-family: inherit; font-size: 12px">Пресет: Рабочий</button>
+    </div>
+    <div style="flex: 1; min-height: 0; padding: 4px 16px 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; gap: 12px; justify-content: center">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{left}}" as="s" hint-placeholder-count="4">
+            <button type="button" aria-label="{{s.name}}" style="{{s.style}}">{{s.name}}</button>
+          </sc-for>
+        </div>
+        <div style="width: 200px; height: 248px; border-radius: 10px; background: #26304A; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 12px 10px; box-sizing: border-box">
+          <div style="font-size: 12px; color: #AEB9D6">Сила 64 · Ловк 48 · Инт 12</div>
+          <div style="width: 96px; height: 120px; border-radius: 40px 40px 14px 14px; background: #3F6FD1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; box-sizing: border-box; font-size: 11px">портрет</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px">
+            <div style="font-weight: 700; font-size: 16px">Мечник · ур. 42</div>
+            <div style="font-size: 12px; color: #AEB9D6">Вихри 3/5 · Шквал готов</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{right}}" as="s" hint-placeholder-count="4">
+            <button type="button" aria-label="{{s.name}}" style="{{s.style}}">{{s.name}}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{stats}}" as="st" hint-placeholder-count="6">
+          <div style="height: 58px; border-radius: 8px; background: #26304A; padding: 8px 10px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between">
+            <div style="font-size: 11px; color: #AEB9D6">{{st.label}}</div>
+            <div style="font-family: 'Lilita One', Rubik, sans-serif; font-size: 19px; color: {{st.color}}">{{st.value}}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px; border-radius: 8px; background: #22304A; font-size: 12px; color: #D5DCEE">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #FF4D4D"></span>
+        Новое кольцо лучше надетого: +7% урона удара
+        <div style="flex: 1"></div>
+        <span style="color: #F0B43C; font-weight: 500">Сравнить</span>
+      </div>
+    </div>
+    <dc-import name="TabBar" active="hero" hint-size="480px,60px"></dc-import>
+  </section>
+  <dc-import name="Strip" variant="solo" show-zones="false" hint-size="480px,180px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":786}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const rarity = { common: '#9AA3B5', magic: '#4FC277', rare: '#5B9BFF', epic: '#B07CFF', legend: '#FF9A3C' };
+    const slot = (name, r) => ({
+      name,
+      style: 'width: 56px; height: 56px; border-radius: 8px; border: 2px solid ' + rarity[r] + '; background: #26304A; color: #D5DCEE; font-family: inherit; font-size: 11px; padding: 0'
+    });
+    return {
+      left: [slot('Шлем', 'rare'), slot('Доспех', 'magic'), slot('Перчатки', 'epic'), slot('Сапоги', 'common')],
+      right: [slot('Оружие', 'legend'), slot('Амулет', 'rare'), slot('Кольцо', 'magic'), slot('Кольцо', 'epic')],
+      stats: [
+        { label: 'Урон за удар', value: '1.24K', color: '#EEF2FF' },
+        { label: 'DPS сейчас', value: '8.9K', color: '#F0B43C' },
+        { label: 'Крит', value: '18% ×2.5', color: '#EEF2FF' },
+        { label: 'Фокус', value: '×2.1 / 3', color: '#FFB4A8' },
+        { label: 'Энергия', value: '62 / 100', color: '#8FD3FF' },
+        { label: 'Золото', value: '+35%', color: '#F0B43C' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
