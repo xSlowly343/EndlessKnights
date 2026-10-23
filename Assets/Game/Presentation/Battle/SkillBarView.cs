@@ -25,10 +25,6 @@ namespace Game.Presentation.Battle
         private static readonly Color CooldownShade = new Color(0f, 0f, 0f, 0.65f);
         private static readonly Color LabelColor = Color.white;
         private static readonly Color KeyColor = new Color(1f, 1f, 1f, 0.8f);
-        private static readonly Color RedGem = new Color(0.8f, 0.25f, 0.22f);
-        private static readonly Color GreenGem = new Color(0.25f, 0.65f, 0.3f);
-        private static readonly Color BlueGem = new Color(0.25f, 0.45f, 0.85f);
-        private static readonly Color WhiteGem = new Color(0.7f, 0.7f, 0.72f);
         private static readonly Color Dimmed = new Color(0.45f, 0.45f, 0.45f);
 
         private readonly Icon[] _icons = new Icon[MaxIcons];
@@ -81,14 +77,6 @@ namespace Game.Presentation.Battle
                 _icons[i].Animate(delta);
         }
 
-        private static Color ColorOf(GemColor color) => color switch
-        {
-            GemColor.Red => RedGem,
-            GemColor.Green => GreenGem,
-            GemColor.Blue => BlueGem,
-            _ => WhiteGem
-        };
-
         private static string KeyLabel(int index) => index switch
         {
             SkillSystem.LeftButtonSlot => "Л",
@@ -119,7 +107,7 @@ namespace Game.Presentation.Battle
                 _root.transform.position = centre;
                 var frameSize = IconSize + StripSpace.Units(FramePx * 2f);
                 _frame = ShapeSprites.Create("Frame", ShapeSprites.Square, FrameIdle, centre, Vector2.one * frameSize, 30, _root.transform);
-                _back = ShapeSprites.Create("Back", ShapeSprites.Square, WhiteGem, centre, Vector2.one * IconSize, 31, _root.transform);
+                _back = ShapeSprites.Create("Back", ShapeSprites.Square, GemColors.White, centre, Vector2.one * IconSize, 31, _root.transform);
                 _collider = _back.gameObject.AddComponent<BoxCollider2D>();
                 _shade = ShapeSprites.Create("Cooldown", ShapeSprites.Square, CooldownShade, centre, Vector2.one * IconSize, 32, _root.transform);
                 _label = StripText.Create("Name", string.Empty, centre, 0.11f, TextAnchor.MiddleCenter, LabelColor, _root.transform, 33);
@@ -149,7 +137,7 @@ namespace Game.Presentation.Battle
 
                 var def = slot.Def;
                 var affordable = def.ResourceCost <= 0 || resource >= def.ResourceCost;
-                var color = ColorOf(slot.Skill.Color);
+                var color = GemColors.Of(slot.Skill.Color);
                 _back.color = def.IsPassive || !affordable ? color * Dimmed : color;
                 _frame.color = slot.Active ? FrameActive : FrameIdle;
                 ShowCooldown((float)slot.CooldownFraction);
