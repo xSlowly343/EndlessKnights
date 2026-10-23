@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Game.Core.Text;
 
 namespace Game.Core.Ui
 {
@@ -16,37 +17,37 @@ namespace Game.Core.Ui
             PanelSection.Party,
         };
 
-        private static readonly string[] NoSubTabs = Array.Empty<string>();
-        private static readonly string[] HeroSubTabs = { "Обзор", "Статы", "Ввод" };
-        private static readonly string[] BookSubTabs = { "Скиллы", "Цвета поддержек" };
-        private static readonly string[] TreeSubTabs = { "Дерево", "Подкласс", "Самоцветы" };
-        private static readonly string[] ItemsSubTabs = { "Сумка", "Артефакты", "Разбор" };
-        private static readonly string[] PartySubTabs = { "Отряд", "Друзья", "Клан", "Поиск" };
-
-        public static string Title(PanelSection section) => section switch
+        public static string Title(PanelSection section)
         {
-            PanelSection.Hero => "Герой",
-            PanelSection.Book => "Книга",
-            PanelSection.Tree => "Дерево",
-            PanelSection.Items => "Предметы",
-            PanelSection.Party => "Отряд",
-            PanelSection.Portal => "Портал",
-            PanelSection.Stats => "Статистика",
-            PanelSection.Camp => "Лагерь",
-            PanelSection.Shop => "Магазин",
-            PanelSection.Settings => "Настройки",
-            _ => throw new ArgumentOutOfRangeException(nameof(section), section, null),
+            if (!Enum.IsDefined(typeof(PanelSection), section))
+                throw new ArgumentOutOfRangeException(nameof(section), section, null);
+            return Texts.Get("panel.section." + Key(section));
+        }
+
+        public static IReadOnlyList<string> SubTabs(PanelSection section)
+        {
+            var count = SubTabCount(section);
+            var tabs = new string[count];
+            for (var i = 0; i < count; i++)
+                tabs[i] = Texts.Get("panel.tab." + Key(section) + "." + i);
+            return tabs;
+        }
+
+        private static int SubTabCount(PanelSection section) => section switch
+        {
+            PanelSection.Hero => 3,
+            PanelSection.Book => 2,
+            PanelSection.Tree => 3,
+            PanelSection.Items => 3,
+            PanelSection.Party => 4,
+            _ => 0,
         };
 
-        public static IReadOnlyList<string> SubTabs(PanelSection section) => section switch
+        private static string Key(PanelSection section)
         {
-            PanelSection.Hero => HeroSubTabs,
-            PanelSection.Book => BookSubTabs,
-            PanelSection.Tree => TreeSubTabs,
-            PanelSection.Items => ItemsSubTabs,
-            PanelSection.Party => PartySubTabs,
-            _ => NoSubTabs,
-        };
+            var name = section.ToString();
+            return char.ToLowerInvariant(name[0]) + name.Substring(1);
+        }
 
         public static PanelHeight DefaultHeight(PanelSection section) =>
             section == PanelSection.Portal ? PanelHeight.Half : PanelHeight.Full;

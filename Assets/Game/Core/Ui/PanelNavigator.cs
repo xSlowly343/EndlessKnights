@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Core.Text;
 
 namespace Game.Core.Ui
 {
@@ -37,7 +38,7 @@ namespace Game.Core.Ui
         public PanelHeight Height => IsWide ? PanelHeight.Full : HeightOf(Active);
         public int SubTab => _subTabs.TryGetValue(Active, out var index) ? index : 0;
         public IReadOnlyList<string> SubTabs => ShowingMore ? Array.Empty<string>() : PanelSections.SubTabs(Active);
-        public string Title => ShowingMore ? "Ещё" : PanelSections.Title(Active);
+        public string Title => ShowingMore ? Texts.Get("panel.more") : PanelSections.Title(Active);
         public PanelFrame Frame => PanelGeometry.Frame(Height, IsWide, SubTabs.Count > 0);
 
         public PanelHeight HeightOf(PanelSection section) =>

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using Game.Core.Math;
+using Game.Core.Text;
 
 namespace Game.Core.Sim
 {
     public static class OfflineReport
     {
         public const double MinimumAwaySeconds = 60;
-        public const string Title = "Пока тебя не было";
+        public static string Title => Texts.Get("offline.title");
 
         private const double CapToleranceSeconds = 1;
 
@@ -15,18 +16,18 @@ namespace Game.Core.Sim
 
         public static IReadOnlyList<string> Lines(double awaySeconds, OfflineResult result, NumberFormatSettings format)
         {
-            var lines = new List<string> { "Тебя не было: " + Duration(awaySeconds) };
+            var lines = new List<string> { Texts.Format("offline.away", Duration(awaySeconds)) };
             if (awaySeconds > result.Seconds + CapToleranceSeconds)
-                lines.Add("Засчитано: " + Duration(result.Seconds) + " (это предел)");
-            lines.Add("Золото: +" + NumberFormatter.Format(result.Gold, format));
-            lines.Add("Побеждено врагов: " + result.Kills);
+                lines.Add(Texts.Format("offline.counted", Duration(result.Seconds)));
+            lines.Add(Texts.Format("offline.gold", NumberFormatter.Format(result.Gold, format)));
+            lines.Add(Texts.Format("offline.kills", result.Kills));
             lines.Add(result.StagesCleared > 0
-                ? $"Этап: {result.StageBefore} → {result.StageAfter}"
-                : $"Этап: {result.StageAfter}");
+                ? Texts.Format("offline.stageMoved", result.StageBefore, result.StageAfter)
+                : Texts.Format("offline.stage", result.StageAfter));
             if (result.StoppedAtGuardian)
-                lines.Add("Дальше страж биома, его бьют вживую");
+                lines.Add(Texts.Get("offline.guardian"));
             else if (result.StuckAtBoss)
-                lines.Add("Босс этапа пока сильнее, нужна прокачка");
+                lines.Add(Texts.Get("offline.stuck"));
             return lines;
         }
 
@@ -34,12 +35,12 @@ namespace Game.Core.Sim
         {
             var totalMinutes = (long)System.Math.Floor(seconds / 60);
             if (totalMinutes < 1)
-                return "меньше минуты";
+                return Texts.Get("unit.lessThanMinute");
             var hours = totalMinutes / 60;
             var minutes = totalMinutes % 60;
             if (hours == 0)
-                return $"{minutes} мин";
-            return minutes == 0 ? $"{hours} ч" : $"{hours} ч {minutes} мин";
+                return Texts.Format("unit.minutes", minutes);
+            return minutes == 0 ? Texts.Format("unit.hours", hours) : Texts.Format("unit.hoursMinutes", hours, minutes);
         }
     }
 }
