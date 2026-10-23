@@ -1,3 +1,4 @@
+using System;
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
 using UnityEngine;
@@ -11,18 +12,36 @@ namespace Game.Bootstrap
         private PointerInput _pointer = null!;
         private PanelView _panels = null!;
         private bool _passingClicks;
+        private bool _enabled = true;
 
-        public bool Enabled { get; set; } = true;
+        public event Action<bool>? Changed;
 
-        public static ClickThroughDriver Attach(GameObject host, WindowController window, Camera camera, PointerInput pointer, PanelView panels)
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                if (_enabled == value)
+                    return;
+                _enabled = value;
+                Changed?.Invoke(value);
+            }
+        }
+
+        public static ClickThroughDriver Attach(GameObject host, WindowController window, Camera camera, PointerInput pointer, PanelView panels, FocusModeButton toggleButton)
         {
             var driver = host.AddComponent<ClickThroughDriver>();
             driver._panels = panels;
             driver._pointer = pointer;
             driver._window = window;
             driver._camera = camera;
+            toggleButton.Clicked += driver.Toggle;
+            driver.Changed += toggleButton.ShowPassingClicks;
+            toggleButton.ShowPassingClicks(driver.Enabled);
             return driver;
         }
+
+        public void Toggle() => Enabled = !Enabled;
 
         private void Update()
         {
@@ -36,16 +55,17 @@ namespace Game.Bootstrap
             if (!_window.TryGetBounds(out var bounds) || !ScreenCursor.TryGetPosition(out var x, out var y))
                 return;
 
-            var catches = CatchesAt(bounds, x, y);
+            var catches = StripHitTest.TryGetWorldPoint(_camera, bounds.Left, bounds.Top, bounds.Width, bounds.Height, x, y, out var worldPoint)
+                && CatchesAt(worldPoint);
             _passingClicks = ClickThroughPolicy.ShouldPassClicks(catches, _pointer.Held, _passingClicks);
             _window.SetClickThrough(_passingClicks);
         }
 
-        private bool CatchesAt(ScreenRect bounds, int x, int y)
+        private bool CatchesAt(Vector2 worldPoint)
         {
             if (_panels.IsOpen)
-                return StripHitTest.IsClickableAt(_camera, bounds.Left, bounds.Top, bounds.Width, bounds.Height, x, y);
-            return PointerState.IsControlDown() && StripHitTest.IsSpriteAt(_camera, bounds.Left, bounds.Top, bounds.Width, bounds.Height, x, y);
+                return StripHitTest.IsClickableAt(worldPoint);
+            return PointerState.IsControlDown() && StripHitTest.IsSpriteAt(worldPoint);
         }
     }
 }

@@ -21,6 +21,12 @@ namespace Game.Platform.Windows.Window
             MoveTo(IsNoFocus ? FocusModeState.Normal : FocusModeState.NoFocusPending);
         }
 
+        public void Set(bool noFocus)
+        {
+            if (noFocus != IsNoFocus)
+                Toggle();
+        }
+
         public void Observe(bool gameIsForeground)
         {
             if (State == FocusModeState.NoFocusPending && !gameIsForeground)
