@@ -54,6 +54,8 @@ namespace Game.Platform.Windows.Window
                 NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate);
         }
 
+        public bool PassesClicks => _clickThrough;
+
         public bool IsForeground => NativeMethods.GetForegroundWindow() == _window;
 
         public void ShowInTaskbar()

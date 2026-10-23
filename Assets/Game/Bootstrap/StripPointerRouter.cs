@@ -76,7 +76,7 @@ namespace Game.Bootstrap
 
         private void HandlePress()
         {
-            if (!TryGetWorldPoint(out var worldPoint))
+            if (_window.PassesClicks || !TryGetWorldPoint(out var worldPoint))
                 return;
 
             if (_panels.TryClick(worldPoint))
