@@ -37,6 +37,9 @@ namespace Game.Core.Build
         public void UseRules(SkillBookRules rules) => _rules = rules;
 
         public int SlotCount => _rules.SlotsFor(_state.RecordStage);
+        public int MaxSlots => _rules.MaxSlots;
+
+        public long UnlockStageOf(int slot) => _rules.UnlockStageOf(slot);
 
         public int FreeCopies(GemDef gem)
         {

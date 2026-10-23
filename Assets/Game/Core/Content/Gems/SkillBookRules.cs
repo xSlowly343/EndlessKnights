@@ -43,6 +43,9 @@ namespace Game.Core.Content.Gems
             return slots;
         }
 
+        public long UnlockStageOf(int slot) =>
+            slot < BaseSlots || slot >= MaxSlots ? 0 : _slotUnlockStages[slot - BaseSlots];
+
         public int SocketsFor(long recordStage, int rebirths)
         {
             var sockets = BaseSockets + System.Math.Min(rebirths, SocketRebirths);
