@@ -76,6 +76,9 @@ namespace Game.Core.Save
                     ("otherTree", WriteTree(state.OtherPreset.Tree)),
                     ("otherSkills", JsonValue.Array(WritePresetSkills(state.OtherPreset))))),
                 ("chainDamage", SaveValues.Of(state.ChainDamage)),
+                ("tutorial", Object(
+                    ("skipped", JsonValue.Of(state.TutorialSkipped)),
+                    ("done", JsonValue.Array(WriteTutorialDone(state))))),
                 ("carry", Object(
                     ("keys", JsonValue.Of(state.KeyCarry)),
                     ("mousePx", JsonValue.Of(state.MouseCarryPx)))));
@@ -146,6 +149,7 @@ namespace Game.Core.Save
             }
             state.Tree = ReadTree(node.Field("tree"));
             state.Ascendancy = ReadAscendancy(node.Field("ascendancy"));
+            ReadTutorial(node, state);
             var input = node.Field("inputStats");
             state.TotalInput.Keys = ReadCount(input.Field("keys"));
             state.TotalInput.LeftClicks = ReadCount(input.Field("leftClicks"));
@@ -274,6 +278,29 @@ namespace Game.Core.Save
             for (var i = 0; i < ids.Length; i++)
                 ids[i] = JsonValue.Of(state.OwnedGems[i].Id);
             return ids;
+        }
+
+        private static JsonValue[] WriteTutorialDone(GameState state)
+        {
+            var ids = new List<string>(state.TutorialDone);
+            ids.Sort(System.StringComparer.Ordinal);
+            var values = new JsonValue[ids.Count];
+            for (var i = 0; i < values.Length; i++)
+                values[i] = JsonValue.Of(ids[i]);
+            return values;
+        }
+
+        private static void ReadTutorial(ContentNode node, GameState state)
+        {
+            if (!node.HasField("tutorial"))
+            {
+                state.TutorialSkipped = true;
+                return;
+            }
+            var tutorial = node.Field("tutorial");
+            state.TutorialSkipped = tutorial.Field("skipped").AsBool();
+            foreach (var id in tutorial.Field("done").Items())
+                state.TutorialDone.Add(id.AsString());
         }
 
         private static JsonValue[] WriteSkills(GameState state)

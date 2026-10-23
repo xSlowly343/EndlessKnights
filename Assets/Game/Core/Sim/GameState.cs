@@ -74,6 +74,8 @@ namespace Game.Core.Sim
         }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
         public BigNumber ChainDamage { get; set; }
+        public HashSet<string> TutorialDone { get; } = new HashSet<string>(32, System.StringComparer.Ordinal);
+        public bool TutorialSkipped { get; set; }
 
         public long KeyHits { get; set; }
         public int Combo { get; set; }
