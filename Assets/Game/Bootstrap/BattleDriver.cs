@@ -13,10 +13,12 @@ namespace Game.Bootstrap
     {
         private GameLoop _loop = null!;
         private BattleView _view = null!;
+        private SkillBarView _skillBar = null!;
         private GameData _data = null!;
         private int _bossTotalTicks = 1;
 
         public GameLoop Loop => _loop;
+        public SkillBarView SkillBar => _skillBar;
 
         public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Viking };
 
@@ -26,6 +28,8 @@ namespace Game.Bootstrap
             driver._data = data;
             driver._loop = new GameLoop(data, input, state ?? NewRun(), new StatSheet());
             driver._view = BattleView.Create();
+            driver._skillBar = SkillBarView.Create();
+            driver._skillBar.SlotClicked += driver._loop.RequestCast;
             driver._bossTotalTicks = System.Math.Max(1, driver._loop.State.BossTicksLeft);
             driver._view.ShowEnemy(driver._loop.State.EnemyType == EnemyType.Boss, driver._loop.State.EnemyType == EnemyType.Guardian);
             return driver;
@@ -98,6 +102,7 @@ namespace Game.Bootstrap
                 FocusFraction(state.Focus),
                 state.Resource / _data.Combat.Resources.Max,
                 state.Gold);
+            _skillBar.Show(state.Skills, state.Resource);
         }
 
         private double FocusFraction(double focus)
