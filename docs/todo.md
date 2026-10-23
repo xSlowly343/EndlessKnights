@@ -63,3 +63,4 @@
 - [ ] 14а.24 — новые статы из `items.md` §6 (`weaponSkillDamage`, `nativeEffect`, `innateEffect`, `resourceMax`, `quickSkillDamage` и другие) завести в `StatSheet` вместе с задачами, где они впервые нужны.
 - [ ] 15.x — источники Астральной и Первозданной редкостей (`items.md` §3.2) не заданы: появятся с новыми активностями (Эпохи, Глубины Разлома, события). Добавить их в `drops.json` вместе с этими задачами.
 - [ ] 10.6 — ядро готово (`GameLoop.BossHint`, строки `BossHint.Lines`); на ПК показать карточку в полоске или панели после третьего провала и кнопку «Престиж» в ней.
+- [ ] 11.3 — ядро готово (`InputPermissions`, `ConsentTexts`); на ПК: экран согласия при первом запуске, `BattleDriver` ставит `loop.Permissions = InputPermissions.From(settings)` и обновляет при смене настроек.
