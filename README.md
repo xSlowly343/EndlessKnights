@@ -28,13 +28,13 @@
 | План и журнал | `roadmap.md`, `progress.md`, `todo.md`, `dev-notes.md` |
 | Техника | `engine-spec.md` (код), `blender-spec.md` (графика), `setup.md`, `mcp-setup.md` |
 | Дизайн целиком | `concept.md` |
-| Персонажи, дерево, скиллы | `class-resources.md`, `tree-effects.md`, `skills.md`, `class-options.md` (история выбора) |
+| Персонажи, дерево, скиллы | `class-resources.md`, `tree-effects.md`, `skills.md` |
 | Предметы и престиж | `items.md`, `prestige-options.md`, `artifacts.md` |
 | Кооп и отряд | `coop.md`, `party-hideout.md` |
-| Мирный мир | `peaceful-world.md`, `peaceful-activities.md` (короткий концепт) |
+| Мирный мир | `peaceful-world.md` |
 | Интерфейс и стиль | `ui-layout.md`, `ui-mockups/`, `visual-style.md`, `tbh-reference.md`, `tt2-combat-reference.md` |
 | Контент и сеттинг | `content-plan.md`, `content-draft.md`, `setting-options.md` |
-| Черновики | `monetization-p2w.md` (не реализуется, кроме §6), `archive/` (не используется) |
+| Черновики и история | `monetization-p2w.md` (не реализуется), `archive/` (выбор классов, первый прототип, старый концепт мирных активностей; для новых задач не используется) |
 
 При противоречии приоритет такой: `engine-spec.md` / `blender-spec.md` → `roadmap.md` → `content-draft.md` и `prestige-options.md` → `concept.md` → остальное (подробно в `CLAUDE.md`).
 
