@@ -24,6 +24,7 @@ namespace Game.Platform.Windows.Input
         private const int MouseLastXOffset = HeaderSize + 12;
         private const int MouseLastYOffset = HeaderSize + 16;
         private const int PointerSpeedRefreshMilliseconds = 5000;
+        private const int StopWaitMilliseconds = 500;
 
         private static readonly RawInputNativeMethods.WindowProcedure Procedure = HandleMessage;
         private static readonly InputCounters Counters = new InputCounters();
@@ -46,6 +47,7 @@ namespace Game.Platform.Windows.Input
         private readonly Thread _thread;
         private IntPtr _window;
         private volatile bool _started;
+        private volatile bool _stopping;
 
         private RawInputService()
         {
@@ -81,8 +83,11 @@ namespace Game.Platform.Windows.Input
 
         public void Dispose()
         {
+            _stopping = true;
             if (_window != IntPtr.Zero)
                 RawInputNativeMethods.PostMessage(_window, RawInputNativeMethods.WmClose, IntPtr.Zero, IntPtr.Zero);
+            if (_thread.IsAlive && !_thread.Join(StopWaitMilliseconds))
+                Debug.LogWarning("RawInput: thread did not stop in time");
         }
 
         private void Run()
@@ -105,6 +110,11 @@ namespace Game.Platform.Windows.Input
             }
 
             _started = true;
+            if (_stopping)
+            {
+                RawInputNativeMethods.DestroyWindow(_window);
+                return;
+            }
             while (RawInputNativeMethods.GetMessage(out var message, IntPtr.Zero, 0, 0) > 0)
                 RawInputNativeMethods.DispatchMessage(ref message);
         }

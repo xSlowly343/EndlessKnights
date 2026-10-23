@@ -18,7 +18,20 @@ namespace Game.Presentation.Strip
             sprite.transform.position = new Vector3(position.x, position.y, sprite.transform.position.z);
             sprite.transform.localScale = new Vector3(size.x, size.y, 1f);
             var button = sprite.AddComponent<StripButton>();
+            sprite.AddComponent<StripClickable>();
             button._collider = sprite.GetComponent<BoxCollider2D>();
+            return button;
+        }
+
+        public static StripButton CreateIcon(string name, Sprite icon, Vector2 position, float size)
+        {
+            var host = new GameObject(name);
+            host.transform.position = position;
+            host.transform.localScale = new Vector3(size, size, 1f);
+            host.AddComponent<SpriteRenderer>().sprite = icon;
+            var button = host.AddComponent<StripButton>();
+            host.AddComponent<StripClickable>();
+            button._collider = host.AddComponent<BoxCollider2D>();
             return button;
         }
 

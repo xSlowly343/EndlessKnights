@@ -5,9 +5,6 @@ namespace Game.Presentation.Strip
 {
     public sealed class FocusModeButton : MonoBehaviour
     {
-        private static readonly Color NormalColor = new Color(0.85f, 0.85f, 0.85f);
-        private static readonly Color NoFocusColor = new Color(0.25f, 0.6f, 1f);
-
         private SpriteRenderer _renderer = null!;
         private Collider2D _collider = null!;
 
@@ -15,12 +12,14 @@ namespace Game.Presentation.Strip
 
         public static FocusModeButton Create(Vector2 position, float size)
         {
-            var icon = PlaceholderSquare.Create(NormalColor, size);
-            icon.name = "FocusModeButton";
+            var icon = new GameObject("FocusModeButton");
             icon.transform.position = position;
+            icon.transform.localScale = new Vector3(size, size, 1f);
             var button = icon.AddComponent<FocusModeButton>();
-            button._renderer = icon.GetComponent<SpriteRenderer>();
-            button._collider = icon.GetComponent<BoxCollider2D>();
+            icon.AddComponent<StripClickable>();
+            button._renderer = icon.AddComponent<SpriteRenderer>();
+            button._renderer.sprite = StripIcons.Focus;
+            button._collider = icon.AddComponent<BoxCollider2D>();
             return button;
         }
 
@@ -30,7 +29,7 @@ namespace Game.Presentation.Strip
 
         public void ShowNoFocus(bool noFocus)
         {
-            _renderer.color = noFocus ? NoFocusColor : NormalColor;
+            _renderer.sprite = noFocus ? StripIcons.NoFocus : StripIcons.Focus;
         }
     }
 }

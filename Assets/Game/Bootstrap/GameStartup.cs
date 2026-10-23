@@ -20,7 +20,6 @@ namespace Game.Bootstrap
         private const float InputOverlayMargin = 0.3f;
         private static readonly Vector2 MenuButtonPosition = StripSpace.AtPx(455f, 20f);
         private static readonly Vector2 FocusButtonPosition = StripSpace.AtPx(419f, 20f);
-        private static readonly Color MenuButtonColor = new Color(0.8f, 0.2f, 0.2f);
 
         private static bool _isSecondInstance;
 
@@ -75,13 +74,14 @@ namespace Game.Bootstrap
             var pointer = PointerInput.Attach(host);
             var dock = TaskbarDockDriver.Attach(host, window);
             StripCameraDriver.Attach(host, camera, dock);
-            var menuButton = StripButton.Create("MenuButton", MenuButtonColor, MenuButtonPosition, Vector2.one * StripSpace.Units(StripButtonSizePx));
+            var menuButton = StripButton.CreateIcon("MenuButton", StripIcons.Menu, MenuButtonPosition, StripSpace.Units(StripButtonSizePx));
             var panels = PanelView.Create();
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
             var router = StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
             var data = GameDataFiles.TryLoadAll();
             var rawInput = RawInputService.Start(data?.Current.InputCaps.Detection);
             var observedInput = new ObservedInputSource(rawInput);
+            InputShutdownDriver.Attach(host, rawInput);
             var inputDebug = InputDebugOverlay.Create(StripSpace.BottomLeft(InputOverlayMargin));
             InputDebugDriver.Attach(focusButton.gameObject, observedInput, inputDebug, rawInput, window);
             if (data != null)

@@ -109,6 +109,7 @@ namespace Game.Presentation.Battle
                 _frame = ShapeSprites.Create("Frame", ShapeSprites.Square, FrameIdle, centre, Vector2.one * frameSize, 30, _root.transform);
                 _back = ShapeSprites.Create("Back", ShapeSprites.Square, GemColors.White, centre, Vector2.one * IconSize, 31, _root.transform);
                 _collider = _back.gameObject.AddComponent<BoxCollider2D>();
+                _back.gameObject.AddComponent<StripClickable>();
                 _shade = ShapeSprites.Create("Cooldown", ShapeSprites.Square, CooldownShade, centre, Vector2.one * IconSize, 32, _root.transform);
                 _label = StripText.Create("Name", string.Empty, centre, 0.11f, TextAnchor.MiddleCenter, LabelColor, _root.transform, 33);
                 var keyPosition = centre + new Vector2(-IconSize / 2f + StripSpace.Units(2f), IconSize / 2f - StripSpace.Units(1f));
