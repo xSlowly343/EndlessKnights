@@ -22,6 +22,17 @@ namespace Game.Presentation.Strip
             return button;
         }
 
+        public static StripButton CreateIcon(string name, Sprite icon, Vector2 position, float size)
+        {
+            var host = new GameObject(name);
+            host.transform.position = position;
+            host.transform.localScale = new Vector3(size, size, 1f);
+            host.AddComponent<SpriteRenderer>().sprite = icon;
+            var button = host.AddComponent<StripButton>();
+            button._collider = host.AddComponent<BoxCollider2D>();
+            return button;
+        }
+
         public bool Contains(Vector2 worldPoint) => isActiveAndEnabled && _collider.OverlapPoint(worldPoint);
 
         public void Click() => Clicked?.Invoke();

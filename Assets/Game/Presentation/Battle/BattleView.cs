@@ -41,7 +41,7 @@ namespace Game.Presentation.Battle
         private static readonly Vector2 FirstDotPosition = StripSpace.AtPx(82f, 20f);
         private static readonly float DotStep = StripSpace.Units(9f);
         private static readonly float DotSize = StripSpace.Units(6f);
-        private static readonly Vector2 GoldPosition = StripSpace.AtPx(410f, 165f);
+        private static readonly Vector2 GoldPosition = StripSpace.AtPx(10f, 31f);
         private static readonly Vector2 NoticePosition = StripSpace.AtPx(240f, 56f);
         private static readonly Vector2 NumbersOrigin = StripSpace.AtPx(290f, 72f);
         private static readonly Vector2 BossNumbersOrigin = StripSpace.AtPx(230f, 72f);
@@ -184,7 +184,7 @@ namespace Game.Presentation.Battle
                 _dots[i] = ShapeSprites.Create("Dot", ShapeSprites.Circle, DotEmpty, FirstDotPosition + new Vector2(i * DotStep, 0f), Vector2.one * DotSize, 12, _scene);
             _stageText = StripText.Create("Stage", string.Empty, StagePosition, 0.18f, TextAnchor.UpperLeft, Color.white, _scene, 15);
             _timerText = StripText.Create("BossTimer", string.Empty, TimerTextPosition, 0.15f, TextAnchor.MiddleLeft, Color.white, _scene, 15);
-            _goldText = StripText.Create("Gold", string.Empty, GoldPosition, 0.18f, TextAnchor.MiddleLeft, new Color(1f, 0.85f, 0.3f), _scene, 15);
+            _goldText = StripText.Create("Gold", string.Empty, GoldPosition, 0.15f, TextAnchor.MiddleLeft, new Color(1f, 0.85f, 0.3f), _scene, 15);
             _retreatText = StripText.Create("Retreat", "Отступление", EnemyCentre, 0.25f, TextAnchor.MiddleCenter, new Color(1f, 0.4f, 0.3f), _scene, 25);
             _retreatText.gameObject.SetActive(false);
             _noticeText = StripText.Create("Notice", string.Empty, NoticePosition, 0.16f, TextAnchor.MiddleCenter, new Color(0.7f, 1f, 0.7f), _scene, 30);
