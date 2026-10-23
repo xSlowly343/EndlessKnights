@@ -85,6 +85,7 @@ namespace Game.Core.Sim
         public double MetersPerPixel { get; set; } = InputStats.DefaultMetersPerPixel;
         public bool Paused { get; set; }
         public InputPermissions Permissions { get; set; } = InputPermissions.All;
+        public ITickHook? Hook { get; set; }
 
         public int Advance(double seconds)
         {
@@ -248,6 +249,7 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
+            Hook?.BeforeTick();
             LastInput = Permissions.Apply(_input.Drain());
             SessionInput.Add(LastInput, MetersPerPixel);
             State.TotalInput.Add(LastInput, MetersPerPixel);
@@ -264,6 +266,7 @@ namespace Game.Core.Sim
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
+            Hook?.AfterTick();
         }
 
         private void CastRequested()
