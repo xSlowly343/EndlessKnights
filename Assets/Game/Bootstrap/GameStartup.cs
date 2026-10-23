@@ -57,7 +57,6 @@ namespace Game.Bootstrap
 
             var focusButton = FocusModeButton.Create(FocusButtonPosition, StripSpace.Units(StripButtonSizePx));
             var framePacing = FramePacingDriver.Attach(focusButton.gameObject, TrayMenuState.DefaultFrameRate);
-            FocusModeDriver.Attach(focusButton, window);
             if (window == null)
             {
                 var editorData = GameDataFiles.TryLoadAll();
@@ -94,7 +93,7 @@ namespace Game.Bootstrap
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
             }
-            var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer, panels);
+            var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer, panels, menuButton, focusButton);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 
             var tray = TrayIcon.Create(Application.productName);

@@ -27,9 +27,9 @@ namespace Game.Presentation.Strip
 
         public void Click() => Clicked?.Invoke();
 
-        public void ShowNoFocus(bool noFocus)
+        public void ShowPassingClicks(bool passing)
         {
-            _renderer.sprite = noFocus ? StripIcons.NoFocus : StripIcons.Focus;
+            _renderer.sprite = passing ? StripIcons.NoFocus : StripIcons.Focus;
         }
     }
 }

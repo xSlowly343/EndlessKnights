@@ -14,7 +14,6 @@ namespace Game.Bootstrap
             var driver = button.gameObject.AddComponent<FocusModeDriver>();
             driver._window = window;
             button.Clicked += driver._focusMode.Toggle;
-            driver._focusMode.Changed += button.ShowNoFocus;
             driver._focusMode.Changed += driver.ApplyToWindow;
         }
 

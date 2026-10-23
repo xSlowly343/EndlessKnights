@@ -33,6 +33,7 @@ namespace Game.Bootstrap
             driver._inputDebug = inputDebug;
             driver._panelMode = panelMode;
             tray.ShowState(driver._state);
+            clickThrough.Changed += driver.SyncClickThrough;
             inputDebug.SetVisible(driver._state.ShowInputDebug);
         }
 
@@ -66,6 +67,14 @@ namespace Game.Bootstrap
             _dock.AlwaysOnTop = _state.AlwaysOnTop;
             _framePacing.SetFrameRate(_state.FrameRate);
             _inputDebug.SetVisible(_state.ShowInputDebug);
+        }
+
+        private void SyncClickThrough(bool enabled)
+        {
+            if (_state.ClickThrough == enabled)
+                return;
+            _state = _state.Apply(TrayCommand.ToggleClickThrough);
+            _tray.ShowState(_state);
         }
 
         private void Handle(SystemEvent systemEvent)
