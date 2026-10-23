@@ -1,3 +1,4 @@
+using Game.Core.Content.Gems;
 using Game.Core.Math;
 using Game.Core.Party.Transport;
 using Game.Core.Party.Wire;
@@ -32,6 +33,9 @@ namespace Game.Core.Party
         private uint _sequence;
         private int _hitsInBatch;
         private uint _rewardedUpTo;
+        private int _ownSlot = PartyEncounter.NoSlot;
+        private int _firstEvent;
+        private bool _offerNow;
 
         public PartyClient(GameLoop loop, IPartyTransport transport, ulong hostId, PartyRules rules)
         {
@@ -64,13 +68,14 @@ namespace Game.Core.Party
 
         public void Leave()
         {
-            _loop.Stages.Unlink();
+            Unlink();
             Status = PartyLink.Solo;
             _lostAtTick = long.MinValue;
         }
 
         public void BeforeTick()
         {
+            _firstEvent = _loop.Events.Count;
             while (_transport.TryReceive(_in, out var length, out var from))
             {
                 if (from == _hostId)
@@ -88,7 +93,10 @@ namespace Game.Core.Party
         {
             _tick++;
             if (InParty)
+            {
                 CountDamage();
+                WatchCasts();
+            }
             WatchSignal();
             Send();
         }
@@ -103,7 +111,11 @@ namespace Game.Core.Party
             switch (PartyCodec.KindOf(_in, length))
             {
                 case PartyMessageKind.Roster when PartyCodec.TryDecode(_in, length, out RosterMessage roster):
-                    _inRoster = roster.SlotOf(_transport.LocalId) != PartyEncounter.NoSlot;
+                    OnRoster(roster);
+                    break;
+                case PartyMessageKind.PartyOffer when PartyCodec.TryDecode(_in, length, out PartyOfferMessage offer):
+                    if (InParty)
+                        OnOffer(offer);
                     break;
                 case PartyMessageKind.EncounterState when PartyCodec.TryDecode(_in, length, out EncounterStateMessage state):
                     if (state.Sequence > _state.Sequence)
@@ -118,6 +130,40 @@ namespace Game.Core.Party
                         EndLocalEnemy(true);
                     break;
             }
+        }
+
+        private void OnRoster(in RosterMessage roster)
+        {
+            _ownSlot = roster.SlotOf(_transport.LocalId);
+            _inRoster = _ownSlot != PartyEncounter.NoSlot;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (slot == _ownSlot || roster.Player(slot) == 0 || roster.Presence(slot) == PartyPresence.Offline)
+                    _loop.PartyBuffs.ClearAlly(slot);
+            }
+        }
+
+        private void OnOffer(in PartyOfferMessage offer)
+        {
+            if (offer.Slot >= PartyRules.MaxSlots || offer.Slot == _ownSlot)
+                return;
+            var ally = _loop.PartyBuffs.Ally(offer.Slot);
+            ally.Present = true;
+            for (var i = 0; i < ally.Stats.Length; i++)
+                ally.Stats[i] = System.Math.Max(0, offer.Stat(i));
+            var gems = _loop.Data.Gems;
+            for (var i = 0; i < ally.Auras.Length; i++)
+            {
+                var offered = offer.Aura(i);
+                var aura = ally.Auras[i];
+                aura.Clear();
+                if (!offered.Active || !gems.TryGetByNetId(offered.GemNetId, out var gem) || !(gem.Skill?.Effect is AuraEffect effect) || !effect.Party)
+                    continue;
+                aura.Gem = gem;
+                aura.Strength = System.Math.Max(0, offered.Strength);
+                aura.TicksLeft = offered.TicksLeft;
+            }
+            _loop.PartyBuffs.MarkChanged();
         }
 
         private void OnState(in EncounterStateMessage state)
@@ -167,15 +213,24 @@ namespace Game.Core.Party
         {
             Status = PartyLink.Linked;
             _loop.Stages.Link();
+            _loop.Skills.ShareEnemy(true);
+            _offerNow = true;
             if (_state.EnemyId > 0 && _state.EnemyId - 1 > _rewardedUpTo)
                 _rewardedUpTo = _state.EnemyId - 1;
             _localEnemyId = 0;
             _lastHeardTick = _tick;
         }
 
-        private void GoSolo()
+        private void Unlink()
         {
             _loop.Stages.Unlink();
+            _loop.Skills.ShareEnemy(false);
+            _loop.PartyBuffs.ClearAllies();
+        }
+
+        private void GoSolo()
+        {
+            Unlink();
             Status = PartyLink.Solo;
             _lostAtTick = _tick;
             _localEnemyId = 0;
@@ -223,10 +278,30 @@ namespace Game.Core.Party
             if (share > 0)
             {
                 _total += share;
-                _sharesSinceState += share;
+                _sharesSinceState += share * System.Math.Max(1, _state.DamageTaken);
             }
             if (_loop.LastInput.HasAnyInput)
                 _hitsInBatch++;
+        }
+
+        private void WatchCasts()
+        {
+            var events = _loop.Events;
+            for (var i = _firstEvent; i < events.Count; i++)
+            {
+                var gameEvent = events[i];
+                var effect = gameEvent.Gem?.Skill?.Effect;
+                if (gameEvent.Kind == GameEventKind.SkillCast && effect is EnemyDebuffEffect debuff)
+                    SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
+                    {
+                        EffectId = gameEvent.Gem!.NetId,
+                        OnEnemy = true,
+                        Strength = debuff.DamageTaken,
+                        Seconds = gameEvent.Gem.Skill!.DurationSeconds
+                    }));
+                else if (gameEvent.Kind == GameEventKind.AuraChanged && effect is AuraEffect aura && aura.Party)
+                    _offerNow = true;
+            }
         }
 
         private void WatchSignal()
@@ -248,6 +323,8 @@ namespace Game.Core.Party
                 SendToHost(PartyCodec.Encode(_out, new HelloMessage { HeroClass = (byte)_loop.State.Class, Stage = _loop.State.Stage }));
             if (InParty && Every(_rules.DamageBatchSeconds))
                 FlushBatch();
+            if (InParty && (_offerNow || Every(_rules.Buffs.OfferSeconds)))
+                SendOffer();
             if ((InParty || Status == PartyLink.Joining) && Every(_rules.PresenceSeconds))
                 SendToHost(PartyCodec.Encode(_out, new PresenceMessage
                 {
@@ -270,6 +347,25 @@ namespace Game.Core.Party
             }));
             _sentTotal = _total;
             _hitsInBatch = 0;
+        }
+
+        private void SendOffer()
+        {
+            _offerNow = false;
+            var buffs = _loop.PartyBuffs;
+            var offer = new PartyOfferMessage();
+            for (var i = 0; i < buffs.Rules.Stats.Count; i++)
+                offer.SetStat(i, buffs.OwnValue(i));
+            var count = 0;
+            var skills = _loop.State.Skills;
+            for (var i = 0; i < skills.Count && count < PartyBuffRules.MaxAuras; i++)
+            {
+                var slot = skills[i];
+                if (!slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura) || !aura.Party)
+                    continue;
+                offer.SetAura(count++, new OfferedAura { GemNetId = slot.Skill.NetId, Strength = (float)slot.AuraStrength, TicksLeft = slot.ActiveTicks });
+            }
+            SendToHost(PartyCodec.Encode(_out, offer));
         }
 
         private void SendToHost(int length) => _transport.Send(_hostId, _out, length);

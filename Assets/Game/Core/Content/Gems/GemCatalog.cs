@@ -30,14 +30,19 @@ namespace Game.Core.Content.Gems
         };
 
         private readonly Dictionary<string, GemDef> _byId;
+        private readonly Dictionary<int, GemDef> _byNetId;
 
         private GemCatalog(List<GemDef> gems, GemLevels levels)
         {
             All = gems;
             Levels = levels;
             _byId = new Dictionary<string, GemDef>(StringComparer.Ordinal);
+            _byNetId = new Dictionary<int, GemDef>();
             foreach (var gem in gems)
+            {
                 _byId.Add(gem.Id, gem);
+                _byNetId.Add(gem.NetId, gem);
+            }
         }
 
         public IReadOnlyList<GemDef> All { get; }
@@ -46,6 +51,8 @@ namespace Game.Core.Content.Gems
         public GemDef this[string id] => _byId[id];
 
         public bool TryGet(string id, out GemDef gem) => _byId.TryGetValue(id, out gem!);
+
+        public bool TryGetByNetId(int netId, out GemDef gem) => _byNetId.TryGetValue(netId, out gem!);
 
         public static GemCatalog Load(string json)
         {
@@ -56,11 +63,15 @@ namespace Game.Core.Content.Gems
 
             var gems = new List<GemDef>();
             var ids = new HashSet<string>(StringComparer.Ordinal);
+            var netIds = new Dictionary<int, string>();
             foreach (var node in root.Field("gems").Items())
             {
                 var gem = ReadGem(node);
                 if (!ids.Add(gem.Id))
                     throw node.Field("id").Error($"gem id '{gem.Id}' is used twice");
+                if (netIds.TryGetValue(gem.NetId, out var clash))
+                    throw node.Field("id").Error($"gem id '{gem.Id}' has the same network hash as '{clash}', rename one of them");
+                netIds.Add(gem.NetId, gem.Id);
                 gems.Add(gem);
             }
             return new GemCatalog(gems, GemLevels.Read(root.Field("levels")));
@@ -100,6 +111,8 @@ namespace Game.Core.Content.Gems
             var effect = ReadEffect(node.Field("effect"));
             if (effect is AuraEffect && duration <= 0)
                 throw node.Error("an aura needs durationSeconds");
+            if (effect is EnemyDebuffEffect && duration <= 0)
+                throw node.Error("an enemy debuff needs durationSeconds");
             return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect);
         }
 
@@ -113,14 +126,16 @@ namespace Game.Core.Content.Gems
                 case "strike":
                     return new StrikeEffect(node.Field("multiplier").AsNumber(0, 1e6));
                 case "aura":
-                    return new AuraEffect(ModifierReader.ReadList(node.Field("modifiers")));
+                    return new AuraEffect(ModifierReader.ReadList(node.Field("modifiers")), node.HasField("party") && node.Field("party").AsBool());
+                case "enemyDebuff":
+                    return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10));
                 case "idleStrike":
                     return new IdleStrikeEffect(
                         node.Field("chargePerSecond").AsNumber(0, 1000),
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, enemyDebuff or idleStrike");
             }
         }
 

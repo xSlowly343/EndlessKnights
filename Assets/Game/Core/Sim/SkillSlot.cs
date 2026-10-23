@@ -25,6 +25,7 @@ namespace Game.Core.Sim
         }
 
         public bool AuraApplied { get; set; }
+        public double AuraStrength { get; set; }
         public List<Modifier> AuraModifiers { get; } = new List<Modifier>();
 
         public SkillDef Def => Skill.Skill!;

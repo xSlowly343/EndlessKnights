@@ -66,6 +66,10 @@ namespace Game.Core.Party
                     if (effect.OnEnemy)
                         _encounter.ApplyEnemyEffect(effect.EffectId, effect.Strength, effect.Seconds);
                     break;
+                case PartyMessageKind.PartyOffer when PartyCodec.TryDecode(_in, length, out PartyOfferMessage offer):
+                    offer.Slot = (byte)slot;
+                    BroadcastExcept(slot, PartyCodec.Encode(_out, offer));
+                    break;
             }
         }
 
@@ -177,12 +181,14 @@ namespace Game.Core.Party
             }
         }
 
-        private void Broadcast(int length)
+        private void Broadcast(int length) => BroadcastExcept(PartyEncounter.NoSlot, length);
+
+        private void BroadcastExcept(int skipped, int length)
         {
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 var member = _encounter.Member(slot);
-                if (member.Joined)
+                if (member.Joined && slot != skipped)
                     _transport.Send(member.PlayerId, _out, length);
             }
         }

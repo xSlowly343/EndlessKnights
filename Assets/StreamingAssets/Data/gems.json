@@ -31,7 +31,7 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 5,
       "durationSeconds": 20,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.15 }, { "stat": "gold", "kind": "increased", "value": 0.10 }] }
+      "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.15 }, { "stat": "gold", "kind": "increased", "value": 0.10 }] }
     },
     {
       "id": "guitar_solo",
@@ -42,7 +42,7 @@
       "cost": { "resource": 80 },
       "cooldownSeconds": 35,
       "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1.0, "tags": ["Aura"] }, { "stat": "keyHitLightning", "kind": "flat", "value": 0.2 }] }
+      "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1.0, "tags": ["Aura"] }, { "stat": "keyHitLightning", "kind": "flat", "value": 0.2 }] }
     },
     {
       "id": "stenography",
@@ -64,6 +64,17 @@
       "cooldownSeconds": 5,
       "durationSeconds": 30,
       "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25 }] }
+    },
+    {
+      "id": "voodoo_needle",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Игла в куклу", "en": "Needle in the Doll" },
+      "tags": ["Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 5,
+      "durationSeconds": 10,
+      "effect": { "type": "enemyDebuff", "damageTaken": 0.15 }
     },
     {
       "id": "lull",

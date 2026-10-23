@@ -18,9 +18,22 @@ namespace Game.Core.Content.Gems
             Skill = skill;
             Trigger = trigger;
             SupportEffect = supportEffect;
+            NetId = NetIdOf(id);
+        }
+
+        public static int NetIdOf(string id)
+        {
+            var hash = 2166136261u;
+            foreach (var symbol in id)
+            {
+                hash ^= symbol;
+                hash *= 16777619u;
+            }
+            return unchecked((int)hash);
         }
 
         public string Id { get; }
+        public int NetId { get; }
         public GemKind Kind { get; }
         public GemColor Color { get; }
         public string NameRu { get; }

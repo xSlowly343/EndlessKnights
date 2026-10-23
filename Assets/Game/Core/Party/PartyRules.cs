@@ -9,7 +9,7 @@ namespace Game.Core.Party
         public const int MaxSlots = 4;
 
         private PartyRules(int maxMembers, double hpPerExtraPlayer, double restAfterSeconds, double disconnectGraceSeconds, double rejoinWindowSeconds,
-            double lateDamageSeconds, double damageBatchSeconds, double stateBroadcastSeconds, double presenceSeconds, double silenceSeconds, double maxEnemyDamageTaken)
+            double lateDamageSeconds, double damageBatchSeconds, double stateBroadcastSeconds, double presenceSeconds, double silenceSeconds, double maxEnemyDamageTaken, PartyBuffRules buffs)
         {
             MaxMembers = maxMembers;
             HpPerExtraPlayer = hpPerExtraPlayer;
@@ -22,6 +22,7 @@ namespace Game.Core.Party
             PresenceSeconds = presenceSeconds;
             SilenceSeconds = silenceSeconds;
             MaxEnemyDamageTaken = maxEnemyDamageTaken;
+            Buffs = buffs;
         }
 
         public int MaxMembers { get; }
@@ -35,6 +36,7 @@ namespace Game.Core.Party
         public double PresenceSeconds { get; }
         public double SilenceSeconds { get; }
         public double MaxEnemyDamageTaken { get; }
+        public PartyBuffRules Buffs { get; }
 
         public double HpMultiplier(int fighters) => System.Math.Max(1, 1 + HpPerExtraPlayer * (System.Math.Max(1, fighters) - 1));
 
@@ -68,7 +70,8 @@ namespace Game.Core.Party
                 packets.Field("stateBroadcastSeconds").AsNumber(0.1, 10),
                 presenceSeconds,
                 silence,
-                root.Field("maxEnemyDamageTaken").AsNumber(0, 100));
+                root.Field("maxEnemyDamageTaken").AsNumber(0, 100),
+                PartyBuffRules.Read(root.Field("buffs")));
         }
     }
 }

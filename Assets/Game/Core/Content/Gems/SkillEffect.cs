@@ -31,12 +31,24 @@ namespace Game.Core.Content.Gems
 
     public sealed class AuraEffect : SkillEffect
     {
-        public AuraEffect(IReadOnlyList<Modifier> modifiers)
+        public AuraEffect(IReadOnlyList<Modifier> modifiers, bool party = false)
         {
             Modifiers = modifiers;
+            Party = party;
         }
 
         public IReadOnlyList<Modifier> Modifiers { get; }
+        public bool Party { get; }
+    }
+
+    public sealed class EnemyDebuffEffect : SkillEffect
+    {
+        public EnemyDebuffEffect(double damageTaken)
+        {
+            DamageTaken = damageTaken;
+        }
+
+        public double DamageTaken { get; }
     }
 
     public sealed class IdleStrikeEffect : SkillEffect
