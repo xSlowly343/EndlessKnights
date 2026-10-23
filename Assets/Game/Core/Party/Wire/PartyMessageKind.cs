@@ -1,0 +1,15 @@
+namespace Game.Core.Party.Wire
+{
+    public enum PartyMessageKind : byte
+    {
+        None,
+        Hello,
+        DamageBatch,
+        CastEffect,
+        Presence,
+        EncounterState,
+        EnemyKilled,
+        EncounterMoment,
+        Roster
+    }
+}
