@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Build
 
         private static GameLoop Typist(params string[] path)
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
             loop.State.Tree.PointsEarned = 120;
             foreach (var step in path)
             {
@@ -31,10 +31,10 @@ namespace Game.Core.Tests.Build
         [Test]
         public void LeafNodeIsRefundedForGoldAndStatsDrop()
         {
-            var loop = Typist("swordsman_ring_1", "swordsman_ring_2", "swordsman_ring_3");
-            var cost = loop.RefundCost("swordsman_ring_3")!.Value;
+            var loop = Typist("ronin_ring_1", "ronin_ring_2", "ronin_ring_3");
+            var cost = loop.RefundCost("ronin_ring_3")!.Value;
 
-            Assert.That(loop.RefundNode("swordsman_ring_3"), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.RefundNode("ronin_ring_3"), Is.EqualTo(RefundResult.Refunded));
 
             Assert.That(loop.State.Gold, Is.EqualTo(BigNumber.FromDouble(1e9) - cost));
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(2));
@@ -44,7 +44,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NodeHoldingThePathCannotBeRefunded()
         {
-            var path = TreePaths.To(TestWorld.Data.Tree, "swordsman", "swordsman_w1_notable");
+            var path = TreePaths.To(TestWorld.Data.Tree, "ronin", "ronin_resource_7");
             var loop = Typist();
             TreePaths.Allocate(loop, TestWorld.Data.Tree, path.Take(3));
 
@@ -55,16 +55,16 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NodeWithAnotherRouteCanBeRefunded()
         {
-            var loop = Typist("swordsman_ring_1", "swordsman_ring_2", "swordsman_ring_3", "swordsman_ring_4", "swordsman_ring_5");
+            var loop = Typist("ronin_ring_1", "ronin_ring_2", "ronin_ring_3", "ronin_ring_4", "ronin_ring_5");
 
-            Assert.That(loop.RefundNode("swordsman_ring_2"), Is.EqualTo(RefundResult.Refunded));
-            Assert.That(loop.State.Tree.IsAllocated(TestWorld.Data.Tree, "swordsman_ring_3"), Is.True);
+            Assert.That(loop.RefundNode("ronin_ring_2"), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.State.Tree.IsAllocated(TestWorld.Data.Tree, "ronin_ring_3"), Is.True);
         }
 
         [Test]
         public void DeeperNodesCostMoreAndAttributesCostHalf()
         {
-            var path = TreePaths.To(TestWorld.Data.Tree, "swordsman", "swordsman_w1_notable");
+            var path = TreePaths.To(TestWorld.Data.Tree, "ronin", "ronin_resource_7");
             var toAttribute = TreeAllocationTests.ToAttribute;
             var loop = Typist();
             TreePaths.Allocate(loop, TestWorld.Data.Tree, path);
@@ -84,29 +84,29 @@ namespace Game.Core.Tests.Build
         [Test]
         public void HigherLevelMakesRefundsDearer()
         {
-            var loop = Typist("swordsman_ring_1");
-            var atLevelOne = loop.RefundCost("swordsman_ring_1")!.Value;
+            var loop = Typist("ronin_ring_1");
+            var atLevelOne = loop.RefundCost("ronin_ring_1")!.Value;
 
             loop.State.HeroLevel = 11;
 
-            Assert.That((loop.RefundCost("swordsman_ring_1")!.Value / atLevelOne).ToDouble(), Is.EqualTo(System.Math.Pow(1.1, 10)).Within(1e-9));
+            Assert.That((loop.RefundCost("ronin_ring_1")!.Value / atLevelOne).ToDouble(), Is.EqualTo(System.Math.Pow(1.1, 10)).Within(1e-9));
         }
 
         [Test]
         public void RefundNeedsEnoughGold()
         {
-            var loop = Typist("swordsman_ring_1");
+            var loop = Typist("ronin_ring_1");
             loop.State.Gold = BigNumber.FromDouble(1);
 
-            Assert.That(loop.RefundNode("swordsman_ring_1"), Is.EqualTo(RefundResult.NotEnoughGold));
-            Assert.That(loop.RefundNode("swordsman_ring_3"), Is.EqualTo(RefundResult.NotAllocated));
-            Assert.That(loop.RefundNode("swordsman_start"), Is.EqualTo(RefundResult.NotAllocated));
+            Assert.That(loop.RefundNode("ronin_ring_1"), Is.EqualTo(RefundResult.NotEnoughGold));
+            Assert.That(loop.RefundNode("ronin_ring_3"), Is.EqualTo(RefundResult.NotAllocated));
+            Assert.That(loop.RefundNode("ronin_start"), Is.EqualTo(RefundResult.NotAllocated));
         }
 
         [Test]
         public void FullResetIsFreeOncePerDay()
         {
-            var loop = Typist("swordsman_ring_1", "swordsman_ring_2", "swordsman_ring_3");
+            var loop = Typist("ronin_ring_1", "ronin_ring_2", "ronin_ring_3");
             var gold = loop.State.Gold;
             var now = 1_760_000_000_000L;
 
@@ -115,7 +115,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.Gold, Is.EqualTo(gold));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100));
 
-            loop.AllocateNode("swordsman_ring_1");
+            loop.AllocateNode("ronin_ring_1");
             Assert.That(loop.FreeFullReset(now + Day - 1), Is.EqualTo(RefundResult.NotYet));
             Assert.That(loop.FreeFullReset(now + Day), Is.EqualTo(RefundResult.Refunded));
         }
@@ -123,7 +123,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void FreeResetTimeIsSaved()
         {
-            var loop = Typist("swordsman_ring_1");
+            var loop = Typist("ronin_ring_1");
             loop.FreeFullReset(1_760_000_000_000L);
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;

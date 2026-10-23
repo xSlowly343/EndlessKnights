@@ -40,9 +40,8 @@ namespace Game.Core.Tests.Build
             System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(Build.TreePaths.To(TestWorld.Data.Tree, className, target),
                 id => TestWorld.Data.Tree[id].Type == Game.Core.Content.Tree.TreeNodeType.Attribute ? id + "=strength" : id));
 
-        private static string[] ToSeriesNotable => PathTo("swordsman", "swordsman_w1_notable");
-        private static string[] ToMelodyNotable => PathTo("bard", "bard_w1_notable");
-        private static string[] ToOnlyMusic => PathTo("bard", "bard_keystone_1");
+        private static string[] ToSeriesNotable => PathTo("ronin", "ronin_resource_7");
+        private static string[] ToOneSong => PathTo("metalhead", "metalhead_keystone");
 
         private static string[] With(string[] path, string last) => System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Append(path, last));
 
@@ -58,45 +57,45 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void OnlyMusicCutsDamageAndDoublesSongs()
+        public void OneSongDoublesTheSong()
         {
-            var toKeystone = ToOnlyMusic;
-            var (plain, _) = Hero(HeroClass.Bard, System.Linq.Enumerable.ToArray(System.Linq.Enumerable.SkipLast(toKeystone, 1)));
-            var (keystone, _) = Hero(HeroClass.Bard, toKeystone);
+            var toKeystone = ToOneSong;
+            var (plain, _) = Hero(HeroClass.Metalhead, System.Linq.Enumerable.ToArray(System.Linq.Enumerable.SkipLast(toKeystone, 1)));
+            var (keystone, _) = Hero(HeroClass.Metalhead, toKeystone);
             var silent = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             foreach (var loop in new[] { plain, keystone })
             {
                 loop.Skills.Equip(TestWorld.Data.Gems["march"]);
-                loop.State.Notes = 4;
-                loop.Tick();
+                loop.State.Resource = 100;
+                loop.Skills.TryCast(0);
             }
 
             var march = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard) - silent;
             Assert.That(march, Is.GreaterThan(0));
-            Assert.That(keystone.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo((silent + march * 2) * 0.3).Within(1e-6));
+            Assert.That(keystone.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(silent + march * 2).Within(1e-6));
         }
 
         [Test]
         public void MasteryNeedsAnOptionAndCanBeChanged()
         {
-            var (loop, _) = Hero(HeroClass.Swordsman, ToSeriesNotable);
+            var (loop, _) = Hero(HeroClass.Ronin, ToSeriesNotable);
 
-            Assert.That(loop.AllocateNode("swordsman_w1_mastery"), Is.EqualTo(AllocationResult.ChoiceRequired));
-            Assert.That(loop.AllocateNode("swordsman_w1_mastery", masteryOption: 3), Is.EqualTo(AllocationResult.BadChoice));
-            Assert.That(loop.AllocateNode("swordsman_w1_mastery", masteryOption: 2), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("ronin_resource_mastery"), Is.EqualTo(AllocationResult.ChoiceRequired));
+            Assert.That(loop.AllocateNode("ronin_resource_mastery", masteryOption: 3), Is.EqualTo(AllocationResult.BadChoice));
+            Assert.That(loop.AllocateNode("ronin_resource_mastery", masteryOption: 2), Is.EqualTo(AllocationResult.Allocated));
             var withDamage = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
 
-            Assert.That(loop.ChangeMastery("swordsman_w1_mastery", 0), Is.True);
-            Assert.That(withDamage - loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(15).Within(1e-9));
-            Assert.That(loop.ChangeMastery("swordsman_w1_mastery", 7), Is.False);
-            Assert.That(loop.ChangeMastery("bard_w1_mastery", 0), Is.False);
+            Assert.That(loop.ChangeMastery("ronin_resource_mastery", 0), Is.True);
+            Assert.That(withDamage - loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(10).Within(1e-9));
+            Assert.That(loop.ChangeMastery("ronin_resource_mastery", 7), Is.False);
+            Assert.That(loop.ChangeMastery("metalhead_resource_mastery", 0), Is.False);
         }
 
         [Test]
         public void SeriesNotableLetsTheComboSurviveALongerPause()
         {
-            var (plain, plainInput) = Hero(HeroClass.Swordsman, ToSeriesNotable[0]);
-            var (series, seriesInput) = Hero(HeroClass.Swordsman, ToSeriesNotable);
+            var (plain, plainInput) = Hero(HeroClass.Ronin, ToSeriesNotable[0]);
+            var (series, seriesInput) = Hero(HeroClass.Ronin, ToSeriesNotable);
             var pauseTicks = (int)((TestWorld.Data.Combat.Classes.ComboTimeoutSeconds + 0.3) * GameLoop.TicksPerSecond);
 
             foreach (var (loop, input) in new[] { (plain, plainInput), (series, seriesInput) })
@@ -114,37 +113,23 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void MelodyMasteryPlaysOnThreeNotes()
+        public void GuitarNodeStretchesSongDuration()
         {
-            var (loop, input) = Hero(HeroClass.Bard, With(ToMelodyNotable, "bard_w1_mastery:0"));
+            var (loop, _) = Hero(HeroClass.Metalhead, "metalhead_ring_5", "metalhead_ring_4", "metalhead_ring_3");
             loop.Skills.Equip(TestWorld.Data.Gems["march"]);
+            loop.State.Resource = 100;
 
-            input.ClickLeft(3);
-            loop.Tick();
-            loop.Tick();
+            loop.Skills.TryCast(0);
 
-            Assert.That(loop.Combat.Class.NotesPerMelody, Is.EqualTo(3));
-            Assert.That(loop.State.Skills[0].Active, Is.True);
-        }
-
-        [Test]
-        public void MelodyNodesStretchSongDuration()
-        {
-            var (loop, _) = Hero(HeroClass.Bard, "bard_ring_0", "bard_ring_5", "bard_ring_4");
-            loop.Skills.Equip(TestWorld.Data.Gems["march"]);
-            loop.State.Notes = 4;
-
-            loop.Tick();
-
-            var expected = TestWorld.Data.Gems["march"].Skill!.DurationSeconds * 1.16 * GameLoop.TicksPerSecond;
+            var expected = TestWorld.Data.Gems["march"].Skill!.DurationSeconds * 1.06 * GameLoop.TicksPerSecond;
             Assert.That(loop.State.Skills[0].ActiveTicks, Is.EqualTo(expected).Within(1));
         }
 
         [Test]
         public void NoMouseDamageModifierSilencesTheMouse()
         {
-            var (plain, plainInput) = Hero(HeroClass.Swordsman);
-            var (silent, silentInput) = Hero(HeroClass.Swordsman, new[] { new Modifier(CombatStats.Damage, ModifierKind.More, -1, StatTags.Mouse) });
+            var (plain, plainInput) = Hero(HeroClass.Ronin);
+            var (silent, silentInput) = Hero(HeroClass.Ronin, new[] { new Modifier(CombatStats.Damage, ModifierKind.More, -1, StatTags.Mouse) });
 
             foreach (var (loop, input) in new[] { (plain, plainInput), (silent, silentInput) })
             {
@@ -159,7 +144,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EveryTenthKeyHitsHarderWithTheHeavyStrikeStats()
         {
-            var (typist, typistInput) = Hero(HeroClass.Swordsman, new[]
+            var (typist, typistInput) = Hero(HeroClass.Ronin, new[]
             {
                 new Modifier(CombatStats.KeyStrikeEvery, ModifierKind.Flat, 10),
                 new Modifier(CombatStats.KeyStrikeMultiplier, ModifierKind.Flat, 5)
@@ -185,7 +170,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void FocusResetDelayKeepsFocusThroughFourSecondPause()
         {
-            var (loop, input) = Hero(HeroClass.Swordsman, new[] { new Modifier(CombatStats.FocusResetSeconds, ModifierKind.Flat, 2) });
+            var (loop, input) = Hero(HeroClass.Ronin, new[] { new Modifier(CombatStats.FocusResetSeconds, ModifierKind.Flat, 2) });
             for (var i = 0; i < 50; i++)
             {
                 input.PressKeys(1);
@@ -204,7 +189,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void FocusGainGrowsFocusFaster()
         {
-            var (loop, input) = Hero(HeroClass.Swordsman, new[] { new Modifier(CombatStats.FocusGain, ModifierKind.Increased, 0.08) });
+            var (loop, input) = Hero(HeroClass.Ronin, new[] { new Modifier(CombatStats.FocusGain, ModifierKind.Increased, 0.08) });
 
             input.PressKeys(1);
             loop.Tick();
@@ -215,8 +200,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EnterDamageHitsEnterHarder()
         {
-            var (enter, enterInput) = Hero(HeroClass.Swordsman, new[] { new Modifier(CombatStats.EnterDamage, ModifierKind.Increased, 0.25) });
-            var (plain, plainInput) = Hero(HeroClass.Swordsman);
+            var (enter, enterInput) = Hero(HeroClass.Ronin, new[] { new Modifier(CombatStats.EnterDamage, ModifierKind.Increased, 0.25) });
+            var (plain, plainInput) = Hero(HeroClass.Ronin);
 
             enterInput.PressEnter();
             enter.Tick();
@@ -227,20 +212,20 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void EnergyGainGivesMoreEnergyFromKeys()
+        public void ResourceGainGivesMoreResourceFromKeys()
         {
-            var (energy, energyInput) = Hero(HeroClass.Swordsman, new[] { new Modifier(CombatStats.EnergyGain, ModifierKind.Increased, 0.15, StatTags.Keyboard) });
+            var (energy, energyInput) = Hero(HeroClass.Metalhead, new[] { new Modifier(CombatStats.ResourceGain, ModifierKind.Increased, 0.15, StatTags.Keyboard) });
 
             energyInput.PressKeys(1);
             energy.Tick();
 
-            Assert.That(energy.State.Energy, Is.EqualTo(1.15).Within(1e-9));
+            Assert.That(energy.State.Resource, Is.EqualTo(1.15).Within(1e-9));
         }
 
         [Test]
         public void IdleStartSecondsBringsLullTenSecondsEarlier()
         {
-            var (hermit, hermitInput) = Hero(HeroClass.Wanderer, new[] { new Modifier(CombatStats.IdleStartSeconds, ModifierKind.Flat, -10) });
+            var (hermit, hermitInput) = Hero(HeroClass.Nomad, new[] { new Modifier(CombatStats.IdleStartSeconds, ModifierKind.Flat, -10) });
             hermit.Skills.Equip(TestWorld.Data.Gems["lull"]);
 
             for (var i = 0; i < 25 * GameLoop.TicksPerSecond; i++)

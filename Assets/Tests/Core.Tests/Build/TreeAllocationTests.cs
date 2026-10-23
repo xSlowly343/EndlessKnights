@@ -17,14 +17,14 @@ namespace Game.Core.Tests.Build
 
         private static GameLoop Typist(int points)
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
             loop.State.Tree.PointsEarned = points;
             return loop;
         }
 
-        public static string FirstAttribute => TreePaths.NearestOfType(Tree, "swordsman", TreeNodeType.Attribute);
+        public static string FirstAttribute => TreePaths.NearestOfType(Tree, "ronin", TreeNodeType.Attribute);
 
-        public static string[] ToAttribute => TreePaths.To(Tree, "swordsman", FirstAttribute).SkipLast(1).ToArray();
+        public static string[] ToAttribute => TreePaths.To(Tree, "ronin", FirstAttribute).SkipLast(1).ToArray();
 
         private static double KeyDamage(GameLoop loop) => loop.Hero.Compute(CombatStats.Damage, BigNumber.FromDouble(100), StatTags.Keyboard).ToDouble();
 
@@ -35,9 +35,9 @@ namespace Game.Core.Tests.Build
 
             var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id);
 
-            Assert.That(loop.State.Tree.IsAllocated(Tree, "swordsman_start"), Is.True);
+            Assert.That(loop.State.Tree.IsAllocated(Tree, "ronin_start"), Is.True);
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(0));
-            Assert.That(offered, Is.EqualTo(new[] { "swordsman_ring_0", "swordsman_ring_1", "swordsman_ring_5" }));
+            Assert.That(offered, Is.EqualTo(new[] { "ronin_ring_0", "ronin_ring_1", "ronin_ring_5" }));
         }
 
         [Test]
@@ -45,32 +45,32 @@ namespace Game.Core.Tests.Build
         {
             var loop = Typist(1);
 
-            Assert.That(loop.AllocateNode("bard_ring_0"), Is.EqualTo(AllocationResult.NotConnected));
-            Assert.That(loop.AllocateNode("wanderer_ring_0"), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateNode("metalhead_ring_0"), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateNode("nomad_ring_0"), Is.EqualTo(AllocationResult.NotConnected));
         }
 
         [Test]
         public void AfterANodeItsNeighboursJoinTheOffer()
         {
             var loop = Typist(5);
-            loop.AllocateNode("swordsman_ring_1");
+            loop.AllocateNode("ronin_ring_1");
 
             var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id);
-            var expected = Tree["swordsman_start"].Neighbours.Concat(Tree["swordsman_ring_1"].Neighbours)
-                .Where(node => node.Type != TreeNodeType.Start && !node.Locked && node.Id != "swordsman_ring_1").Select(node => node.Id).Distinct().OrderBy(id => id);
+            var expected = Tree["ronin_start"].Neighbours.Concat(Tree["ronin_ring_1"].Neighbours)
+                .Where(node => node.Type != TreeNodeType.Start && !node.Locked && node.Id != "ronin_ring_1").Select(node => node.Id).Distinct().OrderBy(id => id);
 
             Assert.That(offered, Is.EqualTo(expected));
-            Assert.That(offered, Does.Contain("swordsman_ring_2"));
+            Assert.That(offered, Does.Contain("ronin_ring_2"));
         }
 
         [Test]
         public void WandererBeginsAmongItsOwnRing()
         {
-            var loop = TestWorld.Loop(state: new GameState { Tree = new TreeAllocation("wanderer") { PointsEarned = 1 } });
+            var loop = TestWorld.Loop(state: new GameState { Tree = new TreeAllocation("nomad") { PointsEarned = 1 } });
 
             var offered = loop.State.Tree.Allocatable(Tree).Select(node => node.Id).OrderBy(id => id);
 
-            Assert.That(offered, Is.EqualTo(Enumerable.Range(0, 6).Select(k => "wanderer_ring_" + k)));
+            Assert.That(offered, Is.EqualTo(Enumerable.Range(0, 6).Select(k => "nomad_ring_" + k)));
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Game.Core.Tests.Build
         {
             var loop = Typist(1);
 
-            Assert.That(loop.AllocateNode("swordsman_ring_1"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("ronin_ring_1"), Is.EqualTo(AllocationResult.Allocated));
             Assert.That(loop.State.Tree.PointsLeft, Is.EqualTo(0));
         }
 
@@ -87,15 +87,15 @@ namespace Game.Core.Tests.Build
         {
             var loop = Typist(10);
 
-            Assert.That(loop.AllocateNode("swordsman_ring_3"), Is.EqualTo(AllocationResult.NotConnected));
-            Assert.That(loop.AllocateNode("bard_w1_notable"), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateNode("ronin_ring_3"), Is.EqualTo(AllocationResult.NotConnected));
+            Assert.That(loop.AllocateNode("metalhead_skills_3"), Is.EqualTo(AllocationResult.NotConnected));
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(0));
         }
 
         [Test]
         public void PathGrowsStepByStep()
         {
-            var path = TreePaths.To(Tree, "swordsman", "swordsman_w1_notable");
+            var path = TreePaths.To(Tree, "ronin", "ronin_resource_7");
             var loop = Typist(path.Length - 1);
 
             TreePaths.Allocate(loop, Tree, path.SkipLast(1));
@@ -107,11 +107,12 @@ namespace Game.Core.Tests.Build
         {
             var loop = Typist(3);
 
-            loop.AllocateNode("swordsman_ring_1");
-            loop.AllocateNode("swordsman_ring_2");
-            loop.AllocateNode("swordsman_ring_3");
+            loop.AllocateNode("ronin_ring_1");
+            loop.AllocateNode("ronin_ring_2");
+            loop.AllocateNode("ronin_ring_3");
 
-            Assert.That(KeyDamage(loop), Is.EqualTo(105).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Skill), Is.EqualTo(108).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.CritChance, 1, StatTags.Keyboard), Is.EqualTo(1.04).Within(1e-9));
         }
 
         [Test]
@@ -134,33 +135,33 @@ namespace Game.Core.Tests.Build
         {
             var loop = Typist(1);
 
-            Assert.That(loop.AllocateNode("swordsman_ring_1", attribute: "strength"), Is.EqualTo(AllocationResult.BadChoice));
+            Assert.That(loop.AllocateNode("ronin_ring_1", attribute: "strength"), Is.EqualTo(AllocationResult.BadChoice));
         }
 
         [Test]
         public void JewelSocketsAndStartsCannotBeTaken()
         {
-            var jewel = TreePaths.NearestOfType(Tree, "swordsman", TreeNodeType.Jewel);
+            var jewel = TreePaths.NearestOfType(Tree, "ronin", TreeNodeType.Jewel);
             var loop = Typist(60);
-            loop.AllocateNode("swordsman_ring_0");
-            TreePaths.Allocate(loop, Tree, TreePaths.To(Tree, "swordsman", jewel).SkipLast(1));
+            loop.AllocateNode("ronin_ring_0");
+            TreePaths.Allocate(loop, Tree, TreePaths.To(Tree, "ronin", jewel).SkipLast(1));
 
             Assert.That(loop.AllocateNode(jewel), Is.EqualTo(AllocationResult.Locked));
-            Assert.That(loop.AllocateNode("wanderer_start"), Is.EqualTo(AllocationResult.Locked));
+            Assert.That(loop.AllocateNode("nomad_start"), Is.EqualTo(AllocationResult.Locked));
             Assert.That(loop.AllocateNode("no_such_node"), Is.EqualTo(AllocationResult.UnknownNode));
-            Assert.That(loop.AllocateNode("swordsman_ring_0"), Is.EqualTo(AllocationResult.AlreadyAllocated));
+            Assert.That(loop.AllocateNode("ronin_ring_0"), Is.EqualTo(AllocationResult.AlreadyAllocated));
         }
 
         [Test]
         public void RoadGoesAroundAnotherClassStart()
         {
-            var loop = TestWorld.Loop(state: new GameState { Tree = new TreeAllocation("wanderer") });
+            var loop = TestWorld.Loop(state: new GameState { Tree = new TreeAllocation("nomad") });
             loop.State.Tree.PointsEarned = 40;
-            TreePaths.Allocate(loop, Tree, TreePaths.To(Tree, "wanderer", "swordsman_ring_3"));
+            TreePaths.Allocate(loop, Tree, TreePaths.To(Tree, "nomad", "ronin_ring_3"));
 
-            Assert.That(loop.AllocateNode("swordsman_start"), Is.EqualTo(AllocationResult.Locked));
-            Assert.That(loop.AllocateNode("swordsman_ring_2"), Is.EqualTo(AllocationResult.Allocated));
-            Assert.That(loop.AllocateNode("swordsman_ring_1"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("ronin_start"), Is.EqualTo(AllocationResult.Locked));
+            Assert.That(loop.AllocateNode("ronin_ring_2"), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.AllocateNode("ronin_ring_1"), Is.EqualTo(AllocationResult.Allocated));
         }
 
         [Test]
@@ -186,15 +187,15 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NodesCutOffByATreeChangeAreRefundedOnLoad()
         {
-            var state = new GameState { Class = HeroClass.Swordsman };
-            state.Tree.Restore("swordsman_ring_1", null, null);
-            state.Tree.Restore("swordsman_ring_3", null, null);
+            var state = new GameState { Class = HeroClass.Ronin };
+            state.Tree.Restore("ronin_ring_1", null, null);
+            state.Tree.Restore("ronin_ring_3", null, null);
             state.Tree.Restore("removed_node", null, null);
-            state.OtherPreset.Tree.Restore("bard_w1_notable", null, null);
+            state.OtherPreset.Tree.Restore("metalhead_w1_notable", null, null);
 
             var loop = TestWorld.Loop(state: state);
 
-            Assert.That(loop.State.Tree.Allocated, Is.EquivalentTo(new[] { "swordsman_ring_1" }));
+            Assert.That(loop.State.Tree.Allocated, Is.EquivalentTo(new[] { "ronin_ring_1" }));
             Assert.That(loop.State.OtherPreset.Tree.Allocated, Is.Empty);
         }
 
@@ -203,8 +204,49 @@ namespace Game.Core.Tests.Build
         {
             var save = SaveCodec.Decode(Content.TestData.ReadSaveFixture("save_v1.json"), TestWorld.Data);
 
-            Assert.That(save.State.Tree.StartClass, Is.EqualTo("bard"));
+            Assert.That(save.State.Tree.StartClass, Is.EqualTo("metalhead"));
             Assert.That(save.State.Tree.PointsSpent, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void VikingZoneNodeGivesTheVikingRageAndTheRoninTheSharedPart()
+        {
+            var viking = new TreeAllocation("viking");
+            var ronin = new TreeAllocation("ronin");
+            viking.Restore("viking_resource_0", null, null);
+            ronin.Restore("viking_resource_0", null, null);
+
+            var own = viking.Modifiers(Tree).Where(m => m.Stat.Equals(CombatStats.ResourceGain)).Sum(m => m.Value);
+            var shared = ronin.Modifiers(Tree).Where(m => m.Stat.Equals(CombatStats.ResourceGain)).Sum(m => m.Value);
+
+            Assert.That(own, Is.EqualTo(0.06).Within(1e-9));
+            Assert.That(shared, Is.EqualTo(0.02).Within(1e-9));
+        }
+
+        [Test]
+        public void DualMasteryGivesTheSharedOptionToOtherCharacters()
+        {
+            var node = Tree["viking_skills_mastery"];
+            var viking = new TreeAllocation("viking");
+            var ronin = new TreeAllocation("ronin");
+            viking.Restore(node.Id, null, 0);
+            ronin.Restore(node.Id, null, 0);
+
+            Assert.That(viking.Modifiers(Tree), Is.EqualTo(node.Options[0]));
+            Assert.That(ronin.Modifiers(Tree), Is.EqualTo(node.SharedOptions[0]));
+            Assert.That(node.SharedOptions[0], Is.Not.EqualTo(node.Options[0]));
+        }
+
+        [Test]
+        public void ZoneOfAnotherCharacterCanBeReachedAndTaken()
+        {
+            var path = TreePaths.To(Tree, "ronin", "viking_resource_0");
+            var loop = Typist(path.Length);
+
+            TreePaths.Allocate(loop, Tree, path);
+
+            Assert.That(loop.State.Tree.IsAllocated(Tree, "viking_resource_0"), Is.True);
+            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.GreaterThan(1.0));
         }
     }
 }

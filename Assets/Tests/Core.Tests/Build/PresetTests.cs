@@ -12,16 +12,16 @@ namespace Game.Core.Tests.Build
     {
         private static GameLoop TypistWithGems()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Swordsman });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
             loop.Book.GrantStartingGems();
             loop.State.Tree.PointsEarned = 10;
-            loop.AllocateNode("swordsman_ring_1");
-            loop.AllocateNode("swordsman_ring_2");
-            loop.AllocateNode("swordsman_ring_3");
+            loop.AllocateNode("ronin_ring_1");
+            loop.AllocateNode("ronin_ring_2");
+            loop.AllocateNode("ronin_ring_3");
             return loop;
         }
 
-        private static double KeyDamage(GameLoop loop) => loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+        private static double SkillDamage(GameLoop loop) => loop.Hero.Value(CombatStats.Damage, 100, StatTags.Skill);
 
         [Test]
         public void SecondPresetStartsEmptyWithTheSamePoints()
@@ -34,7 +34,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(0));
             Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(10));
             Assert.That(loop.State.Skills, Is.Empty);
-            Assert.That(KeyDamage(loop), Is.EqualTo(100));
+            Assert.That(SkillDamage(loop), Is.EqualTo(100));
         }
 
         [Test]
@@ -42,18 +42,18 @@ namespace Game.Core.Tests.Build
         {
             var loop = TypistWithGems();
             loop.SwitchPreset();
-            loop.AllocateNode("swordsman_ring_5");
+            loop.AllocateNode("ronin_ring_5");
             loop.Book.Equip(TestWorld.Data.Gems["lull"]);
 
             loop.SwitchPreset();
             Assert.That(loop.State.ActivePreset, Is.EqualTo(0));
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(3));
-            Assert.That(KeyDamage(loop), Is.EqualTo(105).Within(1e-9));
-            Assert.That(loop.State.Skills.Count, Is.EqualTo(2));
-            Assert.That(loop.State.Skills[0].Trigger, Is.SameAs(TestWorld.Data.Gems["cast_on_enter"]));
+            Assert.That(SkillDamage(loop), Is.EqualTo(108).Within(1e-9));
+            Assert.That(loop.State.Skills.Count, Is.EqualTo(3));
+            Assert.That(loop.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["march"]));
 
             loop.SwitchPreset();
-            Assert.That(loop.State.Tree.IsAllocated(TestWorld.Data.Tree, "swordsman_ring_5"), Is.True);
+            Assert.That(loop.State.Tree.IsAllocated(TestWorld.Data.Tree, "ronin_ring_5"), Is.True);
             Assert.That(loop.State.Skills.Count, Is.EqualTo(1));
             Assert.That(loop.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["lull"]));
         }
@@ -75,16 +75,16 @@ namespace Game.Core.Tests.Build
         {
             var loop = TypistWithGems();
             loop.SwitchPreset();
-            loop.AllocateNode("swordsman_ring_5");
+            loop.AllocateNode("ronin_ring_5");
             loop.Book.Equip(TestWorld.Data.Gems["lull"]);
 
             var loaded = TestWorld.Loop(state: SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State);
 
             Assert.That(loaded.State.ActivePreset, Is.EqualTo(1));
             Assert.That(loaded.State.OtherPreset.Tree.PointsSpent, Is.EqualTo(3));
-            Assert.That(loaded.State.OtherPreset.Skills.Count, Is.EqualTo(2));
+            Assert.That(loaded.State.OtherPreset.Skills.Count, Is.EqualTo(3));
             loaded.SwitchPreset();
-            Assert.That(loaded.State.Skills[0].Trigger, Is.SameAs(TestWorld.Data.Gems["cast_on_enter"]));
+            Assert.That(loaded.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["march"]));
         }
     }
 }

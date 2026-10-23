@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.Loop(state: new GameState
             {
-                Class = HeroClass.Swordsman,
+                Class = HeroClass.Ronin,
                 Stage = stage,
                 HighestStage = stage,
                 RecordStage = stage,
@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = AtStage(45, 80000);
             loop.State.OwnedGems.Add(TestWorld.Data.Gems["lull"]);
-            loop.AllocateNode("swordsman_ring_1");
+            loop.AllocateNode("ronin_ring_1");
             var gain = loop.Prestige.EchoGain;
 
             Assert.That(loop.Prestige.TryPrestige(), Is.True);
@@ -97,9 +97,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void HalfAnHourOfTypingReachesThePrestigeStage()
+        public void HalfAnHourOfStrongTypingReachesThePrestigeStage()
         {
-            var fresh = new Game.Core.Sim.Headless.Simulation(TestWorld.Data, new Game.Core.Sim.Headless.BotProfile(6)).Run(1800);
+            var fresh = new Game.Core.Sim.Headless.Simulation(TestWorld.Data, new Game.Core.Sim.Headless.BotProfile(6), damageMultiplier: 7).Run(1800);
             Assert.That(fresh.HighestStage, Is.GreaterThan(Rules.MinStage));
         }
 
