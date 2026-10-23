@@ -1,5 +1,4 @@
 using Game.Platform.Windows.Window;
-using Game.Presentation.Strip;
 using UnityEngine;
 
 namespace Game.Bootstrap
@@ -7,31 +6,31 @@ namespace Game.Bootstrap
     public sealed class FocusModeDriver : MonoBehaviour
     {
         private readonly FocusMode _focusMode = new FocusMode();
-        private WindowController? _window;
+        private WindowController _window = null!;
+        private ClickThroughDriver _clickThrough = null!;
 
-        public static void Attach(FocusModeButton button, WindowController? window)
+        public static void Attach(GameObject host, WindowController window, ClickThroughDriver clickThrough)
         {
-            var driver = button.gameObject.AddComponent<FocusModeDriver>();
+            var driver = host.AddComponent<FocusModeDriver>();
             driver._window = window;
-            button.Clicked += driver._focusMode.Toggle;
-            driver._focusMode.Changed += driver.ApplyToWindow;
+            driver._clickThrough = clickThrough;
+            driver._focusMode.Changed += driver.Apply;
+            clickThrough.Changed += driver._focusMode.Set;
+            driver._focusMode.Set(clickThrough.Enabled);
         }
 
         private void Update()
         {
-            if (_window == null)
-                return;
             _window.RememberOtherForeground();
             _focusMode.Observe(_window.IsForeground);
         }
 
-        private void ApplyToWindow(bool noFocus)
+        private void Apply(bool noFocus)
         {
-            if (_window == null)
-                return;
             _window.SetNoActivate(noFocus);
             if (noFocus)
                 _window.ReturnFocusToLastOtherWindow();
+            _clickThrough.Enabled = noFocus;
         }
     }
 }

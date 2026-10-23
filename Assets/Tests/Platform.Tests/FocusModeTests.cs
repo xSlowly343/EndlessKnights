@@ -82,5 +82,17 @@ namespace Game.Platform.Tests
             Assert.That(_focusMode.State, Is.EqualTo(FocusModeState.Normal));
             Assert.That(_changes, Is.Empty);
         }
+
+        [Test]
+        public void SetFollowsTheWantedModeAndNotifiesOnlyOnChange()
+        {
+            _focusMode.Set(true);
+            _focusMode.Set(true);
+            _focusMode.Observe(gameIsForeground: false);
+            _focusMode.Set(false);
+
+            Assert.That(_focusMode.State, Is.EqualTo(FocusModeState.Normal));
+            Assert.That(_changes, Is.EqualTo(new[] { true, false }));
+        }
     }
 }

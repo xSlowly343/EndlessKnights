@@ -94,6 +94,7 @@ namespace Game.Bootstrap
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
             }
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer, panels, menuButton, focusButton);
+            FocusModeDriver.Attach(host, window, clickThrough);
             FullscreenDriver.Attach(focusButton.gameObject, window);
 
             var tray = TrayIcon.Create(Application.productName);
