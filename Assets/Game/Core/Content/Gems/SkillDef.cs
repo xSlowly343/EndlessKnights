@@ -4,8 +4,9 @@ namespace Game.Core.Content.Gems
 {
     public sealed class SkillDef
     {
-        public SkillDef(double resourceCost, double cooldownSeconds, double durationSeconds, SkillEffect effect, IReadOnlyList<string>? marks = null, string? weapon = null, NativeTrait? native = null, string? family = null)
+        public SkillDef(double resourceCost, double cooldownSeconds, double durationSeconds, SkillEffect effect, IReadOnlyList<string>? marks = null, string? weapon = null, NativeTrait? native = null, string? family = null, ArmOn armOn = ArmOn.None)
         {
+            ArmOn = armOn;
             Family = family;
             Native = native ?? NativeTrait.None;
             Weapon = weapon;
@@ -24,11 +25,12 @@ namespace Game.Core.Content.Gems
         public string? Weapon { get; }
         public NativeTrait Native { get; }
         public bool IsPassive =>
-            Effect is IdleStrikeEffect || Effect is FlowEffect || Reserves
+            Effect is IdleStrikeEffect || Effect is FlowEffect || Effect is DistanceStacksEffect || Reserves
             || (Effect is StacksEffect stacks && stacks.Passive)
             || (Effect is SpecialKeysEffect keys && keys.Passive);
         public bool Reserves => Effect is AuraEffect aura && aura.Reserves;
 
         public string? Family { get; }
+        public ArmOn ArmOn { get; }
     }
 }

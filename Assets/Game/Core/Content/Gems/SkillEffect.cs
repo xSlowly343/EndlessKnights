@@ -162,6 +162,57 @@ namespace Game.Core.Content.Gems
             new Modifier(PerStack.Stat, PerStack.Kind, System.Math.Min(MaxTotal, PerStack.Value * stacks), PerStack.Tags);
     }
 
+    public enum ArmOn
+    {
+        None,
+        Flick,
+        Circle
+    }
+
+    public sealed class InputHitsEffect : SkillEffect
+    {
+        public InputHitsEffect(double pxPerHit, double pxShare, double circleMultiplier, double flickMultiplier, double reversalMultiplier, int maxHits)
+        {
+            PxPerHit = pxPerHit;
+            PxShare = pxShare;
+            CircleMultiplier = circleMultiplier;
+            FlickMultiplier = flickMultiplier;
+            ReversalMultiplier = reversalMultiplier;
+            MaxHits = maxHits;
+        }
+
+        public double PxPerHit { get; }
+        public double PxShare { get; }
+        public double CircleMultiplier { get; }
+        public double FlickMultiplier { get; }
+        public double ReversalMultiplier { get; }
+        public int MaxHits { get; }
+    }
+
+    public sealed class DistanceStacksEffect : SkillEffect
+    {
+        public DistanceStacksEffect(double pxPerStack, int windowSeconds, StacksEffect stacks)
+        {
+            PxPerStack = pxPerStack;
+            WindowSeconds = windowSeconds;
+            Stacks = stacks;
+        }
+
+        public double PxPerStack { get; }
+        public int WindowSeconds { get; }
+        public StacksEffect Stacks { get; }
+    }
+
+    public sealed class TrailEffect : SkillEffect
+    {
+        public TrailEffect(double pxPerMultiplier)
+        {
+            PxPerMultiplier = pxPerMultiplier;
+        }
+
+        public double PxPerMultiplier { get; }
+    }
+
     public sealed class EnemyDebuffEffect : SkillEffect
     {
         public EnemyDebuffEffect(double damageTaken)

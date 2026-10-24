@@ -273,6 +273,104 @@
       "effect": { "type": "flow", "afterSeconds": 60, "maxGapSeconds": 2, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.20, "tags": ["Keyboard"] }] }
     },
     {
+      "id": "hurricane",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Ураган", "en": "Hurricane" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 50 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 8,
+      "effect": { "type": "inputHits", "pxPerHit": 100, "pxShare": 0.4, "circle": 2 }
+    },
+    {
+      "id": "dash",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Рывок", "en": "Dash" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 20,
+      "durationSeconds": 10,
+      "effect": { "type": "inputHits", "flick": 3, "maxHits": 5 }
+    },
+    {
+      "id": "lasso",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Лассо", "en": "Lasso" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 8,
+      "durationSeconds": 10,
+      "armOn": "circle",
+      "effect": { "type": "aura", "modifiers": [{ "stat": "overkillCarry", "kind": "flat", "value": 1.0 }] }
+    },
+    {
+      "id": "pendulum_strike",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Маятниковый удар", "en": "Pendulum Strike" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 15,
+      "effect": { "type": "inputHits", "reversal": 0.5 }
+    },
+    {
+      "id": "long_road",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Дальний путь", "en": "Long Road" },
+      "tags": ["Mouse", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "distanceStacks", "pxPerStack": 10000, "windowSeconds": 300, "perStack": { "stat": "damage", "kind": "increased", "value": 0.05 }, "max": 0.25 }
+    },
+    {
+      "id": "comet_trail",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "След кометы", "en": "Comet Trail" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 60 },
+      "cooldownSeconds": 35,
+      "durationSeconds": 10,
+      "effect": { "type": "trail", "pxPerMultiplier": 500 }
+    },
+    {
+      "id": "blade_whirl",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Вихрь клинков", "en": "Blade Whirl" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 25 },
+      "cooldownSeconds": 6,
+      "durationSeconds": 10,
+      "effect": { "type": "inputHits", "circle": 3 }
+    },
+    {
+      "id": "tailwind",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Ветер в спину", "en": "Wind at Your Back" },
+      "tags": ["Aura", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "aura", "reserve": 15, "modifiers": [{ "stat": "overkillCarry", "kind": "flat", "value": 0.5, "tags": ["Mouse"] }] }
+    },
+    {
+      "id": "lightning_zigzag",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Зигзаг молнии", "en": "Lightning Zigzag" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 5,
+      "armOn": "flick",
+      "effect": { "type": "strike", "multiplier": 4, "queueTargets": 1 }
+    },
+    {
       "id": "march",
       "kind": "skill",
       "color": "blue",

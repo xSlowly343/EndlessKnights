@@ -16,6 +16,7 @@
     "stat.auraEffect": { "ru": "сила аур", "en": "aura effect" },
     "stat.focusGain": { "ru": "набор Фокуса", "en": "Focus gain" },
     "stat.focusMultiplier": { "ru": "сила Фокуса", "en": "Focus strength" },
+    "stat.overkillCarry": { "ru": "перенос лишнего урона на следующего врага", "en": "overkill carried to the next enemy" },
     "stat.auraDuration": { "ru": "длительность аур", "en": "aura duration" },
     "stat.comboStrikeMultiplier": { "ru": "сила удара комбо", "en": "combo strike power" },
     "stat.strength": { "ru": "Сила", "en": "Strength" },

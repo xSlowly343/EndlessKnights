@@ -16,10 +16,12 @@ namespace Game.Core.Sim
         public readonly int SpaceDowns;
         public readonly int BackspaceDowns;
         public readonly int ComboDowns;
+        public readonly int Reversals;
 
         public EffectiveInput(double keys, int enterDowns, double clicks, int leftClicks, int rightClicks, int middleClicks, int wheelTicks,
-            double mousePx, int flicks, double circleTurns, double rhythmCv, int spaceDowns = 0, int backspaceDowns = 0, int comboDowns = 0)
+            double mousePx, int flicks, double circleTurns, double rhythmCv, int spaceDowns = 0, int backspaceDowns = 0, int comboDowns = 0, int reversals = 0)
         {
+            Reversals = reversals;
             SpaceDowns = spaceDowns;
             BackspaceDowns = backspaceDowns;
             ComboDowns = comboDowns;
@@ -37,7 +39,7 @@ namespace Game.Core.Sim
         }
 
         public EffectiveInput WithMouse(double mousePx) =>
-            new EffectiveInput(Keys, EnterDowns, Clicks, LeftClicks, RightClicks, MiddleClicks, WheelTicks, mousePx, Flicks, CircleTurns, RhythmCv, SpaceDowns, BackspaceDowns, ComboDowns);
+            new EffectiveInput(Keys, EnterDowns, Clicks, LeftClicks, RightClicks, MiddleClicks, WheelTicks, mousePx, Flicks, CircleTurns, RhythmCv, SpaceDowns, BackspaceDowns, ComboDowns, Reversals);
 
         public int HeavyClicks => RightClicks + MiddleClicks;
 

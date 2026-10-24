@@ -91,6 +91,7 @@ namespace Game.Core.Sim
                 flags |= HitFlags.Crit;
             }
 
+            var hpBefore = _state.EnemyHp;
             _state.EnemyHp -= damage;
             LastTickDamage += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
@@ -99,8 +100,16 @@ namespace Game.Core.Sim
             if (_state.EnemyAlive)
                 return;
 
+            CarryOverkill(damage - hpBefore, tags);
             _state.EnemyHp = BigNumber.Zero;
             _kills?.OnEnemyKilled();
+        }
+
+        private void CarryOverkill(BigNumber overkill, StatTags tags)
+        {
+            var share = System.Math.Min(1, _hero.Value(CombatStats.OverkillCarry, 0, tags));
+            if (share > 0 && overkill.Sign > 0)
+                _state.QueueDamage[0] += overkill * share;
         }
 
         private void KeyHitLightning()

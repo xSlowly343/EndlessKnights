@@ -67,6 +67,12 @@ namespace Game.Core.Content.Gems
             ["keyHit"] = StackTrigger.KeyHit
         };
 
+        private static readonly Dictionary<string, ArmOn> ArmOns = new Dictionary<string, ArmOn>(StringComparer.Ordinal)
+        {
+            ["flick"] = ArmOn.Flick,
+            ["circle"] = ArmOn.Circle
+        };
+
         private readonly Dictionary<string, GemDef> _byId;
         private readonly Dictionary<int, GemDef> _byNetId;
         private readonly Dictionary<string, string> _formerIds;
@@ -172,7 +178,7 @@ namespace Game.Core.Content.Gems
             var effect = ReadEffect(node.Field("effect"), duration);
             if (effect is AuraEffect aura && !aura.Reserves && duration <= 0)
                 throw node.Error("an aura needs durationSeconds or reserve");
-            if ((effect is StoreHitsEffect || effect is QueueHitsEffect || effect is KeyRepeatEffect || effect is StreakStrikeEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
+            if ((effect is StoreHitsEffect || effect is QueueHitsEffect || effect is KeyRepeatEffect || effect is StreakStrikeEffect || effect is InputHitsEffect || effect is TrailEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
             if (effect is EnemyDebuffEffect && duration <= 0)
                 throw node.Error("an enemy debuff needs durationSeconds");
@@ -187,7 +193,8 @@ namespace Game.Core.Content.Gems
             if (native != null && weapon == null)
                 throw node.Field("native").Error("a native trait needs a weapon: only class skills have one");
             var family = node.HasField("family") ? node.Field("family").AsString() : null;
-            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks, weapon, native, family);
+            var armOn = node.HasField("armOn") ? Pick(node.Field("armOn"), ArmOns, "flick or circle") : ArmOn.None;
+            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks, weapon, native, family, armOn);
         }
 
         private static SkillEffect ReadEffect(ContentNode node, double durationSeconds)
@@ -240,6 +247,21 @@ namespace Game.Core.Content.Gems
                         ModifierReader.Read(node.Field("perStack")),
                         node.Field("max").AsNumber(0, 1e6),
                         node.HasField("stackSeconds") ? node.Field("stackSeconds").AsNumber(0.1, 3600) : 0);
+                case "inputHits":
+                    return new InputHitsEffect(
+                        Number(node, "pxPerHit", 1e6),
+                        Number(node, "pxShare", 1000),
+                        Number(node, "circle", 1000),
+                        Number(node, "flick", 1000),
+                        Number(node, "reversal", 1000),
+                        node.HasField("maxHits") ? node.Field("maxHits").AsInt(1, 10000) : 0);
+                case "distanceStacks":
+                    return new DistanceStacksEffect(
+                        node.Field("pxPerStack").AsNumber(1, 1e9),
+                        node.Field("windowSeconds").AsInt(1, 3600),
+                        new StacksEffect(StackTrigger.Kill, ModifierReader.Read(node.Field("perStack")), node.Field("max").AsNumber(0, 1e6), 0));
+                case "trail":
+                    return new TrailEffect(node.Field("pxPerMultiplier").AsNumber(1, 1e9));
                 case "enemyDebuff":
                     return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10));
                 case "idleStrike":
@@ -248,7 +270,7 @@ namespace Game.Core.Content.Gems
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, enemyDebuff or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, enemyDebuff or idleStrike");
             }
         }
 

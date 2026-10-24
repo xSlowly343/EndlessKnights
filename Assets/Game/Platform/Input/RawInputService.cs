@@ -32,6 +32,7 @@ namespace Game.Platform.Windows.Input
         private static readonly MouseMotion Mouse = new MouseMotion();
         private static FlickDetector Flicks = new FlickDetector();
         private static CircleDetector Circles = new CircleDetector();
+        private static readonly ReversalDetector Reversals = new ReversalDetector();
         private static JigglerFilter Jiggler = new JigglerFilter();
         private static RhythmMeter Rhythm = new RhythmMeter();
         private static readonly WheelAccumulator Wheel = new WheelAccumulator();
@@ -253,6 +254,7 @@ namespace Game.Platform.Windows.Input
             if (Flicks.Add(distance, now))
                 Counters.AddFlick();
             Counters.AddCircleTurns(Circles.Add(dx, dy, now));
+            Counters.AddReversals(Reversals.Add(dx, dy));
         }
 
         private static void RecordRhythmicEvent()

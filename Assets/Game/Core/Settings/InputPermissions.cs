@@ -46,7 +46,8 @@ namespace Game.Core.Settings
                 input.SecondsSinceLastInput,
                 Keys ? input.RhythmCv : 0f,
                 input.Suppressed,
-                comboDowns: Keys ? input.ComboDowns : 0);
+                comboDowns: Keys ? input.ComboDowns : 0,
+                reversals: MouseMovement ? input.Reversals : 0);
         }
     }
 }

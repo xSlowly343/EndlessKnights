@@ -51,7 +51,8 @@ namespace Game.Core.Sim
                 snapshot.RhythmCv,
                 snapshot.SpaceDowns,
                 snapshot.BackspaceDowns,
-                snapshot.ComboDowns);
+                snapshot.ComboDowns,
+                snapshot.Reversals);
         }
 
         private static int MouseButtonHits(in InputSnapshot snapshot) =>

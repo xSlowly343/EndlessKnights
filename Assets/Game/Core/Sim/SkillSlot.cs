@@ -11,6 +11,8 @@ namespace Game.Core.Sim
         {
             Skill = skill;
             Trigger = trigger;
+            if (skill.Skill?.Effect is DistanceStacksEffect distance)
+                Buckets = new double[distance.WindowSeconds];
         }
 
         public GemDef Skill { get; set; }
@@ -31,6 +33,13 @@ namespace Game.Core.Sim
         public int StackTicks { get; set; }
         public Modifier StackModifier { get; set; }
         public double ReservedApplied { get; set; }
+        public bool Primed { get; set; }
+        public double PrimedSpent { get; set; }
+        public bool PrimedWasFull { get; set; }
+        public double Progress { get; set; }
+        public double CircleProgress { get; set; }
+        public double[]? Buckets { get; set; }
+        public long BucketSecond { get; set; } = -1;
         public void StartCooldown(int ticks)
         {
             CooldownTicks = ticks;

@@ -122,22 +122,109 @@ namespace Game.Core.Sim
 
             var cooldown = skill.CooldownSeconds * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
             slot.StartCooldown(Ticks(cooldown));
+            slot.LastCastTick = _state.Tick;
+            if (skill.ArmOn != ArmOn.None)
+            {
+                slot.Primed = true;
+                slot.PrimedSpent = spent;
+                slot.PrimedWasFull = wasFull;
+                slot.Progress = 0;
+                _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
+                return CastResult.Cast;
+            }
+            Release(slot, native, spent, wasFull, announce: true);
+            return CastResult.Cast;
+        }
+
+        private void Release(SkillSlot slot, NativeTrait native, double spent, bool wasFull, bool announce)
+        {
+            var skill = slot.Def;
             slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull));
             slot.ActiveTotalTicks = slot.ActiveTicks;
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
             if (skill.Effect is SpecialKeysEffect special && special.Charges > 0)
                 slot.HitsLeft = special.Charges;
+            if (skill.Effect is InputHitsEffect hits && hits.MaxHits > 0)
+                slot.HitsLeft = hits.MaxHits;
             slot.HitCount = 0;
             slot.LastKeyTick = -1;
+            slot.Progress = 0;
+            slot.CircleProgress = 0;
             ApplyAura(slot);
             if (native.HoldDecaySeconds > 0)
                 _resource.HoldDecay(native.HoldDecaySeconds);
-            slot.LastCastTick = _state.Tick;
-            _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
+            if (announce)
+                _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             if (skill.Effect is StrikeEffect strike)
                 Strike(slot, strike, native, spent);
-            return CastResult.Cast;
+        }
+
+        private void TickPrimed(SkillSlot slot, in EffectiveInput input)
+        {
+            if (!Armed(slot))
+            {
+                slot.Primed = false;
+                return;
+            }
+            var released = slot.Def.ArmOn == ArmOn.Flick ? input.Flicks > 0 : (slot.Progress += input.CircleTurns) >= 1;
+            if (!released)
+                return;
+            slot.Primed = false;
+            Release(slot, IsNative(slot) ? slot.Def.Native : NativeTrait.None, slot.PrimedSpent, slot.PrimedWasFull, announce: false);
+        }
+
+        private void TickInputHits(SkillSlot slot, InputHitsEffect hits, in EffectiveInput input)
+        {
+            if (!slot.Active || (hits.MaxHits > 0 && slot.HitsLeft <= 0))
+                return;
+            var multiplier = hits.FlickMultiplier * TakeHits(slot, hits, input.Flicks)
+                + hits.ReversalMultiplier * TakeHits(slot, hits, input.Reversals);
+            if (hits.PxPerHit > 0)
+            {
+                slot.Progress += input.MousePx;
+                var steps = (int)System.Math.Floor(slot.Progress / hits.PxPerHit);
+                slot.Progress -= steps * hits.PxPerHit;
+                multiplier += hits.PxShare * steps;
+            }
+            if (hits.CircleMultiplier > 0)
+            {
+                slot.CircleProgress += input.CircleTurns;
+                var turns = (int)System.Math.Floor(slot.CircleProgress + 1e-9);
+                slot.CircleProgress -= turns;
+                multiplier += hits.CircleMultiplier * turns;
+            }
+            if (multiplier > 0)
+                _combat.SkillHit(_combat.BaseKeyDamage, multiplier, slot.Skill.Tags);
+        }
+
+        private static int TakeHits(SkillSlot slot, InputHitsEffect hits, int events)
+        {
+            if (events <= 0 || hits.MaxHits <= 0)
+                return events;
+            var taken = System.Math.Min(events, slot.HitsLeft);
+            slot.HitsLeft -= taken;
+            return taken;
+        }
+
+        private void TickDistanceStacks(SkillSlot slot, DistanceStacksEffect distance, in EffectiveInput input)
+        {
+            var buckets = slot.Buckets ??= new double[distance.WindowSeconds];
+            var second = _state.Tick / GameLoop.TicksPerSecond;
+            var index = (int)(second % buckets.Length);
+            if (second != slot.BucketSecond)
+            {
+                slot.BucketSecond = second;
+                slot.Progress -= buckets[index];
+                buckets[index] = 0;
+            }
+            if (Armed(slot))
+            {
+                buckets[index] += input.MousePx;
+                slot.Progress += input.MousePx;
+            }
+            var stacks = System.Math.Min(MaxStacks(distance.Stacks), (int)System.Math.Floor(System.Math.Max(0, slot.Progress) / distance.PxPerStack));
+            SetStacks(slot, distance.Stacks, stacks);
         }
 
         private bool Pay(SkillDef skill, NativeTrait native, out double spent)
@@ -329,6 +416,14 @@ namespace Game.Core.Sim
                     SpecialKeyHits(slot, special, input);
                 if (slot.Def.Effect is FlowEffect flow)
                     TickFlow(slot, flow);
+                if (slot.Primed)
+                    TickPrimed(slot, input);
+                if (slot.Def.Effect is InputHitsEffect inputHits)
+                    TickInputHits(slot, inputHits, input);
+                if (slot.Def.Effect is DistanceStacksEffect distance)
+                    TickDistanceStacks(slot, distance, input);
+                if (slot.Active && slot.Def.Effect is TrailEffect)
+                    slot.Progress += input.MousePx;
                 if (input.HasInput && slot.Def.Effect is IdleStrikeEffect strike)
                     ReleaseIdleStrike(slot, strike, idleTicksBefore * GameLoop.TickSeconds);
             }
@@ -347,6 +442,13 @@ namespace Game.Core.Sim
             }
             if (slot.Def.Effect is StacksEffect stacks && !stacks.Passive)
                 ClearStacks(slot);
+            if (slot.Def.Effect is TrailEffect trail)
+            {
+                var multiplier = slot.Progress / trail.PxPerMultiplier;
+                slot.Progress = 0;
+                if (multiplier > 0)
+                    _combat.SkillHit(_combat.BaseKeyDamage, multiplier, slot.Skill.Tags);
+            }
         }
 
         private void TickKillStacks(SkillSlot slot, StacksEffect stacks, int kills)
@@ -373,14 +475,19 @@ namespace Game.Core.Sim
 
         private void AddStacks(SkillSlot slot, StacksEffect stacks, int count)
         {
-            var max = MaxStacks(stacks);
-            var next = System.Math.Min(max, slot.Stacks + count);
             slot.StackTicks = Ticks(stacks.StackSeconds);
+            SetStacks(slot, stacks, System.Math.Min(MaxStacks(stacks), slot.Stacks + count));
+        }
+
+        private void SetStacks(SkillSlot slot, StacksEffect stacks, int next)
+        {
             if (next == slot.Stacks)
                 return;
             if (slot.Stacks > 0)
                 _hero.Remove(slot.StackModifier);
             slot.Stacks = next;
+            if (next == 0)
+                return;
             slot.StackModifier = stacks.For(next);
             _hero.Add(slot.StackModifier);
         }

@@ -13,6 +13,7 @@ namespace Game.Platform.Windows.Input
         private int _backspaceDowns;
         private int _spaceDowns;
         private int _comboDowns;
+        private int _reversals;
         private int _leftClicks;
         private int _rightClicks;
         private int _middleClicks;
@@ -63,6 +64,12 @@ namespace Game.Platform.Windows.Input
 
         public void AddFlick() => Interlocked.Increment(ref _flicks);
 
+        public void AddReversals(int reversals)
+        {
+            if (reversals > 0)
+                Interlocked.Add(ref _reversals, reversals);
+        }
+
         public void AddCircleTurns(int turns)
         {
             if (turns > 0)
@@ -93,7 +100,8 @@ namespace Game.Platform.Windows.Input
                 secondsSinceLastInput: secondsSinceLastInput < 0 ? 0d : secondsSinceLastInput,
                 rhythmCv: System.BitConverter.Int32BitsToSingle(Volatile.Read(ref _rhythmCvBits)),
                 suppressed: suppressed,
-                comboDowns: Interlocked.Exchange(ref _comboDowns, 0));
+                comboDowns: Interlocked.Exchange(ref _comboDowns, 0),
+                reversals: Interlocked.Exchange(ref _reversals, 0));
         }
     }
 }
