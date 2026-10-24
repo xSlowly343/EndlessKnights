@@ -68,3 +68,4 @@ Desktop.ini
 /Tools/**/[Bb]in/
 /Tools/**/[Oo]bj/
 /Tools/**/TestResults/
+.claude/settings.local.json

@@ -1,6 +1,7 @@
 using Game.Platform.Windows.Window;
 using Game.Presentation.Battle;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
 using UnityEngine;
 
 namespace Game.Bootstrap
@@ -13,11 +14,11 @@ namespace Game.Bootstrap
         private FocusModeButton _focusButton = null!;
         private TaskbarDockDriver _dock = null!;
         private StripButton _menuButton = null!;
-        private PanelView _panels = null!;
+        private PanelCanvas _panels = null!;
         private SkillBarView? _skillBar;
         private bool _panelCaptured;
 
-        public static StripPointerRouter Attach(GameObject host, PointerInput pointer, WindowController window, Camera camera, FocusModeButton focusButton, TaskbarDockDriver dock, StripButton menuButton, PanelView panels)
+        public static StripPointerRouter Attach(GameObject host, PointerInput pointer, WindowController window, Camera camera, FocusModeButton focusButton, TaskbarDockDriver dock, StripButton menuButton, PanelCanvas panels)
         {
             var router = host.AddComponent<StripPointerRouter>();
             router._pointer = pointer;

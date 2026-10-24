@@ -6,6 +6,7 @@ using Game.Platform.Windows.Instance;
 using Game.Platform.Windows.Tray;
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -74,7 +75,7 @@ namespace Game.Bootstrap
             var dock = TaskbarDockDriver.Attach(host, window);
             StripCameraDriver.Attach(host, camera, dock);
             var menuButton = StripButton.CreateIcon("MenuButton", StripIcons.Menu, MenuButtonPosition, StripSpace.Units(StripButtonSizePx));
-            var panels = PanelView.Create();
+            var panels = PanelCanvas.Create();
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
             var router = StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
             var data = GameDataFiles.TryLoadAll();

@@ -9,6 +9,7 @@ using Game.Core.Stats;
 using Game.Core.Ui;
 using Game.Presentation.Battle;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -37,7 +38,7 @@ namespace Game.Editor
             loop.State.Gold = BigNumber.FromDouble(12345);
             loop.AllocateNode("ronin_ring_1");
 
-            var panels = PanelView.Create();
+            var panels = PanelCanvas.Create();
             panels.Bind(loop, data.Tree);
             var navigator = new PanelNavigator();
             navigator.SelectTab(PanelSection.Tree);
@@ -62,7 +63,7 @@ namespace Game.Editor
 
             panels.ShowReport("Пока тебя не было", new[] { "Тебя не было: 2 ч 15 мин", "Золото: +1.50K", "Побеждено врагов: 340", "Этап: 12 → 15" });
             panels.Place(0f, true);
-            var report = PanelView.ReportFrame;
+            var report = PanelCanvas.ReportFrame;
             Save(camera, panels, report.WidthPx, report.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-report.png"));
 
             panels.Hide();
@@ -75,19 +76,20 @@ namespace Game.Editor
             Debug.Log("Panel snapshots saved to " + folder);
         }
 
-        private static PanelFrame ShowPanel(PanelView panels, PanelNavigator navigator)
+        private static PanelFrame ShowPanel(PanelCanvas panels, PanelNavigator navigator)
         {
             panels.Show(navigator);
             panels.Place(0f, true);
             return navigator.Frame;
         }
 
-        private static void Save(Camera camera, PanelView panels, int width, int height, string path)
+        private static void Save(Camera camera, PanelCanvas panels, int width, int height, string path)
         {
             StripCamera.Fit(camera, width, height, StripHeightPx, 0, 0);
             var target = new RenderTexture(width, height, 24);
             camera.targetTexture = target;
             panels.Tree.SendMessage("LateUpdate", SendMessageOptions.DontRequireReceiver);
+            Canvas.ForceUpdateCanvases();
             foreach (var view in new[] { camera }.Concat(panels.GetComponentsInChildren<Camera>()))
             {
                 view.targetTexture = target;
