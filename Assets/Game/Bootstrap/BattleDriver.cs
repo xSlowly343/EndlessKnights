@@ -18,6 +18,8 @@ namespace Game.Bootstrap
         private GameData _data = null!;
         private int _bossTotalTicks = 1;
 
+        public event Action<long>? LeveledUp;
+
         public GameLoop Loop => _loop;
         public SkillBarView SkillBar => _skillBar;
 
@@ -85,6 +87,9 @@ namespace Game.Bootstrap
                         break;
                     case GameEventKind.BossFailed:
                         _view.Retreat();
+                        break;
+                    case GameEventKind.LevelUp:
+                        LeveledUp?.Invoke(gameEvent.Stage);
                         break;
                 }
             }

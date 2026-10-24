@@ -43,10 +43,23 @@ namespace Game.Core.Ui
             _ => 0,
         };
 
-        private static string Key(PanelSection section)
+        public static string Key(PanelSection section)
         {
             var name = section.ToString();
             return char.ToLowerInvariant(name[0]) + name.Substring(1);
+        }
+
+        public static bool TryParse(string key, out PanelSection section)
+        {
+            foreach (var candidate in All)
+            {
+                if (Key(candidate) != key)
+                    continue;
+                section = candidate;
+                return true;
+            }
+            section = default;
+            return false;
         }
 
         public static PanelHeight DefaultHeight(PanelSection section) =>

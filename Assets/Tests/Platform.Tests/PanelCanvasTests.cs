@@ -1,3 +1,6 @@
+using System.IO;
+using Game.Core.Content.Tree;
+using Game.Core.Sim;
 using Game.Core.Ui;
 using Game.Presentation.Ui;
 using NUnit.Framework;
@@ -97,6 +100,38 @@ namespace Game.Platform.Tests
             Assert.That(_panel.HeightPx, Is.EqualTo(PanelGeometry.HalfHeightPx));
             Assert.That(claimed, Is.True);
         }
+
+        [Test]
+        public void LockedTabShowsALockAndFreePointsPutADotOnTheTree()
+        {
+            var marks = new PanelMarks(PanelUnlocks.Load(@"{ ""version"": 1, ""unlocks"": [ { ""section"": ""party"", ""stage"": 10 } ] }"));
+            var state = new GameState();
+            state.Tree.PointsEarned = 1;
+            marks.Refresh(state, RealAscendancy());
+            _panel.UseMarks(marks);
+
+            Open(PanelSection.Hero);
+
+            Assert.That(_panel.TabMark(4).LockShown, Is.True);
+            Assert.That(_panel.TabMark(2).DotShown, Is.True);
+            Assert.That(_panel.TabMark(1).DotShown, Is.False);
+            Assert.That(_panel.TabMark(1).LockShown, Is.False);
+        }
+
+        [Test]
+        public void NoticeTakesThePlaceOfTheGoldUntilThePanelHides()
+        {
+            Open(PanelSection.Hero);
+
+            _panel.ShowNotice("Отряд откроется на этапе 10");
+
+            Assert.That(_panel.IsNoticeShown, Is.True);
+            _panel.Hide();
+            Assert.That(_panel.IsNoticeShown, Is.False);
+        }
+
+        private static AscendancyCatalog RealAscendancy() =>
+            AscendancyCatalog.Load(File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Data", AscendancyCatalog.FileName)));
 
         private void Open(PanelSection section)
         {

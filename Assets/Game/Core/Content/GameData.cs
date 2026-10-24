@@ -6,14 +6,15 @@ using Game.Core.Content.Synergy;
 using Game.Core.Content.Weapons;
 using Game.Core.Party;
 using Game.Core.Text;
+using Game.Core.Ui;
 
 namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, PanelUnlocks.FileName };
 
-        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift, WeaponCatalog weapons)
+        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift, WeaponCatalog weapons, PanelUnlocks panel)
         {
             Stages = stages;
             Enemies = enemies;
@@ -31,6 +32,7 @@ namespace Game.Core.Content
             Synergy = synergy;
             Rift = rift;
             Weapons = weapons;
+            Panel = panel;
             Tutorial = tutorial;
         }
 
@@ -51,6 +53,7 @@ namespace Game.Core.Content
         public SynergyRules Synergy { get; }
         public RiftRules Rift { get; }
         public WeaponCatalog Weapons { get; }
+        public PanelUnlocks Panel { get; }
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -74,9 +77,10 @@ namespace Game.Core.Content
             rift.RequireMarks(synergy);
             var weapons = WeaponCatalog.Load(readFile(WeaponCatalog.FileName));
             weapons.RequireGemWeapons(gems);
+            var panel = PanelUnlocks.Load(readFile(PanelUnlocks.FileName));
             var strings = StringTable.Load(readFile(StringTable.FileName));
             Texts.Use(strings);
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons);
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, panel);
         }
     }
 }
