@@ -34,6 +34,7 @@ namespace Game.Core.Text
         public static string Format(string key, object arg0) => string.Format(CultureInfo.InvariantCulture, Get(key), arg0);
 
         public static string Format(string key, object arg0, object arg1) => string.Format(CultureInfo.InvariantCulture, Get(key), arg0, arg1);
+        public static string Format(string key, object arg0, object arg1, object arg2) => string.Format(CultureInfo.InvariantCulture, Get(key), arg0, arg1, arg2);
 
         public static string Pick(string ru, string en) => Language == StringTable.DefaultLanguage ? ru : en;
     }
