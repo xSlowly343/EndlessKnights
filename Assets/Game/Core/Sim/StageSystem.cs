@@ -100,8 +100,7 @@ namespace Game.Core.Sim
             }
             _state.Kills++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
-            _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy);
-            _levels.OnKill(_state.EnemyType);
+            Reward();
             if (_state.FightingBoss)
                 AdvanceStage();
             else if (_state.Farming)
@@ -163,12 +162,21 @@ namespace Game.Core.Sim
             return hp;
         }
 
+        private void Reward()
+        {
+            var multiplier = _state.NextKillReward;
+            _state.NextKillReward = 1;
+            _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy, multiplier);
+            _levels.OnKill(_state.EnemyType, multiplier);
+            if (multiplier > 1 && _state.NextKillShardChance > 0 && _state.Rng.NextDouble() < _state.NextKillShardChance)
+                _state.Rift.Shards += BigNumber.FromDouble(_state.NextKillShards);
+        }
+
         public void ConfirmLinkedKill()
         {
             _state.Kills++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
-            _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy);
-            _levels.OnKill(_state.EnemyType);
+            Reward();
             if (_state.FightingBoss)
                 AdvanceStage();
             _state.EnemyHp = BigNumber.Zero;
@@ -191,6 +199,7 @@ namespace Game.Core.Sim
 
         private void AdvanceStage()
         {
+            _state.BossKills++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossDefeated, _state.Tick, _state.Stage, _state.Enemy));
             var type = _state.EnemyType;
             var stageBefore = _state.Stage;
@@ -232,6 +241,7 @@ namespace Game.Core.Sim
             var timer = _stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
             _state.BossTicksLeft = (int)System.Math.Round(timer * GameLoop.TicksPerSecond);
             _state.BossTimerCarry = 0;
+            _state.BossStarts++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossStarted, _state.Tick, stage, enemy));
         }
 

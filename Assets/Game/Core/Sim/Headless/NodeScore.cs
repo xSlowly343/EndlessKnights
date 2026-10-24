@@ -19,7 +19,6 @@ namespace Game.Core.Sim.Headless
             [CombatStats.ComboStrikeMultiplier.Name] = 0.2,
             [CombatStats.ComboTimeoutSeconds.Name] = 0.1,
             [CombatStats.KeyStrikeMultiplier.Name] = 0.05,
-            [CombatStats.EnterDamage.Name] = 0.1,
             [CombatStats.ResourceGain.Name] = 0.1,
             [CombatStats.Gold.Name] = 0.15,
             [CombatStats.OfflineGold.Name] = 0.1,

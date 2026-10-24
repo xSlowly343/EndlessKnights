@@ -13,6 +13,7 @@ namespace Game.Core.Sim
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
+        private long _hitsTowardCrit;
 
         public CombatSystem(CombatRules rules, StatSheet hero, GameState state, EventQueue events)
         {
@@ -65,12 +66,9 @@ namespace Game.Core.Sim
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
             _state.MouseCarryPx = mouseCarry * _rules.MousePxPerHit;
 
-            var enterHits = System.Math.Min(input.EnterDowns, keyHits);
             for (var i = 0; i < keyHits; i++)
             {
                 var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags);
-                if (i < enterHits)
-                    multiplier *= _hero.Value(CombatStats.EnterDamage, 1, StatTags.Keyboard);
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
                 KeyHitLightning();
             }
@@ -88,12 +86,13 @@ namespace Game.Core.Sim
             if (damage.Sign <= 0)
                 return;
 
-            if (RollCrit(tags))
+            if (ForcedCrit() || RollCrit(tags))
             {
                 damage *= CritMultiplier(tags);
                 flags |= HitFlags.Crit;
             }
 
+            var hpBefore = _state.EnemyHp;
             _state.EnemyHp -= damage;
             LastTickDamage += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
@@ -102,8 +101,16 @@ namespace Game.Core.Sim
             if (_state.EnemyAlive)
                 return;
 
+            CarryOverkill(damage - hpBefore, tags);
             _state.EnemyHp = BigNumber.Zero;
             _kills?.OnEnemyKilled();
+        }
+
+        private void CarryOverkill(BigNumber overkill, StatTags tags)
+        {
+            var share = System.Math.Min(1, _hero.Value(CombatStats.OverkillCarry, 0, tags));
+            if (share > 0 && overkill.Sign > 0)
+                _state.QueueDamage[0] += overkill * share;
         }
 
         private void KeyHitLightning()
@@ -131,6 +138,17 @@ namespace Game.Core.Sim
 
         public double CritMultiplier(StatTags tags) =>
             System.Math.Max(1, _hero.Compute(CombatStats.CritMultiplier, BigNumber.FromDouble(_rules.CritMultiplier), tags | StatTags.Crit).ToDouble());
+
+        private bool ForcedCrit()
+        {
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.CritEvery, 0));
+            if (every < 1)
+            {
+                _hitsTowardCrit = 0;
+                return false;
+            }
+            return ++_hitsTowardCrit % every == 0;
+        }
 
         private bool RollCrit(StatTags tags)
         {

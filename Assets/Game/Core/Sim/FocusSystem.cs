@@ -32,7 +32,11 @@ namespace Game.Core.Sim
             else
                 _state.Focus = Clamp(_state.Focus + _rules.PerEvent * _hero.Value(CombatStats.FocusGain, 1) * Events(input));
 
-            _state.FocusMultiplier = MacroDetected ? _rules.Min : _state.Focus;
+            if (_state.FocusLockTicks > 0)
+                _state.FocusLockTicks--;
+            _state.FocusMultiplier = MacroDetected || _state.FocusLockTicks > 0
+                ? _rules.Min
+                : _state.Focus * System.Math.Max(0, _hero.Value(CombatStats.FocusMultiplier, 1));
         }
 
         private void TrackIdle(in EffectiveInput input)

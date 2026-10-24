@@ -188,6 +188,284 @@
       "effect": { "type": "chainHits", "hits": 60, "nextEnemyShare": 0.5 }
     },
     {
+      "id": "key_drum",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Дробь клавиш", "en": "Key Drumroll" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 10,
+      "durationSeconds": 10,
+      "effect": { "type": "keyRepeat", "every": 5, "multiplier": 1 }
+    },
+    {
+      "id": "overheat",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Перегрев", "en": "Overheat" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 60 },
+      "cooldownSeconds": 90,
+      "durationSeconds": 15,
+      "effect": { "type": "aura", "focusLockAfterSeconds": 30, "modifiers": [{ "stat": "focusMultiplier", "kind": "more", "value": 2.0 }] }
+    },
+    {
+      "id": "space_hammer",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Пробел-молот", "en": "Space Hammer" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 6,
+      "durationSeconds": 10,
+      "effect": { "type": "specialKeys", "key": "space", "bonus": 2 }
+    },
+    {
+      "id": "caps_rage",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Капслок ярости", "en": "Caps Lock Rage" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 40,
+      "durationSeconds": 12,
+      "effect": { "type": "streakStrike", "hits": 20, "maxGapSeconds": 0.5, "multiplier": 5 }
+    },
+    {
+      "id": "typo",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Опечатка", "en": "Typo" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "specialKeys", "key": "backspace", "bonus": 1 }
+    },
+    {
+      "id": "typist",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Машинистка", "en": "Typist" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 50 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0, "tags": ["Keyboard"] }] }
+    },
+    {
+      "id": "hotkeys",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Горячие клавиши", "en": "Hotkeys" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 5,
+      "effect": { "type": "specialKeys", "key": "combo", "bonus": 3, "charges": 10 }
+    },
+    {
+      "id": "touch_typing",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Слепая печать", "en": "Touch Typing" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "flow", "afterSeconds": 60, "maxGapSeconds": 2, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.20, "tags": ["Keyboard"] }] }
+    },
+    {
+      "id": "hurricane",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Ураган", "en": "Hurricane" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 50 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 8,
+      "effect": { "type": "inputHits", "pxPerHit": 100, "pxShare": 0.4, "circle": 2 }
+    },
+    {
+      "id": "dash",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Рывок", "en": "Dash" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 20,
+      "durationSeconds": 10,
+      "effect": { "type": "inputHits", "flick": 3, "maxHits": 5 }
+    },
+    {
+      "id": "lasso",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Лассо", "en": "Lasso" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 8,
+      "durationSeconds": 10,
+      "armOn": "circle",
+      "effect": { "type": "aura", "modifiers": [{ "stat": "overkillCarry", "kind": "flat", "value": 1.0 }] }
+    },
+    {
+      "id": "pendulum_strike",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Маятниковый удар", "en": "Pendulum Strike" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 15,
+      "effect": { "type": "inputHits", "reversal": 0.5 }
+    },
+    {
+      "id": "long_road",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Дальний путь", "en": "Long Road" },
+      "tags": ["Mouse", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "distanceStacks", "pxPerStack": 10000, "windowSeconds": 300, "perStack": { "stat": "damage", "kind": "increased", "value": 0.05 }, "max": 0.25 }
+    },
+    {
+      "id": "comet_trail",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "След кометы", "en": "Comet Trail" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 60 },
+      "cooldownSeconds": 35,
+      "durationSeconds": 10,
+      "effect": { "type": "trail", "pxPerMultiplier": 500 }
+    },
+    {
+      "id": "blade_whirl",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Вихрь клинков", "en": "Blade Whirl" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 25 },
+      "cooldownSeconds": 6,
+      "durationSeconds": 10,
+      "effect": { "type": "inputHits", "circle": 3 }
+    },
+    {
+      "id": "tailwind",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Ветер в спину", "en": "Wind at Your Back" },
+      "tags": ["Aura", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "aura", "reserve": 15, "modifiers": [{ "stat": "overkillCarry", "kind": "flat", "value": 0.5, "tags": ["Mouse"] }] }
+    },
+    {
+      "id": "lightning_zigzag",
+      "kind": "skill",
+      "color": "green",
+      "name": { "ru": "Зигзаг молнии", "en": "Lightning Zigzag" },
+      "tags": ["Mouse", "Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 5,
+      "armOn": "flick",
+      "effect": { "type": "strike", "multiplier": 4, "queueTargets": 1 }
+    },
+    {
+      "id": "mark",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Метка", "en": "Mark" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 15,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "critEvery", "kind": "flat", "value": 5 }] }
+    },
+    {
+      "id": "weak_spot",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Слабое место", "en": "Weak Spot" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 40 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "critMultiplier", "kind": "more", "value": 1.0 }] }
+    },
+    {
+      "id": "execute",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Казнь", "en": "Execute" },
+      "tags": ["Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 10,
+      "effect": { "type": "strike", "multiplier": 3, "executeBelow": 0.2 }
+    },
+    {
+      "id": "exposure",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Разоблачение", "en": "Exposure" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 25 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 15,
+      "marks": ["curse"],
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.20, "tags": ["Skill"] }] }
+    },
+    {
+      "id": "boss_hunt",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Охота на босса", "en": "Boss Hunt" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "bossHunt", "bonus": 0.15, "lastSeconds": 10, "lastBonus": 0.30 }
+    },
+    {
+      "id": "ricochet",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Рикошет", "en": "Ricochet" },
+      "tags": ["Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 4,
+      "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1, "queueMultiplier": 1 }
+    },
+    {
+      "id": "lucky_coin",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Счастливая монета", "en": "Lucky Coin" },
+      "tags": ["Skill"],
+      "cost": { "resource": 10 },
+      "cooldownSeconds": 5,
+      "effect": { "type": "strike", "multiplier": 6, "coinFlip": true }
+    },
+    {
+      "id": "composure",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Выдержка", "en": "Composure" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "composure", "multiplier": 1.5 }
+    },
+    {
+      "id": "freeze_frame",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Стоп-кадр", "en": "Freeze Frame" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 80 },
+      "cooldownSeconds": 120,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "bossTimerSpeed", "kind": "more", "value": -1 }] }
+    },
+    {
       "id": "march",
       "kind": "skill",
       "color": "blue",
@@ -222,11 +500,197 @@
       "effect": { "type": "idleStrike", "chargePerSecond": 0.05, "maxChargeSeconds": 60, "minIdleSeconds": 30 }
     },
     {
-      "id": "cast_on_enter",
+      "id": "golden_fever",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Золотая лихорадка", "en": "Golden Fever" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 40 },
+      "cooldownSeconds": 60,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.3333 }, { "stat": "gold", "kind": "more", "value": 1.0 }] }
+    },
+    {
+      "id": "second_wind",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Второе дыхание", "en": "Second Wind" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 90,
+      "effect": { "type": "gainResource", "amount": 50 }
+    },
+    {
+      "id": "echo",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Эхо", "en": "Echo" },
+      "tags": ["Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 10,
+      "effect": { "type": "echo", "power": 0.5 }
+    },
+    {
+      "id": "coffee_break",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Кофе-брейк", "en": "Coffee Break" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "breakBonus", "breakSeconds": 300, "seconds": 60, "modifiers": [{ "stat": "damage", "kind": "more", "value": 1.0 }] }
+    },
+    {
+      "id": "call",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Созвон", "en": "Call" },
+      "tags": ["Aura", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "aura", "reserve": 20, "keylessStrike": { "everySeconds": 2, "multiplier": 1 }, "modifiers": [] }
+    },
+    {
+      "id": "shoulder_to_shoulder",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Плечом к плечу", "en": "Shoulder to Shoulder" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "passive", "perPartyMember": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.05 }] }
+    },
+    {
+      "id": "heros_diary",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Дневник героя", "en": "Hero's Diary" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "passive", "modifiers": [{ "stat": "gemExperience", "kind": "increased", "value": 0.25 }] }
+    },
+    {
+      "id": "rift_crystal",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Кристалл Разлома", "en": "Rift Crystal" },
+      "tags": ["Skill"],
+      "cost": { "resource": 70 },
+      "cooldownSeconds": 60,
+      "effect": { "type": "nextKillReward", "multiplier": 3, "shardChance": 0.25, "shards": 1 }
+    },
+    {
+      "id": "cast_on_mouse_distance",
       "kind": "trigger",
       "color": "white",
-      "name": { "ru": "Каст при Enter", "en": "Cast on Enter" },
-      "condition": { "type": "enter" },
+      "name": { "ru": "Каст при 1000 px", "en": "Cast on 1000 px" },
+      "condition": { "type": "mouseDistance", "value": 1000 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_boss_timer_low",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст за 5 с до конца таймера", "en": "Cast 5 s Before Time Runs Out" },
+      "condition": { "type": "bossTimerLeft", "value": 5 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_idle",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст в паузе", "en": "Cast While Idle" },
+      "condition": { "type": "idle", "value": 30 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_boss_kill",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при убийстве босса", "en": "Cast on Boss Kill" },
+      "condition": { "type": "bossKilled" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_full_resource",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при полном ресурсе", "en": "Cast on Full Resource" },
+      "condition": { "type": "resourceFull" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_with_left",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст вместе с ЛКМ", "en": "Cast with Left Click" },
+      "condition": { "type": "withLeft" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_with_right",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст вместе с ПКМ", "en": "Cast with Right Click" },
+      "condition": { "type": "withRight" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_tenth_kill",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст на 10-м убийстве", "en": "Cast on Every 10th Kill" },
+      "condition": { "type": "everyKills", "value": 10 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_boss_spawn",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при появлении босса", "en": "Cast on Boss Arrival" },
+      "condition": { "type": "bossSpawned" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_circle",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при круге мышью", "en": "Cast on Mouse Circle" },
+      "condition": { "type": "circle", "value": 1 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_flick",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при взмахе", "en": "Cast on Flick" },
+      "condition": { "type": "flick" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_with_ally",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст с союзником", "en": "Cast with an Ally" },
+      "condition": { "type": "allyHeavyCast", "value": 20 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_low_resource",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст на исходе сил", "en": "Cast on Low Resource" },
+      "condition": { "type": "resourceBelow", "value": 20 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_timer",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст по таймеру", "en": "Cast on Timer" },
+      "formerIds": ["cast_on_enter"],
+      "condition": { "type": "every", "value": 30 },
       "cooldownMultiplier": 1.5
     }
   ]

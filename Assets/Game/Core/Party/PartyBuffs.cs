@@ -65,14 +65,17 @@ namespace Game.Core.Party
 
         public void Tick()
         {
+            var members = 1;
             for (var slot = 0; slot < _allies.Length; slot++)
             {
                 var ally = _allies[slot];
                 if (!ally.Present)
                     continue;
+                members++;
                 for (var i = 0; i < ally.Auras.Length; i++)
                     TickAura(ally.Auras[i]);
             }
+            _state.PartyMembers = members;
             if (_dirty)
                 Rebuild();
         }

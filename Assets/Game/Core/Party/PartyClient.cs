@@ -175,12 +175,16 @@ namespace Game.Core.Party
             {
                 var offered = offer.Aura(i);
                 var aura = ally.Auras[i];
+                var previousGem = aura.Gem;
+                var previousTicks = aura.TicksLeft;
                 aura.Clear();
                 if (!offered.Active || !gems.TryGetByNetId(offered.GemNetId, out var gem) || !(gem.Skill?.Effect is AuraEffect effect) || !effect.Party)
                     continue;
                 aura.Gem = gem;
                 aura.Strength = System.Math.Max(0, offered.Strength);
                 aura.TicksLeft = offered.TicksLeft;
+                if (!effect.Reserves && (!ReferenceEquals(previousGem, gem) || offered.TicksLeft > previousTicks + 1))
+                    NoteAllyCast(gem.Skill!.CooldownSeconds);
             }
             _loop.PartyBuffs.MarkChanged();
         }
@@ -421,6 +425,9 @@ namespace Game.Core.Party
             }
             SendToHost(PartyCodec.Encode(_out, offer));
         }
+
+        private void NoteAllyCast(double cooldownSeconds) =>
+            _loop.State.AllyHeavyCastSeconds = System.Math.Max(_loop.State.AllyHeavyCastSeconds, cooldownSeconds);
 
         private void SendToHost(int length) => _transport.Send(_hostId, _out, length);
 

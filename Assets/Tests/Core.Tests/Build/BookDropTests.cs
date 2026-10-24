@@ -47,17 +47,17 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SkillDroppedOnAFullRowReplacesItAndKeepsTheTrigger()
         {
-            var loop = WithGems("stenography", "march", "cast_on_enter");
+            var loop = WithGems("stenography", "march", "cast_on_timer");
             loop.Book.Equip(Gem("stenography"));
             loop.Book.Equip(Gem("march"));
-            loop.Book.SetTrigger(0, Gem("cast_on_enter"));
+            loop.Book.SetTrigger(0, Gem("cast_on_timer"));
             loop.State.OwnedGems.Add(Gem("lull"));
 
             Assert.That(Drop(loop, BookPlace.Bag(Gem("lull")), BookPlace.Skill(0)), Is.EqualTo(BookResult.Done));
 
             Assert.That(SkillAt(loop, 0), Is.EqualTo("lull"));
             Assert.That(SkillAt(loop, 1), Is.EqualTo("march"));
-            Assert.That(loop.State.Skills[0].Trigger, Is.SameAs(Gem("cast_on_enter")));
+            Assert.That(loop.State.Skills[0].Trigger, Is.SameAs(Gem("cast_on_timer")));
             Assert.That(loop.Book.FreeCopies(Gem("stenography")), Is.EqualTo(1));
         }
 
@@ -107,11 +107,11 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TriggerGoesOnARowAndBackToTheBag()
         {
-            var loop = WithGems("stenography", "cast_on_enter");
+            var loop = WithGems("stenography", "cast_on_timer");
             loop.Book.Equip(Gem("stenography"));
 
-            Assert.That(Drop(loop, BookPlace.Bag(Gem("cast_on_enter")), BookPlace.Trigger(0)), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.State.Skills[0].Trigger, Is.SameAs(Gem("cast_on_enter")));
+            Assert.That(Drop(loop, BookPlace.Bag(Gem("cast_on_timer")), BookPlace.Trigger(0)), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.State.Skills[0].Trigger, Is.SameAs(Gem("cast_on_timer")));
 
             Assert.That(Drop(loop, BookPlace.Trigger(0), BookPlace.Bag()), Is.EqualTo(BookResult.Done));
             Assert.That(loop.State.Skills[0].Trigger, Is.Null);
@@ -120,38 +120,38 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TriggerIsNotASkill()
         {
-            var loop = WithGems("cast_on_enter");
+            var loop = WithGems("cast_on_timer");
 
-            Assert.That(Drop(loop, BookPlace.Bag(Gem("cast_on_enter")), BookPlace.Skill(0)), Is.EqualTo(BookResult.NoSuchSlot));
+            Assert.That(Drop(loop, BookPlace.Bag(Gem("cast_on_timer")), BookPlace.Skill(0)), Is.EqualTo(BookResult.NoSuchSlot));
             Assert.That(loop.State.Skills, Is.Empty);
         }
 
         [Test]
         public void TriggerMovesBetweenRows()
         {
-            var loop = WithGems("stenography", "march", "cast_on_enter");
+            var loop = WithGems("stenography", "march", "cast_on_timer");
             loop.Book.Equip(Gem("stenography"));
             loop.Book.Equip(Gem("march"));
-            loop.Book.SetTrigger(0, Gem("cast_on_enter"));
+            loop.Book.SetTrigger(0, Gem("cast_on_timer"));
 
             Assert.That(Drop(loop, BookPlace.Trigger(0), BookPlace.Trigger(1)), Is.EqualTo(BookResult.Done));
 
             Assert.That(loop.State.Skills[0].Trigger, Is.Null);
-            Assert.That(loop.State.Skills[1].Trigger, Is.SameAs(Gem("cast_on_enter")));
+            Assert.That(loop.State.Skills[1].Trigger, Is.SameAs(Gem("cast_on_timer")));
         }
 
         [Test]
         public void BagShowsEachFreeGemOnceAndHonoursTheFilter()
         {
-            var loop = WithGems("stenography", "stenography", "march", "cast_on_enter");
+            var loop = WithGems("stenography", "stenography", "march", "cast_on_timer");
             loop.Book.Equip(Gem("march"));
             var bag = new List<GemDef>();
 
             GemBag.Fill(loop.Book, loop.State, GemBagFilter.All, bag);
-            Assert.That(bag, Is.EqualTo(new[] { Gem("stenography"), Gem("cast_on_enter") }));
+            Assert.That(bag, Is.EqualTo(new[] { Gem("stenography"), Gem("cast_on_timer") }));
 
             GemBag.Fill(loop.Book, loop.State, GemBagFilter.Triggers, bag);
-            Assert.That(bag, Is.EqualTo(new[] { Gem("cast_on_enter") }));
+            Assert.That(bag, Is.EqualTo(new[] { Gem("cast_on_timer") }));
         }
 
         [Test]

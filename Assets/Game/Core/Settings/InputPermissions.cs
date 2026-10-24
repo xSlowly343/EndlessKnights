@@ -45,7 +45,9 @@ namespace Game.Core.Settings
                 MouseMovement ? input.CircleTurns : 0f,
                 input.SecondsSinceLastInput,
                 Keys ? input.RhythmCv : 0f,
-                input.Suppressed);
+                input.Suppressed,
+                comboDowns: Keys ? input.ComboDowns : 0,
+                reversals: MouseMovement ? input.Reversals : 0);
         }
     }
 }

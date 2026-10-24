@@ -6,6 +6,7 @@ namespace Game.Platform.Windows.Input
         Regular,
         Enter,
         Backspace,
-        Space
+        Space,
+        Combo
     }
 }
