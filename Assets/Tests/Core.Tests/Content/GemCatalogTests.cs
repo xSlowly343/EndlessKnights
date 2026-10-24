@@ -175,10 +175,10 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(Numbers(gems["battle_cry"].Skill!), Is.EqualTo((30, 30, 15)));
-            Assert.That(Numbers(gems["throwing_axe"].Skill!), Is.EqualTo((10, 3, 0)));
-            Assert.That(Numbers(gems["shield_wall"].Skill!), Is.EqualTo((40, 35, 10)));
-            Assert.That(Numbers(gems["ragnarok_roar"].Skill!), Is.EqualTo((70, 45, 8)));
+            Assert.That(Numbers(gems["battle_cry"].Skill!), Is.EqualTo((30d, 30d, 15d)));
+            Assert.That(Numbers(gems["throwing_axe"].Skill!), Is.EqualTo((10d, 3d, 0d)));
+            Assert.That(Numbers(gems["shield_wall"].Skill!), Is.EqualTo((40d, 35d, 10d)));
+            Assert.That(Numbers(gems["ragnarok_roar"].Skill!), Is.EqualTo((70d, 45d, 8d)));
             Assert.That(gems["blood_harvest"].Skill!.IsPassive, Is.True);
             Assert.That(((StrikeEffect)gems["throwing_axe"].Skill!.Effect).SkipCurrent, Is.True);
             Assert.That(((StoreHitsEffect)gems["shield_wall"].Skill!.Effect).ReleaseShare, Is.EqualTo(0.5));
@@ -193,10 +193,10 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(Numbers(gems["power_chord"].Skill!), Is.EqualTo((15, 4, 0)));
-            Assert.That(Numbers(gems["ballad"].Skill!), Is.EqualTo((30, 30, 15)));
-            Assert.That(Numbers(gems["mosh_pit"].Skill!), Is.EqualTo((50, 30, 10)));
-            Assert.That(Numbers(gems["stage_dive"].Skill!), Is.EqualTo((60, 40, 0)));
+            Assert.That(Numbers(gems["power_chord"].Skill!), Is.EqualTo((15d, 4d, 0d)));
+            Assert.That(Numbers(gems["ballad"].Skill!), Is.EqualTo((30d, 30d, 15d)));
+            Assert.That(Numbers(gems["mosh_pit"].Skill!), Is.EqualTo((50d, 30d, 10d)));
+            Assert.That(Numbers(gems["stage_dive"].Skill!), Is.EqualTo((60d, 40d, 0d)));
             Assert.That(((AuraEffect)gems["amp_eleven"].Skill!.Effect).Reserve, Is.EqualTo(25));
             Assert.That(gems["amp_eleven"].Skill!.IsPassive, Is.True);
             Assert.That(gems["song"].Skill!.Family, Is.EqualTo("song"));
