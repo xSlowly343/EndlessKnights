@@ -79,6 +79,9 @@ namespace Game.Editor
             var rarities = RaritySample(panels.CanvasRect);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-rarities.png"));
             UnityEngine.Object.DestroyImmediate(rarities.gameObject);
+            navigator.SelectTab(PanelSection.Party);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-party.png"));
 
             navigator.SelectTab(PanelSection.Book);
             frame = ShowPanel(panels, navigator);
