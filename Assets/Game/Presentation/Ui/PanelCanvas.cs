@@ -58,6 +58,7 @@ namespace Game.Presentation.Ui
         private const float NoticeRightPx = 394f;
         private const float NoticeRightWithWidePx = 322f;
         private const float NoticeSeconds = 3f;
+        private const float PresetWidthPx = 96f;
 
         private readonly List<UiButton> _subTabs = new List<UiButton>();
         private readonly List<UiButton> _tabs = new List<UiButton>();
@@ -73,6 +74,8 @@ namespace Game.Presentation.Ui
         private Image _coin = null!;
         private TextMeshProUGUI _notice = null!;
         private float _noticeLeft;
+        private HeroPanel _heroPanel = null!;
+        private UiButton _preset = null!;
 
         private UiTheme _theme = null!;
         private RectTransform _canvasRect = null!;
@@ -139,6 +142,7 @@ namespace Game.Presentation.Ui
         public float HeightPx => _heightPx;
         public RectTransform CanvasRect => _canvasRect;
         public bool IsNoticeShown => _notice.gameObject.activeSelf;
+        public HeroPanel Hero => _heroPanel;
 
         public SectionMark TabMark(int index) => _tabMarks[index];
         public SectionMark MoreMark(int index) => _moreMarks[index];
@@ -179,7 +183,7 @@ namespace Game.Presentation.Ui
             ShowMarks();
             _shownGold = string.Empty;
             _sinceCurrency = CurrencyRefreshSeconds;
-            RefreshCurrency();
+            RefreshLive();
             gameObject.SetActive(true);
             StartTween(startPx, _shownFrame.HeightPx);
         }
@@ -224,8 +228,14 @@ namespace Game.Presentation.Ui
                 return false;
             if (_showingReport)
                 return TryClickReport(worldPoint);
-            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint))
+            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint))
                 return true;
+            if (_preset.Contains(worldPoint))
+            {
+                _loop?.SwitchPreset();
+                RefreshPreset();
+                return true;
+            }
             if (_treeShown && Tree.TryPress(worldPoint))
             {
                 _treeCaptured = true;
@@ -347,7 +357,26 @@ namespace Game.Presentation.Ui
         {
             AdvanceTween();
             AdvanceNotice();
-            RefreshCurrency();
+            RefreshLive();
+        }
+
+        private void RefreshLive()
+        {
+            if (_showingReport || _loop == null)
+                return;
+            _sinceCurrency += Time.unscaledDeltaTime;
+            if (_sinceCurrency < CurrencyRefreshSeconds)
+                return;
+            _sinceCurrency = 0f;
+            RefreshCurrency(_loop);
+            _heroPanel.Refresh(_loop);
+            RefreshPreset();
+        }
+
+        private void RefreshPreset()
+        {
+            if (_loop != null && _preset.Rect.gameObject.activeSelf)
+                _preset.Text = HeroSummary.Preset(_loop.State);
         }
 
         private void AdvanceNotice()
@@ -394,15 +423,9 @@ namespace Game.Presentation.Ui
                 RefreshHosts();
         }
 
-        private void RefreshCurrency()
+        private void RefreshCurrency(GameLoop loop)
         {
-            if (_showingReport || _loop == null)
-                return;
-            _sinceCurrency += Time.unscaledDeltaTime;
-            if (_sinceCurrency < CurrencyRefreshSeconds)
-                return;
-            _sinceCurrency = 0f;
-            var gold = NumberFormatter.Format(_loop.State.Gold, NumberFormatSettings.Default);
+            var gold = NumberFormatter.Format(loop.State.Gold, NumberFormatSettings.Default);
             if (gold != _shownGold)
                 _currency.text = _shownGold = gold;
         }
@@ -521,7 +544,11 @@ namespace Game.Presentation.Ui
             _zoomIn.Show(zoomShown);
             _zoomOut.Show(zoomShown);
             _bookShown = !navigator.ShowingMore && navigator.Active == PanelSection.Book && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
-            var placeholder = !navigator.ShowingMore && !_treeShown && !_bookShown;
+            var heroSubTab = _shownFrame.HasSubTabs ? navigator.SubTab : 0;
+            var heroShown = !navigator.ShowingMore && navigator.Active == PanelSection.Hero && HeroPanel.Covers(heroSubTab);
+            _heroPanel.Show(heroShown, heroSubTab, _shownFrame.ContentPx);
+            _preset.Show(!navigator.ShowingMore && navigator.Active == PanelSection.Hero && _shownFrame.HasSubTabs);
+            var placeholder = !navigator.ShowingMore && !_treeShown && !_bookShown && !heroShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -643,6 +670,13 @@ namespace Game.Presentation.Ui
             _zoomOut.Text = "−";
             UiElements.IgnoreLayout(_zoomIn.Rect);
             UiElements.IgnoreLayout(_zoomOut.Rect);
+            _preset = Button("Preset", row, middleRight, new Vector2(-MarginPx, 0f), new Vector2(PresetWidthPx, PillHeightPx), _theme.Accent, PillRadiusPx);
+            UiElements.Stretch(UiElements.Fill("Inner", _preset.Rect, _theme.TabBar, PillRadiusPx - BorderPx).rectTransform, BorderPx);
+            var presetLabel = UiElements.Label("PresetText", _preset.Rect, _theme.TextFont, SmallTextSizePx - 1f, _theme.Text, TextAlignmentOptions.Center);
+            UiElements.Stretch(presetLabel.rectTransform);
+            _preset = new UiButton(_preset.Back, presetLabel);
+            UiElements.IgnoreLayout(_preset.Rect);
+            _preset.Show(false);
         }
 
         private UiButton Pill(string name, RectTransform parent)
@@ -673,6 +707,8 @@ namespace Game.Presentation.Ui
                 _moreRows.Add(MoreRow("More " + i, list));
             _placeholder = UiElements.Label("Placeholder", content, _theme.TextFont, TextSizePx, _theme.TextDim, TextAlignmentOptions.Center);
             UiElements.Stretch(_placeholder.rectTransform);
+            _heroPanel = HeroPanel.Create(content, _theme);
+            _heroPanel.TreeRequested += () => TabPressed?.Invoke(PanelSection.Tree);
         }
 
         private UiButton MoreRow(string name, RectTransform parent)

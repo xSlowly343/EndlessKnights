@@ -37,6 +37,12 @@ namespace Game.Editor
             loop.State.Tree.PointsEarned = 5;
             loop.State.Gold = BigNumber.FromDouble(12345);
             loop.AllocateNode("ronin_ring_1");
+            loop.State.HeroLevel = 42;
+            loop.State.Stage = 37;
+            loop.State.RecordStage = 120;
+            var starter = data.Weapons.StarterFor(HeroClass.Viking);
+            loop.Weapons.Give(starter);
+            loop.Weapons.Equip(WeaponHand.Right, starter);
 
             var panels = PanelCanvas.Create();
             panels.Bind(loop, data.Tree);
@@ -59,6 +65,16 @@ namespace Game.Editor
             navigator.SelectTab(PanelSection.Hero);
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero.png"));
+
+            navigator.SelectSubTab(2);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero-input.png"));
+            navigator.SelectSubTab(0);
+
+            navigator.ToggleHeight();
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero-half.png"));
+            navigator.ToggleHeight();
 
             navigator.PressMore();
             frame = ShowPanel(panels, navigator);
