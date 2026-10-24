@@ -14,7 +14,6 @@ namespace Game.Core.Sim
         public static readonly StatId MouseDistance = new StatId("mouseDistance");
         public static readonly StatId ResourceGain = new StatId("resourceGain");
         public static readonly StatId KeyHitLightning = new StatId("keyHitLightning");
-        public static readonly StatId EnterDamage = new StatId("enterDamage");
         public static readonly StatId KeyStrikeEvery = new StatId("keyStrikeEvery");
         public static readonly StatId KeyStrikeMultiplier = new StatId("keyStrikeMultiplier");
         public static readonly StatId AuraDuration = new StatId("auraDuration");

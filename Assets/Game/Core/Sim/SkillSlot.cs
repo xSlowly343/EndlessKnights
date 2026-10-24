@@ -19,6 +19,9 @@ namespace Game.Core.Sim
         public int CooldownTotalTicks { get; set; }
         public int ActiveTicks { get; set; }
         public int ActiveTotalTicks { get; set; }
+        public long EquipTick { get; set; }
+        public long LastCastTick { get; set; } = -1;
+        public double TriggerProgress { get; set; }
         public int HitsLeft { get; set; }
         public BigNumber Stored { get; set; }
         public int Stacks { get; set; }
@@ -39,5 +42,7 @@ namespace Game.Core.Sim
         public bool Ready => CooldownTicks <= 0;
         public double CooldownFraction => Ready ? 0 : CooldownTicks / (double)System.Math.Max(CooldownTicks, CooldownTotalTicks);
         public bool Active => ActiveTicks > 0;
+        public bool CastOn(long tick) => LastCastTick == tick;
+        public long QuietSince => System.Math.Max(EquipTick, LastCastTick);
     }
 }

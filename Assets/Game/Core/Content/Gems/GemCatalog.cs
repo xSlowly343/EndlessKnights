@@ -26,7 +26,32 @@ namespace Game.Core.Content.Gems
 
         private static readonly Dictionary<string, TriggerCondition> Conditions = new Dictionary<string, TriggerCondition>(StringComparer.Ordinal)
         {
-            ["enter"] = TriggerCondition.Enter
+            ["mouseDistance"] = TriggerCondition.MouseDistance,
+            ["bossTimerLeft"] = TriggerCondition.BossTimerLeft,
+            ["idle"] = TriggerCondition.Idle,
+            ["bossKilled"] = TriggerCondition.BossKilled,
+            ["resourceFull"] = TriggerCondition.ResourceFull,
+            ["withLeft"] = TriggerCondition.WithLeft,
+            ["withRight"] = TriggerCondition.WithRight,
+            ["everyKills"] = TriggerCondition.EveryKills,
+            ["bossSpawned"] = TriggerCondition.BossSpawned,
+            ["circle"] = TriggerCondition.Circle,
+            ["flick"] = TriggerCondition.Flick,
+            ["allyHeavyCast"] = TriggerCondition.AllyHeavyCast,
+            ["resourceBelow"] = TriggerCondition.ResourceBelow,
+            ["every"] = TriggerCondition.Every
+        };
+
+        private static readonly HashSet<TriggerCondition> ValuedConditions = new HashSet<TriggerCondition>
+        {
+            TriggerCondition.MouseDistance,
+            TriggerCondition.BossTimerLeft,
+            TriggerCondition.Idle,
+            TriggerCondition.EveryKills,
+            TriggerCondition.Circle,
+            TriggerCondition.AllyHeavyCast,
+            TriggerCondition.ResourceBelow,
+            TriggerCondition.Every
         };
 
         private static readonly Dictionary<string, StackTrigger> StackTriggers = new Dictionary<string, StackTrigger>(StringComparer.Ordinal)
@@ -37,9 +62,11 @@ namespace Game.Core.Content.Gems
 
         private readonly Dictionary<string, GemDef> _byId;
         private readonly Dictionary<int, GemDef> _byNetId;
+        private readonly Dictionary<string, string> _formerIds;
 
-        private GemCatalog(List<GemDef> gems, GemLevels levels)
+        private GemCatalog(List<GemDef> gems, GemLevels levels, Dictionary<string, string> formerIds)
         {
+            _formerIds = formerIds;
             All = gems;
             Levels = levels;
             _byId = new Dictionary<string, GemDef>(StringComparer.Ordinal);
@@ -56,7 +83,8 @@ namespace Game.Core.Content.Gems
 
         public GemDef this[string id] => _byId[id];
 
-        public bool TryGet(string id, out GemDef gem) => _byId.TryGetValue(id, out gem!);
+        public bool TryGet(string id, out GemDef gem) =>
+            _byId.TryGetValue(id, out gem!) || (_formerIds.TryGetValue(id, out var current) && _byId.TryGetValue(current, out gem!));
 
         public bool TryGetByNetId(int netId, out GemDef gem) => _byNetId.TryGetValue(netId, out gem!);
 
@@ -70,9 +98,11 @@ namespace Game.Core.Content.Gems
             var gems = new List<GemDef>();
             var ids = new HashSet<string>(StringComparer.Ordinal);
             var netIds = new Dictionary<int, string>();
+            var formerIds = new Dictionary<string, string>(StringComparer.Ordinal);
             foreach (var node in root.Field("gems").Items())
             {
                 var gem = ReadGem(node);
+                ReadFormerIds(node, gem.Id, formerIds);
                 if (!ids.Add(gem.Id))
                     throw node.Field("id").Error($"gem id '{gem.Id}' is used twice");
                 if (netIds.TryGetValue(gem.NetId, out var clash))
@@ -80,7 +110,25 @@ namespace Game.Core.Content.Gems
                 netIds.Add(gem.NetId, gem.Id);
                 gems.Add(gem);
             }
-            return new GemCatalog(gems, GemLevels.Read(root.Field("levels")));
+            foreach (var former in formerIds)
+            {
+                if (ids.Contains(former.Key))
+                    throw root.Field("gems").Error($"former id '{former.Key}' of '{former.Value}' is still a gem id");
+            }
+            return new GemCatalog(gems, GemLevels.Read(root.Field("levels")), formerIds);
+        }
+
+        private static void ReadFormerIds(ContentNode node, string id, Dictionary<string, string> formerIds)
+        {
+            if (!node.HasField("formerIds"))
+                return;
+            foreach (var former in node.Field("formerIds").Items())
+            {
+                var formerId = former.AsString();
+                if (formerIds.ContainsKey(formerId))
+                    throw former.Error($"former id '{formerId}' is used twice");
+                formerIds.Add(formerId, id);
+            }
         }
 
         private static GemDef ReadGem(ContentNode node)
@@ -193,10 +241,13 @@ namespace Game.Core.Content.Gems
         private static double Number(ContentNode node, string field, double max) =>
             node.HasField(field) ? node.Field(field).AsNumber(0, max) : 0;
 
-        private static TriggerDef ReadTrigger(ContentNode node) =>
-            new TriggerDef(
-                Pick(node.Field("condition").Field("type"), Conditions, "enter"),
-                node.Field("cooldownMultiplier").AsNumber(1, 100));
+        private static TriggerDef ReadTrigger(ContentNode node)
+        {
+            var condition = node.Field("condition");
+            var type = Pick(condition.Field("type"), Conditions, string.Join(", ", Conditions.Keys));
+            var value = ValuedConditions.Contains(type) ? condition.Field("value").AsNumber(0.001, 1e9) : 0;
+            return new TriggerDef(type, value, node.Field("cooldownMultiplier").AsNumber(1, 100));
+        }
 
         private static T Pick<T>(ContentNode node, Dictionary<string, T> names, string expected)
         {

@@ -222,11 +222,116 @@
       "effect": { "type": "idleStrike", "chargePerSecond": 0.05, "maxChargeSeconds": 60, "minIdleSeconds": 30 }
     },
     {
-      "id": "cast_on_enter",
+      "id": "cast_on_mouse_distance",
       "kind": "trigger",
       "color": "white",
-      "name": { "ru": "Каст при Enter", "en": "Cast on Enter" },
-      "condition": { "type": "enter" },
+      "name": { "ru": "Каст при 1000 px", "en": "Cast on 1000 px" },
+      "condition": { "type": "mouseDistance", "value": 1000 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_boss_timer_low",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст за 5 с до конца таймера", "en": "Cast 5 s Before Time Runs Out" },
+      "condition": { "type": "bossTimerLeft", "value": 5 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_idle",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст в паузе", "en": "Cast While Idle" },
+      "condition": { "type": "idle", "value": 30 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_boss_kill",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при убийстве босса", "en": "Cast on Boss Kill" },
+      "condition": { "type": "bossKilled" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_full_resource",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при полном ресурсе", "en": "Cast on Full Resource" },
+      "condition": { "type": "resourceFull" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_with_left",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст вместе с ЛКМ", "en": "Cast with Left Click" },
+      "condition": { "type": "withLeft" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_with_right",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст вместе с ПКМ", "en": "Cast with Right Click" },
+      "condition": { "type": "withRight" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_tenth_kill",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст на 10-м убийстве", "en": "Cast on Every 10th Kill" },
+      "condition": { "type": "everyKills", "value": 10 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_boss_spawn",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при появлении босса", "en": "Cast on Boss Arrival" },
+      "condition": { "type": "bossSpawned" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_circle",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при круге мышью", "en": "Cast on Mouse Circle" },
+      "condition": { "type": "circle", "value": 1 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_flick",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст при взмахе", "en": "Cast on Flick" },
+      "condition": { "type": "flick" },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_with_ally",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст с союзником", "en": "Cast with an Ally" },
+      "condition": { "type": "allyHeavyCast", "value": 20 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_low_resource",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст на исходе сил", "en": "Cast on Low Resource" },
+      "condition": { "type": "resourceBelow", "value": 20 },
+      "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "cast_on_timer",
+      "kind": "trigger",
+      "color": "white",
+      "name": { "ru": "Каст по таймеру", "en": "Cast on Timer" },
+      "formerIds": ["cast_on_enter"],
+      "condition": { "type": "every", "value": 30 },
       "cooldownMultiplier": 1.5
     }
   ]

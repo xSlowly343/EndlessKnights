@@ -92,6 +92,9 @@ namespace Game.Core.Sim
         public int DecayHoldTicks { get; set; }
         public double BossTimerCarry { get; set; }
         public long Kills { get; set; }
+        public long BossKills { get; set; }
+        public long BossStarts { get; set; }
+        public double AllyHeavyCastSeconds { get; set; }
 
         public void ClearQueue()
         {

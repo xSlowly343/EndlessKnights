@@ -13,18 +13,18 @@ namespace Game.Core.Tests.Content
         private static string WithExtraGem(string gemJson) => RealFile().Replace("\"gems\": [", "\"gems\": [\n    " + gemJson + ",");
 
         [Test]
-        public void MvpGemsArePrototypeSkillsStartingSkillsAndOneTrigger()
+        public void MvpGemsArePrototypeSkillsClassSkillsAndTriggers()
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count, Is.EqualTo(19));
+            Assert.That(gems.All.Count, Is.EqualTo(32));
             foreach (var id in new[] { "shield_bash", "odins_fury", "song", "guitar_solo" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["stenography"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["march"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["lull"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["voodoo_needle"].Skill!.Effect, Is.InstanceOf<EnemyDebuffEffect>());
-            Assert.That(gems["cast_on_enter"].Kind, Is.EqualTo(GemKind.Trigger));
+            Assert.That(gems["cast_on_timer"].Kind, Is.EqualTo(GemKind.Trigger));
         }
 
         [Test]
@@ -101,12 +101,39 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void CastOnEnterTriggerCostsLongerCooldown()
+        public void TimerTriggerCastsEveryThirtySecondsWithLongerCooldown()
         {
-            var trigger = GemCatalog.Load(RealFile())["cast_on_enter"].Trigger!;
+            var trigger = GemCatalog.Load(RealFile())["cast_on_timer"].Trigger!;
 
-            Assert.That(trigger.Condition, Is.EqualTo(TriggerCondition.Enter));
+            Assert.That(trigger.Condition, Is.EqualTo(TriggerCondition.Every));
+            Assert.That(trigger.Value, Is.EqualTo(30));
             Assert.That(trigger.CooldownMultiplier, Is.EqualTo(1.5));
+        }
+
+        [Test]
+        public void FourteenTriggersAndNoneListensToKeys()
+        {
+            var gems = GemCatalog.Load(RealFile());
+            var triggers = 0;
+            foreach (var gem in gems.All)
+            {
+                if (gem.Kind != GemKind.Trigger)
+                    continue;
+                triggers++;
+                Assert.That(gem.Trigger!.CooldownMultiplier, Is.EqualTo(1.5), gem.Id);
+            }
+
+            Assert.That(triggers, Is.EqualTo(14));
+            Assert.That(System.Enum.GetNames(typeof(TriggerCondition)), Has.No.Member("Enter"));
+        }
+
+        [Test]
+        public void OldCastOnEnterGemIsReadAsTheTimerTrigger()
+        {
+            var gems = GemCatalog.Load(RealFile());
+
+            Assert.That(gems.TryGet("cast_on_enter", out var gem), Is.True);
+            Assert.That(gem.Id, Is.EqualTo("cast_on_timer"));
         }
 
         [Test]
@@ -180,7 +207,7 @@ namespace Game.Core.Tests.Content
         private static (double Cost, double Cooldown, double Duration) Numbers(SkillDef skill) =>
             (skill.ResourceCost, skill.CooldownSeconds, skill.DurationSeconds);
 
-        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"enter\" }, \"cooldownMultiplier\": 1 }", "gems[18].id: gem id 'lull' is used twice")]
+        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"every\", \"value\": 1 }, \"cooldownMultiplier\": 1 }", "gems[18].id: gem id 'lull' is used twice")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"spell\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'spell'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"pink\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].color: unknown value 'pink'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds or reserve")]

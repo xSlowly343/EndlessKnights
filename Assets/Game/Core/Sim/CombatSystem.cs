@@ -65,12 +65,9 @@ namespace Game.Core.Sim
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
             _state.MouseCarryPx = mouseCarry * _rules.MousePxPerHit;
 
-            var enterHits = System.Math.Min(input.EnterDowns, keyHits);
             for (var i = 0; i < keyHits; i++)
             {
                 var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags);
-                if (i < enterHits)
-                    multiplier *= _hero.Value(CombatStats.EnterDamage, 1, StatTags.Keyboard);
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
                 KeyHitLightning();
             }

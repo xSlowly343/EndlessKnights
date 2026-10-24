@@ -65,7 +65,7 @@ namespace Game.Core.Sim
                 throw new ArgumentException($"{skill.Id} is not a skill gem.", nameof(skill));
             if (trigger != null && (trigger.Kind != GemKind.Trigger || trigger.Trigger == null))
                 throw new ArgumentException($"{trigger.Id} is not a trigger gem.", nameof(trigger));
-            var slot = new SkillSlot(skill, trigger);
+            var slot = new SkillSlot(skill, trigger) { EquipTick = _state.Tick };
             _state.Skills.Add(slot);
             KeepReserved(slot);
             return _state.Skills.Count - 1;
@@ -129,6 +129,7 @@ namespace Game.Core.Sim
             ApplyAura(slot);
             if (native.HoldDecaySeconds > 0)
                 _resource.HoldDecay(native.HoldDecaySeconds);
+            slot.LastCastTick = _state.Tick;
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             if (skill.Effect is StrikeEffect strike)
                 Strike(slot, strike, native, spent);
@@ -346,6 +347,7 @@ namespace Game.Core.Sim
             if (!slot.Ready || !Armed(slot) || idleSeconds < MinIdleSeconds(strike))
                 return;
             slot.StartCooldown(Ticks(slot.Def.CooldownSeconds));
+            slot.LastCastTick = _state.Tick;
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             _combat.SkillHit(_combat.BaseKeyDamage, ChargeMultiplier(strike, idleSeconds), slot.Skill.Tags);
         }

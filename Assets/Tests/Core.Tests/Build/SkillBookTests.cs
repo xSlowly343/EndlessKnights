@@ -82,9 +82,9 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TriggersAreNotSkills()
         {
-            var loop = WithGems("cast_on_enter");
+            var loop = WithGems("cast_on_timer");
 
-            Assert.That(loop.Book.Equip(Gem("cast_on_enter")), Is.EqualTo(BookResult.WrongKind));
+            Assert.That(loop.Book.Equip(Gem("cast_on_timer")), Is.EqualTo(BookResult.WrongKind));
         }
 
         [Test]
@@ -120,16 +120,16 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TriggerGoesIntoItsOwnSlotOnASkill()
         {
-            var loop = WithGems("stenography", "lull", "cast_on_enter");
+            var loop = WithGems("stenography", "lull", "cast_on_timer");
             loop.Book.Equip(Gem("stenography"));
             loop.Book.Equip(Gem("lull"));
 
-            Assert.That(loop.Book.SetTrigger(0, Gem("cast_on_enter")), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.Book.SetTrigger(1, Gem("cast_on_enter")), Is.EqualTo(BookResult.NotOwned));
+            Assert.That(loop.Book.SetTrigger(0, Gem("cast_on_timer")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.SetTrigger(1, Gem("cast_on_timer")), Is.EqualTo(BookResult.NotOwned));
             Assert.That(loop.Book.SetTrigger(0, Gem("lull")), Is.EqualTo(BookResult.WrongKind));
 
             Assert.That(loop.Book.SetTrigger(0, null), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.Book.SetTrigger(1, Gem("cast_on_enter")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.SetTrigger(1, Gem("cast_on_timer")), Is.EqualTo(BookResult.Done));
             Assert.That(loop.State.Skills.Count, Is.EqualTo(2));
         }
 

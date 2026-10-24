@@ -50,7 +50,6 @@
     "stat.volleyDamage": { "ru": "урон Залпа", "en": "Volley damage" },
     "stat.volleyEvery": { "ru": "удары до Залпа", "en": "hits per Volley" },
     "stat.volleySplash": { "ru": "Залп по соседям", "en": "Volley on neighbours" },
-    "stat.enterDamage": { "ru": "урон по Enter", "en": "Enter damage" },
     "stat.damageVsBoss": { "ru": "урон по боссам", "en": "damage against bosses" },
     "stat.dotDamage": { "ru": "урон со временем", "en": "damage over time" },
     "stat.dotDuration": { "ru": "длительность урона со временем", "en": "damage over time duration" },

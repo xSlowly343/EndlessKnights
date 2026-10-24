@@ -198,17 +198,17 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void EnterDamageHitsEnterHarder()
+        public void EnterHitsLikeAnyOtherKey()
         {
-            var (enter, enterInput) = Hero(HeroClass.Ronin, new[] { new Modifier(CombatStats.EnterDamage, ModifierKind.Increased, 0.25) });
+            var (enter, enterInput) = Hero(HeroClass.Ronin);
             var (plain, plainInput) = Hero(HeroClass.Ronin);
 
             enterInput.PressEnter();
             enter.Tick();
-            plainInput.PressEnter();
+            plainInput.PressKeys(1);
             plain.Tick();
 
-            Assert.That(Damage(enter, DamageSource.Keyboard) / Damage(plain, DamageSource.Keyboard), Is.EqualTo(1.25).Within(1e-6));
+            Assert.That(Damage(enter, DamageSource.Keyboard), Is.EqualTo(Damage(plain, DamageSource.Keyboard)).Within(1e-9));
         }
 
         [Test]

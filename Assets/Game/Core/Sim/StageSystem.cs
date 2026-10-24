@@ -191,6 +191,7 @@ namespace Game.Core.Sim
 
         private void AdvanceStage()
         {
+            _state.BossKills++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossDefeated, _state.Tick, _state.Stage, _state.Enemy));
             var type = _state.EnemyType;
             var stageBefore = _state.Stage;
@@ -232,6 +233,7 @@ namespace Game.Core.Sim
             var timer = _stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
             _state.BossTicksLeft = (int)System.Math.Round(timer * GameLoop.TicksPerSecond);
             _state.BossTimerCarry = 0;
+            _state.BossStarts++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossStarted, _state.Tick, stage, enemy));
         }
 
