@@ -44,6 +44,50 @@ namespace Game.Core.Tests.Sim
             return (loop, input);
         }
 
+        private static readonly string[] VikingSkills = { "shield_bash", "odins_fury", "battle_cry", "throwing_axe", "blood_harvest", "shield_wall", "ragnarok_roar" };
+        private static readonly string[] MetalheadSkills = { "song", "guitar_solo", "power_chord", "ballad", "mosh_pit", "amp_eleven", "stage_dive" };
+
+        private static (GameLoop Loop, FakeInputSource Input) ClassSkillHero(HeroClass heroClass)
+        {
+            var input = new FakeInputSource();
+            var hero = new StatSheet();
+            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1000));
+            var loop = TestWorld.Loop(input, new GameState { Class = heroClass }, hero);
+            foreach (var skill in heroClass == HeroClass.Viking ? VikingSkills : MetalheadSkills)
+                loop.Skills.Equip(TestWorld.Data.Gems[skill]);
+            return (loop, input);
+        }
+
+        private static void FightCastingEverything(GameLoop loop, FakeInputSource input, int ticks)
+        {
+            for (var tick = 0; tick < ticks; tick++)
+            {
+                for (var slot = 0; slot < loop.State.Skills.Count; slot++)
+                    loop.RequestCast(slot);
+                input.PressKeys(3);
+                loop.Tick();
+                loop.Events.Clear();
+            }
+        }
+
+        [TestCase(HeroClass.Viking)]
+        [TestCase(HeroClass.Metalhead)]
+        public void ClassSkillTicksDoNotAllocate(HeroClass heroClass)
+        {
+            RequireAllocationCounter();
+            var (warmUp, warmUpInput) = ClassSkillHero(heroClass);
+            FightCastingEverything(warmUp, warmUpInput, 3000);
+            var (loop, input) = ClassSkillHero(heroClass);
+            FightCastingEverything(loop, input, 600);
+
+            var before = GC.GetAllocatedBytesForCurrentThread();
+            FightCastingEverything(loop, input, 3000);
+            var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
+
+            Assert.That(loop.State.Stage, Is.GreaterThan(TestWorld.Data.Stages.BiomeLength));
+            Assert.That(allocated, Is.EqualTo(0));
+        }
+
         [TestCase(HeroClass.Ronin)]
         [TestCase(HeroClass.Metalhead)]
         public void CombatTicksDoNotAllocate(HeroClass heroClass)

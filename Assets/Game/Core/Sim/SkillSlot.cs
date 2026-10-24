@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content.Gems;
+using Game.Core.Math;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
@@ -17,7 +18,13 @@ namespace Game.Core.Sim
         public int CooldownTicks { get; set; }
         public int CooldownTotalTicks { get; set; }
         public int ActiveTicks { get; set; }
+        public int ActiveTotalTicks { get; set; }
         public int HitsLeft { get; set; }
+        public BigNumber Stored { get; set; }
+        public int Stacks { get; set; }
+        public int StackTicks { get; set; }
+        public Modifier StackModifier { get; set; }
+        public double ReservedApplied { get; set; }
         public void StartCooldown(int ticks)
         {
             CooldownTicks = ticks;

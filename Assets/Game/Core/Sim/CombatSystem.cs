@@ -41,6 +41,22 @@ namespace Game.Core.Sim
         public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
             Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);
 
+        public BigNumber SkillDamage(double baseDamage, double multiplier, StatTags tags) =>
+            _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * multiplier;
+
+        public void DirectHit(BigNumber damage)
+        {
+            if (!_state.EnemyAlive || damage.Sign <= 0)
+                return;
+            _state.EnemyHp -= damage;
+            LastTickDamage += damage;
+            _events.Add(GameEvent.Damage(_state.Tick, damage, DamageSource.Skill, HitFlags.None));
+            if (_state.EnemyAlive)
+                return;
+            _state.EnemyHp = BigNumber.Zero;
+            _kills?.OnEnemyKilled();
+        }
+
         public void Tick(in EffectiveInput input)
         {
             LastTickDamage = BigNumber.Zero;

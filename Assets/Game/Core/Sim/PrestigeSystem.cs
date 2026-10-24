@@ -61,7 +61,7 @@ namespace Game.Core.Sim
             _state.BossBestFraction = 0;
             _state.Gold = BigNumber.Zero;
             _state.RunGoldEarned = BigNumber.Zero;
-            _state.ChainDamage = BigNumber.Zero;
+            _state.ClearQueue();
             _upgrades.Reset();
             _state.SpawnEnemy(null, Content.EnemyType.Normal, BigNumber.Zero);
             _stages.EnsureEnemy();

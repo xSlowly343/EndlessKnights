@@ -21,24 +21,79 @@ namespace Game.Core.Content.Gems
 
     public sealed class StrikeEffect : SkillEffect
     {
-        public StrikeEffect(double multiplier)
+        public StrikeEffect(double multiplier, int queueTargets = 0, bool skipCurrent = false, double killRefundShare = 0)
         {
             Multiplier = multiplier;
+            QueueTargets = queueTargets;
+            SkipCurrent = skipCurrent;
+            KillRefundShare = killRefundShare;
         }
 
         public double Multiplier { get; }
+        public int QueueTargets { get; }
+        public bool SkipCurrent { get; }
+        public double KillRefundShare { get; }
     }
 
     public sealed class AuraEffect : SkillEffect
     {
-        public AuraEffect(IReadOnlyList<Modifier> modifiers, bool party = false)
+        public AuraEffect(IReadOnlyList<Modifier> modifiers, bool party = false, double reserve = 0)
         {
             Modifiers = modifiers;
             Party = party;
+            Reserve = reserve;
         }
 
         public IReadOnlyList<Modifier> Modifiers { get; }
         public bool Party { get; }
+        public double Reserve { get; }
+        public bool Reserves => Reserve > 0;
+    }
+
+    public sealed class StoreHitsEffect : SkillEffect
+    {
+        public StoreHitsEffect(double releaseShare)
+        {
+            ReleaseShare = releaseShare;
+        }
+
+        public double ReleaseShare { get; }
+    }
+
+    public sealed class QueueHitsEffect : SkillEffect
+    {
+        public QueueHitsEffect(double share)
+        {
+            Share = share;
+        }
+
+        public double Share { get; }
+    }
+
+    public enum StackTrigger
+    {
+        Kill,
+        KeyHit
+    }
+
+    public sealed class StacksEffect : SkillEffect
+    {
+        public StacksEffect(StackTrigger trigger, Modifier perStack, double maxTotal, double stackSeconds)
+        {
+            Trigger = trigger;
+            PerStack = perStack;
+            MaxTotal = maxTotal;
+            StackSeconds = stackSeconds;
+        }
+
+        public StackTrigger Trigger { get; }
+        public Modifier PerStack { get; }
+        public double MaxTotal { get; }
+        public double StackSeconds { get; }
+        public bool Passive => Trigger == StackTrigger.Kill;
+
+        public Modifier For(int stacks) =>
+            new Modifier(PerStack.Stat, PerStack.Kind, System.Math.Min(MaxTotal, PerStack.Value * stacks), PerStack.Tags);
     }
 
     public sealed class EnemyDebuffEffect : SkillEffect

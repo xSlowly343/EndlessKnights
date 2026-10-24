@@ -10,6 +10,8 @@ namespace Game.Core.Sim
 {
     public sealed class GameState
     {
+        public const int QueueDepth = 3;
+
         public GameState(ulong seed = 1)
         {
             Rng = new Rng(seed);
@@ -76,7 +78,27 @@ namespace Game.Core.Sim
             set => _otherPreset = value;
         }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
-        public BigNumber ChainDamage { get; set; }
+        public BigNumber[] QueueDamage { get; } = new BigNumber[QueueDepth];
+
+        public BigNumber ChainDamage
+        {
+            get => QueueDamage[0];
+            set => QueueDamage[0] = value;
+        }
+
+        public double WoundedSpawnResource { get; set; }
+        public double PendingResource { get; set; }
+        public double ReservedResource { get; set; }
+        public int DecayHoldTicks { get; set; }
+        public double BossTimerCarry { get; set; }
+        public long Kills { get; set; }
+
+        public void ClearQueue()
+        {
+            for (var i = 0; i < QueueDamage.Length; i++)
+                QueueDamage[i] = BigNumber.Zero;
+            WoundedSpawnResource = 0;
+        }
         public HashSet<string> TutorialDone { get; } = new HashSet<string>(32, System.StringComparer.Ordinal);
         public bool TutorialSkipped { get; set; }
 
