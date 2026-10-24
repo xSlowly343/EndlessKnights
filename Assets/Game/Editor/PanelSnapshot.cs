@@ -43,6 +43,9 @@ namespace Game.Editor
             var starter = data.Weapons.StarterFor(HeroClass.Viking);
             loop.Weapons.Give(starter);
             loop.Weapons.Equip(WeaponHand.Right, starter);
+            loop.Book.GrantStartingGems();
+            foreach (var weapon in data.Weapons.Bases.Where(weapon => weapon.Type != starter.Type).Take(9))
+                loop.Weapons.Give(weapon);
 
             var panels = PanelCanvas.Create();
             panels.Bind(loop, data.Tree);
@@ -65,6 +68,14 @@ namespace Game.Editor
             navigator.SelectTab(PanelSection.Hero);
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero.png"));
+
+            navigator.SelectTab(PanelSection.Items);
+            ShowPanel(panels, navigator);
+            panels.Items.Select(loop.Weapons.Bag[3]);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-items.png"));
+            navigator.SelectTab(PanelSection.Hero);
+            frame = ShowPanel(panels, navigator);
 
             navigator.SelectSubTab(2);
             frame = ShowPanel(panels, navigator);
