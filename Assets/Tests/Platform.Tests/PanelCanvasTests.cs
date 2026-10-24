@@ -130,6 +130,18 @@ namespace Game.Platform.Tests
             Assert.That(_panel.IsNoticeShown, Is.False);
         }
 
+        [Test]
+        public void HeroOverviewIsShownAndStatsSubTabFallsBackToThePlaceholder()
+        {
+            Open(PanelSection.Hero);
+            Assert.That(_panel.Hero.IsShown, Is.True);
+
+            _navigator.SelectSubTab(1);
+            Show();
+
+            Assert.That(_panel.Hero.IsShown, Is.False);
+        }
+
         private static AscendancyCatalog RealAscendancy() =>
             AscendancyCatalog.Load(File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Data", AscendancyCatalog.FileName)));
 

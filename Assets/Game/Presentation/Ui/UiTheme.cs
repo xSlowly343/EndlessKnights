@@ -20,6 +20,9 @@ namespace Game.Presentation.Ui
         [SerializeField] private Color accent = new Color32(0x3F, 0x6F, 0xD1, 0xFF);
         [SerializeField] private Color alert = new Color32(0xE5, 0x48, 0x4D, 0xFF);
         [SerializeField] private Color success = new Color32(0x3C, 0x9A, 0x4E, 0xFF);
+        [SerializeField] private Color focusTint = new Color32(0xFF, 0xB4, 0xA8, 0xFF);
+        [SerializeField] private Color resourceTint = new Color32(0x8F, 0xD3, 0xFF, 0xFF);
+        [SerializeField] private Color raritySimple = new Color32(0x9A, 0xA3, 0xB5, 0xFF);
         [SerializeField] private Color text = new Color32(0xEE, 0xF2, 0xFF, 0xFF);
         [SerializeField] private Color textDim = new Color32(0x9A, 0xA6, 0xC8, 0xFF);
 
@@ -36,6 +39,9 @@ namespace Game.Presentation.Ui
         public Color Accent => accent;
         public Color Alert => alert;
         public Color Success => success;
+        public Color FocusTint => focusTint;
+        public Color ResourceTint => resourceTint;
+        public Color RaritySimple => raritySimple;
         public Color Text => text;
         public Color TextDim => textDim;
         public Color TextOnGold => background;
