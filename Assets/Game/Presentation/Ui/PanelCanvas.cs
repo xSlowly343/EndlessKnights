@@ -75,6 +75,7 @@ namespace Game.Presentation.Ui
         private TextMeshProUGUI _notice = null!;
         private float _noticeLeft;
         private HeroPanel _heroPanel = null!;
+        private PartyPanel _partyPanel = null!;
         private UiButton _preset = null!;
 
         private UiTheme _theme = null!;
@@ -143,6 +144,7 @@ namespace Game.Presentation.Ui
         public RectTransform CanvasRect => _canvasRect;
         public bool IsNoticeShown => _notice.gameObject.activeSelf;
         public HeroPanel Hero => _heroPanel;
+        public PartyPanel Party => _partyPanel;
 
         public SectionMark TabMark(int index) => _tabMarks[index];
         public SectionMark MoreMark(int index) => _moreMarks[index];
@@ -228,7 +230,7 @@ namespace Game.Presentation.Ui
                 return false;
             if (_showingReport)
                 return TryClickReport(worldPoint);
-            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint))
+            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint))
                 return true;
             if (_preset.Contains(worldPoint))
             {
@@ -370,6 +372,7 @@ namespace Game.Presentation.Ui
             _sinceCurrency = 0f;
             RefreshCurrency(_loop);
             _heroPanel.Refresh(_loop);
+            _partyPanel.Refresh(_loop);
             RefreshPreset();
         }
 
@@ -548,7 +551,9 @@ namespace Game.Presentation.Ui
             var heroShown = !navigator.ShowingMore && navigator.Active == PanelSection.Hero && HeroPanel.Covers(heroSubTab);
             _heroPanel.Show(heroShown, heroSubTab, _shownFrame.ContentPx);
             _preset.Show(!navigator.ShowingMore && navigator.Active == PanelSection.Hero && _shownFrame.HasSubTabs);
-            var placeholder = !navigator.ShowingMore && !_treeShown && !_bookShown && !heroShown;
+            var partyShown = !navigator.ShowingMore && navigator.Active == PanelSection.Party && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
+            _partyPanel.Show(partyShown, _loop);
+            var placeholder = !navigator.ShowingMore && !_treeShown && !_bookShown && !heroShown && !partyShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -709,6 +714,8 @@ namespace Game.Presentation.Ui
             UiElements.Stretch(_placeholder.rectTransform);
             _heroPanel = HeroPanel.Create(content, _theme);
             _heroPanel.TreeRequested += () => TabPressed?.Invoke(PanelSection.Tree);
+            _partyPanel = PartyPanel.Create(content, _theme);
+            _partyPanel.NoticeRequested += ShowNotice;
         }
 
         private UiButton MoreRow(string name, RectTransform parent)

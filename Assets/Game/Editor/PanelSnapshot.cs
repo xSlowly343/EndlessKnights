@@ -66,6 +66,12 @@ namespace Game.Editor
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero.png"));
 
+            navigator.SelectTab(PanelSection.Party);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-party.png"));
+            navigator.SelectTab(PanelSection.Hero);
+            frame = ShowPanel(panels, navigator);
+
             navigator.SelectSubTab(2);
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero-input.png"));
