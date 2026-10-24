@@ -11,7 +11,8 @@
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 15 },
       "cooldownSeconds": 4,
-      "effect": { "type": "strike", "multiplier": 4 }
+      "effect": { "type": "strike", "multiplier": 4 },
+      "native": { "holdDecaySeconds": 5 }
     },
     {
       "id": "odins_fury",
@@ -22,7 +23,8 @@
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 25,
-      "effect": { "type": "strike", "multiplier": 5 }
+      "effect": { "type": "strike", "multiplier": 5 },
+      "native": { "spendAll": { "perPoint": 0.1, "max": 10 } }
     },
     {
       "id": "song",
@@ -34,6 +36,7 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 5,
       "durationSeconds": 20,
+      "family": "song",
       "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.15 }, { "stat": "gold", "kind": "increased", "value": 0.10 }] }
     },
     {
@@ -47,7 +50,132 @@
       "cooldownSeconds": 35,
       "durationSeconds": 10,
       "marks": ["lightning"],
-      "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1.0, "tags": ["Aura"] }, { "stat": "keyHitLightning", "kind": "flat", "value": 0.2 }] }
+      "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1.0, "tags": ["Aura"] }, { "stat": "keyHitLightning", "kind": "flat", "value": 0.2 }] },
+      "native": { "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0 }] }
+    },
+    {
+      "id": "battle_cry",
+      "kind": "skill",
+      "weapon": "axe",
+      "color": "red",
+      "name": { "ru": "Боевой клич", "en": "Battle Cry" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 15,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.30, "tags": ["Keyboard"] }] },
+      "native": { "resourcePerKeyHit": 1 }
+    },
+    {
+      "id": "throwing_axe",
+      "kind": "skill",
+      "weapon": "axe",
+      "color": "red",
+      "name": { "ru": "Метательный топор", "en": "Throwing Axe" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 10 },
+      "cooldownSeconds": 3,
+      "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1, "skipCurrent": true },
+      "native": { "woundedSpawnResource": 10 }
+    },
+    {
+      "id": "blood_harvest",
+      "kind": "skill",
+      "weapon": "axe",
+      "color": "red",
+      "name": { "ru": "Кровавая жатва", "en": "Blood Harvest" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "stacks", "on": "kill", "perStack": { "stat": "damage", "kind": "increased", "value": 0.05 }, "max": 0.25, "stackSeconds": 10 },
+      "native": { "holdStacksAboveResource": 50 }
+    },
+    {
+      "id": "shield_wall",
+      "kind": "skill",
+      "weapon": "axe",
+      "color": "red",
+      "name": { "ru": "Стена щитов", "en": "Shield Wall" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 40 },
+      "cooldownSeconds": 35,
+      "durationSeconds": 10,
+      "effect": { "type": "storeHits", "releaseShare": 0.5 },
+      "native": { "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0 }] }
+    },
+    {
+      "id": "ragnarok_roar",
+      "kind": "skill",
+      "weapon": "axe",
+      "color": "red",
+      "name": { "ru": "Рёв Рагнарёка", "en": "Ragnarok Roar" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 70 },
+      "cooldownSeconds": 45,
+      "durationSeconds": 8,
+      "effect": { "type": "queueHits", "share": 0.4 },
+      "native": { "fullResourceDurationMultiplier": 2 }
+    },
+    {
+      "id": "power_chord",
+      "kind": "skill",
+      "weapon": "electric_guitar",
+      "color": "red",
+      "name": { "ru": "Пауэр-аккорд", "en": "Power Chord" },
+      "tags": ["Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 4,
+      "effect": { "type": "strike", "multiplier": 3, "queueTargets": 1 },
+      "native": { "extraTargetWhileFamily": "song" }
+    },
+    {
+      "id": "ballad",
+      "kind": "skill",
+      "weapon": "electric_guitar",
+      "color": "red",
+      "name": { "ru": "Баллада", "en": "Ballad" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 15,
+      "family": "song",
+      "effect": { "type": "aura", "modifiers": [{ "stat": "bossTimerSpeed", "kind": "more", "value": -0.25 }] }
+    },
+    {
+      "id": "mosh_pit",
+      "kind": "skill",
+      "weapon": "electric_guitar",
+      "color": "red",
+      "name": { "ru": "Мош-пит", "en": "Mosh Pit" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 50 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 10,
+      "effect": { "type": "stacks", "on": "keyHit", "perStack": { "stat": "damage", "kind": "increased", "value": 0.02 }, "max": 0.25 }
+    },
+    {
+      "id": "amp_eleven",
+      "kind": "skill",
+      "weapon": "electric_guitar",
+      "color": "red",
+      "name": { "ru": "Усилитель на 11", "en": "Amp to Eleven" },
+      "tags": ["Aura", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "aura", "party": true, "reserve": 25, "modifiers": [{ "stat": "focusGain", "kind": "more", "value": 0.20 }] },
+      "native": { "modifiers": [{ "stat": "focusResetSeconds", "kind": "flat", "value": 3 }] }
+    },
+    {
+      "id": "stage_dive",
+      "kind": "skill",
+      "weapon": "electric_guitar",
+      "color": "red",
+      "name": { "ru": "Прыжок со сцены", "en": "Stage Dive" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 60 },
+      "cooldownSeconds": 40,
+      "effect": { "type": "strike", "multiplier": 10, "killRefundShare": 0.5 },
+      "native": { "refreshFamily": "song" }
     },
     {
       "id": "stenography",

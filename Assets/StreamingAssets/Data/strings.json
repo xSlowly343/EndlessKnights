@@ -78,6 +78,7 @@
     "stat.concurrentAuras": { "ru": "аур одновременно", "en": "auras at once" },
     "stat.arrowDamage": { "ru": "урон стрел", "en": "arrow damage" },
     "stat.bossTimerSeconds": { "ru": "таймер босса", "en": "boss timer" },
+    "stat.bossTimerSpeed": { "ru": "скорость таймера босса", "en": "boss timer speed" },
     "stat.keyStrikeEvery": { "ru": "нажатий до сильного удара", "en": "presses per heavy strike" },
     "stat.keyStrikeMultiplier": { "ru": "сила сильного удара", "en": "heavy strike power" },
     "stat.rageBurnDelaySeconds": { "ru": "задержка сгорания Ярости", "en": "Rage burn delay" },

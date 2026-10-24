@@ -80,6 +80,7 @@ namespace Game.Core.Save
                     ("otherTree", WriteTree(state.OtherPreset.Tree)),
                     ("otherSkills", JsonValue.Array(WritePresetSkills(state.OtherPreset))))),
                 ("chainDamage", SaveValues.Of(state.ChainDamage)),
+                ("queueDamage", JsonValue.Array(WriteQueueDamage(state))),
                 ("tutorial", Object(
                     ("skipped", JsonValue.Of(state.TutorialSkipped)),
                     ("done", JsonValue.Array(WriteTutorialDone(state))))),
@@ -154,6 +155,7 @@ namespace Game.Core.Save
             state.Tree = ReadTree(node.Field("tree"));
             state.Ascendancy = ReadAscendancy(node.Field("ascendancy"));
             ReadTutorial(node, state);
+            ReadQueueDamage(node, state);
             var input = node.Field("inputStats");
             state.TotalInput.Keys = ReadCount(input.Field("keys"));
             state.TotalInput.LeftClicks = ReadCount(input.Field("leftClicks"));
@@ -380,6 +382,27 @@ namespace Game.Core.Save
             for (var i = 0; i < values.Length; i++)
                 values[i] = JsonValue.Of(ids[i]);
             return values;
+        }
+
+        private static JsonValue[] WriteQueueDamage(GameState state)
+        {
+            var queue = new JsonValue[GameState.QueueDepth - 1];
+            for (var i = 0; i < queue.Length; i++)
+                queue[i] = SaveValues.Of(state.QueueDamage[i + 1]);
+            return queue;
+        }
+
+        private static void ReadQueueDamage(ContentNode node, GameState state)
+        {
+            if (!node.HasField("queueDamage"))
+                return;
+            var position = 1;
+            foreach (var item in node.Field("queueDamage").Items())
+            {
+                if (position < GameState.QueueDepth)
+                    state.QueueDamage[position] = SaveValues.ReadBigNumber(item);
+                position++;
+            }
         }
 
         private static void ReadTutorial(ContentNode node, GameState state)

@@ -114,12 +114,13 @@ namespace Game.Core.Tests.Sim
         public void OdinsFuryHitsForFiveKeyStrikes()
         {
             var (loop, input) = Hero(HeroClass.Viking, "shield_bash", "odins_fury");
+            loop.State.Resource = 50;
 
             input.ClickRight();
             loop.Tick();
 
             Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 5).Within(1e-9));
-            Assert.That(loop.State.Resource, Is.EqualTo(50));
+            Assert.That(loop.State.Resource, Is.EqualTo(0));
         }
 
         [Test]

@@ -17,7 +17,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count, Is.EqualTo(9));
+            Assert.That(gems.All.Count, Is.EqualTo(19));
             foreach (var id in new[] { "shield_bash", "odins_fury", "song", "guitar_solo" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["stenography"].Kind, Is.EqualTo(GemKind.Skill));
@@ -130,10 +130,63 @@ namespace Game.Core.Tests.Content
             Assert.That(levels.Experience.At(2).ToDouble(), Is.GreaterThan(levels.Experience.At(1).ToDouble()));
         }
 
-        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"enter\" }, \"cooldownMultiplier\": 1 }", "gems[8].id: gem id 'lull' is used twice")]
+        [Test]
+        public void VikingAndMetalheadHaveSevenClassSkillsEachOnTheirWeapon()
+        {
+            var gems = GemCatalog.Load(RealFile());
+            var axe = new[] { "shield_bash", "odins_fury", "battle_cry", "throwing_axe", "blood_harvest", "shield_wall", "ragnarok_roar" };
+            var guitar = new[] { "song", "guitar_solo", "power_chord", "ballad", "mosh_pit", "amp_eleven", "stage_dive" };
+
+            foreach (var id in axe)
+                Assert.That(gems[id].Skill!.Weapon, Is.EqualTo("axe"), id);
+            foreach (var id in guitar)
+                Assert.That(gems[id].Skill!.Weapon, Is.EqualTo("electric_guitar"), id);
+        }
+
+        [Test]
+        public void NewVikingSkillsMatchSkillsDoc()
+        {
+            var gems = GemCatalog.Load(RealFile());
+
+            Assert.That(Numbers(gems["battle_cry"].Skill!), Is.EqualTo((30, 30, 15)));
+            Assert.That(Numbers(gems["throwing_axe"].Skill!), Is.EqualTo((10, 3, 0)));
+            Assert.That(Numbers(gems["shield_wall"].Skill!), Is.EqualTo((40, 35, 10)));
+            Assert.That(Numbers(gems["ragnarok_roar"].Skill!), Is.EqualTo((70, 45, 8)));
+            Assert.That(gems["blood_harvest"].Skill!.IsPassive, Is.True);
+            Assert.That(((StrikeEffect)gems["throwing_axe"].Skill!.Effect).SkipCurrent, Is.True);
+            Assert.That(((StoreHitsEffect)gems["shield_wall"].Skill!.Effect).ReleaseShare, Is.EqualTo(0.5));
+            Assert.That(((QueueHitsEffect)gems["ragnarok_roar"].Skill!.Effect).Share, Is.EqualTo(0.4));
+            Assert.That(gems["shield_bash"].Skill!.Native.HoldDecaySeconds, Is.EqualTo(5));
+            Assert.That(gems["odins_fury"].Skill!.Native.SpendAllMax, Is.EqualTo(10));
+            Assert.That(gems["blood_harvest"].Skill!.Native.HoldStacksAboveResource, Is.EqualTo(50));
+        }
+
+        [Test]
+        public void NewMetalheadSkillsMatchSkillsDoc()
+        {
+            var gems = GemCatalog.Load(RealFile());
+
+            Assert.That(Numbers(gems["power_chord"].Skill!), Is.EqualTo((15, 4, 0)));
+            Assert.That(Numbers(gems["ballad"].Skill!), Is.EqualTo((30, 30, 15)));
+            Assert.That(Numbers(gems["mosh_pit"].Skill!), Is.EqualTo((50, 30, 10)));
+            Assert.That(Numbers(gems["stage_dive"].Skill!), Is.EqualTo((60, 40, 0)));
+            Assert.That(((AuraEffect)gems["amp_eleven"].Skill!.Effect).Reserve, Is.EqualTo(25));
+            Assert.That(gems["amp_eleven"].Skill!.IsPassive, Is.True);
+            Assert.That(gems["song"].Skill!.Family, Is.EqualTo("song"));
+            Assert.That(gems["ballad"].Skill!.Family, Is.EqualTo("song"));
+            Assert.That(((StrikeEffect)gems["stage_dive"].Skill!.Effect).KillRefundShare, Is.EqualTo(0.5));
+        }
+
+        private static (double Cost, double Cooldown, double Duration) Numbers(SkillDef skill) =>
+            (skill.ResourceCost, skill.CooldownSeconds, skill.DurationSeconds);
+
+        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"enter\" }, \"cooldownMultiplier\": 1 }", "gems[18].id: gem id 'lull' is used twice")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"spell\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'spell'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"pink\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].color: unknown value 'pink'")]
-        [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds")]
+        [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds or reserve")]
+        [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"storeHits\", \"releaseShare\": 0.5 } }", "gems[0]: a storeHits skill needs durationSeconds")]
+        [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"strike\", \"multiplier\": 1 }, \"native\": { \"holdDecaySeconds\": 1 } }", "gems[0].native: a native trait needs a weapon")]
+        [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"stacks\", \"on\": \"sneeze\", \"perStack\": { \"stat\": \"damage\", \"kind\": \"increased\", \"value\": 0.1 }, \"max\": 1 } }", "gems[0].effect.on: unknown value 'sneeze'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"fireball\" } }", "gems[0].effect.type: unknown skill effect 'fireball'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"trigger\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"sneeze\" }, \"cooldownMultiplier\": 1 }", "gems[0].condition.type: unknown value 'sneeze'")]
         public void BrokenGemsAreReportedByPath(string gem, string message)

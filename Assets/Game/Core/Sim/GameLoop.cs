@@ -58,7 +58,7 @@ namespace Game.Core.Sim
             _levels = new LevelSystem(data.Combat.Hero, data.Stages, data.TreePoints, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot, _levels);
             _combat.OnKill(_stage);
-            _skills = new SkillSystem(state, Events, _resource, _combat, hero);
+            _skills = new SkillSystem(state, Events, _resource, _combat, hero, data.Weapons);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills);
             _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
@@ -260,6 +260,7 @@ namespace Game.Core.Sim
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
             _weapons.UseCatalog(data.Weapons);
+            _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _prestige.UseRules(data.Prestige);
             _upgrades.UseRules(data.Combat.StrikeUpgrade);

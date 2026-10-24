@@ -26,8 +26,8 @@ namespace Game.Core.Sim
             _resource = rules.For(HeroClassNames.Of(_class));
         }
 
-        public double Max => _rules.Max;
-        public bool IsFull => _state.Resource >= _rules.Max;
+        public double Max => System.Math.Max(0, _rules.Max - _state.ReservedResource);
+        public bool IsFull => _state.Resource >= Max;
         public ClassResource Rules => Current;
 
         private ClassResource Current
@@ -50,11 +50,33 @@ namespace Game.Core.Sim
             var gained = input.Keys * resource.PerKey * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             if (resource.MousePxPerPoint > 0)
                 gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
-            var value = System.Math.Min(_rules.Max, _state.Resource + gained);
+            gained += _state.PendingResource;
+            _state.PendingResource = 0;
+            var value = System.Math.Min(Max, _state.Resource + gained);
             if (Decays(resource, input))
                 value -= resource.DecayPerSecond * GameLoop.TickSeconds;
+            if (_state.DecayHoldTicks > 0)
+                _state.DecayHoldTicks--;
             _state.Resource = System.Math.Max(0, value);
         }
+
+        public void Gain(double amount)
+        {
+            if (amount > 0)
+                _state.Resource = System.Math.Min(Max, _state.Resource + amount);
+        }
+
+        public double SpendAll()
+        {
+            var spent = _state.Resource;
+            _state.Resource = 0;
+            return spent;
+        }
+
+        public void HoldDecay(double seconds) =>
+            _state.DecayHoldTicks = System.Math.Max(_state.DecayHoldTicks, (int)System.Math.Round(seconds * GameLoop.TicksPerSecond));
+
+        public void ClampToMax() => _state.Resource = System.Math.Min(Max, _state.Resource);
 
         public bool TrySpend(double amount)
         {
@@ -66,7 +88,7 @@ namespace Game.Core.Sim
 
         private bool Decays(ClassResource resource, in EffectiveInput input)
         {
-            if (resource.DecayPerSecond <= 0)
+            if (resource.DecayPerSecond <= 0 || _state.DecayHoldTicks > 0)
                 return false;
             if (resource.MouseHoldsDecay && input.MousePx > 0)
                 return false;

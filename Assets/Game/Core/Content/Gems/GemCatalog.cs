@@ -29,6 +29,12 @@ namespace Game.Core.Content.Gems
             ["enter"] = TriggerCondition.Enter
         };
 
+        private static readonly Dictionary<string, StackTrigger> StackTriggers = new Dictionary<string, StackTrigger>(StringComparer.Ordinal)
+        {
+            ["kill"] = StackTrigger.Kill,
+            ["keyHit"] = StackTrigger.KeyHit
+        };
+
         private readonly Dictionary<string, GemDef> _byId;
         private readonly Dictionary<int, GemDef> _byNetId;
 
@@ -109,8 +115,10 @@ namespace Game.Core.Content.Gems
             var resource = cost.HasField("resource") ? cost.Field("resource").AsNumber(0, 1e6) : 0;
             var duration = node.HasField("durationSeconds") ? node.Field("durationSeconds").AsNumber(0, 3600) : 0;
             var effect = ReadEffect(node.Field("effect"));
-            if (effect is AuraEffect && duration <= 0)
-                throw node.Error("an aura needs durationSeconds");
+            if (effect is AuraEffect aura && !aura.Reserves && duration <= 0)
+                throw node.Error("an aura needs durationSeconds or reserve");
+            if ((effect is StoreHitsEffect || effect is QueueHitsEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
+                throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
             if (effect is EnemyDebuffEffect && duration <= 0)
                 throw node.Error("an enemy debuff needs durationSeconds");
             var marks = new List<string>();
@@ -120,7 +128,11 @@ namespace Game.Core.Content.Gems
                     marks.Add(mark.AsString());
             }
             var weapon = node.HasField("weapon") ? node.Field("weapon").AsString() : null;
-            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks, weapon);
+            var native = node.HasField("native") ? ReadNative(node.Field("native")) : null;
+            if (native != null && weapon == null)
+                throw node.Field("native").Error("a native trait needs a weapon: only class skills have one");
+            var family = node.HasField("family") ? node.Field("family").AsString() : null;
+            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks, weapon, native, family);
         }
 
         private static SkillEffect ReadEffect(ContentNode node)
@@ -131,9 +143,26 @@ namespace Game.Core.Content.Gems
                 case "chainHits":
                     return new ChainHitsEffect(node.Field("hits").AsInt(1, 100000), node.Field("nextEnemyShare").AsNumber(0, 100));
                 case "strike":
-                    return new StrikeEffect(node.Field("multiplier").AsNumber(0, 1e6));
+                    return new StrikeEffect(
+                        node.Field("multiplier").AsNumber(0, 1e6),
+                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
+                        node.HasField("skipCurrent") && node.Field("skipCurrent").AsBool(),
+                        node.HasField("killRefundShare") ? node.Field("killRefundShare").AsNumber(0, 1) : 0);
                 case "aura":
-                    return new AuraEffect(ModifierReader.ReadList(node.Field("modifiers")), node.HasField("party") && node.Field("party").AsBool());
+                    return new AuraEffect(
+                        ModifierReader.ReadList(node.Field("modifiers")),
+                        node.HasField("party") && node.Field("party").AsBool(),
+                        node.HasField("reserve") ? node.Field("reserve").AsNumber(0, 100) : 0);
+                case "storeHits":
+                    return new StoreHitsEffect(node.Field("releaseShare").AsNumber(0, 100));
+                case "queueHits":
+                    return new QueueHitsEffect(node.Field("share").AsNumber(0, 100));
+                case "stacks":
+                    return new StacksEffect(
+                        Pick(node.Field("on"), StackTriggers, "kill or keyHit"),
+                        ModifierReader.Read(node.Field("perStack")),
+                        node.Field("max").AsNumber(0, 1e6),
+                        node.HasField("stackSeconds") ? node.Field("stackSeconds").AsNumber(0.1, 3600) : 0);
                 case "enemyDebuff":
                     return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10));
                 case "idleStrike":
@@ -142,9 +171,27 @@ namespace Game.Core.Content.Gems
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, enemyDebuff or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, enemyDebuff or idleStrike");
             }
         }
+
+        private static NativeTrait ReadNative(ContentNode node) =>
+            new NativeTrait
+            {
+                Modifiers = node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>(),
+                HoldDecaySeconds = Number(node, "holdDecaySeconds", 3600),
+                SpendAllPerPoint = node.HasField("spendAll") ? node.Field("spendAll").Field("perPoint").AsNumber(0, 1000) : 0,
+                SpendAllMax = node.HasField("spendAll") ? node.Field("spendAll").Field("max").AsNumber(0, 1e6) : 0,
+                ResourcePerKeyHit = Number(node, "resourcePerKeyHit", 100),
+                WoundedSpawnResource = Number(node, "woundedSpawnResource", 100),
+                HoldStacksAboveResource = Number(node, "holdStacksAboveResource", 100),
+                FullResourceDurationMultiplier = Number(node, "fullResourceDurationMultiplier", 100),
+                ExtraTargetWhileFamily = node.HasField("extraTargetWhileFamily") ? node.Field("extraTargetWhileFamily").AsString() : null,
+                RefreshFamily = node.HasField("refreshFamily") ? node.Field("refreshFamily").AsString() : null
+            };
+
+        private static double Number(ContentNode node, string field, double max) =>
+            node.HasField(field) ? node.Field(field).AsNumber(0, max) : 0;
 
         private static TriggerDef ReadTrigger(ContentNode node) =>
             new TriggerDef(

@@ -64,9 +64,15 @@ namespace Game.Core.Sim
                 return;
             if (!_state.FightingBoss || !_state.EnemyAlive)
                 return;
-            _state.BossTicksLeft--;
+            _state.BossTimerCarry += System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1));
+            while (_state.BossTimerCarry >= 1 && _state.BossTicksLeft > 0)
+            {
+                _state.BossTimerCarry -= 1;
+                _state.BossTicksLeft--;
+            }
             if (_state.BossTicksLeft > 0)
                 return;
+            _state.BossTimerCarry = 0;
 
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossFailed, _state.Tick, _state.Stage, _state.Enemy));
             _state.Farming = true;
@@ -92,6 +98,7 @@ namespace Game.Core.Sim
                 _state.EnemyHp = _state.EnemyMaxHp * StaggerHpShare;
                 return;
             }
+            _state.Kills++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy);
             _levels.OnKill(_state.EnemyType);
@@ -158,6 +165,7 @@ namespace Game.Core.Sim
 
         public void ConfirmLinkedKill()
         {
+            _state.Kills++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy);
             _levels.OnKill(_state.EnemyType);
@@ -223,6 +231,7 @@ namespace Game.Core.Sim
             Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * Multiplier(enemy));
             var timer = _stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
             _state.BossTicksLeft = (int)System.Math.Round(timer * GameLoop.TicksPerSecond);
+            _state.BossTimerCarry = 0;
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossStarted, _state.Tick, stage, enemy));
         }
 
@@ -236,16 +245,27 @@ namespace Game.Core.Sim
 
         private void ApplyChainDamage()
         {
-            var damage = _state.ChainDamage;
+            var damage = TakeQueueFront();
             if (damage.Sign <= 0)
                 return;
-            _state.ChainDamage = BigNumber.Zero;
+            _state.PendingResource += _state.WoundedSpawnResource;
+            _state.WoundedSpawnResource = 0;
             _state.EnemyHp -= damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, DamageSource.Skill, HitFlags.None));
             if (_state.EnemyAlive)
                 return;
             _state.EnemyHp = BigNumber.Zero;
             OnEnemyKilled();
+        }
+
+        private BigNumber TakeQueueFront()
+        {
+            var queue = _state.QueueDamage;
+            var front = queue[0];
+            for (var i = 1; i < queue.Length; i++)
+                queue[i - 1] = queue[i];
+            queue[queue.Length - 1] = BigNumber.Zero;
+            return front;
         }
 
         private void ApplyEnemyModifiers(EnemyDef? enemy)

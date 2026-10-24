@@ -31,7 +31,7 @@ namespace Game.Core.Sim.Rift
             state.BossFailsInARow = BossFailsInARow;
             state.BossBestFraction = BossBestFraction;
             state.BossTicksLeft = 0;
-            state.ChainDamage = Math.BigNumber.Zero;
+            state.ClearQueue();
         }
     }
 }
