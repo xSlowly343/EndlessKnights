@@ -75,6 +75,7 @@ namespace Game.Presentation.Ui
         private TextMeshProUGUI _notice = null!;
         private float _noticeLeft;
         private HeroPanel _heroPanel = null!;
+        private ItemsPanel _itemsPanel = null!;
         private UiButton _preset = null!;
 
         private UiTheme _theme = null!;
@@ -143,6 +144,7 @@ namespace Game.Presentation.Ui
         public RectTransform CanvasRect => _canvasRect;
         public bool IsNoticeShown => _notice.gameObject.activeSelf;
         public HeroPanel Hero => _heroPanel;
+        public ItemsPanel Items => _itemsPanel;
 
         public SectionMark TabMark(int index) => _tabMarks[index];
         public SectionMark MoreMark(int index) => _moreMarks[index];
@@ -167,6 +169,7 @@ namespace Game.Presentation.Ui
             _loop = loop;
             Tree.Bind(loop, tree);
             Book.Bind(loop);
+            _itemsPanel.Bind(loop);
         }
 
         public void Show(PanelNavigator navigator)
@@ -228,7 +231,7 @@ namespace Game.Presentation.Ui
                 return false;
             if (_showingReport)
                 return TryClickReport(worldPoint);
-            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint))
+            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint))
                 return true;
             if (_preset.Contains(worldPoint))
             {
@@ -370,6 +373,7 @@ namespace Game.Presentation.Ui
             _sinceCurrency = 0f;
             RefreshCurrency(_loop);
             _heroPanel.Refresh(_loop);
+            _itemsPanel.Refresh();
             RefreshPreset();
         }
 
@@ -548,7 +552,9 @@ namespace Game.Presentation.Ui
             var heroShown = !navigator.ShowingMore && navigator.Active == PanelSection.Hero && HeroPanel.Covers(heroSubTab);
             _heroPanel.Show(heroShown, heroSubTab, _shownFrame.ContentPx);
             _preset.Show(!navigator.ShowingMore && navigator.Active == PanelSection.Hero && _shownFrame.HasSubTabs);
-            var placeholder = !navigator.ShowingMore && !_treeShown && !_bookShown && !heroShown;
+            var itemsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Items && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
+            _itemsPanel.Show(itemsShown);
+            var placeholder = !navigator.ShowingMore && !_treeShown && !_bookShown && !heroShown && !itemsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -709,6 +715,7 @@ namespace Game.Presentation.Ui
             UiElements.Stretch(_placeholder.rectTransform);
             _heroPanel = HeroPanel.Create(content, _theme);
             _heroPanel.TreeRequested += () => TabPressed?.Invoke(PanelSection.Tree);
+            _itemsPanel = ItemsPanel.Create(content, _theme);
         }
 
         private UiButton MoreRow(string name, RectTransform parent)

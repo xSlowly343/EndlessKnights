@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Game.Bootstrap;
+using Game.Core.Content.Items;
 using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Sim;
@@ -43,6 +44,9 @@ namespace Game.Editor
             var starter = data.Weapons.StarterFor(HeroClass.Viking);
             loop.Weapons.Give(starter);
             loop.Weapons.Equip(WeaponHand.Right, starter);
+            loop.Book.GrantStartingGems();
+            foreach (var weapon in data.Weapons.Bases.Where(weapon => weapon.Type != starter.Type).Take(9))
+                loop.Weapons.Give(weapon);
 
             var panels = PanelCanvas.Create();
             panels.Bind(loop, data.Tree);
@@ -65,6 +69,17 @@ namespace Game.Editor
             navigator.SelectTab(PanelSection.Hero);
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero.png"));
+
+            navigator.SelectTab(PanelSection.Items);
+            ShowPanel(panels, navigator);
+            panels.Items.Select(loop.Weapons.Bag[3]);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-items.png"));
+            var rarities = RaritySample(panels.CanvasRect);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-rarities.png"));
+            UnityEngine.Object.DestroyImmediate(rarities.gameObject);
+            navigator.SelectTab(PanelSection.Hero);
+            frame = ShowPanel(panels, navigator);
 
             navigator.SelectSubTab(2);
             frame = ShowPanel(panels, navigator);
@@ -115,6 +130,27 @@ namespace Game.Editor
             panels.Show(navigator);
             panels.Place(0f, true);
             return navigator.Frame;
+        }
+
+        private static RectTransform RaritySample(RectTransform canvas)
+        {
+            const float cellWidthPx = 58f;
+            const float cellHeightPx = 54f;
+            const float gapPx = 6f;
+            var theme = UiTheme.Load();
+            var back = UiElements.Fill("RaritySample", canvas, theme.Card, 12f);
+            var sample = UiElements.Anchor(back.rectTransform, Vector2.zero, new Vector2(16f, 220f), new Vector2(7f * cellWidthPx + 8f * gapPx, 2f * cellHeightPx + 3f * gapPx + 8f));
+            var rarities = (ItemRarity[])Enum.GetValues(typeof(ItemRarity));
+            for (var i = 0; i < rarities.Length; i++)
+            {
+                var position = new Vector2(gapPx + i % 7 * (cellWidthPx + gapPx), -(gapPx + 4f + i / 7 * (cellHeightPx + gapPx)));
+                var host = UiElements.Anchor(UiElements.Rect(rarities[i].ToString(), sample), new Vector2(0f, 1f), position, new Vector2(cellWidthPx, cellHeightPx));
+                RarityFrame.Create(host, 8f, 2f, new Color32(0x22, 0x30, 0x4A, 0xFF)).Show(rarities[i], true);
+                var letter = UiElements.Label("Letter", host, theme.BoldFont, 16f, RarityFrame.IconOf(rarities[i]), TMPro.TextAlignmentOptions.Center);
+                UiElements.Stretch(letter.rectTransform);
+                letter.text = (i + 1).ToString();
+            }
+            return sample;
         }
 
         private static void Save(Camera camera, PanelCanvas panels, int width, int height, string path)
