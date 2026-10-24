@@ -88,7 +88,7 @@
 - ☰ справа сверху открывает панель на последней вкладке;
 - в отряде полоска не растёт, всё помещается в те же 180.
 
-В коде полоска 180 с 23.10.2026: `GameStartup.StripHeight`, `StripSpace.BaseHeightPx` (14 px на единицу мира, высота сцены 12.86 единицы), зоны в `BattleView` заданы в пикселях макета через `StripSpace.AtPx`. Одна панель — `Game.Core.Ui` (`PanelNavigator`, `PanelGeometry`) и `PanelView`, подробности в `dev-notes.md` (Presentation).
+В коде полоска 180 с 23.10.2026: `GameStartup.StripHeight`, `StripSpace.BaseHeightPx` (14 px на единицу мира, высота сцены 12.86 единицы), зоны в `BattleView` заданы в пикселях макета через `StripSpace.AtPx`. Одна панель — `Game.Core.Ui` (`PanelNavigator`, `PanelGeometry`) и `PanelCanvas`, подробности в `dev-notes.md` (Presentation).
 
 ## 8. Как это ложится на uGUI
 - Один `Canvas` (Screen Space – Overlay) на всё окно. `PanelRoot` с `VerticalLayoutGroup`: Header, SubTabs, Content, TabBar. Высоту меняет `RectTransform`, твин 0.15 с.
