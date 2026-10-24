@@ -25,6 +25,7 @@ namespace Game.Presentation.Ui
         private const float CellRadiusPx = 8f;
         private const float FramePx = 2f;
         private const float CardHeightPx = 150f;
+        private const float CardRadiusPx = 12f;
         private const float IconPx = 40f;
         private const float ButtonHeightPx = 32f;
 
@@ -37,8 +38,8 @@ namespace Game.Presentation.Ui
         private readonly List<WeaponBase> _shown = new List<WeaponBase>();
         private readonly TextMeshProUGUI _empty;
         private readonly RectTransform _card;
-        private Image _cardFrame = null!;
-        private Image _icon = null!;
+        private RarityFrame _cardFrame = null!;
+        private RarityFrame _icon = null!;
         private TextMeshProUGUI _iconLetter = null!;
         private TextMeshProUGUI _name = null!;
         private TextMeshProUGUI _subtitle = null!;
@@ -153,12 +154,13 @@ namespace Game.Presentation.Ui
             if (_selected == null)
                 return;
             var weapon = _selected;
-            var rarity = _theme.RaritySimple;
-            _cardFrame.color = rarity;
-            _icon.color = rarity;
+            var rarity = ItemTexts.RarityOf(weapon);
+            _cardFrame.Show(rarity, true);
+            _icon.Show(rarity, false);
             _iconLetter.text = ItemTexts.Initial(weapon);
-            _iconLetter.color = rarity;
+            _iconLetter.color = RarityFrame.IconOf(rarity);
             _name.text = ItemTexts.Name(weapon);
+            _name.color = RarityFrame.TitleOf(rarity);
             _subtitle.text = ItemTexts.Subtitle(weapon);
             _inHands.text = ItemTexts.InHands(state);
             _innate.text = ItemTexts.Innate(weapon);
@@ -209,14 +211,12 @@ namespace Game.Presentation.Ui
 
         private RectTransform BuildCard()
         {
-            _cardFrame = UiElements.Fill("Card", _root, _theme.RaritySimple, 12f);
-            var card = UiElements.Anchor(_cardFrame.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 8f), new Vector2(GridWidth(), CardHeightPx));
-            UiElements.Stretch(UiElements.Fill("Inner", card, _theme.Card, 11f).rectTransform, 1f);
+            var card = UiElements.Anchor(UiElements.Rect("Card", _root), new Vector2(0.5f, 0f), new Vector2(0f, 8f), new Vector2(GridWidth(), CardHeightPx));
+            _cardFrame = RarityFrame.Create(card, CardRadiusPx, 1f, _theme.Card);
             var topLeft = new Vector2(0f, 1f);
-            _icon = UiElements.Fill("Icon", card, _theme.RaritySimple, CellRadiusPx);
-            UiElements.Anchor(_icon.rectTransform, topLeft, new Vector2(12f, -10f), Vector2.one * IconPx);
-            UiElements.Stretch(UiElements.Fill("Inner", _icon.rectTransform, _theme.Background, CellRadiusPx - FramePx).rectTransform, FramePx);
-            _iconLetter = UiElements.Label("Letter", _icon.rectTransform, _theme.BoldFont, 20f, _theme.RaritySimple, TextAlignmentOptions.Center);
+            var icon = UiElements.Anchor(UiElements.Rect("Icon", card), topLeft, new Vector2(12f, -10f), Vector2.one * IconPx);
+            _icon = RarityFrame.Create(icon, CellRadiusPx, FramePx, _theme.Background);
+            _iconLetter = UiElements.Label("Letter", icon, _theme.BoldFont, 20f, _theme.RaritySimple, TextAlignmentOptions.Center);
             UiElements.Stretch(_iconLetter.rectTransform);
             _name = CardText("Name", card, _theme.BoldFont, 15f, _theme.Text, new Vector2(62f, -10f), new Vector2(250f, 20f));
             _subtitle = CardText("Subtitle", card, _theme.TextFont, 12f, _theme.TextDim, new Vector2(62f, -30f), new Vector2(250f, 18f));
@@ -258,11 +258,11 @@ namespace Game.Presentation.Ui
         private sealed class ItemCell
         {
             private readonly Image _selection;
-            private readonly Image _frame;
+            private readonly RarityFrame _frame;
             private readonly Image _gem;
             private readonly TextMeshProUGUI _letter;
 
-            private ItemCell(Image selection, Image frame, Image gem, TextMeshProUGUI letter)
+            private ItemCell(Image selection, RarityFrame frame, Image gem, TextMeshProUGUI letter)
             {
                 _selection = selection;
                 _frame = frame;
@@ -274,12 +274,11 @@ namespace Game.Presentation.Ui
             {
                 var selection = UiElements.Fill("Cell", parent, Color.white, CellRadiusPx + 2f);
                 UiElements.Anchor(selection.rectTransform, new Vector2(0f, 1f), position, size);
-                var frame = UiElements.Fill("Frame", selection.rectTransform, theme.Border, CellRadiusPx);
-                UiElements.Stretch(frame.rectTransform, 2f);
-                UiElements.Stretch(UiElements.Fill("Inner", frame.rectTransform, CellFill, CellRadiusPx - FramePx).rectTransform, FramePx);
-                var letter = UiElements.Label("Letter", frame.rectTransform, theme.BoldFont, 20f, theme.RaritySimple, TextAlignmentOptions.Center);
+                var host = UiElements.Stretch(UiElements.Rect("Frame", selection.rectTransform), 2f);
+                var frame = RarityFrame.Create(host, CellRadiusPx, FramePx, CellFill);
+                var letter = UiElements.Label("Letter", host, theme.BoldFont, 20f, theme.RaritySimple, TextAlignmentOptions.Center);
                 UiElements.Stretch(letter.rectTransform);
-                var gem = UiElements.Dot("Gem", frame.rectTransform, theme.Text);
+                var gem = UiElements.Dot("Gem", host, theme.Text);
                 UiElements.Anchor(gem.rectTransform, Vector2.zero, new Vector2(5f, 5f), Vector2.one * 7f);
                 return new ItemCell(selection, frame, gem, letter);
             }
@@ -290,12 +289,17 @@ namespace Game.Presentation.Ui
             {
                 _selection.color = selected ? Color.white : Color.clear;
                 var filled = weapon != null;
-                _frame.color = filled ? theme.RaritySimple : new Color(theme.Border.r, theme.Border.g, theme.Border.b, 0.45f);
                 _letter.gameObject.SetActive(filled);
                 _gem.gameObject.SetActive(filled);
                 if (!filled)
+                {
+                    _frame.ShowEmpty(new Color(theme.Border.r, theme.Border.g, theme.Border.b, 0.45f));
                     return;
+                }
+                var rarity = ItemTexts.RarityOf(weapon!);
+                _frame.Show(rarity, !selected);
                 _letter.text = ItemTexts.Initial(weapon!);
+                _letter.color = RarityFrame.IconOf(rarity);
                 _gem.color = Enum.TryParse<GemColor>(weapon!.Type.Color, true, out var color) ? GemColors.Of(color) : GemColors.White;
             }
         }

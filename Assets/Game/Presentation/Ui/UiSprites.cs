@@ -15,14 +15,25 @@ namespace Game.Presentation.Ui
         private static Sprite? _rounded;
         private static Sprite? _circle;
         private static Sprite? _ring;
+        private static Sprite? _rainbow;
 
-        public static Sprite Rounded => _rounded ??= CreateRounded();
+        private static readonly Color[] RainbowStops =
+        {
+            new Color32(0xFF, 0x5A, 0x5A, 0xFF),
+            new Color32(0xF0, 0xB4, 0x3C, 0xFF),
+            new Color32(0x4F, 0xC2, 0x77, 0xFF),
+            new Color32(0x5B, 0x9B, 0xFF, 0xFF),
+            new Color32(0xB0, 0x7C, 0xFF, 0xFF),
+        };
+
+        public static Sprite Rounded => _rounded ??= CreateRounded(_ => Color.white);
+        public static Sprite RainbowRounded => _rainbow ??= CreateRounded(Rainbow);
         public static Sprite Circle => _circle ??= CreateCircle(0f);
         public static Sprite Ring => _ring ??= CreateCircle(RingInnerFraction);
 
         public static float MultiplierFor(float radiusPx) => CornerPx / radiusPx;
 
-        private static Sprite CreateRounded()
+        private static Sprite CreateRounded(System.Func<float, Color> tint)
         {
             var texture = NewTexture(RoundedSize);
             var low = CornerPx;
@@ -35,7 +46,9 @@ namespace Game.Presentation.Ui
                     var py = y + 0.5f;
                     var dx = px < low ? low - px : px > high ? px - high : 0f;
                     var dy = py < low ? low - py : py > high ? py - high : 0f;
-                    texture.SetPixel(x, y, new Color(1f, 1f, 1f, Coverage(CornerPx, dx, dy)));
+                    var color = tint((px + RoundedSize - py) / (2f * RoundedSize));
+                    color.a = Coverage(CornerPx, dx, dy);
+                    texture.SetPixel(x, y, color);
                 }
             }
             texture.Apply();
@@ -60,6 +73,13 @@ namespace Game.Presentation.Ui
             }
             texture.Apply();
             return Sprite.Create(texture, new Rect(0f, 0f, CircleSize, CircleSize), new Vector2(0.5f, 0.5f), PixelsPerUnit);
+        }
+
+        private static Color Rainbow(float t)
+        {
+            var scaled = Mathf.Clamp01(t) * (RainbowStops.Length - 1);
+            var index = Mathf.Min((int)scaled, RainbowStops.Length - 2);
+            return Color.Lerp(RainbowStops[index], RainbowStops[index + 1], scaled - index);
         }
 
         private static Texture2D NewTexture(int size) =>

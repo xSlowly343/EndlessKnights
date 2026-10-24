@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Game.Core.Content.Items;
 using Game.Core.Content.Weapons;
 using Game.Core.Sim;
 using Game.Core.Stats;
@@ -23,8 +24,12 @@ namespace Game.Core.Ui
             return type.Length > 0 ? type.Substring(0, 1) : "?";
         }
 
+        public static ItemRarity RarityOf(WeaponBase weapon) => ItemRarity.Simple;
+
+        public static string Rarity(ItemRarity rarity) => Texts.Get("rarity." + rarity.ToString().ToLowerInvariant());
+
         public static string Subtitle(WeaponBase weapon) =>
-            string.Join(" · ", Texts.Pick(weapon.Type.NameRu, weapon.Type.NameEn), HeroSummary.ClassName(weapon.Type.HeroClass), Texts.Get("rarity.simple").ToLowerInvariant());
+            string.Join(" · ", Texts.Pick(weapon.Type.NameRu, weapon.Type.NameEn), HeroSummary.ClassName(weapon.Type.HeroClass), Rarity(RarityOf(weapon)).ToLowerInvariant());
 
         public static string Innate(WeaponBase weapon) =>
             string.Join(" · ", weapon.Type.Innate.Concat(weapon.Innate).Select(ModifierText.Describe));
