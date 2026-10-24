@@ -9,6 +9,18 @@ namespace Game.Core.Ui
         public static string Hint => Texts.Get("book.hint");
         public static string CompactHint => Texts.Get("book.compactHint");
         public static string EmptyRow => Texts.Get("book.emptyRow");
+        public static string BagTitle => Texts.Get("book.bag");
+        public static string AddTrigger => Texts.Get("book.addTrigger");
+        public static string Unarmed => Texts.Get("book.unarmed");
+
+        public static string Slots(int open, int max) => Texts.Format("book.slots", open, max);
+
+        public static string Name(GemDef gem) => Texts.Pick(gem.NameRu, gem.NameEn);
+
+        public static string Describe(GemDef gem, int freeCopies) =>
+            freeCopies > 0
+                ? Texts.Format("book.describeWithCopies", Name(gem), Kind(gem.Kind), freeCopies)
+                : Texts.Format("book.describe", Name(gem), Kind(gem.Kind));
 
         public static string Result(BookResult result) => result switch
         {

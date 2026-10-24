@@ -47,6 +47,7 @@ namespace Game.Editor
             loop.Book.GrantStartingGems();
             foreach (var weapon in data.Weapons.Bases.Where(weapon => weapon.Type != starter.Type).Take(9))
                 loop.Weapons.Give(weapon);
+            loop.State.OwnedGems.AddRange(data.Gems.All.Where(gem => gem.Skill?.Weapon == null).Take(12));
 
             var panels = PanelCanvas.Create();
             panels.Bind(loop, data.Tree);
@@ -81,6 +82,19 @@ namespace Game.Editor
             navigator.SelectTab(PanelSection.Party);
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-party.png"));
+
+            navigator.SelectTab(PanelSection.Book);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-book.png"));
+            var grabbed = panels.Book.WorldPointOfBagCell(0);
+            panels.TryClick(grabbed);
+            panels.Drag(Vector2.Lerp(grabbed, panels.Book.WorldPointOfRow(2), 0.7f));
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-book-drag.png"));
+            panels.CancelPress();
+            navigator.ToggleHeight();
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-book-half.png"));
+            navigator.ToggleHeight();
             navigator.SelectTab(PanelSection.Hero);
             frame = ShowPanel(panels, navigator);
 

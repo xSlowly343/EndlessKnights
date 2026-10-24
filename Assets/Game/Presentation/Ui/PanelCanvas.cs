@@ -4,7 +4,6 @@ using Game.Core.Content.Tree;
 using Game.Core.Math;
 using Game.Core.Sim;
 using Game.Core.Ui;
-using Game.Presentation.Book;
 using Game.Presentation.Strip;
 using Game.Presentation.Tree;
 using TMPro;
@@ -86,7 +85,7 @@ namespace Game.Presentation.Ui
         private RectTransform _report = null!;
         private RectTransform _subTabRow = null!;
         private Transform _treeHost = null!;
-        private Transform _bookHost = null!;
+        private TextMeshProUGUI _slots = null!;
         private UiButton _handle = null!;
         private UiButton _titlePlate = null!;
         private UiButton _pin = null!;
@@ -377,7 +376,15 @@ namespace Game.Presentation.Ui
             _heroPanel.Refresh(_loop);
             _itemsPanel.Refresh();
             _partyPanel.Refresh(_loop);
+            Book.Refresh();
             RefreshPreset();
+            RefreshSlots();
+        }
+
+        private void RefreshSlots()
+        {
+            if (_loop != null && _slots.gameObject.activeSelf)
+                _slots.text = BookTexts.Slots(_loop.Book.SlotCount, _loop.Book.MaxSlots);
         }
 
         private void RefreshPreset()
@@ -467,7 +474,6 @@ namespace Game.Presentation.Ui
         {
             var settled = !IsTweening && !_showingReport;
             _treeHost.gameObject.SetActive(_treeShown && settled);
-            _bookHost.gameObject.SetActive(_bookShown && settled);
         }
 
         private void ArrangeHosts(float left, bool aboveStrip)
@@ -481,7 +487,6 @@ namespace Game.Presentation.Ui
             var contentBottom = bottom + StripSpace.Units(frame.TabBarPx) + border;
             var contentHeight = StripSpace.Units(frame.ContentPx) - 2f * border;
             Tree.Arrange(left + border, contentBottom, width - 2f * border, contentHeight, StripSpace.PixelsPerUnit);
-            Book.Arrange(left + border, contentBottom, width - 2f * border, contentHeight, StripSpace.PixelsPerUnit);
         }
 
         private void ShowHeader(PanelNavigator navigator)
@@ -551,6 +556,8 @@ namespace Game.Presentation.Ui
             _zoomIn.Show(zoomShown);
             _zoomOut.Show(zoomShown);
             _bookShown = !navigator.ShowingMore && navigator.Active == PanelSection.Book && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
+            Book.Show(_bookShown, _shownFrame.ContentPx);
+            _slots.gameObject.SetActive(!navigator.ShowingMore && navigator.Active == PanelSection.Book && _shownFrame.HasSubTabs);
             var heroSubTab = _shownFrame.HasSubTabs ? navigator.SubTab : 0;
             var heroShown = !navigator.ShowingMore && navigator.Active == PanelSection.Hero && HeroPanel.Covers(heroSubTab);
             _heroPanel.Show(heroShown, heroSubTab, _shownFrame.ContentPx);
@@ -587,8 +594,6 @@ namespace Game.Presentation.Ui
             _report = BuildReport();
             _treeHost = Group("Tree");
             Tree = TreePanel.Create(_treeHost);
-            _bookHost = Group("Book");
-            Book = BookPanel.Create(_bookHost);
         }
 
         private RectTransform BuildFrame()
@@ -688,6 +693,10 @@ namespace Game.Presentation.Ui
             _preset = new UiButton(_preset.Back, presetLabel);
             UiElements.IgnoreLayout(_preset.Rect);
             _preset.Show(false);
+            _slots = UiElements.Label("Slots", row, _theme.TextFont, SmallTextSizePx - 1f, _theme.TextDim, TextAlignmentOptions.MidlineRight);
+            UiElements.Anchor(_slots.rectTransform, middleRight, new Vector2(-1.5f * MarginPx, 0f), new Vector2(PresetWidthPx, PillHeightPx));
+            UiElements.IgnoreLayout(_slots.rectTransform);
+            _slots.gameObject.SetActive(false);
         }
 
         private UiButton Pill(string name, RectTransform parent)
@@ -723,6 +732,7 @@ namespace Game.Presentation.Ui
             _itemsPanel = ItemsPanel.Create(content, _theme);
             _partyPanel = PartyPanel.Create(content, _theme);
             _partyPanel.NoticeRequested += ShowNotice;
+            Book = BookPanel.Create(content, _theme);
         }
 
         private UiButton MoreRow(string name, RectTransform parent)
