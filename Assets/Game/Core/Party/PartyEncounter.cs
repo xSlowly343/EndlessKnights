@@ -1,4 +1,5 @@
 using Game.Core.Content;
+using Game.Core.Math;
 using Game.Core.Sim;
 
 namespace Game.Core.Party
@@ -120,6 +121,12 @@ namespace Game.Core.Party
                 _members[slot].LastInputTick = Tick;
         }
 
+        public void SetHeroClass(int slot, byte heroClass)
+        {
+            if (IsMember(slot))
+                _members[slot].HeroClass = heroClass;
+        }
+
         public void SetPeaceful(int slot, bool peaceful)
         {
             if (IsMember(slot))
@@ -164,9 +171,9 @@ namespace Game.Core.Party
 
         public EnemyEffect Effect(int index) => _effects[index];
 
-        public bool ApplyEnemyEffect(int effectId, double damageTaken, double seconds)
+        public bool ApplyEnemyEffect(int effectId, double damageTaken, double seconds, int owner = NoSlot)
         {
-            if (damageTaken <= 0 || seconds <= 0 || !Started)
+            if (!(damageTaken > 0) || !(seconds > 0) || !Started)
                 return false;
             var ticks = Ticks(seconds);
             var free = NoSlot;
@@ -178,6 +185,7 @@ namespace Game.Core.Party
                         return false;
                     _effects[i].DamageTaken = damageTaken;
                     _effects[i].TicksLeft = System.Math.Max(_effects[i].TicksLeft, ticks);
+                    _effects[i].Owner = owner;
                     return true;
                 }
                 if (free == NoSlot && !_effects[i].Active)
@@ -185,7 +193,7 @@ namespace Game.Core.Party
             }
             if (free == NoSlot)
                 return false;
-            _effects[free] = new EnemyEffect { Id = effectId, DamageTaken = damageTaken, TicksLeft = ticks };
+            _effects[free] = new EnemyEffect { Id = effectId, DamageTaken = damageTaken, TicksLeft = ticks, Owner = owner };
             return true;
         }
 
@@ -232,13 +240,7 @@ namespace Game.Core.Party
             Spawn(PartyEnemyKind.Normal);
         }
 
-        public ulong SeedFor(uint enemyId)
-        {
-            var z = _seed + 0x9E3779B97F4A7C15UL * enemyId;
-            z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
-            z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
-            return z ^ (z >> 31);
-        }
+        public ulong SeedFor(uint enemyId) => SplitMix.At(_seed, enemyId);
 
         private bool IsMember(int slot) => slot >= 0 && slot < _members.Length && _members[slot].Joined;
 

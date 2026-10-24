@@ -14,6 +14,7 @@ namespace Game.Core.Party
         private readonly uint[] _lastSequence = new uint[PartyRules.MaxSlots];
         private readonly uint[] _lastEnemy = new uint[PartyRules.MaxSlots];
         private readonly double[] _lastTotal = new double[PartyRules.MaxSlots];
+        private readonly int[] _messagesThisSecond = new int[PartyRules.MaxSlots];
         private readonly PartyPresence[] _sentPresence = new PartyPresence[PartyRules.MaxSlots];
         private PartyRules _rules;
         private uint _stateSequence;
@@ -40,6 +41,8 @@ namespace Game.Core.Party
             while (_transport.TryReceive(_in, out var length, out var from))
                 Handle(from, length);
             _encounter.Advance();
+            if (_encounter.Tick % GameLoop.TicksPerSecond == 0)
+                System.Array.Clear(_messagesThisSecond, 0, _messagesThisSecond.Length);
             WatchSilence();
             WatchPresence();
             Flush();
@@ -49,9 +52,16 @@ namespace Game.Core.Party
         {
             var kind = PartyCodec.KindOf(_in, length);
             var slot = _encounter.SlotOf(from);
-            if (kind == PartyMessageKind.Hello && PartyCodec.TryDecode(_in, length, out HelloMessage _))
+            if (kind == PartyMessageKind.Hello && PartyCodec.TryDecode(_in, length, out HelloMessage hello))
+            {
                 slot = Welcome(from, slot);
-            if (slot == PartyEncounter.NoSlot)
+                if (slot != PartyEncounter.NoSlot && _encounter.Member(slot).HeroClass != hello.HeroClass)
+                {
+                    _encounter.SetHeroClass(slot, hello.HeroClass);
+                    _rosterChanged = true;
+                }
+            }
+            if (slot == PartyEncounter.NoSlot || ++_messagesThisSecond[slot] > _rules.MaxMessagesPerSecond)
                 return;
             Heard(slot);
             switch (kind)
@@ -64,7 +74,11 @@ namespace Game.Core.Party
                     break;
                 case PartyMessageKind.CastEffect when PartyCodec.TryDecode(_in, length, out CastEffectMessage effect):
                     if (effect.OnEnemy)
-                        _encounter.ApplyEnemyEffect(effect.EffectId, effect.Strength, effect.Seconds);
+                        _encounter.ApplyEnemyEffect(effect.EffectId, effect.Strength, effect.Seconds, slot);
+                    break;
+                case PartyMessageKind.PartyOffer when PartyCodec.TryDecode(_in, length, out PartyOfferMessage offer):
+                    offer.Slot = (byte)slot;
+                    BroadcastExcept(slot, PartyCodec.Encode(_out, offer));
                     break;
             }
         }
@@ -177,12 +191,14 @@ namespace Game.Core.Party
             }
         }
 
-        private void Broadcast(int length)
+        private void Broadcast(int length) => BroadcastExcept(PartyEncounter.NoSlot, length);
+
+        private void BroadcastExcept(int skipped, int length)
         {
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 var member = _encounter.Member(slot);
-                if (member.Joined)
+                if (member.Joined && slot != skipped)
                     _transport.Send(member.PlayerId, _out, length);
             }
         }

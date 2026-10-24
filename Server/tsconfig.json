@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": ["ES2015"],
+    "outFile": "build/party.js",
+    "rootDir": "src",
+    "module": "None",
+    "strict": true,
+    "noImplicitReturns": true,
+    "preserveConstEnums": false,
+    "removeComments": true,
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["src/**/*.ts"]
+}

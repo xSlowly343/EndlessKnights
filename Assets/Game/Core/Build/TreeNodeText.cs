@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Core.Content.Tree;
 using Game.Core.Math;
 using Game.Core.Stats;
+using Game.Core.Text;
 
 namespace Game.Core.Build
 {
@@ -9,7 +10,7 @@ namespace Game.Core.Build
     {
         public static IReadOnlyList<string> Describe(PassiveTree tree, TreeAllocation allocation, TreeNodeDef node, BigNumber? refundCost, NumberFormatSettings format)
         {
-            var lines = new List<string> { node.NameRu + " · " + TypeLabel(node) };
+            var lines = new List<string> { Texts.Pick(node.NameRu, node.NameEn) + " · " + TypeLabel(node) };
             switch (node.Type)
             {
                 case TreeNodeType.Attribute:
@@ -28,13 +29,13 @@ namespace Game.Core.Build
 
         public static string TypeLabel(TreeNodeDef node) => node.Type switch
         {
-            TreeNodeType.Small => "малый узел",
-            TreeNodeType.Notable => "значимый узел",
-            TreeNodeType.Keystone => "ключевой узел",
-            TreeNodeType.Mastery => "мастерство",
-            TreeNodeType.Jewel => "гнездо самоцвета",
-            TreeNodeType.Attribute => "атрибут",
-            _ => "старт класса"
+            TreeNodeType.Small => Texts.Get("tree.type.small"),
+            TreeNodeType.Notable => Texts.Get("tree.type.notable"),
+            TreeNodeType.Keystone => Texts.Get("tree.type.keystone"),
+            TreeNodeType.Mastery => Texts.Get("tree.type.mastery"),
+            TreeNodeType.Jewel => Texts.Get("tree.type.jewel"),
+            TreeNodeType.Attribute => Texts.Get("tree.type.attribute"),
+            _ => Texts.Get("tree.type.start")
         };
 
         public static string AttributeName(string attribute) => ModifierText.Label(new StatId(attribute));
@@ -44,12 +45,12 @@ namespace Game.Core.Build
             var amount = "+" + node.AttributeAmount.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
             return allocation.AttributeChoices.TryGetValue(node.Id, out var chosen)
                 ? $"{amount} {AttributeName(chosen)}"
-                : $"{amount} к выбранному атрибуту";
+                : Texts.Format("tree.toChosenAttribute", amount);
         }
 
         public const string ActiveMark = "> ";
-        public const string OwnPrefix = "Для класса: ";
-        public const string SharedPrefix = "Для остальных: ";
+        public static string OwnPrefix => Texts.Get("tree.ownPrefix");
+        public static string SharedPrefix => Texts.Get("tree.sharedPrefix");
 
         private static void AddModifiers(List<string> lines, TreeAllocation allocation, TreeNodeDef node)
         {
@@ -72,7 +73,7 @@ namespace Game.Core.Build
             var parts = new List<string>();
             foreach (var modifier in modifiers)
                 parts.Add(ModifierText.Describe(modifier));
-            return parts.Count == 0 ? "ничего" : string.Join(", ", parts);
+            return parts.Count == 0 ? Texts.Get("tree.nothing") : string.Join(", ", parts);
         }
 
         private static IReadOnlyList<Modifier> SharedOption(TreeNodeDef node, int option) =>
@@ -95,21 +96,21 @@ namespace Game.Core.Build
         private static string Status(PassiveTree tree, TreeAllocation allocation, TreeNodeDef node, BigNumber? refundCost, NumberFormatSettings format)
         {
             if (node.Type == TreeNodeType.Start)
-                return node.StartClass == allocation.StartClass ? "Твой старт" : "Старт другого класса";
+                return node.StartClass == allocation.StartClass ? Texts.Get("tree.status.ownStart") : Texts.Get("tree.status.otherStart");
             if (allocation.IsAllocated(tree, node.Id))
             {
                 if (refundCost == null)
-                    return "Взят";
+                    return Texts.Get("tree.status.taken");
                 return allocation.CanRemove(tree, node.Id)
-                    ? "Взят · вернуть за " + NumberFormatter.Format(refundCost.Value, format) + " золота"
-                    : "Взят · держит путь к другим узлам";
+                    ? Texts.Format("tree.status.refundFor", NumberFormatter.Format(refundCost.Value, format))
+                    : Texts.Get("tree.status.holdsPath");
             }
             return allocation.Check(tree, node.Id) switch
             {
-                AllocationResult.Locked => "Закрыт",
-                AllocationResult.NoPoints => "Нет свободных очков",
-                AllocationResult.NotConnected => "Нет связи со взятыми узлами",
-                _ => "Можно взять"
+                AllocationResult.Locked => Texts.Get("tree.status.locked"),
+                AllocationResult.NoPoints => Texts.Get("tree.status.noPoints"),
+                AllocationResult.NotConnected => Texts.Get("tree.status.notConnected"),
+                _ => Texts.Get("tree.status.canTake")
             };
         }
     }

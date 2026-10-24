@@ -22,7 +22,7 @@ namespace Game.Core.Sim
 
         public void UseRules(PrestigeRules rules) => _rules = rules;
 
-        public bool Available => _state.HighestStage >= _rules.MinStage;
+        public bool Available => !_state.Rift.Inside && _state.HighestStage >= _rules.MinStage;
 
         public BigNumber EchoGain => _rules.EchoFor(_state.RunGoldEarned);
 

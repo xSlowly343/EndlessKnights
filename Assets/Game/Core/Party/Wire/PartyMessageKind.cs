@@ -10,6 +10,7 @@ namespace Game.Core.Party.Wire
         EncounterState,
         EnemyKilled,
         EncounterMoment,
-        Roster
+        Roster,
+        PartyOffer
     }
 }

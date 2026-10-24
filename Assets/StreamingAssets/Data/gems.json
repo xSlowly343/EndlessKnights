@@ -5,6 +5,7 @@
     {
       "id": "shield_bash",
       "kind": "skill",
+      "weapon": "axe",
       "color": "red",
       "name": { "ru": "Удар щитом", "en": "Shield Bash" },
       "tags": ["Keyboard", "Skill"],
@@ -15,6 +16,7 @@
     {
       "id": "odins_fury",
       "kind": "skill",
+      "weapon": "axe",
       "color": "red",
       "name": { "ru": "Ярость Одина", "en": "Odin's Fury" },
       "tags": ["Keyboard", "Skill"],
@@ -25,24 +27,27 @@
     {
       "id": "song",
       "kind": "skill",
+      "weapon": "electric_guitar",
       "color": "red",
       "name": { "ru": "Песня", "en": "Song" },
       "tags": ["Aura", "Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 5,
       "durationSeconds": 20,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.15 }, { "stat": "gold", "kind": "increased", "value": 0.10 }] }
+      "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.15 }, { "stat": "gold", "kind": "increased", "value": 0.10 }] }
     },
     {
       "id": "guitar_solo",
       "kind": "skill",
+      "weapon": "electric_guitar",
       "color": "red",
       "name": { "ru": "Гитарное соло", "en": "Guitar Solo" },
       "tags": ["Aura", "Skill"],
       "cost": { "resource": 80 },
       "cooldownSeconds": 35,
       "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1.0, "tags": ["Aura"] }, { "stat": "keyHitLightning", "kind": "flat", "value": 0.2 }] }
+      "marks": ["lightning"],
+      "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1.0, "tags": ["Aura"] }, { "stat": "keyHitLightning", "kind": "flat", "value": 0.2 }] }
     },
     {
       "id": "stenography",
@@ -64,6 +69,19 @@
       "cooldownSeconds": 5,
       "durationSeconds": 30,
       "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25 }] }
+    },
+    {
+      "id": "voodoo_needle",
+      "kind": "skill",
+      "weapon": "voodoo_doll",
+      "color": "blue",
+      "name": { "ru": "Игла в куклу", "en": "Needle in the Doll" },
+      "tags": ["Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 5,
+      "durationSeconds": 10,
+      "marks": ["curse"],
+      "effect": { "type": "enemyDebuff", "damageTaken": 0.15 }
     },
     {
       "id": "lull",

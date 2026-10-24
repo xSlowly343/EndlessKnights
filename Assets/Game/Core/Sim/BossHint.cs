@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Game.Core.Content;
 using Game.Core.Math;
+using Game.Core.Text;
 
 namespace Game.Core.Sim
 {
@@ -43,16 +44,16 @@ namespace Game.Core.Sim
         {
             var lines = new List<string>
             {
-                UnknownDamage ? "Урона пока слишком мало, чтобы ранить босса" : $"Тебе не хватает ~{MissingPercent}% урона",
-                "Варианты:"
+                UnknownDamage ? Texts.Get("bossHint.unknown") : Texts.Format("bossHint.missing", MissingPercent),
+                Texts.Get("bossHint.options")
             };
             if (Has(BossHintOptions.Prestige))
-                lines.Add("• Престиж: +" + NumberFormatter.Format(EchoGain, format) + " Эха");
+                lines.Add(Texts.Format("bossHint.prestige", NumberFormatter.Format(EchoGain, format)));
             if (Has(BossHintOptions.StrikeUpgrade))
-                lines.Add("• Улучшить удар за золото");
-            lines.Add("• Сменить билд или пресет");
-            lines.Add("• Позвать друга");
-            lines.Add("• Пофармить этап и вернуться");
+                lines.Add(Texts.Get("bossHint.upgrade"));
+            lines.Add(Texts.Get("bossHint.build"));
+            lines.Add(Texts.Get("bossHint.friend"));
+            lines.Add(Texts.Get("bossHint.farm"));
             return lines;
         }
     }

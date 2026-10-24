@@ -3,8 +3,10 @@ using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Json;
+using Game.Core.Content.Weapons;
 using Game.Core.Math;
 using Game.Core.Sim;
+using Game.Core.Sim.Rift;
 
 namespace Game.Core.Save
 {
@@ -60,7 +62,9 @@ namespace Game.Core.Save
                     ("echo", SaveValues.Of(state.Echo)),
                     ("echoEarned", SaveValues.Of(state.EchoEarned)),
                     ("count", JsonValue.Of(state.Prestiges)))),
-                ("artifacts", JsonValue.Array(WriteArtifacts(state))),
+                ("artifacts", JsonValue.Array(WriteArtifacts(state.Artifacts))),
+                ("rift", WriteRift(state.Rift)),
+                ("weapons", WriteWeapons(state.Weapons)),
                 ("inputStats", Object(
                     ("keys", JsonValue.Of(state.TotalInput.Keys.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("leftClicks", JsonValue.Of(state.TotalInput.LeftClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -84,7 +88,7 @@ namespace Game.Core.Save
                     ("mousePx", JsonValue.Of(state.MouseCarryPx)))));
         }
 
-        public static GameState Read(ContentNode node, EnemyCatalog enemies, GemCatalog gems)
+        public static GameState Read(ContentNode node, EnemyCatalog enemies, GemCatalog gems, WeaponCatalog weapons)
         {
             var rng = node.Field("rng").Items();
             if (rng.Count != 2)
@@ -169,9 +173,97 @@ namespace Game.Core.Save
                     trigger = found;
                 state.OtherPreset.Skills.Add((skill, trigger));
             }
-            foreach (var item in node.Field("artifacts").Items())
-                state.Artifacts[item.Field("id").AsString()] = item.Field("level").AsInt(1);
+            ReadArtifacts(node.Field("artifacts"), state.Artifacts);
+            if (node.HasField("rift"))
+                ReadRift(node.Field("rift"), state.Rift);
+            if (node.HasField("weapons"))
+                ReadWeapons(node.Field("weapons"), weapons, state.Weapons);
             return state;
+        }
+
+        private static JsonValue WriteWeapons(WeaponState weapons)
+        {
+            var bag = new JsonValue[weapons.Bag.Count];
+            for (var i = 0; i < bag.Length; i++)
+                bag[i] = JsonValue.Of(weapons.Bag[i].Id);
+            return Object(
+                ("starterGiven", JsonValue.Of(weapons.StarterGiven)),
+                ("right", weapons.Right == null ? JsonValue.Null() : JsonValue.Of(weapons.Right.Id)),
+                ("left", weapons.Left == null ? JsonValue.Null() : JsonValue.Of(weapons.Left.Id)),
+                ("bag", JsonValue.Array(bag)));
+        }
+
+        private static void ReadWeapons(ContentNode node, WeaponCatalog catalog, WeaponState weapons)
+        {
+            weapons.StarterGiven = node.Field("starterGiven").AsBool();
+            weapons.Right = ReadWeapon(node.Field("right"), catalog);
+            weapons.Left = ReadWeapon(node.Field("left"), catalog);
+            foreach (var item in node.Field("bag").Items())
+            {
+                var weapon = ReadWeapon(item, catalog);
+                if (weapon != null)
+                    weapons.Bag.Add(weapon);
+            }
+        }
+
+        private static WeaponBase? ReadWeapon(ContentNode node, WeaponCatalog catalog) =>
+            !node.IsNull && catalog.TryGetBase(node.AsString(), out var weapon) ? weapon : null;
+
+        private static JsonValue WriteRift(RiftState rift) =>
+            Object(
+                ("windowId", JsonValue.Of(rift.WindowId)),
+                ("windowEndUnixMs", JsonValue.Of(rift.WindowEndUnixMs)),
+                ("inside", JsonValue.Of(rift.Inside)),
+                ("shards", SaveValues.Of(rift.Shards)),
+                ("deepest", JsonValue.Of(rift.Deepest)),
+                ("artifacts", JsonValue.Array(WriteArtifacts(rift.Artifacts))),
+                ("otherWorld", rift.OtherWorld == null ? JsonValue.Null() : WriteProgress(rift.OtherWorld)));
+
+        private static JsonValue WriteProgress(StageProgress progress) =>
+            Object(
+                ("current", JsonValue.Of(progress.Stage)),
+                ("highest", JsonValue.Of(progress.HighestStage)),
+                ("kills", JsonValue.Of(progress.KillsOnStage)),
+                ("farming", JsonValue.Of(progress.Farming)),
+                ("farmKills", JsonValue.Of(progress.FarmKills)),
+                ("bossFailsInARow", JsonValue.Of(progress.BossFailsInARow)),
+                ("bossBestFraction", JsonValue.Of(progress.BossBestFraction)));
+
+        private static void ReadRift(ContentNode node, RiftState rift)
+        {
+            rift.WindowId = node.Field("windowId").AsLong(0);
+            rift.WindowEndUnixMs = node.Field("windowEndUnixMs").AsLong(0);
+            rift.Inside = node.Field("inside").AsBool();
+            rift.Shards = SaveValues.ReadBigNumber(node.Field("shards"));
+            rift.Deepest = node.Field("deepest").AsLong(1);
+            ReadArtifacts(node.Field("artifacts"), rift.Artifacts);
+            var other = node.Field("otherWorld");
+            rift.OtherWorld = other.IsNull ? null : ReadProgress(other);
+            if (rift.Inside && rift.OtherWorld == null)
+                throw other.Error("must hold the home progress while inside the rift");
+        }
+
+        private static StageProgress ReadProgress(ContentNode node)
+        {
+            var progress = new StageProgress
+            {
+                Stage = node.Field("current").AsLong(1),
+                HighestStage = node.Field("highest").AsLong(1),
+                KillsOnStage = node.Field("kills").AsInt(0),
+                Farming = node.Field("farming").AsBool(),
+                FarmKills = node.Field("farmKills").AsInt(0),
+                BossFailsInARow = node.Field("bossFailsInARow").AsInt(0),
+                BossBestFraction = node.Field("bossBestFraction").AsNumber(0, 1)
+            };
+            if (progress.HighestStage < progress.Stage)
+                throw node.Field("highest").Error($"must not be lower than current ({progress.Stage})");
+            return progress;
+        }
+
+        private static void ReadArtifacts(ContentNode node, Dictionary<string, int> artifacts)
+        {
+            foreach (var item in node.Items())
+                artifacts[item.Field("id").AsString()] = item.Field("level").AsInt(1);
         }
 
         private static JsonValue WriteTree(TreeAllocation tree)
@@ -262,13 +354,13 @@ namespace Game.Core.Save
             return items;
         }
 
-        private static JsonValue[] WriteArtifacts(GameState state)
+        private static JsonValue[] WriteArtifacts(Dictionary<string, int> artifacts)
         {
-            var ids = new List<string>(state.Artifacts.Keys);
+            var ids = new List<string>(artifacts.Keys);
             ids.Sort(System.StringComparer.Ordinal);
             var items = new JsonValue[ids.Count];
             for (var i = 0; i < items.Length; i++)
-                items[i] = Object(("id", JsonValue.Of(ids[i])), ("level", JsonValue.Of(state.Artifacts[ids[i]])));
+                items[i] = Object(("id", JsonValue.Of(ids[i])), ("level", JsonValue.Of(artifacts[ids[i]])));
             return items;
         }
 

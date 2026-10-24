@@ -42,6 +42,7 @@ namespace Game.Core.Sim.Headless
                 loops[i] = new GameLoop(_data, new BotInput(_profile, memberSeed ^ 0x5EEDUL), new GameState(memberSeed) { Class = _classes[i] }, new StatSheet());
                 clients[i] = new PartyClient(loops[i], network.Connect(FirstMemberId + (ulong)i), HostId, _data.Party);
                 clients[i].Join();
+                new PlayerBot(_data, loops[i], double.PositiveInfinity).EquipStartingSkills();
             }
 
             var totalTicks = (long)System.Math.Round(seconds * GameLoop.TicksPerSecond);
@@ -50,6 +51,7 @@ namespace Game.Core.Sim.Headless
                 network.Advance(GameLoop.TickSeconds * 1000);
                 for (var i = 0; i < loops.Length; i++)
                 {
+                    CastEverything(loops[i]);
                     loops[i].Tick();
                     kills[i] += loops[i].Events.CountOf(GameEventKind.EnemyKilled);
                     fails[i] += loops[i].Events.CountOf(GameEventKind.BossFailed);
@@ -66,6 +68,12 @@ namespace Game.Core.Sim.Headless
                 members.Add(new PartyMemberResult(_classes[i], state.Stage, state.HighestStage, kills[i], fails[i], state.RunGoldEarned, share));
             }
             return new PartySimulationResult(seconds, host.Kills, members);
+        }
+
+        private static void CastEverything(GameLoop loop)
+        {
+            for (var slot = 0; slot < loop.State.Skills.Count; slot++)
+                loop.RequestCast(slot);
         }
     }
 }

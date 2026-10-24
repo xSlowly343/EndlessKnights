@@ -14,6 +14,30 @@ namespace Game.Core.Party.Wire
         public byte WeightMask;
         public double DamageTaken;
         public ulong EnemySeed;
+        public ShownEffect Effect0;
+        public ShownEffect Effect1;
+        public ShownEffect Effect2;
+        public ShownEffect Effect3;
+
+        public ShownEffect Effect(int index) => index switch
+        {
+            0 => Effect0,
+            1 => Effect1,
+            2 => Effect2,
+            3 => Effect3,
+            _ => default
+        };
+
+        private void SetEffect(int index, ShownEffect effect)
+        {
+            switch (index)
+            {
+                case 0: Effect0 = effect; break;
+                case 1: Effect1 = effect; break;
+                case 2: Effect2 = effect; break;
+                case 3: Effect3 = effect; break;
+            }
+        }
 
         public void Write(ref PartyWriter writer)
         {
@@ -29,9 +53,19 @@ namespace Game.Core.Party.Wire
             writer.Byte(WeightMask);
             writer.Double(DamageTaken);
             writer.ULong(EnemySeed);
+            for (var i = 0; i < ShownEffect.MaxShown; i++)
+                Effect(i).Write(ref writer);
         }
 
-        public static EncounterStateMessage Read(ref PartyReader reader) => new EncounterStateMessage
+        public static EncounterStateMessage Read(ref PartyReader reader)
+        {
+            var message = ReadFields(ref reader);
+            for (var i = 0; i < ShownEffect.MaxShown; i++)
+                message.SetEffect(i, ShownEffect.Read(ref reader));
+            return message;
+        }
+
+        private static EncounterStateMessage ReadFields(ref PartyReader reader) => new EncounterStateMessage
         {
             Sequence = reader.UInt(),
             Tick = reader.Long(),
@@ -55,7 +89,7 @@ namespace Game.Core.Party.Wire
                 if (encounter.Member(slot).Weight > 0)
                     weights |= (byte)(1 << slot);
             }
-            return new EncounterStateMessage
+            var message = new EncounterStateMessage
             {
                 Sequence = sequence,
                 Tick = encounter.Tick,
@@ -70,6 +104,14 @@ namespace Game.Core.Party.Wire
                 DamageTaken = encounter.DamageTakenMultiplier,
                 EnemySeed = encounter.EnemySeed
             };
+            var shown = 0;
+            for (var i = 0; i < PartyEncounter.MaxEffects && shown < ShownEffect.MaxShown; i++)
+            {
+                var effect = encounter.Effect(i);
+                if (effect.Active)
+                    message.SetEffect(shown++, new ShownEffect { Id = effect.Id, TicksLeft = effect.TicksLeft, Owner = effect.Owner });
+            }
+            return message;
         }
     }
 }

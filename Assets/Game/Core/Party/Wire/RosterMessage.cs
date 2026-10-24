@@ -11,6 +11,19 @@ namespace Game.Core.Party.Wire
         public byte Presence1;
         public byte Presence2;
         public byte Presence3;
+        public byte Class0;
+        public byte Class1;
+        public byte Class2;
+        public byte Class3;
+
+        public byte HeroClass(int slot) => slot switch
+        {
+            0 => Class0,
+            1 => Class1,
+            2 => Class2,
+            3 => Class3,
+            _ => 0
+        };
 
         public ulong Player(int slot) => slot switch
         {
@@ -51,6 +64,10 @@ namespace Game.Core.Party.Wire
             writer.Byte(Presence1);
             writer.Byte(Presence2);
             writer.Byte(Presence3);
+            writer.Byte(Class0);
+            writer.Byte(Class1);
+            writer.Byte(Class2);
+            writer.Byte(Class3);
         }
 
         public static RosterMessage Read(ref PartyReader reader) => new RosterMessage
@@ -63,12 +80,17 @@ namespace Game.Core.Party.Wire
             Presence0 = reader.Byte(),
             Presence1 = reader.Byte(),
             Presence2 = reader.Byte(),
-            Presence3 = reader.Byte()
+            Presence3 = reader.Byte(),
+            Class0 = reader.Byte(),
+            Class1 = reader.Byte(),
+            Class2 = reader.Byte(),
+            Class3 = reader.Byte()
         };
 
         public static RosterMessage Of(PartyEncounter encounter, uint version)
         {
             ulong Id(int slot) => encounter.Member(slot).Joined ? encounter.Member(slot).PlayerId : 0;
+            byte Class(int slot) => encounter.Member(slot).Joined ? encounter.Member(slot).HeroClass : (byte)0;
             byte State(int slot) => (byte)(encounter.Member(slot).Joined ? encounter.Presence(slot) : PartyPresence.Offline);
             return new RosterMessage
             {
@@ -80,7 +102,11 @@ namespace Game.Core.Party.Wire
                 Presence0 = State(0),
                 Presence1 = State(1),
                 Presence2 = State(2),
-                Presence3 = State(3)
+                Presence3 = State(3),
+                Class0 = Class(0),
+                Class1 = Class(1),
+                Class2 = Class(2),
+                Class3 = Class(3)
             };
         }
     }

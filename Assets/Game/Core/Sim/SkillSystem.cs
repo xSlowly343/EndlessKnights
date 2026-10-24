@@ -31,6 +31,22 @@ namespace Game.Core.Sim
             }
         }
 
+        public bool SharedEnemy { get; private set; }
+
+        public void ShareEnemy(bool shared)
+        {
+            if (SharedEnemy == shared)
+                return;
+            SharedEnemy = shared;
+            foreach (var slot in _state.Skills)
+            {
+                if (!(slot.Def.Effect is EnemyDebuffEffect))
+                    continue;
+                RemoveAura(slot);
+                ApplyAura(slot);
+            }
+        }
+
         public int Equip(GemDef skill, GemDef? trigger = null)
         {
             if (skill.Kind != GemKind.Skill || skill.Skill == null)
@@ -76,6 +92,8 @@ namespace Game.Core.Sim
             var skill = slot.Def;
             if (skill.IsPassive)
                 return CastResult.Passive;
+            if (!Armed(slot))
+                return CastResult.NoWeapon;
             if (!slot.Ready)
                 return CastResult.OnCooldown;
             if (skill.ResourceCost > 0 && !_resource.TrySpend(skill.ResourceCost))
@@ -140,7 +158,7 @@ namespace Game.Core.Sim
 
         private void ReleaseIdleStrike(SkillSlot slot, IdleStrikeEffect strike, double idleSeconds)
         {
-            if (!slot.Ready || idleSeconds < MinIdleSeconds(strike))
+            if (!slot.Ready || !Armed(slot) || idleSeconds < MinIdleSeconds(strike))
                 return;
             slot.StartCooldown(Ticks(slot.Def.CooldownSeconds));
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
@@ -152,10 +170,26 @@ namespace Game.Core.Sim
             foreach (var slot in _state.Skills)
             {
                 RemoveAura(slot);
-                if (slot.Active)
+                if (slot.Active && Armed(slot))
                     ApplyAura(slot);
             }
         }
+
+        public bool Armed(int index) => index >= 0 && index < _state.Skills.Count && Armed(_state.Skills[index]);
+
+        public void RefreshArmed()
+        {
+            foreach (var slot in _state.Skills)
+            {
+                if (!slot.Active || Armed(slot))
+                    continue;
+                slot.ActiveTicks = 0;
+                slot.HitsLeft = 0;
+                RemoveAura(slot);
+            }
+        }
+
+        private bool Armed(SkillSlot slot) => slot.Def.Weapon == null || _state.Weapons.Holds(slot.Def.Weapon);
 
         private double MinIdleSeconds(IdleStrikeEffect strike) => System.Math.Max(0, strike.MinIdleSeconds + _hero.Value(CombatStats.IdleStartSeconds, 0, StatTags.Idle));
 
@@ -164,7 +198,14 @@ namespace Game.Core.Sim
 
         private void ApplyAura(SkillSlot slot)
         {
-            if (slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura))
+            if (slot.AuraApplied)
+                return;
+            if (slot.Def.Effect is EnemyDebuffEffect debuff)
+            {
+                ApplyDebuff(slot, debuff);
+                return;
+            }
+            if (!(slot.Def.Effect is AuraEffect aura))
                 return;
             var strength = _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
             for (var i = 0; i < aura.Modifiers.Count; i++)
@@ -172,11 +213,22 @@ namespace Game.Core.Sim
                 var modifier = aura.Modifiers[i];
                 slot.AuraModifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * strength, modifier.Tags));
             }
+            slot.AuraStrength = strength;
             _hero.AddRange(slot.AuraModifiers);
             slot.AuraApplied = true;
             _events.Add(GameEvent.ForSkill(GameEventKind.AuraChanged, _state.Tick, slot.Skill));
             if (BoostsAuras(aura))
                 RefreshOtherAuras(slot);
+        }
+
+        private void ApplyDebuff(SkillSlot slot, EnemyDebuffEffect debuff)
+        {
+            if (SharedEnemy || !slot.Active)
+                return;
+            slot.AuraModifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.More, debuff.DamageTaken));
+            slot.AuraStrength = 1;
+            _hero.AddRange(slot.AuraModifiers);
+            slot.AuraApplied = true;
         }
 
         private static bool BoostsAuras(AuraEffect aura)
@@ -208,6 +260,8 @@ namespace Game.Core.Sim
                 _hero.Remove(slot.AuraModifiers[i]);
             slot.AuraModifiers.Clear();
             slot.AuraApplied = false;
+            if (slot.Def.Effect is EnemyDebuffEffect)
+                return;
             _events.Add(GameEvent.ForSkill(GameEventKind.AuraChanged, _state.Tick, slot.Skill));
             if (slot.Def.Effect is AuraEffect aura && BoostsAuras(aura))
                 RefreshOtherAuras(slot);

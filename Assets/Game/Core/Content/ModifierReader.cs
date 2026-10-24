@@ -15,13 +15,17 @@ namespace Game.Core.Content
 
         public static Modifier Read(ContentNode node)
         {
-            var kindNode = node.Field("kind");
-            var kindName = kindNode.AsString();
-            if (!Kinds.TryGetValue(kindName, out var kind))
-                throw kindNode.Error($"unknown modifier kind '{kindName}', expected flat, increased or more");
-
+            var kind = ReadKind(node.Field("kind"));
             var tags = node.HasField("tags") ? ReadTags(node.Field("tags")) : StatTags.None;
             return new Modifier(new StatId(node.Field("stat").AsString()), kind, node.Field("value").AsNumber(-1e6, 1e6), tags);
+        }
+
+        public static ModifierKind ReadKind(ContentNode node)
+        {
+            var kindName = node.AsString();
+            if (!Kinds.TryGetValue(kindName, out var kind))
+                throw node.Error($"unknown modifier kind '{kindName}', expected flat, increased or more");
+            return kind;
         }
 
         public static IReadOnlyList<Modifier> ReadList(ContentNode node)

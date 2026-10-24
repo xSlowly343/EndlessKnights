@@ -3,7 +3,9 @@ using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Party;
 using Game.Core.Settings;
+using Game.Core.Sim.Rift;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
@@ -34,6 +36,10 @@ namespace Game.Core.Sim
         private readonly StrikeUpgradeSystem _upgrades;
         private readonly ArtifactSystem _artifacts;
         private readonly TutorialSystem _tutorial;
+        private readonly PartyBuffs _partyBuffs;
+        private readonly SynergySystem _synergy;
+        private readonly RiftSystem _rift;
+        private readonly WeaponSystem _weapons;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -55,11 +61,15 @@ namespace Game.Core.Sim
             _skills = new SkillSystem(state, Events, _resource, _combat, hero);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills);
-            _artifacts = new ArtifactSystem(data.Artifacts, state, hero);
+            _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
+            _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
             _treeLayer = new ModifierLayer(hero);
+            _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
+            _synergy = new SynergySystem(data.Synergy, state, hero);
+            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
             RebuildTree();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _tutorial = new TutorialSystem(data.Tutorial, state, _upgrades);
@@ -79,6 +89,11 @@ namespace Game.Core.Sim
         public StrikeUpgradeSystem Upgrades => _upgrades;
         public ArtifactSystem Artifacts => _artifacts;
         public TutorialSystem Tutorial => _tutorial;
+        public PartyBuffs PartyBuffs => _partyBuffs;
+        public SynergySystem Synergy => _synergy;
+        public RiftSystem Rift => _rift;
+        public WeaponSystem Weapons => _weapons;
+        public GameData Data => _data;
         public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
         public GameState State { get; }
@@ -229,6 +244,7 @@ namespace Game.Core.Sim
             modifiers.AddRange(State.Ascendancy.Modifiers(_data.Ascendancy));
             _treeLayer.Set(modifiers);
             _skills.RefreshAuras();
+            _partyBuffs.Rebuild();
         }
 
         public void UseData(GameData data)
@@ -243,11 +259,15 @@ namespace Game.Core.Sim
             _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
+            _weapons.UseCatalog(data.Weapons);
             _book.UseRules(data.SkillBook);
             _prestige.UseRules(data.Prestige);
             _upgrades.UseRules(data.Combat.StrikeUpgrade);
-            _artifacts.UseCatalog(data.Artifacts);
+            _artifacts.UseCatalog(data.Artifacts, data.Rift);
             _tutorial.UseRules(data.Tutorial);
+            _partyBuffs.UseRules(data.Party.Buffs);
+            _synergy.UseRules(data.Synergy);
+            _rift.UseData(data);
             RebuildTree();
         }
 
@@ -267,6 +287,9 @@ namespace Game.Core.Sim
             _skills.CastFromButtons(input);
             CastRequested();
             _triggers.Tick(input);
+            _partyBuffs.Tick();
+            _synergy.Tick();
+            _rift.Tick();
             _stage.Tick();
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);

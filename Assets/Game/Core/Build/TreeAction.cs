@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content.Tree;
+using Game.Core.Text;
 
 namespace Game.Core.Build
 {
@@ -36,7 +37,7 @@ namespace Game.Core.Build
                 if (node.Type == TreeNodeType.Mastery)
                     AddMasteryOptions(actions, TreeActionKind.ChangeMastery, node, allocation);
                 if (allocation.CanRemove(tree, node.Id))
-                    actions.Add(new TreeAction(TreeActionKind.Refund, "Вернуть"));
+                    actions.Add(new TreeAction(TreeActionKind.Refund, Texts.Get("tree.action.refund")));
                 return actions;
             }
 
@@ -52,7 +53,7 @@ namespace Game.Core.Build
             else if (node.Type == TreeNodeType.Mastery)
                 AddMasteryOptions(actions, TreeActionKind.Allocate, node, allocation);
             else
-                actions.Add(new TreeAction(TreeActionKind.Allocate, "Взять"));
+                actions.Add(new TreeAction(TreeActionKind.Allocate, Texts.Get("tree.action.take")));
             return actions;
         }
 
@@ -61,7 +62,7 @@ namespace Game.Core.Build
             var hasChoice = allocation.MasteryChoices.TryGetValue(node.Id, out var chosen);
             for (var i = 0; i < node.Options.Count; i++)
                 if (kind == TreeActionKind.Allocate || !hasChoice || chosen != i)
-                    actions.Add(new TreeAction(kind, "Вариант " + (i + 1), masteryOption: i));
+                    actions.Add(new TreeAction(kind, Texts.Format("tree.action.option", i + 1), masteryOption: i));
         }
     }
 }

@@ -17,12 +17,13 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count, Is.EqualTo(8));
+            Assert.That(gems.All.Count, Is.EqualTo(9));
             foreach (var id in new[] { "shield_bash", "odins_fury", "song", "guitar_solo" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["stenography"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["march"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["lull"].Kind, Is.EqualTo(GemKind.Skill));
+            Assert.That(gems["voodoo_needle"].Skill!.Effect, Is.InstanceOf<EnemyDebuffEffect>());
             Assert.That(gems["cast_on_enter"].Kind, Is.EqualTo(GemKind.Trigger));
         }
 
@@ -129,7 +130,7 @@ namespace Game.Core.Tests.Content
             Assert.That(levels.Experience.At(2).ToDouble(), Is.GreaterThan(levels.Experience.At(1).ToDouble()));
         }
 
-        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"enter\" }, \"cooldownMultiplier\": 1 }", "gems[7].id: gem id 'lull' is used twice")]
+        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"enter\" }, \"cooldownMultiplier\": 1 }", "gems[8].id: gem id 'lull' is used twice")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"spell\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'spell'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"pink\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].color: unknown value 'pink'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds")]

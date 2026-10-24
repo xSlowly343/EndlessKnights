@@ -1,30 +1,29 @@
 using System.Collections.Generic;
+using Game.Core.Text;
 
 namespace Game.Core.Ui
 {
     public static class ConsentTexts
     {
-        public const string Title = "Что игра считает и что нет";
-        public const string Accept = "Понятно, начать";
-        public const string Decline = "Не сейчас";
-        public const string Declined = "Ввод не считается, пока ты не согласишься. Экран согласия есть в настройках.";
+        private const int CountedLines = 5;
+        private const int NotCountedLines = 3;
 
-        public static readonly IReadOnlyList<string> Counted = new[]
+        public static string Title => Texts.Get("consent.title");
+        public static string Accept => Texts.Get("consent.accept");
+        public static string Decline => Texts.Get("consent.decline");
+        public static string Declined => Texts.Get("consent.declined");
+        public static string NetworkNote => Texts.Get("consent.networkNote");
+
+        public static IReadOnlyList<string> Counted => Lines("consent.counted.", CountedLines);
+
+        public static IReadOnlyList<string> NotCounted => Lines("consent.notCounted.", NotCountedLines);
+
+        private static IReadOnlyList<string> Lines(string prefix, int count)
         {
-            "Сколько раз нажаты клавиши, без того, какие именно",
-            "Отдельно только Enter, Backspace и пробел",
-            "Путь мыши в пикселях, взмахи и круги",
-            "Клики левой, правой и средней кнопкой и щелчки колёсика",
-            "Имя активной программы, только чтобы сверить с чёрным списком, без сохранения"
-        };
-
-        public static readonly IReadOnlyList<string> NotCounted = new[]
-        {
-            "Коды клавиш и набранный текст: игра их не видит и не хранит",
-            "Заголовки окон, адреса сайтов и содержимое экрана",
-            "Ввод в приложениях из чёрного списка и при паузе"
-        };
-
-        public const string NetworkNote = "На диск и в сеть уходят только счётчики. Что именно считать, можно выбрать в настройках.";
+            var lines = new string[count];
+            for (var i = 0; i < count; i++)
+                lines[i] = Texts.Get(prefix + i);
+            return lines;
+        }
     }
 }

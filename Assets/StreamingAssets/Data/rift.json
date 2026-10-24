@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "schedule": {
+    "windows": [{ "day": "tuesday", "hourUtc": 12 }, { "day": "saturday", "hourUtc": 12 }],
+    "durationHours": 24,
+    "announceMinutes": 60
+  },
+  "world": {
+    "hpMultiplier": 10,
+    "softWall": { "period": 25, "zoneLength": 3, "rate": 1.2 },
+    "bossTimerSeconds": 30
+  },
+  "shards": { "boss": 1, "guardian": 3 },
+  "artifacts": {
+    "unlockCost": { "curve": "exp", "base": 2, "rate": 1.15 },
+    "levelCost": { "curve": "exp", "base": 1, "rate": 1.25 }
+  },
+  "modifiersPerWindow": 2,
+  "markBonus": 0.5,
+  "modifiers": [
+    { "id": "stone_skin", "unlessMarks": ["curse", "time"], "favours": ["curse", "time"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5 }] },
+    { "id": "regeneration", "unlessMarks": ["poison", "fire"], "favours": ["poison", "fire"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.3 }] },
+    { "id": "colossus_shield", "unlessMarks": ["lightning", "hunterMark"], "favours": ["lightning", "hunterMark"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.3 }] },
+    { "id": "horde", "favours": ["summon"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.25 }, { "stat": "gold", "kind": "more", "value": 0.5 }] },
+    { "id": "silence", "favours": ["stun"], "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": -0.5, "tags": ["Aura"] }] },
+    { "id": "eclipse", "favours": ["series"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Keyboard"] }, { "stat": "mouseDistance", "kind": "more", "value": 1 }] }
+  ]
+}
