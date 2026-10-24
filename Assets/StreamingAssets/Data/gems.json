@@ -371,6 +371,101 @@
       "effect": { "type": "strike", "multiplier": 4, "queueTargets": 1 }
     },
     {
+      "id": "mark",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Метка", "en": "Mark" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 15,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "critEvery", "kind": "flat", "value": 5 }] }
+    },
+    {
+      "id": "weak_spot",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Слабое место", "en": "Weak Spot" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 40 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "critMultiplier", "kind": "more", "value": 1.0 }] }
+    },
+    {
+      "id": "execute",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Казнь", "en": "Execute" },
+      "tags": ["Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 10,
+      "effect": { "type": "strike", "multiplier": 3, "executeBelow": 0.2 }
+    },
+    {
+      "id": "exposure",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Разоблачение", "en": "Exposure" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 25 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 15,
+      "marks": ["curse"],
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.20, "tags": ["Skill"] }] }
+    },
+    {
+      "id": "boss_hunt",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Охота на босса", "en": "Boss Hunt" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "bossHunt", "bonus": 0.15, "lastSeconds": 10, "lastBonus": 0.30 }
+    },
+    {
+      "id": "ricochet",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Рикошет", "en": "Ricochet" },
+      "tags": ["Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 4,
+      "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1, "queueMultiplier": 1 }
+    },
+    {
+      "id": "lucky_coin",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Счастливая монета", "en": "Lucky Coin" },
+      "tags": ["Skill"],
+      "cost": { "resource": 10 },
+      "cooldownSeconds": 5,
+      "effect": { "type": "strike", "multiplier": 6, "coinFlip": true }
+    },
+    {
+      "id": "composure",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Выдержка", "en": "Composure" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "composure", "multiplier": 1.5 }
+    },
+    {
+      "id": "freeze_frame",
+      "kind": "skill",
+      "color": "blue",
+      "name": { "ru": "Стоп-кадр", "en": "Freeze Frame" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 80 },
+      "cooldownSeconds": 120,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "bossTimerSpeed", "kind": "more", "value": -1 }] }
+    },
+    {
       "id": "march",
       "kind": "skill",
       "color": "blue",

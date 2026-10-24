@@ -21,8 +21,12 @@ namespace Game.Core.Content.Gems
 
     public sealed class StrikeEffect : SkillEffect
     {
-        public StrikeEffect(double multiplier, int queueTargets = 0, bool skipCurrent = false, double killRefundShare = 0)
+        public StrikeEffect(double multiplier, int queueTargets = 0, bool skipCurrent = false, double killRefundShare = 0,
+            double queueMultiplier = 0, double executeBelow = 0, bool coinFlip = false)
         {
+            QueueMultiplier = queueMultiplier > 0 ? queueMultiplier : multiplier;
+            ExecuteBelow = executeBelow;
+            CoinFlip = coinFlip;
             Multiplier = multiplier;
             QueueTargets = queueTargets;
             SkipCurrent = skipCurrent;
@@ -33,6 +37,9 @@ namespace Game.Core.Content.Gems
         public int QueueTargets { get; }
         public bool SkipCurrent { get; }
         public double KillRefundShare { get; }
+        public double QueueMultiplier { get; }
+        public double ExecuteBelow { get; }
+        public bool CoinFlip { get; }
     }
 
     public sealed class AuraEffect : SkillEffect
@@ -211,6 +218,30 @@ namespace Game.Core.Content.Gems
         }
 
         public double PxPerMultiplier { get; }
+    }
+
+    public sealed class BossHuntEffect : SkillEffect
+    {
+        public BossHuntEffect(double bonus, double lastSeconds, double lastBonus)
+        {
+            Bonus = bonus;
+            LastSeconds = lastSeconds;
+            LastBonus = lastBonus;
+        }
+
+        public double Bonus { get; }
+        public double LastSeconds { get; }
+        public double LastBonus { get; }
+    }
+
+    public sealed class ComposureEffect : SkillEffect
+    {
+        public ComposureEffect(double multiplier)
+        {
+            Multiplier = multiplier;
+        }
+
+        public double Multiplier { get; }
     }
 
     public sealed class EnemyDebuffEffect : SkillEffect

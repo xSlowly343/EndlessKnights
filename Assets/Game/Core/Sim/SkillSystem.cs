@@ -65,7 +65,7 @@ namespace Game.Core.Sim
                 throw new ArgumentException($"{skill.Id} is not a skill gem.", nameof(skill));
             if (trigger != null && (trigger.Kind != GemKind.Trigger || trigger.Trigger == null))
                 throw new ArgumentException($"{trigger.Id} is not a trigger gem.", nameof(trigger));
-            var slot = new SkillSlot(skill, trigger) { EquipTick = _state.Tick };
+            var slot = new SkillSlot(skill, trigger) { EquipTick = _state.Tick, ReadyTick = _state.Tick };
             _state.Skills.Add(slot);
             KeepReserved(slot);
             return _state.Skills.Count - 1;
@@ -120,6 +120,7 @@ namespace Game.Core.Sim
             if (!Pay(skill, native, out var spent))
                 return CastResult.NotEnoughResource;
 
+            slot.CastPower = CastPower(slot);
             var cooldown = skill.CooldownSeconds * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
             slot.StartCooldown(Ticks(cooldown));
             slot.LastCastTick = _state.Tick;
@@ -135,6 +136,22 @@ namespace Game.Core.Sim
             Release(slot, native, spent, wasFull, announce: true);
             return CastResult.Cast;
         }
+
+        private double CastPower(SkillSlot slot)
+        {
+            if (slot.Def.CooldownSeconds <= 0 || _state.Tick - slot.ReadyTick < Ticks(slot.Def.CooldownSeconds))
+                return 1;
+            var power = 1.0;
+            foreach (var other in _state.Skills)
+            {
+                if (other.Def.Effect is ComposureEffect composure && Armed(other))
+                    power = System.Math.Max(power, composure.Multiplier);
+            }
+            return power;
+        }
+
+        private void SkillHit(SkillSlot slot, double multiplier) =>
+            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * slot.CastPower, slot.Skill.Tags);
 
         private void Release(SkillSlot slot, NativeTrait native, double spent, bool wasFull, bool announce)
         {
@@ -195,7 +212,7 @@ namespace Game.Core.Sim
                 multiplier += hits.CircleMultiplier * turns;
             }
             if (multiplier > 0)
-                _combat.SkillHit(_combat.BaseKeyDamage, multiplier, slot.Skill.Tags);
+                SkillHit(slot, multiplier);
         }
 
         private static int TakeHits(SkillSlot slot, InputHitsEffect hits, int events)
@@ -250,13 +267,25 @@ namespace Game.Core.Sim
 
         private void Strike(SkillSlot slot, StrikeEffect strike, NativeTrait native, double spent)
         {
-            var multiplier = native.SpendsAll ? System.Math.Min(native.SpendAllMax, spent * native.SpendAllPerPoint) : strike.Multiplier;
+            if (strike.CoinFlip && _state.Rng.NextDouble() < 0.5)
+            {
+                slot.StartCooldown(0);
+                return;
+            }
+            if (Executes(strike))
+            {
+                _combat.DirectHit(_state.EnemyHp);
+                return;
+            }
+            var power = slot.CastPower;
+            var multiplier = power * (native.SpendsAll ? System.Math.Min(native.SpendAllMax, spent * native.SpendAllPerPoint) : strike.Multiplier);
+            var queueMultiplier = native.SpendsAll ? multiplier : power * strike.QueueMultiplier;
             var tags = slot.Skill.Tags;
             var targets = strike.QueueTargets + (native.ExtraTargetWhileFamily != null && AnyActive(native.ExtraTargetWhileFamily) ? 1 : 0);
             targets = System.Math.Min(targets, GameState.QueueDepth);
             if (targets > 0)
             {
-                var damage = _combat.SkillDamage(_combat.BaseKeyDamage, multiplier, tags);
+                var damage = _combat.SkillDamage(_combat.BaseKeyDamage, queueMultiplier, tags);
                 for (var i = 0; i < targets; i++)
                     _state.QueueDamage[i] += damage;
                 if (native.WoundedSpawnResource > 0)
@@ -272,6 +301,10 @@ namespace Game.Core.Sim
             if (native.RefreshFamily != null)
                 RefreshActive(native.RefreshFamily);
         }
+
+        private bool Executes(StrikeEffect strike) =>
+            strike.ExecuteBelow > 0 && _state.EnemyAlive && _state.EnemyMaxHp.Sign > 0
+            && (_state.EnemyHp / _state.EnemyMaxHp).ToDouble() < strike.ExecuteBelow;
 
         private bool AnyActive(string family)
         {
@@ -338,7 +371,7 @@ namespace Game.Core.Sim
                 slot.HitCount = 0;
             slot.LastKeyTick = _state.Tick;
             if (++slot.HitCount % streak.Hits == 0)
-                _combat.SkillHit(_combat.BaseKeyDamage, streak.Multiplier, slot.Skill.Tags);
+                SkillHit(slot, streak.Multiplier);
         }
 
         private void SpecialKeyHits(SkillSlot slot, SpecialKeysEffect special, in EffectiveInput input)
@@ -356,7 +389,7 @@ namespace Game.Core.Sim
                 return;
             }
             if (presses > 0)
-                _combat.SkillHit(_combat.BaseKeyDamage, special.Bonus * presses, slot.Skill.Tags);
+                SkillHit(slot, special.Bonus * presses);
         }
 
         private static int Presses(SpecialKey key, in EffectiveInput input)
@@ -401,8 +434,8 @@ namespace Game.Core.Sim
             for (var index = 0; index < _state.Skills.Count; index++)
             {
                 var slot = _state.Skills[index];
-                if (slot.CooldownTicks > 0)
-                    slot.CooldownTicks--;
+                if (slot.CooldownTicks > 0 && --slot.CooldownTicks == 0)
+                    slot.ReadyTick = _state.Tick;
                 KeepReserved(slot);
                 if (slot.ActiveTicks > 0)
                 {
@@ -422,11 +455,28 @@ namespace Game.Core.Sim
                     TickInputHits(slot, inputHits, input);
                 if (slot.Def.Effect is DistanceStacksEffect distance)
                     TickDistanceStacks(slot, distance, input);
+                if (slot.Def.Effect is BossHuntEffect hunt)
+                    TickBossHunt(slot, hunt);
                 if (slot.Active && slot.Def.Effect is TrailEffect)
                     slot.Progress += input.MousePx;
                 if (input.HasInput && slot.Def.Effect is IdleStrikeEffect strike)
                     ReleaseIdleStrike(slot, strike, idleTicksBefore * GameLoop.TickSeconds);
             }
+        }
+
+        private void TickBossHunt(SkillSlot slot, BossHuntEffect hunt)
+        {
+            var bonus = !Armed(slot) || !_state.FightingBoss ? 0
+                : _state.BossTicksLeft > 0 && _state.BossTicksLeft <= Ticks(hunt.LastSeconds) ? hunt.LastBonus : hunt.Bonus;
+            if (bonus == slot.HuntBonus)
+                return;
+            RemoveAura(slot);
+            slot.HuntBonus = bonus;
+            if (bonus <= 0)
+                return;
+            slot.AuraModifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.More, bonus));
+            _hero.AddRange(slot.AuraModifiers);
+            slot.AuraApplied = true;
         }
 
         private void End(SkillSlot slot)
@@ -447,7 +497,7 @@ namespace Game.Core.Sim
                 var multiplier = slot.Progress / trail.PxPerMultiplier;
                 slot.Progress = 0;
                 if (multiplier > 0)
-                    _combat.SkillHit(_combat.BaseKeyDamage, multiplier, slot.Skill.Tags);
+                    SkillHit(slot, multiplier);
             }
         }
 
@@ -659,6 +709,7 @@ namespace Game.Core.Sim
                 _hero.Remove(slot.AuraModifiers[i]);
             slot.AuraModifiers.Clear();
             slot.AuraApplied = false;
+            slot.HuntBonus = 0;
             _state.ReservedResource = System.Math.Max(0, _state.ReservedResource - slot.ReservedApplied);
             slot.ReservedApplied = 0;
             if (!(slot.Def.Effect is AuraEffect aura))

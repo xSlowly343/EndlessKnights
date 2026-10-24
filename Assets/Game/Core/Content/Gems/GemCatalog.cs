@@ -209,7 +209,10 @@ namespace Game.Core.Content.Gems
                         node.Field("multiplier").AsNumber(0, 1e6),
                         node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
                         node.HasField("skipCurrent") && node.Field("skipCurrent").AsBool(),
-                        node.HasField("killRefundShare") ? node.Field("killRefundShare").AsNumber(0, 1) : 0);
+                        node.HasField("killRefundShare") ? node.Field("killRefundShare").AsNumber(0, 1) : 0,
+                        Number(node, "queueMultiplier", 1e6),
+                        Number(node, "executeBelow", 1),
+                        node.HasField("coinFlip") && node.Field("coinFlip").AsBool());
                 case "aura":
                     return new AuraEffect(
                         ModifierReader.ReadList(node.Field("modifiers")),
@@ -262,6 +265,13 @@ namespace Game.Core.Content.Gems
                         new StacksEffect(StackTrigger.Kill, ModifierReader.Read(node.Field("perStack")), node.Field("max").AsNumber(0, 1e6), 0));
                 case "trail":
                     return new TrailEffect(node.Field("pxPerMultiplier").AsNumber(1, 1e9));
+                case "bossHunt":
+                    return new BossHuntEffect(
+                        node.Field("bonus").AsNumber(0, 1000),
+                        node.Field("lastSeconds").AsNumber(0, 3600),
+                        node.Field("lastBonus").AsNumber(0, 1000));
+                case "composure":
+                    return new ComposureEffect(node.Field("multiplier").AsNumber(1, 1000));
                 case "enemyDebuff":
                     return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10));
                 case "idleStrike":
@@ -270,7 +280,7 @@ namespace Game.Core.Content.Gems
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, enemyDebuff or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, enemyDebuff or idleStrike");
             }
         }
 

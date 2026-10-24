@@ -13,6 +13,7 @@ namespace Game.Core.Sim
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
+        private long _hitsTowardCrit;
 
         public CombatSystem(CombatRules rules, StatSheet hero, GameState state, EventQueue events)
         {
@@ -85,7 +86,7 @@ namespace Game.Core.Sim
             if (damage.Sign <= 0)
                 return;
 
-            if (RollCrit(tags))
+            if (ForcedCrit() || RollCrit(tags))
             {
                 damage *= CritMultiplier(tags);
                 flags |= HitFlags.Crit;
@@ -137,6 +138,17 @@ namespace Game.Core.Sim
 
         public double CritMultiplier(StatTags tags) =>
             System.Math.Max(1, _hero.Compute(CombatStats.CritMultiplier, BigNumber.FromDouble(_rules.CritMultiplier), tags | StatTags.Crit).ToDouble());
+
+        private bool ForcedCrit()
+        {
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.CritEvery, 0));
+            if (every < 1)
+            {
+                _hitsTowardCrit = 0;
+                return false;
+            }
+            return ++_hitsTowardCrit % every == 0;
+        }
 
         private bool RollCrit(StatTags tags)
         {

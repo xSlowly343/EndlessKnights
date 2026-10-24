@@ -40,6 +40,9 @@ namespace Game.Core.Sim
         public double CircleProgress { get; set; }
         public double[]? Buckets { get; set; }
         public long BucketSecond { get; set; } = -1;
+        public long ReadyTick { get; set; }
+        public double CastPower { get; set; } = 1;
+        public double HuntBonus { get; set; }
         public void StartCooldown(int ticks)
         {
             CooldownTicks = ticks;
