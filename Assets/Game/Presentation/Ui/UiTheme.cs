@@ -18,6 +18,7 @@ namespace Game.Presentation.Ui
         [SerializeField] private Color plateDark = new Color32(0x7A, 0x1E, 0x24, 0xFF);
         [SerializeField] private Color gold = new Color32(0xF0, 0xB4, 0x3C, 0xFF);
         [SerializeField] private Color accent = new Color32(0x3F, 0x6F, 0xD1, 0xFF);
+        [SerializeField] private Color alert = new Color32(0xE5, 0x48, 0x4D, 0xFF);
         [SerializeField] private Color success = new Color32(0x3C, 0x9A, 0x4E, 0xFF);
         [SerializeField] private Color text = new Color32(0xEE, 0xF2, 0xFF, 0xFF);
         [SerializeField] private Color textDim = new Color32(0x9A, 0xA6, 0xC8, 0xFF);
@@ -33,6 +34,7 @@ namespace Game.Presentation.Ui
         public Color PlateDark => plateDark;
         public Color Gold => gold;
         public Color Accent => accent;
+        public Color Alert => alert;
         public Color Success => success;
         public Color Text => text;
         public Color TextDim => textDim;

@@ -90,6 +90,7 @@ namespace Game.Bootstrap
                 var battle = BattleDriver.Attach(host, data.Current, observedInput, save?.State);
                 panels.Bind(battle.Loop, data.Current.Tree);
                 router.UseSkillBar(battle.SkillBar);
+                NotificationDriver.Attach(host, dock, panelMode, panels, battle);
                 if (save != null)
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);

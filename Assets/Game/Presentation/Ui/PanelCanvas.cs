@@ -54,6 +54,10 @@ namespace Game.Presentation.Ui
         private const float SmallTextSizePx = 13f;
         private const float NumberSizePx = 19f;
         private const float GlyphSizePx = 20f;
+        private const float NoticeMinSizePx = 10f;
+        private const float NoticeRightPx = 394f;
+        private const float NoticeRightWithWidePx = 322f;
+        private const float NoticeSeconds = 3f;
 
         private readonly List<UiButton> _subTabs = new List<UiButton>();
         private readonly List<UiButton> _tabs = new List<UiButton>();
@@ -62,6 +66,13 @@ namespace Game.Presentation.Ui
         private readonly List<TextMeshProUGUI> _reportLines = new List<TextMeshProUGUI>();
         private readonly List<PanelSection> _moreSections = new List<PanelSection>();
         private readonly List<PanelSection> _barSections = new List<PanelSection>();
+        private readonly List<SectionMark> _tabMarks = new List<SectionMark>();
+        private readonly List<SectionMark> _moreMarks = new List<SectionMark>();
+        private IReadOnlyList<PanelSection> _moreAll = Array.Empty<PanelSection>();
+        private PanelMarks? _marks;
+        private Image _coin = null!;
+        private TextMeshProUGUI _notice = null!;
+        private float _noticeLeft;
 
         private UiTheme _theme = null!;
         private RectTransform _canvasRect = null!;
@@ -127,6 +138,25 @@ namespace Game.Presentation.Ui
         public bool IsTweening => _tweenElapsed < TweenSeconds;
         public float HeightPx => _heightPx;
         public RectTransform CanvasRect => _canvasRect;
+        public bool IsNoticeShown => _notice.gameObject.activeSelf;
+
+        public SectionMark TabMark(int index) => _tabMarks[index];
+        public SectionMark MoreMark(int index) => _moreMarks[index];
+
+        public void UseMarks(PanelMarks marks) => _marks = marks;
+
+        public void RefreshMarks()
+        {
+            if (IsOpen && !_showingReport)
+                ShowMarks();
+        }
+
+        public void ShowNotice(string text)
+        {
+            _notice.text = text;
+            _noticeLeft = NoticeSeconds;
+            ShowNoticeInsteadOfGold(true);
+        }
 
         public void Bind(GameLoop loop, PassiveTree tree)
         {
@@ -146,6 +176,7 @@ namespace Game.Presentation.Ui
             ShowSubTabs(navigator);
             ShowTabs(navigator);
             ShowContent(navigator);
+            ShowMarks();
             _shownGold = string.Empty;
             _sinceCurrency = CurrencyRefreshSeconds;
             RefreshCurrency();
@@ -182,6 +213,8 @@ namespace Game.Presentation.Ui
         public void Hide()
         {
             CancelPress();
+            _noticeLeft = 0f;
+            ShowNoticeInsteadOfGold(false);
             gameObject.SetActive(false);
         }
 
@@ -313,8 +346,42 @@ namespace Game.Presentation.Ui
         private void LateUpdate()
         {
             AdvanceTween();
+            AdvanceNotice();
             RefreshCurrency();
         }
+
+        private void AdvanceNotice()
+        {
+            if (_noticeLeft <= 0f)
+                return;
+            _noticeLeft -= Time.unscaledDeltaTime;
+            if (_noticeLeft <= 0f)
+                ShowNoticeInsteadOfGold(false);
+        }
+
+        private void ShowNoticeInsteadOfGold(bool notice)
+        {
+            _notice.gameObject.SetActive(notice);
+            _coin.gameObject.SetActive(!notice);
+            _currency.gameObject.SetActive(!notice);
+        }
+
+        private void ShowMarks()
+        {
+            for (var i = 0; i < _tabMarks.Count; i++)
+            {
+                if (i < _barSections.Count)
+                    _tabMarks[i].Show(HasDot(_barSections[i]), LockStage(_barSections[i]));
+                else
+                    _tabMarks[i].Show(_marks != null && _marks.HasDotAmong(_moreAll), 0);
+            }
+            for (var i = 0; i < _moreSections.Count && i < _moreMarks.Count; i++)
+                _moreMarks[i].Show(HasDot(_moreSections[i]), LockStage(_moreSections[i]));
+        }
+
+        private bool HasDot(PanelSection section) => _marks != null && _marks.HasDot(section);
+
+        private long LockStage(PanelSection section) => _marks == null || _marks.IsOpen(section) ? 0 : _marks.UnlockStage(section);
 
         private void AdvanceTween()
         {
@@ -394,6 +461,8 @@ namespace Game.Presentation.Ui
             var canBeWide = !navigator.ShowingMore && PanelSections.CanBeWide(navigator.Active);
             _wide.Show(canBeWide);
             _wide.Text = navigator.IsWide ? "Уже" : "Шире";
+            var noticeLeft = _notice.rectTransform.anchoredPosition.x;
+            _notice.rectTransform.sizeDelta = new Vector2((canBeWide ? NoticeRightWithWidePx : NoticeRightPx) - noticeLeft, HeaderButtonPx);
             _handle.Show(!navigator.IsWide && !navigator.ShowingMore);
         }
 
@@ -421,6 +490,7 @@ namespace Game.Presentation.Ui
         {
             _barSections.Clear();
             _barSections.AddRange(navigator.Bar);
+            _moreAll = navigator.More;
             var activeIndex = navigator.ShowingMore ? _barSections.Count : _barSections.IndexOf(navigator.Active);
             for (var i = 0; i < _tabs.Count; i++)
             {
@@ -527,9 +597,16 @@ namespace Game.Presentation.Ui
             _titlePlate.Label!.color = Color.white;
             UiElements.BottomEdge(UiElements.Fill("Line", _titlePlate.Rect, _theme.Gold).rectTransform, PlateLinePx, ButtonRadiusPx);
             var coinX = 2f * MarginPx + PlateWidthPx;
-            UiElements.Anchor(UiElements.Dot("Coin", header, _theme.Gold).rectTransform, middleLeft, new Vector2(coinX, 0f), Vector2.one * CoinPx);
+            _coin = UiElements.Dot("Coin", header, _theme.Gold);
+            UiElements.Anchor(_coin.rectTransform, middleLeft, new Vector2(coinX, 0f), Vector2.one * CoinPx);
             _currency = UiElements.Label("Currency", header, _theme.NumberFont, NumberSizePx, _theme.Gold, TextAlignmentOptions.MidlineLeft);
             UiElements.Anchor(_currency.rectTransform, middleLeft, new Vector2(coinX + CoinPx + MarginPx / 2f, 0f), new Vector2(CurrencyWidthPx, HeaderButtonPx));
+            _notice = UiElements.Label("Notice", header, _theme.TextFont, SmallTextSizePx, _theme.Text, TextAlignmentOptions.MidlineLeft);
+            _notice.enableAutoSizing = true;
+            _notice.fontSizeMin = NoticeMinSizePx;
+            _notice.fontSizeMax = SmallTextSizePx;
+            UiElements.Anchor(_notice.rectTransform, middleLeft, new Vector2(coinX, 0f), new Vector2(NoticeRightPx - coinX, HeaderButtonPx));
+            _notice.gameObject.SetActive(false);
             _close = Button("Close", header, middleRight, new Vector2(-MarginPx, 0f), Vector2.one * HeaderButtonPx, _theme.PlateDark, ButtonRadiusPx, _theme.BoldFont, GlyphSizePx);
             _close.Text = "×";
             _pin = Button("Pin", header, middleRight, new Vector2(-2f * MarginPx - HeaderButtonPx, 0f), Vector2.one * HeaderButtonPx, _theme.Card, ButtonRadiusPx);
@@ -607,7 +684,9 @@ namespace Game.Presentation.Ui
             var chevron = UiElements.Label("Chevron", back.rectTransform, _theme.BoldFont, GlyphSizePx, _theme.TextDim, TextAlignmentOptions.MidlineRight);
             UiElements.Stretch(chevron.rectTransform).offsetMax = new Vector2(-MoreTextInsetPx, 0f);
             chevron.text = "›";
-            return new UiButton(back, label);
+            var row = new UiButton(back, label);
+            _moreMarks.Add(SectionMark.ForRow(row, chevron.gameObject, _theme));
+            return row;
         }
 
         private void BuildTabBar(RectTransform bar)
@@ -629,8 +708,10 @@ namespace Game.Presentation.Ui
                 UiElements.Stretch(label.rectTransform);
                 var stripe = UiElements.Fill("Stripe", back.rectTransform, _theme.Gold, TabStripePx / 2f);
                 UiElements.TopEdge(stripe.rectTransform, TabStripePx, TabStripeInsetPx);
-                _tabs.Add(new UiButton(back, label));
+                var tab = new UiButton(back, label);
+                _tabs.Add(tab);
                 _tabStripes.Add(stripe);
+                _tabMarks.Add(SectionMark.ForTab(tab, _theme));
             }
         }
 

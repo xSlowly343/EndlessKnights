@@ -68,10 +68,14 @@ namespace Game.Presentation.Ui
             return image;
         }
 
-        public static Image Dot(string name, Transform parent, Color color)
+        public static Image Dot(string name, Transform parent, Color color) => Shape(name, parent, color, UiSprites.Circle);
+
+        public static Image Ring(string name, Transform parent, Color color) => Shape(name, parent, color, UiSprites.Ring);
+
+        private static Image Shape(string name, Transform parent, Color color, Sprite sprite)
         {
             var image = Rect(name, parent).gameObject.AddComponent<Image>();
-            image.sprite = UiSprites.Circle;
+            image.sprite = sprite;
             image.color = color;
             image.raycastTarget = false;
             return image;

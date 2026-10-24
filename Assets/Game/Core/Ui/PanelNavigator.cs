@@ -27,6 +27,9 @@ namespace Game.Core.Ui
         }
 
         public event Action? Changed;
+        public event Action<PanelSection>? Refused;
+
+        public Func<PanelSection, bool> IsUnlocked { get; set; } = _ => true;
 
         public bool IsOpen { get; private set; }
         public bool ShowingMore { get; private set; }
@@ -54,7 +57,9 @@ namespace Game.Core.Ui
 
         public void SelectTab(PanelSection section)
         {
-            if (IsOpen && !ShowingMore && Active == section)
+            if (!IsUnlocked(section))
+                Refused?.Invoke(section);
+            else if (IsOpen && !ShowingMore && Active == section)
                 Close();
             else
                 Open(section, false);
@@ -118,10 +123,20 @@ namespace Game.Core.Ui
             if (!IsOpen || steps == 0)
                 return;
             var current = Array.IndexOf(_bar, Active);
-            var start = current < 0 ? 0 : current;
-            var next = ((start + steps) % BarSize + BarSize) % BarSize;
-            Open(_bar[next], false);
+            var index = current < 0 ? 0 : current;
+            var direction = System.Math.Sign(steps);
+            var left = System.Math.Abs(steps);
+            for (var tries = BarSize * left; left > 0 && tries > 0; tries--)
+            {
+                index = Wrap(index + direction);
+                if (IsUnlocked(_bar[index]))
+                    left--;
+            }
+            if (left == 0)
+                Open(_bar[index], false);
         }
+
+        private static int Wrap(int index) => (index % BarSize + BarSize) % BarSize;
 
         public void PlaceOnBar(int slot, PanelSection section)
         {

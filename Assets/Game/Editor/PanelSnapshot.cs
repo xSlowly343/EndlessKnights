@@ -40,6 +40,9 @@ namespace Game.Editor
 
             var panels = PanelCanvas.Create();
             panels.Bind(loop, data.Tree);
+            var marks = new PanelMarks(data.Panel);
+            marks.Refresh(loop.State, data.Ascendancy);
+            panels.UseMarks(marks);
             var navigator = new PanelNavigator();
             navigator.SelectTab(PanelSection.Tree);
             var frame = ShowPanel(panels, navigator);
@@ -61,6 +64,11 @@ namespace Game.Editor
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-more.png"));
 
+            navigator.SelectTab(PanelSection.Hero);
+            frame = ShowPanel(panels, navigator);
+            panels.ShowNotice(PanelTexts.Locked(PanelSection.Party, data.Panel.StageFor(PanelSection.Party)));
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-notice.png"));
+
             panels.ShowReport("Пока тебя не было", new[] { "Тебя не было: 2 ч 15 мин", "Золото: +1.50K", "Побеждено врагов: 340", "Этап: 12 → 15" });
             panels.Place(0f, true);
             var report = PanelCanvas.ReportFrame;
@@ -73,6 +81,16 @@ namespace Game.Editor
             battle.Hit(BigNumber.FromDouble(3900), true);
             battle.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
             Save(camera, panels, GameStartup.StripWidth, StripHeightPx, Path.Combine(folder, "strip.png"));
+
+            var queue = new NotificationQueue();
+            queue.Push(PanelTexts.Unlocked(PanelSection.Items), 8);
+            queue.Push(PanelTexts.LevelUp(7), 9);
+            queue.Push(PanelTexts.Locked(PanelSection.Party, data.Panel.StageFor(PanelSection.Party)), 9.6);
+            var pills = NotificationPills.Create();
+            pills.Place(true);
+            pills.Show(queue.Items, 10);
+            var pillsArea = Mathf.RoundToInt(NotificationPills.AreaHeightPx) + PanelGeometry.GapToStripPx;
+            Save(camera, panels, GameStartup.StripWidth, StripHeightPx + pillsArea, Path.Combine(folder, "strip-notifications.png"));
             Debug.Log("Panel snapshots saved to " + folder);
         }
 

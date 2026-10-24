@@ -10,11 +10,15 @@ namespace Game.Presentation.Ui
         private const int CircleSize = 64;
         private const float PixelsPerUnit = 100f;
 
+        private const float RingInnerFraction = 0.62f;
+
         private static Sprite? _rounded;
         private static Sprite? _circle;
+        private static Sprite? _ring;
 
         public static Sprite Rounded => _rounded ??= CreateRounded();
-        public static Sprite Circle => _circle ??= CreateCircle();
+        public static Sprite Circle => _circle ??= CreateCircle(0f);
+        public static Sprite Ring => _ring ??= CreateCircle(RingInnerFraction);
 
         public static float MultiplierFor(float radiusPx) => CornerPx / radiusPx;
 
@@ -39,14 +43,20 @@ namespace Game.Presentation.Ui
             return Sprite.Create(texture, new Rect(0f, 0f, RoundedSize, RoundedSize), new Vector2(0.5f, 0.5f), PixelsPerUnit, 0, SpriteMeshType.FullRect, border);
         }
 
-        private static Sprite CreateCircle()
+        private static Sprite CreateCircle(float innerFraction)
         {
             var texture = NewTexture(CircleSize);
             var radius = CircleSize / 2f;
+            var inner = radius * innerFraction;
             for (var y = 0; y < CircleSize; y++)
             {
                 for (var x = 0; x < CircleSize; x++)
-                    texture.SetPixel(x, y, new Color(1f, 1f, 1f, Coverage(radius, x + 0.5f - radius, y + 0.5f - radius)));
+                {
+                    var dx = x + 0.5f - radius;
+                    var dy = y + 0.5f - radius;
+                    var hole = inner > 0f ? Coverage(inner, dx, dy) : 0f;
+                    texture.SetPixel(x, y, new Color(1f, 1f, 1f, Coverage(radius, dx, dy) - hole));
+                }
             }
             texture.Apply();
             return Sprite.Create(texture, new Rect(0f, 0f, CircleSize, CircleSize), new Vector2(0.5f, 0.5f), PixelsPerUnit);
