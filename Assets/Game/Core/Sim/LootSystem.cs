@@ -27,9 +27,9 @@ namespace Game.Core.Sim
             return _hero.Compute(CombatStats.Gold, baseGold * (enemy?.GoldMultiplier ?? 1.0), StatTags.Gold);
         }
 
-        public void OnKill(long stage, EnemyType type, EnemyDef? enemy)
+        public void OnKill(long stage, EnemyType type, EnemyDef? enemy, double multiplier = 1)
         {
-            var gold = GoldFor(stage, type, enemy);
+            var gold = GoldFor(stage, type, enemy) * multiplier;
             if (gold.Sign <= 0)
                 return;
             _state.Gold += gold;

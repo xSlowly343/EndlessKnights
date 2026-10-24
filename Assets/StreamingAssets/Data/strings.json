@@ -17,6 +17,7 @@
     "stat.focusGain": { "ru": "набор Фокуса", "en": "Focus gain" },
     "stat.focusMultiplier": { "ru": "сила Фокуса", "en": "Focus strength" },
     "stat.overkillCarry": { "ru": "перенос лишнего урона на следующего врага", "en": "overkill carried to the next enemy" },
+    "stat.gemExperience": { "ru": "опыт гемов", "en": "gem experience" },
     "stat.critEvery": { "ru": "гарантированный крит каждые N ударов", "en": "guaranteed crit every N hits" },
     "stat.auraDuration": { "ru": "длительность аур", "en": "aura duration" },
     "stat.comboStrikeMultiplier": { "ru": "сила удара комбо", "en": "combo strike power" },

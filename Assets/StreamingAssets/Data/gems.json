@@ -500,6 +500,87 @@
       "effect": { "type": "idleStrike", "chargePerSecond": 0.05, "maxChargeSeconds": 60, "minIdleSeconds": 30 }
     },
     {
+      "id": "golden_fever",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Золотая лихорадка", "en": "Golden Fever" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 40 },
+      "cooldownSeconds": 60,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.3333 }, { "stat": "gold", "kind": "more", "value": 1.0 }] }
+    },
+    {
+      "id": "second_wind",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Второе дыхание", "en": "Second Wind" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 90,
+      "effect": { "type": "gainResource", "amount": 50 }
+    },
+    {
+      "id": "echo",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Эхо", "en": "Echo" },
+      "tags": ["Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 10,
+      "effect": { "type": "echo", "power": 0.5 }
+    },
+    {
+      "id": "coffee_break",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Кофе-брейк", "en": "Coffee Break" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "breakBonus", "breakSeconds": 300, "seconds": 60, "modifiers": [{ "stat": "damage", "kind": "more", "value": 1.0 }] }
+    },
+    {
+      "id": "call",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Созвон", "en": "Call" },
+      "tags": ["Aura", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "aura", "reserve": 20, "keylessStrike": { "everySeconds": 2, "multiplier": 1 }, "modifiers": [] }
+    },
+    {
+      "id": "shoulder_to_shoulder",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Плечом к плечу", "en": "Shoulder to Shoulder" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "passive", "perPartyMember": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.05 }] }
+    },
+    {
+      "id": "heros_diary",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Дневник героя", "en": "Hero's Diary" },
+      "tags": ["Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "passive", "modifiers": [{ "stat": "gemExperience", "kind": "increased", "value": 0.25 }] }
+    },
+    {
+      "id": "rift_crystal",
+      "kind": "skill",
+      "color": "white",
+      "name": { "ru": "Кристалл Разлома", "en": "Rift Crystal" },
+      "tags": ["Skill"],
+      "cost": { "resource": 70 },
+      "cooldownSeconds": 60,
+      "effect": { "type": "nextKillReward", "multiplier": 3, "shardChance": 0.25, "shards": 1 }
+    },
+    {
       "id": "cast_on_mouse_distance",
       "kind": "trigger",
       "color": "white",

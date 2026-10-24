@@ -42,7 +42,8 @@ namespace Game.Core.Sim
         public long BucketSecond { get; set; } = -1;
         public long ReadyTick { get; set; }
         public double CastPower { get; set; } = 1;
-        public double HuntBonus { get; set; }
+        public double PassiveScale { get; set; }
+        public double AuraPower { get; set; } = 1;
         public void StartCooldown(int ticks)
         {
             CooldownTicks = ticks;

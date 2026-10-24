@@ -47,15 +47,64 @@ namespace Game.Core.Tests.Sim
         private static readonly string[] VikingSkills = { "shield_bash", "odins_fury", "battle_cry", "throwing_axe", "blood_harvest", "shield_wall", "ragnarok_roar" };
         private static readonly string[] MetalheadSkills = { "song", "guitar_solo", "power_chord", "ballad", "mosh_pit", "amp_eleven", "stage_dive" };
 
-        private static (GameLoop Loop, FakeInputSource Input) ClassSkillHero(HeroClass heroClass)
+        private static readonly string[] CommonSkills =
+        {
+            "stenography", "key_drum", "overheat", "space_hammer", "caps_rage", "typo", "typist", "hotkeys", "touch_typing",
+            "hurricane", "dash", "lasso", "pendulum_strike", "long_road", "comet_trail", "blade_whirl", "tailwind", "lightning_zigzag",
+            "mark", "weak_spot", "execute", "exposure", "boss_hunt", "ricochet", "lucky_coin", "composure", "freeze_frame",
+            "lull", "golden_fever", "second_wind", "echo", "coffee_break", "call", "shoulder_to_shoulder", "heros_diary", "rift_crystal"
+        };
+
+        private static (GameLoop Loop, FakeInputSource Input) ClassSkillHero(HeroClass heroClass) =>
+            SkillHero(heroClass, heroClass == HeroClass.Viking ? VikingSkills : MetalheadSkills);
+
+        private static (GameLoop Loop, FakeInputSource Input) SkillHero(HeroClass heroClass, string[] skills)
         {
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1000));
             var loop = TestWorld.Loop(input, new GameState { Class = heroClass }, hero);
-            foreach (var skill in heroClass == HeroClass.Viking ? VikingSkills : MetalheadSkills)
+            foreach (var skill in skills)
                 loop.Skills.Equip(TestWorld.Data.Gems[skill]);
             return (loop, input);
+        }
+
+        private static void FightWithEveryInput(GameLoop loop, FakeInputSource input, int ticks)
+        {
+            for (var tick = 0; tick < ticks; tick++)
+            {
+                for (var slot = 0; slot < loop.State.Skills.Count; slot++)
+                    loop.RequestCast(slot);
+                if (tick % 50 < 40)
+                {
+                    input.PressKeys(2);
+                    input.PressSpace(tick % 4 == 0 ? 1 : 0);
+                    input.PressCombo(tick % 5 == 0 ? 1 : 0);
+                }
+                input.MoveMouse(300);
+                input.Flick(tick % 7 == 0 ? 1 : 0);
+                input.Circle(0.3f);
+                input.Reverse(tick % 3 == 0 ? 1 : 0);
+                loop.Tick();
+                loop.Events.Clear();
+            }
+        }
+
+        [Test]
+        public void CommonSkillTicksDoNotAllocate()
+        {
+            RequireAllocationCounter();
+            var (warmUp, warmUpInput) = SkillHero(HeroClass.Ronin, CommonSkills);
+            FightWithEveryInput(warmUp, warmUpInput, 3000);
+            var (loop, input) = SkillHero(HeroClass.Ronin, CommonSkills);
+            FightWithEveryInput(loop, input, 2000);
+
+            var before = GC.GetAllocatedBytesForCurrentThread();
+            FightWithEveryInput(loop, input, 3000);
+            var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
+
+            Assert.That(loop.State.Stage, Is.GreaterThan(TestWorld.Data.Stages.BiomeLength));
+            Assert.That(allocated, Is.EqualTo(0));
         }
 
         private static void FightCastingEverything(GameLoop loop, FakeInputSource input, int ticks)

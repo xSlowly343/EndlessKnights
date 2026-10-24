@@ -218,7 +218,9 @@ namespace Game.Core.Content.Gems
                         ModifierReader.ReadList(node.Field("modifiers")),
                         node.HasField("party") && node.Field("party").AsBool(),
                         node.HasField("reserve") ? node.Field("reserve").AsNumber(0, 100) : 0,
-                        node.HasField("focusLockAfterSeconds") ? node.Field("focusLockAfterSeconds").AsNumber(0, 3600) : 0);
+                        node.HasField("focusLockAfterSeconds") ? node.Field("focusLockAfterSeconds").AsNumber(0, 3600) : 0,
+                        node.HasField("keylessStrike") ? node.Field("keylessStrike").Field("everySeconds").AsNumber(0.1, 3600) : 0,
+                        node.HasField("keylessStrike") ? node.Field("keylessStrike").Field("multiplier").AsNumber(0, 1e6) : 0);
                 case "keyRepeat":
                     return new KeyRepeatEffect(node.Field("every").AsInt(1, 10000), node.Field("multiplier").AsNumber(0, 1000));
                 case "specialKeys":
@@ -272,6 +274,24 @@ namespace Game.Core.Content.Gems
                         node.Field("lastBonus").AsNumber(0, 1000));
                 case "composure":
                     return new ComposureEffect(node.Field("multiplier").AsNumber(1, 1000));
+                case "passive":
+                    return new PassiveEffect(
+                        ModifierReader.ReadList(node.Field("modifiers")),
+                        node.HasField("perPartyMember") && node.Field("perPartyMember").AsBool());
+                case "breakBonus":
+                    return new BreakBonusEffect(
+                        node.Field("breakSeconds").AsNumber(1, 86400),
+                        node.Field("seconds").AsNumber(0.1, 86400),
+                        ModifierReader.ReadList(node.Field("modifiers")));
+                case "gainResource":
+                    return new ResourceGainEffect(node.Field("amount").AsNumber(0, 1e6));
+                case "echo":
+                    return new EchoEffect(node.Field("power").AsNumber(0, 10));
+                case "nextKillReward":
+                    return new NextKillRewardEffect(
+                        node.Field("multiplier").AsNumber(1, 1000),
+                        Number(node, "shardChance", 1),
+                        Number(node, "shards", 1e6));
                 case "enemyDebuff":
                     return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10));
                 case "idleStrike":
@@ -280,7 +300,7 @@ namespace Game.Core.Content.Gems
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, enemyDebuff or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff or idleStrike");
             }
         }
 

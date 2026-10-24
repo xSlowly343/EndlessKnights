@@ -20,6 +20,7 @@ namespace Game.Core.Sim
         private readonly StatSheet _hero;
         private WeaponCatalog _weapons;
         private long _seenKills;
+        private SkillSlot? _lastCast;
 
         public SkillSystem(GameState state, EventQueue events, ResourceSystem resource, CombatSystem combat, StatSheet hero, WeaponCatalog weapons)
         {
@@ -121,6 +122,9 @@ namespace Game.Core.Sim
                 return CastResult.NotEnoughResource;
 
             slot.CastPower = CastPower(slot);
+            slot.AuraPower = 1;
+            if (!(skill.Effect is EchoEffect))
+                _lastCast = slot;
             var cooldown = skill.CooldownSeconds * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
             slot.StartCooldown(Ticks(cooldown));
             slot.LastCastTick = _state.Tick;
@@ -175,6 +179,42 @@ namespace Game.Core.Sim
                 _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             if (skill.Effect is StrikeEffect strike)
                 Strike(slot, strike, native, spent);
+            if (skill.Effect is ResourceGainEffect gain)
+                _resource.Gain(gain.Amount);
+            if (skill.Effect is NextKillRewardEffect reward)
+                ArmNextKillReward(reward);
+            if (skill.Effect is EchoEffect echo)
+                Repeat(echo);
+        }
+
+        private void ArmNextKillReward(NextKillRewardEffect reward)
+        {
+            _state.NextKillReward = System.Math.Max(_state.NextKillReward, reward.Multiplier);
+            _state.NextKillShardChance = reward.ShardChance;
+            _state.NextKillShards = reward.Shards;
+        }
+
+        private void Repeat(EchoEffect echo)
+        {
+            var target = _lastCast;
+            if (target == null || !_state.Skills.Contains(target) || !Armed(target))
+                return;
+            if (target.Def.Effect is StrikeEffect strike)
+            {
+                var power = target.CastPower;
+                target.CastPower = echo.Power;
+                Strike(target, strike, NativeTrait.None, 0);
+                target.CastPower = power;
+                return;
+            }
+            if (target.Active || target.Primed)
+            {
+                target.ActiveTicks += Ticks(target.Def.DurationSeconds * echo.Power);
+                return;
+            }
+            target.CastPower = echo.Power;
+            target.AuraPower = echo.Power;
+            Release(target, NativeTrait.None, 0, false, announce: false);
         }
 
         private void TickPrimed(SkillSlot slot, in EffectiveInput input)
@@ -457,6 +497,12 @@ namespace Game.Core.Sim
                     TickDistanceStacks(slot, distance, input);
                 if (slot.Def.Effect is BossHuntEffect hunt)
                     TickBossHunt(slot, hunt);
+                if (slot.Def.Effect is PassiveEffect passive)
+                    SetPassive(slot, passive.Modifiers, passive.PerPartyMember ? _state.PartyMembers : 1);
+                if (slot.Def.Effect is BreakBonusEffect breakBonus)
+                    TickBreakBonus(slot, breakBonus, input, idleTicksBefore);
+                if (slot.Active && slot.Def.Effect is AuraEffect keyless && keyless.KeylessStrikeSeconds > 0)
+                    TickKeylessStrike(slot, keyless);
                 if (slot.Active && slot.Def.Effect is TrailEffect)
                     slot.Progress += input.MousePx;
                 if (input.HasInput && slot.Def.Effect is IdleStrikeEffect strike)
@@ -466,15 +512,38 @@ namespace Game.Core.Sim
 
         private void TickBossHunt(SkillSlot slot, BossHuntEffect hunt)
         {
-            var bonus = !Armed(slot) || !_state.FightingBoss ? 0
+            var bonus = !_state.FightingBoss ? 0
                 : _state.BossTicksLeft > 0 && _state.BossTicksLeft <= Ticks(hunt.LastSeconds) ? hunt.LastBonus : hunt.Bonus;
-            if (bonus == slot.HuntBonus)
+            SetPassive(slot, hunt.Modifiers, bonus);
+        }
+
+        private void TickBreakBonus(SkillSlot slot, BreakBonusEffect bonus, in EffectiveInput input, long idleTicksBefore)
+        {
+            if (input.HasInput && idleTicksBefore >= Ticks(bonus.BreakSeconds))
+                slot.FlowStartTick = _state.Tick;
+            var on = slot.FlowStartTick >= 0 && _state.Tick - slot.FlowStartTick < Ticks(bonus.Seconds);
+            SetPassive(slot, bonus.Modifiers, on ? 1 : 0);
+        }
+
+        private void TickKeylessStrike(SkillSlot slot, AuraEffect aura)
+        {
+            var every = Ticks(aura.KeylessStrikeSeconds);
+            if (every > 0 && _state.KeylessTicks > 0 && _state.KeylessTicks % every == 0)
+                SkillHit(slot, aura.KeylessStrikeMultiplier);
+        }
+
+        private void SetPassive(SkillSlot slot, System.Collections.Generic.IReadOnlyList<Modifier> modifiers, double scale)
+        {
+            if (!Armed(slot))
+                scale = 0;
+            if (scale == slot.PassiveScale && (scale <= 0 || slot.AuraApplied))
                 return;
             RemoveAura(slot);
-            slot.HuntBonus = bonus;
-            if (bonus <= 0)
+            slot.PassiveScale = scale;
+            if (scale <= 0)
                 return;
-            slot.AuraModifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.More, bonus));
+            for (var i = 0; i < modifiers.Count; i++)
+                slot.AuraModifiers.Add(new Modifier(modifiers[i].Stat, modifiers[i].Kind, modifiers[i].Value * scale, modifiers[i].Tags));
             _hero.AddRange(slot.AuraModifiers);
             slot.AuraApplied = true;
         }
@@ -646,7 +715,7 @@ namespace Game.Core.Sim
             for (var i = 0; aura != null && i < aura.Modifiers.Count; i++)
             {
                 var modifier = aura.Modifiers[i];
-                slot.AuraModifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * strength, modifier.Tags));
+                slot.AuraModifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * strength * slot.AuraPower, modifier.Tags));
             }
             for (var i = 0; i < native.Count; i++)
                 slot.AuraModifiers.Add(native[i]);
@@ -709,7 +778,7 @@ namespace Game.Core.Sim
                 _hero.Remove(slot.AuraModifiers[i]);
             slot.AuraModifiers.Clear();
             slot.AuraApplied = false;
-            slot.HuntBonus = 0;
+            slot.PassiveScale = 0;
             _state.ReservedResource = System.Math.Max(0, _state.ReservedResource - slot.ReservedApplied);
             slot.ReservedApplied = 0;
             if (!(slot.Def.Effect is AuraEffect aura))

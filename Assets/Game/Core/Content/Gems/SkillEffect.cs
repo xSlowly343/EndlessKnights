@@ -44,8 +44,11 @@ namespace Game.Core.Content.Gems
 
     public sealed class AuraEffect : SkillEffect
     {
-        public AuraEffect(IReadOnlyList<Modifier> modifiers, bool party = false, double reserve = 0, double focusLockAfterSeconds = 0)
+        public AuraEffect(IReadOnlyList<Modifier> modifiers, bool party = false, double reserve = 0, double focusLockAfterSeconds = 0,
+            double keylessStrikeSeconds = 0, double keylessStrikeMultiplier = 0)
         {
+            KeylessStrikeSeconds = keylessStrikeSeconds;
+            KeylessStrikeMultiplier = keylessStrikeMultiplier;
             Modifiers = modifiers;
             Party = party;
             Reserve = reserve;
@@ -53,6 +56,8 @@ namespace Game.Core.Content.Gems
         }
 
         public double FocusLockAfterSeconds { get; }
+        public double KeylessStrikeSeconds { get; }
+        public double KeylessStrikeMultiplier { get; }
 
         public IReadOnlyList<Modifier> Modifiers { get; }
         public bool Party { get; }
@@ -227,7 +232,10 @@ namespace Game.Core.Content.Gems
             Bonus = bonus;
             LastSeconds = lastSeconds;
             LastBonus = lastBonus;
+            Modifiers = new[] { new Modifier(Sim.CombatStats.Damage, ModifierKind.More, 1) };
         }
+
+        public IReadOnlyList<Modifier> Modifiers { get; }
 
         public double Bonus { get; }
         public double LastSeconds { get; }
@@ -242,6 +250,66 @@ namespace Game.Core.Content.Gems
         }
 
         public double Multiplier { get; }
+    }
+
+    public sealed class PassiveEffect : SkillEffect
+    {
+        public PassiveEffect(IReadOnlyList<Modifier> modifiers, bool perPartyMember)
+        {
+            Modifiers = modifiers;
+            PerPartyMember = perPartyMember;
+        }
+
+        public IReadOnlyList<Modifier> Modifiers { get; }
+        public bool PerPartyMember { get; }
+    }
+
+    public sealed class BreakBonusEffect : SkillEffect
+    {
+        public BreakBonusEffect(double breakSeconds, double seconds, IReadOnlyList<Modifier> modifiers)
+        {
+            BreakSeconds = breakSeconds;
+            Seconds = seconds;
+            Modifiers = modifiers;
+        }
+
+        public double BreakSeconds { get; }
+        public double Seconds { get; }
+        public IReadOnlyList<Modifier> Modifiers { get; }
+    }
+
+    public sealed class ResourceGainEffect : SkillEffect
+    {
+        public ResourceGainEffect(double amount)
+        {
+            Amount = amount;
+        }
+
+        public double Amount { get; }
+    }
+
+    public sealed class EchoEffect : SkillEffect
+    {
+        public EchoEffect(double power)
+        {
+            Power = power;
+        }
+
+        public double Power { get; }
+    }
+
+    public sealed class NextKillRewardEffect : SkillEffect
+    {
+        public NextKillRewardEffect(double multiplier, double shardChance, double shards)
+        {
+            Multiplier = multiplier;
+            ShardChance = shardChance;
+            Shards = shards;
+        }
+
+        public double Multiplier { get; }
+        public double ShardChance { get; }
+        public double Shards { get; }
     }
 
     public sealed class EnemyDebuffEffect : SkillEffect

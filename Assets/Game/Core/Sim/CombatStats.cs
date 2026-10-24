@@ -25,6 +25,7 @@ namespace Game.Core.Sim
         public static readonly StatId BossTimerSpeed = new StatId("bossTimerSpeed");
         public static readonly StatId OfflineCapHours = new StatId("offlineCapHours");
         public static readonly StatId ComboTimeoutSeconds = new StatId("comboTimeoutSeconds");
+        public static readonly StatId GemExperience = new StatId("gemExperience");
         public static readonly StatId CritEvery = new StatId("critEvery");
         public static readonly StatId OverkillCarry = new StatId("overkillCarry");
         public static readonly StatId ComboStrikeMultiplier = new StatId("comboStrikeMultiplier");
