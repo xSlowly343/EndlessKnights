@@ -54,6 +54,13 @@ namespace Game.Core.Content.Gems
             TriggerCondition.Every
         };
 
+        private static readonly Dictionary<string, SpecialKey> SpecialKeys = new Dictionary<string, SpecialKey>(StringComparer.Ordinal)
+        {
+            ["space"] = SpecialKey.Space,
+            ["backspace"] = SpecialKey.Backspace,
+            ["combo"] = SpecialKey.Combo
+        };
+
         private static readonly Dictionary<string, StackTrigger> StackTriggers = new Dictionary<string, StackTrigger>(StringComparer.Ordinal)
         {
             ["kill"] = StackTrigger.Kill,
@@ -162,10 +169,10 @@ namespace Game.Core.Content.Gems
             var cost = node.Field("cost");
             var resource = cost.HasField("resource") ? cost.Field("resource").AsNumber(0, 1e6) : 0;
             var duration = node.HasField("durationSeconds") ? node.Field("durationSeconds").AsNumber(0, 3600) : 0;
-            var effect = ReadEffect(node.Field("effect"));
+            var effect = ReadEffect(node.Field("effect"), duration);
             if (effect is AuraEffect aura && !aura.Reserves && duration <= 0)
                 throw node.Error("an aura needs durationSeconds or reserve");
-            if ((effect is StoreHitsEffect || effect is QueueHitsEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
+            if ((effect is StoreHitsEffect || effect is QueueHitsEffect || effect is KeyRepeatEffect || effect is StreakStrikeEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
             if (effect is EnemyDebuffEffect && duration <= 0)
                 throw node.Error("an enemy debuff needs durationSeconds");
@@ -183,7 +190,7 @@ namespace Game.Core.Content.Gems
             return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks, weapon, native, family);
         }
 
-        private static SkillEffect ReadEffect(ContentNode node)
+        private static SkillEffect ReadEffect(ContentNode node, double durationSeconds)
         {
             var typeNode = node.Field("type");
             switch (typeNode.AsString())
@@ -200,7 +207,29 @@ namespace Game.Core.Content.Gems
                     return new AuraEffect(
                         ModifierReader.ReadList(node.Field("modifiers")),
                         node.HasField("party") && node.Field("party").AsBool(),
-                        node.HasField("reserve") ? node.Field("reserve").AsNumber(0, 100) : 0);
+                        node.HasField("reserve") ? node.Field("reserve").AsNumber(0, 100) : 0,
+                        node.HasField("focusLockAfterSeconds") ? node.Field("focusLockAfterSeconds").AsNumber(0, 3600) : 0);
+                case "keyRepeat":
+                    return new KeyRepeatEffect(node.Field("every").AsInt(1, 10000), node.Field("multiplier").AsNumber(0, 1000));
+                case "specialKeys":
+                {
+                    var charges = node.HasField("charges") ? node.Field("charges").AsInt(1, 10000) : 0;
+                    return new SpecialKeysEffect(
+                        Pick(node.Field("key"), SpecialKeys, "space, backspace or combo"),
+                        node.Field("bonus").AsNumber(0, 1000),
+                        charges,
+                        charges == 0 && durationSeconds <= 0);
+                }
+                case "streakStrike":
+                    return new StreakStrikeEffect(
+                        node.Field("hits").AsInt(1, 10000),
+                        node.Field("maxGapSeconds").AsNumber(0.1, 3600),
+                        node.Field("multiplier").AsNumber(0, 1e6));
+                case "flow":
+                    return new FlowEffect(
+                        node.Field("afterSeconds").AsNumber(0.1, 86400),
+                        node.Field("maxGapSeconds").AsNumber(0.1, 3600),
+                        ModifierReader.ReadList(node.Field("modifiers")));
                 case "storeHits":
                     return new StoreHitsEffect(node.Field("releaseShare").AsNumber(0, 100));
                 case "queueHits":
@@ -219,7 +248,7 @@ namespace Game.Core.Content.Gems
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, enemyDebuff or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, enemyDebuff or idleStrike");
             }
         }
 

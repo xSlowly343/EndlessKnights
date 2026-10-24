@@ -22,6 +22,9 @@ namespace Game.Core.Sim
         public long EquipTick { get; set; }
         public long LastCastTick { get; set; } = -1;
         public double TriggerProgress { get; set; }
+        public int HitCount { get; set; }
+        public long LastKeyTick { get; set; } = -1;
+        public long FlowStartTick { get; set; } = -1;
         public int HitsLeft { get; set; }
         public BigNumber Stored { get; set; }
         public int Stacks { get; set; }

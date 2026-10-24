@@ -18,6 +18,7 @@ namespace Game.Core.Input
         public readonly double SecondsSinceLastInput;
         public readonly float RhythmCv;
         public readonly bool Suppressed;
+        public readonly int ComboDowns;
 
         public InputSnapshot(
             int keyDowns = 0,
@@ -33,8 +34,10 @@ namespace Game.Core.Input
             float circleTurns = 0f,
             double secondsSinceLastInput = 0d,
             float rhythmCv = 0f,
-            bool suppressed = false)
+            bool suppressed = false,
+            int comboDowns = 0)
         {
+            ComboDowns = comboDowns;
             KeyDowns = keyDowns;
             EnterDowns = enterDowns;
             BackspaceDowns = backspaceDowns;

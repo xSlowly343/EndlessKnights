@@ -91,6 +91,7 @@ namespace Game.Core.Sim
         public double ReservedResource { get; set; }
         public int DecayHoldTicks { get; set; }
         public double BossTimerCarry { get; set; }
+        public int FocusLockTicks { get; set; }
         public long Kills { get; set; }
         public long BossKills { get; set; }
         public long BossStarts { get; set; }

@@ -12,6 +12,7 @@ namespace Game.Platform.Windows.Input
         private int _enterDowns;
         private int _backspaceDowns;
         private int _spaceDowns;
+        private int _comboDowns;
         private int _leftClicks;
         private int _rightClicks;
         private int _middleClicks;
@@ -34,6 +35,8 @@ namespace Game.Platform.Windows.Input
                 Interlocked.Increment(ref _backspaceDowns);
             else if (keyClass == KeyClass.Space)
                 Interlocked.Increment(ref _spaceDowns);
+            else if (keyClass == KeyClass.Combo)
+                Interlocked.Increment(ref _comboDowns);
         }
 
         public void AddClicks(MouseButtons buttons)
@@ -89,7 +92,8 @@ namespace Game.Platform.Windows.Input
                 circleTurns: (float)(Interlocked.Exchange(ref _circleMilliTurns, 0L) / MilliPerTurn),
                 secondsSinceLastInput: secondsSinceLastInput < 0 ? 0d : secondsSinceLastInput,
                 rhythmCv: System.BitConverter.Int32BitsToSingle(Volatile.Read(ref _rhythmCvBits)),
-                suppressed: suppressed);
+                suppressed: suppressed,
+                comboDowns: Interlocked.Exchange(ref _comboDowns, 0));
         }
     }
 }

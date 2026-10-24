@@ -23,7 +23,10 @@ namespace Game.Core.Content.Gems
         public IReadOnlyList<string> Marks { get; }
         public string? Weapon { get; }
         public NativeTrait Native { get; }
-        public bool IsPassive => Effect is IdleStrikeEffect || Reserves || (Effect is StacksEffect stacks && stacks.Passive);
+        public bool IsPassive =>
+            Effect is IdleStrikeEffect || Effect is FlowEffect || Reserves
+            || (Effect is StacksEffect stacks && stacks.Passive)
+            || (Effect is SpecialKeysEffect keys && keys.Passive);
         public bool Reserves => Effect is AuraEffect aura && aura.Reserves;
 
         public string? Family { get; }

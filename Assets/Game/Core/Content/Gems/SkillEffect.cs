@@ -37,12 +37,15 @@ namespace Game.Core.Content.Gems
 
     public sealed class AuraEffect : SkillEffect
     {
-        public AuraEffect(IReadOnlyList<Modifier> modifiers, bool party = false, double reserve = 0)
+        public AuraEffect(IReadOnlyList<Modifier> modifiers, bool party = false, double reserve = 0, double focusLockAfterSeconds = 0)
         {
             Modifiers = modifiers;
             Party = party;
             Reserve = reserve;
+            FocusLockAfterSeconds = focusLockAfterSeconds;
         }
+
+        public double FocusLockAfterSeconds { get; }
 
         public IReadOnlyList<Modifier> Modifiers { get; }
         public bool Party { get; }
@@ -68,6 +71,69 @@ namespace Game.Core.Content.Gems
         }
 
         public double Share { get; }
+    }
+
+    public sealed class KeyRepeatEffect : SkillEffect
+    {
+        public KeyRepeatEffect(int every, double multiplier)
+        {
+            Every = every;
+            Multiplier = multiplier;
+        }
+
+        public int Every { get; }
+        public double Multiplier { get; }
+    }
+
+    public enum SpecialKey
+    {
+        Space,
+        Backspace,
+        Combo
+    }
+
+    public sealed class SpecialKeysEffect : SkillEffect
+    {
+        public SpecialKeysEffect(SpecialKey key, double bonus, int charges, bool passive)
+        {
+            Key = key;
+            Bonus = bonus;
+            Charges = charges;
+            Passive = passive;
+        }
+
+        public SpecialKey Key { get; }
+        public double Bonus { get; }
+        public int Charges { get; }
+        public bool Passive { get; }
+    }
+
+    public sealed class StreakStrikeEffect : SkillEffect
+    {
+        public StreakStrikeEffect(int hits, double maxGapSeconds, double multiplier)
+        {
+            Hits = hits;
+            MaxGapSeconds = maxGapSeconds;
+            Multiplier = multiplier;
+        }
+
+        public int Hits { get; }
+        public double MaxGapSeconds { get; }
+        public double Multiplier { get; }
+    }
+
+    public sealed class FlowEffect : SkillEffect
+    {
+        public FlowEffect(double afterSeconds, double maxGapSeconds, IReadOnlyList<Modifier> modifiers)
+        {
+            AfterSeconds = afterSeconds;
+            MaxGapSeconds = maxGapSeconds;
+            Modifiers = modifiers;
+        }
+
+        public double AfterSeconds { get; }
+        public double MaxGapSeconds { get; }
+        public IReadOnlyList<Modifier> Modifiers { get; }
     }
 
     public enum StackTrigger

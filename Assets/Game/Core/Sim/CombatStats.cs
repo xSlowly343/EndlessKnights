@@ -9,6 +9,7 @@ namespace Game.Core.Sim
         public static readonly StatId CritMultiplier = new StatId("critMultiplier");
         public static readonly StatId Gold = new StatId("gold");
         public static readonly StatId FocusGain = new StatId("focusGain");
+        public static readonly StatId FocusMultiplier = new StatId("focusMultiplier");
         public static readonly StatId FocusMax = new StatId("focusMax");
         public static readonly StatId FocusResetSeconds = new StatId("focusResetSeconds");
         public static readonly StatId MouseDistance = new StatId("mouseDistance");

@@ -188,6 +188,91 @@
       "effect": { "type": "chainHits", "hits": 60, "nextEnemyShare": 0.5 }
     },
     {
+      "id": "key_drum",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Дробь клавиш", "en": "Key Drumroll" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 10,
+      "durationSeconds": 10,
+      "effect": { "type": "keyRepeat", "every": 5, "multiplier": 1 }
+    },
+    {
+      "id": "overheat",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Перегрев", "en": "Overheat" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 60 },
+      "cooldownSeconds": 90,
+      "durationSeconds": 15,
+      "effect": { "type": "aura", "focusLockAfterSeconds": 30, "modifiers": [{ "stat": "focusMultiplier", "kind": "more", "value": 2.0 }] }
+    },
+    {
+      "id": "space_hammer",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Пробел-молот", "en": "Space Hammer" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 6,
+      "durationSeconds": 10,
+      "effect": { "type": "specialKeys", "key": "space", "bonus": 2 }
+    },
+    {
+      "id": "caps_rage",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Капслок ярости", "en": "Caps Lock Rage" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 30 },
+      "cooldownSeconds": 40,
+      "durationSeconds": 12,
+      "effect": { "type": "streakStrike", "hits": 20, "maxGapSeconds": 0.5, "multiplier": 5 }
+    },
+    {
+      "id": "typo",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Опечатка", "en": "Typo" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "specialKeys", "key": "backspace", "bonus": 1 }
+    },
+    {
+      "id": "typist",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Машинистка", "en": "Typist" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 50 },
+      "cooldownSeconds": 30,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0, "tags": ["Keyboard"] }] }
+    },
+    {
+      "id": "hotkeys",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Горячие клавиши", "en": "Hotkeys" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 5,
+      "effect": { "type": "specialKeys", "key": "combo", "bonus": 3, "charges": 10 }
+    },
+    {
+      "id": "touch_typing",
+      "kind": "skill",
+      "color": "red",
+      "name": { "ru": "Слепая печать", "en": "Touch Typing" },
+      "tags": ["Keyboard", "Skill"],
+      "cost": {},
+      "cooldownSeconds": 0,
+      "effect": { "type": "flow", "afterSeconds": 60, "maxGapSeconds": 2, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.20, "tags": ["Keyboard"] }] }
+    },
+    {
       "id": "march",
       "kind": "skill",
       "color": "blue",

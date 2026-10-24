@@ -126,6 +126,10 @@ namespace Game.Core.Sim
             slot.ActiveTotalTicks = slot.ActiveTicks;
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
+            if (skill.Effect is SpecialKeysEffect special && special.Charges > 0)
+                slot.HitsLeft = special.Charges;
+            slot.HitCount = 0;
+            slot.LastKeyTick = -1;
             ApplyAura(slot);
             if (native.HoldDecaySeconds > 0)
                 _resource.HoldDecay(native.HoldDecaySeconds);
@@ -229,9 +233,78 @@ namespace Game.Core.Sim
                 case StacksEffect stacks when stacks.Trigger == StackTrigger.KeyHit:
                     AddStacks(slot, stacks, 1);
                     break;
+                case KeyRepeatEffect repeat:
+                    if (++slot.HitCount % repeat.Every == 0)
+                        _combat.DirectHit(damage * repeat.Multiplier);
+                    break;
+                case StreakStrikeEffect streak:
+                    StreakHit(slot, streak);
+                    break;
             }
             if (IsNative(slot))
                 _resource.Gain(slot.Def.Native.ResourcePerKeyHit);
+        }
+
+        private void StreakHit(SkillSlot slot, StreakStrikeEffect streak)
+        {
+            if (slot.LastKeyTick >= 0 && _state.Tick - slot.LastKeyTick > Ticks(streak.MaxGapSeconds))
+                slot.HitCount = 0;
+            slot.LastKeyTick = _state.Tick;
+            if (++slot.HitCount % streak.Hits == 0)
+                _combat.SkillHit(_combat.BaseKeyDamage, streak.Multiplier, slot.Skill.Tags);
+        }
+
+        private void SpecialKeyHits(SkillSlot slot, SpecialKeysEffect special, in EffectiveInput input)
+        {
+            if (!Armed(slot))
+                return;
+            var presses = System.Math.Min(Presses(special.Key, input), (int)System.Math.Ceiling(input.Keys));
+            if (special.Charges > 0)
+            {
+                presses = System.Math.Min(presses, slot.HitsLeft);
+                slot.HitsLeft -= presses;
+            }
+            else if (!special.Passive && !slot.Active)
+            {
+                return;
+            }
+            if (presses > 0)
+                _combat.SkillHit(_combat.BaseKeyDamage, special.Bonus * presses, slot.Skill.Tags);
+        }
+
+        private static int Presses(SpecialKey key, in EffectiveInput input)
+        {
+            switch (key)
+            {
+                case SpecialKey.Space:
+                    return input.SpaceDowns;
+                case SpecialKey.Backspace:
+                    return input.BackspaceDowns;
+                default:
+                    return input.ComboDowns;
+            }
+        }
+
+        private void TickFlow(SkillSlot slot, FlowEffect flow)
+        {
+            if (!Armed(slot) || _state.KeylessTicks > Ticks(flow.MaxGapSeconds))
+            {
+                slot.FlowStartTick = -1;
+                RemoveAura(slot);
+                return;
+            }
+            if (slot.FlowStartTick < 0)
+            {
+                if (_state.KeylessTicks == 0)
+                    slot.FlowStartTick = _state.Tick;
+                return;
+            }
+            if (slot.AuraApplied || _state.Tick - slot.FlowStartTick < Ticks(flow.AfterSeconds))
+                return;
+            for (var i = 0; i < flow.Modifiers.Count; i++)
+                slot.AuraModifiers.Add(flow.Modifiers[i]);
+            _hero.AddRange(slot.AuraModifiers);
+            slot.AuraApplied = true;
         }
 
         public void Tick(in EffectiveInput input, long idleTicksBefore)
@@ -252,6 +325,10 @@ namespace Game.Core.Sim
                 }
                 if (slot.Def.Effect is StacksEffect stacks && stacks.Passive)
                     TickKillStacks(slot, stacks, kills);
+                if (slot.Def.Effect is SpecialKeysEffect special)
+                    SpecialKeyHits(slot, special, input);
+                if (slot.Def.Effect is FlowEffect flow)
+                    TickFlow(slot, flow);
                 if (input.HasInput && slot.Def.Effect is IdleStrikeEffect strike)
                     ReleaseIdleStrike(slot, strike, idleTicksBefore * GameLoop.TickSeconds);
             }
@@ -260,6 +337,8 @@ namespace Game.Core.Sim
         private void End(SkillSlot slot)
         {
             RemoveAura(slot);
+            if (slot.Def.Effect is AuraEffect aura && aura.FocusLockAfterSeconds > 0)
+                _state.FocusLockTicks = Ticks(aura.FocusLockAfterSeconds);
             if (slot.Def.Effect is StoreHitsEffect store)
             {
                 var stored = slot.Stored;
