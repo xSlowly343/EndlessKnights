@@ -1,6 +1,7 @@
 using System;
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
 using UnityEngine;
 
 namespace Game.Bootstrap
@@ -10,7 +11,7 @@ namespace Game.Bootstrap
         private WindowController _window = null!;
         private Camera _camera = null!;
         private PointerInput _pointer = null!;
-        private PanelView _panels = null!;
+        private PanelCanvas _panels = null!;
         private bool _passingClicks;
         private bool _enabled = true;
 
@@ -28,7 +29,7 @@ namespace Game.Bootstrap
             }
         }
 
-        public static ClickThroughDriver Attach(GameObject host, WindowController window, Camera camera, PointerInput pointer, PanelView panels, FocusModeButton toggleButton)
+        public static ClickThroughDriver Attach(GameObject host, WindowController window, Camera camera, PointerInput pointer, PanelCanvas panels, FocusModeButton toggleButton)
         {
             var driver = host.AddComponent<ClickThroughDriver>();
             driver._panels = panels;

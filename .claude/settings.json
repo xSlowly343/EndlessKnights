@@ -9,9 +9,8 @@
       "PowerShell(gh:*)",
       "PowerShell(powershell -ExecutionPolicy Bypass -File build.ps1:*)",
       "PowerShell(powershell -ExecutionPolicy Bypass -File Tools/*)",
-      "Read(./**)",
-      "Edit(./**)",
-      "Write(./**)",
+      "Read(/**)",
+      "Edit(/**)",
       "WebFetch(domain:fonts.google.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)"

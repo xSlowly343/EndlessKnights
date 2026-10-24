@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.Core.Ui;
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
 using UnityEngine;
 
 namespace Game.Bootstrap
@@ -10,12 +11,12 @@ namespace Game.Bootstrap
     public sealed class PanelModeDriver : MonoBehaviour
     {
         private TaskbarDockDriver _dock = null!;
-        private PanelView _panels = null!;
+        private PanelCanvas _panels = null!;
 
         public PanelNavigator Navigator { get; private set; } = null!;
         public bool IsOpen => _panels.IsOpen;
 
-        public static PanelModeDriver Attach(GameObject host, TaskbarDockDriver dock, PanelView panels, StripButton menuButton)
+        public static PanelModeDriver Attach(GameObject host, TaskbarDockDriver dock, PanelCanvas panels, StripButton menuButton)
         {
             var driver = host.AddComponent<PanelModeDriver>();
             driver._dock = dock;
@@ -53,7 +54,7 @@ namespace Game.Bootstrap
         {
             Navigator.Close();
             _panels.ShowReport(title, lines);
-            Expand(PanelView.ReportFrame);
+            Expand(PanelCanvas.ReportFrame);
         }
 
         public void Close()
