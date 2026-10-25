@@ -16,6 +16,10 @@ namespace Game.Presentation.Ui
         private static Sprite? _circle;
         private static Sprite? _ring;
         private static Sprite? _rainbow;
+        private static Texture2D? _nodeAtlas;
+
+        public static readonly Rect DiscUv = new Rect(0f, 0f, 0.5f, 1f);
+        public static readonly Rect RingUv = new Rect(0.5f, 0f, 0.5f, 1f);
 
         private static readonly Color[] RainbowStops =
         {
@@ -30,6 +34,8 @@ namespace Game.Presentation.Ui
         public static Sprite RainbowRounded => _rainbow ??= CreateRounded(Rainbow);
         public static Sprite Circle => _circle ??= CreateCircle(0f);
         public static Sprite Ring => _ring ??= CreateCircle(RingInnerFraction);
+
+        public static Texture2D NodeAtlas => _nodeAtlas ??= CreateNodeAtlas();
 
         public static float MultiplierFor(float radiusPx) => CornerPx / radiusPx;
 
@@ -73,6 +79,26 @@ namespace Game.Presentation.Ui
             }
             texture.Apply();
             return Sprite.Create(texture, new Rect(0f, 0f, CircleSize, CircleSize), new Vector2(0.5f, 0.5f), PixelsPerUnit);
+        }
+
+        private static Texture2D CreateNodeAtlas()
+        {
+            var texture = new Texture2D(2 * CircleSize, CircleSize, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            var radius = CircleSize / 2f;
+            var inner = radius * RingInnerFraction;
+            for (var y = 0; y < CircleSize; y++)
+            {
+                for (var x = 0; x < CircleSize; x++)
+                {
+                    var dx = x + 0.5f - radius;
+                    var dy = y + 0.5f - radius;
+                    var disc = Coverage(radius - 1f, dx, dy);
+                    texture.SetPixel(x, y, new Color(1f, 1f, 1f, disc));
+                    texture.SetPixel(CircleSize + x, y, new Color(1f, 1f, 1f, disc - Coverage(inner, dx, dy)));
+                }
+            }
+            texture.Apply();
+            return texture;
         }
 
         private static Color Rainbow(float t)

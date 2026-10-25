@@ -35,6 +35,18 @@ jobs:
         run: git lfs pull
       - name: Unity tests and Windows build
         run: ./build.ps1 -Tests
+      - name: Show Unity errors
+        if: failure()
+        continue-on-error: true
+        run: |
+          foreach ($log in Get-ChildItem Builds/Logs -Filter *.log) {
+            Write-Host "== $($log.Name)"
+            Select-String -Path $log.FullName -Pattern 'error CS|Exception|Failed|Error:' | Select-Object -First 60 | ForEach-Object { $_.Line }
+          }
+          $results = 'Builds/Logs/editmode-results.xml'
+          if (Test-Path $results) {
+            ([xml](Get-Content $results)).SelectNodes("//test-case[@result='Failed']") | Select-Object -First 30 | ForEach-Object { Write-Host "FAILED $($_.fullname)"; Write-Host $_.failure.message.InnerText }
+          }
       - name: Upload logs
         if: always()
         continue-on-error: true

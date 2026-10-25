@@ -146,6 +146,7 @@ namespace Game.Editor
         {
             panels.Show(navigator);
             panels.Place(0f, true);
+            Canvas.ForceUpdateCanvases();
             return navigator.Frame;
         }
 
@@ -175,7 +176,6 @@ namespace Game.Editor
             StripCamera.Fit(camera, width, height, StripHeightPx, 0, 0);
             var target = new RenderTexture(width, height, 24);
             camera.targetTexture = target;
-            panels.Tree.SendMessage("LateUpdate", SendMessageOptions.DontRequireReceiver);
             Canvas.ForceUpdateCanvases();
             foreach (var view in new[] { camera }.Concat(panels.GetComponentsInChildren<Camera>()))
             {

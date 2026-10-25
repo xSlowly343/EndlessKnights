@@ -5,7 +5,6 @@ using Game.Core.Math;
 using Game.Core.Sim;
 using Game.Core.Ui;
 using Game.Presentation.Strip;
-using Game.Presentation.Tree;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +35,6 @@ namespace Game.Presentation.Ui
         private const float HandleBarHeightPx = 4f;
         private const float PillHeightPx = 28f;
         private const int PillPaddingPx = 14;
-        private const float ZoomButtonPx = 28f;
         private const float TabStripePx = 3f;
         private const float TabStripeInsetPx = 12f;
         private const float MoreRowHeightPx = 44f;
@@ -84,7 +82,6 @@ namespace Game.Presentation.Ui
         private RectTransform _frame = null!;
         private RectTransform _report = null!;
         private RectTransform _subTabRow = null!;
-        private Transform _treeHost = null!;
         private TextMeshProUGUI _slots = null!;
         private UiButton _handle = null!;
         private UiButton _titlePlate = null!;
@@ -92,8 +89,6 @@ namespace Game.Presentation.Ui
         private Image _pinDot = null!;
         private UiButton _close = null!;
         private UiButton _wide = null!;
-        private UiButton _zoomIn = null!;
-        private UiButton _zoomOut = null!;
         private UiButton _claim = null!;
         private TextMeshProUGUI _currency = null!;
         private TextMeshProUGUI _placeholder = null!;
@@ -214,8 +209,6 @@ namespace Game.Presentation.Ui
             _canvasRect.pivot = aboveStrip ? Vector2.zero : Vector2.up;
             _canvasRect.position = new Vector3(left, aboveStrip ? StripSpace.Height + gap : -gap, 0f);
             ApplyHeight(_heightPx);
-            if (!_showingReport)
-                ArrangeHosts(left, aboveStrip);
         }
 
         public void Hide()
@@ -288,7 +281,6 @@ namespace Game.Presentation.Ui
                 return;
             _tweenElapsed = TweenSeconds;
             ApplyHeight(_tweenToPx);
-            RefreshHosts();
         }
 
         private bool TryClickReport(Vector2 worldPoint)
@@ -305,19 +297,7 @@ namespace Game.Presentation.Ui
         {
             if (Pressed(_close, worldPoint, ClosePressed) || Pressed(_pin, worldPoint, PinPressed) || Pressed(_handle, worldPoint, HeightPressed))
                 return true;
-            if (Pressed(_wide, worldPoint, WidePressed))
-                return true;
-            if (_zoomIn.Contains(worldPoint))
-            {
-                Tree.ZoomIn();
-                return true;
-            }
-            if (_zoomOut.Contains(worldPoint))
-            {
-                Tree.ZoomOut();
-                return true;
-            }
-            return false;
+            return Pressed(_wide, worldPoint, WidePressed);
         }
 
         private bool TryClickRows(Vector2 worldPoint)
@@ -362,6 +342,7 @@ namespace Game.Presentation.Ui
             AdvanceTween();
             AdvanceNotice();
             RefreshLive();
+            Tree.Tick(Time.unscaledDeltaTime);
         }
 
         private void RefreshLive()
@@ -433,8 +414,6 @@ namespace Game.Presentation.Ui
             _tweenElapsed += Time.unscaledDeltaTime;
             var t = Mathf.Clamp01(_tweenElapsed / TweenSeconds);
             ApplyHeight(Mathf.Lerp(_tweenFromPx, _tweenToPx, 1f - (1f - t) * (1f - t)));
-            if (!IsTweening)
-                RefreshHosts();
         }
 
         private void RefreshCurrency(GameLoop loop)
@@ -458,7 +437,6 @@ namespace Game.Presentation.Ui
                 _tweenElapsed = 0f;
                 ApplyHeight(fromPx);
             }
-            RefreshHosts();
         }
 
         private void ApplyHeight(float heightPx)
@@ -468,25 +446,6 @@ namespace Game.Presentation.Ui
             _canvasRect.sizeDelta = size;
             _hitArea.size = size;
             _hitArea.offset = new Vector2(size.x / 2f, _aboveStrip ? size.y / 2f : -size.y / 2f);
-        }
-
-        private void RefreshHosts()
-        {
-            var settled = !IsTweening && !_showingReport;
-            _treeHost.gameObject.SetActive(_treeShown && settled);
-        }
-
-        private void ArrangeHosts(float left, bool aboveStrip)
-        {
-            var frame = _shownFrame;
-            var width = StripSpace.Units(frame.WidthPx);
-            var height = StripSpace.Units(frame.HeightPx);
-            var gap = StripSpace.Units(PanelGeometry.GapToStripPx);
-            var border = StripSpace.Units(BorderPx);
-            var bottom = aboveStrip ? StripSpace.Height + gap : -gap - height;
-            var contentBottom = bottom + StripSpace.Units(frame.TabBarPx) + border;
-            var contentHeight = StripSpace.Units(frame.ContentPx) - 2f * border;
-            Tree.Arrange(left + border, contentBottom, width - 2f * border, contentHeight, StripSpace.PixelsPerUnit);
         }
 
         private void ShowHeader(PanelNavigator navigator)
@@ -552,9 +511,7 @@ namespace Game.Presentation.Ui
                     _moreRows[i].Text = PanelSections.Title(_moreSections[i]);
             }
             _treeShown = !navigator.ShowingMore && navigator.Active == PanelSection.Tree && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
-            var zoomShown = _treeShown && _shownFrame.HasSubTabs;
-            _zoomIn.Show(zoomShown);
-            _zoomOut.Show(zoomShown);
+            Tree.Show(_treeShown, _shownFrame.WidthPx, _shownFrame.ContentPx);
             _bookShown = !navigator.ShowingMore && navigator.Active == PanelSection.Book && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
             Book.Show(_bookShown, _shownFrame.ContentPx);
             _slots.gameObject.SetActive(!navigator.ShowingMore && navigator.Active == PanelSection.Book && _shownFrame.HasSubTabs);
@@ -592,8 +549,6 @@ namespace Game.Presentation.Ui
             _canvasRect.gameObject.AddComponent<StripClickable>();
             _frame = BuildFrame();
             _report = BuildReport();
-            _treeHost = Group("Tree");
-            Tree = TreePanel.Create(_treeHost);
         }
 
         private RectTransform BuildFrame()
@@ -680,12 +635,6 @@ namespace Game.Presentation.Ui
             for (var i = 0; i < MaxSubTabs; i++)
                 _subTabs.Add(Pill("SubTab " + i, row));
             var middleRight = new Vector2(1f, 0.5f);
-            _zoomIn = Button("ZoomIn", row, middleRight, new Vector2(-MarginPx, 0f), Vector2.one * ZoomButtonPx, _theme.Card, ButtonRadiusPx, _theme.BoldFont, GlyphSizePx);
-            _zoomIn.Text = "+";
-            _zoomOut = Button("ZoomOut", row, middleRight, new Vector2(-1.5f * MarginPx - ZoomButtonPx, 0f), Vector2.one * ZoomButtonPx, _theme.Card, ButtonRadiusPx, _theme.BoldFont, GlyphSizePx);
-            _zoomOut.Text = "−";
-            UiElements.IgnoreLayout(_zoomIn.Rect);
-            UiElements.IgnoreLayout(_zoomOut.Rect);
             _preset = Button("Preset", row, middleRight, new Vector2(-MarginPx, 0f), new Vector2(PresetWidthPx, PillHeightPx), _theme.Accent, PillRadiusPx);
             UiElements.Stretch(UiElements.Fill("Inner", _preset.Rect, _theme.TabBar, PillRadiusPx - BorderPx).rectTransform, BorderPx);
             var presetLabel = UiElements.Label("PresetText", _preset.Rect, _theme.TextFont, SmallTextSizePx - 1f, _theme.Text, TextAlignmentOptions.Center);
@@ -733,6 +682,7 @@ namespace Game.Presentation.Ui
             _partyPanel = PartyPanel.Create(content, _theme);
             _partyPanel.NoticeRequested += ShowNotice;
             Book = BookPanel.Create(content, _theme);
+            Tree = TreePanel.Create(content, _theme);
         }
 
         private UiButton MoreRow(string name, RectTransform parent)
@@ -808,12 +758,5 @@ namespace Game.Presentation.Ui
         }
 
         private TMP_FontAsset Font(TMP_FontAsset? preferred) => preferred != null ? preferred : TMP_Settings.defaultFontAsset;
-
-        private Transform Group(string name)
-        {
-            var group = new GameObject(name).transform;
-            group.SetParent(transform, false);
-            return group;
-        }
     }
 }
