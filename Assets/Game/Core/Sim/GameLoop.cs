@@ -295,7 +295,8 @@ namespace Game.Core.Sim
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
-            _tutorial.Tick(LastInput, Events, firstEvent);
+            if (Permissions.Consent)
+                _tutorial.Tick(LastInput, Events, firstEvent);
             Hook?.AfterTick();
         }
 

@@ -145,6 +145,8 @@ namespace Game.Editor
             battle.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
             var skillBar = SkillBarView.Create(battle.transform);
             skillBar.Show(loop.State.Skills, loop.State.Resource);
+            var hint = StripHintView.Create(battle.transform);
+            hint.Show(StripHint.For(true, data.Tutorial.Steps[0]));
             Save(camera, panels, GameStartup.StripWidth, StripHeightPx, Path.Combine(folder, "strip.png"));
 
             var queue = new NotificationQueue();

@@ -95,6 +95,8 @@ namespace Game.Bootstrap
                 var battle = BattleDriver.Attach(host, data.Current, observedInput, save?.State);
                 panels.Bind(battle.Loop, data.Current.Tree);
                 router.UseSkillBar(battle.SkillBar);
+                router.UseHint(battle.Hint);
+                StripHintDriver.Attach(host, battle.Loop, battle.Hint, settings, panelMode);
                 battleView = battle.View;
                 loop = battle.Loop;
                 notifications = NotificationDriver.Attach(host, dock, panelMode, panels, battle);
