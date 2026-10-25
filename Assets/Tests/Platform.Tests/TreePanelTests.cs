@@ -83,15 +83,12 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void FullyZoomedOutGlyphMarkersStayOnTheTree()
+        public void FullyZoomedOutEveryNodeStaysOnTheTree()
         {
             for (var i = 0; i < 20; i++)
                 _panel.Tree.ZoomOut();
 
-            var shown = _data.Tree.Nodes.Count(_panel.Tree.IsMarkerShown);
-
-            Assert.That(shown, Is.GreaterThan(100));
-            Assert.That(_data.Tree.Nodes.Where(node => node.Type == Game.Core.Content.Tree.TreeNodeType.Start).All(_panel.Tree.IsMarkerShown), Is.True);
+            Assert.That(_data.Tree.Nodes.All(_panel.Tree.IsMarkerShown), Is.True);
         }
 
         [Test]

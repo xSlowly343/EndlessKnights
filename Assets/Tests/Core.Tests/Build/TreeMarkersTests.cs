@@ -84,6 +84,27 @@ namespace Game.Core.Tests.Build
             Assert.That(nodes.Where(node => node.Type == TreeNodeType.Start).All(node => markers.IsShown(IndexOf(nodes, node))), Is.True);
         }
 
+        [Test]
+        public void AtTheClosestZoomMarkerSizeNoRealNodesOverlap()
+        {
+            var nodes = TestWorld.Real.Tree.Nodes;
+            var markers = new TreeMarkers(nodes);
+            const double closestPixelsPerUnit = 25.0;
+
+            markers.Pick(nodes.Select(node => System.Math.Max(WorldHalf(node.Type), MarkerPx(node.Type) / 2 / closestPixelsPerUnit)).ToArray(), new int[nodes.Count], 2 / closestPixelsPerUnit);
+
+            Assert.That(nodes.Where((node, i) => !markers.IsShown(i)).Select(node => node.Id), Is.Empty);
+        }
+
+        private static double MarkerPx(TreeNodeType type) => type switch
+        {
+            TreeNodeType.Start => 30,
+            TreeNodeType.Keystone => 26,
+            TreeNodeType.Notable => 20,
+            TreeNodeType.Jewel => 14,
+            _ => 16
+        };
+
         private static double WorldHalf(TreeNodeType type) => type switch
         {
             TreeNodeType.Notable => 0.3,

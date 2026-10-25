@@ -71,7 +71,7 @@ namespace Game.Presentation.Ui
         private static readonly Color32 RedColor = new Color32(0xE0, 0x57, 0x4A, 0xFF);
         private static readonly Color32 GreenColor = new Color32(0x4F, 0xC2, 0x77, 0xFF);
         private static readonly Color32 BlueColor = new Color32(0x3F, 0x6F, 0xD1, 0xFF);
-        private static readonly Color32 WhiteColor = new Color32(0x7F, 0x89, 0xA0, 0xFF);
+        private static readonly Color32 WhiteColor = new Color32(0xE6, 0xD3, 0xA3, 0xFF);
         private static readonly Color32 TakenColor = new Color32(0xF0, 0xB4, 0x3C, 0xFF);
         private static readonly Color32 DiskColor = new Color32(0x14, 0x19, 0x2C, 0xFF);
         private static readonly Color32 OfferedRing = new Color32(0xFF, 0xFF, 0xFF, 0xFF);
@@ -327,7 +327,7 @@ namespace Game.Presentation.Ui
             if (_tree == null || _nodeMesh == null || _ringMesh == null || _markers == null)
                 return;
             var pixelsPerUnit = PixelsPerUnit();
-            PickMarkers(pixelsPerUnit);
+            PickMarkers();
             for (var i = 0; i < _tree.Nodes.Count; i++)
             {
                 var node = _tree.Nodes[i];
@@ -347,7 +347,7 @@ namespace Game.Presentation.Ui
             ShowSelection();
         }
 
-        private void PickMarkers(float pixelsPerUnit)
+        private void PickMarkers()
         {
             if (_tree == null || _markers == null)
                 return;
@@ -355,10 +355,10 @@ namespace Game.Presentation.Ui
             for (var i = 0; i < _tree.Nodes.Count; i++)
             {
                 var type = _tree.Nodes[i].Type;
-                _halves[i] = HalfOf(type, pixelsPerUnit);
+                _halves[i] = HalfOf(type);
                 _priorities[i] = TreeMarkers.PriorityOf(type, _looks[i] == TreeNodeLook.Offered, IsTakenLook(_looks[i]));
             }
-            _markers.Pick(_halves, _priorities, pixelsPerUnit > 0f ? MarkerGapPx / pixelsPerUnit : 0.0);
+            _markers.Pick(_halves, _priorities, MarkerGapPx / MaxPixelsPerUnit);
             for (var i = 0; i < _tree.Nodes.Count; i++)
                 if (_markers.IsShown(i))
                     _shownNodes.Add(_tree.Nodes[i]);
@@ -434,8 +434,7 @@ namespace Game.Presentation.Ui
 
         private float PixelsPerUnit() => _viewport == null ? 0f : _fieldPx.y / (float)_viewport.VisibleHeight;
 
-        private static float HalfOf(TreeNodeType type, float pixelsPerUnit) =>
-            pixelsPerUnit > 0f ? Mathf.Max(Radius(type), MarkerPx(type) / 2f / pixelsPerUnit) : Radius(type);
+        private static float HalfOf(TreeNodeType type) => Mathf.Max(Radius(type), MarkerPx(type) / 2f / MaxPixelsPerUnit);
 
         public static float MarkerPx(TreeNodeType type) => type switch
         {
@@ -615,9 +614,9 @@ namespace Game.Presentation.Ui
             if (_selected == null)
                 return;
             var pixelsPerUnit = PixelsPerUnit();
-            var half = HalfOf(_selected.Type, pixelsPerUnit) * SelectionScale;
+            var half = HalfOf(_selected.Type) * SelectionScale;
             if (pixelsPerUnit > 0f)
-                half = Mathf.Max(half, HalfOf(_selected.Type, pixelsPerUnit) + SelectionGapPx / pixelsPerUnit);
+                half = Mathf.Max(half, HalfOf(_selected.Type) + SelectionGapPx / pixelsPerUnit);
             _selection.anchoredPosition = Position(_selected);
             _selection.sizeDelta = Vector2.one * (2f * half);
         }
