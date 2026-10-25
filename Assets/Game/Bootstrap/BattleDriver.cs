@@ -22,6 +22,7 @@ namespace Game.Bootstrap
 
         public GameLoop Loop => _loop;
         public SkillBarView SkillBar => _skillBar;
+        public BattleView View => _view;
 
         public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Viking };
 

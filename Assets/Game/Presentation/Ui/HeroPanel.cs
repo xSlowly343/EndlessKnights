@@ -115,7 +115,7 @@ namespace Game.Presentation.Ui
             _progress.text = HeroSummary.Progress(state);
             _hands[0].Show(HeroSummary.Hand(loop, WeaponHand.Right), _theme);
             _hands[1].Show(HeroSummary.Hand(loop, WeaponHand.Left), _theme);
-            var tiles = HeroSummary.Tiles(loop, NumberFormatSettings.Default);
+            var tiles = HeroSummary.Tiles(loop, NumberDisplay.Settings);
             for (var i = 0; i < _tileValues.Count && i < tiles.Count; i++)
             {
                 _tileLabels[i].text = tiles[i].Label;

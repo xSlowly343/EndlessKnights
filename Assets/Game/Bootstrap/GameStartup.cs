@@ -5,6 +5,7 @@ using Game.Platform.Windows.Input;
 using Game.Platform.Windows.Instance;
 using Game.Platform.Windows.Tray;
 using Game.Platform.Windows.Window;
+using Game.Presentation.Battle;
 using Game.Presentation.Strip;
 using Game.Presentation.Ui;
 using UnityEngine;
@@ -79,6 +80,9 @@ namespace Game.Bootstrap
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
             var router = StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
             var data = GameDataFiles.TryLoadAll();
+            var settings = SettingsDriver.Attach(host);
+            BattleView? battleView = null;
+            GameLoop? loop = null;
             var rawInput = RawInputService.Start(data?.Current.InputCaps.Detection);
             var observedInput = new ObservedInputSource(rawInput);
             InputShutdownDriver.Attach(host, rawInput);
@@ -90,6 +94,8 @@ namespace Game.Bootstrap
                 var battle = BattleDriver.Attach(host, data.Current, observedInput, save?.State);
                 panels.Bind(battle.Loop, data.Current.Tree);
                 router.UseSkillBar(battle.SkillBar);
+                battleView = battle.View;
+                loop = battle.Loop;
                 NotificationDriver.Attach(host, dock, panelMode, panels, battle);
                 if (save != null)
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
@@ -100,15 +106,15 @@ namespace Game.Bootstrap
             FullscreenDriver.Attach(focusButton.gameObject, window);
 
             var tray = TrayIcon.Create(Application.productName);
-            if (tray != null)
-                TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug, panelMode);
+            var trayDriver = tray != null ? TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug, panelMode) : null;
+            settings.Bind(panels, panelMode, dock, trayDriver, battleView, loop);
         }
 
         private static void ReportOffline(BattleDriver battle, PanelModeDriver panelMode, double awaySeconds)
         {
             var result = battle.ApplyOffline(awaySeconds);
             if (result != null && OfflineReport.ShouldShow(awaySeconds, result))
-                panelMode.OpenReport(OfflineReport.Title, OfflineReport.Lines(awaySeconds, result, NumberFormatSettings.Default));
+                panelMode.OpenReport(OfflineReport.Title, OfflineReport.Lines(awaySeconds, result, NumberDisplay.Settings));
         }
     }
 }
