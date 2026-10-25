@@ -119,6 +119,36 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void EveryTabAndMoreRowHasAnIconEvenWhenLocked()
+        {
+            var marks = new PanelMarks(PanelUnlocks.Load(@"{ ""version"": 1, ""unlocks"": [ { ""section"": ""party"", ""stage"": 10 } ] }"));
+            marks.Refresh(new GameState(), RealAscendancy());
+            _panel.UseMarks(marks);
+            Open(PanelSection.Hero);
+
+            for (var i = 0; i < PanelCanvas.TabCount; i++)
+                Assert.That(_panel.TabMark(i).Icon.sprite, Is.Not.Null, "tab " + i);
+            Assert.That(_panel.TabMark(4).Icon.enabled, Is.True);
+            Assert.That(_panel.TabMark(4).Icon.color.a, Is.LessThan(1f));
+
+            _navigator.PressMore();
+            Show();
+
+            for (var i = 0; i < _navigator.More.Count; i++)
+                Assert.That(_panel.MoreMark(i).Icon.sprite, Is.Not.Null, "more " + i);
+        }
+
+        [Test]
+        public void EverySectionAndCurrencyHasAnIconSprite()
+        {
+            foreach (var section in PanelSections.All)
+                Assert.That(UiIcons.Tab(section), Is.Not.Null, section.ToString());
+            Assert.That(UiIcons.Tab(UiIcons.More), Is.Not.Null);
+            foreach (var currency in new[] { "gold", "echo", "gems", "shards" })
+                Assert.That(UiIcons.Currency(currency), Is.Not.Null, currency);
+        }
+
+        [Test]
         public void NoticeTakesThePlaceOfTheGoldUntilThePanelHides()
         {
             Open(PanelSection.Hero);

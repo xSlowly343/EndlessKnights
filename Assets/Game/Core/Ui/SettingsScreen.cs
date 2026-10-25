@@ -124,6 +124,13 @@ namespace Game.Core.Ui
             }
         }
 
+        public static string Note(int tab) => tab switch
+        {
+            0 => Texts.Get("settings.credits"),
+            1 => Texts.Get("settings.soundNote"),
+            _ => string.Empty
+        };
+
         public static string Version(string version) => Texts.Format("settings.version", version);
 
         public static string WhatsNewTitle(string version) => Texts.Format("settings.whatsNewTitle", version);

@@ -261,6 +261,7 @@
     "settings.format.engineering": { "ru": "Инженерный", "en": "Engineering" },
     "settings.format.full": { "ru": "Полностью", "en": "Full" },
     "settings.soundNote": { "ru": "Звука в игре пока нет: громкость сохраняется на будущее", "en": "The game has no sound yet: volumes are kept for later" },
+    "settings.credits": { "ru": "Иконки: Lorc, Delapouite, Caro Asercion, PriorBlue, Guard13007, HeavenlyDog, John Colburn, Skoll, Willdabeast — game-icons.net, CC BY 3.0", "en": "Icons: Lorc, Delapouite, Caro Asercion, PriorBlue, Guard13007, HeavenlyDog, John Colburn, Skoll, Willdabeast — game-icons.net, CC BY 3.0" },
     "battle.stage": { "ru": "Этап {0}", "en": "Stage {0}" },
     "battle.stageBoss": { "ru": "Этап {0} · БОСС", "en": "Stage {0} · BOSS" },
     "battle.retreat": { "ru": "Отступление", "en": "Retreat" },

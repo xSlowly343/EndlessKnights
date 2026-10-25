@@ -88,6 +88,20 @@ namespace Game.Presentation.Ui
             return image;
         }
 
+        public static Image Icon(string name, Transform parent, Sprite? sprite, Color color)
+        {
+            var image = Shape(name, parent, color, UiSprites.Circle);
+            image.preserveAspect = true;
+            Use(image, sprite);
+            return image;
+        }
+
+        public static void Use(Image icon, Sprite? sprite)
+        {
+            icon.sprite = sprite;
+            icon.enabled = sprite != null;
+        }
+
         public static TextMeshProUGUI Label(string name, Transform parent, TMP_FontAsset? font, float sizePx, Color color, TextAlignmentOptions alignment)
         {
             var label = Rect(name, parent).gameObject.AddComponent<TextMeshProUGUI>();
