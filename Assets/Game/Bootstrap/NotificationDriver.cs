@@ -1,8 +1,6 @@
-using System;
 using Game.Core.Sim;
 using Game.Core.Ui;
 using Game.Platform.Windows.Window;
-using Game.Presentation.Strip;
 using Game.Presentation.Ui;
 using UnityEngine;
 
@@ -52,8 +50,7 @@ namespace Game.Bootstrap
             if (!_expanded)
             {
                 _expanded = true;
-                var scale = DpiScale;
-                _dock.Expand(Mathf.RoundToInt(StripSpace.BaseWidthPx * scale), Mathf.RoundToInt((NotificationPills.AreaHeightPx + PanelGeometry.GapToStripPx) * scale));
+                _pills.Place(_dock.Layout.PanelsAboveStrip);
             }
             _pills.Show(_queue.Items, Now);
         }
@@ -77,7 +74,6 @@ namespace Game.Bootstrap
             if (_queue.Expire(Now) && _queue.IsEmpty)
             {
                 DropPills();
-                _dock.Collapse();
                 return;
             }
             _pills.Show(_queue.Items, Now);
@@ -105,8 +101,6 @@ namespace Game.Bootstrap
             if (_expanded && !_panelMode.IsOpen)
                 _pills.Place(layout.PanelsAboveStrip);
         }
-
-        private float DpiScale => Math.Max(1, _dock.StripHeightPx) / StripSpace.BaseHeightPx;
 
         private static double Now => Time.unscaledTimeAsDouble;
     }

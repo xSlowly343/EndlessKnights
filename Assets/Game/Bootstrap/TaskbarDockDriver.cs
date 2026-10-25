@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Game.Core.Ui;
 using Game.Platform.Windows.Window;
 using UnityEngine;
 
@@ -28,8 +29,6 @@ namespace Game.Bootstrap
         private float _nextRaiseTime;
         private float _nextCheckTime;
         private bool _expanded;
-        private int _panelWidthPx;
-        private int _panelHeightPx;
         private ScreenRect _pendingWindow;
         private bool _hasPendingWindow;
 
@@ -39,6 +38,7 @@ namespace Game.Bootstrap
         public PanelLayout Layout { get; private set; }
         public bool AlwaysOnTop { get; set; } = true;
         public int StripHeightPx => _size.Height;
+        public int StripWidthPx => _size.Width;
         public int Offset => _offset;
 
         public void UseOffset(int offset)
@@ -85,22 +85,14 @@ namespace Game.Bootstrap
                 PlaceNextToTaskbar();
         }
 
-        public PanelLayout Expand(int panelWidthPx, int panelHeightPx)
+        public void Expand()
         {
             _expanded = true;
-            _panelWidthPx = panelWidthPx;
-            _panelHeightPx = panelHeightPx;
             _drag.Release();
             _depthDrag.Release();
-            PlaceNextToTaskbar();
-            return Layout;
         }
 
-        public void Collapse()
-        {
-            _expanded = false;
-            PlaceNextToTaskbar();
-        }
+        public void Collapse() => _expanded = false;
 
         public void BeginDrag()
         {
@@ -179,13 +171,13 @@ namespace Game.Bootstrap
             PlaceNextToTaskbar();
         }
 
-        private int PlacedDepth => _expanded && !StripPlacement.IsHorizontal(_dockedEdge) ? 0 : _depth;
+        private int PanelAreaPx(int basePx) => (int)Math.Round((double)basePx * _size.Height / BaseStripSize.Height);
 
         private void PlaceNextToTaskbar()
         {
-            var strip = StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, GapToTaskbar, _offset, PlacedDepth);
-            Layout = _expanded && MonitorWorkArea.TryGet(strip, out var workArea)
-                ? PanelLayout.Expanded(strip, workArea, _dockedEdge, _panelWidthPx, _panelHeightPx)
+            var strip = StripPlacement.NextToTaskbar(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, GapToTaskbar, _offset, _depth);
+            Layout = MonitorWorkArea.TryGet(strip, out var workArea)
+                ? PanelLayout.Expanded(strip, workArea, _dockedEdge, PanelAreaPx(PanelGeometry.WideWidthPx), PanelAreaPx(PanelGeometry.WideHeightPx + PanelGeometry.GapToStripPx))
                 : PanelLayout.Collapsed(strip);
             _pendingWindow = Layout.Window;
             _hasPendingWindow = true;
