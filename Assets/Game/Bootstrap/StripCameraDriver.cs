@@ -6,21 +6,31 @@ namespace Game.Bootstrap
 {
     public sealed class StripCameraDriver : MonoBehaviour
     {
+        private readonly SurfaceResizeGate _gate = new SurfaceResizeGate();
         private Camera _camera = null!;
-        private TaskbarDockDriver _dock = null!;
+        private int _stripHeightPx;
 
         public static void Attach(GameObject host, Camera camera, TaskbarDockDriver dock)
         {
             var driver = host.AddComponent<StripCameraDriver>();
             driver._camera = camera;
-            driver._dock = dock;
-            dock.Placed += driver.Fit;
-            driver.Fit(dock.Layout, dock.StripHeightPx);
+            dock.Placed += driver.Request;
+            driver.Request(dock.Layout, dock.StripHeightPx);
         }
 
-        private void Fit(PanelLayout layout, int stripHeightPx)
+        private void Request(PanelLayout layout, int stripHeightPx)
         {
-            StripCamera.Fit(_camera, layout.Window.Width, layout.Window.Height, stripHeightPx, layout.StripOffsetX, layout.StripOffsetFromBottom);
+            _stripHeightPx = stripHeightPx;
+            _gate.Request(layout);
+            FitWhenSurfaceMatches();
+        }
+
+        private void LateUpdate() => FitWhenSurfaceMatches();
+
+        private void FitWhenSurfaceMatches()
+        {
+            if (_gate.TryTake(Screen.width, Screen.height, out var layout))
+                StripCamera.Fit(_camera, layout.Window.Width, layout.Window.Height, _stripHeightPx, layout.StripOffsetX, layout.StripOffsetFromBottom);
         }
     }
 }
