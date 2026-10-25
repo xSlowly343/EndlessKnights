@@ -21,6 +21,7 @@ namespace Game.Core.Ui
         CountClicks,
         CountWheel,
         ShowInputDebug,
-        InputConsent
+        InputConsent,
+        WhatsNew
     }
 }

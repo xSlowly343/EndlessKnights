@@ -110,7 +110,7 @@ namespace Game.Bootstrap
 
             var tray = TrayIcon.Create(Application.productName);
             var trayDriver = tray != null ? TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug, panelMode) : null;
-            settings.Bind(panels, panelMode, dock, trayDriver, battleView, loop, notifications);
+            settings.Bind(panels, panelMode, dock, trayDriver, battleView, loop, notifications, data?.Current.ChangeLog);
         }
 
         private static void ReportOffline(BattleDriver battle, PanelModeDriver panelMode, double awaySeconds)

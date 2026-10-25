@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Content;
 using Game.Core.Math;
 using Game.Core.Settings;
 using Game.Core.Sim;
@@ -20,6 +21,7 @@ namespace Game.Bootstrap
         private BattleView? _battle;
         private GameLoop? _loop;
         private NotificationDriver? _notifications;
+        private ChangeLog? _changeLog;
 
         public GameSettings Settings { get; private set; } = new GameSettings();
 
@@ -35,8 +37,9 @@ namespace Game.Bootstrap
             return driver;
         }
 
-        public void Bind(PanelCanvas panels, PanelModeDriver? panelMode, TaskbarDockDriver? dock, TrayDriver? tray, BattleView? battle, GameLoop? loop, NotificationDriver? notifications)
+        public void Bind(PanelCanvas panels, PanelModeDriver? panelMode, TaskbarDockDriver? dock, TrayDriver? tray, BattleView? battle, GameLoop? loop, NotificationDriver? notifications, ChangeLog? changeLog)
         {
+            _changeLog = changeLog;
             _loop = loop;
             _notifications = notifications;
             ApplyPermissions();
@@ -46,6 +49,7 @@ namespace Game.Bootstrap
             _battle = battle;
             ApplyText(Settings);
             panels.Settings.Use(Settings);
+            panels.Settings.UseVersion(Application.version);
             panels.Settings.Changed += OnChanged;
             panels.ConsentAccepted += () => AnswerConsent(true);
             panels.ConsentDeclined += () => AnswerConsent(false);
@@ -95,6 +99,9 @@ namespace Game.Bootstrap
                 case SettingId.InputConsent:
                     _panelMode?.OpenConsent();
                     return;
+                case SettingId.WhatsNew:
+                    ShowWhatsNew();
+                    return;
                 case SettingId.ResetPosition:
                     _dock?.UseOffset((int)Settings.StripOffset);
                     break;
@@ -107,6 +114,13 @@ namespace Game.Bootstrap
                     break;
             }
             Save();
+        }
+
+        private void ShowWhatsNew()
+        {
+            var latest = _changeLog?.Latest;
+            if (latest != null)
+                _panelMode?.OpenReport(SettingsScreen.WhatsNewTitle(latest.Game), latest.Lines(Texts.Language), Texts.Get("report.gotIt"));
         }
 
         private void OnTrayChanged(TrayMenuState state)
