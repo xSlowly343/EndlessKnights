@@ -92,7 +92,7 @@ namespace Game.Presentation.Ui
                 else
                     _rows[i].Hide();
             }
-            _note.text = _tab == 1 ? Game.Core.Text.Texts.Get("settings.soundNote") : string.Empty;
+            _note.text = SettingsScreen.Note(_tab);
             Arrange();
         }
 

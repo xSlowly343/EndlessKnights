@@ -42,11 +42,14 @@ namespace Game.Presentation.Ui
         private const float TabStripeInsetPx = 12f;
         private const float MoreRowHeightPx = 44f;
         private const float MoreTextInsetPx = 16f;
+        private const float MoreIconPx = 24f;
+        private const float TabIconPx = 24f;
+        private const float TabIconTopPx = 8f;
         private const float ReportPlateWidthPx = 280f;
         private const float ReportLineHeightPx = 28f;
         private const float ClaimWidthPx = 160f;
         private const float ClaimHeightPx = 36f;
-        private const float CoinPx = 14f;
+        private const float CoinPx = 22f;
         private const float CurrencyWidthPx = 140f;
         private const float CurrencyRefreshSeconds = 0.25f;
         private const float TitleSizePx = 16f;
@@ -549,7 +552,10 @@ namespace Game.Presentation.Ui
             {
                 var tab = _tabs[i];
                 var active = i == activeIndex;
-                tab.Text = i < _barSections.Count ? PanelSections.Title(_barSections[i]) : "Ещё";
+                var inBar = i < _barSections.Count;
+                tab.Text = inBar ? PanelSections.Title(_barSections[i]) : "Ещё";
+                UiElements.Use(_tabMarks[i].Icon, inBar ? UiIcons.Tab(_barSections[i]) : UiIcons.Tab(UiIcons.More));
+                _tabMarks[i].Tint(active ? _theme.Gold : _theme.TextDim);
                 tab.Back.color = active ? _theme.Card : Color.clear;
                 tab.Label!.color = active ? _theme.Gold : _theme.TextDim;
                 tab.Label.font = Font(active ? _theme.BoldFont : _theme.TextFont);
@@ -566,8 +572,10 @@ namespace Game.Presentation.Ui
             {
                 var shown = i < _moreSections.Count;
                 _moreRows[i].Show(shown);
-                if (shown)
-                    _moreRows[i].Text = PanelSections.Title(_moreSections[i]);
+                if (!shown)
+                    continue;
+                _moreRows[i].Text = PanelSections.Title(_moreSections[i]);
+                UiElements.Use(_moreMarks[i].Icon, UiIcons.Tab(_moreSections[i]));
             }
             _treeShown = !navigator.ShowingMore && navigator.Active == PanelSection.Tree && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
             Tree.Show(_treeShown, _shownFrame.WidthPx, _shownFrame.ContentPx);
@@ -674,7 +682,7 @@ namespace Game.Presentation.Ui
             _titlePlate.Label!.color = Color.white;
             UiElements.BottomEdge(UiElements.Fill("Line", _titlePlate.Rect, _theme.Gold).rectTransform, PlateLinePx, ButtonRadiusPx);
             var coinX = 2f * MarginPx + PlateWidthPx;
-            _coin = UiElements.Dot("Coin", header, _theme.Gold);
+            _coin = UiElements.Icon("Coin", header, UiIcons.Currency(UiIcons.Gold), _theme.Gold);
             UiElements.Anchor(_coin.rectTransform, middleLeft, new Vector2(coinX, 0f), Vector2.one * CoinPx);
             _currency = UiElements.Label("Currency", header, _theme.NumberFont, NumberSizePx, _theme.Gold, TextAlignmentOptions.MidlineLeft);
             UiElements.Anchor(_currency.rectTransform, middleLeft, new Vector2(coinX + CoinPx + MarginPx / 2f, 0f), new Vector2(CurrencyWidthPx, HeaderButtonPx));
@@ -769,13 +777,17 @@ namespace Game.Presentation.Ui
         {
             var back = UiElements.Fill(name, parent, _theme.Card, ButtonRadiusPx);
             back.rectTransform.sizeDelta = new Vector2(0f, MoreRowHeightPx);
+            var icon = UiElements.Icon(name + "Icon", back.rectTransform, null, _theme.Text);
+            UiElements.Anchor(icon.rectTransform, new Vector2(0f, 0.5f), new Vector2(MoreTextInsetPx, 0f), Vector2.one * MoreIconPx);
             var label = UiElements.Label(name + "Text", back.rectTransform, _theme.TextFont, TextSizePx, _theme.Text, TextAlignmentOptions.MidlineLeft);
-            UiElements.Stretch(label.rectTransform).offsetMin = new Vector2(MoreTextInsetPx, 0f);
+            UiElements.Stretch(label.rectTransform).offsetMin = new Vector2(MoreTextInsetPx + MoreIconPx + MarginPx, 0f);
             var chevron = UiElements.Label("Chevron", back.rectTransform, _theme.BoldFont, GlyphSizePx, _theme.TextDim, TextAlignmentOptions.MidlineRight);
             UiElements.Stretch(chevron.rectTransform).offsetMax = new Vector2(-MoreTextInsetPx, 0f);
             chevron.text = "›";
             var row = new UiButton(back, label);
-            _moreMarks.Add(SectionMark.ForRow(row, chevron.gameObject, _theme));
+            var mark = SectionMark.ForRow(row, icon, chevron.gameObject, _theme);
+            mark.Tint(_theme.Text);
+            _moreMarks.Add(mark);
             return row;
         }
 
@@ -794,14 +806,16 @@ namespace Game.Presentation.Ui
             for (var i = 0; i < TabCount; i++)
             {
                 var back = UiElements.Fill("Tab " + i, tabs, Color.clear);
+                var icon = UiElements.Icon("Tab " + i + "Icon", back.rectTransform, null, _theme.TextDim);
+                UiElements.Anchor(icon.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -TabIconTopPx), Vector2.one * TabIconPx);
                 var label = UiElements.Label("Tab " + i + "Text", back.rectTransform, _theme.TextFont, SmallTextSizePx, _theme.TextDim, TextAlignmentOptions.Center);
-                UiElements.Stretch(label.rectTransform);
+                UiElements.BottomEdge(label.rectTransform, SectionMark.TabLabelHeightPx).anchoredPosition = new Vector2(0f, SectionMark.TabLabelBottomPx);
                 var stripe = UiElements.Fill("Stripe", back.rectTransform, _theme.Gold, TabStripePx / 2f);
                 UiElements.TopEdge(stripe.rectTransform, TabStripePx, TabStripeInsetPx);
                 var tab = new UiButton(back, label);
                 _tabs.Add(tab);
                 _tabStripes.Add(stripe);
-                _tabMarks.Add(SectionMark.ForTab(tab, _theme));
+                _tabMarks.Add(SectionMark.ForTab(tab, icon, _theme));
             }
         }
 
