@@ -61,8 +61,9 @@ namespace Game.Core.Build
 
         public void LimitZoom(double closestHeight)
         {
+            var wasClosest = VisibleHeight <= ClosestHeight;
             _closestHeight = System.Math.Max(MinVisibleHeight, closestHeight);
-            VisibleHeight = Clamp(VisibleHeight, ClosestHeight, _maxVisibleHeight);
+            VisibleHeight = Clamp(wasClosest ? ClosestHeight : VisibleHeight, ClosestHeight, _maxVisibleHeight);
         }
 
         public void FocusOn(double x, double y, double visibleHeight)

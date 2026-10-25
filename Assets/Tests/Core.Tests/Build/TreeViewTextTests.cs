@@ -123,6 +123,8 @@ namespace Game.Core.Tests.Build
             Assert.That(viewport.VisibleHeight, Is.EqualTo(18));
             viewport.FocusOn(0, 0, 5);
             Assert.That(viewport.VisibleHeight, Is.EqualTo(18));
+            viewport.LimitZoom(12);
+            Assert.That(viewport.VisibleHeight, Is.EqualTo(12));
         }
 
         [Test]
