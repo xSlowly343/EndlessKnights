@@ -111,6 +111,21 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void LimitedZoomStopsZoomingInAndPullsACloserViewBack()
+        {
+            var viewport = new TreeViewport(Tree.Nodes, 1);
+            viewport.FocusOn(0, 0, 10);
+
+            viewport.LimitZoom(18);
+            for (var i = 0; i < 5; i++)
+                viewport.ZoomIn();
+
+            Assert.That(viewport.VisibleHeight, Is.EqualTo(18));
+            viewport.FocusOn(0, 0, 5);
+            Assert.That(viewport.VisibleHeight, Is.EqualTo(18));
+        }
+
+        [Test]
         public void ViewportResizedForTheWidePanelKeepsTheZoomAndShowsMoreAcross()
         {
             var viewport = new TreeViewport(Tree.Nodes, 464.0 / 250.0);

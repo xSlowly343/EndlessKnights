@@ -86,7 +86,7 @@ namespace Game.Presentation.Ui
         private const float NormalGlyphLift = 0.15f;
         private const byte NotableOuterAlpha = 0x90;
         private const float OutlineScale = 1.3f;
-        private const float StartPixelsPerUnit = 56f;
+        private const float MaxPixelsPerUnit = 25f;
         private static readonly Color32 LinkDark = new Color32(0xAE, 0xB9, 0xD6, 0x50);
         private static readonly Color32 LinkNear = new Color32(0xAE, 0xB9, 0xD6, 0x90);
 
@@ -191,6 +191,7 @@ namespace Game.Presentation.Ui
             _highlight = string.Empty;
             BuildMap(tree);
             _viewport = new TreeViewport(tree.Nodes, _fieldPx.x / _fieldPx.y);
+            _viewport.LimitZoom(_fieldPx.y / MaxPixelsPerUnit);
             FocusOwnPath();
             Refresh();
         }
@@ -204,6 +205,7 @@ namespace Game.Presentation.Ui
             UiElements.TopEdge(_field, _fieldPx.y);
             _bodyLines = contentPx >= FullCardMinContentPx ? MaxBodyLines : CompactBodyLines;
             _viewport?.Resize(_fieldPx.x / _fieldPx.y);
+            _viewport?.LimitZoom(_fieldPx.y / MaxPixelsPerUnit);
             if (!shown)
                 return;
             Refresh();
@@ -237,7 +239,7 @@ namespace Game.Presentation.Ui
                 return;
             var start = _tree.StartOf(_loop.State.Tree.StartClass);
             if (start != null)
-                _viewport.FocusOn(start.X, start.Y, _fieldPx.y / StartPixelsPerUnit);
+                _viewport.FocusOn(start.X, start.Y, _fieldPx.y / MaxPixelsPerUnit);
             PlaceMap();
         }
 

@@ -63,7 +63,7 @@ namespace Game.Editor
             panels.Release(target);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-tree.png"));
             SaveTreeZoom(camera, panels, frame, 2, Path.Combine(folder, "panel-tree-close.png"));
-            SaveTreeZoom(camera, panels, frame, -4, Path.Combine(folder, "panel-tree-mid.png"));
+            SaveTreeZoom(camera, panels, frame, -2, Path.Combine(folder, "panel-tree-mid.png"));
             SaveTreeZoom(camera, panels, frame, -20, Path.Combine(folder, "panel-tree-far.png"));
             panels.Tree.FocusOwnPath();
 
