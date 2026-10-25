@@ -12,6 +12,8 @@ namespace Game.Bootstrap
     {
         private TaskbarDockDriver _dock = null!;
         private PanelCanvas _panels = null!;
+        private string? _reportTitle;
+        private IReadOnlyList<string>? _reportLines;
 
         public PanelNavigator Navigator { get; private set; } = null!;
         public bool IsOpen => _panels.IsOpen;
@@ -44,7 +46,7 @@ namespace Game.Bootstrap
 
         public void Toggle()
         {
-            if (_panels.IsShowingReport)
+            if (_panels.IsShowingCard)
                 Close();
             else
                 Navigator.PressMenu();
@@ -58,13 +60,33 @@ namespace Game.Bootstrap
 
         public void OpenReport(string title, IReadOnlyList<string> lines)
         {
+            _reportTitle = title;
+            _reportLines = lines;
             Navigator.Close();
             _panels.ShowReport(title, lines);
             Expand(PanelCanvas.ReportFrame);
         }
 
+        public void OpenConsent()
+        {
+            if (!_panels.IsShowingReport)
+                ForgetReport();
+            Navigator.Close();
+            _panels.ShowConsent();
+            Expand(PanelCanvas.ConsentFrame);
+        }
+
+        public void FinishConsent()
+        {
+            if (_reportTitle != null && _reportLines != null)
+                OpenReport(_reportTitle, _reportLines);
+            else
+                Close();
+        }
+
         public void Close()
         {
+            ForgetReport();
             if (Navigator.IsOpen)
             {
                 Navigator.Close();
@@ -72,6 +94,12 @@ namespace Game.Bootstrap
             }
             _panels.Hide();
             _dock.Collapse();
+        }
+
+        private void ForgetReport()
+        {
+            _reportTitle = null;
+            _reportLines = null;
         }
 
         private void Apply()

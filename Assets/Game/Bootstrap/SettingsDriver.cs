@@ -19,6 +19,7 @@ namespace Game.Bootstrap
         private PanelModeDriver? _panelMode;
         private BattleView? _battle;
         private GameLoop? _loop;
+        private NotificationDriver? _notifications;
 
         public GameSettings Settings { get; private set; } = new GameSettings();
 
@@ -34,9 +35,10 @@ namespace Game.Bootstrap
             return driver;
         }
 
-        public void Bind(PanelCanvas panels, PanelModeDriver? panelMode, TaskbarDockDriver? dock, TrayDriver? tray, BattleView? battle, GameLoop? loop)
+        public void Bind(PanelCanvas panels, PanelModeDriver? panelMode, TaskbarDockDriver? dock, TrayDriver? tray, BattleView? battle, GameLoop? loop, NotificationDriver? notifications)
         {
             _loop = loop;
+            _notifications = notifications;
             ApplyPermissions();
             _panelMode = panelMode;
             _dock = dock;
@@ -45,6 +47,8 @@ namespace Game.Bootstrap
             ApplyText(Settings);
             panels.Settings.Use(Settings);
             panels.Settings.Changed += OnChanged;
+            panels.ConsentAccepted += () => AnswerConsent(true);
+            panels.ConsentDeclined += () => AnswerConsent(false);
             if (_dock != null)
             {
                 _dock.UseOffset((int)Settings.StripOffset);
@@ -55,7 +59,20 @@ namespace Game.Bootstrap
                 _tray.UseState(TrayStateOf(Settings));
                 _tray.StateChanged += OnTrayChanged;
             }
-            _panelMode?.Refresh();
+            if (Settings.InputConsentGiven)
+                _panelMode?.Refresh();
+            else
+                _panelMode?.OpenConsent();
+        }
+
+        private void AnswerConsent(bool given)
+        {
+            Settings.InputConsentGiven = given;
+            ApplyPermissions();
+            Save();
+            _panelMode?.FinishConsent();
+            if (!given)
+                _notifications?.Notify(ConsentTexts.Declined);
         }
 
         private void OnChanged(SettingId id)
@@ -75,6 +92,9 @@ namespace Game.Bootstrap
                 case SettingId.CountWheel:
                     ApplyPermissions();
                     break;
+                case SettingId.InputConsent:
+                    _panelMode?.OpenConsent();
+                    return;
                 case SettingId.ResetPosition:
                     _dock?.UseOffset((int)Settings.StripOffset);
                     break;
@@ -121,7 +141,7 @@ namespace Game.Bootstrap
         private void ApplyPermissions()
         {
             if (_loop != null)
-                _loop.Permissions = new InputPermissions(true, Settings.CountKeys, Settings.CountMouseMovement, Settings.CountClicks, Settings.CountWheel);
+                _loop.Permissions = InputPermissions.From(Settings);
         }
 
         private static void ApplyText(GameSettings settings)

@@ -83,6 +83,7 @@ namespace Game.Bootstrap
             var settings = SettingsDriver.Attach(host);
             BattleView? battleView = null;
             GameLoop? loop = null;
+            NotificationDriver? notifications = null;
             var rawInput = RawInputService.Start(data?.Current.InputCaps.Detection);
             var observedInput = new ObservedInputSource(rawInput);
             InputShutdownDriver.Attach(host, rawInput);
@@ -96,7 +97,7 @@ namespace Game.Bootstrap
                 router.UseSkillBar(battle.SkillBar);
                 battleView = battle.View;
                 loop = battle.Loop;
-                NotificationDriver.Attach(host, dock, panelMode, panels, battle);
+                notifications = NotificationDriver.Attach(host, dock, panelMode, panels, battle);
                 if (save != null)
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
@@ -107,7 +108,7 @@ namespace Game.Bootstrap
 
             var tray = TrayIcon.Create(Application.productName);
             var trayDriver = tray != null ? TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug, panelMode) : null;
-            settings.Bind(panels, panelMode, dock, trayDriver, battleView, loop);
+            settings.Bind(panels, panelMode, dock, trayDriver, battleView, loop, notifications);
         }
 
         private static void ReportOffline(BattleDriver battle, PanelModeDriver panelMode, double awaySeconds)
