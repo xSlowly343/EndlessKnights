@@ -62,6 +62,10 @@ namespace Game.Editor
             panels.TryClick(target);
             panels.Release(target);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-tree.png"));
+            SaveTreeZoom(camera, panels, frame, 2, Path.Combine(folder, "panel-tree-close.png"));
+            SaveTreeZoom(camera, panels, frame, -4, Path.Combine(folder, "panel-tree-mid.png"));
+            SaveTreeZoom(camera, panels, frame, -20, Path.Combine(folder, "panel-tree-far.png"));
+            panels.Tree.FocusOwnPath();
 
             navigator.ToggleWide();
             frame = ShowPanel(panels, navigator);
@@ -188,6 +192,18 @@ namespace Game.Editor
                 letter.text = (i + 1).ToString();
             }
             return sample;
+        }
+
+        private static void SaveTreeZoom(Camera camera, PanelCanvas panels, PanelFrame frame, int steps, string path)
+        {
+            for (var i = 0; i < System.Math.Abs(steps); i++)
+            {
+                if (steps > 0)
+                    panels.Tree.ZoomIn();
+                else
+                    panels.Tree.ZoomOut();
+            }
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, path);
         }
 
         private static void Save(Camera camera, PanelCanvas panels, int width, int height, string path)
