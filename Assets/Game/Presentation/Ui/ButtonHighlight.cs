@@ -15,6 +15,7 @@ namespace Game.Presentation.Ui
         public ButtonHighlight(Transform parent)
         {
             _overlay = UiElements.Fill("ButtonHighlight", parent, HoverTint);
+            UiElements.IgnoreLayout(_overlay.rectTransform);
             _overlay.gameObject.SetActive(false);
         }
 
