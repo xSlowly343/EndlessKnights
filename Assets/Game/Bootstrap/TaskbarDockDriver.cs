@@ -30,10 +30,19 @@ namespace Game.Bootstrap
         private int _panelHeightPx;
 
         public event Action<PanelLayout, int>? Placed;
+        public event Action<int>? Moved;
 
         public PanelLayout Layout { get; private set; }
         public bool AlwaysOnTop { get; set; } = true;
         public int StripHeightPx => _size.Height;
+        public int Offset => _offset;
+
+        public void UseOffset(int offset)
+        {
+            _offset = _isDocked ? StripPlacement.ClampOffset(_dockedEdge, _dockedTaskbar, _size.Width, _size.Height, offset) : offset;
+            if (_isDocked)
+                PlaceNextToTaskbar();
+        }
 
         public static TaskbarDockDriver Attach(GameObject host, WindowController window)
         {
@@ -105,8 +114,11 @@ namespace Game.Bootstrap
 
         public void EndDrag()
         {
+            var dragging = _drag.IsDragging;
             _drag.Release();
             _depthDrag.Release();
+            if (dragging)
+                Moved?.Invoke(_offset);
         }
 
         private bool TryGetCursor(out int along, out int across)

@@ -99,7 +99,7 @@ namespace Game.Presentation.Battle
             return index;
         }
 
-        private static string Format(BigNumber amount) => NumberFormatter.Format(amount, NumberFormatSettings.Default);
+        private static string Format(BigNumber amount) => NumberFormatter.Format(amount, NumberDisplay.Settings);
 
         private void Update()
         {

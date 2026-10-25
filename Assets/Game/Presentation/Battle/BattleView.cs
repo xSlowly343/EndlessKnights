@@ -152,6 +152,15 @@ namespace Game.Presentation.Battle
 
         public void Retreat() => _retreatAge = 0f;
 
+        public void Relabel()
+        {
+            _shownStage = -1;
+            _shownTenths = -1;
+            _shownPercent = -1;
+            _shownGold = string.Empty;
+            _retreatText.text = BattleTexts.Retreat;
+        }
+
         public void ShowNotice(string text)
         {
             _noticeText.text = text;
@@ -189,7 +198,7 @@ namespace Game.Presentation.Battle
                 _timer.gameObject.SetActive(bossFight);
             if (bossFight)
                 ShowTimer(bossSecondsLeft, bossTimerFraction);
-            var goldText = NumberFormatter.Format(gold, NumberFormatSettings.Default);
+            var goldText = NumberFormatter.Format(gold, NumberDisplay.Settings);
             if (goldText != _shownGold)
                 _goldText.text = _shownGold = goldText;
         }

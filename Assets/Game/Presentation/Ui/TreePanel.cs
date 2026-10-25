@@ -418,7 +418,7 @@ namespace Game.Presentation.Ui
                 ShowCard(TreeTexts.Hint, StatusColor, Color.clear);
                 return;
             }
-            _info.AddRange(TreeNodeText.Describe(_tree, allocation, _selected, _loop.RefundCost(_selected.Id), NumberFormatSettings.Default));
+            _info.AddRange(TreeNodeText.Describe(_tree, allocation, _selected, _loop.RefundCost(_selected.Id), NumberDisplay.Settings));
             _actions.AddRange(TreeAction.For(_tree, allocation, _selected));
             if (_actions.Count > MaxActions)
                 _actions.RemoveRange(MaxActions, _actions.Count - MaxActions);

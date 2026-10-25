@@ -50,6 +50,12 @@ namespace Game.Bootstrap
                 Navigator.PressMenu();
         }
 
+        public void Refresh()
+        {
+            if (Navigator.IsOpen)
+                _panels.Show(Navigator);
+        }
+
         public void OpenReport(string title, IReadOnlyList<string> lines)
         {
             Navigator.Close();

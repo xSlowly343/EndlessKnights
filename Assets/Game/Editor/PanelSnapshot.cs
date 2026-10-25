@@ -112,6 +112,14 @@ namespace Game.Editor
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-more.png"));
 
+            panels.Settings.Use(new Game.Core.Settings.GameSettings());
+            navigator.SelectTab(PanelSection.Settings);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-settings.png"));
+            navigator.SelectSubTab(1);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-settings-sound.png"));
+
             navigator.SelectTab(PanelSection.Hero);
             frame = ShowPanel(panels, navigator);
             panels.ShowNotice(PanelTexts.Locked(PanelSection.Party, data.Panel.StageFor(PanelSection.Party)));
