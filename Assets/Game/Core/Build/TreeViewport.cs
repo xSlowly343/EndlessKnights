@@ -14,6 +14,7 @@ namespace Game.Core.Build
         private readonly double _minY;
         private readonly double _maxY;
         private double _maxVisibleHeight;
+        private double _closestHeight = MinVisibleHeight;
 
         public TreeViewport(IReadOnlyList<TreeNodeDef> nodes, double aspect)
         {
@@ -52,22 +53,31 @@ namespace Game.Core.Build
             CentreY = Clamp(CentreY - dv * VisibleHeight, _minY, _maxY);
         }
 
-        public void ZoomIn() => VisibleHeight = Clamp(VisibleHeight / ZoomStep, MinVisibleHeight, _maxVisibleHeight);
+        public double ClosestHeight => System.Math.Min(_closestHeight, _maxVisibleHeight);
 
-        public void ZoomOut() => VisibleHeight = Clamp(VisibleHeight * ZoomStep, MinVisibleHeight, _maxVisibleHeight);
+        public void ZoomIn() => VisibleHeight = Clamp(VisibleHeight / ZoomStep, ClosestHeight, _maxVisibleHeight);
+
+        public void ZoomOut() => VisibleHeight = Clamp(VisibleHeight * ZoomStep, ClosestHeight, _maxVisibleHeight);
+
+        public void LimitZoom(double closestHeight)
+        {
+            var wasClosest = VisibleHeight <= ClosestHeight;
+            _closestHeight = System.Math.Max(MinVisibleHeight, closestHeight);
+            VisibleHeight = Clamp(wasClosest ? ClosestHeight : VisibleHeight, ClosestHeight, _maxVisibleHeight);
+        }
 
         public void FocusOn(double x, double y, double visibleHeight)
         {
             CentreX = Clamp(x, _minX, _maxX);
             CentreY = Clamp(y, _minY, _maxY);
-            VisibleHeight = Clamp(visibleHeight, MinVisibleHeight, _maxVisibleHeight);
+            VisibleHeight = Clamp(visibleHeight, ClosestHeight, _maxVisibleHeight);
         }
 
         public void Resize(double aspect)
         {
             Aspect = aspect;
             _maxVisibleHeight = FitHeight(aspect);
-            VisibleHeight = Clamp(VisibleHeight, MinVisibleHeight, _maxVisibleHeight);
+            VisibleHeight = Clamp(VisibleHeight, ClosestHeight, _maxVisibleHeight);
         }
 
         public static TreeNodeDef? NodeAt(IReadOnlyList<TreeNodeDef> nodes, double x, double y, double radius)

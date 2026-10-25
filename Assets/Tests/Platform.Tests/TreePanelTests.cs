@@ -74,11 +74,34 @@ namespace Game.Platform.Tests
         [Test]
         public void ZoomButtonInsideTheFieldZoomsIn()
         {
+            _panel.Tree.ZoomOut();
             var height = _panel.Tree.VisibleHeight;
 
             Assert.That(_panel.TryClick(_panel.Tree.WorldPointOfZoomIn()), Is.True);
 
             Assert.That(_panel.Tree.VisibleHeight, Is.LessThan(height));
+        }
+
+        [Test]
+        public void FullyZoomedOutGlyphMarkersStayOnTheTree()
+        {
+            for (var i = 0; i < 20; i++)
+                _panel.Tree.ZoomOut();
+
+            var shown = _data.Tree.Nodes.Count(_panel.Tree.IsMarkerShown);
+
+            Assert.That(shown, Is.GreaterThan(100));
+            Assert.That(_data.Tree.Nodes.Where(node => node.Type == Game.Core.Content.Tree.TreeNodeType.Start).All(_panel.Tree.IsMarkerShown), Is.True);
+        }
+
+        [Test]
+        public void TheTreeOpensAtTheClosestZoom()
+        {
+            var height = _panel.Tree.VisibleHeight;
+
+            _panel.Tree.ZoomIn();
+
+            Assert.That(_panel.Tree.VisibleHeight, Is.EqualTo(height));
         }
 
         [Test]

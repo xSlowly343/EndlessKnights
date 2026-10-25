@@ -11,6 +11,7 @@ namespace Game.Presentation.Ui
         private const float PixelsPerUnit = 100f;
 
         private const float RingInnerFraction = 0.62f;
+        private const float NodeRingInnerFraction = 0.8f;
         private const float RaisedTopShade = 1f;
         private const float RaisedBottomShade = 0.84f;
         private const float RaisedDepthShade = 0.6f;
@@ -137,7 +138,7 @@ namespace Game.Presentation.Ui
                         var dx = x + 0.5f - CircleSize / 2f;
                         var dy = y + 0.5f - CircleSize / 2f;
                         var solid = ShapeCoverage(shape, radius, dx, dy);
-                        var hole = ShapeCoverage(shape, radius * RingInnerFraction, dx, dy);
+                        var hole = ShapeCoverage(shape, radius * NodeRingInnerFraction, dx, dy);
                         texture.SetPixel(2 * shape * CircleSize + x, y, new Color(1f, 1f, 1f, solid));
                         texture.SetPixel((2 * shape + 1) * CircleSize + x, y, new Color(1f, 1f, 1f, Mathf.Clamp01(solid - hole)));
                     }
