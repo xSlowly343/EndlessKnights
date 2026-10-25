@@ -38,8 +38,10 @@ namespace Game.Presentation.Battle
         private const float FocusHeightPx = 10f;
         private const float ResourceHeightPx = 4f;
         private const float BarRadiusPx = 5f;
-        private const float HpLeftPx = 116f;
-        private const float HpWidthPx = 244f;
+        private const float MultiplierLeftPx = 112f;
+        private const float MultiplierWidthPx = 36f;
+        private const float HpLeftPx = 152f;
+        private const float HpWidthPx = 208f;
         private const float HpHeightPx = 10f;
         private const float PercentWidthPx = 40f;
         private const float CoinLeftPx = 410f;
@@ -71,6 +73,7 @@ namespace Game.Presentation.Battle
         private static readonly Color TimerBlinkColor = new Color32(0xFF, 0x5A, 0x5A, 0xFF);
         private static readonly Color DotEmpty = new Color32(0x3A, 0x48, 0x70, 0xFF);
         private static readonly Color DotFull = new Color32(0xEE, 0xF2, 0xFF, 0xFF);
+        private static readonly Color MultiplierColor = new Color32(0xFF, 0xB4, 0xA8, 0xFF);
         private static readonly Color PercentColor = new Color32(0xD5, 0xDC, 0xEE, 0xFF);
         private static readonly Color RetreatColor = new Color32(0xFF, 0x66, 0x4D, 0xFF);
         private static readonly Color NoticeColor = new Color32(0xB3, 0xFF, 0xB3, 0xFF);
@@ -89,6 +92,7 @@ namespace Game.Presentation.Battle
         private TextMeshProUGUI _stageText = null!;
         private TextMeshProUGUI _timerText = null!;
         private TextMeshProUGUI _percentText = null!;
+        private TextMeshProUGUI _multiplierText = null!;
         private TextMeshProUGUI _goldText = null!;
         private TextMeshProUGUI _retreatText = null!;
         private TextMeshProUGUI _noticeText = null!;
@@ -115,10 +119,12 @@ namespace Game.Presentation.Battle
         private bool _shownBoss;
         private int _shownTenths = -1;
         private int _shownPercent = -1;
+        private int _shownMultiplier = -1;
 
         public string StageText => _stageText.text;
         public string TimerText => _timerText.text;
         public string PercentText => _percentText.text;
+        public string MultiplierText => _multiplierText.text;
         public string GoldText => _goldText.text;
         public bool TimerShown => _timer.gameObject.activeSelf;
         public float HpShown => _shownHp;
@@ -157,6 +163,7 @@ namespace Game.Presentation.Battle
             _shownStage = -1;
             _shownTenths = -1;
             _shownPercent = -1;
+            _shownMultiplier = -1;
             _shownGold = string.Empty;
             _retreatText.text = BattleTexts.Retreat;
         }
@@ -179,7 +186,7 @@ namespace Game.Presentation.Battle
         }
 
         public void ShowState(long stage, int killsOnStage, int enemiesPerStage, double hpFraction, double bossSecondsLeft, double bossTimerFraction, bool bossFight,
-            double focusFraction, double energyFraction, BigNumber gold)
+            double focusFraction, double focusMultiplier, double energyFraction, BigNumber gold)
         {
             if (stage != _shownStage || bossFight != _shownBoss)
             {
@@ -190,6 +197,9 @@ namespace Game.Presentation.Battle
             _targetHp = (float)hpFraction;
             _targetFocus = (float)focusFraction;
             _targetEnergy = (float)energyFraction;
+            var multiplier = BattleTexts.MultiplierTenths(focusMultiplier);
+            if (multiplier != _shownMultiplier)
+                _multiplierText.text = BattleTexts.Multiplier(_shownMultiplier = multiplier);
             var percent = BattleTexts.PercentOf(hpFraction);
             if (percent != _shownPercent)
                 _percentText.text = BattleTexts.Percent(_shownPercent = percent);
@@ -261,6 +271,8 @@ namespace Game.Presentation.Battle
 
             _focusFill = Bar("Focus", hud, MarginPx, BottomCentrePx - 2f, FocusWidthPx, FocusHeightPx, FocusColor);
             _energyFill = Bar("Resource", hud, MarginPx, BottomCentrePx + 8f, FocusWidthPx, ResourceHeightPx, _theme.ResourceTint);
+            _multiplierText = Label("FocusMultiplier", hud, _theme.NumberFont, 14f, MultiplierColor, TextAlignmentOptions.MidlineLeft);
+            StripCanvas.Place(_multiplierText.rectTransform, MultiplierLeftPx, BottomCentrePx + 2f, new Vector2(MultiplierWidthPx, 20f), left);
             _hpFill = Bar("Hp", hud, HpLeftPx, BottomCentrePx, HpWidthPx, HpHeightPx, HpFillColor);
             _percentText = Label("HpPercent", hud, _theme.TextFont, 12f, PercentColor, TextAlignmentOptions.MidlineLeft);
             StripCanvas.Place(_percentText.rectTransform, HpLeftPx + HpWidthPx + 6f, BottomCentrePx, new Vector2(PercentWidthPx, 18f), left);

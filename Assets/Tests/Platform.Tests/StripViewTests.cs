@@ -6,6 +6,7 @@ using Game.Core.Sim;
 using Game.Core.Stats;
 using Game.Core.Text;
 using Game.Presentation.Battle;
+using Game.Presentation.Strip;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -34,10 +35,11 @@ namespace Game.Platform.Tests
         [Test]
         public void StateLineShowsStageHealthAndGold()
         {
-            _battle.ShowState(37, 4, 10, 0.62, 0, 1, false, 0.5, 0.5, BigNumber.FromDouble(12400));
+            _battle.ShowState(37, 4, 10, 0.62, 0, 1, false, 0.5, 2.14, 0.5, BigNumber.FromDouble(12400));
 
             Assert.That(_battle.StageText, Is.EqualTo("Этап 37"));
             Assert.That(_battle.PercentText, Is.EqualTo("62%"));
+            Assert.That(_battle.MultiplierText, Is.EqualTo("×2.1"));
             Assert.That(_battle.GoldText, Is.EqualTo(NumberFormatter.Format(BigNumber.FromDouble(12400), NumberFormatSettings.Default)));
             Assert.That(_battle.TimerShown, Is.False);
         }
@@ -45,11 +47,36 @@ namespace Game.Platform.Tests
         [Test]
         public void BossFightShowsTheTimerPill()
         {
-            _battle.ShowState(40, 0, 10, 1, 17.91, 0.6, true, 0, 0, BigNumber.Zero);
+            _battle.ShowState(40, 0, 10, 1, 17.91, 0.6, true, 0, 1, 0, BigNumber.Zero);
 
             Assert.That(_battle.StageText, Is.EqualTo("Этап 40 · БОСС"));
             Assert.That(_battle.TimerShown, Is.True);
             Assert.That(_battle.TimerText, Is.EqualTo("18.0 с"));
+        }
+
+        [Test]
+        public void FocusButtonSwapsItsGlyphAndTakesClicks()
+        {
+            var button = FocusModeButton.Create(StripSpace.AtPx(419f, 20f));
+            Physics2D.SyncTransforms();
+
+            Assert.That(button.Glyph, Is.SameAs(StripIcons.Focus));
+            Assert.That(button.Contains(StripSpace.AtPx(419f, 20f)), Is.True);
+            Assert.That(button.Contains(StripSpace.AtPx(380f, 20f)), Is.False);
+            button.ShowPassingClicks(true);
+            Assert.That(button.Glyph, Is.SameAs(StripIcons.NoFocus));
+
+            Object.DestroyImmediate(button.gameObject);
+        }
+
+        [Test]
+        public void InputDebugOverlayPrintsOnlyCounters()
+        {
+            var overlay = InputDebugOverlay.Create(StripSpace.BottomLeft(0.3f));
+
+            Assert.That(overlay.Text, Does.StartWith("keys 0"));
+
+            Object.DestroyImmediate(overlay.gameObject);
         }
 
         [Test]

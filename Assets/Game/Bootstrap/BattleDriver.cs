@@ -115,6 +115,7 @@ namespace Game.Bootstrap
                 state.BossTicksLeft / (double)_bossTotalTicks,
                 bossFight,
                 FocusFraction(state.Focus),
+                state.FocusMultiplier,
                 state.Resource / _data.Combat.Resources.Max,
                 state.Gold);
             _skillBar.Show(state.Skills, state.Resource);
