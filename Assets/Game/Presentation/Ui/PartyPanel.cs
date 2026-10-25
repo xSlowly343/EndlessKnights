@@ -198,7 +198,7 @@ namespace Game.Presentation.Ui
         {
             var back = UiElements.Fill(text, row, border, RadiusPx);
             UiElements.Anchor(back.rectTransform, new Vector2(0f, 0.5f), new Vector2(x, 0f), new Vector2(width, ButtonPx));
-            UiElements.Stretch(UiElements.Fill("Inner", back.rectTransform, fill, RadiusPx - PanelCanvas.BorderPx).rectTransform, PanelCanvas.BorderPx);
+            UiElements.Stretch(UiElements.Raise(UiElements.Fill("Inner", back.rectTransform, fill, RadiusPx - PanelCanvas.BorderPx)).rectTransform, PanelCanvas.BorderPx);
             var label = UiElements.Label("Text", back.rectTransform, _theme.BoldFont, 12f, textColor, TextAlignmentOptions.Center);
             UiElements.Stretch(label.rectTransform);
             label.text = text;

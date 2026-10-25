@@ -134,7 +134,7 @@ namespace Game.Presentation.Ui
 
         private static UiButton Button(string name, RectTransform parent, Vector2 anchor, Vector2 positionPx, Vector2 sizePx, Color color, TMP_FontAsset? font, float sizeTextPx)
         {
-            var back = UiElements.Fill(name, parent, color, ButtonRadiusPx);
+            var back = UiElements.Raise(UiElements.Fill(name, parent, color, ButtonRadiusPx));
             UiElements.Anchor(back.rectTransform, anchor, positionPx, sizePx);
             var label = UiElements.Label(name + "Text", back.rectTransform, font, sizeTextPx, Color.white, TextAlignmentOptions.Center);
             UiElements.Stretch(label.rectTransform);

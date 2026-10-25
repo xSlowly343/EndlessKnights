@@ -23,6 +23,9 @@ namespace Game.Presentation.Ui
 
         private const float MarginPx = 8f;
         private const float FrameRadiusPx = 10f;
+        private const float CornerGemPx = 12f;
+        private const float CornerGemRimPx = 6f;
+        private const float CornerGemInsetPx = 4f;
         private const float ButtonRadiusPx = 6f;
         private const float PillRadiusPx = 14f;
         private const float HeaderButtonPx = 30f;
@@ -80,6 +83,7 @@ namespace Game.Presentation.Ui
 
         private UiTheme _theme = null!;
         private RectTransform _canvasRect = null!;
+        private ButtonHighlight _highlight = null!;
         private BoxCollider2D _hitArea = null!;
         private RectTransform _frame = null!;
         private RectTransform _report = null!;
@@ -246,6 +250,16 @@ namespace Game.Presentation.Ui
             ShowNoticeInsteadOfGold(false);
             gameObject.SetActive(false);
         }
+
+        public void Point(Vector2 worldPoint, bool held)
+        {
+            if (IsOpen)
+                _highlight.Point(worldPoint, held);
+            else
+                _highlight.Clear();
+        }
+
+        public void PointAway() => _highlight.Clear();
 
         public bool TryClick(Vector2 worldPoint)
         {
@@ -597,6 +611,7 @@ namespace Game.Presentation.Ui
             _frame = BuildFrame();
             _report = BuildReport();
             _consent = ConsentCard.Create(_canvasRect, _theme);
+            _highlight = new ButtonHighlight(_canvasRect);
         }
 
         private RectTransform BuildFrame()
@@ -624,7 +639,23 @@ namespace Game.Presentation.Ui
         {
             var root = UiElements.Stretch(UiElements.Rect(name, _canvasRect));
             UiElements.Stretch(UiElements.Fill("Border", root, _theme.Border, FrameRadiusPx).rectTransform);
-            return UiElements.Stretch(UiElements.Fill("Body", root, _theme.Background, FrameRadiusPx - BorderPx).rectTransform, BorderPx);
+            var body = UiElements.Stretch(UiElements.Fill("Body", root, _theme.Background, FrameRadiusPx - BorderPx).rectTransform, BorderPx);
+            AddCornerGems(root);
+            return body;
+        }
+
+        private void AddCornerGems(RectTransform root)
+        {
+            for (var corner = 0; corner < 4; corner++)
+            {
+                var anchor = new Vector2(corner % 2, corner / 2);
+                var offset = new Vector2(anchor.x > 0f ? -CornerGemInsetPx : CornerGemInsetPx, anchor.y > 0f ? -CornerGemInsetPx : CornerGemInsetPx);
+                var rim = UiElements.Shape("CornerGem", root, _theme.TabBar, UiSprites.Diamond);
+                UiElements.Anchor(rim.rectTransform, anchor, offset, Vector2.one * (CornerGemPx + CornerGemRimPx));
+                rim.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+                var gem = UiElements.Shape("Gold", rim.rectTransform, _theme.Gold, UiSprites.Diamond);
+                UiElements.Anchor(gem.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.one * CornerGemPx);
+            }
         }
 
         private static RectTransform Row(string name, RectTransform parent, float heightPx)
@@ -796,7 +827,7 @@ namespace Game.Presentation.Ui
 
         private UiButton Button(string name, RectTransform parent, Vector2 anchor, Vector2 positionPx, Vector2 sizePx, Color color, float radiusPx, TMP_FontAsset? font = null, float fontSizePx = 0f)
         {
-            var back = UiElements.Fill(name, parent, color, radiusPx);
+            var back = UiElements.Raise(UiElements.Fill(name, parent, color, radiusPx));
             UiElements.Anchor(back.rectTransform, anchor, positionPx, sizePx);
             if (fontSizePx <= 0f)
                 return new UiButton(back, null);

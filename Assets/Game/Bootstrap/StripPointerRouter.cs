@@ -44,6 +44,15 @@ namespace Game.Bootstrap
                 HandleRelease();
             else if (_pointer.Held)
                 HandleHold();
+            TrackHover();
+        }
+
+        private void TrackHover()
+        {
+            if (!_window.PassesClicks && TryGetWorldPoint(out var worldPoint))
+                _panels.Point(worldPoint, _pointer.Held);
+            else
+                _panels.PointAway();
         }
 
         private void HandleHold()
