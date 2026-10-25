@@ -284,12 +284,12 @@ namespace Game.Presentation.Ui
 
         public static float Radius(TreeNodeType type) => type switch
         {
-            TreeNodeType.Notable => 0.55f,
-            TreeNodeType.Keystone => 0.85f,
-            TreeNodeType.Mastery => 0.6f,
-            TreeNodeType.Jewel => 0.5f,
-            TreeNodeType.Start => 1.1f,
-            _ => 0.32f
+            TreeNodeType.Notable => 0.3f,
+            TreeNodeType.Keystone => 0.5f,
+            TreeNodeType.Mastery => 0.34f,
+            TreeNodeType.Jewel => 0.3f,
+            TreeNodeType.Start => 0.9f,
+            _ => 0.2f
         };
 
         public TreeNodeLook LookAt(TreeNodeDef node)
