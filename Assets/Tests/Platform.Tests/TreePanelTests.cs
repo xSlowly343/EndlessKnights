@@ -82,6 +82,36 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void ClickingANodeHighlightsItsGlyphAndClickingItAgainClearsIt()
+        {
+            var node = _loop.State.Tree.Allocatable(_data.Tree).Where(def => def.Type == Game.Core.Content.Tree.TreeNodeType.Small).OrderByDescending(def => def.Y).First();
+            var point = _panel.Tree.WorldPointOf(node);
+
+            _panel.TryClick(point);
+            _panel.Release(point);
+
+            Assert.That(_panel.Tree.Highlight, Is.EqualTo(Game.Core.Content.Tree.TreeGlyph.Of(node)));
+
+            _panel.TryClick(point);
+            _panel.Release(point);
+
+            Assert.That(_panel.Tree.Selected, Is.Null);
+            Assert.That(_panel.Tree.Highlight, Is.Empty);
+        }
+
+        [Test]
+        public void FullyZoomedOutGlyphMarkersStayOnTheTree()
+        {
+            for (var i = 0; i < 20; i++)
+                _panel.Tree.ZoomOut();
+
+            var shown = _data.Tree.Nodes.Count(_panel.Tree.IsMarkerShown);
+
+            Assert.That(shown, Is.GreaterThan(100));
+            Assert.That(_data.Tree.Nodes.Where(node => node.Type == Game.Core.Content.Tree.TreeNodeType.Start).All(_panel.Tree.IsMarkerShown), Is.True);
+        }
+
+        [Test]
         public void HalfHeightKeepsTheCardShort()
         {
             Assert.That(_panel.Tree.IsCompact, Is.False);
