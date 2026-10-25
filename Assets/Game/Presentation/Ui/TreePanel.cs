@@ -516,7 +516,7 @@ namespace Game.Presentation.Ui
             status = CardLabel("Status", card, _theme.TextFont, 11f, StatusColor);
             for (var i = 0; i < MaxActions; i++)
             {
-                var back = UiElements.Fill("Action " + i, card, _theme.Gold, ActionRadiusPx);
+                var back = UiElements.Raise(UiElements.Fill("Action " + i, card, _theme.Gold, ActionRadiusPx));
                 var label = UiElements.Label("Action " + i + "Text", back.rectTransform, _theme.BoldFont, 14f, TakeText, TextAlignmentOptions.Center);
                 UiElements.Stretch(label.rectTransform);
                 label.enableAutoSizing = true;
@@ -536,7 +536,7 @@ namespace Game.Presentation.Ui
 
         private UiButton Tool(string name, Vector2 anchor, Vector2 positionPx, Vector2 sizePx, Color color, float radiusPx, TMP_FontAsset? font = null, float fontSizePx = 0f)
         {
-            var back = UiElements.Fill(name, _field, color, radiusPx);
+            var back = UiElements.Raise(UiElements.Fill(name, _field, color, radiusPx));
             UiElements.Anchor(back.rectTransform, anchor, positionPx, sizePx);
             if (fontSizePx <= 0f)
                 return new UiButton(back, null);

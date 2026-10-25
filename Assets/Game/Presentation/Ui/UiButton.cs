@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,11 +7,16 @@ namespace Game.Presentation.Ui
 {
     public sealed class UiButton
     {
+        private static readonly List<UiButton> Registered = new List<UiButton>();
+
         public UiButton(Image back, TextMeshProUGUI? label)
         {
             Back = back;
             Label = label;
+            Registered.Add(this);
         }
+
+        public static IReadOnlyList<UiButton> All => Registered;
 
         public Image Back { get; }
         public TextMeshProUGUI? Label { get; }
