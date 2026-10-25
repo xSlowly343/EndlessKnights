@@ -46,13 +46,6 @@ namespace Game.Bootstrap
 
         private void Update()
         {
-            if (!Enabled)
-            {
-                _passingClicks = false;
-                _window.SetClickThrough(false);
-                return;
-            }
-
             if (!_window.TryGetBounds(out var bounds) || !ScreenCursor.TryGetPosition(out var x, out var y))
                 return;
 
@@ -64,9 +57,14 @@ namespace Game.Bootstrap
 
         private bool CatchesAt(Vector2 worldPoint)
         {
+            if (!Enabled)
+                return IsOverGame(worldPoint);
             if (_panels.IsOpen)
                 return StripHitTest.IsClickableAt(worldPoint);
             return PointerState.IsControlDown() && StripHitTest.IsSpriteAt(worldPoint);
         }
+
+        private bool IsOverGame(Vector2 worldPoint) =>
+            StripHitTest.IsInStrip(worldPoint) || (_panels.IsOpen && UiElements.Contains(_panels.CanvasRect, worldPoint));
     }
 }

@@ -12,6 +12,7 @@ namespace Game.Bootstrap
     {
         private TaskbarDockDriver _dock = null!;
         private PanelCanvas _panels = null!;
+        private int _frameWidthPx = PanelGeometry.WidthPx;
         private string? _reportTitle;
         private IReadOnlyList<string>? _reportLines;
         private string? _reportAction;
@@ -119,14 +120,22 @@ namespace Game.Bootstrap
 
         private void Expand(PanelFrame frame)
         {
-            var scale = DpiScale;
-            _dock.Expand(Mathf.RoundToInt(frame.WidthPx * scale), Mathf.RoundToInt(frame.AreaHeightPx * scale));
+            _frameWidthPx = frame.WidthPx;
+            _dock.Expand();
+            PlacePanel(_dock.Layout);
         }
 
         private void OnPlaced(PanelLayout layout, int stripHeightPx)
         {
             if (_panels.IsOpen)
-                _panels.Place(-layout.StripOffsetX / DpiScale, layout.PanelsAboveStrip);
+                PlacePanel(layout);
+        }
+
+        private void PlacePanel(PanelLayout layout)
+        {
+            var scale = DpiScale;
+            var left = layout.PanelLeft(Mathf.RoundToInt(_frameWidthPx * scale), _dock.StripWidthPx);
+            _panels.Place(left / scale, layout.PanelsAboveStrip);
         }
 
         private float DpiScale => Math.Max(1, _dock.StripHeightPx) / StripSpace.BaseHeightPx;

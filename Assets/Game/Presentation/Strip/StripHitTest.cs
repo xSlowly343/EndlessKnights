@@ -28,6 +28,9 @@ namespace Game.Presentation.Strip
             return true;
         }
 
+        public static bool IsInStrip(Vector2 worldPoint) =>
+            worldPoint.x >= 0f && worldPoint.x <= StripSpace.Width && worldPoint.y >= 0f && worldPoint.y <= StripSpace.Height;
+
         public static bool IsSpriteAt(Vector2 worldPoint) => Physics2D.OverlapPoint(worldPoint) != null;
 
         public static bool IsClickableAt(Vector2 worldPoint)
