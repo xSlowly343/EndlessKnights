@@ -1,5 +1,7 @@
 using Game.Core.Content.Gems;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
+using TMPro;
 using UnityEngine;
 
 namespace Game.Presentation.Battle
@@ -17,6 +19,7 @@ namespace Game.Presentation.Battle
         private const float GlowPulseSpeed = 4f;
         private const float GlowAlpha = 0.35f;
         private const float NameRisePx = 10f;
+        private const int NameSortingOrder = 26;
 
         private static readonly Vector2 HeroCentre = StripSpace.AtPx(85f, 117f);
         private static readonly Vector2 EnemyCentre = StripSpace.AtPx(416f, 108f);
@@ -29,7 +32,8 @@ namespace Game.Presentation.Battle
         private SpriteRenderer _ring = null!;
         private SpriteRenderer _wave = null!;
         private SpriteRenderer _glow = null!;
-        private TextMesh _name = null!;
+        private TextMeshProUGUI _name = null!;
+        private Vector2 _namePx;
         private Color _color = Color.white;
         private float _trailAge = TrailSeconds;
         private float _ringAge = RingSeconds;
@@ -77,7 +81,10 @@ namespace Game.Presentation.Battle
             _ring = ShapeSprites.Create("SkillRing", ShapeSprites.Circle, Color.clear, EnemyCentre, Vector2.one * StripSpace.Units(RingStartPx), 21, transform);
             _wave = ShapeSprites.Create("SkillWave", ShapeSprites.Square, Color.clear, WaveCentre, WaveSize, 8, transform);
             _glow = ShapeSprites.Create("AuraGlow", ShapeSprites.Circle, Color.clear, HeroCentre, GlowSize, 9, transform);
-            _name = StripText.Create("SkillName", string.Empty, NamePosition, 0.16f, TextAnchor.MiddleCenter, Color.white, transform, 26);
+            var canvas = StripCanvas.Create("SkillName", NameSortingOrder, transform);
+            _name = UiElements.Label("Name", canvas, UiTheme.Load().BoldFont, 14f, Color.white, TextAlignmentOptions.Center);
+            _namePx = StripCanvas.PxOf(NamePosition);
+            StripCanvas.Place(_name.rectTransform, _namePx.x, StripSpace.BaseHeightPx - _namePx.y, new Vector2(300f, 22f), new Vector2(0.5f, 0.5f));
             HideAll();
         }
 
@@ -148,7 +155,7 @@ namespace Game.Presentation.Battle
             var color = _color;
             color.a = 1f - progress * progress;
             _name.color = color;
-            _name.transform.position = NamePosition + new Vector2(0f, StripSpace.Units(NameRisePx) * progress);
+            _name.rectTransform.anchoredPosition = _namePx + new Vector2(0f, NameRisePx * progress);
         }
 
         private bool Fade(SpriteRenderer sprite, float age, float seconds, float startAlpha)

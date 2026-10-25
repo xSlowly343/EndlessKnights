@@ -128,6 +128,8 @@ namespace Game.Editor
             battle.ShowState(37, 4, 10, 0.62, 18, 0.6, true, 0.7, 0.4, BigNumber.FromDouble(12400));
             battle.Hit(BigNumber.FromDouble(3900), true);
             battle.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
+            var skillBar = SkillBarView.Create(battle.transform);
+            skillBar.Show(loop.State.Skills, loop.State.Resource);
             Save(camera, panels, GameStartup.StripWidth, StripHeightPx, Path.Combine(folder, "strip.png"));
 
             var queue = new NotificationQueue();

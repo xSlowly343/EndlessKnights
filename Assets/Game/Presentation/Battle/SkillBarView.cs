@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using Game.Core.Content.Gems;
 using Game.Core.Sim;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.Presentation.Battle
 {
@@ -16,12 +19,13 @@ namespace Game.Presentation.Battle
         private const float FirstCentreXPx = 196f;
         private const float CentreYPx = 18f;
         private const float FramePx = 2f;
+        private const float RadiusPx = 6f;
         private const float ReadyPopSeconds = 0.18f;
         private const float ReadyPopScale = 0.2f;
+        private const int SortingOrder = 30;
 
-        private static readonly float IconSize = StripSpace.Units(IconPx);
-        private static readonly Color FrameIdle = new Color(0.1f, 0.1f, 0.12f);
-        private static readonly Color FrameActive = new Color(1f, 0.9f, 0.4f);
+        private static readonly Color FrameIdle = new Color32(0x14, 0x1A, 0x2B, 0xFF);
+        private static readonly Color FrameActive = new Color32(0xF0, 0xB4, 0x3C, 0xFF);
         private static readonly Color CooldownShade = new Color(0f, 0f, 0f, 0.65f);
         private static readonly Color LabelColor = Color.white;
         private static readonly Color KeyColor = new Color(1f, 1f, 1f, 0.8f);
@@ -33,11 +37,9 @@ namespace Game.Presentation.Battle
 
         public static SkillBarView Create(Transform? parent = null)
         {
-            var host = new GameObject("SkillBar");
-            if (parent != null)
-                host.transform.SetParent(parent, false);
-            var view = host.AddComponent<SkillBarView>();
-            view.Build();
+            var canvas = StripCanvas.Create("SkillBar", SortingOrder, parent);
+            var view = canvas.gameObject.AddComponent<SkillBarView>();
+            view.Build(canvas);
             return view;
         }
 
@@ -53,6 +55,12 @@ namespace Game.Presentation.Battle
             return false;
         }
 
+        public Vector2 WorldPointOf(int index) => _icons[index].WorldCentre;
+
+        public string LabelOf(int index) => _icons[index].Label;
+
+        public bool IsShown(int index) => _icons[index].IsShown;
+
         public void Show(IReadOnlyList<SkillSlot> slots, double resource)
         {
             for (var i = 0; i < MaxIcons; i++)
@@ -64,10 +72,11 @@ namespace Game.Presentation.Battle
             }
         }
 
-        private void Build()
+        private void Build(RectTransform canvas)
         {
+            var theme = UiTheme.Load();
             for (var i = 0; i < MaxIcons; i++)
-                _icons[i] = new Icon(i, StripSpace.AtPx(FirstCentreXPx + i * StepPx, CentreYPx), transform);
+                _icons[i] = new Icon(i, FirstCentreXPx + i * StepPx, canvas, theme);
         }
 
         private void Update()
@@ -88,48 +97,52 @@ namespace Game.Presentation.Battle
 
         private sealed class Icon
         {
-            private readonly GameObject _root;
-            private readonly SpriteRenderer _frame;
-            private readonly SpriteRenderer _back;
-            private readonly SpriteRenderer _shade;
-            private readonly TextMesh _label;
-            private readonly Collider2D _collider;
-            private readonly Vector2 _centre;
+            private readonly RectTransform _root;
+            private readonly Image _frame;
+            private readonly Image _back;
+            private readonly RectTransform _shade;
+            private readonly TextMeshProUGUI _label;
             private GemDef? _shownGem;
             private bool _wasCoolingDown;
             private float _popAge = ReadyPopSeconds;
 
-            public Icon(int index, Vector2 centre, Transform parent)
+            public Icon(int index, float centreXPx, RectTransform canvas, UiTheme theme)
             {
-                _centre = centre;
-                _root = new GameObject($"Skill{index}");
-                _root.transform.SetParent(parent, false);
-                _root.transform.position = centre;
-                var frameSize = IconSize + StripSpace.Units(FramePx * 2f);
-                _frame = ShapeSprites.Create("Frame", ShapeSprites.Square, FrameIdle, centre, Vector2.one * frameSize, 30, _root.transform);
-                _back = ShapeSprites.Create("Back", ShapeSprites.Square, GemColors.White, centre, Vector2.one * IconSize, 31, _root.transform);
-                _collider = _back.gameObject.AddComponent<BoxCollider2D>();
-                _back.gameObject.AddComponent<StripClickable>();
-                _shade = ShapeSprites.Create("Cooldown", ShapeSprites.Square, CooldownShade, centre, Vector2.one * IconSize, 32, _root.transform);
-                _label = StripText.Create("Name", string.Empty, centre, 0.11f, TextAnchor.MiddleCenter, LabelColor, _root.transform, 33);
-                var keyPosition = centre + new Vector2(-IconSize / 2f + StripSpace.Units(2f), IconSize / 2f - StripSpace.Units(1f));
-                StripText.Create("Key", KeyLabel(index), keyPosition, 0.07f, TextAnchor.UpperLeft, KeyColor, _root.transform, 34);
-                _root.SetActive(false);
+                var framePx = IconPx + 2f * FramePx;
+                _frame = UiElements.Fill($"Skill{index}", canvas, FrameIdle, RadiusPx + FramePx);
+                _root = StripCanvas.Place(_frame.rectTransform, centreXPx, CentreYPx, Vector2.one * framePx, new Vector2(0.5f, 0.5f));
+                var hit = _root.gameObject.AddComponent<BoxCollider2D>();
+                hit.size = Vector2.one * framePx;
+                _root.gameObject.AddComponent<StripClickable>();
+                _back = UiElements.Fill("Back", _root, GemColors.White, RadiusPx);
+                UiElements.Stretch(_back.rectTransform, FramePx);
+                _shade = UiElements.Fill("Cooldown", _back.rectTransform, CooldownShade, RadiusPx).rectTransform;
+                UiElements.TopEdge(_shade, 0f);
+                _label = UiElements.Label("Name", _back.rectTransform, theme.BoldFont, 10f, LabelColor, TextAlignmentOptions.Center);
+                UiElements.Stretch(_label.rectTransform);
+                var key = UiElements.Label("Key", _back.rectTransform, theme.BoldFont, 7f, KeyColor, TextAlignmentOptions.TopLeft);
+                UiElements.Stretch(key.rectTransform, 1.5f);
+                key.text = KeyLabel(index);
+                _root.gameObject.SetActive(false);
             }
 
-            public bool Contains(Vector2 worldPoint) => _root.activeInHierarchy && _collider.OverlapPoint(worldPoint);
+            public bool IsShown => _root.gameObject.activeSelf;
+            public string Label => _label.text;
+            public Vector2 WorldCentre => _root.TransformPoint(_root.rect.center);
+
+            public bool Contains(Vector2 worldPoint) => UiElements.Contains(_root, worldPoint);
 
             public void Hide()
             {
-                if (_root.activeSelf)
-                    _root.SetActive(false);
+                if (_root.gameObject.activeSelf)
+                    _root.gameObject.SetActive(false);
                 _shownGem = null;
             }
 
             public void Show(SkillSlot slot, double resource)
             {
-                if (!_root.activeSelf)
-                    _root.SetActive(true);
+                if (!_root.gameObject.activeSelf)
+                    _root.gameObject.SetActive(true);
                 if (!ReferenceEquals(_shownGem, slot.Skill))
                 {
                     _shownGem = slot.Skill;
@@ -153,7 +166,7 @@ namespace Game.Presentation.Battle
             {
                 _popAge += delta;
                 var pop = _popAge < ReadyPopSeconds ? 1f + ReadyPopScale * Mathf.Sin(_popAge / ReadyPopSeconds * Mathf.PI) : 1f;
-                _root.transform.localScale = new Vector3(pop, pop, 1f);
+                _root.localScale = new Vector3(pop, pop, 1f);
             }
 
             private void ShowCooldown(float fraction)
@@ -161,12 +174,8 @@ namespace Game.Presentation.Battle
                 var visible = fraction > 0f;
                 if (_shade.gameObject.activeSelf != visible)
                     _shade.gameObject.SetActive(visible);
-                if (!visible)
-                    return;
-                var height = IconSize * Mathf.Clamp01(fraction);
-                var transform = _shade.transform;
-                transform.localScale = new Vector3(IconSize, height, 1f);
-                transform.position = new Vector3(_centre.x, _centre.y + IconSize / 2f - height / 2f, transform.position.z);
+                if (visible)
+                    _shade.sizeDelta = new Vector2(0f, IconPx * Mathf.Clamp01(fraction));
             }
         }
     }

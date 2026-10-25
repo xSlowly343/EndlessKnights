@@ -1,5 +1,7 @@
 using Game.Core.Math;
-using Game.Presentation.Strip;
+using Game.Core.Ui;
+using Game.Presentation.Ui;
+using TMPro;
 using UnityEngine;
 
 namespace Game.Presentation.Battle
@@ -8,16 +10,19 @@ namespace Game.Presentation.Battle
     {
         private const int PoolSize = 30;
         private const float LifetimeSeconds = 0.6f;
-        private const float RiseUnits = 2.2f;
-        private const float CharacterSize = 0.2f;
-        private const float CritScale = 1.6f;
+        private const float RisePx = 31f;
+        private const float FontSizePx = 18f;
+        private const float CritFontSizePx = 24f;
+        private const float BoxWidthPx = 160f;
+        private const float BoxHeightPx = 32f;
+        private const int SortingOrder = 27;
         private const float MergeGrowth = 0.012f;
         private const float MaxMergeScale = 1.5f;
 
         private static readonly Color NormalColor = Color.white;
-        private static readonly Color CritColor = new Color(1f, 0.85f, 0.2f);
+        private static readonly Color CritColor = new Color32(0xF0, 0xB4, 0x3C, 0xFF);
 
-        private readonly TextMesh[] _texts = new TextMesh[PoolSize];
+        private readonly TextMeshProUGUI[] _texts = new TextMeshProUGUI[PoolSize];
         private readonly float[] _ages = new float[PoolSize];
         private readonly Vector2[] _starts = new Vector2[PoolSize];
         private readonly Color[] _colors = new Color[PoolSize];
@@ -29,12 +34,17 @@ namespace Game.Presentation.Battle
 
         public static DamageNumbers Create()
         {
-            var host = new GameObject("DamageNumbers");
-            var numbers = host.AddComponent<DamageNumbers>();
+            var canvas = StripCanvas.Create("DamageNumbers", SortingOrder);
+            var numbers = canvas.gameObject.AddComponent<DamageNumbers>();
+            var font = UiTheme.Load().NumberFont;
             for (var i = 0; i < PoolSize; i++)
             {
-                numbers._texts[i] = StripText.Create("Number", string.Empty, Vector2.zero, CharacterSize, TextAnchor.MiddleCenter, Color.white, host.transform, 20);
-                numbers._texts[i].gameObject.SetActive(false);
+                var text = UiElements.Label("Number", canvas, font, FontSizePx, NormalColor, TextAlignmentOptions.Center);
+                text.rectTransform.anchorMin = Vector2.zero;
+                text.rectTransform.anchorMax = Vector2.zero;
+                text.rectTransform.sizeDelta = new Vector2(BoxWidthPx, BoxHeightPx);
+                text.gameObject.SetActive(false);
+                numbers._texts[i] = text;
                 numbers._ages[i] = LifetimeSeconds;
             }
             return numbers;
@@ -50,13 +60,13 @@ namespace Game.Presentation.Battle
 
             var index = Take();
             var text = _texts[index];
-            text.text = Format(amount);
-            text.characterSize = crit ? CharacterSize * CritScale : CharacterSize;
+            text.text = crit ? Format(amount) + " " + BattleTexts.Crit : Format(amount);
+            text.fontSize = crit ? CritFontSizePx : FontSizePx;
             _colors[index] = crit ? CritColor : NormalColor;
             text.color = _colors[index];
-            _starts[index] = at;
+            _starts[index] = StripCanvas.PxOf(at);
             _ages[index] = 0f;
-            text.transform.position = at;
+            text.rectTransform.anchoredPosition = _starts[index];
             text.gameObject.SetActive(true);
 
             if (!crit)
@@ -73,7 +83,7 @@ namespace Game.Presentation.Battle
             _mergedHits++;
             var text = _texts[_mergedIndex];
             text.text = Format(_mergedAmount);
-            text.characterSize = CharacterSize * Mathf.Min(MaxMergeScale, 1f + MergeGrowth * _mergedHits);
+            text.fontSize = FontSizePx * Mathf.Min(MaxMergeScale, 1f + MergeGrowth * _mergedHits);
             _ages[_mergedIndex] = 0f;
         }
 
@@ -101,8 +111,8 @@ namespace Game.Presentation.Battle
                 _ages[i] += delta;
                 var progress = Mathf.Clamp01(_ages[i] / LifetimeSeconds);
                 var text = _texts[i];
-                var rise = i == _mergedIndex ? RiseUnits * 0.4f * progress : RiseUnits * progress;
-                text.transform.position = _starts[i] + new Vector2(0f, rise);
+                var rise = i == _mergedIndex ? RisePx * 0.4f * progress : RisePx * progress;
+                text.rectTransform.anchoredPosition = _starts[i] + new Vector2(0f, rise);
                 var color = _colors[i];
                 color.a = 1f - progress * progress;
                 text.color = color;
