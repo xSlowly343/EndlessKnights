@@ -13,6 +13,8 @@ namespace Game.Core.Ui
         public static string Decline => Texts.Get("consent.decline");
         public static string Declined => Texts.Get("consent.declined");
         public static string NetworkNote => Texts.Get("consent.networkNote");
+        public static string CountedHeading => Texts.Get("consent.countedHeading");
+        public static string NotCountedHeading => Texts.Get("consent.notCountedHeading");
 
         public static IReadOnlyList<string> Counted => Lines("consent.counted.", CountedLines);
 

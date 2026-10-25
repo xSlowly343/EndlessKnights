@@ -75,6 +75,7 @@ namespace Game.Presentation.Ui
         private ItemsPanel _itemsPanel = null!;
         private PartyPanel _partyPanel = null!;
         private SettingsPanel _settingsPanel = null!;
+        private ConsentCard _consent = null!;
         private UiButton _preset = null!;
 
         private UiTheme _theme = null!;
@@ -95,7 +96,8 @@ namespace Game.Presentation.Ui
         private TextMeshProUGUI _placeholder = null!;
         private TextMeshProUGUI _reportTitle = null!;
         private PanelFrame _shownFrame;
-        private bool _showingReport;
+        private bool _showingCard;
+        private bool _showingConsent;
         private bool _aboveStrip = true;
         private bool _treeShown;
         private bool _treeCaptured;
@@ -120,6 +122,8 @@ namespace Game.Presentation.Ui
         public event Action? WidePressed;
         public event Action<int>? SubTabPressed;
         public event Action? ClaimPressed;
+        public event Action? ConsentAccepted;
+        public event Action? ConsentDeclined;
 
         public static PanelCanvas Create()
         {
@@ -131,10 +135,13 @@ namespace Game.Presentation.Ui
         }
 
         public static PanelFrame ReportFrame => PanelGeometry.Frame(PanelHeight.Half, false, false);
+        public static PanelFrame ConsentFrame => new PanelFrame(PanelGeometry.WidthPx, Mathf.CeilToInt(ConsentCard.NaturalHeightPx), 0, 0, 0);
         public static float CollapsedHeightPx => PanelGeometry.HeaderPx + PanelGeometry.TabBarPx + 2f * BorderPx;
 
         public bool IsOpen => gameObject.activeSelf;
-        public bool IsShowingReport => IsOpen && _showingReport;
+        public bool IsShowingReport => IsOpen && _showingCard && !_showingConsent;
+        public bool IsShowingConsent => IsOpen && _showingConsent;
+        public bool IsShowingCard => IsOpen && _showingCard;
         public bool IsTweening => _tweenElapsed < TweenSeconds;
         public float HeightPx => _heightPx;
         public RectTransform CanvasRect => _canvasRect;
@@ -143,6 +150,7 @@ namespace Game.Presentation.Ui
         public ItemsPanel Items => _itemsPanel;
         public PartyPanel Party => _partyPanel;
         public SettingsPanel Settings => _settingsPanel;
+        public ConsentCard Consent => _consent;
 
         public SectionMark TabMark(int index) => _tabMarks[index];
         public SectionMark MoreMark(int index) => _moreMarks[index];
@@ -151,7 +159,7 @@ namespace Game.Presentation.Ui
 
         public void RefreshMarks()
         {
-            if (IsOpen && !_showingReport)
+            if (IsOpen && !_showingCard)
                 ShowMarks();
         }
 
@@ -172,11 +180,13 @@ namespace Game.Presentation.Ui
 
         public void Show(PanelNavigator navigator)
         {
-            var startPx = IsOpen && !_showingReport ? _heightPx : CollapsedHeightPx;
-            _showingReport = false;
+            var startPx = IsOpen && !_showingCard ? _heightPx : CollapsedHeightPx;
+            _showingCard = false;
+            _showingConsent = false;
             _shownFrame = navigator.Frame;
             _frame.gameObject.SetActive(true);
             _report.gameObject.SetActive(false);
+            _consent.Hide();
             ShowHeader(navigator);
             ShowSubTabs(navigator);
             ShowTabs(navigator);
@@ -192,13 +202,28 @@ namespace Game.Presentation.Ui
         public void ShowReport(string title, IReadOnlyList<string> lines)
         {
             var startPx = IsOpen ? _heightPx : CollapsedHeightPx;
-            _showingReport = true;
+            _showingCard = true;
+            _showingConsent = false;
             _shownFrame = ReportFrame;
             _frame.gameObject.SetActive(false);
+            _consent.Hide();
             _report.gameObject.SetActive(true);
             _reportTitle.text = title;
             for (var i = 0; i < _reportLines.Count; i++)
                 _reportLines[i].text = i < lines.Count ? lines[i] : string.Empty;
+            gameObject.SetActive(true);
+            StartTween(startPx, _shownFrame.HeightPx);
+        }
+
+        public void ShowConsent()
+        {
+            var startPx = IsOpen ? _heightPx : CollapsedHeightPx;
+            _showingCard = true;
+            _showingConsent = true;
+            _shownFrame = ConsentFrame;
+            _frame.gameObject.SetActive(false);
+            _report.gameObject.SetActive(false);
+            _consent.Show();
             gameObject.SetActive(true);
             StartTween(startPx, _shownFrame.HeightPx);
         }
@@ -225,7 +250,9 @@ namespace Game.Presentation.Ui
         {
             if (!IsOpen)
                 return false;
-            if (_showingReport)
+            if (_showingConsent)
+                return TryClickConsent(worldPoint);
+            if (_showingCard)
                 return TryClickReport(worldPoint);
             if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
                 return true;
@@ -295,6 +322,21 @@ namespace Game.Presentation.Ui
             return UiElements.Contains(_canvasRect, worldPoint);
         }
 
+        private bool TryClickConsent(Vector2 worldPoint)
+        {
+            if (_consent.IsAccept(worldPoint))
+            {
+                ConsentAccepted?.Invoke();
+                return true;
+            }
+            if (_consent.IsDecline(worldPoint))
+            {
+                ConsentDeclined?.Invoke();
+                return true;
+            }
+            return UiElements.Contains(_canvasRect, worldPoint);
+        }
+
         private bool TryClickHeader(Vector2 worldPoint)
         {
             if (Pressed(_close, worldPoint, ClosePressed) || Pressed(_pin, worldPoint, PinPressed) || Pressed(_handle, worldPoint, HeightPressed))
@@ -349,7 +391,7 @@ namespace Game.Presentation.Ui
 
         private void RefreshLive()
         {
-            if (_showingReport || _loop == null)
+            if (_showingCard || _loop == null)
                 return;
             _sinceCurrency += Time.unscaledDeltaTime;
             if (_sinceCurrency < CurrencyRefreshSeconds)
@@ -553,6 +595,7 @@ namespace Game.Presentation.Ui
             _canvasRect.gameObject.AddComponent<StripClickable>();
             _frame = BuildFrame();
             _report = BuildReport();
+            _consent = ConsentCard.Create(_canvasRect, _theme);
         }
 
         private RectTransform BuildFrame()

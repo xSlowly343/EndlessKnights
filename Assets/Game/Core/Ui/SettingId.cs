@@ -20,6 +20,7 @@ namespace Game.Core.Ui
         CountMouseMovement,
         CountClicks,
         CountWheel,
-        ShowInputDebug
+        ShowInputDebug,
+        InputConsent
     }
 }

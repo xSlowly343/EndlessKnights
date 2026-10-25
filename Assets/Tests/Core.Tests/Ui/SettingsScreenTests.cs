@@ -87,6 +87,19 @@ namespace Game.Core.Tests.Ui
             Assert.That(settings.StripOffset, Is.EqualTo(0));
         }
 
+        [Test]
+        public void ConsentRowOnlyOpensTheConsentScreen()
+        {
+            Texts.UseLanguage("ru");
+            var settings = new GameSettings();
+
+            Assert.That(SettingsScreen.Rows(2), Does.Contain(SettingId.InputConsent));
+            Assert.That(SettingsScreen.KindOf(SettingId.InputConsent), Is.EqualTo(SettingKind.Action));
+            Assert.That(SettingsScreen.Value(SettingId.InputConsent, settings), Is.EqualTo("Открыть"));
+            Assert.That(SettingsScreen.Change(SettingId.InputConsent, settings, 1), Is.True);
+            Assert.That(settings.InputConsentGiven, Is.False);
+        }
+
         [TearDown]
         public void RestoreLanguage() => Texts.UseLanguage("ru");
     }

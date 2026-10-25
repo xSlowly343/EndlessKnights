@@ -18,7 +18,7 @@ namespace Game.Core.Ui
         {
             new[] { SettingId.Language, SettingId.Paused, SettingId.AlwaysOnTop, SettingId.ClickThrough, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals },
             new[] { SettingId.MasterVolume, SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume },
-            new[] { SettingId.CountKeys, SettingId.CountMouseMovement, SettingId.CountClicks, SettingId.CountWheel, SettingId.ShowInputDebug },
+            new[] { SettingId.InputConsent, SettingId.CountKeys, SettingId.CountMouseMovement, SettingId.CountClicks, SettingId.CountWheel, SettingId.ShowInputDebug },
         };
 
         public static int TabCount => Tabs.Length;
@@ -40,13 +40,13 @@ namespace Game.Core.Ui
         {
             SettingId.Paused or SettingId.AlwaysOnTop or SettingId.ClickThrough or SettingId.CountKeys or SettingId.CountMouseMovement
                 or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug => SettingKind.Toggle,
-            SettingId.ResetPosition => SettingKind.Action,
+            SettingId.ResetPosition or SettingId.InputConsent => SettingKind.Action,
             _ => SettingKind.Choice
         };
 
         public static string Label(SettingId id) => Texts.Get("settings." + Key(id));
 
-        public static string ActionLabel => Texts.Get("settings.reset");
+        public static string ActionLabel(SettingId id) => Texts.Get(id == SettingId.InputConsent ? "settings.consentOpen" : "settings.reset");
 
         public static bool IsOn(SettingId id, GameSettings settings) => id switch
         {
@@ -64,7 +64,7 @@ namespace Game.Core.Ui
         public static string Value(SettingId id, GameSettings settings) => KindOf(id) switch
         {
             SettingKind.Toggle => Texts.Get(IsOn(id, settings) ? "settings.on" : "settings.off"),
-            SettingKind.Action => ActionLabel,
+            SettingKind.Action => ActionLabel(id),
             _ => ChoiceValue(id, settings)
         };
 
@@ -115,6 +115,8 @@ namespace Game.Core.Ui
                     return true;
                 case SettingId.ShowInputDebug:
                     settings.ShowInputDebug = !settings.ShowInputDebug;
+                    return true;
+                case SettingId.InputConsent:
                     return true;
                 default:
                     return ChangeVolume(id, settings, step);

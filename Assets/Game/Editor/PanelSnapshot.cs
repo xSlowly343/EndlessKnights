@@ -130,6 +130,13 @@ namespace Game.Editor
             var report = PanelCanvas.ReportFrame;
             Save(camera, panels, report.WidthPx, report.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-report.png"));
 
+            panels.ShowConsent();
+            panels.Place(0f, true);
+            panels.FinishTween();
+            Canvas.ForceUpdateCanvases();
+            var consent = PanelCanvas.ConsentFrame;
+            Save(camera, panels, consent.WidthPx, consent.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-consent.png"));
+
             panels.Hide();
             var battle = BattleView.Create();
             battle.ShowEnemy(true, false);
