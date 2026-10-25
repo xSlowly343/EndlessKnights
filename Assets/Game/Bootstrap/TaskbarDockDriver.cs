@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Game.Platform.Windows.Window;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace Game.Bootstrap
 
         private readonly StripDrag _drag = new StripDrag();
         private readonly StripDrag _depthDrag = new StripDrag();
+        private readonly WaitForEndOfFrame _endOfFrame = new WaitForEndOfFrame();
         private WindowController _window = null!;
         private TaskbarEdge _dockedEdge;
         private ScreenRect _dockedTaskbar;
@@ -28,6 +30,8 @@ namespace Game.Bootstrap
         private bool _expanded;
         private int _panelWidthPx;
         private int _panelHeightPx;
+        private ScreenRect _pendingWindow;
+        private bool _hasPendingWindow;
 
         public event Action<PanelLayout, int>? Placed;
         public event Action<int>? Moved;
@@ -48,8 +52,21 @@ namespace Game.Bootstrap
         {
             var driver = host.AddComponent<TaskbarDockDriver>();
             driver._window = window;
+            driver.StartCoroutine(driver.MoveWindowAfterRender());
             driver.DockIfTaskbarChanged();
             return driver;
+        }
+
+        private IEnumerator MoveWindowAfterRender()
+        {
+            while (true)
+            {
+                yield return _endOfFrame;
+                if (!_hasPendingWindow)
+                    continue;
+                _hasPendingWindow = false;
+                _window.PlaceAt(_pendingWindow);
+            }
         }
 
         private void Update()
@@ -170,7 +187,8 @@ namespace Game.Bootstrap
             Layout = _expanded && MonitorWorkArea.TryGet(strip, out var workArea)
                 ? PanelLayout.Expanded(strip, workArea, _dockedEdge, _panelWidthPx, _panelHeightPx)
                 : PanelLayout.Collapsed(strip);
-            _window.PlaceAt(Layout.Window);
+            _pendingWindow = Layout.Window;
+            _hasPendingWindow = true;
             Placed?.Invoke(Layout, _size.Height);
         }
     }
