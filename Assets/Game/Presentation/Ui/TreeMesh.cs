@@ -22,6 +22,7 @@ namespace Game.Presentation.Ui
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
             rect.pivot = parent.pivot;
+            rect.gameObject.AddComponent<CanvasRenderer>();
             var mesh = rect.gameObject.AddComponent<TreeMesh>();
             mesh.raycastTarget = false;
             mesh._texture = texture;
