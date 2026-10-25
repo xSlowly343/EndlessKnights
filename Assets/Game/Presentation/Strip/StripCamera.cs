@@ -11,6 +11,7 @@ namespace Game.Presentation.Strip
             var pixelsPerUnit = stripHeightPx / StripSpace.Height;
             var halfHeight = windowHeightPx / (2f * pixelsPerUnit);
             var halfWidth = windowWidthPx / (2f * pixelsPerUnit);
+            camera.aspect = (float)windowWidthPx / windowHeightPx;
             camera.orthographicSize = halfHeight;
             camera.transform.position = new Vector3(
                 halfWidth - stripOffsetXPx / pixelsPerUnit,
