@@ -278,7 +278,7 @@ namespace Game.Presentation.Ui
             {
                 _looks[i] = LookOf(_tree.Nodes[i], allocation, canTake && offered.Contains(_tree.Nodes[i]));
                 var centre = new Vector2((float)_tree.Nodes[i].X, (float)_tree.Nodes[i].Y);
-                _nodeMesh.SetSquare(i, centre, Radius(_tree.Nodes[i].Type), _looks[i] == TreeNodeLook.Offered ? UiSprites.RingUv : UiSprites.DiscUv);
+                _nodeMesh.SetSquare(i, centre, Radius(_tree.Nodes[i].Type), ShapeOf(_tree.Nodes[i].Type, _looks[i] == TreeNodeLook.Offered));
                 _nodeMesh.SetColor(i, ColorOf(_looks[i]));
             }
             for (var i = 0; i < _links.Count; i++)
@@ -331,6 +331,13 @@ namespace Game.Presentation.Ui
                 layer.Mesh.Apply();
             }
         }
+
+        private static Rect ShapeOf(TreeNodeType type, bool ring) => type switch
+        {
+            TreeNodeType.Mastery or TreeNodeType.Start => ring ? UiSprites.HexRingUv : UiSprites.HexUv,
+            TreeNodeType.Keystone => ring ? UiSprites.DiamondRingUv : UiSprites.DiamondUv,
+            _ => ring ? UiSprites.RingUv : UiSprites.DiscUv
+        };
 
         private static Color32 GlyphColorOf(TreeNodeLook look) => look switch
         {

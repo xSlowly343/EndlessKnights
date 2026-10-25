@@ -25,8 +25,16 @@ namespace Game.Presentation.Ui
         private static Sprite? _diamond;
         private static Texture2D? _nodeAtlas;
 
-        public static readonly Rect DiscUv = new Rect(0f, 0f, 0.5f, 1f);
-        public static readonly Rect RingUv = new Rect(0.5f, 0f, 0.5f, 1f);
+        private const int NodeShapes = 3;
+        private const float HexApothem = 0.8660254f;
+        private const float DiamondReach = 0.7071068f;
+
+        public static readonly Rect DiscUv = NodeUv(0, false);
+        public static readonly Rect RingUv = NodeUv(0, true);
+        public static readonly Rect HexUv = NodeUv(1, false);
+        public static readonly Rect HexRingUv = NodeUv(1, true);
+        public static readonly Rect DiamondUv = NodeUv(2, false);
+        public static readonly Rect DiamondRingUv = NodeUv(2, true);
 
         private static readonly Color[] RainbowStops =
         {
@@ -114,24 +122,43 @@ namespace Game.Presentation.Ui
             return new Color(shade, shade, shade, 1f);
         }
 
+        private static Rect NodeUv(int shape, bool ring) => new Rect((2 * shape + (ring ? 1 : 0)) / (2f * NodeShapes), 0f, 1f / (2f * NodeShapes), 1f);
+
         private static Texture2D CreateNodeAtlas()
         {
-            var texture = new Texture2D(2 * CircleSize, CircleSize, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
-            var radius = CircleSize / 2f;
-            var inner = radius * RingInnerFraction;
-            for (var y = 0; y < CircleSize; y++)
+            var texture = new Texture2D(2 * NodeShapes * CircleSize, CircleSize, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            var radius = CircleSize / 2f - 1f;
+            for (var shape = 0; shape < NodeShapes; shape++)
             {
-                for (var x = 0; x < CircleSize; x++)
+                for (var y = 0; y < CircleSize; y++)
                 {
-                    var dx = x + 0.5f - radius;
-                    var dy = y + 0.5f - radius;
-                    var disc = Coverage(radius - 1f, dx, dy);
-                    texture.SetPixel(x, y, new Color(1f, 1f, 1f, disc));
-                    texture.SetPixel(CircleSize + x, y, new Color(1f, 1f, 1f, disc - Coverage(inner, dx, dy)));
+                    for (var x = 0; x < CircleSize; x++)
+                    {
+                        var dx = x + 0.5f - CircleSize / 2f;
+                        var dy = y + 0.5f - CircleSize / 2f;
+                        var solid = ShapeCoverage(shape, radius, dx, dy);
+                        var hole = ShapeCoverage(shape, radius * RingInnerFraction, dx, dy);
+                        texture.SetPixel(2 * shape * CircleSize + x, y, new Color(1f, 1f, 1f, solid));
+                        texture.SetPixel((2 * shape + 1) * CircleSize + x, y, new Color(1f, 1f, 1f, Mathf.Clamp01(solid - hole)));
+                    }
                 }
             }
             texture.Apply();
             return texture;
+        }
+
+        private static float ShapeCoverage(int shape, float radius, float dx, float dy)
+        {
+            switch (shape)
+            {
+                case 1:
+                    var reach = Mathf.Max(Mathf.Abs(dx), Mathf.Max(Mathf.Abs(0.5f * dx + 0.8660254f * dy), Mathf.Abs(0.5f * dx - 0.8660254f * dy)));
+                    return Mathf.Clamp01(radius * HexApothem - reach + 0.5f);
+                case 2:
+                    return Mathf.Clamp01(radius * DiamondReach - (Mathf.Abs(dx) + Mathf.Abs(dy)) * DiamondReach + 0.5f);
+                default:
+                    return Coverage(radius, dx, dy);
+            }
         }
 
         private static Color Rainbow(float t)
