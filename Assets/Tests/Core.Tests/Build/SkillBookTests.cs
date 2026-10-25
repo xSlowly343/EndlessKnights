@@ -142,8 +142,8 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.State.OwnedGems.Count, Is.EqualTo(3));
             Assert.That(loop.State.Skills.Count, Is.EqualTo(3));
-            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("shield_bash")));
-            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("odins_fury")));
+            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("iron_rim_bash")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("no_mercy")));
             Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("lull")));
             Assert.That(loop.State.Skills[0].Trigger, Is.Null);
             Assert.That(loop.Book.GrantStartingGems(), Is.False);
@@ -156,8 +156,8 @@ namespace Game.Core.Tests.Build
 
             loop.Book.GrantStartingGems();
 
-            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("song")));
-            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("guitar_solo")));
+            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("hearth_song")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("louder")));
         }
 
         [Test]
@@ -182,7 +182,7 @@ namespace Game.Core.Tests.Build
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;
 
             Assert.That(loaded.OwnedGems.Count, Is.EqualTo(3));
-            Assert.That(loaded.Skills[1].Skill, Is.SameAs(Gem("odins_fury")));
+            Assert.That(loaded.Skills[1].Skill, Is.SameAs(Gem("no_mercy")));
         }
 
         [Test]

@@ -81,8 +81,8 @@ namespace Game.Core.Tests.Party
         {
             var loop = TestWorld.Loop();
             var before = loop.Hero.Value(CombatStats.Damage, 1);
-            TestWorld.ArmFor(loop, TestWorld.Data.Gems["voodoo_needle"]);
-            loop.Skills.Equip(TestWorld.Data.Gems["voodoo_needle"]);
+            TestWorld.ArmFor(loop, TestWorld.Data.Gems["charm_prick"]);
+            loop.Skills.Equip(TestWorld.Data.Gems["charm_prick"]);
             loop.State.Resource = 100;
 
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
@@ -107,12 +107,12 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void VoodooNeedleBoostsTheWholePartyAtTheHost()
+        public void CharmPrickBoostsTheWholePartyAtTheHost()
         {
             var rig = new Rig(2);
             rig.Run(5);
             var voodoo = rig.Members[0];
-            var slot = voodoo.Equip("voodoo_needle");
+            var slot = voodoo.Equip("charm_prick");
             var before = voodoo.Damage;
 
             voodoo.Cast(slot);
@@ -151,7 +151,7 @@ namespace Game.Core.Tests.Party
             var metalhead = rig.Members[0];
             var friend = rig.Members[1];
             var before = friend.Damage;
-            var slot = metalhead.Equip("song");
+            var slot = metalhead.Equip("hearth_song");
 
             metalhead.Cast(slot);
             rig.Run(1);
@@ -169,8 +169,8 @@ namespace Game.Core.Tests.Party
             rig.Run(5);
             var friend = rig.Members[1];
             var before = friend.Damage;
-            var metalSlot = rig.Members[0].Equip("song");
-            var friendSlot = friend.Equip("song");
+            var metalSlot = rig.Members[0].Equip("hearth_song");
+            var friendSlot = friend.Equip("hearth_song");
 
             rig.Members[0].Cast(metalSlot);
             friend.Cast(friendSlot);
@@ -190,8 +190,8 @@ namespace Game.Core.Tests.Party
             var strong = rig.Members[1];
             strong.Loop.Hero.Add(new Modifier(CombatStats.AuraEffect, ModifierKind.Increased, 1, StatTags.Aura));
 
-            weak.Cast(weak.Equip("song"));
-            strong.Cast(strong.Equip("song"));
+            weak.Cast(weak.Equip("hearth_song"));
+            strong.Cast(strong.Equip("hearth_song"));
             rig.Run(1);
 
             Assert.That(friend.Damage, Is.EqualTo(before * 1.30).Within(1e-6));
@@ -206,11 +206,11 @@ namespace Game.Core.Tests.Party
             var voodoo = rig.Members[0];
             var friend = rig.Members[1].Client;
 
-            voodoo.Cast(voodoo.Equip("voodoo_needle"));
+            voodoo.Cast(voodoo.Equip("charm_prick"));
             rig.Run(1);
 
             var icon = friend.EnemyEffect(0);
-            Assert.That(icon.Id, Is.EqualTo(TestWorld.Data.Gems["voodoo_needle"].NetId));
+            Assert.That(icon.Id, Is.EqualTo(TestWorld.Data.Gems["charm_prick"].NetId));
             Assert.That(icon.TicksLeft, Is.InRange(80, 100));
             Assert.That(friend.EnemyEffect(1).Active, Is.False);
             Assert.That(friend.DamageTaken, Is.EqualTo(1.15).Within(1e-9));
@@ -229,7 +229,7 @@ namespace Game.Core.Tests.Party
             rig.Run(5);
             Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1));
 
-            voodoo.Cast(voodoo.Equip("voodoo_needle"));
+            voodoo.Cast(voodoo.Equip("charm_prick"));
             rig.Run(1);
 
             Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1.25).Within(1e-9));

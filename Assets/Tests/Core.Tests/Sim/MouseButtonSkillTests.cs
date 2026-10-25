@@ -40,7 +40,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void LeftClickCastsTheFirstSlot()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "shield_bash", "odins_fury");
+            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
 
             input.ClickLeft();
             loop.Tick();
@@ -53,11 +53,11 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void RightAndMiddleClicksCastTheSecondSlot()
         {
-            var (right, rightInput) = Hero(HeroClass.Viking, "shield_bash", "odins_fury");
+            var (right, rightInput) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
             rightInput.ClickRight();
             right.Tick();
 
-            var (middle, middleInput) = Hero(HeroClass.Viking, "shield_bash", "odins_fury");
+            var (middle, middleInput) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
             middleInput.ClickMiddle();
             middle.Tick();
 
@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WheelCastsNothing()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "shield_bash", "odins_fury");
+            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
 
             input.ScrollWheel(20);
             loop.Tick();
@@ -82,7 +82,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClickWhileOnCooldownDoesNothingAndTheFirstClickAfterCasts()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "shield_bash");
+            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash");
             input.ClickLeft();
             loop.Tick();
             var cooldown = loop.State.Skills[0].CooldownTicks;
@@ -100,9 +100,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ShieldBashHitsForFourKeyStrikes()
+        public void IronRimBashHitsForFourKeyStrikes()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "shield_bash");
+            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash");
 
             input.ClickLeft();
             loop.Tick();
@@ -111,9 +111,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void OdinsFuryHitsForFiveKeyStrikes()
+        public void NoMercyHitsForFiveKeyStrikes()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "shield_bash", "odins_fury");
+            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
             loop.State.Resource = 50;
 
             input.ClickRight();
@@ -126,7 +126,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SongRaisesDamageAndGold()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead, "song");
+            var (loop, input) = Hero(HeroClass.Metalhead, "hearth_song");
 
             input.ClickLeft();
             loop.Tick();
@@ -136,9 +136,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void GuitarSoloDoublesTheSongAndAddsLightningToEveryKeyHit()
+        public void LouderDoublesTheSongAndAddsLightningToEveryKeyHit()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead, "song", "guitar_solo");
+            var (loop, input) = Hero(HeroClass.Metalhead, "hearth_song", "louder");
             input.ClickLeft();
             loop.Tick();
             loop.State.Resource = 100;
@@ -156,14 +156,14 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SongReturnsToNormalWhenTheSoloEnds()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead, "song", "guitar_solo");
+            var (loop, input) = Hero(HeroClass.Metalhead, "hearth_song", "louder");
             input.ClickLeft();
             loop.Tick();
             loop.State.Resource = 100;
             input.ClickRight();
             loop.Tick();
 
-            for (var i = 0; i < Gem("guitar_solo").Skill!.DurationSeconds * GameLoop.TicksPerSecond; i++)
+            for (var i = 0; i < Gem("louder").Skill!.DurationSeconds * GameLoop.TicksPerSecond; i++)
                 loop.Tick();
 
             Assert.That(loop.State.Skills[0].Active, Is.True);

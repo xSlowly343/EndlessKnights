@@ -47,9 +47,9 @@ namespace Game.Core.Tests.Content
         [Test]
         public void StartingClassSkillsNeedTheirWeapon()
         {
-            Assert.That(TestWorld.Real.Gems["shield_bash"].Skill!.Weapon, Is.EqualTo("axe"));
-            Assert.That(TestWorld.Real.Gems["song"].Skill!.Weapon, Is.EqualTo("electric_guitar"));
-            Assert.That(TestWorld.Real.Gems["voodoo_needle"].Skill!.Weapon, Is.EqualTo("voodoo_doll"));
+            Assert.That(TestWorld.Real.Gems["iron_rim_bash"].Skill!.Weapon, Is.EqualTo("axe"));
+            Assert.That(TestWorld.Real.Gems["hearth_song"].Skill!.Weapon, Is.EqualTo("electric_guitar"));
+            Assert.That(TestWorld.Real.Gems["charm_prick"].Skill!.Weapon, Is.EqualTo("voodoo_doll"));
             Assert.That(TestWorld.Real.Gems["stenography"].Skill!.Weapon, Is.Null);
         }
 

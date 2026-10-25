@@ -10,9 +10,9 @@ namespace Game.Core.Tests.Sim
     public class VikingSkillTests
     {
         [Test]
-        public void ShieldBashKeepsFuryFromBurningForFiveSeconds()
+        public void IronRimBashKeepsFuryFromBurningForFiveSeconds()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "shield_bash");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash");
 
             viking.Cast(0);
             viking.Ticks(45);
@@ -25,9 +25,9 @@ namespace Game.Core.Tests.Sim
         [TestCase(100, 10)]
         [TestCase(80, 8)]
         [TestCase(50, 5)]
-        public void OdinsFurySpendsAllFuryForTheVikingAndScalesWithIt(double fury, double multiplier)
+        public void NoMercySpendsAllFuryForTheVikingAndScalesWithIt(double fury, double multiplier)
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "odins_fury");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "no_mercy");
             viking.State.Resource = fury;
 
             viking.Cast(0);
@@ -37,21 +37,21 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void OdinsFuryWithABorrowedAxeHasAFixedCostAndForce()
+        public void NoMercyWithABorrowedAxeHasAFixedCostAndForce()
         {
-            var ronin = SkillTestHero.Borrowing(HeroClass.Ronin, HeroClass.Viking, "odins_fury");
+            var ronin = SkillTestHero.Borrowing(HeroClass.Ronin, HeroClass.Viking, "no_mercy");
 
             Assert.That(ronin.Cast(0), Is.EqualTo(CastResult.Cast));
 
             Assert.That(ronin.Loop.Skills.IsNative(0), Is.False);
-            Assert.That(ronin.DamageFrom(DamageSource.Skill), Is.EqualTo(ronin.SkillDamage("odins_fury", 5)).Within(1e-9));
+            Assert.That(ronin.DamageFrom(DamageSource.Skill), Is.EqualTo(ronin.SkillDamage("no_mercy", 5)).Within(1e-9));
             Assert.That(ronin.State.Resource, Is.EqualTo(50));
         }
 
         [Test]
-        public void BattleCryRaisesKeyDamageForFifteenSeconds()
+        public void RoarFromTheDoorRaisesKeyDamageForFifteenSeconds()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "battle_cry");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "roar_from_the_door");
             var before = viking.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
 
             viking.Cast(0);
@@ -63,9 +63,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EveryKeyHitInTheVikingsBattleCryGivesOneMoreFury()
+        public void EveryKeyHitInTheVikingsRoarGivesOneMoreFury()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "battle_cry");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "roar_from_the_door");
             viking.State.Resource = 30;
             viking.Cast(0);
 
@@ -76,21 +76,21 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ThrowingAxeSparesTheCurrentEnemyAndWoundsTheNext()
+        public void HatchetTossSparesTheCurrentEnemyAndWoundsTheNext()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "throwing_axe");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "hatchet_toss");
             var hp = viking.State.EnemyHp;
 
             viking.Cast(0);
 
             Assert.That(viking.State.EnemyHp, Is.EqualTo(hp));
-            Assert.That(viking.Queued(0), Is.EqualTo(viking.SkillDamage("throwing_axe", 2)).Within(1e-9));
+            Assert.That(viking.Queued(0), Is.EqualTo(viking.SkillDamage("hatchet_toss", 2)).Within(1e-9));
         }
 
         [Test]
         public void WoundedEnemyGivesTheVikingTenFuryWhenItAppears()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "throwing_axe");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "hatchet_toss");
             viking.State.Resource = 20;
             viking.Cast(0);
 
@@ -105,7 +105,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WoundedEnemyGivesNoFuryToABorrowedAxe()
         {
-            var ronin = SkillTestHero.Borrowing(HeroClass.Ronin, HeroClass.Viking, "throwing_axe");
+            var ronin = SkillTestHero.Borrowing(HeroClass.Ronin, HeroClass.Viking, "hatchet_toss");
             ronin.State.Resource = 20;
             ronin.Cast(0);
 
@@ -117,9 +117,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void BloodHarvestIsPassiveAndStacksOnKillsUpToFive()
+        public void ForgeHeatIsPassiveAndStacksOnKillsUpToFive()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "blood_harvest");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "forge_heat");
             Assert.That(viking.Cast(0), Is.EqualTo(CastResult.Passive));
 
             viking.KillCurrentEnemy();
@@ -135,9 +135,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void BloodHarvestStacksFallOffTenSecondsAfterTheLastKill()
+        public void ForgeHeatStacksFallOffTenSecondsAfterTheLastKill()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "blood_harvest");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "forge_heat");
             viking.KillCurrentEnemy();
             viking.Ticks(1);
             viking.State.Resource = 0;
@@ -150,9 +150,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void BloodHarvestStacksHoldWhileTheVikingsFuryIsAboveFifty()
+        public void ForgeHeatStacksHoldWhileTheVikingsFuryIsAboveFifty()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "blood_harvest");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "forge_heat");
             viking.KillCurrentEnemy();
 
             for (var i = 0; i < 300; i++)
@@ -165,11 +165,11 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ShieldWallReleasesHalfOfTheStoredHitsWhenItEnds()
+        public void AnvilReleasesHalfOfTheStoredHitsWhenItEnds()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "shield_wall");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "anvil");
             viking.Cast(0);
-            var duration = (int)(TestWorld.Data.Gems["shield_wall"].Skill!.DurationSeconds * GameLoop.TicksPerSecond);
+            var duration = (int)(TestWorld.Data.Gems["anvil"].Skill!.DurationSeconds * GameLoop.TicksPerSecond);
 
             viking.Ticks(duration - 1, keysPerTick: 2);
             var keys = viking.DamageFrom(DamageSource.Keyboard);
@@ -180,9 +180,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void FuryGrowsTwiceAsFastInTheVikingsShieldWall()
+        public void FuryGrowsTwiceAsFastAtTheVikingsAnvil()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "shield_wall");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "anvil");
             viking.State.Resource = 40;
             viking.Cast(0);
 
@@ -193,9 +193,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void RagnarokRoarSendsFortyPercentOfEveryKeyHitToTheWholeQueue()
+        public void LongWinterSendsFortyPercentOfEveryKeyHitToTheWholeQueue()
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "ragnarok_roar");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "long_winter");
             viking.State.Resource = 70;
             viking.Cast(0);
 
@@ -208,9 +208,9 @@ namespace Game.Core.Tests.Sim
 
         [TestCase(70, 80)]
         [TestCase(100, 160)]
-        public void RagnarokRoarLastsTwiceAsLongAtFullFury(double fury, int ticks)
+        public void LongWinterLastsTwiceAsLongAtFullFury(double fury, int ticks)
         {
-            var viking = SkillTestHero.Of(HeroClass.Viking, "ragnarok_roar");
+            var viking = SkillTestHero.Of(HeroClass.Viking, "long_winter");
             viking.State.Resource = fury;
 
             viking.Cast(0);

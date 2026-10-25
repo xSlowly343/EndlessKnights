@@ -197,7 +197,7 @@ namespace Game.Core.Tests.Sim
         [TestCase(15, 1)]
         public void LowResourceTriggerCastsCheapSkills(double resource, int casts)
         {
-            var (loop, _) = Hero("cast_on_low_resource", "throwing_axe", HeroClass.Viking);
+            var (loop, _) = Hero("cast_on_low_resource", "hatchet_toss", HeroClass.Viking);
             loop.State.Resource = resource;
 
             loop.Tick();

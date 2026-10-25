@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void TakingTheWeaponOffDimsTheSkillAndBlocksTheCast()
         {
             var loop = Hero(HeroClass.Viking);
-            loop.Skills.Equip(TestWorld.Real.Gems["shield_bash"]);
+            loop.Skills.Equip(TestWorld.Real.Gems["iron_rim_bash"]);
             loop.State.Resource = 100;
 
             loop.Weapons.Unequip(WeaponHand.Right);
@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void ActiveAuraGoesOutWithItsWeapon()
         {
             var loop = Hero(HeroClass.Metalhead);
-            loop.Skills.Equip(TestWorld.Real.Gems["song"]);
+            loop.Skills.Equip(TestWorld.Real.Gems["hearth_song"]);
             loop.State.Resource = 100;
             var before = loop.Hero.Value(CombatStats.Damage, 1);
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void SecondHandOpensAnotherClassSkills()
         {
             var loop = Hero(HeroClass.Viking);
-            loop.Skills.Equip(TestWorld.Real.Gems["song"]);
+            loop.Skills.Equip(TestWorld.Real.Gems["hearth_song"]);
             loop.State.Resource = 100;
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.NoWeapon));
 

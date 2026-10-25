@@ -9,9 +9,9 @@ namespace Game.Core.Tests.Sim
     public class MetalheadSkillTests
     {
         [Test]
-        public void GuitarSoloDoublesDriveFromTheMetalheadsHits()
+        public void LouderDoublesDriveFromTheMetalheadsHits()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "guitar_solo");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "louder");
             metalhead.State.Resource = 80;
             metalhead.Cast(0);
 
@@ -22,33 +22,33 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void PowerChordHitsTheEnemyAndTheNextOne()
+        public void NailChordHitsTheEnemyAndTheNextOne()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "power_chord");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "nail_chord");
 
             metalhead.Cast(0);
 
-            var wave = metalhead.SkillDamage("power_chord", 3);
+            var wave = metalhead.SkillDamage("nail_chord", 3);
             Assert.That(metalhead.DamageFrom(DamageSource.Skill), Is.EqualTo(wave).Within(1e-9));
             Assert.That(metalhead.Queued(0), Is.EqualTo(wave).Within(1e-9));
             Assert.That(metalhead.Queued(1), Is.EqualTo(0));
         }
 
         [Test]
-        public void PowerChordReachesTheThirdEnemyWhileTheMetalheadSings()
+        public void NailChordReachesTheThirdEnemyWhileTheMetalheadSings()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "power_chord", "song");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "nail_chord", "hearth_song");
             metalhead.Cast(1);
 
             metalhead.Cast(0);
 
-            Assert.That(metalhead.Queued(1), Is.EqualTo(metalhead.SkillDamage("power_chord", 3)).Within(1e-9));
+            Assert.That(metalhead.Queued(1), Is.EqualTo(metalhead.SkillDamage("nail_chord", 3)).Within(1e-9));
         }
 
         [Test]
-        public void PowerChordOnABorrowedGuitarIgnoresTheSong()
+        public void NailChordOnABorrowedGuitarIgnoresTheSong()
         {
-            var ronin = SkillTestHero.Borrowing(HeroClass.Ronin, HeroClass.Metalhead, "power_chord", "song");
+            var ronin = SkillTestHero.Borrowing(HeroClass.Ronin, HeroClass.Metalhead, "nail_chord", "hearth_song");
             ronin.Cast(1);
 
             ronin.Cast(0);
@@ -58,9 +58,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void BalladSlowsTheBossTimerByAQuarter()
+        public void ColossusLullabySlowsTheBossTimerByAQuarter()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "ballad");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "colossus_lullaby");
             metalhead.State.SpawnEnemy(null, EnemyType.Boss, BigNumber.Create(1, 50));
             metalhead.State.BossTicksLeft = 100;
 
@@ -73,7 +73,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void BossTimerRunsAtFullSpeedAfterTheBallad()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "ballad");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "colossus_lullaby");
             metalhead.Cast(0);
             metalhead.Ticks(150);
             metalhead.State.SpawnEnemy(null, EnemyType.Boss, BigNumber.Create(1, 50));
@@ -85,9 +85,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void MoshPitAddsTwoPercentPerKeyHitUpToAQuarter()
+        public void WholeHallAddsTwoPercentPerKeyHitUpToAQuarter()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "mosh_pit");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "whole_hall");
             metalhead.Cast(0);
 
             metalhead.Ticks(1, keysPerTick: 5);
@@ -98,9 +98,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void MoshPitStacksVanishWhenItEnds()
+        public void WholeHallStacksVanishWhenItEnds()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "mosh_pit");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "whole_hall");
             metalhead.Cast(0);
             metalhead.Ticks(1, keysPerTick: 5);
 
@@ -113,7 +113,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AmpToElevenReservesAQuarterOfTheBarAndSpeedsUpFocus()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "amp_eleven");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "underside_amp");
 
             Assert.That(metalhead.Cast(0), Is.EqualTo(CastResult.Passive));
             metalhead.Ticks(1);
@@ -129,7 +129,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AmpToElevenFreesTheReserveWhenRemoved()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "amp_eleven");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "underside_amp");
 
             metalhead.Loop.Skills.Unequip(0);
 
@@ -142,18 +142,18 @@ namespace Game.Core.Tests.Sim
         {
             var metalhead = SkillTestHero.Of(HeroClass.Metalhead);
             var plain = metalhead.Loop.Focus.ResetAfterIdleSeconds;
-            metalhead.Loop.Skills.Equip(TestWorld.Data.Gems["amp_eleven"]);
+            metalhead.Loop.Skills.Equip(TestWorld.Data.Gems["underside_amp"]);
 
-            var ronin = SkillTestHero.Borrowing(HeroClass.Ronin, HeroClass.Metalhead, "amp_eleven");
+            var ronin = SkillTestHero.Borrowing(HeroClass.Ronin, HeroClass.Metalhead, "underside_amp");
 
             Assert.That(metalhead.Loop.Focus.ResetAfterIdleSeconds, Is.EqualTo(plain + 3).Within(1e-9));
             Assert.That(ronin.Loop.Focus.ResetAfterIdleSeconds, Is.EqualTo(plain).Within(1e-9));
         }
 
         [Test]
-        public void StageDiveHitsForTenStrikesAndRefundsHalfOnAKill()
+        public void StillAliveHitsForTenStrikesAndRefundsHalfOnAKill()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "stage_dive");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "still_alive");
             metalhead.State.EnemyHp = BigNumber.FromDouble(1e-6);
 
             metalhead.Cast(0);
@@ -162,20 +162,20 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void StageDiveWithoutAKillRefundsNothing()
+        public void StillAliveWithoutAKillRefundsNothing()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "stage_dive");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "still_alive");
 
             metalhead.Cast(0);
 
-            Assert.That(metalhead.DamageFrom(DamageSource.Skill), Is.EqualTo(metalhead.SkillDamage("stage_dive", 10)).Within(1e-9));
+            Assert.That(metalhead.DamageFrom(DamageSource.Skill), Is.EqualTo(metalhead.SkillDamage("still_alive", 10)).Within(1e-9));
             Assert.That(metalhead.State.Resource, Is.EqualTo(40));
         }
 
         [Test]
-        public void StageDiveKillRenewsTheMetalheadsSongs()
+        public void StillAliveKillRenewsTheMetalheadsSongs()
         {
-            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "stage_dive", "song");
+            var metalhead = SkillTestHero.Of(HeroClass.Metalhead, "still_alive", "hearth_song");
             metalhead.Cast(1);
             metalhead.Ticks(100);
             var full = metalhead.State.Skills[1].ActiveTotalTicks;

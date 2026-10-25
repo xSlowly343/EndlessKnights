@@ -44,8 +44,8 @@ namespace Game.Core.Tests.Sim
             return (loop, input);
         }
 
-        private static readonly string[] VikingSkills = { "shield_bash", "odins_fury", "battle_cry", "throwing_axe", "blood_harvest", "shield_wall", "ragnarok_roar" };
-        private static readonly string[] MetalheadSkills = { "song", "guitar_solo", "power_chord", "ballad", "mosh_pit", "amp_eleven", "stage_dive" };
+        private static readonly string[] VikingSkills = { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };
+        private static readonly string[] MetalheadSkills = { "hearth_song", "louder", "nail_chord", "colossus_lullaby", "whole_hall", "underside_amp", "still_alive" };
 
         private static readonly string[] CommonSkills =
         {
