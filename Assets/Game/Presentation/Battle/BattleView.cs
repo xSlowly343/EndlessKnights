@@ -1,5 +1,8 @@
 using Game.Core.Math;
+using Game.Core.Ui;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
+using TMPro;
 using UnityEngine;
 
 namespace Game.Presentation.Battle
@@ -19,6 +22,29 @@ namespace Game.Presentation.Battle
         private const float RetreatSeconds = 1.2f;
         private const int MaxDots = 10;
         private const float NoticeSeconds = 8f;
+        private const int HudSortingOrder = 22;
+        private const int TextSortingOrder = 26;
+        private const float RowCentrePx = 20f;
+        private const float BottomCentrePx = 165f;
+        private const float MarginPx = 10f;
+        private const float StageWidthPx = 140f;
+        private const float DotsLeftPx = 79f;
+        private const float DotPx = 6f;
+        private const float DotStepPx = 9f;
+        private const float TimerLeftPx = 328f;
+        private const float TimerWidthPx = 62f;
+        private const float TimerHeightPx = 22f;
+        private const float FocusWidthPx = 96f;
+        private const float FocusHeightPx = 10f;
+        private const float ResourceHeightPx = 4f;
+        private const float BarRadiusPx = 5f;
+        private const float HpLeftPx = 116f;
+        private const float HpWidthPx = 244f;
+        private const float HpHeightPx = 10f;
+        private const float PercentWidthPx = 40f;
+        private const float CoinLeftPx = 410f;
+        private const float CoinPx = 14f;
+        private const float GoldWidthPx = 54f;
 
         private static readonly Vector2 HeroPosition = StripSpace.AtPx(85f, 117f);
         private static readonly Vector2 HeroSize = new Vector2(StripSpace.Units(50f), StripSpace.Units(66f));
@@ -26,22 +52,7 @@ namespace Game.Presentation.Battle
         private static readonly float GroundY = StripSpace.AtPx(0f, 150f).y;
         private static readonly float EnemySize = 6f;
         private static readonly float BossSize = 7.4f;
-        private static readonly Vector2 HpBarSize = new Vector2(StripSpace.Units(200f), StripSpace.Units(10f));
-        private static readonly Vector2 HpBarCentre = StripSpace.AtPx(260f, 165f);
-        private static readonly Vector2 TimerBarSize = new Vector2(StripSpace.Units(70f), StripSpace.Units(3f));
-        private static readonly Vector2 TimerBarCentre = StripSpace.AtPx(365f, 32f);
-        private static readonly Vector2 TimerTextPosition = StripSpace.AtPx(330f, 17f);
-        private static readonly float FocusBarLeft = StripSpace.Units(10f);
-        private static readonly float FocusBarWidth = StripSpace.Units(96f);
-        private static readonly Vector2 FocusBarCentre = StripSpace.AtPx(58f, 163f);
-        private static readonly Vector2 FocusBarSize = new Vector2(FocusBarWidth, StripSpace.Units(8f));
-        private static readonly Vector2 EnergyBarCentre = StripSpace.AtPx(58f, 173f);
-        private static readonly Vector2 EnergyBarSize = new Vector2(FocusBarWidth, StripSpace.Units(4f));
-        private static readonly Vector2 StagePosition = StripSpace.AtPx(10f, 8f);
-        private static readonly Vector2 FirstDotPosition = StripSpace.AtPx(82f, 20f);
-        private static readonly float DotStep = StripSpace.Units(9f);
-        private static readonly float DotSize = StripSpace.Units(6f);
-        private static readonly Vector2 GoldPosition = StripSpace.AtPx(10f, 31f);
+        private static readonly Vector2 CoinTarget = StripSpace.AtPx(CoinLeftPx + CoinPx / 2f, BottomCentrePx);
         private static readonly Vector2 NoticePosition = StripSpace.AtPx(240f, 56f);
         private static readonly Vector2 NumbersOrigin = StripSpace.AtPx(290f, 72f);
         private static readonly Vector2 BossNumbersOrigin = StripSpace.AtPx(230f, 72f);
@@ -51,29 +62,36 @@ namespace Game.Presentation.Battle
         private static readonly Color EnemyColor = new Color(0.85f, 0.25f, 0.2f);
         private static readonly Color BossColor = new Color(0.6f, 0.1f, 0.6f);
         private static readonly Color GuardianColor = new Color(0.2f, 0.6f, 0.25f);
-        private static readonly Color BarBackColor = new Color(0.15f, 0.15f, 0.15f);
-        private static readonly Color HpFillColor = new Color(0.9f, 0.2f, 0.2f);
-        private static readonly Color TimerFillColor = new Color(0.95f, 0.75f, 0.2f);
-        private static readonly Color FocusColor = new Color(1f, 0.75f, 0.2f);
-        private static readonly Color EnergyColor = new Color(0.3f, 0.75f, 1f);
-        private static readonly Color DotEmpty = new Color(0.3f, 0.3f, 0.3f);
-        private static readonly Color DotFull = new Color(0.95f, 0.95f, 0.95f);
+        private static readonly Color TrackColor = new Color32(0x12, 0x18, 0x28, 0xFF);
+        private static readonly Color HpFillColor = new Color32(0x4F, 0xC2, 0x77, 0xFF);
+        private static readonly Color FocusColor = new Color32(0xE0, 0x57, 0x4A, 0xFF);
+        private static readonly Color TimerBackColor = new Color32(0x5A, 0x1F, 0x28, 0xFF);
+        private static readonly Color TimerFillColor = new Color32(0x8A, 0x2E, 0x38, 0xFF);
+        private static readonly Color TimerTextColor = new Color32(0xFF, 0xD7, 0xD7, 0xFF);
+        private static readonly Color TimerBlinkColor = new Color32(0xFF, 0x5A, 0x5A, 0xFF);
+        private static readonly Color DotEmpty = new Color32(0x3A, 0x48, 0x70, 0xFF);
+        private static readonly Color DotFull = new Color32(0xEE, 0xF2, 0xFF, 0xFF);
+        private static readonly Color PercentColor = new Color32(0xD5, 0xDC, 0xEE, 0xFF);
+        private static readonly Color RetreatColor = new Color32(0xFF, 0x66, 0x4D, 0xFF);
+        private static readonly Color NoticeColor = new Color32(0xB3, 0xFF, 0xB3, 0xFF);
         private static readonly Color GroundColor = new Color(0.18f, 0.35f, 0.23f);
 
         private Transform _scene = null!;
         private SpriteRenderer _hero = null!;
         private SpriteRenderer _enemy = null!;
-        private SpriteRenderer _hpFill = null!;
-        private SpriteRenderer _timerBack = null!;
-        private SpriteRenderer _timerFill = null!;
-        private SpriteRenderer _focusFill = null!;
-        private SpriteRenderer _energyFill = null!;
-        private readonly SpriteRenderer[] _dots = new SpriteRenderer[MaxDots];
-        private TextMesh _stageText = null!;
-        private TextMesh _timerText = null!;
-        private TextMesh _goldText = null!;
-        private TextMesh _retreatText = null!;
-        private TextMesh _noticeText = null!;
+        private UiTheme _theme = null!;
+        private RectTransform _hpFill = null!;
+        private RectTransform _timer = null!;
+        private RectTransform _timerFill = null!;
+        private RectTransform _focusFill = null!;
+        private RectTransform _energyFill = null!;
+        private readonly UnityEngine.UI.Image[] _dots = new UnityEngine.UI.Image[MaxDots];
+        private TextMeshProUGUI _stageText = null!;
+        private TextMeshProUGUI _timerText = null!;
+        private TextMeshProUGUI _percentText = null!;
+        private TextMeshProUGUI _goldText = null!;
+        private TextMeshProUGUI _retreatText = null!;
+        private TextMeshProUGUI _noticeText = null!;
         private float _noticeAge = NoticeSeconds;
         private DamageNumbers _numbers = null!;
         private CoinBurst _coins = null!;
@@ -93,6 +111,17 @@ namespace Game.Presentation.Battle
         private float _shownEnergy;
         private float _targetEnergy;
         private string _shownGold = string.Empty;
+        private long _shownStage = -1;
+        private bool _shownBoss;
+        private int _shownTenths = -1;
+        private int _shownPercent = -1;
+
+        public string StageText => _stageText.text;
+        public string TimerText => _timerText.text;
+        public string PercentText => _percentText.text;
+        public string GoldText => _goldText.text;
+        public bool TimerShown => _timer.gameObject.activeSelf;
+        public float HpShown => _shownHp;
 
         public static BattleView Create()
         {
@@ -143,29 +172,41 @@ namespace Game.Presentation.Battle
         public void ShowState(long stage, int killsOnStage, int enemiesPerStage, double hpFraction, double bossSecondsLeft, double bossTimerFraction, bool bossFight,
             double focusFraction, double energyFraction, BigNumber gold)
         {
-            _stageText.text = bossFight ? $"Этап {stage} · БОСС" : $"Этап {stage}";
+            if (stage != _shownStage || bossFight != _shownBoss)
+            {
+                _shownStage = stage;
+                _shownBoss = bossFight;
+                _stageText.text = BattleTexts.Stage(stage, bossFight);
+            }
             _targetHp = (float)hpFraction;
             _targetFocus = (float)focusFraction;
             _targetEnergy = (float)energyFraction;
+            var percent = BattleTexts.PercentOf(hpFraction);
+            if (percent != _shownPercent)
+                _percentText.text = BattleTexts.Percent(_shownPercent = percent);
             ShowDots(bossFight ? 0 : killsOnStage, bossFight ? 0 : enemiesPerStage);
-            _timerBack.gameObject.SetActive(bossFight);
-            _timerFill.gameObject.SetActive(bossFight);
-            _timerText.gameObject.SetActive(bossFight);
+            if (_timer.gameObject.activeSelf != bossFight)
+                _timer.gameObject.SetActive(bossFight);
             if (bossFight)
-            {
-                SetFill(_timerFill, TimerBarSize.x, (float)bossTimerFraction, TimerBarCentre.x - TimerBarSize.x / 2f);
-                _timerText.text = $"{bossSecondsLeft:0.0} с";
-                var blinking = bossSecondsLeft <= BossBlinkSeconds && Mathf.Repeat(Time.unscaledTime, 0.5f) < 0.25f;
-                _timerText.color = blinking ? Color.red : Color.white;
-                _timerFill.color = blinking ? Color.red : TimerFillColor;
-            }
+                ShowTimer(bossSecondsLeft, bossTimerFraction);
             var goldText = NumberFormatter.Format(gold, NumberFormatSettings.Default);
             if (goldText != _shownGold)
                 _goldText.text = _shownGold = goldText;
         }
 
+        private void ShowTimer(double secondsLeft, double fraction)
+        {
+            var tenths = BattleTexts.Tenths(secondsLeft);
+            if (tenths != _shownTenths)
+                _timerText.text = BattleTexts.Seconds(_shownTenths = tenths);
+            SetFill(_timerFill, TimerWidthPx, (float)fraction);
+            var blinking = secondsLeft <= BossBlinkSeconds && Mathf.Repeat(Time.unscaledTime, 0.5f) < 0.25f;
+            _timerText.color = blinking ? TimerBlinkColor : TimerTextColor;
+        }
+
         private void Build()
         {
+            _theme = UiTheme.Load();
             _scene = new GameObject("Scene").transform;
             _scene.SetParent(transform, false);
             _hero = ShapeSprites.Create("Hero", ShapeSprites.Square, HeroColor, HeroPosition, HeroSize, 10, _scene);
@@ -173,44 +214,93 @@ namespace Game.Presentation.Battle
             _enemy.gameObject.AddComponent<CircleCollider2D>();
             _hero.gameObject.AddComponent<BoxCollider2D>();
             ShapeSprites.Create("Ground", ShapeSprites.Square, GroundColor, new Vector2(StripSpace.Width / 2f, GroundY), new Vector2(StripSpace.Width, StripSpace.Units(2f)), 9, _scene);
-            ShapeSprites.Create("HpBack", ShapeSprites.Square, BarBackColor, HpBarCentre, HpBarSize, 11, _scene);
-            _hpFill = ShapeSprites.Create("HpFill", ShapeSprites.Square, HpFillColor, HpBarCentre, HpBarSize, 12, _scene);
-            _timerBack = ShapeSprites.Create("TimerBack", ShapeSprites.Square, BarBackColor, TimerBarCentre, TimerBarSize, 11, _scene);
-            _timerFill = ShapeSprites.Create("TimerFill", ShapeSprites.Square, TimerFillColor, TimerBarCentre, TimerBarSize, 12, _scene);
-            ShapeSprites.Create("FocusBack", ShapeSprites.Square, BarBackColor, FocusBarCentre, FocusBarSize, 11, _scene);
-            _focusFill = ShapeSprites.Create("Focus", ShapeSprites.Square, FocusColor, FocusBarCentre, FocusBarSize, 12, _scene);
-            _energyFill = ShapeSprites.Create("Energy", ShapeSprites.Square, EnergyColor, EnergyBarCentre, EnergyBarSize, 12, _scene);
-            for (var i = 0; i < MaxDots; i++)
-                _dots[i] = ShapeSprites.Create("Dot", ShapeSprites.Circle, DotEmpty, FirstDotPosition + new Vector2(i * DotStep, 0f), Vector2.one * DotSize, 12, _scene);
-            _stageText = StripText.Create("Stage", string.Empty, StagePosition, 0.18f, TextAnchor.UpperLeft, Color.white, _scene, 15);
-            _timerText = StripText.Create("BossTimer", string.Empty, TimerTextPosition, 0.15f, TextAnchor.MiddleLeft, Color.white, _scene, 15);
-            _goldText = StripText.Create("Gold", string.Empty, GoldPosition, 0.15f, TextAnchor.MiddleLeft, new Color(1f, 0.85f, 0.3f), _scene, 15);
-            _retreatText = StripText.Create("Retreat", "Отступление", EnemyCentre, 0.25f, TextAnchor.MiddleCenter, new Color(1f, 0.4f, 0.3f), _scene, 25);
+            BuildHud(StripCanvas.Create("Hud", HudSortingOrder, transform));
+            var texts = StripCanvas.Create("SceneTexts", TextSortingOrder, _scene);
+            _retreatText = Label("Retreat", texts, _theme.BoldFont, 20f, RetreatColor, TextAlignmentOptions.Center);
+            StripCanvas.Place(_retreatText.rectTransform, EnemyX * StripSpace.PixelsPerUnit, StripSpace.BaseHeightPx - (GroundY + EnemySize / 2f) * StripSpace.PixelsPerUnit, new Vector2(160f, 28f), new Vector2(0.5f, 0.5f));
+            _retreatText.text = BattleTexts.Retreat;
             _retreatText.gameObject.SetActive(false);
-            _noticeText = StripText.Create("Notice", string.Empty, NoticePosition, 0.16f, TextAnchor.MiddleCenter, new Color(0.7f, 1f, 0.7f), _scene, 30);
+            _noticeText = Label("Notice", texts, _theme.TextFont, 13f, NoticeColor, TextAlignmentOptions.Center);
+            var notice = StripCanvas.PxOf(NoticePosition);
+            StripCanvas.Place(_noticeText.rectTransform, notice.x, StripSpace.BaseHeightPx - notice.y, new Vector2(320f, 20f), new Vector2(0.5f, 0.5f));
             _noticeText.gameObject.SetActive(false);
             _numbers = DamageNumbers.Create();
-            _coins = CoinBurst.Create(GoldPosition + new Vector2(StripSpace.Units(8f), 0f));
+            _numbers.transform.SetParent(transform, false);
+            _coins = CoinBurst.Create(CoinTarget);
+            _coins.transform.SetParent(transform, false);
             _coins.CoinArrived += () => _goldBumpAge = 0f;
         }
+
+        private void BuildHud(RectTransform hud)
+        {
+            var left = new Vector2(0f, 0.5f);
+            _stageText = Label("Stage", hud, _theme.NumberFont, 16f, _theme.Text, TextAlignmentOptions.MidlineLeft);
+            StripCanvas.Place(_stageText.rectTransform, MarginPx, RowCentrePx, new Vector2(StageWidthPx, 24f), left);
+            for (var i = 0; i < MaxDots; i++)
+            {
+                _dots[i] = UiElements.Dot("Dot " + i, hud, DotEmpty);
+                StripCanvas.Place(_dots[i].rectTransform, DotsLeftPx + i * DotStepPx, RowCentrePx, Vector2.one * DotPx, left);
+            }
+
+            _timer = UiElements.Fill("BossTimer", hud, TimerBackColor, TimerHeightPx / 2f).rectTransform;
+            StripCanvas.Place(_timer, TimerLeftPx, RowCentrePx, new Vector2(TimerWidthPx, TimerHeightPx), left);
+            _timerFill = UiElements.Fill("Fill", _timer, TimerFillColor, TimerHeightPx / 2f).rectTransform;
+            FillFromLeft(_timerFill, TimerWidthPx, TimerHeightPx);
+            _timerText = Label("Text", _timer, _theme.NumberFont, 14f, TimerTextColor, TextAlignmentOptions.Center);
+            UiElements.Stretch(_timerText.rectTransform);
+            _timer.gameObject.SetActive(false);
+
+            _focusFill = Bar("Focus", hud, MarginPx, BottomCentrePx - 2f, FocusWidthPx, FocusHeightPx, FocusColor);
+            _energyFill = Bar("Resource", hud, MarginPx, BottomCentrePx + 8f, FocusWidthPx, ResourceHeightPx, _theme.ResourceTint);
+            _hpFill = Bar("Hp", hud, HpLeftPx, BottomCentrePx, HpWidthPx, HpHeightPx, HpFillColor);
+            _percentText = Label("HpPercent", hud, _theme.TextFont, 12f, PercentColor, TextAlignmentOptions.MidlineLeft);
+            StripCanvas.Place(_percentText.rectTransform, HpLeftPx + HpWidthPx + 6f, BottomCentrePx, new Vector2(PercentWidthPx, 18f), left);
+
+            var coin = UiElements.Dot("Coin", hud, _theme.Gold);
+            StripCanvas.Place(coin.rectTransform, CoinLeftPx, BottomCentrePx, Vector2.one * CoinPx, left);
+            _goldText = Label("Gold", hud, _theme.NumberFont, 15f, _theme.Gold, TextAlignmentOptions.MidlineLeft);
+            StripCanvas.Place(_goldText.rectTransform, CoinLeftPx + CoinPx + 4f, BottomCentrePx, new Vector2(GoldWidthPx, 20f), left);
+        }
+
+        private static RectTransform Bar(string name, RectTransform hud, float leftPx, float centrePx, float widthPx, float heightPx, Color color)
+        {
+            var radius = Mathf.Min(BarRadiusPx, heightPx / 2f);
+            var track = UiElements.Fill(name, hud, TrackColor, radius).rectTransform;
+            StripCanvas.Place(track, leftPx, centrePx, new Vector2(widthPx, heightPx), new Vector2(0f, 0.5f));
+            var fill = UiElements.Fill("Fill", track, color, radius).rectTransform;
+            FillFromLeft(fill, widthPx, heightPx);
+            return fill;
+        }
+
+        private static void FillFromLeft(RectTransform fill, float widthPx, float heightPx)
+        {
+            fill.anchorMin = new Vector2(0f, 0.5f);
+            fill.anchorMax = new Vector2(0f, 0.5f);
+            fill.pivot = new Vector2(0f, 0.5f);
+            fill.anchoredPosition = Vector2.zero;
+            fill.sizeDelta = new Vector2(widthPx, heightPx);
+        }
+
+        private static TextMeshProUGUI Label(string name, RectTransform parent, TMP_FontAsset? font, float sizePx, Color color, TextAlignmentOptions alignment) =>
+            UiElements.Label(name, parent, font, sizePx, color, alignment);
 
         private void ShowDots(int kills, int total)
         {
             for (var i = 0; i < MaxDots; i++)
             {
                 var visible = i < total;
-                _dots[i].gameObject.SetActive(visible);
+                if (_dots[i].gameObject.activeSelf != visible)
+                    _dots[i].gameObject.SetActive(visible);
                 if (visible)
                     _dots[i].color = i < kills ? DotFull : DotEmpty;
             }
         }
 
-        private static void SetFill(SpriteRenderer fill, float fullWidth, float fraction, float left)
+        private static void SetFill(RectTransform fill, float fullWidthPx, float fraction)
         {
-            var width = fullWidth * Mathf.Clamp01(fraction);
-            var transform = fill.transform;
-            transform.localScale = new Vector3(Mathf.Max(width, 0.0001f), transform.localScale.y, 1f);
-            transform.position = new Vector3(left + width / 2f, transform.position.y, transform.position.z);
+            var size = fill.sizeDelta;
+            size.x = fullWidthPx * Mathf.Clamp01(fraction);
+            fill.sizeDelta = size;
         }
 
         private void Update()
@@ -228,9 +318,9 @@ namespace Game.Presentation.Battle
             _shownHp = _targetHp > _shownHp ? _targetHp : Mathf.Lerp(_shownHp, _targetHp, blend);
             _shownFocus = Mathf.Lerp(_shownFocus, _targetFocus, blend);
             _shownEnergy = Mathf.Lerp(_shownEnergy, _targetEnergy, blend);
-            SetFill(_hpFill, HpBarSize.x, _shownHp, HpBarCentre.x - HpBarSize.x / 2f);
-            SetFill(_focusFill, FocusBarWidth, _shownFocus, FocusBarLeft);
-            SetFill(_energyFill, FocusBarWidth, _shownEnergy, FocusBarLeft);
+            SetFill(_hpFill, HpWidthPx, _shownHp);
+            SetFill(_focusFill, FocusWidthPx, _shownFocus);
+            SetFill(_energyFill, FocusWidthPx, _shownEnergy);
         }
 
         private void AnimateEnemy(float delta)
