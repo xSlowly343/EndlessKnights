@@ -16,6 +16,15 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void FocusMultiplierRoundsDownToTenths()
+        {
+            Assert.That(BattleTexts.MultiplierTenths(2.19), Is.EqualTo(21));
+            Assert.That(BattleTexts.MultiplierTenths(1.0), Is.EqualTo(10));
+            Assert.That(BattleTexts.Multiplier(21), Is.EqualTo("×2.1"));
+            Assert.That(BattleTexts.Multiplier(10), Is.EqualTo("×1.0"));
+        }
+
+        [Test]
         public void BossTimerRoundsUpToTenths()
         {
             Texts.UseLanguage("ru");

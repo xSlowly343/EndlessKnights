@@ -18,10 +18,10 @@ namespace Game.Bootstrap
         public const int StripWidth = 480;
         public const int StripHeight = 180;
 
-        private const float StripButtonSizePx = 28f;
         private const float InputOverlayMargin = 0.3f;
         private static readonly Vector2 MenuButtonPosition = StripSpace.AtPx(455f, 20f);
         private static readonly Vector2 FocusButtonPosition = StripSpace.AtPx(419f, 20f);
+        private static readonly Color MenuGold = new Color32(0xF0, 0xB4, 0x3C, 0xFF);
 
         private static bool _isSecondInstance;
 
@@ -57,7 +57,7 @@ namespace Game.Bootstrap
             window?.ShowInTaskbar();
             window?.KeepOnTop();
 
-            var focusButton = FocusModeButton.Create(FocusButtonPosition, StripSpace.Units(StripButtonSizePx));
+            var focusButton = FocusModeButton.Create(FocusButtonPosition);
             var framePacing = FramePacingDriver.Attach(focusButton.gameObject, TrayMenuState.DefaultFrameRate);
             if (window == null)
             {
@@ -75,7 +75,7 @@ namespace Game.Bootstrap
             var pointer = PointerInput.Attach(host);
             var dock = TaskbarDockDriver.Attach(host, window);
             StripCameraDriver.Attach(host, camera, dock);
-            var menuButton = StripButton.CreateIcon("MenuButton", StripIcons.Menu, MenuButtonPosition, StripSpace.Units(StripButtonSizePx));
+            var menuButton = StripButton.CreateIcon("MenuButton", StripIcons.Menu, MenuButtonPosition, MenuGold, MenuGold);
             var panels = PanelCanvas.Create();
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
             var router = StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);

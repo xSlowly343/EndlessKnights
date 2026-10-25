@@ -1,4 +1,5 @@
 using System;
+using Game.Presentation.Ui;
 using UnityEngine;
 
 namespace Game.Presentation.Strip
@@ -23,15 +24,11 @@ namespace Game.Presentation.Strip
             return button;
         }
 
-        public static StripButton CreateIcon(string name, Sprite icon, Vector2 position, float size)
+        public static StripButton CreateIcon(string name, Sprite icon, Vector2 position, Color glyphColor, Color borderColor)
         {
-            var host = new GameObject(name);
-            host.transform.position = position;
-            host.transform.localScale = new Vector3(size, size, 1f);
-            host.AddComponent<SpriteRenderer>().sprite = icon;
-            var button = host.AddComponent<StripButton>();
-            host.AddComponent<StripClickable>();
-            button._collider = host.AddComponent<BoxCollider2D>();
+            var view = StripIconButtonView.Create(name, position, icon, glyphColor, borderColor);
+            var button = view.Root.gameObject.AddComponent<StripButton>();
+            button._collider = view.Root.GetComponent<BoxCollider2D>();
             return button;
         }
 

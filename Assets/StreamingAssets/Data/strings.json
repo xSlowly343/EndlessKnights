@@ -261,6 +261,7 @@
     "battle.retreat": { "ru": "Отступление", "en": "Retreat" },
     "battle.crit": { "ru": "КРИТ", "en": "CRIT" },
     "battle.seconds": { "ru": "{0} с", "en": "{0} s" },
+    "battle.multiplier": { "ru": "×{0}", "en": "×{0}" },
     "battle.percent": { "ru": "{0}%", "en": "{0}%" },
     "hint.consent": { "ru": "Ввод не считается. Нажми, чтобы разрешить", "en": "Input isn't counted. Click to allow" },
     "tutorial.type": { "ru": "Печатай где угодно: каждая клавиша — удар", "en": "Type anywhere: every key is a hit" },

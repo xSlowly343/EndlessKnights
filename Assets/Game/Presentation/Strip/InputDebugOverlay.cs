@@ -1,28 +1,35 @@
 using Game.Core.Input;
+using Game.Presentation.Ui;
+using TMPro;
 using UnityEngine;
 
 namespace Game.Presentation.Strip
 {
     public sealed class InputDebugOverlay : MonoBehaviour
     {
-        private const string BuiltinFontName = "LegacyRuntime.ttf";
-        private const int FontSize = 48;
-        private const float CharacterSize = 0.25f;
+        private const int SortingOrder = 40;
+        private const float WidthPx = 470f;
+        private const float HeightPx = 48f;
+        private const float FontSizePx = 10f;
 
-        private TextMesh _text = null!;
+        private TextMeshProUGUI _text = null!;
         private InputTotals _shown;
+
+        public string Text => _text.text;
 
         public static InputDebugOverlay Create(Vector2 position)
         {
-            var host = new GameObject("InputDebugOverlay");
-            host.transform.position = position;
-            var text = host.AddComponent<TextMesh>();
-            text.font = Resources.GetBuiltinResource<Font>(BuiltinFontName);
-            text.GetComponent<MeshRenderer>().sharedMaterial = text.font.material;
-            text.fontSize = FontSize;
-            text.characterSize = CharacterSize;
-            text.anchor = TextAnchor.LowerLeft;
-            text.color = Color.white;
+            var host = new GameObject("InputDebugOverlay", typeof(RectTransform));
+            var rect = (RectTransform)host.transform;
+            var canvas = host.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.WorldSpace;
+            canvas.sortingOrder = SortingOrder;
+            rect.pivot = Vector2.zero;
+            rect.sizeDelta = new Vector2(WidthPx, HeightPx);
+            rect.localScale = Vector3.one / StripSpace.PixelsPerUnit;
+            rect.position = new Vector3(position.x, position.y, 0f);
+            var text = UiElements.Label("Text", rect, UiTheme.Load().TextFont, FontSizePx, Color.white, TextAlignmentOptions.BottomLeft);
+            UiElements.Stretch(text.rectTransform);
             var overlay = host.AddComponent<InputDebugOverlay>();
             overlay._text = text;
             overlay.Render(default);
