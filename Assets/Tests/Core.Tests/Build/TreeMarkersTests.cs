@@ -43,16 +43,14 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void HighlightBeatsOfferedAndOfferedBeatsKeystone()
+        public void StartBeatsOfferedAndOfferedBeatsKeystone()
         {
-            var highlighted = TreeMarkers.PriorityOf(TreeNodeType.Small, true, false, false);
-            var offered = TreeMarkers.PriorityOf(TreeNodeType.Small, false, true, false);
-            var keystone = TreeMarkers.PriorityOf(TreeNodeType.Keystone, false, false, true);
+            var offered = TreeMarkers.PriorityOf(TreeNodeType.Small, true, false);
+            var keystone = TreeMarkers.PriorityOf(TreeNodeType.Keystone, false, true);
 
-            Assert.That(highlighted, Is.GreaterThan(offered));
+            Assert.That(TreeMarkers.PriorityOf(TreeNodeType.Start, false, false), Is.GreaterThan(offered));
             Assert.That(offered, Is.GreaterThan(keystone));
-            Assert.That(keystone, Is.GreaterThan(TreeMarkers.PriorityOf(TreeNodeType.Notable, false, false, true)));
-            Assert.That(TreeMarkers.PriorityOf(TreeNodeType.Start, false, false, false), Is.GreaterThan(highlighted + offered));
+            Assert.That(keystone, Is.GreaterThan(TreeMarkers.PriorityOf(TreeNodeType.Notable, false, true)));
         }
 
         [Test]
@@ -73,7 +71,7 @@ namespace Game.Core.Tests.Build
             var markers = new TreeMarkers(nodes);
             const double pixelsPerUnit = 4.0;
             var halves = nodes.Select(node => 6.0 / pixelsPerUnit).ToArray();
-            var priorities = nodes.Select(node => TreeMarkers.PriorityOf(node.Type, false, false, false)).ToArray();
+            var priorities = nodes.Select(node => TreeMarkers.PriorityOf(node.Type, false, false)).ToArray();
 
             markers.Pick(halves, priorities, 0.0);
 

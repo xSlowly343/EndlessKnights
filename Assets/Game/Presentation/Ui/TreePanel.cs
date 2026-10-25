@@ -55,9 +55,7 @@ namespace Game.Presentation.Ui
         private const float TakenLinkPx = 3f;
         private const float SelectionScale = 1.5f;
         private const float SelectionGapPx = 4f;
-        private const float HaloScale = 1.55f;
         private const float MarkerGapPx = 2f;
-        private const float DotPx = 4f;
         private const double PickRadiusShare = 0.03;
         private const double MinPickRadius = 0.6;
 
@@ -77,7 +75,6 @@ namespace Game.Presentation.Ui
         private static readonly Color32 TakenColor = new Color32(0xF0, 0xB4, 0x3C, 0xFF);
         private static readonly Color32 DiskColor = new Color32(0x14, 0x19, 0x2C, 0xFF);
         private static readonly Color32 OfferedRing = new Color32(0xFF, 0xFF, 0xFF, 0xFF);
-        private static readonly Color32 HighlightColor = new Color32(0x6F, 0xE8, 0xFF, 0xFF);
         private static readonly Color32 Hidden = new Color32(0, 0, 0, 0);
         private const float NormalShade = 0.72f;
         private const float LockedShade = 0.3f;
@@ -111,13 +108,10 @@ namespace Game.Presentation.Ui
         private TreeMesh? _nodeMesh;
         private TreeMesh? _ringMesh;
         private TreeMesh? _outlineMesh;
-        private TreeMesh? _haloMesh;
         private TreeMarkers? _markers;
         private double[] _halves = System.Array.Empty<double>();
         private int[] _priorities = System.Array.Empty<int>();
-        private string[] _glyphs = System.Array.Empty<string>();
         private readonly List<TreeNodeDef> _shownNodes = new List<TreeNodeDef>();
-        private string _highlight = string.Empty;
         private readonly List<int> _outlined = new List<int>();
         private Color32[] _sectorColors = System.Array.Empty<Color32>();
         private readonly List<GlyphLayer> _glyphLayers = new List<GlyphLayer>();
@@ -179,16 +173,11 @@ namespace Game.Presentation.Ui
             _takeable = TreeTexts.TakeableCount(tree);
             _looks = new TreeNodeLook[tree.Nodes.Count];
             _sectorColors = new Color32[tree.Nodes.Count];
-            _glyphs = new string[tree.Nodes.Count];
             _halves = new double[tree.Nodes.Count];
             _priorities = new int[tree.Nodes.Count];
             for (var i = 0; i < tree.Nodes.Count; i++)
-            {
                 _sectorColors[i] = SectorColor(tree.Nodes[i]);
-                _glyphs[i] = TreeGlyph.Of(tree.Nodes[i]);
-            }
             _markers = new TreeMarkers(tree.Nodes);
-            _highlight = string.Empty;
             BuildMap(tree);
             _viewport = new TreeViewport(tree.Nodes, _fieldPx.x / _fieldPx.y);
             _viewport.LimitZoom(_fieldPx.y / MaxPixelsPerUnit);
@@ -298,10 +287,8 @@ namespace Game.Presentation.Ui
             var (x, y) = _viewport.ToTree(uv.x, uv.y);
             var radius = System.Math.Max(MinPickRadius, _viewport.VisibleHeight * PickRadiusShare);
             var picked = TreeViewport.NodeAt(_shownNodes, x, y, radius);
-            Select(ReferenceEquals(picked, _selected) ? null : picked);
+            Select(picked);
         }
-
-        public string Highlight => _highlight;
 
         public bool IsMarkerShown(TreeNodeDef node)
         {
@@ -312,8 +299,6 @@ namespace Game.Presentation.Ui
         private void Select(TreeNodeDef? node)
         {
             _selected = node;
-            var index = node == null || _tree == null ? -1 : IndexOf(_tree, node);
-            _highlight = index < 0 ? string.Empty : _glyphs[index];
             Paint();
             ShowInfo();
         }
@@ -339,7 +324,7 @@ namespace Game.Presentation.Ui
 
         private void Paint()
         {
-            if (_tree == null || _nodeMesh == null || _ringMesh == null || _haloMesh == null || _markers == null)
+            if (_tree == null || _nodeMesh == null || _ringMesh == null || _markers == null)
                 return;
             var pixelsPerUnit = PixelsPerUnit();
             PickMarkers(pixelsPerUnit);
@@ -348,26 +333,14 @@ namespace Game.Presentation.Ui
                 var node = _tree.Nodes[i];
                 var position = Position(node);
                 var half = (float)_halves[i];
-                var matches = Matches(i);
-                if (_markers.IsShown(i))
-                {
-                    _nodeMesh.SetSquare(i, position, half, ShapeOf(node.Type, false));
-                    _nodeMesh.SetColor(i, DiskColor);
-                    _ringMesh.SetSquare(i, position, half, ShapeOf(node.Type, true));
-                    _ringMesh.SetColor(i, RingColorOf(_looks[i], _sectorColors[i]));
-                }
-                else
-                {
-                    _nodeMesh.SetSquare(i, position, DotHalf(node.Type, pixelsPerUnit), UiSprites.DiscUv);
-                    _nodeMesh.SetColor(i, matches ? HighlightColor : DotColorOf(_looks[i], _sectorColors[i]));
-                    _ringMesh.SetColor(i, Hidden);
-                }
-                _haloMesh.SetSquare(i, position, half * HaloScale, UiSprites.RingUv);
-                _haloMesh.SetColor(i, matches && _markers.IsShown(i) ? HighlightColor : Hidden);
+                var shown = _markers.IsShown(i);
+                _nodeMesh.SetSquare(i, position, half, ShapeOf(node.Type, false));
+                _nodeMesh.SetColor(i, shown ? DiskColor : Hidden);
+                _ringMesh.SetSquare(i, position, half, ShapeOf(node.Type, true));
+                _ringMesh.SetColor(i, shown ? RingColorOf(_looks[i], _sectorColors[i]) : Hidden);
             }
             _nodeMesh.Apply();
             _ringMesh.Apply();
-            _haloMesh.Apply();
             PaintLinks(pixelsPerUnit);
             PaintOutlines();
             PaintGlyphs(pixelsPerUnit);
@@ -383,15 +356,13 @@ namespace Game.Presentation.Ui
             {
                 var type = _tree.Nodes[i].Type;
                 _halves[i] = HalfOf(type, pixelsPerUnit);
-                _priorities[i] = TreeMarkers.PriorityOf(type, Matches(i), _looks[i] == TreeNodeLook.Offered, IsTakenLook(_looks[i]));
+                _priorities[i] = TreeMarkers.PriorityOf(type, _looks[i] == TreeNodeLook.Offered, IsTakenLook(_looks[i]));
             }
             _markers.Pick(_halves, _priorities, pixelsPerUnit > 0f ? MarkerGapPx / pixelsPerUnit : 0.0);
             for (var i = 0; i < _tree.Nodes.Count; i++)
                 if (_markers.IsShown(i))
                     _shownNodes.Add(_tree.Nodes[i]);
         }
-
-        private bool Matches(int index) => _highlight.Length > 0 && _glyphs[index] == _highlight;
 
         private static bool IsTakenLook(TreeNodeLook look) => look == TreeNodeLook.Taken || look == TreeNodeLook.OwnStart;
 
@@ -466,9 +437,6 @@ namespace Game.Presentation.Ui
         private static float HalfOf(TreeNodeType type, float pixelsPerUnit) =>
             pixelsPerUnit > 0f ? Mathf.Max(Radius(type), MarkerPx(type) / 2f / pixelsPerUnit) : Radius(type);
 
-        private static float DotHalf(TreeNodeType type, float pixelsPerUnit) =>
-            pixelsPerUnit > 0f ? Mathf.Min(Radius(type), DotPx / 2f / pixelsPerUnit) : Radius(type);
-
         public static float MarkerPx(TreeNodeType type) => type switch
         {
             TreeNodeType.Start => 30f,
@@ -538,8 +506,6 @@ namespace Game.Presentation.Ui
             _ => Shade(sector, NormalShade)
         };
 
-        private static Color32 DotColorOf(TreeNodeLook look, Color32 sector) => look == TreeNodeLook.Offered ? OfferedRing : RingColorOf(look, sector);
-
         private static Color32 GlyphColorOf(TreeNodeLook look, Color32 sector) => look switch
         {
             TreeNodeLook.Taken => TakenColor,
@@ -595,7 +561,6 @@ namespace Game.Presentation.Ui
             _map.sizeDelta = bounds.size;
             _map.pivot = new Vector2(-bounds.xMin / bounds.width, -bounds.yMin / bounds.height);
             _linkMesh = TreeMesh.Create("Links", _map, null, _links.Count);
-            _haloMesh = TreeMesh.Create("Halos", _map, UiSprites.NodeAtlas, tree.Nodes.Count);
             _nodeMesh = TreeMesh.Create("Nodes", _map, UiSprites.NodeAtlas, tree.Nodes.Count);
             BuildRings(tree);
             BuildOutlines(tree);

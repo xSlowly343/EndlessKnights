@@ -83,24 +83,6 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void ClickingANodeHighlightsItsGlyphAndClickingItAgainClearsIt()
-        {
-            var node = _loop.State.Tree.Allocatable(_data.Tree).Where(def => def.Type == Game.Core.Content.Tree.TreeNodeType.Small).OrderByDescending(def => def.Y).First();
-            var point = _panel.Tree.WorldPointOf(node);
-
-            _panel.TryClick(point);
-            _panel.Release(point);
-
-            Assert.That(_panel.Tree.Highlight, Is.EqualTo(Game.Core.Content.Tree.TreeGlyph.Of(node)));
-
-            _panel.TryClick(point);
-            _panel.Release(point);
-
-            Assert.That(_panel.Tree.Selected, Is.Null);
-            Assert.That(_panel.Tree.Highlight, Is.Empty);
-        }
-
-        [Test]
         public void FullyZoomedOutGlyphMarkersStayOnTheTree()
         {
             for (var i = 0; i < 20; i++)

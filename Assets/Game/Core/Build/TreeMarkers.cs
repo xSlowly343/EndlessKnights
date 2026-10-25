@@ -5,8 +5,7 @@ namespace Game.Core.Build
 {
     public sealed class TreeMarkers
     {
-        public const int StartPriority = 128;
-        public const int HighlightPriority = 64;
+        public const int StartPriority = 64;
         public const int OfferedPriority = 32;
         public const int TypePriorityStep = 4;
         public const int TakenPriority = 2;
@@ -39,8 +38,8 @@ namespace Game.Core.Build
 
         public bool IsShown(int index) => _shown[index];
 
-        public static int PriorityOf(TreeNodeType type, bool highlighted, bool offered, bool taken) =>
-            (type == TreeNodeType.Start ? StartPriority : 0) + (highlighted ? HighlightPriority : 0) + (offered ? OfferedPriority : 0) + TypeRank(type) * TypePriorityStep + (taken ? TakenPriority : 0);
+        public static int PriorityOf(TreeNodeType type, bool offered, bool taken) =>
+            (type == TreeNodeType.Start ? StartPriority : 0) + (offered ? OfferedPriority : 0) + TypeRank(type) * TypePriorityStep + (taken ? TakenPriority : 0);
 
         public static int TypeRank(TreeNodeType type) => type switch
         {
