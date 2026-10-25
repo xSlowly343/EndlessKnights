@@ -30,7 +30,7 @@ namespace Game.Core.Sim
             var time = System.Math.Max(0, System.Math.Min(seconds, capSeconds));
             var used = time;
             var stage = state.Stage;
-            var kills = state.Farming ? stages.EnemiesPerStage : System.Math.Min(state.KillsOnStage, stages.EnemiesPerStage);
+            var kills = state.Farming ? stages.EnemiesOnStage(stage) : System.Math.Min(state.KillsOnStage, stages.EnemiesOnStage(stage));
             var farming = state.Farming;
             var stoppedAtGuardian = false;
             var stuckAtBoss = false;
@@ -44,7 +44,7 @@ namespace Game.Core.Sim
             while (!farming)
             {
                 var normal = NormalEnemy(stage, dps, goldMultiplier);
-                var remaining = stages.EnemiesPerStage - kills;
+                var remaining = stages.EnemiesOnStage(stage) - kills;
                 if (time < remaining * normal.Seconds)
                 {
                     var partial = (int)System.Math.Floor(time / normal.Seconds);
@@ -57,7 +57,7 @@ namespace Game.Core.Sim
                 time -= remaining * normal.Seconds;
                 totalKills += remaining;
                 gold += normal.Gold * remaining;
-                kills = stages.EnemiesPerStage;
+                kills = stages.EnemiesOnStage(stage);
 
                 var guardian = stages.IsBiomeGuardian(stage);
                 if (guardian && !fightGuardians)

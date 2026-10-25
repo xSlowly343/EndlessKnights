@@ -8,7 +8,7 @@ namespace Game.Core.Tests.Content
     {
         private const string Valid = @"{
   ""version"": 1,
-  ""enemiesPerStage"": 10,
+  ""waves"": { ""count"": 4, ""firstEnemies"": 1, ""enemiesPerWave"": 1, ""stagesPerExtraEnemy"": 10, ""maxEnemiesPerWave"": 8 },
   ""enemyHp"": { ""curve"": ""exp"", ""base"": 20, ""rate"": 1.08 },
   ""softWall"": { ""period"": 100, ""zoneLength"": 10, ""rate"": 1.2 },
   ""boss"": { ""hpMultiplier"": 6, ""timerSeconds"": 30, ""timerMaxSeconds"": 90, ""goldMultiplier"": 5, ""retryAfterKills"": 10 },
@@ -19,6 +19,31 @@ namespace Game.Core.Tests.Content
 }";
 
         private static StageTable Table() => StageTable.Load(Valid);
+
+        [Test]
+        public void WavesGrowWithinStageAndAcrossStages()
+        {
+            var table = Table();
+
+            Assert.That(table.WaveCount, Is.EqualTo(4));
+            Assert.That(table.WaveSize(1, 0), Is.EqualTo(1));
+            Assert.That(table.WaveSize(1, 3), Is.EqualTo(4));
+            Assert.That(table.EnemiesOnStage(1), Is.EqualTo(10));
+            Assert.That(table.EnemiesOnStage(11), Is.EqualTo(14));
+            Assert.That(table.WaveSize(1000, 3), Is.EqualTo(8));
+        }
+
+        [Test]
+        public void WaveAfterKillsFollowsWaveSizes()
+        {
+            var table = Table();
+
+            Assert.That(table.WaveAfterKills(1, 0), Is.EqualTo(0));
+            Assert.That(table.WaveAfterKills(1, 1), Is.EqualTo(1));
+            Assert.That(table.WaveAfterKills(1, 2), Is.EqualTo(1));
+            Assert.That(table.WaveAfterKills(1, 3), Is.EqualTo(2));
+            Assert.That(table.WaveAfterKills(1, 10), Is.EqualTo(4));
+        }
 
         [Test]
         public void RealDataFileLoads()
