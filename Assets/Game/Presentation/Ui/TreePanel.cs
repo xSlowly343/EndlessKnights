@@ -27,6 +27,8 @@ namespace Game.Presentation.Ui
         public const int CompactBodyLines = 1;
         public const float FullCardMinContentPx = 400f;
 
+        private const string GlyphGroup = "tree";
+        private const float GlyphShare = 0.85f;
         private const float InsetPx = 10f;
         private const float GapPx = 6f;
         private const float PillHeightPx = 28f;
@@ -66,6 +68,9 @@ namespace Game.Presentation.Ui
         private static readonly Color32 OwnStartColor = new Color32(0xE0, 0x57, 0x4A, 0xFF);
         private static readonly Color32 OtherStartColor = new Color32(0x7A, 0x1E, 0x24, 0xC0);
         private static readonly Color32 LockedColor = new Color32(0x4A, 0x56, 0x77, 0x50);
+        private static readonly Color32 GlyphLight = new Color32(0xE6, 0xE9, 0xF0, 0xE0);
+        private static readonly Color32 GlyphDim = new Color32(0xAE, 0xB9, 0xD6, 0x70);
+        private static readonly Color32 GlyphOnGold = new Color32(0x1B, 0x22, 0x36, 0xFF);
         private static readonly Color32 LinkDark = new Color32(0xAE, 0xB9, 0xD6, 0x38);
         private static readonly Color32 LinkNear = new Color32(0xAE, 0xB9, 0xD6, 0x90);
 
@@ -88,6 +93,7 @@ namespace Game.Presentation.Ui
         private readonly List<(int From, int To)> _links = new List<(int From, int To)>();
         private TreeMesh? _linkMesh;
         private TreeMesh? _nodeMesh;
+        private readonly List<GlyphLayer> _glyphLayers = new List<GlyphLayer>();
         private RectTransform? _selection;
         private GameLoop? _loop;
         private PassiveTree? _tree;
@@ -279,7 +285,75 @@ namespace Game.Presentation.Ui
                 _linkMesh.SetColor(i, LinkColor(_looks[_links[i].From], _looks[_links[i].To]));
             _nodeMesh.Apply();
             _linkMesh.Apply();
+            RefreshGlyphs();
             ShowInfo();
+        }
+
+        private void BuildGlyphs(PassiveTree tree)
+        {
+            _glyphLayers.Clear();
+            var byGlyph = new Dictionary<string, List<int>>();
+            for (var i = 0; i < tree.Nodes.Count; i++)
+            {
+                var glyph = TreeGlyph.Of(tree.Nodes[i]);
+                if (glyph.Length == 0)
+                    continue;
+                if (!byGlyph.TryGetValue(glyph, out var nodes))
+                    byGlyph[glyph] = nodes = new List<int>();
+                nodes.Add(i);
+            }
+            foreach (var pair in byGlyph)
+            {
+                var sprite = UiIcons.Get(GlyphGroup, pair.Key);
+                if (sprite == null)
+                    continue;
+                var texture = sprite.texture;
+                var rect = sprite.textureRect;
+                var uv = new Rect(rect.x / texture.width, rect.y / texture.height, rect.width / texture.width, rect.height / texture.height);
+                var mesh = TreeMesh.Create("Glyph " + pair.Key, _map, texture, pair.Value.Count);
+                _glyphLayers.Add(new GlyphLayer(mesh, pair.Value.ToArray(), uv));
+            }
+        }
+
+        private void RefreshGlyphs()
+        {
+            if (_tree == null)
+                return;
+            foreach (var layer in _glyphLayers)
+            {
+                for (var slot = 0; slot < layer.Nodes.Length; slot++)
+                {
+                    var node = _tree.Nodes[layer.Nodes[slot]];
+                    var centre = new Vector2((float)node.X, (float)node.Y);
+                    layer.Mesh.SetSquare(slot, centre, Radius(node.Type) * GlyphShare, layer.Uv);
+                    layer.Mesh.SetColor(slot, GlyphColorOf(_looks[layer.Nodes[slot]]));
+                }
+                layer.Mesh.Apply();
+            }
+        }
+
+        private static Color32 GlyphColorOf(TreeNodeLook look) => look switch
+        {
+            TreeNodeLook.Offered => OfferedColor,
+            TreeNodeLook.Taken => GlyphOnGold,
+            TreeNodeLook.OwnStart => GlyphLight,
+            TreeNodeLook.OtherStart => GlyphDim,
+            TreeNodeLook.Locked => GlyphDim,
+            _ => GlyphLight
+        };
+
+        private readonly struct GlyphLayer
+        {
+            public readonly TreeMesh Mesh;
+            public readonly int[] Nodes;
+            public readonly Rect Uv;
+
+            public GlyphLayer(TreeMesh mesh, int[] nodes, Rect uv)
+            {
+                Mesh = mesh;
+                Nodes = nodes;
+                Uv = uv;
+            }
         }
 
         public static float Radius(TreeNodeType type) => type switch
@@ -322,6 +396,7 @@ namespace Game.Presentation.Ui
                 _linkMesh.SetQuad(i, a - side, a + side, b + side, b - side, new Rect(0f, 0f, 1f, 1f));
             }
             _nodeMesh = TreeMesh.Create("Nodes", _map, UiSprites.NodeAtlas, tree.Nodes.Count);
+            BuildGlyphs(tree);
             _selection = UiElements.Ring("Selection", _nodeMesh.rectTransform, SelectionColor).rectTransform;
             _selection.anchorMin = _selection.anchorMax = _map.pivot;
             _selection.gameObject.SetActive(false);
