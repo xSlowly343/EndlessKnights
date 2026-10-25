@@ -30,5 +30,17 @@ namespace Game.Core.Tests.Content
             foreach (var node in tree.Nodes.Where(node => node.Type != TreeNodeType.Jewel))
                 Assert.That(TreeGlyph.Of(node), Is.Not.Empty, node.Id);
         }
+
+        [Test]
+        public void StartsAndKeystonesEachHaveTheirOwnGlyph()
+        {
+            var tree = TestWorld.Real.Tree;
+
+            foreach (var type in new[] { TreeNodeType.Start, TreeNodeType.Keystone })
+            {
+                var glyphs = tree.Nodes.Where(node => node.Type == type).Select(TreeGlyph.Of).ToList();
+                Assert.That(glyphs.Distinct().Count(), Is.EqualTo(glyphs.Count), type.ToString());
+            }
+        }
     }
 }

@@ -79,6 +79,41 @@ namespace Game.Core.Content.Tree
             ["intelligence"] = "intelligence"
         };
 
+        private const string SectorScopePrefix = "sector:";
+
+        private static readonly Dictionary<string, string> ClassAttribute = new Dictionary<string, string>
+        {
+            ["viking"] = "red",
+            ["ronin"] = "red",
+            ["metalhead"] = "red",
+            ["bannerbearer"] = "red",
+            ["plague_doctor"] = "red",
+            ["amazon"] = "green",
+            ["stormweaver"] = "green",
+            ["oracle"] = "green",
+            ["captain"] = "green",
+            ["voodoo"] = "blue",
+            ["clockmaker"] = "blue",
+            ["moonshiner"] = "blue",
+            ["gravedigger"] = "blue",
+            ["nomad"] = "white"
+        };
+
+        public static string AttributeOf(TreeNodeDef node)
+        {
+            if (node.Scope.StartsWith(SectorScopePrefix, System.StringComparison.Ordinal))
+                switch (node.Scope.Substring(SectorScopePrefix.Length))
+                {
+                    case "strength":
+                        return "red";
+                    case "dexterity":
+                        return "green";
+                    case "intelligence":
+                        return "blue";
+                }
+            return node.ScopeClass != null && ClassAttribute.TryGetValue(node.ScopeClass, out var attribute) ? attribute : "white";
+        }
+
         public static bool TryOfStat(StatId stat, out string glyph) => ByStat.TryGetValue(stat.Name, out glyph!);
 
         public static string Of(TreeNodeDef node)
@@ -86,11 +121,11 @@ namespace Game.Core.Content.Tree
             switch (node.Type)
             {
                 case TreeNodeType.Keystone:
-                    return "keystone";
+                    return "key_" + node.Id;
                 case TreeNodeType.Mastery:
                     return "reading";
                 case TreeNodeType.Start:
-                    return "start";
+                    return "start_" + node.StartClass;
                 case TreeNodeType.Jewel:
                     return string.Empty;
             }
