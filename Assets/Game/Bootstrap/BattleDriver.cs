@@ -14,6 +14,7 @@ namespace Game.Bootstrap
         private GameLoop _loop = null!;
         private BattleView _view = null!;
         private SkillBarView _skillBar = null!;
+        private StripHintView _hint = null!;
         private SkillEffects _effects = null!;
         private GameData _data = null!;
         private int _bossTotalTicks = 1;
@@ -22,6 +23,7 @@ namespace Game.Bootstrap
 
         public GameLoop Loop => _loop;
         public SkillBarView SkillBar => _skillBar;
+        public StripHintView Hint => _hint;
         public BattleView View => _view;
 
         public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Viking };
@@ -34,6 +36,7 @@ namespace Game.Bootstrap
             driver._loop.Book.GrantStartingGems();
             driver._view = BattleView.Create();
             driver._skillBar = SkillBarView.Create();
+            driver._hint = StripHintView.Create();
             driver._effects = SkillEffects.Create();
             driver._skillBar.SlotClicked += driver._loop.RequestCast;
             driver._bossTotalTicks = System.Math.Max(1, driver._loop.State.BossTicksLeft);

@@ -40,6 +40,23 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void HintsWaitForConsent()
+        {
+            var (loop, input) = NewPlayer();
+            loop.Permissions = Game.Core.Settings.InputPermissions.None;
+            for (var i = 0; i < 2000; i++)
+                loop.Tick();
+
+            Assert.That(loop.Tutorial.Current, Is.Null);
+            Assert.That(loop.State.TutorialDone, Is.Empty);
+
+            loop.Permissions = Game.Core.Settings.InputPermissions.All;
+            loop.Tick();
+
+            Assert.That(loop.Tutorial.Current!.Id, Is.EqualTo("type"));
+        }
+
+        [Test]
         public void FirstHintAsksToTypeAndGoesAwayAfterTyping()
         {
             var (loop, input) = NewPlayer();

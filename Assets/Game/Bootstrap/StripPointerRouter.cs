@@ -16,6 +16,7 @@ namespace Game.Bootstrap
         private StripButton _menuButton = null!;
         private PanelCanvas _panels = null!;
         private SkillBarView? _skillBar;
+        private StripHintView? _hint;
         private bool _panelCaptured;
 
         public static StripPointerRouter Attach(GameObject host, PointerInput pointer, WindowController window, Camera camera, FocusModeButton focusButton, TaskbarDockDriver dock, StripButton menuButton, PanelCanvas panels)
@@ -32,6 +33,8 @@ namespace Game.Bootstrap
         }
 
         public void UseSkillBar(SkillBarView skillBar) => _skillBar = skillBar;
+
+        public void UseHint(StripHintView hint) => _hint = hint;
 
         private void Update()
         {
@@ -86,6 +89,8 @@ namespace Game.Bootstrap
                 return;
             }
             if (_skillBar != null && _skillBar.TryClick(worldPoint))
+                return;
+            if (_hint != null && _hint.TryClick(worldPoint))
                 return;
             if (_menuButton.Contains(worldPoint))
                 _menuButton.Click();
