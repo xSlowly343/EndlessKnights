@@ -5,7 +5,7 @@ namespace Game.Core.Build
 {
     public sealed class TreeViewport
     {
-        public const double MinVisibleHeight = 8;
+        public const double MinVisibleHeight = 3.5;
         public const double ZoomStep = 1.5;
         private const double FitMargin = 1.05;
 

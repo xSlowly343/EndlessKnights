@@ -27,6 +27,8 @@ namespace Game.Presentation.Ui
         public const int CompactBodyLines = 1;
         public const float FullCardMinContentPx = 400f;
 
+        private const string GlyphGroup = "tree";
+        private const float GlyphShare = 0.62f;
         private const float InsetPx = 10f;
         private const float GapPx = 6f;
         private const float PillHeightPx = 28f;
@@ -47,7 +49,6 @@ namespace Game.Presentation.Ui
         private const float RefreshSeconds = 2f;
         private const float LinkWidth = 0.14f;
         private const float SelectionScale = 2.8f;
-        private const double FirstViewHeight = 30;
         private const double PickRadiusShare = 0.03;
         private const double MinPickRadius = 0.6;
 
@@ -60,12 +61,26 @@ namespace Game.Presentation.Ui
         private static readonly Color BodyColor = new Color32(0xD5, 0xDC, 0xEE, 0xFF);
         private static readonly Color StatusColor = new Color32(0xAE, 0xB9, 0xD6, 0xFF);
         private static readonly Color SelectionColor = new Color32(0xFF, 0xFF, 0xFF, 0xE6);
-        private static readonly Color32 NormalColor = new Color32(0x9A, 0xA6, 0xC8, 0x60);
-        private static readonly Color32 OfferedColor = new Color32(0x8C, 0xE0, 0xA8, 0xFF);
+        private static readonly Color32 RedColor = new Color32(0xE0, 0x57, 0x4A, 0xFF);
+        private static readonly Color32 GreenColor = new Color32(0x4F, 0xC2, 0x77, 0xFF);
+        private static readonly Color32 BlueColor = new Color32(0x3F, 0x6F, 0xD1, 0xFF);
+        private static readonly Color32 WhiteColor = new Color32(0x7F, 0x89, 0xA0, 0xFF);
         private static readonly Color32 TakenColor = new Color32(0xF0, 0xB4, 0x3C, 0xFF);
-        private static readonly Color32 OwnStartColor = new Color32(0xE0, 0x57, 0x4A, 0xFF);
-        private static readonly Color32 OtherStartColor = new Color32(0x7A, 0x1E, 0x24, 0xC0);
-        private static readonly Color32 LockedColor = new Color32(0x4A, 0x56, 0x77, 0x50);
+        private static readonly Color32 DiskColor = new Color32(0x14, 0x19, 0x2C, 0xFF);
+        private static readonly Color32 OfferedRing = new Color32(0xFF, 0xFF, 0xFF, 0xFF);
+        private static readonly Color32 Hidden = new Color32(0, 0, 0, 0);
+        private const float NormalShade = 0.72f;
+        private const float LockedShade = 0.3f;
+        private const float OtherStartShade = 0.5f;
+        private const float OfferedGlyphLift = 0.35f;
+        private const byte NotableOuterAlpha = 0x90;
+        private const float OutlineScale = 1.3f;
+        private const float MinGlyphPx = 10f;
+        private const float MinRingPx = 7f;
+        private const float MinLandmarkPx = 18f;
+        private const float MinNotablePx = 10f;
+        private const float MinLargeGlyphPx = 8f;
+        private const float StartPixelsPerUnit = 56f;
         private static readonly Color32 LinkDark = new Color32(0xAE, 0xB9, 0xD6, 0x38);
         private static readonly Color32 LinkNear = new Color32(0xAE, 0xB9, 0xD6, 0x90);
 
@@ -88,6 +103,11 @@ namespace Game.Presentation.Ui
         private readonly List<(int From, int To)> _links = new List<(int From, int To)>();
         private TreeMesh? _linkMesh;
         private TreeMesh? _nodeMesh;
+        private TreeMesh? _ringMesh;
+        private TreeMesh? _outlineMesh;
+        private readonly List<int> _outlined = new List<int>();
+        private Color32[] _sectorColors = System.Array.Empty<Color32>();
+        private readonly List<GlyphLayer> _glyphLayers = new List<GlyphLayer>();
         private RectTransform? _selection;
         private GameLoop? _loop;
         private PassiveTree? _tree;
@@ -102,6 +122,7 @@ namespace Game.Presentation.Ui
         private Vector2 _pressPoint;
         private Vector2 _lastDragPoint;
         private float _sinceRefresh;
+        private float _glyphScale;
 
         private TreePanel(RectTransform content, UiTheme theme)
         {
@@ -144,6 +165,9 @@ namespace Game.Presentation.Ui
             _tree = tree;
             _takeable = TreeTexts.TakeableCount(tree);
             _looks = new TreeNodeLook[tree.Nodes.Count];
+            _sectorColors = new Color32[tree.Nodes.Count];
+            for (var i = 0; i < tree.Nodes.Count; i++)
+                _sectorColors[i] = SectorColor(tree.Nodes[i]);
             BuildMap(tree);
             _viewport = new TreeViewport(tree.Nodes, _fieldPx.x / _fieldPx.y);
             FocusOwnPath();
@@ -192,7 +216,7 @@ namespace Game.Presentation.Ui
                 return;
             var start = _tree.StartOf(_loop.State.Tree.StartClass);
             if (start != null)
-                _viewport.FocusOn(start.X, start.Y, FirstViewHeight);
+                _viewport.FocusOn(start.X, start.Y, _fieldPx.y / StartPixelsPerUnit);
             PlaceMap();
         }
 
@@ -269,27 +293,184 @@ namespace Game.Presentation.Ui
             var offered = new HashSet<TreeNodeDef>(allocation.Allocatable(_tree));
             var canTake = allocation.PointsLeft > 0;
             for (var i = 0; i < _tree.Nodes.Count; i++)
-            {
                 _looks[i] = LookOf(_tree.Nodes[i], allocation, canTake && offered.Contains(_tree.Nodes[i]));
-                var centre = new Vector2((float)_tree.Nodes[i].X, (float)_tree.Nodes[i].Y);
-                _nodeMesh.SetSquare(i, centre, Radius(_tree.Nodes[i].Type), _looks[i] == TreeNodeLook.Offered ? UiSprites.RingUv : UiSprites.DiscUv);
-                _nodeMesh.SetColor(i, ColorOf(_looks[i]));
-            }
             for (var i = 0; i < _links.Count; i++)
                 _linkMesh.SetColor(i, LinkColor(_looks[_links[i].From], _looks[_links[i].To]));
-            _nodeMesh.Apply();
             _linkMesh.Apply();
+            Paint();
             ShowInfo();
+        }
+
+        private void Paint()
+        {
+            if (_tree == null || _nodeMesh == null || _ringMesh == null)
+                return;
+            var pixelsPerUnit = PixelsPerUnit();
+            for (var i = 0; i < _tree.Nodes.Count; i++)
+            {
+                var node = _tree.Nodes[i];
+                var half = HalfOf(node.Type, pixelsPerUnit);
+                var dot = IsDot(node.Type, pixelsPerUnit);
+                _nodeMesh.SetSquare(i, Position(node), half, ShapeOf(node.Type, false));
+                _nodeMesh.SetColor(i, dot ? DotColorOf(_looks[i], _sectorColors[i]) : DiskColor);
+                _ringMesh.SetSquare(i, Position(node), half, ShapeOf(node.Type, true));
+                _ringMesh.SetColor(i, dot ? Hidden : RingColorOf(_looks[i], _sectorColors[i]));
+            }
+            _nodeMesh.Apply();
+            _ringMesh.Apply();
+            PaintOutlines(pixelsPerUnit);
+            PaintGlyphs(pixelsPerUnit);
+        }
+
+        private void BuildGlyphs(PassiveTree tree)
+        {
+            _glyphLayers.Clear();
+            var byGlyph = new Dictionary<string, List<int>>();
+            for (var i = 0; i < tree.Nodes.Count; i++)
+            {
+                var glyph = TreeGlyph.Of(tree.Nodes[i]);
+                if (glyph.Length == 0)
+                    continue;
+                if (!byGlyph.TryGetValue(glyph, out var nodes))
+                    byGlyph[glyph] = nodes = new List<int>();
+                nodes.Add(i);
+            }
+            foreach (var pair in byGlyph)
+            {
+                var sprite = UiIcons.Get(GlyphGroup, pair.Key);
+                if (sprite == null)
+                    continue;
+                var texture = sprite.texture;
+                var rect = sprite.textureRect;
+                var uv = new Rect(rect.x / texture.width, rect.y / texture.height, rect.width / texture.width, rect.height / texture.height);
+                var mesh = TreeMesh.Create("Glyph " + pair.Key, _map, texture, pair.Value.Count);
+                _glyphLayers.Add(new GlyphLayer(mesh, pair.Value.ToArray(), uv));
+            }
+        }
+
+        private void PaintGlyphs(float pixelsPerUnit)
+        {
+            if (_tree == null)
+                return;
+            foreach (var layer in _glyphLayers)
+            {
+                for (var slot = 0; slot < layer.Nodes.Length; slot++)
+                {
+                    var index = layer.Nodes[slot];
+                    var node = _tree.Nodes[index];
+                    var half = HalfOf(node.Type, pixelsPerUnit) * GlyphShare;
+                    layer.Mesh.SetSquare(slot, Position(node), half, layer.Uv);
+                    layer.Mesh.SetColor(slot, 2f * half * pixelsPerUnit >= (IsLarge(node.Type) ? MinLargeGlyphPx : MinGlyphPx) ? GlyphColorOf(_looks[index], _sectorColors[index]) : Hidden);
+                }
+                layer.Mesh.Apply();
+            }
+        }
+
+        private float PixelsPerUnit() => _viewport == null ? 0f : _fieldPx.y / (float)_viewport.VisibleHeight;
+
+        private static bool IsLarge(TreeNodeType type) => type != TreeNodeType.Small && type != TreeNodeType.Attribute;
+
+        private static float HalfOf(TreeNodeType type, float pixelsPerUnit) =>
+            IsLarge(type) && pixelsPerUnit > 0f ? Mathf.Max(Radius(type), MinPxOf(type) / 2f / pixelsPerUnit) : Radius(type);
+
+        private static float MinPxOf(TreeNodeType type) => type == TreeNodeType.Keystone || type == TreeNodeType.Start ? MinLandmarkPx : MinNotablePx;
+
+        private static bool IsDot(TreeNodeType type, float pixelsPerUnit) => !IsLarge(type) && 2f * Radius(type) * pixelsPerUnit < MinRingPx;
+
+        private void BuildRings(PassiveTree tree) => _ringMesh = TreeMesh.Create("Rings", _map, UiSprites.NodeAtlas, tree.Nodes.Count);
+
+        private void BuildOutlines(PassiveTree tree)
+        {
+            _outlined.Clear();
+            for (var i = 0; i < tree.Nodes.Count; i++)
+                if (HasOutline(tree.Nodes[i].Type))
+                    _outlined.Add(i);
+            _outlineMesh = TreeMesh.Create("Outlines", _map, UiSprites.NodeAtlas, _outlined.Count);
+        }
+
+        private void PaintOutlines(float pixelsPerUnit)
+        {
+            if (_outlineMesh == null || _tree == null)
+                return;
+            for (var slot = 0; slot < _outlined.Count; slot++)
+            {
+                var index = _outlined[slot];
+                var node = _tree.Nodes[index];
+                var look = _looks[index];
+                _outlineMesh.SetSquare(slot, Position(node), HalfOf(node.Type, pixelsPerUnit) * OutlineScale, ShapeOf(node.Type, true));
+                _outlineMesh.SetColor(slot, node.Type == TreeNodeType.Keystone
+                    ? look == TreeNodeLook.Locked ? Shade(TakenColor, LockedShade) : TakenColor
+                    : WithAlpha(RingColorOf(look, _sectorColors[index]), NotableOuterAlpha));
+            }
+            _outlineMesh.Apply();
+        }
+
+        private static bool HasOutline(TreeNodeType type) => type == TreeNodeType.Notable || type == TreeNodeType.Keystone;
+
+        private static Color32 SectorColor(TreeNodeDef node) => TreeGlyph.AttributeOf(node) switch
+        {
+            "red" => RedColor,
+            "green" => GreenColor,
+            "blue" => BlueColor,
+            _ => WhiteColor
+        };
+
+        private static Color32 Shade(Color32 color, float share) =>
+            new Color32((byte)(color.r * share), (byte)(color.g * share), (byte)(color.b * share), color.a);
+
+        private static Color32 WithAlpha(Color32 color, byte alpha) => new Color32(color.r, color.g, color.b, alpha);
+
+        private static Rect ShapeOf(TreeNodeType type, bool ring) => type switch
+        {
+            TreeNodeType.Mastery or TreeNodeType.Start => ring ? UiSprites.HexRingUv : UiSprites.HexUv,
+            TreeNodeType.Keystone => ring ? UiSprites.DiamondRingUv : UiSprites.DiamondUv,
+            _ => ring ? UiSprites.RingUv : UiSprites.DiscUv
+        };
+
+        private static Color32 RingColorOf(TreeNodeLook look, Color32 sector) => look switch
+        {
+            TreeNodeLook.Taken => TakenColor,
+            TreeNodeLook.Offered => OfferedRing,
+            TreeNodeLook.OwnStart => sector,
+            TreeNodeLook.OtherStart => Shade(sector, OtherStartShade),
+            TreeNodeLook.Locked => Shade(sector, LockedShade),
+            _ => Shade(sector, NormalShade)
+        };
+
+        private static Color32 DotColorOf(TreeNodeLook look, Color32 sector) => look == TreeNodeLook.Offered ? OfferedRing : RingColorOf(look, sector);
+
+        private static Color32 GlyphColorOf(TreeNodeLook look, Color32 sector) => look switch
+        {
+            TreeNodeLook.Taken => TakenColor,
+            TreeNodeLook.Offered => Color32.Lerp(sector, OfferedRing, OfferedGlyphLift),
+            TreeNodeLook.OwnStart => sector,
+            TreeNodeLook.OtherStart => Shade(sector, OtherStartShade),
+            TreeNodeLook.Locked => Shade(sector, LockedShade),
+            _ => Shade(sector, NormalShade)
+        };
+
+        private readonly struct GlyphLayer
+        {
+            public readonly TreeMesh Mesh;
+            public readonly int[] Nodes;
+            public readonly Rect Uv;
+
+            public GlyphLayer(TreeMesh mesh, int[] nodes, Rect uv)
+            {
+                Mesh = mesh;
+                Nodes = nodes;
+                Uv = uv;
+            }
         }
 
         public static float Radius(TreeNodeType type) => type switch
         {
-            TreeNodeType.Notable => 0.55f,
-            TreeNodeType.Keystone => 0.85f,
-            TreeNodeType.Mastery => 0.6f,
-            TreeNodeType.Jewel => 0.5f,
-            TreeNodeType.Start => 1.1f,
-            _ => 0.32f
+            TreeNodeType.Notable => 0.3f,
+            TreeNodeType.Keystone => 0.5f,
+            TreeNodeType.Mastery => 0.34f,
+            TreeNodeType.Jewel => 0.3f,
+            TreeNodeType.Start => 0.9f,
+            _ => 0.2f
         };
 
         public TreeNodeLook LookAt(TreeNodeDef node)
@@ -322,6 +503,9 @@ namespace Game.Presentation.Ui
                 _linkMesh.SetQuad(i, a - side, a + side, b + side, b - side, new Rect(0f, 0f, 1f, 1f));
             }
             _nodeMesh = TreeMesh.Create("Nodes", _map, UiSprites.NodeAtlas, tree.Nodes.Count);
+            BuildRings(tree);
+            BuildOutlines(tree);
+            BuildGlyphs(tree);
             _selection = UiElements.Ring("Selection", _nodeMesh.rectTransform, SelectionColor).rectTransform;
             _selection.anchorMin = _selection.anchorMax = _map.pivot;
             _selection.gameObject.SetActive(false);
@@ -347,9 +531,14 @@ namespace Game.Presentation.Ui
         {
             if (_viewport == null)
                 return;
-            var scale = _fieldPx.y / (float)_viewport.VisibleHeight;
+            var scale = PixelsPerUnit();
             _map.localScale = new Vector3(scale, scale, 1f);
             _map.anchoredPosition = new Vector2(-(float)_viewport.CentreX * scale, -(float)_viewport.CentreY * scale);
+            if (!Mathf.Approximately(scale, _glyphScale))
+            {
+                _glyphScale = scale;
+                Paint();
+            }
         }
 
         private Vector2 FieldUv(Vector2 worldPoint)
@@ -423,7 +612,7 @@ namespace Game.Presentation.Ui
             if (_actions.Count > MaxActions)
                 _actions.RemoveRange(MaxActions, _actions.Count - MaxActions);
             var look = LookAt(_selected);
-            ShowCard(_info[0], look == TreeNodeLook.Offered ? TitleOffered : look == TreeNodeLook.Taken ? _theme.Gold : _theme.Text, ColorOf(look));
+            ShowCard(_info[0], look == TreeNodeLook.Offered ? TitleOffered : look == TreeNodeLook.Taken ? _theme.Gold : _theme.Text, ColorOf(look, SectorColor(_selected)));
         }
 
         private void ShowPoints(TreeAllocation allocation)
@@ -561,14 +750,14 @@ namespace Game.Presentation.Ui
             return -1;
         }
 
-        private static Color32 ColorOf(TreeNodeLook look) => look switch
+        private static Color32 ColorOf(TreeNodeLook look, Color32 sector) => look switch
         {
-            TreeNodeLook.Offered => OfferedColor,
+            TreeNodeLook.Offered => sector,
             TreeNodeLook.Taken => TakenColor,
-            TreeNodeLook.OwnStart => OwnStartColor,
-            TreeNodeLook.OtherStart => OtherStartColor,
-            TreeNodeLook.Locked => LockedColor,
-            _ => NormalColor
+            TreeNodeLook.OwnStart => sector,
+            TreeNodeLook.OtherStart => Shade(sector, OtherStartShade),
+            TreeNodeLook.Locked => Shade(sector, LockedShade),
+            _ => Shade(sector, NormalShade)
         };
 
         private static Color32 LinkColor(TreeNodeLook a, TreeNodeLook b)
