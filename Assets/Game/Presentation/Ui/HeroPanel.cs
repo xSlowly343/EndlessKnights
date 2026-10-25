@@ -97,6 +97,8 @@ namespace Game.Presentation.Ui
                 RefreshOverview(loop);
         }
 
+        public string InputCell(int row, int column) => _inputRows[row][column].text;
+
         public bool TryClick(Vector2 worldPoint)
         {
             if (!IsShown || !_toTree.Contains(worldPoint))
@@ -132,7 +134,7 @@ namespace Game.Presentation.Ui
         {
             _sessionTitle.text = InputStatsView.SessionTitle;
             _allTimeTitle.text = InputStatsView.AllTimeTitle;
-            var rows = InputStatsView.Rows(loop.SessionInput, loop.State.TotalInput);
+            var rows = InputStatsView.Rows(loop.SessionInput, loop.State.TotalInput, NumberDisplay.Settings.ThousandsSeparator);
             for (var i = 0; i < _inputRows.Count && i < rows.Count; i++)
             {
                 var cells = _inputRows[i];
