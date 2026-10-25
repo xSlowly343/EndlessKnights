@@ -100,6 +100,18 @@ namespace Game.Core.Tests.Ui
             Assert.That(settings.InputConsentGiven, Is.False);
         }
 
+        [Test]
+        public void WhatsNewAndVersionTexts()
+        {
+            Texts.UseLanguage("ru");
+
+            Assert.That(SettingsScreen.Rows(0), Does.Contain(SettingId.WhatsNew));
+            Assert.That(SettingsScreen.Value(SettingId.WhatsNew, new GameSettings()), Is.EqualTo("Открыть"));
+            Assert.That(SettingsScreen.Value(SettingId.ResetPosition, new GameSettings()), Is.EqualTo("Сбросить"));
+            Assert.That(SettingsScreen.WhatsNewTitle("1.0"), Is.EqualTo("Что нового в 1.0"));
+            Assert.That(SettingsScreen.Version("1.0"), Is.EqualTo("Rift Warden 1.0"));
+        }
+
         [TearDown]
         public void RestoreLanguage() => Texts.UseLanguage("ru");
     }

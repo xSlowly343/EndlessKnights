@@ -16,7 +16,7 @@ namespace Game.Core.Ui
 
         private static readonly SettingId[][] Tabs =
         {
-            new[] { SettingId.Language, SettingId.Paused, SettingId.AlwaysOnTop, SettingId.ClickThrough, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals },
+            new[] { SettingId.Language, SettingId.Paused, SettingId.AlwaysOnTop, SettingId.ClickThrough, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.WhatsNew },
             new[] { SettingId.MasterVolume, SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume },
             new[] { SettingId.InputConsent, SettingId.CountKeys, SettingId.CountMouseMovement, SettingId.CountClicks, SettingId.CountWheel, SettingId.ShowInputDebug },
         };
@@ -40,13 +40,13 @@ namespace Game.Core.Ui
         {
             SettingId.Paused or SettingId.AlwaysOnTop or SettingId.ClickThrough or SettingId.CountKeys or SettingId.CountMouseMovement
                 or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug => SettingKind.Toggle,
-            SettingId.ResetPosition or SettingId.InputConsent => SettingKind.Action,
+            SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew => SettingKind.Action,
             _ => SettingKind.Choice
         };
 
         public static string Label(SettingId id) => Texts.Get("settings." + Key(id));
 
-        public static string ActionLabel(SettingId id) => Texts.Get(id == SettingId.InputConsent ? "settings.consentOpen" : "settings.reset");
+        public static string ActionLabel(SettingId id) => Texts.Get(id == SettingId.ResetPosition ? "settings.reset" : "settings.open");
 
         public static bool IsOn(SettingId id, GameSettings settings) => id switch
         {
@@ -117,11 +117,16 @@ namespace Game.Core.Ui
                     settings.ShowInputDebug = !settings.ShowInputDebug;
                     return true;
                 case SettingId.InputConsent:
+                case SettingId.WhatsNew:
                     return true;
                 default:
                     return ChangeVolume(id, settings, step);
             }
         }
+
+        public static string Version(string version) => Texts.Format("settings.version", version);
+
+        public static string WhatsNewTitle(string version) => Texts.Format("settings.whatsNewTitle", version);
 
         public static string LanguageName(string language) => Texts.Get("settings.language." + language);
 

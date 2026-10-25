@@ -50,6 +50,14 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void VersionSitsInTheCorner()
+        {
+            _panel.Settings.UseVersion("1.0");
+
+            Assert.That(_panel.Settings.VersionText, Is.EqualTo("Rift Warden 1.0"));
+        }
+
+        [Test]
         public void ArrowsStepAChoice()
         {
             var row = IndexOf(SettingId.FrameRate, 0);

@@ -14,6 +14,7 @@ namespace Game.Bootstrap
         private PanelCanvas _panels = null!;
         private string? _reportTitle;
         private IReadOnlyList<string>? _reportLines;
+        private string? _reportAction;
 
         public PanelNavigator Navigator { get; private set; } = null!;
         public bool IsOpen => _panels.IsOpen;
@@ -58,12 +59,13 @@ namespace Game.Bootstrap
                 _panels.Show(Navigator);
         }
 
-        public void OpenReport(string title, IReadOnlyList<string> lines)
+        public void OpenReport(string title, IReadOnlyList<string> lines, string? action = null)
         {
             _reportTitle = title;
             _reportLines = lines;
+            _reportAction = action;
             Navigator.Close();
-            _panels.ShowReport(title, lines);
+            _panels.ShowReport(title, lines, action);
             Expand(PanelCanvas.ReportFrame);
         }
 
@@ -79,7 +81,7 @@ namespace Game.Bootstrap
         public void FinishConsent()
         {
             if (_reportTitle != null && _reportLines != null)
-                OpenReport(_reportTitle, _reportLines);
+                OpenReport(_reportTitle, _reportLines, _reportAction);
             else
                 Close();
         }
@@ -100,6 +102,7 @@ namespace Game.Bootstrap
         {
             _reportTitle = null;
             _reportLines = null;
+            _reportAction = null;
         }
 
         private void Apply()

@@ -23,6 +23,8 @@ namespace Game.Presentation.Ui
         private const float ValueWidthPx = 132f;
         private const float ActionWidthPx = 100f;
         private const float NotePx = 32f;
+        private const float VersionWidthPx = 200f;
+        private const float VersionHeightPx = 16f;
 
         private static readonly Color ToggleOff = new Color32(0x14, 0x1A, 0x2B, 0xFF);
         private static readonly Color ArrowFill = new Color32(0x2E, 0x3A, 0x58, 0xFF);
@@ -31,6 +33,7 @@ namespace Game.Presentation.Ui
         private readonly RectTransform _root;
         private readonly List<Row> _rows = new List<Row>();
         private readonly TextMeshProUGUI _note;
+        private readonly TextMeshProUGUI _version;
         private IReadOnlyList<SettingId> _shown = Array.Empty<SettingId>();
         private GameSettings? _settings;
         private int _tab;
@@ -44,6 +47,8 @@ namespace Game.Presentation.Ui
                 _rows.Add(Row.Create(i, _root, theme));
             _note = UiElements.Label("Note", _root, theme.TextFont, 11f, theme.TextDim, TextAlignmentOptions.TopLeft);
             _note.textWrappingMode = TextWrappingModes.Normal;
+            _version = UiElements.Label("Version", _root, theme.TextFont, 11f, theme.TextDim, TextAlignmentOptions.BottomRight);
+            UiElements.Anchor(_version.rectTransform, new Vector2(1f, 0f), new Vector2(-PaddingPx, TopPx), new Vector2(VersionWidthPx, VersionHeightPx));
             _root.gameObject.SetActive(false);
         }
 
@@ -53,6 +58,12 @@ namespace Game.Presentation.Ui
 
         public bool IsShown => _root.gameObject.activeSelf;
         public int ShownRows => _shown.Count;
+        public string VersionText => _version.text;
+
+        public void UseVersion(string version)
+        {
+            _version.text = SettingsScreen.Version(version);
+        }
 
         public void Use(GameSettings settings)
         {
@@ -116,7 +127,7 @@ namespace Game.Presentation.Ui
             var width = PanelGeometry.WidthPx - 2f * PanelCanvas.BorderPx - 2f * PaddingPx;
             var noteRoom = _note.text.Length > 0 ? NotePx + GapPx : 0f;
             var natural = _shown.Count * (RowPx + GapPx);
-            var room = _contentPx - TopPx - noteRoom - GapPx;
+            var room = _contentPx - TopPx - noteRoom - GapPx - VersionHeightPx;
             var scale = natural > 0f ? Mathf.Min(1f, room / natural) : 1f;
             var y = TopPx;
             for (var i = 0; i < _shown.Count; i++)

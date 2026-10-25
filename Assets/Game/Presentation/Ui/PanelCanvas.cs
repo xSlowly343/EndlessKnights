@@ -199,7 +199,7 @@ namespace Game.Presentation.Ui
             StartTween(startPx, _shownFrame.HeightPx);
         }
 
-        public void ShowReport(string title, IReadOnlyList<string> lines)
+        public void ShowReport(string title, IReadOnlyList<string> lines, string? action = null)
         {
             var startPx = IsOpen ? _heightPx : CollapsedHeightPx;
             _showingCard = true;
@@ -209,6 +209,7 @@ namespace Game.Presentation.Ui
             _consent.Hide();
             _report.gameObject.SetActive(true);
             _reportTitle.text = title;
+            _claim.Text = action ?? Game.Core.Text.Texts.Get("report.claim");
             for (var i = 0; i < _reportLines.Count; i++)
                 _reportLines[i].text = i < lines.Count ? lines[i] : string.Empty;
             gameObject.SetActive(true);
@@ -790,7 +791,6 @@ namespace Game.Presentation.Ui
             }
             _claim = Button("Claim", body, new Vector2(0.5f, 0f), new Vector2(0f, MarginPx), new Vector2(ClaimWidthPx, ClaimHeightPx), _theme.Success, ButtonRadiusPx, _theme.BoldFont, TitleSizePx);
             _claim.Label!.color = Color.white;
-            _claim.Text = "Забрать";
             return (RectTransform)body.parent;
         }
 
