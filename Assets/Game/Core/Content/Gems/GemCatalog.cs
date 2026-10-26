@@ -328,7 +328,7 @@ namespace Game.Core.Content.Gems
                         node.Field("maxGapSeconds").AsNumber(0.1, 3600),
                         ModifierReader.ReadList(node.Field("modifiers")));
                 case "storeHits":
-                    return new StoreHitsEffect(node.Field("releaseShare").AsNumber(0, 100));
+                    return new StoreHitsEffect(node.Field("releaseShare").AsNumber(0, 100)) { Queue = node.HasField("queue") && node.Field("queue").AsBool() };
                 case "flurry":
                     return new FlurryEffect(
                         node.Field("hits").AsInt(1, 10000),
@@ -475,6 +475,7 @@ namespace Game.Core.Content.Gems
                 ResourceOnCast = Number(node, "resourceOnCast", 1000),
                 ResourceOnKill = Number(node, "resourceOnKill", 1000),
                 ResourceOnHit = Number(node, "resourceOnHit", 1000),
+                ResourceOnCrit = Number(node, "resourceOnCrit", 1000),
                 ComboOnCast = node.HasField("comboOnCast") ? node.Field("comboOnCast").AsInt(0, 10000) : 0,
                 ComboPerHit = node.HasField("comboPerHit") ? node.Field("comboPerHit").AsInt(0, 10000) : 0,
                 ComboPerKeyHit = node.HasField("comboPerKeyHit") ? node.Field("comboPerKeyHit").AsInt(0, 10000) : 0,

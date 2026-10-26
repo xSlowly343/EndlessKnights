@@ -504,6 +504,15 @@ namespace Game.Core.Sim
             }
         }
 
+        public void OnCrit()
+        {
+            foreach (var slot in _state.Skills)
+            {
+                if (slot.Def.IsPassive && slot.Def.Native.ResourceOnCrit > 0 && IsNative(slot) && Armed(slot))
+                    _resource.Gain(slot.Def.Native.ResourceOnCrit);
+            }
+        }
+
         private void OnActiveKeyHit(SkillSlot slot, BigNumber damage)
         {
             switch (slot.Def.Effect)
@@ -575,9 +584,11 @@ namespace Game.Core.Sim
             if (!due)
                 return;
             var native = IsNative(slot) ? slot.Def.Native : NativeTrait.None;
-            var multiplier = strike.Multiplier * (WhenHolds(native) && native.WhenMultiplier > 0 ? native.WhenMultiplier : 1);
-            if (strike.QueueTargets > 0)
-                QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier, slot.Skill.Tags), strike.QueueTargets);
+            var when = WhenHolds(native);
+            var multiplier = strike.Multiplier * (when && native.WhenMultiplier > 0 ? native.WhenMultiplier : 1);
+            var targets = strike.QueueTargets + (when ? native.WhenExtraTargets : 0);
+            if (targets > 0)
+                QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier, slot.Skill.Tags), targets);
             SkillHit(slot, multiplier);
             _resource.Gain(native.ResourceOnHit);
         }
@@ -722,6 +733,8 @@ namespace Game.Core.Sim
                 }
                 if (slot.Def.Effect is StacksEffect stacks && stacks.Passive)
                     TickKillStacks(slot, stacks, kills);
+                if (kills > 0 && slot.Def.IsPassive && slot.Def.Native.ResourceOnKill > 0 && IsNative(slot) && Armed(slot))
+                    _resource.Gain(slot.Def.Native.ResourceOnKill * kills);
                 if (slot.Def.Effect is SpecialKeysEffect special)
                     SpecialKeyHits(slot, special, input);
                 if (slot.Def.Effect is FlowEffect flow)
@@ -996,9 +1009,11 @@ namespace Game.Core.Sim
                 _state.FocusLockTicks = Ticks(aura.FocusLockAfterSeconds);
             if (slot.Def.Effect is StoreHitsEffect store)
             {
-                var stored = slot.Stored;
+                var stored = slot.Stored * ReleaseShare(slot, store);
                 slot.Stored = BigNumber.Zero;
-                _combat.DirectHit(stored * ReleaseShare(slot, store));
+                if (store.Queue)
+                    QueueShare(stored, 0);
+                _combat.DirectHit(stored);
             }
             if (slot.Def.Effect is StacksEffect stacks && !stacks.Passive)
                 ClearStacks(slot);
@@ -1011,8 +1026,12 @@ namespace Game.Core.Sim
             }
         }
 
-        private double ReleaseShare(SkillSlot slot, StoreHitsEffect store) =>
-            _state.FightingBoss && slot.Def.Native.BossReleaseShare > 0 && IsNative(slot) ? slot.Def.Native.BossReleaseShare : store.ReleaseShare;
+        private double ReleaseShare(SkillSlot slot, StoreHitsEffect store)
+        {
+            var native = IsNative(slot) ? slot.Def.Native : NativeTrait.None;
+            var share = _state.FightingBoss && native.BossReleaseShare > 0 ? native.BossReleaseShare : store.ReleaseShare;
+            return slot.WhenAtCast && native.WhenMultiplier > 0 ? share * native.WhenMultiplier : share;
+        }
 
         private void TickKillStacks(SkillSlot slot, StacksEffect stacks, int kills)
         {

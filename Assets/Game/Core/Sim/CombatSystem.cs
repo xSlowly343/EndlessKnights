@@ -135,6 +135,8 @@ namespace Game.Core.Sim
             {
                 damage *= CritMultiplier(tags);
                 flags |= HitFlags.Crit;
+                if (source != DamageSource.Skill)
+                    _keyHits?.OnCrit();
             }
 
             var hpBefore = _state.EnemyHp;

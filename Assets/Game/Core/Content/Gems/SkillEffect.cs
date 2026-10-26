@@ -83,6 +83,7 @@ namespace Game.Core.Content.Gems
         }
 
         public double ReleaseShare { get; }
+        public bool Queue { get; set; }
     }
 
     public sealed class FlurryEffect : SkillEffect

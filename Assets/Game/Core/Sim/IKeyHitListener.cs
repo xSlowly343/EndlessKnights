@@ -7,5 +7,7 @@ namespace Game.Core.Sim
         void OnKeyHit(BigNumber damage);
 
         void OnMouseHit(BigNumber damage);
+
+        void OnCrit();
     }
 }

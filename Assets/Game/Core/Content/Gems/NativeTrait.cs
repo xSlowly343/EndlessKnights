@@ -26,6 +26,7 @@ namespace Game.Core.Content.Gems
         public double ResourceOnCast { get; set; }
         public double ResourceOnKill { get; set; }
         public double ResourceOnHit { get; set; }
+        public double ResourceOnCrit { get; set; }
         public int ComboOnCast { get; set; }
         public int ComboPerHit { get; set; }
         public int ComboPerKeyHit { get; set; }
