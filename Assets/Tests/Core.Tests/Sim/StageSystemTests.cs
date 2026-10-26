@@ -94,7 +94,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(input, new GameState { Stage = TestWorld.Data.Stages.BiomeLength }, hero);
             var normalDamage = hero.Compute(CombatStats.Damage, 10, StatTags.Keyboard).ToDouble();
 
-            TypeFor(loop, input, TestWorld.Data.Stages.EnemiesPerStage);
+            TypeFor(loop, input, TestWorld.Data.Stages.EnemiesOnStage(TestWorld.Data.Stages.BiomeLength));
 
             Assert.That(loop.State.EnemyType, Is.EqualTo(EnemyType.Guardian));
             Assert.That(loop.State.Enemy!.Id, Is.EqualTo("ancient_ent"));

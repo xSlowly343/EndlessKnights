@@ -35,7 +35,7 @@ namespace Game.Core.Tests.Sim
         {
             var input = new FakeInputSource();
             var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1000));
+            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 100000));
             var start = TestWorld.Data.Stages.BiomeLength - 5;
             var loop = TestWorld.Loop(input, new GameState { Class = heroClass, Stage = start, HighestStage = start }, hero);
             loop.Skills.Equip(TestWorld.Data.Gems["through_stride"], TestWorld.Data.Gems["cast_on_timer"]);

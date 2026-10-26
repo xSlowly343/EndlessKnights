@@ -90,7 +90,7 @@ namespace Game.Core.Tests.Sim
             var (loop, input) = Strong(new GameState { Stage = length, HighestStage = length, RecordStage = length });
             var before = loop.State.Tree.PointsEarned;
 
-            Kill(loop, input, TestWorld.Data.Stages.EnemiesPerStage + 1);
+            Kill(loop, input, TestWorld.Data.Stages.EnemiesOnStage(length) + 1);
 
             Assert.That(loop.State.Stage, Is.EqualTo(length + 1));
             Assert.That(loop.State.RecordStage, Is.EqualTo(length + 1));
