@@ -67,6 +67,12 @@ namespace Game.Core.Content.Gems
             ["keyHit"] = StackTrigger.KeyHit
         };
 
+        private static readonly Dictionary<string, DotKind> DotKinds = new Dictionary<string, DotKind>(StringComparer.Ordinal)
+        {
+            ["poison"] = DotKind.Poison,
+            ["burn"] = DotKind.Burn
+        };
+
         private static readonly Dictionary<string, ArmOn> ArmOns = new Dictionary<string, ArmOn>(StringComparer.Ordinal)
         {
             ["flick"] = ArmOn.Flick,
@@ -201,7 +207,7 @@ namespace Game.Core.Content.Gems
                 throw node.Error("an aura needs durationSeconds or reserve");
             if ((effect is StoreHitsEffect || effect is QueueHitsEffect || effect is KeyRepeatEffect || effect is StreakStrikeEffect || effect is InputHitsEffect || effect is TrailEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
-            if ((effect is EnemyDebuffEffect || effect is CurseFlowEffect) && duration <= 0)
+            if ((effect is EnemyDebuffEffect || effect is CurseFlowEffect || (effect is AddStacksEffect flowing && flowing.PerSecond > 0)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
             var marks = new List<string>();
             if (node.HasField("marks"))
@@ -322,13 +328,21 @@ namespace Game.Core.Content.Gems
                         node.Field("seconds").AsNumber(0.1, 3600),
                         node.Field("shotsPerSecond").AsNumber(0.01, 100),
                         node.Field("multiplier").AsNumber(0, 1e6));
+                case "addStacks":
+                    return new AddStacksEffect(
+                        Pick(node.Field("dot"), DotKinds, "poison or burn"),
+                        Number(node, "stacks", 1e6),
+                        Number(node, "perSecond", 1e6),
+                        Number(node, "multiplier", 1e6));
+                case "detonate":
+                    return new DetonateEffect(node.Field("seconds").AsNumber(0.1, 3600));
                 case "idleStrike":
                     return new IdleStrikeEffect(
                         node.Field("chargePerSecond").AsNumber(0, 1000),
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff, curseFlow, cannon or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff, curseFlow, cannon, addStacks, detonate or idleStrike");
             }
         }
 

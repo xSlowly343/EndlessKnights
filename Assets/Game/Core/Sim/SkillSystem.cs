@@ -31,6 +31,7 @@ namespace Game.Core.Sim
             _hero = hero;
             _weapons = weapons;
             Cannons = new CannonSystem(state, hero, combat, resource);
+            Dots = new DotSystem(state, hero, combat);
             _seenKills = state.Kills;
             foreach (var slot in _state.Skills)
             {
@@ -41,6 +42,7 @@ namespace Game.Core.Sim
 
         public bool SharedEnemy { get; private set; }
         public CannonSystem Cannons { get; }
+        public DotSystem Dots { get; }
 
         public void ShareEnemy(bool shared)
         {
@@ -190,10 +192,21 @@ namespace Game.Core.Sim
                 _resource.Gain(gain.Amount);
             if (skill.Effect is CannonEffect cannon)
                 Cannons.Place(cannon, slot.Skill.Tags);
+            if (skill.Effect is AddStacksEffect stacks)
+                AddStacks(slot, stacks);
+            if (skill.Effect is DetonateEffect detonate)
+                Dots.Detonate(detonate);
             if (skill.Effect is NextKillRewardEffect reward)
                 ArmNextKillReward(reward);
             if (skill.Effect is EchoEffect echo)
                 Repeat(echo);
+        }
+
+        private void AddStacks(SkillSlot slot, AddStacksEffect stacks)
+        {
+            if (stacks.Multiplier > 0)
+                SkillHit(slot, stacks.Multiplier);
+            Dots.Apply(stacks);
         }
 
         private void ArmNextKillReward(NextKillRewardEffect reward)
@@ -523,6 +536,8 @@ namespace Game.Core.Sim
                     ReleaseIdleStrike(slot, strike, idleTicksBefore * GameLoop.TickSeconds);
                 if (slot.Active && slot.Def.Effect is CurseFlowEffect flowing)
                     TickCurseFlow(flowing);
+                if (slot.Active && slot.Def.Effect is AddStacksEffect stackFlow && stackFlow.PerSecond > 0)
+                    Dots.Flow(stackFlow);
             }
         }
 

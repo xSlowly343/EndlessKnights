@@ -361,4 +361,36 @@ namespace Game.Core.Content.Gems
         public double ShotsPerSecond { get; }
         public double Multiplier { get; }
     }
+
+    public enum DotKind
+    {
+        Poison,
+        Burn
+    }
+
+    public sealed class AddStacksEffect : SkillEffect
+    {
+        public AddStacksEffect(DotKind kind, double stacks, double perSecond, double multiplier)
+        {
+            Kind = kind;
+            Stacks = stacks;
+            PerSecond = perSecond;
+            Multiplier = multiplier;
+        }
+
+        public DotKind Kind { get; }
+        public double Stacks { get; }
+        public double PerSecond { get; }
+        public double Multiplier { get; }
+    }
+
+    public sealed class DetonateEffect : SkillEffect
+    {
+        public DetonateEffect(double seconds)
+        {
+            Seconds = seconds;
+        }
+
+        public double Seconds { get; }
+    }
 }

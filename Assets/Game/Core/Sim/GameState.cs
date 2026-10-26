@@ -108,6 +108,11 @@ namespace Game.Core.Sim
         public double BankedSeconds { get; set; }
         public CannonState[] Cannons { get; } = new CannonState[CannonSystem.Capacity];
         public double BroadsidePx { get; set; }
+        public double PoisonStacks { get; set; }
+        public double BurnStacks { get; set; }
+        public double DotCarry { get; set; }
+        public double StirTurns { get; set; }
+        public int OverheatTicks { get; set; }
         public double AllyHeavyCastSeconds { get; set; }
 
         public void ClearQueue()
@@ -140,6 +145,9 @@ namespace Game.Core.Sim
             EnemyMaxHp = hp;
             HitsOnEnemy = 0;
             EnemySpawnTick = Tick;
+            PoisonStacks = 0;
+            BurnStacks = 0;
+            DotCarry = 0;
         }
     }
 }

@@ -43,10 +43,17 @@ namespace Game.Core.Sim
             }
         }
 
+        public bool Overheated => _state.OverheatTicks > 0;
+
         public void Tick(in EffectiveInput input)
         {
             var resource = Current;
             _state.KeylessTicks = input.Keys > 0 ? 0 : _state.KeylessTicks + 1;
+            if (resource.Inverse)
+            {
+                TickInverse(resource);
+                return;
+            }
             var gained = input.Keys * resource.PerKey * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             if (resource.MousePxPerPoint > 0)
                 gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
@@ -81,9 +88,30 @@ namespace Game.Core.Sim
 
         public bool TrySpend(double amount)
         {
+            if (Current.Inverse)
+                return TryBuild(amount);
             if (amount < 0 || _state.Resource < amount)
                 return false;
             _state.Resource -= amount;
+            return true;
+        }
+
+        private void TickInverse(ClassResource resource)
+        {
+            if (_state.OverheatTicks > 0)
+                _state.OverheatTicks--;
+            var decay = resource.InverseDecayPerSecond * System.Math.Max(0, _hero.Value(CombatStats.PressureDecay, 1)) * GameLoop.TickSeconds;
+            _state.Resource = System.Math.Max(0, System.Math.Min(Max, _state.Resource + _state.PendingResource) - decay);
+            _state.PendingResource = 0;
+        }
+
+        private bool TryBuild(double amount)
+        {
+            if (amount < 0 || Overheated)
+                return false;
+            _state.Resource = System.Math.Min(Max, _state.Resource + amount);
+            if (_state.Resource >= Max && _hero.Value(CombatStats.OverheatDisabled, 0) <= 0)
+                _state.OverheatTicks = (int)System.Math.Round((Current.OverheatSeconds + _hero.Value(CombatStats.OverheatSeconds, 0)) * GameLoop.TicksPerSecond);
             return true;
         }
 

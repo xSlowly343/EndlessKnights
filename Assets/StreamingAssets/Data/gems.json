@@ -534,6 +534,28 @@
       "effect": { "type": "cannon", "seconds": 30, "shotsPerSecond": 1, "multiplier": 1.5 }
     },
     {
+      "id": "vial_from_belt",
+      "kind": "skill",
+      "weapon": "syringe_cane",
+      "color": "red",
+      "name": { "ru": "Склянка с пояса", "en": "Vial from the Belt" },
+      "tags": ["DoT", "Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 4,
+      "effect": { "type": "addStacks", "dot": "poison", "stacks": 3 }
+    },
+    {
+      "id": "fuse_bottle",
+      "kind": "skill",
+      "weapon": "still_burner",
+      "color": "blue",
+      "name": { "ru": "Бутыль с фитилём", "en": "Fuse Bottle" },
+      "tags": ["DoT", "Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 3,
+      "effect": { "type": "addStacks", "dot": "burn", "stacks": 3, "multiplier": 2 }
+    },
+    {
       "id": "lull",
       "kind": "skill",
       "color": "white",
@@ -1046,7 +1068,7 @@
       "tags": ["DoT", "Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
-      "locked": true
+      "effect": { "type": "detonate", "seconds": 10 }
     },
     {
       "id": "sky_stone",
@@ -1058,7 +1080,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 60 },
       "cooldownSeconds": 35,
-      "effect": { "type": "strike", "multiplier": 15 }
+      "effect": { "type": "addStacks", "dot": "burn", "stacks": 15, "multiplier": 15 }
     },
     {
       "id": "scrap_saw",
@@ -1084,7 +1106,7 @@
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
       "durationSeconds": 8,
-      "locked": true
+      "effect": { "type": "addStacks", "dot": "burn", "perSecond": 3 }
     },
     {
       "id": "restless_earth",
