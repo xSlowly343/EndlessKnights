@@ -14,6 +14,7 @@ namespace Game.Core.Sim
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
         private long _hitsTowardCrit;
+        private double _extraCritChance;
 
         public CombatSystem(CombatRules rules, StatSheet hero, GameState state, EventQueue events)
         {
@@ -46,6 +47,13 @@ namespace Game.Core.Sim
 
         public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
             Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);
+
+        public void SkillHit(double baseDamage, double multiplier, StatTags tags, double extraCritChance)
+        {
+            _extraCritChance = extraCritChance;
+            Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);
+            _extraCritChance = 0;
+        }
 
         public BigNumber SkillDamage(double baseDamage, double multiplier, StatTags tags) =>
             _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * multiplier;
@@ -108,7 +116,7 @@ namespace Game.Core.Sim
             }
             for (var i = 0; i < mouseHits; i++)
                 Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier);
-            _class.EndTick(keyHits);
+            _class.EndTick(keyHits, input.MousePx);
         }
 
         private void Hit(DamageSource source, double baseDamage, StatTags tags, HitFlags flags, double multiplier)
@@ -202,7 +210,7 @@ namespace Game.Core.Sim
 
         private bool RollCrit(StatTags tags)
         {
-            var chance = CritChance(tags);
+            var chance = System.Math.Min(1, CritChance(tags) + _extraCritChance);
             return chance > 0 && _state.Rng.NextDouble() < chance;
         }
 

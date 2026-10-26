@@ -358,7 +358,9 @@ namespace Game.Core.Sim
             if (strike.SkipCurrent)
                 return;
             var killsBefore = _state.Kills;
-            _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags);
+            if (strike.Arrow)
+                multiplier *= System.Math.Max(0, _hero.Value(CombatStats.ArrowDamage, 1, tags));
+            _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags, strike.CritChance);
             if (_state.Kills == killsBefore)
                 return;
             _resource.Gain(spent * strike.KillRefundShare);

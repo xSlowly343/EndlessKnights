@@ -23,12 +23,13 @@
       "captain": { "perKey": 0.3333 },
       "plague_doctor": { "perKey": 1 },
       "gravedigger": { "perKey": 0.1, "perKill": 5 },
+      "ronin": { "perKey": 0 },
       "moonshiner": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } }
     }
   },
   "crit": { "chance": 0.05, "multiplier": 2 },
   "classes": {
-    "ronin": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 25, "strikeMultiplier": 3 } }
+    "ronin": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 25, "strikeMultiplier": 3, "whirlResource": 20 } }
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },
   "hero": {

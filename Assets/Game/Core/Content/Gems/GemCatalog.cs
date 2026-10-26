@@ -245,7 +245,9 @@ namespace Game.Core.Content.Gems
                         node.HasField("killRefundShare") ? node.Field("killRefundShare").AsNumber(0, 1) : 0,
                         Number(node, "queueMultiplier", 1e6),
                         Number(node, "executeBelow", 1),
-                        node.HasField("coinFlip") && node.Field("coinFlip").AsBool());
+                        node.HasField("coinFlip") && node.Field("coinFlip").AsBool(),
+                        Number(node, "critChance", 1),
+                        node.HasField("arrow") && node.Field("arrow").AsBool());
                 case "aura":
                     return new AuraEffect(
                         ModifierReader.ReadList(node.Field("modifiers")),

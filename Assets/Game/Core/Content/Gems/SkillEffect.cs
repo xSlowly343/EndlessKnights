@@ -22,8 +22,10 @@ namespace Game.Core.Content.Gems
     public sealed class StrikeEffect : SkillEffect
     {
         public StrikeEffect(double multiplier, int queueTargets = 0, bool skipCurrent = false, double killRefundShare = 0,
-            double queueMultiplier = 0, double executeBelow = 0, bool coinFlip = false)
+            double queueMultiplier = 0, double executeBelow = 0, bool coinFlip = false, double critChance = 0, bool arrow = false)
         {
+            CritChance = critChance;
+            Arrow = arrow;
             QueueMultiplier = queueMultiplier > 0 ? queueMultiplier : multiplier;
             ExecuteBelow = executeBelow;
             CoinFlip = coinFlip;
@@ -40,6 +42,8 @@ namespace Game.Core.Content.Gems
         public double QueueMultiplier { get; }
         public double ExecuteBelow { get; }
         public bool CoinFlip { get; }
+        public double CritChance { get; }
+        public bool Arrow { get; }
     }
 
     public sealed class AuraEffect : SkillEffect

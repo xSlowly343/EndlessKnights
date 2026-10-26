@@ -545,6 +545,17 @@
       "effect": { "type": "summon", "minion": "skeleton", "seconds": 60, "hitsPerSecond": 1, "multiplier": 1 }
     },
     {
+      "id": "thin_cut",
+      "kind": "skill",
+      "weapon": "katana",
+      "color": "red",
+      "name": { "ru": "Тонкий срез", "en": "Thin Cut" },
+      "tags": ["Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 3,
+      "effect": { "type": "strike", "multiplier": 2, "critChance": 1 }
+    },
+    {
       "id": "vial_from_belt",
       "kind": "skill",
       "weapon": "syringe_cane",
