@@ -14,10 +14,12 @@ namespace Game.Core.Sim
         public readonly long Stage;
         public readonly EnemyDef? Enemy;
         public readonly GemDef? Gem;
+        public readonly ItemDrop? Drop;
 
-        private GameEvent(GameEventKind kind, long tick, BigNumber amount, DamageSource source, HitFlags flags, long stage, EnemyDef? enemy, GemDef? gem = null)
+        private GameEvent(GameEventKind kind, long tick, BigNumber amount, DamageSource source, HitFlags flags, long stage, EnemyDef? enemy, GemDef? gem = null, ItemDrop? drop = null)
         {
             Gem = gem;
+            Drop = drop;
             Kind = kind;
             Tick = tick;
             Amount = amount;
@@ -40,6 +42,9 @@ namespace Game.Core.Sim
 
         public static GameEvent ForSkill(GameEventKind kind, long tick, GemDef gem) =>
             new GameEvent(kind, tick, BigNumber.Zero, DamageSource.None, HitFlags.None, 0, null, gem);
+
+        public static GameEvent ForDrop(long tick, ItemDrop drop) =>
+            new GameEvent(GameEventKind.ItemDropped, tick, BigNumber.Zero, DamageSource.None, HitFlags.None, drop.Stage, null, null, drop);
 
         public static GameEvent Gold(long tick, BigNumber amount, long stage) => WithAmount(GameEventKind.GoldGained, tick, amount, stage);
 

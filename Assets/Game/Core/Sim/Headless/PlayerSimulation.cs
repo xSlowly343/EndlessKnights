@@ -48,10 +48,13 @@ namespace Game.Core.Sim.Headless
             for (var day = 1; day <= days; day++)
             {
                 var goldBefore = _goldTotal;
+                var itemsBefore = state.Drops.ItemsFound;
+                loop.SetLocalDay(day);
                 Act(bot, state, awaySeconds);
                 for (var tick = 1L; tick <= activeTicks; tick++)
                 {
                     loop.Tick();
+                    loop.Drops.Flush();
                     loop.Events.Clear();
                     if (tick % ActEveryTicks == 0)
                         Act(bot, state, ActEveryTicks * GameLoop.TickSeconds);
@@ -59,7 +62,7 @@ namespace Game.Core.Sim.Headless
                 loop.ApplyOffline(offline.Simulate(state, offlineSeconds));
                 awaySeconds = offlineSeconds;
                 CountGold(state);
-                records.Add(Record(day, state, _goldTotal - goldBefore));
+                records.Add(Record(day, state, _goldTotal - goldBefore, state.Drops.ItemsFound - itemsBefore));
             }
             LastState = state;
             return records;
@@ -78,14 +81,15 @@ namespace Game.Core.Sim.Headless
             _goldSeen = earned;
         }
 
-        private static DayRecord Record(int day, GameState state, BigNumber goldToday)
+        private static DayRecord Record(int day, GameState state, BigNumber goldToday, long itemsToday)
         {
             var levels = 0;
             foreach (var level in state.Artifacts.Values)
                 levels += level;
             var ascendancy = state.Ascendancy;
             return new DayRecord(day, state.Stage, state.HighestStage, state.RecordStage, state.HeroLevel, state.Tree.PointsSpent,
-                ascendancy.Subclass ?? "-", ascendancy.Allocated.Count, state.Prestiges, state.Artifacts.Count, levels, state.EchoEarned, goldToday);
+                ascendancy.Subclass ?? "-", ascendancy.Allocated.Count, state.Prestiges, state.Artifacts.Count, levels, state.EchoEarned, goldToday,
+                itemsToday, state.Drops.DailyItems, state.OwnedGems.Count);
         }
     }
 }

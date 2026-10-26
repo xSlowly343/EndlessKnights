@@ -1,5 +1,6 @@
 using Game.Core.Clock;
 using Game.Core.Content;
+using Game.Core.Content.Items;
 using Game.Core.Content.Json;
 using Game.Core.Input;
 using Game.Core.Math;
@@ -84,6 +85,33 @@ namespace Game.Core.Tests.Save
             Play(restored, restoredInput, 2000);
 
             Assert.That(SaveCodec.Encode(restored.State, Clock), Is.EqualTo(SaveCodec.Encode(original.State, Clock)));
+        }
+
+        [Test]
+        public void DropsSurviveSaving()
+        {
+            var loop = PlayedLoop(HeroClass.Viking, 50);
+            loop.SetLocalDay(20_000);
+            loop.Drops.OnBossDefeated(3, EnemyType.Boss, 3, raisesRecord: true);
+            loop.Drops.OnBossDefeated(20, EnemyType.Boss, 20, raisesRecord: true);
+            loop.Drops.Flush();
+            var drops = loop.State.Drops;
+            drops.DailyItems = 7;
+            drops.Dust = 12.5;
+            drops.SalvageUpTo = ItemRarity.Fine;
+
+            var loaded = RoundTrip(loop.State).State;
+
+            Assert.That(loaded.Drops.Day, Is.EqualTo(20_000));
+            Assert.That(loaded.Drops.DailyItems, Is.EqualTo(7));
+            Assert.That(loaded.Drops.Dust, Is.EqualTo(12.5));
+            Assert.That(loaded.Drops.SalvageUpTo, Is.EqualTo(ItemRarity.Fine));
+            Assert.That(loaded.Drops.ItemsFound, Is.EqualTo(drops.ItemsFound));
+            Assert.That(loaded.Drops.Gear.Count, Is.EqualTo(drops.Gear.Count));
+            Assert.That(loaded.Drops.Gear[0].Slot, Is.EqualTo(ItemSlot.Helmet));
+            Assert.That(loaded.Drops.Gear[0].Color, Is.EqualTo("red"));
+            Assert.That(loaded.Weapons.Bag.Count, Is.EqualTo(loop.State.Weapons.Bag.Count));
+            Assert.That(loaded.Drops.Rng.State, Is.EqualTo(drops.Rng.State));
         }
 
         [Test]

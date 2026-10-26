@@ -40,6 +40,7 @@ namespace Game.Core.Sim
         private readonly SynergySystem _synergy;
         private readonly RiftSystem _rift;
         private readonly WeaponSystem _weapons;
+        private readonly DropSystem _drops;
         private readonly OverloadSystem _overload;
         private readonly BannerSystem _banner;
         private GameData _data;
@@ -66,6 +67,8 @@ namespace Game.Core.Sim
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills, _resource);
             _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
+            _drops = new DropSystem(data.Drops, data.Stages, data.Gems, _weapons, state, hero, Events);
+            _stage.Drops = _drops;
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
@@ -99,6 +102,7 @@ namespace Game.Core.Sim
         public SynergySystem Synergy => _synergy;
         public RiftSystem Rift => _rift;
         public WeaponSystem Weapons => _weapons;
+        public DropSystem Drops => _drops;
         public OverloadSystem Overload => _overload;
         public GameData Data => _data;
         public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
@@ -132,6 +136,7 @@ namespace Game.Core.Sim
             }
             if (_pendingSeconds < 0)
                 _pendingSeconds = 0;
+            _drops.Flush();
             return ticks;
         }
 
@@ -176,8 +181,11 @@ namespace Game.Core.Sim
                 _castRequests |= 1UL << slotIndex;
         }
 
+        public void SetLocalDay(long day) => _drops.SetDay(day);
+
         public void ApplyOffline(OfflineResult result)
         {
+            _drops.ApplyOffline(result);
             OfflineCalculator.Apply(State, result);
             _stage.EnsureEnemy();
         }
@@ -285,6 +293,7 @@ namespace Game.Core.Sim
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
             _weapons.UseCatalog(data.Weapons);
+            _drops.UseData(data.Drops, data.Stages, data.Gems);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _prestige.UseRules(data.Prestige);
