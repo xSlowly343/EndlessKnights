@@ -96,6 +96,12 @@ namespace Game.Editor
             panels.Drag(Vector2.Lerp(grabbed, panels.Book.WorldPointOfRow(2), 0.7f));
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-book-drag.png"));
             panels.CancelPress();
+            var selected = panels.Book.WorldPointOfRow(1);
+            panels.TryClick(selected);
+            panels.Release(selected);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-book-selected.png"));
+            panels.TryClick(selected);
+            panels.Release(selected);
             navigator.ToggleHeight();
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-book-half.png"));

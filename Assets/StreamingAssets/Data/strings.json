@@ -420,6 +420,8 @@
     "panel.tab.party.1": { "ru": "Друзья", "en": "Friends" },
     "panel.tab.party.2": { "ru": "Клан", "en": "Clan" },
     "panel.tab.party.3": { "ru": "Поиск", "en": "Search" },
+    "book.remove": { "ru": "Снять", "en": "Remove" },
+    "book.removed": { "ru": "{0} снят в сумку", "en": "{0} went back to the bag" },
     "book.hint": { "ru": "Перетащи гем в строку или обратно в сумку", "en": "Drag a gem into a row or back into the bag" },
     "book.compactHint": { "ru": "Сумка гемов видна в полной высоте панели", "en": "The gem bag shows at full panel height" },
     "book.emptyRow": { "ru": "пусто", "en": "empty" },
