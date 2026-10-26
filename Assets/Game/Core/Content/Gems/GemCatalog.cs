@@ -70,7 +70,8 @@ namespace Game.Core.Content.Gems
         private static readonly Dictionary<string, MinionKind> MinionKinds = new Dictionary<string, MinionKind>(StringComparer.Ordinal)
         {
             ["cannon"] = MinionKind.Cannon,
-            ["skeleton"] = MinionKind.Skeleton
+            ["skeleton"] = MinionKind.Skeleton,
+            ["beast"] = MinionKind.Beast
         };
 
         private static readonly Dictionary<string, DotKind> DotKinds = new Dictionary<string, DotKind>(StringComparer.Ordinal)
@@ -333,7 +334,7 @@ namespace Game.Core.Content.Gems
                     return new CurseFlowEffect(node.Field("hitsPerSecond").AsNumber(0, 100));
                 case "summon":
                     return new SummonEffect(
-                        Pick(node.Field("minion"), MinionKinds, "cannon or skeleton"),
+                        Pick(node.Field("minion"), MinionKinds, "cannon, skeleton or beast"),
                         node.Field("seconds").AsNumber(0.1, 3600),
                         node.Field("hitsPerSecond").AsNumber(0.01, 100),
                         node.Field("multiplier").AsNumber(0, 1e6));

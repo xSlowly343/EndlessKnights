@@ -24,6 +24,7 @@
       "plague_doctor": { "perKey": 1 },
       "gravedigger": { "perKey": 0.1, "perKill": 5 },
       "ronin": { "perKey": 0 },
+      "amazon": { "perKey": 0, "mousePxPerPoint": 160, "perSecond": 1 },
       "moonshiner": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } }
     }
   },
@@ -48,7 +49,8 @@
     "poison": { "max": 50, "hitsPerStack": 0.2, "stirMax": 5 },
     "burn": { "max": 30, "hitsPerStack": 0.3, "fanning": 1.5 }
   },
-  "skeletons": { "max": 5, "lantern": 1.3 },
+  "skeletons": { "max": 5, "mouseSpeed": 1.3 },
+  "beasts": { "max": 1, "mouseSpeed": 1.5 },
   "cannons": { "max": 3, "resourcePerShot": 1, "broadside": { "mousePx": 3000, "balls": 5 } },
   "curses": { "maxOnEnemy": 1, "flick": { "bonus": 0.1, "max": 0.5 } },
   "conditions": {

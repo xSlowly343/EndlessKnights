@@ -556,6 +556,17 @@
       "effect": { "type": "strike", "multiplier": 2, "critChance": 1 }
     },
     {
+      "id": "arrow_from_the_road",
+      "kind": "skill",
+      "weapon": "short_bow",
+      "color": "green",
+      "name": { "ru": "Стрела с дороги", "en": "Arrow from the Road" },
+      "tags": ["Skill"],
+      "cost": { "resource": 5 },
+      "cooldownSeconds": 3,
+      "effect": { "type": "strike", "multiplier": 3, "critChance": 0.3, "arrow": true }
+    },
+    {
       "id": "vial_from_belt",
       "kind": "skill",
       "weapon": "syringe_cane",
@@ -757,7 +768,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 40 },
       "cooldownSeconds": 60,
-      "effect": { "type": "strike", "multiplier": 20 }
+      "effect": { "type": "strike", "multiplier": 20, "critChance": 1, "arrow": true }
     },
     {
       "id": "panther_at_side",
@@ -770,7 +781,7 @@
       "cost": { "resource": 50 },
       "cooldownSeconds": 40,
       "durationSeconds": 30,
-      "locked": true
+      "effect": { "type": "summon", "minion": "beast", "seconds": 30, "hitsPerSecond": 2, "multiplier": 1 }
     },
     {
       "id": "ahead_of_thunder",

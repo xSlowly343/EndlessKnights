@@ -355,7 +355,8 @@ namespace Game.Core.Content.Gems
     public enum MinionKind
     {
         Cannon,
-        Skeleton
+        Skeleton,
+        Beast
     }
 
     public sealed class SummonEffect : SkillEffect

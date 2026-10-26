@@ -10,7 +10,7 @@ namespace Game.Core.Tests.Sim
 {
     public class GravediggerSoulsTests
     {
-        private static SkeletonRules Rules => TestWorld.Data.Combat.Skeletons;
+        private static MinionRules Rules => TestWorld.Data.Combat.Skeletons;
         private static ClassResource Souls => TestWorld.Data.Combat.Resources.For("gravedigger");
         private static GemDef Colleague => TestWorld.Real.Gems["call_a_colleague"];
         private static SummonEffect Skeleton => (SummonEffect)Colleague.Skill!.Effect;
@@ -116,7 +116,7 @@ namespace Game.Core.Tests.Sim
                 loop.Tick();
             }
 
-            Assert.That(loop.Skills.Minions.SkeletonHits, Is.EqualTo((long)(10 * Rules.Lantern)));
+            Assert.That(loop.Skills.Minions.SkeletonHits, Is.EqualTo((long)(10 * Rules.MouseSpeed)));
         }
 
         [Test]

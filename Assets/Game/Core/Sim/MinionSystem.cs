@@ -23,12 +23,13 @@ namespace Game.Core.Sim
 
         public long CannonShots { get; private set; }
         public long SkeletonHits { get; private set; }
+        public long BeastHits { get; private set; }
 
         public int Limit(MinionKind kind)
         {
             var limit = kind == MinionKind.Cannon
                 ? _combat.Cannons.Max + _hero.Value(CombatStats.CannonCount, 0)
-                : _combat.Skeletons.Max + _hero.Value(CombatStats.MinionCount, 0, StatTags.Minion);
+                : Rules(kind).Max + _hero.Value(CombatStats.MinionCount, 0, StatTags.Minion);
             return System.Math.Min(Capacity, (int)System.Math.Max(0, System.Math.Round(limit)));
         }
 
@@ -70,13 +71,12 @@ namespace Game.Core.Sim
         {
             Broadside(input);
             var speed = System.Math.Max(0, _hero.Value(CombatStats.MinionSpeed, 1, StatTags.Minion));
-            var lantern = _state.Class == HeroClass.Gravedigger && input.MousePx > 0 ? _combat.Skeletons.Lantern : 1;
             var minions = _state.Minions;
             for (var i = 0; i < minions.Length; i++)
             {
                 if (!minions[i].Standing)
                     continue;
-                var kindSpeed = minions[i].Kind == MinionKind.Skeleton ? speed * lantern : speed;
+                var kindSpeed = minions[i].Kind != MinionKind.Cannon && input.MousePx > 0 ? speed * Rules(minions[i].Kind).MouseSpeed : speed;
                 minions[i].HitCarry += minions[i].HitsPerSecond * kindSpeed * GameLoop.TickSeconds;
                 while (minions[i].HitCarry >= 1 - 1e-9)
                 {
@@ -91,13 +91,16 @@ namespace Game.Core.Sim
         {
             _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags);
             if (kind == MinionKind.Skeleton)
-            {
                 SkeletonHits++;
+            if (kind == MinionKind.Beast)
+                BeastHits++;
+            if (kind != MinionKind.Cannon)
                 return;
-            }
             CannonShots++;
             _resource.Gain(_combat.Cannons.ResourcePerShot * _hero.Value(CombatStats.ResourceGain, 1));
         }
+
+        private MinionRules Rules(MinionKind kind) => kind == MinionKind.Beast ? _combat.Beasts : _combat.Skeletons;
 
         private void Broadside(in EffectiveInput input)
         {
