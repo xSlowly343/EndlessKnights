@@ -77,30 +77,39 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void ZoneNodesAreDualAndOtherNodesAreTheSameForEveryone()
+        public void TreeKeepsAllItsNodes()
         {
             var tree = PassiveTree.Load(RealFile());
 
-            foreach (var node in tree.Nodes)
-            {
-                var hasEffect = node.Modifiers.Count > 0 || node.Options.Count > 0;
-                if (node.IsDual && hasEffect)
-                    Assert.That(node.SharedModifiers.Count > 0 || node.SharedOptions.Count == node.Options.Count && node.Options.Count > 0, Is.True, node.Id);
-                if (!node.IsDual)
-                    Assert.That(node.SharedModifiers.Count + node.SharedOptions.Count, Is.EqualTo(0), node.Id);
-            }
+            Assert.That(tree.Nodes.Count, Is.EqualTo(2595));
             Assert.That(tree.Nodes.Count(node => node.Scope == "sector:strength"), Is.GreaterThan(tree.Nodes.Count(node => node.Scope == "sector:dexterity")));
             Assert.That(tree.Nodes.Count(node => node.Scope == TreeNodeDef.CommonScope), Is.GreaterThanOrEqualTo(60));
         }
 
         [Test]
-        public void VikingZoneNodeGivesTheVikingItsOwnEffectAndTheRoninTheSharedOne()
+        public void ZoneNodesUseOnlyStatsThatWorkForEveryCharacter()
         {
             var tree = PassiveTree.Load(RealFile());
-            var node = tree["viking_resource_0"];
+            var classStats = new System.Collections.Generic.HashSet<string>
+            {
+                "rageBurnDelaySeconds", "comboTimeoutSeconds", "comboStrikeMultiplier", "songMouseSeconds", "readingGain", "bannerAuraBonus",
+                "flickCurseBonus", "pressureDecay", "overheatSeconds", "overheatDisabled", "overloadMultiplier", "overloadDisabled",
+                "loopShare", "damagePerSector", "chainTargets", "cannonCount", "minionExplode", "burnSeconds"
+            };
 
-            Assert.That(node.ModifiersFor("viking"), Is.EqualTo(new[] { new Modifier(new StatId("resourceGain"), ModifierKind.Increased, 0.06) }));
-            Assert.That(node.ModifiersFor("ronin"), Is.EqualTo(new[] { new Modifier(new StatId("resourceGain"), ModifierKind.Increased, 0.02) }));
+            foreach (var node in tree.Nodes.Where(node => node.Type != TreeNodeType.Start))
+            {
+                var stats = node.Modifiers.Concat(node.Options.SelectMany(option => option)).Select(m => m.Stat.Name);
+                Assert.That(stats.Where(classStats.Contains), Is.Empty, node.Id);
+            }
+        }
+
+        [Test]
+        public void SharedModifiersAreRejected()
+        {
+            var json = RealFile().Replace("\"group\": \"nomad_ring\"}", "\"group\": \"nomad_ring\", \"sharedModifiers\": []}");
+
+            Assert.That(() => PassiveTree.Load(json), Throws.TypeOf<ContentException>().With.Message.Contains("sharedModifiers"));
         }
 
         [Test]
@@ -129,7 +138,6 @@ namespace Game.Core.Tests.Content
 
             Assert.That(tree["metalhead_keystone"].Modifiers, Does.Contain(new Modifier(new StatId("auraEffect"), ModifierKind.More, 1.0, StatTags.Aura)));
             Assert.That(tree["ronin_resource_mastery"].Options.Count, Is.EqualTo(3));
-            Assert.That(tree["ronin_resource_mastery"].SharedOptions.Count, Is.EqualTo(3));
         }
 
         [Test]

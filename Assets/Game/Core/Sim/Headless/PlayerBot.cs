@@ -144,7 +144,7 @@ namespace Game.Core.Sim.Headless
                 case TreeNodeType.Mastery:
                     return BestOption(node);
                 default:
-                    return (_score.Of(node.ModifiersFor(_loop.State.Tree.StartClass)), 0);
+                    return (_score.Of(node.Modifiers), 0);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Game.Core.Sim.Headless
             var best = (Score: double.MinValue, Option: 0);
             for (var i = 0; i < node.Options.Count; i++)
             {
-                var score = _score.Of(node.OptionFor(i, _loop.State.Tree.StartClass));
+                var score = _score.Of(node.Options[i]);
                 if (score > best.Score)
                     best = (score, i);
             }
