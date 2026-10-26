@@ -144,11 +144,11 @@ namespace Game.Core.Build
             {
                 if (!tree.TryGet(id, out var node))
                     continue;
-                modifiers.AddRange(node.ModifiersFor(StartClass));
+                modifiers.AddRange(node.Modifiers);
                 if (node.Type == TreeNodeType.Attribute && _attributes.TryGetValue(id, out var attribute))
                     modifiers.Add(new Modifier(PassiveTree.AttributeStat(attribute), ModifierKind.Flat, node.AttributeAmount));
                 if (node.Type == TreeNodeType.Mastery && _masteries.TryGetValue(id, out var option) && option >= 0 && option < node.Options.Count)
-                    modifiers.AddRange(node.OptionFor(option, StartClass));
+                    modifiers.AddRange(node.Options[option]);
             }
             return modifiers;
         }

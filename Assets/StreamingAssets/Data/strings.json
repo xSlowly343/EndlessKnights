@@ -209,8 +209,6 @@
     "tree.type.attribute": { "ru": "атрибут", "en": "attribute" },
     "tree.type.start": { "ru": "старт класса", "en": "class start" },
     "tree.toChosenAttribute": { "ru": "{0} к выбранному атрибуту", "en": "{0} to the chosen attribute" },
-    "tree.ownPrefix": { "ru": "Для класса: ", "en": "For your class: " },
-    "tree.sharedPrefix": { "ru": "Для остальных: ", "en": "For other classes: " },
     "tree.nothing": { "ru": "ничего", "en": "nothing" },
     "tree.status.ownStart": { "ru": "Твой старт", "en": "Your start" },
     "tree.status.otherStart": { "ru": "Старт другого класса", "en": "Another class's start" },

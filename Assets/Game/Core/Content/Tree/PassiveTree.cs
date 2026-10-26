@@ -21,6 +21,7 @@ namespace Game.Core.Content.Tree
         };
 
         private static readonly HashSet<string> Roles = new HashSet<string>(StringComparer.Ordinal) { "dd", "buffer", "debuffer", "dot", "summoner" };
+        private static readonly string[] SharedEffectFields = { "sharedModifiers", "sharedOptions" };
 
         private readonly Dictionary<string, TreeNodeDef> _byId;
         private readonly Dictionary<string, TreeNodeDef> _startByClass;
@@ -167,16 +168,13 @@ namespace Game.Core.Content.Tree
             var scope = ReadScope(node.Field("scope"), attributes);
             if (startClass != null && scope != TreeNodeDef.ClassScopePrefix + startClass)
                 throw node.Field("scope").Error($"a start belongs to its own class, expected '{TreeNodeDef.ClassScopePrefix}{startClass}'");
-            var shared = node.HasField("sharedModifiers") ? ModifierReader.ReadList(node.Field("sharedModifiers")) : Array.Empty<Modifier>();
-            var sharedOptions = ReadSharedOptions(node, type, options.Count);
-            if ((shared.Count > 0 || sharedOptions.Count > 0) && !scope.StartsWith(TreeNodeDef.ClassScopePrefix, StringComparison.Ordinal))
-                throw node.Field("scope").Error("only a node of a class zone can have shared modifiers");
+            RejectSharedEffects(node);
             var name = node.Field("name");
             return new TreeNodeDef(
                 node.Field("id").AsString(), type,
                 node.Field("x").AsNumber(-1000, 1000), node.Field("y").AsNumber(-1000, 1000),
                 name.Field("ru").AsString(), name.Field("en").AsString(),
-                modifiers, options, amount, startClass, locked, scope, shared, sharedOptions);
+                modifiers, options, amount, startClass, locked, scope);
         }
 
         private static void RequireStartForEveryZone(ContentNode list, List<TreeNodeDef> nodes, HashSet<string> classes)
@@ -208,18 +206,13 @@ namespace Game.Core.Content.Tree
             return text;
         }
 
-        private static IReadOnlyList<IReadOnlyList<Modifier>> ReadSharedOptions(ContentNode node, TreeNodeType type, int optionCount)
+        private static void RejectSharedEffects(ContentNode node)
         {
-            if (!node.HasField("sharedOptions"))
-                return Array.Empty<IReadOnlyList<Modifier>>();
-            if (type != TreeNodeType.Mastery)
-                throw node.Field("sharedOptions").Error("only a mastery has shared options");
-            var shared = new List<IReadOnlyList<Modifier>>();
-            foreach (var option in node.Field("sharedOptions").Items())
-                shared.Add(ModifierReader.ReadList(option));
-            if (shared.Count != optionCount)
-                throw node.Field("sharedOptions").Error($"a mastery needs one shared option for each of its {optionCount} options");
-            return shared;
+            foreach (var field in SharedEffectFields)
+            {
+                if (node.HasField(field))
+                    throw node.Field(field).Error("a node gives the same effect to every class, put it into 'modifiers' or 'options'");
+            }
         }
 
         private static int ReadLinks(ContentNode links, Dictionary<string, TreeNodeDef> byId)

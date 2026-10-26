@@ -40,7 +40,6 @@ namespace Game.Core.Tests.Build
             System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(Build.TreePaths.To(TestWorld.Data.Tree, className, target),
                 id => TestWorld.Data.Tree[id].Type == Game.Core.Content.Tree.TreeNodeType.Attribute ? id + "=strength" : id));
 
-        private static string[] ToSeriesNotable => PathTo("ronin", "ronin_resource_7");
         private static string[] ToOneSong => PathTo("metalhead", "metalhead_keystone");
 
         private static string[] With(string[] path, string last) => System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Append(path, last));
@@ -92,10 +91,12 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void SeriesNotableLetsTheComboSurviveALongerPause()
+        public void NinjaPathLetsTheComboSurviveALongerPause()
         {
-            var (plain, plainInput) = Hero(HeroClass.Ronin, ToSeriesNotable[0]);
-            var (series, seriesInput) = Hero(HeroClass.Ronin, ToSeriesNotable);
+            var (plain, plainInput) = Hero(HeroClass.Ronin);
+            var (series, seriesInput) = Hero(HeroClass.Ronin);
+            series.CompleteActivity("garden");
+            Assert.That(series.ChooseSubclass("ninja"), Is.EqualTo(SubclassResult.Chosen));
             var pauseTicks = (int)((TestWorld.Data.Combat.Classes.ComboTimeoutSeconds + 0.3) * GameLoop.TicksPerSecond);
 
             foreach (var (loop, input) in new[] { (plain, plainInput), (series, seriesInput) })
