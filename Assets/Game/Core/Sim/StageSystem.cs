@@ -47,6 +47,7 @@ namespace Game.Core.Sim
         public bool RaisesRecord { get; set; } = true;
         public IBossListener? BossListener { get; set; }
         public IKillTimeListener? KillTimeListener { get; set; }
+        public DropSystem? Drops { get; set; }
         public StageTable Table => _stages;
 
         public void EnsureEnemy()
@@ -173,6 +174,7 @@ namespace Game.Core.Sim
             _state.NextKillReward = 1;
             _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy, multiplier);
             _levels.OnKill(_state.EnemyType, multiplier);
+            Drops?.OnKill(_state.EnemyType);
             if (multiplier > 1 && _state.NextKillShardChance > 0 && _state.Rng.NextDouble() < _state.NextKillShardChance)
                 _state.Rift.Shards += BigNumber.FromDouble(_state.NextKillShards);
         }
@@ -216,6 +218,7 @@ namespace Game.Core.Sim
             _state.BossBestFraction = 0;
             if (_state.Stage > _state.HighestStage)
                 _state.HighestStage = _state.Stage;
+            Drops?.OnBossDefeated(stageBefore, type, _state.RecordStage, RaisesRecord);
             if (RaisesRecord)
                 _levels.OnStageReached(_state.Stage);
             BossListener?.OnBossDefeated(type, stageBefore);

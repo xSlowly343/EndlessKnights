@@ -15,6 +15,7 @@ namespace Game.Core.Sim
         public GameState(ulong seed = 1)
         {
             Rng = new Rng(seed);
+            Drops = new DropState(seed);
         }
 
         public long Tick { get; set; }
@@ -58,6 +59,7 @@ namespace Game.Core.Sim
         public Dictionary<string, int> Artifacts { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
         public RiftState Rift { get; } = new RiftState();
         public WeaponState Weapons { get; } = new WeaponState();
+        public DropState Drops { get; }
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;

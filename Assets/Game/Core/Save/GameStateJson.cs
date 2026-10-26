@@ -66,6 +66,7 @@ namespace Game.Core.Save
                 ("artifacts", JsonValue.Array(WriteArtifacts(state.Artifacts))),
                 ("rift", WriteRift(state.Rift)),
                 ("weapons", WriteWeapons(state.Weapons)),
+                ("drops", WriteDrops(state.Drops)),
                 ("inputStats", Object(
                     ("keys", JsonValue.Of(state.TotalInput.Keys.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("leftClicks", JsonValue.Of(state.TotalInput.LeftClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -181,7 +182,69 @@ namespace Game.Core.Save
                 ReadRift(node.Field("rift"), state.Rift);
             if (node.HasField("weapons"))
                 ReadWeapons(node.Field("weapons"), weapons, state.Weapons);
+            if (node.HasField("drops"))
+                ReadDrops(node.Field("drops"), state.Drops);
+            else
+                state.Drops.Rng = new Rng(rng0 ^ rng1 ^ DropState.SeedSalt);
             return state;
+        }
+
+        private static JsonValue WriteDrops(DropState drops)
+        {
+            var (rng0, rng1) = drops.Rng.State;
+            var gear = new JsonValue[drops.Gear.Count];
+            for (var i = 0; i < gear.Length; i++)
+                gear[i] = WriteGear(drops.Gear[i]);
+            return Object(
+                ("rng", JsonValue.Array(new[] { SaveValues.Of(rng0), SaveValues.Of(rng1) })),
+                ("day", JsonValue.Of(drops.Day)),
+                ("dailyItems", JsonValue.Of(drops.DailyItems)),
+                ("dust", JsonValue.Of(drops.Dust)),
+                ("salvageUpTo", drops.SalvageUpTo == null ? JsonValue.Null() : JsonValue.Of(ItemRarityNames.Of(drops.SalvageUpTo.Value))),
+                ("itemsFound", JsonValue.Of(drops.ItemsFound)),
+                ("salvagedItems", JsonValue.Of(drops.SalvagedItems)),
+                ("gear", JsonValue.Array(gear)));
+        }
+
+        private static JsonValue WriteGear(GearItem item) =>
+            Object(
+                ("slot", JsonValue.Of(ItemSlotNames.Of(item.Slot))),
+                ("rarity", JsonValue.Of(ItemRarityNames.Of(item.Rarity))),
+                ("itemLevel", JsonValue.Of(item.ItemLevel)),
+                ("color", item.Color == null ? JsonValue.Null() : JsonValue.Of(item.Color)));
+
+        private static void ReadDrops(ContentNode node, DropState drops)
+        {
+            var rng = node.Field("rng").Items();
+            if (rng.Count != 2)
+                throw node.Field("rng").Error("expected two state words");
+            var rng0 = SaveValues.ReadULong(rng[0]);
+            var rng1 = SaveValues.ReadULong(rng[1]);
+            if (rng0 == 0 && rng1 == 0)
+                throw node.Field("rng").Error("state words must not both be zero");
+            drops.Rng = Rng.FromState(rng0, rng1);
+            drops.Day = node.Field("day").AsLong();
+            drops.DailyItems = node.Field("dailyItems").AsInt(0);
+            drops.Dust = node.Field("dust").AsNumber(0, 1e300);
+            var salvage = node.Field("salvageUpTo");
+            drops.SalvageUpTo = !salvage.IsNull && ItemRarityNames.ByName.TryGetValue(salvage.AsString(), out var limit) ? limit : (ItemRarity?)null;
+            drops.ItemsFound = node.Field("itemsFound").AsLong(0);
+            drops.SalvagedItems = node.Field("salvagedItems").AsLong(0);
+            foreach (var item in node.Field("gear").Items())
+            {
+                var gear = ReadGear(item);
+                if (gear != null)
+                    drops.Gear.Add(gear);
+            }
+        }
+
+        private static GearItem? ReadGear(ContentNode node)
+        {
+            if (!ItemSlotNames.ByName.TryGetValue(node.Field("slot").AsString(), out var slot) || slot == ItemSlot.Weapon)
+                return null;
+            var rarity = ItemRarityNames.ByName.TryGetValue(node.Field("rarity").AsString(), out var found) ? found : ItemRarity.Simple;
+            var color = node.Field("color");
+            return new GearItem(slot, rarity, node.Field("itemLevel").AsInt(1), color.IsNull ? null : color.AsString());
         }
 
         private static JsonValue WriteWeapons(WeaponState weapons)

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "rarityWeights": { "simple": 40, "fine": 28, "uncommon": 17, "rare": 9, "epic": 4, "legendary": 1.5, "mythic": 0.4, "ancient": 0.09, "rift": 0.01 },
+  "ceiling": { "firstBiome": "rare", "perBiome": 1 },
+  "slotWeights": { "weapon": 20, "helmet": 13.75, "chest": 13.75, "gloves": 13.75, "boots": 13.75, "amulet": 10, "ring": 15 },
+  "record": { "items": 1, "maxRarity": "rare" },
+  "specialBoss": { "every": 10, "items": 1, "minRarity": "uncommon" },
+  "guardian": { "items": 2, "minRarity": "rare" },
+  "daily": { "chance": 0.25, "limit": 20, "maxLimit": 25, "recordShare": 0.8, "offlineChance": 0.5 },
+  "guarantees": [
+    { "stage": 3, "slot": "helmet", "rarity": "fine", "color": "own" },
+    { "stage": 10, "slot": "ring", "rarity": "uncommon", "color": "own" },
+    { "stage": 20, "slot": "weapon", "rarity": "uncommon", "color": "ownColorOtherClass" },
+    { "stage": 50, "slot": "empty", "rarity": "rare" }
+  ],
+  "gems": {
+    "skill": { "normal": 300, "boss": 10 },
+    "support": { "normal": 150, "boss": 0 },
+    "trigger": { "normal": 500, "boss": 0, "firstAtStage": 10 }
+  },
+  "bag": { "size": 60 },
+  "dust": { "simple": 1, "fine": 2, "uncommon": 4, "rare": 10, "epic": 25, "legendary": 60, "mythic": 150, "ancient": 400, "rift": 1000 }
+}

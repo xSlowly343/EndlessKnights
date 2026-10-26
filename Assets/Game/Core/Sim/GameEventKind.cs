@@ -12,6 +12,8 @@ namespace Game.Core.Sim
         SkillCast,
         AuraChanged,
         LevelUp,
-        Prestige
+        Prestige,
+        ItemDropped,
+        GemDropped
     }
 }

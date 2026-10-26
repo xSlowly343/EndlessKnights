@@ -1,4 +1,5 @@
 using System;
+using Game.Core.Clock;
 using Game.Core.Content;
 using Game.Core.Input;
 using Game.Core.Math;
@@ -61,6 +62,7 @@ namespace Game.Bootstrap
 
         private void Update()
         {
+            _loop.SetLocalDay(LocalDay.Of(DateTimeOffset.Now));
             _loop.Advance(Time.unscaledDeltaTime);
             ShowEvents();
             ShowState();
