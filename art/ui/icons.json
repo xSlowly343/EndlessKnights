@@ -13,10 +13,15 @@
     "weapons": { "size": 64, "tile": "attribute", "padding": 0.16 },
     "glyphs": { "size": 64, "tile": "attribute", "padding": 0.2 },
     "strip": { "size": 40, "tile": "#26304A", "padding": 0.14 },
-    "tree": { "size": 64, "tile": "#14192C", "padding": 0.16 }
+    "tree": { "size": 64, "tile": "#14192C", "padding": 0.16 },
+    "filters": { "size": 40, "tile": "#26304A", "padding": 0.14 }
   },
   "attributes": { "red": "#E0574A", "green": "#4FC277", "blue": "#3F6FD1", "white": "#7F89A0" },
   "icons": [
+    { "group": "filters", "id": "all", "source": "lorc/cut-diamond" },
+    { "group": "filters", "id": "skills", "source": "lorc/lightning-arc" },
+    { "group": "filters", "id": "supports", "source": "lorc/gears" },
+    { "group": "filters", "id": "triggers", "source": "lorc/cycle" },
     { "group": "tabs", "id": "hero", "source": "delapouite/viking-helmet" },
     { "group": "tabs", "id": "book", "source": "lorc/open-book" },
     { "group": "tabs", "id": "tree", "source": "lorc/tree-branch" },

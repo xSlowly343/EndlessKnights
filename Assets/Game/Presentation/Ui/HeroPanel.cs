@@ -19,6 +19,7 @@ namespace Game.Presentation.Ui
         private const float GapPx = 8f;
         private const float SlotPx = 56f;
         private const float RingPx = 52f;
+        private const float SlotIconShare = 0.55f;
         private const float FramePx = 2f;
         private const float SlotRadiusPx = 8f;
         private const float CenterWidthPx = 212f;
@@ -158,7 +159,7 @@ namespace Game.Presentation.Ui
             var doll = UiElements.Anchor(UiElements.Rect("Doll", _overview), top, new Vector2(0f, -GapPx / 2f), new Vector2(SlotPx + CenterWidthPx + JewelryWidthPx + 4f * GapPx / 2f + GapPx, DollHeightPx));
             var topLeft = new Vector2(0f, 1f);
             for (var i = 0; i < HeroSummary.ArmorSlots.Count; i++)
-                SquareSlot(doll, HeroSummary.SlotName(HeroSummary.ArmorSlots[i]), new Vector2(0f, -i * (SlotPx + GapPx)));
+                SquareSlot(doll, HeroSummary.ArmorSlots[i], new Vector2(0f, -i * (SlotPx + GapPx)));
             var centerX = SlotPx + GapPx + 2f;
             BuildPortrait(doll, centerX);
             var handWidth = (CenterWidthPx - GapPx) / 2f;
@@ -174,7 +175,7 @@ namespace Game.Presentation.Ui
             var inner = UiElements.Fill("Inner", box.rectTransform, _theme.Background, 9f);
             UiElements.Stretch(inner.rectTransform, 1f);
             for (var i = 0; i < HeroSummary.JewelrySlots.Count; i++)
-                RingSlot(box.rectTransform, HeroSummary.SlotName(HeroSummary.JewelrySlots[i]), new Vector2(0f, -(GapPx / 2f + 2f + i * (RingPx + GapPx))));
+                RingSlot(box.rectTransform, HeroSummary.JewelrySlots[i], new Vector2(0f, -(GapPx / 2f + 2f + i * (RingPx + GapPx))));
             return doll;
         }
 
@@ -196,29 +197,36 @@ namespace Game.Presentation.Ui
             UiElements.Anchor(_progress.rectTransform, bottom, new Vector2(0f, GapPx), new Vector2(CenterWidthPx - 2f * GapPx, 16f));
         }
 
-        private void SquareSlot(RectTransform parent, string name, Vector2 position)
+        private void SquareSlot(RectTransform parent, string slot, Vector2 position)
         {
-            var frame = UiElements.Fill(name, parent, _theme.Border, SlotRadiusPx);
+            var frame = UiElements.Fill(slot, parent, _theme.Border, SlotRadiusPx);
             UiElements.Anchor(frame.rectTransform, new Vector2(0f, 1f), position, Vector2.one * SlotPx);
             var inner = UiElements.Fill("Inner", frame.rectTransform, _theme.Card, SlotRadiusPx - FramePx);
             UiElements.Stretch(inner.rectTransform, FramePx);
-            SlotLabel(frame.rectTransform, name, 11f);
+            SlotMark(frame.rectTransform, slot, SlotPx, 11f);
         }
 
-        private void RingSlot(RectTransform parent, string name, Vector2 position)
+        private void RingSlot(RectTransform parent, string slot, Vector2 position)
         {
-            var frame = UiElements.Dot(name, parent, _theme.Border);
+            var frame = UiElements.Dot(slot, parent, _theme.Border);
             UiElements.Anchor(frame.rectTransform, new Vector2(0.5f, 1f), position, Vector2.one * RingPx);
             var inner = UiElements.Dot("Inner", frame.rectTransform, _theme.Card);
             UiElements.Stretch(inner.rectTransform, FramePx);
-            SlotLabel(frame.rectTransform, name, 10f);
+            SlotMark(frame.rectTransform, slot, RingPx, 10f);
         }
 
-        private void SlotLabel(RectTransform parent, string text, float sizePx)
+        private void SlotMark(RectTransform parent, string slot, float slotPx, float textPx)
         {
-            var label = UiElements.Label("Label", parent, _theme.TextFont, sizePx, _theme.TextDim, TextAlignmentOptions.Center);
+            var sprite = UiIcons.Slot(slot);
+            if (sprite != null)
+            {
+                var icon = UiElements.Icon("Icon", parent, sprite, _theme.TextDim);
+                UiElements.Anchor(icon.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.one * (slotPx * SlotIconShare));
+                return;
+            }
+            var label = UiElements.Label("Label", parent, _theme.TextFont, textPx, _theme.TextDim, TextAlignmentOptions.Center);
             UiElements.Stretch(label.rectTransform);
-            label.text = text;
+            label.text = HeroSummary.SlotName(slot);
         }
 
         private RectTransform BuildTiles()
