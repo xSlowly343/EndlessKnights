@@ -33,6 +33,7 @@ namespace Game.Presentation.Ui
         private const float DividerHeightPx = 30f;
         private const float BagHeaderPx = 24f;
         private const float FilterPaddingPx = 10f;
+        private const float FilterIconInsetPx = 4f;
         private const float CellPx = 42f;
         private const float BagGemPx = 20f;
         private const float GhostPx = 30f;
@@ -51,6 +52,7 @@ namespace Game.Presentation.Ui
         private readonly List<Row> _rows = new List<Row>();
         private readonly List<BagCell> _bag = new List<BagCell>();
         private readonly List<UiButton> _filters = new List<UiButton>();
+        private readonly List<Image> _filterIcons = new List<Image>();
         private readonly List<GemDef> _bagGems = new List<GemDef>();
         private readonly RectTransform _bagHeader;
         private readonly RectTransform _bagArea;
@@ -127,7 +129,7 @@ namespace Game.Presentation.Ui
             {
                 var active = Filters[i] == _filter;
                 _filters[i].Back.color = active ? ActivePill : Color.clear;
-                _filters[i].Label!.color = active ? _theme.Text : _theme.TextDim;
+                _filterIcons[i].color = active ? _theme.Text : _theme.TextDim;
             }
             GemBag.Fill(book, state, _filter, _bagGems);
             for (var i = 0; i < _bag.Count; i++)
@@ -275,14 +277,15 @@ namespace Game.Presentation.Ui
             {
                 var back = UiElements.Fill("Filter", pills, Color.clear, BagHeaderPx / 2f);
                 var fit = back.gameObject.AddComponent<HorizontalLayoutGroup>();
-                fit.padding = new RectOffset((int)FilterPaddingPx, (int)FilterPaddingPx, 0, 0);
+                fit.padding = new RectOffset((int)FilterPaddingPx, (int)FilterPaddingPx, (int)FilterIconInsetPx, (int)FilterIconInsetPx);
                 fit.childControlWidth = true;
                 fit.childControlHeight = true;
                 fit.childForceExpandWidth = false;
                 back.gameObject.AddComponent<LayoutElement>().preferredHeight = BagHeaderPx;
-                var label = UiElements.Label("Text", back.rectTransform, _theme.TextFont, 12f, _theme.TextDim, TextAlignmentOptions.Center);
-                label.text = BookTexts.Filter(filter);
-                _filters.Add(new UiButton(back, label));
+                var icon = UiElements.Icon("Icon", back.rectTransform, UiIcons.Filter(filter), _theme.TextDim);
+                icon.gameObject.AddComponent<LayoutElement>().preferredWidth = BagHeaderPx - 2f * FilterIconInsetPx;
+                _filterIcons.Add(icon);
+                _filters.Add(new UiButton(back, null));
             }
             return header;
         }
