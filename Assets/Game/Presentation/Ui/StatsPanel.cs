@@ -15,7 +15,6 @@ namespace Game.Presentation.Ui
         private const float RowHeightPx = 52f;
         private const float ColumnWidthPx = 150f;
         private const float RadiusPx = 8f;
-        private const int RowCount = 3;
 
         private readonly UiTheme _theme;
         private readonly RectTransform _root;
@@ -30,7 +29,7 @@ namespace Game.Presentation.Ui
             var labelWidth = Width() - 2f * ColumnWidthPx;
             _sessionTitle = HeaderCell(new Vector2(PaddingPx + labelWidth, -GapPx));
             _allTimeTitle = HeaderCell(new Vector2(PaddingPx + labelWidth + ColumnWidthPx, -GapPx));
-            for (var i = 0; i < RowCount; i++)
+            for (var i = 0; i < InputStatsView.RowCount; i++)
                 _rows.Add(BuildRow(i, labelWidth));
             _root.gameObject.SetActive(false);
         }
@@ -49,13 +48,13 @@ namespace Game.Presentation.Ui
                 return;
             _sessionTitle.text = InputStatsView.SessionTitle;
             _allTimeTitle.text = InputStatsView.AllTimeTitle;
-            var rows = InputStatsView.Rows(loop.SessionInput, loop.State.TotalInput, NumberDisplay.Settings.ThousandsSeparator);
+            var rows = InputStatsView.Rows(loop.SessionInput, loop.State.TotalInput, loop.State.StartedUnixMs, NumberDisplay.Settings.ThousandsSeparator);
             for (var i = 0; i < _rows.Count && i < rows.Count; i++)
             {
                 var cells = _rows[i];
                 cells[0].text = rows[i].Label;
-                cells[1].text = rows[i].HasHint ? $"{rows[i].Session}\n<size=60%><color=#9AA6C8>{rows[i].SessionHint}</color></size>" : rows[i].Session;
-                cells[2].text = rows[i].HasHint ? $"{rows[i].AllTime}\n<size=60%><color=#9AA6C8>{rows[i].AllTimeHint}</color></size>" : rows[i].AllTime;
+                cells[1].text = rows[i].Session;
+                cells[2].text = rows[i].AllTime;
             }
         }
 

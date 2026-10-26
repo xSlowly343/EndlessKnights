@@ -490,6 +490,8 @@
     "offline.stuck": { "ru": "Босс этапа пока сильнее, нужна прокачка", "en": "The stage boss is still stronger, you need to level up" },
     "stats.session": { "ru": "Сессия", "en": "This session" },
     "stats.allTime": { "ru": "Всё время", "en": "All time" },
+    "stats.playTime": { "ru": "Время в игре", "en": "Time played" },
+    "stats.started": { "ru": "Начало игры", "en": "Started playing" },
     "stats.keys": { "ru": "Нажатия клавиш", "en": "Key presses" },
     "stats.clicks": { "ru": "Клики мыши", "en": "Mouse clicks" },
     "stats.mouse": { "ru": "Расстояние мыши", "en": "Mouse distance" },

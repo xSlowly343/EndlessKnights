@@ -72,7 +72,9 @@ namespace Game.Core.Save
                     ("leftClicks", JsonValue.Of(state.TotalInput.LeftClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("rightClicks", JsonValue.Of(state.TotalInput.RightClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("middleClicks", JsonValue.Of(state.TotalInput.MiddleClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
-                    ("mouseMeters", JsonValue.Of(state.TotalInput.MouseMeters)))),
+                    ("mouseMeters", JsonValue.Of(state.TotalInput.MouseMeters)),
+                    ("playSeconds", JsonValue.Of(state.TotalInput.PlaySeconds)),
+                    ("startedUnixMs", JsonValue.Of(state.StartedUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))))),
                 ("skills", JsonValue.Array(WriteSkills(state))),
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
                 ("tree", WriteTree(state.Tree)),
@@ -164,6 +166,10 @@ namespace Game.Core.Save
             state.TotalInput.RightClicks = ReadCount(input.Field("rightClicks"));
             state.TotalInput.MiddleClicks = ReadCount(input.Field("middleClicks"));
             state.TotalInput.MouseMeters = input.Field("mouseMeters").AsNumber(0, 1e15);
+            if (input.HasField("playSeconds"))
+                state.TotalInput.PlaySeconds = input.Field("playSeconds").AsNumber(0, 1e12);
+            if (input.HasField("startedUnixMs"))
+                state.StartedUnixMs = (long)ReadCount(input.Field("startedUnixMs"));
             var presets = node.Field("presets");
             state.ActivePreset = presets.Field("active").AsInt(0, 1);
             state.OtherPreset = new BuildPreset(ReadTree(presets.Field("otherTree")));
