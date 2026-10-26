@@ -79,7 +79,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CapsLockRageCountsOnlyUnbrokenHits()
         {
-            var steady = Hero("caps_rage");
+            var steady = Hero("no_breather");
             steady.Cast(0);
             for (var i = 0; i < 20; i++)
             {
@@ -87,7 +87,7 @@ namespace Game.Core.Tests.Sim
                 steady.Ticks(2);
             }
 
-            var broken = Hero("caps_rage");
+            var broken = Hero("no_breather");
             broken.Cast(0);
             for (var i = 0; i < 20; i++)
             {
@@ -95,26 +95,26 @@ namespace Game.Core.Tests.Sim
                 broken.Ticks(i == 10 ? 8 : 2);
             }
 
-            Assert.That(steady.DamageFrom(DamageSource.Skill), Is.EqualTo(steady.SkillDamage("caps_rage", 5)).Within(1e-9));
+            Assert.That(steady.DamageFrom(DamageSource.Skill), Is.EqualTo(steady.SkillDamage("no_breather", 5)).Within(1e-9));
             Assert.That(broken.DamageFrom(DamageSource.Skill), Is.EqualTo(0));
         }
 
         [Test]
-        public void TypoTurnsEveryBackspaceIntoADoubleHit()
+        public void StepBackTurnsEveryBackspaceIntoADoubleHit()
         {
-            var hero = Hero("typo");
+            var hero = Hero("step_back");
             Assert.That(hero.Cast(0), Is.EqualTo(CastResult.Passive));
 
             hero.Input.PressBackspace(1);
             hero.Ticks(1);
 
-            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("typo", 1)).Within(1e-9));
+            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("step_back", 1)).Within(1e-9));
         }
 
         [Test]
-        public void TypistDoublesResourceFromKeys()
+        public void QuickStrideDoublesResourceFromKeys()
         {
-            var hero = Hero("typist");
+            var hero = Hero("quick_stride");
             hero.State.Resource = 50;
             hero.Cast(0);
             var perKey = TestWorld.Data.Combat.Resources.For("ronin").PerKey;
@@ -125,9 +125,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void HotkeysChargeTenCombos()
+        public void DoubleGripChargeTenCombos()
         {
-            var hero = Hero("hotkeys");
+            var hero = Hero("double_grip");
             hero.Cast(0);
             Assert.That(hero.State.Skills[0].HitsLeft, Is.EqualTo(10));
 
@@ -138,13 +138,13 @@ namespace Game.Core.Tests.Sim
             }
 
             Assert.That(hero.State.Skills[0].HitsLeft, Is.EqualTo(0));
-            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("hotkeys", 3 * 10)).Within(1e-6));
+            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("double_grip", 3 * 10)).Within(1e-6));
         }
 
         [Test]
-        public void TouchTypingRewardsAMinuteOfSteadyTyping()
+        public void SteadyPaceRewardsAMinuteOfSteadyTyping()
         {
-            var hero = Hero("touch_typing");
+            var hero = Hero("steady_pace");
 
             for (var i = 0; i < 599; i++)
                 hero.Ticks(1, keysPerTick: i % 10 == 0 ? 1 : 0);

@@ -192,10 +192,11 @@
       "native": { "refreshFamily": "song" }
     },
     {
-      "id": "stenography",
+      "id": "through_stride",
+      "formerIds": ["stenography"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Стенография", "en": "Stenography" },
+      "name": { "ru": "Сквозной Ход", "en": "Through Stride" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 40 },
       "cooldownSeconds": 20,
@@ -235,10 +236,11 @@
       "effect": { "type": "specialKeys", "key": "space", "bonus": 2 }
     },
     {
-      "id": "caps_rage",
+      "id": "no_breather",
+      "formerIds": ["caps_rage"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Капслок ярости", "en": "Caps Lock Rage" },
+      "name": { "ru": "Без передышки", "en": "No Breather" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 40,
@@ -246,20 +248,22 @@
       "effect": { "type": "streakStrike", "hits": 20, "maxGapSeconds": 0.5, "multiplier": 5 }
     },
     {
-      "id": "typo",
+      "id": "step_back",
+      "formerIds": ["typo"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Опечатка", "en": "Typo" },
+      "name": { "ru": "Шаг назад", "en": "Step Back" },
       "tags": ["Keyboard", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "specialKeys", "key": "backspace", "bonus": 1 }
     },
     {
-      "id": "typist",
+      "id": "quick_stride",
+      "formerIds": ["typist"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Машинистка", "en": "Typist" },
+      "name": { "ru": "Частый Ход", "en": "Quickened Stride" },
       "tags": ["Aura", "Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
@@ -267,20 +271,22 @@
       "effect": { "type": "aura", "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0, "tags": ["Keyboard"] }] }
     },
     {
-      "id": "hotkeys",
+      "id": "double_grip",
+      "formerIds": ["hotkeys"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Горячие клавиши", "en": "Hotkeys" },
+      "name": { "ru": "Двойной хват", "en": "Double Grip" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 15 },
       "cooldownSeconds": 5,
       "effect": { "type": "specialKeys", "key": "combo", "bonus": 3, "charges": 10 }
     },
     {
-      "id": "touch_typing",
+      "id": "steady_pace",
+      "formerIds": ["touch_typing"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Слепая печать", "en": "Touch Typing" },
+      "name": { "ru": "Ровный шаг", "en": "Steady Pace" },
       "tags": ["Keyboard", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
@@ -546,20 +552,22 @@
       "effect": { "type": "echo", "power": 0.5 }
     },
     {
-      "id": "coffee_break",
+      "id": "caravan_halt",
+      "formerIds": ["coffee_break"],
       "kind": "skill",
       "color": "white",
-      "name": { "ru": "Кофе-брейк", "en": "Coffee Break" },
+      "name": { "ru": "Привал", "en": "Caravan Halt" },
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "breakBonus", "breakSeconds": 300, "seconds": 60, "modifiers": [{ "stat": "damage", "kind": "more", "value": 1.0 }] }
     },
     {
-      "id": "call",
+      "id": "blade_on_watch",
+      "formerIds": ["call"],
       "kind": "skill",
       "color": "white",
-      "name": { "ru": "Созвон", "en": "Call" },
+      "name": { "ru": "Клинок на часах", "en": "Blade on Watch" },
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
@@ -576,10 +584,11 @@
       "effect": { "type": "passive", "perPartyMember": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.05 }] }
     },
     {
-      "id": "heros_diary",
+      "id": "prokhors_ledger",
+      "formerIds": ["heros_diary"],
       "kind": "skill",
       "color": "white",
-      "name": { "ru": "Дневник героя", "en": "Hero's Diary" },
+      "name": { "ru": "Запись у Прохора", "en": "Prokhor's Ledger" },
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,

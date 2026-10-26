@@ -60,19 +60,19 @@ namespace Game.Core.Tests.Build
         [Test]
         public void OnlyOwnedSkillsGoIn()
         {
-            var loop = WithGems("stenography");
+            var loop = WithGems("through_stride");
 
             Assert.That(loop.Book.Equip(Gem("march")), Is.EqualTo(BookResult.NotOwned));
-            Assert.That(loop.Book.Equip(Gem("stenography")), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.Book.Equip(Gem("stenography")), Is.EqualTo(BookResult.NotOwned));
+            Assert.That(loop.Book.Equip(Gem("through_stride")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.Equip(Gem("through_stride")), Is.EqualTo(BookResult.NotOwned));
         }
 
         [Test]
         public void NoMoreSkillsThanSlots()
         {
-            var loop = WithGems("stenography", "march", "lull", "lull");
+            var loop = WithGems("through_stride", "march", "lull", "lull");
 
-            loop.Book.Equip(Gem("stenography"));
+            loop.Book.Equip(Gem("through_stride"));
             loop.Book.Equip(Gem("march"));
             loop.Book.Equip(Gem("lull"));
 
@@ -90,14 +90,14 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SkillsCanBeRearrangedFreely()
         {
-            var loop = WithGems("stenography", "march", "lull");
-            loop.Book.Equip(Gem("stenography"));
+            var loop = WithGems("through_stride", "march", "lull");
+            loop.Book.Equip(Gem("through_stride"));
             loop.Book.Equip(Gem("march"));
             loop.Book.Equip(Gem("lull"));
 
             Assert.That(loop.Book.Move(0, 2), Is.EqualTo(BookResult.Done));
             Assert.That(loop.State.Skills[0].Skill, Is.SameAs(Gem("march")));
-            Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("stenography")));
+            Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("through_stride")));
             Assert.That(loop.Book.Move(0, 3), Is.EqualTo(BookResult.NoSuchSlot));
         }
 
@@ -120,8 +120,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TriggerGoesIntoItsOwnSlotOnASkill()
         {
-            var loop = WithGems("stenography", "lull", "cast_on_timer");
-            loop.Book.Equip(Gem("stenography"));
+            var loop = WithGems("through_stride", "lull", "cast_on_timer");
+            loop.Book.Equip(Gem("through_stride"));
             loop.Book.Equip(Gem("lull"));
 
             Assert.That(loop.Book.SetTrigger(0, Gem("cast_on_timer")), Is.EqualTo(BookResult.Done));

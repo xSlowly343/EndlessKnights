@@ -50,7 +50,7 @@ namespace Game.Core.Tests.Content
             Assert.That(TestWorld.Real.Gems["iron_rim_bash"].Skill!.Weapon, Is.EqualTo("axe"));
             Assert.That(TestWorld.Real.Gems["hearth_song"].Skill!.Weapon, Is.EqualTo("electric_guitar"));
             Assert.That(TestWorld.Real.Gems["charm_prick"].Skill!.Weapon, Is.EqualTo("voodoo_doll"));
-            Assert.That(TestWorld.Real.Gems["stenography"].Skill!.Weapon, Is.Null);
+            Assert.That(TestWorld.Real.Gems["through_stride"].Skill!.Weapon, Is.Null);
         }
 
         [Test]

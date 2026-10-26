@@ -92,7 +92,7 @@ namespace Game.Core.Tests.Sim.Weapons
         {
             var loop = Hero(HeroClass.Viking);
             loop.Weapons.Unequip(WeaponHand.Right);
-            loop.Skills.Equip(TestWorld.Real.Gems["stenography"]);
+            loop.Skills.Equip(TestWorld.Real.Gems["through_stride"]);
             loop.State.Resource = 100;
 
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));

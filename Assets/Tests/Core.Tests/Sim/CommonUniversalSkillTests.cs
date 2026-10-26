@@ -70,9 +70,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CoffeeBreakDoublesDamageForAMinuteAfterAFiveMinutePause()
+        public void CaravanHaltDoublesDamageForAMinuteAfterAFiveMinutePause()
         {
-            var hero = Hero("coffee_break");
+            var hero = Hero("caravan_halt");
             hero.Ticks(3000);
             Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(1));
 
@@ -88,9 +88,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CoffeeBreakNeedsALongPause()
+        public void CaravanHaltNeedsALongPause()
         {
-            var hero = Hero("coffee_break");
+            var hero = Hero("caravan_halt");
             hero.Ticks(2000);
 
             hero.Ticks(1, keysPerTick: 1);
@@ -99,16 +99,16 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CallReservesAndStrikesEveryTwoSecondsWithoutKeys()
+        public void BladeOnWatchReservesAndStrikesEveryTwoSecondsWithoutKeys()
         {
-            var hero = Hero("call");
+            var hero = Hero("blade_on_watch");
             hero.Ticks(1);
             Assert.That(hero.State.ReservedResource, Is.EqualTo(20));
             hero.Ticks(1, keysPerTick: 1);
             hero.Loop.Events.Clear();
 
             hero.Ticks(40);
-            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("call", 2)).Within(1e-6));
+            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("blade_on_watch", 2)).Within(1e-6));
 
             hero.Loop.Events.Clear();
             for (var i = 0; i < 20; i++)
@@ -134,9 +134,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void HerosDiaryRaisesGemExperience()
+        public void ProkhorsLedgerRaisesGemExperience()
         {
-            var hero = Hero("heros_diary");
+            var hero = Hero("prokhors_ledger");
 
             hero.Ticks(1);
 

@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Content
             Assert.That(gems.All.Count, Is.EqualTo(66));
             foreach (var id in new[] { "iron_rim_bash", "no_mercy", "hearth_song", "louder" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
-            Assert.That(gems["stenography"].Kind, Is.EqualTo(GemKind.Skill));
+            Assert.That(gems["through_stride"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["march"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["lull"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["charm_prick"].Skill!.Effect, Is.InstanceOf<EnemyDebuffEffect>());
@@ -28,13 +28,13 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void StenographyMatchesContentDraft()
+        public void ThroughStrideMatchesContentDraft()
         {
-            var gem = GemCatalog.Load(RealFile())["stenography"];
+            var gem = GemCatalog.Load(RealFile())["through_stride"];
             var effect = (ChainHitsEffect)gem.Skill!.Effect;
 
             Assert.That(gem.Color, Is.EqualTo(GemColor.Red));
-            Assert.That(gem.NameRu, Is.EqualTo("Стенография"));
+            Assert.That(gem.NameRu, Is.EqualTo("Сквозной Ход"));
             Assert.That(gem.Tags, Is.EqualTo(StatTags.Keyboard | StatTags.Skill));
             Assert.That(gem.Skill.ResourceCost, Is.EqualTo(40));
             Assert.That(gem.Skill.CooldownSeconds, Is.EqualTo(20));
@@ -151,7 +151,16 @@ namespace Game.Core.Tests.Content
         [TestCase("amp_eleven", "underside_amp")]
         [TestCase("stage_dive", "still_alive")]
         [TestCase("voodoo_needle", "charm_prick")]
-        public void OldClassSkillFromASaveIsReadAsItsLoreSkill(string oldId, string newId)
+        [TestCase("stenography", "through_stride")]
+        [TestCase("typo", "step_back")]
+        [TestCase("typist", "quick_stride")]
+        [TestCase("hotkeys", "double_grip")]
+        [TestCase("touch_typing", "steady_pace")]
+        [TestCase("coffee_break", "caravan_halt")]
+        [TestCase("call", "blade_on_watch")]
+        [TestCase("heros_diary", "prokhors_ledger")]
+        [TestCase("caps_rage", "no_breather")]
+        public void RenamedSkillFromASaveIsReadAsItsLoreSkill(string oldId, string newId)
         {
             var gems = GemCatalog.Load(RealFile());
 

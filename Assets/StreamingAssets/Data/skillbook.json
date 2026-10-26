@@ -4,18 +4,18 @@
   "sockets": { "base": 1, "recordStages": [50, 250], "rebirths": 2, "max": 5, "attributePerColoredSupport": 15 },
   "startingGems": {
     "viking": ["iron_rim_bash", "no_mercy", "lull"],
-    "ronin": ["march", "stenography", "lull"],
-    "amazon": ["march", "stenography", "lull"],
-    "stormweaver": ["march", "stenography", "lull"],
-    "nomad": ["march", "stenography", "lull"],
+    "ronin": ["march", "through_stride", "lull"],
+    "amazon": ["march", "through_stride", "lull"],
+    "stormweaver": ["march", "through_stride", "lull"],
+    "nomad": ["march", "through_stride", "lull"],
     "metalhead": ["hearth_song", "louder", "lull"],
-    "oracle": ["march", "stenography", "lull"],
-    "bannerbearer": ["march", "stenography", "lull"],
-    "voodoo": ["charm_prick", "stenography", "lull"],
-    "clockmaker": ["march", "stenography", "lull"],
-    "plague_doctor": ["march", "stenography", "lull"],
-    "moonshiner": ["march", "stenography", "lull"],
-    "gravedigger": ["march", "stenography", "lull"],
-    "captain": ["march", "stenography", "lull"]
+    "oracle": ["march", "through_stride", "lull"],
+    "bannerbearer": ["march", "through_stride", "lull"],
+    "voodoo": ["charm_prick", "through_stride", "lull"],
+    "clockmaker": ["march", "through_stride", "lull"],
+    "plague_doctor": ["march", "through_stride", "lull"],
+    "moonshiner": ["march", "through_stride", "lull"],
+    "gravedigger": ["march", "through_stride", "lull"],
+    "captain": ["march", "through_stride", "lull"]
   }
 }

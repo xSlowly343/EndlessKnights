@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void RequirementIsReadFromGemsJson()
         {
-            var gem = GemsWithRequirement()["stenography"];
+            var gem = GemsWithRequirement()["through_stride"];
 
             Assert.That(gem.Requires["strength"], Is.EqualTo(10));
         }
@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void GemNeedsEnoughAttributeFromTheTree()
         {
-            var gem = GemsWithRequirement()["stenography"];
+            var gem = GemsWithRequirement()["through_stride"];
             var loop = Swordsman();
             loop.State.OwnedGems.Add(gem);
 
