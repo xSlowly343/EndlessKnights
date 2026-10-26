@@ -58,6 +58,7 @@ namespace Game.Core.Sim
             if (resource.MousePxPerPoint > 0)
                 gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
             gained += resource.PerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1);
+            gained += input.Clicks * resource.PerClick * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Click);
             gained += _state.PendingResource;
             _state.PendingResource = 0;
             var value = System.Math.Min(Max, _state.Resource + gained);

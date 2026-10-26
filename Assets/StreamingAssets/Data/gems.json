@@ -578,6 +578,17 @@
       "effect": { "type": "strike", "multiplier": 2, "queueTargets": 2 }
     },
     {
+      "id": "fathers_scimitar",
+      "kind": "skill",
+      "weapon": "scimitar",
+      "color": "red",
+      "name": { "ru": "Отцовский ятаган", "en": "Father's Scimitar" },
+      "tags": ["Skill"],
+      "cost": { "resource": 10 },
+      "cooldownSeconds": 4,
+      "effect": { "type": "strike", "multiplier": 3 }
+    },
+    {
       "id": "vial_from_belt",
       "kind": "skill",
       "weapon": "syringe_cane",
