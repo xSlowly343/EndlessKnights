@@ -22,7 +22,7 @@ namespace Game.Core.Sim
 
         public void UseRules(PrestigeRules rules) => _rules = rules;
 
-        public bool Available => _state.HighestStage >= _rules.MinStage;
+        public bool Available => !_state.Rift.Inside && _state.HighestStage >= _rules.MinStage;
 
         public BigNumber EchoGain => _rules.EchoFor(_state.RunGoldEarned);
 
@@ -58,9 +58,10 @@ namespace Game.Core.Sim
             _state.Farming = false;
             _state.FarmKills = 0;
             _state.BossFailsInARow = 0;
+            _state.BossBestFraction = 0;
             _state.Gold = BigNumber.Zero;
             _state.RunGoldEarned = BigNumber.Zero;
-            _state.ChainDamage = BigNumber.Zero;
+            _state.ClearQueue();
             _upgrades.Reset();
             _state.SpawnEnemy(null, Content.EnemyType.Normal, BigNumber.Zero);
             _stages.EnsureEnemy();

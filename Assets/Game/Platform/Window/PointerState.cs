@@ -4,9 +4,12 @@ namespace Game.Platform.Windows.Window
     {
         private const int LeftButton = 0x01;
         private const int RightButton = 0x02;
+        private const int ControlKey = 0x11;
         private const int SwapButtonMetric = 23;
         private const int DownBit = 0x8000;
         private const int PressedSinceLastPollBit = 0x0001;
+
+        public static bool IsControlDown() => (NativeMethods.GetAsyncKeyState(ControlKey) & DownBit) != 0;
 
         public static (bool Down, bool PressedSinceLastPoll) ReadPrimaryButton()
         {

@@ -4,11 +4,14 @@ using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Sim.Rift;
 
 namespace Game.Core.Sim
 {
     public sealed class GameState
     {
+        public const int QueueDepth = 3;
+
         public GameState(ulong seed = 1)
         {
             Rng = new Rng(seed);
@@ -39,6 +42,7 @@ namespace Game.Core.Sim
         public bool Farming { get; set; }
         public int FarmKills { get; set; }
         public int BossFailsInARow { get; set; }
+        public double BossBestFraction { get; set; }
 
         public EnemyDef? Enemy { get; private set; }
         public EnemyType EnemyType { get; private set; }
@@ -52,6 +56,8 @@ namespace Game.Core.Sim
         public BigNumber EchoEarned { get; set; }
         public int Prestiges { get; set; }
         public Dictionary<string, int> Artifacts { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
+        public RiftState Rift { get; } = new RiftState();
+        public WeaponState Weapons { get; } = new WeaponState();
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;
@@ -72,7 +78,37 @@ namespace Game.Core.Sim
             set => _otherPreset = value;
         }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
-        public BigNumber ChainDamage { get; set; }
+        public BigNumber[] QueueDamage { get; } = new BigNumber[QueueDepth];
+
+        public BigNumber ChainDamage
+        {
+            get => QueueDamage[0];
+            set => QueueDamage[0] = value;
+        }
+
+        public double WoundedSpawnResource { get; set; }
+        public double PendingResource { get; set; }
+        public double ReservedResource { get; set; }
+        public int DecayHoldTicks { get; set; }
+        public double BossTimerCarry { get; set; }
+        public int FocusLockTicks { get; set; }
+        public long Kills { get; set; }
+        public long BossKills { get; set; }
+        public int PartyMembers { get; set; } = 1;
+        public double NextKillReward { get; set; } = 1;
+        public double NextKillShardChance { get; set; }
+        public double NextKillShards { get; set; }
+        public long BossStarts { get; set; }
+        public double AllyHeavyCastSeconds { get; set; }
+
+        public void ClearQueue()
+        {
+            for (var i = 0; i < QueueDamage.Length; i++)
+                QueueDamage[i] = BigNumber.Zero;
+            WoundedSpawnResource = 0;
+        }
+        public HashSet<string> TutorialDone { get; } = new HashSet<string>(32, System.StringComparer.Ordinal);
+        public bool TutorialSkipped { get; set; }
 
         public long KeyHits { get; set; }
         public int Combo { get; set; }

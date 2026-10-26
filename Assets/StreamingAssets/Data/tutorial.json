@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "steps": [
+    { "id": "type", "text": "Печатай где угодно: каждая клавиша — удар", "show": { "when": "start" }, "done": { "when": "keys", "count": 20 }, "maxSeconds": 120 },
+    { "id": "mouse", "text": "Веди мышью: это тоже урон", "show": { "when": "kills", "count": 1 }, "done": { "when": "mousePx", "count": 3000 }, "maxSeconds": 60 },
+    { "id": "skills", "text": "Клик ЛКМ или ПКМ в любом окне — скилл", "show": { "when": "kills", "count": 3 }, "done": { "when": "skillCast" }, "maxSeconds": 60 },
+    { "id": "boss", "text": "Босс! Добей его, пока идёт таймер", "show": { "when": "bossStarted" }, "done": { "when": "bossEnded" }, "maxSeconds": 90 },
+    { "id": "boss_failed", "text": "Не успел — пофарми, и босс вернётся", "show": { "when": "bossFailed" }, "done": { "when": "seconds", "count": 8 }, "maxSeconds": 8 },
+    { "id": "tree", "text": "Новый уровень: возьми узел в дереве", "show": { "when": "levelUp" }, "done": { "when": "treeNode" }, "maxSeconds": 120 },
+    { "id": "upgrade", "text": "Хватает золота: улучши удар в панели", "show": { "when": "upgradeAffordable" }, "done": { "when": "strikeUpgrade" }, "maxSeconds": 120 }
+  ]
+}

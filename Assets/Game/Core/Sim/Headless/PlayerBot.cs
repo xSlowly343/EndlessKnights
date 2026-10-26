@@ -28,8 +28,7 @@ namespace Game.Core.Sim.Headless
 
         public void Act(double secondsSinceLastAct)
         {
-            _loop.Book.GrantStartingGems();
-            EquipOwnedSkills();
+            EquipStartingSkills();
             SpendTreePoints();
             SpendSubclassPoints();
             PrestigeWhenStuck(secondsSinceLastAct);
@@ -57,6 +56,12 @@ namespace Game.Core.Sim.Headless
                 default:
                     return "strength";
             }
+        }
+
+        public void EquipStartingSkills()
+        {
+            _loop.Book.GrantStartingGems();
+            EquipOwnedSkills();
         }
 
         private void EquipOwnedSkills()

@@ -82,7 +82,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClickWhileOnCooldownDoesNothingAndTheFirstClickAfterCasts()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead, "shield_bash");
+            var (loop, input) = Hero(HeroClass.Viking, "shield_bash");
             input.ClickLeft();
             loop.Tick();
             var cooldown = loop.State.Skills[0].CooldownTicks;
@@ -114,12 +114,13 @@ namespace Game.Core.Tests.Sim
         public void OdinsFuryHitsForFiveKeyStrikes()
         {
             var (loop, input) = Hero(HeroClass.Viking, "shield_bash", "odins_fury");
+            loop.State.Resource = 50;
 
             input.ClickRight();
             loop.Tick();
 
             Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 5).Within(1e-9));
-            Assert.That(loop.State.Resource, Is.EqualTo(50));
+            Assert.That(loop.State.Resource, Is.EqualTo(0));
         }
 
         [Test]

@@ -12,8 +12,12 @@ namespace Game.Core.Tests.Build
 {
     public class ClassPassiveTests
     {
-        private static GameLoop Real(GameState state, StatSheet? hero = null) =>
-            new GameLoop(TestWorld.Real, new FakeInputSource(), state, hero ?? new StatSheet());
+        private static GameLoop Real(GameState state, StatSheet? hero = null)
+        {
+            var loop = new GameLoop(TestWorld.Real, new FakeInputSource(), state, hero ?? new StatSheet());
+            loop.Weapons.Unequip(WeaponHand.Right);
+            return loop;
+        }
 
         [Test]
         public void RoninStartGivesLongerComboAndKeyCrits()

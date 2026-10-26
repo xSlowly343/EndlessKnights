@@ -13,10 +13,18 @@ namespace Game.Bootstrap
     {
         private GameLoop _loop = null!;
         private BattleView _view = null!;
+        private SkillBarView _skillBar = null!;
+        private StripHintView _hint = null!;
+        private SkillEffects _effects = null!;
         private GameData _data = null!;
         private int _bossTotalTicks = 1;
 
+        public event Action<long>? LeveledUp;
+
         public GameLoop Loop => _loop;
+        public SkillBarView SkillBar => _skillBar;
+        public StripHintView Hint => _hint;
+        public BattleView View => _view;
 
         public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Viking };
 
@@ -25,7 +33,12 @@ namespace Game.Bootstrap
             var driver = host.AddComponent<BattleDriver>();
             driver._data = data;
             driver._loop = new GameLoop(data, input, state ?? NewRun(), new StatSheet());
+            driver._loop.Book.GrantStartingGems();
             driver._view = BattleView.Create();
+            driver._skillBar = SkillBarView.Create();
+            driver._hint = StripHintView.Create();
+            driver._effects = SkillEffects.Create();
+            driver._skillBar.SlotClicked += driver._loop.RequestCast;
             driver._bossTotalTicks = System.Math.Max(1, driver._loop.State.BossTicksLeft);
             driver._view.ShowEnemy(driver._loop.State.EnemyType == EnemyType.Boss, driver._loop.State.EnemyType == EnemyType.Guardian);
             return driver;
@@ -73,8 +86,14 @@ namespace Game.Bootstrap
                         _bossTotalTicks = System.Math.Max(1, _loop.State.BossTicksLeft);
                         _view.ShowEnemy(_loop.State.EnemyType == EnemyType.Boss, _loop.State.EnemyType == EnemyType.Guardian);
                         break;
+                    case GameEventKind.SkillCast when gameEvent.Gem != null:
+                        _effects.Cast(gameEvent.Gem);
+                        break;
                     case GameEventKind.BossFailed:
                         _view.Retreat();
+                        break;
+                    case GameEventKind.LevelUp:
+                        LeveledUp?.Invoke(gameEvent.Stage);
                         break;
                 }
             }
@@ -96,8 +115,24 @@ namespace Game.Bootstrap
                 state.BossTicksLeft / (double)_bossTotalTicks,
                 bossFight,
                 FocusFraction(state.Focus),
+                state.FocusMultiplier,
                 state.Resource / _data.Combat.Resources.Max,
                 state.Gold);
+            _skillBar.Show(state.Skills, state.Resource);
+            ShowAura(state);
+        }
+
+        private void ShowAura(GameState state)
+        {
+            for (var i = 0; i < state.Skills.Count; i++)
+            {
+                var slot = state.Skills[i];
+                if (!slot.AuraApplied)
+                    continue;
+                _effects.ShowAura(true, slot.Skill.Color);
+                return;
+            }
+            _effects.ShowAura(false, default);
         }
 
         private double FocusFraction(double focus)

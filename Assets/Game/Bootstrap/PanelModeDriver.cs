@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.Core.Ui;
 using Game.Platform.Windows.Window;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
 using UnityEngine;
 
 namespace Game.Bootstrap
@@ -10,12 +11,16 @@ namespace Game.Bootstrap
     public sealed class PanelModeDriver : MonoBehaviour
     {
         private TaskbarDockDriver _dock = null!;
-        private PanelView _panels = null!;
+        private PanelCanvas _panels = null!;
+        private int _frameWidthPx = PanelGeometry.WidthPx;
+        private string? _reportTitle;
+        private IReadOnlyList<string>? _reportLines;
+        private string? _reportAction;
 
         public PanelNavigator Navigator { get; private set; } = null!;
         public bool IsOpen => _panels.IsOpen;
 
-        public static PanelModeDriver Attach(GameObject host, TaskbarDockDriver dock, PanelView panels, StripButton menuButton)
+        public static PanelModeDriver Attach(GameObject host, TaskbarDockDriver dock, PanelCanvas panels, StripButton menuButton)
         {
             var driver = host.AddComponent<PanelModeDriver>();
             driver._dock = dock;
@@ -43,21 +48,48 @@ namespace Game.Bootstrap
 
         public void Toggle()
         {
-            if (_panels.IsShowingReport)
+            if (_panels.IsShowingCard)
                 Close();
             else
                 Navigator.PressMenu();
         }
 
-        public void OpenReport(string title, IReadOnlyList<string> lines)
+        public void Refresh()
         {
+            if (Navigator.IsOpen)
+                _panels.Show(Navigator);
+        }
+
+        public void OpenReport(string title, IReadOnlyList<string> lines, string? action = null)
+        {
+            _reportTitle = title;
+            _reportLines = lines;
+            _reportAction = action;
             Navigator.Close();
-            _panels.ShowReport(title, lines);
-            Expand(PanelView.ReportFrame);
+            _panels.ShowReport(title, lines, action);
+            Expand(PanelCanvas.ReportFrame);
+        }
+
+        public void OpenConsent()
+        {
+            if (!_panels.IsShowingReport)
+                ForgetReport();
+            Navigator.Close();
+            _panels.ShowConsent();
+            Expand(PanelCanvas.ConsentFrame);
+        }
+
+        public void FinishConsent()
+        {
+            if (_reportTitle != null && _reportLines != null)
+                OpenReport(_reportTitle, _reportLines, _reportAction);
+            else
+                Close();
         }
 
         public void Close()
         {
+            ForgetReport();
             if (Navigator.IsOpen)
             {
                 Navigator.Close();
@@ -65,6 +97,13 @@ namespace Game.Bootstrap
             }
             _panels.Hide();
             _dock.Collapse();
+        }
+
+        private void ForgetReport()
+        {
+            _reportTitle = null;
+            _reportLines = null;
+            _reportAction = null;
         }
 
         private void Apply()
@@ -81,14 +120,22 @@ namespace Game.Bootstrap
 
         private void Expand(PanelFrame frame)
         {
-            var scale = DpiScale;
-            _dock.Expand(Mathf.RoundToInt(frame.WidthPx * scale), Mathf.RoundToInt(frame.AreaHeightPx * scale));
+            _frameWidthPx = frame.WidthPx;
+            _dock.Expand();
+            PlacePanel(_dock.Layout);
         }
 
         private void OnPlaced(PanelLayout layout, int stripHeightPx)
         {
             if (_panels.IsOpen)
-                _panels.Place(-layout.StripOffsetX / DpiScale, layout.PanelsAboveStrip);
+                PlacePanel(layout);
+        }
+
+        private void PlacePanel(PanelLayout layout)
+        {
+            var scale = DpiScale;
+            var left = layout.PanelLeft(Mathf.RoundToInt(_frameWidthPx * scale), _dock.StripWidthPx);
+            _panels.Place(left / scale, layout.PanelsAboveStrip);
         }
 
         private float DpiScale => Math.Max(1, _dock.StripHeightPx) / StripSpace.BaseHeightPx;

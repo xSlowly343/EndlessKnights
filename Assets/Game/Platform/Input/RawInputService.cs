@@ -24,6 +24,7 @@ namespace Game.Platform.Windows.Input
         private const int MouseLastXOffset = HeaderSize + 12;
         private const int MouseLastYOffset = HeaderSize + 16;
         private const int PointerSpeedRefreshMilliseconds = 5000;
+        private const int StopWaitMilliseconds = 500;
 
         private static readonly RawInputNativeMethods.WindowProcedure Procedure = HandleMessage;
         private static readonly InputCounters Counters = new InputCounters();
@@ -31,6 +32,7 @@ namespace Game.Platform.Windows.Input
         private static readonly MouseMotion Mouse = new MouseMotion();
         private static FlickDetector Flicks = new FlickDetector();
         private static CircleDetector Circles = new CircleDetector();
+        private static readonly ReversalDetector Reversals = new ReversalDetector();
         private static JigglerFilter Jiggler = new JigglerFilter();
         private static RhythmMeter Rhythm = new RhythmMeter();
         private static readonly WheelAccumulator Wheel = new WheelAccumulator();
@@ -46,6 +48,7 @@ namespace Game.Platform.Windows.Input
         private readonly Thread _thread;
         private IntPtr _window;
         private volatile bool _started;
+        private volatile bool _stopping;
 
         private RawInputService()
         {
@@ -81,8 +84,11 @@ namespace Game.Platform.Windows.Input
 
         public void Dispose()
         {
+            _stopping = true;
             if (_window != IntPtr.Zero)
                 RawInputNativeMethods.PostMessage(_window, RawInputNativeMethods.WmClose, IntPtr.Zero, IntPtr.Zero);
+            if (_thread.IsAlive && !_thread.Join(StopWaitMilliseconds))
+                Debug.LogWarning("RawInput: thread did not stop in time");
         }
 
         private void Run()
@@ -105,6 +111,11 @@ namespace Game.Platform.Windows.Input
             }
 
             _started = true;
+            if (_stopping)
+            {
+                RawInputNativeMethods.DestroyWindow(_window);
+                return;
+            }
             while (RawInputNativeMethods.GetMessage(out var message, IntPtr.Zero, 0, 0) > 0)
                 RawInputNativeMethods.DispatchMessage(ref message);
         }
@@ -243,6 +254,7 @@ namespace Game.Platform.Windows.Input
             if (Flicks.Add(distance, now))
                 Counters.AddFlick();
             Counters.AddCircleTurns(Circles.Add(dx, dy, now));
+            Counters.AddReversals(Reversals.Add(dx, dy));
         }
 
         private static void RecordRhythmicEvent()

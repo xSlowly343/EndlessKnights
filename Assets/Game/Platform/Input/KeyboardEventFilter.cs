@@ -15,6 +15,9 @@ namespace Game.Platform.Windows.Input
         private const ushort LeftWindows = 0x5B;
         private const ushort RightWindows = 0x5C;
         private const ushort LeftShift = 0xA0;
+        private const ushort LeftControl = 0xA2;
+        private const ushort RightControl = 0xA3;
+        private const ushort LeftAlt = 0xA4;
         private const ushort RightAlt = 0xA5;
         private const ushort InvalidKey = 0xFF;
 
@@ -40,8 +43,15 @@ namespace Game.Platform.Windows.Input
                 return KeyClass.None;
             _held[word] |= bit;
 
-            return IsModifier(virtualKey) ? KeyClass.None : Classify(virtualKey);
+            if (IsModifier(virtualKey))
+                return KeyClass.None;
+            return ComboHeld() ? KeyClass.Combo : Classify(virtualKey);
         }
+
+        private bool ComboHeld() =>
+            Held(Control) || Held(Alt) || Held(LeftControl) || Held(RightControl) || Held(LeftAlt) || Held(RightAlt);
+
+        private bool Held(ushort virtualKey) => (_held[virtualKey / BitsPerWord] & (1UL << (virtualKey % BitsPerWord))) != 0;
 
         private static bool IsModifier(ushort virtualKey) =>
             virtualKey == Shift || virtualKey == Control || virtualKey == Alt

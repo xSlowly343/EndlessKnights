@@ -39,6 +39,21 @@ namespace Game.Core.Tests.Save
 
         private static SaveFile RoundTrip(GameState state) => SaveCodec.Decode(SaveCodec.Encode(state, Clock), TestWorld.Data);
 
+        [Test]
+        public void DamageQueuedForLaterEnemiesSurvivesSaving()
+        {
+            var state = PlayedLoop(HeroClass.Viking, 10).State;
+            state.QueueDamage[0] = BigNumber.FromDouble(30);
+            state.QueueDamage[1] = BigNumber.FromDouble(20);
+            state.QueueDamage[2] = BigNumber.FromDouble(10);
+
+            var loaded = RoundTrip(state).State;
+
+            Assert.That(loaded.QueueDamage[0].ToDouble(), Is.EqualTo(30));
+            Assert.That(loaded.QueueDamage[1].ToDouble(), Is.EqualTo(20));
+            Assert.That(loaded.QueueDamage[2].ToDouble(), Is.EqualTo(10));
+        }
+
         [TestCase(HeroClass.Ronin)]
         [TestCase(HeroClass.Metalhead)]
         public void SaveThenLoadGivesEqualState(HeroClass heroClass)

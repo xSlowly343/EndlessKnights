@@ -1,0 +1,27 @@
+namespace Game.Core.Ui
+{
+    public enum SettingId
+    {
+        Language,
+        Paused,
+        AlwaysOnTop,
+        ClickThrough,
+        ResetPosition,
+        FrameRate,
+        NumberFormat,
+        Decimals,
+        MasterVolume,
+        MusicVolume,
+        HitVolume,
+        SkillVolume,
+        InterfaceVolume,
+        NotificationVolume,
+        CountKeys,
+        CountMouseMovement,
+        CountClicks,
+        CountWheel,
+        ShowInputDebug,
+        InputConsent,
+        WhatsNew
+    }
+}

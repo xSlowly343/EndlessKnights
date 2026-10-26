@@ -37,6 +37,17 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void PanelGrowsAboveAStripLoweredOntoTheTaskbar()
+        {
+            var strip = new ScreenRect(0, 900, 480, 1080);
+
+            var layout = PanelLayout.Expanded(strip, WorkArea, TaskbarEdge.Bottom, PanelWidth, PanelArea);
+
+            Assert.That((layout.Window.Top, layout.Window.Bottom), Is.EqualTo((900 - PanelArea, 1080)));
+            Assert.That(layout.StripOffsetFromBottom, Is.EqualTo(0));
+        }
+
+        [Test]
         public void SinglePanelFollowsTheStripAlongTheTaskbar()
         {
             var strip = new ScreenRect(1440, 852, 1920, 1032);
@@ -118,6 +129,39 @@ namespace Game.Platform.Tests
             Assert.That(layout.Window.Height, Is.EqualTo(180 + PanelArea));
             Assert.That(layout.StripOffsetFromBottom, Is.EqualTo(PanelArea));
             Assert.That(layout.PanelsAboveStrip, Is.False);
+        }
+
+        [Test]
+        public void NarrowPanelStandsAboveTheStripInsideTheWideWindow()
+        {
+            var strip = new ScreenRect(700, 852, 1180, 1032);
+
+            var layout = PanelLayout.Expanded(strip, WorkArea, TaskbarEdge.Bottom, WideWidth, WideArea);
+
+            Assert.That(layout.PanelLeft(PanelWidth, 480), Is.EqualTo(0));
+            Assert.That(layout.PanelLeft(WideWidth, 480), Is.EqualTo(-layout.StripOffsetX));
+        }
+
+        [Test]
+        public void WidePanelGrowsTowardsTheRoomyScreenSide()
+        {
+            var strip = new ScreenRect(0, 852, 480, 1032);
+
+            var layout = PanelLayout.Expanded(strip, WorkArea, TaskbarEdge.Bottom, WideWidth, WideArea);
+
+            Assert.That(layout.PanelLeft(PanelWidth, 480), Is.EqualTo(0));
+            Assert.That(layout.PanelLeft(WideWidth, 480), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void PanelNeverLeavesTheWindow()
+        {
+            var strip = new ScreenRect(1440, 852, 1920, 1032);
+
+            var layout = PanelLayout.Expanded(strip, WorkArea, TaskbarEdge.Bottom, WideWidth, WideArea);
+
+            Assert.That(layout.PanelLeft(WideWidth, 480), Is.EqualTo(-480));
+            Assert.That(layout.PanelLeft(PanelWidth, 480), Is.EqualTo(0));
         }
     }
 }

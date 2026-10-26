@@ -13,6 +13,8 @@ namespace Game.Core.Input
         private float _mouseDistancePx;
         private int _flicks;
         private float _circleTurns;
+        private int _comboDowns;
+        private int _reversals;
 
         public double SecondsSinceLastInput { get; set; }
         public float RhythmCv { get; set; }
@@ -38,6 +40,12 @@ namespace Game.Core.Input
             _spaceDowns += count;
         }
 
+        public void PressCombo(int count = 1)
+        {
+            _keyDowns += count;
+            _comboDowns += count;
+        }
+
         public void ClickLeft(int count = 1) => _leftClicks += count;
         public void ClickRight(int count = 1) => _rightClicks += count;
         public void ClickMiddle(int count = 1) => _middleClicks += count;
@@ -45,6 +53,7 @@ namespace Game.Core.Input
         public void MoveMouse(float distancePx) => _mouseDistancePx += distancePx;
         public void Flick(int count = 1) => _flicks += count;
         public void Circle(float turns) => _circleTurns += turns;
+        public void Reverse(int count = 1) => _reversals += count;
 
         public InputSnapshot Drain()
         {
@@ -52,7 +61,7 @@ namespace Game.Core.Input
                 _keyDowns, _enterDowns, _backspaceDowns, _spaceDowns,
                 _leftClicks, _rightClicks, _middleClicks, _wheelTicks,
                 _mouseDistancePx, _flicks, _circleTurns,
-                SecondsSinceLastInput, RhythmCv, Suppressed);
+                SecondsSinceLastInput, RhythmCv, Suppressed, _comboDowns, _reversals);
 
             _keyDowns = 0;
             _enterDowns = 0;
@@ -65,6 +74,8 @@ namespace Game.Core.Input
             _mouseDistancePx = 0f;
             _flicks = 0;
             _circleTurns = 0f;
+            _comboDowns = 0;
+            _reversals = 0;
             return snapshot;
         }
     }

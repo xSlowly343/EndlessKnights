@@ -21,7 +21,11 @@ namespace Game.Bootstrap
         private readonly SleepTracker _sleep = new SleepTracker();
         private TrayMenuState _state = TrayMenuState.Default;
 
-        public static void Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough, FramePacingDriver framePacing, TaskbarDockDriver dock, RawInputService? rawInput, InputDebugOverlay inputDebug, PanelModeDriver? panelMode = null)
+        public event Action<TrayMenuState>? StateChanged;
+
+        public TrayMenuState State => _state;
+
+        public static TrayDriver Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough, FramePacingDriver framePacing, TaskbarDockDriver dock, RawInputService? rawInput, InputDebugOverlay inputDebug, PanelModeDriver? panelMode = null)
         {
             var driver = host.AddComponent<TrayDriver>();
             driver._tray = tray;
@@ -33,7 +37,15 @@ namespace Game.Bootstrap
             driver._inputDebug = inputDebug;
             driver._panelMode = panelMode;
             tray.ShowState(driver._state);
+            clickThrough.Changed += driver.SyncClickThrough;
             inputDebug.SetVisible(driver._state.ShowInputDebug);
+            return driver;
+        }
+
+        public void UseState(TrayMenuState state)
+        {
+            _state = state;
+            ApplyState();
         }
 
         private void Update()
@@ -58,13 +70,29 @@ namespace Game.Bootstrap
             }
 
             _state = _state.Apply(command);
+            ApplyState();
+            StateChanged?.Invoke(_state);
+        }
+
+        private void ApplyState()
+        {
             _tray.ShowState(_state);
             GamePause.Set(_state.Paused);
             _rawInput?.SetPaused(_state.Paused);
             _clickThrough.Enabled = _state.ClickThrough;
             _window.SetAlwaysOnTop(_state.AlwaysOnTop);
+            _dock.AlwaysOnTop = _state.AlwaysOnTop;
             _framePacing.SetFrameRate(_state.FrameRate);
             _inputDebug.SetVisible(_state.ShowInputDebug);
+        }
+
+        private void SyncClickThrough(bool enabled)
+        {
+            if (_state.ClickThrough == enabled)
+                return;
+            _state = _state.Apply(TrayCommand.ToggleClickThrough);
+            _tray.ShowState(_state);
+            StateChanged?.Invoke(_state);
         }
 
         private void Handle(SystemEvent systemEvent)

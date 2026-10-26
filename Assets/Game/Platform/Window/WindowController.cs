@@ -54,6 +54,8 @@ namespace Game.Platform.Windows.Window
                 NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate);
         }
 
+        public bool PassesClicks => _clickThrough;
+
         public bool IsForeground => NativeMethods.GetForegroundWindow() == _window;
 
         public void ShowInTaskbar()
@@ -102,7 +104,7 @@ namespace Game.Platform.Windows.Window
 
         public void SetClickThrough(bool enabled)
         {
-            if (enabled == _clickThrough)
+            if (enabled == _clickThrough && enabled == HasClickThroughStyles())
                 return;
             _clickThrough = enabled;
             const long clickThroughStyles = NativeMethods.WsExTransparent | NativeMethods.WsExLayered;
@@ -115,6 +117,13 @@ namespace Game.Platform.Windows.Window
             {
                 UpdateExStyle(0L, clickThroughStyles);
             }
+        }
+
+        private bool HasClickThroughStyles()
+        {
+            const long clickThroughStyles = NativeMethods.WsExTransparent | NativeMethods.WsExLayered;
+            var exStyle = NativeMethods.GetWindowLongPtr(_window, NativeMethods.GwlExStyle).ToInt64();
+            return (exStyle & clickThroughStyles) == clickThroughStyles;
         }
 
         private void UpdateExStyle(long add, long remove)

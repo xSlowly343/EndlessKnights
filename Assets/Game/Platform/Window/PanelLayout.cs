@@ -36,6 +36,14 @@ namespace Game.Platform.Windows.Window
             return new PanelLayout(grown, strip.Left - left, 0, true);
         }
 
+        public int PanelLeft(int panelWidth, int stripWidth)
+        {
+            var preferred = StripOffsetX > 0 ? stripWidth - panelWidth : 0;
+            var lowest = -StripOffsetX;
+            var highest = Window.Width - StripOffsetX - panelWidth;
+            return Math.Max(lowest, Math.Min(preferred, highest));
+        }
+
         private static int PreferredLeft(ScreenRect strip, ScreenRect workArea, int width)
         {
             var roomToTheLeft = strip.Right - workArea.Left;

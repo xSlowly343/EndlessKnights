@@ -20,11 +20,14 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EnterCastsTheSkill()
+        public void ThousandPixelsOfMouseCastTheSkill()
         {
-            var (loop, input, slot) = WithTrigger(Gem("cast_on_enter"));
+            var (loop, input, slot) = WithTrigger(Gem("cast_on_mouse_distance"));
 
-            input.PressEnter();
+            input.MoveMouse(600);
+            loop.Tick();
+            Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(0));
+            input.MoveMouse(400);
             loop.Tick();
 
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(1));
@@ -34,45 +37,52 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TriggeredCastCostsTheSameEnergyButLongerCooldown()
         {
-            var (loop, input, slot) = WithTrigger(Gem("cast_on_enter"));
-            input.PressEnter();
+            var (loop, input, slot) = WithTrigger(Gem("cast_on_mouse_distance"));
+            input.MoveMouse(1000);
             loop.Tick();
 
             var skill = Gem("stenography").Skill!;
-            var multiplier = Gem("cast_on_enter").Trigger!.CooldownMultiplier;
+            var multiplier = Gem("cast_on_mouse_distance").Trigger!.CooldownMultiplier;
             Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(skill.CooldownSeconds * multiplier * GameLoop.TicksPerSecond));
             Assert.That(loop.State.Resource, Is.EqualTo(TestWorld.Data.Combat.Resources.Max - skill.ResourceCost));
         }
 
         [Test]
-        public void OtherKeysDoNotTrigger()
+        public void NoTriggerListensToKeys()
         {
-            var (loop, input, _) = WithTrigger(Gem("cast_on_enter"));
+            foreach (var gem in TestWorld.Data.Gems.All)
+            {
+                if (gem.Kind != GemKind.Trigger || gem.Trigger!.Condition == TriggerCondition.Idle)
+                    continue;
+                var (loop, input, _) = WithTrigger(gem);
+                loop.State.Resource = 50;
 
-            input.PressKeys(5);
-            input.PressSpace();
-            input.PressBackspace();
-            loop.Tick();
+                input.PressKeys(5);
+                input.PressEnter();
+                input.PressSpace();
+                input.PressBackspace();
+                loop.Tick();
 
-            Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(0));
+                Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(0), gem.Id);
+            }
         }
 
         [Test]
-        public void WithoutTriggerEnterDoesNothing()
+        public void WithoutTriggerMouseDoesNothing()
         {
             var (loop, input, _) = WithTrigger(null);
 
-            input.PressEnter();
+            input.MoveMouse(5000);
             loop.Tick();
 
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(0));
         }
 
         [Test]
-        public void EnterDuringCooldownWaitsForTheNextEnterAfterIt()
+        public void FlickDuringCooldownWaitsForTheNextFlickAfterIt()
         {
-            var (loop, input, slot) = WithTrigger(Gem("cast_on_enter"));
-            input.PressEnter();
+            var (loop, input, slot) = WithTrigger(Gem("cast_on_flick"));
+            input.Flick();
             loop.Tick();
             var cooldown = loop.State.Skills[slot].CooldownTicks;
             loop.State.Resource = 100;
@@ -80,13 +90,13 @@ namespace Game.Core.Tests.Sim
             for (var i = 0; i < cooldown; i++)
             {
                 if (i % 50 == 0)
-                    input.PressEnter();
+                    input.Flick();
                 loop.Tick();
             }
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(1));
 
             loop.State.Resource = 100;
-            input.PressEnter();
+            input.Flick();
             loop.Tick();
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(2));
         }
@@ -94,10 +104,10 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TriggerWithoutEnergyDoesNotCast()
         {
-            var (loop, input, slot) = WithTrigger(Gem("cast_on_enter"));
+            var (loop, input, slot) = WithTrigger(Gem("cast_on_flick"));
             loop.State.Resource = 0;
 
-            input.PressEnter();
+            input.Flick();
             loop.Tick();
 
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(0));

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "game": "1.0",
+      "lines": {
+        "ru": [
+          "Панель целиком на новом интерфейсе, дерево тоже",
+          "Полоска: новые шкалы, цифры урона и иконки скиллов",
+          "Настройки: язык, формат чисел, звук и ввод",
+          "Экран «Что игра считает» при первом запуске",
+          "Подсказки первых минут прямо в полоске",
+          "Множитель Фокуса рядом с его шкалой"
+        ],
+        "en": [
+          "The whole panel, tree included, uses the new interface",
+          "Strip: new bars, damage numbers and skill icons",
+          "Settings: language, number format, sound and input",
+          "\"What the game counts\" screen on first launch",
+          "First-minute hints right in the strip",
+          "Focus multiplier next to its bar"
+        ]
+      }
+    }
+  ]
+}

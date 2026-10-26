@@ -101,5 +101,27 @@ namespace Game.Platform.Tests
 
             AssertRect(strip, 1920, 1212);
         }
+
+        [Test]
+        public void StripCanBeLoweredOntoTheBottomTaskbarButNotBelowTheScreen()
+        {
+            AssertRect(StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, BottomTaskbar, Width, Height, 0, 0, 30), 0, 882);
+            AssertRect(StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, BottomTaskbar, Width, Height, 0, 0, 500), 0, 900);
+            AssertRect(StripPlacement.NextToTaskbar(TaskbarEdge.Bottom, BottomTaskbar, Width, Height, 0, 0, -20), 0, 852);
+        }
+
+        [Test]
+        public void DepthGoesIntoTheTaskbarOnEveryEdge()
+        {
+            var top = new ScreenRect(0, 0, 1920, 48);
+            var left = new ScreenRect(0, 0, 48, 1080);
+            var right = new ScreenRect(1872, 0, 1920, 1080);
+
+            Assert.That(StripPlacement.NextToTaskbar(TaskbarEdge.Top, top, Width, Height, 0, 0, 48).Top, Is.EqualTo(0));
+            Assert.That(StripPlacement.NextToTaskbar(TaskbarEdge.Left, left, Width, Height, 0, 0, 48).Left, Is.EqualTo(0));
+            Assert.That(StripPlacement.NextToTaskbar(TaskbarEdge.Right, right, Width, Height, 0, 0, 48).Right, Is.EqualTo(1920));
+            Assert.That(StripPlacement.DepthDirection(TaskbarEdge.Bottom), Is.EqualTo(1));
+            Assert.That(StripPlacement.DepthDirection(TaskbarEdge.Top), Is.EqualTo(-1));
+        }
     }
 }

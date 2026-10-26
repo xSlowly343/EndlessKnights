@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "unlocks": [
+    { "section": "items", "stage": 50 },
+    { "section": "party", "stage": 100 },
+    { "section": "shop", "stage": 150 },
+    { "section": "portal", "stage": 100 },
+    { "section": "camp", "stage": 500 }
+  ]
+}

@@ -1,0 +1,73 @@
+const test = require("node:test");
+const assert = require("node:assert");
+const { loadModule, readVectors } = require("./load");
+
+const party = loadModule();
+const vectors = readVectors("party-encounter.json");
+
+function close(actual, expected, where) {
+  const tolerance = 1e-12 * Math.max(1, Math.abs(expected));
+  assert.ok(Math.abs(actual - expected) <= tolerance, `${where}: ${actual} is not ${expected}`);
+}
+
+function run(encounter, step) {
+  switch (step.op) {
+    case "join": return encounter.join(step.player);
+    case "leave": return encounter.leave(step.slot);
+    case "input": return encounter.reportInput(step.slot);
+    case "peaceful": return encounter.setPeaceful(step.slot, step.value);
+    case "connected": return encounter.setConnected(step.slot, step.value);
+    case "damage": return encounter.applyDamage(step.slot, step.enemyId, step.share);
+    case "effect": return encounter.applyEnemyEffect(step.id, step.damageTaken, step.seconds);
+    case "requestBoss": return encounter.requestBossFight();
+    case "advance":
+      for (let i = 0; i < step.ticks; i++)
+        encounter.advance();
+      return undefined;
+    default: throw new Error("unknown op " + step.op);
+  }
+}
+
+function compare(encounter, expect, where) {
+  for (const key of ["tick", "enemyId", "enemyKind", "killsOnStage", "farming", "farmKills", "bossTicksLeft", "fighters"])
+    assert.strictEqual(encounter[key], expect[key], `${where}: ${key}`);
+  assert.strictEqual(encounter.enemySeed, expect.enemySeed, `${where}: enemySeed`);
+  close(encounter.barFull, expect.barFull, `${where}: barFull`);
+  close(encounter.barLeft, expect.barLeft, `${where}: barLeft`);
+  close(encounter.damageTakenMultiplier(), expect.damageTaken, `${where}: damageTaken`);
+  expect.members.forEach((member, slot) => {
+    const actual = encounter.members[slot];
+    if (member === null) {
+      assert.strictEqual(actual.joined, false, `${where}: slot ${slot} should be empty`);
+      return;
+    }
+    assert.strictEqual(actual.playerId, member.player, `${where}: slot ${slot} player`);
+    assert.strictEqual(actual.weight, member.weight, `${where}: slot ${slot} weight`);
+    assert.strictEqual(encounter.presence(slot), member.presence, `${where}: slot ${slot} presence`);
+  });
+  assert.strictEqual(encounter.events.length, expect.events.length, `${where}: event count`);
+  expect.events.forEach((event, i) => {
+    const actual = encounter.events[i];
+    assert.strictEqual(actual.kind, event.kind, `${where}: event ${i} kind`);
+    assert.strictEqual(actual.tick, event.tick, `${where}: event ${i} tick`);
+    assert.strictEqual(actual.enemyId, event.enemyId, `${where}: event ${i} enemy`);
+    assert.strictEqual(actual.enemyKind, event.enemyKind, `${where}: event ${i} enemy kind`);
+    event.shares.forEach((share, slot) => close(actual.shares[slot], share, `${where}: event ${i} share ${slot}`));
+  });
+  encounter.events.length = 0;
+}
+
+for (const scenario of vectors.scenarios) {
+  test(scenario.name, () => {
+    const encounter = new party.PartyEncounter(vectors.rules, scenario.seed);
+    scenario.steps.forEach((step, index) => {
+      const where = `${scenario.name}, step ${index} (${step.op})`;
+      const result = run(encounter, step);
+      if (typeof step.result === "boolean")
+        assert.strictEqual(result, step.result, `${where}: result`);
+      else if (step.op === "damage" || step.op === "join")
+        close(result, step.result, `${where}: result`);
+      compare(encounter, step.expect, where);
+    });
+  });
+}

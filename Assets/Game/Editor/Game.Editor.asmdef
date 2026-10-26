@@ -4,7 +4,8 @@
     "references": [
         "Game.Bootstrap",
         "Game.Core",
-        "Game.Presentation"
+        "Game.Presentation",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"

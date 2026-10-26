@@ -58,6 +58,22 @@ namespace Game.Platform.Tests
             Assert.That(counted, Is.EqualTo(1));
         }
 
+        [Test]
+        public void KeyWithControlOrAltHeldIsACombo()
+        {
+            _filter.Process(Control, Make);
+            Assert.That(_filter.Process(KeyC, Make), Is.EqualTo(KeyClass.Combo));
+            _filter.Process(KeyC, Break);
+            _filter.Process(Control, Break);
+
+            _filter.Process(0xA4, Make);
+            Assert.That(_filter.Process(KeyA, Make), Is.EqualTo(KeyClass.Combo));
+            _filter.Process(KeyA, Break);
+            _filter.Process(0xA4, Break);
+
+            Assert.That(_filter.Process(KeyA, Make), Is.EqualTo(KeyClass.Regular));
+        }
+
         [TestCase((ushort)0x10)]
         [TestCase((ushort)0x11)]
         [TestCase((ushort)0x12)]
@@ -95,11 +111,13 @@ namespace Game.Platform.Tests
             counters.AddKey(KeyClass.Backspace);
             counters.AddKey(KeyClass.Space);
             counters.AddKey(KeyClass.Space);
+            counters.AddKey(KeyClass.Combo);
             counters.AddKey(KeyClass.None);
 
             var snapshot = counters.Drain();
 
-            Assert.That(snapshot.KeyDowns, Is.EqualTo(5));
+            Assert.That(snapshot.KeyDowns, Is.EqualTo(6));
+            Assert.That(snapshot.ComboDowns, Is.EqualTo(1));
             Assert.That(snapshot.EnterDowns, Is.EqualTo(1));
             Assert.That(snapshot.BackspaceDowns, Is.EqualTo(1));
             Assert.That(snapshot.SpaceDowns, Is.EqualTo(2));

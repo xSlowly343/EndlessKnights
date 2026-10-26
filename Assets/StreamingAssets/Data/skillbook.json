@@ -11,7 +11,7 @@
     "metalhead": ["song", "guitar_solo", "lull"],
     "oracle": ["march", "stenography", "lull"],
     "bannerbearer": ["march", "stenography", "lull"],
-    "voodoo": ["march", "stenography", "lull"],
+    "voodoo": ["voodoo_needle", "stenography", "lull"],
     "clockmaker": ["march", "stenography", "lull"],
     "plague_doctor": ["march", "stenography", "lull"],
     "moonshiner": ["march", "stenography", "lull"],

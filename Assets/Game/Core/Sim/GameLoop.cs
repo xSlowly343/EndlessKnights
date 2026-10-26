@@ -3,6 +3,9 @@ using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Party;
+using Game.Core.Settings;
+using Game.Core.Sim.Rift;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
@@ -12,6 +15,7 @@ namespace Game.Core.Sim
         public const int TicksPerSecond = 10;
         public const double TickSeconds = 1.0 / TicksPerSecond;
         public const int MaxCatchUpTicks = 50;
+        public const int MaxRequestedSlots = 64;
 
         private const double TimeEpsilon = 1e-9;
 
@@ -31,8 +35,14 @@ namespace Game.Core.Sim
         private readonly PrestigeSystem _prestige;
         private readonly StrikeUpgradeSystem _upgrades;
         private readonly ArtifactSystem _artifacts;
+        private readonly TutorialSystem _tutorial;
+        private readonly PartyBuffs _partyBuffs;
+        private readonly SynergySystem _synergy;
+        private readonly RiftSystem _rift;
+        private readonly WeaponSystem _weapons;
         private GameData _data;
         private double _pendingSeconds;
+        private ulong _castRequests;
 
         public GameLoop(GameData data, IInputSource input, GameState state, StatSheet hero)
         {
@@ -48,16 +58,21 @@ namespace Game.Core.Sim
             _levels = new LevelSystem(data.Combat.Hero, data.Stages, data.TreePoints, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot, _levels);
             _combat.OnKill(_stage);
-            _skills = new SkillSystem(state, Events, _resource, _combat, hero);
+            _skills = new SkillSystem(state, Events, _resource, _combat, hero, data.Weapons);
             _combat.OnKeyHit(_skills);
-            _triggers = new TriggerSystem(state, _skills);
-            _artifacts = new ArtifactSystem(data.Artifacts, state, hero);
+            _triggers = new TriggerSystem(state, _skills, _resource);
+            _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
+            _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
             _treeLayer = new ModifierLayer(hero);
+            _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
+            _synergy = new SynergySystem(data.Synergy, state, hero);
+            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
             RebuildTree();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
+            _tutorial = new TutorialSystem(data.Tutorial, state, _upgrades);
             _stage.EnsureEnemy();
         }
 
@@ -73,6 +88,13 @@ namespace Game.Core.Sim
         public PrestigeSystem Prestige => _prestige;
         public StrikeUpgradeSystem Upgrades => _upgrades;
         public ArtifactSystem Artifacts => _artifacts;
+        public TutorialSystem Tutorial => _tutorial;
+        public PartyBuffs PartyBuffs => _partyBuffs;
+        public SynergySystem Synergy => _synergy;
+        public RiftSystem Rift => _rift;
+        public WeaponSystem Weapons => _weapons;
+        public GameData Data => _data;
+        public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
@@ -80,6 +102,8 @@ namespace Game.Core.Sim
         public InputStats SessionInput { get; } = new InputStats();
         public double MetersPerPixel { get; set; } = InputStats.DefaultMetersPerPixel;
         public bool Paused { get; set; }
+        public InputPermissions Permissions { get; set; } = InputPermissions.All;
+        public ITickHook? Hook { get; set; }
 
         public int Advance(double seconds)
         {
@@ -137,6 +161,12 @@ namespace Game.Core.Sim
             State.Tree.LastFreeResetUnixMs = nowUnixMs;
             RebuildTree();
             return RefundResult.Refunded;
+        }
+
+        public void RequestCast(int slotIndex)
+        {
+            if (slotIndex >= 0 && slotIndex < MaxRequestedSlots)
+                _castRequests |= 1UL << slotIndex;
         }
 
         public void ApplyOffline(OfflineResult result)
@@ -200,7 +230,7 @@ namespace Game.Core.Sim
                 if (_book.Equip(skill) != BookResult.Done)
                     continue;
                 var index = State.Skills.Count - 1;
-                State.Skills[index].CooldownTicks = (int)System.Math.Round(skill.Skill!.CooldownSeconds * TicksPerSecond);
+                State.Skills[index].StartCooldown((int)System.Math.Round(skill.Skill!.CooldownSeconds * TicksPerSecond));
                 if (trigger != null)
                     _book.SetTrigger(index, trigger);
             }
@@ -214,6 +244,7 @@ namespace Game.Core.Sim
             modifiers.AddRange(State.Ascendancy.Modifiers(_data.Ascendancy));
             _treeLayer.Set(modifiers);
             _skills.RefreshAuras();
+            _partyBuffs.Rebuild();
         }
 
         public void UseData(GameData data)
@@ -228,16 +259,24 @@ namespace Game.Core.Sim
             _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
+            _weapons.UseCatalog(data.Weapons);
+            _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _prestige.UseRules(data.Prestige);
             _upgrades.UseRules(data.Combat.StrikeUpgrade);
-            _artifacts.UseCatalog(data.Artifacts);
+            _artifacts.UseCatalog(data.Artifacts, data.Rift);
+            _tutorial.UseRules(data.Tutorial);
+            _partyBuffs.UseRules(data.Party.Buffs);
+            _synergy.UseRules(data.Synergy);
+            _rift.UseData(data);
             RebuildTree();
         }
 
         public void Tick()
         {
-            LastInput = _input.Drain();
+            Hook?.BeforeTick();
+            var firstEvent = Events.Count;
+            LastInput = Permissions.Apply(_input.Drain());
             SessionInput.Add(LastInput, MetersPerPixel);
             State.TotalInput.Add(LastInput, MetersPerPixel);
             var raw = _inputRules.Apply(LastInput);
@@ -247,11 +286,30 @@ namespace Game.Core.Sim
             _resource.Tick(input);
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
+            CastRequested();
             _triggers.Tick(input);
+            _partyBuffs.Tick();
+            _synergy.Tick();
+            _rift.Tick();
             _stage.Tick();
             _combat.Tick(input);
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
+            if (Permissions.Consent)
+                _tutorial.Tick(LastInput, Events, firstEvent);
+            Hook?.AfterTick();
+        }
+
+        private void CastRequested()
+        {
+            for (var index = 0; _castRequests != 0; index++)
+            {
+                var bit = 1UL << index;
+                if ((_castRequests & bit) == 0)
+                    continue;
+                _castRequests &= ~bit;
+                _skills.TryCast(index);
+            }
         }
     }
 }

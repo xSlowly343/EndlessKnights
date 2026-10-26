@@ -1,5 +1,7 @@
 using Game.Platform.Windows.Window;
+using Game.Presentation.Battle;
 using Game.Presentation.Strip;
+using Game.Presentation.Ui;
 using UnityEngine;
 
 namespace Game.Bootstrap
@@ -12,10 +14,12 @@ namespace Game.Bootstrap
         private FocusModeButton _focusButton = null!;
         private TaskbarDockDriver _dock = null!;
         private StripButton _menuButton = null!;
-        private PanelView _panels = null!;
+        private PanelCanvas _panels = null!;
+        private SkillBarView? _skillBar;
+        private StripHintView? _hint;
         private bool _panelCaptured;
 
-        public static void Attach(GameObject host, PointerInput pointer, WindowController window, Camera camera, FocusModeButton focusButton, TaskbarDockDriver dock, StripButton menuButton, PanelView panels)
+        public static StripPointerRouter Attach(GameObject host, PointerInput pointer, WindowController window, Camera camera, FocusModeButton focusButton, TaskbarDockDriver dock, StripButton menuButton, PanelCanvas panels)
         {
             var router = host.AddComponent<StripPointerRouter>();
             router._pointer = pointer;
@@ -25,7 +29,12 @@ namespace Game.Bootstrap
             router._dock = dock;
             router._menuButton = menuButton;
             router._panels = panels;
+            return router;
         }
+
+        public void UseSkillBar(SkillBarView skillBar) => _skillBar = skillBar;
+
+        public void UseHint(StripHintView hint) => _hint = hint;
 
         private void Update()
         {
@@ -35,6 +44,15 @@ namespace Game.Bootstrap
                 HandleRelease();
             else if (_pointer.Held)
                 HandleHold();
+            TrackHover();
+        }
+
+        private void TrackHover()
+        {
+            if (!_window.PassesClicks && TryGetWorldPoint(out var worldPoint))
+                _panels.Point(worldPoint, _pointer.Held);
+            else
+                _panels.PointAway();
         }
 
         private void HandleHold()
@@ -71,7 +89,7 @@ namespace Game.Bootstrap
 
         private void HandlePress()
         {
-            if (!TryGetWorldPoint(out var worldPoint))
+            if (_window.PassesClicks || !TryGetWorldPoint(out var worldPoint))
                 return;
 
             if (_panels.TryClick(worldPoint))
@@ -79,6 +97,10 @@ namespace Game.Bootstrap
                 _panelCaptured = true;
                 return;
             }
+            if (_skillBar != null && _skillBar.TryClick(worldPoint))
+                return;
+            if (_hint != null && _hint.TryClick(worldPoint))
+                return;
             if (_menuButton.Contains(worldPoint))
                 _menuButton.Click();
             else if (_focusButton.Contains(worldPoint))

@@ -38,7 +38,7 @@ namespace Game.Core.Sim
             var gold = BigNumber.Zero;
             var goldMultiplier = _hero.Compute(CombatStats.Gold, BigNumber.One, StatTags.Gold) * _hero.Value(CombatStats.OfflineGold, 1, StatTags.Gold);
 
-            if (dps.Sign <= 0 || time <= 0)
+            if (dps.Sign <= 0 || time <= 0 || state.Rift.Inside)
                 return new OfflineResult(0, 0, BigNumber.Zero, stage, stage, kills, farming, false, false);
 
             while (!farming)
@@ -100,7 +100,10 @@ namespace Game.Core.Sim
         public static void Apply(GameState state, OfflineResult result)
         {
             if (result.StageAfter != result.StageBefore)
+            {
                 state.BossFailsInARow = 0;
+                state.BossBestFraction = 0;
+            }
             state.Stage = result.StageAfter;
             if (state.Stage > state.HighestStage)
                 state.HighestStage = state.Stage;
