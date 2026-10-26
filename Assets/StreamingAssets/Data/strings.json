@@ -264,7 +264,6 @@
     "battle.stage": { "ru": "Этап {0}", "en": "Stage {0}" },
     "battle.stageBoss": { "ru": "Этап {0} · БОСС", "en": "Stage {0} · BOSS" },
     "battle.retreat": { "ru": "Отступление", "en": "Retreat" },
-    "battle.crit": { "ru": "КРИТ", "en": "CRIT" },
     "battle.seconds": { "ru": "{0} с", "en": "{0} s" },
     "battle.multiplier": { "ru": "×{0}", "en": "×{0}" },
     "battle.percent": { "ru": "{0}%", "en": "{0}%" },

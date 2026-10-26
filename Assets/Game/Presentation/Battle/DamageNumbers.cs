@@ -12,7 +12,8 @@ namespace Game.Presentation.Battle
         private const float LifetimeSeconds = 0.6f;
         private const float RisePx = 31f;
         private const float FontSizePx = 18f;
-        private const float CritFontSizePx = 24f;
+        private const float CritFontSizePx = 27f;
+        private const float CritTiltDegrees = -6f;
         private const float BoxWidthPx = 160f;
         private const float BoxHeightPx = 32f;
         private const int SortingOrder = 27;
@@ -20,7 +21,7 @@ namespace Game.Presentation.Battle
         private const float MaxMergeScale = 1.5f;
 
         private static readonly Color NormalColor = Color.white;
-        private static readonly Color CritColor = new Color32(0xF0, 0xB4, 0x3C, 0xFF);
+        private static readonly Color CritColor = new Color32(0xFF, 0x9A, 0x2E, 0xFF);
 
         private readonly TextMeshProUGUI[] _texts = new TextMeshProUGUI[PoolSize];
         private readonly float[] _ages = new float[PoolSize];
@@ -60,7 +61,8 @@ namespace Game.Presentation.Battle
 
             var index = Take();
             var text = _texts[index];
-            text.text = crit ? Format(amount) + " " + BattleTexts.Crit : Format(amount);
+            text.text = Format(amount);
+            text.rectTransform.localRotation = crit ? Quaternion.Euler(0f, 0f, CritTiltDegrees) : Quaternion.identity;
             text.fontSize = crit ? CritFontSizePx : FontSizePx;
             _colors[index] = crit ? CritColor : NormalColor;
             text.color = _colors[index];

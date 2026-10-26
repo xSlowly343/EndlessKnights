@@ -46,6 +46,17 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
+        public void WaveFillShowsKillsInsideTheCurrentWave()
+        {
+            var table = Table();
+
+            Assert.That(table.WaveFillAfterKills(1, 0), Is.EqualTo(0));
+            Assert.That(table.WaveFillAfterKills(1, 2), Is.EqualTo(0.5));
+            Assert.That(table.WaveFillAfterKills(1, 4), Is.EqualTo(1 / 3d).Within(1e-12));
+            Assert.That(table.WaveFillAfterKills(1, 10), Is.EqualTo(1));
+        }
+
+        [Test]
         public void RealDataFileLoads()
         {
             var table = StageTable.Load(TestData.ReadGameDataFile(StageTable.FileName));

@@ -114,6 +114,14 @@ namespace Game.Core.Content
             return wave;
         }
 
+        public double WaveFillAfterKills(long stage, int kills)
+        {
+            var wave = 0;
+            while (wave < _waves.Count && kills >= _waves.Size(stage, wave))
+                kills -= _waves.Size(stage, wave++);
+            return wave < _waves.Count ? kills / (double)_waves.Size(stage, wave) : 1d;
+        }
+
         public BigNumber EnemyHp(long stage)
         {
             var walls = WallStagesUpTo(stage) - WallStagesUpTo(1);

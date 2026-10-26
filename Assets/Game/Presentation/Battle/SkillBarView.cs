@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Game.Core.Content.Gems;
 using Game.Core.Sim;
+using Game.Core.Ui;
 using Game.Presentation.Strip;
 using Game.Presentation.Ui;
 using TMPro;
@@ -14,20 +15,22 @@ namespace Game.Presentation.Battle
     {
         public const int MaxIcons = 5;
 
-        private const float IconPx = 24f;
+        private const float IconPx = 22f;
         private const float StepPx = 28f;
-        private const float FirstCentreXPx = 196f;
-        private const float CentreYPx = 18f;
-        private const float FramePx = 2f;
+        private const float FirstCentreXPx = 59f;
+        private const float CentreYPx = 166f;
+        private const float FramePx = 1.5f;
+        private const float RechargeAlpha = 0.45f;
         private const float RadiusPx = 6f;
         private const float ReadyPopSeconds = 0.18f;
         private const float ReadyPopScale = 0.2f;
         private const int SortingOrder = 30;
 
-        private static readonly Color FrameIdle = new Color32(0x14, 0x1A, 0x2B, 0xFF);
+        private static readonly Color FrameIdle = new Color32(0x3A, 0x48, 0x70, 0xFF);
         private static readonly Color FrameActive = new Color32(0xF0, 0xB4, 0x3C, 0xFF);
-        private static readonly Color CooldownShade = new Color(0f, 0f, 0f, 0.65f);
+        private static readonly Color BackColor = new Color32(0x14, 0x1A, 0x2B, 0xFF);
         private static readonly Color LabelColor = Color.white;
+        private static readonly Color LabelCooling = new Color(1f, 1f, 1f, 0.3f);
         private static readonly Color KeyColor = new Color(1f, 1f, 1f, 0.8f);
         private static readonly Color Dimmed = new Color(0.45f, 0.45f, 0.45f);
 
@@ -100,8 +103,10 @@ namespace Game.Presentation.Battle
             private readonly RectTransform _root;
             private readonly Image _frame;
             private readonly Image _back;
-            private readonly RectTransform _shade;
+            private readonly Image _recharge;
             private readonly TextMeshProUGUI _label;
+            private readonly TextMeshProUGUI _seconds;
+            private int _shownSeconds = -1;
             private GemDef? _shownGem;
             private bool _wasCoolingDown;
             private float _popAge = ReadyPopSeconds;
@@ -114,12 +119,16 @@ namespace Game.Presentation.Battle
                 var hit = _root.gameObject.AddComponent<BoxCollider2D>();
                 hit.size = Vector2.one * framePx;
                 _root.gameObject.AddComponent<StripClickable>();
-                _back = UiElements.Fill("Back", _root, GemColors.White, RadiusPx);
+                _back = UiElements.Fill("Back", _root, BackColor, RadiusPx);
                 UiElements.Stretch(_back.rectTransform, FramePx);
-                _shade = UiElements.Fill("Cooldown", _back.rectTransform, CooldownShade, RadiusPx).rectTransform;
-                UiElements.TopEdge(_shade, 0f);
+                _recharge = UiElements.Fill("Recharge", _back.rectTransform, GemColors.White, RadiusPx);
+                UiElements.BottomEdge(_recharge.rectTransform, 0f);
+                _recharge.gameObject.SetActive(false);
                 _label = UiElements.Label("Name", _back.rectTransform, theme.BoldFont, 10f, LabelColor, TextAlignmentOptions.Center);
                 UiElements.Stretch(_label.rectTransform);
+                _seconds = UiElements.Label("Seconds", _back.rectTransform, theme.NumberFont, 12f, LabelColor, TextAlignmentOptions.Center);
+                UiElements.Stretch(_seconds.rectTransform);
+                _seconds.gameObject.SetActive(false);
                 var key = UiElements.Label("Key", _back.rectTransform, theme.BoldFont, 7f, KeyColor, TextAlignmentOptions.TopLeft);
                 UiElements.Stretch(key.rectTransform, 1.5f);
                 key.text = KeyLabel(index);
@@ -152,11 +161,12 @@ namespace Game.Presentation.Battle
                 var def = slot.Def;
                 var affordable = def.ResourceCost <= 0 || resource >= def.ResourceCost;
                 var color = GemColors.Of(slot.Skill.Color);
-                _back.color = def.IsPassive || !affordable ? color * Dimmed : color;
-                _frame.color = slot.Active ? FrameActive : FrameIdle;
-                ShowCooldown((float)slot.CooldownFraction);
-
                 var coolingDown = !slot.Ready;
+                var usable = !def.IsPassive && affordable && !coolingDown;
+                _frame.color = slot.Active ? FrameActive : usable ? color : def.IsPassive || !affordable ? color * Dimmed : FrameIdle;
+                _label.color = coolingDown ? LabelCooling : LabelColor;
+                ShowCooldown((float)slot.CooldownFraction, slot.CooldownTicks, color);
+
                 if (_wasCoolingDown && !coolingDown)
                     _popAge = 0f;
                 _wasCoolingDown = coolingDown;
@@ -169,13 +179,21 @@ namespace Game.Presentation.Battle
                 _root.localScale = new Vector3(pop, pop, 1f);
             }
 
-            private void ShowCooldown(float fraction)
+            private void ShowCooldown(float fraction, int ticksLeft, Color color)
             {
                 var visible = fraction > 0f;
-                if (_shade.gameObject.activeSelf != visible)
-                    _shade.gameObject.SetActive(visible);
-                if (visible)
-                    _shade.sizeDelta = new Vector2(0f, IconPx * Mathf.Clamp01(fraction));
+                if (_recharge.gameObject.activeSelf != visible)
+                    _recharge.gameObject.SetActive(visible);
+                if (_seconds.gameObject.activeSelf != visible)
+                    _seconds.gameObject.SetActive(visible);
+                if (!visible)
+                    return;
+                color.a = RechargeAlpha;
+                _recharge.color = color;
+                _recharge.rectTransform.sizeDelta = new Vector2(0f, IconPx * (1f - Mathf.Clamp01(fraction)));
+                var seconds = Mathf.CeilToInt(ticksLeft / (float)GameLoop.TicksPerSecond);
+                if (seconds != _shownSeconds)
+                    _seconds.text = BattleTexts.Whole(_shownSeconds = seconds);
             }
         }
     }
