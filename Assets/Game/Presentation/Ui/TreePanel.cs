@@ -848,6 +848,7 @@ namespace Game.Presentation.Ui
         private void ArmReset(bool armed)
         {
             _resetArmed = armed && _loop != null;
+            _reset.Back.color = _resetArmed ? _theme.Alert : ToolColor;
             if (!_resetArmed)
             {
                 _reset.Text = TreeTexts.Reset;
