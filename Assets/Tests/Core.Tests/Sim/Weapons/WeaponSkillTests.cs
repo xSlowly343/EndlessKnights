@@ -229,7 +229,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void EveryRarityNeedsSkillTierWeights()
         {
-            var json = TestData.ReadGameDataFile(WeaponCatalog.FileName).Replace("      \"rift\": [5, 25, 40, 30, 0],\n", string.Empty);
+            var json = TestData.ReadGameDataFile(WeaponCatalog.FileName).Replace("      \"rift\": [5, 25, 40, 30, 0],", string.Empty);
 
             Assert.Throws<ContentException>(() => WeaponCatalog.Load(json));
         }

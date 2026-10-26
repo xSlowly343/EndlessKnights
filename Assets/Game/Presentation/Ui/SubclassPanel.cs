@@ -348,7 +348,7 @@ namespace Game.Presentation.Ui
             var local = (Vector2)_map.InverseTransformPoint(worldPoint);
             foreach (var view in _nodes)
             {
-                var distance = Vector2.Distance(local, view.Fill.rectTransform.anchoredPosition);
+                var distance = Vector2.Distance(local, view.Ring.rectTransform.anchoredPosition);
                 if (distance > view.SizePx / 2f + PickSlackPx || distance >= bestDistance)
                     continue;
                 best = view.Node;
