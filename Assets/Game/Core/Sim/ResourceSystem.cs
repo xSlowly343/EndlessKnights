@@ -59,6 +59,8 @@ namespace Game.Core.Sim
                 gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
             gained += resource.PerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1);
             gained += input.Clicks * resource.PerClick * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Click);
+            if (Reading(resource, input))
+                gained += resource.ReadingPerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
             gained += _state.PendingResource;
             _state.PendingResource = 0;
             var value = System.Math.Min(Max, _state.Resource + gained);
@@ -115,6 +117,10 @@ namespace Game.Core.Sim
                 _state.OverheatTicks = (int)System.Math.Round((Current.OverheatSeconds + _hero.Value(CombatStats.OverheatSeconds, 0)) * GameLoop.TicksPerSecond);
             return true;
         }
+
+        private bool Reading(ClassResource resource, in EffectiveInput input) =>
+            resource.ReadingPerSecond > 0 && input.MousePx > 0
+            && _state.KeylessTicks * GameLoop.TickSeconds > resource.ReadingAfterKeylessSeconds;
 
         private bool Decays(ClassResource resource, in EffectiveInput input)
         {

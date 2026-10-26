@@ -113,6 +113,8 @@ namespace Game.Core.Sim
         public double DotCarry { get; set; }
         public double StirTurns { get; set; }
         public int OverheatTicks { get; set; }
+        public int WeakenedSpawns { get; set; }
+        public double WeakenShare { get; set; }
         public double AllyHeavyCastSeconds { get; set; }
 
         public void ClearQueue()

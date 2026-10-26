@@ -589,6 +589,18 @@
       "effect": { "type": "strike", "multiplier": 3 }
     },
     {
+      "id": "by_the_gait",
+      "kind": "skill",
+      "weapon": "holy_orb",
+      "color": "green",
+      "name": { "ru": "По походке", "en": "By the Gait" },
+      "tags": ["Aura", "Skill"],
+      "cost": { "resource": 25 },
+      "cooldownSeconds": 6,
+      "durationSeconds": 10,
+      "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "critChance", "kind": "flat", "value": 0.1 }] }
+    },
+    {
       "id": "vial_from_belt",
       "kind": "skill",
       "weapon": "syringe_cane",
@@ -969,7 +981,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 40,
-      "locked": true
+      "effect": { "type": "weakenNext", "enemies": 5, "hpShare": 0.25 }
     },
     {
       "id": "signed_hammer",

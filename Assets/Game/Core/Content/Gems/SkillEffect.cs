@@ -406,4 +406,16 @@ namespace Game.Core.Content.Gems
 
         public double Seconds { get; }
     }
+
+    public sealed class WeakenNextEffect : SkillEffect
+    {
+        public WeakenNextEffect(int enemies, double hpShare)
+        {
+            Enemies = enemies;
+            HpShare = hpShare;
+        }
+
+        public int Enemies { get; }
+        public double HpShare { get; }
+    }
 }

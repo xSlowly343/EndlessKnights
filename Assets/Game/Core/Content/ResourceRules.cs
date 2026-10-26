@@ -32,8 +32,10 @@ namespace Game.Core.Content
 
     public sealed class ClassResource
     {
-        public ClassResource(double perKey, double mousePxPerPoint, double decayPerSecond, double decayAfterKeylessSeconds, bool mouseHoldsDecay, double perSecond = 0, double perFastKillSecond = 0, double inverseDecayPerSecond = 0, double overheatSeconds = 0, bool inverse = false, double perKill = 0, double overloadMultiplier = 0, double perClick = 0)
+        public ClassResource(double perKey, double mousePxPerPoint, double decayPerSecond, double decayAfterKeylessSeconds, bool mouseHoldsDecay, double perSecond = 0, double perFastKillSecond = 0, double inverseDecayPerSecond = 0, double overheatSeconds = 0, bool inverse = false, double perKill = 0, double overloadMultiplier = 0, double perClick = 0, double readingPerSecond = 0, double readingAfterKeylessSeconds = 0)
         {
+            ReadingPerSecond = readingPerSecond;
+            ReadingAfterKeylessSeconds = readingAfterKeylessSeconds;
             PerClick = perClick;
             OverloadMultiplier = overloadMultiplier;
             PerKill = perKill;
@@ -54,6 +56,8 @@ namespace Game.Core.Content
         public double PerFastKillSecond { get; }
         public double PerKill { get; }
         public double PerClick { get; }
+        public double ReadingPerSecond { get; }
+        public double ReadingAfterKeylessSeconds { get; }
         public double OverloadMultiplier { get; }
         public bool Inverse { get; }
         public double InverseDecayPerSecond { get; }
@@ -71,6 +75,8 @@ namespace Game.Core.Content
             var perFastKillSecond = node.HasField("perFastKillSecond") ? node.Field("perFastKillSecond").AsNumber(0, 1000) : 0;
             var perKill = node.HasField("perKill") ? node.Field("perKill").AsNumber(0, 1000) : 0;
             var perClick = node.HasField("perClick") ? node.Field("perClick").AsNumber(0, 1000) : 0;
+            var readingPerSecond = node.HasField("reading") ? node.Field("reading").Field("perSecond").AsNumber(0, 1000) : 0;
+            var readingAfter = node.HasField("reading") ? node.Field("reading").Field("afterKeylessSeconds").AsNumber(0, 3600) : 0;
             var overload = node.HasField("overload") ? node.Field("overload").Field("multiplier").AsNumber(0, 1e6) : 0;
             if (node.HasField("inverse"))
             {
@@ -81,7 +87,7 @@ namespace Game.Core.Content
                     inverse.Field("decayPerSecond").AsNumber(0, 1e6), inverse.Field("overheatSeconds").AsNumber(0, 3600), true, perKill, perClick: perClick);
             }
             if (!node.HasField("decay"))
-                return new ClassResource(perKey, mousePxPerPoint, 0, 0, false, perSecond, perFastKillSecond, perKill: perKill, overloadMultiplier: overload, perClick: perClick);
+                return new ClassResource(perKey, mousePxPerPoint, 0, 0, false, perSecond, perFastKillSecond, perKill: perKill, overloadMultiplier: overload, perClick: perClick, readingPerSecond: readingPerSecond, readingAfterKeylessSeconds: readingAfter);
             var decay = node.Field("decay");
             return new ClassResource(
                 perKey,
@@ -93,7 +99,9 @@ namespace Game.Core.Content
                 perFastKillSecond,
                 perKill: perKill,
                 overloadMultiplier: overload,
-                perClick: perClick);
+                perClick: perClick,
+                readingPerSecond: readingPerSecond,
+                readingAfterKeylessSeconds: readingAfter);
         }
     }
 }

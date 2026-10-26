@@ -254,10 +254,20 @@ namespace Game.Core.Sim
 
         private void Spawn(EnemyDef? enemy, EnemyType type, BigNumber hp)
         {
-            _state.SpawnEnemy(enemy, type, hp);
+            _state.SpawnEnemy(enemy, type, Weakened(hp));
             ApplyEnemyModifiers(enemy);
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemySpawned, _state.Tick, _state.Stage, enemy));
             ApplyChainDamage();
+        }
+
+        private BigNumber Weakened(BigNumber hp)
+        {
+            if (_state.WeakenedSpawns <= 0)
+                return hp;
+            var share = _state.WeakenShare;
+            if (--_state.WeakenedSpawns == 0)
+                _state.WeakenShare = 0;
+            return hp * (1 - share);
         }
 
         private void ApplyChainDamage()

@@ -196,6 +196,8 @@ namespace Game.Core.Sim
                 AddStacks(slot, stacks);
             if (skill.Effect is DetonateEffect detonate)
                 Dots.Detonate(detonate);
+            if (skill.Effect is WeakenNextEffect weaken)
+                WeakenNext(weaken);
             if (skill.Effect is NextKillRewardEffect reward)
                 ArmNextKillReward(reward);
             if (skill.Effect is EchoEffect echo)
@@ -207,6 +209,12 @@ namespace Game.Core.Sim
             if (stacks.Multiplier > 0)
                 SkillHit(slot, stacks.Multiplier);
             Dots.Apply(stacks);
+        }
+
+        private void WeakenNext(WeakenNextEffect weaken)
+        {
+            _state.WeakenedSpawns = System.Math.Max(_state.WeakenedSpawns, weaken.Enemies);
+            _state.WeakenShare = System.Math.Max(_state.WeakenShare, weaken.HpShare);
         }
 
         private void ArmNextKillReward(NextKillRewardEffect reward)
