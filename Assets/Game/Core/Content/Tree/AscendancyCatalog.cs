@@ -221,7 +221,8 @@ namespace Game.Core.Content.Tree
                 node.Field("id").AsString(), type,
                 node.Field("x").AsNumber(-1000, 1000), node.Field("y").AsNumber(-1000, 1000),
                 name.Field("ru").AsString(), name.Field("en").AsString(),
-                modifiers, Array.Empty<IReadOnlyList<Modifier>>(), 0, null, locked);
+                modifiers, Array.Empty<IReadOnlyList<Modifier>>(), 0, null, locked,
+                descriptionRu: PassiveTree.DescriptionText(node, "ru"), descriptionEn: PassiveTree.DescriptionText(node, "en"));
         }
 
         private static TreeNodeDef Find(ContentNode id, Dictionary<string, TreeNodeDef> byId)

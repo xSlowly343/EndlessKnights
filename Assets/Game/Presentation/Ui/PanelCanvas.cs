@@ -260,9 +260,19 @@ namespace Game.Presentation.Ui
                 _highlight.Point(worldPoint, held);
             else
                 _highlight.Clear();
+            if (IsOpen && _treeShown && !held)
+                Tree.Hover(worldPoint);
+            else
+                Tree.HoverAway();
         }
 
-        public void PointAway() => _highlight.Clear();
+        public void PointAway()
+        {
+            _highlight.Clear();
+            Tree.HoverAway();
+        }
+
+        public void SetRoomBeside(float leftPx, float rightPx) => Tree.SetRoomBeside(leftPx, rightPx);
 
         public bool TryClick(Vector2 worldPoint)
         {
@@ -620,6 +630,7 @@ namespace Game.Presentation.Ui
             _report = BuildReport();
             _consent = ConsentCard.Create(_canvasRect, _theme);
             _highlight = new ButtonHighlight(_canvasRect);
+            Tree.UseTooltip(new TreeNodeCardView("TreeTooltip", _canvasRect, _theme, TreeNodeCardMode.Tooltip), _frame);
         }
 
         private RectTransform BuildFrame()

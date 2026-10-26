@@ -9,7 +9,8 @@ namespace Game.Core.Content.Tree
 
         public TreeNodeDef(string id, TreeNodeType type, double x, double y, string nameRu, string nameEn, IReadOnlyList<Modifier> modifiers,
             IReadOnlyList<IReadOnlyList<Modifier>> options, double attributeAmount, string? startClass, bool locked,
-            string scope = CommonScope, IReadOnlyList<Modifier>? sharedModifiers = null, IReadOnlyList<IReadOnlyList<Modifier>>? sharedOptions = null)
+            string scope = CommonScope, IReadOnlyList<Modifier>? sharedModifiers = null, IReadOnlyList<IReadOnlyList<Modifier>>? sharedOptions = null,
+            string descriptionRu = "", string descriptionEn = "")
         {
             Id = id;
             Type = type;
@@ -26,6 +27,8 @@ namespace Game.Core.Content.Tree
             ScopeClass = scope.StartsWith(ClassScopePrefix, System.StringComparison.Ordinal) ? scope.Substring(ClassScopePrefix.Length) : null;
             SharedModifiers = sharedModifiers ?? System.Array.Empty<Modifier>();
             SharedOptions = sharedOptions ?? System.Array.Empty<IReadOnlyList<Modifier>>();
+            DescriptionRu = descriptionRu;
+            DescriptionEn = descriptionEn;
         }
 
         public const string CommonScope = "common";
@@ -37,6 +40,9 @@ namespace Game.Core.Content.Tree
         public double Y { get; }
         public string NameRu { get; }
         public string NameEn { get; }
+        public string DescriptionRu { get; }
+        public string DescriptionEn { get; }
+        public bool HasDescription => DescriptionRu.Length > 0 || DescriptionEn.Length > 0;
         public IReadOnlyList<Modifier> Modifiers { get; }
         public IReadOnlyList<IReadOnlyList<Modifier>> Options { get; }
         public double AttributeAmount { get; }
