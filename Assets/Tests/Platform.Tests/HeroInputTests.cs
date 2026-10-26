@@ -37,7 +37,7 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void InputTabShowsSessionAndAllTimeCounters()
+        public void StatisticsShowSessionAndAllTimeCounters()
         {
             _input.PressKeys(1234);
             _input.ClickLeft(3);
@@ -45,10 +45,10 @@ namespace Game.Platform.Tests
 
             Open();
 
-            Assert.That(_panel.Hero.InputCell(0, 0), Is.EqualTo(Texts.Get("stats.keys")));
-            Assert.That(_panel.Hero.InputCell(0, 1), Is.EqualTo("1 234"));
-            Assert.That(_panel.Hero.InputCell(0, 2), Is.EqualTo("1 234"));
-            Assert.That(_panel.Hero.InputCell(1, 1), Does.StartWith("3"));
+            Assert.That(_panel.Stats.Cell(0, 0), Is.EqualTo(Texts.Get("stats.keys")));
+            Assert.That(_panel.Stats.Cell(0, 1), Is.EqualTo("1 234"));
+            Assert.That(_panel.Stats.Cell(0, 2), Is.EqualTo("1 234"));
+            Assert.That(_panel.Stats.Cell(1, 1), Does.StartWith("3"));
         }
 
         [Test]
@@ -60,16 +60,15 @@ namespace Game.Platform.Tests
 
             Open();
 
-            Assert.That(_panel.Hero.InputCell(0, 1), Is.EqualTo("1,234"));
+            Assert.That(_panel.Stats.Cell(0, 1), Is.EqualTo("1,234"));
         }
 
         private void Open()
         {
             var navigator = new PanelNavigator();
-            navigator.SelectTab(PanelSection.Hero);
-            navigator.SelectSubTab(2);
+            navigator.SelectTab(PanelSection.Stats);
             _panel.Show(navigator);
-            _panel.Hero.Refresh(_loop);
+            _panel.Stats.Refresh(_loop);
         }
     }
 }

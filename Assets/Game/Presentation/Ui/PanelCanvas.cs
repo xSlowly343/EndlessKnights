@@ -79,6 +79,7 @@ namespace Game.Presentation.Ui
         private float _noticeLeft;
         private HeroPanel _heroPanel = null!;
         private ItemsPanel _itemsPanel = null!;
+        private StatsPanel _statsPanel = null!;
         private MasterPanel _masterPanel = null!;
         private PartyPanel _partyPanel = null!;
         private SettingsPanel _settingsPanel = null!;
@@ -158,6 +159,7 @@ namespace Game.Presentation.Ui
         public bool IsNoticeShown => _notice.gameObject.activeSelf;
         public HeroPanel Hero => _heroPanel;
         public ItemsPanel Items => _itemsPanel;
+        public StatsPanel Stats => _statsPanel;
         public MasterPanel Master => _masterPanel;
         public PartyPanel Party => _partyPanel;
         public SettingsPanel Settings => _settingsPanel;
@@ -446,6 +448,7 @@ namespace Game.Presentation.Ui
             _sinceCurrency = 0f;
             RefreshCurrency(_loop);
             _heroPanel.Refresh(_loop);
+            _statsPanel.Refresh(_loop);
             _itemsPanel.Refresh();
             _masterPanel.Refresh();
             _partyPanel.Refresh(_loop);
@@ -624,9 +627,11 @@ namespace Game.Presentation.Ui
             _itemsPanel.Show(itemsShown);
             var partyShown = !navigator.ShowingMore && navigator.Active == PanelSection.Party && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
             _partyPanel.Show(partyShown, _loop);
+            var statsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Stats;
+            _statsPanel.Show(statsShown);
             var settingsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Settings;
             _settingsPanel.Show(settingsShown, _shownFrame.HasSubTabs ? navigator.SubTab : 0, _shownFrame.ContentPx);
-            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !settingsShown;
+            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !statsShown && !settingsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -802,6 +807,7 @@ namespace Game.Presentation.Ui
             _heroPanel = HeroPanel.Create(content, _theme);
             _heroPanel.TreeRequested += () => TabPressed?.Invoke(PanelSection.Tree);
             _itemsPanel = ItemsPanel.Create(content, _theme);
+            _statsPanel = StatsPanel.Create(content, _theme);
             _masterPanel = MasterPanel.Create(content, _theme);
             _partyPanel = PartyPanel.Create(content, _theme);
             _partyPanel.NoticeRequested += ShowNotice;
