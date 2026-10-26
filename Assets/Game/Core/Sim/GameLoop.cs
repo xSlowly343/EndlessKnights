@@ -40,6 +40,8 @@ namespace Game.Core.Sim
         private readonly SynergySystem _synergy;
         private readonly RiftSystem _rift;
         private readonly WeaponSystem _weapons;
+        private readonly OverloadSystem _overload;
+        private readonly BannerSystem _banner;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -58,6 +60,8 @@ namespace Game.Core.Sim
             _levels = new LevelSystem(data.Combat.Hero, data.Stages, data.TreePoints, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot, _levels);
             _combat.OnKill(_stage);
+            _stage.KillTimeListener = new KillResourceSystem(state, hero, _resource, _combat);
+            _overload = new OverloadSystem(state, hero, _resource, _combat);
             _skills = new SkillSystem(state, Events, _resource, _combat, hero, data.Weapons);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills, _resource);
@@ -66,11 +70,13 @@ namespace Game.Core.Sim
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
+            _banner = new BannerSystem(state, hero, _combat, _skills);
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
             RebuildTree();
+            SyncPathSkill();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _tutorial = new TutorialSystem(data.Tutorial, state, _upgrades);
             _stage.EnsureEnemy();
@@ -93,6 +99,7 @@ namespace Game.Core.Sim
         public SynergySystem Synergy => _synergy;
         public RiftSystem Rift => _rift;
         public WeaponSystem Weapons => _weapons;
+        public OverloadSystem Overload => _overload;
         public GameData Data => _data;
         public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
@@ -198,8 +205,26 @@ namespace Game.Core.Sim
         private SubclassResult AfterSubclassChange(SubclassResult result)
         {
             if (result == SubclassResult.Chosen)
+            {
                 RebuildTree();
+                SyncPathSkill();
+            }
             return result;
+        }
+
+        private void SyncPathSkill()
+        {
+            var path = State.Ascendancy.Subclass;
+            for (var i = State.Skills.Count - 1; i >= 0; i--)
+            {
+                var gem = State.Skills[i].Skill;
+                if (gem.Ascendancy != null && gem.Ascendancy != path)
+                    _skills.Unequip(i);
+            }
+            State.OwnedGems.RemoveAll(gem => gem.Ascendancy != null && gem.Ascendancy != path);
+            var pathSkill = _data.Gems.ForPath(path);
+            if (pathSkill != null && !State.OwnedGems.Contains(pathSkill))
+                State.OwnedGems.Add(pathSkill);
         }
 
         public bool ChangeMastery(string nodeId, int option)
@@ -270,6 +295,7 @@ namespace Game.Core.Sim
             _synergy.UseRules(data.Synergy);
             _rift.UseData(data);
             RebuildTree();
+            SyncPathSkill();
         }
 
         public void Tick()
@@ -283,7 +309,9 @@ namespace Game.Core.Sim
             var input = raw.WithMouse(raw.MousePx * System.Math.Max(0, Hero.Value(CombatStats.MouseDistance, 1, StatTags.Mouse)));
             var idleTicksBefore = State.IdleTicks;
             _focus.Tick(input);
+            _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
+            _banner.Tick(input);
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
             CastRequested();
@@ -293,6 +321,9 @@ namespace Game.Core.Sim
             _rift.Tick();
             _stage.Tick();
             _combat.Tick(input);
+            _skills.Minions.Tick(input);
+            _skills.Dots.Tick(input);
+            _overload.Tick();
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
             if (Permissions.Consent)

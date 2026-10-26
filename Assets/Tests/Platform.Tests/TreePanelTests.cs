@@ -56,6 +56,35 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void HoveringANodeShowsItsTooltipAndPointingAwayHidesIt()
+        {
+            var node = _loop.State.Tree.Allocatable(_data.Tree).First();
+
+            _panel.Point(_panel.Tree.WorldPointOf(node), false);
+
+            Assert.That(_panel.Tree.Hovered, Is.SameAs(node));
+            Assert.That(_panel.Tree.IsTooltipShown, Is.True);
+
+            _panel.PointAway();
+
+            Assert.That(_panel.Tree.IsTooltipShown, Is.False);
+        }
+
+        [Test]
+        public void ClickingANodePinsItsCardAndHidesTheTooltip()
+        {
+            var node = _loop.State.Tree.Allocatable(_data.Tree).First();
+            var point = _panel.Tree.WorldPointOf(node);
+            _panel.Point(point, false);
+
+            Assert.That(_panel.TryClick(point), Is.True);
+            _panel.Release(point);
+
+            Assert.That(_panel.Tree.Selected, Is.SameAs(node));
+            Assert.That(_panel.Tree.IsTooltipShown, Is.False);
+        }
+
+        [Test]
         public void DraggingMovesTheTreeWithThePointerAndSelectsNothing()
         {
             var start = _data.Tree.StartOf(_loop.State.Tree.StartClass)!;

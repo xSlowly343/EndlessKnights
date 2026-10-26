@@ -22,8 +22,8 @@ namespace Game.Presentation.Ui
 
     public sealed class TreePanel
     {
-        public const int MaxActions = 4;
-        public const int MaxBodyLines = 5;
+        public const int MaxActions = TreeNodeCardView.MaxActions;
+        public const int MaxBodyLines = TreeNodeCardView.MaxStatLines;
         public const int CompactBodyLines = 1;
         public const float FullCardMinContentPx = 400f;
 
@@ -37,17 +37,10 @@ namespace Game.Presentation.Ui
         private const float PillPaddingPx = 12f;
         private const float ToolPx = 32f;
         private const float ToolRadiusPx = 8f;
-        private const float CardRadiusPx = 10f;
-        private const float CardPaddingPx = 12f;
-        private const float CardTopPx = 10f;
-        private const float CardDotPx = 14f;
-        private const float TitlePx = 18f;
-        private const float BodyPx = 16f;
-        private const float StatusPx = 15f;
-        private const float ActionHeightPx = 34f;
-        private const float ActionWidthPx = 100f;
-        private const float ActionRadiusPx = 8f;
         private const float ClickSlopPx = 6f;
+        private const float HintHeightPx = 34f;
+        private const float HintRadiusPx = 10f;
+        private const float TooltipGapPx = 12f;
         private const float RefreshSeconds = 2f;
         private const float LinkWorld = 0.06f;
         private const float LinkPx = 1.5f;
@@ -62,11 +55,8 @@ namespace Game.Presentation.Ui
         private static readonly Color FieldColor = new Color32(0x12, 0x18, 0x28, 0xFF);
         private static readonly Color ToolColor = new Color32(0x26, 0x30, 0x4A, 0xF2);
         private static readonly Color PillColor = new Color32(0x1B, 0x22, 0x36, 0xEB);
-        private static readonly Color CardColor = new Color32(0x1B, 0x22, 0x36, 0xF5);
-        private static readonly Color TakeText = new Color32(0x2A, 0x1C, 0x00, 0xFF);
-        private static readonly Color TitleOffered = new Color32(0x8C, 0xE0, 0xA8, 0xFF);
-        private static readonly Color BodyColor = new Color32(0xD5, 0xDC, 0xEE, 0xFF);
         private static readonly Color StatusColor = new Color32(0xAE, 0xB9, 0xD6, 0xFF);
+        private static readonly Color HintColor = new Color32(0x1B, 0x22, 0x36, 0xEB);
         private static readonly Color SelectionColor = new Color32(0xFF, 0xFF, 0xFF, 0xE6);
         private static readonly Color32 RedColor = new Color32(0xE0, 0x57, 0x4A, 0xFF);
         private static readonly Color32 GreenColor = new Color32(0x4F, 0xC2, 0x77, 0xFF);
@@ -95,14 +85,16 @@ namespace Game.Presentation.Ui
         private readonly UiButton _zoomIn;
         private readonly UiButton _zoomOut;
         private readonly UiButton _home;
-        private readonly RectTransform _card;
-        private readonly UnityEngine.UI.Image _dot;
-        private readonly TextMeshProUGUI _title;
-        private readonly List<TextMeshProUGUI> _body = new List<TextMeshProUGUI>();
-        private readonly TextMeshProUGUI _status;
-        private readonly List<UiButton> _buttons = new List<UiButton>();
+        private readonly TreeNodeCardView _card;
+        private readonly RectTransform _hint;
+        private readonly TextMeshProUGUI _hintText;
         private readonly List<TreeAction> _actions = new List<TreeAction>();
-        private readonly List<string> _info = new List<string>();
+        private TreeNodeCardView? _tooltip;
+        private RectTransform? _tooltipPanel;
+        private TreeNodeDef? _hovered;
+        private float _roomLeftPx;
+        private float _roomRightPx;
+        private readonly Vector3[] _corners = new Vector3[4];
         private readonly List<(int From, int To)> _links = new List<(int From, int To)>();
         private TreeMesh? _linkMesh;
         private TreeMesh? _nodeMesh;
@@ -140,7 +132,7 @@ namespace Game.Presentation.Ui
             _map = UiElements.Rect("Map", _field);
             UiElements.Anchor(_map, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
             _pill = Tool("Points", new Vector2(0f, 1f), new Vector2(InsetPx, -InsetPx), new Vector2(0f, PillHeightPx), PillColor, PillHeightPx / 2f, theme.TextFont, 12f);
-            _pill.Label!.color = BodyColor;
+            _pill.Label!.color = StatusColor;
             _pill.Label.alignment = TextAlignmentOptions.Center;
             var right = new Vector2(1f, 1f);
             _zoomIn = Tool("ZoomIn", right, new Vector2(-InsetPx, -InsetPx), Vector2.one * ToolPx, ToolColor, ToolRadiusPx, theme.BoldFont, 18f);
@@ -152,7 +144,8 @@ namespace Game.Presentation.Ui
             UiElements.Anchor(target.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.one * 14f);
             var centre = UiElements.Dot("Centre", _home.Rect, theme.Text);
             UiElements.Anchor(centre.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.one * 5f);
-            _card = BuildCard(out _dot, out _title, out _status);
+            _card = new TreeNodeCardView("Card", _field, theme, TreeNodeCardMode.Pinned);
+            _hint = BuildHint(out _hintText);
             _root.gameObject.SetActive(false);
         }
 
@@ -161,7 +154,9 @@ namespace Game.Presentation.Ui
         public bool IsShown => _root.gameObject.activeSelf;
         public bool IsCompact => _bodyLines == CompactBodyLines;
         public TreeNodeDef? Selected => _selected;
-        public string Title => _title.text;
+        public string Title => _selected == null ? _hintText.text : Game.Core.Text.Texts.Pick(_selected.NameRu, _selected.NameEn);
+        public TreeNodeDef? Hovered => _hovered;
+        public bool IsTooltipShown => _tooltip != null && _tooltip.IsShown;
         public string Points => _pill.Label!.text;
         public int ActionCount => _actions.Count;
         public double VisibleHeight => _viewport?.VisibleHeight ?? 0;
@@ -188,7 +183,10 @@ namespace Game.Presentation.Ui
         public void Show(bool shown, float widthPx, float contentPx)
         {
             if (!shown)
+            {
                 CancelPress();
+                HoverAway();
+            }
             _root.gameObject.SetActive(shown);
             _fieldPx = new Vector2(Mathf.Max(1f, widthPx - 2f * PanelCanvas.BorderPx), Mathf.Max(1f, contentPx - 2f * PanelCanvas.BorderPx));
             UiElements.TopEdge(_field, _fieldPx.y);
@@ -234,7 +232,38 @@ namespace Game.Presentation.Ui
 
         public Vector2 WorldPointOf(TreeNodeDef node) => _map.TransformPoint(new Vector3((float)node.X, (float)node.Y, 0f));
 
-        public Vector2 WorldPointOfAction(int index) => _buttons[index].Rect.TransformPoint(_buttons[index].Rect.rect.center);
+        public Vector2 WorldPointOfAction(int index) => _card.Actions[index].Rect.TransformPoint(_card.Actions[index].Rect.rect.center);
+
+        public void UseTooltip(TreeNodeCardView tooltip, RectTransform panel)
+        {
+            _tooltip = tooltip;
+            _tooltipPanel = panel;
+        }
+
+        public void SetRoomBeside(float leftPx, float rightPx)
+        {
+            _roomLeftPx = leftPx;
+            _roomRightPx = rightPx;
+        }
+
+        public void Hover(Vector2 worldPoint)
+        {
+            var node = !IsShown || _pressedInTree || OverControls(worldPoint) || !UiElements.Contains(_field, worldPoint) ? null : NodeAt(worldPoint);
+            if (node == null)
+            {
+                HoverAway();
+                return;
+            }
+            if (!ReferenceEquals(node, _hovered) || _tooltip == null || !_tooltip.IsShown)
+                ShowTooltip(node);
+            PlaceTooltip(node);
+        }
+
+        public void HoverAway()
+        {
+            _hovered = null;
+            _tooltip?.Hide();
+        }
 
         public Vector2 WorldPointOfZoomIn() => _zoomIn.Rect.TransformPoint(_zoomIn.Rect.rect.center);
 
@@ -246,13 +275,19 @@ namespace Game.Presentation.Ui
                 return true;
             for (var i = 0; i < _actions.Count; i++)
             {
-                if (!_buttons[i].Contains(worldPoint))
+                if (!_card.Actions[i].Contains(worldPoint))
                     continue;
                 Perform(_actions[i]);
                 return true;
             }
-            if (UiElements.Contains(_card, worldPoint) || UiElements.Contains(_pill.Rect, worldPoint))
+            if (_card.Close != null && _card.IsShown && _card.Close.Contains(worldPoint))
+            {
+                Select(null);
                 return true;
+            }
+            if (OverControls(worldPoint))
+                return true;
+            HoverAway();
             if (_viewport == null || !UiElements.Contains(_field, worldPoint))
                 return false;
             _pressedInTree = true;
@@ -283,11 +318,54 @@ namespace Game.Presentation.Ui
             _pressedInTree = false;
             if (_dragged || _viewport == null || _tree == null)
                 return;
+            Select(NodeAt(worldPoint));
+        }
+
+        private TreeNodeDef? NodeAt(Vector2 worldPoint)
+        {
+            if (_viewport == null)
+                return null;
             var uv = FieldUv(worldPoint);
             var (x, y) = _viewport.ToTree(uv.x, uv.y);
             var radius = System.Math.Max(MinPickRadius, _viewport.VisibleHeight * PickRadiusShare);
-            var picked = TreeViewport.NodeAt(_shownNodes, x, y, radius);
-            Select(picked);
+            return TreeViewport.NodeAt(_shownNodes, x, y, radius);
+        }
+
+        private bool OverControls(Vector2 worldPoint) =>
+            (_card.IsShown && UiElements.Contains(_card.Root, worldPoint)) || UiElements.Contains(_hint, worldPoint) || UiElements.Contains(_pill.Rect, worldPoint)
+            || _zoomIn.Contains(worldPoint) || _zoomOut.Contains(worldPoint) || _home.Contains(worldPoint);
+
+        private void ShowTooltip(TreeNodeDef node)
+        {
+            _hovered = node;
+            if (_tooltip == null || _loop == null || _tree == null)
+                return;
+            var card = TreeNodeCard.ForPassive(_tree, _loop.State.Tree, node, _loop.RefundCost(node.Id), NumberDisplay.Settings, _loop.Hero);
+            _tooltip.Show(card, node.Type, LookAt(node), TreeNodeCardView.TooltipWidthPx, System.Array.Empty<TreeAction>(), Game.Core.Text.Texts.Get("tree.tip.click"));
+            _tooltip.Root.SetAsLastSibling();
+        }
+
+        private void PlaceTooltip(TreeNodeDef node)
+        {
+            if (_tooltip == null || _tooltipPanel == null)
+                return;
+            var layer = (RectTransform)_tooltip.Root.parent;
+            _tooltipPanel.GetWorldCorners(_corners);
+            var low = layer.InverseTransformPoint(_corners[0]);
+            var high = layer.InverseTransformPoint(_corners[2]);
+            var anchor = layer.InverseTransformPoint(WorldPointOf(node));
+            var width = TreeNodeCardView.TooltipWidthPx;
+            var side = TooltipPlacement.Side(_roomLeftPx, _roomRightPx, width, TooltipGapPx);
+            var x = side switch
+            {
+                TooltipSide.Left => low.x - TooltipGapPx - width,
+                TooltipSide.Right => high.x + TooltipGapPx,
+                _ => anchor.x < (low.x + high.x) / 2f ? high.x - InsetPx - width : low.x + InsetPx
+            };
+            var top = (float)TooltipPlacement.Top(anchor.y, _tooltip.HeightPx, low.y, high.y);
+            _tooltip.Root.anchorMin = _tooltip.Root.anchorMax = Vector2.zero;
+            _tooltip.Root.pivot = new Vector2(0f, 1f);
+            _tooltip.Root.localPosition = new Vector3(x, top, 0f);
         }
 
         public bool IsMarkerShown(TreeNodeDef node)
@@ -299,6 +377,7 @@ namespace Game.Presentation.Ui
         private void Select(TreeNodeDef? node)
         {
             _selected = node;
+            HoverAway();
             Paint();
             ShowInfo();
         }
@@ -320,6 +399,8 @@ namespace Game.Presentation.Ui
                 _looks[i] = LookOf(_tree.Nodes[i], allocation, canTake && offered.Contains(_tree.Nodes[i]));
             Paint();
             ShowInfo();
+            if (_hovered != null)
+                ShowTooltip(_hovered);
         }
 
         private void Paint()
@@ -567,7 +648,8 @@ namespace Game.Presentation.Ui
             _selection = UiElements.Ring("Selection", _nodeMesh.rectTransform, SelectionColor).rectTransform;
             _selection.anchorMin = _selection.anchorMax = _map.pivot;
             _selection.gameObject.SetActive(false);
-            _card.SetAsLastSibling();
+            _card.Root.SetAsLastSibling();
+            _hint.SetAsLastSibling();
         }
 
         private static Rect Bounds(PassiveTree tree)
@@ -655,26 +737,35 @@ namespace Game.Presentation.Ui
         private void ShowInfo()
         {
             _actions.Clear();
-            _info.Clear();
             if (_loop == null || _tree == null)
             {
                 _pill.Text = string.Empty;
-                ShowCard(TreeTexts.Unavailable, _theme.TextDim, Color.clear);
+                ShowHint(TreeTexts.Unavailable);
                 return;
             }
             var allocation = _loop.State.Tree;
             ShowPoints(allocation);
             if (_selected == null)
             {
-                ShowCard(TreeTexts.Hint, StatusColor, Color.clear);
+                ShowHint(TreeTexts.Hint);
                 return;
             }
-            _info.AddRange(TreeNodeText.Describe(_tree, allocation, _selected, _loop.RefundCost(_selected.Id), NumberDisplay.Settings));
             _actions.AddRange(TreeAction.For(_tree, allocation, _selected));
             if (_actions.Count > MaxActions)
                 _actions.RemoveRange(MaxActions, _actions.Count - MaxActions);
-            var look = LookAt(_selected);
-            ShowCard(_info[0], look == TreeNodeLook.Offered ? TitleOffered : look == TreeNodeLook.Taken ? _theme.Gold : _theme.Text, ColorOf(look, SectorColor(_selected)));
+            var card = TreeNodeCard.ForPassive(_tree, allocation, _selected, _loop.RefundCost(_selected.Id), NumberDisplay.Settings, _loop.Hero);
+            _hint.gameObject.SetActive(false);
+            _card.Show(IsCompact ? card.Shortened(CompactBodyLines) : card, _selected.Type, LookAt(_selected), _fieldPx.x - 2f * InsetPx, _actions, string.Empty);
+            _card.Root.anchorMin = _card.Root.anchorMax = new Vector2(0.5f, 0f);
+            _card.Root.pivot = new Vector2(0.5f, 0f);
+            _card.Root.anchoredPosition = new Vector2(0f, InsetPx);
+        }
+
+        private void ShowHint(string text)
+        {
+            _card.Hide();
+            _hint.gameObject.SetActive(true);
+            _hintText.text = text;
         }
 
         private void ShowPoints(TreeAllocation allocation)
@@ -685,104 +776,15 @@ namespace Game.Presentation.Ui
             _pill.Rect.sizeDelta = new Vector2(width, PillHeightPx);
         }
 
-        private void ShowCard(string title, Color titleColor, Color dotColor)
+        private RectTransform BuildHint(out TextMeshProUGUI text)
         {
-            _title.text = title;
-            _title.color = titleColor;
-            _dot.gameObject.SetActive(dotColor.a > 0f);
-            _dot.color = dotColor;
-            var bodyCount = Mathf.Max(0, Mathf.Min(_info.Count - 2, _bodyLines));
-            for (var i = 0; i < _body.Count; i++)
-            {
-                var shown = i < bodyCount;
-                _body[i].gameObject.SetActive(shown);
-                if (shown)
-                    _body[i].text = _info[i + 1];
-            }
-            var hasStatus = _info.Count >= 2;
-            _status.gameObject.SetActive(hasStatus);
-            if (hasStatus)
-                _status.text = _info[_info.Count - 1];
-            for (var i = 0; i < _buttons.Count; i++)
-            {
-                var shown = i < _actions.Count;
-                _buttons[i].Show(shown);
-                if (!shown)
-                    continue;
-                var primary = _actions[i].Kind != TreeActionKind.Refund;
-                _buttons[i].Text = _actions[i].Label;
-                _buttons[i].Back.color = primary ? _theme.Gold : _theme.Card;
-                _buttons[i].Label!.color = primary ? TakeText : _theme.Text;
-            }
-            ArrangeCard(bodyCount, hasStatus);
-        }
-
-        private void ArrangeCard(int bodyCount, bool hasStatus)
-        {
-            var textLeft = _dot.gameObject.activeSelf ? CardPaddingPx + CardDotPx + GapPx * 2f : CardPaddingPx;
-            var y = CardTopPx;
-            Line(_title.rectTransform, textLeft, ref y, TitlePx);
-            for (var i = 0; i < bodyCount; i++)
-                Line(_body[i].rectTransform, textLeft, ref y, BodyPx);
-            if (hasStatus)
-                Line(_status.rectTransform, textLeft, ref y, StatusPx);
-            UiElements.Anchor(_dot.rectTransform, new Vector2(0f, 1f), new Vector2(CardPaddingPx, -(CardTopPx + (TitlePx - CardDotPx) / 2f)), Vector2.one * CardDotPx);
-            if (_actions.Count > 0)
-            {
-                y += GapPx;
-                for (var i = 0; i < _actions.Count; i++)
-                {
-                    var x = -(CardPaddingPx + (_actions.Count - 1 - i) * (ActionWidthPx + GapPx));
-                    UiElements.Anchor(_buttons[i].Rect, new Vector2(1f, 1f), new Vector2(x, -y), new Vector2(ActionWidthPx, ActionHeightPx));
-                }
-                y += ActionHeightPx;
-            }
-            y += CardTopPx;
-            _card.offsetMin = new Vector2(InsetPx, InsetPx);
-            _card.offsetMax = new Vector2(-InsetPx, InsetPx + y);
-        }
-
-        private static void Line(RectTransform line, float left, ref float y, float heightPx)
-        {
-            line.anchorMin = new Vector2(0f, 1f);
-            line.anchorMax = Vector2.one;
-            line.pivot = new Vector2(0.5f, 1f);
-            line.offsetMin = new Vector2(left, -y - heightPx);
-            line.offsetMax = new Vector2(-CardPaddingPx, -y);
-            y += heightPx;
-        }
-
-        private RectTransform BuildCard(out UnityEngine.UI.Image dot, out TextMeshProUGUI title, out TextMeshProUGUI status)
-        {
-            var border = UiElements.Fill("Card", _field, _theme.Border, CardRadiusPx);
-            var card = border.rectTransform;
-            card.anchorMin = Vector2.zero;
-            card.anchorMax = new Vector2(1f, 0f);
-            card.pivot = new Vector2(0.5f, 0f);
-            UiElements.Stretch(UiElements.Fill("Back", card, CardColor, CardRadiusPx - PanelCanvas.BorderPx).rectTransform, PanelCanvas.BorderPx);
-            dot = UiElements.Dot("Dot", card, _theme.Gold);
-            title = CardLabel("Title", card, _theme.BoldFont, 14f, _theme.Text);
-            for (var i = 0; i < MaxBodyLines; i++)
-                _body.Add(CardLabel("Line " + i, card, _theme.TextFont, 12f, BodyColor));
-            status = CardLabel("Status", card, _theme.TextFont, 11f, StatusColor);
-            for (var i = 0; i < MaxActions; i++)
-            {
-                var back = UiElements.Raise(UiElements.Fill("Action " + i, card, _theme.Gold, ActionRadiusPx));
-                var label = UiElements.Label("Action " + i + "Text", back.rectTransform, _theme.BoldFont, 14f, TakeText, TextAlignmentOptions.Center);
-                UiElements.Stretch(label.rectTransform);
-                label.enableAutoSizing = true;
-                label.fontSizeMin = 10f;
-                label.fontSizeMax = 14f;
-                _buttons.Add(new UiButton(back, label));
-            }
-            return card;
-        }
-
-        private static TextMeshProUGUI CardLabel(string name, RectTransform card, TMP_FontAsset? font, float sizePx, Color color)
-        {
-            var label = UiElements.Label(name, card, font, sizePx, color, TextAlignmentOptions.MidlineLeft);
-            label.overflowMode = TextOverflowModes.Ellipsis;
-            return label;
+            var back = UiElements.Fill("Hint", _field, HintColor, HintRadiusPx);
+            var rect = UiElements.BottomEdge(back.rectTransform, HintHeightPx, InsetPx);
+            rect.anchoredPosition = new Vector2(0f, InsetPx);
+            text = UiElements.Label("HintText", rect, _theme.TextFont, 12f, StatusColor, TextAlignmentOptions.Center);
+            UiElements.Stretch(text.rectTransform, 8f);
+            text.overflowMode = TextOverflowModes.Ellipsis;
+            return rect;
         }
 
         private UiButton Tool(string name, Vector2 anchor, Vector2 positionPx, Vector2 sizePx, Color color, float radiusPx, TMP_FontAsset? font = null, float fontSizePx = 0f)
@@ -811,16 +813,6 @@ namespace Game.Presentation.Ui
                     return i;
             return -1;
         }
-
-        private static Color32 ColorOf(TreeNodeLook look, Color32 sector) => look switch
-        {
-            TreeNodeLook.Offered => sector,
-            TreeNodeLook.Taken => TakenColor,
-            TreeNodeLook.OwnStart => sector,
-            TreeNodeLook.OtherStart => Shade(sector, OtherStartShade),
-            TreeNodeLook.Locked => Shade(sector, LockedShade),
-            _ => Shade(sector, NormalShade)
-        };
 
         private static Color32 LinkColor(TreeNodeLook a, TreeNodeLook b)
         {

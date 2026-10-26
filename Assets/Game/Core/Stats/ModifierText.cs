@@ -26,28 +26,37 @@ namespace Game.Core.Stats
             return Texts.Has(key) ? Texts.Get(key) : stat.Name;
         }
 
+        public static string Subject(Modifier modifier) => Label(modifier.Stat) + TagSuffix(modifier.Tags);
+
         public static string Describe(Modifier modifier)
         {
-            var label = Label(modifier.Stat) + TagSuffix(modifier.Tags);
+            var label = Subject(modifier);
             return modifier.Kind switch
             {
                 ModifierKind.Increased => Texts.Format("modifier.increased", Signed(modifier.Value * 100), label),
                 ModifierKind.More => Texts.Format("modifier.more", Signed(modifier.Value * 100), label),
-                _ => Texts.Format("modifier.flat", FlatValue(modifier), label)
+                _ => Texts.Format("modifier.flat", FlatAmount(modifier.Stat, modifier.Value, true), label)
             };
         }
 
-        private static string FlatValue(Modifier modifier)
+        public static string FlatAmount(StatId stat, double value, bool signed)
         {
-            var name = modifier.Stat.Name;
+            var name = stat.Name;
             if (FlatPercent.Contains(name))
-                return Texts.Format("unit.percent", Signed(modifier.Value * 100));
+                return Texts.Format("unit.percent", Number(value * 100, signed));
             if (name.EndsWith("Seconds"))
-                return Texts.Format("unit.seconds", Signed(modifier.Value));
+                return Texts.Format("unit.seconds", Number(value, signed));
             if (name.EndsWith("Hours"))
-                return Texts.Format("unit.hours", Signed(modifier.Value));
-            return Signed(modifier.Value);
+                return Texts.Format("unit.hours", Number(value, signed));
+            return Number(value, signed);
         }
+
+        public static string Percent(double share) => Texts.Format("unit.percent", Signed(share * 100));
+
+        public static string Times(double multiplier) => "×" + System.Math.Round(multiplier, 2).ToString("0.00", CultureInfo.InvariantCulture);
+
+        private static string Number(double value, bool signed) =>
+            signed ? Signed(value) : System.Math.Round(value, 2).ToString("0.##", CultureInfo.InvariantCulture);
 
         private static string TagSuffix(StatTags tags)
         {

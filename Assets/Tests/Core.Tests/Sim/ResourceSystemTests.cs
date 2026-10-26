@@ -109,15 +109,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CharacterWithoutItsOwnResourceUsesTheDefaultOne()
+        public void EveryCharacterHasItsOwnResource()
         {
-            var (loop, input) = Hero(HeroClass.Captain);
+            var resources = TestWorld.Data.Combat.Resources;
 
-            Type(loop, input, 3);
-            input.MoveMouse(1500);
-            loop.Tick();
-
-            Assert.That(loop.State.Resource, Is.EqualTo(4).Within(1e-9));
+            foreach (var name in HeroClassNames.ByName.Keys)
+                Assert.That(resources.For(name), Is.Not.SameAs(resources.Fallback), name);
         }
 
         [Test]

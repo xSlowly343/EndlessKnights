@@ -14,6 +14,7 @@ namespace Game.Core.Sim
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
         private long _hitsTowardCrit;
+        private double _extraCritChance;
 
         public CombatSystem(CombatRules rules, StatSheet hero, GameState state, EventQueue events)
         {
@@ -38,12 +39,54 @@ namespace Game.Core.Sim
         public void OnKeyHit(IKeyHitListener keyHits) => _keyHits = keyHits;
 
         public double BaseKeyDamage => _rules.KeyDamage;
+        public CurseRules Curses => _rules.Curses;
+        public ConditionRules Conditions => _rules.Conditions;
+        public CannonRules Cannons => _rules.Cannons;
+        public DotRules Dots => _rules.Dots;
+        public MinionRules Skeletons => _rules.Skeletons;
+        public MinionRules Beasts => _rules.Beasts;
+        public BannerRules Banner => _rules.Banner;
 
         public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
             Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);
 
+        public void SkillHit(double baseDamage, double multiplier, StatTags tags, double extraCritChance)
+        {
+            _extraCritChance = extraCritChance;
+            Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);
+            _extraCritChance = 0;
+        }
+
         public BigNumber SkillDamage(double baseDamage, double multiplier, StatTags tags) =>
             _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * multiplier;
+
+        public void NotePause(long idleTicksBefore, bool hasInput)
+        {
+            var conditions = _rules.Conditions;
+            if (hasInput && idleTicksBefore * GameLoop.TickSeconds >= conditions.AfterIdlePauseSeconds)
+                _state.AfterIdleTicks = (int)System.Math.Round(conditions.AfterIdleSeconds * GameLoop.TicksPerSecond);
+            else if (_state.AfterIdleTicks > 0)
+                _state.AfterIdleTicks--;
+        }
+
+        public double ConditionMultiplier(StatTags tags)
+        {
+            var conditions = _rules.Conditions;
+            var multiplier = 1.0;
+            if (_state.FightingBoss)
+            {
+                multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageVsBoss, 1, tags));
+                if (_state.BossSecondsLeft <= conditions.BossTimerEndSeconds)
+                    multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageAtBossTimerEnd, 1, tags));
+            }
+            if (_state.HitsOnEnemy < conditions.FirstHits)
+                multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.FirstHitsBonus, 0, tags));
+            if (_state.KillStreak > 0)
+                multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerKill, 0, tags)) * System.Math.Min(_state.KillStreak, conditions.KillStreakMax);
+            if (_state.AfterIdleTicks > 0)
+                multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageAfterIdle, 1, tags));
+            return multiplier;
+        }
 
         public void DirectHit(BigNumber damage)
         {
@@ -61,6 +104,7 @@ namespace Game.Core.Sim
         public void Tick(in EffectiveInput input)
         {
             LastTickDamage = BigNumber.Zero;
+            CountStreakTime();
             var keyHits = TakeWhole(_state.KeyCarry + input.Keys, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -74,7 +118,7 @@ namespace Game.Core.Sim
             }
             for (var i = 0; i < mouseHits; i++)
                 Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier);
-            _class.EndTick(keyHits);
+            _class.EndTick(keyHits, input.MousePx);
         }
 
         private void Hit(DamageSource source, double baseDamage, StatTags tags, HitFlags flags, double multiplier)
@@ -82,9 +126,10 @@ namespace Game.Core.Sim
             if (!_state.EnemyAlive)
                 return;
 
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * multiplier;
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags));
             if (damage.Sign <= 0)
                 return;
+            _state.HitsOnEnemy++;
 
             if (ForcedCrit() || RollCrit(tags))
             {
@@ -98,12 +143,27 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
             if (source == DamageSource.Keyboard)
                 _keyHits?.OnKeyHit(damage);
-            if (_state.EnemyAlive)
+            if (_state.EnemyAlive && !Culled(tags))
                 return;
 
             CarryOverkill(damage - hpBefore, tags);
             _state.EnemyHp = BigNumber.Zero;
             _kills?.OnEnemyKilled();
+        }
+
+        private bool Culled(StatTags tags)
+        {
+            var threshold = System.Math.Min(_rules.Conditions.CullMax, _hero.Value(CombatStats.CullThreshold, 0, tags));
+            return threshold > 0 && _state.EnemyHp < _state.EnemyMaxHp * threshold;
+        }
+
+        private void CountStreakTime()
+        {
+            if (_state.KillStreak == 0)
+                return;
+            _state.TicksSinceKill++;
+            if (_state.TicksSinceKill > _rules.Conditions.KillStreakResetSeconds * GameLoop.TicksPerSecond)
+                _state.KillStreak = 0;
         }
 
         private void CarryOverkill(BigNumber overkill, StatTags tags)
@@ -152,7 +212,7 @@ namespace Game.Core.Sim
 
         private bool RollCrit(StatTags tags)
         {
-            var chance = CritChance(tags);
+            var chance = System.Math.Min(1, CritChance(tags) + _extraCritChance);
             return chance > 0 && _state.Rng.NextDouble() < chance;
         }
 

@@ -44,6 +44,9 @@ namespace Game.Platform.Windows.Window
             return Math.Max(lowest, Math.Min(preferred, highest));
         }
 
+        public (int Left, int Right) RoomBeside(int panelLeft, int panelWidth) =>
+            (Math.Max(0, panelLeft + StripOffsetX), Math.Max(0, Window.Width - StripOffsetX - panelLeft - panelWidth));
+
         private static int PreferredLeft(ScreenRect strip, ScreenRect workArea, int width)
         {
             var roomToTheLeft = strip.Right - workArea.Left;

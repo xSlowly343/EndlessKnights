@@ -11,6 +11,14 @@ namespace Game.Core.Build
         public static IReadOnlyList<string> Describe(PassiveTree tree, TreeAllocation allocation, TreeNodeDef node, BigNumber? refundCost, NumberFormatSettings format)
         {
             var lines = new List<string> { Texts.Pick(node.NameRu, node.NameEn) + " · " + TypeLabel(node) };
+            lines.AddRange(StatLines(allocation, node));
+            lines.Add(Status(tree, allocation, node, refundCost, format));
+            return lines;
+        }
+
+        public static IReadOnlyList<string> StatLines(TreeAllocation allocation, TreeNodeDef node)
+        {
+            var lines = new List<string>();
             switch (node.Type)
             {
                 case TreeNodeType.Attribute:
@@ -23,7 +31,6 @@ namespace Game.Core.Build
                     AddModifiers(lines, node);
                     break;
             }
-            lines.Add(Status(tree, allocation, node, refundCost, format));
             return lines;
         }
 
@@ -75,7 +82,7 @@ namespace Game.Core.Build
             }
         }
 
-        private static string Status(PassiveTree tree, TreeAllocation allocation, TreeNodeDef node, BigNumber? refundCost, NumberFormatSettings format)
+        public static string Status(PassiveTree tree, TreeAllocation allocation, TreeNodeDef node, BigNumber? refundCost, NumberFormatSettings format)
         {
             if (node.Type == TreeNodeType.Start)
                 return node.StartClass == allocation.StartClass ? Texts.Get("tree.status.ownStart") : Texts.Get("tree.status.otherStart");

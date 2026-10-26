@@ -65,6 +65,10 @@ namespace Game.Core.Build
                 return BookResult.WrongKind;
             if (FreeCopies(skill) <= 0)
                 return BookResult.NotOwned;
+            if (skill.Locked)
+                return BookResult.WaitsForMechanic;
+            if (skill.Ascendancy != null && skill.Ascendancy != _state.Ascendancy.Subclass)
+                return BookResult.WrongPath;
             if (!MeetsRequirements(skill))
                 return BookResult.AttributesTooLow;
             if (_state.Skills.Count >= SlotCount)

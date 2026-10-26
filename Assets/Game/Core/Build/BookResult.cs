@@ -7,6 +7,8 @@ namespace Game.Core.Build
         WrongKind,
         NoFreeSlot,
         NoSuchSlot,
-        AttributesTooLow
+        AttributesTooLow,
+        WrongPath,
+        WaitsForMechanic
     }
 }

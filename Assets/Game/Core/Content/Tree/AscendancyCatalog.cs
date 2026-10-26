@@ -22,7 +22,7 @@ namespace Game.Core.Content.Tree
     {
         private readonly Dictionary<string, TreeNodeDef> _byId;
 
-        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, TreeNodeDef start, IReadOnlyList<TreeNodeDef> nodes)
+        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, TreeNodeDef start, IReadOnlyList<TreeNodeDef> nodes, string blurb = "")
         {
             Id = id;
             HeroClass = heroClass;
@@ -30,6 +30,7 @@ namespace Game.Core.Content.Tree
             NameEn = nameEn;
             Start = start;
             Nodes = nodes;
+            Blurb = blurb;
             _byId = new Dictionary<string, TreeNodeDef>(StringComparer.Ordinal);
             foreach (var node in nodes)
                 _byId.Add(node.Id, node);
@@ -41,6 +42,7 @@ namespace Game.Core.Content.Tree
         public string NameEn { get; }
         public TreeNodeDef Start { get; }
         public IReadOnlyList<TreeNodeDef> Nodes { get; }
+        public string Blurb { get; }
 
         public bool TryGet(string id, out TreeNodeDef node) => _byId.TryGetValue(id, out node!);
     }
@@ -110,6 +112,20 @@ namespace Game.Core.Content.Tree
                     if (tree.TryGet(node.Id, out _))
                         throw new ContentException(FileName, node.Id, "this id is already used on the passive tree");
                 }
+            }
+        }
+
+        public void RequirePathSkills(Gems.GemCatalog gems, Weapons.WeaponCatalog weapons)
+        {
+            foreach (var gem in gems.All)
+            {
+                if (gem.Ascendancy == null)
+                    continue;
+                var where = "gems." + gem.Id;
+                if (!TryGet(gem.Ascendancy, out var path))
+                    throw new ContentException(Gems.GemCatalog.FileName, where, $"unknown path '{gem.Ascendancy}', expected a subclass id from {FileName}");
+                if (!weapons.TryGetType(gem.Skill!.Weapon!, out var weapon) || Sim.HeroClassNames.Of(weapon.HeroClass) != path.HeroClass)
+                    throw new ContentException(Gems.GemCatalog.FileName, where, $"path '{path.Id}' belongs to '{path.HeroClass}', the skill needs the weapon of that class");
             }
         }
 
@@ -192,7 +208,8 @@ namespace Game.Core.Content.Tree
             RequireReachable(item.Field("links"), start, nodes);
 
             var name = item.Field("name");
-            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes);
+            var blurb = item.HasField("blurb") ? item.Field("blurb").AsString() : string.Empty;
+            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes, blurb);
         }
 
         private static TreeNodeDef ReadNode(ContentNode node)
@@ -207,7 +224,8 @@ namespace Game.Core.Content.Tree
                 node.Field("id").AsString(), type,
                 node.Field("x").AsNumber(-1000, 1000), node.Field("y").AsNumber(-1000, 1000),
                 name.Field("ru").AsString(), name.Field("en").AsString(),
-                modifiers, Array.Empty<IReadOnlyList<Modifier>>(), 0, null, locked);
+                modifiers, Array.Empty<IReadOnlyList<Modifier>>(), 0, null, locked,
+                descriptionRu: PassiveTree.DescriptionText(node, "ru"), descriptionEn: PassiveTree.DescriptionText(node, "en"));
         }
 
         private static TreeNodeDef Find(ContentNode id, Dictionary<string, TreeNodeDef> byId)

@@ -163,5 +163,17 @@ namespace Game.Platform.Tests
             Assert.That(layout.PanelLeft(WideWidth, 480), Is.EqualTo(-480));
             Assert.That(layout.PanelLeft(PanelWidth, 480), Is.EqualTo(0));
         }
+
+        [Test]
+        public void RoomBesideTheNarrowPanelIsTheRestOfTheWideWindow()
+        {
+            var strip = new ScreenRect(1440, 852, 1920, 1032);
+
+            var layout = PanelLayout.Expanded(strip, WorkArea, TaskbarEdge.Bottom, WideWidth, WideArea);
+            var room = layout.RoomBeside(layout.PanelLeft(PanelWidth, 480), PanelWidth);
+
+            Assert.That(room.Left + room.Right, Is.EqualTo(layout.Window.Width - PanelWidth));
+            Assert.That(room.Left, Is.GreaterThan(room.Right));
+        }
     }
 }
