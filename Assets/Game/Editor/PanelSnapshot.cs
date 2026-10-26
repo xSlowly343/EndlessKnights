@@ -100,6 +100,14 @@ namespace Game.Editor
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-book-half.png"));
             navigator.ToggleHeight();
+            navigator.SelectSubTab(1);
+            frame = ShowPanel(panels, navigator);
+            var place = panels.Master.WorldPointOfPlace(3);
+            panels.TryClick(place);
+            panels.Release(place);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-master.png"));
+            navigator.SelectSubTab(0);
             navigator.SelectTab(PanelSection.Hero);
             frame = ShowPanel(panels, navigator);
 

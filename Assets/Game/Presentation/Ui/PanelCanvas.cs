@@ -79,6 +79,7 @@ namespace Game.Presentation.Ui
         private float _noticeLeft;
         private HeroPanel _heroPanel = null!;
         private ItemsPanel _itemsPanel = null!;
+        private MasterPanel _masterPanel = null!;
         private PartyPanel _partyPanel = null!;
         private SettingsPanel _settingsPanel = null!;
         private ConsentCard _consent = null!;
@@ -157,6 +158,7 @@ namespace Game.Presentation.Ui
         public bool IsNoticeShown => _notice.gameObject.activeSelf;
         public HeroPanel Hero => _heroPanel;
         public ItemsPanel Items => _itemsPanel;
+        public MasterPanel Master => _masterPanel;
         public PartyPanel Party => _partyPanel;
         public SettingsPanel Settings => _settingsPanel;
         public ConsentCard Consent => _consent;
@@ -186,6 +188,7 @@ namespace Game.Presentation.Ui
             Subclass.Bind(loop);
             Book.Bind(loop);
             _itemsPanel.Bind(loop);
+            _masterPanel.Bind(loop);
         }
 
         public void Show(PanelNavigator navigator)
@@ -296,7 +299,7 @@ namespace Game.Presentation.Ui
                 return TryClickConsent(worldPoint);
             if (_showingCard)
                 return TryClickReport(worldPoint);
-            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
+            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _masterPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
                 return true;
             if (_preset.Contains(worldPoint))
             {
@@ -444,6 +447,7 @@ namespace Game.Presentation.Ui
             RefreshCurrency(_loop);
             _heroPanel.Refresh(_loop);
             _itemsPanel.Refresh();
+            _masterPanel.Refresh();
             _partyPanel.Refresh(_loop);
             Book.Refresh();
             RefreshPreset();
@@ -609,6 +613,8 @@ namespace Game.Presentation.Ui
             Subclass.Show(_subclassShown, _shownFrame.WidthPx, _shownFrame.ContentPx);
             _bookShown = !navigator.ShowingMore && navigator.Active == PanelSection.Book && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
             Book.Show(_bookShown, _shownFrame.ContentPx);
+            var masterShown = !navigator.ShowingMore && navigator.Active == PanelSection.Book && navigator.SubTab == 1 && _shownFrame.HasSubTabs;
+            _masterPanel.Show(masterShown);
             _slots.gameObject.SetActive(!navigator.ShowingMore && navigator.Active == PanelSection.Book && _shownFrame.HasSubTabs);
             var heroSubTab = _shownFrame.HasSubTabs ? navigator.SubTab : 0;
             var heroShown = !navigator.ShowingMore && navigator.Active == PanelSection.Hero && HeroPanel.Covers(heroSubTab);
@@ -620,7 +626,7 @@ namespace Game.Presentation.Ui
             _partyPanel.Show(partyShown, _loop);
             var settingsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Settings;
             _settingsPanel.Show(settingsShown, _shownFrame.HasSubTabs ? navigator.SubTab : 0, _shownFrame.ContentPx);
-            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !heroShown && !itemsShown && !partyShown && !settingsShown;
+            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !settingsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -796,6 +802,7 @@ namespace Game.Presentation.Ui
             _heroPanel = HeroPanel.Create(content, _theme);
             _heroPanel.TreeRequested += () => TabPressed?.Invoke(PanelSection.Tree);
             _itemsPanel = ItemsPanel.Create(content, _theme);
+            _masterPanel = MasterPanel.Create(content, _theme);
             _partyPanel = PartyPanel.Create(content, _theme);
             _partyPanel.NoticeRequested += ShowNotice;
             Book = BookPanel.Create(content, _theme);
