@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Core.Content;
 using Game.Core.Math;
 using Game.Core.Stats;
@@ -20,6 +21,8 @@ namespace Game.Core.Sim
             _layer = new ModifierLayer(hero);
             Rebuild();
         }
+
+        public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
 
         public int Level => _state.StrikeLevel;
 

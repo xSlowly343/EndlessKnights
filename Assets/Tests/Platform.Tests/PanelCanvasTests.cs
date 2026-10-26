@@ -161,15 +161,22 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void HeroOverviewIsShownAndStatsSubTabFallsBackToThePlaceholder()
+        public void HeroStatsSubTabListsDamageAndSources()
         {
+            var data = Game.Core.Content.GameData.Load(name => File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Data", name)));
+            var loop = new GameLoop(data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Viking }, new Game.Core.Stats.StatSheet());
+            _panel.Bind(loop, data.Tree);
             Open(PanelSection.Hero);
             Assert.That(_panel.Hero.IsShown, Is.True);
 
             _navigator.SelectSubTab(1);
             Show();
+            _panel.Hero.Refresh(loop);
 
-            Assert.That(_panel.Hero.IsShown, Is.False);
+            Assert.That(_panel.Hero.IsShown, Is.True);
+            Assert.That(_panel.Hero.StatLabel(0, 0), Is.EqualTo(Game.Core.Text.Texts.Get("hero.stats.damage")));
+            Assert.That(_panel.Hero.StatValue(0, 1), Is.Not.Empty);
+            Assert.That(_panel.Hero.StatLabel(1, 0), Is.EqualTo(Game.Core.Text.Texts.Get("hero.stats.attributes")));
         }
 
         private static AscendancyCatalog RealAscendancy() =>

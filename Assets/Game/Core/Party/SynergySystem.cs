@@ -38,6 +38,8 @@ namespace Game.Core.Party
             _reactionCooldown = new int[rules.Reactions.Count];
         }
 
+        public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
+
         public SynergyRules Rules => _rules;
         public int OwnMarks { get; private set; }
         public int AllyMarks { get; private set; }

@@ -86,6 +86,7 @@ namespace Game.Core.Sim
         }
 
         public StatSheet Hero { get; }
+        public IReadOnlyList<Modifier> TreeModifiers => _treeLayer.Applied;
         public CombatSystem Combat => _combat;
         public StageSystem Stages => _stage;
         public FocusSystem Focus => _focus;

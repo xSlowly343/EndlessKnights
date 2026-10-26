@@ -90,6 +90,11 @@ namespace Game.Editor
             navigator.SelectTab(PanelSection.Hero);
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero.png"));
+            navigator.SelectSubTab(1);
+            frame = ShowPanel(panels, navigator);
+            panels.Hero.Refresh(loop);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero-stats.png"));
+            navigator.SelectSubTab(0);
 
             navigator.SelectTab(PanelSection.Items);
             ShowPanel(panels, navigator);
