@@ -46,7 +46,7 @@ namespace Game.Core.Tests.Content
         {
             var rules = CombatRules.Load(RealFile());
 
-            Assert.That(rules.Resources.For("captain"), Is.SameAs(rules.Resources.Fallback));
+            Assert.That(rules.Resources.For("gravedigger"), Is.SameAs(rules.Resources.Fallback));
         }
 
         [Test]

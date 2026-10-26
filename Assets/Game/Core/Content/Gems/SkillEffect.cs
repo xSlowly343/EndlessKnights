@@ -347,4 +347,18 @@ namespace Game.Core.Content.Gems
 
         public double HitsPerSecond { get; }
     }
+
+    public sealed class CannonEffect : SkillEffect
+    {
+        public CannonEffect(double seconds, double shotsPerSecond, double multiplier)
+        {
+            Seconds = seconds;
+            ShotsPerSecond = shotsPerSecond;
+            Multiplier = multiplier;
+        }
+
+        public double Seconds { get; }
+        public double ShotsPerSecond { get; }
+        public double Multiplier { get; }
+    }
 }

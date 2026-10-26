@@ -16,6 +16,6 @@
     "plague_doctor": ["march", "through_stride", "lull"],
     "moonshiner": ["march", "through_stride", "lull"],
     "gravedigger": ["march", "through_stride", "lull"],
-    "captain": ["march", "through_stride", "lull"]
+    "captain": ["cannon_by_name", "through_stride", "lull"]
   }
 }

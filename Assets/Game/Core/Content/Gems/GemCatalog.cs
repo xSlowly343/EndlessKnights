@@ -317,13 +317,18 @@ namespace Game.Core.Content.Gems
                     return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10), Number(node, "bossTimerSlow", 0.9));
                 case "curseFlow":
                     return new CurseFlowEffect(node.Field("hitsPerSecond").AsNumber(0, 100));
+                case "cannon":
+                    return new CannonEffect(
+                        node.Field("seconds").AsNumber(0.1, 3600),
+                        node.Field("shotsPerSecond").AsNumber(0.01, 100),
+                        node.Field("multiplier").AsNumber(0, 1e6));
                 case "idleStrike":
                     return new IdleStrikeEffect(
                         node.Field("chargePerSecond").AsNumber(0, 1000),
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff, curseFlow or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff, curseFlow, cannon or idleStrike");
             }
         }
 

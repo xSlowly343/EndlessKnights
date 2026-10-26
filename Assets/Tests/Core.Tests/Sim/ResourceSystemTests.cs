@@ -111,7 +111,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CharacterWithoutItsOwnResourceUsesTheDefaultOne()
         {
-            var (loop, input) = Hero(HeroClass.Captain);
+            var (loop, input) = Hero(HeroClass.Gravedigger);
 
             Type(loop, input, 3);
             input.MoveMouse(1500);

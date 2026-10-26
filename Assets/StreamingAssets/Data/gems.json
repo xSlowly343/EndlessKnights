@@ -523,6 +523,17 @@
       "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "bossTimerSlow": 0.3 }
     },
     {
+      "id": "cannon_by_name",
+      "kind": "skill",
+      "weapon": "pistol",
+      "color": "green",
+      "name": { "ru": "Пушка по имени", "en": "Cannon by Name" },
+      "tags": ["Minion", "Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 5,
+      "effect": { "type": "cannon", "seconds": 30, "shotsPerSecond": 1, "multiplier": 1.5 }
+    },
+    {
       "id": "lull",
       "kind": "skill",
       "color": "white",
@@ -1125,7 +1136,7 @@
       "cost": { "resource": 60 },
       "cooldownSeconds": 40,
       "durationSeconds": 30,
-      "locked": true
+      "effect": { "type": "aura", "modifiers": [{ "stat": "cannonCount", "kind": "flat", "value": 2 }] }
     },
     {
       "id": "figurehead",

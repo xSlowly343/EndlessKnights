@@ -46,6 +46,7 @@ namespace Game.Core.Tests.Sim
 
         private static readonly string[] VikingSkills = { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };
         private static readonly string[] MetalheadSkills = { "hearth_song", "louder", "nail_chord", "colossus_lullaby", "whole_hall", "underside_amp", "still_alive" };
+        private static readonly string[] CaptainSkills = { "cannon_by_name" };
 
         private static readonly string[] CommonSkills =
         {
@@ -56,7 +57,7 @@ namespace Game.Core.Tests.Sim
         };
 
         private static (GameLoop Loop, FakeInputSource Input) ClassSkillHero(HeroClass heroClass) =>
-            SkillHero(heroClass, heroClass == HeroClass.Viking ? VikingSkills : MetalheadSkills);
+            SkillHero(heroClass, heroClass == HeroClass.Viking ? VikingSkills : heroClass == HeroClass.Captain ? CaptainSkills : MetalheadSkills);
 
         private static (GameLoop Loop, FakeInputSource Input) SkillHero(HeroClass heroClass, string[] skills)
         {
@@ -121,6 +122,7 @@ namespace Game.Core.Tests.Sim
 
         [TestCase(HeroClass.Viking)]
         [TestCase(HeroClass.Metalhead)]
+        [TestCase(HeroClass.Captain)]
         public void ClassSkillTicksDoNotAllocate(HeroClass heroClass)
         {
             RequireAllocationCounter();

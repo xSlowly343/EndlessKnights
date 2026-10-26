@@ -19,7 +19,8 @@
       "viking": { "perKey": 2, "decay": { "perSecond": 10, "afterKeylessSeconds": 3, "mouseHolds": true } },
       "metalhead": { "perKey": 1 },
       "voodoo": { "perKey": 0.2, "perSecond": 3 },
-      "clockmaker": { "perKey": 0.1, "mousePxPerPoint": 1000, "perFastKillSecond": 5 }
+      "clockmaker": { "perKey": 0.1, "mousePxPerPoint": 1000, "perFastKillSecond": 5 },
+      "captain": { "perKey": 0.3333 }
     }
   },
   "crit": { "chance": 0.05, "multiplier": 2 },
@@ -39,6 +40,7 @@
     "damagePerLevel": 0.1,
     "milestone": { "every": 25, "multiplier": 2 }
   },
+  "cannons": { "max": 3, "resourcePerShot": 1, "broadside": { "mousePx": 3000, "balls": 5 } },
   "curses": { "maxOnEnemy": 1, "flick": { "bonus": 0.1, "max": 0.5 } },
   "conditions": {
     "bossTimerEndSeconds": 10,

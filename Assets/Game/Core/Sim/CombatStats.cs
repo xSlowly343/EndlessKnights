@@ -47,5 +47,8 @@ namespace Game.Core.Sim
         public static readonly StatId EnemyDebuffEffect = new StatId("enemyDebuffEffect");
         public static readonly StatId SandFromFastKills = new StatId("sandFromFastKills");
         public static readonly StatId BossTimerBank = new StatId("bossTimerBank");
+        public static readonly StatId CannonCount = new StatId("cannonCount");
+        public static readonly StatId MinionSeconds = new StatId("minionSeconds");
+        public static readonly StatId MinionSpeed = new StatId("minionSpeed");
     }
 }

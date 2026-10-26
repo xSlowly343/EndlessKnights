@@ -40,6 +40,7 @@ namespace Game.Core.Sim
         public double BaseKeyDamage => _rules.KeyDamage;
         public CurseRules Curses => _rules.Curses;
         public ConditionRules Conditions => _rules.Conditions;
+        public CannonRules Cannons => _rules.Cannons;
 
         public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
             Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);

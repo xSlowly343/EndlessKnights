@@ -315,6 +315,7 @@ namespace Game.Core.Sim
             _rift.Tick();
             _stage.Tick();
             _combat.Tick(input);
+            _skills.Cannons.Tick(input);
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
             if (Permissions.Consent)

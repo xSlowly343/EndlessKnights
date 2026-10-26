@@ -30,6 +30,7 @@ namespace Game.Core.Sim
             _combat = combat;
             _hero = hero;
             _weapons = weapons;
+            Cannons = new CannonSystem(state, hero, combat, resource);
             _seenKills = state.Kills;
             foreach (var slot in _state.Skills)
             {
@@ -39,6 +40,7 @@ namespace Game.Core.Sim
         }
 
         public bool SharedEnemy { get; private set; }
+        public CannonSystem Cannons { get; }
 
         public void ShareEnemy(bool shared)
         {
@@ -186,6 +188,8 @@ namespace Game.Core.Sim
                 Strike(slot, strike, native, spent);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
+            if (skill.Effect is CannonEffect cannon)
+                Cannons.Place(cannon, slot.Skill.Tags);
             if (skill.Effect is NextKillRewardEffect reward)
                 ArmNextKillReward(reward);
             if (skill.Effect is EchoEffect echo)
