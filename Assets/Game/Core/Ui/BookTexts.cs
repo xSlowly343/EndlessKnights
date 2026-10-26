@@ -12,6 +12,9 @@ namespace Game.Core.Ui
         public static string BagTitle => Texts.Get("book.bag");
         public static string AddTrigger => Texts.Get("book.addTrigger");
         public static string Unarmed => Texts.Get("book.unarmed");
+        public static string Remove => Texts.Get("book.remove");
+
+        public static string Removed(GemDef gem) => Texts.Format("book.removed", Name(gem));
 
         public static string Slots(int open, int max) => Texts.Format("book.slots", open, max);
 
