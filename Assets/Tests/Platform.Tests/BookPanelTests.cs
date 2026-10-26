@@ -65,6 +65,35 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void ClickingAnEquippedSkillOffersToRemoveItToTheBag()
+        {
+            var skill = _loop.Data.Gems.All.First(gem => gem.Kind == GemKind.Skill && gem.Skill!.Weapon == null && _loop.Book.MeetsRequirements(gem));
+            _loop.State.OwnedGems.Add(skill);
+            Open();
+            var bag = _panel.Book.WorldPointOfBagCell(0);
+            var row = _panel.Book.WorldPointOfRow(0);
+            _panel.TryClick(bag);
+            _panel.Drag(Vector2.Lerp(bag, row, 0.5f));
+            _panel.Drag(row);
+            _panel.Release(row);
+            var index = _loop.State.Skills.FindIndex(slot => ReferenceEquals(slot.Skill, skill));
+            Assert.That(index, Is.GreaterThanOrEqualTo(0));
+
+            var card = _panel.Book.WorldPointOfRow(index);
+            _panel.TryClick(card);
+            _panel.Release(card);
+            Assert.That(_panel.Book.SelectedRow, Is.EqualTo(index));
+
+            var remove = _panel.Book.WorldPointOfRemove(index);
+            Assert.That(_panel.TryClick(remove), Is.True);
+            _panel.Release(remove);
+
+            Assert.That(_loop.State.Skills.Select(slot => slot.Skill), Has.None.SameAs(skill));
+            Assert.That(_panel.Book.SelectedRow, Is.EqualTo(-1));
+            Assert.That(_panel.Book.Hint, Is.EqualTo(BookTexts.Removed(skill)));
+        }
+
+        [Test]
         public void HalfHeightHidesTheBag()
         {
             Open();

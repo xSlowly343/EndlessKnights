@@ -57,6 +57,22 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void ANodeComesBackOnlyWhenNoTakenNodeHangsOnIt()
+        {
+            var loop = UnlockedTypist(ActivityIds.FirstGuardian, ActivityIds.FirstPrestige);
+            loop.ChooseSubclass("kensei");
+            var path = TreePaths.SubclassPath(Subclass("kensei"), NotableAtDepth("kensei", 2).Id);
+            foreach (var id in path)
+                Assert.That(loop.AllocateSubclassNode(id), Is.EqualTo(AllocationResult.Allocated), id);
+
+            Assert.That(loop.RefundSubclassNode(path[0]), Is.False);
+            Assert.That(loop.RefundSubclassNode(path[1]), Is.True);
+            Assert.That(loop.RefundSubclassNode(path[0]), Is.True);
+            Assert.That(loop.State.Ascendancy.PointsLeft(Catalog), Is.EqualTo(2));
+            Assert.That(loop.RefundSubclassNode(path[0]), Is.False);
+        }
+
+        [Test]
         public void SubclassIsLockedUntilTheFirstActivity()
         {
             var loop = TypistLoop();

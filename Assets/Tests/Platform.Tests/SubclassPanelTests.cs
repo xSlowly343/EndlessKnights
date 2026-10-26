@@ -56,14 +56,15 @@ namespace Game.Platform.Tests
 
             var node = offered.Nodes.First(def => SubclassView.CanTake(_loop.State.Ascendancy, _data.Ascendancy, def));
             Assert.That(_panel.TryClick(_panel.Subclass.WorldPointOf(node)), Is.True);
-            Assert.That(_panel.Subclass.Selected, Is.SameAs(node));
-            Assert.That(_panel.Subclass.ActionCount, Is.EqualTo(1));
-            Canvas.ForceUpdateCanvases();
 
-            Assert.That(_panel.TryClick(_panel.Subclass.WorldPointOfAction(0)), Is.True);
-
+            Assert.That(_panel.Subclass.Selected, Is.Null);
             Assert.That(_loop.State.Ascendancy.IsAllocated(node.Id), Is.True);
             Assert.That(_loop.State.Ascendancy.PointsLeft(_data.Ascendancy), Is.EqualTo(0));
+
+            Assert.That(_panel.TryClick(_panel.Subclass.WorldPointOf(node)), Is.True);
+
+            Assert.That(_loop.State.Ascendancy.IsAllocated(node.Id), Is.False);
+            Assert.That(_loop.State.Ascendancy.PointsLeft(_data.Ascendancy), Is.EqualTo(1));
         }
 
         [Test]

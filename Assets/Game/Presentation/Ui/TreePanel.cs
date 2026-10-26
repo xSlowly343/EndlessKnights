@@ -277,7 +277,8 @@ namespace Game.Presentation.Ui
             {
                 if (!_card.Actions[i].Contains(worldPoint))
                     continue;
-                Perform(_actions[i]);
+                if (_selected != null)
+                    Perform(_selected, _actions[i]);
                 return true;
             }
             if (_card.Close != null && _card.IsShown && _card.Close.Contains(worldPoint))
@@ -316,9 +317,25 @@ namespace Game.Presentation.Ui
             if (!_pressedInTree)
                 return;
             _pressedInTree = false;
-            if (_dragged || _viewport == null || _tree == null)
+            if (_dragged || _viewport == null || _tree == null || _loop == null)
                 return;
-            Select(NodeAt(worldPoint));
+            var node = NodeAt(worldPoint);
+            if (node == null)
+            {
+                Select(null);
+                return;
+            }
+            var actions = TreeAction.For(_tree, _loop.State.Tree, node);
+            if (actions.Count > 1)
+            {
+                Select(node);
+                return;
+            }
+            Select(null);
+            if (actions.Count == 1)
+                Perform(node, actions[0]);
+            ShowTooltip(node);
+            PlaceTooltip(node);
         }
 
         private TreeNodeDef? NodeAt(Vector2 worldPoint)
@@ -341,7 +358,7 @@ namespace Game.Presentation.Ui
             if (_tooltip == null || _loop == null || _tree == null)
                 return;
             var card = TreeNodeCard.ForPassive(_tree, _loop.State.Tree, node, _loop.RefundCost(node.Id), NumberDisplay.Settings, _loop.Hero);
-            _tooltip.Show(card, node.Type, LookAt(node), TreeNodeCardView.TooltipWidthPx, System.Array.Empty<TreeAction>(), Game.Core.Text.Texts.Get("tree.tip.click"));
+            _tooltip.Show(card, node.Type, LookAt(node), TreeNodeCardView.TooltipWidthPx, System.Array.Empty<TreeAction>(), TreeTexts.ClickTip(TreeAction.For(_tree, _loop.State.Tree, node)));
             _tooltip.Root.SetAsLastSibling();
         }
 
@@ -703,21 +720,21 @@ namespace Game.Presentation.Ui
             _selection.sizeDelta = Vector2.one * (2f * half);
         }
 
-        private void Perform(TreeAction action)
+        private void Perform(TreeNodeDef node, TreeAction action)
         {
-            if (_loop == null || _selected == null)
+            if (_loop == null)
                 return;
             switch (action.Kind)
             {
                 case TreeActionKind.Allocate:
-                    _loop.AllocateNode(_selected.Id, action.Attribute, action.MasteryOption);
+                    _loop.AllocateNode(node.Id, action.Attribute, action.MasteryOption);
                     break;
                 case TreeActionKind.ChangeMastery:
                     if (action.MasteryOption.HasValue)
-                        _loop.ChangeMastery(_selected.Id, action.MasteryOption.Value);
+                        _loop.ChangeMastery(node.Id, action.MasteryOption.Value);
                     break;
                 case TreeActionKind.Refund:
-                    _loop.RefundNode(_selected.Id);
+                    _loop.RefundNode(node.Id);
                     break;
             }
             Refresh();
