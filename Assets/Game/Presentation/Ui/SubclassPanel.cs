@@ -172,7 +172,17 @@ namespace Game.Presentation.Ui
                 return true;
             if (!UiElements.Contains(_field, worldPoint))
                 return false;
-            Select(NodeAt(worldPoint));
+            var node = NodeAt(worldPoint);
+            Select(null);
+            if (node == null)
+                return true;
+            if (_loop.State.Ascendancy.CanRemove(_loop.Data.Ascendancy, node.Id))
+                _loop.RefundSubclassNode(node.Id);
+            else if (SubclassView.CanTake(_loop.State.Ascendancy, _loop.Data.Ascendancy, node))
+                _loop.AllocateSubclassNode(node.Id);
+            Refresh();
+            ShowTooltip(node);
+            PlaceTooltip(node);
             return true;
         }
 
@@ -303,7 +313,7 @@ namespace Game.Presentation.Ui
             if (_tooltip == null || _loop == null || _shownPath == null)
                 return;
             var card = SubclassView.Card(_loop.State.Ascendancy, _loop.Data.Ascendancy, _shownPath, node, _loop.Hero);
-            _tooltip.Show(card, node.Type, LookOf(node), TreeNodeCardView.TooltipWidthPx, System.Array.Empty<TreeAction>(), Texts.Get("tree.tip.click"));
+            _tooltip.Show(card, node.Type, LookOf(node), TreeNodeCardView.TooltipWidthPx, System.Array.Empty<TreeAction>(), ClickTip(node));
             _tooltip.Root.SetAsLastSibling();
         }
 
@@ -327,6 +337,15 @@ namespace Game.Presentation.Ui
             _tooltip.Root.anchorMin = _tooltip.Root.anchorMax = Vector2.zero;
             _tooltip.Root.pivot = new Vector2(0f, 1f);
             _tooltip.Root.localPosition = new Vector3(x, top, 0f);
+        }
+
+        private string ClickTip(TreeNodeDef node)
+        {
+            var state = _loop!.State.Ascendancy;
+            var catalog = _loop.Data.Ascendancy;
+            if (state.CanRemove(catalog, node.Id))
+                return Texts.Get("tree.tip.refund");
+            return SubclassView.CanTake(state, catalog, node) ? Texts.Get("tree.tip.take") : string.Empty;
         }
 
         private TreeNodeLook LookOf(TreeNodeDef node)

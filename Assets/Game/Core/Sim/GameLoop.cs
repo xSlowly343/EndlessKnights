@@ -210,6 +210,14 @@ namespace Game.Core.Sim
             return result;
         }
 
+        public bool RefundSubclassNode(string nodeId)
+        {
+            var removed = State.Ascendancy.Remove(_data.Ascendancy, nodeId);
+            if (removed)
+                RebuildTree();
+            return removed;
+        }
+
         private SubclassResult AfterSubclassChange(SubclassResult result)
         {
             if (result == SubclassResult.Chosen)
