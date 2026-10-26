@@ -73,6 +73,32 @@ namespace Game.Core.Build
 
         public bool IsAllocated(string nodeId) => _allocated.Contains(nodeId);
 
+        public bool CanRemove(AscendancyCatalog catalog, string nodeId)
+        {
+            if (!_allocated.Contains(nodeId) || Subclass == null || !catalog.TryGet(Subclass, out var subclass))
+                return false;
+            var reached = new HashSet<string>(StringComparer.Ordinal);
+            var pending = new Stack<TreeNodeDef>();
+            pending.Push(subclass.Start);
+            while (pending.Count > 0)
+            {
+                foreach (var neighbour in pending.Pop().Neighbours)
+                {
+                    if (neighbour.Id != nodeId && _allocated.Contains(neighbour.Id) && reached.Add(neighbour.Id))
+                        pending.Push(neighbour);
+                }
+            }
+            return reached.Count == _allocated.Count - 1;
+        }
+
+        public bool Remove(AscendancyCatalog catalog, string nodeId)
+        {
+            if (!CanRemove(catalog, nodeId))
+                return false;
+            _allocated.Remove(nodeId);
+            return true;
+        }
+
         public AllocationResult Check(AscendancyCatalog catalog, string nodeId)
         {
             if (Subclass == null || !catalog.TryGet(Subclass, out var subclass))

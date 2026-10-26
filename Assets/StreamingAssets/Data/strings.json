@@ -296,7 +296,7 @@
     "subclass.locked": { "ru": "Путь откроется с первым очком Пути: {0}", "en": "The Path opens with the first Path point: {0}" },
     "subclass.pick": { "ru": "Выбери Путь", "en": "Choose a Path" },
     "subclass.choose": { "ru": "Выбрать", "en": "Choose" },
-    "subclass.hint": { "ru": "Наведи на узел, нажми, чтобы взять", "en": "Hover a node, tap to take it" },
+    "subclass.hint": { "ru": "Наведи — описание, клик — взять или вернуть", "en": "Hover for details, click to take or refund" },
     "tree.unavailable": { "ru": "Дерево недоступно", "en": "The tree is unavailable" },
     "tree.points": { "ru": "Очков: {0}", "en": "Points: {0}" },
     "tree.taken": { "ru": "взято {0} / {1}", "en": "taken {0} / {1}" },
