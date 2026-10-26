@@ -125,7 +125,7 @@ namespace Game.Core.Sim
             slot.AuraPower = 1;
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
-            var cooldown = skill.CooldownSeconds * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
+            var cooldown = skill.CooldownSeconds * CooldownMultiplier() * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
             slot.StartCooldown(Ticks(cooldown));
             slot.LastCastTick = _state.Tick;
             if (skill.ArmOn != ArmOn.None)
@@ -651,7 +651,7 @@ namespace Game.Core.Sim
         {
             if (!slot.Ready || !Armed(slot) || idleSeconds < MinIdleSeconds(strike))
                 return;
-            slot.StartCooldown(Ticks(slot.Def.CooldownSeconds));
+            slot.StartCooldown(Ticks(slot.Def.CooldownSeconds * CooldownMultiplier()));
             slot.LastCastTick = _state.Tick;
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             _combat.SkillHit(_combat.BaseKeyDamage, ChargeMultiplier(strike, idleSeconds), slot.Skill.Tags);
@@ -692,6 +692,8 @@ namespace Game.Core.Sim
 
         private bool IsNative(SkillSlot slot) =>
             slot.Def.Weapon != null && _weapons.TryGetType(slot.Def.Weapon, out var weapon) && weapon.HeroClass == _state.Class;
+
+        private double CooldownMultiplier() => System.Math.Max(0.1, _hero.Value(CombatStats.SkillCooldown, 1));
 
         private double MinIdleSeconds(IdleStrikeEffect strike) => System.Math.Max(0, strike.MinIdleSeconds + _hero.Value(CombatStats.IdleStartSeconds, 0, StatTags.Idle));
 

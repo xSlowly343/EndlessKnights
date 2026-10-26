@@ -64,7 +64,7 @@ namespace Game.Core.Sim
                 return;
             if (!_state.FightingBoss || !_state.EnemyAlive)
                 return;
-            _state.BossTimerCarry += System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1));
+            _state.BossTimerCarry += System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1)) / System.Math.Max(1, _hero.Value(CombatStats.BossTimerSlow, 1));
             while (_state.BossTimerCarry >= 1 && _state.BossTicksLeft > 0)
             {
                 _state.BossTimerCarry -= 1;
@@ -78,6 +78,7 @@ namespace Game.Core.Sim
             _state.Farming = true;
             _state.FarmKills = 0;
             _state.BossFailsInARow++;
+            _state.KillStreak = 0;
             RecordBossFraction();
             SpawnNormal();
         }
@@ -99,6 +100,8 @@ namespace Game.Core.Sim
                 return;
             }
             _state.Kills++;
+            _state.KillStreak++;
+            _state.TicksSinceKill = 0;
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             Reward();
             if (_state.FightingBoss)

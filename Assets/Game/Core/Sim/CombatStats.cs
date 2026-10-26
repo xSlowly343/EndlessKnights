@@ -29,5 +29,15 @@ namespace Game.Core.Sim
         public static readonly StatId CritEvery = new StatId("critEvery");
         public static readonly StatId OverkillCarry = new StatId("overkillCarry");
         public static readonly StatId ComboStrikeMultiplier = new StatId("comboStrikeMultiplier");
+        public static readonly StatId DamageVsBoss = new StatId("damageVsBoss");
+        public static readonly StatId DamageAtBossTimerEnd = new StatId("damageAtBossTimerEnd");
+        public static readonly StatId BossTimerSlow = new StatId("bossTimerSlow");
+        public static readonly StatId DamagePerKill = new StatId("damagePerKill");
+        public static readonly StatId FirstHitsBonus = new StatId("firstHitsBonus");
+        public static readonly StatId CullThreshold = new StatId("cullThreshold");
+        public static readonly StatId DamageAfterIdle = new StatId("damageAfterIdle");
+        public static readonly StatId ResourceMax = new StatId("resourceMax");
+        public static readonly StatId RageBurnDelaySeconds = new StatId("rageBurnDelaySeconds");
+        public static readonly StatId SkillCooldown = new StatId("skillCooldown");
     }
 }

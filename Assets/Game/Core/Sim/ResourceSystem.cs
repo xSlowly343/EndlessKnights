@@ -26,7 +26,7 @@ namespace Game.Core.Sim
             _resource = rules.For(HeroClassNames.Of(_class));
         }
 
-        public double Max => System.Math.Max(0, _rules.Max - _state.ReservedResource);
+        public double Max => System.Math.Max(0, _rules.Max + _hero.Value(CombatStats.ResourceMax, 0) - _state.ReservedResource);
         public bool IsFull => _state.Resource >= Max;
         public ClassResource Rules => Current;
 
@@ -92,7 +92,7 @@ namespace Game.Core.Sim
                 return false;
             if (resource.MouseHoldsDecay && input.MousePx > 0)
                 return false;
-            return _state.KeylessTicks * GameLoop.TickSeconds > resource.DecayAfterKeylessSeconds;
+            return _state.KeylessTicks * GameLoop.TickSeconds > resource.DecayAfterKeylessSeconds + _hero.Value(CombatStats.RageBurnDelaySeconds, 0);
         }
     }
 }
