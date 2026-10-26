@@ -12,6 +12,17 @@ namespace Game.Core.Ui
 
         public static string Points(int left) => Texts.Format("tree.points", left);
 
+        public static string Reset => Texts.Get("tree.reset");
+
+        public static string ResetConfirm(string cost) => cost.Length == 0 ? Texts.Get("tree.resetConfirmFree") : Texts.Format("tree.resetConfirm", cost);
+
+        public static string ResetResult(RefundResult result, int points) => result switch
+        {
+            RefundResult.Refunded => Texts.Format("tree.resetDone", points),
+            RefundResult.NotEnoughGold => Texts.Get("tree.resetNoGold"),
+            _ => Texts.Get("tree.resetNothing")
+        };
+
         public static string ClickTip(IReadOnlyList<TreeAction> actions)
         {
             if (actions.Count > 1)

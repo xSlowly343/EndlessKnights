@@ -121,6 +121,35 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void FullResetIsFreeOnceADayAndThenCostsHalfTheRefunds()
+        {
+            var loop = Typist("ronin_ring_1", "ronin_ring_2");
+            var now = 1_760_000_000_000L;
+            loop.CompleteActivity(ActivityIds.FirstGuardian);
+            loop.ChooseSubclass("kensei");
+            var path = loop.Data.Ascendancy.SubclassesOf(loop.State.Tree.StartClass).Single(s => s.Id == "kensei").Start.Neighbours[0];
+            loop.AllocateSubclassNode(path.Id);
+
+            Assert.That(loop.FullResetCost(now), Is.EqualTo(BigNumber.Zero));
+            Assert.That(loop.FullReset(now), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(0));
+            Assert.That(loop.State.Ascendancy.IsAllocated(path.Id), Is.True);
+            Assert.That(loop.FullReset(now), Is.EqualTo(RefundResult.NotAllocated));
+
+            loop.AllocateNode("ronin_ring_1");
+            loop.AllocateNode("ronin_ring_2");
+            var half = (loop.RefundCost("ronin_ring_1")!.Value + loop.RefundCost("ronin_ring_2")!.Value) * BigNumber.FromDouble(0.5);
+            Assert.That(loop.FullResetCost(now + 1).ToDouble(), Is.EqualTo(half.ToDouble()).Within(1e-6));
+
+            loop.State.Gold = BigNumber.Zero;
+            Assert.That(loop.FullReset(now + 1), Is.EqualTo(RefundResult.NotEnoughGold));
+            loop.State.Gold = half;
+            Assert.That(loop.FullReset(now + 1), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.State.Gold.ToDouble(), Is.EqualTo(0).Within(1e-6));
+            Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(0));
+        }
+
+        [Test]
         public void FreeResetTimeIsSaved()
         {
             var loop = Typist("ronin_ring_1");

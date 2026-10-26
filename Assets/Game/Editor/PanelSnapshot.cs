@@ -71,6 +71,10 @@ namespace Game.Editor
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-tree-wide.png"));
             navigator.ToggleWide();
+            frame = ShowPanel(panels, navigator);
+            panels.TryClick(panels.Tree.WorldPointOfReset());
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-tree-reset.png"));
+            panels.TryClick(panels.Tree.WorldPointOfZoomIn());
 
             foreach (var activity in data.Ascendancy.Activities.Take(4))
                 loop.CompleteActivity(activity.Id);

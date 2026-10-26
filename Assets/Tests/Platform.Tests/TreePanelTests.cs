@@ -101,6 +101,23 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void ResetAsksOnceThenClearsTheTree()
+        {
+            var node = _loop.State.Tree.Allocatable(_data.Tree).First(def => def.Type == Game.Core.Content.Tree.TreeNodeType.Small);
+            _loop.AllocateNode(node.Id);
+            Open();
+
+            Assert.That(_panel.TryClick(_panel.Tree.WorldPointOfReset()), Is.True);
+            Assert.That(_panel.Tree.IsResetArmed, Is.True);
+            Assert.That(_loop.State.Tree.PointsSpent, Is.EqualTo(1));
+
+            Assert.That(_panel.TryClick(_panel.Tree.WorldPointOfReset()), Is.True);
+
+            Assert.That(_panel.Tree.IsResetArmed, Is.False);
+            Assert.That(_loop.State.Tree.PointsSpent, Is.EqualTo(0));
+        }
+
+        [Test]
         public void ZoomButtonInsideTheFieldZoomsIn()
         {
             _panel.Tree.ZoomOut();
