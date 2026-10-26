@@ -23,6 +23,20 @@ namespace Game.Core.Content.Gems
         public double FullResourceBonus { get; set; }
         public double RepeatAboveCombo { get; set; }
         public double BossReleaseShare { get; set; }
+        public double ResourceOnCast { get; set; }
+        public double ResourceOnKill { get; set; }
+        public double ResourceOnHit { get; set; }
+        public int ComboOnCast { get; set; }
+        public int ComboPerHit { get; set; }
+        public int ComboPerKeyHit { get; set; }
+        public double DurationMultiplier { get; set; }
+        public SkillCondition? When { get; set; }
+        public IReadOnlyList<Modifier> WhenModifiers { get; set; } = System.Array.Empty<Modifier>();
+        public double WhenMultiplier { get; set; }
+        public double WhenExecuteBelow { get; set; }
+        public bool WhenFree { get; set; }
+        public double WhenDurationMultiplier { get; set; }
+        public int WhenExtraTargets { get; set; }
 
         public bool SpendsAll => SpendAllPerPoint > 0;
         public bool HoldsStacks => HoldStacksAboveResource > 0;

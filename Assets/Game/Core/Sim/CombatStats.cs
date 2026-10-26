@@ -29,6 +29,8 @@ namespace Game.Core.Sim
         public static readonly StatId CritEvery = new StatId("critEvery");
         public static readonly StatId OverkillCarry = new StatId("overkillCarry");
         public static readonly StatId ComboStrikeMultiplier = new StatId("comboStrikeMultiplier");
+        public static readonly StatId ComboStrikeResource = new StatId("comboStrikeResource");
+        public static readonly StatId ComboKeepShare = new StatId("comboKeepShare");
         public static readonly StatId DamageVsBoss = new StatId("damageVsBoss");
         public static readonly StatId DamageAtBossTimerEnd = new StatId("damageAtBossTimerEnd");
         public static readonly StatId BossTimerSlow = new StatId("bossTimerSlow");

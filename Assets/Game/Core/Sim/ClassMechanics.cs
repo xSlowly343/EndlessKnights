@@ -29,7 +29,9 @@ namespace Game.Core.Sim
             if (_state.Combo % _rules.ComboStrikeEvery != 0)
                 return 1;
             flags = HitFlags.ComboStrike;
-            _state.PendingResource += _rules.WhirlResource * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
+            _state.LastComboStrikeTick = _state.Tick;
+            var whirl = _rules.WhirlResource + _hero.Value(CombatStats.ComboStrikeResource, 0, StatTags.Keyboard);
+            _state.PendingResource += whirl * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             return _rules.ComboStrikeMultiplier + _hero.Value(CombatStats.ComboStrikeMultiplier, 0, StatTags.Keyboard);
         }
 
@@ -43,7 +45,8 @@ namespace Game.Core.Sim
             var timeout = _rules.ComboTimeoutSeconds + _hero.Value(CombatStats.ComboTimeoutSeconds, 0, StatTags.Keyboard);
             if (_state.ComboIdleTicks > System.Math.Round(timeout * GameLoop.TicksPerSecond))
             {
-                _state.Combo = 0;
+                var keep = System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.ComboKeepShare, 0, StatTags.Keyboard)));
+                _state.Combo = (int)System.Math.Floor(_state.Combo * keep);
                 _state.ComboIdleTicks = 0;
             }
         }

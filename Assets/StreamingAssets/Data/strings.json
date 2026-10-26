@@ -22,6 +22,8 @@
     "stat.critEvery": { "ru": "гарантированный крит каждые N ударов", "en": "guaranteed crit every N hits" },
     "stat.auraDuration": { "ru": "длительность аур", "en": "aura duration" },
     "stat.comboStrikeMultiplier": { "ru": "сила удара комбо", "en": "combo strike power" },
+    "stat.comboStrikeResource": { "ru": "ресурс за удар комбо", "en": "resource per combo strike" },
+    "stat.comboKeepShare": { "ru": "доля серии после обрыва", "en": "streak kept after a break" },
     "stat.strength": { "ru": "Сила", "en": "Strength" },
     "stat.dexterity": { "ru": "Ловкость", "en": "Dexterity" },
     "stat.intelligence": { "ru": "Интеллект", "en": "Intelligence" },

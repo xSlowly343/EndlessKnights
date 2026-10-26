@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Stats;
@@ -17,7 +18,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count, Is.EqualTo(125));
+            Assert.That(gems.All.Count(gem => gem.Skill?.Weapon == null), Is.EqualTo(51));
             foreach (var id in new[] { "iron_rim_bash", "no_mercy", "hearth_song", "louder" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["through_stride"].Kind, Is.EqualTo(GemKind.Skill));

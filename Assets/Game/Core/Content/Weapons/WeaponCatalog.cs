@@ -140,7 +140,7 @@ namespace Game.Core.Content.Weapons
                     continue;
                 if (!pools.TryGetValue(weapon, out var pool))
                     throw new ContentException(GemCatalog.FileName, "gems." + gem.Id, $"unknown weapon type '{weapon}', expected one of {string.Join(", ", _types.Keys)} from {FileName}");
-                if (gem.Ascendancy == null)
+                if (gem.Ascendancy == null && !gem.Locked)
                     pool.Add(gem);
             }
             foreach (var type in Types)

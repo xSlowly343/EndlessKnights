@@ -38,6 +38,10 @@ namespace Game.Core.Sim
         public bool PrimedWasFull { get; set; }
         public double Progress { get; set; }
         public double CircleProgress { get; set; }
+        public bool StandingApplied { get; set; }
+        public bool NativeApplied { get; set; }
+        public bool WhenApplied { get; set; }
+        public bool WhenAtCast { get; set; }
         public double[]? Buckets { get; set; }
         public long BucketSecond { get; set; } = -1;
         public long ReadyTick { get; set; }

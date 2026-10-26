@@ -143,6 +143,8 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
             if (source == DamageSource.Keyboard)
                 _keyHits?.OnKeyHit(damage);
+            else if (source == DamageSource.Mouse)
+                _keyHits?.OnMouseHit(damage);
             if (_state.EnemyAlive && !Culled(tags))
                 return;
 
