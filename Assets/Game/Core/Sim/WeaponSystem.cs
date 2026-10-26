@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Game.Core.Content.Items;
 using Game.Core.Content.Weapons;
+using Game.Core.Math;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
@@ -22,8 +24,8 @@ namespace Game.Core.Sim
         }
 
         public WeaponCatalog Catalog => _catalog;
-        public WeaponBase? In(WeaponHand hand) => _state.Weapons.In(hand);
-        public IReadOnlyList<WeaponBase> Bag => _state.Weapons.Bag;
+        public WeaponItem? In(WeaponHand hand) => _state.Weapons.In(hand);
+        public IReadOnlyList<WeaponItem> Bag => _state.Weapons.Bag;
 
         public void UseCatalog(WeaponCatalog catalog)
         {
@@ -42,9 +44,17 @@ namespace Game.Core.Sim
             Changed();
         }
 
-        public void Give(WeaponBase weapon) => _state.Weapons.Bag.Add(weapon);
+        public WeaponItem Give(WeaponBase weaponBase) => Give(_catalog.Starter(weaponBase));
 
-        public bool Equip(WeaponHand hand, WeaponBase weapon)
+        public WeaponItem Give(WeaponBase weaponBase, ItemRarity rarity, Rng rng) => Give(_catalog.Roll(weaponBase, rarity, rng));
+
+        public WeaponItem Give(WeaponItem weapon)
+        {
+            _state.Weapons.Bag.Add(weapon);
+            return weapon;
+        }
+
+        public bool Equip(WeaponHand hand, WeaponItem weapon)
         {
             var weapons = _state.Weapons;
             if (!weapons.Bag.Remove(weapon))
@@ -76,11 +86,11 @@ namespace Game.Core.Sim
                 return;
             weapons.StarterGiven = true;
             if (weapons.Right == null && weapons.Left == null)
-                weapons.Right = _catalog.StarterFor(_state.Class);
+                weapons.Right = _catalog.Starter(_catalog.StarterFor(_state.Class));
         }
 
-        private WeaponBase? Rebind(WeaponBase? weapon) =>
-            weapon != null && _catalog.TryGetBase(weapon.Id, out var found) ? found : null;
+        private WeaponItem? Rebind(WeaponItem? weapon) =>
+            weapon != null && _catalog.TryGetBase(weapon.Id, out var found) ? weapon.Rebased(found) : null;
 
         private void Changed()
         {
@@ -96,7 +106,7 @@ namespace Game.Core.Sim
             _layer.Set(modifiers);
         }
 
-        private static void Add(List<Modifier> modifiers, WeaponBase? weapon)
+        private static void Add(List<Modifier> modifiers, WeaponItem? weapon)
         {
             if (weapon == null)
                 return;

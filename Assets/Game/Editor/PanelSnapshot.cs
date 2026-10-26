@@ -41,12 +41,13 @@ namespace Game.Editor
             loop.State.HeroLevel = 42;
             loop.State.Stage = 37;
             loop.State.RecordStage = 120;
-            var starter = data.Weapons.StarterFor(HeroClass.Viking);
-            loop.Weapons.Give(starter);
+            var starter = loop.Weapons.Give(data.Weapons.StarterFor(HeroClass.Viking));
             loop.Weapons.Equip(WeaponHand.Right, starter);
             loop.Book.GrantStartingGems();
+            var rng = new Rng(7);
+            var rarity = ItemRarity.Fine;
             foreach (var weapon in data.Weapons.Bases.Where(weapon => weapon.Type != starter.Type).Take(9))
-                loop.Weapons.Give(weapon);
+                loop.Weapons.Give(weapon, rarity++, rng);
             loop.State.OwnedGems.AddRange(data.Gems.All.Where(gem => gem.Skill?.Weapon == null).Take(12));
 
             var panels = PanelCanvas.Create();
@@ -99,6 +100,14 @@ namespace Game.Editor
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-book-half.png"));
             navigator.ToggleHeight();
+            navigator.SelectSubTab(1);
+            frame = ShowPanel(panels, navigator);
+            var place = panels.Master.WorldPointOfPlace(3);
+            panels.TryClick(place);
+            panels.Release(place);
+            frame = ShowPanel(panels, navigator);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-master.png"));
+            navigator.SelectSubTab(0);
             navigator.SelectTab(PanelSection.Hero);
             frame = ShowPanel(panels, navigator);
 

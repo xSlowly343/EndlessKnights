@@ -1,4 +1,6 @@
+using System.Linq;
 using Game.Core.Content;
+using Game.Core.Content.Weapons;
 using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Sim;
@@ -24,20 +26,34 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = heroClass }), hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(TestWorld.Classless(new GameState { Class = heroClass })), hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             foreach (var skill in skills)
                 loop.Skills.Equip(TestWorld.Data.Gems[skill]);
+            PutOnTheWeapon(loop, skills);
             loop.State.Resource = 100;
             loop.Events.Clear();
             return new SkillTestHero(loop, input);
         }
 
+        private static void PutOnTheWeapon(GameLoop loop, string[] skills)
+        {
+            var right = loop.State.Weapons.Right;
+            if (right == null)
+                return;
+            var extra = skills.Where(id =>
+            {
+                var gem = TestWorld.Data.Gems[id];
+                return gem.Skill?.Weapon == right.Type.Id && gem.Ascendancy == null && !right.Skills.Contains(id);
+            }).ToList();
+            if (extra.Count > 0)
+                loop.State.Weapons.Right = new WeaponItem(right.Base, right.Rarity, right.Skills.Concat(extra).ToList());
+        }
+
         public static SkillTestHero Borrowing(HeroClass heroClass, HeroClass weaponOwner, params string[] skills)
         {
             var test = Of(heroClass, skills);
-            var weapon = TestWorld.Data.Weapons.StarterFor(weaponOwner);
-            test.Loop.Weapons.Give(weapon);
+            var weapon = test.Loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(weaponOwner));
             test.Loop.Weapons.Equip(WeaponHand.Left, weapon);
             test.Loop.Events.Clear();
             return test;

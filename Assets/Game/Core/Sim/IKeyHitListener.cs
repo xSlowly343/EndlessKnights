@@ -5,5 +5,9 @@ namespace Game.Core.Sim
     public interface IKeyHitListener
     {
         void OnKeyHit(BigNumber damage);
+
+        void OnMouseHit(BigNumber damage);
+
+        void OnCrit();
     }
 }

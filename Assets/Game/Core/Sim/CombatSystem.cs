@@ -135,6 +135,8 @@ namespace Game.Core.Sim
             {
                 damage *= CritMultiplier(tags);
                 flags |= HitFlags.Crit;
+                if (source != DamageSource.Skill)
+                    _keyHits?.OnCrit();
             }
 
             var hpBefore = _state.EnemyHp;
@@ -143,6 +145,8 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
             if (source == DamageSource.Keyboard)
                 _keyHits?.OnKeyHit(damage);
+            else if (source == DamageSource.Mouse)
+                _keyHits?.OnMouseHit(damage);
             if (_state.EnemyAlive && !Culled(tags))
                 return;
 

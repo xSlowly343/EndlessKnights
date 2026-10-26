@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Tree;
 using Game.Core.Stats;
@@ -75,6 +76,34 @@ namespace Game.Core.Build
                 return BookResult.NoFreeSlot;
             _skills.Equip(skill);
             return BookResult.Done;
+        }
+
+        public BookResult PlaceFromWeapon(GemDef skill, IReadOnlyList<int> unlockLevels)
+        {
+            if (skill.Kind != GemKind.Skill)
+                return BookResult.WrongKind;
+            if (skill.Locked)
+                return BookResult.WaitsForMechanic;
+            if (!_state.Weapons.Opens(skill.Id, _state.HeroLevel, unlockLevels))
+                return BookResult.NotOnWeapon;
+            if (RowOf(skill) >= 0)
+                return BookResult.AlreadyInBook;
+            if (!MeetsRequirements(skill))
+                return BookResult.AttributesTooLow;
+            if (_state.Skills.Count >= SlotCount)
+                return BookResult.NoFreeSlot;
+            _skills.Equip(skill);
+            return BookResult.Done;
+        }
+
+        public int RowOf(GemDef skill)
+        {
+            for (var i = 0; i < _state.Skills.Count; i++)
+            {
+                if (ReferenceEquals(_state.Skills[i].Skill, skill))
+                    return i;
+            }
+            return -1;
         }
 
         public BookResult Unequip(int index)

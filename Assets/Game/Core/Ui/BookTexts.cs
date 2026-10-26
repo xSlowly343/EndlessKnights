@@ -32,6 +32,8 @@ namespace Game.Core.Ui
             BookResult.AttributesTooLow => Texts.Get("book.result.attributesTooLow"),
             BookResult.WrongPath => Texts.Get("book.result.wrongPath"),
             BookResult.WaitsForMechanic => Texts.Get("book.result.waitsForMechanic"),
+            BookResult.NotOnWeapon => Texts.Get("book.result.notOnWeapon"),
+            BookResult.AlreadyInBook => Texts.Get("book.result.alreadyInBook"),
             _ => string.Empty
         };
 

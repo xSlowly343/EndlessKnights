@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Stats;
@@ -17,7 +18,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count, Is.EqualTo(119));
+            Assert.That(gems.All.Count(gem => gem.Skill?.Weapon == null), Is.EqualTo(51));
             foreach (var id in new[] { "iron_rim_bash", "no_mercy", "hearth_song", "louder" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["through_stride"].Kind, Is.EqualTo(GemKind.Skill));
@@ -239,7 +240,7 @@ namespace Game.Core.Tests.Content
         private static (double Cost, double Cooldown, double Duration) Numbers(SkillDef skill) =>
             (skill.ResourceCost, skill.CooldownSeconds, skill.DurationSeconds);
 
-        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"every\", \"value\": 1 }, \"cooldownMultiplier\": 1 }", "gems[55].id: gem id 'lull' is used twice")]
+        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"every\", \"value\": 1 }, \"cooldownMultiplier\": 1 }", "gems[61].id: gem id 'lull' is used twice")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"spell\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'spell'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"pink\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].color: unknown value 'pink'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds or reserve")]

@@ -46,6 +46,7 @@ namespace Game.Core.Tests.Sim
 
         private static readonly string[] VikingSkills = { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };
         private static readonly string[] MetalheadSkills = { "hearth_song", "louder", "nail_chord", "colossus_lullaby", "whole_hall", "underside_amp", "still_alive" };
+        private static readonly string[] RoninSkills = { "thin_cut", "hundred_cuts", "no_rush", "kitchen_rhythm", "what_remains_of_the_debt", "sweep_over_the_queue", "slow_simmer" };
         private static readonly string[] CaptainSkills = { "cannon_by_name" };
         private static readonly string[] PlagueDoctorSkills = { "vial_from_belt" };
         private static readonly string[] MoonshinerSkills = { "fuse_bottle" };
@@ -66,6 +67,7 @@ namespace Game.Core.Tests.Sim
             heroClass switch
             {
                 HeroClass.Viking => VikingSkills,
+                HeroClass.Ronin => RoninSkills,
                 HeroClass.Captain => CaptainSkills,
                 HeroClass.PlagueDoctor => PlagueDoctorSkills,
                 HeroClass.Moonshiner => MoonshinerSkills,
@@ -78,7 +80,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1000));
-            var loop = TestWorld.Loop(input, new GameState { Class = heroClass }, hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = heroClass }), hero);
             foreach (var skill in skills)
                 loop.Skills.Equip(TestWorld.Data.Gems[skill]);
             return (loop, input);
@@ -135,6 +137,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [TestCase(HeroClass.Viking)]
+        [TestCase(HeroClass.Ronin)]
         [TestCase(HeroClass.Metalhead)]
         [TestCase(HeroClass.Captain)]
         [TestCase(HeroClass.PlagueDoctor)]
@@ -146,7 +149,7 @@ namespace Game.Core.Tests.Sim
             var (warmUp, warmUpInput) = ClassSkillHero(heroClass);
             FightCastingEverything(warmUp, warmUpInput, 3000);
             var (loop, input) = ClassSkillHero(heroClass);
-            FightCastingEverything(loop, input, 600);
+            FightCastingEverything(loop, input, 1200);
 
             var before = GC.GetAllocatedBytesForCurrentThread();
             FightCastingEverything(loop, input, 3000);

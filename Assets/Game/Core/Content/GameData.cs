@@ -78,7 +78,7 @@ namespace Game.Core.Content
             var rift = RiftRules.Load(readFile(RiftRules.FileName));
             rift.RequireMarks(synergy);
             var weapons = WeaponCatalog.Load(readFile(WeaponCatalog.FileName));
-            weapons.RequireGemWeapons(gems);
+            weapons.BindGems(gems);
             ascendancy.RequirePathSkills(gems, weapons);
             var panel = PanelUnlocks.Load(readFile(PanelUnlocks.FileName));
             var changeLog = ChangeLog.Load(readFile(ChangeLog.FileName));

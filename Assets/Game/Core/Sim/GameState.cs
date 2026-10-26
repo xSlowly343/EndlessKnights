@@ -63,6 +63,8 @@ namespace Game.Core.Sim
         public double FocusMultiplier { get; set; } = 1;
         public double Resource { get; set; }
         public long KeylessTicks { get; set; }
+        public long MouseIdleTicks { get; set; } = long.MaxValue / 2;
+        public bool Reading { get; set; }
         public long IdleTicks { get; set; }
         public long MacroRhythmTicks { get; set; }
 
@@ -131,6 +133,7 @@ namespace Game.Core.Sim
 
         public long KeyHits { get; set; }
         public int Combo { get; set; }
+        public long LastComboStrikeTick { get; set; } = -1;
         public long ComboIdleTicks { get; set; }
 
         public double KeyCarry { get; set; }

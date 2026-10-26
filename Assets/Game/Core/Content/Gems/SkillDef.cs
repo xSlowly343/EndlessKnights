@@ -4,8 +4,10 @@ namespace Game.Core.Content.Gems
 {
     public sealed class SkillDef
     {
-        public SkillDef(double resourceCost, double cooldownSeconds, double durationSeconds, SkillEffect effect, IReadOnlyList<string>? marks = null, string? weapon = null, NativeTrait? native = null, string? family = null, ArmOn armOn = ArmOn.None)
+        public SkillDef(double resourceCost, double cooldownSeconds, double durationSeconds, SkillEffect effect, IReadOnlyList<string>? marks = null, string? weapon = null, NativeTrait? native = null, string? family = null, ArmOn armOn = ArmOn.None, SkillTier tier = SkillTier.Common, SkillRole role = SkillRole.Other)
         {
+            Tier = tier;
+            Role = role;
             ArmOn = armOn;
             Family = family;
             Native = native ?? NativeTrait.None;
@@ -25,11 +27,13 @@ namespace Game.Core.Content.Gems
         public string? Weapon { get; }
         public NativeTrait Native { get; }
         public bool IsPassive =>
-            Effect is IdleStrikeEffect || Effect is FlowEffect || Effect is DistanceStacksEffect || Effect is BossHuntEffect || Effect is PassiveEffect || Effect is BreakBonusEffect || Effect is ComposureEffect || Reserves
+            Effect is IdleStrikeEffect || Effect is HitStrikeEffect || Effect is ScaledEffect || Effect is FlowEffect || Effect is ComboStacksEffect || Effect is DistanceStacksEffect || Effect is BossHuntEffect || Effect is PassiveEffect || Effect is BreakBonusEffect || Effect is ComposureEffect || Reserves
             || (Effect is StacksEffect stacks && stacks.Passive)
             || (Effect is SpecialKeysEffect keys && keys.Passive);
         public bool Reserves => Effect is AuraEffect aura && aura.Reserves;
 
+        public SkillTier Tier { get; }
+        public SkillRole Role { get; }
         public string? Family { get; }
         public ArmOn ArmOn { get; }
     }

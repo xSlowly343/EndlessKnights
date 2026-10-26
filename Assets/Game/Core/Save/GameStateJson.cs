@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
+using Game.Core.Content.Items;
 using Game.Core.Content.Json;
 using Game.Core.Content.Weapons;
 using Game.Core.Math;
@@ -187,12 +188,25 @@ namespace Game.Core.Save
         {
             var bag = new JsonValue[weapons.Bag.Count];
             for (var i = 0; i < bag.Length; i++)
-                bag[i] = JsonValue.Of(weapons.Bag[i].Id);
+                bag[i] = WriteWeapon(weapons.Bag[i]);
             return Object(
                 ("starterGiven", JsonValue.Of(weapons.StarterGiven)),
-                ("right", weapons.Right == null ? JsonValue.Null() : JsonValue.Of(weapons.Right.Id)),
-                ("left", weapons.Left == null ? JsonValue.Null() : JsonValue.Of(weapons.Left.Id)),
+                ("right", WriteWeapon(weapons.Right)),
+                ("left", WriteWeapon(weapons.Left)),
                 ("bag", JsonValue.Array(bag)));
+        }
+
+        private static JsonValue WriteWeapon(WeaponItem? weapon)
+        {
+            if (weapon == null)
+                return JsonValue.Null();
+            var skills = new JsonValue[weapon.Skills.Count];
+            for (var i = 0; i < skills.Length; i++)
+                skills[i] = JsonValue.Of(weapon.Skills[i]);
+            return Object(
+                ("base", JsonValue.Of(weapon.Id)),
+                ("rarity", JsonValue.Of(ItemRarityNames.Of(weapon.Rarity))),
+                ("skills", JsonValue.Array(skills)));
         }
 
         private static void ReadWeapons(ContentNode node, WeaponCatalog catalog, WeaponState weapons)
@@ -208,8 +222,20 @@ namespace Game.Core.Save
             }
         }
 
-        private static WeaponBase? ReadWeapon(ContentNode node, WeaponCatalog catalog) =>
-            !node.IsNull && catalog.TryGetBase(node.AsString(), out var weapon) ? weapon : null;
+        private static WeaponItem? ReadWeapon(ContentNode node, WeaponCatalog catalog)
+        {
+            if (node.IsNull)
+                return null;
+            if (!node.HasField("base"))
+                return catalog.TryGetBase(node.AsString(), out var oldBase) ? catalog.Starter(oldBase) : null;
+            if (!catalog.TryGetBase(node.Field("base").AsString(), out var weaponBase))
+                return null;
+            var rarity = ItemRarityNames.ByName.TryGetValue(node.Field("rarity").AsString(), out var found) ? found : ItemRarity.Simple;
+            var skills = new List<string>();
+            foreach (var item in node.Field("skills").Items())
+                skills.Add(item.AsString());
+            return new WeaponItem(weaponBase, rarity, skills);
+        }
 
         private static JsonValue WriteRift(RiftState rift) =>
             Object(

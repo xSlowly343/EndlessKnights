@@ -36,8 +36,7 @@ namespace Game.Core.Tests.Ui
         public void StarterWeaponIsShownInTheRightHand()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
-            var starter = loop.Data.Weapons.StarterFor(HeroClass.Viking);
-            loop.Weapons.Give(starter);
+            var starter = loop.Weapons.Give(loop.Data.Weapons.StarterFor(HeroClass.Viking));
             loop.Weapons.Equip(WeaponHand.Right, starter);
 
             var right = HeroSummary.Hand(loop, WeaponHand.Right);

@@ -41,6 +41,13 @@ namespace Game.Core.Tests.Sim
             return state;
         }
 
+        public static GameState WithAllWeaponPlacesOpen(GameState state)
+        {
+            var levels = Data.Weapons.SkillRules.UnlockLevels;
+            state.HeroLevel = levels[levels.Count - 1];
+            return state;
+        }
+
         public static void ArmFor(GameLoop loop, GemDef gem)
         {
             var type = gem.Skill?.Weapon;
@@ -50,8 +57,7 @@ namespace Game.Core.Tests.Sim
             {
                 if (weapon.Type.Id != type)
                     continue;
-                loop.Weapons.Give(weapon);
-                loop.Weapons.Equip(WeaponHand.Left, weapon);
+                loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(weapon));
                 return;
             }
         }

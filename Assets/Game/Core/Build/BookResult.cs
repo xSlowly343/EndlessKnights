@@ -9,6 +9,8 @@ namespace Game.Core.Build
         NoSuchSlot,
         AttributesTooLow,
         WrongPath,
-        WaitsForMechanic
+        WaitsForMechanic,
+        NotOnWeapon,
+        AlreadyInBook
     }
 }

@@ -44,6 +44,12 @@ namespace Game.Core.Content.Gems
         public bool CoinFlip { get; }
         public double CritChance { get; }
         public bool Arrow { get; }
+        public double LowHpBelow { get; set; }
+        public double LowHpMultiplier { get; set; }
+        public double BossMultiplier { get; set; }
+        public bool LastKeyHit { get; set; }
+        public double PauseSeconds { get; set; }
+        public double PauseMultiplier { get; set; }
     }
 
     public sealed class AuraEffect : SkillEffect
@@ -77,6 +83,53 @@ namespace Game.Core.Content.Gems
         }
 
         public double ReleaseShare { get; }
+        public bool Queue { get; set; }
+    }
+
+    public sealed class FlurryEffect : SkillEffect
+    {
+        public FlurryEffect(int hits, double seconds, double multiplier, int queueTargets)
+        {
+            Hits = hits;
+            Seconds = seconds;
+            Multiplier = multiplier;
+            QueueTargets = queueTargets;
+            HitsPerTick = System.Math.Max(1, (int)System.Math.Ceiling(hits / (seconds * Sim.GameLoop.TicksPerSecond) - 1e-9));
+        }
+
+        public int Hits { get; }
+        public double Seconds { get; }
+        public double Multiplier { get; }
+        public int QueueTargets { get; }
+        public int HitsPerTick { get; }
+    }
+
+    public sealed class PauseStrikeEffect : SkillEffect
+    {
+        public PauseStrikeEffect(double pauseSeconds, double multiplier)
+        {
+            PauseSeconds = pauseSeconds;
+            Multiplier = multiplier;
+        }
+
+        public double PauseSeconds { get; }
+        public double Multiplier { get; }
+    }
+
+    public sealed class ComboStacksEffect : SkillEffect
+    {
+        public ComboStacksEffect(int hitsPerStack, Modifier perStack, double maxTotal)
+        {
+            HitsPerStack = hitsPerStack;
+            PerStack = perStack;
+            MaxTotal = maxTotal;
+            Modifiers = new[] { new Modifier(perStack.Stat, perStack.Kind, 1, perStack.Tags) };
+        }
+
+        public int HitsPerStack { get; }
+        public Modifier PerStack { get; }
+        public double MaxTotal { get; }
+        public IReadOnlyList<Modifier> Modifiers { get; }
     }
 
     public sealed class QueueHitsEffect : SkillEffect
@@ -87,6 +140,8 @@ namespace Game.Core.Content.Gems
         }
 
         public double Share { get; }
+        public int Targets { get; set; }
+        public HitInput Input { get; set; }
     }
 
     public sealed class KeyRepeatEffect : SkillEffect
@@ -99,6 +154,9 @@ namespace Game.Core.Content.Gems
 
         public int Every { get; }
         public double Multiplier { get; }
+        public int Hits { get; set; }
+        public int QueueTargets { get; set; }
+        public HitInput Input { get; set; }
     }
 
     public enum SpecialKey
@@ -266,6 +324,7 @@ namespace Game.Core.Content.Gems
 
         public IReadOnlyList<Modifier> Modifiers { get; }
         public bool PerPartyMember { get; }
+        public SkillCondition? When { get; set; }
     }
 
     public sealed class BreakBonusEffect : SkillEffect
@@ -326,6 +385,72 @@ namespace Game.Core.Content.Gems
 
         public double DamageTaken { get; }
         public double BossTimerSlow { get; }
+        public double StrikeMultiplier { get; set; }
+        public StatTags Tags { get; set; }
+    }
+
+    public sealed class HitStrikeEffect : SkillEffect
+    {
+        public HitStrikeEffect(HitInput input, int every, double multiplier, int queueTargets)
+        {
+            Input = input;
+            Every = every;
+            Multiplier = multiplier;
+            QueueTargets = queueTargets;
+        }
+
+        public HitInput Input { get; }
+        public int Every { get; }
+        public double Multiplier { get; }
+        public int QueueTargets { get; }
+    }
+
+    public sealed class ScaledEffect : SkillEffect
+    {
+        public ScaledEffect(ScaleSource source, double per, double from, int maxSteps, IReadOnlyList<Modifier> perStep, IReadOnlyList<Modifier> modifiers, string? family)
+        {
+            Source = source;
+            Per = per;
+            From = from;
+            MaxSteps = maxSteps;
+            PerStep = perStep;
+            Modifiers = modifiers;
+            Family = family;
+        }
+
+        public ScaleSource Source { get; }
+        public double Per { get; }
+        public double From { get; }
+        public int MaxSteps { get; }
+        public IReadOnlyList<Modifier> PerStep { get; }
+        public IReadOnlyList<Modifier> Modifiers { get; }
+        public string? Family { get; }
+    }
+
+    public sealed class PulseEffect : SkillEffect
+    {
+        public PulseEffect(double everySeconds, double multiplier, int queueTargets)
+        {
+            EverySeconds = everySeconds;
+            Multiplier = multiplier;
+            QueueTargets = queueTargets;
+        }
+
+        public double EverySeconds { get; }
+        public double Multiplier { get; }
+        public int QueueTargets { get; }
+    }
+
+    public sealed class ExtendFamilyEffect : SkillEffect
+    {
+        public ExtendFamilyEffect(string family, double seconds)
+        {
+            Family = family;
+            Seconds = seconds;
+        }
+
+        public string Family { get; }
+        public double Seconds { get; }
     }
 
     public sealed class IdleStrikeEffect : SkillEffect

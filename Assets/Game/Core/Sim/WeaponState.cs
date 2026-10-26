@@ -5,14 +5,14 @@ namespace Game.Core.Sim
 {
     public sealed class WeaponState
     {
-        public WeaponBase? Right { get; set; }
-        public WeaponBase? Left { get; set; }
-        public List<WeaponBase> Bag { get; } = new List<WeaponBase>();
+        public WeaponItem? Right { get; set; }
+        public WeaponItem? Left { get; set; }
+        public List<WeaponItem> Bag { get; } = new List<WeaponItem>();
         public bool StarterGiven { get; set; }
 
-        public WeaponBase? In(WeaponHand hand) => hand == WeaponHand.Right ? Right : Left;
+        public WeaponItem? In(WeaponHand hand) => hand == WeaponHand.Right ? Right : Left;
 
-        public void Set(WeaponHand hand, WeaponBase? weapon)
+        public void Set(WeaponHand hand, WeaponItem? weapon)
         {
             if (hand == WeaponHand.Right)
                 Right = weapon;
@@ -23,5 +23,9 @@ namespace Game.Core.Sim
         public bool Holds(string typeId) =>
             (Right != null && string.Equals(Right.Type.Id, typeId, System.StringComparison.Ordinal)) ||
             (Left != null && string.Equals(Left.Type.Id, typeId, System.StringComparison.Ordinal));
+
+        public bool Opens(string skillId, int heroLevel, IReadOnlyList<int> unlockLevels) =>
+            (Right != null && Right.Opens(skillId, heroLevel, unlockLevels)) ||
+            (Left != null && Left.Opens(skillId, heroLevel, unlockLevels));
     }
 }
