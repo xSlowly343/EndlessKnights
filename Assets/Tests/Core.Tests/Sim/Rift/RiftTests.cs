@@ -31,7 +31,7 @@ namespace Game.Core.Tests.Sim.Rift
 
         private static void DefeatBoss(GameLoop loop)
         {
-            loop.State.KillsOnStage = loop.Stages.Table.EnemiesPerStage;
+            loop.State.KillsOnStage = loop.Stages.Table.EnemiesOnStage(loop.State.Stage);
             loop.State.Farming = false;
             loop.Stages.OnEnemyKilled();
             Assert.That(loop.State.FightingBoss, Is.True);
