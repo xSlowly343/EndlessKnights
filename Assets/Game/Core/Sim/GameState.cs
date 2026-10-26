@@ -19,6 +19,7 @@ namespace Game.Core.Sim
         }
 
         public long Tick { get; set; }
+        public long StartedUnixMs { get; set; }
         public Rng Rng { get; set; }
         public HeroClass Class { get; set; }
 

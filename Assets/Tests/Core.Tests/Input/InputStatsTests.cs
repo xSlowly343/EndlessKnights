@@ -2,6 +2,7 @@ using Game.Core.Clock;
 using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Save;
+using Game.Core.Sim;
 using Game.Core.Tests.Sim;
 using NUnit.Framework;
 
@@ -51,6 +52,8 @@ namespace Game.Core.Tests.Input
             input.ClickMiddle(1);
             input.MoveMouse(96 * 100);
             loop.Tick();
+            loop.MarkStarted(1_793_000_000_000);
+            loop.MarkStarted(1_800_000_000_000);
 
             var text = SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1)));
             var restarted = TestWorld.Loop(state: SaveCodec.Decode(text, TestWorld.Data).State);
@@ -61,6 +64,9 @@ namespace Game.Core.Tests.Input
             Assert.That(total.Clicks, Is.EqualTo(6));
             Assert.That(total.RightClicks, Is.EqualTo(3));
             Assert.That(total.MouseMeters, Is.EqualTo(2.54).Within(1e-9));
+            Assert.That(total.PlaySeconds, Is.EqualTo(GameLoop.TickSeconds).Within(1e-9));
+            Assert.That(restarted.SessionInput.PlaySeconds, Is.EqualTo(0));
+            Assert.That(restarted.State.StartedUnixMs, Is.EqualTo(1_793_000_000_000));
         }
 
         [Test]

@@ -23,6 +23,24 @@ namespace Game.Core.Math
                 + (russian ? " км" : " km");
         }
 
+        public static string Duration(double seconds, bool russian = true)
+        {
+            var minutes = double.IsNaN(seconds) || seconds < 0 ? 0 : (long)System.Math.Floor(seconds / 60);
+            var hours = minutes / 60;
+            if (hours == 0)
+                return minutes.ToString(CultureInfo.InvariantCulture) + (russian ? " мин" : " min");
+            return hours.ToString(CultureInfo.InvariantCulture) + (russian ? " ч " : " h ")
+                + (minutes % 60).ToString("00", CultureInfo.InvariantCulture) + (russian ? " мин" : " min");
+        }
+
+        public static string Date(long unixMs, bool russian = true)
+        {
+            if (unixMs <= 0)
+                return "—";
+            var local = System.DateTimeOffset.FromUnixTimeMilliseconds(unixMs).ToLocalTime();
+            return local.ToString(russian ? "dd.MM.yyyy" : "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        }
+
         private static string Group(string digits, string separator)
         {
             if (digits.Length <= 3)

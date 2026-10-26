@@ -316,6 +316,12 @@ namespace Game.Core.Sim
             SyncPathSkill();
         }
 
+        public void MarkStarted(long nowUnixMs)
+        {
+            if (State.StartedUnixMs <= 0)
+                State.StartedUnixMs = nowUnixMs;
+        }
+
         public void Tick()
         {
             Hook?.BeforeTick();
@@ -323,6 +329,8 @@ namespace Game.Core.Sim
             LastInput = Permissions.Apply(_input.Drain());
             SessionInput.Add(LastInput, MetersPerPixel);
             State.TotalInput.Add(LastInput, MetersPerPixel);
+            SessionInput.PlaySeconds += TickSeconds;
+            State.TotalInput.PlaySeconds += TickSeconds;
             var raw = _inputRules.Apply(LastInput);
             var input = raw.WithMouse(raw.MousePx * System.Math.Max(0, Hero.Value(CombatStats.MouseDistance, 1, StatTags.Mouse)));
             var idleTicksBefore = State.IdleTicks;

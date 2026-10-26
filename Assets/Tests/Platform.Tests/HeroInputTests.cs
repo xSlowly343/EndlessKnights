@@ -45,10 +45,10 @@ namespace Game.Platform.Tests
 
             Open();
 
-            Assert.That(_panel.Stats.Cell(0, 0), Is.EqualTo(Texts.Get("stats.keys")));
-            Assert.That(_panel.Stats.Cell(0, 1), Is.EqualTo("1 234"));
-            Assert.That(_panel.Stats.Cell(0, 2), Is.EqualTo("1 234"));
-            Assert.That(_panel.Stats.Cell(1, 1), Does.StartWith("3"));
+            Assert.That(_panel.Stats.Cell(2, 0), Is.EqualTo(Texts.Get("stats.keys")));
+            Assert.That(_panel.Stats.Cell(2, 1), Is.EqualTo("1 234"));
+            Assert.That(_panel.Stats.Cell(2, 2), Is.EqualTo("1 234"));
+            Assert.That(_panel.Stats.Cell(3, 1), Is.EqualTo("3"));
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace Game.Platform.Tests
 
             Open();
 
-            Assert.That(_panel.Stats.Cell(0, 1), Is.EqualTo("1,234"));
+            Assert.That(_panel.Stats.Cell(2, 1), Is.EqualTo("1,234"));
         }
 
         private void Open()
