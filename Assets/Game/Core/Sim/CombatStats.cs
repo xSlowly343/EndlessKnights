@@ -39,5 +39,11 @@ namespace Game.Core.Sim
         public static readonly StatId ResourceMax = new StatId("resourceMax");
         public static readonly StatId RageBurnDelaySeconds = new StatId("rageBurnDelaySeconds");
         public static readonly StatId SkillCooldown = new StatId("skillCooldown");
+        public static readonly StatId CurseEffect = new StatId("curseEffect");
+        public static readonly StatId CurseSeconds = new StatId("curseSeconds");
+        public static readonly StatId CursesOnEnemy = new StatId("cursesOnEnemy");
+        public static readonly StatId FlickCurseBonus = new StatId("flickCurseBonus");
+        public static readonly StatId CurseDamage = new StatId("curseDamage");
+        public static readonly StatId EnemyDebuffEffect = new StatId("enemyDebuffEffect");
     }
 }

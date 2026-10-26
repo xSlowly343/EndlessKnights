@@ -921,7 +921,7 @@
       "cost": { "resource": 70 },
       "cooldownSeconds": 45,
       "durationSeconds": 20,
-      "locked": true
+      "effect": { "type": "curseFlow", "hitsPerSecond": 0 }
     },
     {
       "id": "patchwork_doll",
@@ -947,7 +947,7 @@
       "cost": { "resource": 60 },
       "cooldownSeconds": 40,
       "durationSeconds": 20,
-      "locked": true
+      "effect": { "type": "curseFlow", "hitsPerSecond": 1 }
     },
     {
       "id": "bank_of_seconds",

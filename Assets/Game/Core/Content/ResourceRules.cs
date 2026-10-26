@@ -32,9 +32,10 @@ namespace Game.Core.Content
 
     public sealed class ClassResource
     {
-        public ClassResource(double perKey, double mousePxPerPoint, double decayPerSecond, double decayAfterKeylessSeconds, bool mouseHoldsDecay)
+        public ClassResource(double perKey, double mousePxPerPoint, double decayPerSecond, double decayAfterKeylessSeconds, bool mouseHoldsDecay, double perSecond = 0)
         {
             PerKey = perKey;
+            PerSecond = perSecond;
             MousePxPerPoint = mousePxPerPoint;
             DecayPerSecond = decayPerSecond;
             DecayAfterKeylessSeconds = decayAfterKeylessSeconds;
@@ -42,6 +43,7 @@ namespace Game.Core.Content
         }
 
         public double PerKey { get; }
+        public double PerSecond { get; }
         public double MousePxPerPoint { get; }
         public double DecayPerSecond { get; }
         public double DecayAfterKeylessSeconds { get; }
@@ -51,15 +53,17 @@ namespace Game.Core.Content
         {
             var perKey = node.HasField("perKey") ? node.Field("perKey").AsNumber(0, 1000) : 0;
             var mousePxPerPoint = node.HasField("mousePxPerPoint") ? node.Field("mousePxPerPoint").AsNumber(1, 1e6) : 0;
+            var perSecond = node.HasField("perSecond") ? node.Field("perSecond").AsNumber(0, 1000) : 0;
             if (!node.HasField("decay"))
-                return new ClassResource(perKey, mousePxPerPoint, 0, 0, false);
+                return new ClassResource(perKey, mousePxPerPoint, 0, 0, false, perSecond);
             var decay = node.Field("decay");
             return new ClassResource(
                 perKey,
                 mousePxPerPoint,
                 decay.Field("perSecond").AsNumber(0, 1e6),
                 decay.Field("afterKeylessSeconds").AsNumber(0, 3600),
-                decay.HasField("mouseHolds") && decay.Field("mouseHolds").AsBool());
+                decay.HasField("mouseHolds") && decay.Field("mouseHolds").AsBool(),
+                perSecond);
         }
     }
 }

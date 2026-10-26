@@ -335,4 +335,14 @@ namespace Game.Core.Content.Gems
         public double MaxChargeSeconds { get; }
         public double MinIdleSeconds { get; }
     }
+
+    public sealed class CurseFlowEffect : SkillEffect
+    {
+        public CurseFlowEffect(double hitsPerSecond)
+        {
+            HitsPerSecond = hitsPerSecond;
+        }
+
+        public double HitsPerSecond { get; }
+    }
 }

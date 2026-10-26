@@ -201,8 +201,8 @@ namespace Game.Core.Content.Gems
                 throw node.Error("an aura needs durationSeconds or reserve");
             if ((effect is StoreHitsEffect || effect is QueueHitsEffect || effect is KeyRepeatEffect || effect is StreakStrikeEffect || effect is InputHitsEffect || effect is TrailEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
-            if (effect is EnemyDebuffEffect && duration <= 0)
-                throw node.Error("an enemy debuff needs durationSeconds");
+            if ((effect is EnemyDebuffEffect || effect is CurseFlowEffect) && duration <= 0)
+                throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
             var marks = new List<string>();
             if (node.HasField("marks"))
             {
@@ -315,13 +315,15 @@ namespace Game.Core.Content.Gems
                         Number(node, "shards", 1e6));
                 case "enemyDebuff":
                     return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10));
+                case "curseFlow":
+                    return new CurseFlowEffect(node.Field("hitsPerSecond").AsNumber(0, 100));
                 case "idleStrike":
                     return new IdleStrikeEffect(
                         node.Field("chargePerSecond").AsNumber(0, 1000),
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff, curseFlow or idleStrike");
             }
         }
 

@@ -38,6 +38,7 @@ namespace Game.Core.Sim
         public void OnKeyHit(IKeyHitListener keyHits) => _keyHits = keyHits;
 
         public double BaseKeyDamage => _rules.KeyDamage;
+        public CurseRules Curses => _rules.Curses;
 
         public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
             Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);

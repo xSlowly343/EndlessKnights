@@ -103,6 +103,7 @@ namespace Game.Core.Sim
         public int KillStreak { get; set; }
         public long TicksSinceKill { get; set; }
         public int AfterIdleTicks { get; set; }
+        public int CurseFlicks { get; set; }
         public double AllyHeavyCastSeconds { get; set; }
 
         public void ClearQueue()
