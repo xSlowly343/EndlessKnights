@@ -32,12 +32,17 @@ namespace Game.Presentation.Ui
         private const float TileHeightPx = 58f;
         private const float HintHeightPx = 34f;
         private const int Columns = 3;
+        private const float StatRowPx = 22f;
+        private const float StatLabelShare = 0.66f;
+        private const int StatRowsPerColumn = 17;
 
         private readonly UiTheme _theme;
         private readonly RectTransform _root;
         private readonly RectTransform _overview;
         private readonly RectTransform _doll;
         private readonly RectTransform _tiles;
+        private readonly RectTransform _stats;
+        private readonly List<TextMeshProUGUI[]>[] _statRows = { new List<TextMeshProUGUI[]>(), new List<TextMeshProUGUI[]>() };
         private readonly List<TextMeshProUGUI> _tileLabels = new List<TextMeshProUGUI>();
         private readonly List<TextMeshProUGUI> _tileValues = new List<TextMeshProUGUI>();
         private readonly HandCard[] _hands = new HandCard[2];
@@ -58,11 +63,12 @@ namespace Game.Presentation.Ui
             _doll = BuildDoll();
             _tiles = BuildTiles();
             BuildHint();
+            _stats = BuildStats();
         }
 
         public static HeroPanel Create(RectTransform content, UiTheme theme) => new HeroPanel(content, theme);
 
-        public static bool Covers(int subTab) => subTab == 0;
+        public static bool Covers(int subTab) => subTab == 0 || subTab == 1;
 
         public bool IsShown => _root.gameObject.activeSelf;
 
@@ -75,6 +81,7 @@ namespace Game.Presentation.Ui
                 return;
             _subTab = subTab;
             _overview.gameObject.SetActive(subTab == 0);
+            _stats.gameObject.SetActive(subTab == 1);
             var compact = contentHeightPx < CompactBelowPx;
             _doll.gameObject.SetActive(!compact);
             _tiles.anchoredPosition = new Vector2(0f, compact ? -GapPx : -(GapPx / 2f + DollHeightPx + 2f * GapPx));
@@ -84,8 +91,15 @@ namespace Game.Presentation.Ui
         {
             if (!IsShown)
                 return;
-            RefreshOverview(loop);
+            if (_subTab == 1)
+                RefreshStats(loop);
+            else
+                RefreshOverview(loop);
         }
+
+        public string StatLabel(int column, int row) => _statRows[column][row][0].text;
+
+        public string StatValue(int column, int row) => _statRows[column][row][1].text;
 
         public bool TryClick(Vector2 worldPoint)
         {
@@ -116,6 +130,54 @@ namespace Game.Presentation.Ui
             _hint.gameObject.SetActive(hint != null);
             if (hint != null)
                 _hintText.text = hint;
+        }
+
+        private void RefreshStats(GameLoop loop)
+        {
+            var lines = HeroStatsView.Lines(loop, NumberDisplay.Settings);
+            var used = new int[HeroStatsView.Columns];
+            foreach (var line in lines)
+            {
+                var rows = _statRows[line.Column];
+                if (used[line.Column] >= rows.Count)
+                    continue;
+                var cells = rows[used[line.Column]++];
+                cells[0].text = line.Label;
+                cells[0].font = line.IsHeader ? _theme.BoldFont : _theme.TextFont;
+                cells[0].color = line.IsHeader ? _theme.Gold : _theme.TextDim;
+                cells[1].text = line.Value;
+            }
+            for (var column = 0; column < HeroStatsView.Columns; column++)
+            {
+                for (var row = used[column]; row < _statRows[column].Count; row++)
+                {
+                    _statRows[column][row][0].text = string.Empty;
+                    _statRows[column][row][1].text = string.Empty;
+                }
+            }
+        }
+
+        private RectTransform BuildStats()
+        {
+            var stats = UiElements.Stretch(UiElements.Rect("Stats", _root));
+            var columnWidth = (StripWidth() - GapPx) / HeroStatsView.Columns;
+            var topLeft = new Vector2(0f, 1f);
+            for (var column = 0; column < HeroStatsView.Columns; column++)
+            {
+                var x = PaddingPx + column * (columnWidth + GapPx);
+                for (var row = 0; row < StatRowsPerColumn; row++)
+                {
+                    var y = -(GapPx + row * StatRowPx);
+                    var label = UiElements.Label("Label", stats, _theme.TextFont, 12f, _theme.TextDim, TextAlignmentOptions.MidlineLeft);
+                    UiElements.Anchor(label.rectTransform, topLeft, new Vector2(x, y), new Vector2(columnWidth * StatLabelShare, StatRowPx));
+                    label.overflowMode = TextOverflowModes.Ellipsis;
+                    var value = UiElements.Label("Value", stats, _theme.BoldFont, 12f, _theme.Text, TextAlignmentOptions.MidlineRight);
+                    UiElements.Anchor(value.rectTransform, topLeft, new Vector2(x, y), new Vector2(columnWidth, StatRowPx));
+                    _statRows[column].Add(new[] { label, value });
+                }
+            }
+            stats.gameObject.SetActive(false);
+            return stats;
         }
 
         private Color AccentColor(HeroStatAccent accent) => accent switch

@@ -23,6 +23,8 @@ namespace Game.Core.Sim
             Rebuild();
         }
 
+        public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
+
         public WeaponCatalog Catalog => _catalog;
         public WeaponItem? In(WeaponHand hand) => _state.Weapons.In(hand);
         public IReadOnlyList<WeaponItem> Bag => _state.Weapons.Bag;

@@ -43,6 +43,8 @@ namespace Game.Core.Sim.Rift
             ApplyWorld();
         }
 
+        public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
+
         public RiftRules Rules => _rules;
         public bool Inside => _state.Rift.Inside;
         public IReadOnlyList<RiftModifier> WindowModifiers => _windowModifiers;

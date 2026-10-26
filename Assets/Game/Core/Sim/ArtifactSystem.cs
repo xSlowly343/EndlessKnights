@@ -29,6 +29,8 @@ namespace Game.Core.Sim
             Rebuild();
         }
 
+        public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
+
         public bool InRift => _state.Rift.Inside;
         public IReadOnlyDictionary<string, int> Owned => OwnedLevels;
         public BigNumber Currency => InRift ? _state.Rift.Shards : _state.Echo;

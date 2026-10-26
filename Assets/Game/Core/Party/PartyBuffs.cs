@@ -26,6 +26,8 @@ namespace Game.Core.Party
                 _allies[i] = new AllyOffer();
         }
 
+        public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
+
         public PartyBuffRules Rules => _rules;
 
         public AllyOffer Ally(int slot) => _allies[slot];
