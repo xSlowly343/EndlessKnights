@@ -29,12 +29,15 @@ namespace Game.Core.Sim
             if (_state.Combo % _rules.ComboStrikeEvery != 0)
                 return 1;
             flags = HitFlags.ComboStrike;
+            _state.PendingResource += _rules.WhirlResource * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             return _rules.ComboStrikeMultiplier + _hero.Value(CombatStats.ComboStrikeMultiplier, 0, StatTags.Keyboard);
         }
 
-        public void EndTick(int keyHits)
+        public void EndTick(int keyHits, double mousePx)
         {
             if (keyHits > 0 || _state.Combo == 0)
+                return;
+            if (mousePx > 0 && _state.Class == HeroClass.Ronin)
                 return;
             _state.ComboIdleTicks++;
             var timeout = _rules.ComboTimeoutSeconds + _hero.Value(CombatStats.ComboTimeoutSeconds, 0, StatTags.Keyboard);

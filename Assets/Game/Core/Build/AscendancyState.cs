@@ -65,6 +65,16 @@ namespace Game.Core.Build
 
         public AllocationResult Allocate(AscendancyCatalog catalog, string nodeId)
         {
+            var check = Check(catalog, nodeId);
+            if (check == AllocationResult.Allocated)
+                _allocated.Add(nodeId);
+            return check;
+        }
+
+        public bool IsAllocated(string nodeId) => _allocated.Contains(nodeId);
+
+        public AllocationResult Check(AscendancyCatalog catalog, string nodeId)
+        {
             if (Subclass == null || !catalog.TryGet(Subclass, out var subclass))
                 return AllocationResult.Locked;
             if (!subclass.TryGet(nodeId, out var node))
@@ -77,7 +87,6 @@ namespace Game.Core.Build
                 return AllocationResult.NoPoints;
             if (!TouchesAllocated(subclass, node))
                 return AllocationResult.NotConnected;
-            _allocated.Add(nodeId);
             return AllocationResult.Allocated;
         }
 

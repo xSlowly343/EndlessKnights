@@ -30,6 +30,8 @@ namespace Game.Core.Ui
             BookResult.NoFreeSlot => Texts.Get("book.result.noFreeSlot"),
             BookResult.NoSuchSlot => Texts.Get("book.result.noSuchSlot"),
             BookResult.AttributesTooLow => Texts.Get("book.result.attributesTooLow"),
+            BookResult.WrongPath => Texts.Get("book.result.wrongPath"),
+            BookResult.WaitsForMechanic => Texts.Get("book.result.waitsForMechanic"),
             _ => string.Empty
         };
 

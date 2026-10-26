@@ -50,7 +50,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.Tree.PointsSpent, Is.EqualTo(3));
             Assert.That(SkillDamage(loop), Is.EqualTo(108).Within(1e-9));
             Assert.That(loop.State.Skills.Count, Is.EqualTo(3));
-            Assert.That(loop.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["march"]));
+            Assert.That(loop.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["thin_cut"]));
 
             loop.SwitchPreset();
             Assert.That(loop.State.Tree.IsAllocated(TestWorld.Data.Tree, "ronin_ring_5"), Is.True);
@@ -84,7 +84,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loaded.State.OtherPreset.Tree.PointsSpent, Is.EqualTo(3));
             Assert.That(loaded.State.OtherPreset.Skills.Count, Is.EqualTo(3));
             loaded.SwitchPreset();
-            Assert.That(loaded.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["march"]));
+            Assert.That(loaded.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["thin_cut"]));
         }
     }
 }

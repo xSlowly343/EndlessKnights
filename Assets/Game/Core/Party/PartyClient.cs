@@ -354,7 +354,7 @@ namespace Game.Core.Party
                     {
                         EffectId = gameEvent.Gem!.NetId,
                         OnEnemy = true,
-                        Strength = debuff.DamageTaken,
+                        Strength = _loop.Skills.DebuffStrength(gameEvent.Gem!),
                         Seconds = gameEvent.Gem.Skill!.DurationSeconds
                     }));
                 else if (gameEvent.Kind == GameEventKind.AuraChanged && effect is AuraEffect aura && aura.Party)

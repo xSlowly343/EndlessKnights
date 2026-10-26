@@ -174,8 +174,12 @@ namespace Game.Core.Content.Tree
                 node.Field("id").AsString(), type,
                 node.Field("x").AsNumber(-1000, 1000), node.Field("y").AsNumber(-1000, 1000),
                 name.Field("ru").AsString(), name.Field("en").AsString(),
-                modifiers, options, amount, startClass, locked, scope);
+                modifiers, options, amount, startClass, locked, scope,
+                DescriptionText(node, "ru"), DescriptionText(node, "en"));
         }
+
+        internal static string DescriptionText(ContentNode node, string language) =>
+            node.HasField("description") && node.Field("description").HasField(language) ? node.Field("description").Field(language).AsString() : string.Empty;
 
         private static void RequireStartForEveryZone(ContentNode list, List<TreeNodeDef> nodes, HashSet<string> classes)
         {

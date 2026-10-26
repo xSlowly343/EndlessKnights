@@ -6,7 +6,8 @@ namespace Game.Core.Content.Gems
     public sealed class GemDef
     {
         public GemDef(string id, GemKind kind, GemColor color, string nameRu, string nameEn, StatTags tags,
-            SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null, IReadOnlyDictionary<string, double>? requires = null)
+            SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null, IReadOnlyDictionary<string, double>? requires = null,
+            string? ascendancy = null, bool locked = false)
         {
             Requires = requires ?? new Dictionary<string, double>();
             Id = id;
@@ -19,6 +20,8 @@ namespace Game.Core.Content.Gems
             Trigger = trigger;
             SupportEffect = supportEffect;
             NetId = NetIdOf(id);
+            Ascendancy = ascendancy;
+            Locked = locked;
         }
 
         public static int NetIdOf(string id)
@@ -43,5 +46,7 @@ namespace Game.Core.Content.Gems
         public TriggerDef? Trigger { get; }
         public string? SupportEffect { get; }
         public IReadOnlyDictionary<string, double> Requires { get; }
+        public string? Ascendancy { get; }
+        public bool Locked { get; }
     }
 }

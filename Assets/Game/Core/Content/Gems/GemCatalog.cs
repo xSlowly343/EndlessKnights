@@ -67,6 +67,19 @@ namespace Game.Core.Content.Gems
             ["keyHit"] = StackTrigger.KeyHit
         };
 
+        private static readonly Dictionary<string, MinionKind> MinionKinds = new Dictionary<string, MinionKind>(StringComparer.Ordinal)
+        {
+            ["cannon"] = MinionKind.Cannon,
+            ["skeleton"] = MinionKind.Skeleton,
+            ["beast"] = MinionKind.Beast
+        };
+
+        private static readonly Dictionary<string, DotKind> DotKinds = new Dictionary<string, DotKind>(StringComparer.Ordinal)
+        {
+            ["poison"] = DotKind.Poison,
+            ["burn"] = DotKind.Burn
+        };
+
         private static readonly Dictionary<string, ArmOn> ArmOns = new Dictionary<string, ArmOn>(StringComparer.Ordinal)
         {
             ["flick"] = ArmOn.Flick,
@@ -76,6 +89,7 @@ namespace Game.Core.Content.Gems
         private readonly Dictionary<string, GemDef> _byId;
         private readonly Dictionary<int, GemDef> _byNetId;
         private readonly Dictionary<string, string> _formerIds;
+        private readonly Dictionary<string, GemDef> _byPath = new Dictionary<string, GemDef>(StringComparer.Ordinal);
 
         private GemCatalog(List<GemDef> gems, GemLevels levels, Dictionary<string, string> formerIds)
         {
@@ -88,6 +102,8 @@ namespace Game.Core.Content.Gems
             {
                 _byId.Add(gem.Id, gem);
                 _byNetId.Add(gem.NetId, gem);
+                if (gem.Ascendancy != null)
+                    _byPath.Add(gem.Ascendancy, gem);
             }
         }
 
@@ -95,6 +111,8 @@ namespace Game.Core.Content.Gems
         public GemLevels Levels { get; }
 
         public GemDef this[string id] => _byId[id];
+
+        public GemDef? ForPath(string? pathId) => pathId != null && _byPath.TryGetValue(pathId, out var gem) ? gem : null;
 
         public bool TryGet(string id, out GemDef gem) =>
             _byId.TryGetValue(id, out gem!) || (_formerIds.TryGetValue(id, out var current) && _byId.TryGetValue(current, out gem!));
@@ -112,6 +130,7 @@ namespace Game.Core.Content.Gems
             var ids = new HashSet<string>(StringComparer.Ordinal);
             var netIds = new Dictionary<int, string>();
             var formerIds = new Dictionary<string, string>(StringComparer.Ordinal);
+            var paths = new HashSet<string>(StringComparer.Ordinal);
             foreach (var node in root.Field("gems").Items())
             {
                 var gem = ReadGem(node);
@@ -121,6 +140,8 @@ namespace Game.Core.Content.Gems
                 if (netIds.TryGetValue(gem.NetId, out var clash))
                     throw node.Field("id").Error($"gem id '{gem.Id}' has the same network hash as '{clash}', rename one of them");
                 netIds.Add(gem.NetId, gem.Id);
+                if (gem.Ascendancy != null && !paths.Add(gem.Ascendancy))
+                    throw node.Field("ascendancy").Error($"path '{gem.Ascendancy}' already has a skill");
                 gems.Add(gem);
             }
             foreach (var former in formerIds)
@@ -162,7 +183,7 @@ namespace Game.Core.Content.Gems
             switch (kind)
             {
                 case GemKind.Skill:
-                    return new GemDef(id, kind, color, nameRu, nameEn, tags, skill: ReadSkill(node), requires: requires);
+                    return ReadSkillGem(node, id, color, nameRu, nameEn, tags, requires);
                 case GemKind.Trigger:
                     return new GemDef(id, kind, color, nameRu, nameEn, tags, trigger: ReadTrigger(node), requires: requires);
                 default:
@@ -170,18 +191,31 @@ namespace Game.Core.Content.Gems
             }
         }
 
-        private static SkillDef ReadSkill(ContentNode node)
+        private static GemDef ReadSkillGem(ContentNode node, string id, GemColor color, string nameRu, string nameEn, StatTags tags, Dictionary<string, double> requires)
+        {
+            var ascendancy = node.HasField("ascendancy") ? node.Field("ascendancy").AsString() : null;
+            var locked = node.HasField("locked") && node.Field("locked").AsBool();
+            if (ascendancy != null && !node.HasField("weapon"))
+                throw node.Field("ascendancy").Error("a path skill is a class skill and needs a weapon");
+            if (locked && ascendancy == null)
+                throw node.Field("locked").Error("only a path skill can wait for its mechanic");
+            if (locked == node.HasField("effect"))
+                throw node.Error(locked ? "a locked path skill has no effect yet" : "a skill needs an effect");
+            return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: ReadSkill(node, locked), requires: requires, ascendancy: ascendancy, locked: locked);
+        }
+
+        private static SkillDef ReadSkill(ContentNode node, bool locked)
         {
             var cost = node.Field("cost");
             var resource = cost.HasField("resource") ? cost.Field("resource").AsNumber(0, 1e6) : 0;
             var duration = node.HasField("durationSeconds") ? node.Field("durationSeconds").AsNumber(0, 3600) : 0;
-            var effect = ReadEffect(node.Field("effect"), duration);
+            var effect = locked ? new PassiveEffect(Array.Empty<Modifier>(), false) : ReadEffect(node.Field("effect"), duration);
             if (effect is AuraEffect aura && !aura.Reserves && duration <= 0)
                 throw node.Error("an aura needs durationSeconds or reserve");
             if ((effect is StoreHitsEffect || effect is QueueHitsEffect || effect is KeyRepeatEffect || effect is StreakStrikeEffect || effect is InputHitsEffect || effect is TrailEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
-            if (effect is EnemyDebuffEffect && duration <= 0)
-                throw node.Error("an enemy debuff needs durationSeconds");
+            if ((effect is EnemyDebuffEffect || effect is CurseFlowEffect || (effect is AddStacksEffect flowing && flowing.PerSecond > 0)) && duration <= 0)
+                throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
             var marks = new List<string>();
             if (node.HasField("marks"))
             {
@@ -212,7 +246,9 @@ namespace Game.Core.Content.Gems
                         node.HasField("killRefundShare") ? node.Field("killRefundShare").AsNumber(0, 1) : 0,
                         Number(node, "queueMultiplier", 1e6),
                         Number(node, "executeBelow", 1),
-                        node.HasField("coinFlip") && node.Field("coinFlip").AsBool());
+                        node.HasField("coinFlip") && node.Field("coinFlip").AsBool(),
+                        Number(node, "critChance", 1),
+                        node.HasField("arrow") && node.Field("arrow").AsBool());
                 case "aura":
                     return new AuraEffect(
                         ModifierReader.ReadList(node.Field("modifiers")),
@@ -293,14 +329,32 @@ namespace Game.Core.Content.Gems
                         Number(node, "shardChance", 1),
                         Number(node, "shards", 1e6));
                 case "enemyDebuff":
-                    return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10));
+                    return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10), Number(node, "bossTimerSlow", 0.9));
+                case "curseFlow":
+                    return new CurseFlowEffect(node.Field("hitsPerSecond").AsNumber(0, 100));
+                case "summon":
+                    return new SummonEffect(
+                        Pick(node.Field("minion"), MinionKinds, "cannon, skeleton or beast"),
+                        node.Field("seconds").AsNumber(0.1, 3600),
+                        node.Field("hitsPerSecond").AsNumber(0.01, 100),
+                        node.Field("multiplier").AsNumber(0, 1e6));
+                case "addStacks":
+                    return new AddStacksEffect(
+                        Pick(node.Field("dot"), DotKinds, "poison or burn"),
+                        Number(node, "stacks", 1e6),
+                        Number(node, "perSecond", 1e6),
+                        Number(node, "multiplier", 1e6));
+                case "detonate":
+                    return new DetonateEffect(node.Field("seconds").AsNumber(0.1, 3600));
+                case "weakenNext":
+                    return new WeakenNextEffect(node.Field("enemies").AsInt(1, 1000), node.Field("hpShare").AsNumber(0, 0.99));
                 case "idleStrike":
                     return new IdleStrikeEffect(
                         node.Field("chargePerSecond").AsNumber(0, 1000),
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff, curseFlow, summon, addStacks, detonate, weakenNext or idleStrike");
             }
         }
 

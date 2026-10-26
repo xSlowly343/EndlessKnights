@@ -46,6 +46,7 @@ namespace Game.Core.Sim
         public bool Linked { get; private set; }
         public bool RaisesRecord { get; set; } = true;
         public IBossListener? BossListener { get; set; }
+        public IKillTimeListener? KillTimeListener { get; set; }
         public StageTable Table => _stages;
 
         public void EnsureEnemy()
@@ -64,7 +65,7 @@ namespace Game.Core.Sim
                 return;
             if (!_state.FightingBoss || !_state.EnemyAlive)
                 return;
-            _state.BossTimerCarry += System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1));
+            _state.BossTimerCarry += System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1)) / System.Math.Max(1, _hero.Value(CombatStats.BossTimerSlow, 1));
             while (_state.BossTimerCarry >= 1 && _state.BossTicksLeft > 0)
             {
                 _state.BossTimerCarry -= 1;
@@ -78,6 +79,7 @@ namespace Game.Core.Sim
             _state.Farming = true;
             _state.FarmKills = 0;
             _state.BossFailsInARow++;
+            _state.KillStreak = 0;
             RecordBossFraction();
             SpawnNormal();
         }
@@ -99,8 +101,11 @@ namespace Game.Core.Sim
                 return;
             }
             _state.Kills++;
+            _state.KillStreak++;
+            _state.TicksSinceKill = 0;
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             Reward();
+            KillTimeListener?.OnKillTimed(_state.EnemyType, _state.EnemyLifeSeconds, false);
             if (_state.FightingBoss)
                 AdvanceStage();
             else if (_state.Farming)
@@ -177,6 +182,7 @@ namespace Game.Core.Sim
             _state.Kills++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             Reward();
+            KillTimeListener?.OnKillTimed(_state.EnemyType, _state.EnemyLifeSeconds, true);
             if (_state.FightingBoss)
                 AdvanceStage();
             _state.EnemyHp = BigNumber.Zero;
@@ -239,7 +245,8 @@ namespace Game.Core.Sim
             var enemy = guardian ? _guardians[biome] ?? _bosses[biome] : _bosses[biome];
             Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * Multiplier(enemy));
             var timer = _stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
-            _state.BossTicksLeft = (int)System.Math.Round(timer * GameLoop.TicksPerSecond);
+            _state.BossTicksLeft = (int)System.Math.Round((timer + _state.BankedSeconds) * GameLoop.TicksPerSecond);
+            _state.BankedSeconds = 0;
             _state.BossTimerCarry = 0;
             _state.BossStarts++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossStarted, _state.Tick, stage, enemy));
@@ -247,10 +254,20 @@ namespace Game.Core.Sim
 
         private void Spawn(EnemyDef? enemy, EnemyType type, BigNumber hp)
         {
-            _state.SpawnEnemy(enemy, type, hp);
+            _state.SpawnEnemy(enemy, type, Weakened(hp));
             ApplyEnemyModifiers(enemy);
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemySpawned, _state.Tick, _state.Stage, enemy));
             ApplyChainDamage();
+        }
+
+        private BigNumber Weakened(BigNumber hp)
+        {
+            if (_state.WeakenedSpawns <= 0)
+                return hp;
+            var share = _state.WeakenShare;
+            if (--_state.WeakenedSpawns == 0)
+                _state.WeakenShare = 0;
+            return hp * (1 - share);
         }
 
         private void ApplyChainDamage()

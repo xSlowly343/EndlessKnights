@@ -108,6 +108,7 @@ namespace Game.Presentation.Ui
         private bool _aboveStrip = true;
         private bool _treeShown;
         private bool _treeCaptured;
+        private bool _subclassShown;
         private bool _bookShown;
         private bool _bookCaptured;
         private float _heightPx;
@@ -120,6 +121,7 @@ namespace Game.Presentation.Ui
 
         public TreePanel Tree { get; private set; } = null!;
         public BookPanel Book { get; private set; } = null!;
+        public SubclassPanel Subclass { get; private set; } = null!;
 
         public event Action<PanelSection>? TabPressed;
         public event Action? MorePressed;
@@ -181,6 +183,7 @@ namespace Game.Presentation.Ui
         {
             _loop = loop;
             Tree.Bind(loop, tree);
+            Subclass.Bind(loop);
             Book.Bind(loop);
             _itemsPanel.Bind(loop);
         }
@@ -249,6 +252,8 @@ namespace Game.Presentation.Ui
         public void Hide()
         {
             CancelPress();
+            Tree.HoverAway();
+            Subclass.HoverAway();
             _noticeLeft = 0f;
             ShowNoticeInsteadOfGold(false);
             gameObject.SetActive(false);
@@ -260,9 +265,28 @@ namespace Game.Presentation.Ui
                 _highlight.Point(worldPoint, held);
             else
                 _highlight.Clear();
+            if (IsOpen && _treeShown && !held)
+                Tree.Hover(worldPoint);
+            else
+                Tree.HoverAway();
+            if (IsOpen && _subclassShown && !held)
+                Subclass.Hover(worldPoint);
+            else
+                Subclass.HoverAway();
         }
 
-        public void PointAway() => _highlight.Clear();
+        public void PointAway()
+        {
+            _highlight.Clear();
+            Tree.HoverAway();
+            Subclass.HoverAway();
+        }
+
+        public void SetRoomBeside(float leftPx, float rightPx)
+        {
+            Tree.SetRoomBeside(leftPx, rightPx);
+            Subclass.SetRoomBeside(leftPx, rightPx);
+        }
 
         public bool TryClick(Vector2 worldPoint)
         {
@@ -285,6 +309,8 @@ namespace Game.Presentation.Ui
                 _treeCaptured = true;
                 return true;
             }
+            if (_subclassShown && Subclass.TryPress(worldPoint))
+                return true;
             if (_bookShown && Book.TryPress(worldPoint))
             {
                 _bookCaptured = true;
@@ -579,6 +605,8 @@ namespace Game.Presentation.Ui
             }
             _treeShown = !navigator.ShowingMore && navigator.Active == PanelSection.Tree && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
             Tree.Show(_treeShown, _shownFrame.WidthPx, _shownFrame.ContentPx);
+            _subclassShown = !navigator.ShowingMore && navigator.Active == PanelSection.Tree && navigator.SubTab == 1 && _shownFrame.HasSubTabs;
+            Subclass.Show(_subclassShown, _shownFrame.WidthPx, _shownFrame.ContentPx);
             _bookShown = !navigator.ShowingMore && navigator.Active == PanelSection.Book && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
             Book.Show(_bookShown, _shownFrame.ContentPx);
             _slots.gameObject.SetActive(!navigator.ShowingMore && navigator.Active == PanelSection.Book && _shownFrame.HasSubTabs);
@@ -592,7 +620,7 @@ namespace Game.Presentation.Ui
             _partyPanel.Show(partyShown, _loop);
             var settingsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Settings;
             _settingsPanel.Show(settingsShown, _shownFrame.HasSubTabs ? navigator.SubTab : 0, _shownFrame.ContentPx);
-            var placeholder = !navigator.ShowingMore && !_treeShown && !_bookShown && !heroShown && !itemsShown && !partyShown && !settingsShown;
+            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !heroShown && !itemsShown && !partyShown && !settingsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -620,6 +648,8 @@ namespace Game.Presentation.Ui
             _report = BuildReport();
             _consent = ConsentCard.Create(_canvasRect, _theme);
             _highlight = new ButtonHighlight(_canvasRect);
+            Tree.UseTooltip(new TreeNodeCardView("TreeTooltip", _canvasRect, _theme, TreeNodeCardMode.Tooltip), _frame);
+            Subclass.UseTooltip(new TreeNodeCardView("SubclassTooltip", _canvasRect, _theme, TreeNodeCardMode.Tooltip), _frame);
         }
 
         private RectTransform BuildFrame()
@@ -770,6 +800,7 @@ namespace Game.Presentation.Ui
             _partyPanel.NoticeRequested += ShowNotice;
             Book = BookPanel.Create(content, _theme);
             Tree = TreePanel.Create(content, _theme);
+            Subclass = SubclassPanel.Create(content, _theme);
             _settingsPanel = SettingsPanel.Create(content, _theme);
         }
 

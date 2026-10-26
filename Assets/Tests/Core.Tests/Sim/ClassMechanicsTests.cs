@@ -85,7 +85,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ClicksAndMouseDoNotKeepTheComboAlive()
+        public void ClicksDoNotKeepTheComboAlive()
         {
             var (loop, input) = Hero(HeroClass.Ronin);
             var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
@@ -94,11 +94,52 @@ namespace Game.Core.Tests.Sim
             for (var i = 0; i < timeoutTicks + 2; i++)
             {
                 input.ClickLeft();
-                input.MoveMouse(500);
                 loop.Tick();
             }
 
             Assert.That(loop.State.Combo, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void BladeDanceKeepsTheComboAliveWhileTheMouseMoves()
+        {
+            var (loop, input) = Hero(HeroClass.Ronin);
+            var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
+            Keys(loop, input, 5);
+
+            for (var i = 0; i < timeoutTicks * 3; i++)
+            {
+                input.MoveMouse(500);
+                loop.Tick();
+            }
+
+            Assert.That(loop.State.Combo, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void ThinCutAlwaysCrits()
+        {
+            var (loop, _) = Hero(HeroClass.Ronin);
+            var gem = TestWorld.Real.Gems["thin_cut"];
+            loop.State.Resource = 100;
+            TestWorld.ArmFor(loop, gem);
+            loop.Events.Clear();
+
+            Assert.That(loop.Skills.TryCast(loop.Skills.Equip(gem)), Is.EqualTo(CastResult.Cast));
+
+            Assert.That(LastHit(loop).Flags & HitFlags.Crit, Is.EqualTo(HitFlags.Crit));
+            Assert.That(TestWorld.Real.SkillBook.StartingGems("ronin"), Has.Some.Property("Id").EqualTo("thin_cut"));
+        }
+
+        [Test]
+        public void EveryComboStrikeGivesOneWhirl()
+        {
+            var (loop, input) = Hero(HeroClass.Ronin);
+
+            Keys(loop, input, Rules.ComboStrikeEvery);
+            loop.Tick();
+
+            Assert.That(loop.State.Resource, Is.EqualTo(Rules.WhirlResource).Within(1e-9));
         }
 
         [Test]

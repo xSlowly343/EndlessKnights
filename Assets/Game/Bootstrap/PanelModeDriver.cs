@@ -134,8 +134,11 @@ namespace Game.Bootstrap
         private void PlacePanel(PanelLayout layout)
         {
             var scale = DpiScale;
-            var left = layout.PanelLeft(Mathf.RoundToInt(_frameWidthPx * scale), _dock.StripWidthPx);
+            var width = Mathf.RoundToInt(_frameWidthPx * scale);
+            var left = layout.PanelLeft(width, _dock.StripWidthPx);
             _panels.Place(left / scale, layout.PanelsAboveStrip);
+            var room = layout.RoomBeside(left, width);
+            _panels.SetRoomBeside(room.Left / scale, room.Right / scale);
         }
 
         private float DpiScale => Math.Max(1, _dock.StripHeightPx) / StripSpace.BaseHeightPx;

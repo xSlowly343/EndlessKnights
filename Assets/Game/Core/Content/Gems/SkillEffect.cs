@@ -22,8 +22,10 @@ namespace Game.Core.Content.Gems
     public sealed class StrikeEffect : SkillEffect
     {
         public StrikeEffect(double multiplier, int queueTargets = 0, bool skipCurrent = false, double killRefundShare = 0,
-            double queueMultiplier = 0, double executeBelow = 0, bool coinFlip = false)
+            double queueMultiplier = 0, double executeBelow = 0, bool coinFlip = false, double critChance = 0, bool arrow = false)
         {
+            CritChance = critChance;
+            Arrow = arrow;
             QueueMultiplier = queueMultiplier > 0 ? queueMultiplier : multiplier;
             ExecuteBelow = executeBelow;
             CoinFlip = coinFlip;
@@ -40,6 +42,8 @@ namespace Game.Core.Content.Gems
         public double QueueMultiplier { get; }
         public double ExecuteBelow { get; }
         public bool CoinFlip { get; }
+        public double CritChance { get; }
+        public bool Arrow { get; }
     }
 
     public sealed class AuraEffect : SkillEffect
@@ -314,12 +318,14 @@ namespace Game.Core.Content.Gems
 
     public sealed class EnemyDebuffEffect : SkillEffect
     {
-        public EnemyDebuffEffect(double damageTaken)
+        public EnemyDebuffEffect(double damageTaken, double bossTimerSlow = 0)
         {
             DamageTaken = damageTaken;
+            BossTimerSlow = bossTimerSlow;
         }
 
         public double DamageTaken { get; }
+        public double BossTimerSlow { get; }
     }
 
     public sealed class IdleStrikeEffect : SkillEffect
@@ -334,5 +340,82 @@ namespace Game.Core.Content.Gems
         public double ChargePerSecond { get; }
         public double MaxChargeSeconds { get; }
         public double MinIdleSeconds { get; }
+    }
+
+    public sealed class CurseFlowEffect : SkillEffect
+    {
+        public CurseFlowEffect(double hitsPerSecond)
+        {
+            HitsPerSecond = hitsPerSecond;
+        }
+
+        public double HitsPerSecond { get; }
+    }
+
+    public enum MinionKind
+    {
+        Cannon,
+        Skeleton,
+        Beast
+    }
+
+    public sealed class SummonEffect : SkillEffect
+    {
+        public SummonEffect(MinionKind kind, double seconds, double hitsPerSecond, double multiplier)
+        {
+            Kind = kind;
+            Seconds = seconds;
+            HitsPerSecond = hitsPerSecond;
+            Multiplier = multiplier;
+        }
+
+        public MinionKind Kind { get; }
+        public double Seconds { get; }
+        public double HitsPerSecond { get; }
+        public double Multiplier { get; }
+    }
+
+    public enum DotKind
+    {
+        Poison,
+        Burn
+    }
+
+    public sealed class AddStacksEffect : SkillEffect
+    {
+        public AddStacksEffect(DotKind kind, double stacks, double perSecond, double multiplier)
+        {
+            Kind = kind;
+            Stacks = stacks;
+            PerSecond = perSecond;
+            Multiplier = multiplier;
+        }
+
+        public DotKind Kind { get; }
+        public double Stacks { get; }
+        public double PerSecond { get; }
+        public double Multiplier { get; }
+    }
+
+    public sealed class DetonateEffect : SkillEffect
+    {
+        public DetonateEffect(double seconds)
+        {
+            Seconds = seconds;
+        }
+
+        public double Seconds { get; }
+    }
+
+    public sealed class WeakenNextEffect : SkillEffect
+    {
+        public WeakenNextEffect(int enemies, double hpShare)
+        {
+            Enemies = enemies;
+            HpShare = hpShare;
+        }
+
+        public int Enemies { get; }
+        public double HpShare { get; }
     }
 }

@@ -5,8 +5,10 @@ namespace Game.Core.Stats
 {
     public sealed class StatSheet
     {
+        private const int CacheCapacity = 512;
+
         private readonly List<Modifier> _modifiers = new List<Modifier>();
-        private readonly Dictionary<(StatId Stat, StatTags Tags), Totals> _cache = new Dictionary<(StatId, StatTags), Totals>();
+        private readonly Dictionary<(StatId Stat, StatTags Tags), Totals> _cache = new Dictionary<(StatId, StatTags), Totals>(CacheCapacity);
 
         public int RecalculationCount { get; private set; }
 
@@ -48,6 +50,8 @@ namespace Game.Core.Stats
             return (baseValue + totals.Flat) * totals.IncreasedMultiplier * totals.MoreMultiplier;
         }
 
+        public Totals TotalsOf(StatId stat, StatTags tags = StatTags.None) => TotalsFor(stat, tags);
+
         private Totals TotalsFor(StatId stat, StatTags tags)
         {
             var key = (stat, tags);
@@ -83,7 +87,7 @@ namespace Game.Core.Stats
 
         private void Invalidate() => _cache.Clear();
 
-        private readonly struct Totals
+        public readonly struct Totals
         {
             public readonly double Flat;
             public readonly double IncreasedMultiplier;

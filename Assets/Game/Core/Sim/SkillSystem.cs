@@ -30,6 +30,8 @@ namespace Game.Core.Sim
             _combat = combat;
             _hero = hero;
             _weapons = weapons;
+            Minions = new MinionSystem(state, hero, combat, resource);
+            Dots = new DotSystem(state, hero, combat);
             _seenKills = state.Kills;
             foreach (var slot in _state.Skills)
             {
@@ -39,6 +41,8 @@ namespace Game.Core.Sim
         }
 
         public bool SharedEnemy { get; private set; }
+        public MinionSystem Minions { get; }
+        public DotSystem Dots { get; }
 
         public void ShareEnemy(bool shared)
         {
@@ -125,7 +129,7 @@ namespace Game.Core.Sim
             slot.AuraPower = 1;
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
-            var cooldown = skill.CooldownSeconds * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
+            var cooldown = skill.CooldownSeconds * CooldownMultiplier() * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
             slot.StartCooldown(Ticks(cooldown));
             slot.LastCastTick = _state.Tick;
             if (skill.ArmOn != ArmOn.None)
@@ -160,6 +164,11 @@ namespace Game.Core.Sim
         private void Release(SkillSlot slot, NativeTrait native, double spent, bool wasFull, bool announce)
         {
             var skill = slot.Def;
+            if (skill.Effect is EnemyDebuffEffect)
+            {
+                PrepareCurse(slot);
+                RemoveAura(slot);
+            }
             slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull));
             slot.ActiveTotalTicks = slot.ActiveTicks;
             if (skill.Effect is ChainHitsEffect chain)
@@ -181,10 +190,31 @@ namespace Game.Core.Sim
                 Strike(slot, strike, native, spent);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
+            if (skill.Effect is SummonEffect summon)
+                Minions.Place(summon, slot.Skill.Tags);
+            if (skill.Effect is AddStacksEffect stacks)
+                AddStacks(slot, stacks);
+            if (skill.Effect is DetonateEffect detonate)
+                Dots.Detonate(detonate);
+            if (skill.Effect is WeakenNextEffect weaken)
+                WeakenNext(weaken);
             if (skill.Effect is NextKillRewardEffect reward)
                 ArmNextKillReward(reward);
             if (skill.Effect is EchoEffect echo)
                 Repeat(echo);
+        }
+
+        private void AddStacks(SkillSlot slot, AddStacksEffect stacks)
+        {
+            if (stacks.Multiplier > 0)
+                SkillHit(slot, stacks.Multiplier);
+            Dots.Apply(stacks);
+        }
+
+        private void WeakenNext(WeakenNextEffect weaken)
+        {
+            _state.WeakenedSpawns = System.Math.Max(_state.WeakenedSpawns, weaken.Enemies);
+            _state.WeakenShare = System.Math.Max(_state.WeakenShare, weaken.HpShare);
         }
 
         private void ArmNextKillReward(NextKillRewardEffect reward)
@@ -300,6 +330,8 @@ namespace Game.Core.Sim
         private double DurationMultiplier(SkillDef skill, NativeTrait native, bool wasFull)
         {
             var multiplier = skill.Effect is AuraEffect ? _hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura) : 1;
+            if (IsCurse(skill) && skill.DurationSeconds > 0)
+                multiplier *= System.Math.Max(0, _hero.Value(CombatStats.CurseSeconds, skill.DurationSeconds)) / skill.DurationSeconds;
             if (wasFull && native.FullResourceDurationMultiplier > 0)
                 multiplier *= native.FullResourceDurationMultiplier;
             return multiplier;
@@ -322,6 +354,8 @@ namespace Game.Core.Sim
             var queueMultiplier = native.SpendsAll ? multiplier : power * strike.QueueMultiplier;
             var tags = slot.Skill.Tags;
             var targets = strike.QueueTargets + (native.ExtraTargetWhileFamily != null && AnyActive(native.ExtraTargetWhileFamily) ? 1 : 0);
+            if (strike.QueueTargets > 0 && !strike.SkipCurrent)
+                targets += (int)System.Math.Max(0, System.Math.Round(_hero.Value(CombatStats.ChainTargets, 0, tags)));
             targets = System.Math.Min(targets, GameState.QueueDepth);
             if (targets > 0)
             {
@@ -334,7 +368,9 @@ namespace Game.Core.Sim
             if (strike.SkipCurrent)
                 return;
             var killsBefore = _state.Kills;
-            _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags);
+            if (strike.Arrow)
+                multiplier *= System.Math.Max(0, _hero.Value(CombatStats.ArrowDamage, 1, tags));
+            _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags, strike.CritChance);
             if (_state.Kills == killsBefore)
                 return;
             _resource.Gain(spent * strike.KillRefundShare);
@@ -471,6 +507,9 @@ namespace Game.Core.Sim
         {
             var kills = (int)System.Math.Min(int.MaxValue, System.Math.Max(0, _state.Kills - _seenKills));
             _seenKills = _state.Kills;
+            if (kills > 0 && !SharedEnemy && !CursesFlow())
+                EndDebuffs();
+            CountCurseFlicks(input);
             for (var index = 0; index < _state.Skills.Count; index++)
             {
                 var slot = _state.Skills[index];
@@ -507,7 +546,112 @@ namespace Game.Core.Sim
                     slot.Progress += input.MousePx;
                 if (input.HasInput && slot.Def.Effect is IdleStrikeEffect strike)
                     ReleaseIdleStrike(slot, strike, idleTicksBefore * GameLoop.TickSeconds);
+                if (slot.Active && slot.Def.Effect is CurseFlowEffect flowing)
+                    TickCurseFlow(flowing);
+                if (slot.Active && slot.Def.Effect is AddStacksEffect stackFlow && stackFlow.PerSecond > 0)
+                    Dots.Flow(stackFlow);
             }
+        }
+
+        public double DebuffStrength(GemDef gem)
+        {
+            if (!(gem.Skill?.Effect is EnemyDebuffEffect debuff))
+                return 0;
+            var strength = debuff.DamageTaken * System.Math.Max(0, _hero.Value(CombatStats.EnemyDebuffEffect, 1));
+            return IsCurse(gem.Skill) ? strength * System.Math.Max(0, _hero.Value(CombatStats.CurseEffect, 1)) : strength;
+        }
+
+        public int ActiveCurses
+        {
+            get
+            {
+                var count = 0;
+                foreach (var slot in _state.Skills)
+                {
+                    if (slot.Active && IsCurse(slot.Def))
+                        count++;
+                }
+                return count;
+            }
+        }
+
+        private int CurseLimit => _combat.Curses.MaxOnEnemy + (int)System.Math.Max(0, System.Math.Round(_hero.Value(CombatStats.CursesOnEnemy, 0)));
+
+        private static bool IsCurse(SkillDef skill)
+        {
+            if (!(skill.Effect is EnemyDebuffEffect))
+                return false;
+            for (var i = 0; i < skill.Marks.Count; i++)
+            {
+                if (skill.Marks[i] == CurseMark)
+                    return true;
+            }
+            return false;
+        }
+
+        private bool CursesFlow()
+        {
+            foreach (var slot in _state.Skills)
+            {
+                if (slot.Active && slot.Def.Effect is CurseFlowEffect)
+                    return true;
+            }
+            return false;
+        }
+
+        private void EndDebuffs()
+        {
+            foreach (var slot in _state.Skills)
+            {
+                if (!slot.Active || !(slot.Def.Effect is EnemyDebuffEffect))
+                    continue;
+                slot.ActiveTicks = 0;
+                End(slot);
+            }
+        }
+
+        private void CountCurseFlicks(in EffectiveInput input)
+        {
+            if (_state.Class != HeroClass.Voodoo || input.Flicks <= 0)
+                return;
+            _state.CurseFlicks = System.Math.Min(_combat.Curses.FlicksToMax, _state.CurseFlicks + input.Flicks);
+        }
+
+        private void PrepareCurse(SkillSlot slot)
+        {
+            slot.CursePower = 1;
+            if (!IsCurse(slot.Def))
+                return;
+            var rules = _combat.Curses;
+            slot.CursePower = 1 + System.Math.Min(rules.FlickMax, _state.CurseFlicks * rules.FlickBonus) * System.Math.Max(0, _hero.Value(CombatStats.FlickCurseBonus, 1));
+            _state.CurseFlicks = 0;
+            if (slot.Active)
+                return;
+            while (ActiveCurses >= CurseLimit)
+                EndOldestCurse();
+        }
+
+        private void EndOldestCurse()
+        {
+            SkillSlot? oldest = null;
+            foreach (var slot in _state.Skills)
+            {
+                if (slot.Active && IsCurse(slot.Def) && (oldest == null || slot.LastCastTick < oldest.LastCastTick))
+                    oldest = slot;
+            }
+            if (oldest == null)
+                return;
+            oldest.ActiveTicks = 0;
+            End(oldest);
+        }
+
+        private void TickCurseFlow(CurseFlowEffect flow)
+        {
+            if (flow.HitsPerSecond <= 0 || _state.Tick % GameLoop.TicksPerSecond != 0)
+                return;
+            var curses = ActiveCurses;
+            if (curses > 0)
+                _combat.SkillHit(_combat.BaseKeyDamage, curses * flow.HitsPerSecond * System.Math.Max(0, _hero.Value(CombatStats.CurseDamage, 1)), StatTags.Skill | StatTags.DoT);
         }
 
         private void TickBossHunt(SkillSlot slot, BossHuntEffect hunt)
@@ -651,7 +795,7 @@ namespace Game.Core.Sim
         {
             if (!slot.Ready || !Armed(slot) || idleSeconds < MinIdleSeconds(strike))
                 return;
-            slot.StartCooldown(Ticks(slot.Def.CooldownSeconds));
+            slot.StartCooldown(Ticks(slot.Def.CooldownSeconds * CooldownMultiplier()));
             slot.LastCastTick = _state.Tick;
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             _combat.SkillHit(_combat.BaseKeyDamage, ChargeMultiplier(strike, idleSeconds), slot.Skill.Tags);
@@ -664,6 +808,17 @@ namespace Game.Core.Sim
                 RemoveAura(slot);
                 if (slot.Active && Armed(slot))
                     ApplyAura(slot);
+            }
+        }
+
+        public void RefreshAuraStrength()
+        {
+            foreach (var slot in _state.Skills)
+            {
+                if (!slot.AuraApplied || !(slot.Def.Effect is AuraEffect))
+                    continue;
+                RemoveAura(slot);
+                ApplyAura(slot);
             }
         }
 
@@ -692,6 +847,8 @@ namespace Game.Core.Sim
 
         private bool IsNative(SkillSlot slot) =>
             slot.Def.Weapon != null && _weapons.TryGetType(slot.Def.Weapon, out var weapon) && weapon.HeroClass == _state.Class;
+
+        private double CooldownMultiplier() => System.Math.Max(0.1, _hero.Value(CombatStats.SkillCooldown, 1));
 
         private double MinIdleSeconds(IdleStrikeEffect strike) => System.Math.Max(0, strike.MinIdleSeconds + _hero.Value(CombatStats.IdleStartSeconds, 0, StatTags.Idle));
 
@@ -743,7 +900,9 @@ namespace Game.Core.Sim
         {
             if (SharedEnemy || !slot.Active)
                 return;
-            slot.AuraModifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.More, debuff.DamageTaken));
+            slot.AuraModifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.More, DebuffStrength(slot.Skill) * slot.CursePower));
+            if (debuff.BossTimerSlow > 0)
+                slot.AuraModifiers.Add(new Modifier(CombatStats.BossTimerSpeed, ModifierKind.More, -debuff.BossTimerSlow));
             slot.AuraStrength = 1;
             _hero.AddRange(slot.AuraModifiers);
             slot.AuraApplied = true;
@@ -787,6 +946,8 @@ namespace Game.Core.Sim
             if (BoostsAuras(aura))
                 RefreshOtherAuras(slot);
         }
+
+        private const string CurseMark = "curse";
 
         private static int Ticks(double seconds) => (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);
     }
