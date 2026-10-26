@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Content
         {
             var tree = TestWorld.Real.Tree;
             var stats = tree.Nodes
-                .SelectMany(node => node.Modifiers.Concat(node.SharedModifiers).Concat(node.Options.SelectMany(option => option)).Concat(node.SharedOptions.SelectMany(option => option)))
+                .SelectMany(node => node.Modifiers.Concat(node.Options.SelectMany(option => option)))
                 .Select(modifier => modifier.Stat)
                 .Distinct()
                 .ToList();

@@ -209,22 +209,19 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void VikingZoneNodeGivesTheVikingRageAndTheRoninTheSharedPart()
+        public void VikingZoneNodeGivesTheVikingAndTheRoninTheSameEffect()
         {
             var viking = new TreeAllocation("viking");
             var ronin = new TreeAllocation("ronin");
             viking.Restore("viking_resource_0", null, null);
             ronin.Restore("viking_resource_0", null, null);
 
-            var own = viking.Modifiers(Tree).Where(m => m.Stat.Equals(CombatStats.ResourceGain)).Sum(m => m.Value);
-            var shared = ronin.Modifiers(Tree).Where(m => m.Stat.Equals(CombatStats.ResourceGain)).Sum(m => m.Value);
-
-            Assert.That(own, Is.EqualTo(0.06).Within(1e-9));
-            Assert.That(shared, Is.EqualTo(0.02).Within(1e-9));
+            Assert.That(ronin.Modifiers(Tree).Where(m => m.Stat.Equals(CombatStats.ResourceGain)).Sum(m => m.Value), Is.EqualTo(0.06).Within(1e-9));
+            Assert.That(viking.Modifiers(Tree).Where(m => m.Stat.Equals(CombatStats.ResourceGain)).Sum(m => m.Value), Is.EqualTo(0.06).Within(1e-9));
         }
 
         [Test]
-        public void DualMasteryGivesTheSharedOptionToOtherCharacters()
+        public void ZoneMasteryGivesTheSameOptionToEveryCharacter()
         {
             var node = Tree["viking_skills_mastery"];
             var viking = new TreeAllocation("viking");
@@ -233,8 +230,7 @@ namespace Game.Core.Tests.Build
             ronin.Restore(node.Id, null, 0);
 
             Assert.That(viking.Modifiers(Tree), Is.EqualTo(node.Options[0]));
-            Assert.That(ronin.Modifiers(Tree), Is.EqualTo(node.SharedOptions[0]));
-            Assert.That(node.SharedOptions[0], Is.Not.EqualTo(node.Options[0]));
+            Assert.That(ronin.Modifiers(Tree), Is.EqualTo(node.Options[0]));
         }
 
         [Test]

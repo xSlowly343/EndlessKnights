@@ -34,7 +34,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EveryTreeStatHasARussianLabel()
         {
-            var stats = Tree.Nodes.SelectMany(node => node.Modifiers.Concat(node.SharedModifiers).Concat(node.Options.Concat(node.SharedOptions).SelectMany(option => option)))
+            var stats = Tree.Nodes.SelectMany(node => node.Modifiers.Concat(node.Options.SelectMany(option => option)))
                 .Select(modifier => modifier.Stat).Distinct();
 
             Assert.That(stats.Where(stat => ModifierText.Label(stat) == stat.Name), Is.Empty);
@@ -168,17 +168,15 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void DualNodeShowsBothLinesAndMarksTheOneThatWorks()
+        public void ZoneNodeShowsOneLineForEveryCharacter()
         {
             var node = Tree["viking_resource_0"];
 
             var forRonin = TreeNodeText.Describe(Tree, Swordsman(1).State.Tree, node, null, NumberFormatSettings.Default);
             var forViking = TreeNodeText.Describe(Tree, new Game.Core.Build.TreeAllocation("viking"), node, null, NumberFormatSettings.Default);
 
-            Assert.That(forRonin[1], Is.EqualTo(TreeNodeText.OwnPrefix + "+6% накопление ресурса"));
-            Assert.That(forRonin[2], Is.EqualTo(TreeNodeText.ActiveMark + TreeNodeText.SharedPrefix + "+2% накопление ресурса"));
-            Assert.That(forViking[1], Is.EqualTo(TreeNodeText.ActiveMark + TreeNodeText.OwnPrefix + "+6% накопление ресурса"));
-            Assert.That(forViking[2], Is.EqualTo(TreeNodeText.SharedPrefix + "+2% накопление ресурса"));
+            Assert.That(forRonin[1], Is.EqualTo("+6% накопление ресурса"));
+            Assert.That(forViking[1], Is.EqualTo(forRonin[1]));
         }
     }
 }
