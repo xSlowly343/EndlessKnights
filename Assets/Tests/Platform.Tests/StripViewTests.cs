@@ -35,22 +35,25 @@ namespace Game.Platform.Tests
         [Test]
         public void StateLineShowsStageHealthAndGold()
         {
-            _battle.ShowState(37, 2, 4, 0.62, 0, 1, false, 0.5, 2.14, 0.5, BigNumber.FromDouble(12400));
+            _battle.ShowState(37, 2, 4, 0.5, 0.62, 0, 1, false, 62.7, 100, BigNumber.FromDouble(12400));
 
             Assert.That(_battle.StageText, Is.EqualTo("Этап 37"));
             Assert.That(_battle.PercentText, Is.EqualTo("62%"));
-            Assert.That(_battle.MultiplierText, Is.EqualTo("×2.1"));
+            Assert.That(_battle.ResourceText, Is.EqualTo("62"));
             Assert.That(_battle.GoldText, Is.EqualTo(NumberFormatter.Format(BigNumber.FromDouble(12400), NumberFormatSettings.Default)));
             Assert.That(_battle.TimerShown, Is.False);
+            Assert.That(_battle.WavesShown, Is.True);
+            Assert.That(_battle.WaveSegmentsShown, Is.EqualTo(4));
         }
 
         [Test]
         public void BossFightShowsTheTimerPill()
         {
-            _battle.ShowState(40, 4, 4, 1, 17.91, 0.6, true, 0, 1, 0, BigNumber.Zero);
+            _battle.ShowState(40, 4, 4, 1, 1, 17.91, 0.6, true, 0, 100, BigNumber.Zero);
 
             Assert.That(_battle.StageText, Is.EqualTo("Этап 40 · БОСС"));
             Assert.That(_battle.TimerShown, Is.True);
+            Assert.That(_battle.WavesShown, Is.False);
             Assert.That(_battle.TimerText, Is.EqualTo("18.0 с"));
         }
 

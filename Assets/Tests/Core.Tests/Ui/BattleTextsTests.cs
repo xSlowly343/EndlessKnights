@@ -25,6 +25,13 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void ResourceAmountIsAWholeNumber()
+        {
+            Assert.That(BattleTexts.Whole(62), Is.EqualTo("62"));
+            Assert.That(BattleTexts.Whole(0), Is.EqualTo("0"));
+        }
+
+        [Test]
         public void BossTimerRoundsUpToTenths()
         {
             Texts.UseLanguage("ru");

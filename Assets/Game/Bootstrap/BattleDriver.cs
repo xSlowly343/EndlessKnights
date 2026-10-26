@@ -110,13 +110,13 @@ namespace Game.Bootstrap
                 state.Stage,
                 _data.Stages.WaveAfterKills(state.Stage, state.KillsOnStage),
                 _data.Stages.WaveCount,
+                _data.Stages.WaveFillAfterKills(state.Stage, state.KillsOnStage),
                 hpFraction,
                 state.BossTicksLeft / (double)GameLoop.TicksPerSecond,
                 state.BossTicksLeft / (double)_bossTotalTicks,
                 bossFight,
-                FocusFraction(state.Focus),
-                state.FocusMultiplier,
-                state.Resource / _data.Combat.Resources.Max,
+                state.Resource,
+                _data.Combat.Resources.Max,
                 state.Gold);
             _skillBar.Show(state.Skills, state.Resource);
             ShowAura(state);
@@ -133,13 +133,6 @@ namespace Game.Bootstrap
                 return;
             }
             _effects.ShowAura(false, default);
-        }
-
-        private double FocusFraction(double focus)
-        {
-            var min = _data.Combat.Focus.Min;
-            var range = _loop.Focus.Max - min;
-            return range <= 0 ? 0 : (focus - min) / range;
         }
     }
 }
