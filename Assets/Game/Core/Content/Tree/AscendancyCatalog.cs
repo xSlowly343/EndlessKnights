@@ -22,7 +22,7 @@ namespace Game.Core.Content.Tree
     {
         private readonly Dictionary<string, TreeNodeDef> _byId;
 
-        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, TreeNodeDef start, IReadOnlyList<TreeNodeDef> nodes)
+        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, TreeNodeDef start, IReadOnlyList<TreeNodeDef> nodes, string blurb = "")
         {
             Id = id;
             HeroClass = heroClass;
@@ -30,6 +30,7 @@ namespace Game.Core.Content.Tree
             NameEn = nameEn;
             Start = start;
             Nodes = nodes;
+            Blurb = blurb;
             _byId = new Dictionary<string, TreeNodeDef>(StringComparer.Ordinal);
             foreach (var node in nodes)
                 _byId.Add(node.Id, node);
@@ -41,6 +42,7 @@ namespace Game.Core.Content.Tree
         public string NameEn { get; }
         public TreeNodeDef Start { get; }
         public IReadOnlyList<TreeNodeDef> Nodes { get; }
+        public string Blurb { get; }
 
         public bool TryGet(string id, out TreeNodeDef node) => _byId.TryGetValue(id, out node!);
     }
@@ -206,7 +208,8 @@ namespace Game.Core.Content.Tree
             RequireReachable(item.Field("links"), start, nodes);
 
             var name = item.Field("name");
-            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes);
+            var blurb = item.HasField("blurb") ? item.Field("blurb").AsString() : string.Empty;
+            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes, blurb);
         }
 
         private static TreeNodeDef ReadNode(ContentNode node)
