@@ -135,14 +135,14 @@ namespace Game.Core.Tests.Ui
         {
             var navigator = new PanelNavigator();
             navigator.SelectTab(PanelSection.Hero);
-            navigator.SelectSubTab(2);
+            navigator.SelectSubTab(1);
             navigator.SelectSubTab(7);
             navigator.SelectTab(PanelSection.Party);
 
             Assert.That(navigator.SubTab, Is.EqualTo(0));
             navigator.SelectTab(PanelSection.Hero);
-            Assert.That(navigator.SubTab, Is.EqualTo(2));
-            Assert.That(navigator.SubTabs[navigator.SubTab], Is.EqualTo("Ввод"));
+            Assert.That(navigator.SubTab, Is.EqualTo(1));
+            Assert.That(navigator.SubTabs[navigator.SubTab], Is.EqualTo("Статы"));
         }
 
         [Test]

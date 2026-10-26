@@ -111,10 +111,11 @@ namespace Game.Editor
             navigator.SelectTab(PanelSection.Hero);
             frame = ShowPanel(panels, navigator);
 
-            navigator.SelectSubTab(2);
+            navigator.SelectTab(PanelSection.Stats);
             frame = ShowPanel(panels, navigator);
-            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-hero-input.png"));
-            navigator.SelectSubTab(0);
+            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-stats.png"));
+            navigator.SelectTab(PanelSection.Hero);
+            frame = ShowPanel(panels, navigator);
 
             navigator.ToggleHeight();
             frame = ShowPanel(panels, navigator);

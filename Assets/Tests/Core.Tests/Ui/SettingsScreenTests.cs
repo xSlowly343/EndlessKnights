@@ -15,8 +15,9 @@ namespace Game.Core.Tests.Ui
         {
             var shown = Enumerable.Range(0, SettingsScreen.TabCount).SelectMany(SettingsScreen.Rows).ToList();
             var all = (SettingId[])Enum.GetValues(typeof(SettingId));
+            var offScreen = new[] { SettingId.Paused, SettingId.ClickThrough, SettingId.CountKeys, SettingId.CountMouseMovement, SettingId.CountClicks, SettingId.CountWheel, SettingId.ShowInputDebug };
 
-            Assert.That(shown, Is.EquivalentTo(all));
+            Assert.That(shown.Concat(offScreen), Is.EquivalentTo(all));
             foreach (var id in all)
                 Assert.That(Texts.Has("settings." + char.ToLowerInvariant(id.ToString()[0]) + id.ToString().Substring(1)), Is.True, id.ToString());
             Assert.That(PanelSections.SubTabs(PanelSection.Settings).Count, Is.EqualTo(SettingsScreen.TabCount));
@@ -93,7 +94,7 @@ namespace Game.Core.Tests.Ui
             Texts.UseLanguage("ru");
             var settings = new GameSettings();
 
-            Assert.That(SettingsScreen.Rows(2), Does.Contain(SettingId.InputConsent));
+            Assert.That(SettingsScreen.Rows(0), Does.Contain(SettingId.InputConsent));
             Assert.That(SettingsScreen.KindOf(SettingId.InputConsent), Is.EqualTo(SettingKind.Action));
             Assert.That(SettingsScreen.Value(SettingId.InputConsent, settings), Is.EqualTo("Открыть"));
             Assert.That(SettingsScreen.Change(SettingId.InputConsent, settings, 1), Is.True);
