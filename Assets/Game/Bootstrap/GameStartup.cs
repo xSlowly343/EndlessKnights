@@ -76,11 +76,11 @@ namespace Game.Bootstrap
             var dock = TaskbarDockDriver.Attach(host, window);
             StripCameraDriver.Attach(host, camera, dock);
             var menuButton = StripButton.CreateIcon("MenuButton", StripIcons.Menu, MenuButtonPosition, MenuGold, MenuGold);
+            var data = GameDataFiles.TryLoadAll();
+            var settings = SettingsDriver.Attach(host);
             var panels = PanelCanvas.Create();
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
             var router = StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
-            var data = GameDataFiles.TryLoadAll();
-            var settings = SettingsDriver.Attach(host);
             BattleView? battleView = null;
             GameLoop? loop = null;
             NotificationDriver? notifications = null;
