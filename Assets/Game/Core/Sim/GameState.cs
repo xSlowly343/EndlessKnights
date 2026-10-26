@@ -99,6 +99,10 @@ namespace Game.Core.Sim
         public double NextKillShardChance { get; set; }
         public double NextKillShards { get; set; }
         public long BossStarts { get; set; }
+        public int HitsOnEnemy { get; set; }
+        public int KillStreak { get; set; }
+        public long TicksSinceKill { get; set; }
+        public int AfterIdleTicks { get; set; }
         public double AllyHeavyCastSeconds { get; set; }
 
         public void ClearQueue()
@@ -128,6 +132,7 @@ namespace Game.Core.Sim
             EnemyType = type;
             EnemyHp = hp;
             EnemyMaxHp = hp;
+            HitsOnEnemy = 0;
         }
     }
 }

@@ -36,5 +36,12 @@
     "cost": { "curve": "exp", "base": 10, "rate": 1.08 },
     "damagePerLevel": 0.1,
     "milestone": { "every": 25, "multiplier": 2 }
+  },
+  "conditions": {
+    "bossTimerEndSeconds": 10,
+    "firstHits": 3,
+    "killStreak": { "max": 25, "resetSeconds": 10 },
+    "cullMax": 0.5,
+    "afterIdle": { "pauseSeconds": 30, "seconds": 10 }
   }
 }

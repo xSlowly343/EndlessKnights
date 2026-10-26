@@ -303,6 +303,7 @@ namespace Game.Core.Sim
             var input = raw.WithMouse(raw.MousePx * System.Math.Max(0, Hero.Value(CombatStats.MouseDistance, 1, StatTags.Mouse)));
             var idleTicksBefore = State.IdleTicks;
             _focus.Tick(input);
+            _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
