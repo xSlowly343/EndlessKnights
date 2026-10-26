@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Game.Core.Build;
 using Game.Core.Content.Tree;
 using Game.Core.Text;
 
@@ -9,6 +11,15 @@ namespace Game.Core.Ui
         public static string Unavailable => Texts.Get("tree.unavailable");
 
         public static string Points(int left) => Texts.Format("tree.points", left);
+
+        public static string ClickTip(IReadOnlyList<TreeAction> actions)
+        {
+            if (actions.Count > 1)
+                return Texts.Get("tree.tip.choose");
+            if (actions.Count == 0)
+                return string.Empty;
+            return actions[0].Kind == TreeActionKind.Refund ? Texts.Get("tree.tip.refund") : Texts.Get("tree.tip.take");
+        }
 
         public static string Taken(int spent, int total) => Texts.Format("tree.taken", spent, total);
 

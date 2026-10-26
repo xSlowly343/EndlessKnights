@@ -60,8 +60,7 @@ namespace Game.Editor
             var frame = ShowPanel(panels, navigator);
 
             var target = panels.Tree.WorldPointOf(data.Tree["ronin_ring_1"]);
-            panels.TryClick(target);
-            panels.Release(target);
+            panels.Point(target, false);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-tree.png"));
             SaveTreeZoom(camera, panels, frame, 2, Path.Combine(folder, "panel-tree-close.png"));
             SaveTreeZoom(camera, panels, frame, -2, Path.Combine(folder, "panel-tree-mid.png"));

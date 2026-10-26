@@ -35,21 +35,16 @@ namespace Game.Platform.Tests
         public void TearDown() => Object.DestroyImmediate(_panel.gameObject);
 
         [Test]
-        public void ClickingAnOfferedNodeShowsTakeAndTakingSpendsAPoint()
+        public void ClickingAnOfferedNodeTakesItAndSpendsAPoint()
         {
-            var node = _loop.State.Tree.Allocatable(_data.Tree).First(def => def.Type != Game.Core.Content.Tree.TreeNodeType.Attribute);
+            var node = _loop.State.Tree.Allocatable(_data.Tree).First(def => def.Type == Game.Core.Content.Tree.TreeNodeType.Small);
             Assert.That(_panel.Tree.LookAt(node), Is.EqualTo(TreeNodeLook.Offered));
 
             var point = _panel.Tree.WorldPointOf(node);
             Assert.That(_panel.TryClick(point), Is.True);
             _panel.Release(point);
 
-            Assert.That(_panel.Tree.Selected, Is.SameAs(node));
-            Assert.That(_panel.Tree.ActionCount, Is.EqualTo(1));
-
-            Assert.That(_panel.TryClick(_panel.Tree.WorldPointOfAction(0)), Is.True);
-            _panel.Release(_panel.Tree.WorldPointOfAction(0));
-
+            Assert.That(_panel.Tree.Selected, Is.Null);
             Assert.That(_loop.State.Tree.IsAllocated(_data.Tree, node.Id), Is.True);
             Assert.That(_panel.Tree.LookAt(node), Is.EqualTo(TreeNodeLook.Taken));
             Assert.That(_panel.Tree.Points, Does.Contain(TreeTexts.Points(1)));
@@ -71,17 +66,22 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void ClickingANodePinsItsCardAndHidesTheTooltip()
+        public void ClickingATakenNodeRefundsItAndKeepsTheTooltip()
         {
-            var node = _loop.State.Tree.Allocatable(_data.Tree).First();
+            var node = _loop.State.Tree.Allocatable(_data.Tree).First(def => def.Type == Game.Core.Content.Tree.TreeNodeType.Small);
+            _loop.State.Gold = Game.Core.Math.BigNumber.FromDouble(1e12);
             var point = _panel.Tree.WorldPointOf(node);
-            _panel.Point(point, false);
+            _panel.TryClick(point);
+            _panel.Release(point);
+            Assert.That(_loop.State.Tree.IsAllocated(_data.Tree, node.Id), Is.True);
 
+            _panel.Point(point, false);
             Assert.That(_panel.TryClick(point), Is.True);
             _panel.Release(point);
 
-            Assert.That(_panel.Tree.Selected, Is.SameAs(node));
-            Assert.That(_panel.Tree.IsTooltipShown, Is.False);
+            Assert.That(_loop.State.Tree.IsAllocated(_data.Tree, node.Id), Is.False);
+            Assert.That(_panel.Tree.Selected, Is.Null);
+            Assert.That(_panel.Tree.IsTooltipShown, Is.True);
         }
 
         [Test]

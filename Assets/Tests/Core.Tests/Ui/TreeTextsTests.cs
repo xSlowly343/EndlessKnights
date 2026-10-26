@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Ui
 
             Assert.That(TreeTexts.Points(4), Is.EqualTo("Очков: 4"));
             Assert.That(TreeTexts.Taken(31, 1672), Is.EqualTo("взято 31 / 1672"));
-            Assert.That(TreeTexts.Hint, Does.StartWith("Нажми на узел"));
+            Assert.That(TreeTexts.Hint, Does.StartWith("Наведи"));
         }
 
         [Test]
