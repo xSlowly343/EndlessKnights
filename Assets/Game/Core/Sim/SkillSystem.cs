@@ -453,7 +453,43 @@ namespace Game.Core.Sim
             && (!condition.BossRetry || (_state.FightingBoss && _state.BossFailsInARow > 0))
             && (condition.BossLastSeconds <= 0 || (_state.FightingBoss && _state.BossTicksLeft > 0 && _state.BossTicksLeft <= Ticks(condition.BossLastSeconds)))
             && (condition.FamilyActive == null || AnyActive(condition.FamilyActive))
-            && (condition.AfterComboStrikeSeconds <= 0 || (_state.LastComboStrikeTick >= 0 && _state.Tick - _state.LastComboStrikeTick <= Ticks(condition.AfterComboStrikeSeconds)));
+            && (condition.AfterComboStrikeSeconds <= 0 || (_state.LastComboStrikeTick >= 0 && _state.Tick - _state.LastComboStrikeTick <= Ticks(condition.AfterComboStrikeSeconds)))
+            && (!condition.MouseMoving || _state.MouseIdleTicks < Ticks(MouseMovingSeconds))
+            && (!condition.Reading || _state.Reading)
+            && (condition.DotStacksAtLeast <= 0 || _state.PoisonStacks + _state.BurnStacks >= condition.DotStacksAtLeast - 1e-9)
+            && (condition.CursesAtLeast <= 0 || ActiveCurses >= condition.CursesAtLeast)
+            && (condition.MinionsAtLeast <= 0 || StandingMinions >= condition.MinionsAtLeast)
+            && (condition.AurasAtLeast <= 0 || ActiveAuras >= condition.AurasAtLeast);
+
+        private const double MouseMovingSeconds = 2;
+
+        private int StandingMinions
+        {
+            get
+            {
+                var count = 0;
+                foreach (var minion in _state.Minions)
+                {
+                    if (minion.Standing)
+                        count++;
+                }
+                return count;
+            }
+        }
+
+        private int ActiveAuras
+        {
+            get
+            {
+                var count = 0;
+                foreach (var slot in _state.Skills)
+                {
+                    if (slot.Active && slot.Def.Effect is AuraEffect)
+                        count++;
+                }
+                return count;
+            }
+        }
 
         private bool AnyActive(string family)
         {

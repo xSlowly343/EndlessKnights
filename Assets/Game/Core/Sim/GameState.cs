@@ -63,6 +63,8 @@ namespace Game.Core.Sim
         public double FocusMultiplier { get; set; } = 1;
         public double Resource { get; set; }
         public long KeylessTicks { get; set; }
+        public long MouseIdleTicks { get; set; }
+        public bool Reading { get; set; }
         public long IdleTicks { get; set; }
         public long MacroRhythmTicks { get; set; }
 

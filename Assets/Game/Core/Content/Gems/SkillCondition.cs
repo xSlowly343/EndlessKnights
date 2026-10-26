@@ -9,5 +9,11 @@ namespace Game.Core.Content.Gems
         public bool BossRetry { get; set; }
         public string? FamilyActive { get; set; }
         public double AfterComboStrikeSeconds { get; set; }
+        public bool MouseMoving { get; set; }
+        public bool Reading { get; set; }
+        public double DotStacksAtLeast { get; set; }
+        public int CursesAtLeast { get; set; }
+        public int MinionsAtLeast { get; set; }
+        public int AurasAtLeast { get; set; }
     }
 }

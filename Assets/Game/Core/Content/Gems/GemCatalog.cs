@@ -498,8 +498,17 @@ namespace Game.Core.Content.Gems
                 Boss = node.HasField("boss") && node.Field("boss").AsBool(),
                 BossRetry = node.HasField("bossRetry") && node.Field("bossRetry").AsBool(),
                 FamilyActive = node.HasField("familyActive") ? node.Field("familyActive").AsString() : null,
-                AfterComboStrikeSeconds = Number(node, "afterComboStrikeSeconds", 3600)
+                AfterComboStrikeSeconds = Number(node, "afterComboStrikeSeconds", 3600),
+                MouseMoving = node.HasField("mouseMoving") && node.Field("mouseMoving").AsBool(),
+                Reading = node.HasField("reading") && node.Field("reading").AsBool(),
+                DotStacksAtLeast = Number(node, "dotStacksAtLeast", 1e6),
+                CursesAtLeast = Count(node, "cursesAtLeast"),
+                MinionsAtLeast = Count(node, "minionsAtLeast"),
+                AurasAtLeast = Count(node, "aurasAtLeast")
             };
+
+        private static int Count(ContentNode node, string field) =>
+            node.HasField(field) ? node.Field(field).AsInt(0, 1000) : 0;
 
         private static double Number(ContentNode node, string field, double max) =>
             node.HasField(field) ? node.Field(field).AsNumber(0, max) : 0;
