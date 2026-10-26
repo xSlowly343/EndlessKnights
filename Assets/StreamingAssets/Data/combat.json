@@ -25,6 +25,7 @@
       "gravedigger": { "perKey": 0.1, "perKill": 5 },
       "ronin": { "perKey": 0 },
       "amazon": { "perKey": 0, "mousePxPerPoint": 160, "perSecond": 1 },
+      "stormweaver": { "perKey": 0.2, "mousePxPerPoint": 400, "overload": { "multiplier": 5 } },
       "moonshiner": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } }
     }
   },

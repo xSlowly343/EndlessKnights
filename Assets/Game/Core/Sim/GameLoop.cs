@@ -40,6 +40,7 @@ namespace Game.Core.Sim
         private readonly SynergySystem _synergy;
         private readonly RiftSystem _rift;
         private readonly WeaponSystem _weapons;
+        private readonly OverloadSystem _overload;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -59,6 +60,7 @@ namespace Game.Core.Sim
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot, _levels);
             _combat.OnKill(_stage);
             _stage.KillTimeListener = new KillResourceSystem(state, hero, _resource, _combat);
+            _overload = new OverloadSystem(state, hero, _resource, _combat);
             _skills = new SkillSystem(state, Events, _resource, _combat, hero, data.Weapons);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills, _resource);
@@ -95,6 +97,7 @@ namespace Game.Core.Sim
         public SynergySystem Synergy => _synergy;
         public RiftSystem Rift => _rift;
         public WeaponSystem Weapons => _weapons;
+        public OverloadSystem Overload => _overload;
         public GameData Data => _data;
         public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
@@ -317,6 +320,7 @@ namespace Game.Core.Sim
             _combat.Tick(input);
             _skills.Minions.Tick(input);
             _skills.Dots.Tick(input);
+            _overload.Tick();
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
             if (Permissions.Consent)

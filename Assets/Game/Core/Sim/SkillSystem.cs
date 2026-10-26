@@ -346,6 +346,8 @@ namespace Game.Core.Sim
             var queueMultiplier = native.SpendsAll ? multiplier : power * strike.QueueMultiplier;
             var tags = slot.Skill.Tags;
             var targets = strike.QueueTargets + (native.ExtraTargetWhileFamily != null && AnyActive(native.ExtraTargetWhileFamily) ? 1 : 0);
+            if (strike.QueueTargets > 0 && !strike.SkipCurrent)
+                targets += (int)System.Math.Max(0, System.Math.Round(_hero.Value(CombatStats.ChainTargets, 0, tags)));
             targets = System.Math.Min(targets, GameState.QueueDepth);
             if (targets > 0)
             {

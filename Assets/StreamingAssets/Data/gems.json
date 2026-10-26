@@ -567,6 +567,17 @@
       "effect": { "type": "strike", "multiplier": 3, "critChance": 0.3, "arrow": true }
     },
     {
+      "id": "finger_spark",
+      "kind": "skill",
+      "weapon": "storm_wand",
+      "color": "green",
+      "name": { "ru": "Искра с пальцев", "en": "Finger Spark" },
+      "tags": ["Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 3,
+      "effect": { "type": "strike", "multiplier": 2, "queueTargets": 2 }
+    },
+    {
       "id": "vial_from_belt",
       "kind": "skill",
       "weapon": "syringe_cane",

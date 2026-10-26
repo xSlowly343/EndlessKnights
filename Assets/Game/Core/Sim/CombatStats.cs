@@ -52,6 +52,9 @@ namespace Game.Core.Sim
         public static readonly StatId MinionSpeed = new StatId("minionSpeed");
         public static readonly StatId MinionCount = new StatId("minionCount");
         public static readonly StatId ArrowDamage = new StatId("arrowDamage");
+        public static readonly StatId OverloadMultiplier = new StatId("overloadMultiplier");
+        public static readonly StatId OverloadDisabled = new StatId("overloadDisabled");
+        public static readonly StatId ChainTargets = new StatId("chainTargets");
         public static readonly StatId DotDamage = new StatId("dotDamage");
         public static readonly StatId DotStacks = new StatId("dotStacks");
         public static readonly StatId PoisonStacks = new StatId("poisonStacks");
