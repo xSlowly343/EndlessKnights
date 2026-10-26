@@ -41,6 +41,7 @@ namespace Game.Core.Sim
         private readonly RiftSystem _rift;
         private readonly WeaponSystem _weapons;
         private readonly OverloadSystem _overload;
+        private readonly BannerSystem _banner;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -69,6 +70,7 @@ namespace Game.Core.Sim
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
+            _banner = new BannerSystem(state, hero, _combat, _skills);
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
@@ -309,6 +311,7 @@ namespace Game.Core.Sim
             _focus.Tick(input);
             _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
+            _banner.Tick(input);
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
             CastRequested();

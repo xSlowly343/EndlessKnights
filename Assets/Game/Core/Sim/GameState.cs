@@ -114,6 +114,9 @@ namespace Game.Core.Sim
         public double StirTurns { get; set; }
         public int OverheatTicks { get; set; }
         public int WeakenedSpawns { get; set; }
+        public double BannerPx { get; set; }
+        public double BannerBonus { get; set; }
+        public int BannerDecayTicks { get; set; }
         public double WeakenShare { get; set; }
         public double AllyHeavyCastSeconds { get; set; }
 

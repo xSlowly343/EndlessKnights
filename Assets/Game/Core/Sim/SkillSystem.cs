@@ -811,6 +811,17 @@ namespace Game.Core.Sim
             }
         }
 
+        public void RefreshAuraStrength()
+        {
+            foreach (var slot in _state.Skills)
+            {
+                if (!slot.AuraApplied || !(slot.Def.Effect is AuraEffect))
+                    continue;
+                RemoveAura(slot);
+                ApplyAura(slot);
+            }
+        }
+
         public bool Armed(int index) => index >= 0 && index < _state.Skills.Count && Armed(_state.Skills[index]);
 
         public void RefreshArmed()

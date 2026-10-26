@@ -5,8 +5,9 @@ namespace Game.Core.Content
         public const string FileName = "combat.json";
         public const int SupportedVersion = 2;
 
-        private CombatRules(double keyDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, ResourceRules resources, double critChance, double critMultiplier, ClassRules classes, OfflineRules offline, HeroRules hero, StrikeUpgradeRules strikeUpgrade, ConditionRules conditions, CurseRules curses, CannonRules cannons, DotRules dots, MinionRules skeletons, MinionRules beasts)
+        private CombatRules(double keyDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, ResourceRules resources, double critChance, double critMultiplier, ClassRules classes, OfflineRules offline, HeroRules hero, StrikeUpgradeRules strikeUpgrade, ConditionRules conditions, CurseRules curses, CannonRules cannons, DotRules dots, MinionRules skeletons, MinionRules beasts, BannerRules banner)
         {
+            Banner = banner;
             Skeletons = skeletons;
             Beasts = beasts;
             Dots = dots;
@@ -43,6 +44,7 @@ namespace Game.Core.Content
         public DotRules Dots { get; }
         public MinionRules Skeletons { get; }
         public MinionRules Beasts { get; }
+        public BannerRules Banner { get; }
 
         public static CombatRules Load(string json)
         {
@@ -71,7 +73,8 @@ namespace Game.Core.Content
                 CannonRules.Read(root.Field("cannons")),
                 DotRules.Read(root.Field("dots")),
                 MinionRules.Read(root.Field("skeletons")),
-                MinionRules.Read(root.Field("beasts")));
+                MinionRules.Read(root.Field("beasts")),
+                BannerRules.Read(root.Field("banner")));
         }
     }
 }

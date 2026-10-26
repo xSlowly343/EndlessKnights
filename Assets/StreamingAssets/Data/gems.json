@@ -601,6 +601,17 @@
       "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "critChance", "kind": "flat", "value": 0.1 }] }
     },
     {
+      "id": "foreman_hammer",
+      "kind": "skill",
+      "weapon": "banner",
+      "color": "red",
+      "name": { "ru": "Молот прораба", "en": "Foreman's Hammer" },
+      "tags": ["Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 4,
+      "effect": { "type": "strike", "multiplier": 3 }
+    },
+    {
       "id": "vial_from_belt",
       "kind": "skill",
       "weapon": "syringe_cane",

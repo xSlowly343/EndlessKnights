@@ -45,6 +45,7 @@ namespace Game.Core.Sim
         public DotRules Dots => _rules.Dots;
         public MinionRules Skeletons => _rules.Skeletons;
         public MinionRules Beasts => _rules.Beasts;
+        public BannerRules Banner => _rules.Banner;
 
         public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
             Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);
