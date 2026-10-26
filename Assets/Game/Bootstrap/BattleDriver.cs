@@ -108,8 +108,8 @@ namespace Game.Bootstrap
             var bossFight = state.EnemyType != EnemyType.Normal;
             _view.ShowState(
                 state.Stage,
-                state.KillsOnStage,
-                _data.Stages.EnemiesPerStage,
+                _data.Stages.WaveAfterKills(state.Stage, state.KillsOnStage),
+                _data.Stages.WaveCount,
                 hpFraction,
                 state.BossTicksLeft / (double)GameLoop.TicksPerSecond,
                 state.BossTicksLeft / (double)_bossTotalTicks,

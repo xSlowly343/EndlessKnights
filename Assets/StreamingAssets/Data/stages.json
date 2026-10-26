@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "enemiesPerStage": 10,
+  "waves": { "count": 4, "firstEnemies": 1, "enemiesPerWave": 1, "stagesPerExtraEnemy": 10, "maxEnemiesPerWave": 8 },
   "enemyHp": { "curve": "exp", "base": 120, "rate": 1.08 },
   "softWall": { "period": 100, "zoneLength": 10, "rate": 1.2 },
   "boss": { "hpMultiplier": 7, "timerSeconds": 30, "timerMaxSeconds": 90, "goldMultiplier": 5, "retryAfterKills": 10 },
