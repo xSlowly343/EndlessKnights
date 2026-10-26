@@ -35,7 +35,7 @@ namespace Game.Platform.Tests
         [Test]
         public void StateLineShowsStageHealthAndGold()
         {
-            _battle.ShowState(37, 4, 10, 0.62, 0, 1, false, 0.5, 2.14, 0.5, BigNumber.FromDouble(12400));
+            _battle.ShowState(37, 2, 4, 0.62, 0, 1, false, 0.5, 2.14, 0.5, BigNumber.FromDouble(12400));
 
             Assert.That(_battle.StageText, Is.EqualTo("Этап 37"));
             Assert.That(_battle.PercentText, Is.EqualTo("62%"));
@@ -47,7 +47,7 @@ namespace Game.Platform.Tests
         [Test]
         public void BossFightShowsTheTimerPill()
         {
-            _battle.ShowState(40, 0, 10, 1, 17.91, 0.6, true, 0, 1, 0, BigNumber.Zero);
+            _battle.ShowState(40, 4, 4, 1, 17.91, 0.6, true, 0, 1, 0, BigNumber.Zero);
 
             Assert.That(_battle.StageText, Is.EqualTo("Этап 40 · БОСС"));
             Assert.That(_battle.TimerShown, Is.True);

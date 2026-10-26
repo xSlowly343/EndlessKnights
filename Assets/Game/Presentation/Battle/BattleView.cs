@@ -72,6 +72,7 @@ namespace Game.Presentation.Battle
         private static readonly Color TimerTextColor = new Color32(0xFF, 0xD7, 0xD7, 0xFF);
         private static readonly Color TimerBlinkColor = new Color32(0xFF, 0x5A, 0x5A, 0xFF);
         private static readonly Color DotEmpty = new Color32(0x3A, 0x48, 0x70, 0xFF);
+        private static readonly Color DotCurrent = new Color32(0x8F, 0xA6, 0xE0, 0xFF);
         private static readonly Color DotFull = new Color32(0xEE, 0xF2, 0xFF, 0xFF);
         private static readonly Color MultiplierColor = new Color32(0xFF, 0xB4, 0xA8, 0xFF);
         private static readonly Color PercentColor = new Color32(0xD5, 0xDC, 0xEE, 0xFF);
@@ -185,7 +186,7 @@ namespace Game.Presentation.Battle
             _numbers.Show(amount, crit, origin + spread);
         }
 
-        public void ShowState(long stage, int killsOnStage, int enemiesPerStage, double hpFraction, double bossSecondsLeft, double bossTimerFraction, bool bossFight,
+        public void ShowState(long stage, int wave, int waves, double hpFraction, double bossSecondsLeft, double bossTimerFraction, bool bossFight,
             double focusFraction, double focusMultiplier, double energyFraction, BigNumber gold)
         {
             if (stage != _shownStage || bossFight != _shownBoss)
@@ -203,7 +204,7 @@ namespace Game.Presentation.Battle
             var percent = BattleTexts.PercentOf(hpFraction);
             if (percent != _shownPercent)
                 _percentText.text = BattleTexts.Percent(_shownPercent = percent);
-            ShowDots(bossFight ? 0 : killsOnStage, bossFight ? 0 : enemiesPerStage);
+            ShowDots(bossFight ? 0 : wave, bossFight ? 0 : waves);
             if (_timer.gameObject.activeSelf != bossFight)
                 _timer.gameObject.SetActive(bossFight);
             if (bossFight)
@@ -305,7 +306,7 @@ namespace Game.Presentation.Battle
         private static TextMeshProUGUI Label(string name, RectTransform parent, TMP_FontAsset? font, float sizePx, Color color, TextAlignmentOptions alignment) =>
             UiElements.Label(name, parent, font, sizePx, color, alignment);
 
-        private void ShowDots(int kills, int total)
+        private void ShowDots(int wave, int total)
         {
             for (var i = 0; i < MaxDots; i++)
             {
@@ -313,7 +314,7 @@ namespace Game.Presentation.Battle
                 if (_dots[i].gameObject.activeSelf != visible)
                     _dots[i].gameObject.SetActive(visible);
                 if (visible)
-                    _dots[i].color = i < kills ? DotFull : DotEmpty;
+                    _dots[i].color = i < wave ? DotFull : i == wave ? DotCurrent : DotEmpty;
             }
         }
 

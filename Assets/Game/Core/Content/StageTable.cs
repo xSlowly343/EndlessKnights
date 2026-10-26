@@ -16,16 +16,17 @@ namespace Game.Core.Content
         private readonly double _bossHpMultiplier;
         private readonly double _bossGoldMultiplier;
         private readonly string[] _biomes;
+        private readonly WaveRules _waves;
 
         private StageTable(ExponentialCurve enemyHp, ExponentialCurve gold, int wallPeriod, int wallZoneLength, double wallRate,
-            int enemiesPerStage, double bossHpMultiplier, double bossTimerSeconds, double bossTimerMaxSeconds, double bossGoldMultiplier, int bossRetryAfterKills, int biomeLength, string[] biomes, BossHintRules bossHint)
+            WaveRules waves, double bossHpMultiplier, double bossTimerSeconds, double bossTimerMaxSeconds, double bossGoldMultiplier, int bossRetryAfterKills, int biomeLength, string[] biomes, BossHintRules bossHint)
         {
             _enemyHp = enemyHp;
             _gold = gold;
             _wallPeriod = wallPeriod;
             _wallZoneLength = wallZoneLength;
             _wallRate = wallRate;
-            EnemiesPerStage = enemiesPerStage;
+            _waves = waves;
             _bossHpMultiplier = bossHpMultiplier;
             BossTimerSeconds = bossTimerSeconds;
             BossTimerMaxSeconds = bossTimerMaxSeconds;
@@ -36,7 +37,8 @@ namespace Game.Core.Content
             BossHint = bossHint;
         }
 
-        public int EnemiesPerStage { get; }
+        public int WaveCount => _waves.Count;
+        public int EnemiesPerStage => EnemiesOnStage(1);
         public double BossTimerSeconds { get; }
         public double BossTimerMaxSeconds { get; }
         public int BossRetryAfterKills { get; }
@@ -79,7 +81,7 @@ namespace Game.Core.Content
                 period,
                 zoneLength,
                 wallRate,
-                root.Field("enemiesPerStage").AsInt(1, 1000),
+                WaveRules.Read(root.Field("waves")),
                 boss.Field("hpMultiplier").AsNumber(1.0, 1e6),
                 timerSeconds,
                 timerMaxSeconds,
@@ -91,8 +93,26 @@ namespace Game.Core.Content
         }
 
         public StageTable ForWorld(double hpMultiplier, int wallPeriod, int wallZoneLength, double wallRate, double bossTimerSeconds) =>
-            new StageTable(_enemyHp.Scaled(hpMultiplier), _gold, wallPeriod, wallZoneLength, System.Math.Max(wallRate, _enemyHp.Rate), EnemiesPerStage, _bossHpMultiplier,
+            new StageTable(_enemyHp.Scaled(hpMultiplier), _gold, wallPeriod, wallZoneLength, System.Math.Max(wallRate, _enemyHp.Rate), _waves, _bossHpMultiplier,
                 bossTimerSeconds, bossTimerSeconds, _bossGoldMultiplier, BossRetryAfterKills, BiomeLength, _biomes, BossHint);
+
+        public int WaveSize(long stage, int wave) => _waves.Size(stage, wave);
+
+        public int EnemiesOnStage(long stage)
+        {
+            var total = 0;
+            for (var wave = 0; wave < _waves.Count; wave++)
+                total += _waves.Size(stage, wave);
+            return total;
+        }
+
+        public int WaveAfterKills(long stage, int kills)
+        {
+            var wave = 0;
+            while (wave < _waves.Count && kills >= _waves.Size(stage, wave))
+                kills -= _waves.Size(stage, wave++);
+            return wave;
+        }
 
         public BigNumber EnemyHp(long stage)
         {

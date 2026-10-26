@@ -112,10 +112,43 @@ namespace Game.Core.Tests.Save
             var alchemist = JsonEdit.Update(payload, "state", state => JsonEdit.Update(state, "ascendancy", a =>
                 JsonEdit.Set(JsonEdit.Set(a, "subclass", JsonValue.Of("plague_doctor")), "allocated", JsonValue.Array(new[] { JsonValue.Of("plague_doctor_1") }))));
 
-            var ascendancy = SaveMigrations.Default.Upgrade(alchemist, 9).Fields["state"].Fields["ascendancy"];
+            var ascendancy = SaveMigrations.Default.Steps[8].Upgrade(alchemist).Fields["state"].Fields["ascendancy"];
 
             Assert.That(ascendancy.Fields["subclass"].Text, Is.EqualTo("plague_bringer"));
             Assert.That(ascendancy.Fields["allocated"].Items.Single().Text, Is.EqualTo("plague_bringer_1"));
+        }
+
+        [TestCase("berserker")]
+        [TestCase("hermit")]
+        [TestCase("conductor")]
+        [TestCase("seer")]
+        [TestCase("bombardier")]
+        public void SubclassThatStayedAPathKeepsItsChoiceButNotItsNodes(string subclass)
+        {
+            var ascendancy = UpgradedFromTenth(subclass);
+
+            Assert.That(ascendancy.Fields["subclass"].Text, Is.EqualTo(subclass));
+            Assert.That(ascendancy.Fields["allocated"].Items, Is.Empty);
+        }
+
+        [TestCase("duellist")]
+        [TestCase("plague_bringer")]
+        [TestCase("chronomancer")]
+        public void SubclassThatIsNoLongerAPathIsCleared(string subclass)
+        {
+            var ascendancy = UpgradedFromTenth(subclass);
+
+            Assert.That(ascendancy.Fields["subclass"].Kind, Is.EqualTo(JsonKind.Null));
+            Assert.That(ascendancy.Fields["allocated"].Items, Is.Empty);
+        }
+
+        private static JsonValue UpgradedFromTenth(string subclass)
+        {
+            var payload = JsonParser.Parse(TestData.ReadSaveFixture("save_v9.json"), "save").Fields["payload"];
+            var tenth = SaveMigrations.Default.Steps[8].Upgrade(payload);
+            var chosen = JsonEdit.Update(tenth, "state", state => JsonEdit.Update(state, "ascendancy", a =>
+                JsonEdit.Set(JsonEdit.Set(a, "subclass", JsonValue.Of(subclass)), "allocated", JsonValue.Array(new[] { JsonValue.Of(subclass + "_1") }))));
+            return SaveMigrations.Default.Upgrade(chosen, 10).Fields["state"].Fields["ascendancy"];
         }
 
         [TestCase("swordsman", HeroClass.Ronin)]

@@ -144,7 +144,7 @@ namespace Game.Editor
             panels.Hide();
             var battle = BattleView.Create();
             battle.ShowEnemy(true, false);
-            battle.ShowState(37, 4, 10, 0.62, 18, 0.6, true, 0.7, 2.1, 0.4, BigNumber.FromDouble(12400));
+            battle.ShowState(37, 2, 4, 0.62, 18, 0.6, true, 0.7, 2.1, 0.4, BigNumber.FromDouble(12400));
             battle.Hit(BigNumber.FromDouble(3900), true);
             battle.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
             var skillBar = SkillBarView.Create(battle.transform);

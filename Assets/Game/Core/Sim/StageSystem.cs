@@ -105,7 +105,7 @@ namespace Game.Core.Sim
                 AdvanceStage();
             else if (_state.Farming)
                 CountFarmKill();
-            else if (_state.KillsOnStage < _stages.EnemiesPerStage)
+            else if (_state.KillsOnStage < _stages.EnemiesOnStage(_state.Stage))
                 _state.KillsOnStage++;
             SpawnNext();
         }
@@ -217,7 +217,7 @@ namespace Game.Core.Sim
 
         private void SpawnNext()
         {
-            if (!_state.Farming && _state.KillsOnStage >= _stages.EnemiesPerStage)
+            if (!_state.Farming && _state.KillsOnStage >= _stages.EnemiesOnStage(_state.Stage))
                 SpawnBoss();
             else
                 SpawnNormal();
