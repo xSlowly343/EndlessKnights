@@ -13,7 +13,7 @@ namespace Game.Core.Tests.Sim
         {
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input);
-            var slot = loop.Skills.Equip(Gem("stenography"), trigger);
+            var slot = loop.Skills.Equip(Gem("through_stride"), trigger);
             loop.State.Resource = 100;
             loop.Events.Clear();
             return (loop, input, slot);
@@ -41,7 +41,7 @@ namespace Game.Core.Tests.Sim
             input.MoveMouse(1000);
             loop.Tick();
 
-            var skill = Gem("stenography").Skill!;
+            var skill = Gem("through_stride").Skill!;
             var multiplier = Gem("cast_on_mouse_distance").Trigger!.CooldownMultiplier;
             Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(skill.CooldownSeconds * multiplier * GameLoop.TicksPerSecond));
             Assert.That(loop.State.Resource, Is.EqualTo(TestWorld.Data.Combat.Resources.Max - skill.ResourceCost));

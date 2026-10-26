@@ -22,7 +22,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.Loop();
 
-            Assert.That(loop.Skills.Equip(Gem("stenography")), Is.EqualTo(0));
+            Assert.That(loop.Skills.Equip(Gem("through_stride")), Is.EqualTo(0));
             Assert.That(loop.Skills.Equip(Gem("march")), Is.EqualTo(1));
             Assert.That(loop.State.Skills.Count, Is.EqualTo(2));
         }
@@ -40,12 +40,12 @@ namespace Game.Core.Tests.Sim
         public void CastSpendsResourceAndStartsCooldown()
         {
             var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("stenography"));
+            var slot = loop.Skills.Equip(Gem("through_stride"));
             loop.State.Resource = 100;
 
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
 
-            var skill = Gem("stenography").Skill!;
+            var skill = Gem("through_stride").Skill!;
             Assert.That(loop.State.Resource, Is.EqualTo(100 - skill.ResourceCost));
             Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(skill.CooldownSeconds * GameLoop.TicksPerSecond));
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(1));
@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Sim
         public void CastIsRefusedWithoutResourceAndKeepsIt()
         {
             var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("stenography"));
+            var slot = loop.Skills.Equip(Gem("through_stride"));
             loop.State.Resource = 10;
 
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.NotEnoughResource));
@@ -67,7 +67,7 @@ namespace Game.Core.Tests.Sim
         public void CooldownBlocksUntilItRunsOut()
         {
             var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("stenography"));
+            var slot = loop.Skills.Equip(Gem("through_stride"));
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
             var cooldownTicks = loop.State.Skills[slot].CooldownTicks;
@@ -113,12 +113,12 @@ namespace Game.Core.Tests.Sim
         public void TriggeredCastHasLongerCooldown()
         {
             var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("stenography"), Gem("cast_on_timer"));
+            var slot = loop.Skills.Equip(Gem("through_stride"), Gem("cast_on_timer"));
             loop.State.Resource = 100;
 
             loop.Skills.TryCast(slot, triggered: true);
 
-            var expected = Gem("stenography").Skill!.CooldownSeconds * Gem("cast_on_timer").Trigger!.CooldownMultiplier;
+            var expected = Gem("through_stride").Skill!.CooldownSeconds * Gem("cast_on_timer").Trigger!.CooldownMultiplier;
             Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(expected * GameLoop.TicksPerSecond));
         }
 
@@ -136,7 +136,7 @@ namespace Game.Core.Tests.Sim
         public void SkillSlotsAreSaved()
         {
             var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("stenography"), Gem("cast_on_timer"));
+            var slot = loop.Skills.Equip(Gem("through_stride"), Gem("cast_on_timer"));
             loop.Skills.Equip(Gem("lull"));
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
@@ -146,7 +146,7 @@ namespace Game.Core.Tests.Sim
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, clock), TestWorld.Data).State;
 
             Assert.That(loaded.Skills.Count, Is.EqualTo(2));
-            Assert.That(loaded.Skills[0].Skill, Is.SameAs(Gem("stenography")));
+            Assert.That(loaded.Skills[0].Skill, Is.SameAs(Gem("through_stride")));
             Assert.That(loaded.Skills[0].Trigger, Is.SameAs(Gem("cast_on_timer")));
             Assert.That(loaded.Skills[0].CooldownTicks, Is.EqualTo(loop.State.Skills[0].CooldownTicks));
             Assert.That(loaded.Skills[1].Trigger, Is.Null);

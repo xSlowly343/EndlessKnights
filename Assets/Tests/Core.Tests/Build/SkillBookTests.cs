@@ -60,19 +60,19 @@ namespace Game.Core.Tests.Build
         [Test]
         public void OnlyOwnedSkillsGoIn()
         {
-            var loop = WithGems("stenography");
+            var loop = WithGems("through_stride");
 
             Assert.That(loop.Book.Equip(Gem("march")), Is.EqualTo(BookResult.NotOwned));
-            Assert.That(loop.Book.Equip(Gem("stenography")), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.Book.Equip(Gem("stenography")), Is.EqualTo(BookResult.NotOwned));
+            Assert.That(loop.Book.Equip(Gem("through_stride")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.Equip(Gem("through_stride")), Is.EqualTo(BookResult.NotOwned));
         }
 
         [Test]
         public void NoMoreSkillsThanSlots()
         {
-            var loop = WithGems("stenography", "march", "lull", "lull");
+            var loop = WithGems("through_stride", "march", "lull", "lull");
 
-            loop.Book.Equip(Gem("stenography"));
+            loop.Book.Equip(Gem("through_stride"));
             loop.Book.Equip(Gem("march"));
             loop.Book.Equip(Gem("lull"));
 
@@ -90,14 +90,14 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SkillsCanBeRearrangedFreely()
         {
-            var loop = WithGems("stenography", "march", "lull");
-            loop.Book.Equip(Gem("stenography"));
+            var loop = WithGems("through_stride", "march", "lull");
+            loop.Book.Equip(Gem("through_stride"));
             loop.Book.Equip(Gem("march"));
             loop.Book.Equip(Gem("lull"));
 
             Assert.That(loop.Book.Move(0, 2), Is.EqualTo(BookResult.Done));
             Assert.That(loop.State.Skills[0].Skill, Is.SameAs(Gem("march")));
-            Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("stenography")));
+            Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("through_stride")));
             Assert.That(loop.Book.Move(0, 3), Is.EqualTo(BookResult.NoSuchSlot));
         }
 
@@ -120,8 +120,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TriggerGoesIntoItsOwnSlotOnASkill()
         {
-            var loop = WithGems("stenography", "lull", "cast_on_timer");
-            loop.Book.Equip(Gem("stenography"));
+            var loop = WithGems("through_stride", "lull", "cast_on_timer");
+            loop.Book.Equip(Gem("through_stride"));
             loop.Book.Equip(Gem("lull"));
 
             Assert.That(loop.Book.SetTrigger(0, Gem("cast_on_timer")), Is.EqualTo(BookResult.Done));
@@ -142,8 +142,8 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.State.OwnedGems.Count, Is.EqualTo(3));
             Assert.That(loop.State.Skills.Count, Is.EqualTo(3));
-            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("shield_bash")));
-            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("odins_fury")));
+            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("iron_rim_bash")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("no_mercy")));
             Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("lull")));
             Assert.That(loop.State.Skills[0].Trigger, Is.Null);
             Assert.That(loop.Book.GrantStartingGems(), Is.False);
@@ -156,8 +156,8 @@ namespace Game.Core.Tests.Build
 
             loop.Book.GrantStartingGems();
 
-            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("song")));
-            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("guitar_solo")));
+            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("hearth_song")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("louder")));
         }
 
         [Test]
@@ -182,7 +182,7 @@ namespace Game.Core.Tests.Build
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;
 
             Assert.That(loaded.OwnedGems.Count, Is.EqualTo(3));
-            Assert.That(loaded.Skills[1].Skill, Is.SameAs(Gem("odins_fury")));
+            Assert.That(loaded.Skills[1].Skill, Is.SameAs(Gem("no_mercy")));
         }
 
         [Test]

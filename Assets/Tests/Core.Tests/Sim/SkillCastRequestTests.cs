@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
         public void RequestedCastHappensOnTheNextTick()
         {
             var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("stenography"));
+            var slot = loop.Skills.Equip(Gem("through_stride"));
             loop.State.Resource = 100;
 
             loop.RequestCast(slot);
@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Sim
         public void RequestIsUsedOnce()
         {
             var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("stenography"));
+            var slot = loop.Skills.Equip(Gem("through_stride"));
             loop.State.Resource = 100;
             loop.RequestCast(slot);
             loop.Tick();
@@ -56,7 +56,7 @@ namespace Game.Core.Tests.Sim
         public void CooldownFractionFallsFromOneToZero()
         {
             var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("stenography"));
+            var slot = loop.Skills.Equip(Gem("through_stride"));
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
             var skill = loop.State.Skills[slot];
@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CooldownLoadedWithoutTotalShowsFull()
         {
-            var slot = new SkillSlot(Gem("stenography")) { CooldownTicks = 40 };
+            var slot = new SkillSlot(Gem("through_stride")) { CooldownTicks = 40 };
 
             Assert.That(slot.CooldownFraction, Is.EqualTo(1d));
         }

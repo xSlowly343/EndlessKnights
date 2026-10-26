@@ -38,21 +38,21 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1000));
             var start = TestWorld.Data.Stages.BiomeLength - 5;
             var loop = TestWorld.Loop(input, new GameState { Class = heroClass, Stage = start, HighestStage = start }, hero);
-            loop.Skills.Equip(TestWorld.Data.Gems["stenography"], TestWorld.Data.Gems["cast_on_timer"]);
+            loop.Skills.Equip(TestWorld.Data.Gems["through_stride"], TestWorld.Data.Gems["cast_on_timer"]);
             loop.Skills.Equip(TestWorld.Data.Gems["march"]);
             loop.Skills.Equip(TestWorld.Data.Gems["lull"]);
             return (loop, input);
         }
 
-        private static readonly string[] VikingSkills = { "shield_bash", "odins_fury", "battle_cry", "throwing_axe", "blood_harvest", "shield_wall", "ragnarok_roar" };
-        private static readonly string[] MetalheadSkills = { "song", "guitar_solo", "power_chord", "ballad", "mosh_pit", "amp_eleven", "stage_dive" };
+        private static readonly string[] VikingSkills = { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };
+        private static readonly string[] MetalheadSkills = { "hearth_song", "louder", "nail_chord", "colossus_lullaby", "whole_hall", "underside_amp", "still_alive" };
 
         private static readonly string[] CommonSkills =
         {
-            "stenography", "key_drum", "overheat", "space_hammer", "caps_rage", "typo", "typist", "hotkeys", "touch_typing",
+            "through_stride", "key_drum", "overheat", "space_hammer", "no_breather", "step_back", "quick_stride", "double_grip", "steady_pace",
             "hurricane", "dash", "lasso", "pendulum_strike", "long_road", "comet_trail", "blade_whirl", "tailwind", "lightning_zigzag",
             "mark", "weak_spot", "execute", "exposure", "boss_hunt", "ricochet", "lucky_coin", "composure", "freeze_frame",
-            "lull", "golden_fever", "second_wind", "echo", "coffee_break", "call", "shoulder_to_shoulder", "heros_diary", "rift_crystal"
+            "lull", "golden_fever", "second_wind", "echo", "caravan_halt", "blade_on_watch", "shoulder_to_shoulder", "prokhors_ledger", "rift_crystal"
         };
 
         private static (GameLoop Loop, FakeInputSource Input) ClassSkillHero(HeroClass heroClass) =>

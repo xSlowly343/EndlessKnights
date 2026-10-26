@@ -10,7 +10,7 @@ namespace Game.Core.Tests.Sim
 {
     public class StenographyTests
     {
-        private static ChainHitsEffect Effect => (ChainHitsEffect)TestWorld.Data.Gems["stenography"].Skill!.Effect;
+        private static ChainHitsEffect Effect => (ChainHitsEffect)TestWorld.Data.Gems["through_stride"].Skill!.Effect;
 
         private static (GameLoop Loop, FakeInputSource Input, int Slot) Typist(double enemyHp)
         {
@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Metalhead }, hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(enemyHp));
-            var slot = loop.Skills.Equip(TestWorld.Data.Gems["stenography"]);
+            var slot = loop.Skills.Equip(TestWorld.Data.Gems["through_stride"]);
             loop.State.Resource = 100;
             loop.Events.Clear();
             return (loop, input, slot);

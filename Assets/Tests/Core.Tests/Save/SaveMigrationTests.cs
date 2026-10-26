@@ -42,7 +42,7 @@ namespace Game.Core.Tests.Save
             Assert.That(save.StoredVersion, Is.EqualTo(2));
             Assert.That(save.State.Stage, Is.EqualTo(38));
             Assert.That(save.State.Skills.Count, Is.EqualTo(3));
-            Assert.That(save.State.Skills[0].Skill.Id, Is.EqualTo("stenography"));
+            Assert.That(save.State.Skills[0].Skill.Id, Is.EqualTo("through_stride"));
             Assert.That(save.State.Skills[0].Trigger!.Id, Is.EqualTo("cast_on_timer"));
             Assert.That(save.State.Skills[0].HitsLeft, Is.EqualTo(18));
             Assert.That(save.State.Skills[0].CooldownTicks, Is.EqualTo(221));

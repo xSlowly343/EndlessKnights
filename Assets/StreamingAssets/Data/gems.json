@@ -3,11 +3,12 @@
   "levels": { "max": 20, "effectPerLevel": 0.02, "experience": { "curve": "exp", "base": 100, "rate": 1.3 } },
   "gems": [
     {
-      "id": "shield_bash",
+      "id": "iron_rim_bash",
+      "formerIds": ["shield_bash"],
       "kind": "skill",
       "weapon": "axe",
       "color": "red",
-      "name": { "ru": "Удар щитом", "en": "Shield Bash" },
+      "name": { "ru": "Окованный щит", "en": "Iron-Rim Bash" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 15 },
       "cooldownSeconds": 4,
@@ -15,11 +16,12 @@
       "native": { "holdDecaySeconds": 5 }
     },
     {
-      "id": "odins_fury",
+      "id": "no_mercy",
+      "formerIds": ["odins_fury"],
       "kind": "skill",
       "weapon": "axe",
       "color": "red",
-      "name": { "ru": "Ярость Одина", "en": "Odin's Fury" },
+      "name": { "ru": "Без жалости", "en": "No Mercy" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 25,
@@ -27,11 +29,12 @@
       "native": { "spendAll": { "perPoint": 0.1, "max": 10 } }
     },
     {
-      "id": "song",
+      "id": "hearth_song",
+      "formerIds": ["song"],
       "kind": "skill",
       "weapon": "electric_guitar",
       "color": "red",
-      "name": { "ru": "Песня", "en": "Song" },
+      "name": { "ru": "Песня у камина", "en": "Hearthside Song" },
       "tags": ["Aura", "Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 5,
@@ -40,11 +43,12 @@
       "effect": { "type": "aura", "party": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.15 }, { "stat": "gold", "kind": "increased", "value": 0.10 }] }
     },
     {
-      "id": "guitar_solo",
+      "id": "louder",
+      "formerIds": ["guitar_solo"],
       "kind": "skill",
       "weapon": "electric_guitar",
       "color": "red",
-      "name": { "ru": "Гитарное соло", "en": "Guitar Solo" },
+      "name": { "ru": "Громче!", "en": "Louder!" },
       "tags": ["Aura", "Skill"],
       "cost": { "resource": 80 },
       "cooldownSeconds": 35,
@@ -54,11 +58,12 @@
       "native": { "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0 }] }
     },
     {
-      "id": "battle_cry",
+      "id": "roar_from_the_door",
+      "formerIds": ["battle_cry"],
       "kind": "skill",
       "weapon": "axe",
       "color": "red",
-      "name": { "ru": "Боевой клич", "en": "Battle Cry" },
+      "name": { "ru": "Рёв с порога", "en": "Roar from the Door" },
       "tags": ["Aura", "Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 30,
@@ -67,11 +72,12 @@
       "native": { "resourcePerKeyHit": 1 }
     },
     {
-      "id": "throwing_axe",
+      "id": "hatchet_toss",
+      "formerIds": ["throwing_axe"],
       "kind": "skill",
       "weapon": "axe",
       "color": "red",
-      "name": { "ru": "Метательный топор", "en": "Throwing Axe" },
+      "name": { "ru": "Топорик вдогонку", "en": "Parting Hatchet" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 10 },
       "cooldownSeconds": 3,
@@ -79,11 +85,12 @@
       "native": { "woundedSpawnResource": 10 }
     },
     {
-      "id": "blood_harvest",
+      "id": "forge_heat",
+      "formerIds": ["blood_harvest"],
       "kind": "skill",
       "weapon": "axe",
       "color": "red",
-      "name": { "ru": "Кровавая жатва", "en": "Blood Harvest" },
+      "name": { "ru": "Жар горна", "en": "Forge Heat" },
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
@@ -91,11 +98,12 @@
       "native": { "holdStacksAboveResource": 50 }
     },
     {
-      "id": "shield_wall",
+      "id": "anvil",
+      "formerIds": ["shield_wall"],
       "kind": "skill",
       "weapon": "axe",
       "color": "red",
-      "name": { "ru": "Стена щитов", "en": "Shield Wall" },
+      "name": { "ru": "Наковальня", "en": "Anvil" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 40 },
       "cooldownSeconds": 35,
@@ -104,11 +112,12 @@
       "native": { "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0 }] }
     },
     {
-      "id": "ragnarok_roar",
+      "id": "long_winter",
+      "formerIds": ["ragnarok_roar"],
       "kind": "skill",
       "weapon": "axe",
       "color": "red",
-      "name": { "ru": "Рёв Рагнарёка", "en": "Ragnarok Roar" },
+      "name": { "ru": "Долгая зима", "en": "Long Winter" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 70 },
       "cooldownSeconds": 45,
@@ -117,11 +126,12 @@
       "native": { "fullResourceDurationMultiplier": 2 }
     },
     {
-      "id": "power_chord",
+      "id": "nail_chord",
+      "formerIds": ["power_chord"],
       "kind": "skill",
       "weapon": "electric_guitar",
       "color": "red",
-      "name": { "ru": "Пауэр-аккорд", "en": "Power Chord" },
+      "name": { "ru": "Аккорд Гвоздя", "en": "Nail's Chord" },
       "tags": ["Skill"],
       "cost": { "resource": 15 },
       "cooldownSeconds": 4,
@@ -129,11 +139,12 @@
       "native": { "extraTargetWhileFamily": "song" }
     },
     {
-      "id": "ballad",
+      "id": "colossus_lullaby",
+      "formerIds": ["ballad"],
       "kind": "skill",
       "weapon": "electric_guitar",
       "color": "red",
-      "name": { "ru": "Баллада", "en": "Ballad" },
+      "name": { "ru": "Колыбельная для Колосса", "en": "Lullaby for a Colossus" },
       "tags": ["Aura", "Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 30,
@@ -142,11 +153,12 @@
       "effect": { "type": "aura", "modifiers": [{ "stat": "bossTimerSpeed", "kind": "more", "value": -0.25 }] }
     },
     {
-      "id": "mosh_pit",
+      "id": "whole_hall",
+      "formerIds": ["mosh_pit"],
       "kind": "skill",
       "weapon": "electric_guitar",
       "color": "red",
-      "name": { "ru": "Мош-пит", "en": "Mosh Pit" },
+      "name": { "ru": "Весь зал подпевает", "en": "The Whole Hall Sings" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
@@ -154,11 +166,12 @@
       "effect": { "type": "stacks", "on": "keyHit", "perStack": { "stat": "damage", "kind": "increased", "value": 0.02 }, "max": 0.25 }
     },
     {
-      "id": "amp_eleven",
+      "id": "underside_amp",
+      "formerIds": ["amp_eleven"],
       "kind": "skill",
       "weapon": "electric_guitar",
       "color": "red",
-      "name": { "ru": "Усилитель на 11", "en": "Amp to Eleven" },
+      "name": { "ru": "Усилитель из Изнанки", "en": "Underside Amp" },
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
@@ -166,11 +179,12 @@
       "native": { "modifiers": [{ "stat": "focusResetSeconds", "kind": "flat", "value": 3 }] }
     },
     {
-      "id": "stage_dive",
+      "id": "still_alive",
+      "formerIds": ["stage_dive"],
       "kind": "skill",
       "weapon": "electric_guitar",
       "color": "red",
-      "name": { "ru": "Прыжок со сцены", "en": "Stage Dive" },
+      "name": { "ru": "Мир ещё живой", "en": "The World Is Still Alive" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 60 },
       "cooldownSeconds": 40,
@@ -178,10 +192,11 @@
       "native": { "refreshFamily": "song" }
     },
     {
-      "id": "stenography",
+      "id": "through_stride",
+      "formerIds": ["stenography"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Стенография", "en": "Stenography" },
+      "name": { "ru": "Сквозной Ход", "en": "Through Stride" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 40 },
       "cooldownSeconds": 20,
@@ -221,10 +236,11 @@
       "effect": { "type": "specialKeys", "key": "space", "bonus": 2 }
     },
     {
-      "id": "caps_rage",
+      "id": "no_breather",
+      "formerIds": ["caps_rage"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Капслок ярости", "en": "Caps Lock Rage" },
+      "name": { "ru": "Без передышки", "en": "No Breather" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 40,
@@ -232,20 +248,22 @@
       "effect": { "type": "streakStrike", "hits": 20, "maxGapSeconds": 0.5, "multiplier": 5 }
     },
     {
-      "id": "typo",
+      "id": "step_back",
+      "formerIds": ["typo"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Опечатка", "en": "Typo" },
+      "name": { "ru": "Шаг назад", "en": "Step Back" },
       "tags": ["Keyboard", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "specialKeys", "key": "backspace", "bonus": 1 }
     },
     {
-      "id": "typist",
+      "id": "quick_stride",
+      "formerIds": ["typist"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Машинистка", "en": "Typist" },
+      "name": { "ru": "Частый Ход", "en": "Quickened Stride" },
       "tags": ["Aura", "Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
@@ -253,20 +271,22 @@
       "effect": { "type": "aura", "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0, "tags": ["Keyboard"] }] }
     },
     {
-      "id": "hotkeys",
+      "id": "double_grip",
+      "formerIds": ["hotkeys"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Горячие клавиши", "en": "Hotkeys" },
+      "name": { "ru": "Двойной хват", "en": "Double Grip" },
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 15 },
       "cooldownSeconds": 5,
       "effect": { "type": "specialKeys", "key": "combo", "bonus": 3, "charges": 10 }
     },
     {
-      "id": "touch_typing",
+      "id": "steady_pace",
+      "formerIds": ["touch_typing"],
       "kind": "skill",
       "color": "red",
-      "name": { "ru": "Слепая печать", "en": "Touch Typing" },
+      "name": { "ru": "Ровный шаг", "en": "Steady Pace" },
       "tags": ["Keyboard", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
@@ -477,11 +497,12 @@
       "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25 }] }
     },
     {
-      "id": "voodoo_needle",
+      "id": "charm_prick",
+      "formerIds": ["voodoo_needle"],
       "kind": "skill",
       "weapon": "voodoo_doll",
       "color": "blue",
-      "name": { "ru": "Игла в куклу", "en": "Needle in the Doll" },
+      "name": { "ru": "Укол в оберег", "en": "Charm Prick" },
       "tags": ["Skill"],
       "cost": { "resource": 20 },
       "cooldownSeconds": 5,
@@ -531,20 +552,22 @@
       "effect": { "type": "echo", "power": 0.5 }
     },
     {
-      "id": "coffee_break",
+      "id": "caravan_halt",
+      "formerIds": ["coffee_break"],
       "kind": "skill",
       "color": "white",
-      "name": { "ru": "Кофе-брейк", "en": "Coffee Break" },
+      "name": { "ru": "Привал", "en": "Caravan Halt" },
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "breakBonus", "breakSeconds": 300, "seconds": 60, "modifiers": [{ "stat": "damage", "kind": "more", "value": 1.0 }] }
     },
     {
-      "id": "call",
+      "id": "blade_on_watch",
+      "formerIds": ["call"],
       "kind": "skill",
       "color": "white",
-      "name": { "ru": "Созвон", "en": "Call" },
+      "name": { "ru": "Клинок на часах", "en": "Blade on Watch" },
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
@@ -561,10 +584,11 @@
       "effect": { "type": "passive", "perPartyMember": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.05 }] }
     },
     {
-      "id": "heros_diary",
+      "id": "prokhors_ledger",
+      "formerIds": ["heros_diary"],
       "kind": "skill",
       "color": "white",
-      "name": { "ru": "Дневник героя", "en": "Hero's Diary" },
+      "name": { "ru": "Запись у Прохора", "en": "Prokhor's Ledger" },
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,

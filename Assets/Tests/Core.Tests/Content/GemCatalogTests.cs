@@ -18,23 +18,23 @@ namespace Game.Core.Tests.Content
             var gems = GemCatalog.Load(RealFile());
 
             Assert.That(gems.All.Count, Is.EqualTo(66));
-            foreach (var id in new[] { "shield_bash", "odins_fury", "song", "guitar_solo" })
+            foreach (var id in new[] { "iron_rim_bash", "no_mercy", "hearth_song", "louder" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
-            Assert.That(gems["stenography"].Kind, Is.EqualTo(GemKind.Skill));
+            Assert.That(gems["through_stride"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["march"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["lull"].Kind, Is.EqualTo(GemKind.Skill));
-            Assert.That(gems["voodoo_needle"].Skill!.Effect, Is.InstanceOf<EnemyDebuffEffect>());
+            Assert.That(gems["charm_prick"].Skill!.Effect, Is.InstanceOf<EnemyDebuffEffect>());
             Assert.That(gems["cast_on_timer"].Kind, Is.EqualTo(GemKind.Trigger));
         }
 
         [Test]
-        public void StenographyMatchesContentDraft()
+        public void ThroughStrideMatchesContentDraft()
         {
-            var gem = GemCatalog.Load(RealFile())["stenography"];
+            var gem = GemCatalog.Load(RealFile())["through_stride"];
             var effect = (ChainHitsEffect)gem.Skill!.Effect;
 
             Assert.That(gem.Color, Is.EqualTo(GemColor.Red));
-            Assert.That(gem.NameRu, Is.EqualTo("Стенография"));
+            Assert.That(gem.NameRu, Is.EqualTo("Сквозной Ход"));
             Assert.That(gem.Tags, Is.EqualTo(StatTags.Keyboard | StatTags.Skill));
             Assert.That(gem.Skill.ResourceCost, Is.EqualTo(40));
             Assert.That(gem.Skill.CooldownSeconds, Is.EqualTo(20));
@@ -57,8 +57,8 @@ namespace Game.Core.Tests.Content
         public void VikingStartingSkillsMatchSkillsDoc()
         {
             var gems = GemCatalog.Load(RealFile());
-            var bash = gems["shield_bash"].Skill!;
-            var fury = gems["odins_fury"].Skill!;
+            var bash = gems["iron_rim_bash"].Skill!;
+            var fury = gems["no_mercy"].Skill!;
 
             Assert.That(bash.ResourceCost, Is.EqualTo(15));
             Assert.That(bash.CooldownSeconds, Is.EqualTo(4));
@@ -72,8 +72,8 @@ namespace Game.Core.Tests.Content
         public void MetalheadStartingSkillsMatchSkillsDoc()
         {
             var gems = GemCatalog.Load(RealFile());
-            var song = gems["song"].Skill!;
-            var solo = gems["guitar_solo"].Skill!;
+            var song = gems["hearth_song"].Skill!;
+            var solo = gems["louder"].Skill!;
 
             Assert.That(song.ResourceCost, Is.EqualTo(30));
             Assert.That(song.CooldownSeconds, Is.EqualTo(5));
@@ -136,6 +136,38 @@ namespace Game.Core.Tests.Content
             Assert.That(gem.Id, Is.EqualTo("cast_on_timer"));
         }
 
+        [TestCase("shield_bash", "iron_rim_bash")]
+        [TestCase("odins_fury", "no_mercy")]
+        [TestCase("battle_cry", "roar_from_the_door")]
+        [TestCase("throwing_axe", "hatchet_toss")]
+        [TestCase("blood_harvest", "forge_heat")]
+        [TestCase("shield_wall", "anvil")]
+        [TestCase("ragnarok_roar", "long_winter")]
+        [TestCase("song", "hearth_song")]
+        [TestCase("guitar_solo", "louder")]
+        [TestCase("power_chord", "nail_chord")]
+        [TestCase("ballad", "colossus_lullaby")]
+        [TestCase("mosh_pit", "whole_hall")]
+        [TestCase("amp_eleven", "underside_amp")]
+        [TestCase("stage_dive", "still_alive")]
+        [TestCase("voodoo_needle", "charm_prick")]
+        [TestCase("stenography", "through_stride")]
+        [TestCase("typo", "step_back")]
+        [TestCase("typist", "quick_stride")]
+        [TestCase("hotkeys", "double_grip")]
+        [TestCase("touch_typing", "steady_pace")]
+        [TestCase("coffee_break", "caravan_halt")]
+        [TestCase("call", "blade_on_watch")]
+        [TestCase("heros_diary", "prokhors_ledger")]
+        [TestCase("caps_rage", "no_breather")]
+        public void RenamedSkillFromASaveIsReadAsItsLoreSkill(string oldId, string newId)
+        {
+            var gems = GemCatalog.Load(RealFile());
+
+            Assert.That(gems.TryGet(oldId, out var gem), Is.True);
+            Assert.That(gem.Id, Is.EqualTo(newId));
+        }
+
         [Test]
         public void SupportGemsAlreadyFitTheFormat()
         {
@@ -161,8 +193,8 @@ namespace Game.Core.Tests.Content
         public void VikingAndMetalheadHaveSevenClassSkillsEachOnTheirWeapon()
         {
             var gems = GemCatalog.Load(RealFile());
-            var axe = new[] { "shield_bash", "odins_fury", "battle_cry", "throwing_axe", "blood_harvest", "shield_wall", "ragnarok_roar" };
-            var guitar = new[] { "song", "guitar_solo", "power_chord", "ballad", "mosh_pit", "amp_eleven", "stage_dive" };
+            var axe = new[] { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };
+            var guitar = new[] { "hearth_song", "louder", "nail_chord", "colossus_lullaby", "whole_hall", "underside_amp", "still_alive" };
 
             foreach (var id in axe)
                 Assert.That(gems[id].Skill!.Weapon, Is.EqualTo("axe"), id);
@@ -175,17 +207,17 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(Numbers(gems["battle_cry"].Skill!), Is.EqualTo((30d, 30d, 15d)));
-            Assert.That(Numbers(gems["throwing_axe"].Skill!), Is.EqualTo((10d, 3d, 0d)));
-            Assert.That(Numbers(gems["shield_wall"].Skill!), Is.EqualTo((40d, 35d, 10d)));
-            Assert.That(Numbers(gems["ragnarok_roar"].Skill!), Is.EqualTo((70d, 45d, 8d)));
-            Assert.That(gems["blood_harvest"].Skill!.IsPassive, Is.True);
-            Assert.That(((StrikeEffect)gems["throwing_axe"].Skill!.Effect).SkipCurrent, Is.True);
-            Assert.That(((StoreHitsEffect)gems["shield_wall"].Skill!.Effect).ReleaseShare, Is.EqualTo(0.5));
-            Assert.That(((QueueHitsEffect)gems["ragnarok_roar"].Skill!.Effect).Share, Is.EqualTo(0.4));
-            Assert.That(gems["shield_bash"].Skill!.Native.HoldDecaySeconds, Is.EqualTo(5));
-            Assert.That(gems["odins_fury"].Skill!.Native.SpendAllMax, Is.EqualTo(10));
-            Assert.That(gems["blood_harvest"].Skill!.Native.HoldStacksAboveResource, Is.EqualTo(50));
+            Assert.That(Numbers(gems["roar_from_the_door"].Skill!), Is.EqualTo((30d, 30d, 15d)));
+            Assert.That(Numbers(gems["hatchet_toss"].Skill!), Is.EqualTo((10d, 3d, 0d)));
+            Assert.That(Numbers(gems["anvil"].Skill!), Is.EqualTo((40d, 35d, 10d)));
+            Assert.That(Numbers(gems["long_winter"].Skill!), Is.EqualTo((70d, 45d, 8d)));
+            Assert.That(gems["forge_heat"].Skill!.IsPassive, Is.True);
+            Assert.That(((StrikeEffect)gems["hatchet_toss"].Skill!.Effect).SkipCurrent, Is.True);
+            Assert.That(((StoreHitsEffect)gems["anvil"].Skill!.Effect).ReleaseShare, Is.EqualTo(0.5));
+            Assert.That(((QueueHitsEffect)gems["long_winter"].Skill!.Effect).Share, Is.EqualTo(0.4));
+            Assert.That(gems["iron_rim_bash"].Skill!.Native.HoldDecaySeconds, Is.EqualTo(5));
+            Assert.That(gems["no_mercy"].Skill!.Native.SpendAllMax, Is.EqualTo(10));
+            Assert.That(gems["forge_heat"].Skill!.Native.HoldStacksAboveResource, Is.EqualTo(50));
         }
 
         [Test]
@@ -193,15 +225,15 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(Numbers(gems["power_chord"].Skill!), Is.EqualTo((15d, 4d, 0d)));
-            Assert.That(Numbers(gems["ballad"].Skill!), Is.EqualTo((30d, 30d, 15d)));
-            Assert.That(Numbers(gems["mosh_pit"].Skill!), Is.EqualTo((50d, 30d, 10d)));
-            Assert.That(Numbers(gems["stage_dive"].Skill!), Is.EqualTo((60d, 40d, 0d)));
-            Assert.That(((AuraEffect)gems["amp_eleven"].Skill!.Effect).Reserve, Is.EqualTo(25));
-            Assert.That(gems["amp_eleven"].Skill!.IsPassive, Is.True);
-            Assert.That(gems["song"].Skill!.Family, Is.EqualTo("song"));
-            Assert.That(gems["ballad"].Skill!.Family, Is.EqualTo("song"));
-            Assert.That(((StrikeEffect)gems["stage_dive"].Skill!.Effect).KillRefundShare, Is.EqualTo(0.5));
+            Assert.That(Numbers(gems["nail_chord"].Skill!), Is.EqualTo((15d, 4d, 0d)));
+            Assert.That(Numbers(gems["colossus_lullaby"].Skill!), Is.EqualTo((30d, 30d, 15d)));
+            Assert.That(Numbers(gems["whole_hall"].Skill!), Is.EqualTo((50d, 30d, 10d)));
+            Assert.That(Numbers(gems["still_alive"].Skill!), Is.EqualTo((60d, 40d, 0d)));
+            Assert.That(((AuraEffect)gems["underside_amp"].Skill!.Effect).Reserve, Is.EqualTo(25));
+            Assert.That(gems["underside_amp"].Skill!.IsPassive, Is.True);
+            Assert.That(gems["hearth_song"].Skill!.Family, Is.EqualTo("song"));
+            Assert.That(gems["colossus_lullaby"].Skill!.Family, Is.EqualTo("song"));
+            Assert.That(((StrikeEffect)gems["still_alive"].Skill!.Effect).KillRefundShare, Is.EqualTo(0.5));
         }
 
         private static (double Cost, double Cooldown, double Duration) Numbers(SkillDef skill) =>

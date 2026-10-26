@@ -8,7 +8,7 @@ namespace Game.Core.Tests.Sim
 {
     public class TriggerConditionTests
     {
-        private static (GameLoop Loop, FakeInputSource Input) Hero(string trigger, string skill = "stenography", HeroClass heroClass = HeroClass.Ronin, params string[] before)
+        private static (GameLoop Loop, FakeInputSource Input) Hero(string trigger, string skill = "through_stride", HeroClass heroClass = HeroClass.Ronin, params string[] before)
         {
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = heroClass }));
@@ -114,7 +114,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WithLeftTriggerFollowsTheLeftButtonSkill()
         {
-            var (loop, input) = Hero("cast_with_left", "stenography", HeroClass.Ronin, "march");
+            var (loop, input) = Hero("cast_with_left", "through_stride", HeroClass.Ronin, "march");
 
             loop.Tick();
             Assert.That(Casts(loop), Is.EqualTo(0));
@@ -128,7 +128,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WithRightTriggerFollowsTheRightButtonSkill()
         {
-            var (loop, input) = Hero("cast_with_right", "stenography", HeroClass.Ronin, "lull", "march");
+            var (loop, input) = Hero("cast_with_right", "through_stride", HeroClass.Ronin, "lull", "march");
 
             input.ClickLeft();
             loop.Tick();
@@ -197,7 +197,7 @@ namespace Game.Core.Tests.Sim
         [TestCase(15, 1)]
         public void LowResourceTriggerCastsCheapSkills(double resource, int casts)
         {
-            var (loop, _) = Hero("cast_on_low_resource", "throwing_axe", HeroClass.Viking);
+            var (loop, _) = Hero("cast_on_low_resource", "hatchet_toss", HeroClass.Viking);
             loop.State.Resource = resource;
 
             loop.Tick();
