@@ -31,8 +31,6 @@ namespace Game.Presentation.Ui
         private const float PortraitHeightPx = 84f;
         private const float TileHeightPx = 58f;
         private const float HintHeightPx = 34f;
-        private const float RowHeightPx = 52f;
-        private const float ColumnWidthPx = 150f;
         private const int Columns = 3;
 
         private readonly UiTheme _theme;
@@ -40,11 +38,9 @@ namespace Game.Presentation.Ui
         private readonly RectTransform _overview;
         private readonly RectTransform _doll;
         private readonly RectTransform _tiles;
-        private readonly RectTransform _input;
         private readonly List<TextMeshProUGUI> _tileLabels = new List<TextMeshProUGUI>();
         private readonly List<TextMeshProUGUI> _tileValues = new List<TextMeshProUGUI>();
         private readonly HandCard[] _hands = new HandCard[2];
-        private readonly List<TextMeshProUGUI[]> _inputRows = new List<TextMeshProUGUI[]>();
         private TextMeshProUGUI _attributes = null!;
         private TextMeshProUGUI _initial = null!;
         private TextMeshProUGUI _title = null!;
@@ -52,8 +48,6 @@ namespace Game.Presentation.Ui
         private RectTransform _hint = null!;
         private TextMeshProUGUI _hintText = null!;
         private UiButton _toTree = null!;
-        private TextMeshProUGUI _sessionTitle = null!;
-        private TextMeshProUGUI _allTimeTitle = null!;
         private int _subTab;
 
         private HeroPanel(RectTransform content, UiTheme theme)
@@ -64,12 +58,11 @@ namespace Game.Presentation.Ui
             _doll = BuildDoll();
             _tiles = BuildTiles();
             BuildHint();
-            _input = BuildInput();
         }
 
         public static HeroPanel Create(RectTransform content, UiTheme theme) => new HeroPanel(content, theme);
 
-        public static bool Covers(int subTab) => subTab != 1;
+        public static bool Covers(int subTab) => subTab == 0;
 
         public bool IsShown => _root.gameObject.activeSelf;
 
@@ -82,7 +75,6 @@ namespace Game.Presentation.Ui
                 return;
             _subTab = subTab;
             _overview.gameObject.SetActive(subTab == 0);
-            _input.gameObject.SetActive(subTab == 2);
             var compact = contentHeightPx < CompactBelowPx;
             _doll.gameObject.SetActive(!compact);
             _tiles.anchoredPosition = new Vector2(0f, compact ? -GapPx : -(GapPx / 2f + DollHeightPx + 2f * GapPx));
@@ -92,13 +84,8 @@ namespace Game.Presentation.Ui
         {
             if (!IsShown)
                 return;
-            if (_subTab == 2)
-                RefreshInput(loop);
-            else
-                RefreshOverview(loop);
+            RefreshOverview(loop);
         }
-
-        public string InputCell(int row, int column) => _inputRows[row][column].text;
 
         public bool TryClick(Vector2 worldPoint)
         {
@@ -129,20 +116,6 @@ namespace Game.Presentation.Ui
             _hint.gameObject.SetActive(hint != null);
             if (hint != null)
                 _hintText.text = hint;
-        }
-
-        private void RefreshInput(GameLoop loop)
-        {
-            _sessionTitle.text = InputStatsView.SessionTitle;
-            _allTimeTitle.text = InputStatsView.AllTimeTitle;
-            var rows = InputStatsView.Rows(loop.SessionInput, loop.State.TotalInput, NumberDisplay.Settings.ThousandsSeparator);
-            for (var i = 0; i < _inputRows.Count && i < rows.Count; i++)
-            {
-                var cells = _inputRows[i];
-                cells[0].text = rows[i].Label;
-                cells[1].text = rows[i].HasHint ? $"{rows[i].Session}\n<size=60%><color=#9AA6C8>{rows[i].SessionHint}</color></size>" : rows[i].Session;
-                cells[2].text = rows[i].HasHint ? $"{rows[i].AllTime}\n<size=60%><color=#9AA6C8>{rows[i].AllTimeHint}</color></size>" : rows[i].AllTime;
-            }
         }
 
         private Color AccentColor(HeroStatAccent accent) => accent switch
@@ -265,42 +238,6 @@ namespace Game.Presentation.Ui
             label.text = HeroSummary.TreeAction;
             _toTree = new UiButton(action, label);
             _hint.gameObject.SetActive(false);
-        }
-
-        private RectTransform BuildInput()
-        {
-            var input = UiElements.Stretch(UiElements.Rect("Input", _root));
-            var topLeft = new Vector2(0f, 1f);
-            var labelWidth = StripWidth() - 2f * ColumnWidthPx;
-            _sessionTitle = HeaderCell(input, new Vector2(PaddingPx + labelWidth, -GapPx));
-            _allTimeTitle = HeaderCell(input, new Vector2(PaddingPx + labelWidth + ColumnWidthPx, -GapPx));
-            for (var i = 0; i < 3; i++)
-            {
-                var row = UiElements.Fill("Row " + i, input, _theme.Card, SlotRadiusPx);
-                UiElements.Anchor(row.rectTransform, topLeft, new Vector2(PaddingPx, -(32f + i * (RowHeightPx + GapPx))), new Vector2(StripWidth(), RowHeightPx));
-                var label = UiElements.Label("Label", row.rectTransform, _theme.TextFont, 13f, _theme.TextDim, TextAlignmentOptions.MidlineLeft);
-                UiElements.Anchor(label.rectTransform, new Vector2(0f, 0.5f), new Vector2(12f, 0f), new Vector2(labelWidth - 12f, RowHeightPx));
-                var session = InputValue(row.rectTransform, labelWidth);
-                var allTime = InputValue(row.rectTransform, labelWidth + ColumnWidthPx);
-                _inputRows.Add(new[] { label, session, allTime });
-            }
-            input.gameObject.SetActive(false);
-            return input;
-        }
-
-        private TextMeshProUGUI HeaderCell(RectTransform parent, Vector2 position)
-        {
-            var cell = UiElements.Label("Column", parent, _theme.TextFont, 11f, _theme.TextDim, TextAlignmentOptions.MidlineLeft);
-            UiElements.Anchor(cell.rectTransform, new Vector2(0f, 1f), position, new Vector2(ColumnWidthPx, 18f));
-            return cell;
-        }
-
-        private TextMeshProUGUI InputValue(RectTransform row, float x)
-        {
-            var value = UiElements.Label("Value", row, _theme.NumberFont, 17f, _theme.Text, TextAlignmentOptions.MidlineLeft);
-            UiElements.Anchor(value.rectTransform, new Vector2(0f, 0.5f), new Vector2(x, 0f), new Vector2(ColumnWidthPx, RowHeightPx));
-            value.lineSpacing = -10f;
-            return value;
         }
 
         private static float StripWidth() => PanelGeometry.WidthPx - 2f * PanelCanvas.BorderPx - 2f * PaddingPx;

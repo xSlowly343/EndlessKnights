@@ -16,9 +16,8 @@ namespace Game.Core.Ui
 
         private static readonly SettingId[][] Tabs =
         {
-            new[] { SettingId.Language, SettingId.Paused, SettingId.AlwaysOnTop, SettingId.ClickThrough, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.WhatsNew },
+            new[] { SettingId.Language, SettingId.AlwaysOnTop, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.InputConsent, SettingId.WhatsNew },
             new[] { SettingId.MasterVolume, SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume },
-            new[] { SettingId.InputConsent, SettingId.CountKeys, SettingId.CountMouseMovement, SettingId.CountClicks, SettingId.CountWheel, SettingId.ShowInputDebug },
         };
 
         public static int TabCount => Tabs.Length;
