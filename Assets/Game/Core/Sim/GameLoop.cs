@@ -71,6 +71,7 @@ namespace Game.Core.Sim
             _synergy = new SynergySystem(data.Synergy, state, hero);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
             RebuildTree();
+            SyncPathSkill();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _tutorial = new TutorialSystem(data.Tutorial, state, _upgrades);
             _stage.EnsureEnemy();
@@ -198,8 +199,26 @@ namespace Game.Core.Sim
         private SubclassResult AfterSubclassChange(SubclassResult result)
         {
             if (result == SubclassResult.Chosen)
+            {
                 RebuildTree();
+                SyncPathSkill();
+            }
             return result;
+        }
+
+        private void SyncPathSkill()
+        {
+            var path = State.Ascendancy.Subclass;
+            for (var i = State.Skills.Count - 1; i >= 0; i--)
+            {
+                var gem = State.Skills[i].Skill;
+                if (gem.Ascendancy != null && gem.Ascendancy != path)
+                    _skills.Unequip(i);
+            }
+            State.OwnedGems.RemoveAll(gem => gem.Ascendancy != null && gem.Ascendancy != path);
+            var pathSkill = _data.Gems.ForPath(path);
+            if (pathSkill != null && !State.OwnedGems.Contains(pathSkill))
+                State.OwnedGems.Add(pathSkill);
         }
 
         public bool ChangeMastery(string nodeId, int option)
@@ -270,6 +289,7 @@ namespace Game.Core.Sim
             _synergy.UseRules(data.Synergy);
             _rift.UseData(data);
             RebuildTree();
+            SyncPathSkill();
         }
 
         public void Tick()

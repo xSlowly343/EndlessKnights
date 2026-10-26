@@ -113,6 +113,20 @@ namespace Game.Core.Content.Tree
             }
         }
 
+        public void RequirePathSkills(Gems.GemCatalog gems, Weapons.WeaponCatalog weapons)
+        {
+            foreach (var gem in gems.All)
+            {
+                if (gem.Ascendancy == null)
+                    continue;
+                var where = "gems." + gem.Id;
+                if (!TryGet(gem.Ascendancy, out var path))
+                    throw new ContentException(Gems.GemCatalog.FileName, where, $"unknown path '{gem.Ascendancy}', expected a subclass id from {FileName}");
+                if (!weapons.TryGetType(gem.Skill!.Weapon!, out var weapon) || Sim.HeroClassNames.Of(weapon.HeroClass) != path.HeroClass)
+                    throw new ContentException(Gems.GemCatalog.FileName, where, $"path '{path.Id}' belongs to '{path.HeroClass}', the skill needs the weapon of that class");
+            }
+        }
+
         public static AscendancyCatalog Load(string json)
         {
             var root = ContentNode.Root(json, FileName);

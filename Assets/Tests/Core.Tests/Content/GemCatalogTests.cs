@@ -17,7 +17,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count, Is.EqualTo(66));
+            Assert.That(gems.All.Count, Is.EqualTo(108));
             foreach (var id in new[] { "iron_rim_bash", "no_mercy", "hearth_song", "louder" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["through_stride"].Kind, Is.EqualTo(GemKind.Skill));

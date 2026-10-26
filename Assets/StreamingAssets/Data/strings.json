@@ -411,6 +411,8 @@
     "book.result.noFreeSlot": { "ru": "Свободных слотов нет", "en": "No free slots" },
     "book.result.noSuchSlot": { "ru": "Здесь нет слота для этого гема", "en": "There is no slot for this gem here" },
     "book.result.attributesTooLow": { "ru": "Не хватает атрибутов", "en": "Attributes are too low" },
+    "book.result.wrongPath": { "ru": "Скилл другого Пути", "en": "Skill of another Path" },
+    "book.result.waitsForMechanic": { "ru": "Скилл Пути ждёт свою механику", "en": "This Path skill waits for its mechanic" },
     "book.row.left": { "ru": "ЛКМ", "en": "LMB" },
     "book.row.right": { "ru": "ПКМ", "en": "RMB" },
     "book.row.auto": { "ru": "Авто", "en": "Auto" },
