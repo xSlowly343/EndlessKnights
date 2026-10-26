@@ -32,8 +32,7 @@ namespace Game.Platform.Tests
         public void RightHandButtonEquipsTheSelectedWeapon()
         {
             var starter = _loop.Weapons.In(WeaponHand.Right)!;
-            var other = _loop.Data.Weapons.Bases.First(weapon => weapon.Type != starter.Type);
-            _loop.Weapons.Give(other);
+            var other = _loop.Weapons.Give(_loop.Data.Weapons.Bases.First(weapon => weapon.Type != starter.Type));
             var navigator = new PanelNavigator();
             navigator.SelectTab(PanelSection.Items);
             _panel.Show(navigator);
@@ -51,8 +50,7 @@ namespace Game.Platform.Tests
         [Test]
         public void ClickOnAFilledCellSelectsTheWeapon()
         {
-            var weapon = _loop.Data.Weapons.Bases.Last();
-            _loop.Weapons.Give(weapon);
+            var weapon = _loop.Weapons.Give(_loop.Data.Weapons.Bases.Last());
             var navigator = new PanelNavigator();
             navigator.SelectTab(PanelSection.Items);
             _panel.Show(navigator);

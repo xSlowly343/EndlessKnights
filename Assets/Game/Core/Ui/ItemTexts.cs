@@ -16,22 +16,22 @@ namespace Game.Core.Ui
 
         public static string Empty(ItemFilter filter) => Texts.Get(filter == ItemFilter.All || filter == ItemFilter.Weapons ? "items.empty" : "items.emptyKind");
 
-        public static string Name(WeaponBase weapon) => Texts.Pick(weapon.NameRu, weapon.NameEn);
+        public static string Name(WeaponItem weapon) => Texts.Pick(weapon.NameRu, weapon.NameEn);
 
-        public static string Initial(WeaponBase weapon)
+        public static string Initial(WeaponItem weapon)
         {
             var type = Texts.Pick(weapon.Type.NameRu, weapon.Type.NameEn);
             return type.Length > 0 ? type.Substring(0, 1) : "?";
         }
 
-        public static ItemRarity RarityOf(WeaponBase weapon) => ItemRarity.Simple;
+        public static ItemRarity RarityOf(WeaponItem weapon) => weapon.Rarity;
 
         public static string Rarity(ItemRarity rarity) => Texts.Get("rarity." + rarity.ToString().ToLowerInvariant());
 
-        public static string Subtitle(WeaponBase weapon) =>
+        public static string Subtitle(WeaponItem weapon) =>
             string.Join(" · ", Texts.Pick(weapon.Type.NameRu, weapon.Type.NameEn), HeroSummary.ClassName(weapon.Type.HeroClass), Rarity(RarityOf(weapon)).ToLowerInvariant());
 
-        public static string Innate(WeaponBase weapon) =>
+        public static string Innate(WeaponItem weapon) =>
             string.Join(" · ", weapon.Type.Innate.Concat(weapon.Innate).Select(ModifierText.Describe));
 
         public static string InHands(GameState state) =>
@@ -45,9 +45,9 @@ namespace Game.Core.Ui
 
         public static string EquipTo(WeaponHand hand) => Texts.Get(hand == WeaponHand.Right ? "items.toRight" : "items.toLeft");
 
-        public static IReadOnlyList<WeaponBase> Bag(GameState state, ItemFilter filter) =>
-            filter == ItemFilter.All || filter == ItemFilter.Weapons ? state.Weapons.Bag : System.Array.Empty<WeaponBase>();
+        public static IReadOnlyList<WeaponItem> Bag(GameState state, ItemFilter filter) =>
+            filter == ItemFilter.All || filter == ItemFilter.Weapons ? state.Weapons.Bag : System.Array.Empty<WeaponItem>();
 
-        private static string HandName(WeaponBase? weapon) => weapon != null ? Name(weapon) : Texts.Get("hero.empty");
+        private static string HandName(WeaponItem? weapon) => weapon != null ? Name(weapon) : Texts.Get("hero.empty");
     }
 }

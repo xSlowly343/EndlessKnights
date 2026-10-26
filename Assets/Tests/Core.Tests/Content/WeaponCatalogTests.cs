@@ -58,7 +58,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"weapon\": \"axe\"", "\"weapon\": \"axee\""));
 
-            var error = Assert.Throws<ContentException>(() => Catalog.RequireGemWeapons(gems))!;
+            var error = Assert.Throws<ContentException>(() => Catalog.BindGems(gems))!;
 
             Assert.That(error.Message, Does.Contain("axee"));
         }

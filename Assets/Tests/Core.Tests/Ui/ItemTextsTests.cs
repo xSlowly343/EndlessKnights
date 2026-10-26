@@ -36,7 +36,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void WeaponsWithoutAffixesAreSimpleAndSaySoInTheSubtitle()
         {
-            var axe = TestWorld.Real.Weapons.StarterFor(HeroClass.Viking);
+            var axe = TestWorld.Real.Weapons.Starter(TestWorld.Real.Weapons.StarterFor(HeroClass.Viking));
 
             Assert.That(ItemTexts.RarityOf(axe), Is.EqualTo(ItemRarity.Simple));
             Assert.That(ItemTexts.Subtitle(axe), Does.EndWith("простая"));

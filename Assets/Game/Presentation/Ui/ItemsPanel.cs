@@ -35,7 +35,7 @@ namespace Game.Presentation.Ui
         private readonly RectTransform _root;
         private readonly List<UiButton> _filters = new List<UiButton>();
         private readonly List<ItemCell> _cells = new List<ItemCell>();
-        private readonly List<WeaponBase> _shown = new List<WeaponBase>();
+        private readonly List<WeaponItem> _shown = new List<WeaponItem>();
         private readonly TextMeshProUGUI _empty;
         private readonly RectTransform _card;
         private RarityFrame _cardFrame = null!;
@@ -50,7 +50,7 @@ namespace Game.Presentation.Ui
         private UiButton _toRight = null!;
         private UiButton _toLeft = null!;
         private ItemFilter _filter = ItemFilter.All;
-        private WeaponBase? _selected;
+        private WeaponItem? _selected;
         private GameLoop? _loop;
 
         private ItemsPanel(RectTransform content, UiTheme theme)
@@ -68,7 +68,7 @@ namespace Game.Presentation.Ui
         public static ItemsPanel Create(RectTransform content, UiTheme theme) => new ItemsPanel(content, theme);
 
         public bool IsShown => _root.gameObject.activeSelf;
-        public WeaponBase? Selected => _selected;
+        public WeaponItem? Selected => _selected;
 
         public void Bind(GameLoop loop) => _loop = loop;
 
@@ -120,7 +120,7 @@ namespace Game.Presentation.Ui
             return false;
         }
 
-        public void Select(WeaponBase? weapon)
+        public void Select(WeaponItem? weapon)
         {
             _selected = weapon;
             Refresh();
@@ -164,7 +164,7 @@ namespace Game.Presentation.Ui
             _subtitle.text = ItemTexts.Subtitle(weapon);
             _inHands.text = ItemTexts.InHands(state);
             _innate.text = ItemTexts.Innate(weapon);
-            var right = WeaponSwap.For(state, weapon, WeaponHand.Right);
+            var right = WeaponSwap.For(state, weapon, WeaponHand.Right, _loop!.Data.Weapons.SkillRules.UnlockLevels);
             _lightUp.text = ItemTexts.LightUp(right);
             _goOut.text = ItemTexts.GoOut(right);
         }
@@ -285,7 +285,7 @@ namespace Game.Presentation.Ui
 
             public bool Contains(Vector2 worldPoint) => UiElements.Contains(_selection.rectTransform, worldPoint);
 
-            public void Show(WeaponBase? weapon, bool selected, UiTheme theme)
+            public void Show(WeaponItem? weapon, bool selected, UiTheme theme)
             {
                 _selection.color = selected ? Color.white : Color.clear;
                 var filled = weapon != null;

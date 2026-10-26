@@ -13,8 +13,8 @@ namespace Game.Core.Tests.Ui
     {
         private GemDef _axeSkill = null!;
         private GemDef _otherSkill = null!;
-        private WeaponBase _axe = null!;
-        private WeaponBase _other = null!;
+        private WeaponItem _axe = null!;
+        private WeaponItem _other = null!;
 
         [SetUp]
         public void SetUp()
@@ -22,10 +22,10 @@ namespace Game.Core.Tests.Ui
             var data = TestWorld.Real;
             Texts.UseLanguage("ru");
             var weaponSkills = data.Gems.All.Where(gem => gem.Skill?.Weapon != null).ToList();
-            _axe = data.Weapons.StarterFor(HeroClass.Viking);
+            _axe = data.Weapons.Starter(data.Weapons.StarterFor(HeroClass.Viking));
             _axeSkill = weaponSkills.First(gem => gem.Skill!.Weapon == _axe.Type.Id);
             _otherSkill = weaponSkills.First(gem => gem.Skill!.Weapon != _axe.Type.Id);
-            _other = data.Weapons.Bases.First(weapon => weapon.Type.Id == _otherSkill.Skill!.Weapon);
+            _other = data.Weapons.Starter(data.Weapons.Bases.First(weapon => weapon.Type.Id == _otherSkill.Skill!.Weapon));
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace Game.Core.Tests.Ui
             state.Skills.Add(new SkillSlot(_axeSkill));
             state.Skills.Add(new SkillSlot(_otherSkill));
 
-            var swap = WeaponSwap.For(state, _other, WeaponHand.Right);
+            var swap = WeaponSwap.For(state, _other, WeaponHand.Right, TestWorld.Real.Weapons.SkillRules.UnlockLevels);
 
             Assert.That(swap.Replaced, Is.SameAs(_axe));
             Assert.That(swap.LightUp, Is.EqualTo(new[] { _otherSkill.NameRu }));
@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Ui
             state.Weapons.Right = _axe;
             state.Skills.Add(new SkillSlot(_axeSkill));
 
-            var swap = WeaponSwap.For(state, _other, WeaponHand.Left);
+            var swap = WeaponSwap.For(state, _other, WeaponHand.Left, TestWorld.Real.Weapons.SkillRules.UnlockLevels);
 
             Assert.That(swap.Replaced, Is.Null);
             Assert.That(swap.GoOut, Is.Empty);

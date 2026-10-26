@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = heroClass }), hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(TestWorld.Classless(new GameState { Class = heroClass })), hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             foreach (var skill in skills)
                 loop.Skills.Equip(TestWorld.Data.Gems[skill]);
@@ -36,8 +36,7 @@ namespace Game.Core.Tests.Sim
         public static SkillTestHero Borrowing(HeroClass heroClass, HeroClass weaponOwner, params string[] skills)
         {
             var test = Of(heroClass, skills);
-            var weapon = TestWorld.Data.Weapons.StarterFor(weaponOwner);
-            test.Loop.Weapons.Give(weapon);
+            var weapon = test.Loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(weaponOwner));
             test.Loop.Weapons.Equip(WeaponHand.Left, weapon);
             test.Loop.Events.Clear();
             return test;

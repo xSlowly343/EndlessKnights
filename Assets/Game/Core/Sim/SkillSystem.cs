@@ -922,7 +922,15 @@ namespace Game.Core.Sim
             }
         }
 
-        private bool Armed(SkillSlot slot) => slot.Def.Weapon == null || _state.Weapons.Holds(slot.Def.Weapon);
+        private bool Armed(SkillSlot slot)
+        {
+            var weapon = slot.Def.Weapon;
+            if (weapon == null)
+                return true;
+            if (slot.Skill.Ascendancy != null)
+                return _state.Weapons.Holds(weapon);
+            return _state.Weapons.Opens(slot.Skill.Id, _state.HeroLevel, _weapons.SkillRules.UnlockLevels);
+        }
 
         private bool IsNative(SkillSlot slot) =>
             slot.Def.Weapon != null && _weapons.TryGetType(slot.Def.Weapon, out var weapon) && weapon.HeroClass == _state.Class;

@@ -80,7 +80,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1000));
-            var loop = TestWorld.Loop(input, new GameState { Class = heroClass }, hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = heroClass }), hero);
             foreach (var skill in skills)
                 loop.Skills.Equip(TestWorld.Data.Gems[skill]);
             return (loop, input);

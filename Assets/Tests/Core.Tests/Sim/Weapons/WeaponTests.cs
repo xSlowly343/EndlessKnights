@@ -79,8 +79,7 @@ namespace Game.Core.Tests.Sim.Weapons
             loop.State.Resource = 100;
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.NoWeapon));
 
-            var guitar = Base("spark_guitar");
-            loop.Weapons.Give(guitar);
+            var guitar = loop.Weapons.Give(Base("spark_guitar"));
             Assert.That(loop.Weapons.Equip(WeaponHand.Left, guitar), Is.True);
 
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
@@ -107,8 +106,7 @@ namespace Game.Core.Tests.Sim.Weapons
             var bare = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             var axe = loop.Weapons.Bag[0];
             loop.Weapons.Equip(WeaponHand.Right, axe);
-            var second = Base("battle_axe");
-            loop.Weapons.Give(second);
+            var second = loop.Weapons.Give(Base("battle_axe"));
             loop.Weapons.Equip(WeaponHand.Left, second);
 
             Assert.That(keyDamage - bare, Is.EqualTo(10).Within(1e-9));
@@ -121,8 +119,7 @@ namespace Game.Core.Tests.Sim.Weapons
             var loop = Hero(HeroClass.Viking);
             var rage = new StatId("rageEveryTwentyHits");
             Assert.That(loop.Hero.Value(rage, 0), Is.EqualTo(0));
-            var greataxe = Base("jarl_axe");
-            loop.Weapons.Give(greataxe);
+            var greataxe = loop.Weapons.Give(Base("jarl_axe"));
 
             loop.Weapons.Equip(WeaponHand.Right, greataxe);
 
@@ -135,7 +132,7 @@ namespace Game.Core.Tests.Sim.Weapons
         {
             var loop = Hero(HeroClass.Viking);
 
-            Assert.That(loop.Weapons.Equip(WeaponHand.Left, Base("battle_axe")), Is.False);
+            Assert.That(loop.Weapons.Equip(WeaponHand.Left, Catalog.Starter(Base("battle_axe"))), Is.False);
             Assert.That(loop.Weapons.Unequip(WeaponHand.Left), Is.False);
         }
 
@@ -143,9 +140,9 @@ namespace Game.Core.Tests.Sim.Weapons
         public void SaveKeepsHandsAndBag()
         {
             var loop = Hero(HeroClass.Viking);
-            loop.Weapons.Give(Base("spark_guitar"));
+            var guitar = loop.Weapons.Give(Base("spark_guitar"));
             loop.Weapons.Give(Base("jarl_axe"));
-            loop.Weapons.Equip(WeaponHand.Left, Base("spark_guitar"));
+            loop.Weapons.Equip(WeaponHand.Left, guitar);
 
             var text = SaveCodec.Encode(loop.State, Clock);
             var restored = SaveCodec.Decode(text, TestWorld.Real).State;

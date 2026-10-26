@@ -16,6 +16,21 @@ namespace Game.Core.Content.Gems
             ["trigger"] = GemKind.Trigger
         };
 
+        private static readonly Dictionary<string, SkillTier> Tiers = new Dictionary<string, SkillTier>(StringComparer.Ordinal)
+        {
+            ["common"] = SkillTier.Common,
+            ["rare"] = SkillTier.Rare,
+            ["epic"] = SkillTier.Epic,
+            ["legendary"] = SkillTier.Legendary,
+            ["mythic"] = SkillTier.Mythic
+        };
+
+        private static readonly Dictionary<string, SkillRole> Roles = new Dictionary<string, SkillRole>(StringComparer.Ordinal)
+        {
+            ["fast"] = SkillRole.Fast,
+            ["heavy"] = SkillRole.Heavy
+        };
+
         private static readonly Dictionary<string, GemColor> Colors = new Dictionary<string, GemColor>(StringComparer.Ordinal)
         {
             ["red"] = GemColor.Red,
@@ -228,7 +243,11 @@ namespace Game.Core.Content.Gems
                 throw node.Field("native").Error("a native trait needs a weapon: only class skills have one");
             var family = node.HasField("family") ? node.Field("family").AsString() : null;
             var armOn = node.HasField("armOn") ? Pick(node.Field("armOn"), ArmOns, "flick or circle") : ArmOn.None;
-            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks, weapon, native, family, armOn);
+            if (weapon == null && (node.HasField("tier") || node.HasField("role")))
+                throw node.Error("tier and role belong to class skills: add a weapon");
+            var tier = node.HasField("tier") ? Pick(node.Field("tier"), Tiers, "common, rare, epic, legendary or mythic") : SkillTier.Common;
+            var role = node.HasField("role") ? Pick(node.Field("role"), Roles, "fast or heavy") : SkillRole.Other;
+            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks, weapon, native, family, armOn, tier, role);
         }
 
         private static SkillEffect ReadEffect(ContentNode node, double durationSeconds)

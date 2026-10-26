@@ -41,12 +41,13 @@ namespace Game.Editor
             loop.State.HeroLevel = 42;
             loop.State.Stage = 37;
             loop.State.RecordStage = 120;
-            var starter = data.Weapons.StarterFor(HeroClass.Viking);
-            loop.Weapons.Give(starter);
+            var starter = loop.Weapons.Give(data.Weapons.StarterFor(HeroClass.Viking));
             loop.Weapons.Equip(WeaponHand.Right, starter);
             loop.Book.GrantStartingGems();
+            var rng = new Rng(7);
+            var rarity = ItemRarity.Fine;
             foreach (var weapon in data.Weapons.Bases.Where(weapon => weapon.Type != starter.Type).Take(9))
-                loop.Weapons.Give(weapon);
+                loop.Weapons.Give(weapon, rarity++, rng);
             loop.State.OwnedGems.AddRange(data.Gems.All.Where(gem => gem.Skill?.Weapon == null).Take(12));
 
             var panels = PanelCanvas.Create();
