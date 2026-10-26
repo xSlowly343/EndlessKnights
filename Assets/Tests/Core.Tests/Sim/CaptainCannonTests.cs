@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
     {
         private static CannonRules Rules => TestWorld.Data.Combat.Cannons;
         private static GemDef CannonByName => TestWorld.Real.Gems["cannon_by_name"];
-        private static CannonEffect Cannon => (CannonEffect)CannonByName.Skill!.Effect;
+        private static SummonEffect Cannon => (SummonEffect)CannonByName.Skill!.Effect;
 
         private static (GameLoop Loop, FakeInputSource Input) Captain(params Modifier[] modifiers)
         {
@@ -38,7 +38,7 @@ namespace Game.Core.Tests.Sim
         private static void Place(GameLoop loop, int count)
         {
             for (var i = 0; i < count; i++)
-                loop.Skills.Cannons.Place(Cannon, CannonByName.Tags);
+                loop.Skills.Minions.Place(Cannon, CannonByName.Tags);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.Skills.TryCast(index), Is.EqualTo(CastResult.Cast));
 
-            Assert.That(loop.Skills.Cannons.Standing, Is.EqualTo(1));
+            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(1));
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Game.Core.Tests.Sim
 
             Wait(loop, 3);
 
-            Assert.That(loop.Skills.Cannons.Shots, Is.EqualTo(3));
+            Assert.That(loop.Skills.Minions.CannonShots, Is.EqualTo(3));
             Assert.That(loop.State.Resource, Is.EqualTo(3 * Rules.ResourcePerShot).Within(1e-9));
             var expected = TestWorld.Data.Combat.KeyDamage * Cannon.Multiplier * 3;
             Assert.That((hp - loop.State.EnemyHp).ToDouble(), Is.EqualTo(expected).Within(1e-6));
@@ -83,11 +83,11 @@ namespace Game.Core.Tests.Sim
             Place(loop, 1);
 
             Wait(loop, Cannon.Seconds - 1);
-            Assert.That(loop.Skills.Cannons.Standing, Is.EqualTo(1));
+            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(1));
             Wait(loop, 1);
 
-            Assert.That(loop.Skills.Cannons.Standing, Is.EqualTo(0));
-            Assert.That(loop.Skills.Cannons.Shots, Is.EqualTo((long)Cannon.Seconds));
+            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(0));
+            Assert.That(loop.Skills.Minions.CannonShots, Is.EqualTo((long)Cannon.Seconds));
         }
 
         [Test]
@@ -98,9 +98,9 @@ namespace Game.Core.Tests.Sim
             Wait(loop, 5);
             Place(loop, Rules.Max);
 
-            Assert.That(loop.Skills.Cannons.Standing, Is.EqualTo(Rules.Max));
+            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(Rules.Max));
             Wait(loop, Cannon.Seconds - 5);
-            Assert.That(loop.Skills.Cannons.Standing, Is.EqualTo(Rules.Max));
+            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(Rules.Max));
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace Game.Core.Tests.Sim
 
             Place(loop, Rules.Max + 3);
 
-            Assert.That(loop.Skills.Cannons.Standing, Is.EqualTo(Rules.Max + 2));
+            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(Rules.Max + 2));
         }
 
         [Test]
@@ -123,8 +123,8 @@ namespace Game.Core.Tests.Sim
 
             Wait(loop, Cannon.Seconds);
 
-            Assert.That(loop.Skills.Cannons.Standing, Is.EqualTo(0));
-            Assert.That(loop.Skills.Cannons.Shots, Is.EqualTo((long)Cannon.Seconds));
+            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(0));
+            Assert.That(loop.Skills.Minions.CannonShots, Is.EqualTo((long)Cannon.Seconds));
         }
 
         [Test]

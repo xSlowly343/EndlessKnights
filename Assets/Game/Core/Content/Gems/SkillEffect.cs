@@ -348,17 +348,25 @@ namespace Game.Core.Content.Gems
         public double HitsPerSecond { get; }
     }
 
-    public sealed class CannonEffect : SkillEffect
+    public enum MinionKind
     {
-        public CannonEffect(double seconds, double shotsPerSecond, double multiplier)
+        Cannon,
+        Skeleton
+    }
+
+    public sealed class SummonEffect : SkillEffect
+    {
+        public SummonEffect(MinionKind kind, double seconds, double hitsPerSecond, double multiplier)
         {
+            Kind = kind;
             Seconds = seconds;
-            ShotsPerSecond = shotsPerSecond;
+            HitsPerSecond = hitsPerSecond;
             Multiplier = multiplier;
         }
 
+        public MinionKind Kind { get; }
         public double Seconds { get; }
-        public double ShotsPerSecond { get; }
+        public double HitsPerSecond { get; }
         public double Multiplier { get; }
     }
 

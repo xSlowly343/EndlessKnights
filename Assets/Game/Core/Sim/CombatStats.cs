@@ -50,6 +50,7 @@ namespace Game.Core.Sim
         public static readonly StatId CannonCount = new StatId("cannonCount");
         public static readonly StatId MinionSeconds = new StatId("minionSeconds");
         public static readonly StatId MinionSpeed = new StatId("minionSpeed");
+        public static readonly StatId MinionCount = new StatId("minionCount");
         public static readonly StatId DotDamage = new StatId("dotDamage");
         public static readonly StatId DotStacks = new StatId("dotStacks");
         public static readonly StatId PoisonStacks = new StatId("poisonStacks");

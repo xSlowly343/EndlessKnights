@@ -19,7 +19,7 @@ namespace Game.Core.Content
         {
             var broadside = node.Field("broadside");
             return new CannonRules(
-                node.Field("max").AsInt(0, Sim.CannonSystem.Capacity),
+                node.Field("max").AsInt(0, Sim.MinionSystem.Capacity),
                 node.Field("resourcePerShot").AsNumber(0, 1000),
                 broadside.Field("mousePx").AsNumber(1, 1e9),
                 broadside.Field("balls").AsNumber(0, 1000));

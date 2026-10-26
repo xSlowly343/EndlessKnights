@@ -531,7 +531,18 @@
       "tags": ["Minion", "Skill"],
       "cost": { "resource": 20 },
       "cooldownSeconds": 5,
-      "effect": { "type": "cannon", "seconds": 30, "shotsPerSecond": 1, "multiplier": 1.5 }
+      "effect": { "type": "summon", "minion": "cannon", "seconds": 30, "hitsPerSecond": 1, "multiplier": 1.5 }
+    },
+    {
+      "id": "call_a_colleague",
+      "kind": "skill",
+      "weapon": "shovel",
+      "color": "blue",
+      "name": { "ru": "Позвать коллегу", "en": "Call a Colleague" },
+      "tags": ["Minion", "Skill"],
+      "cost": { "resource": 15 },
+      "cooldownSeconds": 4,
+      "effect": { "type": "summon", "minion": "skeleton", "seconds": 60, "hitsPerSecond": 1, "multiplier": 1 }
     },
     {
       "id": "vial_from_belt",

@@ -58,7 +58,7 @@ namespace Game.Core.Sim
             _levels = new LevelSystem(data.Combat.Hero, data.Stages, data.TreePoints, state, Events);
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot, _levels);
             _combat.OnKill(_stage);
-            _stage.KillTimeListener = new FastKillSystem(state, hero, _resource, _combat);
+            _stage.KillTimeListener = new KillResourceSystem(state, hero, _resource, _combat);
             _skills = new SkillSystem(state, Events, _resource, _combat, hero, data.Weapons);
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills, _resource);
@@ -315,7 +315,7 @@ namespace Game.Core.Sim
             _rift.Tick();
             _stage.Tick();
             _combat.Tick(input);
-            _skills.Cannons.Tick(input);
+            _skills.Minions.Tick(input);
             _skills.Dots.Tick(input);
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;

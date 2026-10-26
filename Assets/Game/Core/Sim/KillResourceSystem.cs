@@ -3,14 +3,14 @@ using Game.Core.Stats;
 
 namespace Game.Core.Sim
 {
-    public sealed class FastKillSystem : IKillTimeListener
+    public sealed class KillResourceSystem : IKillTimeListener
     {
         private readonly GameState _state;
         private readonly StatSheet _hero;
         private readonly ResourceSystem _resource;
         private readonly CombatSystem _combat;
 
-        public FastKillSystem(GameState state, StatSheet hero, ResourceSystem resource, CombatSystem combat)
+        public KillResourceSystem(GameState state, StatSheet hero, ResourceSystem resource, CombatSystem combat)
         {
             _state = state;
             _hero = hero;
@@ -20,12 +20,20 @@ namespace Game.Core.Sim
 
         public void OnKillTimed(EnemyType type, double lifeSeconds, bool shared)
         {
+            GainPerKill();
             var saved = System.Math.Max(0, _combat.Conditions.FastKillSeconds - lifeSeconds);
             if (saved <= 0)
                 return;
             GainSand(saved);
             if (type == EnemyType.Normal && !shared)
                 Bank(saved);
+        }
+
+        private void GainPerKill()
+        {
+            var perKill = _resource.Rules.PerKill;
+            if (perKill > 0)
+                _resource.Gain(perKill * _hero.Value(CombatStats.ResourceGain, 1));
         }
 
         private void GainSand(double saved)

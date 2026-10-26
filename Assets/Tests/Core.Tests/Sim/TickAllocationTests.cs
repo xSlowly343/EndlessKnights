@@ -49,6 +49,7 @@ namespace Game.Core.Tests.Sim
         private static readonly string[] CaptainSkills = { "cannon_by_name" };
         private static readonly string[] PlagueDoctorSkills = { "vial_from_belt" };
         private static readonly string[] MoonshinerSkills = { "fuse_bottle" };
+        private static readonly string[] GravediggerSkills = { "call_a_colleague" };
 
         private static readonly string[] CommonSkills =
         {
@@ -68,6 +69,7 @@ namespace Game.Core.Tests.Sim
                 HeroClass.Captain => CaptainSkills,
                 HeroClass.PlagueDoctor => PlagueDoctorSkills,
                 HeroClass.Moonshiner => MoonshinerSkills,
+                HeroClass.Gravedigger => GravediggerSkills,
                 _ => MetalheadSkills
             };
 
@@ -137,6 +139,7 @@ namespace Game.Core.Tests.Sim
         [TestCase(HeroClass.Captain)]
         [TestCase(HeroClass.PlagueDoctor)]
         [TestCase(HeroClass.Moonshiner)]
+        [TestCase(HeroClass.Gravedigger)]
         public void ClassSkillTicksDoNotAllocate(HeroClass heroClass)
         {
             RequireAllocationCounter();

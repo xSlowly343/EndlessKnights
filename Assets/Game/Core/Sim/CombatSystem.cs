@@ -42,6 +42,7 @@ namespace Game.Core.Sim
         public ConditionRules Conditions => _rules.Conditions;
         public CannonRules Cannons => _rules.Cannons;
         public DotRules Dots => _rules.Dots;
+        public SkeletonRules Skeletons => _rules.Skeletons;
 
         public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
             Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);

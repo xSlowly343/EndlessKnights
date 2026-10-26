@@ -22,6 +22,7 @@
       "clockmaker": { "perKey": 0.1, "mousePxPerPoint": 1000, "perFastKillSecond": 5 },
       "captain": { "perKey": 0.3333 },
       "plague_doctor": { "perKey": 1 },
+      "gravedigger": { "perKey": 0.1, "perKill": 5 },
       "moonshiner": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } }
     }
   },
@@ -46,6 +47,7 @@
     "poison": { "max": 50, "hitsPerStack": 0.2, "stirMax": 5 },
     "burn": { "max": 30, "hitsPerStack": 0.3, "fanning": 1.5 }
   },
+  "skeletons": { "max": 5, "lantern": 1.3 },
   "cannons": { "max": 3, "resourcePerShot": 1, "broadside": { "mousePx": 3000, "balls": 5 } },
   "curses": { "maxOnEnemy": 1, "flick": { "bonus": 0.1, "max": 0.5 } },
   "conditions": {

@@ -106,7 +106,7 @@ namespace Game.Core.Sim
         public int CurseFlicks { get; set; }
         public long EnemySpawnTick { get; private set; }
         public double BankedSeconds { get; set; }
-        public CannonState[] Cannons { get; } = new CannonState[CannonSystem.Capacity];
+        public MinionState[] Minions { get; } = new MinionState[MinionSystem.Capacity];
         public double BroadsidePx { get; set; }
         public double PoisonStacks { get; set; }
         public double BurnStacks { get; set; }
