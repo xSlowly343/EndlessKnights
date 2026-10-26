@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void FilledPoolsHoldThirtyFiveSkillsSplitTwelveNineSixThreeFive()
         {
-            Assert.That(FullPools().Select(type => type.Id), Does.Contain("katana"));
+            Assert.That(FullPools().Count(), Is.EqualTo(TestWorld.Real.Weapons.Types.Count()));
             foreach (var type in FullPools())
             {
                 var skills = ClassSkills(type).ToList();
