@@ -45,5 +45,7 @@ namespace Game.Core.Sim
         public static readonly StatId FlickCurseBonus = new StatId("flickCurseBonus");
         public static readonly StatId CurseDamage = new StatId("curseDamage");
         public static readonly StatId EnemyDebuffEffect = new StatId("enemyDebuffEffect");
+        public static readonly StatId SandFromFastKills = new StatId("sandFromFastKills");
+        public static readonly StatId BossTimerBank = new StatId("bossTimerBank");
     }
 }

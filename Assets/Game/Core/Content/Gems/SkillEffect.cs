@@ -314,12 +314,14 @@ namespace Game.Core.Content.Gems
 
     public sealed class EnemyDebuffEffect : SkillEffect
     {
-        public EnemyDebuffEffect(double damageTaken)
+        public EnemyDebuffEffect(double damageTaken, double bossTimerSlow = 0)
         {
             DamageTaken = damageTaken;
+            BossTimerSlow = bossTimerSlow;
         }
 
         public double DamageTaken { get; }
+        public double BossTimerSlow { get; }
     }
 
     public sealed class IdleStrikeEffect : SkillEffect

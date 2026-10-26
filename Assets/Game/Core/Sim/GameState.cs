@@ -104,6 +104,8 @@ namespace Game.Core.Sim
         public long TicksSinceKill { get; set; }
         public int AfterIdleTicks { get; set; }
         public int CurseFlicks { get; set; }
+        public long EnemySpawnTick { get; private set; }
+        public double BankedSeconds { get; set; }
         public double AllyHeavyCastSeconds { get; set; }
 
         public void ClearQueue()
@@ -125,6 +127,7 @@ namespace Game.Core.Sim
         public double ElapsedSeconds => Tick * GameLoop.TickSeconds;
         public bool EnemyAlive => EnemyHp.Sign > 0;
         public bool FightingBoss => EnemyType != EnemyType.Normal;
+        public double EnemyLifeSeconds => (Tick - EnemySpawnTick) * GameLoop.TickSeconds;
         public double BossSecondsLeft => BossTicksLeft * GameLoop.TickSeconds;
 
         public void SpawnEnemy(EnemyDef? enemy, EnemyType type, BigNumber hp)
@@ -134,6 +137,7 @@ namespace Game.Core.Sim
             EnemyHp = hp;
             EnemyMaxHp = hp;
             HitsOnEnemy = 0;
+            EnemySpawnTick = Tick;
         }
     }
 }

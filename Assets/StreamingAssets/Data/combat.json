@@ -18,7 +18,8 @@
     "classes": {
       "viking": { "perKey": 2, "decay": { "perSecond": 10, "afterKeylessSeconds": 3, "mouseHolds": true } },
       "metalhead": { "perKey": 1 },
-      "voodoo": { "perKey": 0.2, "perSecond": 3 }
+      "voodoo": { "perKey": 0.2, "perSecond": 3 },
+      "clockmaker": { "perKey": 0.1, "mousePxPerPoint": 1000, "perFastKillSecond": 5 }
     }
   },
   "crit": { "chance": 0.05, "multiplier": 2 },
@@ -44,6 +45,7 @@
     "firstHits": 3,
     "killStreak": { "max": 25, "resetSeconds": 10 },
     "cullMax": 0.5,
-    "afterIdle": { "pauseSeconds": 30, "seconds": 10 }
+    "afterIdle": { "pauseSeconds": 30, "seconds": 10 },
+    "fastKillSeconds": 3
   }
 }

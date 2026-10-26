@@ -859,6 +859,8 @@ namespace Game.Core.Sim
             if (SharedEnemy || !slot.Active)
                 return;
             slot.AuraModifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.More, DebuffStrength(slot.Skill) * slot.CursePower));
+            if (debuff.BossTimerSlow > 0)
+                slot.AuraModifiers.Add(new Modifier(CombatStats.BossTimerSpeed, ModifierKind.More, -debuff.BossTimerSlow));
             slot.AuraStrength = 1;
             _hero.AddRange(slot.AuraModifiers);
             slot.AuraApplied = true;

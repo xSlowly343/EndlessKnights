@@ -314,7 +314,7 @@ namespace Game.Core.Content.Gems
                         Number(node, "shardChance", 1),
                         Number(node, "shards", 1e6));
                 case "enemyDebuff":
-                    return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10));
+                    return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10), Number(node, "bossTimerSlow", 0.9));
                 case "curseFlow":
                     return new CurseFlowEffect(node.Field("hitsPerSecond").AsNumber(0, 100));
                 case "idleStrike":

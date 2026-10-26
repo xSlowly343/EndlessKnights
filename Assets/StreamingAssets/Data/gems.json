@@ -511,6 +511,18 @@
       "effect": { "type": "enemyDebuff", "damageTaken": 0.15 }
     },
     {
+      "id": "stretch_second",
+      "kind": "skill",
+      "weapon": "pendulum",
+      "color": "blue",
+      "name": { "ru": "Растянуть секунду", "en": "Stretch the Second" },
+      "tags": ["Skill"],
+      "cost": { "resource": 20 },
+      "cooldownSeconds": 5,
+      "durationSeconds": 10,
+      "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "bossTimerSlow": 0.3 }
+    },
+    {
       "id": "lull",
       "kind": "skill",
       "color": "white",
@@ -959,7 +971,7 @@
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "locked": true
+      "effect": { "type": "passive", "modifiers": [{ "stat": "bossTimerBank", "kind": "flat", "value": 30 }] }
     },
     {
       "id": "cracked_glass",

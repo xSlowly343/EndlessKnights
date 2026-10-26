@@ -5,8 +5,10 @@ namespace Game.Core.Stats
 {
     public sealed class StatSheet
     {
+        private const int CacheCapacity = 512;
+
         private readonly List<Modifier> _modifiers = new List<Modifier>();
-        private readonly Dictionary<(StatId Stat, StatTags Tags), Totals> _cache = new Dictionary<(StatId, StatTags), Totals>();
+        private readonly Dictionary<(StatId Stat, StatTags Tags), Totals> _cache = new Dictionary<(StatId, StatTags), Totals>(CacheCapacity);
 
         public int RecalculationCount { get; private set; }
 
