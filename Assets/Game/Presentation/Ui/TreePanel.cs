@@ -85,6 +85,8 @@ namespace Game.Presentation.Ui
         private readonly UiButton _zoomIn;
         private readonly UiButton _zoomOut;
         private readonly UiButton _home;
+        private readonly UiButton _reset;
+        private bool _resetArmed;
         private readonly TreeNodeCardView _card;
         private readonly RectTransform _hint;
         private readonly TextMeshProUGUI _hintText;
@@ -144,6 +146,8 @@ namespace Game.Presentation.Ui
             UiElements.Anchor(target.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.one * 14f);
             var centre = UiElements.Dot("Centre", _home.Rect, theme.Text);
             UiElements.Anchor(centre.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.one * 5f);
+            _reset = Tool("Reset", right, new Vector2(-InsetPx, -InsetPx - 3f * (ToolPx + GapPx)), new Vector2(ToolPx, ToolPx), ToolColor, ToolRadiusPx, theme.TextFont, 11f);
+            _reset.Text = TreeTexts.Reset;
             _card = new TreeNodeCardView("Card", _field, theme, TreeNodeCardMode.Pinned);
             _hint = BuildHint(out _hintText);
             _root.gameObject.SetActive(false);
@@ -271,6 +275,12 @@ namespace Game.Presentation.Ui
         {
             if (!IsShown)
                 return false;
+            if (_reset.Contains(worldPoint))
+            {
+                PressReset();
+                return true;
+            }
+            ArmReset(false);
             if (Pressed(_zoomIn, worldPoint, ZoomIn) || Pressed(_zoomOut, worldPoint, ZoomOut) || Pressed(_home, worldPoint, FocusOwnPath))
                 return true;
             for (var i = 0; i < _actions.Count; i++)
@@ -350,7 +360,7 @@ namespace Game.Presentation.Ui
 
         private bool OverControls(Vector2 worldPoint) =>
             (_card.IsShown && UiElements.Contains(_card.Root, worldPoint)) || UiElements.Contains(_hint, worldPoint) || UiElements.Contains(_pill.Rect, worldPoint)
-            || _zoomIn.Contains(worldPoint) || _zoomOut.Contains(worldPoint) || _home.Contains(worldPoint);
+            || _zoomIn.Contains(worldPoint) || _zoomOut.Contains(worldPoint) || _home.Contains(worldPoint) || _reset.Contains(worldPoint);
 
         private void ShowTooltip(TreeNodeDef node)
         {
@@ -814,6 +824,43 @@ namespace Game.Presentation.Ui
             UiElements.Stretch(label.rectTransform);
             return new UiButton(back, label);
         }
+
+        public bool IsResetArmed => _resetArmed;
+
+        public Vector2 WorldPointOfReset() => _reset.Rect.TransformPoint(_reset.Rect.rect.center);
+
+        private void PressReset()
+        {
+            if (_loop == null)
+                return;
+            if (!_resetArmed)
+            {
+                ArmReset(true);
+                return;
+            }
+            ArmReset(false);
+            var result = _loop.FullReset(NowUnixMs());
+            Select(null);
+            Refresh();
+            ShowHint(TreeTexts.ResetResult(result, _loop.State.Tree.PointsLeft));
+        }
+
+        private void ArmReset(bool armed)
+        {
+            _resetArmed = armed && _loop != null;
+            if (!_resetArmed)
+            {
+                _reset.Text = TreeTexts.Reset;
+                _reset.Rect.sizeDelta = new Vector2(ToolPx, ToolPx);
+                return;
+            }
+            var cost = _loop!.FullResetCost(NowUnixMs());
+            _reset.Text = TreeTexts.ResetConfirm(cost.IsZero ? string.Empty : NumberFormatter.Format(cost, NumberDisplay.Settings));
+            var width = _reset.Label!.GetPreferredValues(_reset.Label.text).x + 2f * PillPaddingPx;
+            _reset.Rect.sizeDelta = new Vector2(Mathf.Max(ToolPx, width), ToolPx);
+        }
+
+        private static long NowUnixMs() => System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         private static bool Pressed(UiButton button, Vector2 worldPoint, System.Action action)
         {

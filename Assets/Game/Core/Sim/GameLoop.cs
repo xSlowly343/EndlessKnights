@@ -175,6 +175,35 @@ namespace Game.Core.Sim
             return RefundResult.Refunded;
         }
 
+        public BigNumber FullResetCost(long nowUnixMs)
+        {
+            if (State.Tree.FreeResetReady(_data.Tree, nowUnixMs))
+                return BigNumber.Zero;
+            var total = BigNumber.Zero;
+            foreach (var id in State.Tree.Allocated)
+            {
+                var cost = RefundCost(id);
+                if (cost != null)
+                    total += cost.Value;
+            }
+            return total * BigNumber.FromDouble(_data.Tree.Respec.FullResetShare);
+        }
+
+        public RefundResult FullReset(long nowUnixMs)
+        {
+            if (State.Tree.PointsSpent == 0)
+                return RefundResult.NotAllocated;
+            if (State.Tree.FreeResetReady(_data.Tree, nowUnixMs))
+                return FreeFullReset(nowUnixMs);
+            var cost = FullResetCost(nowUnixMs);
+            if (State.Gold < cost)
+                return RefundResult.NotEnoughGold;
+            State.Gold -= cost;
+            State.Tree.Clear();
+            RebuildTree();
+            return RefundResult.Refunded;
+        }
+
         public void RequestCast(int slotIndex)
         {
             if (slotIndex >= 0 && slotIndex < MaxRequestedSlots)
