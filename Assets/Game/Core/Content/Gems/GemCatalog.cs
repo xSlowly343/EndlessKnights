@@ -212,7 +212,7 @@ namespace Game.Core.Content.Gems
             var effect = locked ? new PassiveEffect(Array.Empty<Modifier>(), false) : ReadEffect(node.Field("effect"), duration);
             if (effect is AuraEffect aura && !aura.Reserves && duration <= 0)
                 throw node.Error("an aura needs durationSeconds or reserve");
-            if ((effect is StoreHitsEffect || effect is QueueHitsEffect || effect is KeyRepeatEffect || effect is StreakStrikeEffect || effect is InputHitsEffect || effect is TrailEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
+            if ((effect is StoreHitsEffect || effect is PauseStrikeEffect || effect is QueueHitsEffect || effect is KeyRepeatEffect || effect is StreakStrikeEffect || effect is InputHitsEffect || effect is TrailEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
             if ((effect is EnemyDebuffEffect || effect is CurseFlowEffect || (effect is AddStacksEffect flowing && flowing.PerSecond > 0)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
@@ -280,6 +280,19 @@ namespace Game.Core.Content.Gems
                         ModifierReader.ReadList(node.Field("modifiers")));
                 case "storeHits":
                     return new StoreHitsEffect(node.Field("releaseShare").AsNumber(0, 100));
+                case "flurry":
+                    return new FlurryEffect(
+                        node.Field("hits").AsInt(1, 10000),
+                        node.Field("seconds").AsNumber(0.1, 3600),
+                        node.Field("multiplier").AsNumber(0, 1e6),
+                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0);
+                case "pauseStrike":
+                    return new PauseStrikeEffect(node.Field("pauseSeconds").AsNumber(0.1, 3600), node.Field("multiplier").AsNumber(0, 1e6));
+                case "comboStacks":
+                    return new ComboStacksEffect(
+                        node.Field("hitsPerStack").AsInt(1, 100000),
+                        ModifierReader.Read(node.Field("perStack")),
+                        node.Field("max").AsNumber(0, 1e6));
                 case "queueHits":
                     return new QueueHitsEffect(node.Field("share").AsNumber(0, 100));
                 case "stacks":
@@ -354,7 +367,7 @@ namespace Game.Core.Content.Gems
                         node.Field("maxChargeSeconds").AsNumber(0.1, 86400),
                         node.Field("minIdleSeconds").AsNumber(0, 86400));
                 default:
-                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff, curseFlow, summon, addStacks, detonate, weakenNext or idleStrike");
+                    throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, flurry, pauseStrike, comboStacks, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff, curseFlow, summon, addStacks, detonate, weakenNext or idleStrike");
             }
         }
 
@@ -370,7 +383,13 @@ namespace Game.Core.Content.Gems
                 HoldStacksAboveResource = Number(node, "holdStacksAboveResource", 100),
                 FullResourceDurationMultiplier = Number(node, "fullResourceDurationMultiplier", 100),
                 ExtraTargetWhileFamily = node.HasField("extraTargetWhileFamily") ? node.Field("extraTargetWhileFamily").AsString() : null,
-                RefreshFamily = node.HasField("refreshFamily") ? node.Field("refreshFamily").AsString() : null
+                RefreshFamily = node.HasField("refreshFamily") ? node.Field("refreshFamily").AsString() : null,
+                FreeAboveCombo = Number(node, "freeAboveCombo", 1e6),
+                CarryOn = node.HasField("carryOn") && node.Field("carryOn").AsBool(),
+                HoldCombo = node.HasField("holdCombo") && node.Field("holdCombo").AsBool(),
+                FullResourceBonus = Number(node, "fullResourceBonus", 1000),
+                RepeatAboveCombo = Number(node, "repeatAboveCombo", 1e6),
+                BossReleaseShare = Number(node, "bossReleaseShare", 100)
             };
 
         private static double Number(ContentNode node, string field, double max) =>

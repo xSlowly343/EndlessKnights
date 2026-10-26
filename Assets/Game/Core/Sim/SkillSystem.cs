@@ -21,6 +21,8 @@ namespace Game.Core.Sim
         private WeaponCatalog _weapons;
         private long _seenKills;
         private SkillSlot? _lastCast;
+        private long _lastKeyHitTick = long.MinValue / 2;
+        private long _keyGapTicks;
 
         public SkillSystem(GameState state, EventQueue events, ResourceSystem resource, CombatSystem combat, StatSheet hero, WeaponCatalog weapons)
         {
@@ -177,6 +179,8 @@ namespace Game.Core.Sim
                 slot.HitsLeft = special.Charges;
             if (skill.Effect is InputHitsEffect hits && hits.MaxHits > 0)
                 slot.HitsLeft = hits.MaxHits;
+            if (skill.Effect is FlurryEffect flurry)
+                slot.HitsLeft = flurry.Hits;
             slot.HitCount = 0;
             slot.LastKeyTick = -1;
             slot.Progress = 0;
@@ -187,7 +191,11 @@ namespace Game.Core.Sim
             if (announce)
                 _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             if (skill.Effect is StrikeEffect strike)
+            {
                 Strike(slot, strike, native, spent);
+                if (native.RepeatAboveCombo > 0 && _state.Combo > native.RepeatAboveCombo)
+                    Strike(slot, strike, native, 0);
+            }
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)
@@ -317,6 +325,11 @@ namespace Game.Core.Sim
         private bool Pay(SkillDef skill, NativeTrait native, out double spent)
         {
             spent = skill.ResourceCost;
+            if (native.FreeAboveCombo > 0 && _state.Combo > native.FreeAboveCombo)
+            {
+                spent = 0;
+                return true;
+            }
             if (native.SpendsAll)
             {
                 if (_state.Resource < skill.ResourceCost)
@@ -403,6 +416,8 @@ namespace Game.Core.Sim
 
         public void OnKeyHit(BigNumber damage)
         {
+            _keyGapTicks = _state.Tick - _lastKeyHitTick;
+            _lastKeyHitTick = _state.Tick;
             foreach (var slot in _state.Skills)
             {
                 if (slot.HitsLeft > 0 && slot.Def.Effect is ChainHitsEffect chain)
@@ -436,6 +451,9 @@ namespace Game.Core.Sim
                 case StreakStrikeEffect streak:
                     StreakHit(slot, streak);
                     break;
+                case PauseStrikeEffect pause:
+                    PauseHit(slot, pause);
+                    break;
             }
             if (IsNative(slot))
                 _resource.Gain(slot.Def.Native.ResourcePerKeyHit);
@@ -448,6 +466,58 @@ namespace Game.Core.Sim
             slot.LastKeyTick = _state.Tick;
             if (++slot.HitCount % streak.Hits == 0)
                 SkillHit(slot, streak.Multiplier);
+        }
+
+        private void PauseHit(SkillSlot slot, PauseStrikeEffect pause)
+        {
+            if (_keyGapTicks < Ticks(pause.PauseSeconds))
+                return;
+            slot.ActiveTicks = 0;
+            End(slot);
+            SkillHit(slot, pause.Multiplier);
+        }
+
+        private void TickFlurry(SkillSlot slot, FlurryEffect flurry)
+        {
+            if (slot.HitsLeft <= 0)
+                return;
+            if (!Armed(slot))
+            {
+                slot.HitsLeft = 0;
+                return;
+            }
+            if (!_state.EnemyAlive)
+                return;
+            var killsBefore = _state.Kills;
+            var hits = System.Math.Min(slot.HitsLeft, flurry.HitsPerTick);
+            for (var i = 0; i < hits; i++)
+            {
+                slot.HitsLeft--;
+                FlurryQueueHit(slot, flurry);
+                SkillHit(slot, flurry.Multiplier);
+                if (_state.Kills == killsBefore)
+                    continue;
+                if (!IsNative(slot) || !slot.Def.Native.CarryOn)
+                    slot.HitsLeft = 0;
+                return;
+            }
+        }
+
+        private void FlurryQueueHit(SkillSlot slot, FlurryEffect flurry)
+        {
+            if (flurry.QueueTargets <= 0)
+                return;
+            var damage = _combat.SkillDamage(_combat.BaseKeyDamage, flurry.Multiplier * slot.CastPower, slot.Skill.Tags);
+            for (var i = 0; i < flurry.QueueTargets; i++)
+                _state.QueueDamage[i] += damage;
+        }
+
+        private void TickComboStacks(SkillSlot slot, ComboStacksEffect combo)
+        {
+            var value = System.Math.Min(combo.MaxTotal, combo.PerStack.Value * (_state.Combo / combo.HitsPerStack));
+            if (IsNative(slot) && _resource.IsFull)
+                value += slot.Def.Native.FullResourceBonus;
+            SetPassive(slot, combo.Modifiers, value);
         }
 
         private void SpecialKeyHits(SkillSlot slot, SpecialKeysEffect special, in EffectiveInput input)
@@ -536,6 +606,12 @@ namespace Game.Core.Sim
                     TickDistanceStacks(slot, distance, input);
                 if (slot.Def.Effect is BossHuntEffect hunt)
                     TickBossHunt(slot, hunt);
+                if (slot.Def.Effect is FlurryEffect flurry)
+                    TickFlurry(slot, flurry);
+                if (slot.Def.Effect is ComboStacksEffect combo)
+                    TickComboStacks(slot, combo);
+                if (slot.Active && slot.Def.Effect is PauseStrikeEffect && slot.Def.Native.HoldCombo && IsNative(slot))
+                    _state.ComboIdleTicks = 0;
                 if (slot.Def.Effect is PassiveEffect passive)
                     SetPassive(slot, passive.Modifiers, passive.PerPartyMember ? _state.PartyMembers : 1);
                 if (slot.Def.Effect is BreakBonusEffect breakBonus)
@@ -701,7 +777,7 @@ namespace Game.Core.Sim
             {
                 var stored = slot.Stored;
                 slot.Stored = BigNumber.Zero;
-                _combat.DirectHit(stored * store.ReleaseShare);
+                _combat.DirectHit(stored * ReleaseShare(slot, store));
             }
             if (slot.Def.Effect is StacksEffect stacks && !stacks.Passive)
                 ClearStacks(slot);
@@ -713,6 +789,9 @@ namespace Game.Core.Sim
                     SkillHit(slot, multiplier);
             }
         }
+
+        private double ReleaseShare(SkillSlot slot, StoreHitsEffect store) =>
+            _state.FightingBoss && slot.Def.Native.BossReleaseShare > 0 && IsNative(slot) ? slot.Def.Native.BossReleaseShare : store.ReleaseShare;
 
         private void TickKillStacks(SkillSlot slot, StacksEffect stacks, int kills)
         {

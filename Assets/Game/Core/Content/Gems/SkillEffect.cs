@@ -79,6 +79,52 @@ namespace Game.Core.Content.Gems
         public double ReleaseShare { get; }
     }
 
+    public sealed class FlurryEffect : SkillEffect
+    {
+        public FlurryEffect(int hits, double seconds, double multiplier, int queueTargets)
+        {
+            Hits = hits;
+            Seconds = seconds;
+            Multiplier = multiplier;
+            QueueTargets = queueTargets;
+            HitsPerTick = System.Math.Max(1, (int)System.Math.Ceiling(hits / (seconds * Sim.GameLoop.TicksPerSecond) - 1e-9));
+        }
+
+        public int Hits { get; }
+        public double Seconds { get; }
+        public double Multiplier { get; }
+        public int QueueTargets { get; }
+        public int HitsPerTick { get; }
+    }
+
+    public sealed class PauseStrikeEffect : SkillEffect
+    {
+        public PauseStrikeEffect(double pauseSeconds, double multiplier)
+        {
+            PauseSeconds = pauseSeconds;
+            Multiplier = multiplier;
+        }
+
+        public double PauseSeconds { get; }
+        public double Multiplier { get; }
+    }
+
+    public sealed class ComboStacksEffect : SkillEffect
+    {
+        public ComboStacksEffect(int hitsPerStack, Modifier perStack, double maxTotal)
+        {
+            HitsPerStack = hitsPerStack;
+            PerStack = perStack;
+            MaxTotal = maxTotal;
+            Modifiers = new[] { new Modifier(perStack.Stat, perStack.Kind, 1, perStack.Tags) };
+        }
+
+        public int HitsPerStack { get; }
+        public Modifier PerStack { get; }
+        public double MaxTotal { get; }
+        public IReadOnlyList<Modifier> Modifiers { get; }
+    }
+
     public sealed class QueueHitsEffect : SkillEffect
     {
         public QueueHitsEffect(double share)

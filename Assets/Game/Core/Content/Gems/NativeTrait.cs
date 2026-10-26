@@ -17,6 +17,12 @@ namespace Game.Core.Content.Gems
         public double FullResourceDurationMultiplier { get; set; }
         public string? ExtraTargetWhileFamily { get; set; }
         public string? RefreshFamily { get; set; }
+        public double FreeAboveCombo { get; set; }
+        public bool CarryOn { get; set; }
+        public bool HoldCombo { get; set; }
+        public double FullResourceBonus { get; set; }
+        public double RepeatAboveCombo { get; set; }
+        public double BossReleaseShare { get; set; }
 
         public bool SpendsAll => SpendAllPerPoint > 0;
         public bool HoldsStacks => HoldStacksAboveResource > 0;
