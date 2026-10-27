@@ -8040,6 +8040,27 @@
       "color": "white",
       "name": { "ru": "Скупщик", "en": "Pawnbroker" },
       "effect": { "type": "pawnbroker", "power": 0.7, "killReward": 1.4 }
+    },
+    {
+      "id": "key_echo",
+      "kind": "support",
+      "color": "red",
+      "name": { "ru": "Эхо клавиш", "en": "Key Echo" },
+      "effect": { "type": "keyEcho", "everyKeys": 40, "power": 0.5, "keyDamage": 1.1 }
+    },
+    {
+      "id": "legacy",
+      "kind": "support",
+      "color": "white",
+      "name": { "ru": "Наследие", "en": "Legacy" },
+      "effect": { "type": "legacy", "partyPower": 1.1 }
+    },
+    {
+      "id": "resonance",
+      "kind": "support",
+      "color": "blue",
+      "name": { "ru": "Резонанс", "en": "Resonance" },
+      "effect": { "type": "resonance", "allyPower": 1.2, "afterSeconds": 5 }
     }
   ]
 }
