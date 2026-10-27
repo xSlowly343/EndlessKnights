@@ -46,7 +46,15 @@ namespace Game.Core.Sim
         public bool SharedEnemy { get; private set; }
         public GemLevels? Levels { get; set; }
 
-        public double LevelPower(GemDef gem) => Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem));
+        public double LevelPower(GemDef gem) => (Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem))) * ColorPower(gem);
+
+        public double ColorPower(GemDef gem) => gem.Color switch
+        {
+            GemColor.Red => System.Math.Max(0, _hero.Value(CombatStats.RedGemEffect, 1)),
+            GemColor.Green => System.Math.Max(0, _hero.Value(CombatStats.GreenGemEffect, 1)),
+            GemColor.Blue => System.Math.Max(0, _hero.Value(CombatStats.BlueGemEffect, 1)),
+            _ => 1
+        };
         public MinionSystem Minions { get; }
         public DotSystem Dots { get; }
 

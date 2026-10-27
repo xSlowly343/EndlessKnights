@@ -67,6 +67,7 @@ namespace Game.Core.Save
                 ("rift", WriteRift(state.Rift)),
                 ("weapons", WriteWeapons(state.Weapons)),
                 ("drops", WriteDrops(state.Drops)),
+                ("gear", WriteWorn(state.Gear)),
                 ("inputStats", Object(
                     ("keys", JsonValue.Of(state.TotalInput.Keys.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("leftClicks", JsonValue.Of(state.TotalInput.LeftClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -94,7 +95,7 @@ namespace Game.Core.Save
                     ("mousePx", JsonValue.Of(state.MouseCarryPx)))));
         }
 
-        public static GameState Read(ContentNode node, EnemyCatalog enemies, GemCatalog gems, WeaponCatalog weapons)
+        public static GameState Read(ContentNode node, EnemyCatalog enemies, GemCatalog gems, WeaponCatalog weapons, ItemCatalog? items = null)
         {
             var rng = node.Field("rng").Items();
             if (rng.Count != 2)
@@ -193,7 +194,9 @@ namespace Game.Core.Save
             if (node.HasField("weapons"))
                 ReadWeapons(node.Field("weapons"), weapons, state.Weapons);
             if (node.HasField("drops"))
-                ReadDrops(node.Field("drops"), state.Drops);
+                ReadDrops(node.Field("drops"), state.Drops, items);
+            if (node.HasField("gear") && items != null)
+                ReadWorn(node.Field("gear"), items, state.Gear);
             if (node.HasField("gemProgress"))
                 ReadGemProgress(node.Field("gemProgress"), gems, state);
             else
@@ -218,14 +221,43 @@ namespace Game.Core.Save
                 ("gear", JsonValue.Array(gear)));
         }
 
-        private static JsonValue WriteGear(GearItem item) =>
-            Object(
+        private static JsonValue WriteGear(GearItem item)
+        {
+            var affixes = new JsonValue[item.Affixes.Count];
+            for (var i = 0; i < affixes.Length; i++)
+                affixes[i] = Object(("id", JsonValue.Of(item.Affixes[i].Def.Id)), ("tier", JsonValue.Of(item.Affixes[i].Tier)), ("value", JsonValue.Of(item.Affixes[i].Value)));
+            return Object(
                 ("slot", JsonValue.Of(ItemSlotNames.Of(item.Slot))),
                 ("rarity", JsonValue.Of(ItemRarityNames.Of(item.Rarity))),
                 ("itemLevel", JsonValue.Of(item.ItemLevel)),
-                ("color", item.Color == null ? JsonValue.Null() : JsonValue.Of(item.Color)));
+                ("color", item.Color == null ? JsonValue.Null() : JsonValue.Of(item.Color)),
+                ("base", item.Base == null ? JsonValue.Null() : JsonValue.Of(item.Base.Id)),
+                ("affixes", JsonValue.Array(affixes)));
+        }
 
-        private static void ReadDrops(ContentNode node, DropState drops)
+        private static JsonValue WriteWorn(GearState gear)
+        {
+            var worn = new JsonValue[GearState.Slots];
+            for (var i = 0; i < worn.Length; i++)
+                worn[i] = gear.Worn[i] == null ? JsonValue.Null() : WriteGear(gear.Worn[i]!);
+            return JsonValue.Array(worn);
+        }
+
+        private static void ReadWorn(ContentNode node, ItemCatalog items, GearState gear)
+        {
+            var slot = 0;
+            foreach (var item in node.Items())
+            {
+                if (slot >= GearState.Slots)
+                    return;
+                var read = item.IsNull ? null : ReadGear(item, items);
+                if (read != null && read.Wearable && GearState.Fits((GearSlot)slot, read.Slot))
+                    gear.Worn[slot] = read;
+                slot++;
+            }
+        }
+
+        private static void ReadDrops(ContentNode node, DropState drops, ItemCatalog? items)
         {
             var rng = node.Field("rng").Items();
             if (rng.Count != 2)
@@ -244,19 +276,35 @@ namespace Game.Core.Save
             drops.SalvagedItems = node.Field("salvagedItems").AsLong(0);
             foreach (var item in node.Field("gear").Items())
             {
-                var gear = ReadGear(item);
+                var gear = ReadGear(item, items);
                 if (gear != null)
                     drops.Gear.Add(gear);
             }
         }
 
-        private static GearItem? ReadGear(ContentNode node)
+        private static GearItem? ReadGear(ContentNode node, ItemCatalog? items)
         {
             if (!ItemSlotNames.ByName.TryGetValue(node.Field("slot").AsString(), out var slot) || slot == ItemSlot.Weapon)
                 return null;
             var rarity = ItemRarityNames.ByName.TryGetValue(node.Field("rarity").AsString(), out var found) ? found : ItemRarity.Simple;
             var color = node.Field("color");
-            return new GearItem(slot, rarity, node.Field("itemLevel").AsInt(1), color.IsNull ? null : color.AsString());
+            var itemLevel = node.Field("itemLevel").AsInt(1);
+            if (items != null && node.HasField("base") && !node.Field("base").IsNull && items.TryGetBase(node.Field("base").AsString(), out var gearBase) && gearBase.Slot == slot)
+                return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items));
+            return new GearItem(slot, rarity, itemLevel, color.IsNull ? null : color.AsString());
+        }
+
+        private static IReadOnlyList<GearAffix> ReadAffixes(ContentNode node, ItemCatalog items)
+        {
+            var affixes = new List<GearAffix>();
+            if (!node.HasField("affixes"))
+                return affixes;
+            foreach (var item in node.Field("affixes").Items())
+            {
+                if (items.TryGetAffix(item.Field("id").AsString(), out var def))
+                    affixes.Add(new GearAffix(def, item.Field("tier").AsInt(1, items.Tiers), item.Field("value").AsNumber(-1e6, 1e6)));
+            }
+            return affixes;
         }
 
         private static JsonValue WriteWeapons(WeaponState weapons)

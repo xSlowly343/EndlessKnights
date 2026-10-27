@@ -117,5 +117,8 @@ namespace Game.Core.Sim
         public static readonly StatId SkeletonOnKill = new StatId("skeletonOnKill");
         public static readonly StatId BeastOnKill = new StatId("beastOnKill");
         public static readonly StatId MinionQueueShare = new StatId("minionQueueShare");
+        public static readonly StatId RedGemEffect = new StatId("redGemEffect");
+        public static readonly StatId GreenGemEffect = new StatId("greenGemEffect");
+        public static readonly StatId BlueGemEffect = new StatId("blueGemEffect");
     }
 }
