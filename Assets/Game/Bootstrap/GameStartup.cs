@@ -78,6 +78,7 @@ namespace Game.Bootstrap
             var menuButton = StripButton.CreateIcon("MenuButton", StripIcons.Menu, MenuButtonPosition, MenuGold, MenuGold);
             var data = GameDataFiles.TryLoadAll();
             var settings = SettingsDriver.Attach(host);
+            ErrorReportDriver.Attach(host, settings.Settings);
             var panels = PanelCanvas.Create();
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
             var router = StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);

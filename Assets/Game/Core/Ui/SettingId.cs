@@ -22,6 +22,7 @@ namespace Game.Core.Ui
         CountWheel,
         ShowInputDebug,
         InputConsent,
-        WhatsNew
+        WhatsNew,
+        ErrorReports
     }
 }
