@@ -83,6 +83,19 @@ namespace Game.Core.Sim
             set => _otherPreset = value;
         }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
+        public Dictionary<string, GemProgress> GemProgress { get; } = new Dictionary<string, GemProgress>(System.StringComparer.Ordinal);
+
+        public GemProgress ProgressOf(GemDef gem)
+        {
+            if (!GemProgress.TryGetValue(gem.Id, out var progress))
+            {
+                progress = new GemProgress();
+                GemProgress.Add(gem.Id, progress);
+            }
+            return progress;
+        }
+
+        public int LevelOf(GemDef gem) => GemProgress.TryGetValue(gem.Id, out var progress) ? progress.Level : 1;
         public BigNumber[] QueueDamage { get; } = new BigNumber[QueueDepth];
 
         public BigNumber ChainDamage

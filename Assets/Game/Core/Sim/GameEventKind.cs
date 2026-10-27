@@ -14,6 +14,7 @@ namespace Game.Core.Sim
         LevelUp,
         Prestige,
         ItemDropped,
-        GemDropped
+        GemDropped,
+        GemLevelUp
     }
 }

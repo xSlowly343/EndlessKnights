@@ -109,6 +109,7 @@ namespace Game.Core.Build
             if (attribute != null && others + 1 > ColoredSupportLimit(attribute))
                 return BookResult.TooManyColored;
             slot.Supports[socket] = support;
+            _state.ProgressOf(support);
             return BookResult.Done;
         }
 
@@ -201,6 +202,8 @@ namespace Game.Core.Build
             if (trigger != null && !MeetsRequirements(trigger))
                 return BookResult.AttributesTooLow;
             slot.Trigger = trigger;
+            if (trigger != null)
+                _state.ProgressOf(trigger);
             return BookResult.Done;
         }
 
