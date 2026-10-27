@@ -280,6 +280,11 @@ namespace Game.Core.Sim
                     slot.InkHits++;
                     state.PoisonStacks = System.Math.Min(poisonMax, state.PoisonStacks + support.PoisonPerHit);
                 }
+                if (support.VulnerabilityShare > 0)
+                {
+                    state.VulnerabilityShare = System.Math.Max(state.VulnerabilityShare, support.VulnerabilityShare);
+                    state.VulnerabilityTicks = System.Math.Max(state.VulnerabilityTicks, (int)System.Math.Round(support.VulnerabilitySeconds * GameLoop.TicksPerSecond));
+                }
                 for (var target = 0; target < slot.FlickTargets && target < state.QueueDamage.Length; target++)
                     state.QueueDamage[target] += damage * (support.FlickTargetShare * support.QueueDamageMultiplier);
             }
@@ -324,6 +329,45 @@ namespace Game.Core.Sim
                 slot.CooldownTicks = System.Math.Max(0, slot.CooldownTicks - (int)System.Math.Round(seconds * GameLoop.TicksPerSecond));
             if (resource > 0)
                 state.PendingResource += resource;
+            var reward = KillReward(slot);
+            if (reward > 1)
+                state.NextKillReward = System.Math.Max(state.NextKillReward, reward);
+        }
+
+        public static double KillReward(SkillSlot slot)
+        {
+            var reward = 1.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    reward *= support.KillRewardMultiplier;
+            }
+            return reward;
+        }
+
+        public static double Affliction(SkillSlot slot)
+        {
+            var multiplier = 1.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    multiplier *= support.AfflictionMultiplier;
+            }
+            return multiplier;
+        }
+
+        public static double StackCap(SkillSlot slot)
+        {
+            var multiplier = 1.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    multiplier *= support.StackCapMultiplier;
+            }
+            return multiplier;
         }
     }
 }

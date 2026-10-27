@@ -14,12 +14,15 @@ namespace Game.Core.Sim.Headless
         public const string DurationHost = "tethered_ball";
         public const string MouseHost = "lantern_at_a_distance";
         public const string SummonHost = "call_a_colleague";
+        public const string PoisonHost = "vial_from_belt";
         public const long Stage = 40;
         public const double Attributes = 100;
 
         private readonly GameData _data;
         private readonly ulong _seed;
         private readonly string _host;
+        private readonly System.Collections.Generic.Dictionary<(double, double, double, double, double, double, double), BigNumber> _plain =
+            new System.Collections.Generic.Dictionary<(double, double, double, double, double, double, double), BigNumber>();
 
         public SupportBalance(GameData data, ulong seed = 1, string host = FastHost)
         {
@@ -32,7 +35,12 @@ namespace Game.Core.Sim.Headless
 
         public double Multiplier(GemDef support, BotProfile profile, double seconds)
         {
-            var plain = SkillDamage(null, profile, seconds);
+            var key = (profile.KeysPerSecond, profile.ClicksPerSecond, profile.MousePxPerSecond, profile.RhythmCv, profile.CircleTurnsPerSecond, profile.FlicksPerSecond, seconds);
+            if (!_plain.TryGetValue(key, out var plain))
+            {
+                plain = SkillDamage(null, profile, seconds);
+                _plain[key] = plain;
+            }
             return plain.Sign <= 0 ? 0 : (SkillDamage(support, profile, seconds) / plain).ToDouble();
         }
 

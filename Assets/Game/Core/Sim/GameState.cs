@@ -174,6 +174,9 @@ namespace Game.Core.Sim
         public long KeyStreak { get; set; }
         public double SupportKeyBonus { get; set; } = 1;
         public double SupportMouseBonus { get; set; } = 1;
+        public double SupportStackCap { get; set; } = 1;
+        public double VulnerabilityShare { get; set; }
+        public int VulnerabilityTicks { get; set; }
         public int Combo { get; set; }
         public long LastComboStrikeTick { get; set; } = -1;
         public long ComboIdleTicks { get; set; }
@@ -200,6 +203,8 @@ namespace Game.Core.Sim
             DotCarry = 0;
             Doom = BigNumber.Zero;
             DoomTicks = 0;
+            VulnerabilityShare = 0;
+            VulnerabilityTicks = 0;
         }
     }
 }
