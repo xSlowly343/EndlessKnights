@@ -50,6 +50,7 @@ namespace Game.Core.Sim
         public BannerRules Banner => _rules.Banner;
         public ClassRules Classes => _rules.Classes;
         public PathRules Paths => _rules.Paths;
+        public bool LastHitCrit { get; private set; }
 
         public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
             Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);
@@ -200,6 +201,7 @@ namespace Game.Core.Sim
                 multiplier *= _state.SupportKeyBonus;
             else if (source == DamageSource.Mouse)
                 multiplier *= _state.SupportMouseBonus;
+            LastHitCrit = false;
             var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags));
             if (damage.Sign <= 0)
                 return;
@@ -209,6 +211,7 @@ namespace Game.Core.Sim
             {
                 damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting));
                 flags |= HitFlags.Crit;
+                LastHitCrit = true;
                 if (source != DamageSource.Skill)
                     _keyHits?.OnCrit();
             }

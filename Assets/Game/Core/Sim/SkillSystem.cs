@@ -20,6 +20,7 @@ namespace Game.Core.Sim
         private readonly StatSheet _hero;
         private WeaponCatalog _weapons;
         private long _seenKills;
+        private long _seenPoisonTicks;
         private SkillSlot? _lastCast;
         private long _lastKeyHitTick = long.MinValue / 2;
         private long _keyGapTicks;
@@ -224,7 +225,7 @@ namespace Game.Core.Sim
             if (skill.Effect is InputHitsEffect hits && hits.MaxHits > 0)
                 slot.HitsLeft = hits.MaxHits;
             if (skill.Effect is FlurryEffect flurry)
-                slot.HitsLeft = flurry.Hits;
+                slot.HitsLeft = FlurryHits(flurry, native);
             slot.HitCount = 0;
             slot.LastKeyTick = -1;
             slot.Progress = 0;
@@ -473,6 +474,8 @@ namespace Game.Core.Sim
                 _combat.DirectHit(_lastKeyHitDamage * multiplier);
             else
                 _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags, paused ? strike.CritChance : 0);
+            if (native.ResourceOnCrit > 0 && _combat.LastHitCrit && !strike.LastKeyHit)
+                _resource.Gain(native.ResourceOnCrit);
             if (_state.Kills == killsBefore)
                 return;
             _resource.Gain(spent * strike.KillRefundShare + native.ResourceOnKill);
@@ -738,6 +741,14 @@ namespace Game.Core.Sim
             SkillHit(slot, pause.Multiplier);
         }
 
+        private int FlurryHits(FlurryEffect flurry, NativeTrait native)
+        {
+            if (native.ExtraHitPerMousePx <= 0)
+                return flurry.Hits;
+            var extra = (int)System.Math.Min(int.MaxValue / 2, System.Math.Floor(_state.MouseWindow.Total / native.ExtraHitPerMousePx));
+            return System.Math.Min(System.Math.Max(flurry.Hits, native.MaxHits), flurry.Hits + extra);
+        }
+
         private void TickFlurry(SkillSlot slot, FlurryEffect flurry)
         {
             if (slot.HitsLeft <= 0)
@@ -843,6 +854,8 @@ namespace Game.Core.Sim
         {
             var kills = (int)System.Math.Min(int.MaxValue, System.Math.Max(0, _state.Kills - _seenKills));
             _seenKills = _state.Kills;
+            var poisonTicks = Dots.PoisonTicks - _seenPoisonTicks;
+            _seenPoisonTicks = Dots.PoisonTicks;
             ExtendSongs(input);
             if (kills > 0 && !SharedEnemy && !CursesFlow())
                 EndDebuffs();
@@ -870,6 +883,8 @@ namespace Game.Core.Sim
                     TickKillStacks(slot, stacks, kills);
                 if (kills > 0 && slot.Def.IsPassive && slot.Def.Native.ResourceOnKill > 0 && IsNative(slot) && Armed(slot))
                     _resource.Gain(slot.Def.Native.ResourceOnKill * kills);
+                if (poisonTicks > 0 && slot.Def.Native.ResourcePerPoisonTick > 0 && IsNative(slot) && Armed(slot))
+                    _resource.Gain(slot.Def.Native.ResourcePerPoisonTick * poisonTicks);
                 if (slot.Def.Effect is SpecialKeysEffect special)
                     SpecialKeyHits(slot, special, input);
                 if (slot.Def.Effect is FlowEffect flow)
@@ -1372,6 +1387,8 @@ namespace Game.Core.Sim
         {
             var native = IsNative(slot) ? slot.Def.Native : NativeTrait.None;
             var share = _state.FightingBoss && native.BossReleaseShare > 0 ? native.BossReleaseShare : store.ReleaseShare;
+            if (native.ReleaseBonusPx > 0)
+                share *= 1 + native.ReleaseBonus * System.Math.Floor(_state.MouseWindow.Last(slot.ActiveTotalTicks) / native.ReleaseBonusPx);
             return slot.WhenAtCast && native.WhenMultiplier > 0 ? share * native.WhenMultiplier : share;
         }
 

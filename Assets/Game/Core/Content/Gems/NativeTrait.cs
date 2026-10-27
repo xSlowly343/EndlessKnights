@@ -27,6 +27,11 @@ namespace Game.Core.Content.Gems
         public double ResourceOnKill { get; set; }
         public double ResourceOnHit { get; set; }
         public double ResourceOnCrit { get; set; }
+        public double ResourcePerPoisonTick { get; set; }
+        public double ExtraHitPerMousePx { get; set; }
+        public int MaxHits { get; set; }
+        public double ReleaseBonusPx { get; set; }
+        public double ReleaseBonus { get; set; }
         public int ComboOnCast { get; set; }
         public int ComboPerHit { get; set; }
         public int ComboPerKeyHit { get; set; }

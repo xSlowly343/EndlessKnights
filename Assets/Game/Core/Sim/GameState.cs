@@ -69,6 +69,7 @@ namespace Game.Core.Sim
         public double Resource { get; set; }
         public long KeylessTicks { get; set; }
         public long MouseIdleTicks { get; set; } = long.MaxValue / 2;
+        public MouseWindow MouseWindow { get; } = new MouseWindow();
         public bool Reading { get; set; }
         public long IdleTicks { get; set; }
         public long IdleTicksBeforeInput { get; set; }

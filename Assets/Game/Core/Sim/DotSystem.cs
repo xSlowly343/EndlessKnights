@@ -22,6 +22,8 @@ namespace Game.Core.Sim
 
         public double PoisonMax => (Rules.PoisonMax + System.Math.Max(0, _hero.Value(CombatStats.PoisonStacks, 0, StatTags.DoT))) * _state.SupportStackCap;
         public double BurnMax => Rules.BurnMax * _state.SupportStackCap;
+        public long PoisonTicks { get; private set; }
+
         public int Stir => System.Math.Min(Rules.StirMax, (int)System.Math.Floor(_state.StirTurns + 1e-9));
 
         public void Apply(AddStacksEffect effect, double multiplier = 1)
@@ -63,6 +65,8 @@ namespace Game.Core.Sim
             if (--_ticksToHit > 0)
                 return;
             _ticksToHit = GameLoop.TicksPerSecond;
+            if (_state.PoisonStacks > 0)
+                PoisonTicks++;
             var carry = _state.DotCarry;
             _state.DotCarry = 0;
             Hit(carry);
