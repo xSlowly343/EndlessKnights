@@ -228,6 +228,8 @@ namespace Game.Core.Sim
             _stage.EnsureEnemy();
         }
 
+        public bool RebirthGem(GemDef gem) => _book.Rebirth(gem, _data.Gems.Levels.Max);
+
         public bool CompleteActivity(string activityId) =>
             _data.Ascendancy.IsActivity(activityId) && State.Ascendancy.Complete(activityId);
 

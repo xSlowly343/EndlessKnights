@@ -44,6 +44,25 @@ namespace Game.Core.Build
 
         public int SocketCount => _rules.SocketsFor(_state.RecordStage, 0);
 
+        public int SocketsAt(int index) =>
+            index < 0 || index >= _state.Skills.Count ? 0 : _rules.SocketsFor(_state.RecordStage, RebirthsOf(_state.Skills[index].Skill));
+
+        public int RebirthsOf(GemDef gem) => _state.GemProgress.TryGetValue(gem.Id, out var progress) ? progress.Rebirths : 0;
+
+        public bool CanRebirth(GemDef gem, int maxLevel) =>
+            _state.GemProgress.TryGetValue(gem.Id, out var progress) && progress.Level >= maxLevel && progress.Rebirths < _rules.SocketRebirths;
+
+        public bool Rebirth(GemDef gem, int maxLevel)
+        {
+            if (!CanRebirth(gem, maxLevel))
+                return false;
+            var progress = _state.GemProgress[gem.Id];
+            progress.Rebirths++;
+            progress.Level = 1;
+            progress.Experience = 0;
+            return true;
+        }
+
         public static string? AttributeOf(GemColor color) => color switch
         {
             GemColor.Red => "strength",
@@ -83,7 +102,7 @@ namespace Game.Core.Build
         {
             if (index < 0 || index >= _state.Skills.Count)
                 return BookResult.NoSuchSlot;
-            if (socket < 0 || socket >= SocketCount)
+            if (socket < 0 || socket >= SocketsAt(index))
                 return BookResult.NoSuchSocket;
             var slot = _state.Skills[index];
             if (support == null)
