@@ -18,6 +18,7 @@ namespace Game.Core.Sim
         private readonly StatSheet _hero;
         private readonly EventQueue _events;
         private readonly WeaponSystem _weapons;
+        private readonly GearSystem _gear;
         private readonly double[] _rarityWeights = new double[DropRules.RarityCount];
         private readonly List<GemDef>[] _gemPools = { new List<GemDef>(), new List<GemDef>(), new List<GemDef>() };
         private readonly List<WeaponType> _types = new List<WeaponType>();
@@ -25,15 +26,17 @@ namespace Game.Core.Sim
         private readonly PendingDrop[] _pending = new PendingDrop[PendingCapacity];
         private int _pendingCount;
         private DropRules _rules = null!;
+        private ItemCatalog _items = null!;
         private StageTable _stages = null!;
 
-        public DropSystem(DropRules rules, StageTable stages, GemCatalog gems, WeaponSystem weapons, GameState state, StatSheet hero, EventQueue events)
+        public DropSystem(DropRules rules, StageTable stages, GemCatalog gems, ItemCatalog items, WeaponSystem weapons, GearSystem gear, GameState state, StatSheet hero, EventQueue events)
         {
             _state = state;
             _hero = hero;
             _events = events;
             _weapons = weapons;
-            UseData(rules, stages, gems);
+            _gear = gear;
+            UseData(rules, stages, gems, items);
         }
 
         public DropRules Rules => _rules;
@@ -42,9 +45,10 @@ namespace Game.Core.Sim
         public int BagCount => _state.Weapons.Bag.Count + _state.Drops.Gear.Count;
         public bool BagFull => BagCount >= _rules.BagSize;
 
-        public void UseData(DropRules rules, StageTable stages, GemCatalog gems)
+        public void UseData(DropRules rules, StageTable stages, GemCatalog gems, ItemCatalog items)
         {
             _rules = rules;
+            _items = items;
             _stages = stages;
             foreach (var pool in _gemPools)
                 pool.Clear();
@@ -306,8 +310,29 @@ namespace Game.Core.Sim
         private ItemSlot EmptySlot(Rng rng)
         {
             var weapons = _state.Weapons;
-            return weapons.Right == null || weapons.Left == null ? ItemSlot.Weapon : RollSlot(rng, includeWeapon: false);
+            if (weapons.Right == null || weapons.Left == null)
+                return ItemSlot.Weapon;
+            var worn = _state.Gear.Worn;
+            var weakest = -1;
+            for (var i = 0; i < worn.Length; i++)
+            {
+                if (worn[i] == null)
+                    return ItemOf((GearSlot)i);
+                if (weakest < 0 || worn[i]!.Rarity < worn[weakest]!.Rarity)
+                    weakest = i;
+            }
+            return weakest < 0 ? RollSlot(rng, includeWeapon: false) : ItemOf((GearSlot)weakest);
         }
+
+        private static ItemSlot ItemOf(GearSlot slot) => slot switch
+        {
+            GearSlot.Helmet => ItemSlot.Helmet,
+            GearSlot.Chest => ItemSlot.Chest,
+            GearSlot.Gloves => ItemSlot.Gloves,
+            GearSlot.Boots => ItemSlot.Boots,
+            GearSlot.Amulet => ItemSlot.Amulet,
+            _ => ItemSlot.Ring
+        };
 
         private WeaponType OtherClassOfOwnColor(Rng rng)
         {
@@ -336,8 +361,10 @@ namespace Game.Core.Sim
             drops.ItemsFound++;
             var rarity = drop.Rarity;
             var weapon = drop.Type != null ? RollWeapon(drop.Type, rarity, drop.Stage, drops.Rng) : null;
-            var gear = weapon == null ? new GearItem(drop.Slot, rarity, BiomeNumber(drop.Stage), drop.Color) : null;
-            var salvaged = BagFull || ShouldSalvage(weapon, rarity);
+            var gear = weapon == null ? RollGear(drop, rarity, drops.Rng) : null;
+            if (gear != null)
+                _gear.NoteFound(gear);
+            var salvaged = BagFull || ShouldSalvage(weapon, gear, rarity);
             var dust = salvaged ? _rules.DustFor(rarity) : 0;
             drops.Dust += dust;
             if (salvaged)
@@ -349,13 +376,37 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(drop.Source, drop.Stage, weapon, gear, salvaged, dust)));
         }
 
-        private bool ShouldSalvage(WeaponItem? weapon, ItemRarity rarity)
+        private GearItem RollGear(PendingDrop drop, ItemRarity rarity, Rng rng)
+        {
+            var itemLevel = BiomeNumber(drop.Stage);
+            var chance = _rules.SetChanceFor(drop.Source);
+            if (chance > 0 && rng.NextDouble() < chance)
+            {
+                var set = _items.PickSet(drop.Slot, rarity, rng);
+                if (set != null)
+                    return _items.RollSetPiece(set, drop.Slot, drop.Color, rarity, itemLevel, rng);
+            }
+            return _items.Roll(drop.Slot, drop.Color, rarity, itemLevel, rng);
+        }
+
+        private bool ShouldSalvage(WeaponItem? weapon, GearItem? gear, ItemRarity rarity)
         {
             var limit = _state.Drops.SalvageUpTo;
             if (limit == null || rarity > limit.Value)
                 return false;
-            return weapon == null || !BetterThanHeld(rarity);
+            if (weapon != null)
+                return !BetterThanHeld(rarity);
+            return gear == null || !BetterThanWorn(gear);
         }
+
+        private bool BetterThanWorn(GearItem gear)
+        {
+            if (gear.Slot == ItemSlot.Ring)
+                return Weaker(_state.Gear.In(GearSlot.RingLeft), gear) || Weaker(_state.Gear.In(GearSlot.RingRight), gear);
+            return Weaker(_state.Gear.In(GearState.SlotFor(gear.Slot)), gear);
+        }
+
+        private static bool Weaker(GearItem? worn, GearItem candidate) => worn == null || candidate.Rarity > worn.Rarity;
 
         private bool BetterThanHeld(ItemRarity rarity)
         {

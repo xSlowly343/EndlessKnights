@@ -375,11 +375,53 @@ namespace Game.Core.Tests.Sim
             Assert.That(slots, Is.EquivalentTo(System.Enum.GetValues(typeof(ItemSlot))));
         }
 
+        private static void WearMythicsEverywhere(GameLoop loop)
+        {
+            var items = TestWorld.Data.Items;
+            var rng = new Game.Core.Math.Rng(5);
+            foreach (GearSlot slot in System.Enum.GetValues(typeof(GearSlot)))
+            {
+                var itemSlot = slot switch
+                {
+                    GearSlot.Helmet => ItemSlot.Helmet,
+                    GearSlot.Chest => ItemSlot.Chest,
+                    GearSlot.Gloves => ItemSlot.Gloves,
+                    GearSlot.Boots => ItemSlot.Boots,
+                    GearSlot.Amulet => ItemSlot.Amulet,
+                    _ => ItemSlot.Ring
+                };
+                var item = items.Roll(itemSlot, null, ItemRarity.Mythic, 1, rng);
+                loop.State.Drops.Gear.Add(item);
+                Assert.That(loop.Gear.Equip(slot, item), Is.True);
+            }
+        }
+
+        [Test]
+        public void AutoSalvageKeepsArmourBetterThanTheWornOne()
+        {
+            var loop = Viking(seed: 31);
+            loop.State.Drops.SalvageUpTo = ItemRarity.Fine;
+            var keptFine = 0;
+
+            for (var i = 0; i < 200 && keptFine == 0; i++)
+            {
+                foreach (var item in Defeat(loop, 7, 7))
+                {
+                    if (item.Gear != null && item.Rarity <= ItemRarity.Fine && !item.Salvaged)
+                        keptFine++;
+                }
+                loop.State.Drops.Gear.Clear();
+            }
+
+            Assert.That(keptFine, Is.GreaterThan(0));
+        }
+
         [Test]
         public void AutoSalvageTurnsLowItemsIntoDust()
         {
             var loop = Viking(seed: 31);
             loop.State.Drops.SalvageUpTo = ItemRarity.Fine;
+            WearMythicsEverywhere(loop);
             var kept = 0;
 
             for (var i = 0; i < 400; i++)

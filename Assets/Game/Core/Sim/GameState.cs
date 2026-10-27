@@ -62,6 +62,7 @@ namespace Game.Core.Sim
         public WeaponState Weapons { get; } = new WeaponState();
         public DropState Drops { get; }
         public GearState Gear { get; } = new GearState();
+        public HashSet<string> SetCollection { get; } = new HashSet<string>(System.StringComparer.Ordinal);
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;

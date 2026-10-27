@@ -40,9 +40,9 @@
     {"id": "runner_boots", "slot": "boots", "color": "green", "fromBiome": 4, "name": {"ru": "Сапоги бегуна", "en": "Runner Boots"}, "implicit": [{"stat": "greenGemEffect", "kind": "increased", "value": 0.08}]},
     {"id": "slippers", "slot": "boots", "color": "blue", "fromBiome": 1, "name": {"ru": "Туфли", "en": "Slippers"}, "implicit": [{"stat": "blueGemEffect", "kind": "increased", "value": 0.04}]},
     {"id": "sage_sandals", "slot": "boots", "color": "blue", "fromBiome": 4, "name": {"ru": "Сандалии мудреца", "en": "Sage Sandals"}, "implicit": [{"stat": "blueGemEffect", "kind": "increased", "value": 0.08}]},
-    {"id": "ruby_ring", "slot": "ring", "fromBiome": 1, "name": {"ru": "Рубиновое кольцо", "en": "Ruby Ring"}, "implicit": [{"stat": "damage", "kind": "increased", "tags": ["Keyboard"], "value": 0.04}]},
-    {"id": "emerald_ring", "slot": "ring", "fromBiome": 1, "name": {"ru": "Изумрудное кольцо", "en": "Emerald Ring"}, "implicit": [{"stat": "damage", "kind": "increased", "tags": ["Mouse"], "value": 0.06}]},
-    {"id": "sapphire_ring", "slot": "ring", "fromBiome": 1, "name": {"ru": "Сапфировое кольцо", "en": "Sapphire Ring"}, "implicit": [{"stat": "damage", "kind": "increased", "tags": ["Skill"], "value": 0.04}]},
+    {"id": "ruby_ring", "slot": "ring", "color": "red", "fromBiome": 1, "name": {"ru": "Рубиновое кольцо", "en": "Ruby Ring"}, "implicit": [{"stat": "damage", "kind": "increased", "tags": ["Keyboard"], "value": 0.04}]},
+    {"id": "emerald_ring", "slot": "ring", "color": "green", "fromBiome": 1, "name": {"ru": "Изумрудное кольцо", "en": "Emerald Ring"}, "implicit": [{"stat": "damage", "kind": "increased", "tags": ["Mouse"], "value": 0.06}]},
+    {"id": "sapphire_ring", "slot": "ring", "color": "blue", "fromBiome": 1, "name": {"ru": "Сапфировое кольцо", "en": "Sapphire Ring"}, "implicit": [{"stat": "damage", "kind": "increased", "tags": ["Skill"], "value": 0.04}]},
     {"id": "gold_ring", "slot": "ring", "fromBiome": 2, "name": {"ru": "Золотое кольцо", "en": "Gold Ring"}, "implicit": [{"stat": "gold", "kind": "increased", "value": 0.06}]},
     {"id": "amber_ring", "slot": "ring", "fromBiome": 2, "name": {"ru": "Янтарное кольцо", "en": "Amber Ring"}, "implicit": [{"stat": "gemDrop", "kind": "increased", "value": 0.05}]},
     {"id": "obsidian_ring", "slot": "ring", "fromBiome": 3, "name": {"ru": "Обсидиановое кольцо", "en": "Obsidian Ring"}, "implicit": [{"stat": "damage", "kind": "increased", "tags": ["Idle"], "value": 0.08}]},
@@ -100,5 +100,9 @@
     {"id": "jewel_intelligence", "slots": ["ring", "amulet"], "part": "suffix", "stats": [{"stat": "intelligence", "kind": "flat"}], "tiers": [3, 18], "group": "attribute"},
     {"id": "amulet_all_attributes", "slots": ["amulet"], "part": "suffix", "stats": [{"stat": "strength", "kind": "flat"}, {"stat": "dexterity", "kind": "flat"}, {"stat": "intelligence", "kind": "flat"}], "tiers": [1, 6], "group": "attribute"},
     {"id": "jewel_damage", "slots": ["ring", "amulet"], "part": "prefix", "stats": [{"stat": "damage", "kind": "increased"}], "tiers": [0.02, 0.12]}
+  ],
+  "sets": [
+    {"id": "jarl_forge", "name": {"ru": "Кузня ярла", "en": "Jarl's Forge"}, "rarity": "rare", "color": "red", "pieces": {"helmet": [{"stat": "resourceGain", "kind": "increased", "value": 0.05, "tags": ["Keyboard"]}], "chest": [{"stat": "damage", "kind": "increased", "value": 0.06, "tags": ["Keyboard"]}], "gloves": [{"stat": "critChance", "kind": "flat", "value": 0.01, "tags": ["Keyboard"]}], "boots": [{"stat": "focusGain", "kind": "increased", "value": 0.06}]}, "bonus": [{"stat": "damage", "kind": "increased", "value": 0.08, "tags": ["Keyboard"]}]},
+    {"id": "onslaught", "name": {"ru": "Натиск", "en": "Onslaught"}, "rarity": "rare", "pieces": {"helmet": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.06}], "chest": [{"stat": "damage", "kind": "increased", "value": 0.04}], "gloves": [{"stat": "damage", "kind": "increased", "value": 0.06, "tags": ["Skill"]}], "boots": [{"stat": "critMultiplier", "kind": "flat", "value": 0.08}]}, "bonus": [{"stat": "damage", "kind": "increased", "value": 0.06}]}
   ]
 }

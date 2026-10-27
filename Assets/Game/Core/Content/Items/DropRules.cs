@@ -28,8 +28,11 @@ namespace Game.Core.Content.Items
 
         private DropRules(double[] rarityWeights, ItemRarity firstCeiling, int ceilingPerBiome, double[] slotWeights, DropTable record, int specialBossEvery,
             DropTable specialBoss, DropTable guardian, DailyDropRules daily, Dictionary<long, DropGuarantee> guarantees, Dictionary<GemKind, GemDropChance> gems,
-            long firstTriggerStage, int bagSize, double[] dust)
+            long firstTriggerStage, int bagSize, double[] dust, double setChance, double setBossChance, double setGuardianChance)
         {
+            SetChance = setChance;
+            SetBossChance = setBossChance;
+            SetGuardianChance = setGuardianChance;
             _rarityWeights = rarityWeights;
             FirstCeiling = firstCeiling;
             CeilingPerBiome = ceilingPerBiome;
@@ -55,6 +58,18 @@ namespace Game.Core.Content.Items
         public DailyDropRules Daily { get; }
         public long FirstTriggerStage { get; }
         public int BagSize { get; }
+        public double SetChance { get; }
+        public double SetBossChance { get; }
+        public double SetGuardianChance { get; }
+
+        public double SetChanceFor(DropSource source) => source switch
+        {
+            DropSource.Record => SetChance,
+            DropSource.SpecialBoss => SetBossChance,
+            DropSource.Daily => SetBossChance,
+            DropSource.Guardian => SetGuardianChance,
+            _ => 0
+        };
         public IReadOnlyList<double> SlotWeights => _slotWeights;
 
         public double RarityWeight(ItemRarity rarity) => _rarityWeights[(int)rarity];
@@ -97,7 +112,10 @@ namespace Game.Core.Content.Items
                 ReadGems(root.Field("gems")),
                 triggers.HasField("firstAtStage") ? triggers.Field("firstAtStage").AsLong(0) : 0,
                 root.Field("bag").Field("size").AsInt(1, 10000),
-                ReadRarities(root.Field("dust"), 0, 1e12, requirePositive: false));
+                ReadRarities(root.Field("dust"), 0, 1e12, requirePositive: false),
+                root.Field("sets").Field("chance").AsNumber(0, 1),
+                root.Field("sets").Field("boss").AsNumber(0, 1),
+                root.Field("sets").Field("guardian").AsNumber(0, 1));
         }
 
         private static double[] ReadRarities(ContentNode node, double min, double max, bool requirePositive)

@@ -8,15 +8,53 @@ namespace Game.Core.Sim
     {
         private readonly GameState _state;
         private readonly ModifierLayer _layer;
+        private ItemCatalog _catalog;
 
-        public GearSystem(GameState state, StatSheet hero)
+        public GearSystem(ItemCatalog catalog, GameState state, StatSheet hero)
         {
+            _catalog = catalog;
             _state = state;
             _layer = new ModifierLayer(hero);
             Rebuild();
         }
 
         public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
+
+        public void UseCatalog(ItemCatalog catalog)
+        {
+            _catalog = catalog;
+            Rebuild();
+        }
+
+        public bool Collected(SetDef set)
+        {
+            foreach (var slot in set.Slots)
+            {
+                if (!_state.SetCollection.Contains(SetDef.PieceKey(set.Id, slot)))
+                    return false;
+            }
+            return true;
+        }
+
+        public int CollectedPieces(SetDef set)
+        {
+            var count = 0;
+            foreach (var slot in set.Slots)
+            {
+                if (_state.SetCollection.Contains(SetDef.PieceKey(set.Id, slot)))
+                    count++;
+            }
+            return count;
+        }
+
+        public bool NoteFound(GearItem item)
+        {
+            if (item.Set == null || !_state.SetCollection.Add(SetDef.PieceKey(item.Set.Id, item.Slot)))
+                return false;
+            if (Collected(item.Set))
+                Rebuild();
+            return true;
+        }
         public GearItem? In(GearSlot slot) => _state.Gear.In(slot);
         public IReadOnlyList<GearItem> Bag => _state.Drops.Gear;
 
@@ -57,6 +95,11 @@ namespace Game.Core.Sim
             var modifiers = new List<Modifier>();
             foreach (var item in _state.Gear.Worn)
                 item?.AddModifiers(modifiers);
+            foreach (var set in _catalog.Sets)
+            {
+                if (Collected(set))
+                    modifiers.AddRange(set.Bonus);
+            }
             _layer.Set(modifiers);
         }
     }
