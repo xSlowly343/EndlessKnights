@@ -104,10 +104,15 @@ namespace Game.Sim
         private static int RunSupports(GameData data, SimOptions options)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            var hosts = new[] { new SupportBalance(data, options.Seed, SupportBalance.FastHost), new SupportBalance(data, options.Seed, SupportBalance.HeavyHost) };
+            var hosts = new[]
+            {
+                new SupportBalance(data, options.Seed, SupportBalance.FastHost),
+                new SupportBalance(data, options.Seed, SupportBalance.HeavyHost),
+                new SupportBalance(data, options.Seed, SupportBalance.DurationHost)
+            };
             using var file = options.OutFile == null ? null : new StreamWriter(options.OutFile);
             var output = file ?? Console.Out;
-            output.WriteLine("support,color,fast_typist,fast_mouse,fast_idle,fast_average,heavy_typist,heavy_mouse,heavy_idle,heavy_average,best,verdict");
+            output.WriteLine("support,color,fast_typist,fast_mouse,fast_idle,fast_average,heavy_typist,heavy_mouse,heavy_idle,heavy_average,duration_typist,duration_mouse,duration_idle,duration_average,best,verdict");
             var outside = 0;
             foreach (var gem in data.Gems.All)
             {
@@ -137,8 +142,8 @@ namespace Game.Sim
             }
             watch.Stop();
             Console.Error.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                "supports on {0} and {1} at stage {2}, {3:0.##} h per profile: {4} outside x{5:0.00}-x{6:0.00}; simulated in {7:0.00} s",
-                SupportBalance.FastHost, SupportBalance.HeavyHost, SupportBalance.Stage, options.SupportHours, outside, SupportLow, SupportHigh, watch.Elapsed.TotalSeconds));
+                "supports on {0}, {1} and {8} at stage {2}, {3:0.##} h per profile: {4} outside x{5:0.00}-x{6:0.00}; simulated in {7:0.00} s",
+                SupportBalance.FastHost, SupportBalance.HeavyHost, SupportBalance.Stage, options.SupportHours, outside, SupportLow, SupportHigh, watch.Elapsed.TotalSeconds, SupportBalance.DurationHost));
             return 0;
         }
 

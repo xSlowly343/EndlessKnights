@@ -11,6 +11,7 @@ namespace Game.Core.Sim.Headless
     {
         public const string FastHost = "iron_rim_bash";
         public const string HeavyHost = "no_mercy";
+        public const string DurationHost = "tethered_ball";
         public const long Stage = 40;
         public const double Attributes = 100;
 
@@ -89,7 +90,7 @@ namespace Game.Core.Sim.Headless
             {
                 if (weapon.Type.Id != type)
                     continue;
-                loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(weapon));
+                loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(new Content.Weapons.WeaponItem(weapon, Content.Items.ItemRarity.Simple, new[] { skill.Id })));
                 return;
             }
         }

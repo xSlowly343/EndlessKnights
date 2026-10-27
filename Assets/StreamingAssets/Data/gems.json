@@ -7935,6 +7935,27 @@
       "color": "white",
       "name": { "ru": "Отложенная плата", "en": "Deferred Payment" },
       "effect": { "type": "deferredPayment", "costMultiplier": 0.8, "perSecond": 0.1 }
+    },
+    {
+      "id": "double_charge",
+      "kind": "support",
+      "color": "white",
+      "name": { "ru": "Двойной заряд", "en": "Double Charge" },
+      "effect": { "type": "doubleCharge", "extraCharges": 1, "power": 1.15 }
+    },
+    {
+      "id": "twins",
+      "kind": "support",
+      "color": "white",
+      "name": { "ru": "Близнецы", "en": "Twins" },
+      "effect": { "type": "twins", "afterSeconds": 2, "power": 0.3 }
+    },
+    {
+      "id": "lingering",
+      "kind": "support",
+      "color": "white",
+      "name": { "ru": "Затяжной", "en": "Lingering" },
+      "effect": { "type": "lingering", "durationMultiplier": 1.2, "lingerMax": 1 }
     }
   ]
 }
