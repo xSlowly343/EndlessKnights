@@ -7,6 +7,8 @@ namespace Game.Core.Sim
 {
     public sealed class SkillSlot
     {
+        public const int SocketCapacity = 8;
+
         public SkillSlot(GemDef skill, GemDef? trigger = null)
         {
             Skill = skill;
@@ -17,6 +19,7 @@ namespace Game.Core.Sim
 
         public GemDef Skill { get; set; }
         public GemDef? Trigger { get; set; }
+        public GemDef?[] Supports { get; } = new GemDef?[SocketCapacity];
         public int CooldownTicks { get; set; }
         public int CooldownTotalTicks { get; set; }
         public int ActiveTicks { get; set; }

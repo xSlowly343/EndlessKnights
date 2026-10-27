@@ -16,6 +16,8 @@ namespace Game.Core.Sim
         private long _hitsTowardCrit;
         private double _extraCritChance;
 
+        public SkillSlot? Supporting { get; set; }
+
         public CombatSystem(CombatRules rules, StatSheet hero, GameState state, EventQueue events)
         {
             _rules = rules;
@@ -187,6 +189,9 @@ namespace Game.Core.Sim
             if (!_state.EnemyAlive)
                 return;
 
+            var supporting = source == DamageSource.Skill ? Supporting : null;
+            if (supporting != null)
+                multiplier *= SupportEffects.HitMultiplier(supporting, _state);
             var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags));
             if (damage.Sign <= 0)
                 return;
@@ -210,6 +215,8 @@ namespace Game.Core.Sim
                 PierceQueue(damage);
                 _keyHits?.OnKeyHit(damage);
             }
+            if (supporting != null)
+                SupportEffects.AfterHit(supporting, _state, damage);
             else if (source == DamageSource.Mouse)
                 _keyHits?.OnMouseHit(damage);
             if (_state.EnemyAlive && !Culled(tags))
@@ -217,6 +224,8 @@ namespace Game.Core.Sim
 
             CarryOverkill(damage - hpBefore, tags);
             _state.EnemyHp = BigNumber.Zero;
+            if (supporting != null)
+                SupportEffects.OnKill(supporting);
             _kills?.OnEnemyKilled();
         }
 

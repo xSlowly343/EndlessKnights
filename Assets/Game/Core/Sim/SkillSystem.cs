@@ -135,7 +135,7 @@ namespace Game.Core.Sim
             slot.AuraPower = 1;
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
-            var cooldown = skill.CooldownSeconds * CooldownMultiplier() * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
+            var cooldown = skill.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot) * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
             slot.StartCooldown(Ticks(cooldown));
             slot.LastCastTick = _state.Tick;
             if (skill.ArmOn != ArmOn.None)
@@ -147,7 +147,10 @@ namespace Game.Core.Sim
                 _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
                 return CastResult.Cast;
             }
+            var outer = _combat.Supporting;
+            _combat.Supporting = slot;
             Release(slot, native, spent, wasFull, announce: true);
+            _combat.Supporting = outer;
             return CastResult.Cast;
         }
 
@@ -528,8 +531,10 @@ namespace Game.Core.Sim
             _keyGapTicks = _state.Tick - _lastKeyHitTick;
             _lastKeyHitTick = _state.Tick;
             _lastKeyHitDamage = damage;
+            var outer = _combat.Supporting;
             foreach (var slot in _state.Skills)
             {
+                _combat.Supporting = slot;
                 if (slot.HitsLeft > 0 && slot.Def.Effect is ChainHitsEffect chain)
                 {
                     slot.HitsLeft--;
@@ -540,17 +545,21 @@ namespace Game.Core.Sim
                 if (slot.Def.Effect is HitStrikeEffect strike && strike.Input != HitInput.Mouse)
                     CountHitStrike(slot, strike);
             }
+            _combat.Supporting = outer;
         }
 
         public void OnMouseHit(BigNumber damage)
         {
+            var outer = _combat.Supporting;
             foreach (var slot in _state.Skills)
             {
+                _combat.Supporting = slot;
                 if (slot.Active && !slot.Def.Reserves)
                     OnActiveHit(slot, damage, HitInput.Mouse);
                 if (slot.Def.Effect is HitStrikeEffect strike && (strike.Input == HitInput.Mouse || strike.Input == HitInput.Any))
                     CountHitStrike(slot, strike);
             }
+            _combat.Supporting = outer;
         }
 
         public void OnCrit()
@@ -772,6 +781,7 @@ namespace Game.Core.Sim
             for (var index = 0; index < _state.Skills.Count; index++)
             {
                 var slot = _state.Skills[index];
+                _combat.Supporting = slot;
                 if (slot.CooldownTicks > 0 && --slot.CooldownTicks == 0)
                     slot.ReadyTick = _state.Tick;
                 KeepReserved(slot);
@@ -823,6 +833,7 @@ namespace Game.Core.Sim
                 if (slot.Active && slot.Def.Effect is AddStacksEffect stackFlow && stackFlow.PerSecond > 0)
                     Dots.Flow(stackFlow);
             }
+            _combat.Supporting = null;
             _state.ActiveAuras = CountAuras();
         }
 

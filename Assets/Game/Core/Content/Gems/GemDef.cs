@@ -7,8 +7,9 @@ namespace Game.Core.Content.Gems
     {
         public GemDef(string id, GemKind kind, GemColor color, string nameRu, string nameEn, StatTags tags,
             SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null, IReadOnlyDictionary<string, double>? requires = null,
-            string? ascendancy = null, bool locked = false)
+            string? ascendancy = null, bool locked = false, SupportDef? support = null)
         {
+            Support = support;
             Requires = requires ?? new Dictionary<string, double>();
             Id = id;
             Kind = kind;
@@ -45,6 +46,7 @@ namespace Game.Core.Content.Gems
         public SkillDef? Skill { get; }
         public TriggerDef? Trigger { get; }
         public string? SupportEffect { get; }
+        public SupportDef? Support { get; }
         public IReadOnlyDictionary<string, double> Requires { get; }
         public string? Ascendancy { get; }
         public bool Locked { get; }

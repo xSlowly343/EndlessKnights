@@ -7851,6 +7851,27 @@
       "formerIds": ["cast_on_enter"],
       "condition": { "type": "every", "value": 30 },
       "cooldownMultiplier": 1.5
+    },
+    {
+      "id": "rebound",
+      "kind": "support",
+      "color": "white",
+      "name": { "ru": "Отскок", "en": "Rebound" },
+      "effect": { "type": "rebound", "killCooldownSeconds": 1, "cooldownMultiplier": 0.9 }
+    },
+    {
+      "id": "chain",
+      "kind": "support",
+      "color": "green",
+      "name": { "ru": "Цепь", "en": "Chain" },
+      "effect": { "type": "chain", "share": 0.6 }
+    },
+    {
+      "id": "executioner",
+      "kind": "support",
+      "color": "blue",
+      "name": { "ru": "Казнящий", "en": "Executioner" },
+      "effect": { "type": "executioner", "below": 0.3, "multiplier": 2, "killCooldownSeconds": 2 }
     }
   ]
 }

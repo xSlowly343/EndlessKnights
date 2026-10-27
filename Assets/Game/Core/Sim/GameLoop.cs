@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Game.Core.Build;
 using Game.Core.Content;
+using Game.Core.Content.Gems;
 using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Party;
@@ -288,7 +289,10 @@ namespace Game.Core.Sim
         {
             var current = new BuildPreset(State.Tree);
             foreach (var slot in State.Skills)
+            {
                 current.Skills.Add((slot.Skill, slot.Trigger));
+                current.Supports.Add((GemDef?[])slot.Supports.Clone());
+            }
 
             var next = State.OtherPreset;
             next.Tree.PointsEarned = State.Tree.PointsEarned;
@@ -299,14 +303,21 @@ namespace Game.Core.Sim
             State.ActivePreset = 1 - State.ActivePreset;
             RebuildTree();
 
-            foreach (var (skill, trigger) in next.Skills)
+            for (var i = 0; i < next.Skills.Count; i++)
             {
+                var (skill, trigger) = next.Skills[i];
                 if (_book.Equip(skill) != BookResult.Done)
                     continue;
                 var index = State.Skills.Count - 1;
                 State.Skills[index].StartCooldown((int)System.Math.Round(skill.Skill!.CooldownSeconds * TicksPerSecond));
                 if (trigger != null)
                     _book.SetTrigger(index, trigger);
+                var supports = next.SupportsAt(i);
+                for (var socket = 0; socket < supports.Length; socket++)
+                {
+                    if (supports[socket] != null)
+                        _book.SetSupport(index, socket, supports[socket]);
+                }
             }
         }
 
