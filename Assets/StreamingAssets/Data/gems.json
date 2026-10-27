@@ -7872,6 +7872,27 @@
       "color": "blue",
       "name": { "ru": "Казнящий", "en": "Executioner" },
       "effect": { "type": "executioner", "below": 0.3, "multiplier": 2, "killCooldownSeconds": 2 }
+    },
+    {
+      "id": "apprentice",
+      "kind": "support",
+      "color": "white",
+      "name": { "ru": "Ученик", "en": "Apprentice" },
+      "effect": { "type": "apprentice", "power": 0.9, "experienceMultiplier": 1.5 }
+    },
+    {
+      "id": "boss_hunter",
+      "kind": "support",
+      "color": "blue",
+      "name": { "ru": "Против боссов", "en": "Boss Hunter" },
+      "effect": { "type": "bossHunter", "boss": 1.6, "normal": 0.95 }
+    },
+    {
+      "id": "death_mark",
+      "kind": "support",
+      "color": "blue",
+      "name": { "ru": "Метка смерти", "en": "Death Mark" },
+      "effect": { "type": "deathMark", "killResource": 5, "markedMultiplier": 1.2 }
     }
   ]
 }

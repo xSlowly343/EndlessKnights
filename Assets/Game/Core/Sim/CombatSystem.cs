@@ -225,7 +225,7 @@ namespace Game.Core.Sim
             CarryOverkill(damage - hpBefore, tags);
             _state.EnemyHp = BigNumber.Zero;
             if (supporting != null)
-                SupportEffects.OnKill(supporting);
+                SupportEffects.OnKill(supporting, _state);
             _kills?.OnEnemyKilled();
         }
 

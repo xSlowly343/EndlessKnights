@@ -250,5 +250,58 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.State.Skills[0].Supports[0], Is.SameAs(Gem("rebound")));
         }
+            [Test]
+        public void ApprenticeTradesPowerForExperience()
+        {
+            var loop = Hero(new Modifier(CombatStats.Damage, ModifierKind.More, 1e60, StatTags.Keyboard));
+            var slot = Equip(loop, "iron_rim_bash", "apprentice");
+            loop.Book.SetSupport(slot, 0, Gem("apprentice"));
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(slot);
+            Assert.That(loop.State.Skills[slot].CastPower, Is.EqualTo(0.9).Within(1e-9));
+
+            var input = new FakeInputSource();
+            var typing = TestWorld.Loop(input, loop.State, loop.Hero);
+            typing.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(10));
+            input.PressKeys(1);
+            typing.Tick();
+
+            Assert.That(typing.State.GemProgress["iron_rim_bash"].Experience, Is.EqualTo(TestWorld.Data.Gems.Levels.ExperiencePerKill * 1.5).Within(1e-9));
+        }
+
+        [Test]
+        public void BossHunterIsStrongOnBossesAndWeakerOnTheRest()
+        {
+            var plain = Hero(Attribute("intelligence", 15));
+            var hunter = Hero(Attribute("intelligence", 15));
+            var plainSlot = Equip(plain, "iron_rim_bash");
+            var slot = Equip(hunter, "iron_rim_bash", "boss_hunter");
+            hunter.Book.SetSupport(slot, 0, Gem("boss_hunter"));
+            var support = Gem("boss_hunter").Support!;
+
+            Assert.That(CastDamage(hunter, slot) / CastDamage(plain, plainSlot), Is.EqualTo(support.NormalMultiplier).Within(1e-6));
+
+            foreach (var loop in new[] { plain, hunter })
+                loop.State.SpawnEnemy(null, EnemyType.Boss, BigNumber.Create(1, 50));
+            Assert.That(CastDamage(hunter, slot) / CastDamage(plain, plainSlot), Is.EqualTo(support.BossMultiplier).Within(1e-6));
+        }
+
+        [Test]
+        public void DeathMarkHitsMarkedEnemiesHarderAndKillsGiveResource()
+        {
+            var loop = Hero(Attribute("intelligence", 15));
+            var slot = Equip(loop, "iron_rim_bash", "death_mark");
+            loop.Book.SetSupport(slot, 0, Gem("death_mark"));
+            var support = Gem("death_mark").Support!;
+
+            var first = CastDamage(loop, slot);
+            var second = CastDamage(loop, slot);
+            Assert.That(second / first, Is.EqualTo(support.MarkedMultiplier).Within(1e-6));
+
+            loop.State.EnemyHp = BigNumber.FromDouble(1);
+            loop.State.PendingResource = 0;
+            CastDamage(loop, slot);
+            Assert.That(loop.State.PendingResource, Is.EqualTo(support.KillResource).Within(1e-9));
+        }
     }
 }
