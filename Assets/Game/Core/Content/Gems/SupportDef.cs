@@ -16,7 +16,10 @@ namespace Game.Core.Content.Gems
         DeferredPayment,
         DoubleCharge,
         Twins,
-        Lingering
+        Lingering,
+        InkPoison,
+        SeriesRhythm,
+        SeriesFinish
     }
 
     public sealed class SupportDef
@@ -57,6 +60,15 @@ namespace Game.Core.Content.Gems
         public double TwinPower { get; private set; }
         public double DurationMultiplier { get; private set; } = 1;
         public double LingerMax { get; private set; }
+        public double PoisonPerHit { get; private set; }
+        public int PoisonHitsMax { get; private set; }
+        public int RhythmEvery { get; private set; }
+        public double RhythmCooldownSeconds { get; private set; }
+        public int RhythmLongSeries { get; private set; }
+        public double RhythmPower { get; private set; } = 1;
+        public int FinishAfterHits { get; private set; }
+        public double FinishMultiplier { get; private set; }
+        public double FinishResource { get; private set; }
 
         public static SupportDef? Read(ContentNode effect)
         {
@@ -151,6 +163,27 @@ namespace Game.Core.Content.Gems
                     {
                         DurationMultiplier = effect.Field("durationMultiplier").AsNumber(0, 10),
                         LingerMax = effect.Field("lingerMax").AsNumber(0, 10)
+                    };
+                case "inkPoison":
+                    return new SupportDef(SupportKind.InkPoison)
+                    {
+                        PoisonPerHit = effect.Field("stacksPerHit").AsNumber(0, 1000),
+                        PoisonHitsMax = effect.Field("maxHits").AsInt(1, 1000)
+                    };
+                case "seriesRhythm":
+                    return new SupportDef(SupportKind.SeriesRhythm)
+                    {
+                        RhythmEvery = effect.Field("every").AsInt(1, 100000),
+                        RhythmCooldownSeconds = effect.Field("cooldownSeconds").AsNumber(0, 600),
+                        RhythmLongSeries = effect.Field("longSeries").AsInt(1, 100000),
+                        RhythmPower = effect.Field("power").AsNumber(1, 100)
+                    };
+                case "seriesFinish":
+                    return new SupportDef(SupportKind.SeriesFinish)
+                    {
+                        FinishAfterHits = effect.Field("afterHits").AsInt(1, 100000),
+                        FinishMultiplier = effect.Field("multiplier").AsNumber(0, 1000),
+                        FinishResource = effect.Field("resource").AsNumber(0, 1000)
                     };
                 default:
                     return null;

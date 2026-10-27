@@ -32,6 +32,8 @@ namespace Game.Core.Sim
                     power *= 1 + System.Math.Min(support.HungerMax, support.HungerStep * System.Math.Floor((state.KeyHits - slot.KeyHitsAtCast) / support.HungerHitsPerStep));
                 if (support.FocusStep > 0)
                     power *= 1 + System.Math.Min(support.FocusBonusMax, support.FocusBonus * System.Math.Max(0, state.FocusMultiplier - 1) / support.FocusStep);
+                if (support.RhythmLongSeries > 0 && state.KeyStreak > support.RhythmLongSeries)
+                    power *= support.RhythmPower;
             }
             slot.KeyHitsAtCast = state.KeyHits;
             return power;
@@ -161,15 +163,47 @@ namespace Game.Core.Sim
             return multiplier;
         }
 
-        public static void AfterHit(SkillSlot slot, GameState state, BigNumber damage)
+        public static void AfterHit(SkillSlot slot, GameState state, BigNumber damage, double poisonMax)
         {
+            if (slot.MarkedSpawnTick != state.EnemySpawnTick)
+                slot.InkHits = 0;
             slot.MarkedSpawnTick = state.EnemySpawnTick;
             for (var i = 0; i < slot.Supports.Length; i++)
             {
                 var support = slot.Supports[i]?.Support;
-                if (support != null && support.QueueShare > 0)
+                if (support == null)
+                    continue;
+                if (support.QueueShare > 0)
                     state.QueueDamage[support.QueueSlot] += damage * support.QueueShare;
+                if (support.PoisonPerHit > 0 && slot.InkHits < support.PoisonHitsMax)
+                {
+                    slot.InkHits++;
+                    state.PoisonStacks = System.Math.Min(poisonMax, state.PoisonStacks + support.PoisonPerHit);
+                }
             }
+        }
+
+        public static void OnKeyHit(SkillSlot slot, GameState state)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support == null)
+                    continue;
+                if (support.RhythmEvery > 0 && state.KeyStreak % support.RhythmEvery == 0)
+                    slot.CooldownTicks = System.Math.Max(0, slot.CooldownTicks - (int)System.Math.Round(support.RhythmCooldownSeconds * GameLoop.TicksPerSecond));
+            }
+        }
+
+        public static SupportDef? Finish(SkillSlot slot)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.FinishAfterHits > 0)
+                    return support;
+            }
+            return null;
         }
 
         public static void OnKill(SkillSlot slot, GameState state)

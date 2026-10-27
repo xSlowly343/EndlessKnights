@@ -510,5 +510,75 @@ namespace Game.Core.Tests.Build
 
             Assert.That(typing.State.Skills[slot].ActiveTicks, Is.EqualTo(total));
         }
+
+        [Test]
+        public void InkPoisonPoisonsTheEnemyOnTheFirstSkillHits()
+        {
+            var loop = Hero(Attribute("strength", 30));
+            var slot = Supported(loop, "iron_rim_bash", "ink_poison");
+            var support = Gem("ink_poison").Support!;
+
+            for (var i = 0; i < support.PoisonHitsMax + 2; i++)
+                CastDamage(loop, slot);
+
+            Assert.That(loop.State.PoisonStacks, Is.EqualTo(support.PoisonPerHit * support.PoisonHitsMax).Within(1e-9));
+        }
+
+        [Test]
+        public void SeriesRhythmCutsTheCooldownEveryTwentyFiveHitsAndRewardsLongSeries()
+        {
+            var support = Gem("series_rhythm").Support!;
+            var loop = Hero(Attribute("strength", 30));
+            var slot = Supported(loop, "iron_rim_bash", "series_rhythm");
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(slot);
+            var before = loop.State.Skills[slot].CooldownTicks;
+            loop.State.KeyStreak = support.RhythmEvery - 1;
+
+            SupportEffects.OnKeyHit(loop.State.Skills[slot], loop.State);
+            Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(before));
+            loop.State.KeyStreak++;
+            SupportEffects.OnKeyHit(loop.State.Skills[slot], loop.State);
+            Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(before - (int)(support.RhythmCooldownSeconds * GameLoop.TicksPerSecond)));
+
+            Assert.That(CastPowerWith("series_rhythm", l => l.State.KeyStreak = support.RhythmLongSeries + 1), Is.EqualTo(support.RhythmPower).Within(1e-9));
+            Assert.That(CastPowerWith("series_rhythm", l => l.State.KeyStreak = support.RhythmLongSeries), Is.EqualTo(1).Within(1e-9));
+        }
+
+        [Test]
+        public void SeriesFinishStrikesOnTheTwentiethHitAfterTheCast()
+        {
+            var support = Gem("series_finish").Support!;
+            var loop = Hero(Attribute("strength", 30));
+            var slot = Supported(loop, "iron_rim_bash", "series_finish");
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(slot);
+            loop.State.Resource = 0;
+            var input = new FakeInputSource();
+            var typing = TestWorld.Loop(input, loop.State, loop.Hero);
+            typing.State.HitsOnEnemy = 10;
+
+            for (var i = 0; i < support.FinishAfterHits - 1; i++)
+            {
+                input.PressKeys(1);
+                typing.Tick();
+                typing.Tick();
+            }
+            Assert.That(typing.State.Skills[slot].FinishHits, Is.EqualTo(support.FinishAfterHits - 1));
+
+            typing.Events.Clear();
+            input.PressKeys(1);
+            typing.Tick();
+
+            Assert.That(typing.State.Skills[slot].FinishHits, Is.EqualTo(-1));
+            var skillHits = 0;
+            for (var i = 0; i < typing.Events.Count; i++)
+            {
+                if (typing.Events[i].Kind == GameEventKind.Damage && typing.Events[i].Source == DamageSource.Skill)
+                    skillHits++;
+            }
+            Assert.That(skillHits, Is.EqualTo(1));
+            Assert.That(typing.State.Resource, Is.GreaterThanOrEqualTo(support.FinishResource));
+        }
     }
 }

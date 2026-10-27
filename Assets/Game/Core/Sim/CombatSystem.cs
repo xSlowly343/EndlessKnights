@@ -216,7 +216,7 @@ namespace Game.Core.Sim
                 _keyHits?.OnKeyHit(damage);
             }
             if (supporting != null)
-                SupportEffects.AfterHit(supporting, _state, damage);
+                SupportEffects.AfterHit(supporting, _state, damage, _rules.Dots.PoisonMax);
             else if (source == DamageSource.Mouse)
                 _keyHits?.OnMouseHit(damage);
             if (_state.EnemyAlive && !Culled(tags))

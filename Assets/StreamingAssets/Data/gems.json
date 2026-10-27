@@ -7956,6 +7956,27 @@
       "color": "white",
       "name": { "ru": "Затяжной", "en": "Lingering" },
       "effect": { "type": "lingering", "durationMultiplier": 1.2, "lingerMax": 1 }
+    },
+    {
+      "id": "ink_poison",
+      "kind": "support",
+      "color": "red",
+      "name": { "ru": "Чернильный яд", "en": "Ink Poison" },
+      "effect": { "type": "inkPoison", "stacksPerHit": 0.4, "maxHits": 3 }
+    },
+    {
+      "id": "series_rhythm",
+      "kind": "support",
+      "color": "red",
+      "name": { "ru": "Ритм серии", "en": "Series Rhythm" },
+      "effect": { "type": "seriesRhythm", "every": 25, "cooldownSeconds": 1, "longSeries": 50, "power": 1.1 }
+    },
+    {
+      "id": "series_finish",
+      "kind": "support",
+      "color": "red",
+      "name": { "ru": "Финиш серии", "en": "Series Finish" },
+      "effect": { "type": "seriesFinish", "afterHits": 20, "multiplier": 3, "resource": 5 }
     }
   ]
 }
