@@ -56,7 +56,11 @@ namespace Game.Core.Settings
                     ["wheel"] = JsonValue.Of(settings.CountWheel),
                     ["consentGiven"] = JsonValue.Of(settings.InputConsentGiven)
                 }),
-                ["language"] = JsonValue.Of(settings.Language)
+                ["language"] = JsonValue.Of(settings.Language),
+                ["privacy"] = JsonValue.Object(new Dictionary<string, JsonValue>
+                {
+                    ["policyVersion"] = JsonValue.Of(settings.AcceptedPolicyVersion)
+                })
             };
             return JsonWriter.Write(JsonValue.Object(fields)) + "\n";
         }
@@ -107,6 +111,11 @@ namespace Game.Core.Settings
                 settings.CountClicks = Read(input, "clicks", node => node.AsBool(), settings.CountClicks, problems);
                 settings.CountWheel = Read(input, "wheel", node => node.AsBool(), settings.CountWheel, problems);
                 settings.InputConsentGiven = Read(input, "consentGiven", node => node.AsBool(), settings.InputConsentGiven, problems);
+            }
+            if (root.HasField("privacy"))
+            {
+                var privacy = root.Field("privacy");
+                settings.AcceptedPolicyVersion = Read(privacy, "policyVersion", node => node.AsInt(0), settings.AcceptedPolicyVersion, problems);
             }
             return settings;
         }

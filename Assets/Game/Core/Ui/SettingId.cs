@@ -22,6 +22,8 @@ namespace Game.Core.Ui
         CountWheel,
         ShowInputDebug,
         InputConsent,
-        WhatsNew
+        WhatsNew,
+        PrivacyPolicy,
+        Eula
     }
 }

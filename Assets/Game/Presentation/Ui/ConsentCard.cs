@@ -23,7 +23,7 @@ namespace Game.Presentation.Ui
         private const float LineSizePx = 13f;
         private const float DotPx = 6f;
         private const float DotGapPx = 10f;
-        private const float NotePx = 40f;
+        private const float NotePx = 60f;
         private const float NoteSizePx = 12f;
         private const float SectionGapPx = 8f;
         private const float ButtonHeightPx = 36f;
@@ -91,7 +91,7 @@ namespace Game.Presentation.Ui
             _notCountedHeading.text = ConsentTexts.NotCountedHeading;
             Fill(_counted, ConsentTexts.Counted);
             Fill(_notCounted, ConsentTexts.NotCounted);
-            _note.text = ConsentTexts.NetworkNote;
+            _note.text = ConsentTexts.Note;
             _accept.Text = ConsentTexts.Accept;
             _decline.Text = ConsentTexts.Decline;
             _root.gameObject.SetActive(true);

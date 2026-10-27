@@ -18,6 +18,7 @@ namespace Game.Core.Ui
         {
             new[] { SettingId.Language, SettingId.AlwaysOnTop, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.InputConsent, SettingId.WhatsNew },
             new[] { SettingId.MasterVolume, SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume },
+            new[] { SettingId.PrivacyPolicy, SettingId.Eula },
         };
 
         public static int TabCount => Tabs.Length;
@@ -39,7 +40,7 @@ namespace Game.Core.Ui
         {
             SettingId.Paused or SettingId.AlwaysOnTop or SettingId.ClickThrough or SettingId.CountKeys or SettingId.CountMouseMovement
                 or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug => SettingKind.Toggle,
-            SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew => SettingKind.Action,
+            SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew or SettingId.PrivacyPolicy or SettingId.Eula => SettingKind.Action,
             _ => SettingKind.Choice
         };
 
@@ -117,6 +118,8 @@ namespace Game.Core.Ui
                     return true;
                 case SettingId.InputConsent:
                 case SettingId.WhatsNew:
+                case SettingId.PrivacyPolicy:
+                case SettingId.Eula:
                     return true;
                 default:
                     return ChangeVolume(id, settings, step);
