@@ -34,9 +34,70 @@ namespace Game.Core.Sim
                     power *= 1 + System.Math.Min(support.FocusBonusMax, support.FocusBonus * System.Math.Max(0, state.FocusMultiplier - 1) / support.FocusStep);
                 if (support.RhythmLongSeries > 0 && state.KeyStreak > support.RhythmLongSeries)
                     power *= support.RhythmPower;
+                if (support.CirclesForPower > 0 && slot.CirclesSinceCast >= support.CirclesForPower)
+                    power *= support.CirclePower;
             }
             slot.KeyHitsAtCast = state.KeyHits;
+            slot.CirclesSinceCast = 0;
             return power;
+        }
+
+        public static double AuraPower(SkillSlot slot)
+        {
+            var power = 1.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    power *= support.AuraPowerMultiplier;
+            }
+            return power;
+        }
+
+        public static double MouseDistance(SkillSlot slot)
+        {
+            var multiplier = 1.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    multiplier *= support.MouseDistanceMultiplier;
+            }
+            return multiplier;
+        }
+
+        public static void ActiveInputDamage(SkillSlot slot, ref double keys, ref double mouse)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support == null)
+                    continue;
+                keys *= support.ActiveKeyDamage;
+                mouse *= support.ActiveMouseDamage;
+            }
+        }
+
+        public static SupportDef? Whirlpool(SkillSlot slot)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.CirclesForPower > 0)
+                    return support;
+            }
+            return null;
+        }
+
+        public static SupportDef? Tailwind(SkillSlot slot)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.WindPxPerSecond > 0)
+                    return support;
+            }
+            return null;
         }
 
         public static double CritChance(SkillSlot slot, GameState state)

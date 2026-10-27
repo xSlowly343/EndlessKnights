@@ -19,7 +19,10 @@ namespace Game.Core.Content.Gems
         Lingering,
         InkPoison,
         SeriesRhythm,
-        SeriesFinish
+        SeriesFinish,
+        LongSwing,
+        Whirlpool,
+        Tailwind
     }
 
     public sealed class SupportDef
@@ -69,6 +72,15 @@ namespace Game.Core.Content.Gems
         public int FinishAfterHits { get; private set; }
         public double FinishMultiplier { get; private set; }
         public double FinishResource { get; private set; }
+        public double MouseDistanceMultiplier { get; private set; } = 1;
+        public double ActiveMouseDamage { get; private set; } = 1;
+        public double ActiveKeyDamage { get; private set; } = 1;
+        public double CircleCooldownSeconds { get; private set; }
+        public int CirclesForPower { get; private set; }
+        public double CirclePower { get; private set; } = 1;
+        public double WindPxPerSecond { get; private set; }
+        public double WindMax { get; private set; }
+        public double AuraPowerMultiplier { get; private set; } = 1;
 
         public static SupportDef? Read(ContentNode effect)
         {
@@ -184,6 +196,26 @@ namespace Game.Core.Content.Gems
                         FinishAfterHits = effect.Field("afterHits").AsInt(1, 100000),
                         FinishMultiplier = effect.Field("multiplier").AsNumber(0, 1000),
                         FinishResource = effect.Field("resource").AsNumber(0, 1000)
+                    };
+                case "longSwing":
+                    return new SupportDef(SupportKind.LongSwing)
+                    {
+                        MouseDistanceMultiplier = effect.Field("distanceMultiplier").AsNumber(0, 100),
+                        ActiveMouseDamage = effect.Field("mouseDamage").AsNumber(0, 100)
+                    };
+                case "whirlpool":
+                    return new SupportDef(SupportKind.Whirlpool)
+                    {
+                        CircleCooldownSeconds = effect.Field("cooldownSecondsPerCircle").AsNumber(0, 600),
+                        CirclesForPower = effect.Field("circlesForPower").AsInt(1, 1000),
+                        CirclePower = effect.Field("power").AsNumber(1, 100)
+                    };
+                case "tailwind":
+                    return new SupportDef(SupportKind.Tailwind)
+                    {
+                        WindPxPerSecond = effect.Field("pxPerSecond").AsNumber(1, 1e7),
+                        WindMax = effect.Field("max").AsNumber(0, 10),
+                        AuraPowerMultiplier = effect.Field("auraPower").AsNumber(0, 100)
                     };
                 default:
                     return null;

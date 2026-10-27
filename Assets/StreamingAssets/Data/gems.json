@@ -7955,14 +7955,14 @@
       "kind": "support",
       "color": "white",
       "name": { "ru": "Затяжной", "en": "Lingering" },
-      "effect": { "type": "lingering", "durationMultiplier": 1.2, "lingerMax": 1 }
+      "effect": { "type": "lingering", "durationMultiplier": 1.2, "lingerMax": 0.5 }
     },
     {
       "id": "ink_poison",
       "kind": "support",
       "color": "red",
       "name": { "ru": "Чернильный яд", "en": "Ink Poison" },
-      "effect": { "type": "inkPoison", "stacksPerHit": 0.4, "maxHits": 3 }
+      "effect": { "type": "inkPoison", "stacksPerHit": 0.2, "maxHits": 3 }
     },
     {
       "id": "series_rhythm",
@@ -7976,7 +7976,28 @@
       "kind": "support",
       "color": "red",
       "name": { "ru": "Финиш серии", "en": "Series Finish" },
-      "effect": { "type": "seriesFinish", "afterHits": 20, "multiplier": 3, "resource": 5 }
+      "effect": { "type": "seriesFinish", "afterHits": 20, "multiplier": 2, "resource": 5 }
+    },
+    {
+      "id": "long_swing",
+      "kind": "support",
+      "color": "green",
+      "name": { "ru": "Длинный взмах", "en": "Long Swing" },
+      "effect": { "type": "longSwing", "distanceMultiplier": 1.3, "mouseDamage": 1.1 }
+    },
+    {
+      "id": "whirlpool",
+      "kind": "support",
+      "color": "green",
+      "name": { "ru": "Круговорот", "en": "Whirlpool" },
+      "effect": { "type": "whirlpool", "cooldownSecondsPerCircle": 1, "circlesForPower": 3, "power": 1.1 }
+    },
+    {
+      "id": "tailwind_support",
+      "kind": "support",
+      "color": "green",
+      "name": { "ru": "Попутный ветер", "en": "Tailwind" },
+      "effect": { "type": "tailwind", "pxPerSecond": 2000, "max": 1, "auraPower": 1.1 }
     }
   ]
 }

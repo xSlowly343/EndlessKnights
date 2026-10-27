@@ -580,5 +580,82 @@ namespace Game.Core.Tests.Build
             Assert.That(skillHits, Is.EqualTo(1));
             Assert.That(typing.State.Resource, Is.GreaterThanOrEqualTo(support.FinishResource));
         }
+
+        [Test]
+        public void LongSwingStretchesMouseDistanceAndBoostsMouseHitsWhileActive()
+        {
+            var support = Gem("long_swing").Support!;
+            var loop = Hero(Attribute("dexterity", 30));
+            var slot = Supported(loop, "space_hammer", "long_swing");
+            Assert.That(SupportEffects.MouseDistance(loop.State.Skills[slot]), Is.EqualTo(support.MouseDistanceMultiplier).Within(1e-9));
+
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(slot);
+            loop.Tick();
+
+            Assert.That(loop.State.SupportMouseBonus, Is.EqualTo(support.ActiveMouseDamage).Within(1e-9));
+            Assert.That(loop.State.SupportKeyBonus, Is.EqualTo(1).Within(1e-9));
+        }
+
+        [Test]
+        public void WhirlpoolCirclesCutTheCooldownAndPowerTheNextCast()
+        {
+            var support = Gem("whirlpool").Support!;
+            var loop = Hero(Attribute("dexterity", 30));
+            var slot = Supported(loop, "iron_rim_bash", "whirlpool");
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(slot);
+            var before = loop.State.Skills[slot].CooldownTicks;
+            var input = new FakeInputSource();
+            var circling = TestWorld.Loop(input, loop.State, loop.Hero);
+
+            input.Circle(support.CirclesForPower);
+            circling.Tick();
+
+            var cut = support.CirclesForPower * (int)(support.CircleCooldownSeconds * GameLoop.TicksPerSecond);
+            Assert.That(circling.State.Skills[slot].CooldownTicks, Is.EqualTo(System.Math.Max(0, before - 1 - cut)));
+            circling.State.Skills[slot].CooldownTicks = 0;
+            circling.State.Resource = 100;
+            circling.Skills.TryCast(slot);
+            Assert.That(circling.State.Skills[slot].CastPower, Is.EqualTo(support.CirclePower).Within(1e-9));
+        }
+
+        [Test]
+        public void TailwindStretchesTheEffectWithMouseDistanceUpToItsCap()
+        {
+            var support = Gem("tailwind_support").Support!;
+            var loop = Hero(Attribute("dexterity", 30));
+            var slot = Supported(loop, "space_hammer", "tailwind_support");
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(slot);
+            var skill = loop.State.Skills[slot];
+            var total = skill.ActiveTotalTicks;
+            var input = new FakeInputSource();
+            var moving = TestWorld.Loop(input, loop.State, loop.Hero);
+
+            input.MoveMouse((float)support.WindPxPerSecond);
+            moving.Tick();
+            Assert.That(skill.ActiveTicks, Is.EqualTo(total - 1 + GameLoop.TicksPerSecond));
+
+            for (var i = 0; i < 100; i++)
+            {
+                input.MoveMouse((float)support.WindPxPerSecond);
+                moving.Tick();
+            }
+            Assert.That(skill.WindTicks, Is.EqualTo((int)System.Math.Round(total * support.WindMax)));
+        }
+
+        [Test]
+        public void TailwindMakesAurasStronger()
+        {
+            var support = Gem("tailwind_support").Support!;
+            var loop = Hero(Attribute("dexterity", 30));
+            var slot = Supported(loop, "march", "tailwind_support");
+            loop.State.Resource = 100;
+
+            loop.Skills.TryCast(slot);
+
+            Assert.That(loop.State.Skills[slot].AuraPower, Is.EqualTo(support.AuraPowerMultiplier).Within(1e-9));
+        }
     }
 }
