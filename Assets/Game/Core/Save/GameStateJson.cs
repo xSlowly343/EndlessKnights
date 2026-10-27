@@ -221,6 +221,12 @@ namespace Game.Core.Save
                 ("day", JsonValue.Of(drops.Day)),
                 ("dailyItems", JsonValue.Of(drops.DailyItems)),
                 ("dust", JsonValue.Of(drops.Dust)),
+                ("shards", JsonValue.Of(drops.Shards)),
+                ("shardCarry", JsonValue.Of(drops.ShardCarry)),
+                ("shardsFound", JsonValue.Of(drops.ShardsFound)),
+                ("dailyShards", JsonValue.Of(drops.DailyShards)),
+                ("uncutGems", JsonValue.Of(drops.UncutGems)),
+                ("uncutFound", JsonValue.Of(drops.UncutFound)),
                 ("salvageUpTo", drops.SalvageUpTo == null ? JsonValue.Null() : JsonValue.Of(ItemRarityNames.Of(drops.SalvageUpTo.Value))),
                 ("itemsFound", JsonValue.Of(drops.ItemsFound)),
                 ("salvagedItems", JsonValue.Of(drops.SalvagedItems)),
@@ -277,6 +283,15 @@ namespace Game.Core.Save
             drops.Day = node.Field("day").AsLong();
             drops.DailyItems = node.Field("dailyItems").AsInt(0);
             drops.Dust = node.Field("dust").AsNumber(0, 1e300);
+            if (node.HasField("shards"))
+            {
+                drops.Shards = node.Field("shards").AsLong(0);
+                drops.ShardCarry = node.Field("shardCarry").AsNumber(0, 1);
+                drops.ShardsFound = node.Field("shardsFound").AsLong(0);
+                drops.DailyShards = node.Field("dailyShards").AsInt(0);
+                drops.UncutGems = node.Field("uncutGems").AsInt(0);
+                drops.UncutFound = node.Field("uncutFound").AsLong(0);
+            }
             var salvage = node.Field("salvageUpTo");
             drops.SalvageUpTo = !salvage.IsNull && ItemRarityNames.ByName.TryGetValue(salvage.AsString(), out var limit) ? limit : (ItemRarity?)null;
             drops.ItemsFound = node.Field("itemsFound").AsLong(0);

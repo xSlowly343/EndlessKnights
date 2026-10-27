@@ -28,8 +28,9 @@ namespace Game.Core.Content.Items
 
         private DropRules(double[] rarityWeights, ItemRarity firstCeiling, int ceilingPerBiome, double[] slotWeights, DropTable record, int specialBossEvery,
             DropTable specialBoss, DropTable guardian, DailyDropRules daily, Dictionary<long, DropGuarantee> guarantees, Dictionary<GemKind, GemDropChance> gems,
-            long firstTriggerStage, int bagSize, double[] dust, double setChance, double setBossChance, double setGuardianChance)
+            long firstTriggerStage, int bagSize, double[] dust, double setChance, double setBossChance, double setGuardianChance, ShardRules shards)
         {
+            Shards = shards;
             SetChance = setChance;
             SetBossChance = setBossChance;
             SetGuardianChance = setGuardianChance;
@@ -61,6 +62,7 @@ namespace Game.Core.Content.Items
         public double SetChance { get; }
         public double SetBossChance { get; }
         public double SetGuardianChance { get; }
+        public ShardRules Shards { get; }
 
         public double SetChanceFor(DropSource source) => source switch
         {
@@ -115,7 +117,8 @@ namespace Game.Core.Content.Items
                 ReadRarities(root.Field("dust"), 0, 1e12, requirePositive: false),
                 root.Field("sets").Field("chance").AsNumber(0, 1),
                 root.Field("sets").Field("boss").AsNumber(0, 1),
-                root.Field("sets").Field("guardian").AsNumber(0, 1));
+                root.Field("sets").Field("guardian").AsNumber(0, 1),
+                ShardRules.Read(root.Field("shards"), root.Field("uncut")));
         }
 
         private static double[] ReadRarities(ContentNode node, double min, double max, bool requirePositive)

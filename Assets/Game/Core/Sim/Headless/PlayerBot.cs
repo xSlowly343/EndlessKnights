@@ -33,6 +33,7 @@ namespace Game.Core.Sim.Headless
             SpendSubclassPoints();
             PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
+            CutUncutGems();
             _loop.Upgrades.BuyMax();
         }
 
@@ -71,6 +72,20 @@ namespace Game.Core.Sim.Headless
                 while (gem.Kind == Content.Gems.GemKind.Skill && _loop.Book.FreeCopies(gem) > 0 && _loop.Book.Equip(gem) == BookResult.Done)
                 {
                 }
+            }
+        }
+
+        private void CutUncutGems()
+        {
+            while (_loop.BuyUncutGem())
+            {
+            }
+            foreach (var gem in _loop.Drops.PoolOf(Content.Gems.GemKind.Skill))
+            {
+                if (_loop.Drops.UncutGems == 0)
+                    return;
+                if (!_loop.State.OwnedGems.Contains(gem))
+                    _loop.CutGem(gem);
             }
         }
 

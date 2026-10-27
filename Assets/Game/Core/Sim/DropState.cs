@@ -17,6 +17,12 @@ namespace Game.Core.Sim
         public long Day { get; set; }
         public int DailyItems { get; set; }
         public double Dust { get; set; }
+        public long Shards { get; set; }
+        public double ShardCarry { get; set; }
+        public long ShardsFound { get; set; }
+        public int DailyShards { get; set; }
+        public int UncutGems { get; set; }
+        public long UncutFound { get; set; }
         public ItemRarity? SalvageUpTo { get; set; }
         public long ItemsFound { get; set; }
         public long SalvagedItems { get; set; }

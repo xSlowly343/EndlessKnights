@@ -11,7 +11,7 @@ namespace Game.Core.Stats
             "critChance", "critMultiplier", "comboStrikeMultiplier", "crushCleave", "crushMultiplier", "damagePerSector",
             "doomedCritChance", "doomedCritMultiplier", "dotSpread", "doubleStrike", "flareMultiplier", "flareSplash",
             "focusMax", "partyContribution", "partyCritChance", "partyCritMultiplier", "pierceShare", "volleySplash",
-            "windupKeptAfterCrush", "gemDrop", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",
+            "windupKeptAfterCrush", "gemDrop", "uncutGemChance", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",
             "laterHitsPenalty", "minionExplode", "damagePerResource", "keyHitQueueShare", "damagePerCombo", "damagePerComboMax",
             "damageAtBalance", "rampPerSecond", "rampMax", "overloadQueueShare", "goldPerResource", "enemyHpCut", "damagePerAura",
             "echoShare", "doomShare", "doomMultiplier", "dotQueueShare", "skeletonOnKill", "beastOnKill", "minionQueueShare"

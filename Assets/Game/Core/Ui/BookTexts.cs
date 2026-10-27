@@ -1,5 +1,6 @@
 using Game.Core.Build;
 using Game.Core.Content.Gems;
+using Game.Core.Sim;
 using Game.Core.Text;
 
 namespace Game.Core.Ui
@@ -42,6 +43,19 @@ namespace Game.Core.Ui
             BookResult.TooManyColored => Texts.Get("book.result.tooManyColored"),
             _ => string.Empty
         };
+
+        public static string Cut(CutResult result) => result switch
+        {
+            CutResult.NoUncut => Texts.Get("book.cut.noUncut"),
+            CutResult.NotCuttable => Texts.Get("book.cut.notCuttable"),
+            _ => string.Empty
+        };
+
+        public static string Uncut(int count) => Texts.Format("book.uncut", count);
+
+        public static string Shards(long count) => Texts.Format("book.shards", count);
+
+        public static string BuyUncut(int cost) => Texts.Format("book.buyUncut", cost);
 
         public static string RowKey(int row) => row switch
         {
