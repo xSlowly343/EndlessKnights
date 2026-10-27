@@ -43,6 +43,7 @@ namespace Game.Core.Sim
         private readonly DropSystem _drops;
         private readonly OverloadSystem _overload;
         private readonly BannerSystem _banner;
+        private readonly PathSystem _paths;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -74,6 +75,7 @@ namespace Game.Core.Sim
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
             _banner = new BannerSystem(state, hero, _combat, _skills);
+            _paths = new PathSystem(state, hero, _combat);
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
@@ -105,6 +107,7 @@ namespace Game.Core.Sim
         public WeaponSystem Weapons => _weapons;
         public DropSystem Drops => _drops;
         public OverloadSystem Overload => _overload;
+        public PathSystem Paths => _paths;
         public GameData Data => _data;
         public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
@@ -379,6 +382,7 @@ namespace Game.Core.Sim
             _skills.Minions.Tick(input);
             _skills.Dots.Tick(input);
             _overload.Tick();
+            _paths.Tick(input);
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
             if (Permissions.Consent)

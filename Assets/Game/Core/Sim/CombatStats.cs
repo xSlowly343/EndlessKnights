@@ -67,5 +67,25 @@ namespace Game.Core.Sim
         public static readonly StatId PressureDecay = new StatId("pressureDecay");
         public static readonly StatId OverheatSeconds = new StatId("overheatSeconds");
         public static readonly StatId OverheatDisabled = new StatId("overheatDisabled");
+        public static readonly StatId DamagePerResource = new StatId("damagePerResource");
+        public static readonly StatId ResourceDecay = new StatId("resourceDecay");
+        public static readonly StatId ResourcePerKey = new StatId("resourcePerKey");
+        public static readonly StatId KeyHitQueueShare = new StatId("keyHitQueueShare");
+        public static readonly StatId QueueStrikeEvery = new StatId("queueStrikeEvery");
+        public static readonly StatId QueueStrikeMultiplier = new StatId("queueStrikeMultiplier");
+        public static readonly StatId CloneEvery = new StatId("cloneEvery");
+        public static readonly StatId CloneMultiplier = new StatId("cloneMultiplier");
+        public static readonly StatId ComboStrikeCrit = new StatId("comboStrikeCrit");
+        public static readonly StatId DamagePerCombo = new StatId("damagePerCombo");
+        public static readonly StatId DamagePerComboMax = new StatId("damagePerComboMax");
+        public static readonly StatId SkillSuperEvery = new StatId("skillSuperEvery");
+        public static readonly StatId SkillSuperMultiplier = new StatId("skillSuperMultiplier");
+        public static readonly StatId CompanionHitsPerSecond = new StatId("companionHitsPerSecond");
+        public static readonly StatId CompanionMultiplier = new StatId("companionMultiplier");
+        public static readonly StatId DamageAtBalance = new StatId("damageAtBalance");
+        public static readonly StatId RampPerSecond = new StatId("rampPerSecond");
+        public static readonly StatId RampMax = new StatId("rampMax");
+        public static readonly StatId OverloadQueueShare = new StatId("overloadQueueShare");
+        public static readonly StatId IdleHitsPerSecond = new StatId("idleHitsPerSecond");
     }
 }
