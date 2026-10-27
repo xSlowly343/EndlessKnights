@@ -108,6 +108,7 @@ namespace Game.Core.Sim
                 return;
             }
             _state.Kills++;
+            NoteWeakenedKill();
             _state.KillStreak++;
             _state.TicksSinceKill = 0;
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
@@ -185,9 +186,18 @@ namespace Game.Core.Sim
                 _state.Rift.Shards += BigNumber.FromDouble(_state.NextKillShards);
         }
 
+        private void NoteWeakenedKill()
+        {
+            if (!_state.EnemyWeakened)
+                return;
+            _state.WeakenedKills++;
+            _state.LastWeakenedKillSeconds = _state.EnemyLifeSeconds;
+        }
+
         public void ConfirmLinkedKill()
         {
             _state.Kills++;
+            NoteWeakenedKill();
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             Reward();
             KillTimeListener?.OnKillTimed(_state.EnemyType, _state.EnemyLifeSeconds, true);
@@ -267,7 +277,9 @@ namespace Game.Core.Sim
             var spread = _state.EnemyAlive ? 0 : System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.DotSpread, 0, StatTags.DoT)));
             var poison = _state.PoisonStacks * spread;
             var burn = _state.BurnStacks * spread;
+            var weakened = _state.WeakenedSpawns > 0;
             _state.SpawnEnemy(enemy, type, Weakened(hp));
+            _state.EnemyWeakened = weakened;
             _state.PoisonStacks = poison;
             _state.BurnStacks = burn;
             ApplyEnemyModifiers(enemy);

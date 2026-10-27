@@ -53,6 +53,7 @@ namespace Game.Core.Sim
             _state.KeylessTicks = input.Keys > 0 ? 0 : _state.KeylessTicks + 1;
             _state.MouseIdleTicks = input.MousePx > 0 ? 0 : _state.MouseIdleTicks + 1;
             _state.MouseWindow.Record(input.MousePx);
+            _state.ClicklessTicks = input.Clicks > 0 || input.LeftClicks + input.RightClicks + input.MiddleClicks > 0 ? 0 : _state.ClicklessTicks + 1;
             _state.Reading = Reading(resource, input);
             if (resource.Inverse)
             {

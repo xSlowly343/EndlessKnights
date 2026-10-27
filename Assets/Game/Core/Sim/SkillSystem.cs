@@ -21,6 +21,7 @@ namespace Game.Core.Sim
         private WeaponCatalog _weapons;
         private long _seenKills;
         private long _seenPoisonTicks;
+        private long _seenWeakenedKills;
         private SkillSlot? _lastCast;
         private long _lastKeyHitTick = long.MinValue / 2;
         private long _keyGapTicks;
@@ -227,6 +228,7 @@ namespace Game.Core.Sim
             if (skill.Effect is FlurryEffect flurry)
                 slot.HitsLeft = FlurryHits(flurry, native);
             slot.HitCount = 0;
+            slot.InputKinds = 0;
             slot.LastKeyTick = -1;
             slot.Progress = 0;
             slot.CircleProgress = 0;
@@ -360,6 +362,8 @@ namespace Game.Core.Sim
                 multiplier += hits.CircleMultiplier * turns;
                 hitCount += turns;
             }
+            if (multiplier > 0 && hits.QueueTargets > 0)
+                QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * slot.CastPower, slot.Skill.Tags), hits.QueueTargets);
             if (multiplier > 0)
                 SkillHit(slot, multiplier);
             if (hitCount > 0 && IsNative(slot))
@@ -482,6 +486,7 @@ namespace Game.Core.Sim
                 _combat.DirectHit(_lastKeyHitDamage * multiplier);
             else
                 _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags, paused ? strike.CritChance : 0);
+            _resource.Gain(native.ResourceOnHit);
             if (native.ResourceOnCrit > 0 && _combat.LastHitCrit && !strike.LastKeyHit)
                 _resource.Gain(native.ResourceOnCrit);
             if (_state.Kills == killsBefore)
@@ -682,11 +687,14 @@ namespace Game.Core.Sim
                 case QueueHitsEffect queue when Matches(queue.Input, input):
                     QueueShare(damage * queue.Share, queue.Targets);
                     break;
-                case KeyRepeatEffect repeat when Matches(repeat.Input, input):
+                case KeyRepeatEffect repeat when Matches(RepeatInput(slot, repeat), input):
                     RepeatHit(slot, repeat, damage);
                     break;
             }
         }
+
+        private HitInput RepeatInput(SkillSlot slot, KeyRepeatEffect repeat) =>
+            IsNative(slot) && slot.Def.Native.RepeatInput != null ? slot.Def.Native.RepeatInput.Value : repeat.Input;
 
         private static bool Matches(HitInput wanted, HitInput actual) =>
             wanted == HitInput.Any || wanted == actual || (wanted == HitInput.Combo && actual == HitInput.Keys);
@@ -748,6 +756,9 @@ namespace Game.Core.Sim
             End(slot);
             SkillHit(slot, pause.Multiplier);
         }
+
+        private static int InputKindBits(in EffectiveInput input) =>
+            (input.Keys > 0 ? 1 : 0) | (input.MousePx > 0 ? 2 : 0) | (input.Clicks > 0 || input.LeftClicks + input.RightClicks + input.MiddleClicks > 0 ? 4 : 0);
 
         private int FlurryHits(FlurryEffect flurry, NativeTrait native)
         {
@@ -864,6 +875,8 @@ namespace Game.Core.Sim
             _seenKills = _state.Kills;
             var poisonTicks = Dots.PoisonTicks - _seenPoisonTicks;
             _seenPoisonTicks = Dots.PoisonTicks;
+            var weakenedKill = _state.WeakenedKills != _seenWeakenedKills;
+            _seenWeakenedKills = _state.WeakenedKills;
             ExtendSongs(input);
             if (kills > 0 && !SharedEnemy && !CursesFlow())
                 EndDebuffs();
@@ -891,6 +904,14 @@ namespace Game.Core.Sim
                     TickKillStacks(slot, stacks, kills);
                 if (kills > 0 && slot.Def.IsPassive && slot.Def.Native.ResourceOnKill > 0 && IsNative(slot) && Armed(slot))
                     _resource.Gain(slot.Def.Native.ResourceOnKill * kills);
+                if (slot.Active && slot.Def.Effect is InputKindsEffect)
+                    slot.InputKinds |= InputKindBits(input);
+                if (weakenedKill && slot.CooldownTicks > 0 && slot.Def.Native.ResetWithinSeconds > 0 && IsNative(slot)
+                    && _state.LastWeakenedKillSeconds <= slot.Def.Native.ResetWithinSeconds + 1e-9)
+                {
+                    slot.CooldownTicks = 0;
+                    slot.ReadyTick = _state.Tick;
+                }
                 if (poisonTicks > 0 && slot.Def.Native.ResourcePerPoisonTick > 0 && IsNative(slot) && Armed(slot))
                     _resource.Gain(slot.Def.Native.ResourcePerPoisonTick * poisonTicks);
                 if (slot.Def.Effect is SpecialKeysEffect special)
@@ -1395,6 +1416,15 @@ namespace Game.Core.Sim
             }
             if (slot.Def.Effect is StacksEffect stacks && !stacks.Passive)
                 ClearStacks(slot);
+            if (slot.Def.Effect is InputKindsEffect kinds && Armed(slot))
+            {
+                var count = (slot.InputKinds & 1) + ((slot.InputKinds >> 1) & 1) + ((slot.InputKinds >> 2) & 1);
+                slot.InputKinds = 0;
+                if (count > 0)
+                    SkillHit(slot, kinds.PerKind * count);
+            }
+            if (IsNative(slot) && Armed(slot))
+                _resource.Gain(slot.Def.Native.ResourceOnEnd);
             if (slot.Def.Effect is TrailEffect trail)
             {
                 var multiplier = slot.Progress / trail.PxPerMultiplier;

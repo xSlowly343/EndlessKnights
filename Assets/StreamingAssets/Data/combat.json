@@ -65,7 +65,8 @@
     "killStreak": { "max": 25, "resetSeconds": 10 },
     "cullMax": 0.5,
     "afterIdle": { "pauseSeconds": 30, "seconds": 10 },
-    "fastKillSeconds": 3
+    "fastKillSeconds": 3,
+    "inputKindSeconds": 10
   },
   "paths": {
     "balanceWindowSeconds": 10,

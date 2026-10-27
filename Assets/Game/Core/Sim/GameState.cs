@@ -69,6 +69,10 @@ namespace Game.Core.Sim
         public double Resource { get; set; }
         public long KeylessTicks { get; set; }
         public long MouseIdleTicks { get; set; } = long.MaxValue / 2;
+        public long ClicklessTicks { get; set; } = long.MaxValue / 2;
+        public bool EnemyWeakened { get; set; }
+        public long WeakenedKills { get; set; }
+        public double LastWeakenedKillSeconds { get; set; }
         public MouseWindow MouseWindow { get; } = new MouseWindow();
         public bool Reading { get; set; }
         public long IdleTicks { get; set; }

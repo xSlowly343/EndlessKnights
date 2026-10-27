@@ -92,6 +92,9 @@ namespace Game.Core.Sim
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerKill, 0, tags)) * System.Math.Min(_state.KillStreak, conditions.KillStreakMax);
             if (_state.AfterIdleTicks > 0)
                 multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageAfterIdle, 1, tags));
+            var perKind = _hero.Value(CombatStats.DamagePerInputKind, 0, tags);
+            if (perKind > 0)
+                multiplier *= 1 + perKind * RecentInputKinds();
             return multiplier * PathMultiplier(tags);
         }
 
@@ -275,6 +278,15 @@ namespace Game.Core.Sim
             var share = System.Math.Min(1, _hero.Value(CombatStats.KeyHitQueueShare, 0, StatTags.Keyboard));
             if (share > 0)
                 _state.QueueDamage[0] += damage * share;
+            var all = System.Math.Min(1, _hero.Value(CombatStats.KeyHitQueueAll, 0, StatTags.Keyboard));
+            if (all > 0)
+                _state.AddToQueue(damage * all);
+        }
+
+        public int RecentInputKinds()
+        {
+            var window = (long)System.Math.Round(_rules.Conditions.InputKindSeconds * GameLoop.TicksPerSecond);
+            return (_state.KeylessTicks < window ? 1 : 0) + (_state.MouseIdleTicks < window ? 1 : 0) + (_state.ClicklessTicks < window ? 1 : 0);
         }
 
         private bool Culled(StatTags tags)

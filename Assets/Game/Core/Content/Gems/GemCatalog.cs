@@ -329,6 +329,8 @@ namespace Game.Core.Content.Gems
                         node.Field("afterSeconds").AsNumber(0.1, 86400),
                         node.Field("maxGapSeconds").AsNumber(0.1, 3600),
                         ModifierReader.ReadList(node.Field("modifiers")));
+                case "inputKinds":
+                    return new InputKindsEffect(node.Field("perKind").AsNumber(0, 1e6));
                 case "storeHits":
                     return new StoreHitsEffect(node.Field("releaseShare").AsNumber(0, 100)) { Queue = node.HasField("queue") && node.Field("queue").AsBool() };
                 case "flurry":
@@ -363,7 +365,10 @@ namespace Game.Core.Content.Gems
                         Number(node, "circle", 1000),
                         Number(node, "flick", 1000),
                         Number(node, "reversal", 1000),
-                        node.HasField("maxHits") ? node.Field("maxHits").AsInt(1, 10000) : 0);
+                        node.HasField("maxHits") ? node.Field("maxHits").AsInt(1, 10000) : 0)
+                    {
+                        QueueTargets = node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0
+                    };
                 case "distanceStacks":
                     return new DistanceStacksEffect(
                         node.Field("pxPerStack").AsNumber(1, 1e9),
@@ -481,6 +486,9 @@ namespace Game.Core.Content.Gems
                 ResourceOnCrit = Number(node, "resourceOnCrit", 1000),
                 ResourcePerPoisonTick = Number(node, "resourcePerPoisonTick", 1000),
                 MouseEverySeconds = node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0,
+                ResourceOnEnd = Number(node, "resourceOnEnd", 1000),
+                ResetWithinSeconds = Number(node, "resetWithinSeconds", 600),
+                RepeatInput = node.HasField("repeatInput") ? Pick(node.Field("repeatInput"), Inputs, "keys, mouse or any") : (HitInput?)null,
                 ExtraHitPerMousePx = Number(node, "extraHitPerMousePx", 1e6),
                 MaxHits = node.HasField("maxHits") ? node.Field("maxHits").AsInt(1, 1000) : 0,
                 ReleaseBonusPx = node.HasField("releaseBonus") ? node.Field("releaseBonus").Field("px").AsNumber(1, 1e6) : 0,

@@ -87,6 +87,16 @@ namespace Game.Core.Content.Gems
         public bool Queue { get; set; }
     }
 
+    public sealed class InputKindsEffect : SkillEffect
+    {
+        public InputKindsEffect(double perKind)
+        {
+            PerKind = perKind;
+        }
+
+        public double PerKind { get; }
+    }
+
     public sealed class FlurryEffect : SkillEffect
     {
         public FlurryEffect(int hits, double seconds, double multiplier, int queueTargets)
@@ -258,6 +268,7 @@ namespace Game.Core.Content.Gems
 
         public double PxPerHit { get; }
         public double PxShare { get; }
+        public int QueueTargets { get; set; }
         public double CircleMultiplier { get; }
         public double FlickMultiplier { get; }
         public double ReversalMultiplier { get; }
