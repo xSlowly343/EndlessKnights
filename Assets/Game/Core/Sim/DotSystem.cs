@@ -40,9 +40,13 @@ namespace Game.Core.Sim
 
         public void Flow(AddStacksEffect effect) => Add(effect.Kind, effect.PerSecond * GameLoop.TickSeconds);
 
-        public void Detonate(DetonateEffect effect)
+        public void Detonate(DetonateEffect effect) => Detonate(effect.Seconds);
+
+        public long Bursts { get; private set; }
+
+        private void Detonate(double seconds)
         {
-            var hits = HitsPerSecond(1) * effect.Seconds;
+            var hits = HitsPerSecond(1) * seconds;
             _state.PoisonStacks = 0;
             _state.BurnStacks = 0;
             Hit(hits);
@@ -52,6 +56,8 @@ namespace Game.Core.Sim
         {
             if (_state.Class == HeroClass.PlagueDoctor)
                 _state.StirTurns = System.Math.Min(Rules.StirMax, _state.StirTurns + input.CircleTurns);
+            StacksFromKeys(input);
+            BurstAtMax();
             var fanning = _state.Class == HeroClass.Moonshiner && input.MousePx > 0 ? Rules.FanningMultiplier : 1;
             _state.DotCarry += HitsPerSecond(fanning) * GameLoop.TickSeconds;
             if (--_ticksToHit > 0)
@@ -62,8 +68,34 @@ namespace Game.Core.Sim
             Hit(carry);
         }
 
+        private void StacksFromKeys(in EffectiveInput input)
+        {
+            if (input.Keys <= 0)
+                return;
+            var poison = _hero.Value(CombatStats.KeyHitPoison, 0, StatTags.DoT);
+            if (poison > 0)
+                Add(DotKind.Poison, poison * input.Keys);
+            var burn = _hero.Value(CombatStats.KeyHitBurn, 0, StatTags.DoT);
+            if (burn > 0)
+                Add(DotKind.Burn, burn * input.Keys);
+        }
+
+        private void BurstAtMax()
+        {
+            var seconds = _hero.Value(CombatStats.DetonateAtMax, 0, StatTags.DoT);
+            if (seconds <= 0)
+                return;
+            var poisonFull = PoisonMax > 0 && _state.PoisonStacks >= PoisonMax - 1e-9;
+            var burnFull = BurnMax > 0 && _state.BurnStacks >= BurnMax - 1e-9;
+            if (!poisonFull && !burnFull)
+                return;
+            Bursts++;
+            Detonate(seconds);
+        }
+
         private double HitsPerSecond(double fanning) =>
-            _state.PoisonStacks * Rules.PoisonHitsPerStack + _state.BurnStacks * Rules.BurnHitsPerStack * fanning;
+            _state.PoisonStacks * Rules.PoisonHitsPerStack
+            + _state.BurnStacks * Rules.BurnHitsPerStack * fanning * System.Math.Max(0, _hero.Value(CombatStats.BurnDamage, 1, StatTags.DoT));
 
         private void Add(DotKind kind, double stacks)
         {
@@ -77,7 +109,11 @@ namespace Game.Core.Sim
         {
             if (hits <= 0)
                 return;
-            _combat.SkillHit(_combat.BaseKeyDamage, hits * System.Math.Max(0, _hero.Value(CombatStats.DotDamage, 1, StatTags.DoT)), StatTags.Skill | StatTags.DoT);
+            var multiplier = hits * System.Math.Max(0, _hero.Value(CombatStats.DotDamage, 1, StatTags.DoT));
+            _combat.SkillHit(_combat.BaseKeyDamage, multiplier, StatTags.Skill | StatTags.DoT);
+            var share = _hero.Value(CombatStats.DotQueueShare, 0, StatTags.DoT);
+            if (share > 0)
+                _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * share, StatTags.Skill | StatTags.DoT));
         }
     }
 }

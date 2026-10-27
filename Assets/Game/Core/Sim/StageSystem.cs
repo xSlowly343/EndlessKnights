@@ -259,7 +259,12 @@ namespace Game.Core.Sim
 
         private void Spawn(EnemyDef? enemy, EnemyType type, BigNumber hp)
         {
+            var spread = _state.EnemyAlive ? 0 : System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.DotSpread, 0, StatTags.DoT)));
+            var poison = _state.PoisonStacks * spread;
+            var burn = _state.BurnStacks * spread;
             _state.SpawnEnemy(enemy, type, Weakened(hp));
+            _state.PoisonStacks = poison;
+            _state.BurnStacks = burn;
             ApplyEnemyModifiers(enemy);
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemySpawned, _state.Tick, _state.Stage, enemy));
             ApplyChainDamage();

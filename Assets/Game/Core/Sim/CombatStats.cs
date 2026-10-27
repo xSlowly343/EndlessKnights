@@ -106,5 +106,16 @@ namespace Game.Core.Sim
         public static readonly StatId ReadingGain = new StatId("readingGain");
         public static readonly StatId AuraReserve = new StatId("auraReserve");
         public static readonly StatId BannerAuraBonus = new StatId("bannerAuraBonus");
+        public static readonly StatId BurnDamage = new StatId("burnDamage");
+        public static readonly StatId DotSpread = new StatId("dotSpread");
+        public static readonly StatId KeyHitPoison = new StatId("keyHitPoison");
+        public static readonly StatId KeyHitBurn = new StatId("keyHitBurn");
+        public static readonly StatId DetonateAtMax = new StatId("detonateAtMax");
+        public static readonly StatId DotQueueShare = new StatId("dotQueueShare");
+        public static readonly StatId OverheatBurst = new StatId("overheatBurst");
+        public static readonly StatId OverloadAtMax = new StatId("overloadAtMax");
+        public static readonly StatId SkeletonOnKill = new StatId("skeletonOnKill");
+        public static readonly StatId BeastOnKill = new StatId("beastOnKill");
+        public static readonly StatId MinionQueueShare = new StatId("minionQueueShare");
     }
 }
