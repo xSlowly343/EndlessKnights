@@ -340,14 +340,17 @@ namespace Game.Core.Sim
         {
             if (!slot.Active || (hits.MaxHits > 0 && slot.HitsLeft <= 0))
                 return;
-            var multiplier = hits.FlickMultiplier * TakeHits(slot, hits, input.Flicks)
-                + hits.ReversalMultiplier * TakeHits(slot, hits, input.Reversals);
+            var flicks = TakeHits(slot, hits, input.Flicks);
+            var reversals = TakeHits(slot, hits, input.Reversals);
+            var multiplier = hits.FlickMultiplier * flicks + hits.ReversalMultiplier * reversals;
+            var hitCount = (hits.FlickMultiplier > 0 ? flicks : 0) + (hits.ReversalMultiplier > 0 ? reversals : 0);
             if (hits.PxPerHit > 0)
             {
                 slot.Progress += input.MousePx * SupportEffects.MouseDistance(slot);
                 var steps = (int)System.Math.Floor(slot.Progress / hits.PxPerHit);
                 slot.Progress -= steps * hits.PxPerHit;
                 multiplier += hits.PxShare * steps;
+                hitCount += steps;
             }
             if (hits.CircleMultiplier > 0)
             {
@@ -355,9 +358,12 @@ namespace Game.Core.Sim
                 var turns = (int)System.Math.Floor(slot.CircleProgress + 1e-9);
                 slot.CircleProgress -= turns;
                 multiplier += hits.CircleMultiplier * turns;
+                hitCount += turns;
             }
             if (multiplier > 0)
                 SkillHit(slot, multiplier);
+            if (hitCount > 0 && IsNative(slot))
+                _resource.Gain(slot.Def.Native.ResourceOnHit * hitCount);
         }
 
         private static int TakeHits(SkillSlot slot, InputHitsEffect hits, int events)
@@ -467,6 +473,8 @@ namespace Game.Core.Sim
             }
             if (strike.SkipCurrent)
                 return;
+            if (strike.BossTimerStopSeconds > 0 && _state.FightingBoss)
+                _state.BossTimerStopTicks = System.Math.Max(_state.BossTimerStopTicks, Ticks(strike.BossTimerStopSeconds));
             var killsBefore = _state.Kills;
             if (strike.Arrow)
                 multiplier *= System.Math.Max(0, _hero.Value(CombatStats.ArrowDamage, 1, tags));
@@ -1272,14 +1280,27 @@ namespace Game.Core.Sim
         {
             if (!Armed(slot))
                 return;
-            var every = System.Math.Max(1, Ticks(pulse.EverySeconds));
-            if (++slot.HitCount % every != 0)
+            slot.Progress += 1.0 / System.Math.Max(1, Ticks(PulseSeconds(slot, pulse)));
+            if (slot.Progress < 1 - 1e-9)
                 return;
+            slot.Progress -= 1;
             if (pulse.QueueTargets > 0)
                 QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, pulse.Multiplier * slot.CastPower, slot.Skill.Tags), pulse.QueueTargets);
             SkillHit(slot, pulse.Multiplier);
             if (IsNative(slot))
                 _resource.Gain(slot.Def.Native.ResourceOnHit);
+        }
+
+        private double PulseSeconds(SkillSlot slot, PulseEffect pulse)
+        {
+            if (_state.MouseIdleTicks >= Ticks(MouseMovingSeconds))
+                return pulse.EverySeconds;
+            var seconds = pulse.EverySeconds;
+            if (pulse.MouseEverySeconds > 0)
+                seconds = System.Math.Min(seconds, pulse.MouseEverySeconds);
+            if (IsNative(slot) && slot.Def.Native.MouseEverySeconds > 0)
+                seconds = System.Math.Min(seconds, slot.Def.Native.MouseEverySeconds);
+            return seconds;
         }
 
         private void TickStanding(SkillSlot slot)

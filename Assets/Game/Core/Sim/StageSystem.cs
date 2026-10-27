@@ -67,6 +67,11 @@ namespace Game.Core.Sim
                 return;
             if (!_state.FightingBoss || !_state.EnemyAlive)
                 return;
+            if (_state.BossTimerStopTicks > 0)
+            {
+                _state.BossTimerStopTicks--;
+                return;
+            }
             _state.BossTimerCarry += System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1)) / System.Math.Max(1, _hero.Value(CombatStats.BossTimerSlow, 1));
             while (_state.BossTimerCarry >= 1 && _state.BossTicksLeft > 0)
             {

@@ -17,6 +17,8 @@ namespace Game.Core.Sim
             _combat = combat;
         }
 
+        public const double MaxKeep = 0.9;
+
         public long Discharges { get; private set; }
         public long Bursts { get; private set; }
 
@@ -34,7 +36,11 @@ namespace Game.Core.Sim
                 return;
             if (_hero.Value(CombatStats.OverloadDisabled, 0) > 0)
                 return;
-            _resource.SpendAll();
+            var keep = System.Math.Min(MaxKeep, System.Math.Max(0, _hero.Value(CombatStats.OverloadKeep, 0)));
+            if (keep > 0)
+                _resource.TrySpend(_state.Resource - keep * _resource.Max);
+            else
+                _resource.SpendAll();
             Discharges++;
             var power = multiplier + _hero.Value(CombatStats.OverloadMultiplier, 0, StatTags.Skill);
             _combat.SkillHit(_combat.BaseKeyDamage, power, StatTags.Skill);

@@ -50,6 +50,7 @@ namespace Game.Core.Content.Gems
         public bool LastKeyHit { get; set; }
         public double PauseSeconds { get; set; }
         public double PauseMultiplier { get; set; }
+        public double BossTimerStopSeconds { get; set; }
     }
 
     public sealed class AuraEffect : SkillEffect
@@ -429,14 +430,16 @@ namespace Game.Core.Content.Gems
 
     public sealed class PulseEffect : SkillEffect
     {
-        public PulseEffect(double everySeconds, double multiplier, int queueTargets)
+        public PulseEffect(double everySeconds, double multiplier, int queueTargets, double mouseEverySeconds = 0)
         {
+            MouseEverySeconds = mouseEverySeconds;
             EverySeconds = everySeconds;
             Multiplier = multiplier;
             QueueTargets = queueTargets;
         }
 
         public double EverySeconds { get; }
+        public double MouseEverySeconds { get; }
         public double Multiplier { get; }
         public int QueueTargets { get; }
     }
