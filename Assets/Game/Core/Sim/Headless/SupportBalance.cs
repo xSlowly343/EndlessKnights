@@ -9,18 +9,23 @@ namespace Game.Core.Sim.Headless
 {
     public sealed class SupportBalance
     {
-        public const string HostSkill = "iron_rim_bash";
+        public const string FastHost = "iron_rim_bash";
+        public const string HeavyHost = "no_mercy";
         public const long Stage = 40;
         public const double Attributes = 100;
 
         private readonly GameData _data;
         private readonly ulong _seed;
+        private readonly string _host;
 
-        public SupportBalance(GameData data, ulong seed = 1)
+        public SupportBalance(GameData data, ulong seed = 1, string host = FastHost)
         {
             _data = data;
             _seed = seed;
+            _host = host;
         }
+
+        public string Host => _host;
 
         public double Multiplier(GemDef support, BotProfile profile, double seconds)
         {
@@ -31,11 +36,11 @@ namespace Game.Core.Sim.Headless
         public BigNumber SkillDamage(GemDef? support, BotProfile profile, double seconds)
         {
             var loop = Hero(profile);
-            var host = _data.Gems[HostSkill];
+            var host = _data.Gems[_host];
             Arm(loop, host);
             loop.State.OwnedGems.Add(host);
             if (loop.Book.Equip(host) != BookResult.Done)
-                throw new System.InvalidOperationException($"{HostSkill} cannot be equipped for the support check");
+                throw new System.InvalidOperationException($"{_host} cannot be equipped for the support check");
             if (support != null)
             {
                 loop.State.OwnedGems.Add(support);

@@ -17,15 +17,23 @@ namespace Game.Core.Sim
             return multiplier;
         }
 
-        public static double Power(SkillSlot slot)
+        public static double Power(SkillSlot slot, GameState state)
         {
             var power = 1.0;
             for (var i = 0; i < slot.Supports.Length; i++)
             {
                 var support = slot.Supports[i]?.Support;
-                if (support != null)
-                    power *= support.Power;
+                if (support == null)
+                    continue;
+                power *= support.Power;
+                if (support.QuietSeconds > 0 && state.IdleTicksBeforeInput * GameLoop.TickSeconds >= support.QuietSeconds)
+                    power *= support.QuietPower;
+                if (support.HungerHitsPerStep > 0)
+                    power *= 1 + System.Math.Min(support.HungerMax, support.HungerStep * System.Math.Floor((state.KeyHits - slot.KeyHitsAtCast) / support.HungerHitsPerStep));
+                if (support.FocusStep > 0)
+                    power *= 1 + System.Math.Min(support.FocusBonusMax, support.FocusBonus * System.Math.Max(0, state.FocusMultiplier - 1) / support.FocusStep);
             }
+            slot.KeyHitsAtCast = state.KeyHits;
             return power;
         }
 

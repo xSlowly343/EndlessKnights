@@ -7,7 +7,10 @@ namespace Game.Core.Content.Gems
         Executioner,
         Apprentice,
         BossHunter,
-        DeathMark
+        DeathMark,
+        QuietHour,
+        BladeHunger,
+        Acceleration
     }
 
     public sealed class SupportDef
@@ -29,6 +32,14 @@ namespace Game.Core.Content.Gems
         public double NormalMultiplier { get; private set; } = 1;
         public double KillResource { get; private set; }
         public double MarkedMultiplier { get; private set; } = 1;
+        public double QuietSeconds { get; private set; }
+        public double QuietPower { get; private set; } = 1;
+        public double HungerHitsPerStep { get; private set; }
+        public double HungerStep { get; private set; }
+        public double HungerMax { get; private set; }
+        public double FocusStep { get; private set; }
+        public double FocusBonus { get; private set; }
+        public double FocusBonusMax { get; private set; }
 
         public static SupportDef? Read(ContentNode effect)
         {
@@ -66,6 +77,26 @@ namespace Game.Core.Content.Gems
                     {
                         KillResource = effect.Field("killResource").AsNumber(0, 1000),
                         MarkedMultiplier = effect.Field("markedMultiplier").AsNumber(0, 100)
+                    };
+                case "quietHour":
+                    return new SupportDef(SupportKind.QuietHour)
+                    {
+                        QuietSeconds = effect.Field("idleSeconds").AsNumber(0, 86400),
+                        QuietPower = effect.Field("power").AsNumber(1, 100)
+                    };
+                case "bladeHunger":
+                    return new SupportDef(SupportKind.BladeHunger)
+                    {
+                        HungerHitsPerStep = effect.Field("hitsPerStep").AsNumber(1, 100000),
+                        HungerStep = effect.Field("step").AsNumber(0, 10),
+                        HungerMax = effect.Field("max").AsNumber(0, 100)
+                    };
+                case "acceleration":
+                    return new SupportDef(SupportKind.Acceleration)
+                    {
+                        FocusStep = effect.Field("focusStep").AsNumber(0.01, 100),
+                        FocusBonus = effect.Field("bonus").AsNumber(0, 10),
+                        FocusBonusMax = effect.Field("max").AsNumber(0, 100)
                     };
                 default:
                     return null;

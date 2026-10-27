@@ -92,6 +92,8 @@ namespace Game.Sim
         private const double SupportLow = 1.15;
         private const double SupportHigh = 1.40;
 
+        private const double SupportMiddle = (SupportLow + SupportHigh) / 2;
+
         private static readonly (string Name, BotProfile Profile)[] SupportProfiles =
         {
             ("typist", new BotProfile(8, 0, 300)),
@@ -102,36 +104,51 @@ namespace Game.Sim
         private static int RunSupports(GameData data, SimOptions options)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            var balance = new SupportBalance(data, options.Seed);
+            var hosts = new[] { new SupportBalance(data, options.Seed, SupportBalance.FastHost), new SupportBalance(data, options.Seed, SupportBalance.HeavyHost) };
             using var file = options.OutFile == null ? null : new StreamWriter(options.OutFile);
             var output = file ?? Console.Out;
-            output.WriteLine("support,color,typist,mouse,idle,average,verdict");
+            output.WriteLine("support,color,fast_typist,fast_mouse,fast_idle,fast_average,heavy_typist,heavy_mouse,heavy_idle,heavy_average,best,verdict");
             var outside = 0;
             foreach (var gem in data.Gems.All)
             {
                 if (gem.Kind != Game.Core.Content.Gems.GemKind.Support || gem.Support == null)
                     continue;
-                var sum = 0.0;
                 var cells = new List<string>();
-                foreach (var (_, profile) in SupportProfiles)
+                var best = 0.0;
+                foreach (var host in hosts)
                 {
-                    var multiplier = balance.Multiplier(gem, profile, options.SupportHours * 3600);
-                    sum += multiplier;
-                    cells.Add(multiplier.ToString("0.###", CultureInfo.InvariantCulture));
+                    var sum = 0.0;
+                    foreach (var (_, profile) in SupportProfiles)
+                    {
+                        var multiplier = host.Multiplier(gem, profile, options.SupportHours * 3600);
+                        sum += multiplier;
+                        cells.Add(multiplier.ToString("0.###", CultureInfo.InvariantCulture));
+                    }
+                    var average = sum / SupportProfiles.Length;
+                    cells.Add(average.ToString("0.###", CultureInfo.InvariantCulture));
+                    if (System.Math.Abs(average - SupportMiddle) < System.Math.Abs(best - SupportMiddle))
+                        best = average;
                 }
-                var average = sum / SupportProfiles.Length;
-                var utility = gem.Support.ExperienceMultiplier != 1;
-                var fits = utility || (average >= SupportLow && average <= SupportHigh);
-                if (!fits)
+                var verdict = Verdict(gem.Support, best);
+                if (verdict == "review")
                     outside++;
                 output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3:0.###},{4}",
-                    gem.Id, gem.Color.ToString().ToLowerInvariant(), string.Join(",", cells), average, utility ? "utility" : fits ? "ok" : "review"));
+                    gem.Id, gem.Color.ToString().ToLowerInvariant(), string.Join(",", cells), best, verdict));
             }
             watch.Stop();
             Console.Error.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                "supports on {0} at stage {1}, {2:0.##} h per profile: {3} outside x{4:0.00}-x{5:0.00}; simulated in {6:0.00} s",
-                SupportBalance.HostSkill, SupportBalance.Stage, options.SupportHours, outside, SupportLow, SupportHigh, watch.Elapsed.TotalSeconds));
+                "supports on {0} and {1} at stage {2}, {3:0.##} h per profile: {4} outside x{5:0.00}-x{6:0.00}; simulated in {7:0.00} s",
+                SupportBalance.FastHost, SupportBalance.HeavyHost, SupportBalance.Stage, options.SupportHours, outside, SupportLow, SupportHigh, watch.Elapsed.TotalSeconds));
             return 0;
+        }
+
+        private static string Verdict(Game.Core.Content.Gems.SupportDef support, double best)
+        {
+            if (support.ExperienceMultiplier != 1)
+                return "utility";
+            if (support.QuietSeconds > 0)
+                return "conditional";
+            return best >= SupportLow && best <= SupportHigh ? "ok" : "review";
         }
 
         private static readonly (string Name, HeroClass[] Classes)[] StandardParties =
