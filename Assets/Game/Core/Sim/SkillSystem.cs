@@ -207,6 +207,7 @@ namespace Game.Core.Sim
             slot.LingerTicks = 0;
             slot.WindPx = 0;
             slot.WindTicks = 0;
+            slot.FlickTargets = 0;
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
             if (skill.Effect is SpecialKeysEffect special && special.Charges > 0)
@@ -837,6 +838,7 @@ namespace Game.Core.Sim
                 TickTwin(slot);
                 TickWhirlpool(slot, input);
                 TickTailwind(slot, input);
+                TickSweeping(slot, input);
                 if (slot.ActiveTicks > 0 && !Lingers(slot, input))
                 {
                     slot.ActiveTicks--;
@@ -901,6 +903,15 @@ namespace Game.Core.Sim
             }
             _state.SupportKeyBonus = keys;
             _state.SupportMouseBonus = mouse;
+        }
+
+        private void TickSweeping(SkillSlot slot, in EffectiveInput input)
+        {
+            if (input.Flicks <= 0 || !slot.Active)
+                return;
+            var sweeping = SupportEffects.Sweeping(slot);
+            if (sweeping != null)
+                slot.FlickTargets = System.Math.Min(sweeping.FlickTargetsMax, slot.FlickTargets + input.Flicks);
         }
 
         private void TickWhirlpool(SkillSlot slot, in EffectiveInput input)

@@ -209,6 +209,8 @@ namespace Game.Core.Sim
                     _keyHits?.OnCrit();
             }
 
+            if (supporting != null && Redirected(supporting, damage))
+                return;
             damage = WithholdDoom(damage);
             var hpBefore = _state.EnemyHp;
             _state.EnemyHp -= damage;
@@ -231,6 +233,15 @@ namespace Game.Core.Sim
             if (supporting != null)
                 SupportEffects.OnKill(supporting, _state);
             _kills?.OnEnemyKilled();
+        }
+
+        private bool Redirected(SkillSlot supporting, BigNumber damage)
+        {
+            var redirect = SupportEffects.Redirect(supporting);
+            if (redirect <= 0)
+                return false;
+            _state.QueueDamage[0] += damage * redirect;
+            return true;
         }
 
         public const double MaxDoomShare = 0.95;

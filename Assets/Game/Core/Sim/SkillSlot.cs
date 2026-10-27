@@ -65,6 +65,7 @@ namespace Game.Core.Sim
         public double CooldownCircles { get; set; }
         public double WindPx { get; set; }
         public int WindTicks { get; set; }
+        public int FlickTargets { get; set; }
         public double PassiveScale { get; set; }
         public double AuraPower { get; set; } = 1;
         public double CursePower { get; set; } = 1;

@@ -13,6 +13,7 @@ namespace Game.Core.Sim.Headless
         public const string HeavyHost = "no_mercy";
         public const string DurationHost = "tethered_ball";
         public const string MouseHost = "lantern_at_a_distance";
+        public const string SummonHost = "call_a_colleague";
         public const long Stage = 40;
         public const double Attributes = 100;
 
