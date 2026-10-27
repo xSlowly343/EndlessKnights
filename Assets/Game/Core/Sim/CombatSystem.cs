@@ -197,9 +197,9 @@ namespace Game.Core.Sim
                 return;
             _state.HitsOnEnemy++;
 
-            if (ForcedCrit() || ComboStrikeCrit(flags) || RollCrit(tags))
+            if (ForcedCrit() || ComboStrikeCrit(flags) || RollCrit(tags, supporting))
             {
-                damage *= CritMultiplier(tags);
+                damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting));
                 flags |= HitFlags.Crit;
                 if (source != DamageSource.Skill)
                     _keyHits?.OnCrit();
@@ -314,9 +314,10 @@ namespace Game.Core.Sim
             return ++_hitsTowardCrit % every == 0;
         }
 
-        private bool RollCrit(StatTags tags)
+        private bool RollCrit(StatTags tags, SkillSlot? supporting)
         {
-            var chance = System.Math.Min(1, CritChance(tags) + _extraCritChance);
+            var support = supporting == null ? 0 : SupportEffects.CritChance(supporting, _state);
+            var chance = System.Math.Min(1, CritChance(tags) + _extraCritChance + support);
             return chance > 0 && _state.Rng.NextDouble() < chance;
         }
 

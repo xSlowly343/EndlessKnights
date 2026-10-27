@@ -134,7 +134,7 @@ namespace Game.Core.Sim
             var native = IsNative(slot) ? skill.Native : NativeTrait.None;
             var wasFull = _resource.IsFull;
             slot.WhenAtCast = WhenHolds(native);
-            if (!Pay(skill, native, slot.WhenAtCast, out var spent))
+            if (!Pay(slot, native, slot.WhenAtCast, out var spent))
                 return CastResult.NotEnoughResource;
 
             var supportPower = SupportEffects.Power(slot, _state);
@@ -368,11 +368,12 @@ namespace Game.Core.Sim
             SetStacks(slot, distance.Stacks, stacks);
         }
 
-        private double Cost(SkillDef skill) => skill.ResourceCost * System.Math.Max(0, _hero.Value(CombatStats.SkillCost, 1));
+        private double Cost(SkillSlot slot) => slot.Def.ResourceCost * System.Math.Max(0, _hero.Value(CombatStats.SkillCost, 1)) * SupportEffects.CostMultiplier(slot);
 
-        private bool Pay(SkillDef skill, NativeTrait native, bool when, out double spent)
+        private bool Pay(SkillSlot slot, NativeTrait native, bool when, out double spent)
         {
-            var cost = Cost(skill);
+            var skill = slot.Def;
+            var cost = Cost(slot);
             spent = cost;
             if ((native.FreeAboveCombo > 0 && _state.Combo > native.FreeAboveCombo) || (when && native.WhenFree))
             {
@@ -384,6 +385,14 @@ namespace Game.Core.Sim
                 if (_state.Resource < cost)
                     return false;
                 spent = _resource.SpendAll();
+                return true;
+            }
+            if (cost > 0 && SupportEffects.DeferPerSecond(slot) > 0 && !_resource.Rules.Inverse)
+            {
+                if (_state.Resource < cost)
+                    return false;
+                slot.DeferredCost += cost;
+                slot.DeferredTotal = slot.DeferredCost;
                 return true;
             }
             return cost <= 0 || _resource.TrySpend(cost);
@@ -791,6 +800,7 @@ namespace Game.Core.Sim
                 _combat.Supporting = slot;
                 if (slot.CooldownTicks > 0 && --slot.CooldownTicks == 0)
                     slot.ReadyTick = _state.Tick;
+                PayDeferred(slot);
                 KeepReserved(slot);
                 if (slot.ActiveTicks > 0)
                 {
@@ -842,6 +852,17 @@ namespace Game.Core.Sim
             }
             _combat.Supporting = null;
             _state.ActiveAuras = CountAuras();
+        }
+
+        private void PayDeferred(SkillSlot slot)
+        {
+            if (slot.DeferredCost <= 0)
+                return;
+            var due = System.Math.Min(slot.DeferredCost, slot.DeferredTotal * SupportEffects.DeferPerSecond(slot) * GameLoop.TickSeconds);
+            if (due <= 0)
+                due = slot.DeferredCost;
+            slot.DeferredCost -= due;
+            _resource.TrySpend(System.Math.Min(due, _state.Resource));
         }
 
         private int CountAuras()

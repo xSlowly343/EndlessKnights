@@ -7914,6 +7914,27 @@
       "color": "red",
       "name": { "ru": "Разгон", "en": "Acceleration" },
       "effect": { "type": "acceleration", "focusStep": 0.5, "bonus": 0.08, "max": 0.6 }
+    },
+    {
+      "id": "crit_focus",
+      "kind": "support",
+      "color": "red",
+      "name": { "ru": "Крит-фокус", "en": "Crit Focus" },
+      "effect": { "type": "critFocus", "critPerStep": 0.03, "focusStep": 0.5, "critMultiplier": 1.2 }
+    },
+    {
+      "id": "wide_reach",
+      "kind": "support",
+      "color": "white",
+      "name": { "ru": "Широкий охват", "en": "Wide Reach" },
+      "effect": { "type": "wideReach", "share": 0.2, "slot": 1 }
+    },
+    {
+      "id": "deferred_payment",
+      "kind": "support",
+      "color": "white",
+      "name": { "ru": "Отложенная плата", "en": "Deferred Payment" },
+      "effect": { "type": "deferredPayment", "costMultiplier": 0.8, "perSecond": 0.1 }
     }
   ]
 }

@@ -360,5 +360,70 @@ namespace Game.Core.Tests.Build
             Assert.That(CastPowerWith("acceleration", loop => loop.State.FocusMultiplier = 2), Is.EqualTo(1 + support.FocusBonus / support.FocusStep).Within(1e-9));
             Assert.That(CastPowerWith("acceleration", loop => loop.State.FocusMultiplier = 100), Is.EqualTo(1 + support.FocusBonusMax).Within(1e-9));
         }
+
+        [Test]
+        public void CritFocusLetsTheSkillCritFromFocusAndHitHarder()
+        {
+            var plain = Hero(Attribute("strength", 30));
+            var focused = Hero(Attribute("strength", 30));
+            var plainSlot = Equip(plain, "iron_rim_bash");
+            var slot = Equip(focused, "iron_rim_bash", "crit_focus");
+            focused.Book.SetSupport(slot, 0, Gem("crit_focus"));
+            var support = Gem("crit_focus").Support!;
+            focused.State.FocusMultiplier = 2;
+            Assert.That(SupportEffects.CritChance(focused.State.Skills[slot], focused.State), Is.EqualTo(support.CritPerFocusStep / support.CritFocusStep).Within(1e-9));
+
+            plain.State.FocusMultiplier = 1000;
+            focused.State.FocusMultiplier = 1000;
+            var ratio = CastDamage(focused, slot) / CastDamage(plain, plainSlot);
+
+            Assert.That(ratio, Is.EqualTo(focused.Combat.CritMultiplier(StatTags.Skill) * support.CritMultiplier).Within(1e-6));
+        }
+
+        [Test]
+        public void WideReachHitsTheEnemyAfterTheNext()
+        {
+            var loop = Hero();
+            var slot = Equip(loop, "iron_rim_bash", "wide_reach");
+            loop.Book.SetSupport(slot, 0, Gem("wide_reach"));
+            var support = Gem("wide_reach").Support!;
+
+            var hit = CastDamage(loop, slot);
+
+            Assert.That(loop.State.QueueDamage[support.QueueSlot].ToDouble(), Is.EqualTo(hit * support.QueueShare).Within(hit * 1e-6));
+        }
+
+        [Test]
+        public void DeferredPaymentCostsLessAndDrainsOverTime()
+        {
+            var loop = Hero();
+            var gem = Gem("iron_rim_bash");
+            var slot = Equip(loop, "iron_rim_bash", "deferred_payment");
+            loop.Book.SetSupport(slot, 0, Gem("deferred_payment"));
+            var support = Gem("deferred_payment").Support!;
+            var cost = gem.Skill!.ResourceCost * support.CostMultiplier;
+            loop.State.Resource = 100;
+
+            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
+            Assert.That(loop.State.Resource, Is.EqualTo(100).Within(1e-9));
+            Assert.That(loop.State.Skills[slot].DeferredCost, Is.EqualTo(cost).Within(1e-9));
+
+            for (var i = 0; i < GameLoop.TicksPerSecond; i++)
+                loop.Skills.Tick(default, 0);
+
+            Assert.That(loop.State.Skills[slot].DeferredCost, Is.EqualTo(cost * (1 - support.DeferPerSecond)).Within(1e-9));
+            Assert.That(loop.State.Resource, Is.EqualTo(100 - cost * support.DeferPerSecond).Within(1e-9));
+        }
+
+        [Test]
+        public void DeferredPaymentStillNeedsTheResourceAtCast()
+        {
+            var loop = Hero();
+            var slot = Equip(loop, "iron_rim_bash", "deferred_payment");
+            loop.Book.SetSupport(slot, 0, Gem("deferred_payment"));
+            loop.State.Resource = 1;
+
+            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.NotEnoughResource));
+        }
     }
 }
