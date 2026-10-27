@@ -170,9 +170,9 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void DamageDealersHaveAPathKeystone()
+        public void DamageDealersBuffersAndDebuffersHaveAPathKeystone()
         {
-            foreach (var heroClass in new[] { "viking", "ronin", "amazon", "stormweaver", "nomad" })
+            foreach (var heroClass in new[] { "viking", "ronin", "amazon", "stormweaver", "nomad", "metalhead", "oracle", "bannerbearer", "voodoo", "clockmaker" })
             {
                 foreach (var subclass in Catalog.SubclassesOf(heroClass))
                     Assert.That(subclass.Nodes.Count(n => n.Type == TreeNodeType.Keystone), Is.EqualTo(1), subclass.Id);
@@ -191,6 +191,14 @@ namespace Game.Core.Tests.Build
                         Assert.That(known, Does.Contain(modifier.Stat.Name), keystone.Id);
                 }
             }
+        }
+
+        [Test]
+        public void FateWeaverAndSongNodesAreOpen()
+        {
+            Assert.That(Subclass("fate_weaver").Nodes.Where(n => n.Locked), Is.Empty);
+            foreach (var path in new[] { "pit_fighter", "conductor", "headliner" })
+                Assert.That(Subclass(path).Nodes.Where(n => n.Locked), Is.Empty, path);
         }
 
         [Test]

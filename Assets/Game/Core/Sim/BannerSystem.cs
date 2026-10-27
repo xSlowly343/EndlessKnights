@@ -54,7 +54,7 @@ namespace Game.Core.Sim
             _appliedBonus = bonus;
             if (bonus > 0)
             {
-                _applied = new Modifier(CombatStats.AuraEffect, ModifierKind.Increased, bonus, StatTags.Aura);
+                _applied = new Modifier(CombatStats.AuraEffect, ModifierKind.Increased, bonus * System.Math.Max(0, _hero.Value(CombatStats.BannerAuraBonus, 1)), StatTags.Aura);
                 _hero.Add(_applied);
             }
             _skills.RefreshAuraStrength();

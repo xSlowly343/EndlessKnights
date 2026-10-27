@@ -24,7 +24,8 @@ namespace Game.Core.Sim
         public BigNumber GoldFor(long stage, EnemyType type, EnemyDef? enemy)
         {
             var baseGold = type == EnemyType.Normal ? _stages.EnemyGold(stage) : _stages.BossGold(stage);
-            return _hero.Compute(CombatStats.Gold, baseGold * (enemy?.GoldMultiplier ?? 1.0), StatTags.Gold);
+            var fill = 1 + System.Math.Max(0, _hero.Value(CombatStats.GoldPerResource, 0, StatTags.Gold)) * _state.ResourceFill;
+            return _hero.Compute(CombatStats.Gold, baseGold * (enemy?.GoldMultiplier ?? 1.0), StatTags.Gold) * fill;
         }
 
         public void OnKill(long stage, EnemyType type, EnemyDef? enemy, double multiplier = 1)

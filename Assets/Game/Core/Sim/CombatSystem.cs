@@ -46,6 +46,7 @@ namespace Game.Core.Sim
         public MinionRules Skeletons => _rules.Skeletons;
         public MinionRules Beasts => _rules.Beasts;
         public BannerRules Banner => _rules.Banner;
+        public ClassRules Classes => _rules.Classes;
 
         public void SkillHit(double baseDamage, double multiplier, StatTags tags) =>
             Hit(DamageSource.Skill, baseDamage, tags, HitFlags.None, multiplier);
@@ -100,6 +101,8 @@ namespace Game.Core.Sim
             var balance = _hero.Value(CombatStats.DamageAtBalance, 0, tags);
             if (balance > 0)
                 multiplier *= 1 + balance * Balance();
+            if (_state.ActiveAuras > 0)
+                multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerAura, 0, tags)) * _state.ActiveAuras;
             return multiplier;
         }
 
@@ -196,6 +199,7 @@ namespace Game.Core.Sim
                     _keyHits?.OnCrit();
             }
 
+            damage = WithholdDoom(damage);
             var hpBefore = _state.EnemyHp;
             _state.EnemyHp -= damage;
             LastTickDamage += damage;
@@ -213,6 +217,20 @@ namespace Game.Core.Sim
             CarryOverkill(damage - hpBefore, tags);
             _state.EnemyHp = BigNumber.Zero;
             _kills?.OnEnemyKilled();
+        }
+
+        public const double MaxDoomShare = 0.95;
+
+        private BigNumber WithholdDoom(BigNumber damage)
+        {
+            var share = System.Math.Min(MaxDoomShare, _hero.Value(CombatStats.DoomShare, 0));
+            if (share <= 0)
+                return damage;
+            var withheld = damage * share;
+            _state.Doom += withheld;
+            if (_state.DoomTicks <= 0)
+                _state.DoomTicks = System.Math.Max(1, (int)System.Math.Round((_rules.Paths.DoomSeconds + _hero.Value(CombatStats.DoomSeconds, 0)) * GameLoop.TicksPerSecond));
+            return damage - withheld;
         }
 
         private bool ComboStrikeCrit(HitFlags flags) =>
@@ -267,6 +285,8 @@ namespace Game.Core.Sim
         public double CritChance(StatTags tags)
         {
             var chance = _hero.Compute(CombatStats.CritChance, BigNumber.FromDouble(_rules.CritChance), tags | StatTags.Crit).ToDouble();
+            if (_state.Doom.Sign > 0)
+                chance *= System.Math.Max(0, _hero.Value(CombatStats.DoomedCritChance, 1));
             return System.Math.Min(1, System.Math.Max(0, chance));
         }
 

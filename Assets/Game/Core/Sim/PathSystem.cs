@@ -1,3 +1,4 @@
+using Game.Core.Math;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
@@ -7,21 +8,47 @@ namespace Game.Core.Sim
         private readonly GameState _state;
         private readonly StatSheet _hero;
         private readonly CombatSystem _combat;
+        private readonly ResourceSystem _resource;
+        private readonly SkillSystem _skills;
 
-        public PathSystem(GameState state, StatSheet hero, CombatSystem combat)
+        public PathSystem(GameState state, StatSheet hero, CombatSystem combat, ResourceSystem resource, SkillSystem skills)
         {
             _state = state;
             _hero = hero;
             _combat = combat;
+            _resource = resource;
+            _skills = skills;
         }
 
         public long IdleHits { get; private set; }
         public long CompanionHits { get; private set; }
+        public long ClickHits { get; private set; }
+        public long DoomReleases { get; private set; }
+        public long Echoes { get; private set; }
 
         public void Tick(in EffectiveInput input)
         {
+            var dealt = _combat.LastTickDamage;
+            ReleaseDoom();
             IdleStrikes(input);
             Companion();
+            ClickStrikes(input);
+            HolyFire();
+            CurseStrikes();
+            Echo(dealt);
+        }
+
+        private void ReleaseDoom()
+        {
+            if (_state.DoomTicks <= 0 || --_state.DoomTicks > 0)
+                return;
+            var doom = _state.Doom;
+            _state.Doom = BigNumber.Zero;
+            var multiplier = (1 + System.Math.Max(0, _hero.Value(CombatStats.DoomMultiplier, 0))) * System.Math.Max(0, _hero.Value(CombatStats.LoopShare, 1));
+            if (doom.Sign <= 0)
+                return;
+            DoomReleases++;
+            _combat.DirectHit(doom * multiplier);
         }
 
         private void IdleStrikes(in EffectiveInput input)
@@ -58,6 +85,62 @@ namespace Game.Core.Sim
                 _combat.SkillHit(_combat.BaseKeyDamage, multiplier, StatTags.Skill | StatTags.Minion);
                 CompanionHits++;
             }
+        }
+
+        private void ClickStrikes(in EffectiveInput input)
+        {
+            var multiplier = _hero.Value(CombatStats.ClickHitMultiplier, 0, StatTags.Click);
+            if (multiplier <= 0 || input.Clicks <= 0)
+            {
+                _state.ClickHitCarry = 0;
+                return;
+            }
+            var hits = TakeHits(_state.ClickHitCarry + input.Clicks, out var carry);
+            _state.ClickHitCarry = carry;
+            for (var i = 0; i < hits; i++)
+            {
+                _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Click);
+                ClickHits++;
+            }
+        }
+
+        private void HolyFire()
+        {
+            var perPoint = _hero.Value(CombatStats.ResourceGainDamage, 0, StatTags.Skill);
+            var gained = _resource.GainedThisTick;
+            if (perPoint > 0 && gained > 0)
+                _combat.SkillHit(_combat.BaseKeyDamage, perPoint * gained, StatTags.Skill);
+        }
+
+        private void CurseStrikes()
+        {
+            var perSecond = _hero.Value(CombatStats.CurseHitsPerSecond, 0, StatTags.DoT);
+            if (perSecond <= 0 || _state.Tick % GameLoop.TicksPerSecond != 0)
+                return;
+            var curses = _skills.ActiveCurses;
+            if (curses > 0)
+                _combat.SkillHit(_combat.BaseKeyDamage, curses * perSecond * System.Math.Max(0, _hero.Value(CombatStats.CurseDamage, 1)), StatTags.Skill | StatTags.DoT);
+        }
+
+        private void Echo(BigNumber dealt)
+        {
+            var every = _hero.Value(CombatStats.EchoEverySeconds, 0);
+            if (every <= 0)
+            {
+                _state.EchoDamage = BigNumber.Zero;
+                _state.EchoTicks = 0;
+                return;
+            }
+            _state.EchoDamage += dealt;
+            if (++_state.EchoTicks < System.Math.Max(1, (int)System.Math.Round(every * GameLoop.TicksPerSecond)))
+                return;
+            var echo = _state.EchoDamage * System.Math.Max(0, _hero.Value(CombatStats.EchoShare, 0));
+            _state.EchoDamage = BigNumber.Zero;
+            _state.EchoTicks = 0;
+            if (echo.Sign <= 0)
+                return;
+            Echoes++;
+            _combat.DirectHit(echo);
         }
 
         private static int TakeHits(double amount, out double carry)

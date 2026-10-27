@@ -75,7 +75,7 @@ namespace Game.Core.Sim
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
             _banner = new BannerSystem(state, hero, _combat, _skills);
-            _paths = new PathSystem(state, hero, _combat);
+            _paths = new PathSystem(state, hero, _combat, _resource, _skills);
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);

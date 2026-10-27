@@ -44,10 +44,12 @@ namespace Game.Core.Sim
         }
 
         public bool Overheated => _state.OverheatTicks > 0;
+        public double GainedThisTick { get; private set; }
 
         public void Tick(in EffectiveInput input)
         {
             var resource = Current;
+            GainedThisTick = 0;
             _state.KeylessTicks = input.Keys > 0 ? 0 : _state.KeylessTicks + 1;
             _state.MouseIdleTicks = input.MousePx > 0 ? 0 : _state.MouseIdleTicks + 1;
             _state.Reading = Reading(resource, input);
@@ -63,10 +65,11 @@ namespace Game.Core.Sim
             gained += resource.PerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1);
             gained += input.Clicks * resource.PerClick * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Click);
             if (_state.Reading)
-                gained += resource.ReadingPerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
+                gained += resource.ReadingPerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse) * System.Math.Max(0, _hero.Value(CombatStats.ReadingGain, 1));
             gained += _state.PendingResource;
             _state.PendingResource = 0;
             var value = System.Math.Min(Max, _state.Resource + gained);
+            GainedThisTick += System.Math.Max(0, value - _state.Resource);
             if (Decays(resource, input))
                 value -= resource.DecayPerSecond * System.Math.Max(0, _hero.Value(CombatStats.ResourceDecay, 1)) * GameLoop.TickSeconds;
             if (_state.DecayHoldTicks > 0)
@@ -85,8 +88,12 @@ namespace Game.Core.Sim
 
         public void Gain(double amount)
         {
-            if (amount > 0)
-                _state.Resource = System.Math.Min(Max, _state.Resource + amount);
+            if (amount <= 0)
+                return;
+            var before = _state.Resource;
+            _state.Resource = System.Math.Min(Max, _state.Resource + amount);
+            if (!Current.Inverse)
+                GainedThisTick += System.Math.Max(0, _state.Resource - before);
         }
 
         public double SpendAll()
