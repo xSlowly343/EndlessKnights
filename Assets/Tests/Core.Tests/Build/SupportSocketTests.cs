@@ -179,7 +179,8 @@ namespace Game.Core.Tests.Build
 
             var hit = CastDamage(loop, slot);
 
-            Assert.That(loop.State.QueueDamage[0].ToDouble(), Is.EqualTo(hit * 0.6).Within(hit * 1e-6));
+            var share = Gem("chain").Support!.QueueShare;
+            Assert.That(loop.State.QueueDamage[0].ToDouble(), Is.EqualTo(hit * share).Within(hit * 1e-6));
         }
 
         [Test]
