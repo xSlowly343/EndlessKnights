@@ -40,10 +40,12 @@ npm test
   | `party_quick` | `{ language, role, utcOffsetMinutes? }` | вид (вступил или создал открытый) |
   | `party_block`, `party_unblock` | `{ userId }` | `{ blocked: [...] }` |
   | `party_report` | `{ userId, reason }` (`search.reportReasons`) | `{ ok: true }` |
+  | `rift_board` | `{ riftId }` | `{ riftId, endUnixMs, settled, parties, top: [{ place, title, depth, members, yours }], own: { place, depth, reward } \| null }` (первые `board.shown`) |
+  | `rift_rewards` | `{}` | `{ rewards: [{ riftId, place, of, depth, title, shards, uncutGems, ingots }] }` — забирает невыданные награды Разлома, каждая выдаётся один раз |
   | `party_chronicle` | `{}` | `{ partyId, banner, titles, stats: { bossesTogether, hoursTogether, fullOrchestra }, feats: [{ id, kind, tracked, levels, level, at, progress }], records: [{ at, kind, name, feat, level }] }` (новые записи первыми) |
 
   Значения `title`, `language`, `wanted`, `role`, `slot` берутся из `party.json` → `search`.
-- Хранилище: `party_codes/<код>` и `party_match/<partyId>` у системного пользователя, `party/current` у игрока (`{ partyId, matchId, slot, seen }`), `party_blocks/list` у игрока, `party_reports/<кого>:<кто>` у системного пользователя, `party_chronicle/<partyId>` (Хроника отряда) у системного пользователя, `party_feats/<partyId>` (копия подвигов отряда) у каждого участника, `rift_party/open` (общий Разлом, в который сейчас входят отряды: id, окно, начало, конец, вход до) у системного пользователя.
+- Хранилище: `party_codes/<код>` и `party_match/<partyId>` у системного пользователя, `party/current` у игрока (`{ partyId, matchId, slot, seen }`), `party_blocks/list` у игрока, `party_reports/<кого>:<кто>` у системного пользователя, `party_chronicle/<partyId>` (Хроника отряда) у системного пользователя, `party_feats/<partyId>` (копия подвигов отряда) у каждого участника, `rift_party/open` (общий Разлом, в который сейчас входят отряды: id, окно, начало, конец, вход до), `rift_board/<riftId>` (таблица Разлома) и `rift_board/pending` (Разломы без итога) у системного пользователя, `rift_rewards/<riftId>` (награда за место) у каждого участника.
 - Клиентские вызовы групп (создать группу с именем `party-…`, вступить, выйти, исключить, повысить, изменить, удалить отряд, листать группы) закрыты before-хуками: отрядом управляют только RPC.
 - RPC `rift_window` (без аргументов) отдаёт `{ serverUnixMs, open, next, announced }`: открытое окно Разлома (или `null`), следующее окно и их модификаторы по `rift.json`.
 - Клиент входит в матч с метаданными `{ "playerNumber": "<SteamID64>" }`: это число попадает в `Roster`, по нему клиент находит свой слот. Матч отряда пускает только участников этого отряда.

@@ -122,6 +122,7 @@ namespace Game.Core.Party
 
         public PartyWorld World => _state.World;
         public bool IsLeader { get; set; }
+        public long RiftId => _state.World == PartyWorld.Rift ? _state.RiftId : 0;
         public long RiftEndUnixMs => _state.World == PartyWorld.Rift ? _loop.Rift.PartyRiftEnd(_state.RiftId) : 0;
         public bool WorldSwitching => InParty && _state.Switching;
         public PartyWorld PendingWorld => _state.Switching ? (PartyWorld)_state.PendingWorld : _state.World;

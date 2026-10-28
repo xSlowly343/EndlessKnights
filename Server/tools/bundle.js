@@ -61,7 +61,10 @@ const riftRules = {
   modifiers: rift.modifiers.map((modifier) => modifier.id),
   modifiersPerWindow: rift.modifiersPerWindow,
   partyJoinMs: Math.round(rift.party.joinMinutes * 60 * 1000),
-  partyDurationMs: Math.round(rift.party.durationHours * 3600 * 1000)
+  partyDurationMs: Math.round(rift.party.durationHours * 3600 * 1000),
+  boardUpdateMs: Math.round(rift.board.updateMinutes * 60 * 1000),
+  boardShown: rift.board.shown,
+  boardPlaces: rift.board.places.map((place) => ({ upTo: place.upTo || 0, shards: place.shards, uncutGems: place.uncutGems, ingots: place.ingots }))
 };
 
 const directoryRules = {

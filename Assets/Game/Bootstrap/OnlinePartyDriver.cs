@@ -3,9 +3,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Game.Core.Content;
+using Game.Core.Content.Rift;
 using Game.Core.Party;
 using Game.Core.Settings;
 using Game.Core.Sim;
+using Game.Core.Sim.Rift;
 using Game.Core.Ui;
 using Game.Net.Nakama;
 using Game.Presentation.Battle;
@@ -19,6 +21,7 @@ namespace Game.Bootstrap
         private const float KeepAliveSeconds = 10f;
         private const float SearchRefreshSeconds = 30f;
         private const float AlliesRefreshSeconds = 0.1f;
+        private const float RiftRewardsSeconds = 300f;
 
         private readonly ConcurrentQueue<Action> _mainThread = new ConcurrentQueue<Action>();
         private GameLoop _loop = null!;
@@ -31,6 +34,8 @@ namespace Game.Bootstrap
         private PartyClient? _party;
         private Task _keepAlive = Task.CompletedTask;
         private float _sinceKeepAlive;
+        private float _sinceRiftRewards = RiftRewardsSeconds;
+        private bool _claimingRiftRewards;
         private int _matchGeneration;
         private bool _busy;
         private PartySearchFilters _filters = null!;
@@ -113,6 +118,7 @@ namespace Game.Bootstrap
             }
             WatchReactions();
             ShowAllies();
+            WatchRiftRewards();
             if (_session.MatchGeneration != _matchGeneration)
             {
                 _matchGeneration = _session.MatchGeneration;
@@ -134,6 +140,43 @@ namespace Game.Bootstrap
                     Debug.LogWarning("Party: " + error.Message);
                 }
             });
+        }
+
+        private void WatchRiftRewards()
+        {
+            _sinceRiftRewards += Time.unscaledDeltaTime;
+            if (_claimingRiftRewards || _sinceRiftRewards < RiftRewardsSeconds)
+                return;
+            _sinceRiftRewards = 0f;
+            _claimingRiftRewards = true;
+            var directory = _session!.Directory;
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var rewards = await directory.ClaimRiftRewardsAsync().ConfigureAwait(false);
+                    if (rewards.Count > 0)
+                        _mainThread.Enqueue(() => TakeRiftRewards(rewards));
+                }
+                catch (NakamaException error)
+                {
+                    Debug.LogWarning("Rift rewards: " + error.Message);
+                }
+                finally
+                {
+                    _mainThread.Enqueue(() => _claimingRiftRewards = false);
+                }
+            });
+        }
+
+        private void TakeRiftRewards(IReadOnlyList<RiftRewardView> rewards)
+        {
+            foreach (var claimed in rewards)
+            {
+                var reward = new RiftReward(claimed.Shards, claimed.UncutGems, claimed.Ingots);
+                RiftRewards.Apply(_loop.State, reward);
+                _panels.ShowNotice(RiftBoardText.Reward(claimed.Place, claimed.Of, claimed.Depth, reward));
+            }
         }
 
         private void React(int reaction)
