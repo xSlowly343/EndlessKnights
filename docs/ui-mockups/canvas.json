@@ -156,6 +156,55 @@
       "w": 790,
       "h": 3896,
       "title": "Мини-деревья всех 42 Путей (из ascendancy.json)"
+    },
+    "Artifacts.dc.html": {
+      "x": 0,
+      "y": 4800,
+      "w": 480,
+      "h": 786,
+      "title": "Предметы › Артефакты Разлома: группа, печати, потолок"
+    },
+    "UniqueItem.dc.html": {
+      "x": 560,
+      "y": 4800,
+      "w": 480,
+      "h": 786,
+      "title": "Предметы › Сумка: уникальная вещь"
+    },
+    "UniqueWeapon.dc.html": {
+      "x": 1120,
+      "y": 4800,
+      "w": 480,
+      "h": 786,
+      "title": "Предметы: уникальное оружие на два типа"
+    },
+    "Salvage.dc.html": {
+      "x": 1680,
+      "y": 4800,
+      "w": 480,
+      "h": 786,
+      "title": "Предметы › Разбор и авторазбор"
+    },
+    "Jewels.dc.html": {
+      "x": 2240,
+      "y": 4800,
+      "w": 480,
+      "h": 786,
+      "title": "Дерево › Самоцветы: гнёзда и сумка"
+    },
+    "Stats.dc.html": {
+      "x": 0,
+      "y": 5700,
+      "w": 480,
+      "h": 786,
+      "title": "Статистика (в «Ещё»)"
+    },
+    "Settings.dc.html": {
+      "x": 560,
+      "y": 5700,
+      "w": 480,
+      "h": 786,
+      "title": "Настройки: Игра и Звук"
     }
   },
   "order": [
@@ -179,7 +228,14 @@
     "EchoSpirits.dc.html",
     "EchoChronicle.dc.html",
     "StripEncounters.dc.html",
-    "Ascendancy.dc.html"
+    "Ascendancy.dc.html",
+    "Artifacts.dc.html",
+    "UniqueItem.dc.html",
+    "UniqueWeapon.dc.html",
+    "Salvage.dc.html",
+    "Jewels.dc.html",
+    "Stats.dc.html",
+    "Settings.dc.html"
   ],
   "notes": {
     "t1": {
