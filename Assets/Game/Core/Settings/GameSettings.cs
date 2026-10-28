@@ -24,5 +24,6 @@ namespace Game.Core.Settings
         public bool CountWheel { get; set; } = true;
         public string Language { get; set; } = "ru";
         public bool InputConsentGiven { get; set; }
+        public bool TelemetryConsentGiven { get; set; }
     }
 }

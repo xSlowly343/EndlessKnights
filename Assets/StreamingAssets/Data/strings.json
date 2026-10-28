@@ -481,7 +481,7 @@
     "panel.tab.hero.0": { "ru": "Обзор", "en": "Overview" },
     "panel.tab.settings.0": { "ru": "Игра", "en": "Game" },
     "panel.tab.settings.1": { "ru": "Звук", "en": "Sound" },
-    "panel.tab.settings.2": { "ru": "Ввод", "en": "Input" },
+    "panel.tab.settings.2": { "ru": "Приватность", "en": "Privacy" },
     "panel.tab.hero.1": { "ru": "Статы", "en": "Stats" },
     "panel.tab.hero.2": { "ru": "Ввод", "en": "Input" },
     "panel.tab.book.0": { "ru": "Скиллы", "en": "Skills" },
@@ -569,6 +569,8 @@
     "stats.keys": { "ru": "Нажатия клавиш", "en": "Key presses" },
     "stats.clicks": { "ru": "Клики мыши", "en": "Mouse clicks" },
     "stats.mouse": { "ru": "Расстояние мыши", "en": "Mouse distance" },
-    "stats.clicksHint": { "ru": "ЛКМ {0} · ПКМ {1} · СКМ {2}", "en": "LMB {0} · RMB {1} · MMB {2}" }
+    "stats.clicksHint": { "ru": "ЛКМ {0} · ПКМ {1} · СКМ {2}", "en": "LMB {0} · RMB {1} · MMB {2}" },
+    "settings.telemetry": { "ru": "Анонимная статистика", "en": "Anonymous statistics" },
+    "settings.privacyNote": { "ru": "Статистика — только счётчики и итоги сессий со случайным номером установки, без кодов клавиш и текста. Выключена, пока ты её не включишь.", "en": "Statistics are only counters and session totals with a random install number, no key codes or text. Off until you turn it on." }
   }
 }

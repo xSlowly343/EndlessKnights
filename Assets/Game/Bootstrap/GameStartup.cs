@@ -104,6 +104,7 @@ namespace Game.Bootstrap
                 if (save != null)
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
+                TelemetryDriver.Attach(host, battle.Loop, settings.Settings, panels.Settings);
             }
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer, panels, focusButton);
             FocusModeDriver.Attach(host, window, clickThrough);

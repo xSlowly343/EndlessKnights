@@ -120,7 +120,8 @@ namespace Game.Core.Tests.Ui
 
             Assert.That(SettingsScreen.Note(0), Does.Contain("game-icons.net").And.Contain("CC BY 3.0").And.Contain("Lorc"));
             Assert.That(SettingsScreen.Note(1), Is.EqualTo(Texts.Get("settings.soundNote")));
-            Assert.That(SettingsScreen.Note(2), Is.Empty);
+            Assert.That(SettingsScreen.Note(2), Is.EqualTo(Texts.Get("settings.privacyNote")));
+            Assert.That(SettingsScreen.Note(3), Is.Empty);
         }
 
         [TearDown]
