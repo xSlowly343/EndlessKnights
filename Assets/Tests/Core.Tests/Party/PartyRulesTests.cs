@@ -17,6 +17,23 @@ namespace Game.Core.Tests.Party
   ""maxEnemyDamageTaken"": 1.0,
   ""contribution"": { ""minShare"": 0.1, ""activeInputSeconds"": 30, ""restBankMinutes"": 60, ""idlePortionShare"": 1.5, ""typingReserveShare"": 0.5 },
   ""caps"": { ""barsPerSecond"": 3, ""burstBars"": 1, ""hitBurstSeconds"": 2, ""flagsBeforeReport"": 20 },
+  ""search"": {
+    ""codeLength"": 6,
+    ""inactiveDays"": 7,
+    ""listLimit"": 20,
+    ""titles"": [""night_shift"", ""nine_to_six"", ""coffee_break"", ""lunch_raid"", ""quiet_keys"", ""loud_keys"", ""early_birds"", ""late_owls"", ""weekend_heroes"", ""office_knights"", ""rift_walkers"", ""lamp_lighters""],
+    ""roles"": [""any"", ""damage"", ""buffer"", ""debuffer"", ""dot"", ""summoner""],
+    ""languages"": [""ru"", ""en""],
+    ""reportReasons"": [""cheating"", ""idle_farming"", ""offensive_name""],
+    ""timeSlots"": [{ ""id"": ""night"", ""fromHour"": 0 }, { ""id"": ""morning"", ""fromHour"": 6 }, { ""id"": ""day"", ""fromHour"": 12 }, { ""id"": ""evening"", ""fromHour"": 18 }],
+    ""classRoles"": {
+      ""viking"": ""damage"", ""ronin"": ""damage"", ""amazon"": ""damage"", ""stormweaver"": ""damage"", ""nomad"": ""damage"",
+      ""metalhead"": ""buffer"", ""oracle"": ""buffer"", ""bannerbearer"": ""buffer"",
+      ""voodoo"": ""debuffer"", ""clockmaker"": ""debuffer"",
+      ""plague_doctor"": ""dot"", ""moonshiner"": ""dot"",
+      ""gravedigger"": ""summoner"", ""captain"": ""summoner""
+    }
+  },
   ""buffs"": { ""selfShare"": 1.0, ""offerSeconds"": 1.0, ""stats"": [{ ""from"": ""partyDamage"", ""to"": ""damage"", ""kind"": ""increased"" }] }
 }";
 

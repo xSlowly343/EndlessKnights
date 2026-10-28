@@ -20,6 +20,22 @@ async function call(base, path, init) {
   return text ? JSON.parse(text) : {};
 }
 
+async function refused(base, path, init) {
+  const response = await fetch(base + path, init);
+  const text = await response.text();
+  assert.ok(!response.ok, path + " should be refused, got " + response.status + " " + text);
+  return text;
+}
+
+async function rpcRefused(base, token, id, payload, message) {
+  const text = await refused(base, "/v2/rpc/" + id, bearer(token, "POST", JSON.stringify(payload)));
+  assert.ok(text.indexOf(message) >= 0, id + " should fail with \"" + message + "\", got " + text);
+}
+
+function bearer(token, method, body) {
+  return { method: method, headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) };
+}
+
 async function authenticate(base, serverKey) {
   const basic = Buffer.from(serverKey + ":").toString("base64");
   const deviceId = "smoke-" + crypto.randomUUID();
@@ -105,7 +121,7 @@ class MatchSocket {
     const joined = this.waitFor("match join reply", (envelope) => {
       if (envelope.cid !== cid)
         return undefined;
-      return envelope.error ? new Error("match join: " + JSON.stringify(envelope.error)) : envelope.match;
+      return envelope.error ? new Error("match join: " + (envelope.error.message || JSON.stringify(envelope.error))) : envelope.match;
     });
     this.socket.send(JSON.stringify({ cid: cid, match_join: { match_id: matchId, metadata: { playerNumber: number } } }));
     return joined;
@@ -168,9 +184,30 @@ async function main() {
   assert.ok(rift.serverUnixMs > 0 && rift.next, "rift_window reply " + JSON.stringify(rift));
   console.log("ok    rpc rift_window, server time " + new Date(rift.serverUnixMs).toISOString());
 
-  const created = await rpc(base, session.token, "party_create", { seed: "123" });
-  assert.ok(created.matchId, "party_create reply " + JSON.stringify(created));
-  console.log("ok    rpc party_create, match " + created.matchId);
+  const created = await rpc(base, session.token, "party_create", { language: "ru", title: "night_shift" });
+  assert.match(created.code, /^[2-9A-HJ-NP-Z]{6}$/, "party code " + created.code);
+  assert.strictEqual(created.leader, session.userId);
+  console.log("ok    rpc party_create, code " + created.code.slice(0, 3) + "-" + created.code.slice(3));
+
+  const friend = await authenticate(base, serverKey);
+  const typedCode = created.code.slice(0, 3).toLowerCase() + "-" + created.code.slice(3);
+  const joinedView = await rpc(base, friend.token, "party_join", { code: typedCode });
+  assert.strictEqual(joinedView.members.length, 2);
+  const connected = await rpc(base, session.token, "party_connect", {});
+  assert.strictEqual((await rpc(base, friend.token, "party_connect", {})).matchId, connected.matchId, "both members get the same match");
+  created.matchId = connected.matchId;
+  console.log("ok    friend joined by code, both connect to match " + connected.matchId);
+
+  const stranger = await authenticate(base, serverKey);
+  await rpcRefused(base, stranger.token, "party_connect", {}, "not in a party");
+  const intruder = new MatchSocket(base, stranger.token);
+  await intruder.open();
+  await assert.rejects(intruder.join(created.matchId, "76561197960287999"), /not a member|rejected/);
+  intruder.close();
+  await refused(base, "/v2/group", bearer(stranger.token, "POST", { name: "party-x", open: true }));
+  await refused(base, "/v2/group?limit=10", bearer(stranger.token, "GET"));
+  await refused(base, "/v2/group/" + created.id + "/join", bearer(stranger.token, "POST"));
+  console.log("ok    a stranger cannot enter the match, create, list or join party groups");
 
   const first = new MatchSocket(base, session.token);
   await first.open();
@@ -181,7 +218,6 @@ async function main() {
   const startTick = stateTick(await firstState);
   console.log("ok    joined the party match, Roster slot 0 = " + firstNumber + ", fight tick " + startTick);
 
-  const friend = await authenticate(base, serverKey);
   const second = new MatchSocket(base, friend.token);
   await second.open();
   const bothRoster = first.packet(RosterKind, (data) => rosterNumber(data, 0) === firstNumber && rosterNumber(data, 1) === secondNumber);
@@ -210,8 +246,29 @@ async function main() {
 
   const membership = await readMembership(base, session.token, session.userId);
   assert.strictEqual(membership.matchId, created.matchId);
-  assert.strictEqual(membership.slot, 0);
-  console.log("ok    storage party/current = slot " + membership.slot);
+  assert.strictEqual(membership.partyId, created.id);
+  assert.ok(membership.seen > 0);
+  console.log("ok    storage party/current = party " + membership.partyId + ", slot " + membership.slot);
+
+  const opened = await rpc(base, session.token, "party_update", { access: "open", wanted: "buffer" });
+  assert.strictEqual(opened.access, "open");
+  const listed = (await rpc(base, stranger.token, "party_list", { language: "ru", role: "buffer" })).parties;
+  const card = listed.find((entry) => entry.id === created.id);
+  assert.ok(card, "the open party is listed");
+  assert.strictEqual(card.wantsYou, true);
+  assert.strictEqual(card.code, undefined);
+  const quick = await rpc(base, stranger.token, "party_quick", { language: "ru", role: "buffer" });
+  assert.strictEqual(quick.id, created.id);
+  assert.strictEqual(quick.members.length, 3);
+  console.log("ok    the open party is found in the search and by quick match (" + listed.length + " listed)");
+
+  await rpc(base, friend.token, "party_leave", {});
+  await rpc(base, stranger.token, "party_leave", {});
+  const after = await rpc(base, session.token, "party_leave", {});
+  assert.strictEqual(after.party, null);
+  assert.strictEqual((await rpc(base, session.token, "party_mine", {})).party, null);
+  await rpcRefused(base, friend.token, "party_join", { code: created.code }, "unknown code");
+  console.log("ok    everyone left, the party and its code are gone");
   console.log("smoke: all good");
 }
 

@@ -54,5 +54,17 @@ const riftRules = {
   modifiersPerWindow: rift.modifiersPerWindow
 };
 
+const directoryRules = {
+  maxMembers: party.maxMembers,
+  codeLength: party.search.codeLength,
+  inactiveDays: party.search.inactiveDays,
+  listLimit: party.search.listLimit,
+  titles: party.search.titles,
+  roles: party.search.roles,
+  languages: party.search.languages,
+  reportReasons: party.search.reportReasons,
+  timeSlots: party.search.timeSlots
+};
+
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\n" + code);

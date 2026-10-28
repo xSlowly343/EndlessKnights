@@ -9,6 +9,29 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
         matchSignal: partyMatchSignal
     });
     initializer.registerRpc("party_create", partyCreateRpc);
+    initializer.registerRpc("party_mine", partyMineRpc);
+    initializer.registerRpc("party_connect", partyConnectRpc);
+    initializer.registerRpc("party_join", partyJoinRpc);
+    initializer.registerRpc("party_leave", partyLeaveRpc);
+    initializer.registerRpc("party_kick", partyKickRpc);
+    initializer.registerRpc("party_promote", partyPromoteRpc);
+    initializer.registerRpc("party_update", partyUpdateRpc);
+    initializer.registerRpc("party_list", partyListRpc);
+    initializer.registerRpc("party_quick", partyQuickRpc);
+    initializer.registerRpc("party_block", partyBlockRpc);
+    initializer.registerRpc("party_unblock", partyUnblockRpc);
+    initializer.registerRpc("party_report", partyReportRpc);
     initializer.registerRpc("rift_window", riftWindowRpc);
+    initializer.registerBeforeCreateGroup(partyBeforeCreateGroup);
+    initializer.registerBeforeUpdateGroup(partyBeforeGroupChange);
+    initializer.registerBeforeDeleteGroup(partyBeforeGroupChange);
+    initializer.registerBeforeJoinGroup(partyBeforeGroupChange);
+    initializer.registerBeforeLeaveGroup(partyBeforeGroupChange);
+    initializer.registerBeforeAddGroupUsers(partyBeforeGroupChange);
+    initializer.registerBeforeBanGroupUsers(partyBeforeGroupChange);
+    initializer.registerBeforeKickGroupUsers(partyBeforeGroupChange);
+    initializer.registerBeforePromoteGroupUsers(partyBeforeGroupChange);
+    initializer.registerBeforeDemoteGroupUsers(partyBeforeGroupChange);
+    initializer.registerBeforeListGroups(partyBeforeListGroups);
     logger.info("party module loaded");
 }

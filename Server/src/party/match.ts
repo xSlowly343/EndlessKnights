@@ -1,5 +1,6 @@
 interface PartyMatchState {
     host: PartyHost;
+    partyId: string;
     presences: { [userId: string]: nkruntime.Presence };
     pendingNumbers: { [userId: string]: string };
     emptyTicks: number;
@@ -25,7 +26,8 @@ function partyDecimalOrNull(value: any): string | null {
 
 function partyMatchInit(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, params: { [key: string]: string }) {
     const seed = partyDecimalOrNull(params.seed) || String(Date.now());
-    const state: PartyMatchState = { host: new PartyHost(PartyServerRules, seed), presences: {}, pendingNumbers: {}, emptyTicks: 0 };
+    const partyId = typeof params.partyId === "string" ? params.partyId : "";
+    const state: PartyMatchState = { host: new PartyHost(PartyServerRules, seed), partyId: partyId, presences: {}, pendingNumbers: {}, emptyTicks: 0 };
     return { state: state, tickRate: PartyTicksPerSecond, label: JSON.stringify({ kind: PartyMatchName, open: true }) };
 }
 
@@ -34,6 +36,8 @@ function partyMatchJoinAttempt(ctx: nkruntime.Context, logger: nkruntime.Logger,
     state = partyRevive(state);
     const host = state.host;
     const known = host.encounter.slotOf(presence.userId) !== PartyNoSlot;
+    if (state.partyId && !partyMatchMember(nk, state.partyId, presence.userId))
+        return { state: state, accept: false, rejectMessage: "not a member of this party" };
     if (!known && host.encounter.memberCount() >= PartyServerRules.maxMembers)
         return { state: state, accept: false, rejectMessage: "party is full" };
     if (!known && partyDecimalOrNull(metadata.playerNumber) === null)
@@ -51,7 +55,10 @@ function partyMatchJoin(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
         state.presences[presence.userId] = presence;
         const slot = host.join(presence.userId, state.pendingNumbers[presence.userId] || "0");
         delete state.pendingNumbers[presence.userId];
-        partySaveMembership(nk, logger, ctx.matchId || "", presence.userId, slot);
+        if (state.partyId)
+            partyNoteVisit(nk, logger, state.partyId, ctx.matchId || "", presence.userId, slot);
+        else
+            partySaveMembership(nk, logger, ctx.matchId || "", presence.userId, slot);
     }
     partyUpdateLabel(dispatcher, host);
     return { state: state };
@@ -93,12 +100,6 @@ function partyMatchSignal(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: 
     if (request[0] === "leave" && request[1])
         state.host.leave(request[1]);
     return { state: state, data: "ok" };
-}
-
-function partyCreateRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
-    const request = payload ? JSON.parse(payload) : {};
-    const seed = partyDecimalOrNull(request.seed);
-    return JSON.stringify({ matchId: nk.matchCreate(PartyMatchName, seed ? { seed: seed } : {}) });
 }
 
 function partySend(dispatcher: nkruntime.MatchDispatcher, state: PartyMatchState, host: PartyHost): void {
