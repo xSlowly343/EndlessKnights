@@ -91,10 +91,11 @@ namespace Game.Sim
             friend.Report(Console.Out);
             var linked = leader.Client.Status == PartyLink.Linked && friend.Client.Status == PartyLink.Linked;
             var sameEnemy = leader.Client.EnemyId == friend.Client.EnemyId;
-            Console.WriteLine("both linked " + linked + ", same enemy " + sameEnemy);
+            var reactionsArrive = leader.ReactionsHeard > 0 && friend.ReactionsHeard > 0;
+            Console.WriteLine("both linked " + linked + ", same enemy " + sameEnemy + ", reactions arrive " + reactionsArrive);
             await friend.FinishAsync(false).ConfigureAwait(false);
             await leader.FinishAsync(false).ConfigureAwait(false);
-            return linked && leader.Client.PartyRewards > 0 && friend.Client.PartyRewards > 0 ? 0 : 1;
+            return linked && reactionsArrive && leader.Client.PartyRewards > 0 && friend.Client.PartyRewards > 0 ? 0 : 1;
         }
 
         private static void Play(IReadOnlyList<Bot> bots, double seconds)
@@ -125,6 +126,7 @@ namespace Game.Sim
         private sealed class Bot
         {
             private const int KeepAliveTicks = 50;
+            private const int ReactionTicks = 100;
 
             private readonly OnlineSession _online;
             private readonly GameLoop _loop;
@@ -133,6 +135,7 @@ namespace Game.Sim
             private Task _keepAlive = Task.CompletedTask;
             private long _ticks;
             private int _matchGeneration;
+            private readonly int[] _heard = new int[PartyRules.MaxSlots];
 
             private Bot(GameData data, OnlineSession online, GameLoop loop)
             {
@@ -146,6 +149,8 @@ namespace Game.Sim
             public PartyView? Party => _online.Party;
             public PartyClient Client { get; }
             public long Kills { get; private set; }
+            public int ReactionsSent { get; private set; }
+            public int ReactionsHeard { get; private set; }
 
             public static async Task<Bot> LoginAsync(GameData data, NakamaClient client, BotProfile profile, HeroClass heroClass, int index)
             {
@@ -212,6 +217,15 @@ namespace Game.Sim
                 for (var slot = 0; slot < _loop.State.Skills.Count; slot++)
                     _loop.RequestCast(slot);
                 _loop.Tick();
+                if (_ticks % ReactionTicks == ReactionTicks / 2 && Client.SendReaction(ReactionsSent % Client.Reactions.Ids.Count))
+                    ReactionsSent++;
+                for (var slot = 0; slot < _heard.Length; slot++)
+                {
+                    var serial = Client.ReactionSerial(slot);
+                    if (serial != _heard[slot] && slot != Client.OwnSlot)
+                        ReactionsHeard++;
+                    _heard[slot] = serial;
+                }
                 Kills += _loop.Events.CountOf(GameEventKind.EnemyKilled);
                 _loop.Events.Clear();
                 if (++_ticks % KeepAliveTicks == 0 && _keepAlive.IsCompleted)
@@ -222,9 +236,9 @@ namespace Game.Sim
             {
                 var own = Client.OwnSlot;
                 output.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}, reconnects {9}",
+                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}, reconnects {9}, reactions sent {10}, heard {11}",
                     HeroClassNames.Of(_loop.State.Class), _online.PlayerNumber, Client.Status, own, Client.PartyRewards, Client.UnpaidKills,
-                    own >= 0 ? Client.Contribution(own) : 0, _loop.State.Stage, Client.EnemyId, _online.Reconnects));
+                    own >= 0 ? Client.Contribution(own) : 0, _loop.State.Stage, Client.EnemyId, _online.Reconnects, ReactionsSent, ReactionsHeard));
             }
 
             public async Task FinishAsync(bool stay)

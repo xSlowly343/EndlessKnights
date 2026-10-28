@@ -21,6 +21,7 @@ namespace Game.Core.Party
         private readonly double[] _allowance = new double[PartyRules.MaxSlots];
         private readonly double[] _hitAllowance = new double[PartyRules.MaxSlots];
         private readonly int[] _flags = new int[PartyRules.MaxSlots];
+        private readonly long[] _lastReactionTick = new long[PartyRules.MaxSlots];
         private PartyRules _rules;
         private uint _stateSequence;
         private uint _rosterVersion;
@@ -89,6 +90,9 @@ namespace Game.Core.Party
                     offer.Slot = (byte)slot;
                     BroadcastExcept(slot, PartyCodec.Encode(_out, offer));
                     break;
+                case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
+                    React(slot, reaction);
+                    break;
             }
         }
 
@@ -105,9 +109,19 @@ namespace Game.Core.Party
             _allowance[slot] = _rules.Caps.BurstBars;
             _hitAllowance[slot] = HitBurst;
             _flags[slot] = 0;
+            _lastReactionTick[slot] = PartyEncounter.Never;
             _rosterChanged = true;
             _ticksToState = 0;
             return slot;
+        }
+
+        private void React(int slot, PartyReactionMessage reaction)
+        {
+            if (!_rules.Reactions.Knows(reaction.Reaction) || _encounter.Tick - _lastReactionTick[slot] < Ticks(_rules.Reactions.CooldownSeconds))
+                return;
+            _lastReactionTick[slot] = _encounter.Tick;
+            reaction.Slot = (byte)slot;
+            BroadcastExcept(slot, PartyCodec.Encode(_out, reaction));
         }
 
         private void Heard(int slot)

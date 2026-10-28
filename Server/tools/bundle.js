@@ -36,6 +36,8 @@ const rules = {
   burstBars: party.caps.burstBars,
   hitBurstSeconds: party.caps.hitBurstSeconds,
   flagsBeforeReport: party.caps.flagsBeforeReport,
+  reactionCount: party.reactions.ids.length,
+  reactionCooldownSeconds: party.reactions.cooldownSeconds,
   enemiesPerStage: enemiesOnFirstStage(stages.waves),
   bossRetryAfterKills: stages.boss.retryAfterKills,
   bossTimerSeconds: stages.boss.timerSeconds,

@@ -69,7 +69,9 @@ namespace Game.Core.Tests.Party
             var relayed = offer;
             relayed.Slot = 2;
             builder.Append("    \"offerRelay\": { \"slot\": 2, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, offer)))
-                .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, relayed))).Append("\" }\n");
+                .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, relayed))).Append("\" },\n");
+            builder.Append("    \"reactionRelay\": { \"slot\": 1, \"reaction\": 4, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 0, Reaction = 4 })))
+                .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 1, Reaction = 4 }))).Append("\" }\n");
             builder.Append("  }\n}\n");
             return builder.ToString();
         }

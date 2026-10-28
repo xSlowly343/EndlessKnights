@@ -17,6 +17,7 @@ namespace Game.Core.Tests.Party
   ""maxEnemyDamageTaken"": 1.0,
   ""contribution"": { ""minShare"": 0.1, ""activeInputSeconds"": 30, ""restBankMinutes"": 60, ""idlePortionShare"": 1.5, ""typingReserveShare"": 0.5 },
   ""caps"": { ""barsPerSecond"": 3, ""burstBars"": 1, ""hitBurstSeconds"": 2, ""flagsBeforeReport"": 20 },
+  ""reactions"": { ""ids"": [""hello"", ""good_fight"", ""lunch""], ""cooldownSeconds"": 3, ""showSeconds"": 4 },
   ""search"": {
     ""codeLength"": 6,
     ""inactiveDays"": 7,
@@ -104,6 +105,27 @@ namespace Game.Core.Tests.Party
             var error = Assert.Throws<ContentException>(() => PartyRules.Load(Valid.Replace(@"""burstBars"": 1", @"""burstBars"": 0.5")));
 
             Assert.That(error!.Message, Does.Contain("burstBars"));
+        }
+
+        [Test]
+        public void ReactionsAreRead()
+        {
+            var rules = PartyRules.Load(Valid);
+
+            Assert.That(rules.Reactions.Ids, Is.EqualTo(new[] { "hello", "good_fight", "lunch" }));
+            Assert.That(rules.Reactions.CooldownSeconds, Is.EqualTo(3));
+            Assert.That(rules.Reactions.ShowSeconds, Is.EqualTo(4));
+            Assert.That(rules.Reactions.Knows(2), Is.True);
+            Assert.That(rules.Reactions.Knows(3), Is.False);
+        }
+
+        [TestCase(@"[""hello"", ""good_fight"", ""lunch""]", @"[]")]
+        [TestCase(@"[""hello"", ""good_fight"", ""lunch""]", @"[""hello"", ""hello""]")]
+        public void BadReactionListsAreRejected(string from, string to)
+        {
+            var error = Assert.Throws<ContentException>(() => PartyRules.Load(Valid.Replace(from, to)));
+
+            Assert.That(error!.Message, Does.Contain("ids"));
         }
 
         [Test]

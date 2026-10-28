@@ -19,17 +19,18 @@ namespace Game.Core.Ui
         }
 
         public static IReadOnlyList<PartyRow> From(GameState state, PartyClient client) =>
-            From(state, client.Status, client.Roster, client.OwnSlot, client.ContributionKills > 0 ? client.Contribution : null, client.LastKillPaid);
+            From(state, client.Status, client.Roster, client.OwnSlot, client.ContributionKills > 0 ? client.Contribution : null, client.LastKillPaid,
+                slot => PartyReactions.Label(client.Reactions, client.ReactionOf(slot)));
 
         public static IReadOnlyList<PartyRow> From(GameState state, PartyLink link, RosterMessage roster, int ownSlot,
-            System.Func<int, double>? contribution = null, bool lastKillPaid = true)
+            System.Func<int, double>? contribution = null, bool lastKillPaid = true, System.Func<int, string>? reaction = null)
         {
             if (!InParty(link) || ownSlot < 0)
                 return Solo(state);
             var selfPresence = link == PartyLink.NoSignal ? PartyPresence.Offline : roster.Presence(ownSlot);
             var selfDetails = Texts.Format("party.classStage", HeroSummary.ClassName(state.Class), state.Stage)
                 + Standing(roster, ownSlot, contribution) + (lastKillPaid ? string.Empty : Separator + Texts.Get("party.unpaid"));
-            var rows = new List<PartyRow> { new PartyRow(true, ownSlot, Texts.Get("party.you"), selfDetails, selfPresence) };
+            var rows = new List<PartyRow> { new PartyRow(true, ownSlot, Texts.Get("party.you"), selfDetails, selfPresence, reaction?.Invoke(ownSlot) ?? string.Empty) };
             var number = 1;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
@@ -38,7 +39,8 @@ namespace Game.Core.Ui
                 if (roster.Player(slot) == 0)
                     continue;
                 number++;
-                rows.Add(new PartyRow(false, slot, Texts.Format("party.player", number), ClassName(roster.HeroClass(slot)) + Standing(roster, slot, contribution), roster.Presence(slot)));
+                rows.Add(new PartyRow(false, slot, Texts.Format("party.player", number), ClassName(roster.HeroClass(slot)) + Standing(roster, slot, contribution), roster.Presence(slot),
+                    reaction?.Invoke(slot) ?? string.Empty));
             }
             while (rows.Count < PartyRules.MaxSlots)
                 rows.Add(PartyRow.Free);

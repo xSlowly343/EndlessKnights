@@ -8,6 +8,7 @@
   "maxEnemyDamageTaken": 1.0,
   "contribution": { "minShare": 0.1, "activeInputSeconds": 30, "restBankMinutes": 60, "idlePortionShare": 1.5, "typingReserveShare": 0.5 },
   "caps": { "barsPerSecond": 3, "burstBars": 1, "hitBurstSeconds": 2, "flagsBeforeReport": 20 },
+  "reactions": { "ids": ["hello", "good_fight", "thanks", "help", "brb", "lunch"], "cooldownSeconds": 3, "showSeconds": 4 },
   "search": {
     "codeLength": 6,
     "inactiveDays": 7,

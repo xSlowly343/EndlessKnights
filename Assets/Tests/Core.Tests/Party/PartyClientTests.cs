@@ -308,5 +308,53 @@ namespace Game.Core.Tests.Party
             }
             Assert.That(rig.Players[0].Client.PartyRewards, Is.GreaterThan(paidBefore + 3));
         }
+
+        [Test]
+        public void AReactionReachesTheOthersAndFadesAfterItsTime()
+        {
+            var rig = new Rig(5, 40, 70);
+            rig.Run(10);
+            var sender = rig.Players[1].Client;
+            var slot = sender.OwnSlot;
+
+            Assert.That(sender.SendReaction(0), Is.True);
+            rig.Run(1);
+
+            Assert.That(sender.ReactionOf(slot), Is.EqualTo(0), "the sender sees its own reaction at once");
+            Assert.That(rig.Players[0].Client.ReactionOf(slot), Is.EqualTo(0));
+            Assert.That(rig.Players[2].Client.ReactionOf(slot), Is.EqualTo(0));
+            Assert.That(rig.Players[0].Client.ReactionOf(rig.Players[0].Client.OwnSlot), Is.EqualTo(PartyClient.NoReaction));
+
+            rig.Run(TestWorld.Data.Party.Reactions.ShowSeconds + 0.5);
+
+            Assert.That(rig.Players[0].Client.ReactionOf(slot), Is.EqualTo(PartyClient.NoReaction));
+        }
+
+        [Test]
+        public void ReactionsWaitForTheCooldownAndUnknownOnesAreRefused()
+        {
+            var rig = new Rig(5, 40);
+            rig.Run(10);
+            var client = rig.Players[0].Client;
+
+            Assert.That(client.SendReaction(TestWorld.Data.Party.Reactions.Ids.Count), Is.False);
+            Assert.That(client.SendReaction(1), Is.True);
+            Assert.That(client.CanReact, Is.False);
+            Assert.That(client.SendReaction(2), Is.False);
+
+            rig.Run(TestWorld.Data.Party.Reactions.CooldownSeconds);
+
+            Assert.That(client.CanReact, Is.True);
+            Assert.That(client.SendReaction(2), Is.True);
+        }
+
+        [Test]
+        public void SoloPlayersCannotReact()
+        {
+            var rig = new Rig(5);
+
+            Assert.That(rig.Players[0].Client.CanReact, Is.False);
+            Assert.That(rig.Players[0].Client.SendReaction(0), Is.False);
+        }
     }
 }

@@ -67,6 +67,29 @@ test("a full party refuses the fifth member and offers skip the sender", () => {
   assert.strictEqual(new Uint8Array(host.outbox[0].data)[1], 2);
 });
 
+test("reactions skip the sender and wait for the cooldown", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  for (let i = 0; i < 3; i++)
+    host.join("user-" + i, String(100 + i));
+  host.tick();
+  host.outbox.length = 0;
+  const reaction = new Uint8Array([10, 0, 1]);
+  host.receive("user-1", reaction.buffer);
+  assert.strictEqual(host.outbox.length, 1);
+  assert.deepStrictEqual(Array.from(host.outbox[0].to), [0, 2]);
+  assert.deepStrictEqual(Array.from(new Uint8Array(host.outbox[0].data)), [10, 1, 1]);
+  host.outbox.length = 0;
+  host.receive("user-1", reaction.buffer);
+  assert.strictEqual(host.outbox.length, 0);
+  host.receive("user-2", new Uint8Array([10, 0, party.PartyServerRules.reactionCount]).buffer);
+  assert.strictEqual(host.outbox.length, 0);
+  for (let i = 0; i < party.PartyServerRules.reactionCooldownSeconds * 10; i++)
+    host.tick();
+  host.outbox.length = 0;
+  host.receive("user-1", reaction.buffer);
+  assert.strictEqual(host.outbox.length, 1);
+});
+
 function joinedHost() {
   const host = new party.PartyHost(party.PartyServerRules, "5");
   host.join("user-a", "11");

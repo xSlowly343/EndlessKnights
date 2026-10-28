@@ -11,6 +11,7 @@ namespace Game.Core.Party.Wire
         EnemyKilled,
         EncounterMoment,
         Roster,
-        PartyOffer
+        PartyOffer,
+        PartyReaction
     }
 }

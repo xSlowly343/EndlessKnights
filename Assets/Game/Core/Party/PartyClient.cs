@@ -36,10 +36,16 @@ namespace Game.Core.Party
         private uint _countedUpTo;
         private long _lastOwnInputTick = PartyEncounter.Never;
         private readonly double[] _contribution = new double[PartyRules.MaxSlots];
+        private readonly int[] _reaction = { NoReaction, NoReaction, NoReaction, NoReaction };
+        private readonly long[] _reactionTick = new long[PartyRules.MaxSlots];
+        private readonly int[] _reactionSerial = new int[PartyRules.MaxSlots];
+        private long _lastSentReactionTick = PartyEncounter.Never;
         private int _contributionKills;
         private int _ownSlot = PartyEncounter.NoSlot;
         private int _firstEvent;
         private bool _offerNow;
+
+        public const int NoReaction = -1;
 
         public PartyClient(GameLoop loop, IPartyTransport transport, ulong hostId, PartyRules rules)
         {
@@ -64,6 +70,26 @@ namespace Game.Core.Party
         public int BossKillsSeen { get; private set; }
         public double DamageTaken => System.Math.Max(1, _state.DamageTaken);
         public int OwnSlot => _ownSlot;
+
+        public int ReactionOf(int slot) =>
+            slot >= 0 && slot < PartyRules.MaxSlots && _reaction[slot] != NoReaction && _tick - _reactionTick[slot] <= Ticks(_rules.Reactions.ShowSeconds) ? _reaction[slot] : NoReaction;
+
+        public PartyReactionRules Reactions => _rules.Reactions;
+
+        public int ReactionSerial(int slot) => slot >= 0 && slot < PartyRules.MaxSlots ? _reactionSerial[slot] : 0;
+
+        public bool CanReact => InParty && _tick - _lastSentReactionTick >= Ticks(_rules.Reactions.CooldownSeconds);
+
+        public bool SendReaction(int reaction)
+        {
+            if (!CanReact || !_rules.Reactions.Knows(reaction))
+                return false;
+            _lastSentReactionTick = _tick;
+            SendToHost(PartyCodec.Encode(_out, new PartyReactionMessage { Reaction = (byte)reaction }));
+            if (_ownSlot >= 0)
+                ShowReaction(_ownSlot, reaction);
+            return true;
+        }
 
         public double Contribution(int slot) =>
             _contributionKills == 0 || slot < 0 || slot >= PartyRules.MaxSlots ? 0 : _contribution[slot] / _contributionKills;
@@ -109,6 +135,8 @@ namespace Game.Core.Party
             _countedUpTo = 0;
             _contributionKills = 0;
             System.Array.Clear(_contribution, 0, _contribution.Length);
+            for (var slot = 0; slot < _reaction.Length; slot++)
+                _reaction[slot] = NoReaction;
             _total = 0;
             _sentTotal = 0;
             _sharesSinceState = 0;
@@ -168,6 +196,10 @@ namespace Game.Core.Party
                     if (InParty)
                         OnOffer(offer);
                     break;
+                case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
+                    if (InParty && reaction.Slot < PartyRules.MaxSlots && reaction.Slot != _ownSlot && _rules.Reactions.Knows(reaction.Reaction))
+                        ShowReaction(reaction.Slot, reaction.Reaction);
+                    break;
                 case PartyMessageKind.EncounterState when PartyCodec.TryDecode(_in, length, out EncounterStateMessage state):
                     if (state.Sequence > _state.Sequence)
                         OnState(state);
@@ -181,6 +213,13 @@ namespace Game.Core.Party
                         EndLocalEnemy(true);
                     break;
             }
+        }
+
+        private void ShowReaction(int slot, int reaction)
+        {
+            _reaction[slot] = reaction;
+            _reactionTick[slot] = _tick;
+            _reactionSerial[slot]++;
         }
 
         private void OnRoster(in RosterMessage roster)

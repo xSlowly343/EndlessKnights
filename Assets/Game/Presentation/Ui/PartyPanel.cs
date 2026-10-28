@@ -25,6 +25,8 @@ namespace Game.Presentation.Ui
         private const float FreePx = 40f;
         private const float ButtonPx = 32f;
         private const int MaxMenuOptions = 4;
+        private const float ReactionPx = 26f;
+        private const string ReactionColor = "#FFD27A";
         private const float MenuTitlePx = 18f;
         private const float MenuOptionPx = 28f;
         private const float MenuClosePx = 26f;
@@ -62,6 +64,9 @@ namespace Game.Presentation.Ui
         private readonly TextMeshProUGUI _menuTitle;
         private readonly UiButton[] _menuOptions = new UiButton[MaxMenuOptions];
         private readonly UiButton _menuClose;
+        private readonly RectTransform _reactionRow;
+        private readonly UiButton[] _reactions = new UiButton[PartyReactionRules.MaxReactions];
+        private int _reactionCount;
         private IReadOnlyList<PartyRow> _shownRows = Array.Empty<PartyRow>();
         private IReadOnlyList<PartyMemberOption> _options = Array.Empty<PartyMemberOption>();
         private PartyClient? _client;
@@ -82,6 +87,12 @@ namespace Game.Presentation.Ui
             _help = Button(buttons, PartyRoster.Help, 0f, buttonWidth, theme.Accent, Color.white, theme.Accent);
             _links = Button(buttons, PartyRoster.Links, buttonWidth + GapPx, buttonWidth, theme.Card, theme.Text, theme.Card);
             _leave = Button(buttons, PartyRoster.Leave, 2f * (buttonWidth + GapPx), buttonWidth, theme.Background, LeaveText, theme.Plate);
+            _reactionRow = UiElements.Rect("Reactions", _root);
+            for (var i = 0; i < _reactions.Length; i++)
+            {
+                _reactions[i] = Button(_reactionRow, "Reaction " + i, 0f, 1f, theme.Card, theme.Text, theme.Border);
+                _reactions[i].Show(false);
+            }
             _menu = BuildMenu(out _menuTitle, out _menuClose);
             _root.gameObject.SetActive(false);
         }
@@ -91,16 +102,33 @@ namespace Game.Presentation.Ui
         public event Action<string>? NoticeRequested;
         public event Action<PartyAction>? ActionRequested;
         public event Action<int, PartyMemberOption>? MemberActionRequested;
+        public event Action<int>? ReactionRequested;
 
         public bool IsShown => _root.gameObject.activeSelf;
         public int ShownMembers { get; private set; }
         public bool ShowsEnemy => _enemyCard.gameObject.activeSelf;
         public bool ShowsMemberMenu => _menu.gameObject.activeSelf;
         public int MenuSlot => _menuSlot;
+        public bool ShowsReactions => _reactionRow.gameObject.activeSelf;
 
         public void UseClient(PartyClient? client) => _client = client;
 
         public void UseCode(string code) => _code = code;
+
+        public void UseReactions(IReadOnlyList<string> labels)
+        {
+            _reactionCount = Math.Min(labels.Count, _reactions.Length);
+            var width = (Width() - (_reactionCount - 1) * GapPx) / Math.Max(1, _reactionCount);
+            for (var i = 0; i < _reactions.Length; i++)
+            {
+                var shown = i < _reactionCount;
+                _reactions[i].Show(shown);
+                if (!shown)
+                    continue;
+                _reactions[i].Text = labels[i];
+                UiElements.Anchor(_reactions[i].Rect, new Vector2(0f, 0.5f), new Vector2(i * (width + GapPx), 0f), new Vector2(width, ReactionPx));
+            }
+        }
 
         public void UseMemberOptions(IReadOnlyList<PartyMemberOption> options)
         {
@@ -162,6 +190,19 @@ namespace Game.Presentation.Ui
                 Place(_free.Rect, y, FreePx);
                 y += FreePx + GapPx;
             }
+            var reactions = inParty && _reactionCount > 0;
+            _reactionRow.gameObject.SetActive(reactions);
+            if (reactions)
+            {
+                Place(_reactionRow, y, ReactionPx);
+                y += ReactionPx + GapPx;
+                var ready = _client!.CanReact;
+                for (var i = 0; i < _reactionCount; i++)
+                {
+                    if (_reactions[i].Label != null)
+                        _reactions[i].Label!.color = ready ? _theme.Text : _theme.TextDim;
+                }
+            }
             Place((RectTransform)_help.Rect.parent, y, ButtonPx);
             var hasCode = _code.Length > 0;
             _help.Text = PartyActions.Label(PartyActions.Left(hasCode), _code);
@@ -178,6 +219,13 @@ namespace Game.Presentation.Ui
                 return true;
             if (TryOpenMenu(worldPoint))
                 return true;
+            for (var i = 0; i < _reactionCount && ShowsReactions; i++)
+            {
+                if (!_reactions[i].Contains(worldPoint))
+                    continue;
+                ReactionRequested?.Invoke(i);
+                return true;
+            }
             var hasCode = _code.Length > 0;
             var action = _help.Contains(worldPoint) || _free.Contains(worldPoint) ? PartyActions.Left(hasCode)
                 : _links.Contains(worldPoint) ? PartyActions.Middle(hasCode)
@@ -193,6 +241,8 @@ namespace Game.Presentation.Ui
         }
 
         public Vector2 WorldPointOfHelp() => _help.Rect.TransformPoint(_help.Rect.rect.center);
+
+        public Vector2 WorldPointOfReaction(int index) => _reactions[index].Rect.TransformPoint(_reactions[index].Rect.rect.center);
 
         public Vector2 WorldPointOfRow(int index) => _rows[index].Rect.TransformPoint(_rows[index].Rect.rect.center);
 
@@ -410,7 +460,7 @@ namespace Game.Presentation.Ui
                 _avatar.color = row.IsSelf ? AllyColors[0] : _color;
                 _name.text = row.Name;
                 _name.color = row.IsSelf ? theme.Text : Color.Lerp(_color, Color.white, 0.45f);
-                _details.text = row.Details;
+                _details.text = row.Reaction.Length > 0 ? "<color=" + ReactionColor + ">«" + row.Reaction + "»</color>  " + row.Details : row.Details;
                 _status.text = PartyRoster.Status(row.Presence);
                 _chip.color = row.Presence == PartyPresence.Fighting ? FightingChip : row.Presence == PartyPresence.Offline ? OfflineChip : RestingChip;
                 _status.color = row.Presence == PartyPresence.Fighting ? FightingText : row.Presence == PartyPresence.Offline ? OfflineText : RestingText;

@@ -35,10 +35,13 @@ namespace Game.Bootstrap
         private bool _searchShown;
         private bool _searching;
         private float _sinceSearch;
+        private NotificationDriver? _notifications;
+        private readonly int[] _heardReactions = new int[PartyRules.MaxSlots];
 
-        public static OnlinePartyDriver Attach(GameObject host, GameLoop loop, GameData data, PanelCanvas panels, GameSettings settings)
+        public static OnlinePartyDriver Attach(GameObject host, GameLoop loop, GameData data, PanelCanvas panels, GameSettings settings, NotificationDriver? notifications)
         {
             var driver = host.AddComponent<OnlinePartyDriver>();
+            driver._notifications = notifications;
             driver._loop = loop;
             driver._data = data;
             driver._panels = panels;
@@ -46,6 +49,11 @@ namespace Game.Bootstrap
             panels.Party.ActionRequested += driver.OnAction;
             panels.Party.MemberActionRequested += driver.OnMemberAction;
             panels.Party.UseMemberOptions(PartyMemberMenu.Options(data.Party.Search));
+            var reactions = new List<string>();
+            foreach (var id in data.Party.Reactions.Ids)
+                reactions.Add(PartyReactions.Label(id));
+            panels.Party.UseReactions(reactions);
+            panels.Party.ReactionRequested += driver.React;
             driver._filters = new PartySearchFilters(data.Party.Search, settings.Language);
             panels.PartySearch.UseFilters(driver._filters);
             panels.PartySearch.QuickRequested += () => driver.OnAction(PartyAction.QuickMatch);
@@ -92,6 +100,7 @@ namespace Game.Bootstrap
                 RetryStart();
                 return;
             }
+            WatchReactions();
             if (_session.MatchGeneration != _matchGeneration)
             {
                 _matchGeneration = _session.MatchGeneration;
@@ -113,6 +122,50 @@ namespace Game.Bootstrap
                     Debug.LogWarning("Party: " + error.Message);
                 }
             });
+        }
+
+        private void React(int reaction)
+        {
+            if (_party == null || !_party.InParty)
+            {
+                _panels.ShowNotice(PartyActions.Failed("not in a party"));
+                return;
+            }
+            if (!_party.SendReaction(reaction))
+                _panels.ShowNotice(PartyReactions.Wait(_data.Party.Reactions));
+        }
+
+        private void WatchReactions()
+        {
+            var party = _party!;
+            if (!party.InParty)
+                return;
+            for (var slot = 0; slot < _heardReactions.Length; slot++)
+            {
+                var serial = party.ReactionSerial(slot);
+                if (serial == _heardReactions[slot])
+                    continue;
+                _heardReactions[slot] = serial;
+                var reaction = party.ReactionOf(slot);
+                if (slot == party.OwnSlot || reaction == PartyClient.NoReaction)
+                    continue;
+                Announce(slot, PartyReactions.Label(party.Reactions, reaction));
+            }
+        }
+
+        private void Announce(int slot, string reaction)
+        {
+            foreach (var row in PartyRoster.From(_loop.State, _party!))
+            {
+                if (row.Slot != slot || row.IsFree)
+                    continue;
+                var text = PartyReactions.Said(row.Name, reaction);
+                if (_notifications != null)
+                    _notifications.Notify(text);
+                else
+                    _panels.ShowNotice(text);
+                return;
+            }
         }
 
         private void WatchSearch()
