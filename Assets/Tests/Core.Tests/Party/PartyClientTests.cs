@@ -65,7 +65,10 @@ namespace Game.Core.Tests.Party
             }
 
             public LoopbackNetwork Network { get; }
-            public PartyHost Host { get; }
+            public PartyHost Host { get; private set; }
+
+            public void ReplaceHost(ulong seed) =>
+                Host = new PartyHost(new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, seed), Network.Connect(HostId), TestWorld.Data.Party);
             public Player[] Players { get; }
 
             public void Run(double seconds, bool typing = true) => RunEach(seconds, typing, typing);
@@ -282,6 +285,28 @@ namespace Game.Core.Tests.Party
             Assert.That(macro.Loop.Focus.MacroDetected, Is.True);
             Assert.That(rig.Host.Encounter.Typing(macro.Client.OwnSlot), Is.False);
             Assert.That(rig.Host.Encounter.Typing(rig.Players[0].Client.OwnSlot), Is.True);
+        }
+
+        [Test]
+        public void AfterTheServerRestartsTheFightGoesOnWithTheNewHost()
+        {
+            var rig = new Rig(5, 5);
+            rig.Run(30);
+            var paidBefore = rig.Players[0].Client.PartyRewards;
+            Assert.That(rig.Host.Encounter.EnemyId, Is.GreaterThan(5u));
+
+            rig.ReplaceHost(77);
+            foreach (var player in rig.Players)
+                player.Client.Rejoin();
+            rig.Run(30);
+
+            Assert.That(rig.Host.Kills, Is.GreaterThan(3), "the new host starts from enemy 1 and the fight goes on");
+            foreach (var player in rig.Players)
+            {
+                Assert.That(player.Client.Status, Is.EqualTo(PartyLink.Linked));
+                Assert.That(player.Client.EnemyId, Is.EqualTo(rig.Host.Encounter.EnemyId));
+            }
+            Assert.That(rig.Players[0].Client.PartyRewards, Is.GreaterThan(paidBefore + 3));
         }
     }
 }

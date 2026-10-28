@@ -51,10 +51,23 @@ namespace Game.Net.Nakama
             using var request = new HttpRequestMessage(HttpMethod.Post, ServerUrl + path);
             request.Headers.Authorization = authorization;
             request.Content = new StringContent(body, Encoding.UTF8, "application/json");
-            using var response = await _http.SendAsync(request, cancel).ConfigureAwait(false);
-            var text = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            if (!response.IsSuccessStatusCode)
-                throw new NakamaException((int)response.StatusCode, ErrorMessage(text));
+            HttpResponseMessage response;
+            try
+            {
+                response = await _http.SendAsync(request, cancel).ConfigureAwait(false);
+            }
+            catch (HttpRequestException error)
+            {
+                throw new NakamaException(0, "no connection to the server: " + error.Message);
+            }
+            catch (TaskCanceledException) when (!cancel.IsCancellationRequested)
+            {
+                throw new NakamaException(0, "the server did not answer in time");
+            }
+            using var reply = response;
+            var text = await reply.Content.ReadAsStringAsync().ConfigureAwait(false);
+            if (!reply.IsSuccessStatusCode)
+                throw new NakamaException((int)reply.StatusCode, ErrorMessage(text));
             return text;
         }
 

@@ -54,6 +54,7 @@ namespace Game.Presentation.Ui
         private readonly UiButton _links;
         private readonly UiButton _leave;
         private PartyClient? _client;
+        private string _code = string.Empty;
 
         private PartyPanel(RectTransform content, UiTheme theme)
         {
@@ -75,12 +76,15 @@ namespace Game.Presentation.Ui
         public static PartyPanel Create(RectTransform content, UiTheme theme) => new PartyPanel(content, theme);
 
         public event Action<string>? NoticeRequested;
+        public event Action<PartyAction>? ActionRequested;
 
         public bool IsShown => _root.gameObject.activeSelf;
         public int ShownMembers { get; private set; }
         public bool ShowsEnemy => _enemyCard.gameObject.activeSelf;
 
         public void UseClient(PartyClient? client) => _client = client;
+
+        public void UseCode(string code) => _code = code;
 
         public void Show(bool shown, GameLoop? loop)
         {
@@ -129,19 +133,28 @@ namespace Game.Presentation.Ui
                 y += FreePx + GapPx;
             }
             Place((RectTransform)_help.Rect.parent, y, ButtonPx);
-            _leave.Show(inParty);
+            var hasCode = _code.Length > 0;
+            _help.Text = PartyActions.Label(PartyActions.Left(hasCode), _code);
+            _links.Text = PartyActions.Label(PartyActions.Middle(hasCode), _code);
+            _leave.Text = PartyActions.Label(PartyActions.Right(hasCode), _code);
         }
 
         public bool TryClick(Vector2 worldPoint)
         {
             if (!IsShown)
                 return false;
-            if (_free.Contains(worldPoint) || _help.Contains(worldPoint) || _links.Contains(worldPoint) || _leave.Contains(worldPoint))
-            {
+            var hasCode = _code.Length > 0;
+            var action = _help.Contains(worldPoint) || _free.Contains(worldPoint) ? PartyActions.Left(hasCode)
+                : _links.Contains(worldPoint) ? PartyActions.Middle(hasCode)
+                : _leave.Contains(worldPoint) ? PartyActions.Right(hasCode)
+                : PartyAction.None;
+            if (action == PartyAction.None)
+                return false;
+            if (ActionRequested != null)
+                ActionRequested(action);
+            else
                 NoticeRequested?.Invoke(PartyRoster.NotYet);
-                return true;
-            }
-            return false;
+            return true;
         }
 
         public Vector2 WorldPointOfHelp() => _help.Rect.TransformPoint(_help.Rect.rect.center);
@@ -200,7 +213,10 @@ namespace Game.Presentation.Ui
             UiElements.Anchor(back.rectTransform, new Vector2(0f, 0.5f), new Vector2(x, 0f), new Vector2(width, ButtonPx));
             UiElements.Stretch(UiElements.Raise(UiElements.Fill("Inner", back.rectTransform, fill, RadiusPx - PanelCanvas.BorderPx)).rectTransform, PanelCanvas.BorderPx);
             var label = UiElements.Label("Text", back.rectTransform, _theme.BoldFont, 12f, textColor, TextAlignmentOptions.Center);
-            UiElements.Stretch(label.rectTransform);
+            UiElements.Stretch(label.rectTransform, 4f);
+            label.enableAutoSizing = true;
+            label.fontSizeMin = 9f;
+            label.fontSizeMax = 12f;
             label.text = text;
             return new UiButton(back, label);
         }

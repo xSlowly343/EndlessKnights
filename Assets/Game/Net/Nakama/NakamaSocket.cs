@@ -31,7 +31,14 @@ namespace Game.Net.Nakama
             var url = serverUrl.TrimEnd('/');
             url = (url.StartsWith("https://", StringComparison.Ordinal) ? "wss://" + url.Substring(8) : url.StartsWith("http://", StringComparison.Ordinal) ? "ws://" + url.Substring(7) : url)
                 + "/ws?lang=en&status=true&token=" + Uri.EscapeDataString(session.Token);
-            await _socket.ConnectAsync(new Uri(url), cancel).ConfigureAwait(false);
+            try
+            {
+                await _socket.ConnectAsync(new Uri(url), cancel).ConfigureAwait(false);
+            }
+            catch (WebSocketException error)
+            {
+                throw new NakamaException(0, "no connection to the server: " + error.Message);
+            }
             _open = true;
             new Thread(SendLoop) { IsBackground = true, Name = "nakama-send" }.Start();
             _ = Task.Run(ReceiveLoop);

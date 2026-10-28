@@ -65,7 +65,7 @@ namespace Game.Sim
             Play(new[] { bot }, seconds);
             bot.Report(Console.Out);
             await bot.FinishAsync(stay).ConfigureAwait(false);
-            return bot.Client!.Status == PartyLink.Linked ? 0 : 1;
+            return bot.Client.Status == PartyLink.Linked ? 0 : 1;
         }
 
         private static async Task<int> RunPair(GameData data, NakamaClient client, BotProfile profile, double seconds)
@@ -80,8 +80,8 @@ namespace Game.Sim
             Play(new[] { leader, friend }, seconds);
             leader.Report(Console.Out);
             friend.Report(Console.Out);
-            var linked = leader.Client!.Status == PartyLink.Linked && friend.Client!.Status == PartyLink.Linked;
-            var sameEnemy = leader.Client.EnemyId == friend.Client!.EnemyId;
+            var linked = leader.Client.Status == PartyLink.Linked && friend.Client.Status == PartyLink.Linked;
+            var sameEnemy = leader.Client.EnemyId == friend.Client.EnemyId;
             Console.WriteLine("both linked " + linked + ", same enemy " + sameEnemy);
             await friend.FinishAsync(false).ConfigureAwait(false);
             await leader.FinishAsync(false).ConfigureAwait(false);
@@ -115,74 +115,80 @@ namespace Game.Sim
 
         private sealed class Bot
         {
-            private readonly GameData _data;
-            private readonly NakamaClient _client;
-            private readonly NakamaSession _session;
-            private readonly PartyDirectory _directory;
-            private readonly GameLoop _loop;
-            private readonly ulong _playerNumber;
-            private OnlineParty? _online;
+            private const int KeepAliveTicks = 50;
 
-            private Bot(GameData data, NakamaClient client, NakamaSession session, GameLoop loop, ulong playerNumber)
+            private readonly OnlineSession _online;
+            private readonly GameLoop _loop;
+            private Task _keepAlive = Task.CompletedTask;
+            private long _ticks;
+            private int _matchGeneration;
+
+            private Bot(GameData data, OnlineSession online, GameLoop loop)
             {
-                _data = data;
-                _client = client;
-                _session = session;
-                _directory = new PartyDirectory(client, session);
+                _online = online;
                 _loop = loop;
-                _playerNumber = playerNumber;
+                Client = new PartyClient(loop, online.Transport, NakamaPartyTransport.HostId, data.Party);
             }
 
-            public PartyView? Party { get; private set; }
-            public PartyClient? Client { get; private set; }
+            public PartyView? Party => _online.Party;
+            public PartyClient Client { get; }
             public long Kills { get; private set; }
 
             public static async Task<Bot> LoginAsync(GameData data, NakamaClient client, BotProfile profile, HeroClass heroClass, int index)
             {
-                var session = await client.AuthenticateDeviceAsync("bot-" + Guid.NewGuid().ToString("N")).ConfigureAwait(false);
+                var device = "bot-" + Guid.NewGuid().ToString("N");
+                var playerNumber = BotSteamBase + (ulong)(Math.Abs(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0)) % 1000000000);
+                var online = await OnlineSession.StartAsync(client, cancel => client.AuthenticateDeviceAsync(device, cancel), playerNumber).ConfigureAwait(false);
                 var seed = (ulong)Environment.TickCount64 * 31 + (ulong)index;
                 var loop = new GameLoop(data, new BotInput(profile, seed), new GameState(seed) { Class = heroClass }, new StatSheet());
                 new PlayerBot(data, loop, double.PositiveInfinity).EquipStartingSkills();
-                var playerNumber = BotSteamBase + (ulong)(Math.Abs(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0)) % 1000000000);
-                return new Bot(data, client, session, loop, playerNumber);
+                return new Bot(data, online, loop);
             }
 
-            public async Task CreateAsync(bool open) => Party = await _directory.CreateAsync(open ? "open" : "invite", null, null, null).ConfigureAwait(false);
+            public async Task CreateAsync(bool open) => await _online.CreateAsync(open ? "open" : "invite", null).ConfigureAwait(false);
 
-            public async Task JoinAsync(string code) => Party = await _directory.JoinByCodeAsync(code).ConfigureAwait(false);
+            public async Task JoinAsync(string code) => await _online.JoinByCodeAsync(code).ConfigureAwait(false);
 
-            public async Task ConnectAsync()
+            public Task ConnectAsync()
             {
-                _online = await OnlineParty.ConnectAsync(_client, _session, _playerNumber).ConfigureAwait(false)
-                    ?? throw new NakamaException(0, "the bot is not in a party");
-                Client = new PartyClient(_loop, _online.Transport, NakamaPartyTransport.HostId, _data.Party);
+                if (!_online.Linked)
+                    throw new NakamaException(0, "the bot is not in a party");
+                _matchGeneration = _online.MatchGeneration;
                 Client.Join();
+                return Task.CompletedTask;
             }
 
             public void Tick()
             {
+                if (_online.MatchGeneration != _matchGeneration)
+                {
+                    _matchGeneration = _online.MatchGeneration;
+                    Client.Rejoin();
+                }
                 for (var slot = 0; slot < _loop.State.Skills.Count; slot++)
                     _loop.RequestCast(slot);
                 _loop.Tick();
                 Kills += _loop.Events.CountOf(GameEventKind.EnemyKilled);
                 _loop.Events.Clear();
+                if (++_ticks % KeepAliveTicks == 0 && _keepAlive.IsCompleted)
+                    _keepAlive = Task.Run(() => _online.KeepAliveAsync(DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
             }
 
             public void Report(System.IO.TextWriter output)
             {
-                var client = Client!;
-                var own = client.OwnSlot;
+                var own = Client.OwnSlot;
                 output.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}",
-                    HeroClassNames.Of(_loop.State.Class), _playerNumber, client.Status, own, client.PartyRewards, client.UnpaidKills,
-                    own >= 0 ? client.Contribution(own) : 0, _loop.State.Stage, client.EnemyId));
+                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}, reconnects {9}",
+                    HeroClassNames.Of(_loop.State.Class), _online.PlayerNumber, Client.Status, own, Client.PartyRewards, Client.UnpaidKills,
+                    own >= 0 ? Client.Contribution(own) : 0, _loop.State.Stage, Client.EnemyId, _online.Reconnects));
             }
 
             public async Task FinishAsync(bool stay)
             {
-                _online?.Dispose();
+                await _keepAlive.ConfigureAwait(false);
                 if (!stay)
-                    await _directory.LeaveAsync().ConfigureAwait(false);
+                    await _online.LeaveAsync().ConfigureAwait(false);
+                _online.Dispose();
             }
         }
     }
