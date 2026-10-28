@@ -68,6 +68,10 @@
     "fastKillSeconds": 3,
     "inputKindSeconds": 10
   },
+  "encounters": {
+    "wanderer": { "chance": 0.05, "minStage": 30, "jumpMin": 10, "jumpMax": 50 },
+    "golden": { "chance": 0.002, "minStage": 10, "seconds": 15, "hpMultiplier": 1000, "goldPerHp": 1 }
+  },
   "paths": {
     "balanceWindowSeconds": 10,
     "doom": { "seconds": 4 },

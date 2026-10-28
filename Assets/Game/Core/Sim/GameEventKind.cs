@@ -18,6 +18,8 @@ namespace Game.Core.Sim
         GemLevelUp,
         UncutGemDropped,
         ShardsGained,
-        TrialCompleted
+        TrialCompleted,
+        WandererJumped,
+        GoldenColossusAppeared
     }
 }

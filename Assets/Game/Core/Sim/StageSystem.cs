@@ -65,6 +65,7 @@ namespace Game.Core.Sim
         {
             if (Linked)
                 return;
+            TickGolden();
             if (!_state.FightingBoss || !_state.EnemyAlive)
                 return;
             if (_state.BossTimerStopTicks > 0)
@@ -229,6 +230,7 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossDefeated, _state.Tick, _state.Stage, _state.Enemy));
             var type = _state.EnemyType;
             var stageBefore = _state.Stage;
+            var wanderer = _state.WandererBoss;
             _state.Stage++;
             _state.KillsOnStage = 0;
             _state.Farming = false;
@@ -236,6 +238,8 @@ namespace Game.Core.Sim
             _state.BossBestFraction = 0;
             if (_state.Stage > _state.HighestStage)
                 _state.HighestStage = _state.Stage;
+            if (wanderer)
+                Jump();
             Drops?.OnBossDefeated(stageBefore, type, _state.RecordStage, RaisesRecord);
             OpenChest(stageBefore);
             if (RaisesRecord)
@@ -266,7 +270,55 @@ namespace Game.Core.Sim
             var normals = _enemies.Normals(_stages.Biome(stage));
             var enemy = normals.Count == 0 ? null : normals[_state.Rng.NextInt(0, normals.Count)];
             var cut = System.Math.Min(MaxHpCut, System.Math.Max(0, _hero.Value(CombatStats.EnemyHpCut, 0)));
+            if (GoldenComes(stage))
+            {
+                Spawn(enemy, EnemyType.Normal, _stages.EnemyHp(stage) * (Multiplier(enemy) * Encounters.GoldenHpMultiplier));
+                _state.GoldenTicks = (int)System.Math.Round(Encounters.GoldenSeconds * GameLoop.TicksPerSecond);
+                _state.GoldenNormalHp = _stages.EnemyHp(stage) * Multiplier(enemy);
+                _events.Add(GameEvent.ForStage(GameEventKind.GoldenColossusAppeared, _state.Tick, stage));
+                return;
+            }
             Spawn(enemy, EnemyType.Normal, _stages.EnemyHp(stage) * (Multiplier(enemy) * (1 - cut)));
+        }
+
+        public EncounterRules Encounters { get; set; } = null!;
+
+        private bool GoldenComes(long stage) =>
+            RaisesRecord && Encounters.GoldenChance > 0 && stage >= Encounters.GoldenMinStage && _state.Rng.NextDouble() < Encounters.GoldenChance;
+
+        private bool WandererComes(long stage, bool guardian) =>
+            RaisesRecord && !guardian && Encounters.WandererChance > 0 && stage >= Encounters.WandererMinStage
+            && stage + Encounters.JumpMin <= _state.RecordStage && _state.Rng.NextDouble() < Encounters.WandererChance;
+
+        private void TickGolden()
+        {
+            if (_state.GoldenTicks <= 0)
+                return;
+            if (_state.GoldenDamage.Sign > 0 && _state.GoldenNormalHp.Sign > 0)
+            {
+                _loot.Golden(_state.Stage, (_state.GoldenDamage / _state.GoldenNormalHp).ToDouble() * Encounters.GoldenGold);
+                _state.GoldenDamage = BigNumber.Zero;
+            }
+            if (--_state.GoldenTicks > 0 || !_state.EnemyAlive)
+                return;
+            SpawnNormal();
+        }
+
+        private void Jump()
+        {
+            var jump = _state.Rng.NextInt(Encounters.JumpMin, Encounters.JumpMax + 1);
+            var target = System.Math.Min(_state.Stage + jump, _state.RecordStage);
+            if (target <= _state.Stage)
+                return;
+            var jumped = target - _state.Stage;
+            var skipped = 0L;
+            for (var stage = _state.Stage; stage < target; stage++)
+                skipped += _stages.EnemiesOnStage(stage);
+            _levels.OnSkipped(skipped, jumped);
+            _state.Stage = target;
+            if (_state.Stage > _state.HighestStage)
+                _state.HighestStage = _state.Stage;
+            _events.Add(GameEvent.WithAmount(GameEventKind.WandererJumped, _state.Tick, BigNumber.FromDouble(jumped), _state.Stage));
         }
 
         private void SpawnBoss()
@@ -277,6 +329,7 @@ namespace Game.Core.Sim
             var enemy = guardian ? _guardians[biome] ?? _bosses[biome] : _bosses[biome];
             var guardianShare = guardian ? System.Math.Max(0.1, _hero.Value(CombatStats.GuardianHp, 1)) : 1;
             Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * (Multiplier(enemy) * guardianShare));
+            _state.WandererBoss = WandererComes(stage, guardian);
             var timer = _stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
             _state.BossTicksLeft = (int)System.Math.Round((timer + _state.BankedSeconds) * GameLoop.TicksPerSecond);
             _state.BankedSeconds = 0;
