@@ -14,6 +14,7 @@ namespace Game.Bootstrap
 
         private readonly ConcurrentQueue<string> _problems = new ConcurrentQueue<string>();
         private ErrorReporter _reporter = null!;
+        private IErrorReportSink _sink = NoErrorReportSink.Instance;
         private GameSettings _settings = null!;
         private float _sinceFlush;
 
@@ -21,6 +22,7 @@ namespace Game.Bootstrap
         {
             var driver = host.AddComponent<ErrorReportDriver>();
             driver._settings = settings;
+            driver._sink = NetworkFile.ErrorSink(NetworkFile.Load());
             var scrubber = new LogScrubber(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), Environment.UserName);
             driver._reporter = new ErrorReporter(new ErrorReportStore(SaveDriver.SaveDirectory), scrubber, Application.version, SystemInfo.operatingSystem, () => DateTimeOffset.UtcNow);
             driver._reporter.Problem += driver._problems.Enqueue;
@@ -67,13 +69,13 @@ namespace Game.Bootstrap
             if (_sinceFlush < FlushSeconds)
                 return;
             _sinceFlush = 0f;
-            _reporter.Flush(NoErrorReportSink.Instance, _settings.ErrorReportConsentGiven);
+            _reporter.Flush(_sink, _settings.ErrorReportConsentGiven);
         }
 
         private void OnApplicationQuit()
         {
             Application.logMessageReceivedThreaded -= OnLog;
-            _reporter.Flush(NoErrorReportSink.Instance, _settings.ErrorReportConsentGiven);
+            _reporter.Flush(_sink, _settings.ErrorReportConsentGiven);
             _reporter.StopSession();
         }
     }

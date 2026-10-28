@@ -37,6 +37,9 @@ check "https://$DOMAIN/healthcheck" curl -fsS "${curl_tls[@]}" --max-time 10 "ht
 rift="$(curl -fsS "${curl_tls[@]}" --max-time 10 "https://$DOMAIN/v2/rpc/rift_window?http_key=$NAKAMA_HTTP_KEY&unwrap" 2>/dev/null)"
 if [[ "$rift" == *serverUnixMs* ]]; then pass "module answers rpc rift_window"; else fail "rpc rift_window: '$rift'"; fi
 
+intake="$(curl -s "${curl_tls[@]}" --max-time 10 -o /dev/null -w '%{http_code}' -X POST -H 'Content-Type: application/json' --data '{}' "https://$DOMAIN/intake/telemetry" 2>/dev/null)"
+if [ "$intake" = "400" ]; then pass "intake checks packets (junk -> 400)"; else fail "intake /intake/telemetry answered '$intake', expected 400"; fi
+
 check "console on 127.0.0.1:7351" curl -fsS --max-time 10 -o /dev/null http://127.0.0.1:7351/
 
 if swapon --show --noheadings 2>/dev/null | grep -q .; then pass "swap on"; else warn "swap off (install.sh turns it on)"; fi

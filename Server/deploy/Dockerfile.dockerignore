@@ -6,6 +6,7 @@
 !Server/tsconfig.json
 !Server/src/
 !Server/tools/
+!Server/config/
 !Server/test/
 !Server/test-vectors/
 !Server/deploy/nakama.yml

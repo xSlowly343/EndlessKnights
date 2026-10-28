@@ -22,6 +22,10 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("party_unblock", partyUnblockRpc);
     initializer.registerRpc("party_report", partyReportRpc);
     initializer.registerRpc("rift_window", riftWindowRpc);
+    initializer.registerRpc("telemetry_push", telemetryPushRpc);
+    initializer.registerRpc("error_report_push", errorReportPushRpc);
+    initializer.registerRpc("telemetry_summary", telemetrySummaryRpc);
+    initializer.registerRpc("error_report_list", errorReportListRpc);
     initializer.registerBeforeCreateGroup(partyBeforeCreateGroup);
     initializer.registerBeforeUpdateGroup(partyBeforeGroupChange);
     initializer.registerBeforeDeleteGroup(partyBeforeGroupChange);

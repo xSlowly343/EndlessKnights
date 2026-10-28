@@ -1,5 +1,7 @@
 const assert = require("assert");
 const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
 
 const RosterKind = 8;
 const EncounterStateKind = 5;
@@ -179,6 +181,13 @@ async function main() {
 
   const session = await authenticate(base, serverKey);
   console.log("ok    device login, user " + session.userId);
+
+  const samples = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "test-vectors", "intake-samples.json"), "utf8"));
+  const intake = async (kind, body) => (await fetch(base + "/intake/" + kind, { method: "POST", headers: { "Content-Type": "application/json" }, body: body })).status;
+  assert.strictEqual(await intake("telemetry", JSON.stringify(samples.telemetry[0])), 200, "telemetry sample");
+  assert.strictEqual(await intake("errors", JSON.stringify(samples.errors[0])), 200, "error report sample");
+  assert.strictEqual(await intake("telemetry", JSON.stringify(Object.assign({ steamId: "1" }, samples.telemetry[0]))), 400, "a packet with an extra field");
+  console.log("ok    intake takes client packets without login and refuses extra fields");
 
   const rift = await rpc(base, session.token, "rift_window", {});
   assert.ok(rift.serverUnixMs > 0 && rift.next, "rift_window reply " + JSON.stringify(rift));
