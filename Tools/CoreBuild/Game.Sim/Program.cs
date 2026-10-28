@@ -120,11 +120,12 @@ namespace Game.Sim
                     cells.Add(multiplier.ToString("0.###", CultureInfo.InvariantCulture));
                 }
                 var average = sum / SupportProfiles.Length;
-                var fits = average >= SupportLow && average <= SupportHigh;
+                var utility = gem.Support.ExperienceMultiplier != 1;
+                var fits = utility || (average >= SupportLow && average <= SupportHigh);
                 if (!fits)
                     outside++;
                 output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3:0.###},{4}",
-                    gem.Id, gem.Color.ToString().ToLowerInvariant(), string.Join(",", cells), average, fits ? "ok" : "review"));
+                    gem.Id, gem.Color.ToString().ToLowerInvariant(), string.Join(",", cells), average, utility ? "utility" : fits ? "ok" : "review"));
             }
             watch.Stop();
             Console.Error.WriteLine(string.Format(CultureInfo.InvariantCulture,

@@ -49,13 +49,14 @@ namespace Game.Core.Sim
                 if (!_skills.Armed(index))
                     continue;
                 var slot = _state.Skills[index];
-                Grant(slot.Skill, amount);
+                var gained = amount * SupportEffects.ExperienceMultiplier(slot);
+                Grant(slot.Skill, gained);
                 if (slot.Trigger != null)
-                    Grant(slot.Trigger, amount);
+                    Grant(slot.Trigger, gained);
                 for (var i = 0; i < slot.Supports.Length; i++)
                 {
                     if (slot.Supports[i] != null)
-                        Grant(slot.Supports[i]!, amount);
+                        Grant(slot.Supports[i]!, gained);
                 }
             }
         }

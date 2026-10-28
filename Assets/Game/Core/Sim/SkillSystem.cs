@@ -137,8 +137,9 @@ namespace Game.Core.Sim
             if (!Pay(skill, native, slot.WhenAtCast, out var spent))
                 return CastResult.NotEnoughResource;
 
-            slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill);
-            slot.AuraPower = 1;
+            var supportPower = SupportEffects.Power(slot);
+            slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill) * supportPower;
+            slot.AuraPower = supportPower;
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
             var cooldown = skill.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot) * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);

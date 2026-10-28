@@ -47,8 +47,7 @@ namespace Game.Core.Sim.Headless
             var ticks = (long)System.Math.Round(seconds * GameLoop.TicksPerSecond);
             for (var tick = 0L; tick < ticks; tick++)
             {
-                loop.State.Farming = true;
-                loop.State.FarmKills = 0;
+                loop.State.Stage = Stage;
                 loop.RequestCast(0);
                 loop.Tick();
                 for (var i = 0; i < loop.Events.Count; i++)

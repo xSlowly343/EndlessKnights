@@ -50,6 +50,7 @@ namespace Game.Core.Sim
         public long ReadyTick { get; set; }
         public double CastPower { get; set; } = 1;
         public int MouseExtendedTicks { get; set; }
+        public long MarkedSpawnTick { get; set; } = -1;
         public double PassiveScale { get; set; }
         public double AuraPower { get; set; } = 1;
         public double CursePower { get; set; } = 1;
