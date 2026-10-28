@@ -17,7 +17,7 @@ namespace Game.Sim
     public static class BotCommand
     {
         public const string Usage =
-            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--report cheating]";
+            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
 
         private const ulong BotSteamBase = 76561190000000000UL;
 
@@ -27,7 +27,7 @@ namespace Game.Sim
             for (var i = 0; i < args.Count; i++)
             {
                 var name = args[i];
-                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--rift" || name == "--stay" || name == "--find" || name == "--quick";
+                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--rift" || name == "--chronicle" || name == "--stay" || name == "--find" || name == "--quick";
                 if (flag)
                     options[name] = "yes";
                 else if (i + 1 < args.Count)
@@ -47,10 +47,11 @@ namespace Game.Sim
                     return RunPair(data, client, profile, seconds, options.ContainsKey("--rift")).GetAwaiter().GetResult();
                 var stay = options.ContainsKey("--stay");
                 if (options.TryGetValue("--code", out var code))
-                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.JoinAsync(code), stay, options.TryGetValue("--report", out var codeReason) ? codeReason : null).GetAwaiter().GetResult();
+                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.JoinAsync(code), stay, options.TryGetValue("--report", out var codeReason) ? codeReason : null,
+                        options.ContainsKey("--chronicle")).GetAwaiter().GetResult();
                 options.TryGetValue("--report", out var reason);
                 if (options.ContainsKey("--create"))
-                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.CreateAsync(options.ContainsKey("--open")), stay, reason).GetAwaiter().GetResult();
+                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.CreateAsync(options.ContainsKey("--open")), stay, reason, options.ContainsKey("--chronicle")).GetAwaiter().GetResult();
                 if (options.ContainsKey("--find"))
                     return RunOne(data, client, profile, heroClass, seconds, bot => bot.FindAsync(Console.Out), stay, reason).GetAwaiter().GetResult();
                 if (options.ContainsKey("--quick"))
@@ -64,7 +65,7 @@ namespace Game.Sim
         }
 
         private static async Task<int> RunOne(GameData data, NakamaClient client, BotProfile profile, HeroClass heroClass, double seconds, Func<Bot, Task> enter, bool stay,
-            string? reportReason)
+            string? reportReason, bool chronicle = false)
         {
             var bot = await Bot.LoginAsync(data, client, profile, heroClass, 1).ConfigureAwait(false);
             await enter(bot).ConfigureAwait(false);
@@ -72,6 +73,8 @@ namespace Game.Sim
             await bot.ConnectAsync().ConfigureAwait(false);
             Play(new[] { bot }, seconds);
             bot.Report(Console.Out);
+            if (chronicle)
+                await bot.ShowChronicleAsync(Console.Out).ConfigureAwait(false);
             if (reportReason != null)
                 await bot.ReportOtherAsync(reportReason, Console.Out).ConfigureAwait(false);
             await bot.FinishAsync(stay).ConfigureAwait(false);
@@ -190,6 +193,18 @@ namespace Game.Sim
                 if (found.Count == 0)
                     throw new NakamaException(0, "no open party to join");
                 await _online.JoinOpenAsync(found[0].Id).ConfigureAwait(false);
+            }
+
+            public async Task ShowChronicleAsync(System.IO.TextWriter output)
+            {
+                var chronicle = await _online.Directory.ChronicleAsync().ConfigureAwait(false);
+                output.WriteLine(PartyChronicleText.Banner(chronicle.Banner) + ", bosses together " + chronicle.BossesTogether + ", hours " +
+                    chronicle.HoursTogether.ToString("0.0", CultureInfo.InvariantCulture));
+                foreach (var feat in chronicle.Feats)
+                    output.WriteLine("  " + PartyChronicleText.Feat(feat.Id) + ": " + (feat.Level > 0 ? PartyChronicleText.Earned(feat.AtUnixMs, 0) + ", " : string.Empty) +
+                        PartyChronicleText.Goal(feat.Kind, feat.Tracked, feat.Level, feat.Levels, feat.Progress));
+                foreach (var record in chronicle.Records)
+                    output.WriteLine("  " + PartyChronicleText.Record(record.Kind, record.AtUnixMs, record.Name, record.Feat, 0));
             }
 
             public async Task ReportOtherAsync(string reason, System.IO.TextWriter output)

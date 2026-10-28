@@ -7,6 +7,7 @@ const party = JSON.parse(fs.readFileSync(path.join(data, "party.json"), "utf8"))
 const stages = JSON.parse(fs.readFileSync(path.join(data, "stages.json"), "utf8"));
 const rift = JSON.parse(fs.readFileSync(path.join(data, "rift.json"), "utf8"));
 const intake = JSON.parse(fs.readFileSync(path.join(root, "config", "intake.json"), "utf8"));
+const chronicle = JSON.parse(fs.readFileSync(path.join(data, "party_chronicle.json"), "utf8"));
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
 function enemiesOnFirstStage(waves) {
@@ -82,5 +83,16 @@ const intakeRules = {
   characters: Object.keys(party.search.classRoles)
 };
 
+if (chronicle.version !== 1)
+  throw new Error("party_chronicle.json: version " + chronicle.version + " is not supported");
+const chronicleRules = {
+  flushSeconds: chronicle.flushSeconds,
+  maxRecords: chronicle.maxRecords,
+  feats: chronicle.feats.map((feat) => ({
+    id: feat.id, kind: feat.kind, levels: feat.levels, banner: feat.banner || [], title: feat.title || null, tracked: feat.tracked !== false
+  })),
+  classRoles: Object.values(party.search.classRoles)
+};
+
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\n" + code);

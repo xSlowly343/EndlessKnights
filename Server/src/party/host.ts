@@ -24,6 +24,7 @@ class PartyHost {
     cutShares = 0;
     repeatedShares = 0;
     clockUnixMs = 0;
+    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0 };
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
     private readonly allowance = [0, 0, 0, 0];
@@ -152,7 +153,37 @@ class PartyHost {
                 this.messagesThisSecond[i] = 0;
         this.watchSilence();
         this.watchPresence();
+        this.noteTogether();
         this.flush();
+    }
+
+    takeChronicle(): ChronicleStats {
+        const taken = { bossesTogether: this.chronicle.bossesTogether, ticksTogether: this.chronicle.ticksTogether, fullOrchestra: this.chronicle.fullOrchestra };
+        this.chronicle.bossesTogether = 0;
+        this.chronicle.ticksTogether = 0;
+        this.chronicle.fullOrchestra = 0;
+        return taken;
+    }
+
+    private noteTogether(): void {
+        let fighting = 0;
+        for (let slot = 0; slot < PartyMaxSlots; slot++)
+            if (this.encounter.members[slot].joined && this.encounter.presence(slot) === PartyPresence.Fighting)
+                fighting++;
+        if (fighting >= 2)
+            this.chronicle.ticksTogether++;
+    }
+
+    private noteBossKill(event: PartyEvent): void {
+        const roles: string[] = [];
+        for (let slot = 0; slot < PartyMaxSlots; slot++)
+            if (event.shares[slot] > 0 && this.encounter.members[slot].joined)
+                roles.push(chronicleRoleOf(this.encounter.members[slot].heroClass));
+        if (roles.length < 2)
+            return;
+        this.chronicle.bossesTogether++;
+        if (chronicleFullOrchestra(roles))
+            this.chronicle.fullOrchestra++;
     }
 
     private requestWorld(request: WorldRequestMessage): void {
@@ -276,6 +307,8 @@ class PartyHost {
         for (const event of events) {
             if (event.kind === PartyEventKind.EnemyKilled) {
                 this.kills++;
+                if (event.enemyKind === PartyEnemyKind.Boss)
+                    this.noteBossKill(event);
                 this.broadcast(partyEncodeEnemyKilled(event), PartyNoSlot);
             } else if (event.kind === PartyEventKind.EnemySpawned || event.kind === PartyEventKind.WorldPending
                 || event.kind === PartyEventKind.WorldCancelled || event.kind === PartyEventKind.WorldChanged) {

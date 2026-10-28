@@ -256,6 +256,7 @@ function partyCreateFor(nk: nkruntime.Nakama, userId: string, request: { [key: s
     meta.code = partyReserveCode(nk, group.id);
     partySaveMeta(nk, group, meta);
     partyNoteMember(nk, userId, group.id, "", PartyNoSlot);
+    chronicleNote(nk, group.id, "created", null);
     return group;
 }
 
@@ -274,6 +275,7 @@ function partyAdd(nk: nkruntime.Nakama, group: nkruntime.Group, userId: string):
     meta.members.push(userId);
     partySaveMeta(nk, group, meta);
     partyNoteMember(nk, userId, group.id, "", PartyNoSlot);
+    chronicleNote(nk, group.id, "joined", userId);
     return group;
 }
 
@@ -288,9 +290,11 @@ function partyRemove(nk: nkruntime.Nakama, group: nkruntime.Group, userId: strin
     if (live)
         nk.matchSignal(live, "leave:" + userId);
     if (meta.members.length === 0) {
+        chronicleForget(nk, group.id);
         partyDissolve(nk, group.id, meta.code);
         return;
     }
+    chronicleNote(nk, group.id, "left", userId);
     if (meta.leader === userId)
         meta.leader = meta.members[0];
     partyHandOverOwner(nk, group.id, userId, meta.leader);

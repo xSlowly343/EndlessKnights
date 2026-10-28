@@ -34,6 +34,27 @@ namespace Game.Net.Tests
         public void ServerErrorsAreShownWithoutTheScriptStack(string raw, string clean) => Assert.That(NakamaClient.Clean(raw), Is.EqualTo(clean));
 
         [Test]
+        public void AChronicleIsReadFromTheServerReply()
+        {
+            var json = NakamaJson.Parse("{\"partyId\":\"p1\",\"banner\":2,\"titles\":[\"full_orchestra\"],\"stats\":{\"bossesTogether\":120,\"hoursTogether\":3.5,\"fullOrchestra\":1},"
+                + "\"feats\":[{\"id\":\"old_guard\",\"kind\":\"bossesTogether\",\"tracked\":true,\"levels\":[100,1000,10000],\"level\":1,\"at\":1792760000000,\"progress\":120},"
+                + "{\"id\":\"night_shift\",\"kind\":\"nightBosses\",\"tracked\":false,\"levels\":[20],\"level\":0,\"at\":0,\"progress\":0}],"
+                + "\"records\":[{\"at\":1792760000000,\"kind\":\"feat\",\"name\":\"\",\"feat\":\"old_guard\",\"level\":1},{\"at\":1792700000000,\"kind\":\"joined\",\"name\":\"Bob\",\"feat\":\"\",\"level\":0}]}");
+
+            var chronicle = PartyChronicleView.From(json)!;
+
+            Assert.That(chronicle.Banner, Is.EqualTo(2));
+            Assert.That(chronicle.Titles, Is.EqualTo(new[] { "full_orchestra" }));
+            Assert.That(chronicle.BossesTogether, Is.EqualTo(120));
+            Assert.That(chronicle.HoursTogether, Is.EqualTo(3.5));
+            Assert.That(chronicle.Feats[0].Levels, Is.EqualTo(new[] { 100.0, 1000, 10000 }));
+            Assert.That(chronicle.Feats[0].Level, Is.EqualTo(1));
+            Assert.That(chronicle.Feats[1].Tracked, Is.False);
+            Assert.That(chronicle.Records[1].Name, Is.EqualTo("Bob"));
+            Assert.That(chronicle.Records[0].AtUnixMs, Is.EqualTo(1792760000000));
+        }
+
+        [Test]
         public void APartyViewIsReadFromTheServerReply()
         {
             var json = NakamaJson.Parse("{\"id\":\"p1\",\"code\":\"K7MQ2X\",\"access\":\"open\",\"title\":\"night_shift\",\"language\":\"ru\",\"wanted\":\"buffer\",\"leader\":\"u1\",\"maxMembers\":4,\"matchId\":null,"

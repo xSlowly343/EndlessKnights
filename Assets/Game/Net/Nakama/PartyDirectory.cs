@@ -73,6 +73,9 @@ namespace Game.Net.Nakama
         public Task ReportAsync(string userId, string reason, CancellationToken cancel = default) =>
             Call("party_report", NakamaJson.Object(("userId", NakamaJson.Quote(userId)), ("reason", NakamaJson.Quote(reason))), cancel);
 
+        public async Task<PartyChronicleView> ChronicleAsync(CancellationToken cancel = default) =>
+            PartyChronicleView.From(await Call("party_chronicle", "{}", cancel).ConfigureAwait(false)) ?? throw new NakamaException(0, "the server sent no chronicle");
+
         private async Task<JsonValue> Call(string rpc, string payload, CancellationToken cancel) =>
             NakamaJson.Parse(await _client.RpcAsync(_session, rpc, payload, cancel).ConfigureAwait(false));
 

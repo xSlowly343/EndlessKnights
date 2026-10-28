@@ -4,6 +4,7 @@ interface PartyMatchState {
     presences: { [userId: string]: nkruntime.Presence };
     pendingNumbers: { [userId: string]: string };
     emptyTicks: number;
+    chronicleTicks: number;
 }
 
 const PartyMatchName = "party";
@@ -27,7 +28,7 @@ function partyDecimalOrNull(value: any): string | null {
 function partyMatchInit(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, params: { [key: string]: string }) {
     const seed = partyDecimalOrNull(params.seed) || String(Date.now());
     const partyId = typeof params.partyId === "string" ? params.partyId : "";
-    const state: PartyMatchState = { host: new PartyHost(PartyServerRules, seed), partyId: partyId, presences: {}, pendingNumbers: {}, emptyTicks: 0 };
+    const state: PartyMatchState = { host: new PartyHost(PartyServerRules, seed), partyId: partyId, presences: {}, pendingNumbers: {}, emptyTicks: 0, chronicleTicks: 0 };
     return { state: state, tickRate: PartyTicksPerSecond, label: JSON.stringify({ kind: PartyMatchName, open: true }) };
 }
 
@@ -84,13 +85,31 @@ function partyMatchLoop(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     host.tick(Date.now());
     partySend(dispatcher, state, host);
     partyReportFlags(nk, logger, ctx.matchId || "", host);
+    state.chronicleTicks = (state.chronicleTicks || 0) + 1;
+    if (state.chronicleTicks >= Math.max(1, partyTicks(ChronicleServerRules.flushSeconds))) {
+        state.chronicleTicks = 0;
+        partyFlushChronicle(nk, logger, state);
+    }
     state.emptyTicks = Object.keys(state.presences).length === 0 ? state.emptyTicks + 1 : 0;
     return state.emptyTicks > PartyEmptyTicksBeforeClose ? null : { state: state };
 }
 
 function partyMatchTerminate(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, dispatcher: nkruntime.MatchDispatcher,
     tick: number, state: PartyMatchState, graceSeconds: number) {
+    state = partyRevive(state);
+    partyFlushChronicle(nk, logger, state);
     return { state: state };
+}
+
+function partyFlushChronicle(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: PartyMatchState): void {
+    const host = state.host;
+    const delta = host.takeChronicle();
+    const members: string[] = [];
+    for (const member of host.encounter.members)
+        if (member.joined)
+            members.push(member.playerId);
+    for (const got of chronicleFlush(nk, logger, state.partyId, delta, members))
+        logger.info("party %s: feat %s, level %d", state.partyId, got.feat, got.level);
 }
 
 function partyMatchSignal(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, dispatcher: nkruntime.MatchDispatcher,
