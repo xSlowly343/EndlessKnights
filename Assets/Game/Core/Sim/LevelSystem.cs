@@ -98,6 +98,8 @@ namespace Game.Core.Sim
                     return _state.Prestiges;
                 case PointCounter.Trials:
                     return _state.Chronicle.Completed.Count;
+                case PointCounter.Gates:
+                    return _state.GatesCleared.Count;
                 default:
                     return _state.RecordStage;
             }

@@ -21,6 +21,7 @@ namespace Game.Core.Sim
         TrialCompleted,
         WandererJumped,
         GoldenColossusAppeared,
-        JewelDropped
+        JewelDropped,
+        GateCleared
     }
 }

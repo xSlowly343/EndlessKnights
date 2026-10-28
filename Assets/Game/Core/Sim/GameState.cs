@@ -180,6 +180,7 @@ namespace Game.Core.Sim
         public double AutoCastKeys { get; set; }
         public long InputStreakTicks { get; set; }
         public JewelState Jewels { get; } = new JewelState();
+        public HashSet<long> GatesCleared { get; } = new HashSet<long>();
         public double IdleHitCarry { get; set; }
         public double CompanionHitCarry { get; set; }
         public int ActiveAuras { get; set; }

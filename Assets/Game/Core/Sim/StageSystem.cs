@@ -241,6 +241,12 @@ namespace Game.Core.Sim
             if (wanderer)
                 Jump();
             Drops?.OnBossDefeated(stageBefore, type, _state.RecordStage, RaisesRecord);
+            if (Gates?.TryClear(stageBefore) is StageGate gate)
+            {
+                if (gate.FirstKillUnique)
+                    Drops?.GiveLimitUnique(stageBefore);
+                _levels.SyncTreePoints();
+            }
             OpenChest(stageBefore);
             if (RaisesRecord)
                 _levels.OnStageReached(_state.Stage);
@@ -248,6 +254,7 @@ namespace Game.Core.Sim
         }
 
         public double ChestGold { get; set; }
+        public GateSystem? Gates { get; set; }
 
         private void OpenChest(long stage)
         {
