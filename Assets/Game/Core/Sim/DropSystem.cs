@@ -142,6 +142,30 @@ namespace Game.Core.Sim
             return RollWeapon(type, set.Rarity, stage, rng).InSet(set);
         }
 
+        public void GiveLimitUnique(long stage)
+        {
+            var gear = _items.Uniques;
+            var weapons = _weapons.Catalog.Uniques;
+            var total = gear.Count + weapons.Count;
+            if (total == 0)
+                return;
+            var rng = _state.Drops.Rng;
+            var pick = rng.NextInt(0, total);
+            WeaponItem? weapon = null;
+            GearItem? item = null;
+            if (pick < gear.Count)
+            {
+                item = new GearItem(gear[pick], BiomeNumber(stage));
+                _state.Drops.Gear.Add(item);
+            }
+            else
+            {
+                weapon = _weapons.Give(_weapons.Catalog.RollUnique(weapons[pick - gear.Count], rng));
+            }
+            _state.Drops.ItemsFound++;
+            _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Limit, stage, weapon, item, false, 0)));
+        }
+
         public bool BuyUncut()
         {
             var drops = _state.Drops;

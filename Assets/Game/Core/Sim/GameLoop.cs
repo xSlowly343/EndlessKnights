@@ -52,6 +52,7 @@ namespace Game.Core.Sim
         private readonly GemExperienceSystem _gemExperience;
         private readonly GearSystem _gear;
         private readonly JewelSystem _jewels;
+        private readonly GateSystem _gates;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -83,6 +84,8 @@ namespace Game.Core.Sim
             _stage.Drops = _drops;
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
             _jewels = new JewelSystem(data.Tree, state, hero);
+            _gates = new GateSystem(data.Stages, state, hero, Events);
+            _stage.Gates = _gates;
             _artifacts.Rebuilt = _jewels.Rebuild;
             _chronicle = new ChronicleSystem(data.Chronicle, state, hero, Events, _levels);
             _atlas = new AtlasSystem(data.Atlas, state, hero);
@@ -133,6 +136,7 @@ namespace Game.Core.Sim
         public WeaponSystem Weapons => _weapons;
         public GearSystem Gear => _gear;
         public JewelSystem Jewels => _jewels;
+        public GateSystem Gates => _gates;
         public DropSystem Drops => _drops;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
@@ -397,6 +401,7 @@ namespace Game.Core.Sim
             _drops.UseData(data.Drops, data.Stages, data.Gems, data.Items);
             _gear.UseCatalog(data.Items);
             _jewels.Tree = data.Tree;
+            _gates.UseStages(data.Stages);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _prestige.UseRules(data.Prestige);

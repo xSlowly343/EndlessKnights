@@ -76,6 +76,7 @@ namespace Game.Core.Save
                 ("spirits", WriteLevels(state.Spirits)),
                 ("gear", WriteWorn(state.Gear)),
                 ("jewels", WriteJewels(state.Jewels)),
+                ("gatesCleared", WriteStages(state.GatesCleared)),
                 ("setCollection", JsonValue.Array(WriteCollection(state))),
                 ("inputStats", Object(
                     ("keys", JsonValue.Of(state.TotalInput.Keys.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -220,6 +221,11 @@ namespace Game.Core.Save
                 ReadLevels(node.Field("spirits"), state.Spirits);
             if (node.HasField("gear") && items != null)
                 ReadWorn(node.Field("gear"), items, state.Gear);
+            if (node.HasField("gatesCleared"))
+            {
+                foreach (var item in node.Field("gatesCleared").Items())
+                    state.GatesCleared.Add(item.AsLong(1));
+            }
             if (node.HasField("jewels") && items != null)
                 ReadJewels(node.Field("jewels"), items, state.Jewels);
             if (node.HasField("setCollection"))
@@ -401,6 +407,16 @@ namespace Game.Core.Save
             if (items != null && node.HasField("base") && !node.Field("base").IsNull && items.TryGetBase(node.Field("base").AsString(), out var gearBase) && gearBase.Slot == slot)
                 return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot));
             return new GearItem(slot, rarity, itemLevel, color.IsNull ? null : color.AsString());
+        }
+
+        private static JsonValue WriteStages(HashSet<long> stages)
+        {
+            var sorted = new List<long>(stages);
+            sorted.Sort();
+            var items = new JsonValue[sorted.Count];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = JsonValue.Of(sorted[i]);
+            return JsonValue.Array(items);
         }
 
         private static JsonValue WriteJewels(JewelState jewels)

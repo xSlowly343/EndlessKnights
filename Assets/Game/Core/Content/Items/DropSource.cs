@@ -9,5 +9,6 @@ namespace Game.Core.Content.Items
         Offline,
         Guarantee,
         Craft,
+        Limit,
     }
 }

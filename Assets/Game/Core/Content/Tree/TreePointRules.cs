@@ -10,7 +10,8 @@ namespace Game.Core.Content.Tree
         MouseKm,
         Prestiges,
         RecordStage,
-        Trials
+        Trials,
+        Gates
     }
 
     public sealed class PointLadder
@@ -47,7 +48,8 @@ namespace Game.Core.Content.Tree
             ["mouseKm"] = PointCounter.MouseKm,
             ["prestiges"] = PointCounter.Prestiges,
             ["recordStage"] = PointCounter.RecordStage,
-            ["trials"] = PointCounter.Trials
+            ["trials"] = PointCounter.Trials,
+            ["gates"] = PointCounter.Gates
         };
 
         private TreePointRules(IReadOnlyList<PointLadder> ladders)
