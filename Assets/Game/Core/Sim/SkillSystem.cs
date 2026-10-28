@@ -140,7 +140,7 @@ namespace Game.Core.Sim
 
             var supportPower = SupportEffects.Power(slot, _state);
             slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill) * supportPower;
-            slot.AuraPower = supportPower;
+            slot.AuraPower = supportPower * SupportEffects.AuraPower(slot);
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
             var cooldown = skill.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot) * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
@@ -205,6 +205,8 @@ namespace Game.Core.Sim
             slot.ActiveTotalTicks = slot.ActiveTicks;
             slot.MouseExtendedTicks = 0;
             slot.LingerTicks = 0;
+            slot.WindPx = 0;
+            slot.WindTicks = 0;
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
             if (skill.Effect is SpecialKeysEffect special && special.Charges > 0)
@@ -331,7 +333,7 @@ namespace Game.Core.Sim
                 + hits.ReversalMultiplier * TakeHits(slot, hits, input.Reversals);
             if (hits.PxPerHit > 0)
             {
-                slot.Progress += input.MousePx;
+                slot.Progress += input.MousePx * SupportEffects.MouseDistance(slot);
                 var steps = (int)System.Math.Floor(slot.Progress / hits.PxPerHit);
                 slot.Progress -= steps * hits.PxPerHit;
                 multiplier += hits.PxShare * steps;
@@ -369,8 +371,9 @@ namespace Game.Core.Sim
             }
             if (Armed(slot))
             {
-                buckets[index] += input.MousePx;
-                slot.Progress += input.MousePx;
+                var px = input.MousePx * SupportEffects.MouseDistance(slot);
+                buckets[index] += px;
+                slot.Progress += px;
             }
             var stacks = System.Math.Min(MaxStacks(distance.Stacks), (int)System.Math.Floor(System.Math.Max(0, slot.Progress) / distance.PxPerStack));
             SetStacks(slot, distance.Stacks, stacks);
@@ -832,6 +835,8 @@ namespace Game.Core.Sim
                 KeepReserved(slot);
                 RefillCharge(slot);
                 TickTwin(slot);
+                TickWhirlpool(slot, input);
+                TickTailwind(slot, input);
                 if (slot.ActiveTicks > 0 && !Lingers(slot, input))
                 {
                     slot.ActiveTicks--;
@@ -872,7 +877,7 @@ namespace Game.Core.Sim
                 if (slot.Active && slot.Def.Effect is AuraEffect keyless && keyless.KeylessStrikeSeconds > 0)
                     TickKeylessStrike(slot, keyless);
                 if (slot.Active && slot.Def.Effect is TrailEffect)
-                    slot.Progress += input.MousePx;
+                    slot.Progress += input.MousePx * SupportEffects.MouseDistance(slot);
                 if (input.HasInput && slot.Def.Effect is IdleStrikeEffect strike)
                     ReleaseIdleStrike(slot, strike, idleTicksBefore * GameLoop.TickSeconds);
                 if (slot.Active && slot.Def.Effect is CurseFlowEffect flowing)
@@ -882,6 +887,61 @@ namespace Game.Core.Sim
             }
             _combat.Supporting = null;
             _state.ActiveAuras = CountAuras();
+            ActiveInputBonuses();
+        }
+
+        private void ActiveInputBonuses()
+        {
+            var keys = 1.0;
+            var mouse = 1.0;
+            for (var i = 0; i < _state.Skills.Count; i++)
+            {
+                if (_state.Skills[i].Active)
+                    SupportEffects.ActiveInputDamage(_state.Skills[i], ref keys, ref mouse);
+            }
+            _state.SupportKeyBonus = keys;
+            _state.SupportMouseBonus = mouse;
+        }
+
+        private void TickWhirlpool(SkillSlot slot, in EffectiveInput input)
+        {
+            if (input.CircleTurns <= 0)
+                return;
+            var whirlpool = SupportEffects.Whirlpool(slot);
+            if (whirlpool == null)
+                return;
+            slot.CirclesSinceCast += input.CircleTurns;
+            if (slot.CooldownTicks <= 0)
+            {
+                slot.CooldownCircles = 0;
+                return;
+            }
+            slot.CooldownCircles += input.CircleTurns;
+            var turns = (int)System.Math.Floor(slot.CooldownCircles + 1e-9);
+            if (turns <= 0)
+                return;
+            slot.CooldownCircles -= turns;
+            slot.CooldownTicks = System.Math.Max(0, slot.CooldownTicks - turns * Ticks(whirlpool.CircleCooldownSeconds));
+            if (slot.CooldownTicks == 0)
+                slot.ReadyTick = _state.Tick;
+        }
+
+        private void TickTailwind(SkillSlot slot, in EffectiveInput input)
+        {
+            if (!slot.Active || input.MousePx <= 0)
+                return;
+            var wind = SupportEffects.Tailwind(slot);
+            if (wind == null)
+                return;
+            slot.WindPx += input.MousePx;
+            var seconds = (int)System.Math.Floor(slot.WindPx / wind.WindPxPerSecond + 1e-9);
+            if (seconds <= 0)
+                return;
+            slot.WindPx -= seconds * wind.WindPxPerSecond;
+            var room = System.Math.Max(0, (int)System.Math.Round(slot.ActiveTotalTicks * wind.WindMax) - slot.WindTicks);
+            var added = System.Math.Min(room, seconds * GameLoop.TicksPerSecond);
+            slot.WindTicks += added;
+            slot.ActiveTicks += added;
         }
 
         private void RefillCharge(SkillSlot slot)

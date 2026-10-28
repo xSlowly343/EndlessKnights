@@ -172,6 +172,8 @@ namespace Game.Core.Sim
 
         public long KeyHits { get; set; }
         public long KeyStreak { get; set; }
+        public double SupportKeyBonus { get; set; } = 1;
+        public double SupportMouseBonus { get; set; } = 1;
         public int Combo { get; set; }
         public long LastComboStrikeTick { get; set; } = -1;
         public long ComboIdleTicks { get; set; }

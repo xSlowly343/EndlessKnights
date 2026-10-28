@@ -92,12 +92,10 @@ namespace Game.Sim
         private const double SupportLow = 1.15;
         private const double SupportHigh = 1.40;
 
-        private const double SupportMiddle = (SupportLow + SupportHigh) / 2;
-
         private static readonly (string Name, BotProfile Profile)[] SupportProfiles =
         {
             ("typist", new BotProfile(8, 0, 300)),
-            ("mouse", new BotProfile(1, 0, 1500)),
+            ("mouse", new BotProfile(1, 0, 1500, 0.4, 0.3)),
             ("idle", new BotProfile(0.5, 0, 100))
         };
 
@@ -108,11 +106,12 @@ namespace Game.Sim
             {
                 new SupportBalance(data, options.Seed, SupportBalance.FastHost),
                 new SupportBalance(data, options.Seed, SupportBalance.HeavyHost),
-                new SupportBalance(data, options.Seed, SupportBalance.DurationHost)
+                new SupportBalance(data, options.Seed, SupportBalance.DurationHost),
+                new SupportBalance(data, options.Seed, SupportBalance.MouseHost)
             };
             using var file = options.OutFile == null ? null : new StreamWriter(options.OutFile);
             var output = file ?? Console.Out;
-            output.WriteLine("support,color,fast_typist,fast_mouse,fast_idle,fast_average,heavy_typist,heavy_mouse,heavy_idle,heavy_average,duration_typist,duration_mouse,duration_idle,duration_average,best,verdict");
+            output.WriteLine("support,color,fast_typist,fast_mouse,fast_idle,fast_average,heavy_typist,heavy_mouse,heavy_idle,heavy_average,duration_typist,duration_mouse,duration_idle,duration_average,mouse_typist,mouse_mouse,mouse_idle,mouse_average,best,verdict");
             var outside = 0;
             foreach (var gem in data.Gems.All)
             {
@@ -131,8 +130,7 @@ namespace Game.Sim
                     }
                     var average = sum / SupportProfiles.Length;
                     cells.Add(average.ToString("0.###", CultureInfo.InvariantCulture));
-                    if (System.Math.Abs(average - SupportMiddle) < System.Math.Abs(best - SupportMiddle))
-                        best = average;
+                    best = System.Math.Max(best, average);
                 }
                 var verdict = Verdict(gem.Support, best);
                 if (verdict == "review")
@@ -142,8 +140,8 @@ namespace Game.Sim
             }
             watch.Stop();
             Console.Error.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                "supports on {0}, {1} and {8} at stage {2}, {3:0.##} h per profile: {4} outside x{5:0.00}-x{6:0.00}; simulated in {7:0.00} s",
-                SupportBalance.FastHost, SupportBalance.HeavyHost, SupportBalance.Stage, options.SupportHours, outside, SupportLow, SupportHigh, watch.Elapsed.TotalSeconds, SupportBalance.DurationHost));
+                "supports on {0}, {1}, {8} and {9} at stage {2}, {3:0.##} h per profile: {4} outside x{5:0.00}-x{6:0.00}; simulated in {7:0.00} s",
+                SupportBalance.FastHost, SupportBalance.HeavyHost, SupportBalance.Stage, options.SupportHours, outside, SupportLow, SupportHigh, watch.Elapsed.TotalSeconds, SupportBalance.DurationHost, SupportBalance.MouseHost));
             return 0;
         }
 
@@ -151,7 +149,7 @@ namespace Game.Sim
         {
             if (support.ExperienceMultiplier != 1)
                 return "utility";
-            if (support.QuietSeconds > 0)
+            if (support.QuietSeconds > 0 || support.CirclesForPower > 0)
                 return "conditional";
             return best >= SupportLow && best <= SupportHigh ? "ok" : "review";
         }

@@ -28,6 +28,7 @@ namespace Game.Core.Sim.Headless
                 keyDowns: keys,
                 leftClicks: clicks,
                 mouseDistancePx: (float)mouse,
+                circleTurns: (float)(_profile.CircleTurnsPerSecond * GameLoop.TickSeconds),
                 rhythmCv: (float)_profile.RhythmCv);
         }
 

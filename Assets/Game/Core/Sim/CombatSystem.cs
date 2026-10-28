@@ -192,6 +192,10 @@ namespace Game.Core.Sim
             var supporting = source == DamageSource.Skill ? Supporting : null;
             if (supporting != null)
                 multiplier *= SupportEffects.HitMultiplier(supporting, _state);
+            if (source == DamageSource.Keyboard)
+                multiplier *= _state.SupportKeyBonus;
+            else if (source == DamageSource.Mouse)
+                multiplier *= _state.SupportMouseBonus;
             var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags));
             if (damage.Sign <= 0)
                 return;
