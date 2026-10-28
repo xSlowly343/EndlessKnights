@@ -99,6 +99,28 @@ namespace Game.Core.Party
             _lostAtTick = long.MinValue;
         }
 
+        public void Rejoin()
+        {
+            Unlink();
+            _state = default;
+            _stateArrivalTick = _tick;
+            _localEnemyId = 0;
+            _rewardedUpTo = 0;
+            _countedUpTo = 0;
+            _contributionKills = 0;
+            System.Array.Clear(_contribution, 0, _contribution.Length);
+            _total = 0;
+            _sentTotal = 0;
+            _sharesSinceState = 0;
+            _allyRatePerTick = 0;
+            _hitsInBatch = 0;
+            Roster = default;
+            _ownSlot = PartyEncounter.NoSlot;
+            _lostAtTick = _tick;
+            _lastHeardTick = _tick;
+            StartJoining();
+        }
+
         public void BeforeTick()
         {
             _firstEvent = _loop.Events.Count;

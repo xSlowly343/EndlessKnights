@@ -720,6 +720,22 @@
     "party.time.night": { "ru": "ночью", "en": "at night" },
     "party.code": { "ru": "Код отряда: {0}", "en": "Party code: {0}" },
     "party.wanted": { "ru": "Ищут: {0}", "en": "Looking for: {0}" },
-    "party.usuallyOnline": { "ru": "Обычно в сети {0}", "en": "Usually online {0}" }
+    "party.usuallyOnline": { "ru": "Обычно в сети {0}", "en": "Usually online {0}" },
+    "party.create": { "ru": "Создать отряд", "en": "Create party" },
+    "party.joinCode": { "ru": "Вступить по коду", "en": "Join by code" },
+    "party.quick": { "ru": "Найти отряд", "en": "Find a party" },
+    "party.codeButton": { "ru": "Код {0}", "en": "Code {0}" },
+    "party.offline": { "ru": "Сервер отряда не настроен: отряд пока только соло", "en": "No party server is set up yet: you play solo" },
+    "party.working": { "ru": "Связываемся с сервером…", "en": "Contacting the server…" },
+    "party.noCode": { "ru": "Скопируйте код отряда (6 знаков, например K7M-Q2X) и нажмите ещё раз", "en": "Copy a party code (6 characters, like K7M-Q2X) and press again" },
+    "party.codeCopied": { "ru": "Код {0} скопирован: отправьте его другу", "en": "Code {0} copied: send it to a friend" },
+    "party.joined": { "ru": "Вы в отряде: {0} из {1}", "en": "You are in the party: {0} of {1}" },
+    "party.left": { "ru": "Вы вышли из отряда", "en": "You left the party" },
+    "party.failed": { "ru": "Не вышло: {0}", "en": "That did not work: {0}" },
+    "party.reason.full": { "ru": "в отряде нет мест", "en": "the party is full" },
+    "party.reason.unknownCode": { "ru": "такого кода нет", "en": "there is no such code" },
+    "party.reason.alreadyIn": { "ru": "вы уже в отряде", "en": "you are already in a party" },
+    "party.reason.notIn": { "ru": "вы не в отряде", "en": "you are not in a party" },
+    "party.reason.network": { "ru": "нет связи с сервером", "en": "no connection to the server" }
   }
 }

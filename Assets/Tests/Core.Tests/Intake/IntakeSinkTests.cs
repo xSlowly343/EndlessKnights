@@ -96,8 +96,10 @@ namespace Game.Core.Tests.Intake
         [Test]
         public void TheServerUrlGivesBothIntakeAddresses()
         {
-            var config = NetworkConfig.Load("{ \"version\": 1, \"serverUrl\": \"https://play.example.com/\" }");
+            var config = NetworkConfig.Load("{ \"version\": 1, \"serverUrl\": \"https://play.example.com/\", \"serverKey\": null }");
 
+            Assert.That(config.HasParty, Is.False, "the party needs the server key too");
+            Assert.That(NetworkConfig.Load("{ \"version\": 1, \"serverUrl\": \"https://play.example.com\", \"serverKey\": \"k1\" }").HasParty, Is.True);
             Assert.That(config.TelemetryUrl, Is.EqualTo("https://play.example.com/intake/telemetry"));
             Assert.That(config.ErrorsUrl, Is.EqualTo("https://play.example.com/intake/errors"));
         }
@@ -105,7 +107,7 @@ namespace Game.Core.Tests.Intake
         [Test]
         public void APlainHttpServerIsRefused()
         {
-            var error = Assert.Throws<ContentException>(() => NetworkConfig.Load("{ \"version\": 1, \"serverUrl\": \"http://play.example.com\" }"));
+            var error = Assert.Throws<ContentException>(() => NetworkConfig.Load("{ \"version\": 1, \"serverUrl\": \"http://play.example.com\", \"serverKey\": null }"));
 
             Assert.That(error!.Message, Does.Contain("https://"));
         }
