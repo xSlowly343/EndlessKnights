@@ -592,6 +592,8 @@ namespace Game.Core.Content.Gems
         public double Stacks { get; }
         public double PerSecond { get; }
         public double Multiplier { get; }
+        public IReadOnlyList<Modifier> WhileActive { get; set; } = System.Array.Empty<Modifier>();
+        public bool EndsOnKill { get; set; }
     }
 
     public sealed class DetonateEffect : SkillEffect
@@ -602,6 +604,7 @@ namespace Game.Core.Content.Gems
         }
 
         public double Seconds { get; }
+        public bool KeepStacks { get; set; }
     }
 
     public sealed class WeakenNextEffect : SkillEffect

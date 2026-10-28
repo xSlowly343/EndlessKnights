@@ -464,9 +464,13 @@ namespace Game.Core.Content.Gems
                         Pick(node.Field("dot"), DotKinds, "poison or burn"),
                         Number(node, "stacks", 1e6),
                         Number(node, "perSecond", 1e6),
-                        Number(node, "multiplier", 1e6));
+                        Number(node, "multiplier", 1e6))
+                    {
+                        WhileActive = node.HasField("whileActive") ? ModifierReader.ReadList(node.Field("whileActive")) : Array.Empty<Modifier>(),
+                        EndsOnKill = node.HasField("endsOnKill") && node.Field("endsOnKill").AsBool()
+                    };
                 case "detonate":
-                    return new DetonateEffect(node.Field("seconds").AsNumber(0.1, 3600));
+                    return new DetonateEffect(node.Field("seconds").AsNumber(0.1, 3600)) { KeepStacks = node.HasField("keepStacks") && node.Field("keepStacks").AsBool() };
                 case "weakenNext":
                     return new WeakenNextEffect(node.Field("enemies").AsInt(1, 1000), node.Field("hpShare").AsNumber(0, 0.99))
                     {
@@ -538,6 +542,8 @@ namespace Game.Core.Content.Gems
                 StackSeconds = Number(node, "stackSeconds", 3600),
                 CarryOver = node.HasField("carryOver") && node.Field("carryOver").AsBool(),
                 WindowSeconds = Number(node, "windowSeconds", Sim.DamageWindow.Seconds),
+                StackGrowth = Number(node, "stackGrowth", 10),
+                WhenResource = node.HasField("when") ? Number(node.Field("when"), "resource", 1000) : 0,
                 ResourcePerSavedSecond = Number(node, "resourcePerSavedSecond", 1000),
                 RestoresFocus = node.HasField("restoresFocus") && node.Field("restoresFocus").AsBool(),
                 BossTimerSeconds = Number(node, "bossTimerSeconds", 60),

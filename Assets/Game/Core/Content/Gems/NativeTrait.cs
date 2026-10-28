@@ -34,6 +34,8 @@ namespace Game.Core.Content.Gems
         public double StackSeconds { get; set; }
         public bool CarryOver { get; set; }
         public double WindowSeconds { get; set; }
+        public double StackGrowth { get; set; }
+        public double WhenResource { get; set; }
         public double ResourcePerSavedSecond { get; set; }
         public bool RestoresFocus { get; set; }
         public double BossTimerSeconds { get; set; }

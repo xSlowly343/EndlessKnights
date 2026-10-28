@@ -259,7 +259,7 @@ namespace Game.Core.Sim
             if (skill.Effect is AddStacksEffect stacks)
                 AddStacks(slot, stacks);
             if (skill.Effect is DetonateEffect detonate)
-                Dots.Detonate(detonate);
+                Dots.Detonate(detonate, native.StackGrowth);
             if (skill.Effect is WeakenNextEffect weaken)
             {
                 WeakenNext(weaken);
@@ -285,6 +285,8 @@ namespace Game.Core.Sim
             }
             if (native.RestoresFocus)
                 _state.FocusRefill = true;
+            if (slot.WhenAtCast && native.WhenResource > 0)
+                _resource.Gain(native.WhenResource);
             if (skill.Effect is RepeatRecentEffect recent)
             {
                 var seconds = native.WindowSeconds > 0 ? native.WindowSeconds : recent.Seconds;
@@ -983,6 +985,11 @@ namespace Game.Core.Sim
                 TickSweeping(slot, input);
                 if (slot.Def.Effect is WishEffect)
                     TickWish(slot, kills);
+                if (kills > 0 && slot.Active && slot.Def.Effect is AddStacksEffect { EndsOnKill: true } && !(IsNative(slot) && slot.Def.Native.CarryOver))
+                {
+                    slot.ActiveTicks = 0;
+                    End(slot);
+                }
                 if (slot.ActiveTicks > 0 && !Lingers(slot, input) && !HeldByResource(slot))
                 {
                     slot.ActiveTicks--;
@@ -1723,7 +1730,7 @@ namespace Game.Core.Sim
             var native = IsNative(slot) ? slot.Def.Native.Modifiers : Array.Empty<Modifier>();
             var potion = slot.Def.Effect is PotionEffect brew && slot.PotionChoice >= 0 && slot.Active
                 ? brew.Options[slot.PotionChoice].Modifiers
-                : Array.Empty<Modifier>();
+                : slot.Def.Effect is AddStacksEffect cloud && slot.Active ? cloud.WhileActive : Array.Empty<Modifier>();
             if (aura == null && native.Count == 0 && potion.Count == 0)
                 return;
             var strength = aura == null ? 1 : _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
