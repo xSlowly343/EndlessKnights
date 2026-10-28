@@ -19,6 +19,8 @@ namespace Game.Core.Content.Gems
 
         public double EffectMultiplier(int level) => 1 + EffectPerLevel * (System.Math.Max(1, System.Math.Min(level, Max)) - 1);
 
+        public double EffectMultiplier(int level, int bonus) => EffectMultiplier(level) + EffectPerLevel * System.Math.Max(0, bonus);
+
         public static GemLevels Read(ContentNode node) =>
             new GemLevels(
                 node.Field("max").AsInt(1, 100),

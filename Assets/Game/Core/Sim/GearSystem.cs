@@ -19,6 +19,7 @@ namespace Game.Core.Sim
         }
 
         public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
+        public System.Action? Rebuilt { get; set; }
 
         public void UseCatalog(ItemCatalog catalog)
         {
@@ -101,6 +102,7 @@ namespace Game.Core.Sim
                     modifiers.AddRange(set.Bonus);
             }
             _layer.Set(modifiers);
+            Rebuilt?.Invoke();
         }
     }
 }

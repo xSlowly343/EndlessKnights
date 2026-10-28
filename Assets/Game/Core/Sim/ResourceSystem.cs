@@ -66,6 +66,7 @@ namespace Game.Core.Sim
                 gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
             gained += (resource.PerSecond + System.Math.Max(0, _hero.Value(CombatStats.ResourcePerSecond, 0))) * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1);
             gained += input.Clicks * resource.PerClick * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Click);
+            gained += FromGear(input);
             if (_state.Reading)
                 gained += resource.ReadingPerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse) * System.Math.Max(0, _hero.Value(CombatStats.ReadingGain, 1));
             gained += _state.PendingResource;
@@ -78,6 +79,18 @@ namespace Game.Core.Sim
                 _state.DecayHoldTicks--;
             _state.Resource = System.Math.Max(0, value);
             NoteFill();
+        }
+
+        private double FromGear(in EffectiveInput input)
+        {
+            var gained = 0.0;
+            var perThousandPx = _hero.Value(CombatStats.ResourcePerThousandPx, 0, StatTags.Mouse);
+            if (perThousandPx > 0 && input.MousePx > 0)
+                gained += input.MousePx / 1000 * perThousandPx * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
+            var perIdleSecond = _hero.Value(CombatStats.ResourcePerIdleSecond, 0, StatTags.Idle);
+            if (perIdleSecond > 0 && input.Keys == 0 && input.MousePx <= 0 && input.Clicks == 0)
+                gained += perIdleSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Idle);
+            return gained;
         }
 
         private double PerKey(ClassResource resource) => resource.PerKey + System.Math.Max(0, _hero.Value(CombatStats.ResourcePerKey, 0));

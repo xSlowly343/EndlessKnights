@@ -39,6 +39,40 @@ namespace Game.Core.Content.Items
         public IReadOnlyList<GearBase> Bases { get; }
         public IReadOnlyList<AffixDef> Affixes { get; }
         public IReadOnlyList<SetDef> Sets { get; }
+        public IReadOnlyList<UniqueDef> Uniques { get; private set; } = Array.Empty<UniqueDef>();
+
+        public bool TryGetUnique(string id, out UniqueDef unique)
+        {
+            foreach (var candidate in Uniques)
+            {
+                if (candidate.Id == id)
+                {
+                    unique = candidate;
+                    return true;
+                }
+            }
+            unique = null!;
+            return false;
+        }
+
+        public UniqueDef? PickUnique(ItemSlot slot, ItemRarity ceiling, Rng rng)
+        {
+            var count = 0;
+            foreach (var unique in Uniques)
+            {
+                if (unique.Slot == slot && unique.Rarity <= ceiling)
+                    count++;
+            }
+            if (count == 0)
+                return null;
+            var pick = rng.NextInt(0, count);
+            foreach (var unique in Uniques)
+            {
+                if (unique.Slot == slot && unique.Rarity <= ceiling && pick-- == 0)
+                    return unique;
+            }
+            return null;
+        }
 
         public bool TryGetSet(string id, out SetDef set) => _sets.TryGetValue(id, out set!);
 
@@ -214,7 +248,31 @@ namespace Game.Core.Content.Items
             var catalog = new ItemCatalog(bases, affixes, sets, rarities, tiers,
                 weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
             ReadCraft(root.Field("craft"), catalog);
+            catalog.Uniques = ReadUniques(root.Field("uniques"), catalog);
             return catalog;
+        }
+
+        private static List<UniqueDef> ReadUniques(ContentNode node, ItemCatalog catalog)
+        {
+            var uniques = new List<UniqueDef>();
+            var ids = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var item in node.Items())
+            {
+                var id = item.Field("id").AsString();
+                if (!ids.Add(id))
+                    throw item.Field("id").Error($"unique id '{id}' is used twice");
+                var baseNode = item.Field("base");
+                if (!catalog.TryGetBase(baseNode.AsString(), out var gearBase))
+                    throw baseNode.Error($"unknown base '{baseNode.AsString()}'");
+                var rarityNode = item.Field("rarity");
+                if (!ItemRarityNames.ByName.TryGetValue(rarityNode.AsString(), out var rarity))
+                    throw rarityNode.Error($"unknown rarity '{rarityNode.AsString()}'");
+                var name = item.Field("name");
+                var rule = item.Field("rule");
+                uniques.Add(new UniqueDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), gearBase, rarity,
+                    ModifierReader.ReadList(item.Field("lines")), rule.Field("ru").AsString(), rule.Field("en").AsString()));
+            }
+            return uniques;
         }
 
         private static void ReadCraft(ContentNode node, ItemCatalog catalog)

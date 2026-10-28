@@ -78,6 +78,8 @@ namespace Game.Core.Sim
         {
             var conditions = _rules.Conditions;
             var multiplier = 1.0;
+            if (!_state.FightingBoss)
+                multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageVsNormal, 1, tags));
             if (_state.FightingBoss)
             {
                 multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageVsBoss, 1, tags));

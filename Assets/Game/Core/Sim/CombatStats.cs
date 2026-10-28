@@ -157,5 +157,12 @@ namespace Game.Core.Sim
         public static readonly StatId WandererChance = new StatId("wandererChance");
         public static readonly StatId DamageVsGuardian = new StatId("damageVsGuardian");
         public static readonly StatId OfflineDpsShare = new StatId("offlineDpsShare");
+        public static readonly StatId KeyCastLeftEvery = new StatId("keyCastLeftEvery");
+        public static readonly StatId ResourcePerThousandPx = new StatId("resourcePerThousandPx");
+        public static readonly StatId ResourcePerIdleSecond = new StatId("resourcePerIdleSecond");
+        public static readonly StatId DamageVsNormal = new StatId("damageVsNormal");
+        public static readonly StatId WeaponInnateEffect = new StatId("weaponInnateEffect");
+        public static readonly StatId LowestGemExperience = new StatId("lowestGemExperience");
+        public static readonly StatId GemLevelBonus = new StatId("gemLevelBonus");
     }
 }

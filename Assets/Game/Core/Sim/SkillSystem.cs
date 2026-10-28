@@ -48,7 +48,9 @@ namespace Game.Core.Sim
         public bool SharedEnemy { get; private set; }
         public GemLevels? Levels { get; set; }
 
-        public double LevelPower(GemDef gem) => (Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem))) * ColorPower(gem);
+        public double LevelPower(GemDef gem) => (Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem), LevelBonus)) * ColorPower(gem);
+
+        private int LevelBonus => (int)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.GemLevelBonus, 0)) + 1e-9);
 
         public double ColorPower(GemDef gem) => gem.Color switch
         {
@@ -1673,10 +1675,23 @@ namespace Game.Core.Sim
 
         public void CastFromButtons(in EffectiveInput input)
         {
+            CastFromKeys(input.Keys);
             if (input.LeftClicks > 0)
                 TryCast(LeftButtonSlot);
             if (input.HeavyClicks > 0)
                 TryCast(RightButtonSlot);
+        }
+
+        private void CastFromKeys(double keys)
+        {
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.KeyCastLeftEvery, 0, StatTags.Keyboard));
+            if (every < 1 || keys <= 0)
+                return;
+            _state.AutoCastKeys += keys;
+            if (_state.AutoCastKeys < every)
+                return;
+            _state.AutoCastKeys %= every;
+            TryCast(LeftButtonSlot, triggered: true);
         }
 
         public double IdleStrikeCharge(int index)

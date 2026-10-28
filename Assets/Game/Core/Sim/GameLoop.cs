@@ -76,6 +76,8 @@ namespace Game.Core.Sim
             _triggers = new TriggerSystem(state, _skills, _resource);
             _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
             _gear = new GearSystem(data.Items, state, hero);
+            _gear.Rebuilt = _weapons.RefreshInnate;
+            _weapons.RefreshInnate();
             _drops = new DropSystem(data.Drops, data.Stages, data.Gems, data.Items, _weapons, _gear, state, hero, Events);
             _stage.Drops = _drops;
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);

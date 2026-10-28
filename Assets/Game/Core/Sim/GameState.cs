@@ -177,6 +177,7 @@ namespace Game.Core.Sim
         public double KeyHitRate { get; set; }
         public double MouseHitRate { get; set; }
         public long SkillCasts { get; set; }
+        public double AutoCastKeys { get; set; }
         public double IdleHitCarry { get; set; }
         public double CompanionHitCarry { get; set; }
         public int ActiveAuras { get; set; }

@@ -44,21 +44,36 @@ namespace Game.Core.Sim
             var amount = kills * _levels.ExperiencePerKill * System.Math.Max(0, _hero.Value(CombatStats.GemExperience, 1));
             if (amount <= 0)
                 return;
+            GemDef? lowest = null;
+            var lowestGained = 0.0;
             for (var index = 0; index < _state.Skills.Count; index++)
             {
                 if (!_skills.Armed(index))
                     continue;
                 var slot = _state.Skills[index];
                 var gained = amount * SupportEffects.ExperienceMultiplier(slot);
-                Grant(slot.Skill, gained);
+                Note(slot.Skill, gained, ref lowest, ref lowestGained);
                 if (slot.Trigger != null)
-                    Grant(slot.Trigger, gained);
+                    Note(slot.Trigger, gained, ref lowest, ref lowestGained);
                 for (var i = 0; i < slot.Supports.Length; i++)
                 {
                     if (slot.Supports[i] != null)
-                        Grant(slot.Supports[i]!, gained);
+                        Note(slot.Supports[i]!, gained, ref lowest, ref lowestGained);
                 }
             }
+            var bonus = _hero.Value(CombatStats.LowestGemExperience, 0);
+            if (lowest != null && bonus > 0)
+                Grant(lowest, lowestGained * bonus);
+        }
+
+        private void Note(GemDef gem, double gained, ref GemDef? lowest, ref double lowestGained)
+        {
+            if (lowest == null || _state.LevelOf(gem) < _state.LevelOf(lowest))
+            {
+                lowest = gem;
+                lowestGained = gained;
+            }
+            Grant(gem, gained);
         }
 
         public void Grant(GemDef gem, double amount)
