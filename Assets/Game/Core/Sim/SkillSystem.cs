@@ -150,6 +150,8 @@ namespace Game.Core.Sim
                 slot.StartCooldown(Ticks(cooldown));
             slot.LastCastTick = _state.Tick;
             ArmTwin(slot);
+            if (SupportEffects.Finish(slot) != null)
+                slot.FinishHits = 0;
             if (skill.ArmOn != ArmOn.None)
             {
                 slot.Primed = true;
@@ -552,6 +554,7 @@ namespace Game.Core.Sim
         {
             _keyGapTicks = _state.Tick - _lastKeyHitTick;
             _lastKeyHitTick = _state.Tick;
+            _state.KeyStreak = _keyGapTicks > Ticks(_combat.Classes.ComboTimeoutSeconds) ? 1 : _state.KeyStreak + 1;
             _lastKeyHitDamage = damage;
             var outer = _combat.Supporting;
             foreach (var slot in _state.Skills)
@@ -566,8 +569,27 @@ namespace Game.Core.Sim
                     OnActiveKeyHit(slot, damage);
                 if (slot.Def.Effect is HitStrikeEffect strike && strike.Input != HitInput.Mouse)
                     CountHitStrike(slot, strike);
+                SupportEffects.OnKeyHit(slot, _state);
+                CountFinish(slot);
             }
             _combat.Supporting = outer;
+        }
+
+        private void CountFinish(SkillSlot slot)
+        {
+            if (slot.FinishHits < 0 || slot.Active)
+                return;
+            var finish = SupportEffects.Finish(slot);
+            if (finish == null)
+            {
+                slot.FinishHits = -1;
+                return;
+            }
+            if (++slot.FinishHits < finish.FinishAfterHits)
+                return;
+            slot.FinishHits = -1;
+            SkillHit(slot, finish.FinishMultiplier);
+            _resource.Gain(finish.FinishResource);
         }
 
         public void OnMouseHit(BigNumber damage)

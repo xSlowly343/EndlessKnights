@@ -171,6 +171,7 @@ namespace Game.Core.Sim
         public bool TutorialSkipped { get; set; }
 
         public long KeyHits { get; set; }
+        public long KeyStreak { get; set; }
         public int Combo { get; set; }
         public long LastComboStrikeTick { get; set; } = -1;
         public long ComboIdleTicks { get; set; }
