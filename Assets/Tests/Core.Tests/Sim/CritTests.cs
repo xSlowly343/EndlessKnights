@@ -69,7 +69,7 @@ namespace Game.Core.Tests.Sim
         {
             var input = new FakeInputSource();
             var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.Flat, 1));
+            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.Flat, 1 - TestWorld.Data.Combat.CritChance));
             var loop = TestWorld.Loop(input, hero: hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(1e9));
             loop.Events.Clear();
@@ -81,6 +81,19 @@ namespace Game.Core.Tests.Sim
             Assert.That(hit.IsCrit, Is.True);
             var expected = TestWorld.Data.Combat.KeyDamage * loop.State.FocusMultiplier * TestWorld.Data.Combat.CritMultiplier;
             Assert.That(hit.Amount.ToDouble(), Is.EqualTo(expected).Within(1e-9));
+        }
+
+        [Test]
+        public void CritChanceAboveOneHundredPercentRaisesCritDamage()
+        {
+            var hero = new StatSheet();
+            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.Flat, 1.5 - TestWorld.Data.Combat.CritChance));
+            var loop = TestWorld.Loop(hero: hero);
+
+            Assert.That(TestWorld.Data.Combat.OvercritRate, Is.EqualTo(1));
+            Assert.That(loop.Combat.CritChance(StatTags.Keyboard), Is.EqualTo(1));
+            Assert.That(loop.Combat.Overcrit(StatTags.Keyboard), Is.EqualTo(0.5).Within(1e-9));
+            Assert.That(loop.Combat.CritMultiplier(StatTags.Keyboard), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier * 1.5).Within(1e-9));
         }
 
         [Test]

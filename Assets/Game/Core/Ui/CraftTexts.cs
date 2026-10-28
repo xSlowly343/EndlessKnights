@@ -14,6 +14,7 @@ namespace Game.Core.Ui
             CraftResult.WrongSlot => Texts.Get("craft.result.wrongSlot"),
             CraftResult.NotEnoughIngots => Texts.Get("craft.result.notEnoughIngots"),
             CraftResult.BagFull => Texts.Get("craft.result.bagFull"),
+            CraftResult.AboveCeiling => Texts.Get("craft.result.aboveCeiling"),
             _ => string.Empty
         };
     }
