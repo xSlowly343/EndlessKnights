@@ -35,6 +35,7 @@ namespace Game.Core.Sim
         }
 
         public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
+        public System.Action? Rebuilt { get; set; }
 
         public bool InRift => _state.Rift.Inside;
         public IReadOnlyDictionary<string, int> Owned => OwnedLevels;
@@ -121,6 +122,7 @@ namespace Game.Core.Sim
                 modifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, _catalog.AllDamagePerLevel * level * (1 + allDamageBoost)));
             }
             _layer.Set(modifiers);
+            Rebuilt?.Invoke();
         }
 
         private double[] TypeBoosts(Dictionary<string, int> owned, out double allDamageBoost)

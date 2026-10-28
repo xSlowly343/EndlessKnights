@@ -24,11 +24,14 @@ namespace Game.Core.Content
         public double AfterIdleSeconds { get; }
         public double FastKillSeconds { get; }
         public double InputKindSeconds { get; }
+        public double LongStreakSeconds { get; private set; } = double.MaxValue;
+        public double LongStreakPauseSeconds { get; private set; } = 3;
 
         public static ConditionRules Read(ContentNode node)
         {
             var streak = node.Field("killStreak");
             var afterIdle = node.Field("afterIdle");
+            var longStreak = node.Field("longStreak");
             return new ConditionRules(
                 node.Field("bossTimerEndSeconds").AsNumber(0, 600),
                 node.Field("firstHits").AsInt(0, 10000),
@@ -38,7 +41,11 @@ namespace Game.Core.Content
                 afterIdle.Field("pauseSeconds").AsNumber(0, 86400),
                 afterIdle.Field("seconds").AsNumber(0, 3600),
                 node.Field("fastKillSeconds").AsNumber(0, 600),
-                node.Field("inputKindSeconds").AsNumber(0.1, 600));
+                node.Field("inputKindSeconds").AsNumber(0.1, 600))
+            {
+                LongStreakSeconds = longStreak.Field("seconds").AsNumber(1, 86400),
+                LongStreakPauseSeconds = longStreak.Field("pauseSeconds").AsNumber(0.1, 3600)
+            };
         }
     }
 }

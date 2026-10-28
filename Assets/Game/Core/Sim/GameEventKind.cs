@@ -20,6 +20,7 @@ namespace Game.Core.Sim
         ShardsGained,
         TrialCompleted,
         WandererJumped,
-        GoldenColossusAppeared
+        GoldenColossusAppeared,
+        JewelDropped
     }
 }

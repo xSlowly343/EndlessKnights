@@ -22,6 +22,7 @@
   "uncut": { "share": 0.05, "shardCost": 30 },
   "sets": { "chance": 0.02, "boss": 0.04, "guardian": 0.08 },
   "uniques": { "guardian": 0.03 },
+  "jewels": { "guardian": 0.5, "specialBoss": 0.1, "bagSize": 60 },
   "bag": { "size": 60 },
   "dust": { "simple": 1, "fine": 2, "uncommon": 4, "rare": 10, "epic": 25, "legendary": 60, "mythic": 150, "ancient": 400, "rift": 1000 }
 }

@@ -68,6 +68,8 @@ namespace Game.Core.Sim
         public void NotePause(long idleTicksBefore, bool hasInput)
         {
             var conditions = _rules.Conditions;
+            var paused = !hasInput && (idleTicksBefore + 1) * GameLoop.TickSeconds >= conditions.LongStreakPauseSeconds;
+            _state.InputStreakTicks = paused ? 0 : _state.InputStreakTicks + 1;
             if (hasInput && idleTicksBefore * GameLoop.TickSeconds >= conditions.AfterIdlePauseSeconds)
                 _state.AfterIdleTicks = (int)System.Math.Round(conditions.AfterIdleSeconds * GameLoop.TicksPerSecond);
             else if (_state.AfterIdleTicks > 0)
@@ -96,6 +98,9 @@ namespace Game.Core.Sim
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerKill, 0, tags)) * System.Math.Min(_state.KillStreak, conditions.KillStreakMax);
             if (_state.AfterIdleTicks > 0)
                 multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageAfterIdle, 1, tags));
+            var longStreak = System.Math.Max(0, _hero.Value(CombatStats.DamageLongStreak, 1, tags));
+            if (_state.InputStreakTicks * GameLoop.TickSeconds >= conditions.LongStreakSeconds)
+                multiplier *= longStreak;
             var perShot = _hero.Value(CombatStats.CannonShotDamage, 0, tags);
             if (perShot > 0 && _state.CannonShotsOnEnemy > 0)
                 multiplier *= 1 + System.Math.Min(System.Math.Max(0, _hero.Value(CombatStats.CannonShotDamageMax, 0, tags)), perShot * _state.CannonShotsOnEnemy);

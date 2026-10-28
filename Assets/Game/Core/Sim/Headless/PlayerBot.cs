@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Game.Core.Build;
 using Game.Core.Content;
+using Game.Core.Content.Items;
 using Game.Core.Content.Tree;
 using Game.Core.Math;
 using Game.Core.Stats;
@@ -30,6 +31,7 @@ namespace Game.Core.Sim.Headless
         {
             EquipStartingSkills();
             SpendTreePoints();
+            SocketJewels();
             SpendSubclassPoints();
             PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
@@ -158,9 +160,48 @@ namespace Game.Core.Sim.Headless
                     return (_score.Attribute(node.AttributeAmount), 0);
                 case TreeNodeType.Mastery:
                     return BestOption(node);
+                case TreeNodeType.Jewel:
+                    return (BestJewel(out _), 0);
                 default:
                     return (_score.Of(node.Modifiers), 0);
             }
+        }
+
+        private void SocketJewels()
+        {
+            var tree = _data.Tree;
+            foreach (var node in tree.Nodes)
+            {
+                if (node.Type != TreeNodeType.Jewel || !_loop.Jewels.IsOpen(node.Id))
+                    continue;
+                var score = BestJewel(out var jewel);
+                var socketed = _loop.Jewels.In(node.Id);
+                if (jewel != null && (socketed == null || score > JewelScore(socketed)))
+                    _loop.Jewels.Socket(node.Id, jewel);
+            }
+        }
+
+        private double BestJewel(out JewelItem? best)
+        {
+            best = null;
+            var bestScore = 0.0;
+            foreach (var jewel in _loop.Jewels.Bag)
+            {
+                var score = JewelScore(jewel);
+                if (score > bestScore)
+                {
+                    best = jewel;
+                    bestScore = score;
+                }
+            }
+            return bestScore;
+        }
+
+        private double JewelScore(JewelItem jewel)
+        {
+            var modifiers = new List<Modifier>();
+            jewel.AddModifiers(modifiers, 1);
+            return _score.Of(modifiers);
         }
 
         private (double Score, int Option) BestOption(TreeNodeDef node)

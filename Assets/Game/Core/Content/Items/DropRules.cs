@@ -65,6 +65,16 @@ namespace Game.Core.Content.Items
         public ShardRules Shards { get; }
 
         public double UniqueGuardianChance { get; private set; }
+        public double JewelGuardianChance { get; private set; }
+        public double JewelSpecialBossChance { get; private set; }
+        public int JewelBagSize { get; private set; }
+
+        public double JewelChanceFor(DropSource source) => source switch
+        {
+            DropSource.Guardian => JewelGuardianChance,
+            DropSource.SpecialBoss => JewelSpecialBossChance,
+            _ => 0
+        };
 
         public double UniqueChanceFor(DropSource source) => source == DropSource.Guardian ? UniqueGuardianChance : 0;
 
@@ -124,7 +134,10 @@ namespace Game.Core.Content.Items
                 root.Field("sets").Field("guardian").AsNumber(0, 1),
                 ShardRules.Read(root.Field("shards"), root.Field("uncut")))
             {
-                UniqueGuardianChance = root.Field("uniques").Field("guardian").AsNumber(0, 1)
+                UniqueGuardianChance = root.Field("uniques").Field("guardian").AsNumber(0, 1),
+                JewelGuardianChance = root.Field("jewels").Field("guardian").AsNumber(0, 1),
+                JewelSpecialBossChance = root.Field("jewels").Field("specialBoss").AsNumber(0, 1),
+                JewelBagSize = root.Field("jewels").Field("bagSize").AsInt(1, 10000)
             };
         }
 

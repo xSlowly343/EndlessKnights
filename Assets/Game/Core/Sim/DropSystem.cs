@@ -203,6 +203,8 @@ namespace Game.Core.Sim
                 _pending[i] = default;
                 if (drop.Gem != null)
                     GiveGem(drop.Gem);
+                else if (drop.IsJewel)
+                    DeliverJewel(drop);
                 else
                     Deliver(drop);
             }
@@ -224,11 +226,38 @@ namespace Game.Core.Sim
             else
                 GiveRolled(_rules.Record, stage, DropSource.Record);
             if (type == EnemyType.Guardian)
+            {
                 GiveRolled(_rules.Guardian, stage, DropSource.Guardian);
+                RollJewel(_rules.Guardian, stage, DropSource.Guardian);
+            }
             else if (_rules.IsSpecialBoss(stage))
+            {
                 GiveRolled(_rules.SpecialBoss, stage, DropSource.SpecialBoss);
+                RollJewel(_rules.SpecialBoss, stage, DropSource.SpecialBoss);
+            }
             if (stage == _rules.FirstTriggerStage && _gemPools[(int)GemKind.Trigger].Count > 0)
                 Push(PendingDrop.OfGem(PickGem(_gemPools[(int)GemKind.Trigger], preferNew: true)));
+        }
+
+        private void RollJewel(DropTable table, long stage, DropSource source)
+        {
+            var chance = _rules.JewelChanceFor(source);
+            var rng = _state.Drops.Rng;
+            if (chance <= 0 || !rng.Chance(chance))
+                return;
+            Push(PendingDrop.Jewel(source, stage, RollRarity(table, BiomeNumber(stage), rng)));
+        }
+
+        private void DeliverJewel(PendingDrop drop)
+        {
+            var jewel = _items.RollJewel(drop.Rarity, BiomeNumber(drop.Stage), _state.Drops.Rng);
+            var jewels = _state.Jewels;
+            jewels.Found++;
+            if (jewels.Bag.Count >= _rules.JewelBagSize)
+                _state.Drops.Dust += _rules.DustFor(drop.Rarity);
+            else
+                jewels.Bag.Add(jewel);
+            _events.Add(GameEvent.WithAmount(GameEventKind.JewelDropped, _state.Tick, BigNumber.FromDouble((int)drop.Rarity), drop.Stage));
         }
 
         private void RollDaily(long stage, DropSource source, double chance)

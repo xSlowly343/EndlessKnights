@@ -150,5 +150,29 @@
     {"id": "apprentice_ring", "name": {"ru": "Кольцо ученика", "en": "Apprentice's Ring"}, "base": "sapphire_ring", "rarity": "legendary", "lines": [{"stat": "lowestGemExperience", "kind": "flat", "value": 1}, {"stat": "gemExperience", "kind": "increased", "value": 0.1}], "rule": {"ru": "гем с самым низким уровнем получает двойной опыт", "en": "the lowest-level gem gains double experience"}},
     {"id": "thousand_notes", "name": {"ru": "Амулет тысячи нот", "en": "Amulet of a Thousand Notes"}, "base": "banner_amulet", "rarity": "legendary", "lines": [{"stat": "damagePerAura", "kind": "flat", "value": 0.03}, {"stat": "auraEffect", "kind": "increased", "value": 0.15}], "rule": {"ru": "каждая песня в отряде даёт +3% урона тебе, до 5 (пока — свои ауры)", "en": "every song in the party gives you +3% damage, up to 5 (for now: your own auras)"}},
     {"id": "devourer_eye", "name": {"ru": "Око Пожирателя", "en": "Eye of the Devourer"}, "base": "colossus_heart", "rarity": "legendary", "lines": [{"stat": "gemLevelBonus", "kind": "flat", "value": 1}, {"stat": "itemRarity", "kind": "increased", "value": -0.5}], "rule": {"ru": "+1 к уровню всех гемов; редкость найденных вещей −50%", "en": "+1 to the level of all gems; −50% rarity of found items"}}
-  ]
+  ],
+  "jewels": {
+    "maxAffixes": 4,
+    "affixes": [
+      {"id": "socketed_key_damage", "part": "prefix", "stats": [{"stat": "damage", "kind": "increased", "tags": ["Keyboard"]}], "tiers": [0.03, 0.12]},
+      {"id": "socketed_mouse_damage", "part": "prefix", "stats": [{"stat": "damage", "kind": "increased", "tags": ["Mouse"]}], "tiers": [0.03, 0.12]},
+      {"id": "socketed_skill_damage", "part": "prefix", "stats": [{"stat": "damage", "kind": "increased", "tags": ["Skill"]}], "tiers": [0.03, 0.12]},
+      {"id": "socketed_dot_damage", "part": "prefix", "stats": [{"stat": "dotDamage", "kind": "increased"}], "tiers": [0.03, 0.12]},
+      {"id": "socketed_minion_damage", "part": "prefix", "stats": [{"stat": "damage", "kind": "increased", "tags": ["Minion"]}], "tiers": [0.03, 0.12]},
+      {"id": "socketed_boss_damage", "part": "prefix", "stats": [{"stat": "damageVsBoss", "kind": "increased"}], "tiers": [0.04, 0.16]},
+      {"id": "socketed_long_streak", "part": "prefix", "stats": [{"stat": "damageLongStreak", "kind": "increased"}], "tiers": [0.05, 0.2]},
+      {"id": "socketed_after_idle", "part": "prefix", "stats": [{"stat": "damageAfterIdle", "kind": "increased"}], "tiers": [0.05, 0.2]},
+      {"id": "socketed_aura", "part": "prefix", "stats": [{"stat": "auraEffect", "kind": "increased"}], "tiers": [0.02, 0.08]},
+      {"id": "socketed_crit_multiplier", "part": "prefix", "stats": [{"stat": "critMultiplier", "kind": "increased"}], "tiers": [0.04, 0.16]},
+      {"id": "socketed_crit_chance", "part": "suffix", "stats": [{"stat": "critChance", "kind": "flat"}], "tiers": [0.003, 0.015]},
+      {"id": "socketed_focus", "part": "suffix", "stats": [{"stat": "focusGain", "kind": "increased"}], "tiers": [0.03, 0.12]},
+      {"id": "socketed_resource", "part": "suffix", "stats": [{"stat": "resourceGain", "kind": "increased"}], "tiers": [0.02, 0.08]},
+      {"id": "socketed_cooldown", "part": "suffix", "stats": [{"stat": "skillCooldown", "kind": "increased"}], "tiers": [-0.01, -0.05]},
+      {"id": "socketed_gold", "part": "suffix", "stats": [{"stat": "gold", "kind": "increased", "tags": ["Gold"]}], "tiers": [0.03, 0.12]},
+      {"id": "socketed_mouse_distance", "part": "suffix", "stats": [{"stat": "mouseDistance", "kind": "increased", "tags": ["Mouse"]}], "tiers": [0.03, 0.12]},
+      {"id": "socketed_strength", "part": "suffix", "stats": [{"stat": "strength", "kind": "flat"}], "tiers": [2, 10], "group": "attribute"},
+      {"id": "socketed_dexterity", "part": "suffix", "stats": [{"stat": "dexterity", "kind": "flat"}], "tiers": [2, 10], "group": "attribute"},
+      {"id": "socketed_intelligence", "part": "suffix", "stats": [{"stat": "intelligence", "kind": "flat"}], "tiers": [2, 10], "group": "attribute"}
+    ]
+  }
 }
