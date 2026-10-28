@@ -462,6 +462,13 @@ namespace Game.Core.Sim
         private GearItem RollGear(PendingDrop drop, ItemRarity rarity, Rng rng)
         {
             var itemLevel = BiomeNumber(drop.Stage);
+            var uniqueChance = _rules.UniqueChanceFor(drop.Source);
+            if (uniqueChance > 0 && rng.NextDouble() < uniqueChance)
+            {
+                var unique = _items.PickUnique(drop.Slot, _rules.CeilingFor(itemLevel), rng);
+                if (unique != null)
+                    return new GearItem(unique, itemLevel);
+            }
             var chance = _rules.SetChanceFor(drop.Source);
             if (chance > 0 && rng.NextDouble() < chance)
             {
@@ -479,7 +486,7 @@ namespace Game.Core.Sim
                 return false;
             if (weapon != null)
                 return !BetterThanHeld(rarity);
-            return gear == null || !BetterThanWorn(gear);
+            return gear == null || (gear.Unique == null && !BetterThanWorn(gear));
         }
 
         private bool BetterThanWorn(GearItem gear)

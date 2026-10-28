@@ -26,7 +26,19 @@ namespace Game.Core.Content.Items
             Affixes = affixes;
         }
 
+        public GearItem(UniqueDef unique, int itemLevel)
+        {
+            Unique = unique;
+            Base = unique.Base;
+            Slot = unique.Slot;
+            Rarity = unique.Rarity;
+            ItemLevel = itemLevel;
+            Color = unique.Base.Color;
+            Affixes = Array.Empty<GearAffix>();
+        }
+
         public GearBase? Base { get; }
+        public UniqueDef? Unique { get; }
         public ItemSlot Slot { get; }
         public ItemRarity Rarity { get; }
         public int ItemLevel { get; }
@@ -44,6 +56,8 @@ namespace Game.Core.Content.Items
                 affix.AddModifiers(modifiers);
             if (Set != null)
                 modifiers.AddRange(Set.PieceLines(Slot));
+            if (Unique != null)
+                modifiers.AddRange(Unique.Lines);
         }
     }
 }

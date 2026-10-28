@@ -325,6 +325,7 @@ namespace Game.Core.Save
                 ("color", item.Color == null ? JsonValue.Null() : JsonValue.Of(item.Color)),
                 ("base", item.Base == null ? JsonValue.Null() : JsonValue.Of(item.Base.Id)),
                 ("set", item.Set == null ? JsonValue.Null() : JsonValue.Of(item.Set.Id)),
+                ("unique", item.Unique == null ? JsonValue.Null() : JsonValue.Of(item.Unique.Id)),
                 ("affixes", JsonValue.Array(affixes)));
         }
 
@@ -392,6 +393,8 @@ namespace Game.Core.Save
             var rarity = ItemRarityNames.ByName.TryGetValue(node.Field("rarity").AsString(), out var found) ? found : ItemRarity.Simple;
             var color = node.Field("color");
             var itemLevel = node.Field("itemLevel").AsInt(1);
+            if (items != null && node.HasField("unique") && !node.Field("unique").IsNull && items.TryGetUnique(node.Field("unique").AsString(), out var unique) && unique.Slot == slot)
+                return new GearItem(unique, itemLevel);
             if (items != null && node.HasField("base") && !node.Field("base").IsNull && items.TryGetBase(node.Field("base").AsString(), out var gearBase) && gearBase.Slot == slot)
                 return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot));
             return new GearItem(slot, rarity, itemLevel, color.IsNull ? null : color.AsString());

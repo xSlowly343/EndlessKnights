@@ -64,6 +64,10 @@ namespace Game.Core.Content.Items
         public double SetGuardianChance { get; }
         public ShardRules Shards { get; }
 
+        public double UniqueGuardianChance { get; private set; }
+
+        public double UniqueChanceFor(DropSource source) => source == DropSource.Guardian ? UniqueGuardianChance : 0;
+
         public double SetChanceFor(DropSource source) => source switch
         {
             DropSource.Record => SetChance,
@@ -118,7 +122,10 @@ namespace Game.Core.Content.Items
                 root.Field("sets").Field("chance").AsNumber(0, 1),
                 root.Field("sets").Field("boss").AsNumber(0, 1),
                 root.Field("sets").Field("guardian").AsNumber(0, 1),
-                ShardRules.Read(root.Field("shards"), root.Field("uncut")));
+                ShardRules.Read(root.Field("shards"), root.Field("uncut")))
+            {
+                UniqueGuardianChance = root.Field("uniques").Field("guardian").AsNumber(0, 1)
+            };
         }
 
         private static double[] ReadRarities(ContentNode node, double min, double max, bool requirePositive)

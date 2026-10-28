@@ -10,14 +10,17 @@ namespace Game.Core.Sim
     {
         private readonly GameState _state;
         private readonly SkillSystem _skills;
+        private readonly StatSheet _hero;
         private readonly ModifierLayer _layer;
         private WeaponCatalog _catalog;
+        private double _appliedScale = 1;
 
         public WeaponSystem(WeaponCatalog catalog, GameState state, StatSheet hero, SkillSystem skills)
         {
             _catalog = catalog;
             _state = state;
             _skills = skills;
+            _hero = hero;
             _layer = new ModifierLayer(hero);
             GiveStarter();
             Rebuild();
@@ -100,20 +103,35 @@ namespace Game.Core.Sim
             _skills.RefreshArmed();
         }
 
+        public void RefreshInnate()
+        {
+            if (System.Math.Abs(InnateScale - _appliedScale) > 1e-12)
+                Rebuild();
+        }
+
+        private double InnateScale => System.Math.Max(0, _hero.Value(CombatStats.WeaponInnateEffect, 1));
+
         private void Rebuild()
         {
             var modifiers = new List<Modifier>();
-            Add(modifiers, _state.Weapons.Right);
-            Add(modifiers, _state.Weapons.Left);
+            _appliedScale = InnateScale;
+            Add(modifiers, _state.Weapons.Right, _appliedScale);
+            Add(modifiers, _state.Weapons.Left, _appliedScale);
             _layer.Set(modifiers);
         }
 
-        private static void Add(List<Modifier> modifiers, WeaponItem? weapon)
+        private static void Add(List<Modifier> modifiers, WeaponItem? weapon, double scale)
         {
             if (weapon == null)
                 return;
-            modifiers.AddRange(weapon.Type.Innate);
-            modifiers.AddRange(weapon.Innate);
+            AddScaled(modifiers, weapon.Type.Innate, scale);
+            AddScaled(modifiers, weapon.Innate, scale);
+        }
+
+        private static void AddScaled(List<Modifier> modifiers, IReadOnlyList<Modifier> innate, double scale)
+        {
+            foreach (var modifier in innate)
+                modifiers.Add(scale == 1 ? modifier : new Modifier(modifier.Stat, modifier.Kind, modifier.Value * scale, modifier.Tags));
         }
     }
 }
