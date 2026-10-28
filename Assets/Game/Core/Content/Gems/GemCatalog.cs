@@ -296,6 +296,7 @@ namespace Game.Core.Content.Gems
                         BossTimerStopSeconds = Number(node, "bossTimerStopSeconds", 600),
                         Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null,
                         PerCurse = Number(node, "perCurse", 1e6),
+                        ConsumeMinion = node.HasField("consumeMinion") && node.Field("consumeMinion").AsBool(),
                         BurnStacks = Number(node, "burnStacks", 1000),
                         RefreshCurses = node.HasField("refreshCurses") && node.Field("refreshCurses").AsBool()
                     };
@@ -308,7 +309,8 @@ namespace Game.Core.Content.Gems
                         node.HasField("keylessStrike") ? node.Field("keylessStrike").Field("everySeconds").AsNumber(0.1, 3600) : 0,
                         node.HasField("keylessStrike") ? node.Field("keylessStrike").Field("multiplier").AsNumber(0, 1e6) : 0)
                     {
-                        IdleOffSeconds = Number(node, "idleOffSeconds", 3600)
+                        IdleOffSeconds = Number(node, "idleOffSeconds", 3600),
+                        SummonEveryKeys = node.HasField("summonEveryKeys") ? node.Field("summonEveryKeys").AsInt(1, 100000) : 0
                     };
                 case "keyRepeat":
                     return new KeyRepeatEffect(node.Field("every").AsInt(1, 10000), node.Field("multiplier").AsNumber(0, 1000))
@@ -424,6 +426,7 @@ namespace Game.Core.Content.Gems
                         StrikeMultiplier = Number(node, "strikeMultiplier", 1e6),
                         BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
                         BossTimerOncePerFight = node.HasField("bossTimerOncePerFight") && node.Field("bossTimerOncePerFight").AsBool(),
+                        Modifiers = node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>(),
                         Tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None
                     };
                 case "hitStrike":
@@ -460,7 +463,10 @@ namespace Game.Core.Content.Gems
                         Pick(node.Field("minion"), MinionKinds, "cannon, skeleton or beast"),
                         node.Field("seconds").AsNumber(0.1, 3600),
                         node.Field("hitsPerSecond").AsNumber(0.01, 100),
-                        node.Field("multiplier").AsNumber(0, 1e6));
+                        node.Field("multiplier").AsNumber(0, 1e6))
+                    {
+                        WhileActive = node.HasField("whileActive") ? ModifierReader.ReadList(node.Field("whileActive")) : Array.Empty<Modifier>()
+                    };
                 case "addStacks":
                     return new AddStacksEffect(
                         Pick(node.Field("dot"), DotKinds, "poison or burn"),
@@ -547,6 +553,8 @@ namespace Game.Core.Content.Gems
                 WindowSeconds = Number(node, "windowSeconds", Sim.DamageWindow.Seconds),
                 StackGrowth = Number(node, "stackGrowth", 10),
                 ResourceRelief = Number(node, "resourceRelief", 1000),
+                PerMinion = Number(node, "perMinion", 10),
+                RespawnMinion = node.HasField("respawnMinion") && node.Field("respawnMinion").AsBool(),
                 RepeatEvery = node.HasField("repeatEvery") ? node.Field("repeatEvery").AsInt(1, 10000) : 0,
                 WhenResource = node.HasField("when") ? Number(node.Field("when"), "resource", 1000) : 0,
                 ResourcePerSavedSecond = Number(node, "resourcePerSavedSecond", 1000),

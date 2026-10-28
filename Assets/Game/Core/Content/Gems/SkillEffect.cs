@@ -53,6 +53,7 @@ namespace Game.Core.Content.Gems
         public double BossTimerStopSeconds { get; set; }
         public StacksEffect? Stacks { get; set; }
         public double PerCurse { get; set; }
+        public bool ConsumeMinion { get; set; }
         public double BurnStacks { get; set; }
         public bool RefreshCurses { get; set; }
     }
@@ -109,6 +110,7 @@ namespace Game.Core.Content.Gems
         public double Reserve { get; }
         public bool Reserves => Reserve > 0;
         public double IdleOffSeconds { get; set; }
+        public int SummonEveryKeys { get; set; }
     }
 
     public sealed class StoreHitsEffect : SkillEffect
@@ -455,6 +457,7 @@ namespace Game.Core.Content.Gems
         public double BossTimerSlow { get; }
         public double BossTimerSeconds { get; set; }
         public bool BossTimerOncePerFight { get; set; }
+        public IReadOnlyList<Modifier> Modifiers { get; set; } = System.Array.Empty<Modifier>();
         public double StrikeMultiplier { get; set; }
         public StatTags Tags { get; set; }
     }
@@ -572,6 +575,7 @@ namespace Game.Core.Content.Gems
         public double Seconds { get; }
         public double HitsPerSecond { get; }
         public double Multiplier { get; }
+        public IReadOnlyList<Modifier> WhileActive { get; set; } = System.Array.Empty<Modifier>();
     }
 
     public enum DotKind

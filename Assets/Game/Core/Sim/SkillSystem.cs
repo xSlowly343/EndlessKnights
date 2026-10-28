@@ -543,7 +543,9 @@ namespace Game.Core.Sim
                 return;
             }
             var paused = strike.PauseSeconds <= 0 || _state.Tick - _lastKeyHitTick >= Ticks(strike.PauseSeconds);
-            var power = slot.CastPower * StrikeBonus(strike, native, when);
+            var power = slot.CastPower * StrikeBonus(strike, native, when) * (1 + native.PerMinion * Minions.Standing(MinionKind.Skeleton));
+            if (strike.ConsumeMinion && !Minions.Consume(MinionKind.Skeleton, native.RespawnMinion))
+                power = 0;
             var baseMultiplier = strike.PerCurse > 0 ? strike.PerCurse * ActiveCurses
                 : strike.PauseSeconds > 0 && paused ? strike.PauseMultiplier : LowHp(strike) ? strike.LowHpMultiplier : strike.Multiplier;
             if (strike.RefreshCurses)
@@ -781,6 +783,10 @@ namespace Game.Core.Sim
             {
                 case StoreHitsEffect _:
                     slot.Stored += damage;
+                    break;
+                case AuraEffect raising when raising.SummonEveryKeys > 0 && input == HitInput.Keys:
+                    if (++slot.HitCount % raising.SummonEveryKeys == 0)
+                        Minions.Place(_combat.Paths.SkeletonOnKill, slot.Skill.Tags);
                     break;
                 case QueueHitsEffect queue when Matches(queue.Input, input):
                     QueueShare(damage * queue.Share, queue.Targets);
@@ -1748,7 +1754,8 @@ namespace Game.Core.Sim
             var native = IsNative(slot) ? slot.Def.Native.Modifiers : Array.Empty<Modifier>();
             var potion = slot.Def.Effect is PotionEffect brew && slot.PotionChoice >= 0 && slot.Active
                 ? brew.Options[slot.PotionChoice].Modifiers
-                : slot.Def.Effect is AddStacksEffect cloud && slot.Active ? cloud.WhileActive : Array.Empty<Modifier>();
+                : slot.Def.Effect is AddStacksEffect cloud && slot.Active ? cloud.WhileActive
+                : slot.Def.Effect is SummonEffect called && slot.Active ? called.WhileActive : Array.Empty<Modifier>();
             if (aura == null && native.Count == 0 && potion.Count == 0)
                 return;
             var strength = aura == null ? 1 : _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
@@ -1787,6 +1794,8 @@ namespace Game.Core.Sim
             if (SharedEnemy || !slot.Active)
                 return;
             slot.AuraModifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.More, DebuffStrength(slot.Skill) * slot.CursePower));
+            for (var i = 0; i < debuff.Modifiers.Count; i++)
+                slot.AuraModifiers.Add(debuff.Modifiers[i]);
             if (debuff.BossTimerSlow > 0)
                 slot.AuraModifiers.Add(new Modifier(CombatStats.BossTimerSpeed, ModifierKind.More, -debuff.BossTimerSlow));
             slot.AuraStrength = 1;
