@@ -5,6 +5,7 @@ namespace Game.Core.Sim.Rift
         Entered,
         Closed,
         AlreadyInside,
-        InParty
+        InParty,
+        InDungeon
     }
 }

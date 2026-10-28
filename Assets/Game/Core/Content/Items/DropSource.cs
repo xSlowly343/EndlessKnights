@@ -10,5 +10,6 @@ namespace Game.Core.Content.Items
         Guarantee,
         Craft,
         Limit,
+        Dungeon,
     }
 }

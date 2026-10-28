@@ -158,6 +158,14 @@ namespace Game.Core.Content
             };
 
 
+        public StageTable ForDungeon(double hpMultiplier, double bossHpMultiplier, double bossTimerSeconds) =>
+            new StageTable(_enemyHp.Scaled(hpMultiplier), _gold, _wallPeriod, 0, _wallRate, _waves, _bossHpMultiplier * bossHpMultiplier,
+                bossTimerSeconds, bossTimerSeconds, _bossGoldMultiplier, BossRetryAfterKills, BiomeLength, _biomes, BossHint)
+            {
+                _hpSteps = _hpSteps,
+                _goldSteps = _goldSteps
+            };
+
         public int WaveSize(long stage, int wave) => _waves.Size(stage, wave);
 
         public int EnemiesOnStage(long stage)

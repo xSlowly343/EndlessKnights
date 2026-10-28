@@ -68,6 +68,8 @@ namespace Game.Core.Sim.Rift
         {
             if (Inside)
                 return RiftEntry.AlreadyInside;
+            if (_state.Dungeons.Inside)
+                return RiftEntry.InDungeon;
             if (_stage.Linked)
                 return RiftEntry.InParty;
             var open = WindowAt(nowUnixMs);
@@ -144,8 +146,11 @@ namespace Game.Core.Sim.Rift
         private void ApplyWorld()
         {
             var inside = Inside;
-            _stage.UseData(inside ? _world : _home, _enemies);
-            _stage.RaisesRecord = !inside;
+            if (!_state.Dungeons.Inside)
+            {
+                _stage.UseData(inside ? _world : _home, _enemies);
+                _stage.RaisesRecord = !inside;
+            }
             LoadWindowModifiers();
             _marks = -1;
             Tick();

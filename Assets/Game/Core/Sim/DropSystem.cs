@@ -144,7 +144,58 @@ namespace Game.Core.Sim
             return RollWeapon(type, set.Rarity, stage, rng).InSet(set);
         }
 
-        public void GiveLimitUnique(long stage)
+        public DungeonRules? Dungeons { get; set; }
+
+        private void RollKey(long stage, EnemyType type)
+        {
+            var rules = Dungeons;
+            if (rules == null || stage < rules.KeysFromStage || Unlocks?.IsOpen(Feature.Dungeons) == false)
+                return;
+            var chance = type == EnemyType.Guardian ? rules.GuardianKeyChance : _rules.IsSpecialBoss(stage) ? rules.SpecialBossKeyChance : rules.BossKeyChance;
+            if (chance > 0 && _state.Drops.Rng.Chance(chance))
+                Push(PendingDrop.Key(stage));
+        }
+
+        private void DeliverKey(PendingDrop drop)
+        {
+            var rules = Dungeons!;
+            var keys = _state.Dungeons.Keys;
+            if (keys.Count >= rules.KeyBag)
+                return;
+            var rng = _state.Drops.Rng;
+            var highest = rules.HighestTierFor(drop.Stage, _state.GatesCleared.Count > 0);
+            if (highest < 1)
+                return;
+            var tier = System.Math.Max(1, highest - rng.NextInt(0, 2));
+            var count = rng.NextInt(0, rules.MaxModifiers + 1);
+            var chosen = new List<string>();
+            for (var i = 0; i < count && chosen.Count < rules.Modifiers.Count; i++)
+            {
+                var modifier = rules.Modifiers[rng.NextInt(0, rules.Modifiers.Count)];
+                if (!chosen.Contains(modifier.Id))
+                    chosen.Add(modifier.Id);
+            }
+            keys.Add(new DungeonKey(tier, chosen));
+            _events.Add(GameEvent.ForStage(GameEventKind.DungeonKeyDropped, _state.Tick, tier));
+        }
+
+        public void GiveDungeonLoot(DungeonTier tier, double bonus)
+        {
+            var rng = _state.Drops.Rng;
+            var scale = 1 + System.Math.Max(0, bonus);
+            var amount = tier.Loot.Items * scale;
+            var items = (int)System.Math.Floor(amount) + (rng.NextDouble() < amount - System.Math.Floor(amount) ? 1 : 0);
+            for (var i = 0; i < items; i++)
+                Push(Rolled(tier.Loot, tier.Stage, DropSource.Dungeon));
+            Flush();
+            if (tier.UniqueChance > 0 && rng.NextDouble() < System.Math.Min(1, tier.UniqueChance * scale))
+                GiveUnique(tier.Stage, DropSource.Dungeon);
+            _state.Drops.Shards += (long)System.Math.Round(tier.Shards * scale);
+        }
+
+        public void GiveLimitUnique(long stage) => GiveUnique(stage, DropSource.Limit);
+
+        private void GiveUnique(long stage, DropSource source)
         {
             var gear = _items.Uniques;
             var weapons = _weapons.Catalog.Uniques;
@@ -165,7 +216,7 @@ namespace Game.Core.Sim
                 weapon = _weapons.Give(_weapons.Catalog.RollUnique(weapons[pick - gear.Count], rng));
             }
             _state.Drops.ItemsFound++;
-            _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Limit, stage, weapon, item, false, 0)));
+            _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(source, stage, weapon, item, false, 0)));
         }
 
         public bool BuyUncut()
@@ -236,6 +287,7 @@ namespace Game.Core.Sim
             GiveShards(stage, type, recordBefore);
             if (stage >= recordBefore)
                 GiveRecordItems(stage, type);
+            RollKey(stage, type);
             if (_rules.Daily.Allows(stage, recordBefore))
                 RollDaily(stage, DropSource.Daily, _rules.Daily.Chance);
         }
@@ -268,6 +320,8 @@ namespace Game.Core.Sim
                     GiveGem(drop.Gem);
                 else if (drop.IsJewel)
                     DeliverJewel(drop);
+                else if (drop.IsKey)
+                    DeliverKey(drop);
                 else
                     Deliver(drop);
             }

@@ -77,6 +77,7 @@ namespace Game.Core.Save
                 ("gear", WriteWorn(state.Gear)),
                 ("jewels", WriteJewels(state.Jewels)),
                 ("gatesCleared", WriteStages(state.GatesCleared)),
+                ("dungeons", WriteDungeons(state.Dungeons)),
                 ("setCollection", JsonValue.Array(WriteCollection(state))),
                 ("inputStats", Object(
                     ("keys", JsonValue.Of(state.TotalInput.Keys.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -221,6 +222,8 @@ namespace Game.Core.Save
                 ReadLevels(node.Field("spirits"), state.Spirits);
             if (node.HasField("gear") && items != null)
                 ReadWorn(node.Field("gear"), items, state.Gear);
+            if (node.HasField("dungeons"))
+                ReadDungeons(node.Field("dungeons"), state.Dungeons);
             if (node.HasField("gatesCleared"))
             {
                 foreach (var item in node.Field("gatesCleared").Items())
@@ -407,6 +410,54 @@ namespace Game.Core.Save
             if (items != null && node.HasField("base") && !node.Field("base").IsNull && items.TryGetBase(node.Field("base").AsString(), out var gearBase) && gearBase.Slot == slot)
                 return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot));
             return new GearItem(slot, rarity, itemLevel, color.IsNull ? null : color.AsString());
+        }
+
+        private static JsonValue WriteDungeons(DungeonState dungeons)
+        {
+            var keys = new JsonValue[dungeons.Keys.Count];
+            for (var i = 0; i < keys.Length; i++)
+                keys[i] = WriteKey(dungeons.Keys[i]);
+            return Object(
+                ("keys", JsonValue.Array(keys)),
+                ("active", dungeons.Active == null ? JsonValue.Null() : WriteKey(dungeons.Active)),
+                ("startStage", JsonValue.Of(dungeons.StartStage)),
+                ("home", dungeons.Home == null ? JsonValue.Null() : WriteProgress(dungeons.Home)),
+                ("completed", JsonValue.Of(dungeons.Completed)),
+                ("failed", JsonValue.Of(dungeons.Failed)),
+                ("bestTier", JsonValue.Of(dungeons.BestTier)));
+        }
+
+        private static JsonValue WriteKey(DungeonKey key)
+        {
+            var modifiers = new JsonValue[key.Modifiers.Count];
+            for (var i = 0; i < modifiers.Length; i++)
+                modifiers[i] = JsonValue.Of(key.Modifiers[i]);
+            return Object(("tier", JsonValue.Of(key.Tier)), ("modifiers", JsonValue.Array(modifiers)));
+        }
+
+        private static void ReadDungeons(ContentNode node, DungeonState dungeons)
+        {
+            foreach (var item in node.Field("keys").Items())
+                dungeons.Keys.Add(ReadKey(item));
+            var active = node.Field("active");
+            var home = node.Field("home");
+            if (!active.IsNull && !home.IsNull)
+            {
+                dungeons.Active = ReadKey(active);
+                dungeons.Home = ReadProgress(home);
+                dungeons.StartStage = node.Field("startStage").AsLong(1);
+            }
+            dungeons.Completed = node.Field("completed").AsLong(0);
+            dungeons.Failed = node.Field("failed").AsLong(0);
+            dungeons.BestTier = node.Field("bestTier").AsInt(0);
+        }
+
+        private static DungeonKey ReadKey(ContentNode node)
+        {
+            var modifiers = new List<string>();
+            foreach (var item in node.Field("modifiers").Items())
+                modifiers.Add(item.AsString());
+            return new DungeonKey(node.Field("tier").AsInt(1), modifiers);
         }
 
         private static JsonValue WriteStages(HashSet<long> stages)

@@ -54,6 +54,7 @@ namespace Game.Core.Sim
         private readonly JewelSystem _jewels;
         private readonly GateSystem _gates;
         private readonly Unlocks _unlocks;
+        private readonly DungeonSystem _dungeons;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -100,6 +101,8 @@ namespace Game.Core.Sim
             _spirits.Unlocks = _unlocks;
             _chronicle.Unlocks = _unlocks;
             _drops.Unlocks = _unlocks;
+            _drops.Dungeons = data.Dungeons;
+            _dungeons = new DungeonSystem(data, state, hero, _stage, _drops, Events) { Unlocks = _unlocks };
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
@@ -147,6 +150,7 @@ namespace Game.Core.Sim
         public JewelSystem Jewels => _jewels;
         public GateSystem Gates => _gates;
         public Unlocks Unlocks => _unlocks;
+        public DungeonSystem Dungeons => _dungeons;
         public DropSystem Drops => _drops;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
@@ -413,6 +417,8 @@ namespace Game.Core.Sim
             _jewels.Tree = data.Tree;
             _gates.UseStages(data.Stages);
             _unlocks.Rules = data.Unlocks;
+            _drops.Dungeons = data.Dungeons;
+            _dungeons.UseData(data);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _prestige.UseRules(data.Prestige);
@@ -464,6 +470,7 @@ namespace Game.Core.Sim
             _synergy.Tick();
             _rift.Tick();
             _stage.Tick();
+            _dungeons.Tick();
             _chronicle.Tick();
             _combat.Tick(input);
             _skills.Minions.Tick(input);
