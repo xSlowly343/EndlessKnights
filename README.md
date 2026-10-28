@@ -28,7 +28,7 @@
 | План и журнал | `roadmap.md`, `progress.md`, `todo.md`, `dev-notes.md` |
 | Техника | `engine-spec.md` (код), `blender-spec.md` (графика), `setup.md`, `mcp-setup.md` |
 | Дизайн целиком | `concept.md` |
-| Персонажи, дерево, скиллы | `class-resources.md`, `tree-effects.md`, `skills.md` |
+| Персонажи, дерево, скиллы | `class-resources.md`, `tree-effects.md`, `skills.md`, `ascendancy-keystones.md`, `ascendancy-missing.md` |
 | Предметы и престиж | `items.md`, `prestige-options.md`, `artifacts.md` |
 | Кооп и отряд | `coop.md`, `party-hideout.md` |
 | Мирный мир | `peaceful-world.md` |

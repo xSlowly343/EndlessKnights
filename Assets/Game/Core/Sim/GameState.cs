@@ -124,6 +124,20 @@ namespace Game.Core.Sim
         public int BannerDecayTicks { get; set; }
         public double WeakenShare { get; set; }
         public double AllyHeavyCastSeconds { get; set; }
+        public double ResourceFill { get; set; }
+        public double KeyHitRate { get; set; }
+        public double MouseHitRate { get; set; }
+        public long SkillCasts { get; set; }
+        public double IdleHitCarry { get; set; }
+        public double CompanionHitCarry { get; set; }
+
+        public void AddToQueue(BigNumber damage)
+        {
+            if (damage.Sign <= 0)
+                return;
+            for (var i = 0; i < QueueDamage.Length; i++)
+                QueueDamage[i] += damage;
+        }
 
         public void ClearQueue()
         {

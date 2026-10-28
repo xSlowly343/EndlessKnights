@@ -85,7 +85,30 @@ namespace Game.Core.Sim
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerKill, 0, tags)) * System.Math.Min(_state.KillStreak, conditions.KillStreakMax);
             if (_state.AfterIdleTicks > 0)
                 multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageAfterIdle, 1, tags));
+            return multiplier * PathMultiplier(tags);
+        }
+
+        private double PathMultiplier(StatTags tags)
+        {
+            var multiplier = 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerResource, 0, tags)) * _state.ResourceFill;
+            var perCombo = _hero.Value(CombatStats.DamagePerCombo, 0, tags);
+            if (perCombo > 0)
+                multiplier *= 1 + System.Math.Min(System.Math.Max(0, _hero.Value(CombatStats.DamagePerComboMax, 0, tags)), perCombo * _state.Combo);
+            var ramp = _hero.Value(CombatStats.RampPerSecond, 0, tags);
+            if (ramp > 0 && _state.EnemyAlive)
+                multiplier *= 1 + System.Math.Min(System.Math.Max(0, _hero.Value(CombatStats.RampMax, 0, tags)), ramp * _state.EnemyLifeSeconds);
+            var balance = _hero.Value(CombatStats.DamageAtBalance, 0, tags);
+            if (balance > 0)
+                multiplier *= 1 + balance * Balance();
             return multiplier;
+        }
+
+        public double Balance()
+        {
+            var keys = _state.KeyHitRate;
+            var mouse = _state.MouseHitRate;
+            var larger = System.Math.Max(keys, mouse);
+            return larger <= 1e-9 ? 0 : System.Math.Min(keys, mouse) / larger;
         }
 
         public void DirectHit(BigNumber damage)
@@ -115,10 +138,44 @@ namespace Game.Core.Sim
                 var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags);
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
                 KeyHitLightning();
+                ShadowClone();
+                QueueStrike();
             }
             for (var i = 0; i < mouseHits; i++)
                 Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier);
             _class.EndTick(keyHits, input.MousePx);
+            NoteRates(keyHits, input.MousePx / _rules.MousePxPerHit);
+        }
+
+        private void NoteRates(double keyHits, double mouseHits)
+        {
+            var blend = System.Math.Min(1, GameLoop.TickSeconds / _rules.Paths.BalanceWindowSeconds);
+            _state.KeyHitRate += (keyHits * GameLoop.TicksPerSecond - _state.KeyHitRate) * blend;
+            _state.MouseHitRate += (mouseHits * GameLoop.TicksPerSecond - _state.MouseHitRate) * blend;
+        }
+
+        private bool EveryNthKeyHit(StatId every)
+        {
+            var n = (long)System.Math.Round(_hero.Value(every, 0, StatTags.Keyboard));
+            return n >= 1 && _state.KeyHits % n == 0;
+        }
+
+        private void ShadowClone()
+        {
+            if (!EveryNthKeyHit(CombatStats.CloneEvery))
+                return;
+            var multiplier = _hero.Value(CombatStats.CloneMultiplier, 0, StatTags.Keyboard);
+            if (multiplier > 0)
+                Hit(DamageSource.Skill, _rules.KeyDamage, StatTags.Keyboard, HitFlags.None, _state.FocusMultiplier * multiplier);
+        }
+
+        private void QueueStrike()
+        {
+            if (!EveryNthKeyHit(CombatStats.QueueStrikeEvery))
+                return;
+            var multiplier = _hero.Value(CombatStats.QueueStrikeMultiplier, 0, StatTags.Keyboard);
+            if (multiplier > 0)
+                _state.AddToQueue(SkillDamage(_rules.KeyDamage, _state.FocusMultiplier * multiplier, StatTags.Keyboard));
         }
 
         private void Hit(DamageSource source, double baseDamage, StatTags tags, HitFlags flags, double multiplier)
@@ -131,7 +188,7 @@ namespace Game.Core.Sim
                 return;
             _state.HitsOnEnemy++;
 
-            if (ForcedCrit() || RollCrit(tags))
+            if (ForcedCrit() || ComboStrikeCrit(flags) || RollCrit(tags))
             {
                 damage *= CritMultiplier(tags);
                 flags |= HitFlags.Crit;
@@ -144,7 +201,10 @@ namespace Game.Core.Sim
             LastTickDamage += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
             if (source == DamageSource.Keyboard)
+            {
+                PierceQueue(damage);
                 _keyHits?.OnKeyHit(damage);
+            }
             else if (source == DamageSource.Mouse)
                 _keyHits?.OnMouseHit(damage);
             if (_state.EnemyAlive && !Culled(tags))
@@ -153,6 +213,16 @@ namespace Game.Core.Sim
             CarryOverkill(damage - hpBefore, tags);
             _state.EnemyHp = BigNumber.Zero;
             _kills?.OnEnemyKilled();
+        }
+
+        private bool ComboStrikeCrit(HitFlags flags) =>
+            (flags & HitFlags.ComboStrike) != 0 && _hero.Value(CombatStats.ComboStrikeCrit, 0, StatTags.Keyboard) > 0;
+
+        private void PierceQueue(BigNumber damage)
+        {
+            var share = System.Math.Min(1, _hero.Value(CombatStats.KeyHitQueueShare, 0, StatTags.Keyboard));
+            if (share > 0)
+                _state.QueueDamage[0] += damage * share;
         }
 
         private bool Culled(StatTags tags)

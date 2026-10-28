@@ -131,7 +131,7 @@ namespace Game.Core.Sim
             if (!Pay(skill, native, slot.WhenAtCast, out var spent))
                 return CastResult.NotEnoughResource;
 
-            slot.CastPower = CastPower(slot);
+            slot.CastPower = CastPower(slot) * SuperCast();
             slot.AuraPower = 1;
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
@@ -162,6 +162,15 @@ namespace Game.Core.Sim
                     power = System.Math.Max(power, composure.Multiplier);
             }
             return power;
+        }
+
+        private double SuperCast()
+        {
+            _state.SkillCasts++;
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.SkillSuperEvery, 0, StatTags.Skill));
+            if (every < 1 || _state.SkillCasts % every != 0)
+                return 1;
+            return System.Math.Max(1, _hero.Value(CombatStats.SkillSuperMultiplier, 1, StatTags.Skill));
         }
 
         private void SkillHit(SkillSlot slot, double multiplier) =>

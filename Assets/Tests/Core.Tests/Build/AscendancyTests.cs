@@ -118,7 +118,7 @@ namespace Game.Core.Tests.Build
         {
             foreach (var subclass in Catalog.Subclasses)
             {
-                Assert.That(subclass.Nodes.Count, Is.InRange(14, 17), subclass.Id);
+                Assert.That(subclass.Nodes.Count(n => n.Type != TreeNodeType.Keystone && !n.Id.EndsWith("_bk_1")), Is.InRange(14, 17), subclass.Id);
                 Assert.That(subclass.Nodes.Count(n => n.Type == TreeNodeType.Notable), Is.InRange(7, 8), subclass.Id);
                 var depths = subclass.Nodes.Where(n => n.Type == TreeNodeType.Notable).Select(n => TreePaths.SubclassPath(subclass, n.Id).Length).Distinct().Count();
                 Assert.That(depths, Is.GreaterThanOrEqualTo(3), subclass.Id);
@@ -151,6 +151,77 @@ namespace Game.Core.Tests.Build
 
             Assert.That(state.Allocate(catalog, "s_small"), Is.EqualTo(AllocationResult.Allocated));
             Assert.That(state.Allocate(catalog, "s_notable"), Is.EqualTo(AllocationResult.Locked));
+        }
+
+        [Test]
+        public void PathKeystoneIsALeafBehindOneSmallNode()
+        {
+            foreach (var subclass in Catalog.Subclasses)
+            {
+                foreach (var keystone in subclass.Nodes.Where(n => n.Type == TreeNodeType.Keystone))
+                {
+                    Assert.That(keystone.Neighbours.Count, Is.EqualTo(1), keystone.Id);
+                    Assert.That(TreePaths.SubclassPath(subclass, keystone.Id).Length, Is.EqualTo(2), keystone.Id);
+                    Assert.That(keystone.DescriptionRu, Is.Not.Empty, keystone.Id);
+                    Assert.That(keystone.DescriptionEn, Is.Not.Empty, keystone.Id);
+                    Assert.That(keystone.Locked, Is.False, keystone.Id);
+                }
+            }
+        }
+
+        [Test]
+        public void DamageDealersHaveAPathKeystone()
+        {
+            foreach (var heroClass in new[] { "viking", "ronin", "amazon", "stormweaver", "nomad" })
+            {
+                foreach (var subclass in Catalog.SubclassesOf(heroClass))
+                    Assert.That(subclass.Nodes.Count(n => n.Type == TreeNodeType.Keystone), Is.EqualTo(1), subclass.Id);
+            }
+        }
+
+        [Test]
+        public void KeystoneStatsAreReadByTheGame()
+        {
+            var known = typeof(CombatStats).GetFields().Select(f => ((StatId)f.GetValue(null)!).Name).ToHashSet();
+            foreach (var subclass in Catalog.Subclasses)
+            {
+                foreach (var keystone in subclass.Nodes.Where(n => n.Type == TreeNodeType.Keystone))
+                {
+                    foreach (var modifier in keystone.Modifiers)
+                        Assert.That(known, Does.Contain(modifier.Stat.Name), keystone.Id);
+                }
+            }
+        }
+
+        [Test]
+        public void TwoKeystonesOnOnePathAreRefused()
+        {
+            var json = Valid.Replace("\"id\": \"s_small\", \"type\": \"small\"", "\"id\": \"s_small\", \"type\": \"keystone\"")
+                .Replace("\"id\": \"s_notable\", \"type\": \"notable\"", "\"id\": \"s_notable\", \"type\": \"keystone\"");
+
+            var error = Assert.Throws<ContentException>(() => AscendancyCatalog.Load(json))!;
+
+            Assert.That(error.Message, Does.Contain("more than one keystone"));
+        }
+
+        [Test]
+        public void DjinnKeystoneMakesTheMouseTheMainWeapon()
+        {
+            var keystone = Subclass("djinn").Nodes.Single(n => n.Type == TreeNodeType.Keystone);
+            var path = TreePaths.SubclassPath(Subclass("djinn"), keystone.Id);
+            var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Nomad }, new StatSheet());
+            foreach (var activity in Catalog.Activities.Take(path.Length))
+                loop.CompleteActivity(activity.Id);
+            loop.ChooseSubclass("djinn");
+            foreach (var id in path.SkipLast(1))
+                loop.AllocateSubclassNode(id);
+            var mouse = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse);
+            var keys = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+
+            Assert.That(loop.AllocateSubclassNode(keystone.Id), Is.EqualTo(AllocationResult.Allocated));
+
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(mouse * 3).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(keys * 0.4).Within(1e-9));
         }
 
         [Test]
@@ -257,7 +328,7 @@ namespace Game.Core.Tests.Build
             Assert.That(catalog.Subclasses.Single().Nodes.Count, Is.EqualTo(3));
         }
 
-        [TestCase("\"type\": \"small\"", "\"type\": \"keystone\"", "unknown subclass node type 'keystone'")]
+        [TestCase("\"type\": \"small\"", "\"type\": \"mastery\"", "unknown subclass node type 'mastery'")]
         [TestCase("\"type\": \"small\"", "\"type\": \"start\"", "subclass 's' has two start nodes")]
         [TestCase("[\"s_small\", \"s_notable\"]", "[\"s_small\", \"s_small\"]", "node 's_small' is linked to itself")]
         [TestCase(", [\"s_small\", \"s_notable\"]", "", "node 's_notable' cannot be reached from the start 's_start'")]

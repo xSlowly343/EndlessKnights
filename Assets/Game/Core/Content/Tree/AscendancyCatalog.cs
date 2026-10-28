@@ -56,7 +56,8 @@ namespace Game.Core.Content.Tree
         {
             ["start"] = TreeNodeType.Start,
             ["small"] = TreeNodeType.Small,
-            ["notable"] = TreeNodeType.Notable
+            ["notable"] = TreeNodeType.Notable,
+            ["keystone"] = TreeNodeType.Keystone
         };
 
         private readonly Dictionary<string, SubclassDef> _byId;
@@ -192,6 +193,8 @@ namespace Game.Core.Content.Tree
             }
             if (start == null)
                 throw item.Field("nodes").Error($"subclass '{id}' needs a start node");
+            if (nodes.FindAll(node => node.Type == TreeNodeType.Keystone).Count > 1)
+                throw item.Field("nodes").Error($"subclass '{id}' has more than one keystone");
 
             foreach (var link in item.Field("links").Items())
             {
@@ -216,7 +219,7 @@ namespace Game.Core.Content.Tree
         {
             var typeNode = node.Field("type");
             if (!Types.TryGetValue(typeNode.AsString(), out var type))
-                throw typeNode.Error($"unknown subclass node type '{typeNode.AsString()}', expected start, small or notable");
+                throw typeNode.Error($"unknown subclass node type '{typeNode.AsString()}', expected start, small, notable or keystone");
             var modifiers = node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>();
             var locked = node.HasField("locked") && node.Field("locked").AsBool();
             var name = node.Field("name");

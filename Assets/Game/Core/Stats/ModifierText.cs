@@ -12,7 +12,8 @@ namespace Game.Core.Stats
             "doomedCritChance", "doomedCritMultiplier", "dotSpread", "doubleStrike", "flareMultiplier", "flareSplash",
             "focusMax", "partyContribution", "partyCritChance", "partyCritMultiplier", "pierceShare", "volleySplash",
             "windupKeptAfterCrush", "gemDrop", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",
-            "laterHitsPenalty", "minionExplode"
+            "laterHitsPenalty", "minionExplode", "damagePerResource", "keyHitQueueShare", "damagePerCombo", "damagePerComboMax",
+            "damageAtBalance", "rampPerSecond", "rampMax", "overloadQueueShare"
         };
 
         private static readonly StatTags[] LabelledTags =

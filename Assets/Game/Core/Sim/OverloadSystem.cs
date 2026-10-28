@@ -28,7 +28,11 @@ namespace Game.Core.Sim
                 return;
             _resource.SpendAll();
             Discharges++;
-            _combat.SkillHit(_combat.BaseKeyDamage, multiplier + _hero.Value(CombatStats.OverloadMultiplier, 0, StatTags.Skill), StatTags.Skill);
+            var power = multiplier + _hero.Value(CombatStats.OverloadMultiplier, 0, StatTags.Skill);
+            _combat.SkillHit(_combat.BaseKeyDamage, power, StatTags.Skill);
+            var share = _hero.Value(CombatStats.OverloadQueueShare, 0, StatTags.Skill);
+            if (share > 0)
+                _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, power * share, StatTags.Skill));
         }
     }
 }

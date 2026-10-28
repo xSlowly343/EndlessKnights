@@ -65,5 +65,6 @@
     "cullMax": 0.5,
     "afterIdle": { "pauseSeconds": 30, "seconds": 10 },
     "fastKillSeconds": 3
-  }
+  },
+  "paths": { "balanceWindowSeconds": 10 }
 }
