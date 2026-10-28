@@ -11,7 +11,7 @@ namespace Game.Core.Party.Transport
         private readonly ulong[] _downLinks = new ulong[PartyRules.MaxSlots * 2];
         private int _downCount;
 
-        public LoopbackNetwork(ulong seed, double minLatencyMs = 0, double maxLatencyMs = 0, double loss = 0, int capacity = 1024, int maxPacketBytes = 256)
+        public LoopbackNetwork(ulong seed, double minLatencyMs = 0, double maxLatencyMs = 0, double loss = 0, int capacity = 1024, int maxPacketBytes = Wire.PartyCodec.MaxPacketBytes)
         {
             if (maxLatencyMs < minLatencyMs)
                 throw new ArgumentException("max latency must not be lower than min latency", nameof(maxLatencyMs));

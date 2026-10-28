@@ -1,4 +1,4 @@
-const PartyMaxPacketBytes = 128;
+const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,

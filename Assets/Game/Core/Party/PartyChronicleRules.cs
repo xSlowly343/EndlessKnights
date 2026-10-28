@@ -28,11 +28,14 @@ namespace Game.Core.Party
         public const string FileName = "party_chronicle.json";
         public const int SupportedVersion = 1;
 
-        public static readonly IReadOnlyList<string> TrackedKinds = new[] { "bossesTogether", "fullOrchestra", "hoursTogether" };
-        public static readonly IReadOnlyList<string> LaterKinds = new[] { "guardiansTogether", "synergiesOnOneEnemy", "riftDepth", "nightBosses", "mentorHours" };
+        public static readonly IReadOnlyList<string> TrackedKinds = new[] { "bossesTogether", "fullOrchestra", "hoursTogether", "nightBosses" };
+        public static readonly IReadOnlyList<string> LaterKinds = new[] { "guardiansTogether", "synergiesOnOneEnemy", "riftDepth", "mentorHours" };
 
-        private PartyChronicleRules(double flushSeconds, int maxRecords, IReadOnlyList<PartyFeat> feats)
+        private PartyChronicleRules(double flushSeconds, int maxRecords, int nightUtcOffsetMinutes, int nightFromHour, int nightToHour, IReadOnlyList<PartyFeat> feats)
         {
+            NightUtcOffsetMinutes = nightUtcOffsetMinutes;
+            NightFromHour = nightFromHour;
+            NightToHour = nightToHour;
             FlushSeconds = flushSeconds;
             MaxRecords = maxRecords;
             Feats = feats;
@@ -40,6 +43,9 @@ namespace Game.Core.Party
 
         public double FlushSeconds { get; }
         public int MaxRecords { get; }
+        public int NightUtcOffsetMinutes { get; }
+        public int NightFromHour { get; }
+        public int NightToHour { get; }
         public IReadOnlyList<PartyFeat> Feats { get; }
 
         public static PartyChronicleRules Load(string json)
@@ -52,7 +58,13 @@ namespace Game.Core.Party
             var ids = new HashSet<string>();
             foreach (var item in root.Field("feats").Items())
                 feats.Add(ReadFeat(item, ids));
-            return new PartyChronicleRules(root.Field("flushSeconds").AsNumber(5, 3600), root.Field("maxRecords").AsInt(1, 500), feats);
+            var night = root.Field("night");
+            var from = night.Field("fromHour").AsInt(0, 23);
+            var to = night.Field("toHour").AsInt(1, 24);
+            if (to <= from)
+                throw night.Field("toHour").Error($"must be later than fromHour ({from})");
+            return new PartyChronicleRules(root.Field("flushSeconds").AsNumber(5, 3600), root.Field("maxRecords").AsInt(1, 500),
+                night.Field("utcOffsetMinutes").AsInt(-720, 840), from, to, feats);
         }
 
         private static PartyFeat ReadFeat(ContentNode node, HashSet<string> ids)

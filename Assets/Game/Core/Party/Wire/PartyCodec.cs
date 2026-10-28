@@ -2,7 +2,7 @@ namespace Game.Core.Party.Wire
 {
     public static class PartyCodec
     {
-        public const int MaxPacketBytes = 128;
+        public const int MaxPacketBytes = 256;
 
         public static PartyMessageKind KindOf(byte[] buffer, int length) =>
             length > 0 && buffer[0] <= (byte)PartyMessageKind.WorldRequest ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
