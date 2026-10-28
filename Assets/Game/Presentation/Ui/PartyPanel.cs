@@ -40,6 +40,7 @@ namespace Game.Presentation.Ui
         private static readonly Color OfflineText = new Color32(0xFF, 0xB4, 0xB4, 0xFF);
         private static readonly Color BarBack = new Color32(0x12, 0x18, 0x28, 0xFF);
         private static readonly Color LeaveText = new Color32(0xFF, 0xB4, 0xB4, 0xFF);
+        private static readonly Color RiftText = new Color32(0xC9, 0xA7, 0xFF, 0xFF);
 
         private readonly UiTheme _theme;
         private readonly RectTransform _root;
@@ -52,6 +53,8 @@ namespace Game.Presentation.Ui
         private readonly UiButton _help;
         private readonly UiButton _links;
         private readonly UiButton _leave;
+        private readonly UiButton _rift;
+        private PartyRiftAction _riftAction;
         private readonly RectTransform _menu;
         private readonly TextMeshProUGUI _menuTitle;
         private readonly UiButton[] _menuOptions = new UiButton[MaxMenuOptions];
@@ -79,6 +82,9 @@ namespace Game.Presentation.Ui
             _help = Button(buttons, PartyRoster.Help, 0f, buttonWidth, theme.Accent, Color.white, theme.Accent);
             _links = Button(buttons, PartyRoster.Links, buttonWidth + GapPx, buttonWidth, theme.Card, theme.Text, theme.Card);
             _leave = Button(buttons, PartyRoster.Leave, 2f * (buttonWidth + GapPx), buttonWidth, theme.Background, LeaveText, theme.Plate);
+            var riftRow = UiElements.Rect("Rift", _root);
+            _rift = Button(riftRow, PartyRiftButton.Label(PartyRiftAction.Enter, null), 0f, Width(), theme.Card, RiftText, theme.Border);
+            riftRow.gameObject.SetActive(false);
             _reactionRow = UiElements.Rect("Reactions", _root);
             for (var i = 0; i < _reactions.Length; i++)
             {
@@ -95,6 +101,7 @@ namespace Game.Presentation.Ui
         public event Action<PartyAction>? ActionRequested;
         public event Action<int, PartyMemberOption>? MemberActionRequested;
         public event Action<int>? ReactionRequested;
+        public event Action<PartyRiftAction>? RiftRequested;
 
         public bool IsShown => _root.gameObject.activeSelf;
         public int ShownMembers { get; private set; }
@@ -102,6 +109,8 @@ namespace Game.Presentation.Ui
         public bool ShowsMemberMenu => _menu.gameObject.activeSelf;
         public int MenuSlot => _menuSlot;
         public bool ShowsReactions => _reactionRow.gameObject.activeSelf;
+        public bool ShowsRift => _rift.Rect.parent.gameObject.activeSelf;
+        public PartyRiftAction RiftAction => _riftAction;
 
         public void UseClient(PartyClient? client) => _client = client;
 
@@ -195,6 +204,15 @@ namespace Game.Presentation.Ui
                         _reactions[i].Label!.color = ready ? _theme.Text : _theme.TextDim;
                 }
             }
+            _riftAction = PartyRiftButton.Of(inParty ? _client : null, NowUnixMs());
+            var riftRow = (RectTransform)_rift.Rect.parent;
+            riftRow.gameObject.SetActive(_riftAction != PartyRiftAction.None);
+            if (_riftAction != PartyRiftAction.None)
+            {
+                Place(riftRow, y, ButtonPx);
+                y += ButtonPx + GapPx;
+                _rift.Text = PartyRiftButton.Label(_riftAction, _client);
+            }
             Place((RectTransform)_help.Rect.parent, y, ButtonPx);
             var hasCode = _code.Length > 0;
             _help.Text = PartyActions.Label(PartyActions.Left(hasCode), _code);
@@ -216,6 +234,11 @@ namespace Game.Presentation.Ui
                 if (!_reactions[i].Contains(worldPoint))
                     continue;
                 ReactionRequested?.Invoke(i);
+                return true;
+            }
+            if (ShowsRift && _rift.Contains(worldPoint))
+            {
+                RiftRequested?.Invoke(_riftAction);
                 return true;
             }
             var hasCode = _code.Length > 0;
@@ -393,6 +416,8 @@ namespace Game.Presentation.Ui
             label.text = text;
             return new UiButton(back, label);
         }
+
+        private static long NowUnixMs() => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         private static void Place(RectTransform rect, float y, float height) =>
             UiElements.Anchor(rect, new Vector2(0f, 1f), new Vector2(PaddingPx, -y), new Vector2(Width(), height));

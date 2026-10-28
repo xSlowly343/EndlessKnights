@@ -10,6 +10,7 @@ namespace Game.Core.Party
         public const int NoSlot = -1;
         public const long Never = -(1L << 53);
         public const int MaxRepeatSeconds = 10;
+        public const byte NoWorld = byte.MaxValue;
         private const int RecentTicks = MaxRepeatSeconds * GameLoop.TicksPerSecond + 1;
 
         private readonly PartyMember[] _members = new PartyMember[PartyRules.MaxSlots];
@@ -45,6 +46,12 @@ namespace Game.Core.Party
         public long SpawnTick { get; private set; }
         public double LoopShare { get; private set; }
         public double SavedBossTicks { get; private set; }
+        public PartyWorld World { get; private set; }
+        public long WindowId { get; private set; }
+        public byte PendingWorld { get; private set; } = NoWorld;
+        public long PendingWindowId { get; private set; }
+        public int SwitchTicksLeft { get; private set; }
+        public bool Switching => PendingWorld != NoWorld;
         public bool Started => EnemyId != 0;
         public PartyEventQueue Events { get; } = new PartyEventQueue();
         public int Capacity => _rules.MaxMembers;
@@ -295,12 +302,60 @@ namespace Game.Core.Party
             return true;
         }
 
+        public bool ProposeWorld(PartyWorld world, long windowId)
+        {
+            if (!Started || Switching || (world == World && windowId == WindowId) || (world == PartyWorld.Home) != (windowId == 0))
+                return false;
+            PendingWorld = (byte)world;
+            PendingWindowId = windowId;
+            SwitchTicksLeft = System.Math.Max(1, Ticks(_rules.WorldSwitchSeconds));
+            Events.Add(new PartyEvent(PartyEventKind.WorldPending, Tick, EnemyId, EnemyKind));
+            return true;
+        }
+
+        public bool CancelWorld()
+        {
+            if (!Switching)
+                return false;
+            ClearPending();
+            Events.Add(new PartyEvent(PartyEventKind.WorldCancelled, Tick, EnemyId, EnemyKind));
+            return true;
+        }
+
+        public void SwitchWorld(PartyWorld world, long windowId)
+        {
+            ClearPending();
+            World = world;
+            WindowId = windowId;
+            KillsOnStage = 0;
+            Farming = false;
+            FarmKills = 0;
+            _previousEnemyId = 0;
+            System.Array.Clear(_effects, 0, _effects.Length);
+            System.Array.Clear(_recent, 0, _recent.Length);
+            Events.Add(new PartyEvent(PartyEventKind.WorldChanged, Tick, EnemyId, EnemyKind));
+            if (Started)
+                Spawn(PartyEnemyKind.Normal);
+        }
+
+        private void ClearPending()
+        {
+            PendingWorld = NoWorld;
+            PendingWindowId = 0;
+            SwitchTicksLeft = 0;
+        }
+
         public void Advance()
         {
             Tick++;
             _recent[Tick % RecentTicks] = 0;
             TickEffects();
             DropLostFighters();
+            if (Switching && --SwitchTicksLeft <= 0)
+            {
+                SwitchWorld((PartyWorld)PendingWorld, PendingWindowId);
+                return;
+            }
             if (!FightingBoss || !Started)
                 return;
             var rate = BossTimerRate;

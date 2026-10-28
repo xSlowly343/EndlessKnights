@@ -73,9 +73,24 @@ namespace Game.Core.Sim.Rift
             if (_stage.Linked)
                 return RiftEntry.InParty;
             var open = WindowAt(nowUnixMs);
-            if (open == null)
+            return open == null ? RiftEntry.Closed : EnterWindow(open.Value);
+        }
+
+        public RiftEntry EnterPartyWindow(long windowId)
+        {
+            if (Inside && _state.Rift.WindowId == windowId)
+                return RiftEntry.AlreadyInside;
+            if (_state.Dungeons.Inside)
+                return RiftEntry.InDungeon;
+            var open = WindowAt(windowId * 1000);
+            if (open == null || open.Value.Id != windowId)
                 return RiftEntry.Closed;
-            var window = open.Value;
+            Leave();
+            return EnterWindow(open.Value);
+        }
+
+        private RiftEntry EnterWindow(RiftWindow window)
+        {
             var rift = _state.Rift;
             if (rift.WindowId != window.Id)
                 rift.StartWindow(window.Id, window.EndUnixMs);
@@ -103,7 +118,7 @@ namespace Game.Core.Sim.Rift
         public bool CloseIfEnded(long nowUnixMs)
         {
             var rift = _state.Rift;
-            if (rift.WindowId == 0 || nowUnixMs < rift.WindowEndUnixMs || (rift.OtherWorld == null && !rift.Inside))
+            if ((_stage.Linked && rift.Inside) || rift.WindowId == 0 || nowUnixMs < rift.WindowEndUnixMs || (rift.OtherWorld == null && !rift.Inside))
                 return false;
             Leave();
             rift.EndWindow();

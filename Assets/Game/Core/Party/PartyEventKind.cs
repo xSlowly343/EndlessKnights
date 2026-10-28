@@ -6,6 +6,9 @@ namespace Game.Core.Party
         BossStarted,
         EnemyKilled,
         StageCleared,
-        BossFailed
+        BossFailed,
+        WorldPending,
+        WorldCancelled,
+        WorldChanged
     }
 }

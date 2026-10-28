@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 128;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11
 }
 
 class PartyWriter {
@@ -108,12 +108,13 @@ interface HelloMessage { heroClass: number; stage: number; sharePerSecondCap: nu
 interface DamageBatchMessage { sequence: number; enemyId: number; keys: number; mouse: number; skills: number; dot: number; summons: number; hits: number; crits: number; }
 interface CastEffectMessage { effectId: number; onEnemy: boolean; strength: number; seconds: number; timerSlow: number; repeatSeconds: number; }
 interface PresenceMessage { presence: PartyPresence; stage: number; resource: number; }
+interface WorldRequestMessage { world: PartyWorld; cancel: boolean; windowId: number; }
 
 function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
         return PartyMessageKind.None;
     const kind = new DataView(data).getUint8(0);
-    return kind <= PartyMessageKind.PartyReaction ? kind : PartyMessageKind.None;
+    return kind <= PartyMessageKind.WorldRequest ? kind : PartyMessageKind.None;
 }
 
 function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
@@ -151,6 +152,12 @@ function partyDecodeCastEffect(data: ArrayBuffer): CastEffectMessage | null {
 function partyDecodePresence(data: ArrayBuffer): PresenceMessage | null {
     const r = partyOpen(data, PartyMessageKind.Presence);
     const message = { presence: r.byte(), stage: r.long(), resource: r.float() };
+    return r.complete ? message : null;
+}
+
+function partyDecodeWorldRequest(data: ArrayBuffer): WorldRequestMessage | null {
+    const r = partyOpen(data, PartyMessageKind.WorldRequest);
+    const message = { world: r.byte(), cancel: r.bool(), windowId: r.long() };
     return r.complete ? message : null;
 }
 
@@ -210,6 +217,10 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
     for (let slot = 0; slot < PartyMaxSlots; slot++)
         w.float(recent ? recent[slot] || 0 : 0);
     w.float(encounter.fightingBoss ? encounter.bossTimerRate() : 1);
+    w.byte(encounter.world);
+    w.byte(encounter.pendingWorld);
+    w.byte(Math.min(255, encounter.switchTicksLeft));
+    w.long(encounter.windowId);
     return w.bytes();
 }
 

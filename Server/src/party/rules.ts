@@ -6,6 +6,7 @@ interface PartyEncounterRules {
     lateDamageSeconds: number;
     maxEnemyDamageTaken: number;
     minBossTimerRate: number;
+    worldSwitchSeconds: number;
     enemiesPerStage: number;
     bossRetryAfterKills: number;
     bossTimerSeconds: number;
@@ -25,7 +26,9 @@ const PartyMaxRepeatSeconds = 10;
 const PartyRecentTicks = PartyMaxRepeatSeconds * PartyTicksPerSecond + 1;
 
 const enum PartyEnemyKind { Normal = 0, Boss = 1 }
-const enum PartyEventKind { EnemySpawned = 0, BossStarted = 1, EnemyKilled = 2, StageCleared = 3, BossFailed = 4 }
+const enum PartyEventKind { EnemySpawned = 0, BossStarted = 1, EnemyKilled = 2, StageCleared = 3, BossFailed = 4, WorldPending = 5, WorldCancelled = 6, WorldChanged = 7 }
+const enum PartyWorld { Home = 0, Rift = 1 }
+const PartyNoWorld = 255;
 const enum PartyPresence { Fighting = 0, Resting = 1, Peaceful = 2, Offline = 3 }
 
 function partyHpMultiplier(rules: PartyEncounterRules, fighters: number): number {

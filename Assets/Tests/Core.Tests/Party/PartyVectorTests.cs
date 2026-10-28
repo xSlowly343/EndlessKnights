@@ -38,7 +38,8 @@ namespace Game.Core.Tests.Party
                 Disconnects(),
                 RestAndPeace(),
                 Contribution(),
-                Clockmaker()
+                Clockmaker(),
+                Worlds()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -50,6 +51,7 @@ namespace Game.Core.Tests.Party
                    $"    \"lateDamageSeconds\": {N(rules.LateDamageSeconds)},\n" +
                    $"    \"maxEnemyDamageTaken\": {N(rules.MaxEnemyDamageTaken)},\n" +
                    $"    \"minBossTimerRate\": {N(rules.Timer.MinBossRate)},\n" +
+                   $"    \"worldSwitchSeconds\": {N(rules.WorldSwitchSeconds)},\n" +
                    $"    \"minShare\": {N(rules.Contribution.MinShare)},\n" +
                    $"    \"activeInputSeconds\": {N(rules.Contribution.ActiveInputSeconds)},\n" +
                    $"    \"restBankSeconds\": {N(rules.Contribution.RestBankSeconds)},\n" +
@@ -264,6 +266,37 @@ namespace Game.Core.Tests.Party
             r.Hit(0, 50);
             r.Advance(1);
             r.Repeat(0, 7);
+            return r.ToJson();
+        }
+
+        private static string Worlds()
+        {
+            var r = Recorder("the party moves to the rift and back", 8080);
+            r.ProposeWorld(PartyWorld.Rift, 1761652800);
+            r.Join(61);
+            r.Join(62);
+            r.ProposeWorld(PartyWorld.Home, 0);
+            r.ProposeWorld(PartyWorld.Rift, 0);
+            r.ProposeWorld(PartyWorld.Home, 5);
+            r.Hit(0, 0.4);
+            r.Effect(90, 0.2, 30);
+            r.ProposeWorld(PartyWorld.Rift, 1761652800);
+            r.ProposeWorld(PartyWorld.Rift, 1761998400);
+            r.Advance(50);
+            r.CancelWorld();
+            r.CancelWorld();
+            r.Advance(30);
+            r.ProposeWorld(PartyWorld.Rift, 1761652800);
+            r.Hit(1, 0.3);
+            r.Advance(99);
+            r.Advance(1);
+            r.Hit(0, 0.2);
+            r.Damage(1, r.Encounter.EnemyId - 1, 0.3);
+            r.ProposeWorld(PartyWorld.Rift, 1761652800);
+            while (!r.Encounter.FightingBoss)
+                r.Hit(0, 1);
+            r.SwitchWorld(PartyWorld.Home, 0);
+            r.Advance(1);
             return r.ToJson();
         }
 
