@@ -24,6 +24,7 @@ namespace Game.Core.Ui
         public bool IsOpen(PanelSection section) => _open[(int)section];
         public bool HasDot(PanelSection section) => _dots[(int)section];
         public long UnlockStage(PanelSection section) => _unlocks.StageFor(section);
+        public int UnreadMail { get; set; }
 
         public bool HasDotAmong(IReadOnlyList<PanelSection> sections)
         {
@@ -57,9 +58,10 @@ namespace Game.Core.Ui
             return changed;
         }
 
-        private static bool NeedsAttention(PanelSection section, GameState state, AscendancyCatalog ascendancy) => section switch
+        private bool NeedsAttention(PanelSection section, GameState state, AscendancyCatalog ascendancy) => section switch
         {
             PanelSection.Tree => state.Tree.PointsLeft > 0 || state.Ascendancy.PointsLeft(ascendancy) > 0,
+            PanelSection.Mail => UnreadMail > 0,
             _ => false,
         };
     }

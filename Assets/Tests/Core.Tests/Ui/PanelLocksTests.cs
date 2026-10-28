@@ -122,6 +122,21 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void UnreadMailPutsADotOnTheMail()
+        {
+            var marks = new PanelMarks(PanelUnlocks.Load(Valid));
+            var state = new GameState();
+            marks.Refresh(state, TestWorld.Data.Ascendancy);
+            Assert.That(marks.HasDot(PanelSection.Mail), Is.False);
+
+            marks.UnreadMail = 1;
+
+            Assert.That(marks.Refresh(state, TestWorld.Data.Ascendancy), Is.True);
+            Assert.That(marks.HasDot(PanelSection.Mail), Is.True);
+            Assert.That(marks.IsOpen(PanelSection.Mail), Is.True, "mail is open from the first stage");
+        }
+
+        [Test]
         public void NoDotWithoutFreePoints()
         {
             var marks = new PanelMarks(PanelUnlocks.Load(Valid));

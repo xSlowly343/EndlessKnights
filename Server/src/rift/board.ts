@@ -13,21 +13,8 @@ interface RiftBoard {
     settled: boolean;
 }
 
-interface RiftRewardRecord {
-    riftId: number;
-    place: number;
-    of: number;
-    depth: number;
-    title: string;
-    shards: number;
-    uncutGems: number;
-    ingots: number;
-    claimed: boolean;
-}
-
 const RiftBoardCollection = "rift_board";
 const RiftBoardIndexKey = "pending";
-const RiftRewardsCollection = "rift_rewards";
 const RiftBoardWriteAttempts = 3;
 
 function riftBoardKey(riftId: number): string {
@@ -121,17 +108,11 @@ function riftSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, riftId: numb
     for (let i = 0; i < ranking.length; i++) {
         const entry = ranking[i];
         const tier = riftRewardFor(i + 1);
-        for (const userId of entry.members) {
-            const reward: RiftRewardRecord = {
-                riftId: riftId, place: i + 1, of: ranking.length, depth: entry.cleared + 1, title: entry.title,
-                shards: tier.shards, uncutGems: tier.uncutGems, ingots: tier.ingots, claimed: false
-            };
-            try {
-                nk.storageWrite([{ collection: RiftRewardsCollection, key: riftBoardKey(riftId), userId: userId, value: reward as any, version: "*", permissionRead: 1, permissionWrite: 0 }]);
-            } catch (error) {
-                continue;
-            }
-        }
+        for (const userId of entry.members)
+            mailSend(nk, userId, {
+                id: "rift-" + riftId, kind: "rift", at: nowUnixMs, place: i + 1, of: ranking.length, depth: entry.cleared + 1, title: entry.title,
+                reward: { shards: tier.shards, uncutGems: tier.uncutGems, ingots: tier.ingots }, claimed: false, claimedAt: 0
+            });
     }
     board.settled = true;
     try {
@@ -185,28 +166,4 @@ function riftBoardRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkru
         throw new Error("rift not found");
     const group = partyGroupOfUser(nk, partyCaller(ctx));
     return JSON.stringify(riftBoardView(objects[0].value as RiftBoard, group ? group.id : ""));
-}
-
-function riftRewardsRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
-    const userId = partyCaller(ctx);
-    riftSettleDue(nk, logger, Date.now());
-    const claimed: RiftRewardRecord[] = [];
-    let cursor: string | undefined = undefined;
-    do {
-        const page: { objects?: nkruntime.StorageObject[]; cursor?: string } = nk.storageList(userId, RiftRewardsCollection, 100, cursor);
-        for (const object of page.objects || []) {
-            const reward = object.value as RiftRewardRecord;
-            if (reward.claimed)
-                continue;
-            reward.claimed = true;
-            try {
-                nk.storageWrite([{ collection: RiftRewardsCollection, key: object.key, userId: userId, value: reward as any, version: object.version, permissionRead: 1, permissionWrite: 0 }]);
-                claimed.push(reward);
-            } catch (error) {
-                continue;
-            }
-        }
-        cursor = page.cursor || undefined;
-    } while (cursor);
-    return JSON.stringify({ rewards: claimed });
 }

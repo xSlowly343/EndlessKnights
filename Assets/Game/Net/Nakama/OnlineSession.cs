@@ -48,6 +48,7 @@ namespace Game.Net.Nakama
         }
 
         public PartyDirectory Directory => new PartyDirectory(_client, _session);
+        public MailDirectory Mail => new MailDirectory(_client, _session);
 
         public Task<PartyView> CreateAsync(string access, string? language, CancellationToken cancel = default) =>
             Enter(directory => directory.CreateAsync(access, null, language, null, cancel), cancel);

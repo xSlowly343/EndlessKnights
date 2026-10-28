@@ -52,26 +52,4 @@ namespace Game.Net.Nakama
         public int Members { get; }
         public bool Yours { get; }
     }
-
-    public sealed class RiftRewardView
-    {
-        public RiftRewardView(JsonValue json)
-        {
-            RiftId = (long)NakamaJson.Number(json, "riftId");
-            Place = (int)NakamaJson.Number(json, "place");
-            Of = (int)NakamaJson.Number(json, "of");
-            Depth = (long)NakamaJson.Number(json, "depth");
-            Shards = (long)NakamaJson.Number(json, "shards");
-            UncutGems = (int)NakamaJson.Number(json, "uncutGems");
-            Ingots = (long)NakamaJson.Number(json, "ingots");
-        }
-
-        public long RiftId { get; }
-        public int Place { get; }
-        public int Of { get; }
-        public long Depth { get; }
-        public long Shards { get; }
-        public int UncutGems { get; }
-        public long Ingots { get; }
-    }
 }

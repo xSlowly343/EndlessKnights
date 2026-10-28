@@ -15,7 +15,7 @@ namespace Game.Presentation.Ui
     {
         public const int MaxSubTabs = 4;
         public const int PartySearchSubTab = 3;
-        public const int MaxMoreRows = 5;
+        public const int MaxMoreRows = 6;
         public const int MaxReportLines = 7;
         public const int TabCount = PanelNavigator.BarSize + 1;
         public const float TweenSeconds = 0.15f;
@@ -81,6 +81,7 @@ namespace Game.Presentation.Ui
         private HeroPanel _heroPanel = null!;
         private ItemsPanel _itemsPanel = null!;
         private StatsPanel _statsPanel = null!;
+        private MailPanel _mailPanel = null!;
         private MasterPanel _masterPanel = null!;
         private PartyPanel _partyPanel = null!;
         private PartySearchPanel _partySearchPanel = null!;
@@ -162,6 +163,7 @@ namespace Game.Presentation.Ui
         public HeroPanel Hero => _heroPanel;
         public ItemsPanel Items => _itemsPanel;
         public StatsPanel Stats => _statsPanel;
+        public MailPanel Mail => _mailPanel;
         public MasterPanel Master => _masterPanel;
         public PartyPanel Party => _partyPanel;
         public PartySearchPanel PartySearch => _partySearchPanel;
@@ -304,7 +306,7 @@ namespace Game.Presentation.Ui
                 return TryClickConsent(worldPoint);
             if (_showingCard)
                 return TryClickReport(worldPoint);
-            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _masterPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _partySearchPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
+            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _masterPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _partySearchPanel.TryClick(worldPoint) || _mailPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
                 return true;
             if (_preset.Contains(worldPoint))
             {
@@ -634,9 +636,11 @@ namespace Game.Presentation.Ui
             _partySearchPanel.Show(partySearchShown, _shownFrame.ContentPx);
             var statsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Stats;
             _statsPanel.Show(statsShown);
+            var mailShown = !navigator.ShowingMore && navigator.Active == PanelSection.Mail;
+            _mailPanel.Show(mailShown, _shownFrame.ContentPx);
             var settingsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Settings;
             _settingsPanel.Show(settingsShown, _shownFrame.HasSubTabs ? navigator.SubTab : 0, _shownFrame.ContentPx);
-            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !partySearchShown && !statsShown && !settingsShown;
+            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !partySearchShown && !statsShown && !mailShown && !settingsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -813,6 +817,7 @@ namespace Game.Presentation.Ui
             _heroPanel.TreeRequested += () => TabPressed?.Invoke(PanelSection.Tree);
             _itemsPanel = ItemsPanel.Create(content, _theme);
             _statsPanel = StatsPanel.Create(content, _theme);
+            _mailPanel = MailPanel.Create(content, _theme);
             _masterPanel = MasterPanel.Create(content, _theme);
             _partyPanel = PartyPanel.Create(content, _theme);
             _partyPanel.NoticeRequested += ShowNotice;

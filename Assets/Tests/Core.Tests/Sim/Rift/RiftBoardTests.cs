@@ -62,7 +62,6 @@ namespace Game.Core.Tests.Sim.Rift
 
             Assert.That(RiftBoardText.Row(2, "night_shift", 31, true), Does.StartWith("2. ").And.EndWith("· этап 31 · ваш отряд"));
             Assert.That(RiftBoardText.Own(2, 14, 31), Is.EqualTo("Ваш отряд: 2 место из 14, этап 31"));
-            Assert.That(RiftBoardText.Reward(2, 14, 31, new RiftReward(200, 0, 4)), Is.EqualTo("Итоги Разлома: 2 место из 14, этап 31 · Осколки +200 · Слитки +4"));
         }
     }
 }
