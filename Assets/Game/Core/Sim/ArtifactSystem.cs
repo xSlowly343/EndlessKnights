@@ -132,10 +132,18 @@ namespace Game.Core.Sim
                     foreach (var modifier in artifact.PerArtifact)
                         modifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * level * owned.Count * scale, modifier.Tags));
                 }
-                modifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, _catalog.AllDamagePerLevel * level * (1 + allDamageBoost)));
+                modifiers.Add(General(level, allDamageBoost));
             }
             _layer.Set(modifiers);
             Rebuilt?.Invoke();
+        }
+
+        private Modifier General(int level, double boost)
+        {
+            var perLevel = _catalog.AllDamagePerLevel * (1 + boost);
+            return _catalog.AllDamageCompounds
+                ? new Modifier(CombatStats.Damage, ModifierKind.More, System.Math.Pow(1 + perLevel, level) - 1)
+                : new Modifier(CombatStats.Damage, ModifierKind.Increased, perLevel * level);
         }
 
         private double[] TypeBoosts(Dictionary<string, int> owned, out double allDamageBoost)

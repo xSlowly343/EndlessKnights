@@ -15,7 +15,11 @@ namespace Game.Core.Sim.Headless
         private readonly NodeScore _score;
         private readonly string _attribute;
         private readonly double _stuckSecondsBeforePrestige;
+        private const int BossFailsBeforePrestige = 1;
+        private const double SlowStageSeconds = 60;
         private double _stuckSeconds;
+        private double _stageSeconds;
+        private long _stage;
 
         public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige)
         {
@@ -298,10 +302,26 @@ namespace Game.Core.Sim.Headless
         {
             var state = _loop.State;
             _stuckSeconds = state.Farming && state.BossFailsInARow > 0 ? _stuckSeconds + seconds : 0;
-            if (_stuckSeconds < _stuckSecondsBeforePrestige || !_loop.Prestige.Available || _loop.Prestige.EchoGain.Sign <= 0)
+            if (state.Stage != _stage)
+            {
+                _stage = state.Stage;
+                _stageSeconds = 0;
+            }
+            else if (!state.FightingBoss)
+            {
+                _stageSeconds += seconds;
+            }
+            var bossFailed = state.BossFailsInARow >= BossFailsBeforePrestige;
+            var slowStage = _stageSeconds > SlowStageSeconds;
+            if (!bossFailed && !slowStage && _stuckSeconds < _stuckSecondsBeforePrestige)
+                return;
+            if (!_loop.Prestige.Available || _loop.Prestige.EchoGain.Sign <= 0)
                 return;
             if (_loop.Prestige.TryPrestige())
+            {
                 _stuckSeconds = 0;
+                _stageSeconds = 0;
+            }
         }
 
         private void SpendEcho()
