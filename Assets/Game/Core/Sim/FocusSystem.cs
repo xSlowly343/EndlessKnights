@@ -27,7 +27,7 @@ namespace Game.Core.Sim
             TrackIdle(input);
             TrackRhythm(input.RhythmCv);
 
-            if (_state.IdleTicks > SecondsToTicks(ResetAfterIdleSeconds))
+            if (_state.IdleTicks > SecondsToTicks(ResetAfterIdleSeconds) && _hero.Value(CombatStats.FocusHold, 0) <= 0)
                 _state.Focus = _rules.Min;
             else
                 _state.Focus = Clamp(_state.Focus + _rules.PerEvent * _hero.Value(CombatStats.FocusGain, 1) * Events(input));

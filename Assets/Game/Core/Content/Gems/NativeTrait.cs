@@ -30,6 +30,9 @@ namespace Game.Core.Content.Gems
         public double ResourcePerPoisonTick { get; set; }
         public double MouseEverySeconds { get; set; }
         public double ResourceOnEnd { get; set; }
+        public double WeakenedGold { get; set; }
+        public bool BestOfTwo { get; set; }
+        public int QueueTargets { get; set; }
         public double ResetWithinSeconds { get; set; }
         public HitInput? RepeatInput { get; set; }
         public double ExtraHitPerMousePx { get; set; }

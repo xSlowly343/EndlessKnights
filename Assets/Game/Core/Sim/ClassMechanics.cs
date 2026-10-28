@@ -41,6 +41,8 @@ namespace Game.Core.Sim
                 return;
             if (mousePx > 0 && _state.Class == HeroClass.Ronin)
                 return;
+            if (_hero.Value(CombatStats.ComboHold, 0) > 0)
+                return;
             _state.ComboIdleTicks++;
             var timeout = _rules.ComboTimeoutSeconds + _hero.Value(CombatStats.ComboTimeoutSeconds, 0, StatTags.Keyboard);
             if (_state.ComboIdleTicks > System.Math.Round(timeout * GameLoop.TicksPerSecond))

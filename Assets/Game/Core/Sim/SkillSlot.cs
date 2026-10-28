@@ -29,6 +29,7 @@ namespace Game.Core.Sim
         public double TriggerProgress { get; set; }
         public int HitCount { get; set; }
         public int InputKinds { get; set; }
+        public int PotionChoice { get; set; } = -1;
         public long LastKeyTick { get; set; } = -1;
         public long FlowStartTick { get; set; } = -1;
         public int HitsLeft { get; set; }
