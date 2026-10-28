@@ -10,7 +10,7 @@ namespace Game.Core.Party
 
         private PartyRules(int maxMembers, double hpPerExtraPlayer, double restAfterSeconds, double disconnectGraceSeconds, double rejoinWindowSeconds,
             double lateDamageSeconds, double damageBatchSeconds, double stateBroadcastSeconds, double presenceSeconds, double silenceSeconds, double maxEnemyDamageTaken, PartyBuffRules buffs, int maxMessagesPerSecond,
-            PartyContributionRules contribution, PartyCapRules caps, PartySearchRules search, PartyReactionRules reactions, PartyTimerRules timer, double worldSwitchSeconds)
+            PartyContributionRules contribution, PartyCapRules caps, PartySearchRules search, PartyReactionRules reactions, PartyTimerRules timer, double worldSwitchSeconds, PartyGhostRules ghost)
         {
             MaxMembers = maxMembers;
             HpPerExtraPlayer = hpPerExtraPlayer;
@@ -31,6 +31,7 @@ namespace Game.Core.Party
             Reactions = reactions;
             Timer = timer;
             WorldSwitchSeconds = worldSwitchSeconds;
+            Ghost = ghost;
         }
 
         public int MaxMembers { get; }
@@ -52,6 +53,7 @@ namespace Game.Core.Party
         public PartyReactionRules Reactions { get; }
         public PartyTimerRules Timer { get; }
         public double WorldSwitchSeconds { get; }
+        public PartyGhostRules Ghost { get; }
 
         public double HpMultiplier(int fighters) => System.Math.Max(1, 1 + HpPerExtraPlayer * (System.Math.Max(1, fighters) - 1));
 
@@ -95,7 +97,8 @@ namespace Game.Core.Party
                 PartySearchRules.Read(root.Field("search")),
                 PartyReactionRules.Read(root.Field("reactions")),
                 PartyTimerRules.Read(root.Field("timer")),
-                root.Field("worldSwitchSeconds").AsNumber(1, 25));
+                root.Field("worldSwitchSeconds").AsNumber(1, 25),
+                PartyGhostRules.Read(root.Field("ghost")));
         }
     }
 }

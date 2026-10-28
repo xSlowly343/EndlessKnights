@@ -25,6 +25,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("rift_window", riftWindowRpc);
     initializer.registerRpc("rift_board", riftBoardRpc);
     initializer.registerRpc("mail_list", mailListRpc);
+    initializer.registerRpc("ghost_upload", ghostUploadRpc);
+    initializer.registerRpc("ghost_pick", ghostPickRpc);
     initializer.registerRpc("mail_claim", mailClaimRpc);
     initializer.registerRpc("telemetry_push", telemetryPushRpc);
     initializer.registerRpc("error_report_push", errorReportPushRpc);
