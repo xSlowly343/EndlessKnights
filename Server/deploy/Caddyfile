@@ -3,5 +3,23 @@
 }
 
 {$DOMAIN} {
-	reverse_proxy nakama:7350
+	handle /intake/telemetry {
+		request_body {
+			max_size 16KB
+		}
+		rewrite * /v2/rpc/telemetry_push?http_key={$NAKAMA_HTTP_KEY}&unwrap
+		reverse_proxy nakama:7350
+	}
+
+	handle /intake/errors {
+		request_body {
+			max_size 64KB
+		}
+		rewrite * /v2/rpc/error_report_push?http_key={$NAKAMA_HTTP_KEY}&unwrap
+		reverse_proxy nakama:7350
+	}
+
+	handle {
+		reverse_proxy nakama:7350
+	}
 }

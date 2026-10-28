@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "telemetry": [
+    {
+  "character": "voodoo",
+  "clicksPerMinute": 21.25,
+  "closed": true,
+  "daysSinceFirst": 7,
+  "firstPrestigeSeconds": 25200,
+  "game": "0.9.3",
+  "installId": "0123456789abcdef0123456789abcdef",
+  "keysPerMinute": 182.5,
+  "mouseMeters": 140.75,
+  "prestiges": 2,
+  "recordStage": 412,
+  "returnDays": [
+    0,
+    1,
+    3,
+    7
+  ],
+  "schema": 1,
+  "session": 4,
+  "sessionSeconds": 5400,
+  "totalPlaySeconds": 36000
+},
+    {
+  "character": "viking",
+  "clicksPerMinute": 0,
+  "closed": false,
+  "daysSinceFirst": 0,
+  "firstPrestigeSeconds": null,
+  "game": "0.9.3",
+  "installId": "fedcba9876543210fedcba9876543210",
+  "keysPerMinute": 95,
+  "mouseMeters": 0,
+  "prestiges": 0,
+  "recordStage": 1,
+  "returnDays": [
+    0
+  ],
+  "schema": 1,
+  "session": 1,
+  "sessionSeconds": 600,
+  "totalPlaySeconds": 600
+}
+  ],
+  "errors": [
+    {
+  "createdUtc": "2026-10-28T09:15:00Z",
+  "game": "0.9.3",
+  "kind": "crash",
+  "lines": [
+    "[12:00:01] loaded save from %USER%",
+    "[12:00:05] party linked"
+  ],
+  "message": "NullReferenceException: Object reference not set to an instance of an object",
+  "os": "Windows 11 (10.0.22631) 64bit",
+  "schema": 1,
+  "stackTrace": "Game.Presentation.Ui.PartyPanel.Refresh (Game.Core.Sim.GameLoop loop)\nGame.Bootstrap.GameStartup.Update ()"
+}
+  ]
+}

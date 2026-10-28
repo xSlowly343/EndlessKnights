@@ -26,6 +26,7 @@ declare namespace nkruntime {
         storageRead(keys: StorageReadRequest[]): StorageObject[];
         storageWrite(objects: StorageWriteRequest[]): any;
         storageDelete(keys: StorageDeleteRequest[]): void;
+        storageList(userId: string | undefined, collection: string, limit?: number, cursor?: string): { objects?: StorageObject[]; cursor?: string };
         uuidv4(): string;
         usersGetId(userIds: string[]): User[];
         groupCreate(userId: string, name: string, creatorId?: string | null, lang?: string | null, description?: string | null, avatarURL?: string | null,

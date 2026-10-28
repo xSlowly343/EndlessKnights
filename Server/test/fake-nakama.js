@@ -119,6 +119,14 @@ class FakeNakama {
     }
   }
 
+  storageList(userId, collection, limit, cursor) {
+    const all = [...this.storage.values()].filter((object) => object.collection === collection && (userId === undefined || object.userId === userId))
+      .sort((a, b) => (a.key < b.key ? -1 : 1));
+    const start = cursor ? Number(cursor) : 0;
+    const page = all.slice(start, start + (limit || 100)).map((object) => JSON.parse(JSON.stringify(object)));
+    return { objects: page, cursor: start + page.length < all.length ? String(start + page.length) : "" };
+  }
+
   storageDelete(keys) {
     for (const key of keys) this.storage.delete(this.key(key));
   }

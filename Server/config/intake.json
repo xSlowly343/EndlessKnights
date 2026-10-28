@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "telemetry": { "retentionDays": 400, "maxPacketsPerDay": 50000 },
+  "errors": { "retentionDays": 90, "maxReportsPerDay": 5000, "maxMessageChars": 2000, "maxStackChars": 16000, "maxLines": 100, "maxLineChars": 500 },
+  "summary": { "maxObjects": 200000, "retentionMarks": [1, 7, 30] }
+}

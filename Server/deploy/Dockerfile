@@ -10,6 +10,7 @@ COPY Assets/StreamingAssets/Data/party.json Assets/StreamingAssets/Data/stages.j
 COPY Server/package.json Server/tsconfig.json Server/
 COPY Server/src Server/src
 COPY Server/tools Server/tools
+COPY Server/config Server/config
 COPY Server/test Server/test
 COPY Server/test-vectors Server/test-vectors
 WORKDIR /repo/Server

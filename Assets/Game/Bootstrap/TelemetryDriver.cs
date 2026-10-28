@@ -23,7 +23,7 @@ namespace Game.Bootstrap
             var driver = host.AddComponent<TelemetryDriver>();
             driver._loop = loop;
             driver._settings = settings;
-            driver._service = new TelemetryService(new TelemetryStore(SaveDriver.SaveDirectory), NoTelemetrySink.Instance, Application.version);
+            driver._service = new TelemetryService(new TelemetryStore(SaveDriver.SaveDirectory), NetworkFile.TelemetrySink(NetworkFile.Load()), Application.version);
             driver._service.Problem += problem => Debug.LogWarning("Telemetry: " + problem);
             driver.ApplyConsent();
             settingsPanel.Changed += driver.OnSettingChanged;

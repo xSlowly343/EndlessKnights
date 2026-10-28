@@ -70,6 +70,7 @@ services:
     environment:
       DOMAIN: ${DOMAIN:?}
       ACME_EMAIL: ${ACME_EMAIL:?}
+      NAKAMA_HTTP_KEY: ${NAKAMA_HTTP_KEY:?}
     ports:
       - "80:80"
       - "443:443"
