@@ -33,6 +33,29 @@ namespace Game.Platform.Tests
         public void TearDown() => Object.DestroyImmediate(_battle.gameObject);
 
         [Test]
+        public void AlliesStandBehindTheHeroWithTheirReaction()
+        {
+            Assert.That(_battle.Allies.Shown, Is.Zero);
+            var allies = new[]
+            {
+                new Game.Core.Ui.StripAlly(0, 1, Game.Core.Party.PartyPresence.Fighting, string.Empty),
+                new Game.Core.Ui.StripAlly(3, 2, Game.Core.Party.PartyPresence.Offline, "Привет!"),
+                default(Game.Core.Ui.StripAlly),
+            };
+
+            _battle.Allies.Show(allies, 2);
+
+            Assert.That(_battle.Allies.Shown, Is.EqualTo(2));
+            Assert.That(_battle.Allies.ReactionShown(0), Is.Empty);
+            Assert.That(_battle.Allies.ReactionShown(1), Is.EqualTo("Привет!"));
+
+            _battle.Allies.Show(allies, 0);
+
+            Assert.That(_battle.Allies.Shown, Is.Zero);
+            Assert.That(_battle.Allies.ReactionShown(1), Is.Empty);
+        }
+
+        [Test]
         public void StateLineShowsStageHealthAndGold()
         {
             _battle.ShowState(37, 2, 4, 0.5, 0.62, 0, 1, false, 62.7, 100, BigNumber.FromDouble(12400));

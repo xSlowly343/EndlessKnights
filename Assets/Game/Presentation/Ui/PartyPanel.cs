@@ -32,14 +32,6 @@ namespace Game.Presentation.Ui
         private const float MenuClosePx = 26f;
         private const float MenuInsetPx = 8f;
 
-        private static readonly Color[] AllyColors =
-        {
-            new Color32(0x3F, 0x6F, 0xD1, 0xFF),
-            new Color32(0x4F, 0xC2, 0x77, 0xFF),
-            new Color32(0xB0, 0x7C, 0xFF, 0xFF),
-            new Color32(0xFF, 0x9A, 0x3C, 0xFF),
-        };
-
         private static readonly Color FightingChip = new Color32(0x1F, 0x4A, 0x33, 0xFF);
         private static readonly Color FightingText = new Color32(0xBF, 0xF2, 0xD2, 0xFF);
         private static readonly Color RestingChip = new Color32(0x4A, 0x3A, 0x16, 0xFF);
@@ -435,7 +427,7 @@ namespace Game.Presentation.Ui
                 var back = UiElements.Fill("Member " + slot, parent, theme.Card, RadiusPx);
                 var rect = back.rectTransform;
                 var middleLeft = new Vector2(0f, 0.5f);
-                var color = AllyColors[slot % AllyColors.Length];
+                var color = PartyColors.Of(slot);
                 var avatar = UiElements.Dot("Avatar", rect, color);
                 UiElements.Anchor(avatar.rectTransform, middleLeft, new Vector2(PaddingPx, 0f), Vector2.one * AvatarPx);
                 var textLeft = 2f * PaddingPx + AvatarPx;
@@ -457,7 +449,7 @@ namespace Game.Presentation.Ui
                 Back.gameObject.SetActive(!row.IsFree);
                 if (row.IsFree)
                     return;
-                _avatar.color = row.IsSelf ? AllyColors[0] : _color;
+                _avatar.color = row.IsSelf ? PartyColors.Of(0) : _color;
                 _name.text = row.Name;
                 _name.color = row.IsSelf ? theme.Text : Color.Lerp(_color, Color.white, 0.45f);
                 _details.text = row.Reaction.Length > 0 ? "<color=" + ReactionColor + ">«" + row.Reaction + "»</color>  " + row.Details : row.Details;

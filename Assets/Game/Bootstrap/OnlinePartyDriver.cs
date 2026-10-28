@@ -8,6 +8,7 @@ using Game.Core.Settings;
 using Game.Core.Sim;
 using Game.Core.Ui;
 using Game.Net.Nakama;
+using Game.Presentation.Battle;
 using Game.Presentation.Ui;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace Game.Bootstrap
     {
         private const float KeepAliveSeconds = 10f;
         private const float SearchRefreshSeconds = 30f;
+        private const float AlliesRefreshSeconds = 0.1f;
 
         private readonly ConcurrentQueue<Action> _mainThread = new ConcurrentQueue<Action>();
         private GameLoop _loop = null!;
@@ -37,11 +39,16 @@ namespace Game.Bootstrap
         private float _sinceSearch;
         private NotificationDriver? _notifications;
         private readonly int[] _heardReactions = new int[PartyRules.MaxSlots];
+        private readonly StripAlly[] _allies = new StripAlly[StripAllies.MaxShown];
+        private BattleView? _battle;
+        private float _sinceAllies;
 
-        public static OnlinePartyDriver Attach(GameObject host, GameLoop loop, GameData data, PanelCanvas panels, GameSettings settings, NotificationDriver? notifications)
+        public static OnlinePartyDriver Attach(GameObject host, GameLoop loop, GameData data, PanelCanvas panels, GameSettings settings, NotificationDriver? notifications,
+            BattleView? battle)
         {
             var driver = host.AddComponent<OnlinePartyDriver>();
             driver._notifications = notifications;
+            driver._battle = battle;
             driver._loop = loop;
             driver._data = data;
             driver._panels = panels;
@@ -101,6 +108,7 @@ namespace Game.Bootstrap
                 return;
             }
             WatchReactions();
+            ShowAllies();
             if (_session.MatchGeneration != _matchGeneration)
             {
                 _matchGeneration = _session.MatchGeneration;
@@ -133,6 +141,17 @@ namespace Game.Bootstrap
             }
             if (!_party.SendReaction(reaction))
                 _panels.ShowNotice(PartyReactions.Wait(_data.Party.Reactions));
+        }
+
+        private void ShowAllies()
+        {
+            if (_battle == null)
+                return;
+            _sinceAllies += Time.unscaledDeltaTime;
+            if (_sinceAllies < AlliesRefreshSeconds)
+                return;
+            _sinceAllies = 0f;
+            _battle.Allies.Show(_allies, StripAllies.Fill(_party!, _allies));
         }
 
         private void WatchReactions()
