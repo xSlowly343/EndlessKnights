@@ -109,6 +109,23 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void CompoundingGeneralBonusGrowsAsAPowerOfTheLevel()
+        {
+            var json = Game.Core.Tests.Content.TestData.ReadGameDataFile(ArtifactCatalog.FileName)
+                .Replace("\"allDamagePerLevel\": 0.02,", "\"allDamagePerLevel\": 0.02, \"allDamageCompounds\": true,");
+            var catalog = ArtifactCatalog.Load(json);
+            var state = TestWorld.Classless(new GameState(3) { Class = HeroClass.Viking });
+            state.Artifacts["hourglass"] = 10;
+            state.Artifacts["anchor"] = 5;
+            var hero = new StatSheet();
+            var system = new ArtifactSystem(catalog, TestWorld.Data.Rift, state, hero);
+
+            Assert.That(catalog.AllDamageCompounds, Is.True);
+            Assert.That(hero.Value(CombatStats.Damage, 1), Is.EqualTo(System.Math.Pow(1.02, 15)).Within(1e-9));
+            Assert.That(system.Modifiers.Count(m => m.Kind == ModifierKind.More), Is.EqualTo(2));
+        }
+
+        [Test]
         public void SkyBladeRaisesTheGeneralBonusOfEveryArtifact()
         {
             var plain = With(("hourglass", 10));

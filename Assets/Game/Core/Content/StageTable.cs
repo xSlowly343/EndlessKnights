@@ -17,6 +17,9 @@ namespace Game.Core.Content
         private readonly double _bossGoldMultiplier;
         private readonly string[] _biomes;
         private readonly WaveRules _waves;
+        private (long From, double Log10Rate)[] _hpSteps = System.Array.Empty<(long, double)>();
+        private bool _wallsOnTop;
+        private (long From, double Log10Rate)[] _goldSteps = System.Array.Empty<(long, double)>();
 
         private StageTable(ExponentialCurve enemyHp, ExponentialCurve gold, int wallPeriod, int wallZoneLength, double wallRate,
             WaveRules waves, double bossHpMultiplier, double bossTimerSeconds, double bossTimerMaxSeconds, double bossGoldMultiplier, int bossRetryAfterKills, int biomeLength, string[] biomes, BossHintRules bossHint)
@@ -82,8 +85,9 @@ namespace Game.Core.Content
                 throw wall.Field("zoneLength").Error($"must be shorter than period ({period})");
 
             var enemyHp = ExponentialCurve.Read(root.Field("enemyHp"));
-            var wallRate = wall.Field("rate").AsNumber(1.0, 100.0);
-            if (wallRate < enemyHp.Rate)
+            var wallExtra = wall.HasField("extra") ? wall.Field("extra").AsNumber(1.0, 100.0) : 0;
+            var wallRate = wallExtra > 0 ? wallExtra : wall.Field("rate").AsNumber(1.0, 100.0);
+            if (wallExtra <= 0 && wallRate < enemyHp.Rate)
                 throw wall.Field("rate").Error("must not be lower than enemyHp.rate, otherwise the wall makes enemies weaker");
 
             var boss = root.Field("boss");
@@ -103,9 +107,12 @@ namespace Game.Core.Content
                 foreach (var item in root.Field("gates").Items())
                     gates.Add(StageGate.Read(item));
             }
+            var hpSteps = ReadSteps(root.Field("enemyHp"), enemyHp);
+            var goldCurve = ExponentialCurve.Read(root.Field("gold"));
+            var goldSteps = ReadSteps(root.Field("gold"), goldCurve);
             return new StageTable(
                 enemyHp,
-                ExponentialCurve.Read(root.Field("gold")),
+                goldCurve,
                 period,
                 zoneLength,
                 wallRate,
@@ -119,16 +126,37 @@ namespace Game.Core.Content
                 biomes.ToArray(),
                 BossHintRules.Read(root.Field("bossHint")))
             {
-                Gates = gates.ToArray()
+                Gates = gates.ToArray(),
+                _wallsOnTop = wallExtra > 0,
+                _hpSteps = hpSteps,
+                _goldSteps = goldSteps
             };
+        }
+
+        private static (long, double)[] ReadSteps(ContentNode node, ExponentialCurve curve)
+        {
+            var steps = new List<(long, double)> { (1, System.Math.Log10(curve.Rate)) };
+            if (!node.HasField("steps"))
+                return steps.ToArray();
+            foreach (var item in node.Field("steps").Items())
+            {
+                var from = item.Field("from").AsLong(2);
+                if (from <= steps[steps.Count - 1].Item1)
+                    throw item.Field("from").Error("steps must go up by stage");
+                steps.Add((from, System.Math.Log10(item.Field("rate").AsNumber(1.0, 100.0))));
+            }
+            return steps.ToArray();
         }
 
         public StageTable ForWorld(double hpMultiplier, int wallPeriod, int wallZoneLength, double wallRate, double bossTimerSeconds) =>
             new StageTable(_enemyHp.Scaled(hpMultiplier), _gold, wallPeriod, wallZoneLength, System.Math.Max(wallRate, _enemyHp.Rate), _waves, _bossHpMultiplier,
                 bossTimerSeconds, bossTimerSeconds, _bossGoldMultiplier, BossRetryAfterKills, BiomeLength, _biomes, BossHint)
             {
-                Gates = Gates
+                Gates = Gates,
+                _hpSteps = _hpSteps,
+                _goldSteps = _goldSteps
             };
+
 
         public int WaveSize(long stage, int wave) => _waves.Size(stage, wave);
 
@@ -159,8 +187,18 @@ namespace Game.Core.Content
         public BigNumber EnemyHp(long stage)
         {
             var walls = WallStagesUpTo(stage) - WallStagesUpTo(1);
-            var normal = stage - 1 - walls;
-            var log10 = System.Math.Log10(_enemyHp.Base) + normal * System.Math.Log10(_enemyHp.Rate) + walls * System.Math.Log10(_wallRate);
+            var log10 = System.Math.Log10(_enemyHp.Base) + walls * System.Math.Log10(_wallRate);
+            if (_hpSteps.Length == 0)
+                return ExponentialCurve.FromLog10(log10 + (stage - 1 - walls) * System.Math.Log10(_enemyHp.Rate));
+            for (var i = 0; i < _hpSteps.Length; i++)
+            {
+                var low = _hpSteps[i].From;
+                var high = System.Math.Min(stage, i + 1 < _hpSteps.Length ? _hpSteps[i + 1].From : long.MaxValue);
+                if (high <= low)
+                    break;
+                var normal = _wallsOnTop ? high - low : high - low - (WallStagesUpTo(high) - WallStagesUpTo(low));
+                log10 += normal * _hpSteps[i].Log10Rate;
+            }
             return ExponentialCurve.FromLog10(log10);
         }
 
@@ -170,7 +208,21 @@ namespace Game.Core.Content
 
         public BigNumber BossHp(long stage) => EnemyHp(stage) * _bossHpMultiplier;
 
-        public BigNumber EnemyGold(long stage) => _gold.At(stage);
+        public BigNumber EnemyGold(long stage)
+        {
+            if (_goldSteps.Length == 0)
+                return _gold.At(stage);
+            var log10 = System.Math.Log10(_gold.Base);
+            for (var i = 0; i < _goldSteps.Length; i++)
+            {
+                var low = _goldSteps[i].From;
+                var high = System.Math.Min(stage, i + 1 < _goldSteps.Length ? _goldSteps[i + 1].From : long.MaxValue);
+                if (high <= low)
+                    break;
+                log10 += (high - low) * _goldSteps[i].Log10Rate;
+            }
+            return ExponentialCurve.FromLog10(log10);
+        }
 
         public BigNumber BossGold(long stage) => EnemyGold(stage) * _bossGoldMultiplier;
 

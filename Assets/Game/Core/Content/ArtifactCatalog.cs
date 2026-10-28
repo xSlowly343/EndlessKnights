@@ -82,6 +82,7 @@ namespace Game.Core.Content
         public double AllDamagePerLevel { get; }
         public int Groups { get; }
         public double JackpotMultiplier { get; private set; } = 1;
+        public bool AllDamageCompounds { get; private set; }
 
         public bool TryGet(string id, out ArtifactDef artifact) => _byId.TryGetValue(id, out artifact!);
 
@@ -110,7 +111,8 @@ namespace Game.Core.Content
                 ExponentialCurve.Read(root.Field("levelCost")),
                 root.Field("allDamagePerLevel").AsNumber(0, 10))
             {
-                JackpotMultiplier = root.Field("jackpotMultiplier").AsNumber(1, 1000)
+                JackpotMultiplier = root.Field("jackpotMultiplier").AsNumber(1, 1000),
+                AllDamageCompounds = root.HasField("allDamageCompounds") && root.Field("allDamageCompounds").AsBool()
             };
         }
 
