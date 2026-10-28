@@ -26,6 +26,11 @@ namespace Game.Core.Sim
         {
             TrackIdle(input);
             TrackRhythm(input.RhythmCv);
+            if (_state.FocusRefill)
+            {
+                _state.FocusRefill = false;
+                _state.Focus = Max;
+            }
 
             if (_state.IdleTicks > SecondsToTicks(ResetAfterIdleSeconds) && _hero.Value(CombatStats.FocusHold, 0) <= 0)
                 _state.Focus = _rules.Min;

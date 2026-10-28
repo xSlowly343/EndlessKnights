@@ -131,6 +131,16 @@ namespace Game.Core.Content.Gems
         public double Share { get; }
     }
 
+    public sealed class RepeatRecentEffect : SkillEffect
+    {
+        public RepeatRecentEffect(double seconds)
+        {
+            Seconds = seconds;
+        }
+
+        public double Seconds { get; }
+    }
+
     public sealed class InputKindsEffect : SkillEffect
     {
         public InputKindsEffect(double perKind)
@@ -442,6 +452,7 @@ namespace Game.Core.Content.Gems
         public double DamageTaken { get; }
         public double BossTimerSlow { get; }
         public double BossTimerSeconds { get; set; }
+        public bool BossTimerOncePerFight { get; set; }
         public double StrikeMultiplier { get; set; }
         public StatTags Tags { get; set; }
     }

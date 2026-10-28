@@ -26,7 +26,19 @@ namespace Game.Core.Sim
                 return;
             GainSand(saved);
             if (type == EnemyType.Normal && !shared)
+            {
                 Bank(saved);
+                BankFastKill();
+            }
+        }
+
+        private void BankFastKill()
+        {
+            var perKill = _hero.Value(CombatStats.FastKillBank, 0);
+            if (perKill <= 0)
+                return;
+            var cap = _hero.Value(CombatStats.BossTimerBank, 0) + _hero.Value(CombatStats.FastKillBankMax, 0);
+            _state.BankedSeconds = System.Math.Max(_state.BankedSeconds, System.Math.Min(cap, _state.BankedSeconds + perKill));
         }
 
         private void GainPerKill()
@@ -48,7 +60,7 @@ namespace Game.Core.Sim
         {
             var cap = _hero.Value(CombatStats.BossTimerBank, 0);
             if (cap > 0)
-                _state.BankedSeconds = System.Math.Min(cap, _state.BankedSeconds + saved);
+                _state.BankedSeconds = System.Math.Max(_state.BankedSeconds, System.Math.Min(cap, _state.BankedSeconds + saved));
         }
     }
 }

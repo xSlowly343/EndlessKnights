@@ -344,6 +344,7 @@ namespace Game.Core.Sim
 
         private void Wish(BigNumber damage)
         {
+            _state.TotalDamage += damage;
             if (_state.WishShare > 0)
                 _state.WishStored += damage * _state.WishShare;
         }

@@ -543,12 +543,13 @@
       "tier": "common",
       "role": "fast",
       "color": "blue",
-      "name": { "ru": "Растянуть секунду", "en": "Stretch the Second" },
+      "name": {"ru": "Растянуть секунду", "en": "Stretch the Second"},
       "tags": ["Skill"],
-      "cost": { "resource": 20 },
+      "cost": {"resource": 20},
       "cooldownSeconds": 5,
       "durationSeconds": 10,
-      "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "bossTimerSlow": 0.3 }
+      "effect": {"type": "enemyDebuff", "damageTaken": 0.1, "bossTimerSlow": 0.3},
+      "native": {"resourcePerSavedSecond": 1}
     },
     {
       "id": "cannon_by_name",
@@ -5222,12 +5223,12 @@
       "weapon": "pendulum",
       "ascendancy": "illusionist",
       "color": "blue",
-      "name": { "ru": "Треснувшее стекло", "en": "Cracked Glass" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 50 },
+      "name": {"ru": "Треснувшее стекло", "en": "Cracked Glass"},
+      "tags": ["Skill"],
+      "cost": {"resource": 50},
       "cooldownSeconds": 35,
       "durationSeconds": 10,
-      "effect": { "type": "storeHits", "releaseShare": 0.3 }
+      "effect": {"type": "wish", "share": 0.3}
     },
     {
       "id": "thread_of_doom",
@@ -5416,12 +5417,12 @@
       "weapon": "pendulum",
       "tier": "rare",
       "color": "blue",
-      "name": { "ru": "Песок в часах", "en": "Sand in the Glass" },
+      "name": {"ru": "Песок в часах", "en": "Sand in the Glass"},
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 5}] },
-      "native": { "modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 3}] }
+      "effect": {"type": "passive", "modifiers": [{"stat": "fastKillBank", "kind": "flat", "value": 1}, {"stat": "fastKillBankMax", "kind": "flat", "value": 15}]},
+      "native": {"modifiers": [{"stat": "fastKillBankMax", "kind": "flat", "value": 10}]}
     },
     {
       "id": "time_with_character",
@@ -5430,13 +5431,13 @@
       "tier": "rare",
       "role": "heavy",
       "color": "blue",
-      "name": { "ru": "Время с характером", "en": "Time with Character" },
+      "name": {"ru": "Время с характером", "en": "Time with Character"},
       "tags": ["Skill"],
-      "cost": { "resource": 50 },
+      "cost": {"resource": 50},
       "cooldownSeconds": 60,
       "durationSeconds": 20,
-      "effect": { "type": "enemyDebuff", "damageTaken": 0, "bossTimerSlow": 0.5 },
-      "native": { "resourceOnCast": 10 }
+      "effect": {"type": "enemyDebuff", "damageTaken": 0, "bossTimerSeconds": 10, "bossTimerOncePerFight": true},
+      "native": {"restoresFocus": true}
     },
     {
       "id": "minute_hand",
@@ -5529,13 +5530,12 @@
       "tier": "epic",
       "role": "heavy",
       "color": "blue",
-      "name": { "ru": "Куранты бьют снова", "en": "The Chimes Strike Again" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 80 },
+      "name": {"ru": "Куранты бьют снова", "en": "The Chimes Strike Again"},
+      "tags": ["Skill"],
+      "cost": {"resource": 80},
       "cooldownSeconds": 40,
-      "durationSeconds": 5,
-      "effect": { "type": "storeHits", "releaseShare": 1 },
-      "native": { "durationMultiplier": 1.4 }
+      "effect": {"type": "repeatRecent", "seconds": 5},
+      "native": {"windowSeconds": 7}
     },
     {
       "id": "the_hands_froze",
@@ -5544,13 +5544,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "blue",
-      "name": { "ru": "Стрелки замерли", "en": "The Hands Froze" },
+      "name": {"ru": "Стрелки замерли", "en": "The Hands Froze"},
       "tags": ["Aura", "Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 45,
       "durationSeconds": 4,
-      "effect": { "type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}] },
-      "native": { "durationMultiplier": 1.5 }
+      "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}, {"stat": "damage", "kind": "more", "value": 0.5}]},
+      "native": {"durationMultiplier": 1.5}
     },
     {
       "id": "strike_on_the_last_second",

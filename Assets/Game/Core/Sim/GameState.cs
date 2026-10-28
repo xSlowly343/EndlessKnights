@@ -75,6 +75,11 @@ namespace Game.Core.Sim
         public double WeakenVulnerabilityShare { get; set; }
         public int WeakenVulnerabilityTicks { get; set; }
         public double WishShare { get; set; }
+        public BigNumber TotalDamage { get; set; }
+        public DamageWindow DamageWindow { get; } = new DamageWindow();
+        public double BossTimerRate { get; set; } = 1;
+        public bool BossTimerBonusUsed { get; set; }
+        public bool FocusRefill { get; set; }
         public BigNumber WishStored { get; set; }
         public double EnemyGoldBonus { get; set; }
         public int SureCritsLeft { get; set; }
@@ -214,6 +219,7 @@ namespace Game.Core.Sim
             EnemyMaxHp = hp;
             HitsOnEnemy = 0;
             BossTimerStopTicks = 0;
+            BossTimerBonusUsed = false;
             EnemySpawnTick = Tick;
             PoisonStacks = 0;
             BurnStacks = 0;
