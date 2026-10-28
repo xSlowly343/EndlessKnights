@@ -45,11 +45,17 @@ namespace Game.Core.Sim
 
         public double XpToNextLevel => _state.HeroLevel >= _rules.MaxLevel ? 0 : _rules.XpToNext(_state.HeroLevel);
 
-        public void OnKill(EnemyType type, double multiplier = 1)
+        public void OnKill(EnemyType type, double multiplier = 1) =>
+            GainXp(multiplier * _rules.XpPerKill * (type == EnemyType.Normal ? 1 : _rules.BossXpMultiplier));
+
+        public void OnSkipped(long normals, long bosses) =>
+            GainXp(_rules.XpPerKill * (normals + bosses * _rules.BossXpMultiplier));
+
+        private void GainXp(double xp)
         {
             if (_state.HeroLevel >= _rules.MaxLevel)
                 return;
-            _state.HeroXp += multiplier * _rules.XpPerKill * (type == EnemyType.Normal ? 1 : _rules.BossXpMultiplier);
+            _state.HeroXp += xp;
             while (_state.HeroLevel < _rules.MaxLevel && _state.HeroXp >= _rules.XpToNext(_state.HeroLevel))
             {
                 _state.HeroXp -= _rules.XpToNext(_state.HeroLevel);

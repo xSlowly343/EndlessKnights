@@ -28,6 +28,16 @@ namespace Game.Core.Sim
             return _hero.Compute(CombatStats.Gold, baseGold * (enemy?.GoldMultiplier ?? 1.0), StatTags.Gold) * fill;
         }
 
+        public void Golden(long stage, double share)
+        {
+            var gold = _hero.Compute(CombatStats.Gold, _stages.EnemyGold(stage) * share * System.Math.Max(0, _hero.Value(CombatStats.EncounterGold, 1, StatTags.Gold)), StatTags.Gold);
+            if (gold.Sign <= 0)
+                return;
+            _state.Gold += gold;
+            _state.RunGoldEarned += gold;
+            _events.Add(GameEvent.Gold(_state.Tick, gold, stage));
+        }
+
         public void Chest(long stage, double share)
         {
             var gold = _hero.Compute(CombatStats.Gold, _stages.BossGold(stage) * share * System.Math.Max(0, _hero.Value(CombatStats.ChestGold, 1, StatTags.Gold)), StatTags.Gold);

@@ -147,6 +147,10 @@ namespace Game.Core.Sim
         public int HitsOnEnemy { get; set; }
         public int BossTimerStopTicks { get; set; }
         public int CannonShotsOnEnemy { get; set; }
+        public bool WandererBoss { get; set; }
+        public int GoldenTicks { get; set; }
+        public BigNumber GoldenNormalHp { get; set; }
+        public BigNumber GoldenDamage { get; set; }
         public int Barrels { get; set; }
         public int BarrelTicks { get; set; }
         public double BarrelMultiplier { get; set; }
@@ -230,6 +234,9 @@ namespace Game.Core.Sim
             HitsOnEnemy = 0;
             BossTimerStopTicks = 0;
             CannonShotsOnEnemy = 0;
+            WandererBoss = false;
+            GoldenTicks = 0;
+            GoldenDamage = BigNumber.Zero;
             BossTimerBonusUsed = false;
             EnemySpawnTick = Tick;
             PoisonStacks = 0;

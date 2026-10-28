@@ -54,7 +54,10 @@ namespace Game.Core.Save
                     ("id", state.Enemy == null ? JsonValue.Null() : JsonValue.Of(state.Enemy.Id)),
                     ("type", JsonValue.Of(SaveValues.NameOf(state.EnemyType, EnemyTypes))),
                     ("hp", SaveValues.Of(state.EnemyHp)),
-                    ("maxHp", SaveValues.Of(state.EnemyMaxHp)))),
+                    ("maxHp", SaveValues.Of(state.EnemyMaxHp)),
+                    ("wanderer", JsonValue.Of(state.WandererBoss)),
+                    ("goldenTicks", JsonValue.Of(state.GoldenTicks)),
+                    ("goldenNormalHp", SaveValues.Of(state.GoldenNormalHp)))),
                 ("gold", Object(
                     ("wallet", SaveValues.Of(state.Gold)),
                     ("runEarned", SaveValues.Of(state.RunGoldEarned)))),
@@ -157,6 +160,12 @@ namespace Game.Core.Save
             state.SpawnEnemy(ReadEnemyDef(enemy.Field("id"), enemies), SaveValues.ReadEnum(enemy.Field("type"), EnemyTypes),
                 SaveValues.ReadBigNumber(enemy.Field("maxHp")));
             state.EnemyHp = SaveValues.ReadBigNumber(enemy.Field("hp"));
+            if (enemy.HasField("goldenTicks"))
+            {
+                state.WandererBoss = enemy.Field("wanderer").AsBool();
+                state.GoldenTicks = enemy.Field("goldenTicks").AsInt(0, 100000);
+                state.GoldenNormalHp = SaveValues.ReadBigNumber(enemy.Field("goldenNormalHp"));
+            }
             ReadSkills(node.Field("skills"), gems, state);
             foreach (var id in node.Field("ownedGems").Items())
             {
