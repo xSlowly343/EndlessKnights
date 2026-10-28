@@ -182,6 +182,9 @@ namespace Game.Core.Save
                 if (!triggerNode.IsNull && gems.TryGet(triggerNode.AsString(), out var found) && found.Trigger != null)
                     trigger = found;
                 state.OtherPreset.Skills.Add((skill, trigger));
+                var supports = new GemDef?[SkillSlot.SocketCapacity];
+                ReadSupports(item, gems, supports);
+                state.OtherPreset.Supports.Add(supports);
             }
             ReadArtifacts(node.Field("artifacts"), state.Artifacts);
             if (node.HasField("rift"))
@@ -446,7 +449,8 @@ namespace Game.Core.Save
             for (var i = 0; i < items.Length; i++)
             {
                 var (skill, trigger) = preset.Skills[i];
-                items[i] = Object(("gem", JsonValue.Of(skill.Id)), ("trigger", trigger == null ? JsonValue.Null() : JsonValue.Of(trigger.Id)));
+                items[i] = Object(("gem", JsonValue.Of(skill.Id)), ("trigger", trigger == null ? JsonValue.Null() : JsonValue.Of(trigger.Id)),
+                    ("supports", JsonValue.Array(WriteSupports(preset.SupportsAt(i)))));
             }
             return items;
         }
@@ -524,9 +528,36 @@ namespace Game.Core.Save
                     ("trigger", slot.Trigger == null ? JsonValue.Null() : JsonValue.Of(slot.Trigger.Id)),
                     ("cooldownTicks", JsonValue.Of(slot.CooldownTicks)),
                     ("activeTicks", JsonValue.Of(slot.ActiveTicks)),
-                    ("hitsLeft", JsonValue.Of(slot.HitsLeft)));
+                    ("hitsLeft", JsonValue.Of(slot.HitsLeft)),
+                    ("supports", JsonValue.Array(WriteSupports(slot.Supports))));
             }
             return skills;
+        }
+
+        private static JsonValue[] WriteSupports(GemDef?[] supports)
+        {
+            var used = supports.Length;
+            while (used > 0 && supports[used - 1] == null)
+                used--;
+            var items = new JsonValue[used];
+            for (var i = 0; i < used; i++)
+                items[i] = supports[i] == null ? JsonValue.Null() : JsonValue.Of(supports[i]!.Id);
+            return items;
+        }
+
+        private static void ReadSupports(ContentNode item, GemCatalog gems, GemDef?[] supports)
+        {
+            if (!item.HasField("supports"))
+                return;
+            var socket = 0;
+            foreach (var id in item.Field("supports").Items())
+            {
+                if (socket >= supports.Length)
+                    return;
+                if (!id.IsNull && gems.TryGet(id.AsString(), out var support) && support.Kind == GemKind.Support)
+                    supports[socket] = support;
+                socket++;
+            }
         }
 
         private static void ReadSkills(ContentNode node, GemCatalog gems, GameState state)
@@ -539,12 +570,14 @@ namespace Game.Core.Save
                 GemDef? trigger = null;
                 if (!triggerNode.IsNull && gems.TryGet(triggerNode.AsString(), out var found) && found.Trigger != null)
                     trigger = found;
-                state.Skills.Add(new SkillSlot(skill, trigger)
+                var slot = new SkillSlot(skill, trigger)
                 {
                     CooldownTicks = item.Field("cooldownTicks").AsInt(0),
                     ActiveTicks = item.Field("activeTicks").AsInt(0),
                     HitsLeft = item.Field("hitsLeft").AsInt(0)
-                });
+                };
+                ReadSupports(item, gems, slot.Supports);
+                state.Skills.Add(slot);
             }
         }
 

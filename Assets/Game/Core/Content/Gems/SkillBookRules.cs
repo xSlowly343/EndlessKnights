@@ -89,7 +89,7 @@ namespace Game.Core.Content.Gems
                 sockets.Field("base").AsInt(0, 20),
                 ReadStages(sockets.Field("recordStages")),
                 sockets.Field("rebirths").AsInt(0, 20),
-                sockets.Field("max").AsInt(1, 20),
+                sockets.Field("max").AsInt(1, Sim.SkillSlot.SocketCapacity),
                 starting,
                 sockets.Field("attributePerColoredSupport").AsNumber(1, 10000));
         }

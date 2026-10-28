@@ -219,7 +219,8 @@ namespace Game.Core.Content.Gems
                 case GemKind.Trigger:
                     return new GemDef(id, kind, color, nameRu, nameEn, tags, trigger: ReadTrigger(node), requires: requires);
                 default:
-                    return new GemDef(id, kind, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(), requires: requires);
+                    return new GemDef(id, kind, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(), requires: requires,
+                        support: SupportDef.Read(node.Field("effect")));
             }
         }
 

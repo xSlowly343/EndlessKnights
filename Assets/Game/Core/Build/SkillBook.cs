@@ -42,6 +42,76 @@ namespace Game.Core.Build
 
         public long UnlockStageOf(int slot) => _rules.UnlockStageOf(slot);
 
+        public int SocketCount => _rules.SocketsFor(_state.RecordStage, 0);
+
+        public static string? AttributeOf(GemColor color) => color switch
+        {
+            GemColor.Red => "strength",
+            GemColor.Green => "dexterity",
+            GemColor.Blue => "intelligence",
+            _ => null
+        };
+
+        public bool InBuild(GemDef support)
+        {
+            foreach (var slot in _state.Skills)
+            {
+                for (var i = 0; i < slot.Supports.Length; i++)
+                {
+                    if (ReferenceEquals(slot.Supports[i], support))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        public int ColoredInBuild(GemColor color)
+        {
+            var count = 0;
+            foreach (var slot in _state.Skills)
+            {
+                for (var i = 0; i < slot.Supports.Length; i++)
+                {
+                    if (slot.Supports[i] != null && slot.Supports[i]!.Color == color)
+                        count++;
+                }
+            }
+            return count;
+        }
+
+        public BookResult SetSupport(int index, int socket, GemDef? support)
+        {
+            if (index < 0 || index >= _state.Skills.Count)
+                return BookResult.NoSuchSlot;
+            if (socket < 0 || socket >= SocketCount)
+                return BookResult.NoSuchSocket;
+            var slot = _state.Skills[index];
+            if (support == null)
+            {
+                slot.Supports[socket] = null;
+                return BookResult.Done;
+            }
+            if (support.Kind != GemKind.Support)
+                return BookResult.WrongKind;
+            if (support.Support == null)
+                return BookResult.WaitsForMechanic;
+            if (ReferenceEquals(slot.Supports[socket], support))
+                return BookResult.Done;
+            if (InBuild(support))
+                return BookResult.AlreadyInBuild;
+            if (FreeCopies(support) <= 0)
+                return BookResult.NotOwned;
+            if (!MeetsRequirements(support))
+                return BookResult.AttributesTooLow;
+            var attribute = AttributeOf(support.Color);
+            var replaced = slot.Supports[socket];
+            var others = ColoredInBuild(support.Color) - (replaced != null && replaced.Color == support.Color ? 1 : 0);
+            if (attribute != null && others + 1 > ColoredSupportLimit(attribute))
+                return BookResult.TooManyColored;
+            slot.Supports[socket] = support;
+            return BookResult.Done;
+        }
+
         public int FreeCopies(GemDef gem)
         {
             var owned = 0;
@@ -56,6 +126,11 @@ namespace Game.Core.Build
                     owned--;
                 if (ReferenceEquals(slot.Trigger, gem))
                     owned--;
+                for (var i = 0; i < slot.Supports.Length; i++)
+                {
+                    if (ReferenceEquals(slot.Supports[i], gem))
+                        owned--;
+                }
             }
             return owned;
         }

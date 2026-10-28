@@ -37,6 +37,9 @@ namespace Game.Core.Ui
             BookResult.WaitsForMechanic => Texts.Get("book.result.waitsForMechanic"),
             BookResult.NotOnWeapon => Texts.Get("book.result.notOnWeapon"),
             BookResult.AlreadyInBook => Texts.Get("book.result.alreadyInBook"),
+            BookResult.NoSuchSocket => Texts.Get("book.result.noSuchSocket"),
+            BookResult.AlreadyInBuild => Texts.Get("book.result.alreadyInBuild"),
+            BookResult.TooManyColored => Texts.Get("book.result.tooManyColored"),
             _ => string.Empty
         };
 

@@ -11,6 +11,9 @@ namespace Game.Core.Build
         WrongPath,
         WaitsForMechanic,
         NotOnWeapon,
-        AlreadyInBook
+        AlreadyInBook,
+        NoSuchSocket,
+        AlreadyInBuild,
+        TooManyColored
     }
 }

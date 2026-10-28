@@ -18,7 +18,8 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Skill?.Weapon == null), Is.EqualTo(51));
+            Assert.That(gems.All.Count(gem => gem.Skill?.Weapon == null && gem.Kind != GemKind.Support), Is.EqualTo(51));
+            Assert.That(gems.All.Count(gem => gem.Kind == GemKind.Support), Is.EqualTo(3));
             foreach (var id in new[] { "iron_rim_bash", "no_mercy", "hearth_song", "louder" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["through_stride"].Kind, Is.EqualTo(GemKind.Skill));
@@ -177,6 +178,8 @@ namespace Game.Core.Tests.Content
 
             Assert.That(gems["echo_keys"].Kind, Is.EqualTo(GemKind.Support));
             Assert.That(gems["echo_keys"].SupportEffect, Is.EqualTo("repeatEveryKeys"));
+            Assert.That(gems["echo_keys"].Support, Is.Null);
+            Assert.That(gems["chain"].Support!.QueueShare, Is.EqualTo(0.6));
         }
 
         [Test]
