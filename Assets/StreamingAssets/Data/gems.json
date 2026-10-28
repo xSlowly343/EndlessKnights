@@ -739,11 +739,12 @@
       "tier": "common",
       "role": "fast",
       "color": "red",
-      "name": { "ru": "Молот прораба", "en": "Foreman's Hammer" },
+      "name": {"ru": "Молот прораба", "en": "Foreman's Hammer"},
       "tags": ["Skill"],
-      "cost": { "resource": 15 },
+      "cost": {"resource": 15},
       "cooldownSeconds": 4,
-      "effect": { "type": "strike", "multiplier": 3 }
+      "effect": {"type": "strike", "multiplier": 3, "stacks": {"perStack": {"stat": "damage", "kind": "increased", "value": 0.03}, "max": 0.15, "stackSeconds": 8}},
+      "native": {"stackSeconds": 12}
     },
     {
       "id": "vial_from_belt",
@@ -4182,12 +4183,12 @@
       "weapon": "banner",
       "ascendancy": "paladin",
       "color": "red",
-      "name": { "ru": "Молот под расписку", "en": "Hammer on Receipt" },
+      "name": {"ru": "Молот под расписку", "en": "Hammer on Receipt"},
       "tags": ["Skill"],
-      "cost": { "resource": 50 },
+      "cost": {"resource": 50},
       "cooldownSeconds": 35,
       "durationSeconds": 15,
-      "locked": true
+      "effect": {"type": "pulse", "everySeconds": 1, "multiplier": 2, "queueTargets": 3}
     },
     {
       "id": "answer_from_the_shield",
@@ -4195,12 +4196,12 @@
       "weapon": "banner",
       "ascendancy": "bulwark",
       "color": "red",
-      "name": { "ru": "Ответ из-за щита", "en": "Answer from Behind the Shield" },
+      "name": {"ru": "Ответ из-за щита", "en": "Answer from Behind the Shield"},
       "tags": ["Skill"],
-      "cost": { "resource": 50 },
+      "cost": {"resource": 50},
       "cooldownSeconds": 40,
       "durationSeconds": 20,
-      "locked": true
+      "effect": {"type": "pulse", "everySeconds": 3, "multiplier": 6, "bossTimerSeconds": 1}
     },
     {
       "id": "unanswered_question",
@@ -4235,12 +4236,12 @@
       "weapon": "banner",
       "tier": "common",
       "color": "red",
-      "name": { "ru": "Плата артели", "en": "Artel Pay" },
+      "name": {"ru": "Плата артели", "en": "Artel Pay"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "party": true, "reserve": 25 },
-      "native": { "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.05}] }
+      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "party": true, "reserve": 25, "idleOffSeconds": 10},
+      "native": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.05}]}
     },
     {
       "id": "brick_in_hand",
@@ -4371,12 +4372,12 @@
       "weapon": "banner",
       "tier": "rare",
       "color": "red",
-      "name": { "ru": "Гроза над знаменем", "en": "Storm over the Banner" },
+      "name": {"ru": "Гроза над знаменем", "en": "Storm over the Banner"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "aura", "modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.1}], "party": true, "reserve": 25 },
-      "native": { "modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.05}] }
+      "effect": {"type": "aura", "modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.1}], "party": true, "reserve": 25, "idleOffSeconds": 10},
+      "native": {"modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.05}]}
     },
     {
       "id": "nobody_retreats",
@@ -4384,12 +4385,12 @@
       "weapon": "banner",
       "tier": "rare",
       "color": "red",
-      "name": { "ru": "Никто не отступает", "en": "Nobody Retreats" },
+      "name": {"ru": "Никто не отступает", "en": "Nobody Retreats"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "aura", "modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 3}], "party": true, "reserve": 25 },
-      "native": { "modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 1}] }
+      "effect": {"type": "aura", "modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 3}], "party": true, "reserve": 25, "idleOffSeconds": 10},
+      "native": {"modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 1}]}
     },
     {
       "id": "shaft_blow",
@@ -4496,13 +4497,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "red",
-      "name": { "ru": "Знамя не падает", "en": "The Banner Does Not Fall" },
+      "name": {"ru": "Знамя не падает", "en": "The Banner Does Not Fall"},
       "tags": ["Aura", "Skill"],
-      "cost": { "resource": 40 },
+      "cost": {"resource": 40},
       "cooldownSeconds": 40,
       "durationSeconds": 8,
-      "effect": { "type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}], "party": true },
-      "native": { "when": {"resourceAtLeast": 80, "durationMultiplier": 1.5} }
+      "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}], "party": true},
+      "native": {"extraSecondsPerPoint": 0.1}
     },
     {
       "id": "the_gates_stand",
