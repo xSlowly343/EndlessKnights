@@ -41,6 +41,16 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void YourOwnRowOpensNoMemberMenu()
+        {
+            _panel.Party.UseMemberOptions(PartyMemberMenu.Options(_loop.Data.Party.Search));
+
+            _panel.TryClick(_panel.Party.WorldPointOfRow(0));
+
+            Assert.That(_panel.Party.ShowsMemberMenu, Is.False);
+        }
+
+        [Test]
         public void PartyButtonsSayOnlinePartiesComeLater()
         {
             Assert.That(_panel.TryClick(_panel.Party.WorldPointOfHelp()), Is.True);

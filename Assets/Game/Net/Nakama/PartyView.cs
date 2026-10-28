@@ -18,7 +18,7 @@ namespace Game.Net.Nakama
             MatchId = NakamaJson.Text(json, "matchId");
             var members = new List<PartyMemberView>();
             foreach (var member in NakamaJson.Items(json, "members"))
-                members.Add(new PartyMemberView(NakamaJson.Text(member, "userId"), NakamaJson.Text(member, "name"), NakamaJson.Text(member, "steamId"), NakamaJson.Flag(member, "leader")));
+                members.Add(new PartyMemberView(NakamaJson.Text(member, "userId"), NakamaJson.Text(member, "name"), NakamaJson.Text(member, "steamId"), NakamaJson.Flag(member, "leader"), SlotOf(member)));
             Members = members;
         }
 
@@ -35,22 +35,42 @@ namespace Game.Net.Nakama
         public bool IsOpen => Access == "open";
 
         public static PartyView? From(JsonValue? json) => json == null || json.Kind != JsonKind.Object ? null : new PartyView(json);
+
+        public string? UserIdAtSlot(int slot)
+        {
+            if (slot < 0)
+                return null;
+            foreach (var member in Members)
+            {
+                if (member.Slot == slot)
+                    return member.UserId;
+            }
+            return null;
+        }
+
+        private static int SlotOf(JsonValue member)
+        {
+            var slot = NakamaJson.Field(member, "slot");
+            return slot != null && slot.Kind == JsonKind.Number ? (int)slot.Number : -1;
+        }
     }
 
     public sealed class PartyMemberView
     {
-        public PartyMemberView(string userId, string name, string steamId, bool leader)
+        public PartyMemberView(string userId, string name, string steamId, bool leader, int slot)
         {
             UserId = userId;
             Name = name;
             SteamId = steamId;
             Leader = leader;
+            Slot = slot;
         }
 
         public string UserId { get; }
         public string Name { get; }
         public string SteamId { get; }
         public bool Leader { get; }
+        public int Slot { get; }
     }
 
     public sealed class PartyCard

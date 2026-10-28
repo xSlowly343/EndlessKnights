@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -60,6 +61,27 @@ namespace Game.Net.Nakama
         public Task<PartyView> QuickAsync(string language, string role, int utcOffsetMinutes, CancellationToken cancel = default) =>
             Enter(directory => directory.QuickAsync(language, role, utcOffsetMinutes, cancel), cancel);
 
+        public Task<IReadOnlyList<PartyCard>> ListAsync(string language, string role, string? wanted, string? slot, int utcOffsetMinutes, CancellationToken cancel = default) =>
+            Directory.ListAsync(language, role, wanted, slot, utcOffsetMinutes, cancel);
+
+        public async Task<bool> BlockAsync(int slot, CancellationToken cancel = default)
+        {
+            var userId = await UserIdAtSlotAsync(slot, cancel).ConfigureAwait(false);
+            if (userId == null)
+                return false;
+            await Directory.BlockAsync(userId, cancel).ConfigureAwait(false);
+            return true;
+        }
+
+        public async Task<bool> ReportAsync(int slot, string reason, CancellationToken cancel = default)
+        {
+            var userId = await UserIdAtSlotAsync(slot, cancel).ConfigureAwait(false);
+            if (userId == null)
+                return false;
+            await Directory.ReportAsync(userId, reason, cancel).ConfigureAwait(false);
+            return true;
+        }
+
         public Task LeaveAsync(CancellationToken cancel = default) => Locked(async () =>
         {
             Unlink();
@@ -89,6 +111,20 @@ namespace Game.Net.Nakama
                     Unlink();
             }
         });
+
+        private async Task<string?> UserIdAtSlotAsync(int slot, CancellationToken cancel)
+        {
+            string? userId = null;
+            await Locked(async () =>
+            {
+                userId = Party?.UserIdAtSlot(slot);
+                if (userId != null || Party == null)
+                    return;
+                Party = await Directory.MineAsync(cancel).ConfigureAwait(false);
+                userId = Party?.UserIdAtSlot(slot);
+            }).ConfigureAwait(false);
+            return userId == UserId ? null : userId;
+        }
 
         public void Dispose()
         {

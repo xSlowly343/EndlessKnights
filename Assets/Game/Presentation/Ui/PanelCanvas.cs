@@ -14,6 +14,7 @@ namespace Game.Presentation.Ui
     public sealed class PanelCanvas : MonoBehaviour
     {
         public const int MaxSubTabs = 4;
+        public const int PartySearchSubTab = 3;
         public const int MaxMoreRows = 5;
         public const int MaxReportLines = 7;
         public const int TabCount = PanelNavigator.BarSize + 1;
@@ -82,6 +83,7 @@ namespace Game.Presentation.Ui
         private StatsPanel _statsPanel = null!;
         private MasterPanel _masterPanel = null!;
         private PartyPanel _partyPanel = null!;
+        private PartySearchPanel _partySearchPanel = null!;
         private SettingsPanel _settingsPanel = null!;
         private ConsentCard _consent = null!;
         private UiButton _preset = null!;
@@ -162,6 +164,7 @@ namespace Game.Presentation.Ui
         public StatsPanel Stats => _statsPanel;
         public MasterPanel Master => _masterPanel;
         public PartyPanel Party => _partyPanel;
+        public PartySearchPanel PartySearch => _partySearchPanel;
         public SettingsPanel Settings => _settingsPanel;
         public ConsentCard Consent => _consent;
 
@@ -301,7 +304,7 @@ namespace Game.Presentation.Ui
                 return TryClickConsent(worldPoint);
             if (_showingCard)
                 return TryClickReport(worldPoint);
-            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _masterPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
+            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _masterPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _partySearchPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
                 return true;
             if (_preset.Contains(worldPoint))
             {
@@ -627,11 +630,13 @@ namespace Game.Presentation.Ui
             _itemsPanel.Show(itemsShown);
             var partyShown = !navigator.ShowingMore && navigator.Active == PanelSection.Party && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
             _partyPanel.Show(partyShown, _loop);
+            var partySearchShown = !navigator.ShowingMore && navigator.Active == PanelSection.Party && navigator.SubTab == PartySearchSubTab && _shownFrame.HasSubTabs;
+            _partySearchPanel.Show(partySearchShown, _shownFrame.ContentPx);
             var statsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Stats;
             _statsPanel.Show(statsShown);
             var settingsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Settings;
             _settingsPanel.Show(settingsShown, _shownFrame.HasSubTabs ? navigator.SubTab : 0, _shownFrame.ContentPx);
-            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !statsShown && !settingsShown;
+            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !partySearchShown && !statsShown && !settingsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -811,6 +816,7 @@ namespace Game.Presentation.Ui
             _masterPanel = MasterPanel.Create(content, _theme);
             _partyPanel = PartyPanel.Create(content, _theme);
             _partyPanel.NoticeRequested += ShowNotice;
+            _partySearchPanel = PartySearchPanel.Create(content, _theme);
             Book = BookPanel.Create(content, _theme);
             Tree = TreePanel.Create(content, _theme);
             Subclass = SubclassPanel.Create(content, _theme);

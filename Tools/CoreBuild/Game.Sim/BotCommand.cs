@@ -8,6 +8,7 @@ using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Sim.Headless;
 using Game.Core.Stats;
+using Game.Core.Ui;
 using Game.Net.Nakama;
 
 namespace Game.Sim
@@ -25,7 +26,7 @@ namespace Game.Sim
             for (var i = 0; i < args.Count; i++)
             {
                 var name = args[i];
-                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--stay";
+                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--stay" || name == "--find" || name == "--quick";
                 if (flag)
                     options[name] = "yes";
                 else if (i + 1 < args.Count)
@@ -45,10 +46,15 @@ namespace Game.Sim
                     return RunPair(data, client, profile, seconds).GetAwaiter().GetResult();
                 var stay = options.ContainsKey("--stay");
                 if (options.TryGetValue("--code", out var code))
-                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.JoinAsync(code), stay).GetAwaiter().GetResult();
+                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.JoinAsync(code), stay, options.TryGetValue("--report", out var codeReason) ? codeReason : null).GetAwaiter().GetResult();
+                options.TryGetValue("--report", out var reason);
                 if (options.ContainsKey("--create"))
-                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.CreateAsync(options.ContainsKey("--open")), stay).GetAwaiter().GetResult();
-                return Fail("choose --create, --code or --pair");
+                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.CreateAsync(options.ContainsKey("--open")), stay, reason).GetAwaiter().GetResult();
+                if (options.ContainsKey("--find"))
+                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.FindAsync(Console.Out), stay, reason).GetAwaiter().GetResult();
+                if (options.ContainsKey("--quick"))
+                    return RunOne(data, client, profile, heroClass, seconds, bot => bot.QuickAsync(), stay, reason).GetAwaiter().GetResult();
+                return Fail("choose --create, --code, --find, --quick or --pair");
             }
             catch (NakamaException error)
             {
@@ -56,7 +62,8 @@ namespace Game.Sim
             }
         }
 
-        private static async Task<int> RunOne(GameData data, NakamaClient client, BotProfile profile, HeroClass heroClass, double seconds, Func<Bot, Task> enter, bool stay)
+        private static async Task<int> RunOne(GameData data, NakamaClient client, BotProfile profile, HeroClass heroClass, double seconds, Func<Bot, Task> enter, bool stay,
+            string? reportReason)
         {
             var bot = await Bot.LoginAsync(data, client, profile, heroClass, 1).ConfigureAwait(false);
             await enter(bot).ConfigureAwait(false);
@@ -64,6 +71,8 @@ namespace Game.Sim
             await bot.ConnectAsync().ConfigureAwait(false);
             Play(new[] { bot }, seconds);
             bot.Report(Console.Out);
+            if (reportReason != null)
+                await bot.ReportOtherAsync(reportReason, Console.Out).ConfigureAwait(false);
             await bot.FinishAsync(stay).ConfigureAwait(false);
             return bot.Client.Status == PartyLink.Linked ? 0 : 1;
         }
@@ -119,6 +128,8 @@ namespace Game.Sim
 
             private readonly OnlineSession _online;
             private readonly GameLoop _loop;
+            private readonly PartySearchRules _search;
+            private readonly string _language;
             private Task _keepAlive = Task.CompletedTask;
             private long _ticks;
             private int _matchGeneration;
@@ -127,6 +138,8 @@ namespace Game.Sim
             {
                 _online = online;
                 _loop = loop;
+                _search = data.Party.Search;
+                _language = _search.Languages[0];
                 Client = new PartyClient(loop, online.Transport, NakamaPartyTransport.HostId, data.Party);
             }
 
@@ -148,6 +161,37 @@ namespace Game.Sim
             public async Task CreateAsync(bool open) => await _online.CreateAsync(open ? "open" : "invite", null).ConfigureAwait(false);
 
             public async Task JoinAsync(string code) => await _online.JoinByCodeAsync(code).ConfigureAwait(false);
+
+            public async Task QuickAsync() =>
+                await _online.QuickAsync(_language, _search.RoleOf(_loop.State.Class), 0).ConfigureAwait(false);
+
+            public async Task FindAsync(System.IO.TextWriter output)
+            {
+                var found = await _online.ListAsync(_language, _search.RoleOf(_loop.State.Class), null, null, 0).ConfigureAwait(false);
+                output.WriteLine("open parties " + found.Count);
+                foreach (var card in found)
+                {
+                    var row = PartySearchRow.From(card.Id, card.Title, card.Language, card.Wanted, card.Members, card.MaxMembers, card.ActiveNow, card.UsuallyOnline, card.WantsYou);
+                    output.WriteLine("  " + row.Title + " · " + row.Details + " · " + row.Seats + (row.Tags.Length > 0 ? " · " + row.Tags : string.Empty));
+                }
+                if (found.Count == 0)
+                    throw new NakamaException(0, "no open party to join");
+                await _online.JoinOpenAsync(found[0].Id).ConfigureAwait(false);
+            }
+
+            public async Task ReportOtherAsync(string reason, System.IO.TextWriter output)
+            {
+                for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                {
+                    if (slot == Client.OwnSlot || Client.Roster.Player(slot) == 0)
+                        continue;
+                    var reported = await _online.ReportAsync(slot, reason).ConfigureAwait(false);
+                    var blocked = await _online.BlockAsync(slot).ConfigureAwait(false);
+                    output.WriteLine("slot " + slot + ": reported " + reported + ", blocked " + blocked);
+                    return;
+                }
+                output.WriteLine("nobody else in the roster to report");
+            }
 
             public Task ConnectAsync()
             {

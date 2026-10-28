@@ -24,6 +24,11 @@ namespace Game.Presentation.Ui
         private const float ChipWidthPx = 96f;
         private const float FreePx = 40f;
         private const float ButtonPx = 32f;
+        private const int MaxMenuOptions = 4;
+        private const float MenuTitlePx = 18f;
+        private const float MenuOptionPx = 28f;
+        private const float MenuClosePx = 26f;
+        private const float MenuInsetPx = 8f;
 
         private static readonly Color[] AllyColors =
         {
@@ -53,8 +58,15 @@ namespace Game.Presentation.Ui
         private readonly UiButton _help;
         private readonly UiButton _links;
         private readonly UiButton _leave;
+        private readonly RectTransform _menu;
+        private readonly TextMeshProUGUI _menuTitle;
+        private readonly UiButton[] _menuOptions = new UiButton[MaxMenuOptions];
+        private readonly UiButton _menuClose;
+        private IReadOnlyList<PartyRow> _shownRows = Array.Empty<PartyRow>();
+        private IReadOnlyList<PartyMemberOption> _options = Array.Empty<PartyMemberOption>();
         private PartyClient? _client;
         private string _code = string.Empty;
+        private int _menuSlot = PartyEncounter.NoSlot;
 
         private PartyPanel(RectTransform content, UiTheme theme)
         {
@@ -70,6 +82,7 @@ namespace Game.Presentation.Ui
             _help = Button(buttons, PartyRoster.Help, 0f, buttonWidth, theme.Accent, Color.white, theme.Accent);
             _links = Button(buttons, PartyRoster.Links, buttonWidth + GapPx, buttonWidth, theme.Card, theme.Text, theme.Card);
             _leave = Button(buttons, PartyRoster.Leave, 2f * (buttonWidth + GapPx), buttonWidth, theme.Background, LeaveText, theme.Plate);
+            _menu = BuildMenu(out _menuTitle, out _menuClose);
             _root.gameObject.SetActive(false);
         }
 
@@ -77,17 +90,33 @@ namespace Game.Presentation.Ui
 
         public event Action<string>? NoticeRequested;
         public event Action<PartyAction>? ActionRequested;
+        public event Action<int, PartyMemberOption>? MemberActionRequested;
 
         public bool IsShown => _root.gameObject.activeSelf;
         public int ShownMembers { get; private set; }
         public bool ShowsEnemy => _enemyCard.gameObject.activeSelf;
+        public bool ShowsMemberMenu => _menu.gameObject.activeSelf;
+        public int MenuSlot => _menuSlot;
 
         public void UseClient(PartyClient? client) => _client = client;
 
         public void UseCode(string code) => _code = code;
 
+        public void UseMemberOptions(IReadOnlyList<PartyMemberOption> options)
+        {
+            _options = options;
+            for (var i = 0; i < _menuOptions.Length; i++)
+            {
+                _menuOptions[i].Show(i < options.Count);
+                if (i < options.Count)
+                    _menuOptions[i].Text = options[i].Label;
+            }
+        }
+
         public void Show(bool shown, GameLoop? loop)
         {
+            if (!shown)
+                CloseMemberMenu();
             _root.gameObject.SetActive(shown);
             if (shown && loop != null)
                 Refresh(loop);
@@ -99,6 +128,7 @@ namespace Game.Presentation.Ui
                 return;
             var inParty = _client != null && _client.InParty;
             var rows = inParty ? PartyRoster.From(loop.State, _client!) : PartyRoster.Solo(loop.State);
+            _shownRows = rows;
             var y = TopPx;
             _enemyCard.gameObject.SetActive(inParty);
             _hintCard.gameObject.SetActive(!inParty);
@@ -137,12 +167,17 @@ namespace Game.Presentation.Ui
             _help.Text = PartyActions.Label(PartyActions.Left(hasCode), _code);
             _links.Text = PartyActions.Label(PartyActions.Middle(hasCode), _code);
             _leave.Text = PartyActions.Label(PartyActions.Right(hasCode), _code);
+            PlaceMenu();
         }
 
         public bool TryClick(Vector2 worldPoint)
         {
             if (!IsShown)
                 return false;
+            if (ShowsMemberMenu && TryClickMenu(worldPoint))
+                return true;
+            if (TryOpenMenu(worldPoint))
+                return true;
             var hasCode = _code.Length > 0;
             var action = _help.Contains(worldPoint) || _free.Contains(worldPoint) ? PartyActions.Left(hasCode)
                 : _links.Contains(worldPoint) ? PartyActions.Middle(hasCode)
@@ -158,6 +193,102 @@ namespace Game.Presentation.Ui
         }
 
         public Vector2 WorldPointOfHelp() => _help.Rect.TransformPoint(_help.Rect.rect.center);
+
+        public Vector2 WorldPointOfRow(int index) => _rows[index].Rect.TransformPoint(_rows[index].Rect.rect.center);
+
+        public Vector2 WorldPointOfMenuOption(int index) => _menuOptions[index].Rect.TransformPoint(_menuOptions[index].Rect.rect.center);
+
+        public void CloseMemberMenu()
+        {
+            _menuSlot = PartyEncounter.NoSlot;
+            _menu.gameObject.SetActive(false);
+        }
+
+        private bool TryOpenMenu(Vector2 worldPoint)
+        {
+            if (_options.Count == 0)
+                return false;
+            for (var i = 0; i < _rows.Count && i < _shownRows.Count; i++)
+            {
+                var row = _shownRows[i];
+                if (!row.CanBeReported || !UiElements.Contains(_rows[i].Rect, worldPoint))
+                    continue;
+                _menuSlot = row.Slot;
+                _menuTitle.text = PartyMemberMenu.Title(row.Name);
+                PlaceMenu();
+                return true;
+            }
+            return false;
+        }
+
+        private bool TryClickMenu(Vector2 worldPoint)
+        {
+            var slot = _menuSlot;
+            for (var i = 0; i < _menuOptions.Length && i < _options.Count; i++)
+            {
+                if (!_menuOptions[i].Contains(worldPoint))
+                    continue;
+                CloseMemberMenu();
+                MemberActionRequested?.Invoke(slot, _options[i]);
+                return true;
+            }
+            var inside = UiElements.Contains(_menu, worldPoint);
+            CloseMemberMenu();
+            return inside;
+        }
+
+        private void PlaceMenu()
+        {
+            var index = -1;
+            for (var i = 0; i < _shownRows.Count && _menuSlot != PartyEncounter.NoSlot; i++)
+            {
+                if (_shownRows[i].Slot == _menuSlot && _shownRows[i].CanBeReported)
+                    index = i;
+            }
+            if (index < 0)
+            {
+                CloseMemberMenu();
+                return;
+            }
+            var height = MenuHeight();
+            var rowTop = -_rows[index].Rect.anchoredPosition.y;
+            var below = rowTop + RowPx + 2f;
+            var y = below + height <= _root.rect.height ? below : Mathf.Max(TopPx, rowTop - height - 2f);
+            Place(_menu, y, height);
+            _menu.SetAsLastSibling();
+            _menu.gameObject.SetActive(true);
+        }
+
+        private static float MenuHeight()
+        {
+            var optionRows = (MaxMenuOptions + 1) / 2;
+            return 2f * MenuInsetPx + MenuTitlePx + GapPx + optionRows * (MenuOptionPx + GapPx) + MenuClosePx;
+        }
+
+        private RectTransform BuildMenu(out TextMeshProUGUI title, out UiButton close)
+        {
+            var border = UiElements.Fill("MemberMenu", _root, _theme.Border, RadiusPx);
+            var card = border.rectTransform;
+            UiElements.Stretch(UiElements.Fill("Inner", card, _theme.Card, RadiusPx - PanelCanvas.BorderPx).rectTransform, PanelCanvas.BorderPx);
+            title = UiElements.Label("Title", card, _theme.BoldFont, 12f, _theme.Text, TextAlignmentOptions.MidlineLeft);
+            UiElements.Anchor(title.rectTransform, new Vector2(0f, 1f), new Vector2(MenuInsetPx, -MenuInsetPx), new Vector2(Width() - 2f * MenuInsetPx, MenuTitlePx));
+            title.overflowMode = TextOverflowModes.Ellipsis;
+            var optionWidth = (Width() - 2f * MenuInsetPx - GapPx) / 2f;
+            var top = MenuInsetPx + MenuTitlePx + GapPx;
+            for (var i = 0; i < _menuOptions.Length; i++)
+            {
+                var x = MenuInsetPx + (i % 2) * (optionWidth + GapPx);
+                var y = top + (i / 2) * (MenuOptionPx + GapPx);
+                _menuOptions[i] = Button(card, "Option " + i, 0f, optionWidth, i == 0 ? _theme.Background : _theme.Plate, i == 0 ? LeaveText : _theme.Text, _theme.Plate);
+                UiElements.Anchor(_menuOptions[i].Rect, new Vector2(0f, 1f), new Vector2(x, -y), new Vector2(optionWidth, MenuOptionPx));
+                _menuOptions[i].Show(false);
+            }
+            var closeTop = top + ((MaxMenuOptions + 1) / 2) * (MenuOptionPx + GapPx);
+            close = Button(card, PartyMemberMenu.Close, 0f, Width() - 2f * MenuInsetPx, _theme.Background, _theme.TextDim, _theme.Border);
+            UiElements.Anchor(close.Rect, new Vector2(0f, 1f), new Vector2(MenuInsetPx, -closeTop), new Vector2(Width() - 2f * MenuInsetPx, MenuClosePx));
+            card.gameObject.SetActive(false);
+            return card;
+        }
 
         private void ShowEnemy()
         {

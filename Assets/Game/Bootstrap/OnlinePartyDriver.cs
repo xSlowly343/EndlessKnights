@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Game.Core.Content;
 using Game.Core.Party;
@@ -15,6 +16,7 @@ namespace Game.Bootstrap
     public sealed class OnlinePartyDriver : MonoBehaviour
     {
         private const float KeepAliveSeconds = 10f;
+        private const float SearchRefreshSeconds = 30f;
 
         private readonly ConcurrentQueue<Action> _mainThread = new ConcurrentQueue<Action>();
         private GameLoop _loop = null!;
@@ -29,6 +31,10 @@ namespace Game.Bootstrap
         private float _sinceKeepAlive;
         private int _matchGeneration;
         private bool _busy;
+        private PartySearchFilters _filters = null!;
+        private bool _searchShown;
+        private bool _searching;
+        private float _sinceSearch;
 
         public static OnlinePartyDriver Attach(GameObject host, GameLoop loop, GameData data, PanelCanvas panels, GameSettings settings)
         {
@@ -38,6 +44,13 @@ namespace Game.Bootstrap
             driver._panels = panels;
             driver._settings = settings;
             panels.Party.ActionRequested += driver.OnAction;
+            panels.Party.MemberActionRequested += driver.OnMemberAction;
+            panels.Party.UseMemberOptions(PartyMemberMenu.Options(data.Party.Search));
+            driver._filters = new PartySearchFilters(data.Party.Search, settings.Language);
+            panels.PartySearch.UseFilters(driver._filters);
+            panels.PartySearch.QuickRequested += () => driver.OnAction(PartyAction.QuickMatch);
+            panels.PartySearch.RefreshRequested += driver.Search;
+            panels.PartySearch.JoinRequested += driver.JoinOpen;
             var config = NetworkFile.Load();
             if (!config.HasParty)
                 return driver;
@@ -70,6 +83,7 @@ namespace Game.Bootstrap
         {
             while (_mainThread.TryDequeue(out var action))
                 action();
+            WatchSearch();
             if (_client == null)
                 return;
             _sinceKeepAlive += Time.unscaledDeltaTime;
@@ -98,6 +112,103 @@ namespace Game.Bootstrap
                 {
                     Debug.LogWarning("Party: " + error.Message);
                 }
+            });
+        }
+
+        private void WatchSearch()
+        {
+            var shown = _panels.PartySearch.IsShown;
+            var opened = shown && !_searchShown;
+            _searchShown = shown;
+            if (!shown)
+                return;
+            _sinceSearch += Time.unscaledDeltaTime;
+            if (opened || _sinceSearch >= SearchRefreshSeconds)
+                Search();
+        }
+
+        private void Search()
+        {
+            _sinceSearch = 0f;
+            if (_client == null)
+            {
+                _panels.PartySearch.ShowStatus(PartySearchTexts.Offline);
+                return;
+            }
+            if (_session == null)
+            {
+                _panels.PartySearch.ShowStatus(PartyActions.Failed(string.Empty));
+                return;
+            }
+            if (_session.InParty)
+            {
+                _panels.PartySearch.ShowStatus(PartySearchTexts.InParty);
+                return;
+            }
+            if (_searching)
+                return;
+            _searching = true;
+            _panels.PartySearch.ShowStatus(PartySearchTexts.Loading);
+            var session = _session;
+            var language = _filters.Language;
+            var wanted = _filters.Wanted;
+            var slot = _filters.Slot;
+            var role = _data.Party.Search.RoleOf(_loop.State.Class);
+            var offset = UtcOffsetMinutes();
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var cards = await session.ListAsync(language, role, wanted, slot, offset).ConfigureAwait(false);
+                    var rows = new List<PartySearchRow>(cards.Count);
+                    foreach (var card in cards)
+                        rows.Add(PartySearchRow.From(card.Id, card.Title, card.Language, card.Wanted, card.Members, card.MaxMembers, card.ActiveNow, card.UsuallyOnline, card.WantsYou));
+                    _mainThread.Enqueue(() => _panels.PartySearch.ShowRows(rows));
+                }
+                catch (NakamaException error)
+                {
+                    Debug.LogWarning("Party search: " + error.Message);
+                    _mainThread.Enqueue(() => _panels.PartySearch.ShowStatus(PartyActions.Failed(error.Message)));
+                }
+                finally
+                {
+                    _mainThread.Enqueue(() => _searching = false);
+                }
+            });
+        }
+
+        private void RefreshSearch()
+        {
+            if (_panels.PartySearch.IsShown)
+                Search();
+        }
+
+        private void JoinOpen(string partyId)
+        {
+            if (_session == null || _busy)
+            {
+                _panels.ShowNotice(_busy ? PartyActions.Working : PartyActions.Offline);
+                return;
+            }
+            var session = _session;
+            Enter(() => session.JoinOpenAsync(partyId));
+        }
+
+        private void OnMemberAction(int slot, PartyMemberOption option)
+        {
+            if (_session == null || _busy)
+            {
+                _panels.ShowNotice(_busy ? PartyActions.Working : PartyActions.Offline);
+                return;
+            }
+            var session = _session;
+            Run(async () =>
+            {
+                var done = option.IsBlock
+                    ? await session.BlockAsync(slot).ConfigureAwait(false)
+                    : await session.ReportAsync(slot, option.ReportReason!).ConfigureAwait(false);
+                var notice = !done ? PartyMemberMenu.NotFound : option.IsBlock ? PartyMemberMenu.Blocked : PartyMemberMenu.Reported;
+                _mainThread.Enqueue(() => _panels.ShowNotice(notice));
             });
         }
 
@@ -154,6 +265,7 @@ namespace Game.Bootstrap
                             _party?.Leave();
                             ShowCode();
                             _panels.ShowNotice(PartyActions.LeftParty);
+                            RefreshSearch();
                         });
                     });
                     break;
@@ -174,6 +286,7 @@ namespace Game.Bootstrap
                     _party?.Rejoin();
                     ShowCode();
                     _panels.ShowNotice(PartyActions.Joined(party.Members.Count, party.MaxMembers));
+                    RefreshSearch();
                 });
             });
         }
