@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "spirits": [
+    {"id": "wind_spirit", "name": {"ru": "Дух ветра", "en": "Wind Spirit"}, "trigger": "mousePx", "every": 1000, "multiplier": 3, "perLevel": 1, "maxLevel": 10, "awakenCost": 50, "levelCost": {"curve": "exp", "base": 20, "rate": 1.4}},
+    {"id": "hearth_spirit", "name": {"ru": "Дух очага", "en": "Hearth Spirit"}, "trigger": "casts", "every": 3, "multiplier": 5, "perLevel": 1.5, "maxLevel": 10, "awakenCost": 50, "levelCost": {"curve": "exp", "base": 20, "rate": 1.4}},
+    {"id": "drum_spirit", "name": {"ru": "Дух барабана", "en": "Drum Spirit"}, "trigger": "keys", "every": 50, "multiplier": 5, "perLevel": 1.5, "maxLevel": 10, "awakenCost": 50, "levelCost": {"curve": "exp", "base": 20, "rate": 1.4}},
+    {"id": "owl_spirit", "name": {"ru": "Сова-дух", "en": "Owl Spirit"}, "trigger": "clicks", "every": 10, "multiplier": 4, "perLevel": 1, "maxLevel": 10, "awakenCost": 50, "levelCost": {"curve": "exp", "base": 20, "rate": 1.4}},
+    {"id": "moss_spirit", "name": {"ru": "Мшистый дух", "en": "Moss Spirit"}, "trigger": "idleSeconds", "every": 5, "multiplier": 3, "perLevel": 1, "maxLevel": 10, "awakenCost": 50, "levelCost": {"curve": "exp", "base": 20, "rate": 1.4}},
+    {"id": "hunt_spirit", "name": {"ru": "Дух охоты", "en": "Hunt Spirit"}, "trigger": "kills", "every": 5, "multiplier": 6, "perLevel": 2, "maxLevel": 10, "awakenCost": 50, "levelCost": {"curve": "exp", "base": 20, "rate": 1.4}},
+    {"id": "star_spirit", "name": {"ru": "Звёздный дух", "en": "Star Spirit"}, "trigger": "crits", "every": 20, "multiplier": 6, "perLevel": 2, "maxLevel": 10, "awakenCost": 50, "levelCost": {"curve": "exp", "base": 20, "rate": 1.4}},
+    {"id": "tide_spirit", "name": {"ru": "Дух прилива", "en": "Tide Spirit"}, "trigger": "seconds", "every": 10, "multiplier": 2, "perLevel": 0.5, "maxLevel": 10, "awakenCost": 50, "levelCost": {"curve": "exp", "base": 20, "rate": 1.4}}
+  ]
+}

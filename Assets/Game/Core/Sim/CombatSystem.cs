@@ -226,6 +226,7 @@ namespace Game.Core.Sim
                 damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting));
                 flags |= HitFlags.Crit;
                 LastHitCrit = true;
+                _state.Crits++;
                 if (source != DamageSource.Skill)
                     _keyHits?.OnCrit();
             }
