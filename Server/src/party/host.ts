@@ -31,6 +31,7 @@ class PartyHost {
     private readonly messagesThisSecond = [0, 0, 0, 0];
     private readonly sentPresence = [PartyPresence.Fighting, PartyPresence.Fighting, PartyPresence.Fighting, PartyPresence.Fighting];
     private readonly lastReactionTick = [PartyNever, PartyNever, PartyNever, PartyNever];
+    private readonly recentShares = [0, 0, 0, 0];
     private stateSequence = 0;
     private rosterVersion = 0;
     private rosterChanged = false;
@@ -162,8 +163,11 @@ class PartyHost {
         this.hitAllowance[slot] = Math.max(0, this.hitAllowance[slot] - Math.max(0, batch.hits));
         if (batch.hits > 0)
             this.encounter.reportInput(slot);
-        if (delta > 0)
-            this.acceptedShares += this.cappedDamage(slot, batch.enemyId, delta);
+        if (!(delta > 0))
+            return;
+        const accepted = this.cappedDamage(slot, batch.enemyId, delta);
+        this.acceptedShares += accepted;
+        this.recentShares[slot] += accepted;
     }
 
     private cappedDamage(slot: number, enemyId: number, delta: number): number {
@@ -239,7 +243,9 @@ class PartyHost {
         }
         if (--this.ticksToState <= 0 && this.encounter.started) {
             this.ticksToState = Math.max(1, partyTicks(this.config.stateBroadcastSeconds));
-            this.broadcast(partyEncodeEncounterState(this.encounter, ++this.stateSequence), PartyNoSlot);
+            this.broadcast(partyEncodeEncounterState(this.encounter, ++this.stateSequence, this.recentShares), PartyNoSlot);
+            for (let slot = 0; slot < PartyMaxSlots; slot++)
+                this.recentShares[slot] = 0;
         }
     }
 

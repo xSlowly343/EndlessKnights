@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Game.Core.Content;
+using Game.Core.Math;
 using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Sim.Headless;
@@ -16,7 +17,7 @@ namespace Game.Sim
     public static class BotCommand
     {
         public const string Usage =
-            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --pair) [--seconds 60] [--kps 6] [--class viking] [--stay]";
+            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair) [--seconds 60] [--kps 6] [--class viking] [--stay] [--report cheating]";
 
         private const ulong BotSteamBase = 76561190000000000UL;
 
@@ -151,6 +152,7 @@ namespace Game.Sim
             public long Kills { get; private set; }
             public int ReactionsSent { get; private set; }
             public int ReactionsHeard { get; private set; }
+            public BigNumber AllyDamage { get; private set; }
 
             public static async Task<Bot> LoginAsync(GameData data, NakamaClient client, BotProfile profile, HeroClass heroClass, int index)
             {
@@ -221,6 +223,7 @@ namespace Game.Sim
                     ReactionsSent++;
                 for (var slot = 0; slot < _heard.Length; slot++)
                 {
+                    AllyDamage += Client.TakeAllyDamage(slot);
                     var serial = Client.ReactionSerial(slot);
                     if (serial != _heard[slot] && slot != Client.OwnSlot)
                         ReactionsHeard++;
@@ -236,9 +239,10 @@ namespace Game.Sim
             {
                 var own = Client.OwnSlot;
                 output.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}, reconnects {9}, reactions sent {10}, heard {11}",
+                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}, reconnects {9}, reactions sent {10}, heard {11}, ally damage {12}, boss kills {13}",
                     HeroClassNames.Of(_loop.State.Class), _online.PlayerNumber, Client.Status, own, Client.PartyRewards, Client.UnpaidKills,
-                    own >= 0 ? Client.Contribution(own) : 0, _loop.State.Stage, Client.EnemyId, _online.Reconnects, ReactionsSent, ReactionsHeard));
+                    own >= 0 ? Client.Contribution(own) : 0, _loop.State.Stage, Client.EnemyId, _online.Reconnects, ReactionsSent, ReactionsHeard,
+                    NumberFormatter.Format(AllyDamage, NumberFormatSettings.Default), Client.BossKillsSeen));
             }
 
             public async Task FinishAsync(bool stay)

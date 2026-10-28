@@ -18,6 +18,30 @@ namespace Game.Core.Party.Wire
         public ShownEffect Effect1;
         public ShownEffect Effect2;
         public ShownEffect Effect3;
+        public float Recent0;
+        public float Recent1;
+        public float Recent2;
+        public float Recent3;
+
+        public float Recent(int slot) => slot switch
+        {
+            0 => Recent0,
+            1 => Recent1,
+            2 => Recent2,
+            3 => Recent3,
+            _ => 0f
+        };
+
+        public void SetRecent(int slot, float share)
+        {
+            switch (slot)
+            {
+                case 0: Recent0 = share; break;
+                case 1: Recent1 = share; break;
+                case 2: Recent2 = share; break;
+                case 3: Recent3 = share; break;
+            }
+        }
 
         public ShownEffect Effect(int index) => index switch
         {
@@ -55,6 +79,8 @@ namespace Game.Core.Party.Wire
             writer.ULong(EnemySeed);
             for (var i = 0; i < ShownEffect.MaxShown; i++)
                 Effect(i).Write(ref writer);
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                writer.Float(Recent(slot));
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -62,6 +88,8 @@ namespace Game.Core.Party.Wire
             var message = ReadFields(ref reader);
             for (var i = 0; i < ShownEffect.MaxShown; i++)
                 message.SetEffect(i, ShownEffect.Read(ref reader));
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                message.SetRecent(slot, reader.Float());
             return message;
         }
 

@@ -67,6 +67,40 @@ test("a full party refuses the fifth member and offers skip the sender", () => {
   assert.strictEqual(new Uint8Array(host.outbox[0].data)[1], 2);
 });
 
+test("the state tells every member how much each slot hit since the last state", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.join("user-b", "12");
+  for (let i = 0; i < 12; i++)
+    host.tick();
+  const batch = new Uint8Array(57);
+  const view = new DataView(batch.buffer);
+  batch[0] = 2;
+  view.setUint32(1, 1, true);
+  view.setUint32(5, host.encounter.enemyId, true);
+  view.setFloat64(9, 0.2, true);
+  view.setInt32(49, 1, true);
+  host.receive("user-b", batch.buffer);
+  host.outbox.length = 0;
+  let state = null;
+  for (let i = 0; i < 10 && !state; i++) {
+    host.tick();
+    state = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5) || null;
+  }
+  assert.ok(state, "a state goes out");
+  const data = new DataView(state.data);
+  const recent = (slot) => data.getFloat32(state.data.byteLength - 16 + slot * 4, true);
+  assert.ok(Math.abs(recent(1) - 0.2) < 1e-6, "slot 1 hit 0.2 of the bar");
+  assert.strictEqual(recent(0), 0);
+  host.outbox.length = 0;
+  let next = null;
+  for (let i = 0; i < 10 && !next; i++) {
+    host.tick();
+    next = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5) || null;
+  }
+  assert.strictEqual(new DataView(next.data).getFloat32(next.data.byteLength - 12, true), 0, "the sum starts again after each state");
+});
+
 test("reactions skip the sender and wait for the cooldown", () => {
   const host = new party.PartyHost(party.PartyServerRules, "5");
   for (let i = 0; i < 3; i++)
