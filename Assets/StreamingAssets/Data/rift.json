@@ -6,6 +6,17 @@
     "announceMinutes": 60
   },
   "party": { "joinMinutes": 60, "durationHours": 24 },
+  "board": {
+    "updateMinutes": 5,
+    "shown": 20,
+    "places": [
+      { "upTo": 1, "shards": 300, "uncutGems": 3, "ingots": 6 },
+      { "upTo": 3, "shards": 200, "uncutGems": 2, "ingots": 4 },
+      { "upTo": 10, "shards": 120, "uncutGems": 1, "ingots": 2 },
+      { "upTo": 50, "shards": 60, "uncutGems": 1, "ingots": 1 },
+      { "shards": 30, "uncutGems": 0, "ingots": 1 }
+    ]
+  },
   "world": {
     "hpMultiplier": 10,
     "softWall": { "period": 25, "zoneLength": 3, "rate": 1.2 },

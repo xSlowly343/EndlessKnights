@@ -5,6 +5,8 @@ interface PartyMatchState {
     pendingNumbers: { [userId: string]: string };
     emptyTicks: number;
     chronicleTicks: number;
+    boardRiftId: number;
+    boardTicks: number;
 }
 
 const PartyMatchName = "party";
@@ -28,7 +30,7 @@ function partyDecimalOrNull(value: any): string | null {
 function partyMatchInit(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, params: { [key: string]: string }) {
     const seed = partyDecimalOrNull(params.seed) || String(Date.now());
     const partyId = typeof params.partyId === "string" ? params.partyId : "";
-    const state: PartyMatchState = { host: new PartyHost(PartyServerRules, seed), partyId: partyId, presences: {}, pendingNumbers: {}, emptyTicks: 0, chronicleTicks: 0 };
+    const state: PartyMatchState = { host: new PartyHost(PartyServerRules, seed), partyId: partyId, presences: {}, pendingNumbers: {}, emptyTicks: 0, chronicleTicks: 0, boardRiftId: 0, boardTicks: 0 };
     return { state: state, tickRate: PartyTicksPerSecond, label: JSON.stringify({ kind: PartyMatchName, open: true }) };
 }
 
@@ -85,6 +87,7 @@ function partyMatchLoop(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     const now = Date.now();
     partyHandleWorld(nk, state, now);
     host.tick(now);
+    partyTrackRift(nk, logger, state, now);
     partySend(dispatcher, state, host);
     partyReportFlags(nk, logger, ctx.matchId || "", host);
     state.chronicleTicks = (state.chronicleTicks || 0) + 1;
@@ -122,6 +125,40 @@ function partyHandleWorld(nk: nkruntime.Nakama, state: PartyMatchState, nowUnixM
         }
     }
     host.worldRequests.length = 0;
+}
+
+function partyTrackRift(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: PartyMatchState, nowUnixMs: number): void {
+    const host = state.host;
+    const current = host.encounter.world === PartyWorld.Rift ? host.encounter.riftId : 0;
+    state.boardTicks = (state.boardTicks || 0) + 1;
+    const due = state.boardTicks >= Math.max(1, partyTicks(RiftServerRules.boardUpdateMs / 1000));
+    const tracked = state.boardRiftId || 0;
+    if (tracked !== 0 && (due || current !== tracked)) {
+        partyWriteBoard(nk, state, tracked, nowUnixMs);
+        state.boardRiftId = current;
+    } else if (tracked === 0 && current !== 0) {
+        state.boardRiftId = current;
+        partyWriteBoard(nk, state, current, nowUnixMs);
+    }
+    if (due) {
+        state.boardTicks = 0;
+        riftSettleDue(nk, logger, nowUnixMs);
+    }
+}
+
+function partyWriteBoard(nk: nkruntime.Nakama, state: PartyMatchState, riftId: number, nowUnixMs: number): void {
+    if (!state.partyId)
+        return;
+    const host = state.host;
+    const members: string[] = [];
+    for (const member of host.encounter.members)
+        if (member.joined)
+            members.push(member.playerId);
+    const group = partyGroupById(nk, state.partyId);
+    const title = group ? partyMetaOf(group).title : "";
+    const cleared = host.riftCleared;
+    host.riftCleared = 0;
+    riftBoardAdd(nk, riftId, state.partyId, title, cleared, members, nowUnixMs);
 }
 
 function partyLeaderOf(nk: nkruntime.Nakama, partyId: string): string | null {

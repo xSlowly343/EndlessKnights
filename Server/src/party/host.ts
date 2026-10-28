@@ -28,6 +28,7 @@ class PartyHost {
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
     readonly worldRequests: { slot: number; world: PartyWorld; cancel: boolean }[] = [];
+    riftCleared = 0;
     private readonly allowance = [0, 0, 0, 0];
     private readonly hitAllowance = [0, 0, 0, 0];
     private readonly lastHeardTick = [0, 0, 0, 0];
@@ -303,6 +304,9 @@ class PartyHost {
                 if (event.enemyKind === PartyEnemyKind.Boss)
                     this.noteBossKill(event);
                 this.broadcast(partyEncodeEnemyKilled(event), PartyNoSlot);
+            } else if (event.kind === PartyEventKind.StageCleared && this.encounter.world === PartyWorld.Rift) {
+                this.riftCleared++;
+                this.broadcast(partyEncodeMoment(event, this.encounter.bossTicksLeft), PartyNoSlot);
             } else if (event.kind === PartyEventKind.EnemySpawned || event.kind === PartyEventKind.WorldPending
                 || event.kind === PartyEventKind.WorldCancelled || event.kind === PartyEventKind.WorldChanged) {
                 this.ticksToState = 0;

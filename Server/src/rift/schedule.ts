@@ -11,6 +11,16 @@ interface RiftRules {
     modifiersPerWindow: number;
     partyJoinMs: number;
     partyDurationMs: number;
+    boardUpdateMs: number;
+    boardShown: number;
+    boardPlaces: RiftBoardPlace[];
+}
+
+interface RiftBoardPlace {
+    upTo: number;
+    shards: number;
+    uncutGems: number;
+    ingots: number;
 }
 
 interface RiftWindow {

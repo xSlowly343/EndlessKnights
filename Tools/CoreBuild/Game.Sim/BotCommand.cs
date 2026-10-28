@@ -101,6 +101,8 @@ namespace Game.Sim
             var bothInRift = leader.Client.World == PartyWorld.Rift && friend.Client.World == PartyWorld.Rift;
             if (rift)
                 Console.WriteLine("both in the rift " + bothInRift);
+            if (bothInRift)
+                await leader.ShowRiftBoardAsync(Console.Out).ConfigureAwait(false);
             await friend.FinishAsync(false).ConfigureAwait(false);
             await leader.FinishAsync(false).ConfigureAwait(false);
             return linked && reactionsArrive && leader.Client.PartyRewards > 0 && friend.Client.PartyRewards > 0 && (!rift || bothInRift) ? 0 : 1;
@@ -193,6 +195,15 @@ namespace Game.Sim
                 if (found.Count == 0)
                     throw new NakamaException(0, "no open party to join");
                 await _online.JoinOpenAsync(found[0].Id).ConfigureAwait(false);
+            }
+
+            public async Task ShowRiftBoardAsync(System.IO.TextWriter output)
+            {
+                var board = await _online.Directory.RiftBoardAsync(Client.RiftId).ConfigureAwait(false);
+                output.WriteLine("rift " + board.RiftId + ", ends " + DateTimeOffset.FromUnixTimeMilliseconds(board.EndUnixMs).ToString("u", CultureInfo.InvariantCulture) +
+                    ", " + RiftBoardText.Own(board.OwnPlace, board.Parties, board.OwnDepth));
+                foreach (var row in board.Top)
+                    output.WriteLine("  " + RiftBoardText.Row(row.Place, row.Title, row.Depth, row.Yours));
             }
 
             public async Task ShowChronicleAsync(System.IO.TextWriter output)

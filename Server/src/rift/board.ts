@@ -1,0 +1,212 @@
+interface RiftBoardEntry {
+    partyId: string;
+    title: string;
+    cleared: number;
+    reachedAt: number;
+    members: string[];
+}
+
+interface RiftBoard {
+    riftId: number;
+    endUnixMs: number;
+    parties: { [partyId: string]: RiftBoardEntry };
+    settled: boolean;
+}
+
+interface RiftRewardRecord {
+    riftId: number;
+    place: number;
+    of: number;
+    depth: number;
+    title: string;
+    shards: number;
+    uncutGems: number;
+    ingots: number;
+    claimed: boolean;
+}
+
+const RiftBoardCollection = "rift_board";
+const RiftBoardIndexKey = "pending";
+const RiftRewardsCollection = "rift_rewards";
+const RiftBoardWriteAttempts = 3;
+
+function riftBoardKey(riftId: number): string {
+    return String(riftId);
+}
+
+function riftUpdate<T>(nk: nkruntime.Nakama, key: string, empty: () => T, change: (value: T) => boolean): T | null {
+    for (let attempt = 1; attempt <= RiftBoardWriteAttempts; attempt++) {
+        const objects = nk.storageRead([{ collection: RiftBoardCollection, key: key, userId: PartySystemUser }]);
+        const value = objects.length > 0 ? objects[0].value as T : empty();
+        if (!change(value))
+            return value;
+        try {
+            nk.storageWrite([{
+                collection: RiftBoardCollection, key: key, userId: PartySystemUser, value: value as any,
+                version: objects.length > 0 ? objects[0].version : "*", permissionRead: 0, permissionWrite: 0
+            }]);
+            return value;
+        } catch (error) {
+            if (attempt === RiftBoardWriteAttempts)
+                return null;
+        }
+    }
+    return null;
+}
+
+function riftEmptyBoard(riftId: number): RiftBoard {
+    return { riftId: riftId, endUnixMs: riftPartyEnd(riftId), parties: {}, settled: false };
+}
+
+function riftBoardAdd(nk: nkruntime.Nakama, riftId: number, partyId: string, title: string, cleared: number, members: string[], nowUnixMs: number): boolean {
+    let created = false;
+    const board = riftUpdate(nk, riftBoardKey(riftId), () => {
+        created = true;
+        return riftEmptyBoard(riftId);
+    }, (value) => {
+        if (value.settled)
+            return false;
+        const entry = value.parties[partyId] || { partyId: partyId, title: title, cleared: 0, reachedAt: nowUnixMs, members: [] };
+        if (cleared > 0) {
+            entry.cleared += cleared;
+            entry.reachedAt = nowUnixMs;
+        }
+        if (title)
+            entry.title = title;
+        for (const member of members)
+            if (entry.members.indexOf(member) < 0)
+                entry.members.push(member);
+        value.parties[partyId] = entry;
+        return true;
+    });
+    if (created && board !== null)
+        riftUpdate<{ rifts: number[] }>(nk, RiftBoardIndexKey, () => ({ rifts: [] }), (index) => {
+            if (index.rifts.indexOf(riftId) >= 0)
+                return false;
+            index.rifts.push(riftId);
+            return true;
+        });
+    return board !== null && !board.settled;
+}
+
+function riftSettlesAt(riftId: number): number {
+    return riftPartyEnd(riftId) + RiftServerRules.boardUpdateMs;
+}
+
+function riftRanking(board: RiftBoard): RiftBoardEntry[] {
+    const entries: RiftBoardEntry[] = [];
+    for (const partyId of Object.keys(board.parties))
+        entries.push(board.parties[partyId]);
+    entries.sort((a, b) => b.cleared - a.cleared || a.reachedAt - b.reachedAt || (a.partyId < b.partyId ? -1 : a.partyId > b.partyId ? 1 : 0));
+    return entries;
+}
+
+function riftRewardFor(place: number): RiftBoardPlace {
+    for (const tier of RiftServerRules.boardPlaces)
+        if (tier.upTo === 0 || place <= tier.upTo)
+            return tier;
+    return { upTo: 0, shards: 0, uncutGems: 0, ingots: 0 };
+}
+
+function riftSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, riftId: number, nowUnixMs: number): boolean {
+    const objects = nk.storageRead([{ collection: RiftBoardCollection, key: riftBoardKey(riftId), userId: PartySystemUser }]);
+    if (objects.length === 0)
+        return true;
+    const board = objects[0].value as RiftBoard;
+    if (board.settled)
+        return true;
+    if (nowUnixMs < riftSettlesAt(riftId))
+        return false;
+    const ranking = riftRanking(board);
+    for (let i = 0; i < ranking.length; i++) {
+        const entry = ranking[i];
+        const tier = riftRewardFor(i + 1);
+        for (const userId of entry.members) {
+            const reward: RiftRewardRecord = {
+                riftId: riftId, place: i + 1, of: ranking.length, depth: entry.cleared + 1, title: entry.title,
+                shards: tier.shards, uncutGems: tier.uncutGems, ingots: tier.ingots, claimed: false
+            };
+            try {
+                nk.storageWrite([{ collection: RiftRewardsCollection, key: riftBoardKey(riftId), userId: userId, value: reward as any, version: "*", permissionRead: 1, permissionWrite: 0 }]);
+            } catch (error) {
+                continue;
+            }
+        }
+    }
+    board.settled = true;
+    try {
+        nk.storageWrite([{
+            collection: RiftBoardCollection, key: riftBoardKey(riftId), userId: PartySystemUser, value: board as any,
+            version: objects[0].version, permissionRead: 0, permissionWrite: 0
+        }]);
+    } catch (error) {
+        return false;
+    }
+    logger.info("rift %d settled: %d parties", riftId, ranking.length);
+    return true;
+}
+
+function riftSettleDue(nk: nkruntime.Nakama, logger: nkruntime.Logger, nowUnixMs: number): void {
+    const objects = nk.storageRead([{ collection: RiftBoardCollection, key: RiftBoardIndexKey, userId: PartySystemUser }]);
+    if (objects.length === 0)
+        return;
+    const settled: number[] = [];
+    for (const riftId of (objects[0].value as { rifts: number[] }).rifts)
+        if (riftSettlesAt(riftId) <= nowUnixMs && riftSettle(nk, logger, riftId, nowUnixMs))
+            settled.push(riftId);
+    if (settled.length > 0)
+        riftUpdate<{ rifts: number[] }>(nk, RiftBoardIndexKey, () => ({ rifts: [] }), (index) => {
+            index.rifts = index.rifts.filter((riftId) => settled.indexOf(riftId) < 0);
+            return true;
+        });
+}
+
+function riftBoardView(board: RiftBoard, partyId: string): { [key: string]: any } {
+    const ranking = riftRanking(board);
+    const shown = ranking.slice(0, RiftServerRules.boardShown).map((entry, i) => ({
+        place: i + 1, title: entry.title, depth: entry.cleared + 1, members: entry.members.length, yours: entry.partyId === partyId
+    }));
+    let own: { [key: string]: any } | null = null;
+    for (let i = 0; i < ranking.length; i++)
+        if (ranking[i].partyId === partyId)
+            own = { place: i + 1, depth: ranking[i].cleared + 1, reward: riftRewardFor(i + 1) };
+    return { riftId: board.riftId, endUnixMs: board.endUnixMs, settled: board.settled, parties: ranking.length, top: shown, own: own };
+}
+
+function riftBoardRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    const now = Date.now();
+    riftSettleDue(nk, logger, now);
+    const request = partyRequest(payload);
+    const riftId = typeof request.riftId === "number" && request.riftId > 0 ? Math.floor(request.riftId) : 0;
+    if (riftId === 0)
+        throw new Error("bad request");
+    const objects = nk.storageRead([{ collection: RiftBoardCollection, key: riftBoardKey(riftId), userId: PartySystemUser }]);
+    if (objects.length === 0)
+        throw new Error("rift not found");
+    const group = partyGroupOfUser(nk, partyCaller(ctx));
+    return JSON.stringify(riftBoardView(objects[0].value as RiftBoard, group ? group.id : ""));
+}
+
+function riftRewardsRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    const userId = partyCaller(ctx);
+    riftSettleDue(nk, logger, Date.now());
+    const claimed: RiftRewardRecord[] = [];
+    let cursor: string | undefined = undefined;
+    do {
+        const page: { objects?: nkruntime.StorageObject[]; cursor?: string } = nk.storageList(userId, RiftRewardsCollection, 100, cursor);
+        for (const object of page.objects || []) {
+            const reward = object.value as RiftRewardRecord;
+            if (reward.claimed)
+                continue;
+            reward.claimed = true;
+            try {
+                nk.storageWrite([{ collection: RiftRewardsCollection, key: object.key, userId: userId, value: reward as any, version: object.version, permissionRead: 1, permissionWrite: 0 }]);
+                claimed.push(reward);
+            } catch (error) {
+                continue;
+            }
+        }
+        cursor = page.cursor || undefined;
+    } while (cursor);
+    return JSON.stringify({ rewards: claimed });
+}

@@ -76,6 +76,18 @@ namespace Game.Net.Nakama
         public async Task<PartyChronicleView> ChronicleAsync(CancellationToken cancel = default) =>
             PartyChronicleView.From(await Call("party_chronicle", "{}", cancel).ConfigureAwait(false)) ?? throw new NakamaException(0, "the server sent no chronicle");
 
+        public async Task<RiftBoardView> RiftBoardAsync(long riftId, CancellationToken cancel = default) =>
+            RiftBoardView.From(await Call("rift_board", NakamaJson.Object(("riftId", riftId.ToString(CultureInfo.InvariantCulture))), cancel).ConfigureAwait(false))
+            ?? throw new NakamaException(0, "the server sent no board");
+
+        public async Task<IReadOnlyList<RiftRewardView>> ClaimRiftRewardsAsync(CancellationToken cancel = default)
+        {
+            var rewards = new List<RiftRewardView>();
+            foreach (var reward in NakamaJson.Items(await Call("rift_rewards", "{}", cancel).ConfigureAwait(false), "rewards"))
+                rewards.Add(new RiftRewardView(reward));
+            return rewards;
+        }
+
         private async Task<JsonValue> Call(string rpc, string payload, CancellationToken cancel) =>
             NakamaJson.Parse(await _client.RpcAsync(_session, rpc, payload, cancel).ConfigureAwait(false));
 
