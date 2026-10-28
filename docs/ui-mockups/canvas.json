@@ -79,6 +79,83 @@
       "w": 480,
       "h": 560,
       "title": "Рамки 11 редкостей, метки сумки, слот руки"
+    },
+    "Subclass.dc.html": {
+      "x": 0,
+      "y": 3000,
+      "w": 480,
+      "h": 786,
+      "title": "Дерево › Подкласс: мини-дерево Пути с ключом"
+    },
+    "Master.dc.html": {
+      "x": 560,
+      "y": 3000,
+      "w": 480,
+      "h": 786,
+      "title": "Книга › Мастер: круг скиллов оружия"
+    },
+    "BookSockets.dc.html": {
+      "x": 1120,
+      "y": 3000,
+      "w": 480,
+      "h": 786,
+      "title": "Книга › Скиллы: гнёзда поддержек, цвета, неогранённые гемы"
+    },
+    "Cut.dc.html": {
+      "x": 1680,
+      "y": 3000,
+      "w": 480,
+      "h": 786,
+      "title": "Огранка гема"
+    },
+    "Sets.dc.html": {
+      "x": 2240,
+      "y": 3000,
+      "w": 480,
+      "h": 786,
+      "title": "Предметы › Сеты: Коллекция и крафт"
+    },
+    "EchoAtlas.dc.html": {
+      "x": 0,
+      "y": 3900,
+      "w": 480,
+      "h": 786,
+      "title": "Эхо › Атлас Разлома (раздел предложен агентом)"
+    },
+    "EchoResonance.dc.html": {
+      "x": 560,
+      "y": 3900,
+      "w": 480,
+      "h": 786,
+      "title": "Эхо › Резонансы ввода"
+    },
+    "EchoSpirits.dc.html": {
+      "x": 1120,
+      "y": 3900,
+      "w": 480,
+      "h": 786,
+      "title": "Эхо › Духи-спутники"
+    },
+    "EchoChronicle.dc.html": {
+      "x": 1680,
+      "y": 3900,
+      "w": 480,
+      "h": 786,
+      "title": "Эхо › Летопись испытаний"
+    },
+    "StripEncounters.dc.html": {
+      "x": 2240,
+      "y": 3900,
+      "w": 480,
+      "h": 380,
+      "title": "Полоска: Золотой Колосс и Странник Разлома"
+    },
+    "Ascendancy.dc.html": {
+      "x": 2900,
+      "y": 0,
+      "w": 790,
+      "h": 3896,
+      "title": "Мини-деревья всех 42 Путей (из ascendancy.json)"
     }
   },
   "order": [
@@ -91,7 +168,18 @@
     "Strip.dc.html",
     "TabBar.dc.html",
     "Portal.dc.html",
-    "Frames.dc.html"
+    "Frames.dc.html",
+    "Subclass.dc.html",
+    "Master.dc.html",
+    "BookSockets.dc.html",
+    "Cut.dc.html",
+    "Sets.dc.html",
+    "EchoAtlas.dc.html",
+    "EchoResonance.dc.html",
+    "EchoSpirits.dc.html",
+    "EchoChronicle.dc.html",
+    "StripEncounters.dc.html",
+    "Ascendancy.dc.html"
   ],
   "notes": {
     "t1": {
