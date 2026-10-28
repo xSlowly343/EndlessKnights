@@ -63,7 +63,7 @@ body{margin:0}
         Свободное место: пригласить друга из Steam
       </button>
       <div style="display: flex; gap: 8px">
-        <button type="button" style="flex: 1.4; height: 36px; border-radius: 8px; border: 0; background: #F0B43C; color: #2A1C00; font-family: inherit; font-weight: 700; font-size: 13px; box-shadow: inset 0 -3px 0 #B47E1A">Позвать на помощь</button>
+        <button type="button" style="flex: 1.4; height: 36px; border-radius: 8px; border: 0; background: #F0B43C; color: #2A1C00; font-family: inherit; font-weight: 700; font-size: 13px; box-shadow: inset 0 -3px 0 #B47E1A">Код K7M-Q2X</button>
         <button type="button" style="flex: 1; height: 36px; border-radius: 8px; border: 0; background: #3F6FD1; color: #FFFFFF; font-family: inherit; font-weight: 500; font-size: 13px; box-shadow: inset 0 -3px 0 #2A4E9A">Связки</button>
         <button type="button" style="flex: 1; height: 36px; border-radius: 8px; border: 1px solid #B02A2A; background: transparent; color: #FFB4B4; font-family: inherit; font-weight: 500; font-size: 13px">Покинуть</button>
       </div>
@@ -80,9 +80,9 @@ class Component extends DCLogic {
     const avatar = (c) => 'width: 36px; height: 36px; border-radius: 50%; flex: none; background: ' + c + '; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35)';
     return {
       members: [
-        { name: 'Вы', cls: 'Мечник · этап 37', status: 'бьёт', chip: chip('#1F4A33', '#BFF2D2'), aura: 'Шквал готов', share: '41%', color: '#8FB4FF', avatar: avatar('#3F6FD1') },
-        { name: 'Аня', cls: 'Бард · этап 112', status: 'бьёт', chip: chip('#1F4A33', '#BFF2D2'), aura: 'Песнь золота: +20% пати', share: '34%', color: '#8CE0A8', avatar: avatar('#4FC277') },
-        { name: 'Миша', cls: 'Ведьма · этап 64', status: 'отдыхает', chip: chip('#4A3A16', '#FFE2A0'), aura: 'Уязвимость: +15% по врагу', share: '25%', color: '#D2B4FF', avatar: avatar('#B07CFF') }
+        { name: 'Вы', cls: 'Викинг · этап 37', status: 'бьёт', chip: chip('#1F4A33', '#BFF2D2'), aura: 'Сокрушение готово', share: '41%', color: '#8FB4FF', avatar: avatar('#3F6FD1') },
+        { name: 'Аня', cls: 'Металлист · этап 112', status: 'бьёт', chip: chip('#1F4A33', '#BFF2D2'), aura: 'Песня золота: +20% отряду', share: '34%', color: '#8CE0A8', avatar: avatar('#4FC277') },
+        { name: 'Миша', cls: 'Вуду-колдунья · этап 64', status: 'отдыхает', chip: chip('#4A3A16', '#FFE2A0'), aura: 'Уязвимость: +15% по врагу', share: '25%', color: '#D2B4FF', avatar: avatar('#B07CFF') }
       ]
     };
   }
