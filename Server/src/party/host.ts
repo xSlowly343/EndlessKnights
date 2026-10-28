@@ -27,6 +27,7 @@ class PartyHost {
     readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0 };
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
+    readonly worldRequests: { slot: number; world: PartyWorld; cancel: boolean }[] = [];
     private readonly allowance = [0, 0, 0, 0];
     private readonly hitAllowance = [0, 0, 0, 0];
     private readonly lastHeardTick = [0, 0, 0, 0];
@@ -128,7 +129,7 @@ class PartyHost {
             case PartyMessageKind.WorldRequest: {
                 const request = partyDecodeWorldRequest(data);
                 if (request)
-                    this.requestWorld(request);
+                    this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel });
                 break;
             }
             case PartyMessageKind.PartyReaction: {
@@ -192,22 +193,8 @@ class PartyHost {
             this.chronicle.nightBosses++;
     }
 
-    private requestWorld(request: WorldRequestMessage): void {
-        if (request.cancel) {
-            this.encounter.cancelWorld();
-            return;
-        }
-        if (request.world === PartyWorld.Home) {
-            this.encounter.proposeWorld(PartyWorld.Home, 0);
-            return;
-        }
-        const open = request.world === PartyWorld.Rift ? riftWindowAt(RiftServerRules, this.clockUnixMs) : null;
-        if (open !== null && open.id === request.windowId)
-            this.encounter.proposeWorld(PartyWorld.Rift, request.windowId);
-    }
-
     private returnWhenTheRiftCloses(): void {
-        if (this.encounter.world === PartyWorld.Rift && this.clockUnixMs >= this.encounter.windowId * 1000 + RiftServerRules.durationMs)
+        if (this.encounter.world === PartyWorld.Rift && this.clockUnixMs >= riftPartyEnd(this.encounter.riftId))
             this.encounter.switchWorld(PartyWorld.Home, 0);
     }
 

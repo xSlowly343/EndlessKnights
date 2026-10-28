@@ -780,6 +780,8 @@
     "party.rift.home": { "ru": "Вернуться домой", "en": "Back home" },
     "party.rift.leaving": { "ru": "В Разлом через {0} с · отменить", "en": "Rift in {0}s · cancel" },
     "party.rift.returning": { "ru": "Домой через {0} с · отменить", "en": "Home in {0}s · cancel" },
+    "party.rift.leaderLeaving": { "ru": "Лидер ведёт в Разлом: {0} с", "en": "The leader takes you into the Rift: {0}s" },
+    "party.rift.leaderReturning": { "ru": "Лидер ведёт домой: {0} с", "en": "The leader takes you home: {0}s" },
     "chronicle.feat.first_steps": { "ru": "Первые шаги", "en": "First Steps" },
     "chronicle.feat.old_guard": { "ru": "Старая гвардия", "en": "Old Guard" },
     "chronicle.feat.guardian_hunters": { "ru": "Охотники на стражей", "en": "Guardian Hunters" },

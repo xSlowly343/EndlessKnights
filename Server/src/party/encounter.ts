@@ -65,9 +65,9 @@ class PartyEncounter {
     loopShare = 0;
     savedBossTicks = 0;
     world = PartyWorld.Home;
-    windowId = 0;
+    riftId = 0;
     pendingWorld = PartyNoWorld;
-    pendingWindowId = 0;
+    pendingRiftId = 0;
     switchTicksLeft = 0;
     private readonly recent: number[] = [];
     private bossTimerCarry = 0;
@@ -274,11 +274,11 @@ class PartyEncounter {
         return true;
     }
 
-    proposeWorld(world: PartyWorld, windowId: number): boolean {
-        if (!this.started || this.switching || (world === this.world && windowId === this.windowId) || (world === PartyWorld.Home) !== (windowId === 0))
+    proposeWorld(world: PartyWorld, riftId: number): boolean {
+        if (!this.started || this.switching || (world === this.world && riftId === this.riftId) || (world === PartyWorld.Home) !== (riftId === 0))
             return false;
         this.pendingWorld = world;
-        this.pendingWindowId = windowId;
+        this.pendingRiftId = riftId;
         this.switchTicksLeft = Math.max(1, partyTicks(this.rules.worldSwitchSeconds));
         this.addEvent(PartyEventKind.WorldPending);
         return true;
@@ -292,10 +292,10 @@ class PartyEncounter {
         return true;
     }
 
-    switchWorld(world: PartyWorld, windowId: number): void {
+    switchWorld(world: PartyWorld, riftId: number): void {
         this.clearPending();
         this.world = world;
-        this.windowId = windowId;
+        this.riftId = riftId;
         this.killsOnStage = 0;
         this.farming = false;
         this.farmKills = 0;
@@ -315,7 +315,7 @@ class PartyEncounter {
         this.tickEffects();
         this.dropLostFighters();
         if (this.switching && --this.switchTicksLeft <= 0) {
-            this.switchWorld(this.pendingWorld, this.pendingWindowId);
+            this.switchWorld(this.pendingWorld, this.pendingRiftId);
             return;
         }
         if (!this.fightingBoss || !this.started)
@@ -345,7 +345,7 @@ class PartyEncounter {
 
     private clearPending(): void {
         this.pendingWorld = PartyNoWorld;
-        this.pendingWindowId = 0;
+        this.pendingRiftId = 0;
         this.switchTicksLeft = 0;
     }
 

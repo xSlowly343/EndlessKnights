@@ -414,7 +414,12 @@ namespace Game.Bootstrap
             });
         }
 
-        private void ShowCode() => _panels.Party.UseCode(_session?.Party?.Code ?? string.Empty);
+        private void ShowCode()
+        {
+            _panels.Party.UseCode(_session?.Party?.Code ?? string.Empty);
+            if (_party != null)
+                _party.IsLeader = _session?.Party != null && _session.Party.Leader == _session.UserId;
+        }
 
         private string Language()
         {

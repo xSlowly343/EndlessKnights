@@ -5,6 +5,7 @@
     "durationHours": 24,
     "announceMinutes": 60
   },
+  "party": { "joinMinutes": 60, "durationHours": 24 },
   "world": {
     "hpMultiplier": 10,
     "softWall": { "period": 25, "zoneLength": 3, "rate": 1.2 },

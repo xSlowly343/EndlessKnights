@@ -8,7 +8,8 @@ namespace Game.Core.Ui
         None,
         Enter,
         Home,
-        Cancel
+        Cancel,
+        Countdown
     }
 
     public static class PartyRiftButton
@@ -18,7 +19,9 @@ namespace Game.Core.Ui
             if (client == null || !client.InParty)
                 return PartyRiftAction.None;
             if (client.WorldSwitching)
-                return PartyRiftAction.Cancel;
+                return client.IsLeader ? PartyRiftAction.Cancel : PartyRiftAction.Countdown;
+            if (!client.IsLeader)
+                return PartyRiftAction.None;
             if (client.World == PartyWorld.Rift)
                 return PartyRiftAction.Home;
             return client.RiftOpen(nowUnixMs) ? PartyRiftAction.Enter : PartyRiftAction.None;
@@ -29,6 +32,7 @@ namespace Game.Core.Ui
             PartyRiftAction.Enter => Texts.Get("party.rift.enter"),
             PartyRiftAction.Home => Texts.Get("party.rift.home"),
             PartyRiftAction.Cancel => Texts.Format(client!.PendingWorld == PartyWorld.Rift ? "party.rift.leaving" : "party.rift.returning", Seconds(client)),
+            PartyRiftAction.Countdown => Texts.Format(client!.PendingWorld == PartyWorld.Rift ? "party.rift.leaderLeaving" : "party.rift.leaderReturning", Seconds(client)),
             _ => string.Empty
         };
 
