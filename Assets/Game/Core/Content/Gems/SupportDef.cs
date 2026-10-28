@@ -13,7 +13,10 @@ namespace Game.Core.Content.Gems
         Acceleration,
         CritFocus,
         WideReach,
-        DeferredPayment
+        DeferredPayment,
+        DoubleCharge,
+        Twins,
+        Lingering
     }
 
     public sealed class SupportDef
@@ -49,6 +52,11 @@ namespace Game.Core.Content.Gems
         public double CritMultiplier { get; private set; } = 1;
         public double CostMultiplier { get; private set; } = 1;
         public double DeferPerSecond { get; private set; }
+        public int ExtraCharges { get; private set; }
+        public double TwinSeconds { get; private set; }
+        public double TwinPower { get; private set; }
+        public double DurationMultiplier { get; private set; } = 1;
+        public double LingerMax { get; private set; }
 
         public static SupportDef? Read(ContentNode effect)
         {
@@ -125,6 +133,24 @@ namespace Game.Core.Content.Gems
                     {
                         CostMultiplier = effect.Field("costMultiplier").AsNumber(0, 10),
                         DeferPerSecond = effect.Field("perSecond").AsNumber(0.001, 100)
+                    };
+                case "doubleCharge":
+                    return new SupportDef(SupportKind.DoubleCharge)
+                    {
+                        ExtraCharges = effect.Field("extraCharges").AsInt(1, 10),
+                        Power = effect.Field("power").AsNumber(0, 10)
+                    };
+                case "twins":
+                    return new SupportDef(SupportKind.Twins)
+                    {
+                        TwinSeconds = effect.Field("afterSeconds").AsNumber(0.1, 600),
+                        TwinPower = effect.Field("power").AsNumber(0, 10)
+                    };
+                case "lingering":
+                    return new SupportDef(SupportKind.Lingering)
+                    {
+                        DurationMultiplier = effect.Field("durationMultiplier").AsNumber(0, 10),
+                        LingerMax = effect.Field("lingerMax").AsNumber(0, 10)
                     };
                 default:
                     return null;

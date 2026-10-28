@@ -84,6 +84,53 @@ namespace Game.Core.Sim
             return 0;
         }
 
+        public static int ExtraCharges(SkillSlot slot)
+        {
+            var charges = 0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    charges += support.ExtraCharges;
+            }
+            return charges;
+        }
+
+        public static SupportDef? Twins(SkillSlot slot)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.TwinSeconds > 0)
+                    return support;
+            }
+            return null;
+        }
+
+        public static double DurationMultiplier(SkillSlot slot)
+        {
+            var multiplier = 1.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    multiplier *= support.DurationMultiplier;
+            }
+            return multiplier;
+        }
+
+        public static double LingerMax(SkillSlot slot)
+        {
+            var max = 0.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    max = System.Math.Max(max, support.LingerMax);
+            }
+            return max;
+        }
+
         public static double ExperienceMultiplier(SkillSlot slot)
         {
             var multiplier = 1.0;

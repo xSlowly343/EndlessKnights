@@ -425,5 +425,90 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.NotEnoughResource));
         }
+
+        private static int Supported(GameLoop loop, string skill, string support)
+        {
+            var slot = Equip(loop, skill, support);
+            Assert.That(loop.Book.SetSupport(slot, 0, Gem(support)), Is.EqualTo(BookResult.Done));
+            return slot;
+        }
+
+        private static void Wait(GameLoop loop, int ticks, FakeInputSource? input = null)
+        {
+            for (var i = 0; i < ticks; i++)
+            {
+                input?.PressKeys(1);
+                loop.Tick();
+            }
+        }
+
+        [Test]
+        public void DoubleChargeStoresASecondCastAfterTheCooldown()
+        {
+            var loop = Hero();
+            var slot = Supported(loop, "iron_rim_bash", "double_charge");
+            var skill = loop.State.Skills[slot];
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(slot);
+            var cooldown = skill.CooldownTicks;
+            Assert.That(skill.SpareCharges, Is.EqualTo(0));
+
+            Wait(loop, cooldown);
+            Assert.That(skill.Ready, Is.True);
+            Assert.That(skill.SpareCharges, Is.EqualTo(0));
+            Wait(loop, cooldown + 1);
+            Assert.That(skill.SpareCharges, Is.EqualTo(1));
+
+            loop.State.Resource = 100;
+            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
+            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
+            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.OnCooldown));
+        }
+
+        [Test]
+        public void TwinsRepeatTheSkillLaterAtAThirdOfItsPower()
+        {
+            var plain = Hero();
+            var twins = Hero();
+            var plainSlot = Equip(plain, "iron_rim_bash");
+            var slot = Supported(twins, "iron_rim_bash", "twins");
+            var support = Gem("twins").Support!;
+            var first = CastDamage(twins, slot);
+            Assert.That(first, Is.EqualTo(CastDamage(plain, plainSlot)).Within(first * 1e-9));
+
+            twins.Events.Clear();
+            for (var i = 0; i < (int)(support.TwinSeconds * GameLoop.TicksPerSecond); i++)
+                twins.Tick();
+            var repeat = 0.0;
+            for (var i = 0; i < twins.Events.Count; i++)
+            {
+                if (twins.Events[i].Kind == GameEventKind.Damage && twins.Events[i].Source == DamageSource.Skill)
+                    repeat += twins.Events[i].Amount.ToDouble();
+            }
+
+            Assert.That(repeat, Is.EqualTo(first * support.TwinPower).Within(first * 1e-6));
+        }
+
+        [Test]
+        public void LingeringLastsLongerAndHoldsWhileTyping()
+        {
+            var plain = Hero();
+            var lingering = Hero();
+            var plainSlot = Equip(plain, "space_hammer");
+            var slot = Supported(lingering, "space_hammer", "lingering");
+            var support = Gem("lingering").Support!;
+            plain.State.Resource = 100;
+            lingering.State.Resource = 100;
+            plain.Skills.TryCast(plainSlot);
+            lingering.Skills.TryCast(slot);
+            var total = lingering.State.Skills[slot].ActiveTotalTicks;
+            Assert.That(total, Is.EqualTo((int)System.Math.Round(plain.State.Skills[plainSlot].ActiveTotalTicks * support.DurationMultiplier)));
+
+            var input = new FakeInputSource();
+            var typing = TestWorld.Loop(input, lingering.State, lingering.Hero);
+            Wait(typing, 20, input);
+
+            Assert.That(typing.State.Skills[slot].ActiveTicks, Is.EqualTo(total));
+        }
     }
 }

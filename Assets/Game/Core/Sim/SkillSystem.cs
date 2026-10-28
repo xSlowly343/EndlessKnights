@@ -129,7 +129,8 @@ namespace Game.Core.Sim
                 return CastResult.Passive;
             if (!Armed(slot))
                 return CastResult.NoWeapon;
-            if (!slot.Ready)
+            var spare = !slot.Ready && slot.SpareCharges > 0;
+            if (!slot.Ready && !spare)
                 return CastResult.OnCooldown;
             var native = IsNative(slot) ? skill.Native : NativeTrait.None;
             var wasFull = _resource.IsFull;
@@ -143,8 +144,12 @@ namespace Game.Core.Sim
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
             var cooldown = skill.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot) * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
-            slot.StartCooldown(Ticks(cooldown));
+            if (spare)
+                slot.SpareCharges--;
+            else
+                slot.StartCooldown(Ticks(cooldown));
             slot.LastCastTick = _state.Tick;
+            ArmTwin(slot);
             if (skill.ArmOn != ArmOn.None)
             {
                 slot.Primed = true;
@@ -194,9 +199,10 @@ namespace Game.Core.Sim
                 PrepareCurse(slot);
                 RemoveAura(slot);
             }
-            slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast));
+            slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast) * SupportEffects.DurationMultiplier(slot));
             slot.ActiveTotalTicks = slot.ActiveTicks;
             slot.MouseExtendedTicks = 0;
+            slot.LingerTicks = 0;
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
             if (skill.Effect is SpecialKeysEffect special && special.Charges > 0)
@@ -802,7 +808,9 @@ namespace Game.Core.Sim
                     slot.ReadyTick = _state.Tick;
                 PayDeferred(slot);
                 KeepReserved(slot);
-                if (slot.ActiveTicks > 0)
+                RefillCharge(slot);
+                TickTwin(slot);
+                if (slot.ActiveTicks > 0 && !Lingers(slot, input))
                 {
                     slot.ActiveTicks--;
                     if (slot.ActiveTicks == 0)
@@ -853,6 +861,63 @@ namespace Game.Core.Sim
             _combat.Supporting = null;
             _state.ActiveAuras = CountAuras();
         }
+
+        private void RefillCharge(SkillSlot slot)
+        {
+            var extra = SupportEffects.ExtraCharges(slot);
+            if (slot.SpareCharges >= extra)
+            {
+                slot.SpareCharges = System.Math.Min(slot.SpareCharges, extra);
+                slot.ChargeTicks = 0;
+                return;
+            }
+            if (!slot.Ready)
+                return;
+            if (slot.ChargeTicks <= 0)
+                slot.ChargeTicks = System.Math.Max(1, Ticks(slot.Def.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot)));
+            if (--slot.ChargeTicks == 0)
+                slot.SpareCharges++;
+        }
+
+        private void ArmTwin(SkillSlot slot)
+        {
+            var twins = SupportEffects.Twins(slot);
+            if (twins == null || slot.Def.Effect is EchoEffect)
+                return;
+            slot.TwinTicks = System.Math.Max(1, Ticks(twins.TwinSeconds));
+            slot.TwinPower = twins.TwinPower;
+        }
+
+        private void TickTwin(SkillSlot slot)
+        {
+            if (slot.TwinTicks <= 0 || --slot.TwinTicks > 0)
+                return;
+            if (!Armed(slot) || slot.Def.ArmOn != ArmOn.None)
+                return;
+            var castPower = slot.CastPower;
+            var auraPower = slot.AuraPower;
+            slot.CastPower = castPower * slot.TwinPower;
+            slot.AuraPower = auraPower * slot.TwinPower;
+            if (slot.Def.Effect is AuraEffect || slot.Def.Effect is EnemyDebuffEffect)
+                RemoveAura(slot);
+            Release(slot, IsNative(slot) ? slot.Def.Native : NativeTrait.None, 0, false, announce: false);
+            slot.CastPower = castPower;
+            slot.AuraPower = auraPower;
+        }
+
+        private bool Lingers(SkillSlot slot, in EffectiveInput input)
+        {
+            var max = SupportEffects.LingerMax(slot);
+            if (max <= 0 || slot.LingerTicks >= slot.ActiveTotalTicks * max || !SameInput(slot.Skill.Tags, input))
+                return false;
+            slot.LingerTicks++;
+            return true;
+        }
+
+        private static bool SameInput(StatTags tags, in EffectiveInput input) =>
+            ((tags & StatTags.Keyboard) != 0 && input.Keys > 0)
+            || ((tags & StatTags.Mouse) != 0 && input.MousePx > 0)
+            || ((tags & StatTags.Click) != 0 && input.Clicks > 0);
 
         private void PayDeferred(SkillSlot slot)
         {

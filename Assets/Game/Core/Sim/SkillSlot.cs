@@ -54,6 +54,11 @@ namespace Game.Core.Sim
         public long KeyHitsAtCast { get; set; }
         public double DeferredCost { get; set; }
         public double DeferredTotal { get; set; }
+        public int SpareCharges { get; set; }
+        public int ChargeTicks { get; set; }
+        public int TwinTicks { get; set; }
+        public double TwinPower { get; set; }
+        public int LingerTicks { get; set; }
         public double PassiveScale { get; set; }
         public double AuraPower { get; set; } = 1;
         public double CursePower { get; set; } = 1;
