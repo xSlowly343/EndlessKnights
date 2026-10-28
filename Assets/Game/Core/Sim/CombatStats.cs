@@ -131,6 +131,11 @@ namespace Game.Core.Sim
         public static readonly StatId BeastCount = new StatId("beastCount");
         public static readonly StatId ResourcePerSecond = new StatId("resourcePerSecond");
         public static readonly StatId BossGold = new StatId("bossGold");
+        public static readonly StatId KeyBurstEvery = new StatId("keyBurstEvery");
+        public static readonly StatId KeyBurstMultiplier = new StatId("keyBurstMultiplier");
+        public static readonly StatId MouseBurstPx = new StatId("mouseBurstPx");
+        public static readonly StatId MouseBurstMultiplier = new StatId("mouseBurstMultiplier");
+        public static readonly StatId CooldownPerClick = new StatId("cooldownPerClick");
         public static readonly StatId GuardianHp = new StatId("guardianHp");
         public static readonly StatId ChestEvery = new StatId("chestEvery");
         public static readonly StatId ChestGold = new StatId("chestGold");

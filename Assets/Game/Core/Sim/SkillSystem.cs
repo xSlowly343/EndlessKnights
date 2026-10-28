@@ -1000,6 +1000,7 @@ namespace Game.Core.Sim
             var poisonTicks = Dots.PoisonTicks - _seenPoisonTicks;
             _seenPoisonTicks = Dots.PoisonTicks;
             TickBarrels();
+            var clickCut = Ticks(_hero.Value(CombatStats.CooldownPerClick, 0) * (input.LeftClicks + input.RightClicks + input.MiddleClicks));
             var weakenedKill = _state.WeakenedKills != _seenWeakenedKills;
             _seenWeakenedKills = _state.WeakenedKills;
             ExtendSongs(input);
@@ -1010,6 +1011,8 @@ namespace Game.Core.Sim
             {
                 var slot = _state.Skills[index];
                 _combat.Supporting = slot;
+                if (slot.CooldownTicks > 0 && clickCut > 0)
+                    slot.CooldownTicks = System.Math.Max(1, slot.CooldownTicks - clickCut);
                 if (slot.CooldownTicks > 0 && --slot.CooldownTicks == 0)
                     slot.ReadyTick = _state.Tick;
                 PayDeferred(slot);

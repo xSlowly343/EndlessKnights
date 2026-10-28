@@ -69,6 +69,7 @@ namespace Game.Core.Save
                 ("drops", WriteDrops(state.Drops)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
+                ("resonance", WriteLevels(state.Resonance)),
                 ("gear", WriteWorn(state.Gear)),
                 ("setCollection", JsonValue.Array(WriteCollection(state))),
                 ("inputStats", Object(
@@ -202,6 +203,8 @@ namespace Game.Core.Save
                 ReadChronicle(node.Field("chronicle"), state.Chronicle);
             if (node.HasField("atlas"))
                 ReadIds(node.Field("atlas"), state.Atlas);
+            if (node.HasField("resonance"))
+                ReadLevels(node.Field("resonance"), state.Resonance);
             if (node.HasField("gear") && items != null)
                 ReadWorn(node.Field("gear"), items, state.Gear);
             if (node.HasField("setCollection"))
@@ -214,6 +217,22 @@ namespace Game.Core.Save
             else
                 state.Drops.Rng = new Rng(rng0 ^ rng1 ^ DropState.SeedSalt);
             return state;
+        }
+
+        private static JsonValue WriteLevels(Dictionary<string, int> levels)
+        {
+            var ids = new List<string>(levels.Keys);
+            ids.Sort(System.StringComparer.Ordinal);
+            var items = new JsonValue[ids.Count];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = Object(("id", JsonValue.Of(ids[i])), ("level", JsonValue.Of(levels[ids[i]])));
+            return JsonValue.Array(items);
+        }
+
+        private static void ReadLevels(ContentNode node, Dictionary<string, int> levels)
+        {
+            foreach (var item in node.Items())
+                levels[item.Field("id").AsString()] = item.Field("level").AsInt(0, 1000);
         }
 
         private static JsonValue WriteIds(List<string> ids)
