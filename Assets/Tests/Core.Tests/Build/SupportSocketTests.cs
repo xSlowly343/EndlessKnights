@@ -712,5 +712,66 @@ namespace Game.Core.Tests.Build
             Assert.That(hunter.State.EnemyHp, Is.EqualTo(hp));
             Assert.That(hunter.State.QueueDamage[0].ToDouble(), Is.EqualTo(hit * support.RedirectMultiplier).Within(hit * 1e-6));
         }
+
+        [Test]
+        public void CursedLeavesTheEnemyVulnerableForAWhile()
+        {
+            var support = Gem("cursed").Support!;
+            var loop = Hero(Attribute("intelligence", 30));
+            var slot = Supported(loop, "iron_rim_bash", "cursed");
+
+            CastDamage(loop, slot);
+
+            Assert.That(loop.State.VulnerabilityTicks, Is.EqualTo((int)(support.VulnerabilitySeconds * GameLoop.TicksPerSecond)));
+            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1 + support.VulnerabilityShare).Within(1e-9));
+            loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(100));
+            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1).Within(1e-9));
+        }
+
+        [Test]
+        public void LingeringBlightAddsMoreStacksLongerCursesAndAHigherCap()
+        {
+            var support = Gem("lingering_blight").Support!;
+            var plain = Hero(Attribute("intelligence", 30));
+            var blight = Hero(Attribute("intelligence", 30));
+            var plainSlot = Equip(plain, "vial_from_belt");
+            var slot = Supported(blight, "vial_from_belt", "lingering_blight");
+            plain.State.Resource = 100;
+            blight.State.Resource = 100;
+            plain.Skills.TryCast(plainSlot);
+            blight.Skills.TryCast(slot);
+            Assert.That(blight.State.PoisonStacks, Is.EqualTo(plain.State.PoisonStacks * support.AfflictionMultiplier).Within(1e-9));
+
+            var plainMax = plain.Skills.Dots.PoisonMax;
+            plain.Tick();
+            blight.Tick();
+            Assert.That(blight.Skills.Dots.PoisonMax, Is.EqualTo(plainMax * support.StackCapMultiplier).Within(1e-9));
+
+            var curser = Hero(Attribute("intelligence", 30));
+            var plainCurser = Hero(Attribute("intelligence", 30));
+            var curse = Supported(curser, "pin", "lingering_blight");
+            var plainCurse = Equip(plainCurser, "pin");
+            curser.State.Resource = 100;
+            plainCurser.State.Resource = 100;
+            curser.Skills.TryCast(curse);
+            plainCurser.Skills.TryCast(plainCurse);
+            Assert.That(curser.State.Skills[curse].ActiveTotalTicks, Is.EqualTo((int)System.Math.Round(plainCurser.State.Skills[plainCurse].ActiveTotalTicks * support.AfflictionMultiplier)));
+        }
+
+        [Test]
+        public void PawnbrokerTradesPowerForRicherKills()
+        {
+            var support = Gem("pawnbroker").Support!;
+            var loop = Hero();
+            var slot = Supported(loop, "iron_rim_bash", "pawnbroker");
+            loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(1));
+            var gold = loop.Loot.GoldFor(loop.State.Stage, EnemyType.Normal, null);
+            var before = loop.State.Gold;
+
+            CastDamage(loop, slot);
+
+            Assert.That(loop.State.Skills[slot].CastPower, Is.EqualTo(support.Power).Within(1e-9));
+            Assert.That((loop.State.Gold - before).ToDouble(), Is.EqualTo((gold * support.KillRewardMultiplier).ToDouble()).Within(1e-6));
+        }
     }
 }

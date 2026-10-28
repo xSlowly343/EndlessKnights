@@ -8019,6 +8019,27 @@
       "color": "green",
       "name": { "ru": "Охотник за целью", "en": "Target Hunter" },
       "effect": { "type": "targetHunter", "multiplier": 1.3 }
+    },
+    {
+      "id": "cursed",
+      "kind": "support",
+      "color": "blue",
+      "name": { "ru": "Проклятый", "en": "Cursed" },
+      "effect": { "type": "cursed", "damageTaken": 0.08, "seconds": 8 }
+    },
+    {
+      "id": "lingering_blight",
+      "kind": "support",
+      "color": "blue",
+      "name": { "ru": "Затяжная хворь", "en": "Lingering Blight" },
+      "effect": { "type": "lingeringBlight", "afflictionMultiplier": 1.5, "stackCapMultiplier": 1.1 }
+    },
+    {
+      "id": "pawnbroker",
+      "kind": "support",
+      "color": "white",
+      "name": { "ru": "Скупщик", "en": "Pawnbroker" },
+      "effect": { "type": "pawnbroker", "power": 0.7, "killReward": 1.4 }
     }
   ]
 }

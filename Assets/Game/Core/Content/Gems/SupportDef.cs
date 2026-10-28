@@ -25,7 +25,10 @@ namespace Game.Core.Content.Gems
         Tailwind,
         MinionTrail,
         Sweeping,
-        TargetHunter
+        TargetHunter,
+        Cursed,
+        LingeringBlight,
+        Pawnbroker
     }
 
     public sealed class SupportDef
@@ -90,6 +93,11 @@ namespace Game.Core.Content.Gems
         public double FlickTargetShare { get; private set; }
         public double QueueDamageMultiplier { get; private set; } = 1;
         public double RedirectMultiplier { get; private set; }
+        public double VulnerabilityShare { get; private set; }
+        public double VulnerabilitySeconds { get; private set; }
+        public double AfflictionMultiplier { get; private set; } = 1;
+        public double StackCapMultiplier { get; private set; } = 1;
+        public double KillRewardMultiplier { get; private set; } = 1;
 
         public static SupportDef? Read(ContentNode effect)
         {
@@ -241,6 +249,24 @@ namespace Game.Core.Content.Gems
                     };
                 case "targetHunter":
                     return new SupportDef(SupportKind.TargetHunter) { RedirectMultiplier = effect.Field("multiplier").AsNumber(0, 100) };
+                case "cursed":
+                    return new SupportDef(SupportKind.Cursed)
+                    {
+                        VulnerabilityShare = effect.Field("damageTaken").AsNumber(0, 10),
+                        VulnerabilitySeconds = effect.Field("seconds").AsNumber(0.1, 600)
+                    };
+                case "lingeringBlight":
+                    return new SupportDef(SupportKind.LingeringBlight)
+                    {
+                        AfflictionMultiplier = effect.Field("afflictionMultiplier").AsNumber(0, 100),
+                        StackCapMultiplier = effect.Field("stackCapMultiplier").AsNumber(0, 100)
+                    };
+                case "pawnbroker":
+                    return new SupportDef(SupportKind.Pawnbroker)
+                    {
+                        Power = effect.Field("power").AsNumber(0, 10),
+                        KillRewardMultiplier = effect.Field("killReward").AsNumber(1, 100)
+                    };
                 default:
                     return null;
             }

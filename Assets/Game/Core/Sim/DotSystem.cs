@@ -20,13 +20,13 @@ namespace Game.Core.Sim
 
         private DotRules Rules => _combat.Dots;
 
-        public double PoisonMax => Rules.PoisonMax + System.Math.Max(0, _hero.Value(CombatStats.PoisonStacks, 0, StatTags.DoT));
-        public double BurnMax => Rules.BurnMax;
+        public double PoisonMax => (Rules.PoisonMax + System.Math.Max(0, _hero.Value(CombatStats.PoisonStacks, 0, StatTags.DoT))) * _state.SupportStackCap;
+        public double BurnMax => Rules.BurnMax * _state.SupportStackCap;
         public int Stir => System.Math.Min(Rules.StirMax, (int)System.Math.Floor(_state.StirTurns + 1e-9));
 
-        public void Apply(AddStacksEffect effect)
+        public void Apply(AddStacksEffect effect, double multiplier = 1)
         {
-            var stacks = effect.Stacks;
+            var stacks = effect.Stacks * multiplier;
             if (stacks <= 0)
                 return;
             stacks += System.Math.Max(0, _hero.Value(CombatStats.DotStacks, 0, StatTags.DoT));

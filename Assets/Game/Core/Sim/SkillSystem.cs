@@ -201,7 +201,8 @@ namespace Game.Core.Sim
                 PrepareCurse(slot);
                 RemoveAura(slot);
             }
-            slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast) * SupportEffects.DurationMultiplier(slot));
+            var affliction = IsCurse(skill) || skill.Effect is CurseFlowEffect ? SupportEffects.Affliction(slot) : 1;
+            slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast) * SupportEffects.DurationMultiplier(slot) * affliction);
             slot.ActiveTotalTicks = slot.ActiveTicks;
             slot.MouseExtendedTicks = 0;
             slot.LingerTicks = 0;
@@ -273,7 +274,7 @@ namespace Game.Core.Sim
         {
             if (stacks.Multiplier > 0)
                 SkillHit(slot, stacks.Multiplier);
-            Dots.Apply(stacks);
+            Dots.Apply(stacks, SupportEffects.Affliction(slot) * slot.StackPower);
         }
 
         private void WeakenNext(WeakenNextEffect weaken)
@@ -903,6 +904,10 @@ namespace Game.Core.Sim
             }
             _state.SupportKeyBonus = keys;
             _state.SupportMouseBonus = mouse;
+            var cap = 1.0;
+            for (var i = 0; i < _state.Skills.Count; i++)
+                cap *= SupportEffects.StackCap(_state.Skills[i]);
+            _state.SupportStackCap = cap;
         }
 
         private void TickSweeping(SkillSlot slot, in EffectiveInput input)
@@ -993,7 +998,9 @@ namespace Game.Core.Sim
             slot.AuraPower = auraPower * slot.TwinPower;
             if (slot.Def.Effect is AuraEffect || slot.Def.Effect is EnemyDebuffEffect)
                 RemoveAura(slot);
+            slot.StackPower = slot.TwinPower;
             Release(slot, IsNative(slot) ? slot.Def.Native : NativeTrait.None, 0, false, announce: false);
+            slot.StackPower = 1;
             slot.CastPower = castPower;
             slot.AuraPower = auraPower;
         }

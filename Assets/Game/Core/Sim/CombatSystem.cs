@@ -106,6 +106,8 @@ namespace Game.Core.Sim
                 multiplier *= 1 + balance * Balance();
             if (_state.ActiveAuras > 0)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerAura, 0, tags)) * _state.ActiveAuras;
+            if (_state.VulnerabilityTicks > 0)
+                multiplier *= 1 + _state.VulnerabilityShare;
             return multiplier;
         }
 
@@ -133,6 +135,8 @@ namespace Game.Core.Sim
         public void Tick(in EffectiveInput input)
         {
             LastTickDamage = BigNumber.Zero;
+            if (_state.VulnerabilityTicks > 0 && --_state.VulnerabilityTicks == 0)
+                _state.VulnerabilityShare = 0;
             CountStreakTime();
             var keyHits = TakeWhole(_state.KeyCarry + input.Keys, out var keyCarry);
             _state.KeyCarry = keyCarry;
