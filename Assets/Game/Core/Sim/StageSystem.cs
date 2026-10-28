@@ -179,7 +179,7 @@ namespace Game.Core.Sim
         {
             var multiplier = _state.NextKillReward;
             _state.NextKillReward = 1;
-            _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy, multiplier);
+            _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy, multiplier * (1 + _state.EnemyGoldBonus));
             _levels.OnKill(_state.EnemyType, multiplier);
             Drops?.OnKill(_state.EnemyType);
             if (multiplier > 1 && _state.NextKillShardChance > 0 && _state.Rng.NextDouble() < _state.NextKillShardChance)
@@ -278,8 +278,10 @@ namespace Game.Core.Sim
             var poison = _state.PoisonStacks * spread;
             var burn = _state.BurnStacks * spread;
             var weakened = _state.WeakenedSpawns > 0;
+            var goldBonus = weakened ? _state.WeakenGoldBonus : 0;
             _state.SpawnEnemy(enemy, type, Weakened(hp));
             _state.EnemyWeakened = weakened;
+            _state.EnemyGoldBonus = goldBonus;
             _state.PoisonStacks = poison;
             _state.BurnStacks = burn;
             ApplyEnemyModifiers(enemy);
@@ -293,7 +295,10 @@ namespace Game.Core.Sim
                 return hp;
             var share = _state.WeakenShare;
             if (--_state.WeakenedSpawns == 0)
+            {
                 _state.WeakenShare = 0;
+                _state.WeakenGoldBonus = 0;
+            }
             return hp * (1 - share);
         }
 

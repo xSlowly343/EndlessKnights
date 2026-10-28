@@ -71,6 +71,10 @@ namespace Game.Core.Sim
         public long MouseIdleTicks { get; set; } = long.MaxValue / 2;
         public long ClicklessTicks { get; set; } = long.MaxValue / 2;
         public bool EnemyWeakened { get; set; }
+        public double WeakenGoldBonus { get; set; }
+        public double EnemyGoldBonus { get; set; }
+        public int SureCritsLeft { get; set; }
+        public bool SureCritsArmed { get; set; }
         public long WeakenedKills { get; set; }
         public double LastWeakenedKillSeconds { get; set; }
         public MouseWindow MouseWindow { get; } = new MouseWindow();

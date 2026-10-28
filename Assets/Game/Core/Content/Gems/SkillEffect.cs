@@ -53,6 +53,36 @@ namespace Game.Core.Content.Gems
         public double BossTimerStopSeconds { get; set; }
     }
 
+    public sealed class PotionOption
+    {
+        public PotionOption(IReadOnlyList<Modifier> modifiers, bool bossTimerStop, double strike, double bossScore, double normalScore)
+        {
+            Modifiers = modifiers;
+            BossTimerStop = bossTimerStop;
+            Strike = strike;
+            BossScore = bossScore;
+            NormalScore = normalScore;
+        }
+
+        public IReadOnlyList<Modifier> Modifiers { get; }
+        public bool BossTimerStop { get; }
+        public double Strike { get; }
+        public double BossScore { get; }
+        public double NormalScore { get; }
+
+        public double Score(bool boss) => boss ? BossScore : NormalScore;
+    }
+
+    public sealed class PotionEffect : SkillEffect
+    {
+        public PotionEffect(IReadOnlyList<PotionOption> options)
+        {
+            Options = options;
+        }
+
+        public IReadOnlyList<PotionOption> Options { get; }
+    }
+
     public sealed class AuraEffect : SkillEffect
     {
         public AuraEffect(IReadOnlyList<Modifier> modifiers, bool party = false, double reserve = 0, double focusLockAfterSeconds = 0,

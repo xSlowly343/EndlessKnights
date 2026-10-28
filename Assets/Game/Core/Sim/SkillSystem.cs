@@ -227,6 +227,8 @@ namespace Game.Core.Sim
                 slot.HitsLeft = hits.MaxHits;
             if (skill.Effect is FlurryEffect flurry)
                 slot.HitsLeft = FlurryHits(flurry, native);
+            if (skill.Effect is PotionEffect brew)
+                slot.PotionChoice = PickPotion(brew, native);
             slot.HitCount = 0;
             slot.InputKinds = 0;
             slot.LastKeyTick = -1;
@@ -258,7 +260,12 @@ namespace Game.Core.Sim
             if (skill.Effect is DetonateEffect detonate)
                 Dots.Detonate(detonate);
             if (skill.Effect is WeakenNextEffect weaken)
+            {
                 WeakenNext(weaken);
+                _state.WeakenGoldBonus = System.Math.Max(_state.WeakenGoldBonus, native.WeakenedGold);
+            }
+            if (skill.Effect is PotionEffect potion)
+                DrinkPotion(slot, potion);
             if (skill.Effect is NextKillRewardEffect reward)
                 ArmNextKillReward(reward);
             if (skill.Effect is EchoEffect echo)
@@ -286,6 +293,25 @@ namespace Game.Core.Sim
             if (stacks.Multiplier > 0)
                 SkillHit(slot, stacks.Multiplier);
             Dots.Apply(stacks, SupportEffects.Affliction(slot) * slot.StackPower);
+        }
+
+        private int PickPotion(PotionEffect potion, NativeTrait native)
+        {
+            var choice = _state.Rng.NextInt(0, potion.Options.Count);
+            if (!native.BestOfTwo)
+                return choice;
+            var other = _state.Rng.NextInt(0, potion.Options.Count);
+            var boss = _state.FightingBoss;
+            return potion.Options[other].Score(boss) > potion.Options[choice].Score(boss) ? other : choice;
+        }
+
+        private void DrinkPotion(SkillSlot slot, PotionEffect potion)
+        {
+            var option = potion.Options[slot.PotionChoice];
+            if (option.BossTimerStop && _state.FightingBoss)
+                _state.BossTimerStopTicks = System.Math.Max(_state.BossTimerStopTicks, slot.ActiveTicks);
+            if (option.Strike > 0)
+                SkillHit(slot, option.Strike);
         }
 
         private void WeakenNext(WeakenNextEffect weaken)
@@ -1305,8 +1331,9 @@ namespace Game.Core.Sim
             if (slot.Progress < 1 - 1e-9)
                 return;
             slot.Progress -= 1;
-            if (pulse.QueueTargets > 0)
-                QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, pulse.Multiplier * slot.CastPower, slot.Skill.Tags), pulse.QueueTargets);
+            var queueTargets = System.Math.Min(GameState.QueueDepth, pulse.QueueTargets + (IsNative(slot) ? slot.Def.Native.QueueTargets : 0));
+            if (queueTargets > 0)
+                QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, pulse.Multiplier * slot.CastPower, slot.Skill.Tags), queueTargets);
             SkillHit(slot, pulse.Multiplier);
             if (IsNative(slot))
                 _resource.Gain(slot.Def.Native.ResourceOnHit);
@@ -1605,14 +1632,20 @@ namespace Game.Core.Sim
             }
             var aura = slot.Def.Effect as AuraEffect;
             var native = IsNative(slot) ? slot.Def.Native.Modifiers : Array.Empty<Modifier>();
-            if (aura == null && native.Count == 0)
+            var potion = slot.Def.Effect is PotionEffect brew && slot.PotionChoice >= 0 && slot.Active
+                ? brew.Options[slot.PotionChoice].Modifiers
+                : Array.Empty<Modifier>();
+            if (aura == null && native.Count == 0 && potion.Count == 0)
                 return;
             var strength = aura == null ? 1 : _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
+            var when = slot.WhenAtCast && IsNative(slot) && slot.Def.Native.WhenMultiplier > 0 ? slot.Def.Native.WhenMultiplier : 1;
             for (var i = 0; aura != null && i < aura.Modifiers.Count; i++)
             {
                 var modifier = aura.Modifiers[i];
-                slot.AuraModifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * strength * slot.AuraPower * LevelPower(slot.Skill), modifier.Tags));
+                slot.AuraModifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * strength * when * slot.AuraPower * LevelPower(slot.Skill), modifier.Tags));
             }
+            for (var i = 0; i < potion.Count; i++)
+                slot.AuraModifiers.Add(new Modifier(potion[i].Stat, potion[i].Kind, potion[i].Value * slot.AuraPower * LevelPower(slot.Skill), potion[i].Tags));
             for (var i = 0; i < native.Count; i++)
                 slot.AuraModifiers.Add(native[i]);
             slot.AuraStrength = strength;

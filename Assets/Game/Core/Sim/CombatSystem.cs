@@ -141,6 +141,7 @@ namespace Game.Core.Sim
         public void Tick(in EffectiveInput input)
         {
             LastTickDamage = BigNumber.Zero;
+            ArmSureCrits();
             if (_state.VulnerabilityTicks > 0 && --_state.VulnerabilityTicks == 0)
                 _state.VulnerabilityShare = 0;
             CountStreakTime();
@@ -339,8 +340,28 @@ namespace Game.Core.Sim
         public double CritMultiplier(StatTags tags) =>
             System.Math.Max(1, _hero.Compute(CombatStats.CritMultiplier, BigNumber.FromDouble(_rules.CritMultiplier), tags | StatTags.Crit).ToDouble());
 
+        private void ArmSureCrits()
+        {
+            var sure = (int)System.Math.Round(System.Math.Max(0, _hero.Value(CombatStats.SureCrits, 0)));
+            if (sure <= 0)
+            {
+                _state.SureCritsArmed = false;
+                _state.SureCritsLeft = 0;
+                return;
+            }
+            if (_state.SureCritsArmed)
+                return;
+            _state.SureCritsArmed = true;
+            _state.SureCritsLeft = sure;
+        }
+
         private bool ForcedCrit()
         {
+            if (_state.SureCritsLeft > 0)
+            {
+                _state.SureCritsLeft--;
+                return true;
+            }
             var every = (long)System.Math.Round(_hero.Value(CombatStats.CritEvery, 0));
             if (every < 1)
             {

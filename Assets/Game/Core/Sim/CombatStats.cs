@@ -43,6 +43,9 @@ namespace Game.Core.Sim
         public static readonly StatId DamagePerKill = new StatId("damagePerKill");
         public static readonly StatId FirstHitsBonus = new StatId("firstHitsBonus");
         public static readonly StatId FrozenFirstHit = new StatId("frozenFirstHit");
+        public static readonly StatId ComboHold = new StatId("comboHold");
+        public static readonly StatId FocusHold = new StatId("focusHold");
+        public static readonly StatId SureCrits = new StatId("sureCrits");
         public static readonly StatId OverloadKeep = new StatId("overloadKeep");
         public static readonly StatId CullThreshold = new StatId("cullThreshold");
         public static readonly StatId DamageAfterIdle = new StatId("damageAfterIdle");

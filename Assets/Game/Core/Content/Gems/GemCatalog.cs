@@ -329,6 +329,8 @@ namespace Game.Core.Content.Gems
                         node.Field("afterSeconds").AsNumber(0.1, 86400),
                         node.Field("maxGapSeconds").AsNumber(0.1, 3600),
                         ModifierReader.ReadList(node.Field("modifiers")));
+                case "potion":
+                    return ReadPotion(node.Field("options"));
                 case "inputKinds":
                     return new InputKindsEffect(node.Field("perKind").AsNumber(0, 1e6));
                 case "storeHits":
@@ -461,6 +463,24 @@ namespace Game.Core.Content.Gems
             }
         }
 
+        private static PotionEffect ReadPotion(ContentNode node)
+        {
+            var options = new List<PotionOption>();
+            foreach (var item in node.Items())
+            {
+                var score = item.Field("score");
+                options.Add(new PotionOption(
+                    item.HasField("modifiers") ? ModifierReader.ReadList(item.Field("modifiers")) : Array.Empty<Modifier>(),
+                    item.HasField("bossTimerStop") && item.Field("bossTimerStop").AsBool(),
+                    Number(item, "strike", 1e6),
+                    score.Field("boss").AsNumber(0, 1000),
+                    score.Field("normal").AsNumber(0, 1000)));
+            }
+            if (options.Count == 0)
+                throw node.Error("a potion needs at least one option");
+            return new PotionEffect(options);
+        }
+
         private static NativeTrait ReadNative(ContentNode node) =>
             new NativeTrait
             {
@@ -487,6 +507,9 @@ namespace Game.Core.Content.Gems
                 ResourcePerPoisonTick = Number(node, "resourcePerPoisonTick", 1000),
                 MouseEverySeconds = node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0,
                 ResourceOnEnd = Number(node, "resourceOnEnd", 1000),
+                WeakenedGold = Number(node, "weakenedGold", 100),
+                BestOfTwo = node.HasField("bestOfTwo") && node.Field("bestOfTwo").AsBool(),
+                QueueTargets = node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
                 ResetWithinSeconds = Number(node, "resetWithinSeconds", 600),
                 RepeatInput = node.HasField("repeatInput") ? Pick(node.Field("repeatInput"), Inputs, "keys, mouse or any") : (HitInput?)null,
                 ExtraHitPerMousePx = Number(node, "extraHitPerMousePx", 1e6),
