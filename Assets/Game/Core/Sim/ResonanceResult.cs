@@ -5,6 +5,7 @@ namespace Game.Core.Sim
         Raised,
         UnknownBranch,
         MaxLevel,
-        NotEnoughEcho
+        NotEnoughEcho,
+        Locked
     }
 }

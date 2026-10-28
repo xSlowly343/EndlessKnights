@@ -4,6 +4,7 @@ namespace Game.Core.Sim
     {
         Cut,
         NoUncut,
-        NotCuttable
+        NotCuttable,
+        Locked
     }
 }

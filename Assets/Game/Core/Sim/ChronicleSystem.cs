@@ -35,8 +35,12 @@ namespace Game.Core.Sim
             Rebuild();
         }
 
+        public Unlocks? Unlocks { get; set; }
+
         public TrialResult Start(string id)
         {
+            if (Unlocks?.IsOpen(Feature.Chronicle) == false)
+                return TrialResult.Locked;
             var chronicle = _state.Chronicle;
             if (!_catalog.TryGet(id, out _))
                 return TrialResult.UnknownTrial;

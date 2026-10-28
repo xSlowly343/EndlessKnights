@@ -33,8 +33,12 @@ namespace Game.Core.Sim
             Rebuild();
         }
 
+        public Unlocks? Unlocks { get; set; }
+
         public ResonanceResult Raise(string id)
         {
+            if (Unlocks?.IsOpen(Feature.Resonance) == false)
+                return ResonanceResult.Locked;
             if (!_catalog.TryGet(id, out var branch))
                 return ResonanceResult.UnknownBranch;
             var level = Level(id);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Content;
 using Game.Core.Content.Items;
 using Game.Core.Content.Tree;
 using Game.Core.Stats;
@@ -26,8 +27,10 @@ namespace Game.Core.Sim
 
         public JewelItem? In(string nodeId) => _state.Jewels.Sockets.TryGetValue(nodeId, out var jewel) ? jewel : null;
 
+        public Unlocks? Unlocks { get; set; }
+
         public bool IsOpen(string nodeId) =>
-            Tree.TryGet(nodeId, out var node) && node.Type == TreeNodeType.Jewel && _state.Tree.IsAllocated(Tree, nodeId);
+            Unlocks?.IsOpen(Feature.Jewels) != false && Tree.TryGet(nodeId, out var node) && node.Type == TreeNodeType.Jewel && _state.Tree.IsAllocated(Tree, nodeId);
 
         public bool Socket(string nodeId, JewelItem jewel)
         {

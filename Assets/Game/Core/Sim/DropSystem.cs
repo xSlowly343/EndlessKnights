@@ -77,6 +77,8 @@ namespace Game.Core.Sim
         {
             if (!_items.TryGetSet(setId, out var set))
                 return CraftResult.UnknownSet;
+            if (Unlocks?.IsOpen(Feature.SetCraft) == false)
+                return CraftResult.Locked;
             if (set.Rarity > _rules.CeilingAt(System.Math.Max(1, _state.RecordStage)))
                 return CraftResult.AboveCeiling;
             if (BagFull)
@@ -168,6 +170,8 @@ namespace Game.Core.Sim
 
         public bool BuyUncut()
         {
+            if (Unlocks?.IsOpen(Feature.Cutting) == false)
+                return false;
             var drops = _state.Drops;
             var cost = _rules.Shards.UncutCost;
             if (drops.Shards < cost)
@@ -177,8 +181,12 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public Unlocks? Unlocks { get; set; }
+
         public CutResult Cut(GemDef gem)
         {
+            if (Unlocks?.IsOpen(Feature.Cutting) == false)
+                return CutResult.Locked;
             if (_state.Drops.UncutGems <= 0)
                 return CutResult.NoUncut;
             if (!Cuttable(gem))
@@ -298,7 +306,7 @@ namespace Game.Core.Sim
         {
             var chance = _rules.JewelChanceFor(source);
             var rng = _state.Drops.Rng;
-            if (chance <= 0 || !rng.Chance(chance))
+            if (chance <= 0 || Unlocks?.IsOpen(Feature.Jewels) == false || !rng.Chance(chance))
                 return;
             Push(PendingDrop.Jewel(source, stage, RollRarity(table, stage, rng)));
         }

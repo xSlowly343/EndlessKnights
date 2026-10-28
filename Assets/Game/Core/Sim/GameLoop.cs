@@ -53,6 +53,7 @@ namespace Game.Core.Sim
         private readonly GearSystem _gear;
         private readonly JewelSystem _jewels;
         private readonly GateSystem _gates;
+        private readonly Unlocks _unlocks;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -91,6 +92,14 @@ namespace Game.Core.Sim
             _atlas = new AtlasSystem(data.Atlas, state, hero);
             _resonance = new ResonanceSystem(data.Resonance, state, hero);
             _spirits = new SpiritSystem(data.Spirits, state, _combat);
+            _unlocks = new Unlocks(data.Unlocks, state);
+            _artifacts.Unlocks = _unlocks;
+            _jewels.Unlocks = _unlocks;
+            _atlas.Unlocks = _unlocks;
+            _resonance.Unlocks = _unlocks;
+            _spirits.Unlocks = _unlocks;
+            _chronicle.Unlocks = _unlocks;
+            _drops.Unlocks = _unlocks;
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
@@ -137,6 +146,7 @@ namespace Game.Core.Sim
         public GearSystem Gear => _gear;
         public JewelSystem Jewels => _jewels;
         public GateSystem Gates => _gates;
+        public Unlocks Unlocks => _unlocks;
         public DropSystem Drops => _drops;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
@@ -402,6 +412,7 @@ namespace Game.Core.Sim
             _gear.UseCatalog(data.Items);
             _jewels.Tree = data.Tree;
             _gates.UseStages(data.Stages);
+            _unlocks.Rules = data.Unlocks;
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _prestige.UseRules(data.Prestige);

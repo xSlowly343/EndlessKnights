@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "features": {
+    "artifacts": { "prestiges": 1 },
+    "cutting": { "stage": 100 },
+    "jewels": { "stage": 150 },
+    "resonance": { "stage": 300 },
+    "spirits": { "stage": 1000 },
+    "atlas": { "stage": 2500 },
+    "chronicle": { "stage": 5000 },
+    "setCraft": { "stage": 10000 }
+  },
+  "artifactGroups": [0, 0, 50000, 100000]
+}
