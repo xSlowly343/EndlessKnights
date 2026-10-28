@@ -143,13 +143,13 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EachBiomeOpensOneMoreRarity()
+        public void OnlyTheFirstFourRaritiesDropBeforeTheLimit()
         {
-            Assert.That(Rules.CeilingFor(1), Is.EqualTo(ItemRarity.Rare));
-            Assert.That(Rules.CeilingFor(2), Is.EqualTo(ItemRarity.Epic));
-            Assert.That(Rules.CeilingFor(5), Is.EqualTo(ItemRarity.Ancient));
-            Assert.That(Rules.CeilingFor(6), Is.EqualTo(ItemRarity.Rift));
-            Assert.That(Rules.CeilingFor(40), Is.EqualTo(ItemRarity.Rift));
+            Assert.That(Rules.CeilingAt(1), Is.EqualTo(ItemRarity.Rare));
+            Assert.That(Rules.CeilingAt(300), Is.EqualTo(ItemRarity.Rare));
+            Assert.That(Rules.CeilingAt(49999), Is.EqualTo(ItemRarity.Rare));
+            Assert.That(Rules.CeilingAt(50000), Is.EqualTo(ItemRarity.Rift));
+            Assert.That(Rules.CeilingAt(80000), Is.EqualTo(ItemRarity.Rift));
         }
 
         [Test]
@@ -165,9 +165,9 @@ namespace Game.Core.Tests.Sim
 
             for (var i = 0; i < 10000; i++)
             {
-                if (plain.Drops.RollRarity(table, 6, rngA) == ItemRarity.Simple)
+                if (plain.Drops.RollRarity(table, 60000, rngA) == ItemRarity.Simple)
                     plainSimple++;
-                if (lucky.Drops.RollRarity(table, 6, rngB) == ItemRarity.Simple)
+                if (lucky.Drops.RollRarity(table, 60000, rngB) == ItemRarity.Simple)
                     luckySimple++;
             }
 

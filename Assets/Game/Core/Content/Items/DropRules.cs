@@ -26,7 +26,7 @@ namespace Game.Core.Content.Items
         private readonly Dictionary<long, DropGuarantee> _guarantees;
         private readonly Dictionary<GemKind, GemDropChance> _gems;
 
-        private DropRules(double[] rarityWeights, ItemRarity firstCeiling, int ceilingPerBiome, double[] slotWeights, DropTable record, int specialBossEvery,
+        private DropRules(double[] rarityWeights, ItemRarity firstCeiling, double[] slotWeights, DropTable record, int specialBossEvery,
             DropTable specialBoss, DropTable guardian, DailyDropRules daily, Dictionary<long, DropGuarantee> guarantees, Dictionary<GemKind, GemDropChance> gems,
             long firstTriggerStage, int bagSize, double[] dust, double setChance, double setBossChance, double setGuardianChance, ShardRules shards)
         {
@@ -36,7 +36,6 @@ namespace Game.Core.Content.Items
             SetGuardianChance = setGuardianChance;
             _rarityWeights = rarityWeights;
             FirstCeiling = firstCeiling;
-            CeilingPerBiome = ceilingPerBiome;
             _slotWeights = slotWeights;
             Record = record;
             SpecialBossEvery = specialBossEvery;
@@ -51,7 +50,6 @@ namespace Game.Core.Content.Items
         }
 
         public ItemRarity FirstCeiling { get; }
-        public int CeilingPerBiome { get; }
         public DropTable Record { get; }
         public int SpecialBossEvery { get; }
         public DropTable SpecialBoss { get; }
@@ -92,10 +90,17 @@ namespace Game.Core.Content.Items
 
         public double DustFor(ItemRarity rarity) => _dust[System.Math.Min((int)rarity, _dust.Length - 1)];
 
-        public ItemRarity CeilingFor(int biomeNumber)
+        public (long Stage, ItemRarity Rarity)[] CeilingSteps { get; private set; } = System.Array.Empty<(long, ItemRarity)>();
+
+        public ItemRarity CeilingAt(long stage)
         {
-            var ceiling = (long)FirstCeiling + (long)CeilingPerBiome * (System.Math.Max(1, biomeNumber) - 1);
-            return (ItemRarity)System.Math.Min(ceiling, (long)ItemRarity.Rift);
+            var ceiling = FirstCeiling;
+            for (var i = 0; i < CeilingSteps.Length; i++)
+            {
+                if (stage >= CeilingSteps[i].Stage && CeilingSteps[i].Rarity > ceiling)
+                    ceiling = CeilingSteps[i].Rarity;
+            }
+            return ceiling;
         }
 
         public bool IsSpecialBoss(long stage) => SpecialBossEvery > 0 && stage % SpecialBossEvery == 0;
@@ -116,8 +121,7 @@ namespace Game.Core.Content.Items
             var triggers = root.Field("gems").Field("trigger");
             return new DropRules(
                 ReadRarities(root.Field("rarityWeights"), 0, 1e6, requirePositive: true),
-                DropTable.Rarity(ceiling, "firstBiome", ItemRarity.Rare),
-                ceiling.Field("perBiome").AsInt(0, RarityCount),
+                DropTable.Rarity(ceiling, "first", ItemRarity.Rare),
                 ReadSlots(root.Field("slotWeights")),
                 DropTable.Read(root.Field("record"), MaxItemsPerSource),
                 special.Field("every").AsInt(0, 100000),
@@ -134,11 +138,20 @@ namespace Game.Core.Content.Items
                 root.Field("sets").Field("guardian").AsNumber(0, 1),
                 ShardRules.Read(root.Field("shards"), root.Field("uncut")))
             {
+                CeilingSteps = ReadCeilingSteps(ceiling.Field("steps")).ToArray(),
                 UniqueGuardianChance = root.Field("uniques").Field("guardian").AsNumber(0, 1),
                 JewelGuardianChance = root.Field("jewels").Field("guardian").AsNumber(0, 1),
                 JewelSpecialBossChance = root.Field("jewels").Field("specialBoss").AsNumber(0, 1),
                 JewelBagSize = root.Field("jewels").Field("bagSize").AsInt(1, 10000)
             };
+        }
+
+        private static List<(long, ItemRarity)> ReadCeilingSteps(ContentNode node)
+        {
+            var steps = new List<(long, ItemRarity)>();
+            foreach (var item in node.Items())
+                steps.Add((item.Field("stage").AsLong(1), DropTable.Rarity(item, "rarity", ItemRarity.Rare)));
+            return steps;
         }
 
         private static double[] ReadRarities(ContentNode node, double min, double max, bool requirePositive)

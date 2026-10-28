@@ -77,6 +77,8 @@ namespace Game.Core.Sim
         {
             if (!_items.TryGetSet(setId, out var set))
                 return CraftResult.UnknownSet;
+            if (set.Rarity > _rules.CeilingAt(System.Math.Max(1, _state.RecordStage)))
+                return CraftResult.AboveCeiling;
             if (BagFull)
                 return CraftResult.BagFull;
             var complete = _gear.Collected(set);
@@ -274,7 +276,7 @@ namespace Game.Core.Sim
             var rng = _state.Drops.Rng;
             if (chance <= 0 || !rng.Chance(chance))
                 return;
-            Push(PendingDrop.Jewel(source, stage, RollRarity(table, BiomeNumber(stage), rng)));
+            Push(PendingDrop.Jewel(source, stage, RollRarity(table, stage, rng)));
         }
 
         private void DeliverJewel(PendingDrop drop)
@@ -309,16 +311,16 @@ namespace Game.Core.Sim
         private PendingDrop Rolled(DropTable table, long stage, DropSource source)
         {
             var rng = _state.Drops.Rng;
-            var rarity = RollRarity(table, BiomeNumber(stage), rng);
+            var rarity = RollRarity(table, stage, rng);
             var slot = RollSlot(rng, includeWeapon: true);
             return slot == ItemSlot.Weapon
                 ? PendingDrop.Weapon(source, stage, rarity, PickType(rng))
                 : PendingDrop.Gear(source, stage, slot, rarity, RandomColor(slot, rng));
         }
 
-        public ItemRarity RollRarity(DropTable table, int biomeNumber, Rng rng)
+        public ItemRarity RollRarity(DropTable table, long stage, Rng rng)
         {
-            var ceiling = _rules.CeilingFor(biomeNumber);
+            var ceiling = _rules.CeilingAt(stage);
             var top = table.MaxRarity < ceiling ? table.MaxRarity : ceiling;
             var bottom = table.MinRarity > top ? top : table.MinRarity;
             var find = System.Math.Max(0, _hero.Value(CombatStats.ItemFind, 1));
@@ -399,7 +401,7 @@ namespace Game.Core.Sim
             var chance = _rules.UniqueChanceFor(drop.Source);
             if (chance > 0 && rng.NextDouble() < chance)
             {
-                var unique = _weapons.Catalog.PickUnique(_rules.CeilingFor(BiomeNumber(drop.Stage)), rng);
+                var unique = _weapons.Catalog.PickUnique(_rules.CeilingAt(drop.Stage), rng);
                 if (unique != null)
                     return _weapons.Catalog.RollUnique(unique, rng);
             }
@@ -560,7 +562,7 @@ namespace Game.Core.Sim
             var uniqueChance = _rules.UniqueChanceFor(drop.Source);
             if (uniqueChance > 0 && rng.NextDouble() < uniqueChance)
             {
-                var unique = _items.PickUnique(drop.Slot, _rules.CeilingFor(itemLevel), rng);
+                var unique = _items.PickUnique(drop.Slot, _rules.CeilingAt(drop.Stage), rng);
                 if (unique != null)
                     return new GearItem(unique, itemLevel);
             }

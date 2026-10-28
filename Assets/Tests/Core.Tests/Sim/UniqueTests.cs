@@ -87,7 +87,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void GuardiansDropUniquesOnceTheirRarityIsOpenAndAutoSalvageKeepsThem()
+        public void GuardiansDropUniquesOnlyPastTheLimitAndAutoSalvageKeepsThem()
         {
             var stages = TestWorld.Data.Stages;
             var loop = TestWorld.Loop(state: TestWorld.Classless(new GameState(11) { Class = HeroClass.Viking }));
@@ -95,7 +95,7 @@ namespace Game.Core.Tests.Sim
             loop.State.Drops.SalvageUpTo = ItemRarity.Legendary;
 
             var early = DropsFrom(loop, stages.BiomeLength);
-            var late = DropsFrom(loop, 3L * stages.BiomeLength);
+            var late = DropsFrom(loop, 50000);
 
             Assert.That(early.Where(d => d.Gear != null).All(d => d.Gear!.Unique == null), Is.True);
             var uniques = late.Where(d => d.Gear?.Unique != null).ToList();

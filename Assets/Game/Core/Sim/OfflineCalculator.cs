@@ -60,7 +60,7 @@ namespace Game.Core.Sim
                 kills = stages.EnemiesOnStage(stage);
 
                 var guardian = stages.IsBiomeGuardian(stage);
-                if (guardian && !fightGuardians)
+                if ((guardian && !fightGuardians) || stages.GateAt(stage) != null)
                 {
                     stoppedAtGuardian = true;
                     farming = true;

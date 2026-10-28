@@ -87,7 +87,7 @@ namespace Game.Core.Tests.Sim
             var loop = Real();
             loop.Drops.UseData(DropRules.Load(json), TestWorld.Real.Stages, TestWorld.Real.Gems, TestWorld.Real.Items);
             loop.State.Drops.SalvageUpTo = ItemRarity.Legendary;
-            var stage = 3L * TestWorld.Real.Stages.BiomeLength;
+            var stage = 50000L;
 
             var found = 0;
             for (var i = 0; i < 40; i++)

@@ -36,6 +36,7 @@ namespace Game.Core.Content
         public ResourceRules Resources { get; }
         public double CritChance { get; }
         public double CritMultiplier { get; }
+        public double OvercritRate { get; private set; }
         public ClassRules Classes { get; }
         public OfflineRules Offline { get; }
         public HeroRules Hero { get; }
@@ -80,7 +81,10 @@ namespace Game.Core.Content
                 MinionRules.Read(root.Field("beasts")),
                 BannerRules.Read(root.Field("banner")),
                 PathRules.Read(root.Field("paths")),
-                EncounterRules.Read(root.Field("encounters")));
+                EncounterRules.Read(root.Field("encounters")))
+            {
+                OvercritRate = crit.HasField("overcritRate") ? crit.Field("overcritRate").AsNumber(0, 100) : 0
+            };
         }
     }
 }

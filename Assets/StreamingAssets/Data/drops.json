@@ -1,7 +1,7 @@
 {
   "version": 1,
   "rarityWeights": { "simple": 40, "fine": 28, "uncommon": 17, "rare": 9, "epic": 4, "legendary": 1.5, "mythic": 0.4, "ancient": 0.09, "rift": 0.01 },
-  "ceiling": { "firstBiome": "rare", "perBiome": 1 },
+  "ceiling": { "first": "rare", "steps": [{ "stage": 50000, "rarity": "rift" }] },
   "slotWeights": { "weapon": 20, "helmet": 13.75, "chest": 13.75, "gloves": 13.75, "boots": 13.75, "amulet": 10, "ring": 15 },
   "record": { "items": 1, "maxRarity": "rare" },
   "specialBoss": { "every": 10, "items": 1, "minRarity": "uncommon" },

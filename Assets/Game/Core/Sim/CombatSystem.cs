@@ -373,16 +373,21 @@ namespace Game.Core.Sim
             return System.Math.Max(1, _hero.Value(CombatStats.KeyStrikeMultiplier, 0, StatTags.Keyboard));
         }
 
-        public double CritChance(StatTags tags)
+        public double CritChance(StatTags tags) => System.Math.Min(1, System.Math.Max(0, RawCritChance(tags)));
+
+        public double Overcrit(StatTags tags) => System.Math.Max(0, RawCritChance(tags) - 1);
+
+        private double RawCritChance(StatTags tags)
         {
             var chance = _hero.Compute(CombatStats.CritChance, BigNumber.FromDouble(_rules.CritChance), tags | StatTags.Crit).ToDouble();
             if (_state.Doom.Sign > 0)
                 chance *= System.Math.Max(0, _hero.Value(CombatStats.DoomedCritChance, 1));
-            return System.Math.Min(1, System.Math.Max(0, chance));
+            return chance;
         }
 
         public double CritMultiplier(StatTags tags) =>
-            System.Math.Max(1, _hero.Compute(CombatStats.CritMultiplier, BigNumber.FromDouble(_rules.CritMultiplier), tags | StatTags.Crit).ToDouble());
+            System.Math.Max(1, _hero.Compute(CombatStats.CritMultiplier, BigNumber.FromDouble(_rules.CritMultiplier), tags | StatTags.Crit).ToDouble())
+            * (1 + Overcrit(tags) * _rules.OvercritRate);
 
         private void NoteDamage(BigNumber damage)
         {

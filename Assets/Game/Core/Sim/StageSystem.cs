@@ -309,7 +309,7 @@ namespace Game.Core.Sim
         private void Jump()
         {
             var jump = _state.Rng.NextInt(Encounters.JumpMin, Encounters.JumpMax + 1);
-            var target = System.Math.Min(_state.Stage + jump, _state.RecordStage);
+            var target = System.Math.Min(System.Math.Min(_state.Stage + jump, _state.RecordStage), _stages.NextGateFrom(_state.Stage + 1));
             if (target <= _state.Stage)
                 return;
             var jumped = target - _state.Stage;
@@ -327,12 +327,14 @@ namespace Game.Core.Sim
         {
             var stage = _state.Stage;
             var biome = _stages.Biome(stage);
-            var guardian = _stages.IsBiomeGuardian(stage);
+            var gate = _stages.GateAt(stage);
+            var guardian = gate != null || _stages.IsBiomeGuardian(stage);
             var enemy = guardian ? _guardians[biome] ?? _bosses[biome] : _bosses[biome];
-            var guardianShare = guardian ? System.Math.Max(0.1, _hero.Value(CombatStats.GuardianHp, 1)) : 1;
-            Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * (Multiplier(enemy) * guardianShare));
-            _state.WandererBoss = WandererComes(stage, guardian);
-            var timer = _stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
+            var guardianShare = guardian && gate == null ? System.Math.Max(0.1, _hero.Value(CombatStats.GuardianHp, 1)) : 1;
+            var gateShare = gate?.HpMultiplier ?? 1;
+            Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * (Multiplier(enemy) * guardianShare * gateShare));
+            _state.WandererBoss = gate == null && WandererComes(stage, guardian);
+            var timer = gate?.TimerSeconds ?? _stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
             _state.BossTicksLeft = (int)System.Math.Round((timer + _state.BankedSeconds) * GameLoop.TicksPerSecond);
             _state.BankedSeconds = 0;
             _state.BossTimerCarry = 0;

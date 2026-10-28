@@ -503,7 +503,9 @@ namespace Game.Core.Sim
             SetStacks(slot, distance.Stacks, stacks);
         }
 
-        private double Cost(SkillSlot slot) => slot.Def.ResourceCost * System.Math.Max(0, _hero.Value(CombatStats.SkillCost, 1)) * SupportEffects.CostMultiplier(slot);
+        private double Cost(SkillSlot slot) => slot.Def.ResourceCost * System.Math.Max(MinCostShare, _hero.Value(CombatStats.SkillCost, 1)) * SupportEffects.CostMultiplier(slot);
+
+        private const double MinCostShare = 0.1;
 
         private bool Pay(SkillSlot slot, NativeTrait native, bool when, out double spent)
         {

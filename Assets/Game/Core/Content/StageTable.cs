@@ -45,6 +45,28 @@ namespace Game.Core.Content
         public int BiomeLength { get; }
         public BossHintRules BossHint { get; }
         public System.Collections.Generic.IReadOnlyList<string> Biomes => _biomes;
+        public StageGate[] Gates { get; private set; } = System.Array.Empty<StageGate>();
+
+        public StageGate? GateAt(long stage)
+        {
+            for (var i = 0; i < Gates.Length; i++)
+            {
+                if (Gates[i].Stage == stage)
+                    return Gates[i];
+            }
+            return null;
+        }
+
+        public long NextGateFrom(long stage)
+        {
+            var next = long.MaxValue;
+            for (var i = 0; i < Gates.Length; i++)
+            {
+                if (Gates[i].Stage >= stage && Gates[i].Stage < next)
+                    next = Gates[i].Stage;
+            }
+            return next;
+        }
 
         public static StageTable Load(string json)
         {
@@ -75,6 +97,12 @@ namespace Game.Core.Content
             if (biomes.Count == 0)
                 throw root.Field("biomes").Error("at least one biome is required");
 
+            var gates = new List<StageGate>();
+            if (root.HasField("gates"))
+            {
+                foreach (var item in root.Field("gates").Items())
+                    gates.Add(StageGate.Read(item));
+            }
             return new StageTable(
                 enemyHp,
                 ExponentialCurve.Read(root.Field("gold")),
@@ -89,12 +117,18 @@ namespace Game.Core.Content
                 boss.Field("retryAfterKills").AsInt(1, 1000),
                 root.Field("biomeLength").AsInt(1),
                 biomes.ToArray(),
-                BossHintRules.Read(root.Field("bossHint")));
+                BossHintRules.Read(root.Field("bossHint")))
+            {
+                Gates = gates.ToArray()
+            };
         }
 
         public StageTable ForWorld(double hpMultiplier, int wallPeriod, int wallZoneLength, double wallRate, double bossTimerSeconds) =>
             new StageTable(_enemyHp.Scaled(hpMultiplier), _gold, wallPeriod, wallZoneLength, System.Math.Max(wallRate, _enemyHp.Rate), _waves, _bossHpMultiplier,
-                bossTimerSeconds, bossTimerSeconds, _bossGoldMultiplier, BossRetryAfterKills, BiomeLength, _biomes, BossHint);
+                bossTimerSeconds, bossTimerSeconds, _bossGoldMultiplier, BossRetryAfterKills, BiomeLength, _biomes, BossHint)
+            {
+                Gates = Gates
+            };
 
         public int WaveSize(long stage, int wave) => _waves.Size(stage, wave);
 

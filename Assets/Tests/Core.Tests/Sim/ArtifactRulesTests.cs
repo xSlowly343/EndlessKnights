@@ -77,12 +77,14 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CappedArtifactsStopLevelling()
         {
-            var loop = With(("pathfinder_seal", 30));
+            var loop = With(("hourglass", 30), ("pathfinder_seal", 30));
             loop.State.Echo = BigNumber.FromDouble(1e30);
 
-            Assert.That(loop.Artifacts.IsMaxed("pathfinder_seal"), Is.True);
-            Assert.That(loop.Artifacts.TryLevelUp("pathfinder_seal"), Is.False);
-            Assert.That(loop.State.Artifacts["pathfinder_seal"], Is.EqualTo(30));
+            Assert.That(loop.Artifacts.IsMaxed("hourglass"), Is.True);
+            Assert.That(loop.Artifacts.TryLevelUp("hourglass"), Is.False);
+            Assert.That(loop.State.Artifacts["hourglass"], Is.EqualTo(30));
+            Assert.That(loop.Artifacts.TryLevelUp("pathfinder_seal"), Is.True);
+            Assert.That(Catalog.All.Count(a => a.Capped), Is.EqualTo(1));
         }
 
         [Test]
