@@ -92,6 +92,9 @@ namespace Game.Core.Sim
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerKill, 0, tags)) * System.Math.Min(_state.KillStreak, conditions.KillStreakMax);
             if (_state.AfterIdleTicks > 0)
                 multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageAfterIdle, 1, tags));
+            var perShot = _hero.Value(CombatStats.CannonShotDamage, 0, tags);
+            if (perShot > 0 && _state.CannonShotsOnEnemy > 0)
+                multiplier *= 1 + System.Math.Min(System.Math.Max(0, _hero.Value(CombatStats.CannonShotDamageMax, 0, tags)), perShot * _state.CannonShotsOnEnemy);
             var perTenPoison = _hero.Value(CombatStats.DamagePerTenPoison, 0, tags);
             if (perTenPoison > 0)
                 multiplier *= 1 + perTenPoison * System.Math.Floor(_state.PoisonStacks / 10 + 1e-9);
