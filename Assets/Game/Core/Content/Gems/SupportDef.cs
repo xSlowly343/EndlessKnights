@@ -10,7 +10,10 @@ namespace Game.Core.Content.Gems
         DeathMark,
         QuietHour,
         BladeHunger,
-        Acceleration
+        Acceleration,
+        CritFocus,
+        WideReach,
+        DeferredPayment
     }
 
     public sealed class SupportDef
@@ -24,6 +27,7 @@ namespace Game.Core.Content.Gems
         public double CooldownMultiplier { get; private set; } = 1;
         public double KillCooldownSeconds { get; private set; }
         public double QueueShare { get; private set; }
+        public int QueueSlot { get; private set; }
         public double LowHpBelow { get; private set; }
         public double LowHpMultiplier { get; private set; } = 1;
         public double Power { get; private set; } = 1;
@@ -40,6 +44,11 @@ namespace Game.Core.Content.Gems
         public double FocusStep { get; private set; }
         public double FocusBonus { get; private set; }
         public double FocusBonusMax { get; private set; }
+        public double CritPerFocusStep { get; private set; }
+        public double CritFocusStep { get; private set; }
+        public double CritMultiplier { get; private set; } = 1;
+        public double CostMultiplier { get; private set; } = 1;
+        public double DeferPerSecond { get; private set; }
 
         public static SupportDef? Read(ContentNode effect)
         {
@@ -97,6 +106,25 @@ namespace Game.Core.Content.Gems
                         FocusStep = effect.Field("focusStep").AsNumber(0.01, 100),
                         FocusBonus = effect.Field("bonus").AsNumber(0, 10),
                         FocusBonusMax = effect.Field("max").AsNumber(0, 100)
+                    };
+                case "critFocus":
+                    return new SupportDef(SupportKind.CritFocus)
+                    {
+                        CritPerFocusStep = effect.Field("critPerStep").AsNumber(0, 1),
+                        CritFocusStep = effect.Field("focusStep").AsNumber(0.01, 100),
+                        CritMultiplier = effect.Field("critMultiplier").AsNumber(1, 100)
+                    };
+                case "wideReach":
+                    return new SupportDef(SupportKind.WideReach)
+                    {
+                        QueueShare = effect.Field("share").AsNumber(0, 1),
+                        QueueSlot = effect.Field("slot").AsInt(0, Sim.GameState.QueueDepth - 1)
+                    };
+                case "deferredPayment":
+                    return new SupportDef(SupportKind.DeferredPayment)
+                    {
+                        CostMultiplier = effect.Field("costMultiplier").AsNumber(0, 10),
+                        DeferPerSecond = effect.Field("perSecond").AsNumber(0.001, 100)
                     };
                 default:
                     return null;

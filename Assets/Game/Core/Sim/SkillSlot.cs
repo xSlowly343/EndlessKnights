@@ -52,6 +52,8 @@ namespace Game.Core.Sim
         public int MouseExtendedTicks { get; set; }
         public long MarkedSpawnTick { get; set; } = -1;
         public long KeyHitsAtCast { get; set; }
+        public double DeferredCost { get; set; }
+        public double DeferredTotal { get; set; }
         public double PassiveScale { get; set; }
         public double AuraPower { get; set; } = 1;
         public double CursePower { get; set; } = 1;

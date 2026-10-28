@@ -37,6 +37,53 @@ namespace Game.Core.Sim
             return power;
         }
 
+        public static double CritChance(SkillSlot slot, GameState state)
+        {
+            var chance = 0.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.CritFocusStep > 0)
+                    chance += support.CritPerFocusStep * System.Math.Max(0, state.FocusMultiplier - 1) / support.CritFocusStep;
+            }
+            return chance;
+        }
+
+        public static double CritMultiplier(SkillSlot slot)
+        {
+            var multiplier = 1.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    multiplier *= support.CritMultiplier;
+            }
+            return multiplier;
+        }
+
+        public static double CostMultiplier(SkillSlot slot)
+        {
+            var multiplier = 1.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null)
+                    multiplier *= support.CostMultiplier;
+            }
+            return multiplier;
+        }
+
+        public static double DeferPerSecond(SkillSlot slot)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.DeferPerSecond > 0)
+                    return support.DeferPerSecond;
+            }
+            return 0;
+        }
+
         public static double ExperienceMultiplier(SkillSlot slot)
         {
             var multiplier = 1.0;
@@ -74,7 +121,7 @@ namespace Game.Core.Sim
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null && support.QueueShare > 0)
-                    state.QueueDamage[0] += damage * support.QueueShare;
+                    state.QueueDamage[support.QueueSlot] += damage * support.QueueShare;
             }
         }
 
