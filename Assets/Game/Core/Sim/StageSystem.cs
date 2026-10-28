@@ -8,6 +8,7 @@ namespace Game.Core.Sim
     public sealed class StageSystem : IKillHandler
     {
         public const double StaggerHpShare = 1e-12;
+        public const double MaxHpCut = 0.9;
 
         private readonly StatSheet _hero;
         private readonly GameState _state;
@@ -237,7 +238,8 @@ namespace Game.Core.Sim
             var stage = _state.Stage;
             var normals = _enemies.Normals(_stages.Biome(stage));
             var enemy = normals.Count == 0 ? null : normals[_state.Rng.NextInt(0, normals.Count)];
-            Spawn(enemy, EnemyType.Normal, _stages.EnemyHp(stage) * Multiplier(enemy));
+            var cut = System.Math.Min(MaxHpCut, System.Math.Max(0, _hero.Value(CombatStats.EnemyHpCut, 0)));
+            Spawn(enemy, EnemyType.Normal, _stages.EnemyHp(stage) * (Multiplier(enemy) * (1 - cut)));
         }
 
         private void SpawnBoss()

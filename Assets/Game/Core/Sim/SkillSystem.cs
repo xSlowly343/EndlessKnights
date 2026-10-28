@@ -186,6 +186,7 @@ namespace Game.Core.Sim
             }
             slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast));
             slot.ActiveTotalTicks = slot.ActiveTicks;
+            slot.MouseExtendedTicks = 0;
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
             if (skill.Effect is SpecialKeysEffect special && special.Charges > 0)
@@ -357,9 +358,12 @@ namespace Game.Core.Sim
             SetStacks(slot, distance.Stacks, stacks);
         }
 
+        private double Cost(SkillDef skill) => skill.ResourceCost * System.Math.Max(0, _hero.Value(CombatStats.SkillCost, 1));
+
         private bool Pay(SkillDef skill, NativeTrait native, bool when, out double spent)
         {
-            spent = skill.ResourceCost;
+            var cost = Cost(skill);
+            spent = cost;
             if ((native.FreeAboveCombo > 0 && _state.Combo > native.FreeAboveCombo) || (when && native.WhenFree))
             {
                 spent = 0;
@@ -367,12 +371,12 @@ namespace Game.Core.Sim
             }
             if (native.SpendsAll)
             {
-                if (_state.Resource < skill.ResourceCost)
+                if (_state.Resource < cost)
                     return false;
                 spent = _resource.SpendAll();
                 return true;
             }
-            return skill.ResourceCost <= 0 || _resource.TrySpend(skill.ResourceCost);
+            return cost <= 0 || _resource.TrySpend(cost);
         }
 
         private double DurationMultiplier(SkillDef skill, NativeTrait native, bool wasFull, bool when)
@@ -761,6 +765,7 @@ namespace Game.Core.Sim
         {
             var kills = (int)System.Math.Min(int.MaxValue, System.Math.Max(0, _state.Kills - _seenKills));
             _seenKills = _state.Kills;
+            ExtendSongs(input);
             if (kills > 0 && !SharedEnemy && !CursesFlow())
                 EndDebuffs();
             CountCurseFlicks(input);
@@ -818,6 +823,66 @@ namespace Game.Core.Sim
                 if (slot.Active && slot.Def.Effect is AddStacksEffect stackFlow && stackFlow.PerSecond > 0)
                     Dots.Flow(stackFlow);
             }
+            _state.ActiveAuras = CountAuras();
+        }
+
+        private int CountAuras()
+        {
+            var count = 0;
+            for (var i = 0; i < _state.Skills.Count; i++)
+            {
+                if (_state.Skills[i].AuraApplied && _state.Skills[i].Def.Effect is AuraEffect)
+                    count++;
+            }
+            return count;
+        }
+
+        private static bool IsSong(SkillSlot slot) => slot.Active && slot.Def.Effect is AuraEffect && !slot.Def.Reserves;
+
+        private void ExtendSongs(in EffectiveInput input)
+        {
+            var keyTicks = KeyExtension(input);
+            var mouseTicks = HeadbangTicks(input);
+            if (keyTicks == 0 && mouseTicks == 0)
+                return;
+            var mouseCap = Ticks(_combat.Classes.HeadbangMaxSeconds + _hero.Value(CombatStats.SongMouseSeconds, 0, StatTags.Aura));
+            for (var i = 0; i < _state.Skills.Count; i++)
+            {
+                var slot = _state.Skills[i];
+                if (!IsSong(slot))
+                    continue;
+                if (keyTicks > 0)
+                    slot.ActiveTicks = System.Math.Max(slot.ActiveTicks, System.Math.Min(slot.ActiveTotalTicks, slot.ActiveTicks + keyTicks));
+                var room = System.Math.Max(0, mouseCap - slot.MouseExtendedTicks);
+                var added = System.Math.Min(room, mouseTicks);
+                if (added <= 0)
+                    continue;
+                slot.MouseExtendedTicks += added;
+                slot.ActiveTicks += added;
+                slot.ActiveTotalTicks = System.Math.Max(slot.ActiveTotalTicks, slot.ActiveTicks);
+            }
+        }
+
+        private int KeyExtension(in EffectiveInput input)
+        {
+            var perKey = _hero.Value(CombatStats.AuraSecondsPerKey, 0, StatTags.Aura);
+            if (perKey <= 0 || input.Keys <= 0)
+                return 0;
+            _state.AuraKeyCarry += input.Keys * perKey * GameLoop.TicksPerSecond;
+            var ticks = (int)System.Math.Floor(_state.AuraKeyCarry + 1e-9);
+            _state.AuraKeyCarry -= ticks;
+            return ticks;
+        }
+
+        private int HeadbangTicks(in EffectiveInput input)
+        {
+            if (_state.Class != HeroClass.Metalhead || input.MousePx <= 0)
+                return 0;
+            var pxPerSecond = _combat.Classes.HeadbangPxPerSecond;
+            _state.HeadbangPx += input.MousePx;
+            var seconds = (int)System.Math.Floor(_state.HeadbangPx / pxPerSecond + 1e-9);
+            _state.HeadbangPx -= seconds * pxPerSecond;
+            return seconds * GameLoop.TicksPerSecond;
         }
 
         public double DebuffStrength(GemDef gem)
@@ -1265,8 +1330,8 @@ namespace Game.Core.Sim
         {
             if (aura == null || !aura.Reserves)
                 return;
-            slot.ReservedApplied = aura.Reserve;
-            _state.ReservedResource += aura.Reserve;
+            slot.ReservedApplied = System.Math.Max(0, aura.Reserve + _hero.Value(CombatStats.AuraReserve, 0, StatTags.Aura));
+            _state.ReservedResource += slot.ReservedApplied;
             _resource.ClampToMax();
         }
 

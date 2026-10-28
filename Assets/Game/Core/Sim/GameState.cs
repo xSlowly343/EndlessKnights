@@ -130,6 +130,14 @@ namespace Game.Core.Sim
         public long SkillCasts { get; set; }
         public double IdleHitCarry { get; set; }
         public double CompanionHitCarry { get; set; }
+        public int ActiveAuras { get; set; }
+        public BigNumber Doom { get; set; }
+        public int DoomTicks { get; set; }
+        public BigNumber EchoDamage { get; set; }
+        public int EchoTicks { get; set; }
+        public double AuraKeyCarry { get; set; }
+        public double HeadbangPx { get; set; }
+        public double ClickHitCarry { get; set; }
 
         public void AddToQueue(BigNumber damage)
         {
@@ -173,6 +181,8 @@ namespace Game.Core.Sim
             PoisonStacks = 0;
             BurnStacks = 0;
             DotCarry = 0;
+            Doom = BigNumber.Zero;
+            DoomTicks = 0;
         }
     }
 }

@@ -13,7 +13,8 @@ namespace Game.Core.Stats
             "focusMax", "partyContribution", "partyCritChance", "partyCritMultiplier", "pierceShare", "volleySplash",
             "windupKeptAfterCrush", "gemDrop", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",
             "laterHitsPenalty", "minionExplode", "damagePerResource", "keyHitQueueShare", "damagePerCombo", "damagePerComboMax",
-            "damageAtBalance", "rampPerSecond", "rampMax", "overloadQueueShare"
+            "damageAtBalance", "rampPerSecond", "rampMax", "overloadQueueShare", "goldPerResource", "enemyHpCut", "damagePerAura",
+            "echoShare", "doomShare", "doomMultiplier"
         };
 
         private static readonly StatTags[] LabelledTags =

@@ -87,5 +87,24 @@ namespace Game.Core.Sim
         public static readonly StatId RampMax = new StatId("rampMax");
         public static readonly StatId OverloadQueueShare = new StatId("overloadQueueShare");
         public static readonly StatId IdleHitsPerSecond = new StatId("idleHitsPerSecond");
+        public static readonly StatId GoldPerResource = new StatId("goldPerResource");
+        public static readonly StatId ClickHitMultiplier = new StatId("clickHitMultiplier");
+        public static readonly StatId AuraSecondsPerKey = new StatId("auraSecondsPerKey");
+        public static readonly StatId SongMouseSeconds = new StatId("songMouseSeconds");
+        public static readonly StatId ResourceGainDamage = new StatId("resourceGainDamage");
+        public static readonly StatId SkillCost = new StatId("skillCost");
+        public static readonly StatId EnemyHpCut = new StatId("enemyHpCut");
+        public static readonly StatId DamagePerAura = new StatId("damagePerAura");
+        public static readonly StatId CurseHitsPerSecond = new StatId("curseHitsPerSecond");
+        public static readonly StatId EchoEverySeconds = new StatId("echoEverySeconds");
+        public static readonly StatId EchoShare = new StatId("echoShare");
+        public static readonly StatId DoomShare = new StatId("doomShare");
+        public static readonly StatId DoomSeconds = new StatId("doomSeconds");
+        public static readonly StatId DoomMultiplier = new StatId("doomMultiplier");
+        public static readonly StatId DoomedCritChance = new StatId("doomedCritChance");
+        public static readonly StatId LoopShare = new StatId("loopShare");
+        public static readonly StatId ReadingGain = new StatId("readingGain");
+        public static readonly StatId AuraReserve = new StatId("auraReserve");
+        public static readonly StatId BannerAuraBonus = new StatId("bannerAuraBonus");
     }
 }
