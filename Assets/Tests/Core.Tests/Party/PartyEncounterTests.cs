@@ -34,6 +34,75 @@ namespace Game.Core.Tests.Party
 
         private static void KillCurrent(PartyEncounter encounter) => encounter.ApplyDamage(0, encounter.EnemyId, encounter.BarLeft / encounter.DamageTakenMultiplier + 1e-9);
 
+        private static PartyEncounter AtBoss()
+        {
+            var encounter = new PartyEncounter(Rules, Stages, 42);
+            encounter.Join(100);
+            while (!encounter.FightingBoss)
+                KillCurrent(encounter);
+            for (var i = 0; i <= PartyEncounter.MaxRepeatSeconds * GameLoop.TicksPerSecond; i++)
+                encounter.Advance();
+            return encounter;
+        }
+
+        [Test]
+        public void TimerSlowsStackDownToTheFloorAndCountSavedSeconds()
+        {
+            var encounter = AtBoss();
+            var start = encounter.BossTicksLeft;
+            Assert.That(encounter.ApplyEnemyEffect(1, 0, 3, 0, 0.5), Is.True, "a pure timer effect is taken");
+
+            for (var i = 0; i < 20; i++)
+                encounter.Advance();
+
+            Assert.That(start - encounter.BossTicksLeft, Is.EqualTo(10));
+            Assert.That(encounter.SavedBossTicks, Is.EqualTo(10).Within(1e-9));
+            encounter.ApplyEnemyEffect(2, 0.1, 5, 0, 0.6);
+            encounter.ApplyEnemyEffect(3, 0, 5, 0, 0.9);
+            Assert.That(encounter.BossTimerRate, Is.EqualTo(Rules.Timer.MinBossRate));
+            Assert.That(encounter.ApplyEnemyEffect(4, 0, 5, 0, 0), Is.False, "an effect needs damage or a timer slow");
+        }
+
+        [Test]
+        public void TheBossKillReportsTheLoopAndTheSavedSeconds()
+        {
+            var encounter = AtBoss();
+            encounter.Events.Clear();
+            encounter.ApplyEnemyEffect(1, 0, 5, 0, 0.5);
+            encounter.ApplyDamage(0, encounter.EnemyId, 0.3);
+            for (var i = 0; i < 30; i++)
+                encounter.Advance();
+
+            Assert.That(encounter.RepeatRecent(0, 5), Is.EqualTo(0.3).Within(1e-9), "the chimes repeat the last seconds of the party");
+            KillCurrent(encounter);
+
+            var killed = encounter.Events[0];
+            for (var i = 0; i < encounter.Events.Count && killed.Kind != PartyEventKind.EnemyKilled; i++)
+                killed = encounter.Events[i];
+            Assert.That(killed.Kind, Is.EqualTo(PartyEventKind.EnemyKilled));
+            Assert.That(killed.Loop, Is.EqualTo(0.3).Within(1e-9));
+            Assert.That(killed.SavedSeconds, Is.EqualTo(1.5).Within(1e-9));
+            Assert.That(encounter.LoopShare, Is.Zero);
+            Assert.That(encounter.SavedBossTicks, Is.Zero);
+        }
+
+        [Test]
+        public void RepeatingNormalDamageOnTheBossIsScaledToTheBoss()
+        {
+            var encounter = new PartyEncounter(Rules, Stages, 42);
+            encounter.Join(100);
+            while (encounter.KillsOnStage < Stages.EnemiesPerStage - 1 || encounter.FightingBoss)
+                KillCurrent(encounter);
+            for (var i = 0; i < 60; i++)
+                encounter.Advance();
+            KillCurrent(encounter);
+            Assert.That(encounter.FightingBoss, Is.True);
+
+            var repeated = encounter.RepeatRecent(0, 5);
+
+            Assert.That(repeated, Is.EqualTo(1 / Stages.BossHpMultiplier).Within(1e-6));
+        }
+
         [TestCase(1, 1)]
         [TestCase(2, 2)]
         [TestCase(4, 4)]

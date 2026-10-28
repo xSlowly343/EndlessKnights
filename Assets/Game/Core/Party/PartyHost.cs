@@ -22,6 +22,7 @@ namespace Game.Core.Party
         private readonly double[] _hitAllowance = new double[PartyRules.MaxSlots];
         private readonly int[] _flags = new int[PartyRules.MaxSlots];
         private readonly long[] _lastReactionTick = new long[PartyRules.MaxSlots];
+        private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
         private PartyRules _rules;
         private uint _stateSequence;
@@ -41,6 +42,7 @@ namespace Game.Core.Party
         public long Kills { get; private set; }
         public double AcceptedShares { get; private set; }
         public double CutShares { get; private set; }
+        public double RepeatedShares { get; private set; }
 
         public int Flags(int slot) => _flags[slot];
 
@@ -85,7 +87,7 @@ namespace Game.Core.Party
                     break;
                 case PartyMessageKind.CastEffect when PartyCodec.TryDecode(_in, length, out CastEffectMessage effect):
                     if (effect.OnEnemy)
-                        _encounter.ApplyEnemyEffect(effect.EffectId, effect.Strength, effect.Seconds, slot);
+                        Cast(slot, effect);
                     break;
                 case PartyMessageKind.PartyOffer when PartyCodec.TryDecode(_in, length, out PartyOfferMessage offer):
                     offer.Slot = (byte)slot;
@@ -111,9 +113,27 @@ namespace Game.Core.Party
             _hitAllowance[slot] = HitBurst;
             _flags[slot] = 0;
             _lastReactionTick[slot] = PartyEncounter.Never;
+            _lastRepeatTick[slot] = PartyEncounter.Never;
             _rosterChanged = true;
             _ticksToState = 0;
             return slot;
+        }
+
+        private void Cast(int slot, in CastEffectMessage effect)
+        {
+            if (!(effect.RepeatSeconds > 0))
+            {
+                _encounter.ApplyEnemyEffect(effect.EffectId, effect.Strength, effect.Seconds, slot, effect.TimerSlow);
+                return;
+            }
+            var timer = _rules.Timer;
+            if (_encounter.Tick - _lastRepeatTick[slot] < Ticks(timer.RepeatCooldownSeconds))
+                return;
+            _lastRepeatTick[slot] = _encounter.Tick;
+            var applied = _encounter.RepeatRecent(slot, System.Math.Min(timer.RepeatMaxSeconds, effect.RepeatSeconds));
+            AcceptedShares += applied;
+            RepeatedShares += applied;
+            _recentShares[slot] += applied;
         }
 
         private void React(int slot, PartyReactionMessage reaction)

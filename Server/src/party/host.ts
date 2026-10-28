@@ -9,6 +9,8 @@ interface PartyServerConfig extends PartyEncounterRules {
     flagsBeforeReport: number;
     reactionCount: number;
     reactionCooldownSeconds: number;
+    repeatMaxSeconds: number;
+    repeatCooldownSeconds: number;
 }
 
 const PartyCutTolerance = 1e-9;
@@ -20,6 +22,7 @@ class PartyHost {
     kills = 0;
     acceptedShares = 0;
     cutShares = 0;
+    repeatedShares = 0;
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
     private readonly allowance = [0, 0, 0, 0];
@@ -31,6 +34,7 @@ class PartyHost {
     private readonly messagesThisSecond = [0, 0, 0, 0];
     private readonly sentPresence = [PartyPresence.Fighting, PartyPresence.Fighting, PartyPresence.Fighting, PartyPresence.Fighting];
     private readonly lastReactionTick = [PartyNever, PartyNever, PartyNever, PartyNever];
+    private readonly lastRepeatTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly recentShares = [0, 0, 0, 0];
     private stateSequence = 0;
     private rosterVersion = 0;
@@ -57,6 +61,7 @@ class PartyHost {
             this.hitAllowance[slot] = this.hitBurst();
             this.flags[slot] = 0;
             this.lastReactionTick[slot] = PartyNever;
+            this.lastRepeatTick[slot] = PartyNever;
             this.ticksToState = 0;
         }
         this.rosterChanged = true;
@@ -109,7 +114,7 @@ class PartyHost {
             case PartyMessageKind.CastEffect: {
                 const effect = partyDecodeCastEffect(data);
                 if (effect && effect.onEnemy)
-                    this.encounter.applyEnemyEffect(effect.effectId, effect.strength, effect.seconds, slot);
+                    this.cast(slot, effect);
                 break;
             }
             case PartyMessageKind.PartyOffer: {
@@ -138,6 +143,20 @@ class PartyHost {
         this.watchSilence();
         this.watchPresence();
         this.flush();
+    }
+
+    private cast(slot: number, effect: CastEffectMessage): void {
+        if (!(effect.repeatSeconds > 0)) {
+            this.encounter.applyEnemyEffect(effect.effectId, effect.strength, effect.seconds, slot, effect.timerSlow);
+            return;
+        }
+        if (this.encounter.tick - this.lastRepeatTick[slot] < Math.max(1, partyTicks(this.config.repeatCooldownSeconds)))
+            return;
+        this.lastRepeatTick[slot] = this.encounter.tick;
+        const applied = this.encounter.repeatRecent(slot, Math.min(this.config.repeatMaxSeconds, effect.repeatSeconds));
+        this.acceptedShares += applied;
+        this.repeatedShares += applied;
+        this.recentShares[slot] += applied;
     }
 
     private heard(slot: number): void {

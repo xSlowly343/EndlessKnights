@@ -38,8 +38,12 @@ namespace Game.Core.Tests.Party
 
         public double Hit(int slot, double share) => Damage(slot, _encounter.EnemyId, share);
 
-        public bool Effect(int id, double damageTaken, double seconds) =>
-            Record($"\"op\": \"effect\", \"id\": {id}, \"damageTaken\": {Number(damageTaken)}, \"seconds\": {Number(seconds)}", () => _encounter.ApplyEnemyEffect(id, damageTaken, seconds));
+        public bool Effect(int id, double damageTaken, double seconds, double timerSlow = 0) =>
+            Record($"\"op\": \"effect\", \"id\": {id}, \"damageTaken\": {Number(damageTaken)}, \"seconds\": {Number(seconds)}, \"timerSlow\": {Number(timerSlow)}",
+                () => _encounter.ApplyEnemyEffect(id, damageTaken, seconds, PartyEncounter.NoSlot, timerSlow));
+
+        public double Repeat(int slot, double seconds) =>
+            Record($"\"op\": \"repeat\", \"slot\": {slot}, \"seconds\": {Number(seconds)}", () => _encounter.RepeatRecent(slot, seconds));
 
         public bool RequestBoss() => Record("\"op\": \"requestBoss\"", () => _encounter.RequestBossFight());
 
@@ -91,6 +95,9 @@ namespace Game.Core.Tests.Party
                 .Append(", \"barLeft\": ").Append(Number(e.BarLeft))
                 .Append(", \"fighters\": ").Append(e.Fighters)
                 .Append(", \"damageTaken\": ").Append(Number(e.DamageTakenMultiplier))
+                .Append(", \"bossTimerRate\": ").Append(Number(e.BossTimerRate))
+                .Append(", \"loopShare\": ").Append(Number(e.LoopShare))
+                .Append(", \"savedBossTicks\": ").Append(Number(e.SavedBossTicks))
                 .Append(", \"members\": [");
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
@@ -113,7 +120,9 @@ namespace Game.Core.Tests.Party
                     .Append(", \"enemyKind\": ").Append((int)partyEvent.EnemyKind)
                     .Append(", \"shares\": [").Append(Number(partyEvent.Share0)).Append(", ").Append(Number(partyEvent.Share1)).Append(", ")
                     .Append(Number(partyEvent.Share2)).Append(", ").Append(Number(partyEvent.Share3)).Append("]")
-                    .Append(", \"rewarded\": ").Append(partyEvent.Rewarded).Append(" }");
+                    .Append(", \"rewarded\": ").Append(partyEvent.Rewarded)
+                    .Append(", \"loop\": ").Append(Number(partyEvent.Loop))
+                    .Append(", \"saved\": ").Append(Number(partyEvent.SavedSeconds)).Append(" }");
             }
             builder.Append("] }");
             e.Events.Clear();

@@ -39,18 +39,19 @@ test("encounter state and roster encode like the core", () => {
 
 test("kill and moment encode like the core", () => {
   const killed = vectors.encode.enemyKilled;
-  assert.strictEqual(hex(party.partyEncodeEnemyKilled({ kind: 2, tick: killed.tick, enemyId: killed.enemyId, enemyKind: killed.enemyKind, shares: killed.shares, rewarded: killed.rewarded })), killed.hex);
+  assert.strictEqual(hex(party.partyEncodeEnemyKilled({ kind: 2, tick: killed.tick, enemyId: killed.enemyId, enemyKind: killed.enemyKind, shares: killed.shares, rewarded: killed.rewarded, loop: killed.loop, saved: killed.saved })), killed.hex);
   const moment = vectors.encode.moment;
   assert.strictEqual(hex(party.partyEncodeMoment({ kind: moment.kind, tick: moment.tick, enemyId: moment.enemyId, enemyKind: moment.enemyKind, shares: [0, 0, 0, 0] }, moment.bossTicksLeft)), moment.hex);
 });
 
 test("client messages decode like the core", () => {
-  const { hello, damageBatch, castEffect, presence } = vectors.decode;
+  const { hello, damageBatch, castEffect, repeatCast, presence } = vectors.decode;
   const strip = (o) => { const copy = Object.assign({}, o); delete copy.hex; return copy; };
   const plain = (o) => JSON.parse(JSON.stringify(o));
   assert.deepStrictEqual(plain(party.partyDecodeHello(bytes(hello.hex))), strip(hello));
   assert.deepStrictEqual(plain(party.partyDecodeDamageBatch(bytes(damageBatch.hex))), strip(damageBatch));
   assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(castEffect.hex))), strip(castEffect));
+  assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(repeatCast.hex))), strip(repeatCast));
   assert.deepStrictEqual(plain(party.partyDecodePresence(bytes(presence.hex))), strip(presence));
 });
 

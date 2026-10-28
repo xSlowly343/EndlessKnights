@@ -88,7 +88,7 @@ namespace Game.Core.Ui
                 if (!self)
                     number++;
                 var share = kill.Contribution(slot);
-                var percent = (int)System.Math.Round(share * 100, System.MidpointRounding.AwayFromZero);
+                var percent = Percent(share);
                 var name = self ? Texts.Get("party.you") : Texts.Format("party.player", number);
                 into[count++] = new BossShare(ColorIndexOf(roster, ownSlot, slot), share, Texts.Format("party.boss.share", name, percent));
             }
@@ -96,5 +96,19 @@ namespace Game.Core.Ui
         }
 
         public static string BossTitle(bool rewarded) => Texts.Get(rewarded ? "party.boss.down" : "party.boss.downUnpaid");
+
+        public static string BossTitle(in EnemyKilledMessage kill, int ownSlot)
+        {
+            var title = BossTitle(kill.RewardedFor(ownSlot));
+            var loop = Percent(kill.Loop);
+            if (loop > 0)
+                title += " · " + Texts.Format("party.boss.loop", loop);
+            var saved = (int)System.Math.Round(kill.SavedSeconds, System.MidpointRounding.AwayFromZero);
+            if (saved > 0)
+                title += " · " + Texts.Format("party.boss.saved", saved);
+            return title;
+        }
+
+        private static int Percent(double share) => (int)System.Math.Round(share * 100, System.MidpointRounding.AwayFromZero);
     }
 }

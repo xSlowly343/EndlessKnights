@@ -171,7 +171,7 @@ namespace Game.Bootstrap
                 return;
             var kill = party.LastBossKill;
             var shares = PartyStripMarks.FillBossShares(kill, party.Roster, party.OwnSlot, _bossShares);
-            _battle.PartyMarks.ShowBossShares(PartyStripMarks.BossTitle(kill.RewardedFor(party.OwnSlot)), _bossShares, shares);
+            _battle.PartyMarks.ShowBossShares(PartyStripMarks.BossTitle(kill, party.OwnSlot), _bossShares, shares);
         }
 
         private void WatchReactions()

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Game.Core.Content.Weapons;
 using Game.Core.Input;
 using Game.Core.Party;
 using Game.Core.Party.Transport;
@@ -195,6 +197,45 @@ namespace Game.Core.Tests.Party
             rig.Run(1);
 
             Assert.That(friend.Damage, Is.EqualTo(before * 1.30).Within(1e-6));
+        }
+
+        [Test]
+        public void StretchTheSecondSlowsTheTimerAtTheHost()
+        {
+            var rig = new Rig(2);
+            var clockmaker = rig.Members[0];
+            clockmaker.Loop.State.Class = HeroClass.Clockmaker;
+            rig.Run(5);
+
+            clockmaker.Cast(clockmaker.Equip("stretch_second"));
+            rig.Run(1);
+
+            var effect = rig.Host.Encounter.Effect(0);
+            Assert.That(effect.Id, Is.EqualTo(TestWorld.Data.Gems["stretch_second"].NetId));
+            Assert.That(effect.TimerSlow, Is.EqualTo(0.3).Within(1e-9));
+            Assert.That(effect.Owner, Is.EqualTo(clockmaker.Client.OwnSlot));
+        }
+
+        [Test]
+        public void TheChimesRepeatThePartyDamageAtTheHostNotAtHome()
+        {
+            var rig = new Rig(2);
+            var clockmaker = rig.Members[0];
+            clockmaker.Loop.State.Class = HeroClass.Clockmaker;
+            rig.Run(5);
+            var slot = clockmaker.Equip("the_chimes_strike_again");
+            var pendulum = clockmaker.Loop.State.Weapons.Left!;
+            clockmaker.Loop.State.Weapons.Left = new WeaponItem(pendulum.Base, pendulum.Rarity, new List<string>(pendulum.Skills) { "the_chimes_strike_again" });
+            var before = clockmaker.Loop.State.TotalDamage;
+            var hits = clockmaker.Loop.State.DamageWindow.Last(before, 70);
+
+            clockmaker.Cast(slot);
+            clockmaker.Loop.Tick();
+
+            Assert.That((clockmaker.Loop.State.TotalDamage - before).ToDouble(), Is.LessThan(hits.ToDouble() * 0.5), "the local fight does not repeat on its own");
+            Assert.That(clockmaker.Loop.Skills.LastRepeatSeconds, Is.EqualTo(7));
+            rig.Run(1);
+            Assert.That(rig.Host.RepeatedShares, Is.GreaterThan(0));
         }
 
         [Test]

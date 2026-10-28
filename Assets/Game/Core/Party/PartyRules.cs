@@ -10,7 +10,7 @@ namespace Game.Core.Party
 
         private PartyRules(int maxMembers, double hpPerExtraPlayer, double restAfterSeconds, double disconnectGraceSeconds, double rejoinWindowSeconds,
             double lateDamageSeconds, double damageBatchSeconds, double stateBroadcastSeconds, double presenceSeconds, double silenceSeconds, double maxEnemyDamageTaken, PartyBuffRules buffs, int maxMessagesPerSecond,
-            PartyContributionRules contribution, PartyCapRules caps, PartySearchRules search, PartyReactionRules reactions)
+            PartyContributionRules contribution, PartyCapRules caps, PartySearchRules search, PartyReactionRules reactions, PartyTimerRules timer)
         {
             MaxMembers = maxMembers;
             HpPerExtraPlayer = hpPerExtraPlayer;
@@ -29,6 +29,7 @@ namespace Game.Core.Party
             Caps = caps;
             Search = search;
             Reactions = reactions;
+            Timer = timer;
         }
 
         public int MaxMembers { get; }
@@ -48,6 +49,7 @@ namespace Game.Core.Party
         public PartyCapRules Caps { get; }
         public PartySearchRules Search { get; }
         public PartyReactionRules Reactions { get; }
+        public PartyTimerRules Timer { get; }
 
         public double HpMultiplier(int fighters) => System.Math.Max(1, 1 + HpPerExtraPlayer * (System.Math.Max(1, fighters) - 1));
 
@@ -89,7 +91,8 @@ namespace Game.Core.Party
                 contribution,
                 PartyCapRules.Read(root.Field("caps")),
                 PartySearchRules.Read(root.Field("search")),
-                PartyReactionRules.Read(root.Field("reactions")));
+                PartyReactionRules.Read(root.Field("reactions")),
+                PartyTimerRules.Read(root.Field("timer")));
         }
     }
 }

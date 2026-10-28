@@ -1,5 +1,6 @@
 using Game.Core.Party;
 using Game.Core.Party.Transport;
+using Game.Core.Sim;
 using Game.Core.Tests.Sim;
 using NUnit.Framework;
 
@@ -107,6 +108,33 @@ namespace Game.Core.Tests.Party
             transport.Send(HostId, buffer, Game.Core.Party.Wire.PartyCodec.Encode(buffer, batch));
             network.Advance(600);
             host.Tick();
+        }
+
+        private static void Repeat(PartyHost host, LoopbackNetwork network, IPartyTransport transport, double seconds)
+        {
+            var buffer = new byte[Game.Core.Party.Wire.PartyCodec.MaxPacketBytes];
+            var cast = new Game.Core.Party.Wire.CastEffectMessage { EffectId = 7, OnEnemy = true, RepeatSeconds = seconds };
+            transport.Send(HostId, buffer, Game.Core.Party.Wire.PartyCodec.Encode(buffer, cast));
+            network.Advance(600);
+            host.Tick();
+        }
+
+        [Test]
+        public void TheChimesRepeatOncePerCooldown()
+        {
+            var (host, network, cheat) = Joined();
+            Forge(host, network, cheat, 2000, 0.4, 1);
+
+            Repeat(host, network, cheat, 600);
+            var first = host.RepeatedShares;
+            Repeat(host, network, cheat, 5);
+
+            Assert.That(first, Is.GreaterThan(0));
+            Assert.That(host.RepeatedShares, Is.EqualTo(first), "the second cast waits for the cooldown");
+            for (var i = 0; i < TestWorld.Data.Party.Timer.RepeatCooldownSeconds * GameLoop.TicksPerSecond; i++)
+                host.Tick();
+            Repeat(host, network, cheat, 5);
+            Assert.That(host.RepeatedShares, Is.EqualTo(first), "nothing was hit in the last 5 seconds");
         }
 
         [Test]
