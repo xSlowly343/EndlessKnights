@@ -178,6 +178,8 @@ namespace Game.Core.Sim
         public double MouseHitRate { get; set; }
         public long SkillCasts { get; set; }
         public double AutoCastKeys { get; set; }
+        public long InputStreakTicks { get; set; }
+        public JewelState Jewels { get; } = new JewelState();
         public double IdleHitCarry { get; set; }
         public double CompanionHitCarry { get; set; }
         public int ActiveAuras { get; set; }

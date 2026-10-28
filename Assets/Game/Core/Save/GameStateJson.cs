@@ -75,6 +75,7 @@ namespace Game.Core.Save
                 ("resonance", WriteLevels(state.Resonance)),
                 ("spirits", WriteLevels(state.Spirits)),
                 ("gear", WriteWorn(state.Gear)),
+                ("jewels", WriteJewels(state.Jewels)),
                 ("setCollection", JsonValue.Array(WriteCollection(state))),
                 ("inputStats", Object(
                     ("keys", JsonValue.Of(state.TotalInput.Keys.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -219,6 +220,8 @@ namespace Game.Core.Save
                 ReadLevels(node.Field("spirits"), state.Spirits);
             if (node.HasField("gear") && items != null)
                 ReadWorn(node.Field("gear"), items, state.Gear);
+            if (node.HasField("jewels") && items != null)
+                ReadJewels(node.Field("jewels"), items, state.Jewels);
             if (node.HasField("setCollection"))
             {
                 foreach (var key in node.Field("setCollection").Items())
@@ -398,6 +401,45 @@ namespace Game.Core.Save
             if (items != null && node.HasField("base") && !node.Field("base").IsNull && items.TryGetBase(node.Field("base").AsString(), out var gearBase) && gearBase.Slot == slot)
                 return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot));
             return new GearItem(slot, rarity, itemLevel, color.IsNull ? null : color.AsString());
+        }
+
+        private static JsonValue WriteJewels(JewelState jewels)
+        {
+            var bag = new JsonValue[jewels.Bag.Count];
+            for (var i = 0; i < bag.Length; i++)
+                bag[i] = WriteJewel(jewels.Bag[i]);
+            var nodes = new List<string>(jewels.Sockets.Keys);
+            nodes.Sort(System.StringComparer.Ordinal);
+            var sockets = new JsonValue[nodes.Count];
+            for (var i = 0; i < sockets.Length; i++)
+                sockets[i] = Object(("node", JsonValue.Of(nodes[i])), ("jewel", WriteJewel(jewels.Sockets[nodes[i]])));
+            return Object(("found", JsonValue.Of(jewels.Found)), ("bag", JsonValue.Array(bag)), ("sockets", JsonValue.Array(sockets)));
+        }
+
+        private static JsonValue WriteJewel(JewelItem jewel)
+        {
+            var affixes = new JsonValue[jewel.Affixes.Count];
+            for (var i = 0; i < affixes.Length; i++)
+                affixes[i] = Object(("id", JsonValue.Of(jewel.Affixes[i].Def.Id)), ("tier", JsonValue.Of(jewel.Affixes[i].Tier)), ("value", JsonValue.Of(jewel.Affixes[i].Value)));
+            return Object(
+                ("rarity", JsonValue.Of(ItemRarityNames.Of(jewel.Rarity))),
+                ("itemLevel", JsonValue.Of(jewel.ItemLevel)),
+                ("affixes", JsonValue.Array(affixes)));
+        }
+
+        private static void ReadJewels(ContentNode node, ItemCatalog items, JewelState jewels)
+        {
+            jewels.Found = node.Field("found").AsLong(0);
+            foreach (var item in node.Field("bag").Items())
+                jewels.Bag.Add(ReadJewel(item, items));
+            foreach (var item in node.Field("sockets").Items())
+                jewels.Sockets[item.Field("node").AsString()] = ReadJewel(item.Field("jewel"), items);
+        }
+
+        private static JewelItem ReadJewel(ContentNode node, ItemCatalog items)
+        {
+            var rarity = ItemRarityNames.ByName.TryGetValue(node.Field("rarity").AsString(), out var found) ? found : ItemRarity.Simple;
+            return new JewelItem(rarity, node.Field("itemLevel").AsInt(1), ReadAffixes(node, items));
         }
 
         private static SetDef? ReadSet(ContentNode node, ItemCatalog items, ItemSlot slot) =>

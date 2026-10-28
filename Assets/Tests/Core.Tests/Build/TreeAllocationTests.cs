@@ -139,14 +139,14 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void JewelSocketsAndStartsCannotBeTaken()
+        public void JewelSocketsCanBeTakenButStartsCannot()
         {
             var jewel = TreePaths.NearestOfType(Tree, "ronin", TreeNodeType.Jewel);
             var loop = Typist(60);
             loop.AllocateNode("ronin_ring_0");
             TreePaths.Allocate(loop, Tree, TreePaths.To(Tree, "ronin", jewel).SkipLast(1));
 
-            Assert.That(loop.AllocateNode(jewel), Is.EqualTo(AllocationResult.Locked));
+            Assert.That(loop.AllocateNode(jewel), Is.EqualTo(AllocationResult.Allocated));
             Assert.That(loop.AllocateNode("nomad_start"), Is.EqualTo(AllocationResult.Locked));
             Assert.That(loop.AllocateNode("no_such_node"), Is.EqualTo(AllocationResult.UnknownNode));
             Assert.That(loop.AllocateNode("ronin_ring_0"), Is.EqualTo(AllocationResult.AlreadyAllocated));

@@ -102,6 +102,8 @@
     "stat.weaponInnateEffect": { "ru": "эффекта врождённых свойств оружия", "en": "effect of weapon innate properties" },
     "stat.lowestGemExperience": { "ru": "опыта гему с самым низким уровнем", "en": "experience for the lowest-level gem" },
     "stat.gemLevelBonus": { "ru": "к уровню всех гемов", "en": "to the level of all gems" },
+    "stat.damageLongStreak": { "ru": "урона, если ввод идёт дольше 2 минут без пауз", "en": "damage while input goes on for over 2 minutes without pauses" },
+    "stat.jewelEffect": { "ru": "эффекта самоцветов в гнёздах дерева", "en": "effect of jewels in tree sockets" },
     "stat.cooldownPerResource": { "ru": "отката скиллов за каждую единицу ресурса", "en": "skill cooldown per point of resource" },
     "stat.cooldownPerResourceMax": { "ru": "предел срезания отката от ресурса", "en": "cap on cooldown cut from resource" },
     "stat.auraReserveOnce": { "ru": "ауры стоят один раз вместо резерва", "en": "auras cost once instead of reserving" },

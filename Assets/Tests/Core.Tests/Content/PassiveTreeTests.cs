@@ -123,12 +123,12 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void JewelSocketsAreVisibleButLocked()
+        public void JewelSocketsAreOpen()
         {
             var tree = PassiveTree.Load(RealFile());
 
-            Assert.That(tree.Nodes.Where(node => node.Type == TreeNodeType.Jewel).All(node => node.Locked), Is.True);
-            Assert.That(tree.Nodes.Where(node => node.Type != TreeNodeType.Jewel).Any(node => node.Locked), Is.False);
+            Assert.That(tree.Nodes.Count(node => node.Type == TreeNodeType.Jewel), Is.EqualTo(30));
+            Assert.That(tree.Nodes.Any(node => node.Locked), Is.False);
         }
 
         [Test]
