@@ -5721,12 +5721,12 @@
       "weapon": "syringe_cane",
       "ascendancy": "rat_king",
       "color": "red",
-      "name": { "ru": "Крысиный прилив", "en": "Rat Tide" },
-      "tags": ["DoT", "Skill"],
-      "cost": { "resource": 60 },
+      "name": {"ru": "Крысиный прилив", "en": "Rat Tide"},
+      "tags": ["Aura", "DoT", "Skill"],
+      "cost": {"resource": 60},
       "cooldownSeconds": 40,
       "durationSeconds": 30,
-      "locked": true
+      "effect": {"type": "aura", "modifiers": [{"stat": "dotQueueShare", "kind": "flat", "value": 1}]}
     },
     {
       "id": "lancet_cut",
@@ -5760,12 +5760,13 @@
       "tier": "common",
       "role": "fast",
       "color": "red",
-      "name": { "ru": "Укол тростью", "en": "Cane Jab" },
+      "name": {"ru": "Укол тростью", "en": "Cane Jab"},
       "tags": ["DoT", "Skill"],
-      "cost": { "resource": 10 },
+      "cost": {"resource": 10},
       "cooldownSeconds": 3,
-      "effect": { "type": "addStacks", "dot": "poison", "stacks": 2, "multiplier": 2 },
-      "native": { "resourceOnCast": 3 }
+      "effect": {"type": "addStacks", "dot": "poison", "multiplier": 2, "whileActive": [{"stat": "dotDamage", "kind": "more", "value": 1, "tags": ["DoT"]}]},
+      "native": {"when": {"dotStacksAtLeast": 20, "resource": 5}},
+      "durationSeconds": 5
     },
     {
       "id": "drop_from_the_needle",
@@ -5912,13 +5913,13 @@
       "tier": "rare",
       "role": "heavy",
       "color": "red",
-      "name": { "ru": "Ассистент Лёва", "en": "Assistant Lyova" },
+      "name": {"ru": "Ассистент Лёва", "en": "Assistant Lyova"},
       "tags": ["DoT", "Skill"],
-      "cost": { "resource": 50 },
+      "cost": {"resource": 50},
       "cooldownSeconds": 35,
       "durationSeconds": 20,
-      "effect": { "type": "addStacks", "dot": "poison", "perSecond": 5 },
-      "native": { "durationMultiplier": 1.2 }
+      "effect": {"type": "addStacks", "dot": "poison", "perSecond": 5, "endsOnKill": true},
+      "native": {"carryOver": true}
     },
     {
       "id": "diagnosis",
@@ -5926,12 +5927,12 @@
       "weapon": "syringe_cane",
       "tier": "rare",
       "color": "red",
-      "name": { "ru": "Диагноз", "en": "Diagnosis" },
+      "name": {"ru": "Диагноз", "en": "Diagnosis"},
       "tags": ["DoT", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["DoT"]}] },
-      "native": { "when": {"dotStacksAtLeast": 20, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["DoT"]}]} }
+      "effect": {"type": "passive", "modifiers": [{"stat": "damagePerTenPoison", "kind": "flat", "value": 0.03}]},
+      "native": {"modifiers": [{"stat": "damagePerTenPoison", "kind": "flat", "value": 0.02}]}
     },
     {
       "id": "quarantine_round",
@@ -5939,13 +5940,14 @@
       "weapon": "syringe_cane",
       "tier": "rare",
       "role": "heavy",
-      "locked": true,
       "color": "red",
-      "name": { "ru": "Карантинный обход", "en": "Quarantine Round" },
-      "tags": ["DoT", "Skill"],
-      "cost": { "resource": 40 },
+      "name": {"ru": "Карантинный обход", "en": "Quarantine Round"},
+      "tags": ["Aura", "DoT", "Skill"],
+      "cost": {"resource": 40},
       "cooldownSeconds": 40,
-      "durationSeconds": 20
+      "durationSeconds": 20,
+      "effect": {"type": "aura", "modifiers": [{"stat": "dotSpread", "kind": "flat", "value": 0.5}]},
+      "native": {"modifiers": [{"stat": "dotSpread", "kind": "flat", "value": 0.25}]}
     },
     {
       "id": "lancet",
@@ -6037,13 +6039,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "red",
-      "name": { "ru": "Сначала хуже", "en": "Worse First" },
+      "name": {"ru": "Сначала хуже", "en": "Worse First"},
       "tags": ["DoT", "Skill"],
-      "cost": { "resource": 70 },
+      "cost": {"resource": 70},
       "cooldownSeconds": 30,
       "durationSeconds": 15,
-      "effect": { "type": "addStacks", "dot": "poison", "perSecond": 2 },
-      "native": { "durationMultiplier": 1.3 }
+      "effect": {"type": "addStacks", "dot": "poison", "perSecond": 2, "whileActive": [{"stat": "dotSpread", "kind": "flat", "value": 0.5}]},
+      "native": {"modifiers": [{"stat": "dotSpread", "kind": "flat", "value": 0.5}]}
     },
     {
       "id": "not_enough_patience",
@@ -6052,12 +6054,12 @@
       "tier": "epic",
       "role": "fast",
       "color": "red",
-      "name": { "ru": "Не хватило терпения", "en": "Not Enough Patience" },
+      "name": {"ru": "Не хватило терпения", "en": "Not Enough Patience"},
       "tags": ["DoT", "Skill"],
-      "cost": { "resource": 25 },
+      "cost": {"resource": 25},
       "cooldownSeconds": 8,
-      "effect": { "type": "detonate", "seconds": 3 },
-      "native": { "resourceOnCast": 5 }
+      "effect": {"type": "detonate", "seconds": 3, "keepStacks": true},
+      "native": {"stackGrowth": 0.2}
     },
     {
       "id": "autopsy",

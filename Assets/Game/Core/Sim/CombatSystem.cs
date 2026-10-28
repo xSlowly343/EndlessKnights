@@ -92,6 +92,9 @@ namespace Game.Core.Sim
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerKill, 0, tags)) * System.Math.Min(_state.KillStreak, conditions.KillStreakMax);
             if (_state.AfterIdleTicks > 0)
                 multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageAfterIdle, 1, tags));
+            var perTenPoison = _hero.Value(CombatStats.DamagePerTenPoison, 0, tags);
+            if (perTenPoison > 0)
+                multiplier *= 1 + perTenPoison * System.Math.Floor(_state.PoisonStacks / 10 + 1e-9);
             var perKind = _hero.Value(CombatStats.DamagePerInputKind, 0, tags);
             if (perKind > 0)
                 multiplier *= 1 + perKind * RecentInputKinds();

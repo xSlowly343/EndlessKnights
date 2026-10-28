@@ -42,7 +42,17 @@ namespace Game.Core.Sim
 
         public void Flow(AddStacksEffect effect) => Add(effect.Kind, effect.PerSecond * GameLoop.TickSeconds);
 
-        public void Detonate(DetonateEffect effect) => Detonate(effect.Seconds);
+        public void Detonate(DetonateEffect effect, double stackGrowth = 0)
+        {
+            if (!effect.KeepStacks)
+            {
+                Detonate(effect.Seconds);
+                return;
+            }
+            Hit(HitsPerSecond(1) * effect.Seconds);
+            if (stackGrowth > 0)
+                _state.PoisonStacks = System.Math.Min(PoisonMax, _state.PoisonStacks * (1 + stackGrowth));
+        }
 
         public long Bursts { get; private set; }
 

@@ -60,6 +60,7 @@ namespace Game.Core.Sim
         public static readonly StatId EnemyDebuffEffect = new StatId("enemyDebuffEffect");
         public static readonly StatId SandFromFastKills = new StatId("sandFromFastKills");
         public static readonly StatId FastKillBank = new StatId("fastKillBank");
+        public static readonly StatId DamagePerTenPoison = new StatId("damagePerTenPoison");
         public static readonly StatId FastKillBankMax = new StatId("fastKillBankMax");
         public static readonly StatId BossTimerBank = new StatId("bossTimerBank");
         public static readonly StatId CannonCount = new StatId("cannonCount");
