@@ -296,6 +296,7 @@ namespace Game.Core.Content.Gems
                         BossTimerStopSeconds = Number(node, "bossTimerStopSeconds", 600),
                         Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null,
                         PerCurse = Number(node, "perCurse", 1e6),
+                        BurnStacks = Number(node, "burnStacks", 1000),
                         RefreshCurses = node.HasField("refreshCurses") && node.Field("refreshCurses").AsBool()
                     };
                 case "aura":
@@ -314,7 +315,8 @@ namespace Game.Core.Content.Gems
                     {
                         Hits = node.HasField("hits") ? node.Field("hits").AsInt(1, 10000) : 0,
                         QueueTargets = node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
-                        Input = node.HasField("input") ? Pick(node.Field("input"), Inputs, "keys, mouse or any") : HitInput.Keys
+                        Input = node.HasField("input") ? Pick(node.Field("input"), Inputs, "keys, mouse or any") : HitInput.Keys,
+                        BurnStacks = Number(node, "burnStacks", 1000)
                     };
                 case "specialKeys":
                 {
@@ -467,7 +469,8 @@ namespace Game.Core.Content.Gems
                         Number(node, "multiplier", 1e6))
                     {
                         WhileActive = node.HasField("whileActive") ? ModifierReader.ReadList(node.Field("whileActive")) : Array.Empty<Modifier>(),
-                        EndsOnKill = node.HasField("endsOnKill") && node.Field("endsOnKill").AsBool()
+                        EndsOnKill = node.HasField("endsOnKill") && node.Field("endsOnKill").AsBool(),
+                        DelaySeconds = Number(node, "delaySeconds", 600)
                     };
                 case "detonate":
                     return new DetonateEffect(node.Field("seconds").AsNumber(0.1, 3600)) { KeepStacks = node.HasField("keepStacks") && node.Field("keepStacks").AsBool() };
@@ -543,6 +546,8 @@ namespace Game.Core.Content.Gems
                 CarryOver = node.HasField("carryOver") && node.Field("carryOver").AsBool(),
                 WindowSeconds = Number(node, "windowSeconds", Sim.DamageWindow.Seconds),
                 StackGrowth = Number(node, "stackGrowth", 10),
+                ResourceRelief = Number(node, "resourceRelief", 1000),
+                RepeatEvery = node.HasField("repeatEvery") ? node.Field("repeatEvery").AsInt(1, 10000) : 0,
                 WhenResource = node.HasField("when") ? Number(node.Field("when"), "resource", 1000) : 0,
                 ResourcePerSavedSecond = Number(node, "resourcePerSavedSecond", 1000),
                 RestoresFocus = node.HasField("restoresFocus") && node.Field("restoresFocus").AsBool(),
@@ -575,6 +580,7 @@ namespace Game.Core.Content.Gems
             new SkillCondition
             {
                 ResourceAtLeast = Number(node, "resourceAtLeast", 1000),
+                ResourceAtMost = Number(node, "resourceAtMost", 1000),
                 ComboAbove = node.HasField("comboAbove") ? node.Field("comboAbove").AsInt(0, 1000000) : 0,
                 BossLastSeconds = Number(node, "bossLastSeconds", 3600),
                 Boss = node.HasField("boss") && node.Field("boss").AsBool(),

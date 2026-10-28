@@ -53,6 +53,7 @@ namespace Game.Core.Content.Gems
         public double BossTimerStopSeconds { get; set; }
         public StacksEffect? Stacks { get; set; }
         public double PerCurse { get; set; }
+        public double BurnStacks { get; set; }
         public bool RefreshCurses { get; set; }
     }
 
@@ -222,6 +223,7 @@ namespace Game.Core.Content.Gems
         public int Hits { get; set; }
         public int QueueTargets { get; set; }
         public HitInput Input { get; set; }
+        public double BurnStacks { get; set; }
     }
 
     public enum SpecialKey
@@ -594,6 +596,7 @@ namespace Game.Core.Content.Gems
         public double Multiplier { get; }
         public IReadOnlyList<Modifier> WhileActive { get; set; } = System.Array.Empty<Modifier>();
         public bool EndsOnKill { get; set; }
+        public double DelaySeconds { get; set; }
     }
 
     public sealed class DetonateEffect : SkillEffect

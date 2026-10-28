@@ -40,6 +40,8 @@ namespace Game.Core.Sim
             Add(effect.Kind, stacks);
         }
 
+        public void AddBurn(double stacks) => Add(DotKind.Burn, stacks);
+
         public void Flow(AddStacksEffect effect) => Add(effect.Kind, effect.PerSecond * GameLoop.TickSeconds);
 
         public void Detonate(DetonateEffect effect, double stackGrowth = 0)
