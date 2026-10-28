@@ -324,6 +324,9 @@ namespace Game.Core.Tests.Party
             Assert.That(rig.Players[0].Client.ReactionOf(slot), Is.EqualTo(0));
             Assert.That(rig.Players[2].Client.ReactionOf(slot), Is.EqualTo(0));
             Assert.That(rig.Players[0].Client.ReactionOf(rig.Players[0].Client.OwnSlot), Is.EqualTo(PartyClient.NoReaction));
+            var allies = new Game.Core.Ui.StripAlly[Game.Core.Ui.StripAllies.MaxShown];
+            Assert.That(Game.Core.Ui.StripAllies.Fill(rig.Players[0].Client, allies), Is.EqualTo(2));
+            Assert.That(System.Array.Find(allies, ally => ally.Slot == slot).Reaction, Is.EqualTo(Game.Core.Ui.PartyReactions.Label(TestWorld.Data.Party.Reactions, 0)));
 
             rig.Run(TestWorld.Data.Party.Reactions.ShowSeconds + 0.5);
 
@@ -355,6 +358,7 @@ namespace Game.Core.Tests.Party
 
             Assert.That(rig.Players[0].Client.CanReact, Is.False);
             Assert.That(rig.Players[0].Client.SendReaction(0), Is.False);
+            Assert.That(Game.Core.Ui.StripAllies.Fill(rig.Players[0].Client, new Game.Core.Ui.StripAlly[3]), Is.Zero);
         }
     }
 }

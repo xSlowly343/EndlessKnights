@@ -95,6 +95,7 @@ namespace Game.Presentation.Battle
         private Transform _scene = null!;
         private SpriteRenderer _hero = null!;
         private SpriteRenderer _enemy = null!;
+        private AllySilhouettes _allies = null!;
         private UiTheme _theme = null!;
         private RectTransform _hpTrack = null!;
         private RectTransform _hpFill = null!;
@@ -159,6 +160,7 @@ namespace Game.Presentation.Battle
         public string GoldText => _goldText.text;
         public bool TimerShown => _timer.gameObject.activeSelf;
         public float HpShown => _shownHp;
+        public AllySilhouettes Allies => _allies;
 
         public static BattleView Create()
         {
@@ -277,6 +279,7 @@ namespace Game.Presentation.Battle
             var notice = StripCanvas.PxOf(NoticePosition);
             StripCanvas.Place(_noticeText.rectTransform, notice.x, StripSpace.BaseHeightPx - notice.y, new Vector2(320f, 20f), new Vector2(0.5f, 0.5f));
             _noticeText.gameObject.SetActive(false);
+            _allies = AllySilhouettes.Create(_scene, texts, _theme);
             _numbers = DamageNumbers.Create();
             _numbers.transform.SetParent(transform, false);
             _coins = CoinBurst.Create(CoinTarget);
@@ -423,6 +426,7 @@ namespace Game.Presentation.Battle
             AnimateBars(delta);
             AnimateEnemy(delta);
             AnimateHero(delta);
+            _allies.Animate(Time.unscaledTime);
             AnimateEffects(delta);
         }
 
