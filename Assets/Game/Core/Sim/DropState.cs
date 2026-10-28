@@ -18,6 +18,7 @@ namespace Game.Core.Sim
         public int DailyItems { get; set; }
         public double Dust { get; set; }
         public long Shards { get; set; }
+        public long Ingots { get; set; }
         public double ShardCarry { get; set; }
         public long ShardsFound { get; set; }
         public int DailyShards { get; set; }

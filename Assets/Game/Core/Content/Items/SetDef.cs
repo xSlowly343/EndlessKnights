@@ -7,8 +7,9 @@ namespace Game.Core.Content.Items
     {
         private readonly Dictionary<ItemSlot, IReadOnlyList<Modifier>> _pieces;
 
-        public SetDef(string id, string nameRu, string nameEn, ItemRarity rarity, string? color, Dictionary<ItemSlot, IReadOnlyList<Modifier>> pieces, IReadOnlyList<Modifier> bonus)
+        public SetDef(string id, string nameRu, string nameEn, ItemRarity rarity, string? color, Dictionary<ItemSlot, IReadOnlyList<Modifier>> pieces, IReadOnlyList<Modifier> bonus, string? theme = null)
         {
+            Theme = theme;
             Id = id;
             NameRu = nameRu;
             NameEn = nameEn;
@@ -24,6 +25,7 @@ namespace Game.Core.Content.Items
         public string NameEn { get; }
         public ItemRarity Rarity { get; }
         public string? Color { get; }
+        public string? Theme { get; }
         public IReadOnlyList<ItemSlot> Slots { get; }
         public IReadOnlyList<Modifier> Bonus { get; }
 
