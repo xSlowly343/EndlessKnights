@@ -88,6 +88,7 @@ if (chronicle.version !== 1)
 const chronicleRules = {
   flushSeconds: chronicle.flushSeconds,
   maxRecords: chronicle.maxRecords,
+  night: chronicle.night,
   feats: chronicle.feats.map((feat) => ({
     id: feat.id, kind: feat.kind, levels: feat.levels, banner: feat.banner || [], title: feat.title || null, tracked: feat.tracked !== false
   })),

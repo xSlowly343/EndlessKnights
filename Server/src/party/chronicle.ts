@@ -10,6 +10,7 @@ interface ChronicleFeatRule {
 interface ChronicleRules {
     flushSeconds: number;
     maxRecords: number;
+    night: { utcOffsetMinutes: number; fromHour: number; toHour: number };
     feats: ChronicleFeatRule[];
     classRoles: string[];
 }
@@ -18,6 +19,7 @@ interface ChronicleStats {
     bossesTogether: number;
     ticksTogether: number;
     fullOrchestra: number;
+    nightBosses: number;
 }
 
 interface ChronicleRecord {
@@ -50,7 +52,7 @@ function chronicleTicksPerHour(): number {
 }
 
 function chronicleNoStats(): ChronicleStats {
-    return { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0 };
+    return { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0 };
 }
 
 function chronicleEmpty(): ChronicleValue {
@@ -58,7 +60,7 @@ function chronicleEmpty(): ChronicleValue {
 }
 
 function chronicleHasStats(stats: ChronicleStats): boolean {
-    return stats.bossesTogether > 0 || stats.ticksTogether > 0 || stats.fullOrchestra > 0;
+    return stats.bossesTogether > 0 || stats.ticksTogether > 0 || stats.fullOrchestra > 0 || stats.nightBosses > 0;
 }
 
 function chronicleProgress(stats: ChronicleStats, kind: string): number {
@@ -66,6 +68,7 @@ function chronicleProgress(stats: ChronicleStats, kind: string): number {
         case "bossesTogether": return stats.bossesTogether;
         case "hoursTogether": return stats.ticksTogether / chronicleTicksPerHour();
         case "fullOrchestra": return stats.fullOrchestra;
+        case "nightBosses": return stats.nightBosses;
         default: return 0;
     }
 }
@@ -80,6 +83,7 @@ function chronicleAdd(value: ChronicleValue, delta: ChronicleStats, now: number,
     value.stats.bossesTogether += delta.bossesTogether;
     value.stats.ticksTogether += delta.ticksTogether;
     value.stats.fullOrchestra += delta.fullOrchestra;
+    value.stats.nightBosses += delta.nightBosses;
     const earned: ChronicleEarned[] = [];
     for (const feat of rules.feats) {
         if (!feat.tracked)
@@ -125,7 +129,8 @@ function chronicleView(partyId: string, value: ChronicleValue, rules: ChronicleR
         stats: {
             bossesTogether: value.stats.bossesTogether,
             hoursTogether: Math.floor(value.stats.ticksTogether / chronicleTicksPerHour() * 10) / 10,
-            fullOrchestra: value.stats.fullOrchestra
+            fullOrchestra: value.stats.fullOrchestra,
+            nightBosses: value.stats.nightBosses
         },
         feats: rules.feats.map((feat) => {
             const got = value.feats[feat.id];
@@ -220,6 +225,11 @@ function chronicleKeepForMembers(nk: nkruntime.Nakama, logger: nkruntime.Logger,
 function chronicleRoleOf(heroClass: number): string {
     const roles = ChronicleServerRules.classRoles;
     return heroClass >= 0 && heroClass < roles.length ? roles[heroClass] : "";
+}
+
+function chronicleAtNight(unixMs: number, rules: ChronicleRules): boolean {
+    const hour = Math.floor((unixMs + rules.night.utcOffsetMinutes * 60000) / 3600000) % 24;
+    return unixMs > 0 && hour >= rules.night.fromHour && hour < rules.night.toHour;
 }
 
 function chronicleFullOrchestra(roles: string[]): boolean {

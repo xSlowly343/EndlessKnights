@@ -17,9 +17,10 @@ namespace Game.Core.Tests.Party
   ""version"": 1,
   ""flushSeconds"": 60,
   ""maxRecords"": 50,
+  ""night"": { ""utcOffsetMinutes"": 180, ""fromHour"": 0, ""toHour"": 6 },
   ""feats"": [
     { ""id"": ""first_steps"", ""kind"": ""bossesTogether"", ""levels"": [10], ""banner"": [1] },
-    { ""id"": ""night_shift"", ""kind"": ""nightBosses"", ""levels"": [20], ""title"": ""owls"", ""tracked"": false }
+    { ""id"": ""rift_conquerors"", ""kind"": ""riftDepth"", ""levels"": [100, 200], ""title"": ""owls"", ""tracked"": false }
   ]
 }";
 
@@ -53,14 +54,18 @@ namespace Game.Core.Tests.Party
             Assert.That(rules.Feats[0].Banner, Is.EqualTo(new[] { 1 }));
             Assert.That(rules.Feats[0].Tracked, Is.True);
             Assert.That(rules.Feats[1].Title, Is.EqualTo("owls"));
+            Assert.That(rules.NightUtcOffsetMinutes, Is.EqualTo(180), "the night is counted by Moscow time");
+            Assert.That(rules.NightFromHour, Is.EqualTo(0));
+            Assert.That(rules.NightToHour, Is.EqualTo(6));
             Assert.That(rules.Feats[1].Tracked, Is.False);
         }
 
         [TestCase(@"""levels"": [10], ""banner"": [1]", @"""levels"": [10, 5], ""banner"": [1, 2]", "levels")]
         [TestCase(@"""levels"": [10], ""banner"": [1]", @"""levels"": [10], ""banner"": [1, 2]", "banner")]
-        [TestCase(@"""levels"": [20], ""title"": ""owls"", ""tracked"": false", @"""levels"": [20], ""title"": ""owls""", "not counted yet")]
+        [TestCase(@"""levels"": [100, 200], ""title"": ""owls"", ""tracked"": false", @"""levels"": [100, 200], ""title"": ""owls""", "not counted yet")]
+        [TestCase(@"""toHour"": 6", @"""toHour"": 0", "toHour")]
         [TestCase(@"""kind"": ""bossesTogether""", @"""kind"": ""dragons""", "unknown kind")]
-        [TestCase(@"""id"": ""night_shift""", @"""id"": ""first_steps""", "new, non-empty id")]
+        [TestCase(@"""id"": ""rift_conquerors""", @"""id"": ""first_steps""", "new, non-empty id")]
         public void BadFeatsAreRejected(string from, string to, string message)
         {
             var error = Assert.Throws<ContentException>(() => PartyChronicleRules.Load(Valid.Replace(from, to)));

@@ -12,7 +12,7 @@ namespace Game.Net.Nakama
 {
     public sealed class NakamaSocket : IDisposable
     {
-        private const int PacketBytes = 256;
+        private const int PacketBytes = Game.Core.Party.Wire.PartyCodec.MaxPacketBytes;
 
         private readonly ClientWebSocket _socket = new ClientWebSocket();
         private readonly BlockingCollection<Outgoing> _outgoing = new BlockingCollection<Outgoing>();

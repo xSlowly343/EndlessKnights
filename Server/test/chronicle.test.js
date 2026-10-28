@@ -8,8 +8,8 @@ const rules = party.ChronicleServerRules;
 const plain = (o) => JSON.parse(JSON.stringify(o));
 const viking = 0, metalhead = 5, voodoo = 8, plagueDoctor = 10;
 
-function stats(bosses, hours, orchestra) {
-  return { bossesTogether: bosses, ticksTogether: Math.round(hours * 36000), fullOrchestra: orchestra };
+function stats(bosses, hours, orchestra, night) {
+  return { bossesTogether: bosses, ticksTogether: Math.round(hours * 36000), fullOrchestra: orchestra, nightBosses: night || 0 };
 }
 
 function killBoss(host, slots) {
@@ -47,9 +47,9 @@ test("hours together and the full orchestra give titles, untracked feats wait", 
   party.chronicleAdd(value, stats(0, 0.1, 0), 2000, rules);
   assert.deepStrictEqual(plain(party.chronicleTitles(value, rules)), ["full_orchestra", "inseparable"]);
   party.chronicleAdd(value, stats(100000, 1000, 100), 3000, rules);
-  assert.strictEqual(value.feats.night_shift, undefined, "night bosses are not counted yet");
+  assert.strictEqual(value.feats.guardian_hunters, undefined, "guardians are not counted yet");
   const view = party.chronicleView("p1", value, rules);
-  assert.strictEqual(view.feats.find((feat) => feat.id === "night_shift").tracked, false);
+  assert.strictEqual(view.feats.find((feat) => feat.id === "guardian_hunters").tracked, false);
   assert.strictEqual(view.records[0].at, 3000, "the newest record comes first");
 });
 
@@ -111,4 +111,26 @@ test("the party chronicle keeps feats, records and copies for every member", () 
   call("ann", "partyLeaveRpc");
   assert.strictEqual(nk.storageRead([{ collection: "party_chronicle", key: view.id, userId: party.PartySystemUser }]).length, 0, "a dissolved party forgets its chronicle");
   assert.strictEqual(nk.storageRead([{ collection: "party_feats", key: view.id, userId: "bob" }]).length, 1, "a former member keeps the copy");
+});
+
+test("night bosses are counted by Moscow time and give the owls", () => {
+  const moscow = (day, hour) => Date.UTC(2026, 9, day, hour - 3, 30);
+  assert.strictEqual(party.chronicleAtNight(moscow(28, 0), rules), true, "00:30 in Moscow is night");
+  assert.strictEqual(party.chronicleAtNight(moscow(28, 5), rules), true);
+  assert.strictEqual(party.chronicleAtNight(moscow(28, 6), rules), false, "06:30 in Moscow is morning");
+  assert.strictEqual(party.chronicleAtNight(moscow(28, 23), rules), false);
+  assert.strictEqual(party.chronicleAtNight(Date.UTC(2026, 9, 28, 22, 30), rules), true, "22:30 UTC is already 01:30 in Moscow");
+  const value = party.chronicleEmpty();
+  party.chronicleAdd(value, stats(20, 0, 0, 20), 1000, rules);
+  assert.deepStrictEqual(plain(party.chronicleTitles(value, rules)), ["owls"]);
+
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.join("user-b", "12");
+  host.tick(moscow(28, 12));
+  killBoss(host, [0, 1]);
+  assert.strictEqual(host.chronicle.nightBosses, 0, "a boss at noon is not the night shift");
+  host.tick(moscow(29, 2));
+  killBoss(host, [0, 1]);
+  assert.strictEqual(host.chronicle.nightBosses, 1);
 });

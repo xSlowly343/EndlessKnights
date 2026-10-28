@@ -24,7 +24,7 @@ class PartyHost {
     cutShares = 0;
     repeatedShares = 0;
     clockUnixMs = 0;
-    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0 };
+    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0 };
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
     private readonly allowance = [0, 0, 0, 0];
@@ -158,7 +158,11 @@ class PartyHost {
     }
 
     takeChronicle(): ChronicleStats {
-        const taken = { bossesTogether: this.chronicle.bossesTogether, ticksTogether: this.chronicle.ticksTogether, fullOrchestra: this.chronicle.fullOrchestra };
+        const taken = {
+            bossesTogether: this.chronicle.bossesTogether, ticksTogether: this.chronicle.ticksTogether, fullOrchestra: this.chronicle.fullOrchestra,
+            nightBosses: this.chronicle.nightBosses
+        };
+        this.chronicle.nightBosses = 0;
         this.chronicle.bossesTogether = 0;
         this.chronicle.ticksTogether = 0;
         this.chronicle.fullOrchestra = 0;
@@ -184,6 +188,8 @@ class PartyHost {
         this.chronicle.bossesTogether++;
         if (chronicleFullOrchestra(roles))
             this.chronicle.fullOrchestra++;
+        if (chronicleAtNight(this.clockUnixMs, ChronicleServerRules))
+            this.chronicle.nightBosses++;
     }
 
     private requestWorld(request: WorldRequestMessage): void {
