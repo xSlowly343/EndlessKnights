@@ -5,7 +5,7 @@ const { FakeNakama, logger } = require("./fake-nakama");
 
 const party = loadModule();
 const rift = party.RiftServerRules;
-const window = party.riftNext(rift, Date.UTC(2026, 9, 26));
+const window = party.riftNext(rift, Date.now() + 8 * 24 * 3600 * 1000);
 const hour = 3600 * 1000;
 
 function worldRequest(world, cancel) {
@@ -92,4 +92,41 @@ test("parties entering within the hour share one rift and its end, later ones op
   assert.strictEqual(second.host.encounter.world, 1);
   step(nk, second, party.riftPartyEnd(ids[0]));
   assert.strictEqual(second.host.encounter.world, 0, "the rift end brings the party home");
+});
+
+test("after a server restart the new match puts the party back into its rift until the rift ends", () => {
+  const { nk, call } = world("ann", "bob");
+  const state = match(nk, call, "ann", "bob");
+  const now = window.startUnixMs + hour;
+  enter(nk, state, "ann", now);
+  party.partyTrackRift(nk, logger, state, now);
+  const riftId = state.host.encounter.riftId;
+  const restart = () => party.partyMatchInit({ env: {} }, logger, nk, { partyId: state.partyId }).state;
+
+  const restored = restart();
+  assert.strictEqual(restored.host.encounter.world, 1, "the party is back in the rift");
+  assert.strictEqual(restored.host.encounter.riftId, riftId);
+  assert.strictEqual(restored.boardRiftId, riftId, "the board goes on with the same rift");
+  restored.host.join("ann", "11");
+  assert.strictEqual(restored.host.encounter.world, 1);
+  assert.strictEqual(restored.host.encounter.started, true);
+
+  state.host.receive("ann", worldRequest(0, false));
+  step(nk, state, now);
+  for (let i = 0; i < party.PartyServerRules.worldSwitchSeconds * 10 + 1; i++)
+    step(nk, state, now);
+  party.partyTrackRift(nk, logger, state, now);
+  assert.strictEqual(state.host.encounter.world, 0);
+  assert.strictEqual(restart().host.encounter.world, 0, "a party that went home stays home after a restart");
+});
+
+test("a rift that has ended is not restored", () => {
+  const { nk, call } = world("ann", "bob");
+  const state = match(nk, call, "ann", "bob");
+  const now = window.startUnixMs + hour;
+  enter(nk, state, "ann", now);
+  party.partyTrackRift(nk, logger, state, now);
+  const end = party.riftPartyEnd(state.host.encounter.riftId);
+  assert.strictEqual(party.riftPartyOf(nk, state.partyId, end - 1), state.host.encounter.riftId);
+  assert.strictEqual(party.riftPartyOf(nk, state.partyId, end), 0);
 });

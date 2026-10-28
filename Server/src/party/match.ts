@@ -31,6 +31,7 @@ function partyMatchInit(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     const seed = partyDecimalOrNull(params.seed) || String(Date.now());
     const partyId = typeof params.partyId === "string" ? params.partyId : "";
     const state: PartyMatchState = { host: new PartyHost(PartyServerRules, seed), partyId: partyId, presences: {}, pendingNumbers: {}, emptyTicks: 0, chronicleTicks: 0, boardRiftId: 0, boardTicks: 0 };
+    partyRestoreRift(nk, logger, state, Date.now());
     return { state: state, tickRate: PartyTicksPerSecond, label: JSON.stringify({ kind: PartyMatchName, open: true }) };
 }
 
@@ -127,6 +128,16 @@ function partyHandleWorld(nk: nkruntime.Nakama, state: PartyMatchState, nowUnixM
     host.worldRequests.length = 0;
 }
 
+function partyRestoreRift(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: PartyMatchState, nowUnixMs: number): void {
+    const riftId = riftPartyOf(nk, state.partyId, nowUnixMs);
+    if (riftId === 0)
+        return;
+    state.host.encounter.switchWorld(PartyWorld.Rift, riftId);
+    state.host.encounter.events.length = 0;
+    state.boardRiftId = riftId;
+    logger.info("party %s: back in rift %d after a restart", state.partyId, riftId);
+}
+
 function partyTrackRift(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: PartyMatchState, nowUnixMs: number): void {
     const host = state.host;
     const current = host.encounter.world === PartyWorld.Rift ? host.encounter.riftId : 0;
@@ -136,8 +147,11 @@ function partyTrackRift(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: P
     if (tracked !== 0 && (due || current !== tracked)) {
         partyWriteBoard(nk, state, tracked, nowUnixMs);
         state.boardRiftId = current;
+        if (current !== tracked)
+            riftPartyNote(nk, state.partyId, current);
     } else if (tracked === 0 && current !== 0) {
         state.boardRiftId = current;
+        riftPartyNote(nk, state.partyId, current);
         partyWriteBoard(nk, state, current, nowUnixMs);
     }
     if (due) {
