@@ -43,6 +43,7 @@ namespace Game.Core.Sim
         private readonly TutorialSystem _tutorial;
         private readonly PartyBuffs _partyBuffs;
         private readonly SynergySystem _synergy;
+        private readonly GhostSystem _ghost;
         private readonly RiftSystem _rift;
         private readonly WeaponSystem _weapons;
         private readonly DropSystem _drops;
@@ -116,6 +117,7 @@ namespace Game.Core.Sim
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
+            _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
             RebuildTree();
             SyncPathSkill();
@@ -144,6 +146,7 @@ namespace Game.Core.Sim
         public TutorialSystem Tutorial => _tutorial;
         public PartyBuffs PartyBuffs => _partyBuffs;
         public SynergySystem Synergy => _synergy;
+        public GhostSystem Ghost => _ghost;
         public RiftSystem Rift => _rift;
         public WeaponSystem Weapons => _weapons;
         public GearSystem Gear => _gear;
@@ -434,6 +437,7 @@ namespace Game.Core.Sim
             _tutorial.UseRules(data.Tutorial);
             _partyBuffs.UseRules(data.Party.Buffs);
             _synergy.UseRules(data.Synergy);
+            _ghost.UseRules(data.Party.Ghost);
             _rift.UseData(data);
             RebuildTree();
             SyncPathSkill();
@@ -467,6 +471,8 @@ namespace Game.Core.Sim
             CastRequested();
             _triggers.Tick(input);
             _partyBuffs.Tick();
+            _ghost.NoteInput(input.HasInput);
+            _ghost.Tick();
             _synergy.Tick();
             _rift.Tick();
             _stage.Tick();

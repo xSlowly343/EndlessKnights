@@ -17,7 +17,7 @@ namespace Game.Sim
     public static class BotCommand
     {
         public const string Usage =
-            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
+            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift] | --ghost) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
 
         private const ulong BotSteamBase = 76561190000000000UL;
 
@@ -27,7 +27,7 @@ namespace Game.Sim
             for (var i = 0; i < args.Count; i++)
             {
                 var name = args[i];
-                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--rift" || name == "--chronicle" || name == "--stay" || name == "--find" || name == "--quick";
+                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--rift" || name == "--chronicle" || name == "--ghost" || name == "--stay" || name == "--find" || name == "--quick";
                 if (flag)
                     options[name] = "yes";
                 else if (i + 1 < args.Count)
@@ -43,6 +43,8 @@ namespace Game.Sim
             var client = new NakamaClient(server, key);
             try
             {
+                if (options.ContainsKey("--ghost"))
+                    return RunGhost(data, client, profile, heroClass, seconds).GetAwaiter().GetResult();
                 if (options.ContainsKey("--pair"))
                     return RunPair(data, client, profile, seconds, options.ContainsKey("--rift")).GetAwaiter().GetResult();
                 var stay = options.ContainsKey("--stay");
@@ -79,6 +81,23 @@ namespace Game.Sim
                 await bot.ReportOtherAsync(reportReason, Console.Out).ConfigureAwait(false);
             await bot.FinishAsync(stay).ConfigureAwait(false);
             return bot.Client.Status == PartyLink.Linked ? 0 : 1;
+        }
+
+        private static async Task<int> RunGhost(GameData data, NakamaClient client, BotProfile profile, HeroClass heroClass, double seconds)
+        {
+            var bot = await Bot.LoginAsync(data, client, profile, heroClass, 1).ConfigureAwait(false);
+            Play(new[] { bot }, System.Math.Min(20, seconds / 2));
+            var activity = await bot.ShareGhostAsync().ConfigureAwait(false);
+            Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "shared own ghost: class {0}, pace {1:0.###} enemies/s, activity {2:P0}",
+                HeroClassNames.Of(heroClass), bot.Loop.Ghost.OwnShareRate, activity));
+            var ghost = await bot.TakeGhostAsync(data).ConfigureAwait(false);
+            Console.WriteLine(ghost == null ? "no ghost to take" : string.Format(CultureInfo.InvariantCulture, "ghost {0} ({1}), pace {2:0.###}, activity {3:P0}",
+                ghost.Value.Name, HeroClassNames.Of(ghost.Value.HeroClass), ghost.Value.ShareRate, ghost.Value.Activity));
+            Play(new[] { bot }, seconds);
+            Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "kills {0}, stage {1}, ghost damage {2}, bosses with the ghost {3}",
+                bot.Kills, bot.Loop.State.Stage, NumberFormatter.Format(bot.Loop.Ghost.Damage, NumberFormatSettings.Default), bot.Loop.Ghost.BossesHelped));
+            await bot.FinishAsync(true).ConfigureAwait(false);
+            return 0;
         }
 
         private static async Task<int> RunPair(GameData data, NakamaClient client, BotProfile profile, double seconds, bool rift)
@@ -159,6 +178,7 @@ namespace Game.Sim
 
             public PartyView? Party => _online.Party;
             public PartyClient Client { get; }
+            public GameLoop Loop => _loop;
             public long Kills { get; private set; }
             public int ReactionsSent { get; private set; }
             public bool WantsRift { get; set; }
@@ -195,6 +215,20 @@ namespace Game.Sim
                 if (found.Count == 0)
                     throw new NakamaException(0, "no open party to join");
                 await _online.JoinOpenAsync(found[0].Id).ConfigureAwait(false);
+            }
+
+            public Task<double> ShareGhostAsync()
+            {
+                var synergy = _loop.Data.Synergy;
+                return _online.Ghosts.ShareAsync(_loop.State.Class, _loop.Ghost.OwnShareRate, synergy.IdsOf(_loop.Synergy.OwnMarks), _loop.Ghost.TakeActiveSeconds());
+            }
+
+            public async Task<GhostSnapshot?> TakeGhostAsync(GameData data)
+            {
+                var ghost = await _online.Ghosts.PickAsync(data.Synergy).ConfigureAwait(false);
+                if (ghost != null)
+                    _loop.Ghost.Use(ghost.Value);
+                return ghost;
             }
 
             public async Task ShowRiftBoardAsync(System.IO.TextWriter output)

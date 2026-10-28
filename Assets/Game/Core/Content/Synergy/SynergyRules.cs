@@ -51,6 +51,17 @@ namespace Game.Core.Content.Synergy
             return mask;
         }
 
+        public IReadOnlyList<string> IdsOf(int mask)
+        {
+            var ids = new List<string>();
+            for (var i = 0; i < Marks.Count; i++)
+            {
+                if ((mask & (1 << i)) != 0)
+                    ids.Add(Marks[i]);
+            }
+            return ids;
+        }
+
         public int MaskOf(GemDef gem)
         {
             if (gem.Skill == null)
