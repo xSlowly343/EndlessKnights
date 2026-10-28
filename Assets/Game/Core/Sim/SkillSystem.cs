@@ -212,7 +212,8 @@ namespace Game.Core.Sim
                 RemoveAura(slot);
             }
             var affliction = IsCurse(skill) || skill.Effect is CurseFlowEffect ? SupportEffects.Affliction(slot) : 1;
-            slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast) * SupportEffects.DurationMultiplier(slot) * affliction);
+            slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast) * SupportEffects.DurationMultiplier(slot) * affliction)
+                + Ticks(System.Math.Max(0, spent - Cost(slot)) * native.ExtraSecondsPerPoint);
             slot.ActiveTotalTicks = slot.ActiveTicks;
             slot.MouseExtendedTicks = 0;
             slot.LingerTicks = 0;
@@ -513,6 +514,12 @@ namespace Game.Core.Sim
             else
                 _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags, paused ? strike.CritChance : 0);
             _resource.Gain(native.ResourceOnHit);
+            if (strike.Stacks != null)
+            {
+                AddStacks(slot, strike.Stacks, 1);
+                if (native.StackSeconds > 0)
+                    slot.StackTicks = Ticks(native.StackSeconds);
+            }
             if (native.ResourceOnCrit > 0 && _combat.LastHitCrit && !strike.LastKeyHit)
                 _resource.Gain(native.ResourceOnCrit);
             if (_state.Kills == killsBefore)
@@ -930,6 +937,8 @@ namespace Game.Core.Sim
                     TickKillStacks(slot, stacks, kills);
                 if (kills > 0 && slot.Def.IsPassive && slot.Def.Native.ResourceOnKill > 0 && IsNative(slot) && Armed(slot))
                     _resource.Gain(slot.Def.Native.ResourceOnKill * kills);
+                if (slot.Stacks > 0 && slot.Def.Effect is StrikeEffect { Stacks: { } } && (!Armed(slot) || --slot.StackTicks <= 0))
+                    ClearStacks(slot);
                 if (slot.Active && slot.Def.Effect is InputKindsEffect)
                     slot.InputKinds |= InputKindBits(input);
                 if (weakenedKill && slot.CooldownTicks > 0 && slot.Def.Native.ResetWithinSeconds > 0 && IsNative(slot)
@@ -1335,6 +1344,8 @@ namespace Game.Core.Sim
             if (queueTargets > 0)
                 QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, pulse.Multiplier * slot.CastPower, slot.Skill.Tags), queueTargets);
             SkillHit(slot, pulse.Multiplier);
+            if (pulse.BossTimerSeconds > 0 && _state.FightingBoss)
+                _state.BossTicksLeft += Ticks(pulse.BossTimerSeconds);
             if (IsNative(slot))
                 _resource.Gain(slot.Def.Native.ResourceOnHit);
         }
@@ -1526,10 +1537,19 @@ namespace Game.Core.Sim
         {
             if (!slot.Def.Reserves || !Armed(slot))
                 return;
+            if (IdleOff(slot))
+            {
+                RemoveAura(slot);
+                slot.ActiveTicks = 0;
+                return;
+            }
             slot.ActiveTicks = Ticks(ReserveRefreshSeconds);
             slot.ActiveTotalTicks = slot.ActiveTicks;
             ApplyAura(slot);
         }
+
+        private bool IdleOff(SkillSlot slot) =>
+            slot.Def.Effect is AuraEffect aura && aura.IdleOffSeconds > 0 && !IsNative(slot) && _state.IdleTicks > Ticks(aura.IdleOffSeconds);
 
         public void CastFromButtons(in EffectiveInput input)
         {

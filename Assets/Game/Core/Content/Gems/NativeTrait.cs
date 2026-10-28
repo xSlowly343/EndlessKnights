@@ -31,6 +31,8 @@ namespace Game.Core.Content.Gems
         public double MouseEverySeconds { get; set; }
         public double ResourceOnEnd { get; set; }
         public double WeakenedGold { get; set; }
+        public double StackSeconds { get; set; }
+        public double ExtraSecondsPerPoint { get; set; }
         public bool BestOfTwo { get; set; }
         public int QueueTargets { get; set; }
         public double ResetWithinSeconds { get; set; }
@@ -51,7 +53,7 @@ namespace Game.Core.Content.Gems
         public double WhenDurationMultiplier { get; set; }
         public int WhenExtraTargets { get; set; }
 
-        public bool SpendsAll => SpendAllPerPoint > 0;
+        public bool SpendsAll => SpendAllPerPoint > 0 || ExtraSecondsPerPoint > 0;
         public bool HoldsStacks => HoldStacksAboveResource > 0;
     }
 }

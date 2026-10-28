@@ -51,6 +51,7 @@ namespace Game.Core.Content.Gems
         public double PauseSeconds { get; set; }
         public double PauseMultiplier { get; set; }
         public double BossTimerStopSeconds { get; set; }
+        public StacksEffect? Stacks { get; set; }
     }
 
     public sealed class PotionOption
@@ -104,6 +105,7 @@ namespace Game.Core.Content.Gems
         public bool Party { get; }
         public double Reserve { get; }
         public bool Reserves => Reserve > 0;
+        public double IdleOffSeconds { get; set; }
     }
 
     public sealed class StoreHitsEffect : SkillEffect
@@ -481,6 +483,7 @@ namespace Game.Core.Content.Gems
 
         public double EverySeconds { get; }
         public double MouseEverySeconds { get; }
+        public double BossTimerSeconds { get; set; }
         public double Multiplier { get; }
         public int QueueTargets { get; }
     }

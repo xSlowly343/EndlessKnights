@@ -293,7 +293,8 @@ namespace Game.Core.Content.Gems
                         LastKeyHit = node.HasField("lastKeyHit") && node.Field("lastKeyHit").AsBool(),
                         PauseSeconds = Number(node, "pauseSeconds", 3600),
                         PauseMultiplier = Number(node, "pauseMultiplier", 1e6),
-                        BossTimerStopSeconds = Number(node, "bossTimerStopSeconds", 600)
+                        BossTimerStopSeconds = Number(node, "bossTimerStopSeconds", 600),
+                        Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null
                     };
                 case "aura":
                     return new AuraEffect(
@@ -302,7 +303,10 @@ namespace Game.Core.Content.Gems
                         node.HasField("reserve") ? node.Field("reserve").AsNumber(0, 100) : 0,
                         node.HasField("focusLockAfterSeconds") ? node.Field("focusLockAfterSeconds").AsNumber(0, 3600) : 0,
                         node.HasField("keylessStrike") ? node.Field("keylessStrike").Field("everySeconds").AsNumber(0.1, 3600) : 0,
-                        node.HasField("keylessStrike") ? node.Field("keylessStrike").Field("multiplier").AsNumber(0, 1e6) : 0);
+                        node.HasField("keylessStrike") ? node.Field("keylessStrike").Field("multiplier").AsNumber(0, 1e6) : 0)
+                    {
+                        IdleOffSeconds = Number(node, "idleOffSeconds", 3600)
+                    };
                 case "keyRepeat":
                     return new KeyRepeatEffect(node.Field("every").AsInt(1, 10000), node.Field("multiplier").AsNumber(0, 1000))
                     {
@@ -432,7 +436,10 @@ namespace Game.Core.Content.Gems
                         node.Field("everySeconds").AsNumber(0.1, 3600),
                         node.Field("multiplier").AsNumber(0, 1e6),
                         node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
-                        node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0);
+                        node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0)
+                    {
+                        BossTimerSeconds = Number(node, "bossTimerSeconds", 60)
+                    };
                 case "extendFamily":
                     return new ExtendFamilyEffect(node.Field("family").AsString(), node.Field("seconds").AsNumber(0.1, 3600));
                 case "curseFlow":
@@ -462,6 +469,13 @@ namespace Game.Core.Content.Gems
                     throw typeNode.Error($"unknown skill effect '{typeNode.AsString()}', expected chainHits, strike, hitStrike, scaled, pulse, extendFamily, flurry, pauseStrike, comboStacks, aura, storeHits, queueHits, stacks, keyRepeat, specialKeys, streakStrike, flow, inputHits, distanceStacks, trail, bossHunt, composure, passive, breakBonus, gainResource, echo, nextKillReward, enemyDebuff, curseFlow, summon, addStacks, detonate, weakenNext or idleStrike");
             }
         }
+
+        private static StacksEffect ReadCastStacks(ContentNode node) =>
+            new StacksEffect(
+                StackTrigger.KeyHit,
+                ModifierReader.Read(node.Field("perStack")),
+                node.Field("max").AsNumber(0, 1e6),
+                node.Field("stackSeconds").AsNumber(0.1, 3600));
 
         private static PotionEffect ReadPotion(ContentNode node)
         {
@@ -508,6 +522,8 @@ namespace Game.Core.Content.Gems
                 MouseEverySeconds = node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0,
                 ResourceOnEnd = Number(node, "resourceOnEnd", 1000),
                 WeakenedGold = Number(node, "weakenedGold", 100),
+                StackSeconds = Number(node, "stackSeconds", 3600),
+                ExtraSecondsPerPoint = Number(node, "extraSecondsPerPoint", 100),
                 BestOfTwo = node.HasField("bestOfTwo") && node.Field("bestOfTwo").AsBool(),
                 QueueTargets = node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
                 ResetWithinSeconds = Number(node, "resetWithinSeconds", 600),
