@@ -48,7 +48,7 @@ namespace Game.Core.Ui
             if (weapon == null)
                 return false;
             if (skill.Ascendancy != null)
-                return string.Equals(weapon.Type.Id, skill.Skill!.Weapon, StringComparison.Ordinal);
+                return weapon.Counts(skill.Skill!.Weapon!);
             return weapon.Opens(skill.Id, state.HeroLevel, unlockLevels);
         }
     }

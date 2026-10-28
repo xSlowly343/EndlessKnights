@@ -336,6 +336,18 @@ namespace Game.Core.Sim
             }
         }
 
+        private WeaponItem WeaponFor(PendingDrop drop, ItemRarity rarity, Rng rng)
+        {
+            var chance = _rules.UniqueChanceFor(drop.Source);
+            if (chance > 0 && rng.NextDouble() < chance)
+            {
+                var unique = _weapons.Catalog.PickUnique(_rules.CeilingFor(BiomeNumber(drop.Stage)), rng);
+                if (unique != null)
+                    return _weapons.Catalog.RollUnique(unique, rng);
+            }
+            return RollWeapon(drop.Type!, rarity, drop.Stage, rng);
+        }
+
         private WeaponItem RollWeapon(WeaponType type, ItemRarity rarity, long stage, Rng rng)
         {
             var catalog = _weapons.Catalog;
@@ -443,7 +455,7 @@ namespace Game.Core.Sim
             var drops = _state.Drops;
             drops.ItemsFound++;
             var rarity = drop.Rarity;
-            var weapon = drop.Type != null ? RollWeapon(drop.Type, rarity, drop.Stage, drops.Rng) : null;
+            var weapon = drop.Type != null ? WeaponFor(drop, rarity, drops.Rng) : null;
             var gear = weapon == null ? RollGear(drop, rarity, drops.Rng) : null;
             if (gear != null)
                 _gear.NoteFound(gear);
@@ -485,7 +497,7 @@ namespace Game.Core.Sim
             if (limit == null || rarity > limit.Value)
                 return false;
             if (weapon != null)
-                return !BetterThanHeld(rarity);
+                return weapon.Unique == null && !BetterThanHeld(rarity);
             return gear == null || (gear.Unique == null && !BetterThanWorn(gear));
         }
 

@@ -42,6 +42,64 @@ namespace Game.Core.Content.Weapons
         public IReadOnlyList<double> BaseWeights { get; }
         public WeaponSkillRules SkillRules { get; }
 
+        public IReadOnlyList<UniqueWeaponDef> Uniques { get; private set; } = Array.Empty<UniqueWeaponDef>();
+
+        public bool TryGetUnique(string id, out UniqueWeaponDef unique)
+        {
+            foreach (var candidate in Uniques)
+            {
+                if (candidate.Id == id)
+                {
+                    unique = candidate;
+                    return true;
+                }
+            }
+            unique = null!;
+            return false;
+        }
+
+        public UniqueWeaponDef? PickUnique(ItemRarity ceiling, Rng rng)
+        {
+            var count = 0;
+            foreach (var unique in Uniques)
+            {
+                if (unique.Rarity <= ceiling)
+                    count++;
+            }
+            if (count == 0)
+                return null;
+            var pick = rng.NextInt(0, count);
+            foreach (var unique in Uniques)
+            {
+                if (unique.Rarity <= ceiling && pick-- == 0)
+                    return unique;
+            }
+            return null;
+        }
+
+        public WeaponItem RollUnique(UniqueWeaponDef unique, Rng rng)
+        {
+            var first = RollSkills(unique.Base.Type, unique.Rarity, rng);
+            if (unique.SecondType == null)
+                return new WeaponItem(unique.Base, unique.Rarity, first, unique);
+            var second = RollSkills(unique.SecondType, unique.Rarity, rng);
+            var skills = new List<string>();
+            for (var pair = 0; skills.Count < SkillRules.Places && (pair * 2 < first.Count || pair * 2 < second.Count); pair++)
+            {
+                Take(first, pair * 2, skills);
+                Take(first, pair * 2 + 1, skills);
+                Take(second, pair * 2, skills);
+                Take(second, pair * 2 + 1, skills);
+            }
+            return new WeaponItem(unique.Base, unique.Rarity, skills, unique);
+        }
+
+        private void Take(IReadOnlyList<string> from, int index, List<string> skills)
+        {
+            if (index < from.Count && skills.Count < SkillRules.Places)
+                skills.Add(from[index]);
+        }
+
         public IReadOnlyList<GemDef> PoolOf(WeaponType type) =>
             _pools.TryGetValue(type.Id, out var pool) ? pool : Array.Empty<GemDef>();
 
@@ -211,8 +269,41 @@ namespace Game.Core.Content.Weapons
             var baseWeights = new List<double>();
             foreach (var item in root.Field("baseWeights").Items())
                 baseWeights.Add(item.AsNumber(0, 1000));
-            return new WeaponCatalog(types, bases, weights.Field("own").AsNumber(0, 1000), weights.Field("other").AsNumber(0, 1000), baseWeights,
+            var catalog = new WeaponCatalog(types, bases, weights.Field("own").AsNumber(0, 1000), weights.Field("other").AsNumber(0, 1000), baseWeights,
                 WeaponSkillRules.Read(root.Field("skills")));
+            catalog.Uniques = ReadUniques(root.Field("uniques"), catalog, byId);
+            return catalog;
+        }
+
+        private static List<UniqueWeaponDef> ReadUniques(ContentNode node, WeaponCatalog catalog, Dictionary<string, WeaponType> types)
+        {
+            var uniques = new List<UniqueWeaponDef>();
+            var ids = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var item in node.Items())
+            {
+                var id = item.Field("id").AsString();
+                if (!ids.Add(id))
+                    throw item.Field("id").Error($"unique weapon id '{id}' is used twice");
+                var baseNode = item.Field("base");
+                if (!catalog.TryGetBase(baseNode.AsString(), out var weaponBase))
+                    throw baseNode.Error($"unknown weapon base '{baseNode.AsString()}'");
+                WeaponType? second = null;
+                if (item.HasField("alsoType"))
+                {
+                    var typeNode = item.Field("alsoType");
+                    if (!types.TryGetValue(typeNode.AsString(), out var found) || found == weaponBase.Type)
+                        throw typeNode.Error($"'{typeNode.AsString()}' is not a second weapon type");
+                    second = found;
+                }
+                var rarityNode = item.Field("rarity");
+                if (!ItemRarityNames.ByName.TryGetValue(rarityNode.AsString(), out var rarity))
+                    throw rarityNode.Error($"unknown rarity '{rarityNode.AsString()}'");
+                var name = item.Field("name");
+                var rule = item.Field("rule");
+                uniques.Add(new UniqueWeaponDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), weaponBase, second, rarity,
+                    ModifierReader.ReadList(item.Field("lines")), rule.Field("ru").AsString(), rule.Field("en").AsString()));
+            }
+            return uniques;
         }
 
         private static WeaponType ReadType(ContentNode node)

@@ -126,6 +126,10 @@ namespace Game.Core.Sim
                 return;
             AddScaled(modifiers, weapon.Type.Innate, scale);
             AddScaled(modifiers, weapon.Innate, scale);
+            if (weapon.SecondType != null)
+                AddScaled(modifiers, weapon.SecondType.Innate, scale);
+            if (weapon.Unique != null)
+                modifiers.AddRange(weapon.Unique.Lines);
         }
 
         private static void AddScaled(List<Modifier> modifiers, IReadOnlyList<Modifier> innate, double scale)
