@@ -13,9 +13,9 @@ namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName, ChronicleCatalog.FileName };
 
-        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift, WeaponCatalog weapons, ItemCatalog items, DropRules drops, PanelUnlocks panel, ChangeLog changeLog)
+        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift, WeaponCatalog weapons, ItemCatalog items, DropRules drops, PanelUnlocks panel, ChangeLog changeLog, ChronicleCatalog chronicle)
         {
             Items = items;
             Stages = stages;
@@ -38,6 +38,7 @@ namespace Game.Core.Content
             Panel = panel;
             Tutorial = tutorial;
             ChangeLog = changeLog;
+            Chronicle = chronicle;
         }
 
         public StageTable Stages { get; }
@@ -61,6 +62,7 @@ namespace Game.Core.Content
         public DropRules Drops { get; }
         public PanelUnlocks Panel { get; }
         public ChangeLog ChangeLog { get; }
+        public ChronicleCatalog Chronicle { get; }
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -89,9 +91,10 @@ namespace Game.Core.Content
             var drops = DropRules.Load(readFile(DropRules.FileName));
             var panel = PanelUnlocks.Load(readFile(PanelUnlocks.FileName));
             var changeLog = ChangeLog.Load(readFile(ChangeLog.FileName));
+            var chronicle = ChronicleCatalog.Load(readFile(ChronicleCatalog.FileName));
             var strings = StringTable.Load(readFile(StringTable.FileName));
             Texts.Use(strings);
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog);
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle);
         }
     }
 }

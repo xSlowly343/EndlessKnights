@@ -36,6 +36,7 @@ namespace Game.Core.Sim
         private readonly PrestigeSystem _prestige;
         private readonly StrikeUpgradeSystem _upgrades;
         private readonly ArtifactSystem _artifacts;
+        private readonly ChronicleSystem _chronicle;
         private readonly TutorialSystem _tutorial;
         private readonly PartyBuffs _partyBuffs;
         private readonly SynergySystem _synergy;
@@ -75,6 +76,7 @@ namespace Game.Core.Sim
             _drops = new DropSystem(data.Drops, data.Stages, data.Gems, data.Items, _weapons, _gear, state, hero, Events);
             _stage.Drops = _drops;
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
+            _chronicle = new ChronicleSystem(data.Chronicle, state, hero, Events, _levels);
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
@@ -106,6 +108,7 @@ namespace Game.Core.Sim
         public PrestigeSystem Prestige => _prestige;
         public StrikeUpgradeSystem Upgrades => _upgrades;
         public ArtifactSystem Artifacts => _artifacts;
+        public ChronicleSystem Chronicle => _chronicle;
         public TutorialSystem Tutorial => _tutorial;
         public PartyBuffs PartyBuffs => _partyBuffs;
         public SynergySystem Synergy => _synergy;
@@ -234,6 +237,10 @@ namespace Game.Core.Sim
         public bool RebirthGem(GemDef gem) => _book.Rebirth(gem, _data.Gems.Levels.Max);
 
         public bool BuyUncutGem() => _drops.BuyUncut();
+
+        public TrialResult StartTrial(string trialId) => _chronicle.Start(trialId);
+
+        public bool AbandonTrial() => _chronicle.Abandon();
 
         public CutResult CutGem(GemDef gem) => _drops.Cut(gem);
 
@@ -367,6 +374,7 @@ namespace Game.Core.Sim
             _prestige.UseRules(data.Prestige);
             _upgrades.UseRules(data.Combat.StrikeUpgrade);
             _artifacts.UseCatalog(data.Artifacts, data.Rift);
+            _chronicle.UseCatalog(data.Chronicle);
             _tutorial.UseRules(data.Tutorial);
             _partyBuffs.UseRules(data.Party.Buffs);
             _synergy.UseRules(data.Synergy);
@@ -406,6 +414,7 @@ namespace Game.Core.Sim
             _synergy.Tick();
             _rift.Tick();
             _stage.Tick();
+            _chronicle.Tick();
             _combat.Tick(input);
             _skills.Minions.Tick(input);
             _skills.Dots.Tick(input);

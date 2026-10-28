@@ -67,6 +67,7 @@ namespace Game.Core.Save
                 ("rift", WriteRift(state.Rift)),
                 ("weapons", WriteWeapons(state.Weapons)),
                 ("drops", WriteDrops(state.Drops)),
+                ("chronicle", WriteChronicle(state.Chronicle)),
                 ("gear", WriteWorn(state.Gear)),
                 ("setCollection", JsonValue.Array(WriteCollection(state))),
                 ("inputStats", Object(
@@ -196,6 +197,8 @@ namespace Game.Core.Save
                 ReadWeapons(node.Field("weapons"), weapons, state.Weapons);
             if (node.HasField("drops"))
                 ReadDrops(node.Field("drops"), state.Drops, items);
+            if (node.HasField("chronicle"))
+                ReadChronicle(node.Field("chronicle"), state.Chronicle);
             if (node.HasField("gear") && items != null)
                 ReadWorn(node.Field("gear"), items, state.Gear);
             if (node.HasField("setCollection"))
@@ -208,6 +211,30 @@ namespace Game.Core.Save
             else
                 state.Drops.Rng = new Rng(rng0 ^ rng1 ^ DropState.SeedSalt);
             return state;
+        }
+
+        private static JsonValue WriteChronicle(ChronicleState chronicle)
+        {
+            var completed = new JsonValue[chronicle.Completed.Count];
+            for (var i = 0; i < completed.Length; i++)
+                completed[i] = JsonValue.Of(chronicle.Completed[i]);
+            return Object(
+                ("active", chronicle.Active == null ? JsonValue.Null() : JsonValue.Of(chronicle.Active)),
+                ("activePrestige", JsonValue.Of(chronicle.ActivePrestige)),
+                ("completed", JsonValue.Array(completed)));
+        }
+
+        private static void ReadChronicle(ContentNode node, ChronicleState chronicle)
+        {
+            var active = node.Field("active");
+            chronicle.Active = active.IsNull ? null : active.AsString();
+            chronicle.ActivePrestige = node.Field("activePrestige").AsInt(0);
+            foreach (var item in node.Field("completed").Items())
+            {
+                var id = item.AsString();
+                if (!chronicle.Completed.Contains(id))
+                    chronicle.Completed.Add(id);
+            }
         }
 
         private static JsonValue WriteDrops(DropState drops)

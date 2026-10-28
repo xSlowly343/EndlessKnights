@@ -17,6 +17,7 @@ namespace Game.Core.Sim
         GemDropped,
         GemLevelUp,
         UncutGemDropped,
-        ShardsGained
+        ShardsGained,
+        TrialCompleted
     }
 }

@@ -133,6 +133,8 @@ namespace Game.Core.Sim
         {
             if (index < 0 || index >= _state.Skills.Count)
                 return CastResult.NoSkill;
+            if (_state.Chronicle.SkillsLocked)
+                return CastResult.TrialForbids;
             var slot = _state.Skills[index];
             var skill = slot.Def;
             if (skill.IsPassive)
