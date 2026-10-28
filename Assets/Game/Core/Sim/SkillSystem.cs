@@ -46,6 +46,7 @@ namespace Game.Core.Sim
         }
 
         public bool SharedEnemy { get; private set; }
+        public double LastRepeatSeconds { get; private set; }
         public GemLevels? Levels { get; set; }
 
         public double LevelPower(GemDef gem) => (Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem), LevelBonus)) * ColorPower(gem);
@@ -302,8 +303,9 @@ namespace Game.Core.Sim
                 _state.Resource = System.Math.Max(0, _state.Resource - native.ResourceRelief);
             if (skill.Effect is RepeatRecentEffect recent)
             {
-                var seconds = native.WindowSeconds > 0 ? native.WindowSeconds : recent.Seconds;
-                _combat.DirectHit(_state.DamageWindow.Last(_state.TotalDamage, Ticks(seconds)));
+                LastRepeatSeconds = native.WindowSeconds > 0 ? native.WindowSeconds : recent.Seconds;
+                if (!SharedEnemy)
+                    _combat.DirectHit(_state.DamageWindow.Last(_state.TotalDamage, Ticks(LastRepeatSeconds)));
             }
             if (skill.Effect is PotionEffect potion)
                 DrinkPotion(slot, potion);

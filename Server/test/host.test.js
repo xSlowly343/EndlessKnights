@@ -89,7 +89,7 @@ test("the state tells every member how much each slot hit since the last state",
   }
   assert.ok(state, "a state goes out");
   const data = new DataView(state.data);
-  const recent = (slot) => data.getFloat32(state.data.byteLength - 16 + slot * 4, true);
+  const recent = (slot) => data.getFloat32(state.data.byteLength - 20 + slot * 4, true);
   assert.ok(Math.abs(recent(1) - 0.2) < 1e-6, "slot 1 hit 0.2 of the bar");
   assert.strictEqual(recent(0), 0);
   host.outbox.length = 0;

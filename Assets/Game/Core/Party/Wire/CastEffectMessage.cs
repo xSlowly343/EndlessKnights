@@ -6,6 +6,8 @@ namespace Game.Core.Party.Wire
         public bool OnEnemy;
         public double Strength;
         public double Seconds;
+        public double TimerSlow;
+        public double RepeatSeconds;
 
         public void Write(ref PartyWriter writer)
         {
@@ -13,6 +15,8 @@ namespace Game.Core.Party.Wire
             writer.Bool(OnEnemy);
             writer.Double(Strength);
             writer.Double(Seconds);
+            writer.Double(TimerSlow);
+            writer.Double(RepeatSeconds);
         }
 
         public static CastEffectMessage Read(ref PartyReader reader) => new CastEffectMessage
@@ -20,7 +24,9 @@ namespace Game.Core.Party.Wire
             EffectId = reader.Int(),
             OnEnemy = reader.Bool(),
             Strength = reader.Double(),
-            Seconds = reader.Double()
+            Seconds = reader.Double(),
+            TimerSlow = reader.Double(),
+            RepeatSeconds = reader.Double()
         };
     }
 }

@@ -239,10 +239,10 @@ namespace Game.Sim
             {
                 var own = Client.OwnSlot;
                 output.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}, reconnects {9}, reactions sent {10}, heard {11}, ally damage {12}, boss kills {13}",
+                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}, reconnects {9}, reactions sent {10}, heard {11}, ally damage {12}, boss kills {13}, last boss loop {14:P0}, timer saved {15:0.0}s",
                     HeroClassNames.Of(_loop.State.Class), _online.PlayerNumber, Client.Status, own, Client.PartyRewards, Client.UnpaidKills,
                     own >= 0 ? Client.Contribution(own) : 0, _loop.State.Stage, Client.EnemyId, _online.Reconnects, ReactionsSent, ReactionsHeard,
-                    NumberFormatter.Format(AllyDamage, NumberFormatSettings.Default), Client.BossKillsSeen));
+                    NumberFormatter.Format(AllyDamage, NumberFormatSettings.Default), Client.BossKillsSeen, Client.LastBossKill.Loop, Client.LastBossKill.SavedSeconds));
             }
 
             public async Task FinishAsync(bool stay)

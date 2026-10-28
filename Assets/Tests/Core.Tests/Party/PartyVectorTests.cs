@@ -37,7 +37,8 @@ namespace Game.Core.Tests.Party
                 Effects(),
                 Disconnects(),
                 RestAndPeace(),
-                Contribution()
+                Contribution(),
+                Clockmaker()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -48,6 +49,7 @@ namespace Game.Core.Tests.Party
                    $"    \"disconnectGraceSeconds\": {N(rules.DisconnectGraceSeconds)},\n" +
                    $"    \"lateDamageSeconds\": {N(rules.LateDamageSeconds)},\n" +
                    $"    \"maxEnemyDamageTaken\": {N(rules.MaxEnemyDamageTaken)},\n" +
+                   $"    \"minBossTimerRate\": {N(rules.Timer.MinBossRate)},\n" +
                    $"    \"minShare\": {N(rules.Contribution.MinShare)},\n" +
                    $"    \"activeInputSeconds\": {N(rules.Contribution.ActiveInputSeconds)},\n" +
                    $"    \"restBankSeconds\": {N(rules.Contribution.RestBankSeconds)},\n" +
@@ -223,6 +225,45 @@ namespace Game.Core.Tests.Party
             r.Hit(0, 10);
             r.Input(2);
             r.Hit(2, 10);
+            return r.ToJson();
+        }
+
+        private static string Clockmaker()
+        {
+            var r = Recorder("timer slows and the chimes repeat party damage", 4242);
+            r.Join(51);
+            r.Join(52);
+            r.Repeat(0, 5);
+            r.Hit(0, 0.6);
+            r.Advance(3);
+            r.Hit(1, 0.5);
+            r.Advance(2);
+            r.Repeat(1, 5);
+            r.Repeat(1, 0);
+            r.Repeat(3, 5);
+            while (!r.Encounter.FightingBoss)
+            {
+                r.Input(0);
+                r.Input(1);
+                r.Hit(0, 1.5);
+                r.Advance(1);
+            }
+            r.Effect(77, 0.1, 3, 0.3);
+            r.Effect(78, 0, 2, 0.5);
+            r.Effect(79, 0, 2, -0.5);
+            r.Effect(80, 0, 2, 0);
+            r.Effect(81, 0, 5, 0.9);
+            r.Hit(0, 0.2);
+            r.Advance(7);
+            r.Hit(1, 0.3);
+            r.Advance(25);
+            r.Hit(0, 0.4);
+            r.Advance(30);
+            r.Repeat(0, 3);
+            r.Repeat(1, 20);
+            r.Hit(0, 50);
+            r.Advance(1);
+            r.Repeat(0, 7);
             return r.ToJson();
         }
 

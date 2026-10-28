@@ -17,6 +17,7 @@ namespace Game.Core.Tests.Party
   ""maxEnemyDamageTaken"": 1.0,
   ""contribution"": { ""minShare"": 0.1, ""activeInputSeconds"": 30, ""restBankMinutes"": 60, ""idlePortionShare"": 1.5, ""typingReserveShare"": 0.5 },
   ""caps"": { ""barsPerSecond"": 3, ""burstBars"": 1, ""hitBurstSeconds"": 2, ""flagsBeforeReport"": 20 },
+  ""timer"": { ""minBossRate"": 0.25, ""repeatMaxSeconds"": 7, ""repeatCooldownSeconds"": 20 },
   ""reactions"": { ""ids"": [""hello"", ""good_fight"", ""lunch""], ""cooldownSeconds"": 3, ""showSeconds"": 4 },
   ""search"": {
     ""codeLength"": 6,
@@ -117,6 +118,24 @@ namespace Game.Core.Tests.Party
             Assert.That(rules.Reactions.ShowSeconds, Is.EqualTo(4));
             Assert.That(rules.Reactions.Knows(2), Is.True);
             Assert.That(rules.Reactions.Knows(3), Is.False);
+        }
+
+        [Test]
+        public void TimerRulesAreRead()
+        {
+            var rules = PartyRules.Load(Valid);
+
+            Assert.That(rules.Timer.MinBossRate, Is.EqualTo(0.25));
+            Assert.That(rules.Timer.RepeatMaxSeconds, Is.EqualTo(7));
+            Assert.That(rules.Timer.RepeatCooldownSeconds, Is.EqualTo(20));
+        }
+
+        [Test]
+        public void RepeatLongerThanTheHostLogIsRejected()
+        {
+            var error = Assert.Throws<ContentException>(() => PartyRules.Load(Valid.Replace(@"""repeatMaxSeconds"": 7", @"""repeatMaxSeconds"": 30")));
+
+            Assert.That(error!.Message, Does.Contain("repeatMaxSeconds"));
         }
 
         [TestCase(@"[""hello"", ""good_fight"", ""lunch""]", @"[]")]

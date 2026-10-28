@@ -10,6 +10,8 @@ namespace Game.Core.Party.Wire
         public double Share2;
         public double Share3;
         public byte Rewarded;
+        public float Loop;
+        public float SavedSeconds;
 
         public double Contribution(int slot) => slot switch
         {
@@ -32,6 +34,8 @@ namespace Game.Core.Party.Wire
             writer.Double(Share2);
             writer.Double(Share3);
             writer.Byte(Rewarded);
+            writer.Float(Loop);
+            writer.Float(SavedSeconds);
         }
 
         public static EnemyKilledMessage Read(ref PartyReader reader) => new EnemyKilledMessage
@@ -43,7 +47,9 @@ namespace Game.Core.Party.Wire
             Share1 = reader.Double(),
             Share2 = reader.Double(),
             Share3 = reader.Double(),
-            Rewarded = reader.Byte()
+            Rewarded = reader.Byte(),
+            Loop = reader.Float(),
+            SavedSeconds = reader.Float()
         };
 
         public static EnemyKilledMessage Of(in PartyEvent killed) => new EnemyKilledMessage
@@ -55,7 +61,9 @@ namespace Game.Core.Party.Wire
             Share1 = killed.Share1,
             Share2 = killed.Share2,
             Share3 = killed.Share3,
-            Rewarded = killed.Rewarded
+            Rewarded = killed.Rewarded,
+            Loop = (float)killed.Loop,
+            SavedSeconds = (float)killed.SavedSeconds
         };
     }
 }

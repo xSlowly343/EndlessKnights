@@ -395,8 +395,10 @@ namespace Game.Core.Party
             if (_localEnemyId == 0 || _localEnemyId <= _rewardedUpTo)
                 return;
             gameState.EnemyHp = _unit * System.Math.Max(Predicted(), StageSystem.StaggerHpShare);
-            if (gameState.FightingBoss)
-                gameState.BossTicksLeft = (int)System.Math.Max(0, _state.BossTicksLeft - (_tick - _stateArrivalTick));
+            if (!gameState.FightingBoss)
+                return;
+            gameState.BossTimerRate = _state.BossTimerRate;
+            gameState.BossTicksLeft = (int)System.Math.Max(0, _state.BossTicksLeft - System.Math.Floor((_tick - _stateArrivalTick) * (double)_state.BossTimerRate));
         }
 
         private void SpawnLocal(uint enemyId, bool boss, ulong seed, double barFull, int killsOnStage, bool farming, int bossTicksLeft)
@@ -477,7 +479,15 @@ namespace Game.Core.Party
                         EffectId = gameEvent.Gem!.NetId,
                         OnEnemy = true,
                         Strength = _loop.Skills.DebuffStrength(gameEvent.Gem!),
-                        Seconds = gameEvent.Gem.Skill!.DurationSeconds
+                        Seconds = gameEvent.Gem.Skill!.DurationSeconds,
+                        TimerSlow = debuff.BossTimerSlow
+                    }));
+                else if (gameEvent.Kind == GameEventKind.SkillCast && effect is RepeatRecentEffect)
+                    SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
+                    {
+                        EffectId = gameEvent.Gem!.NetId,
+                        OnEnemy = true,
+                        RepeatSeconds = _loop.Skills.LastRepeatSeconds
                     }));
                 else if (gameEvent.Kind == GameEventKind.AuraChanged && effect is AuraEffect aura && aura.Party)
                     _offerNow = true;

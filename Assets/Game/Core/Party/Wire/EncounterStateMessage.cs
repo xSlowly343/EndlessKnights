@@ -22,6 +22,7 @@ namespace Game.Core.Party.Wire
         public float Recent1;
         public float Recent2;
         public float Recent3;
+        public float BossTimerRate;
 
         public float Recent(int slot) => slot switch
         {
@@ -81,6 +82,7 @@ namespace Game.Core.Party.Wire
                 Effect(i).Write(ref writer);
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 writer.Float(Recent(slot));
+            writer.Float(BossTimerRate);
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -90,6 +92,7 @@ namespace Game.Core.Party.Wire
                 message.SetEffect(i, ShownEffect.Read(ref reader));
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 message.SetRecent(slot, reader.Float());
+            message.BossTimerRate = reader.Float();
             return message;
         }
 
@@ -130,7 +133,8 @@ namespace Game.Core.Party.Wire
                 Farming = encounter.Farming,
                 WeightMask = weights,
                 DamageTaken = encounter.DamageTakenMultiplier,
-                EnemySeed = encounter.EnemySeed
+                EnemySeed = encounter.EnemySeed,
+                BossTimerRate = encounter.FightingBoss ? (float)encounter.BossTimerRate : 1f
             };
             var shown = 0;
             for (var i = 0; i < PartyEncounter.MaxEffects && shown < ShownEffect.MaxShown; i++)

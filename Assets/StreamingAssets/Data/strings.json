@@ -773,6 +773,8 @@
     "party.reaction.wait": { "ru": "Реакции — не чаще раза в {0} с", "en": "One reaction per {0} s" },
     "party.boss.down": { "ru": "Босс повержен · вклад отряда", "en": "Boss down · party shares" },
     "party.boss.downUnpaid": { "ru": "Босс повержен · вам без награды: не было ввода", "en": "Boss down · no reward for you: no input" },
-    "party.boss.share": { "ru": "{0} {1}%", "en": "{0} {1}%" }
+    "party.boss.share": { "ru": "{0} {1}%", "en": "{0} {1}%" },
+    "party.boss.loop": { "ru": "петля {0}%", "en": "loop {0}%" },
+    "party.boss.saved": { "ru": "таймер +{0} с", "en": "timer +{0}s" }
   }
 }

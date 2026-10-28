@@ -5,6 +5,8 @@ interface PartyEvent {
     enemyKind: PartyEnemyKind;
     shares: number[];
     rewarded: number;
+    loop: number;
+    saved: number;
 }
 
 class PartyMember {
@@ -38,6 +40,7 @@ class PartyMember {
 interface PartyEnemyEffect {
     id: number;
     damageTaken: number;
+    timerSlow: number;
     ticksLeft: number;
     owner: number;
 }
@@ -59,6 +62,10 @@ class PartyEncounter {
     barLeft = 0;
     fighters = 0;
     spawnTick = 0;
+    loopShare = 0;
+    savedBossTicks = 0;
+    private readonly recent: number[] = [];
+    private bossTimerCarry = 0;
     private previousEnemyId = 0;
     private previousKind = PartyEnemyKind.Normal;
     private previousKilledTick = -Number.MAX_SAFE_INTEGER;
@@ -67,7 +74,9 @@ class PartyEncounter {
         for (let i = 0; i < PartyMaxSlots; i++)
             this.members.push(new PartyMember());
         for (let i = 0; i < PartyMaxEffects; i++)
-            this.effects.push({ id: 0, damageTaken: 0, ticksLeft: 0, owner: PartyNoSlot });
+            this.effects.push({ id: 0, damageTaken: 0, timerSlow: 0, ticksLeft: 0, owner: PartyNoSlot });
+        for (let i = 0; i < PartyRecentTicks; i++)
+            this.recent.push(0);
     }
 
     get started(): boolean { return this.enemyId !== 0; }
@@ -182,9 +191,18 @@ class PartyEncounter {
         return 1 + Math.min(this.rules.maxEnemyDamageTaken, total);
     }
 
-    applyEnemyEffect(effectId: number, damageTaken: number, seconds: number, owner: number = PartyNoSlot): boolean {
-        if (!(damageTaken > 0) || !(seconds > 0) || !this.started)
+    bossTimerRate(): number {
+        let rate = 1;
+        for (const effect of this.effects)
+            if (effect.ticksLeft > 0)
+                rate *= 1 - effect.timerSlow;
+        return Math.max(this.rules.minBossTimerRate, rate);
+    }
+
+    applyEnemyEffect(effectId: number, damageTaken: number, seconds: number, owner: number = PartyNoSlot, timerSlow: number = 0): boolean {
+        if (!(damageTaken >= 0) || !(timerSlow >= 0) || !(damageTaken > 0 || timerSlow > 0) || !(seconds > 0) || !this.started)
             return false;
+        timerSlow = Math.min(1, timerSlow);
         const ticks = partyTicks(seconds);
         let free = PartyNoSlot;
         for (let i = 0; i < this.effects.length; i++) {
@@ -193,6 +211,7 @@ class PartyEncounter {
                 if (damageTaken < effect.damageTaken)
                     return false;
                 effect.damageTaken = damageTaken;
+                effect.timerSlow = Math.max(effect.timerSlow, timerSlow);
                 effect.ticksLeft = Math.max(effect.ticksLeft, ticks);
                 effect.owner = owner;
                 return true;
@@ -202,7 +221,7 @@ class PartyEncounter {
         }
         if (free === PartyNoSlot)
             return false;
-        this.effects[free] = { id: effectId, damageTaken: damageTaken, ticksLeft: ticks, owner: owner };
+        this.effects[free] = { id: effectId, damageTaken: damageTaken, timerSlow: timerSlow, ticksLeft: ticks, owner: owner };
         return true;
     }
 
@@ -211,11 +230,22 @@ class PartyEncounter {
         const applied = limit === undefined ? applicable : Math.min(applicable, limit);
         if (!(applied > 0))
             return 0;
-        this.members[slot].enemyShare += applied;
-        this.barLeft -= applied;
-        if (this.barLeft <= 0)
-            this.kill();
-        return applied;
+        this.recent[this.tick % PartyRecentTicks] += applied * this.kindScale();
+        return this.take(slot, applied);
+    }
+
+    repeatRecent(slot: number, seconds: number): number {
+        if (!this.isMember(slot) || !this.started || !(seconds > 0))
+            return 0;
+        const ticks = Math.min(PartyRecentTicks - 1, partyTicks(seconds));
+        let sum = 0;
+        for (let i = 0; i < ticks && this.tick - i >= 0; i++)
+            sum += this.recent[(this.tick - i) % PartyRecentTicks];
+        const applied = Math.min(this.barLeft, sum / this.kindScale());
+        if (!(applied > 0))
+            return 0;
+        this.loopShare += applied;
+        return this.take(slot, applied);
     }
 
     applicable(slot: number, enemyId: number, share: number): number {
@@ -240,11 +270,18 @@ class PartyEncounter {
 
     advance(): void {
         this.tick++;
+        this.recent[this.tick % PartyRecentTicks] = 0;
         this.tickEffects();
         this.dropLostFighters();
         if (!this.fightingBoss || !this.started)
             return;
-        this.bossTicksLeft--;
+        const rate = this.bossTimerRate();
+        this.savedBossTicks += 1 - rate;
+        this.bossTimerCarry += rate;
+        while (this.bossTimerCarry >= 1 && this.bossTicksLeft > 0) {
+            this.bossTimerCarry -= 1;
+            this.bossTicksLeft--;
+        }
         if (this.bossTicksLeft > 0)
             return;
         this.addEvent(PartyEventKind.BossFailed);
@@ -259,6 +296,18 @@ class PartyEncounter {
             if (this.members[slot].weight > 0)
                 mask |= 1 << slot;
         return mask;
+    }
+
+    private take(slot: number, applied: number): number {
+        this.members[slot].enemyShare += applied;
+        this.barLeft -= applied;
+        if (this.barLeft <= 0)
+            this.kill();
+        return applied;
+    }
+
+    private kindScale(): number {
+        return this.fightingBoss ? this.rules.bossHpMultiplier : 1;
     }
 
     private isMember(slot: number): boolean {
@@ -302,7 +351,10 @@ class PartyEncounter {
         for (const member of this.members)
             shares.push(total > 0 ? member.enemyShare / total : 0);
         const rewarded = this.reward();
-        this.events.push({ kind: PartyEventKind.EnemyKilled, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: shares, rewarded: rewarded });
+        this.events.push({
+            kind: PartyEventKind.EnemyKilled, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: shares, rewarded: rewarded,
+            loop: total > 0 ? this.loopShare / total : 0, saved: this.savedBossTicks / PartyTicksPerSecond
+        });
         this.previousEnemyId = this.enemyId;
         this.previousKind = this.enemyKind;
         this.previousKilledTick = this.tick;
@@ -353,6 +405,9 @@ class PartyEncounter {
         this.enemyKind = kind;
         this.spawnTick = this.tick;
         this.fighters = 0;
+        this.loopShare = 0;
+        this.savedBossTicks = 0;
+        this.bossTimerCarry = 0;
         for (let i = 0; i < this.members.length; i++) {
             const member = this.members[i];
             member.enemyShare = 0;
@@ -411,6 +466,6 @@ class PartyEncounter {
     }
 
     private addEvent(kind: PartyEventKind): void {
-        this.events.push({ kind: kind, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: [0, 0, 0, 0], rewarded: 0 });
+        this.events.push({ kind: kind, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: [0, 0, 0, 0], rewarded: 0, loop: 0, saved: 0 });
     }
 }

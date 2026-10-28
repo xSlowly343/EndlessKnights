@@ -48,5 +48,14 @@ namespace Game.Core.Tests.Ui
             Assert.That(PartyStripMarks.BossTitle(true), Does.StartWith("Босс повержен"));
             Assert.That(PartyStripMarks.BossTitle(false), Does.Contain("без награды"));
         }
+
+        [Test]
+        public void TheBossTitleNamesTheLoopAndTheSavedSeconds()
+        {
+            var kill = new EnemyKilledMessage { Share0 = 1, Rewarded = 1, Loop = 0.18f, SavedSeconds = 6.4f };
+
+            Assert.That(PartyStripMarks.BossTitle(kill, 0), Is.EqualTo("Босс повержен · вклад отряда · петля 18% · таймер +6 с"));
+            Assert.That(PartyStripMarks.BossTitle(new EnemyKilledMessage { Share0 = 1 }, 0), Is.EqualTo("Босс повержен · вам без награды: не было ввода"));
+        }
     }
 }

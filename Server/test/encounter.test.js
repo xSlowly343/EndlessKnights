@@ -18,7 +18,8 @@ function run(encounter, step) {
     case "peaceful": return encounter.setPeaceful(step.slot, step.value);
     case "connected": return encounter.setConnected(step.slot, step.value);
     case "damage": return encounter.applyDamage(step.slot, step.enemyId, step.share);
-    case "effect": return encounter.applyEnemyEffect(step.id, step.damageTaken, step.seconds);
+    case "effect": return encounter.applyEnemyEffect(step.id, step.damageTaken, step.seconds, -1, step.timerSlow);
+    case "repeat": return encounter.repeatRecent(step.slot, step.seconds);
     case "requestBoss": return encounter.requestBossFight();
     case "advance":
       for (let i = 0; i < step.ticks; i++)
@@ -35,6 +36,9 @@ function compare(encounter, expect, where) {
   close(encounter.barFull, expect.barFull, `${where}: barFull`);
   close(encounter.barLeft, expect.barLeft, `${where}: barLeft`);
   close(encounter.damageTakenMultiplier(), expect.damageTaken, `${where}: damageTaken`);
+  close(encounter.bossTimerRate(), expect.bossTimerRate, `${where}: bossTimerRate`);
+  close(encounter.loopShare, expect.loopShare, `${where}: loopShare`);
+  close(encounter.savedBossTicks, expect.savedBossTicks, `${where}: savedBossTicks`);
   expect.members.forEach((member, slot) => {
     const actual = encounter.members[slot];
     if (member === null) {
@@ -57,6 +61,8 @@ function compare(encounter, expect, where) {
     assert.strictEqual(actual.enemyKind, event.enemyKind, `${where}: event ${i} enemy kind`);
     assert.strictEqual(actual.rewarded, event.rewarded, `${where}: event ${i} rewarded`);
     event.shares.forEach((share, slot) => close(actual.shares[slot], share, `${where}: event ${i} share ${slot}`));
+    close(actual.loop, event.loop, `${where}: event ${i} loop`);
+    close(actual.saved, event.saved, `${where}: event ${i} saved`);
   });
   encounter.events.length = 0;
 }
@@ -74,7 +80,7 @@ for (const scenario of vectors.scenarios) {
       const result = run(encounter, step);
       if (typeof step.result === "boolean")
         assert.strictEqual(result, step.result, `${where}: result`);
-      else if (step.op === "damage" || step.op === "join")
+      else if (step.op === "damage" || step.op === "join" || step.op === "repeat")
         close(result, step.result, `${where}: result`);
       compare(encounter, step.expect, where);
     });

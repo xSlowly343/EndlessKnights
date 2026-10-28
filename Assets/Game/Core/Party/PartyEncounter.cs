@@ -9,15 +9,19 @@ namespace Game.Core.Party
         public const int MaxEffects = 16;
         public const int NoSlot = -1;
         public const long Never = -(1L << 53);
+        public const int MaxRepeatSeconds = 10;
+        private const int RecentTicks = MaxRepeatSeconds * GameLoop.TicksPerSecond + 1;
 
         private readonly PartyMember[] _members = new PartyMember[PartyRules.MaxSlots];
         private readonly EnemyEffect[] _effects = new EnemyEffect[MaxEffects];
+        private readonly double[] _recent = new double[RecentTicks];
         private readonly ulong _seed;
         private PartyRules _rules;
         private StageTable _stages;
         private uint _previousEnemyId;
         private PartyEnemyKind _previousKind;
         private long _previousKilledTick = long.MinValue;
+        private double _bossTimerCarry;
 
         public PartyEncounter(PartyRules rules, StageTable stages, ulong seed)
         {
@@ -39,6 +43,8 @@ namespace Game.Core.Party
         public double BarLeft { get; private set; }
         public int Fighters { get; private set; }
         public long SpawnTick { get; private set; }
+        public double LoopShare { get; private set; }
+        public double SavedBossTicks { get; private set; }
         public bool Started => EnemyId != 0;
         public PartyEventQueue Events { get; } = new PartyEventQueue();
         public int Capacity => _rules.MaxMembers;
@@ -187,12 +193,27 @@ namespace Game.Core.Party
             }
         }
 
+        public double BossTimerRate
+        {
+            get
+            {
+                var rate = 1.0;
+                for (var i = 0; i < _effects.Length; i++)
+                {
+                    if (_effects[i].Active)
+                        rate *= 1 - _effects[i].TimerSlow;
+                }
+                return System.Math.Max(_rules.Timer.MinBossRate, rate);
+            }
+        }
+
         public EnemyEffect Effect(int index) => _effects[index];
 
-        public bool ApplyEnemyEffect(int effectId, double damageTaken, double seconds, int owner = NoSlot)
+        public bool ApplyEnemyEffect(int effectId, double damageTaken, double seconds, int owner = NoSlot, double timerSlow = 0)
         {
-            if (!(damageTaken > 0) || !(seconds > 0) || !Started)
+            if (!(damageTaken >= 0) || !(timerSlow >= 0) || !(damageTaken > 0 || timerSlow > 0) || !(seconds > 0) || !Started)
                 return false;
+            timerSlow = System.Math.Min(1, timerSlow);
             var ticks = Ticks(seconds);
             var free = NoSlot;
             for (var i = 0; i < _effects.Length; i++)
@@ -202,6 +223,7 @@ namespace Game.Core.Party
                     if (damageTaken < _effects[i].DamageTaken)
                         return false;
                     _effects[i].DamageTaken = damageTaken;
+                    _effects[i].TimerSlow = System.Math.Max(_effects[i].TimerSlow, timerSlow);
                     _effects[i].TicksLeft = System.Math.Max(_effects[i].TicksLeft, ticks);
                     _effects[i].Owner = owner;
                     return true;
@@ -211,7 +233,7 @@ namespace Game.Core.Party
             }
             if (free == NoSlot)
                 return false;
-            _effects[free] = new EnemyEffect { Id = effectId, DamageTaken = damageTaken, TicksLeft = ticks, Owner = owner };
+            _effects[free] = new EnemyEffect { Id = effectId, DamageTaken = damageTaken, TimerSlow = timerSlow, TicksLeft = ticks, Owner = owner };
             return true;
         }
 
@@ -220,12 +242,35 @@ namespace Game.Core.Party
             var applied = System.Math.Min(Applicable(slot, enemyId, share), limit);
             if (!(applied > 0))
                 return 0;
+            _recent[Tick % RecentTicks] += applied * KindScale;
+            return Take(slot, applied);
+        }
+
+        public double RepeatRecent(int slot, double seconds)
+        {
+            if (!IsMember(slot) || !Started || !(seconds > 0))
+                return 0;
+            var ticks = System.Math.Min(RecentTicks - 1, Ticks(seconds));
+            var sum = 0.0;
+            for (var i = 0; i < ticks && Tick - i >= 0; i++)
+                sum += _recent[(Tick - i) % RecentTicks];
+            var applied = System.Math.Min(BarLeft, sum / KindScale);
+            if (!(applied > 0))
+                return 0;
+            LoopShare += applied;
+            return Take(slot, applied);
+        }
+
+        private double Take(int slot, double applied)
+        {
             _members[slot].EnemyShare += applied;
             BarLeft -= applied;
             if (BarLeft <= 0)
                 Kill();
             return applied;
         }
+
+        private double KindScale => FightingBoss ? _stages.BossHpMultiplier : 1;
 
         public double Applicable(int slot, uint enemyId, double share)
         {
@@ -253,11 +298,19 @@ namespace Game.Core.Party
         public void Advance()
         {
             Tick++;
+            _recent[Tick % RecentTicks] = 0;
             TickEffects();
             DropLostFighters();
             if (!FightingBoss || !Started)
                 return;
-            BossTicksLeft--;
+            var rate = BossTimerRate;
+            SavedBossTicks += 1 - rate;
+            _bossTimerCarry += rate;
+            while (_bossTimerCarry >= 1 && BossTicksLeft > 0)
+            {
+                _bossTimerCarry -= 1;
+                BossTicksLeft--;
+            }
             if (BossTicksLeft > 0)
                 return;
             Events.Add(new PartyEvent(PartyEventKind.BossFailed, Tick, EnemyId, EnemyKind));
@@ -309,7 +362,8 @@ namespace Game.Core.Party
                 total += _members[i].EnemyShare;
             var rewarded = Reward();
             Events.Add(new PartyEvent(PartyEventKind.EnemyKilled, Tick, EnemyId, EnemyKind,
-                ShareOf(0, total), ShareOf(1, total), ShareOf(2, total), ShareOf(3, total), rewarded));
+                ShareOf(0, total), ShareOf(1, total), ShareOf(2, total), ShareOf(3, total), rewarded,
+                total > 0 ? LoopShare / total : 0, SavedBossTicks / GameLoop.TicksPerSecond));
             _previousEnemyId = EnemyId;
             _previousKind = EnemyKind;
             _previousKilledTick = Tick;
@@ -373,6 +427,9 @@ namespace Game.Core.Party
             EnemyKind = kind;
             SpawnTick = Tick;
             Fighters = 0;
+            LoopShare = 0;
+            SavedBossTicks = 0;
+            _bossTimerCarry = 0;
             for (var i = 0; i < _members.Length; i++)
             {
                 var member = _members[i];
