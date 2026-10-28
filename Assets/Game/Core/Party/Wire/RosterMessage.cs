@@ -1,3 +1,5 @@
+using Game.Core.Sim;
+
 namespace Game.Core.Party.Wire
 {
     public struct RosterMessage
@@ -15,6 +17,19 @@ namespace Game.Core.Party.Wire
         public byte Class1;
         public byte Class2;
         public byte Class3;
+        public uint RestBank0;
+        public uint RestBank1;
+        public uint RestBank2;
+        public uint RestBank3;
+
+        public uint RestBankSeconds(int slot) => slot switch
+        {
+            0 => RestBank0,
+            1 => RestBank1,
+            2 => RestBank2,
+            3 => RestBank3,
+            _ => 0
+        };
 
         public byte HeroClass(int slot) => slot switch
         {
@@ -68,6 +83,10 @@ namespace Game.Core.Party.Wire
             writer.Byte(Class1);
             writer.Byte(Class2);
             writer.Byte(Class3);
+            writer.UInt(RestBank0);
+            writer.UInt(RestBank1);
+            writer.UInt(RestBank2);
+            writer.UInt(RestBank3);
         }
 
         public static RosterMessage Read(ref PartyReader reader) => new RosterMessage
@@ -84,7 +103,11 @@ namespace Game.Core.Party.Wire
             Class0 = reader.Byte(),
             Class1 = reader.Byte(),
             Class2 = reader.Byte(),
-            Class3 = reader.Byte()
+            Class3 = reader.Byte(),
+            RestBank0 = reader.UInt(),
+            RestBank1 = reader.UInt(),
+            RestBank2 = reader.UInt(),
+            RestBank3 = reader.UInt()
         };
 
         public static RosterMessage Of(PartyEncounter encounter, uint version)
@@ -92,6 +115,7 @@ namespace Game.Core.Party.Wire
             ulong Id(int slot) => encounter.Member(slot).Joined ? encounter.Member(slot).PlayerId : 0;
             byte Class(int slot) => encounter.Member(slot).Joined ? encounter.Member(slot).HeroClass : (byte)0;
             byte State(int slot) => (byte)(encounter.Member(slot).Joined ? encounter.Presence(slot) : PartyPresence.Offline);
+            uint Bank(int slot) => encounter.Member(slot).Joined ? (uint)(encounter.Member(slot).RestBankTicks / GameLoop.TicksPerSecond) : 0;
             return new RosterMessage
             {
                 Version = version,
@@ -106,7 +130,11 @@ namespace Game.Core.Party.Wire
                 Class0 = Class(0),
                 Class1 = Class(1),
                 Class2 = Class(2),
-                Class3 = Class(3)
+                Class3 = Class(3),
+                RestBank0 = Bank(0),
+                RestBank1 = Bank(1),
+                RestBank2 = Bank(2),
+                RestBank3 = Bank(3)
             };
         }
     }

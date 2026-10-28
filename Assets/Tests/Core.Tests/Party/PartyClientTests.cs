@@ -68,14 +68,16 @@ namespace Game.Core.Tests.Party
             public PartyHost Host { get; }
             public Player[] Players { get; }
 
-            public void Run(double seconds, bool typing = true)
+            public void Run(double seconds, bool typing = true) => RunEach(seconds, typing, typing);
+
+            public void RunEach(double seconds, bool firstTyping, bool othersTyping)
             {
                 var ticks = (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);
                 for (var tick = 0; tick < ticks; tick++)
                 {
                     Network.Advance(100);
-                    foreach (var player in Players)
-                        player.Tick(typing);
+                    for (var i = 0; i < Players.Length; i++)
+                        Players[i].Tick(i == 0 ? firstTyping : othersTyping);
                     Host.Tick();
                 }
             }
@@ -229,6 +231,57 @@ namespace Game.Core.Tests.Party
             Assert.That(a.Client.Status, Is.EqualTo(PartyLink.Solo));
             Assert.That(a.Loop.Stages.Linked, Is.False);
             Assert.That(a.SoloKills, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void AnIdlePartnerIsPaidFromTheRestBankAndThenNotAtAll()
+        {
+            var rig = new Rig(5, 5);
+            rig.Run(20);
+            var idle = rig.Players[1];
+            Assert.That(idle.Client.InParty, Is.True);
+            Assert.That(idle.Client.UnpaidKills, Is.EqualTo(0));
+
+            rig.RunEach(100, true, false);
+            Assert.That(idle.Client.Roster.RestBankSeconds(idle.Client.OwnSlot), Is.EqualTo(0u), "the short bank from 20 s of play and 30 s of grace is spent");
+            var killsBefore = idle.AllKills;
+
+            rig.RunEach(30, true, false);
+
+            Assert.That(idle.Client.UnpaidKills, Is.GreaterThan(0));
+            Assert.That(idle.Client.LastKillPaid, Is.False);
+            Assert.That(idle.AllKills, Is.EqualTo(killsBefore), "an unpaid kill gives no kill, gold or drops");
+            Assert.That(rig.Players[0].Client.LastKillPaid, Is.True);
+        }
+
+        [Test]
+        public void EveryMemberSeesTheContributionOfEachSlot()
+        {
+            var rig = new Rig(5, 5);
+
+            rig.Run(30);
+
+            var client = rig.Players[0].Client;
+            Assert.That(client.ContributionKills, Is.GreaterThan(5));
+            Assert.That(client.Contribution(0), Is.GreaterThan(0.2));
+            Assert.That(client.Contribution(1), Is.GreaterThan(0.2));
+            Assert.That(client.Contribution(0) + client.Contribution(1), Is.EqualTo(1).Within(1e-9));
+            Assert.That(rig.Players[1].Client.Contribution(0), Is.EqualTo(client.Contribution(0)).Within(1e-9));
+        }
+
+        [Test]
+        public void AMacroRhythmDoesNotCountAsTyping()
+        {
+            var rig = new Rig(5, 5);
+            rig.Run(10);
+            var macro = rig.Players[1];
+            macro.Input.RhythmCv = 0.01f;
+
+            rig.Run(100);
+
+            Assert.That(macro.Loop.Focus.MacroDetected, Is.True);
+            Assert.That(rig.Host.Encounter.Typing(macro.Client.OwnSlot), Is.False);
+            Assert.That(rig.Host.Encounter.Typing(rig.Players[0].Client.OwnSlot), Is.True);
         }
     }
 }

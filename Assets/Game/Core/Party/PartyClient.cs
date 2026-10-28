@@ -33,6 +33,10 @@ namespace Game.Core.Party
         private uint _sequence;
         private int _hitsInBatch;
         private uint _rewardedUpTo;
+        private uint _countedUpTo;
+        private long _lastOwnInputTick = PartyEncounter.Never;
+        private readonly double[] _contribution = new double[PartyRules.MaxSlots];
+        private int _contributionKills;
         private int _ownSlot = PartyEncounter.NoSlot;
         private int _firstEvent;
         private bool _offerNow;
@@ -50,6 +54,8 @@ namespace Game.Core.Party
         public PartyLink Status { get; private set; }
         public bool Peaceful { get; set; }
         public long PartyRewards { get; private set; }
+        public long UnpaidKills { get; private set; }
+        public bool LastKillPaid { get; private set; } = true;
         public uint EnemyId => _state.EnemyId;
         public double BarFull => _state.BarFull;
         public double PredictedBarLeft => InParty ? Predicted() : 0;
@@ -58,6 +64,11 @@ namespace Game.Core.Party
         public int BossKillsSeen { get; private set; }
         public double DamageTaken => System.Math.Max(1, _state.DamageTaken);
         public int OwnSlot => _ownSlot;
+
+        public double Contribution(int slot) =>
+            _contributionKills == 0 || slot < 0 || slot >= PartyRules.MaxSlots ? 0 : _contribution[slot] / _contributionKills;
+
+        public int ContributionKills => _contributionKills;
 
         public ShownEffect EnemyEffect(int index)
         {
@@ -204,6 +215,7 @@ namespace Game.Core.Party
 
         private void OnKilled(in EnemyKilledMessage killed)
         {
+            CountContribution(killed);
             if (killed.EnemyKind == PartyEnemyKind.Boss && killed.EnemyId > LastBossKill.EnemyId)
             {
                 LastBossKill = killed;
@@ -213,10 +225,22 @@ namespace Game.Core.Party
                 return;
             if (killed.EnemyId != _localEnemyId)
                 SpawnLocal(killed.EnemyId, killed.EnemyKind == PartyEnemyKind.Boss, killed.EnemyId, _state.BarFull, _state.KillsOnStage, _state.Farming, 0);
-            EndLocalEnemy(false);
+            EndLocalEnemy(false, killed.RewardedFor(_ownSlot));
         }
 
-        private void EndLocalEnemy(bool bossFailed)
+        private void CountContribution(in EnemyKilledMessage killed)
+        {
+            if (killed.EnemyId <= _countedUpTo)
+                return;
+            _countedUpTo = killed.EnemyId;
+            _contributionKills++;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                _contribution[slot] += killed.Contribution(slot);
+        }
+
+        private void EndLocalEnemy(bool bossFailed) => EndLocalEnemy(bossFailed, LocallyPaid());
+
+        private void EndLocalEnemy(bool bossFailed, bool paid)
         {
             if (_localEnemyId <= _rewardedUpTo)
                 return;
@@ -226,9 +250,19 @@ namespace Game.Core.Party
                 _loop.Stages.ConfirmLinkedBossFailed();
                 return;
             }
+            LastKillPaid = paid;
+            if (!paid)
+            {
+                _loop.Stages.SkipLinkedKill();
+                UnpaidKills++;
+                return;
+            }
             _loop.Stages.ConfirmLinkedKill();
             PartyRewards++;
         }
+
+        private bool LocallyPaid() =>
+            _tick - _lastOwnInputTick <= Ticks(_rules.Contribution.ActiveInputSeconds) || (_ownSlot >= 0 && Roster.RestBankSeconds(_ownSlot) > 0);
 
         private void StartJoining()
         {
@@ -247,6 +281,10 @@ namespace Game.Core.Party
                 _rewardedUpTo = _state.EnemyId - 1;
             _localEnemyId = 0;
             _lastHeardTick = _tick;
+            _countedUpTo = _state.EnemyId > 0 ? _state.EnemyId - 1 : 0;
+            _contributionKills = 0;
+            System.Array.Clear(_contribution, 0, _contribution.Length);
+            LastKillPaid = true;
         }
 
         private void Unlink()
@@ -309,8 +347,11 @@ namespace Game.Core.Party
                 _total += share;
                 _sharesSinceState += share * System.Math.Max(1, _state.DamageTaken);
             }
-            if (_loop.LastInput.HasAnyInput)
+            if (_loop.LastInput.HasAnyInput && !_loop.Focus.MacroDetected)
+            {
                 _hitsInBatch++;
+                _lastOwnInputTick = _tick;
+            }
         }
 
         private void ShareMarks()

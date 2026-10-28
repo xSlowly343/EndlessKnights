@@ -39,7 +39,7 @@ test("encounter state and roster encode like the core", () => {
 
 test("kill and moment encode like the core", () => {
   const killed = vectors.encode.enemyKilled;
-  assert.strictEqual(hex(party.partyEncodeEnemyKilled({ kind: 2, tick: killed.tick, enemyId: killed.enemyId, enemyKind: killed.enemyKind, shares: killed.shares })), killed.hex);
+  assert.strictEqual(hex(party.partyEncodeEnemyKilled({ kind: 2, tick: killed.tick, enemyId: killed.enemyId, enemyKind: killed.enemyKind, shares: killed.shares, rewarded: killed.rewarded })), killed.hex);
   const moment = vectors.encode.moment;
   assert.strictEqual(hex(party.partyEncodeMoment({ kind: moment.kind, tick: moment.tick, enemyId: moment.enemyId, enemyKind: moment.enemyKind, shares: [0, 0, 0, 0] }, moment.bossTicksLeft)), moment.hex);
 });

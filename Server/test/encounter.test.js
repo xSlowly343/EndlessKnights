@@ -44,6 +44,9 @@ function compare(encounter, expect, where) {
     assert.strictEqual(actual.playerId, member.player, `${where}: slot ${slot} player`);
     assert.strictEqual(actual.weight, member.weight, `${where}: slot ${slot} weight`);
     assert.strictEqual(encounter.presence(slot), member.presence, `${where}: slot ${slot} presence`);
+    assert.strictEqual(encounter.typing(slot), member.typing, `${where}: slot ${slot} typing`);
+    close(actual.enemyShare, member.share, `${where}: slot ${slot} share`);
+    assert.strictEqual(actual.restBankTicks, member.restBank, `${where}: slot ${slot} rest bank`);
   });
   assert.strictEqual(encounter.events.length, expect.events.length, `${where}: event count`);
   expect.events.forEach((event, i) => {
@@ -52,10 +55,16 @@ function compare(encounter, expect, where) {
     assert.strictEqual(actual.tick, event.tick, `${where}: event ${i} tick`);
     assert.strictEqual(actual.enemyId, event.enemyId, `${where}: event ${i} enemy`);
     assert.strictEqual(actual.enemyKind, event.enemyKind, `${where}: event ${i} enemy kind`);
+    assert.strictEqual(actual.rewarded, event.rewarded, `${where}: event ${i} rewarded`);
     event.shares.forEach((share, slot) => close(actual.shares[slot], share, `${where}: event ${i} share ${slot}`));
   });
   encounter.events.length = 0;
 }
+
+test("the rules built into the server match the core", () => {
+  for (const key of Object.keys(vectors.rules))
+    assert.strictEqual(party.PartyServerRules[key], vectors.rules[key], key);
+});
 
 for (const scenario of vectors.scenarios) {
   test(scenario.name, () => {

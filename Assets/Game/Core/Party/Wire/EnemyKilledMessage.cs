@@ -9,6 +9,7 @@ namespace Game.Core.Party.Wire
         public double Share1;
         public double Share2;
         public double Share3;
+        public byte Rewarded;
 
         public double Contribution(int slot) => slot switch
         {
@@ -19,6 +20,8 @@ namespace Game.Core.Party.Wire
             _ => 0
         };
 
+        public bool RewardedFor(int slot) => (Rewarded & (1 << slot)) != 0;
+
         public void Write(ref PartyWriter writer)
         {
             writer.Long(Tick);
@@ -28,6 +31,7 @@ namespace Game.Core.Party.Wire
             writer.Double(Share1);
             writer.Double(Share2);
             writer.Double(Share3);
+            writer.Byte(Rewarded);
         }
 
         public static EnemyKilledMessage Read(ref PartyReader reader) => new EnemyKilledMessage
@@ -38,7 +42,8 @@ namespace Game.Core.Party.Wire
             Share0 = reader.Double(),
             Share1 = reader.Double(),
             Share2 = reader.Double(),
-            Share3 = reader.Double()
+            Share3 = reader.Double(),
+            Rewarded = reader.Byte()
         };
 
         public static EnemyKilledMessage Of(in PartyEvent killed) => new EnemyKilledMessage
@@ -49,7 +54,8 @@ namespace Game.Core.Party.Wire
             Share0 = killed.Share0,
             Share1 = killed.Share1,
             Share2 = killed.Share2,
-            Share3 = killed.Share3
+            Share3 = killed.Share3,
+            Rewarded = killed.Rewarded
         };
     }
 }

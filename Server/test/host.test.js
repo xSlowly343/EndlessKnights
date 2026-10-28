@@ -66,3 +66,52 @@ test("a full party refuses the fifth member and offers skip the sender", () => {
   assert.deepStrictEqual(Array.from(host.outbox[0].to), [0, 1, 3]);
   assert.strictEqual(new Uint8Array(host.outbox[0].data)[1], 2);
 });
+
+function joinedHost() {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.tick();
+  host.outbox.length = 0;
+  return host;
+}
+
+test("forged damage is cut to the bar rate and flagged", () => {
+  const host = joinedHost();
+  const rules = party.PartyServerRules;
+  for (let i = 0; i < 20; i++) {
+    host.receive("user-a", batch(100 + i, host.encounter.enemyId, 1e6, 1));
+    host.tick();
+  }
+  assert.ok(host.kills > 0);
+  assert.ok(host.kills <= Math.ceil(rules.burstBars + rules.barsPerSecond * 2), "kills " + host.kills);
+  assert.ok(host.flags[0] > 0);
+  assert.ok(host.cutShares > 0);
+});
+
+test("one strong hit with overkill is not flagged", () => {
+  const host = joinedHost();
+  host.receive("user-a", batch(1, host.encounter.enemyId, 50, 1));
+  host.tick();
+  assert.strictEqual(host.kills, 1);
+  assert.strictEqual(host.flags[0], 0);
+  assert.strictEqual(host.cutShares, 0);
+});
+
+test("more hits than ticks are flagged and reports come every flagsBeforeReport flags", () => {
+  const host = joinedHost();
+  const every = party.PartyServerRules.flagsBeforeReport;
+  for (let i = 0; i < every; i++)
+    host.receive("user-a", batch(1 + i, host.encounter.enemyId, 0.001, 1000));
+  assert.strictEqual(host.flags[0], every);
+  assert.deepStrictEqual(Array.from(host.reports), [0]);
+});
+
+test("the reward mask goes out with every kill", () => {
+  const host = joinedHost();
+  host.receive("user-a", batch(1, host.encounter.enemyId, 5, 1));
+  host.tick();
+  const killed = host.outbox.map((packet) => new Uint8Array(packet.data)).find((bytes) => bytes[0] === 6);
+  assert.ok(killed);
+  assert.strictEqual(killed[1 + 8 + 4 + 1 + 4 * 8], 1);
+});
+

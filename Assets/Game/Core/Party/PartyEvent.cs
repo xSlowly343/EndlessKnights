@@ -10,9 +10,11 @@ namespace Game.Core.Party
         public readonly double Share1;
         public readonly double Share2;
         public readonly double Share3;
+        public readonly byte Rewarded;
 
-        public PartyEvent(PartyEventKind kind, long tick, uint enemyId, PartyEnemyKind enemyKind, double share0 = 0, double share1 = 0, double share2 = 0, double share3 = 0)
+        public PartyEvent(PartyEventKind kind, long tick, uint enemyId, PartyEnemyKind enemyKind, double share0 = 0, double share1 = 0, double share2 = 0, double share3 = 0, byte rewarded = 0)
         {
+            Rewarded = rewarded;
             Kind = kind;
             Tick = tick;
             EnemyId = enemyId;
@@ -31,5 +33,7 @@ namespace Game.Core.Party
             3 => Share3,
             _ => 0
         };
+
+        public bool RewardedFor(int slot) => (Rewarded & (1 << slot)) != 0;
     }
 }

@@ -92,5 +92,61 @@ namespace Game.Core.Tests.Party
 
             Assert.That(host.Encounter.BarLeft, Is.EqualTo(host.Encounter.BarFull - 0.3).Within(1e-9));
         }
+
+        private static (PartyHost Host, LoopbackNetwork Network, Game.Core.Party.Transport.IPartyTransport Cheat) Joined()
+        {
+            var (host, bots, network) = Party(0, 0.0);
+            Run(host, bots, network, 30, true);
+            return (host, network, network.Connect(10));
+        }
+
+        private static void Forge(PartyHost host, LoopbackNetwork network, IPartyTransport transport, uint sequence, double keys, int hits)
+        {
+            var buffer = new byte[Game.Core.Party.Wire.PartyCodec.MaxPacketBytes];
+            var batch = new Game.Core.Party.Wire.DamageBatchMessage { Sequence = sequence, EnemyId = host.Encounter.EnemyId, Keys = keys, Hits = hits };
+            transport.Send(HostId, buffer, Game.Core.Party.Wire.PartyCodec.Encode(buffer, batch));
+            network.Advance(600);
+            host.Tick();
+        }
+
+        [Test]
+        public void ForgedDamageIsCutToTheBarRate()
+        {
+            var (host, network, cheat) = Joined();
+            var killsBefore = host.Kills;
+            var caps = TestWorld.Data.Party.Caps;
+
+            for (var i = 0; i < 20; i++)
+                Forge(host, network, cheat, 1000u + (uint)i, 1e6, 1);
+
+            var kills = host.Kills - killsBefore;
+            Assert.That(kills, Is.LessThanOrEqualTo((long)System.Math.Ceiling(caps.BurstBars + caps.BarsPerSecond * 2)));
+            Assert.That(kills, Is.GreaterThan(0));
+            Assert.That(host.Flags(0), Is.GreaterThan(0));
+            Assert.That(host.CutShares, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void OneStrongHitWithOverkillIsNotFlagged()
+        {
+            var (host, network, cheat) = Joined();
+            var killsBefore = host.Kills;
+
+            Forge(host, network, cheat, 1000, 50, 1);
+
+            Assert.That(host.Kills - killsBefore, Is.EqualTo(1));
+            Assert.That(host.Flags(0), Is.EqualTo(0));
+            Assert.That(host.CutShares, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void MoreHitsThanTicksAreFlagged()
+        {
+            var (host, network, cheat) = Joined();
+
+            Forge(host, network, cheat, 1000, 0.01, 500);
+
+            Assert.That(host.Flags(0), Is.EqualTo(1));
+        }
     }
 }

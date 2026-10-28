@@ -94,7 +94,7 @@ namespace Game.Presentation.Ui
             if (!IsShown)
                 return;
             var inParty = _client != null && _client.InParty;
-            var rows = inParty ? PartyRoster.From(loop.State, _client!.Status, _client.Roster, _client.OwnSlot) : PartyRoster.Solo(loop.State);
+            var rows = inParty ? PartyRoster.From(loop.State, _client!) : PartyRoster.Solo(loop.State);
             var y = TopPx;
             _enemyCard.gameObject.SetActive(inParty);
             _hintCard.gameObject.SetActive(!inParty);

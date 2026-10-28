@@ -29,9 +29,9 @@ namespace Game.Core.Tests.Party
             AssertRoundTrip(new CastEffectMessage { EffectId = 3, OnEnemy = true, Strength = 0.4, Seconds = 8 }, PartyCodec.Encode, Decode<CastEffectMessage>(PartyCodec.TryDecode));
             AssertRoundTrip(new PresenceMessage { Presence = PartyPresence.Peaceful, Stage = 30, Resource = 42.5f }, PartyCodec.Encode, Decode<PresenceMessage>(PartyCodec.TryDecode));
             AssertRoundTrip(new EncounterStateMessage { Sequence = 4, Tick = 1234, EnemyId = 11, EnemyKind = PartyEnemyKind.Boss, BarLeft = 1.25, BarFull = 3, BossTicksLeft = 250, KillsOnStage = 10, Farming = true, WeightMask = 0b1011, DamageTaken = 1.3, EnemySeed = ulong.MaxValue }, PartyCodec.Encode, Decode<EncounterStateMessage>(PartyCodec.TryDecode));
-            AssertRoundTrip(new EnemyKilledMessage { Tick = 99, EnemyId = 12, EnemyKind = PartyEnemyKind.Normal, Share0 = 0.5, Share1 = 0.25, Share2 = 0.125, Share3 = 0.125 }, PartyCodec.Encode, Decode<EnemyKilledMessage>(PartyCodec.TryDecode));
+            AssertRoundTrip(new EnemyKilledMessage { Tick = 99, EnemyId = 12, EnemyKind = PartyEnemyKind.Normal, Share0 = 0.5, Share1 = 0.25, Share2 = 0.125, Share3 = 0.125, Rewarded = 9 }, PartyCodec.Encode, Decode<EnemyKilledMessage>(PartyCodec.TryDecode));
             AssertRoundTrip(new EncounterMomentMessage { Kind = PartyEventKind.BossFailed, Tick = 5, EnemyId = 3, BossTicksLeft = 0 }, PartyCodec.Encode, Decode<EncounterMomentMessage>(PartyCodec.TryDecode));
-            AssertRoundTrip(new RosterMessage { Version = 2, Player0 = 1, Player1 = 2, Player3 = ulong.MaxValue, Presence1 = (byte)PartyPresence.Resting, Presence2 = (byte)PartyPresence.Offline }, PartyCodec.Encode, Decode<RosterMessage>(PartyCodec.TryDecode));
+            AssertRoundTrip(new RosterMessage { Version = 2, Player0 = 1, Player1 = 2, Player3 = ulong.MaxValue, Presence1 = (byte)PartyPresence.Resting, Presence2 = (byte)PartyPresence.Offline, RestBank1 = 3600, RestBank3 = 7 }, PartyCodec.Encode, Decode<RosterMessage>(PartyCodec.TryDecode));
         }
 
         [Test]
