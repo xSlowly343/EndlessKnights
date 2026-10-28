@@ -6242,12 +6242,12 @@
       "weapon": "still_burner",
       "ascendancy": "chainsawyer",
       "color": "blue",
-      "name": { "ru": "Пила из хлама", "en": "Scrap Saw" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 40 },
+      "name": {"ru": "Пила из хлама", "en": "Scrap Saw"},
+      "tags": ["Keyboard", "Skill"],
+      "cost": {"resource": 40},
       "cooldownSeconds": 30,
       "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.5 }] }
+      "effect": {"type": "keyRepeat", "every": 1, "multiplier": 0.5, "burnStacks": 1}
     },
     {
       "id": "exhale",
@@ -6255,12 +6255,12 @@
       "weapon": "still_burner",
       "ascendancy": "fire_breather",
       "color": "blue",
-      "name": { "ru": "Выдох", "en": "Exhale" },
+      "name": {"ru": "Выдох", "en": "Exhale"},
       "tags": ["DoT", "Skill"],
-      "cost": { "resource": 50 },
+      "cost": {"resource": 50},
       "cooldownSeconds": 30,
       "durationSeconds": 8,
-      "effect": { "type": "addStacks", "dot": "burn", "perSecond": 3 }
+      "effect": {"type": "addStacks", "dot": "burn", "perSecond": 3, "whileActive": [{"stat": "dotQueueShare", "kind": "flat", "value": 1}]}
     },
     {
       "id": "by_eye",
@@ -6269,12 +6269,13 @@
       "tier": "common",
       "role": "fast",
       "color": "blue",
-      "name": { "ru": "На глаз", "en": "By Eye" },
+      "name": {"ru": "На глаз", "en": "By Eye"},
       "tags": ["DoT", "Skill"],
       "cost": {},
       "cooldownSeconds": 10,
-      "effect": { "type": "addStacks", "dot": "burn", "stacks": 1, "multiplier": 2 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 1.5} }
+      "effect": {"type": "addStacks", "dot": "burn", "stacks": 1, "multiplier": 2},
+      "native": {"resourceRelief": 20, "modifiers": [{"stat": "overheatDisabled", "kind": "flat", "value": 1}]},
+      "durationSeconds": 5
     },
     {
       "id": "first_drop",
@@ -6282,13 +6283,13 @@
       "weapon": "still_burner",
       "tier": "common",
       "color": "blue",
-      "name": { "ru": "Первая капля", "en": "First Drop" },
+      "name": {"ru": "Первая капля", "en": "First Drop"},
       "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 20 },
+      "cost": {"resource": 20},
       "cooldownSeconds": 30,
       "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 10, "multiplier": 2 },
-      "native": { "durationMultiplier": 1.5 }
+      "effect": {"type": "keyRepeat", "every": 10, "multiplier": 0, "burnStacks": 1},
+      "native": {"repeatEvery": 6}
     },
     {
       "id": "little_flame",
@@ -6421,12 +6422,13 @@
       "tier": "rare",
       "role": "heavy",
       "color": "blue",
-      "name": { "ru": "Бражная бочка", "en": "Mash Barrel" },
+      "name": {"ru": "Бражная бочка", "en": "Mash Barrel"},
       "tags": ["DoT", "Skill"],
-      "cost": { "resource": 35 },
+      "cost": {"resource": 35},
       "cooldownSeconds": 30,
-      "effect": { "type": "addStacks", "dot": "burn", "stacks": 10, "multiplier": 10 },
-      "native": { "when": {"resourceAtLeast": 70, "multiplier": 1.5} }
+      "effect": {"type": "addStacks", "dot": "burn", "stacks": 10, "multiplier": 10, "delaySeconds": 5},
+      "native": {"when": {"resourceAtLeast": 70, "multiplier": 1.5}},
+      "durationSeconds": 5
     },
     {
       "id": "fire_through_the_coil",
@@ -6543,12 +6545,12 @@
       "tier": "epic",
       "role": "heavy",
       "color": "blue",
-      "name": { "ru": "Пар сам скажет", "en": "The Steam Will Tell" },
+      "name": {"ru": "Пар сам скажет", "en": "The Steam Will Tell"},
       "tags": ["DoT", "Skill"],
-      "cost": { "resource": 40 },
+      "cost": {"resource": 40},
       "cooldownSeconds": 20,
-      "effect": { "type": "strike", "multiplier": 5 },
-      "native": { "spendAll": {"perPoint": 0.1, "max": 10} }
+      "effect": {"type": "strike", "multiplier": 5, "burnStacks": 5},
+      "native": {"spendAll": {"perPoint": 0.1, "max": 10}}
     },
     {
       "id": "broken_gauge",
@@ -6556,12 +6558,12 @@
       "weapon": "still_burner",
       "tier": "epic",
       "color": "blue",
-      "name": { "ru": "Сломанный манометр", "en": "Broken Gauge" },
+      "name": {"ru": "Сломанный манометр", "en": "Broken Gauge"},
       "tags": ["DoT", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}] },
-      "native": { "when": {"resourceAtLeast": 50, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.5, "tags": ["DoT"]}]} }
+      "effect": {"type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}]},
+      "native": {"modifiers": [{"stat": "overheatBurst", "kind": "flat", "value": 20}, {"stat": "overheatDisabled", "kind": "flat", "value": 1}], "when": {"resourceAtLeast": 50, "resourceAtMost": 90, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.5, "tags": ["DoT"]}]}}
     },
     {
       "id": "dry_run",

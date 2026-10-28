@@ -3,6 +3,7 @@ namespace Game.Core.Content.Gems
     public sealed class SkillCondition
     {
         public double ResourceAtLeast { get; set; }
+        public double ResourceAtMost { get; set; }
         public int ComboAbove { get; set; }
         public double BossLastSeconds { get; set; }
         public bool Boss { get; set; }

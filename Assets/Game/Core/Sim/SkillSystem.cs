@@ -257,7 +257,8 @@ namespace Game.Core.Sim
             if (skill.Effect is SummonEffect summon)
                 Minions.Place(summon, slot.Skill.Tags);
             if (skill.Effect is AddStacksEffect stacks)
-                AddStacks(slot, stacks);
+                if (stacks.DelaySeconds <= 0)
+                    AddStacks(slot, stacks);
             if (skill.Effect is DetonateEffect detonate)
                 Dots.Detonate(detonate, native.StackGrowth);
             if (skill.Effect is WeakenNextEffect weaken)
@@ -287,6 +288,8 @@ namespace Game.Core.Sim
                 _state.FocusRefill = true;
             if (slot.WhenAtCast && native.WhenResource > 0)
                 _resource.Gain(native.WhenResource);
+            if (native.ResourceRelief > 0)
+                _state.Resource = System.Math.Max(0, _state.Resource - native.ResourceRelief);
             if (skill.Effect is RepeatRecentEffect recent)
             {
                 var seconds = native.WindowSeconds > 0 ? native.WindowSeconds : recent.Seconds;
@@ -318,8 +321,10 @@ namespace Game.Core.Sim
 
         private void AddStacks(SkillSlot slot, AddStacksEffect stacks)
         {
+            var native = IsNative(slot) ? slot.Def.Native : NativeTrait.None;
+            var when = slot.WhenAtCast && native.WhenMultiplier > 0 ? native.WhenMultiplier : 1;
             if (stacks.Multiplier > 0)
-                SkillHit(slot, stacks.Multiplier);
+                SkillHit(slot, stacks.Multiplier * when);
             Dots.Apply(stacks, SupportEffects.Affliction(slot) * slot.StackPower);
         }
 
@@ -494,7 +499,7 @@ namespace Game.Core.Sim
             }
             if (native.SpendsAll)
             {
-                if (_state.Resource < cost)
+                if (!_resource.Rules.Inverse && _state.Resource < cost)
                     return false;
                 spent = _resource.SpendAll();
                 return true;
@@ -578,6 +583,9 @@ namespace Game.Core.Sim
             }
             if (native.ResourceOnCrit > 0 && _combat.LastHitCrit && !strike.LastKeyHit)
                 _resource.Gain(native.ResourceOnCrit);
+            var burn = native.SpendsAll && strike.BurnStacks > 0 ? System.Math.Min(native.SpendAllMax, spent * native.SpendAllPerPoint) : strike.BurnStacks;
+            if (burn > 0)
+                Dots.AddBurn(burn * slot.StackPower);
             if (_state.Kills == killsBefore)
                 return;
             _resource.Gain(spent * strike.KillRefundShare + native.ResourceOnKill);
@@ -606,6 +614,7 @@ namespace Game.Core.Sim
 
         private bool Holds(SkillCondition condition) =>
             (condition.ResourceAtLeast <= 0 || _state.Resource >= condition.ResourceAtLeast - 1e-9)
+            && (condition.ResourceAtMost <= 0 || _state.Resource <= condition.ResourceAtMost + 1e-9)
             && (condition.ComboAbove <= 0 || _state.Combo > condition.ComboAbove)
             && (!condition.Boss || _state.FightingBoss)
             && (!condition.BossRetry || (_state.FightingBoss && _state.BossFailsInARow > 0))
@@ -797,10 +806,14 @@ namespace Game.Core.Sim
 
         private void RepeatHit(SkillSlot slot, KeyRepeatEffect repeat, BigNumber damage)
         {
-            if (++slot.HitCount % repeat.Every != 0)
+            var every = IsNative(slot) && slot.Def.Native.RepeatEvery > 0 ? slot.Def.Native.RepeatEvery : repeat.Every;
+            if (++slot.HitCount % every != 0)
                 return;
+            if (repeat.BurnStacks > 0)
+                Dots.AddBurn(repeat.BurnStacks * slot.StackPower);
             var extra = damage * repeat.Multiplier;
-            _combat.DirectHit(extra);
+            if (repeat.Multiplier > 0)
+                _combat.DirectHit(extra);
             if (repeat.QueueTargets > 0)
                 QueueShare(extra, repeat.QueueTargets);
             if (IsNative(slot))
@@ -1521,6 +1534,11 @@ namespace Game.Core.Sim
             }
             if (slot.Def.Effect is StacksEffect stacks && !stacks.Passive)
                 ClearStacks(slot);
+            if (slot.Def.Effect is AddStacksEffect { DelaySeconds: > 0 } delayed && Armed(slot))
+            {
+                slot.WhenAtCast = WhenHolds(IsNative(slot) ? slot.Def.Native : NativeTrait.None);
+                AddStacks(slot, delayed);
+            }
             if (slot.Def.Effect is WishEffect)
             {
                 var stored = _state.WishStored;
