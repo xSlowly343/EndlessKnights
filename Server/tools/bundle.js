@@ -8,6 +8,13 @@ const stages = JSON.parse(fs.readFileSync(path.join(data, "stages.json"), "utf8"
 const rift = JSON.parse(fs.readFileSync(path.join(data, "rift.json"), "utf8"));
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
+function enemiesOnFirstStage(waves) {
+  let total = 0;
+  for (let wave = 0; wave < waves.count; wave++)
+    total += Math.min(waves.maxEnemiesPerWave, waves.firstEnemies + wave * waves.enemiesPerWave);
+  return total;
+}
+
 const rules = {
   maxMembers: party.maxMembers,
   hpPerExtraPlayer: party.hpPerExtraPlayer,
@@ -19,7 +26,16 @@ const rules = {
   maxMessagesPerSecond: party.packets.maxMessagesPerSecond,
   lateDamageSeconds: party.lateDamageSeconds,
   maxEnemyDamageTaken: party.maxEnemyDamageTaken,
-  enemiesPerStage: stages.enemiesPerStage,
+  minShare: party.contribution.minShare,
+  activeInputSeconds: party.contribution.activeInputSeconds,
+  restBankSeconds: party.contribution.restBankMinutes * 60,
+  idlePortionShare: party.contribution.idlePortionShare,
+  typingReserveShare: party.contribution.typingReserveShare,
+  barsPerSecond: party.caps.barsPerSecond,
+  burstBars: party.caps.burstBars,
+  hitBurstSeconds: party.caps.hitBurstSeconds,
+  flagsBeforeReport: party.caps.flagsBeforeReport,
+  enemiesPerStage: enemiesOnFirstStage(stages.waves),
   bossRetryAfterKills: stages.boss.retryAfterKills,
   bossTimerSeconds: stages.boss.timerSeconds,
   bossHpMultiplier: stages.boss.hpMultiplier

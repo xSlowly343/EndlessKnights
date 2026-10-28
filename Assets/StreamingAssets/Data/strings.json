@@ -689,6 +689,9 @@
     "eula.line.3": { "ru": "Правила работы за твоим ПК — твоя ответственность", "en": "Workplace rules for your PC are your responsibility" },
     "eula.line.4": { "ru": "Нельзя взламывать игру, сервер и данные других игроков", "en": "Do not hack the game, the server or other players' data" },
     "eula.line.5": { "ru": "Игра предоставляется по лицензии, а не продаётся", "en": "The game is licensed to you, not sold" },
-    "eula.line.6": { "ru": "Полный текст — на странице игры в Steam", "en": "The full text is on the game's Steam page" }
+    "eula.line.6": { "ru": "Полный текст — на странице игры в Steam", "en": "The full text is on the game's Steam page" },
+    "party.contribution": { "ru": "вклад {0}%", "en": "share {0}%" },
+    "party.restBank": { "ru": "запас отдыха {0} мин", "en": "rest bank {0} min" },
+    "party.unpaid": { "ru": "без награды: нет ввода и запаса отдыха", "en": "no reward: no input and no rest bank" }
   }
 }

@@ -36,7 +36,8 @@ namespace Game.Core.Tests.Party
                 BossTimeout(),
                 Effects(),
                 Disconnects(),
-                RestAndPeace()
+                RestAndPeace(),
+                Contribution()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -47,6 +48,11 @@ namespace Game.Core.Tests.Party
                    $"    \"disconnectGraceSeconds\": {N(rules.DisconnectGraceSeconds)},\n" +
                    $"    \"lateDamageSeconds\": {N(rules.LateDamageSeconds)},\n" +
                    $"    \"maxEnemyDamageTaken\": {N(rules.MaxEnemyDamageTaken)},\n" +
+                   $"    \"minShare\": {N(rules.Contribution.MinShare)},\n" +
+                   $"    \"activeInputSeconds\": {N(rules.Contribution.ActiveInputSeconds)},\n" +
+                   $"    \"restBankSeconds\": {N(rules.Contribution.RestBankSeconds)},\n" +
+                   $"    \"idlePortionShare\": {N(rules.Contribution.IdlePortionShare)},\n" +
+                   $"    \"typingReserveShare\": {N(rules.Contribution.TypingReserveShare)},\n" +
                    $"    \"enemiesPerStage\": {stages.EnemiesPerStage},\n" +
                    $"    \"bossRetryAfterKills\": {stages.BossRetryAfterKills},\n" +
                    $"    \"bossTimerSeconds\": {N(stages.BossTimerSeconds)},\n" +
@@ -182,6 +188,41 @@ namespace Game.Core.Tests.Party
             r.Hit(0, 2);
             r.Peaceful(5, true);
             r.Input(-1);
+            return r.ToJson();
+        }
+
+        private static string Contribution()
+        {
+            var r = Recorder("idle damage is capped and the rest bank pays the idle", 777);
+            r.Join(31);
+            r.Join(32);
+            r.Join(33);
+            for (var i = 0; i < 40; i++)
+            {
+                r.Input(0);
+                r.Input(1);
+                r.Input(2);
+                r.Advance(1);
+            }
+            r.Hit(0, 3);
+            r.Hit(0, 0.2);
+            for (var i = 0; i < 310; i++)
+            {
+                r.Input(0);
+                r.Advance(1);
+            }
+            r.Hit(1, 10);
+            r.Hit(2, 10);
+            r.Hit(0, 0.3);
+            r.Hit(0, 0.3);
+            r.Advance(1500);
+            r.Hit(1, 0.5);
+            r.Hit(0, 10);
+            r.Hit(0, 10);
+            r.Hit(1, 0.05);
+            r.Hit(0, 10);
+            r.Input(2);
+            r.Hit(2, 10);
             return r.ToJson();
         }
 

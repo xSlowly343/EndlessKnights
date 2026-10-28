@@ -3,6 +3,8 @@ const crypto = require("crypto");
 
 const RosterKind = 8;
 const EncounterStateKind = 5;
+const EnemyKilledKind = 6;
+const DamageBatchKind = 2;
 const firstNumber = "76561197960287930";
 const secondNumber = "76561197960287931";
 
@@ -45,6 +47,7 @@ class MatchSocket {
     this.url = base.replace(/^http/, "ws") + "/ws?lang=en&status=true&token=" + encodeURIComponent(token);
     this.waiters = [];
     this.nextCid = 1;
+    this.counts = {};
   }
 
   open() {
@@ -57,6 +60,12 @@ class MatchSocket {
   }
 
   receive(envelope) {
+    if (envelope.match_data) {
+      const kind = Number(envelope.match_data.op_code);
+      this.counts[kind] = (this.counts[kind] || 0) + 1;
+      if (kind === EncounterStateKind)
+        this.enemy = Buffer.from(envelope.match_data.data, "base64").readUInt32LE(13);
+    }
     for (const waiter of this.waiters.slice())
       waiter(envelope);
   }
@@ -102,6 +111,10 @@ class MatchSocket {
     return joined;
   }
 
+  send(matchId, data) {
+    this.socket.send(JSON.stringify({ match_data_send: { match_id: matchId, op_code: data[0], data: data.toString("base64") } }));
+  }
+
   close() {
     this.socket.close();
   }
@@ -113,6 +126,20 @@ function rosterNumber(data, slot) {
 
 function stateTick(data) {
   return Number(data.readBigInt64LE(5));
+}
+
+function damageBatch(sequence, enemyId, keys, hits) {
+  const data = Buffer.alloc(57);
+  data[0] = DamageBatchKind;
+  data.writeUInt32LE(sequence, 1);
+  data.writeUInt32LE(enemyId, 5);
+  data.writeDoubleLE(keys, 9);
+  data.writeInt32LE(hits, 49);
+  return data;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function readMembership(base, token, userId) {
@@ -164,8 +191,22 @@ async function main() {
 
   const laterState = await first.packet(EncounterStateKind, (data) => stateTick(data) >= startTick + 10);
   console.log("ok    the fight keeps its state between ticks, tick " + startTick + " -> " + stateTick(laterState));
-  first.close();
   second.close();
+  await sleep(300);
+
+  const killsBefore = first.counts[EnemyKilledKind] || 0;
+  const paidKill = first.packet(EnemyKilledKind, () => true);
+  for (let i = 0; i < 20; i++) {
+    first.send(created.matchId, damageBatch(1000 + i, first.enemy, 1e6 * (i + 1), 1));
+    await sleep(100);
+  }
+  await sleep(500);
+  const forgedKills = (first.counts[EnemyKilledKind] || 0) - killsBefore;
+  assert.ok(forgedKills >= 1 && forgedKills <= 8, "forged damage killed " + forgedKills + " enemies in 2 s");
+  const killed = await paidKill;
+  assert.strictEqual(killed[1 + 8 + 4 + 1 + 4 * 8] & 1, 1, "the typing player is not in the reward mask");
+  console.log("ok    forged damage is cut: " + forgedKills + " kills in 2 s instead of 20, reward mask " + killed[1 + 8 + 4 + 1 + 4 * 8]);
+  first.close();
 
   const membership = await readMembership(base, session.token, session.userId);
   assert.strictEqual(membership.matchId, created.matchId);

@@ -76,6 +76,7 @@ function partyMatchLoop(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
         host.receive(message.sender.userId, message.data);
     host.tick();
     partySend(dispatcher, state, host);
+    partyReportFlags(nk, logger, ctx.matchId || "", host);
     state.emptyTicks = Object.keys(state.presences).length === 0 ? state.emptyTicks + 1 : 0;
     return state.emptyTicks > PartyEmptyTicksBeforeClose ? null : { state: state };
 }
@@ -126,4 +127,21 @@ function partySaveMembership(nk: nkruntime.Nakama, logger: nkruntime.Logger, mat
     } catch (error) {
         logger.warn("party membership was not saved for %s: %s", userId, String(error));
     }
+}
+
+function partyReportFlags(nk: nkruntime.Nakama, logger: nkruntime.Logger, matchId: string, host: PartyHost): void {
+    for (const slot of host.reports) {
+        const member = host.encounter.members[slot];
+        logger.warn("party %s: player %s (user %s) has %d capped batches", matchId, host.playerNumbers[slot], member.playerId, host.flags[slot]);
+        try {
+            nk.storageWrite([{
+                collection: "party_flags", key: member.playerId, userId: member.playerId,
+                value: { flags: host.flags[slot], matchId: matchId, playerNumber: host.playerNumbers[slot], at: Date.now() },
+                permissionRead: 0, permissionWrite: 0
+            }]);
+        } catch (error) {
+            logger.warn("party flags were not saved for %s: %s", member.playerId, String(error));
+        }
+    }
+    host.reports.length = 0;
 }

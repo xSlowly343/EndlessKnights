@@ -6,6 +6,8 @@ namespace Game.Core.Party
 {
     public sealed class PartyHost
     {
+        private const double CutTolerance = 1e-9;
+
         private readonly PartyEncounter _encounter;
         private readonly IPartyTransport _transport;
         private readonly byte[] _in = new byte[PartyCodec.MaxPacketBytes];
@@ -16,6 +18,9 @@ namespace Game.Core.Party
         private readonly double[] _lastTotal = new double[PartyRules.MaxSlots];
         private readonly int[] _messagesThisSecond = new int[PartyRules.MaxSlots];
         private readonly PartyPresence[] _sentPresence = new PartyPresence[PartyRules.MaxSlots];
+        private readonly double[] _allowance = new double[PartyRules.MaxSlots];
+        private readonly double[] _hitAllowance = new double[PartyRules.MaxSlots];
+        private readonly int[] _flags = new int[PartyRules.MaxSlots];
         private PartyRules _rules;
         private uint _stateSequence;
         private uint _rosterVersion;
@@ -33,6 +38,9 @@ namespace Game.Core.Party
         public PartyEncounter Encounter => _encounter;
         public long Kills { get; private set; }
         public double AcceptedShares { get; private set; }
+        public double CutShares { get; private set; }
+
+        public int Flags(int slot) => _flags[slot];
 
         public void UseRules(PartyRules rules) => _rules = rules;
 
@@ -41,6 +49,7 @@ namespace Game.Core.Party
             while (_transport.TryReceive(_in, out var length, out var from))
                 Handle(from, length);
             _encounter.Advance();
+            Refill();
             if (_encounter.Tick % GameLoop.TicksPerSecond == 0)
                 System.Array.Clear(_messagesThisSecond, 0, _messagesThisSecond.Length);
             WatchSilence();
@@ -93,6 +102,9 @@ namespace Game.Core.Party
             _lastSequence[slot] = 0;
             _lastEnemy[slot] = 0;
             _lastTotal[slot] = 0;
+            _allowance[slot] = _rules.Caps.BurstBars;
+            _hitAllowance[slot] = HitBurst;
+            _flags[slot] = 0;
             _rosterChanged = true;
             _ticksToState = 0;
             return slot;
@@ -119,11 +131,43 @@ namespace Game.Core.Party
                 _lastEnemy[slot] = batch.EnemyId;
                 _lastTotal[slot] = total;
             }
+            if (batch.Hits > _hitAllowance[slot])
+                Flag(slot);
+            _hitAllowance[slot] = System.Math.Max(0, _hitAllowance[slot] - System.Math.Max(0, batch.Hits));
             if (batch.Hits > 0)
                 _encounter.ReportInput(slot);
             if (delta > 0)
-                AcceptedShares += _encounter.ApplyDamage(slot, batch.EnemyId, delta);
+                AcceptedShares += CappedDamage(slot, batch.EnemyId, delta);
         }
+
+        private double CappedDamage(int slot, uint enemyId, double delta)
+        {
+            var barFull = _encounter.BarFull;
+            var wanted = _encounter.Applicable(slot, enemyId, delta);
+            var allowed = System.Math.Min(wanted, _allowance[slot] * barFull);
+            if (wanted - allowed > CutTolerance * barFull)
+            {
+                CutShares += wanted - allowed;
+                Flag(slot);
+            }
+            var applied = _encounter.ApplyDamage(slot, enemyId, delta, allowed);
+            _allowance[slot] = System.Math.Max(0, _allowance[slot] - applied / barFull);
+            return applied;
+        }
+
+        private void Flag(int slot) => _flags[slot]++;
+
+        private void Refill()
+        {
+            var step = _rules.Caps.BarsPerSecond / GameLoop.TicksPerSecond;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                _allowance[slot] = System.Math.Min(_rules.Caps.BurstBars, _allowance[slot] + step);
+                _hitAllowance[slot] = System.Math.Min(HitBurst, _hitAllowance[slot] + 1);
+            }
+        }
+
+        private double HitBurst => _rules.Caps.HitBurstSeconds * GameLoop.TicksPerSecond;
 
         private void WatchSilence()
         {

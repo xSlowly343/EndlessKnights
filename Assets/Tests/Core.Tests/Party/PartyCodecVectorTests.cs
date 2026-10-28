@@ -38,18 +38,19 @@ namespace Game.Core.Tests.Party
             encounter.ApplyDamage(0, 1, 0.75);
             encounter.ApplyEnemyEffect(-123456, 0.15, 10, 1);
             encounter.ApplyEnemyEffect(42, 0.25, 4);
-            for (var i = 0; i < 7; i++)
+            for (var i = 0; i < 32; i++)
                 encounter.Advance();
+            encounter.ApplyDamage(1, 1, 5);
             encounter.SetPeaceful(1, true);
 
             var builder = new StringBuilder("{\n  \"version\": 1,\n");
             builder.Append("  \"seed\": \"777\",\n");
-            builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"damage 0 1 0.75\", \"effect -123456 0.15 10 1\", \"effect 42 0.25 4\", \"advance 7\", \"peaceful 1 true\"],\n");
+            builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"damage 0 1 0.75\", \"effect -123456 0.15 10 1\", \"effect 42 0.25 4\", \"advance 32\", \"damage 1 1 5\", \"peaceful 1 true\"],\n");
             builder.Append("  \"encode\": {\n");
             builder.Append("    \"encounterState\": { \"sequence\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, EncounterStateMessage.Of(encounter, 5)))).Append("\" },\n");
             builder.Append("    \"roster\": { \"version\": 3, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, RosterMessage.Of(encounter, 3)))).Append("\" },\n");
-            var killed = new PartyEvent(PartyEventKind.EnemyKilled, 12, 4, PartyEnemyKind.Boss, 0.625, 0.375);
-            builder.Append("    \"enemyKilled\": { \"tick\": 12, \"enemyId\": 4, \"enemyKind\": 1, \"shares\": [0.625, 0.375, 0, 0], \"hex\": \"")
+            var killed = new PartyEvent(PartyEventKind.EnemyKilled, 12, 4, PartyEnemyKind.Boss, 0.625, 0.375, 0, 0, 5);
+            builder.Append("    \"enemyKilled\": { \"tick\": 12, \"enemyId\": 4, \"enemyKind\": 1, \"shares\": [0.625, 0.375, 0, 0], \"rewarded\": 5, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, EnemyKilledMessage.Of(killed)))).Append("\" },\n");
             builder.Append("    \"moment\": { \"kind\": 4, \"tick\": 300, \"enemyId\": 11, \"enemyKind\": 1, \"bossTicksLeft\": 0, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new EncounterMomentMessage { Kind = PartyEventKind.BossFailed, Tick = 300, EnemyId = 11, BossTicksLeft = 0 }))).Append("\" }\n");

@@ -70,9 +70,12 @@ npm run smoke -- https://<домен> <NAKAMA_SERVER_KEY>
 ```bash
 docker run --rm -v "$PWD/..":/s -w /s node:22.23.4-alpine node test/smoke.js https://<домен> "$(grep ^NAKAMA_SERVER_KEY secrets.env | cut -d= -f2)"
 ```
-Ожидается 8 строк `ok` и `smoke: all good`: healthcheck, вход устройством, `rift_window`, `party_create`, вход в матч, второй игрок в Roster, бой идёт по тикам, `party/current` в хранилище. Тестовые аккаунты `smoke-…` остаются в базе, это нормально.
+Ожидается 9 строк `ok` и `smoke: all good`: healthcheck, вход устройством, `rift_window`, `party_create`, вход в матч, второй игрок в Roster, бой идёт по тикам, подделанный урон режется капом (не больше 8 убийств за 2 с), `party/current` в хранилище. Тестовые аккаунты `smoke-…` остаются в базе, это нормально.
 
 Вывод обеих команд (без ключей) приложи к отчёту или PR.
+
+### Пометки читеров
+Хозяин боя пишет игроков, у которых кап срезал урон 20 раз и больше, в хранилище Nakama: консоль → Storage → коллекция `party_flags`. В отчёт для Сергея попадает число пометок и `playerNumber` (SteamID). Автобана нет, решает человек (coop.md §8).
 
 ## 4. Обновление
 ```bash

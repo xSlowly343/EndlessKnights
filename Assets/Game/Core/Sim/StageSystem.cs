@@ -209,6 +209,8 @@ namespace Game.Core.Sim
             _state.EnemyHp = BigNumber.Zero;
         }
 
+        public void SkipLinkedKill() => _state.EnemyHp = BigNumber.Zero;
+
         public void ConfirmLinkedBossFailed()
         {
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossFailed, _state.Tick, _state.Stage, _state.Enemy));

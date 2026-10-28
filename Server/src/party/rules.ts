@@ -9,11 +9,17 @@ interface PartyEncounterRules {
     bossRetryAfterKills: number;
     bossTimerSeconds: number;
     bossHpMultiplier: number;
+    minShare: number;
+    activeInputSeconds: number;
+    restBankSeconds: number;
+    idlePortionShare: number;
+    typingReserveShare: number;
 }
 
 const PartyTicksPerSecond = 10;
 const PartyMaxSlots = 4;
 const PartyNoSlot = -1;
+const PartyNever = -9007199254740992;
 
 const enum PartyEnemyKind { Normal = 0, Boss = 1 }
 const enum PartyEventKind { EnemySpawned = 0, BossStarted = 1, EnemyKilled = 2, StageCleared = 3, BossFailed = 4 }

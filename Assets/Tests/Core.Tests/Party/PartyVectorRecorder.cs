@@ -97,7 +97,9 @@ namespace Game.Core.Tests.Party
                 var member = e.Member(slot);
                 if (slot > 0)
                     builder.Append(", ");
-                builder.Append(member.Joined ? $"{{ \"player\": \"{member.PlayerId}\", \"weight\": {member.Weight}, \"presence\": {(int)e.Presence(slot)} }}" : "null");
+                builder.Append(member.Joined
+                    ? $"{{ \"player\": \"{member.PlayerId}\", \"weight\": {member.Weight}, \"presence\": {(int)e.Presence(slot)}, \"typing\": {Bool(e.Typing(slot))}, \"share\": {Number(member.EnemyShare)}, \"restBank\": {member.RestBankTicks} }}"
+                    : "null");
             }
             builder.Append("], \"events\": [");
             for (var i = 0; i < e.Events.Count; i++)
@@ -110,7 +112,8 @@ namespace Game.Core.Tests.Party
                     .Append(", \"enemyId\": ").Append(partyEvent.EnemyId)
                     .Append(", \"enemyKind\": ").Append((int)partyEvent.EnemyKind)
                     .Append(", \"shares\": [").Append(Number(partyEvent.Share0)).Append(", ").Append(Number(partyEvent.Share1)).Append(", ")
-                    .Append(Number(partyEvent.Share2)).Append(", ").Append(Number(partyEvent.Share3)).Append("] }");
+                    .Append(Number(partyEvent.Share2)).Append(", ").Append(Number(partyEvent.Share3)).Append("]")
+                    .Append(", \"rewarded\": ").Append(partyEvent.Rewarded).Append(" }");
             }
             builder.Append("] }");
             e.Events.Clear();

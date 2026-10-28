@@ -8,6 +8,7 @@ namespace Game.Core.Party
     {
         public const int MaxEffects = 16;
         public const int NoSlot = -1;
+        public const long Never = -(1L << 53);
 
         private readonly PartyMember[] _members = new PartyMember[PartyRules.MaxSlots];
         private readonly EnemyEffect[] _effects = new EnemyEffect[MaxEffects];
@@ -37,6 +38,7 @@ namespace Game.Core.Party
         public double BarFull { get; private set; }
         public double BarLeft { get; private set; }
         public int Fighters { get; private set; }
+        public long SpawnTick { get; private set; }
         public bool Started => EnemyId != 0;
         public PartyEventQueue Events { get; } = new PartyEventQueue();
         public int Capacity => _rules.MaxMembers;
@@ -152,7 +154,23 @@ namespace Game.Core.Party
                 return PartyPresence.Offline;
             if (member.Peaceful)
                 return PartyPresence.Peaceful;
-            return Tick - member.LastInputTick > Ticks(_rules.RestAfterSeconds) ? PartyPresence.Resting : PartyPresence.Fighting;
+            return Active(member) ? PartyPresence.Fighting : PartyPresence.Resting;
+        }
+
+        public bool Typing(int slot) => IsMember(slot) && Tick - _members[slot].LastInputTick <= Ticks(_rules.Contribution.ActiveInputSeconds);
+
+        public double Portion
+        {
+            get
+            {
+                var counting = 0;
+                for (var i = 0; i < _members.Length; i++)
+                {
+                    if (_members[i].Joined && Counts(i))
+                        counting++;
+                }
+                return BarFull / System.Math.Max(1, counting);
+            }
         }
 
         public double DamageTakenMultiplier
@@ -197,7 +215,19 @@ namespace Game.Core.Party
             return true;
         }
 
-        public double ApplyDamage(int slot, uint enemyId, double share)
+        public double ApplyDamage(int slot, uint enemyId, double share, double limit = double.PositiveInfinity)
+        {
+            var applied = System.Math.Min(Applicable(slot, enemyId, share), limit);
+            if (!(applied > 0))
+                return 0;
+            _members[slot].EnemyShare += applied;
+            BarLeft -= applied;
+            if (BarLeft <= 0)
+                Kill();
+            return applied;
+        }
+
+        public double Applicable(int slot, uint enemyId, double share)
         {
             if (!IsMember(slot) || !Started || !(share > 0) || double.IsInfinity(share))
                 return 0;
@@ -208,11 +238,7 @@ namespace Game.Core.Party
                 share *= KindRatio(_previousKind, EnemyKind);
             }
             var applied = System.Math.Min(BarLeft, share * DamageTakenMultiplier);
-            _members[slot].EnemyShare += applied;
-            BarLeft -= applied;
-            if (BarLeft <= 0)
-                Kill();
-            return applied;
+            return Typing(slot) ? applied : System.Math.Min(applied, IdleRoom(slot));
         }
 
         public bool RequestBossFight()
@@ -255,14 +281,35 @@ namespace Game.Core.Party
             return to == PartyEnemyKind.Boss ? 1 / boss : boss;
         }
 
+        private double IdleRoom(int slot)
+        {
+            var portion = Portion;
+            var contribution = _rules.Contribution;
+            var idleTaken = 0.0;
+            var typing = 0;
+            for (var i = 0; i < _members.Length; i++)
+            {
+                if (!_members[i].Joined)
+                    continue;
+                if (Typing(i))
+                    typing++;
+                else
+                    idleTaken += _members[i].EnemyShare;
+            }
+            var own = contribution.IdlePortionShare * portion - _members[slot].EnemyShare;
+            var shared = BarFull - contribution.TypingReserveShare * portion * typing - idleTaken;
+            return System.Math.Max(0, System.Math.Min(own, shared));
+        }
+
         private void Kill()
         {
             BarLeft = 0;
             var total = 0.0;
             for (var i = 0; i < _members.Length; i++)
                 total += _members[i].EnemyShare;
+            var rewarded = Reward();
             Events.Add(new PartyEvent(PartyEventKind.EnemyKilled, Tick, EnemyId, EnemyKind,
-                ShareOf(0, total), ShareOf(1, total), ShareOf(2, total), ShareOf(3, total)));
+                ShareOf(0, total), ShareOf(1, total), ShareOf(2, total), ShareOf(3, total), rewarded));
             _previousEnemyId = EnemyId;
             _previousKind = EnemyKind;
             _previousKilledTick = Tick;
@@ -285,6 +332,36 @@ namespace Game.Core.Party
             SpawnNext();
         }
 
+        private byte Reward()
+        {
+            var contribution = _rules.Contribution;
+            var counted = contribution.MinShare * Portion;
+            var lifetime = Tick - SpawnTick;
+            var bankMax = Ticks(contribution.RestBankSeconds);
+            var rewarded = 0;
+            for (var i = 0; i < _members.Length; i++)
+            {
+                var member = _members[i];
+                if (!member.Joined)
+                    continue;
+                if (member.EnemyShare > 0 && member.EnemyShare >= counted)
+                    member.LastContributionTick = Tick;
+                if (!member.Connected || member.Peaceful)
+                    continue;
+                if (Typing(i))
+                {
+                    rewarded |= 1 << i;
+                    member.RestBankTicks = System.Math.Min(bankMax, member.RestBankTicks + lifetime);
+                }
+                else if (member.RestBankTicks > 0)
+                {
+                    rewarded |= 1 << i;
+                    member.RestBankTicks = System.Math.Max(0, member.RestBankTicks - lifetime);
+                }
+            }
+            return (byte)rewarded;
+        }
+
         private double ShareOf(int slot, double total) => total > 0 ? _members[slot].EnemyShare / total : 0;
 
         private void SpawnNext() =>
@@ -294,6 +371,7 @@ namespace Game.Core.Party
         {
             EnemyId++;
             EnemyKind = kind;
+            SpawnTick = Tick;
             Fighters = 0;
             for (var i = 0; i < _members.Length; i++)
             {
@@ -318,7 +396,13 @@ namespace Game.Core.Party
                 return false;
             if (member.Peaceful)
                 return false;
-            return Tick - member.LastInputTick <= Ticks(_rules.RestAfterSeconds);
+            return Active(member);
+        }
+
+        private bool Active(PartyMember member)
+        {
+            var rest = Ticks(_rules.RestAfterSeconds);
+            return Tick - member.LastInputTick <= rest || Tick - member.LastContributionTick <= rest;
         }
 
         private void DropLostFighters()

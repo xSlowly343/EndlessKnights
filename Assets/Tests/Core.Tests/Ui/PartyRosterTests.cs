@@ -50,7 +50,7 @@ namespace Game.Core.Tests.Ui
             Assert.That(rows.Count, Is.EqualTo(PartyRules.MaxSlots));
             Assert.That(rows[0].IsSelf, Is.True);
             Assert.That(rows[1].Name, Is.EqualTo("Игрок 2"));
-            Assert.That(rows[1].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Metalhead)));
+            Assert.That(rows[1].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Metalhead) + " · запас отдыха 0 мин"));
             Assert.That(PartyRoster.Status(rows[1].Presence), Is.EqualTo("отдыхает"));
             Assert.That(PartyRoster.Status(rows[2].Presence), Is.EqualTo("нет связи"));
             Assert.That(rows[3].IsFree, Is.True);
@@ -72,6 +72,22 @@ namespace Game.Core.Tests.Ui
         {
             foreach (PartyPresence presence in Enum.GetValues(typeof(PartyPresence)))
                 Assert.That(Texts.Has("party.status." + presence.ToString().ToLowerInvariant()), Is.True, presence.ToString());
+        }
+
+        [Test]
+        public void ContributionRestBankAndAMissedRewardAreShown()
+        {
+            var roster = new RosterMessage
+            {
+                Player0 = 11, Class0 = (byte)HeroClass.Viking, Presence0 = (byte)PartyPresence.Fighting,
+                Player1 = 22, Class1 = (byte)HeroClass.Gravedigger, Presence1 = (byte)PartyPresence.Resting, RestBank1 = 25 * 60 + 40,
+            };
+            double Share(int slot) => slot == 0 ? 0.625 : 0.375;
+
+            var rows = PartyRoster.From(_state, PartyLink.Linked, roster, 0, Share, false);
+
+            Assert.That(rows[0].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Viking) + " · этап 37 · вклад 63% · без награды: нет ввода и запаса отдыха"));
+            Assert.That(rows[1].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Gravedigger) + " · вклад 38% · запас отдыха 25 мин"));
         }
     }
 }

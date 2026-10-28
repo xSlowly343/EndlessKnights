@@ -10,6 +10,8 @@ namespace Game.Core.Party
         public long DisconnectedAtTick { get; internal set; }
         public int Weight { get; internal set; }
         public double EnemyShare { get; internal set; }
+        public long LastContributionTick { get; internal set; } = PartyEncounter.Never;
+        public long RestBankTicks { get; internal set; }
         public byte HeroClass { get; internal set; }
 
         internal void Reset()
@@ -22,6 +24,8 @@ namespace Game.Core.Party
             DisconnectedAtTick = 0;
             Weight = 0;
             EnemyShare = 0;
+            LastContributionTick = PartyEncounter.Never;
+            RestBankTicks = 0;
             HeroClass = 0;
         }
     }

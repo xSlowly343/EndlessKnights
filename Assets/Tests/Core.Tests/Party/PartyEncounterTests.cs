@@ -155,7 +155,7 @@ namespace Game.Core.Tests.Party
                 encounter.Advance();
             KillCurrent(encounter);
 
-            Assert.That(encounter.Fighters, Is.EqualTo(0));
+            Assert.That(encounter.Fighters, Is.EqualTo(1), "only the one who dealt the killing damage counts");
             Assert.That(encounter.BarFull, Is.EqualTo(1));
         }
 

@@ -4,6 +4,7 @@ interface PartyEvent {
     enemyId: number;
     enemyKind: PartyEnemyKind;
     shares: number[];
+    rewarded: number;
 }
 
 class PartyMember {
@@ -15,6 +16,8 @@ class PartyMember {
     disconnectedAtTick = 0;
     weight = 0;
     enemyShare = 0;
+    lastContributionTick = PartyNever;
+    restBankTicks = 0;
     heroClass = 0;
 
     reset(): void {
@@ -26,6 +29,8 @@ class PartyMember {
         this.disconnectedAtTick = 0;
         this.weight = 0;
         this.enemyShare = 0;
+        this.lastContributionTick = PartyNever;
+        this.restBankTicks = 0;
         this.heroClass = 0;
     }
 }
@@ -53,6 +58,7 @@ class PartyEncounter {
     barFull = 0;
     barLeft = 0;
     fighters = 0;
+    spawnTick = 0;
     private previousEnemyId = 0;
     private previousKind = PartyEnemyKind.Normal;
     private previousKilledTick = -Number.MAX_SAFE_INTEGER;
@@ -153,7 +159,19 @@ class PartyEncounter {
             return PartyPresence.Offline;
         if (member.peaceful)
             return PartyPresence.Peaceful;
-        return this.tick - member.lastInputTick > partyTicks(this.rules.restAfterSeconds) ? PartyPresence.Resting : PartyPresence.Fighting;
+        return this.active(member) ? PartyPresence.Fighting : PartyPresence.Resting;
+    }
+
+    typing(slot: number): boolean {
+        return this.isMember(slot) && this.tick - this.members[slot].lastInputTick <= partyTicks(this.rules.activeInputSeconds);
+    }
+
+    portion(): number {
+        let counting = 0;
+        for (let i = 0; i < this.members.length; i++)
+            if (this.members[i].joined && this.counts(i))
+                counting++;
+        return this.barFull / Math.max(1, counting);
     }
 
     damageTakenMultiplier(): number {
@@ -188,7 +206,19 @@ class PartyEncounter {
         return true;
     }
 
-    applyDamage(slot: number, enemyId: number, share: number): number {
+    applyDamage(slot: number, enemyId: number, share: number, limit?: number): number {
+        const applicable = this.applicable(slot, enemyId, share);
+        const applied = limit === undefined ? applicable : Math.min(applicable, limit);
+        if (!(applied > 0))
+            return 0;
+        this.members[slot].enemyShare += applied;
+        this.barLeft -= applied;
+        if (this.barLeft <= 0)
+            this.kill();
+        return applied;
+    }
+
+    applicable(slot: number, enemyId: number, share: number): number {
         if (!this.isMember(slot) || !this.started || !(share > 0) || share === Infinity)
             return 0;
         if (enemyId !== this.enemyId) {
@@ -197,11 +227,7 @@ class PartyEncounter {
             share *= this.kindRatio(this.previousKind, this.enemyKind);
         }
         const applied = Math.min(this.barLeft, share * this.damageTakenMultiplier());
-        this.members[slot].enemyShare += applied;
-        this.barLeft -= applied;
-        if (this.barLeft <= 0)
-            this.kill();
-        return applied;
+        return this.typing(slot) ? applied : Math.min(applied, this.idleRoom(slot));
     }
 
     requestBossFight(): boolean {
@@ -250,6 +276,23 @@ class PartyEncounter {
         return to === PartyEnemyKind.Boss ? 1 / boss : boss;
     }
 
+    private idleRoom(slot: number): number {
+        const portion = this.portion();
+        let idleTaken = 0;
+        let typing = 0;
+        for (let i = 0; i < this.members.length; i++) {
+            if (!this.members[i].joined)
+                continue;
+            if (this.typing(i))
+                typing++;
+            else
+                idleTaken += this.members[i].enemyShare;
+        }
+        const own = this.rules.idlePortionShare * portion - this.members[slot].enemyShare;
+        const shared = this.barFull - this.rules.typingReserveShare * portion * typing - idleTaken;
+        return Math.max(0, Math.min(own, shared));
+    }
+
     private kill(): void {
         this.barLeft = 0;
         let total = 0;
@@ -258,7 +301,8 @@ class PartyEncounter {
         const shares: number[] = [];
         for (const member of this.members)
             shares.push(total > 0 ? member.enemyShare / total : 0);
-        this.events.push({ kind: PartyEventKind.EnemyKilled, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: shares });
+        const rewarded = this.reward();
+        this.events.push({ kind: PartyEventKind.EnemyKilled, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: shares, rewarded: rewarded });
         this.previousEnemyId = this.enemyId;
         this.previousKind = this.enemyKind;
         this.previousKilledTick = this.tick;
@@ -276,6 +320,30 @@ class PartyEncounter {
         this.spawnNext();
     }
 
+    private reward(): number {
+        const counted = this.rules.minShare * this.portion();
+        const lifetime = this.tick - this.spawnTick;
+        const bankMax = partyTicks(this.rules.restBankSeconds);
+        let rewarded = 0;
+        for (let i = 0; i < this.members.length; i++) {
+            const member = this.members[i];
+            if (!member.joined)
+                continue;
+            if (member.enemyShare > 0 && member.enemyShare >= counted)
+                member.lastContributionTick = this.tick;
+            if (!member.connected || member.peaceful)
+                continue;
+            if (this.typing(i)) {
+                rewarded |= 1 << i;
+                member.restBankTicks = Math.min(bankMax, member.restBankTicks + lifetime);
+            } else if (member.restBankTicks > 0) {
+                rewarded |= 1 << i;
+                member.restBankTicks = Math.max(0, member.restBankTicks - lifetime);
+            }
+        }
+        return rewarded;
+    }
+
     private spawnNext(): void {
         this.spawn(!this.farming && this.killsOnStage >= this.rules.enemiesPerStage ? PartyEnemyKind.Boss : PartyEnemyKind.Normal);
     }
@@ -283,6 +351,7 @@ class PartyEncounter {
     private spawn(kind: PartyEnemyKind): void {
         this.enemyId++;
         this.enemyKind = kind;
+        this.spawnTick = this.tick;
         this.fighters = 0;
         for (let i = 0; i < this.members.length; i++) {
             const member = this.members[i];
@@ -305,7 +374,12 @@ class PartyEncounter {
             return false;
         if (member.peaceful)
             return false;
-        return this.tick - member.lastInputTick <= partyTicks(this.rules.restAfterSeconds);
+        return this.active(member);
+    }
+
+    private active(member: PartyMember): boolean {
+        const rest = partyTicks(this.rules.restAfterSeconds);
+        return this.tick - member.lastInputTick <= rest || this.tick - member.lastContributionTick <= rest;
     }
 
     private dropLostFighters(): void {
@@ -337,6 +411,6 @@ class PartyEncounter {
     }
 
     private addEvent(kind: PartyEventKind): void {
-        this.events.push({ kind: kind, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: [0, 0, 0, 0] });
+        this.events.push({ kind: kind, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: [0, 0, 0, 0], rewarded: 0 });
     }
 }

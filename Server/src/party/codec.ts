@@ -206,6 +206,7 @@ function partyEncodeEnemyKilled(event: PartyEvent): ArrayBuffer {
     w.byte(event.enemyKind);
     for (let i = 0; i < PartyMaxSlots; i++)
         w.double(event.shares[i]);
+    w.byte(event.rewarded);
     return w.bytes();
 }
 
@@ -227,5 +228,7 @@ function partyEncodeRoster(encounter: PartyEncounter, version: number, playerNum
         w.byte(encounter.members[slot].joined ? encounter.presence(slot) : PartyPresence.Offline);
     for (let slot = 0; slot < PartyMaxSlots; slot++)
         w.byte(encounter.members[slot].joined ? encounter.members[slot].heroClass : 0);
+    for (let slot = 0; slot < PartyMaxSlots; slot++)
+        w.uint(encounter.members[slot].joined ? Math.floor(encounter.members[slot].restBankTicks / PartyTicksPerSecond) : 0);
     return w.bytes();
 }
