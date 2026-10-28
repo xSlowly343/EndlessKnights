@@ -6736,12 +6736,12 @@
       "weapon": "shovel",
       "ascendancy": "necromancer",
       "color": "blue",
-      "name": { "ru": "Беспокойная земля", "en": "Restless Earth" },
+      "name": {"ru": "Беспокойная земля", "en": "Restless Earth"},
       "tags": ["Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 40,
       "durationSeconds": 20,
-      "effect": { "type": "enemyDebuff", "damageTaken": 0.1 }
+      "effect": {"type": "enemyDebuff", "damageTaken": 0.1, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.5, "tags": ["Minion"]}]}
     },
     {
       "id": "too_much_colossus",
@@ -6749,12 +6749,12 @@
       "weapon": "shovel",
       "ascendancy": "blood_demon",
       "color": "blue",
-      "name": { "ru": "Слишком много Колосса", "en": "Too Much Colossus" },
+      "name": {"ru": "Слишком много Колосса", "en": "Too Much Colossus"},
       "tags": ["Aura", "Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 40,
       "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "more", "value": 1.0, "tags": ["Keyboard"] }] }
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 1.0, "tags": ["Keyboard"]}], "summonEveryKeys": 10}
     },
     {
       "id": "night_round",
@@ -6762,12 +6762,12 @@
       "weapon": "shovel",
       "ascendancy": "werewolf",
       "color": "blue",
-      "name": { "ru": "Ночной обход", "en": "Night Round" },
+      "name": {"ru": "Ночной обход", "en": "Night Round"},
       "tags": ["Minion", "Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 40,
       "durationSeconds": 15,
-      "locked": true
+      "effect": {"type": "summon", "minion": "beast", "seconds": 15, "hitsPerSecond": 1, "multiplier": 2, "whileActive": [{"stat": "beastOnKill", "kind": "flat", "value": 1, "tags": ["Minion"]}, {"stat": "beastCount", "kind": "flat", "value": 5, "tags": ["Minion"]}]}
     },
     {
       "id": "shovel_blow",
@@ -6776,12 +6776,12 @@
       "tier": "common",
       "role": "fast",
       "color": "blue",
-      "name": { "ru": "Удар лопатой", "en": "Shovel Blow" },
+      "name": {"ru": "Удар лопатой", "en": "Shovel Blow"},
       "tags": ["Skill"],
-      "cost": { "resource": 10 },
+      "cost": {"resource": 10},
       "cooldownSeconds": 3,
-      "effect": { "type": "strike", "multiplier": 3 },
-      "native": { "when": {"minionsAtLeast": 3, "multiplier": 1.3} }
+      "effect": {"type": "strike", "multiplier": 3, "killRefundShare": 0.5},
+      "native": {"perMinion": 0.1}
     },
     {
       "id": "handful_of_earth",
@@ -6929,12 +6929,12 @@
       "tier": "rare",
       "role": "fast",
       "color": "blue",
-      "name": { "ru": "Костяная осыпь", "en": "Bone Scree" },
+      "name": {"ru": "Костяная осыпь", "en": "Bone Scree"},
       "tags": ["Skill"],
-      "cost": { "resource": 20 },
+      "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": { "type": "strike", "multiplier": 6, "queueTargets": 1 },
-      "native": { "resourceOnCast": 5 }
+      "effect": {"type": "strike", "multiplier": 6, "queueTargets": 1, "consumeMinion": true},
+      "native": {"respawnMinion": true}
     },
     {
       "id": "lantern_light",
@@ -6955,12 +6955,12 @@
       "weapon": "shovel",
       "tier": "rare",
       "color": "blue",
-      "name": { "ru": "Работы хватит", "en": "Plenty of Work" },
+      "name": {"ru": "Работы хватит", "en": "Plenty of Work"},
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Minion"]}] },
-      "native": { "resourceOnKill": 3 }
+      "effect": {"type": "passive", "modifiers": [{"stat": "skeletonOnKill", "kind": "flat", "value": 0.25, "tags": ["Minion"]}]},
+      "native": {"modifiers": [{"stat": "skeletonOnKill", "kind": "flat", "value": 0.15, "tags": ["Minion"]}]}
     },
     {
       "id": "bone_throw",
@@ -7053,12 +7053,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "blue",
-      "name": { "ru": "Вся смена", "en": "The Whole Shift" },
+      "name": {"ru": "Вся смена", "en": "The Whole Shift"},
       "tags": ["Minion", "Skill"],
-      "cost": { "resource": 80 },
+      "cost": {"resource": 80},
       "cooldownSeconds": 40,
-      "effect": { "type": "summon", "minion": "skeleton", "seconds": 15, "hitsPerSecond": 10, "multiplier": 1 },
-      "native": { "resourceOnKill": 5 }
+      "effect": {"type": "summon", "minion": "skeleton", "seconds": 15, "hitsPerSecond": 10, "multiplier": 1},
+      "native": {"modifiers": [{"stat": "skeletonOnKill", "kind": "flat", "value": 1, "tags": ["Minion"]}]},
+      "durationSeconds": 15
     },
     {
       "id": "museum_exhibit",

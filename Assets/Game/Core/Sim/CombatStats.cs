@@ -128,6 +128,7 @@ namespace Game.Core.Sim
         public static readonly StatId OverloadAtMax = new StatId("overloadAtMax");
         public static readonly StatId SkeletonOnKill = new StatId("skeletonOnKill");
         public static readonly StatId BeastOnKill = new StatId("beastOnKill");
+        public static readonly StatId BeastCount = new StatId("beastCount");
         public static readonly StatId MinionQueueShare = new StatId("minionQueueShare");
         public static readonly StatId RedGemEffect = new StatId("redGemEffect");
         public static readonly StatId GreenGemEffect = new StatId("greenGemEffect");

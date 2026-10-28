@@ -29,7 +29,8 @@ namespace Game.Core.Sim
         {
             var limit = kind == MinionKind.Cannon
                 ? _combat.Cannons.Max + _hero.Value(CombatStats.CannonCount, 0)
-                : Rules(kind).Max + _hero.Value(CombatStats.MinionCount, 0, StatTags.Minion);
+                : Rules(kind).Max + _hero.Value(CombatStats.MinionCount, 0, StatTags.Minion)
+                    + (kind == MinionKind.Beast ? _hero.Value(CombatStats.BeastCount, 0, StatTags.Minion) : 0);
             return System.Math.Min(Capacity, (int)System.Math.Max(0, System.Math.Round(limit)));
         }
 
@@ -61,6 +62,18 @@ namespace Game.Core.Sim
                 Tags = tags | StatTags.Minion,
                 MouseBonus = mouseBonus
             };
+        }
+
+        public bool Consume(MinionKind kind, bool respawn)
+        {
+            var index = OldestIndex(kind);
+            if (index < 0)
+                return false;
+            if (respawn)
+                _state.Minions[index].TicksLeft = (int)System.Math.Round(Fresh(kind).Seconds * System.Math.Max(0, _hero.Value(CombatStats.MinionSeconds, 1, StatTags.Minion)) * GameLoop.TicksPerSecond);
+            else
+                _state.Minions[index] = default;
+            return true;
         }
 
         public void Clear()
@@ -106,6 +119,8 @@ namespace Game.Core.Sim
             CannonShots++;
             _resource.Gain(_combat.Cannons.ResourcePerShot * _hero.Value(CombatStats.ResourceGain, 1));
         }
+
+        private SummonEffect Fresh(MinionKind kind) => kind == MinionKind.Beast ? _combat.Paths.BeastOnKill : _combat.Paths.SkeletonOnKill;
 
         private MinionRules Rules(MinionKind kind) => kind == MinionKind.Beast ? _combat.Beasts : _combat.Skeletons;
 
