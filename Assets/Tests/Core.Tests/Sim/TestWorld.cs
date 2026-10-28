@@ -25,6 +25,8 @@ namespace Game.Core.Tests.Sim
             var json = TestData.ReadGameDataFile(name);
             if (name == PassiveTree.FileName)
                 return WithoutStartModifiers(json);
+            if (name == UnlockRules.FileName)
+                return "{ \"version\": 1, \"features\": {}, \"artifactGroups\": [] }";
             if (name == WeaponCatalog.FileName)
                 return Regex.Replace(json, "\"innate\": \\[.*\\]", "\"innate\": []");
             return json;

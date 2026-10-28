@@ -8,6 +8,7 @@ namespace Game.Core.Sim
         WrongSlot,
         NotEnoughIngots,
         BagFull,
-        AboveCeiling
+        AboveCeiling,
+        Locked
     }
 }

@@ -6,6 +6,7 @@ namespace Game.Core.Sim
         UnknownNode,
         AlreadyTaken,
         NotConnected,
-        NotEnoughEcho
+        NotEnoughEcho,
+        Locked
     }
 }

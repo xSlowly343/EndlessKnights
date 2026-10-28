@@ -43,14 +43,21 @@ namespace Game.Core.Sim
 
         public BigNumber UnlockCost => UnlockCurve.At(OwnedLevels.Count + 1) * UnlockDiscount;
 
-        public bool AllUnlocked => Locked().Count == 0;
+        public bool AllUnlocked => OwnedLevels.Count >= _catalog.All.Count && Locked().Count == 0;
+
+        public bool WaitsForGroup => !AllUnlocked && Locked().Count == 0;
 
         public int OpenGroup
         {
             get
             {
-                var locked = Locked();
-                return locked.Count == 0 ? _catalog.Groups : locked[0].Group;
+                var group = int.MaxValue;
+                foreach (var artifact in _catalog.All)
+                {
+                    if (!OwnedLevels.ContainsKey(artifact.Id))
+                        group = System.Math.Min(group, artifact.Group);
+                }
+                return group == int.MaxValue ? _catalog.Groups : group;
             }
         }
 
@@ -75,8 +82,14 @@ namespace Game.Core.Sim
             return chances;
         }
 
+        public Unlocks? Unlocks { get; set; }
+
+        public bool Open => InRift || Unlocks?.IsOpen(Feature.Artifacts) != false;
+
         public ArtifactDef? TryUnlock()
         {
+            if (!Open)
+                return null;
             var locked = Locked();
             var cost = UnlockCost;
             if (locked.Count == 0 || Currency < cost)
@@ -90,7 +103,7 @@ namespace Game.Core.Sim
 
         public bool TryLevelUp(string id)
         {
-            if (!OwnedLevels.TryGetValue(id, out var level) || IsMaxed(id))
+            if (!Open || !OwnedLevels.TryGetValue(id, out var level) || IsMaxed(id))
                 return false;
             var cost = LevelCurve.At(level);
             if (Currency < cost)
@@ -150,6 +163,8 @@ namespace Game.Core.Sim
                 if (!OwnedLevels.ContainsKey(artifact.Id))
                     group = System.Math.Min(group, artifact.Group);
             }
+            if (Unlocks != null && group != int.MaxValue && !Unlocks.ArtifactGroupOpen(group))
+                return locked;
             foreach (var artifact in _catalog.All)
             {
                 if (artifact.Group == group && !OwnedLevels.ContainsKey(artifact.Id))

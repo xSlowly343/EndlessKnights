@@ -43,8 +43,12 @@ namespace Game.Core.Sim
             System.Array.Clear(_progress, 0, Capacity);
         }
 
+        public Unlocks? Unlocks { get; set; }
+
         public SpiritResult Raise(string id)
         {
+            if (Unlocks?.IsOpen(Feature.Spirits) == false)
+                return SpiritResult.Locked;
             if (!_catalog.TryGet(id, out var spirit))
                 return SpiritResult.UnknownSpirit;
             var level = Level(id);

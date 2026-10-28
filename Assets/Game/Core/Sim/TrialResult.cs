@@ -7,6 +7,7 @@ namespace Game.Core.Sim
         AlreadyRunning,
         NeedsPrestige,
         RunNotFresh,
-        InsideRift
+        InsideRift,
+        Locked
     }
 }

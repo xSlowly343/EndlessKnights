@@ -6,6 +6,7 @@ namespace Game.Core.Sim
         Raised,
         UnknownSpirit,
         MaxLevel,
-        NotEnoughEcho
+        NotEnoughEcho,
+        Locked
     }
 }

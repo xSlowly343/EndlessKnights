@@ -30,8 +30,12 @@ namespace Game.Core.Sim
             Rebuild();
         }
 
+        public Unlocks? Unlocks { get; set; }
+
         public AtlasResult CanAllocate(string id)
         {
+            if (Unlocks?.IsOpen(Feature.Atlas) == false)
+                return AtlasResult.Locked;
             if (!_catalog.TryGet(id, out var node))
                 return AtlasResult.UnknownNode;
             if (Taken(id))
