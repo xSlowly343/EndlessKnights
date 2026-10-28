@@ -686,7 +686,8 @@
       "tags": ["Skill"],
       "cost": { "resource": 5 },
       "cooldownSeconds": 3,
-      "effect": { "type": "strike", "multiplier": 3, "critChance": 0.3, "arrow": true }
+      "effect": { "type": "strike", "multiplier": 3, "critChance": 0.3, "arrow": true },
+      "native": { "resourceOnCrit": 5 }
     },
     {
       "id": "finger_spark",
@@ -1758,7 +1759,7 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 5,
       "effect": { "type": "addStacks", "dot": "poison", "stacks": 5 },
-      "native": { "resourceOnCast": 5 }
+      "native": { "resourcePerPoisonTick": 0.5 }
     },
     {
       "id": "reed_arrow",
@@ -2036,7 +2037,7 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
       "effect": { "type": "flurry", "hits": 8, "seconds": 0.8, "multiplier": 2, "queueTargets": 1 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 1.5} }
+      "native": { "extraHitPerMousePx": 1000, "maxHits": 16 }
     },
     {
       "id": "seed_arrow",
@@ -2051,7 +2052,7 @@
       "cooldownSeconds": 35,
       "durationSeconds": 5,
       "effect": { "type": "storeHits", "releaseShare": 0.5 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 1.5} }
+      "native": { "releaseBonus": {"px": 500, "bonus": 0.1} }
     },
     {
       "id": "arrow_to_the_heart",
