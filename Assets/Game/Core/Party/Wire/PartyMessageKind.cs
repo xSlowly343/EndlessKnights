@@ -12,6 +12,7 @@ namespace Game.Core.Party.Wire
         EncounterMoment,
         Roster,
         PartyOffer,
-        PartyReaction
+        PartyReaction,
+        WorldRequest
     }
 }

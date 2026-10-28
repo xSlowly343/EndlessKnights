@@ -23,6 +23,7 @@ class PartyHost {
     acceptedShares = 0;
     cutShares = 0;
     repeatedShares = 0;
+    clockUnixMs = 0;
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
     private readonly allowance = [0, 0, 0, 0];
@@ -123,6 +124,12 @@ class PartyHost {
                     this.broadcast(relayed, slot);
                 break;
             }
+            case PartyMessageKind.WorldRequest: {
+                const request = partyDecodeWorldRequest(data);
+                if (request)
+                    this.requestWorld(request);
+                break;
+            }
             case PartyMessageKind.PartyReaction: {
                 const relayed = partyRelayReaction(data, slot, this.config.reactionCount);
                 if (relayed && this.encounter.tick - this.lastReactionTick[slot] >= Math.max(1, partyTicks(this.config.reactionCooldownSeconds))) {
@@ -134,8 +141,11 @@ class PartyHost {
         }
     }
 
-    tick(): void {
+    tick(nowUnixMs?: number): void {
+        if (nowUnixMs !== undefined)
+            this.clockUnixMs = nowUnixMs;
         this.encounter.advance();
+        this.returnWhenTheRiftCloses();
         this.refill();
         if (this.encounter.tick % PartyTicksPerSecond === 0)
             for (let i = 0; i < PartyMaxSlots; i++)
@@ -143,6 +153,25 @@ class PartyHost {
         this.watchSilence();
         this.watchPresence();
         this.flush();
+    }
+
+    private requestWorld(request: WorldRequestMessage): void {
+        if (request.cancel) {
+            this.encounter.cancelWorld();
+            return;
+        }
+        if (request.world === PartyWorld.Home) {
+            this.encounter.proposeWorld(PartyWorld.Home, 0);
+            return;
+        }
+        const open = request.world === PartyWorld.Rift ? riftWindowAt(RiftServerRules, this.clockUnixMs) : null;
+        if (open !== null && open.id === request.windowId)
+            this.encounter.proposeWorld(PartyWorld.Rift, request.windowId);
+    }
+
+    private returnWhenTheRiftCloses(): void {
+        if (this.encounter.world === PartyWorld.Rift && this.clockUnixMs >= this.encounter.windowId * 1000 + RiftServerRules.durationMs)
+            this.encounter.switchWorld(PartyWorld.Home, 0);
     }
 
     private cast(slot: number, effect: CastEffectMessage): void {
@@ -248,7 +277,8 @@ class PartyHost {
             if (event.kind === PartyEventKind.EnemyKilled) {
                 this.kills++;
                 this.broadcast(partyEncodeEnemyKilled(event), PartyNoSlot);
-            } else if (event.kind === PartyEventKind.EnemySpawned) {
+            } else if (event.kind === PartyEventKind.EnemySpawned || event.kind === PartyEventKind.WorldPending
+                || event.kind === PartyEventKind.WorldCancelled || event.kind === PartyEventKind.WorldChanged) {
                 this.ticksToState = 0;
             } else {
                 this.broadcast(partyEncodeMoment(event, this.encounter.bossTicksLeft), PartyNoSlot);

@@ -775,6 +775,10 @@
     "party.boss.downUnpaid": { "ru": "Босс повержен · вам без награды: не было ввода", "en": "Boss down · no reward for you: no input" },
     "party.boss.share": { "ru": "{0} {1}%", "en": "{0} {1}%" },
     "party.boss.loop": { "ru": "петля {0}%", "en": "loop {0}%" },
-    "party.boss.saved": { "ru": "таймер +{0} с", "en": "timer +{0}s" }
+    "party.boss.saved": { "ru": "таймер +{0} с", "en": "timer +{0}s" },
+    "party.rift.enter": { "ru": "В Разлом отрядом", "en": "Into the Rift together" },
+    "party.rift.home": { "ru": "Вернуться домой", "en": "Back home" },
+    "party.rift.leaving": { "ru": "В Разлом через {0} с · отменить", "en": "Rift in {0}s · cancel" },
+    "party.rift.returning": { "ru": "Домой через {0} с · отменить", "en": "Home in {0}s · cancel" }
   }
 }

@@ -89,7 +89,7 @@ test("the state tells every member how much each slot hit since the last state",
   }
   assert.ok(state, "a state goes out");
   const data = new DataView(state.data);
-  const recent = (slot) => data.getFloat32(state.data.byteLength - 20 + slot * 4, true);
+  const recent = (slot) => data.getFloat32(state.data.byteLength - 31 + slot * 4, true);
   assert.ok(Math.abs(recent(1) - 0.2) < 1e-6, "slot 1 hit 0.2 of the bar");
   assert.strictEqual(recent(0), 0);
   host.outbox.length = 0;
@@ -98,7 +98,7 @@ test("the state tells every member how much each slot hit since the last state",
     host.tick();
     next = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5) || null;
   }
-  assert.strictEqual(new DataView(next.data).getFloat32(next.data.byteLength - 12, true), 0, "the sum starts again after each state");
+  assert.strictEqual(new DataView(next.data).getFloat32(next.data.byteLength - 27, true), 0, "the sum starts again after each state");
 });
 
 test("reactions skip the sender and wait for the cooldown", () => {
@@ -172,3 +172,42 @@ test("the reward mask goes out with every kill", () => {
   assert.strictEqual(killed[1 + 8 + 4 + 1 + 4 * 8], 1);
 });
 
+
+function worldRequest(world, windowId, cancel) {
+  const view = new DataView(new ArrayBuffer(11));
+  view.setUint8(0, 11);
+  view.setUint8(1, world);
+  view.setUint8(2, cancel ? 1 : 0);
+  view.setUint32(3, windowId % 4294967296, true);
+  view.setInt32(7, Math.floor(windowId / 4294967296), true);
+  return view.buffer;
+}
+
+test("the rift opens for the party only inside the server window and closes at its end", () => {
+  const rules = party.RiftServerRules;
+  const window = party.riftNext(rules, Date.UTC(2026, 9, 26));
+  const inside = window.startUnixMs + 3600 * 1000;
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.join("user-b", "12");
+  host.tick(window.startUnixMs - 1000);
+  host.receive("user-a", worldRequest(1, window.id, false));
+  host.tick(window.startUnixMs - 900);
+  assert.strictEqual(host.encounter.switching, false, "a closed window is refused");
+  host.receive("user-a", worldRequest(1, window.id + 1, false));
+  host.tick(inside);
+  assert.strictEqual(host.encounter.switching, false, "a foreign window is refused");
+  host.receive("user-a", worldRequest(1, window.id, false));
+  host.tick(inside);
+  assert.strictEqual(host.encounter.switching, true);
+  host.receive("user-b", worldRequest(0, 0, true));
+  host.tick(inside);
+  assert.strictEqual(host.encounter.switching, false, "any member calls the move off");
+  host.receive("user-b", worldRequest(1, window.id, false));
+  for (let i = 0; i < party.PartyServerRules.worldSwitchSeconds * 10 + 1; i++)
+    host.tick(inside);
+  assert.strictEqual(host.encounter.world, 1);
+  assert.strictEqual(host.encounter.windowId, window.id);
+  host.tick(window.endUnixMs);
+  assert.strictEqual(host.encounter.world, 0, "the window end brings the party home");
+});

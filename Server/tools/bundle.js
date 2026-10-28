@@ -28,6 +28,7 @@ const rules = {
   lateDamageSeconds: party.lateDamageSeconds,
   maxEnemyDamageTaken: party.maxEnemyDamageTaken,
   minBossTimerRate: party.timer.minBossRate,
+  worldSwitchSeconds: party.worldSwitchSeconds,
   repeatMaxSeconds: party.timer.repeatMaxSeconds,
   repeatCooldownSeconds: party.timer.repeatCooldownSeconds,
   minShare: party.contribution.minShare,

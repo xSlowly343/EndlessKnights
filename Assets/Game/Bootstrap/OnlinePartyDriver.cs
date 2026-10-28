@@ -64,6 +64,7 @@ namespace Game.Bootstrap
                 reactions.Add(PartyReactions.Label(id));
             panels.Party.UseReactions(reactions);
             panels.Party.ReactionRequested += driver.React;
+            panels.Party.RiftRequested += driver.MoveWorld;
             driver._filters = new PartySearchFilters(data.Party.Search, settings.Language);
             panels.PartySearch.UseFilters(driver._filters);
             panels.PartySearch.QuickRequested += () => driver.OnAction(PartyAction.QuickMatch);
@@ -172,6 +173,12 @@ namespace Game.Bootstrap
             var kill = party.LastBossKill;
             var shares = PartyStripMarks.FillBossShares(kill, party.Roster, party.OwnSlot, _bossShares);
             _battle.PartyMarks.ShowBossShares(PartyStripMarks.BossTitle(kill, party.OwnSlot), _bossShares, shares);
+        }
+
+        private void MoveWorld(PartyRiftAction action)
+        {
+            PartyRiftButton.Perform(action, _party, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+            _panels.Party.Refresh(_loop);
         }
 
         private void WatchReactions()

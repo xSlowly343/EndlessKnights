@@ -64,6 +64,11 @@ class PartyEncounter {
     spawnTick = 0;
     loopShare = 0;
     savedBossTicks = 0;
+    world = PartyWorld.Home;
+    windowId = 0;
+    pendingWorld = PartyNoWorld;
+    pendingWindowId = 0;
+    switchTicksLeft = 0;
     private readonly recent: number[] = [];
     private bossTimerCarry = 0;
     private previousEnemyId = 0;
@@ -82,6 +87,7 @@ class PartyEncounter {
     get started(): boolean { return this.enemyId !== 0; }
     get fightingBoss(): boolean { return this.enemyKind === PartyEnemyKind.Boss; }
     get enemySeed(): string { return partySeedFor(this.seed, this.enemyId); }
+    get switching(): boolean { return this.pendingWorld !== PartyNoWorld; }
 
     useRules(rules: PartyEncounterRules): void {
         this.rules = rules;
@@ -268,11 +274,50 @@ class PartyEncounter {
         return true;
     }
 
+    proposeWorld(world: PartyWorld, windowId: number): boolean {
+        if (!this.started || this.switching || (world === this.world && windowId === this.windowId) || (world === PartyWorld.Home) !== (windowId === 0))
+            return false;
+        this.pendingWorld = world;
+        this.pendingWindowId = windowId;
+        this.switchTicksLeft = Math.max(1, partyTicks(this.rules.worldSwitchSeconds));
+        this.addEvent(PartyEventKind.WorldPending);
+        return true;
+    }
+
+    cancelWorld(): boolean {
+        if (!this.switching)
+            return false;
+        this.clearPending();
+        this.addEvent(PartyEventKind.WorldCancelled);
+        return true;
+    }
+
+    switchWorld(world: PartyWorld, windowId: number): void {
+        this.clearPending();
+        this.world = world;
+        this.windowId = windowId;
+        this.killsOnStage = 0;
+        this.farming = false;
+        this.farmKills = 0;
+        this.previousEnemyId = 0;
+        for (let i = 0; i < this.effects.length; i++)
+            this.effects[i] = { id: 0, damageTaken: 0, timerSlow: 0, ticksLeft: 0, owner: 0 };
+        for (let i = 0; i < this.recent.length; i++)
+            this.recent[i] = 0;
+        this.addEvent(PartyEventKind.WorldChanged);
+        if (this.started)
+            this.spawn(PartyEnemyKind.Normal);
+    }
+
     advance(): void {
         this.tick++;
         this.recent[this.tick % PartyRecentTicks] = 0;
         this.tickEffects();
         this.dropLostFighters();
+        if (this.switching && --this.switchTicksLeft <= 0) {
+            this.switchWorld(this.pendingWorld, this.pendingWindowId);
+            return;
+        }
         if (!this.fightingBoss || !this.started)
             return;
         const rate = this.bossTimerRate();
@@ -296,6 +341,12 @@ class PartyEncounter {
             if (this.members[slot].weight > 0)
                 mask |= 1 << slot;
         return mask;
+    }
+
+    private clearPending(): void {
+        this.pendingWorld = PartyNoWorld;
+        this.pendingWindowId = 0;
+        this.switchTicksLeft = 0;
     }
 
     private take(slot: number, applied: number): number {

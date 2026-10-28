@@ -1,3 +1,4 @@
+using Game.Core.Content.Rift;
 using Game.Core.Party.Transport;
 using Game.Core.Party.Wire;
 using Game.Core.Sim;
@@ -24,6 +25,7 @@ namespace Game.Core.Party
         private readonly long[] _lastReactionTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
+        private readonly RiftSchedule? _rift;
         private PartyRules _rules;
         private uint _stateSequence;
         private uint _rosterVersion;
@@ -31,12 +33,15 @@ namespace Game.Core.Party
         private int _ticksToState;
         private int _ticksToRoster;
 
-        public PartyHost(PartyEncounter encounter, IPartyTransport transport, PartyRules rules)
+        public PartyHost(PartyEncounter encounter, IPartyTransport transport, PartyRules rules, RiftSchedule? rift = null)
         {
             _encounter = encounter;
             _transport = transport;
             _rules = rules;
+            _rift = rift;
         }
+
+        public long ClockUnixMs { get; set; }
 
         public PartyEncounter Encounter => _encounter;
         public long Kills { get; private set; }
@@ -53,6 +58,7 @@ namespace Game.Core.Party
             while (_transport.TryReceive(_in, out var length, out var from))
                 Handle(from, length);
             _encounter.Advance();
+            ReturnWhenTheRiftCloses();
             Refill();
             if (_encounter.Tick % GameLoop.TicksPerSecond == 0)
                 System.Array.Clear(_messagesThisSecond, 0, _messagesThisSecond.Length);
@@ -96,6 +102,9 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     React(slot, reaction);
                     break;
+                case PartyMessageKind.WorldRequest when PartyCodec.TryDecode(_in, length, out WorldRequestMessage request):
+                    RequestWorld(request);
+                    break;
             }
         }
 
@@ -134,6 +143,29 @@ namespace Game.Core.Party
             AcceptedShares += applied;
             RepeatedShares += applied;
             _recentShares[slot] += applied;
+        }
+
+        private void RequestWorld(in WorldRequestMessage request)
+        {
+            if (request.Cancel)
+            {
+                _encounter.CancelWorld();
+                return;
+            }
+            if (request.World == PartyWorld.Home)
+            {
+                _encounter.ProposeWorld(PartyWorld.Home, 0);
+                return;
+            }
+            var open = request.World == PartyWorld.Rift ? _rift?.WindowAt(ClockUnixMs) : null;
+            if (open != null && open.Value.Id == request.WindowId)
+                _encounter.ProposeWorld(PartyWorld.Rift, request.WindowId);
+        }
+
+        private void ReturnWhenTheRiftCloses()
+        {
+            if (_encounter.World == PartyWorld.Rift && (_rift == null || ClockUnixMs >= _encounter.WindowId * 1000 + _rift.DurationMs))
+                _encounter.SwitchWorld(PartyWorld.Home, 0);
         }
 
         private void React(int slot, PartyReactionMessage reaction)
@@ -245,6 +277,9 @@ namespace Game.Core.Party
                         Broadcast(PartyCodec.Encode(_out, EnemyKilledMessage.Of(partyEvent)));
                         break;
                     case PartyEventKind.EnemySpawned:
+                    case PartyEventKind.WorldPending:
+                    case PartyEventKind.WorldCancelled:
+                    case PartyEventKind.WorldChanged:
                         _ticksToState = 0;
                         break;
                     default:

@@ -23,6 +23,12 @@ namespace Game.Core.Party.Wire
         public float Recent2;
         public float Recent3;
         public float BossTimerRate;
+        public PartyWorld World;
+        public byte PendingWorld;
+        public byte SwitchTicksLeft;
+        public long WindowId;
+
+        public bool Switching => PendingWorld != PartyEncounter.NoWorld;
 
         public float Recent(int slot) => slot switch
         {
@@ -83,6 +89,10 @@ namespace Game.Core.Party.Wire
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 writer.Float(Recent(slot));
             writer.Float(BossTimerRate);
+            writer.Byte((byte)World);
+            writer.Byte(PendingWorld);
+            writer.Byte(SwitchTicksLeft);
+            writer.Long(WindowId);
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -93,6 +103,10 @@ namespace Game.Core.Party.Wire
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 message.SetRecent(slot, reader.Float());
             message.BossTimerRate = reader.Float();
+            message.World = (PartyWorld)reader.Byte();
+            message.PendingWorld = reader.Byte();
+            message.SwitchTicksLeft = reader.Byte();
+            message.WindowId = reader.Long();
             return message;
         }
 
@@ -134,7 +148,11 @@ namespace Game.Core.Party.Wire
                 WeightMask = weights,
                 DamageTaken = encounter.DamageTakenMultiplier,
                 EnemySeed = encounter.EnemySeed,
-                BossTimerRate = encounter.FightingBoss ? (float)encounter.BossTimerRate : 1f
+                BossTimerRate = encounter.FightingBoss ? (float)encounter.BossTimerRate : 1f,
+                World = encounter.World,
+                PendingWorld = encounter.PendingWorld,
+                SwitchTicksLeft = (byte)System.Math.Min(255, encounter.SwitchTicksLeft),
+                WindowId = encounter.WindowId
             };
             var shown = 0;
             for (var i = 0; i < PartyEncounter.MaxEffects && shown < ShownEffect.MaxShown; i++)

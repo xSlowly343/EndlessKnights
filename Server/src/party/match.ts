@@ -81,7 +81,7 @@ function partyMatchLoop(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     const host = state.host;
     for (const message of messages)
         host.receive(message.sender.userId, message.data);
-    host.tick();
+    host.tick(Date.now());
     partySend(dispatcher, state, host);
     partyReportFlags(nk, logger, ctx.matchId || "", host);
     state.emptyTicks = Object.keys(state.presences).length === 0 ? state.emptyTicks + 1 : 0;

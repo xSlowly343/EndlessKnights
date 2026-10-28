@@ -17,7 +17,7 @@ namespace Game.Sim
     public static class BotCommand
     {
         public const string Usage =
-            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair) [--seconds 60] [--kps 6] [--class viking] [--stay] [--report cheating]";
+            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--report cheating]";
 
         private const ulong BotSteamBase = 76561190000000000UL;
 
@@ -27,7 +27,7 @@ namespace Game.Sim
             for (var i = 0; i < args.Count; i++)
             {
                 var name = args[i];
-                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--stay" || name == "--find" || name == "--quick";
+                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--rift" || name == "--stay" || name == "--find" || name == "--quick";
                 if (flag)
                     options[name] = "yes";
                 else if (i + 1 < args.Count)
@@ -44,7 +44,7 @@ namespace Game.Sim
             try
             {
                 if (options.ContainsKey("--pair"))
-                    return RunPair(data, client, profile, seconds).GetAwaiter().GetResult();
+                    return RunPair(data, client, profile, seconds, options.ContainsKey("--rift")).GetAwaiter().GetResult();
                 var stay = options.ContainsKey("--stay");
                 if (options.TryGetValue("--code", out var code))
                     return RunOne(data, client, profile, heroClass, seconds, bot => bot.JoinAsync(code), stay, options.TryGetValue("--report", out var codeReason) ? codeReason : null).GetAwaiter().GetResult();
@@ -78,7 +78,7 @@ namespace Game.Sim
             return bot.Client.Status == PartyLink.Linked ? 0 : 1;
         }
 
-        private static async Task<int> RunPair(GameData data, NakamaClient client, BotProfile profile, double seconds)
+        private static async Task<int> RunPair(GameData data, NakamaClient client, BotProfile profile, double seconds, bool rift)
         {
             var leader = await Bot.LoginAsync(data, client, profile, HeroClass.Viking, 1).ConfigureAwait(false);
             var friend = await Bot.LoginAsync(data, client, profile, HeroClass.Voodoo, 2).ConfigureAwait(false);
@@ -87,6 +87,7 @@ namespace Game.Sim
             Console.WriteLine("party code " + PartySearchRules.FormatCode(leader.Party.Code) + ", members " + friend.Party!.Members.Count);
             await leader.ConnectAsync().ConfigureAwait(false);
             await friend.ConnectAsync().ConfigureAwait(false);
+            leader.WantsRift = rift;
             Play(new[] { leader, friend }, seconds);
             leader.Report(Console.Out);
             friend.Report(Console.Out);
@@ -94,9 +95,12 @@ namespace Game.Sim
             var sameEnemy = leader.Client.EnemyId == friend.Client.EnemyId;
             var reactionsArrive = leader.ReactionsHeard > 0 && friend.ReactionsHeard > 0;
             Console.WriteLine("both linked " + linked + ", same enemy " + sameEnemy + ", reactions arrive " + reactionsArrive);
+            var bothInRift = leader.Client.World == PartyWorld.Rift && friend.Client.World == PartyWorld.Rift;
+            if (rift)
+                Console.WriteLine("both in the rift " + bothInRift);
             await friend.FinishAsync(false).ConfigureAwait(false);
             await leader.FinishAsync(false).ConfigureAwait(false);
-            return linked && reactionsArrive && leader.Client.PartyRewards > 0 && friend.Client.PartyRewards > 0 ? 0 : 1;
+            return linked && reactionsArrive && leader.Client.PartyRewards > 0 && friend.Client.PartyRewards > 0 && (!rift || bothInRift) ? 0 : 1;
         }
 
         private static void Play(IReadOnlyList<Bot> bots, double seconds)
@@ -128,6 +132,7 @@ namespace Game.Sim
         {
             private const int KeepAliveTicks = 50;
             private const int ReactionTicks = 100;
+            private const int RiftTicks = 50;
 
             private readonly OnlineSession _online;
             private readonly GameLoop _loop;
@@ -151,6 +156,7 @@ namespace Game.Sim
             public PartyClient Client { get; }
             public long Kills { get; private set; }
             public int ReactionsSent { get; private set; }
+            public bool WantsRift { get; set; }
             public int ReactionsHeard { get; private set; }
             public BigNumber AllyDamage { get; private set; }
 
@@ -221,6 +227,8 @@ namespace Game.Sim
                 _loop.Tick();
                 if (_ticks % ReactionTicks == ReactionTicks / 2 && Client.SendReaction(ReactionsSent % Client.Reactions.Ids.Count))
                     ReactionsSent++;
+                if (WantsRift && _ticks % RiftTicks == 0 && Client.World == PartyWorld.Home && !Client.WorldSwitching)
+                    Client.ProposeWorld(PartyWorld.Rift, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
                 for (var slot = 0; slot < _heard.Length; slot++)
                 {
                     AllyDamage += Client.TakeAllyDamage(slot);
@@ -239,10 +247,10 @@ namespace Game.Sim
             {
                 var own = Client.OwnSlot;
                 output.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}, reconnects {9}, reactions sent {10}, heard {11}, ally damage {12}, boss kills {13}, last boss loop {14:P0}, timer saved {15:0.0}s",
+                    "{0} {1}: link {2}, slot {3}, paid kills {4}, unpaid {5}, share {6:P0}, stage {7}, enemy {8}, reconnects {9}, reactions sent {10}, heard {11}, ally damage {12}, boss kills {13}, last boss loop {14:P0}, timer saved {15:0.0}s, world {16}",
                     HeroClassNames.Of(_loop.State.Class), _online.PlayerNumber, Client.Status, own, Client.PartyRewards, Client.UnpaidKills,
                     own >= 0 ? Client.Contribution(own) : 0, _loop.State.Stage, Client.EnemyId, _online.Reconnects, ReactionsSent, ReactionsHeard,
-                    NumberFormatter.Format(AllyDamage, NumberFormatSettings.Default), Client.BossKillsSeen, Client.LastBossKill.Loop, Client.LastBossKill.SavedSeconds));
+                    NumberFormatter.Format(AllyDamage, NumberFormatSettings.Default), Client.BossKillsSeen, Client.LastBossKill.Loop, Client.LastBossKill.SavedSeconds, Client.World));
             }
 
             public async Task FinishAsync(bool stay)

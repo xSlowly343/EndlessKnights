@@ -45,6 +45,14 @@ namespace Game.Core.Tests.Party
         public double Repeat(int slot, double seconds) =>
             Record($"\"op\": \"repeat\", \"slot\": {slot}, \"seconds\": {Number(seconds)}", () => _encounter.RepeatRecent(slot, seconds));
 
+        public bool ProposeWorld(PartyWorld world, long windowId) =>
+            Record($"\"op\": \"proposeWorld\", \"world\": {(int)world}, \"windowId\": {windowId}", () => _encounter.ProposeWorld(world, windowId));
+
+        public bool CancelWorld() => Record("\"op\": \"cancelWorld\"", () => _encounter.CancelWorld());
+
+        public void SwitchWorld(PartyWorld world, long windowId) =>
+            Record($"\"op\": \"switchWorld\", \"world\": {(int)world}, \"windowId\": {windowId}", () => _encounter.SwitchWorld(world, windowId));
+
         public bool RequestBoss() => Record("\"op\": \"requestBoss\"", () => _encounter.RequestBossFight());
 
         public void Advance(int ticks) => Record($"\"op\": \"advance\", \"ticks\": {ticks}", () =>
@@ -98,6 +106,10 @@ namespace Game.Core.Tests.Party
                 .Append(", \"bossTimerRate\": ").Append(Number(e.BossTimerRate))
                 .Append(", \"loopShare\": ").Append(Number(e.LoopShare))
                 .Append(", \"savedBossTicks\": ").Append(Number(e.SavedBossTicks))
+                .Append(", \"world\": ").Append((int)e.World)
+                .Append(", \"windowId\": ").Append(e.WindowId)
+                .Append(", \"pendingWorld\": ").Append(e.PendingWorld)
+                .Append(", \"switchTicksLeft\": ").Append(e.SwitchTicksLeft)
                 .Append(", \"members\": [");
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
