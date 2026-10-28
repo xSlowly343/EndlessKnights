@@ -4703,12 +4703,12 @@
       "weapon": "voodoo_doll",
       "ascendancy": "puppeteer",
       "color": "blue",
-      "name": { "ru": "Лоскутная кукла", "en": "Patchwork Doll" },
+      "name": {"ru": "Лоскутная кукла", "en": "Patchwork Doll"},
       "tags": ["Minion", "Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 40,
       "durationSeconds": 30,
-      "locked": true
+      "effect": {"type": "summon", "minion": "beast", "seconds": 30, "hitsPerSecond": 1, "multiplier": 2}
     },
     {
       "id": "fermented_curse",
@@ -4730,13 +4730,13 @@
       "tier": "common",
       "role": "fast",
       "color": "blue",
-      "name": { "ru": "Дым трубки", "en": "Pipe Smoke" },
+      "name": {"ru": "Дым трубки", "en": "Pipe Smoke"},
       "tags": ["Skill"],
-      "cost": { "resource": 25 },
+      "cost": {"resource": 25},
       "cooldownSeconds": 8,
       "durationSeconds": 10,
-      "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "tags": ["Keyboard"], "bossTimerSlow": 0.3 },
-      "native": { "durationMultiplier": 1.6666666666666667 }
+      "effect": {"type": "enemyDebuff", "damageTaken": 0.1, "tags": ["Keyboard"], "bossTimerSeconds": 3},
+      "native": {"bossTimerSeconds": 5}
     },
     {
       "id": "pin",
@@ -4887,13 +4887,13 @@
       "tier": "rare",
       "role": "heavy",
       "color": "blue",
-      "name": { "ru": "Болотный жилец", "en": "Swamp Dweller" },
+      "name": {"ru": "Болотный жилец", "en": "Swamp Dweller"},
       "tags": ["Skill"],
-      "cost": { "resource": 50 },
+      "cost": {"resource": 50},
       "cooldownSeconds": 35,
       "durationSeconds": 30,
-      "effect": { "type": "pulse", "everySeconds": 1, "multiplier": 2 },
-      "native": { "durationMultiplier": 1.5 }
+      "effect": {"type": "pulse", "everySeconds": 1, "multiplier": 2, "stacks": {"perStack": {"stat": "damage", "kind": "more", "value": 0.02}, "max": 0.2, "stackSeconds": 30}},
+      "native": {"lastsAboveResource": 50}
     },
     {
       "id": "the_jam_ripens",
@@ -4901,12 +4901,12 @@
       "weapon": "voodoo_doll",
       "tier": "rare",
       "color": "blue",
-      "name": { "ru": "Варенье зреет", "en": "The Jam Ripens" },
+      "name": {"ru": "Варенье зреет", "en": "The Jam Ripens"},
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.5}] },
-      "native": { "modifiers": [{"stat": "curseDamage", "kind": "increased", "value": 0.5}] }
+      "effect": {"type": "passive", "modifiers": [{"stat": "curseHitsPerSecond", "kind": "flat", "value": 0.5}]},
+      "native": {"modifiers": [{"stat": "curseHitsPerSecond", "kind": "flat", "value": 0.5}]}
     },
     {
       "id": "curio_from_the_counter",
@@ -4915,12 +4915,12 @@
       "tier": "rare",
       "role": "fast",
       "color": "blue",
-      "name": { "ru": "Диковина с прилавка", "en": "Curio from the Counter" },
+      "name": {"ru": "Диковина с прилавка", "en": "Curio from the Counter"},
       "tags": ["Skill"],
-      "cost": { "resource": 15 },
+      "cost": {"resource": 15},
       "cooldownSeconds": 4,
-      "effect": { "type": "weakenNext", "enemies": 1, "hpShare": 0.05 },
-      "native": { "resourceOnCast": 5 }
+      "effect": {"type": "weakenNext", "enemies": 1, "hpShare": 0, "vulnerability": {"share": 0.15, "seconds": 10}},
+      "native": {"weakenShare": 0.05}
     },
     {
       "id": "memory_knot",
@@ -5014,13 +5014,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "blue",
-      "name": { "ru": "Долгое желание", "en": "Long Wish" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 70 },
+      "name": {"ru": "Долгое желание", "en": "Long Wish"},
+      "tags": ["Skill"],
+      "cost": {"resource": 70},
       "cooldownSeconds": 30,
       "durationSeconds": 8,
-      "effect": { "type": "storeHits", "releaseShare": 1.3 },
-      "native": { "when": {"cursesAtLeast": 1, "multiplier": 1.2} }
+      "effect": {"type": "wish", "share": 0.3},
+      "native": {"carryOver": true}
     },
     {
       "id": "skull_on_the_staff",
@@ -5029,12 +5029,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "blue",
-      "name": { "ru": "Череп на посохе", "en": "Skull on the Staff" },
+      "name": {"ru": "Череп на посохе", "en": "Skull on the Staff"},
       "tags": ["Skill"],
-      "cost": { "resource": 90 },
+      "cost": {"resource": 90},
       "cooldownSeconds": 45,
-      "effect": { "type": "strike", "multiplier": 5 },
-      "native": { "when": {"cursesAtLeast": 2, "multiplier": 2} }
+      "effect": {"type": "strike", "multiplier": 5, "perCurse": 5, "refreshCurses": true},
+      "native": {"modifiers": [{"stat": "resourceGain", "kind": "more", "value": 1}]},
+      "durationSeconds": 10
     },
     {
       "id": "needle_to_the_heart",
