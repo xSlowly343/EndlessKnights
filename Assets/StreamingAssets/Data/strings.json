@@ -571,6 +571,7 @@
     "stats.mouse": { "ru": "Расстояние мыши", "en": "Mouse distance" },
     "stats.clicksHint": { "ru": "ЛКМ {0} · ПКМ {1} · СКМ {2}", "en": "LMB {0} · RMB {1} · MMB {2}" },
     "settings.telemetry": { "ru": "Анонимная статистика", "en": "Anonymous statistics" },
-    "settings.privacyNote": { "ru": "Статистика — только счётчики и итоги сессий со случайным номером установки, без кодов клавиш и текста. Выключена, пока ты её не включишь.", "en": "Statistics are only counters and session totals with a random install number, no key codes or text. Off until you turn it on." }
+    "settings.privacyNote": { "ru": "Статистика — только счётчики и итоги сессий со случайным номером установки, без кодов клавиш и текста. Выключена, пока ты её не включишь.", "en": "Statistics are only counters and session totals with a random install number, no key codes or text. Off until you turn it on." },
+    "settings.errorReports": { "ru": "Отправлять отчёты об ошибках", "en": "Send error reports" }
   }
 }

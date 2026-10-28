@@ -23,6 +23,7 @@ namespace Game.Core.Ui
         ShowInputDebug,
         InputConsent,
         WhatsNew,
-        Telemetry
+        Telemetry,
+        ErrorReports
     }
 }

@@ -18,7 +18,7 @@ namespace Game.Core.Ui
         {
             new[] { SettingId.Language, SettingId.AlwaysOnTop, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.InputConsent, SettingId.WhatsNew },
             new[] { SettingId.MasterVolume, SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume },
-            new[] { SettingId.Telemetry },
+            new[] { SettingId.Telemetry, SettingId.ErrorReports },
         };
 
         public static int TabCount => Tabs.Length;
@@ -39,7 +39,7 @@ namespace Game.Core.Ui
         public static SettingKind KindOf(SettingId id) => id switch
         {
             SettingId.Paused or SettingId.AlwaysOnTop or SettingId.ClickThrough or SettingId.CountKeys or SettingId.CountMouseMovement
-                or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug or SettingId.Telemetry => SettingKind.Toggle,
+                or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug or SettingId.Telemetry or SettingId.ErrorReports => SettingKind.Toggle,
             SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew => SettingKind.Action,
             _ => SettingKind.Choice
         };
@@ -59,6 +59,7 @@ namespace Game.Core.Ui
             SettingId.CountWheel => settings.CountWheel,
             SettingId.ShowInputDebug => settings.ShowInputDebug,
             SettingId.Telemetry => settings.TelemetryConsentGiven,
+            SettingId.ErrorReports => settings.ErrorReportConsentGiven,
             _ => false
         };
 
@@ -119,6 +120,9 @@ namespace Game.Core.Ui
                     return true;
                 case SettingId.Telemetry:
                     settings.TelemetryConsentGiven = !settings.TelemetryConsentGiven;
+                    return true;
+                case SettingId.ErrorReports:
+                    settings.ErrorReportConsentGiven = !settings.ErrorReportConsentGiven;
                     return true;
                 case SettingId.InputConsent:
                 case SettingId.WhatsNew:

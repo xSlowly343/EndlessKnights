@@ -25,5 +25,6 @@ namespace Game.Core.Settings
         public string Language { get; set; } = "ru";
         public bool InputConsentGiven { get; set; }
         public bool TelemetryConsentGiven { get; set; }
+        public bool ErrorReportConsentGiven { get; set; }
     }
 }
