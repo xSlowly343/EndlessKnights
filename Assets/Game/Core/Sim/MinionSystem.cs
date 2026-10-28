@@ -117,7 +117,24 @@ namespace Game.Core.Sim
             if (kind != MinionKind.Cannon)
                 return;
             CannonShots++;
+            _state.CannonShotsOnEnemy++;
+            CannonExtras(multiplier, tags);
             _resource.Gain(_combat.Cannons.ResourcePerShot * _hero.Value(CombatStats.ResourceGain, 1));
+        }
+
+        private void CannonExtras(double multiplier, StatTags tags)
+        {
+            var next = _hero.Value(CombatStats.CannonNextShare, 0, StatTags.Minion);
+            if (next > 0)
+                _state.QueueDamage[0] += _combat.SkillDamage(_combat.BaseKeyDamage, multiplier * next, tags);
+            if (_state.Barrels > 0)
+            {
+                _state.Barrels--;
+                _combat.SkillHit(_combat.BaseKeyDamage, _state.BarrelMultiplier, StatTags.Skill);
+            }
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.CannonBarrelEvery, 0, StatTags.Minion));
+            if (every >= 1 && CannonShots % every == 0)
+                _combat.SkillHit(_combat.BaseKeyDamage, _hero.Value(CombatStats.CannonBarrelMultiplier, 0, StatTags.Minion), StatTags.Skill);
         }
 
         private SummonEffect Fresh(MinionKind kind) => kind == MinionKind.Beast ? _combat.Paths.BeastOnKill : _combat.Paths.SkeletonOnKill;

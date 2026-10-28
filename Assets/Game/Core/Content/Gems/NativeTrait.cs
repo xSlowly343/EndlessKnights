@@ -37,6 +37,7 @@ namespace Game.Core.Content.Gems
         public double StackGrowth { get; set; }
         public double ResourceRelief { get; set; }
         public double PerMinion { get; set; }
+        public int Barrels { get; set; }
         public bool RespawnMinion { get; set; }
         public int RepeatEvery { get; set; }
         public double WhenResource { get; set; }

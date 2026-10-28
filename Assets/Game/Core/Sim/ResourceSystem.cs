@@ -64,7 +64,7 @@ namespace Game.Core.Sim
             var gained = input.Keys * PerKey(resource) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             if (resource.MousePxPerPoint > 0)
                 gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
-            gained += resource.PerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1);
+            gained += (resource.PerSecond + System.Math.Max(0, _hero.Value(CombatStats.ResourcePerSecond, 0))) * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1);
             gained += input.Clicks * resource.PerClick * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Click);
             if (_state.Reading)
                 gained += resource.ReadingPerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse) * System.Math.Max(0, _hero.Value(CombatStats.ReadingGain, 1));

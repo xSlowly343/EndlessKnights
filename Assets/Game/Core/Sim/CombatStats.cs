@@ -129,6 +129,12 @@ namespace Game.Core.Sim
         public static readonly StatId SkeletonOnKill = new StatId("skeletonOnKill");
         public static readonly StatId BeastOnKill = new StatId("beastOnKill");
         public static readonly StatId BeastCount = new StatId("beastCount");
+        public static readonly StatId ResourcePerSecond = new StatId("resourcePerSecond");
+        public static readonly StatId CannonNextShare = new StatId("cannonNextShare");
+        public static readonly StatId CannonShotDamage = new StatId("cannonShotDamage");
+        public static readonly StatId CannonShotDamageMax = new StatId("cannonShotDamageMax");
+        public static readonly StatId CannonBarrelEvery = new StatId("cannonBarrelEvery");
+        public static readonly StatId CannonBarrelMultiplier = new StatId("cannonBarrelMultiplier");
         public static readonly StatId MinionQueueShare = new StatId("minionQueueShare");
         public static readonly StatId RedGemEffect = new StatId("redGemEffect");
         public static readonly StatId GreenGemEffect = new StatId("greenGemEffect");

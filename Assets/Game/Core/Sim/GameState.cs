@@ -140,6 +140,10 @@ namespace Game.Core.Sim
         public long BossStarts { get; set; }
         public int HitsOnEnemy { get; set; }
         public int BossTimerStopTicks { get; set; }
+        public int CannonShotsOnEnemy { get; set; }
+        public int Barrels { get; set; }
+        public int BarrelTicks { get; set; }
+        public double BarrelMultiplier { get; set; }
         public int KillStreak { get; set; }
         public long TicksSinceKill { get; set; }
         public int AfterIdleTicks { get; set; }
@@ -219,6 +223,7 @@ namespace Game.Core.Sim
             EnemyMaxHp = hp;
             HitsOnEnemy = 0;
             BossTimerStopTicks = 0;
+            CannonShotsOnEnemy = 0;
             BossTimerBonusUsed = false;
             EnemySpawnTick = Tick;
             PoisonStacks = 0;

@@ -7245,12 +7245,12 @@
       "weapon": "pistol",
       "ascendancy": "corsair",
       "color": "green",
-      "name": { "ru": "Ещё одна пушка", "en": "One More Cannon" },
+      "name": {"ru": "Ещё одна пушка", "en": "One More Cannon"},
       "tags": ["Minion", "Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 40,
       "durationSeconds": 30,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "cannonCount", "kind": "flat", "value": 2 }] }
+      "effect": {"type": "aura", "modifiers": [{"stat": "cannonCount", "kind": "flat", "value": 2}, {"stat": "cannonBarrelEvery", "kind": "flat", "value": 5, "tags": ["Minion"]}, {"stat": "cannonBarrelMultiplier", "kind": "flat", "value": 8, "tags": ["Minion"]}]}
     },
     {
       "id": "figurehead",
@@ -7258,12 +7258,12 @@
       "weapon": "pistol",
       "ascendancy": "sea_witch",
       "color": "green",
-      "name": { "ru": "Носовая фигура", "en": "Figurehead" },
+      "name": {"ru": "Носовая фигура", "en": "Figurehead"},
       "tags": ["Minion", "Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 40,
       "durationSeconds": 30,
-      "locked": true
+      "effect": {"type": "summon", "minion": "beast", "seconds": 30, "hitsPerSecond": 2, "multiplier": 1.5}
     },
     {
       "id": "neighbour_from_below",
@@ -7271,12 +7271,12 @@
       "weapon": "pistol",
       "ascendancy": "kraken_master",
       "color": "green",
-      "name": { "ru": "Сосед из-под воды", "en": "Neighbour from Below" },
+      "name": {"ru": "Сосед из-под воды", "en": "Neighbour from Below"},
       "tags": ["Skill"],
-      "cost": { "resource": 70 },
+      "cost": {"resource": 70},
       "cooldownSeconds": 45,
       "durationSeconds": 15,
-      "locked": true
+      "effect": {"type": "pulse", "everySeconds": 1, "multiplier": 3, "queueTargets": 3}
     },
     {
       "id": "the_pistol_answers",
@@ -7437,12 +7437,12 @@
       "tier": "rare",
       "role": "fast",
       "color": "green",
-      "name": { "ru": "Бочка из трюма", "en": "Barrel from the Hold" },
+      "name": {"ru": "Бочка из трюма", "en": "Barrel from the Hold"},
       "tags": ["Skill"],
-      "cost": { "resource": 25 },
+      "cost": {"resource": 25},
       "cooldownSeconds": 8,
-      "effect": { "type": "strike", "multiplier": 8 },
-      "native": { "resourceOnCast": 5 }
+      "effect": {"type": "barrel", "multiplier": 8, "seconds": 5},
+      "native": {"barrels": 2}
     },
     {
       "id": "chain_shot",
@@ -7450,12 +7450,12 @@
       "weapon": "pistol",
       "tier": "rare",
       "color": "green",
-      "name": { "ru": "Цепные ядра", "en": "Chain Shot" },
+      "name": {"ru": "Цепные ядра", "en": "Chain Shot"},
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Minion"]}] },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.07, "tags": ["Minion"]}] }
+      "effect": {"type": "passive", "modifiers": [{"stat": "cannonShotDamage", "kind": "flat", "value": 0.01}, {"stat": "cannonShotDamageMax", "kind": "flat", "value": 0.15}]},
+      "native": {"modifiers": [{"stat": "cannonShotDamageMax", "kind": "flat", "value": 0.1}]}
     },
     {
       "id": "parrot_with_five_words",
@@ -7463,12 +7463,12 @@
       "weapon": "pistol",
       "tier": "rare",
       "color": "green",
-      "name": { "ru": "Попугай с пятью словами", "en": "Parrot with Five Words" },
+      "name": {"ru": "Попугай с пятью словами", "en": "Parrot with Five Words"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Minion"]}], "reserve": 15 },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.2}] }
+      "effect": {"type": "aura", "modifiers": [{"stat": "cannonNextShare", "kind": "flat", "value": 0.3, "tags": ["Minion"]}], "reserve": 15},
+      "native": {"modifiers": [{"stat": "resourcePerSecond", "kind": "flat", "value": 0.2}]}
     },
     {
       "id": "shot_over_the_shoulder",
@@ -7577,12 +7577,12 @@
       "tier": "epic",
       "role": "heavy",
       "color": "green",
-      "name": { "ru": "Борт на мели", "en": "Ship Aground" },
+      "name": {"ru": "Борт на мели", "en": "Ship Aground"},
       "tags": ["Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 1, "queueTargets": 3 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 1.5} }
+      "effect": {"type": "flurry", "hits": 30, "seconds": 3, "multiplier": 1, "queueTargets": 3},
+      "native": {"extraHitPerMousePx": 200, "maxHits": 100}
     },
     {
       "id": "point_blank",

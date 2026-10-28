@@ -272,6 +272,12 @@ namespace Game.Core.Sim
                     _state.WeakenVulnerabilityTicks = System.Math.Max(_state.WeakenVulnerabilityTicks, Ticks(weaken.VulnerabilitySeconds));
                 }
             }
+            if (skill.Effect is BarrelEffect barrel)
+            {
+                _state.Barrels += native.Barrels > 0 ? native.Barrels : 1;
+                _state.BarrelTicks = Ticks(barrel.Seconds);
+                _state.BarrelMultiplier = barrel.Multiplier * slot.CastPower;
+            }
             if (skill.Effect is WishEffect wish)
             {
                 _state.WishShare = wish.Share;
@@ -326,6 +332,14 @@ namespace Game.Core.Sim
             if (stacks.Multiplier > 0)
                 SkillHit(slot, stacks.Multiplier * when);
             Dots.Apply(stacks, SupportEffects.Affliction(slot) * slot.StackPower);
+        }
+
+        private void TickBarrels()
+        {
+            if (_state.BarrelTicks <= 0 || --_state.BarrelTicks > 0)
+                return;
+            for (; _state.Barrels > 0; _state.Barrels--)
+                _combat.SkillHit(_combat.BaseKeyDamage, _state.BarrelMultiplier, StatTags.Skill);
         }
 
         private void RefreshCurses()
@@ -983,6 +997,7 @@ namespace Game.Core.Sim
             _seenKills = _state.Kills;
             var poisonTicks = Dots.PoisonTicks - _seenPoisonTicks;
             _seenPoisonTicks = Dots.PoisonTicks;
+            TickBarrels();
             var weakenedKill = _state.WeakenedKills != _seenWeakenedKills;
             _seenWeakenedKills = _state.WeakenedKills;
             ExtendSongs(input);

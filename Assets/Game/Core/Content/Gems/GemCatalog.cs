@@ -345,6 +345,8 @@ namespace Game.Core.Content.Gems
                     return new WishEffect(node.Field("share").AsNumber(0, 100));
                 case "repeatRecent":
                     return new RepeatRecentEffect(node.Field("seconds").AsNumber(0.1, Sim.DamageWindow.Seconds));
+                case "barrel":
+                    return new BarrelEffect(node.Field("multiplier").AsNumber(0, 1e6), node.Field("seconds").AsNumber(0.1, 600));
                 case "inputKinds":
                     return new InputKindsEffect(node.Field("perKind").AsNumber(0, 1e6));
                 case "storeHits":
@@ -554,6 +556,7 @@ namespace Game.Core.Content.Gems
                 StackGrowth = Number(node, "stackGrowth", 10),
                 ResourceRelief = Number(node, "resourceRelief", 1000),
                 PerMinion = Number(node, "perMinion", 10),
+                Barrels = node.HasField("barrels") ? node.Field("barrels").AsInt(1, 100) : 0,
                 RespawnMinion = node.HasField("respawnMinion") && node.Field("respawnMinion").AsBool(),
                 RepeatEvery = node.HasField("repeatEvery") ? node.Field("repeatEvery").AsInt(1, 10000) : 0,
                 WhenResource = node.HasField("when") ? Number(node.Field("when"), "resource", 1000) : 0,

@@ -144,6 +144,18 @@ namespace Game.Core.Content.Gems
         public double Seconds { get; }
     }
 
+    public sealed class BarrelEffect : SkillEffect
+    {
+        public BarrelEffect(double multiplier, double seconds)
+        {
+            Multiplier = multiplier;
+            Seconds = seconds;
+        }
+
+        public double Multiplier { get; }
+        public double Seconds { get; }
+    }
+
     public sealed class InputKindsEffect : SkillEffect
     {
         public InputKindsEffect(double perKind)
