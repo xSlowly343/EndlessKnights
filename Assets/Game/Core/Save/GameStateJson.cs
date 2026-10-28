@@ -541,7 +541,8 @@ namespace Game.Core.Save
         {
             var map = new Dictionary<string, JsonValue>(state.GemProgress.Count);
             foreach (var pair in state.GemProgress)
-                map.Add(pair.Key, Object(("level", JsonValue.Of(pair.Value.Level)), ("experience", JsonValue.Of(pair.Value.Experience))));
+                map.Add(pair.Key, Object(("level", JsonValue.Of(pair.Value.Level)), ("experience", JsonValue.Of(pair.Value.Experience)),
+                    ("rebirths", JsonValue.Of(pair.Value.Rebirths))));
             return JsonValue.Object(map);
         }
 
@@ -555,6 +556,8 @@ namespace Game.Core.Save
                 var progress = state.ProgressOf(gem);
                 progress.Level = item.Field("level").AsInt(1, gems.Levels.Max);
                 progress.Experience = item.Field("experience").AsNumber(0, 1e15);
+                if (item.HasField("rebirths"))
+                    progress.Rebirths = item.Field("rebirths").AsInt(0, 100);
             }
         }
 
