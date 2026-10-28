@@ -237,9 +237,19 @@ namespace Game.Core.Sim
             if (_state.Stage > _state.HighestStage)
                 _state.HighestStage = _state.Stage;
             Drops?.OnBossDefeated(stageBefore, type, _state.RecordStage, RaisesRecord);
+            OpenChest(stageBefore);
             if (RaisesRecord)
                 _levels.OnStageReached(_state.Stage);
             BossListener?.OnBossDefeated(type, stageBefore);
+        }
+
+        public double ChestGold { get; set; }
+
+        private void OpenChest(long stage)
+        {
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.ChestEvery, 0));
+            if (every >= 1 && stage % every == 0)
+                _loot.Chest(stage, ChestGold);
         }
 
         private void SpawnNext()
@@ -265,7 +275,8 @@ namespace Game.Core.Sim
             var biome = _stages.Biome(stage);
             var guardian = _stages.IsBiomeGuardian(stage);
             var enemy = guardian ? _guardians[biome] ?? _bosses[biome] : _bosses[biome];
-            Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * Multiplier(enemy));
+            var guardianShare = guardian ? System.Math.Max(0.1, _hero.Value(CombatStats.GuardianHp, 1)) : 1;
+            Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * (Multiplier(enemy) * guardianShare));
             var timer = _stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
             _state.BossTicksLeft = (int)System.Math.Round((timer + _state.BankedSeconds) * GameLoop.TicksPerSecond);
             _state.BankedSeconds = 0;

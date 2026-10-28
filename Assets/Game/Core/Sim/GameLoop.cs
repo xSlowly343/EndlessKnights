@@ -37,6 +37,7 @@ namespace Game.Core.Sim
         private readonly StrikeUpgradeSystem _upgrades;
         private readonly ArtifactSystem _artifacts;
         private readonly ChronicleSystem _chronicle;
+        private readonly AtlasSystem _atlas;
         private readonly TutorialSystem _tutorial;
         private readonly PartyBuffs _partyBuffs;
         private readonly SynergySystem _synergy;
@@ -77,6 +78,8 @@ namespace Game.Core.Sim
             _stage.Drops = _drops;
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
             _chronicle = new ChronicleSystem(data.Chronicle, state, hero, Events, _levels);
+            _atlas = new AtlasSystem(data.Atlas, state, hero);
+            _stage.ChestGold = data.Atlas.ChestGold;
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
@@ -109,6 +112,7 @@ namespace Game.Core.Sim
         public StrikeUpgradeSystem Upgrades => _upgrades;
         public ArtifactSystem Artifacts => _artifacts;
         public ChronicleSystem Chronicle => _chronicle;
+        public AtlasSystem Atlas => _atlas;
         public TutorialSystem Tutorial => _tutorial;
         public PartyBuffs PartyBuffs => _partyBuffs;
         public SynergySystem Synergy => _synergy;
@@ -241,6 +245,8 @@ namespace Game.Core.Sim
         public TrialResult StartTrial(string trialId) => _chronicle.Start(trialId);
 
         public bool AbandonTrial() => _chronicle.Abandon();
+
+        public AtlasResult AllocateAtlasNode(string nodeId) => _atlas.Allocate(nodeId);
 
         public CutResult CutGem(GemDef gem) => _drops.Cut(gem);
 
@@ -375,6 +381,8 @@ namespace Game.Core.Sim
             _upgrades.UseRules(data.Combat.StrikeUpgrade);
             _artifacts.UseCatalog(data.Artifacts, data.Rift);
             _chronicle.UseCatalog(data.Chronicle);
+            _atlas.UseCatalog(data.Atlas);
+            _stage.ChestGold = data.Atlas.ChestGold;
             _tutorial.UseRules(data.Tutorial);
             _partyBuffs.UseRules(data.Party.Buffs);
             _synergy.UseRules(data.Synergy);

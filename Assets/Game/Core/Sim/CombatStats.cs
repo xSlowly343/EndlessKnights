@@ -130,6 +130,10 @@ namespace Game.Core.Sim
         public static readonly StatId BeastOnKill = new StatId("beastOnKill");
         public static readonly StatId BeastCount = new StatId("beastCount");
         public static readonly StatId ResourcePerSecond = new StatId("resourcePerSecond");
+        public static readonly StatId BossGold = new StatId("bossGold");
+        public static readonly StatId GuardianHp = new StatId("guardianHp");
+        public static readonly StatId ChestEvery = new StatId("chestEvery");
+        public static readonly StatId ChestGold = new StatId("chestGold");
         public static readonly StatId CannonNextShare = new StatId("cannonNextShare");
         public static readonly StatId CannonShotDamage = new StatId("cannonShotDamage");
         public static readonly StatId CannonShotDamageMax = new StatId("cannonShotDamageMax");
