@@ -22,6 +22,8 @@ jobs:
           clean: false
       - name: Run Game.Core tests
         run: dotnet test Tools/CoreBuild/Game.Core.Tests/Game.Core.Tests.csproj --nologo
+      - name: Run Game.Net tests
+        run: dotnet test Tools/CoreBuild/Game.Net.Tests/Game.Net.Tests.csproj --nologo
 
   unity:
     runs-on: [self-hosted, unity]

@@ -13,9 +13,10 @@ namespace Game.Sim
         public static int Main(string[] args)
         {
             SimOptions options;
+            var botArgs = args.Length > 0 && args[0] == "bot" ? args[1..] : null;
             try
             {
-                options = SimOptions.Parse(args);
+                options = SimOptions.Parse(botArgs == null ? args : System.Array.Empty<string>());
             }
             catch (Exception error) when (error is ArgumentException || error is FormatException)
             {
@@ -36,6 +37,8 @@ namespace Game.Sim
                 return 1;
             }
 
+            if (botArgs != null)
+                return BotCommand.Run(data, botArgs);
             var profile = new BotProfile(options.KeysPerSecond, options.ClicksPerSecond, options.MousePxPerSecond);
             if (options.SupportHours > 0)
                 return RunSupports(data, options);
