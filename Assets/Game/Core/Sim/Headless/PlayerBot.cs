@@ -266,25 +266,37 @@ namespace Game.Core.Sim.Headless
         private void SpendEcho()
         {
             var artifacts = _loop.Artifacts;
-            while (_loop.Artifacts.TryUnlock() != null)
-            {
-            }
             while (true)
             {
-                string? cheapest = null;
-                var cheapestCost = BigNumber.Zero;
-                foreach (var pair in _loop.State.Artifacts)
+                var cheapest = CheapestLevel(out var levelCost);
+                var canUnlock = !artifacts.AllUnlocked && artifacts.Currency >= artifacts.UnlockCost;
+                if (canUnlock && (cheapest == null || artifacts.UnlockCost <= levelCost))
                 {
-                    var cost = artifacts.LevelCost(pair.Key);
-                    if (cheapest == null || cost < cheapestCost)
-                    {
-                        cheapest = pair.Key;
-                        cheapestCost = cost;
-                    }
+                    artifacts.TryUnlock();
+                    continue;
                 }
                 if (cheapest == null || !artifacts.TryLevelUp(cheapest))
                     return;
             }
+        }
+
+        private string? CheapestLevel(out BigNumber cost)
+        {
+            var artifacts = _loop.Artifacts;
+            string? cheapest = null;
+            cost = BigNumber.Zero;
+            foreach (var pair in _loop.State.Artifacts)
+            {
+                if (artifacts.IsMaxed(pair.Key))
+                    continue;
+                var next = artifacts.LevelCost(pair.Key);
+                if (cheapest == null || next < cost)
+                {
+                    cheapest = pair.Key;
+                    cost = next;
+                }
+            }
+            return cheapest;
         }
     }
 }

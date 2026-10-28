@@ -48,14 +48,24 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.Gold(_state.Tick, gold, stage));
         }
 
+        public double JackpotMultiplier { get; set; } = 1;
+
         public void OnKill(long stage, EnemyType type, EnemyDef? enemy, double multiplier = 1)
         {
-            var gold = GoldFor(stage, type, enemy) * multiplier;
+            var gold = GoldFor(stage, type, enemy) * (multiplier * Jackpot(type));
             if (gold.Sign <= 0)
                 return;
             _state.Gold += gold;
             _state.RunGoldEarned += gold;
             _events.Add(GameEvent.Gold(_state.Tick, gold, stage));
+        }
+
+        private double Jackpot(EnemyType type)
+        {
+            if (type != EnemyType.Normal)
+                return 1;
+            var chance = _hero.Value(CombatStats.GoldJackpotChance, 0, StatTags.Gold);
+            return chance > 0 && _state.Rng.NextDouble() < chance ? JackpotMultiplier : 1;
         }
     }
 }

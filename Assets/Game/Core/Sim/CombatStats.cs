@@ -149,5 +149,13 @@ namespace Game.Core.Sim
         public static readonly StatId RedGemEffect = new StatId("redGemEffect");
         public static readonly StatId GreenGemEffect = new StatId("greenGemEffect");
         public static readonly StatId BlueGemEffect = new StatId("blueGemEffect");
+        public static readonly StatId ArtifactCost = new StatId("artifactCost");
+        public static readonly StatId EchoGain = new StatId("echoGain");
+        public static readonly StatId UpgradeCost = new StatId("upgradeCost");
+        public static readonly StatId PrestigeStartStage = new StatId("prestigeStartStage");
+        public static readonly StatId GoldJackpotChance = new StatId("goldJackpotChance");
+        public static readonly StatId WandererChance = new StatId("wandererChance");
+        public static readonly StatId DamageVsGuardian = new StatId("damageVsGuardian");
+        public static readonly StatId OfflineDpsShare = new StatId("offlineDpsShare");
     }
 }

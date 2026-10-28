@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Game.Core.Clock;
 using Game.Core.Content;
 using Game.Core.Math;
@@ -12,6 +13,7 @@ namespace Game.Core.Tests.Sim
     public class ArtifactTests
     {
         private static ArtifactCatalog Catalog => TestWorld.Data.Artifacts;
+        private static List<ArtifactDef> FirstGroup => Catalog.All.Where(a => a.Group == 1).ToList();
 
         private static GameLoop WithEcho(double echo, ulong seed = 1)
         {
@@ -21,9 +23,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void MvpHasFiveArtifacts()
+        public void ThereAreFourGroupsOfThirty()
         {
-            Assert.That(Catalog.All.Count, Is.EqualTo(5));
+            Assert.That(Catalog.All.Count, Is.EqualTo(120));
+            Assert.That(Catalog.Groups, Is.EqualTo(4));
+            for (var group = 1; group <= 4; group++)
+                Assert.That(Catalog.All.Count(a => a.Group == group), Is.EqualTo(30), "group " + group);
         }
 
         [Test]
@@ -77,15 +82,15 @@ namespace Game.Core.Tests.Sim
             {
                 var loop = WithEcho(1e9, seed);
                 var chances = loop.Artifacts.Chances();
-                Assert.That(chances.Count, Is.EqualTo(Catalog.All.Count));
-                Assert.That(chances[0].Chance, Is.EqualTo(1.0 / Catalog.All.Count));
+                Assert.That(chances.Count, Is.EqualTo(FirstGroup.Count));
+                Assert.That(chances[0].Chance, Is.EqualTo(1.0 / FirstGroup.Count));
                 var id = loop.Artifacts.TryUnlock()!.Id;
                 counts[id] = counts.TryGetValue(id, out var count) ? count + 1 : 1;
             }
 
-            var expected = runs / (double)Catalog.All.Count;
-            foreach (var artifact in Catalog.All)
-                Assert.That(counts[artifact.Id], Is.EqualTo(expected).Within(expected * 0.1), artifact.Id);
+            var expected = runs / (double)FirstGroup.Count;
+            foreach (var artifact in FirstGroup)
+                Assert.That(counts[artifact.Id], Is.EqualTo(expected).Within(expected * 0.3), artifact.Id);
         }
 
         [Test]

@@ -19,7 +19,7 @@ namespace Game.Core.Sim
                 _normalAverages[biome] = Averages(data.Enemies.Normals(biome));
         }
 
-        public BigNumber OfflineDps(GameState state) => state.RecentDps * _data.Combat.Offline.DpsShare;
+        public BigNumber OfflineDps(GameState state) => state.RecentDps * System.Math.Min(1, _data.Combat.Offline.DpsShare + System.Math.Max(0, _hero.Value(CombatStats.OfflineDpsShare, 0)));
 
         public OfflineResult Simulate(GameState state, double seconds) => Simulate(state, seconds, OfflineDps(state), fightGuardians: false);
 

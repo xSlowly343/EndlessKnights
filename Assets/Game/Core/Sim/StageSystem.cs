@@ -287,8 +287,10 @@ namespace Game.Core.Sim
             RaisesRecord && Encounters.GoldenChance > 0 && stage >= Encounters.GoldenMinStage && _state.Rng.NextDouble() < Encounters.GoldenChance;
 
         private bool WandererComes(long stage, bool guardian) =>
-            RaisesRecord && !guardian && Encounters.WandererChance > 0 && stage >= Encounters.WandererMinStage
-            && stage + Encounters.JumpMin <= _state.RecordStage && _state.Rng.NextDouble() < Encounters.WandererChance;
+            RaisesRecord && !guardian && WandererChance > 0 && stage >= Encounters.WandererMinStage
+            && stage + Encounters.JumpMin <= _state.RecordStage && _state.Rng.NextDouble() < WandererChance;
+
+        private double WandererChance => Encounters.WandererChance + System.Math.Max(0, _hero.Value(CombatStats.WandererChance, 0));
 
         private void TickGolden()
         {
