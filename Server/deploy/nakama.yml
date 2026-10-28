@@ -1,0 +1,16 @@
+name: riftwarden1
+data_dir: /nakama/data/
+shutdown_grace_sec: 10
+logger:
+  level: INFO
+  stdout: true
+session:
+  token_expiry_sec: 7200
+  refresh_token_expiry_sec: 2592000
+socket:
+  port: 7350
+runtime:
+  path: /nakama/data/modules
+  js_entrypoint: index.js
+console:
+  port: 7351

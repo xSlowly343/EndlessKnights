@@ -1,0 +1,12 @@
+*
+!Assets/StreamingAssets/Data/party.json
+!Assets/StreamingAssets/Data/stages.json
+!Assets/StreamingAssets/Data/rift.json
+!Server/package.json
+!Server/tsconfig.json
+!Server/src/
+!Server/tools/
+!Server/test/
+!Server/test-vectors/
+!Server/deploy/nakama.yml
+!Server/deploy/nakama-start.sh
