@@ -47,9 +47,9 @@ namespace Game.Core.Party
         public double LoopShare { get; private set; }
         public double SavedBossTicks { get; private set; }
         public PartyWorld World { get; private set; }
-        public long WindowId { get; private set; }
+        public long RiftId { get; private set; }
         public byte PendingWorld { get; private set; } = NoWorld;
-        public long PendingWindowId { get; private set; }
+        public long PendingRiftId { get; private set; }
         public int SwitchTicksLeft { get; private set; }
         public bool Switching => PendingWorld != NoWorld;
         public bool Started => EnemyId != 0;
@@ -302,12 +302,12 @@ namespace Game.Core.Party
             return true;
         }
 
-        public bool ProposeWorld(PartyWorld world, long windowId)
+        public bool ProposeWorld(PartyWorld world, long riftId)
         {
-            if (!Started || Switching || (world == World && windowId == WindowId) || (world == PartyWorld.Home) != (windowId == 0))
+            if (!Started || Switching || (world == World && riftId == RiftId) || (world == PartyWorld.Home) != (riftId == 0))
                 return false;
             PendingWorld = (byte)world;
-            PendingWindowId = windowId;
+            PendingRiftId = riftId;
             SwitchTicksLeft = System.Math.Max(1, Ticks(_rules.WorldSwitchSeconds));
             Events.Add(new PartyEvent(PartyEventKind.WorldPending, Tick, EnemyId, EnemyKind));
             return true;
@@ -322,11 +322,11 @@ namespace Game.Core.Party
             return true;
         }
 
-        public void SwitchWorld(PartyWorld world, long windowId)
+        public void SwitchWorld(PartyWorld world, long riftId)
         {
             ClearPending();
             World = world;
-            WindowId = windowId;
+            RiftId = riftId;
             KillsOnStage = 0;
             Farming = false;
             FarmKills = 0;
@@ -341,7 +341,7 @@ namespace Game.Core.Party
         private void ClearPending()
         {
             PendingWorld = NoWorld;
-            PendingWindowId = 0;
+            PendingRiftId = 0;
             SwitchTicksLeft = 0;
         }
 
@@ -353,7 +353,7 @@ namespace Game.Core.Party
             DropLostFighters();
             if (Switching && --SwitchTicksLeft <= 0)
             {
-                SwitchWorld((PartyWorld)PendingWorld, PendingWindowId);
+                SwitchWorld((PartyWorld)PendingWorld, PendingRiftId);
                 return;
             }
             if (!FightingBoss || !Started)

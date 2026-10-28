@@ -45,13 +45,13 @@ namespace Game.Core.Tests.Party
         public double Repeat(int slot, double seconds) =>
             Record($"\"op\": \"repeat\", \"slot\": {slot}, \"seconds\": {Number(seconds)}", () => _encounter.RepeatRecent(slot, seconds));
 
-        public bool ProposeWorld(PartyWorld world, long windowId) =>
-            Record($"\"op\": \"proposeWorld\", \"world\": {(int)world}, \"windowId\": {windowId}", () => _encounter.ProposeWorld(world, windowId));
+        public bool ProposeWorld(PartyWorld world, long riftId) =>
+            Record($"\"op\": \"proposeWorld\", \"world\": {(int)world}, \"riftId\": {riftId}", () => _encounter.ProposeWorld(world, riftId));
 
         public bool CancelWorld() => Record("\"op\": \"cancelWorld\"", () => _encounter.CancelWorld());
 
-        public void SwitchWorld(PartyWorld world, long windowId) =>
-            Record($"\"op\": \"switchWorld\", \"world\": {(int)world}, \"windowId\": {windowId}", () => _encounter.SwitchWorld(world, windowId));
+        public void SwitchWorld(PartyWorld world, long riftId) =>
+            Record($"\"op\": \"switchWorld\", \"world\": {(int)world}, \"riftId\": {riftId}", () => _encounter.SwitchWorld(world, riftId));
 
         public bool RequestBoss() => Record("\"op\": \"requestBoss\"", () => _encounter.RequestBossFight());
 
@@ -107,7 +107,7 @@ namespace Game.Core.Tests.Party
                 .Append(", \"loopShare\": ").Append(Number(e.LoopShare))
                 .Append(", \"savedBossTicks\": ").Append(Number(e.SavedBossTicks))
                 .Append(", \"world\": ").Append((int)e.World)
-                .Append(", \"windowId\": ").Append(e.WindowId)
+                .Append(", \"riftId\": ").Append(e.RiftId)
                 .Append(", \"pendingWorld\": ").Append(e.PendingWorld)
                 .Append(", \"switchTicksLeft\": ").Append(e.SwitchTicksLeft)
                 .Append(", \"members\": [");

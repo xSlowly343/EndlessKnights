@@ -63,8 +63,8 @@ namespace Game.Core.Tests.Party
                 .Append(Hex(PartyCodec.Encode(_buffer, new CastEffectMessage { EffectId = -99, OnEnemy = true, Strength = 0.15, Seconds = 10, TimerSlow = 0.3 }))).Append("\" },\n");
             builder.Append("    \"repeatCast\": { \"effectId\": 12, \"onEnemy\": true, \"strength\": 0, \"seconds\": 0, \"timerSlow\": 0, \"repeatSeconds\": 7, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new CastEffectMessage { EffectId = 12, OnEnemy = true, RepeatSeconds = 7 }))).Append("\" },\n");
-            builder.Append("    \"worldRequest\": { \"world\": 1, \"cancel\": false, \"windowId\": 1761652800, \"hex\": \"")
-                .Append(Hex(PartyCodec.Encode(_buffer, new WorldRequestMessage { World = PartyWorld.Rift, WindowId = 1761652800 }))).Append("\" },\n");
+            builder.Append("    \"worldRequest\": { \"world\": 1, \"cancel\": false, \"riftId\": 1761652800, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new WorldRequestMessage { World = PartyWorld.Rift, RiftId = 1761652800 }))).Append("\" },\n");
             builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new PresenceMessage { Presence = PartyPresence.Peaceful, Stage = 77, Resource = 12.5f }))).Append("\" },\n");
             var offer = new PartyOfferMessage { Slot = 0 };

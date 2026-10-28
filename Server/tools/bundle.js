@@ -59,7 +59,9 @@ const riftRules = {
   durationMs: Math.round(rift.schedule.durationHours * 3600 * 1000),
   announceMs: Math.round(rift.schedule.announceMinutes * 60 * 1000),
   modifiers: rift.modifiers.map((modifier) => modifier.id),
-  modifiersPerWindow: rift.modifiersPerWindow
+  modifiersPerWindow: rift.modifiersPerWindow,
+  partyJoinMs: Math.round(rift.party.joinMinutes * 60 * 1000),
+  partyDurationMs: Math.round(rift.party.durationHours * 3600 * 1000)
 };
 
 const directoryRules = {

@@ -9,6 +9,8 @@ interface RiftRules {
     announceMs: number;
     modifiers: string[];
     modifiersPerWindow: number;
+    partyJoinMs: number;
+    partyDurationMs: number;
 }
 
 interface RiftWindow {

@@ -108,7 +108,7 @@ interface HelloMessage { heroClass: number; stage: number; sharePerSecondCap: nu
 interface DamageBatchMessage { sequence: number; enemyId: number; keys: number; mouse: number; skills: number; dot: number; summons: number; hits: number; crits: number; }
 interface CastEffectMessage { effectId: number; onEnemy: boolean; strength: number; seconds: number; timerSlow: number; repeatSeconds: number; }
 interface PresenceMessage { presence: PartyPresence; stage: number; resource: number; }
-interface WorldRequestMessage { world: PartyWorld; cancel: boolean; windowId: number; }
+interface WorldRequestMessage { world: PartyWorld; cancel: boolean; riftId: number; }
 
 function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
@@ -157,7 +157,7 @@ function partyDecodePresence(data: ArrayBuffer): PresenceMessage | null {
 
 function partyDecodeWorldRequest(data: ArrayBuffer): WorldRequestMessage | null {
     const r = partyOpen(data, PartyMessageKind.WorldRequest);
-    const message = { world: r.byte(), cancel: r.bool(), windowId: r.long() };
+    const message = { world: r.byte(), cancel: r.bool(), riftId: r.long() };
     return r.complete ? message : null;
 }
 
@@ -220,7 +220,7 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
     w.byte(encounter.world);
     w.byte(encounter.pendingWorld);
     w.byte(Math.min(255, encounter.switchTicksLeft));
-    w.long(encounter.windowId);
+    w.long(encounter.riftId);
     return w.bytes();
 }
 

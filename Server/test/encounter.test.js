@@ -21,9 +21,9 @@ function run(encounter, step) {
     case "effect": return encounter.applyEnemyEffect(step.id, step.damageTaken, step.seconds, -1, step.timerSlow);
     case "repeat": return encounter.repeatRecent(step.slot, step.seconds);
     case "requestBoss": return encounter.requestBossFight();
-    case "proposeWorld": return encounter.proposeWorld(step.world, step.windowId);
+    case "proposeWorld": return encounter.proposeWorld(step.world, step.riftId);
     case "cancelWorld": return encounter.cancelWorld();
-    case "switchWorld": return encounter.switchWorld(step.world, step.windowId);
+    case "switchWorld": return encounter.switchWorld(step.world, step.riftId);
     case "advance":
       for (let i = 0; i < step.ticks; i++)
         encounter.advance();
@@ -33,7 +33,7 @@ function run(encounter, step) {
 }
 
 function compare(encounter, expect, where) {
-  for (const key of ["tick", "enemyId", "enemyKind", "killsOnStage", "farming", "farmKills", "bossTicksLeft", "fighters", "world", "windowId", "pendingWorld", "switchTicksLeft"])
+  for (const key of ["tick", "enemyId", "enemyKind", "killsOnStage", "farming", "farmKills", "bossTicksLeft", "fighters", "world", "riftId", "pendingWorld", "switchTicksLeft"])
     assert.strictEqual(encounter[key], expect[key], `${where}: ${key}`);
   assert.strictEqual(encounter.enemySeed, expect.enemySeed, `${where}: enemySeed`);
   close(encounter.barFull, expect.barFull, `${where}: barFull`);

@@ -46,7 +46,7 @@ namespace Game.Core.Party
         private int _ownSlot = PartyEncounter.NoSlot;
         private int _firstEvent;
         private bool _offerNow;
-        private long _refusedWindow;
+        private long _refusedRift;
 
         public const int NoReaction = -1;
         private const double MaxAllyShares = 1000;
@@ -121,6 +121,8 @@ namespace Game.Core.Party
         public bool InParty => Status == PartyLink.Linked || Status == PartyLink.NoSignal;
 
         public PartyWorld World => _state.World;
+        public bool IsLeader { get; set; }
+        public long RiftEndUnixMs => _state.World == PartyWorld.Rift ? _loop.Rift.PartyRiftEnd(_state.RiftId) : 0;
         public bool WorldSwitching => InParty && _state.Switching;
         public PartyWorld PendingWorld => _state.Switching ? (PartyWorld)_state.PendingWorld : _state.World;
         public double WorldSwitchSecondsLeft =>
@@ -130,15 +132,15 @@ namespace Game.Core.Party
         {
             if (!InParty || _state.Switching || world == _state.World)
                 return false;
-            long windowId = 0;
+            long riftId = 0;
             if (world == PartyWorld.Rift)
             {
                 var open = _loop.Rift.WindowAt(nowUnixMs);
                 if (open == null)
                     return false;
-                windowId = open.Value.Id;
+                riftId = open.Value.Id;
             }
-            SendToHost(PartyCodec.Encode(_out, new WorldRequestMessage { World = world, WindowId = windowId }));
+            SendToHost(PartyCodec.Encode(_out, new WorldRequestMessage { World = world, RiftId = riftId }));
             return true;
         }
 
@@ -148,7 +150,7 @@ namespace Game.Core.Party
         {
             if (!WorldSwitching)
                 return false;
-            SendToHost(PartyCodec.Encode(_out, new WorldRequestMessage { World = _state.World, Cancel = true, WindowId = _state.WindowId }));
+            SendToHost(PartyCodec.Encode(_out, new WorldRequestMessage { World = _state.World, Cancel = true, RiftId = _state.RiftId }));
             return true;
         }
 
@@ -313,7 +315,7 @@ namespace Game.Core.Party
 
         private void OnState(in EncounterStateMessage state)
         {
-            if (InParty && _state.EnemyId != 0 && (state.World != _state.World || state.WindowId != _state.WindowId))
+            if (InParty && _state.EnemyId != 0 && (state.World != _state.World || state.RiftId != _state.RiftId))
                 AbandonLocalEnemy();
             var elapsed = System.Math.Max(1, _tick - _stateArrivalTick);
             _allyRatePerTick = state.EnemyId == _state.EnemyId
@@ -348,9 +350,9 @@ namespace Game.Core.Party
                 return;
             if (_state.World == PartyWorld.Rift)
             {
-                if ((!rift.Inside || _loop.State.Rift.WindowId != _state.WindowId) && _refusedWindow != _state.WindowId
-                    && rift.EnterPartyWindow(_state.WindowId) != RiftEntry.Entered)
-                    _refusedWindow = _state.WindowId;
+                if ((!rift.Inside || _loop.State.Rift.WindowId != _state.RiftId) && _refusedRift != _state.RiftId
+                    && rift.EnterPartyRift(_state.RiftId) != RiftEntry.Entered)
+                    _refusedRift = _state.RiftId;
             }
             else if (rift.Inside)
             {

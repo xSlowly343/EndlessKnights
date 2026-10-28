@@ -82,7 +82,9 @@ function partyMatchLoop(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     const host = state.host;
     for (const message of messages)
         host.receive(message.sender.userId, message.data);
-    host.tick(Date.now());
+    const now = Date.now();
+    partyHandleWorld(nk, state, now);
+    host.tick(now);
     partySend(dispatcher, state, host);
     partyReportFlags(nk, logger, ctx.matchId || "", host);
     state.chronicleTicks = (state.chronicleTicks || 0) + 1;
@@ -99,6 +101,34 @@ function partyMatchTerminate(ctx: nkruntime.Context, logger: nkruntime.Logger, n
     state = partyRevive(state);
     partyFlushChronicle(nk, logger, state);
     return { state: state };
+}
+
+function partyHandleWorld(nk: nkruntime.Nakama, state: PartyMatchState, nowUnixMs: number): void {
+    const host = state.host;
+    if (host.worldRequests.length === 0)
+        return;
+    const leader = partyLeaderOf(nk, state.partyId);
+    for (const request of host.worldRequests) {
+        if (leader !== null && host.encounter.members[request.slot].playerId !== leader)
+            continue;
+        if (request.cancel) {
+            host.encounter.cancelWorld();
+        } else if (request.world === PartyWorld.Home) {
+            host.encounter.proposeWorld(PartyWorld.Home, 0);
+        } else if (request.world === PartyWorld.Rift && host.encounter.world !== PartyWorld.Rift && !host.encounter.switching) {
+            const rift = riftPartyJoin(nk, nowUnixMs);
+            if (rift !== null)
+                host.encounter.proposeWorld(PartyWorld.Rift, rift.id);
+        }
+    }
+    host.worldRequests.length = 0;
+}
+
+function partyLeaderOf(nk: nkruntime.Nakama, partyId: string): string | null {
+    if (!partyId)
+        return null;
+    const group = partyGroupById(nk, partyId);
+    return group ? partyMetaOf(group).leader : null;
 }
 
 function partyFlushChronicle(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: PartyMatchState): void {

@@ -26,7 +26,7 @@ namespace Game.Core.Party.Wire
         public PartyWorld World;
         public byte PendingWorld;
         public byte SwitchTicksLeft;
-        public long WindowId;
+        public long RiftId;
 
         public bool Switching => PendingWorld != PartyEncounter.NoWorld;
 
@@ -92,7 +92,7 @@ namespace Game.Core.Party.Wire
             writer.Byte((byte)World);
             writer.Byte(PendingWorld);
             writer.Byte(SwitchTicksLeft);
-            writer.Long(WindowId);
+            writer.Long(RiftId);
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -106,7 +106,7 @@ namespace Game.Core.Party.Wire
             message.World = (PartyWorld)reader.Byte();
             message.PendingWorld = reader.Byte();
             message.SwitchTicksLeft = reader.Byte();
-            message.WindowId = reader.Long();
+            message.RiftId = reader.Long();
             return message;
         }
 
@@ -152,7 +152,7 @@ namespace Game.Core.Party.Wire
                 World = encounter.World,
                 PendingWorld = encounter.PendingWorld,
                 SwitchTicksLeft = (byte)System.Math.Min(255, encounter.SwitchTicksLeft),
-                WindowId = encounter.WindowId
+                RiftId = encounter.RiftId
             };
             var shown = 0;
             for (var i = 0; i < PartyEncounter.MaxEffects && shown < ShownEffect.MaxShown; i++)

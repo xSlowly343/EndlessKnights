@@ -25,7 +25,7 @@ namespace Game.Core.Party
         private readonly long[] _lastReactionTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
-        private readonly RiftSchedule? _rift;
+        private readonly RiftRules? _rift;
         private PartyRules _rules;
         private uint _stateSequence;
         private uint _rosterVersion;
@@ -33,7 +33,7 @@ namespace Game.Core.Party
         private int _ticksToState;
         private int _ticksToRoster;
 
-        public PartyHost(PartyEncounter encounter, IPartyTransport transport, PartyRules rules, RiftSchedule? rift = null)
+        public PartyHost(PartyEncounter encounter, IPartyTransport transport, PartyRules rules, RiftRules? rift = null)
         {
             _encounter = encounter;
             _transport = transport;
@@ -42,6 +42,7 @@ namespace Game.Core.Party
         }
 
         public long ClockUnixMs { get; set; }
+        public ulong LeaderId { get; set; }
 
         public PartyEncounter Encounter => _encounter;
         public long Kills { get; private set; }
@@ -103,7 +104,8 @@ namespace Game.Core.Party
                     React(slot, reaction);
                     break;
                 case PartyMessageKind.WorldRequest when PartyCodec.TryDecode(_in, length, out WorldRequestMessage request):
-                    RequestWorld(request);
+                    if (LeaderId == 0 || _encounter.Member(slot).PlayerId == LeaderId)
+                        RequestWorld(request);
                     break;
             }
         }
@@ -157,14 +159,13 @@ namespace Game.Core.Party
                 _encounter.ProposeWorld(PartyWorld.Home, 0);
                 return;
             }
-            var open = request.World == PartyWorld.Rift ? _rift?.WindowAt(ClockUnixMs) : null;
-            if (open != null && open.Value.Id == request.WindowId)
-                _encounter.ProposeWorld(PartyWorld.Rift, request.WindowId);
+            if (request.World == PartyWorld.Rift && _rift?.Schedule.WindowAt(ClockUnixMs) != null)
+                _encounter.ProposeWorld(PartyWorld.Rift, ClockUnixMs / 1000);
         }
 
         private void ReturnWhenTheRiftCloses()
         {
-            if (_encounter.World == PartyWorld.Rift && (_rift == null || ClockUnixMs >= _encounter.WindowId * 1000 + _rift.DurationMs))
+            if (_encounter.World == PartyWorld.Rift && (_rift == null || ClockUnixMs >= _encounter.RiftId * 1000 + _rift.PartyDurationMs))
                 _encounter.SwitchWorld(PartyWorld.Home, 0);
         }
 

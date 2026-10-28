@@ -72,28 +72,34 @@ namespace Game.Core.Sim.Rift
                 return RiftEntry.InDungeon;
             if (_stage.Linked)
                 return RiftEntry.InParty;
+            var rift = _state.Rift;
+            if (rift.WindowId != 0 && nowUnixMs < rift.WindowEndUnixMs && WindowAt(rift.WindowId * 1000) != null)
+                return EnterRift(rift.WindowId, rift.WindowEndUnixMs);
             var open = WindowAt(nowUnixMs);
             return open == null ? RiftEntry.Closed : EnterWindow(open.Value);
         }
 
-        public RiftEntry EnterPartyWindow(long windowId)
+        public RiftEntry EnterPartyRift(long riftId)
         {
-            if (Inside && _state.Rift.WindowId == windowId)
+            if (Inside && _state.Rift.WindowId == riftId)
                 return RiftEntry.AlreadyInside;
             if (_state.Dungeons.Inside)
                 return RiftEntry.InDungeon;
-            var open = WindowAt(windowId * 1000);
-            if (open == null || open.Value.Id != windowId)
+            if (WindowAt(riftId * 1000) == null)
                 return RiftEntry.Closed;
             Leave();
-            return EnterWindow(open.Value);
+            return EnterRift(riftId, PartyRiftEnd(riftId));
         }
 
-        private RiftEntry EnterWindow(RiftWindow window)
+        public long PartyRiftEnd(long riftId) => riftId * 1000 + _rules.PartyDurationMs;
+
+        private RiftEntry EnterWindow(RiftWindow window) => EnterRift(window.Id, window.EndUnixMs);
+
+        private RiftEntry EnterRift(long riftId, long endUnixMs)
         {
             var rift = _state.Rift;
-            if (rift.WindowId != window.Id)
-                rift.StartWindow(window.Id, window.EndUnixMs);
+            if (rift.WindowId != riftId)
+                rift.StartWindow(riftId, endUnixMs);
             var riftProgress = rift.OtherWorld ?? new StageProgress();
             rift.OtherWorld = StageProgress.Capture(_state);
             rift.Inside = true;
@@ -173,11 +179,11 @@ namespace Game.Core.Sim.Rift
 
         private void LoadWindowModifiers()
         {
-            var windowId = _state.Rift.WindowId;
-            if (windowId == _modifiersFor)
+            var riftId = _state.Rift.WindowId;
+            if (riftId == _modifiersFor)
                 return;
-            _modifiersFor = windowId;
-            _windowModifiers = windowId == 0 ? System.Array.Empty<RiftModifier>() : _rules.ModifiersFor(windowId);
+            _modifiersFor = riftId;
+            _windowModifiers = riftId == 0 ? System.Array.Empty<RiftModifier>() : _rules.ModifiersFor(WindowAt(riftId * 1000)?.Id ?? riftId);
             _unlessMasks = new int[_windowModifiers.Count];
             _favouredMask = 0;
             for (var i = 0; i < _windowModifiers.Count; i++)
