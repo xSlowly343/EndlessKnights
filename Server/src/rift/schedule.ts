@@ -87,3 +87,7 @@ function riftWindowReply(rules: RiftRules, nowUnixMs: number): string {
         announced: riftAnnounced(rules, nowUnixMs)
     });
 }
+
+function riftWindowRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return riftWindowReply(RiftServerRules, Date.now());
+}

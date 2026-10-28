@@ -55,4 +55,4 @@ Tools/            скрипты PowerShell и сборка Game.Core вне Uni
 docs/             документация
 build.ps1         сборка игры
 ```
-Папки `art/` (исходники Blender, фаза 12) и `Server/` (модули Nakama, фаза 13) появятся позже.
+Ещё есть `art/` (исходники графики) и `Server/` (модули Nakama на TypeScript, развёртывание на Ubuntu 24.04 в `Server/deploy`).

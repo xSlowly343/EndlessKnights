@@ -55,7 +55,7 @@ class PartyEncounter {
     fighters = 0;
     private previousEnemyId = 0;
     private previousKind = PartyEnemyKind.Normal;
-    private previousKilledTick = -Infinity;
+    private previousKilledTick = -Number.MAX_SAFE_INTEGER;
 
     constructor(private rules: PartyEncounterRules, private readonly seed: string) {
         for (let i = 0; i < PartyMaxSlots; i++)

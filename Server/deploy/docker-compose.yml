@@ -1,0 +1,86 @@
+name: riftwarden
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "5"
+
+services:
+  postgres:
+    image: postgres:${POSTGRES_VERSION:?}
+    restart: unless-stopped
+    command: ["postgres", "-c", "shared_buffers=256MB", "-c", "effective_cache_size=768MB", "-c", "max_connections=60"]
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?}
+      POSTGRES_USER: ${POSTGRES_USER:?}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    logging: *logging
+
+  nakama:
+    build:
+      context: ../..
+      dockerfile: Server/deploy/Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION:?}
+        TYPESCRIPT_VERSION: ${TYPESCRIPT_VERSION:?}
+        NAKAMA_VERSION: ${NAKAMA_VERSION:?}
+        SERVER_VERSION: ${SERVER_VERSION:?}
+    image: riftwarden-nakama:${SERVER_VERSION:?}-nakama${NAKAMA_VERSION:?}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?}
+      POSTGRES_USER: ${POSTGRES_USER:?}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+      NAKAMA_SERVER_KEY: ${NAKAMA_SERVER_KEY:?}
+      NAKAMA_HTTP_KEY: ${NAKAMA_HTTP_KEY:?}
+      NAKAMA_SESSION_KEY: ${NAKAMA_SESSION_KEY:?}
+      NAKAMA_REFRESH_KEY: ${NAKAMA_REFRESH_KEY:?}
+      NAKAMA_CONSOLE_USER: ${NAKAMA_CONSOLE_USER:?}
+      NAKAMA_CONSOLE_PASSWORD: ${NAKAMA_CONSOLE_PASSWORD:?}
+      NAKAMA_CONSOLE_SIGNING_KEY: ${NAKAMA_CONSOLE_SIGNING_KEY:?}
+      STEAM_APP_ID: ${STEAM_APP_ID:?}
+      STEAM_PUBLISHER_KEY: ${STEAM_PUBLISHER_KEY:-}
+    ports:
+      - "127.0.0.1:7351:7351"
+    healthcheck:
+      test: ["CMD", "/nakama/nakama", "healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    logging: *logging
+
+  caddy:
+    image: caddy:${CADDY_VERSION:?}
+    restart: unless-stopped
+    depends_on:
+      nakama:
+        condition: service_healthy
+    environment:
+      DOMAIN: ${DOMAIN:?}
+      ACME_EMAIL: ${ACME_EMAIL:?}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    logging: *logging
+
+volumes:
+  postgres-data:
+  caddy-data:
+  caddy-config:
