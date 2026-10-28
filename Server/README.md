@@ -29,7 +29,7 @@ npm test
 
   | RPC | Запрос | Ответ |
   |---|---|---|
-  | `party_create` | `{ access?: "invite"\|"open", title?, language?, wanted? }` | вид отряда: `{ id, code, access, title, language, wanted, leader, maxMembers, matchId, members: [{ userId, name, steamId, leader }] }` |
+  | `party_create` | `{ access?: "invite"\|"open", title?, language?, wanted? }` | вид отряда: `{ id, code, access, title, language, wanted, leader, maxMembers, matchId, members: [{ userId, name, steamId, leader, slot }] }`, `slot` — место в живом матче отряда или −1 |
   | `party_mine` | `{}` | `{ party: вид \| null }` |
   | `party_connect` | `{}` | `{ matchId }` — живой матч отряда, при необходимости новый |
   | `party_join` | `{ code }` (любой регистр, с дефисом) или `{ partyId }` (только открытый) | вид |

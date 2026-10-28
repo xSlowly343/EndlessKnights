@@ -37,7 +37,7 @@ namespace Game.Net.Tests
         public void APartyViewIsReadFromTheServerReply()
         {
             var json = NakamaJson.Parse("{\"id\":\"p1\",\"code\":\"K7MQ2X\",\"access\":\"open\",\"title\":\"night_shift\",\"language\":\"ru\",\"wanted\":\"buffer\",\"leader\":\"u1\",\"maxMembers\":4,\"matchId\":null,"
-                + "\"members\":[{\"userId\":\"u1\",\"name\":\"Ann\",\"steamId\":\"76561198000000000\",\"leader\":true},{\"userId\":\"u2\",\"name\":\"Bob\",\"steamId\":\"\",\"leader\":false}]}");
+                + "\"members\":[{\"userId\":\"u1\",\"name\":\"Ann\",\"steamId\":\"76561198000000000\",\"leader\":true,\"slot\":1},{\"userId\":\"u2\",\"name\":\"Bob\",\"steamId\":\"\",\"leader\":false}]}");
 
             var view = PartyView.From(json)!;
 
@@ -47,6 +47,11 @@ namespace Game.Net.Tests
             Assert.That(view.Members.Count, Is.EqualTo(2));
             Assert.That(view.Members[0].Leader, Is.True);
             Assert.That(view.Members[0].SteamId, Is.EqualTo("76561198000000000"));
+            Assert.That(view.Members[0].Slot, Is.EqualTo(1));
+            Assert.That(view.Members[1].Slot, Is.EqualTo(-1));
+            Assert.That(view.UserIdAtSlot(1), Is.EqualTo("u1"));
+            Assert.That(view.UserIdAtSlot(0), Is.Null);
+            Assert.That(view.UserIdAtSlot(-1), Is.Null);
             Assert.That(PartyView.From(NakamaJson.Parse("null")), Is.Null);
         }
 

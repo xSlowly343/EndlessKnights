@@ -189,6 +189,27 @@ test("only party members may enter the party match", () => {
   assert.ok(nk.groups.get(view.id).metadata.hours.some((count) => count > 0));
 });
 
+test("members show their slot in the live match, so a roster row can be blocked or reported", () => {
+  const { nk, call } = world("ann", "bob");
+  const view = call("ann", "partyCreateRpc", {});
+  call("bob", "partyJoinRpc", { code: view.code });
+  assert.deepStrictEqual(call("ann", "partyMineRpc").party.members.map((m) => m.slot), [-1, -1]);
+  const ctx = { matchId: call("ann", "partyConnectRpc").matchId, env: {} };
+  const presence = (userId) => ({ userId: userId, sessionId: "s" + userId, username: userId, node: "n" });
+  let state = JSON.parse(JSON.stringify(party.partyMatchInit(ctx, logger, nk, { partyId: view.id }).state));
+  for (const [userId, number] of [["bob", "21"], ["ann", "22"]]) {
+    state = JSON.parse(JSON.stringify(party.partyMatchJoinAttempt(ctx, logger, nk, null, 0, state, presence(userId), { playerNumber: number }).state));
+    state = JSON.parse(JSON.stringify(party.partyMatchJoin(ctx, logger, nk, { matchLabelUpdate() {} }, 0, state, [presence(userId)]).state));
+  }
+  const slots = {};
+  for (const member of call("ann", "partyMineRpc").party.members)
+    slots[member.userId] = member.slot;
+  assert.deepStrictEqual(slots, { ann: 1, bob: 0 });
+  nk.matches.delete(ctx.matchId);
+  call("ann", "partyConnectRpc");
+  assert.deepStrictEqual(call("ann", "partyMineRpc").party.members.map((m) => m.slot), [-1, -1]);
+});
+
 test("members come from the group itself, so a lost metadata write cannot hide anyone", () => {
   const { nk, call } = world("ann", "bob", "cid");
   const view = call("ann", "partyCreateRpc", {});

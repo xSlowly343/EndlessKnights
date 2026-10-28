@@ -4,10 +4,11 @@ namespace Game.Core.Ui
 {
     public readonly struct PartyRow
     {
-        public PartyRow(bool isSelf, string name, string details, PartyPresence presence)
+        public PartyRow(bool isSelf, int slot, string name, string details, PartyPresence presence)
         {
             IsSelf = isSelf;
             IsFree = false;
+            Slot = slot;
             Name = name;
             Details = details;
             Presence = presence;
@@ -17,6 +18,7 @@ namespace Game.Core.Ui
         {
             IsSelf = false;
             IsFree = isFree;
+            Slot = PartyEncounter.NoSlot;
             Name = string.Empty;
             Details = string.Empty;
             Presence = PartyPresence.Offline;
@@ -26,6 +28,8 @@ namespace Game.Core.Ui
 
         public bool IsSelf { get; }
         public bool IsFree { get; }
+        public int Slot { get; }
+        public bool CanBeReported => !IsSelf && !IsFree && Slot >= 0;
         public string Name { get; }
         public string Details { get; }
         public PartyPresence Presence { get; }

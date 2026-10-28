@@ -169,6 +169,17 @@ function partyLastSeen(nk: nkruntime.Nakama, userIds: string[]): { [userId: stri
     return seen;
 }
 
+function partySlotsIn(nk: nkruntime.Nakama, userIds: string[], partyId: string, matchId: string | null): { [userId: string]: number } {
+    const slots: { [userId: string]: number } = {};
+    if (userIds.length === 0 || !matchId)
+        return slots;
+    const objects = nk.storageRead(userIds.map((userId) => ({ collection: "party", key: "current", userId: userId })));
+    for (const object of objects)
+        if (object.value.partyId === partyId && object.value.matchId === matchId && typeof object.value.slot === "number")
+            slots[object.userId] = object.value.slot;
+    return slots;
+}
+
 function partyView(nk: nkruntime.Nakama, group: nkruntime.Group): { [key: string]: any } {
     const meta = partyMetaOf(group);
     const users = meta.members.length > 0 ? nk.usersGetId(meta.members) : [];
@@ -176,6 +187,7 @@ function partyView(nk: nkruntime.Nakama, group: nkruntime.Group): { [key: string
     for (const user of users)
         byId[user.userId] = user;
     const live = partyLiveMatchId(nk, group.id);
+    const slots = partySlotsIn(nk, meta.members, group.id, live);
     return {
         id: group.id,
         code: meta.code,
@@ -188,7 +200,10 @@ function partyView(nk: nkruntime.Nakama, group: nkruntime.Group): { [key: string
         matchId: live,
         members: meta.members.map((userId) => {
             const user = byId[userId];
-            return { userId: userId, name: user ? user.displayName || user.username : "", steamId: user ? user.steamId || "" : "", leader: userId === meta.leader };
+            return {
+                userId: userId, name: user ? user.displayName || user.username : "", steamId: user ? user.steamId || "" : "", leader: userId === meta.leader,
+                slot: slots[userId] === undefined ? -1 : slots[userId]
+            };
         })
     };
 }

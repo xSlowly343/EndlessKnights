@@ -43,9 +43,14 @@ namespace Game.Net.Nakama
         public async Task<string> ConnectAsync(CancellationToken cancel = default) =>
             NakamaJson.Text(await Call("party_connect", "{}", cancel).ConfigureAwait(false), "matchId");
 
-        public async Task<IReadOnlyList<PartyCard>> ListAsync(string? language, string role, string? wanted, int utcOffsetMinutes, CancellationToken cancel = default)
+        public async Task<IReadOnlyList<PartyCard>> ListAsync(string? language, string role, string? wanted, int utcOffsetMinutes, CancellationToken cancel = default) =>
+            await ListAsync(language, role, wanted, null, utcOffsetMinutes, cancel).ConfigureAwait(false);
+
+        public async Task<IReadOnlyList<PartyCard>> ListAsync(string? language, string role, string? wanted, string? slot, int utcOffsetMinutes, CancellationToken cancel = default)
         {
             var fields = new List<(string, string)> { ("role", NakamaJson.Quote(role)), ("utcOffsetMinutes", Number(utcOffsetMinutes)) };
+            if (slot != null)
+                fields.Add(("slot", NakamaJson.Quote(slot)));
             if (language != null)
                 fields.Add(("language", NakamaJson.Quote(language)));
             if (wanted != null)

@@ -68,6 +68,7 @@ namespace Game.Core.Ui
             "unknown code" => Texts.Get("party.reason.unknownCode"),
             "already in a party" => Texts.Get("party.reason.alreadyIn"),
             "not in a party" => Texts.Get("party.reason.notIn"),
+            "party not found" => Texts.Get("party.reason.notFound"),
             _ => Texts.Get("party.reason.network")
         };
     }

@@ -85,6 +85,15 @@ dotnet run --project Tools/CoreBuild/Game.Sim -c Release -- bot --server https:/
 ```
 Ожидается «both linked True, same enemy True» и у обоих ботов оплаченные убийства больше нуля. Код выхода 0.
 
+Поиск отряда так же (два терминала): первый бот создаёт открытый отряд, второй находит его через `party_list` и вступает:
+```bash
+dotnet run --project Tools/CoreBuild/Game.Sim -c Release -- bot --server https://<домен> --key <NAKAMA_SERVER_KEY> --create --open --seconds 60
+```
+```bash
+dotnet run --project Tools/CoreBuild/Game.Sim -c Release -- bot --server https://<домен> --key <NAKAMA_SERVER_KEY> --find --seconds 30
+```
+Второй печатает «open parties N» со строками отрядов и «link Linked». Флаг `--report cheating` в тестах на боевом сервере не ставить: жалоба ляжет в `party_reports`.
+
 Вывод обеих команд (без ключей) приложи к отчёту или PR.
 
 ### Статистика и отчёты об ошибках

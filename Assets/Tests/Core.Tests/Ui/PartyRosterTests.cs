@@ -55,6 +55,8 @@ namespace Game.Core.Tests.Ui
             Assert.That(PartyRoster.Status(rows[2].Presence), Is.EqualTo("нет связи"));
             Assert.That(rows[3].IsFree, Is.True);
             Assert.That(PartyRoster.Members(rows), Is.EqualTo(3));
+            Assert.That(rows.Select(row => row.Slot), Is.EqualTo(new[] { 0, 1, 3, PartyEncounter.NoSlot }));
+            Assert.That(rows.Select(row => row.CanBeReported), Is.EqualTo(new[] { false, true, true, false }));
         }
 
         [Test]
