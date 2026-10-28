@@ -696,11 +696,12 @@
       "tier": "common",
       "role": "fast",
       "color": "green",
-      "name": { "ru": "Искра с пальцев", "en": "Finger Spark" },
+      "name": {"ru": "Искра с пальцев", "en": "Finger Spark"},
       "tags": ["Skill"],
-      "cost": { "resource": 15 },
+      "cost": {"resource": 15},
       "cooldownSeconds": 3,
-      "effect": { "type": "strike", "multiplier": 2, "queueTargets": 2 }
+      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 2},
+      "native": {"when": {"resourceAtLeast": 70, "extraTargets": 1}}
     },
     {
       "id": "fathers_scimitar",
@@ -2225,12 +2226,12 @@
       "weapon": "storm_wand",
       "ascendancy": "eclipser",
       "color": "green",
-      "name": { "ru": "Полдень и полночь", "en": "Noon and Midnight" },
+      "name": {"ru": "Полдень и полночь", "en": "Noon and Midnight"},
       "tags": ["Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 30,
       "durationSeconds": 10,
-      "locked": true
+      "effect": {"type": "aura", "modifiers": [{"stat": "damageAtBalance", "kind": "flat", "value": 1}]}
     },
     {
       "id": "rime_sphere",
@@ -2238,12 +2239,12 @@
       "weapon": "storm_wand",
       "ascendancy": "frost_giant",
       "color": "green",
-      "name": { "ru": "Сфера инея", "en": "Rime Sphere" },
+      "name": {"ru": "Сфера инея", "en": "Rime Sphere"},
       "tags": ["Aura", "Skill"],
-      "cost": { "resource": 50 },
+      "cost": {"resource": 50},
       "cooldownSeconds": 30,
       "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "bossTimerSlow", "kind": "more", "value": 0.6667 }] }
+      "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSlow", "kind": "more", "value": 0.6667}, {"stat": "frozenFirstHit", "kind": "flat", "value": 2}]}
     },
     {
       "id": "dust_whirl",
@@ -2251,12 +2252,12 @@
       "weapon": "storm_wand",
       "ascendancy": "wind_dervish",
       "color": "green",
-      "name": { "ru": "Пыльный вихрь", "en": "Dust Whirl" },
+      "name": {"ru": "Пыльный вихрь", "en": "Dust Whirl"},
       "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 30,
       "durationSeconds": 10,
-      "locked": true
+      "effect": {"type": "pulse", "everySeconds": 1, "multiplier": 3, "queueTargets": 3, "mouseEverySeconds": 0.5}
     },
     {
       "id": "lantern_at_a_distance",
@@ -2265,13 +2266,13 @@
       "tier": "common",
       "role": "fast",
       "color": "green",
-      "name": { "ru": "Фонарь на расстоянии", "en": "Lantern at a Distance" },
+      "name": {"ru": "Фонарь на расстоянии", "en": "Lantern at a Distance"},
       "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 20 },
+      "cost": {"resource": 20},
       "cooldownSeconds": 6,
       "durationSeconds": 8,
-      "effect": { "type": "inputHits", "pxPerHit": 300, "pxShare": 1 },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.2, "tags": ["Mouse"]}] }
+      "effect": {"type": "inputHits", "pxPerHit": 300, "pxShare": 1},
+      "native": {"resourceOnHit": 1}
     },
     {
       "id": "snap",
@@ -2446,12 +2447,12 @@
       "tier": "rare",
       "role": "heavy",
       "color": "green",
-      "name": { "ru": "Раскат", "en": "Peal of Thunder" },
+      "name": {"ru": "Раскат", "en": "Peal of Thunder"},
       "tags": ["Skill"],
-      "cost": { "resource": 50 },
+      "cost": {"resource": 50},
       "cooldownSeconds": 25,
-      "effect": { "type": "strike", "multiplier": 8 },
-      "native": { "when": {"resourceAtLeast": 90, "multiplier": 1.5} }
+      "effect": {"type": "strike", "multiplier": 8, "bossTimerStopSeconds": 3},
+      "native": {"when": {"resourceAtLeast": 90, "multiplier": 1.5}}
     },
     {
       "id": "chain_over_the_roofs",
@@ -2542,13 +2543,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "green",
-      "name": { "ru": "Плащ-туча", "en": "Cloud Cloak" },
+      "name": {"ru": "Плащ-туча", "en": "Cloud Cloak"},
       "tags": ["Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 30,
       "durationSeconds": 10,
-      "effect": { "type": "pulse", "everySeconds": 0.5, "multiplier": 2 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 1.6666666666666667} }
+      "effect": {"type": "pulse", "everySeconds": 0.5, "multiplier": 2},
+      "native": {"mouseEverySeconds": 0.3}
     },
     {
       "id": "weather_over_the_edge",
@@ -2557,13 +2558,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "green",
-      "name": { "ru": "Погода над Кромкой", "en": "Weather over the Edge" },
+      "name": {"ru": "Погода над Кромкой", "en": "Weather over the Edge"},
       "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 80 },
+      "cost": {"resource": 80},
       "cooldownSeconds": 45,
       "durationSeconds": 12,
-      "effect": { "type": "queueHits", "share": 0.5, "targets": 1 },
-      "native": { "modifiers": [{"stat": "overloadDisabled", "kind": "flat", "value": 1}] }
+      "effect": {"type": "queueHits", "share": 0.5, "targets": 1},
+      "native": {"modifiers": [{"stat": "overloadKeep", "kind": "flat", "value": 0.7}]}
     },
     {
       "id": "lightning_in_the_back",

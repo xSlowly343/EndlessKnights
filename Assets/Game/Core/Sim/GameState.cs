@@ -122,6 +122,7 @@ namespace Game.Core.Sim
         public double NextKillShards { get; set; }
         public long BossStarts { get; set; }
         public int HitsOnEnemy { get; set; }
+        public int BossTimerStopTicks { get; set; }
         public int KillStreak { get; set; }
         public long TicksSinceKill { get; set; }
         public int AfterIdleTicks { get; set; }
@@ -200,6 +201,7 @@ namespace Game.Core.Sim
             EnemyHp = hp;
             EnemyMaxHp = hp;
             HitsOnEnemy = 0;
+            BossTimerStopTicks = 0;
             EnemySpawnTick = Tick;
             PoisonStacks = 0;
             BurnStacks = 0;

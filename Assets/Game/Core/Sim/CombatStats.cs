@@ -42,6 +42,8 @@ namespace Game.Core.Sim
         public static readonly StatId BossTimerSlow = new StatId("bossTimerSlow");
         public static readonly StatId DamagePerKill = new StatId("damagePerKill");
         public static readonly StatId FirstHitsBonus = new StatId("firstHitsBonus");
+        public static readonly StatId FrozenFirstHit = new StatId("frozenFirstHit");
+        public static readonly StatId OverloadKeep = new StatId("overloadKeep");
         public static readonly StatId CullThreshold = new StatId("cullThreshold");
         public static readonly StatId DamageAfterIdle = new StatId("damageAfterIdle");
         public static readonly StatId ResourceMax = new StatId("resourceMax");

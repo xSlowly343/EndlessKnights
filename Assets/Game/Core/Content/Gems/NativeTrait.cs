@@ -28,6 +28,7 @@ namespace Game.Core.Content.Gems
         public double ResourceOnHit { get; set; }
         public double ResourceOnCrit { get; set; }
         public double ResourcePerPoisonTick { get; set; }
+        public double MouseEverySeconds { get; set; }
         public double ExtraHitPerMousePx { get; set; }
         public int MaxHits { get; set; }
         public double ReleaseBonusPx { get; set; }

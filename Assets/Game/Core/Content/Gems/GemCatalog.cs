@@ -292,7 +292,8 @@ namespace Game.Core.Content.Gems
                         BossMultiplier = Number(node, "bossMultiplier", 1000),
                         LastKeyHit = node.HasField("lastKeyHit") && node.Field("lastKeyHit").AsBool(),
                         PauseSeconds = Number(node, "pauseSeconds", 3600),
-                        PauseMultiplier = Number(node, "pauseMultiplier", 1e6)
+                        PauseMultiplier = Number(node, "pauseMultiplier", 1e6),
+                        BossTimerStopSeconds = Number(node, "bossTimerStopSeconds", 600)
                     };
                 case "aura":
                     return new AuraEffect(
@@ -423,7 +424,8 @@ namespace Game.Core.Content.Gems
                     return new PulseEffect(
                         node.Field("everySeconds").AsNumber(0.1, 3600),
                         node.Field("multiplier").AsNumber(0, 1e6),
-                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0);
+                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
+                        node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0);
                 case "extendFamily":
                     return new ExtendFamilyEffect(node.Field("family").AsString(), node.Field("seconds").AsNumber(0.1, 3600));
                 case "curseFlow":
@@ -478,6 +480,7 @@ namespace Game.Core.Content.Gems
                 ResourceOnHit = Number(node, "resourceOnHit", 1000),
                 ResourceOnCrit = Number(node, "resourceOnCrit", 1000),
                 ResourcePerPoisonTick = Number(node, "resourcePerPoisonTick", 1000),
+                MouseEverySeconds = node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0,
                 ExtraHitPerMousePx = Number(node, "extraHitPerMousePx", 1e6),
                 MaxHits = node.HasField("maxHits") ? node.Field("maxHits").AsInt(1, 1000) : 0,
                 ReleaseBonusPx = node.HasField("releaseBonus") ? node.Field("releaseBonus").Field("px").AsNumber(1, 1e6) : 0,

@@ -78,6 +78,8 @@
     "stat.mouseDistance": { "ru": "урон от пути мыши", "en": "damage from mouse travel" },
     "stat.doubleStrike": { "ru": "шанс двойного удара", "en": "double strike chance" },
     "stat.gemDrop": { "ru": "шанс выпадения гемов", "en": "gem drop chance" },
+    "stat.frozenFirstHit": { "ru": "урона первого удара по замёрзшему врагу", "en": "first hit damage on a frozen enemy" },
+    "stat.overloadKeep": { "ru": "шкалы остаётся после перегрузки", "en": "of the bar kept after an overload" },
     "stat.uncutGemChance": { "ru": "доля неогранённых гемов", "en": "uncut gem share" },
     "stat.shardDrop": { "ru": "Осколков Разлома с боссов", "en": "Rift Shards from bosses" },
     "stat.idleStartSeconds": { "ru": "время до Затишья", "en": "time before Lull" },

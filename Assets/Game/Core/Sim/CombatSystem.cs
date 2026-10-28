@@ -86,6 +86,8 @@ namespace Game.Core.Sim
             }
             if (_state.HitsOnEnemy < conditions.FirstHits)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.FirstHitsBonus, 0, tags));
+            if (_state.HitsOnEnemy == 0)
+                multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.FrozenFirstHit, 0, tags));
             if (_state.KillStreak > 0)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerKill, 0, tags)) * System.Math.Min(_state.KillStreak, conditions.KillStreakMax);
             if (_state.AfterIdleTicks > 0)
