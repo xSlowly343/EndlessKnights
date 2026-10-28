@@ -68,6 +68,7 @@ namespace Game.Presentation.Battle
         private static readonly Vector2 BossNumbersOrigin = StripSpace.AtPx(318f, 52f);
         private static readonly float NumbersSpreadX = StripSpace.Units(14f);
         private static readonly float NumbersSpreadY = StripSpace.Units(3f);
+        private static readonly Vector2 AllyNumbersShift = new Vector2(StripSpace.Units(-30f), StripSpace.Units(-34f));
         private static readonly Color HeroColor = new Color(0.25f, 0.55f, 1f);
         private static readonly Color EnemyColor = new Color(0.85f, 0.25f, 0.2f);
         private static readonly Color BossColor = new Color(0.6f, 0.1f, 0.6f);
@@ -96,6 +97,7 @@ namespace Game.Presentation.Battle
         private SpriteRenderer _hero = null!;
         private SpriteRenderer _enemy = null!;
         private AllySilhouettes _allies = null!;
+        private PartyEnemyMarks _marks = null!;
         private UiTheme _theme = null!;
         private RectTransform _hpTrack = null!;
         private RectTransform _hpFill = null!;
@@ -161,6 +163,7 @@ namespace Game.Presentation.Battle
         public bool TimerShown => _timer.gameObject.activeSelf;
         public float HpShown => _shownHp;
         public AllySilhouettes Allies => _allies;
+        public PartyEnemyMarks PartyMarks => _marks;
 
         public static BattleView Create()
         {
@@ -218,6 +221,13 @@ namespace Game.Presentation.Battle
             _numbers.Show(amount, crit, origin + spread);
         }
 
+        public void ShowAllyHit(BigNumber amount, Color color)
+        {
+            var origin = (_enemyScale > EnemySize ? BossNumbersOrigin : NumbersOrigin) + AllyNumbersShift;
+            var spread = new Vector2(Random.Range(-NumbersSpreadX, NumbersSpreadX), Random.Range(0f, NumbersSpreadY));
+            _numbers.ShowAlly(amount, color, origin + spread);
+        }
+
         public void ShowState(long stage, int wave, int waves, double waveFill, double hpFraction, double bossSecondsLeft, double bossTimerFraction, bool bossFight,
             double resource, double resourceMax, BigNumber gold)
         {
@@ -269,7 +279,9 @@ namespace Game.Presentation.Battle
             _enemy.gameObject.AddComponent<CircleCollider2D>();
             _hero.gameObject.AddComponent<BoxCollider2D>();
             ShapeSprites.Create("Ground", ShapeSprites.Square, GroundColor, new Vector2(StripSpace.Width / 2f, GroundY), new Vector2(StripSpace.Width, StripSpace.Units(2f)), 9, _scene);
-            BuildHud(StripCanvas.Create("Hud", HudSortingOrder, transform));
+            var hud = StripCanvas.Create("Hud", HudSortingOrder, transform);
+            BuildHud(hud);
+            _marks = PartyEnemyMarks.Create(hud, _theme);
             var texts = StripCanvas.Create("SceneTexts", TextSortingOrder, _scene);
             _retreatText = Label("Retreat", texts, _theme.BoldFont, 20f, RetreatColor, TextAlignmentOptions.Center);
             StripCanvas.Place(_retreatText.rectTransform, EnemyX * StripSpace.PixelsPerUnit, StripSpace.BaseHeightPx - (GroundY + EnemySize / 2f) * StripSpace.PixelsPerUnit, new Vector2(160f, 28f), new Vector2(0.5f, 0.5f));
@@ -427,6 +439,7 @@ namespace Game.Presentation.Battle
             AnimateEnemy(delta);
             AnimateHero(delta);
             _allies.Animate(Time.unscaledTime);
+            _marks.Animate(delta);
             AnimateEffects(delta);
         }
 

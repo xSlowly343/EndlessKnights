@@ -22,6 +22,7 @@ namespace Game.Core.Party
         private readonly double[] _hitAllowance = new double[PartyRules.MaxSlots];
         private readonly int[] _flags = new int[PartyRules.MaxSlots];
         private readonly long[] _lastReactionTick = new long[PartyRules.MaxSlots];
+        private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
         private PartyRules _rules;
         private uint _stateSequence;
         private uint _rosterVersion;
@@ -150,8 +151,11 @@ namespace Game.Core.Party
             _hitAllowance[slot] = System.Math.Max(0, _hitAllowance[slot] - System.Math.Max(0, batch.Hits));
             if (batch.Hits > 0)
                 _encounter.ReportInput(slot);
-            if (delta > 0)
-                AcceptedShares += CappedDamage(slot, batch.EnemyId, delta);
+            if (!(delta > 0))
+                return;
+            var accepted = CappedDamage(slot, batch.EnemyId, delta);
+            AcceptedShares += accepted;
+            _recentShares[slot] += accepted;
         }
 
         private double CappedDamage(int slot, uint enemyId, double delta)
@@ -245,7 +249,13 @@ namespace Game.Core.Party
             if (--_ticksToState <= 0 && _encounter.Started)
             {
                 _ticksToState = Ticks(_rules.StateBroadcastSeconds);
-                Broadcast(PartyCodec.Encode(_out, EncounterStateMessage.Of(_encounter, ++_stateSequence)));
+                var state = EncounterStateMessage.Of(_encounter, ++_stateSequence);
+                for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                {
+                    state.SetRecent(slot, (float)_recentShares[slot]);
+                    _recentShares[slot] = 0;
+                }
+                Broadcast(PartyCodec.Encode(_out, state));
             }
         }
 

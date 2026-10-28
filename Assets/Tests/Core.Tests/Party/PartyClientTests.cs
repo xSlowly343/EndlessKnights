@@ -307,6 +307,7 @@ namespace Game.Core.Tests.Party
                 Assert.That(player.Client.EnemyId, Is.EqualTo(rig.Host.Encounter.EnemyId));
             }
             Assert.That(rig.Players[0].Client.PartyRewards, Is.GreaterThan(paidBefore + 3));
+            Assert.That(rig.Players[0].Client.LastBossKill.EnemyId, Is.LessThanOrEqualTo(rig.Host.Encounter.EnemyId), "bosses of the old match do not hide the new ones");
         }
 
         [Test]
@@ -359,6 +360,45 @@ namespace Game.Core.Tests.Party
             Assert.That(rig.Players[0].Client.CanReact, Is.False);
             Assert.That(rig.Players[0].Client.SendReaction(0), Is.False);
             Assert.That(Game.Core.Ui.StripAllies.Fill(rig.Players[0].Client, new Game.Core.Ui.StripAlly[3]), Is.Zero);
+        }
+
+        [Test]
+        public void TheDamageOfAlliesArrivesInYourOwnNumbers()
+        {
+            var rig = new Rig(5, 40);
+            rig.Run(5);
+            var watcher = rig.Players[0].Client;
+            var ally = rig.Players[1].Client.OwnSlot;
+            watcher.TakeAllyDamage(ally);
+
+            rig.Run(5);
+
+            var damage = watcher.TakeAllyDamage(ally);
+            Assert.That(damage.Sign, Is.GreaterThan(0));
+            Assert.That(watcher.TakeAllyDamage(ally).Sign, Is.Zero, "taking resets the sum");
+            Assert.That(watcher.TakeAllyDamage(watcher.OwnSlot).Sign, Is.Zero, "your own damage is shown by your own hits");
+            Assert.That(rig.Host.Encounter.MemberCount, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void AnEnemyEffectShowsAsABadgeInItsOwnersColour()
+        {
+            var rig = new Rig(5, 40);
+            rig.Run(5);
+            var gem = TestWorld.Data.Gems.All[0];
+            var owner = rig.Players[1].Client.OwnSlot;
+            rig.Host.Encounter.ApplyEnemyEffect(gem.NetId, 0.15, 8, owner);
+
+            rig.Run(1);
+
+            var badges = new Game.Core.Ui.EnemyBadge[Game.Core.Party.Wire.ShownEffect.MaxShown];
+            Assert.That(Game.Core.Ui.PartyStripMarks.FillBadges(rig.Players[0].Client, TestWorld.Data.Gems, badges), Is.EqualTo(1));
+            Assert.That(badges[0].ColorIndex, Is.EqualTo(1));
+            Assert.That(badges[0].GemColor, Is.EqualTo(gem.Color));
+            Assert.That(badges[0].SecondsLeft, Is.InRange(6, 8));
+            Assert.That(badges[0].Name, Is.EqualTo(gem.NameRu));
+            Assert.That(Game.Core.Ui.PartyStripMarks.FillBadges(rig.Players[1].Client, TestWorld.Data.Gems, badges), Is.EqualTo(1));
+            Assert.That(badges[0].ColorIndex, Is.Zero, "the owner sees its own effect in its own colour");
         }
     }
 }

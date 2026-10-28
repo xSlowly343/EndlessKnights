@@ -40,6 +40,9 @@ namespace Game.Bootstrap
         private NotificationDriver? _notifications;
         private readonly int[] _heardReactions = new int[PartyRules.MaxSlots];
         private readonly StripAlly[] _allies = new StripAlly[StripAllies.MaxShown];
+        private readonly EnemyBadge[] _badges = new EnemyBadge[Game.Core.Party.Wire.ShownEffect.MaxShown];
+        private readonly BossShare[] _bossShares = new BossShare[PartyRules.MaxSlots];
+        private int _bossKillsSeen;
         private BattleView? _battle;
         private float _sinceAllies;
 
@@ -151,7 +154,24 @@ namespace Game.Bootstrap
             if (_sinceAllies < AlliesRefreshSeconds)
                 return;
             _sinceAllies = 0f;
-            _battle.Allies.Show(_allies, StripAllies.Fill(_party!, _allies));
+            var party = _party!;
+            var count = StripAllies.Fill(party, _allies);
+            _battle.Allies.Show(_allies, count);
+            for (var i = 0; i < count; i++)
+            {
+                var damage = party.TakeAllyDamage(_allies[i].Slot);
+                if (damage.Sign > 0)
+                    _battle.ShowAllyHit(damage, PartyColors.Of(_allies[i].ColorIndex));
+            }
+            _battle.PartyMarks.ShowBadges(_badges, PartyStripMarks.FillBadges(party, _data.Gems, _badges));
+            if (party.BossKillsSeen == _bossKillsSeen)
+                return;
+            _bossKillsSeen = party.BossKillsSeen;
+            if (!party.InParty)
+                return;
+            var kill = party.LastBossKill;
+            var shares = PartyStripMarks.FillBossShares(kill, party.Roster, party.OwnSlot, _bossShares);
+            _battle.PartyMarks.ShowBossShares(PartyStripMarks.BossTitle(kill.RewardedFor(party.OwnSlot)), _bossShares, shares);
         }
 
         private void WatchReactions()

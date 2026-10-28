@@ -56,6 +56,28 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void EnemyEffectsAndBossSharesAppearOverTheFight()
+        {
+            var badges = new[]
+            {
+                new Game.Core.Ui.EnemyBadge(1, Game.Core.Content.Gems.GemColor.Blue, 7, "Уязвимость"),
+                new Game.Core.Ui.EnemyBadge(Game.Core.Ui.PartyStripMarks.NoColor, Game.Core.Content.Gems.GemColor.Red, 2, string.Empty),
+            };
+            _battle.PartyMarks.ShowBadges(badges, 2);
+            Assert.That(_battle.PartyMarks.BadgesShown, Is.EqualTo(2));
+            _battle.PartyMarks.ShowBadges(badges, 0);
+            Assert.That(_battle.PartyMarks.BadgesShown, Is.Zero);
+
+            var shares = new[] { new Game.Core.Ui.BossShare(0, 0.6, "Вы 60%"), new Game.Core.Ui.BossShare(1, 0.4, "Игрок 2 40%") };
+            _battle.PartyMarks.ShowBossShares("Босс повержен · вклад отряда", shares, 2);
+
+            Assert.That(_battle.PartyMarks.CardShown, Is.True);
+            Assert.That(_battle.PartyMarks.CardTitle, Is.EqualTo("Босс повержен · вклад отряда"));
+            _battle.PartyMarks.Animate(5f);
+            Assert.That(_battle.PartyMarks.CardShown, Is.False);
+        }
+
+        [Test]
         public void StateLineShowsStageHealthAndGold()
         {
             _battle.ShowState(37, 2, 4, 0.5, 0.62, 0, 1, false, 62.7, 100, BigNumber.FromDouble(12400));

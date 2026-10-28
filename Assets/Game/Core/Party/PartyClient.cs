@@ -39,6 +39,7 @@ namespace Game.Core.Party
         private readonly int[] _reaction = { NoReaction, NoReaction, NoReaction, NoReaction };
         private readonly long[] _reactionTick = new long[PartyRules.MaxSlots];
         private readonly int[] _reactionSerial = new int[PartyRules.MaxSlots];
+        private readonly double[] _allyShares = new double[PartyRules.MaxSlots];
         private long _lastSentReactionTick = PartyEncounter.Never;
         private int _contributionKills;
         private int _ownSlot = PartyEncounter.NoSlot;
@@ -46,6 +47,7 @@ namespace Game.Core.Party
         private bool _offerNow;
 
         public const int NoReaction = -1;
+        private const double MaxAllyShares = 1000;
 
         public PartyClient(GameLoop loop, IPartyTransport transport, ulong hostId, PartyRules rules)
         {
@@ -96,6 +98,15 @@ namespace Game.Core.Party
 
         public int ContributionKills => _contributionKills;
 
+        public BigNumber TakeAllyDamage(int slot)
+        {
+            if (slot < 0 || slot >= PartyRules.MaxSlots)
+                return BigNumber.Zero;
+            var share = _allyShares[slot];
+            _allyShares[slot] = 0;
+            return share > 0 && _unit.Sign > 0 ? _unit * share : BigNumber.Zero;
+        }
+
         public ShownEffect EnemyEffect(int index)
         {
             var effect = _state.Effect(index);
@@ -136,7 +147,11 @@ namespace Game.Core.Party
             _contributionKills = 0;
             System.Array.Clear(_contribution, 0, _contribution.Length);
             for (var slot = 0; slot < _reaction.Length; slot++)
+            {
                 _reaction[slot] = NoReaction;
+                _allyShares[slot] = 0;
+            }
+            LastBossKill = default;
             _total = 0;
             _sentTotal = 0;
             _sharesSinceState = 0;
@@ -272,6 +287,11 @@ namespace Game.Core.Party
             _state = state;
             _stateArrivalTick = _tick;
             _sharesSinceState = 0;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (slot != _ownSlot && InParty)
+                    _allyShares[slot] = System.Math.Min(_allyShares[slot] + state.Recent(slot), MaxAllyShares);
+            }
         }
 
         private void OnKilled(in EnemyKilledMessage killed)

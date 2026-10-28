@@ -13,6 +13,7 @@ namespace Game.Presentation.Battle
         private const float RisePx = 31f;
         private const float FontSizePx = 18f;
         private const float CritFontSizePx = 27f;
+        private const float AllyFontSizePx = 13f;
         private const float CritTiltDegrees = -6f;
         private const float BoxWidthPx = 160f;
         private const float BoxHeightPx = 32f;
@@ -77,6 +78,21 @@ namespace Game.Presentation.Battle
                 _mergedAmount = amount;
                 _mergedHits = 1;
             }
+        }
+
+        public void ShowAlly(BigNumber amount, Color color, Vector2 at)
+        {
+            var index = Take();
+            var text = _texts[index];
+            text.text = Format(amount);
+            text.rectTransform.localRotation = Quaternion.identity;
+            text.fontSize = AllyFontSizePx;
+            _colors[index] = color;
+            text.color = color;
+            _starts[index] = StripCanvas.PxOf(at);
+            _ages[index] = 0f;
+            text.rectTransform.anchoredPosition = _starts[index];
+            text.gameObject.SetActive(true);
         }
 
         private void Grow(BigNumber amount)

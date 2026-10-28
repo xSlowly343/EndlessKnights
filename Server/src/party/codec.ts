@@ -179,7 +179,7 @@ function partyStart(kind: PartyMessageKind): PartyWriter {
     return writer;
 }
 
-function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number): ArrayBuffer {
+function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, recent?: number[]): ArrayBuffer {
     const w = partyStart(PartyMessageKind.EncounterState);
     w.uint(sequence);
     w.long(encounter.tick);
@@ -207,6 +207,8 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number):
         w.int(0);
         w.byte(0);
     }
+    for (let slot = 0; slot < PartyMaxSlots; slot++)
+        w.float(recent ? recent[slot] || 0 : 0);
     return w.bytes();
 }
 
