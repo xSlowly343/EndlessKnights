@@ -84,10 +84,10 @@ namespace Game.Core.Sim
             _resonance = new ResonanceSystem(data.Resonance, state, hero);
             _spirits = new SpiritSystem(data.Spirits, state, _combat);
             _stage.ChestGold = data.Atlas.ChestGold;
-            _stage.Encounters = data.Combat.Encounters;
+            _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
-            _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
+            _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades, hero);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
             _banner = new BannerSystem(state, hero, _combat, _skills);
             _paths = new PathSystem(state, hero, _combat, _resource, _skills);
@@ -399,6 +399,8 @@ namespace Game.Core.Sim
             _resonance.UseCatalog(data.Resonance);
             _spirits.UseCatalog(data.Spirits);
             _stage.ChestGold = data.Atlas.ChestGold;
+            _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
+            _stage.Encounters = data.Combat.Encounters;
             _tutorial.UseRules(data.Tutorial);
             _partyBuffs.UseRules(data.Party.Buffs);
             _synergy.UseRules(data.Synergy);

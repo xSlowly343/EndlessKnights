@@ -8,7 +8,11 @@ namespace Game.Core.Sim
 {
     public sealed class ArtifactSystem
     {
+        private const double MinUnlockDiscount = 0.1;
+        private static readonly int TypeCount = System.Enum.GetValues(typeof(ArtifactType)).Length;
+
         private readonly GameState _state;
+        private readonly StatSheet _hero;
         private readonly ModifierLayer _layer;
         private ArtifactCatalog _catalog;
         private RiftRules _rift;
@@ -18,6 +22,7 @@ namespace Game.Core.Sim
             _catalog = catalog;
             _rift = rift;
             _state = state;
+            _hero = hero;
             _layer = new ModifierLayer(hero);
             Rebuild();
         }
@@ -35,12 +40,26 @@ namespace Game.Core.Sim
         public IReadOnlyDictionary<string, int> Owned => OwnedLevels;
         public BigNumber Currency => InRift ? _state.Rift.Shards : _state.Echo;
 
-        public BigNumber UnlockCost => UnlockCurve.At(OwnedLevels.Count + 1);
+        public BigNumber UnlockCost => UnlockCurve.At(OwnedLevels.Count + 1) * UnlockDiscount;
 
         public bool AllUnlocked => Locked().Count == 0;
 
+        public int OpenGroup
+        {
+            get
+            {
+                var locked = Locked();
+                return locked.Count == 0 ? _catalog.Groups : locked[0].Group;
+            }
+        }
+
         public BigNumber LevelCost(string id) =>
             OwnedLevels.TryGetValue(id, out var level) ? LevelCurve.At(level) : BigNumber.Zero;
+
+        public bool IsMaxed(string id) =>
+            OwnedLevels.TryGetValue(id, out var level) && _catalog.TryGet(id, out var artifact) && artifact.Capped && level >= artifact.MaxLevel;
+
+        private double UnlockDiscount => System.Math.Max(MinUnlockDiscount, _hero.Value(CombatStats.ArtifactCost, 1));
 
         private Dictionary<string, int> OwnedLevels => InRift ? _state.Rift.Artifacts : _state.Artifacts;
         private ExponentialCurve UnlockCurve => InRift ? _rift.UnlockCost : _catalog.UnlockCost;
@@ -70,7 +89,7 @@ namespace Game.Core.Sim
 
         public bool TryLevelUp(string id)
         {
-            if (!OwnedLevels.TryGetValue(id, out var level))
+            if (!OwnedLevels.TryGetValue(id, out var level) || IsMaxed(id))
                 return false;
             var cost = LevelCurve.At(level);
             if (Currency < cost)
@@ -85,23 +104,53 @@ namespace Game.Core.Sim
         {
             var modifiers = new List<Modifier>();
             var owned = OwnedLevels;
+            var boosts = TypeBoosts(owned, out var allDamageBoost);
             foreach (var artifact in _catalog.All)
             {
-                if (!owned.TryGetValue(artifact.Id, out var level))
+                if (!owned.TryGetValue(artifact.Id, out var saved))
                     continue;
-                foreach (var modifier in artifact.PerLevel)
-                    modifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * level, modifier.Tags));
-                modifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, _catalog.AllDamagePerLevel * level));
+                var level = artifact.EffectiveLevel(saved);
+                var scale = artifact.Type == ArtifactType.Meta ? 1 : 1 + boosts[(int)artifact.Type];
+                if (artifact.WorksFor(_state.Class))
+                {
+                    foreach (var modifier in artifact.PerLevel)
+                        modifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * level * scale, modifier.Tags));
+                    foreach (var modifier in artifact.PerArtifact)
+                        modifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * level * owned.Count * scale, modifier.Tags));
+                }
+                modifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, _catalog.AllDamagePerLevel * level * (1 + allDamageBoost)));
             }
             _layer.Set(modifiers);
+        }
+
+        private double[] TypeBoosts(Dictionary<string, int> owned, out double allDamageBoost)
+        {
+            var boosts = new double[TypeCount];
+            allDamageBoost = 0;
+            foreach (var artifact in _catalog.All)
+            {
+                if (!owned.TryGetValue(artifact.Id, out var saved))
+                    continue;
+                var level = artifact.EffectiveLevel(saved);
+                allDamageBoost += artifact.BoostAllDamage * level;
+                foreach (var type in artifact.BoostTypes)
+                    boosts[(int)type] += artifact.Boost * level;
+            }
+            return boosts;
         }
 
         private List<ArtifactDef> Locked()
         {
             var locked = new List<ArtifactDef>();
+            var group = int.MaxValue;
             foreach (var artifact in _catalog.All)
             {
                 if (!OwnedLevels.ContainsKey(artifact.Id))
+                    group = System.Math.Min(group, artifact.Group);
+            }
+            foreach (var artifact in _catalog.All)
+            {
+                if (artifact.Group == group && !OwnedLevels.ContainsKey(artifact.Id))
                     locked.Add(artifact);
             }
             return locked;

@@ -14,7 +14,8 @@ namespace Game.Core.Stats
             "windupKeptAfterCrush", "gemDrop", "uncutGemChance", "frozenFirstHit", "overloadKeep", "keyHitQueueAll", "damagePerInputKind", "damagePerTenPoison", "cannonNextShare", "cannonShotDamage", "cannonShotDamageMax", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",
             "laterHitsPenalty", "minionExplode", "damagePerResource", "keyHitQueueShare", "damagePerCombo", "damagePerComboMax",
             "damageAtBalance", "rampPerSecond", "rampMax", "overloadQueueShare", "goldPerResource", "enemyHpCut", "damagePerAura",
-            "echoShare", "doomShare", "doomMultiplier", "dotQueueShare", "skeletonOnKill", "beastOnKill", "minionQueueShare"
+            "echoShare", "doomShare", "doomMultiplier", "dotQueueShare", "skeletonOnKill", "beastOnKill", "minionQueueShare",
+            "goldJackpotChance", "wandererChance", "offlineDpsShare"
         };
 
         private static readonly StatTags[] LabelledTags =

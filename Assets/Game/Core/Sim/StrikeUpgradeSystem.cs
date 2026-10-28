@@ -8,8 +8,10 @@ namespace Game.Core.Sim
     public sealed class StrikeUpgradeSystem
     {
         private const double ExactPowerLimit = 300;
+        private const double MinCostShare = 0.1;
 
         private readonly GameState _state;
+        private readonly StatSheet _hero;
         private readonly ModifierLayer _layer;
         private readonly Modifier[] _modifier = new Modifier[1];
         private StrikeUpgradeRules _rules;
@@ -18,6 +20,7 @@ namespace Game.Core.Sim
         {
             _rules = rules;
             _state = state;
+            _hero = hero;
             _layer = new ModifierLayer(hero);
             Rebuild();
         }
@@ -41,7 +44,7 @@ namespace Game.Core.Sim
             if (levels <= 0)
                 return BigNumber.Zero;
             var rate = _rules.Cost.Rate;
-            var next = _rules.Cost.At(Level + 1);
+            var next = NextCost;
             if (rate <= 1)
                 return next * levels;
             var exponent = levels * System.Math.Log10(rate);
@@ -51,9 +54,11 @@ namespace Game.Core.Sim
             return next * ExponentialCurve.FromLog10(sumLog10);
         }
 
+        private BigNumber NextCost => _rules.Cost.At(Level + 1) * System.Math.Max(MinCostShare, _hero.Value(CombatStats.UpgradeCost, 1));
+
         public int Affordable()
         {
-            var next = _rules.Cost.At(Level + 1);
+            var next = NextCost;
             if (_state.Gold < next)
                 return 0;
             var rate = _rules.Cost.Rate;

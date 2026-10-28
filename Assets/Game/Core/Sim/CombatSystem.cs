@@ -81,6 +81,8 @@ namespace Game.Core.Sim
             if (_state.FightingBoss)
             {
                 multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageVsBoss, 1, tags));
+                if (_state.EnemyType == EnemyType.Guardian)
+                    multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageVsGuardian, 1, tags));
                 if (_state.BossSecondsLeft <= conditions.BossTimerEndSeconds)
                     multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageAtBossTimerEnd, 1, tags));
             }

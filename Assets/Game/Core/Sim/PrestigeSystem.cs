@@ -1,5 +1,6 @@
 using Game.Core.Content;
 using Game.Core.Math;
+using Game.Core.Stats;
 
 namespace Game.Core.Sim
 {
@@ -9,22 +10,37 @@ namespace Game.Core.Sim
         private readonly EventQueue _events;
         private readonly StageSystem _stages;
         private readonly StrikeUpgradeSystem _upgrades;
+        private readonly StatSheet _hero;
         private PrestigeRules _rules;
 
-        public PrestigeSystem(PrestigeRules rules, GameState state, EventQueue events, StageSystem stages, StrikeUpgradeSystem upgrades)
+        public PrestigeSystem(PrestigeRules rules, GameState state, EventQueue events, StageSystem stages, StrikeUpgradeSystem upgrades, StatSheet hero)
         {
             _rules = rules;
             _state = state;
             _events = events;
             _stages = stages;
             _upgrades = upgrades;
+            _hero = hero;
         }
 
         public void UseRules(PrestigeRules rules) => _rules = rules;
 
         public bool Available => !_state.Rift.Inside && _state.HighestStage >= _rules.MinStage;
 
-        public BigNumber EchoGain => _rules.EchoFor(_state.RunGoldEarned);
+        public BigNumber EchoGain
+        {
+            get
+            {
+                var echo = _rules.EchoFor(_state.RunGoldEarned);
+                var bonus = System.Math.Max(0, _hero.Value(CombatStats.EchoGain, 1));
+                if (bonus == 1 || echo.Sign <= 0)
+                    return echo;
+                var boosted = echo * bonus;
+                return boosted.Log10() < 15 ? BigNumber.FromDouble(System.Math.Floor(boosted.ToDouble())) : boosted;
+            }
+        }
+
+        public long StartStage => System.Math.Max(1, System.Math.Min(_state.RecordStage, 1 + (long)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.PrestigeStartStage, 0)) + 1e-9)));
 
         public bool Highlighted
         {
@@ -52,8 +68,9 @@ namespace Game.Core.Sim
 
         private void ResetRun()
         {
-            _state.Stage = 1;
-            _state.HighestStage = 1;
+            var start = StartStage;
+            _state.Stage = start;
+            _state.HighestStage = start;
             _state.KillsOnStage = 0;
             _state.Farming = false;
             _state.FarmKills = 0;
