@@ -11,8 +11,11 @@ namespace Game.Core.Sim
         private readonly ResourceSystem _resource;
         private readonly SkillSystem _skills;
 
+        private long _seenKills;
+
         public PathSystem(GameState state, StatSheet hero, CombatSystem combat, ResourceSystem resource, SkillSystem skills)
         {
+            _seenKills = state.Kills;
             _state = state;
             _hero = hero;
             _combat = combat;
@@ -25,6 +28,7 @@ namespace Game.Core.Sim
         public long ClickHits { get; private set; }
         public long DoomReleases { get; private set; }
         public long Echoes { get; private set; }
+        public long RaisedFromKills { get; private set; }
 
         public void Tick(in EffectiveInput input)
         {
@@ -36,6 +40,31 @@ namespace Game.Core.Sim
             HolyFire();
             CurseStrikes();
             Echo(dealt);
+            RaiseFromKills();
+        }
+
+        private void RaiseFromKills()
+        {
+            var kills = _state.Kills - _seenKills;
+            _seenKills = _state.Kills;
+            if (kills <= 0)
+                return;
+            var rules = _combat.Paths;
+            var skeleton = _hero.Value(CombatStats.SkeletonOnKill, 0, StatTags.Minion);
+            var beast = _hero.Value(CombatStats.BeastOnKill, 0, StatTags.Minion);
+            for (var i = 0; i < kills && i < MinionSystem.Capacity; i++)
+            {
+                Raise(rules.SkeletonOnKill, skeleton);
+                Raise(rules.BeastOnKill, beast);
+            }
+        }
+
+        private void Raise(Content.Gems.SummonEffect summon, double chance)
+        {
+            if (chance <= 0 || (chance < 1 && _state.Rng.NextDouble() >= chance))
+                return;
+            _skills.Minions.Place(summon, StatTags.Skill);
+            RaisedFromKills++;
         }
 
         private void ReleaseDoom()

@@ -170,13 +170,10 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void DamageDealersBuffersAndDebuffersHaveAPathKeystone()
+        public void EveryPathHasOneKeystone()
         {
-            foreach (var heroClass in new[] { "viking", "ronin", "amazon", "stormweaver", "nomad", "metalhead", "oracle", "bannerbearer", "voodoo", "clockmaker" })
-            {
-                foreach (var subclass in Catalog.SubclassesOf(heroClass))
-                    Assert.That(subclass.Nodes.Count(n => n.Type == TreeNodeType.Keystone), Is.EqualTo(1), subclass.Id);
-            }
+            foreach (var subclass in Catalog.Subclasses)
+                Assert.That(subclass.Nodes.Count(n => n.Type == TreeNodeType.Keystone), Is.EqualTo(1), subclass.Id);
         }
 
         [Test]

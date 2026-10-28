@@ -90,6 +90,9 @@ namespace Game.Core.Sim
         private void Hit(MinionKind kind, double multiplier, StatTags tags)
         {
             _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags);
+            var share = _hero.Value(CombatStats.MinionQueueShare, 0, StatTags.Minion);
+            if (share > 0)
+                _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * share, tags));
             if (kind == MinionKind.Skeleton)
                 SkeletonHits++;
             if (kind == MinionKind.Beast)

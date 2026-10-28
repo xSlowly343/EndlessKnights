@@ -67,5 +67,12 @@
     "afterIdle": { "pauseSeconds": 30, "seconds": 10 },
     "fastKillSeconds": 3
   },
-  "paths": { "balanceWindowSeconds": 10, "doom": { "seconds": 4 } }
+  "paths": {
+    "balanceWindowSeconds": 10,
+    "doom": { "seconds": 4 },
+    "onKill": {
+      "skeleton": { "seconds": 60, "hitsPerSecond": 1, "multiplier": 1 },
+      "beast": { "seconds": 30, "hitsPerSecond": 2, "multiplier": 1 }
+    }
+  }
 }
