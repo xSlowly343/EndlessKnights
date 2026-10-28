@@ -33,7 +33,8 @@ namespace Game.Core.Tests.Sim
                 Assert.That(Items.Sets.Where(s => s.Rarity == rarity).Select(s => s.Theme), Is.EquivalentTo(new[] { "red", "green", "blue", "onslaught", "mainstay", "decay" }), rarity.ToString());
             foreach (var set in Items.Sets)
             {
-                Assert.That(set.Slots, Is.EquivalentTo(new[] { ItemSlot.Helmet, ItemSlot.Chest, ItemSlot.Gloves, ItemSlot.Boots }), set.Id);
+                Assert.That(set.Slots, Is.EquivalentTo(new[] { ItemSlot.Weapon, ItemSlot.Helmet, ItemSlot.Chest, ItemSlot.Gloves, ItemSlot.Boots }), set.Id);
+                Assert.That(set.WeaponTypes, Is.Not.Empty, set.Id);
                 Assert.That(set.Bonus, Is.Not.Empty, set.Id);
             }
             Assert.That(Set("jarl_forge").Color, Is.EqualTo("red"));
@@ -73,16 +74,18 @@ namespace Game.Core.Tests.Sim
             var costs = new List<double>();
             var slots = new HashSet<ItemSlot>();
 
-            for (var i = 0; i < 4; i++)
+            for (var i = 0; i < 5; i++)
             {
                 costs.Add(loop.Drops.CraftCost(set));
+                var gearBefore = loop.State.Drops.Gear.Count;
                 Assert.That(loop.CraftSetPiece("jarl_forge"), Is.EqualTo(CraftResult.Crafted));
-                slots.Add(loop.State.Drops.Gear[loop.State.Drops.Gear.Count - 1].Slot);
+                slots.Add(loop.State.Drops.Gear.Count > gearBefore ? loop.State.Drops.Gear[loop.State.Drops.Gear.Count - 1].Slot : ItemSlot.Weapon);
             }
 
-            Assert.That(costs, Is.EqualTo(new[] { 10.0, 15, 20, 30 }));
-            Assert.That(slots.Count, Is.EqualTo(4));
-            Assert.That(loop.State.Drops.Ingots, Is.EqualTo(1000 - 75));
+            Assert.That(costs, Is.EqualTo(new[] { 10.0, 15, 20, 30, 40 }));
+            Assert.That(slots.Count, Is.EqualTo(5));
+            Assert.That(loop.State.Weapons.Bag.Last().Set, Is.SameAs(set));
+            Assert.That(loop.State.Drops.Ingots, Is.EqualTo(1000 - 115));
             Assert.That(loop.Gear.Collected(set), Is.True);
             Assert.That(loop.Drops.CraftCost(set), Is.EqualTo(10));
         }
@@ -142,17 +145,18 @@ namespace Game.Core.Tests.Sim
             var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             var rng = new Rng(3);
 
-            foreach (var slot in set.Slots.Take(3))
+            var armour = set.Slots.Where(slot => slot != ItemSlot.Weapon).ToList();
+            foreach (var slot in armour)
                 Assert.That(loop.Gear.NoteFound(Items.RollSetPiece(set, slot, null, ItemRarity.Rare, 1, rng)), Is.True);
             Assert.That(loop.Gear.Collected(set), Is.False);
-            Assert.That(loop.Gear.CollectedPieces(set), Is.EqualTo(3));
+            Assert.That(loop.Gear.CollectedPieces(set), Is.EqualTo(4));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(before).Within(1e-9));
 
-            Assert.That(loop.Gear.NoteFound(Items.RollSetPiece(set, set.Slots[3], null, ItemRarity.Rare, 1, rng)), Is.True);
+            Assert.That(loop.Gear.NoteFound(set, ItemSlot.Weapon), Is.True);
 
             Assert.That(loop.Gear.Collected(set), Is.True);
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(before * 1.08).Within(1e-9));
-            Assert.That(loop.Gear.NoteFound(Items.RollSetPiece(set, set.Slots[0], null, ItemRarity.Rare, 1, rng)), Is.False);
+            Assert.That(loop.Gear.NoteFound(Items.RollSetPiece(set, armour[0], null, ItemRarity.Rare, 1, rng)), Is.False);
         }
 
         [Test]

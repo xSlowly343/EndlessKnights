@@ -207,7 +207,7 @@ namespace Game.Core.Save
             if (node.HasField("rift"))
                 ReadRift(node.Field("rift"), state.Rift);
             if (node.HasField("weapons"))
-                ReadWeapons(node.Field("weapons"), weapons, state.Weapons);
+                ReadWeapons(node.Field("weapons"), weapons, items, state.Weapons);
             if (node.HasField("drops"))
                 ReadDrops(node.Field("drops"), state.Drops, items);
             if (node.HasField("chronicle"))
@@ -491,23 +491,24 @@ namespace Game.Core.Save
                 ("base", JsonValue.Of(weapon.Id)),
                 ("rarity", JsonValue.Of(ItemRarityNames.Of(weapon.Rarity))),
                 ("skills", JsonValue.Array(skills)),
-                ("unique", weapon.Unique == null ? JsonValue.Null() : JsonValue.Of(weapon.Unique.Id)));
+                ("unique", weapon.Unique == null ? JsonValue.Null() : JsonValue.Of(weapon.Unique.Id)),
+                ("set", weapon.Set == null ? JsonValue.Null() : JsonValue.Of(weapon.Set.Id)));
         }
 
-        private static void ReadWeapons(ContentNode node, WeaponCatalog catalog, WeaponState weapons)
+        private static void ReadWeapons(ContentNode node, WeaponCatalog catalog, ItemCatalog? items, WeaponState weapons)
         {
             weapons.StarterGiven = node.Field("starterGiven").AsBool();
-            weapons.Right = ReadWeapon(node.Field("right"), catalog);
-            weapons.Left = ReadWeapon(node.Field("left"), catalog);
+            weapons.Right = ReadWeapon(node.Field("right"), catalog, items);
+            weapons.Left = ReadWeapon(node.Field("left"), catalog, items);
             foreach (var item in node.Field("bag").Items())
             {
-                var weapon = ReadWeapon(item, catalog);
+                var weapon = ReadWeapon(item, catalog, items);
                 if (weapon != null)
                     weapons.Bag.Add(weapon);
             }
         }
 
-        private static WeaponItem? ReadWeapon(ContentNode node, WeaponCatalog catalog)
+        private static WeaponItem? ReadWeapon(ContentNode node, WeaponCatalog catalog, ItemCatalog? items)
         {
             if (node.IsNull)
                 return null;
@@ -520,7 +521,8 @@ namespace Game.Core.Save
             foreach (var item in node.Field("skills").Items())
                 skills.Add(item.AsString());
             var unique = node.HasField("unique") && !node.Field("unique").IsNull && catalog.TryGetUnique(node.Field("unique").AsString(), out var uniqueDef) && uniqueDef.Base == weaponBase ? uniqueDef : null;
-            return new WeaponItem(weaponBase, rarity, skills, unique);
+            var set = items != null && node.HasField("set") && !node.Field("set").IsNull && items.TryGetSet(node.Field("set").AsString(), out var setDef) && setDef.Has(ItemSlot.Weapon) ? setDef : null;
+            return new WeaponItem(weaponBase, rarity, skills, unique, set);
         }
 
         private static JsonValue WriteRift(RiftState rift) =>
