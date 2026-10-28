@@ -61,6 +61,7 @@ namespace Game.Core.Sim
         public RiftState Rift { get; } = new RiftState();
         public WeaponState Weapons { get; } = new WeaponState();
         public DropState Drops { get; }
+        public GearState Gear { get; } = new GearState();
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;

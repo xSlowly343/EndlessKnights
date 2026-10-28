@@ -1,0 +1,205 @@
+using System;
+using System.Collections.Generic;
+using Game.Core.Math;
+using Game.Core.Stats;
+
+namespace Game.Core.Content.Items
+{
+    public sealed class ItemCatalog
+    {
+        public const string FileName = "items.json";
+        public const int SupportedVersion = 1;
+
+        private readonly Dictionary<string, GearBase> _bases;
+        private readonly Dictionary<string, AffixDef> _affixes;
+        private readonly RarityRule[] _rarities;
+
+        private ItemCatalog(List<GearBase> bases, List<AffixDef> affixes, RarityRule[] rarities, int tiers, double topWeight, double nextWeight, double restWeight)
+        {
+            Bases = bases;
+            Affixes = affixes;
+            _rarities = rarities;
+            Tiers = tiers;
+            TopWeight = topWeight;
+            NextWeight = nextWeight;
+            RestWeight = restWeight;
+            _bases = new Dictionary<string, GearBase>(StringComparer.Ordinal);
+            foreach (var gearBase in bases)
+                _bases.Add(gearBase.Id, gearBase);
+            _affixes = new Dictionary<string, AffixDef>(StringComparer.Ordinal);
+            foreach (var affix in affixes)
+                _affixes.Add(affix.Id, affix);
+        }
+
+        public IReadOnlyList<GearBase> Bases { get; }
+        public IReadOnlyList<AffixDef> Affixes { get; }
+        public int Tiers { get; }
+        public double TopWeight { get; }
+        public double NextWeight { get; }
+        public double RestWeight { get; }
+
+        public RarityRule RuleOf(ItemRarity rarity) => _rarities[(int)rarity];
+
+        public bool TryGetBase(string id, out GearBase gearBase) => _bases.TryGetValue(id, out gearBase!);
+
+        public bool TryGetAffix(string id, out AffixDef affix) => _affixes.TryGetValue(id, out affix!);
+
+        public GearItem Roll(ItemSlot slot, string? color, ItemRarity rarity, int itemLevel, Rng rng)
+        {
+            var gearBase = PickBase(slot, color, itemLevel, rng);
+            return new GearItem(gearBase, rarity, itemLevel, RollAffixes(slot, rarity, itemLevel, rng));
+        }
+
+        public GearBase PickBase(ItemSlot slot, string? color, int itemLevel, Rng rng)
+        {
+            var candidates = new List<GearBase>();
+            GearBase? best = null;
+            foreach (var gearBase in Bases)
+            {
+                if (gearBase.Slot != slot || (color != null && gearBase.Color != null && gearBase.Color != color))
+                    continue;
+                if (gearBase.FromBiome <= itemLevel)
+                    candidates.Add(gearBase);
+                else if (best == null || gearBase.FromBiome < best.FromBiome)
+                    best = gearBase;
+            }
+            if (candidates.Count == 0)
+                return best ?? throw new InvalidOperationException($"no base for slot {slot}");
+            return candidates[rng.NextInt(0, candidates.Count)];
+        }
+
+        public IReadOnlyList<GearAffix> RollAffixes(ItemSlot slot, ItemRarity rarity, int itemLevel, Rng rng)
+        {
+            var rule = RuleOf(rarity);
+            var chosen = new List<GearAffix>();
+            var suffixes = (rule.Affixes + 1) / 2;
+            var prefixes = rule.Affixes - suffixes;
+            Pick(slot, true, prefixes, rule, itemLevel, rng, chosen);
+            Pick(slot, false, suffixes, rule, itemLevel, rng, chosen);
+            return chosen;
+        }
+
+        private void Pick(ItemSlot slot, bool prefix, int count, RarityRule rule, int itemLevel, Rng rng, List<GearAffix> chosen)
+        {
+            for (var n = 0; n < count; n++)
+            {
+                var pool = new List<AffixDef>();
+                foreach (var affix in Affixes)
+                {
+                    if (affix.Prefix == prefix && affix.FitsSlot(slot) && Free(affix, chosen))
+                        pool.Add(affix);
+                }
+                if (pool.Count == 0)
+                    return;
+                var def = pool[rng.NextInt(0, pool.Count)];
+                var tier = RollTier(rule, itemLevel, rng);
+                chosen.Add(new GearAffix(def, tier, def.ValueAt(tier, Tiers)));
+            }
+        }
+
+        private static bool Free(AffixDef affix, List<GearAffix> chosen)
+        {
+            foreach (var taken in chosen)
+            {
+                if (ReferenceEquals(taken.Def, affix) || (affix.Group != null && taken.Def.Group == affix.Group))
+                    return false;
+            }
+            return true;
+        }
+
+        public int RollTier(RarityRule rule, int itemLevel, Rng rng)
+        {
+            var open = System.Math.Max(1, System.Math.Min(Tiers, itemLevel));
+            if (rule.TopTiers > 0)
+                return System.Math.Max(1, open - rng.NextInt(0, System.Math.Min(rule.TopTiers, open)));
+            if (open == 1)
+                return 1;
+            var roll = rng.NextDouble() * (TopWeight + NextWeight + (open > 2 ? RestWeight : 0));
+            if (roll < TopWeight)
+                return open;
+            if (roll < TopWeight + NextWeight || open == 2)
+                return open - 1;
+            return rng.NextInt(1, open - 1);
+        }
+
+        public static ItemCatalog Load(string json)
+        {
+            var root = ContentNode.Root(json, FileName);
+            var version = root.Field("version").AsInt(1);
+            if (version != SupportedVersion)
+                throw root.Field("version").Error($"version {version} is not supported, expected {SupportedVersion}");
+            var tiers = root.Field("tiers").AsInt(1, 20);
+            var weights = root.Field("tierWeights");
+            var rarities = ReadRarities(root.Field("rarities"), tiers);
+            var bases = new List<GearBase>();
+            var ids = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var item in root.Field("bases").Items())
+            {
+                var gearBase = ReadBase(item);
+                if (!ids.Add(gearBase.Id))
+                    throw item.Field("id").Error($"base id '{gearBase.Id}' is used twice");
+                bases.Add(gearBase);
+            }
+            var affixes = new List<AffixDef>();
+            var affixIds = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var item in root.Field("affixes").Items())
+            {
+                var affix = ReadAffix(item);
+                if (!affixIds.Add(affix.Id))
+                    throw item.Field("id").Error($"affix id '{affix.Id}' is used twice");
+                affixes.Add(affix);
+            }
+            return new ItemCatalog(bases, affixes, rarities, tiers,
+                weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
+        }
+
+        private static RarityRule[] ReadRarities(ContentNode node, int tiers)
+        {
+            var rules = new RarityRule[Enum.GetValues(typeof(ItemRarity)).Length];
+            foreach (ItemRarity rarity in Enum.GetValues(typeof(ItemRarity)))
+            {
+                var item = node.Field(ItemRarityNames.Of(rarity));
+                rules[(int)rarity] = new RarityRule(item.Field("affixes").AsInt(0, 20), item.Field("topTiers").AsInt(0, tiers));
+            }
+            return rules;
+        }
+
+        private static GearBase ReadBase(ContentNode node)
+        {
+            var slotNode = node.Field("slot");
+            if (!ItemSlotNames.ByName.TryGetValue(slotNode.AsString(), out var slot) || slot == ItemSlot.Weapon)
+                throw slotNode.Error($"unknown gear slot '{slotNode.AsString()}'");
+            var name = node.Field("name");
+            return new GearBase(
+                node.Field("id").AsString(), slot,
+                node.HasField("color") ? node.Field("color").AsString() : null,
+                node.Field("fromBiome").AsInt(1, 100),
+                name.Field("ru").AsString(), name.Field("en").AsString(),
+                ModifierReader.ReadList(node.Field("implicit")));
+        }
+
+        private static AffixDef ReadAffix(ContentNode node)
+        {
+            var slots = new List<ItemSlot>();
+            foreach (var slotNode in node.Field("slots").Items())
+            {
+                if (!ItemSlotNames.ByName.TryGetValue(slotNode.AsString(), out var slot) || slot == ItemSlot.Weapon)
+                    throw slotNode.Error($"unknown gear slot '{slotNode.AsString()}'");
+                slots.Add(slot);
+            }
+            var part = node.Field("part").AsString();
+            if (part != "prefix" && part != "suffix")
+                throw node.Field("part").Error("expected prefix or suffix");
+            var stats = new List<AffixStat>();
+            foreach (var stat in node.Field("stats").Items())
+                stats.Add(new AffixStat(new StatId(stat.Field("stat").AsString()), ModifierReader.ReadKind(stat.Field("kind")),
+                    stat.HasField("tags") ? ModifierReader.ReadTags(stat.Field("tags")) : StatTags.None));
+            var tiers = node.Field("tiers").Items();
+            if (tiers.Count != 2)
+                throw node.Field("tiers").Error("expected the first and the last tier values");
+            return new AffixDef(node.Field("id").AsString(), slots, part == "prefix", stats,
+                tiers[0].AsNumber(-1e6, 1e6), tiers[1].AsNumber(-1e6, 1e6),
+                node.HasField("group") ? node.Field("group").AsString() : null);
+        }
+    }
+}

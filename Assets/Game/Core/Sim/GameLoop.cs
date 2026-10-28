@@ -46,6 +46,7 @@ namespace Game.Core.Sim
         private readonly BannerSystem _banner;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
+        private readonly GearSystem _gear;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -70,6 +71,7 @@ namespace Game.Core.Sim
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills, _resource);
             _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
+            _gear = new GearSystem(state, hero);
             _drops = new DropSystem(data.Drops, data.Stages, data.Gems, _weapons, state, hero, Events);
             _stage.Drops = _drops;
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
@@ -109,6 +111,7 @@ namespace Game.Core.Sim
         public SynergySystem Synergy => _synergy;
         public RiftSystem Rift => _rift;
         public WeaponSystem Weapons => _weapons;
+        public GearSystem Gear => _gear;
         public DropSystem Drops => _drops;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
