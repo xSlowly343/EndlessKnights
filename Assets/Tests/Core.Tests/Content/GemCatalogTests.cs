@@ -179,7 +179,7 @@ namespace Game.Core.Tests.Content
             Assert.That(gems["echo_keys"].Kind, Is.EqualTo(GemKind.Support));
             Assert.That(gems["echo_keys"].SupportEffect, Is.EqualTo("repeatEveryKeys"));
             Assert.That(gems["echo_keys"].Support, Is.Null);
-            Assert.That(gems["chain"].Support!.QueueShare, Is.EqualTo(0.6));
+            Assert.That(gems["chain"].Support!.QueueShare, Is.EqualTo(0.3));
         }
 
         [Test]

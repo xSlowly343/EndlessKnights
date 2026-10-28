@@ -7864,7 +7864,7 @@
       "kind": "support",
       "color": "green",
       "name": { "ru": "Цепь", "en": "Chain" },
-      "effect": { "type": "chain", "share": 0.6 }
+      "effect": { "type": "chain", "share": 0.3 }
     },
     {
       "id": "executioner",

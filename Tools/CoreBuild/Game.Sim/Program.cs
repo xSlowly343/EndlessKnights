@@ -37,6 +37,8 @@ namespace Game.Sim
             }
 
             var profile = new BotProfile(options.KeysPerSecond, options.ClicksPerSecond, options.MousePxPerSecond);
+            if (options.SupportHours > 0)
+                return RunSupports(data, options);
             if (options.Days > 0)
                 return RunPlayer(data, profile, options);
             if (options.StandardParties || options.Party != null)
@@ -84,6 +86,50 @@ namespace Game.Sim
                 "{0} days x {1:0.##} h active, {2} at {3:0.#} keys/s, {4:0.#} clicks/s: record stage {5}, level {6}, prestiges {7}, artifacts {8}; simulated in {9:0.00} s",
                 days.Count, options.ActiveHours, options.HeroClass, options.KeysPerSecond, options.ClicksPerSecond,
                 last.RecordStage, last.HeroLevel, last.Prestiges, last.Artifacts, watch.Elapsed.TotalSeconds));
+            return 0;
+        }
+
+        private const double SupportLow = 1.15;
+        private const double SupportHigh = 1.40;
+
+        private static readonly (string Name, BotProfile Profile)[] SupportProfiles =
+        {
+            ("typist", new BotProfile(8, 0, 300)),
+            ("mouse", new BotProfile(1, 0, 1500)),
+            ("idle", new BotProfile(0.5, 0, 100))
+        };
+
+        private static int RunSupports(GameData data, SimOptions options)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var balance = new SupportBalance(data, options.Seed);
+            using var file = options.OutFile == null ? null : new StreamWriter(options.OutFile);
+            var output = file ?? Console.Out;
+            output.WriteLine("support,color,typist,mouse,idle,average,verdict");
+            var outside = 0;
+            foreach (var gem in data.Gems.All)
+            {
+                if (gem.Kind != Game.Core.Content.Gems.GemKind.Support || gem.Support == null)
+                    continue;
+                var sum = 0.0;
+                var cells = new List<string>();
+                foreach (var (_, profile) in SupportProfiles)
+                {
+                    var multiplier = balance.Multiplier(gem, profile, options.SupportHours * 3600);
+                    sum += multiplier;
+                    cells.Add(multiplier.ToString("0.###", CultureInfo.InvariantCulture));
+                }
+                var average = sum / SupportProfiles.Length;
+                var fits = average >= SupportLow && average <= SupportHigh;
+                if (!fits)
+                    outside++;
+                output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3:0.###},{4}",
+                    gem.Id, gem.Color.ToString().ToLowerInvariant(), string.Join(",", cells), average, fits ? "ok" : "review"));
+            }
+            watch.Stop();
+            Console.Error.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                "supports on {0} at stage {1}, {2:0.##} h per profile: {3} outside x{4:0.00}-x{5:0.00}; simulated in {6:0.00} s",
+                SupportBalance.HostSkill, SupportBalance.Stage, options.SupportHours, outside, SupportLow, SupportHigh, watch.Elapsed.TotalSeconds));
             return 0;
         }
 
