@@ -70,6 +70,7 @@ namespace Game.Core.Save
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
                 ("resonance", WriteLevels(state.Resonance)),
+                ("spirits", WriteLevels(state.Spirits)),
                 ("gear", WriteWorn(state.Gear)),
                 ("setCollection", JsonValue.Array(WriteCollection(state))),
                 ("inputStats", Object(
@@ -205,6 +206,8 @@ namespace Game.Core.Save
                 ReadIds(node.Field("atlas"), state.Atlas);
             if (node.HasField("resonance"))
                 ReadLevels(node.Field("resonance"), state.Resonance);
+            if (node.HasField("spirits"))
+                ReadLevels(node.Field("spirits"), state.Spirits);
             if (node.HasField("gear") && items != null)
                 ReadWorn(node.Field("gear"), items, state.Gear);
             if (node.HasField("setCollection"))

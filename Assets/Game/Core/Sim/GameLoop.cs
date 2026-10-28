@@ -39,6 +39,7 @@ namespace Game.Core.Sim
         private readonly ChronicleSystem _chronicle;
         private readonly AtlasSystem _atlas;
         private readonly ResonanceSystem _resonance;
+        private readonly SpiritSystem _spirits;
         private readonly TutorialSystem _tutorial;
         private readonly PartyBuffs _partyBuffs;
         private readonly SynergySystem _synergy;
@@ -81,6 +82,7 @@ namespace Game.Core.Sim
             _chronicle = new ChronicleSystem(data.Chronicle, state, hero, Events, _levels);
             _atlas = new AtlasSystem(data.Atlas, state, hero);
             _resonance = new ResonanceSystem(data.Resonance, state, hero);
+            _spirits = new SpiritSystem(data.Spirits, state, _combat);
             _stage.ChestGold = data.Atlas.ChestGold;
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades);
@@ -116,6 +118,7 @@ namespace Game.Core.Sim
         public ChronicleSystem Chronicle => _chronicle;
         public AtlasSystem Atlas => _atlas;
         public ResonanceSystem Resonance => _resonance;
+        public SpiritSystem Spirits => _spirits;
         public TutorialSystem Tutorial => _tutorial;
         public PartyBuffs PartyBuffs => _partyBuffs;
         public SynergySystem Synergy => _synergy;
@@ -253,6 +256,8 @@ namespace Game.Core.Sim
 
         public ResonanceResult RaiseResonance(string branchId) => _resonance.Raise(branchId);
 
+        public SpiritResult RaiseSpirit(string spiritId) => _spirits.Raise(spiritId);
+
         public CutResult CutGem(GemDef gem) => _drops.Cut(gem);
 
         public bool CompleteActivity(string activityId) =>
@@ -388,6 +393,7 @@ namespace Game.Core.Sim
             _chronicle.UseCatalog(data.Chronicle);
             _atlas.UseCatalog(data.Atlas);
             _resonance.UseCatalog(data.Resonance);
+            _spirits.UseCatalog(data.Spirits);
             _stage.ChestGold = data.Atlas.ChestGold;
             _tutorial.UseRules(data.Tutorial);
             _partyBuffs.UseRules(data.Party.Buffs);
@@ -434,6 +440,7 @@ namespace Game.Core.Sim
             _skills.Dots.Tick(input);
             _overload.Tick();
             _paths.Tick(input);
+            _spirits.Tick(input);
             _gemExperience.Tick();
             _dps.Tick(_combat.LastTickDamage);
             State.DamageWindow.Record(State.TotalDamage);
