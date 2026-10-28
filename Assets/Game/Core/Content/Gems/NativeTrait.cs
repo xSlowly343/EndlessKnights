@@ -32,6 +32,10 @@ namespace Game.Core.Content.Gems
         public double ResourceOnEnd { get; set; }
         public double WeakenedGold { get; set; }
         public double StackSeconds { get; set; }
+        public bool CarryOver { get; set; }
+        public double BossTimerSeconds { get; set; }
+        public double LastsAboveResource { get; set; }
+        public double WeakenShare { get; set; }
         public double ExtraSecondsPerPoint { get; set; }
         public bool BestOfTwo { get; set; }
         public int QueueTargets { get; set; }

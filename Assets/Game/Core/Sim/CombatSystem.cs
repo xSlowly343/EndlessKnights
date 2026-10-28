@@ -131,6 +131,7 @@ namespace Game.Core.Sim
                 return;
             _state.EnemyHp -= damage;
             LastTickDamage += damage;
+            Wish(damage);
             _events.Add(GameEvent.Damage(_state.Tick, damage, DamageSource.Skill, HitFlags.None));
             if (_state.EnemyAlive)
                 return;
@@ -227,6 +228,7 @@ namespace Game.Core.Sim
             damage = WithholdDoom(damage);
             var hpBefore = _state.EnemyHp;
             _state.EnemyHp -= damage;
+            Wish(damage);
             LastTickDamage += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
             if (source == DamageSource.Keyboard)
@@ -339,6 +341,12 @@ namespace Game.Core.Sim
 
         public double CritMultiplier(StatTags tags) =>
             System.Math.Max(1, _hero.Compute(CombatStats.CritMultiplier, BigNumber.FromDouble(_rules.CritMultiplier), tags | StatTags.Crit).ToDouble());
+
+        private void Wish(BigNumber damage)
+        {
+            if (_state.WishShare > 0)
+                _state.WishStored += damage * _state.WishShare;
+        }
 
         private void ArmSureCrits()
         {

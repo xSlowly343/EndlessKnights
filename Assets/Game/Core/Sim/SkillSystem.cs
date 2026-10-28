@@ -264,7 +264,20 @@ namespace Game.Core.Sim
             {
                 WeakenNext(weaken);
                 _state.WeakenGoldBonus = System.Math.Max(_state.WeakenGoldBonus, native.WeakenedGold);
+                _state.WeakenShare = System.Math.Max(_state.WeakenShare, native.WeakenShare);
+                if (weaken.VulnerabilityShare > 0)
+                {
+                    _state.WeakenVulnerabilityShare = System.Math.Max(_state.WeakenVulnerabilityShare, weaken.VulnerabilityShare);
+                    _state.WeakenVulnerabilityTicks = System.Math.Max(_state.WeakenVulnerabilityTicks, Ticks(weaken.VulnerabilitySeconds));
+                }
             }
+            if (skill.Effect is WishEffect wish)
+            {
+                _state.WishShare = wish.Share;
+                _state.WishStored = BigNumber.Zero;
+            }
+            if (skill.Effect is EnemyDebuffEffect timed && _state.FightingBoss)
+                _state.BossTicksLeft += Ticks(native.BossTimerSeconds > 0 ? native.BossTimerSeconds : timed.BossTimerSeconds);
             if (skill.Effect is PotionEffect potion)
                 DrinkPotion(slot, potion);
             if (skill.Effect is NextKillRewardEffect reward)
@@ -295,6 +308,32 @@ namespace Game.Core.Sim
                 SkillHit(slot, stacks.Multiplier);
             Dots.Apply(stacks, SupportEffects.Affliction(slot) * slot.StackPower);
         }
+
+        private void RefreshCurses()
+        {
+            foreach (var curse in _state.Skills)
+            {
+                if (curse.Active && IsCurse(curse.Def))
+                    curse.ActiveTicks = System.Math.Max(curse.ActiveTicks, curse.ActiveTotalTicks);
+            }
+        }
+
+        private void TickWish(SkillSlot slot, int kills)
+        {
+            if (kills <= 0 || !slot.Active)
+                return;
+            var stored = _state.WishStored;
+            _state.WishStored = BigNumber.Zero;
+            if (!IsNative(slot) || !slot.Def.Native.CarryOver)
+                return;
+            var share = _state.WishShare;
+            _state.WishShare = 0;
+            _combat.DirectHit(stored);
+            _state.WishShare = share;
+        }
+
+        private bool HeldByResource(SkillSlot slot) =>
+            slot.ActiveTicks == 1 && IsNative(slot) && slot.Def.Native.LastsAboveResource > 0 && _state.Resource > slot.Def.Native.LastsAboveResource;
 
         private int PickPotion(PotionEffect potion, NativeTrait native)
         {
@@ -486,7 +525,10 @@ namespace Game.Core.Sim
             }
             var paused = strike.PauseSeconds <= 0 || _state.Tick - _lastKeyHitTick >= Ticks(strike.PauseSeconds);
             var power = slot.CastPower * StrikeBonus(strike, native, when);
-            var baseMultiplier = strike.PauseSeconds > 0 && paused ? strike.PauseMultiplier : LowHp(strike) ? strike.LowHpMultiplier : strike.Multiplier;
+            var baseMultiplier = strike.PerCurse > 0 ? strike.PerCurse * ActiveCurses
+                : strike.PauseSeconds > 0 && paused ? strike.PauseMultiplier : LowHp(strike) ? strike.LowHpMultiplier : strike.Multiplier;
+            if (strike.RefreshCurses)
+                RefreshCurses();
             var multiplier = power * (native.SpendsAll ? System.Math.Min(native.SpendAllMax, spent * native.SpendAllPerPoint) : baseMultiplier);
             var queueMultiplier = native.SpendsAll ? multiplier : power * strike.QueueMultiplier;
             var tags = slot.Skill.Tags;
@@ -927,7 +969,9 @@ namespace Game.Core.Sim
                 TickWhirlpool(slot, input);
                 TickTailwind(slot, input);
                 TickSweeping(slot, input);
-                if (slot.ActiveTicks > 0 && !Lingers(slot, input))
+                if (slot.Def.Effect is WishEffect)
+                    TickWish(slot, kills);
+                if (slot.ActiveTicks > 0 && !Lingers(slot, input) && !HeldByResource(slot))
                 {
                     slot.ActiveTicks--;
                     if (slot.ActiveTicks == 0)
@@ -1344,6 +1388,8 @@ namespace Game.Core.Sim
             if (queueTargets > 0)
                 QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, pulse.Multiplier * slot.CastPower, slot.Skill.Tags), queueTargets);
             SkillHit(slot, pulse.Multiplier);
+            if (pulse.Stacks != null)
+                AddStacks(slot, pulse.Stacks, 1);
             if (pulse.BossTimerSeconds > 0 && _state.FightingBoss)
                 _state.BossTicksLeft += Ticks(pulse.BossTimerSeconds);
             if (IsNative(slot))
@@ -1453,6 +1499,15 @@ namespace Game.Core.Sim
                 _combat.DirectHit(stored);
             }
             if (slot.Def.Effect is StacksEffect stacks && !stacks.Passive)
+                ClearStacks(slot);
+            if (slot.Def.Effect is WishEffect)
+            {
+                var stored = _state.WishStored;
+                _state.WishShare = 0;
+                _state.WishStored = BigNumber.Zero;
+                _combat.DirectHit(stored);
+            }
+            if (slot.Def.Effect is PulseEffect { Stacks: { } })
                 ClearStacks(slot);
             if (slot.Def.Effect is InputKindsEffect kinds && Armed(slot))
             {

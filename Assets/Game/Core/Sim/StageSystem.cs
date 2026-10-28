@@ -279,9 +279,16 @@ namespace Game.Core.Sim
             var burn = _state.BurnStacks * spread;
             var weakened = _state.WeakenedSpawns > 0;
             var goldBonus = weakened ? _state.WeakenGoldBonus : 0;
+            var vulnerability = weakened ? _state.WeakenVulnerabilityShare : 0;
+            var vulnerabilityTicks = _state.WeakenVulnerabilityTicks;
             _state.SpawnEnemy(enemy, type, Weakened(hp));
             _state.EnemyWeakened = weakened;
             _state.EnemyGoldBonus = goldBonus;
+            if (vulnerability > 0)
+            {
+                _state.VulnerabilityShare = System.Math.Max(_state.VulnerabilityShare, vulnerability);
+                _state.VulnerabilityTicks = System.Math.Max(_state.VulnerabilityTicks, vulnerabilityTicks);
+            }
             _state.PoisonStacks = poison;
             _state.BurnStacks = burn;
             ApplyEnemyModifiers(enemy);
@@ -298,6 +305,8 @@ namespace Game.Core.Sim
             {
                 _state.WeakenShare = 0;
                 _state.WeakenGoldBonus = 0;
+                _state.WeakenVulnerabilityShare = 0;
+                _state.WeakenVulnerabilityTicks = 0;
             }
             return hp * (1 - share);
         }

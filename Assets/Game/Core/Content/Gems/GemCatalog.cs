@@ -294,7 +294,9 @@ namespace Game.Core.Content.Gems
                         PauseSeconds = Number(node, "pauseSeconds", 3600),
                         PauseMultiplier = Number(node, "pauseMultiplier", 1e6),
                         BossTimerStopSeconds = Number(node, "bossTimerStopSeconds", 600),
-                        Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null
+                        Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null,
+                        PerCurse = Number(node, "perCurse", 1e6),
+                        RefreshCurses = node.HasField("refreshCurses") && node.Field("refreshCurses").AsBool()
                     };
                 case "aura":
                     return new AuraEffect(
@@ -335,6 +337,8 @@ namespace Game.Core.Content.Gems
                         ModifierReader.ReadList(node.Field("modifiers")));
                 case "potion":
                     return ReadPotion(node.Field("options"));
+                case "wish":
+                    return new WishEffect(node.Field("share").AsNumber(0, 100));
                 case "inputKinds":
                     return new InputKindsEffect(node.Field("perKind").AsNumber(0, 1e6));
                 case "storeHits":
@@ -414,6 +418,7 @@ namespace Game.Core.Content.Gems
                     return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10), Number(node, "bossTimerSlow", 0.9))
                     {
                         StrikeMultiplier = Number(node, "strikeMultiplier", 1e6),
+                        BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
                         Tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None
                     };
                 case "hitStrike":
@@ -438,7 +443,8 @@ namespace Game.Core.Content.Gems
                         node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
                         node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0)
                     {
-                        BossTimerSeconds = Number(node, "bossTimerSeconds", 60)
+                        BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
+                        Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null
                     };
                 case "extendFamily":
                     return new ExtendFamilyEffect(node.Field("family").AsString(), node.Field("seconds").AsNumber(0.1, 3600));
@@ -459,7 +465,11 @@ namespace Game.Core.Content.Gems
                 case "detonate":
                     return new DetonateEffect(node.Field("seconds").AsNumber(0.1, 3600));
                 case "weakenNext":
-                    return new WeakenNextEffect(node.Field("enemies").AsInt(1, 1000), node.Field("hpShare").AsNumber(0, 0.99));
+                    return new WeakenNextEffect(node.Field("enemies").AsInt(1, 1000), node.Field("hpShare").AsNumber(0, 0.99))
+                    {
+                        VulnerabilityShare = node.HasField("vulnerability") ? node.Field("vulnerability").Field("share").AsNumber(0, 10) : 0,
+                        VulnerabilitySeconds = node.HasField("vulnerability") ? node.Field("vulnerability").Field("seconds").AsNumber(0.1, 3600) : 0
+                    };
                 case "idleStrike":
                     return new IdleStrikeEffect(
                         node.Field("chargePerSecond").AsNumber(0, 1000),
@@ -523,6 +533,10 @@ namespace Game.Core.Content.Gems
                 ResourceOnEnd = Number(node, "resourceOnEnd", 1000),
                 WeakenedGold = Number(node, "weakenedGold", 100),
                 StackSeconds = Number(node, "stackSeconds", 3600),
+                CarryOver = node.HasField("carryOver") && node.Field("carryOver").AsBool(),
+                BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
+                LastsAboveResource = Number(node, "lastsAboveResource", 1000),
+                WeakenShare = Number(node, "weakenShare", 0.99),
                 ExtraSecondsPerPoint = Number(node, "extraSecondsPerPoint", 100),
                 BestOfTwo = node.HasField("bestOfTwo") && node.Field("bestOfTwo").AsBool(),
                 QueueTargets = node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,

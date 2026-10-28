@@ -52,6 +52,8 @@ namespace Game.Core.Content.Gems
         public double PauseMultiplier { get; set; }
         public double BossTimerStopSeconds { get; set; }
         public StacksEffect? Stacks { get; set; }
+        public double PerCurse { get; set; }
+        public bool RefreshCurses { get; set; }
     }
 
     public sealed class PotionOption
@@ -117,6 +119,16 @@ namespace Game.Core.Content.Gems
 
         public double ReleaseShare { get; }
         public bool Queue { get; set; }
+    }
+
+    public sealed class WishEffect : SkillEffect
+    {
+        public WishEffect(double share)
+        {
+            Share = share;
+        }
+
+        public double Share { get; }
     }
 
     public sealed class InputKindsEffect : SkillEffect
@@ -429,6 +441,7 @@ namespace Game.Core.Content.Gems
 
         public double DamageTaken { get; }
         public double BossTimerSlow { get; }
+        public double BossTimerSeconds { get; set; }
         public double StrikeMultiplier { get; set; }
         public StatTags Tags { get; set; }
     }
@@ -484,6 +497,7 @@ namespace Game.Core.Content.Gems
         public double EverySeconds { get; }
         public double MouseEverySeconds { get; }
         public double BossTimerSeconds { get; set; }
+        public StacksEffect? Stacks { get; set; }
         public double Multiplier { get; }
         public int QueueTargets { get; }
     }
@@ -589,5 +603,7 @@ namespace Game.Core.Content.Gems
 
         public int Enemies { get; }
         public double HpShare { get; }
+        public double VulnerabilityShare { get; set; }
+        public double VulnerabilitySeconds { get; set; }
     }
 }

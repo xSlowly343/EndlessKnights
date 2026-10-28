@@ -72,6 +72,10 @@ namespace Game.Core.Sim
         public long ClicklessTicks { get; set; } = long.MaxValue / 2;
         public bool EnemyWeakened { get; set; }
         public double WeakenGoldBonus { get; set; }
+        public double WeakenVulnerabilityShare { get; set; }
+        public int WeakenVulnerabilityTicks { get; set; }
+        public double WishShare { get; set; }
+        public BigNumber WishStored { get; set; }
         public double EnemyGoldBonus { get; set; }
         public int SureCritsLeft { get; set; }
         public bool SureCritsArmed { get; set; }
