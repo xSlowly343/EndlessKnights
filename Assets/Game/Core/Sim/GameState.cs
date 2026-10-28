@@ -63,6 +63,8 @@ namespace Game.Core.Sim
         public DropState Drops { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();
         public List<string> Atlas { get; } = new List<string>();
+        public Dictionary<string, int> Resonance { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
+        public double MouseBurstCarryPx { get; set; }
         public GearState Gear { get; } = new GearState();
         public HashSet<string> SetCollection { get; } = new HashSet<string>(System.StringComparer.Ordinal);
 

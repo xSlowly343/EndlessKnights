@@ -159,7 +159,7 @@ namespace Game.Core.Sim
 
             for (var i = 0; i < keyHits; i++)
             {
-                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags);
+                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst();
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
                 KeyHitLightning();
                 ShadowClone();
@@ -167,6 +167,7 @@ namespace Game.Core.Sim
             }
             for (var i = 0; i < mouseHits; i++)
                 Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier);
+            MouseBursts(input.MousePx);
             _class.EndTick(keyHits, input.MousePx);
             NoteRates(keyHits, input.MousePx / _rules.MousePxPerHit);
         }
@@ -325,6 +326,31 @@ namespace Game.Core.Sim
             var share = _hero.Value(CombatStats.KeyHitLightning, 0, StatTags.Skill);
             if (share > 0)
                 Hit(DamageSource.Skill, _rules.KeyDamage, StatTags.Skill, HitFlags.None, share);
+        }
+
+        private double KeyBurst()
+        {
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.KeyBurstEvery, 0, StatTags.Keyboard));
+            if (every < 1 || _state.KeyHits % every != 0)
+                return 1;
+            return System.Math.Max(1, _hero.Value(CombatStats.KeyBurstMultiplier, 0, StatTags.Keyboard));
+        }
+
+        private void MouseBursts(double mousePx)
+        {
+            var every = _hero.Value(CombatStats.MouseBurstPx, 0, StatTags.Mouse);
+            if (every <= 0)
+            {
+                _state.MouseBurstCarryPx = 0;
+                return;
+            }
+            _state.MouseBurstCarryPx += mousePx;
+            var multiplier = System.Math.Max(1, _hero.Value(CombatStats.MouseBurstMultiplier, 0, StatTags.Mouse));
+            while (_state.MouseBurstCarryPx >= every)
+            {
+                _state.MouseBurstCarryPx -= every;
+                Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier * multiplier);
+            }
         }
 
         private double HeavyStrike(ref HitFlags flags)
