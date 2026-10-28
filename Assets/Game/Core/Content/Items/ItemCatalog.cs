@@ -42,12 +42,27 @@ namespace Game.Core.Content.Items
 
         public bool TryGetSet(string id, out SetDef set) => _sets.TryGetValue(id, out set!);
 
+        public double[] CraftBaseCost { get; private set; } = new double[Enum.GetValues(typeof(ItemRarity)).Length];
+        public IReadOnlyList<double> CraftSteps { get; private set; } = new[] { 1.0 };
+
+        public double CraftCost(SetDef set, int collected, bool complete)
+        {
+            var baseCost = CraftBaseCost[(int)set.Rarity];
+            return complete ? baseCost : baseCost * CraftSteps[System.Math.Min(collected, CraftSteps.Count - 1)];
+        }
+
         public SetDef? PickSet(ItemSlot slot, ItemRarity rarity, Rng rng)
         {
             var candidates = new List<SetDef>();
+            var best = ItemRarity.Simple;
             foreach (var set in Sets)
             {
-                if (set.Has(slot) && set.Rarity <= rarity)
+                if (set.Has(slot) && set.Rarity <= rarity && set.Rarity > best)
+                    best = set.Rarity;
+            }
+            foreach (var set in Sets)
+            {
+                if (set.Has(slot) && set.Rarity == best)
                     candidates.Add(set);
             }
             return candidates.Count == 0 ? null : candidates[rng.NextInt(0, candidates.Count)];
@@ -196,8 +211,29 @@ namespace Game.Core.Content.Items
                     throw item.Field("id").Error($"set id '{set.Id}' is used twice");
                 sets.Add(set);
             }
-            return new ItemCatalog(bases, affixes, sets, rarities, tiers,
+            var catalog = new ItemCatalog(bases, affixes, sets, rarities, tiers,
                 weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
+            ReadCraft(root.Field("craft"), catalog);
+            return catalog;
+        }
+
+        private static void ReadCraft(ContentNode node, ItemCatalog catalog)
+        {
+            var costs = new double[Enum.GetValues(typeof(ItemRarity)).Length];
+            var baseCost = node.Field("baseCost");
+            foreach (var name in baseCost.FieldNames())
+            {
+                if (!ItemRarityNames.ByName.TryGetValue(name, out var rarity) || rarity < ItemRarity.Rare)
+                    throw baseCost.Field(name).Error("craft costs are for set rarities from rare up");
+                costs[(int)rarity] = baseCost.Field(name).AsNumber(0, 1e9);
+            }
+            var steps = new List<double>();
+            foreach (var step in node.Field("steps").Items())
+                steps.Add(step.AsNumber(0, 1e6));
+            if (steps.Count == 0)
+                throw node.Field("steps").Error("needs at least one step");
+            catalog.CraftBaseCost = costs;
+            catalog.CraftSteps = steps;
         }
 
         private static RarityRule[] ReadRarities(ContentNode node, int tiers)
@@ -242,7 +278,8 @@ namespace Game.Core.Content.Items
                 throw piecesNode.Error("a set needs pieces");
             var name = node.Field("name");
             return new SetDef(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), rarity,
-                node.HasField("color") ? node.Field("color").AsString() : null, pieces, ModifierReader.ReadList(node.Field("bonus")));
+                node.HasField("color") ? node.Field("color").AsString() : null, pieces, ModifierReader.ReadList(node.Field("bonus")),
+                node.HasField("theme") ? node.Field("theme").AsString() : null);
         }
 
         private static AffixDef ReadAffix(ContentNode node)

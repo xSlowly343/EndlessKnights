@@ -8,5 +8,6 @@ namespace Game.Core.Content.Items
         Daily,
         Offline,
         Guarantee,
+        Craft,
     }
 }

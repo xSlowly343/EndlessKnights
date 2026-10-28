@@ -25,16 +25,96 @@ namespace Game.Core.Tests.Sim
             TestWorld.Loop(state: TestWorld.Classless(new GameState(7) { Class = HeroClass.Viking }));
 
         [Test]
-        public void FirstTwoSetsAreRareStrengthAndOnslaught()
+        public void ThirtySixSetsSixThemesInEachOfSixRarities()
         {
-            Assert.That(Items.Sets.Select(s => s.Id), Is.EquivalentTo(new[] { "jarl_forge", "onslaught" }));
+            Assert.That(Items.Sets.Count, Is.EqualTo(36));
+            var rarities = new[] { ItemRarity.Rare, ItemRarity.Epic, ItemRarity.Legendary, ItemRarity.Mythic, ItemRarity.Ancient, ItemRarity.Rift };
+            foreach (var rarity in rarities)
+                Assert.That(Items.Sets.Where(s => s.Rarity == rarity).Select(s => s.Theme), Is.EquivalentTo(new[] { "red", "green", "blue", "onslaught", "mainstay", "decay" }), rarity.ToString());
             foreach (var set in Items.Sets)
             {
-                Assert.That(set.Rarity, Is.EqualTo(ItemRarity.Rare));
-                Assert.That(set.Slots, Is.EquivalentTo(new[] { ItemSlot.Helmet, ItemSlot.Chest, ItemSlot.Gloves, ItemSlot.Boots }));
-                Assert.That(set.Bonus, Is.Not.Empty);
+                Assert.That(set.Slots, Is.EquivalentTo(new[] { ItemSlot.Helmet, ItemSlot.Chest, ItemSlot.Gloves, ItemSlot.Boots }), set.Id);
+                Assert.That(set.Bonus, Is.Not.Empty, set.Id);
             }
             Assert.That(Set("jarl_forge").Color, Is.EqualTo("red"));
+            Assert.That(Set("jarl_forge").Rarity, Is.EqualTo(ItemRarity.Rare));
+            Assert.That(Set("onslaught").Rarity, Is.EqualTo(ItemRarity.Rare));
+        }
+
+        [Test]
+        public void EveryRarityStepMakesTheSetHalfAgainStronger()
+        {
+            var rare = Set("jarl_forge").Bonus[0].Value;
+            var epic = Set("mountain_hammer").Bonus[0].Value;
+            var rift = Set("underside_forge").Bonus[0].Value;
+
+            Assert.That(epic / rare, Is.EqualTo(1.5).Within(1e-3));
+            Assert.That(rift / rare, Is.EqualTo(System.Math.Pow(1.5, 5)).Within(1e-2));
+        }
+
+        [Test]
+        public void DropsPickASetOfTheirOwnRarity()
+        {
+            var rng = new Rng(5);
+            for (var i = 0; i < 50; i++)
+            {
+                Assert.That(Items.PickSet(ItemSlot.Helmet, ItemRarity.Mythic, rng)!.Rarity, Is.EqualTo(ItemRarity.Mythic));
+                Assert.That(Items.PickSet(ItemSlot.Helmet, ItemRarity.Rare, rng)!.Rarity, Is.EqualTo(ItemRarity.Rare));
+            }
+            Assert.That(Items.PickSet(ItemSlot.Helmet, ItemRarity.Uncommon, rng), Is.Null);
+        }
+
+        [Test]
+        public void CraftingGivesAPieceThatIsNotYetInTheCollectionAndTheCostGrows()
+        {
+            var loop = Viking();
+            loop.State.Drops.Ingots = 1000;
+            var set = Set("jarl_forge");
+            var costs = new List<double>();
+            var slots = new HashSet<ItemSlot>();
+
+            for (var i = 0; i < 4; i++)
+            {
+                costs.Add(loop.Drops.CraftCost(set));
+                Assert.That(loop.CraftSetPiece("jarl_forge"), Is.EqualTo(CraftResult.Crafted));
+                slots.Add(loop.State.Drops.Gear[loop.State.Drops.Gear.Count - 1].Slot);
+            }
+
+            Assert.That(costs, Is.EqualTo(new[] { 10.0, 15, 20, 30 }));
+            Assert.That(slots.Count, Is.EqualTo(4));
+            Assert.That(loop.State.Drops.Ingots, Is.EqualTo(1000 - 75));
+            Assert.That(loop.Gear.Collected(set), Is.True);
+            Assert.That(loop.Drops.CraftCost(set), Is.EqualTo(10));
+        }
+
+        [Test]
+        public void ACollectedSetCraftsThePieceThePlayerChooses()
+        {
+            var loop = Viking();
+            loop.State.Drops.Ingots = 100;
+            foreach (var slot in Set("onslaught").Slots)
+                loop.State.SetCollection.Add(SetDef.PieceKey("onslaught", slot));
+
+            Assert.That(loop.CraftSetPiece("onslaught"), Is.EqualTo(CraftResult.NeedsSlot));
+            Assert.That(loop.CraftSetPiece("onslaught", ItemSlot.Ring), Is.EqualTo(CraftResult.WrongSlot));
+            Assert.That(loop.CraftSetPiece("onslaught", ItemSlot.Gloves), Is.EqualTo(CraftResult.Crafted));
+
+            var piece = loop.State.Drops.Gear.Last();
+            Assert.That(piece.Slot, Is.EqualTo(ItemSlot.Gloves));
+            Assert.That(piece.Set!.Id, Is.EqualTo("onslaught"));
+            Assert.That(piece.Rarity, Is.EqualTo(ItemRarity.Rare));
+            Assert.That(loop.State.Drops.Ingots, Is.EqualTo(90));
+        }
+
+        [Test]
+        public void CraftingNeedsIngotsAndAKnownSet()
+        {
+            var loop = Viking();
+            loop.State.Drops.Ingots = 5;
+
+            Assert.That(loop.CraftSetPiece("no_such_set"), Is.EqualTo(CraftResult.UnknownSet));
+            Assert.That(loop.CraftSetPiece("jarl_forge"), Is.EqualTo(CraftResult.NotEnoughIngots));
+            Assert.That(loop.State.Drops.Ingots, Is.EqualTo(5));
         }
 
         [Test]

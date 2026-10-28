@@ -71,6 +71,46 @@ namespace Game.Core.Sim
         public int DailyShardsLeft => System.Math.Max(0, _rules.Shards.DailyLimit - _state.Drops.DailyShards);
         public double UncutChance => System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.UncutGemChance, _rules.Shards.UncutShare)));
 
+        public double CraftCost(SetDef set) => _items.CraftCost(set, _gear.CollectedPieces(set), _gear.Collected(set));
+
+        public CraftResult CraftSetPiece(string setId, ItemSlot? chosen = null)
+        {
+            if (!_items.TryGetSet(setId, out var set))
+                return CraftResult.UnknownSet;
+            if (BagFull)
+                return CraftResult.BagFull;
+            var complete = _gear.Collected(set);
+            ItemSlot slot;
+            if (complete)
+            {
+                if (chosen == null)
+                    return CraftResult.NeedsSlot;
+                if (!set.Has(chosen.Value))
+                    return CraftResult.WrongSlot;
+                slot = chosen.Value;
+            }
+            else
+            {
+                var missing = new List<ItemSlot>();
+                foreach (var piece in set.Slots)
+                {
+                    if (!_state.SetCollection.Contains(SetDef.PieceKey(set.Id, piece)))
+                        missing.Add(piece);
+                }
+                slot = missing[_state.Drops.Rng.NextInt(0, missing.Count)];
+            }
+            var cost = (long)System.Math.Ceiling(CraftCost(set));
+            if (_state.Drops.Ingots < cost)
+                return CraftResult.NotEnoughIngots;
+            _state.Drops.Ingots -= cost;
+            var item = _items.RollSetPiece(set, slot, null, set.Rarity, BiomeNumber(System.Math.Max(1, _state.RecordStage)), _state.Drops.Rng);
+            _gear.NoteFound(item);
+            _state.Drops.Gear.Add(item);
+            _state.Drops.ItemsFound++;
+            _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Craft, _state.Stage, null, item, false, 0)));
+            return CraftResult.Crafted;
+        }
+
         public bool BuyUncut()
         {
             var drops = _state.Drops;

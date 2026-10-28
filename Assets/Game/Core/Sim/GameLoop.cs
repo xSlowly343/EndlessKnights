@@ -250,6 +250,8 @@ namespace Game.Core.Sim
 
         public bool BuyUncutGem() => _drops.BuyUncut();
 
+        public CraftResult CraftSetPiece(string setId, Content.Items.ItemSlot? slot = null) => _drops.CraftSetPiece(setId, slot);
+
         public TrialResult StartTrial(string trialId) => _chronicle.Start(trialId);
 
         public bool AbandonTrial() => _chronicle.Abandon();
