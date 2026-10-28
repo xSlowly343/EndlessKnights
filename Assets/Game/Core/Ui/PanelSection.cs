@@ -12,5 +12,6 @@ namespace Game.Core.Ui
         Camp,
         Shop,
         Settings,
+        Mail,
     }
 }

@@ -13,7 +13,7 @@ namespace Game.Core.Tests.Ui
             var navigator = new PanelNavigator();
 
             Assert.That(navigator.Bar, Is.EqualTo(new[] { PanelSection.Hero, PanelSection.Book, PanelSection.Tree, PanelSection.Items, PanelSection.Party }));
-            Assert.That(navigator.More, Is.EqualTo(new[] { PanelSection.Portal, PanelSection.Stats, PanelSection.Camp, PanelSection.Shop, PanelSection.Settings }));
+            Assert.That(navigator.More, Is.EqualTo(new[] { PanelSection.Portal, PanelSection.Stats, PanelSection.Camp, PanelSection.Shop, PanelSection.Settings, PanelSection.Mail }));
         }
 
         [Test]

@@ -34,21 +34,25 @@ namespace Game.Net.Tests
         public void ServerErrorsAreShownWithoutTheScriptStack(string raw, string clean) => Assert.That(NakamaClient.Clean(raw), Is.EqualTo(clean));
 
         [Test]
-        public void ARiftBoardAndItsRewardsAreReadFromTheServerReply()
+        public void ARiftBoardAndARewardLetterAreReadFromTheServerReply()
         {
             var board = RiftBoardView.From(NakamaJson.Parse("{\"riftId\":1793102400,\"endUnixMs\":1793188800000,\"settled\":false,\"parties\":14,"
                 + "\"top\":[{\"place\":1,\"title\":\"night_shift\",\"depth\":40,\"members\":4,\"yours\":false},{\"place\":2,\"title\":\"loud_keys\",\"depth\":31,\"members\":2,\"yours\":true}],"
                 + "\"own\":{\"place\":2,\"depth\":31,\"reward\":{\"upTo\":3,\"shards\":200,\"uncutGems\":2,\"ingots\":4}}}"))!;
-            var reward = new RiftRewardView(NakamaJson.Parse("{\"riftId\":1793102400,\"place\":2,\"of\":14,\"depth\":31,\"title\":\"loud_keys\",\"shards\":200,\"uncutGems\":2,\"ingots\":4,\"claimed\":true}"));
+            var letter = MailDirectory.Letter(NakamaJson.Parse("{\"id\":\"rift-1793102400\",\"kind\":\"rift\",\"at\":1793189100000,\"place\":2,\"of\":14,\"depth\":31,\"title\":\"loud_keys\","
+                + "\"reward\":{\"shards\":200,\"uncutGems\":2,\"ingots\":4},\"claimed\":false,\"claimedAt\":0}"));
 
             Assert.That(board.Parties, Is.EqualTo(14));
             Assert.That(board.Top[1].Yours, Is.True);
             Assert.That(board.Top[0].Depth, Is.EqualTo(40));
             Assert.That(board.OwnPlace, Is.EqualTo(2));
             Assert.That(board.EndUnixMs, Is.EqualTo(1793188800000));
-            Assert.That(reward.Place, Is.EqualTo(2));
-            Assert.That(reward.Ingots, Is.EqualTo(4));
-            Assert.That(reward.UncutGems, Is.EqualTo(2));
+            Assert.That(letter.Id, Is.EqualTo("rift-1793102400"));
+            Assert.That(letter.Kind, Is.EqualTo("rift"));
+            Assert.That(letter.Place, Is.EqualTo(2));
+            Assert.That(letter.Reward.Ingots, Is.EqualTo(4));
+            Assert.That(letter.Reward.UncutGems, Is.EqualTo(2));
+            Assert.That(letter.Claimed, Is.False);
         }
 
         [Test]

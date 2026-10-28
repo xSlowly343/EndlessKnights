@@ -3,11 +3,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Game.Core.Content;
-using Game.Core.Content.Rift;
+using Game.Core.Mail;
 using Game.Core.Party;
 using Game.Core.Settings;
 using Game.Core.Sim;
-using Game.Core.Sim.Rift;
 using Game.Core.Ui;
 using Game.Net.Nakama;
 using Game.Presentation.Battle;
@@ -21,7 +20,7 @@ namespace Game.Bootstrap
         private const float KeepAliveSeconds = 10f;
         private const float SearchRefreshSeconds = 30f;
         private const float AlliesRefreshSeconds = 0.1f;
-        private const float RiftRewardsSeconds = 300f;
+        private const float MailSeconds = 300f;
 
         private readonly ConcurrentQueue<Action> _mainThread = new ConcurrentQueue<Action>();
         private GameLoop _loop = null!;
@@ -34,8 +33,10 @@ namespace Game.Bootstrap
         private PartyClient? _party;
         private Task _keepAlive = Task.CompletedTask;
         private float _sinceKeepAlive;
-        private float _sinceRiftRewards = RiftRewardsSeconds;
-        private bool _claimingRiftRewards;
+        private readonly MailBox _mailBox = new MailBox();
+        private float _sinceMail = MailSeconds;
+        private bool _loadingMail;
+        private bool _claimingLetter;
         private int _matchGeneration;
         private bool _busy;
         private PartySearchFilters _filters = null!;
@@ -70,6 +71,8 @@ namespace Game.Bootstrap
             panels.Party.UseReactions(reactions);
             panels.Party.ReactionRequested += driver.React;
             panels.Party.RiftRequested += driver.MoveWorld;
+            panels.Mail.ClaimRequested += driver.Claim;
+            panels.Mail.Opened += () => driver._sinceMail = MailSeconds;
             driver._filters = new PartySearchFilters(data.Party.Search, settings.Language);
             panels.PartySearch.UseFilters(driver._filters);
             panels.PartySearch.QuickRequested += () => driver.OnAction(PartyAction.QuickMatch);
@@ -118,7 +121,7 @@ namespace Game.Bootstrap
             }
             WatchReactions();
             ShowAllies();
-            WatchRiftRewards();
+            WatchMail();
             if (_session.MatchGeneration != _matchGeneration)
             {
                 _matchGeneration = _session.MatchGeneration;
@@ -142,41 +145,82 @@ namespace Game.Bootstrap
             });
         }
 
-        private void WatchRiftRewards()
+        private void WatchMail()
         {
-            _sinceRiftRewards += Time.unscaledDeltaTime;
-            if (_claimingRiftRewards || _sinceRiftRewards < RiftRewardsSeconds)
+            _sinceMail += Time.unscaledDeltaTime;
+            if (_loadingMail || _sinceMail < MailSeconds)
                 return;
-            _sinceRiftRewards = 0f;
-            _claimingRiftRewards = true;
-            var directory = _session!.Directory;
+            _sinceMail = 0f;
+            _loadingMail = true;
+            var mail = _session!.Mail;
             Task.Run(async () =>
             {
                 try
                 {
-                    var rewards = await directory.ClaimRiftRewardsAsync().ConfigureAwait(false);
-                    if (rewards.Count > 0)
-                        _mainThread.Enqueue(() => TakeRiftRewards(rewards));
+                    var letters = await mail.ListAsync().ConfigureAwait(false);
+                    _mainThread.Enqueue(() => TakeLetters(letters));
                 }
                 catch (NakamaException error)
                 {
-                    Debug.LogWarning("Rift rewards: " + error.Message);
+                    Debug.LogWarning("Mail: " + error.Message);
                 }
                 finally
                 {
-                    _mainThread.Enqueue(() => _claimingRiftRewards = false);
+                    _mainThread.Enqueue(() => _loadingMail = false);
                 }
             });
         }
 
-        private void TakeRiftRewards(IReadOnlyList<RiftRewardView> rewards)
+        private void TakeLetters(IReadOnlyList<MailLetter> letters)
         {
-            foreach (var claimed in rewards)
+            foreach (var letter in _mailBox.Replace(letters))
+                _notifications?.Notify(MailText.Arrived(letter));
+            ShowMail();
+        }
+
+        private void ShowMail()
+        {
+            _panels.Mail.ShowRows(MailText.Rows(_mailBox.Letters));
+            if (_notifications != null)
+                _notifications.Marks.UnreadMail = _mailBox.Unread;
+        }
+
+        private void Claim(string id)
+        {
+            if (_session == null || _claimingLetter)
+                return;
+            _claimingLetter = true;
+            var mail = _session.Mail;
+            Task.Run(async () =>
             {
-                var reward = new RiftReward(claimed.Shards, claimed.UncutGems, claimed.Ingots);
-                RiftRewards.Apply(_loop.State, reward);
-                _panels.ShowNotice(RiftBoardText.Reward(claimed.Place, claimed.Of, claimed.Depth, reward));
+                try
+                {
+                    var letter = await mail.ClaimAsync(id).ConfigureAwait(false);
+                    _mainThread.Enqueue(() => TakeLetter(letter));
+                }
+                catch (NakamaException error)
+                {
+                    _mainThread.Enqueue(() =>
+                    {
+                        _panels.ShowNotice(PartyActions.Failed(error.Message));
+                        _sinceMail = MailSeconds;
+                    });
+                }
+                finally
+                {
+                    _mainThread.Enqueue(() => _claimingLetter = false);
+                }
+            });
+        }
+
+        private void TakeLetter(MailLetter letter)
+        {
+            if (_mailBox.Take(letter, _loop.State))
+            {
+                GetComponent<SaveDriver>()?.SaveNow();
+                _panels.ShowNotice(MailText.Taken(letter));
             }
+            ShowMail();
         }
 
         private void React(int reaction)

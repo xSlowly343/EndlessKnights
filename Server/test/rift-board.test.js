@@ -45,32 +45,46 @@ test("the board ranks parties by depth and then by who got there first", () => {
   assert.strictEqual(board.settled, false);
 });
 
-test("after the rift every member gets the reward of the party place once", () => {
+test("after the rift every member gets a letter with the reward of the party place, claimed once", () => {
   const { nk, call } = world("ann", "bob", "cid", "dan");
   const first = partyOf(call, "ann", "bob");
   const second = partyOf(call, "cid");
   party.riftBoardAdd(nk, riftId, first, "night_shift", 30, ["ann", "bob"], opened);
   party.riftBoardAdd(nk, riftId, second, "night_shift", 10, ["cid", "dan"], opened);
   call("dan", "partyCreateRpc", {});
+  const letters = (user) => call(user, "mailListRpc");
 
   party.riftSettleDue(nk, logger, end);
-  assert.deepStrictEqual(plain(call("ann", "riftRewardsRpc").rewards), [], "nothing before the last update after the end");
+  assert.strictEqual(letters("ann").unread, 0, "no letter before the last update after the end");
 
   party.riftSettleDue(nk, logger, end + rift.boardUpdateMs);
   assert.strictEqual(party.riftBoardAdd(nk, riftId, second, "night_shift", 100, ["cid"], end + rift.boardUpdateMs), false, "a late update does not change a settled board");
-  const ann = call("ann", "riftRewardsRpc").rewards;
-  assert.strictEqual(ann.length, 1);
-  assert.strictEqual(ann[0].place, 1);
-  assert.strictEqual(ann[0].of, 2);
-  assert.strictEqual(ann[0].depth, 31);
-  assert.strictEqual(ann[0].shards, rift.boardPlaces[0].shards);
-  assert.strictEqual(call("bob", "riftRewardsRpc").rewards[0].place, 1);
-  const dan = call("dan", "riftRewardsRpc").rewards;
-  assert.strictEqual(dan[0].place, 2, "a member who fought in the rift and left still gets the reward");
-  assert.strictEqual(dan[0].ingots, rift.boardPlaces[1].ingots);
-  assert.deepStrictEqual(plain(call("ann", "riftRewardsRpc").rewards), [], "a reward is claimed once");
+  const mail = letters("ann");
+  assert.strictEqual(mail.unread, 1);
+  const letter = mail.letters[0];
+  assert.strictEqual(letter.id, "rift-" + riftId);
+  assert.strictEqual(letter.kind, "rift");
+  assert.strictEqual(letter.place, 1);
+  assert.strictEqual(letter.of, 2);
+  assert.strictEqual(letter.depth, 31);
+  assert.strictEqual(letter.reward.shards, rift.boardPlaces[0].shards);
+  assert.strictEqual(letter.claimed, false);
+  assert.strictEqual(letters("bob").letters[0].place, 1);
+  const dan = letters("dan").letters[0];
+  assert.strictEqual(dan.place, 2, "a member who fought in the rift and left still gets the letter");
+  assert.strictEqual(dan.reward.ingots, rift.boardPlaces[1].ingots);
+
+  const claimed = call("ann", "mailClaimRpc", { id: letter.id }).letter;
+  assert.strictEqual(claimed.claimed, true);
+  assert.strictEqual(claimed.reward.shards, rift.boardPlaces[0].shards);
+  assert.throws(() => call("ann", "mailClaimRpc", { id: letter.id }), /already claimed/);
+  assert.throws(() => call("ann", "mailClaimRpc", { id: "rift-1" }), /no such letter/);
+  assert.strictEqual(letters("bob").unread, 1, "each member has a letter of their own");
+  const after = letters("ann");
+  assert.strictEqual(after.unread, 0);
+  assert.strictEqual(after.letters[0].claimed, true, "a claimed letter stays in the list");
   party.riftSettleDue(nk, logger, end + 2 * rift.boardUpdateMs);
-  assert.deepStrictEqual(plain(call("ann", "riftRewardsRpc").rewards), [], "settling again pays nothing twice");
+  assert.strictEqual(letters("ann").unread, 0, "settling again sends nothing twice");
 });
 
 test("everyone past the listed places gets the rest tier", () => {

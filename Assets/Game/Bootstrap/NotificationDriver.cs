@@ -39,6 +39,8 @@ namespace Game.Bootstrap
             return driver;
         }
 
+        public PanelMarks Marks => _marks;
+
         public void Notify(string text)
         {
             if (_panelMode.IsOpen)
