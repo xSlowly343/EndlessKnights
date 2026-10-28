@@ -710,11 +710,12 @@
       "tier": "common",
       "role": "fast",
       "color": "red",
-      "name": { "ru": "Отцовский ятаган", "en": "Father's Scimitar" },
+      "name": {"ru": "Отцовский ятаган", "en": "Father's Scimitar"},
       "tags": ["Skill"],
-      "cost": { "resource": 10 },
+      "cost": {"resource": 10},
       "cooldownSeconds": 4,
-      "effect": { "type": "strike", "multiplier": 3 }
+      "effect": {"type": "strike", "multiplier": 3},
+      "native": {"resourceOnHit": 2}
     },
     {
       "id": "by_the_gait",
@@ -2751,12 +2752,12 @@
       "weapon": "scimitar",
       "ascendancy": "djinn",
       "color": "white",
-      "name": { "ru": "Сам себе буря", "en": "A Storm of One's Own" },
+      "name": {"ru": "Сам себе буря", "en": "A Storm of One's Own"},
       "tags": ["Aura", "Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 30,
       "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "more", "value": 1.0, "tags": ["Mouse"] }] }
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 1.0, "tags": ["Mouse"]}, {"stat": "keyHitQueueAll", "kind": "flat", "value": 0.3}]}
     },
     {
       "id": "cargo_delivered",
@@ -2778,12 +2779,12 @@
       "tier": "common",
       "role": "fast",
       "color": "red",
-      "name": { "ru": "Мираж у колодца", "en": "Mirage at the Well" },
+      "name": {"ru": "Мираж у колодца", "en": "Mirage at the Well"},
       "tags": ["Skill"],
-      "cost": { "resource": 20 },
+      "cost": {"resource": 20},
       "cooldownSeconds": 8,
-      "effect": { "type": "weakenNext", "enemies": 1, "hpShare": 0.2 },
-      "native": { "resourceOnCast": 5 }
+      "effect": {"type": "weakenNext", "enemies": 1, "hpShare": 0.2},
+      "native": {"resetWithinSeconds": 2}
     },
     {
       "id": "handful_of_sand",
@@ -2944,13 +2945,13 @@
       "tier": "rare",
       "role": "heavy",
       "color": "red",
-      "name": { "ru": "Песок из карманов", "en": "Sand from the Pockets" },
+      "name": {"ru": "Песок из карманов", "en": "Sand from the Pockets"},
       "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 50 },
+      "cost": {"resource": 50},
       "cooldownSeconds": 30,
       "durationSeconds": 10,
-      "effect": { "type": "inputHits", "pxPerHit": 200, "pxShare": 1 },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "more", "value": 0.5, "tags": ["Mouse"]}] }
+      "effect": {"type": "inputHits", "pxPerHit": 200, "pxShare": 1, "queueTargets": 3},
+      "native": {"resourceOnHit": 1}
     },
     {
       "id": "a_different_road_each_time",
@@ -2958,12 +2959,12 @@
       "weapon": "scimitar",
       "tier": "rare",
       "color": "red",
-      "name": { "ru": "Каждый раз другая дорога", "en": "A Different Road Each Time" },
+      "name": {"ru": "Каждый раз другая дорога", "en": "A Different Road Each Time"},
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.16}] },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}] }
+      "effect": {"type": "passive", "modifiers": [{"stat": "damagePerInputKind", "kind": "flat", "value": 0.08}]},
+      "native": {"modifiers": [{"stat": "damagePerInputKind", "kind": "flat", "value": 0.04}]}
     },
     {
       "id": "twin_scimitars",
@@ -3054,13 +3055,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "red",
-      "name": { "ru": "Попутчик из песка", "en": "Companion of Sand" },
+      "name": {"ru": "Попутчик из песка", "en": "Companion of Sand"},
       "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 60 },
+      "cost": {"resource": 60},
       "cooldownSeconds": 30,
       "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 1, "multiplier": 0.5, "input": "any" },
-      "native": { "durationMultiplier": 1.2 }
+      "effect": {"type": "keyRepeat", "every": 1, "multiplier": 0.5},
+      "native": {"repeatInput": "any"}
     },
     {
       "id": "water_supply",
@@ -3069,13 +3070,13 @@
       "tier": "epic",
       "role": "heavy",
       "color": "red",
-      "name": { "ru": "Запас воды", "en": "Water Supply" },
+      "name": {"ru": "Запас воды", "en": "Water Supply"},
       "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 70 },
+      "cost": {"resource": 70},
       "cooldownSeconds": 40,
       "durationSeconds": 15,
-      "effect": { "type": "storeHits", "releaseShare": 1 },
-      "native": { "resourceOnCast": 35 }
+      "effect": {"type": "inputKinds", "perKind": 5},
+      "native": {"resourceOnEnd": 35}
     },
     {
       "id": "strike_from_the_mirage",

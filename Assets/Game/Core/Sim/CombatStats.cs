@@ -75,6 +75,8 @@ namespace Game.Core.Sim
         public static readonly StatId ResourceDecay = new StatId("resourceDecay");
         public static readonly StatId ResourcePerKey = new StatId("resourcePerKey");
         public static readonly StatId KeyHitQueueShare = new StatId("keyHitQueueShare");
+        public static readonly StatId KeyHitQueueAll = new StatId("keyHitQueueAll");
+        public static readonly StatId DamagePerInputKind = new StatId("damagePerInputKind");
         public static readonly StatId QueueStrikeEvery = new StatId("queueStrikeEvery");
         public static readonly StatId QueueStrikeMultiplier = new StatId("queueStrikeMultiplier");
         public static readonly StatId CloneEvery = new StatId("cloneEvery");
