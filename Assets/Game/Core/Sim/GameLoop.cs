@@ -45,6 +45,7 @@ namespace Game.Core.Sim
         private readonly OverloadSystem _overload;
         private readonly BannerSystem _banner;
         private readonly PathSystem _paths;
+        private readonly GemExperienceSystem _gemExperience;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -77,6 +78,8 @@ namespace Game.Core.Sim
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
             _banner = new BannerSystem(state, hero, _combat, _skills);
             _paths = new PathSystem(state, hero, _combat, _resource, _skills);
+            _skills.Levels = data.Gems.Levels;
+            _gemExperience = new GemExperienceSystem(data.Gems.Levels, state, hero, _skills, Events);
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
@@ -109,6 +112,7 @@ namespace Game.Core.Sim
         public DropSystem Drops => _drops;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
+        public GemExperienceSystem GemExperience => _gemExperience;
         public GameData Data => _data;
         public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
 
@@ -344,6 +348,8 @@ namespace Game.Core.Sim
             _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
+            _skills.Levels = data.Gems.Levels;
+            _gemExperience.UseLevels(data.Gems.Levels);
             _weapons.UseCatalog(data.Weapons);
             _drops.UseData(data.Drops, data.Stages, data.Gems);
             _skills.UseWeapons(data.Weapons);
@@ -394,6 +400,7 @@ namespace Game.Core.Sim
             _skills.Dots.Tick(input);
             _overload.Tick();
             _paths.Tick(input);
+            _gemExperience.Tick();
             _dps.Tick(_combat.LastTickDamage);
             State.Tick++;
             if (Permissions.Consent)

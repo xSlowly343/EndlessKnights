@@ -44,6 +44,9 @@ namespace Game.Core.Sim
         }
 
         public bool SharedEnemy { get; private set; }
+        public GemLevels? Levels { get; set; }
+
+        public double LevelPower(GemDef gem) => Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem));
         public MinionSystem Minions { get; }
         public DotSystem Dots { get; }
 
@@ -74,6 +77,9 @@ namespace Game.Core.Sim
             if (trigger != null && (trigger.Kind != GemKind.Trigger || trigger.Trigger == null))
                 throw new ArgumentException($"{trigger.Id} is not a trigger gem.", nameof(trigger));
             var slot = new SkillSlot(skill, trigger) { EquipTick = _state.Tick, ReadyTick = _state.Tick };
+            _state.ProgressOf(skill);
+            if (trigger != null)
+                _state.ProgressOf(trigger);
             _state.Skills.Add(slot);
             KeepReserved(slot);
             return _state.Skills.Count - 1;
@@ -131,7 +137,7 @@ namespace Game.Core.Sim
             if (!Pay(skill, native, slot.WhenAtCast, out var spent))
                 return CastResult.NotEnoughResource;
 
-            slot.CastPower = CastPower(slot) * SuperCast();
+            slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill);
             slot.AuraPower = 1;
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
@@ -1322,7 +1328,7 @@ namespace Game.Core.Sim
             for (var i = 0; aura != null && i < aura.Modifiers.Count; i++)
             {
                 var modifier = aura.Modifiers[i];
-                slot.AuraModifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * strength * slot.AuraPower, modifier.Tags));
+                slot.AuraModifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * strength * slot.AuraPower * LevelPower(slot.Skill), modifier.Tags));
             }
             for (var i = 0; i < native.Count; i++)
                 slot.AuraModifiers.Add(native[i]);

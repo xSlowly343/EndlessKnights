@@ -77,6 +77,7 @@ namespace Game.Core.Save
                     ("startedUnixMs", JsonValue.Of(state.StartedUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))))),
                 ("skills", JsonValue.Array(WriteSkills(state))),
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
+                ("gemProgress", WriteGemProgress(state)),
                 ("tree", WriteTree(state.Tree)),
                 ("ascendancy", WriteAscendancy(state.Ascendancy)),
                 ("presets", Object(
@@ -193,6 +194,8 @@ namespace Game.Core.Save
                 ReadWeapons(node.Field("weapons"), weapons, state.Weapons);
             if (node.HasField("drops"))
                 ReadDrops(node.Field("drops"), state.Drops);
+            if (node.HasField("gemProgress"))
+                ReadGemProgress(node.Field("gemProgress"), gems, state);
             else
                 state.Drops.Rng = new Rng(rng0 ^ rng1 ^ DropState.SeedSalt);
             return state;
@@ -532,6 +535,27 @@ namespace Game.Core.Save
                     ("supports", JsonValue.Array(WriteSupports(slot.Supports))));
             }
             return skills;
+        }
+
+        private static JsonValue WriteGemProgress(GameState state)
+        {
+            var map = new Dictionary<string, JsonValue>(state.GemProgress.Count);
+            foreach (var pair in state.GemProgress)
+                map.Add(pair.Key, Object(("level", JsonValue.Of(pair.Value.Level)), ("experience", JsonValue.Of(pair.Value.Experience))));
+            return JsonValue.Object(map);
+        }
+
+        private static void ReadGemProgress(ContentNode node, GemCatalog gems, GameState state)
+        {
+            foreach (var id in node.FieldNames())
+            {
+                if (!gems.TryGet(id, out var gem))
+                    continue;
+                var item = node.Field(id);
+                var progress = state.ProgressOf(gem);
+                progress.Level = item.Field("level").AsInt(1, gems.Levels.Max);
+                progress.Experience = item.Field("experience").AsNumber(0, 1e15);
+            }
         }
 
         private static JsonValue[] WriteSupports(GemDef?[] supports)
