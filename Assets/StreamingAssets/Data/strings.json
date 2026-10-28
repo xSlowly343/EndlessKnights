@@ -78,6 +78,8 @@
     "stat.mouseDistance": { "ru": "урон от пути мыши", "en": "damage from mouse travel" },
     "stat.doubleStrike": { "ru": "шанс двойного удара", "en": "double strike chance" },
     "stat.gemDrop": { "ru": "шанс выпадения гемов", "en": "gem drop chance" },
+    "stat.fastKillBank": { "ru": "с к таймеру босса за быстрое убийство", "en": "s of boss timer per fast kill" },
+    "stat.fastKillBankMax": { "ru": "с предела таймера от быстрых убийств", "en": "s cap of boss timer from fast kills" },
     "stat.comboHold": { "ru": "серия не рвётся", "en": "streak does not break" },
     "stat.focusHold": { "ru": "Фокус не сбрасывается", "en": "Focus does not reset" },
     "stat.sureCrits": { "ru": "гарантированных критов подряд", "en": "guaranteed crits in a row" },

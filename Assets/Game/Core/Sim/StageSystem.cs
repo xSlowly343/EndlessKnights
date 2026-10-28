@@ -70,9 +70,11 @@ namespace Game.Core.Sim
             if (_state.BossTimerStopTicks > 0)
             {
                 _state.BossTimerStopTicks--;
+                _state.BossTimerRate = 0;
                 return;
             }
-            _state.BossTimerCarry += System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1)) / System.Math.Max(1, _hero.Value(CombatStats.BossTimerSlow, 1));
+            _state.BossTimerRate = System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1)) / System.Math.Max(1, _hero.Value(CombatStats.BossTimerSlow, 1));
+            _state.BossTimerCarry += _state.BossTimerRate;
             while (_state.BossTimerCarry >= 1 && _state.BossTicksLeft > 0)
             {
                 _state.BossTimerCarry -= 1;

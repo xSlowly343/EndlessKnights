@@ -276,8 +276,20 @@ namespace Game.Core.Sim
                 _state.WishShare = wish.Share;
                 _state.WishStored = BigNumber.Zero;
             }
-            if (skill.Effect is EnemyDebuffEffect timed && _state.FightingBoss)
-                _state.BossTicksLeft += Ticks(native.BossTimerSeconds > 0 ? native.BossTimerSeconds : timed.BossTimerSeconds);
+            if (skill.Effect is EnemyDebuffEffect timed && _state.FightingBoss && !(timed.BossTimerOncePerFight && _state.BossTimerBonusUsed))
+            {
+                var seconds = native.BossTimerSeconds > 0 ? native.BossTimerSeconds : timed.BossTimerSeconds;
+                _state.BossTicksLeft += Ticks(seconds);
+                if (seconds > 0 && timed.BossTimerOncePerFight)
+                    _state.BossTimerBonusUsed = true;
+            }
+            if (native.RestoresFocus)
+                _state.FocusRefill = true;
+            if (skill.Effect is RepeatRecentEffect recent)
+            {
+                var seconds = native.WindowSeconds > 0 ? native.WindowSeconds : recent.Seconds;
+                _combat.DirectHit(_state.DamageWindow.Last(_state.TotalDamage, Ticks(seconds)));
+            }
             if (skill.Effect is PotionEffect potion)
                 DrinkPotion(slot, potion);
             if (skill.Effect is NextKillRewardEffect reward)
@@ -991,6 +1003,8 @@ namespace Game.Core.Sim
                     slot.CooldownTicks = 0;
                     slot.ReadyTick = _state.Tick;
                 }
+                if (slot.Active && _state.FightingBoss && slot.Def.Native.ResourcePerSavedSecond > 0 && IsNative(slot))
+                    _resource.Gain(slot.Def.Native.ResourcePerSavedSecond * GameLoop.TickSeconds * System.Math.Max(0, 1 - _state.BossTimerRate));
                 if (poisonTicks > 0 && slot.Def.Native.ResourcePerPoisonTick > 0 && IsNative(slot) && Armed(slot))
                     _resource.Gain(slot.Def.Native.ResourcePerPoisonTick * poisonTicks);
                 if (slot.Def.Effect is SpecialKeysEffect special)

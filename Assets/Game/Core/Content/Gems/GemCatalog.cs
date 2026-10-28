@@ -339,6 +339,8 @@ namespace Game.Core.Content.Gems
                     return ReadPotion(node.Field("options"));
                 case "wish":
                     return new WishEffect(node.Field("share").AsNumber(0, 100));
+                case "repeatRecent":
+                    return new RepeatRecentEffect(node.Field("seconds").AsNumber(0.1, Sim.DamageWindow.Seconds));
                 case "inputKinds":
                     return new InputKindsEffect(node.Field("perKind").AsNumber(0, 1e6));
                 case "storeHits":
@@ -419,6 +421,7 @@ namespace Game.Core.Content.Gems
                     {
                         StrikeMultiplier = Number(node, "strikeMultiplier", 1e6),
                         BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
+                        BossTimerOncePerFight = node.HasField("bossTimerOncePerFight") && node.Field("bossTimerOncePerFight").AsBool(),
                         Tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None
                     };
                 case "hitStrike":
@@ -534,6 +537,9 @@ namespace Game.Core.Content.Gems
                 WeakenedGold = Number(node, "weakenedGold", 100),
                 StackSeconds = Number(node, "stackSeconds", 3600),
                 CarryOver = node.HasField("carryOver") && node.Field("carryOver").AsBool(),
+                WindowSeconds = Number(node, "windowSeconds", Sim.DamageWindow.Seconds),
+                ResourcePerSavedSecond = Number(node, "resourcePerSavedSecond", 1000),
+                RestoresFocus = node.HasField("restoresFocus") && node.Field("restoresFocus").AsBool(),
                 BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
                 LastsAboveResource = Number(node, "lastsAboveResource", 1000),
                 WeakenShare = Number(node, "weakenShare", 0.99),

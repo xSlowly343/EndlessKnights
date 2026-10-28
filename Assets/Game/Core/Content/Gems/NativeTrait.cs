@@ -33,6 +33,9 @@ namespace Game.Core.Content.Gems
         public double WeakenedGold { get; set; }
         public double StackSeconds { get; set; }
         public bool CarryOver { get; set; }
+        public double WindowSeconds { get; set; }
+        public double ResourcePerSavedSecond { get; set; }
+        public bool RestoresFocus { get; set; }
         public double BossTimerSeconds { get; set; }
         public double LastsAboveResource { get; set; }
         public double WeakenShare { get; set; }

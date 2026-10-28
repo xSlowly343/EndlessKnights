@@ -413,6 +413,7 @@ namespace Game.Core.Sim
             _paths.Tick(input);
             _gemExperience.Tick();
             _dps.Tick(_combat.LastTickDamage);
+            State.DamageWindow.Record(State.TotalDamage);
             State.Tick++;
             if (Permissions.Consent)
                 _tutorial.Tick(LastInput, Events, firstEvent);
