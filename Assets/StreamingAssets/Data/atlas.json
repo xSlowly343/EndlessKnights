@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "chestGold": 3,
+  "nodes": [
+    {"id": "map_of_the_rim", "name": {"ru": "Карта края", "en": "Map of the Rim"}, "cost": 10, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.05}]},
+    {"id": "boss_purse", "name": {"ru": "Кошель Колосса", "en": "Colossus Purse"}, "cost": 25, "requires": ["map_of_the_rim"], "modifiers": [{"stat": "bossGold", "kind": "increased", "value": 0.1}]},
+    {"id": "heavy_purse", "name": {"ru": "Тяжёлый кошель", "en": "Heavy Purse"}, "cost": 60, "requires": ["boss_purse"], "modifiers": [{"stat": "bossGold", "kind": "increased", "value": 0.15}]},
+    {"id": "stage_chests", "name": {"ru": "Сундуки на дороге", "en": "Chests on the Road"}, "cost": 150, "requires": ["heavy_purse"], "modifiers": [{"stat": "chestEvery", "kind": "flat", "value": 5}]},
+    {"id": "richer_chests", "name": {"ru": "Сундуки побогаче", "en": "Richer Chests"}, "cost": 300, "requires": ["stage_chests"], "modifiers": [{"stat": "chestGold", "kind": "increased", "value": 0.5}]},
+    {"id": "tired_guardians", "name": {"ru": "Уставшие стражи", "en": "Tired Guardians"}, "cost": 40, "requires": ["map_of_the_rim"], "modifiers": [{"stat": "guardianHp", "kind": "more", "value": -0.1}]},
+    {"id": "worn_guardians", "name": {"ru": "Стражи на исходе", "en": "Worn-Out Guardians"}, "cost": 120, "requires": ["tired_guardians"], "modifiers": [{"stat": "guardianHp", "kind": "more", "value": -0.1}]},
+    {"id": "guardian_spoils", "name": {"ru": "Добыча стражей", "en": "Guardian Spoils"}, "cost": 250, "requires": ["worn_guardians"], "modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.1}]},
+    {"id": "long_rest", "name": {"ru": "Долгий привал", "en": "Long Rest"}, "cost": 40, "requires": ["map_of_the_rim"], "modifiers": [{"stat": "offlineCapHours", "kind": "flat", "value": 1}]},
+    {"id": "camp_fund", "name": {"ru": "Казна лагеря", "en": "Camp Fund"}, "cost": 100, "requires": ["long_rest"], "modifiers": [{"stat": "offlineGold", "kind": "increased", "value": 0.2}]},
+    {"id": "longer_rest", "name": {"ru": "Ночёвка у края", "en": "Night at the Rim"}, "cost": 250, "requires": ["camp_fund"], "modifiers": [{"stat": "offlineCapHours", "kind": "flat", "value": 1}]},
+    {"id": "keen_eye", "name": {"ru": "Зоркий глаз", "en": "Keen Eye"}, "cost": 40, "requires": ["map_of_the_rim"], "modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.1}]},
+    {"id": "shard_seeker", "name": {"ru": "Искатель осколков", "en": "Shard Seeker"}, "cost": 100, "requires": ["keen_eye"], "modifiers": [{"stat": "shardDrop", "kind": "increased", "value": 0.2}]},
+    {"id": "daily_luck", "name": {"ru": "Удачный день", "en": "Lucky Day"}, "cost": 300, "requires": ["shard_seeker"], "modifiers": [{"stat": "dailyItems", "kind": "flat", "value": 1}]},
+    {"id": "crossroads", "name": {"ru": "Перекрёсток", "en": "Crossroads"}, "cost": 500, "requires": ["richer_chests", "guardian_spoils", "longer_rest", "daily_luck"], "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}, {"stat": "itemQuantity", "kind": "increased", "value": 0.05}]}
+  ]
+}
