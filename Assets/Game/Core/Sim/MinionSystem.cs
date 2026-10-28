@@ -72,8 +72,20 @@ namespace Game.Core.Sim
             if (respawn)
                 _state.Minions[index].TicksLeft = (int)System.Math.Round(Fresh(kind).Seconds * System.Math.Max(0, _hero.Value(CombatStats.MinionSeconds, 1, StatTags.Minion)) * GameLoop.TicksPerSecond);
             else
+            {
+                Explode(_state.Minions[index]);
                 _state.Minions[index] = default;
+            }
             return true;
+        }
+
+        private void Explode(in MinionState minion)
+        {
+            if (minion.Kind == MinionKind.Cannon || minion.Hits <= 0)
+                return;
+            var share = _hero.Value(CombatStats.MinionExplode, 0, StatTags.Minion);
+            if (share > 0)
+                _combat.SkillHit(_combat.BaseKeyDamage, minion.Multiplier * minion.Hits * share, minion.Tags);
         }
 
         public void Clear()
@@ -98,9 +110,12 @@ namespace Game.Core.Sim
                 while (minions[i].HitCarry >= 1 - 1e-9)
                 {
                     minions[i].HitCarry -= 1;
+                    minions[i].Hits++;
                     Hit(minions[i].Kind, minions[i].Multiplier, minions[i].Tags);
                 }
                 minions[i].TicksLeft--;
+                if (!minions[i].Standing)
+                    Explode(minions[i]);
             }
         }
 

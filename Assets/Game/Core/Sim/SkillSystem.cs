@@ -1769,7 +1769,15 @@ namespace Game.Core.Sim
         private bool IsNative(SkillSlot slot) =>
             slot.Def.Weapon != null && _weapons.TryGetType(slot.Def.Weapon, out var weapon) && weapon.HeroClass == _state.Class;
 
-        private double CooldownMultiplier() => System.Math.Max(0.1, _hero.Value(CombatStats.SkillCooldown, 1));
+        private double CooldownMultiplier() => System.Math.Max(0.1, _hero.Value(CombatStats.SkillCooldown, 1) - ResourceCooldownCut());
+
+        private double ResourceCooldownCut()
+        {
+            var perPoint = _hero.Value(CombatStats.CooldownPerResource, 0, StatTags.Skill);
+            if (perPoint <= 0)
+                return 0;
+            return System.Math.Min(System.Math.Max(0, _hero.Value(CombatStats.CooldownPerResourceMax, 0, StatTags.Skill)), perPoint * _state.Resource);
+        }
 
         private double MinIdleSeconds(IdleStrikeEffect strike) => System.Math.Max(0, strike.MinIdleSeconds + _hero.Value(CombatStats.IdleStartSeconds, 0, StatTags.Idle));
 
@@ -1819,7 +1827,13 @@ namespace Game.Core.Sim
         {
             if (aura == null || !aura.Reserves)
                 return;
-            slot.ReservedApplied = System.Math.Max(0, aura.Reserve + _hero.Value(CombatStats.AuraReserve, 0, StatTags.Aura));
+            var reserve = System.Math.Max(0, aura.Reserve + _hero.Value(CombatStats.AuraReserve, 0, StatTags.Aura));
+            if (_hero.Value(CombatStats.AuraReserveOnce, 0, StatTags.Aura) > 0)
+            {
+                _state.Resource = System.Math.Max(0, _state.Resource - reserve);
+                return;
+            }
+            slot.ReservedApplied = reserve;
             _state.ReservedResource += slot.ReservedApplied;
             _resource.ClampToMax();
         }

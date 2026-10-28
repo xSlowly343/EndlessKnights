@@ -164,5 +164,9 @@ namespace Game.Core.Sim
         public static readonly StatId WeaponInnateEffect = new StatId("weaponInnateEffect");
         public static readonly StatId LowestGemExperience = new StatId("lowestGemExperience");
         public static readonly StatId GemLevelBonus = new StatId("gemLevelBonus");
+        public static readonly StatId CooldownPerResource = new StatId("cooldownPerResource");
+        public static readonly StatId CooldownPerResourceMax = new StatId("cooldownPerResourceMax");
+        public static readonly StatId AuraReserveOnce = new StatId("auraReserveOnce");
+        public static readonly StatId MinionExplode = new StatId("minionExplode");
     }
 }

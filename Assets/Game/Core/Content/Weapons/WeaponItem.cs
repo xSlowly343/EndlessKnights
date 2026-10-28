@@ -7,14 +7,17 @@ namespace Game.Core.Content.Weapons
 {
     public sealed class WeaponItem
     {
-        public WeaponItem(WeaponBase weaponBase, ItemRarity rarity, IReadOnlyList<string> skills)
+        public WeaponItem(WeaponBase weaponBase, ItemRarity rarity, IReadOnlyList<string> skills, UniqueWeaponDef? unique = null)
         {
             Base = weaponBase;
             Rarity = rarity;
             Skills = skills;
+            Unique = unique;
         }
 
         public WeaponBase Base { get; }
+        public UniqueWeaponDef? Unique { get; }
+        public WeaponType? SecondType => Unique?.SecondType;
         public ItemRarity Rarity { get; }
         public IReadOnlyList<string> Skills { get; }
         public string Id => Base.Id;
@@ -23,7 +26,10 @@ namespace Game.Core.Content.Weapons
         public string NameEn => Base.NameEn;
         public IReadOnlyList<Modifier> Innate => Base.Innate;
 
-        public WeaponItem Rebased(WeaponBase weaponBase) => new WeaponItem(weaponBase, Rarity, Skills);
+        public WeaponItem Rebased(WeaponBase weaponBase) => new WeaponItem(weaponBase, Rarity, Skills, Unique);
+
+        public bool Counts(string typeId) =>
+            string.Equals(Type.Id, typeId, StringComparison.Ordinal) || (SecondType != null && string.Equals(SecondType.Id, typeId, StringComparison.Ordinal));
 
         public bool Opens(string skillId, int heroLevel, IReadOnlyList<int> unlockLevels)
         {

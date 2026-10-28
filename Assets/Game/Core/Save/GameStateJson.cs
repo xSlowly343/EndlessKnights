@@ -448,7 +448,8 @@ namespace Game.Core.Save
             return Object(
                 ("base", JsonValue.Of(weapon.Id)),
                 ("rarity", JsonValue.Of(ItemRarityNames.Of(weapon.Rarity))),
-                ("skills", JsonValue.Array(skills)));
+                ("skills", JsonValue.Array(skills)),
+                ("unique", weapon.Unique == null ? JsonValue.Null() : JsonValue.Of(weapon.Unique.Id)));
         }
 
         private static void ReadWeapons(ContentNode node, WeaponCatalog catalog, WeaponState weapons)
@@ -476,7 +477,8 @@ namespace Game.Core.Save
             var skills = new List<string>();
             foreach (var item in node.Field("skills").Items())
                 skills.Add(item.AsString());
-            return new WeaponItem(weaponBase, rarity, skills);
+            var unique = node.HasField("unique") && !node.Field("unique").IsNull && catalog.TryGetUnique(node.Field("unique").AsString(), out var uniqueDef) && uniqueDef.Base == weaponBase ? uniqueDef : null;
+            return new WeaponItem(weaponBase, rarity, skills, unique);
         }
 
         private static JsonValue WriteRift(RiftState rift) =>
