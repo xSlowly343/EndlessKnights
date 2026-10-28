@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "stages": 2,
+  "bossTimerSeconds": 45,
+  "maxModifiers": 3,
+  "keys": {"fromStage": 150, "boss": 0.03, "specialBoss": 0.15, "guardian": 0.5, "bag": 30},
+  "tiers": [
+    {"stage": 150, "items": 2, "minRarity": "fine", "maxRarity": "rare", "shards": 5},
+    {"stage": 200, "items": 2, "minRarity": "fine", "maxRarity": "rare", "shards": 10},
+    {"stage": 300, "items": 3, "minRarity": "fine", "maxRarity": "rare", "shards": 15},
+    {"stage": 400, "items": 3, "minRarity": "fine", "maxRarity": "rare", "shards": 20},
+    {"stage": 550, "items": 4, "minRarity": "uncommon", "maxRarity": "rare", "shards": 25},
+    {"stage": 700, "items": 4, "minRarity": "uncommon", "maxRarity": "rare", "shards": 30},
+    {"stage": 900, "items": 5, "minRarity": "uncommon", "maxRarity": "rare", "shards": 35},
+    {"stage": 1200, "items": 5, "minRarity": "uncommon", "maxRarity": "rare", "shards": 40},
+    {"stage": 1600, "items": 6, "minRarity": "uncommon", "maxRarity": "rare", "shards": 45},
+    {"stage": 50000, "items": 5, "minRarity": "epic", "maxRarity": "mythic", "shards": 60, "uniqueChance": 0.1, "needsLimit": true},
+    {"stage": 52000, "items": 5, "minRarity": "epic", "maxRarity": "mythic", "shards": 70, "uniqueChance": 0.15, "needsLimit": true},
+    {"stage": 55000, "items": 6, "minRarity": "epic", "maxRarity": "ancient", "shards": 80, "uniqueChance": 0.2, "needsLimit": true},
+    {"stage": 60000, "items": 6, "minRarity": "legendary", "maxRarity": "ancient", "shards": 90, "uniqueChance": 0.25, "needsLimit": true},
+    {"stage": 65000, "items": 7, "minRarity": "legendary", "maxRarity": "rift", "shards": 100, "uniqueChance": 0.3, "needsLimit": true},
+    {"stage": 72000, "items": 7, "minRarity": "legendary", "maxRarity": "rift", "shards": 110, "uniqueChance": 0.35, "needsLimit": true},
+    {"stage": 80000, "items": 8, "minRarity": "legendary", "maxRarity": "rift", "shards": 120, "uniqueChance": 0.4, "needsLimit": true}
+  ],
+  "modifiers": [
+    {"id": "thick_hide", "name": {"ru": "Толстокожие", "en": "Thick Hide"}, "enemyHp": 1.4, "reward": 0.2},
+    {"id": "mouse_storm", "name": {"ru": "Буря мыши", "en": "Mouse Storm"}, "hero": [{"stat": "damage", "kind": "more", "value": 1, "tags": ["Mouse"]}, {"stat": "damage", "kind": "more", "value": -0.3, "tags": ["Keyboard"]}], "reward": 0.1},
+    {"id": "no_focus", "name": {"ru": "Без Фокуса", "en": "No Focus"}, "hero": [{"stat": "focusGain", "kind": "more", "value": -1}], "reward": 0.25},
+    {"id": "hurry", "name": {"ru": "Спешка", "en": "Hurry"}, "bossTimer": 0.7, "reward": 0.2},
+    {"id": "tough_boss", "name": {"ru": "Крепкий хозяин", "en": "Tough Master"}, "bossHp": 2, "reward": 0.25},
+    {"id": "slow_hands", "name": {"ru": "Тяжёлые руки", "en": "Heavy Hands"}, "hero": [{"stat": "skillCooldown", "kind": "increased", "value": 1}], "reward": 0.15}
+  ]
+}

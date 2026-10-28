@@ -22,6 +22,9 @@ namespace Game.Core.Sim
         WandererJumped,
         GoldenColossusAppeared,
         JewelDropped,
-        GateCleared
+        GateCleared,
+        DungeonKeyDropped,
+        DungeonCompleted,
+        DungeonFailed
     }
 }
