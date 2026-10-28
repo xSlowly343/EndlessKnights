@@ -69,6 +69,7 @@ namespace Game.Core.Sim
         public long MouseIdleTicks { get; set; } = long.MaxValue / 2;
         public bool Reading { get; set; }
         public long IdleTicks { get; set; }
+        public long IdleTicksBeforeInput { get; set; }
         public long MacroRhythmTicks { get; set; }
 
         public List<SkillSlot> Skills { get; } = new List<SkillSlot>();

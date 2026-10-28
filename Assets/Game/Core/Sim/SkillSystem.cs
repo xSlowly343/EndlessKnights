@@ -76,7 +76,7 @@ namespace Game.Core.Sim
                 throw new ArgumentException($"{skill.Id} is not a skill gem.", nameof(skill));
             if (trigger != null && (trigger.Kind != GemKind.Trigger || trigger.Trigger == null))
                 throw new ArgumentException($"{trigger.Id} is not a trigger gem.", nameof(trigger));
-            var slot = new SkillSlot(skill, trigger) { EquipTick = _state.Tick, ReadyTick = _state.Tick };
+            var slot = new SkillSlot(skill, trigger) { EquipTick = _state.Tick, ReadyTick = _state.Tick, KeyHitsAtCast = _state.KeyHits };
             _state.ProgressOf(skill);
             if (trigger != null)
                 _state.ProgressOf(trigger);
@@ -137,7 +137,7 @@ namespace Game.Core.Sim
             if (!Pay(skill, native, slot.WhenAtCast, out var spent))
                 return CastResult.NotEnoughResource;
 
-            var supportPower = SupportEffects.Power(slot);
+            var supportPower = SupportEffects.Power(slot, _state);
             slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill) * supportPower;
             slot.AuraPower = supportPower;
             if (!(skill.Effect is EchoEffect))

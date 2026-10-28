@@ -303,5 +303,62 @@ namespace Game.Core.Tests.Build
             CastDamage(loop, slot);
             Assert.That(loop.State.PendingResource, Is.EqualTo(support.KillResource).Within(1e-9));
         }
+
+        private static double CastPowerWith(string support, System.Action<GameLoop> setup)
+        {
+            var loop = Hero(Attribute("strength", 30));
+            var slot = Equip(loop, "iron_rim_bash", support);
+            Assert.That(loop.Book.SetSupport(slot, 0, Gem(support)), Is.EqualTo(BookResult.Done));
+            setup(loop);
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(slot);
+            return loop.State.Skills[slot].CastPower;
+        }
+
+        [Test]
+        public void QuietTimeDoublesTheCastAfterALongPause()
+        {
+            var support = Gem("quiet_time").Support!;
+            var pause = (long)(support.QuietSeconds * GameLoop.TicksPerSecond);
+
+            Assert.That(CastPowerWith("quiet_time", loop => loop.State.IdleTicksBeforeInput = pause), Is.EqualTo(support.QuietPower).Within(1e-9));
+            Assert.That(CastPowerWith("quiet_time", loop => loop.State.IdleTicksBeforeInput = pause - 1), Is.EqualTo(1).Within(1e-9));
+        }
+
+        [Test]
+        public void BladeHungerGrowsWithKeyHitsSinceTheLastCastUpToItsCap()
+        {
+            var support = Gem("blade_hunger").Support!;
+            var tenSteps = (long)(support.HungerHitsPerStep * 10);
+
+            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.KeyHits += tenSteps), Is.EqualTo(1 + 10 * support.HungerStep).Within(1e-9));
+            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.KeyHits += 1_000_000), Is.EqualTo(1 + support.HungerMax).Within(1e-9));
+        }
+
+        [Test]
+        public void BladeHungerStartsAgainAfterEveryCast()
+        {
+            var loop = Hero(Attribute("strength", 30));
+            var slot = Equip(loop, "iron_rim_bash", "blade_hunger");
+            loop.Book.SetSupport(slot, 0, Gem("blade_hunger"));
+            loop.State.KeyHits += 1000;
+            loop.State.Resource = 100;
+            loop.Skills.TryCast(slot);
+            loop.State.Skills[slot].CooldownTicks = 0;
+            loop.State.Resource = 100;
+
+            loop.Skills.TryCast(slot);
+
+            Assert.That(loop.State.Skills[slot].CastPower, Is.EqualTo(1).Within(1e-9));
+        }
+
+        [Test]
+        public void AccelerationGrowsWithFocusUpToItsCap()
+        {
+            var support = Gem("acceleration").Support!;
+
+            Assert.That(CastPowerWith("acceleration", loop => loop.State.FocusMultiplier = 2), Is.EqualTo(1 + support.FocusBonus / support.FocusStep).Within(1e-9));
+            Assert.That(CastPowerWith("acceleration", loop => loop.State.FocusMultiplier = 100), Is.EqualTo(1 + support.FocusBonusMax).Within(1e-9));
+        }
     }
 }
