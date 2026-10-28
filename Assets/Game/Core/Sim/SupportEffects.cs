@@ -78,6 +78,45 @@ namespace Game.Core.Sim
             }
         }
 
+        public static void MinionBonuses(SkillSlot? slot, out double mouseSpeed, out double life)
+        {
+            mouseSpeed = 1;
+            life = 1;
+            if (slot == null)
+                return;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support == null)
+                    continue;
+                mouseSpeed *= support.MinionMouseSpeed;
+                life *= support.MinionLife;
+            }
+        }
+
+        public static SupportDef? Sweeping(SkillSlot slot)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.FlickTargetsMax > 0)
+                    return support;
+            }
+            return null;
+        }
+
+        public static double Redirect(SkillSlot slot)
+        {
+            var multiplier = 0.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.RedirectMultiplier > 0)
+                    multiplier = System.Math.Max(multiplier, support.RedirectMultiplier);
+            }
+            return multiplier;
+        }
+
         public static SupportDef? Whirlpool(SkillSlot slot)
         {
             for (var i = 0; i < slot.Supports.Length; i++)
@@ -241,6 +280,8 @@ namespace Game.Core.Sim
                     slot.InkHits++;
                     state.PoisonStacks = System.Math.Min(poisonMax, state.PoisonStacks + support.PoisonPerHit);
                 }
+                for (var target = 0; target < slot.FlickTargets && target < state.QueueDamage.Length; target++)
+                    state.QueueDamage[target] += damage * (support.FlickTargetShare * support.QueueDamageMultiplier);
             }
         }
 

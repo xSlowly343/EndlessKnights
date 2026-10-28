@@ -657,5 +657,60 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.State.Skills[slot].AuraPower, Is.EqualTo(support.AuraPowerMultiplier).Within(1e-9));
         }
+
+        [Test]
+        public void MinionTrailMakesItsSummonsLiveLongerAndRunFasterWithTheMouse()
+        {
+            var support = Gem("minion_trail").Support!;
+            var plain = Hero(Attribute("dexterity", 30));
+            var trail = Hero(Attribute("dexterity", 30));
+            var plainSlot = Equip(plain, "call_a_colleague");
+            var slot = Supported(trail, "call_a_colleague", "minion_trail");
+            plain.State.Resource = 100;
+            trail.State.Resource = 100;
+
+            plain.Skills.TryCast(plainSlot);
+            trail.Skills.TryCast(slot);
+
+            var plainMinion = System.Array.Find(plain.State.Minions, m => m.Standing);
+            var minion = System.Array.Find(trail.State.Minions, m => m.Standing);
+            Assert.That(minion.TicksLeft, Is.EqualTo((int)System.Math.Round(plainMinion.TicksLeft * support.MinionLife)));
+            Assert.That(minion.MouseBonus, Is.EqualTo(support.MinionMouseSpeed).Within(1e-9));
+            Assert.That(plainMinion.MouseBonus, Is.EqualTo(1).Within(1e-9));
+        }
+
+        [Test]
+        public void SweepingFlicksAddQueueTargetsToTheSkillHits()
+        {
+            var support = Gem("sweeping").Support!;
+            var loop = Hero(Attribute("dexterity", 30));
+            var slot = Supported(loop, "iron_rim_bash", "sweeping");
+            var skill = loop.State.Skills[slot];
+            skill.FlickTargets = 2;
+
+            SupportEffects.AfterHit(skill, loop.State, BigNumber.FromDouble(100), 50);
+
+            var expected = 100 * support.FlickTargetShare * support.QueueDamageMultiplier;
+            Assert.That(loop.State.QueueDamage[0].ToDouble(), Is.EqualTo(expected).Within(1e-9));
+            Assert.That(loop.State.QueueDamage[1].ToDouble(), Is.EqualTo(expected).Within(1e-9));
+            Assert.That(loop.State.QueueDamage[2].ToDouble(), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TargetHunterSendsTheSkillHitToTheNextEnemyStronger()
+        {
+            var support = Gem("target_hunter").Support!;
+            var plain = Hero(Attribute("dexterity", 30));
+            var hunter = Hero(Attribute("dexterity", 30));
+            var plainSlot = Equip(plain, "iron_rim_bash");
+            var slot = Supported(hunter, "iron_rim_bash", "target_hunter");
+            var hp = hunter.State.EnemyHp;
+
+            var hit = CastDamage(plain, plainSlot);
+            CastDamage(hunter, slot);
+
+            Assert.That(hunter.State.EnemyHp, Is.EqualTo(hp));
+            Assert.That(hunter.State.QueueDamage[0].ToDouble(), Is.EqualTo(hit * support.RedirectMultiplier).Within(hit * 1e-6));
+        }
     }
 }

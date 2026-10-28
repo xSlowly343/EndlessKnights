@@ -11,6 +11,7 @@ namespace Game.Core.Sim
         public double HitsPerSecond;
         public double Multiplier;
         public StatTags Tags;
+        public double MouseBonus;
 
         public bool Standing => TicksLeft > 0;
     }

@@ -7976,7 +7976,7 @@
       "kind": "support",
       "color": "red",
       "name": { "ru": "Финиш серии", "en": "Series Finish" },
-      "effect": { "type": "seriesFinish", "afterHits": 20, "multiplier": 2, "resource": 5 }
+      "effect": { "type": "seriesFinish", "afterHits": 20, "multiplier": 1.8, "resource": 5 }
     },
     {
       "id": "long_swing",
@@ -7998,6 +7998,27 @@
       "color": "green",
       "name": { "ru": "Попутный ветер", "en": "Tailwind" },
       "effect": { "type": "tailwind", "pxPerSecond": 2000, "max": 1, "auraPower": 1.1 }
+    },
+    {
+      "id": "minion_trail",
+      "kind": "support",
+      "color": "green",
+      "name": { "ru": "След для слуг", "en": "Trail for Servants" },
+      "effect": { "type": "minionTrail", "mouseSpeed": 1.3, "life": 1.2 }
+    },
+    {
+      "id": "sweeping",
+      "kind": "support",
+      "color": "green",
+      "name": { "ru": "Размашистый", "en": "Sweeping" },
+      "effect": { "type": "sweeping", "maxTargets": 3, "share": 0.5, "queueDamage": 1.15 }
+    },
+    {
+      "id": "target_hunter",
+      "kind": "support",
+      "color": "green",
+      "name": { "ru": "Охотник за целью", "en": "Target Hunter" },
+      "effect": { "type": "targetHunter", "multiplier": 1.3 }
     }
   ]
 }

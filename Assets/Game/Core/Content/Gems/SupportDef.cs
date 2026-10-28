@@ -22,7 +22,10 @@ namespace Game.Core.Content.Gems
         SeriesFinish,
         LongSwing,
         Whirlpool,
-        Tailwind
+        Tailwind,
+        MinionTrail,
+        Sweeping,
+        TargetHunter
     }
 
     public sealed class SupportDef
@@ -81,6 +84,12 @@ namespace Game.Core.Content.Gems
         public double WindPxPerSecond { get; private set; }
         public double WindMax { get; private set; }
         public double AuraPowerMultiplier { get; private set; } = 1;
+        public double MinionMouseSpeed { get; private set; } = 1;
+        public double MinionLife { get; private set; } = 1;
+        public int FlickTargetsMax { get; private set; }
+        public double FlickTargetShare { get; private set; }
+        public double QueueDamageMultiplier { get; private set; } = 1;
+        public double RedirectMultiplier { get; private set; }
 
         public static SupportDef? Read(ContentNode effect)
         {
@@ -217,6 +226,21 @@ namespace Game.Core.Content.Gems
                         WindMax = effect.Field("max").AsNumber(0, 10),
                         AuraPowerMultiplier = effect.Field("auraPower").AsNumber(0, 100)
                     };
+                case "minionTrail":
+                    return new SupportDef(SupportKind.MinionTrail)
+                    {
+                        MinionMouseSpeed = effect.Field("mouseSpeed").AsNumber(0, 100),
+                        MinionLife = effect.Field("life").AsNumber(0, 100)
+                    };
+                case "sweeping":
+                    return new SupportDef(SupportKind.Sweeping)
+                    {
+                        FlickTargetsMax = effect.Field("maxTargets").AsInt(1, Sim.GameState.QueueDepth),
+                        FlickTargetShare = effect.Field("share").AsNumber(0, 10),
+                        QueueDamageMultiplier = effect.Field("queueDamage").AsNumber(0, 100)
+                    };
+                case "targetHunter":
+                    return new SupportDef(SupportKind.TargetHunter) { RedirectMultiplier = effect.Field("multiplier").AsNumber(0, 100) };
                 default:
                     return null;
             }

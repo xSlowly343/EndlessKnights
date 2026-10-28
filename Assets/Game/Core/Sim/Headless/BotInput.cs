@@ -12,6 +12,7 @@ namespace Game.Core.Sim.Headless
         private readonly Rng _rng;
         private double _keyCarry;
         private double _clickCarry;
+        private double _flickCarry;
 
         public BotInput(BotProfile profile, ulong seed)
         {
@@ -29,6 +30,7 @@ namespace Game.Core.Sim.Headless
                 leftClicks: clicks,
                 mouseDistancePx: (float)mouse,
                 circleTurns: (float)(_profile.CircleTurnsPerSecond * GameLoop.TickSeconds),
+                flicks: Take(ref _flickCarry, _profile.FlicksPerSecond),
                 rhythmCv: (float)_profile.RhythmCv);
         }
 
