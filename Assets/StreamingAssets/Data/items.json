@@ -91,6 +91,7 @@
     {"id": "jewel_offline_gold", "slots": ["ring", "amulet"], "part": "suffix", "stats": [{"stat": "offlineGold", "kind": "increased"}], "tiers": [0.05, 0.3]},
     {"id": "amulet_offline_cap", "slots": ["amulet"], "part": "suffix", "stats": [{"stat": "offlineCapHours", "kind": "flat"}], "tiers": [0.25, 1.5]},
     {"id": "jewel_gem_drop", "slots": ["ring", "amulet"], "part": "prefix", "stats": [{"stat": "gemDrop", "kind": "increased"}], "tiers": [0.03, 0.18]},
+    {"id": "jewel_shard_drop", "slots": ["ring", "amulet"], "part": "suffix", "stats": [{"stat": "shardDrop", "kind": "increased"}], "tiers": [0.03, 0.18]},
     {"id": "ring_item_rarity", "slots": ["ring"], "part": "prefix", "stats": [{"stat": "itemRarity", "kind": "increased"}], "tiers": [0.04, 0.24]},
     {"id": "ring_item_quantity", "slots": ["ring"], "part": "suffix", "stats": [{"stat": "itemQuantity", "kind": "increased"}], "tiers": [0.03, 0.18]},
     {"id": "amulet_gem_experience", "slots": ["amulet"], "part": "suffix", "stats": [{"stat": "gemExperience", "kind": "increased"}], "tiers": [0.03, 0.18]},

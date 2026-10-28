@@ -62,6 +62,37 @@ namespace Game.Core.Sim
         private static bool Drops(GemDef gem) =>
             !gem.Locked && gem.Ascendancy == null && (gem.Kind != GemKind.Skill || gem.Skill?.Weapon == null);
 
+        public static bool Cuttable(GemDef gem) => Drops(gem);
+
+        public IReadOnlyList<GemDef> PoolOf(GemKind kind) => _gemPools[(int)kind];
+
+        public long Shards => _state.Drops.Shards;
+        public int UncutGems => _state.Drops.UncutGems;
+        public int DailyShardsLeft => System.Math.Max(0, _rules.Shards.DailyLimit - _state.Drops.DailyShards);
+        public double UncutChance => System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.UncutGemChance, _rules.Shards.UncutShare)));
+
+        public bool BuyUncut()
+        {
+            var drops = _state.Drops;
+            var cost = _rules.Shards.UncutCost;
+            if (drops.Shards < cost)
+                return false;
+            drops.Shards -= cost;
+            drops.UncutGems++;
+            return true;
+        }
+
+        public CutResult Cut(GemDef gem)
+        {
+            if (_state.Drops.UncutGems <= 0)
+                return CutResult.NoUncut;
+            if (!Cuttable(gem))
+                return CutResult.NotCuttable;
+            _state.Drops.UncutGems--;
+            GiveGem(gem);
+            return CutResult.Cut;
+        }
+
         public void SetDay(long day)
         {
             var drops = _state.Drops;
@@ -69,6 +100,7 @@ namespace Game.Core.Sim
                 return;
             drops.Day = day;
             drops.DailyItems = 0;
+            drops.DailyShards = 0;
         }
 
         public int BiomeNumber(long stage) => (int)System.Math.Min(int.MaxValue, (stage - 1) / _stages.BiomeLength + 1);
@@ -86,6 +118,11 @@ namespace Game.Core.Sim
             var chance = _rules.GemChance(kind).For(type) * bonus;
             if (chance <= 0 || _gemPools[(int)kind].Count == 0 || !_state.Drops.Rng.Chance(chance))
                 return;
+            if (_state.Drops.Rng.Chance(UncutChance))
+            {
+                GiveUncut();
+                return;
+            }
             Push(PendingDrop.OfGem(PickGem(_gemPools[(int)kind], preferNew: false)));
         }
 
@@ -93,6 +130,7 @@ namespace Game.Core.Sim
         {
             if (!raisesRecord)
                 return;
+            GiveShards(stage, type, recordBefore);
             if (stage >= recordBefore)
                 GiveRecordItems(stage, type);
             if (_rules.Daily.Allows(stage, recordBefore))
@@ -106,6 +144,11 @@ namespace Game.Core.Sim
             {
                 if (_rules.Daily.Allows(stage, record))
                     RollDaily(stage, DropSource.Offline, _rules.Daily.Chance * _rules.Daily.OfflineChance);
+            }
+            for (var stage = result.StageBefore; stage < result.StageAfter && DailyShardsLeft > 0; stage++)
+            {
+                if (_rules.Daily.Allows(stage, record) && _state.Drops.Rng.Chance(_rules.Daily.OfflineChance))
+                    GiveDailyShards(ShardsFor(stage, EnemyType.Boss));
             }
             Flush();
         }
@@ -428,6 +471,48 @@ namespace Game.Core.Sim
                 }
             }
             return pool[rng.NextInt(0, pool.Count)];
+        }
+
+        private void GiveShards(long stage, EnemyType type, long recordBefore)
+        {
+            var amount = ShardsFor(stage, type);
+            if (stage >= recordBefore)
+                AddShards(amount);
+            else if (_rules.Daily.Allows(stage, recordBefore))
+                GiveDailyShards(amount);
+        }
+
+        private long ShardsFor(long stage, EnemyType type)
+        {
+            var drops = _state.Drops;
+            var amount = _rules.Shards.ForBoss(type, _rules.IsSpecialBoss(stage));
+            drops.ShardCarry += System.Math.Max(0, _hero.Value(CombatStats.ShardDrop, amount));
+            var whole = (long)System.Math.Floor(drops.ShardCarry);
+            drops.ShardCarry -= whole;
+            return whole;
+        }
+
+        private void GiveDailyShards(long amount)
+        {
+            var given = System.Math.Min(amount, DailyShardsLeft);
+            _state.Drops.DailyShards += (int)given;
+            AddShards(given);
+        }
+
+        private void AddShards(long amount)
+        {
+            if (amount <= 0)
+                return;
+            _state.Drops.Shards += amount;
+            _state.Drops.ShardsFound += amount;
+            _events.Add(GameEvent.WithAmount(GameEventKind.ShardsGained, _state.Tick, BigNumber.FromDouble(amount), _state.Stage));
+        }
+
+        private void GiveUncut()
+        {
+            _state.Drops.UncutGems++;
+            _state.Drops.UncutFound++;
+            _events.Add(GameEvent.ForStage(GameEventKind.UncutGemDropped, _state.Tick, _state.Stage));
         }
 
         private void GiveGem(GemDef gem)

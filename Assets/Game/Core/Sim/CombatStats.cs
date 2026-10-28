@@ -27,6 +27,8 @@ namespace Game.Core.Sim
         public static readonly StatId ComboTimeoutSeconds = new StatId("comboTimeoutSeconds");
         public static readonly StatId GemExperience = new StatId("gemExperience");
         public static readonly StatId GemDrop = new StatId("gemDrop");
+        public static readonly StatId UncutGemChance = new StatId("uncutGemChance");
+        public static readonly StatId ShardDrop = new StatId("shardDrop");
         public static readonly StatId ItemFind = new StatId("itemRarity");
         public static readonly StatId ItemQuantity = new StatId("itemQuantity");
         public static readonly StatId DailyItems = new StatId("dailyItems");

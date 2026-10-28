@@ -233,6 +233,10 @@ namespace Game.Core.Sim
 
         public bool RebirthGem(GemDef gem) => _book.Rebirth(gem, _data.Gems.Levels.Max);
 
+        public bool BuyUncutGem() => _drops.BuyUncut();
+
+        public CutResult CutGem(GemDef gem) => _drops.Cut(gem);
+
         public bool CompleteActivity(string activityId) =>
             _data.Ascendancy.IsActivity(activityId) && State.Ascendancy.Complete(activityId);
 

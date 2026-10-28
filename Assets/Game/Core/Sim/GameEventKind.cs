@@ -15,6 +15,8 @@ namespace Game.Core.Sim
         Prestige,
         ItemDropped,
         GemDropped,
-        GemLevelUp
+        GemLevelUp,
+        UncutGemDropped,
+        ShardsGained
     }
 }
