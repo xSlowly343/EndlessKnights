@@ -377,16 +377,24 @@ namespace Game.Core.Content.Items
             var piecesNode = node.Field("pieces");
             foreach (var slotName in piecesNode.FieldNames())
             {
-                if (!ItemSlotNames.ByName.TryGetValue(slotName, out var slot) || slot == ItemSlot.Weapon || slot == ItemSlot.Ring || slot == ItemSlot.Amulet)
-                    throw piecesNode.Field(slotName).Error($"a set piece goes to armour slots, not '{slotName}'");
+                if (!ItemSlotNames.ByName.TryGetValue(slotName, out var slot) || slot == ItemSlot.Ring || slot == ItemSlot.Amulet)
+                    throw piecesNode.Field(slotName).Error($"a set piece goes to a weapon hand or armour slots, not '{slotName}'");
                 pieces[slot] = ModifierReader.ReadList(piecesNode.Field(slotName));
             }
             if (pieces.Count == 0)
                 throw piecesNode.Error("a set needs pieces");
+            var weaponTypes = new List<string>();
+            if (pieces.ContainsKey(ItemSlot.Weapon))
+            {
+                foreach (var type in node.Field("weaponTypes").Items())
+                    weaponTypes.Add(type.AsString());
+                if (weaponTypes.Count == 0)
+                    throw node.Field("weaponTypes").Error("a set with a weapon piece needs weapon types");
+            }
             var name = node.Field("name");
             return new SetDef(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), rarity,
                 node.HasField("color") ? node.Field("color").AsString() : null, pieces, ModifierReader.ReadList(node.Field("bonus")),
-                node.HasField("theme") ? node.Field("theme").AsString() : null);
+                node.HasField("theme") ? node.Field("theme").AsString() : null, weaponTypes);
         }
 
         private static AffixDef ReadAffix(ContentNode node, bool jewel = false)

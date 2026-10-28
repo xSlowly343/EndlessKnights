@@ -48,11 +48,13 @@ namespace Game.Core.Sim
             return count;
         }
 
-        public bool NoteFound(GearItem item)
+        public bool NoteFound(GearItem item) => item.Set != null && NoteFound(item.Set, item.Slot);
+
+        public bool NoteFound(SetDef set, ItemSlot slot)
         {
-            if (item.Set == null || !_state.SetCollection.Add(SetDef.PieceKey(item.Set.Id, item.Slot)))
+            if (!_state.SetCollection.Add(SetDef.PieceKey(set.Id, slot)))
                 return false;
-            if (Collected(item.Set))
+            if (Collected(set))
                 Rebuild();
             return true;
         }

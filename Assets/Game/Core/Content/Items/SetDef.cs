@@ -7,8 +7,10 @@ namespace Game.Core.Content.Items
     {
         private readonly Dictionary<ItemSlot, IReadOnlyList<Modifier>> _pieces;
 
-        public SetDef(string id, string nameRu, string nameEn, ItemRarity rarity, string? color, Dictionary<ItemSlot, IReadOnlyList<Modifier>> pieces, IReadOnlyList<Modifier> bonus, string? theme = null)
+        public SetDef(string id, string nameRu, string nameEn, ItemRarity rarity, string? color, Dictionary<ItemSlot, IReadOnlyList<Modifier>> pieces, IReadOnlyList<Modifier> bonus, string? theme = null,
+            IReadOnlyList<string>? weaponTypes = null)
         {
+            WeaponTypes = weaponTypes ?? System.Array.Empty<string>();
             Theme = theme;
             Id = id;
             NameRu = nameRu;
@@ -28,6 +30,17 @@ namespace Game.Core.Content.Items
         public string? Theme { get; }
         public IReadOnlyList<ItemSlot> Slots { get; }
         public IReadOnlyList<Modifier> Bonus { get; }
+        public IReadOnlyList<string> WeaponTypes { get; }
+
+        public bool AllowsType(string typeId)
+        {
+            foreach (var type in WeaponTypes)
+            {
+                if (string.Equals(type, typeId, System.StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
+        }
 
         public bool Has(ItemSlot slot) => _pieces.ContainsKey(slot);
 

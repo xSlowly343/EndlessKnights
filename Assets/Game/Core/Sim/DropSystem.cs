@@ -73,7 +73,7 @@ namespace Game.Core.Sim
 
         public double CraftCost(SetDef set) => _items.CraftCost(set, _gear.CollectedPieces(set), _gear.Collected(set));
 
-        public CraftResult CraftSetPiece(string setId, ItemSlot? chosen = null)
+        public CraftResult CraftSetPiece(string setId, ItemSlot? chosen = null, string? weaponType = null)
         {
             if (!_items.TryGetSet(setId, out var set))
                 return CraftResult.UnknownSet;
@@ -102,6 +102,18 @@ namespace Game.Core.Sim
             var cost = (long)System.Math.Ceiling(CraftCost(set));
             if (_state.Drops.Ingots < cost)
                 return CraftResult.NotEnoughIngots;
+            if (slot == ItemSlot.Weapon)
+            {
+                var weapon = CraftSetWeapon(set, weaponType);
+                if (weapon == null)
+                    return CraftResult.WrongSlot;
+                _state.Drops.Ingots -= cost;
+                _weapons.Give(weapon);
+                _gear.NoteFound(set, ItemSlot.Weapon);
+                _state.Drops.ItemsFound++;
+                _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Craft, _state.Stage, weapon, null, false, 0)));
+                return CraftResult.Crafted;
+            }
             _state.Drops.Ingots -= cost;
             var item = _items.RollSetPiece(set, slot, null, set.Rarity, BiomeNumber(System.Math.Max(1, _state.RecordStage)), _state.Drops.Rng);
             _gear.NoteFound(item);
@@ -109,6 +121,23 @@ namespace Game.Core.Sim
             _state.Drops.ItemsFound++;
             _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Craft, _state.Stage, null, item, false, 0)));
             return CraftResult.Crafted;
+        }
+
+        private WeaponItem? CraftSetWeapon(SetDef set, string? chosenType)
+        {
+            var rng = _state.Drops.Rng;
+            WeaponType type;
+            if (chosenType != null)
+            {
+                if (!set.AllowsType(chosenType) || !_weapons.Catalog.TryGetType(chosenType, out type))
+                    return null;
+            }
+            else
+            {
+                type = SetWeaponType(set, OwnType, rng);
+            }
+            var stage = System.Math.Max(1, _state.RecordStage);
+            return RollWeapon(type, set.Rarity, stage, rng).InSet(set);
         }
 
         public bool BuyUncut()
@@ -374,7 +403,30 @@ namespace Game.Core.Sim
                 if (unique != null)
                     return _weapons.Catalog.RollUnique(unique, rng);
             }
+            var setChance = _rules.SetChanceFor(drop.Source);
+            if (setChance > 0 && rng.NextDouble() < setChance)
+            {
+                var set = _items.PickSet(ItemSlot.Weapon, rarity, rng);
+                if (set != null)
+                    return RollWeapon(SetWeaponType(set, drop.Type!, rng), rarity, drop.Stage, rng).InSet(set);
+            }
             return RollWeapon(drop.Type!, rarity, drop.Stage, rng);
+        }
+
+        private WeaponType SetWeaponType(SetDef set, WeaponType rolled, Rng rng)
+        {
+            if (set.AllowsType(OwnType.Id))
+                return OwnType;
+            if (set.AllowsType(rolled.Id))
+                return rolled;
+            var types = _weapons.Catalog.Types;
+            _types.Clear();
+            for (var i = 0; i < types.Count; i++)
+            {
+                if (set.AllowsType(types[i].Id))
+                    _types.Add(types[i]);
+            }
+            return _types.Count == 0 ? rolled : _types[rng.NextInt(0, _types.Count)];
         }
 
         private WeaponItem RollWeapon(WeaponType type, ItemRarity rarity, long stage, Rng rng)
@@ -488,6 +540,8 @@ namespace Game.Core.Sim
             var gear = weapon == null ? RollGear(drop, rarity, drops.Rng) : null;
             if (gear != null)
                 _gear.NoteFound(gear);
+            if (weapon?.Set != null)
+                _gear.NoteFound(weapon.Set, ItemSlot.Weapon);
             var salvaged = BagFull || ShouldSalvage(weapon, gear, rarity);
             var dust = salvaged ? _rules.DustFor(rarity) : 0;
             drops.Dust += dust;
