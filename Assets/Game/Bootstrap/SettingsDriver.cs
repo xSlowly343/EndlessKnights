@@ -63,15 +63,18 @@ namespace Game.Bootstrap
                 _tray.UseState(TrayStateOf(Settings));
                 _tray.StateChanged += OnTrayChanged;
             }
-            if (Settings.InputConsentGiven)
-                _panelMode?.Refresh();
-            else
+            if (PrivacyPolicy.ShouldAskConsent(Settings))
                 _panelMode?.OpenConsent();
+            else
+                _panelMode?.Refresh();
         }
 
         private void AnswerConsent(bool given)
         {
-            Settings.InputConsentGiven = given;
+            if (given)
+                PrivacyPolicy.Accept(Settings);
+            else
+                Settings.InputConsentGiven = false;
             ApplyPermissions();
             Save();
             _panelMode?.FinishConsent();
@@ -101,6 +104,10 @@ namespace Game.Bootstrap
                     return;
                 case SettingId.WhatsNew:
                     ShowWhatsNew();
+                    return;
+                case SettingId.PrivacyPolicy:
+                case SettingId.Eula:
+                    _panelMode?.OpenReport(PrivacyTexts.Title(id), PrivacyTexts.Lines(id), PrivacyTexts.GotIt);
                     return;
                 case SettingId.ResetPosition:
                     _dock?.UseOffset((int)Settings.StripOffset);

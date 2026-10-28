@@ -60,7 +60,8 @@ namespace Game.Core.Settings
                 ["privacy"] = JsonValue.Object(new Dictionary<string, JsonValue>
                 {
                     ["telemetry"] = JsonValue.Of(settings.TelemetryConsentGiven),
-                    ["errorReports"] = JsonValue.Of(settings.ErrorReportConsentGiven)
+                    ["errorReports"] = JsonValue.Of(settings.ErrorReportConsentGiven),
+                    ["policyVersion"] = JsonValue.Of(settings.AcceptedPolicyVersion)
                 })
             };
             return JsonWriter.Write(JsonValue.Object(fields)) + "\n";
@@ -118,6 +119,7 @@ namespace Game.Core.Settings
                 var privacy = root.Field("privacy");
                 settings.TelemetryConsentGiven = Read(privacy, "telemetry", node => node.AsBool(), settings.TelemetryConsentGiven, problems);
                 settings.ErrorReportConsentGiven = Read(privacy, "errorReports", node => node.AsBool(), settings.ErrorReportConsentGiven, problems);
+                settings.AcceptedPolicyVersion = Read(privacy, "policyVersion", node => node.AsInt(0), settings.AcceptedPolicyVersion, problems);
             }
             return settings;
         }

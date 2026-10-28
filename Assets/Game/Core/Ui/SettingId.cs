@@ -24,6 +24,8 @@ namespace Game.Core.Ui
         InputConsent,
         WhatsNew,
         Telemetry,
-        ErrorReports
+        ErrorReports,
+        PrivacyPolicy,
+        Eula
     }
 }

@@ -572,6 +572,25 @@
     "stats.clicksHint": { "ru": "ЛКМ {0} · ПКМ {1} · СКМ {2}", "en": "LMB {0} · RMB {1} · MMB {2}" },
     "settings.telemetry": { "ru": "Анонимная статистика", "en": "Anonymous statistics" },
     "settings.privacyNote": { "ru": "Статистика — только счётчики и итоги сессий со случайным номером установки, без кодов клавиш и текста. Выключена, пока ты её не включишь.", "en": "Statistics are only counters and session totals with a random install number, no key codes or text. Off until you turn it on." },
-    "settings.errorReports": { "ru": "Отправлять отчёты об ошибках", "en": "Send error reports" }
+    "settings.errorReports": { "ru": "Отправлять отчёты об ошибках", "en": "Send error reports" },
+    "settings.privacyPolicy": { "ru": "Политика приватности", "en": "Privacy policy" },
+    "settings.eula": { "ru": "Пользовательское соглашение", "en": "User agreement" },
+    "consent.policyNote": { "ru": "Нажимая «Понятно, начать», ты принимаешь Политику приватности и Соглашение (версия {0}).", "en": "By pressing “Got it, start” you accept the Privacy policy and the User agreement (version {0})." },
+    "privacy.title": { "ru": "Политика приватности (версия {0})", "en": "Privacy policy (version {0})" },
+    "privacy.line.0": { "ru": "Игра считает только число нажатий, кликов и путь мыши", "en": "The game counts only presses, clicks and mouse travel" },
+    "privacy.line.1": { "ru": "Коды клавиш, набранный текст и экран не видим и не храним", "en": "Key codes, typed text and the screen are never seen or kept" },
+    "privacy.line.2": { "ru": "Счётчики и сейв хранятся на твоём ПК рядом с игрой", "en": "Counters and the save stay on your PC next to the game" },
+    "privacy.line.3": { "ru": "Анонимная статистика и отчёты об ошибках — по согласию", "en": "Anonymous statistics and error reports only if you agree" },
+    "privacy.line.4": { "ru": "В отряде через Steam уходят урон, этап и ник, не ввод", "en": "In a party Steam carries damage, stage and name, not input" },
+    "privacy.line.5": { "ru": "Согласие можно отозвать здесь же, в Настройках", "en": "You can withdraw consent here, in the settings" },
+    "privacy.line.6": { "ru": "Полный текст — на странице игры в Steam", "en": "The full text is on the game's Steam page" },
+    "eula.title": { "ru": "Пользовательское соглашение (версия {0})", "en": "User agreement (version {0})" },
+    "eula.line.0": { "ru": "Игра — для личного некоммерческого использования", "en": "The game is for personal, non-commercial use" },
+    "eula.line.1": { "ru": "Игра работает рядом с другими программами и считает ввод", "en": "The game runs beside other apps and counts input" },
+    "eula.line.2": { "ru": "Макросы и автокликеры не засчитываются", "en": "Macros and autoclickers are not counted" },
+    "eula.line.3": { "ru": "Правила работы за твоим ПК — твоя ответственность", "en": "Workplace rules for your PC are your responsibility" },
+    "eula.line.4": { "ru": "Нельзя взламывать игру, сервер и данные других игроков", "en": "Do not hack the game, the server or other players' data" },
+    "eula.line.5": { "ru": "Игра предоставляется по лицензии, а не продаётся", "en": "The game is licensed to you, not sold" },
+    "eula.line.6": { "ru": "Полный текст — на странице игры в Steam", "en": "The full text is on the game's Steam page" }
   }
 }

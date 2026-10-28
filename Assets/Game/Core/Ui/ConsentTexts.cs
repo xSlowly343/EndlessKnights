@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Settings;
 using Game.Core.Text;
 
 namespace Game.Core.Ui
@@ -15,6 +16,8 @@ namespace Game.Core.Ui
         public static string NetworkNote => Texts.Get("consent.networkNote");
         public static string CountedHeading => Texts.Get("consent.countedHeading");
         public static string NotCountedHeading => Texts.Get("consent.notCountedHeading");
+        public static string PolicyNote => Texts.Format("consent.policyNote", PrivacyPolicy.CurrentVersion);
+        public static string Note => NetworkNote + " " + PolicyNote;
 
         public static IReadOnlyList<string> Counted => Lines("consent.counted.", CountedLines);
 
