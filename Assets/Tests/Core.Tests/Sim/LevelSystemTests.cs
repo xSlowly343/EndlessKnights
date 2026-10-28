@@ -127,6 +127,8 @@ namespace Game.Core.Tests.Sim
             state.TotalInput.Keys = ulong.MaxValue / 2;
             state.TotalInput.LeftClicks = ulong.MaxValue / 4;
             state.TotalInput.MouseMeters = 1e12;
+            foreach (var trial in TestWorld.Data.Chronicle.All)
+                state.Chronicle.Completed.Add(trial.Id);
 
             var loop = TestWorld.Loop(state: state);
 
@@ -138,7 +140,7 @@ namespace Game.Core.Tests.Sim
         {
             var points = Rules.MaxLevel - 1 + Rules.MaxGuardianPoints + TestWorld.Data.TreePoints.MaxPoints;
 
-            Assert.That(points, Is.EqualTo(146));
+            Assert.That(points, Is.EqualTo(166));
         }
 
         [TestCase("\"counter\": \"keys\"", "\"counter\": \"steps\"", "unknown counter 'steps'")]

@@ -7,6 +7,7 @@ namespace Game.Core.Sim
         Passive,
         OnCooldown,
         NotEnoughResource,
-        NoWeapon
+        NoWeapon,
+        TrialForbids
     }
 }

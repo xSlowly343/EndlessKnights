@@ -61,6 +61,7 @@ namespace Game.Core.Sim
         public RiftState Rift { get; } = new RiftState();
         public WeaponState Weapons { get; } = new WeaponState();
         public DropState Drops { get; }
+        public ChronicleState Chronicle { get; } = new ChronicleState();
         public GearState Gear { get; } = new GearState();
         public HashSet<string> SetCollection { get; } = new HashSet<string>(System.StringComparer.Ordinal);
 

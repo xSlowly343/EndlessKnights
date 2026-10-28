@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "minPrestiges": 1,
+  "trials": [
+    {"id": "only_mouse", "name": {"ru": "Только мышь", "en": "Mouse Only"}, "goalStage": 50, "rules": [{"stat": "damage", "kind": "more", "value": -1, "tags": ["Keyboard"]}], "reward": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"]}]},
+    {"id": "only_keys", "name": {"ru": "Только клавиши", "en": "Keys Only"}, "goalStage": 50, "rules": [{"stat": "damage", "kind": "more", "value": -1, "tags": ["Mouse"]}], "reward": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["Keyboard"]}]},
+    {"id": "no_skills", "name": {"ru": "Без скиллов", "en": "No Skills"}, "goalStage": 50, "noSkills": true, "reward": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["Skill"]}]},
+    {"id": "hurried_boss", "name": {"ru": "Босс торопит", "en": "The Boss Hurries"}, "goalStage": 50, "rules": [{"stat": "bossTimerSpeed", "kind": "more", "value": 0.5}], "reward": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}]},
+    {"id": "half_strength", "name": {"ru": "Вполсилы", "en": "Half Strength"}, "goalStage": 50, "rules": [{"stat": "damage", "kind": "more", "value": -0.5}], "reward": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
+    {"id": "empty_purse", "name": {"ru": "Пустой кошель", "en": "Empty Purse"}, "goalStage": 50, "rules": [{"stat": "gold", "kind": "more", "value": -1}], "reward": [{"stat": "gold", "kind": "increased", "value": 0.1}]},
+    {"id": "no_luck", "name": {"ru": "Без удачи", "en": "No Luck"}, "goalStage": 50, "rules": [{"stat": "critChance", "kind": "more", "value": -1}], "reward": [{"stat": "critChance", "kind": "flat", "value": 0.01}]},
+    {"id": "slow_hands", "name": {"ru": "Медленные руки", "en": "Slow Hands"}, "goalStage": 75, "rules": [{"stat": "skillCooldown", "kind": "more", "value": 1}], "reward": [{"stat": "skillCooldown", "kind": "increased", "value": -0.03}]},
+    {"id": "empty_bar", "name": {"ru": "Пустая шкала", "en": "Empty Bar"}, "goalStage": 75, "rules": [{"stat": "resourceGain", "kind": "more", "value": -0.5}], "reward": [{"stat": "resourceGain", "kind": "increased", "value": 0.05}]},
+    {"id": "alone", "name": {"ru": "В одиночку", "en": "Alone"}, "goalStage": 75, "rules": [{"stat": "minionCount", "kind": "flat", "value": -99, "tags": ["Minion"]}, {"stat": "cannonCount", "kind": "flat", "value": -99}], "reward": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Minion"]}]},
+    {"id": "clean_blade", "name": {"ru": "Чистый клинок", "en": "Clean Blade"}, "goalStage": 75, "rules": [{"stat": "dotDamage", "kind": "more", "value": -1, "tags": ["DoT"]}], "reward": [{"stat": "dotDamage", "kind": "increased", "value": 0.05, "tags": ["DoT"]}]},
+    {"id": "glass_cannon", "name": {"ru": "Стеклянная пушка", "en": "Glass Cannon"}, "goalStage": 100, "rules": [{"stat": "damage", "kind": "more", "value": 1}, {"stat": "bossTimerSpeed", "kind": "more", "value": 1}], "reward": [{"stat": "damage", "kind": "increased", "value": 0.05}]},
+    {"id": "long_road", "name": {"ru": "Долгая дорога", "en": "The Long Road"}, "goalStage": 150, "rules": [{"stat": "damage", "kind": "more", "value": -0.3}], "reward": [{"stat": "damage", "kind": "increased", "value": 0.05}]},
+    {"id": "true_trial", "name": {"ru": "Настоящее испытание", "en": "The True Trial"}, "goalStage": 150, "rules": [{"stat": "damage", "kind": "more", "value": -0.5}, {"stat": "bossTimerSpeed", "kind": "more", "value": 0.5}], "reward": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "gold", "kind": "increased", "value": 0.1}]}
+  ]
+}

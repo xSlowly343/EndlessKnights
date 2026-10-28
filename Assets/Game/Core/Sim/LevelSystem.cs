@@ -90,6 +90,8 @@ namespace Game.Core.Sim
                     return _state.TotalInput.MouseMeters / 1000;
                 case PointCounter.Prestiges:
                     return _state.Prestiges;
+                case PointCounter.Trials:
+                    return _state.Chronicle.Completed.Count;
                 default:
                     return _state.RecordStage;
             }
