@@ -7,6 +7,8 @@ interface PartyServerConfig extends PartyEncounterRules {
     burstBars: number;
     hitBurstSeconds: number;
     flagsBeforeReport: number;
+    reactionCount: number;
+    reactionCooldownSeconds: number;
 }
 
 const PartyCutTolerance = 1e-9;
@@ -28,6 +30,7 @@ class PartyHost {
     private readonly lastTotal = [0, 0, 0, 0];
     private readonly messagesThisSecond = [0, 0, 0, 0];
     private readonly sentPresence = [PartyPresence.Fighting, PartyPresence.Fighting, PartyPresence.Fighting, PartyPresence.Fighting];
+    private readonly lastReactionTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private stateSequence = 0;
     private rosterVersion = 0;
     private rosterChanged = false;
@@ -52,6 +55,7 @@ class PartyHost {
             this.allowance[slot] = this.config.burstBars;
             this.hitAllowance[slot] = this.hitBurst();
             this.flags[slot] = 0;
+            this.lastReactionTick[slot] = PartyNever;
             this.ticksToState = 0;
         }
         this.rosterChanged = true;
@@ -111,6 +115,14 @@ class PartyHost {
                 const relayed = partyRelayOffer(data, slot);
                 if (relayed)
                     this.broadcast(relayed, slot);
+                break;
+            }
+            case PartyMessageKind.PartyReaction: {
+                const relayed = partyRelayReaction(data, slot, this.config.reactionCount);
+                if (relayed && this.encounter.tick - this.lastReactionTick[slot] >= Math.max(1, partyTicks(this.config.reactionCooldownSeconds))) {
+                    this.lastReactionTick[slot] = this.encounter.tick;
+                    this.broadcast(relayed, slot);
+                }
                 break;
             }
         }

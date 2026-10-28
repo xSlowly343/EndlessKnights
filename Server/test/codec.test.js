@@ -61,6 +61,13 @@ test("truncated and foreign packets are refused", () => {
   assert.strictEqual(party.partyKindOf(bytes("ff00")), 0);
 });
 
+test("reactions are relayed with the sender slot, unknown ones are dropped", () => {
+  const reaction = vectors.decode.reactionRelay;
+  assert.strictEqual(hex(party.partyRelayReaction(bytes(reaction.hex), reaction.slot, reaction.reaction + 1)), reaction.relayedHex);
+  assert.strictEqual(party.partyRelayReaction(bytes(reaction.hex), reaction.slot, reaction.reaction), null);
+  assert.strictEqual(party.partyRelayReaction(bytes(reaction.hex + "00"), reaction.slot, 16), null);
+});
+
 test("offers are relayed with the sender slot", () => {
   const offer = vectors.decode.offerRelay;
   assert.strictEqual(hex(party.partyRelayOffer(bytes(offer.hex), offer.slot)), offer.relayedHex);

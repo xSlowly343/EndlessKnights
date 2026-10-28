@@ -762,6 +762,14 @@
     "party.member.blocked": { "ru": "Игрок заблокирован: через поиск вы больше не встретитесь", "en": "Player blocked: the search will not match you again" },
     "party.member.reported": { "ru": "Жалоба отправлена, спасибо", "en": "Report sent, thank you" },
     "party.member.notFound": { "ru": "Не нашли игрока на сервере, попробуйте через минуту", "en": "Could not find the player on the server, try again in a minute" },
-    "party.member.close": { "ru": "Отмена", "en": "Cancel" }
+    "party.member.close": { "ru": "Отмена", "en": "Cancel" },
+    "party.reaction.hello": { "ru": "Привет!", "en": "Hi!" },
+    "party.reaction.good_fight": { "ru": "Отличный бой!", "en": "Great fight!" },
+    "party.reaction.thanks": { "ru": "Спасибо!", "en": "Thanks!" },
+    "party.reaction.help": { "ru": "Нужна помощь", "en": "Need help" },
+    "party.reaction.brb": { "ru": "Сейчас вернусь", "en": "Be right back" },
+    "party.reaction.lunch": { "ru": "Ушёл на обед", "en": "Off to lunch" },
+    "party.reaction.said": { "ru": "{0}: «{1}»", "en": "{0}: “{1}”" },
+    "party.reaction.wait": { "ru": "Реакции — не чаще раза в {0} с", "en": "One reaction per {0} s" }
   }
 }

@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 128;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10
 }
 
 class PartyWriter {
@@ -113,7 +113,7 @@ function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
         return PartyMessageKind.None;
     const kind = new DataView(data).getUint8(0);
-    return kind <= PartyMessageKind.PartyOffer ? kind : PartyMessageKind.None;
+    return kind <= PartyMessageKind.PartyReaction ? kind : PartyMessageKind.None;
 }
 
 function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
@@ -159,6 +159,17 @@ function partyRelayOffer(data: ArrayBuffer, slot: number): ArrayBuffer | null {
         return null;
     const copy = data.slice(0);
     new DataView(copy).setUint8(1, slot);
+    return copy;
+}
+
+function partyRelayReaction(data: ArrayBuffer, slot: number, known: number): ArrayBuffer | null {
+    if (partyKindOf(data) !== PartyMessageKind.PartyReaction || data.byteLength !== 3)
+        return null;
+    const copy = data.slice(0);
+    const view = new DataView(copy);
+    if (view.getUint8(2) >= known)
+        return null;
+    view.setUint8(1, slot);
     return copy;
 }
 

@@ -51,6 +51,15 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void SoloShowsNoReactionButtons()
+        {
+            _panel.Party.UseReactions(new[] { "Привет!", "Спасибо!" });
+            _panel.Party.Refresh(_loop);
+
+            Assert.That(_panel.Party.ShowsReactions, Is.False);
+        }
+
+        [Test]
         public void PartyButtonsSayOnlinePartiesComeLater()
         {
             Assert.That(_panel.TryClick(_panel.Party.WorldPointOfHelp()), Is.True);

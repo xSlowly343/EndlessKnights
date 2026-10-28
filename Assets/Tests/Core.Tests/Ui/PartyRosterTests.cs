@@ -60,6 +60,34 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void AFreshReactionIsShownOnItsRow()
+        {
+            var roster = new RosterMessage { Player0 = 11, Player2 = 33, Class2 = (byte)HeroClass.Oracle };
+
+            var rows = PartyRoster.From(_state, PartyLink.Linked, roster, 0, null, true, slot => slot == 2 ? "Привет!" : string.Empty);
+
+            Assert.That(rows[0].Reaction, Is.Empty);
+            Assert.That(rows[1].Slot, Is.EqualTo(2));
+            Assert.That(rows[1].Reaction, Is.EqualTo("Привет!"));
+            Assert.That(rows[2].Reaction, Is.Empty);
+        }
+
+        [Test]
+        public void ReactionTextsComeFromThePartyRules()
+        {
+            var rules = TestWorld.Data.Party.Reactions;
+
+            Assert.That(rules.Ids.Select(PartyReactions.Label), Has.None.StartsWith("party."));
+            Assert.That(PartyReactions.Label(rules, 0), Is.EqualTo("Привет!"));
+            Assert.That(PartyReactions.Label(rules, PartyClient.NoReaction), Is.Empty);
+            Assert.That(PartyReactions.Said("Игрок 2", "Привет!"), Is.EqualTo("Игрок 2: «Привет!»"));
+            Assert.That(PartyReactions.Wait(rules), Is.EqualTo("Реакции — не чаще раза в 3 с"));
+            Texts.UseLanguage("en");
+            Assert.That(rules.Ids.Select(PartyReactions.Label), Has.None.StartsWith("party."));
+            Texts.UseLanguage("ru");
+        }
+
+        [Test]
         public void WithoutALinkTheRosterIsSolo()
         {
             var roster = new RosterMessage { Player0 = 11, Player1 = 22 };
