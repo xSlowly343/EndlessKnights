@@ -28,10 +28,10 @@ namespace Game.Core.Tests.Sim
             new GameLoop(TestWorld.Real, new FakeInputSource(), TestWorld.Classless(new GameState(6) { Class = heroClass }), new StatSheet());
 
         [Test]
-        public void FirstBatchHasFourUniqueWeaponsThreeOfThemDoubleTyped()
+        public void EightUniqueWeaponsFiveOfThemDoubleTyped()
         {
-            Assert.That(Weapons.Uniques.Count, Is.EqualTo(4));
-            Assert.That(Weapons.Uniques.Count(u => u.SecondType != null), Is.EqualTo(3));
+            Assert.That(Weapons.Uniques.Count, Is.EqualTo(8));
+            Assert.That(Weapons.Uniques.Count(u => u.SecondType != null), Is.EqualTo(5));
             Assert.That(Def("corsair_axe").SecondType!.Id, Is.EqualTo("pistol"));
             Assert.That(Def("skull_shovel").SecondType, Is.Null);
         }
