@@ -576,8 +576,20 @@ namespace Game.Core.Sim
                     CountHitStrike(slot, strike);
                 SupportEffects.OnKeyHit(slot, _state);
                 CountFinish(slot);
+                CountKeyEcho(slot);
             }
             _combat.Supporting = outer;
+        }
+
+        private void CountKeyEcho(SkillSlot slot)
+        {
+            var echo = SupportEffects.KeyEcho(slot);
+            if (echo == null || slot.LastCastTick < 0)
+                return;
+            if (++slot.EchoKeys < echo.EchoEveryKeys)
+                return;
+            slot.EchoKeys = 0;
+            Repeat(slot, echo.EchoPower);
         }
 
         private void CountFinish(SkillSlot slot)
@@ -990,16 +1002,24 @@ namespace Game.Core.Sim
         {
             if (slot.TwinTicks <= 0 || --slot.TwinTicks > 0)
                 return;
-            if (!Armed(slot) || slot.Def.ArmOn != ArmOn.None)
+            Repeat(slot, slot.TwinPower);
+        }
+
+        private void Repeat(SkillSlot slot, double power)
+        {
+            if (!Armed(slot) || slot.Def.ArmOn != ArmOn.None || slot.Def.IsPassive)
                 return;
             var castPower = slot.CastPower;
             var auraPower = slot.AuraPower;
-            slot.CastPower = castPower * slot.TwinPower;
-            slot.AuraPower = auraPower * slot.TwinPower;
+            slot.CastPower = castPower * power;
+            slot.AuraPower = auraPower * power;
             if (slot.Def.Effect is AuraEffect || slot.Def.Effect is EnemyDebuffEffect)
                 RemoveAura(slot);
-            slot.StackPower = slot.TwinPower;
+            slot.StackPower = power;
+            var outer = _combat.Supporting;
+            _combat.Supporting = slot;
             Release(slot, IsNative(slot) ? slot.Def.Native : NativeTrait.None, 0, false, announce: false);
+            _combat.Supporting = outer;
             slot.StackPower = 1;
             slot.CastPower = castPower;
             slot.AuraPower = auraPower;

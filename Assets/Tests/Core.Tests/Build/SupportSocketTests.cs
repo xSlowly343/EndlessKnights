@@ -773,5 +773,53 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.Skills[slot].CastPower, Is.EqualTo(support.Power).Within(1e-9));
             Assert.That((loop.State.Gold - before).ToDouble(), Is.EqualTo((gold * support.KillRewardMultiplier).ToDouble()).Within(1e-6));
         }
+
+        [Test]
+        public void KeyEchoRepeatsTheSkillEveryFiftyKeysAtHalfPower()
+        {
+            var support = Gem("key_echo").Support!;
+            var loop = Hero(Attribute("strength", 30));
+            var slot = Supported(loop, "iron_rim_bash", "key_echo");
+            var first = CastDamage(loop, slot);
+            var input = new FakeInputSource();
+            var typing = TestWorld.Loop(input, loop.State, loop.Hero);
+            typing.State.HitsOnEnemy = 10;
+
+            for (var i = 0; i < support.EchoEveryKeys - 1; i++)
+            {
+                input.PressKeys(1);
+                typing.Tick();
+                typing.Tick();
+            }
+            typing.Events.Clear();
+            input.PressKeys(1);
+            typing.Tick();
+
+            var repeat = 0.0;
+            for (var i = 0; i < typing.Events.Count; i++)
+            {
+                if (typing.Events[i].Kind == GameEventKind.Damage && typing.Events[i].Source == DamageSource.Skill)
+                    repeat += typing.Events[i].Amount.ToDouble();
+            }
+            Assert.That(repeat, Is.EqualTo(first * support.EchoPower).Within(first * 1e-6));
+        }
+
+        [Test]
+        public void LegacyIsStrongerOnlyInAParty()
+        {
+            var support = Gem("legacy").Support!;
+
+            Assert.That(CastPowerWith("legacy", l => l.State.PartyMembers = 1), Is.EqualTo(1).Within(1e-9));
+            Assert.That(CastPowerWith("legacy", l => l.State.PartyMembers = 3), Is.EqualTo(support.PartyPower).Within(1e-9));
+        }
+
+        [Test]
+        public void ResonanceWaitsForTheParty()
+        {
+            var loop = Hero();
+            var slot = Equip(loop, "iron_rim_bash", "resonance");
+
+            Assert.That(loop.Book.SetSupport(slot, 0, Gem("resonance")), Is.EqualTo(BookResult.WaitsForMechanic));
+        }
     }
 }

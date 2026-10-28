@@ -151,7 +151,7 @@ namespace Game.Sim
         {
             if (support.ExperienceMultiplier != 1 || support.KillRewardMultiplier != 1)
                 return "utility";
-            if (support.VulnerabilityShare > 0)
+            if (support.VulnerabilityShare > 0 || support.PartyPower != 1)
                 return "party";
             if (support.QuietSeconds > 0 || support.CirclesForPower > 0)
                 return "conditional";

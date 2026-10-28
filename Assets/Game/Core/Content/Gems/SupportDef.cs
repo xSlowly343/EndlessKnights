@@ -28,7 +28,9 @@ namespace Game.Core.Content.Gems
         TargetHunter,
         Cursed,
         LingeringBlight,
-        Pawnbroker
+        Pawnbroker,
+        KeyEcho,
+        Legacy
     }
 
     public sealed class SupportDef
@@ -98,6 +100,9 @@ namespace Game.Core.Content.Gems
         public double AfflictionMultiplier { get; private set; } = 1;
         public double StackCapMultiplier { get; private set; } = 1;
         public double KillRewardMultiplier { get; private set; } = 1;
+        public int EchoEveryKeys { get; private set; }
+        public double EchoPower { get; private set; }
+        public double PartyPower { get; private set; } = 1;
 
         public static SupportDef? Read(ContentNode effect)
         {
@@ -267,6 +272,15 @@ namespace Game.Core.Content.Gems
                         Power = effect.Field("power").AsNumber(0, 10),
                         KillRewardMultiplier = effect.Field("killReward").AsNumber(1, 100)
                     };
+                case "keyEcho":
+                    return new SupportDef(SupportKind.KeyEcho)
+                    {
+                        EchoEveryKeys = effect.Field("everyKeys").AsInt(1, 100000),
+                        EchoPower = effect.Field("power").AsNumber(0, 10),
+                        ActiveKeyDamage = effect.Field("keyDamage").AsNumber(0, 100)
+                    };
+                case "legacy":
+                    return new SupportDef(SupportKind.Legacy) { PartyPower = effect.Field("partyPower").AsNumber(0, 10) };
                 default:
                     return null;
             }

@@ -67,6 +67,7 @@ namespace Game.Core.Sim
         public int WindTicks { get; set; }
         public int FlickTargets { get; set; }
         public double StackPower { get; set; } = 1;
+        public int EchoKeys { get; set; }
         public double PassiveScale { get; set; }
         public double AuraPower { get; set; } = 1;
         public double CursePower { get; set; } = 1;

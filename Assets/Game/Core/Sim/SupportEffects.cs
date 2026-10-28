@@ -36,6 +36,8 @@ namespace Game.Core.Sim
                     power *= support.RhythmPower;
                 if (support.CirclesForPower > 0 && slot.CirclesSinceCast >= support.CirclesForPower)
                     power *= support.CirclePower;
+                if (state.PartyMembers > 1)
+                    power *= support.PartyPower;
             }
             slot.KeyHitsAtCast = state.KeyHits;
             slot.CirclesSinceCast = 0;
@@ -300,6 +302,17 @@ namespace Game.Core.Sim
                 if (support.RhythmEvery > 0 && state.KeyStreak % support.RhythmEvery == 0)
                     slot.CooldownTicks = System.Math.Max(0, slot.CooldownTicks - (int)System.Math.Round(support.RhythmCooldownSeconds * GameLoop.TicksPerSecond));
             }
+        }
+
+        public static SupportDef? KeyEcho(SkillSlot slot)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.EchoEveryKeys > 0)
+                    return support;
+            }
+            return null;
         }
 
         public static SupportDef? Finish(SkillSlot slot)
