@@ -11,11 +11,16 @@ namespace Game.Core.Content.Items
         public const int SupportedVersion = 1;
 
         private readonly Dictionary<string, GearBase> _bases;
+        private readonly Dictionary<string, SetDef> _sets;
         private readonly Dictionary<string, AffixDef> _affixes;
         private readonly RarityRule[] _rarities;
 
-        private ItemCatalog(List<GearBase> bases, List<AffixDef> affixes, RarityRule[] rarities, int tiers, double topWeight, double nextWeight, double restWeight)
+        private ItemCatalog(List<GearBase> bases, List<AffixDef> affixes, List<SetDef> sets, RarityRule[] rarities, int tiers, double topWeight, double nextWeight, double restWeight)
         {
+            Sets = sets;
+            _sets = new Dictionary<string, SetDef>(StringComparer.Ordinal);
+            foreach (var set in sets)
+                _sets.Add(set.Id, set);
             Bases = bases;
             Affixes = affixes;
             _rarities = rarities;
@@ -33,6 +38,26 @@ namespace Game.Core.Content.Items
 
         public IReadOnlyList<GearBase> Bases { get; }
         public IReadOnlyList<AffixDef> Affixes { get; }
+        public IReadOnlyList<SetDef> Sets { get; }
+
+        public bool TryGetSet(string id, out SetDef set) => _sets.TryGetValue(id, out set!);
+
+        public SetDef? PickSet(ItemSlot slot, ItemRarity rarity, Rng rng)
+        {
+            var candidates = new List<SetDef>();
+            foreach (var set in Sets)
+            {
+                if (set.Has(slot) && set.Rarity <= rarity)
+                    candidates.Add(set);
+            }
+            return candidates.Count == 0 ? null : candidates[rng.NextInt(0, candidates.Count)];
+        }
+
+        public GearItem RollSetPiece(SetDef set, ItemSlot slot, string? color, ItemRarity rarity, int itemLevel, Rng rng)
+        {
+            var gearBase = PickBase(slot, set.Color ?? color, itemLevel, rng);
+            return new GearItem(gearBase, rarity, itemLevel, RollAffixes(slot, rarity, itemLevel, rng), set);
+        }
         public int Tiers { get; }
         public double TopWeight { get; }
         public double NextWeight { get; }
@@ -50,13 +75,26 @@ namespace Game.Core.Content.Items
             return new GearItem(gearBase, rarity, itemLevel, RollAffixes(slot, rarity, itemLevel, rng));
         }
 
-        public GearBase PickBase(ItemSlot slot, string? color, int itemLevel, Rng rng)
+        public GearBase PickBase(ItemSlot slot, string? color, int itemLevel, Rng rng) =>
+            PickBase(slot, color, itemLevel, rng, exactColor: color != null && HasColored(slot, color, itemLevel));
+
+        private bool HasColored(ItemSlot slot, string color, int itemLevel)
+        {
+            foreach (var gearBase in Bases)
+            {
+                if (gearBase.Slot == slot && gearBase.Color == color && gearBase.FromBiome <= itemLevel)
+                    return true;
+            }
+            return false;
+        }
+
+        private GearBase PickBase(ItemSlot slot, string? color, int itemLevel, Rng rng, bool exactColor)
         {
             var candidates = new List<GearBase>();
             GearBase? best = null;
             foreach (var gearBase in Bases)
             {
-                if (gearBase.Slot != slot || (color != null && gearBase.Color != null && gearBase.Color != color))
+                if (gearBase.Slot != slot || (color != null && gearBase.Color != null && gearBase.Color != color) || (exactColor && gearBase.Color != color))
                     continue;
                 if (gearBase.FromBiome <= itemLevel)
                     candidates.Add(gearBase);
@@ -149,7 +187,16 @@ namespace Game.Core.Content.Items
                     throw item.Field("id").Error($"affix id '{affix.Id}' is used twice");
                 affixes.Add(affix);
             }
-            return new ItemCatalog(bases, affixes, rarities, tiers,
+            var sets = new List<SetDef>();
+            var setIds = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var item in root.Field("sets").Items())
+            {
+                var set = ReadSet(item);
+                if (!setIds.Add(set.Id))
+                    throw item.Field("id").Error($"set id '{set.Id}' is used twice");
+                sets.Add(set);
+            }
+            return new ItemCatalog(bases, affixes, sets, rarities, tiers,
                 weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
         }
 
@@ -176,6 +223,26 @@ namespace Game.Core.Content.Items
                 node.Field("fromBiome").AsInt(1, 100),
                 name.Field("ru").AsString(), name.Field("en").AsString(),
                 ModifierReader.ReadList(node.Field("implicit")));
+        }
+
+        private static SetDef ReadSet(ContentNode node)
+        {
+            var rarityNode = node.Field("rarity");
+            if (!ItemRarityNames.ByName.TryGetValue(rarityNode.AsString(), out var rarity) || rarity < ItemRarity.Rare)
+                throw rarityNode.Error("a set needs a rarity from rare up");
+            var pieces = new Dictionary<ItemSlot, IReadOnlyList<Modifier>>();
+            var piecesNode = node.Field("pieces");
+            foreach (var slotName in piecesNode.FieldNames())
+            {
+                if (!ItemSlotNames.ByName.TryGetValue(slotName, out var slot) || slot == ItemSlot.Weapon || slot == ItemSlot.Ring || slot == ItemSlot.Amulet)
+                    throw piecesNode.Field(slotName).Error($"a set piece goes to armour slots, not '{slotName}'");
+                pieces[slot] = ModifierReader.ReadList(piecesNode.Field(slotName));
+            }
+            if (pieces.Count == 0)
+                throw piecesNode.Error("a set needs pieces");
+            var name = node.Field("name");
+            return new SetDef(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), rarity,
+                node.HasField("color") ? node.Field("color").AsString() : null, pieces, ModifierReader.ReadList(node.Field("bonus")));
         }
 
         private static AffixDef ReadAffix(ContentNode node)

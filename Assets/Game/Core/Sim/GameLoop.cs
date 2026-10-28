@@ -71,8 +71,8 @@ namespace Game.Core.Sim
             _combat.OnKeyHit(_skills);
             _triggers = new TriggerSystem(state, _skills, _resource);
             _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
-            _gear = new GearSystem(state, hero);
-            _drops = new DropSystem(data.Drops, data.Stages, data.Gems, _weapons, state, hero, Events);
+            _gear = new GearSystem(data.Items, state, hero);
+            _drops = new DropSystem(data.Drops, data.Stages, data.Gems, data.Items, _weapons, _gear, state, hero, Events);
             _stage.Drops = _drops;
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
@@ -356,7 +356,8 @@ namespace Game.Core.Sim
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);
             _weapons.UseCatalog(data.Weapons);
-            _drops.UseData(data.Drops, data.Stages, data.Gems);
+            _drops.UseData(data.Drops, data.Stages, data.Gems, data.Items);
+            _gear.UseCatalog(data.Items);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _prestige.UseRules(data.Prestige);

@@ -18,6 +18,7 @@
     "support": { "normal": 150, "boss": 0 },
     "trigger": { "normal": 500, "boss": 0, "firstAtStage": 10 }
   },
+  "sets": { "chance": 0.02, "boss": 0.04, "guardian": 0.08 },
   "bag": { "size": 60 },
   "dust": { "simple": 1, "fine": 2, "uncommon": 4, "rare": 10, "epic": 25, "legendary": 60, "mythic": 150, "ancient": 400, "rift": 1000 }
 }
