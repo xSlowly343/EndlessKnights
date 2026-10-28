@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Настройки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 480px; height: 786px; display: flex; flex-direction: column; gap: 6px; background: #0F2236; font-family: Rubik, 'Segoe UI', sans-serif; color: #EEF2FF">
+  <section aria-label="Панель" style="width: 480px; height: 600px; box-sizing: border-box; display: flex; flex-direction: column; border-radius: 12px; border: 1px solid #3A4870; background: #1B2236; overflow: hidden">
+    <div style="height: 46px; flex: none; position: relative; display: flex; align-items: center; gap: 10px; padding: 0 8px; box-sizing: border-box; border-bottom: 1px solid #3A4870">
+      <div style="position: absolute; left: 222px; top: 4px; width: 36px; height: 4px; border-radius: 2px; background: #4A5677"></div>
+      <div style="height: 30px; padding: 0 14px; display: flex; align-items: center; border-radius: 6px; background: #B02A2A; box-shadow: inset 0 -2px 0 #F0B43C; font-weight: 700; font-size: 15px">Настройки</div>
+      
+      <div style="flex: 1"></div>
+      <button type="button" aria-label="Свернуть в полоску" style="width: 30px; height: 30px; border-radius: 6px; border: 0; background: #7A1E1E; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE4E4" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12 M18 6L6 18"></path></svg></button>
+    </div>
+    <div style="height: 40px; flex: none; display: flex; align-items: center; gap: 2px; padding: 0 8px"><button type="button" style="height: 28px; padding: 0 12px; border-radius: 14px; border: 0; background: #2E3A58; color: #EEF2FF; font-family: inherit; font-size: 13px; font-weight: 500;">Игра</button><button type="button" style="height: 28px; padding: 0 12px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px; ">Звук</button></div>
+    <div style="flex: 1; min-height: 0; position: relative; overflow: hidden; background: #121828">
+<div style="position: absolute; left: 8px; right: 8px; top: 8px; height: 38px; border-radius: 8px; background: #1B2236; border: 1px solid #3A4870; display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; font-size: 12px"><span style="flex: 1; color: #D5DCEE">Язык</span><div style="display: flex; gap: 4px"><button type="button" style="height: 28px; padding: 0 12px; border-radius: 14px; border: 0; background: #2E3A58; color: #EEF2FF; font-family: inherit; font-size: 13px; font-weight: 500;">Русский</button><button type="button" style="height: 28px; padding: 0 12px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px; ">English</button></div></div><div style="position: absolute; left: 8px; right: 8px; top: 50px; height: 38px; border-radius: 8px; background: #1B2236; border: 1px solid #3A4870; display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; font-size: 12px"><span style="flex: 1; color: #D5DCEE">Запускать вместе с Windows</span><div style="width: 38px; height: 22px; border-radius: 11px; background: #F0B43C; position: relative; flex: none"><div style="position: absolute; top: 3px; left: 19px; width: 16px; height: 16px; border-radius: 50%; background: #EEF2FF"></div></div></div><div style="position: absolute; left: 8px; right: 8px; top: 92px; height: 38px; border-radius: 8px; background: #1B2236; border: 1px solid #3A4870; display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; font-size: 12px"><span style="flex: 1; color: #D5DCEE">Кадров в секунду, пока полоска видна</span><div style="display: flex; gap: 2px"><button type="button" style="height: 28px; padding: 0 12px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px; ">30</button><button type="button" style="height: 28px; padding: 0 12px; border-radius: 14px; border: 0; background: #2E3A58; color: #EEF2FF; font-family: inherit; font-size: 13px; font-weight: 500;">60</button><button type="button" style="height: 28px; padding: 0 12px; border-radius: 14px; border: 0; background: transparent; color: #AEB9D6; font-family: inherit; font-size: 13px; ">144</button></div></div><div style="position: absolute; left: 8px; right: 8px; top: 134px; height: 38px; border-radius: 8px; background: #1B2236; border: 1px solid #3A4870; display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; font-size: 12px"><span style="flex: 1; color: #D5DCEE">Режим «от батареи» (30 FPS)</span><div style="width: 38px; height: 22px; border-radius: 11px; background: #26304A; position: relative; flex: none"><div style="position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #EEF2FF"></div></div></div><div style="position: absolute; left: 8px; right: 8px; top: 176px; height: 38px; border-radius: 8px; background: #1B2236; border: 1px solid #3A4870; display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; font-size: 12px"><span style="flex: 1; color: #D5DCEE">Прозрачность полоски</span><div style="width: 150px; height: 6px; border-radius: 3px; background: #26304A; position: relative; flex: none"><div style="width: 70%; height: 6px; border-radius: 3px; background: #F0B43C"></div><div style="position: absolute; left: calc(70% - 7px); top: -4px; width: 14px; height: 14px; border-radius: 50%; background: #EEF2FF"></div></div></div><div style="position: absolute; left: 8px; right: 8px; top: 218px; height: 38px; border-radius: 8px; background: #1B2236; border: 1px solid #3A4870; display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; font-size: 12px"><span style="flex: 1; color: #D5DCEE">Цифры урона в полоске</span><div style="width: 38px; height: 22px; border-radius: 11px; background: #F0B43C; position: relative; flex: none"><div style="position: absolute; top: 3px; left: 19px; width: 16px; height: 16px; border-radius: 50%; background: #EEF2FF"></div></div></div><div style="position: absolute; left: 8px; right: 8px; top: 260px; height: 38px; border-radius: 8px; background: #1B2236; border: 1px solid #3A4870; display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; font-size: 12px"><span style="flex: 1; color: #D5DCEE">Уведомления над полоской</span><div style="width: 38px; height: 22px; border-radius: 11px; background: #F0B43C; position: relative; flex: none"><div style="position: absolute; top: 3px; left: 19px; width: 16px; height: 16px; border-radius: 50%; background: #EEF2FF"></div></div></div><div style="position: absolute; left: 8px; right: 8px; top: 302px; height: 38px; border-radius: 8px; background: #1B2236; border: 1px solid #3A4870; display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; font-size: 12px"><span style="flex: 1; color: #D5DCEE">Глобальные хоткеи</span><div style="width: 38px; height: 22px; border-radius: 11px; background: #26304A; position: relative; flex: none"><div style="position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #EEF2FF"></div></div></div><div style="position: absolute; left: 8px; right: 8px; top: 344px; height: 38px; border-radius: 8px; background: #1B2236; border: 1px solid #3A4870; display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; font-size: 12px"><span style="flex: 1; color: #D5DCEE">Показать обучение заново</span><button type="button" style="height: 34px; padding: 0 16px; border-radius: 8px; border: 0; background: #26304A; color: #D5DCEE; font-weight: 500; font-family: inherit; font-size: 13px; flex: none">Сбросить</button></div>
+    </div>
+    <dc-import name="TabBar" active="more" hint-size="480px,60px"></dc-import>
+  </section>
+  <dc-import name="Strip" variant="solo" show-zones="false" hint-size="480px,180px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":786}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
