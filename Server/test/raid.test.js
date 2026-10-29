@@ -125,3 +125,28 @@ test("a new week settles the old raid once: seals go to the wallets and the resu
   server.raidSettle(nk, logger, Object.assign(plain(stored.value), { week: old.week }), Date.now());
   assert.strictEqual(server.walletRead(nk, "bob").value.balances.seals, rules.minSeals, "a second settlement pays nothing");
 });
+
+test("the week is settled from matches and other calls even if nobody in the clan opens the raid", () => {
+  const { nk, call } = world("ann", "bob");
+  const clan = clanOf(call, ["ann", "bob"]);
+  call("ann", "raidPushRpc", { flesh: 30, seconds: 15 });
+  call("bob", "raidPushRpc", { flesh: 10, seconds: 15 });
+  const week = server.raidWeekOf(Date.now());
+  const index = () => nk.storageRead([{ collection: "clan_raid_index", key: "pending", userId: server.PartySystemUser }])[0].value.raids;
+  assert.deepStrictEqual(plain(index()), [{ clanId: clan.id, week: week }]);
+
+  server.raidSettleDue(nk, logger, Date.now());
+  assert.strictEqual(index().length, 1, "the running week is not settled");
+  assert.strictEqual(server.walletRead(nk, "bob").value.balances.seals, 0);
+
+  const nextWeek = server.raidWeekStart(week + 1) + 60000;
+  server.raidSettleDue(nk, logger, nextWeek);
+  assert.strictEqual(server.walletRead(nk, "bob").value.balances.seals, rules.minSeals);
+  assert.ok(server.walletRead(nk, "ann").value.balances.seals >= rules.minSeals, "everyone who hit the boss is paid");
+  assert.strictEqual(index().length, 0);
+  const last = nk.storageRead([{ collection: "clan_raid_last", key: clan.id, userId: server.PartySystemUser }])[0].value;
+  assert.strictEqual(last.week, week);
+
+  server.raidSettleDue(nk, logger, nextWeek);
+  assert.strictEqual(server.walletRead(nk, "bob").value.balances.seals, rules.minSeals, "nothing is paid twice");
+});

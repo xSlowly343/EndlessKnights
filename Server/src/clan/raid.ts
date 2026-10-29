@@ -55,6 +55,9 @@ declare const RaidServerRules: RaidRules;
 const RaidCollection = "clan_raid";
 const RaidLastCollection = "clan_raid_last";
 const RaidWriteAttempts = 4;
+const RaidIndexCollection = "clan_raid_index";
+const RaidIndexKey = "pending";
+const RaidSettlePerCall = 20;
 const RaidPushSlackSeconds = 5;
 
 function raidWeekOf(unixMs: number): number {
@@ -173,6 +176,58 @@ function raidSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, raid: RaidVa
     logger.info("clan %s: raid of week %d settled, killed %s, %d players", raid.clanId, raid.week, String(result.killed), result.places.length);
 }
 
+interface RaidIndex {
+    raids: { clanId: string; week: number }[];
+}
+
+function raidIndexChange(nk: nkruntime.Nakama, change: (index: RaidIndex) => boolean): void {
+    for (let attempt = 1; attempt <= RaidWriteAttempts; attempt++) {
+        const objects = nk.storageRead([{ collection: RaidIndexCollection, key: RaidIndexKey, userId: PartySystemUser }]);
+        const index = objects.length > 0 ? objects[0].value as RaidIndex : { raids: [] };
+        if (!change(index))
+            return;
+        try {
+            nk.storageWrite([{
+                collection: RaidIndexCollection, key: RaidIndexKey, userId: PartySystemUser, value: index as any,
+                version: objects.length > 0 ? objects[0].version : "*", permissionRead: 0, permissionWrite: 0
+            }]);
+            return;
+        } catch (error) {
+            if (attempt === RaidWriteAttempts)
+                return;
+        }
+    }
+}
+
+function raidNoteCreated(nk: nkruntime.Nakama, clanId: string, week: number): void {
+    raidIndexChange(nk, (index) => {
+        for (const raid of index.raids)
+            if (raid.clanId === clanId && raid.week === week)
+                return false;
+        index.raids.push({ clanId: clanId, week: week });
+        return true;
+    });
+}
+
+function raidSettleDue(nk: nkruntime.Nakama, logger: nkruntime.Logger, nowUnixMs: number): void {
+    const objects = nk.storageRead([{ collection: RaidIndexCollection, key: RaidIndexKey, userId: PartySystemUser }]);
+    if (objects.length === 0)
+        return;
+    const week = raidWeekOf(nowUnixMs);
+    const due = (objects[0].value as RaidIndex).raids.filter((raid) => raid.week < week).slice(0, RaidSettlePerCall);
+    if (due.length === 0)
+        return;
+    for (const entry of due) {
+        const raid = raidRead(nk, entry.clanId).value;
+        if (raid && raid.week === entry.week)
+            raidSettle(nk, logger, raid, nowUnixMs);
+    }
+    raidIndexChange(nk, (index) => {
+        index.raids = index.raids.filter((raid) => !due.some((done) => done.clanId === raid.clanId && done.week === raid.week));
+        return true;
+    });
+}
+
 function raidChange<T>(nk: nkruntime.Nakama, logger: nkruntime.Logger, group: nkruntime.Group, nowUnixMs: number, change: (raid: RaidValue) => T): T {
     const week = raidWeekOf(nowUnixMs);
     const members = clanMetaOf(group).members.length;
@@ -183,11 +238,14 @@ function raidChange<T>(nk: nkruntime.Nakama, logger: nkruntime.Logger, group: nk
             raidSettle(nk, logger, raid, nowUnixMs);
             raid = null;
         }
+        const created = !raid;
         if (!raid)
             raid = raidCreate(group.id, week, members);
         const result = change(raid);
         try {
             nk.storageWrite([{ collection: RaidCollection, key: group.id, userId: PartySystemUser, value: raid as any, version: stored.version, permissionRead: 0, permissionWrite: 0 }]);
+            if (created)
+                raidNoteCreated(nk, group.id, week);
             return result;
         } catch (error) {
             if (attempt === RaidWriteAttempts)
@@ -254,6 +312,7 @@ function raidPushRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrun
 function raidViewRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const userId = partyCaller(ctx);
     const now = Date.now();
+    raidSettleDue(nk, logger, now);
     const group = clanOf(nk, userId, now);
     const stored = raidRead(nk, group.id).value;
     const raid = stored && stored.week === raidWeekOf(now) ? stored : raidChange(nk, logger, group, now, (value) => value);

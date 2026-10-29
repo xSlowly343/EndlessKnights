@@ -227,6 +227,7 @@ function partyTrackRift(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: P
     if (due) {
         state.boardTicks = 0;
         riftSettleDue(nk, logger, nowUnixMs);
+        raidSettleDue(nk, logger, nowUnixMs);
     }
 }
 

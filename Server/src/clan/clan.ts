@@ -322,6 +322,7 @@ function clanCreateRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkr
 function clanMineRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const userId = partyCaller(ctx);
     const now = Date.now();
+    raidSettleDue(nk, logger, now);
     const group = clanGroupOfUser(nk, userId, now);
     if (!group)
         return JSON.stringify({ clan: null });
