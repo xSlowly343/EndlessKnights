@@ -23,6 +23,7 @@ interface PartyEncounterRules {
     restBankSeconds: number;
     idlePortionShare: number;
     typingReserveShare: number;
+    allyCreditMax: number;
     relaySenderSeconds: number;
     relayRecipientSeconds: number;
 }

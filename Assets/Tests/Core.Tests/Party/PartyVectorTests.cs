@@ -44,7 +44,8 @@ namespace Game.Core.Tests.Party
                 HelpCall(),
                 WeakenNext(),
                 WeakenedRewards(),
-                MedianWaves()
+                MedianWaves(),
+                AllyCredit()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -65,6 +66,7 @@ namespace Game.Core.Tests.Party
                    $"    \"restBankSeconds\": {N(rules.Contribution.RestBankSeconds)},\n" +
                    $"    \"idlePortionShare\": {N(rules.Contribution.IdlePortionShare)},\n" +
                    $"    \"typingReserveShare\": {N(rules.Contribution.TypingReserveShare)},\n" +
+                   $"    \"allyCreditMax\": {N(rules.Contribution.AllyCreditMax)},\n" +
                    $"    \"relaySenderSeconds\": {N(rules.Relay.SenderSeconds)},\n" +
                    $"    \"relayRecipientSeconds\": {N(rules.Relay.RecipientSeconds)},\n" +
                    $"    \"waveCount\": {stages.Waves.Count},\n" +
@@ -95,6 +97,32 @@ namespace Game.Core.Tests.Party
             r.Weaken(2, 0.2);
             r.SwitchWorld(PartyWorld.Rift, 1761652800);
             r.Hit(0, 2);
+            return r.ToJson();
+        }
+
+        private static string AllyCredit()
+        {
+            var r = Recorder("a booster gets a share of the damage of the allies it boosts", 3131);
+            r.Join(1);
+            r.Join(2);
+            r.Join(3);
+            r.Credit(1, 0.1);
+            r.Credit(2, 5);
+            r.Credit(0, -1);
+            r.Hit(0, 0.5);
+            r.Auras(1, 20);
+            r.Hit(0, 0.5);
+            r.Effect(77, 0.1, 3, 0, 2);
+            r.Hit(0, 0.6);
+            r.Hit(1, 0.4);
+            r.Hit(2, 1.5);
+            r.Advance(30);
+            r.Hit(0, 2);
+            r.Hit(0, 3);
+            r.JoinGuest(4, 30);
+            r.Credit(3, 0.2);
+            r.Auras(3, 50);
+            r.Hit(0, 3);
             return r.ToJson();
         }
 

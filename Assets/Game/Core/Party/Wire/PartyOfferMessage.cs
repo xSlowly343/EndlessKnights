@@ -39,6 +39,20 @@ namespace Game.Core.Party.Wire
             }
         }
 
+        public int LongestAuraTicks
+        {
+            get
+            {
+                var ticks = 0;
+                for (var i = 0; i < PartyBuffRules.MaxAuras; i++)
+                {
+                    if (Aura(i).Active)
+                        ticks = System.Math.Max(ticks, Aura(i).TicksLeft);
+                }
+                return ticks;
+            }
+        }
+
         public OfferedAura Aura(int index) => index switch
         {
             0 => Aura0,

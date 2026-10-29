@@ -59,6 +59,10 @@ namespace Game.Core.Tests.Party
         public void SwitchWorld(PartyWorld world, long riftId) =>
             Record($"\"op\": \"switchWorld\", \"world\": {(int)world}, \"riftId\": {riftId}", () => _encounter.SwitchWorld(world, riftId));
 
+        public void Credit(int slot, double rate) => Record($"\"op\": \"credit\", \"slot\": {slot}, \"rate\": {Number(rate)}", () => _encounter.SetCredit(slot, rate));
+
+        public void Auras(int slot, int ticks) => Record($"\"op\": \"auras\", \"slot\": {slot}, \"ticks\": {ticks}", () => _encounter.NoteAuras(slot, ticks));
+
         public void Stage(int slot, long stage) => Record($"\"op\": \"stage\", \"slot\": {slot}, \"stage\": {stage}", () => _encounter.SetStage(slot, stage));
 
         public int RelayTarget(int from) => Record($"\"op\": \"relayTarget\", \"slot\": {from}", () => _encounter.RelayTarget(from));
@@ -141,7 +145,7 @@ namespace Game.Core.Tests.Party
                 if (slot > 0)
                     builder.Append(", ");
                 builder.Append(member.Joined
-                    ? $"{{ \"player\": \"{member.PlayerId}\", \"weight\": {member.Weight}, \"presence\": {(int)e.Presence(slot)}, \"typing\": {Bool(e.Typing(slot))}, \"share\": {Number(member.EnemyShare)}, \"restBank\": {member.RestBankTicks}, \"guest\": {member.GuestTicksLeft} }}"
+                    ? $"{{ \"player\": \"{member.PlayerId}\", \"weight\": {member.Weight}, \"presence\": {(int)e.Presence(slot)}, \"typing\": {Bool(e.Typing(slot))}, \"share\": {Number(member.EnemyShare)}, \"restBank\": {member.RestBankTicks}, \"guest\": {member.GuestTicksLeft}, \"credited\": {Number(member.CreditedShare)}, \"boosting\": {Bool(e.Boosting(slot))} }}"
                     : "null");
             }
             builder.Append("], \"events\": [");

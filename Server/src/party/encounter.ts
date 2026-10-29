@@ -23,6 +23,9 @@ class PartyMember {
     heroClass = 0;
     guestTicksLeft = 0;
     stage = 0;
+    creditRate = 0;
+    auraTicksLeft = 0;
+    creditedShare = 0;
 
     get guest(): boolean { return this.guestTicksLeft > 0; }
 
@@ -40,6 +43,9 @@ class PartyMember {
         this.heroClass = 0;
         this.guestTicksLeft = 0;
         this.stage = 0;
+        this.creditRate = 0;
+        this.auraTicksLeft = 0;
+        this.creditedShare = 0;
     }
 }
 
@@ -189,6 +195,27 @@ class PartyEncounter {
     reportInput(slot: number): void {
         if (this.isMember(slot))
             this.members[slot].lastInputTick = this.tick;
+    }
+
+    setCredit(slot: number, rate: number): void {
+        if (this.isMember(slot))
+            this.members[slot].creditRate = rate > 0 ? Math.min(this.rules.allyCreditMax, rate) : 0;
+    }
+
+    noteAuras(slot: number, ticks: number): void {
+        if (this.isMember(slot))
+            this.members[slot].auraTicksLeft = Math.max(0, ticks);
+    }
+
+    boosting(slot: number): boolean {
+        if (!this.isMember(slot))
+            return false;
+        if (this.members[slot].auraTicksLeft > 0)
+            return true;
+        for (const effect of this.effects)
+            if (effect.ticksLeft > 0 && effect.id !== 0 && effect.owner === slot)
+                return true;
+        return false;
     }
 
     setStage(slot: number, stage: number): void {
@@ -476,10 +503,20 @@ class PartyEncounter {
 
     private take(slot: number, applied: number): number {
         this.members[slot].enemyShare += applied;
+        this.creditBoosters(slot, applied);
         this.barLeft -= applied;
         if (this.barLeft <= 0)
             this.kill();
         return applied;
+    }
+
+    private creditBoosters(slot: number, applied: number): void {
+        for (let i = 0; i < this.members.length; i++) {
+            const member = this.members[i];
+            if (i === slot || !member.joined || member.guest || !(member.creditRate > 0) || !this.boosting(i))
+                continue;
+            member.creditedShare += applied * member.creditRate;
+        }
     }
 
     private kindScale(): number {
@@ -520,18 +557,21 @@ class PartyEncounter {
 
     private kill(): void {
         this.barLeft = 0;
+        let damage = 0;
         let total = 0;
-        for (const member of this.members)
-            total += member.enemyShare;
+        for (const member of this.members) {
+            damage += member.enemyShare;
+            total += member.enemyShare + member.creditedShare;
+        }
         const shares: number[] = [];
         for (const member of this.members)
-            shares.push(total > 0 ? member.enemyShare / total : 0);
+            shares.push(total > 0 ? (member.enemyShare + member.creditedShare) / total : 0);
         const rewarded = this.reward();
         this.enemyKilled = true;
         this.enemyRewarded = rewarded;
         this.events.push({
             kind: PartyEventKind.EnemyKilled, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: shares, rewarded: rewarded,
-            loop: total > 0 ? this.loopShare / total : 0, saved: this.savedBossTicks / PartyTicksPerSecond
+            loop: damage > 0 ? this.loopShare / damage : 0, saved: this.savedBossTicks / PartyTicksPerSecond
         });
         this.previousEnemyId = this.enemyId;
         this.previousKind = this.enemyKind;
@@ -595,6 +635,7 @@ class PartyEncounter {
         for (let i = 0; i < this.members.length; i++) {
             const member = this.members[i];
             member.enemyShare = 0;
+            member.creditedShare = 0;
             member.weight = member.joined && this.counts(i) ? 1 : 0;
             this.fighters += member.weight;
         }
@@ -685,6 +726,9 @@ class PartyEncounter {
         for (const effect of this.effects)
             if (effect.ticksLeft > 0)
                 effect.ticksLeft--;
+        for (const member of this.members)
+            if (member.auraTicksLeft > 0)
+                member.auraTicksLeft--;
     }
 
     private addEvent(kind: PartyEventKind): void {

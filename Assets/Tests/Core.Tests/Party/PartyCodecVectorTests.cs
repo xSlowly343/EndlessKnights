@@ -77,8 +77,8 @@ namespace Game.Core.Tests.Party
             builder.Append("    \"bossRequest\": { \"hex\": \"").Append(Hex(PartyCodec.EncodeBossRequest(_buffer))).Append("\" },\n");
             builder.Append("    \"worldRequest\": { \"world\": 1, \"cancel\": false, \"riftId\": 1761652800, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new WorldRequestMessage { World = PartyWorld.Rift, RiftId = 1761652800 }))).Append("\" },\n");
-            builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"hex\": \"")
-                .Append(Hex(PartyCodec.Encode(_buffer, new PresenceMessage { Presence = PartyPresence.Peaceful, Stage = 77, Resource = 12.5f }))).Append("\" },\n");
+            builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"contribution\": 0.125, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new PresenceMessage { Presence = PartyPresence.Peaceful, Stage = 77, Resource = 12.5f, Contribution = 0.125f }))).Append("\" },\n");
             var offer = new PartyOfferMessage { Slot = 0 };
             offer.SetStat(0, 0.3);
             offer.SetAura(0, new OfferedAura { GemNetId = 5, Strength = 1.5f, TicksLeft = 200 });

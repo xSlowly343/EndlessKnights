@@ -15,6 +15,9 @@ namespace Game.Core.Party
         public byte HeroClass { get; internal set; }
         public int GuestTicksLeft { get; internal set; }
         public long Stage { get; internal set; }
+        public double CreditRate { get; internal set; }
+        public int AuraTicksLeft { get; internal set; }
+        public double CreditedShare { get; internal set; }
         public bool Guest => GuestTicksLeft > 0;
 
         internal void Reset()
@@ -32,6 +35,9 @@ namespace Game.Core.Party
             HeroClass = 0;
             GuestTicksLeft = 0;
             Stage = 0;
+            CreditRate = 0;
+            AuraTicksLeft = 0;
+            CreditedShare = 0;
         }
     }
 }

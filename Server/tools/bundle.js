@@ -42,6 +42,7 @@ const rules = {
   restBankSeconds: party.contribution.restBankMinutes * 60,
   idlePortionShare: party.contribution.idlePortionShare,
   typingReserveShare: party.contribution.typingReserveShare,
+  allyCreditMax: party.contribution.allyCreditMax,
   relaySenderSeconds: party.relay.senderSeconds,
   relayRecipientSeconds: party.relay.recipientSeconds,
   relayShare: party.relay.share,

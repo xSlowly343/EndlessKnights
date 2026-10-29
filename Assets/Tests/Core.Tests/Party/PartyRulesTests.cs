@@ -18,7 +18,7 @@ namespace Game.Core.Tests.Party
   ""weaken"": { ""maxEnemies"": 10, ""maxShare"": 0.5, ""maxGold"": 1 },
   ""worldSwitchSeconds"": 10,
   ""ghost"": { ""power"": 0.25, ""fullHours"": 4, ""minActivity"": 0.25, ""uploadMinutes"": 10, ""freshHours"": 48, ""pool"": 200 },
-  ""contribution"": { ""minShare"": 0.1, ""activeInputSeconds"": 30, ""restBankMinutes"": 60, ""idlePortionShare"": 1.5, ""typingReserveShare"": 0.5 },
+  ""contribution"": { ""minShare"": 0.1, ""activeInputSeconds"": 30, ""restBankMinutes"": 60, ""idlePortionShare"": 1.5, ""typingReserveShare"": 0.5, ""allyCreditMax"": 0.25 },
   ""caps"": { ""barsPerSecond"": 3, ""burstBars"": 1, ""hitBurstSeconds"": 2, ""flagsBeforeReport"": 20 },
   ""timer"": { ""minBossRate"": 0.25, ""repeatMaxSeconds"": 7, ""repeatCooldownSeconds"": 20 },
   ""gifts"": { ""dailyLimit"": 3, ""perFriendDaily"": 1, ""receiveDailyLimit"": 5, ""friendshipCost"": 5 },

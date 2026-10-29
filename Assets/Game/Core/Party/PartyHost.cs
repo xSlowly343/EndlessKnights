@@ -138,6 +138,7 @@ namespace Game.Core.Party
                 case PartyMessageKind.Presence when PartyCodec.TryDecode(_in, length, out PresenceMessage presence):
                     _encounter.SetPeaceful(slot, presence.Presence == PartyPresence.Peaceful);
                     _encounter.SetStage(slot, presence.Stage);
+                    _encounter.SetCredit(slot, presence.Contribution);
                     break;
                 case PartyMessageKind.CastEffect when PartyCodec.TryDecode(_in, length, out CastEffectMessage effect):
                     if (effect.OnEnemy)
@@ -145,6 +146,7 @@ namespace Game.Core.Party
                     break;
                 case PartyMessageKind.PartyOffer when PartyCodec.TryDecode(_in, length, out PartyOfferMessage offer):
                     offer.Slot = (byte)slot;
+                    _encounter.NoteAuras(slot, offer.LongestAuraTicks);
                     BroadcastExcept(slot, PartyCodec.Encode(_out, offer));
                     break;
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):

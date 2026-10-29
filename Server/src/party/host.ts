@@ -149,6 +149,7 @@ class PartyHost {
                     this.encounter.setPeaceful(slot, presence.presence === PartyPresence.Peaceful);
                     this.stages[slot] = presence.stage;
                     this.encounter.setStage(slot, presence.stage);
+                    this.encounter.setCredit(slot, presence.contribution);
                 }
                 break;
             }
@@ -160,8 +161,10 @@ class PartyHost {
             }
             case PartyMessageKind.PartyOffer: {
                 const relayed = partyRelayOffer(data, slot);
-                if (relayed)
+                if (relayed) {
+                    this.encounter.noteAuras(slot, partyOfferAuraTicks(relayed));
                     this.broadcast(relayed, slot);
+                }
                 break;
             }
             case PartyMessageKind.WorldRequest: {

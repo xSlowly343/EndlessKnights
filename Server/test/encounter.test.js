@@ -25,6 +25,8 @@ function run(encounter, step) {
     case "requestBoss": return encounter.requestBossFight();
     case "relayTarget": return encounter.relayTarget(step.slot);
     case "stage": return encounter.setStage(step.slot, step.stage);
+    case "credit": return encounter.setCredit(step.slot, step.rate);
+    case "auras": return encounter.noteAuras(step.slot, step.ticks);
     case "weaken": return encounter.weakenNext(step.enemies, step.share, step.gold, step.vulnerability, step.vulnerabilitySeconds, step.effectId, step.owner);
     case "proposeWorld": return encounter.proposeWorld(step.world, step.riftId);
     case "cancelWorld": return encounter.cancelWorld();
@@ -68,6 +70,8 @@ function compare(encounter, expect, where) {
     close(actual.enemyShare, member.share, `${where}: slot ${slot} share`);
     assert.strictEqual(actual.restBankTicks, member.restBank, `${where}: slot ${slot} rest bank`);
     assert.strictEqual(actual.guestTicksLeft, member.guest, `${where}: slot ${slot} guest`);
+    close(actual.creditedShare, member.credited, `${where}: slot ${slot} credited`);
+    assert.strictEqual(encounter.boosting(slot), member.boosting, `${where}: slot ${slot} boosting`);
   });
   assert.strictEqual(encounter.events.length, expect.events.length, `${where}: event count`);
   expect.events.forEach((event, i) => {

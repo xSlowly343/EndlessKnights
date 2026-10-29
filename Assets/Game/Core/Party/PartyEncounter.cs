@@ -166,6 +166,32 @@ namespace Game.Core.Party
                 _members[slot].HeroClass = heroClass;
         }
 
+        public void SetCredit(int slot, double rate)
+        {
+            if (IsMember(slot))
+                _members[slot].CreditRate = rate > 0 ? System.Math.Min(_rules.Contribution.AllyCreditMax, rate) : 0;
+        }
+
+        public void NoteAuras(int slot, int ticks)
+        {
+            if (IsMember(slot))
+                _members[slot].AuraTicksLeft = System.Math.Max(0, ticks);
+        }
+
+        public bool Boosting(int slot)
+        {
+            if (!IsMember(slot))
+                return false;
+            if (_members[slot].AuraTicksLeft > 0)
+                return true;
+            for (var i = 0; i < _effects.Length; i++)
+            {
+                if (_effects[i].Active && _effects[i].Owner == slot)
+                    return true;
+            }
+            return false;
+        }
+
         public void SetStage(int slot, long stage)
         {
             if (IsMember(slot) && stage > 0)
@@ -360,10 +386,22 @@ namespace Game.Core.Party
         private double Take(int slot, double applied)
         {
             _members[slot].EnemyShare += applied;
+            CreditBoosters(slot, applied);
             BarLeft -= applied;
             if (BarLeft <= 0)
                 Kill();
             return applied;
+        }
+
+        private void CreditBoosters(int slot, double applied)
+        {
+            for (var i = 0; i < _members.Length; i++)
+            {
+                var member = _members[i];
+                if (i == slot || !member.Joined || member.Guest || !(member.CreditRate > 0) || !Boosting(i))
+                    continue;
+                member.CreditedShare += applied * member.CreditRate;
+            }
         }
 
         private double KindScale => FightingBoss ? _stages.BossHpMultiplier : 1;
@@ -537,15 +575,19 @@ namespace Game.Core.Party
         private void Kill()
         {
             BarLeft = 0;
+            var damage = 0.0;
             var total = 0.0;
             for (var i = 0; i < _members.Length; i++)
-                total += _members[i].EnemyShare;
+            {
+                damage += _members[i].EnemyShare;
+                total += _members[i].EnemyShare + _members[i].CreditedShare;
+            }
             var rewarded = Reward();
             _enemyKilled = true;
             _enemyRewarded = rewarded;
             Events.Add(new PartyEvent(PartyEventKind.EnemyKilled, Tick, EnemyId, EnemyKind,
                 ShareOf(0, total), ShareOf(1, total), ShareOf(2, total), ShareOf(3, total), rewarded,
-                total > 0 ? LoopShare / total : 0, SavedBossTicks / GameLoop.TicksPerSecond));
+                damage > 0 ? LoopShare / damage : 0, SavedBossTicks / GameLoop.TicksPerSecond));
             _previousEnemyId = EnemyId;
             _previousKind = EnemyKind;
             _previousKilledTick = Tick;
@@ -600,7 +642,7 @@ namespace Game.Core.Party
             return (byte)rewarded;
         }
 
-        private double ShareOf(int slot, double total) => total > 0 ? _members[slot].EnemyShare / total : 0;
+        private double ShareOf(int slot, double total) => total > 0 ? (_members[slot].EnemyShare + _members[slot].CreditedShare) / total : 0;
 
         private void SpawnNext() =>
             Spawn(!Farming && KillsOnStage >= EnemiesOnStage ? PartyEnemyKind.Boss : PartyEnemyKind.Normal);
@@ -622,6 +664,7 @@ namespace Game.Core.Party
             {
                 var member = _members[i];
                 member.EnemyShare = 0;
+                member.CreditedShare = 0;
                 member.Weight = member.Joined && Counts(i) ? 1 : 0;
                 Fighters += member.Weight;
             }
@@ -724,6 +767,11 @@ namespace Game.Core.Party
             {
                 if (_effects[i].TicksLeft > 0)
                     _effects[i].TicksLeft--;
+            }
+            for (var i = 0; i < _members.Length; i++)
+            {
+                if (_members[i].AuraTicksLeft > 0)
+                    _members[i].AuraTicksLeft--;
             }
         }
 

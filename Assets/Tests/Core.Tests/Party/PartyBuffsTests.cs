@@ -130,6 +130,42 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void TheSeersGemLuckReachesTheAlly()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var friend = rig.Members[1];
+            var before = friend.Loop.Hero.Value(CombatStats.GemDrop, 1);
+            rig.Members[0].Loop.Hero.Add(new Modifier(new StatId("partyGemDrop"), ModifierKind.Increased, 0.15));
+            rig.Members[0].Loop.RebuildTree();
+
+            rig.Run(2);
+
+            Assert.That(friend.Loop.Hero.Value(CombatStats.GemDrop, 1), Is.EqualTo(before * 1.15).Within(1e-6));
+            Assert.That(TestWorld.Data.Ascendancy.Subclasses.SelectMany(path => path.Nodes).Where(node => node.Id == "seer_6").Single().Locked, Is.False);
+        }
+
+        [Test]
+        public void APartyContributionStatCreditsTheBoosterWithPartOfTheBoostedDamage()
+        {
+            var rig = new Rig(2);
+            var bannerman = rig.Members[0];
+            bannerman.Loop.Hero.Add(new Modifier(CombatStats.PartyContribution, ModifierKind.Flat, 0.05));
+            var song = bannerman.Equip("hearth_song");
+            rig.Run(5);
+            Assert.That(rig.Host.Encounter.Boosting(bannerman.Client.OwnSlot), Is.False, "no aura yet");
+            bannerman.Cast(song);
+            rig.Run(1);
+            Assert.That(rig.Host.Encounter.Member(bannerman.Client.OwnSlot).CreditRate, Is.EqualTo(0.05).Within(1e-6));
+            Assert.That(rig.Host.Encounter.Boosting(bannerman.Client.OwnSlot), Is.True);
+
+            var before = rig.Host.Encounter.Member(bannerman.Client.OwnSlot).CreditedShare;
+            rig.Host.Encounter.ApplyDamage(rig.Members[1].Client.OwnSlot, rig.Host.Encounter.EnemyId, 0.2);
+
+            Assert.That(rig.Host.Encounter.Member(bannerman.Client.OwnSlot).CreditedShare - before, Is.EqualTo(0.2 * 0.05).Within(1e-9));
+        }
+
+        [Test]
         public void TreePartyDamageReachesTheAlly()
         {
             var rig = new Rig(2);
