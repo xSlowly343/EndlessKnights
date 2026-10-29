@@ -41,6 +41,17 @@ namespace Game.Core.Tests.Save
         private static SaveFile RoundTrip(GameState state) => SaveCodec.Decode(SaveCodec.Encode(state, Clock), TestWorld.Data);
 
         [Test]
+        public void MentorPerksSurviveSaving()
+        {
+            var state = new GameState { MentorCoopPoints = 3, EarlyBookSlot = true };
+
+            var loaded = RoundTrip(state).State;
+
+            Assert.That(loaded.MentorCoopPoints, Is.EqualTo(3));
+            Assert.That(loaded.EarlyBookSlot, Is.True);
+        }
+
+        [Test]
         public void DamageQueuedForLaterEnemiesSurvivesSaving()
         {
             var state = PlayedLoop(HeroClass.Viking, 10).State;

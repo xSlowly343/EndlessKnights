@@ -131,6 +131,7 @@ namespace Game.Core.Tests.Sim
                 state.Chronicle.Completed.Add(trial.Id);
             foreach (var gate in TestWorld.Data.Stages.Gates)
                 state.GatesCleared.Add(gate.Stage);
+            state.MentorCoopPoints = 5;
 
             var loop = TestWorld.Loop(state: state);
 
@@ -142,7 +143,7 @@ namespace Game.Core.Tests.Sim
         {
             var points = Rules.MaxLevel - 1 + Rules.MaxGuardianPoints + TestWorld.Data.TreePoints.MaxPoints;
 
-            Assert.That(points, Is.EqualTo(167));
+            Assert.That(points, Is.EqualTo(172));
         }
 
         [TestCase("\"counter\": \"keys\"", "\"counter\": \"steps\"", "unknown counter 'steps'")]

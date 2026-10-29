@@ -8,15 +8,17 @@ namespace Game.Core.Party
     public sealed class MentorBonus
     {
         private readonly LevelSystem _levels;
+        private readonly GameState _state;
         private readonly ModifierLayer _layer;
         private readonly List<Modifier> _modifiers = new List<Modifier>(1);
         private readonly List<string> _marks = new List<string>();
         private MentorRules _rules;
 
-        public MentorBonus(MentorRules rules, StatSheet hero, LevelSystem levels)
+        public MentorBonus(MentorRules rules, StatSheet hero, LevelSystem levels, GameState state)
         {
             _rules = rules;
             _levels = levels;
+            _state = state;
             _layer = new ModifierLayer(hero);
         }
 
@@ -53,6 +55,19 @@ namespace Game.Core.Party
         }
 
         public bool IsMarked(string nodeId) => _marks.Contains(nodeId);
+
+        public void UsePerks(IReadOnlyList<string> perks, int coopPoints)
+        {
+            for (var i = 0; i < perks.Count; i++)
+            {
+                if (perks[i] == MentorRules.EarlyBookSlotPerk)
+                    _state.EarlyBookSlot = true;
+            }
+            if (coopPoints <= _state.MentorCoopPoints)
+                return;
+            _state.MentorCoopPoints = coopPoints;
+            _levels.SyncTreePoints();
+        }
 
         public static bool FightsBeside(PartyClient party, ulong mentorPlayer) => FightsBeside(party.Status, party.Roster, party.OwnSlot, mentorPlayer);
 

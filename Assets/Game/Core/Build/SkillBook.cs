@@ -37,10 +37,10 @@ namespace Game.Core.Build
 
         public void UseRules(SkillBookRules rules) => _rules = rules;
 
-        public int SlotCount => _rules.SlotsFor(_state.RecordStage);
+        public int SlotCount => _rules.SlotsFor(_state.RecordStage, _state.EarlyBookSlot);
         public int MaxSlots => _rules.MaxSlots;
 
-        public long UnlockStageOf(int slot) => _rules.UnlockStageOf(slot);
+        public long UnlockStageOf(int slot) => _rules.UnlockStageOf(slot, _state.EarlyBookSlot);
 
         public int SocketCount => _rules.SocketsFor(_state.RecordStage, 0);
 

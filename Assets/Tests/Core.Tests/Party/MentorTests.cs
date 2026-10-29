@@ -82,6 +82,40 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void TheEarlyBookSlotOpensTheNextSlotOfTheBookNow()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var book = TestWorld.Data.SkillBook;
+            Assert.That(loop.Book.SlotCount, Is.EqualTo(book.BaseSlots));
+            var later = loop.Book.UnlockStageOf(book.BaseSlots + 1);
+
+            loop.Mentor.UsePerks(new[] { "graduate_frame", MentorRules.EarlyBookSlotPerk }, 0);
+
+            Assert.That(loop.State.EarlyBookSlot, Is.True);
+            Assert.That(loop.Book.SlotCount, Is.EqualTo(book.BaseSlots + 1));
+            Assert.That(loop.Book.UnlockStageOf(book.BaseSlots), Is.Zero, "the early slot is open");
+            Assert.That(loop.Book.UnlockStageOf(book.BaseSlots + 1), Is.EqualTo(TestWorld.Data.SkillBook.UnlockStageOf(book.BaseSlots)), "the next slot opens one milestone earlier");
+            Assert.That(later, Is.GreaterThan(loop.Book.UnlockStageOf(book.BaseSlots + 1)));
+            loop.State.RecordStage = 100_000;
+            Assert.That(loop.Book.SlotCount, Is.EqualTo(book.MaxSlots), "the perk never gives more than all the slots");
+        }
+
+        [Test]
+        public void MentorCoopPointsGoToTheTreeAsCoopHelpPoints()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var before = loop.State.Tree.PointsEarned;
+
+            loop.Mentor.UsePerks(System.Array.Empty<string>(), 2);
+            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 2));
+
+            loop.Mentor.UsePerks(System.Array.Empty<string>(), 1);
+            Assert.That(loop.State.MentorCoopPoints, Is.EqualTo(2), "an older answer of the server takes nothing back");
+            loop.Mentor.UsePerks(System.Array.Empty<string>(), 9);
+            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 5), "coop help gives five points at most");
+        }
+
+        [Test]
         public void TheMentorMarksAreKeptUpToTheLimit()
         {
             var loop = TestWorld.Loop(new FakeInputSource());

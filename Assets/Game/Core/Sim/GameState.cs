@@ -190,6 +190,9 @@ namespace Game.Core.Sim
         public long InputStreakTicks { get; set; }
         public JewelState Jewels { get; } = new JewelState();
         public HashSet<long> GatesCleared { get; } = new HashSet<long>();
+        public int MentorCoopPoints { get; set; }
+        public int CoopHelpPoints => MentorCoopPoints;
+        public bool EarlyBookSlot { get; set; }
         public DungeonState Dungeons { get; } = new DungeonState();
         public double IdleHitCarry { get; set; }
         public double CompanionHitCarry { get; set; }

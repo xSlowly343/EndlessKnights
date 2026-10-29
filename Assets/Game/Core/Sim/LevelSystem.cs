@@ -102,6 +102,8 @@ namespace Game.Core.Sim
                     return _state.Chronicle.Completed.Count;
                 case PointCounter.Gates:
                     return _state.GatesCleared.Count;
+                case PointCounter.CoopHelp:
+                    return _state.CoopHelpPoints;
                 default:
                     return _state.RecordStage;
             }

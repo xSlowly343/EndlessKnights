@@ -32,19 +32,22 @@ namespace Game.Core.Content.Gems
         public int MaxSockets { get; }
         public double AttributePerColoredSupport { get; }
 
-        public int SlotsFor(long recordStage)
+        public int SlotsFor(long recordStage, bool earlySlot = false)
         {
-            var slots = BaseSlots;
+            var slots = BaseSlots + (earlySlot ? 1 : 0);
             foreach (var stage in _slotUnlockStages)
             {
                 if (recordStage > stage)
                     slots++;
             }
-            return slots;
+            return System.Math.Min(MaxSlots, slots);
         }
 
-        public long UnlockStageOf(int slot) =>
-            slot < BaseSlots || slot >= MaxSlots ? 0 : _slotUnlockStages[slot - BaseSlots];
+        public long UnlockStageOf(int slot, bool earlySlot = false)
+        {
+            var step = slot - BaseSlots - (earlySlot ? 1 : 0);
+            return step < 0 || slot >= MaxSlots ? 0 : _slotUnlockStages[step];
+        }
 
         public int SocketsFor(long recordStage, int rebirths)
         {

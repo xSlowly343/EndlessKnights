@@ -23,6 +23,7 @@ namespace Game.Core.Party
     {
         public const string FileName = "mentor.json";
         public const int SupportedVersion = 1;
+        public const string EarlyBookSlotPerk = "early_book_slot";
 
         private MentorRules(int studentDays, int maxMarks, double goldBonus, double xpBonus, IReadOnlyList<MentorStep> steps)
         {

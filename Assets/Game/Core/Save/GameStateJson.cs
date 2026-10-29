@@ -77,6 +77,9 @@ namespace Game.Core.Save
                 ("gear", WriteWorn(state.Gear)),
                 ("jewels", WriteJewels(state.Jewels)),
                 ("gatesCleared", WriteStages(state.GatesCleared)),
+                ("mentorPerks", Object(
+                    ("coopPoints", JsonValue.Of(state.MentorCoopPoints)),
+                    ("earlyBookSlot", JsonValue.Of(state.EarlyBookSlot)))),
                 ("dungeons", WriteDungeons(state.Dungeons)),
                 ("setCollection", JsonValue.Array(WriteCollection(state))),
                 ("inputStats", Object(
@@ -229,6 +232,12 @@ namespace Game.Core.Save
             {
                 foreach (var item in node.Field("gatesCleared").Items())
                     state.GatesCleared.Add(item.AsLong(1));
+            }
+            if (node.HasField("mentorPerks"))
+            {
+                var perks = node.Field("mentorPerks");
+                state.MentorCoopPoints = perks.Field("coopPoints").AsInt(0, 100);
+                state.EarlyBookSlot = perks.Field("earlyBookSlot").AsBool();
             }
             if (node.HasField("jewels") && items != null)
                 ReadJewels(node.Field("jewels"), items, state.Jewels);

@@ -124,7 +124,7 @@ namespace Game.Core.Sim
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events);
             _clanTree = new ClanTreeBonus(data.ClanTree, hero);
-            _mentor = new MentorBonus(data.Mentor, hero, _levels);
+            _mentor = new MentorBonus(data.Mentor, hero, _levels, state);
             RebuildTree();
             SyncPathSkill();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
