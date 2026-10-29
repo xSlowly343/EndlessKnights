@@ -17,6 +17,7 @@ interface PartyServerConfig extends PartyEncounterRules {
     relayCooldownSeconds: number;
     allyResourceMax: number;
     allyResourceCooldownSeconds: number;
+    castNoticeSeconds: number;
 }
 
 const PartyCutTolerance = 1e-9;
@@ -54,6 +55,7 @@ class PartyHost {
     private readonly lastRepeatTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastRelayTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastResourceTick = [PartyNever, PartyNever, PartyNever, PartyNever];
+    private readonly lastCastNoticeTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly recentShares = [0, 0, 0, 0];
     private readonly recentHits = [0, 0, 0, 0];
     private stateSequence = 0;
@@ -159,6 +161,14 @@ class PartyHost {
                 const request = partyDecodeWorldRequest(data);
                 if (request)
                     this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel });
+                break;
+            }
+            case PartyMessageKind.AllyCast: {
+                const relayed = partyRelayAllyCast(data, slot);
+                if (relayed && this.encounter.tick - this.lastCastNoticeTick[slot] >= Math.max(1, partyTicks(this.config.castNoticeSeconds))) {
+                    this.lastCastNoticeTick[slot] = this.encounter.tick;
+                    this.broadcast(relayed, slot);
+                }
                 break;
             }
             case PartyMessageKind.PartyResource: {
@@ -355,6 +365,7 @@ class PartyHost {
         this.lastRepeatTick[slot] = PartyNever;
         this.lastRelayTick[slot] = PartyNever;
         this.lastResourceTick[slot] = PartyNever;
+        this.lastCastNoticeTick[slot] = PartyNever;
         this.ticksToState = 0;
     }
 

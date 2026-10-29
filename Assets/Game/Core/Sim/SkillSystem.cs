@@ -68,6 +68,7 @@ namespace Game.Core.Sim
             if (SharedEnemy == shared)
                 return;
             SharedEnemy = shared;
+            _state.SharedEnemy = shared;
             foreach (var slot in _state.Skills)
             {
                 if (!(slot.Def.Effect is EnemyDebuffEffect))

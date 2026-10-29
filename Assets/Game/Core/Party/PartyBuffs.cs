@@ -104,10 +104,10 @@ namespace Game.Core.Party
                 _dirty = true;
                 return;
             }
-            var suppressed = OwnAuraActive(aura.Gem!);
-            if (suppressed == aura.Suppressed)
+            var own = OwnStrength(aura.Gem!);
+            if (own == aura.OwnStrength)
                 return;
-            aura.Suppressed = suppressed;
+            aura.OwnStrength = own;
             _dirty = true;
         }
 
@@ -142,20 +142,24 @@ namespace Game.Core.Party
                     var aura = ally.Auras[i];
                     if (!aura.Active)
                         continue;
-                    aura.Suppressed = OwnAuraActive(aura.Gem!);
+                    aura.OwnStrength = OwnStrength(aura.Gem!);
+                    var stacks = SkillSystem.StacksOf(aura.Gem!);
+                    var strength = stacks != null ? System.Math.Min(stacks.MaxTotal, aura.Strength) : aura.Strength;
+                    aura.Suppressed = aura.OwnStrength > 0 && aura.OwnStrength >= strength;
                     if (aura.Suppressed || !Strongest(slot, aura))
                         continue;
+                    var above = strength - aura.OwnStrength;
                     if (aura.Gem!.Skill?.Effect is AuraEffect effect)
                     {
                         for (var m = 0; m < effect.Modifiers.Count; m++)
                         {
                             var modifier = effect.Modifiers[m];
-                            _buffer.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * aura.Strength, modifier.Tags));
+                            _buffer.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * above, modifier.Tags));
                         }
                     }
-                    else if (SkillSystem.StacksOf(aura.Gem) is { } stacks)
+                    else if (stacks != null)
                     {
-                        _buffer.Add(new Modifier(stacks.PerStack.Stat, stacks.PerStack.Kind, System.Math.Min(stacks.MaxTotal, aura.Strength), stacks.PerStack.Tags));
+                        _buffer.Add(new Modifier(stacks.PerStack.Stat, stacks.PerStack.Kind, above, stacks.PerStack.Tags));
                     }
                 }
             }
@@ -179,15 +183,20 @@ namespace Game.Core.Party
             return true;
         }
 
-        private bool OwnAuraActive(GemDef gem)
+        private double OwnStrength(GemDef gem)
         {
             var skills = _state.Skills;
             for (var i = 0; i < skills.Count; i++)
             {
-                if ((skills[i].AuraApplied || skills[i].Stacks > 0) && skills[i].Skill.NetId == gem.NetId)
-                    return true;
+                var slot = skills[i];
+                if (slot.Skill.NetId != gem.NetId)
+                    continue;
+                if (slot.AuraApplied)
+                    return slot.AuraStrength;
+                if (slot.Stacks > 0 && SkillSystem.StacksOf(gem) is { } stacks)
+                    return System.Math.Min(stacks.MaxTotal, stacks.PerStack.Value * slot.Stacks);
             }
-            return false;
+            return 0;
         }
     }
 }

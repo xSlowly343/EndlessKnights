@@ -127,7 +127,7 @@ namespace Game.Core.Sim
                 multiplier *= 1 + balance * Balance();
             if (_state.ActiveAuras > 0)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerAura, 0, tags)) * _state.ActiveAuras;
-            if (_state.VulnerabilityTicks > 0)
+            if (_state.VulnerabilityTicks > 0 && !_state.SharedEnemy)
                 multiplier *= 1 + _state.VulnerabilityShare;
             return multiplier;
         }

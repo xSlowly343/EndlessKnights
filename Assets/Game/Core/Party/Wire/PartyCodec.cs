@@ -5,7 +5,7 @@ namespace Game.Core.Party.Wire
         public const int MaxPacketBytes = 256;
 
         public static PartyMessageKind KindOf(byte[] buffer, int length) =>
-            length > 0 && buffer[0] <= (byte)PartyMessageKind.PartyResource ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
+            length > 0 && buffer[0] <= (byte)PartyMessageKind.AllyCast ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
 
         public static int Encode(byte[] buffer, HelloMessage message)
         {
@@ -82,6 +82,20 @@ namespace Game.Core.Party.Wire
             var writer = Start(buffer, PartyMessageKind.WorldRequest);
             message.Write(ref writer);
             return writer.Length;
+        }
+
+        public static int Encode(byte[] buffer, AllyCastMessage message)
+        {
+            var writer = Start(buffer, PartyMessageKind.AllyCast);
+            message.Write(ref writer);
+            return writer.Length;
+        }
+
+        public static bool TryDecode(byte[] buffer, int length, out AllyCastMessage message)
+        {
+            var reader = Open(buffer, length, PartyMessageKind.AllyCast);
+            message = AllyCastMessage.Read(ref reader);
+            return reader.Complete;
         }
 
         public static int Encode(byte[] buffer, PartyResourceMessage message)

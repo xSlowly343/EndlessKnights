@@ -42,7 +42,7 @@ namespace Game.Core.Tests.Party
       ""gravedigger"": ""summoner"", ""captain"": ""summoner""
     }
   },
-  ""buffs"": { ""selfShare"": 1.0, ""offerSeconds"": 1.0, ""allyResource"": { ""max"": 50, ""cooldownSeconds"": 5 }, ""stats"": [{ ""from"": ""partyDamage"", ""to"": ""damage"", ""kind"": ""increased"" }] }
+  ""buffs"": { ""selfShare"": 1.0, ""offerSeconds"": 1.0, ""allyResource"": { ""max"": 50, ""cooldownSeconds"": 5 }, ""castNoticeSeconds"": 1, ""stats"": [{ ""from"": ""partyDamage"", ""to"": ""damage"", ""kind"": ""increased"" }] }
 }";
 
         [Test]

@@ -84,6 +84,8 @@ namespace Game.Core.Tests.Party
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, relayed))).Append("\" },\n");
             builder.Append("    \"reactionRelay\": { \"slot\": 1, \"reaction\": 4, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 0, Reaction = 4 })))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 1, Reaction = 4 }))).Append("\" },\n");
+            builder.Append("    \"allyCast\": { \"slot\": 2, \"gem\": 4242, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new AllyCastMessage { GemNetId = 4242 })))
+                .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new AllyCastMessage { Slot = 2, GemNetId = 4242 }))).Append("\" },\n");
             builder.Append("    \"allyResource\": { \"slot\": 3, \"amount\": 20, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyResourceMessage { Amount = 20 })))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyResourceMessage { Slot = 3, Amount = 20 }))).Append("\" },\n");
             builder.Append("    \"focusDropped\": { \"from\": 255, \"to\": 255, \"focus\": 1.75, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, FocusRelayMessage.Dropped(1.75)))).Append("\" },\n");

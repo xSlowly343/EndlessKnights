@@ -30,7 +30,8 @@ namespace Game.Core.Content.Gems
         LingeringBlight,
         Pawnbroker,
         KeyEcho,
-        Legacy
+        Legacy,
+        Resonance
     }
 
     public sealed class SupportDef
@@ -97,6 +98,8 @@ namespace Game.Core.Content.Gems
         public double RedirectMultiplier { get; private set; }
         public double VulnerabilityShare { get; private set; }
         public double VulnerabilitySeconds { get; private set; }
+        public double AllyPower { get; private set; }
+        public double AfterSeconds { get; private set; }
         public double AfflictionMultiplier { get; private set; } = 1;
         public double StackCapMultiplier { get; private set; } = 1;
         public double KillRewardMultiplier { get; private set; } = 1;
@@ -281,6 +284,12 @@ namespace Game.Core.Content.Gems
                     };
                 case "legacy":
                     return new SupportDef(SupportKind.Legacy) { PartyPower = effect.Field("partyPower").AsNumber(0, 10) };
+                case "resonance":
+                    return new SupportDef(SupportKind.Resonance)
+                    {
+                        AllyPower = effect.Field("allyPower").AsNumber(0, 10),
+                        AfterSeconds = effect.Field("afterSeconds").AsNumber(0, 600)
+                    };
                 default:
                     return null;
             }

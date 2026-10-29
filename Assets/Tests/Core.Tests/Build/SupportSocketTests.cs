@@ -814,12 +814,12 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void ResonanceWaitsForTheParty()
+        public void ResonanceGoesIntoASocketNowThatThePartyHasBuffs()
         {
-            var loop = Hero();
+            var loop = Hero(Attribute("intelligence", 15));
             var slot = Equip(loop, "iron_rim_bash", "resonance");
 
-            Assert.That(loop.Book.SetSupport(slot, 0, Gem("resonance")), Is.EqualTo(BookResult.WaitsForMechanic));
+            Assert.That(loop.Book.SetSupport(slot, 0, Gem("resonance")), Is.EqualTo(BookResult.Done));
         }
     }
 }

@@ -39,6 +39,9 @@ namespace Game.Core.Party
         private readonly double[] _contribution = new double[PartyRules.MaxSlots];
         private readonly int[] _reaction = { NoReaction, NoReaction, NoReaction, NoReaction };
         private readonly long[] _reactionTick = new long[PartyRules.MaxSlots];
+        private readonly int[] _glowGem = new int[PartyBuffRules.MaxAuras];
+        private readonly float[] _glowStrength = new float[PartyBuffRules.MaxAuras];
+        private readonly long[] _glowUntil = new long[PartyBuffRules.MaxAuras];
         private readonly int[] _reactionSerial = new int[PartyRules.MaxSlots];
         private readonly double[] _allyShares = new double[PartyRules.MaxSlots];
         private long _lastSentReactionTick = PartyEncounter.Never;
@@ -274,6 +277,10 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     if (InParty && reaction.Slot < PartyRules.MaxSlots && reaction.Slot != _ownSlot && _rules.Reactions.Knows(reaction.Reaction))
                         ShowReaction(reaction.Slot, reaction.Reaction);
+                    break;
+                case PartyMessageKind.AllyCast when PartyCodec.TryDecode(_in, length, out AllyCastMessage cast):
+                    if (InParty && cast.Slot != _ownSlot && _loop.Data.Gems.TryGetByNetId(cast.GemNetId, out var castGem) && castGem.Skill != null)
+                        NoteAllyCast(castGem.Skill.CooldownSeconds);
                     break;
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     if (InParty && resource.Slot != _ownSlot)
@@ -632,6 +639,11 @@ namespace Game.Core.Party
                     _offerNow = true;
                 if (gameEvent.Kind == GameEventKind.SkillCast && effect is AuraEffect { AllyResource: > 0 } gift)
                     SendToHost(PartyCodec.Encode(_out, new PartyResourceMessage { Amount = (float)gift.AllyResource }));
+                if (gameEvent.Kind != GameEventKind.SkillCast || gameEvent.Gem?.Skill == null)
+                    continue;
+                if (gameEvent.Gem.Skill.Role == SkillRole.Heavy)
+                    SendToHost(PartyCodec.Encode(_out, new AllyCastMessage { GemNetId = gameEvent.Gem.NetId }));
+                ShareCurse(gameEvent.Gem);
             }
         }
 
@@ -643,6 +655,31 @@ namespace Game.Core.Party
             _loop.State.FocusDropped = 0;
             if (Status == PartyLink.Linked && !IsGuest)
                 SendToHost(PartyCodec.Encode(_out, FocusRelayMessage.Dropped(dropped)));
+        }
+
+        private void ShareCurse(GemDef gem)
+        {
+            var skills = _loop.State.Skills;
+            for (var i = 0; i < skills.Count; i++)
+            {
+                if (!ReferenceEquals(skills[i].Skill, gem))
+                    continue;
+                var supports = skills[i].Supports;
+                for (var s = 0; s < supports.Length; s++)
+                {
+                    var support = supports[s];
+                    if (support?.Support == null || !(support.Support.VulnerabilityShare > 0))
+                        continue;
+                    SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
+                    {
+                        EffectId = support.NetId,
+                        OnEnemy = true,
+                        Strength = support.Support.VulnerabilityShare,
+                        Seconds = support.Support.VulnerabilitySeconds
+                    }));
+                }
+                return;
+            }
         }
 
         private double WeakenShare(GemDef gem, WeakenNextEffect weaken)
@@ -726,21 +763,73 @@ namespace Game.Core.Party
                 var slot = skills[i];
                 if (!slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura) || !aura.Party)
                     continue;
-                offer.SetAura(count++, new OfferedAura { GemNetId = slot.Skill.NetId, Strength = (float)slot.AuraStrength, TicksLeft = slot.ActiveTicks });
+                offer.SetAura(count++, Resonate(slot, slot.AuraStrength, slot.ActiveTicks));
             }
             for (var i = 0; i < skills.Count && count < PartyBuffRules.MaxAuras; i++)
             {
                 if (!_loop.Skills.SharesStacks(i, out var stacks))
                     continue;
                 var slot = skills[i];
-                offer.SetAura(count++, new OfferedAura
-                {
-                    GemNetId = slot.Skill.NetId,
-                    Strength = (float)System.Math.Min(stacks.MaxTotal, stacks.PerStack.Value * slot.Stacks),
-                    TicksLeft = slot.StackTicks > 0 ? slot.StackTicks : slot.ActiveTicks
-                });
+                offer.SetAura(count++, Resonate(slot, System.Math.Min(stacks.MaxTotal, stacks.PerStack.Value * slot.Stacks), slot.StackTicks > 0 ? slot.StackTicks : slot.ActiveTicks));
+            }
+            for (var i = 0; i < _glowGem.Length && count < PartyBuffRules.MaxAuras; i++)
+            {
+                if (_glowGem[i] == 0 || _glowUntil[i] <= _tick || Offered(offer, count, _glowGem[i]))
+                    continue;
+                offer.SetAura(count++, new OfferedAura { GemNetId = _glowGem[i], Strength = _glowStrength[i], TicksLeft = (int)(_glowUntil[i] - _tick) });
             }
             SendToHost(PartyCodec.Encode(_out, offer));
+        }
+
+        private OfferedAura Resonate(SkillSlot slot, double strength, int ticks)
+        {
+            var offered = new OfferedAura { GemNetId = slot.Skill.NetId, Strength = (float)strength, TicksLeft = ticks };
+            var resonance = ResonanceOf(slot);
+            if (resonance == null)
+                return offered;
+            offered.Strength = (float)(strength * resonance.AllyPower);
+            offered.TicksLeft = ticks + Ticks(resonance.AfterSeconds);
+            Glow(offered);
+            return offered;
+        }
+
+        private static SupportDef? ResonanceOf(SkillSlot slot)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.Kind == SupportKind.Resonance)
+                    return support;
+            }
+            return null;
+        }
+
+        private void Glow(in OfferedAura offered)
+        {
+            var free = 0;
+            for (var i = 0; i < _glowGem.Length; i++)
+            {
+                if (_glowGem[i] == offered.GemNetId)
+                {
+                    free = i;
+                    break;
+                }
+                if (_glowUntil[i] < _glowUntil[free])
+                    free = i;
+            }
+            _glowGem[free] = offered.GemNetId;
+            _glowStrength[free] = offered.Strength;
+            _glowUntil[free] = _tick + offered.TicksLeft;
+        }
+
+        private static bool Offered(in PartyOfferMessage offer, int count, int gemNetId)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                if (offer.Aura(i).GemNetId == gemNetId)
+                    return true;
+            }
+            return false;
         }
 
         private void NoteAllyCast(double cooldownSeconds) =>

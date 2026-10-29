@@ -26,6 +26,7 @@ namespace Game.Core.Party
         private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRelayTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastResourceTick = new long[PartyRules.MaxSlots];
+        private readonly long[] _lastCastNoticeTick = new long[PartyRules.MaxSlots];
         private readonly ulong[] _invitedGuests = new ulong[PartyRules.MaxSlots];
         private readonly double[] _invitedSeconds = new double[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
@@ -144,6 +145,14 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     React(slot, reaction);
                     break;
+                case PartyMessageKind.AllyCast when PartyCodec.TryDecode(_in, length, out AllyCastMessage cast):
+                    if (_encounter.Tick - _lastCastNoticeTick[slot] >= Ticks(_rules.Buffs.CastNoticeSeconds))
+                    {
+                        _lastCastNoticeTick[slot] = _encounter.Tick;
+                        cast.Slot = (byte)slot;
+                        BroadcastExcept(slot, PartyCodec.Encode(_out, cast));
+                    }
+                    break;
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     ShareResource(slot, resource.Amount);
                     break;
@@ -175,6 +184,7 @@ namespace Game.Core.Party
             _lastRepeatTick[slot] = PartyEncounter.Never;
             _lastRelayTick[slot] = PartyEncounter.Never;
             _lastResourceTick[slot] = PartyEncounter.Never;
+            _lastCastNoticeTick[slot] = PartyEncounter.Never;
             _rosterChanged = true;
             _ticksToState = 0;
             return slot;

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Game.Core.Content.Tree;
 using Game.Core.Content.Weapons;
 using Game.Core.Input;
 using Game.Core.Party;
@@ -334,6 +336,146 @@ namespace Game.Core.Tests.Party
             while (rig.Host.Encounter.EnemyId == enemy)
                 rig.Run(0.1);
             Assert.That(rig.Host.Encounter.WeakenedSpawns, Is.EqualTo(weakened - 1), "each new enemy of the party uses one");
+        }
+
+        private static void AddToWeapon(Member member, string gem)
+        {
+            member.Loop.State.HeroLevel = 100;
+            var weapons = member.Loop.State.Weapons;
+            var type = TestWorld.Data.Gems[gem].Skill!.Weapon;
+            var right = weapons.Right != null && weapons.Right.Type.Id == type;
+            var hand = right ? weapons.Right! : weapons.Left!;
+            if (hand.Skills.Contains(gem))
+                return;
+            var armed = new WeaponItem(hand.Base, hand.Rarity, new List<string>(hand.Skills) { gem });
+            if (right)
+                weapons.Right = armed;
+            else
+                weapons.Left = armed;
+        }
+
+        [Test]
+        public void TheWholeHallSingsForThePartyOnlyFromTheMetalhead()
+        {
+            var rig = new Rig(3);
+            rig.Run(5);
+            var metalhead = rig.Members[0];
+            var viking = rig.Members[1];
+            var friend = rig.Members[2];
+            metalhead.Loop.State.Class = HeroClass.Metalhead;
+            var song = metalhead.Equip("whole_hall");
+            var borrowed = viking.Equip("whole_hall");
+            AddToWeapon(metalhead, "whole_hall");
+            AddToWeapon(viking, "whole_hall");
+
+            metalhead.Cast(song);
+            viking.Cast(borrowed);
+            rig.Run(2);
+
+            Assert.That(metalhead.Loop.State.Skills[song].Stacks, Is.GreaterThan(5));
+            Assert.That(viking.Loop.State.Skills[borrowed].Stacks, Is.GreaterThan(5));
+            var hall = TestWorld.Data.Gems["whole_hall"];
+            Assert.That(friend.Loop.PartyBuffs.Ally(metalhead.Client.OwnSlot).Auras[0].Gem, Is.SameAs(hall), "the Metalhead shares the stacks");
+            Assert.That(friend.Loop.PartyBuffs.Ally(viking.Client.OwnSlot).Auras[0].Gem, Is.Null, "a borrowed guitar keeps them to itself");
+        }
+
+        [Test]
+        public void AWeakerOwnAuraLeavesRoomForTheStrongerAlly()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var strong = rig.Members[0];
+            var friend = rig.Members[1];
+            var before = friend.Damage;
+            strong.Loop.Hero.Add(new Modifier(CombatStats.AuraEffect, ModifierKind.Increased, 1, StatTags.Aura));
+
+            strong.Cast(strong.Equip("hearth_song"));
+            friend.Cast(friend.Equip("hearth_song"));
+            rig.Run(1);
+
+            Assert.That(friend.Damage, Is.EqualTo(before * 1.30).Within(1e-6), "the stronger song wins even over your own weaker one");
+        }
+
+        [Test]
+        public void ResonanceMakesTheSongStrongerOnAlliesAndLongerAfterItEnds()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var metalhead = rig.Members[0];
+            var friend = rig.Members[1];
+            var before = friend.Damage;
+            metalhead.Loop.Hero.Add(new Modifier(PassiveTree.AttributeStat("intelligence"), ModifierKind.Flat, 15));
+            var song = metalhead.Equip("hearth_song");
+            metalhead.Loop.State.OwnedGems.Add(TestWorld.Data.Gems["resonance"]);
+            Assert.That(metalhead.Loop.Book.SetSupport(song, 0, TestWorld.Data.Gems["resonance"]), Is.EqualTo(Game.Core.Build.BookResult.Done));
+            var seconds = TestWorld.Data.Gems["hearth_song"].Skill!.DurationSeconds;
+
+            metalhead.Cast(song);
+            rig.Run(1);
+            Assert.That(friend.Damage, Is.EqualTo(before * (1 + 0.15 * 1.2)).Within(1e-5));
+
+            rig.Run(seconds + 1);
+            Assert.That(metalhead.Loop.State.Skills[song].AuraApplied, Is.False);
+            Assert.That(friend.Damage, Is.GreaterThan(before), "the song keeps ringing for the ally after it ends");
+
+            rig.Run(6);
+            Assert.That(friend.Damage, Is.EqualTo(before).Within(1e-6));
+        }
+
+        [Test]
+        public void CursedVulnerabilityHangsOnThePartyEnemyAtTheHost()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var caster = rig.Members[0];
+            caster.Loop.Hero.Add(new Modifier(PassiveTree.AttributeStat("intelligence"), ModifierKind.Flat, 15));
+            var skill = caster.Equip("hatchet_toss");
+            AddToWeapon(caster, "hatchet_toss");
+            caster.Loop.State.OwnedGems.Add(TestWorld.Data.Gems["cursed"]);
+            Assert.That(caster.Loop.Book.SetSupport(skill, 0, TestWorld.Data.Gems["cursed"]), Is.EqualTo(Game.Core.Build.BookResult.Done));
+
+            caster.Cast(skill);
+            rig.Run(0.5);
+
+            Assert.That(rig.Host.Encounter.DamageTakenMultiplier, Is.EqualTo(1.08).Within(1e-9), "everyone's hits count 8% more");
+            Assert.That(caster.Loop.State.SharedEnemy, Is.True);
+        }
+
+        [Test]
+        public void AnAllysHeavyCastFiresCastWithAlly()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var viking = rig.Members[0];
+            var friend = rig.Members[1];
+            var heavy = viking.Equip("no_mercy");
+            AddToWeapon(viking, "no_mercy");
+            var trigger = TestWorld.Data.Gems["cast_with_ally"];
+            friend.Loop.State.OwnedGems.Add(trigger);
+            var hatchet = friend.Equip("hatchet_toss");
+            AddToWeapon(friend, "hatchet_toss");
+            Assert.That(friend.Loop.Book.SetTrigger(hatchet, trigger), Is.EqualTo(Game.Core.Build.BookResult.Done));
+            friend.Loop.State.Resource = 1000;
+            var casts = 0;
+            for (var tick = 0; tick < 20; tick++)
+            {
+                if (tick == 0)
+                    viking.Cast(heavy);
+                rig.Network.Advance(100);
+                foreach (var member in rig.Members)
+                {
+                    member.Input.PressKeys(1);
+                    member.Loop.Tick();
+                    if (member == friend)
+                        casts += member.Loop.Events.CountOf(GameEventKind.SkillCast);
+                    member.Loop.Events.Clear();
+                }
+                rig.Host.Tick();
+            }
+
+            Assert.That(TestWorld.Data.Gems["no_mercy"].Skill!.Role, Is.EqualTo(Game.Core.Content.Gems.SkillRole.Heavy));
+            Assert.That(TestWorld.Data.Gems["no_mercy"].Skill!.CooldownSeconds, Is.GreaterThanOrEqualTo(20));
+            Assert.That(casts, Is.GreaterThan(0), "the ally's heavy strike reaches the friend's trigger");
         }
 
         [Test]

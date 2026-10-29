@@ -15,6 +15,7 @@ namespace Game.Core.Party.Wire
         PartyReaction,
         WorldRequest,
         FocusRelay,
-        PartyResource
+        PartyResource,
+        AllyCast
     }
 }

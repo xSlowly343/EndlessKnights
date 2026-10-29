@@ -184,7 +184,8 @@
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
       "durationSeconds": 10,
-      "effect": { "type": "stacks", "on": "keyHit", "perStack": { "stat": "damage", "kind": "increased", "value": 0.02 }, "max": 0.25 }
+      "effect": { "type": "stacks", "on": "keyHit", "perStack": { "stat": "damage", "kind": "increased", "value": 0.02 }, "max": 0.25 },
+      "native": { "partyStacks": true }
     },
     {
       "id": "underside_amp",

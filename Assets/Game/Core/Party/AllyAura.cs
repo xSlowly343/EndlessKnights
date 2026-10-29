@@ -8,6 +8,7 @@ namespace Game.Core.Party
         public double Strength { get; set; }
         public int TicksLeft { get; set; }
         public bool Suppressed { get; set; }
+        public double OwnStrength { get; set; }
 
         public bool Active => Gem != null && TicksLeft > 0;
 
@@ -17,6 +18,7 @@ namespace Game.Core.Party
             Strength = 0;
             TicksLeft = 0;
             Suppressed = false;
+            OwnStrength = 0;
         }
     }
 }

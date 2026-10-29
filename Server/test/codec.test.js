@@ -90,6 +90,12 @@ test("resource for allies is relayed with the sender slot and capped", () => {
   assert.strictEqual(party.partyRelayResource(bytes(resource.hex.slice(0, -2)), resource.slot, 1000), null);
 });
 
+test("a heavy cast notice is relayed with the sender slot", () => {
+  const cast = vectors.decode.allyCast;
+  assert.strictEqual(hex(party.partyRelayAllyCast(bytes(cast.hex), cast.slot)), cast.relayedHex);
+  assert.strictEqual(party.partyRelayAllyCast(bytes(cast.hex + "00"), cast.slot), null);
+});
+
 test("offers are relayed with the sender slot", () => {
   const offer = vectors.decode.offerRelay;
   assert.strictEqual(hex(party.partyRelayOffer(bytes(offer.hex), offer.slot)), offer.relayedHex);
