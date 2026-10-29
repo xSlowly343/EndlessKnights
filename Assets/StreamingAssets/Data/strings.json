@@ -904,6 +904,16 @@
     "raid.last.killed": { "ru": "Прошлый рейд: босс повержен · место {0} из {1} · Печати +{2}", "en": "Last raid: the boss fell · place {0} of {1} · seals +{2}" },
     "raid.last.survived": { "ru": "Прошлый рейд: босс устоял · место {0} из {1} · Печати +{2}", "en": "Last raid: the boss held · place {0} of {1} · seals +{2}" },
     "raid.last.killedWithoutYou": { "ru": "Прошлый рейд: клан победил без вас", "en": "Last raid: the clan won without you" },
-    "raid.last.survivedWithoutYou": { "ru": "Прошлый рейд: босс устоял", "en": "Last raid: the boss held" }
+    "raid.last.survivedWithoutYou": { "ru": "Прошлый рейд: босс устоял", "en": "Last raid: the boss held" },
+    "wallet.source.clan_challenge": { "ru": "челлендж клана", "en": "clan challenge" },
+    "challenge.title.keys": { "ru": "Клан набирает {0} нажатий", "en": "The clan types {0} keys" },
+    "challenge.title.clicks": { "ru": "Клан делает {0} кликов", "en": "The clan clicks {0} times" },
+    "challenge.title.mouseMeters": { "ru": "Вместе {0} мыши", "en": "{0} of mouse together" },
+    "challenge.title.bosses": { "ru": "Клан побеждает {0} боссов", "en": "The clan beats {0} bosses" },
+    "challenge.km": { "ru": "{0} км", "en": "{0} km" },
+    "challenge.progress": { "ru": "{0} из {1}", "en": "{0} of {1}" },
+    "challenge.done": { "ru": "выполнено", "en": "done" },
+    "challenge.yours": { "ru": "ваши {0} · Печати +{1}", "en": "yours {0} · seals +{1}" },
+    "challenge.notYet": { "ru": "помогите — Печати +{0}", "en": "help out — seals +{0}" }
   }
 }

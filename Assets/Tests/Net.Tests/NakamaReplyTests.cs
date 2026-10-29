@@ -75,6 +75,13 @@ namespace Game.Net.Tests
             Assert.That(raid.HasLast && raid.LastKilled, Is.True);
             Assert.That(raid.LastSeals, Is.EqualTo(55));
             Assert.That(fresh.HasLast, Is.False);
+            Assert.That(raid.Daily, Is.Null);
+            var daily = ClanDailyView.From(NakamaJson.Parse("{\"day\":20755,\"endsAt\":1793307600000,\"challenges\":[{\"id\":\"keys\",\"counter\":\"keys\",\"target\":120000,"
+                + "\"progress\":82000,\"done\":0,\"yours\":3100,\"seals\":10},{\"id\":\"mouse\",\"counter\":\"mouseMeters\",\"target\":12000,\"progress\":12000,\"done\":1793280000000,\"yours\":0,\"seals\":10}]}"));
+            Assert.That(daily.Challenges[0].Progress, Is.EqualTo(82000));
+            Assert.That(daily.Challenges[0].Done, Is.False);
+            Assert.That(daily.Challenges[1].Done, Is.True);
+            Assert.That(daily.Challenges[1].Counter, Is.EqualTo("mouseMeters"));
         }
 
         [Test]

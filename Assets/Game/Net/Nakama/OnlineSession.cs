@@ -54,6 +54,7 @@ namespace Game.Net.Nakama
         public ClanDirectory Clans => new ClanDirectory(_client, _session);
         public Task<CoopWalletView> WalletAsync(CancellationToken cancel = default) => CoopWalletView.FetchAsync(_client, _session, cancel);
         public Task<RaidView> RaidAsync(CancellationToken cancel = default) => RaidView.ShowAsync(_client, _session, cancel);
+        public Task<ClanDailyView> ClanDailyAsync(CancellationToken cancel = default) => ClanDailyView.ShowAsync(_client, _session, cancel);
         public Task<RaidView> PushRaidAsync(RaidRules rules, RaidPush push, CancellationToken cancel = default) => RaidView.PushAsync(_client, _session, rules, push, cancel);
 
         public Task<PartyView> CreateAsync(string access, string? language, CancellationToken cancel = default) =>

@@ -5,13 +5,14 @@ namespace Game.Core.Party
 {
     public readonly struct RaidPush
     {
-        public RaidPush(double skill, double mouse, double keys, double idle, double seconds)
+        public RaidPush(double skill, double mouse, double keys, double idle, double seconds, in ClanCounts counts)
         {
             Skill = skill;
             Mouse = mouse;
             Keys = keys;
             Idle = idle;
             Seconds = seconds;
+            Counts = counts;
         }
 
         public double Skill { get; }
@@ -19,6 +20,7 @@ namespace Game.Core.Party
         public double Keys { get; }
         public double Idle { get; }
         public double Seconds { get; }
+        public ClanCounts Counts { get; }
         public double Total => Skill + Mouse + Keys + Idle;
 
         public double Of(RaidInput input) => input switch
@@ -28,6 +30,22 @@ namespace Game.Core.Party
             RaidInput.Keys => Keys,
             _ => Idle
         };
+    }
+
+    public readonly struct ClanCounts
+    {
+        public ClanCounts(long keyPresses, long clicks, double mouseMeters, long bosses)
+        {
+            KeyPresses = keyPresses;
+            Clicks = clicks;
+            MouseMeters = mouseMeters;
+            Bosses = bosses;
+        }
+
+        public long KeyPresses { get; }
+        public long Clicks { get; }
+        public double MouseMeters { get; }
+        public long Bosses { get; }
     }
 
     public sealed class RaidTally
@@ -40,6 +58,10 @@ namespace Game.Core.Party
         private RaidRules _rules;
         private long _ticks;
         private BigNumber _ghostSeen;
+        private ulong _keysSeen;
+        private ulong _clicksSeen;
+        private double _metersSeen;
+        private long _bossesSeen;
 
         public RaidTally(RaidRules rules, GameState state, StageSystem stage, GhostSystem ghost, EventQueue events)
         {
@@ -48,6 +70,7 @@ namespace Game.Core.Party
             _stage = stage;
             _ghost = ghost;
             _events = events;
+            MarkCounts();
         }
 
         public double Seconds => (double)_ticks / GameLoop.TicksPerSecond;
@@ -81,11 +104,25 @@ namespace Game.Core.Party
 
         public RaidPush Take()
         {
-            var push = new RaidPush(_shares[(int)RaidInput.Skill], _shares[(int)RaidInput.Mouse], _shares[(int)RaidInput.Keys], _shares[(int)RaidInput.Idle], Seconds);
+            var total = _state.TotalInput;
+            var counts = new ClanCounts(Since(total.Keys, _keysSeen), Since(total.Clicks, _clicksSeen), System.Math.Max(0, total.MouseMeters - _metersSeen),
+                System.Math.Max(0, _state.BossKills - _bossesSeen));
+            var push = new RaidPush(_shares[(int)RaidInput.Skill], _shares[(int)RaidInput.Mouse], _shares[(int)RaidInput.Keys], _shares[(int)RaidInput.Idle], Seconds, counts);
             for (var i = 0; i < _shares.Length; i++)
                 _shares[i] = 0;
             _ticks = 0;
+            MarkCounts();
             return push;
+        }
+
+        private static long Since(ulong now, ulong seen) => now > seen ? (long)(now - seen) : 0;
+
+        private void MarkCounts()
+        {
+            _keysSeen = _state.TotalInput.Keys;
+            _clicksSeen = _state.TotalInput.Clicks;
+            _metersSeen = _state.TotalInput.MouseMeters;
+            _bossesSeen = _state.BossKills;
         }
 
         private static RaidInput InputOf(DamageSource source) => source switch

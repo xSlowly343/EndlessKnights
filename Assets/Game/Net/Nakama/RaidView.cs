@@ -30,6 +30,8 @@ namespace Game.Net.Nakama
             foreach (var row in NakamaJson.Items(json, "top"))
                 top.Add(new RaidRowView((int)NakamaJson.Number(row, "place"), NakamaJson.Text(row, "userId"), NakamaJson.Text(row, "name"), NakamaJson.Number(row, "share")));
             Top = top;
+            var daily = NakamaJson.Field(json, "daily");
+            Daily = daily != null && daily.Kind == JsonKind.Object ? ClanDailyView.From(daily) : null;
             var last = NakamaJson.Field(json, "last");
             HasLast = last != null && last.Kind == JsonKind.Object;
             if (last != null && HasLast)
@@ -53,6 +55,7 @@ namespace Game.Net.Nakama
         public int Players { get; }
         public long OwnSeals { get; }
         public IReadOnlyList<RaidRowView> Top { get; }
+        public ClanDailyView? Daily { get; }
         public bool HasLast { get; }
         public bool LastKilled { get; }
         public int LastPlace { get; }
@@ -70,10 +73,59 @@ namespace Game.Net.Nakama
             foreach (var layer in rules.Layers)
                 fields.Add((layer.Id, Number(push.Of(layer.Input))));
             fields.Add(("seconds", Number(push.Seconds)));
+            var counts = push.Counts;
+            fields.Add(("counts", NakamaJson.Object(("keys", Number(counts.KeyPresses)), ("clicks", Number(counts.Clicks)), ("mouseMeters", Number(counts.MouseMeters)),
+                ("bosses", Number(counts.Bosses)))));
             return From(NakamaJson.Parse(await client.RpcAsync(session, "raid_push", NakamaJson.Object(fields.ToArray()), cancel).ConfigureAwait(false)));
         }
 
         private static string Number(double value) => value.ToString("R", CultureInfo.InvariantCulture);
+    }
+
+    public sealed class ClanDailyView
+    {
+        private ClanDailyView(JsonValue json)
+        {
+            Day = (long)NakamaJson.Number(json, "day");
+            EndsAtUnixMs = (long)NakamaJson.Number(json, "endsAt");
+            var challenges = new List<ClanChallengeView>();
+            foreach (var item in NakamaJson.Items(json, "challenges"))
+                challenges.Add(new ClanChallengeView(NakamaJson.Text(item, "id"), NakamaJson.Text(item, "counter"), NakamaJson.Number(item, "target"), NakamaJson.Number(item, "progress"),
+                    (long)NakamaJson.Number(item, "done"), NakamaJson.Number(item, "yours"), (int)NakamaJson.Number(item, "seals")));
+            Challenges = challenges;
+        }
+
+        public long Day { get; }
+        public long EndsAtUnixMs { get; }
+        public IReadOnlyList<ClanChallengeView> Challenges { get; }
+
+        public static ClanDailyView From(JsonValue json) => new ClanDailyView(json);
+
+        public static async Task<ClanDailyView> ShowAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "clan_daily", "{}", cancel).ConfigureAwait(false)));
+    }
+
+    public readonly struct ClanChallengeView
+    {
+        public ClanChallengeView(string id, string counter, double target, double progress, long doneAtUnixMs, double yours, int seals)
+        {
+            Id = id;
+            Counter = counter;
+            Target = target;
+            Progress = progress;
+            DoneAtUnixMs = doneAtUnixMs;
+            Yours = yours;
+            Seals = seals;
+        }
+
+        public string Id { get; }
+        public string Counter { get; }
+        public double Target { get; }
+        public double Progress { get; }
+        public long DoneAtUnixMs { get; }
+        public bool Done => DoneAtUnixMs > 0;
+        public double Yours { get; }
+        public int Seals { get; }
     }
 
     public readonly struct RaidLayerView

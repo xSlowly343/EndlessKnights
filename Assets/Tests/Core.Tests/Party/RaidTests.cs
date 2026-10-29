@@ -122,6 +122,7 @@ namespace Game.Core.Tests.Party
             var push = loop.Raid.Take();
 
             Assert.That(push.Seconds, Is.EqualTo(3).Within(1e-9));
+            Assert.That(push.Counts.KeyPresses, Is.EqualTo(120), "the clan challenges count the keys pressed");
             Assert.That(push.Keys, Is.GreaterThan(0));
             Assert.That(push.Of(RaidInput.Keys), Is.EqualTo(push.Keys));
             Assert.That(loop.Raid.Take().Total, Is.Zero);
@@ -149,6 +150,49 @@ namespace Game.Core.Tests.Party
             tally.Take();
 
             Assert.That(System.GC.GetAllocatedBytesForCurrentThread() - before, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TheClanPacketCountsKeysClicksMouseAndBossesSinceTheLastOne()
+        {
+            var (loop, input) = Hero();
+            input.PressKeys(7);
+            input.ClickLeft(2);
+            input.MoveMouse(96 / 0.0254f);
+            loop.Tick();
+            loop.State.BossKills += 3;
+
+            var counts = loop.Raid.Take().Counts;
+
+            Assert.That(counts.KeyPresses, Is.EqualTo(7));
+            Assert.That(counts.Clicks, Is.EqualTo(2));
+            Assert.That(counts.MouseMeters, Is.EqualTo(1).Within(1e-3));
+            Assert.That(counts.Bosses, Is.EqualTo(3));
+            Assert.That(loop.Raid.Take().Counts.KeyPresses, Is.Zero);
+        }
+
+        [TestCase("ru")]
+        [TestCase("en")]
+        public void EveryClanChallengeHasItsTexts(string language)
+        {
+            Texts.UseLanguage(language);
+            var rules = ClanChallengeRules.Load(TestData.ReadGameDataFile(ClanChallengeRules.FileName));
+
+            Assert.That(rules.Challenges.Count, Is.GreaterThanOrEqualTo(rules.PerDay));
+            foreach (var challenge in rules.Challenges)
+                Assert.That(Texts.Has("challenge.title." + challenge.Counter), Is.True, challenge.Id);
+        }
+
+        [Test]
+        public void ChallengesReadLikeTheMockup()
+        {
+            Assert.That(ClanChallengeText.Title("keys", 100_000), Is.EqualTo("Клан набирает 100K нажатий"));
+            Assert.That(ClanChallengeText.Title("mouseMeters", 10_000), Is.EqualTo("Вместе 10 км мыши"));
+            Assert.That(ClanChallengeText.Progress("keys", 82_345, 100_000, false), Is.EqualTo("82.3K из 100K"));
+            Assert.That(ClanChallengeText.Progress("mouseMeters", 6_400, 10_000, false), Is.EqualTo("6.4 км из 10 км"));
+            Assert.That(ClanChallengeText.Progress("bosses", 150, 150, true), Is.EqualTo("выполнено"));
+            Assert.That(ClanChallengeText.Yours("keys", 3_100, 10), Is.EqualTo("ваши 3.1K · Печати +10"));
+            Assert.That(ClanChallengeText.Yours("clicks", 0, 10), Is.EqualTo("помогите — Печати +10"));
         }
 
         [Test]

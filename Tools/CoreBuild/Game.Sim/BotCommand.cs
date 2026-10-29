@@ -137,6 +137,9 @@ namespace Game.Sim
                     + (layer.Hp - layer.Left).ToString("0.##", CultureInfo.InvariantCulture) + " of " + layer.Hp.ToString("0", CultureInfo.InvariantCulture));
             foreach (var row in raid.Top)
                 Console.WriteLine("  " + row.Place + ". " + row.Name + " " + (row.Share * 100).ToString("0.#", CultureInfo.InvariantCulture) + "%");
+            foreach (var challenge in raid.Daily?.Challenges ?? Array.Empty<ClanChallengeView>())
+                Console.WriteLine("  " + ClanChallengeText.Title(challenge.Counter, challenge.Target) + ": " + ClanChallengeText.Progress(challenge.Counter, challenge.Progress, challenge.Target, challenge.Done)
+                    + " · " + ClanChallengeText.Yours(challenge.Counter, challenge.Yours, challenge.Seals));
             await bots[0].FinishAsync(true).ConfigureAwait(false);
             return raid.Players == count ? 0 : 1;
         }

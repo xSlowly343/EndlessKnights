@@ -28,6 +28,7 @@ interface RaidMemberTally {
     dealt: number;
     layers: { [layerId: string]: number };
     lastPush: number;
+    lastSeconds: number;
     capped: number;
 }
 
@@ -106,7 +107,7 @@ function raidHit(raid: RaidValue, layerId: string, amount: number): number {
 
 function raidApply(raid: RaidValue, userId: string, push: { [layerId: string]: number }, seconds: number, nowUnixMs: number): number {
     const rules = RaidServerRules;
-    const tally: RaidMemberTally = raid.tally[userId] || { dealt: 0, layers: {}, lastPush: 0, capped: 0 };
+    const tally: RaidMemberTally = raid.tally[userId] || { dealt: 0, layers: {}, lastPush: 0, lastSeconds: 0, capped: 0 };
     const since = tally.lastPush > 0 ? (nowUnixMs - tally.lastPush) / 1000 + RaidPushSlackSeconds : 4 * rules.pushSeconds;
     const allowedSeconds = Math.max(0, Math.min(seconds, since, 4 * rules.pushSeconds));
     let total = 0;
@@ -128,6 +129,7 @@ function raidApply(raid: RaidValue, userId: string, push: { [layerId: string]: n
     }
     tally.dealt += dealt;
     tally.lastPush = nowUnixMs;
+    tally.lastSeconds = allowedSeconds;
     raid.tally[userId] = tally;
     return dealt;
 }
@@ -235,13 +237,18 @@ function raidPushRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrun
     for (const layer of RaidServerRules.layers)
         push[layer.id] = raidNumber(request[layer.id]);
     const seconds = raidNumber(request.seconds);
+    const reported = challengeCounts(request.counts);
     const now = Date.now();
     const group = clanOf(nk, userId, now);
     const raid = raidChange(nk, logger, group, now, (value) => {
         raidApply(value, userId, push, seconds, now);
         return value;
     });
-    return JSON.stringify(raidView(nk, raid, userId, raidLast(nk, group.id), now));
+    const counts = challengeCap(reported, raid.tally[userId].lastSeconds);
+    const daily = challengeChange(nk, logger, group, now, (value) => challengeAdd(value, userId, counts, now));
+    const view = raidView(nk, raid, userId, raidLast(nk, group.id), now);
+    view.daily = challengeView(daily, userId);
+    return JSON.stringify(view);
 }
 
 function raidViewRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

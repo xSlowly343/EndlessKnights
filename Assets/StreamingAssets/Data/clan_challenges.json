@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "perDay": 2,
+  "dayUtcOffsetMinutes": 180,
+  "minMembers": 5,
+  "capsPerSecond": { "keys": 15, "clicks": 16, "mouseMeters": 5, "bosses": 0.5 },
+  "challenges": [
+    { "id": "keys", "counter": "keys", "perMember": 4000, "seals": 10 },
+    { "id": "mouse", "counter": "mouseMeters", "perMember": 400, "seals": 10 },
+    { "id": "clicks", "counter": "clicks", "perMember": 1500, "seals": 10 },
+    { "id": "bosses", "counter": "bosses", "perMember": 15, "seals": 10 }
+  ]
+}
