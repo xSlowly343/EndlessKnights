@@ -51,6 +51,7 @@ namespace Game.Core.Party
         private bool _offerNow;
         private long _refusedRift;
         private long _guestLinkTick;
+        private uint _sentReactions;
 
         public const int NoReaction = -1;
         private const double MaxAllyShares = 1000;
@@ -252,6 +253,7 @@ namespace Game.Core.Party
             {
                 CountDamage();
                 WatchCasts();
+                ShareReactions();
             }
             PassDroppedFocus();
             WatchSignal();
@@ -488,6 +490,7 @@ namespace Game.Core.Party
         private void Link()
         {
             Status = PartyLink.Linked;
+            _sentReactions = 0;
             _guestLinkTick = _tick;
             _loop.Stages.Link(IsGuest);
             _loop.Skills.ShareEnemy(true);
@@ -645,6 +648,15 @@ namespace Game.Core.Party
                     SendToHost(PartyCodec.Encode(_out, new AllyCastMessage { GemNetId = gameEvent.Gem.NetId }));
                 ShareCurse(gameEvent.Gem);
             }
+        }
+
+        private void ShareReactions()
+        {
+            var reactions = _loop.Synergy.ReactionMask;
+            if (reactions == _sentReactions || Status != PartyLink.Linked)
+                return;
+            _sentReactions = reactions;
+            SendToHost(PartyCodec.Encode(_out, new SynergyMessage { Reactions = reactions }));
         }
 
         private void PassDroppedFocus()

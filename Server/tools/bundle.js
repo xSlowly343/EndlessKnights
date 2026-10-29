@@ -14,6 +14,7 @@ const challenges = JSON.parse(fs.readFileSync(path.join(data, "clan_challenges.j
 const raid = JSON.parse(fs.readFileSync(path.join(data, "raid.json"), "utf8"));
 const clan = JSON.parse(fs.readFileSync(path.join(data, "clan.json"), "utf8"));
 const gems = JSON.parse(fs.readFileSync(path.join(data, "gems.json"), "utf8"));
+const synergy = JSON.parse(fs.readFileSync(path.join(data, "synergy.json"), "utf8"));
 const chronicle = JSON.parse(fs.readFileSync(path.join(data, "party_chronicle.json"), "utf8"));
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
@@ -55,6 +56,7 @@ const rules = {
   allyResourceMax: party.buffs.allyResource.max,
   allyResourceCooldownSeconds: party.buffs.allyResource.cooldownSeconds,
   castNoticeSeconds: party.buffs.castNoticeSeconds,
+  synergyReactions: synergy.reactions.length,
   barsPerSecond: party.caps.barsPerSecond,
   burstBars: party.caps.burstBars,
   hitBurstSeconds: party.caps.hitBurstSeconds,

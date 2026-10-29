@@ -48,6 +48,7 @@ namespace Game.Core.Party
 
         public bool ResponseActive(int index) => (_responses & (1UL << index)) != 0;
         public bool ReactionActive(int index) => (_reactions & (1UL << index)) != 0;
+        public uint ReactionMask => (uint)_reactions;
         public bool ConstellationActive(int index) => (_constellations & (1UL << index)) != 0;
         public double ReactionCooldownSeconds(int index) => _reactionCooldown[index] * GameLoop.TickSeconds;
 

@@ -40,16 +40,16 @@ test("ten bosses together give the first banner, a hundred raise it", () => {
   assert.deepStrictEqual(plain(value.records.map((record) => record.feat + record.level)), ["first_steps1", "old_guard1", "old_guard2"]);
 });
 
-test("hours together and the full orchestra give titles, untracked feats wait", () => {
+test("hours together and the full orchestra give titles, a feat waits for its own counter", () => {
   const value = party.chronicleEmpty();
   party.chronicleAdd(value, stats(0, 99.9, 1), 1000, rules);
   assert.deepStrictEqual(plain(party.chronicleTitles(value, rules)), ["full_orchestra"]);
   party.chronicleAdd(value, stats(0, 0.1, 0), 2000, rules);
   assert.deepStrictEqual(plain(party.chronicleTitles(value, rules)), ["full_orchestra", "inseparable"]);
   party.chronicleAdd(value, stats(100000, 1000, 100), 3000, rules);
-  assert.strictEqual(value.feats.chain_reaction, undefined, "synergies on the enemy are not counted yet");
+  assert.strictEqual(value.feats.chain_reaction, undefined, "bosses and hours do not make a chain reaction");
   const view = party.chronicleView("p1", value, rules);
-  assert.strictEqual(view.feats.find((feat) => feat.id === "chain_reaction").tracked, false);
+  assert.strictEqual(view.feats.find((feat) => feat.id === "chain_reaction").tracked, true);
   assert.strictEqual(view.records[0].at, 3000, "the newest record comes first");
 });
 
@@ -176,4 +176,46 @@ test("a boss together counts as a guardian when a member who earned it stood on 
   const value = party.chronicleEmpty();
   const earned = party.chronicleAdd(value, Object.assign(stats(0, 0, 0), { guardiansTogether: 5 }), 1000, rules);
   assert.deepStrictEqual(plain(earned.map((got) => got.feat)), ["guardian_hunters"]);
+});
+
+test("three different synergies on one enemy make a chain reaction", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.join("user-b", "12");
+  host.tick();
+  const synergy = (mask) => {
+    const view = new DataView(new ArrayBuffer(5));
+    view.setUint8(0, 15);
+    view.setUint32(1, mask, true);
+    return view.buffer;
+  };
+  const kill = () => {
+    host.encounter.reportInput(0);
+    host.encounter.applyDamage(0, host.encounter.enemyId, host.encounter.barLeft + 1);
+    host.tick();
+  };
+  host.receive("user-a", synergy(0b0001));
+  host.receive("user-b", synergy(0b0010));
+  kill();
+  assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 2);
+  host.receive("user-a", synergy(0));
+  host.receive("user-b", synergy(0));
+  kill();
+  kill();
+  assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 2, "synergies still running when an enemy comes count for it, faded ones do not");
+  host.receive("user-b", synergy(0b1000));
+  host.receive("user-a", synergy(0b0101));
+  kill();
+  assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 3, "three different synergies while one enemy lived");
+  host.receive("user-a", synergy(0xffffffff));
+  assert.strictEqual(party.partyBitCount(party.partyDecodeSynergy(synergy(0xffffffff), party.PartyServerRules.synergyReactions)), party.PartyServerRules.synergyReactions, "unknown reactions are dropped");
+
+  const delta = host.takeChronicle();
+  assert.strictEqual(delta.synergiesOnOneEnemy, 3);
+  assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 0);
+  const value = party.chronicleEmpty();
+  const earned = party.chronicleAdd(value, delta, 1000, rules);
+  assert.deepStrictEqual(plain(earned.map((e) => e.feat)), ["chain_reaction"]);
+  party.chronicleAdd(value, Object.assign(party.chronicleNoStats(), { synergiesOnOneEnemy: 1 }), 2000, rules);
+  assert.strictEqual(value.stats.synergiesOnOneEnemy, 3, "the best enemy stays the record");
 });

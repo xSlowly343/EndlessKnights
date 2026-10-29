@@ -69,6 +69,8 @@ namespace Game.Core.Tests.Party
             }
         }
 
+        public void SendSynergy(uint reactions) => Send(PartyCodec.Encode(_buffer, new SynergyMessage { Reactions = reactions }));
+
         private void Send(int length) => _transport.Send(_host, _buffer, length);
     }
 }

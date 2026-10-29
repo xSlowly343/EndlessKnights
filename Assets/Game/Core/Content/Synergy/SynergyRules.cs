@@ -11,6 +11,7 @@ namespace Game.Core.Content.Synergy
         public const string FileName = "synergy.json";
         public const int SupportedVersion = 1;
         public const int MaxMarks = 30;
+        public const int MaxReactions = 32;
         public const string AuraMark = "aura";
 
         private readonly Dictionary<string, int> _markIndex;
@@ -128,7 +129,11 @@ namespace Game.Core.Content.Synergy
                 responses.Add(ReadResponse(node, markIndex));
             var reactions = new List<SynergyReaction>();
             foreach (var node in root.Field("reactions").Items())
+            {
+                if (reactions.Count == MaxReactions)
+                    throw node.Error($"no more than {MaxReactions} reactions fit in one party message");
                 reactions.Add(ReadReaction(node, markIndex));
+            }
             var constellations = new List<SynergyConstellation>();
             foreach (var node in root.Field("constellations").Items())
                 constellations.Add(ReadConstellation(node, markIndex, roles));

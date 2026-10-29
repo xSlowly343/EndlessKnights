@@ -33,6 +33,22 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void SynergiesFromDifferentMembersCountOnOneEnemy()
+        {
+            var (host, bots, network) = Party(0, 0.02, 0.02);
+            Run(host, bots, network, 30, true);
+            var killsBefore = host.Kills;
+
+            bots[0].SendSynergy(0b001);
+            bots[1].SendSynergy(0b110);
+            for (var tick = 0; tick < 200 && host.Kills == killsBefore; tick++)
+                Run(host, bots, network, 1, true);
+
+            Assert.That(host.Kills, Is.GreaterThan(killsBefore));
+            Assert.That(host.MostReactionsOnOneEnemy, Is.EqualTo(3));
+        }
+
+        [Test]
         public void FourBotsWithFivePercentLossConverge()
         {
             var (host, bots, network) = Party(0.05, 0.03, 0.02, 0.04, 0.01);

@@ -90,6 +90,13 @@ test("resource for allies is relayed with the sender slot and capped", () => {
   assert.strictEqual(party.partyRelayResource(bytes(resource.hex.slice(0, -2)), resource.slot, 1000), null);
 });
 
+test("synergies on the enemy decode like the core", () => {
+  const synergy = vectors.decode.synergy;
+  assert.strictEqual(party.partyDecodeSynergy(bytes(synergy.hex), 12), synergy.reactions);
+  assert.strictEqual(party.partyDecodeSynergy(bytes(synergy.hex), 1), 1, "reactions the server does not know are cut");
+  assert.strictEqual(party.partyDecodeSynergy(bytes(synergy.hex.slice(0, -2)), 12), null);
+});
+
 test("a heavy cast notice is relayed with the sender slot", () => {
   const cast = vectors.decode.allyCast;
   assert.strictEqual(hex(party.partyRelayAllyCast(bytes(cast.hex), cast.slot)), cast.relayedHex);

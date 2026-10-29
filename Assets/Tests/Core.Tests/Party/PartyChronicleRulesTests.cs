@@ -62,7 +62,6 @@ namespace Game.Core.Tests.Party
 
         [TestCase(@"""levels"": [10], ""banner"": [1]", @"""levels"": [10, 5], ""banner"": [1, 2]", "levels")]
         [TestCase(@"""levels"": [10], ""banner"": [1]", @"""levels"": [10], ""banner"": [1, 2]", "banner")]
-        [TestCase(@"""levels"": [100, 200], ""title"": ""owls"", ""tracked"": false", @"""levels"": [100, 200], ""title"": ""owls""", "not counted yet")]
         [TestCase(@"""toHour"": 6", @"""toHour"": 0", "toHour")]
         [TestCase(@"""kind"": ""bossesTogether""", @"""kind"": ""dragons""", "unknown kind")]
         [TestCase(@"""id"": ""rift_conquerors""", @"""id"": ""first_steps""", "new, non-empty id")]
@@ -71,6 +70,16 @@ namespace Game.Core.Tests.Party
             var error = Assert.Throws<ContentException>(() => PartyChronicleRules.Load(Valid.Replace(from, to)));
 
             Assert.That(error!.Message, Does.Contain(message));
+        }
+
+        [Test]
+        public void EveryFeatIsCountedNowThatTheChainReactionIsTracked()
+        {
+            var rules = PartyChronicleRules.Load(TestData.ReadGameDataFile(PartyChronicleRules.FileName));
+
+            Assert.That(rules.Feats.All(feat => feat.Tracked), Is.True);
+            Assert.That(PartyChronicleRules.LaterKinds, Is.Empty);
+            Assert.That(PartyChronicleRules.Load(Valid.Replace(@"""title"": ""owls"", ""tracked"": false", @"""title"": ""owls""")).Feats[1].Tracked, Is.True);
         }
 
         [Test]

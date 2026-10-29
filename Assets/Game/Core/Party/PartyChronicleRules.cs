@@ -28,8 +28,8 @@ namespace Game.Core.Party
         public const string FileName = "party_chronicle.json";
         public const int SupportedVersion = 1;
 
-        public static readonly IReadOnlyList<string> TrackedKinds = new[] { "bossesTogether", "fullOrchestra", "hoursTogether", "nightBosses", "riftDepth", "mentorHours", "guardiansTogether" };
-        public static readonly IReadOnlyList<string> LaterKinds = new[] { "synergiesOnOneEnemy" };
+        public static readonly IReadOnlyList<string> TrackedKinds = new[] { "bossesTogether", "fullOrchestra", "hoursTogether", "nightBosses", "riftDepth", "mentorHours", "guardiansTogether", "synergiesOnOneEnemy" };
+        public static readonly IReadOnlyList<string> LaterKinds = System.Array.Empty<string>();
 
         private PartyChronicleRules(double flushSeconds, int maxRecords, int nightUtcOffsetMinutes, int nightFromHour, int nightToHour, IReadOnlyList<PartyFeat> feats)
         {

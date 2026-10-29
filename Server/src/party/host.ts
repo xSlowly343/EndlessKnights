@@ -18,6 +18,7 @@ interface PartyServerConfig extends PartyEncounterRules {
     allyResourceMax: number;
     allyResourceCooldownSeconds: number;
     castNoticeSeconds: number;
+    synergyReactions: number;
 }
 
 const PartyCutTolerance = 1e-9;
@@ -32,7 +33,7 @@ class PartyHost {
     repeatedShares = 0;
     relays = 0;
     clockUnixMs = 0;
-    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0 };
+    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0, synergiesOnOneEnemy: 0 };
     readonly stages = [0, 0, 0, 0];
     friendBosses: { [userId: string]: number } = {};
     helpBosses: { [userId: string]: number } = {};
@@ -56,6 +57,8 @@ class PartyHost {
     private readonly lastRelayTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastResourceTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastCastNoticeTick = [PartyNever, PartyNever, PartyNever, PartyNever];
+    private readonly reactions = [0, 0, 0, 0];
+    private enemyReactions = 0;
     private readonly recentShares = [0, 0, 0, 0];
     private readonly recentHits = [0, 0, 0, 0];
     private stateSequence = 0;
@@ -163,6 +166,14 @@ class PartyHost {
                     this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel });
                 break;
             }
+            case PartyMessageKind.Synergy: {
+                const synergy = partyDecodeSynergy(data, this.config.synergyReactions);
+                if (synergy !== null) {
+                    this.reactions[slot] = synergy;
+                    this.enemyReactions = (this.enemyReactions | synergy) >>> 0;
+                }
+                break;
+            }
             case PartyMessageKind.AllyCast: {
                 const relayed = partyRelayAllyCast(data, slot);
                 if (relayed && this.encounter.tick - this.lastCastNoticeTick[slot] >= Math.max(1, partyTicks(this.config.castNoticeSeconds))) {
@@ -215,8 +226,9 @@ class PartyHost {
         const taken = {
             bossesTogether: this.chronicle.bossesTogether, ticksTogether: this.chronicle.ticksTogether, fullOrchestra: this.chronicle.fullOrchestra,
             nightBosses: this.chronicle.nightBosses, riftDepth: this.chronicle.riftDepth || 0, mentorSeconds: this.chronicle.mentorSeconds || 0,
-            guardiansTogether: this.chronicle.guardiansTogether || 0
+            guardiansTogether: this.chronicle.guardiansTogether || 0, synergiesOnOneEnemy: this.chronicle.synergiesOnOneEnemy || 0
         };
+        this.chronicle.synergiesOnOneEnemy = 0;
         this.chronicle.guardiansTogether = 0;
         this.chronicle.riftDepth = 0;
         this.chronicle.mentorSeconds = 0;
@@ -298,6 +310,14 @@ class PartyHost {
             this.friendBosses[userId] = (this.friendBosses[userId] || 0) + 1;
     }
 
+    private activeReactions(): number {
+        let active = 0;
+        for (let slot = 0; slot < PartyMaxSlots; slot++)
+            if (this.encounter.members[slot].joined)
+                active = (active | this.reactions[slot]) >>> 0;
+        return active;
+    }
+
     private noteHelp(event: PartyEvent): void {
         for (let slot = 0; slot < PartyMaxSlots; slot++) {
             const member = this.encounter.members[slot];
@@ -366,6 +386,7 @@ class PartyHost {
         this.lastRelayTick[slot] = PartyNever;
         this.lastResourceTick[slot] = PartyNever;
         this.lastCastNoticeTick[slot] = PartyNever;
+        this.reactions[slot] = 0;
         this.ticksToState = 0;
     }
 
@@ -459,6 +480,7 @@ class PartyHost {
         for (const event of events) {
             if (event.kind === PartyEventKind.EnemyKilled) {
                 this.kills++;
+                this.chronicle.synergiesOnOneEnemy = Math.max(this.chronicle.synergiesOnOneEnemy || 0, partyBitCount(this.enemyReactions));
                 if (event.enemyKind === PartyEnemyKind.Boss)
                     this.noteBossKill(event);
                 this.broadcast(partyEncodeEnemyKilled(event), PartyNoSlot);
@@ -467,7 +489,10 @@ class PartyHost {
                 this.broadcast(partyEncodeMoment(event, this.encounter.bossTicksLeft), PartyNoSlot);
             } else if (event.kind === PartyEventKind.GuestLeft) {
                 this.releaseGuests(event.rewarded);
-            } else if (event.kind === PartyEventKind.EnemySpawned || event.kind === PartyEventKind.WorldPending
+            } else if (event.kind === PartyEventKind.EnemySpawned) {
+                this.enemyReactions = this.activeReactions();
+                this.ticksToState = 0;
+            } else if (event.kind === PartyEventKind.WorldPending
                 || event.kind === PartyEventKind.WorldCancelled || event.kind === PartyEventKind.WorldChanged) {
                 this.ticksToState = 0;
             } else {

@@ -93,6 +93,7 @@ namespace Game.Core.Tests.Party
 
             loop.Tick();
             Assert.That(loop.Synergy.ReactionActive(miasma), Is.True);
+            Assert.That(loop.Synergy.ReactionMask, Is.EqualTo(1u << miasma), "the mask goes to the host for the chain reaction");
             Assert.That(loop.Hero.Value(new StatId("miasmaBurstShare"), 0), Is.EqualTo(0.3).Within(1e-9));
 
             for (var tick = 0; tick < 20; tick++)
