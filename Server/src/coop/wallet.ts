@@ -125,6 +125,14 @@ function walletSpend(nk: nkruntime.Nakama, userId: string, currency: string, amo
     });
 }
 
+function walletRefund(nk: nkruntime.Nakama, userId: string, currency: string, amount: number, reason: string, nowUnixMs: number): void {
+    walletChange(nk, userId, (value) => {
+        value.balances[currency] += amount;
+        walletNote(value, { at: nowUnixMs, source: reason, currency: currency, amount: amount });
+        return 0;
+    });
+}
+
 function walletView(value: WalletValue, nowUnixMs: number): { [key: string]: any } {
     const today = walletDayOf(nowUnixMs) === value.day ? value.today : {};
     return {

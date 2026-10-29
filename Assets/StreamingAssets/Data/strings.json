@@ -914,6 +914,19 @@
     "challenge.progress": { "ru": "{0} из {1}", "en": "{0} of {1}" },
     "challenge.done": { "ru": "выполнено", "en": "done" },
     "challenge.yours": { "ru": "ваши {0} · Печати +{1}", "en": "yours {0} · seals +{1}" },
-    "challenge.notYet": { "ru": "помогите — Печати +{0}", "en": "help out — seals +{0}" }
+    "challenge.notYet": { "ru": "помогите — Печати +{0}", "en": "help out — seals +{0}" },
+    "wallet.source.clan_donation": { "ru": "вклад в казну клана", "en": "gift to the clan treasury" },
+    "wallet.source.clan_donation_back": { "ru": "вклад вернулся: сервер занят", "en": "gift returned: the server was busy" },
+    "clanTree.taken": { "ru": "открыт", "en": "open" },
+    "clanTree.cost": { "ru": "{0} Печатей", "en": "{0} seals" },
+    "clanTree.closed": { "ru": "{0} Печатей · сначала соседний узел", "en": "{0} seals · open a neighbour first" },
+    "clanTree.treasury": { "ru": "Казна клана: {0} Печатей", "en": "Clan treasury: {0} seals" },
+    "clanTree.yours": { "ru": "Ваш вклад: {0}", "en": "Your gifts: {0}" },
+    "clanTree.log.donated": { "ru": "{0}: +{1} Печатей в казну", "en": "{0}: +{1} seals to the treasury" },
+    "clanTree.log.bought": { "ru": "{0}: открыт узел «{1}» за {2}", "en": "{0}: opened “{1}” for {2}" },
+    "clanTree.reason.notEnough": { "ru": "в казне не хватает Печатей", "en": "the treasury is short of seals" },
+    "clanTree.reason.notConnected": { "ru": "сначала откройте соседний узел", "en": "open a neighbouring node first" },
+    "clanTree.reason.taken": { "ru": "узел уже открыт", "en": "the node is already open" },
+    "clanTree.reason.leaderOnly": { "ru": "узлы открывают глава и офицеры", "en": "only the leader and officers open nodes" }
   }
 }

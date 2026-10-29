@@ -85,6 +85,20 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheClanTreeIsReadWithTheTreasuryDonorsAndLog()
+        {
+            var tree = ClanTreeView.From(NakamaJson.Parse("{\"treasury\":1240,\"taken\":[\"common_hearth\",\"war_drums\"],\"yours\":300,"
+                + "\"donors\":[{\"userId\":\"bob\",\"name\":\"Bob\",\"amount\":900}],\"log\":[{\"at\":1793188800000,\"name\":\"Ann\",\"kind\":\"bought\",\"amount\":600,\"node\":\"war_drums\"}]}"));
+
+            Assert.That(tree.Treasury, Is.EqualTo(1240));
+            Assert.That(tree.Taken, Is.EqualTo(new[] { "common_hearth", "war_drums" }));
+            Assert.That(tree.Yours, Is.EqualTo(300));
+            Assert.That(tree.Donors[0].Amount, Is.EqualTo(900));
+            Assert.That(tree.Log[0].Node, Is.EqualTo("war_drums"));
+            Assert.That(ClanTreeView.DonatePayload(50), Is.EqualTo("{\"amount\":50}"));
+        }
+
+        [Test]
         public void TheCoopWalletIsReadWithTodayAndTheLedger()
         {
             var wallet = CoopWalletView.From(NakamaJson.Parse("{\"balances\":{\"friendship\":46,\"seals\":320},"

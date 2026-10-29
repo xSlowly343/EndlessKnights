@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "minDonation": 10,
+  "nodes": [
+    { "id": "common_hearth", "name": { "ru": "Общий очаг", "en": "Common Hearth" }, "cost": 300, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.03 }] },
+    { "id": "war_drums", "name": { "ru": "Боевые барабаны", "en": "War Drums" }, "cost": 600, "requires": ["common_hearth"], "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.03 }] },
+    { "id": "old_scars", "name": { "ru": "Старые шрамы", "en": "Old Scars" }, "cost": 1500, "requires": ["war_drums"], "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.03 }] },
+    { "id": "trophy_wall", "name": { "ru": "Стена трофеев", "en": "Trophy Wall" }, "cost": 900, "requires": ["war_drums"], "modifiers": [{ "stat": "bossGold", "kind": "increased", "value": 0.05 }] },
+    { "id": "cutters_bench", "name": { "ru": "Верстак огранщика", "en": "Cutter's Bench" }, "cost": 600, "requires": ["common_hearth"], "modifiers": [{ "stat": "gemExperience", "kind": "increased", "value": 0.05 }] },
+    { "id": "shard_sieve", "name": { "ru": "Сито для Осколков", "en": "Shard Sieve" }, "cost": 1200, "requires": ["cutters_bench"], "modifiers": [{ "stat": "shardDrop", "kind": "increased", "value": 0.05 }] },
+    { "id": "night_watch", "name": { "ru": "Ночной дозор", "en": "Night Watch" }, "cost": 900, "requires": ["common_hearth"], "modifiers": [{ "stat": "offlineGold", "kind": "increased", "value": 0.05 }] },
+    { "id": "keen_eyes", "name": { "ru": "Зоркие глаза", "en": "Keen Eyes" }, "cost": 2000, "requires": ["night_watch", "trophy_wall"], "modifiers": [{ "stat": "itemQuantity", "kind": "increased", "value": 0.03 }] }
+  ]
+}

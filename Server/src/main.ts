@@ -36,6 +36,9 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("raid_push", raidPushRpc);
     initializer.registerRpc("raid_view", raidViewRpc);
     initializer.registerRpc("clan_daily", clanDailyRpc);
+    initializer.registerRpc("clan_tree", clanTreeRpc);
+    initializer.registerRpc("clan_donate", clanDonateRpc);
+    initializer.registerRpc("clan_tree_buy", clanTreeBuyRpc);
     initializer.registerRpc("rift_window", riftWindowRpc);
     initializer.registerRpc("rift_board", riftBoardRpc);
     initializer.registerRpc("mail_list", mailListRpc);

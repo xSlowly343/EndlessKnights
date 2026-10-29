@@ -53,6 +53,15 @@ namespace Game.Net.Nakama
         public async Task<ClanView?> QuickAsync(string language, CancellationToken cancel = default) =>
             ClanView.From(NakamaJson.Field(await Call("clan_quick", NakamaJson.Object(("language", NakamaJson.Quote(language))), cancel).ConfigureAwait(false), "clan"));
 
+        public async Task<ClanTreeView> TreeAsync(CancellationToken cancel = default) =>
+            ClanTreeView.From(await Call("clan_tree", "{}", cancel).ConfigureAwait(false));
+
+        public async Task<ClanTreeView> DonateAsync(long seals, CancellationToken cancel = default) =>
+            ClanTreeView.From(await Call("clan_donate", ClanTreeView.DonatePayload(seals), cancel).ConfigureAwait(false));
+
+        public async Task<ClanTreeView> OpenNodeAsync(string nodeId, CancellationToken cancel = default) =>
+            ClanTreeView.From(await Call("clan_tree_buy", ClanTreeView.BuyPayload(nodeId), cancel).ConfigureAwait(false));
+
         private async Task<ClanView> OnMember(string rpc, string userId, CancellationToken cancel) =>
             View(await Call(rpc, NakamaJson.Object(("userId", NakamaJson.Quote(userId))), cancel).ConfigureAwait(false));
 
