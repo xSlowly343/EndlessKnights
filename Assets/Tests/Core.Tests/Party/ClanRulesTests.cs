@@ -19,6 +19,7 @@ namespace Game.Core.Tests.Party
   ""activeMinutes"": 15,
   ""inactiveDays"": 30,
   ""leaderAwayDays"": 14,
+  ""requests"": { ""days"": 7, ""perClan"": 30, ""perPlayer"": 3 },
   ""names"": { ""adjectives"": [""lilac"", ""golden""], ""nouns"": [""lanterns""] }
 }";
 
@@ -56,6 +57,19 @@ namespace Game.Core.Tests.Party
                 Assert.That(Texts.Has("clan.noun." + id), Is.True, id);
             foreach (var role in new[] { ClanRules.Leader, ClanRules.Officer, ClanRules.Member })
                 Assert.That(Texts.Has("clan.role." + role), Is.True, role);
+        }
+
+        [Test]
+        public void ClanRequestsReadAsPlainWords()
+        {
+            var rules = Real;
+            Assert.That(rules.RequestDays, Is.EqualTo(7));
+            Assert.That(rules.RequestsPerPlayer, Is.EqualTo(3));
+            Assert.That(ClanText.RequestSent("lilac", "lanterns"), Is.EqualTo("Заявка в «Лиловые фонари» отправлена"));
+            Assert.That(ClanText.RequestFrom("Боря", 0, 2 * 86_400_000L + 1, rules.RequestDays), Is.EqualTo("Боря просится в клан · ещё 5 д"));
+            Assert.That(ClanText.Answer(true, "lilac", "lanterns"), Is.EqualTo("Вас приняли в «Лиловые фонари»"));
+            Assert.That(ClanText.Failed("too many requests"), Does.Contain("слишком много заявок"));
+            Assert.That(ClanText.ByRequest, Is.EqualTo("по заявке"));
         }
 
         [Test]

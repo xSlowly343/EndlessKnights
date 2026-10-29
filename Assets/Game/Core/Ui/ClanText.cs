@@ -44,8 +44,23 @@ namespace Game.Core.Ui
             "clan not found" => Texts.Get("clan.reason.notFound"),
             "too many officers" => Texts.Get("clan.reason.officers"),
             "only the leader can do that" => Texts.Get("clan.reason.leaderOnly"),
+            "only officers can do that" => Texts.Get("clan.reason.officerOnly"),
+            "too many requests" => Texts.Get("clan.reason.tooManyRequests"),
+            "clan has too many requests" => Texts.Get("clan.reason.clanRequests"),
+            "clan is open" => Texts.Get("clan.reason.open"),
+            "no such request" => Texts.Get("clan.reason.noRequest"),
             _ => Texts.Get("party.reason.network")
         };
+
+        public static string RequestSent(string adjective, string noun) => Texts.Format("clan.request.sent", Name(adjective, noun));
+
+        public static string RequestFrom(string name, long atUnixMs, long nowUnixMs, int requestDays) =>
+            Texts.Format("clan.request.from", name, System.Math.Max(0, (atUnixMs + requestDays * DayMs - nowUnixMs + DayMs - 1) / DayMs));
+
+        public static string Answer(bool accepted, string adjective, string noun) =>
+            Texts.Format(accepted ? "clan.request.accepted" : "clan.request.declined", Name(adjective, noun));
+
+        public static string ByRequest => Texts.Get("clan.request.badge");
 
         private static string Initial(string word) => word.Length == 0 ? string.Empty : word.Substring(0, 1);
     }

@@ -36,6 +36,11 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("clan_update", clanUpdateRpc);
     initializer.registerRpc("clan_list", clanListRpc);
     initializer.registerRpc("clan_quick", clanQuickRpc);
+    initializer.registerRpc("clan_apply", clanApplyRpc);
+    initializer.registerRpc("clan_requests", clanRequestsRpc);
+    initializer.registerRpc("clan_answer", clanAnswerRpc);
+    initializer.registerRpc("clan_applications", clanApplicationsRpc);
+    initializer.registerRpc("clan_withdraw", clanWithdrawRpc);
     initializer.registerRpc("raid_push", raidPushRpc);
     initializer.registerRpc("raid_view", raidViewRpc);
     initializer.registerRpc("clan_daily", clanDailyRpc);

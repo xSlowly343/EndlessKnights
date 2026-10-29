@@ -6,6 +6,9 @@ interface ClanRules {
     activeMinutes: number;
     inactiveDays: number;
     leaderAwayDays: number;
+    requestDays: number;
+    requestsPerClan: number;
+    requestsPerPlayer: number;
     adjectives: string[];
     nouns: string[];
     languages: string[];
@@ -215,6 +218,7 @@ function clanAdd(nk: nkruntime.Nakama, group: nkruntime.Group, userId: string, n
     meta.members.push(userId);
     clanSaveMeta(nk, group, meta);
     clanNoteSeen(nk, userId, group.id, now);
+    clanForgetApplications(nk, userId, now);
     return group;
 }
 
@@ -282,7 +286,7 @@ interface ClanCandidate { group: nkruntime.Group; card: { [key: string]: any }; 
 function clanCandidates(nk: nkruntime.Nakama, userId: string, request: { [key: string]: any }, now: number): ClanCandidate[] {
     const rules = ClanServerRules;
     const language = request.language === undefined ? undefined : partyPick(request.language, rules.languages, rules.languages[0]);
-    const listed = nk.groupsList(undefined, language, true, undefined, 100).groups || [];
+    const listed = nk.groupsList(undefined, language, request.closed !== true, undefined, 100).groups || [];
     const groups: nkruntime.Group[] = [];
     for (const source of listed) {
         const group = clanIsClan(source) ? clanLoad(nk, source, now) : null;
@@ -307,7 +311,7 @@ function clanCandidates(nk: nkruntime.Nakama, userId: string, request: { [key: s
         const activeNow = clanActiveCount(clanLastSeen(nk, meta.members), meta.members, now);
         result.push({
             group: group,
-            card: { id: group.id, adjective: meta.adjective, noun: meta.noun, language: meta.language, members: meta.members.length, maxMembers: rules.maxMembers, activeNow: activeNow }
+            card: { id: group.id, adjective: meta.adjective, noun: meta.noun, language: meta.language, members: meta.members.length, maxMembers: rules.maxMembers, activeNow: activeNow, byRequest: meta.access !== PartyOpen }
         });
     }
     result.sort((a, b) => b.card.activeNow - a.card.activeNow || b.card.members - a.card.members);

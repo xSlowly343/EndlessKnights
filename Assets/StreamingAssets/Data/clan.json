@@ -7,6 +7,7 @@
   "activeMinutes": 15,
   "inactiveDays": 30,
   "leaderAwayDays": 14,
+  "requests": { "days": 7, "perClan": 30, "perPlayer": 3 },
   "names": {
     "adjectives": ["lilac", "crimson", "golden", "silver", "sapphire", "iron", "night", "morning", "quiet", "loud", "swift", "stubborn", "wandering", "smouldering", "free", "last"],
     "nouns": ["lanterns", "keys", "knights", "owls", "foxes", "wolves", "ravens", "clocks", "banners", "hammers", "comets", "sparks", "wardens", "wanderers", "drums", "anvils"]

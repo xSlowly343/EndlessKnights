@@ -148,6 +148,9 @@ const clanRules = {
   activeMinutes: clan.activeMinutes,
   inactiveDays: clan.inactiveDays,
   leaderAwayDays: clan.leaderAwayDays,
+  requestDays: clan.requests.days,
+  requestsPerClan: clan.requests.perClan,
+  requestsPerPlayer: clan.requests.perPlayer,
   adjectives: clan.names.adjectives,
   nouns: clan.names.nouns,
   languages: party.search.languages

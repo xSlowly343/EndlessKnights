@@ -41,9 +41,14 @@ namespace Game.Net.Nakama
         public async Task<ClanView> UpdateAsync(string? access, string? adjective, string? noun, string? language, CancellationToken cancel = default) =>
             View(await Call("clan_update", Card(access, adjective, noun, language), cancel).ConfigureAwait(false));
 
-        public async Task<IReadOnlyList<ClanCard>> ListAsync(string? language, CancellationToken cancel = default)
+        public async Task<IReadOnlyList<ClanCard>> ListAsync(string? language, CancellationToken cancel = default, bool byRequest = false)
         {
-            var reply = await Call("clan_list", language == null ? "{}" : NakamaJson.Object(("language", NakamaJson.Quote(language))), cancel).ConfigureAwait(false);
+            var fields = new List<(string, string)>();
+            if (language != null)
+                fields.Add(("language", NakamaJson.Quote(language)));
+            if (byRequest)
+                fields.Add(("closed", "true"));
+            var reply = await Call("clan_list", NakamaJson.Object(fields.ToArray()), cancel).ConfigureAwait(false);
             var cards = new List<ClanCard>();
             foreach (var card in NakamaJson.Items(reply, "clans"))
                 cards.Add(new ClanCard(card));
@@ -61,6 +66,29 @@ namespace Game.Net.Nakama
 
         public async Task<ClanTreeView> OpenNodeAsync(string nodeId, CancellationToken cancel = default) =>
             ClanTreeView.From(await Call("clan_tree_buy", ClanTreeView.BuyPayload(nodeId), cancel).ConfigureAwait(false));
+
+        public Task ApplyAsync(string clanId, CancellationToken cancel = default) =>
+            Call("clan_apply", NakamaJson.Object(("clanId", NakamaJson.Quote(clanId))), cancel);
+
+        public async Task<ClanRequestsView> RequestsAsync(CancellationToken cancel = default) =>
+            ClanRequestsView.From(await Call("clan_requests", "{}", cancel).ConfigureAwait(false));
+
+        public async Task<ClanRequestsView> AnswerAsync(string userId, bool accept, CancellationToken cancel = default) =>
+            ClanRequestsView.From(await Call("clan_answer", NakamaJson.Object(("userId", NakamaJson.Quote(userId)), ("accept", accept ? "true" : "false")), cancel).ConfigureAwait(false));
+
+        public async Task<IReadOnlyList<ClanApplicationRow>> ApplicationsAsync(CancellationToken cancel = default) =>
+            Applications(await Call("clan_applications", "{}", cancel).ConfigureAwait(false));
+
+        public async Task<IReadOnlyList<ClanApplicationRow>> WithdrawAsync(string clanId, CancellationToken cancel = default) =>
+            Applications(await Call("clan_withdraw", NakamaJson.Object(("clanId", NakamaJson.Quote(clanId))), cancel).ConfigureAwait(false));
+
+        private static IReadOnlyList<ClanApplicationRow> Applications(JsonValue reply)
+        {
+            var rows = new List<ClanApplicationRow>();
+            foreach (var row in NakamaJson.Items(reply, "clans"))
+                rows.Add(new ClanApplicationRow(row));
+            return rows;
+        }
 
         private async Task<ClanView> OnMember(string rpc, string userId, CancellationToken cancel) =>
             View(await Call(rpc, NakamaJson.Object(("userId", NakamaJson.Quote(userId))), cancel).ConfigureAwait(false));

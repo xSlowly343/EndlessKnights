@@ -78,8 +78,10 @@ namespace Game.Net.Nakama
             Members = (int)NakamaJson.Number(json, "members");
             MaxMembers = (int)NakamaJson.Number(json, "maxMembers");
             ActiveNow = (int)NakamaJson.Number(json, "activeNow");
+            ByRequest = NakamaJson.Flag(json, "byRequest");
         }
 
+        public bool ByRequest { get; }
         public string Id { get; }
         public string Adjective { get; }
         public string Noun { get; }

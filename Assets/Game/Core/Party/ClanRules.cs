@@ -12,8 +12,11 @@ namespace Game.Core.Party
         public const string Member = "member";
 
         private ClanRules(int maxMembers, int maxOfficers, int codeLength, int listLimit, int activeMinutes, int inactiveDays, int leaderAwayDays,
-            IReadOnlyList<string> adjectives, IReadOnlyList<string> nouns)
+            IReadOnlyList<string> adjectives, IReadOnlyList<string> nouns, int requestDays, int requestsPerClan, int requestsPerPlayer)
         {
+            RequestDays = requestDays;
+            RequestsPerClan = requestsPerClan;
+            RequestsPerPlayer = requestsPerPlayer;
             MaxMembers = maxMembers;
             MaxOfficers = maxOfficers;
             CodeLength = codeLength;
@@ -34,6 +37,9 @@ namespace Game.Core.Party
         public int LeaderAwayDays { get; }
         public IReadOnlyList<string> Adjectives { get; }
         public IReadOnlyList<string> Nouns { get; }
+        public int RequestDays { get; }
+        public int RequestsPerClan { get; }
+        public int RequestsPerPlayer { get; }
 
         public static ClanRules Load(string json)
         {
@@ -47,8 +53,10 @@ namespace Game.Core.Party
             if (leaderAwayDays > inactiveDays)
                 throw root.Field("leaderAwayDays").Error($"must not be longer than inactiveDays ({inactiveDays})");
             var names = root.Field("names");
+            var requests = root.Field("requests");
             return new ClanRules(maxMembers, root.Field("maxOfficers").AsInt(0, maxMembers - 1), root.Field("codeLength").AsInt(4, 10), root.Field("listLimit").AsInt(1, 100),
-                root.Field("activeMinutes").AsInt(1, 1440), inactiveDays, leaderAwayDays, Ids(names.Field("adjectives")), Ids(names.Field("nouns")));
+                root.Field("activeMinutes").AsInt(1, 1440), inactiveDays, leaderAwayDays, Ids(names.Field("adjectives")), Ids(names.Field("nouns")),
+                requests.Field("days").AsInt(1, 90), requests.Field("perClan").AsInt(1, 500), requests.Field("perPlayer").AsInt(1, 50));
         }
 
         private static IReadOnlyList<string> Ids(ContentNode node)

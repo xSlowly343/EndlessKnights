@@ -136,6 +136,21 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ClanRequestsAndApplicationsAreRead()
+        {
+            var requests = ClanRequestsView.From(NakamaJson.Parse("{\"clanId\":\"c1\",\"days\":7,\"requests\":[{\"userId\":\"bob\",\"name\":\"Bob\",\"at\":1793188800000,\"until\":1793793600000}]}"));
+            var card = new ClanCard(NakamaJson.Parse("{\"id\":\"c1\",\"byRequest\":true}"));
+            var application = new ClanApplicationRow(NakamaJson.Parse("{\"clanId\":\"c1\",\"adjective\":\"lilac\",\"noun\":\"lanterns\",\"members\":12,\"at\":1,\"until\":1793793600000}"));
+
+            Assert.That(requests.Days, Is.EqualTo(7));
+            Assert.That(requests.Requests[0].Name, Is.EqualTo("Bob"));
+            Assert.That(requests.Requests[0].UntilUnixMs, Is.EqualTo(1793793600000));
+            Assert.That(card.ByRequest, Is.True);
+            Assert.That(application.Noun, Is.EqualTo("lanterns"));
+            Assert.That(application.Members, Is.EqualTo(12));
+        }
+
+        [Test]
         public void TheClanTreeIsReadWithTheTreasuryDonorsAndLog()
         {
             var tree = ClanTreeView.From(NakamaJson.Parse("{\"treasury\":1240,\"taken\":[\"common_hearth\",\"war_drums\"],\"yours\":300,"
