@@ -49,6 +49,11 @@ namespace Game.Core.Tests.Party
             builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"damage 0 1 0.75\", \"effect -123456 0.15 10 1\", \"effect 42 0.25 4\", \"advance 32\", \"damage 1 1 5\", \"peaceful 1 true\", \"guest 76561198000000003 30\"],\n");
             builder.Append("  \"encode\": {\n");
             builder.Append("    \"encounterState\": { \"sequence\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, EncounterStateMessage.Of(encounter, 5)))).Append("\" },\n");
+            var busy = EncounterStateMessage.Of(encounter, 6);
+            busy.SetRecent(1, 0.25f);
+            busy.SetHits(0, 7);
+            busy.SetHits(2, 300);
+            builder.Append("    \"busyState\": { \"sequence\": 6, \"recent\": [0, 0.25, 0, 0], \"hits\": [7, 0, 300, 0], \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, busy))).Append("\" },\n");
             builder.Append("    \"roster\": { \"version\": 3, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, RosterMessage.Of(encounter, 3)))).Append("\" },\n");
             var killed = new PartyEvent(PartyEventKind.EnemyKilled, 12, 4, PartyEnemyKind.Boss, 0.625, 0.375, 0, 0, 5, 0.25, 6.5);
             builder.Append("    \"enemyKilled\": { \"tick\": 12, \"enemyId\": 4, \"enemyKind\": 1, \"shares\": [0.625, 0.375, 0, 0], \"rewarded\": 5, \"loop\": 0.25, \"saved\": 6.5, \"hex\": \"")
@@ -77,6 +82,8 @@ namespace Game.Core.Tests.Party
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, relayed))).Append("\" },\n");
             builder.Append("    \"reactionRelay\": { \"slot\": 1, \"reaction\": 4, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 0, Reaction = 4 })))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 1, Reaction = 4 }))).Append("\" },\n");
+            builder.Append("    \"allyResource\": { \"slot\": 3, \"amount\": 20, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyResourceMessage { Amount = 20 })))
+                .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyResourceMessage { Slot = 3, Amount = 20 }))).Append("\" },\n");
             builder.Append("    \"focusDropped\": { \"from\": 255, \"to\": 255, \"focus\": 1.75, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, FocusRelayMessage.Dropped(1.75)))).Append("\" },\n");
             builder.Append("    \"focusRelay\": { \"from\": 2, \"to\": 0, \"focus\": 0.875, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new FocusRelayMessage { From = 2, To = 0, Focus = 0.875f }))).Append("\" }\n");

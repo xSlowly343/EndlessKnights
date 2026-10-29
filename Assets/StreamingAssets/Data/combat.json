@@ -14,6 +14,7 @@
   },
   "resources": {
     "max": 100,
+    "allyHitStatSeconds": 2,
     "default": { "perKey": 1, "mousePxPerPoint": 1500 },
     "classes": {
       "viking": { "perKey": 2, "decay": { "perSecond": 10, "afterKeylessSeconds": 3, "mouseHolds": true } },
@@ -25,8 +26,8 @@
       "gravedigger": { "perKey": 0.1, "perKill": 5 },
       "ronin": { "perKey": 0 },
       "amazon": { "perKey": 0, "mousePxPerPoint": 160, "perSecond": 1 },
-      "bannerbearer": { "perKey": 0.3333 },
-      "oracle": { "perKey": 0, "mousePxPerPoint": 600, "reading": { "perSecond": 1, "afterKeylessSeconds": 5 } },
+      "bannerbearer": { "perKey": 0.3333, "perAllyHit": 0.1 },
+      "oracle": { "perKey": 0, "mousePxPerPoint": 600, "perAllyHit": 0.1, "reading": { "perSecond": 1, "afterKeylessSeconds": 5 } },
       "nomad": { "perKey": 0.5, "mousePxPerPoint": 500, "perClick": 1 },
       "stormweaver": { "perKey": 0.2, "mousePxPerPoint": 400, "overload": { "multiplier": 5 } },
       "moonshiner": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } }

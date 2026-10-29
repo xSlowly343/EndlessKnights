@@ -25,9 +25,11 @@ namespace Game.Core.Party
         private readonly long[] _lastReactionTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRelayTick = new long[PartyRules.MaxSlots];
+        private readonly long[] _lastResourceTick = new long[PartyRules.MaxSlots];
         private readonly ulong[] _invitedGuests = new ulong[PartyRules.MaxSlots];
         private readonly double[] _invitedSeconds = new double[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
+        private readonly int[] _recentHits = new int[PartyRules.MaxSlots];
         private readonly RiftRules? _rift;
         private PartyRules _rules;
         private uint _stateSequence;
@@ -142,6 +144,9 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     React(slot, reaction);
                     break;
+                case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
+                    ShareResource(slot, resource.Amount);
+                    break;
                 case PartyMessageKind.FocusRelay when PartyCodec.TryDecode(_in, length, out FocusRelayMessage relay):
                     Relay(slot, relay.Focus);
                     break;
@@ -169,6 +174,7 @@ namespace Game.Core.Party
             _lastReactionTick[slot] = PartyEncounter.Never;
             _lastRepeatTick[slot] = PartyEncounter.Never;
             _lastRelayTick[slot] = PartyEncounter.Never;
+            _lastResourceTick[slot] = PartyEncounter.Never;
             _rosterChanged = true;
             _ticksToState = 0;
             return slot;
@@ -189,6 +195,15 @@ namespace Game.Core.Party
             AcceptedShares += applied;
             RepeatedShares += applied;
             _recentShares[slot] += applied;
+        }
+
+        private void ShareResource(int slot, double amount)
+        {
+            var buffs = _rules.Buffs;
+            if (!(amount > 0) || double.IsInfinity(amount) || _encounter.Tick - _lastResourceTick[slot] < Ticks(buffs.AllyResourceCooldownSeconds))
+                return;
+            _lastResourceTick[slot] = _encounter.Tick;
+            BroadcastExcept(slot, PartyCodec.Encode(_out, new PartyResourceMessage { Slot = (byte)slot, Amount = (float)System.Math.Min(buffs.AllyResourceMax, amount) }));
         }
 
         private void Relay(int slot, double dropped)
@@ -260,7 +275,10 @@ namespace Game.Core.Party
                 Flag(slot);
             _hitAllowance[slot] = System.Math.Max(0, _hitAllowance[slot] - System.Math.Max(0, batch.Hits));
             if (batch.Hits > 0)
+            {
                 _encounter.ReportInput(slot);
+                _recentHits[slot] += batch.Hits;
+            }
             if (!(delta > 0))
                 return;
             var accepted = CappedDamage(slot, batch.EnemyId, delta);
@@ -369,7 +387,9 @@ namespace Game.Core.Party
                 for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 {
                     state.SetRecent(slot, (float)_recentShares[slot]);
+                    state.SetHits(slot, _recentHits[slot]);
                     _recentShares[slot] = 0;
+                    _recentHits[slot] = 0;
                 }
                 Broadcast(PartyCodec.Encode(_out, state));
             }

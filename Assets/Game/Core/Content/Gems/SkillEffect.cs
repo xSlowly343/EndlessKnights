@@ -111,6 +111,7 @@ namespace Game.Core.Content.Gems
         public bool Reserves => Reserve > 0;
         public double IdleOffSeconds { get; set; }
         public int SummonEveryKeys { get; set; }
+        public double AllyResource { get; set; }
     }
 
     public sealed class StoreHitsEffect : SkillEffect
@@ -527,6 +528,7 @@ namespace Game.Core.Content.Gems
         public double BossTimerSeconds { get; set; }
         public StacksEffect? Stacks { get; set; }
         public double Multiplier { get; }
+        public double PerAlly { get; set; }
         public int QueueTargets { get; }
     }
 

@@ -275,6 +275,10 @@ namespace Game.Core.Party
                     if (InParty && reaction.Slot < PartyRules.MaxSlots && reaction.Slot != _ownSlot && _rules.Reactions.Knows(reaction.Reaction))
                         ShowReaction(reaction.Slot, reaction.Reaction);
                     break;
+                case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
+                    if (InParty && resource.Slot != _ownSlot)
+                        _loop.Resource.GiftFromAlly(System.Math.Min(resource.Amount, _rules.Buffs.AllyResourceMax));
+                    break;
                 case PartyMessageKind.FocusRelay when PartyCodec.TryDecode(_in, length, out FocusRelayMessage relay):
                     if (InParty)
                         OnRelay(relay);
@@ -364,11 +368,24 @@ namespace Game.Core.Party
             _state = state;
             _stateArrivalTick = _tick;
             _sharesSinceState = 0;
+            if (InParty)
+                _loop.Resource.NoteAllyHits(AllyHits(state));
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 if (slot != _ownSlot && InParty)
                     _allyShares[slot] = System.Math.Min(_allyShares[slot] + state.Recent(slot), MaxAllyShares);
             }
+        }
+
+        private int AllyHits(in EncounterStateMessage state)
+        {
+            var hits = 0;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (slot != _ownSlot)
+                    hits += state.Hits(slot);
+            }
+            return hits;
         }
 
         private void AbandonLocalEnemy()
@@ -480,6 +497,7 @@ namespace Game.Core.Party
 
         private void Unlink()
         {
+            _loop.State.PartyAllies = 0;
             _loop.Stages.Unlink();
             _loop.Skills.ShareEnemy(false);
             _loop.PartyBuffs.ClearAllies();
@@ -551,6 +569,7 @@ namespace Game.Core.Party
         {
             var synergy = _loop.Synergy;
             var rules = synergy.Rules;
+            var allies = 0;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 var present = slot != _ownSlot && Roster.Player(slot) != 0 && Roster.Presence(slot) != PartyPresence.Offline;
@@ -573,7 +592,9 @@ namespace Game.Core.Party
                         marks |= rules.MaskOf(gem);
                 }
                 synergy.SetAlly(slot, true, (HeroClass)Roster.HeroClass(slot), marks);
+                allies++;
             }
+            _loop.State.PartyAllies = allies;
         }
 
         private void WatchCasts()
@@ -601,6 +622,8 @@ namespace Game.Core.Party
                     }));
                 else if (gameEvent.Kind == GameEventKind.AuraChanged && effect is AuraEffect aura && aura.Party)
                     _offerNow = true;
+                if (gameEvent.Kind == GameEventKind.SkillCast && effect is AuraEffect { AllyResource: > 0 } gift)
+                    SendToHost(PartyCodec.Encode(_out, new PartyResourceMessage { Amount = (float)gift.AllyResource }));
             }
         }
 

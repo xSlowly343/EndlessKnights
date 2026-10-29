@@ -35,6 +35,7 @@
   "buffs": {
     "selfShare": 1.0,
     "offerSeconds": 1.0,
+    "allyResource": { "max": 50, "cooldownSeconds": 5 },
     "stats": [
       { "from": "partyDamage", "to": "damage", "kind": "increased" },
       { "from": "partyGold", "to": "gold", "kind": "increased" },

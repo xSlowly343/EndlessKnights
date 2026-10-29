@@ -36,6 +36,8 @@ test("encounter state and roster encode like the core", () => {
   const { encounter, numbers } = scriptedEncounter();
   assert.strictEqual(hex(party.partyEncodeEncounterState(encounter, vectors.encode.encounterState.sequence)), vectors.encode.encounterState.hex);
   assert.strictEqual(hex(party.partyEncodeRoster(encounter, vectors.encode.roster.version, numbers)), vectors.encode.roster.hex);
+  const busy = vectors.encode.busyState;
+  assert.strictEqual(hex(party.partyEncodeEncounterState(encounter, busy.sequence, busy.recent, busy.hits)), busy.hex, "recent shares and hits, hits above 255 are cut");
 });
 
 test("kill and moment encode like the core", () => {
@@ -77,6 +79,14 @@ test("a dropped focus decodes and a relay encodes like the core", () => {
   assert.strictEqual(hex(party.partyEncodeFocusRelay(focusRelay.from, focusRelay.to, focusRelay.focus)), focusRelay.hex);
   assert.strictEqual(party.partyKindOf(bytes(focusRelay.hex)), 12);
   assert.strictEqual(party.partyDecodeFocusRelay(bytes(focusRelay.hex.slice(0, -2))), null);
+});
+
+test("resource for allies is relayed with the sender slot and capped", () => {
+  const resource = vectors.decode.allyResource;
+  assert.strictEqual(hex(party.partyRelayResource(bytes(resource.hex), resource.slot, 1000)), resource.relayedHex);
+  const capped = party.partyRelayResource(bytes(resource.hex), resource.slot, 5);
+  assert.strictEqual(new DataView(capped).getFloat32(2, true), 5);
+  assert.strictEqual(party.partyRelayResource(bytes(resource.hex.slice(0, -2)), resource.slot, 1000), null);
 });
 
 test("offers are relayed with the sender slot", () => {

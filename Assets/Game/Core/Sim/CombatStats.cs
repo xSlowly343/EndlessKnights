@@ -160,6 +160,7 @@ namespace Game.Core.Sim
         public static readonly StatId KeyCastLeftEvery = new StatId("keyCastLeftEvery");
         public static readonly StatId ResourcePerThousandPx = new StatId("resourcePerThousandPx");
         public static readonly StatId ResourcePerIdleSecond = new StatId("resourcePerIdleSecond");
+        public static readonly StatId OmenPerAllyHit = new StatId("omenPerAllyHit");
         public static readonly StatId DamageVsNormal = new StatId("damageVsNormal");
         public static readonly StatId WeaponInnateEffect = new StatId("weaponInnateEffect");
         public static readonly StatId LowestGemExperience = new StatId("lowestGemExperience");

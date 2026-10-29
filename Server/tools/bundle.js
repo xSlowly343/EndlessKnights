@@ -50,6 +50,8 @@ const rules = {
   relayShare: party.relay.share,
   relayMaxBonus: party.relay.maxBonus,
   relayCooldownSeconds: party.relay.cooldownSeconds,
+  allyResourceMax: party.buffs.allyResource.max,
+  allyResourceCooldownSeconds: party.buffs.allyResource.cooldownSeconds,
   barsPerSecond: party.caps.barsPerSecond,
   burstBars: party.caps.burstBars,
   hitBurstSeconds: party.caps.hitBurstSeconds,

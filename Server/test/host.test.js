@@ -89,16 +89,19 @@ test("the state tells every member how much each slot hit since the last state",
   }
   assert.ok(state, "a state goes out");
   const data = new DataView(state.data);
-  const recent = (slot) => data.getFloat32(state.data.byteLength - 31 + slot * 4, true);
+  const recent = (slot) => data.getFloat32(state.data.byteLength - 35 + slot * 4, true);
+  const hits = (slot) => data.getUint8(state.data.byteLength - 4 + slot);
   assert.ok(Math.abs(recent(1) - 0.2) < 1e-6, "slot 1 hit 0.2 of the bar");
   assert.strictEqual(recent(0), 0);
+  assert.strictEqual(hits(1), 1, "slot 1 landed one hit");
+  assert.strictEqual(hits(0), 0);
   host.outbox.length = 0;
   let next = null;
   for (let i = 0; i < 10 && !next; i++) {
     host.tick();
     next = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5) || null;
   }
-  assert.strictEqual(new DataView(next.data).getFloat32(next.data.byteLength - 27, true), 0, "the sum starts again after each state");
+  assert.strictEqual(new DataView(next.data).getFloat32(next.data.byteLength - 31, true), 0, "the sum starts again after each state");
 });
 
 test("reactions skip the sender and wait for the cooldown", () => {
@@ -226,4 +229,37 @@ test("a dropped focus goes to the member who typed last, once per cooldown", () 
   host.receive("user-1", dropped(NaN));
   assert.strictEqual(relays(host).length, 0);
   assert.strictEqual(host.relays, 2);
+});
+
+test("resource for allies goes to the others, capped and once per cooldown", () => {
+  const rules = party.PartyServerRules;
+  const host = new party.PartyHost(rules, "5");
+  for (let i = 0; i < 3; i++)
+    host.join("user-" + i, String(100 + i));
+  host.tick();
+  host.outbox.length = 0;
+  const gift = (amount) => {
+    const view = new DataView(new ArrayBuffer(6));
+    view.setUint8(0, 13);
+    view.setFloat32(2, amount, true);
+    return view.buffer;
+  };
+  const sent = () => {
+    const out = host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 13)
+      .map((packet) => ({ slot: new DataView(packet.data).getUint8(1), amount: new DataView(packet.data).getFloat32(2, true), to: JSON.parse(JSON.stringify(packet.to)) }));
+    host.outbox.length = 0;
+    return out;
+  };
+  host.receive("user-1", gift(500));
+  const first = sent();
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(first)), [{ slot: 1, amount: rules.allyResourceMax, to: [0, 2] }]);
+  host.receive("user-1", gift(20));
+  assert.strictEqual(sent().length, 0, "the sender waits for the cooldown");
+  for (let i = 0; i < rules.allyResourceCooldownSeconds * 10; i++)
+    host.tick();
+  host.outbox.length = 0;
+  host.receive("user-1", gift(-3));
+  assert.strictEqual(sent().length, 0);
+  host.receive("user-1", gift(20));
+  assert.strictEqual(sent()[0].amount, 20);
 });

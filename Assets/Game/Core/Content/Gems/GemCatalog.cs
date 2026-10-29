@@ -310,7 +310,8 @@ namespace Game.Core.Content.Gems
                         node.HasField("keylessStrike") ? node.Field("keylessStrike").Field("multiplier").AsNumber(0, 1e6) : 0)
                     {
                         IdleOffSeconds = Number(node, "idleOffSeconds", 3600),
-                        SummonEveryKeys = node.HasField("summonEveryKeys") ? node.Field("summonEveryKeys").AsInt(1, 100000) : 0
+                        SummonEveryKeys = node.HasField("summonEveryKeys") ? node.Field("summonEveryKeys").AsInt(1, 100000) : 0,
+                        AllyResource = Number(node, "allyResource", 1000)
                     };
                 case "keyRepeat":
                     return new KeyRepeatEffect(node.Field("every").AsInt(1, 10000), node.Field("multiplier").AsNumber(0, 1000))
@@ -454,7 +455,8 @@ namespace Game.Core.Content.Gems
                         node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0)
                     {
                         BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
-                        Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null
+                        Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null,
+                        PerAlly = Number(node, "perAlly", 1000)
                     };
                 case "extendFamily":
                     return new ExtendFamilyEffect(node.Field("family").AsString(), node.Field("seconds").AsNumber(0.1, 3600));

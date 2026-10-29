@@ -179,6 +179,76 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void LightThroughTheLensGrowsWithEveryAlly()
+        {
+            var alone = SkillTestHero.Of(HeroClass.Oracle, "light_through_the_lens");
+            var withTwo = SkillTestHero.Of(HeroClass.Oracle, "light_through_the_lens");
+            withTwo.State.PartyAllies = 2;
+            Assert.That(alone.Cast(0), Is.EqualTo(CastResult.Cast));
+            Assert.That(withTwo.Cast(0), Is.EqualTo(CastResult.Cast));
+
+            alone.Ticks(10);
+            withTwo.Ticks(10);
+
+            Assert.That(withTwo.DamageFrom(DamageSource.Skill), Is.EqualTo(3 * alone.DamageFrom(DamageSource.Skill)).Within(1e-6 * alone.DamageFrom(DamageSource.Skill)));
+        }
+
+        [Test]
+        public void OmensAndResolveGrowFromAllyHits()
+        {
+            foreach (var heroClass in new[] { HeroClass.Oracle, HeroClass.Bannerbearer })
+            {
+                var hero = SkillTestHero.Of(heroClass);
+                hero.State.Resource = 0;
+
+                hero.Loop.Resource.NoteAllyHits(25);
+                hero.Ticks(1);
+
+                Assert.That(hero.State.Resource, Is.EqualTo(2.5).Within(1e-9), heroClass + ": +1 for every 10 ally hits");
+            }
+            var viking = SkillTestHero.Of(HeroClass.Viking);
+            viking.State.Resource = 0;
+            viking.Loop.Resource.NoteAllyHits(25);
+            viking.Ticks(1);
+            Assert.That(viking.State.Resource, Is.LessThan(1e-9), "other classes do not count ally hits");
+        }
+
+        [Test]
+        public void TheSeersOrbAddsAnOmenForAllyHitsOnceInTwoSeconds()
+        {
+            var hero = SkillTestHero.Of(HeroClass.Oracle);
+            hero.Loop.Hero.Add(new Modifier(CombatStats.OmenPerAllyHit, ModifierKind.Flat, 1));
+            hero.State.Resource = 0;
+
+            hero.Loop.Resource.NoteAllyHits(1);
+            hero.Loop.Resource.NoteAllyHits(1);
+            hero.Ticks(1);
+            Assert.That(hero.State.Resource, Is.EqualTo(1.2).Within(1e-9), "one omen from the orb and 0.2 from two hits");
+
+            hero.Ticks(2 * GameLoop.TicksPerSecond);
+            hero.Loop.Resource.NoteAllyHits(1);
+            hero.Ticks(1);
+            Assert.That(hero.State.Resource, Is.EqualTo(2.3).Within(1e-9));
+        }
+
+        [Test]
+        public void AllyResourceFillsTheBarAndCoolsThePressure()
+        {
+            var oracle = SkillTestHero.Of(HeroClass.Oracle);
+            var moonshiner = SkillTestHero.Of(HeroClass.Moonshiner);
+            oracle.State.Resource = 10;
+            moonshiner.State.Resource = 50;
+
+            oracle.Loop.Resource.GiftFromAlly(20);
+            moonshiner.Loop.Resource.GiftFromAlly(20);
+            oracle.Ticks(1);
+
+            Assert.That(oracle.State.Resource, Is.EqualTo(30).Within(1e-9));
+            Assert.That(moonshiner.State.Resource, Is.EqualTo(30).Within(1e-9), "for the inverse resource a gift lowers the pressure");
+            Assert.That(((AuraEffect)TestWorld.Data.Gems["good_forecast"].Skill!.Effect).AllyResource, Is.EqualTo(20));
+        }
+
+        [Test]
         public void LightThroughTheLensHitsTheNextEnemyOnlyForTheOracle()
         {
             var oracle = SkillTestHero.Of(HeroClass.Oracle, "light_through_the_lens");

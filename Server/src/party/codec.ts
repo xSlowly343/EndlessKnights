@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13
 }
 
 class PartyWriter {
@@ -115,7 +115,7 @@ function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
         return PartyMessageKind.None;
     const kind = new DataView(data).getUint8(0);
-    return kind <= PartyMessageKind.FocusRelay ? kind : PartyMessageKind.None;
+    return kind <= PartyMessageKind.PartyResource ? kind : PartyMessageKind.None;
 }
 
 function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
@@ -176,6 +176,18 @@ function partyEncodeFocusRelay(from: number, to: number, focus: number): ArrayBu
     return w.bytes();
 }
 
+function partyRelayResource(data: ArrayBuffer, slot: number, max: number): ArrayBuffer | null {
+    const r = partyOpen(data, PartyMessageKind.PartyResource);
+    r.byte();
+    const amount = r.float();
+    if (!r.complete || !(amount > 0) || !isFinite(amount))
+        return null;
+    const w = partyStart(PartyMessageKind.PartyResource);
+    w.byte(slot);
+    w.float(Math.min(max, amount));
+    return w.bytes();
+}
+
 function partyRelayOffer(data: ArrayBuffer, slot: number): ArrayBuffer | null {
     if (partyKindOf(data) !== PartyMessageKind.PartyOffer || data.byteLength < 2)
         return null;
@@ -201,7 +213,7 @@ function partyStart(kind: PartyMessageKind): PartyWriter {
     return writer;
 }
 
-function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, recent?: number[]): ArrayBuffer {
+function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, recent?: number[], hits?: number[]): ArrayBuffer {
     const w = partyStart(PartyMessageKind.EncounterState);
     w.uint(sequence);
     w.long(encounter.tick);
@@ -236,6 +248,8 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
     w.byte(encounter.pendingWorld);
     w.byte(Math.min(255, encounter.switchTicksLeft));
     w.long(encounter.riftId);
+    for (let slot = 0; slot < PartyMaxSlots; slot++)
+        w.byte(Math.min(255, Math.max(0, hits ? hits[slot] || 0 : 0)));
     return w.bytes();
 }
 

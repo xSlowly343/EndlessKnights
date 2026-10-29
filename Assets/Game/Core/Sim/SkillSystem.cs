@@ -1450,10 +1450,11 @@ namespace Game.Core.Sim
             if (slot.Progress < 1 - 1e-9)
                 return;
             slot.Progress -= 1;
+            var multiplier = pulse.Multiplier + pulse.PerAlly * _state.PartyAllies;
             var queueTargets = System.Math.Min(GameState.QueueDepth, pulse.QueueTargets + (IsNative(slot) ? slot.Def.Native.QueueTargets : 0));
             if (queueTargets > 0)
-                QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, pulse.Multiplier * slot.CastPower, slot.Skill.Tags), queueTargets);
-            SkillHit(slot, pulse.Multiplier);
+                QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * slot.CastPower, slot.Skill.Tags), queueTargets);
+            SkillHit(slot, multiplier);
             if (pulse.Stacks != null)
                 AddStacks(slot, pulse.Stacks, 1);
             if (pulse.BossTimerSeconds > 0 && _state.FightingBoss)

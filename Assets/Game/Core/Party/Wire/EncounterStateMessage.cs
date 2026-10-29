@@ -27,6 +27,31 @@ namespace Game.Core.Party.Wire
         public byte PendingWorld;
         public byte SwitchTicksLeft;
         public long RiftId;
+        public byte Hits0;
+        public byte Hits1;
+        public byte Hits2;
+        public byte Hits3;
+
+        public int Hits(int slot) => slot switch
+        {
+            0 => Hits0,
+            1 => Hits1,
+            2 => Hits2,
+            3 => Hits3,
+            _ => 0
+        };
+
+        public void SetHits(int slot, int hits)
+        {
+            var clamped = (byte)System.Math.Min(byte.MaxValue, System.Math.Max(0, hits));
+            switch (slot)
+            {
+                case 0: Hits0 = clamped; break;
+                case 1: Hits1 = clamped; break;
+                case 2: Hits2 = clamped; break;
+                case 3: Hits3 = clamped; break;
+            }
+        }
 
         public bool Switching => PendingWorld != PartyEncounter.NoWorld;
 
@@ -93,6 +118,8 @@ namespace Game.Core.Party.Wire
             writer.Byte(PendingWorld);
             writer.Byte(SwitchTicksLeft);
             writer.Long(RiftId);
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                writer.Byte((byte)Hits(slot));
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -107,6 +134,8 @@ namespace Game.Core.Party.Wire
             message.PendingWorld = reader.Byte();
             message.SwitchTicksLeft = reader.Byte();
             message.RiftId = reader.Long();
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                message.SetHits(slot, reader.Byte());
             return message;
         }
 

@@ -15,6 +15,8 @@ interface PartyServerConfig extends PartyEncounterRules {
     relayShare: number;
     relayMaxBonus: number;
     relayCooldownSeconds: number;
+    allyResourceMax: number;
+    allyResourceCooldownSeconds: number;
 }
 
 const PartyCutTolerance = 1e-9;
@@ -51,7 +53,9 @@ class PartyHost {
     private readonly lastReactionTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastRepeatTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastRelayTick = [PartyNever, PartyNever, PartyNever, PartyNever];
+    private readonly lastResourceTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly recentShares = [0, 0, 0, 0];
+    private readonly recentHits = [0, 0, 0, 0];
     private stateSequence = 0;
     private rosterVersion = 0;
     private rosterChanged = false;
@@ -155,6 +159,14 @@ class PartyHost {
                 const request = partyDecodeWorldRequest(data);
                 if (request)
                     this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel });
+                break;
+            }
+            case PartyMessageKind.PartyResource: {
+                const relayed = partyRelayResource(data, slot, this.config.allyResourceMax);
+                if (relayed && this.encounter.tick - this.lastResourceTick[slot] >= Math.max(1, partyTicks(this.config.allyResourceCooldownSeconds))) {
+                    this.lastResourceTick[slot] = this.encounter.tick;
+                    this.broadcast(relayed, slot);
+                }
                 break;
             }
             case PartyMessageKind.FocusRelay: {
@@ -338,6 +350,7 @@ class PartyHost {
         this.lastReactionTick[slot] = PartyNever;
         this.lastRepeatTick[slot] = PartyNever;
         this.lastRelayTick[slot] = PartyNever;
+        this.lastResourceTick[slot] = PartyNever;
         this.ticksToState = 0;
     }
 
@@ -362,8 +375,10 @@ class PartyHost {
         if (batch.hits > this.hitAllowance[slot])
             this.flag(slot);
         this.hitAllowance[slot] = Math.max(0, this.hitAllowance[slot] - Math.max(0, batch.hits));
-        if (batch.hits > 0)
+        if (batch.hits > 0) {
             this.encounter.reportInput(slot);
+            this.recentHits[slot] += batch.hits;
+        }
         if (!(delta > 0))
             return;
         const accepted = this.cappedDamage(slot, batch.enemyId, delta);
@@ -452,9 +467,11 @@ class PartyHost {
         }
         if (--this.ticksToState <= 0 && this.encounter.started) {
             this.ticksToState = Math.max(1, partyTicks(this.config.stateBroadcastSeconds));
-            this.broadcast(partyEncodeEncounterState(this.encounter, ++this.stateSequence, this.recentShares), PartyNoSlot);
-            for (let slot = 0; slot < PartyMaxSlots; slot++)
+            this.broadcast(partyEncodeEncounterState(this.encounter, ++this.stateSequence, this.recentShares, this.recentHits), PartyNoSlot);
+            for (let slot = 0; slot < PartyMaxSlots; slot++) {
                 this.recentShares[slot] = 0;
+                this.recentHits[slot] = 0;
+            }
         }
     }
 

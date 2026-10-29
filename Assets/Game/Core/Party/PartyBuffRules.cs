@@ -9,16 +9,20 @@ namespace Game.Core.Party
         public const int MaxStats = 6;
         public const int MaxAuras = 4;
 
-        private PartyBuffRules(double selfShare, double offerSeconds, IReadOnlyList<PartyStatLink> stats)
+        private PartyBuffRules(double selfShare, double offerSeconds, IReadOnlyList<PartyStatLink> stats, double allyResourceMax, double allyResourceCooldownSeconds)
         {
             SelfShare = selfShare;
             OfferSeconds = offerSeconds;
             Stats = stats;
+            AllyResourceMax = allyResourceMax;
+            AllyResourceCooldownSeconds = allyResourceCooldownSeconds;
         }
 
         public double SelfShare { get; }
         public double OfferSeconds { get; }
         public IReadOnlyList<PartyStatLink> Stats { get; }
+        public double AllyResourceMax { get; }
+        public double AllyResourceCooldownSeconds { get; }
 
         public static PartyBuffRules Read(ContentNode node)
         {
@@ -32,7 +36,9 @@ namespace Game.Core.Party
                     new StatId(item.Field("to").AsString()),
                     ModifierReader.ReadKind(item.Field("kind"))));
             }
-            return new PartyBuffRules(node.Field("selfShare").AsNumber(0, 1), node.Field("offerSeconds").AsNumber(0.1, 60), stats);
+            var allyResource = node.Field("allyResource");
+            return new PartyBuffRules(node.Field("selfShare").AsNumber(0, 1), node.Field("offerSeconds").AsNumber(0.1, 60), stats,
+                allyResource.Field("max").AsNumber(0, 1000), allyResource.Field("cooldownSeconds").AsNumber(0, 600));
         }
     }
 }

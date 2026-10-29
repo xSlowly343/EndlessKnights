@@ -137,6 +137,8 @@ namespace Game.Core.Sim
 
         public double WoundedSpawnResource { get; set; }
         public double PendingResource { get; set; }
+        public int AllyHitStatTicks { get; set; }
+        public int PartyAllies { get; set; }
         public double ReservedResource { get; set; }
         public int DecayHoldTicks { get; set; }
         public double BossTimerCarry { get; set; }

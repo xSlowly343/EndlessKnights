@@ -3996,7 +3996,7 @@
       "cost": {"resource": 70},
       "cooldownSeconds": 30,
       "durationSeconds": 20,
-      "effect": {"type": "aura", "party": true, "modifiers": [{"stat": "comboHold", "kind": "flat", "value": 1}, {"stat": "focusHold", "kind": "flat", "value": 1}]},
+      "effect": {"type": "aura", "party": true, "allyResource": 20, "modifiers": [{"stat": "comboHold", "kind": "flat", "value": 1}, {"stat": "focusHold", "kind": "flat", "value": 1}]},
       "native": {"resourceOnCast": 30}
     },
     {
@@ -4011,7 +4011,7 @@
       "cost": {"resource": 80},
       "cooldownSeconds": 45,
       "durationSeconds": 6,
-      "effect": {"type": "pulse", "everySeconds": 0.25, "multiplier": 1},
+      "effect": {"type": "pulse", "everySeconds": 0.25, "multiplier": 1, "perAlly": 1},
       "native": {"queueTargets": 1}
     },
     {

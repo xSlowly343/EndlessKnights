@@ -422,6 +422,45 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void TheOracleGainsOmensFromAllyHitsAndGivesResourceToAllies()
+        {
+            var rig = new Rig(5);
+            var oracle = SkillTestHero.Of(HeroClass.Oracle, "good_forecast");
+            var oracleClient = new PartyClient(oracle.Loop, rig.Network.Connect(50), HostId, TestWorld.Data.Party);
+            oracleClient.Join();
+            var viking = rig.Players[0];
+            void Step(bool typing)
+            {
+                rig.Network.Advance(100);
+                viking.Tick(typing);
+                oracle.Loop.Tick();
+                oracle.Loop.Events.Clear();
+                rig.Host.Tick();
+            }
+            for (var tick = 0; tick < 20; tick++)
+                Step(true);
+            oracle.State.Resource = 0;
+
+            for (var tick = 0; tick < 50; tick++)
+                Step(true);
+
+            Assert.That(oracleClient.Status, Is.EqualTo(PartyLink.Linked));
+            Assert.That(oracle.State.PartyAllies, Is.EqualTo(1));
+            Assert.That(oracle.State.Resource, Is.InRange(3.5, 5.5), "about one omen for every ten hits of the ally");
+
+            oracle.State.Resource = 100;
+            viking.Loop.State.Resource = 0;
+            oracle.Loop.RequestCast(0);
+            for (var tick = 0; tick < 10; tick++)
+                Step(false);
+
+            Assert.That(oracle.State.Skills[0].Active, Is.True, "Good Forecast is on");
+
+            Assert.That(viking.Loop.State.Resource, Is.EqualTo(20).Within(1e-6), "Good Forecast gives the ally 20 of their resource");
+            Assert.That(viking.Loop.State.PartyAllies, Is.EqualTo(1));
+        }
+
+        [Test]
         public void FocusIsNotPassedWhenNobodyTypes()
         {
             var rig = new Rig(5, 5);
