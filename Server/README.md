@@ -41,7 +41,7 @@ npm test
   | `party_block`, `party_unblock` | `{ userId }` | `{ blocked: [...] }` |
   | `party_report` | `{ userId, reason }` (`search.reportReasons`) | `{ ok: true }` |
   | `rift_board` | `{ riftId }` | `{ riftId, endUnixMs, settled, parties, top: [{ place, title, depth, members, yours }], own: { place, depth, reward } \| null }` (первые `board.shown`) |
-  | `mail_list` | `{}` | `{ letters: [{ id, kind, at, place, of, depth, title, reward: { shards, uncutGems, ingots, friendship }, claimed, claimedAt }], unread }` (невзятые первыми, до 50; `friendship` уже в кошельке — сервер начислил при итоге Разлома, источник `rift_place`) |
+  | `mail_list` | `{}` | `{ letters: [{ id, kind, at, place, of, depth, title, reward: { shards, uncutGems, ingots, friendship }, claimed, claimedAt, gem? }], unread }` (невзятые первыми, до 50; `friendship` уже в кошельке — сервер начислил при итоге Разлома, источник `rift_place`) |
   | `mail_claim` | `{ id }` | `{ letter }`; ошибки `no such letter`, `already claimed` — каждое письмо забирается один раз |
   | `party_chronicle` | `{}` | `{ partyId, banner, titles, stats: { bossesTogether, hoursTogether, fullOrchestra }, feats: [{ id, kind, tracked, levels, level, at, progress }], records: [{ at, kind, name, feat, level }] }` (новые записи первыми) |
 
@@ -79,6 +79,14 @@ npm test
   | `ghost_thanks` | `{ userId, bosses }` (1–100, `userId` — хозяин последнего взятого призрака) | `{ granted }` — сколько Знаков получил хозяин; ошибки `not your ghost`, `bad request` |
 
   Знаки за боссов вместе начисляет матч отряда сам, за место в таблице Разлома — итог Разлома (`rift_place`), за помощь по зову — матч гостю (`help_call`).
+- Подарки гемами (14а.18), правила — `party.json` → `gifts`, список даримых гемов — `gems.json` без `ascendancy`. Ошибки: `bad request`, `this gem cannot be gifted`, `this player does not take gifts from you`, `no gifts left today`, `already gifted this friend today`, `this friend got enough gifts today`, `not enough friendship`, `the gift was not sent, try again`.
+
+  | RPC | Запрос | Ответ |
+  |---|---|---|
+  | `gift_send` | `{ userId, gemId }` | `{ gemId, mentor, left }`; другу — письмо `kind: "gift"` с `gem` и именем дарящего в `title`; Знаки списаны (`gift_sent`) |
+  | `gift_status` | `{}` | `{ left, dailyLimit, perFriendDaily, cost }` |
+
+  Наставник своему ученику дарит без дневных пределов. Счётчики — `gift/today` у игрока (день по Москве).
 - Зов на помощь (13.15), правила — `party.json` → `help`. Ошибки: `bad request`, `not in a party`, `already in your party`, `this player does not take calls from you`, `wait before calling again`, `no boss to help with`, `no calls from the rift`, `party is full`, `the call is over`.
 
   | RPC | Запрос | Ответ |

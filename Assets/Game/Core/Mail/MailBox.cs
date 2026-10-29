@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Game.Core.Build;
+using Game.Core.Content.Gems;
 using Game.Core.Sim;
 using Game.Core.Sim.Rift;
 
@@ -39,12 +41,14 @@ namespace Game.Core.Mail
             return null;
         }
 
-        public bool Take(MailLetter claimed, GameState state)
+        public bool Take(MailLetter claimed, GameState state, GemCatalog? gems = null)
         {
             var local = Find(claimed.Id);
             if (local != null && local.Claimed)
                 return false;
             RiftRewards.Apply(state, claimed.Reward);
+            if (claimed.Kind == MailLetter.GiftKind && gems != null && gems.TryGet(claimed.Gem, out var gem))
+                GemGifts.Receive(state, gem);
             if (local == null)
                 return true;
             local.MarkClaimed();

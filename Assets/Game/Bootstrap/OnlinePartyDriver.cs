@@ -180,7 +180,7 @@ namespace Game.Bootstrap
 
         private void ShowMail()
         {
-            _panels.Mail.ShowRows(MailText.Rows(_mailBox.Letters));
+            _panels.Mail.ShowRows(MailText.Rows(_mailBox.Letters, _data.Gems));
             if (_notifications != null)
                 _notifications.Marks.UnreadMail = _mailBox.Unread;
         }
@@ -215,10 +215,10 @@ namespace Game.Bootstrap
 
         private void TakeLetter(MailLetter letter)
         {
-            if (_mailBox.Take(letter, _loop.State))
+            if (_mailBox.Take(letter, _loop.State, _data.Gems))
             {
                 GetComponent<SaveDriver>()?.SaveNow();
-                _panels.ShowNotice(MailText.Taken(letter));
+                _panels.ShowNotice(MailText.Taken(letter, _data.Gems));
             }
             ShowMail();
         }

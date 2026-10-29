@@ -90,6 +90,7 @@ namespace Game.Core.Save
                 ("skills", JsonValue.Array(WriteSkills(state))),
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
                 ("gemProgress", WriteGemProgress(state)),
+                ("boundGems", WriteBoundGems(state)),
                 ("tree", WriteTree(state.Tree)),
                 ("ascendancy", WriteAscendancy(state.Ascendancy)),
                 ("presets", Object(
@@ -240,6 +241,8 @@ namespace Game.Core.Save
                 ReadGemProgress(node.Field("gemProgress"), gems, state);
             else
                 state.Drops.Rng = new Rng(rng0 ^ rng1 ^ DropState.SeedSalt);
+            if (node.HasField("boundGems"))
+                ReadBoundGems(node.Field("boundGems"), gems, state);
             return state;
         }
 
@@ -824,6 +827,26 @@ namespace Game.Core.Save
                 map.Add(pair.Key, Object(("level", JsonValue.Of(pair.Value.Level)), ("experience", JsonValue.Of(pair.Value.Experience)),
                     ("rebirths", JsonValue.Of(pair.Value.Rebirths))));
             return JsonValue.Object(map);
+        }
+
+        private static JsonValue WriteBoundGems(GameState state)
+        {
+            var map = new Dictionary<string, JsonValue>(state.BoundGems.Count);
+            foreach (var pair in state.BoundGems)
+            {
+                if (pair.Value > 0)
+                    map.Add(pair.Key, JsonValue.Of(pair.Value));
+            }
+            return JsonValue.Object(map);
+        }
+
+        private static void ReadBoundGems(ContentNode node, GemCatalog gems, GameState state)
+        {
+            foreach (var id in node.FieldNames())
+            {
+                if (gems.TryGet(id, out _))
+                    state.BoundGems[id] = node.Field(id).AsInt(0, 100000);
+            }
         }
 
         private static void ReadGemProgress(ContentNode node, GemCatalog gems, GameState state)

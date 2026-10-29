@@ -20,6 +20,7 @@ namespace Game.Core.Tests.Party
   ""contribution"": { ""minShare"": 0.1, ""activeInputSeconds"": 30, ""restBankMinutes"": 60, ""idlePortionShare"": 1.5, ""typingReserveShare"": 0.5 },
   ""caps"": { ""barsPerSecond"": 3, ""burstBars"": 1, ""hitBurstSeconds"": 2, ""flagsBeforeReport"": 20 },
   ""timer"": { ""minBossRate"": 0.25, ""repeatMaxSeconds"": 7, ""repeatCooldownSeconds"": 20 },
+  ""gifts"": { ""dailyLimit"": 3, ""perFriendDaily"": 1, ""receiveDailyLimit"": 5, ""friendshipCost"": 5 },
   ""help"": { ""seconds"": 30, ""answerSeconds"": 60, ""callCooldownSeconds"": 120, ""defaultAccept"": ""friends"" },
   ""relay"": { ""share"": 0.5, ""maxBonus"": 1, ""seconds"": 30, ""senderSeconds"": 10, ""recipientSeconds"": 2, ""cooldownSeconds"": 10 },
   ""reactions"": { ""ids"": [""hello"", ""good_fight"", ""lunch""], ""cooldownSeconds"": 3, ""showSeconds"": 4 },
@@ -132,6 +133,19 @@ namespace Game.Core.Tests.Party
             Assert.That(rules.Timer.MinBossRate, Is.EqualTo(0.25));
             Assert.That(rules.Timer.RepeatMaxSeconds, Is.EqualTo(7));
             Assert.That(rules.Timer.RepeatCooldownSeconds, Is.EqualTo(20));
+        }
+
+        [Test]
+        public void GiftRulesAreRead()
+        {
+            var gifts = PartyRules.Load(Valid).Gifts;
+
+            Assert.That(gifts.DailyLimit, Is.EqualTo(3));
+            Assert.That(gifts.PerFriendDaily, Is.EqualTo(1));
+            Assert.That(gifts.ReceiveDailyLimit, Is.EqualTo(5));
+            Assert.That(gifts.FriendshipCost, Is.EqualTo(5));
+            var error = Assert.Throws<ContentException>(() => PartyRules.Load(Valid.Replace(@"""perFriendDaily"": 1", @"""perFriendDaily"": 4")));
+            Assert.That(error!.Message, Does.Contain("perFriendDaily"));
         }
 
         [Test]

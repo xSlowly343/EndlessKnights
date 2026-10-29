@@ -6,8 +6,9 @@ namespace Game.Core.Mail
     {
         public const string RiftKind = "rift";
         public const string MentorKind = "mentor";
+        public const string GiftKind = "gift";
 
-        public MailLetter(string id, string kind, long atUnixMs, int place, int of, long depth, string title, RiftReward reward, bool claimed)
+        public MailLetter(string id, string kind, long atUnixMs, int place, int of, long depth, string title, RiftReward reward, bool claimed, string gem = "")
         {
             Id = id;
             Kind = kind;
@@ -18,6 +19,7 @@ namespace Game.Core.Mail
             Title = title;
             Reward = reward;
             Claimed = claimed;
+            Gem = gem;
         }
 
         public string Id { get; }
@@ -28,6 +30,7 @@ namespace Game.Core.Mail
         public long Depth { get; }
         public string Title { get; }
         public RiftReward Reward { get; }
+        public string Gem { get; }
         public bool Claimed { get; private set; }
 
         public void MarkClaimed() => Claimed = true;

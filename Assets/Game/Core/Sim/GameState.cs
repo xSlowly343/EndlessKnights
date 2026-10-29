@@ -113,6 +113,7 @@ namespace Game.Core.Sim
             set => _otherPreset = value;
         }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
+        public Dictionary<string, int> BoundGems { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
         public Dictionary<string, GemProgress> GemProgress { get; } = new Dictionary<string, GemProgress>(System.StringComparer.Ordinal);
 
         public GemProgress ProgressOf(GemDef gem)

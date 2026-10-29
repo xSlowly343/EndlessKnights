@@ -16,6 +16,7 @@ interface MailLetter {
     reward: MailReward;
     claimed: boolean;
     claimedAt: number;
+    gem?: string;
 }
 
 const MailCollection = "mail";
