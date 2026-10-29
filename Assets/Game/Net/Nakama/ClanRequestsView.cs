@@ -55,4 +55,31 @@ namespace Game.Net.Nakama
         public int Members { get; }
         public long UntilUnixMs { get; }
     }
+
+    public sealed class ClanChronicleView
+    {
+        private ClanChronicleView(JsonValue json)
+        {
+            ClanId = NakamaJson.Text(json, "clanId");
+            var titles = new List<string>();
+            foreach (var title in NakamaJson.Items(json, "titles"))
+                titles.Add(title.Text);
+            Titles = titles;
+            var feats = new List<PartyFeatView>();
+            foreach (var feat in NakamaJson.Items(json, "feats"))
+                feats.Add(new PartyFeatView(feat));
+            Feats = feats;
+            var records = new List<PartyRecordView>();
+            foreach (var record in NakamaJson.Items(json, "records"))
+                records.Add(new PartyRecordView(record));
+            Records = records;
+        }
+
+        public string ClanId { get; }
+        public IReadOnlyList<string> Titles { get; }
+        public IReadOnlyList<PartyFeatView> Feats { get; }
+        public IReadOnlyList<PartyRecordView> Records { get; }
+
+        public static ClanChronicleView From(JsonValue json) => new ClanChronicleView(json);
+    }
 }

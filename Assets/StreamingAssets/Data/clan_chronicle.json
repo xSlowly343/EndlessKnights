@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "maxRecords": 50,
+  "feats": [
+    { "id": "clan_first_fall", "kind": "raidsKilled", "levels": [1], "title": "devourer_slayers" },
+    { "id": "clan_old_hunters", "kind": "raidsKilled", "levels": [5, 20, 50] },
+    { "id": "clan_many_hands", "kind": "challengesDone", "levels": [10, 50, 200] },
+    { "id": "clan_roots", "kind": "treeNodes", "levels": [1, 4, 8], "title": "deep_roots" },
+    { "id": "clan_treasury", "kind": "sealsDonated", "levels": [1000, 10000, 50000] },
+    { "id": "clan_full_house", "kind": "membersMax", "levels": [10, 20, 30] }
+  ]
+}

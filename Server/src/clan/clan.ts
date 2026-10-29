@@ -91,6 +91,7 @@ function clanHandOver(nk: nkruntime.Nakama, group: nkruntime.Group, meta: ClanMe
 }
 
 function clanDissolve(nk: nkruntime.Nakama, groupId: string, code: string): void {
+    nk.storageDelete([{ collection: ClanChronicleCollection, key: groupId, userId: PartySystemUser }]);
     nk.storageDelete([{ collection: ClanCodes, key: code, userId: PartySystemUser }]);
     nk.groupDelete(groupId);
 }
@@ -200,6 +201,7 @@ function clanCreateFor(nk: nkruntime.Nakama, userId: string, request: { [key: st
     meta.code = clanReserveCode(nk, group.id);
     clanSaveMeta(nk, group, meta);
     clanNoteSeen(nk, userId, group.id, now);
+    clanChronicleEvent(nk, group, "founded", userId, "", { membersMax: 1 });
     return group;
 }
 
@@ -219,6 +221,7 @@ function clanAdd(nk: nkruntime.Nakama, group: nkruntime.Group, userId: string, n
     clanSaveMeta(nk, group, meta);
     clanNoteSeen(nk, userId, group.id, now);
     clanForgetApplications(nk, userId, now);
+    clanChronicleEvent(nk, group, "joined", userId, "", { membersMax: meta.members.length });
     return group;
 }
 
@@ -240,6 +243,7 @@ function clanRemove(nk: nkruntime.Nakama, group: nkruntime.Group, userId: string
     }
     nk.groupUsersKick(group.id, [userId]);
     clanSaveMeta(nk, group, meta);
+    clanChronicleEvent(nk, group, "left", userId, "", {});
 }
 
 function clanOf(nk: nkruntime.Nakama, userId: string, now: number): nkruntime.Group {

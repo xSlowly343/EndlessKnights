@@ -173,6 +173,8 @@ function raidSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, raid: RaidVa
             logger.warn("raid seals were not granted to %s: %s", userId, String(error));
         }
     }
+    if (result.killed)
+        clanChronicleNote(nk, logger, raid.clanId, { raidsKilled: 1 }, { at: nowUnixMs, kind: "raid", name: "", feat: "", level: 0, detail: raid.boss }, result.places);
     logger.info("clan %s: raid of week %d settled, killed %s, %d players", raid.clanId, raid.week, String(result.killed), result.places.length);
 }
 

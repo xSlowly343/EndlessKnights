@@ -73,6 +73,28 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void TheClanChronicleFileLoadsAndEveryFeatReads()
+        {
+            var rules = ClanChronicleRules.Load(TestData.ReadGameDataFile(ClanChronicleRules.FileName));
+            Assert.That(rules.Feats.Count, Is.EqualTo(6));
+            foreach (var language in new[] { "ru", "en" })
+            {
+                Texts.UseLanguage(language);
+                foreach (var feat in rules.Feats)
+                {
+                    Assert.That(Texts.Has("chronicle.feat." + feat.Id), Is.True, feat.Id);
+                    Assert.That(Texts.Has("chronicle.goal." + feat.Kind), Is.True, feat.Kind);
+                    if (feat.Title != null)
+                        Assert.That(Texts.Has("chronicle.title." + feat.Title), Is.True, feat.Title);
+                }
+            }
+            Texts.UseLanguage("ru");
+            Assert.That(PartyChronicleText.Goal("raidsKilled", true, 1, new double[] { 5, 20, 50 }, 3), Is.EqualTo("рейдов, где босс пал: 3 из 20 · ступень 2 из 3"));
+            Assert.That(PartyChronicleText.Record("founded", 0, "Аня", "", 180), Is.EqualTo("01.01 — клан основан, глава Аня"));
+            Assert.Throws<ContentException>(() => ClanChronicleRules.Load(TestData.ReadGameDataFile(ClanChronicleRules.FileName).Replace("\"treeNodes\"", "\"bossesTogether\"")));
+        }
+
+        [Test]
         public void EveryPairOfWordsGivesADifferentName()
         {
             var rules = Real;

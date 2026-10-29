@@ -134,6 +134,8 @@ function challengeChange(nk: nkruntime.Nakama, logger: nkruntime.Logger, group: 
         }
         for (const id of finished)
             challengeReward(nk, logger, daily, id, nowUnixMs);
+        if (finished.length > 0)
+            clanChronicleNote(nk, logger, group.id, { challengesDone: finished.length }, null, clanMetaOf(group).members);
         return daily;
     }
     throw new Error("clan is busy, try again");

@@ -93,6 +93,7 @@ function clanDonateRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkr
             clanTreeLog(tree, { at: now, userId: userId, kind: "donated", amount: amount, node: "" });
             return tree;
         });
+        clanChronicleNote(nk, logger, group.id, { sealsDonated: amount }, null, clanMetaOf(group).members);
         return JSON.stringify(clanTreeView(nk, value, userId));
     } catch (error) {
         walletRefund(nk, userId, ClanTreeCurrency, amount, "clan_donation_back", now);
@@ -123,5 +124,6 @@ function clanTreeBuyRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
         return tree;
     });
     logger.info("clan %s: tree node %s bought by %s", group.id, node.id, userId);
+    clanChronicleEvent(nk, group, "node", userId, node.id, { treeNodes: 1 });
     return JSON.stringify(clanTreeView(nk, value, userId));
 }

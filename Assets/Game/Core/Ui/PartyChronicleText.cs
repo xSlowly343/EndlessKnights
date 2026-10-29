@@ -35,6 +35,9 @@ namespace Game.Core.Ui
                 "joined" => Texts.Format("chronicle.record.joined", day, name),
                 "left" => Texts.Format("chronicle.record.left", day, name),
                 "feat" => Texts.Format("chronicle.record.feat", day, Feat(feat)),
+                "founded" => Texts.Format("chronicle.record.founded", day, name),
+                "raid" => Texts.Format("chronicle.record.raid", day),
+                "node" => Texts.Format("chronicle.record.node", day, name),
                 _ => day
             };
         }

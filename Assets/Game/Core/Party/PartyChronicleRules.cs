@@ -57,7 +57,7 @@ namespace Game.Core.Party
             var feats = new List<PartyFeat>();
             var ids = new HashSet<string>();
             foreach (var item in root.Field("feats").Items())
-                feats.Add(ReadFeat(item, ids));
+                feats.Add(ReadFeat(item, ids, TrackedKinds, LaterKinds));
             var night = root.Field("night");
             var from = night.Field("fromHour").AsInt(0, 23);
             var to = night.Field("toHour").AsInt(1, 24);
@@ -67,7 +67,7 @@ namespace Game.Core.Party
                 night.Field("utcOffsetMinutes").AsInt(-720, 840), from, to, feats);
         }
 
-        private static PartyFeat ReadFeat(ContentNode node, HashSet<string> ids)
+        internal static PartyFeat ReadFeat(ContentNode node, HashSet<string> ids, IReadOnlyList<string> trackedKinds, IReadOnlyList<string> laterKinds)
         {
             var id = node.Field("id").AsString();
             if (id.Length == 0 || !ids.Add(id))
@@ -75,9 +75,9 @@ namespace Game.Core.Party
             var kindNode = node.Field("kind");
             var kind = kindNode.AsString();
             var tracked = !node.HasField("tracked") || node.Field("tracked").AsBool();
-            if (!Contains(TrackedKinds, kind) && !Contains(LaterKinds, kind))
+            if (!Contains(trackedKinds, kind) && !Contains(laterKinds, kind))
                 throw kindNode.Error($"unknown kind {kind}");
-            if (tracked && !Contains(TrackedKinds, kind))
+            if (tracked && !Contains(trackedKinds, kind))
                 throw kindNode.Error($"{kind} is not counted yet, mark the feat \"tracked\": false");
             var levels = new List<double>();
             var levelsNode = node.Field("levels");

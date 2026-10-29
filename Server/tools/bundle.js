@@ -13,6 +13,7 @@ const clanTree = JSON.parse(fs.readFileSync(path.join(data, "clan_tree.json"), "
 const challenges = JSON.parse(fs.readFileSync(path.join(data, "clan_challenges.json"), "utf8"));
 const raid = JSON.parse(fs.readFileSync(path.join(data, "raid.json"), "utf8"));
 const clan = JSON.parse(fs.readFileSync(path.join(data, "clan.json"), "utf8"));
+const clanChronicle = JSON.parse(fs.readFileSync(path.join(data, "clan_chronicle.json"), "utf8"));
 const gems = JSON.parse(fs.readFileSync(path.join(data, "gems.json"), "utf8"));
 const synergy = JSON.parse(fs.readFileSync(path.join(data, "synergy.json"), "utf8"));
 const chronicle = JSON.parse(fs.readFileSync(path.join(data, "party_chronicle.json"), "utf8"));
@@ -156,6 +157,13 @@ const clanRules = {
   languages: party.search.languages
 };
 
+if (clanChronicle.version !== 1)
+  throw new Error("clan_chronicle.json: version " + clanChronicle.version + " is not supported");
+const clanChronicleRules = {
+  maxRecords: clanChronicle.maxRecords,
+  feats: clanChronicle.feats.map((feat) => ({ id: feat.id, kind: feat.kind, levels: feat.levels, title: feat.title || null }))
+};
+
 if (coopCurrency.version !== 1)
   throw new Error("coop_currency.json: version " + coopCurrency.version + " is not supported");
 const giftRules = {
@@ -231,4 +239,4 @@ const mentorRules = {
 const ghostRules = Object.assign({}, party.ghost, { classes: Object.keys(party.search.classRoles).length });
 
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar GiftServerRules = " + JSON.stringify(giftRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar GiftServerRules = " + JSON.stringify(giftRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\n" + code);

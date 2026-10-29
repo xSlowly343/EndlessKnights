@@ -67,6 +67,9 @@ namespace Game.Net.Nakama
         public async Task<ClanTreeView> OpenNodeAsync(string nodeId, CancellationToken cancel = default) =>
             ClanTreeView.From(await Call("clan_tree_buy", ClanTreeView.BuyPayload(nodeId), cancel).ConfigureAwait(false));
 
+        public async Task<ClanChronicleView> ChronicleAsync(CancellationToken cancel = default) =>
+            ClanChronicleView.From(await Call("clan_chronicle", "{}", cancel).ConfigureAwait(false));
+
         public Task ApplyAsync(string clanId, CancellationToken cancel = default) =>
             Call("clan_apply", NakamaJson.Object(("clanId", NakamaJson.Quote(clanId))), cancel);
 
