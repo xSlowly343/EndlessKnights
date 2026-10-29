@@ -471,6 +471,7 @@ namespace Game.Core.Content.Gems
         public double BossTimerSlow { get; }
         public double BossTimerSeconds { get; set; }
         public bool BossTimerOncePerFight { get; set; }
+        public bool WhileAura { get; set; }
         public IReadOnlyList<Modifier> Modifiers { get; set; } = System.Array.Empty<Modifier>();
         public double StrikeMultiplier { get; set; }
         public StatTags Tags { get; set; }
@@ -527,6 +528,8 @@ namespace Game.Core.Content.Gems
         public double EverySeconds { get; }
         public double MouseEverySeconds { get; }
         public double BossTimerSeconds { get; set; }
+        public double BossTimerSlow { get; set; }
+        public IReadOnlyList<Modifier> WhileActive { get; set; } = System.Array.Empty<Modifier>();
         public StacksEffect? Stacks { get; set; }
         public double Multiplier { get; }
         public double PerAlly { get; set; }

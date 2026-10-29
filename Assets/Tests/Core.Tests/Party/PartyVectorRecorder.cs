@@ -41,9 +41,12 @@ namespace Game.Core.Tests.Party
 
         public double Hit(int slot, double share) => Damage(slot, _encounter.EnemyId, share);
 
-        public bool Effect(int id, double damageTaken, double seconds, double timerSlow = 0) =>
-            Record($"\"op\": \"effect\", \"id\": {id}, \"damageTaken\": {Number(damageTaken)}, \"seconds\": {Number(seconds)}, \"timerSlow\": {Number(timerSlow)}",
-                () => _encounter.ApplyEnemyEffect(id, damageTaken, seconds, PartyEncounter.NoSlot, timerSlow));
+        public bool Effect(int id, double damageTaken, double seconds, double timerSlow = 0, int owner = PartyEncounter.NoSlot) =>
+            Record($"\"op\": \"effect\", \"id\": {id}, \"damageTaken\": {Number(damageTaken)}, \"seconds\": {Number(seconds)}, \"timerSlow\": {Number(timerSlow)}, \"owner\": {owner}",
+                () => _encounter.ApplyEnemyEffect(id, damageTaken, seconds, owner, timerSlow));
+
+        public bool EndEffect(int id, int owner) =>
+            Record($"\"op\": \"endEffect\", \"id\": {id}, \"owner\": {owner}", () => _encounter.EndEnemyEffect(id, owner));
 
         public double Repeat(int slot, double seconds) =>
             Record($"\"op\": \"repeat\", \"slot\": {slot}, \"seconds\": {Number(seconds)}", () => _encounter.RepeatRecent(slot, seconds));
@@ -58,8 +61,9 @@ namespace Game.Core.Tests.Party
 
         public int RelayTarget(int from) => Record($"\"op\": \"relayTarget\", \"slot\": {from}", () => _encounter.RelayTarget(from));
 
-        public bool Weaken(int enemies, double share) =>
-            Record($"\"op\": \"weaken\", \"enemies\": {enemies}, \"share\": {Number(share)}", () => _encounter.WeakenNext(enemies, share));
+        public bool Weaken(int enemies, double share, double gold = 0, double vulnerability = 0, double vulnerabilitySeconds = 0, int effectId = 0, int owner = PartyEncounter.NoSlot) =>
+            Record($"\"op\": \"weaken\", \"enemies\": {enemies}, \"share\": {Number(share)}, \"gold\": {Number(gold)}, \"vulnerability\": {Number(vulnerability)}, \"vulnerabilitySeconds\": {Number(vulnerabilitySeconds)}, \"effectId\": {effectId}, \"owner\": {owner}",
+                () => _encounter.WeakenNext(enemies, share, gold, vulnerability, vulnerabilitySeconds, effectId, owner));
 
         public bool RequestBoss() => Record("\"op\": \"requestBoss\"", () => _encounter.RequestBossFight());
 
@@ -120,6 +124,9 @@ namespace Game.Core.Tests.Party
                 .Append(", \"switchTicksLeft\": ").Append(e.SwitchTicksLeft)
                 .Append(", \"weakenedSpawns\": ").Append(e.WeakenedSpawns)
                 .Append(", \"weakenShare\": ").Append(Number(e.WeakenShare))
+                .Append(", \"weakenGold\": ").Append(Number(e.WeakenGold))
+                .Append(", \"enemyWeakened\": ").Append(Bool(e.EnemyWeakened))
+                .Append(", \"enemyWeakenGold\": ").Append(Number(e.EnemyWeakenGold))
                 .Append(", \"members\": [");
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {

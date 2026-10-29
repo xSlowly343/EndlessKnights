@@ -432,6 +432,7 @@ namespace Game.Core.Content.Gems
                         StrikeMultiplier = Number(node, "strikeMultiplier", 1e6),
                         BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
                         BossTimerOncePerFight = node.HasField("bossTimerOncePerFight") && node.Field("bossTimerOncePerFight").AsBool(),
+                        WhileAura = node.HasField("whileAura") && node.Field("whileAura").AsBool(),
                         Modifiers = node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>(),
                         Tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None
                     };
@@ -458,6 +459,8 @@ namespace Game.Core.Content.Gems
                         node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0)
                     {
                         BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
+                        BossTimerSlow = Number(node, "bossTimerSlow", 0.9),
+                        WhileActive = TimerSlowModifiers(Number(node, "bossTimerSlow", 0.9)),
                         Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null,
                         PerAlly = Number(node, "perAlly", 1000)
                     };
@@ -620,6 +623,9 @@ namespace Game.Core.Content.Gems
 
         private static double Number(ContentNode node, string field, double max) =>
             node.HasField(field) ? node.Field(field).AsNumber(0, max) : 0;
+
+        private static IReadOnlyList<Modifier> TimerSlowModifiers(double slow) =>
+            slow > 0 ? new[] { new Modifier(Sim.CombatStats.BossTimerSpeed, ModifierKind.More, -slow) } : Array.Empty<Modifier>();
 
         private static TriggerDef ReadTrigger(ContentNode node)
         {

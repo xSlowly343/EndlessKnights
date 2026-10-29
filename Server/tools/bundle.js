@@ -39,6 +39,7 @@ const rules = {
   maxEnemyDamageTaken: party.maxEnemyDamageTaken,
   maxWeakenedSpawns: party.weaken.maxEnemies,
   maxWeakenShare: party.weaken.maxShare,
+  maxWeakenGold: party.weaken.maxGold,
   minBossTimerRate: party.timer.minBossRate,
   worldSwitchSeconds: party.worldSwitchSeconds,
   repeatMaxSeconds: party.timer.repeatMaxSeconds,

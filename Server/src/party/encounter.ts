@@ -75,6 +75,13 @@ class PartyEncounter {
     switchTicksLeft = 0;
     weakenedSpawns = 0;
     weakenShare = 0;
+    weakenGold = 0;
+    weakenVulnerability = 0;
+    weakenVulnerabilitySeconds = 0;
+    enemyWeakened = false;
+    enemyWeakenGold = 0;
+    private weakenVulnerabilityId = 0;
+    private weakenVulnerabilityOwner = PartyNoSlot;
     private readonly recent: number[] = [];
     private bossTimerCarry = 0;
     private previousEnemyId = 0;
@@ -296,12 +303,30 @@ class PartyEncounter {
         return this.typing(slot) ? applied : Math.min(applied, this.idleRoom(slot));
     }
 
-    weakenNext(enemies: number, share: number): boolean {
+    weakenNext(enemies: number, share: number, gold: number = 0, vulnerability: number = 0, vulnerabilitySeconds: number = 0, effectId: number = 0, owner: number = PartyNoSlot): boolean {
         if (!(enemies > 0) || !(share > 0) || !this.started)
             return false;
         this.weakenedSpawns = Math.max(this.weakenedSpawns, Math.min(this.rules.maxWeakenedSpawns, Math.floor(enemies)));
         this.weakenShare = Math.max(this.weakenShare, Math.min(this.rules.maxWeakenShare, share));
+        if (gold > 0)
+            this.weakenGold = Math.max(this.weakenGold, Math.min(this.rules.maxWeakenGold, gold));
+        if (vulnerability > 0 && vulnerabilitySeconds > 0 && vulnerability >= this.weakenVulnerability) {
+            this.weakenVulnerability = vulnerability;
+            this.weakenVulnerabilitySeconds = vulnerabilitySeconds;
+            this.weakenVulnerabilityId = effectId;
+            this.weakenVulnerabilityOwner = owner;
+        }
         return true;
+    }
+
+    endEnemyEffect(effectId: number, owner: number): boolean {
+        for (const effect of this.effects) {
+            if (!(effect.ticksLeft > 0) || effect.id !== effectId || effect.owner !== owner)
+                continue;
+            effect.ticksLeft = 0;
+            return true;
+        }
+        return false;
     }
 
     requestBossFight(): boolean {
@@ -339,8 +364,9 @@ class PartyEncounter {
         this.farming = false;
         this.farmKills = 0;
         this.previousEnemyId = 0;
-        this.weakenedSpawns = 0;
-        this.weakenShare = 0;
+        this.clearWeaken();
+        this.enemyWeakened = false;
+        this.enemyWeakenGold = 0;
         for (let i = 0; i < this.effects.length; i++)
             this.effects[i] = { id: 0, damageTaken: 0, timerSlow: 0, ticksLeft: 0, owner: 0 };
         for (let i = 0; i < this.recent.length; i++)
@@ -510,6 +536,10 @@ class PartyEncounter {
         this.barFull = partyHpMultiplier(this.rules, this.fighters);
         this.barLeft = this.barFull * (1 - this.takeWeaken());
         this.addEvent(PartyEventKind.EnemySpawned);
+        if (this.enemyWeakened && this.weakenVulnerability > 0)
+            this.applyEnemyEffect(this.weakenVulnerabilityId, this.weakenVulnerability, this.weakenVulnerabilitySeconds, this.weakenVulnerabilityOwner);
+        if (this.weakenedSpawns === 0)
+            this.clearWeaken();
         if (kind !== PartyEnemyKind.Boss)
             return;
         this.bossTicksLeft = partyTicks(this.rules.bossTimerSeconds);
@@ -517,12 +547,22 @@ class PartyEncounter {
     }
 
     private takeWeaken(): number {
-        if (this.weakenedSpawns <= 0)
+        this.enemyWeakened = this.weakenedSpawns > 0;
+        this.enemyWeakenGold = this.enemyWeakened ? this.weakenGold : 0;
+        if (!this.enemyWeakened)
             return 0;
-        const share = this.weakenShare;
-        if (--this.weakenedSpawns === 0)
-            this.weakenShare = 0;
-        return share;
+        this.weakenedSpawns--;
+        return this.weakenShare;
+    }
+
+    private clearWeaken(): void {
+        this.weakenedSpawns = 0;
+        this.weakenShare = 0;
+        this.weakenGold = 0;
+        this.weakenVulnerability = 0;
+        this.weakenVulnerabilitySeconds = 0;
+        this.weakenVulnerabilityId = 0;
+        this.weakenVulnerabilityOwner = PartyNoSlot;
     }
 
     private counts(slot: number): boolean {

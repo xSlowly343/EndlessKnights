@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Party
   ""packets"": { ""damageBatchSeconds"": 0.5, ""stateBroadcastSeconds"": 0.5, ""presenceSeconds"": 5, ""maxMessagesPerSecond"": 40 },
   ""lateDamageSeconds"": 1.0,
   ""maxEnemyDamageTaken"": 1.0,
-  ""weaken"": { ""maxEnemies"": 10, ""maxShare"": 0.5 },
+  ""weaken"": { ""maxEnemies"": 10, ""maxShare"": 0.5, ""maxGold"": 1 },
   ""worldSwitchSeconds"": 10,
   ""ghost"": { ""power"": 0.25, ""fullHours"": 4, ""minActivity"": 0.25, ""uploadMinutes"": 10, ""freshHours"": 48, ""pool"": 200 },
   ""contribution"": { ""minShare"": 0.1, ""activeInputSeconds"": 30, ""restBankMinutes"": 60, ""idlePortionShare"": 1.5, ""typingReserveShare"": 0.5 },

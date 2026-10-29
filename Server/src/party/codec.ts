@@ -106,7 +106,7 @@ class PartyReader {
 
 interface HelloMessage { heroClass: number; stage: number; sharePerSecondCap: number; }
 interface DamageBatchMessage { sequence: number; enemyId: number; keys: number; mouse: number; skills: number; dot: number; summons: number; hits: number; crits: number; }
-interface CastEffectMessage { effectId: number; onEnemy: boolean; strength: number; seconds: number; timerSlow: number; repeatSeconds: number; weakenEnemies: number; weakenShare: number; }
+interface CastEffectMessage { effectId: number; onEnemy: boolean; strength: number; seconds: number; timerSlow: number; repeatSeconds: number; weakenEnemies: number; weakenShare: number; weakenGold: number; end: boolean; }
 interface PresenceMessage { presence: PartyPresence; stage: number; resource: number; }
 interface WorldRequestMessage { world: PartyWorld; cancel: boolean; riftId: number; }
 interface FocusRelayMessage { from: number; to: number; focus: number; }
@@ -146,7 +146,7 @@ function partyBatchTotal(batch: DamageBatchMessage): number {
 
 function partyDecodeCastEffect(data: ArrayBuffer): CastEffectMessage | null {
     const r = partyOpen(data, PartyMessageKind.CastEffect);
-    const message = { effectId: r.int(), onEnemy: r.bool(), strength: r.double(), seconds: r.double(), timerSlow: r.double(), repeatSeconds: r.double(), weakenEnemies: r.byte(), weakenShare: r.double() };
+    const message = { effectId: r.int(), onEnemy: r.bool(), strength: r.double(), seconds: r.double(), timerSlow: r.double(), repeatSeconds: r.double(), weakenEnemies: r.byte(), weakenShare: r.double(), weakenGold: r.double(), end: r.bool() };
     return r.complete ? message : null;
 }
 
@@ -274,6 +274,8 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
     w.long(encounter.riftId);
     for (let slot = 0; slot < PartyMaxSlots; slot++)
         w.byte(Math.min(255, Math.max(0, hits ? hits[slot] || 0 : 0)));
+    w.bool(encounter.enemyWeakened);
+    w.float(encounter.enemyWeakenGold);
     return w.bytes();
 }
 

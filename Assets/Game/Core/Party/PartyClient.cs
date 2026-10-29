@@ -52,6 +52,7 @@ namespace Game.Core.Party
         private long _refusedRift;
         private long _guestLinkTick;
         private uint _sentReactions;
+        private int _auraBoundGem;
 
         public const int NoReaction = -1;
         private const double MaxAllyShares = 1000;
@@ -253,6 +254,7 @@ namespace Game.Core.Party
             {
                 CountDamage();
                 WatchCasts();
+                EndAuraBoundDebuff();
                 ShareReactions();
             }
             PassDroppedFocus();
@@ -491,6 +493,7 @@ namespace Game.Core.Party
         {
             Status = PartyLink.Linked;
             _sentReactions = 0;
+            _auraBoundGem = 0;
             _guestLinkTick = _tick;
             _loop.Stages.Link(IsGuest);
             _loop.Skills.ShareEnemy(true);
@@ -549,7 +552,8 @@ namespace Game.Core.Party
             }
             _localEnemyId = enemyId;
             _localStage = _loop.State.Stage;
-            _unit = _loop.Stages.SpawnLinked(boss, seed, barFull, killsOnStage, farming, bossTicksLeft);
+            var weakened = _state.EnemyId == enemyId && _state.Weakened;
+            _unit = _loop.Stages.SpawnLinked(boss, seed, barFull, killsOnStage, farming, bossTicksLeft, weakened, weakened ? _state.WeakenedGold : 0);
         }
 
         private double Predicted()
@@ -615,6 +619,7 @@ namespace Game.Core.Party
                 var gameEvent = events[i];
                 var effect = gameEvent.Gem?.Skill?.Effect;
                 if (gameEvent.Kind == GameEventKind.SkillCast && effect is EnemyDebuffEffect debuff)
+                {
                     SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
                     {
                         EffectId = gameEvent.Gem!.NetId,
@@ -623,13 +628,27 @@ namespace Game.Core.Party
                         Seconds = gameEvent.Gem.Skill!.DurationSeconds,
                         TimerSlow = debuff.BossTimerSlow
                     }));
+                    if (debuff.WhileAura)
+                        _auraBoundGem = gameEvent.Gem.NetId;
+                }
                 else if (gameEvent.Kind == GameEventKind.SkillCast && effect is WeakenNextEffect weaken)
                     SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
                     {
                         EffectId = gameEvent.Gem!.NetId,
                         OnEnemy = true,
                         WeakenEnemies = (byte)System.Math.Min(byte.MaxValue, weaken.Enemies),
-                        WeakenShare = WeakenShare(gameEvent.Gem, weaken)
+                        WeakenShare = WeakenShare(gameEvent.Gem, weaken),
+                        WeakenGold = WeakenGold(gameEvent.Gem),
+                        Strength = weaken.VulnerabilityShare,
+                        Seconds = weaken.VulnerabilitySeconds
+                    }));
+                else if (gameEvent.Kind == GameEventKind.SkillCast && effect is PulseEffect { BossTimerSlow: > 0 } pulse)
+                    SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
+                    {
+                        EffectId = gameEvent.Gem!.NetId,
+                        OnEnemy = true,
+                        Seconds = gameEvent.Gem.Skill!.DurationSeconds,
+                        TimerSlow = pulse.BossTimerSlow
                     }));
                 else if (gameEvent.Kind == GameEventKind.SkillCast && effect is RepeatRecentEffect)
                     SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
@@ -648,6 +667,20 @@ namespace Game.Core.Party
                     SendToHost(PartyCodec.Encode(_out, new AllyCastMessage { GemNetId = gameEvent.Gem.NetId }));
                 ShareCurse(gameEvent.Gem);
             }
+        }
+
+        private void EndAuraBoundDebuff()
+        {
+            if (_auraBoundGem == 0)
+                return;
+            var skills = _loop.State.Skills;
+            for (var i = 0; i < skills.Count; i++)
+            {
+                if (skills[i].Active && skills[i].Skill.NetId == _auraBoundGem)
+                    return;
+            }
+            SendToHost(PartyCodec.Encode(_out, new CastEffectMessage { EffectId = _auraBoundGem, OnEnemy = true, End = true }));
+            _auraBoundGem = 0;
         }
 
         private void ShareReactions()
@@ -704,6 +737,17 @@ namespace Game.Core.Party
                     share = System.Math.Max(share, gem.Skill!.Native.WeakenShare);
             }
             return share;
+        }
+
+        private double WeakenGold(GemDef gem)
+        {
+            var skills = _loop.State.Skills;
+            for (var i = 0; i < skills.Count; i++)
+            {
+                if (ReferenceEquals(skills[i].Skill, gem) && _loop.Skills.IsNative(i))
+                    return gem.Skill!.Native.WeakenedGold;
+            }
+            return 0;
         }
 
         private void WatchSignal()

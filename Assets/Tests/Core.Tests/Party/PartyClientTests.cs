@@ -460,6 +460,101 @@ namespace Game.Core.Tests.Party
             Assert.That(viking.Loop.State.PartyAllies, Is.EqualTo(1));
         }
 
+        private static void Step(Rig rig, SkillTestHero hero, bool typing)
+        {
+            rig.Network.Advance(100);
+            rig.Players[0].Tick(typing);
+            hero.Loop.Tick();
+            hero.Loop.Events.Clear();
+            rig.Host.Tick();
+        }
+
+        private static PartyClient Joined(Rig rig, SkillTestHero hero)
+        {
+            var client = new PartyClient(hero.Loop, rig.Network.Connect(50), HostId, TestWorld.Data.Party);
+            client.Join();
+            for (var tick = 0; tick < 20; tick++)
+                Step(rig, hero, true);
+            Assert.That(client.Status, Is.EqualTo(PartyLink.Linked));
+            return client;
+        }
+
+        [Test]
+        public void AMistakeInTheDetailsWeakensTheNextEnemyAtTheHostWithGoldForEveryone()
+        {
+            var rig = new Rig(5);
+            var oracle = SkillTestHero.Of(HeroClass.Oracle, "mistake_in_the_details");
+            Joined(rig, oracle);
+            oracle.State.Resource = 100;
+            oracle.Loop.RequestCast(0);
+            for (var tick = 0; tick < 10 && rig.Host.Encounter.WeakenedSpawns == 0; tick++)
+                Step(rig, oracle, false);
+            Assert.That(rig.Host.Encounter.WeakenedSpawns, Is.EqualTo(1));
+            Assert.That(rig.Host.Encounter.WeakenGold, Is.EqualTo(0.2).Within(1e-9));
+            Assert.That(oracle.State.WeakenedSpawns, Is.Zero, "the host keeps the weakened enemies, not the client");
+
+            var viking = rig.Players[0].Loop.State;
+            var seen = false;
+            for (var tick = 0; tick < 100 && !seen; tick++)
+            {
+                Step(rig, oracle, true);
+                seen = viking.EnemyWeakened;
+            }
+
+            Assert.That(seen, Is.True, "the ally knows the shared enemy is weakened");
+            Assert.That(viking.EnemyGoldBonus, Is.EqualTo(0.2).Within(1e-6));
+            Assert.That(oracle.State.EnemyWeakened, Is.True);
+            Assert.That(oracle.State.EnemyGoldBonus, Is.EqualTo(0.2).Within(1e-6));
+        }
+
+        [Test]
+        public void TheHostDropsTheQuestionWhenTheInquisitorHasNoAuraLeft()
+        {
+            var rig = new Rig(5);
+            var inquisitor = SkillTestHero.Borrowing(HeroClass.Viking, HeroClass.Bannerbearer, "artel_pay", "unanswered_question");
+            Joined(rig, inquisitor);
+            Assert.That(inquisitor.State.Skills[0].AuraApplied, Is.True);
+            inquisitor.State.Resource = 100;
+            inquisitor.Loop.RequestCast(1);
+            for (var tick = 0; tick < 5; tick++)
+                Step(rig, inquisitor, true);
+            Assert.That(rig.Host.Encounter.DamageTakenMultiplier, Is.EqualTo(1.15).Within(1e-9));
+
+            inquisitor.State.IdleTicks = 10 * GameLoop.TicksPerSecond;
+            for (var tick = 0; tick < 5; tick++)
+                Step(rig, inquisitor, true);
+
+            Assert.That(inquisitor.State.Skills[1].Active, Is.False);
+            Assert.That(rig.Host.Encounter.DamageTakenMultiplier, Is.EqualTo(1), "the host lifts the question");
+        }
+
+        [Test]
+        public void TheShieldAnswerSlowsThePartyBossTimerAtTheHost()
+        {
+            var rig = new Rig(5);
+            var shield = SkillTestHero.Of(HeroClass.Bannerbearer, "answer_from_the_shield");
+            Joined(rig, shield);
+            shield.State.Resource = 100;
+            shield.Loop.RequestCast(0);
+            for (var tick = 0; tick < 5; tick++)
+                Step(rig, shield, false);
+
+            var gem = TestWorld.Data.Gems["answer_from_the_shield"];
+            var found = false;
+            for (var i = 0; i < PartyEncounter.MaxEffects; i++)
+            {
+                var effect = rig.Host.Encounter.Effect(i);
+                if (effect.Active && effect.Id == gem.NetId)
+                {
+                    found = true;
+                    Assert.That(effect.TimerSlow, Is.EqualTo(0.33).Within(1e-9));
+                    Assert.That(effect.DamageTaken, Is.Zero);
+                }
+            }
+            Assert.That(found, Is.True);
+            Assert.That(rig.Host.Encounter.BossTimerRate, Is.EqualTo(0.67).Within(1e-9));
+        }
+
         [Test]
         public void FocusIsNotPassedWhenNobodyTypes()
         {

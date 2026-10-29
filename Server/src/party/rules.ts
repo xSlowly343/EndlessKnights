@@ -7,6 +7,7 @@ interface PartyEncounterRules {
     maxEnemyDamageTaken: number;
     maxWeakenedSpawns: number;
     maxWeakenShare: number;
+    maxWeakenGold: number;
     minBossTimerRate: number;
     worldSwitchSeconds: number;
     enemiesPerStage: number;

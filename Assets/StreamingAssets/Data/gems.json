@@ -4203,7 +4203,7 @@
       "cost": {"resource": 50},
       "cooldownSeconds": 40,
       "durationSeconds": 20,
-      "effect": {"type": "pulse", "everySeconds": 3, "multiplier": 6, "bossTimerSeconds": 1}
+      "effect": {"type": "pulse", "everySeconds": 3, "multiplier": 6, "bossTimerSlow": 0.33}
     },
     {
       "id": "unanswered_question",
@@ -4216,7 +4216,7 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 40,
       "durationSeconds": 20,
-      "effect": { "type": "enemyDebuff", "damageTaken": 0.15 }
+      "effect": { "type": "enemyDebuff", "damageTaken": 0.15, "whileAura": true }
     },
     {
       "id": "shaft_through",

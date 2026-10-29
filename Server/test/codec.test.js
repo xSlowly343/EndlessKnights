@@ -27,6 +27,7 @@ function scriptedEncounter() {
     else if (op === "effect") encounter.applyEnemyEffect(Number(a), Number(b), Number(c), d === undefined ? -1 : Number(d));
     else if (op === "advance") for (let i = 0; i < Number(a); i++) encounter.advance();
     else if (op === "peaceful") encounter.setPeaceful(Number(a), b === "true");
+    else if (op === "weaken") encounter.weakenNext(Number(a), Number(b), Number(c));
     else if (op === "guest") numbers[encounter.joinGuest(a, Number(b))] = a;
   }
   return { encounter, numbers };
@@ -48,7 +49,7 @@ test("kill and moment encode like the core", () => {
 });
 
 test("client messages decode like the core", () => {
-  const { hello, damageBatch, castEffect, repeatCast, weakenCast, worldRequest, presence } = vectors.decode;
+  const { hello, damageBatch, castEffect, repeatCast, weakenCast, endCast, worldRequest, presence } = vectors.decode;
   const strip = (o) => { const copy = Object.assign({}, o); delete copy.hex; return copy; };
   const plain = (o) => JSON.parse(JSON.stringify(o));
   assert.deepStrictEqual(plain(party.partyDecodeHello(bytes(hello.hex))), strip(hello));
@@ -56,6 +57,7 @@ test("client messages decode like the core", () => {
   assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(castEffect.hex))), strip(castEffect));
   assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(repeatCast.hex))), strip(repeatCast));
   assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(weakenCast.hex))), strip(weakenCast));
+  assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(endCast.hex))), strip(endCast));
   assert.deepStrictEqual(plain(party.partyDecodePresence(bytes(presence.hex))), strip(presence));
   assert.deepStrictEqual(plain(party.partyDecodeWorldRequest(bytes(worldRequest.hex))), strip(worldRequest));
 });

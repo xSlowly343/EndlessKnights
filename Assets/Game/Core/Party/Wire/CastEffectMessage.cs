@@ -10,6 +10,8 @@ namespace Game.Core.Party.Wire
         public double RepeatSeconds;
         public byte WeakenEnemies;
         public double WeakenShare;
+        public double WeakenGold;
+        public bool End;
 
         public void Write(ref PartyWriter writer)
         {
@@ -21,6 +23,8 @@ namespace Game.Core.Party.Wire
             writer.Double(RepeatSeconds);
             writer.Byte(WeakenEnemies);
             writer.Double(WeakenShare);
+            writer.Double(WeakenGold);
+            writer.Bool(End);
         }
 
         public static CastEffectMessage Read(ref PartyReader reader) => new CastEffectMessage
@@ -32,7 +36,9 @@ namespace Game.Core.Party.Wire
             TimerSlow = reader.Double(),
             RepeatSeconds = reader.Double(),
             WeakenEnemies = reader.Byte(),
-            WeakenShare = reader.Double()
+            WeakenShare = reader.Double(),
+            WeakenGold = reader.Double(),
+            End = reader.Bool()
         };
     }
 }

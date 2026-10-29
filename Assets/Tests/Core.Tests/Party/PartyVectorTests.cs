@@ -42,7 +42,8 @@ namespace Game.Core.Tests.Party
                 Worlds(),
                 FocusRelay(),
                 HelpCall(),
-                WeakenNext()
+                WeakenNext(),
+                WeakenedRewards()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -55,6 +56,7 @@ namespace Game.Core.Tests.Party
                    $"    \"maxEnemyDamageTaken\": {N(rules.MaxEnemyDamageTaken)},\n" +
                    $"    \"maxWeakenedSpawns\": {rules.MaxWeakenedSpawns},\n" +
                    $"    \"maxWeakenShare\": {N(rules.MaxWeakenShare)},\n" +
+                   $"    \"maxWeakenGold\": {N(rules.MaxWeakenGold)},\n" +
                    $"    \"minBossTimerRate\": {N(rules.Timer.MinBossRate)},\n" +
                    $"    \"worldSwitchSeconds\": {N(rules.WorldSwitchSeconds)},\n" +
                    $"    \"minShare\": {N(rules.Contribution.MinShare)},\n" +
@@ -86,6 +88,31 @@ namespace Game.Core.Tests.Party
             r.Weaken(0, 0.5);
             r.Weaken(2, -1);
             r.Weaken(2, 0.2);
+            r.SwitchWorld(PartyWorld.Rift, 1761652800);
+            r.Hit(0, 2);
+            return r.ToJson();
+        }
+
+        private static string WeakenedRewards()
+        {
+            var r = Recorder("the host tells which enemy is weakened, with gold and vulnerability", 616);
+            r.Join(1);
+            r.Join(2);
+            r.Weaken(2, 0.15, 0.2, 0.1, 4, 501, 1);
+            r.Weaken(1, 0.1, 5, 0.05, 9, 502, 0);
+            r.Hit(0, 2);
+            r.Advance(10);
+            r.Hit(1, 2);
+            r.Advance(50);
+            r.Hit(0, 2);
+            r.Weaken(1, 0.2);
+            r.Hit(1, 2);
+            r.Effect(600, 0.15, 20, 0, 1);
+            r.EndEffect(600, 0);
+            r.Advance(3);
+            r.EndEffect(600, 1);
+            r.EndEffect(600, 1);
+            r.Weaken(3, 0.2, 0.2, 0.1, 4, 501, 1);
             r.SwitchWorld(PartyWorld.Rift, 1761652800);
             r.Hit(0, 2);
             return r.ToJson();

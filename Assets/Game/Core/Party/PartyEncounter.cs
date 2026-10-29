@@ -23,6 +23,8 @@ namespace Game.Core.Party
         private PartyEnemyKind _previousKind;
         private long _previousKilledTick = long.MinValue;
         private double _bossTimerCarry;
+        private int _weakenVulnerabilityId;
+        private int _weakenVulnerabilityOwner = NoSlot;
 
         public PartyEncounter(PartyRules rules, StageTable stages, ulong seed)
         {
@@ -53,6 +55,11 @@ namespace Game.Core.Party
         public int SwitchTicksLeft { get; private set; }
         public int WeakenedSpawns { get; private set; }
         public double WeakenShare { get; private set; }
+        public double WeakenGold { get; private set; }
+        public double WeakenVulnerability { get; private set; }
+        public double WeakenVulnerabilitySeconds { get; private set; }
+        public bool EnemyWeakened { get; private set; }
+        public double EnemyWeakenGold { get; private set; }
         public bool Switching => PendingWorld != NoWorld;
         public bool Started => EnemyId != 0;
         public PartyEventQueue Events { get; } = new PartyEventQueue();
@@ -322,13 +329,34 @@ namespace Game.Core.Party
             return Typing(slot) ? applied : System.Math.Min(applied, IdleRoom(slot));
         }
 
-        public bool WeakenNext(int enemies, double share)
+        public bool WeakenNext(int enemies, double share, double gold = 0, double vulnerability = 0, double vulnerabilitySeconds = 0, int effectId = 0, int owner = NoSlot)
         {
             if (enemies <= 0 || !(share > 0) || !Started)
                 return false;
             WeakenedSpawns = System.Math.Max(WeakenedSpawns, System.Math.Min(_rules.MaxWeakenedSpawns, enemies));
             WeakenShare = System.Math.Max(WeakenShare, System.Math.Min(_rules.MaxWeakenShare, share));
+            if (gold > 0)
+                WeakenGold = System.Math.Max(WeakenGold, System.Math.Min(_rules.MaxWeakenGold, gold));
+            if (vulnerability > 0 && vulnerabilitySeconds > 0 && vulnerability >= WeakenVulnerability)
+            {
+                WeakenVulnerability = vulnerability;
+                WeakenVulnerabilitySeconds = vulnerabilitySeconds;
+                _weakenVulnerabilityId = effectId;
+                _weakenVulnerabilityOwner = owner;
+            }
             return true;
+        }
+
+        public bool EndEnemyEffect(int effectId, int owner)
+        {
+            for (var i = 0; i < _effects.Length; i++)
+            {
+                if (!_effects[i].Active || _effects[i].Id != effectId || _effects[i].Owner != owner)
+                    continue;
+                _effects[i].TicksLeft = 0;
+                return true;
+            }
+            return false;
         }
 
         public bool RequestBossFight()
@@ -370,8 +398,9 @@ namespace Game.Core.Party
             Farming = false;
             FarmKills = 0;
             _previousEnemyId = 0;
-            WeakenedSpawns = 0;
-            WeakenShare = 0;
+            ClearWeaken();
+            EnemyWeakened = false;
+            EnemyWeakenGold = 0;
             System.Array.Clear(_effects, 0, _effects.Length);
             System.Array.Clear(_recent, 0, _recent.Length);
             Events.Add(new PartyEvent(PartyEventKind.WorldChanged, Tick, EnemyId, EnemyKind));
@@ -537,6 +566,10 @@ namespace Game.Core.Party
             BarFull = _rules.HpMultiplier(Fighters);
             BarLeft = BarFull * (1 - TakeWeaken());
             Events.Add(new PartyEvent(PartyEventKind.EnemySpawned, Tick, EnemyId, kind));
+            if (EnemyWeakened && WeakenVulnerability > 0)
+                ApplyEnemyEffect(_weakenVulnerabilityId, WeakenVulnerability, WeakenVulnerabilitySeconds, _weakenVulnerabilityOwner);
+            if (WeakenedSpawns == 0)
+                ClearWeaken();
             if (kind != PartyEnemyKind.Boss)
                 return;
             BossTicksLeft = Ticks(_stages.BossTimerSeconds);
@@ -545,12 +578,23 @@ namespace Game.Core.Party
 
         private double TakeWeaken()
         {
-            if (WeakenedSpawns <= 0)
+            EnemyWeakened = WeakenedSpawns > 0;
+            EnemyWeakenGold = EnemyWeakened ? WeakenGold : 0;
+            if (!EnemyWeakened)
                 return 0;
-            var share = WeakenShare;
-            if (--WeakenedSpawns == 0)
-                WeakenShare = 0;
-            return share;
+            WeakenedSpawns--;
+            return WeakenShare;
+        }
+
+        private void ClearWeaken()
+        {
+            WeakenedSpawns = 0;
+            WeakenShare = 0;
+            WeakenGold = 0;
+            WeakenVulnerability = 0;
+            WeakenVulnerabilitySeconds = 0;
+            _weakenVulnerabilityId = 0;
+            _weakenVulnerabilityOwner = NoSlot;
         }
 
         private bool Counts(int slot)

@@ -103,7 +103,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void AnswerFromTheShieldPushesTheBossTimerBackOneSecondEveryThreeSeconds()
+        public void AnswerFromTheShieldSlowsTheBossTimerWhileItLasts()
         {
             var hero = SkillTestHero.Of(HeroClass.Bannerbearer, "answer_from_the_shield");
             hero.State.SpawnEnemy(null, EnemyType.Boss, BigNumber.Create(1, 50));
@@ -114,8 +114,48 @@ namespace Game.Core.Tests.Sim
             hero.Ticks(3 * GameLoop.TicksPerSecond);
 
             Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("answer_from_the_shield", 6)).Within(1e-6));
-            Assert.That(hero.State.BossTicksLeft, Is.EqualTo(300 - 30 + 10));
+            Assert.That(hero.State.BossTimerRate, Is.EqualTo(0.67).Within(1e-9));
+            Assert.That(hero.State.BossTicksLeft, Is.EqualTo(300 - 20));
             Assert.That(TestWorld.Data.Gems["answer_from_the_shield"].Locked, Is.False);
+
+            hero.Ticks(17 * GameLoop.TicksPerSecond);
+            Assert.That(hero.State.Skills[0].Active, Is.False);
+            var left = hero.State.BossTicksLeft;
+            hero.Ticks(GameLoop.TicksPerSecond);
+            Assert.That(hero.State.BossTimerRate, Is.EqualTo(1));
+            Assert.That(left - hero.State.BossTicksLeft, Is.EqualTo(GameLoop.TicksPerSecond), "the timer runs at full speed again");
+        }
+
+        [Test]
+        public void UnansweredQuestionHoldsOnlyWhileAnAuraBurns()
+        {
+            var viking = SkillTestHero.Borrowing(HeroClass.Viking, HeroClass.Bannerbearer, "artel_pay", "unanswered_question");
+            viking.Ticks(1, keysPerTick: 1);
+            Assert.That(viking.State.Skills[0].AuraApplied, Is.True);
+            viking.State.Resource = 100;
+
+            Assert.That(viking.Cast(1), Is.EqualTo(CastResult.Cast));
+            viking.Ticks(5 * GameLoop.TicksPerSecond, keysPerTick: 1);
+            Assert.That(viking.State.Skills[1].Active, Is.True, "the question holds under the aura");
+
+            viking.State.IdleTicks = 10 * GameLoop.TicksPerSecond;
+            viking.Ticks(2);
+
+            Assert.That(viking.State.Skills[0].AuraApplied, Is.False);
+            Assert.That(viking.State.Skills[1].Active, Is.False, "no aura, no question");
+            Assert.That(viking.State.Skills[1].AuraApplied, Is.False);
+        }
+
+        [Test]
+        public void UnansweredQuestionWithoutAnAuraFadesAtOnce()
+        {
+            var hero = SkillTestHero.Of(HeroClass.Bannerbearer, "unanswered_question");
+            hero.State.Resource = 100;
+
+            Assert.That(hero.Cast(0), Is.EqualTo(CastResult.Cast));
+            hero.Ticks(1);
+
+            Assert.That(hero.State.Skills[0].Active, Is.False);
         }
     }
 }

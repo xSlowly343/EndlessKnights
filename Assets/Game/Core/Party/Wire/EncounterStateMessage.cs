@@ -31,6 +31,8 @@ namespace Game.Core.Party.Wire
         public byte Hits1;
         public byte Hits2;
         public byte Hits3;
+        public bool Weakened;
+        public float WeakenedGold;
 
         public int Hits(int slot) => slot switch
         {
@@ -120,6 +122,8 @@ namespace Game.Core.Party.Wire
             writer.Long(RiftId);
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 writer.Byte((byte)Hits(slot));
+            writer.Bool(Weakened);
+            writer.Float(WeakenedGold);
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -136,6 +140,8 @@ namespace Game.Core.Party.Wire
             message.RiftId = reader.Long();
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 message.SetHits(slot, reader.Byte());
+            message.Weakened = reader.Bool();
+            message.WeakenedGold = reader.Float();
             return message;
         }
 
@@ -181,7 +187,9 @@ namespace Game.Core.Party.Wire
                 World = encounter.World,
                 PendingWorld = encounter.PendingWorld,
                 SwitchTicksLeft = (byte)System.Math.Min(255, encounter.SwitchTicksLeft),
-                RiftId = encounter.RiftId
+                RiftId = encounter.RiftId,
+                Weakened = encounter.EnemyWeakened,
+                WeakenedGold = (float)encounter.EnemyWeakenGold
             };
             var shown = 0;
             for (var i = 0; i < PartyEncounter.MaxEffects && shown < ShownEffect.MaxShown; i++)

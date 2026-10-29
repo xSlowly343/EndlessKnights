@@ -89,8 +89,8 @@ test("the state tells every member how much each slot hit since the last state",
   }
   assert.ok(state, "a state goes out");
   const data = new DataView(state.data);
-  const recent = (slot) => data.getFloat32(state.data.byteLength - 35 + slot * 4, true);
-  const hits = (slot) => data.getUint8(state.data.byteLength - 4 + slot);
+  const recent = (slot) => data.getFloat32(state.data.byteLength - 40 + slot * 4, true);
+  const hits = (slot) => data.getUint8(state.data.byteLength - 9 + slot);
   assert.ok(Math.abs(recent(1) - 0.2) < 1e-6, "slot 1 hit 0.2 of the bar");
   assert.strictEqual(recent(0), 0);
   assert.strictEqual(hits(1), 1, "slot 1 landed one hit");
@@ -268,18 +268,51 @@ test("a weaken cast makes the next enemies of the party come weaker", () => {
   const host = new party.PartyHost(party.PartyServerRules, "5");
   host.join("user-a", "11");
   host.tick();
-  const view = new DataView(new ArrayBuffer(47));
+  const view = new DataView(new ArrayBuffer(56));
   view.setUint8(0, 3);
   view.setInt32(1, 31, true);
   view.setUint8(5, 1);
+  view.setFloat64(6, 0.1, true);
+  view.setFloat64(14, 4, true);
   view.setUint8(38, 3);
   view.setFloat64(39, 0.25, true);
+  view.setFloat64(47, 0.2, true);
   host.receive("user-a", view.buffer);
   assert.strictEqual(host.encounter.weakenedSpawns, 3);
   host.receive("user-a", batch(1, host.encounter.enemyId, 1.5, 1));
+  host.outbox.length = 0;
   host.tick();
   assert.strictEqual(host.encounter.weakenedSpawns, 2);
   assert.ok(Math.abs(host.encounter.barLeft - 0.75 * host.encounter.barFull) < 1e-9, "the new enemy comes a quarter weaker");
+  assert.ok(Math.abs(host.encounter.damageTakenMultiplier() - 1.1) < 1e-9, "the weakened enemy is vulnerable");
+  const state = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5);
+  assert.ok(state, "the new enemy goes out at once");
+  const data = new DataView(state.data);
+  assert.strictEqual(data.getUint8(state.data.byteLength - 5), 1, "the state says the enemy is weakened");
+  assert.ok(Math.abs(data.getFloat32(state.data.byteLength - 4, true) - 0.2) < 1e-6, "with its gold bonus");
+});
+
+test("an aura-bound debuff ends when its owner says the auras are gone", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.join("user-b", "12");
+  host.tick();
+  const cast = (end) => {
+    const view = new DataView(new ArrayBuffer(56));
+    view.setUint8(0, 3);
+    view.setInt32(1, 600, true);
+    view.setUint8(5, 1);
+    view.setFloat64(6, end ? 0 : 0.15, true);
+    view.setFloat64(14, end ? 0 : 20, true);
+    view.setUint8(55, end ? 1 : 0);
+    return view.buffer;
+  };
+  host.receive("user-a", cast(false));
+  assert.ok(Math.abs(host.encounter.damageTakenMultiplier() - 1.15) < 1e-9);
+  host.receive("user-b", cast(true));
+  assert.ok(Math.abs(host.encounter.damageTakenMultiplier() - 1.15) < 1e-9, "only the owner ends it");
+  host.receive("user-a", cast(true));
+  assert.strictEqual(host.encounter.damageTakenMultiplier(), 1);
 });
 
 test("a heavy cast notice goes to the others once per second", () => {

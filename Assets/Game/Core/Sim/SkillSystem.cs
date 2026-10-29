@@ -288,7 +288,7 @@ namespace Game.Core.Sim
                     AddStacks(slot, stacks);
             if (skill.Effect is DetonateEffect detonate)
                 Dots.Detonate(detonate, native.StackGrowth);
-            if (skill.Effect is WeakenNextEffect weaken)
+            if (skill.Effect is WeakenNextEffect weaken && !SharedEnemy)
             {
                 WeakenNext(weaken);
                 _state.WeakenGoldBonus = System.Math.Max(_state.WeakenGoldBonus, native.WeakenedGold);
@@ -1057,6 +1057,11 @@ namespace Game.Core.Sim
                     slot.ActiveTicks = 0;
                     End(slot);
                 }
+                if (slot.Active && slot.Def.Effect is EnemyDebuffEffect { WhileAura: true } && !OwnAuraActive)
+                {
+                    slot.ActiveTicks = 0;
+                    End(slot);
+                }
                 if (slot.ActiveTicks > 0 && !Lingers(slot, input) && !HeldByResource(slot))
                 {
                     slot.ActiveTicks--;
@@ -1334,6 +1339,19 @@ namespace Game.Core.Sim
                 return 0;
             var strength = debuff.DamageTaken * System.Math.Max(0, _hero.Value(CombatStats.EnemyDebuffEffect, 1));
             return IsCurse(gem.Skill) ? strength * System.Math.Max(0, _hero.Value(CombatStats.CurseEffect, 1)) : strength;
+        }
+
+        public bool OwnAuraActive
+        {
+            get
+            {
+                foreach (var slot in _state.Skills)
+                {
+                    if (slot.AuraApplied && slot.Def.Effect is AuraEffect)
+                        return true;
+                }
+                return false;
+            }
         }
 
         public int ActiveCurses
@@ -1825,7 +1843,8 @@ namespace Game.Core.Sim
             var potion = slot.Def.Effect is PotionEffect brew && slot.PotionChoice >= 0 && slot.Active
                 ? brew.Options[slot.PotionChoice].Modifiers
                 : slot.Def.Effect is AddStacksEffect cloud && slot.Active ? cloud.WhileActive
-                : slot.Def.Effect is SummonEffect called && slot.Active ? called.WhileActive : Array.Empty<Modifier>();
+                : slot.Def.Effect is SummonEffect called && slot.Active ? called.WhileActive
+                : slot.Def.Effect is PulseEffect pulsing && slot.Active ? pulsing.WhileActive : Array.Empty<Modifier>();
             if (aura == null && native.Count == 0 && potion.Count == 0)
                 return;
             var strength = aura == null ? 1 : _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
