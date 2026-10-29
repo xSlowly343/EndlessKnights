@@ -313,11 +313,7 @@ function partyReportFlags(nk: nkruntime.Nakama, logger: nkruntime.Logger, matchI
         const member = host.encounter.members[slot];
         logger.warn("party %s: player %s (user %s) has %d capped batches", matchId, host.playerNumbers[slot], member.playerId, host.flags[slot]);
         try {
-            nk.storageWrite([{
-                collection: "party_flags", key: member.playerId, userId: member.playerId,
-                value: { flags: host.flags[slot], matchId: matchId, playerNumber: host.playerNumbers[slot], at: Date.now() },
-                permissionRead: 0, permissionWrite: 0
-            }]);
+            partyNoteFlags(nk, member.playerId, host.playerNumbers[slot], host.flags[slot], matchId, Date.now());
         } catch (error) {
             logger.warn("party flags were not saved for %s: %s", member.playerId, String(error));
         }

@@ -15,7 +15,7 @@
 | Caddy | 2.11.7 (alpine) |
 | Node.js для сборки модулей | 22.23.4 (только внутри сборки образа, на сервер не ставится) |
 | TypeScript | 6.0.2 |
-| Наши модули (`SERVER_VERSION`) | 0.37.0, совпадает с `Server/package.json` (сборка проверяет) |
+| Наши модули (`SERVER_VERSION`) | 0.38.0, совпадает с `Server/package.json` (сборка проверяет) |
 
 Обновление: поменять строку в `versions.env`, проверить на тестовом стенде (`docs/server-deploy.md` §6), закоммитить, на сервере `git pull` и `./deploy.sh`. Пакеты Docker после установки закреплены (`apt-mark hold`), поэтому `apt upgrade` их не обновит. Новую версию Docker ставит повторный запуск `install.sh`.
 
@@ -89,6 +89,6 @@ ssh -L 7351:127.0.0.1:7351 user@сервер
 | `Caddyfile` | HTTPS и проксирование на Nakama (HTTP и WebSocket); пути приёма `/intake/telemetry` и `/intake/errors` с подстановкой `http_key` |
 | `install.sh` | подготовка чистой Ubuntu 24.04 |
 | `make-secrets.sh`, `deploy.sh`, `healthcheck.sh`, `backup.sh`, `restore.sh`, `compose.sh` | см. выше; `compose.sh` — это `docker compose` с нашими файлами |
-| `report.sh` | сводка анонимной статистики (`report.sh telemetry`) и частые ошибки игроков (`report.sh errors 20`) |
+| `report.sh` | сводка анонимной статистики (`report.sh telemetry`), частые ошибки игроков (`report.sh errors 20`), пометки читеров и жалобы за N дней (`report.sh party 30`) |
 | `../config/intake.json` | сроки хранения и лимиты приёма статистики и отчётов |
 | `systemd/` | служба и таймер ежедневного бэкапа |

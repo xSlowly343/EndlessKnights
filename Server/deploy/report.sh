@@ -8,7 +8,8 @@ curl_tls=()
 case "${1:-}" in
     telemetry) rpc=telemetry_summary; body='{}' ;;
     errors) rpc=error_report_list; body="{\"limit\": ${2:-20}}" ;;
-    *) echo "usage: report.sh telemetry | errors [how many groups]" >&2; exit 1 ;;
+    party) rpc=party_moderation; body="{\"days\": ${2:-30}, \"limit\": ${3:-50}}" ;;
+    *) echo "usage: report.sh telemetry | errors [how many groups] | party [days] [how many players]" >&2; exit 1 ;;
 esac
 
 curl -fsS "${curl_tls[@]}" --max-time 60 -X POST -H 'Content-Type: application/json' --data "$body" \
