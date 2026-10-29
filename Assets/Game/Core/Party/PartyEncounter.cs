@@ -24,6 +24,9 @@ namespace Game.Core.Party
         private long _previousKilledTick = long.MinValue;
         private double _bossTimerCarry;
         private int _weakenVulnerabilityId;
+        private EnemyHistory _history;
+        private bool _enemyKilled;
+        private byte _enemyRewarded;
         private int _weakenVulnerabilityOwner = NoSlot;
 
         public PartyEncounter(PartyRules rules, StageTable stages, ulong seed)
@@ -251,6 +254,8 @@ namespace Game.Core.Party
         }
 
         public EnemyEffect Effect(int index) => _effects[index];
+
+        public EnemyHistory History => _history;
 
         public bool ApplyEnemyEffect(int effectId, double damageTaken, double seconds, int owner = NoSlot, double timerSlow = 0)
         {
@@ -487,6 +492,8 @@ namespace Game.Core.Party
             for (var i = 0; i < _members.Length; i++)
                 total += _members[i].EnemyShare;
             var rewarded = Reward();
+            _enemyKilled = true;
+            _enemyRewarded = rewarded;
             Events.Add(new PartyEvent(PartyEventKind.EnemyKilled, Tick, EnemyId, EnemyKind,
                 ShareOf(0, total), ShareOf(1, total), ShareOf(2, total), ShareOf(3, total), rewarded,
                 total > 0 ? LoopShare / total : 0, SavedBossTicks / GameLoop.TicksPerSecond));
@@ -549,6 +556,10 @@ namespace Game.Core.Party
 
         private void Spawn(PartyEnemyKind kind)
         {
+            if (Started)
+                _history.Push(_enemyKilled, FightingBoss, _enemyRewarded);
+            _enemyKilled = false;
+            _enemyRewarded = 0;
             EnemyId++;
             EnemyKind = kind;
             SpawnTick = Tick;

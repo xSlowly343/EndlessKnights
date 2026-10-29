@@ -49,6 +49,8 @@ function compare(encounter, expect, where) {
   close(encounter.weakenShare, expect.weakenShare, `${where}: weakenShare`);
   close(encounter.weakenGold, expect.weakenGold, `${where}: weakenGold`);
   close(encounter.enemyWeakenGold, expect.enemyWeakenGold, `${where}: enemyWeakenGold`);
+  const history = encounter.history;
+  assert.deepStrictEqual([history.killed, history.bosses].concat(history.rewards), expect.history, `${where}: history`);
   expect.members.forEach((member, slot) => {
     const actual = encounter.members[slot];
     if (member === null) {

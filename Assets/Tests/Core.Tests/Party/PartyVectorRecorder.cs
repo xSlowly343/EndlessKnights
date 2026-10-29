@@ -127,6 +127,8 @@ namespace Game.Core.Tests.Party
                 .Append(", \"weakenGold\": ").Append(Number(e.WeakenGold))
                 .Append(", \"enemyWeakened\": ").Append(Bool(e.EnemyWeakened))
                 .Append(", \"enemyWeakenGold\": ").Append(Number(e.EnemyWeakenGold))
+                .Append(", \"history\": [").Append(e.History.Killed).Append(", ").Append(e.History.Bosses).Append(", ").Append(e.History.Rewards0).Append(", ")
+                .Append(e.History.Rewards1).Append(", ").Append(e.History.Rewards2).Append(", ").Append(e.History.Rewards3).Append("]")
                 .Append(", \"members\": [");
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {

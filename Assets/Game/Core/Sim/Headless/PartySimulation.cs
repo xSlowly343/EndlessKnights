@@ -18,9 +18,11 @@ namespace Game.Core.Sim.Headless
         private readonly IReadOnlyList<HeroClass> _classes;
         private readonly ulong _seed;
         private readonly double _loss;
+        private readonly double _damageMultiplier;
 
-        public PartySimulation(GameData data, BotProfile profile, IReadOnlyList<HeroClass> classes, ulong seed = 1, double loss = 0)
+        public PartySimulation(GameData data, BotProfile profile, IReadOnlyList<HeroClass> classes, ulong seed = 1, double loss = 0, double damageMultiplier = 1)
         {
+            _damageMultiplier = damageMultiplier;
             _data = data;
             _profile = profile;
             _classes = classes;
@@ -39,7 +41,10 @@ namespace Game.Core.Sim.Headless
             for (var i = 0; i < loops.Length; i++)
             {
                 var memberSeed = _seed + (ulong)i * 7919;
-                loops[i] = new GameLoop(_data, new BotInput(_profile, memberSeed ^ 0x5EEDUL), new GameState(memberSeed) { Class = _classes[i] }, new StatSheet());
+                var hero = new StatSheet();
+                if (_damageMultiplier != 1)
+                    hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, _damageMultiplier - 1));
+                loops[i] = new GameLoop(_data, new BotInput(_profile, memberSeed ^ 0x5EEDUL), new GameState(memberSeed) { Class = _classes[i] }, hero);
                 clients[i] = new PartyClient(loops[i], network.Connect(FirstMemberId + (ulong)i), HostId, _data.Party);
                 clients[i].Join();
                 new PlayerBot(_data, loops[i], double.PositiveInfinity).EquipStartingSkills();
@@ -65,7 +70,7 @@ namespace Game.Core.Sim.Headless
             {
                 var state = loops[i].State;
                 var share = host.Kills > 0 ? clients[i].PartyRewards / (double)host.Kills : 0;
-                members.Add(new PartyMemberResult(_classes[i], state.Stage, state.HighestStage, kills[i], fails[i], state.RunGoldEarned, share));
+                members.Add(new PartyMemberResult(_classes[i], state.Stage, state.HighestStage, kills[i], fails[i], state.RunGoldEarned, share, clients[i].MissedKills));
             }
             return new PartySimulationResult(seconds, host.Kills, members);
         }

@@ -276,6 +276,10 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
         w.byte(Math.min(255, Math.max(0, hits ? hits[slot] || 0 : 0)));
     w.bool(encounter.enemyWeakened);
     w.float(encounter.enemyWeakenGold);
+    w.uint(encounter.history.killed);
+    w.uint(encounter.history.bosses);
+    for (const word of encounter.history.rewards)
+        w.uint(word);
     return w.bytes();
 }
 

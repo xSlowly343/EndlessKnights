@@ -4,7 +4,7 @@ namespace Game.Core.Sim.Headless
 {
     public sealed class PartyMemberResult
     {
-        public PartyMemberResult(HeroClass heroClass, long finalStage, long highestStage, long kills, int bossFails, BigNumber goldEarned, double shareOfKills)
+        public PartyMemberResult(HeroClass heroClass, long finalStage, long highestStage, long kills, int bossFails, BigNumber goldEarned, double shareOfKills, long missedKills = 0)
         {
             HeroClass = heroClass;
             FinalStage = finalStage;
@@ -13,6 +13,7 @@ namespace Game.Core.Sim.Headless
             BossFails = bossFails;
             GoldEarned = goldEarned;
             ShareOfKills = shareOfKills;
+            MissedKills = missedKills;
         }
 
         public HeroClass HeroClass { get; }
@@ -22,5 +23,6 @@ namespace Game.Core.Sim.Headless
         public int BossFails { get; }
         public BigNumber GoldEarned { get; }
         public double ShareOfKills { get; }
+        public long MissedKills { get; }
     }
 }

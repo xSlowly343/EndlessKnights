@@ -176,15 +176,15 @@ namespace Game.Sim
                 : new[] { ("custom", new List<HeroClass>(options.Party!).ToArray()) };
             using var file = options.OutFile == null ? null : new StreamWriter(options.OutFile);
             var output = file ?? Console.Out;
-            output.WriteLine("scenario,class,final_stage,highest_stage,kills,boss_fails,party_kill_share,gold_earned,party_seconds_per_kill");
+            output.WriteLine("scenario,class,final_stage,highest_stage,kills,boss_fails,party_kill_share,gold_earned,party_seconds_per_kill,missed_kills");
             foreach (var (name, classes) in parties)
             {
-                var result = new PartySimulation(data, profile, classes, options.Seed, options.Loss).Run(options.Hours * 3600);
+                var result = new PartySimulation(data, profile, classes, options.Seed, options.Loss, options.DamageMultiplier).Run(options.Hours * 3600);
                 foreach (var member in result.Members)
                 {
-                    output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6:0.###},{7},{8:0.###}",
+                    output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6:0.###},{7},{8:0.###},{9}",
                         name, HeroClassNames.Of(member.HeroClass), member.FinalStage, member.HighestStage, member.Kills, member.BossFails,
-                        member.ShareOfKills, StageRecord.Number(member.GoldEarned), result.SecondsPerKill));
+                        member.ShareOfKills, StageRecord.Number(member.GoldEarned), result.SecondsPerKill, member.MissedKills));
                 }
             }
             watch.Stop();

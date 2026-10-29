@@ -41,6 +41,22 @@ class PartyMember {
     }
 }
 
+interface PartyEnemyHistory {
+    killed: number;
+    bosses: number;
+    rewards: number[];
+}
+
+function partyPushHistory(history: PartyEnemyHistory, killed: boolean, boss: boolean, rewarded: number): void {
+    history.killed = ((history.killed << 1) | (killed ? 1 : 0)) >>> 0;
+    history.bosses = ((history.bosses << 1) | (boss ? 1 : 0)) >>> 0;
+    const words = history.rewards;
+    words[3] = ((words[3] << 4) | (words[2] >>> 28)) >>> 0;
+    words[2] = ((words[2] << 4) | (words[1] >>> 28)) >>> 0;
+    words[1] = ((words[1] << 4) | (words[0] >>> 28)) >>> 0;
+    words[0] = ((words[0] << 4) | (killed ? rewarded & 0xF : 0)) >>> 0;
+}
+
 interface PartyEnemyEffect {
     id: number;
     damageTaken: number;
@@ -81,6 +97,9 @@ class PartyEncounter {
     enemyWeakened = false;
     enemyWeakenGold = 0;
     private weakenVulnerabilityId = 0;
+    readonly history: PartyEnemyHistory = { killed: 0, bosses: 0, rewards: [0, 0, 0, 0] };
+    private enemyKilled = false;
+    private enemyRewarded = 0;
     private weakenVulnerabilityOwner = PartyNoSlot;
     private readonly recent: number[] = [];
     private bossTimerCarry = 0;
@@ -470,6 +489,8 @@ class PartyEncounter {
         for (const member of this.members)
             shares.push(total > 0 ? member.enemyShare / total : 0);
         const rewarded = this.reward();
+        this.enemyKilled = true;
+        this.enemyRewarded = rewarded;
         this.events.push({
             kind: PartyEventKind.EnemyKilled, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: shares, rewarded: rewarded,
             loop: total > 0 ? this.loopShare / total : 0, saved: this.savedBossTicks / PartyTicksPerSecond
@@ -520,6 +541,10 @@ class PartyEncounter {
     }
 
     private spawn(kind: PartyEnemyKind): void {
+        if (this.started)
+            partyPushHistory(this.history, this.enemyKilled, this.fightingBoss, this.enemyRewarded);
+        this.enemyKilled = false;
+        this.enemyRewarded = 0;
         this.enemyId++;
         this.enemyKind = kind;
         this.spawnTick = this.tick;

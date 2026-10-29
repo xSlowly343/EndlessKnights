@@ -35,6 +35,7 @@ namespace Game.Core.Party
         private int _hitsInBatch;
         private uint _rewardedUpTo;
         private uint _countedUpTo;
+        private uint _settledUpTo;
         private long _lastOwnInputTick = PartyEncounter.Never;
         private readonly double[] _contribution = new double[PartyRules.MaxSlots];
         private readonly int[] _reaction = { NoReaction, NoReaction, NoReaction, NoReaction };
@@ -71,6 +72,7 @@ namespace Game.Core.Party
         public bool Peaceful { get; set; }
         public long PartyRewards { get; private set; }
         public long UnpaidKills { get; private set; }
+        public long MissedKills { get; private set; }
         public bool LastKillPaid { get; private set; } = true;
         public uint EnemyId => _state.EnemyId;
         public double BarFull => _state.BarFull;
@@ -380,6 +382,8 @@ namespace Game.Core.Party
         {
             if (InParty && _state.EnemyId != 0 && (state.World != _state.World || state.RiftId != _state.RiftId))
                 AbandonLocalEnemy();
+            if (InParty)
+                SettleHistory(state);
             var elapsed = System.Math.Max(1, _tick - _stateArrivalTick);
             _allyRatePerTick = state.EnemyId == _state.EnemyId
                 ? System.Math.Max(0, (_state.BarLeft - state.BarLeft - _sharesSinceState) / elapsed)
@@ -398,6 +402,42 @@ namespace Game.Core.Party
             }
         }
 
+        private void SettleHistory(in EncounterStateMessage state)
+        {
+            var first = state.EnemyId > EnemyHistory.Depth ? state.EnemyId - EnemyHistory.Depth : 1;
+            for (var id = System.Math.Max(_rewardedUpTo + 1, first); id < state.EnemyId; id++)
+                SettleFromHistory(id, state.History, (int)(state.EnemyId - 1 - id));
+        }
+
+        private void SettleFromHistory(uint enemyId, in EnemyHistory history, int age)
+        {
+            var killed = history.KilledAt(age);
+            var boss = history.BossAt(age);
+            if (enemyId != _localEnemyId)
+            {
+                if (!killed)
+                {
+                    _rewardedUpTo = enemyId;
+                    Settle(enemyId);
+                    return;
+                }
+                SpawnLocal(enemyId, boss, enemyId, _state.BarFull, _state.KillsOnStage, _state.Farming, 0);
+            }
+            if (killed)
+                EndLocalEnemy(false, history.RewardedFor(age, _ownSlot));
+            else if (boss)
+                EndLocalEnemy(true);
+            else
+                DropLocalEnemy();
+        }
+
+        private void DropLocalEnemy()
+        {
+            _rewardedUpTo = _localEnemyId;
+            Settle(_localEnemyId);
+            _loop.Stages.SkipLinkedKill();
+        }
+
         private int AllyHits(in EncounterStateMessage state)
         {
             var hits = 0;
@@ -413,6 +453,8 @@ namespace Game.Core.Party
         {
             if (_localEnemyId > _rewardedUpTo)
                 _rewardedUpTo = _localEnemyId;
+            if (_localEnemyId > _settledUpTo)
+                _settledUpTo = _localEnemyId;
             _localEnemyId = 0;
             _total = 0;
             _sentTotal = 0;
@@ -444,7 +486,7 @@ namespace Game.Core.Party
                 LastBossKill = killed;
                 BossKillsSeen++;
             }
-            if (killed.EnemyId <= _rewardedUpTo)
+            if (killed.EnemyId != _rewardedUpTo + 1)
                 return;
             if (killed.EnemyId != _localEnemyId)
                 SpawnLocal(killed.EnemyId, killed.EnemyKind == PartyEnemyKind.Boss, killed.EnemyId, _state.BarFull, _state.KillsOnStage, _state.Farming, 0);
@@ -468,6 +510,7 @@ namespace Game.Core.Party
             if (_localEnemyId <= _rewardedUpTo)
                 return;
             _rewardedUpTo = _localEnemyId;
+            Settle(_localEnemyId);
             if (IsGuest)
             {
                 _loop.Stages.SkipLinkedKill();
@@ -487,6 +530,14 @@ namespace Game.Core.Party
             }
             _loop.Stages.ConfirmLinkedKill();
             PartyRewards++;
+        }
+
+        private void Settle(uint enemyId)
+        {
+            if (enemyId > _settledUpTo + 1)
+                MissedKills += enemyId - _settledUpTo - 1;
+            if (enemyId > _settledUpTo)
+                _settledUpTo = enemyId;
         }
 
         private bool LocallyPaid() =>
@@ -510,6 +561,7 @@ namespace Game.Core.Party
             _offerNow = true;
             if (_state.EnemyId > 0 && _state.EnemyId - 1 > _rewardedUpTo)
                 _rewardedUpTo = _state.EnemyId - 1;
+            _settledUpTo = _rewardedUpTo;
             _localEnemyId = 0;
             _lastHeardTick = _tick;
             _countedUpTo = _state.EnemyId > 0 ? _state.EnemyId - 1 : 0;
