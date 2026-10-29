@@ -13,6 +13,8 @@ namespace Game.Core.Party
         public long LastContributionTick { get; internal set; } = PartyEncounter.Never;
         public long RestBankTicks { get; internal set; }
         public byte HeroClass { get; internal set; }
+        public int GuestTicksLeft { get; internal set; }
+        public bool Guest => GuestTicksLeft > 0;
 
         internal void Reset()
         {
@@ -27,6 +29,7 @@ namespace Game.Core.Party
             LastContributionTick = PartyEncounter.Never;
             RestBankTicks = 0;
             HeroClass = 0;
+            GuestTicksLeft = 0;
         }
     }
 }

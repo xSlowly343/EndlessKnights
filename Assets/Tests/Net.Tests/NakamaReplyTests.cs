@@ -57,6 +57,21 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void CallsForHelpAndTheAnswerAreRead()
+        {
+            var invites = HelpDirectory.Invites(NakamaJson.Parse("{\"invites\":[{\"from\":\"ann-id\",\"name\":\"Ann\",\"until\":1793189160000}]}"));
+            var answer = HelpDirectory.Answer(NakamaJson.Parse("{\"matchId\":\"abc.nakama1\",\"seconds\":30}"));
+
+            Assert.That(invites, Has.Count.EqualTo(1));
+            Assert.That(invites[0].From, Is.EqualTo("ann-id"));
+            Assert.That(invites[0].Name, Is.EqualTo("Ann"));
+            Assert.That(invites[0].UntilUnixMs, Is.EqualTo(1793189160000));
+            Assert.That(answer.MatchId, Is.EqualTo("abc.nakama1"));
+            Assert.That(answer.Seconds, Is.EqualTo(30));
+            Assert.Throws<NakamaException>(() => HelpDirectory.Answer(NakamaJson.Parse("{}")));
+        }
+
+        [Test]
         public void TheClanRaidIsReadWithLayersPlacesAndLastWeek()
         {
             var raid = RaidView.From(NakamaJson.Parse("{\"boss\":\"devourer\",\"week\":2964,\"endsAt\":1793566800000,\"members\":27,\"killedAt\":0,\"left\":0.58,"

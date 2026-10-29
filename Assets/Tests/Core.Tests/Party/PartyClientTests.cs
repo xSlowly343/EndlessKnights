@@ -348,6 +348,80 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void ACalledFriendHitsTheBossForHalfAMinuteAndKeepsTheirOwnStage()
+        {
+            var rig = new Rig(5, 5);
+            var friend = new Player(rig.Network, 99, 40);
+            friend.Loop.State.KillsOnStage = 3;
+            var ownStage = friend.Loop.State.Stage;
+            for (var tick = 0; tick < 3000 && !rig.Host.Encounter.FightingBoss; tick++)
+                rig.Run(0.1);
+            Assert.That(rig.Host.Encounter.FightingBoss, Is.True);
+            var help = TestWorld.Data.Party.Help;
+
+            Assert.That(rig.Host.InviteGuest(friend.Id, help.Seconds), Is.True);
+            friend.Client.JoinAsGuest();
+            var linkedTicks = 0;
+            var guestHits = 0.0;
+            var seenAsGuest = false;
+            for (var tick = 0; tick < (help.Seconds + 5) * GameLoop.TicksPerSecond && !friend.Client.GuestFinished; tick++)
+            {
+                rig.Network.Advance(100);
+                foreach (var player in rig.Players)
+                    player.Tick(true);
+                friend.Tick(true);
+                rig.Host.Tick();
+                var slot = rig.Host.Encounter.SlotOf(friend.Id);
+                if (friend.Client.Status == PartyLink.Linked)
+                    linkedTicks++;
+                if (slot == PartyEncounter.NoSlot)
+                    continue;
+                Assert.That(rig.Host.Encounter.Member(slot).Guest, Is.True);
+                Assert.That(rig.Host.Encounter.Fighters, Is.EqualTo(2), "a guest does not make the enemy bigger");
+                guestHits = System.Math.Max(guestHits, rig.Host.Encounter.Member(slot).EnemyShare);
+                seenAsGuest |= rig.Players[0].Client.Roster.Guest(slot);
+            }
+
+            Assert.That(linkedTicks, Is.GreaterThan((help.Seconds - 2) * GameLoop.TicksPerSecond));
+            Assert.That(guestHits, Is.GreaterThan(0), "the friend's hits land on the party's enemy");
+            Assert.That(seenAsGuest, Is.True, "the party sees a guest in the slot");
+            Assert.That(friend.Client.GuestFinished, Is.True);
+            Assert.That(friend.Client.Status, Is.EqualTo(PartyLink.Solo));
+            Assert.That(friend.Client.IsGuest, Is.False);
+            Assert.That(friend.Client.PartyRewards, Is.Zero, "the friend is not paid for the party's kills");
+            Assert.That(friend.Loop.State.Stage, Is.EqualTo(ownStage));
+            Assert.That(friend.Loop.State.KillsOnStage, Is.EqualTo(3), "the friend's own stage progress comes back");
+            Assert.That(rig.Host.Encounter.SlotOf(friend.Id), Is.EqualTo(PartyEncounter.NoSlot));
+        }
+
+        [Test]
+        public void CallsForHelpReadInRussian()
+        {
+            Game.Core.Text.Texts.UseLanguage("ru");
+
+            Assert.That(Game.Core.Ui.HelpCallText.Invite("Аня", 61_000, 1_500), Is.EqualTo("Аня зовёт на помощь против босса · ещё 60 с"));
+            Assert.That(Game.Core.Ui.HelpCallText.Helping(12.3), Is.EqualTo("Вы помогаете: ещё 13 с"));
+            Assert.That(Game.Core.Ui.HelpCallText.Guest("Боря"), Is.EqualTo("Боря пришёл на помощь"));
+            Assert.That(Game.Core.Ui.HelpCallText.Accept(PartyHelpRules.AcceptFriends), Is.EqualTo("Принимать зов на помощь: от друзей"));
+            Assert.That(Game.Core.Ui.HelpCallText.Refused("no boss to help with"), Is.EqualTo("звать можно только на босса"));
+            Assert.That(Game.Core.Ui.HelpCallText.Refused("party is full"), Is.EqualTo("в отряде нет мест"));
+            Assert.That(Game.Core.Ui.HelpCallText.Refused("socket closed"), Is.EqualTo("нет связи с сервером"));
+            foreach (var accept in PartyHelpRules.AcceptChoices)
+                Assert.That(Game.Core.Ui.HelpCallText.Accept(accept), Does.StartWith("Принимать"));
+        }
+
+        [Test]
+        public void OnlyABossFightCanCallAFriend()
+        {
+            var rig = new Rig(5);
+            rig.Run(1);
+
+            Assert.That(rig.Host.Encounter.FightingBoss, Is.False);
+            Assert.That(rig.Host.InviteGuest(99, 30), Is.False);
+            Assert.That(rig.Host.InviteGuest(rig.Players[0].Id, 30), Is.False);
+        }
+
+        [Test]
         public void FocusIsNotPassedWhenNobodyTypes()
         {
             var rig = new Rig(5, 5);

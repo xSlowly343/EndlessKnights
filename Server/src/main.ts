@@ -50,6 +50,10 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("ghost_thanks", ghostThanksRpc);
     initializer.registerRpc("coop_wallet", coopWalletRpc);
     initializer.registerRpc("mail_claim", mailClaimRpc);
+    initializer.registerRpc("help_settings", helpSettingsRpc);
+    initializer.registerRpc("help_call", helpCallRpc);
+    initializer.registerRpc("help_invites", helpInvitesRpc);
+    initializer.registerRpc("help_answer", helpAnswerRpc);
     initializer.registerRpc("telemetry_push", telemetryPushRpc);
     initializer.registerRpc("error_report_push", errorReportPushRpc);
     initializer.registerRpc("telemetry_summary", telemetrySummaryRpc);

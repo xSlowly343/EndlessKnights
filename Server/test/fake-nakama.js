@@ -8,6 +8,8 @@ class FakeNakama {
     this.users = new Map();
     this.matches = new Map();
     this.signals = [];
+    this.notifications = [];
+    this.onSignal = null;
     this.states = new Map();
     this.versions = 0;
   }
@@ -144,7 +146,11 @@ class FakeNakama {
 
   matchSignal(id, data) {
     this.signals.push({ id: id, data: data });
-    return "ok";
+    return this.onSignal ? this.onSignal(id, data) : "ok";
+  }
+
+  notificationSend(userId, subject, content, code, senderId, persistent) {
+    this.notifications.push({ userId, subject, content: JSON.parse(JSON.stringify(content)), code, senderId, persistent });
   }
 
   key(object) {

@@ -7,6 +7,8 @@ interface PartyMatchState {
     chronicleTicks: number;
     boardRiftId: number;
     boardTicks: number;
+    helpInvites?: { [userId: string]: number };
+    pendingGuests?: { [userId: string]: boolean };
 }
 
 const PartyMatchName = "party";
@@ -40,7 +42,8 @@ function partyMatchJoinAttempt(ctx: nkruntime.Context, logger: nkruntime.Logger,
     state = partyRevive(state);
     const host = state.host;
     const known = host.encounter.slotOf(presence.userId) !== PartyNoSlot;
-    if (state.partyId && !partyMatchMember(nk, state.partyId, presence.userId))
+    const guest = known ? host.isGuest(presence.userId) : partyInvitedGuest(state, presence.userId, Date.now());
+    if (state.partyId && !guest && !partyMatchMember(nk, state.partyId, presence.userId))
         return { state: state, accept: false, rejectMessage: "not a member of this party" };
     if (!known && host.encounter.memberCount() >= PartyServerRules.maxMembers)
         return { state: state, accept: false, rejectMessage: "party is full" };
@@ -48,6 +51,10 @@ function partyMatchJoinAttempt(ctx: nkruntime.Context, logger: nkruntime.Logger,
         return { state: state, accept: false, rejectMessage: "playerNumber is required" };
     if (!known)
         state.pendingNumbers[presence.userId] = metadata.playerNumber;
+    if (guest && !known) {
+        state.pendingGuests = state.pendingGuests || {};
+        state.pendingGuests[presence.userId] = true;
+    }
     return { state: state, accept: true };
 }
 
@@ -57,6 +64,10 @@ function partyMatchJoin(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     const host = state.host;
     for (const presence of presences) {
         state.presences[presence.userId] = presence;
+        if (state.pendingGuests && state.pendingGuests[presence.userId]) {
+            partyWelcomeGuest(dispatcher, state, presence);
+            continue;
+        }
         const slot = host.join(presence.userId, state.pendingNumbers[presence.userId] || "0");
         delete state.pendingNumbers[presence.userId];
         if (state.partyId)
@@ -89,6 +100,7 @@ function partyMatchLoop(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     partyHandleWorld(nk, state, now);
     host.tick(now);
     partyTrackRift(nk, logger, state, now);
+    partySeeGuestsOut(dispatcher, state);
     partySend(dispatcher, state, host);
     partyReportFlags(nk, logger, ctx.matchId || "", host);
     state.chronicleTicks = (state.chronicleTicks || 0) + 1;
@@ -105,6 +117,59 @@ function partyMatchTerminate(ctx: nkruntime.Context, logger: nkruntime.Logger, n
     state = partyRevive(state);
     partyFlushChronicle(nk, logger, state);
     return { state: state };
+}
+
+function partyInvitedGuest(state: PartyMatchState, userId: string, nowUnixMs: number): boolean {
+    return !!state.helpInvites && (state.helpInvites[userId] || 0) > nowUnixMs;
+}
+
+function partyWelcomeGuest(dispatcher: nkruntime.MatchDispatcher, state: PartyMatchState, presence: nkruntime.Presence): void {
+    const number = state.pendingNumbers[presence.userId] || "0";
+    delete state.pendingNumbers[presence.userId];
+    delete state.pendingGuests![presence.userId];
+    if (state.helpInvites)
+        delete state.helpInvites[presence.userId];
+    if (state.host.joinGuest(presence.userId, number, HelpServerRules.seconds) !== PartyNoSlot)
+        return;
+    delete state.presences[presence.userId];
+    dispatcher.matchKick([presence]);
+}
+
+function partySeeGuestsOut(dispatcher: nkruntime.MatchDispatcher, state: PartyMatchState): void {
+    const host = state.host;
+    if (host.guestsLeft.length === 0)
+        return;
+    const leaving: nkruntime.Presence[] = [];
+    for (const userId of host.guestsLeft) {
+        const presence = state.presences[userId];
+        if (!presence)
+            continue;
+        leaving.push(presence);
+        delete state.presences[userId];
+    }
+    host.guestsLeft.length = 0;
+    if (leaving.length > 0)
+        dispatcher.matchKick(leaving);
+}
+
+function partyInvite(state: PartyMatchState, userId: string, untilUnixMs: number): string {
+    const encounter = state.host.encounter;
+    if (!userId || !(untilUnixMs > Date.now()))
+        return "bad request";
+    if (encounter.slotOf(userId) !== PartyNoSlot)
+        return "already in your party";
+    if (!encounter.fightingBoss)
+        return "no boss to help with";
+    if (encounter.world !== PartyWorld.Home || encounter.switching)
+        return "no calls from the rift";
+    if (encounter.memberCount() >= PartyServerRules.maxMembers)
+        return "party is full";
+    state.helpInvites = state.helpInvites || {};
+    for (const invited of Object.keys(state.helpInvites))
+        if (state.helpInvites[invited] <= Date.now())
+            delete state.helpInvites[invited];
+    state.helpInvites[userId] = untilUnixMs;
+    return "ok";
 }
 
 function partyHandleWorld(nk: nkruntime.Nakama, state: PartyMatchState, nowUnixMs: number): void {
@@ -166,7 +231,7 @@ function partyWriteBoard(nk: nkruntime.Nakama, state: PartyMatchState, riftId: n
     const host = state.host;
     const members: string[] = [];
     for (const member of host.encounter.members)
-        if (member.joined)
+        if (member.joined && !member.guest)
             members.push(member.playerId);
     const group = partyGroupById(nk, state.partyId);
     const title = group ? partyMetaOf(group).title : "";
@@ -191,11 +256,12 @@ function partyFlushChronicle(nk: nkruntime.Nakama, logger: nkruntime.Logger, sta
     const delta = host.takeChronicle();
     const members: string[] = [];
     for (const member of host.encounter.members)
-        if (member.joined)
+        if (member.joined && !member.guest)
             members.push(member.playerId);
     for (const got of chronicleFlush(nk, logger, state.partyId, delta, members))
         logger.info("party %s: feat %s, level %d", state.partyId, got.feat, got.level);
     walletGrantBosses(nk, logger, host.takeFriendBosses(), Date.now());
+    walletGrantHelp(nk, logger, host.takeHelpBosses(), Date.now());
 }
 
 function partyMatchSignal(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, dispatcher: nkruntime.MatchDispatcher,
@@ -204,6 +270,8 @@ function partyMatchSignal(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: 
     const request = data.split(":");
     if (request[0] === "leave" && request[1])
         state.host.leave(request[1]);
+    if (request[0] === "invite")
+        return { state: state, data: partyInvite(state, request[1] || "", Number(request[2])) };
     return { state: state, data: "ok" };
 }
 

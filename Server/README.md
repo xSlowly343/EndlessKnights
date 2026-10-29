@@ -78,7 +78,17 @@ npm test
   | `coop_wallet` | `{}` | `{ balances: { friendship, seals }, today: [{ source, currency, earned, cap }], ledger: [{ at, source, currency, amount }] }` (новые первыми) |
   | `ghost_thanks` | `{ userId, bosses }` (1–100, `userId` — хозяин последнего взятого призрака) | `{ granted }` — сколько Знаков получил хозяин; ошибки `not your ghost`, `bad request` |
 
-  Знаки за боссов вместе начисляет матч отряда сам, за место в таблице Разлома — итог Разлома (`rift_place`).
+  Знаки за боссов вместе начисляет матч отряда сам, за место в таблице Разлома — итог Разлома (`rift_place`), за помощь по зову — матч гостю (`help_call`).
+- Зов на помощь (13.15), правила — `party.json` → `help`. Ошибки: `bad request`, `not in a party`, `already in your party`, `this player does not take calls from you`, `wait before calling again`, `no boss to help with`, `no calls from the rift`, `party is full`, `the call is over`.
+
+  | RPC | Запрос | Ответ |
+  |---|---|---|
+  | `help_settings` | `{ accept?: "all"\|"friends"\|"none" }` | `{ accept }` — от кого принимать зов (друзья — соклановцы) |
+  | `help_call` | `{ userId }` (зовёт игрок в отряде, на боссе дома) | `{ until }`; другу уходит уведомление `help_call` (код 120) |
+  | `help_invites` | `{}` | `{ invites: [{ from, name, until }] }` — живые зовы ко мне |
+  | `help_answer` | `{ from }` | `{ matchId, seconds }` — войти в матч гостем (метаданные как у участника: `playerNumber`) |
+
+  Гость — место в матче на `seconds` без веса и без награды отряда; матч сам выгоняет его по времени (`matchKick`).
 - Недельный рейд клана (13.14), правила — `raid.json`. Ошибки: `not in a clan`, `bad request`, `raid is busy, try again`.
 
   | RPC | Запрос | Ответ |

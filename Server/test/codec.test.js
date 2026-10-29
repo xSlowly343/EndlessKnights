@@ -27,6 +27,7 @@ function scriptedEncounter() {
     else if (op === "effect") encounter.applyEnemyEffect(Number(a), Number(b), Number(c), d === undefined ? -1 : Number(d));
     else if (op === "advance") for (let i = 0; i < Number(a); i++) encounter.advance();
     else if (op === "peaceful") encounter.setPeaceful(Number(a), b === "true");
+    else if (op === "guest") numbers[encounter.joinGuest(a, Number(b))] = a;
   }
   return { encounter, numbers };
 }

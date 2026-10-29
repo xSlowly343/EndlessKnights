@@ -20,6 +20,9 @@ namespace Game.Core.Sim
         private StageTable _stages = null!;
         private EnemyCatalog _enemies = null!;
         private IReadOnlyList<Modifier>? _appliedEnemyModifiers;
+        private int _ownKillsOnStage;
+        private bool _ownFarming;
+        private int _ownFarmKills;
 
         public StageSystem(StageTable stages, EnemyCatalog enemies, StatSheet hero, GameState state, EventQueue events, LootSystem loot, LevelSystem levels)
         {
@@ -135,7 +138,18 @@ namespace Game.Core.Sim
                 _state.BossBestFraction = System.Math.Min(1, fraction);
         }
 
-        public void Link() => Linked = true;
+        public void Link(bool asGuest = false)
+        {
+            Linked = true;
+            LinkedAsGuest = asGuest;
+            if (!asGuest)
+                return;
+            _ownKillsOnStage = _state.KillsOnStage;
+            _ownFarming = _state.Farming;
+            _ownFarmKills = _state.FarmKills;
+        }
+
+        public bool LinkedAsGuest { get; private set; }
 
         public void Unlink()
         {
@@ -143,6 +157,13 @@ namespace Game.Core.Sim
                 return;
             Linked = false;
             _state.FarmKills = 0;
+            if (LinkedAsGuest)
+            {
+                _state.KillsOnStage = _ownKillsOnStage;
+                _state.Farming = _ownFarming;
+                _state.FarmKills = _ownFarmKills;
+                LinkedAsGuest = false;
+            }
             SpawnNext();
         }
 

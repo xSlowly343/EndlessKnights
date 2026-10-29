@@ -10,6 +10,7 @@ declare namespace nkruntime {
     interface MatchDispatcher {
         broadcastMessage(opCode: number, data: ArrayBuffer | string | null, presences?: Presence[] | null, sender?: Presence | null, reliable?: boolean): void;
         matchLabelUpdate(label: string): void;
+        matchKick(presences: Presence[]): void;
     }
     interface StorageWriteRequest { collection: string; key: string; userId: string; value: { [key: string]: any }; version?: string; permissionRead?: number; permissionWrite?: number; }
     interface StorageReadRequest { collection: string; key: string; userId: string; }
@@ -28,6 +29,7 @@ declare namespace nkruntime {
         storageDelete(keys: StorageDeleteRequest[]): void;
         storageList(userId: string | undefined, collection: string, limit?: number, cursor?: string): { objects?: StorageObject[]; cursor?: string };
         uuidv4(): string;
+        notificationSend(userId: string, subject: string, content: { [key: string]: any }, code: number, senderId?: string | null, persistent?: boolean): void;
         usersGetId(userIds: string[]): User[];
         groupCreate(userId: string, name: string, creatorId?: string | null, lang?: string | null, description?: string | null, avatarURL?: string | null,
             open?: boolean | null, metadata?: { [key: string]: any } | null, limit?: number | null): Group;

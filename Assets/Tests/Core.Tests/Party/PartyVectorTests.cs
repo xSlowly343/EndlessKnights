@@ -40,7 +40,8 @@ namespace Game.Core.Tests.Party
                 Contribution(),
                 Clockmaker(),
                 Worlds(),
-                FocusRelay()
+                FocusRelay(),
+                HelpCall()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -65,6 +66,33 @@ namespace Game.Core.Tests.Party
                    $"    \"bossTimerSeconds\": {N(stages.BossTimerSeconds)},\n" +
                    $"    \"bossHpMultiplier\": {N(stages.BossHpMultiplier)}\n" +
                    "  },\n  \"scenarios\": [\n" + string.Join(",\n", scenarios) + "\n  ]\n}\n";
+        }
+
+        private static string HelpCall()
+        {
+            var r = Recorder("a called friend hits the boss for a while without weight or reward", 4242);
+            r.JoinGuest(70, 30);
+            r.Join(1);
+            r.Join(2);
+            while (!r.Encounter.FightingBoss)
+                r.Hit(0, 1.5);
+            r.JoinGuest(1, 30);
+            r.JoinGuest(70, 0);
+            r.JoinGuest(70, 3);
+            r.Advance(2);
+            r.Hit(2, 0.4);
+            r.Hit(0, 0.5);
+            r.Hit(1, 0.4);
+            r.Advance(10);
+            r.Hit(2, 0.2);
+            r.Advance(18);
+            r.JoinGuest(71, 30);
+            r.Hit(0, 0.3);
+            while (!r.Encounter.FightingBoss)
+                r.Hit(0, 1.5);
+            r.Hit(2, 5);
+            r.SwitchWorld(PartyWorld.Rift, 1761652800);
+            return r.ToJson();
         }
 
         private static string FocusRelay()

@@ -272,5 +272,10 @@ function partyEncodeRoster(encounter: PartyEncounter, version: number, playerNum
         w.byte(encounter.members[slot].joined ? encounter.members[slot].heroClass : 0);
     for (let slot = 0; slot < PartyMaxSlots; slot++)
         w.uint(encounter.members[slot].joined ? Math.floor(encounter.members[slot].restBankTicks / PartyTicksPerSecond) : 0);
+    let guests = 0;
+    for (let slot = 0; slot < PartyMaxSlots; slot++)
+        if (encounter.members[slot].joined && encounter.members[slot].guest)
+            guests |= 1 << slot;
+    w.byte(guests);
     return w.bytes();
 }

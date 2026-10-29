@@ -21,6 +21,9 @@ class PartyMember {
     lastContributionTick = PartyNever;
     restBankTicks = 0;
     heroClass = 0;
+    guestTicksLeft = 0;
+
+    get guest(): boolean { return this.guestTicksLeft > 0; }
 
     reset(): void {
         this.playerId = "";
@@ -34,6 +37,7 @@ class PartyMember {
         this.lastContributionTick = PartyNever;
         this.restBankTicks = 0;
         this.heroClass = 0;
+        this.guestTicksLeft = 0;
     }
 }
 
@@ -130,6 +134,15 @@ class PartyEncounter {
             return i;
         }
         return PartyNoSlot;
+    }
+
+    joinGuest(playerId: string, seconds: number): number {
+        if (!this.started || this.slotOf(playerId) !== PartyNoSlot || !(seconds > 0))
+            return PartyNoSlot;
+        const slot = this.join(playerId);
+        if (slot !== PartyNoSlot)
+            this.members[slot].guestTicksLeft = Math.max(1, partyTicks(seconds));
+        return slot;
     }
 
     leave(slot: number): void {
@@ -308,6 +321,7 @@ class PartyEncounter {
     }
 
     switchWorld(world: PartyWorld, riftId: number): void {
+        this.releaseGuests(true);
         this.clearPending();
         this.world = world;
         this.riftId = riftId;
@@ -328,6 +342,7 @@ class PartyEncounter {
         this.tick++;
         this.recent[this.tick % PartyRecentTicks] = 0;
         this.tickEffects();
+        this.releaseGuests(false);
         this.dropLostFighters();
         if (this.switching && --this.switchTicksLeft <= 0) {
             this.switchWorld(this.pendingWorld, this.pendingRiftId);
@@ -449,7 +464,7 @@ class PartyEncounter {
                 continue;
             if (member.enemyShare > 0 && member.enemyShare >= counted)
                 member.lastContributionTick = this.tick;
-            if (!member.connected || member.peaceful)
+            if (!member.connected || member.peaceful || member.guest)
                 continue;
             if (this.typing(i)) {
                 rewarded |= 1 << i;
@@ -493,7 +508,7 @@ class PartyEncounter {
         const member = this.members[slot];
         if (!member.connected && this.tick - member.disconnectedAtTick > partyTicks(this.rules.disconnectGraceSeconds))
             return false;
-        if (member.peaceful)
+        if (member.peaceful || member.guest)
             return false;
         return this.active(member);
     }
@@ -523,6 +538,21 @@ class PartyEncounter {
         const after = partyHpMultiplier(this.rules, this.fighters);
         this.barLeft *= after / before;
         this.barFull = after;
+    }
+
+    private releaseGuests(all: boolean): void {
+        let left = 0;
+        for (let i = 0; i < this.members.length; i++) {
+            const member = this.members[i];
+            if (!member.joined || !member.guest)
+                continue;
+            if (!all && --member.guestTicksLeft > 0)
+                continue;
+            member.reset();
+            left |= 1 << i;
+        }
+        if (left !== 0)
+            this.events.push({ kind: PartyEventKind.GuestLeft, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: [0, 0, 0, 0], rewarded: left, loop: 0, saved: 0 });
     }
 
     private tickEffects(): void {

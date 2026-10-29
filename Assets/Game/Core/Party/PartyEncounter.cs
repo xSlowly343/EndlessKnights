@@ -119,6 +119,16 @@ namespace Game.Core.Party
             return NoSlot;
         }
 
+        public int JoinGuest(ulong playerId, double seconds)
+        {
+            if (!Started || SlotOf(playerId) != NoSlot || !(seconds > 0))
+                return NoSlot;
+            var slot = Join(playerId);
+            if (slot != NoSlot)
+                _members[slot].GuestTicksLeft = System.Math.Max(1, Ticks(seconds));
+            return slot;
+        }
+
         public void Leave(int slot)
         {
             if (!IsMember(slot))
@@ -341,6 +351,7 @@ namespace Game.Core.Party
 
         public void SwitchWorld(PartyWorld world, long riftId)
         {
+            ReleaseGuests(true);
             ClearPending();
             World = world;
             RiftId = riftId;
@@ -367,6 +378,7 @@ namespace Game.Core.Party
             Tick++;
             _recent[Tick % RecentTicks] = 0;
             TickEffects();
+            ReleaseGuests(false);
             DropLostFighters();
             if (Switching && --SwitchTicksLeft <= 0)
             {
@@ -472,7 +484,7 @@ namespace Game.Core.Party
                     continue;
                 if (member.EnemyShare > 0 && member.EnemyShare >= counted)
                     member.LastContributionTick = Tick;
-                if (!member.Connected || member.Peaceful)
+                if (!member.Connected || member.Peaceful || member.Guest)
                     continue;
                 if (Typing(i))
                 {
@@ -523,7 +535,7 @@ namespace Game.Core.Party
             var member = _members[slot];
             if (!member.Connected && Tick - member.DisconnectedAtTick > Ticks(_rules.DisconnectGraceSeconds))
                 return false;
-            if (member.Peaceful)
+            if (member.Peaceful || member.Guest)
                 return false;
             return Active(member);
         }
@@ -558,6 +570,23 @@ namespace Game.Core.Party
             var after = _rules.HpMultiplier(Fighters);
             BarLeft *= after / before;
             BarFull = after;
+        }
+
+        private void ReleaseGuests(bool all)
+        {
+            var left = 0;
+            for (var i = 0; i < _members.Length; i++)
+            {
+                var member = _members[i];
+                if (!member.Joined || !member.Guest)
+                    continue;
+                if (!all && --member.GuestTicksLeft > 0)
+                    continue;
+                member.Reset();
+                left |= 1 << i;
+            }
+            if (left != 0)
+                Events.Add(new PartyEvent(PartyEventKind.GuestLeft, Tick, EnemyId, EnemyKind, rewarded: (byte)left));
         }
 
         private void TickEffects()

@@ -25,6 +25,8 @@ namespace Game.Core.Party
         private readonly long[] _lastReactionTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRelayTick = new long[PartyRules.MaxSlots];
+        private readonly ulong[] _invitedGuests = new ulong[PartyRules.MaxSlots];
+        private readonly double[] _invitedSeconds = new double[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
         private readonly RiftRules? _rift;
         private PartyRules _rules;
@@ -55,6 +57,41 @@ namespace Game.Core.Party
         public int Flags(int slot) => _flags[slot];
 
         public void UseRules(PartyRules rules) => _rules = rules;
+
+        public bool InviteGuest(ulong playerId, double seconds)
+        {
+            if (playerId == 0 || !(seconds > 0) || !_encounter.FightingBoss || _encounter.World != PartyWorld.Home || _encounter.Switching
+                || _encounter.SlotOf(playerId) != PartyEncounter.NoSlot || _encounter.MemberCount >= _encounter.Capacity)
+                return false;
+            var free = PartyEncounter.NoSlot;
+            for (var i = 0; i < _invitedGuests.Length; i++)
+            {
+                if (_invitedGuests[i] == playerId)
+                {
+                    free = i;
+                    break;
+                }
+                if (free == PartyEncounter.NoSlot && _invitedGuests[i] == 0)
+                    free = i;
+            }
+            if (free == PartyEncounter.NoSlot)
+                return false;
+            _invitedGuests[free] = playerId;
+            _invitedSeconds[free] = seconds;
+            return true;
+        }
+
+        private double TakeInvite(ulong playerId)
+        {
+            for (var i = 0; i < _invitedGuests.Length; i++)
+            {
+                if (_invitedGuests[i] != playerId)
+                    continue;
+                _invitedGuests[i] = 0;
+                return _invitedSeconds[i];
+            }
+            return 0;
+        }
 
         public void Tick()
         {
@@ -119,7 +156,8 @@ namespace Game.Core.Party
         {
             if (slot != PartyEncounter.NoSlot)
                 return slot;
-            slot = _encounter.Join(from);
+            var guestSeconds = TakeInvite(from);
+            slot = guestSeconds > 0 ? _encounter.JoinGuest(from, guestSeconds) : _encounter.Join(from);
             if (slot == PartyEncounter.NoSlot)
                 return slot;
             _lastSequence[slot] = 0;
@@ -295,6 +333,9 @@ namespace Game.Core.Party
                     case PartyEventKind.EnemyKilled:
                         Kills++;
                         Broadcast(PartyCodec.Encode(_out, EnemyKilledMessage.Of(partyEvent)));
+                        break;
+                    case PartyEventKind.GuestLeft:
+                        _rosterChanged = true;
                         break;
                     case PartyEventKind.EnemySpawned:
                     case PartyEventKind.WorldPending:

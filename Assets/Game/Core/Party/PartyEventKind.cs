@@ -9,6 +9,7 @@ namespace Game.Core.Party
         BossFailed,
         WorldPending,
         WorldCancelled,
-        WorldChanged
+        WorldChanged,
+        GuestLeft
     }
 }

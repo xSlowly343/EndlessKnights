@@ -32,6 +32,9 @@ class PartyHost {
     readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0 };
     readonly stages = [0, 0, 0, 0];
     friendBosses: { [userId: string]: number } = {};
+    helpBosses: { [userId: string]: number } = {};
+    readonly guestsLeft: string[] = [];
+    private readonly guestUsers = ["", "", "", ""];
     pairTicks: { [pair: string]: number } = {};
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
@@ -65,22 +68,28 @@ class PartyHost {
         if (slot === PartyNoSlot)
             return slot;
         this.lastHeardTick[slot] = this.encounter.tick;
-        if (known === PartyNoSlot) {
-            this.playerNumbers[slot] = playerNumber;
-            this.stages[slot] = 0;
-            this.lastSequence[slot] = 0;
-            this.lastEnemy[slot] = 0;
-            this.lastTotal[slot] = 0;
-            this.allowance[slot] = this.config.burstBars;
-            this.hitAllowance[slot] = this.hitBurst();
-            this.flags[slot] = 0;
-            this.lastReactionTick[slot] = PartyNever;
-            this.lastRepeatTick[slot] = PartyNever;
-            this.lastRelayTick[slot] = PartyNever;
-            this.ticksToState = 0;
-        }
+        if (known === PartyNoSlot)
+            this.welcome(slot, playerNumber);
         this.rosterChanged = true;
         return slot;
+    }
+
+    joinGuest(playerId: string, playerNumber: string, seconds: number): number {
+        if (this.encounter.slotOf(playerId) !== PartyNoSlot)
+            return PartyNoSlot;
+        const slot = this.encounter.joinGuest(playerId, seconds);
+        if (slot === PartyNoSlot)
+            return slot;
+        this.guestUsers[slot] = playerId;
+        this.lastHeardTick[slot] = this.encounter.tick;
+        this.welcome(slot, playerNumber);
+        this.rosterChanged = true;
+        return slot;
+    }
+
+    isGuest(playerId: string): boolean {
+        const slot = this.encounter.slotOf(playerId);
+        return slot !== PartyNoSlot && this.encounter.members[slot].guest;
     }
 
     leave(playerId: string): void {
@@ -202,6 +211,12 @@ class PartyHost {
         return taken;
     }
 
+    takeHelpBosses(): { [userId: string]: number } {
+        const taken = this.helpBosses;
+        this.helpBosses = {};
+        return taken;
+    }
+
     takeFriendBosses(): { [userId: string]: number } {
         const taken = this.friendBosses;
         this.friendBosses = {};
@@ -211,7 +226,7 @@ class PartyHost {
     private noteTogether(): void {
         const fighting: string[] = [];
         for (let slot = 0; slot < PartyMaxSlots; slot++)
-            if (this.encounter.members[slot].joined && this.encounter.presence(slot) === PartyPresence.Fighting)
+            if (this.encounter.members[slot].joined && !this.encounter.members[slot].guest && this.encounter.presence(slot) === PartyPresence.Fighting)
                 fighting.push(this.encounter.members[slot].playerId);
         if (fighting.length < 2)
             return;
@@ -226,10 +241,11 @@ class PartyHost {
 
     private noteBossKill(event: PartyEvent): void {
         this.noteFriendBoss(event);
+        this.noteHelp(event);
         const roles: string[] = [];
         let guardian = false;
         for (let slot = 0; slot < PartyMaxSlots; slot++)
-            if (event.shares[slot] > 0 && this.encounter.members[slot].joined) {
+            if (event.shares[slot] > 0 && this.encounter.members[slot].joined && !this.encounter.members[slot].guest) {
                 roles.push(chronicleRoleOf(this.encounter.members[slot].heroClass));
                 guardian = guardian || this.onGuardianStage(slot);
             }
@@ -252,12 +268,31 @@ class PartyHost {
     private noteFriendBoss(event: PartyEvent): void {
         const paid: string[] = [];
         for (let slot = 0; slot < PartyMaxSlots; slot++)
-            if ((event.rewarded & (1 << slot)) !== 0 && event.shares[slot] > 0 && this.encounter.members[slot].joined)
+            if ((event.rewarded & (1 << slot)) !== 0 && event.shares[slot] > 0 && this.encounter.members[slot].joined && !this.encounter.members[slot].guest)
                 paid.push(this.encounter.members[slot].playerId);
         if (paid.length < 2)
             return;
         for (const userId of paid)
             this.friendBosses[userId] = (this.friendBosses[userId] || 0) + 1;
+    }
+
+    private noteHelp(event: PartyEvent): void {
+        for (let slot = 0; slot < PartyMaxSlots; slot++) {
+            const member = this.encounter.members[slot];
+            if (member.joined && member.guest && event.shares[slot] > 0)
+                this.helpBosses[member.playerId] = (this.helpBosses[member.playerId] || 0) + 1;
+        }
+    }
+
+    private releaseGuests(mask: number): void {
+        for (let slot = 0; slot < PartyMaxSlots; slot++) {
+            if ((mask & (1 << slot)) === 0 || !this.guestUsers[slot])
+                continue;
+            this.guestsLeft.push(this.guestUsers[slot]);
+            this.guestUsers[slot] = "";
+            this.playerNumbers[slot] = "0";
+        }
+        this.rosterChanged = true;
     }
 
     private returnWhenTheRiftCloses(): void {
@@ -289,6 +324,21 @@ class PartyHost {
         this.lastRelayTick[slot] = this.encounter.tick;
         this.relays++;
         this.broadcast(partyEncodeFocusRelay(slot, target, bonus), PartyNoSlot);
+    }
+
+    private welcome(slot: number, playerNumber: string): void {
+        this.playerNumbers[slot] = playerNumber;
+        this.stages[slot] = 0;
+        this.lastSequence[slot] = 0;
+        this.lastEnemy[slot] = 0;
+        this.lastTotal[slot] = 0;
+        this.allowance[slot] = this.config.burstBars;
+        this.hitAllowance[slot] = this.hitBurst();
+        this.flags[slot] = 0;
+        this.lastReactionTick[slot] = PartyNever;
+        this.lastRepeatTick[slot] = PartyNever;
+        this.lastRelayTick[slot] = PartyNever;
+        this.ticksToState = 0;
     }
 
     private heard(slot: number): void {
@@ -385,6 +435,8 @@ class PartyHost {
             } else if (event.kind === PartyEventKind.StageCleared && this.encounter.world === PartyWorld.Rift) {
                 this.riftCleared++;
                 this.broadcast(partyEncodeMoment(event, this.encounter.bossTicksLeft), PartyNoSlot);
+            } else if (event.kind === PartyEventKind.GuestLeft) {
+                this.releaseGuests(event.rewarded);
             } else if (event.kind === PartyEventKind.EnemySpawned || event.kind === PartyEventKind.WorldPending
                 || event.kind === PartyEventKind.WorldCancelled || event.kind === PartyEventKind.WorldChanged) {
                 this.ticksToState = 0;

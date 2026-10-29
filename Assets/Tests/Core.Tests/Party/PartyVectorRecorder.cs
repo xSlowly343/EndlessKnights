@@ -25,6 +25,9 @@ namespace Game.Core.Tests.Party
 
         public int Join(ulong player) => Record($"\"op\": \"join\", \"player\": \"{player}\"", () => _encounter.Join(player));
 
+        public int JoinGuest(ulong player, double seconds) =>
+            Record($"\"op\": \"joinGuest\", \"player\": \"{player}\", \"seconds\": {Number(seconds)}", () => _encounter.JoinGuest(player, seconds));
+
         public void Leave(int slot) => Record($"\"op\": \"leave\", \"slot\": {slot}", () => _encounter.Leave(slot));
 
         public void Input(int slot) => Record($"\"op\": \"input\", \"slot\": {slot}", () => _encounter.ReportInput(slot));
@@ -119,7 +122,7 @@ namespace Game.Core.Tests.Party
                 if (slot > 0)
                     builder.Append(", ");
                 builder.Append(member.Joined
-                    ? $"{{ \"player\": \"{member.PlayerId}\", \"weight\": {member.Weight}, \"presence\": {(int)e.Presence(slot)}, \"typing\": {Bool(e.Typing(slot))}, \"share\": {Number(member.EnemyShare)}, \"restBank\": {member.RestBankTicks} }}"
+                    ? $"{{ \"player\": \"{member.PlayerId}\", \"weight\": {member.Weight}, \"presence\": {(int)e.Presence(slot)}, \"typing\": {Bool(e.Typing(slot))}, \"share\": {Number(member.EnemyShare)}, \"restBank\": {member.RestBankTicks}, \"guest\": {member.GuestTicksLeft} }}"
                     : "null");
             }
             builder.Append("], \"events\": [");

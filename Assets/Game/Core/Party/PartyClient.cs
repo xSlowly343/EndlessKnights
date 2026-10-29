@@ -47,6 +47,7 @@ namespace Game.Core.Party
         private int _firstEvent;
         private bool _offerNow;
         private long _refusedRift;
+        private long _guestLinkTick;
 
         public const int NoReaction = -1;
         private const double MaxAllyShares = 1000;
@@ -75,6 +76,8 @@ namespace Game.Core.Party
         public double DamageTaken => System.Math.Max(1, _state.DamageTaken);
         public int OwnSlot => _ownSlot;
         public FocusRelayMessage LastRelay { get; private set; }
+        public bool IsGuest { get; private set; }
+        public bool GuestFinished { get; private set; }
         public int RelaySerial { get; private set; }
 
         public int ReactionOf(int slot) =>
@@ -168,11 +171,27 @@ namespace Game.Core.Party
             StartJoining();
         }
 
+        public void JoinAsGuest()
+        {
+            if (Status != PartyLink.Solo && Status != PartyLink.Away)
+                return;
+            IsGuest = true;
+            GuestFinished = false;
+            Join();
+        }
+
         public void Leave()
         {
             Unlink();
             Status = PartyLink.Solo;
             _lostAtTick = long.MinValue;
+            IsGuest = false;
+        }
+
+        private void EndGuest()
+        {
+            Leave();
+            GuestFinished = true;
         }
 
         public void Rejoin()
@@ -365,7 +384,7 @@ namespace Game.Core.Party
         private void FollowWorld()
         {
             var rift = _loop.Rift;
-            if (_state.EnemyId == 0)
+            if (_state.EnemyId == 0 || IsGuest)
                 return;
             if (_state.World == PartyWorld.Rift)
             {
@@ -411,6 +430,11 @@ namespace Game.Core.Party
             if (_localEnemyId <= _rewardedUpTo)
                 return;
             _rewardedUpTo = _localEnemyId;
+            if (IsGuest)
+            {
+                _loop.Stages.SkipLinkedKill();
+                return;
+            }
             if (bossFailed)
             {
                 _loop.Stages.ConfirmLinkedBossFailed();
@@ -440,7 +464,8 @@ namespace Game.Core.Party
         private void Link()
         {
             Status = PartyLink.Linked;
-            _loop.Stages.Link();
+            _guestLinkTick = _tick;
+            _loop.Stages.Link(IsGuest);
             _loop.Skills.ShareEnemy(true);
             _offerNow = true;
             if (_state.EnemyId > 0 && _state.EnemyId - 1 > _rewardedUpTo)
@@ -585,12 +610,22 @@ namespace Game.Core.Party
             if (!(dropped > 0))
                 return;
             _loop.State.FocusDropped = 0;
-            if (Status == PartyLink.Linked)
+            if (Status == PartyLink.Linked && !IsGuest)
                 SendToHost(PartyCodec.Encode(_out, FocusRelayMessage.Dropped(dropped)));
         }
 
         private void WatchSignal()
         {
+            if (IsGuest && (Status == PartyLink.Linked || Status == PartyLink.NoSignal) && _tick - _guestLinkTick >= Ticks(_rules.Help.Seconds))
+            {
+                EndGuest();
+                return;
+            }
+            if (IsGuest && Status == PartyLink.Solo && _lostAtTick != long.MinValue)
+            {
+                EndGuest();
+                return;
+            }
             var silent = _tick - _lastHeardTick;
             if (Status == PartyLink.Linked && silent > Ticks(_rules.SilenceSeconds))
                 Status = PartyLink.NoSignal;

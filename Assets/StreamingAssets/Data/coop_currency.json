@@ -9,6 +9,7 @@
     { "id": "clan_raid", "currency": "seals", "amount": 1, "dailyCap": 100000 },
     { "id": "clan_challenge", "currency": "seals", "amount": 1, "dailyCap": 20 },
     { "id": "mentor_hours", "currency": "friendship", "amount": 1, "dailyCap": 1000 },
-    { "id": "rift_place", "currency": "friendship", "amount": 1, "dailyCap": 1000 }
+    { "id": "rift_place", "currency": "friendship", "amount": 1, "dailyCap": 1000 },
+    { "id": "help_call", "currency": "friendship", "amount": 2, "dailyCap": 10 }
   ]
 }

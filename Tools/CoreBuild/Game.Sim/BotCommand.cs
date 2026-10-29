@@ -17,9 +17,10 @@ namespace Game.Sim
     public static class BotCommand
     {
         public const string Usage =
-            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift] | --ghost | --clan new|open|quick|K7M-Q2X [--count 1] | --raid [--count 3]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
+            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift] | --help-call | --ghost | --clan new|open|quick|K7M-Q2X [--count 1] | --raid [--count 3]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
 
         private const ulong BotSteamBase = 76561190000000000UL;
+        private const double ChronicleFlushWait = 65;
 
         public static int Run(GameData data, IReadOnlyList<string> args)
         {
@@ -27,7 +28,7 @@ namespace Game.Sim
             for (var i = 0; i < args.Count; i++)
             {
                 var name = args[i];
-                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--rift" || name == "--chronicle" || name == "--ghost" || name == "--stay" || name == "--find" || name == "--quick" || name == "--raid";
+                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--rift" || name == "--chronicle" || name == "--ghost" || name == "--stay" || name == "--find" || name == "--quick" || name == "--raid" || name == "--help-call";
                 if (flag)
                     options[name] = "yes";
                 else if (i + 1 < args.Count)
@@ -49,6 +50,8 @@ namespace Game.Sim
                     return RunClan(client, clan, (int)Number(options, "--count", 1)).GetAwaiter().GetResult();
                 if (options.ContainsKey("--ghost"))
                     return RunGhost(data, client, profile, heroClass, seconds).GetAwaiter().GetResult();
+                if (options.ContainsKey("--help-call"))
+                    return RunHelp(data, client, profile, seconds).GetAwaiter().GetResult();
                 if (options.ContainsKey("--pair"))
                     return RunPair(data, client, profile, seconds, options.ContainsKey("--rift")).GetAwaiter().GetResult();
                 var stay = options.ContainsKey("--stay");
@@ -193,6 +196,49 @@ namespace Game.Sim
             return linked && reactionsArrive && leader.Client.PartyRewards > 0 && friend.Client.PartyRewards > 0 && (!rift || bothInRift) ? 0 : 1;
         }
 
+        private static async Task<int> RunHelp(GameData data, NakamaClient client, BotProfile profile, double seconds)
+        {
+            var leader = await Bot.LoginAsync(data, client, profile, HeroClass.Viking, 1).ConfigureAwait(false);
+            var friend = await Bot.LoginAsync(data, client, profile, HeroClass.Voodoo, 2).ConfigureAwait(false);
+            var helper = await Bot.LoginAsync(data, client, profile, HeroClass.Ronin, 3).ConfigureAwait(false);
+            Console.WriteLine("helper takes calls from: " + await helper.Online.Help.AcceptAsync("all").ConfigureAwait(false));
+            await leader.CreateAsync(false).ConfigureAwait(false);
+            await friend.JoinAsync(leader.Party!.Code.ToLowerInvariant()).ConfigureAwait(false);
+            await leader.ConnectAsync().ConfigureAwait(false);
+            await friend.ConnectAsync().ConfigureAwait(false);
+            var party = new[] { leader, friend };
+            for (var waited = 0; waited < seconds && !leader.Loop.State.FightingBoss; waited++)
+                Play(party, 1);
+            if (!leader.Loop.State.FightingBoss)
+                return Fail("the party met no boss to call for help with");
+            var until = await leader.Online.Help.CallAsync(helper.Online.UserId).ConfigureAwait(false);
+            var invites = await helper.Online.Help.InvitesAsync().ConfigureAwait(false);
+            Console.WriteLine("called for help until " + DateTimeOffset.FromUnixTimeMilliseconds(until).ToString("u", CultureInfo.InvariantCulture) + ", invites " + invites.Count);
+            var stageBefore = helper.Loop.State.Stage;
+            using var guest = await helper.Online.AnswerHelpAsync(invites[0].From).ConfigureAwait(false);
+            var guestClient = new PartyClient(helper.Loop, guest.Transport, NakamaPartyTransport.HostId, data.Party);
+            guestClient.JoinAsGuest();
+            var all = new[] { leader, friend, helper };
+            var linkedSeconds = 0;
+            var seenAsGuest = false;
+            for (var second = 0; second < data.Party.Help.Seconds + 10 && !guestClient.GuestFinished; second++)
+            {
+                Play(all, 1);
+                if (guestClient.Status == PartyLink.Linked)
+                    linkedSeconds++;
+                seenAsGuest |= guestClient.OwnSlot >= 0 && leader.Client.Roster.Guest(guestClient.OwnSlot);
+            }
+            Console.WriteLine("guest linked " + linkedSeconds + " s, seen as guest " + seenAsGuest + ", finished " + guestClient.GuestFinished + ", stage kept " + (helper.Loop.State.Stage == stageBefore)
+                + ", paid kills " + guestClient.PartyRewards);
+            Play(all, ChronicleFlushWait);
+            leader.Report(Console.Out);
+            await helper.ShowWalletAsync(Console.Out).ConfigureAwait(false);
+            await friend.FinishAsync(false).ConfigureAwait(false);
+            await leader.FinishAsync(false).ConfigureAwait(false);
+            await helper.FinishAsync(true).ConfigureAwait(false);
+            return linkedSeconds > 0 && seenAsGuest && guestClient.GuestFinished && guestClient.PartyRewards == 0 ? 0 : 1;
+        }
+
         private static void Play(IReadOnlyList<Bot> bots, double seconds)
         {
             var ticks = (long)Math.Round(seconds * GameLoop.TicksPerSecond);
@@ -243,6 +289,7 @@ namespace Game.Sim
             }
 
             public PartyView? Party => _online.Party;
+            public OnlineSession Online => _online;
             public PartyClient Client { get; }
             public GameLoop Loop => _loop;
             public long Kills { get; private set; }

@@ -42,10 +42,11 @@ namespace Game.Core.Tests.Party
                 encounter.Advance();
             encounter.ApplyDamage(1, 1, 5);
             encounter.SetPeaceful(1, true);
+            encounter.JoinGuest(76561198000000003UL, 30);
 
             var builder = new StringBuilder("{\n  \"version\": 1,\n");
             builder.Append("  \"seed\": \"777\",\n");
-            builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"damage 0 1 0.75\", \"effect -123456 0.15 10 1\", \"effect 42 0.25 4\", \"advance 32\", \"damage 1 1 5\", \"peaceful 1 true\"],\n");
+            builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"damage 0 1 0.75\", \"effect -123456 0.15 10 1\", \"effect 42 0.25 4\", \"advance 32\", \"damage 1 1 5\", \"peaceful 1 true\", \"guest 76561198000000003 30\"],\n");
             builder.Append("  \"encode\": {\n");
             builder.Append("    \"encounterState\": { \"sequence\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, EncounterStateMessage.Of(encounter, 5)))).Append("\" },\n");
             builder.Append("    \"roster\": { \"version\": 3, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, RosterMessage.Of(encounter, 3)))).Append("\" },\n");

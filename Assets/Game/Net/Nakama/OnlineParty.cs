@@ -10,7 +10,7 @@ namespace Game.Net.Nakama
     {
         private readonly NakamaSocket _socket;
 
-        private OnlineParty(NakamaSocket socket, NakamaPartyTransport transport, PartyView party)
+        private OnlineParty(NakamaSocket socket, NakamaPartyTransport transport, PartyView? party)
         {
             _socket = socket;
             Transport = transport;
@@ -18,7 +18,8 @@ namespace Game.Net.Nakama
         }
 
         public NakamaPartyTransport Transport { get; }
-        public PartyView Party { get; }
+        public PartyView? Party { get; }
+        public bool Guest => Party == null;
         public bool Connected => _socket.IsOpen;
 
         public static async Task<OnlineParty?> ConnectAsync(NakamaClient client, NakamaSession session, ulong playerNumber, CancellationToken cancel = default)
@@ -28,6 +29,17 @@ namespace Game.Net.Nakama
             if (party == null)
                 return null;
             var matchId = await directory.ConnectAsync(cancel).ConfigureAwait(false);
+            return await JoinAsync(client, session, playerNumber, matchId, party, cancel).ConfigureAwait(false);
+        }
+
+        public static async Task<OnlineParty> HelpAsync(NakamaClient client, NakamaSession session, ulong playerNumber, string from, CancellationToken cancel = default)
+        {
+            var answer = await new HelpDirectory(client, session).AnswerAsync(from, cancel).ConfigureAwait(false);
+            return await JoinAsync(client, session, playerNumber, answer.MatchId, null, cancel).ConfigureAwait(false);
+        }
+
+        private static async Task<OnlineParty> JoinAsync(NakamaClient client, NakamaSession session, ulong playerNumber, string matchId, PartyView? party, CancellationToken cancel)
+        {
             var socket = new NakamaSocket();
             try
             {

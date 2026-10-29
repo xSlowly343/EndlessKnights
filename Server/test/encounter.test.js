@@ -13,6 +13,7 @@ function close(actual, expected, where) {
 function run(encounter, step) {
   switch (step.op) {
     case "join": return encounter.join(step.player);
+    case "joinGuest": return encounter.joinGuest(step.player, step.seconds);
     case "leave": return encounter.leave(step.slot);
     case "input": return encounter.reportInput(step.slot);
     case "peaceful": return encounter.setPeaceful(step.slot, step.value);
@@ -55,6 +56,7 @@ function compare(encounter, expect, where) {
     assert.strictEqual(encounter.typing(slot), member.typing, `${where}: slot ${slot} typing`);
     close(actual.enemyShare, member.share, `${where}: slot ${slot} share`);
     assert.strictEqual(actual.restBankTicks, member.restBank, `${where}: slot ${slot} rest bank`);
+    assert.strictEqual(actual.guestTicksLeft, member.guest, `${where}: slot ${slot} guest`);
   });
   assert.strictEqual(encounter.events.length, expect.events.length, `${where}: event count`);
   expect.events.forEach((event, i) => {
@@ -84,7 +86,7 @@ for (const scenario of vectors.scenarios) {
       const result = run(encounter, step);
       if (typeof step.result === "boolean")
         assert.strictEqual(result, step.result, `${where}: result`);
-      else if (step.op === "damage" || step.op === "join" || step.op === "repeat" || step.op === "relayTarget")
+      else if (step.op === "damage" || step.op === "join" || step.op === "repeat" || step.op === "relayTarget" || step.op === "joinGuest")
         close(result, step.result, `${where}: result`);
       compare(encounter, step.expect, where);
     });
