@@ -54,7 +54,8 @@ namespace Game.Core.Tests.Party
             busy.SetRecent(1, 0.25f);
             busy.SetHits(0, 7);
             busy.SetHits(2, 300);
-            builder.Append("    \"busyState\": { \"sequence\": 6, \"recent\": [0, 0.25, 0, 0], \"hits\": [7, 0, 300, 0], \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, busy))).Append("\" },\n");
+            busy.SetMarks(1, 0x21);
+            builder.Append("    \"busyState\": { \"sequence\": 6, \"recent\": [0, 0.25, 0, 0], \"hits\": [7, 0, 300, 0], \"marks\": [0, 33, 0, 0], \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, busy))).Append("\" },\n");
             builder.Append("    \"roster\": { \"version\": 3, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, RosterMessage.Of(encounter, 3)))).Append("\" },\n");
             var killed = new PartyEvent(PartyEventKind.EnemyKilled, 12, 4, PartyEnemyKind.Boss, 0.625, 0.375, 0, 0, 5, 0.25, 6.5);
             builder.Append("    \"enemyKilled\": { \"tick\": 12, \"enemyId\": 4, \"enemyKind\": 1, \"shares\": [0.625, 0.375, 0, 0], \"rewarded\": 5, \"loop\": 0.25, \"saved\": 6.5, \"hex\": \"")

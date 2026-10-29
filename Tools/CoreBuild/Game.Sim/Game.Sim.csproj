@@ -9,6 +9,9 @@
     <AssemblyName>sim</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="party-kits.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../Game.Core/Game.Core.csproj" />
     <ProjectReference Include="../Game.Net/Game.Net.csproj" />
   </ItemGroup>

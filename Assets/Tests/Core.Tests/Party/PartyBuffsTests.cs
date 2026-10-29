@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Game.Core.Content.Gems;
 using Game.Core.Content.Tree;
 using Game.Core.Content.Weapons;
 using Game.Core.Input;
@@ -78,6 +79,25 @@ namespace Game.Core.Tests.Party
                     Host.Tick();
                 }
             }
+        }
+
+        [Test]
+        public void TheHostTellsEveryMemberTheMarksOfTheOthers()
+        {
+            var rig = new Rig(2);
+            var summon = TestWorld.Data.Synergy.MaskOf(new[] { "summon" });
+            rig.Members[0].Loop.State.Minions[0] = new MinionState { Kind = MinionKind.Skeleton, TicksLeft = 100_000 };
+
+            rig.Run(3);
+
+            Assert.That(rig.Members[0].Loop.Synergy.OwnMarks & summon, Is.EqualTo(summon));
+            Assert.That(rig.Members[1].Loop.Synergy.AllyMarks & summon, Is.EqualTo(summon), "a skeleton is no aura and no effect on the enemy, the host passes the mark on");
+            Assert.That(rig.Members[0].Loop.Synergy.AllyMarks & summon, Is.Zero, "nobody gets their own mark back");
+
+            rig.Members[0].Loop.State.Minions[0] = default;
+            rig.Run(3);
+
+            Assert.That(rig.Members[1].Loop.Synergy.AllyMarks & summon, Is.Zero);
         }
 
         [Test]

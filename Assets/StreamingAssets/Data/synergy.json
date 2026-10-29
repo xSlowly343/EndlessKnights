@@ -8,6 +8,8 @@
     "plague_doctor": "dot", "moonshiner": "dot",
     "gravedigger": "summon", "captain": "summon"
   },
+  "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
+  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon" },
   "secondResponseStat": "secondResponse",
   "responses": [
     { "id": "viking_enemy_blood", "class": "viking", "mark": "curse", "modifiers": [{ "stat": "rageGain", "kind": "increased", "value": 0.25 }] },

@@ -258,7 +258,7 @@ function partyStart(kind: PartyMessageKind): PartyWriter {
     return writer;
 }
 
-function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, recent?: number[], hits?: number[]): ArrayBuffer {
+function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, recent?: number[], hits?: number[], marks?: number[]): ArrayBuffer {
     const w = partyStart(PartyMessageKind.EncounterState);
     w.uint(sequence);
     w.long(encounter.tick);
@@ -302,6 +302,8 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
     for (const word of encounter.history.rewards)
         w.uint(word);
     w.uint(Math.min(4294967295, encounter.waveStage()));
+    for (let slot = 0; slot < PartyMaxSlots; slot++)
+        w.uint(marks && encounter.members[slot].joined ? marks[slot] >>> 0 : 0);
     return w.bytes();
 }
 

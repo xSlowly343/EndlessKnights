@@ -29,6 +29,7 @@
       "tags": ["Keyboard", "Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 25,
+      "marks": ["stun"],
       "effect": { "type": "strike", "multiplier": 5 },
       "native": { "spendAll": { "perPoint": 0.1, "max": 10 } }
     },
@@ -122,6 +123,7 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 35,
       "durationSeconds": 10,
+      "marks": ["stun"],
       "effect": { "type": "storeHits", "releaseShare": 0.5 },
       "native": { "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0 }] }
     },
@@ -138,6 +140,7 @@
       "cost": { "resource": 70 },
       "cooldownSeconds": 45,
       "durationSeconds": 8,
+      "marks": ["stun"],
       "effect": { "type": "queueHits", "share": 0.4 },
       "native": { "fullResourceDurationMultiplier": 2 }
     },
@@ -549,6 +552,7 @@
       "cost": {"resource": 20},
       "cooldownSeconds": 5,
       "durationSeconds": 10,
+      "marks": ["time"],
       "effect": {"type": "enemyDebuff", "damageTaken": 0.1, "bossTimerSlow": 0.3},
       "native": {"resourcePerSavedSecond": 1}
     },
@@ -603,6 +607,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 100 },
       "cooldownSeconds": 20,
+      "marks": ["series"],
       "effect": { "type": "flurry", "hits": 15, "seconds": 1.5, "multiplier": 2, "queueTargets": 1 },
       "native": { "carryOn": true }
     },
@@ -702,6 +707,7 @@
       "tags": ["Skill"],
       "cost": {"resource": 15},
       "cooldownSeconds": 3,
+      "marks": ["lightning"],
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 2},
       "native": {"when": {"resourceAtLeast": 70, "extraTargets": 1}}
     },
@@ -945,6 +951,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 20,
+      "marks": ["stun"],
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
       "native": { "resourceOnHit": 2 }
     },
@@ -959,6 +966,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
+      "marks": ["stun"],
       "effect": { "type": "strike", "multiplier": 10 },
       "native": { "when": {"boss": true, "multiplier": 1.4} }
     },
@@ -974,6 +982,7 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 25,
       "durationSeconds": 6,
+      "marks": ["stun"],
       "effect": { "type": "storeHits", "releaseShare": 1.5 },
       "native": { "holdDecaySeconds": 6 }
     },
@@ -1098,6 +1107,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
+      "marks": ["stun"],
       "effect": { "type": "strike", "multiplier": 12, "queueTargets": 2 },
       "native": { "when": {"resourceAtLeast": 100, "multiplier": 1.5} }
     },
@@ -1208,6 +1218,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
+      "marks": ["stun"],
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
       "native": { "resourceOnKill": 10 }
     },
@@ -1250,6 +1261,7 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 60,
       "durationSeconds": 5,
+      "marks": ["stun"],
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 5, "queueTargets": 3 },
       "native": { "holdDecaySeconds": 15 }
     },
@@ -1265,6 +1277,7 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 90,
       "durationSeconds": 10,
+      "marks": ["stun"],
       "effect": { "type": "storeHits", "releaseShare": 3, "queue": true },
       "native": { "when": {"resourceAtLeast": 100, "multiplier": 1.3333333333333333} }
     },
@@ -1370,6 +1383,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 40 },
       "cooldownSeconds": 20,
+      "marks": ["series"],
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
       "native": { "comboPerHit": 1 }
     },
@@ -1632,6 +1646,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
+      "marks": ["series"],
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
       "native": { "resourceOnKill": 20 }
     },
@@ -1807,6 +1822,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 20 },
       "cooldownSeconds": 20,
+      "marks": ["hunterMark"],
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
       "native": { "resourceOnHit": 1 }
     },
@@ -1974,6 +1990,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 10 },
       "cooldownSeconds": 4,
+      "marks": ["hunterMark"],
       "effect": { "type": "flurry", "hits": 2, "seconds": 0.2, "multiplier": 3 },
       "native": { "carryOn": true }
     },
@@ -2042,6 +2059,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
+      "marks": ["hunterMark"],
       "effect": { "type": "flurry", "hits": 8, "seconds": 0.8, "multiplier": 2, "queueTargets": 1 },
       "native": { "extraHitPerMousePx": 1000, "maxHits": 16 }
     },
@@ -2141,6 +2159,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 80 },
       "cooldownSeconds": 45,
+      "marks": ["hunterMark"],
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
       "native": { "resourceOnKill": 10 }
     },
@@ -2276,6 +2295,7 @@
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
       "durationSeconds": 8,
+      "marks": ["lightning"],
       "effect": {"type": "inputHits", "pxPerHit": 300, "pxShare": 1},
       "native": {"resourceOnHit": 1}
     },
@@ -2290,6 +2310,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 10 },
       "cooldownSeconds": 2,
+      "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 2 },
       "native": { "resourceOnCast": 3 }
     },
@@ -2319,6 +2340,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 20,
+      "marks": ["lightning"],
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
       "native": { "resourceOnHit": 2 }
     },
@@ -2333,6 +2355,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
+      "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 10 },
       "native": { "when": {"resourceAtLeast": 70, "multiplier": 1.4} }
     },
@@ -2348,6 +2371,7 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 25,
       "durationSeconds": 6,
+      "marks": ["lightning"],
       "effect": { "type": "storeHits", "releaseShare": 1.5 },
       "native": { "modifiers": [{"stat": "overloadDisabled", "kind": "flat", "value": 1}] }
     },
@@ -2429,6 +2453,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 25 },
       "cooldownSeconds": 8,
+      "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 3, "queueTargets": 3, "queueMultiplier": 3.6 },
       "native": { "resourceOnKill": 5 }
     },
@@ -2456,6 +2481,7 @@
       "tags": ["Skill"],
       "cost": {"resource": 50},
       "cooldownSeconds": 25,
+      "marks": ["lightning"],
       "effect": {"type": "strike", "multiplier": 8, "bossTimerStopSeconds": 3},
       "native": {"when": {"resourceAtLeast": 90, "multiplier": 1.5}}
     },
@@ -2470,6 +2496,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 20 },
       "cooldownSeconds": 5,
+      "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 4, "queueTargets": 2 },
       "native": { "resourceOnKill": 5 }
     },
@@ -2485,6 +2512,7 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 6,
       "durationSeconds": 6,
+      "marks": ["lightning"],
       "effect": { "type": "pulse", "everySeconds": 0.5, "multiplier": 1 },
       "native": { "when": {"mouseMoving": true, "multiplier": 1.6666666666666667} }
     },
@@ -2499,6 +2527,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
+      "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 12, "queueTargets": 2 },
       "native": { "when": {"resourceAtLeast": 90, "multiplier": 1.5} }
     },
@@ -2553,6 +2582,7 @@
       "cost": {"resource": 60},
       "cooldownSeconds": 30,
       "durationSeconds": 10,
+      "marks": ["lightning"],
       "effect": {"type": "pulse", "everySeconds": 0.5, "multiplier": 2},
       "native": {"mouseEverySeconds": 0.3}
     },
@@ -2568,6 +2598,7 @@
       "cost": {"resource": 80},
       "cooldownSeconds": 45,
       "durationSeconds": 12,
+      "marks": ["lightning"],
       "effect": {"type": "queueHits", "share": 0.5, "targets": 1},
       "native": {"modifiers": [{"stat": "overloadKeep", "kind": "flat", "value": 0.7}]}
     },
@@ -2582,6 +2613,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 6,
+      "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
       "native": { "when": {"resourceAtLeast": 80, "executeBelow": 0.2} }
     },
@@ -2597,6 +2629,7 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 8,
       "durationSeconds": 10,
+      "marks": ["lightning"],
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 2, "hits": 5 },
       "native": { "resourceOnHit": 4 }
     },
@@ -2638,6 +2671,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 40 },
       "cooldownSeconds": 8,
+      "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 15, "queueTargets": 3 },
       "native": { "when": {"resourceAtLeast": 90, "free": true} }
     },
@@ -2652,6 +2686,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
+      "marks": ["lightning"],
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
       "native": { "resourceOnKill": 10 }
     },
@@ -2679,6 +2714,7 @@
       "tags": ["Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 4,
+      "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 20, "critChance": 1 },
       "native": { "when": {"resourceAtLeast": 90, "free": true} }
     },
@@ -2694,6 +2730,7 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 60,
       "durationSeconds": 5,
+      "marks": ["lightning"],
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 5, "queueTargets": 3 },
       "native": { "modifiers": [{"stat": "overloadDisabled", "kind": "flat", "value": 1}], "durationMultiplier": 3 }
     },
@@ -4378,6 +4415,7 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
+      "marks": ["lightning"],
       "effect": {"type": "aura", "modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.1}], "party": true, "reserve": 25, "idleOffSeconds": 10},
       "native": {"modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.05}]}
     },
@@ -4697,6 +4735,7 @@
       "cost": { "resource": 70 },
       "cooldownSeconds": 45,
       "durationSeconds": 20,
+      "marks": ["curse"],
       "effect": { "type": "curseFlow", "hitsPerSecond": 0 }
     },
     {
@@ -4723,6 +4762,7 @@
       "cost": { "resource": 60 },
       "cooldownSeconds": 40,
       "durationSeconds": 20,
+      "marks": ["curse"],
       "effect": { "type": "curseFlow", "hitsPerSecond": 1 }
     },
     {
@@ -4737,6 +4777,7 @@
       "cost": {"resource": 25},
       "cooldownSeconds": 8,
       "durationSeconds": 10,
+      "marks": ["curse"],
       "effect": {"type": "enemyDebuff", "damageTaken": 0.1, "tags": ["Keyboard"], "bossTimerSeconds": 3},
       "native": {"bossTimerSeconds": 5}
     },
@@ -4952,6 +4993,7 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 6,
       "durationSeconds": 10,
+      "marks": ["curse"],
       "effect": { "type": "curseFlow", "hitsPerSecond": 0 },
       "native": { "durationMultiplier": 1.5 }
     },
@@ -5080,6 +5122,7 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 40,
       "durationSeconds": 15,
+      "marks": ["curse"],
       "effect": { "type": "curseFlow", "hitsPerSecond": 0 },
       "native": { "modifiers": [{"stat": "resourceGain", "kind": "more", "value": 1}] }
     },
@@ -5108,6 +5151,7 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 8,
       "durationSeconds": 15,
+      "marks": ["curse"],
       "effect": { "type": "curseFlow", "hitsPerSecond": 1 },
       "native": { "when": {"resourceAtLeast": 100, "free": true} }
     },
@@ -5467,6 +5511,7 @@
       "cost": { "resource": 25 },
       "cooldownSeconds": 10,
       "durationSeconds": 6,
+      "marks": ["time"],
       "effect": { "type": "enemyDebuff", "damageTaken": 0, "bossTimerSlow": 0.5 },
       "native": { "durationMultiplier": 1.6666666666666667 }
     },

@@ -83,6 +83,7 @@ namespace Game.Core.Party
         public int BossKillsSeen { get; private set; }
         public double DamageTaken => System.Math.Max(1, _state.DamageTaken);
         public int OwnSlot => _ownSlot;
+        public double SharesDealt { get; private set; }
         public FocusRelayMessage LastRelay { get; private set; }
         public bool IsGuest { get; private set; }
         public bool GuestFinished { get; private set; }
@@ -636,6 +637,7 @@ namespace Game.Core.Party
                 return;
             _total += share;
             _sharesSinceState += share * System.Math.Max(1, _state.DamageTaken);
+            SharesDealt += share * System.Math.Max(1, _state.DamageTaken);
         }
 
         private double Predicted()
@@ -653,6 +655,7 @@ namespace Game.Core.Party
             {
                 _total += share;
                 _sharesSinceState += share * System.Math.Max(1, _state.DamageTaken);
+                SharesDealt += share * System.Math.Max(1, _state.DamageTaken);
             }
             if (_loop.LastInput.HasAnyInput && !_loop.Focus.MacroDetected)
             {
@@ -674,7 +677,7 @@ namespace Game.Core.Party
                     synergy.SetAlly(slot, false, default, 0);
                     continue;
                 }
-                var marks = 0;
+                var marks = _state.Marks(slot);
                 var ally = _loop.PartyBuffs.Ally(slot);
                 for (var i = 0; i < ally.Auras.Length; i++)
                 {

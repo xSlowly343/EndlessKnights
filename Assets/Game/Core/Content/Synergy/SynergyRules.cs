@@ -17,9 +17,13 @@ namespace Game.Core.Content.Synergy
         private readonly Dictionary<string, int> _markIndex;
         private readonly int[] _roleMask;
 
+        private readonly int[] _markTicks;
+
         private SynergyRules(List<string> marks, Dictionary<string, int> markIndex, List<string> roles, int[] roleMask, StatId secondResponseStat,
-            List<SynergyResponse> responses, List<SynergyReaction> reactions, List<SynergyConstellation> constellations)
+            List<SynergyResponse> responses, List<SynergyReaction> reactions, List<SynergyConstellation> constellations, int[] markTicks, SynergyStateMarks stateMarks)
         {
+            _markTicks = markTicks;
+            StateMarks = stateMarks;
             Marks = marks;
             _markIndex = markIndex;
             Roles = roles;
@@ -36,6 +40,10 @@ namespace Game.Core.Content.Synergy
         public IReadOnlyList<SynergyResponse> Responses { get; }
         public IReadOnlyList<SynergyReaction> Reactions { get; }
         public IReadOnlyList<SynergyConstellation> Constellations { get; }
+
+        public SynergyStateMarks StateMarks { get; }
+
+        public int MarkTicks(int mark) => _markTicks[mark];
 
         public int AuraMarkMask => _markIndex.TryGetValue(AuraMark, out var aura) ? 1 << aura : 0;
 
@@ -137,7 +145,37 @@ namespace Game.Core.Content.Synergy
             var constellations = new List<SynergyConstellation>();
             foreach (var node in root.Field("constellations").Items())
                 constellations.Add(ReadConstellation(node, markIndex, roles));
-            return new SynergyRules(marks, markIndex, roles, roleMask, new StatId(root.Field("secondResponseStat").AsString()), responses, reactions, constellations);
+            return new SynergyRules(marks, markIndex, roles, roleMask, new StatId(root.Field("secondResponseStat").AsString()), responses, reactions, constellations,
+                ReadMarkTicks(root, markIndex, marks.Count), ReadStateMarks(root, markIndex));
+        }
+
+        private static int[] ReadMarkTicks(ContentNode root, Dictionary<string, int> markIndex, int count)
+        {
+            var ticks = new int[count];
+            if (!root.HasField("markSeconds"))
+                return ticks;
+            var node = root.Field("markSeconds");
+            foreach (var name in node.FieldNames())
+            {
+                if (!markIndex.TryGetValue(name, out var index))
+                    throw node.Field(name).Error($"unknown mark '{name}'");
+                ticks[index] = (int)System.Math.Round(node.Field(name).AsNumber(0, 600) * GameLoop.TicksPerSecond);
+            }
+            return ticks;
+        }
+
+        private static SynergyStateMarks ReadStateMarks(ContentNode root, Dictionary<string, int> markIndex)
+        {
+            if (!root.HasField("stateMarks"))
+                return default;
+            var node = root.Field("stateMarks");
+            int Mask(string field) => node.HasField(field) ? 1 << MarkOf(node.Field(field), markIndex) : 0;
+            foreach (var name in node.FieldNames())
+            {
+                if (name != SynergyStateMarks.PoisonField && name != SynergyStateMarks.BurnField && name != SynergyStateMarks.MinionsField)
+                    throw node.Field(name).Error($"unknown state '{name}', expected {SynergyStateMarks.PoisonField}, {SynergyStateMarks.BurnField} or {SynergyStateMarks.MinionsField}");
+            }
+            return new SynergyStateMarks(Mask(SynergyStateMarks.PoisonField), Mask(SynergyStateMarks.BurnField), Mask(SynergyStateMarks.MinionsField));
         }
 
         private static SynergyResponse ReadResponse(ContentNode node, Dictionary<string, int> markIndex)

@@ -24,5 +24,8 @@ namespace Game.Core.Sim.Headless
         public BigNumber GoldEarned { get; }
         public double ShareOfKills { get; }
         public long MissedKills { get; }
+        public BigNumber Damage { get; set; }
+        public double SharesDealt { get; set; }
+        public SynergyUptime? Synergy { get; set; }
     }
 }

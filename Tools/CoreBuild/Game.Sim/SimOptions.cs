@@ -8,7 +8,7 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class viking|ronin|amazon|stormweaver|nomad|metalhead|oracle|bannerbearer|voodoo|clockmaker|plague_doctor|moonshiner|gravedigger|captain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--party viking,ronin,... | standard [--loss 0]] [--supports <hours>] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class viking|ronin|amazon|stormweaver|nomad|metalhead|oracle|bannerbearer|voodoo|clockmaker|plague_doctor|moonshiner|gravedigger|captain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--party viking,ronin,... | standard [--loss 0]] [--supports <hours>] [--synergy <hours> [--drops true]] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
@@ -25,6 +25,8 @@ namespace Game.Sim
         public bool StandardParties { get; private set; }
         public double Loss { get; private set; }
         public double SupportHours { get; private set; }
+        public double SynergyHours { get; private set; }
+        public bool SynergyDrops { get; private set; }
         public string? DataFolder { get; private set; }
         public string? OutFile { get; private set; }
 
@@ -52,6 +54,8 @@ namespace Game.Sim
                     case "--party": options.ReadParty(value); break;
                     case "--loss": options.Loss = Number(value); break;
                     case "--supports": options.SupportHours = Number(value); break;
+                    case "--synergy": options.SynergyHours = Number(value); break;
+                    case "--drops": options.SynergyDrops = bool.Parse(value); break;
                     case "--data": options.DataFolder = value; break;
                     case "--out": options.OutFile = value; break;
                     default: throw new ArgumentException($"unknown option {args[i]}");

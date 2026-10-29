@@ -555,7 +555,7 @@ class PartyHost {
         }
         if (--this.ticksToState <= 0 && this.encounter.started) {
             this.ticksToState = Math.max(1, partyTicks(this.config.stateBroadcastSeconds));
-            this.broadcast(partyEncodeEncounterState(this.encounter, ++this.stateSequence, this.recentShares, this.recentHits), PartyNoSlot);
+            this.broadcast(partyEncodeEncounterState(this.encounter, ++this.stateSequence, this.recentShares, this.recentHits, this.marks), PartyNoSlot);
             for (let slot = 0; slot < PartyMaxSlots; slot++) {
                 this.recentShares[slot] = 0;
                 this.recentHits[slot] = 0;

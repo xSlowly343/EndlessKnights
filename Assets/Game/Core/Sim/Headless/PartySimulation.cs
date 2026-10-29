@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using Game.Core.Content;
+using Game.Core.Content.Gems;
+using Game.Core.Content.Synergy;
+using Game.Core.Math;
 using Game.Core.Party;
 using Game.Core.Party.Transport;
 using Game.Core.Stats;
@@ -30,24 +33,36 @@ namespace Game.Core.Sim.Headless
             _loss = loss;
         }
 
+        public IReadOnlyDictionary<HeroClass, IReadOnlyList<GemDef>>? Kits { get; set; }
+        public SynergyRules? Synergy { get; set; }
+
         public PartySimulationResult Run(double seconds)
         {
+            var synergy = Synergy ?? _data.Synergy;
             var network = new LoopbackNetwork(_seed, MinLatencyMs, MaxLatencyMs, _loss, 4096);
-            var host = new PartyHost(new PartyEncounter(_data.Party, _data.Stages, _seed), network.Connect(HostId), _data.Party);
+            var host = new PartyHost(new PartyEncounter(_data.Party, _data.Stages, _seed), network.Connect(HostId), _data.Party, _data.Rift, synergy);
             var loops = new GameLoop[_classes.Count];
             var clients = new PartyClient[_classes.Count];
             var kills = new long[_classes.Count];
             var fails = new int[_classes.Count];
+            var damage = new BigNumber[_classes.Count];
+            var uptime = new SynergyUptime[_classes.Count];
             for (var i = 0; i < loops.Length; i++)
             {
                 var memberSeed = _seed + (ulong)i * 7919;
                 var hero = new StatSheet();
                 if (_damageMultiplier != 1)
                     hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, _damageMultiplier - 1));
-                loops[i] = new GameLoop(_data, new BotInput(_profile, memberSeed ^ 0x5EEDUL), new GameState(memberSeed) { Class = _classes[i] }, hero);
+                var state = new GameState(memberSeed) { Class = _classes[i] };
+                if (Kits != null && Kits.TryGetValue(_classes[i], out var kit))
+                    state.OwnedGems.AddRange(kit);
+                loops[i] = new GameLoop(_data, new BotInput(_profile, memberSeed ^ 0x5EEDUL), state, hero);
+                if (Synergy != null)
+                    loops[i].Synergy.UseRules(Synergy);
                 clients[i] = new PartyClient(loops[i], network.Connect(FirstMemberId + (ulong)i), HostId, _data.Party);
                 clients[i].Join();
                 new PlayerBot(_data, loops[i], double.PositiveInfinity).EquipStartingSkills();
+                uptime[i] = new SynergyUptime(synergy);
             }
 
             var totalTicks = (long)System.Math.Round(seconds * GameLoop.TicksPerSecond);
@@ -58,6 +73,8 @@ namespace Game.Core.Sim.Headless
                 {
                     CastEverything(loops[i]);
                     loops[i].Tick();
+                    damage[i] += loops[i].Combat.LastTickDamage * BigNumber.FromDouble(clients[i].DamageTaken);
+                    uptime[i].Count(loops[i].Synergy);
                     kills[i] += loops[i].Events.CountOf(GameEventKind.EnemyKilled);
                     fails[i] += loops[i].Events.CountOf(GameEventKind.BossFailed);
                     loops[i].Events.Clear();
@@ -70,7 +87,12 @@ namespace Game.Core.Sim.Headless
             {
                 var state = loops[i].State;
                 var share = host.Kills > 0 ? clients[i].PartyRewards / (double)host.Kills : 0;
-                members.Add(new PartyMemberResult(_classes[i], state.Stage, state.HighestStage, kills[i], fails[i], state.RunGoldEarned, share, clients[i].MissedKills));
+                members.Add(new PartyMemberResult(_classes[i], state.Stage, state.HighestStage, kills[i], fails[i], state.RunGoldEarned, share, clients[i].MissedKills)
+                {
+                    Damage = damage[i],
+                    SharesDealt = clients[i].SharesDealt,
+                    Synergy = uptime[i]
+                });
             }
             return new PartySimulationResult(seconds, host.Kills, members);
         }

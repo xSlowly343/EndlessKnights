@@ -42,6 +42,8 @@ namespace Game.Sim
             var profile = new BotProfile(options.KeysPerSecond, options.ClicksPerSecond, options.MousePxPerSecond);
             if (options.SupportHours > 0)
                 return RunSupports(data, options);
+            if (options.SynergyHours > 0)
+                return SynergyReport.Run(data, folder, profile, options);
             if (options.Days > 0)
                 return RunPlayer(data, profile, options);
             if (options.StandardParties || options.Party != null)

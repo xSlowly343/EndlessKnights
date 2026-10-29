@@ -38,7 +38,7 @@ test("encounter state and roster encode like the core", () => {
   assert.strictEqual(hex(party.partyEncodeEncounterState(encounter, vectors.encode.encounterState.sequence)), vectors.encode.encounterState.hex);
   assert.strictEqual(hex(party.partyEncodeRoster(encounter, vectors.encode.roster.version, numbers)), vectors.encode.roster.hex);
   const busy = vectors.encode.busyState;
-  assert.strictEqual(hex(party.partyEncodeEncounterState(encounter, busy.sequence, busy.recent, busy.hits)), busy.hex, "recent shares and hits, hits above 255 are cut");
+  assert.strictEqual(hex(party.partyEncodeEncounterState(encounter, busy.sequence, busy.recent, busy.hits, busy.marks)), busy.hex, "recent shares, hits and marks, hits above 255 are cut");
 });
 
 test("kill and moment encode like the core", () => {

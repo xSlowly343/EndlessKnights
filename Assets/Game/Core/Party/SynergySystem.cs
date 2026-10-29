@@ -122,14 +122,54 @@ namespace Game.Core.Party
 
         private int OwnSkillMarks()
         {
-            var marks = 0;
+            var marks = StateMarks();
             var skills = _state.Skills;
             for (var i = 0; i < skills.Count; i++)
             {
+                var gemMarks = _rules.MaskOf(skills[i].Skill);
+                if (gemMarks == 0)
+                    continue;
                 if (skills[i].Active)
-                    marks |= _rules.MaskOf(skills[i].Skill);
+                    marks |= gemMarks;
+                else if (skills[i].LastCastTick >= 0)
+                    marks |= Lingering(gemMarks, _state.Tick - skills[i].LastCastTick);
             }
             return marks;
+        }
+
+        private int Lingering(int gemMarks, long ticksSinceCast)
+        {
+            var marks = 0;
+            for (var mark = 0; gemMarks >> mark != 0; mark++)
+            {
+                if ((gemMarks & (1 << mark)) != 0 && ticksSinceCast < _rules.MarkTicks(mark))
+                    marks |= 1 << mark;
+            }
+            return marks;
+        }
+
+        private int StateMarks()
+        {
+            var sources = _rules.StateMarks;
+            var marks = 0;
+            if (_state.EnemyAlive && _state.PoisonStacks > 0)
+                marks |= sources.Poison;
+            if (_state.EnemyAlive && _state.BurnStacks > 0)
+                marks |= sources.Burn;
+            if (sources.Minions != 0 && MinionsOut())
+                marks |= sources.Minions;
+            return marks;
+        }
+
+        private bool MinionsOut()
+        {
+            var minions = _state.Minions;
+            for (var i = 0; i < minions.Length; i++)
+            {
+                if (minions[i].Standing)
+                    return true;
+            }
+            return false;
         }
 
         private ulong ActiveResponses(out int perMarkCount)

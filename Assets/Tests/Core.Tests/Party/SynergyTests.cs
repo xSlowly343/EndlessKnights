@@ -1,4 +1,5 @@
 using Game.Core.Content;
+using Game.Core.Content.Gems;
 using Game.Core.Content.Synergy;
 using Game.Core.Party;
 using Game.Core.Sim;
@@ -147,6 +148,62 @@ namespace Game.Core.Tests.Party
 
             Assert.That(loop.Synergy.ConstellationActive(IndexOfConstellation("elements")), Is.True);
             Assert.That(loop.Synergy.ReactionActive(overload), Is.True);
+        }
+
+        [Test]
+        public void AStrikeMarkStaysForTheSecondsOfItsMarkAfterTheCast()
+        {
+            var loop = Hero(HeroClass.Viking);
+            var gem = TestWorld.Data.Gems["no_mercy"];
+            TestWorld.ArmFor(loop, gem);
+            loop.Skills.Equip(gem);
+            loop.State.Resource = 1000;
+            loop.RequestCast(0);
+
+            loop.Tick();
+
+            Assert.That(loop.Synergy.OwnMarks & Mark("stun"), Is.EqualTo(Mark("stun")), "the heavy axe stuns");
+            var ticks = Rules.MarkTicks(IndexOfMark("stun"));
+            for (var tick = 0; tick < ticks; tick++)
+                loop.Tick();
+            Assert.That(loop.Synergy.OwnMarks & Mark("stun"), Is.Zero, "two seconds later the stun is gone");
+        }
+
+        [Test]
+        public void PoisonFireAndMinionsAreMarksWhileTheyAreThere()
+        {
+            var loop = Hero(HeroClass.Captain);
+            loop.State.PoisonStacks = 3;
+            loop.State.BurnStacks = 2;
+            loop.State.Minions[1] = new MinionState { Kind = MinionKind.Cannon, TicksLeft = 1000 };
+
+            loop.Synergy.Tick();
+
+            Assert.That(loop.Synergy.OwnMarks, Is.EqualTo(Mark("poison") | Mark("fire") | Mark("summon")));
+            loop.State.PoisonStacks = 0;
+            loop.State.BurnStacks = 0;
+            loop.State.Minions[1] = default;
+            loop.Synergy.Tick();
+            Assert.That(loop.Synergy.OwnMarks, Is.Zero);
+        }
+
+        [TestCase(@"""stun"": 2,", @"""frost"": 2,", "unknown mark 'frost'")]
+        [TestCase(@"""minionsOut"": ""summon""", @"""cannonsOut"": ""summon""", "unknown state 'cannonsOut'")]
+        public void BrokenMarkSourcesAreReported(string from, string to, string message)
+        {
+            var json = TestData.ReadGameDataFile(SynergyRules.FileName).Replace(from, to);
+
+            var error = Assert.Throws<ContentException>(() => SynergyRules.Load(json))!;
+
+            Assert.That(error.Message, Does.Contain(message));
+        }
+
+        private static int IndexOfMark(string mark)
+        {
+            for (var i = 0; i < Rules.Marks.Count; i++)
+                if (Rules.Marks[i] == mark)
+                    return i;
+            throw new System.ArgumentException(mark);
         }
 
         [Test]

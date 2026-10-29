@@ -478,6 +478,7 @@ namespace Game.Core.Party
                 {
                     state.SetRecent(slot, (float)_recentShares[slot]);
                     state.SetHits(slot, _recentHits[slot]);
+                    state.SetMarks(slot, _encounter.Member(slot).Joined ? _marks[slot] : 0);
                     _recentShares[slot] = 0;
                     _recentHits[slot] = 0;
                 }
