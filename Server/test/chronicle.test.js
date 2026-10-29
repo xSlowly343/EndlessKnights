@@ -134,3 +134,25 @@ test("night bosses are counted by Moscow time and give the owls", () => {
   killBoss(host, [0, 1]);
   assert.strictEqual(host.chronicle.nightBosses, 1);
 });
+
+test("Rift depth counts the best Rift of the party, mentor hours add up", () => {
+  const value = party.chronicleEmpty();
+  const delta = (riftDepth, mentorSeconds) => Object.assign(stats(0, 0, 0), { riftDepth: riftDepth, mentorSeconds: mentorSeconds });
+  party.chronicleAdd(value, delta(60, 0), 1000, rules);
+  party.chronicleAdd(value, delta(40, 0), 2000, rules);
+  assert.strictEqual(value.stats.riftDepth, 60, "a shallower Rift later does not lower the record");
+  const earned = party.chronicleAdd(value, delta(101, 9 * 3600), 3000, rules);
+  assert.deepStrictEqual(plain(earned.map((got) => got.feat)), ["rift_conquerors"]);
+  assert.deepStrictEqual(plain(party.chronicleAdd(value, delta(0, 3600), 4000, rules).map((got) => got.feat)), ["teacher_and_student"]);
+  const view = party.chronicleView("p1", value, rules);
+  assert.strictEqual(view.stats.riftDepth, 101);
+  assert.strictEqual(view.stats.mentorHours, 10);
+  assert.strictEqual(view.feats.find((feat) => feat.id === "rift_conquerors").tracked, true);
+});
+
+test("the Rift board tells the match how deep the party is", () => {
+  const nk = new FakeNakama();
+  const riftId = 1793102400;
+  assert.strictEqual(party.riftBoardAdd(nk, riftId, "p1", "night_shift", 0, ["ann"], riftId * 1000), 1, "entering the Rift is depth 1");
+  assert.strictEqual(party.riftBoardAdd(nk, riftId, "p1", "night_shift", 4, ["ann"], riftId * 1000 + 1000), 5);
+});

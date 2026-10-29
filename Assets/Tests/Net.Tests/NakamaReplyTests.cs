@@ -177,7 +177,7 @@ namespace Game.Net.Tests
         [Test]
         public void AChronicleIsReadFromTheServerReply()
         {
-            var json = NakamaJson.Parse("{\"partyId\":\"p1\",\"banner\":2,\"titles\":[\"full_orchestra\"],\"stats\":{\"bossesTogether\":120,\"hoursTogether\":3.5,\"fullOrchestra\":1},"
+            var json = NakamaJson.Parse("{\"partyId\":\"p1\",\"banner\":2,\"titles\":[\"full_orchestra\"],\"stats\":{\"bossesTogether\":120,\"hoursTogether\":3.5,\"fullOrchestra\":1,\"riftDepth\":64,\"mentorHours\":2.5},"
                 + "\"feats\":[{\"id\":\"old_guard\",\"kind\":\"bossesTogether\",\"tracked\":true,\"levels\":[100,1000,10000],\"level\":1,\"at\":1792760000000,\"progress\":120},"
                 + "{\"id\":\"night_shift\",\"kind\":\"nightBosses\",\"tracked\":false,\"levels\":[20],\"level\":0,\"at\":0,\"progress\":0}],"
                 + "\"records\":[{\"at\":1792760000000,\"kind\":\"feat\",\"name\":\"\",\"feat\":\"old_guard\",\"level\":1},{\"at\":1792700000000,\"kind\":\"joined\",\"name\":\"Bob\",\"feat\":\"\",\"level\":0}]}");
@@ -188,6 +188,8 @@ namespace Game.Net.Tests
             Assert.That(chronicle.Titles, Is.EqualTo(new[] { "full_orchestra" }));
             Assert.That(chronicle.BossesTogether, Is.EqualTo(120));
             Assert.That(chronicle.HoursTogether, Is.EqualTo(3.5));
+            Assert.That(chronicle.RiftDepth, Is.EqualTo(64));
+            Assert.That(chronicle.MentorHours, Is.EqualTo(2.5));
             Assert.That(chronicle.Feats[0].Levels, Is.EqualTo(new[] { 100.0, 1000, 10000 }));
             Assert.That(chronicle.Feats[0].Level, Is.EqualTo(1));
             Assert.That(chronicle.Feats[1].Tracked, Is.False);

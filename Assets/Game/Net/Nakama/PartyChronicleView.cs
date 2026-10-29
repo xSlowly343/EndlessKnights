@@ -16,6 +16,8 @@ namespace Game.Net.Nakama
             var stats = NakamaJson.Field(json, "stats");
             BossesTogether = stats == null ? 0 : (long)NakamaJson.Number(stats, "bossesTogether");
             HoursTogether = stats == null ? 0 : NakamaJson.Number(stats, "hoursTogether");
+            RiftDepth = stats == null ? 0 : (long)NakamaJson.Number(stats, "riftDepth");
+            MentorHours = stats == null ? 0 : NakamaJson.Number(stats, "mentorHours");
             var feats = new List<PartyFeatView>();
             foreach (var feat in NakamaJson.Items(json, "feats"))
                 feats.Add(new PartyFeatView(feat));
@@ -31,6 +33,8 @@ namespace Game.Net.Nakama
         public IReadOnlyList<string> Titles { get; }
         public long BossesTogether { get; }
         public double HoursTogether { get; }
+        public long RiftDepth { get; }
+        public double MentorHours { get; }
         public IReadOnlyList<PartyFeatView> Feats { get; }
         public IReadOnlyList<PartyRecordView> Records { get; }
 

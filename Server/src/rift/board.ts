@@ -45,7 +45,7 @@ function riftEmptyBoard(riftId: number): RiftBoard {
     return { riftId: riftId, endUnixMs: riftPartyEnd(riftId), parties: {}, settled: false };
 }
 
-function riftBoardAdd(nk: nkruntime.Nakama, riftId: number, partyId: string, title: string, cleared: number, members: string[], nowUnixMs: number): boolean {
+function riftBoardAdd(nk: nkruntime.Nakama, riftId: number, partyId: string, title: string, cleared: number, members: string[], nowUnixMs: number): number {
     let created = false;
     const board = riftUpdate(nk, riftBoardKey(riftId), () => {
         created = true;
@@ -73,7 +73,7 @@ function riftBoardAdd(nk: nkruntime.Nakama, riftId: number, partyId: string, tit
             index.rifts.push(riftId);
             return true;
         });
-    return board !== null && !board.settled;
+    return board !== null && !board.settled && board.parties[partyId] ? 1 + board.parties[partyId].cleared : 0;
 }
 
 function riftSettlesAt(riftId: number): number {

@@ -24,7 +24,7 @@ class PartyHost {
     cutShares = 0;
     repeatedShares = 0;
     clockUnixMs = 0;
-    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0 };
+    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0 };
     friendBosses: { [userId: string]: number } = {};
     pairTicks: { [pair: string]: number } = {};
     readonly flags = [0, 0, 0, 0];
@@ -164,8 +164,10 @@ class PartyHost {
     takeChronicle(): ChronicleStats {
         const taken = {
             bossesTogether: this.chronicle.bossesTogether, ticksTogether: this.chronicle.ticksTogether, fullOrchestra: this.chronicle.fullOrchestra,
-            nightBosses: this.chronicle.nightBosses
+            nightBosses: this.chronicle.nightBosses, riftDepth: this.chronicle.riftDepth || 0, mentorSeconds: this.chronicle.mentorSeconds || 0
         };
+        this.chronicle.riftDepth = 0;
+        this.chronicle.mentorSeconds = 0;
         this.chronicle.nightBosses = 0;
         this.chronicle.bossesTogether = 0;
         this.chronicle.ticksTogether = 0;

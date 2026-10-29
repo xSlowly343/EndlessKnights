@@ -58,7 +58,7 @@ test("after the rift every member gets a letter with the reward of the party pla
   assert.strictEqual(letters("ann").unread, 0, "no letter before the last update after the end");
 
   party.riftSettleDue(nk, logger, end + rift.boardUpdateMs);
-  assert.strictEqual(party.riftBoardAdd(nk, riftId, second, "night_shift", 100, ["cid"], end + rift.boardUpdateMs), false, "a late update does not change a settled board");
+  assert.strictEqual(party.riftBoardAdd(nk, riftId, second, "night_shift", 100, ["cid"], end + rift.boardUpdateMs), 0, "a late update does not change a settled board");
   const mail = letters("ann");
   assert.strictEqual(mail.unread, 1);
   const letter = mail.letters[0];

@@ -106,27 +106,30 @@ function mentorStudentUntil(nk: nkruntime.Nakama, studentId: string): number {
     return (mentorBornAt(nk, [studentId])[studentId] || 0) + MentorServerRules.studentDays * PartyDayMs;
 }
 
-function mentorTogether(nk: nkruntime.Nakama, logger: nkruntime.Logger, pairs: { [pair: string]: number }, nowUnixMs: number): void {
+function mentorTogether(nk: nkruntime.Nakama, logger: nkruntime.Logger, pairs: { [pair: string]: number }, nowUnixMs: number): number {
+    let counted = 0;
     for (const pair of Object.keys(pairs)) {
         const ids = pair.split("|");
         if (ids.length !== 2 || !(pairs[pair] > 0))
             continue;
         try {
-            mentorCount(nk, logger, ids, pairs[pair], nowUnixMs);
+            if (mentorCount(nk, logger, ids, pairs[pair], nowUnixMs))
+                counted += pairs[pair];
         } catch (error) {
             logger.warn("mentor hours were not counted for %s: %s", pair, String(error));
         }
     }
+    return counted;
 }
 
-function mentorCount(nk: nkruntime.Nakama, logger: nkruntime.Logger, ids: string[], seconds: number, nowUnixMs: number): void {
+function mentorCount(nk: nkruntime.Nakama, logger: nkruntime.Logger, ids: string[], seconds: number, nowUnixMs: number): boolean {
     const roles = mentorRoles(nk, ids, nowUnixMs);
     if (roles.students.length !== 1 || roles.mentors.length !== 1)
-        return;
+        return false;
     const studentId = roles.students[0];
     const mentorId = roles.mentors[0];
     if (!mentorFree(roles.profiles[mentorId], studentId, nowUnixMs))
-        return;
+        return false;
     const until = mentorStudentUntil(nk, studentId);
     mentorChange(nk, mentorId, (profile) => {
         if (profile.studentId !== studentId) {
@@ -146,6 +149,7 @@ function mentorCount(nk: nkruntime.Nakama, logger: nkruntime.Logger, ids: string
     });
     for (const level of reached)
         mentorReward(nk, logger, mentorId, studentId, level, nowUnixMs);
+    return true;
 }
 
 function mentorReward(nk: nkruntime.Nakama, logger: nkruntime.Logger, mentorId: string, studentId: string, level: number, nowUnixMs: number): void {

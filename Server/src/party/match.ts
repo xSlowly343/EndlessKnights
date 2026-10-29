@@ -172,7 +172,7 @@ function partyWriteBoard(nk: nkruntime.Nakama, state: PartyMatchState, riftId: n
     const title = group ? partyMetaOf(group).title : "";
     const cleared = host.riftCleared;
     host.riftCleared = 0;
-    riftBoardAdd(nk, riftId, state.partyId, title, cleared, members, nowUnixMs);
+    host.chronicle.riftDepth = Math.max(host.chronicle.riftDepth || 0, riftBoardAdd(nk, riftId, state.partyId, title, cleared, members, nowUnixMs));
 }
 
 function partyLeaderOf(nk: nkruntime.Nakama, partyId: string): string | null {
@@ -184,6 +184,10 @@ function partyLeaderOf(nk: nkruntime.Nakama, partyId: string): string | null {
 
 function partyFlushChronicle(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: PartyMatchState): void {
     const host = state.host;
+    const pairs = host.takePairTicks();
+    for (const pair of Object.keys(pairs))
+        pairs[pair] /= PartyTicksPerSecond;
+    host.chronicle.mentorSeconds = (host.chronicle.mentorSeconds || 0) + mentorTogether(nk, logger, pairs, Date.now());
     const delta = host.takeChronicle();
     const members: string[] = [];
     for (const member of host.encounter.members)
@@ -192,10 +196,6 @@ function partyFlushChronicle(nk: nkruntime.Nakama, logger: nkruntime.Logger, sta
     for (const got of chronicleFlush(nk, logger, state.partyId, delta, members))
         logger.info("party %s: feat %s, level %d", state.partyId, got.feat, got.level);
     walletGrantBosses(nk, logger, host.takeFriendBosses(), Date.now());
-    const pairs = host.takePairTicks();
-    for (const pair of Object.keys(pairs))
-        pairs[pair] /= PartyTicksPerSecond;
-    mentorTogether(nk, logger, pairs, Date.now());
 }
 
 function partyMatchSignal(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, dispatcher: nkruntime.MatchDispatcher,
