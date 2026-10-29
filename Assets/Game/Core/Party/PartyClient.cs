@@ -157,6 +157,16 @@ namespace Game.Core.Party
 
         public bool RiftOpen(long nowUnixMs) => _loop.Rift.WindowAt(nowUnixMs) != null;
 
+        public bool CanCallBoss => InParty && !IsGuest && IsLeader && _state.Farming && _state.EnemyKind != PartyEnemyKind.Boss && !_state.Switching;
+
+        public bool RequestBossFight()
+        {
+            if (!CanCallBoss)
+                return false;
+            SendToHost(PartyCodec.EncodeBossRequest(_out));
+            return true;
+        }
+
         public bool CancelWorldSwitch()
         {
             if (!WorldSwitching)
@@ -532,7 +542,12 @@ namespace Game.Core.Party
             var gameState = _loop.State;
             var fresh = _state.EnemyId > _rewardedUpTo;
             if (fresh && (_localEnemyId != _state.EnemyId || gameState.Stage != _localStage || !gameState.EnemyAlive))
+            {
+                var newEnemy = _localEnemyId != _state.EnemyId;
                 SpawnLocal(_state.EnemyId, _state.EnemyKind == PartyEnemyKind.Boss, _state.EnemySeed, _state.BarFull, _state.KillsOnStage, _state.Farming, _state.BossTicksLeft);
+                if (newEnemy)
+                    HitWithChain();
+            }
             if (_localEnemyId == 0 || _localEnemyId <= _rewardedUpTo)
                 return;
             gameState.EnemyHp = _unit * System.Math.Max(Predicted(), StageSystem.StaggerHpShare);
@@ -554,6 +569,18 @@ namespace Game.Core.Party
             _localStage = _loop.State.Stage;
             var weakened = _state.EnemyId == enemyId && _state.Weakened;
             _unit = _loop.Stages.SpawnLinked(boss, seed, barFull, killsOnStage, farming, bossTicksLeft, weakened, weakened ? _state.WeakenedGold : 0);
+        }
+
+        private void HitWithChain()
+        {
+            var damage = _loop.Stages.TakeLinkedChainDamage();
+            if (damage.Sign <= 0 || _unit.Sign <= 0)
+                return;
+            var share = (damage / _unit).ToDouble();
+            if (!(share > 0))
+                return;
+            _total += share;
+            _sharesSinceState += share * System.Math.Max(1, _state.DamageTaken);
         }
 
         private double Predicted()

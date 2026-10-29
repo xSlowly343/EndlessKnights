@@ -170,6 +170,10 @@ namespace Game.Core.Party
                     if (LeaderId == 0 || _encounter.Member(slot).PlayerId == LeaderId)
                         RequestWorld(request);
                     break;
+                case PartyMessageKind.BossRequest:
+                    if (LeaderId == 0 || _encounter.Member(slot).PlayerId == LeaderId)
+                        _encounter.RequestBossFight();
+                    break;
             }
         }
 

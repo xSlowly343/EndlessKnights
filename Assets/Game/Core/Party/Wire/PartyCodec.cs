@@ -5,7 +5,7 @@ namespace Game.Core.Party.Wire
         public const int MaxPacketBytes = 256;
 
         public static PartyMessageKind KindOf(byte[] buffer, int length) =>
-            length > 0 && buffer[0] <= (byte)PartyMessageKind.Synergy ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
+            length > 0 && buffer[0] <= (byte)PartyMessageKind.BossRequest ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
 
         public static int Encode(byte[] buffer, HelloMessage message)
         {
@@ -83,6 +83,8 @@ namespace Game.Core.Party.Wire
             message.Write(ref writer);
             return writer.Length;
         }
+
+        public static int EncodeBossRequest(byte[] buffer) => Start(buffer, PartyMessageKind.BossRequest).Length;
 
         public static int Encode(byte[] buffer, SynergyMessage message)
         {

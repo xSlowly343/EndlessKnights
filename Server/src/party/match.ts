@@ -174,9 +174,13 @@ function partyInvite(state: PartyMatchState, userId: string, untilUnixMs: number
 
 function partyHandleWorld(nk: nkruntime.Nakama, state: PartyMatchState, nowUnixMs: number): void {
     const host = state.host;
-    if (host.worldRequests.length === 0)
+    if (host.worldRequests.length === 0 && host.bossRequests.length === 0)
         return;
     const leader = partyLeaderOf(nk, state.partyId);
+    for (const slot of host.bossRequests)
+        if (leader === null || host.encounter.members[slot].playerId === leader)
+            host.encounter.requestBossFight();
+    host.bossRequests.length = 0;
     for (const request of host.worldRequests) {
         if (leader !== null && host.encounter.members[request.slot].playerId !== leader)
             continue;

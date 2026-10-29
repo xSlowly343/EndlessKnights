@@ -130,3 +130,19 @@ test("a rift that has ended is not restored", () => {
   assert.strictEqual(party.riftPartyOf(nk, state.partyId, end - 1), state.host.encounter.riftId);
   assert.strictEqual(party.riftPartyOf(nk, state.partyId, end), 0);
 });
+
+test("only the leader calls the boss back while the party farms", () => {
+  const { nk, call } = world("ann", "bob");
+  const state = match(nk, call, "ann", "bob");
+  const now = Date.now();
+  state.host.encounter.farming = true;
+  const bossRequest = new Uint8Array([16]).buffer;
+  state.host.receive("bob", bossRequest);
+  step(nk, state, now);
+  assert.strictEqual(state.host.encounter.fightingBoss, false, "a member cannot call the boss");
+  state.host.receive("ann", bossRequest);
+  step(nk, state, now);
+  assert.strictEqual(state.host.encounter.fightingBoss, true);
+  assert.strictEqual(state.host.encounter.farming, false);
+  assert.strictEqual(state.host.bossRequests.length, 0);
+});

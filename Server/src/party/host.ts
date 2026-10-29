@@ -43,6 +43,7 @@ class PartyHost {
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
     readonly worldRequests: { slot: number; world: PartyWorld; cancel: boolean }[] = [];
+    readonly bossRequests: number[] = [];
     riftCleared = 0;
     private readonly allowance = [0, 0, 0, 0];
     private readonly hitAllowance = [0, 0, 0, 0];
@@ -166,6 +167,9 @@ class PartyHost {
                     this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel });
                 break;
             }
+            case PartyMessageKind.BossRequest:
+                this.bossRequests.push(slot);
+                break;
             case PartyMessageKind.Synergy: {
                 const synergy = partyDecodeSynergy(data, this.config.synergyReactions);
                 if (synergy !== null) {

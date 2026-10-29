@@ -413,6 +413,17 @@ namespace Game.Core.Sim
             return hp * (1 - share);
         }
 
+        public BigNumber TakeLinkedChainDamage()
+        {
+            var damage = TakeQueueFront();
+            if (damage.Sign <= 0)
+                return BigNumber.Zero;
+            _state.PendingResource += _state.WoundedSpawnResource;
+            _state.WoundedSpawnResource = 0;
+            _events.Add(GameEvent.Damage(_state.Tick, damage, DamageSource.Skill, HitFlags.None));
+            return damage;
+        }
+
         private void ApplyChainDamage()
         {
             var damage = TakeQueueFront();

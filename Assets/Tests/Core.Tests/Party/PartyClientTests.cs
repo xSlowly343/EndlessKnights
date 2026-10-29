@@ -556,6 +556,54 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void ChainDamageFromTheQueueHitsTheNextPartyEnemyAtTheHost()
+        {
+            var rig = new Rig(5, 40);
+            rig.Run(5);
+            rig.Run(1, false);
+            var player = rig.Players[0];
+            var killsBefore = rig.Host.Kills;
+            var enemy = rig.Host.Encounter.EnemyId;
+            player.Loop.State.QueueDamage[0] = TestWorld.Data.Stages.EnemyHp(5) * 100;
+            rig.Host.Encounter.ApplyDamage(1, enemy, 100);
+
+            rig.Run(1.5, false);
+
+            Assert.That(rig.Host.Kills - killsBefore, Is.EqualTo(2), "the queued hit kills the next enemy at once");
+            Assert.That(player.Loop.State.QueueDamage[0].Sign, Is.Zero);
+            Assert.That(rig.Host.Encounter.EnemyId, Is.EqualTo(enemy + 2));
+        }
+
+        [Test]
+        public void TheLeaderCallsTheBossBackFromFarming()
+        {
+            var rig = new Rig(5, 40);
+            rig.Host.LeaderId = rig.Players[0].Id;
+            while (!rig.Host.Encounter.FightingBoss)
+                rig.Run(0.5);
+            rig.Run(TestWorld.Data.Stages.BossTimerSeconds + 2, false);
+            Assert.That(rig.Host.Encounter.Farming, Is.True);
+            rig.Run(1, false);
+            var leader = rig.Players[0].Client;
+            var other = rig.Players[1].Client;
+            other.IsLeader = true;
+            Assert.That(other.RequestBossFight(), Is.True);
+            rig.Run(1, false);
+            Assert.That(rig.Host.Encounter.FightingBoss, Is.False, "only the party leader calls the boss");
+
+            Assert.That(leader.CanCallBoss, Is.False);
+            leader.IsLeader = true;
+            Assert.That(leader.CanCallBoss, Is.True);
+            Assert.That(leader.RequestBossFight(), Is.True);
+            rig.Run(1, false);
+
+            Assert.That(rig.Host.Encounter.FightingBoss, Is.True);
+            Assert.That(rig.Players[0].Loop.State.FightingBoss, Is.True);
+            Assert.That(rig.Players[1].Loop.State.FightingBoss, Is.True);
+            Assert.That(leader.CanCallBoss, Is.False);
+        }
+
+        [Test]
         public void FocusIsNotPassedWhenNobodyTypes()
         {
             var rig = new Rig(5, 5);
