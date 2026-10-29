@@ -279,6 +279,63 @@ namespace Game.Core.Tests.Party
             Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1));
         }
 
+        private static bool HasDamage(Member member, double value)
+        {
+            foreach (var modifier in member.Loop.PartyBuffs.Modifiers)
+            {
+                if (modifier.Stat == CombatStats.Damage && modifier.Kind == ModifierKind.Increased && System.Math.Abs(modifier.Value - value) < 1e-6)
+                    return true;
+            }
+            return false;
+        }
+
+        [Test]
+        public void TheForemansHammerStacksReachTheParty()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var bannerbearer = rig.Members[0];
+            var friend = rig.Members[1];
+            var hammer = bannerbearer.Equip("foreman_hammer");
+
+            bannerbearer.Cast(hammer);
+            rig.Run(4.5);
+            bannerbearer.Cast(hammer);
+            rig.Run(1.5);
+
+            Assert.That(bannerbearer.Loop.State.Skills[hammer].Stacks, Is.EqualTo(2));
+            Assert.That(HasDamage(friend, 0.06), Is.True, "two stacks of +3% reach the ally");
+            Assert.That(friend.Loop.PartyBuffs.Ally(bannerbearer.Client.OwnSlot).Auras[0].Gem!.Id, Is.EqualTo("foreman_hammer"));
+
+            rig.Run(15);
+
+            Assert.That(HasDamage(friend, 0.06), Is.False, "the stacks run out for the ally too");
+        }
+
+        [Test]
+        public void TheStarChartWeakensTheNextEnemiesAtTheHost()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var oracle = rig.Members[0];
+            oracle.Loop.State.Class = HeroClass.Oracle;
+            var omens = oracle.Equip("three_omens");
+            var orb = oracle.Loop.State.Weapons.Left!;
+            oracle.Loop.State.Weapons.Left = new WeaponItem(orb.Base, orb.Rarity, new List<string>(orb.Skills) { "three_omens" });
+
+            Assert.That(oracle.Loop.Skills.Armed(omens), Is.True);
+            oracle.Cast(omens);
+            rig.Run(0.5);
+
+            Assert.That(rig.Host.Encounter.WeakenedSpawns, Is.InRange(1, 3));
+            Assert.That(rig.Host.Encounter.WeakenShare, Is.EqualTo(0.1).Within(1e-9));
+            var weakened = rig.Host.Encounter.WeakenedSpawns;
+            var enemy = rig.Host.Encounter.EnemyId;
+            while (rig.Host.Encounter.EnemyId == enemy)
+                rig.Run(0.1);
+            Assert.That(rig.Host.Encounter.WeakenedSpawns, Is.EqualTo(weakened - 1), "each new enemy of the party uses one");
+        }
+
         [Test]
         public void OfferSurvivesTheWire()
         {

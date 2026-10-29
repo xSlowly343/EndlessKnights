@@ -65,10 +65,12 @@ namespace Game.Core.Tests.Party
                 .Append(Hex(PartyCodec.Encode(_buffer, new HelloMessage { HeroClass = 9, Stage = 1234567890123, SharePerSecondCap = 2.5 }))).Append("\" },\n");
             builder.Append("    \"damageBatch\": { \"sequence\": 17, \"enemyId\": 3, \"keys\": 0.5, \"mouse\": 0.25, \"skills\": 0.125, \"dot\": 0.0625, \"summons\": 0.03125, \"hits\": 9, \"crits\": 2, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new DamageBatchMessage { Sequence = 17, EnemyId = 3, Keys = 0.5, Mouse = 0.25, Skills = 0.125, Dot = 0.0625, Summons = 0.03125, Hits = 9, Crits = 2 }))).Append("\" },\n");
-            builder.Append("    \"castEffect\": { \"effectId\": -99, \"onEnemy\": true, \"strength\": 0.15, \"seconds\": 10, \"timerSlow\": 0.3, \"repeatSeconds\": 0, \"hex\": \"")
+            builder.Append("    \"castEffect\": { \"effectId\": -99, \"onEnemy\": true, \"strength\": 0.15, \"seconds\": 10, \"timerSlow\": 0.3, \"repeatSeconds\": 0, \"weakenEnemies\": 0, \"weakenShare\": 0, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new CastEffectMessage { EffectId = -99, OnEnemy = true, Strength = 0.15, Seconds = 10, TimerSlow = 0.3 }))).Append("\" },\n");
-            builder.Append("    \"repeatCast\": { \"effectId\": 12, \"onEnemy\": true, \"strength\": 0, \"seconds\": 0, \"timerSlow\": 0, \"repeatSeconds\": 7, \"hex\": \"")
+            builder.Append("    \"repeatCast\": { \"effectId\": 12, \"onEnemy\": true, \"strength\": 0, \"seconds\": 0, \"timerSlow\": 0, \"repeatSeconds\": 7, \"weakenEnemies\": 0, \"weakenShare\": 0, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new CastEffectMessage { EffectId = 12, OnEnemy = true, RepeatSeconds = 7 }))).Append("\" },\n");
+            builder.Append("    \"weakenCast\": { \"effectId\": 31, \"onEnemy\": true, \"strength\": 0, \"seconds\": 0, \"timerSlow\": 0, \"repeatSeconds\": 0, \"weakenEnemies\": 5, \"weakenShare\": 0.25, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new CastEffectMessage { EffectId = 31, OnEnemy = true, WeakenEnemies = 5, WeakenShare = 0.25 }))).Append("\" },\n");
             builder.Append("    \"worldRequest\": { \"world\": 1, \"cancel\": false, \"riftId\": 1761652800, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new WorldRequestMessage { World = PartyWorld.Rift, RiftId = 1761652800 }))).Append("\" },\n");
             builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"hex\": \"")

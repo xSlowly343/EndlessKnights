@@ -46,6 +46,7 @@ namespace Game.Core.Content.Gems
         public double BossTimerSeconds { get; set; }
         public double LastsAboveResource { get; set; }
         public double WeakenShare { get; set; }
+        public bool PartyStacks { get; set; }
         public double ExtraSecondsPerPoint { get; set; }
         public bool BestOfTwo { get; set; }
         public int QueueTargets { get; set; }

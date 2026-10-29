@@ -5,6 +5,8 @@ interface PartyEncounterRules {
     disconnectGraceSeconds: number;
     lateDamageSeconds: number;
     maxEnemyDamageTaken: number;
+    maxWeakenedSpawns: number;
+    maxWeakenShare: number;
     minBossTimerRate: number;
     worldSwitchSeconds: number;
     enemiesPerStage: number;

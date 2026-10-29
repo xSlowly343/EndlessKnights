@@ -28,6 +28,8 @@ namespace Game.Core.Party
 
         public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
 
+        public static bool Shared(GemDef gem) => gem.Skill?.Effect is AuraEffect { Party: true } || SkillSystem.StacksOf(gem) != null;
+
         public PartyBuffRules Rules => _rules;
 
         public AllyOffer Ally(int slot) => _allies[slot];
@@ -141,12 +143,19 @@ namespace Game.Core.Party
                     if (!aura.Active)
                         continue;
                     aura.Suppressed = OwnAuraActive(aura.Gem!);
-                    if (aura.Suppressed || !Strongest(slot, aura) || !(aura.Gem!.Skill?.Effect is AuraEffect effect))
+                    if (aura.Suppressed || !Strongest(slot, aura))
                         continue;
-                    for (var m = 0; m < effect.Modifiers.Count; m++)
+                    if (aura.Gem!.Skill?.Effect is AuraEffect effect)
                     {
-                        var modifier = effect.Modifiers[m];
-                        _buffer.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * aura.Strength, modifier.Tags));
+                        for (var m = 0; m < effect.Modifiers.Count; m++)
+                        {
+                            var modifier = effect.Modifiers[m];
+                            _buffer.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * aura.Strength, modifier.Tags));
+                        }
+                    }
+                    else if (SkillSystem.StacksOf(aura.Gem) is { } stacks)
+                    {
+                        _buffer.Add(new Modifier(stacks.PerStack.Stat, stacks.PerStack.Kind, System.Math.Min(stacks.MaxTotal, aura.Strength), stacks.PerStack.Tags));
                     }
                 }
             }
@@ -175,7 +184,7 @@ namespace Game.Core.Party
             var skills = _state.Skills;
             for (var i = 0; i < skills.Count; i++)
             {
-                if (skills[i].AuraApplied && skills[i].Skill.NetId == gem.NetId)
+                if ((skills[i].AuraApplied || skills[i].Stacks > 0) && skills[i].Skill.NetId == gem.NetId)
                     return true;
             }
             return false;

@@ -263,3 +263,21 @@ test("resource for allies goes to the others, capped and once per cooldown", () 
   host.receive("user-1", gift(20));
   assert.strictEqual(sent()[0].amount, 20);
 });
+
+test("a weaken cast makes the next enemies of the party come weaker", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.tick();
+  const view = new DataView(new ArrayBuffer(47));
+  view.setUint8(0, 3);
+  view.setInt32(1, 31, true);
+  view.setUint8(5, 1);
+  view.setUint8(38, 3);
+  view.setFloat64(39, 0.25, true);
+  host.receive("user-a", view.buffer);
+  assert.strictEqual(host.encounter.weakenedSpawns, 3);
+  host.receive("user-a", batch(1, host.encounter.enemyId, 1.5, 1));
+  host.tick();
+  assert.strictEqual(host.encounter.weakenedSpawns, 2);
+  assert.ok(Math.abs(host.encounter.barLeft - 0.75 * host.encounter.barFull) < 1e-9, "the new enemy comes a quarter weaker");
+});

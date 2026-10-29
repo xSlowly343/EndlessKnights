@@ -36,6 +36,8 @@ const rules = {
   maxMessagesPerSecond: party.packets.maxMessagesPerSecond,
   lateDamageSeconds: party.lateDamageSeconds,
   maxEnemyDamageTaken: party.maxEnemyDamageTaken,
+  maxWeakenedSpawns: party.weaken.maxEnemies,
+  maxWeakenShare: party.weaken.maxShare,
   minBossTimerRate: party.timer.minBossRate,
   worldSwitchSeconds: party.worldSwitchSeconds,
   repeatMaxSeconds: party.timer.repeatMaxSeconds,

@@ -41,7 +41,8 @@ namespace Game.Core.Tests.Party
                 Clockmaker(),
                 Worlds(),
                 FocusRelay(),
-                HelpCall()
+                HelpCall(),
+                WeakenNext()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -52,6 +53,8 @@ namespace Game.Core.Tests.Party
                    $"    \"disconnectGraceSeconds\": {N(rules.DisconnectGraceSeconds)},\n" +
                    $"    \"lateDamageSeconds\": {N(rules.LateDamageSeconds)},\n" +
                    $"    \"maxEnemyDamageTaken\": {N(rules.MaxEnemyDamageTaken)},\n" +
+                   $"    \"maxWeakenedSpawns\": {rules.MaxWeakenedSpawns},\n" +
+                   $"    \"maxWeakenShare\": {N(rules.MaxWeakenShare)},\n" +
                    $"    \"minBossTimerRate\": {N(rules.Timer.MinBossRate)},\n" +
                    $"    \"worldSwitchSeconds\": {N(rules.WorldSwitchSeconds)},\n" +
                    $"    \"minShare\": {N(rules.Contribution.MinShare)},\n" +
@@ -66,6 +69,26 @@ namespace Game.Core.Tests.Party
                    $"    \"bossTimerSeconds\": {N(stages.BossTimerSeconds)},\n" +
                    $"    \"bossHpMultiplier\": {N(stages.BossHpMultiplier)}\n" +
                    "  },\n  \"scenarios\": [\n" + string.Join(",\n", scenarios) + "\n  ]\n}\n";
+        }
+
+        private static string WeakenNext()
+        {
+            var r = Recorder("weakened enemies come from the host one after another", 515);
+            r.Weaken(3, 0.25);
+            r.Join(1);
+            r.Join(2);
+            r.Weaken(3, 0.25);
+            r.Hit(0, 2);
+            r.Weaken(2, 0.1);
+            r.Weaken(50, 0.9);
+            for (var kill = 0; kill < 11; kill++)
+                r.Hit(1, 2);
+            r.Weaken(0, 0.5);
+            r.Weaken(2, -1);
+            r.Weaken(2, 0.2);
+            r.SwitchWorld(PartyWorld.Rift, 1761652800);
+            r.Hit(0, 2);
+            return r.ToJson();
         }
 
         private static string HelpCall()

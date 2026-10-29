@@ -48,13 +48,14 @@ test("kill and moment encode like the core", () => {
 });
 
 test("client messages decode like the core", () => {
-  const { hello, damageBatch, castEffect, repeatCast, worldRequest, presence } = vectors.decode;
+  const { hello, damageBatch, castEffect, repeatCast, weakenCast, worldRequest, presence } = vectors.decode;
   const strip = (o) => { const copy = Object.assign({}, o); delete copy.hex; return copy; };
   const plain = (o) => JSON.parse(JSON.stringify(o));
   assert.deepStrictEqual(plain(party.partyDecodeHello(bytes(hello.hex))), strip(hello));
   assert.deepStrictEqual(plain(party.partyDecodeDamageBatch(bytes(damageBatch.hex))), strip(damageBatch));
   assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(castEffect.hex))), strip(castEffect));
   assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(repeatCast.hex))), strip(repeatCast));
+  assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(weakenCast.hex))), strip(weakenCast));
   assert.deepStrictEqual(plain(party.partyDecodePresence(bytes(presence.hex))), strip(presence));
   assert.deepStrictEqual(plain(party.partyDecodeWorldRequest(bytes(worldRequest.hex))), strip(worldRequest));
 });

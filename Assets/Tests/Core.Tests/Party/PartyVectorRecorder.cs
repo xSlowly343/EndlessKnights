@@ -58,6 +58,9 @@ namespace Game.Core.Tests.Party
 
         public int RelayTarget(int from) => Record($"\"op\": \"relayTarget\", \"slot\": {from}", () => _encounter.RelayTarget(from));
 
+        public bool Weaken(int enemies, double share) =>
+            Record($"\"op\": \"weaken\", \"enemies\": {enemies}, \"share\": {Number(share)}", () => _encounter.WeakenNext(enemies, share));
+
         public bool RequestBoss() => Record("\"op\": \"requestBoss\"", () => _encounter.RequestBossFight());
 
         public void Advance(int ticks) => Record($"\"op\": \"advance\", \"ticks\": {ticks}", () =>
@@ -115,6 +118,8 @@ namespace Game.Core.Tests.Party
                 .Append(", \"riftId\": ").Append(e.RiftId)
                 .Append(", \"pendingWorld\": ").Append(e.PendingWorld)
                 .Append(", \"switchTicksLeft\": ").Append(e.SwitchTicksLeft)
+                .Append(", \"weakenedSpawns\": ").Append(e.WeakenedSpawns)
+                .Append(", \"weakenShare\": ").Append(Number(e.WeakenShare))
                 .Append(", \"members\": [");
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {

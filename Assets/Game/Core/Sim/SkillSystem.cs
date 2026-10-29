@@ -132,6 +132,27 @@ namespace Game.Core.Sim
 
         public bool IsNative(int index) => index >= 0 && index < _state.Skills.Count && IsNative(_state.Skills[index]);
 
+        public static StacksEffect? StacksOf(GemDef gem) => gem.Skill?.Effect switch
+        {
+            StacksEffect stacks => stacks,
+            StrikeEffect strike => strike.Stacks,
+            PulseEffect pulse => pulse.Stacks,
+            _ => null
+        };
+
+        public bool SharesStacks(int index, out StacksEffect stacks)
+        {
+            stacks = null!;
+            if (index < 0 || index >= _state.Skills.Count)
+                return false;
+            var slot = _state.Skills[index];
+            var found = StacksOf(slot.Skill);
+            if (found == null || slot.Stacks <= 0 || !(found.Party || (IsNative(slot) && slot.Def.Native.PartyStacks)))
+                return false;
+            stacks = found;
+            return true;
+        }
+
         public CastResult TryCast(int index, bool triggered = false)
         {
             if (index < 0 || index >= _state.Skills.Count)

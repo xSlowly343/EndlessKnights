@@ -344,12 +344,12 @@ namespace Game.Core.Party
                 var previousGem = aura.Gem;
                 var previousTicks = aura.TicksLeft;
                 aura.Clear();
-                if (!offered.Active || !gems.TryGetByNetId(offered.GemNetId, out var gem) || !(gem.Skill?.Effect is AuraEffect effect) || !effect.Party)
+                if (!offered.Active || !gems.TryGetByNetId(offered.GemNetId, out var gem) || !PartyBuffs.Shared(gem))
                     continue;
                 aura.Gem = gem;
                 aura.Strength = System.Math.Max(0, offered.Strength);
                 aura.TicksLeft = offered.TicksLeft;
-                if (!effect.Reserves && (!ReferenceEquals(previousGem, gem) || offered.TicksLeft > previousTicks + 1))
+                if (gem.Skill!.Effect is AuraEffect { Reserves: false } && (!ReferenceEquals(previousGem, gem) || offered.TicksLeft > previousTicks + 1))
                     NoteAllyCast(gem.Skill!.CooldownSeconds);
             }
             _loop.PartyBuffs.MarkChanged();
@@ -613,6 +613,14 @@ namespace Game.Core.Party
                         Seconds = gameEvent.Gem.Skill!.DurationSeconds,
                         TimerSlow = debuff.BossTimerSlow
                     }));
+                else if (gameEvent.Kind == GameEventKind.SkillCast && effect is WeakenNextEffect weaken)
+                    SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
+                    {
+                        EffectId = gameEvent.Gem!.NetId,
+                        OnEnemy = true,
+                        WeakenEnemies = (byte)System.Math.Min(byte.MaxValue, weaken.Enemies),
+                        WeakenShare = WeakenShare(gameEvent.Gem, weaken)
+                    }));
                 else if (gameEvent.Kind == GameEventKind.SkillCast && effect is RepeatRecentEffect)
                     SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
                     {
@@ -635,6 +643,18 @@ namespace Game.Core.Party
             _loop.State.FocusDropped = 0;
             if (Status == PartyLink.Linked && !IsGuest)
                 SendToHost(PartyCodec.Encode(_out, FocusRelayMessage.Dropped(dropped)));
+        }
+
+        private double WeakenShare(GemDef gem, WeakenNextEffect weaken)
+        {
+            var share = weaken.HpShare;
+            var skills = _loop.State.Skills;
+            for (var i = 0; i < skills.Count; i++)
+            {
+                if (ReferenceEquals(skills[i].Skill, gem) && _loop.Skills.IsNative(i))
+                    share = System.Math.Max(share, gem.Skill!.Native.WeakenShare);
+            }
+            return share;
         }
 
         private void WatchSignal()
@@ -707,6 +727,18 @@ namespace Game.Core.Party
                 if (!slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura) || !aura.Party)
                     continue;
                 offer.SetAura(count++, new OfferedAura { GemNetId = slot.Skill.NetId, Strength = (float)slot.AuraStrength, TicksLeft = slot.ActiveTicks });
+            }
+            for (var i = 0; i < skills.Count && count < PartyBuffRules.MaxAuras; i++)
+            {
+                if (!_loop.Skills.SharesStacks(i, out var stacks))
+                    continue;
+                var slot = skills[i];
+                offer.SetAura(count++, new OfferedAura
+                {
+                    GemNetId = slot.Skill.NetId,
+                    Strength = (float)System.Math.Min(stacks.MaxTotal, stacks.PerStack.Value * slot.Stacks),
+                    TicksLeft = slot.StackTicks > 0 ? slot.StackTicks : slot.ActiveTicks
+                });
             }
             SendToHost(PartyCodec.Encode(_out, offer));
         }

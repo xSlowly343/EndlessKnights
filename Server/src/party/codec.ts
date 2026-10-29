@@ -106,7 +106,7 @@ class PartyReader {
 
 interface HelloMessage { heroClass: number; stage: number; sharePerSecondCap: number; }
 interface DamageBatchMessage { sequence: number; enemyId: number; keys: number; mouse: number; skills: number; dot: number; summons: number; hits: number; crits: number; }
-interface CastEffectMessage { effectId: number; onEnemy: boolean; strength: number; seconds: number; timerSlow: number; repeatSeconds: number; }
+interface CastEffectMessage { effectId: number; onEnemy: boolean; strength: number; seconds: number; timerSlow: number; repeatSeconds: number; weakenEnemies: number; weakenShare: number; }
 interface PresenceMessage { presence: PartyPresence; stage: number; resource: number; }
 interface WorldRequestMessage { world: PartyWorld; cancel: boolean; riftId: number; }
 interface FocusRelayMessage { from: number; to: number; focus: number; }
@@ -146,7 +146,7 @@ function partyBatchTotal(batch: DamageBatchMessage): number {
 
 function partyDecodeCastEffect(data: ArrayBuffer): CastEffectMessage | null {
     const r = partyOpen(data, PartyMessageKind.CastEffect);
-    const message = { effectId: r.int(), onEnemy: r.bool(), strength: r.double(), seconds: r.double(), timerSlow: r.double(), repeatSeconds: r.double() };
+    const message = { effectId: r.int(), onEnemy: r.bool(), strength: r.double(), seconds: r.double(), timerSlow: r.double(), repeatSeconds: r.double(), weakenEnemies: r.byte(), weakenShare: r.double() };
     return r.complete ? message : null;
 }
 

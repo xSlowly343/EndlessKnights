@@ -73,6 +73,8 @@ class PartyEncounter {
     pendingWorld = PartyNoWorld;
     pendingRiftId = 0;
     switchTicksLeft = 0;
+    weakenedSpawns = 0;
+    weakenShare = 0;
     private readonly recent: number[] = [];
     private bossTimerCarry = 0;
     private previousEnemyId = 0;
@@ -294,6 +296,14 @@ class PartyEncounter {
         return this.typing(slot) ? applied : Math.min(applied, this.idleRoom(slot));
     }
 
+    weakenNext(enemies: number, share: number): boolean {
+        if (!(enemies > 0) || !(share > 0) || !this.started)
+            return false;
+        this.weakenedSpawns = Math.max(this.weakenedSpawns, Math.min(this.rules.maxWeakenedSpawns, Math.floor(enemies)));
+        this.weakenShare = Math.max(this.weakenShare, Math.min(this.rules.maxWeakenShare, share));
+        return true;
+    }
+
     requestBossFight(): boolean {
         if (!this.started || !this.farming || this.fightingBoss)
             return false;
@@ -329,6 +339,8 @@ class PartyEncounter {
         this.farming = false;
         this.farmKills = 0;
         this.previousEnemyId = 0;
+        this.weakenedSpawns = 0;
+        this.weakenShare = 0;
         for (let i = 0; i < this.effects.length; i++)
             this.effects[i] = { id: 0, damageTaken: 0, timerSlow: 0, ticksLeft: 0, owner: 0 };
         for (let i = 0; i < this.recent.length; i++)
@@ -496,12 +508,21 @@ class PartyEncounter {
             this.fighters += member.weight;
         }
         this.barFull = partyHpMultiplier(this.rules, this.fighters);
-        this.barLeft = this.barFull;
+        this.barLeft = this.barFull * (1 - this.takeWeaken());
         this.addEvent(PartyEventKind.EnemySpawned);
         if (kind !== PartyEnemyKind.Boss)
             return;
         this.bossTicksLeft = partyTicks(this.rules.bossTimerSeconds);
         this.addEvent(PartyEventKind.BossStarted);
+    }
+
+    private takeWeaken(): number {
+        if (this.weakenedSpawns <= 0)
+            return 0;
+        const share = this.weakenShare;
+        if (--this.weakenedSpawns === 0)
+            this.weakenShare = 0;
+        return share;
     }
 
     private counts(slot: number): boolean {

@@ -23,6 +23,7 @@ function run(encounter, step) {
     case "repeat": return encounter.repeatRecent(step.slot, step.seconds);
     case "requestBoss": return encounter.requestBossFight();
     case "relayTarget": return encounter.relayTarget(step.slot);
+    case "weaken": return encounter.weakenNext(step.enemies, step.share);
     case "proposeWorld": return encounter.proposeWorld(step.world, step.riftId);
     case "cancelWorld": return encounter.cancelWorld();
     case "switchWorld": return encounter.switchWorld(step.world, step.riftId);
@@ -35,7 +36,7 @@ function run(encounter, step) {
 }
 
 function compare(encounter, expect, where) {
-  for (const key of ["tick", "enemyId", "enemyKind", "killsOnStage", "farming", "farmKills", "bossTicksLeft", "fighters", "world", "riftId", "pendingWorld", "switchTicksLeft"])
+  for (const key of ["tick", "enemyId", "enemyKind", "killsOnStage", "farming", "farmKills", "bossTicksLeft", "fighters", "world", "riftId", "pendingWorld", "switchTicksLeft", "weakenedSpawns"])
     assert.strictEqual(encounter[key], expect[key], `${where}: ${key}`);
   assert.strictEqual(encounter.enemySeed, expect.enemySeed, `${where}: enemySeed`);
   close(encounter.barFull, expect.barFull, `${where}: barFull`);
@@ -44,6 +45,7 @@ function compare(encounter, expect, where) {
   close(encounter.bossTimerRate(), expect.bossTimerRate, `${where}: bossTimerRate`);
   close(encounter.loopShare, expect.loopShare, `${where}: loopShare`);
   close(encounter.savedBossTicks, expect.savedBossTicks, `${where}: savedBossTicks`);
+  close(encounter.weakenShare, expect.weakenShare, `${where}: weakenShare`);
   expect.members.forEach((member, slot) => {
     const actual = encounter.members[slot];
     if (member === null) {

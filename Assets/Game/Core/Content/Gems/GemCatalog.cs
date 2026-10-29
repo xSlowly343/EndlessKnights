@@ -376,7 +376,10 @@ namespace Game.Core.Content.Gems
                         Pick(node.Field("on"), StackTriggers, "kill or keyHit"),
                         ModifierReader.Read(node.Field("perStack")),
                         node.Field("max").AsNumber(0, 1e6),
-                        node.HasField("stackSeconds") ? node.Field("stackSeconds").AsNumber(0.1, 3600) : 0);
+                        node.HasField("stackSeconds") ? node.Field("stackSeconds").AsNumber(0.1, 3600) : 0)
+                    {
+                        Party = node.HasField("party") && node.Field("party").AsBool()
+                    };
                 case "inputHits":
                     return new InputHitsEffect(
                         Number(node, "pxPerHit", 1e6),
@@ -505,7 +508,10 @@ namespace Game.Core.Content.Gems
                 StackTrigger.KeyHit,
                 ModifierReader.Read(node.Field("perStack")),
                 node.Field("max").AsNumber(0, 1e6),
-                node.Field("stackSeconds").AsNumber(0.1, 3600));
+                node.Field("stackSeconds").AsNumber(0.1, 3600))
+            {
+                Party = node.HasField("party") && node.Field("party").AsBool()
+            };
 
         private static PotionEffect ReadPotion(ContentNode node)
         {
@@ -567,6 +573,7 @@ namespace Game.Core.Content.Gems
                 BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
                 LastsAboveResource = Number(node, "lastsAboveResource", 1000),
                 WeakenShare = Number(node, "weakenShare", 0.99),
+                PartyStacks = node.HasField("partyStacks") && node.Field("partyStacks").AsBool(),
                 ExtraSecondsPerPoint = Number(node, "extraSecondsPerPoint", 100),
                 BestOfTwo = node.HasField("bestOfTwo") && node.Field("bestOfTwo").AsBool(),
                 QueueTargets = node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,

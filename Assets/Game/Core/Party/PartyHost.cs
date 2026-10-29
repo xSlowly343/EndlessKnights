@@ -182,6 +182,11 @@ namespace Game.Core.Party
 
         private void Cast(int slot, in CastEffectMessage effect)
         {
+            if (effect.WeakenEnemies > 0)
+            {
+                _encounter.WeakenNext(effect.WeakenEnemies, effect.WeakenShare);
+                return;
+            }
             if (!(effect.RepeatSeconds > 0))
             {
                 _encounter.ApplyEnemyEffect(effect.EffectId, effect.Strength, effect.Seconds, slot, effect.TimerSlow);

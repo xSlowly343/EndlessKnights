@@ -744,7 +744,7 @@
       "tags": ["Skill"],
       "cost": {"resource": 15},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3, "stacks": {"perStack": {"stat": "damage", "kind": "increased", "value": 0.03}, "max": 0.15, "stackSeconds": 8}},
+      "effect": {"type": "strike", "multiplier": 3, "stacks": {"perStack": {"stat": "damage", "kind": "increased", "value": 0.03}, "max": 0.15, "stackSeconds": 8, "party": true}},
       "native": {"stackSeconds": 12}
     },
     {

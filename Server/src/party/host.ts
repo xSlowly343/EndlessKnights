@@ -313,6 +313,10 @@ class PartyHost {
     }
 
     private cast(slot: number, effect: CastEffectMessage): void {
+        if (effect.weakenEnemies > 0) {
+            this.encounter.weakenNext(effect.weakenEnemies, effect.weakenShare);
+            return;
+        }
         if (!(effect.repeatSeconds > 0)) {
             this.encounter.applyEnemyEffect(effect.effectId, effect.strength, effect.seconds, slot, effect.timerSlow);
             return;

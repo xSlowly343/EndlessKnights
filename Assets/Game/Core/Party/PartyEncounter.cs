@@ -51,6 +51,8 @@ namespace Game.Core.Party
         public byte PendingWorld { get; private set; } = NoWorld;
         public long PendingRiftId { get; private set; }
         public int SwitchTicksLeft { get; private set; }
+        public int WeakenedSpawns { get; private set; }
+        public double WeakenShare { get; private set; }
         public bool Switching => PendingWorld != NoWorld;
         public bool Started => EnemyId != 0;
         public PartyEventQueue Events { get; } = new PartyEventQueue();
@@ -320,6 +322,15 @@ namespace Game.Core.Party
             return Typing(slot) ? applied : System.Math.Min(applied, IdleRoom(slot));
         }
 
+        public bool WeakenNext(int enemies, double share)
+        {
+            if (enemies <= 0 || !(share > 0) || !Started)
+                return false;
+            WeakenedSpawns = System.Math.Max(WeakenedSpawns, System.Math.Min(_rules.MaxWeakenedSpawns, enemies));
+            WeakenShare = System.Math.Max(WeakenShare, System.Math.Min(_rules.MaxWeakenShare, share));
+            return true;
+        }
+
         public bool RequestBossFight()
         {
             if (!Started || !Farming || FightingBoss)
@@ -359,6 +370,8 @@ namespace Game.Core.Party
             Farming = false;
             FarmKills = 0;
             _previousEnemyId = 0;
+            WeakenedSpawns = 0;
+            WeakenShare = 0;
             System.Array.Clear(_effects, 0, _effects.Length);
             System.Array.Clear(_recent, 0, _recent.Length);
             Events.Add(new PartyEvent(PartyEventKind.WorldChanged, Tick, EnemyId, EnemyKind));
@@ -522,12 +535,22 @@ namespace Game.Core.Party
                 Fighters += member.Weight;
             }
             BarFull = _rules.HpMultiplier(Fighters);
-            BarLeft = BarFull;
+            BarLeft = BarFull * (1 - TakeWeaken());
             Events.Add(new PartyEvent(PartyEventKind.EnemySpawned, Tick, EnemyId, kind));
             if (kind != PartyEnemyKind.Boss)
                 return;
             BossTicksLeft = Ticks(_stages.BossTimerSeconds);
             Events.Add(new PartyEvent(PartyEventKind.BossStarted, Tick, EnemyId, kind));
+        }
+
+        private double TakeWeaken()
+        {
+            if (WeakenedSpawns <= 0)
+                return 0;
+            var share = WeakenShare;
+            if (--WeakenedSpawns == 0)
+                WeakenShare = 0;
+            return share;
         }
 
         private bool Counts(int slot)

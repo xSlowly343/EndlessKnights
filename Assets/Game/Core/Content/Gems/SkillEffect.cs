@@ -312,6 +312,7 @@ namespace Game.Core.Content.Gems
         public Modifier PerStack { get; }
         public double MaxTotal { get; }
         public double StackSeconds { get; }
+        public bool Party { get; set; }
         public bool Passive => Trigger == StackTrigger.Kill;
 
         public Modifier For(int stacks) =>
