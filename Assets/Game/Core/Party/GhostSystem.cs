@@ -17,6 +17,7 @@ namespace Game.Core.Party
         private bool _marked;
         private long _activeTicks;
         private long _seenBossKills;
+        private long _thankedBosses;
 
         public GhostSystem(PartyGhostRules rules, GameState state, CombatSystem combat, StageSystem stage, SynergySystem synergy)
         {
@@ -63,6 +64,13 @@ namespace Game.Core.Party
             var seconds = _activeTicks / GameLoop.TicksPerSecond;
             _activeTicks -= seconds * GameLoop.TicksPerSecond;
             return seconds;
+        }
+
+        public long TakeThanks()
+        {
+            var bosses = BossesHelped - _thankedBosses;
+            _thankedBosses = BossesHelped;
+            return bosses;
         }
 
         public void NoteInput(bool hasInput)

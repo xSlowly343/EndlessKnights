@@ -41,6 +41,13 @@ namespace Game.Net.Nakama
             return ghost != null && ghost.Kind == JsonKind.Object ? Snapshot(ghost, synergy) : (GhostSnapshot?)null;
         }
 
+        public async Task<long> ThankAsync(string ownerId, long bosses, CancellationToken cancel = default)
+        {
+            var payload = NakamaJson.Object(("userId", NakamaJson.Quote(ownerId)), ("bosses", bosses.ToString(CultureInfo.InvariantCulture)));
+            var reply = NakamaJson.Parse(await _client.RpcAsync(_session, "ghost_thanks", payload, cancel).ConfigureAwait(false));
+            return (long)NakamaJson.Number(reply, "granted");
+        }
+
         public static GhostSnapshot Snapshot(JsonValue ghost, SynergyRules synergy)
         {
             var marks = new List<string>();

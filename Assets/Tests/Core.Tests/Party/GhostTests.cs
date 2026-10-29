@@ -55,6 +55,8 @@ namespace Game.Core.Tests.Party
             for (var i = 0; i < 2000 && loop.Ghost.BossesHelped == 0; i++)
                 loop.Tick();
             Assert.That(loop.Ghost.BossesHelped, Is.EqualTo(1));
+            Assert.That(loop.Ghost.TakeThanks(), Is.EqualTo(1), "the owner is thanked once for each boss");
+            Assert.That(loop.Ghost.TakeThanks(), Is.Zero);
         }
 
         [Test]

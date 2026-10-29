@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "currencies": ["friendship", "seals"],
+  "dayUtcOffsetMinutes": 180,
+  "ledgerSize": 20,
+  "sources": [
+    { "id": "boss_together", "currency": "friendship", "amount": 1, "dailyCap": 20 },
+    { "id": "ghost_helped", "currency": "friendship", "amount": 1, "dailyCap": 10, "perFriendDailyCap": 3 }
+  ]
+}

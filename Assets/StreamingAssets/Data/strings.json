@@ -874,6 +874,13 @@
     "clan.reason.full": { "ru": "в клане нет мест", "en": "the clan is full" },
     "clan.reason.notFound": { "ru": "клан распался или закрыл набор", "en": "the clan is gone or closed" },
     "clan.reason.officers": { "ru": "офицеров уже предельное число", "en": "the clan already has all its officers" },
-    "clan.reason.leaderOnly": { "ru": "это может только глава клана", "en": "only the clan leader can do that" }
+    "clan.reason.leaderOnly": { "ru": "это может только глава клана", "en": "only the clan leader can do that" },
+    "wallet.currency.friendship": { "ru": "Знаки дружбы", "en": "Friendship tokens" },
+    "wallet.currency.seals": { "ru": "Печати клана", "en": "Clan seals" },
+    "wallet.balance": { "ru": "{0} {1}", "en": "{0} {1}" },
+    "wallet.today": { "ru": "{0}: {1} из {2} сегодня", "en": "{0}: {1} of {2} today" },
+    "wallet.entry": { "ru": "{0} {1} · {2}", "en": "{0} {1} · {2}" },
+    "wallet.source.boss_together": { "ru": "боссы вместе с отрядом", "en": "bosses with your party" },
+    "wallet.source.ghost_helped": { "ru": "ваш призрак помог другу", "en": "your ghost helped a friend" }
   }
 }

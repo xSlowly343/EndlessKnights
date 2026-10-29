@@ -27,6 +27,8 @@ const GhostHours = 24;
 const GhostHourMs = 3600 * 1000;
 const GhostMaxMarks = 10;
 const GhostWriteAttempts = 3;
+const GhostPickedKey = "picked";
+const GhostMaxThanks = 100;
 
 function ghostEmptyHours(): number[] {
     const hours: number[] = [];
@@ -162,5 +164,41 @@ function ghostPickRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkru
     if (fresh.length === 0)
         return JSON.stringify({ ghost: null });
     const picked = fresh[Math.floor(Math.random() * fresh.length)];
+    ghostNotePicked(nk, userId, picked.id, now);
     return JSON.stringify({ ghost: ghostView(nk, picked.id, picked.record, now) });
+}
+
+function ghostNotePicked(nk: nkruntime.Nakama, userId: string, ownerId: string, nowUnixMs: number): void {
+    const objects = nk.storageRead([{ collection: GhostCollection, key: GhostPickedKey, userId: userId }]);
+    const previous = objects.length > 0 ? objects[0].value : null;
+    const thanked: { [ownerId: string]: number } = previous && previous.day === walletDayOf(nowUnixMs) && previous.thanked ? previous.thanked : {};
+    nk.storageWrite([{
+        collection: GhostCollection, key: GhostPickedKey, userId: userId, value: { ownerId: ownerId, at: nowUnixMs, day: walletDayOf(nowUnixMs), thanked: thanked },
+        permissionRead: 0, permissionWrite: 0
+    }]);
+}
+
+function ghostThanksRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    const userId = partyCaller(ctx);
+    const request = partyRequest(payload);
+    const bosses = request.bosses;
+    if (typeof request.userId !== "string" || typeof bosses !== "number" || bosses !== Math.floor(bosses) || bosses < 1 || bosses > GhostMaxThanks)
+        throw new Error("bad request");
+    const now = Date.now();
+    const objects = nk.storageRead([{ collection: GhostCollection, key: GhostPickedKey, userId: userId }]);
+    const picked = objects.length > 0 ? objects[0].value : null;
+    if (!picked || picked.ownerId !== request.userId)
+        throw new Error("not your ghost");
+    const day = walletDayOf(now);
+    const thanked: { [ownerId: string]: number } = picked.day === day && picked.thanked ? picked.thanked : {};
+    const source = walletSource("ghost_helped");
+    const room = source.perFriendDailyCap > 0 ? Math.max(0, source.perFriendDailyCap - (thanked[picked.ownerId] || 0)) : bosses;
+    const counted = Math.min(bosses, room);
+    const granted = counted > 0 ? walletGrant(nk, picked.ownerId, source.id, counted, now) : 0;
+    thanked[picked.ownerId] = (thanked[picked.ownerId] || 0) + counted;
+    nk.storageWrite([{
+        collection: GhostCollection, key: GhostPickedKey, userId: userId, value: { ownerId: picked.ownerId, at: picked.at, day: day, thanked: thanked },
+        version: objects[0].version, permissionRead: 0, permissionWrite: 0
+    }]);
+    return JSON.stringify({ granted: granted });
 }

@@ -191,6 +191,7 @@ function partyFlushChronicle(nk: nkruntime.Nakama, logger: nkruntime.Logger, sta
             members.push(member.playerId);
     for (const got of chronicleFlush(nk, logger, state.partyId, delta, members))
         logger.info("party %s: feat %s, level %d", state.partyId, got.feat, got.level);
+    walletGrantBosses(nk, logger, host.takeFriendBosses(), Date.now());
 }
 
 function partyMatchSignal(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, dispatcher: nkruntime.MatchDispatcher,

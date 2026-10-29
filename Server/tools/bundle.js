@@ -7,6 +7,7 @@ const party = JSON.parse(fs.readFileSync(path.join(data, "party.json"), "utf8"))
 const stages = JSON.parse(fs.readFileSync(path.join(data, "stages.json"), "utf8"));
 const rift = JSON.parse(fs.readFileSync(path.join(data, "rift.json"), "utf8"));
 const intake = JSON.parse(fs.readFileSync(path.join(root, "config", "intake.json"), "utf8"));
+const coopCurrency = JSON.parse(fs.readFileSync(path.join(data, "coop_currency.json"), "utf8"));
 const clan = JSON.parse(fs.readFileSync(path.join(data, "clan.json"), "utf8"));
 const chronicle = JSON.parse(fs.readFileSync(path.join(data, "party_chronicle.json"), "utf8"));
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
@@ -116,7 +117,18 @@ const clanRules = {
   languages: party.search.languages
 };
 
+if (coopCurrency.version !== 1)
+  throw new Error("coop_currency.json: version " + coopCurrency.version + " is not supported");
+const walletRules = {
+  currencies: coopCurrency.currencies,
+  dayUtcOffsetMinutes: coopCurrency.dayUtcOffsetMinutes,
+  ledgerSize: coopCurrency.ledgerSize,
+  sources: coopCurrency.sources.map((source) => ({
+    id: source.id, currency: source.currency, amount: source.amount, dailyCap: source.dailyCap, perFriendDailyCap: source.perFriendDailyCap || 0
+  }))
+};
+
 const ghostRules = Object.assign({}, party.ghost, { classes: Object.keys(party.search.classRoles).length });
 
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\n" + code);

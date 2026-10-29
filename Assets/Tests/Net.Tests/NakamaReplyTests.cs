@@ -56,6 +56,21 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheCoopWalletIsReadWithTodayAndTheLedger()
+        {
+            var wallet = CoopWalletView.From(NakamaJson.Parse("{\"balances\":{\"friendship\":46,\"seals\":320},"
+                + "\"today\":[{\"source\":\"boss_together\",\"currency\":\"friendship\",\"earned\":7,\"cap\":20}],"
+                + "\"ledger\":[{\"at\":1793188800000,\"source\":\"gift\",\"currency\":\"friendship\",\"amount\":-3},{\"at\":1793102400000,\"source\":\"boss_together\",\"currency\":\"friendship\",\"amount\":7}]}"));
+
+            Assert.That(wallet.Friendship, Is.EqualTo(46));
+            Assert.That(wallet.Seals, Is.EqualTo(320));
+            Assert.That(wallet.Today[0].Earned, Is.EqualTo(7));
+            Assert.That(wallet.Today[0].Cap, Is.EqualTo(20));
+            Assert.That(wallet.Ledger[0].Amount, Is.EqualTo(-3));
+            Assert.That(wallet.Ledger[1].Source, Is.EqualTo("boss_together"));
+        }
+
+        [Test]
         public void AClanIsReadFromTheServerReplyWithRolesAndLastSeen()
         {
             var clan = ClanView.From(NakamaJson.Parse("{\"id\":\"c1\",\"code\":\"K7MQ2X\",\"access\":\"open\",\"adjective\":\"lilac\",\"noun\":\"lanterns\",\"language\":\"ru\","

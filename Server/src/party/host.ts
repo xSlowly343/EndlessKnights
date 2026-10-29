@@ -25,6 +25,7 @@ class PartyHost {
     repeatedShares = 0;
     clockUnixMs = 0;
     readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0 };
+    friendBosses: { [userId: string]: number } = {};
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
     readonly worldRequests: { slot: number; world: PartyWorld; cancel: boolean }[] = [];
@@ -171,6 +172,12 @@ class PartyHost {
         return taken;
     }
 
+    takeFriendBosses(): { [userId: string]: number } {
+        const taken = this.friendBosses;
+        this.friendBosses = {};
+        return taken;
+    }
+
     private noteTogether(): void {
         let fighting = 0;
         for (let slot = 0; slot < PartyMaxSlots; slot++)
@@ -181,6 +188,7 @@ class PartyHost {
     }
 
     private noteBossKill(event: PartyEvent): void {
+        this.noteFriendBoss(event);
         const roles: string[] = [];
         for (let slot = 0; slot < PartyMaxSlots; slot++)
             if (event.shares[slot] > 0 && this.encounter.members[slot].joined)
@@ -192,6 +200,17 @@ class PartyHost {
             this.chronicle.fullOrchestra++;
         if (chronicleAtNight(this.clockUnixMs, ChronicleServerRules))
             this.chronicle.nightBosses++;
+    }
+
+    private noteFriendBoss(event: PartyEvent): void {
+        const paid: string[] = [];
+        for (let slot = 0; slot < PartyMaxSlots; slot++)
+            if ((event.rewarded & (1 << slot)) !== 0 && event.shares[slot] > 0 && this.encounter.members[slot].joined)
+                paid.push(this.encounter.members[slot].playerId);
+        if (paid.length < 2)
+            return;
+        for (const userId of paid)
+            this.friendBosses[userId] = (this.friendBosses[userId] || 0) + 1;
     }
 
     private returnWhenTheRiftCloses(): void {

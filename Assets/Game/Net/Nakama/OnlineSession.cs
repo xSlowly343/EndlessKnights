@@ -51,6 +51,7 @@ namespace Game.Net.Nakama
         public MailDirectory Mail => new MailDirectory(_client, _session);
         public GhostDirectory Ghosts => new GhostDirectory(_client, _session);
         public ClanDirectory Clans => new ClanDirectory(_client, _session);
+        public Task<CoopWalletView> WalletAsync(CancellationToken cancel = default) => CoopWalletView.FetchAsync(_client, _session, cancel);
 
         public Task<PartyView> CreateAsync(string access, string? language, CancellationToken cancel = default) =>
             Enter(directory => directory.CreateAsync(access, null, language, null, cancel), cancel);

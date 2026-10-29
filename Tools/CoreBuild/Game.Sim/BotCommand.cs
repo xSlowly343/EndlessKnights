@@ -123,6 +123,9 @@ namespace Game.Sim
             Play(new[] { bot }, seconds);
             Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "kills {0}, stage {1}, ghost damage {2}, bosses with the ghost {3}",
                 bot.Kills, bot.Loop.State.Stage, NumberFormatter.Format(bot.Loop.Ghost.Damage, NumberFormatSettings.Default), bot.Loop.Ghost.BossesHelped));
+            if (ghost != null)
+                Console.WriteLine("thanked the ghost's owner: " + await bot.ThankGhostAsync(ghost.Value.UserId).ConfigureAwait(false) + " friendship tokens");
+            await bot.ShowWalletAsync(Console.Out).ConfigureAwait(false);
             await bot.FinishAsync(true).ConfigureAwait(false);
             return 0;
         }
@@ -144,6 +147,8 @@ namespace Game.Sim
             var sameEnemy = leader.Client.EnemyId == friend.Client.EnemyId;
             var reactionsArrive = leader.ReactionsHeard > 0 && friend.ReactionsHeard > 0;
             Console.WriteLine("both linked " + linked + ", same enemy " + sameEnemy + ", reactions arrive " + reactionsArrive);
+            await leader.ShowWalletAsync(Console.Out).ConfigureAwait(false);
+            await friend.ShowWalletAsync(Console.Out).ConfigureAwait(false);
             var bothInRift = leader.Client.World == PartyWorld.Rift && friend.Client.World == PartyWorld.Rift;
             if (rift)
                 Console.WriteLine("both in the rift " + bothInRift);
@@ -256,6 +261,20 @@ namespace Game.Sim
                 if (ghost != null)
                     _loop.Ghost.Use(ghost.Value);
                 return ghost;
+            }
+
+            public async Task<long> ThankGhostAsync(string ownerId)
+            {
+                var bosses = _loop.Ghost.TakeThanks();
+                return bosses > 0 ? await _online.Ghosts.ThankAsync(ownerId, bosses).ConfigureAwait(false) : 0;
+            }
+
+            public async Task ShowWalletAsync(System.IO.TextWriter output)
+            {
+                var wallet = await _online.WalletAsync().ConfigureAwait(false);
+                output.WriteLine("wallet: " + CoopWalletText.Balance(CoopCurrencyRules.Friendship, wallet.Friendship) + ", " + CoopWalletText.Balance(CoopCurrencyRules.Seals, wallet.Seals));
+                foreach (var entry in wallet.Ledger)
+                    output.WriteLine("  " + CoopWalletText.Entry(entry.Currency, entry.Amount, entry.Source));
             }
 
             public async Task ShowRiftBoardAsync(System.IO.TextWriter output)
