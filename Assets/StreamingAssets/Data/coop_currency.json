@@ -5,6 +5,7 @@
   "ledgerSize": 20,
   "sources": [
     { "id": "boss_together", "currency": "friendship", "amount": 1, "dailyCap": 20 },
-    { "id": "ghost_helped", "currency": "friendship", "amount": 1, "dailyCap": 10, "perFriendDailyCap": 3 }
+    { "id": "ghost_helped", "currency": "friendship", "amount": 1, "dailyCap": 10, "perFriendDailyCap": 3 },
+    { "id": "clan_raid", "currency": "seals", "amount": 1, "dailyCap": 100000 }
   ]
 }

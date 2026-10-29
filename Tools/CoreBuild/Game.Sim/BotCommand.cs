@@ -17,7 +17,7 @@ namespace Game.Sim
     public static class BotCommand
     {
         public const string Usage =
-            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift] | --ghost | --clan new|open|quick|K7M-Q2X [--count 1]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
+            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift] | --ghost | --clan new|open|quick|K7M-Q2X [--count 1] | --raid [--count 3]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
 
         private const ulong BotSteamBase = 76561190000000000UL;
 
@@ -27,7 +27,7 @@ namespace Game.Sim
             for (var i = 0; i < args.Count; i++)
             {
                 var name = args[i];
-                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--rift" || name == "--chronicle" || name == "--ghost" || name == "--stay" || name == "--find" || name == "--quick";
+                var flag = name == "--create" || name == "--open" || name == "--pair" || name == "--rift" || name == "--chronicle" || name == "--ghost" || name == "--stay" || name == "--find" || name == "--quick" || name == "--raid";
                 if (flag)
                     options[name] = "yes";
                 else if (i + 1 < args.Count)
@@ -43,6 +43,8 @@ namespace Game.Sim
             var client = new NakamaClient(server, key);
             try
             {
+                if (options.ContainsKey("--raid"))
+                    return RunRaid(data, client, profile, seconds, (int)Number(options, "--count", 3)).GetAwaiter().GetResult();
                 if (options.TryGetValue("--clan", out var clan))
                     return RunClan(client, clan, (int)Number(options, "--count", 1)).GetAwaiter().GetResult();
                 if (options.ContainsKey("--ghost"))
@@ -108,6 +110,35 @@ namespace Game.Sim
             Console.WriteLine(ClanText.Name(clan!.Adjective, clan.Noun) + " [" + ClanText.Tag(clan.Adjective, clan.Noun) + "] · " + ClanText.Members(clan.Members.Count, clan.MaxMembers)
                 + " · " + ClanText.ActiveNow(clan.ActiveNow) + " · " + ClanText.Code(clan.Code));
             return 0;
+        }
+
+        private static async Task<int> RunRaid(GameData data, NakamaClient client, BotProfile profile, double seconds, int count)
+        {
+            var bots = new List<Bot>();
+            string? code = null;
+            for (var i = 0; i < count; i++)
+            {
+                var bot = await Bot.LoginAsync(data, client, profile, (HeroClass)(i % ((int)HeroClass.Captain + 1)), i + 1).ConfigureAwait(false);
+                code = await bot.EnterClanAsync(code).ConfigureAwait(false);
+                bots.Add(bot);
+            }
+            var pushTicks = (long)System.Math.Round(data.Raid.PushSeconds * GameLoop.TicksPerSecond);
+            for (var played = 0L; played < seconds * GameLoop.TicksPerSecond; played += pushTicks)
+            {
+                Play(bots, System.Math.Min(data.Raid.PushSeconds, seconds - (double)played / GameLoop.TicksPerSecond));
+                foreach (var bot in bots)
+                    await bot.PushRaidAsync().ConfigureAwait(false);
+            }
+            var raid = await bots[0].PushRaidAsync().ConfigureAwait(false);
+            var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            Console.WriteLine(RaidText.Boss(raid.Boss) + " · " + RaidText.EndsIn(raid.EndsAtUnixMs, now) + " · " + RaidText.Hp(raid.Left) + ", clan " + ClanText.Code(code!));
+            foreach (var layer in raid.Layers)
+                Console.WriteLine("  " + RaidText.Layer(layer.Id, layer.Left, layer.Hp) + " (" + RaidText.Input(layer.Id) + "), "
+                    + (layer.Hp - layer.Left).ToString("0.##", CultureInfo.InvariantCulture) + " of " + layer.Hp.ToString("0", CultureInfo.InvariantCulture));
+            foreach (var row in raid.Top)
+                Console.WriteLine("  " + row.Place + ". " + row.Name + " " + (row.Share * 100).ToString("0.#", CultureInfo.InvariantCulture) + "%");
+            await bots[0].FinishAsync(true).ConfigureAwait(false);
+            return raid.Players == count ? 0 : 1;
         }
 
         private static async Task<int> RunGhost(GameData data, NakamaClient client, BotProfile profile, HeroClass heroClass, double seconds)
@@ -262,6 +293,14 @@ namespace Game.Sim
                     _loop.Ghost.Use(ghost.Value);
                 return ghost;
             }
+
+            public async Task<string> EnterClanAsync(string? code)
+            {
+                var clan = code == null ? await _online.Clans.CreateAsync("invite", null, null, null).ConfigureAwait(false) : await _online.Clans.JoinByCodeAsync(code).ConfigureAwait(false);
+                return clan.Code;
+            }
+
+            public Task<RaidView> PushRaidAsync() => _online.PushRaidAsync(_loop.Data.Raid, _loop.Raid.Take());
 
             public async Task<long> ThankGhostAsync(string ownerId)
             {

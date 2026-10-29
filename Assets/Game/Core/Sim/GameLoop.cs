@@ -44,6 +44,7 @@ namespace Game.Core.Sim
         private readonly PartyBuffs _partyBuffs;
         private readonly SynergySystem _synergy;
         private readonly GhostSystem _ghost;
+        private readonly RaidTally _raid;
         private readonly RiftSystem _rift;
         private readonly WeaponSystem _weapons;
         private readonly DropSystem _drops;
@@ -119,6 +120,7 @@ namespace Game.Core.Sim
             _synergy = new SynergySystem(data.Synergy, state, hero);
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
+            _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events);
             RebuildTree();
             SyncPathSkill();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
@@ -147,6 +149,7 @@ namespace Game.Core.Sim
         public PartyBuffs PartyBuffs => _partyBuffs;
         public SynergySystem Synergy => _synergy;
         public GhostSystem Ghost => _ghost;
+        public RaidTally Raid => _raid;
         public RiftSystem Rift => _rift;
         public WeaponSystem Weapons => _weapons;
         public GearSystem Gear => _gear;
@@ -438,6 +441,7 @@ namespace Game.Core.Sim
             _partyBuffs.UseRules(data.Party.Buffs);
             _synergy.UseRules(data.Synergy);
             _ghost.UseRules(data.Party.Ghost);
+            _raid.UseRules(data.Raid);
             _rift.UseData(data);
             RebuildTree();
             SyncPathSkill();
@@ -485,6 +489,7 @@ namespace Game.Core.Sim
             _paths.Tick(input);
             _spirits.Tick(input);
             _gemExperience.Tick();
+            _raid.Tick(firstEvent);
             _dps.Tick(_combat.LastTickDamage);
             State.DamageWindow.Record(State.TotalDamage);
             State.Tick++;

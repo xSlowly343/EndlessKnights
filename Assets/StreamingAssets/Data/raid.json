@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "boss": "devourer",
+  "week": { "startDay": "monday", "utcOffsetMinutes": 180 },
+  "pushSeconds": 15,
+  "idleSeconds": 3,
+  "maxSharesPerSecond": 3,
+  "minMembers": 5,
+  "spillover": 0.25,
+  "layers": [
+    { "id": "shield", "input": "skill", "perMember": 1000 },
+    { "id": "armor", "input": "mouse", "perMember": 1500 },
+    { "id": "flesh", "input": "keys", "perMember": 6000 },
+    { "id": "curse", "input": "idle", "perMember": 500 }
+  ],
+  "rewards": { "sealsPerMember": 20, "killBonus": 0.5, "minSeals": 5 }
+}

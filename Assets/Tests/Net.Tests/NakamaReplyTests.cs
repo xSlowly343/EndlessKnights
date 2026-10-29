@@ -56,6 +56,28 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheClanRaidIsReadWithLayersPlacesAndLastWeek()
+        {
+            var raid = RaidView.From(NakamaJson.Parse("{\"boss\":\"devourer\",\"week\":2964,\"endsAt\":1793566800000,\"members\":27,\"killedAt\":0,\"left\":0.58,"
+                + "\"layers\":[{\"id\":\"shield\",\"hp\":27000,\"left\":0},{\"id\":\"armor\",\"hp\":40500,\"left\":13770}],"
+                + "\"own\":{\"share\":0.021,\"place\":9,\"players\":27,\"seals\":41},"
+                + "\"top\":[{\"place\":1,\"userId\":\"ann\",\"name\":\"Ann\",\"share\":0.12}],"
+                + "\"last\":{\"week\":2963,\"killed\":true,\"removed\":1,\"seals\":55,\"place\":4,\"players\":22}}"));
+            var fresh = RaidView.From(NakamaJson.Parse("{\"boss\":\"devourer\",\"layers\":[],\"own\":{\"share\":0,\"place\":0,\"players\":0,\"seals\":0},\"top\":[],\"last\":null}"));
+
+            Assert.That(raid.Boss, Is.EqualTo("devourer"));
+            Assert.That(raid.Members, Is.EqualTo(27));
+            Assert.That(raid.Left, Is.EqualTo(0.58));
+            Assert.That(raid.Layers[1].Left, Is.EqualTo(13770));
+            Assert.That(raid.OwnPlace, Is.EqualTo(9));
+            Assert.That(raid.OwnSeals, Is.EqualTo(41));
+            Assert.That(raid.Top[0].Name, Is.EqualTo("Ann"));
+            Assert.That(raid.HasLast && raid.LastKilled, Is.True);
+            Assert.That(raid.LastSeals, Is.EqualTo(55));
+            Assert.That(fresh.HasLast, Is.False);
+        }
+
+        [Test]
         public void TheCoopWalletIsReadWithTodayAndTheLedger()
         {
             var wallet = CoopWalletView.From(NakamaJson.Parse("{\"balances\":{\"friendship\":46,\"seals\":320},"

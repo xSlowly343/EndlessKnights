@@ -13,7 +13,7 @@ namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName, ChronicleCatalog.FileName, AtlasCatalog.FileName, ResonanceCatalog.FileName, SpiritCatalog.FileName, UnlockRules.FileName, DungeonRules.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName, ChronicleCatalog.FileName, AtlasCatalog.FileName, ResonanceCatalog.FileName, SpiritCatalog.FileName, UnlockRules.FileName, DungeonRules.FileName, RaidRules.FileName };
 
         private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift, WeaponCatalog weapons, ItemCatalog items, DropRules drops, PanelUnlocks panel, ChangeLog changeLog, ChronicleCatalog chronicle, AtlasCatalog atlas, ResonanceCatalog resonance, SpiritCatalog spirits)
         {
@@ -71,6 +71,7 @@ namespace Game.Core.Content
         public SpiritCatalog Spirits { get; }
         public UnlockRules Unlocks { get; private set; } = UnlockRules.AllOpen;
         public DungeonRules Dungeons { get; private set; } = null!;
+        public RaidRules Raid { get; private set; } = null!;
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -105,9 +106,10 @@ namespace Game.Core.Content
             var spirits = SpiritCatalog.Load(readFile(SpiritCatalog.FileName));
             var unlocks = UnlockRules.Load(readFile(UnlockRules.FileName));
             var dungeons = DungeonRules.Load(readFile(DungeonRules.FileName));
+            var raid = RaidRules.Load(readFile(RaidRules.FileName));
             var strings = StringTable.Load(readFile(StringTable.FileName));
             Texts.Use(strings);
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Unlocks = unlocks, Dungeons = dungeons };
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Unlocks = unlocks, Dungeons = dungeons, Raid = raid };
         }
     }
 }

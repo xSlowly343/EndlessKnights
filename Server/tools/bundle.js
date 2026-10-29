@@ -8,6 +8,7 @@ const stages = JSON.parse(fs.readFileSync(path.join(data, "stages.json"), "utf8"
 const rift = JSON.parse(fs.readFileSync(path.join(data, "rift.json"), "utf8"));
 const intake = JSON.parse(fs.readFileSync(path.join(root, "config", "intake.json"), "utf8"));
 const coopCurrency = JSON.parse(fs.readFileSync(path.join(data, "coop_currency.json"), "utf8"));
+const raid = JSON.parse(fs.readFileSync(path.join(data, "raid.json"), "utf8"));
 const clan = JSON.parse(fs.readFileSync(path.join(data, "clan.json"), "utf8"));
 const chronicle = JSON.parse(fs.readFileSync(path.join(data, "party_chronicle.json"), "utf8"));
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
@@ -128,7 +129,25 @@ const walletRules = {
   }))
 };
 
+if (raid.version !== 1)
+  throw new Error("raid.json: version " + raid.version + " is not supported");
+if (days.indexOf(raid.week.startDay) < 0)
+  throw new Error("raid.json: unknown day " + raid.week.startDay);
+const raidRules = {
+  boss: raid.boss,
+  weekStartDay: days.indexOf(raid.week.startDay),
+  weekUtcOffsetMinutes: raid.week.utcOffsetMinutes,
+  pushSeconds: raid.pushSeconds,
+  maxSharesPerSecond: raid.maxSharesPerSecond,
+  minMembers: raid.minMembers,
+  spillover: raid.spillover,
+  layers: raid.layers.map((layer) => ({ id: layer.id, input: layer.input, perMember: layer.perMember })),
+  sealsPerMember: raid.rewards.sealsPerMember,
+  killBonus: raid.rewards.killBonus,
+  minSeals: raid.rewards.minSeals
+};
+
 const ghostRules = Object.assign({}, party.ghost, { classes: Object.keys(party.search.classRoles).length });
 
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\n" + code);
