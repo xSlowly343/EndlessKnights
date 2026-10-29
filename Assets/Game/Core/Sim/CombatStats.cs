@@ -28,6 +28,9 @@ namespace Game.Core.Sim
         public static readonly StatId GemExperience = new StatId("gemExperience");
         public static readonly StatId GemDrop = new StatId("gemDrop");
         public static readonly StatId PartyContribution = new StatId("partyContribution");
+        public static readonly StatId EnemyRegen = new StatId("enemyRegen");
+        public static readonly StatId BossShield = new StatId("bossShield");
+        public static readonly StatId StageEnemies = new StatId("stageEnemies");
         public static readonly StatId UncutGemChance = new StatId("uncutGemChance");
         public static readonly StatId ShardDrop = new StatId("shardDrop");
         public static readonly StatId ItemFind = new StatId("itemRarity");

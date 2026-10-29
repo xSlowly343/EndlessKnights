@@ -68,6 +68,19 @@ const rules = {
   bossHpMultiplier: stages.boss.hpMultiplier
 };
 
+function statSum(modifiers, stat, kind) {
+  return modifiers.filter((modifier) => modifier.stat === stat && modifier.kind === kind).reduce((sum, modifier) => sum + modifier.value, 0);
+}
+
+function markMask(marks) {
+  return (marks || []).reduce((mask, mark) => {
+    const index = synergy.marks.indexOf(mark);
+    if (index < 0)
+      throw new Error("rift.json: unknown mark " + mark);
+    return mask | (1 << index);
+  }, 0);
+}
+
 const riftRules = {
   windows: rift.schedule.windows.map((window) => {
     const day = days.indexOf(window.day);
@@ -78,6 +91,12 @@ const riftRules = {
   durationMs: Math.round(rift.schedule.durationHours * 3600 * 1000),
   announceMs: Math.round(rift.schedule.announceMinutes * 60 * 1000),
   modifiers: rift.modifiers.map((modifier) => modifier.id),
+  enemies: rift.modifiers.map((modifier) => ({
+    unless: markMask(modifier.unlessMarks),
+    regen: statSum(modifier.modifiers, "enemyRegen", "flat"),
+    shield: statSum(modifier.modifiers, "bossShield", "flat"),
+    extraEnemies: statSum(modifier.modifiers, "stageEnemies", "increased")
+  })),
   modifiersPerWindow: rift.modifiersPerWindow,
   partyJoinMs: Math.round(rift.party.joinMinutes * 60 * 1000),
   partyDurationMs: Math.round(rift.party.durationHours * 3600 * 1000),

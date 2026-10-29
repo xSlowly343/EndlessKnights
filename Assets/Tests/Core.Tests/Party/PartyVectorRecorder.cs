@@ -63,6 +63,9 @@ namespace Game.Core.Tests.Party
 
         public void Auras(int slot, int ticks) => Record($"\"op\": \"auras\", \"slot\": {slot}, \"ticks\": {ticks}", () => _encounter.NoteAuras(slot, ticks));
 
+        public void RiftEnemy(double regen, double shield, double extra) =>
+            Record($"\"op\": \"riftEnemy\", \"regen\": {Number(regen)}, \"shield\": {Number(shield)}, \"extra\": {Number(extra)}", () => _encounter.SetRiftEnemy(regen, shield, extra));
+
         public void Stage(int slot, long stage) => Record($"\"op\": \"stage\", \"slot\": {slot}, \"stage\": {stage}", () => _encounter.SetStage(slot, stage));
 
         public int RelayTarget(int from) => Record($"\"op\": \"relayTarget\", \"slot\": {from}", () => _encounter.RelayTarget(from));
@@ -136,6 +139,7 @@ namespace Game.Core.Tests.Party
                 .Append(", \"waveStage\": ").Append(e.WaveStage)
                 .Append(", \"enemiesOnStage\": ").Append(e.EnemiesOnStage)
                 .Append(", \"riftStagesCleared\": ").Append(e.RiftStagesCleared)
+                .Append(", \"shieldFloor\": ").Append(Number(e.ShieldFloor))
                 .Append(", \"history\": [").Append(e.History.Killed).Append(", ").Append(e.History.Bosses).Append(", ").Append(e.History.Rewards0).Append(", ")
                 .Append(e.History.Rewards1).Append(", ").Append(e.History.Rewards2).Append(", ").Append(e.History.Rewards3).Append("]")
                 .Append(", \"members\": [");

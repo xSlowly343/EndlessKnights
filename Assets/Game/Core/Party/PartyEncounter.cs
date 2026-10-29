@@ -60,6 +60,10 @@ namespace Game.Core.Party
         public int WeakenedSpawns { get; private set; }
         public double WeakenShare { get; private set; }
         public long RiftStagesCleared { get; private set; }
+        public double EnemyRegen { get; private set; }
+        public double BossShield { get; private set; }
+        public double ExtraStageEnemies { get; private set; }
+        public double ShieldFloor { get; private set; }
         public double WeakenGold { get; private set; }
         public double WeakenVulnerability { get; private set; }
         public double WeakenVulnerabilitySeconds { get; private set; }
@@ -217,7 +221,18 @@ namespace Game.Core.Party
             }
         }
 
-        public int EnemiesOnStage => _stages.EnemiesOnStage(WaveStage);
+        public int EnemiesOnStage => (int)System.Math.Floor(_stages.EnemiesOnStage(WaveStage) * (1 + ExtraStageEnemies) + 1e-9);
+
+        public void SetRiftEnemy(double regen, double shield, double extraEnemies)
+        {
+            EnemyRegen = regen > 0 ? regen : 0;
+            BossShield = shield > 0 ? shield : 0;
+            ExtraStageEnemies = extraEnemies > 0 ? extraEnemies : 0;
+            if (BossShield > 0 || !(ShieldFloor > 0))
+                return;
+            BarLeft = System.Math.Min(BarLeft, ShieldFloor);
+            ShieldFloor = 0;
+        }
 
         private int SortStages(bool fightersOnly)
         {
@@ -519,6 +534,8 @@ namespace Game.Core.Party
                 SwitchWorld((PartyWorld)PendingWorld, PendingRiftId);
                 return;
             }
+            if (Started && EnemyRegen > 0)
+                BarLeft = System.Math.Min(BarFull, BarLeft + BarFull * EnemyRegen * GameLoop.TickSeconds);
             if (!FightingBoss || !Started)
                 return;
             var rate = BossTimerRate;
@@ -669,6 +686,12 @@ namespace Game.Core.Party
                 Fighters += member.Weight;
             }
             BarFull = _rules.HpMultiplier(Fighters);
+            ShieldFloor = 0;
+            if (kind == PartyEnemyKind.Boss && BossShield > 0)
+            {
+                ShieldFloor = BarFull;
+                BarFull *= 1 + BossShield;
+            }
             BarLeft = BarFull * (1 - TakeWeaken());
             Events.Add(new PartyEvent(PartyEventKind.EnemySpawned, Tick, EnemyId, kind));
             if (EnemyWeakened && WeakenVulnerability > 0)
@@ -741,7 +764,8 @@ namespace Game.Core.Party
                 return;
             var after = _rules.HpMultiplier(Fighters);
             BarLeft *= after / before;
-            BarFull = after;
+            BarFull *= after / before;
+            ShieldFloor *= after / before;
         }
 
         private void ReleaseGuests(bool all)

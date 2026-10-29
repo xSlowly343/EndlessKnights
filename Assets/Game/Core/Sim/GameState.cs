@@ -193,6 +193,7 @@ namespace Game.Core.Sim
         public int MentorCoopPoints { get; set; }
         public int CoopHelpPoints => MentorCoopPoints;
         public bool EarlyBookSlot { get; set; }
+        public BigNumber EnemyShieldFloor { get; set; }
         public DungeonState Dungeons { get; } = new DungeonState();
         public double IdleHitCarry { get; set; }
         public double CompanionHitCarry { get; set; }
@@ -263,6 +264,7 @@ namespace Game.Core.Sim
             DoomTicks = 0;
             VulnerabilityShare = 0;
             VulnerabilityTicks = 0;
+            EnemyShieldFloor = BigNumber.Zero;
         }
     }
 }

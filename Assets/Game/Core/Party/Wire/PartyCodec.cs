@@ -5,7 +5,7 @@ namespace Game.Core.Party.Wire
         public const int MaxPacketBytes = 256;
 
         public static PartyMessageKind KindOf(byte[] buffer, int length) =>
-            length > 0 && buffer[0] <= (byte)PartyMessageKind.BossRequest ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
+            length > 0 && buffer[0] <= (byte)PartyMessageKind.Marks ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
 
         public static int Encode(byte[] buffer, HelloMessage message)
         {
@@ -85,6 +85,20 @@ namespace Game.Core.Party.Wire
         }
 
         public static int EncodeBossRequest(byte[] buffer) => Start(buffer, PartyMessageKind.BossRequest).Length;
+
+        public static int Encode(byte[] buffer, MarksMessage message)
+        {
+            var writer = Start(buffer, PartyMessageKind.Marks);
+            message.Write(ref writer);
+            return writer.Length;
+        }
+
+        public static bool TryDecode(byte[] buffer, int length, out MarksMessage message)
+        {
+            var reader = Open(buffer, length, PartyMessageKind.Marks);
+            message = MarksMessage.Read(ref reader);
+            return reader.Complete;
+        }
 
         public static int Encode(byte[] buffer, SynergyMessage message)
         {

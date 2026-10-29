@@ -45,7 +45,8 @@ namespace Game.Core.Tests.Party
                 WeakenNext(),
                 WeakenedRewards(),
                 MedianWaves(),
-                AllyCredit()
+                AllyCredit(),
+                RiftEnemies()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -97,6 +98,34 @@ namespace Game.Core.Tests.Party
             r.Weaken(2, 0.2);
             r.SwitchWorld(PartyWorld.Rift, 1761652800);
             r.Hit(0, 2);
+            return r.ToJson();
+        }
+
+        private static string RiftEnemies()
+        {
+            var r = Recorder("rift enemies regenerate, colossi carry a shield and hordes are bigger", 2424);
+            r.Join(1);
+            r.Join(2);
+            r.RiftEnemy(0.05, 0.5, 0.5);
+            r.Hit(0, 0.6);
+            r.Advance(10);
+            r.Hit(1, 0.2);
+            r.Advance(100);
+            while (!r.Encounter.FightingBoss)
+            {
+                r.Input(0);
+                r.Input(1);
+                r.Hit(0, 1);
+                r.Hit(1, 1.5);
+            }
+            r.Hit(0, 0.4);
+            r.RiftEnemy(0.05, 0, 0.5);
+            r.Hit(1, 0.3);
+            r.Leave(1);
+            r.Advance(5);
+            r.RiftEnemy(-1, 0.5, 0);
+            r.Hit(0, 5);
+            r.Hit(0, 5);
             return r.ToJson();
         }
 

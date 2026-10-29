@@ -339,3 +339,36 @@ test("a heavy cast notice goes to the others once per second", () => {
   host.receive("user-0", notice.buffer);
   assert.strictEqual(sent().length, 0, "not more than once per castNoticeSeconds");
 });
+
+test("rift enemies regenerate and come in hordes until the party marks lift them", () => {
+  const rules = party.RiftServerRules;
+  const start = Date.UTC(2026, 9, 27, 13);
+  let riftId = 0;
+  for (let day = 0; day < 1400 && riftId === 0; day++) {
+    const window = party.riftWindowAt(rules, start + day * 86400000);
+    if (!window)
+      continue;
+    const picked = party.riftModifiersFor(rules, window.id);
+    if (picked.indexOf("regeneration") >= 0 && picked.indexOf("horde") >= 0)
+      riftId = window.id + 60;
+  }
+  assert.ok(riftId > 0, "a window with regeneration and a horde");
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.tick(riftId * 1000);
+  host.encounter.switchWorld(1, riftId);
+  host.tick(riftId * 1000);
+  const regeneration = rules.enemies[rules.modifiers.indexOf("regeneration")];
+  assert.ok(Math.abs(host.encounter.enemyRegen - regeneration.regen) < 1e-12);
+  assert.ok(Math.abs(host.encounter.extraStageEnemies - 0.5) < 1e-12);
+  const marks = new DataView(new ArrayBuffer(5));
+  marks.setUint8(0, 17);
+  marks.setUint32(1, regeneration.unless & -regeneration.unless, true);
+  host.receive("user-a", marks.buffer);
+  host.tick(riftId * 1000);
+  assert.strictEqual(host.encounter.enemyRegen, 0, "the right mark stops the regeneration");
+  assert.ok(Math.abs(host.encounter.extraStageEnemies - 0.5) < 1e-12);
+  host.encounter.switchWorld(0, 0);
+  host.tick(riftId * 1000);
+  assert.strictEqual(host.encounter.extraStageEnemies, 0);
+});

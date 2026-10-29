@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Game.Core.Content.Rift;
+using Game.Core.Content.Synergy;
 using Game.Core.Party.Transport;
 using Game.Core.Party.Wire;
 using Game.Core.Sim;
@@ -34,6 +36,11 @@ namespace Game.Core.Party
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
         private readonly int[] _recentHits = new int[PartyRules.MaxSlots];
         private readonly RiftRules? _rift;
+        private readonly SynergyRules? _synergy;
+        private readonly uint[] _marks = new uint[PartyRules.MaxSlots];
+        private long _riftEnemyFor = -1;
+        private IReadOnlyList<RiftModifier> _riftModifiers = System.Array.Empty<RiftModifier>();
+        private int[] _riftUnless = System.Array.Empty<int>();
         private PartyRules _rules;
         private uint _stateSequence;
         private uint _rosterVersion;
@@ -41,12 +48,13 @@ namespace Game.Core.Party
         private int _ticksToState;
         private int _ticksToRoster;
 
-        public PartyHost(PartyEncounter encounter, IPartyTransport transport, PartyRules rules, RiftRules? rift = null)
+        public PartyHost(PartyEncounter encounter, IPartyTransport transport, PartyRules rules, RiftRules? rift = null, SynergyRules? synergy = null)
         {
             _encounter = encounter;
             _transport = transport;
             _rules = rules;
             _rift = rift;
+            _synergy = synergy;
         }
 
         public long ClockUnixMs { get; set; }
@@ -103,6 +111,7 @@ namespace Game.Core.Party
         {
             while (_transport.TryReceive(_in, out var length, out var from))
                 Handle(from, length);
+            UpdateRiftEnemies();
             _encounter.Advance();
             ReturnWhenTheRiftCloses();
             Refill();
@@ -174,6 +183,9 @@ namespace Game.Core.Party
                     if (LeaderId == 0 || _encounter.Member(slot).PlayerId == LeaderId)
                         RequestWorld(request);
                     break;
+                case PartyMessageKind.Marks when PartyCodec.TryDecode(_in, length, out MarksMessage marks):
+                    _marks[slot] = marks.Marks;
+                    break;
                 case PartyMessageKind.BossRequest:
                     if (LeaderId == 0 || _encounter.Member(slot).PlayerId == LeaderId)
                         _encounter.RequestBossFight();
@@ -201,6 +213,7 @@ namespace Game.Core.Party
             _lastResourceTick[slot] = PartyEncounter.Never;
             _lastCastNoticeTick[slot] = PartyEncounter.Never;
             _reactions[slot] = 0;
+            _marks[slot] = 0;
             _rosterChanged = true;
             _ticksToState = 0;
             return slot;
@@ -253,6 +266,43 @@ namespace Game.Core.Party
             _lastRelayTick[slot] = _encounter.Tick;
             Relays++;
             Broadcast(PartyCodec.Encode(_out, new FocusRelayMessage { From = (byte)slot, To = (byte)target, Focus = (float)bonus }));
+        }
+
+        private void UpdateRiftEnemies()
+        {
+            if (_encounter.World != PartyWorld.Rift || _rift == null)
+            {
+                _encounter.SetRiftEnemy(0, 0, 0);
+                return;
+            }
+            if (_riftEnemyFor != _encounter.RiftId)
+                LoadRiftModifiers();
+            var marks = 0;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (_encounter.Member(slot).Joined)
+                    marks |= (int)_marks[slot];
+            }
+            double regen = 0, shield = 0, extra = 0;
+            for (var i = 0; i < _riftModifiers.Count; i++)
+            {
+                if ((_riftUnless[i] & marks) != 0)
+                    continue;
+                regen += _riftModifiers[i].EnemyRegen;
+                shield += _riftModifiers[i].BossShield;
+                extra += _riftModifiers[i].ExtraStageEnemies;
+            }
+            _encounter.SetRiftEnemy(regen, shield, extra);
+        }
+
+        private void LoadRiftModifiers()
+        {
+            _riftEnemyFor = _encounter.RiftId;
+            var window = _rift!.Schedule.WindowAt(_encounter.RiftId * 1000)?.Id ?? _encounter.RiftId;
+            _riftModifiers = _rift.ModifiersFor(window);
+            _riftUnless = new int[_riftModifiers.Count];
+            for (var i = 0; i < _riftModifiers.Count; i++)
+                _riftUnless[i] = _synergy?.MaskOf(_riftModifiers[i].UnlessMarks) ?? 0;
         }
 
         private void RequestWorld(in WorldRequestMessage request)

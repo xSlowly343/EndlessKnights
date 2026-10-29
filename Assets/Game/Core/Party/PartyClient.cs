@@ -54,6 +54,7 @@ namespace Game.Core.Party
         private long _guestLinkTick;
         private uint _sentReactions;
         private int _auraBoundGem;
+        private int _sentMarks = -1;
 
         public const int NoReaction = -1;
         private const double MaxAllyShares = 1000;
@@ -268,6 +269,7 @@ namespace Game.Core.Party
                 WatchCasts();
                 EndAuraBoundDebuff();
                 ShareReactions();
+                ShareMarks(Status == PartyLink.Linked);
             }
             PassDroppedFocus();
             WatchSignal();
@@ -554,6 +556,7 @@ namespace Game.Core.Party
         {
             Status = PartyLink.Linked;
             _sentReactions = 0;
+            _sentMarks = -1;
             _auraBoundGem = 0;
             _guestLinkTick = _tick;
             _loop.Stages.Link(IsGuest);
@@ -760,6 +763,15 @@ namespace Game.Core.Party
             }
             SendToHost(PartyCodec.Encode(_out, new CastEffectMessage { EffectId = _auraBoundGem, OnEnemy = true, End = true }));
             _auraBoundGem = 0;
+        }
+
+        private void ShareMarks(bool linked)
+        {
+            var marks = _loop.Synergy.OwnMarks;
+            if (!linked || marks == _sentMarks)
+                return;
+            _sentMarks = marks;
+            SendToHost(PartyCodec.Encode(_out, new MarksMessage { Marks = (uint)marks }));
         }
 
         private void ShareReactions()

@@ -100,6 +100,10 @@ class PartyEncounter {
     weakenedSpawns = 0;
     weakenShare = 0;
     riftStagesCleared = 0;
+    enemyRegen = 0;
+    bossShield = 0;
+    extraStageEnemies = 0;
+    shieldFloor = 0;
     weakenGold = 0;
     weakenVulnerability = 0;
     weakenVulnerabilitySeconds = 0;
@@ -238,7 +242,17 @@ class PartyEncounter {
     }
 
     enemiesOnStage(): number {
-        return partyEnemiesOnStage(this.rules, this.waveStage());
+        return Math.floor(partyEnemiesOnStage(this.rules, this.waveStage()) * (1 + this.extraStageEnemies) + 1e-9);
+    }
+
+    setRiftEnemy(regen: number, shield: number, extraEnemies: number): void {
+        this.enemyRegen = regen > 0 ? regen : 0;
+        this.bossShield = shield > 0 ? shield : 0;
+        this.extraStageEnemies = extraEnemies > 0 ? extraEnemies : 0;
+        if (this.bossShield > 0 || !(this.shieldFloor > 0))
+            return;
+        this.barLeft = Math.min(this.barLeft, this.shieldFloor);
+        this.shieldFloor = 0;
     }
 
     private sortedStages(fightersOnly: boolean): number[] {
@@ -470,6 +484,8 @@ class PartyEncounter {
             this.switchWorld(this.pendingWorld, this.pendingRiftId);
             return;
         }
+        if (this.started && this.enemyRegen > 0)
+            this.barLeft = Math.min(this.barFull, this.barLeft + this.barFull * this.enemyRegen / PartyTicksPerSecond);
         if (!this.fightingBoss || !this.started)
             return;
         const rate = this.bossTimerRate();
@@ -640,6 +656,11 @@ class PartyEncounter {
             this.fighters += member.weight;
         }
         this.barFull = partyHpMultiplier(this.rules, this.fighters);
+        this.shieldFloor = 0;
+        if (kind === PartyEnemyKind.Boss && this.bossShield > 0) {
+            this.shieldFloor = this.barFull;
+            this.barFull *= 1 + this.bossShield;
+        }
         this.barLeft = this.barFull * (1 - this.takeWeaken());
         this.addEvent(PartyEventKind.EnemySpawned);
         if (this.enemyWeakened && this.weakenVulnerability > 0)
@@ -704,7 +725,8 @@ class PartyEncounter {
             return;
         const after = partyHpMultiplier(this.rules, this.fighters);
         this.barLeft *= after / before;
-        this.barFull = after;
+        this.barFull *= after / before;
+        this.shieldFloor *= after / before;
     }
 
     private releaseGuests(all: boolean): void {

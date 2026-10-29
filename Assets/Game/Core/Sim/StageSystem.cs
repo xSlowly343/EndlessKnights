@@ -69,6 +69,8 @@ namespace Game.Core.Sim
             if (Linked)
                 return;
             TickGolden();
+            Regenerate();
+            StripShield();
             if (!_state.FightingBoss || !_state.EnemyAlive)
                 return;
             if (_state.BossTimerStopTicks > 0)
@@ -124,7 +126,7 @@ namespace Game.Core.Sim
                 AdvanceStage();
             else if (_state.Farming)
                 CountFarmKill();
-            else if (_state.KillsOnStage < _stages.EnemiesOnStage(_state.Stage))
+            else if (_state.KillsOnStage < EnemiesOnStage(_state.Stage))
                 _state.KillsOnStage++;
             SpawnNext();
         }
@@ -292,7 +294,7 @@ namespace Game.Core.Sim
 
         private void SpawnNext()
         {
-            if (!_state.Farming && _state.KillsOnStage >= _stages.EnemiesOnStage(_state.Stage))
+            if (!_state.Farming && _state.KillsOnStage >= EnemiesOnStage(_state.Stage))
                 SpawnBoss();
             else
                 SpawnNormal();
@@ -366,7 +368,11 @@ namespace Game.Core.Sim
             var enemy = guardian ? _guardians[biome] ?? _bosses[biome] : _bosses[biome];
             var guardianShare = guardian && gate == null ? System.Math.Max(0.1, _hero.Value(CombatStats.GuardianHp, 1)) : 1;
             var gateShare = gate?.HpMultiplier ?? 1;
-            Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, _stages.BossHp(stage) * (Multiplier(enemy) * guardianShare * gateShare));
+            var bossHp = _stages.BossHp(stage) * (Multiplier(enemy) * guardianShare * gateShare);
+            var shield = System.Math.Max(0, _hero.Value(CombatStats.BossShield, 0));
+            Spawn(enemy, guardian ? EnemyType.Guardian : EnemyType.Boss, bossHp * (1 + shield));
+            if (shield > 0)
+                _state.EnemyShieldFloor = bossHp;
             _state.WandererBoss = gate == null && WandererComes(stage, guardian);
             var timer = gate?.TimerSeconds ?? _stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
             _state.BossTicksLeft = (int)System.Math.Round((timer + _state.BankedSeconds) * GameLoop.TicksPerSecond);
@@ -398,6 +404,24 @@ namespace Game.Core.Sim
             ApplyEnemyModifiers(enemy);
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemySpawned, _state.Tick, _state.Stage, enemy));
             ApplyChainDamage();
+        }
+
+        private int EnemiesOnStage(long stage) =>
+            (int)System.Math.Floor(_stages.EnemiesOnStage(stage) * System.Math.Max(1, _hero.Value(CombatStats.StageEnemies, 1)) + 1e-9);
+
+        private void Regenerate()
+        {
+            var regen = _hero.Value(CombatStats.EnemyRegen, 0);
+            if (regen > 0 && _state.EnemyAlive)
+                _state.EnemyHp = BigNumber.Min(_state.EnemyMaxHp, _state.EnemyHp + _state.EnemyMaxHp * (regen * GameLoop.TickSeconds));
+        }
+
+        private void StripShield()
+        {
+            if (_state.EnemyShieldFloor.Sign <= 0 || _hero.Value(CombatStats.BossShield, 0) > 0)
+                return;
+            _state.EnemyHp = BigNumber.Min(_state.EnemyHp, _state.EnemyShieldFloor);
+            _state.EnemyShieldFloor = BigNumber.Zero;
         }
 
         private BigNumber Weakened(BigNumber hp)

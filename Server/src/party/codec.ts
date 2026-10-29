@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, AllyCast = 14, Synergy = 15, BossRequest = 16
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, AllyCast = 14, Synergy = 15, BossRequest = 16, Marks = 17
 }
 
 class PartyWriter {
@@ -115,7 +115,7 @@ function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
         return PartyMessageKind.None;
     const kind = new DataView(data).getUint8(0);
-    return kind <= PartyMessageKind.BossRequest ? kind : PartyMessageKind.None;
+    return kind <= PartyMessageKind.Marks ? kind : PartyMessageKind.None;
 }
 
 function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
@@ -195,6 +195,12 @@ function partyDecodeSynergy(data: ArrayBuffer, reactions: number): number | null
         return null;
     const known = Math.pow(2, Math.min(32, reactions)) - 1;
     return mask % (known + 1);
+}
+
+function partyDecodeMarks(data: ArrayBuffer): number | null {
+    const r = partyOpen(data, PartyMessageKind.Marks);
+    const marks = r.uint();
+    return r.complete ? marks : null;
 }
 
 function partyBitCount(mask: number): number {

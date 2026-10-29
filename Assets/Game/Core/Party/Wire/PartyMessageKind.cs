@@ -18,6 +18,7 @@ namespace Game.Core.Party.Wire
         PartyResource,
         AllyCast,
         Synergy,
-        BossRequest
+        BossRequest,
+        Marks
     }
 }

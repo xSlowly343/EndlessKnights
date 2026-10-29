@@ -14,6 +14,14 @@ interface RiftRules {
     boardUpdateMs: number;
     boardShown: number;
     boardPlaces: RiftBoardPlace[];
+    enemies: RiftEnemyModifier[];
+}
+
+interface RiftEnemyModifier {
+    unless: number;
+    regen: number;
+    shield: number;
+    extraEnemies: number;
 }
 
 interface RiftBoardPlace {

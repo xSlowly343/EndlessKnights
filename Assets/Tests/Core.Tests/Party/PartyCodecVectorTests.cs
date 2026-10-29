@@ -75,6 +75,7 @@ namespace Game.Core.Tests.Party
             builder.Append("    \"endCast\": { \"effectId\": 33, \"onEnemy\": true, \"strength\": 0, \"seconds\": 0, \"timerSlow\": 0, \"repeatSeconds\": 0, \"weakenEnemies\": 0, \"weakenShare\": 0, \"weakenGold\": 0, \"end\": true, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new CastEffectMessage { EffectId = 33, OnEnemy = true, End = true }))).Append("\" },\n");
             builder.Append("    \"bossRequest\": { \"hex\": \"").Append(Hex(PartyCodec.EncodeBossRequest(_buffer))).Append("\" },\n");
+            builder.Append("    \"marks\": { \"marks\": 384, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new MarksMessage { Marks = 384 }))).Append("\" },\n");
             builder.Append("    \"worldRequest\": { \"world\": 1, \"cancel\": false, \"riftId\": 1761652800, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new WorldRequestMessage { World = PartyWorld.Rift, RiftId = 1761652800 }))).Append("\" },\n");
             builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"contribution\": 0.125, \"hex\": \"")

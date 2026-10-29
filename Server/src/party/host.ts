@@ -59,6 +59,7 @@ class PartyHost {
     private readonly lastResourceTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastCastNoticeTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly reactions = [0, 0, 0, 0];
+    private readonly marks = [0, 0, 0, 0];
     private enemyReactions = 0;
     private readonly recentShares = [0, 0, 0, 0];
     private readonly recentHits = [0, 0, 0, 0];
@@ -173,6 +174,12 @@ class PartyHost {
                     this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel });
                 break;
             }
+            case PartyMessageKind.Marks: {
+                const marks = partyDecodeMarks(data);
+                if (marks !== null)
+                    this.marks[slot] = marks;
+                break;
+            }
             case PartyMessageKind.BossRequest:
                 this.bossRequests.push(slot);
                 break;
@@ -220,6 +227,7 @@ class PartyHost {
     tick(nowUnixMs?: number): void {
         if (nowUnixMs !== undefined)
             this.clockUnixMs = nowUnixMs;
+        this.updateRiftEnemies();
         this.encounter.advance();
         this.returnWhenTheRiftCloses();
         this.refill();
@@ -347,6 +355,31 @@ class PartyHost {
         this.rosterChanged = true;
     }
 
+    private updateRiftEnemies(): void {
+        if (this.encounter.world !== PartyWorld.Rift) {
+            this.encounter.setRiftEnemy(0, 0, 0);
+            return;
+        }
+        const window = riftWindowAt(RiftServerRules, this.encounter.riftId * 1000);
+        const picked = riftModifiersFor(RiftServerRules, window ? window.id : this.encounter.riftId);
+        let marks = 0;
+        for (let slot = 0; slot < PartyMaxSlots; slot++)
+            if (this.encounter.members[slot].joined)
+                marks |= this.marks[slot];
+        let regen = 0;
+        let shield = 0;
+        let extra = 0;
+        for (const id of picked) {
+            const enemy = RiftServerRules.enemies[RiftServerRules.modifiers.indexOf(id)];
+            if (!enemy || (enemy.unless & marks) !== 0)
+                continue;
+            regen += enemy.regen;
+            shield += enemy.shield;
+            extra += enemy.extraEnemies;
+        }
+        this.encounter.setRiftEnemy(regen, shield, extra);
+    }
+
     private returnWhenTheRiftCloses(): void {
         if (this.encounter.world === PartyWorld.Rift && this.clockUnixMs >= riftPartyEnd(this.encounter.riftId))
             this.encounter.switchWorld(PartyWorld.Home, 0);
@@ -401,6 +434,7 @@ class PartyHost {
         this.lastResourceTick[slot] = PartyNever;
         this.lastCastNoticeTick[slot] = PartyNever;
         this.reactions[slot] = 0;
+        this.marks[slot] = 0;
         this.ticksToState = 0;
     }
 
