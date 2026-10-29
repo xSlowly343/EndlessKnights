@@ -4,6 +4,7 @@ using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Party;
 using Game.Core.Sim.Rift;
 
 namespace Game.Core.Sim
@@ -193,6 +194,7 @@ namespace Game.Core.Sim
         public int MentorCoopPoints { get; set; }
         public int CoopHelpPoints => MentorCoopPoints;
         public bool EarlyBookSlot { get; set; }
+        public ClanBonusState ClanBonus { get; } = new ClanBonusState();
         public BigNumber EnemyShieldFloor { get; set; }
         public DungeonState Dungeons { get; } = new DungeonState();
         public double IdleHitCarry { get; set; }

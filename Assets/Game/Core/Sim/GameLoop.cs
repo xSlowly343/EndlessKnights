@@ -123,7 +123,7 @@ namespace Game.Core.Sim
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events);
-            _clanTree = new ClanTreeBonus(data.ClanTree, hero);
+            _clanTree = new ClanTreeBonus(data.ClanTree, hero, state.ClanBonus);
             _mentor = new MentorBonus(data.Mentor, hero, _levels, state);
             RebuildTree();
             SyncPathSkill();

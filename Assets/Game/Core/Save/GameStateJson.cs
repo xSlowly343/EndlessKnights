@@ -80,6 +80,10 @@ namespace Game.Core.Save
                 ("mentorPerks", Object(
                     ("coopPoints", JsonValue.Of(state.MentorCoopPoints)),
                     ("earlyBookSlot", JsonValue.Of(state.EarlyBookSlot)))),
+                ("clanBonus", Object(
+                    ("nodes", WriteIds(state.ClanBonus.Nodes)),
+                    ("answeredUnixMs", JsonValue.Of(state.ClanBonus.AnsweredUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))),
+                    ("seenUnixMs", JsonValue.Of(state.ClanBonus.SeenUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))))),
                 ("dungeons", WriteDungeons(state.Dungeons)),
                 ("setCollection", JsonValue.Array(WriteCollection(state))),
                 ("inputStats", Object(
@@ -239,6 +243,8 @@ namespace Game.Core.Save
                 state.MentorCoopPoints = perks.Field("coopPoints").AsInt(0, 100);
                 state.EarlyBookSlot = perks.Field("earlyBookSlot").AsBool();
             }
+            if (node.HasField("clanBonus"))
+                ReadClanBonus(node.Field("clanBonus"), state.ClanBonus);
             if (node.HasField("jewels") && items != null)
                 ReadJewels(node.Field("jewels"), items, state.Jewels);
             if (node.HasField("setCollection"))
@@ -287,6 +293,13 @@ namespace Game.Core.Save
                 if (!ids.Contains(id))
                     ids.Add(id);
             }
+        }
+
+        private static void ReadClanBonus(ContentNode node, Party.ClanBonusState bonus)
+        {
+            ReadIds(node.Field("nodes"), bonus.Nodes);
+            bonus.AnsweredUnixMs = (long)ReadCount(node.Field("answeredUnixMs"));
+            bonus.SeenUnixMs = (long)ReadCount(node.Field("seenUnixMs"));
         }
 
         private static JsonValue WriteChronicle(ChronicleState chronicle)

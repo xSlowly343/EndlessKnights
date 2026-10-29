@@ -31,10 +31,11 @@ namespace Game.Core.Content
 
         private readonly Dictionary<string, ClanTreeNode> _byId;
 
-        private ClanTreeCatalog(List<ClanTreeNode> all, long minDonation)
+        private ClanTreeCatalog(List<ClanTreeNode> all, long minDonation, int offlineHours)
         {
             All = all;
             MinDonation = minDonation;
+            OfflineHours = offlineHours;
             _byId = new Dictionary<string, ClanTreeNode>(StringComparer.Ordinal);
             foreach (var node in all)
                 _byId.Add(node.Id, node);
@@ -42,6 +43,7 @@ namespace Game.Core.Content
 
         public IReadOnlyList<ClanTreeNode> All { get; }
         public long MinDonation { get; }
+        public int OfflineHours { get; }
 
         public bool TryGet(string id, out ClanTreeNode node) => _byId.TryGetValue(id, out node!);
 
@@ -78,7 +80,7 @@ namespace Game.Core.Content
             }
             if (!all.Exists(node => node.Requires.Count == 0))
                 throw root.Field("nodes").Error("the clan tree needs at least one start node");
-            return new ClanTreeCatalog(all, root.Field("minDonation").AsLong(1, 1_000_000));
+            return new ClanTreeCatalog(all, root.Field("minDonation").AsLong(1, 1_000_000), root.Field("offlineHours").AsInt(0, 24 * 30));
         }
     }
 }

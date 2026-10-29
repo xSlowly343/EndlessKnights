@@ -1,6 +1,7 @@
 {
   "version": 1,
   "minDonation": 10,
+  "offlineHours": 24,
   "nodes": [
     { "id": "common_hearth", "name": { "ru": "Общий очаг", "en": "Common Hearth" }, "cost": 300, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.03 }] },
     { "id": "war_drums", "name": { "ru": "Боевые барабаны", "en": "War Drums" }, "cost": 600, "requires": ["common_hearth"], "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.03 }] },

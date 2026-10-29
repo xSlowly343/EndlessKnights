@@ -1,5 +1,7 @@
+using Game.Core.Clock;
 using Game.Core.Content;
 using Game.Core.Party;
+using Game.Core.Save;
 using Game.Core.Sim;
 using Game.Core.Tests.Content;
 using Game.Core.Tests.Sim;
@@ -11,6 +13,9 @@ namespace Game.Core.Tests.Party
 {
     public class ClanTreeTests
     {
+        private const long Now = 1_800_000_000_000;
+        private const long Hour = 3_600_000;
+
         private static ClanTreeCatalog Catalog => TestWorld.Data.ClanTree;
 
         [SetUp]
@@ -51,13 +56,54 @@ namespace Game.Core.Tests.Party
             var loop = TestWorld.Loop(new Game.Core.Input.FakeInputSource());
             var before = loop.Hero.Value(CombatStats.Gold, 1);
 
-            loop.ClanTree.Use(new[] { "common_hearth", "war_drums", "unknown_from_a_newer_server" });
+            loop.ClanTree.Use(new[] { "common_hearth", "war_drums", "unknown_from_a_newer_server" }, Now);
 
             Assert.That(loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(before * 1.03).Within(1e-9));
             Assert.That(loop.ClanTree.Applied.Count, Is.EqualTo(2), "nodes the game does not know yet are skipped");
-            loop.ClanTree.Clear();
+            loop.ClanTree.Clear(Now + 1000);
             Assert.That(loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(before).Within(1e-9));
             Assert.That(loop.ClanTree.Taken, Is.Empty);
+            Assert.That(loop.ClanTree.Active, Is.False);
+        }
+
+        [Test]
+        public void SavedBonusesWorkWithoutTheServerForTheHoursOfTheFileAndThenFade()
+        {
+            var state = new GameState();
+            TestWorld.Loop(new Game.Core.Input.FakeInputSource(), state: state).ClanTree.Use(new[] { "common_hearth" }, Now);
+            var loaded = SaveCodec.Decode(SaveCodec.Encode(state, new ClockStamp(new ClockReading(Now, 0, 1), Now)), TestWorld.Data).State;
+            var loop = TestWorld.Loop(new Game.Core.Input.FakeInputSource(), state: loaded);
+            var plain = loop.Hero.Value(CombatStats.Gold, 1);
+            var hours = Catalog.OfflineHours;
+
+            Assert.That(hours, Is.EqualTo(24));
+            Assert.That(loop.ClanTree.Taken, Is.EqualTo(new[] { "common_hearth" }));
+            Assert.That(loop.ClanTree.Applied, Is.Empty, "nothing is applied before the game checks the clock");
+            Assert.That(loop.ClanTree.Refresh(Now + (hours - 1) * Hour), Is.True);
+            Assert.That(loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(plain * 1.03).Within(1e-9));
+            Assert.That(loop.ClanTree.Refresh(Now + hours * Hour + 1), Is.False);
+            Assert.That(loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(plain).Within(1e-9));
+            Assert.That(loop.ClanTree.Taken, Is.EqualTo(new[] { "common_hearth" }), "the nodes stay saved until the server answers");
+            Assert.That(loop.ClanTree.Refresh(Now), Is.False, "turning the clock back does not bring the bonus back");
+
+            loop.ClanTree.Use(new[] { "common_hearth" }, Now + 30 * Hour);
+
+            Assert.That(loop.ClanTree.Active, Is.True, "an answer of the server lights the bonus again");
+            Assert.That(loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(plain * 1.03).Within(1e-9));
+        }
+
+        [Test]
+        public void RefreshingAFreshBonusAddsItOnce()
+        {
+            var loop = TestWorld.Loop(new Game.Core.Input.FakeInputSource());
+            var before = loop.Hero.Value(CombatStats.Gold, 1);
+
+            loop.ClanTree.Use(new[] { "common_hearth" }, Now);
+            loop.ClanTree.Refresh(Now + Hour);
+            loop.ClanTree.Refresh(Now + 2 * Hour);
+            loop.ClanTree.UseCatalog(Catalog);
+
+            Assert.That(loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(before * 1.03).Within(1e-9));
         }
 
         [Test]
