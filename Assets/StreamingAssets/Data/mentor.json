@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "studentDays": 7,
+  "mentorMinDays": 30,
+  "maxMarks": 10,
+  "maxMentorCoopPoints": 5,
+  "bonus": { "gold": 0.5, "xp": 0.5 },
+  "rewards": [
+    { "hours": 1, "mentor": { "friendship": 20 }, "student": { "uncutGems": 3 } },
+    { "hours": 5, "mentor": { "friendship": 30 }, "student": { "perk": "early_book_slot" } },
+    { "hours": 10, "mentor": { "perk": "mentor_cloak" }, "student": { "perk": "graduate_frame" } },
+    { "hours": 20, "mentor": { "coopPoints": 1 }, "student": { "coopPoints": 1 } }
+  ]
+}

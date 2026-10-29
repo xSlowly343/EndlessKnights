@@ -85,6 +85,24 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheMentorStatusAndPartyFlagsAreRead()
+        {
+            var mentor = MentorView.From(NakamaJson.Parse("{\"role\":\"mentor\",\"canMentor\":true,\"ready\":true,\"studentUntil\":1793873289000,"
+                + "\"partner\":{\"userId\":\"kid\",\"name\":\"Лёша\"},\"seconds\":13200,\"level\":1,\"marks\":[\"str_12\"],\"perks\":[],\"coopPoints\":0,\"graduates\":2}"));
+            var student = MentorView.From(NakamaJson.Parse("{\"role\":\"student\",\"canMentor\":false,\"ready\":false,\"studentUntil\":1793873289000,\"partner\":null,\"seconds\":0,\"level\":0,\"marks\":[],\"perks\":[]}"));
+            var party = PartyView.From(NakamaJson.Parse("{\"id\":\"p\",\"members\":[{\"userId\":\"kid\",\"student\":true,\"mentor\":false,\"slot\":1},{\"userId\":\"vet\",\"student\":false,\"mentor\":true,\"slot\":0}]}"))!;
+            var card = new PartyCard(NakamaJson.Parse("{\"id\":\"p\",\"hasMentor\":true,\"hasStudent\":false}"));
+
+            Assert.That(mentor.IsMentor, Is.True);
+            Assert.That(mentor.PartnerName, Is.EqualTo("Лёша"));
+            Assert.That(mentor.Seconds, Is.EqualTo(13200));
+            Assert.That(mentor.Graduates, Is.EqualTo(2));
+            Assert.That(student.IsStudent && !student.HasPartner, Is.True);
+            Assert.That(party.Members[0].Student && party.Members[1].Mentor, Is.True);
+            Assert.That(card.HasMentor && !card.HasStudent, Is.True);
+        }
+
+        [Test]
         public void TheClanTreeIsReadWithTheTreasuryDonorsAndLog()
         {
             var tree = ClanTreeView.From(NakamaJson.Parse("{\"treasury\":1240,\"taken\":[\"common_hearth\",\"war_drums\"],\"yours\":300,"

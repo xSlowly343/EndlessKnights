@@ -16,7 +16,7 @@ declare namespace nkruntime {
     interface StorageDeleteRequest { collection: string; key: string; userId: string; version?: string; }
     interface StorageObject { collection: string; key: string; userId: string; version: string; value: { [key: string]: any }; }
     interface Group { id: string; name: string; langTag: string; open: boolean; edgeCount: number; maxCount: number; metadata: { [key: string]: any }; }
-    interface User { userId: string; username: string; displayName: string; steamId: string; online: boolean; }
+    interface User { userId: string; username: string; displayName: string; steamId: string; online: boolean; createTime?: number; }
     interface GroupUser { user: User; state?: number; }
     interface Match { matchId: string; size: number; label: string; }
     interface Nakama {

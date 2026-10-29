@@ -188,6 +188,7 @@ function partyView(nk: nkruntime.Nakama, group: nkruntime.Group): { [key: string
         byId[user.userId] = user;
     const live = partyLiveMatchId(nk, group.id);
     const slots = partySlotsIn(nk, meta.members, group.id, live);
+    const roles = mentorRoles(nk, meta.members, Date.now());
     return {
         id: group.id,
         code: meta.code,
@@ -202,7 +203,8 @@ function partyView(nk: nkruntime.Nakama, group: nkruntime.Group): { [key: string
             const user = byId[userId];
             return {
                 userId: userId, name: user ? user.displayName || user.username : "", steamId: user ? user.steamId || "" : "", leader: userId === meta.leader,
-                slot: slots[userId] === undefined ? -1 : slots[userId]
+                slot: slots[userId] === undefined ? -1 : slots[userId],
+                student: roles.students.indexOf(userId) >= 0, mentor: roles.mentors.indexOf(userId) >= 0
             };
         })
     };
@@ -425,6 +427,10 @@ function partyCandidates(nk: nkruntime.Nakama, userId: string, request: { [key: 
             members.push(member);
     const blocks = partyBlocksOf(nk, members);
     const mine = blocks[userId] || [];
+    const roles = mentorRoles(nk, members, now);
+    const freeMentors = mentorAvailable(roles, now);
+    const mentorWish = request.mentor === undefined ? undefined : partyPick(request.mentor, ["want", "offer"], "want");
+    const wantsMentor = roles.students.indexOf(userId) >= 0 && request.noMentor !== true;
     const result: PartyCandidate[] = [];
     for (const group of groups) {
         if (!partyPruneInactive(nk, group, now))
@@ -440,16 +446,20 @@ function partyCandidates(nk: nkruntime.Nakama, userId: string, request: { [key: 
         const usual = partyUsualSlot(meta, offset);
         if (slot !== undefined && usual !== slot)
             continue;
+        const hasMentor = meta.members.some((member) => freeMentors.indexOf(member) >= 0);
+        const hasStudent = meta.members.some((member) => roles.students.indexOf(member) >= 0);
+        if ((mentorWish === "want" && !hasMentor) || (mentorWish === "offer" && !hasStudent))
+            continue;
         const live = partyLiveMatchId(nk, group.id);
         const match = live ? nk.matchGet(live) : null;
         const activeNow = !!match && match.size > 0;
         const roleWanted = meta.wanted === PartyAnyRole || meta.wanted === role;
         result.push({
             group: group,
-            score: (activeNow ? 4 : 0) + (roleWanted && meta.wanted !== PartyAnyRole ? 2 : 0) + (roleWanted ? 1 : 0),
+            score: (wantsMentor && hasMentor ? 8 : 0) + (activeNow ? 4 : 0) + (roleWanted && meta.wanted !== PartyAnyRole ? 2 : 0) + (roleWanted ? 1 : 0),
             card: {
                 id: group.id, title: meta.title, language: meta.language, wanted: meta.wanted, members: meta.members.length,
-                maxMembers: rules.maxMembers, activeNow: activeNow, usuallyOnline: usual, wantsYou: roleWanted
+                maxMembers: rules.maxMembers, activeNow: activeNow, usuallyOnline: usual, wantsYou: roleWanted, hasMentor: hasMentor, hasStudent: hasStudent
             }
         });
     }
@@ -547,7 +557,7 @@ function partyQuickRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkr
     if (current)
         return JSON.stringify(partyView(nk, current));
     const language = partyPick(request.language, PartyDirectoryRules.languages, PartyDirectoryRules.languages[0]);
-    const candidates = partyCandidates(nk, userId, { language: language, role: request.role, utcOffsetMinutes: request.utcOffsetMinutes });
+    const candidates = partyCandidates(nk, userId, { language: language, role: request.role, utcOffsetMinutes: request.utcOffsetMinutes, noMentor: request.noMentor === true });
     for (const candidate of candidates) {
         try {
             return JSON.stringify(partyView(nk, partyAdd(nk, candidate.group, userId)));

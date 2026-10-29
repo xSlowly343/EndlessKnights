@@ -26,6 +26,7 @@ class PartyHost {
     clockUnixMs = 0;
     readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0 };
     friendBosses: { [userId: string]: number } = {};
+    pairTicks: { [pair: string]: number } = {};
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
     readonly worldRequests: { slot: number; world: PartyWorld; cancel: boolean }[] = [];
@@ -172,6 +173,12 @@ class PartyHost {
         return taken;
     }
 
+    takePairTicks(): { [pair: string]: number } {
+        const taken = this.pairTicks;
+        this.pairTicks = {};
+        return taken;
+    }
+
     takeFriendBosses(): { [userId: string]: number } {
         const taken = this.friendBosses;
         this.friendBosses = {};
@@ -179,12 +186,19 @@ class PartyHost {
     }
 
     private noteTogether(): void {
-        let fighting = 0;
+        const fighting: string[] = [];
         for (let slot = 0; slot < PartyMaxSlots; slot++)
             if (this.encounter.members[slot].joined && this.encounter.presence(slot) === PartyPresence.Fighting)
-                fighting++;
-        if (fighting >= 2)
-            this.chronicle.ticksTogether++;
+                fighting.push(this.encounter.members[slot].playerId);
+        if (fighting.length < 2)
+            return;
+        this.chronicle.ticksTogether++;
+        fighting.sort();
+        for (let a = 0; a < fighting.length; a++)
+            for (let b = a + 1; b < fighting.length; b++) {
+                const pair = fighting[a] + "|" + fighting[b];
+                this.pairTicks[pair] = (this.pairTicks[pair] || 0) + 1;
+            }
     }
 
     private noteBossKill(event: PartyEvent): void {

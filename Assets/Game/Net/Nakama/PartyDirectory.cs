@@ -46,9 +46,14 @@ namespace Game.Net.Nakama
         public async Task<IReadOnlyList<PartyCard>> ListAsync(string? language, string role, string? wanted, int utcOffsetMinutes, CancellationToken cancel = default) =>
             await ListAsync(language, role, wanted, null, utcOffsetMinutes, cancel).ConfigureAwait(false);
 
-        public async Task<IReadOnlyList<PartyCard>> ListAsync(string? language, string role, string? wanted, string? slot, int utcOffsetMinutes, CancellationToken cancel = default)
+        public Task<IReadOnlyList<PartyCard>> ListAsync(string? language, string role, string? wanted, string? slot, int utcOffsetMinutes, CancellationToken cancel = default) =>
+            ListAsync(language, role, wanted, slot, null, utcOffsetMinutes, cancel);
+
+        public async Task<IReadOnlyList<PartyCard>> ListAsync(string? language, string role, string? wanted, string? slot, string? mentor, int utcOffsetMinutes, CancellationToken cancel = default)
         {
             var fields = new List<(string, string)> { ("role", NakamaJson.Quote(role)), ("utcOffsetMinutes", Number(utcOffsetMinutes)) };
+            if (mentor != null)
+                fields.Add(("mentor", NakamaJson.Quote(mentor)));
             if (slot != null)
                 fields.Add(("slot", NakamaJson.Quote(slot)));
             if (language != null)
@@ -65,6 +70,20 @@ namespace Game.Net.Nakama
         public async Task<PartyView> QuickAsync(string language, string role, int utcOffsetMinutes, CancellationToken cancel = default) =>
             View(await Call("party_quick", NakamaJson.Object(("language", NakamaJson.Quote(language)), ("role", NakamaJson.Quote(role)), ("utcOffsetMinutes", Number(utcOffsetMinutes))), cancel)
                 .ConfigureAwait(false));
+
+        public async Task<MentorView> MentorAsync(CancellationToken cancel = default) =>
+            MentorView.From(await Call("mentor_status", "{}", cancel).ConfigureAwait(false));
+
+        public async Task<MentorView> ReadyToMentorAsync(bool ready, CancellationToken cancel = default) =>
+            MentorView.From(await Call("mentor_ready", NakamaJson.Object(("ready", ready ? "true" : "false")), cancel).ConfigureAwait(false));
+
+        public async Task<MentorView> MarkTreeAsync(IReadOnlyList<string> nodeIds, CancellationToken cancel = default)
+        {
+            var quoted = new List<string>(nodeIds.Count);
+            foreach (var id in nodeIds)
+                quoted.Add(NakamaJson.Quote(id));
+            return MentorView.From(await Call("mentor_marks", NakamaJson.Object(("marks", "[" + string.Join(",", quoted) + "]")), cancel).ConfigureAwait(false));
+        }
 
         public Task BlockAsync(string userId, CancellationToken cancel = default) => Call("party_block", NakamaJson.Object(("userId", NakamaJson.Quote(userId))), cancel);
 

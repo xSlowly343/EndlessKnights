@@ -27,10 +27,19 @@ namespace Game.Core.Ui
     {
         public static string Empty => Texts.Get("mail.empty");
 
-        public static string Title(MailLetter letter) => Texts.Get(letter.Kind == MailLetter.RiftKind ? "mail.rift.title" : "mail.title");
+        public static string Title(MailLetter letter) => Texts.Get(letter.Kind switch
+        {
+            MailLetter.RiftKind => "mail.rift.title",
+            MailLetter.MentorKind => "mail.mentor.title",
+            _ => "mail.title"
+        });
 
-        public static string Body(MailLetter letter) =>
-            letter.Kind == MailLetter.RiftKind ? Texts.Format("mail.rift.body", letter.Place, letter.Of, letter.Depth, PartyCardText.Title(letter.Title)) : string.Empty;
+        public static string Body(MailLetter letter) => letter.Kind switch
+        {
+            MailLetter.RiftKind => Texts.Format("mail.rift.body", letter.Place, letter.Of, letter.Depth, PartyCardText.Title(letter.Title)),
+            MailLetter.MentorKind => Texts.Format("mail.mentor.body", letter.Depth),
+            _ => string.Empty
+        };
 
         public static string Reward(MailLetter letter)
         {

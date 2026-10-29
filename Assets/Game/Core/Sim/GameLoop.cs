@@ -46,6 +46,7 @@ namespace Game.Core.Sim
         private readonly GhostSystem _ghost;
         private readonly RaidTally _raid;
         private readonly ClanTreeBonus _clanTree;
+        private readonly MentorBonus _mentor;
         private readonly RiftSystem _rift;
         private readonly WeaponSystem _weapons;
         private readonly DropSystem _drops;
@@ -123,6 +124,7 @@ namespace Game.Core.Sim
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events);
             _clanTree = new ClanTreeBonus(data.ClanTree, hero);
+            _mentor = new MentorBonus(data.Mentor, hero, _levels);
             RebuildTree();
             SyncPathSkill();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
@@ -153,6 +155,7 @@ namespace Game.Core.Sim
         public GhostSystem Ghost => _ghost;
         public RaidTally Raid => _raid;
         public ClanTreeBonus ClanTree => _clanTree;
+        public MentorBonus Mentor => _mentor;
         public RiftSystem Rift => _rift;
         public WeaponSystem Weapons => _weapons;
         public GearSystem Gear => _gear;
@@ -446,6 +449,7 @@ namespace Game.Core.Sim
             _ghost.UseRules(data.Party.Ghost);
             _raid.UseRules(data.Raid);
             _clanTree.UseCatalog(data.ClanTree);
+            _mentor.UseRules(data.Mentor);
             _rift.UseData(data);
             RebuildTree();
             SyncPathSkill();

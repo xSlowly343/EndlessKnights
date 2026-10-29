@@ -12,8 +12,8 @@ class FakeNakama {
     this.versions = 0;
   }
 
-  addUser(userId, name, steamId) {
-    this.users.set(userId, { userId: userId, username: name, displayName: name, steamId: steamId || "", online: true });
+  addUser(userId, name, steamId, createTime) {
+    this.users.set(userId, { userId: userId, username: name, displayName: name, steamId: steamId || "", online: true, createTime: createTime === undefined ? Math.floor(Date.now() / 1000) : createTime });
   }
 
   uuidv4() {

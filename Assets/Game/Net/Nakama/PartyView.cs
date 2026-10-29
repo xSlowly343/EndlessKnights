@@ -18,7 +18,11 @@ namespace Game.Net.Nakama
             MatchId = NakamaJson.Text(json, "matchId");
             var members = new List<PartyMemberView>();
             foreach (var member in NakamaJson.Items(json, "members"))
-                members.Add(new PartyMemberView(NakamaJson.Text(member, "userId"), NakamaJson.Text(member, "name"), NakamaJson.Text(member, "steamId"), NakamaJson.Flag(member, "leader"), SlotOf(member)));
+                members.Add(new PartyMemberView(NakamaJson.Text(member, "userId"), NakamaJson.Text(member, "name"), NakamaJson.Text(member, "steamId"), NakamaJson.Flag(member, "leader"), SlotOf(member))
+                {
+                    Student = NakamaJson.Flag(member, "student"),
+                    Mentor = NakamaJson.Flag(member, "mentor")
+                });
             Members = members;
         }
 
@@ -71,6 +75,8 @@ namespace Game.Net.Nakama
         public string SteamId { get; }
         public bool Leader { get; }
         public int Slot { get; }
+        public bool Student { get; set; }
+        public bool Mentor { get; set; }
     }
 
     public sealed class PartyCard
@@ -86,6 +92,8 @@ namespace Game.Net.Nakama
             ActiveNow = NakamaJson.Flag(json, "activeNow");
             UsuallyOnline = NakamaJson.Text(json, "usuallyOnline");
             WantsYou = NakamaJson.Flag(json, "wantsYou");
+            HasMentor = NakamaJson.Flag(json, "hasMentor");
+            HasStudent = NakamaJson.Flag(json, "hasStudent");
         }
 
         public string Id { get; }
@@ -97,5 +105,7 @@ namespace Game.Net.Nakama
         public bool ActiveNow { get; }
         public string UsuallyOnline { get; }
         public bool WantsYou { get; }
+        public bool HasMentor { get; }
+        public bool HasStudent { get; }
     }
 }
