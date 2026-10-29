@@ -6,7 +6,7 @@
   "feats": [
     { "id": "first_steps", "kind": "bossesTogether", "levels": [10], "banner": [1] },
     { "id": "old_guard", "kind": "bossesTogether", "levels": [100, 1000, 10000], "banner": [2, 3, 4] },
-    { "id": "guardian_hunters", "kind": "guardiansTogether", "levels": [5], "tracked": false },
+    { "id": "guardian_hunters", "kind": "guardiansTogether", "levels": [5] },
     { "id": "full_orchestra", "kind": "fullOrchestra", "levels": [1], "title": "full_orchestra" },
     { "id": "chain_reaction", "kind": "synergiesOnOneEnemy", "levels": [3], "tracked": false },
     { "id": "rift_conquerors", "kind": "riftDepth", "levels": [100, 200] },

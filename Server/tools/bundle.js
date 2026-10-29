@@ -30,6 +30,7 @@ const rules = {
   disconnectGraceSeconds: party.presence.disconnectGraceSeconds,
   silenceSeconds: party.presence.silenceSeconds,
   presenceSeconds: party.packets.presenceSeconds,
+  biomeLength: stages.biomeLength,
   stateBroadcastSeconds: party.packets.stateBroadcastSeconds,
   maxMessagesPerSecond: party.packets.maxMessagesPerSecond,
   lateDamageSeconds: party.lateDamageSeconds,

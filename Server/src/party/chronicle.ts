@@ -22,6 +22,7 @@ interface ChronicleStats {
     nightBosses: number;
     riftDepth: number;
     mentorSeconds: number;
+    guardiansTogether: number;
 }
 
 interface ChronicleRecord {
@@ -54,7 +55,7 @@ function chronicleTicksPerHour(): number {
 }
 
 function chronicleNoStats(): ChronicleStats {
-    return { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0 };
+    return { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0 };
 }
 
 function chronicleEmpty(): ChronicleValue {
@@ -62,7 +63,7 @@ function chronicleEmpty(): ChronicleValue {
 }
 
 function chronicleHasStats(stats: ChronicleStats): boolean {
-    return stats.bossesTogether > 0 || stats.ticksTogether > 0 || stats.fullOrchestra > 0 || stats.nightBosses > 0 || stats.riftDepth > 0 || stats.mentorSeconds > 0;
+    return stats.bossesTogether > 0 || stats.ticksTogether > 0 || stats.fullOrchestra > 0 || stats.nightBosses > 0 || stats.riftDepth > 0 || stats.mentorSeconds > 0 || stats.guardiansTogether > 0;
 }
 
 function chronicleProgress(stats: ChronicleStats, kind: string): number {
@@ -73,6 +74,7 @@ function chronicleProgress(stats: ChronicleStats, kind: string): number {
         case "nightBosses": return stats.nightBosses;
         case "riftDepth": return stats.riftDepth || 0;
         case "mentorHours": return (stats.mentorSeconds || 0) / 3600;
+        case "guardiansTogether": return stats.guardiansTogether || 0;
         default: return 0;
     }
 }
@@ -90,6 +92,7 @@ function chronicleAdd(value: ChronicleValue, delta: ChronicleStats, now: number,
     value.stats.nightBosses += delta.nightBosses;
     value.stats.riftDepth = Math.max(value.stats.riftDepth || 0, delta.riftDepth || 0);
     value.stats.mentorSeconds = (value.stats.mentorSeconds || 0) + (delta.mentorSeconds || 0);
+    value.stats.guardiansTogether = (value.stats.guardiansTogether || 0) + (delta.guardiansTogether || 0);
     const earned: ChronicleEarned[] = [];
     for (const feat of rules.feats) {
         if (!feat.tracked)
@@ -138,7 +141,8 @@ function chronicleView(partyId: string, value: ChronicleValue, rules: ChronicleR
             fullOrchestra: value.stats.fullOrchestra,
             nightBosses: value.stats.nightBosses,
             riftDepth: value.stats.riftDepth || 0,
-            mentorHours: Math.floor((value.stats.mentorSeconds || 0) / 360) / 10
+            mentorHours: Math.floor((value.stats.mentorSeconds || 0) / 360) / 10,
+            guardiansTogether: value.stats.guardiansTogether || 0
         },
         feats: rules.feats.map((feat) => {
             const got = value.feats[feat.id];

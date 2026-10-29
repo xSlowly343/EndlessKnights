@@ -1,6 +1,7 @@
 interface PartyServerConfig extends PartyEncounterRules {
     silenceSeconds: number;
     presenceSeconds: number;
+    biomeLength: number;
     stateBroadcastSeconds: number;
     maxMessagesPerSecond: number;
     barsPerSecond: number;
@@ -24,7 +25,8 @@ class PartyHost {
     cutShares = 0;
     repeatedShares = 0;
     clockUnixMs = 0;
-    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0 };
+    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0 };
+    readonly stages = [0, 0, 0, 0];
     friendBosses: { [userId: string]: number } = {};
     pairTicks: { [pair: string]: number } = {};
     readonly flags = [0, 0, 0, 0];
@@ -60,6 +62,7 @@ class PartyHost {
         this.lastHeardTick[slot] = this.encounter.tick;
         if (known === PartyNoSlot) {
             this.playerNumbers[slot] = playerNumber;
+            this.stages[slot] = 0;
             this.lastSequence[slot] = 0;
             this.lastEnemy[slot] = 0;
             this.lastTotal[slot] = 0;
@@ -99,6 +102,8 @@ class PartyHost {
         switch (partyKindOf(data)) {
             case PartyMessageKind.Hello: {
                 const hello = partyDecodeHello(data);
+                if (hello)
+                    this.stages[slot] = hello.stage;
                 if (hello && this.encounter.members[slot].heroClass !== hello.heroClass) {
                     this.encounter.setHeroClass(slot, hello.heroClass);
                     this.rosterChanged = true;
@@ -113,8 +118,10 @@ class PartyHost {
             }
             case PartyMessageKind.Presence: {
                 const presence = partyDecodePresence(data);
-                if (presence)
+                if (presence) {
                     this.encounter.setPeaceful(slot, presence.presence === PartyPresence.Peaceful);
+                    this.stages[slot] = presence.stage;
+                }
                 break;
             }
             case PartyMessageKind.CastEffect: {
@@ -164,8 +171,10 @@ class PartyHost {
     takeChronicle(): ChronicleStats {
         const taken = {
             bossesTogether: this.chronicle.bossesTogether, ticksTogether: this.chronicle.ticksTogether, fullOrchestra: this.chronicle.fullOrchestra,
-            nightBosses: this.chronicle.nightBosses, riftDepth: this.chronicle.riftDepth || 0, mentorSeconds: this.chronicle.mentorSeconds || 0
+            nightBosses: this.chronicle.nightBosses, riftDepth: this.chronicle.riftDepth || 0, mentorSeconds: this.chronicle.mentorSeconds || 0,
+            guardiansTogether: this.chronicle.guardiansTogether || 0
         };
+        this.chronicle.guardiansTogether = 0;
         this.chronicle.riftDepth = 0;
         this.chronicle.mentorSeconds = 0;
         this.chronicle.nightBosses = 0;
@@ -206,16 +215,26 @@ class PartyHost {
     private noteBossKill(event: PartyEvent): void {
         this.noteFriendBoss(event);
         const roles: string[] = [];
+        let guardian = false;
         for (let slot = 0; slot < PartyMaxSlots; slot++)
-            if (event.shares[slot] > 0 && this.encounter.members[slot].joined)
+            if (event.shares[slot] > 0 && this.encounter.members[slot].joined) {
                 roles.push(chronicleRoleOf(this.encounter.members[slot].heroClass));
+                guardian = guardian || this.onGuardianStage(slot);
+            }
         if (roles.length < 2)
             return;
         this.chronicle.bossesTogether++;
+        if (guardian)
+            this.chronicle.guardiansTogether = (this.chronicle.guardiansTogether || 0) + 1;
         if (chronicleFullOrchestra(roles))
             this.chronicle.fullOrchestra++;
         if (chronicleAtNight(this.clockUnixMs, ChronicleServerRules))
             this.chronicle.nightBosses++;
+    }
+
+    private onGuardianStage(slot: number): boolean {
+        const stage = this.stages[slot];
+        return stage > 0 && this.encounter.world === PartyWorld.Home && stage % this.config.biomeLength === 0;
     }
 
     private noteFriendBoss(event: PartyEvent): void {

@@ -47,9 +47,9 @@ test("hours together and the full orchestra give titles, untracked feats wait", 
   party.chronicleAdd(value, stats(0, 0.1, 0), 2000, rules);
   assert.deepStrictEqual(plain(party.chronicleTitles(value, rules)), ["full_orchestra", "inseparable"]);
   party.chronicleAdd(value, stats(100000, 1000, 100), 3000, rules);
-  assert.strictEqual(value.feats.guardian_hunters, undefined, "guardians are not counted yet");
+  assert.strictEqual(value.feats.chain_reaction, undefined, "synergies on the enemy are not counted yet");
   const view = party.chronicleView("p1", value, rules);
-  assert.strictEqual(view.feats.find((feat) => feat.id === "guardian_hunters").tracked, false);
+  assert.strictEqual(view.feats.find((feat) => feat.id === "chain_reaction").tracked, false);
   assert.strictEqual(view.records[0].at, 3000, "the newest record comes first");
 });
 
@@ -155,4 +155,25 @@ test("the Rift board tells the match how deep the party is", () => {
   const riftId = 1793102400;
   assert.strictEqual(party.riftBoardAdd(nk, riftId, "p1", "night_shift", 0, ["ann"], riftId * 1000), 1, "entering the Rift is depth 1");
   assert.strictEqual(party.riftBoardAdd(nk, riftId, "p1", "night_shift", 4, ["ann"], riftId * 1000 + 1000), 5);
+});
+
+test("a boss together counts as a guardian when a member who earned it stood on a biome guardian stage", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.join("user-b", "12");
+  const biome = party.PartyServerRules.biomeLength;
+  host.stages[0] = biome - 1;
+  host.stages[1] = biome + 3;
+  killBoss(host, [0, 1]);
+  assert.strictEqual(host.chronicle.guardiansTogether, 0);
+  host.stages[1] = 2 * biome;
+  killBoss(host, [0, 1]);
+  assert.strictEqual(host.chronicle.guardiansTogether, 1);
+  host.stages[0] = 3 * biome;
+  host.stages[1] = 1;
+  killBoss(host, [1]);
+  assert.strictEqual(host.chronicle.guardiansTogether, 1, "a guardian killed alone is not together");
+  const value = party.chronicleEmpty();
+  const earned = party.chronicleAdd(value, Object.assign(stats(0, 0, 0), { guardiansTogether: 5 }), 1000, rules);
+  assert.deepStrictEqual(plain(earned.map((got) => got.feat)), ["guardian_hunters"]);
 });

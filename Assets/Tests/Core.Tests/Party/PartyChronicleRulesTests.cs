@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Party
   ""night"": { ""utcOffsetMinutes"": 180, ""fromHour"": 0, ""toHour"": 6 },
   ""feats"": [
     { ""id"": ""first_steps"", ""kind"": ""bossesTogether"", ""levels"": [10], ""banner"": [1] },
-    { ""id"": ""rift_conquerors"", ""kind"": ""guardiansTogether"", ""levels"": [100, 200], ""title"": ""owls"", ""tracked"": false }
+    { ""id"": ""rift_conquerors"", ""kind"": ""synergiesOnOneEnemy"", ""levels"": [100, 200], ""title"": ""owls"", ""tracked"": false }
   ]
 }";
 
