@@ -17,7 +17,7 @@ namespace Game.Sim
     public static class BotCommand
     {
         public const string Usage =
-            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift] | --ghost) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
+            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift] | --ghost | --clan new|open|quick|K7M-Q2X [--count 1]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
 
         private const ulong BotSteamBase = 76561190000000000UL;
 
@@ -43,6 +43,8 @@ namespace Game.Sim
             var client = new NakamaClient(server, key);
             try
             {
+                if (options.TryGetValue("--clan", out var clan))
+                    return RunClan(client, clan, (int)Number(options, "--count", 1)).GetAwaiter().GetResult();
                 if (options.ContainsKey("--ghost"))
                     return RunGhost(data, client, profile, heroClass, seconds).GetAwaiter().GetResult();
                 if (options.ContainsKey("--pair"))
@@ -81,6 +83,31 @@ namespace Game.Sim
                 await bot.ReportOtherAsync(reportReason, Console.Out).ConfigureAwait(false);
             await bot.FinishAsync(stay).ConfigureAwait(false);
             return bot.Client.Status == PartyLink.Linked ? 0 : 1;
+        }
+
+        private static async Task<int> RunClan(NakamaClient client, string how, int count)
+        {
+            ClanView? clan = null;
+            for (var i = 0; i < count; i++)
+            {
+                var device = "bot-" + Guid.NewGuid().ToString("N");
+                var online = await OnlineSession.StartAsync(client, cancel => client.AuthenticateDeviceAsync(device, cancel), BotSteamBase + (ulong)i).ConfigureAwait(false);
+                var clans = online.Clans;
+                clan = how switch
+                {
+                    "new" => await clans.CreateAsync("invite", null, null, null).ConfigureAwait(false),
+                    "open" => await clans.CreateAsync("open", null, null, null).ConfigureAwait(false),
+                    "quick" => await clans.QuickAsync("ru").ConfigureAwait(false),
+                    _ => await clans.JoinByCodeAsync(how).ConfigureAwait(false)
+                };
+                if (clan == null)
+                    return Fail("no open clan to join");
+                if (how == "new" || how == "open")
+                    how = clan.Code;
+            }
+            Console.WriteLine(ClanText.Name(clan!.Adjective, clan.Noun) + " [" + ClanText.Tag(clan.Adjective, clan.Noun) + "] · " + ClanText.Members(clan.Members.Count, clan.MaxMembers)
+                + " · " + ClanText.ActiveNow(clan.ActiveNow) + " · " + ClanText.Code(clan.Code));
+            return 0;
         }
 
         private static async Task<int> RunGhost(GameData data, NakamaClient client, BotProfile profile, HeroClass heroClass, double seconds)

@@ -46,8 +46,24 @@ npm test
   | `party_chronicle` | `{}` | `{ partyId, banner, titles, stats: { bossesTogether, hoursTogether, fullOrchestra }, feats: [{ id, kind, tracked, levels, level, at, progress }], records: [{ at, kind, name, feat, level }] }` (новые записи первыми) |
 
   Значения `title`, `language`, `wanted`, `role`, `slot` берутся из `party.json` → `search`.
-- Хранилище: `party_codes/<код>` и `party_match/<partyId>` у системного пользователя, `party/current` у игрока (`{ partyId, matchId, slot, seen }`), `party_blocks/list` у игрока, `party_reports/<кого>:<кто>` у системного пользователя, `party_chronicle/<partyId>` (Хроника отряда) у системного пользователя, `party_feats/<partyId>` (копия подвигов отряда) у каждого участника, `rift_party/open` (общий Разлом, в который сейчас входят отряды: id, окно, начало, конец, вход до), `rift_board/<riftId>` (таблица Разлома) и `rift_board/pending` (Разломы без итога) у системного пользователя, `mail/<id>` (письма с наградами, итог Разлома — `rift-<riftId>`) у каждого игрока, `rift_party_of/<partyId>` (в каком Разломе отряд, для восстановления после перезапуска) у системного пользователя.
-- Клиентские вызовы групп (создать группу с именем `party-…`, вступить, выйти, исключить, повысить, изменить, удалить отряд, листать группы) закрыты before-хуками: отрядом управляют только RPC.
+- Клан (13.13, до 30 игроков). Ошибки: `already in a clan`, `not in a clan`, `clan is full`, `unknown code`, `clan not found`, `only the leader can do that`, `too many officers`, `not a member`, `bad request`.
+
+  | RPC | Запрос | Ответ |
+  |---|---|---|
+  | `clan_create` | `{ access?: "invite"\|"open", adjective?, noun?, language? }` | вид клана: `{ id, code, access, adjective, noun, language, leader, maxMembers, maxOfficers, activeNow, members: [{ userId, name, steamId, role: "leader"\|"officer"\|"member", seen }] }` (глава, офицеры, остальные по свежести) |
+  | `clan_mine` | `{}` | `{ clan: вид \| null }`, отмечает игрока «в игре» |
+  | `clan_join` | `{ code }` или `{ clanId }` (только открытый) | вид |
+  | `clan_leave` | `{}` | `{ clan: null }` |
+  | `clan_kick` | `{ userId }` (глава — любого, офицер — простого участника) | вид |
+  | `clan_promote`, `clan_demote` | `{ userId }` (только глава): сделать офицером или снять | вид |
+  | `clan_lead` | `{ userId }` (только глава): передать главенство | вид |
+  | `clan_update` | `{ access?, adjective?, noun?, language? }` (только глава) | вид |
+  | `clan_list` | `{ language? }` | `{ clans: [{ id, adjective, noun, language, members, maxMembers, activeNow }] }`, без кодов |
+  | `clan_quick` | `{ language }` | `{ clan: вид \| null }` — вступил в лучший открытый клан или их нет |
+
+  Слова имени (`adjective`, `noun`) и числа — из `clan.json`, языки — из `party.json` → `search.languages`.
+- Хранилище: `party_codes/<код>` и `party_match/<partyId>` у системного пользователя, `party/current` у игрока (`{ partyId, matchId, slot, seen }`), `party_blocks/list` у игрока, `party_reports/<кого>:<кто>` у системного пользователя, `party_chronicle/<partyId>` (Хроника отряда) у системного пользователя, `party_feats/<partyId>` (копия подвигов отряда) у каждого участника, `rift_party/open` (общий Разлом, в который сейчас входят отряды: id, окно, начало, конец, вход до), `rift_board/<riftId>` (таблица Разлома) и `rift_board/pending` (Разломы без итога) у системного пользователя, `mail/<id>` (письма с наградами, итог Разлома — `rift-<riftId>`) у каждого игрока, `rift_party_of/<partyId>` (в каком Разломе отряд, для восстановления после перезапуска) у системного пользователя, `clan_codes/<код>` у системного пользователя и `clan/current` у игрока (`{ clanId, seen }`).
+- Клиентские вызовы групп (создать группу с именем `party-…` или `clan-…`, вступить, выйти, исключить, повысить, изменить, удалить отряд или клан, листать группы) закрыты before-хуками: отрядом и кланом управляют только RPC.
 - RPC `rift_window` (без аргументов) отдаёт `{ serverUnixMs, open, next, announced }`: открытое окно Разлома (или `null`), следующее окно и их модификаторы по `rift.json`.
 - Клиент входит в матч с метаданными `{ "playerNumber": "<SteamID64>" }`: это число попадает в `Roster`, по нему клиент находит свой слот. Матч отряда пускает только участников этого отряда.
 - Пакеты те же, что у `LoopbackTransport`: первый байт — вид сообщения, opCode равен ему же.

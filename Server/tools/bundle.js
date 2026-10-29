@@ -7,6 +7,7 @@ const party = JSON.parse(fs.readFileSync(path.join(data, "party.json"), "utf8"))
 const stages = JSON.parse(fs.readFileSync(path.join(data, "stages.json"), "utf8"));
 const rift = JSON.parse(fs.readFileSync(path.join(data, "rift.json"), "utf8"));
 const intake = JSON.parse(fs.readFileSync(path.join(root, "config", "intake.json"), "utf8"));
+const clan = JSON.parse(fs.readFileSync(path.join(data, "clan.json"), "utf8"));
 const chronicle = JSON.parse(fs.readFileSync(path.join(data, "party_chronicle.json"), "utf8"));
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
@@ -100,7 +101,22 @@ const chronicleRules = {
   classRoles: Object.values(party.search.classRoles)
 };
 
+if (clan.version !== 1)
+  throw new Error("clan.json: version " + clan.version + " is not supported");
+const clanRules = {
+  maxMembers: clan.maxMembers,
+  maxOfficers: clan.maxOfficers,
+  codeLength: clan.codeLength,
+  listLimit: clan.listLimit,
+  activeMinutes: clan.activeMinutes,
+  inactiveDays: clan.inactiveDays,
+  leaderAwayDays: clan.leaderAwayDays,
+  adjectives: clan.names.adjectives,
+  nouns: clan.names.nouns,
+  languages: party.search.languages
+};
+
 const ghostRules = Object.assign({}, party.ghost, { classes: Object.keys(party.search.classRoles).length });
 
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\n" + code);

@@ -22,6 +22,17 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("party_unblock", partyUnblockRpc);
     initializer.registerRpc("party_report", partyReportRpc);
     initializer.registerRpc("party_chronicle", partyChronicleRpc);
+    initializer.registerRpc("clan_create", clanCreateRpc);
+    initializer.registerRpc("clan_mine", clanMineRpc);
+    initializer.registerRpc("clan_join", clanJoinRpc);
+    initializer.registerRpc("clan_leave", clanLeaveRpc);
+    initializer.registerRpc("clan_kick", clanKickRpc);
+    initializer.registerRpc("clan_promote", clanPromoteRpc);
+    initializer.registerRpc("clan_demote", clanDemoteRpc);
+    initializer.registerRpc("clan_lead", clanLeadRpc);
+    initializer.registerRpc("clan_update", clanUpdateRpc);
+    initializer.registerRpc("clan_list", clanListRpc);
+    initializer.registerRpc("clan_quick", clanQuickRpc);
     initializer.registerRpc("rift_window", riftWindowRpc);
     initializer.registerRpc("rift_board", riftBoardRpc);
     initializer.registerRpc("mail_list", mailListRpc);

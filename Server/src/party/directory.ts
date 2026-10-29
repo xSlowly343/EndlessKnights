@@ -598,11 +598,11 @@ function partyGuardGroup(nk: nkruntime.Nakama, groupId: string | undefined): boo
     if (!groupId)
         return false;
     const groups = nk.groupsGetId([groupId]);
-    return groups.length > 0 && partyIsParty(groups[0]);
+    return groups.length > 0 && (partyIsParty(groups[0]) || clanIsClan(groups[0]));
 }
 
 function partyBeforeCreateGroup(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, data: { name?: string }): any {
-    return data.name && data.name.indexOf(PartyGroupPrefix) === 0 ? null : data;
+    return data.name && (data.name.indexOf(PartyGroupPrefix) === 0 || data.name.indexOf(ClanGroupPrefix) === 0) ? null : data;
 }
 
 function partyBeforeGroupChange(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, data: { groupId?: string }): any {

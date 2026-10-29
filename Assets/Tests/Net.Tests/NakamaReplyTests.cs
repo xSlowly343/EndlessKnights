@@ -56,6 +56,26 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void AClanIsReadFromTheServerReplyWithRolesAndLastSeen()
+        {
+            var clan = ClanView.From(NakamaJson.Parse("{\"id\":\"c1\",\"code\":\"K7MQ2X\",\"access\":\"open\",\"adjective\":\"lilac\",\"noun\":\"lanterns\",\"language\":\"ru\","
+                + "\"leader\":\"ann\",\"maxMembers\":30,\"maxOfficers\":4,\"activeNow\":2,\"members\":[{\"userId\":\"ann\",\"name\":\"Ann\",\"steamId\":\"76561198000000000\",\"role\":\"leader\",\"seen\":1793188800000},"
+                + "{\"userId\":\"bob\",\"name\":\"Bob\",\"steamId\":\"\",\"role\":\"officer\",\"seen\":1793188700000}]}"))!;
+            var card = new ClanCard(NakamaJson.Parse("{\"id\":\"c2\",\"adjective\":\"golden\",\"noun\":\"owls\",\"language\":\"en\",\"members\":27,\"maxMembers\":30,\"activeNow\":14}"));
+
+            Assert.That(clan.IsOpen, Is.True);
+            Assert.That(clan.Adjective + " " + clan.Noun, Is.EqualTo("lilac lanterns"));
+            Assert.That(clan.MaxMembers, Is.EqualTo(30));
+            Assert.That(clan.ActiveNow, Is.EqualTo(2));
+            Assert.That(clan.RoleOf("bob"), Is.EqualTo("officer"));
+            Assert.That(clan.RoleOf("eve"), Is.Empty);
+            Assert.That(clan.Members[0].SeenUnixMs, Is.EqualTo(1793188800000));
+            Assert.That(card.Members, Is.EqualTo(27));
+            Assert.That(card.ActiveNow, Is.EqualTo(14));
+            Assert.That(ClanView.From(NakamaJson.Field(NakamaJson.Parse("{\"clan\":null}"), "clan")), Is.Null);
+        }
+
+        [Test]
         public void AGhostIsReadFromTheServerReplyWithItsMarks()
         {
             var synergy = Game.Core.Content.Synergy.SynergyRules.Load(System.IO.File.ReadAllText(DataFile("synergy.json")));
