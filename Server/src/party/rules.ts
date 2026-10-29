@@ -10,7 +10,11 @@ interface PartyEncounterRules {
     maxWeakenGold: number;
     minBossTimerRate: number;
     worldSwitchSeconds: number;
-    enemiesPerStage: number;
+    waveCount: number;
+    waveFirstEnemies: number;
+    waveEnemiesPerWave: number;
+    waveStagesPerExtraEnemy: number;
+    waveMaxEnemies: number;
     bossRetryAfterKills: number;
     bossTimerSeconds: number;
     bossHpMultiplier: number;
@@ -38,6 +42,14 @@ const enum PartyPresence { Fighting = 0, Resting = 1, Peaceful = 2, Offline = 3 
 
 function partyHpMultiplier(rules: PartyEncounterRules, fighters: number): number {
     return Math.max(1, 1 + rules.hpPerExtraPlayer * (Math.max(1, fighters) - 1));
+}
+
+function partyEnemiesOnStage(rules: PartyEncounterRules, stage: number): number {
+    const extra = Math.min(rules.waveMaxEnemies, Math.floor((Math.max(1, stage) - 1) / rules.waveStagesPerExtraEnemy));
+    let total = 0;
+    for (let wave = 0; wave < rules.waveCount; wave++)
+        total += Math.min(rules.waveMaxEnemies, rules.waveFirstEnemies + wave * rules.waveEnemiesPerWave + extra);
+    return total;
 }
 
 function partyTicks(seconds: number): number {

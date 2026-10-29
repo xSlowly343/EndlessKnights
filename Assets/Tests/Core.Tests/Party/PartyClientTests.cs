@@ -604,6 +604,27 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void ThePartyCountsWavesByTheMedianStageOfItsFighters()
+        {
+            var rig = new Rig(5, 40, 120);
+            rig.Run(3);
+
+            Assert.That(rig.Host.Encounter.WaveStage, Is.EqualTo(40));
+            var waves = TestWorld.Data.Stages.EnemiesOnStage(40);
+            Assert.That(waves, Is.GreaterThan(TestWorld.Data.Stages.EnemiesOnStage(5)));
+            foreach (var player in rig.Players)
+                Assert.That(player.Loop.State.WaveStage, Is.EqualTo(40), "everyone sees the waves of the party");
+
+            while (!rig.Host.Encounter.FightingBoss)
+                rig.Run(0.2);
+            Assert.That(rig.Host.Kills, Is.EqualTo(waves));
+
+            rig.Players[0].Client.Leave();
+            rig.Run(0.2);
+            Assert.That(rig.Players[0].Loop.State.WaveStage, Is.EqualTo(rig.Players[0].Loop.State.Stage), "solo goes back to its own waves");
+        }
+
+        [Test]
         public void FocusIsNotPassedWhenNobodyTypes()
         {
             var rig = new Rig(5, 5);

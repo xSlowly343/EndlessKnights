@@ -43,7 +43,8 @@ namespace Game.Core.Tests.Party
                 FocusRelay(),
                 HelpCall(),
                 WeakenNext(),
-                WeakenedRewards()
+                WeakenedRewards(),
+                MedianWaves()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -66,7 +67,11 @@ namespace Game.Core.Tests.Party
                    $"    \"typingReserveShare\": {N(rules.Contribution.TypingReserveShare)},\n" +
                    $"    \"relaySenderSeconds\": {N(rules.Relay.SenderSeconds)},\n" +
                    $"    \"relayRecipientSeconds\": {N(rules.Relay.RecipientSeconds)},\n" +
-                   $"    \"enemiesPerStage\": {stages.EnemiesPerStage},\n" +
+                   $"    \"waveCount\": {stages.Waves.Count},\n" +
+                   $"    \"waveFirstEnemies\": {stages.Waves.FirstEnemies},\n" +
+                   $"    \"waveEnemiesPerWave\": {stages.Waves.EnemiesPerWave},\n" +
+                   $"    \"waveStagesPerExtraEnemy\": {stages.Waves.StagesPerExtraEnemy},\n" +
+                   $"    \"waveMaxEnemies\": {stages.Waves.MaxEnemies},\n" +
                    $"    \"bossRetryAfterKills\": {stages.BossRetryAfterKills},\n" +
                    $"    \"bossTimerSeconds\": {N(stages.BossTimerSeconds)},\n" +
                    $"    \"bossHpMultiplier\": {N(stages.BossHpMultiplier)}\n" +
@@ -90,6 +95,41 @@ namespace Game.Core.Tests.Party
             r.Weaken(2, 0.2);
             r.SwitchWorld(PartyWorld.Rift, 1761652800);
             r.Hit(0, 2);
+            return r.ToJson();
+        }
+
+        private static string MedianWaves()
+        {
+            var r = Recorder("waves follow the median stage of the fighters and the depth in the rift", 909);
+            r.Join(1);
+            r.Stage(0, 5);
+            r.Join(2);
+            r.Stage(1, 95);
+            r.Join(3);
+            r.Stage(2, 41);
+            r.Stage(2, -3);
+            r.JoinGuest(4, 30);
+            r.Stage(3, 900);
+            while (!r.Encounter.FightingBoss)
+            {
+                r.Input(0);
+                r.Input(1);
+                r.Input(2);
+                r.Hit(0, 1.5);
+            }
+            r.Peaceful(2, true);
+            r.Hit(1, 50);
+            r.Leave(1);
+            r.Hit(0, 2);
+            r.Advance(1900);
+            r.Hit(0, 1);
+            r.SwitchWorld(PartyWorld.Rift, 1761652800);
+            while (r.Encounter.RiftStagesCleared < 2)
+            {
+                r.Input(0);
+                r.Hit(0, 1.5);
+            }
+            r.Hit(0, 1);
             return r.ToJson();
         }
 

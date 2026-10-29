@@ -120,6 +120,7 @@ namespace Game.Core.Party
             if (kind == PartyMessageKind.Hello && PartyCodec.TryDecode(_in, length, out HelloMessage hello))
             {
                 slot = Welcome(from, slot);
+                _encounter.SetStage(slot, hello.Stage);
                 if (slot != PartyEncounter.NoSlot && _encounter.Member(slot).HeroClass != hello.HeroClass)
                 {
                     _encounter.SetHeroClass(slot, hello.HeroClass);
@@ -136,6 +137,7 @@ namespace Game.Core.Party
                     break;
                 case PartyMessageKind.Presence when PartyCodec.TryDecode(_in, length, out PresenceMessage presence):
                     _encounter.SetPeaceful(slot, presence.Presence == PartyPresence.Peaceful);
+                    _encounter.SetStage(slot, presence.Stage);
                     break;
                 case PartyMessageKind.CastEffect when PartyCodec.TryDecode(_in, length, out CastEffectMessage effect):
                     if (effect.OnEnemy)

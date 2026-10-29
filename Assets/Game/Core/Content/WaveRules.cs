@@ -17,6 +17,10 @@ namespace Game.Core.Content
         }
 
         public int Count { get; }
+        public int FirstEnemies => _firstEnemies;
+        public int EnemiesPerWave => _enemiesPerWave;
+        public int StagesPerExtraEnemy => _stagesPerExtraEnemy;
+        public int MaxEnemies => _maxEnemies;
 
         public static WaveRules Read(ContentNode node) =>
             new WaveRules(

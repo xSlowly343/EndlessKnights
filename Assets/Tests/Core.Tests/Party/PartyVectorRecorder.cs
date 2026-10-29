@@ -59,6 +59,8 @@ namespace Game.Core.Tests.Party
         public void SwitchWorld(PartyWorld world, long riftId) =>
             Record($"\"op\": \"switchWorld\", \"world\": {(int)world}, \"riftId\": {riftId}", () => _encounter.SwitchWorld(world, riftId));
 
+        public void Stage(int slot, long stage) => Record($"\"op\": \"stage\", \"slot\": {slot}, \"stage\": {stage}", () => _encounter.SetStage(slot, stage));
+
         public int RelayTarget(int from) => Record($"\"op\": \"relayTarget\", \"slot\": {from}", () => _encounter.RelayTarget(from));
 
         public bool Weaken(int enemies, double share, double gold = 0, double vulnerability = 0, double vulnerabilitySeconds = 0, int effectId = 0, int owner = PartyEncounter.NoSlot) =>
@@ -127,6 +129,9 @@ namespace Game.Core.Tests.Party
                 .Append(", \"weakenGold\": ").Append(Number(e.WeakenGold))
                 .Append(", \"enemyWeakened\": ").Append(Bool(e.EnemyWeakened))
                 .Append(", \"enemyWeakenGold\": ").Append(Number(e.EnemyWeakenGold))
+                .Append(", \"waveStage\": ").Append(e.WaveStage)
+                .Append(", \"enemiesOnStage\": ").Append(e.EnemiesOnStage)
+                .Append(", \"riftStagesCleared\": ").Append(e.RiftStagesCleared)
                 .Append(", \"history\": [").Append(e.History.Killed).Append(", ").Append(e.History.Bosses).Append(", ").Append(e.History.Rewards0).Append(", ")
                 .Append(e.History.Rewards1).Append(", ").Append(e.History.Rewards2).Append(", ").Append(e.History.Rewards3).Append("]")
                 .Append(", \"members\": [");

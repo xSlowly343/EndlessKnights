@@ -127,8 +127,10 @@ class PartyHost {
         switch (partyKindOf(data)) {
             case PartyMessageKind.Hello: {
                 const hello = partyDecodeHello(data);
-                if (hello)
+                if (hello) {
                     this.stages[slot] = hello.stage;
+                    this.encounter.setStage(slot, hello.stage);
+                }
                 if (hello && this.encounter.members[slot].heroClass !== hello.heroClass) {
                     this.encounter.setHeroClass(slot, hello.heroClass);
                     this.rosterChanged = true;
@@ -146,6 +148,7 @@ class PartyHost {
                 if (presence) {
                     this.encounter.setPeaceful(slot, presence.presence === PartyPresence.Peaceful);
                     this.stages[slot] = presence.stage;
+                    this.encounter.setStage(slot, presence.stage);
                 }
                 break;
             }

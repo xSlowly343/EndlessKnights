@@ -89,8 +89,8 @@ test("the state tells every member how much each slot hit since the last state",
   }
   assert.ok(state, "a state goes out");
   const data = new DataView(state.data);
-  const recent = (slot) => data.getFloat32(state.data.byteLength - 64 + slot * 4, true);
-  const hits = (slot) => data.getUint8(state.data.byteLength - 33 + slot);
+  const recent = (slot) => data.getFloat32(state.data.byteLength - 68 + slot * 4, true);
+  const hits = (slot) => data.getUint8(state.data.byteLength - 37 + slot);
   assert.ok(Math.abs(recent(1) - 0.2) < 1e-6, "slot 1 hit 0.2 of the bar");
   assert.strictEqual(recent(0), 0);
   assert.strictEqual(hits(1), 1, "slot 1 landed one hit");
@@ -288,10 +288,10 @@ test("a weaken cast makes the next enemies of the party come weaker", () => {
   const state = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5);
   assert.ok(state, "the new enemy goes out at once");
   const data = new DataView(state.data);
-  assert.strictEqual(data.getUint8(state.data.byteLength - 29), 1, "the state says the enemy is weakened");
-  assert.ok(Math.abs(data.getFloat32(state.data.byteLength - 28, true) - 0.2) < 1e-6, "with its gold bonus");
-  assert.strictEqual(data.getUint32(state.data.byteLength - 24, true), 1, "the history says the enemy before was killed");
-  assert.strictEqual(data.getUint32(state.data.byteLength - 16, true), 1, "and paid to slot 0");
+  assert.strictEqual(data.getUint8(state.data.byteLength - 33), 1, "the state says the enemy is weakened");
+  assert.ok(Math.abs(data.getFloat32(state.data.byteLength - 32, true) - 0.2) < 1e-6, "with its gold bonus");
+  assert.strictEqual(data.getUint32(state.data.byteLength - 28, true), 1, "the history says the enemy before was killed");
+  assert.strictEqual(data.getUint32(state.data.byteLength - 20, true), 1, "and paid to slot 0");
 });
 
 test("an aura-bound debuff ends when its owner says the auras are gone", () => {

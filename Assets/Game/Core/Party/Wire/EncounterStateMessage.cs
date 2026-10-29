@@ -34,6 +34,7 @@ namespace Game.Core.Party.Wire
         public bool Weakened;
         public float WeakenedGold;
         public EnemyHistory History;
+        public uint WaveStage;
 
         public int Hits(int slot) => slot switch
         {
@@ -126,6 +127,7 @@ namespace Game.Core.Party.Wire
             writer.Bool(Weakened);
             writer.Float(WeakenedGold);
             History.Write(ref writer);
+            writer.UInt(WaveStage);
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -145,6 +147,7 @@ namespace Game.Core.Party.Wire
             message.Weakened = reader.Bool();
             message.WeakenedGold = reader.Float();
             message.History = EnemyHistory.Read(ref reader);
+            message.WaveStage = reader.UInt();
             return message;
         }
 
@@ -193,7 +196,8 @@ namespace Game.Core.Party.Wire
                 RiftId = encounter.RiftId,
                 Weakened = encounter.EnemyWeakened,
                 WeakenedGold = (float)encounter.EnemyWeakenGold,
-                History = encounter.History
+                History = encounter.History,
+                WaveStage = (uint)System.Math.Min(uint.MaxValue, encounter.WaveStage)
             };
             var shown = 0;
             for (var i = 0; i < PartyEncounter.MaxEffects && shown < ShownEffect.MaxShown; i++)

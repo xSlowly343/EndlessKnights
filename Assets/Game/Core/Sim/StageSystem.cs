@@ -157,6 +157,7 @@ namespace Game.Core.Sim
                 return;
             Linked = false;
             _state.FarmKills = 0;
+            _state.PartyWaveStage = 0;
             if (LinkedAsGuest)
             {
                 _state.KillsOnStage = _ownKillsOnStage;
@@ -167,7 +168,7 @@ namespace Game.Core.Sim
             SpawnNext();
         }
 
-        public BigNumber SpawnLinked(bool boss, ulong seed, double bar, int killsOnStage, bool farming, int bossTicksLeft, bool weakened = false, double weakenedGold = 0)
+        public BigNumber SpawnLinked(bool boss, ulong seed, double bar, int killsOnStage, bool farming, int bossTicksLeft, bool weakened = false, double weakenedGold = 0, long waveStage = 0)
         {
             var stage = _state.Stage;
             var biome = _stages.Biome(stage);
@@ -193,6 +194,7 @@ namespace Game.Core.Sim
             _state.SpawnEnemy(enemy, type, hp * System.Math.Max(bar, StaggerHpShare));
             _state.EnemyWeakened = weakened;
             _state.EnemyGoldBonus = weakened ? weakenedGold : 0;
+            _state.PartyWaveStage = waveStage;
             _state.BossTicksLeft = boss ? bossTicksLeft : 0;
             ApplyEnemyModifiers(enemy);
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemySpawned, _state.Tick, stage, enemy));

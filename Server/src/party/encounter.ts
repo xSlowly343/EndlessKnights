@@ -22,6 +22,7 @@ class PartyMember {
     restBankTicks = 0;
     heroClass = 0;
     guestTicksLeft = 0;
+    stage = 0;
 
     get guest(): boolean { return this.guestTicksLeft > 0; }
 
@@ -38,6 +39,7 @@ class PartyMember {
         this.restBankTicks = 0;
         this.heroClass = 0;
         this.guestTicksLeft = 0;
+        this.stage = 0;
     }
 }
 
@@ -91,6 +93,7 @@ class PartyEncounter {
     switchTicksLeft = 0;
     weakenedSpawns = 0;
     weakenShare = 0;
+    riftStagesCleared = 0;
     weakenGold = 0;
     weakenVulnerability = 0;
     weakenVulnerabilitySeconds = 0;
@@ -186,6 +189,40 @@ class PartyEncounter {
     reportInput(slot: number): void {
         if (this.isMember(slot))
             this.members[slot].lastInputTick = this.tick;
+    }
+
+    setStage(slot: number, stage: number): void {
+        if (this.isMember(slot) && stage > 0)
+            this.members[slot].stage = stage;
+    }
+
+    restoreRiftStages(cleared: number): void {
+        if (this.world === PartyWorld.Rift && cleared > this.riftStagesCleared)
+            this.riftStagesCleared = cleared;
+    }
+
+    waveStage(): number {
+        if (this.world === PartyWorld.Rift)
+            return 1 + this.riftStagesCleared;
+        let stages = this.sortedStages(true);
+        if (stages.length === 0)
+            stages = this.sortedStages(false);
+        return stages.length === 0 ? 1 : Math.floor((stages[(stages.length - 1) >> 1] + stages[stages.length >> 1]) / 2);
+    }
+
+    enemiesOnStage(): number {
+        return partyEnemiesOnStage(this.rules, this.waveStage());
+    }
+
+    private sortedStages(fightersOnly: boolean): number[] {
+        const stages: number[] = [];
+        for (let i = 0; i < this.members.length; i++) {
+            const member = this.members[i];
+            if (!member.joined || member.guest || !(member.stage > 0) || (fightersOnly && !this.counts(i)))
+                continue;
+            stages.push(member.stage);
+        }
+        return stages.sort((a, b) => a - b);
     }
 
     setPeaceful(slot: number, peaceful: boolean): void {
@@ -379,6 +416,7 @@ class PartyEncounter {
         this.clearPending();
         this.world = world;
         this.riftId = riftId;
+        this.riftStagesCleared = 0;
         this.killsOnStage = 0;
         this.farming = false;
         this.farmKills = 0;
@@ -500,13 +538,15 @@ class PartyEncounter {
         this.previousKilledTick = this.tick;
         if (this.fightingBoss) {
             this.addEvent(PartyEventKind.StageCleared);
+            if (this.world === PartyWorld.Rift)
+                this.riftStagesCleared++;
             this.killsOnStage = 0;
             this.farming = false;
         } else if (this.farming) {
             this.farmKills++;
             if (this.farmKills >= this.rules.bossRetryAfterKills)
                 this.farming = false;
-        } else if (this.killsOnStage < this.rules.enemiesPerStage) {
+        } else if (this.killsOnStage < this.enemiesOnStage()) {
             this.killsOnStage++;
         }
         this.spawnNext();
@@ -537,7 +577,7 @@ class PartyEncounter {
     }
 
     private spawnNext(): void {
-        this.spawn(!this.farming && this.killsOnStage >= this.rules.enemiesPerStage ? PartyEnemyKind.Boss : PartyEnemyKind.Normal);
+        this.spawn(!this.farming && this.killsOnStage >= this.enemiesOnStage() ? PartyEnemyKind.Boss : PartyEnemyKind.Normal);
     }
 
     private spawn(kind: PartyEnemyKind): void {

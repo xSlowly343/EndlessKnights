@@ -107,6 +107,8 @@ test("after a server restart the new match puts the party back into its rift unt
   assert.strictEqual(restored.host.encounter.world, 1, "the party is back in the rift");
   assert.strictEqual(restored.host.encounter.riftId, riftId);
   assert.strictEqual(restored.boardRiftId, riftId, "the board goes on with the same rift");
+  party.riftBoardAdd(nk, riftId, state.partyId, "", 3, ["ann"], now);
+  assert.strictEqual(restart().host.encounter.riftStagesCleared, 3, "the rift waves go on from the depth on the board");
   restored.host.join("ann", "11");
   assert.strictEqual(restored.host.encounter.world, 1);
   assert.strictEqual(restored.host.encounter.started, true);

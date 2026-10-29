@@ -18,13 +18,6 @@ const synergy = JSON.parse(fs.readFileSync(path.join(data, "synergy.json"), "utf
 const chronicle = JSON.parse(fs.readFileSync(path.join(data, "party_chronicle.json"), "utf8"));
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
-function enemiesOnFirstStage(waves) {
-  let total = 0;
-  for (let wave = 0; wave < waves.count; wave++)
-    total += Math.min(waves.maxEnemiesPerWave, waves.firstEnemies + wave * waves.enemiesPerWave);
-  return total;
-}
-
 const rules = {
   maxMembers: party.maxMembers,
   hpPerExtraPlayer: party.hpPerExtraPlayer,
@@ -64,7 +57,11 @@ const rules = {
   flagsBeforeReport: party.caps.flagsBeforeReport,
   reactionCount: party.reactions.ids.length,
   reactionCooldownSeconds: party.reactions.cooldownSeconds,
-  enemiesPerStage: enemiesOnFirstStage(stages.waves),
+  waveCount: stages.waves.count,
+  waveFirstEnemies: stages.waves.firstEnemies,
+  waveEnemiesPerWave: stages.waves.enemiesPerWave,
+  waveStagesPerExtraEnemy: stages.waves.stagesPerExtraEnemy,
+  waveMaxEnemies: stages.waves.maxEnemiesPerWave,
   bossRetryAfterKills: stages.boss.retryAfterKills,
   bossTimerSeconds: stages.boss.timerSeconds,
   bossHpMultiplier: stages.boss.hpMultiplier

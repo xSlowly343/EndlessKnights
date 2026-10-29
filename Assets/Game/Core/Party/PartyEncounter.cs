@@ -16,6 +16,7 @@ namespace Game.Core.Party
         private readonly PartyMember[] _members = new PartyMember[PartyRules.MaxSlots];
         private readonly EnemyEffect[] _effects = new EnemyEffect[MaxEffects];
         private readonly double[] _recent = new double[RecentTicks];
+        private readonly long[] _sortedStages = new long[PartyRules.MaxSlots];
         private readonly ulong _seed;
         private PartyRules _rules;
         private StageTable _stages;
@@ -58,6 +59,7 @@ namespace Game.Core.Party
         public int SwitchTicksLeft { get; private set; }
         public int WeakenedSpawns { get; private set; }
         public double WeakenShare { get; private set; }
+        public long RiftStagesCleared { get; private set; }
         public double WeakenGold { get; private set; }
         public double WeakenVulnerability { get; private set; }
         public double WeakenVulnerabilitySeconds { get; private set; }
@@ -162,6 +164,52 @@ namespace Game.Core.Party
         {
             if (IsMember(slot))
                 _members[slot].HeroClass = heroClass;
+        }
+
+        public void SetStage(int slot, long stage)
+        {
+            if (IsMember(slot) && stage > 0)
+                _members[slot].Stage = stage;
+        }
+
+        public void RestoreRiftStages(long cleared)
+        {
+            if (World == PartyWorld.Rift && cleared > RiftStagesCleared)
+                RiftStagesCleared = cleared;
+        }
+
+        public long WaveStage
+        {
+            get
+            {
+                if (World == PartyWorld.Rift)
+                    return 1 + RiftStagesCleared;
+                var count = SortStages(true);
+                if (count == 0)
+                    count = SortStages(false);
+                return count == 0 ? 1 : (_sortedStages[(count - 1) / 2] + _sortedStages[count / 2]) / 2;
+            }
+        }
+
+        public int EnemiesOnStage => _stages.EnemiesOnStage(WaveStage);
+
+        private int SortStages(bool fightersOnly)
+        {
+            var count = 0;
+            for (var i = 0; i < _members.Length; i++)
+            {
+                var member = _members[i];
+                if (!member.Joined || member.Guest || member.Stage <= 0 || (fightersOnly && !Counts(i)))
+                    continue;
+                var at = count++;
+                while (at > 0 && _sortedStages[at - 1] > member.Stage)
+                {
+                    _sortedStages[at] = _sortedStages[at - 1];
+                    at--;
+                }
+                _sortedStages[at] = member.Stage;
+            }
+            return count;
         }
 
         public void SetPeaceful(int slot, bool peaceful)
@@ -399,6 +447,7 @@ namespace Game.Core.Party
             ClearPending();
             World = world;
             RiftId = riftId;
+            RiftStagesCleared = 0;
             KillsOnStage = 0;
             Farming = false;
             FarmKills = 0;
@@ -503,6 +552,8 @@ namespace Game.Core.Party
             if (FightingBoss)
             {
                 Events.Add(new PartyEvent(PartyEventKind.StageCleared, Tick, EnemyId, EnemyKind));
+                if (World == PartyWorld.Rift)
+                    RiftStagesCleared++;
                 KillsOnStage = 0;
                 Farming = false;
             }
@@ -512,7 +563,7 @@ namespace Game.Core.Party
                 if (FarmKills >= _stages.BossRetryAfterKills)
                     Farming = false;
             }
-            else if (KillsOnStage < _stages.EnemiesPerStage)
+            else if (KillsOnStage < EnemiesOnStage)
             {
                 KillsOnStage++;
             }
@@ -552,7 +603,7 @@ namespace Game.Core.Party
         private double ShareOf(int slot, double total) => total > 0 ? _members[slot].EnemyShare / total : 0;
 
         private void SpawnNext() =>
-            Spawn(!Farming && KillsOnStage >= _stages.EnemiesPerStage ? PartyEnemyKind.Boss : PartyEnemyKind.Normal);
+            Spawn(!Farming && KillsOnStage >= EnemiesOnStage ? PartyEnemyKind.Boss : PartyEnemyKind.Normal);
 
         private void Spawn(PartyEnemyKind kind)
         {

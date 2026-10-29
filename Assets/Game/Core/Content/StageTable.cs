@@ -42,6 +42,7 @@ namespace Game.Core.Content
 
         public int WaveCount => _waves.Count;
         public int EnemiesPerStage => EnemiesOnStage(1);
+        public WaveRules Waves => _waves;
         public double BossTimerSeconds { get; }
         public double BossTimerMaxSeconds { get; }
         public int BossRetryAfterKills { get; }

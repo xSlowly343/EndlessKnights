@@ -620,7 +620,7 @@ namespace Game.Core.Party
             _localEnemyId = enemyId;
             _localStage = _loop.State.Stage;
             var weakened = _state.EnemyId == enemyId && _state.Weakened;
-            _unit = _loop.Stages.SpawnLinked(boss, seed, barFull, killsOnStage, farming, bossTicksLeft, weakened, weakened ? _state.WeakenedGold : 0);
+            _unit = _loop.Stages.SpawnLinked(boss, seed, barFull, killsOnStage, farming, bossTicksLeft, weakened, weakened ? _state.WeakenedGold : 0, _state.WaveStage);
         }
 
         private void HitWithChain()

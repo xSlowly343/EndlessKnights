@@ -280,6 +280,7 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
     w.uint(encounter.history.bosses);
     for (const word of encounter.history.rewards)
         w.uint(word);
+    w.uint(Math.min(4294967295, encounter.waveStage()));
     return w.bytes();
 }
 

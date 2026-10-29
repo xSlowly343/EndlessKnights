@@ -76,6 +76,12 @@ function riftBoardAdd(nk: nkruntime.Nakama, riftId: number, partyId: string, tit
     return board !== null && !board.settled && board.parties[partyId] ? 1 + board.parties[partyId].cleared : 0;
 }
 
+function riftBoardCleared(nk: nkruntime.Nakama, riftId: number, partyId: string): number {
+    const objects = nk.storageRead([{ collection: RiftBoardCollection, key: riftBoardKey(riftId), userId: PartySystemUser }]);
+    const board = objects.length > 0 ? objects[0].value as RiftBoard : null;
+    return board && board.parties[partyId] ? board.parties[partyId].cleared : 0;
+}
+
 function riftSettlesAt(riftId: number): number {
     return riftPartyEnd(riftId) + RiftServerRules.boardUpdateMs;
 }

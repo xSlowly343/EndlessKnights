@@ -202,6 +202,7 @@ function partyRestoreRift(nk: nkruntime.Nakama, logger: nkruntime.Logger, state:
     if (riftId === 0)
         return;
     state.host.encounter.switchWorld(PartyWorld.Rift, riftId);
+    state.host.encounter.restoreRiftStages(riftBoardCleared(nk, riftId, state.partyId));
     state.host.encounter.events.length = 0;
     state.boardRiftId = riftId;
     logger.info("party %s: back in rift %d after a restart", state.partyId, riftId);

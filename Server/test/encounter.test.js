@@ -24,6 +24,7 @@ function run(encounter, step) {
     case "repeat": return encounter.repeatRecent(step.slot, step.seconds);
     case "requestBoss": return encounter.requestBossFight();
     case "relayTarget": return encounter.relayTarget(step.slot);
+    case "stage": return encounter.setStage(step.slot, step.stage);
     case "weaken": return encounter.weakenNext(step.enemies, step.share, step.gold, step.vulnerability, step.vulnerabilitySeconds, step.effectId, step.owner);
     case "proposeWorld": return encounter.proposeWorld(step.world, step.riftId);
     case "cancelWorld": return encounter.cancelWorld();
@@ -49,6 +50,9 @@ function compare(encounter, expect, where) {
   close(encounter.weakenShare, expect.weakenShare, `${where}: weakenShare`);
   close(encounter.weakenGold, expect.weakenGold, `${where}: weakenGold`);
   close(encounter.enemyWeakenGold, expect.enemyWeakenGold, `${where}: enemyWeakenGold`);
+  assert.strictEqual(encounter.waveStage(), expect.waveStage, `${where}: waveStage`);
+  assert.strictEqual(encounter.enemiesOnStage(), expect.enemiesOnStage, `${where}: enemiesOnStage`);
+  assert.strictEqual(encounter.riftStagesCleared, expect.riftStagesCleared, `${where}: riftStagesCleared`);
   const history = encounter.history;
   assert.deepStrictEqual([history.killed, history.bosses].concat(history.rewards), expect.history, `${where}: history`);
   expect.members.forEach((member, slot) => {
