@@ -88,6 +88,8 @@ namespace Game.Core.Ui
             lines.Add(Line(0, "hero.stats.focus", Invariant("×{0:0.0} / {1:0.#}", state.Focus, loop.Focus.Max)));
             lines.Add(Line(0, "hero.stats.focusGain", Percent(loop.Hero.Value(CombatStats.FocusGain, 1) - 1)));
             lines.Add(Line(0, "hero.stats.focusReset", Texts.Format("hero.stats.seconds", loop.Focus.ResetAfterIdleSeconds.ToString("0.#", CultureInfo.InvariantCulture))));
+            if (state.RelayFocus > 0)
+                lines.Add(Line(0, "hero.stats.focusRelay", FocusRelayText.Active(state.RelayFocus, loop.Focus.RelaySecondsLeft)));
             lines.Add(Line(0, "hero.stats.resource", Invariant("{0:0} / {1:0}", state.Resource, loop.Resource.Max)));
             lines.Add(Line(0, "hero.stats.resourceGain", Percent(loop.Hero.Value(CombatStats.ResourceGain, 1) - 1)));
         }

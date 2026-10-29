@@ -24,6 +24,7 @@ namespace Game.Core.Party
         private readonly int[] _flags = new int[PartyRules.MaxSlots];
         private readonly long[] _lastReactionTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
+        private readonly long[] _lastRelayTick = new long[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
         private readonly RiftRules? _rift;
         private PartyRules _rules;
@@ -49,6 +50,7 @@ namespace Game.Core.Party
         public double AcceptedShares { get; private set; }
         public double CutShares { get; private set; }
         public double RepeatedShares { get; private set; }
+        public long Relays { get; private set; }
 
         public int Flags(int slot) => _flags[slot];
 
@@ -103,6 +105,9 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     React(slot, reaction);
                     break;
+                case PartyMessageKind.FocusRelay when PartyCodec.TryDecode(_in, length, out FocusRelayMessage relay):
+                    Relay(slot, relay.Focus);
+                    break;
                 case PartyMessageKind.WorldRequest when PartyCodec.TryDecode(_in, length, out WorldRequestMessage request):
                     if (LeaderId == 0 || _encounter.Member(slot).PlayerId == LeaderId)
                         RequestWorld(request);
@@ -125,6 +130,7 @@ namespace Game.Core.Party
             _flags[slot] = 0;
             _lastReactionTick[slot] = PartyEncounter.Never;
             _lastRepeatTick[slot] = PartyEncounter.Never;
+            _lastRelayTick[slot] = PartyEncounter.Never;
             _rosterChanged = true;
             _ticksToState = 0;
             return slot;
@@ -145,6 +151,19 @@ namespace Game.Core.Party
             AcceptedShares += applied;
             RepeatedShares += applied;
             _recentShares[slot] += applied;
+        }
+
+        private void Relay(int slot, double dropped)
+        {
+            var bonus = _rules.Relay.BonusFor(dropped);
+            if (!(bonus > 0) || _encounter.Tick - _lastRelayTick[slot] < Ticks(_rules.Relay.CooldownSeconds))
+                return;
+            var target = _encounter.RelayTarget(slot);
+            if (target == PartyEncounter.NoSlot)
+                return;
+            _lastRelayTick[slot] = _encounter.Tick;
+            Relays++;
+            Broadcast(PartyCodec.Encode(_out, new FocusRelayMessage { From = (byte)slot, To = (byte)target, Focus = (float)bonus }));
         }
 
         private void RequestWorld(in WorldRequestMessage request)

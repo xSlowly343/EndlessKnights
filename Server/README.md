@@ -15,7 +15,7 @@ npm test
 Тесты (`node --test`) прогоняют:
 - `test/encounter.test.js` — сценарии из `test-vectors/party-encounter.json`, шаг за шагом сверяют состояние боя с C#;
 - `test/codec.test.js` — байты пакетов из `test-vectors/party-codec.json`;
-- `test/host.test.js` — приём пакетов, дубликаты, предел сообщений, пересылка `PartyOffer`;
+- `test/host.test.js` — приём пакетов, дубликаты, предел сообщений, пересылка `PartyOffer`, эстафета Фокуса (`FocusRelay`);
 - `test/match.test.js` — обработчики матча, когда состояние между вызовами проходит через Go, как в настоящей Nakama (копия через JSON): пакеты должны совпасть с хозяином без копирования байт в байт.
 
 `npm run smoke -- https://<сервер> <server key>` — проверка живого сервера как у игрока: вход, оба RPC, матч из двух игроков, хранилище (`test/smoke.js`, в `npm test` не входит).

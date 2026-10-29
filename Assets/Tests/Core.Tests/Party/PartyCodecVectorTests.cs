@@ -75,7 +75,10 @@ namespace Game.Core.Tests.Party
             builder.Append("    \"offerRelay\": { \"slot\": 2, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, offer)))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, relayed))).Append("\" },\n");
             builder.Append("    \"reactionRelay\": { \"slot\": 1, \"reaction\": 4, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 0, Reaction = 4 })))
-                .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 1, Reaction = 4 }))).Append("\" }\n");
+                .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 1, Reaction = 4 }))).Append("\" },\n");
+            builder.Append("    \"focusDropped\": { \"from\": 255, \"to\": 255, \"focus\": 1.75, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, FocusRelayMessage.Dropped(1.75)))).Append("\" },\n");
+            builder.Append("    \"focusRelay\": { \"from\": 2, \"to\": 0, \"focus\": 0.875, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new FocusRelayMessage { From = 2, To = 0, Focus = 0.875f }))).Append("\" }\n");
             builder.Append("  }\n}\n");
             return builder.ToString();
         }

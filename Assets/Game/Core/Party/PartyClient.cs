@@ -74,6 +74,8 @@ namespace Game.Core.Party
         public int BossKillsSeen { get; private set; }
         public double DamageTaken => System.Math.Max(1, _state.DamageTaken);
         public int OwnSlot => _ownSlot;
+        public FocusRelayMessage LastRelay { get; private set; }
+        public int RelaySerial { get; private set; }
 
         public int ReactionOf(int slot) =>
             slot >= 0 && slot < PartyRules.MaxSlots && _reaction[slot] != NoReaction && _tick - _reactionTick[slot] <= Ticks(_rules.Reactions.ShowSeconds) ? _reaction[slot] : NoReaction;
@@ -229,6 +231,7 @@ namespace Game.Core.Party
                 CountDamage();
                 WatchCasts();
             }
+            PassDroppedFocus();
             WatchSignal();
             Send();
         }
@@ -253,6 +256,10 @@ namespace Game.Core.Party
                     if (InParty && reaction.Slot < PartyRules.MaxSlots && reaction.Slot != _ownSlot && _rules.Reactions.Knows(reaction.Reaction))
                         ShowReaction(reaction.Slot, reaction.Reaction);
                     break;
+                case PartyMessageKind.FocusRelay when PartyCodec.TryDecode(_in, length, out FocusRelayMessage relay):
+                    if (InParty)
+                        OnRelay(relay);
+                    break;
                 case PartyMessageKind.EncounterState when PartyCodec.TryDecode(_in, length, out EncounterStateMessage state):
                     if (state.Sequence > _state.Sequence)
                         OnState(state);
@@ -273,6 +280,17 @@ namespace Game.Core.Party
             _reaction[slot] = reaction;
             _reactionTick[slot] = _tick;
             _reactionSerial[slot]++;
+        }
+
+        private void OnRelay(in FocusRelayMessage relay)
+        {
+            if (relay.From >= PartyRules.MaxSlots || relay.To >= PartyRules.MaxSlots || relay.From == relay.To)
+                return;
+            var rules = _rules.Relay;
+            if (relay.To == _ownSlot)
+                _loop.Focus.Receive(System.Math.Min(relay.Focus, rules.MaxBonus), rules.MaxBonus, rules.Seconds);
+            LastRelay = relay;
+            RelaySerial++;
         }
 
         private void OnRoster(in RosterMessage roster)
@@ -559,6 +577,16 @@ namespace Game.Core.Party
                 else if (gameEvent.Kind == GameEventKind.AuraChanged && effect is AuraEffect aura && aura.Party)
                     _offerNow = true;
             }
+        }
+
+        private void PassDroppedFocus()
+        {
+            var dropped = _loop.State.FocusDropped;
+            if (!(dropped > 0))
+                return;
+            _loop.State.FocusDropped = 0;
+            if (Status == PartyLink.Linked)
+                SendToHost(PartyCodec.Encode(_out, FocusRelayMessage.Dropped(dropped)));
         }
 
         private void WatchSignal()

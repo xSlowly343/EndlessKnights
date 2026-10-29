@@ -33,15 +33,41 @@ namespace Game.Core.Sim
             }
 
             if (_state.IdleTicks > SecondsToTicks(ResetAfterIdleSeconds) && _hero.Value(CombatStats.FocusHold, 0) <= 0)
-                _state.Focus = _rules.Min;
+                Drop();
             else
                 _state.Focus = Clamp(_state.Focus + _rules.PerEvent * _hero.Value(CombatStats.FocusGain, 1) * Events(input));
 
             if (_state.FocusLockTicks > 0)
                 _state.FocusLockTicks--;
+            TickRelay();
             _state.FocusMultiplier = MacroDetected || _state.FocusLockTicks > 0
                 ? _rules.Min
-                : _state.Focus * System.Math.Max(0, _hero.Value(CombatStats.FocusMultiplier, 1));
+                : (_state.Focus + _state.RelayFocus) * System.Math.Max(0, _hero.Value(CombatStats.FocusMultiplier, 1));
+        }
+
+        public void Receive(double bonus, double maxBonus, double seconds)
+        {
+            if (!(bonus > 0) || !(maxBonus > 0))
+                return;
+            _state.RelayFocus = System.Math.Min(maxBonus, _state.RelayFocus + bonus);
+            _state.RelayFocusTicks = (int)SecondsToTicks(seconds);
+        }
+
+        public double RelaySecondsLeft => _state.RelayFocusTicks * GameLoop.TickSeconds;
+
+        private void Drop()
+        {
+            if (_state.Focus > _rules.Min && !MacroDetected)
+                _state.FocusDropped = _state.Focus - _rules.Min;
+            _state.Focus = _rules.Min;
+        }
+
+        private void TickRelay()
+        {
+            if (_state.RelayFocusTicks <= 0)
+                return;
+            if (--_state.RelayFocusTicks == 0)
+                _state.RelayFocus = 0;
         }
 
         private void TrackIdle(in EffectiveInput input)

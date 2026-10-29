@@ -20,6 +20,7 @@ namespace Game.Core.Tests.Party
   ""contribution"": { ""minShare"": 0.1, ""activeInputSeconds"": 30, ""restBankMinutes"": 60, ""idlePortionShare"": 1.5, ""typingReserveShare"": 0.5 },
   ""caps"": { ""barsPerSecond"": 3, ""burstBars"": 1, ""hitBurstSeconds"": 2, ""flagsBeforeReport"": 20 },
   ""timer"": { ""minBossRate"": 0.25, ""repeatMaxSeconds"": 7, ""repeatCooldownSeconds"": 20 },
+  ""relay"": { ""share"": 0.5, ""maxBonus"": 1, ""seconds"": 30, ""senderSeconds"": 10, ""recipientSeconds"": 2, ""cooldownSeconds"": 10 },
   ""reactions"": { ""ids"": [""hello"", ""good_fight"", ""lunch""], ""cooldownSeconds"": 3, ""showSeconds"": 4 },
   ""search"": {
     ""codeLength"": 6,
@@ -130,6 +131,22 @@ namespace Game.Core.Tests.Party
             Assert.That(rules.Timer.MinBossRate, Is.EqualTo(0.25));
             Assert.That(rules.Timer.RepeatMaxSeconds, Is.EqualTo(7));
             Assert.That(rules.Timer.RepeatCooldownSeconds, Is.EqualTo(20));
+        }
+
+        [Test]
+        public void FocusRelayRulesAreRead()
+        {
+            var relay = PartyRules.Load(Valid).Relay;
+
+            Assert.That(relay.Share, Is.EqualTo(0.5));
+            Assert.That(relay.Seconds, Is.EqualTo(30));
+            Assert.That(relay.SenderSeconds, Is.EqualTo(10));
+            Assert.That(relay.RecipientSeconds, Is.EqualTo(2));
+            Assert.That(relay.CooldownSeconds, Is.EqualTo(10));
+            Assert.That(relay.BonusFor(1.2), Is.EqualTo(0.6));
+            Assert.That(relay.BonusFor(5), Is.EqualTo(1), "a relay never gives more than maxBonus");
+            Assert.That(relay.BonusFor(-1), Is.Zero);
+            Assert.That(relay.BonusFor(double.PositiveInfinity), Is.Zero);
         }
 
         [Test]

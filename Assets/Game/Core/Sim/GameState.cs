@@ -72,6 +72,9 @@ namespace Game.Core.Sim
 
         public double Focus { get; set; } = 1;
         public double FocusMultiplier { get; set; } = 1;
+        public double FocusDropped { get; set; }
+        public double RelayFocus { get; set; }
+        public int RelayFocusTicks { get; set; }
         public double Resource { get; set; }
         public long KeylessTicks { get; set; }
         public long MouseIdleTicks { get; set; } = long.MaxValue / 2;

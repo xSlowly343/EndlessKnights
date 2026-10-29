@@ -177,6 +177,21 @@ class PartyEncounter {
         return this.active(member) ? PartyPresence.Fighting : PartyPresence.Resting;
     }
 
+    relayTarget(from: number): number {
+        if (!this.isMember(from) || !this.members[from].connected || this.tick - this.members[from].lastInputTick > partyTicks(this.rules.relaySenderSeconds))
+            return PartyNoSlot;
+        const recent = partyTicks(this.rules.relayRecipientSeconds);
+        let target = PartyNoSlot;
+        for (let i = 0; i < this.members.length; i++) {
+            const member = this.members[i];
+            if (i === from || !member.joined || !member.connected || member.peaceful || this.tick - member.lastInputTick > recent)
+                continue;
+            if (target === PartyNoSlot || member.lastInputTick > this.members[target].lastInputTick)
+                target = i;
+        }
+        return target;
+    }
+
     typing(slot: number): boolean {
         return this.isMember(slot) && this.tick - this.members[slot].lastInputTick <= partyTicks(this.rules.activeInputSeconds);
     }

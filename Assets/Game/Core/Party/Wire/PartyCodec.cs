@@ -5,7 +5,7 @@ namespace Game.Core.Party.Wire
         public const int MaxPacketBytes = 256;
 
         public static PartyMessageKind KindOf(byte[] buffer, int length) =>
-            length > 0 && buffer[0] <= (byte)PartyMessageKind.WorldRequest ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
+            length > 0 && buffer[0] <= (byte)PartyMessageKind.FocusRelay ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
 
         public static int Encode(byte[] buffer, HelloMessage message)
         {
@@ -82,6 +82,20 @@ namespace Game.Core.Party.Wire
             var writer = Start(buffer, PartyMessageKind.WorldRequest);
             message.Write(ref writer);
             return writer.Length;
+        }
+
+        public static int Encode(byte[] buffer, FocusRelayMessage message)
+        {
+            var writer = Start(buffer, PartyMessageKind.FocusRelay);
+            message.Write(ref writer);
+            return writer.Length;
+        }
+
+        public static bool TryDecode(byte[] buffer, int length, out FocusRelayMessage message)
+        {
+            var reader = Open(buffer, length, PartyMessageKind.FocusRelay);
+            message = FocusRelayMessage.Read(ref reader);
+            return reader.Complete;
         }
 
         public static bool TryDecode(byte[] buffer, int length, out WorldRequestMessage message)

@@ -70,6 +70,14 @@ test("reactions are relayed with the sender slot, unknown ones are dropped", () 
   assert.strictEqual(party.partyRelayReaction(bytes(reaction.hex + "00"), reaction.slot, 16), null);
 });
 
+test("a dropped focus decodes and a relay encodes like the core", () => {
+  const { focusDropped, focusRelay } = vectors.decode;
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(party.partyDecodeFocusRelay(bytes(focusDropped.hex)))), { from: focusDropped.from, to: focusDropped.to, focus: focusDropped.focus });
+  assert.strictEqual(hex(party.partyEncodeFocusRelay(focusRelay.from, focusRelay.to, focusRelay.focus)), focusRelay.hex);
+  assert.strictEqual(party.partyKindOf(bytes(focusRelay.hex)), 12);
+  assert.strictEqual(party.partyDecodeFocusRelay(bytes(focusRelay.hex.slice(0, -2))), null);
+});
+
 test("offers are relayed with the sender slot", () => {
   const offer = vectors.decode.offerRelay;
   assert.strictEqual(hex(party.partyRelayOffer(bytes(offer.hex), offer.slot)), offer.relayedHex);

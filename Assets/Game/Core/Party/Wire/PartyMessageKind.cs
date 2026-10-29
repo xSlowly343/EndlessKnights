@@ -13,6 +13,7 @@ namespace Game.Core.Party.Wire
         Roster,
         PartyOffer,
         PartyReaction,
-        WorldRequest
+        WorldRequest,
+        FocusRelay
     }
 }

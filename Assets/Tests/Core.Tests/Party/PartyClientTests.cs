@@ -311,6 +311,56 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void APausingPlayerPassesFocusToTheOneWhoTypes()
+        {
+            var rig = new Rig(5, 5, 5);
+            rig.Run(15);
+            var resting = rig.Players[0];
+            var dropped = resting.Loop.State.Focus - TestWorld.Data.Combat.Focus.Min;
+            var relay = TestWorld.Data.Party.Relay;
+
+            rig.RunEach(resting.Loop.Focus.ResetAfterIdleSeconds + 1, false, true);
+
+            Assert.That(dropped, Is.GreaterThan(0));
+            Assert.That(rig.Host.Relays, Is.EqualTo(1));
+            var got = System.Array.FindAll(rig.Players, player => player.Loop.State.RelayFocus > 0);
+            Assert.That(got, Has.Length.EqualTo(1), "one typing ally gets the focus");
+            Assert.That(got[0], Is.Not.SameAs(resting));
+            Assert.That(got[0].Loop.State.RelayFocus, Is.EqualTo(relay.BonusFor(dropped)).Within(1e-6));
+            Assert.That(got[0].Loop.State.FocusMultiplier, Is.EqualTo(got[0].Loop.State.Focus + got[0].Loop.State.RelayFocus).Within(1e-9));
+            foreach (var player in rig.Players)
+            {
+                Assert.That(player.Client.LastRelay.From, Is.EqualTo(resting.Client.OwnSlot), "everyone sees who passed the focus");
+                Assert.That(player.Client.LastRelay.To, Is.EqualTo(got[0].Client.OwnSlot));
+                Assert.That(player.Client.RelaySerial, Is.EqualTo(1));
+            }
+
+            Game.Core.Text.Texts.UseLanguage("ru");
+            Assert.That(Game.Core.Ui.FocusRelayText.Notice(got[0].Client.OwnSlot, got[0].Client.LastRelay, "Аня", "Боря", relay.Seconds), Is.EqualTo("Аня передаёт вам Фокус: +1.0 на 30 с"));
+            Assert.That(Game.Core.Ui.FocusRelayText.Notice(resting.Client.OwnSlot, resting.Client.LastRelay, "Аня", "Боря", relay.Seconds), Is.EqualTo("Ваш Фокус ушёл к Боря: +1.0"));
+            Assert.That(Game.Core.Ui.FocusRelayText.Notice(9, resting.Client.LastRelay, "Аня", "Боря", relay.Seconds), Is.EqualTo("Аня передаёт Фокус Боря"));
+            Assert.That(Game.Core.Ui.HeroStatsView.Lines(got[0].Loop, Game.Core.Math.NumberFormatSettings.Default), Has.Some.Matches<Game.Core.Ui.HeroStatLine>(line => line.Value.StartsWith("+1.0 ещё")));
+
+            rig.RunEach(relay.Seconds + 1, false, true);
+
+            Assert.That(got[0].Loop.State.RelayFocus, Is.Zero, "the bonus runs out");
+            Assert.That(rig.Host.Relays, Is.EqualTo(1), "a long pause passes the focus once");
+        }
+
+        [Test]
+        public void FocusIsNotPassedWhenNobodyTypes()
+        {
+            var rig = new Rig(5, 5);
+            rig.Run(15);
+
+            rig.Run(rig.Players[0].Loop.Focus.ResetAfterIdleSeconds + 1, false);
+
+            Assert.That(rig.Host.Relays, Is.Zero);
+            Assert.That(rig.Players[1].Loop.State.RelayFocus, Is.Zero);
+            Assert.That(rig.Players[0].Loop.State.FocusDropped, Is.Zero, "a dropped focus is spent even when nobody takes it");
+        }
+
+        [Test]
         public void AReactionReachesTheOthersAndFadesAfterItsTime()
         {
             var rig = new Rig(5, 40, 70);

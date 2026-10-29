@@ -21,6 +21,7 @@ function run(encounter, step) {
     case "effect": return encounter.applyEnemyEffect(step.id, step.damageTaken, step.seconds, -1, step.timerSlow);
     case "repeat": return encounter.repeatRecent(step.slot, step.seconds);
     case "requestBoss": return encounter.requestBossFight();
+    case "relayTarget": return encounter.relayTarget(step.slot);
     case "proposeWorld": return encounter.proposeWorld(step.world, step.riftId);
     case "cancelWorld": return encounter.cancelWorld();
     case "switchWorld": return encounter.switchWorld(step.world, step.riftId);
@@ -83,7 +84,7 @@ for (const scenario of vectors.scenarios) {
       const result = run(encounter, step);
       if (typeof step.result === "boolean")
         assert.strictEqual(result, step.result, `${where}: result`);
-      else if (step.op === "damage" || step.op === "join" || step.op === "repeat")
+      else if (step.op === "damage" || step.op === "join" || step.op === "repeat" || step.op === "relayTarget")
         close(result, step.result, `${where}: result`);
       compare(encounter, step.expect, where);
     });

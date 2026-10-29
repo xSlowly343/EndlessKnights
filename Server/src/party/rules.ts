@@ -16,6 +16,8 @@ interface PartyEncounterRules {
     restBankSeconds: number;
     idlePortionShare: number;
     typingReserveShare: number;
+    relaySenderSeconds: number;
+    relayRecipientSeconds: number;
 }
 
 const PartyTicksPerSecond = 10;

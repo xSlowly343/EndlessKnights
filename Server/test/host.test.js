@@ -173,3 +173,57 @@ test("the reward mask goes out with every kill", () => {
 });
 
 
+
+function dropped(focus) {
+  const view = new DataView(new ArrayBuffer(7));
+  view.setUint8(0, 12);
+  view.setUint8(1, 255);
+  view.setUint8(2, 255);
+  view.setFloat32(3, focus, true);
+  return view.buffer;
+}
+
+function relays(host) {
+  const sent = host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 12).map((packet) => Object.assign(party.partyDecodeFocusRelay(packet.data), { to_slots: packet.to }));
+  host.outbox.length = 0;
+  return sent;
+}
+
+test("a dropped focus goes to the member who typed last, once per cooldown", () => {
+  const rules = party.PartyServerRules;
+  const host = new party.PartyHost(rules, "5");
+  for (let i = 0; i < 3; i++)
+    host.join("user-" + i, String(100 + i));
+  host.tick();
+  host.outbox.length = 0;
+  host.receive("user-1", batch(1, host.encounter.enemyId, 0.01, 2));
+  host.tick();
+  host.receive("user-2", batch(1, host.encounter.enemyId, 0.01, 2));
+  host.receive("user-0", dropped(1.5));
+  const first = relays(host);
+  assert.strictEqual(first.length, 1);
+  assert.strictEqual(first[0].from, 0);
+  assert.strictEqual(first[0].to, 2, "the latest typer gets it");
+  assert.strictEqual(first[0].focus, Math.min(rules.relayMaxBonus, 1.5 * rules.relayShare));
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(first[0].to_slots)), [0, 1, 2], "everyone sees the relay");
+  assert.strictEqual(host.relays, 1);
+
+  host.receive("user-0", dropped(1.5));
+  assert.strictEqual(relays(host).length, 0, "the sender waits for the cooldown");
+  for (let i = 0; i < rules.relayCooldownSeconds * 10; i++)
+    host.tick();
+  host.outbox.length = 0;
+  host.receive("user-0", batch(2, host.encounter.enemyId, 0.01, 2));
+  host.receive("user-0", dropped(9));
+  assert.strictEqual(relays(host).length, 0, "nobody typed for the last seconds");
+  host.receive("user-1", batch(2, host.encounter.enemyId, 0.02, 2));
+  host.receive("user-0", dropped(9));
+
+  const capped = relays(host);
+  assert.strictEqual(capped[0].to, 1);
+  assert.strictEqual(capped[0].focus, rules.relayMaxBonus, "the bonus stops at maxBonus");
+  host.receive("user-1", dropped(-1));
+  host.receive("user-1", dropped(NaN));
+  assert.strictEqual(relays(host).length, 0);
+  assert.strictEqual(host.relays, 2);
+});

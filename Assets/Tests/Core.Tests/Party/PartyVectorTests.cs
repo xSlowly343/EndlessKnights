@@ -39,7 +39,8 @@ namespace Game.Core.Tests.Party
                 RestAndPeace(),
                 Contribution(),
                 Clockmaker(),
-                Worlds()
+                Worlds(),
+                FocusRelay()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -57,11 +58,41 @@ namespace Game.Core.Tests.Party
                    $"    \"restBankSeconds\": {N(rules.Contribution.RestBankSeconds)},\n" +
                    $"    \"idlePortionShare\": {N(rules.Contribution.IdlePortionShare)},\n" +
                    $"    \"typingReserveShare\": {N(rules.Contribution.TypingReserveShare)},\n" +
+                   $"    \"relaySenderSeconds\": {N(rules.Relay.SenderSeconds)},\n" +
+                   $"    \"relayRecipientSeconds\": {N(rules.Relay.RecipientSeconds)},\n" +
                    $"    \"enemiesPerStage\": {stages.EnemiesPerStage},\n" +
                    $"    \"bossRetryAfterKills\": {stages.BossRetryAfterKills},\n" +
                    $"    \"bossTimerSeconds\": {N(stages.BossTimerSeconds)},\n" +
                    $"    \"bossHpMultiplier\": {N(stages.BossHpMultiplier)}\n" +
                    "  },\n  \"scenarios\": [\n" + string.Join(",\n", scenarios) + "\n  ]\n}\n";
+        }
+
+        private static string FocusRelay()
+        {
+            var r = Recorder("focus goes to the one who typed last", 31);
+            for (ulong player = 1; player <= 4; player++)
+                r.Join(player);
+            r.Advance(5);
+            r.Input(1);
+            r.Input(2);
+            r.RelayTarget(0);
+            r.Advance(3);
+            r.Input(2);
+            r.RelayTarget(0);
+            r.Peaceful(2, true);
+            r.RelayTarget(0);
+            r.Connected(1, false);
+            r.RelayTarget(0);
+            r.Advance(25);
+            r.RelayTarget(0);
+            r.Input(3);
+            r.RelayTarget(0);
+            r.RelayTarget(3);
+            r.Advance(100);
+            r.Input(3);
+            r.RelayTarget(0);
+            r.RelayTarget(9);
+            return r.ToJson();
         }
 
         private static PartyVectorRecorder Recorder(string name, ulong seed) =>

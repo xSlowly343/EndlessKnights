@@ -53,6 +53,8 @@ namespace Game.Core.Tests.Party
         public void SwitchWorld(PartyWorld world, long riftId) =>
             Record($"\"op\": \"switchWorld\", \"world\": {(int)world}, \"riftId\": {riftId}", () => _encounter.SwitchWorld(world, riftId));
 
+        public int RelayTarget(int from) => Record($"\"op\": \"relayTarget\", \"slot\": {from}", () => _encounter.RelayTarget(from));
+
         public bool RequestBoss() => Record("\"op\": \"requestBoss\"", () => _encounter.RequestBossFight());
 
         public void Advance(int ticks) => Record($"\"op\": \"advance\", \"ticks\": {ticks}", () =>

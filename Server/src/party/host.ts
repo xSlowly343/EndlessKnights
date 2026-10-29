@@ -12,6 +12,9 @@ interface PartyServerConfig extends PartyEncounterRules {
     reactionCooldownSeconds: number;
     repeatMaxSeconds: number;
     repeatCooldownSeconds: number;
+    relayShare: number;
+    relayMaxBonus: number;
+    relayCooldownSeconds: number;
 }
 
 const PartyCutTolerance = 1e-9;
@@ -24,6 +27,7 @@ class PartyHost {
     acceptedShares = 0;
     cutShares = 0;
     repeatedShares = 0;
+    relays = 0;
     clockUnixMs = 0;
     readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0 };
     readonly stages = [0, 0, 0, 0];
@@ -43,6 +47,7 @@ class PartyHost {
     private readonly sentPresence = [PartyPresence.Fighting, PartyPresence.Fighting, PartyPresence.Fighting, PartyPresence.Fighting];
     private readonly lastReactionTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastRepeatTick = [PartyNever, PartyNever, PartyNever, PartyNever];
+    private readonly lastRelayTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly recentShares = [0, 0, 0, 0];
     private stateSequence = 0;
     private rosterVersion = 0;
@@ -71,6 +76,7 @@ class PartyHost {
             this.flags[slot] = 0;
             this.lastReactionTick[slot] = PartyNever;
             this.lastRepeatTick[slot] = PartyNever;
+            this.lastRelayTick[slot] = PartyNever;
             this.ticksToState = 0;
         }
         this.rosterChanged = true;
@@ -140,6 +146,12 @@ class PartyHost {
                 const request = partyDecodeWorldRequest(data);
                 if (request)
                     this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel });
+                break;
+            }
+            case PartyMessageKind.FocusRelay: {
+                const relay = partyDecodeFocusRelay(data);
+                if (relay)
+                    this.relay(slot, relay.focus);
                 break;
             }
             case PartyMessageKind.PartyReaction: {
@@ -265,6 +277,18 @@ class PartyHost {
         this.acceptedShares += applied;
         this.repeatedShares += applied;
         this.recentShares[slot] += applied;
+    }
+
+    private relay(slot: number, dropped: number): void {
+        const bonus = dropped > 0 && isFinite(dropped) ? Math.min(this.config.relayMaxBonus, dropped * this.config.relayShare) : 0;
+        if (!(bonus > 0) || this.encounter.tick - this.lastRelayTick[slot] < Math.max(1, partyTicks(this.config.relayCooldownSeconds)))
+            return;
+        const target = this.encounter.relayTarget(slot);
+        if (target === PartyNoSlot)
+            return;
+        this.lastRelayTick[slot] = this.encounter.tick;
+        this.relays++;
+        this.broadcast(partyEncodeFocusRelay(slot, target, bonus), PartyNoSlot);
     }
 
     private heard(slot: number): void {

@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12
 }
 
 class PartyWriter {
@@ -109,12 +109,13 @@ interface DamageBatchMessage { sequence: number; enemyId: number; keys: number; 
 interface CastEffectMessage { effectId: number; onEnemy: boolean; strength: number; seconds: number; timerSlow: number; repeatSeconds: number; }
 interface PresenceMessage { presence: PartyPresence; stage: number; resource: number; }
 interface WorldRequestMessage { world: PartyWorld; cancel: boolean; riftId: number; }
+interface FocusRelayMessage { from: number; to: number; focus: number; }
 
 function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
         return PartyMessageKind.None;
     const kind = new DataView(data).getUint8(0);
-    return kind <= PartyMessageKind.WorldRequest ? kind : PartyMessageKind.None;
+    return kind <= PartyMessageKind.FocusRelay ? kind : PartyMessageKind.None;
 }
 
 function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
@@ -159,6 +160,20 @@ function partyDecodeWorldRequest(data: ArrayBuffer): WorldRequestMessage | null 
     const r = partyOpen(data, PartyMessageKind.WorldRequest);
     const message = { world: r.byte(), cancel: r.bool(), riftId: r.long() };
     return r.complete ? message : null;
+}
+
+function partyDecodeFocusRelay(data: ArrayBuffer): FocusRelayMessage | null {
+    const r = partyOpen(data, PartyMessageKind.FocusRelay);
+    const message = { from: r.byte(), to: r.byte(), focus: r.float() };
+    return r.complete ? message : null;
+}
+
+function partyEncodeFocusRelay(from: number, to: number, focus: number): ArrayBuffer {
+    const w = partyStart(PartyMessageKind.FocusRelay);
+    w.byte(from);
+    w.byte(to);
+    w.float(focus);
+    return w.bytes();
 }
 
 function partyRelayOffer(data: ArrayBuffer, slot: number): ArrayBuffer | null {

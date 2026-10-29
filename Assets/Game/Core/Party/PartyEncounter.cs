@@ -170,6 +170,23 @@ namespace Game.Core.Party
             return Active(member) ? PartyPresence.Fighting : PartyPresence.Resting;
         }
 
+        public int RelayTarget(int from)
+        {
+            if (!IsMember(from) || !_members[from].Connected || Tick - _members[from].LastInputTick > Ticks(_rules.Relay.SenderSeconds))
+                return NoSlot;
+            var recent = Ticks(_rules.Relay.RecipientSeconds);
+            var target = NoSlot;
+            for (var i = 0; i < _members.Length; i++)
+            {
+                var member = _members[i];
+                if (i == from || !member.Joined || !member.Connected || member.Peaceful || Tick - member.LastInputTick > recent)
+                    continue;
+                if (target == NoSlot || member.LastInputTick > _members[target].LastInputTick)
+                    target = i;
+            }
+            return target;
+        }
+
         public bool Typing(int slot) => IsMember(slot) && Tick - _members[slot].LastInputTick <= Ticks(_rules.Contribution.ActiveInputSeconds);
 
         public double Portion
