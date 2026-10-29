@@ -10,11 +10,11 @@
     "updateMinutes": 5,
     "shown": 20,
     "places": [
-      { "upTo": 1, "shards": 300, "uncutGems": 3, "ingots": 6 },
-      { "upTo": 3, "shards": 200, "uncutGems": 2, "ingots": 4 },
-      { "upTo": 10, "shards": 120, "uncutGems": 1, "ingots": 2 },
-      { "upTo": 50, "shards": 60, "uncutGems": 1, "ingots": 1 },
-      { "shards": 30, "uncutGems": 0, "ingots": 1 }
+      { "upTo": 1, "shards": 300, "uncutGems": 3, "ingots": 6, "friendship": 30 },
+      { "upTo": 3, "shards": 200, "uncutGems": 2, "ingots": 4, "friendship": 20 },
+      { "upTo": 10, "shards": 120, "uncutGems": 1, "ingots": 2, "friendship": 15 },
+      { "upTo": 50, "shards": 60, "uncutGems": 1, "ingots": 1, "friendship": 10 },
+      { "shards": 30, "uncutGems": 0, "ingots": 1, "friendship": 5 }
     ]
   },
   "world": {

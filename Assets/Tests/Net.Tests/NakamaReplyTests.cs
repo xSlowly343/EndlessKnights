@@ -40,7 +40,7 @@ namespace Game.Net.Tests
                 + "\"top\":[{\"place\":1,\"title\":\"night_shift\",\"depth\":40,\"members\":4,\"yours\":false},{\"place\":2,\"title\":\"loud_keys\",\"depth\":31,\"members\":2,\"yours\":true}],"
                 + "\"own\":{\"place\":2,\"depth\":31,\"reward\":{\"upTo\":3,\"shards\":200,\"uncutGems\":2,\"ingots\":4}}}"))!;
             var letter = MailDirectory.Letter(NakamaJson.Parse("{\"id\":\"rift-1793102400\",\"kind\":\"rift\",\"at\":1793189100000,\"place\":2,\"of\":14,\"depth\":31,\"title\":\"loud_keys\","
-                + "\"reward\":{\"shards\":200,\"uncutGems\":2,\"ingots\":4},\"claimed\":false,\"claimedAt\":0}"));
+                + "\"reward\":{\"shards\":200,\"uncutGems\":2,\"ingots\":4,\"friendship\":20},\"claimed\":false,\"claimedAt\":0}"));
 
             Assert.That(board.Parties, Is.EqualTo(14));
             Assert.That(board.Top[1].Yours, Is.True);
@@ -52,6 +52,7 @@ namespace Game.Net.Tests
             Assert.That(letter.Place, Is.EqualTo(2));
             Assert.That(letter.Reward.Ingots, Is.EqualTo(4));
             Assert.That(letter.Reward.UncutGems, Is.EqualTo(2));
+            Assert.That(letter.Reward.Friendship, Is.EqualTo(20));
             Assert.That(letter.Claimed, Is.False);
         }
 

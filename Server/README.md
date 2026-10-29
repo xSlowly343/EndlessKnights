@@ -41,7 +41,7 @@ npm test
   | `party_block`, `party_unblock` | `{ userId }` | `{ blocked: [...] }` |
   | `party_report` | `{ userId, reason }` (`search.reportReasons`) | `{ ok: true }` |
   | `rift_board` | `{ riftId }` | `{ riftId, endUnixMs, settled, parties, top: [{ place, title, depth, members, yours }], own: { place, depth, reward } \| null }` (первые `board.shown`) |
-  | `mail_list` | `{}` | `{ letters: [{ id, kind, at, place, of, depth, title, reward: { shards, uncutGems, ingots }, claimed, claimedAt }], unread }` (невзятые первыми, до 50) |
+  | `mail_list` | `{}` | `{ letters: [{ id, kind, at, place, of, depth, title, reward: { shards, uncutGems, ingots, friendship }, claimed, claimedAt }], unread }` (невзятые первыми, до 50; `friendship` уже в кошельке — сервер начислил при итоге Разлома, источник `rift_place`) |
   | `mail_claim` | `{ id }` | `{ letter }`; ошибки `no such letter`, `already claimed` — каждое письмо забирается один раз |
   | `party_chronicle` | `{}` | `{ partyId, banner, titles, stats: { bossesTogether, hoursTogether, fullOrchestra }, feats: [{ id, kind, tracked, levels, level, at, progress }], records: [{ at, kind, name, feat, level }] }` (новые записи первыми) |
 
@@ -78,7 +78,7 @@ npm test
   | `coop_wallet` | `{}` | `{ balances: { friendship, seals }, today: [{ source, currency, earned, cap }], ledger: [{ at, source, currency, amount }] }` (новые первыми) |
   | `ghost_thanks` | `{ userId, bosses }` (1–100, `userId` — хозяин последнего взятого призрака) | `{ granted }` — сколько Знаков получил хозяин; ошибки `not your ghost`, `bad request` |
 
-  Знаки за боссов вместе начисляет матч отряда сам.
+  Знаки за боссов вместе начисляет матч отряда сам, за место в таблице Разлома — итог Разлома (`rift_place`).
 - Недельный рейд клана (13.14), правила — `raid.json`. Ошибки: `not in a clan`, `bad request`, `raid is busy, try again`.
 
   | RPC | Запрос | Ответ |

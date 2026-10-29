@@ -18,7 +18,7 @@ namespace Game.Core.Tests.Ui
         }
 
         private static MailLetter Rift(string id, bool claimed = false) =>
-            new MailLetter(id, MailLetter.RiftKind, 1000, 2, 14, 31, "night_shift", new RiftReward(200, 2, 4), claimed);
+            new MailLetter(id, MailLetter.RiftKind, 1000, 2, 14, 31, "night_shift", new RiftReward(200, 2, 4, 20), claimed);
 
         [Test]
         public void NewLettersArriveOnceAndCountAsUnread()
@@ -61,7 +61,7 @@ namespace Game.Core.Tests.Ui
 
             Assert.That(rows[0].Title, Is.EqualTo("Итоги Разлома"));
             Assert.That(rows[0].Body, Does.StartWith("2 место из 14, этап 31 · отряд «"));
-            Assert.That(rows[0].Reward, Is.EqualTo("Осколки +200 · неогранённые гемы +2 · Слитки +4"));
+            Assert.That(rows[0].Reward, Is.EqualTo("Осколки +200 · неогранённые гемы +2 · Слитки +4 · Знаки дружбы +20"));
             Assert.That(rows[0].Button, Is.EqualTo("Забрать"));
             Assert.That(rows[1].Button, Is.EqualTo("Получено"));
             Assert.That(MailText.Arrived(Rift("rift-1")), Is.EqualTo("Новое письмо: Итоги Разлома"));

@@ -21,6 +21,7 @@ interface RiftBoardPlace {
     shards: number;
     uncutGems: number;
     ingots: number;
+    friendship: number;
 }
 
 interface RiftWindow {

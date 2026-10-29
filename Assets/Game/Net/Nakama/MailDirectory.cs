@@ -39,7 +39,8 @@ namespace Game.Net.Nakama
             var reward = NakamaJson.Field(json, "reward");
             return new MailLetter(NakamaJson.Text(json, "id"), NakamaJson.Text(json, "kind"), (long)NakamaJson.Number(json, "at"), (int)NakamaJson.Number(json, "place"),
                 (int)NakamaJson.Number(json, "of"), (long)NakamaJson.Number(json, "depth"), NakamaJson.Text(json, "title"),
-                reward == null ? default : new RiftReward((long)NakamaJson.Number(reward, "shards"), (int)NakamaJson.Number(reward, "uncutGems"), (long)NakamaJson.Number(reward, "ingots")),
+                reward == null ? default : new RiftReward((long)NakamaJson.Number(reward, "shards"), (int)NakamaJson.Number(reward, "uncutGems"), (long)NakamaJson.Number(reward, "ingots"),
+                    (long)NakamaJson.Number(reward, "friendship")),
                 NakamaJson.Flag(json, "claimed"));
         }
     }

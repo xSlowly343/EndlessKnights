@@ -26,9 +26,24 @@ namespace Game.Core.Tests.Sim.Rift
             Assert.That(rules.Board.RewardFor(3).Shards, Is.EqualTo(rules.Board.RewardFor(2).Shards));
             Assert.That(rules.Board.Places[rules.Board.Places.Count - 1].Rest, Is.True);
             Assert.That(rules.Board.RewardFor(100000).IsEmpty, Is.False, "everyone who played gets something");
+            Assert.That(rules.Board.RewardFor(1).Friendship, Is.GreaterThan(rules.Board.RewardFor(100000).Friendship));
+            Assert.That(rules.Board.RewardFor(100000).Friendship, Is.Positive, "every place brings friendship tokens");
         }
 
-        [TestCase(@"{ ""shards"": 30, ""uncutGems"": 0, ""ingots"": 1 }", @"{ ""upTo"": 99, ""shards"": 30, ""uncutGems"": 0, ""ingots"": 1 }", "no upTo")]
+        [Test]
+        public void APlaceWithoutFriendshipGivesNone()
+        {
+            var json = TestData.ReadGameDataFile(RiftRules.FileName);
+            const string from = @"""ingots"": 6, ""friendship"": 30 }";
+            Assert.That(json, Does.Contain(from));
+
+            var rules = RiftRules.Load(json.Replace(from, @"""ingots"": 6 }"));
+
+            Assert.That(rules.Board.RewardFor(1).Friendship, Is.Zero);
+            Assert.That(rules.Board.RewardFor(1).Ingots, Is.EqualTo(6));
+        }
+
+        [TestCase(@"{ ""shards"": 30, ""uncutGems"": 0, ""ingots"": 1,", @"{ ""upTo"": 99, ""shards"": 30, ""uncutGems"": 0, ""ingots"": 1,", "no upTo")]
         [TestCase(@"{ ""upTo"": 3, ""shards"": 200", @"{ ""upTo"": 1, ""shards"": 200", "places must grow")]
         [TestCase(@"{ ""upTo"": 3, ""shards"": 200", @"{ ""shards"": 200", "needs upTo")]
         public void BadPlaceTiersAreRejected(string from, string to, string message)
@@ -47,11 +62,12 @@ namespace Game.Core.Tests.Sim.Rift
             var state = new GameState();
             state.Drops.Shards = 5;
 
-            RiftRewards.Apply(state, new RiftReward(200, 2, 4));
+            RiftRewards.Apply(state, new RiftReward(200, 2, 4, 20));
 
             Assert.That(state.Drops.Shards, Is.EqualTo(205));
             Assert.That(state.Drops.UncutGems, Is.EqualTo(2));
             Assert.That(state.Drops.Ingots, Is.EqualTo(4));
+            Assert.That(new RiftReward(0, 0, 0, 20).IsEmpty, Is.False, "friendship alone is a reward: the server already put it in the coop wallet");
         }
 
         [Test]

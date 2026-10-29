@@ -50,6 +50,8 @@ namespace Game.Core.Ui
                 parts.Add(Texts.Format("rift.reward.uncut", letter.Reward.UncutGems));
             if (letter.Reward.Ingots > 0)
                 parts.Add(Texts.Format("rift.reward.ingots", letter.Reward.Ingots));
+            if (letter.Reward.Friendship > 0)
+                parts.Add(Texts.Format("rift.reward.friendship", letter.Reward.Friendship));
             return string.Join(" · ", parts);
         }
 

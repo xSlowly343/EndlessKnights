@@ -4,17 +4,19 @@ namespace Game.Core.Content.Rift
 {
     public readonly struct RiftReward
     {
-        public RiftReward(long shards, int uncutGems, long ingots)
+        public RiftReward(long shards, int uncutGems, long ingots, long friendship = 0)
         {
             Shards = shards;
             UncutGems = uncutGems;
             Ingots = ingots;
+            Friendship = friendship;
         }
 
         public long Shards { get; }
         public int UncutGems { get; }
         public long Ingots { get; }
-        public bool IsEmpty => Shards == 0 && UncutGems == 0 && Ingots == 0;
+        public long Friendship { get; }
+        public bool IsEmpty => Shards == 0 && UncutGems == 0 && Ingots == 0 && Friendship == 0;
     }
 
     public sealed class RiftBoardPlace
@@ -67,7 +69,8 @@ namespace Game.Core.Content.Rift
                 var upTo = last ? 0 : item.Field("upTo").AsInt(1, 100000);
                 if (!last && places.Count > 0 && upTo <= places[places.Count - 1].UpTo)
                     throw item.Field("upTo").Error("places must grow");
-                places.Add(new RiftBoardPlace(upTo, new RiftReward(item.Field("shards").AsLong(0, 1000000), item.Field("uncutGems").AsInt(0, 100), item.Field("ingots").AsLong(0, 10000))));
+                places.Add(new RiftBoardPlace(upTo, new RiftReward(item.Field("shards").AsLong(0, 1000000), item.Field("uncutGems").AsInt(0, 100), item.Field("ingots").AsLong(0, 10000),
+                    item.HasField("friendship") ? item.Field("friendship").AsLong(0, 10000) : 0)));
             }
             if (places.Count == 0)
                 throw placesNode.Error("must list at least one tier");

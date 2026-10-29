@@ -92,7 +92,17 @@ function riftRewardFor(place: number): RiftBoardPlace {
     for (const tier of RiftServerRules.boardPlaces)
         if (tier.upTo === 0 || place <= tier.upTo)
             return tier;
-    return { upTo: 0, shards: 0, uncutGems: 0, ingots: 0 };
+    return { upTo: 0, shards: 0, uncutGems: 0, ingots: 0, friendship: 0 };
+}
+
+function riftGrantFriendship(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: string, amount: number, nowUnixMs: number): void {
+    if (!(amount > 0))
+        return;
+    try {
+        walletGrant(nk, userId, "rift_place", amount, nowUnixMs);
+    } catch (error) {
+        logger.warn("friendship for the rift place was not granted to %s: %s", userId, String(error));
+    }
 }
 
 function riftSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, riftId: number, nowUnixMs: number): boolean {
@@ -108,11 +118,14 @@ function riftSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, riftId: numb
     for (let i = 0; i < ranking.length; i++) {
         const entry = ranking[i];
         const tier = riftRewardFor(i + 1);
-        for (const userId of entry.members)
-            mailSend(nk, userId, {
+        for (const userId of entry.members) {
+            const sent = mailSend(nk, userId, {
                 id: "rift-" + riftId, kind: "rift", at: nowUnixMs, place: i + 1, of: ranking.length, depth: entry.cleared + 1, title: entry.title,
-                reward: { shards: tier.shards, uncutGems: tier.uncutGems, ingots: tier.ingots }, claimed: false, claimedAt: 0
+                reward: { shards: tier.shards, uncutGems: tier.uncutGems, ingots: tier.ingots, friendship: tier.friendship }, claimed: false, claimedAt: 0
             });
+            if (sent)
+                riftGrantFriendship(nk, logger, userId, tier.friendship, nowUnixMs);
+        }
     }
     board.settled = true;
     try {

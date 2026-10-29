@@ -10,6 +10,7 @@ const opened = window.startUnixMs + 3600 * 1000;
 const riftId = Math.floor(opened / 1000);
 const end = party.riftPartyEnd(riftId);
 const plain = (o) => JSON.parse(JSON.stringify(o));
+const system = "00000000-0000-0000-0000-000000000000";
 
 function world(...names) {
   const nk = new FakeNakama();
@@ -68,6 +69,7 @@ test("after the rift every member gets a letter with the reward of the party pla
   assert.strictEqual(letter.of, 2);
   assert.strictEqual(letter.depth, 31);
   assert.strictEqual(letter.reward.shards, rift.boardPlaces[0].shards);
+  assert.strictEqual(letter.reward.friendship, rift.boardPlaces[0].friendship);
   assert.strictEqual(letter.claimed, false);
   assert.strictEqual(letters("bob").letters[0].place, 1);
   const dan = letters("dan").letters[0];
@@ -85,6 +87,34 @@ test("after the rift every member gets a letter with the reward of the party pla
   assert.strictEqual(after.letters[0].claimed, true, "a claimed letter stays in the list");
   party.riftSettleDue(nk, logger, end + 2 * rift.boardUpdateMs);
   assert.strictEqual(letters("ann").unread, 0, "settling again sends nothing twice");
+});
+
+test("friendship tokens of the place go to the coop wallet at the settlement, once", () => {
+  const { nk, call } = world("ann", "bob", "cid");
+  const first = partyOf(call, "ann", "bob");
+  const second = partyOf(call, "cid");
+  party.riftBoardAdd(nk, riftId, first, "night_shift", 30, ["ann", "bob"], opened);
+  party.riftBoardAdd(nk, riftId, second, "night_shift", 10, ["cid"], opened);
+  const friendship = (user) => call(user, "coopWalletRpc").balances.friendship;
+
+  party.riftSettleDue(nk, logger, end);
+  assert.strictEqual(friendship("ann"), 0, "nothing before the settlement");
+
+  party.riftSettleDue(nk, logger, end + rift.boardUpdateMs);
+  assert.ok(rift.boardPlaces[0].friendship > rift.boardPlaces[1].friendship);
+  assert.strictEqual(friendship("ann"), rift.boardPlaces[0].friendship);
+  assert.strictEqual(friendship("bob"), rift.boardPlaces[0].friendship);
+  assert.strictEqual(friendship("cid"), rift.boardPlaces[1].friendship);
+  const ledger = call("ann", "coopWalletRpc").ledger;
+  assert.strictEqual(ledger[0].source, "rift_place");
+
+  const board = nk.storageRead([{ collection: "rift_board", key: String(riftId), userId: system }])[0];
+  nk.storageWrite([{ collection: "rift_board", key: String(riftId), userId: system, value: Object.assign({}, board.value, { settled: false }), version: board.version }]);
+  party.riftUpdate(nk, "pending", () => ({ rifts: [] }), (index) => { index.rifts.push(riftId); return true; });
+  party.riftSettleDue(nk, logger, end + 2 * rift.boardUpdateMs);
+  assert.strictEqual(friendship("ann"), rift.boardPlaces[0].friendship, "a settlement that runs again after a failed write pays no second time");
+  call("ann", "mailClaimRpc", { id: "rift-" + riftId });
+  assert.strictEqual(friendship("ann"), rift.boardPlaces[0].friendship, "claiming the letter does not pay the tokens again");
 });
 
 test("everyone past the listed places gets the rest tier", () => {
