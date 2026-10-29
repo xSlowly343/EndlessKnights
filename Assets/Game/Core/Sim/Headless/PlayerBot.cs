@@ -330,12 +330,9 @@ namespace Game.Core.Sim.Headless
             while (true)
             {
                 var cheapest = CheapestLevel(out var levelCost);
-                var canUnlock = !artifacts.AllUnlocked && artifacts.Currency >= artifacts.UnlockCost;
-                if (canUnlock && (cheapest == null || artifacts.UnlockCost <= levelCost))
-                {
-                    artifacts.TryUnlock();
+                var canUnlock = !artifacts.AllUnlocked && !artifacts.WaitsForGroup && artifacts.Currency >= artifacts.UnlockCost;
+                if (canUnlock && (cheapest == null || artifacts.UnlockCost <= levelCost) && artifacts.TryUnlock() != null)
                     continue;
-                }
                 if (cheapest == null || !artifacts.TryLevelUp(cheapest))
                     return;
             }
