@@ -7,51 +7,31 @@ namespace Game.Core.Content.Tree
     public sealed class TreeTemplates
     {
         public const string FileName = "trees/templates.json";
-        public const int SupportedVersion = 3;
-        public const string StartTemplate = "start";
-
-        private static readonly Dictionary<string, TreeNodeType> Types = new Dictionary<string, TreeNodeType>(StringComparer.Ordinal)
-        {
-            ["small"] = TreeNodeType.Small,
-            ["notable"] = TreeNodeType.Notable,
-            ["keystone"] = TreeNodeType.Keystone,
-            ["mastery"] = TreeNodeType.Mastery,
-            ["jewel"] = TreeNodeType.Jewel,
-            ["attribute"] = TreeNodeType.Attribute
-        };
-
-        private static readonly HashSet<string> Roles = new HashSet<string>(StringComparer.Ordinal) { "dd", "buffer", "debuffer", "dot", "summoner" };
+        public const int SupportedVersion = 4;
 
         private readonly Dictionary<string, TreeTemplate> _common;
-        private readonly Dictionary<string, Dictionary<string, TreeTemplate>> _classes;
 
-        private TreeTemplates(IReadOnlyList<string> attributes, RespecRules respec, int minNodes, int maxNodes,
-            Dictionary<string, TreeTemplate> common, Dictionary<string, Dictionary<string, TreeTemplate>> classes)
+        private TreeTemplates(RespecRules respec, IReadOnlyList<int> rowThresholds, int nodeCount, int barEvery, IReadOnlyList<int> majorsAt, int majorOptions,
+            Dictionary<string, TreeTemplate> common)
         {
-            Attributes = attributes;
             Respec = respec;
-            MinNodes = minNodes;
-            MaxNodes = maxNodes;
+            RowThresholds = rowThresholds;
+            NodeCount = nodeCount;
+            BarEvery = barEvery;
+            MajorsAt = majorsAt;
+            MajorOptions = majorOptions;
             _common = common;
-            _classes = classes;
         }
 
-        public IReadOnlyList<string> Attributes { get; }
         public RespecRules Respec { get; }
-        public int MinNodes { get; }
-        public int MaxNodes { get; }
+        public IReadOnlyList<int> RowThresholds { get; }
+        public int NodeCount { get; }
+        public int BarEvery { get; }
+        public IReadOnlyList<int> MajorsAt { get; }
+        public int MajorOptions { get; }
         public IReadOnlyCollection<TreeTemplate> Common => _common.Values;
-        public IReadOnlyCollection<string> Classes => _classes.Keys;
 
-        public IReadOnlyCollection<TreeTemplate> OwnOf(string heroClass) =>
-            _classes.TryGetValue(heroClass, out var own) ? own.Values : (IReadOnlyCollection<TreeTemplate>)Array.Empty<TreeTemplate>();
-
-        public bool TryGet(string heroClass, string id, out TreeTemplate template)
-        {
-            if (_classes.TryGetValue(heroClass, out var own) && own.TryGetValue(id, out template!))
-                return true;
-            return _common.TryGetValue(id, out template!);
-        }
+        public bool TryGet(string id, out TreeTemplate template) => _common.TryGetValue(id, out template!);
 
         public static TreeTemplates Load(string json)
         {
@@ -59,79 +39,49 @@ namespace Game.Core.Content.Tree
             var version = root.Field("version").AsInt(1);
             if (version != SupportedVersion)
                 throw root.Field("version").Error($"version {version} is not supported, expected {SupportedVersion}");
-            var attributes = new List<string>();
-            foreach (var attribute in root.Field("attributes").Items())
-                attributes.Add(attribute.AsString());
-            if (attributes.Count == 0)
-                throw root.Field("attributes").Error("at least one attribute is required");
-            var size = root.Field("size");
-            var minNodes = size.Field("min").AsInt(1, 100_000);
-            var maxNodes = size.Field("max").AsInt(minNodes, 100_000);
-
-            var common = ReadTemplates(root.Field("templates"), null);
-            var classes = new Dictionary<string, Dictionary<string, TreeTemplate>>(StringComparer.Ordinal);
-            var classesNode = root.Field("classes");
-            foreach (var heroClass in classesNode.FieldNames())
-            {
-                var entry = classesNode.Field(heroClass);
-                var own = ReadTemplates(entry.Field("templates"), heroClass);
-                foreach (var id in own.Keys)
-                {
-                    if (common.ContainsKey(id))
-                        throw entry.Field("templates").Field(id).Error($"template '{id}' is already a common template");
-                }
-                var start = entry.Field("start");
-                var name = start.Field("name");
-                own[StartTemplate] = new TreeTemplate(StartTemplate, TreeNodeType.Start, StartTemplate, name.Field("ru").AsString(), name.Field("en").AsString(),
-                    string.Empty, string.Empty, ModifierReader.ReadList(start.Field("modifiers")), Array.Empty<IReadOnlyList<Modifier>>(), 0, Array.Empty<string>(), heroClass);
-                classes[heroClass] = own;
-            }
-            return new TreeTemplates(attributes, RespecRules.Read(root.Field("respec")), minNodes, maxNodes, common, classes);
+            var rows = ReadRising(root.Field("rows"), "row thresholds");
+            if (rows[0] != 0)
+                throw root.Field("rows").Error("the first row is open from the start, its threshold is 0");
+            var bar = root.Field("bar");
+            var majorsAt = ReadRising(bar.Field("majorsAt"), "major talent marks");
+            var common = new Dictionary<string, TreeTemplate>(StringComparer.Ordinal);
+            var templates = root.Field("templates");
+            foreach (var id in templates.FieldNames())
+                common[id] = ReadTemplate(templates.Field(id), id);
+            return new TreeTemplates(RespecRules.Read(root.Field("respec")), rows, root.Field("nodes").AsInt(1, 1000),
+                bar.Field("every").AsInt(1, 1000), majorsAt, bar.Field("majorOptions").AsInt(2, 10), common);
         }
 
-        private static Dictionary<string, TreeTemplate> ReadTemplates(ContentNode node, string? heroClass)
+        public static TreeTemplate ReadTemplate(ContentNode node, string id)
         {
-            var templates = new Dictionary<string, TreeTemplate>(StringComparer.Ordinal);
-            foreach (var id in node.FieldNames())
-            {
-                if (id == StartTemplate)
-                    throw node.Field(id).Error($"'{StartTemplate}' is the class start, not a template");
-                templates[id] = ReadTemplate(node.Field(id), id, heroClass);
-            }
-            return templates;
-        }
-
-        private static TreeTemplate ReadTemplate(ContentNode node, string id, string? heroClass)
-        {
-            var typeNode = node.Field("type");
-            if (!Types.TryGetValue(typeNode.AsString(), out var type))
-                throw typeNode.Error($"unknown template type '{typeNode.AsString()}'");
-            var options = new List<IReadOnlyList<Modifier>>();
-            if (type == TreeNodeType.Mastery)
-            {
-                foreach (var option in node.Field("options").Items())
-                    options.Add(ModifierReader.ReadList(option));
-                if (options.Count < 2)
-                    throw node.Field("options").Error("a mastery needs at least two options");
-            }
-            var modifiers = node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>();
-            if (modifiers.Count == 0 && (type == TreeNodeType.Small || type == TreeNodeType.Notable || type == TreeNodeType.Keystone))
-                throw node.Error($"a {typeNode.AsString()} template needs modifiers");
-            var amount = type == TreeNodeType.Attribute ? node.Field("amount").AsNumber(0.01, 1000) : 0;
-            var roles = new List<string>();
-            if (node.HasField("roles"))
-            {
-                foreach (var role in node.Field("roles").Items())
-                {
-                    if (!Roles.Contains(role.AsString()))
-                        throw role.Error($"unknown role '{role.AsString()}', expected dd, buffer, debuffer, dot or summoner");
-                    roles.Add(role.AsString());
-                }
-            }
-            var theme = node.HasField("theme") ? node.Field("theme").AsString() : typeNode.AsString();
             var name = node.Field("name");
-            return new TreeTemplate(id, type, theme, name.Field("ru").AsString(), name.Field("en").AsString(),
-                PassiveTree.DescriptionText(node, "ru"), PassiveTree.DescriptionText(node, "en"), modifiers, options, amount, roles, heroClass);
+            return new TreeTemplate(id, name.Field("ru").AsString(), name.Field("en").AsString(),
+                ReadLine(node.Field("a")), ReadLine(node.Field("b")), ReadLine(node.Field("c")));
+        }
+
+        public static RankLine ReadLine(ContentNode node)
+        {
+            var modifiers = node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>();
+            var waits = node.HasField("waits") ? node.Field("waits").AsString() : null;
+            var text = node.HasField("text") ? node.Field("text") : (ContentNode?)null;
+            if (modifiers.Count == 0 && (waits == null || text == null))
+                throw node.Error("a line needs modifiers, or a text and the mechanic it waits for");
+            return new RankLine(modifiers, text?.Field("ru").AsString() ?? string.Empty, text?.Field("en").AsString() ?? string.Empty, waits);
+        }
+
+        private static List<int> ReadRising(ContentNode node, string what)
+        {
+            var values = new List<int>();
+            foreach (var item in node.Items())
+            {
+                var value = item.AsInt(0, 100_000);
+                if (values.Count > 0 && value <= values[values.Count - 1])
+                    throw item.Error($"{what} must rise");
+                values.Add(value);
+            }
+            if (values.Count == 0)
+                throw node.Error($"at least one value of {what} is required");
+            return values;
         }
     }
 }

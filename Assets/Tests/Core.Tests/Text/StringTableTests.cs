@@ -35,7 +35,7 @@ namespace Game.Core.Tests.Text
         public void EveryStatInTheDataHasALabel()
         {
             var missing = new SortedSet<string>();
-            foreach (var file in new[] { "tree.json", "trees/templates.json", "ascendancy.json", "gems.json", "artifacts.json", "synergy.json", "rift.json", "weapons.json", "items.json" })
+            foreach (var file in new[] { "tree.json", "trees/templates.json", "trees/viking.json", "ascendancy.json", "gems.json", "artifacts.json", "synergy.json", "rift.json", "weapons.json", "items.json" })
             {
                 foreach (Match match in Regex.Matches(TestData.ReadGameDataFile(file), "\"stat\": *\"(\\w+)\""))
                 {
