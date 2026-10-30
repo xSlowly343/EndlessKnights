@@ -157,6 +157,25 @@ namespace Game.Core.Tests.Party
             Assert.That(loop.State.BurnStacks, Is.EqualTo(8).Within(1e-9));
         }
 
+        [Test]
+        public void OracleCritsUnderTheHunterMarkGiveOmens()
+        {
+            var with = Hero(HeroClass.Oracle);
+            var without = Hero(HeroClass.Oracle);
+            with.Synergy.SetAlly(0, true, HeroClass.Amazon, Mark("hunterMark"));
+            with.Tick();
+            without.Tick();
+
+            with.State.Crits += 4;
+            without.State.Crits += 4;
+            with.Tick();
+            without.Tick();
+
+            Assert.That(with.SynergyStrikes.OmensFromCrits, Is.EqualTo(4).Within(1e-9));
+            Assert.That(without.SynergyStrikes.OmensFromCrits, Is.Zero);
+            Assert.That(with.State.Resource, Is.GreaterThan(without.State.Resource));
+        }
+
         private static GameLoop Casting(HeroClass heroClass, int allyMarks)
         {
             var loop = Hero(heroClass);

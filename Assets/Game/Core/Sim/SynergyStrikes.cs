@@ -9,23 +9,29 @@ namespace Game.Core.Sim
         private readonly StatSheet _hero;
         private readonly SynergySystem _synergy;
         private readonly DotSystem _dots;
+        private readonly ResourceSystem _resource;
+        private long _critsSeen;
         private int _ticksToSpark = GameLoop.TicksPerSecond;
 
-        public SynergyStrikes(GameState state, StatSheet hero, SynergySystem synergy, DotSystem dots)
+        public SynergyStrikes(GameState state, StatSheet hero, SynergySystem synergy, DotSystem dots, ResourceSystem resource)
         {
             _state = state;
             _hero = hero;
             _synergy = synergy;
             _dots = dots;
+            _resource = resource;
+            _critsSeen = state.Crits;
         }
 
         public long ElectrolysisStrikes { get; private set; }
         public long Sparks { get; private set; }
+        public double OmensFromCrits { get; private set; }
 
         public void Tick()
         {
             Electrolysis();
             Spark();
+            SignOfFate();
         }
 
         private void Electrolysis()
@@ -51,6 +57,19 @@ namespace Game.Core.Sim
                     casts++;
             }
             return casts;
+        }
+
+        private void SignOfFate()
+        {
+            var crits = _state.Crits - _critsSeen;
+            _critsSeen = _state.Crits;
+            if (crits <= 0)
+                return;
+            var perCrit = _hero.Value(CombatStats.OmenPerPartyCrit, 0);
+            if (perCrit <= 0)
+                return;
+            OmensFromCrits += crits * perCrit;
+            _resource.Gain(crits * perCrit);
         }
 
         private void Spark()

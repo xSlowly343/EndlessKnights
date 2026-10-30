@@ -121,7 +121,7 @@ namespace Game.Core.Sim
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
-            _synergyStrikes = new SynergyStrikes(state, hero, _synergy, _skills.Dots);
+            _synergyStrikes = new SynergyStrikes(state, hero, _synergy, _skills.Dots, _resource);
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);
