@@ -218,6 +218,41 @@ namespace Game.Core.Tests.Sim.Rift
         }
 
         [Test]
+        public void ABadgeTellsWhoseMarkLiftsTheModifier()
+        {
+            var (loop, index) = LoopInWindowWith("stone_skin");
+            var curse = TestWorld.Data.Synergy.MaskOf(new[] { "curse" });
+            Assert.That(loop.Rift.LiftedBy(index), Is.EqualTo(RiftSystem.NotLifted));
+            Assert.That(loop.Rift.LiftingMarks(index), Is.Zero);
+
+            loop.Synergy.SetAlly(2, true, HeroClass.Voodoo, curse);
+            loop.Tick();
+
+            Assert.That(loop.Rift.LiftedBy(index), Is.EqualTo(2), "the ally in slot 2 holds the curse");
+            Assert.That(loop.Rift.LiftingMarks(index), Is.EqualTo(curse));
+            loop.Synergy.ClearAllies();
+            loop.Tick();
+            Assert.That(loop.Rift.LiftedBy(index), Is.EqualTo(RiftSystem.NotLifted));
+        }
+
+        [Test]
+        public void TheWaveBarCountsTheHordeAndTheBossBarShowsTheShieldInSolo()
+        {
+            var loop = TestWorld.Loop();
+            var plain = loop.Stages.EnemiesOnThisStage;
+            loop.Hero.Add(new Modifier(CombatStats.StageEnemies, ModifierKind.Flat, 0.5));
+
+            Assert.That(loop.Stages.EnemiesOnThisStage, Is.EqualTo((int)System.Math.Floor(plain * 1.5 + 1e-9)));
+
+            loop.Hero.Add(new Modifier(CombatStats.BossShield, ModifierKind.Flat, 0.5));
+            loop.State.KillsOnStage = loop.Stages.EnemiesOnThisStage;
+            loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Zero);
+            loop.Stages.EnsureEnemy();
+            Assert.That(loop.State.FightingBoss, Is.True);
+            Assert.That(loop.Stages.ShieldShare, Is.EqualTo(1 / 1.5).Within(1e-6), "the top third of the boss is shield");
+        }
+
+        [Test]
         public void FavouredMarkBoostsTheResponse()
         {
             var loop = TestWorld.Loop();

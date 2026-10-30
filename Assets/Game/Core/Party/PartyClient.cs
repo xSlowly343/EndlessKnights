@@ -607,6 +607,8 @@ namespace Game.Core.Party
             if (_localEnemyId == 0 || _localEnemyId <= _rewardedUpTo)
                 return;
             gameState.EnemyHp = _unit * System.Math.Max(Predicted(), StageSystem.StaggerHpShare);
+            gameState.EnemyShieldFloor = _state.EnemyId == _localEnemyId && _state.ShieldFloor > 0 ? _unit * _state.ShieldFloor : BigNumber.Zero;
+            gameState.PartyEnemiesOnStage = (int)System.Math.Min(int.MaxValue, _state.EnemiesOnStage);
             if (!gameState.FightingBoss)
                 return;
             gameState.BossTimerRate = _state.BossTimerRate;

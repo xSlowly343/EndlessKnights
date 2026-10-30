@@ -89,8 +89,8 @@ test("the state tells every member how much each slot hit since the last state",
   }
   assert.ok(state, "a state goes out");
   const data = new DataView(state.data);
-  const recent = (slot) => data.getFloat32(state.data.byteLength - 84 + slot * 4, true);
-  const hits = (slot) => data.getUint8(state.data.byteLength - 53 + slot);
+  const recent = (slot) => data.getFloat32(state.data.byteLength - 96 + slot * 4, true);
+  const hits = (slot) => data.getUint8(state.data.byteLength - 65 + slot);
   assert.ok(Math.abs(recent(1) - 0.2) < 1e-6, "slot 1 hit 0.2 of the bar");
   assert.strictEqual(recent(0), 0);
   assert.strictEqual(hits(1), 1, "slot 1 landed one hit");
@@ -101,7 +101,7 @@ test("the state tells every member how much each slot hit since the last state",
     host.tick();
     next = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5) || null;
   }
-  assert.strictEqual(new DataView(next.data).getFloat32(next.data.byteLength - 80, true), 0, "the sum starts again after each state");
+  assert.strictEqual(new DataView(next.data).getFloat32(next.data.byteLength - 92, true), 0, "the sum starts again after each state");
 });
 
 test("the state tells every member the marks of each slot", () => {
@@ -121,7 +121,7 @@ test("the state tells every member the marks of each slot", () => {
     state = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5) || null;
   }
   const data = new DataView(state.data);
-  const markOf = (slot) => data.getUint32(state.data.byteLength - 16 + slot * 4, true);
+  const markOf = (slot) => data.getUint32(state.data.byteLength - 28 + slot * 4, true);
   assert.strictEqual(markOf(1), 0x21, "slot 1 put two marks");
   assert.strictEqual(markOf(0), 0);
   host.leave("user-b");
@@ -131,7 +131,7 @@ test("the state tells every member the marks of each slot", () => {
     host.tick();
     state = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5) || null;
   }
-  assert.strictEqual(new DataView(state.data).getUint32(state.data.byteLength - 12, true), 0, "a member who left has no marks");
+  assert.strictEqual(new DataView(state.data).getUint32(state.data.byteLength - 24, true), 0, "a member who left has no marks");
 });
 
 test("reactions skip the sender and wait for the cooldown", () => {
@@ -318,10 +318,10 @@ test("a weaken cast makes the next enemies of the party come weaker", () => {
   const state = host.outbox.find((packet) => new Uint8Array(packet.data)[0] === 5);
   assert.ok(state, "the new enemy goes out at once");
   const data = new DataView(state.data);
-  assert.strictEqual(data.getUint8(state.data.byteLength - 49), 1, "the state says the enemy is weakened");
-  assert.ok(Math.abs(data.getFloat32(state.data.byteLength - 48, true) - 0.2) < 1e-6, "with its gold bonus");
-  assert.strictEqual(data.getUint32(state.data.byteLength - 44, true), 1, "the history says the enemy before was killed");
-  assert.strictEqual(data.getUint32(state.data.byteLength - 36, true), 1, "and paid to slot 0");
+  assert.strictEqual(data.getUint8(state.data.byteLength - 61), 1, "the state says the enemy is weakened");
+  assert.ok(Math.abs(data.getFloat32(state.data.byteLength - 60, true) - 0.2) < 1e-6, "with its gold bonus");
+  assert.strictEqual(data.getUint32(state.data.byteLength - 56, true), 1, "the history says the enemy before was killed");
+  assert.strictEqual(data.getUint32(state.data.byteLength - 48, true), 1, "and paid to slot 0");
 });
 
 test("an aura-bound debuff ends when its owner says the auras are gone", () => {

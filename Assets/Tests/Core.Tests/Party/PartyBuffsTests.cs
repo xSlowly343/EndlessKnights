@@ -82,6 +82,60 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void MembersSeeTheHordeAndTheColossusShieldOfTheHost()
+        {
+            var rift = TestWorld.Data.Rift;
+            var start = new System.DateTimeOffset(2026, 10, 27, 12, 0, 0, System.TimeSpan.Zero).ToUnixTimeMilliseconds();
+            long riftId = 0;
+            for (var week = 0; week < 400 && riftId == 0; week++)
+            {
+                foreach (var offset in new[] { 0L, 4L })
+                {
+                    var window = rift.Schedule.WindowAt(start + (week * 7 + offset) * 86_400_000L + 3_600_000);
+                    if (window == null)
+                        continue;
+                    var ids = rift.ModifiersFor(window.Value.Id).Select(modifier => modifier.Id).ToList();
+                    if (ids.Contains("horde") && ids.Contains("colossus_shield"))
+                        riftId = window.Value.Id + 60;
+                }
+            }
+            Assert.That(riftId, Is.Not.Zero, "a window with a horde and a colossus shield");
+            var network = new LoopbackNetwork(5, 20, 60, 0, 4096);
+            var host = new PartyHost(new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 3), network.Connect(HostId), TestWorld.Data.Party, rift, TestWorld.Data.Synergy) { ClockUnixMs = riftId * 1000 };
+            var members = new[] { new Member(network, 10), new Member(network, 11) };
+            foreach (var member in members)
+                member.Client.Join();
+            void Run(double seconds)
+            {
+                for (var tick = 0; tick < seconds * GameLoop.TicksPerSecond; tick++)
+                {
+                    network.Advance(100);
+                    foreach (var member in members)
+                    {
+                        member.Input.PressKeys(1);
+                        member.Loop.Tick();
+                        member.Loop.Events.Clear();
+                    }
+                    host.Tick();
+                }
+            }
+            Run(2);
+            host.Encounter.SwitchWorld(PartyWorld.Rift, riftId);
+            Run(2);
+
+            var seen = members[1].Loop;
+            Assert.That(host.Encounter.EnemiesOnStage, Is.GreaterThan(TestWorld.Data.Stages.EnemiesOnStage(host.Encounter.WaveStage)), "the horde brings more enemies");
+            Assert.That(seen.Stages.EnemiesOnThisStage, Is.EqualTo(host.Encounter.EnemiesOnStage));
+
+            for (var i = 0; i < 400 && !host.Encounter.FightingBoss; i++)
+                Run(0.5);
+            Run(1);
+            Assert.That(host.Encounter.FightingBoss, Is.True);
+            Assert.That(host.Encounter.ShieldFloor, Is.GreaterThan(0), "no lightning or hunter mark in this party, the boss keeps its shield");
+            Assert.That(seen.Stages.ShieldShare, Is.EqualTo(host.Encounter.ShieldFloor / host.Encounter.BarFull).Within(0.02), "the member sees where the shield of the boss ends");
+        }
+
+        [Test]
         public void TheHostTellsEveryMemberTheMarksOfTheOthers()
         {
             var rig = new Rig(2);

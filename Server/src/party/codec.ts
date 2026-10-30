@@ -304,6 +304,8 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
     w.uint(Math.min(4294967295, encounter.waveStage()));
     for (let slot = 0; slot < PartyMaxSlots; slot++)
         w.uint(marks && encounter.members[slot].joined ? marks[slot] >>> 0 : 0);
+    w.uint(Math.max(0, encounter.enemiesOnStage()));
+    w.double(encounter.shieldFloor);
     return w.bytes();
 }
 

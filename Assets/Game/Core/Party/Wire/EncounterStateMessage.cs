@@ -39,6 +39,8 @@ namespace Game.Core.Party.Wire
         public uint Marks1;
         public uint Marks2;
         public uint Marks3;
+        public uint EnemiesOnStage;
+        public double ShieldFloor;
 
         public int Marks(int slot) => (int)(slot switch
         {
@@ -154,6 +156,8 @@ namespace Game.Core.Party.Wire
             writer.UInt(WaveStage);
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 writer.UInt((uint)Marks(slot));
+            writer.UInt(EnemiesOnStage);
+            writer.Double(ShieldFloor);
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -176,6 +180,8 @@ namespace Game.Core.Party.Wire
             message.WaveStage = reader.UInt();
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 message.SetMarks(slot, reader.UInt());
+            message.EnemiesOnStage = reader.UInt();
+            message.ShieldFloor = reader.Double();
             return message;
         }
 
@@ -225,7 +231,9 @@ namespace Game.Core.Party.Wire
                 Weakened = encounter.EnemyWeakened,
                 WeakenedGold = (float)encounter.EnemyWeakenGold,
                 History = encounter.History,
-                WaveStage = (uint)System.Math.Min(uint.MaxValue, encounter.WaveStage)
+                WaveStage = (uint)System.Math.Min(uint.MaxValue, encounter.WaveStage),
+                EnemiesOnStage = (uint)System.Math.Max(0, encounter.EnemiesOnStage),
+                ShieldFloor = encounter.ShieldFloor
             };
             var shown = 0;
             for (var i = 0; i < PartyEncounter.MaxEffects && shown < ShownEffect.MaxShown; i++)

@@ -46,6 +46,8 @@ namespace Game.Core.Party
         public int PerMarkCount => _perMarkCount;
         public int FavouredMarks => _favouredMarks;
 
+        public int AllyMarksOf(int slot) => slot >= 0 && slot < PartyRules.MaxSlots ? _allyMarks[slot] : 0;
+
         public bool ResponseActive(int index) => (_responses & (1UL << index)) != 0;
         public bool ReactionActive(int index) => (_reactions & (1UL << index)) != 0;
         public uint ReactionMask => (uint)_reactions;

@@ -141,6 +141,7 @@ namespace Game.Core.Sim
         public int AllyHitStatTicks { get; set; }
         public int PartyAllies { get; set; }
         public long PartyWaveStage { get; set; }
+        public int PartyEnemiesOnStage { get; set; }
         public long WaveStage => PartyWaveStage > 0 ? PartyWaveStage : Stage;
         public bool SharedEnemy { get; set; }
         public double ReservedResource { get; set; }

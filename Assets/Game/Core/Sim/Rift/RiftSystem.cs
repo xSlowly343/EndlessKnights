@@ -49,7 +49,27 @@ namespace Game.Core.Sim.Rift
         public bool Inside => _state.Rift.Inside;
         public IReadOnlyList<RiftModifier> WindowModifiers => _windowModifiers;
 
+        public const int NotLifted = -1;
+        public const int LiftedBySelf = PartyRules.MaxSlots;
+
         public bool ModifierActive(int index) => Inside && (_unlessMasks[index] & PartyMarks) == 0;
+
+        public int LiftingMarks(int index) => Inside ? _unlessMasks[index] & PartyMarks : 0;
+
+        public int LiftedBy(int index)
+        {
+            var unless = LiftingMarks(index);
+            if (unless == 0)
+                return NotLifted;
+            if ((_synergy.OwnMarks & unless) != 0)
+                return LiftedBySelf;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if ((_synergy.AllyMarksOf(slot) & unless) != 0)
+                    return slot;
+            }
+            return NotLifted;
+        }
 
         public void UseData(GameData data)
         {

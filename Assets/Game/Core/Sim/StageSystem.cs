@@ -160,6 +160,8 @@ namespace Game.Core.Sim
             Linked = false;
             _state.FarmKills = 0;
             _state.PartyWaveStage = 0;
+            _state.PartyEnemiesOnStage = 0;
+            _state.EnemyShieldFloor = BigNumber.Zero;
             if (LinkedAsGuest)
             {
                 _state.KillsOnStage = _ownKillsOnStage;
@@ -405,6 +407,10 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemySpawned, _state.Tick, _state.Stage, enemy));
             ApplyChainDamage();
         }
+
+        public int EnemiesOnThisStage => Linked && _state.PartyEnemiesOnStage > 0 ? _state.PartyEnemiesOnStage : EnemiesOnStage(_state.Stage);
+
+        public double ShieldShare => _state.EnemyShieldFloor.Sign > 0 && _state.EnemyMaxHp.Sign > 0 ? System.Math.Min(1, (_state.EnemyShieldFloor / _state.EnemyMaxHp).ToDouble()) : 0;
 
         private int EnemiesOnStage(long stage) =>
             (int)System.Math.Floor(_stages.EnemiesOnStage(stage) * System.Math.Max(1, _hero.Value(CombatStats.StageEnemies, 1)) + 1e-9);
