@@ -22,7 +22,7 @@
 |---|---|---|---|
 | `damagePerResource` | урон × (1 + v × заполненность шкалы ресурса), с тегами | `CombatSystem.PathMultiplier`, `GameState.ResourceFill` | ● 154 |
 | `resourceDecay` | множитель сгорания ресурса в паузах (Гнев) | `ResourceSystem` | ● 154 |
-| `resourcePerKey` | ресурс за удар клавишей сверх правил класса; у обратного ресурса (Жар) копит Давление и может перегреть | `ResourceSystem` | ● 154 |
+| `resourcePerKey` | ресурс за удар клавишей сверх правил класса; у обратного ресурса (Жар) копит Жар и может перегреть | `ResourceSystem` | ● 154 |
 | `keyHitQueueShare` | доля каждого удара клавиш ждёт следующего врага (`QueueDamage[0]`) | `CombatSystem.PierceQueue` | ● 154 |
 | `queueStrikeEvery`, `queueStrikeMultiplier` | каждый N-й удар клавиш бьёт всю очередь (все ячейки `QueueDamage`) | `CombatSystem.QueueStrike` | ● 154 |
 | `cloneEvery`, `cloneMultiplier` | каждый N-й удар клавиш повторяется ещё одним ударом (тень) | `CombatSystem.ShadowClone` | ● 154 |
@@ -36,7 +36,7 @@
 | `idleHitsPerSecond` | в тики без ввода герой бьёт сам (тег `Idle`) | `PathSystem.IdleStrikes` | ● 154 |
 | `goldPerResource` | золото × (1 + v × заполненность шкалы) | `LootSystem` | ● 155 |
 | `songMouseSeconds` | «Хэдбэнг» Skald: мышь продлевает песню (+1 с за `classes.metalhead.headbang.pxPerSecond` px), стат добавляет секунд к пределу `maxSeconds` | `SkillSystem.ExtendSongs` | ● 155, открыл узлы Бойца ямы, Дирижёра, Хэдлайнера |
-| `readingGain`, `auraReserve`, `bannerAuraBonus`, `loopShare` | Знамения от чтения; резерв аур (флэт); усиление Знамени; сила отражённого урона (множитель выпуска Рока) | `ResourceSystem`, `SkillSystem.Reserve`, `BannerSystem`, `PathSystem.ReleaseDoom` | ● 155 |
+| `readingGain`, `auraReserve`, `bannerAuraBonus`, `loopShare` | Видения от чтения; резерв аур (флэт); усиление Знамени; сила отражённого урона (множитель выпуска Рока) | `ResourceSystem`, `SkillSystem.Reserve`, `BannerSystem`, `PathSystem.ReleaseDoom` | ● 155 |
 | `clickHitMultiplier` | клики снова наносят урон (× удар клавиши) | `PathSystem` | ● 155 |
 | `auraSecondsPerKey` | удар клавиш продлевает активные песни-ауры до их полной длительности | `SkillSystem` | ● 155 |
 | `resourceGainDamage` | каждая набранная единица ресурса бьёт врага (× удар клавиши) | `ResourceSystem.LastGained`, `PathSystem` | ● 155 |
@@ -50,7 +50,7 @@
 | `keyHitPoison`, `keyHitBurn` | удары клавиш накладывают стаки | `DotSystem` | ● 156 |
 | `detonateAtMax` | стаки на пределе взрываются уроном за N с и обнуляются | `DotSystem` | ● 156 |
 | `dotQueueShare` | урон DoT бьёт и всю очередь | `DotSystem` | ● 156 |
-| `overheatBurst` | вместо перегрева на полном Давлении — взрыв ×v и Давление в ноль | `OverloadSystem` | ● 156 |
+| `overheatBurst` | вместо перегрева на полном Жаре — взрыв ×v и Жар в ноль | `OverloadSystem` | ● 156 |
 | `overloadAtMax` | любой ресурс на пределе разряжается ударом ×v (Перегрузка для всех) | `OverloadSystem` | ● 156 |
 | `skeletonOnKill`, `beastOnKill` | шанс, что убитый враг встанет скелетом или зверем | `PathSystem`, `combat.json` → `paths.onKill` | ● 156 |
 | `minionQueueShare` | удары призывов и пушек бьют и очередь | `MinionSystem` | ● 156 |
@@ -66,12 +66,12 @@
 
 | Персонаж | Путь | Ключ | Правило | Статы | Ст. |
 |---|---|---|---|---|---|
-| Huscarl | Берсерк | Кровь кипит | Ярость = урон: удары клавиш до +80% при полной шкале; Ярость сгорает вдвое быстрее. Тратить Ярость на скиллы жалко | `damagePerResource` 0.8 (клавиши), `resourceDecay` more +100% | ● |
+| Huscarl | Берсерк | Кровь кипит | Гнев = урон: удары клавиш до +80% при полной шкале; Гнев сгорает вдвое быстрее. Тратить Гнев на скиллы жалко | `damagePerResource` 0.8 (клавиши), `resourceDecay` more +100% | ● |
 | Huscarl | Валькирия | Копьё насквозь | 35% каждого удара клавиш ждёт следующего врага; по текущему −15% | `keyHitQueueShare` 0.35, `damage` more −15% (клавиши) | ● |
 | Huscarl | Мясник | Блендер | каждый 10-й удар клавиш рубит всю очередь ×3; обычные удары −10% | `queueStrikeEvery` 10, `queueStrikeMultiplier` 3 | ● |
 | Wandering Blade | Ниндзя | Теневой клон | каждый 5-й удар повторяет тень; серия рвётся на 0,5 с раньше | `cloneEvery` 5, `cloneMultiplier` 1, `comboTimeoutSeconds` −0.5 | ● |
 | Wandering Blade | Кэнсэй | Один удар | обычные удары −40%, удар серии ×6 сильнее и всегда крит | `damage` more −40%, `comboStrikeMultiplier` +6, `comboStrikeCrit` | ● |
-| Wandering Blade | Онрё | Месть копится | +0,5% урона за удар серии до +100%; Вихри вдвое медленнее | `damagePerCombo` 0.005, `damagePerComboMax` 1, `comboStrikeResource` −10 | ● |
+| Wandering Blade | Онрё | Месть копится | +0,5% урона за удар серии до +100%; Дыхание клинка вдвое медленнее | `damagePerCombo` 0.005, `damagePerComboMax` 1, `comboStrikeResource` −10 | ● |
 | Huntress | Соколица | Сокол на перчатке | каждый 4-й каст — сверх-выстрел ×5; откат +25% | `skillSuperEvery` 4, `skillSuperMultiplier` +4, `skillCooldown` +25% | ● |
 | Huntress | Укротительница | Пантера рядом | пантера бьёт сама 1,2 раза в секунду ×1,5, и в паузах; клавиши −25% | `companionHitsPerSecond` 1.2, `companionMultiplier` +0.5 | ● |
 | Huntress | Громовая дева | Копья вместо стрел | стрела за 10 ударов клавиш, удар клавиш +15% молнией; мышь даёт вдвое меньше стрел | `resourcePerKey` 0.5, `keyHitLightning` 0.15, `resourceGain` more −50% (мышь) | ● |
@@ -88,13 +88,13 @@
 |---|---|---|---|---|---|
 | Skald | Боец ямы | Кулаки в ход | клики снова бьют: клик = удар ×1,5; песни вдвое слабее | `clickHitMultiplier` 1.5, `auraEffect` more −50% | ● |
 | Skald | Дирижёр | Метроном | каждый удар клавиш продлевает песни на 0,05 с (до их полной длины); песни −20% | `auraSecondsPerKey` 0.05, `auraEffect` more −20% | ● |
-| Skald | Хэдлайнер | Звезда сцены | золото до +100% при полном Драйве; урон −25% | `goldPerResource` 1, `damage` more −25% | ● |
-| Seer | Белая волшебница | Святой огонь | каждое набранное Знамение бьёт врага ×0,5 удара; скиллы дороже на 50% | `resourceGainDamage` 0.5, `skillCost` more +50% | ● |
+| Skald | Хэдлайнер | Звезда сцены | золото до +100% при полном Овердрайве; урон −25% | `goldPerResource` 1, `damage` more −25% | ● |
+| Seer | Белая волшебница | Святой огонь | каждое набранное Видение бьёт врага ×0,5 удара; скиллы дороже на 50% | `resourceGainDamage` 0.5, `skillCost` more +50% | ● |
 | Seer | Пророк | Предначертано | шанс крита не работает, каждый 8-й удар — крит с +100% к множителю | `critEvery` 8, `critChance` more −100%, `critMultiplier` +1 | ● |
 | Seer | Звездочтица | Звёздная карта | обычные враги приходят с −25% HP; по боссам −20% | `enemyHpCut` 0.25, `damageVsBoss` more −20% | ● |
 | Herald | Паладин | Молот веры | +15% урона за каждую активную ауру; ауры −30% | `damagePerAura` 0.15, `auraEffect` more −30% | ● |
 | Herald | Страж | Башенный щит | +4% урона за секунду боя с врагом до +120%; всё −25% | `rampPerSecond` 0.04, `rampMax` 1.2, `damage` more −25% | ● |
-| Herald | Инквизитор | Приговор | +10% урона за ауру, ослабления врага +30%; Решимость −30% | `damagePerAura` 0.1, `enemyDebuffEffect` +30%, `resourceGain` more −30% | ● |
+| Herald | Инквизитор | Приговор | +10% урона за ауру, ослабления врага +30%; Доблесть −30% | `damagePerAura` 0.1, `enemyDebuffEffect` +30%, `resourceGain` more −30% | ● |
 | Whisperer | Королева ковена | Ковен в сборе | +1 проклятие на враге, проклятия вдвое дольше; клавиши −30% | `cursesOnEnemy` +1, `curseSeconds` more +100%, `damage` more −30% (клавиши) | ● |
 | Whisperer | Кукловод | Кукла-голем | голем бьёт сам раз в секунду ×2; проклятия −30% | `companionHitsPerSecond` 1, `companionMultiplier` +1, `curseEffect` more −30% | ● |
 | Whisperer | Жрица тлена | Тлен | каждое проклятие бьёт врага раз в секунду; проклятия вдвое слабее | `curseHitsPerSecond` 1, `curseEffect` more −50% | ● |
@@ -109,13 +109,13 @@
 | Venomist | Крысиный король | Крысиная тропа | 60% яда переходит на следующего врага; клавиши −30% | `dotSpread` 0.6, `damage` more −30% (клавиши) | ● |
 | Venomist | Кровавый лекарь | Кровопускание | удар клавиш даёт 0,15 стака яда-крови; яд −20% | `keyHitPoison` 0.15, `dotDamage` more −20% | ● |
 | Venomist | Подрывник | Подрыв на пределе | яд на пределе взрывается уроном за 6 с; предел на 20 ниже | `detonateAtMax` 6, `poisonStacks` −20 | ● |
-| Firebrand | Пиромант | Метеор | вместо перегрева на 100 Давления метеор ×12 и Давление в ноль; остывает вдвое медленнее | `overheatDisabled`, `overheatBurst` 12, `pressureDecay` more −50% | ● |
-| Firebrand | Бензопильщик | Бензопила | удар клавиш +0,4 Давления и 0,1 стака горения; перегрев и от печати | `resourcePerKey` 0.4, `keyHitBurn` 0.1 | ● |
+| Firebrand | Пиромант | Метеор | вместо перегрева на 100 Жара метеор ×12 и Жар в ноль; остывает вдвое медленнее | `overheatDisabled`, `overheatBurst` 12, `pressureDecay` more −50% | ● |
+| Firebrand | Бензопильщик | Бензопила | удар клавиш +0,4 Жара и 0,1 стака горения; перегрев и от печати | `resourcePerKey` 0.4, `keyHitBurn` 0.1 | ● |
 | Firebrand | Огнедышащий | Огненное дыхание | DoT бьёт и всю очередь на 50%; клавиши −25% | `dotQueueShare` 0.5, `damage` more −25% (клавиши) | ● |
 | Undertaker | Некромант | Поднять павших | убитый враг встаёт скелетом с шансом 50%, скелетов +3; клавиши −40% | `skeletonOnKill` 0.5, `minionCount` +3, `damage` more −40% (клавиши) | ● |
-| Undertaker | Кровавый демон | Облик демона | скелеты не встают; удары клавиш до +100% при полных Душах | `damagePerResource` 1 (клавиши), `minionCount` −99 | ● |
+| Undertaker | Кровавый демон | Облик демона | скелеты не встают; удары клавиш до +100% при полных Тенях | `damagePerResource` 1 (клавиши), `minionCount` −99 | ● |
 | Undertaker | Оборотень | Стая | убитый враг становится волком с шансом 35%, призывов +2; откат скиллов +30% | `beastOnKill` 0.35, `minionCount` +2, `skillCooldown` +30% | ● |
-| Sea Wolf | Корсар | Пороховой погреб | на полном Порохе залп ×8 и Порох в ноль; пушек на одну меньше | `overloadAtMax` 8, `cannonCount` −1 | ● |
+| Sea Wolf | Корсар | Пороховой погреб | на полных Зарядах залп ×8 и Заряды в ноль; пушек на одну меньше | `overloadAtMax` 8, `cannonCount` −1 | ● |
 | Sea Wolf | Морская ведьма | Шторм по очереди | пушки и призывы бьют и очередь на 40%; бьют на 20% реже | `minionQueueShare` 0.4, `minionSpeed` more −20% | ● |
 | Sea Wolf | Хозяин кракена | Кракен | кракен бьёт сам раз в 2 с ×6, и в паузах; пушек на две меньше | `companionHitsPerSecond` 0.5, `companionMultiplier` +5, `cannonCount` −2 | ● |
 
