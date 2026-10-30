@@ -186,3 +186,33 @@ function riftBoardRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkru
     const group = partyGroupOfUser(nk, partyCaller(ctx));
     return JSON.stringify(riftBoardView(objects[0].value as RiftBoard, group ? group.id : ""));
 }
+
+function riftMilestones(nk: nkruntime.Nakama, logger: nkruntime.Logger, riftId: number, title: string, members: string[], before: number, after: number, nowUnixMs: number): number {
+    const rules = RiftServerRules;
+    let sent = 0;
+    for (let stage = (Math.floor(before / rules.milestones.every) + 1) * rules.milestones.every; stage <= after; stage += rules.milestones.every) {
+        const step = riftMilestoneStep(rules, stage);
+        if (!step)
+            continue;
+        const gem = step.rareGem ? riftMilestoneGem(rules, riftId, stage) : "";
+        for (const userId of members) {
+            const letter: MailLetter = {
+                id: "riftdepth-" + riftId + "-" + stage, kind: "rift_depth", at: nowUnixMs, place: 0, of: 0, depth: stage, title: title,
+                reward: { shards: step.shards, uncutGems: step.uncutGems, ingots: 0, friendship: step.friendship }, claimed: false, claimedAt: 0
+            };
+            if (gem)
+                letter.gem = gem;
+            if (!mailSend(nk, userId, letter))
+                continue;
+            sent++;
+            if (step.friendship > 0) {
+                try {
+                    walletGrant(nk, userId, "rift_depth", step.friendship, nowUnixMs);
+                } catch (error) {
+                    logger.warn("friendship for the rift milestone was not granted to %s: %s", userId, String(error));
+                }
+            }
+        }
+    }
+    return sent;
+}

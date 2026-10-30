@@ -33,6 +33,7 @@ namespace Game.Core.Ui
             MailLetter.RiftKind => "mail.rift.title",
             MailLetter.MentorKind => "mail.mentor.title",
             MailLetter.GiftKind => "mail.gift.title",
+            MailLetter.RiftDepthKind => "mail.riftDepth.title",
             _ => "mail.title"
         });
 
@@ -41,13 +42,14 @@ namespace Game.Core.Ui
             MailLetter.RiftKind => Texts.Format("mail.rift.body", letter.Place, letter.Of, letter.Depth, PartyCardText.Title(letter.Title)),
             MailLetter.MentorKind => Texts.Format("mail.mentor.body", letter.Depth),
             MailLetter.GiftKind => Texts.Format("mail.gift.body", letter.Title),
+            MailLetter.RiftDepthKind => Texts.Format("mail.riftDepth.body", letter.Depth, PartyCardText.Title(letter.Title)),
             _ => string.Empty
         };
 
         public static string Reward(MailLetter letter, GemCatalog? gems = null)
         {
             var parts = new List<string>();
-            if (letter.Kind == MailLetter.GiftKind)
+            if ((letter.Kind == MailLetter.GiftKind || letter.Kind == MailLetter.RiftDepthKind) && letter.Gem.Length > 0)
                 parts.Add(Texts.Format("mail.gift.gem", gems != null && gems.TryGet(letter.Gem, out var gem) ? BookTexts.Name(gem) : letter.Gem));
             if (letter.Reward.Shards > 0)
                 parts.Add(Texts.Format("rift.reward.shards", letter.Reward.Shards));

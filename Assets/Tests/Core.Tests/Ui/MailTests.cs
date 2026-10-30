@@ -21,6 +21,40 @@ namespace Game.Core.Tests.Ui
             new MailLetter(id, MailLetter.RiftKind, 1000, 2, 14, 31, "night_shift", new RiftReward(200, 2, 4, 20), claimed);
 
         [Test]
+        public void ARiftMilestoneGivesItsRewardAndTheRareGemOfTheRift()
+        {
+            var milestones = TestWorld.Data.Rift.Milestones;
+            var step = milestones.StepAt(100)!;
+            var gem = milestones.GemAt(1792497600, 100);
+            var letter = new MailLetter("riftdepth-1792497600-100", MailLetter.RiftDepthKind, 1000, 0, 0, 100, "night_shift", step.Reward, false, gem);
+            var state = new GameState();
+            var box = new MailBox();
+            box.Replace(new[] { letter });
+
+            Assert.That(step.RareGem, Is.True);
+            Assert.That(milestones.GemsFor(1792497600), Does.Contain(gem));
+            Assert.That(box.Take(letter, state, TestWorld.Data.Gems), Is.True);
+            Assert.That(state.OwnedGems.Exists(owned => owned.Id == gem), Is.True);
+            Assert.That(state.Drops.UncutGems, Is.EqualTo(step.Reward.UncutGems));
+            Assert.That(MailText.Title(letter), Is.EqualTo("Рубеж Разлома"));
+            Assert.That(MailText.Body(letter), Does.Contain("100 этапов"));
+            Assert.That(MailText.Reward(letter, TestWorld.Data.Gems), Does.StartWith("гем «"));
+        }
+
+        [Test]
+        public void MilestonesComeEveryTwentyFiveStagesAndGrowDeeper()
+        {
+            var milestones = TestWorld.Data.Rift.Milestones;
+
+            Assert.That(milestones.StepAt(24), Is.Null);
+            Assert.That(milestones.StepAt(25)!.RareGem, Is.False);
+            Assert.That(milestones.StepAt(75)!.From, Is.EqualTo(25));
+            Assert.That(milestones.StepAt(250)!.Reward.Friendship, Is.GreaterThan(milestones.StepAt(25)!.Reward.Friendship));
+            Assert.That(milestones.GemsFor(1792497600), Has.Count.EqualTo(milestones.RareGemsPerRift));
+            Assert.That(milestones.GemsFor(1792497600), Is.EqualTo(milestones.GemsFor(1792497600)), "the pool of a rift is the same every time");
+        }
+
+        [Test]
         public void NewLettersArriveOnceAndCountAsUnread()
         {
             var box = new MailBox();

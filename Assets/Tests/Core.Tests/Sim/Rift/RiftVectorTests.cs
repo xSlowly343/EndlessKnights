@@ -46,6 +46,7 @@ namespace Game.Core.Tests.Sim.Rift
                         .Append(", \"modifiers\": [").Append(Modifiers(window.Value.Id)).Append("] }");
                 builder.Append(", \"nextStartUnixMs\": ").Append(Number(next.StartUnixMs))
                     .Append(", \"nextModifiers\": [").Append(Modifiers(next.Id)).Append(']')
+                    .Append(", \"milestoneGems\": [").Append(Quoted(rules.Milestones.GemsFor(next.Id))).Append(']')
                     .Append(", \"announced\": ").Append(schedule.Announced(now) ? "true" : "false")
                     .Append(i == times.Length - 1 ? " }\n" : " },\n");
             }
@@ -73,6 +74,14 @@ namespace Game.Core.Tests.Sim.Rift
             var text = new StringBuilder();
             for (var i = 0; i < picked.Count; i++)
                 text.Append(i == 0 ? "" : ", ").Append('"').Append(picked[i].Id).Append('"');
+            return text.ToString();
+        }
+
+        private static string Quoted(System.Collections.Generic.IReadOnlyList<string> ids)
+        {
+            var text = new StringBuilder();
+            for (var i = 0; i < ids.Count; i++)
+                text.Append(i == 0 ? "" : ", ").Append('"').Append(ids[i]).Append('"');
             return text.ToString();
         }
 

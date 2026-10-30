@@ -15,6 +15,22 @@ interface RiftRules {
     boardShown: number;
     boardPlaces: RiftBoardPlace[];
     enemies: RiftEnemyModifier[];
+    milestones: RiftMilestoneRules;
+}
+
+interface RiftMilestoneStep {
+    from: number;
+    shards: number;
+    uncutGems: number;
+    friendship: number;
+    rareGem: boolean;
+}
+
+interface RiftMilestoneRules {
+    every: number;
+    steps: RiftMilestoneStep[];
+    rareGems: string[];
+    rareGemsPerRift: number;
 }
 
 interface RiftEnemyModifier {
@@ -80,22 +96,46 @@ function riftAnnounced(rules: RiftRules, nowUnixMs: number): boolean {
     return riftWindowAt(rules, nowUnixMs) === null && riftNext(rules, nowUnixMs).startUnixMs - nowUnixMs <= rules.announceMs;
 }
 
-function riftModifiersFor(rules: RiftRules, windowId: number): string[] {
+function riftPick<T>(items: T[], pick: number, seedId: number): T[] {
     const order: number[] = [];
-    for (let i = 0; i < rules.modifiers.length; i++)
+    for (let i = 0; i < items.length; i++)
         order.push(i);
-    const take = Math.min(rules.modifiersPerWindow, order.length);
-    const seed = u64FromNumber(windowId);
+    const take = Math.min(pick, order.length);
+    const seed = u64FromNumber(seedId);
     for (let i = 0; i < take; i++) {
         const swap = i + u64ModSmall(splitMixAt(seed, i + 1), order.length - i);
         const kept = order[i];
         order[i] = order[swap];
         order[swap] = kept;
     }
-    const picked: string[] = [];
+    const picked: T[] = [];
     for (let i = 0; i < take; i++)
-        picked.push(rules.modifiers[order[i]]);
+        picked.push(items[order[i]]);
     return picked;
+}
+
+function riftModifiersFor(rules: RiftRules, windowId: number): string[] {
+    return riftPick(rules.modifiers, rules.modifiersPerWindow, windowId);
+}
+
+function riftMilestoneGems(rules: RiftRules, riftId: number): string[] {
+    return riftPick(rules.milestones.rareGems, rules.milestones.rareGemsPerRift, riftId);
+}
+
+function riftMilestoneStep(rules: RiftRules, stage: number): RiftMilestoneStep | null {
+    const milestones = rules.milestones;
+    if (!(stage > 0) || stage % milestones.every !== 0)
+        return null;
+    let found: RiftMilestoneStep | null = null;
+    for (const step of milestones.steps)
+        if (step.from <= stage)
+            found = step;
+    return found;
+}
+
+function riftMilestoneGem(rules: RiftRules, riftId: number, stage: number): string {
+    const gems = riftMilestoneGems(rules, riftId);
+    return gems.length === 0 ? "" : gems[Math.floor(stage / rules.milestones.every) % gems.length];
 }
 
 function riftWindowReply(rules: RiftRules, nowUnixMs: number): string {

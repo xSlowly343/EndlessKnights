@@ -95,6 +95,7 @@ namespace Game.Core.Content
             synergy.RequireGemMarks(gems);
             var rift = RiftRules.Load(readFile(RiftRules.FileName));
             rift.RequireMarks(synergy);
+            rift.Milestones.RequireGems(gems);
             var weapons = WeaponCatalog.Load(readFile(WeaponCatalog.FileName));
             weapons.BindGems(gems);
             ascendancy.RequirePathSkills(gems, weapons);

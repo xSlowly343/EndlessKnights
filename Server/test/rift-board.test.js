@@ -150,3 +150,22 @@ test("the match writes its depth to the board on entry, every update and on the 
   assert.strictEqual(call("ann", "riftBoardRpc", { riftId: riftId }).own.depth, 3, "two bosses later the party is on the third stage");
   assert.strictEqual(host.riftCleared, 0);
 });
+
+test("every 25 stages of the party sends a milestone letter once, with friendship and on deep stages a rare gem of the rift", () => {
+  const nk = new FakeNakama();
+  ["ann", "bob"].forEach((name, i) => nk.addUser(name, name, "7656119800000000" + i));
+  const rules = party.RiftServerRules;
+  const every = rules.milestones.every;
+  const riftId = 1792497600;
+  assert.strictEqual(party.riftMilestones(nk, logger, riftId, "night_shift", ["ann", "bob"], 0, every - 1, Date.now()), 0);
+  assert.strictEqual(party.riftMilestones(nk, logger, riftId, "night_shift", ["ann", "bob"], every - 1, every * 4 + 3, Date.now()), 8);
+  assert.strictEqual(party.riftMilestones(nk, logger, riftId, "night_shift", ["ann"], 0, every * 4, Date.now()), 0, "a letter for a stage goes out once");
+  const letters = nk.storageList("ann", "mail").objects.map((object) => object.value).filter((letter) => letter.kind === "rift_depth");
+  assert.deepStrictEqual(letters.map((letter) => letter.depth).sort((a, b) => a - b), [every, every * 2, every * 3, every * 4]);
+  const deep = letters.find((letter) => letter.depth === every * 4);
+  assert.ok(party.riftMilestoneGems(rules, riftId).indexOf(deep.gem) >= 0, "the rare gem comes from the pool of the rift");
+  assert.strictEqual(letters.find((letter) => letter.depth === every).gem, undefined);
+  const wallet = party.walletRead(nk, "ann").value;
+  const expected = [1, 2, 3, 4].reduce((sum, n) => sum + party.riftMilestoneStep(rules, n * every).friendship, 0);
+  assert.strictEqual(wallet.balances.friendship, expected);
+});

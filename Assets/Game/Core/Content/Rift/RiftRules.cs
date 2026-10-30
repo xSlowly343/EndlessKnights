@@ -23,8 +23,9 @@ namespace Game.Core.Content.Rift
 
         private RiftRules(RiftSchedule schedule, double hpMultiplier, int wallPeriod, int wallZoneLength, double wallRate, double bossTimerSeconds,
             long bossShards, long guardianShards, ExponentialCurve unlockCost, ExponentialCurve levelCost, int modifiersPerWindow, double markBonus,
-            IReadOnlyList<RiftModifier> modifiers, long partyJoinMs, long partyDurationMs, RiftBoardRules board)
+            IReadOnlyList<RiftModifier> modifiers, long partyJoinMs, long partyDurationMs, RiftBoardRules board, RiftMilestoneRules milestones)
         {
+            Milestones = milestones;
             PartyJoinMs = partyJoinMs;
             Board = board;
             PartyDurationMs = partyDurationMs;
@@ -47,6 +48,7 @@ namespace Game.Core.Content.Rift
         public long PartyJoinMs { get; }
         public long PartyDurationMs { get; }
         public RiftBoardRules Board { get; }
+        public RiftMilestoneRules Milestones { get; }
         public double HpMultiplier { get; }
         public int WallPeriod { get; }
         public int WallZoneLength { get; }
@@ -136,7 +138,7 @@ namespace Game.Core.Content.Rift
                 shards.Field("boss").AsLong(0, 1000), shards.Field("guardian").AsLong(0, 1000),
                 ExponentialCurve.Read(artifacts.Field("unlockCost")), ExponentialCurve.Read(artifacts.Field("levelCost")),
                 perWindow, root.Field("markBonus").AsNumber(0, 10), modifiers,
-                (long)System.Math.Round(party.Field("joinMinutes").AsNumber(1, 1440) * 60_000), (long)System.Math.Round(party.Field("durationHours").AsNumber(1, 168) * 3_600_000), RiftBoardRules.Read(root.Field("board")));
+                (long)System.Math.Round(party.Field("joinMinutes").AsNumber(1, 1440) * 60_000), (long)System.Math.Round(party.Field("durationHours").AsNumber(1, 168) * 3_600_000), RiftBoardRules.Read(root.Field("board")), RiftMilestoneRules.Read(root.Field("milestones")));
         }
 
         private static IReadOnlyList<string> Strings(ContentNode node, string field)

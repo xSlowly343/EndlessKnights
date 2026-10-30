@@ -245,8 +245,10 @@ function partyWriteBoard(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: 
     host.riftCleared = 0;
     const depth = riftBoardAdd(nk, riftId, state.partyId, title, cleared, members, nowUnixMs);
     host.chronicle.riftDepth = Math.max(host.chronicle.riftDepth || 0, depth);
-    if (depth > 1)
+    if (depth > 1) {
         coopHelpRift(nk, logger, members, depth - 1);
+        riftMilestones(nk, logger, riftId, title, members, depth - 1 - cleared, depth - 1, nowUnixMs);
+    }
 }
 
 function partyLeaderOf(nk: nkruntime.Nakama, partyId: string): string | null {

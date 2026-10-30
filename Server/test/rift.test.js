@@ -24,6 +24,7 @@ test("next window, its modifiers and the announcement match the core", () => {
     assert.strictEqual(next.startUnixMs, sample.nextStartUnixMs, "at " + sample.nowUnixMs);
     assert.deepStrictEqual(JSON.parse(JSON.stringify(server.riftModifiersFor(rules, next.id))), sample.nextModifiers);
     assert.strictEqual(server.riftAnnounced(rules, sample.nowUnixMs), sample.announced, "at " + sample.nowUnixMs);
+    assert.deepStrictEqual(JSON.parse(JSON.stringify(server.riftMilestoneGems(rules, next.id))), sample.milestoneGems, "milestone gems at " + sample.nowUnixMs);
   }
 });
 

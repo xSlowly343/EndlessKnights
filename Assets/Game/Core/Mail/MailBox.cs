@@ -49,6 +49,8 @@ namespace Game.Core.Mail
             RiftRewards.Apply(state, claimed.Reward);
             if (claimed.Kind == MailLetter.GiftKind && gems != null && gems.TryGet(claimed.Gem, out var gem))
                 GemGifts.Receive(state, gem);
+            if (claimed.Kind == MailLetter.RiftDepthKind && gems != null && gems.TryGet(claimed.Gem, out var rare))
+                state.OwnedGems.Add(rare);
             if (local == null)
                 return true;
             local.MarkClaimed();

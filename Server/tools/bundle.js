@@ -105,6 +105,12 @@ const riftRules = {
   partyDurationMs: Math.round(rift.party.durationHours * 3600 * 1000),
   boardUpdateMs: Math.round(rift.board.updateMinutes * 60 * 1000),
   boardShown: rift.board.shown,
+  milestones: {
+    every: rift.milestones.every,
+    steps: rift.milestones.steps.map((step) => ({ from: step.from, shards: step.shards || 0, uncutGems: step.uncutGems || 0, friendship: step.friendship || 0, rareGem: !!step.rareGem })),
+    rareGems: rift.milestones.rareGems,
+    rareGemsPerRift: rift.milestones.rareGemsPerRift
+  },
   boardPlaces: rift.board.places.map((place) => ({ upTo: place.upTo || 0, shards: place.shards, uncutGems: place.uncutGems, ingots: place.ingots, friendship: place.friendship || 0 }))
 };
 
