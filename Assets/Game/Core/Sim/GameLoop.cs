@@ -226,6 +226,64 @@ namespace Game.Core.Sim
             return ClassChoiceResult.Chosen;
         }
 
+        public bool ClassChangeIsFree => State.ClassChanges < _data.Ascendancy.FreeClassChanges;
+
+        public ClassChangeResult ChangeClassFree(HeroClass heroClass) =>
+            ClassChangeIsFree ? ChangeClass(heroClass) : ClassChangeResult.NotFree;
+
+        public ClassChangeResult ChangeClassPaid(HeroClass heroClass) => ChangeClass(heroClass);
+
+        private ClassChangeResult ChangeClass(HeroClass heroClass)
+        {
+            if (!State.ClassChosen)
+                return ClassChangeResult.NoClassYet;
+            if (State.Class == heroClass)
+                return ClassChangeResult.SameClass;
+            var from = _data.Weapons.TypeOf(State.Class);
+            var to = _data.Weapons.TypeOf(heroClass);
+            var reforge = new GemReforge(_data.Weapons.Reforge, from, to);
+            var equipped = TakeOffSkills();
+            State.Class = heroClass;
+            State.ClassChanges++;
+            reforge.Apply(State, _data.Gems);
+            _weapons.Reforge(from, to);
+            State.Tree = FreshTree(State.Tree);
+            State.OtherPreset = reforge.Preset(State.OtherPreset, FreshTree(State.OtherPreset.Tree));
+            State.Ascendancy.Reset();
+            State.Resource = 0;
+            _levels.SyncTreePoints();
+            RebuildTree();
+            SyncPathSkill();
+            PutOnSkills(equipped, reforge);
+            _skills.RefreshArmed();
+            return ClassChangeResult.Changed;
+        }
+
+        private TreeAllocation FreshTree(TreeAllocation old) =>
+            new TreeAllocation(State.ClassName) { PointsEarned = old.PointsEarned, LastFreeResetUnixMs = old.LastFreeResetUnixMs };
+
+        private List<(GemDef Skill, GemDef? Trigger, GemDef?[] Supports)> TakeOffSkills()
+        {
+            var equipped = new List<(GemDef, GemDef?, GemDef?[])>(State.Skills.Count);
+            foreach (var slot in State.Skills)
+                equipped.Add((slot.Skill, slot.Trigger, (GemDef?[])slot.Supports.Clone()));
+            while (State.Skills.Count > 0)
+                _skills.Unequip(State.Skills.Count - 1);
+            return equipped;
+        }
+
+        private void PutOnSkills(List<(GemDef Skill, GemDef? Trigger, GemDef?[] Supports)> equipped, GemReforge reforge)
+        {
+            foreach (var (skill, trigger, supports) in equipped)
+            {
+                if (skill.Ascendancy != null)
+                    continue;
+                var slot = State.Skills[_skills.Equip(reforge.Of(skill), trigger)];
+                slot.StartCooldown((int)System.Math.Round(slot.Skill.Skill!.CooldownSeconds * TicksPerSecond));
+                supports.CopyTo(slot.Supports, 0);
+            }
+        }
+
         public AllocationResult AllocateNode(string nodeId, string? attribute = null, int? masteryOption = null)
         {
             if (!State.ClassChosen)

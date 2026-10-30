@@ -84,6 +84,19 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public void Reforge(WeaponType from, WeaponType to)
+        {
+            var weapons = _state.Weapons;
+            weapons.Right = Reforged(weapons.Right, from, to);
+            weapons.Left = Reforged(weapons.Left, from, to);
+            for (var i = 0; i < weapons.Bag.Count; i++)
+                weapons.Bag[i] = Reforged(weapons.Bag[i], from, to)!;
+            Changed();
+        }
+
+        private WeaponItem? Reforged(WeaponItem? weapon, WeaponType from, WeaponType to) =>
+            weapon != null && weapon.Type == from ? _catalog.Reforged(weapon, to) : weapon;
+
         public void GiveClassStarter()
         {
             GiveStarter();

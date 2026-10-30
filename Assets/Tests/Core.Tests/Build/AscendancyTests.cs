@@ -313,7 +313,7 @@ namespace Game.Core.Tests.Build
         private const string Valid = @"{
   ""version"": 1,
   ""activities"": [{ ""id"": ""a"", ""name"": { ""ru"": ""А"", ""en"": ""A"" } }],
-  ""change"": { ""freeEveryHours"": 24, ""crystalCost"": 100 },
+  ""change"": { ""freeEveryHours"": 24, ""crystalCost"": 100, ""freeClassChanges"": 1 },
   ""subclasses"": [
     { ""id"": ""s"", ""class"": ""ronin"", ""name"": { ""ru"": ""С"", ""en"": ""S"" },
       ""nodes"": [

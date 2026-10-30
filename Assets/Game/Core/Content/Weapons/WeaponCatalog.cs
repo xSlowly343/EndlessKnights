@@ -19,8 +19,9 @@ namespace Game.Core.Content.Weapons
         private readonly Dictionary<string, WeaponBase> _bases;
         private Dictionary<string, IReadOnlyList<GemDef>> _pools = new Dictionary<string, IReadOnlyList<GemDef>>(StringComparer.Ordinal);
 
-        private WeaponCatalog(List<WeaponType> types, List<WeaponBase> bases, double ownTypeWeight, double otherTypeWeight, IReadOnlyList<double> baseWeights, WeaponSkillRules skillRules)
+        private WeaponCatalog(List<WeaponType> types, List<WeaponBase> bases, double ownTypeWeight, double otherTypeWeight, IReadOnlyList<double> baseWeights, WeaponSkillRules skillRules, ReforgeTable reforge)
         {
+            Reforge = reforge;
             SkillRules = skillRules;
             Types = types;
             Bases = bases;
@@ -41,6 +42,7 @@ namespace Game.Core.Content.Weapons
         public double OtherTypeWeight { get; }
         public IReadOnlyList<double> BaseWeights { get; }
         public WeaponSkillRules SkillRules { get; }
+        public ReforgeTable Reforge { get; }
 
         public IReadOnlyList<UniqueWeaponDef> Uniques { get; private set; } = Array.Empty<UniqueWeaponDef>();
 
@@ -174,6 +176,40 @@ namespace Game.Core.Content.Weapons
             throw new ArgumentOutOfRangeException(nameof(heroClass), heroClass, "Class has no weapon type.");
         }
 
+        public WeaponItem Reforged(WeaponItem weapon, WeaponType to)
+        {
+            var from = weapon.Type;
+            if (weapon.Unique != null || from == to)
+                return weapon;
+            var skills = new string[weapon.Skills.Count];
+            for (var i = 0; i < skills.Length; i++)
+                skills[i] = Reforge.SkillId(weapon.Skills[i], from, to);
+            return new WeaponItem(BaseAtStep(to, StepOf(weapon.Base)), weapon.Rarity, skills, null, weapon.Set);
+        }
+
+        private int StepOf(WeaponBase weaponBase)
+        {
+            var step = 0;
+            foreach (var other in Bases)
+            {
+                if (other.Type == weaponBase.Type && other.FromBiome < weaponBase.FromBiome)
+                    step++;
+            }
+            return step;
+        }
+
+        private WeaponBase BaseAtStep(WeaponType type, int step)
+        {
+            var steps = new List<WeaponBase>();
+            foreach (var weaponBase in Bases)
+            {
+                if (weaponBase.Type == type)
+                    steps.Add(weaponBase);
+            }
+            steps.Sort((a, b) => a.FromBiome.CompareTo(b.FromBiome));
+            return steps[System.Math.Min(step, steps.Count - 1)];
+        }
+
         public WeaponBase StarterFor(HeroClass heroClass)
         {
             var type = TypeOf(heroClass);
@@ -189,8 +225,12 @@ namespace Game.Core.Content.Weapons
         public void BindGems(GemCatalog gems)
         {
             var pools = new Dictionary<string, List<GemDef>>(StringComparer.Ordinal);
+            var classGems = new Dictionary<string, List<GemDef>>(StringComparer.Ordinal);
             foreach (var type in Types)
+            {
                 pools[type.Id] = new List<GemDef>();
+                classGems[type.Id] = new List<GemDef>();
+            }
             foreach (var gem in gems.All)
             {
                 var weapon = gem.Skill?.Weapon;
@@ -198,9 +238,13 @@ namespace Game.Core.Content.Weapons
                     continue;
                 if (!pools.TryGetValue(weapon, out var pool))
                     throw new ContentException(GemCatalog.FileName, "gems." + gem.Id, $"unknown weapon type '{weapon}', expected one of {string.Join(", ", _types.Keys)} from {FileName}");
-                if (gem.Ascendancy == null && !gem.Locked)
+                if (gem.Ascendancy != null)
+                    continue;
+                classGems[weapon].Add(gem);
+                if (!gem.Locked)
                     pool.Add(gem);
             }
+            Reforge.Bind(Types, classGems);
             foreach (var type in Types)
                 RequireStarterSkills(type, pools[type.Id]);
             var bound = new Dictionary<string, IReadOnlyList<GemDef>>(StringComparer.Ordinal);
@@ -270,7 +314,7 @@ namespace Game.Core.Content.Weapons
             foreach (var item in root.Field("baseWeights").Items())
                 baseWeights.Add(item.AsNumber(0, 1000));
             var catalog = new WeaponCatalog(types, bases, weights.Field("own").AsNumber(0, 1000), weights.Field("other").AsNumber(0, 1000), baseWeights,
-                WeaponSkillRules.Read(root.Field("skills")));
+                WeaponSkillRules.Read(root.Field("skills")), ReforgeTable.Read(root.Field("reforge")));
             catalog.Uniques = ReadUniques(root.Field("uniques"), catalog, byId);
             return catalog;
         }

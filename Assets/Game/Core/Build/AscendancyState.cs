@@ -63,6 +63,12 @@ namespace Game.Core.Build
         public SubclassResult ChangePaid(AscendancyCatalog catalog, string heroClass, string subclassId) =>
             Subclass == null ? SubclassResult.NotChosen : Change(catalog, heroClass, subclassId);
 
+        public void Reset()
+        {
+            Subclass = null;
+            _allocated.Clear();
+        }
+
         public AllocationResult Allocate(AscendancyCatalog catalog, string nodeId)
         {
             var check = Check(catalog, nodeId);

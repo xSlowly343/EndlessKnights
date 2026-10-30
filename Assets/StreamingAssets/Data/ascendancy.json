@@ -10,7 +10,7 @@
     {"id": "excavation", "name": {"ru": "Первая находка на раскопках", "en": "First excavation find"}},
     {"id": "expedition", "name": {"ru": "Первая экспедиция спутника", "en": "First companion expedition"}}
   ],
-  "change": {"freeEveryHours": 24, "crystalCost": 100},
+  "change": {"freeEveryHours": 24, "crystalCost": 100, "freeClassChanges": 1},
   "subclasses": [
     {
       "id": "berserker", "class": "viking", "name": {"ru": "Berserker", "en": "Berserker"}, "blurb": "Два топора без щита, урон растёт к концу таймера босса",

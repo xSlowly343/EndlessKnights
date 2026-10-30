@@ -24,6 +24,7 @@ namespace Game.Core.Sim
         public Rng Rng { get; set; }
         public HeroClass Class { get; set; }
         public bool ClassChosen { get; set; } = true;
+        public int ClassChanges { get; set; }
         public string ClassName => ClassChosen ? HeroClassNames.Of(Class) : HeroClassNames.Novice;
 
         public bool Is(HeroClass heroClass) => ClassChosen && Class == heroClass;

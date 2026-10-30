@@ -62,8 +62,9 @@ namespace Game.Core.Content.Tree
 
         private readonly Dictionary<string, SubclassDef> _byId;
 
-        private AscendancyCatalog(IReadOnlyList<AscendancyActivity> activities, IReadOnlyList<SubclassDef> subclasses, double freeChangeHours, int crystalChangeCost)
+        private AscendancyCatalog(IReadOnlyList<AscendancyActivity> activities, IReadOnlyList<SubclassDef> subclasses, double freeChangeHours, int crystalChangeCost, int freeClassChanges)
         {
+            FreeClassChanges = freeClassChanges;
             Activities = activities;
             Subclasses = subclasses;
             FreeChangeHours = freeChangeHours;
@@ -77,6 +78,7 @@ namespace Game.Core.Content.Tree
         public IReadOnlyList<SubclassDef> Subclasses { get; }
         public double FreeChangeHours { get; }
         public int CrystalChangeCost { get; }
+        public int FreeClassChanges { get; }
         public int MaxPoints => Activities.Count;
 
         public bool TryGet(string id, out SubclassDef subclass) => _byId.TryGetValue(id, out subclass!);
@@ -151,7 +153,8 @@ namespace Game.Core.Content.Tree
             }
             return new AscendancyCatalog(activities, subclasses,
                 change.Field("freeEveryHours").AsNumber(0, 24 * 365),
-                change.Field("crystalCost").AsInt(0, 1_000_000));
+                change.Field("crystalCost").AsInt(0, 1_000_000),
+                change.Field("freeClassChanges").AsInt(0, 100));
         }
 
         private static List<AscendancyActivity> ReadActivities(ContentNode node)

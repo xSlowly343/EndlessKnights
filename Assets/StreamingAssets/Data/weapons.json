@@ -20,6 +20,7 @@
       "primordial": [0, 5, 30, 40, 25]
     }
   },
+  "reforge": { "gemKeys": ["tier", "role", "color"] },
   "types": [
     {"id": "axe", "class": "viking", "color": "red", "name": {"ru": "Топор", "en": "Axe"}, "starterSkills": ["iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter"], "innate": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
     {"id": "katana", "class": "ronin", "color": "red", "name": {"ru": "Катана", "en": "Katana"}, "starterSkills": ["thin_cut", "hundred_cuts", "no_rush", "kitchen_rhythm", "what_remains_of_the_debt", "sweep_over_the_queue", "slow_simmer"], "innate": [{"stat": "critChance", "kind": "flat", "value": 0.05, "tags": ["Keyboard"]}]},
