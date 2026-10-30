@@ -1,6 +1,7 @@
 {
   "version": 1,
   "entries": [
+    {"game": "1.1", "lines": {"ru": ["Huscarl: новое дерево из 50 узлов по 5 уровней", "Полоса мастерства и большие таланты 1 из 3", "Очки старого дерева Huscarl возвращены", "Сброс нового дерева бесплатный до первого Предела"], "en": ["Huscarl: a new tree of 50 nodes with 5 ranks", "A mastery bar and major talents, one of three", "Points of the old Huscarl tree are refunded", "Resetting the new tree is free until the first Limit"]}},
     {
       "game": "1.0",
       "lines": {

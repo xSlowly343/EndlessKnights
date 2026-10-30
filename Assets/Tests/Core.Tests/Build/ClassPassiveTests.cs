@@ -30,13 +30,16 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void VikingStartGivesMoreRageAndKeyDamage()
+        public void HuscarlOnTheNewTreeHasNoStartPassiveAndGrowsFromItsNodes()
         {
-            var loop = Real(new GameState { Class = HeroClass.Viking });
+            var loop = Real(new GameState { Class = HeroClass.Viking, HeroLevel = 10 });
+            loop.Levels.SyncTreePoints();
 
-            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1.15).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(110).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(100));
+            Assert.That(loop.State.ClassTreeActive, Is.True);
+            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100).Within(1e-9));
+            Assert.That(loop.RaiseNode("viking_axe"), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(104).Within(1e-9));
         }
 
         [Test]

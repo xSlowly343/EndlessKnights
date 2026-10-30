@@ -9,6 +9,7 @@ namespace Game.Core.Build
     {
         private readonly Dictionary<string, int> _ranks = new Dictionary<string, int>(StringComparer.Ordinal);
         private readonly Dictionary<int, string> _majors = new Dictionary<int, string>();
+        private readonly List<string> _plan = new List<string>();
 
         public ClassTreeAllocation(string heroClass)
         {
@@ -21,6 +22,7 @@ namespace Game.Core.Build
         public int PointsLeft => PointsEarned - PointsSpent;
         public IReadOnlyDictionary<string, int> Ranks => _ranks;
         public IReadOnlyDictionary<int, string> Majors => _majors;
+        public IReadOnlyList<string> Plan => _plan;
 
         public int RankOf(string nodeId) => _ranks.TryGetValue(nodeId, out var rank) ? rank : 0;
 
@@ -61,7 +63,50 @@ namespace Game.Core.Build
                 return check;
             _ranks[nodeId] = RankOf(nodeId) + 1;
             PointsSpent++;
+            if (CountInPlan(nodeId) < _ranks[nodeId])
+                _plan.Add(nodeId);
             return RankResult.Done;
+        }
+
+        public int FillFromPlan(ClassTree tree)
+        {
+            var raised = 0;
+            var progress = true;
+            while (progress && PointsLeft > 0)
+            {
+                progress = false;
+                var wanted = new Dictionary<string, int>(StringComparer.Ordinal);
+                foreach (var id in _plan)
+                {
+                    wanted[id] = (wanted.TryGetValue(id, out var count) ? count : 0) + 1;
+                    if (RankOf(id) >= wanted[id] || CheckRaise(tree, id) != RankResult.Done)
+                        continue;
+                    Raise(tree, id);
+                    raised++;
+                    progress = true;
+                    break;
+                }
+            }
+            return raised;
+        }
+
+        public void ForgetPlan() => _plan.Clear();
+
+        public void RestorePlan(IEnumerable<string> plan)
+        {
+            _plan.Clear();
+            _plan.AddRange(plan);
+        }
+
+        private int CountInPlan(string nodeId)
+        {
+            var count = 0;
+            foreach (var id in _plan)
+            {
+                if (id == nodeId)
+                    count++;
+            }
+            return count;
         }
 
         public RankResult CheckLower(ClassTree tree, string nodeId)
@@ -90,6 +135,9 @@ namespace Game.Core.Build
             else
                 _ranks[nodeId] = rank;
             PointsSpent--;
+            var last = _plan.LastIndexOf(nodeId);
+            if (last >= 0)
+                _plan.RemoveAt(last);
             return RankResult.Done;
         }
 

@@ -101,6 +101,11 @@ namespace Game.Core.Sim.Headless
 
         private void SpendTreePoints()
         {
+            if (_loop.ClassTreeDef is { } classTree)
+            {
+                SpendClassTreePoints(classTree);
+                return;
+            }
             var tree = _data.Tree;
             while (_loop.State.Tree.PointsLeft > 0)
             {
@@ -113,6 +118,48 @@ namespace Game.Core.Sim.Headless
                     node.Type == TreeNodeType.Mastery ? step.Value.Option : (int?)null);
                 if (result != AllocationResult.Allocated)
                     return;
+            }
+        }
+
+        private void SpendClassTreePoints(ClassTree tree)
+        {
+            var allocation = _loop.State.ClassTree;
+            while (allocation.PointsLeft > 0)
+            {
+                ClassTreeNode? best = null;
+                var bestValue = double.MinValue;
+                foreach (var node in tree.Nodes)
+                {
+                    if (allocation.CheckRaise(tree, node.Id) != RankResult.Done)
+                        continue;
+                    var rank = allocation.RankOf(node.Id);
+                    var value = _score.Of(node.ModifiersAt(rank + 1)) - _score.Of(node.ModifiersAt(rank)) + node.Row * 1e-3;
+                    if (value > bestValue)
+                    {
+                        best = node;
+                        bestValue = value;
+                    }
+                }
+                if (best == null || _loop.RaiseNode(best.Id) != RankResult.Done)
+                    break;
+            }
+            ChooseMajorTalents(tree);
+        }
+
+        private void ChooseMajorTalents(ClassTree tree)
+        {
+            var allocation = _loop.State.ClassTree;
+            foreach (var slot in tree.Majors)
+            {
+                if (allocation.PointsSpent < slot.At || allocation.Majors.ContainsKey(slot.At))
+                    continue;
+                var best = slot.Options[0];
+                foreach (var option in slot.Options)
+                {
+                    if (_score.Of(option.Modifiers) > _score.Of(best.Modifiers))
+                        best = option;
+                }
+                _loop.ChooseMajorTalent(slot.At, best.Id);
             }
         }
 

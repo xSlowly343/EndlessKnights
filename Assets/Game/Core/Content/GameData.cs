@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Items;
 using Game.Core.Content.Tree;
@@ -13,7 +14,7 @@ namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName, ChronicleCatalog.FileName, AtlasCatalog.FileName, ResonanceCatalog.FileName, SpiritCatalog.FileName, UnlockRules.FileName, DungeonRules.FileName, RaidRules.FileName, ClanTreeCatalog.FileName, MentorRules.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName, ChronicleCatalog.FileName, AtlasCatalog.FileName, ResonanceCatalog.FileName, SpiritCatalog.FileName, UnlockRules.FileName, DungeonRules.FileName, RaidRules.FileName, ClanTreeCatalog.FileName, MentorRules.FileName, TreeTemplates.FileName };
 
         private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift, WeaponCatalog weapons, ItemCatalog items, DropRules drops, PanelUnlocks panel, ChangeLog changeLog, ChronicleCatalog chronicle, AtlasCatalog atlas, ResonanceCatalog resonance, SpiritCatalog spirits)
         {
@@ -74,6 +75,10 @@ namespace Game.Core.Content
         public RaidRules Raid { get; private set; } = null!;
         public ClanTreeCatalog ClanTree { get; private set; } = null!;
         public MentorRules Mentor { get; private set; } = null!;
+        public TreeTemplates TreeTemplates { get; private set; } = null!;
+        public IReadOnlyDictionary<string, ClassTree> ClassTrees { get; private set; } = new Dictionary<string, ClassTree>();
+
+        public ClassTree? ClassTreeOf(string heroClass) => ClassTrees.TryGetValue(heroClass, out var tree) ? tree : null;
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -114,7 +119,11 @@ namespace Game.Core.Content
             var mentor = MentorRules.Load(readFile(MentorRules.FileName));
             var strings = StringTable.Load(readFile(StringTable.FileName));
             Texts.Use(strings);
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Unlocks = unlocks, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor };
+            var treeTemplates = TreeTemplates.Load(readFile(TreeTemplates.FileName));
+            var classTrees = new Dictionary<string, ClassTree>(StringComparer.Ordinal);
+            foreach (var heroClass in treeTemplates.Classes)
+                classTrees[heroClass] = ClassTreeLoader.Load(treeTemplates, heroClass, readFile(ClassTreeLoader.FileNameOf(heroClass)));
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Unlocks = unlocks, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor, TreeTemplates = treeTemplates, ClassTrees = classTrees };
         }
     }
 }

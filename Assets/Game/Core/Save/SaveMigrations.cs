@@ -6,7 +6,7 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(11,
+        public static readonly SaveMigrations Default = new SaveMigrations(12,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
             new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
@@ -16,7 +16,8 @@ namespace Game.Core.Save
             new SaveMigration(7, "strike upgrades for gold (10.2)", payload => JsonEdit.Update(payload, "state", StateToVersion8)),
             new SaveMigration(8, "nine RPG classes and the large passive tree", payload => JsonEdit.Update(payload, "state", StateToVersion9)),
             new SaveMigration(9, "fourteen characters, class resources and the new passive tree", payload => JsonEdit.Update(payload, "state", StateToVersion10)),
-            new SaveMigration(10, "forty-two ascendancy paths of the fourteen characters", payload => JsonEdit.Update(payload, "state", StateToVersion11)));
+            new SaveMigration(10, "forty-two ascendancy paths of the fourteen characters", payload => JsonEdit.Update(payload, "state", StateToVersion11)),
+            new SaveMigration(11, "class trees of fifty ranked nodes", payload => JsonEdit.Update(payload, "state", StateToVersion12)));
 
         private static readonly IReadOnlyDictionary<string, string> RenamedClasses = new Dictionary<string, string>(StringComparer.Ordinal)
         {
@@ -172,6 +173,22 @@ namespace Game.Core.Save
             var carry = JsonEdit.Update(presets, "carry", c => JsonEdit.Remove(c, "clicks"));
             return JsonEdit.Update(carry, "ascendancy", RenamedSubclass);
         }
+
+        private static JsonValue StateToVersion12(JsonValue state)
+        {
+            var heroClass = state.Fields["hero"].Fields["class"].Text;
+            var withTree = JsonEdit.Set(state, "classTree", EmptyClassTree(heroClass));
+            return JsonEdit.Update(withTree, "presets", p => JsonEdit.Set(p, "otherClassTree", EmptyClassTree(heroClass)));
+        }
+
+        private static JsonValue EmptyClassTree(string heroClass) =>
+            JsonValue.Object(new Dictionary<string, JsonValue>
+            {
+                ["class"] = JsonValue.Of(heroClass),
+                ["ranks"] = JsonValue.Array(new JsonValue[0]),
+                ["majors"] = JsonValue.Array(new JsonValue[0]),
+                ["plan"] = JsonValue.Array(new JsonValue[0])
+            });
 
         private static JsonValue StateToVersion11(JsonValue state) =>
             JsonEdit.Update(state, "ascendancy", KeptSubclassWithoutNodes);

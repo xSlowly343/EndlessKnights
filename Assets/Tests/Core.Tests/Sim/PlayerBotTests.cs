@@ -28,8 +28,10 @@ namespace Game.Core.Tests.Sim
             var day = simulation.Run(2, 2).Last();
             var state = simulation.LastState!;
 
-            Assert.That(state.Tree.PointsSpent, Is.GreaterThan(10));
-            Assert.That(state.Tree.PointsLeft, Is.EqualTo(0));
+            Assert.That(state.ClassTreeActive, Is.True, "the typist plays Huscarl on the new tree");
+            Assert.That(state.TreePointsSpent, Is.GreaterThan(10));
+            Assert.That(state.TreePointsLeft, Is.EqualTo(0));
+            Assert.That(state.ClassTree.Majors, Is.Not.Empty, "the bot picks the first major talent");
             Assert.That(day.RecordStage, Is.GreaterThan(TestWorld.Real.Stages.BiomeLength));
             Assert.That(state.Ascendancy.Subclass, Is.Not.Null);
             Assert.That(state.Ascendancy.PointsLeft(TestWorld.Real.Ascendancy), Is.EqualTo(0));

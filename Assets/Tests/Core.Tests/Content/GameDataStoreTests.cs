@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content;
+using Game.Core.Content.Tree;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Content
@@ -11,6 +12,8 @@ namespace Game.Core.Tests.Content
             var files = new Dictionary<string, string>();
             foreach (var name in GameData.FileNames)
                 files[name] = TestData.ReadGameDataFile(name);
+            foreach (var heroClass in TreeTemplates.Load(files[TreeTemplates.FileName]).Classes)
+                files[ClassTreeLoader.FileNameOf(heroClass)] = TestData.ReadGameDataFile(ClassTreeLoader.FileNameOf(heroClass));
             return files;
         }
 

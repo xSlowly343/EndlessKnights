@@ -30,6 +30,17 @@ namespace Game.Core.Sim
         public bool Is(HeroClass heroClass) => ClassChosen && Class == heroClass;
 
         private TreeAllocation? _tree;
+        private ClassTreeAllocation? _classTree;
+
+        public ClassTreeAllocation ClassTree
+        {
+            get => _classTree ??= new ClassTreeAllocation(ClassName);
+            set => _classTree = value;
+        }
+
+        public bool ClassTreeActive { get; set; }
+        public int TreePointsLeft => ClassTreeActive ? ClassTree.PointsLeft : Tree.PointsLeft;
+        public int TreePointsSpent => ClassTreeActive ? ClassTree.PointsSpent : Tree.PointsSpent;
 
         public TreeAllocation Tree
         {

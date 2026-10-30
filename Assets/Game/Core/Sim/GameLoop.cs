@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
+using Game.Core.Content.Tree;
 using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Party;
@@ -217,6 +218,7 @@ namespace Game.Core.Sim
             State.Class = heroClass;
             State.ClassChosen = true;
             State.Tree = new TreeAllocation(State.ClassName);
+            State.ClassTree = new ClassTreeAllocation(State.ClassName);
             State.OtherPreset = new BuildPreset(new TreeAllocation(State.ClassName));
             State.Resource = 0;
             _levels.SyncTreePoints();
@@ -248,6 +250,7 @@ namespace Game.Core.Sim
             reforge.Apply(State, _data.Gems);
             _weapons.Reforge(from, to);
             State.Tree = FreshTree(State.Tree);
+            State.ClassTree = new ClassTreeAllocation(State.ClassName);
             State.OtherPreset = reforge.Preset(State.OtherPreset, FreshTree(State.OtherPreset.Tree));
             State.Ascendancy.Reset();
             State.Resource = 0;
@@ -284,10 +287,100 @@ namespace Game.Core.Sim
             }
         }
 
+        public ClassTree? ClassTreeDef => State.ClassChosen ? _data.ClassTreeOf(State.ClassName) : null;
+
+        public bool ClassTreeResetFree => State.GatesCleared.Count == 0;
+
+        public RankResult RaiseNode(string nodeId)
+        {
+            var tree = ClassTreeDef;
+            if (tree == null)
+                return RankResult.UnknownNode;
+            var result = State.ClassTree.Raise(tree, nodeId);
+            if (result == RankResult.Done)
+                RebuildTree();
+            return result;
+        }
+
+        public BigNumber? LowerCost(string nodeId)
+        {
+            var tree = ClassTreeDef;
+            if (tree == null || !tree.TryGet(nodeId, out var node) || State.ClassTree.RankOf(nodeId) == 0)
+                return null;
+            return ClassTreeResetFree ? BigNumber.Zero : tree.Respec.NodeCost(node.Row, State.HeroLevel, false);
+        }
+
+        public RefundResult LowerNode(string nodeId)
+        {
+            var tree = ClassTreeDef;
+            var cost = LowerCost(nodeId);
+            if (tree == null || cost == null)
+                return RefundResult.NotAllocated;
+            if (State.ClassTree.CheckLower(tree, nodeId) != RankResult.Done)
+                return RefundResult.BreaksPath;
+            if (State.Gold < cost.Value)
+                return RefundResult.NotEnoughGold;
+            State.Gold -= cost.Value;
+            State.ClassTree.Lower(tree, nodeId);
+            RebuildTree();
+            return RefundResult.Refunded;
+        }
+
+        public BigNumber ClassTreeResetCost()
+        {
+            var tree = ClassTreeDef;
+            if (tree == null || ClassTreeResetFree)
+                return BigNumber.Zero;
+            var total = BigNumber.Zero;
+            foreach (var pair in State.ClassTree.Ranks)
+            {
+                if (tree.TryGet(pair.Key, out var node))
+                    total += tree.Respec.NodeCost(node.Row, State.HeroLevel, false) * BigNumber.FromDouble(pair.Value);
+            }
+            return total * BigNumber.FromDouble(tree.Respec.FullResetShare);
+        }
+
+        public RefundResult ResetClassTree()
+        {
+            if (ClassTreeDef == null || State.ClassTree.PointsSpent == 0)
+                return RefundResult.NotAllocated;
+            var cost = ClassTreeResetCost();
+            if (State.Gold < cost)
+                return RefundResult.NotEnoughGold;
+            State.Gold -= cost;
+            State.ClassTree.Clear();
+            RebuildTree();
+            return RefundResult.Refunded;
+        }
+
+        public int FillClassTree()
+        {
+            var tree = ClassTreeDef;
+            if (tree == null)
+                return 0;
+            var raised = State.ClassTree.FillFromPlan(tree);
+            if (raised > 0)
+                RebuildTree();
+            return raised;
+        }
+
+        public RankResult ChooseMajorTalent(int at, string talentId)
+        {
+            var tree = ClassTreeDef;
+            if (tree == null)
+                return RankResult.UnknownMajor;
+            var result = State.ClassTree.ChooseMajor(tree, at, talentId);
+            if (result == RankResult.Done)
+                RebuildTree();
+            return result;
+        }
+
         public AllocationResult AllocateNode(string nodeId, string? attribute = null, int? masteryOption = null)
         {
             if (!State.ClassChosen)
                 return AllocationResult.ChooseClassFirst;
+            if (ClassTreeDef != null)
+                return AllocationResult.Locked;
             var result = State.Tree.Allocate(_data.Tree, nodeId, attribute, masteryOption);
             if (result == AllocationResult.Allocated)
                 RebuildTree();
@@ -447,7 +540,7 @@ namespace Game.Core.Sim
 
         public void SwitchPreset()
         {
-            var current = new BuildPreset(State.Tree);
+            var current = new BuildPreset(State.Tree, State.ClassTree);
             foreach (var slot in State.Skills)
             {
                 current.Skills.Add((slot.Skill, slot.Trigger));
@@ -456,9 +549,11 @@ namespace Game.Core.Sim
 
             var next = State.OtherPreset;
             next.Tree.PointsEarned = State.Tree.PointsEarned;
+            next.ClassTree.PointsEarned = State.Tree.PointsEarned;
             while (State.Skills.Count > 0)
                 _skills.Unequip(State.Skills.Count - 1);
             State.Tree = next.Tree;
+            State.ClassTree = next.ClassTree;
             State.OtherPreset = current;
             State.ActivePreset = 1 - State.ActivePreset;
             RebuildTree();
@@ -483,14 +578,41 @@ namespace Game.Core.Sim
 
         public void RebuildTree()
         {
-            State.Tree.DropUnreachable(_data.Tree);
-            State.OtherPreset.Tree.DropUnreachable(_data.Tree);
-            var modifiers = new List<Modifier>(State.Tree.Modifiers(_data.Tree));
+            var modifiers = ClassTreeDef is { } tree ? ClassTreeModifiers(tree) : PassiveTreeModifiers();
             modifiers.AddRange(State.Ascendancy.Modifiers(_data.Ascendancy));
             _treeLayer.Set(modifiers);
             _jewels.Rebuild();
             _skills.RefreshAuras();
             _partyBuffs.Rebuild();
+        }
+
+        private List<Modifier> PassiveTreeModifiers()
+        {
+            State.ClassTreeActive = false;
+            State.Tree.DropUnreachable(_data.Tree);
+            State.OtherPreset.Tree.DropUnreachable(_data.Tree);
+            return new List<Modifier>(State.Tree.Modifiers(_data.Tree));
+        }
+
+        private List<Modifier> ClassTreeModifiers(ClassTree tree)
+        {
+            State.ClassTreeActive = true;
+            State.Tree.Clear();
+            State.OtherPreset.Tree.Clear();
+            State.ClassTree = Fitted(State.ClassTree, tree);
+            State.OtherPreset.ClassTree = Fitted(State.OtherPreset.ClassTree, tree);
+            return State.ClassTree.Modifiers(tree);
+        }
+
+        private ClassTreeAllocation Fitted(ClassTreeAllocation allocation, ClassTree tree)
+        {
+            if (allocation.HeroClass != tree.HeroClass)
+                allocation = new ClassTreeAllocation(tree.HeroClass);
+            allocation.PointsEarned = State.Tree.PointsEarned;
+            allocation.DropInvalid(tree);
+            if (allocation.PointsSpent > allocation.PointsEarned)
+                allocation.Clear();
+            return allocation;
         }
 
         public void UseData(GameData data)

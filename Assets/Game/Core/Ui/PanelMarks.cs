@@ -60,7 +60,7 @@ namespace Game.Core.Ui
 
         private bool NeedsAttention(PanelSection section, GameState state, AscendancyCatalog ascendancy) => section switch
         {
-            PanelSection.Tree => state.Tree.PointsLeft > 0 || state.Ascendancy.PointsLeft(ascendancy) > 0,
+            PanelSection.Tree => state.TreePointsLeft > 0 || state.Ascendancy.PointsLeft(ascendancy) > 0,
             PanelSection.Mail => UnreadMail > 0,
             _ => false,
         };

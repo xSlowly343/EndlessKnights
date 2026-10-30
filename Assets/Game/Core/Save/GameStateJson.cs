@@ -4,6 +4,7 @@ using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Items;
 using Game.Core.Content.Json;
+using Game.Core.Content.Tree;
 using Game.Core.Content.Weapons;
 using Game.Core.Math;
 using Game.Core.Sim;
@@ -103,10 +104,12 @@ namespace Game.Core.Save
                 ("gemProgress", WriteGemProgress(state)),
                 ("boundGems", WriteBoundGems(state)),
                 ("tree", WriteTree(state.Tree)),
+                ("classTree", WriteClassTree(state.ClassTree)),
                 ("ascendancy", WriteAscendancy(state.Ascendancy)),
                 ("presets", Object(
                     ("active", JsonValue.Of(state.ActivePreset)),
                     ("otherTree", WriteTree(state.OtherPreset.Tree)),
+                    ("otherClassTree", WriteClassTree(state.OtherPreset.ClassTree)),
                     ("otherSkills", JsonValue.Array(WritePresetSkills(state.OtherPreset))))),
                 ("chainDamage", SaveValues.Of(state.ChainDamage)),
                 ("queueDamage", JsonValue.Array(WriteQueueDamage(state))),
@@ -190,6 +193,7 @@ namespace Game.Core.Save
                     state.OwnedGems.Add(gem);
             }
             state.Tree = ReadTree(node.Field("tree"));
+            state.ClassTree = ReadClassTree(node.Field("classTree"));
             state.Ascendancy = ReadAscendancy(node.Field("ascendancy"));
             ReadTutorial(node, state);
             ReadQueueDamage(node, state);
@@ -207,7 +211,7 @@ namespace Game.Core.Save
                 state.StartedUnixMs = (long)ReadCount(input.Field("startedUnixMs"));
             var presets = node.Field("presets");
             state.ActivePreset = presets.Field("active").AsInt(0, 1);
-            state.OtherPreset = new BuildPreset(ReadTree(presets.Field("otherTree")));
+            state.OtherPreset = new BuildPreset(ReadTree(presets.Field("otherTree")), ReadClassTree(presets.Field("otherClassTree")));
             foreach (var item in presets.Field("otherSkills").Items())
             {
                 if (!gems.TryGet(item.Field("gem").AsString(), out var skill) || skill.Skill == null)
@@ -704,6 +708,42 @@ namespace Game.Core.Save
                 ("pointsEarned", JsonValue.Of(tree.PointsEarned)),
                 ("lastFreeResetUnixMs", JsonValue.Of(tree.LastFreeResetUnixMs)),
                 ("allocated", JsonValue.Array(nodes)));
+        }
+
+        private static JsonValue WriteClassTree(ClassTreeAllocation tree)
+        {
+            var ids = new List<string>(tree.Ranks.Keys);
+            ids.Sort(System.StringComparer.Ordinal);
+            var ranks = new JsonValue[ids.Count];
+            for (var i = 0; i < ranks.Length; i++)
+                ranks[i] = Object(("id", JsonValue.Of(ids[i])), ("rank", JsonValue.Of(tree.Ranks[ids[i]])));
+            var marks = new List<int>(tree.Majors.Keys);
+            marks.Sort();
+            var majors = new JsonValue[marks.Count];
+            for (var i = 0; i < majors.Length; i++)
+                majors[i] = Object(("at", JsonValue.Of(marks[i])), ("id", JsonValue.Of(tree.Majors[marks[i]])));
+            var plan = new JsonValue[tree.Plan.Count];
+            for (var i = 0; i < plan.Length; i++)
+                plan[i] = JsonValue.Of(tree.Plan[i]);
+            return Object(
+                ("class", JsonValue.Of(tree.HeroClass)),
+                ("ranks", JsonValue.Array(ranks)),
+                ("majors", JsonValue.Array(majors)),
+                ("plan", JsonValue.Array(plan)));
+        }
+
+        private static ClassTreeAllocation ReadClassTree(ContentNode node)
+        {
+            var tree = new ClassTreeAllocation(node.Field("class").AsString());
+            foreach (var item in node.Field("ranks").Items())
+                tree.Restore(item.Field("id").AsString(), item.Field("rank").AsInt(1, TreeTemplate.Ranks));
+            foreach (var item in node.Field("majors").Items())
+                tree.RestoreMajor(item.Field("at").AsInt(0, 100_000), item.Field("id").AsString());
+            var plan = new List<string>();
+            foreach (var item in node.Field("plan").Items())
+                plan.Add(item.AsString());
+            tree.RestorePlan(plan);
+            return tree;
         }
 
         private static JsonValue WriteAscendancy(AscendancyState ascendancy) =>

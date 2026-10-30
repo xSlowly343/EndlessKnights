@@ -80,6 +80,7 @@ namespace Game.Core.Sim
         public void SyncTreePoints()
         {
             _state.Tree.PointsEarned = System.Math.Min(_state.HeroLevel, _rules.MaxLevel) + GuardianPoints + MilestonePoints;
+            _state.ClassTree.PointsEarned = _state.Tree.PointsEarned;
             if (_state.RecordStage > _stages.BiomeLength)
                 _state.Ascendancy.Complete(ActivityIds.FirstGuardian);
             if (_state.Prestiges > 0)

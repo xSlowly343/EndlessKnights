@@ -12,8 +12,9 @@ namespace Game.Core.Content.Tree
         private readonly Dictionary<string, TreeTemplate> _common;
 
         private TreeTemplates(RespecRules respec, IReadOnlyList<int> rowThresholds, int nodeCount, int barEvery, IReadOnlyList<int> majorsAt, int majorOptions,
-            Dictionary<string, TreeTemplate> common)
+            Dictionary<string, TreeTemplate> common, IReadOnlyList<string> classes)
         {
+            Classes = classes;
             Respec = respec;
             RowThresholds = rowThresholds;
             NodeCount = nodeCount;
@@ -30,6 +31,7 @@ namespace Game.Core.Content.Tree
         public IReadOnlyList<int> MajorsAt { get; }
         public int MajorOptions { get; }
         public IReadOnlyCollection<TreeTemplate> Common => _common.Values;
+        public IReadOnlyList<string> Classes { get; }
 
         public bool TryGet(string id, out TreeTemplate template) => _common.TryGetValue(id, out template!);
 
@@ -48,8 +50,15 @@ namespace Game.Core.Content.Tree
             var templates = root.Field("templates");
             foreach (var id in templates.FieldNames())
                 common[id] = ReadTemplate(templates.Field(id), id);
+            var classes = new List<string>();
+            foreach (var item in root.Field("classes").Items())
+            {
+                if (!Sim.HeroClassNames.ByName.ContainsKey(item.AsString()) || classes.Contains(item.AsString()))
+                    throw item.Error($"'{item.AsString()}' is not a class or is listed twice");
+                classes.Add(item.AsString());
+            }
             return new TreeTemplates(RespecRules.Read(root.Field("respec")), rows, root.Field("nodes").AsInt(1, 1000),
-                bar.Field("every").AsInt(1, 1000), majorsAt, bar.Field("majorOptions").AsInt(2, 10), common);
+                bar.Field("every").AsInt(1, 1000), majorsAt, bar.Field("majorOptions").AsInt(2, 10), common, classes);
         }
 
         public static TreeTemplate ReadTemplate(ContentNode node, string id)

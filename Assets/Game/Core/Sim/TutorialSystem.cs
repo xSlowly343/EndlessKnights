@@ -113,7 +113,7 @@ namespace Game.Core.Sim
                 _current = i;
                 _progress = 0;
                 _shownTick = _state.Tick;
-                _treePointsAtShow = _state.Tree.PointsSpent;
+                _treePointsAtShow = _state.TreePointsSpent;
                 _strikeLevelAtShow = _state.StrikeLevel;
                 return;
             }
@@ -134,7 +134,7 @@ namespace Game.Core.Sim
                     _progress = (_state.Tick - _shownTick) * GameLoop.TickSeconds;
                     break;
                 case TutorialDone.TreeNode:
-                    _progress = _state.Tree.PointsSpent - _treePointsAtShow;
+                    _progress = _state.TreePointsSpent - _treePointsAtShow;
                     break;
                 case TutorialDone.StrikeUpgrade:
                     _progress = _state.StrikeLevel - _strikeLevelAtShow;

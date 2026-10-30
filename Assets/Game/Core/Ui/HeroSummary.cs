@@ -57,7 +57,7 @@ namespace Game.Core.Ui
 
         public static string? Hint(GameState state)
         {
-            var points = state.Tree.PointsLeft;
+            var points = state.TreePointsLeft;
             return points > 0 ? Texts.Format("hero.hint.treePoints", points) : null;
         }
 

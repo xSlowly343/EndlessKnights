@@ -14,6 +14,7 @@ namespace Game.Core.Tests.Content
   ""respec"": {""cost"": {""curve"": ""exp"", ""base"": 50, ""rate"": 1.3}, ""levelRate"": 1.1, ""attributeShare"": 0.5, ""freeFullResetHours"": 24, ""fullResetShare"": 0.5},
   ""rows"": [0, 3],
   ""nodes"": 3,
+  ""classes"": [""viking""],
   ""bar"": {""every"": 2, ""majorsAt"": [4], ""majorOptions"": 2},
   ""templates"": {
     ""crit"": {""name"": {""ru"": ""Крит"", ""en"": ""Crit""}, ""a"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.03}]}, ""b"": {""modifiers"": [{""stat"": ""critMultiplier"", ""kind"": ""flat"", ""value"": 0.05}]}, ""c"": {""text"": {""ru"": ""т"", ""en"": ""t""}, ""waits"": ""critFocusPause""}}

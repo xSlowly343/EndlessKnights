@@ -27,6 +27,8 @@ namespace Game.Core.Tests.Sim
                 return WithoutStartModifiers(json);
             if (name == UnlockRules.FileName)
                 return "{ \"version\": 1, \"features\": {}, \"artifactGroups\": [] }";
+            if (name == TreeTemplates.FileName)
+                return Regex.Replace(json, "\"classes\": \\[[^\\]]*\\]", "\"classes\": []");
             if (name == WeaponCatalog.FileName)
                 return Regex.Replace(json, "\"innate\": \\[.*\\]", "\"innate\": []");
             return json;
