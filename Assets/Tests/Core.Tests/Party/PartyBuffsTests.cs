@@ -324,7 +324,7 @@ namespace Game.Core.Tests.Party
             var viking = rig.Members[1];
             voodoo.Loop.State.Class = HeroClass.Voodoo;
             viking.Loop.State.Class = HeroClass.Viking;
-            var rage = new StatId("rageGain");
+            var rage = new StatId("resourceGain");
             rig.Run(5);
             Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1));
 

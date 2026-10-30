@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Party
 {
     public class SynergyTests
     {
-        private static readonly StatId RageGain = new StatId("rageGain");
+        private static readonly StatId RageGain = new StatId("resourceGain");
 
         private static SynergyRules Rules => TestWorld.Data.Synergy;
 
@@ -226,7 +226,7 @@ namespace Game.Core.Tests.Party
             Assert.That(System.GC.GetAllocatedBytesForCurrentThread() - before, Is.EqualTo(0));
         }
 
-        [TestCase(@"""mark"": ""curse"", ""modifiers"": [{ ""stat"": ""rageGain""", @"""mark"": ""blood"", ""modifiers"": [{ ""stat"": ""rageGain""", "unknown mark 'blood'")]
+        [TestCase(@"""mark"": ""curse"", ""modifiers"": [{ ""stat"": ""resourceGain""", @"""mark"": ""blood"", ""modifiers"": [{ ""stat"": ""resourceGain""", "unknown mark 'blood'")]
         [TestCase(@"""viking"": ""dd"", ", "", "class 'viking' has no role")]
         [TestCase(@"""marks"": [""fire"", ""poison""]", @"""marks"": [""fire"", ""fire""]", "two different marks")]
         public void BrokenSynergyIsReported(string from, string to, string message)

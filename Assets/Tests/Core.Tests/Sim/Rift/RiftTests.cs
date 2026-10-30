@@ -225,7 +225,7 @@ namespace Game.Core.Tests.Sim.Rift
             var curse = TestWorld.Data.Synergy.MaskOf(new[] { "curse" });
             loop.Synergy.SetAlly(2, true, HeroClass.Voodoo, curse);
             loop.Tick();
-            var rage = new StatId("rageGain");
+            var rage = new StatId("resourceGain");
             var plain = loop.Hero.Value(rage, 1) - 1;
 
             loop.Synergy.SetFavoured(curse, Rules.MarkBonus);
