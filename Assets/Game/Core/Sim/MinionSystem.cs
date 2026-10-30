@@ -12,13 +12,15 @@ namespace Game.Core.Sim
         private readonly StatSheet _hero;
         private readonly CombatSystem _combat;
         private readonly ResourceSystem _resource;
+        private readonly DotSystem _dots;
 
-        public MinionSystem(GameState state, StatSheet hero, CombatSystem combat, ResourceSystem resource)
+        public MinionSystem(GameState state, StatSheet hero, CombatSystem combat, ResourceSystem resource, DotSystem dots)
         {
             _state = state;
             _hero = hero;
             _combat = combat;
             _resource = resource;
+            _dots = dots;
         }
 
         public long CannonShots { get; private set; }
@@ -125,6 +127,7 @@ namespace Game.Core.Sim
             var share = _hero.Value(CombatStats.MinionQueueShare, 0, StatTags.Minion);
             if (share > 0)
                 _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * share, tags));
+            Ignite();
             if (kind == MinionKind.Skeleton)
                 SkeletonHits++;
             if (kind == MinionKind.Beast)
@@ -135,6 +138,13 @@ namespace Game.Core.Sim
             _state.CannonShotsOnEnemy++;
             CannonExtras(multiplier, tags);
             _resource.Gain(_combat.Cannons.ResourcePerShot * _hero.Value(CombatStats.ResourceGain, 1));
+        }
+
+        private void Ignite()
+        {
+            var stacks = _hero.Value(CombatStats.SummonsIgnite, 0, StatTags.Minion);
+            if (stacks > 0 && _state.EnemyAlive)
+                _dots.AddBurn(stacks);
         }
 
         private void CannonExtras(double multiplier, StatTags tags)

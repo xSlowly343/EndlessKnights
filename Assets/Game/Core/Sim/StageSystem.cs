@@ -387,7 +387,7 @@ namespace Game.Core.Sim
         private void Spawn(EnemyDef? enemy, EnemyType type, BigNumber hp)
         {
             var spread = _state.EnemyAlive ? 0 : System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.DotSpread, 0, StatTags.DoT)));
-            var poison = _state.PoisonStacks * spread;
+            var poison = _state.PoisonStacks * (!_state.EnemyAlive && _hero.Value(CombatStats.PoisonNoDecay, 0, StatTags.DoT) >= 1 ? 1 : spread);
             var burn = _state.BurnStacks * spread;
             var weakened = _state.WeakenedSpawns > 0;
             var goldBonus = weakened ? _state.WeakenGoldBonus : 0;

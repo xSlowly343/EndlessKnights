@@ -91,6 +91,61 @@ namespace Game.Core.Tests.Party
             Assert.That(loop.Skills.Dots.MiasmaBursts, Is.Zero);
         }
 
+        [Test]
+        public void FireLegionLetsOwnMinionsIgniteTheEnemy()
+        {
+            var with = Summoned(HeroClass.Gravedigger);
+            var without = Summoned(HeroClass.Gravedigger);
+            with.Synergy.SetAlly(0, true, HeroClass.Moonshiner, Mark("fire"));
+
+            for (var tick = 0; tick < 30; tick++)
+            {
+                with.Tick();
+                without.Tick();
+            }
+
+            Assert.That(with.Synergy.ReactionActive(IndexOfReaction("fire_legion")), Is.True);
+            Assert.That(with.Skills.Minions.SkeletonHits, Is.GreaterThan(0));
+            Assert.That(with.State.BurnStacks, Is.GreaterThan(0));
+            Assert.That(without.State.BurnStacks, Is.Zero);
+        }
+
+        [Test]
+        public void RotOfAgesCarriesThePoisonToTheNextEnemy()
+        {
+            var with = Poisoned(HeroClass.Ronin, 20);
+            var without = Poisoned(HeroClass.Ronin, 20);
+            with.Synergy.SetAlly(0, true, HeroClass.Clockmaker, Mark("time"));
+            without.Synergy.SetAlly(0, true, HeroClass.Viking, Mark("stun"));
+            with.Tick();
+            without.Tick();
+            Assert.That(with.Synergy.ReactionActive(IndexOfReaction("rot_of_ages")), Is.True);
+
+            KillTheEnemy(with);
+            KillTheEnemy(without);
+
+            Assert.That(with.State.PoisonStacks, Is.EqualTo(20).Within(1e-9));
+            Assert.That(without.State.PoisonStacks, Is.Zero);
+        }
+
+        private static GameLoop Summoned(HeroClass heroClass)
+        {
+            var loop = Hero(heroClass);
+            loop.Tick();
+            loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e30);
+            loop.Skills.Minions.Place(loop.Combat.Paths.SkeletonOnKill, Game.Core.Stats.StatTags.Skill);
+            return loop;
+        }
+
+        private static void KillTheEnemy(GameLoop loop)
+        {
+            var kills = loop.State.Kills;
+            loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e-9);
+            for (var tick = 0; tick < 20 && loop.State.Kills == kills; tick++)
+                loop.Tick();
+            Assert.That(loop.State.Kills, Is.GreaterThan(kills));
+        }
+
         private static int IndexOfReaction(string id)
         {
             for (var i = 0; i < Rules.Reactions.Count; i++)

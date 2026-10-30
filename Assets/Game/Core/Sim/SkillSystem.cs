@@ -35,8 +35,8 @@ namespace Game.Core.Sim
             _combat = combat;
             _hero = hero;
             _weapons = weapons;
-            Minions = new MinionSystem(state, hero, combat, resource);
             Dots = new DotSystem(state, hero, combat);
+            Minions = new MinionSystem(state, hero, combat, resource, Dots);
             _seenKills = state.Kills;
             foreach (var slot in _state.Skills)
             {

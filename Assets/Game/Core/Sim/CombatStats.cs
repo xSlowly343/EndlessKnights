@@ -80,6 +80,8 @@ namespace Game.Core.Sim
         public static readonly StatId DotStacks = new StatId("dotStacks");
         public static readonly StatId PoisonStacks = new StatId("poisonStacks");
         public static readonly StatId MiasmaBurstShare = new StatId("miasmaBurstShare");
+        public static readonly StatId SummonsIgnite = new StatId("summonsIgnite");
+        public static readonly StatId PoisonNoDecay = new StatId("poisonNoDecay");
         public static readonly StatId PressureDecay = new StatId("pressureDecay");
         public static readonly StatId OverheatSeconds = new StatId("overheatSeconds");
         public static readonly StatId OverheatDisabled = new StatId("overheatDisabled");
