@@ -552,7 +552,8 @@ namespace Game.Core.Tests.Party
                 }
             }
             Assert.That(found, Is.True);
-            Assert.That(rig.Host.Encounter.BossTimerRate, Is.EqualTo(0.67).Within(1e-9));
+            Assert.That(rig.Host.Encounter.TimerShared, Is.True, "the shield bearer fights beside the others");
+            Assert.That(rig.Host.Encounter.BossTimerRate, Is.EqualTo(0.67 * TestWorld.Data.Party.Timer.SharedRate).Within(1e-9), "the shield and the shared timer multiply");
         }
 
         [Test]
@@ -581,7 +582,7 @@ namespace Game.Core.Tests.Party
             rig.Host.LeaderId = rig.Players[0].Id;
             while (!rig.Host.Encounter.FightingBoss)
                 rig.Run(0.5);
-            rig.Run(TestWorld.Data.Stages.BossTimerSeconds + 2, false);
+            rig.Run(TestWorld.Data.Stages.BossTimerSeconds / TestWorld.Data.Party.Timer.SharedRate + 2, false);
             Assert.That(rig.Host.Encounter.Farming, Is.True);
             rig.Run(1, false);
             var leader = rig.Players[0].Client;

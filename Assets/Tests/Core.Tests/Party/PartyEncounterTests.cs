@@ -186,6 +186,13 @@ namespace Game.Core.Tests.Party
                 encounter.Advance();
             }
 
+            Assert.That(encounter.Events.CountOf(PartyEventKind.BossFailed), Is.Zero, "two fighters share the timer, it runs at half speed");
+            for (var i = 0; i < ticks; i++)
+            {
+                encounter.ReportInput(0);
+                encounter.ReportInput(1);
+                encounter.Advance();
+            }
             Assert.That(encounter.Events.CountOf(PartyEventKind.BossFailed), Is.EqualTo(1));
             Assert.That(encounter.Farming, Is.True);
             Assert.That(encounter.FightingBoss, Is.False);

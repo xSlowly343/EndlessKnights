@@ -35,6 +35,8 @@ const rules = {
   maxWeakenShare: party.weaken.maxShare,
   maxWeakenGold: party.weaken.maxGold,
   minBossTimerRate: party.timer.minBossRate,
+  sharedBossTimerRate: party.timer.sharedRate,
+  sharedTimerFighters: party.timer.sharedFighters,
   worldSwitchSeconds: party.worldSwitchSeconds,
   repeatMaxSeconds: party.timer.repeatMaxSeconds,
   repeatCooldownSeconds: party.timer.repeatCooldownSeconds,

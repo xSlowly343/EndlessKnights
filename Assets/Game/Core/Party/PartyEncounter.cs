@@ -338,7 +338,23 @@ namespace Game.Core.Party
                     if (_effects[i].Active)
                         rate *= 1 - _effects[i].TimerSlow;
                 }
+                if (TimerShared)
+                    rate *= _rules.Timer.SharedRate;
                 return System.Math.Max(_rules.Timer.MinBossRate, rate);
+            }
+        }
+
+        public bool TimerShared
+        {
+            get
+            {
+                var fighters = 0;
+                for (var slot = 0; slot < _members.Length; slot++)
+                {
+                    if (_members[slot].Joined && !_members[slot].Guest && Presence(slot) == PartyPresence.Fighting)
+                        fighters++;
+                }
+                return fighters >= _rules.Timer.SharedFighters;
             }
         }
 

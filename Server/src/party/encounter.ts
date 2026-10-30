@@ -336,7 +336,17 @@ class PartyEncounter {
         for (const effect of this.effects)
             if (effect.ticksLeft > 0)
                 rate *= 1 - effect.timerSlow;
+        if (this.timerShared())
+            rate *= this.rules.sharedBossTimerRate;
         return Math.max(this.rules.minBossTimerRate, rate);
+    }
+
+    timerShared(): boolean {
+        let fighters = 0;
+        for (let slot = 0; slot < this.members.length; slot++)
+            if (this.members[slot].joined && !this.members[slot].guest && this.presence(slot) === PartyPresence.Fighting)
+                fighters++;
+        return fighters >= this.rules.sharedTimerFighters;
     }
 
     applyEnemyEffect(effectId: number, damageTaken: number, seconds: number, owner: number = PartyNoSlot, timerSlow: number = 0): boolean {

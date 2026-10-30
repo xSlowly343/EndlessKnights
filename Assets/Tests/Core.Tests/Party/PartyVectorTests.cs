@@ -46,7 +46,8 @@ namespace Game.Core.Tests.Party
                 WeakenedRewards(),
                 MedianWaves(),
                 AllyCredit(),
-                RiftEnemies()
+                RiftEnemies(),
+                SharedTimer()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -61,6 +62,8 @@ namespace Game.Core.Tests.Party
                    $"    \"maxWeakenShare\": {N(rules.MaxWeakenShare)},\n" +
                    $"    \"maxWeakenGold\": {N(rules.MaxWeakenGold)},\n" +
                    $"    \"minBossTimerRate\": {N(rules.Timer.MinBossRate)},\n" +
+                   $"    \"sharedBossTimerRate\": {N(rules.Timer.SharedRate)},\n" +
+                   $"    \"sharedTimerFighters\": {rules.Timer.SharedFighters},\n" +
                    $"    \"worldSwitchSeconds\": {N(rules.WorldSwitchSeconds)},\n" +
                    $"    \"minShare\": {N(rules.Contribution.MinShare)},\n" +
                    $"    \"activeInputSeconds\": {N(rules.Contribution.ActiveInputSeconds)},\n" +
@@ -212,6 +215,33 @@ namespace Game.Core.Tests.Party
             r.Weaken(3, 0.2, 0.2, 0.1, 4, 501, 1);
             r.SwitchWorld(PartyWorld.Rift, 1761652800);
             r.Hit(0, 2);
+            return r.ToJson();
+        }
+
+        private static string SharedTimer()
+        {
+            var r = Recorder("two fighters share the boss timer, a resting one and a guest do not", 5150);
+            r.Join(1);
+            r.Join(2);
+            while (!r.Encounter.FightingBoss)
+            {
+                r.Input(1);
+                r.Hit(0, 1.5);
+            }
+            r.Input(1);
+            r.Advance(20);
+            r.Effect(9, 0, 10, 0.7, 0);
+            r.Input(0);
+            r.Input(1);
+            r.Advance(10);
+            r.Peaceful(1, true);
+            r.Advance(10);
+            r.JoinGuest(70, 30);
+            r.Input(2);
+            r.Advance(10);
+            r.Peaceful(1, false);
+            r.Input(1);
+            r.Advance(10);
             return r.ToJson();
         }
 

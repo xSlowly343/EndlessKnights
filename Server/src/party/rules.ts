@@ -9,6 +9,8 @@ interface PartyEncounterRules {
     maxWeakenShare: number;
     maxWeakenGold: number;
     minBossTimerRate: number;
+    sharedBossTimerRate: number;
+    sharedTimerFighters: number;
     worldSwitchSeconds: number;
     waveCount: number;
     waveFirstEnemies: number;
