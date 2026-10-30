@@ -135,6 +135,29 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AConstellationHoldsOnlyWhileEveryMemberFights()
+        {
+            var loop = Hero(HeroClass.Viking);
+            var orchestra = IndexOfConstellation("full_orchestra");
+            loop.Synergy.SetAlly(0, true, HeroClass.Metalhead, 0);
+            loop.Synergy.SetAlly(1, true, HeroClass.Voodoo, 0);
+            loop.Synergy.SetAlly(3, true, HeroClass.Gravedigger, 0, fighting: false);
+            loop.Tick();
+            Assert.That(loop.Synergy.ConstellationActive(orchestra), Is.False, "the summoner rests");
+
+            loop.Synergy.SetAlly(3, true, HeroClass.Gravedigger, 0);
+            loop.Tick();
+            Assert.That(loop.Synergy.ConstellationActive(orchestra), Is.True);
+
+            loop.Synergy.OwnFighting = false;
+            loop.Tick();
+            Assert.That(loop.Synergy.ConstellationActive(orchestra), Is.False, "the player rests");
+
+            loop.Synergy.ClearAllies();
+            Assert.That(loop.Synergy.OwnFighting, Is.True, "in solo the player always counts as fighting");
+        }
+
+        [Test]
         public void ElementsRemoveTheReactionCooldown()
         {
             var loop = Hero(HeroClass.Stormweaver);

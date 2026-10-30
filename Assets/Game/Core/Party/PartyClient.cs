@@ -692,10 +692,11 @@ namespace Game.Core.Party
                     if (effect.Active && effect.Owner == slot && _loop.Data.Gems.TryGetByNetId(effect.Id, out var gem))
                         marks |= rules.MaskOf(gem);
                 }
-                synergy.SetAlly(slot, true, (HeroClass)Roster.HeroClass(slot), marks);
+                synergy.SetAlly(slot, true, (HeroClass)Roster.HeroClass(slot), marks, Roster.Presence(slot) == PartyPresence.Fighting);
                 allies++;
             }
             _loop.State.PartyAllies = allies;
+            synergy.OwnFighting = _ownSlot < 0 || Roster.Presence(_ownSlot) == PartyPresence.Fighting;
         }
 
         private void WatchCasts()

@@ -16,6 +16,7 @@ namespace Game.Core.Party
         private readonly int[] _allyMarks = new int[PartyRules.MaxSlots];
         private readonly HeroClass[] _allyClass = new HeroClass[PartyRules.MaxSlots];
         private readonly bool[] _allyPresent = new bool[PartyRules.MaxSlots];
+        private readonly bool[] _allyFighting = new bool[PartyRules.MaxSlots];
         private readonly int[] _playerMarks = new int[Players];
         private readonly HeroClass[] _playerClass = new HeroClass[Players];
         private SynergyRules _rules;
@@ -74,9 +75,12 @@ namespace Game.Core.Party
             Rebuild();
         }
 
-        public void SetAlly(int slot, bool present, HeroClass heroClass, int marks)
+        public bool OwnFighting { get; set; } = true;
+
+        public void SetAlly(int slot, bool present, HeroClass heroClass, int marks, bool fighting = true)
         {
             _allyPresent[slot] = present;
+            _allyFighting[slot] = present && fighting;
             _allyClass[slot] = heroClass;
             _allyMarks[slot] = present ? marks : 0;
         }
@@ -85,13 +89,14 @@ namespace Game.Core.Party
         {
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 SetAlly(slot, false, default, 0);
+            OwnFighting = true;
         }
 
         public void Tick()
         {
             var players = CollectPlayers();
             var responses = ActiveResponses(out var perMarkCount);
-            var constellations = ActiveConstellations(players, out var noCooldown);
+            var constellations = ActiveConstellations(AllFighting() ? players : 0, out var noCooldown);
             var reactions = TickReactions(players, noCooldown);
             if (responses == _responses && perMarkCount == _perMarkCount && reactions == _reactions && constellations == _constellations)
                 return;
@@ -100,6 +105,18 @@ namespace Game.Core.Party
             _reactions = reactions;
             _constellations = constellations;
             Rebuild();
+        }
+
+        private bool AllFighting()
+        {
+            if (!OwnFighting)
+                return false;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (_allyPresent[slot] && !_allyFighting[slot])
+                    return false;
+            }
+            return true;
         }
 
         private int CollectPlayers()
