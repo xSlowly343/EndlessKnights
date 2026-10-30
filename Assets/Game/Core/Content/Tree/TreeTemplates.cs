@@ -64,6 +64,7 @@ namespace Game.Core.Content.Tree
         public TreeShape CommonShape { get; }
         public IReadOnlyList<CommonTreeSlotRule> CommonSlots { get; }
         public IReadOnlyList<string> CommonTrees { get; }
+        public IReadOnlyCollection<string> MajorTalentsAvoid { get; private set; } = Array.Empty<string>();
 
         public static TreeTemplates Load(string json)
         {
@@ -85,8 +86,11 @@ namespace Game.Core.Content.Tree
             var common = root.Field("commonTrees");
             var commonShape = new TreeShape(ReadRows(common.Field("rows")), common.Field("nodes").AsInt(1, 1000),
                 ReadRising(common.Field("majorsAt"), "major talent marks"), common.Field("majorOptions").AsInt(2, 10));
+            var avoid = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var item in root.Field("majorTalentsAvoid").Items())
+                avoid.Add(item.AsString());
             return new TreeTemplates(RespecRules.Read(root.Field("respec")), classShape, passives, bar.Field("every").AsInt(1, 1000), classes,
-                commonShape, ReadSlots(common.Field("slots")), ReadCommonIds(common.Field("trees"), classes));
+                commonShape, ReadSlots(common.Field("slots")), ReadCommonIds(common.Field("trees"), classes)) { MajorTalentsAvoid = avoid };
         }
 
         private static List<CommonTreeSlotRule> ReadSlots(ContentNode list)

@@ -17,6 +17,7 @@ namespace Game.Core.Tests.Content
   ""passives"": 1,
   ""classes"": [""viking""],
   ""bar"": {""every"": 2, ""majorsAt"": [4], ""majorOptions"": 2},
+  ""majorTalentsAvoid"": [""keyHitPoison""],
   ""commonTrees"": {""rows"": [0, 2], ""nodes"": 2, ""majorsAt"": [3], ""majorOptions"": 2, ""slots"": [{""level"": 20, ""pointsPerLevel"": 1, ""maxPoints"": 70}], ""trees"": [""blade""]}
 }";
 
@@ -122,6 +123,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void BrokenTreesAreRejectedWithTheReason()
         {
+            Assert.That(Problem(Tree.Replace("\"stat\": \"critChance\", \"kind\": \"increased\", \"value\": 0.1", "\"stat\": \"keyHitPoison\", \"kind\": \"flat\", \"value\": 1")), Does.Contain("uses 'keyHitPoison'"));
             Assert.That(Problem(Tree.Replace("\"passive\": true, ", "")), Does.Contain("0 class passives, expected 1"));
             Assert.That(Problem(Tree.Replace("\"viking_warm\"", "\"viking_swing\"")), Does.Contain("must differ from other talents and nodes"));
             Assert.That(Problem(Tree.Replace("\"viking_crit\"", "\"ronin_crit\"")), Does.Contain("start with 'viking_'"));

@@ -430,6 +430,8 @@ namespace Game.Core.Sim
         {
             if (TreeOfMajor(talentId) is not { } found)
                 return RankResult.UnknownMajor;
+            if (State.FightingBoss && found.Allocation.Majors.TryGetValue(at, out var chosen) && chosen != talentId)
+                return RankResult.InBossFight;
             var result = found.Allocation.ChooseMajor(found.Tree, at, talentId);
             if (result == RankResult.Done)
                 RebuildTree();

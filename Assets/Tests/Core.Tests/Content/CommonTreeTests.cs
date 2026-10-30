@@ -67,6 +67,20 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
+        public void MajorTalentsKeepAwayFromClassFeaturesMarksAndPaths()
+        {
+            var data = GameData.Load(TestData.ReadGameDataFile);
+            var avoid = data.TreeTemplates.MajorTalentsAvoid;
+
+            Assert.That(avoid, Is.SupersetOf(new[] { "keyHitLightning", "keyHitPoison", "keyHitBurn", "skeletonOnKill", "cannonCount", "idleHitsPerSecond", "resourcePerIdleSecond", "overloadDisabled" }));
+            foreach (var tree in data.ClassTrees.Values.Concat(data.CommonTrees.Values))
+            {
+                foreach (var option in tree.Majors.SelectMany(slot => slot.Options))
+                    Assert.That(option.Modifiers.Select(modifier => modifier.Stat.Name), Has.None.AnyOf(avoid.ToArray()), option.Id);
+            }
+        }
+
+        [Test]
         public void GameDataLoadsTheCommonTrees()
         {
             var data = GameData.Load(TestData.ReadGameDataFile);

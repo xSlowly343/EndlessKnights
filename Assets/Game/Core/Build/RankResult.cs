@@ -12,6 +12,7 @@ namespace Game.Core.Build
         HoldsChild,
         HoldsRow,
         UnknownMajor,
-        MarkNotReached
+        MarkNotReached,
+        InBossFight
     }
 }

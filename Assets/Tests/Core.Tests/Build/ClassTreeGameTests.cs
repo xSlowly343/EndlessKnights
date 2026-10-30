@@ -104,6 +104,25 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void AMajorTalentChangesOnlyOutsideABossFight()
+        {
+            var loop = Huscarl(60);
+            Raise(loop, "tempered_eye", 5);
+            Raise(loop, "battle_trance", 5);
+            Raise(loop, "hirdman_spoils", 5);
+            Raise(loop, "challenge", 5);
+            loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Boss, BigNumber.FromDouble(1e9));
+
+            Assert.That(loop.ChooseMajorTalent(20, "viking_smoulder"), Is.EqualTo(RankResult.Done), "the first choice is a new talent, like a new rank");
+            Assert.That(loop.ChooseMajorTalent(20, "viking_smoulder"), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.ChooseMajorTalent(20, "viking_warm_up"), Is.EqualTo(RankResult.InBossFight));
+            Assert.That(loop.State.ClassTree.Majors[20], Is.EqualTo("viking_smoulder"));
+
+            loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Normal, BigNumber.FromDouble(1e9));
+            Assert.That(loop.ChooseMajorTalent(20, "viking_warm_up"), Is.EqualTo(RankResult.Done));
+        }
+
+        [Test]
         public void EachPresetKeepsItsOwnClassTree()
         {
             var loop = Huscarl();

@@ -34,7 +34,7 @@
     {"at": 45, "options": [
       {"id": "calm_unbreakable_focus", "name": {"ru": "Нерушимый Фокус", "en": "Unbreakable Focus"}, "modifiers": [{"stat": "focusHold", "kind": "flat", "value": 2}, {"stat": "focusResetSeconds", "kind": "flat", "value": 1}]},
       {"id": "calm_deep_meditation", "name": {"ru": "Медитация", "en": "Deep Meditation"}, "modifiers": [{"stat": "focusMultiplier", "kind": "flat", "value": 0.2}, {"stat": "focusGain", "kind": "increased", "value": -0.15}]},
-      {"id": "calm_battle_calm", "name": {"ru": "Покой в бою", "en": "Battle Calm"}, "modifiers": [{"stat": "damageAfterIdle", "kind": "flat", "value": 0.4}, {"stat": "resourcePerIdleSecond", "kind": "flat", "value": 0.3}]}
+      {"id": "calm_battle_calm", "name": {"ru": "Покой в бою", "en": "Battle Calm"}, "modifiers": [{"stat": "damageAfterIdle", "kind": "flat", "value": 0.4}, {"stat": "focusResetSeconds", "kind": "flat", "value": 0.5}]}
     ]}
   ]
 }

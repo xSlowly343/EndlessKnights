@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Game.Core.Stats;
 
 namespace Game.Core.Content.Tree
@@ -30,7 +31,7 @@ namespace Game.Core.Content.Tree
                 barPassives.Add(ModifierReader.ReadList(item));
             if (barPassives.Count == 0)
                 throw root.Field("barPassives").Error("the mastery bar needs at least one passive");
-            var majors = ReadMajors(root.Field("majors"), shape, heroClass, nodes);
+            var majors = ReadMajors(root.Field("majors"), shape, heroClass, nodes, templates.MajorTalentsAvoid);
             return new ClassTree(heroClass, false, nodes, shape.RowThresholds, templates.BarEvery, barPassives, majors, templates.Respec);
         }
 
@@ -44,7 +45,7 @@ namespace Game.Core.Content.Tree
                 if (item.HasField("passive"))
                     throw item.Field("passive").Error("a common tree has no class passives");
             }
-            var majors = ReadMajors(root.Field("majors"), shape, treeId, nodes);
+            var majors = ReadMajors(root.Field("majors"), shape, treeId, nodes, templates.MajorTalentsAvoid);
             var name = root.Field("name");
             var about = root.Field("about");
             return new ClassTree(treeId, true, nodes, shape.RowThresholds, 0, Array.Empty<IReadOnlyList<Modifier>>(), majors, templates.Respec)
@@ -111,7 +112,7 @@ namespace Game.Core.Content.Tree
             return nodes;
         }
 
-        private static List<MajorTalentSlot> ReadMajors(ContentNode list, TreeShape shape, string treeId, List<ClassTreeNode> nodes)
+        private static List<MajorTalentSlot> ReadMajors(ContentNode list, TreeShape shape, string treeId, List<ClassTreeNode> nodes, IReadOnlyCollection<string> avoid)
         {
             var slots = new List<MajorTalentSlot>();
             var ids = new HashSet<string>(StringComparer.Ordinal);
@@ -134,6 +135,11 @@ namespace Game.Core.Content.Tree
                         throw option.Field("id").Error($"major talent id '{id}' must differ from other talents and nodes and start with '{treeId}_'");
                     var name = option.Field("name");
                     var line = TreeTemplates.ReadLine(option);
+                    foreach (var modifier in line.Modifiers)
+                    {
+                        if (avoid.Contains(modifier.Stat.Name))
+                            throw option.Field("modifiers").Error($"major talent '{id}' uses '{modifier.Stat.Name}': it belongs to class features and paths ({TreeTemplates.FileName} → majorTalentsAvoid)");
+                    }
                     options.Add(new MajorTalentDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), line.TextRu, line.TextEn, line.Modifiers, line.Waits));
                 }
                 if (options.Count != shape.MajorOptions)

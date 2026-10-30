@@ -6,6 +6,7 @@
   "passives": 20,
   "classes": ["viking"],
   "bar": {"every": 10, "majorsAt": [20, 50, 90, 140], "majorOptions": 3},
+  "majorTalentsAvoid": ["keyHitLightning", "keyHitPoison", "keyHitBurn", "summonsIgnite", "burnStacksFromAllyLightning", "lightningPoisonBurst", "skeletonOnKill", "beastOnKill", "beastCount", "cannonCount", "minionCount", "cloneEvery", "companionHitsPerSecond", "idleHitsPerSecond", "overloadDisabled", "overheatDisabled", "resourcePerIdleSecond", "resourcePerSecond", "omenPerAllyHit", "omenPerPartyCrit", "keyCastLeftEvery", "weaponInnateEffect", "curseHitsPerSecond", "doomShare", "echoShare"],
   "commonTrees": {
     "rows": [0, 5, 15, 30],
     "nodes": 20,
