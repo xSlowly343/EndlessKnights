@@ -46,6 +46,8 @@ namespace Game.Sim
                 return SynergyReport.Run(data, folder, profile, options);
             if (options.Days > 0)
                 return RunPlayer(data, profile, options);
+            if (options.Party != null && options.IdleMembers > 0)
+                return options.IdleMembers < options.Party.Count ? IdleReport.Run(data, profile, options) : Fail("--idle needs at least one member who types");
             if (options.StandardParties || options.Party != null)
                 return RunParties(data, profile, options);
             var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -208,6 +210,12 @@ namespace Game.Sim
             output.WriteLine(StageRecord.CsvHeader);
             foreach (var stage in result.Stages)
                 output.WriteLine(stage.ToCsv());
+        }
+
+        private static int Fail(string message)
+        {
+            Console.Error.WriteLine(message);
+            return 2;
         }
 
         private static string FindDataFolder()

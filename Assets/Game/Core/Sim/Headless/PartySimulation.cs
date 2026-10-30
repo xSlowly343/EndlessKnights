@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Synergy;
+using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Party;
 using Game.Core.Party.Transport;
@@ -35,6 +36,9 @@ namespace Game.Core.Sim.Headless
 
         public IReadOnlyDictionary<HeroClass, IReadOnlyList<GemDef>>? Kits { get; set; }
         public SynergyRules? Synergy { get; set; }
+        public int IdleMembers { get; set; }
+        public double IdleAfterSeconds { get; set; }
+        public double SampleSeconds { get; set; }
 
         public PartySimulationResult Run(double seconds)
         {
@@ -47,6 +51,8 @@ namespace Game.Core.Sim.Headless
             var fails = new int[_classes.Count];
             var damage = new BigNumber[_classes.Count];
             var uptime = new SynergyUptime[_classes.Count];
+            var inputs = new IdleAfterInput?[_classes.Count];
+            var samples = new List<PartySample>();
             for (var i = 0; i < loops.Length; i++)
             {
                 var memberSeed = _seed + (ulong)i * 7919;
@@ -56,7 +62,13 @@ namespace Game.Core.Sim.Headless
                 var state = new GameState(memberSeed) { Class = _classes[i] };
                 if (Kits != null && Kits.TryGetValue(_classes[i], out var kit))
                     state.OwnedGems.AddRange(kit);
-                loops[i] = new GameLoop(_data, new BotInput(_profile, memberSeed ^ 0x5EEDUL), state, hero);
+                IInputSource input = new BotInput(_profile, memberSeed ^ 0x5EEDUL);
+                if (i >= loops.Length - IdleMembers)
+                {
+                    inputs[i] = new IdleAfterInput(input, IdleAfterSeconds);
+                    input = inputs[i]!;
+                }
+                loops[i] = new GameLoop(_data, input, state, hero);
                 if (Synergy != null)
                     loops[i].Synergy.UseRules(Synergy);
                 clients[i] = new PartyClient(loops[i], network.Connect(FirstMemberId + (ulong)i), HostId, _data.Party);
@@ -71,7 +83,8 @@ namespace Game.Core.Sim.Headless
                 network.Advance(GameLoop.TickSeconds * 1000);
                 for (var i = 0; i < loops.Length; i++)
                 {
-                    CastEverything(loops[i]);
+                    if (inputs[i] == null || !inputs[i]!.Idle)
+                        CastEverything(loops[i]);
                     loops[i].Tick();
                     damage[i] += loops[i].Combat.LastTickDamage * BigNumber.FromDouble(clients[i].DamageTaken);
                     uptime[i].Count(loops[i].Synergy);
@@ -80,6 +93,8 @@ namespace Game.Core.Sim.Headless
                     loops[i].Events.Clear();
                 }
                 host.Tick();
+                if (SampleSeconds > 0 && (tick + 1) % (long)System.Math.Round(SampleSeconds * GameLoop.TicksPerSecond) == 0)
+                    samples.Add(Sample((tick + 1) * GameLoop.TickSeconds, host, clients));
             }
 
             var members = new List<PartyMemberResult>();
@@ -94,7 +109,22 @@ namespace Game.Core.Sim.Headless
                     Synergy = uptime[i]
                 });
             }
-            return new PartySimulationResult(seconds, host.Kills, members);
+            return new PartySimulationResult(seconds, host.Kills, members) { Samples = samples };
+        }
+
+        private static PartySample Sample(double seconds, PartyHost host, PartyClient[] clients)
+        {
+            var rewards = new long[clients.Length];
+            var shares = new double[clients.Length];
+            var banks = new long[clients.Length];
+            for (var i = 0; i < clients.Length; i++)
+            {
+                var slot = clients[i].OwnSlot;
+                rewards[i] = clients[i].PartyRewards;
+                shares[i] = host.SharesOf(slot);
+                banks[i] = slot >= 0 ? host.Encounter.Member(slot).RestBankTicks / GameLoop.TicksPerSecond : 0;
+            }
+            return new PartySample(seconds, host.Kills, rewards, shares, banks);
         }
 
         private static void CastEverything(GameLoop loop)

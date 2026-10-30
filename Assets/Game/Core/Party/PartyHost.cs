@@ -34,6 +34,7 @@ namespace Game.Core.Party
         private readonly ulong[] _invitedGuests = new ulong[PartyRules.MaxSlots];
         private readonly double[] _invitedSeconds = new double[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
+        private readonly double[] _totalShares = new double[PartyRules.MaxSlots];
         private readonly int[] _recentHits = new int[PartyRules.MaxSlots];
         private readonly RiftRules? _rift;
         private readonly SynergyRules? _synergy;
@@ -57,6 +58,7 @@ namespace Game.Core.Party
             _synergy = synergy;
         }
 
+        public double SharesOf(int slot) => slot >= 0 && slot < PartyRules.MaxSlots ? _totalShares[slot] : 0;
         public long ClockUnixMs { get; set; }
         public ulong LeaderId { get; set; }
 
@@ -244,6 +246,7 @@ namespace Game.Core.Party
             AcceptedShares += applied;
             RepeatedShares += applied;
             _recentShares[slot] += applied;
+            _totalShares[slot] += applied;
         }
 
         private void ShareResource(int slot, double amount)
@@ -370,6 +373,7 @@ namespace Game.Core.Party
             var accepted = CappedDamage(slot, batch.EnemyId, delta);
             AcceptedShares += accepted;
             _recentShares[slot] += accepted;
+            _totalShares[slot] += accepted;
         }
 
         private double CappedDamage(int slot, uint enemyId, double delta)

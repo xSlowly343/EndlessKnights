@@ -18,6 +18,25 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void ATwinkThatStopsTypingIsPaidOnlyFromItsRestBankAndThenNoMore()
+        {
+            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Viking, HeroClass.Ronin }, 5)
+            {
+                IdleMembers = 1,
+                IdleAfterSeconds = 120,
+                SampleSeconds = 60
+            }.Run(600);
+
+            var atIdle = party.Samples[1];
+            var last = party.Samples[party.Samples.Count - 1];
+            Assert.That(atIdle.RestBankSeconds[1], Is.GreaterThan(60), "two minutes of typing fill the rest bank");
+            Assert.That(last.RestBankSeconds[1], Is.Zero, "the bank runs dry without typing");
+            Assert.That(last.Rewards[1] - party.Samples[party.Samples.Count - 2].Rewards[1], Is.Zero, "then the twink gets nothing");
+            Assert.That(last.Rewards[0] - party.Samples[party.Samples.Count - 2].Rewards[0], Is.GreaterThan(0), "the one who types still gets every kill");
+            Assert.That(last.HostShares[1] - party.Samples[party.Samples.Count - 2].HostShares[1], Is.Zero, "a twink without input deals nothing");
+        }
+
+        [Test]
         public void EveryMemberGetsEveryPartyKillAndTheSameStages()
         {
             var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Viking, HeroClass.Metalhead }, 3, 0.05).Run(600);

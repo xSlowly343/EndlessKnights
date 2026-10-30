@@ -14,6 +14,7 @@ namespace Game.Core.Sim.Headless
         public double Seconds { get; }
         public long HostKills { get; }
         public IReadOnlyList<PartyMemberResult> Members { get; }
+        public IReadOnlyList<PartySample> Samples { get; set; } = System.Array.Empty<PartySample>();
         public double SecondsPerKill => HostKills > 0 ? Seconds / HostKills : Seconds;
     }
 }
