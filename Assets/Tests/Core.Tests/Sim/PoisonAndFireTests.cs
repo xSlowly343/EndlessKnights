@@ -45,6 +45,40 @@ namespace Game.Core.Tests.Sim
         private static double Dealt(GameLoop loop, BigNumber hp) => (hp - loop.State.EnemyHp).ToDouble();
 
         [Test]
+        public void EveryTenthKeyHitOfAVenomistAddsAPoisonStack()
+        {
+            var (venomist, venomistKeys) = Hero(HeroClass.PlagueDoctor);
+            var (huscarl, huscarlKeys) = Hero(HeroClass.Viking);
+
+            for (var tick = 0; tick < 10; tick++)
+            {
+                venomistKeys.PressKeys(3);
+                huscarlKeys.PressKeys(3);
+                venomist.Tick();
+                huscarl.Tick();
+            }
+
+            Assert.That(Rules.VapourKeyHits, Is.EqualTo(10));
+            Assert.That(venomist.State.KeyHits, Is.GreaterThan(10));
+            Assert.That(venomist.State.PoisonStacks, Is.EqualTo(venomist.State.KeyHits / Rules.VapourKeyHits).Within(0.1), "a stack of poisonous vapours per ten counted key hits");
+            Assert.That(huscarl.State.PoisonStacks, Is.Zero, "only the Venomist breathes vapours");
+        }
+
+        [Test]
+        public void PoisonousVapoursStopAtThePoisonCap()
+        {
+            var (loop, input) = Hero(HeroClass.PlagueDoctor);
+
+            for (var tick = 0; tick < 3000; tick++)
+            {
+                input.PressKeys(3);
+                loop.Tick();
+            }
+
+            Assert.That(loop.State.PoisonStacks, Is.EqualTo(loop.Skills.Dots.PoisonMax).Within(1e-9));
+        }
+
+        [Test]
         public void VialAddsThreePoisonStacks()
         {
             var (loop, _) = Hero(HeroClass.PlagueDoctor);

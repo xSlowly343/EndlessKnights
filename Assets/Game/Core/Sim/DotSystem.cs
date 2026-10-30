@@ -95,6 +95,8 @@ namespace Game.Core.Sim
         {
             if (input.Keys <= 0)
                 return;
+            if (_state.Is(HeroClass.PlagueDoctor) && Rules.VapourKeyHits > 0)
+                Add(DotKind.Poison, input.Keys / Rules.VapourKeyHits);
             var poison = _hero.Value(CombatStats.KeyHitPoison, 0, StatTags.DoT);
             if (poison > 0)
                 Add(DotKind.Poison, poison * input.Keys);
