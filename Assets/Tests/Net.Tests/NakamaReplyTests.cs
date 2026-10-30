@@ -91,7 +91,7 @@ namespace Game.Net.Tests
         [Test]
         public void TheClanRaidIsReadWithLayersPlacesAndLastWeek()
         {
-            var raid = RaidView.From(NakamaJson.Parse("{\"boss\":\"devourer\",\"week\":2964,\"endsAt\":1793566800000,\"members\":27,\"killedAt\":0,\"left\":0.58,"
+            var raid = RaidView.From(NakamaJson.Parse("{\"boss\":\"devourer\",\"week\":2964,\"endsAt\":1793566800000,\"members\":27,\"killedAt\":0,\"left\":0.58,\"coven\":0.25,"
                 + "\"layers\":[{\"id\":\"shield\",\"hp\":27000,\"left\":0},{\"id\":\"armor\",\"hp\":40500,\"left\":13770}],"
                 + "\"own\":{\"share\":0.021,\"place\":9,\"players\":27,\"seals\":41},"
                 + "\"top\":[{\"place\":1,\"userId\":\"ann\",\"name\":\"Ann\",\"share\":0.12}],"
@@ -101,6 +101,7 @@ namespace Game.Net.Tests
             Assert.That(raid.Boss, Is.EqualTo("devourer"));
             Assert.That(raid.Members, Is.EqualTo(27));
             Assert.That(raid.Left, Is.EqualTo(0.58));
+            Assert.That(raid.Coven, Is.EqualTo(0.25));
             Assert.That(raid.Layers[1].Left, Is.EqualTo(13770));
             Assert.That(raid.OwnPlace, Is.EqualTo(9));
             Assert.That(raid.OwnSeals, Is.EqualTo(41));

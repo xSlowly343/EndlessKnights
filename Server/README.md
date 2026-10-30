@@ -109,7 +109,7 @@ npm test
 
   | RPC | Запрос | Ответ |
   |---|---|---|
-  | `raid_push` | `{ shield, armor, flesh, curse, seconds, counts?: { keys, clicks, mouseMeters, bosses } }` — доли врага по слоям и счётчики для челленджей за прошедшие секунды | вид рейда и `daily` — челленджи дня |
+  | `raid_push` | `{ shield, armor, flesh, curse, seconds, coven?, counts?: { keys, clicks, mouseMeters, bosses } }` (`coven` — `curseClanShare` Королевы ковена, PR 261; в ответе `coven` — бонус клана к урону рейду) — доли врага по слоям и счётчики для челленджей за прошедшие секунды | вид рейда и `daily` — челленджи дня |
   | `clan_daily` | `{}` | челленджи дня клана: `{ day, endsAt, challenges: [{ id, counter, target, progress, done, yours, seals }] }` |
   | `clan_tree` | `{}` | `{ treasury, taken: [nodeId], yours, donors: [{ userId, name, amount }], log: [{ at, name, kind: "donated"\|"bought", amount, node }] }` |
   | `clan_donate` | `{ amount }` (не меньше `minDonation` из `clan_tree.json`) | вид дерева; ошибки `not enough seals`, `bad request` |

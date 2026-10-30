@@ -5,8 +5,9 @@ namespace Game.Core.Party
 {
     public readonly struct RaidPush
     {
-        public RaidPush(double skill, double mouse, double keys, double idle, double seconds, in ClanCounts counts)
+        public RaidPush(double skill, double mouse, double keys, double idle, double seconds, in ClanCounts counts, double coven = 0)
         {
+            Coven = coven;
             Skill = skill;
             Mouse = mouse;
             Keys = keys;
@@ -21,6 +22,7 @@ namespace Game.Core.Party
         public double Idle { get; }
         public double Seconds { get; }
         public ClanCounts Counts { get; }
+        public double Coven { get; }
         public double Total => Skill + Mouse + Keys + Idle;
 
         public double Of(RaidInput input) => input switch
@@ -54,6 +56,7 @@ namespace Game.Core.Party
         private readonly StageSystem _stage;
         private readonly GhostSystem _ghost;
         private readonly EventQueue _events;
+        private readonly Stats.StatSheet _hero;
         private readonly double[] _shares = new double[RaidRules.InputKinds];
         private RaidRules _rules;
         private long _ticks;
@@ -63,8 +66,9 @@ namespace Game.Core.Party
         private double _metersSeen;
         private long _bossesSeen;
 
-        public RaidTally(RaidRules rules, GameState state, StageSystem stage, GhostSystem ghost, EventQueue events)
+        public RaidTally(RaidRules rules, GameState state, StageSystem stage, GhostSystem ghost, EventQueue events, Stats.StatSheet hero)
         {
+            _hero = hero;
             _rules = rules;
             _state = state;
             _stage = stage;
@@ -107,7 +111,8 @@ namespace Game.Core.Party
             var total = _state.TotalInput;
             var counts = new ClanCounts(Since(total.Keys, _keysSeen), Since(total.Clicks, _clicksSeen), System.Math.Max(0, total.MouseMeters - _metersSeen),
                 System.Math.Max(0, _state.BossKills - _bossesSeen));
-            var push = new RaidPush(_shares[(int)RaidInput.Skill], _shares[(int)RaidInput.Mouse], _shares[(int)RaidInput.Keys], _shares[(int)RaidInput.Idle], Seconds, counts);
+            var push = new RaidPush(_shares[(int)RaidInput.Skill], _shares[(int)RaidInput.Mouse], _shares[(int)RaidInput.Keys], _shares[(int)RaidInput.Idle], Seconds, counts,
+                System.Math.Max(0, _hero.Value(CombatStats.CurseClanShare, 0)));
             for (var i = 0; i < _shares.Length; i++)
                 _shares[i] = 0;
             _ticks = 0;

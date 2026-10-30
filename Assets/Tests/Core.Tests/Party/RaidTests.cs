@@ -81,7 +81,7 @@ namespace Game.Core.Tests.Party
         {
             var (loop, _) = Hero();
             var events = new EventQueue();
-            var tally = new RaidTally(Rules, loop.State, loop.Stages, loop.Ghost, events);
+            var tally = new RaidTally(Rules, loop.State, loop.Stages, loop.Ghost, events, loop.Hero);
             var hp = loop.Stages.Table.EnemyHp(loop.State.Stage);
             events.Add(GameEvent.Damage(0, hp * 0.5, DamageSource.Skill, HitFlags.None));
             loop.State.IdleTicks = 0;
@@ -138,7 +138,7 @@ namespace Game.Core.Tests.Party
                 Assert.Ignore("This runtime does not report allocated bytes per thread.");
             var (loop, _) = Hero();
             var events = new EventQueue();
-            var tally = new RaidTally(Rules, loop.State, loop.Stages, loop.Ghost, events);
+            var tally = new RaidTally(Rules, loop.State, loop.Stages, loop.Ghost, events, loop.Hero);
             var hp = loop.Stages.Table.EnemyHp(loop.State.Stage);
             for (var i = 0; i < 64; i++)
                 events.Add(GameEvent.Damage(i, hp * 0.01, (DamageSource)(1 + i % 3), HitFlags.None));
@@ -169,6 +169,17 @@ namespace Game.Core.Tests.Party
             Assert.That(counts.MouseMeters, Is.EqualTo(1).Within(1e-3));
             Assert.That(counts.Bosses, Is.EqualTo(3));
             Assert.That(loop.Raid.Take().Counts.KeyPresses, Is.Zero);
+        }
+
+        [Test]
+        public void TheCovenQueenSendsHerCurseShareForTheClanWithTheRaidPacket()
+        {
+            var (loop, _) = Hero();
+            Assert.That(loop.Raid.Take().Coven, Is.Zero);
+
+            loop.Hero.Add(new Game.Core.Stats.Modifier(CombatStats.CurseClanShare, Game.Core.Stats.ModifierKind.Flat, 0.3));
+
+            Assert.That(loop.Raid.Take().Coven, Is.EqualTo(0.3).Within(1e-12));
         }
 
         [TestCase("ru")]

@@ -69,6 +69,19 @@ test("a push is capped by real time and by the most a player can deal per second
   assert.ok(tooSoon <= rules.maxSharesPerSecond * 6 + 1e-9, "a minute cannot be claimed one second after the last push");
 });
 
+test("a coven queen's curse share makes the whole clan hit the raid boss harder while she plays", () => {
+  const raid = server.raidCreate("c", 1, rules.minMembers);
+  const now = 1_800_000_000_000;
+  assert.ok(Math.abs(rules.covenMaxShare - 0.39) < 1e-9, "the share is capped by what the Coven Queen tree can give");
+  assert.strictEqual(server.raidApply(raid, "bob", { flesh: 10 }, 15, now), 10);
+  assert.strictEqual(server.raidApply(raid, "queen", { flesh: 10 }, 15, now, 0.2), 12, "the queen pushes with her share");
+  assert.strictEqual(server.raidApply(raid, "bob", { flesh: 10 }, 15, now + 15000), 12, "and every member hits harder");
+  server.raidApply(raid, "cheat", { flesh: 10 }, 15, now + 15000, 5);
+  assert.ok(Math.abs(server.raidCovenBonus(raid, now + 15000) - rules.covenMaxBonus) < 1e-9, "the bonus stops at the cap");
+  assert.strictEqual(raid.tally.cheat.coven, rules.covenMaxShare);
+  assert.strictEqual(server.raidCovenBonus(raid, now + 15000 + rules.covenActiveMs + 1), 0, "the bonus fades when no queen plays");
+});
+
 test("the boss falls when every layer is down and rewards follow the share of the damage", () => {
   const raid = server.raidCreate("c", 1, rules.minMembers);
   for (const l of raid.layers)

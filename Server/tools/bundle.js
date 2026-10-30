@@ -14,6 +14,7 @@ const challenges = JSON.parse(fs.readFileSync(path.join(data, "clan_challenges.j
 const raid = JSON.parse(fs.readFileSync(path.join(data, "raid.json"), "utf8"));
 const clan = JSON.parse(fs.readFileSync(path.join(data, "clan.json"), "utf8"));
 const clanChronicle = JSON.parse(fs.readFileSync(path.join(data, "clan_chronicle.json"), "utf8"));
+const ascendancy = JSON.parse(fs.readFileSync(path.join(data, "ascendancy.json"), "utf8"));
 const gems = JSON.parse(fs.readFileSync(path.join(data, "gems.json"), "utf8"));
 const synergy = JSON.parse(fs.readFileSync(path.join(data, "synergy.json"), "utf8"));
 const chronicle = JSON.parse(fs.readFileSync(path.join(data, "party_chronicle.json"), "utf8"));
@@ -213,7 +214,10 @@ const raidRules = {
   layers: raid.layers.map((layer) => ({ id: layer.id, input: layer.input, perMember: layer.perMember })),
   sealsPerMember: raid.rewards.sealsPerMember,
   killBonus: raid.rewards.killBonus,
-  minSeals: raid.rewards.minSeals
+  minSeals: raid.rewards.minSeals,
+  covenActiveMs: Math.round(raid.coven.activeMinutes * 60000),
+  covenMaxBonus: raid.coven.maxBonus,
+  covenMaxShare: ascendancy.subclasses.reduce((sum, subclass) => sum + subclass.nodes.reduce((nodes, node) => nodes + (node.modifiers || []).filter((modifier) => modifier.stat === "curseClanShare").reduce((all, modifier) => all + modifier.value, 0), 0), 0)
 };
 
 if (challenges.version !== 1)

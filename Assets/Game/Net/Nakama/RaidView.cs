@@ -17,6 +17,7 @@ namespace Game.Net.Nakama
             KilledAtUnixMs = (long)NakamaJson.Number(json, "killedAt");
             Members = (int)NakamaJson.Number(json, "members");
             Left = NakamaJson.Number(json, "left");
+            Coven = NakamaJson.Number(json, "coven");
             var layers = new List<RaidLayerView>();
             foreach (var layer in NakamaJson.Items(json, "layers"))
                 layers.Add(new RaidLayerView(NakamaJson.Text(layer, "id"), NakamaJson.Number(layer, "hp"), NakamaJson.Number(layer, "left")));
@@ -49,6 +50,7 @@ namespace Game.Net.Nakama
         public long KilledAtUnixMs { get; }
         public int Members { get; }
         public double Left { get; }
+        public double Coven { get; }
         public IReadOnlyList<RaidLayerView> Layers { get; }
         public double OwnShare { get; }
         public int OwnPlace { get; }
@@ -73,6 +75,8 @@ namespace Game.Net.Nakama
             foreach (var layer in rules.Layers)
                 fields.Add((layer.Id, Number(push.Of(layer.Input))));
             fields.Add(("seconds", Number(push.Seconds)));
+            if (push.Coven > 0)
+                fields.Add(("coven", Number(push.Coven)));
             var counts = push.Counts;
             fields.Add(("counts", NakamaJson.Object(("keys", Number(counts.KeyPresses)), ("clicks", Number(counts.Clicks)), ("mouseMeters", Number(counts.MouseMeters)),
                 ("bosses", Number(counts.Bosses)))));

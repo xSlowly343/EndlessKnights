@@ -225,7 +225,7 @@
     "stat.constructMax": { "ru": "конструктов одновременно", "en": "constructs at once" },
     "stat.constructSeconds": { "ru": "длительность конструктов", "en": "construct duration" },
     "stat.cullThreshold": { "ru": "порог добивания", "en": "culling threshold" },
-    "stat.curseClanShare": { "ru": "проклятия для клана", "en": "curse share for the clan" },
+    "stat.curseClanShare": { "ru": "к урону клана по рейд-боссу", "en": "clan damage to the raid boss" },
     "stat.curseDamage": { "ru": "урон проклятий", "en": "curse damage" },
     "stat.damageAfterIdle": { "ru": "урон после Затишья", "en": "damage after Lull" },
     "stat.damageAtBossTimerEnd": { "ru": "урон в конце таймера босса", "en": "damage at the end of the boss timer" },

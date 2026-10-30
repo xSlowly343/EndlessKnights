@@ -13,5 +13,6 @@
     { "id": "flesh", "input": "keys", "perMember": 6000 },
     { "id": "curse", "input": "idle", "perMember": 500 }
   ],
+  "coven": { "activeMinutes": 30, "maxBonus": 0.25 },
   "rewards": { "sealsPerMember": 20, "killBonus": 0.5, "minSeals": 5 }
 }

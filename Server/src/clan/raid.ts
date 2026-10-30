@@ -16,6 +16,9 @@ interface RaidRules {
     sealsPerMember: number;
     killBonus: number;
     minSeals: number;
+    covenActiveMs: number;
+    covenMaxBonus: number;
+    covenMaxShare: number;
 }
 
 interface RaidLayer {
@@ -30,6 +33,8 @@ interface RaidMemberTally {
     lastPush: number;
     lastSeconds: number;
     capped: number;
+    coven?: number;
+    covenAt?: number;
 }
 
 interface RaidValue {
@@ -108,9 +113,26 @@ function raidHit(raid: RaidValue, layerId: string, amount: number): number {
     return direct + spilled;
 }
 
-function raidApply(raid: RaidValue, userId: string, push: { [layerId: string]: number }, seconds: number, nowUnixMs: number): number {
+function raidCovenBonus(raid: RaidValue, nowUnixMs: number): number {
+    const rules = RaidServerRules;
+    let best = 0;
+    for (const userId of Object.keys(raid.tally)) {
+        const tally = raid.tally[userId];
+        if ((tally.coven || 0) > best && nowUnixMs - (tally.covenAt || 0) <= rules.covenActiveMs)
+            best = tally.coven || 0;
+    }
+    return Math.min(rules.covenMaxBonus, best);
+}
+
+function raidApply(raid: RaidValue, userId: string, push: { [layerId: string]: number }, seconds: number, nowUnixMs: number, coven: number = 0): number {
     const rules = RaidServerRules;
     const tally: RaidMemberTally = raid.tally[userId] || { dealt: 0, layers: {}, lastPush: 0, lastSeconds: 0, capped: 0 };
+    if (coven > 0) {
+        tally.coven = Math.min(rules.covenMaxShare, coven);
+        tally.covenAt = nowUnixMs;
+        raid.tally[userId] = tally;
+    }
+    const bonus = 1 + raidCovenBonus(raid, nowUnixMs);
     const since = tally.lastPush > 0 ? (nowUnixMs - tally.lastPush) / 1000 + RaidPushSlackSeconds : 4 * rules.pushSeconds;
     const allowedSeconds = Math.max(0, Math.min(seconds, since, 4 * rules.pushSeconds));
     let total = 0;
@@ -123,7 +145,7 @@ function raidApply(raid: RaidValue, userId: string, push: { [layerId: string]: n
     let dealt = 0;
     if (raid.killedAt === 0) {
         for (const layer of rules.layers) {
-            const done = raidHit(raid, layer.id, (push[layer.id] || 0) * scale);
+            const done = raidHit(raid, layer.id, (push[layer.id] || 0) * scale * bonus);
             tally.layers[layer.id] = (tally.layers[layer.id] || 0) + done;
             dealt += done;
         }
@@ -270,6 +292,7 @@ function raidView(nk: nkruntime.Nakama, raid: RaidValue, userId: string, last: R
     return {
         boss: raid.boss, week: raid.week, endsAt: raidWeekStart(raid.week + 1), members: raid.members, killedAt: raid.killedAt,
         left: raidLeftShare(raid),
+        coven: raidCovenBonus(raid, nowUnixMs),
         layers: raid.layers.map((layer) => ({ id: layer.id, hp: layer.hp, left: layer.left })),
         own: { share: own && total > 0 ? own.dealt / total : 0, place: result.places.indexOf(userId) + 1, players: result.places.length, seals: result.seals[userId] || 0 },
         top: result.places.map((id, index) => ({ place: index + 1, userId: id, name: names[id] || "", share: total > 0 ? raid.tally[id].dealt / total : 0 })),
@@ -301,7 +324,7 @@ function raidPushRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrun
     const now = Date.now();
     const group = clanOf(nk, userId, now);
     const raid = raidChange(nk, logger, group, now, (value) => {
-        raidApply(value, userId, push, seconds, now);
+        raidApply(value, userId, push, seconds, now, raidNumber(request.coven));
         return value;
     });
     const counts = challengeCap(reported, raid.tally[userId].lastSeconds);
