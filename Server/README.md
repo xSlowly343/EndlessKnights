@@ -50,7 +50,7 @@ npm test
 
   | RPC | Запрос | Ответ |
   |---|---|---|
-  | `coop_help` | `{}` | `{ points, max, sources: [{ source: "mentor"\|"bosses"\|"rift"\|"wanderers", points, max, progress?, next?, stages?, thisWeek? }] }` — очки дерева «кооп-помощь» (PR 258) |
+  | `coop_help` | `{}` | `{ points, max, sources: [{ source: "mentor"\|"bosses"\|"rift"\|"wanderers"\|"ghost"\|"auras", points, max, progress?, next?, stages?, thisWeek? }] }` — очки дерева «кооп-помощь» (PR 258, с PR 277 — призрак и ауры) |
   | `mentor_status` | `{}` | `{ role: "student"\|"mentor"\|"none", canMentor, ready, studentUntil, partner: { userId, name } \| null, seconds, level, marks, perks, coopPoints, graduates }` |
   | `mentor_ready` | `{ ready }` (аккаунт старше `mentorMinDays`) | вид наставника |
   | `mentor_marks` | `{ marks: [nodeId] }` (до `maxMarks`, только наставник с учеником) | вид наставника |

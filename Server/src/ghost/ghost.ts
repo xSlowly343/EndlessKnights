@@ -195,6 +195,7 @@ function ghostThanksRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     const room = source.perFriendDailyCap > 0 ? Math.max(0, source.perFriendDailyCap - (thanked[picked.ownerId] || 0)) : bosses;
     const counted = Math.min(bosses, room);
     const granted = counted > 0 ? walletGrant(nk, picked.ownerId, source.id, counted, now) : 0;
+    coopHelpGhost(nk, logger, picked.ownerId, counted);
     thanked[picked.ownerId] = (thanked[picked.ownerId] || 0) + counted;
     nk.storageWrite([{
         collection: GhostCollection, key: GhostPickedKey, userId: userId, value: { ownerId: picked.ownerId, at: picked.at, day: day, thanked: thanked },

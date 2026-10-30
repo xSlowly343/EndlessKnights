@@ -6,12 +6,18 @@ interface CoopHelpRules {
     riftMax: number;
     riftStages: number[];
     wanderersMax: number;
+    ghostMax: number;
+    ghostBosses: number[];
+    aurasMax: number;
+    auraHours: number[];
 }
 
 interface CoopHelpProfile {
     bosses: number;
     rift: number[];
     wanderers: number[];
+    ghost?: number;
+    auraSeconds?: number;
 }
 
 declare const CoopHelpServerRules: CoopHelpRules;
@@ -98,6 +104,52 @@ function coopHelpWanderers(nk: nkruntime.Nakama, logger: nkruntime.Logger, userI
     }
 }
 
+function coopHelpGhost(nk: nkruntime.Nakama, logger: nkruntime.Logger, ownerId: string, bosses: number): void {
+    if (!(bosses > 0))
+        return;
+    const last = CoopHelpServerRules.ghostBosses[CoopHelpServerRules.ghostBosses.length - 1];
+    try {
+        coopHelpChange(nk, ownerId, (profile) => {
+            if ((profile.ghost || 0) >= last)
+                return false;
+            profile.ghost = Math.min(last, (profile.ghost || 0) + bosses);
+            return true;
+        });
+    } catch (error) {
+        logger.warn("coop help ghost bosses were not counted for %s: %s", ownerId, String(error));
+    }
+}
+
+function coopHelpAuras(nk: nkruntime.Nakama, logger: nkruntime.Logger, seconds: { [userId: string]: number }): void {
+    const last = CoopHelpServerRules.auraHours[CoopHelpServerRules.auraHours.length - 1] * 3600;
+    for (const userId of Object.keys(seconds)) {
+        if (!(seconds[userId] > 0))
+            continue;
+        try {
+            coopHelpChange(nk, userId, (profile) => {
+                if ((profile.auraSeconds || 0) >= last)
+                    return false;
+                profile.auraSeconds = Math.min(last, (profile.auraSeconds || 0) + seconds[userId]);
+                return true;
+            });
+        } catch (error) {
+            logger.warn("coop help aura hours were not counted for %s: %s", userId, String(error));
+        }
+    }
+}
+
+function coopHelpSteps(steps: number[], value: number): number {
+    let reached = 0;
+    while (reached < steps.length && value >= steps[reached])
+        reached++;
+    return reached;
+}
+
+function coopHelpNext(steps: number[], value: number): number {
+    const reached = coopHelpSteps(steps, value);
+    return reached < steps.length ? steps[reached] : 0;
+}
+
 function coopHelpWanderersParty(roles: string[], classes: number[]): boolean {
     if (classes.length < PartyMaxSlots)
         return false;
@@ -115,14 +167,20 @@ function coopHelpView(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): 
     const bosses = Math.min(rules.bossesMax, Math.floor(profile.bosses / rules.bossesPerPoint));
     const rift = Math.min(rules.riftMax, profile.rift.length);
     const wanderers = Math.min(rules.wanderersMax, profile.wanderers.length);
+    const ghostBosses = profile.ghost || 0;
+    const ghost = Math.min(rules.ghostMax, coopHelpSteps(rules.ghostBosses, ghostBosses));
+    const auraHours = Math.floor((profile.auraSeconds || 0) / 3600);
+    const auras = Math.min(rules.aurasMax, coopHelpSteps(rules.auraHours, auraHours));
     return {
-        points: Math.min(rules.maxPoints, mentor + bosses + rift + wanderers),
+        points: Math.min(rules.maxPoints, mentor + bosses + rift + wanderers + ghost + auras),
         max: rules.maxPoints,
         sources: [
             { source: "mentor", points: mentor, max: rules.mentorMax },
             { source: "bosses", points: bosses, max: rules.bossesMax, progress: profile.bosses % rules.bossesPerPoint, next: bosses >= rules.bossesMax ? 0 : rules.bossesPerPoint },
             { source: "rift", points: rift, max: Math.min(rules.riftMax, rules.riftStages.length), stages: profile.rift },
-            { source: "wanderers", points: wanderers, max: rules.wanderersMax, thisWeek: profile.wanderers.indexOf(raidWeekOf(nowUnixMs)) >= 0 }
+            { source: "wanderers", points: wanderers, max: rules.wanderersMax, thisWeek: profile.wanderers.indexOf(raidWeekOf(nowUnixMs)) >= 0 },
+            { source: "ghost", points: ghost, max: Math.min(rules.ghostMax, rules.ghostBosses.length), progress: ghostBosses, next: coopHelpNext(rules.ghostBosses, ghostBosses) },
+            { source: "auras", points: auras, max: Math.min(rules.aurasMax, rules.auraHours.length), progress: auraHours, next: coopHelpNext(rules.auraHours, auraHours) }
         ]
     };
 }

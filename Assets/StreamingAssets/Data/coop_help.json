@@ -5,6 +5,8 @@
     "mentor": { "max": 5 },
     "bosses": { "max": 5, "bossesPerPoint": 200 },
     "rift": { "max": 5, "stages": [50, 100, 150, 200, 250] },
-    "wanderers": { "max": 5 }
+    "wanderers": { "max": 5 },
+    "ghost": { "max": 5, "bosses": [1, 10, 100] },
+    "auras": { "max": 5, "hours": [10, 100] }
   }
 }

@@ -276,6 +276,10 @@ function partyFlushChronicle(nk: nkruntime.Nakama, logger: nkruntime.Logger, sta
     walletGrantBosses(nk, logger, bosses, Date.now());
     coopHelpBosses(nk, logger, bosses);
     coopHelpWanderers(nk, logger, host.takeWanderers(), Date.now());
+    const auraTicks = host.takeAuraTicks();
+    for (const userId of Object.keys(auraTicks))
+        auraTicks[userId] /= PartyTicksPerSecond;
+    coopHelpAuras(nk, logger, auraTicks);
     walletGrantHelp(nk, logger, host.takeHelpBosses(), Date.now());
 }
 

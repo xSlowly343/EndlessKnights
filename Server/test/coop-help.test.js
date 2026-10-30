@@ -108,3 +108,45 @@ test("the host notes wanderers only for four different heroes of four different 
   killBoss(host, [0, 1, 2, 3]);
   assert.deepStrictEqual(plain(host.takeWanderers()), [], "two damage dealers repeat a role");
 });
+
+test("a ghost that helped friends kill bosses gives points at 1, 10 and 100 bosses", () => {
+  const { nk, call } = world("ann", "bob");
+  const send = (user, rpc, request) => JSON.parse(server[rpc]({ userId: user, env: {} }, logger, nk, JSON.stringify(request)));
+  send("ann", "ghostUploadRpc", { share: true, heroClass: 8, shareRate: 0.5, marks: [], activeSeconds: 30 });
+  send("bob", "ghostPickRpc", { userId: "ann" });
+  send("bob", "ghostThanksRpc", { userId: "ann", bosses: 1 });
+  let ghost = source(call("ann", "coopHelpRpc"), "ghost");
+  assert.strictEqual(ghost.points, 1);
+  assert.strictEqual(ghost.progress, 1);
+  assert.strictEqual(ghost.next, rules.ghostBosses[1]);
+  server.coopHelpGhost(nk, logger, "ann", rules.ghostBosses[rules.ghostBosses.length - 1] * 2);
+  ghost = source(call("ann", "coopHelpRpc"), "ghost");
+  assert.strictEqual(ghost.points, rules.ghostBosses.length);
+  assert.strictEqual(ghost.progress, rules.ghostBosses[rules.ghostBosses.length - 1], "the count stops at the last step");
+  assert.strictEqual(ghost.next, 0);
+  assert.strictEqual(source(call("bob", "coopHelpRpc"), "ghost").points, 0, "the player who picked the ghost earns nothing");
+});
+
+test("the host counts the hours a fighting member keeps a party aura up next to an ally", () => {
+  const host = new server.PartyHost(server.PartyServerRules, "5");
+  ["a", "b"].forEach((name, i) => host.join("user-" + name, String(11 + i)));
+  host.encounter.noteAuras(0, 1000);
+  for (let tick = 0; tick < 50; tick++) {
+    host.encounter.reportInput(0);
+    host.encounter.reportInput(1);
+    host.tick();
+  }
+  const ticks = host.takeAuraTicks();
+  assert.ok(ticks["user-a"] > 0);
+  assert.strictEqual(ticks["user-b"], undefined, "no aura, no hours");
+  assert.deepStrictEqual(plain(host.takeAuraTicks()), {});
+
+  const { nk, call } = world("ann");
+  server.coopHelpAuras(nk, logger, { ann: rules.auraHours[0] * 3600 - 1 });
+  assert.strictEqual(source(call("ann", "coopHelpRpc"), "auras").points, 0);
+  server.coopHelpAuras(nk, logger, { ann: 1 });
+  const auras = source(call("ann", "coopHelpRpc"), "auras");
+  assert.strictEqual(auras.points, 1);
+  assert.strictEqual(auras.progress, rules.auraHours[0]);
+  assert.strictEqual(auras.next, rules.auraHours[1]);
+});

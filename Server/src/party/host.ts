@@ -37,6 +37,7 @@ class PartyHost {
     readonly stages = [0, 0, 0, 0];
     friendBosses: { [userId: string]: number } = {};
     wanderers: string[] = [];
+    auraTicks: { [userId: string]: number } = {};
     helpBosses: { [userId: string]: number } = {};
     readonly guestsLeft: string[] = [];
     private readonly guestUsers = ["", "", "", ""];
@@ -278,6 +279,12 @@ class PartyHost {
         return taken;
     }
 
+    takeAuraTicks(): { [userId: string]: number } {
+        const taken = this.auraTicks;
+        this.auraTicks = {};
+        return taken;
+    }
+
     takeFriendBosses(): { [userId: string]: number } {
         const taken = this.friendBosses;
         this.friendBosses = {};
@@ -291,6 +298,7 @@ class PartyHost {
                 fighting.push(this.encounter.members[slot].playerId);
         if (fighting.length < 2)
             return;
+        this.noteAuraTicks();
         this.chronicle.ticksTogether++;
         fighting.sort();
         for (let a = 0; a < fighting.length; a++)
@@ -298,6 +306,14 @@ class PartyHost {
                 const pair = fighting[a] + "|" + fighting[b];
                 this.pairTicks[pair] = (this.pairTicks[pair] || 0) + 1;
             }
+    }
+
+    private noteAuraTicks(): void {
+        for (let slot = 0; slot < PartyMaxSlots; slot++) {
+            const member = this.encounter.members[slot];
+            if (member.joined && !member.guest && member.auraTicksLeft > 0 && this.encounter.presence(slot) === PartyPresence.Fighting)
+                this.auraTicks[member.playerId] = (this.auraTicks[member.playerId] || 0) + 1;
+        }
     }
 
     private noteBossKill(event: PartyEvent): void {

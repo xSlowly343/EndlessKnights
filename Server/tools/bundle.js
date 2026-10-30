@@ -258,7 +258,11 @@ const coopHelpRules = {
   bossesPerPoint: coopHelp.sources.bosses.bossesPerPoint,
   riftMax: coopHelp.sources.rift.max,
   riftStages: coopHelp.sources.rift.stages,
-  wanderersMax: coopHelp.sources.wanderers.max
+  wanderersMax: coopHelp.sources.wanderers.max,
+  ghostMax: coopHelp.sources.ghost.max,
+  ghostBosses: coopHelp.sources.ghost.bosses,
+  aurasMax: coopHelp.sources.auras.max,
+  auraHours: coopHelp.sources.auras.hours
 };
 
 const ghostRules = Object.assign({}, party.ghost, { classes: Object.keys(party.search.classRoles).length });
