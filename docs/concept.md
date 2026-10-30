@@ -129,11 +129,11 @@
 
 | Роль | Персонажи |
 |---|---|
-| Урон (ДД) | **Huscarl** (Ярость), **Wandering Blade** (Вихри), **Huntress** (Колчан), **Stormcaller** (Статика), **Wayfarer** (Путь, центр дерева) |
-| Баффер | **Skald** (Драйв), **Seer** (Знамения), **Herald** (Решимость) |
-| Дебаффер | **Whisperer** (Скверна), **Chronist** (Песок) |
-| DoT | **Venomist** (Реагенты), **Firebrand** (Давление) |
-| Призыватель | **Undertaker** (Души), **Sea Wolf** (Порох) |
+| Урон (ДД) | **Huscarl** (Гнев), **Wandering Blade** (Дыхание клинка), **Huntress** (Добыча), **Stormcaller** (Гроза), **Wayfarer** (Мираж) |
+| Баффер | **Skald** (Овердрайв), **Seer** (Видения), **Herald** (Доблесть) |
+| Дебаффер | **Whisperer** (Порча), **Chronist** (Время) |
+| DoT | **Venomist** (Миазмы), **Firebrand** (Жар) |
+| Призыватель | **Undertaker** (Тени), **Sea Wolf** (Заряды) |
 
 **Прежние 9 классов** переходят так (class-resources.md §2.8): Варвар → Huscarl, Мечник → Wandering Blade, Следопыт → Huntress, Чародей → Stormcaller, Странник → Wayfarer, Бард → Skald, Жрец → Seer, Ведьма → Whisperer, Алхимик → Venomist. Новые: Herald, Chronist, Firebrand, Undertaker, Sea Wolf. Сейвы переводятся сами. В коде и `tree.json` пока 9 прежних классов, переход — roadmap 14а.19 и 14а.25.
 

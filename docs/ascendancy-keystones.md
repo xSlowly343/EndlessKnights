@@ -21,8 +21,8 @@
 | Стат | Что делает | Где в коде | Статус |
 |---|---|---|---|
 | `damagePerResource` | урон × (1 + v × заполненность шкалы ресурса), с тегами | `CombatSystem.PathMultiplier`, `GameState.ResourceFill` | ● 154 |
-| `resourceDecay` | множитель сгорания ресурса в паузах (Ярость) | `ResourceSystem` | ● 154 |
-| `resourcePerKey` | ресурс за удар клавишей сверх правил класса; у обратного ресурса (Давление) копит Давление и может перегреть | `ResourceSystem` | ● 154 |
+| `resourceDecay` | множитель сгорания ресурса в паузах (Гнев) | `ResourceSystem` | ● 154 |
+| `resourcePerKey` | ресурс за удар клавишей сверх правил класса; у обратного ресурса (Жар) копит Давление и может перегреть | `ResourceSystem` | ● 154 |
 | `keyHitQueueShare` | доля каждого удара клавиш ждёт следующего врага (`QueueDamage[0]`) | `CombatSystem.PierceQueue` | ● 154 |
 | `queueStrikeEvery`, `queueStrikeMultiplier` | каждый N-й удар клавиш бьёт всю очередь (все ячейки `QueueDamage`) | `CombatSystem.QueueStrike` | ● 154 |
 | `cloneEvery`, `cloneMultiplier` | каждый N-й удар клавиш повторяется ещё одним ударом (тень) | `CombatSystem.ShadowClone` | ● 154 |
