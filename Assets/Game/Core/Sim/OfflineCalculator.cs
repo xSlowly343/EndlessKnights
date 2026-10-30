@@ -39,7 +39,7 @@ namespace Game.Core.Sim
             var goldMultiplier = _hero.Compute(CombatStats.Gold, BigNumber.One, StatTags.Gold) * _hero.Value(CombatStats.OfflineGold, 1, StatTags.Gold);
 
             if (dps.Sign <= 0 || time <= 0 || state.Rift.Inside || state.Dungeons.Inside)
-                return new OfflineResult(0, 0, BigNumber.Zero, stage, stage, kills, farming, false, false);
+                return new OfflineResult(0, 0, BigNumber.Zero, stage, stage, kills, farming, false, false, seconds);
 
             while (!farming)
             {
@@ -94,7 +94,7 @@ namespace Game.Core.Sim
                 gold += normal.Gold * farmed;
             }
 
-            return new OfflineResult(used, totalKills, gold, state.Stage, stage, kills, farming, stoppedAtGuardian, stuckAtBoss);
+            return new OfflineResult(used, totalKills, gold, state.Stage, stage, kills, farming, stoppedAtGuardian, stuckAtBoss, seconds);
         }
 
         public static void Apply(GameState state, OfflineResult result)

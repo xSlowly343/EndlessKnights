@@ -25,7 +25,7 @@ namespace Game.Core.Tests.Sim
         {
             var simulation = Typist();
 
-            var day = simulation.Run(1, 2).Single();
+            var day = simulation.Run(2, 2).Last();
             var state = simulation.LastState!;
 
             Assert.That(state.Tree.PointsSpent, Is.GreaterThan(10));

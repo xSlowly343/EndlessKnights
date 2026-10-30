@@ -173,6 +173,24 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.TotalInput.IdleSeconds, Is.EqualTo(typed), "a key press starts the pause again");
         }
 
+        [Test]
+        public void TimeAwayCountsAsIdleHoursBeyondTheOfflineRewardCap()
+        {
+            var state = new GameState();
+            var loop = TestWorld.Loop(new FakeInputSource(), state);
+            var before = loop.State.Tree.PointsEarned;
+            var away = 101 * 3600.0;
+
+            var result = new OfflineCalculator(TestWorld.Data, loop.Hero).Simulate(loop.State, away);
+            loop.ApplyOffline(result);
+
+            Assert.That(result.Seconds, Is.LessThan(away), "offline rewards stop at their cap");
+            Assert.That(result.AwaySeconds, Is.EqualTo(away));
+            Assert.That(loop.State.TotalInput.IdleSeconds, Is.EqualTo(away).Within(1e-6));
+            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 2), "a hundred hours away give the first two idle points");
+            Assert.That(loop.SessionInput.IdleSeconds, Is.Zero, "time away is not part of the session");
+        }
+
         [TestCase("\"counter\": \"keys\"", "\"counter\": \"steps\"", "unknown counter 'steps'")]
         [TestCase("[1, 10, 50, 100, 500]", "[1, 10, 5]", "steps must grow")]
         [TestCase("[1, 10, 50, 100, 500]", "[]", "a ladder needs at least one step")]

@@ -5,7 +5,7 @@ namespace Game.Core.Sim
     public sealed class OfflineResult
     {
         public OfflineResult(double seconds, long kills, BigNumber gold, long stageBefore, long stageAfter, int killsOnStage, bool farming,
-            bool stoppedAtGuardian, bool stuckAtBoss)
+            bool stoppedAtGuardian, bool stuckAtBoss, double awaySeconds = 0)
         {
             Seconds = seconds;
             Kills = kills;
@@ -16,6 +16,7 @@ namespace Game.Core.Sim
             Farming = farming;
             StoppedAtGuardian = stoppedAtGuardian;
             StuckAtBoss = stuckAtBoss;
+            AwaySeconds = System.Math.Max(seconds, awaySeconds);
         }
 
         public double Seconds { get; }
@@ -27,6 +28,7 @@ namespace Game.Core.Sim
         public bool Farming { get; }
         public bool StoppedAtGuardian { get; }
         public bool StuckAtBoss { get; }
+        public double AwaySeconds { get; }
         public long StagesCleared => StageAfter - StageBefore;
     }
 }

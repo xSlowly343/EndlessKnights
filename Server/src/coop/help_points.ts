@@ -121,7 +121,7 @@ function coopHelpView(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): 
         sources: [
             { source: "mentor", points: mentor, max: rules.mentorMax },
             { source: "bosses", points: bosses, max: rules.bossesMax, progress: profile.bosses % rules.bossesPerPoint, next: bosses >= rules.bossesMax ? 0 : rules.bossesPerPoint },
-            { source: "rift", points: rift, max: rules.riftMax, stages: profile.rift },
+            { source: "rift", points: rift, max: Math.min(rules.riftMax, rules.riftStages.length), stages: profile.rift },
             { source: "wanderers", points: wanderers, max: rules.wanderersMax, thisWeek: profile.wanderers.indexOf(raidWeekOf(nowUnixMs)) >= 0 }
         ]
     };

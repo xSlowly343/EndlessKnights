@@ -34,11 +34,19 @@ function killBoss(host, slots) {
 
 const source = (view, id) => view.sources.find((s) => s.source === id);
 
-test("rules come from coop_help.json and no single source fills all five points", () => {
+test("rules come from coop_help.json and a single source may fill the whole pool", () => {
   assert.strictEqual(rules.maxPoints, 5);
-  for (const max of [rules.mentorMax, rules.bossesMax, rules.riftMax, rules.wanderersMax])
-    assert.ok(max < rules.maxPoints);
-  assert.ok(rules.mentorMax + rules.bossesMax + rules.riftMax + rules.wanderersMax >= rules.maxPoints);
+  for (const max of [rules.mentorMax, rules.bossesMax, rules.wanderersMax])
+    assert.strictEqual(max, rules.maxPoints);
+  assert.strictEqual(Math.min(rules.riftMax, rules.riftStages.length), rules.riftStages.length, "the rift gives a point for each listed stage");
+});
+
+test("bosses alone fill the whole pool", () => {
+  const { nk, call } = world("ann");
+  server.coopHelpBosses(nk, logger, { ann: rules.bossesPerPoint * rules.maxPoints });
+  const view = call("ann", "coopHelpRpc");
+  assert.strictEqual(view.points, rules.maxPoints);
+  assert.strictEqual(source(view, "bosses").next, 0);
 });
 
 test("bosses as a fighter give a point for every few hundred, up to the cap of the source", () => {
@@ -63,8 +71,8 @@ test("rift stages count once each for everyone in the party", () => {
   assert.strictEqual(call("ann", "coopHelpRpc").points, 1, "the same stage twice is one point");
   assert.strictEqual(call("bob", "coopHelpRpc").points, 0);
   server.coopHelpRift(nk, logger, ["ann", "bob"], rules.riftStages[rules.riftStages.length - 1]);
-  assert.strictEqual(call("ann", "coopHelpRpc").points, rules.riftMax);
-  assert.strictEqual(call("bob", "coopHelpRpc").points, rules.riftMax, "a deep rift reached at once gives every stage");
+  assert.strictEqual(call("ann", "coopHelpRpc").points, rules.riftStages.length);
+  assert.strictEqual(call("bob", "coopHelpRpc").points, rules.riftStages.length, "a deep rift reached at once gives every stage");
 });
 
 test("wanderers give one point a week up to the cap", () => {

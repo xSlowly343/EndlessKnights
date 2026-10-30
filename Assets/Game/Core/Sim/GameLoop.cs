@@ -279,6 +279,7 @@ namespace Game.Core.Sim
         {
             _drops.ApplyOffline(result);
             OfflineCalculator.Apply(State, result);
+            AddIdleSeconds(result.AwaySeconds);
             _stage.EnsureEnemy();
         }
 
@@ -459,9 +460,16 @@ namespace Game.Core.Sim
         {
             if (State.IdleTicks * TickSeconds < Data.TreePoints.IdleAfterSeconds)
                 return;
-            var hoursBefore = System.Math.Floor(State.TotalInput.IdleSeconds / 3600);
             SessionInput.IdleSeconds += TickSeconds;
-            State.TotalInput.IdleSeconds += TickSeconds;
+            AddIdleSeconds(TickSeconds);
+        }
+
+        private void AddIdleSeconds(double seconds)
+        {
+            if (seconds <= 0)
+                return;
+            var hoursBefore = System.Math.Floor(State.TotalInput.IdleSeconds / 3600);
+            State.TotalInput.IdleSeconds += seconds;
             if (System.Math.Floor(State.TotalInput.IdleSeconds / 3600) > hoursBefore)
                 _levels.SyncTreePoints();
         }
