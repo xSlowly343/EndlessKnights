@@ -455,6 +455,17 @@ namespace Game.Core.Sim
             SyncPathSkill();
         }
 
+        private void CountIdle()
+        {
+            if (State.IdleTicks * TickSeconds < Data.TreePoints.IdleAfterSeconds)
+                return;
+            var hoursBefore = System.Math.Floor(State.TotalInput.IdleSeconds / 3600);
+            SessionInput.IdleSeconds += TickSeconds;
+            State.TotalInput.IdleSeconds += TickSeconds;
+            if (System.Math.Floor(State.TotalInput.IdleSeconds / 3600) > hoursBefore)
+                _levels.SyncTreePoints();
+        }
+
         public void MarkStarted(long nowUnixMs)
         {
             if (State.StartedUnixMs <= 0)
@@ -475,6 +486,7 @@ namespace Game.Core.Sim
             var idleTicksBefore = State.IdleTicks;
             State.IdleTicksBeforeInput = idleTicksBefore;
             _focus.Tick(input);
+            CountIdle();
             _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
             _banner.Tick(input);

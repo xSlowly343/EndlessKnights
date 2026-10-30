@@ -44,12 +44,14 @@ namespace Game.Core.Tests.Save
         public void MentorPerksSurviveSaving()
         {
             var state = new GameState { MentorCoopPoints = 3, EarlyBookSlot = true, ServerCoopHelpPoints = 4 };
+            state.TotalInput.IdleSeconds = 7200.5;
 
             var loaded = RoundTrip(state).State;
 
             Assert.That(loaded.MentorCoopPoints, Is.EqualTo(3));
             Assert.That(loaded.ServerCoopHelpPoints, Is.EqualTo(4));
             Assert.That(loaded.CoopHelpPoints, Is.EqualTo(4));
+            Assert.That(loaded.TotalInput.IdleSeconds, Is.EqualTo(7200.5));
             Assert.That(loaded.EarlyBookSlot, Is.True);
         }
 

@@ -132,6 +132,7 @@ namespace Game.Core.Tests.Sim
             foreach (var gate in TestWorld.Data.Stages.Gates)
                 state.GatesCleared.Add(gate.Stage);
             state.MentorCoopPoints = 5;
+            state.TotalInput.IdleSeconds = 1e9;
 
             var loop = TestWorld.Loop(state: state);
 
@@ -143,7 +144,33 @@ namespace Game.Core.Tests.Sim
         {
             var points = Rules.MaxLevel - 1 + Rules.MaxGuardianPoints + TestWorld.Data.TreePoints.MaxPoints;
 
-            Assert.That(points, Is.EqualTo(172));
+            Assert.That(points, Is.EqualTo(176));
+        }
+
+        [Test]
+        public void HoursWithoutInputCountAfterTheShortPauseAndGivePointsOnTheirHour()
+        {
+            var input = new FakeInputSource();
+            var state = new GameState();
+            state.TotalInput.IdleSeconds = 10 * 3600 - 5;
+            var loop = TestWorld.Loop(input, state);
+            var before = loop.State.Tree.PointsEarned;
+            var pause = TestWorld.Data.TreePoints.IdleAfterSeconds;
+
+            for (var tick = 0; tick < pause * GameLoop.TicksPerSecond; tick++)
+                loop.Tick();
+            Assert.That(loop.State.TotalInput.IdleSeconds, Is.EqualTo(10 * 3600 - 5).Within(0.2), "a short pause is not idling yet");
+
+            for (var tick = 0; tick < 6 * GameLoop.TicksPerSecond; tick++)
+                loop.Tick();
+            Assert.That(loop.State.TotalInput.IdleSeconds, Is.GreaterThan(10 * 3600));
+            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 1), "ten idle hours give the first point at once");
+
+            input.PressKeys(1);
+            loop.Tick();
+            var typed = loop.State.TotalInput.IdleSeconds;
+            loop.Tick();
+            Assert.That(loop.State.TotalInput.IdleSeconds, Is.EqualTo(typed), "a key press starts the pause again");
         }
 
         [TestCase("\"counter\": \"keys\"", "\"counter\": \"steps\"", "unknown counter 'steps'")]

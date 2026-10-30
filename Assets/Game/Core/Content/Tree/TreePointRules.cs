@@ -12,7 +12,8 @@ namespace Game.Core.Content.Tree
         RecordStage,
         Trials,
         Gates,
-        CoopHelp
+        CoopHelp,
+        IdleHours
     }
 
     public sealed class PointLadder
@@ -51,13 +52,17 @@ namespace Game.Core.Content.Tree
             ["recordStage"] = PointCounter.RecordStage,
             ["trials"] = PointCounter.Trials,
             ["gates"] = PointCounter.Gates,
-            ["coopHelp"] = PointCounter.CoopHelp
+            ["coopHelp"] = PointCounter.CoopHelp,
+            ["idleHours"] = PointCounter.IdleHours
         };
 
-        private TreePointRules(IReadOnlyList<PointLadder> ladders)
+        private TreePointRules(IReadOnlyList<PointLadder> ladders, double idleAfterSeconds)
         {
             Ladders = ladders;
+            IdleAfterSeconds = idleAfterSeconds;
         }
+
+        public double IdleAfterSeconds { get; }
 
         public IReadOnlyList<PointLadder> Ladders { get; }
 
@@ -88,10 +93,10 @@ namespace Game.Core.Content.Tree
                     throw item.Field("id").Error($"ladder id '{id}' is used twice");
                 var counterNode = item.Field("counter");
                 if (!Counters.TryGetValue(counterNode.AsString(), out var counter))
-                    throw counterNode.Error($"unknown counter '{counterNode.AsString()}', expected keys, clicks, mouseKm, prestiges, recordStage, trials, gates or coopHelp");
+                    throw counterNode.Error($"unknown counter '{counterNode.AsString()}', expected keys, clicks, mouseKm, prestiges, recordStage, trials, gates, coopHelp or idleHours");
                 ladders.Add(new PointLadder(id, counter, ReadSteps(item.Field("steps"))));
             }
-            return new TreePointRules(ladders);
+            return new TreePointRules(ladders, root.Field("idleAfterSeconds").AsNumber(0, 3600));
         }
 
         private static List<double> ReadSteps(ContentNode node)

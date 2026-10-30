@@ -10,6 +10,7 @@ namespace Game.Core.Input
         public ulong MiddleClicks { get; set; }
         public double MouseMeters { get; set; }
         public double PlaySeconds { get; set; }
+        public double IdleSeconds { get; set; }
 
         public ulong Clicks => LeftClicks + RightClicks + MiddleClicks;
 

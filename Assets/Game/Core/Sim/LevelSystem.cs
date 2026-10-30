@@ -104,6 +104,8 @@ namespace Game.Core.Sim
                     return _state.GatesCleared.Count;
                 case PointCounter.CoopHelp:
                     return _state.CoopHelpPoints;
+                case PointCounter.IdleHours:
+                    return _state.TotalInput.IdleSeconds / 3600;
                 default:
                     return _state.RecordStage;
             }
