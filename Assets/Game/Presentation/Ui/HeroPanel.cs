@@ -113,7 +113,7 @@ namespace Game.Presentation.Ui
         {
             var state = loop.State;
             _attributes.text = HeroSummary.Attributes(loop);
-            var name = HeroSummary.ClassName(state.Class);
+            var name = HeroSummary.ClassName(state);
             _initial.text = name.Length > 0 ? name.Substring(0, 1) : string.Empty;
             _title.text = HeroSummary.Title(state);
             _progress.text = HeroSummary.Progress(state);

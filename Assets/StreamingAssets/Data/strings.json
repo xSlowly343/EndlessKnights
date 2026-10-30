@@ -420,6 +420,7 @@
     "consent.notCountedHeading": { "ru": "Не считаем", "en": "Not counted" },
     "consent.networkNote": { "ru": "На диск и в сеть уходят только счётчики. Что именно считать, можно выбрать в настройках.", "en": "Only counters are written to disk or sent over the network. You can choose what to count in the settings." },
     "panel.more": { "ru": "Ещё", "en": "More" },
+    "class.novice": { "ru": "Novice", "en": "Novice" },
     "class.viking": { "ru": "Huscarl", "en": "Huscarl" },
     "class.ronin": { "ru": "Wandering Blade", "en": "Wandering Blade" },
     "class.amazon": { "ru": "Huntress", "en": "Huntress" },

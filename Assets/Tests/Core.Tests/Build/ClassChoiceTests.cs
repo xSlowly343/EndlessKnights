@@ -28,6 +28,7 @@ namespace Game.Core.Tests.Build
             var loop = Novice();
 
             Assert.That(loop.State.ClassName, Is.EqualTo(HeroClassNames.Novice));
+            Assert.That(Game.Core.Ui.HeroSummary.Title(loop.State), Does.StartWith("Novice · "));
             Assert.That(loop.State.Weapons.Right, Is.Null);
             Assert.That(loop.State.Weapons.Left, Is.Null);
             Assert.That(loop.State.Skills.Select(slot => slot.Skill.Id), Is.EquivalentTo(new[] { "through_stride", "lull" }));
@@ -65,6 +66,7 @@ namespace Game.Core.Tests.Build
 
             var state = loop.State;
             Assert.That(state.ClassChosen, Is.True);
+            Assert.That(Game.Core.Ui.HeroSummary.Title(state), Does.StartWith("Wandering Blade · "));
             Assert.That(state.Class, Is.EqualTo(HeroClass.Ronin));
             Assert.That(state.Tree.StartClass, Is.EqualTo("ronin"));
             Assert.That(state.Tree.PointsLeft, Is.GreaterThan(0), "points earned as a novice are kept");

@@ -28,7 +28,7 @@ namespace Game.Core.Ui
             if (!InParty(link) || ownSlot < 0)
                 return Solo(state);
             var selfPresence = link == PartyLink.NoSignal ? PartyPresence.Offline : roster.Presence(ownSlot);
-            var selfDetails = Texts.Format("party.classStage", HeroSummary.ClassName(state.Class), state.Stage)
+            var selfDetails = Texts.Format("party.classStage", HeroSummary.ClassName(state), state.Stage)
                 + Standing(roster, ownSlot, contribution) + (lastKillPaid ? string.Empty : Separator + Texts.Get("party.unpaid"));
             var rows = new List<PartyRow> { new PartyRow(true, ownSlot, Texts.Get("party.you"), selfDetails, selfPresence, reaction?.Invoke(ownSlot) ?? string.Empty) };
             var number = 1;
@@ -84,7 +84,7 @@ namespace Game.Core.Ui
         }
 
         private static PartyRow Self(GameState state, PartyPresence presence) =>
-            new PartyRow(true, PartyEncounter.NoSlot, Texts.Get("party.you"), Texts.Format("party.classStage", HeroSummary.ClassName(state.Class), state.Stage), presence);
+            new PartyRow(true, PartyEncounter.NoSlot, Texts.Get("party.you"), Texts.Format("party.classStage", HeroSummary.ClassName(state), state.Stage), presence);
 
         private static string ClassName(byte heroClass) =>
             heroClass < System.Enum.GetValues(typeof(HeroClass)).Length ? HeroSummary.ClassName((HeroClass)heroClass) : string.Empty;

@@ -14,11 +14,13 @@ namespace Game.Core.Ui
 
         public static string ClassName(HeroClass heroClass) => Texts.Get("class." + HeroClassNames.Of(heroClass));
 
+        public static string ClassName(GameState state) => Texts.Get("class." + state.ClassName);
+
         public static string SlotName(string slot) => Texts.Get("hero.slot." + slot);
 
         public static string JewelryTitle => Texts.Get("hero.jewelry");
 
-        public static string Title(GameState state) => Texts.Format("hero.title", ClassName(state.Class), state.HeroLevel);
+        public static string Title(GameState state) => Texts.Format("hero.title", ClassName(state), state.HeroLevel);
 
         public static string Progress(GameState state) => Texts.Format("hero.progress", state.Stage, System.Math.Max(state.RecordStage, state.HighestStage));
 
