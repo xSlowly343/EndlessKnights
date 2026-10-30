@@ -81,6 +81,23 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
+        public void EveryTreeStatHasAMechanic()
+        {
+            var data = GameData.Load(TestData.ReadGameDataFile);
+            var known = typeof(Game.Core.Sim.CombatStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+                .Where(field => field.FieldType == typeof(Game.Core.Stats.StatId))
+                .Select(field => ((Game.Core.Stats.StatId)field.GetValue(null)!).Name)
+                .Concat(new[] { "strength", "dexterity", "intelligence" })
+                .ToHashSet();
+            foreach (var tree in data.ClassTrees.Values.Concat(data.CommonTrees.Values))
+            {
+                var lines = tree.Nodes.SelectMany(node => new[] { node.Template.First, node.Template.Second, node.Template.Third }).SelectMany(line => line.Modifiers)
+                    .Concat(tree.Majors.SelectMany(slot => slot.Options).SelectMany(option => option.Modifiers));
+                Assert.That(lines.Select(modifier => modifier.Stat.Name).Where(stat => !known.Contains(stat)).Distinct(), Is.Empty, tree.Id);
+            }
+        }
+
+        [Test]
         public void GameDataLoadsTheCommonTrees()
         {
             var data = GameData.Load(TestData.ReadGameDataFile);
