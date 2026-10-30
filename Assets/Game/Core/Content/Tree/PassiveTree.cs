@@ -26,7 +26,7 @@ namespace Game.Core.Content.Tree
         private readonly Dictionary<string, TreeNodeDef> _byId;
         private readonly Dictionary<string, TreeNodeDef> _startByClass;
 
-        private PassiveTree(List<TreeNodeDef> nodes, IReadOnlyList<string> attributes, int linkCount, RespecRules respec)
+        internal PassiveTree(List<TreeNodeDef> nodes, IReadOnlyList<string> attributes, int linkCount, RespecRules respec)
         {
             Nodes = nodes;
             Attributes = attributes;
@@ -219,7 +219,7 @@ namespace Game.Core.Content.Tree
             }
         }
 
-        private static int ReadLinks(ContentNode links, Dictionary<string, TreeNodeDef> byId)
+        internal static int ReadLinks(ContentNode links, Dictionary<string, TreeNodeDef> byId)
         {
             var seen = new HashSet<(string, string)>();
             var count = 0;
@@ -249,7 +249,7 @@ namespace Game.Core.Content.Tree
             return node;
         }
 
-        private static void RequireConnected(ContentNode links, List<TreeNodeDef> nodes)
+        internal static void RequireConnected(ContentNode links, List<TreeNodeDef> nodes)
         {
             if (nodes.Count == 0)
                 return;
