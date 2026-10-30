@@ -7,6 +7,7 @@
     { "id": "clan_many_hands", "kind": "challengesDone", "levels": [10, 50, 200] },
     { "id": "clan_roots", "kind": "treeNodes", "levels": [1, 4, 8], "title": "deep_roots" },
     { "id": "clan_treasury", "kind": "sealsDonated", "levels": [1000, 10000, 50000] },
-    { "id": "clan_full_house", "kind": "membersMax", "levels": [10, 20, 30] }
+    { "id": "clan_full_house", "kind": "membersMax", "levels": [10, 20, 30] },
+    { "id": "clan_coven", "kind": "covenRaids", "levels": [1, 5, 20], "title": "the_coven" }
   ]
 }

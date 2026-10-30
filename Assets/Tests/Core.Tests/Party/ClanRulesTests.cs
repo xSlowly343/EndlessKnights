@@ -76,7 +76,7 @@ namespace Game.Core.Tests.Party
         public void TheClanChronicleFileLoadsAndEveryFeatReads()
         {
             var rules = ClanChronicleRules.Load(TestData.ReadGameDataFile(ClanChronicleRules.FileName));
-            Assert.That(rules.Feats.Count, Is.EqualTo(6));
+            Assert.That(rules.Feats.Count, Is.EqualTo(7));
             foreach (var language in new[] { "ru", "en" })
             {
                 Texts.UseLanguage(language);

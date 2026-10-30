@@ -196,7 +196,7 @@ function raidSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, raid: RaidVa
         }
     }
     if (result.killed)
-        clanChronicleNote(nk, logger, raid.clanId, { raidsKilled: 1 }, { at: nowUnixMs, kind: "raid", name: "", feat: "", level: 0, detail: raid.boss }, result.places);
+        clanChronicleNote(nk, logger, raid.clanId, raidCovenBonus(raid, raid.killedAt) > 0 ? { raidsKilled: 1, covenRaids: 1 } : { raidsKilled: 1 }, { at: nowUnixMs, kind: "raid", name: "", feat: "", level: 0, detail: raid.boss }, result.places);
     logger.info("clan %s: raid of week %d settled, killed %s, %d players", raid.clanId, raid.week, String(result.killed), result.places.length);
 }
 

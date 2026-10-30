@@ -163,3 +163,24 @@ test("the week is settled from matches and other calls even if nobody in the cla
   server.raidSettleDue(nk, logger, nextWeek);
   assert.strictEqual(server.walletRead(nk, "bob").value.balances.seals, rules.minSeals, "nothing is paid twice");
 });
+
+test("a raid killed while a coven queen plays goes into the clan chronicle as a sabbath", () => {
+  const { nk, call } = world("ann", "bob");
+  const clan = clanOf(call, ["ann", "bob"]);
+  const now = Date.now();
+  const settle = (week, coven) => {
+    const raid = server.raidCreate(clan.id, week, rules.minMembers);
+    raid.killedAt = now - 1000;
+    raid.tally.ann = { dealt: 100, layers: { flesh: 100 }, lastPush: now - 1000, lastSeconds: 15, capped: 0, coven: coven, covenAt: coven > 0 ? now - 2000 : 0 };
+    server.raidSettle(nk, logger, raid, now);
+  };
+  settle(server.raidWeekOf(now) - 3, 0);
+  let chronicle = call("bob", "clanChronicleRpc", {});
+  assert.strictEqual(chronicle.stats.raidsKilled, 1);
+  assert.strictEqual(chronicle.stats.covenRaids, undefined, "no queen, no sabbath");
+  settle(server.raidWeekOf(now) - 2, 0.3);
+  chronicle = call("bob", "clanChronicleRpc", {});
+  assert.strictEqual(chronicle.stats.covenRaids, 1);
+  assert.strictEqual(chronicle.feats.find((feat) => feat.id === "clan_coven").level, 1);
+  assert.ok(chronicle.titles.indexOf("the_coven") >= 0);
+});
