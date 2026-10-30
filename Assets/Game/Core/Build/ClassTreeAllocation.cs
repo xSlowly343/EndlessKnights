@@ -11,12 +11,12 @@ namespace Game.Core.Build
         private readonly Dictionary<int, string> _majors = new Dictionary<int, string>();
         private readonly List<string> _plan = new List<string>();
 
-        public ClassTreeAllocation(string heroClass)
+        public ClassTreeAllocation(string treeId)
         {
-            HeroClass = heroClass;
+            TreeId = treeId;
         }
 
-        public string HeroClass { get; }
+        public string TreeId { get; }
         public int PointsEarned { get; set; }
         public int PointsSpent { get; private set; }
         public int PointsLeft => PointsEarned - PointsSpent;
@@ -26,7 +26,7 @@ namespace Game.Core.Build
 
         public int RankOf(string nodeId) => _ranks.TryGetValue(nodeId, out var rank) ? rank : 0;
 
-        public int BarSteps(ClassTree tree) => PointsSpent / tree.BarEvery;
+        public int BarSteps(ClassTree tree) => tree.HasBar ? PointsSpent / tree.BarEvery : 0;
 
         public int PointsBelow(ClassTree tree, int row)
         {

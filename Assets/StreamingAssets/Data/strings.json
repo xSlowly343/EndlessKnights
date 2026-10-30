@@ -90,6 +90,7 @@
     "stat.cooldownPerClick": { "ru": "с отката скиллов за клик", "en": "s of skill cooldown per click" },
     "stat.bossGold": { "ru": "золота с боссов", "en": "gold from bosses" },
     "stat.guardianHp": { "ru": "здоровья стражей биома", "en": "biome guardian health" },
+    "stat.dailyItems": { "ru": "вещей в день", "en": "items a day" },
     "stat.chestEvery": { "ru": "сундук каждые N этапов", "en": "a chest every N stages" },
     "stat.artifactCost": { "ru": "цены открытия артефактов", "en": "artifact unlock cost" },
     "stat.echoGain": { "ru": "Эха за престиж", "en": "Echo per prestige" },

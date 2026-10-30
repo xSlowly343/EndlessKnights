@@ -606,8 +606,8 @@ namespace Game.Core.Sim
 
         private ClassTreeAllocation Fitted(ClassTreeAllocation allocation, ClassTree tree)
         {
-            if (allocation.HeroClass != tree.HeroClass)
-                allocation = new ClassTreeAllocation(tree.HeroClass);
+            if (allocation.TreeId != tree.Id)
+                allocation = new ClassTreeAllocation(tree.Id);
             allocation.PointsEarned = State.Tree.PointsEarned;
             allocation.DropInvalid(tree);
             if (allocation.PointsSpent > allocation.PointsEarned)

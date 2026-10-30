@@ -78,7 +78,11 @@ namespace Game.Core.Content
         public TreeTemplates TreeTemplates { get; private set; } = null!;
         public IReadOnlyDictionary<string, ClassTree> ClassTrees { get; private set; } = new Dictionary<string, ClassTree>();
 
+        public IReadOnlyDictionary<string, ClassTree> CommonTrees { get; private set; } = new Dictionary<string, ClassTree>();
+
         public ClassTree? ClassTreeOf(string heroClass) => ClassTrees.TryGetValue(heroClass, out var tree) ? tree : null;
+
+        public ClassTree? CommonTreeOf(string treeId) => CommonTrees.TryGetValue(treeId, out var tree) ? tree : null;
 
         public static GameData Load(Func<string, string> readFile)
         {
@@ -123,7 +127,10 @@ namespace Game.Core.Content
             var classTrees = new Dictionary<string, ClassTree>(StringComparer.Ordinal);
             foreach (var heroClass in treeTemplates.Classes)
                 classTrees[heroClass] = ClassTreeLoader.Load(treeTemplates, heroClass, readFile(ClassTreeLoader.FileNameOf(heroClass)));
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Unlocks = unlocks, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor, TreeTemplates = treeTemplates, ClassTrees = classTrees };
+            var commonTrees = new Dictionary<string, ClassTree>(StringComparer.Ordinal);
+            foreach (var treeId in treeTemplates.CommonTrees)
+                commonTrees[treeId] = ClassTreeLoader.LoadCommon(treeTemplates, treeId, readFile(ClassTreeLoader.CommonFileNameOf(treeId)));
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Unlocks = unlocks, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor, TreeTemplates = treeTemplates, ClassTrees = classTrees, CommonTrees = commonTrees };
         }
     }
 }

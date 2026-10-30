@@ -726,7 +726,7 @@ namespace Game.Core.Save
             for (var i = 0; i < plan.Length; i++)
                 plan[i] = JsonValue.Of(tree.Plan[i]);
             return Object(
-                ("class", JsonValue.Of(tree.HeroClass)),
+                ("class", JsonValue.Of(tree.TreeId)),
                 ("ranks", JsonValue.Array(ranks)),
                 ("majors", JsonValue.Array(majors)),
                 ("plan", JsonValue.Array(plan)));

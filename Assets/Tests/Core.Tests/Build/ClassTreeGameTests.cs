@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Build
             var loop = Huscarl();
             Raise(loop, "wrath", 5);
             Raise(loop, "blood_boils", 3);
-            Raise(loop, "crit", 2);
+            Raise(loop, "tempered_eye", 2);
             var before = loop.State.ClassTree.Ranks.ToDictionary(pair => pair.Key, pair => pair.Value);
 
             Assert.That(loop.ClassTreeResetCost(), Is.EqualTo(BigNumber.Zero));
@@ -89,15 +89,15 @@ namespace Game.Core.Tests.Build
         public void AMajorTalentOnTheBarWorksFromItsMark()
         {
             var loop = Huscarl(60);
-            Raise(loop, "crit", 5);
-            Raise(loop, "focus", 5);
-            Raise(loop, "loot", 5);
-            Raise(loop, "boss", 4);
+            Raise(loop, "tempered_eye", 5);
+            Raise(loop, "battle_trance", 5);
+            Raise(loop, "hirdman_spoils", 5);
+            Raise(loop, "challenge", 4);
 
             Assert.That(loop.ChooseMajorTalent(20, "viking_cool_head"), Is.EqualTo(RankResult.UnknownMajor), "Cool Head is on the 50 mark");
             Assert.That(loop.ChooseMajorTalent(20, "viking_smoulder"), Is.EqualTo(RankResult.MarkNotReached));
             var resource = loop.Hero.Value(CombatStats.ResourceDecay, 1);
-            Raise(loop, "party", 1);
+            Raise(loop, "war_cry", 1);
             Assert.That(loop.ChooseMajorTalent(20, "viking_smoulder"), Is.EqualTo(RankResult.Done));
             Assert.That(loop.Hero.Value(CombatStats.ResourceDecay, 1), Is.LessThan(resource));
             Assert.That(loop.Hero.Value(TreeStat("strength"), 0), Is.EqualTo(3), "two bar steps: +3 Strength and +2% Wrath gain");
@@ -139,17 +139,17 @@ namespace Game.Core.Tests.Build
         public void TheSaveKeepsRanksTalentsAndThePlanAndOldTreeNodesAreRefunded()
         {
             var loop = Huscarl(60);
-            Raise(loop, "crit", 5);
-            Raise(loop, "focus", 5);
-            Raise(loop, "loot", 5);
-            Raise(loop, "boss", 5);
+            Raise(loop, "tempered_eye", 5);
+            Raise(loop, "battle_trance", 5);
+            Raise(loop, "hirdman_spoils", 5);
+            Raise(loop, "challenge", 5);
             loop.ChooseMajorTalent(20, "viking_warm_up");
             loop.State.Tree.Restore(TestWorld.Real.Tree.Nodes.First(node => node.Type == TreeNodeType.Small).Id, null, null);
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, Clock), TestWorld.Real).State;
             var again = new GameLoop(TestWorld.Real, new FakeInputSource(), loaded, new StatSheet());
 
-            Assert.That(loaded.ClassTree.RankOf("viking_crit"), Is.EqualTo(5));
+            Assert.That(loaded.ClassTree.RankOf("viking_tempered_eye"), Is.EqualTo(5));
             Assert.That(loaded.ClassTree.Majors[20], Is.EqualTo("viking_warm_up"));
             Assert.That(loaded.ClassTree.Plan.Count, Is.EqualTo(20));
             Assert.That(again.State.Tree.PointsSpent, Is.Zero, "a node of the old tree is dropped and its point comes back");

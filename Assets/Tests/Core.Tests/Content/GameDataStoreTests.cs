@@ -12,8 +12,11 @@ namespace Game.Core.Tests.Content
             var files = new Dictionary<string, string>();
             foreach (var name in GameData.FileNames)
                 files[name] = TestData.ReadGameDataFile(name);
-            foreach (var heroClass in TreeTemplates.Load(files[TreeTemplates.FileName]).Classes)
+            var templates = TreeTemplates.Load(files[TreeTemplates.FileName]);
+            foreach (var heroClass in templates.Classes)
                 files[ClassTreeLoader.FileNameOf(heroClass)] = TestData.ReadGameDataFile(ClassTreeLoader.FileNameOf(heroClass));
+            foreach (var treeId in templates.CommonTrees)
+                files[ClassTreeLoader.CommonFileNameOf(treeId)] = TestData.ReadGameDataFile(ClassTreeLoader.CommonFileNameOf(treeId));
             return files;
         }
 

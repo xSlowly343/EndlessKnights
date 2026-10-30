@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Build
         {
             var chain = ClassTreeView.Chain(Huscarl, "viking_heavy_swing");
 
-            Assert.That(chain, Is.EquivalentTo(new[] { "viking_axe", "viking_heavy_swing", "viking_long_streak", "viking_jarl_axe", "viking_north_wind" }));
+            Assert.That(chain, Is.EquivalentTo(new[] { "viking_axe", "viking_heavy_swing", "viking_saga_song", "viking_jarl_axe", "viking_north_wind" }));
             Assert.That(ClassTreeView.Chain(Huscarl, "viking_north_wind"), Is.EquivalentTo(new[] { "viking_axe", "viking_heavy_swing", "viking_jarl_axe", "viking_north_wind" }),
                 "from the top only the way down is lit, not the side branches of the parents");
             Assert.That(ClassTreeView.Chain(Huscarl, "viking_nope"), Is.Empty);

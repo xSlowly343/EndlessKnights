@@ -6,14 +6,14 @@ namespace Game.Core.Content.Tree
 {
     public sealed class ClassTreeNode
     {
-        public ClassTreeNode(string id, int row, int column, string? parentId, TreeTemplate template, bool common)
+        public ClassTreeNode(string id, int row, int column, string? parentId, TreeTemplate template, bool passive)
         {
             Id = id;
             Row = row;
             Column = column;
             ParentId = parentId;
             Template = template;
-            Common = common;
+            Passive = passive;
         }
 
         public string Id { get; }
@@ -22,7 +22,7 @@ namespace Game.Core.Content.Tree
         public string? ParentId { get; }
         public ClassTreeNode? Parent { get; internal set; }
         public TreeTemplate Template { get; }
-        public bool Common { get; }
+        public bool Passive { get; }
         public string NameRu => Template.NameRu;
         public string NameEn => Template.NameEn;
 
@@ -67,10 +67,11 @@ namespace Game.Core.Content.Tree
     {
         private readonly Dictionary<string, ClassTreeNode> _byId = new Dictionary<string, ClassTreeNode>(StringComparer.Ordinal);
 
-        public ClassTree(string heroClass, IReadOnlyList<ClassTreeNode> nodes, IReadOnlyList<int> rowThresholds, int barEvery,
+        public ClassTree(string id, bool common, IReadOnlyList<ClassTreeNode> nodes, IReadOnlyList<int> rowThresholds, int barEvery,
             IReadOnlyList<IReadOnlyList<Modifier>> barPassives, IReadOnlyList<MajorTalentSlot> majors, RespecRules respec)
         {
-            HeroClass = heroClass;
+            Id = id;
+            Common = common;
             Nodes = nodes;
             RowThresholds = rowThresholds;
             BarEvery = barEvery;
@@ -86,7 +87,12 @@ namespace Game.Core.Content.Tree
             }
         }
 
-        public string HeroClass { get; }
+        public string Id { get; }
+        public bool Common { get; }
+        public string NameRu { get; internal set; } = string.Empty;
+        public string NameEn { get; internal set; } = string.Empty;
+        public string AboutRu { get; internal set; } = string.Empty;
+        public string AboutEn { get; internal set; } = string.Empty;
         public IReadOnlyList<ClassTreeNode> Nodes { get; }
         public IReadOnlyList<int> RowThresholds { get; }
         public int Rows => RowThresholds.Count;
@@ -99,6 +105,21 @@ namespace Game.Core.Content.Tree
         public ClassTreeNode this[string id] => _byId[id];
 
         public bool TryGet(string id, out ClassTreeNode node) => _byId.TryGetValue(id, out node!);
+
+        public bool HasBar => BarEvery > 0;
+
+        public bool OffersMajor(string talentId)
+        {
+            foreach (var slot in Majors)
+            {
+                foreach (var option in slot.Options)
+                {
+                    if (option.Id == talentId)
+                        return true;
+                }
+            }
+            return false;
+        }
 
         public int ThresholdOf(int row) => RowThresholds[row - 1];
 
