@@ -63,7 +63,7 @@ namespace Game.Core.Tests.Build
             var card = SubclassView.Card(loop.State.Ascendancy, Catalog, Path, Node("berserker_1"), loop.Hero);
 
             Assert.That(card.Name, Is.EqualTo("Без щита"));
-            Assert.That(card.Kind, Does.EndWith("Берсерк"));
+            Assert.That(card.Kind, Does.EndWith("Berserker"));
             Assert.That(card.Stats, Has.Count.EqualTo(Node("berserker_1").Modifiers.Count));
             Assert.That(card.Deltas, Is.Not.Empty);
         }
