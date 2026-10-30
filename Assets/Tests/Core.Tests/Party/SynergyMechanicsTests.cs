@@ -128,6 +128,62 @@ namespace Game.Core.Tests.Party
             Assert.That(without.State.PoisonStacks, Is.Zero);
         }
 
+        [Test]
+        public void StormweaverLightningHitsWithTheAllyPoisonOnEveryLightningCast()
+        {
+            var with = Casting(HeroClass.Stormweaver, Mark("poison"));
+            var without = Casting(HeroClass.Stormweaver, Mark("stun"));
+
+            Assert.That(with.SynergyStrikes.ElectrolysisStrikes, Is.EqualTo(1));
+            Assert.That(without.SynergyStrikes.ElectrolysisStrikes, Is.Zero);
+            Assert.That(with.State.TotalDamage.ToDouble(), Is.GreaterThan(without.State.TotalDamage.ToDouble()));
+        }
+
+        [Test]
+        public void MoonshinerSparkAddsBurnEverySecondOnlyToABurningEnemy()
+        {
+            var loop = Hero(HeroClass.Moonshiner);
+            loop.Tick();
+            loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e30);
+            loop.Synergy.SetAlly(0, true, HeroClass.Stormweaver, Mark("lightning"));
+            for (var tick = 0; tick < 20; tick++)
+                loop.Tick();
+            Assert.That(loop.SynergyStrikes.Sparks, Is.Zero, "nothing burns yet");
+
+            loop.State.BurnStacks = 5;
+            for (var tick = 0; tick < 30; tick++)
+                loop.Tick();
+            Assert.That(loop.SynergyStrikes.Sparks, Is.EqualTo(3));
+            Assert.That(loop.State.BurnStacks, Is.EqualTo(8).Within(1e-9));
+        }
+
+        private static GameLoop Casting(HeroClass heroClass, int allyMarks)
+        {
+            var loop = Hero(heroClass);
+            var gem = FirstLightningGem();
+            TestWorld.ArmFor(loop, gem);
+            loop.Skills.Equip(gem);
+            loop.Tick();
+            loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e30);
+            loop.Synergy.SetAlly(0, true, HeroClass.PlagueDoctor, allyMarks);
+            loop.Tick();
+            loop.State.Resource = 1000;
+            loop.RequestCast(0);
+            loop.Tick();
+            Assert.That(loop.State.Skills[0].LastCastTick, Is.EqualTo(loop.State.Tick - 1), "the lightning skill was cast");
+            return loop;
+        }
+
+        private static Game.Core.Content.Gems.GemDef FirstLightningGem()
+        {
+            foreach (var gem in TestWorld.Data.Gems.All)
+            {
+                if (gem.Skill != null && gem.Skill.Marks.Count > 0 && gem.Skill.Marks[0] == "lightning" && gem.Ascendancy == null)
+                    return gem;
+            }
+            throw new System.InvalidOperationException("no lightning gem");
+        }
+
         private static GameLoop Summoned(HeroClass heroClass)
         {
             var loop = Hero(heroClass);

@@ -21,6 +21,10 @@ namespace Game.Core.Sim
 
         private DotRules Rules => _combat.Dots;
 
+        public double PoisonHits(double stacks) => stacks * Rules.PoisonHitsPerStack * Rules.MiasmaStackSeconds;
+
+        public void HitWith(double hits) => Hit(hits);
+
         public double PoisonMax => (Rules.PoisonMax + System.Math.Max(0, _hero.Value(CombatStats.PoisonStacks, 0, StatTags.DoT))) * _state.SupportStackCap;
         public double BurnMax => Rules.BurnMax * _state.SupportStackCap;
         public long PoisonTicks { get; private set; }

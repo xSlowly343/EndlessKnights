@@ -13,6 +13,7 @@ namespace Game.Core.Content.Synergy
         public const int MaxMarks = 30;
         public const int MaxReactions = 32;
         public const string AuraMark = "aura";
+        public const string LightningMark = "lightning";
 
         private readonly Dictionary<string, int> _markIndex;
         private readonly int[] _roleMask;
@@ -20,8 +21,10 @@ namespace Game.Core.Content.Synergy
         private readonly int[] _markTicks;
 
         private SynergyRules(List<string> marks, Dictionary<string, int> markIndex, List<string> roles, int[] roleMask, StatId secondResponseStat,
-            List<SynergyResponse> responses, List<SynergyReaction> reactions, List<SynergyConstellation> constellations, int[] markTicks, SynergyStateMarks stateMarks)
+            List<SynergyResponse> responses, List<SynergyReaction> reactions, List<SynergyConstellation> constellations, int[] markTicks, SynergyStateMarks stateMarks,
+            double allyPoisonStacks)
         {
+            AllyPoisonStacks = allyPoisonStacks;
             _markTicks = markTicks;
             StateMarks = stateMarks;
             Marks = marks;
@@ -43,9 +46,13 @@ namespace Game.Core.Content.Synergy
 
         public SynergyStateMarks StateMarks { get; }
 
+        public double AllyPoisonStacks { get; }
+
         public int MarkTicks(int mark) => _markTicks[mark];
 
         public int AuraMarkMask => _markIndex.TryGetValue(AuraMark, out var aura) ? 1 << aura : 0;
+
+        public int LightningMarkMask => _markIndex.TryGetValue(LightningMark, out var lightning) ? 1 << lightning : 0;
 
         public int RoleMaskOf(HeroClass heroClass) => _roleMask[(int)heroClass];
 
@@ -146,7 +153,8 @@ namespace Game.Core.Content.Synergy
             foreach (var node in root.Field("constellations").Items())
                 constellations.Add(ReadConstellation(node, markIndex, roles));
             return new SynergyRules(marks, markIndex, roles, roleMask, new StatId(root.Field("secondResponseStat").AsString()), responses, reactions, constellations,
-                ReadMarkTicks(root, markIndex, marks.Count), ReadStateMarks(root, markIndex));
+                ReadMarkTicks(root, markIndex, marks.Count), ReadStateMarks(root, markIndex),
+                root.HasField("allyPoisonStacks") ? root.Field("allyPoisonStacks").AsNumber(0, 100000) : 0);
         }
 
         private static int[] ReadMarkTicks(ContentNode root, Dictionary<string, int> markIndex, int count)
