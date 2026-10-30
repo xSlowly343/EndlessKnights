@@ -165,6 +165,21 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void CoopHelpPointsAreReadWithEverySource()
+        {
+            var help = CoopHelpView.From(NakamaJson.Parse("{\"points\":3,\"max\":5,\"sources\":[{\"source\":\"mentor\",\"points\":1,\"max\":2},"
+                + "{\"source\":\"bosses\",\"points\":1,\"max\":2,\"progress\":57,\"next\":200},{\"source\":\"rift\",\"points\":1,\"max\":2,\"stages\":[100]},"
+                + "{\"source\":\"wanderers\",\"points\":0,\"max\":2,\"thisWeek\":false}]}"));
+
+            Assert.That(help.Points, Is.EqualTo(3));
+            Assert.That(help.Max, Is.EqualTo(5));
+            Assert.That(help.Sources.Count, Is.EqualTo(4));
+            Assert.That(help.Sources[1].Source, Is.EqualTo("bosses"));
+            Assert.That(help.Sources[1].Progress, Is.EqualTo(57));
+            Assert.That(help.Sources[1].Next, Is.EqualTo(200));
+        }
+
+        [Test]
         public void TheCoopWalletIsReadWithTodayAndTheLedger()
         {
             var wallet = CoopWalletView.From(NakamaJson.Parse("{\"balances\":{\"friendship\":46,\"seals\":320},"

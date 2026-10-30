@@ -36,6 +36,7 @@ class PartyHost {
     readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0, synergiesOnOneEnemy: 0 };
     readonly stages = [0, 0, 0, 0];
     friendBosses: { [userId: string]: number } = {};
+    wanderers: string[] = [];
     helpBosses: { [userId: string]: number } = {};
     readonly guestsLeft: string[] = [];
     private readonly guestUsers = ["", "", "", ""];
@@ -269,6 +270,12 @@ class PartyHost {
         return taken;
     }
 
+    takeWanderers(): string[] {
+        const taken = this.wanderers;
+        this.wanderers = [];
+        return taken;
+    }
+
     takeFriendBosses(): { [userId: string]: number } {
         const taken = this.friendBosses;
         this.friendBosses = {};
@@ -319,13 +326,22 @@ class PartyHost {
 
     private noteFriendBoss(event: PartyEvent): void {
         const paid: string[] = [];
+        const roles: string[] = [];
+        const classes: number[] = [];
         for (let slot = 0; slot < PartyMaxSlots; slot++)
-            if ((event.rewarded & (1 << slot)) !== 0 && event.shares[slot] > 0 && this.encounter.members[slot].joined && !this.encounter.members[slot].guest)
+            if ((event.rewarded & (1 << slot)) !== 0 && event.shares[slot] > 0 && this.encounter.members[slot].joined && !this.encounter.members[slot].guest) {
                 paid.push(this.encounter.members[slot].playerId);
+                classes.push(this.encounter.members[slot].heroClass);
+                roles.push(chronicleRoleOf(this.encounter.members[slot].heroClass));
+            }
         if (paid.length < 2)
             return;
         for (const userId of paid)
             this.friendBosses[userId] = (this.friendBosses[userId] || 0) + 1;
+        if (coopHelpWanderersParty(roles, classes))
+            for (const userId of paid)
+                if (this.wanderers.indexOf(userId) < 0)
+                    this.wanderers.push(userId);
     }
 
     private activeReactions(): number {

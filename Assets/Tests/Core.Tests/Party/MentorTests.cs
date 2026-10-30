@@ -116,6 +116,22 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void CoopHelpPointsOfTheServerGoToTheTreeAndNeverTakeMentorPointsAway()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var before = loop.State.Tree.PointsEarned;
+            loop.Mentor.UsePerks(System.Array.Empty<string>(), 2);
+
+            loop.Mentor.UseCoopHelp(1);
+            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 2), "an old save with mentor points keeps them");
+
+            loop.Mentor.UseCoopHelp(4);
+            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 4));
+            loop.Mentor.UseCoopHelp(3);
+            Assert.That(loop.State.CoopHelpPoints, Is.EqualTo(4), "an older answer of the server takes nothing back");
+        }
+
+        [Test]
         public void TheMentorMarksAreKeptUpToTheLimit()
         {
             var loop = TestWorld.Loop(new FakeInputSource());

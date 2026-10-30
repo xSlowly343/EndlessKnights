@@ -215,14 +215,14 @@ function partyTrackRift(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: P
     const due = state.boardTicks >= Math.max(1, partyTicks(RiftServerRules.boardUpdateMs / 1000));
     const tracked = state.boardRiftId || 0;
     if (tracked !== 0 && (due || current !== tracked)) {
-        partyWriteBoard(nk, state, tracked, nowUnixMs);
+        partyWriteBoard(nk, logger, state, tracked, nowUnixMs);
         state.boardRiftId = current;
         if (current !== tracked)
             riftPartyNote(nk, state.partyId, current);
     } else if (tracked === 0 && current !== 0) {
         state.boardRiftId = current;
         riftPartyNote(nk, state.partyId, current);
-        partyWriteBoard(nk, state, current, nowUnixMs);
+        partyWriteBoard(nk, logger, state, current, nowUnixMs);
     }
     if (due) {
         state.boardTicks = 0;
@@ -231,7 +231,7 @@ function partyTrackRift(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: P
     }
 }
 
-function partyWriteBoard(nk: nkruntime.Nakama, state: PartyMatchState, riftId: number, nowUnixMs: number): void {
+function partyWriteBoard(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: PartyMatchState, riftId: number, nowUnixMs: number): void {
     if (!state.partyId)
         return;
     const host = state.host;
@@ -243,7 +243,10 @@ function partyWriteBoard(nk: nkruntime.Nakama, state: PartyMatchState, riftId: n
     const title = group ? partyMetaOf(group).title : "";
     const cleared = host.riftCleared;
     host.riftCleared = 0;
-    host.chronicle.riftDepth = Math.max(host.chronicle.riftDepth || 0, riftBoardAdd(nk, riftId, state.partyId, title, cleared, members, nowUnixMs));
+    const depth = riftBoardAdd(nk, riftId, state.partyId, title, cleared, members, nowUnixMs);
+    host.chronicle.riftDepth = Math.max(host.chronicle.riftDepth || 0, depth);
+    if (depth > 1)
+        coopHelpRift(nk, logger, members, depth - 1);
 }
 
 function partyLeaderOf(nk: nkruntime.Nakama, partyId: string): string | null {
@@ -266,7 +269,10 @@ function partyFlushChronicle(nk: nkruntime.Nakama, logger: nkruntime.Logger, sta
             members.push(member.playerId);
     for (const got of chronicleFlush(nk, logger, state.partyId, delta, members))
         logger.info("party %s: feat %s, level %d", state.partyId, got.feat, got.level);
-    walletGrantBosses(nk, logger, host.takeFriendBosses(), Date.now());
+    const bosses = host.takeFriendBosses();
+    walletGrantBosses(nk, logger, bosses, Date.now());
+    coopHelpBosses(nk, logger, bosses);
+    coopHelpWanderers(nk, logger, host.takeWanderers(), Date.now());
     walletGrantHelp(nk, logger, host.takeHelpBosses(), Date.now());
 }
 

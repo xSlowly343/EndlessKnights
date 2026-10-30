@@ -79,6 +79,7 @@ namespace Game.Core.Save
                 ("gatesCleared", WriteStages(state.GatesCleared)),
                 ("mentorPerks", Object(
                     ("coopPoints", JsonValue.Of(state.MentorCoopPoints)),
+                    ("coopHelp", JsonValue.Of(state.ServerCoopHelpPoints)),
                     ("earlyBookSlot", JsonValue.Of(state.EarlyBookSlot)))),
                 ("clanBonus", Object(
                     ("nodes", WriteIds(state.ClanBonus.Nodes)),
@@ -242,6 +243,8 @@ namespace Game.Core.Save
                 var perks = node.Field("mentorPerks");
                 state.MentorCoopPoints = perks.Field("coopPoints").AsInt(0, 100);
                 state.EarlyBookSlot = perks.Field("earlyBookSlot").AsBool();
+                if (perks.HasField("coopHelp"))
+                    state.ServerCoopHelpPoints = perks.Field("coopHelp").AsInt(0, 100);
             }
             if (node.HasField("clanBonus"))
                 ReadClanBonus(node.Field("clanBonus"), state.ClanBonus);

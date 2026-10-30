@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "maxPoints": 5,
+  "sources": {
+    "mentor": { "max": 2 },
+    "bosses": { "max": 2, "bossesPerPoint": 200 },
+    "rift": { "max": 2, "stages": [100, 200] },
+    "wanderers": { "max": 2 }
+  }
+}

@@ -192,7 +192,8 @@ namespace Game.Core.Sim
         public JewelState Jewels { get; } = new JewelState();
         public HashSet<long> GatesCleared { get; } = new HashSet<long>();
         public int MentorCoopPoints { get; set; }
-        public int CoopHelpPoints => MentorCoopPoints;
+        public int ServerCoopHelpPoints { get; set; }
+        public int CoopHelpPoints => System.Math.Max(MentorCoopPoints, ServerCoopHelpPoints);
         public bool EarlyBookSlot { get; set; }
         public ClanBonusState ClanBonus { get; } = new ClanBonusState();
         public BigNumber EnemyShieldFloor { get; set; }

@@ -74,6 +74,9 @@ namespace Game.Net.Nakama
         public async Task<MentorView> MentorAsync(CancellationToken cancel = default) =>
             MentorView.From(await Call("mentor_status", "{}", cancel).ConfigureAwait(false));
 
+        public async Task<CoopHelpView> CoopHelpAsync(CancellationToken cancel = default) =>
+            CoopHelpView.From(await Call("coop_help", "{}", cancel).ConfigureAwait(false));
+
         public async Task<MentorView> ReadyToMentorAsync(bool ready, CancellationToken cancel = default) =>
             MentorView.From(await Call("mentor_ready", NakamaJson.Object(("ready", ready ? "true" : "false")), cancel).ConfigureAwait(false));
 

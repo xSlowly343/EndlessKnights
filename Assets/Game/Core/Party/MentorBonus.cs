@@ -69,6 +69,14 @@ namespace Game.Core.Party
             _levels.SyncTreePoints();
         }
 
+        public void UseCoopHelp(int points)
+        {
+            if (points <= _state.ServerCoopHelpPoints)
+                return;
+            _state.ServerCoopHelpPoints = points;
+            _levels.SyncTreePoints();
+        }
+
         public static bool FightsBeside(PartyClient party, ulong mentorPlayer) => FightsBeside(party.Status, party.Roster, party.OwnSlot, mentorPlayer);
 
         public static bool FightsBeside(PartyLink status, in RosterMessage roster, int ownSlot, ulong mentorPlayer)

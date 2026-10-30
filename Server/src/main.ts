@@ -23,6 +23,7 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("party_report", partyReportRpc);
     initializer.registerRpc("party_chronicle", partyChronicleRpc);
     initializer.registerRpc("mentor_status", mentorStatusRpc);
+    initializer.registerRpc("coop_help", coopHelpRpc);
     initializer.registerRpc("mentor_ready", mentorReadyRpc);
     initializer.registerRpc("mentor_marks", mentorMarksRpc);
     initializer.registerRpc("clan_create", clanCreateRpc);
