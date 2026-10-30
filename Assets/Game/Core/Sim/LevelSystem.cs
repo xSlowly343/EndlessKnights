@@ -1,4 +1,5 @@
 using Game.Core.Content;
+using System.Collections.Generic;
 using Game.Core.Content.Tree;
 
 namespace Game.Core.Sim
@@ -77,10 +78,17 @@ namespace Game.Core.Sim
             SyncTreePoints();
         }
 
+        public IReadOnlyList<CommonTreeSlotRule> CommonSlots { get; set; } = System.Array.Empty<CommonTreeSlotRule>();
+
         public void SyncTreePoints()
         {
             _state.Tree.PointsEarned = System.Math.Min(_state.HeroLevel, _rules.MaxLevel) + GuardianPoints + MilestonePoints;
             _state.ClassTree.PointsEarned = _state.Tree.PointsEarned;
+            for (var slot = 0; slot < _state.CommonTrees.Count && slot < CommonSlots.Count; slot++)
+            {
+                if (_state.CommonTrees[slot] is { } common)
+                    common.PointsEarned = CommonSlots[slot].PointsAt(_state.HeroLevel);
+            }
             if (_state.RecordStage > _stages.BiomeLength)
                 _state.Ascendancy.Complete(ActivityIds.FirstGuardian);
             if (_state.Prestiges > 0)

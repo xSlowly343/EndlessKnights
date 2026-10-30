@@ -76,7 +76,7 @@ namespace Game.Core.Sim
             _resource = new ResourceSystem(data.Combat.Resources, state, hero);
             _combat = new CombatSystem(data.Combat, hero, state, Events);
             _loot = new LootSystem(data.Stages, hero, state, Events);
-            _levels = new LevelSystem(data.Combat.Hero, data.Stages, data.TreePoints, state, Events);
+            _levels = new LevelSystem(data.Combat.Hero, data.Stages, data.TreePoints, state, Events) { CommonSlots = data.TreeTemplates.CommonSlots };
             _stage = new StageSystem(data.Stages, data.Enemies, hero, state, Events, _loot, _levels);
             _combat.OnKill(_stage);
             _stage.KillTimeListener = new KillResourceSystem(state, hero, _resource, _combat);
@@ -291,12 +291,67 @@ namespace Game.Core.Sim
 
         public bool ClassTreeResetFree => State.GatesCleared.Count == 0;
 
+        public IReadOnlyList<CommonTreeSlotRule> CommonTreeSlots => _data.TreeTemplates.CommonSlots;
+
+        public bool CommonTreeSlotOpen(int slot) => slot >= 0 && slot < CommonTreeSlots.Count && CommonTreeSlots[slot].OpenAt(State.HeroLevel);
+
+        public ClassTree? CommonTreeDef(int slot) =>
+            slot >= 0 && slot < State.CommonTrees.Count && State.CommonTrees[slot] is { } allocation ? _data.CommonTreeOf(allocation.TreeId) : null;
+
+        public ClassTreeAllocation? CommonTreeAllocation(int slot) => CommonTreeDef(slot) != null ? State.CommonTrees[slot] : null;
+
+        public BigNumber CommonTreeChangeCost(int slot) =>
+            CommonTreeDef(slot) is { } tree ? ResetCost(tree, State.CommonTrees[slot]!) : BigNumber.Zero;
+
+        public CommonTreeResult ChooseCommonTree(int slot, string treeId)
+        {
+            if (!CommonTreeSlotOpen(slot))
+                return CommonTreeResult.SlotClosed;
+            if (_data.CommonTreeOf(treeId) == null)
+                return CommonTreeResult.UnknownTree;
+            for (var other = 0; other < State.CommonTrees.Count; other++)
+            {
+                if (State.CommonTrees[other]?.TreeId == treeId)
+                    return other == slot ? CommonTreeResult.SameTree : CommonTreeResult.TakenInOtherSlot;
+            }
+            var cost = CommonTreeChangeCost(slot);
+            if (State.Gold < cost)
+                return CommonTreeResult.NotEnoughGold;
+            State.Gold -= cost;
+            State.CommonTrees[slot] = new ClassTreeAllocation(treeId) { PointsEarned = CommonTreeSlots[slot].PointsAt(State.HeroLevel) };
+            RebuildTree();
+            return CommonTreeResult.Chosen;
+        }
+
+        private (ClassTree Tree, ClassTreeAllocation Allocation)? TreeOfNode(string nodeId)
+        {
+            if (ClassTreeDef is { } classTree && classTree.TryGet(nodeId, out _))
+                return (classTree, State.ClassTree);
+            for (var slot = 0; slot < State.CommonTrees.Count; slot++)
+            {
+                if (CommonTreeDef(slot) is { } tree && tree.TryGet(nodeId, out _))
+                    return (tree, State.CommonTrees[slot]!);
+            }
+            return null;
+        }
+
+        private (ClassTree Tree, ClassTreeAllocation Allocation)? TreeOfMajor(string talentId)
+        {
+            if (ClassTreeDef is { } classTree && classTree.OffersMajor(talentId))
+                return (classTree, State.ClassTree);
+            for (var slot = 0; slot < State.CommonTrees.Count; slot++)
+            {
+                if (CommonTreeDef(slot) is { } tree && tree.OffersMajor(talentId))
+                    return (tree, State.CommonTrees[slot]!);
+            }
+            return null;
+        }
+
         public RankResult RaiseNode(string nodeId)
         {
-            var tree = ClassTreeDef;
-            if (tree == null)
+            if (TreeOfNode(nodeId) is not { } found)
                 return RankResult.UnknownNode;
-            var result = State.ClassTree.Raise(tree, nodeId);
+            var result = found.Allocation.Raise(found.Tree, nodeId);
             if (result == RankResult.Done)
                 RebuildTree();
             return result;
@@ -304,35 +359,32 @@ namespace Game.Core.Sim
 
         public BigNumber? LowerCost(string nodeId)
         {
-            var tree = ClassTreeDef;
-            if (tree == null || !tree.TryGet(nodeId, out var node) || State.ClassTree.RankOf(nodeId) == 0)
+            if (TreeOfNode(nodeId) is not { } found || found.Allocation.RankOf(nodeId) == 0)
                 return null;
-            return ClassTreeResetFree ? BigNumber.Zero : tree.Respec.NodeCost(node.Row, State.HeroLevel, false);
+            return ClassTreeResetFree ? BigNumber.Zero : found.Tree.Respec.NodeCost(found.Tree[nodeId].Row, State.HeroLevel, false);
         }
 
         public RefundResult LowerNode(string nodeId)
         {
-            var tree = ClassTreeDef;
             var cost = LowerCost(nodeId);
-            if (tree == null || cost == null)
+            if (TreeOfNode(nodeId) is not { } found || cost == null)
                 return RefundResult.NotAllocated;
-            if (State.ClassTree.CheckLower(tree, nodeId) != RankResult.Done)
+            if (found.Allocation.CheckLower(found.Tree, nodeId) != RankResult.Done)
                 return RefundResult.BreaksPath;
             if (State.Gold < cost.Value)
                 return RefundResult.NotEnoughGold;
             State.Gold -= cost.Value;
-            State.ClassTree.Lower(tree, nodeId);
+            found.Allocation.Lower(found.Tree, nodeId);
             RebuildTree();
             return RefundResult.Refunded;
         }
 
-        public BigNumber ClassTreeResetCost()
+        private BigNumber ResetCost(ClassTree tree, ClassTreeAllocation allocation)
         {
-            var tree = ClassTreeDef;
-            if (tree == null || ClassTreeResetFree)
+            if (ClassTreeResetFree)
                 return BigNumber.Zero;
             var total = BigNumber.Zero;
-            foreach (var pair in State.ClassTree.Ranks)
+            foreach (var pair in allocation.Ranks)
             {
                 if (tree.TryGet(pair.Key, out var node))
                     total += tree.Respec.NodeCost(node.Row, State.HeroLevel, false) * BigNumber.FromDouble(pair.Value);
@@ -340,25 +392,35 @@ namespace Game.Core.Sim
             return total * BigNumber.FromDouble(tree.Respec.FullResetShare);
         }
 
-        public RefundResult ResetClassTree()
+        public BigNumber ClassTreeResetCost() => ClassTreeDef is { } tree ? ResetCost(tree, State.ClassTree) : BigNumber.Zero;
+
+        public RefundResult ResetClassTree() => ClassTreeDef is { } tree ? Reset(tree, State.ClassTree) : RefundResult.NotAllocated;
+
+        public BigNumber CommonTreeResetCost(int slot) => CommonTreeChangeCost(slot);
+
+        public RefundResult ResetCommonTree(int slot) => CommonTreeDef(slot) is { } tree ? Reset(tree, State.CommonTrees[slot]!) : RefundResult.NotAllocated;
+
+        private RefundResult Reset(ClassTree tree, ClassTreeAllocation allocation)
         {
-            if (ClassTreeDef == null || State.ClassTree.PointsSpent == 0)
+            if (allocation.PointsSpent == 0)
                 return RefundResult.NotAllocated;
-            var cost = ClassTreeResetCost();
+            var cost = ResetCost(tree, allocation);
             if (State.Gold < cost)
                 return RefundResult.NotEnoughGold;
             State.Gold -= cost;
-            State.ClassTree.Clear();
+            allocation.Clear();
             RebuildTree();
             return RefundResult.Refunded;
         }
 
-        public int FillClassTree()
+        public int FillTrees()
         {
-            var tree = ClassTreeDef;
-            if (tree == null)
-                return 0;
-            var raised = State.ClassTree.FillFromPlan(tree);
+            var raised = ClassTreeDef is { } classTree ? State.ClassTree.FillFromPlan(classTree) : 0;
+            for (var slot = 0; slot < State.CommonTrees.Count; slot++)
+            {
+                if (CommonTreeDef(slot) is { } tree)
+                    raised += State.CommonTrees[slot]!.FillFromPlan(tree);
+            }
             if (raised > 0)
                 RebuildTree();
             return raised;
@@ -366,10 +428,9 @@ namespace Game.Core.Sim
 
         public RankResult ChooseMajorTalent(int at, string talentId)
         {
-            var tree = ClassTreeDef;
-            if (tree == null)
+            if (TreeOfMajor(talentId) is not { } found)
                 return RankResult.UnknownMajor;
-            var result = State.ClassTree.ChooseMajor(tree, at, talentId);
+            var result = found.Allocation.ChooseMajor(found.Tree, at, talentId);
             if (result == RankResult.Done)
                 RebuildTree();
             return result;
@@ -540,7 +601,7 @@ namespace Game.Core.Sim
 
         public void SwitchPreset()
         {
-            var current = new BuildPreset(State.Tree, State.ClassTree);
+            var current = new BuildPreset(State.Tree, State.ClassTree) { CommonTrees = State.CommonTrees };
             foreach (var slot in State.Skills)
             {
                 current.Skills.Add((slot.Skill, slot.Trigger));
@@ -554,6 +615,7 @@ namespace Game.Core.Sim
                 _skills.Unequip(State.Skills.Count - 1);
             State.Tree = next.Tree;
             State.ClassTree = next.ClassTree;
+            State.CommonTrees = next.CommonTrees;
             State.OtherPreset = current;
             State.ActivePreset = 1 - State.ActivePreset;
             RebuildTree();
@@ -579,6 +641,7 @@ namespace Game.Core.Sim
         public void RebuildTree()
         {
             var modifiers = ClassTreeDef is { } tree ? ClassTreeModifiers(tree) : PassiveTreeModifiers();
+            modifiers.AddRange(CommonTreeModifiers());
             modifiers.AddRange(State.Ascendancy.Modifiers(_data.Ascendancy));
             _treeLayer.Set(modifiers);
             _jewels.Rebuild();
@@ -604,6 +667,41 @@ namespace Game.Core.Sim
             return State.ClassTree.Modifiers(tree);
         }
 
+        private List<Modifier> CommonTreeModifiers()
+        {
+            State.CommonTrees = FittedCommon(State.CommonTrees);
+            State.OtherPreset.CommonTrees = FittedCommon(State.OtherPreset.CommonTrees);
+            var modifiers = new List<Modifier>();
+            for (var slot = 0; slot < State.CommonTrees.Count; slot++)
+            {
+                if (CommonTreeDef(slot) is { } tree)
+                    modifiers.AddRange(State.CommonTrees[slot]!.Modifiers(tree));
+            }
+            return modifiers;
+        }
+
+        private List<ClassTreeAllocation?> FittedCommon(List<ClassTreeAllocation?> slots)
+        {
+            var rules = CommonTreeSlots;
+            var fitted = new List<ClassTreeAllocation?>(rules.Count);
+            for (var slot = 0; slot < rules.Count; slot++)
+            {
+                var allocation = slot < slots.Count ? slots[slot] : null;
+                var tree = allocation == null ? null : _data.CommonTreeOf(allocation.TreeId);
+                if (tree == null || !rules[slot].OpenAt(State.HeroLevel) || fitted.Exists(other => other?.TreeId == allocation!.TreeId))
+                {
+                    fitted.Add(null);
+                    continue;
+                }
+                allocation!.PointsEarned = rules[slot].PointsAt(State.HeroLevel);
+                allocation.DropInvalid(tree);
+                if (allocation.PointsSpent > allocation.PointsEarned)
+                    allocation.Clear();
+                fitted.Add(allocation);
+            }
+            return fitted;
+        }
+
         private ClassTreeAllocation Fitted(ClassTreeAllocation allocation, ClassTree tree)
         {
             if (allocation.TreeId != tree.Id)
@@ -625,6 +723,7 @@ namespace Game.Core.Sim
             _stage.UseData(data.Stages, data.Enemies);
             _loot.UseData(data.Stages);
             _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
+            _levels.CommonSlots = data.TreeTemplates.CommonSlots;
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;

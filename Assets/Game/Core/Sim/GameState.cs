@@ -38,6 +38,8 @@ namespace Game.Core.Sim
             set => _classTree = value;
         }
 
+        public List<ClassTreeAllocation?> CommonTrees { get; set; } = new List<ClassTreeAllocation?>();
+
         public bool ClassTreeActive { get; set; }
         public int TreePointsLeft => ClassTreeActive ? ClassTree.PointsLeft : Tree.PointsLeft;
         public int TreePointsSpent => ClassTreeActive ? ClassTree.PointsSpent : Tree.PointsSpent;

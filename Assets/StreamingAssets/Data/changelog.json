@@ -1,6 +1,7 @@
 {
   "version": 1,
   "entries": [
+    {"game": "1.2", "lines": {"ru": ["С 20-го и 30-го уровня — ещё два общих дерева из шести", "У общего дерева свои очки (до 70) и большие таланты", "Huscarl: 20 пассивных способностей вместо общих узлов", "Очки дерева Huscarl возвращены"], "en": ["From levels 20 and 30, two more common trees out of six", "A common tree has its own points (up to 70) and talents", "Huscarl: 20 class passives instead of common nodes", "Points of the Huscarl tree are refunded"]}},
     {"game": "1.1", "lines": {"ru": ["Huscarl: новое дерево из 50 узлов по 5 уровней", "Полоса мастерства и большие таланты 1 из 3", "Очки старого дерева Huscarl возвращены", "Сброс нового дерева бесплатный до первого Предела"], "en": ["Huscarl: a new tree of 50 nodes with 5 ranks", "A mastery bar and major talents, one of three", "Points of the old Huscarl tree are refunded", "Resetting the new tree is free until the first Limit"]}},
     {
       "game": "1.0",

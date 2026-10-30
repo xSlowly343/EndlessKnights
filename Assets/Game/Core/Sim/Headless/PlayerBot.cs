@@ -101,9 +101,10 @@ namespace Game.Core.Sim.Headless
 
         private void SpendTreePoints()
         {
+            SpendCommonTreePoints();
             if (_loop.ClassTreeDef is { } classTree)
             {
-                SpendClassTreePoints(classTree);
+                SpendRankedPoints(classTree, _loop.State.ClassTree);
                 return;
             }
             var tree = _data.Tree;
@@ -121,9 +122,41 @@ namespace Game.Core.Sim.Headless
             }
         }
 
-        private void SpendClassTreePoints(ClassTree tree)
+        private void SpendCommonTreePoints()
         {
-            var allocation = _loop.State.ClassTree;
+            for (var slot = 0; slot < _loop.CommonTreeSlots.Count; slot++)
+            {
+                if (!_loop.CommonTreeSlotOpen(slot))
+                    continue;
+                if (_loop.CommonTreeDef(slot) == null && BestCommonTree() is { } best)
+                    _loop.ChooseCommonTree(slot, best);
+                if (_loop.CommonTreeDef(slot) is { } tree)
+                    SpendRankedPoints(tree, _loop.CommonTreeAllocation(slot)!);
+            }
+        }
+
+        private string? BestCommonTree()
+        {
+            string? best = null;
+            var bestValue = double.MinValue;
+            foreach (var pair in _data.CommonTrees)
+            {
+                if (_loop.State.CommonTrees.Exists(slot => slot?.TreeId == pair.Key))
+                    continue;
+                var value = 0.0;
+                foreach (var node in pair.Value.Nodes)
+                    value += _score.Of(node.ModifiersAt(TreeTemplate.Ranks));
+                if (value > bestValue)
+                {
+                    best = pair.Key;
+                    bestValue = value;
+                }
+            }
+            return best;
+        }
+
+        private void SpendRankedPoints(ClassTree tree, ClassTreeAllocation allocation)
+        {
             while (allocation.PointsLeft > 0)
             {
                 ClassTreeNode? best = null;
@@ -143,12 +176,11 @@ namespace Game.Core.Sim.Headless
                 if (best == null || _loop.RaiseNode(best.Id) != RankResult.Done)
                     break;
             }
-            ChooseMajorTalents(tree);
+            ChooseMajorTalents(tree, allocation);
         }
 
-        private void ChooseMajorTalents(ClassTree tree)
+        private void ChooseMajorTalents(ClassTree tree, ClassTreeAllocation allocation)
         {
-            var allocation = _loop.State.ClassTree;
             foreach (var slot in tree.Majors)
             {
                 if (allocation.PointsSpent < slot.At || allocation.Majors.ContainsKey(slot.At))

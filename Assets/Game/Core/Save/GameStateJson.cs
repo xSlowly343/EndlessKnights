@@ -105,11 +105,13 @@ namespace Game.Core.Save
                 ("boundGems", WriteBoundGems(state)),
                 ("tree", WriteTree(state.Tree)),
                 ("classTree", WriteClassTree(state.ClassTree)),
+                ("commonTrees", WriteCommonTrees(state.CommonTrees)),
                 ("ascendancy", WriteAscendancy(state.Ascendancy)),
                 ("presets", Object(
                     ("active", JsonValue.Of(state.ActivePreset)),
                     ("otherTree", WriteTree(state.OtherPreset.Tree)),
                     ("otherClassTree", WriteClassTree(state.OtherPreset.ClassTree)),
+                    ("otherCommonTrees", WriteCommonTrees(state.OtherPreset.CommonTrees)),
                     ("otherSkills", JsonValue.Array(WritePresetSkills(state.OtherPreset))))),
                 ("chainDamage", SaveValues.Of(state.ChainDamage)),
                 ("queueDamage", JsonValue.Array(WriteQueueDamage(state))),
@@ -194,6 +196,7 @@ namespace Game.Core.Save
             }
             state.Tree = ReadTree(node.Field("tree"));
             state.ClassTree = ReadClassTree(node.Field("classTree"));
+            state.CommonTrees = ReadCommonTrees(node.Field("commonTrees"));
             state.Ascendancy = ReadAscendancy(node.Field("ascendancy"));
             ReadTutorial(node, state);
             ReadQueueDamage(node, state);
@@ -211,7 +214,10 @@ namespace Game.Core.Save
                 state.StartedUnixMs = (long)ReadCount(input.Field("startedUnixMs"));
             var presets = node.Field("presets");
             state.ActivePreset = presets.Field("active").AsInt(0, 1);
-            state.OtherPreset = new BuildPreset(ReadTree(presets.Field("otherTree")), ReadClassTree(presets.Field("otherClassTree")));
+            state.OtherPreset = new BuildPreset(ReadTree(presets.Field("otherTree")), ReadClassTree(presets.Field("otherClassTree")))
+            {
+                CommonTrees = ReadCommonTrees(presets.Field("otherCommonTrees"))
+            };
             foreach (var item in presets.Field("otherSkills").Items())
             {
                 if (!gems.TryGet(item.Field("gem").AsString(), out var skill) || skill.Skill == null)
@@ -730,6 +736,22 @@ namespace Game.Core.Save
                 ("ranks", JsonValue.Array(ranks)),
                 ("majors", JsonValue.Array(majors)),
                 ("plan", JsonValue.Array(plan)));
+        }
+
+        private static JsonValue WriteCommonTrees(List<ClassTreeAllocation?> slots)
+        {
+            var values = new JsonValue[slots.Count];
+            for (var i = 0; i < values.Length; i++)
+                values[i] = slots[i] is { } tree ? WriteClassTree(tree) : JsonValue.Null();
+            return JsonValue.Array(values);
+        }
+
+        private static List<ClassTreeAllocation?> ReadCommonTrees(ContentNode node)
+        {
+            var slots = new List<ClassTreeAllocation?>();
+            foreach (var item in node.Items())
+                slots.Add(item.IsNull ? null : ReadClassTree(item));
+            return slots;
         }
 
         private static ClassTreeAllocation ReadClassTree(ContentNode node)

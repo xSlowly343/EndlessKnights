@@ -5,7 +5,7 @@ namespace Game.Core.Sim.Headless
 {
     public readonly struct DayRecord
     {
-        public const string CsvHeader = "day,stage,highest_stage,record_stage,hero_level,tree_points_spent,subclass,subclass_points,prestiges,artifacts,artifact_levels,echo_earned,gold_earned_today,items_today,daily_items_today,gems_owned,shards,shards_found,uncut_found";
+        public const string CsvHeader = "day,stage,highest_stage,record_stage,hero_level,tree_points_spent,common_trees,subclass,subclass_points,prestiges,artifacts,artifact_levels,echo_earned,gold_earned_today,items_today,daily_items_today,gems_owned,shards,shards_found,uncut_found";
 
         public readonly int Day;
         public readonly long Stage;
@@ -13,6 +13,7 @@ namespace Game.Core.Sim.Headless
         public readonly long RecordStage;
         public readonly int HeroLevel;
         public readonly int TreePointsSpent;
+        public readonly string CommonTrees;
         public readonly string Subclass;
         public readonly int SubclassPoints;
         public readonly int Prestiges;
@@ -27,7 +28,7 @@ namespace Game.Core.Sim.Headless
         public readonly long ShardsFound;
         public readonly long UncutFound;
 
-        public DayRecord(int day, long stage, long highestStage, long recordStage, int heroLevel, int treePointsSpent, string subclass, int subclassPoints,
+        public DayRecord(int day, long stage, long highestStage, long recordStage, int heroLevel, int treePointsSpent, string commonTrees, string subclass, int subclassPoints,
             int prestiges, int artifacts, int artifactLevels, BigNumber echoEarned, BigNumber goldToday,
             long itemsToday, int dailyItemsToday, int gemsOwned, long shards, long shardsFound, long uncutFound)
         {
@@ -37,6 +38,7 @@ namespace Game.Core.Sim.Headless
             RecordStage = recordStage;
             HeroLevel = heroLevel;
             TreePointsSpent = treePointsSpent;
+            CommonTrees = commonTrees;
             Subclass = subclass;
             SubclassPoints = subclassPoints;
             Prestiges = prestiges;
@@ -59,6 +61,7 @@ namespace Game.Core.Sim.Headless
             RecordStage.ToString(CultureInfo.InvariantCulture),
             HeroLevel.ToString(CultureInfo.InvariantCulture),
             TreePointsSpent.ToString(CultureInfo.InvariantCulture),
+            CommonTrees,
             Subclass,
             SubclassPoints.ToString(CultureInfo.InvariantCulture),
             Prestiges.ToString(CultureInfo.InvariantCulture),

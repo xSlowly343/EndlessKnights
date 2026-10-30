@@ -80,7 +80,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.ClassTreeResetCost(), Is.EqualTo(BigNumber.Zero));
             Assert.That(loop.ResetClassTree(), Is.EqualTo(RefundResult.Refunded));
             Assert.That(loop.State.TreePointsSpent, Is.Zero);
-            Assert.That(loop.FillClassTree(), Is.EqualTo(10));
+            Assert.That(loop.FillTrees(), Is.EqualTo(10));
 
             Assert.That(loop.State.ClassTree.Ranks, Is.EquivalentTo(before));
         }
@@ -153,7 +153,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loaded.ClassTree.Majors[20], Is.EqualTo("viking_warm_up"));
             Assert.That(loaded.ClassTree.Plan.Count, Is.EqualTo(20));
             Assert.That(again.State.Tree.PointsSpent, Is.Zero, "a node of the old tree is dropped and its point comes back");
-            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(12));
+            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(13));
         }
 
         private static StatId TreeStat(string name) => new StatId(name);

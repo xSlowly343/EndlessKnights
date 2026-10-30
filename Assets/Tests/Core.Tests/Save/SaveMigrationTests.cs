@@ -205,6 +205,21 @@ namespace Game.Core.Tests.Save
         }
 
         [Test]
+        public void TwelfthVersionSaveGetsEmptyCommonTreeSlots()
+        {
+            var step = SaveMigrations.Default.Steps.Single(migration => migration.FromVersion == 12);
+            var empty = new System.Collections.Generic.Dictionary<string, JsonValue>();
+            var state = JsonEdit.Set(JsonValue.Object(empty), "presets", JsonValue.Object(empty));
+            var payload = JsonEdit.Set(JsonValue.Object(empty), "state", state);
+
+            var upgraded = step.Upgrade(payload).Fields["state"];
+
+            Assert.That(upgraded.Fields["commonTrees"].Items, Is.Empty);
+            Assert.That(upgraded.Fields["presets"].Fields["otherCommonTrees"].Items, Is.Empty);
+            Assert.That(SaveCodec.Decode(OldSave(), TestWorld.Real).State.CommonTrees, Is.Empty.Or.All.Null);
+        }
+
+        [Test]
         public void CurrentSaveSkipsMigrations()
         {
             var calls = 0;

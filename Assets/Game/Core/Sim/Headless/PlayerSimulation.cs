@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using Game.Core.Content;
 using Game.Core.Math;
 using Game.Core.Stats;
@@ -81,13 +82,24 @@ namespace Game.Core.Sim.Headless
             _goldSeen = earned;
         }
 
+        private static string CommonTrees(GameState state)
+        {
+            var parts = new List<string>();
+            foreach (var tree in state.CommonTrees)
+            {
+                if (tree != null)
+                    parts.Add(tree.TreeId + ":" + tree.PointsSpent.ToString(CultureInfo.InvariantCulture));
+            }
+            return parts.Count == 0 ? "-" : string.Join("+", parts);
+        }
+
         private static DayRecord Record(int day, GameState state, BigNumber goldToday, long itemsToday)
         {
             var levels = 0;
             foreach (var level in state.Artifacts.Values)
                 levels += level;
             var ascendancy = state.Ascendancy;
-            return new DayRecord(day, state.Stage, state.HighestStage, state.RecordStage, state.HeroLevel, state.TreePointsSpent,
+            return new DayRecord(day, state.Stage, state.HighestStage, state.RecordStage, state.HeroLevel, state.TreePointsSpent, CommonTrees(state),
                 ascendancy.Subclass ?? "-", ascendancy.Allocated.Count, state.Prestiges, state.Artifacts.Count, levels, state.EchoEarned, goldToday,
                 itemsToday, state.Drops.DailyItems, state.OwnedGems.Count, state.Drops.Shards, state.Drops.ShardsFound, state.Drops.UncutFound);
         }

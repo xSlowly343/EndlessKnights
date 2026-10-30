@@ -31,7 +31,7 @@ namespace Game.Core.Build
 
         public BuildPreset Preset(BuildPreset preset, TreeAllocation tree)
         {
-            var reforged = new BuildPreset(tree);
+            var reforged = new BuildPreset(tree) { CommonTrees = preset.CommonTrees };
             for (var i = 0; i < preset.Skills.Count; i++)
             {
                 var (skill, trigger) = preset.Skills[i];
