@@ -22,7 +22,7 @@ namespace Game.Core.Tests.Ui
         {
             var state = new GameState { Class = HeroClass.Viking, HeroLevel = 42 };
 
-            Assert.That(HeroSummary.Title(state), Is.EqualTo("Викинг · ур. 42"));
+            Assert.That(HeroSummary.Title(state), Is.EqualTo("Huscarl · ур. 42"));
         }
 
         [Test]
