@@ -21,7 +21,7 @@ namespace Game.Core.Sim
         public double OnKeyHit(out HitFlags flags)
         {
             flags = HitFlags.None;
-            if (_state.Class != HeroClass.Ronin)
+            if (!_state.Is(HeroClass.Ronin))
                 return 1;
 
             _state.Combo++;
@@ -39,7 +39,7 @@ namespace Game.Core.Sim
         {
             if (keyHits > 0 || _state.Combo == 0)
                 return;
-            if (mousePx > 0 && _state.Class == HeroClass.Ronin)
+            if (mousePx > 0 && _state.Is(HeroClass.Ronin))
                 return;
             if (_hero.Value(CombatStats.ComboHold, 0) > 0)
                 return;

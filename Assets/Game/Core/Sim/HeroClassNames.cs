@@ -5,6 +5,8 @@ namespace Game.Core.Sim
 {
     public static class HeroClassNames
     {
+        public const string Novice = "novice";
+
         public static readonly IReadOnlyDictionary<string, HeroClass> ByName = new Dictionary<string, HeroClass>(StringComparer.Ordinal)
         {
             ["viking"] = HeroClass.Viking,
@@ -23,14 +25,22 @@ namespace Game.Core.Sim
             ["captain"] = HeroClass.Captain
         };
 
+        private static readonly string[] Names = NamesByIndex();
+
         public static string Of(HeroClass heroClass)
         {
+            var index = (int)heroClass;
+            if (index < 0 || index >= Names.Length || Names[index] == null)
+                throw new ArgumentOutOfRangeException(nameof(heroClass), heroClass, "Class has no name.");
+            return Names[index];
+        }
+
+        private static string[] NamesByIndex()
+        {
+            var names = new string[Enum.GetValues(typeof(HeroClass)).Length];
             foreach (var pair in ByName)
-            {
-                if (pair.Value == heroClass)
-                    return pair.Key;
-            }
-            throw new ArgumentOutOfRangeException(nameof(heroClass), heroClass, "Class has no name.");
+                names[(int)pair.Value] = pair.Key;
+            return names;
         }
     }
 }

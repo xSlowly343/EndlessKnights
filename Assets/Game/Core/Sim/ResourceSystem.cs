@@ -8,7 +8,7 @@ namespace Game.Core.Sim
         private readonly GameState _state;
         private readonly StatSheet _hero;
         private ResourceRules _rules;
-        private HeroClass _class;
+        private string _class;
         private ClassResource _resource;
 
         public ResourceSystem(ResourceRules rules, GameState state, StatSheet hero)
@@ -16,14 +16,14 @@ namespace Game.Core.Sim
             _rules = rules;
             _state = state;
             _hero = hero;
-            _class = state.Class;
-            _resource = rules.For(HeroClassNames.Of(state.Class));
+            _class = state.ClassName;
+            _resource = rules.For(_class);
         }
 
         public void UseRules(ResourceRules rules)
         {
             _rules = rules;
-            _resource = rules.For(HeroClassNames.Of(_class));
+            _resource = rules.For(_class);
         }
 
         public double Max => System.Math.Max(0, _rules.Max + _hero.Value(CombatStats.ResourceMax, 0) - _state.ReservedResource);
@@ -34,10 +34,10 @@ namespace Game.Core.Sim
         {
             get
             {
-                if (_class != _state.Class)
+                if (!string.Equals(_class, _state.ClassName, System.StringComparison.Ordinal))
                 {
-                    _class = _state.Class;
-                    _resource = _rules.For(HeroClassNames.Of(_class));
+                    _class = _state.ClassName;
+                    _resource = _rules.For(_class);
                 }
                 return _resource;
             }

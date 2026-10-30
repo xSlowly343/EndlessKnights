@@ -74,12 +74,12 @@ namespace Game.Core.Sim
 
         public void Tick(in EffectiveInput input)
         {
-            if (_state.Class == HeroClass.PlagueDoctor)
+            if (_state.Is(HeroClass.PlagueDoctor))
                 _state.StirTurns = System.Math.Min(Rules.StirMax, _state.StirTurns + input.CircleTurns);
             StacksFromKeys(input);
             BurstAtMax();
             Miasma();
-            var fanning = _state.Class == HeroClass.Moonshiner && input.MousePx > 0 ? Rules.FanningMultiplier : 1;
+            var fanning = _state.Is(HeroClass.Moonshiner) && input.MousePx > 0 ? Rules.FanningMultiplier : 1;
             _state.DotCarry += HitsPerSecond(fanning) * GameLoop.TickSeconds;
             if (--_ticksToHit > 0)
                 return;

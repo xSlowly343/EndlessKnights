@@ -23,12 +23,16 @@ namespace Game.Core.Sim
         public long StartedUnixMs { get; set; }
         public Rng Rng { get; set; }
         public HeroClass Class { get; set; }
+        public bool ClassChosen { get; set; } = true;
+        public string ClassName => ClassChosen ? HeroClassNames.Of(Class) : HeroClassNames.Novice;
+
+        public bool Is(HeroClass heroClass) => ClassChosen && Class == heroClass;
 
         private TreeAllocation? _tree;
 
         public TreeAllocation Tree
         {
-            get => _tree ??= new TreeAllocation(HeroClassNames.Of(Class));
+            get => _tree ??= new TreeAllocation(ClassName);
             set => _tree = value;
         }
 
@@ -110,7 +114,7 @@ namespace Game.Core.Sim
 
         public BuildPreset OtherPreset
         {
-            get => _otherPreset ??= new BuildPreset(new TreeAllocation(HeroClassNames.Of(Class)));
+            get => _otherPreset ??= new BuildPreset(new TreeAllocation(ClassName));
             set => _otherPreset = value;
         }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();

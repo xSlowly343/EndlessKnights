@@ -168,7 +168,7 @@ namespace Game.Core.Sim
 
         private void Broadside(in EffectiveInput input)
         {
-            if (_state.Class != HeroClass.Captain)
+            if (!_state.Is(HeroClass.Captain))
                 return;
             var rules = _combat.Cannons;
             _state.BroadsidePx += input.MousePx;

@@ -1324,7 +1324,7 @@ namespace Game.Core.Sim
 
         private int HeadbangTicks(in EffectiveInput input)
         {
-            if (_state.Class != HeroClass.Metalhead || input.MousePx <= 0)
+            if (!_state.Is(HeroClass.Metalhead) || input.MousePx <= 0)
                 return 0;
             var pxPerSecond = _combat.Classes.HeadbangPxPerSecond;
             _state.HeadbangPx += input.MousePx;
@@ -1405,7 +1405,7 @@ namespace Game.Core.Sim
 
         private void CountCurseFlicks(in EffectiveInput input)
         {
-            if (_state.Class != HeroClass.Voodoo || input.Flicks <= 0)
+            if (!_state.Is(HeroClass.Voodoo) || input.Flicks <= 0)
                 return;
             _state.CurseFlicks = System.Math.Min(_combat.Curses.FlicksToMax, _state.CurseFlicks + input.Flicks);
         }
@@ -1812,7 +1812,7 @@ namespace Game.Core.Sim
         }
 
         private bool IsNative(SkillSlot slot) =>
-            slot.Def.Weapon != null && _weapons.TryGetType(slot.Def.Weapon, out var weapon) && weapon.HeroClass == _state.Class;
+            slot.Def.Weapon != null && _weapons.TryGetType(slot.Def.Weapon, out var weapon) && _state.Is(weapon.HeroClass);
 
         private double CooldownMultiplier() => System.Math.Max(0.1, _hero.Value(CombatStats.SkillCooldown, 1) - ResourceCooldownCut());
 

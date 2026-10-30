@@ -230,7 +230,7 @@ namespace Game.Core.Build
         {
             if (_state.OwnedGems.Count > 0)
                 return false;
-            _state.OwnedGems.AddRange(_rules.StartingGems(HeroClassNames.Of(_state.Class)));
+            _state.OwnedGems.AddRange(_rules.StartingGems(_state.ClassName));
             foreach (var gem in _state.OwnedGems)
             {
                 if (gem.Kind == GemKind.Skill)
@@ -242,6 +242,43 @@ namespace Game.Core.Build
                     AttachToFirstPaidSkill(gem);
             }
             return true;
+        }
+
+        public void GrantClassGems()
+        {
+            var placed = 0;
+            foreach (var gem in _rules.StartingGems(_state.ClassName))
+            {
+                if (_state.OwnedGems.Contains(gem))
+                    continue;
+                _state.OwnedGems.Add(gem);
+                if (gem.Kind == GemKind.Skill)
+                    placed += PlaceClassSkill(gem, placed);
+                else if (gem.Kind == GemKind.Trigger)
+                    AttachToFirstPaidSkill(gem);
+            }
+        }
+
+        private int PlaceClassSkill(GemDef skill, int position)
+        {
+            if (_state.Skills.Count >= SlotCount)
+                FreeGeneralSlot();
+            if (Equip(skill) != BookResult.Done)
+                return 0;
+            Move(_state.Skills.Count - 1, position);
+            return 1;
+        }
+
+        private void FreeGeneralSlot()
+        {
+            for (var index = _state.Skills.Count - 1; index >= 0; index--)
+            {
+                if (_state.Skills[index].Def.Weapon == null)
+                {
+                    Unequip(index);
+                    return;
+                }
+            }
         }
 
         private void AttachToFirstPaidSkill(GemDef trigger)

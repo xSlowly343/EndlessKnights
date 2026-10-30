@@ -125,7 +125,7 @@ namespace Game.Core.Sim
                     continue;
                 var level = artifact.EffectiveLevel(saved);
                 var scale = artifact.Type == ArtifactType.Meta ? 1 : 1 + boosts[(int)artifact.Type];
-                if (artifact.WorksFor(_state.Class))
+                if (artifact.Class == null || _state.Is(artifact.Class.Value))
                 {
                     foreach (var modifier in artifact.PerLevel)
                         modifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * level * scale, modifier.Tags));

@@ -3,6 +3,7 @@
   "slots": { "base": 3, "unlockAfterStages": [100, 200] },
   "sockets": { "base": 1, "recordStages": [50, 250], "rebirths": 2, "max": 5, "attributePerColoredSupport": 15 },
   "startingGems": {
+    "novice": ["through_stride", "lull"],
     "viking": ["iron_rim_bash", "no_mercy", "lull"],
     "ronin": ["thin_cut", "hundred_cuts", "lull"],
     "amazon": ["arrow_from_the_road", "through_stride", "lull"],

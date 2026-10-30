@@ -84,10 +84,16 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public void GiveClassStarter()
+        {
+            GiveStarter();
+            Rebuild();
+        }
+
         private void GiveStarter()
         {
             var weapons = _state.Weapons;
-            if (weapons.StarterGiven)
+            if (weapons.StarterGiven || !_state.ClassChosen)
                 return;
             weapons.StarterGiven = true;
             if (weapons.Right == null && weapons.Left == null)

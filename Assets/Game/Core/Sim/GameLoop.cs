@@ -206,8 +206,30 @@ namespace Game.Core.Sim
             return ticks;
         }
 
+        public bool ClassChoiceReady => !State.ClassChosen && State.HeroLevel >= _data.TreePoints.ClassChoiceLevel;
+
+        public ClassChoiceResult ChooseClass(HeroClass heroClass)
+        {
+            if (State.ClassChosen)
+                return ClassChoiceResult.AlreadyChosen;
+            if (!ClassChoiceReady)
+                return ClassChoiceResult.NotYet;
+            State.Class = heroClass;
+            State.ClassChosen = true;
+            State.Tree = new TreeAllocation(State.ClassName);
+            State.OtherPreset = new BuildPreset(new TreeAllocation(State.ClassName));
+            State.Resource = 0;
+            _levels.SyncTreePoints();
+            _weapons.GiveClassStarter();
+            _book.GrantClassGems();
+            RebuildTree();
+            return ClassChoiceResult.Chosen;
+        }
+
         public AllocationResult AllocateNode(string nodeId, string? attribute = null, int? masteryOption = null)
         {
+            if (!State.ClassChosen)
+                return AllocationResult.ChooseClassFirst;
             var result = State.Tree.Allocate(_data.Tree, nodeId, attribute, masteryOption);
             if (result == AllocationResult.Allocated)
                 RebuildTree();

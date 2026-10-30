@@ -17,6 +17,7 @@ namespace Game.Core.Sim.Headless
         private readonly double _stuckSecondsBeforePrestige;
         private const int BossFailsBeforePrestige = 1;
         private const double SlowStageSeconds = 60;
+        private readonly HeroClass _heroClass;
         private double _stuckSeconds;
         private double _stageSeconds;
         private long _stage;
@@ -27,12 +28,15 @@ namespace Game.Core.Sim.Headless
             _loop = loop;
             _stuckSecondsBeforePrestige = stuckMinutesBeforePrestige * 60;
             var heroClass = loop.State.Class;
+            _heroClass = heroClass;
             _attribute = MainAttribute(heroClass);
             _score = new NodeScore(PlayedTags(heroClass), data.Tree.Attributes);
         }
 
         public void Act(double secondsSinceLastAct)
         {
+            if (_loop.ClassChoiceReady)
+                _loop.ChooseClass(_heroClass);
             EquipStartingSkills();
             SpendTreePoints();
             SocketJewels();

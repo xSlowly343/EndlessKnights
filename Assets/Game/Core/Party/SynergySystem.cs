@@ -200,7 +200,7 @@ namespace Game.Core.Party
             for (var i = 0; i < responses.Count && i < 64; i++)
             {
                 var response = responses[i];
-                if (response.HeroClass != _state.Class || (response.Second && !second))
+                if (!_state.Is(response.HeroClass) || (response.Second && !second))
                     continue;
                 if (response.Mark == SynergyResponse.AnyMark)
                 {

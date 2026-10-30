@@ -28,6 +28,7 @@ namespace Game.Core.Save
                 ("rng", JsonValue.Array(new[] { SaveValues.Of(rng0), SaveValues.Of(rng1) })),
                 ("hero", Object(
                     ("class", JsonValue.Of(HeroClassNames.Of(state.Class))),
+                    ("classChosen", JsonValue.Of(state.ClassChosen)),
                     ("level", JsonValue.Of(state.HeroLevel)),
                     ("strikeLevel", JsonValue.Of(state.StrikeLevel)),
                     ("xp", JsonValue.Of(state.HeroXp)),
@@ -136,6 +137,7 @@ namespace Game.Core.Save
                 Tick = node.Field("tick").AsLong(0),
                 Rng = Rng.FromState(rng0, rng1),
                 Class = SaveValues.ReadEnum(hero.Field("class"), HeroClassNames.ByName),
+                ClassChosen = !hero.HasField("classChosen") || hero.Field("classChosen").AsBool(),
                 Focus = hero.Field("focus").AsNumber(0, 1e6),
                 FocusMultiplier = hero.Field("focusMultiplier").AsNumber(0, 1e6),
                 Resource = hero.Field("resource").AsNumber(0, 1e9),

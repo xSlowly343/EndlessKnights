@@ -454,7 +454,7 @@ namespace Game.Core.Sim
         {
             var catalog = _weapons.Catalog;
             var types = catalog.Types;
-            var own = OwnType;
+            WeaponType? own = _state.ClassChosen ? OwnType : null;
             var total = 0.0;
             for (var i = 0; i < types.Count; i++)
                 total += types[i] == own ? catalog.OwnTypeWeight : catalog.OtherTypeWeight;
@@ -465,7 +465,7 @@ namespace Game.Core.Sim
                 if (roll < 0)
                     return types[i];
             }
-            return own;
+            return own ?? types[types.Count - 1];
         }
 
         private WeaponType OwnType

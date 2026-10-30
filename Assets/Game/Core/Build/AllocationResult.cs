@@ -9,6 +9,7 @@ namespace Game.Core.Build
         NoPoints,
         Locked,
         ChoiceRequired,
-        BadChoice
+        BadChoice,
+        ChooseClassFirst
     }
 }

@@ -27,7 +27,7 @@ namespace Game.Bootstrap
         public StripHintView Hint => _hint;
         public BattleView View => _view;
 
-        public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Viking };
+        public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Viking, ClassChosen = false };
 
         public static BattleDriver Attach(GameObject host, GameData data, IInputSource input, GameState? state = null)
         {

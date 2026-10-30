@@ -56,13 +56,15 @@ namespace Game.Core.Content.Tree
             ["idleHours"] = PointCounter.IdleHours
         };
 
-        private TreePointRules(IReadOnlyList<PointLadder> ladders, double idleAfterSeconds)
+        private TreePointRules(IReadOnlyList<PointLadder> ladders, double idleAfterSeconds, int classChoiceLevel)
         {
             Ladders = ladders;
             IdleAfterSeconds = idleAfterSeconds;
+            ClassChoiceLevel = classChoiceLevel;
         }
 
         public double IdleAfterSeconds { get; }
+        public int ClassChoiceLevel { get; }
 
         public IReadOnlyList<PointLadder> Ladders { get; }
 
@@ -96,7 +98,7 @@ namespace Game.Core.Content.Tree
                     throw counterNode.Error($"unknown counter '{counterNode.AsString()}', expected keys, clicks, mouseKm, prestiges, recordStage, trials, gates, coopHelp or idleHours");
                 ladders.Add(new PointLadder(id, counter, ReadSteps(item.Field("steps"))));
             }
-            return new TreePointRules(ladders, root.Field("idleAfterSeconds").AsNumber(0, 3600));
+            return new TreePointRules(ladders, root.Field("idleAfterSeconds").AsNumber(0, 3600), root.Field("classChoiceLevel").AsInt(1, 100));
         }
 
         private static List<double> ReadSteps(ContentNode node)

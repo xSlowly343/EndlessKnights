@@ -1,6 +1,7 @@
 {
   "version": 1,
   "idleAfterSeconds": 10,
+  "classChoiceLevel": 2,
   "ladders": [
     { "id": "keys", "counter": "keys", "steps": [10000, 100000, 500000, 1000000, 5000000, 10000000] },
     { "id": "clicks", "counter": "clicks", "steps": [5000, 50000, 250000, 1000000, 5000000] },
