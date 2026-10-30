@@ -8,6 +8,7 @@
     "stat.bossTimerBank": { "ru": "Банк секунд для таймера босса", "en": "Boss timer seconds bank" },
     "stat.damage": { "ru": "урон", "en": "damage" },
     "stat.resourceGain": { "ru": "накопление ресурса", "en": "resource gain" },
+    "stat.secondResponse": { "ru": "второй отклик синергии", "en": "second synergy response" },
     "stat.keyHitLightning": { "ru": "молния от каждого удара", "en": "lightning on every hit" },
     "stat.offlineGold": { "ru": "золото офлайн", "en": "offline gold" },
     "stat.gold": { "ru": "золото", "en": "gold" },

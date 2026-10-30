@@ -55,6 +55,7 @@ namespace Game.Core.Content.Tree
             ["bannerAuraBonus"] = "aura",
             ["concurrentAuras"] = "aura",
             ["partyDamage"] = "party",
+            ["secondResponse"] = "party",
             ["partyGold"] = "party",
             ["loopShare"] = "party",
             ["burnDamage"] = "burn",
