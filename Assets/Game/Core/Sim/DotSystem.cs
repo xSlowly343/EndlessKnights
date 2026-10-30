@@ -10,6 +10,7 @@ namespace Game.Core.Sim
         private readonly StatSheet _hero;
         private readonly CombatSystem _combat;
         private int _ticksToHit = GameLoop.TicksPerSecond;
+        private int _miasmaTicks;
 
         public DotSystem(GameState state, StatSheet hero, CombatSystem combat)
         {
@@ -57,6 +58,7 @@ namespace Game.Core.Sim
         }
 
         public long Bursts { get; private set; }
+        public long MiasmaBursts { get; private set; }
 
         private void Detonate(double seconds)
         {
@@ -72,6 +74,7 @@ namespace Game.Core.Sim
                 _state.StirTurns = System.Math.Min(Rules.StirMax, _state.StirTurns + input.CircleTurns);
             StacksFromKeys(input);
             BurstAtMax();
+            Miasma();
             var fanning = _state.Class == HeroClass.Moonshiner && input.MousePx > 0 ? Rules.FanningMultiplier : 1;
             _state.DotCarry += HitsPerSecond(fanning) * GameLoop.TickSeconds;
             if (--_ticksToHit > 0)
@@ -107,6 +110,21 @@ namespace Game.Core.Sim
                 return;
             Bursts++;
             Detonate(seconds);
+        }
+
+        private void Miasma()
+        {
+            if (_miasmaTicks > 0)
+                _miasmaTicks--;
+            var share = _hero.Value(CombatStats.MiasmaBurstShare, 0, StatTags.DoT);
+            if (share <= 0 || _miasmaTicks > 0 || !_state.EnemyAlive || Rules.MiasmaEverySeconds <= 0)
+                return;
+            var hits = HitsPerSecond(1) * Rules.MiasmaStackSeconds * share;
+            if (hits <= 0)
+                return;
+            _miasmaTicks = (int)System.Math.Round(Rules.MiasmaEverySeconds * GameLoop.TicksPerSecond);
+            MiasmaBursts++;
+            Hit(hits);
         }
 
         private double HitsPerSecond(double fanning) =>

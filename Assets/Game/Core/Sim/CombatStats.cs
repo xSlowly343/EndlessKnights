@@ -79,6 +79,7 @@ namespace Game.Core.Sim
         public static readonly StatId DotDamage = new StatId("dotDamage");
         public static readonly StatId DotStacks = new StatId("dotStacks");
         public static readonly StatId PoisonStacks = new StatId("poisonStacks");
+        public static readonly StatId MiasmaBurstShare = new StatId("miasmaBurstShare");
         public static readonly StatId PressureDecay = new StatId("pressureDecay");
         public static readonly StatId OverheatSeconds = new StatId("overheatSeconds");
         public static readonly StatId OverheatDisabled = new StatId("overheatDisabled");
