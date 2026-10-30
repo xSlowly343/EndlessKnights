@@ -139,6 +139,41 @@ namespace Game.Core.Tests.Content
             Assert.That(Assert.Throws<ContentException>(() => TreeTemplates.Load(Templates.Replace("\"rows\": [0, 3]", "\"rows\": [2, 3]")))!.Message, Does.Contain("threshold is 0"));
         }
 
+        private static readonly string[] NewClasses = { "spinner", "rimecaller", "thornmaiden", "clayshaper" };
+
+        [Test]
+        public void EveryClassHasATreeFileWithTwentyPassivesAndTwelveMajorTalents()
+        {
+            var templates = TreeTemplates.Load(TestData.ReadGameDataFile(TreeTemplates.FileName));
+            var known = typeof(Game.Core.Sim.CombatStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+                .Where(field => field.FieldType == typeof(StatId))
+                .Select(field => ((StatId)field.GetValue(null)!).Name)
+                .Concat(new[] { "strength", "dexterity", "intelligence" })
+                .ToHashSet();
+            var classes = Game.Core.Sim.HeroClassNames.ByName.Keys.Concat(NewClasses).ToList();
+
+            Assert.That(classes.Count, Is.EqualTo(18));
+            foreach (var heroClass in classes)
+            {
+                var tree = ClassTreeLoader.Load(templates, heroClass, TestData.ReadGameDataFile(ClassTreeLoader.FileNameOf(heroClass)));
+                Assert.That(tree.Nodes.Count(node => node.Passive), Is.EqualTo(20), heroClass);
+                Assert.That(tree.Majors.Sum(slot => slot.Options.Count), Is.EqualTo(12), heroClass);
+                var stats = tree.Nodes.SelectMany(node => new[] { node.Template.First, node.Template.Second, node.Template.Third }).SelectMany(line => line.Modifiers)
+                    .Concat(tree.Majors.SelectMany(slot => slot.Options).SelectMany(option => option.Modifiers))
+                    .Select(modifier => modifier.Stat.Name);
+                Assert.That(stats.Where(stat => !known.Contains(stat)).Distinct(), Is.Empty, heroClass);
+
+                var allocation = new ClassTreeAllocation(heroClass) { PointsEarned = 180 };
+                while (allocation.PointsLeft > 0)
+                {
+                    var next = tree.Nodes.OrderByDescending(node => node.Row).FirstOrDefault(node => allocation.CheckRaise(tree, node.Id) == RankResult.Done);
+                    Assert.That(next, Is.Not.Null, heroClass);
+                    allocation.Raise(tree, next!.Id);
+                }
+                Assert.That(tree.Nodes.Where(node => node.Row == 7).Any(node => allocation.RankOf(node.Id) > 0), Is.True, heroClass);
+            }
+        }
+
         [Test]
         public void TheHuscarlTreeFromTheDesignLoadsAndAllPointsCanBeSpent()
         {
