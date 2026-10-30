@@ -248,6 +248,7 @@ function partyWriteBoard(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: 
     if (depth > 1) {
         coopHelpRift(nk, logger, members, depth - 1);
         riftMilestones(nk, logger, riftId, title, members, depth - 1 - cleared, depth - 1, nowUnixMs);
+        chronicleRiftDepth(nk, logger, state.partyId, riftId, depth - 1 - cleared, depth - 1, RiftServerRules.milestones.every, nowUnixMs);
     }
 }
 

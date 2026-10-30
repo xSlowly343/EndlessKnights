@@ -43,7 +43,7 @@ npm test
   | `rift_board` | `{ riftId }` | `{ riftId, endUnixMs, settled, parties, top: [{ place, title, depth, members, yours }], own: { place, depth, reward } \| null }` (первые `board.shown`) |
   | `mail_list` | `{}` | `{ letters: [{ id, kind, at, place, of, depth, title, reward: { shards, uncutGems, ingots, friendship }, claimed, claimedAt, gem? }], unread }` (невзятые первыми, до 50; `friendship` уже в кошельке — сервер начислил при итоге Разлома, источник `rift_place`) |
   | `mail_claim` | `{ id }` | `{ letter }`; ошибки `no such letter`, `already claimed` — каждое письмо забирается один раз |
-  | `party_chronicle` | `{}` | `{ partyId, banner, titles, stats: { bossesTogether, hoursTogether, fullOrchestra, nightBosses, riftDepth, mentorHours, guardiansTogether, synergiesOnOneEnemy }, feats: [{ id, kind, tracked, levels, level, at, progress }], records: [{ at, kind, name, feat, level }] }` (новые записи первыми) |
+  | `party_chronicle` | `{}` | `{ partyId, banner, titles, stats: { bossesTogether, hoursTogether, fullOrchestra, nightBosses, riftDepth, mentorHours, guardiansTogether, synergiesOnOneEnemy, wanderersBosses }, feats: [{ id, kind, tracked, levels, level, at, progress }], records: [{ at, kind, name, feat, level, rift? }] }` (новые записи первыми) |
 
   Значения `title`, `language`, `wanted`, `role`, `slot` берутся из `party.json` → `search`.
 - Наставник (13.35), правила — `mentor.json`. Ошибки: `too new to mentor`, `no student`, `bad request`.

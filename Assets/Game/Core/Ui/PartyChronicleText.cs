@@ -26,7 +26,7 @@ namespace Game.Core.Ui
 
         public static string Earned(long atUnixMs, int utcOffsetMinutes) => Texts.Format("chronicle.done", Day(atUnixMs, utcOffsetMinutes));
 
-        public static string Record(string kind, long atUnixMs, string name, string feat, int utcOffsetMinutes)
+        public static string Record(string kind, long atUnixMs, string name, string feat, int utcOffsetMinutes, int level = 0)
         {
             var day = Day(atUnixMs, utcOffsetMinutes);
             return kind switch
@@ -38,6 +38,7 @@ namespace Game.Core.Ui
                 "founded" => Texts.Format("chronicle.record.founded", day, name),
                 "raid" => Texts.Format("chronicle.record.raid", day),
                 "node" => Texts.Format("chronicle.record.node", day, name),
+                "rift" => Texts.Format("chronicle.record.rift", day, level),
                 _ => day
             };
         }

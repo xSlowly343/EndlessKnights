@@ -12,6 +12,7 @@
     { "id": "rift_conquerors", "kind": "riftDepth", "levels": [100, 200] },
     { "id": "inseparable", "kind": "hoursTogether", "levels": [100], "title": "inseparable" },
     { "id": "night_shift", "kind": "nightBosses", "levels": [20], "title": "owls" },
-    { "id": "teacher_and_student", "kind": "mentorHours", "levels": [10] }
+    { "id": "teacher_and_student", "kind": "mentorHours", "levels": [10] },
+    { "id": "wanderers", "kind": "wanderersBosses", "levels": [10, 100, 1000], "title": "wanderers" }
   ]
 }

@@ -219,3 +219,41 @@ test("three different synergies on one enemy make a chain reaction", () => {
   party.chronicleAdd(value, Object.assign(party.chronicleNoStats(), { synergiesOnOneEnemy: 1 }), 2000, rules);
   assert.strictEqual(value.stats.synergiesOnOneEnemy, 3, "the best enemy stays the record");
 });
+
+test("four different heroes of four roles count wanderer bosses and earn the wanderers", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  ["a", "b", "c", "d"].forEach((name, i) => host.join("user-" + name, String(11 + i)));
+  [viking, metalhead, voodoo, plagueDoctor].forEach((heroClass, slot) => host.encounter.setHeroClass(slot, heroClass));
+  killBoss(host, [0, 1, 2]);
+  assert.strictEqual(host.chronicle.wanderersBosses, 0, "three are not wanderers");
+  killBoss(host, [0, 1, 2, 3]);
+  assert.strictEqual(host.chronicle.wanderersBosses, 1);
+  assert.strictEqual(host.takeChronicle().wanderersBosses, 1);
+  assert.strictEqual(host.chronicle.wanderersBosses, 0);
+
+  const feat = rules.feats.find((f) => f.id === "wanderers");
+  const value = party.chronicleEmpty();
+  const delta = (bosses) => Object.assign(stats(0, 0, 0), { wanderersBosses: bosses });
+  assert.deepStrictEqual(plain(party.chronicleAdd(value, delta(feat.levels[0] - 1), 1000, rules)), []);
+  assert.deepStrictEqual(plain(party.chronicleAdd(value, delta(1), 2000, rules)), [{ feat: "wanderers", level: 1 }]);
+  const view = party.chronicleView("p1", value, rules);
+  assert.ok(view.titles.indexOf("wanderers") >= 0);
+  assert.strictEqual(view.stats.wanderersBosses, feat.levels[0]);
+});
+
+test("each Rift window keeps one record with the deepest milestone of the party", () => {
+  const nk = new FakeNakama();
+  nk.addUser("ann", "ann", "76561198000000000");
+  const view = JSON.parse(party.partyCreateRpc({ userId: "ann", env: {} }, logger, nk, "{}"));
+  const every = party.RiftServerRules.milestones.every;
+  const rifts = () => party.chronicleRead(nk, view.id).value.records.filter((record) => record.kind === "rift");
+
+  party.chronicleRiftDepth(nk, logger, view.id, 7, 0, every - 1, every, 1000);
+  assert.strictEqual(rifts().length, 0, "no milestone yet");
+  party.chronicleRiftDepth(nk, logger, view.id, 7, every - 1, every + 3, every, 2000);
+  party.chronicleRiftDepth(nk, logger, view.id, 7, every + 3, 2 * every + 1, every, 3000);
+  party.chronicleRiftDepth(nk, logger, view.id, 7, 2 * every + 1, 2 * every + 5, every, 4000);
+  assert.deepStrictEqual(plain(rifts().map((record) => [record.rift, record.level, record.at])), [[7, 2 * every, 3000]]);
+  party.chronicleRiftDepth(nk, logger, view.id, 8, 0, every, every, 5000);
+  assert.deepStrictEqual(plain(rifts().map((record) => [record.rift, record.level])), [[7, 2 * every], [8, every]], "the next window starts its own record");
+});

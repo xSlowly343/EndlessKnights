@@ -24,6 +24,7 @@ interface ChronicleStats {
     mentorSeconds: number;
     guardiansTogether: number;
     synergiesOnOneEnemy: number;
+    wanderersBosses: number;
 }
 
 interface ChronicleRecord {
@@ -32,6 +33,7 @@ interface ChronicleRecord {
     name: string;
     feat: string;
     level: number;
+    rift?: number;
 }
 
 interface ChronicleValue {
@@ -56,7 +58,7 @@ function chronicleTicksPerHour(): number {
 }
 
 function chronicleNoStats(): ChronicleStats {
-    return { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0, synergiesOnOneEnemy: 0 };
+    return { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0, synergiesOnOneEnemy: 0, wanderersBosses: 0 };
 }
 
 function chronicleEmpty(): ChronicleValue {
@@ -65,7 +67,7 @@ function chronicleEmpty(): ChronicleValue {
 
 function chronicleHasStats(stats: ChronicleStats): boolean {
     return stats.bossesTogether > 0 || stats.ticksTogether > 0 || stats.fullOrchestra > 0 || stats.nightBosses > 0 || stats.riftDepth > 0 || stats.mentorSeconds > 0 || stats.guardiansTogether > 0
-        || stats.synergiesOnOneEnemy > 0;
+        || stats.synergiesOnOneEnemy > 0 || stats.wanderersBosses > 0;
 }
 
 function chronicleProgress(stats: ChronicleStats, kind: string): number {
@@ -78,6 +80,7 @@ function chronicleProgress(stats: ChronicleStats, kind: string): number {
         case "mentorHours": return (stats.mentorSeconds || 0) / 3600;
         case "guardiansTogether": return stats.guardiansTogether || 0;
         case "synergiesOnOneEnemy": return stats.synergiesOnOneEnemy || 0;
+        case "wanderersBosses": return stats.wanderersBosses || 0;
         default: return 0;
     }
 }
@@ -97,6 +100,7 @@ function chronicleAdd(value: ChronicleValue, delta: ChronicleStats, now: number,
     value.stats.mentorSeconds = (value.stats.mentorSeconds || 0) + (delta.mentorSeconds || 0);
     value.stats.guardiansTogether = (value.stats.guardiansTogether || 0) + (delta.guardiansTogether || 0);
     value.stats.synergiesOnOneEnemy = Math.max(value.stats.synergiesOnOneEnemy || 0, delta.synergiesOnOneEnemy || 0);
+    value.stats.wanderersBosses = (value.stats.wanderersBosses || 0) + (delta.wanderersBosses || 0);
     const earned: ChronicleEarned[] = [];
     for (const feat of rules.feats) {
         if (!feat.tracked)
@@ -147,7 +151,8 @@ function chronicleView(partyId: string, value: ChronicleValue, rules: ChronicleR
             riftDepth: value.stats.riftDepth || 0,
             mentorHours: Math.floor((value.stats.mentorSeconds || 0) / 360) / 10,
             guardiansTogether: value.stats.guardiansTogether || 0,
-            synergiesOnOneEnemy: value.stats.synergiesOnOneEnemy || 0
+            synergiesOnOneEnemy: value.stats.synergiesOnOneEnemy || 0,
+            wanderersBosses: value.stats.wanderersBosses || 0
         },
         feats: rules.feats.map((feat) => {
             const got = value.feats[feat.id];
@@ -201,6 +206,31 @@ function chronicleNote(nk: nkruntime.Nakama, partyId: string, kind: string, user
         chronicleUpdate(nk, partyId, (value) => chronicleRecord(value, { at: now, kind: kind, name: name, feat: "", level: 0 }, ChronicleServerRules));
     } catch (error) {
         return;
+    }
+}
+
+function chronicleRiftRecord(value: ChronicleValue, riftId: number, depth: number, now: number, rules: ChronicleRules): boolean {
+    for (let i = value.records.length - 1; i >= 0; i--) {
+        const record = value.records[i];
+        if (record.kind !== "rift" || record.rift !== riftId)
+            continue;
+        if (record.level >= depth)
+            return false;
+        value.records.splice(i, 1);
+        break;
+    }
+    chronicleRecord(value, { at: now, kind: "rift", name: "", feat: "", level: depth, rift: riftId }, rules);
+    return true;
+}
+
+function chronicleRiftDepth(nk: nkruntime.Nakama, logger: nkruntime.Logger, partyId: string, riftId: number, before: number, after: number, every: number, now: number): void {
+    const reached = Math.floor(after / every) * every;
+    if (!partyId || every <= 0 || reached <= 0 || reached <= before)
+        return;
+    try {
+        chronicleUpdate(nk, partyId, (value) => chronicleRiftRecord(value, riftId, reached, now, ChronicleServerRules));
+    } catch (error) {
+        logger.warn("party %s: rift depth was not written to the chronicle: %s", partyId, String(error));
     }
 }
 
