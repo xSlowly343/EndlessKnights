@@ -34,12 +34,21 @@ namespace Game.Core.Stats
         public static string Describe(Modifier modifier)
         {
             var label = Subject(modifier);
-            return modifier.Kind switch
+            var text = modifier.Kind switch
             {
                 ModifierKind.Increased => Texts.Format("modifier.increased", Signed(modifier.Value * 100), label),
                 ModifierKind.More => Texts.Format("modifier.more", Signed(modifier.Value * 100), label),
                 _ => Texts.Format("modifier.flat", FlatAmount(modifier.Stat, modifier.Value, true), label)
             };
+            return text + ConditionSuffix(modifier.When);
+        }
+
+        public static string ConditionSuffix(ModifierCondition condition)
+        {
+            if (condition == ModifierCondition.Always)
+                return string.Empty;
+            var key = ModifierConditions.Key(condition);
+            return " " + (Texts.Has(key) ? Texts.Get(key) : ModifierConditions.MarkName(condition));
         }
 
         public static string FlatAmount(StatId stat, double value, bool signed)

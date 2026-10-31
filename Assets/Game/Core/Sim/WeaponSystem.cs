@@ -156,7 +156,7 @@ namespace Game.Core.Sim
         private static void AddScaled(List<Modifier> modifiers, IReadOnlyList<Modifier> innate, double scale)
         {
             foreach (var modifier in innate)
-                modifiers.Add(scale == 1 ? modifier : new Modifier(modifier.Stat, modifier.Kind, modifier.Value * scale, modifier.Tags));
+                modifiers.Add(scale == 1 ? modifier : modifier.WithValue(modifier.Value * scale));
         }
     }
 }

@@ -20,7 +20,16 @@ namespace Game.Core.Content
             var stat = new StatId(node.Field("stat").AsString());
             if (node.HasField("skill"))
                 stat = StatId.ForSkill(stat, node.Field("skill").AsString());
-            return new Modifier(stat, kind, node.Field("value").AsNumber(-1e6, 1e6), tags);
+            var when = node.HasField("when") ? ReadCondition(node.Field("when")) : ModifierCondition.Always;
+            return new Modifier(stat, kind, node.Field("value").AsNumber(-1e6, 1e6), tags, ModifierPool.General, when);
+        }
+
+        public static ModifierCondition ReadCondition(ContentNode node)
+        {
+            var name = node.AsString();
+            if (!ModifierConditions.TryParse(name, out var condition))
+                throw node.Error($"unknown condition '{name}'");
+            return condition;
         }
 
         public static ModifierKind ReadKind(ContentNode node)

@@ -128,9 +128,9 @@ namespace Game.Core.Sim
                 if (artifact.Class == null || _state.Is(artifact.Class.Value))
                 {
                     foreach (var modifier in artifact.PerLevel)
-                        modifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * level * scale, modifier.Tags));
+                        modifiers.Add(modifier.WithValue(modifier.Value * level * scale));
                     foreach (var modifier in artifact.PerArtifact)
-                        modifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * level * owned.Count * scale, modifier.Tags));
+                        modifiers.Add(modifier.WithValue(modifier.Value * level * owned.Count * scale));
                 }
                 modifiers.Add(General(level, allDamageBoost));
             }

@@ -26,6 +26,7 @@ namespace Game.Core.Content
         public double InputKindSeconds { get; }
         public double LongStreakSeconds { get; private set; } = double.MaxValue;
         public double LongStreakPauseSeconds { get; private set; } = 3;
+        public double BossOpeningSeconds { get; private set; } = 3;
 
         public static ConditionRules Read(ContentNode node)
         {
@@ -44,7 +45,8 @@ namespace Game.Core.Content
                 node.Field("inputKindSeconds").AsNumber(0.1, 600))
             {
                 LongStreakSeconds = longStreak.Field("seconds").AsNumber(1, 86400),
-                LongStreakPauseSeconds = longStreak.Field("pauseSeconds").AsNumber(0.1, 3600)
+                LongStreakPauseSeconds = longStreak.Field("pauseSeconds").AsNumber(0.1, 3600),
+                BossOpeningSeconds = node.HasField("bossOpeningSeconds") ? node.Field("bossOpeningSeconds").AsNumber(0, 600) : 3
             };
         }
     }

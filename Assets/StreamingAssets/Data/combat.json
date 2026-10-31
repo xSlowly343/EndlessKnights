@@ -76,6 +76,7 @@
     "afterIdle": { "pauseSeconds": 30, "seconds": 10 },
     "fastKillSeconds": 3,
     "inputKindSeconds": 10,
+    "bossOpeningSeconds": 3,
     "longStreak": { "seconds": 120, "pauseSeconds": 3 }
   },
   "encounters": {

@@ -54,6 +54,8 @@ namespace Game.Core.Content.Synergy
 
         public int LightningMarkMask => _markIndex.TryGetValue(LightningMark, out var lightning) ? 1 << lightning : 0;
 
+        public int MarkMask(string mark) => _markIndex.TryGetValue(mark, out var index) ? 1 << index : 0;
+
         public int RoleMaskOf(HeroClass heroClass) => _roleMask[(int)heroClass];
 
         public int MaskOf(IReadOnlyList<string> marks)

@@ -341,7 +341,7 @@ namespace Game.Core.Party
             for (var i = 0; i < modifiers.Count; i++)
             {
                 var modifier = modifiers[i];
-                _buffer.Add(times == 1 ? modifier : new Modifier(modifier.Stat, modifier.Kind, modifier.Value * times, modifier.Tags));
+                _buffer.Add(times == 1 ? modifier : modifier.WithValue(modifier.Value * times));
             }
         }
 

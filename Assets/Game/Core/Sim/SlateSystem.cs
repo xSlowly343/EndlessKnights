@@ -355,7 +355,7 @@ namespace Game.Core.Sim
             if (line.HeroClass != null && !_state.Is(line.HeroClass.Value))
                 return;
             foreach (var modifier in line.Modifiers)
-                into.Add(new Modifier(modifier.Stat, modifier.Kind, line.Scaled(modifier.Value, scale), modifier.Tags, ModifierPool.Tree));
+                into.Add(modifier.WithValue(line.Scaled(modifier.Value, scale)).InPool(ModifierPool.Tree));
         }
 
         public void Rebuild()

@@ -10,17 +10,34 @@ namespace Game.Core.Stats
         private readonly List<Modifier> _modifiers = new List<Modifier>();
         private readonly Dictionary<(StatId Stat, StatTags Tags), Totals> _cache = new Dictionary<(StatId, StatTags), Totals>(CacheCapacity);
 
+        private ulong _conditions;
+        private ulong _usedConditions;
+
         public int RecalculationCount { get; private set; }
+
+        public ulong Conditions => _conditions;
+
+        public void SetConditions(ulong conditions)
+        {
+            var changed = (conditions ^ _conditions) & _usedConditions;
+            _conditions = conditions;
+            if (changed != 0)
+                Invalidate();
+        }
 
         public void Add(Modifier modifier)
         {
             _modifiers.Add(modifier);
+            _usedConditions |= ModifierConditions.Bit(modifier.When);
             Invalidate();
         }
 
         public void AddRange(IEnumerable<Modifier> modifiers)
         {
+            var first = _modifiers.Count;
             _modifiers.AddRange(modifiers);
+            for (var i = first; i < _modifiers.Count; i++)
+                _usedConditions |= ModifierConditions.Bit(_modifiers[i].When);
             Invalidate();
         }
 
@@ -35,6 +52,7 @@ namespace Game.Core.Stats
         public void Clear()
         {
             _modifiers.Clear();
+            _usedConditions = 0;
             Invalidate();
         }
 
@@ -64,7 +82,7 @@ namespace Game.Core.Stats
             var more = 1.0;
             foreach (var modifier in _modifiers)
             {
-                if (!modifier.AppliesTo(stat, tags))
+                if (!modifier.AppliesTo(stat, tags) || !modifier.ActiveUnder(_conditions))
                     continue;
                 switch (modifier.Kind)
                 {

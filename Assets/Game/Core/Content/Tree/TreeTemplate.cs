@@ -56,7 +56,7 @@ namespace Game.Core.Content.Tree
             foreach (var modifier in First.Modifiers)
             {
                 if (repeats > 0)
-                    modifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * repeats, modifier.Tags));
+                    modifiers.Add(modifier.WithValue(modifier.Value * repeats));
             }
             if (rank >= 3)
                 modifiers.AddRange(Second.Modifiers);

@@ -1593,7 +1593,7 @@ namespace Game.Core.Sim
             if (scale <= 0)
                 return;
             for (var i = 0; i < modifiers.Count; i++)
-                slot.AuraModifiers.Add(new Modifier(modifiers[i].Stat, modifiers[i].Kind, modifiers[i].Value * scale, modifiers[i].Tags));
+                slot.AuraModifiers.Add(modifiers[i].WithValue(modifiers[i].Value * scale));
             _hero.AddRange(slot.AuraModifiers);
             slot.AuraApplied = true;
         }
@@ -1882,10 +1882,10 @@ namespace Game.Core.Sim
             for (var i = 0; aura != null && i < aura.Modifiers.Count; i++)
             {
                 var modifier = aura.Modifiers[i];
-                slot.AuraModifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * strength * when * slot.AuraPower * LevelPower(slot.Skill), modifier.Tags));
+                slot.AuraModifiers.Add(modifier.WithValue(modifier.Value * strength * when * slot.AuraPower * LevelPower(slot.Skill)));
             }
             for (var i = 0; i < potion.Count; i++)
-                slot.AuraModifiers.Add(new Modifier(potion[i].Stat, potion[i].Kind, potion[i].Value * slot.AuraPower * LevelPower(slot.Skill), potion[i].Tags));
+                slot.AuraModifiers.Add(potion[i].WithValue(potion[i].Value * slot.AuraPower * LevelPower(slot.Skill)));
             for (var i = 0; i < native.Count; i++)
                 slot.AuraModifiers.Add(native[i]);
             slot.AuraStrength = strength;

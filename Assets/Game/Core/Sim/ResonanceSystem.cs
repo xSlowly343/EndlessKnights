@@ -62,7 +62,7 @@ namespace Game.Core.Sim
                 if (level <= 0)
                     continue;
                 foreach (var modifier in branch.PerLevel)
-                    _modifiers.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * level, modifier.Tags));
+                    _modifiers.Add(modifier.WithValue(modifier.Value * level));
                 foreach (var milestone in branch.Milestones)
                 {
                     if (level >= milestone.Level)

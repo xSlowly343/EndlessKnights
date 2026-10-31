@@ -1,0 +1,24 @@
+namespace Game.Core.Stats
+{
+    public enum ModifierCondition : byte
+    {
+        Always,
+        Boss,
+        BossOpening,
+        ResourceAbove30,
+        ResourceAbove50,
+        ResourceAbove80,
+        ResourceFull,
+        Stun,
+        Series,
+        HunterMark,
+        Lightning,
+        Aura,
+        Curse,
+        Time,
+        Poison,
+        Fire,
+        Summon,
+        Blind
+    }
+}

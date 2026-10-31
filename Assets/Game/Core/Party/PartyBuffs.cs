@@ -189,7 +189,7 @@ namespace Game.Core.Party
                         for (var m = 0; m < effect.Modifiers.Count; m++)
                         {
                             var modifier = effect.Modifiers[m];
-                            _buffer.Add(new Modifier(modifier.Stat, modifier.Kind, modifier.Value * above, modifier.Tags));
+                            _buffer.Add(modifier.WithValue(modifier.Value * above));
                         }
                     }
                     else if (stacks != null)

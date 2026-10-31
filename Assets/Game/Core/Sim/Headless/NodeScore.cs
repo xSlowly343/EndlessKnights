@@ -7,6 +7,8 @@ namespace Game.Core.Sim.Headless
     {
         private const double MoreWeight = 3;
         private const double AttributeWeight = 0.005;
+        private const double ConditionalWeight = 0.5;
+        private const double BossOpeningWeight = 0.1;
 
         private static readonly Dictionary<string, double> Weights = new Dictionary<string, double>(System.StringComparer.Ordinal)
         {
@@ -68,7 +70,15 @@ namespace Game.Core.Sim.Headless
             }
             if (!Weights.TryGetValue(modifier.Stat.BaseName, out var weight))
                 return 0;
-            return modifier.Kind == ModifierKind.More ? modifier.Value * weight * MoreWeight : modifier.Value * weight;
+            var value = modifier.Kind == ModifierKind.More ? modifier.Value * weight * MoreWeight : modifier.Value * weight;
+            return value * Uptime(modifier.When);
         }
+
+        private static double Uptime(ModifierCondition condition) => condition switch
+        {
+            ModifierCondition.Always => 1,
+            ModifierCondition.BossOpening => BossOpeningWeight,
+            _ => ConditionalWeight
+        };
     }
 }
