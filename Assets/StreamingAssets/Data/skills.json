@@ -720,6 +720,7 @@
     },
     {
       "id": "finger_spark",
+      "formerIds": ["chain_over_the_roofs"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
@@ -731,7 +732,8 @@
       "cooldownSeconds": 3,
       "marks": ["lightning"],
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 2},
-      "native": {"when": {"resourceAtLeast": 70, "extraTargets": 1}}
+      "native": {"when": {"resourceAtLeast": 70, "extraTargets": 1}},
+      "branches": [{ "level": 5, "options": [{ "id": "bright_spark", "name": { "ru": "Яркая искра", "en": "Bright Spark" }, "damage": 1.3 }, { "id": "quick_spark", "name": { "ru": "Быстрая искра", "en": "Quick Spark" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "chain_over_the_roofs", "name": { "ru": "Цепь по крышам", "en": "Chain over the Roofs" }, "effect": { "queueTargets": 3 } }, { "id": "cheap_spark", "name": { "ru": "Искра даром", "en": "Free Spark" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "five_fingers", "name": { "ru": "Пять пальцев", "en": "Five Fingers" }, "damage": 0.9, "effect": { "queueTargets": 3, "queueMultiplier": 1.5 } }, { "id": "one_finger", "name": { "ru": "Один палец", "en": "One Finger" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "fathers_scimitar",
@@ -1725,10 +1727,10 @@
     },
     {
       "id": "lantern_at_a_distance",
+      "formerIds": ["cloak_of_all_clouds"],
       "kind": "active",
       "weapon": "storm_wand",
-      "tier": "common",
-      "role": "fast",
+      "tier": "rare",
       "color": "green",
       "name": {"ru": "Фонарь на расстоянии", "en": "Lantern at a Distance"},
       "tags": ["Mouse", "Skill"],
@@ -1737,10 +1739,12 @@
       "durationSeconds": 8,
       "marks": ["lightning"],
       "effect": {"type": "inputHits", "pxPerHit": 300, "pxShare": 1},
-      "native": {"resourceOnHit": 1}
+      "native": {"resourceOnHit": 1},
+      "branches": [{ "level": 5, "options": [{ "id": "brighter_lantern", "name": { "ru": "Ярче фонарь", "en": "Brighter Lantern" }, "effect": { "pxShare": 1.3 } }, { "id": "closer_lantern", "name": { "ru": "Ближе фонарь", "en": "Closer Lantern" }, "effect": { "pxPerHit": 240 } }] }, { "level": 15, "options": [{ "id": "cloak_of_all_clouds", "name": { "ru": "Плащ из всех туч", "en": "Cloak of All Clouds" }, "duration": 1.5 }, { "id": "quick_lantern", "name": { "ru": "Быстрый фонарь", "en": "Quick Lantern" }, "cooldown": 0.75 }] }, { "level": 25, "options": [{ "id": "lighthouse", "name": { "ru": "Маяк", "en": "Lighthouse" }, "cooldown": 1.3, "effect": { "pxShare": 1.7 } }, { "id": "swinging_lantern", "name": { "ru": "Качающийся фонарь", "en": "Swinging Lantern" }, "cost": 1.25, "effect": { "pxPerHit": 200 } }] }]
     },
     {
       "id": "snap",
+      "formerIds": ["lightning_rod"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
@@ -1752,13 +1756,15 @@
       "cooldownSeconds": 2,
       "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 2 },
-      "native": { "resourceOnCast": 3 }
+      "native": { "resourceOnCast": 3 },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_snap", "name": { "ru": "Звонкий щелчок", "en": "Louder Snap" }, "damage": 1.3 }, { "id": "quick_snap", "name": { "ru": "Быстрый щелчок", "en": "Quick Snap" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "lightning_rod", "name": { "ru": "Громоотвод", "en": "Lightning Rod" }, "effect": { "queueTargets": 2, "queueMultiplier": 1.5 } }, { "id": "free_snap", "name": { "ru": "Щелчок даром", "en": "Free Snap" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "thunder_snap", "name": { "ru": "Щелчок грома", "en": "Thunder Snap" }, "damage": 1.7, "cooldown": 1.25 }, { "id": "double_snap", "name": { "ru": "Двойной щелчок", "en": "Double Snap" }, "effect": { "queueTargets": 1, "queueMultiplier": 1 } }] }]
     },
     {
       "id": "lantern_wick",
+      "formerIds": ["lamplighter"],
       "kind": "active",
       "weapon": "storm_wand",
-      "tier": "common",
+      "tier": "rare",
       "role": "fast",
       "color": "green",
       "name": { "ru": "Фитиль фонаря", "en": "Lantern Wick" },
@@ -1767,10 +1773,12 @@
       "cooldownSeconds": 4,
       "durationSeconds": 5,
       "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "strikeMultiplier": 3, "tags": ["Skill"] },
-      "native": { "durationMultiplier": 2 }
+      "native": { "durationMultiplier": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_wick", "name": { "ru": "Длинный фитиль", "en": "Longer Wick" }, "effect": { "strikeMultiplier": 4 } }, { "id": "quick_wick", "name": { "ru": "Быстрый фитиль", "en": "Quick Wick" }, "cooldown": 0.7 }] }, { "level": 15, "options": [{ "id": "lamplighter", "name": { "ru": "Фонарщик", "en": "Lamplighter" }, "effect": { "damageTaken": 0.15 } }, { "id": "slow_wick", "name": { "ru": "Медленный фитиль", "en": "Slow Wick" }, "duration": 1.6 }] }, { "level": 25, "options": [{ "id": "blazing_wick", "name": { "ru": "Пылающий фитиль", "en": "Blazing Wick" }, "cooldown": 1.3, "effect": { "damageTaken": 0.2 } }, { "id": "lantern_row", "name": { "ru": "Ряд фонарей", "en": "Row of Lanterns" }, "cost": 1.25, "effect": { "strikeMultiplier": 6 } }] }]
     },
     {
       "id": "short_circuit",
+      "formerIds": ["clouds_gather"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
@@ -1782,7 +1790,8 @@
       "cooldownSeconds": 20,
       "marks": ["lightning"],
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "resourceOnHit": 2 }
+      "native": { "resourceOnHit": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_circuit", "name": { "ru": "Длинное замыкание", "en": "Longer Circuit" }, "effect": { "hits": 8 } }, { "id": "hot_circuit", "name": { "ru": "Горячее замыкание", "en": "Hot Circuit" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "clouds_gather", "name": { "ru": "Тучи копятся", "en": "Clouds Gather" }, "cooldown": 0.7 }, { "id": "cheap_circuit", "name": { "ru": "Замыкание даром", "en": "Free Circuit" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "burnt_fuse", "name": { "ru": "Сгоревший предохранитель", "en": "Burnt Fuse" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "circuit_down_the_line", "name": { "ru": "Замыкание по очереди", "en": "Circuit Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "strike_the_spire",
@@ -1797,26 +1806,12 @@
       "cooldownSeconds": 25,
       "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 10 },
-      "native": { "when": {"resourceAtLeast": 70, "multiplier": 1.4} }
-    },
-    {
-      "id": "clouds_gather",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "common",
-      "role": "heavy",
-      "color": "green",
-      "name": { "ru": "Тучи копятся", "en": "The Clouds Gather" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 25,
-      "durationSeconds": 6,
-      "marks": ["lightning"],
-      "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "modifiers": [{"stat": "overloadDisabled", "kind": "flat", "value": 1}] }
+      "native": { "when": {"resourceAtLeast": 70, "multiplier": 1.4} },
+      "branches": [{ "level": 5, "options": [{ "id": "higher_spire", "name": { "ru": "Выше шпиль", "en": "Higher Spire" }, "damage": 1.3 }, { "id": "quick_spire", "name": { "ru": "Быстрый шпиль", "en": "Quick Spire" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "iron_spire", "name": { "ru": "Железный шпиль", "en": "Iron Spire" }, "cooldown": 1.2, "effect": { "multiplier": 13 } }, { "id": "light_spire", "name": { "ru": "Лёгкий шпиль", "en": "Light Spire" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "cathedral_spire", "name": { "ru": "Шпиль собора", "en": "Cathedral Spire" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "spire_to_spire", "name": { "ru": "Со шпиля на шпиль", "en": "Spire to Spire" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "smell_of_ozone",
+      "formerIds": ["woollen_cloak"],
       "kind": "aura",
       "weapon": "storm_wand",
       "tier": "common",
@@ -1827,78 +1822,12 @@
       "cooldownSeconds": 20,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Mouse"]}] },
-      "native": { "resourceOnCast": 10 }
-    },
-    {
-      "id": "wet_wires",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Мокрые провода", "en": "Wet Wires" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 10, "multiplier": 2 },
-      "native": { "resourceOnHit": 3 }
-    },
-    {
-      "id": "woollen_cloak",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Шерстяной плащ", "en": "Woollen Cloak" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Skill"]}] },
-      "native": { "when": {"resourceAtLeast": 50, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Skill"]}]} }
-    },
-    {
-      "id": "grey_sparks",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Седые искры", "en": "Grey Sparks" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.05}] },
-      "native": { "resourceOnCrit": 2 }
-    },
-    {
-      "id": "lamplighter",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Фонарщик", "en": "Lamplighter" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "resourceOnKill": 3 }
-    },
-    {
-      "id": "lightning_rod",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "rare",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Громоотвод", "en": "Lightning Rod" },
-      "tags": ["Skill"],
-      "cost": { "resource": 25 },
-      "cooldownSeconds": 8,
-      "marks": ["lightning"],
-      "effect": { "type": "strike", "multiplier": 3, "queueTargets": 3, "queueMultiplier": 3.6 },
-      "native": { "resourceOnKill": 5 }
+      "native": { "resourceOnCast": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "sharp_ozone", "name": { "ru": "Резкий озон", "en": "Sharp Ozone" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Mouse"] }] } }, { "id": "faint_ozone", "name": { "ru": "Лёгкий озон", "en": "Faint Ozone" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "woollen_cloak", "name": { "ru": "Шерстяной плащ", "en": "Woollen Cloak" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Mouse"] }, { "stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Skill"] }] } }, { "id": "long_ozone", "name": { "ru": "Долгий озон", "en": "Lingering Ozone" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "storm_smell", "name": { "ru": "Запах грозы", "en": "Smell of the Storm" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Mouse"] }, { "stat": "critChance", "kind": "flat", "value": 0.05 }] } }, { "id": "ozone_all_day", "name": { "ru": "Озон весь день", "en": "Ozone All Day" }, "cooldown": 1.3, "duration": 2 }] }]
     },
     {
       "id": "dry_air",
+      "formerIds": ["electricity_in_the_air"],
       "kind": "aura",
       "weapon": "storm_wand",
       "tier": "rare",
@@ -1908,10 +1837,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "aura", "modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.1}], "reserve": 20 },
-      "native": { "modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.1}] }
+      "native": { "modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.1}] },
+      "branches": [{ "level": 5, "options": [{ "id": "drier_air", "name": { "ru": "Суше воздух", "en": "Drier Air" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.13 }] } }, { "id": "thin_air", "name": { "ru": "Разреженный воздух", "en": "Thin Air" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "electricity_in_the_air", "name": { "ru": "Электричество в воздухе", "en": "Electricity in the Air" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.11 }, { "stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Skill"] }] } }, { "id": "static_air", "name": { "ru": "Статика", "en": "Static" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.11 }, { "stat": "critChance", "kind": "flat", "value": 0.03 }] } }] }, { "level": 25, "options": [{ "id": "desert_air", "name": { "ru": "Воздух пустыни", "en": "Desert Air" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.16 }], "reserve": 30 } }, { "id": "breeze", "name": { "ru": "Ветерок", "en": "Breeze" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.08 }], "reserve": 10 } }] }]
     },
     {
       "id": "peal_of_thunder",
+      "formerIds": ["hail_shower"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "rare",
@@ -1923,29 +1854,15 @@
       "cooldownSeconds": 25,
       "marks": ["lightning"],
       "effect": {"type": "strike", "multiplier": 8, "bossTimerStopSeconds": 3},
-      "native": {"when": {"resourceAtLeast": 90, "multiplier": 1.5}}
-    },
-    {
-      "id": "chain_over_the_roofs",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "rare",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Цепь по крышам", "en": "Chain over the Roofs" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 5,
-      "marks": ["lightning"],
-      "effect": { "type": "strike", "multiplier": 4, "queueTargets": 2 },
-      "native": { "resourceOnKill": 5 }
+      "native": {"when": {"resourceAtLeast": 90, "multiplier": 1.5}},
+      "branches": [{ "level": 5, "options": [{ "id": "louder_peal", "name": { "ru": "Громче раскат", "en": "Louder Peal" }, "damage": 1.3 }, { "id": "quick_peal", "name": { "ru": "Быстрый раскат", "en": "Quick Peal" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "hail_shower", "name": { "ru": "Ливень с градом", "en": "Hail Shower" }, "effect": { "queueTargets": 2 } }, { "id": "long_peal", "name": { "ru": "Долгий раскат", "en": "Long Peal" }, "effect": { "bossTimerStopSeconds": 4 } }] }, { "level": 25, "options": [{ "id": "rolling_thunder", "name": { "ru": "Гром с перекатами", "en": "Rolling Thunder" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "cheap_peal", "name": { "ru": "Раскат даром", "en": "Free Peal" }, "cost": 0.6 }] }]
     },
     {
       "id": "tethered_ball",
+      "formerIds": ["wet_wires"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "rare",
-      "role": "fast",
       "color": "green",
       "name": { "ru": "Шаровая на привязи", "en": "Tethered Ball Lightning" },
       "tags": ["Skill"],
@@ -1954,25 +1871,12 @@
       "durationSeconds": 6,
       "marks": ["lightning"],
       "effect": { "type": "pulse", "everySeconds": 0.5, "multiplier": 1 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 1.6666666666666667} }
-    },
-    {
-      "id": "hail_shower",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "green",
-      "name": { "ru": "Ливень с градом", "en": "Hail Shower" },
-      "tags": ["Skill"],
-      "cost": { "resource": 50 },
-      "cooldownSeconds": 30,
-      "marks": ["lightning"],
-      "effect": { "type": "strike", "multiplier": 12, "queueTargets": 2 },
-      "native": { "when": {"resourceAtLeast": 90, "multiplier": 1.5} }
+      "native": { "when": {"mouseMoving": true, "multiplier": 1.6666666666666667} },
+      "branches": [{ "level": 5, "options": [{ "id": "brighter_ball", "name": { "ru": "Ярче шар", "en": "Brighter Ball" }, "effect": { "multiplier": 1.3 } }, { "id": "faster_ball", "name": { "ru": "Быстрее шар", "en": "Faster Ball" }, "effect": { "everySeconds": 0.4 } }] }, { "level": 15, "options": [{ "id": "wet_wires", "name": { "ru": "Мокрые провода", "en": "Wet Wires" }, "duration": 1.5 }, { "id": "cheap_ball", "name": { "ru": "Шар даром", "en": "Free Ball" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "long_tether", "name": { "ru": "Длинная привязь", "en": "Long Tether" }, "duration": 1.8, "cooldown": 1.3 }, { "id": "ball_down_the_line", "name": { "ru": "Шар по очереди", "en": "Ball Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "rod_on_the_roof",
+      "formerIds": ["old_cloak"],
       "kind": "aura",
       "weapon": "storm_wand",
       "tier": "rare",
@@ -1982,36 +1886,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "aura", "modifiers": [{"stat": "overloadMultiplier", "kind": "increased", "value": 0.3}], "reserve": 20 },
-      "native": { "modifiers": [{"stat": "overloadMultiplier", "kind": "increased", "value": 0.2}] }
-    },
-    {
-      "id": "electricity_in_the_air",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "rare",
-      "color": "green",
-      "name": { "ru": "Электричество в воздухе", "en": "Electricity in the Air" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "keys", "every": 25, "multiplier": 5, "queueTargets": 3 },
-      "native": { "resourceOnHit": 5 }
-    },
-    {
-      "id": "old_cloak",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "rare",
-      "color": "green",
-      "name": { "ru": "Старый плащ", "en": "Old Cloak" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "overloadMultiplier", "kind": "increased", "value": 1}] },
-      "native": { "modifiers": [{"stat": "overloadMultiplier", "kind": "increased", "value": 0.5}] }
+      "native": { "modifiers": [{"stat": "overloadMultiplier", "kind": "increased", "value": 0.2}] },
+      "branches": [{ "level": 5, "options": [{ "id": "taller_rod", "name": { "ru": "Выше громоотвод", "en": "Taller Rod" }, "effect": { "modifiers": [{ "stat": "overloadMultiplier", "kind": "increased", "value": 0.4 }] } }, { "id": "light_rod", "name": { "ru": "Лёгкий громоотвод", "en": "Light Rod" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "old_cloak", "name": { "ru": "Старый плащ", "en": "Old Cloak" }, "effect": { "modifiers": [{ "stat": "overloadMultiplier", "kind": "increased", "value": 0.35 }, { "stat": "damage", "kind": "increased", "value": 0.05 }] } }, { "id": "copper_rod", "name": { "ru": "Медный громоотвод", "en": "Copper Rod" }, "effect": { "modifiers": [{ "stat": "overloadMultiplier", "kind": "increased", "value": 0.3 }, { "stat": "resourceGain", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "rod_on_every_roof", "name": { "ru": "Громоотвод на каждой крыше", "en": "A Rod on Every Roof" }, "effect": { "modifiers": [{ "stat": "overloadMultiplier", "kind": "increased", "value": 0.5 }], "reserve": 30 } }, { "id": "bent_rod", "name": { "ru": "Гнутый громоотвод", "en": "Bent Rod" }, "effect": { "modifiers": [{ "stat": "overloadMultiplier", "kind": "increased", "value": 0.2 }], "reserve": 10 } }] }]
     },
     {
       "id": "cloud_cloak",
+      "formerIds": ["tension"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "epic",
@@ -2024,10 +1904,12 @@
       "durationSeconds": 10,
       "marks": ["lightning"],
       "effect": {"type": "pulse", "everySeconds": 0.5, "multiplier": 2},
-      "native": {"mouseEverySeconds": 0.3}
+      "native": {"mouseEverySeconds": 0.3},
+      "branches": [{ "level": 5, "options": [{ "id": "thicker_cloak", "name": { "ru": "Плотнее туча", "en": "Thicker Cloud" }, "effect": { "multiplier": 2.5 } }, { "id": "quicker_cloak", "name": { "ru": "Чаще разряды", "en": "More Discharges" }, "effect": { "everySeconds": 0.4 } }] }, { "level": 15, "options": [{ "id": "tension", "name": { "ru": "Напряжение", "en": "Tension" }, "duration": 1.4 }, { "id": "cheap_cloak", "name": { "ru": "Туча даром", "en": "Free Cloud" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "thundercloud", "name": { "ru": "Грозовая туча", "en": "Thundercloud" }, "cooldown": 1.3, "effect": { "multiplier": 3.2 } }, { "id": "cloak_over_the_queue", "name": { "ru": "Туча над очередью", "en": "Cloud over the Queue" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "weather_over_the_edge",
+      "formerIds": ["stopped_thunder"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "epic",
@@ -2040,7 +1922,8 @@
       "durationSeconds": 12,
       "marks": ["lightning"],
       "effect": {"type": "queueHits", "share": 0.5, "targets": 1},
-      "native": {"modifiers": [{"stat": "overloadKeep", "kind": "flat", "value": 0.7}]}
+      "native": {"modifiers": [{"stat": "overloadKeep", "kind": "flat", "value": 0.7}]},
+      "branches": [{ "level": 5, "options": [{ "id": "rough_weather", "name": { "ru": "Ненастье", "en": "Rough Weather" }, "effect": { "share": 0.6 } }, { "id": "quick_weather", "name": { "ru": "Быстрая перемена", "en": "Quick Change" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "stopped_thunder", "name": { "ru": "Остановленный гром", "en": "Stopped Thunder" }, "duration": 1.4 }, { "id": "light_weather", "name": { "ru": "Лёгкая погода", "en": "Light Weather" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "storm_season", "name": { "ru": "Сезон штормов", "en": "Storm Season" }, "cooldown": 1.3, "effect": { "share": 0.75 } }, { "id": "weather_for_two", "name": { "ru": "Погода на двоих", "en": "Weather for Two" }, "effect": { "targets": 2, "share": 0.4 } }] }]
     },
     {
       "id": "lightning_in_the_back",
@@ -2055,23 +1938,8 @@
       "cooldownSeconds": 6,
       "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"resourceAtLeast": 80, "executeBelow": 0.2} }
-    },
-    {
-      "id": "discharge_after_discharge",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "epic",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Разряд за разрядом", "en": "Discharge after Discharge" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 8,
-      "durationSeconds": 10,
-      "marks": ["lightning"],
-      "effect": { "type": "keyRepeat", "every": 1, "multiplier": 2, "hits": 5 },
-      "native": { "resourceOnHit": 4 }
+      "native": { "when": {"resourceAtLeast": 80, "executeBelow": 0.2} },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_strike", "name": { "ru": "Точнее в спину", "en": "Truer Strike" }, "damage": 1.3 }, { "id": "quick_strike", "name": { "ru": "Быстрая молния", "en": "Quick Bolt" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "discharge_in_the_back", "name": { "ru": "Разряд в спину", "en": "Discharge in the Back" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_strike", "name": { "ru": "Молния даром", "en": "Free Bolt" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "final_bolt", "name": { "ru": "Последняя молния", "en": "Final Bolt" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "white_bolt", "name": { "ru": "Белая молния", "en": "White Bolt" }, "damage": 1.7 }] }]
     },
     {
       "id": "storm_over_the_square",
@@ -2085,23 +1953,12 @@
       "cooldownSeconds": 40,
       "durationSeconds": 15,
       "effect": { "type": "aura", "modifiers": [{"stat": "chainTargets", "kind": "flat", "value": 2}] },
-      "native": { "modifiers": [{"stat": "overloadDisabled", "kind": "flat", "value": 1}] }
-    },
-    {
-      "id": "tension",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "epic",
-      "color": "green",
-      "name": { "ru": "Напряжение", "en": "Tension" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 2, "maxSteps": 50, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.01}] },
-      "native": { "when": {"resourceAtLeast": 90, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}]} }
+      "native": { "modifiers": [{"stat": "overloadDisabled", "kind": "flat", "value": 1}] },
+      "branches": [{ "level": 5, "options": [{ "id": "wider_storm", "name": { "ru": "Шире гроза", "en": "Wider Storm" }, "duration": 1.3 }, { "id": "quick_storm", "name": { "ru": "Быстрая гроза", "en": "Quick Storm" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "storm_over_the_market", "name": { "ru": "Гроза над рынком", "en": "Storm over the Market" }, "effect": { "modifiers": [{ "stat": "chainTargets", "kind": "flat", "value": 2 }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }, { "id": "light_storm", "name": { "ru": "Лёгкая гроза", "en": "Light Storm" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "storm_over_the_city", "name": { "ru": "Гроза над городом", "en": "Storm over the City" }, "cooldown": 1.4, "effect": { "modifiers": [{ "stat": "chainTargets", "kind": "flat", "value": 3 }] } }, { "id": "long_storm", "name": { "ru": "Долгая гроза", "en": "Long Storm" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "forked_lightning",
+      "formerIds": ["the_sky_obeys"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "legendary",
@@ -2113,10 +1970,12 @@
       "cooldownSeconds": 8,
       "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 15, "queueTargets": 3 },
-      "native": { "when": {"resourceAtLeast": 90, "free": true} }
+      "native": { "when": {"resourceAtLeast": 90, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "brighter_fork", "name": { "ru": "Ярче вилка", "en": "Brighter Fork" }, "damage": 1.3 }, { "id": "quick_fork", "name": { "ru": "Быстрая вилка", "en": "Quick Fork" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "the_sky_obeys", "name": { "ru": "Небо слушается", "en": "The Sky Obeys" }, "effect": { "queueMultiplier": 1.5 } }, { "id": "light_fork", "name": { "ru": "Лёгкая вилка", "en": "Light Fork" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "thousand_forks", "name": { "ru": "Тысяча вилок", "en": "Thousand Forks" }, "damage": 0.9, "effect": { "queueMultiplier": 2 } }, { "id": "single_bolt", "name": { "ru": "Одна молния", "en": "Single Bolt" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "storm_over_the_rim",
+      "formerIds": ["living_lightning_rod"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "legendary",
@@ -2128,23 +1987,12 @@
       "cooldownSeconds": 45,
       "marks": ["lightning"],
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 10 }
-    },
-    {
-      "id": "living_lightning_rod",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "legendary",
-      "color": "green",
-      "name": { "ru": "Живой громоотвод", "en": "Living Lightning Rod" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "overloadMultiplier", "kind": "increased", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.15}] },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}] }
+      "native": { "resourceOnKill": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_storm", "name": { "ru": "Дольше шторм", "en": "Longer Storm" }, "effect": { "hits": 36 } }, { "id": "heavier_storm", "name": { "ru": "Тяжелее шторм", "en": "Heavier Storm" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "living_lightning_rod", "name": { "ru": "Живой громоотвод", "en": "Living Lightning Rod" }, "cooldown": 0.75 }, { "id": "open_storm", "name": { "ru": "Открытый шторм", "en": "Open Storm" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "storm_of_the_age", "name": { "ru": "Шторм века", "en": "Storm of the Age" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "eye_of_the_storm", "name": { "ru": "Глаз бури", "en": "Eye of the Storm" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "lightning_on_a_clear_day",
+      "formerIds": ["grey_sparks"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "mythic",
@@ -2156,10 +2004,12 @@
       "cooldownSeconds": 4,
       "marks": ["lightning"],
       "effect": { "type": "strike", "multiplier": 20, "critChance": 1 },
-      "native": { "when": {"resourceAtLeast": 90, "free": true} }
+      "native": { "when": {"resourceAtLeast": 90, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "clearer_day", "name": { "ru": "Ещё яснее", "en": "Even Clearer" }, "damage": 1.3 }, { "id": "quick_flash", "name": { "ru": "Быстрая вспышка", "en": "Quick Flash" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "grey_sparks", "name": { "ru": "Седые искры", "en": "Grey Sparks" }, "cost": 0.5 }, { "id": "second_flash", "name": { "ru": "Вторая вспышка", "en": "Second Flash" }, "effect": { "queueTargets": 1 } }] }, { "level": 25, "options": [{ "id": "blinding_flash", "name": { "ru": "Ослепительная вспышка", "en": "Blinding Flash" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "flash_down_the_line", "name": { "ru": "Вспышка по очереди", "en": "Flash Down the Line" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "night_without_lanterns",
+      "formerIds": ["discharge_after_discharge"],
       "kind": "active",
       "weapon": "storm_wand",
       "tier": "mythic",
@@ -2172,48 +2022,8 @@
       "durationSeconds": 5,
       "marks": ["lightning"],
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 5, "queueTargets": 3 },
-      "native": { "modifiers": [{"stat": "overloadDisabled", "kind": "flat", "value": 1}], "durationMultiplier": 3 }
-    },
-    {
-      "id": "stopped_thunder",
-      "kind": "aura",
-      "weapon": "storm_wand",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "green",
-      "name": { "ru": "Остановленный гром", "en": "Stopped Thunder" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 90,
-      "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}, {"stat": "damage", "kind": "more", "value": 1, "tags": ["Skill"]}] },
-      "native": { "when": {"resourceAtLeast": 90, "durationMultiplier": 1.5} }
-    },
-    {
-      "id": "cloak_of_all_clouds",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "mythic",
-      "color": "green",
-      "name": { "ru": "Плащ из всех туч", "en": "Cloak of All Clouds" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 10, "maxSteps": 5, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.05}], "from": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Skill"]}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}] }
-    },
-    {
-      "id": "the_sky_obeys",
-      "kind": "active",
-      "weapon": "storm_wand",
-      "tier": "mythic",
-      "color": "green",
-      "name": { "ru": "Небо слушается", "en": "The Sky Obeys" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "any", "every": 10, "multiplier": 10, "queueTargets": 3 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.4285714285714286} }
+      "native": { "modifiers": [{"stat": "overloadDisabled", "kind": "flat", "value": 1}], "durationMultiplier": 3 },
+      "branches": [{ "level": 5, "options": [{ "id": "darker_night", "name": { "ru": "Темнее ночь", "en": "Darker Night" }, "effect": { "multiplier": 6 } }, { "id": "longer_night", "name": { "ru": "Дольше ночь", "en": "Longer Night" }, "duration": 1.3 }] }, { "level": 15, "options": [{ "id": "discharge_after_discharge", "name": { "ru": "Разряд за разрядом", "en": "Discharge after Discharge" }, "cooldown": 0.75 }, { "id": "cheap_night", "name": { "ru": "Ночь даром", "en": "Free Night" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "polar_night", "name": { "ru": "Полярная ночь", "en": "Polar Night" }, "duration": 1.6, "cooldown": 1.3 }, { "id": "single_lantern", "name": { "ru": "Один фонарь", "en": "Single Lantern" }, "effect": { "multiplier": 8, "queueTargets": 1 } }] }]
     },
     {
       "id": "oasis_silence",
