@@ -264,7 +264,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void GemWithUnknownMarkIsReported()
         {
-            var gems = Game.Core.Content.Gems.GemCatalog.Load(TestData.ReadGameDataFile("gems.json").Replace(@"""marks"": [""curse""]", @"""marks"": [""frost""]"));
+            var gems = Game.Core.Content.Gems.GemCatalog.Load(TestData.ReadGameDataFile("skills.json").Replace(@"""marks"": [""curse""]", @"""marks"": [""frost""]"));
 
             var error = Assert.Throws<ContentException>(() => Rules.RequireGemMarks(gems))!;
 

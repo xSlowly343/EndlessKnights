@@ -11,7 +11,7 @@ PREVIEW_COLUMNS = 12
 PREVIEW_LABEL = 22
 PREVIEW_BACKGROUND = "#1B2236"
 PREVIEW_TEXT = "#E6E9F0"
-GEMS_PATH = "Assets/StreamingAssets/Data/gems.json"
+GEMS_PATH = "Assets/StreamingAssets/Data/skills.json"
 
 
 def hex_rgba(value, alpha=255):

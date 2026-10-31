@@ -190,9 +190,9 @@ namespace Game.Core.Tests.Content
         {
             var levels = GemCatalog.Load(RealFile()).Levels;
 
-            Assert.That(levels.Max, Is.EqualTo(20));
+            Assert.That(levels.Max, Is.EqualTo(25));
             Assert.That(levels.EffectMultiplier(1), Is.EqualTo(1));
-            Assert.That(levels.EffectMultiplier(20), Is.EqualTo(1.38).Within(1e-9));
+            Assert.That(levels.EffectMultiplier(25), Is.EqualTo(1.48).Within(1e-9));
             Assert.That(levels.Experience.At(2).ToDouble(), Is.GreaterThan(levels.Experience.At(1).ToDouble()));
         }
 
@@ -259,7 +259,7 @@ namespace Game.Core.Tests.Content
         {
             var error = Assert.Throws<ContentException>(() => GemCatalog.Load(WithExtraGem(gem)))!;
 
-            Assert.That(error.Message, Does.Contain("gems.json: " + message));
+            Assert.That(error.Message, Does.Contain("skills.json: " + message));
         }
     }
 }

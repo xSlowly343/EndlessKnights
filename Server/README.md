@@ -87,7 +87,7 @@ npm test
   | `ghost_thanks` | `{ userId, bosses }` (1–100, `userId` — хозяин последнего взятого призрака) | `{ granted }` — сколько Знаков получил хозяин; ошибки `not your ghost`, `bad request` |
 
   Знаки за боссов вместе начисляет матч отряда сам, за место в таблице Разлома — итог Разлома (`rift_place`), за помощь по зову — матч гостю (`help_call`).
-- Подарки гемами (14а.18), правила — `party.json` → `gifts`, список даримых гемов — `gems.json` без `ascendancy`. Ошибки: `bad request`, `this gem cannot be gifted`, `this player does not take gifts from you`, `no gifts left today`, `already gifted this friend today`, `this friend got enough gifts today`, `not enough friendship`, `the gift was not sent, try again`.
+- Подарки гемами (14а.18), правила — `party.json` → `gifts`, список даримых гемов — `skills.json` без `ascendancy`. Ошибки: `bad request`, `this gem cannot be gifted`, `this player does not take gifts from you`, `no gifts left today`, `already gifted this friend today`, `this friend got enough gifts today`, `not enough friendship`, `the gift was not sent, try again`.
 
   | RPC | Запрос | Ответ |
   |---|---|---|

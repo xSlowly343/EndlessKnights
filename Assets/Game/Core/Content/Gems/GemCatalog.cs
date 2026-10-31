@@ -6,7 +6,7 @@ namespace Game.Core.Content.Gems
 {
     public sealed class GemCatalog
     {
-        public const string FileName = "gems.json";
+        public const string FileName = "skills.json";
         public const int SupportedVersion = 2;
         public const double MinBranchMultiplier = 0.01;
         public const double MaxBranchMultiplier = 100;
