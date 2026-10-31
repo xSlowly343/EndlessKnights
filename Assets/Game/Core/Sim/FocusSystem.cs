@@ -57,10 +57,16 @@ namespace Game.Core.Sim
 
         private void Drop()
         {
-            if (_state.Focus > _rules.Min && !MacroDetected)
-                _state.FocusDropped = _state.Focus - _rules.Min;
-            _state.Focus = _rules.Min;
+            var floor = MacroDetected ? _rules.Min : IdleFloor();
+            if (_state.Focus <= floor)
+                return;
+            if (!MacroDetected)
+                _state.FocusDropped = _state.Focus - floor;
+            _state.Focus = floor;
         }
+
+        private double IdleFloor() =>
+            System.Math.Max(_rules.Min, System.Math.Min(_state.Focus, Max * System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.FocusIdleFloor, 0)))));
 
         private void TickRelay()
         {
@@ -99,7 +105,7 @@ namespace Game.Core.Sim
         }
 
         private double Events(in EffectiveInput input) =>
-            input.Keys + input.Clicks + input.MousePx / _rules.MousePxPerEvent;
+            input.Keys + input.Clicks + input.MousePx / _rules.MousePxPerEvent * System.Math.Max(0, _hero.Value(CombatStats.FocusFromMouse, 1, StatTags.Mouse));
 
         public double Max => System.Math.Max(_rules.Min, _rules.Max + _hero.Value(CombatStats.FocusMax, 0) + CountBonus());
 

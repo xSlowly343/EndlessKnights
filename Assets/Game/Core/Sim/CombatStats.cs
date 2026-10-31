@@ -263,5 +263,17 @@ namespace Game.Core.Sim
         public static readonly StatId SlateEffect = new StatId("slateEffect");
         public static readonly StatId SlateChance = new StatId("slateChance");
         public static readonly StatId SlateRarity = new StatId("slateRarity");
+        public static readonly StatId FirstHitCrit = new StatId("firstHitCrit");
+        public static readonly StatId PauseCrit = new StatId("pauseCrit");
+        public static readonly StatId CritBurstEvery = new StatId("critBurstEvery");
+        public static readonly StatId CritBurstMultiplier = new StatId("critBurstMultiplier");
+        public static readonly StatId ResourcePerFastKill = new StatId("resourcePerFastKill");
+        public static readonly StatId LongStreakPauseSeconds = new StatId("longStreakPauseSeconds");
+        public static readonly StatId MouseQueueShare = new StatId("mouseQueueShare");
+        public static readonly StatId FocusFromMouse = new StatId("focusFromMouse");
+        public static readonly StatId FocusIdleFloor = new StatId("focusIdleFloor");
+        public static readonly StatId DustGain = new StatId("dustGain");
+        public static readonly StatId ReactionEffect = new StatId("reactionEffect");
+        public static readonly StatId ReactionResource = new StatId("reactionResource");
     }
 }

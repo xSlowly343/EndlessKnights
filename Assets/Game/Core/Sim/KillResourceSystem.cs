@@ -25,11 +25,20 @@ namespace Game.Core.Sim
             if (saved <= 0)
                 return;
             GainSand(saved);
+            OnFastKill();
             if (type == EnemyType.Normal && !shared)
             {
                 Bank(saved);
                 BankFastKill();
             }
+        }
+
+        private void OnFastKill()
+        {
+            _state.AfterFastKillTicks = (int)System.Math.Round(_combat.Conditions.AfterFastKillSeconds * GameLoop.TicksPerSecond);
+            var resource = _hero.Value(CombatStats.ResourcePerFastKill, 0);
+            if (resource > 0)
+                _resource.Gain(resource * _hero.Value(CombatStats.ResourceGain, 1));
         }
 
         private void BankFastKill()

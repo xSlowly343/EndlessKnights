@@ -38,6 +38,17 @@ namespace Game.Core.Stats
         AllyBond,
         AllyBlood,
         Reading,
-        HasResource
+        HasResource,
+        FocusFull,
+        BossLowHp,
+        BossTimerEnd,
+        AnyAllyMark,
+        TwoMarks,
+        InParty,
+        AfterFastKill,
+        AfterCircle,
+        AfterFlick,
+        MouseMoving,
+        LongStreak
     }
 }
