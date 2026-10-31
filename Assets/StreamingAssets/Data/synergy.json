@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon"],
+  "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon", "blind"],
   "roles": {
     "viking": "dd", "ronin": "dd", "amazon": "dd", "stormweaver": "dd", "nomad": "dd",
     "metalhead": "buffer", "oracle": "buffer", "bannerbearer": "buffer",
@@ -9,7 +9,7 @@
     "gravedigger": "summon", "captain": "summon"
   },
   "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
-  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark" },
+  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind" },
   "secondResponseStat": "secondResponse",
   "allyPoisonStacks": 25,
   "responses": [

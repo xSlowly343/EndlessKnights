@@ -25,6 +25,8 @@ namespace Game.Core.Sim
                 return AncestorShield(ref flags);
             if (_state.Is(HeroClass.Amazon))
                 return HunterMarkHit();
+            if (_state.Is(HeroClass.Nomad))
+                return SandHit();
             if (!_state.Is(HeroClass.Ronin))
                 return 1;
 
@@ -94,6 +96,18 @@ namespace Game.Core.Sim
                 _state.HunterMarkTicks = _state.EnemyAlive ? _state.HunterMarkTicks - 1 : 0;
         }
 
+        private double SandHit()
+        {
+            if (_rules.Sand.Every <= 0 || ++_state.KeysTowardBlind < BlindEvery)
+                return 1;
+            _state.KeysTowardBlind = 0;
+            if (_state.EnemyAlive)
+                _state.BlindTicks = System.Math.Max(_state.BlindTicks, (int)System.Math.Round((_rules.Sand.Seconds + _hero.Value(CombatStats.BlindSeconds, 0)) * GameLoop.TicksPerSecond));
+            return 1;
+        }
+
+        public int BlindEvery => System.Math.Max(_rules.Sand.EveryMin, (int)System.Math.Round(_rules.Sand.Every + _hero.Value(CombatStats.BlindEvery, 0, StatTags.Keyboard)));
+
         public int ShieldEvery => System.Math.Max(_rules.ShieldEveryMin, (int)System.Math.Round(_rules.ShieldEvery + _hero.Value(CombatStats.ShieldEvery, 0, StatTags.Keyboard)));
 
         public int StrikeEvery
@@ -116,6 +130,8 @@ namespace Game.Core.Sim
             if (_state.StunTicks > 0)
                 _state.StunTicks = _state.EnemyAlive ? _state.StunTicks - 1 : 0;
             TickHunterMark();
+            if (_state.BlindTicks > 0)
+                _state.BlindTicks = _state.EnemyAlive ? _state.BlindTicks - 1 : 0;
             Clockwork();
             EndCombo(keyHits, mousePx);
         }

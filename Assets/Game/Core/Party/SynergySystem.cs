@@ -102,6 +102,7 @@ namespace Game.Core.Party
                 return;
             _responses = responses;
             _perMarkCount = perMarkCount;
+            _state.CompanionMarks = perMarkCount;
             _reactions = reactions;
             _constellations = constellations;
             Rebuild();
@@ -181,6 +182,8 @@ namespace Game.Core.Party
                 marks |= sources.Stun;
             if (_state.EnemyAlive && _state.HunterMarkTicks > 0)
                 marks |= sources.HunterMark;
+            if (_state.EnemyAlive && _state.BlindTicks > 0)
+                marks |= sources.Blind;
             return marks;
         }
 
@@ -208,7 +211,7 @@ namespace Game.Core.Party
                     continue;
                 if (response.Mark == SynergyResponse.AnyMark)
                 {
-                    var count = System.Math.Min(response.MaxMarks, BitCount(AllyMarks));
+                    var count = System.Math.Min(response.MaxMarks + CompanionLimit(), BitCount(CompanionMarks()));
                     if (count == 0)
                         continue;
                     if (response.PerMark)
@@ -220,6 +223,11 @@ namespace Game.Core.Party
             }
             return active;
         }
+
+        private int CompanionLimit() => System.Math.Max(0, (int)System.Math.Round(_hero.Value(CombatStats.CompanionLimit, 0)));
+
+        private int CompanionMarks() =>
+            _hero.Value(CombatStats.CompanionOwnMark, 0) >= 1 ? AllyMarks | (OwnMarks & _rules.StateMarks.Blind) : AllyMarks;
 
         private ulong ActiveConstellations(int players, out bool noCooldown)
         {

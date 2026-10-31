@@ -46,6 +46,7 @@ namespace Game.Core.Save
                     ("killsTowardRise", JsonValue.Of(state.KillsTowardRise)),
                     ("keysTowardShield", JsonValue.Of(state.KeysTowardShield)),
                     ("keysTowardMark", JsonValue.Of(state.KeysTowardMark)),
+                    ("keysTowardBlind", JsonValue.Of(state.KeysTowardBlind)),
                     ("keyHits", JsonValue.Of(state.KeyHits)),
                     ("comboIdleTicks", JsonValue.Of(state.ComboIdleTicks)))),
                 ("stage", Object(
@@ -163,6 +164,7 @@ namespace Game.Core.Save
                 KillsTowardRise = hero.HasField("killsTowardRise") ? hero.Field("killsTowardRise").AsInt(0, 1_000_000) : 0,
                 KeysTowardShield = hero.HasField("keysTowardShield") ? hero.Field("keysTowardShield").AsInt(0, 1_000_000) : 0,
                 KeysTowardMark = hero.HasField("keysTowardMark") ? hero.Field("keysTowardMark").AsInt(0, 1_000_000) : 0,
+                KeysTowardBlind = hero.HasField("keysTowardBlind") ? hero.Field("keysTowardBlind").AsInt(0, 1_000_000) : 0,
                 KeyHits = hero.Field("keyHits").AsLong(0),
                 ComboIdleTicks = hero.Field("comboIdleTicks").AsLong(0),
                 Stage = stage.Field("current").AsLong(1),
