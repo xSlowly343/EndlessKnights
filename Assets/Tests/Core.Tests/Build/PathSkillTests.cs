@@ -143,7 +143,7 @@ namespace Game.Core.Tests.Build
         public void LockedSkillNeedsAWeapon()
         {
             var json = Content.TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"gems\": [",
-                "\"gems\": [\n    { \"id\": \"x\", \"kind\": \"skill\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"locked\": true },");
+                "\"gems\": [\n    { \"id\": \"x\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"locked\": true },");
 
             Assert.That(() => GemCatalog.Load(json), Throws.TypeOf<ContentException>().With.Message.Contains("class skill"));
         }

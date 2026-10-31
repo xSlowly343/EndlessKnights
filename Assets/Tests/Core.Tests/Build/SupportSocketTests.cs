@@ -136,7 +136,7 @@ namespace Game.Core.Tests.Build
         public void SupportWithoutItsMechanicWaits()
         {
             var catalog = GemCatalog.Load(TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"gems\": [",
-                "\"gems\": [\n    { \"id\": \"echo_keys\", \"kind\": \"support\", \"color\": \"white\", \"name\": { \"ru\": \"Эхо\", \"en\": \"Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\" } },"));
+                "\"gems\": [\n    { \"id\": \"echo_keys\", \"kind\": \"support\", \"supports\": [\"Skill\"], \"damageMult\": 1, \"manaMult\": 1, \"color\": \"white\", \"name\": { \"ru\": \"Эхо\", \"en\": \"Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\" } },"));
             var loop = Hero();
             var slot = Equip(loop, "iron_rim_bash");
             loop.State.OwnedGems.Add(catalog["echo_keys"]);

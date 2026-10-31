@@ -81,6 +81,16 @@ namespace Game.Core.Content
 
         public bool IsNull => _value.Kind == JsonKind.Null;
 
+        public ContentNode MergedWith(ContentNode overrides)
+        {
+            RequireKind(JsonKind.Object, "an object");
+            overrides.RequireKind(JsonKind.Object, "an object");
+            var fields = new Dictionary<string, JsonValue>(_value.Fields);
+            foreach (var field in overrides._value.Fields)
+                fields[field.Key] = field.Value;
+            return new ContentNode(JsonValue.Object(fields), overrides.FileName, overrides.Path);
+        }
+
         public string AsString()
         {
             RequireKind(JsonKind.String, "a string");

@@ -7,8 +7,14 @@ namespace Game.Core.Content.Gems
     {
         public GemDef(string id, GemKind kind, GemColor color, string nameRu, string nameEn, StatTags tags,
             SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null, IReadOnlyDictionary<string, double>? requires = null,
-            string? ascendancy = null, bool locked = false, SupportDef? support = null)
+            string? ascendancy = null, bool locked = false, SupportDef? support = null, SkillType? type = null,
+            IReadOnlyList<SkillBranchTier>? branches = null, StatTags supports = StatTags.None, double damageMultiplier = 1, double manaMultiplier = 1)
         {
+            Type = type ?? TypeOf(kind, skill);
+            Branches = branches ?? System.Array.Empty<SkillBranchTier>();
+            Supports = supports;
+            DamageMultiplier = damageMultiplier;
+            ManaMultiplier = manaMultiplier;
             Support = support;
             Requires = requires ?? new Dictionary<string, double>();
             Id = id;
@@ -26,6 +32,13 @@ namespace Game.Core.Content.Gems
             Ascendancy = ascendancy;
             Locked = locked;
         }
+
+        public static SkillType TypeOf(GemKind kind, SkillDef? skill) => kind switch
+        {
+            GemKind.Support => SkillType.Support,
+            GemKind.Trigger => SkillType.Trigger,
+            _ => skill?.Effect is AuraEffect ? SkillType.Aura : SkillType.Active
+        };
 
         public static int NetIdOf(string id)
         {
@@ -54,5 +67,12 @@ namespace Game.Core.Content.Gems
         public IReadOnlyDictionary<string, double> Requires { get; }
         public string? Ascendancy { get; }
         public bool Locked { get; }
+        public SkillType Type { get; }
+        public IReadOnlyList<SkillBranchTier> Branches { get; }
+        public StatTags Supports { get; }
+        public double DamageMultiplier { get; }
+        public double ManaMultiplier { get; }
+
+        public bool CanSupport(GemDef skill) => Type == SkillType.Support && (skill.Type == SkillType.Active || skill.Type == SkillType.Aura) && (skill.Tags & Supports) == Supports;
     }
 }

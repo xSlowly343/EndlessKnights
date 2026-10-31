@@ -1,11 +1,11 @@
 {
-  "version": 1,
+  "version": 2,
   "levels": { "max": 20, "effectPerLevel": 0.02, "experience": { "curve": "exp", "base": 100, "rate": 1.3 }, "experiencePerKill": 4 },
   "gems": [
     {
       "id": "iron_rim_bash",
       "formerIds": ["shield_bash"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "role": "fast",
@@ -20,7 +20,7 @@
     {
       "id": "no_mercy",
       "formerIds": ["odins_fury"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "epic",
       "role": "heavy",
@@ -36,7 +36,7 @@
     {
       "id": "hearth_song",
       "formerIds": ["song"],
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "tier": "common",
       "role": "fast",
@@ -52,7 +52,7 @@
     {
       "id": "louder",
       "formerIds": ["guitar_solo"],
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "tier": "epic",
       "role": "heavy",
@@ -69,7 +69,7 @@
     {
       "id": "roar_from_the_door",
       "formerIds": ["battle_cry"],
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "axe",
       "tier": "rare",
       "color": "red",
@@ -84,7 +84,7 @@
     {
       "id": "hatchet_toss",
       "formerIds": ["throwing_axe"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "role": "fast",
@@ -99,7 +99,7 @@
     {
       "id": "forge_heat",
       "formerIds": ["blood_harvest"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "rare",
       "color": "red",
@@ -113,7 +113,7 @@
     {
       "id": "anvil",
       "formerIds": ["shield_wall"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "rare",
       "role": "heavy",
@@ -130,7 +130,7 @@
     {
       "id": "long_winter",
       "formerIds": ["ragnarok_roar"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "epic",
       "role": "heavy",
@@ -147,7 +147,7 @@
     {
       "id": "nail_chord",
       "formerIds": ["power_chord"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "common",
       "role": "fast",
@@ -162,7 +162,7 @@
     {
       "id": "colossus_lullaby",
       "formerIds": ["ballad"],
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "tier": "rare",
       "color": "red",
@@ -177,7 +177,7 @@
     {
       "id": "whole_hall",
       "formerIds": ["mosh_pit"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "rare",
       "role": "heavy",
@@ -193,7 +193,7 @@
     {
       "id": "underside_amp",
       "formerIds": ["amp_eleven"],
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "tier": "rare",
       "color": "red",
@@ -207,7 +207,7 @@
     {
       "id": "still_alive",
       "formerIds": ["stage_dive"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "epic",
       "role": "heavy",
@@ -222,7 +222,7 @@
     {
       "id": "through_stride",
       "formerIds": ["stenography"],
-      "kind": "skill",
+      "kind": "active",
       "color": "red",
       "name": { "ru": "Сквозной Ход", "en": "Through Stride" },
       "tags": ["Keyboard", "Skill"],
@@ -232,7 +232,7 @@
     },
     {
       "id": "key_drum",
-      "kind": "skill",
+      "kind": "active",
       "color": "red",
       "name": { "ru": "Дробь клавиш", "en": "Key Drumroll" },
       "tags": ["Keyboard", "Skill"],
@@ -243,7 +243,7 @@
     },
     {
       "id": "overheat",
-      "kind": "skill",
+      "kind": "aura",
       "color": "red",
       "name": { "ru": "Перегрев", "en": "Overheat" },
       "tags": ["Aura", "Skill"],
@@ -254,7 +254,7 @@
     },
     {
       "id": "space_hammer",
-      "kind": "skill",
+      "kind": "active",
       "color": "red",
       "name": { "ru": "Пробел-молот", "en": "Space Hammer" },
       "tags": ["Keyboard", "Skill"],
@@ -266,7 +266,7 @@
     {
       "id": "no_breather",
       "formerIds": ["caps_rage"],
-      "kind": "skill",
+      "kind": "active",
       "color": "red",
       "name": { "ru": "Без передышки", "en": "No Breather" },
       "tags": ["Keyboard", "Skill"],
@@ -278,7 +278,7 @@
     {
       "id": "step_back",
       "formerIds": ["typo"],
-      "kind": "skill",
+      "kind": "active",
       "color": "red",
       "name": { "ru": "Шаг назад", "en": "Step Back" },
       "tags": ["Keyboard", "Skill"],
@@ -289,7 +289,7 @@
     {
       "id": "quick_stride",
       "formerIds": ["typist"],
-      "kind": "skill",
+      "kind": "aura",
       "color": "red",
       "name": { "ru": "Частый Ход", "en": "Quickened Stride" },
       "tags": ["Aura", "Skill"],
@@ -301,7 +301,7 @@
     {
       "id": "double_grip",
       "formerIds": ["hotkeys"],
-      "kind": "skill",
+      "kind": "active",
       "color": "red",
       "name": { "ru": "Двойной хват", "en": "Double Grip" },
       "tags": ["Keyboard", "Skill"],
@@ -312,7 +312,7 @@
     {
       "id": "steady_pace",
       "formerIds": ["touch_typing"],
-      "kind": "skill",
+      "kind": "active",
       "color": "red",
       "name": { "ru": "Ровный шаг", "en": "Steady Pace" },
       "tags": ["Keyboard", "Skill"],
@@ -322,7 +322,7 @@
     },
     {
       "id": "hurricane",
-      "kind": "skill",
+      "kind": "active",
       "color": "green",
       "name": { "ru": "Ураган", "en": "Hurricane" },
       "tags": ["Mouse", "Skill"],
@@ -333,7 +333,7 @@
     },
     {
       "id": "dash",
-      "kind": "skill",
+      "kind": "active",
       "color": "green",
       "name": { "ru": "Рывок", "en": "Dash" },
       "tags": ["Mouse", "Skill"],
@@ -344,7 +344,7 @@
     },
     {
       "id": "lasso",
-      "kind": "skill",
+      "kind": "aura",
       "color": "green",
       "name": { "ru": "Лассо", "en": "Lasso" },
       "tags": ["Aura", "Skill"],
@@ -356,7 +356,7 @@
     },
     {
       "id": "pendulum_strike",
-      "kind": "skill",
+      "kind": "active",
       "color": "green",
       "name": { "ru": "Маятниковый удар", "en": "Pendulum Strike" },
       "tags": ["Mouse", "Skill"],
@@ -367,7 +367,7 @@
     },
     {
       "id": "long_road",
-      "kind": "skill",
+      "kind": "active",
       "color": "green",
       "name": { "ru": "Дальний путь", "en": "Long Road" },
       "tags": ["Mouse", "Skill"],
@@ -377,7 +377,7 @@
     },
     {
       "id": "comet_trail",
-      "kind": "skill",
+      "kind": "active",
       "color": "green",
       "name": { "ru": "След кометы", "en": "Comet Trail" },
       "tags": ["Mouse", "Skill"],
@@ -388,7 +388,7 @@
     },
     {
       "id": "blade_whirl",
-      "kind": "skill",
+      "kind": "active",
       "color": "green",
       "name": { "ru": "Вихрь клинков", "en": "Blade Whirl" },
       "tags": ["Mouse", "Skill"],
@@ -399,7 +399,7 @@
     },
     {
       "id": "tailwind",
-      "kind": "skill",
+      "kind": "aura",
       "color": "green",
       "name": { "ru": "Ветер в спину", "en": "Wind at Your Back" },
       "tags": ["Aura", "Skill"],
@@ -409,7 +409,7 @@
     },
     {
       "id": "lightning_zigzag",
-      "kind": "skill",
+      "kind": "active",
       "color": "green",
       "name": { "ru": "Зигзаг молнии", "en": "Lightning Zigzag" },
       "tags": ["Mouse", "Skill"],
@@ -420,7 +420,7 @@
     },
     {
       "id": "mark",
-      "kind": "skill",
+      "kind": "aura",
       "color": "blue",
       "name": { "ru": "Метка", "en": "Mark" },
       "tags": ["Aura", "Skill"],
@@ -431,7 +431,7 @@
     },
     {
       "id": "weak_spot",
-      "kind": "skill",
+      "kind": "aura",
       "color": "blue",
       "name": { "ru": "Слабое место", "en": "Weak Spot" },
       "tags": ["Aura", "Skill"],
@@ -442,7 +442,7 @@
     },
     {
       "id": "execute",
-      "kind": "skill",
+      "kind": "active",
       "color": "blue",
       "name": { "ru": "Казнь", "en": "Execute" },
       "tags": ["Skill"],
@@ -452,7 +452,7 @@
     },
     {
       "id": "exposure",
-      "kind": "skill",
+      "kind": "aura",
       "color": "blue",
       "name": { "ru": "Разоблачение", "en": "Exposure" },
       "tags": ["Aura", "Skill"],
@@ -464,7 +464,7 @@
     },
     {
       "id": "boss_hunt",
-      "kind": "skill",
+      "kind": "active",
       "color": "blue",
       "name": { "ru": "Охота на босса", "en": "Boss Hunt" },
       "tags": ["Skill"],
@@ -474,7 +474,7 @@
     },
     {
       "id": "ricochet",
-      "kind": "skill",
+      "kind": "active",
       "color": "blue",
       "name": { "ru": "Рикошет", "en": "Ricochet" },
       "tags": ["Skill"],
@@ -484,7 +484,7 @@
     },
     {
       "id": "lucky_coin",
-      "kind": "skill",
+      "kind": "active",
       "color": "blue",
       "name": { "ru": "Счастливая монета", "en": "Lucky Coin" },
       "tags": ["Skill"],
@@ -494,7 +494,7 @@
     },
     {
       "id": "composure",
-      "kind": "skill",
+      "kind": "active",
       "color": "blue",
       "name": { "ru": "Выдержка", "en": "Composure" },
       "tags": ["Skill"],
@@ -504,7 +504,7 @@
     },
     {
       "id": "freeze_frame",
-      "kind": "skill",
+      "kind": "aura",
       "color": "blue",
       "name": { "ru": "Стоп-кадр", "en": "Freeze Frame" },
       "tags": ["Aura", "Skill"],
@@ -515,7 +515,7 @@
     },
     {
       "id": "march",
-      "kind": "skill",
+      "kind": "aura",
       "color": "blue",
       "name": { "ru": "Марш", "en": "March" },
       "tags": ["Aura", "Skill"],
@@ -527,7 +527,7 @@
     {
       "id": "charm_prick",
       "formerIds": ["voodoo_needle"],
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "role": "fast",
@@ -542,7 +542,7 @@
     },
     {
       "id": "stretch_second",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "role": "fast",
@@ -558,7 +558,7 @@
     },
     {
       "id": "cannon_by_name",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "role": "fast",
@@ -571,7 +571,7 @@
     },
     {
       "id": "call_a_colleague",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "common",
       "role": "fast",
@@ -584,7 +584,7 @@
     },
     {
       "id": "thin_cut",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "role": "fast",
@@ -598,7 +598,7 @@
     },
     {
       "id": "hundred_cuts",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "epic",
       "role": "heavy",
@@ -613,7 +613,7 @@
     },
     {
       "id": "no_rush",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "role": "fast",
@@ -628,7 +628,7 @@
     },
     {
       "id": "kitchen_rhythm",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "rare",
       "color": "red",
@@ -642,7 +642,7 @@
     },
     {
       "id": "what_remains_of_the_debt",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "rare",
       "color": "red",
@@ -655,7 +655,7 @@
     },
     {
       "id": "sweep_over_the_queue",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "epic",
       "role": "heavy",
@@ -669,7 +669,7 @@
     },
     {
       "id": "slow_simmer",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "rare",
       "role": "heavy",
@@ -684,7 +684,7 @@
     },
     {
       "id": "arrow_from_the_road",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "role": "fast",
@@ -698,7 +698,7 @@
     },
     {
       "id": "finger_spark",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "role": "fast",
@@ -713,7 +713,7 @@
     },
     {
       "id": "fathers_scimitar",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "role": "fast",
@@ -727,7 +727,7 @@
     },
     {
       "id": "by_the_gait",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "common",
       "role": "fast",
@@ -742,7 +742,7 @@
     },
     {
       "id": "foreman_hammer",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "role": "fast",
@@ -756,7 +756,7 @@
     },
     {
       "id": "vial_from_belt",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "role": "fast",
@@ -769,7 +769,7 @@
     },
     {
       "id": "fuse_bottle",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "role": "fast",
@@ -782,7 +782,7 @@
     },
     {
       "id": "lull",
-      "kind": "skill",
+      "kind": "active",
       "color": "white",
       "name": { "ru": "Затишье", "en": "Lull" },
       "tags": ["Idle", "Skill"],
@@ -792,7 +792,7 @@
     },
     {
       "id": "golden_fever",
-      "kind": "skill",
+      "kind": "aura",
       "color": "white",
       "name": { "ru": "Золотая лихорадка", "en": "Golden Fever" },
       "tags": ["Aura", "Skill"],
@@ -803,7 +803,7 @@
     },
     {
       "id": "second_wind",
-      "kind": "skill",
+      "kind": "active",
       "color": "white",
       "name": { "ru": "Второе дыхание", "en": "Second Wind" },
       "tags": ["Skill"],
@@ -813,7 +813,7 @@
     },
     {
       "id": "echo",
-      "kind": "skill",
+      "kind": "active",
       "color": "white",
       "name": { "ru": "Эхо", "en": "Echo" },
       "tags": ["Skill"],
@@ -824,7 +824,7 @@
     {
       "id": "caravan_halt",
       "formerIds": ["coffee_break"],
-      "kind": "skill",
+      "kind": "active",
       "color": "white",
       "name": { "ru": "Привал", "en": "Caravan Halt" },
       "tags": ["Skill"],
@@ -835,7 +835,7 @@
     {
       "id": "blade_on_watch",
       "formerIds": ["call"],
-      "kind": "skill",
+      "kind": "aura",
       "color": "white",
       "name": { "ru": "Клинок на часах", "en": "Blade on Watch" },
       "tags": ["Aura", "Skill"],
@@ -845,7 +845,7 @@
     },
     {
       "id": "shoulder_to_shoulder",
-      "kind": "skill",
+      "kind": "active",
       "color": "white",
       "name": { "ru": "Плечом к плечу", "en": "Shoulder to Shoulder" },
       "tags": ["Skill"],
@@ -856,7 +856,7 @@
     {
       "id": "prokhors_ledger",
       "formerIds": ["heros_diary"],
-      "kind": "skill",
+      "kind": "active",
       "color": "white",
       "name": { "ru": "Запись у Прохора", "en": "Prokhor's Ledger" },
       "tags": ["Skill"],
@@ -866,7 +866,7 @@
     },
     {
       "id": "rift_crystal",
-      "kind": "skill",
+      "kind": "active",
       "color": "white",
       "name": { "ru": "Кристалл Разлома", "en": "Rift Crystal" },
       "tags": ["Skill"],
@@ -876,7 +876,7 @@
     },
     {
       "id": "second_axe",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "ascendancy": "berserker",
       "color": "red",
@@ -889,7 +889,7 @@
     },
     {
       "id": "aurora_spear",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "ascendancy": "valkyrie",
       "color": "red",
@@ -901,7 +901,7 @@
     },
     {
       "id": "hook_and_cleaver",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "ascendancy": "butcher",
       "color": "red",
@@ -914,7 +914,7 @@
     },
     {
       "id": "rivet",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "role": "fast",
@@ -928,7 +928,7 @@
     },
     {
       "id": "sparks_from_the_hammer",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "role": "fast",
@@ -942,7 +942,7 @@
     },
     {
       "id": "tempering",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "role": "heavy",
@@ -957,7 +957,7 @@
     },
     {
       "id": "north_wind",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "role": "heavy",
@@ -972,7 +972,7 @@
     },
     {
       "id": "wet_rope",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "role": "heavy",
@@ -988,7 +988,7 @@
     },
     {
       "id": "leather_apron",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "axe",
       "tier": "common",
       "color": "red",
@@ -1002,7 +1002,7 @@
     },
     {
       "id": "rowers_song",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "color": "red",
@@ -1016,7 +1016,7 @@
     },
     {
       "id": "thick_hide",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "color": "red",
@@ -1029,7 +1029,7 @@
     },
     {
       "id": "torn_ear",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "color": "red",
@@ -1042,7 +1042,7 @@
     },
     {
       "id": "salt_wind",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "common",
       "color": "red",
@@ -1055,7 +1055,7 @@
     },
     {
       "id": "butt_of_the_axe",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "rare",
       "role": "fast",
@@ -1070,7 +1070,7 @@
     },
     {
       "id": "double_swing",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "rare",
       "role": "fast",
@@ -1084,7 +1084,7 @@
     },
     {
       "id": "hot_blank",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "rare",
       "role": "fast",
@@ -1098,7 +1098,7 @@
     },
     {
       "id": "surf_wall",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "rare",
       "role": "heavy",
@@ -1113,7 +1113,7 @@
     },
     {
       "id": "forge_bellows",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "axe",
       "tier": "rare",
       "color": "red",
@@ -1126,7 +1126,7 @@
     },
     {
       "id": "not_a_step_back",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "rare",
       "color": "red",
@@ -1139,7 +1139,7 @@
     },
     {
       "id": "shield_split",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "epic",
       "role": "fast",
@@ -1153,7 +1153,7 @@
     },
     {
       "id": "five_blows_to_a_forging",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "epic",
       "role": "fast",
@@ -1168,7 +1168,7 @@
     },
     {
       "id": "smiths_row",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "epic",
       "color": "red",
@@ -1182,7 +1182,7 @@
     },
     {
       "id": "the_forge_never_cools",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "epic",
       "color": "red",
@@ -1195,7 +1195,7 @@
     },
     {
       "id": "hammer_down_the_line",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "legendary",
       "role": "fast",
@@ -1209,7 +1209,7 @@
     },
     {
       "id": "storm_off_the_north_shore",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "legendary",
       "role": "heavy",
@@ -1224,7 +1224,7 @@
     },
     {
       "id": "smiths_blood",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "legendary",
       "color": "red",
@@ -1237,7 +1237,7 @@
     },
     {
       "id": "the_last_nail",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "mythic",
       "role": "fast",
@@ -1251,7 +1251,7 @@
     },
     {
       "id": "ice_drift",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "mythic",
       "role": "heavy",
@@ -1267,7 +1267,7 @@
     },
     {
       "id": "the_hammer_that_remembers",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "mythic",
       "role": "heavy",
@@ -1283,7 +1283,7 @@
     },
     {
       "id": "the_unfading_forge",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "mythic",
       "color": "red",
@@ -1296,7 +1296,7 @@
     },
     {
       "id": "blood_feud",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "axe",
       "tier": "mythic",
       "color": "red",
@@ -1308,7 +1308,7 @@
     },
     {
       "id": "second_shadow",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "ascendancy": "ninja",
       "color": "red",
@@ -1321,7 +1321,7 @@
     },
     {
       "id": "lift_the_anchor",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "ascendancy": "kensei",
       "color": "red",
@@ -1333,7 +1333,7 @@
     },
     {
       "id": "endless_count",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "ascendancy": "onryo",
       "color": "red",
@@ -1346,7 +1346,7 @@
     },
     {
       "id": "pinch_of_salt",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "role": "fast",
@@ -1360,7 +1360,7 @@
     },
     {
       "id": "fish_knife",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "role": "fast",
@@ -1374,7 +1374,7 @@
     },
     {
       "id": "carving",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "role": "heavy",
@@ -1389,7 +1389,7 @@
     },
     {
       "id": "night_order",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "role": "heavy",
@@ -1403,7 +1403,7 @@
     },
     {
       "id": "pot_on_the_fire",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "role": "heavy",
@@ -1418,7 +1418,7 @@
     },
     {
       "id": "cooks_apron",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "katana",
       "tier": "common",
       "color": "red",
@@ -1432,7 +1432,7 @@
     },
     {
       "id": "steady_knock",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "color": "red",
@@ -1445,7 +1445,7 @@
     },
     {
       "id": "sharp_edge",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "color": "red",
@@ -1458,7 +1458,7 @@
     },
     {
       "id": "kitchen_silence",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "common",
       "color": "red",
@@ -1471,7 +1471,7 @@
     },
     {
       "id": "morning_market",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "katana",
       "tier": "common",
       "color": "red",
@@ -1485,7 +1485,7 @@
     },
     {
       "id": "rice_grain",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "rare",
       "role": "fast",
@@ -1499,7 +1499,7 @@
     },
     {
       "id": "trim_the_edge",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "rare",
       "role": "fast",
@@ -1514,7 +1514,7 @@
     },
     {
       "id": "reflection_in_the_blade",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "rare",
       "role": "fast",
@@ -1527,7 +1527,7 @@
     },
     {
       "id": "through_three_boards",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "rare",
       "role": "heavy",
@@ -1541,7 +1541,7 @@
     },
     {
       "id": "polished_rice",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "katana",
       "tier": "rare",
       "color": "red",
@@ -1554,7 +1554,7 @@
     },
     {
       "id": "cold_water",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "rare",
       "color": "red",
@@ -1567,7 +1567,7 @@
     },
     {
       "id": "one_cut",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "epic",
       "role": "fast",
@@ -1581,7 +1581,7 @@
     },
     {
       "id": "dance_without_music",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "epic",
       "role": "fast",
@@ -1596,7 +1596,7 @@
     },
     {
       "id": "cooks_breath",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "katana",
       "tier": "epic",
       "color": "red",
@@ -1610,7 +1610,7 @@
     },
     {
       "id": "memory_of_the_knife",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "epic",
       "color": "red",
@@ -1623,7 +1623,7 @@
     },
     {
       "id": "moon_cut",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "legendary",
       "role": "fast",
@@ -1637,7 +1637,7 @@
     },
     {
       "id": "last_order_of_the_day",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "legendary",
       "role": "heavy",
@@ -1652,7 +1652,7 @@
     },
     {
       "id": "debt_paid",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "legendary",
       "color": "red",
@@ -1665,7 +1665,7 @@
     },
     {
       "id": "the_knife_that_does_not_hurry",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "mythic",
       "role": "fast",
@@ -1678,7 +1678,7 @@
     },
     {
       "id": "thousand_cuts",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "mythic",
       "role": "heavy",
@@ -1693,7 +1693,7 @@
     },
     {
       "id": "heavenly_square",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "katana",
       "tier": "mythic",
       "role": "heavy",
@@ -1708,7 +1708,7 @@
     },
     {
       "id": "the_last_ronin",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "mythic",
       "color": "red",
@@ -1721,7 +1721,7 @@
     },
     {
       "id": "clean_board",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "katana",
       "tier": "mythic",
       "color": "red",
@@ -1733,7 +1733,7 @@
     },
     {
       "id": "falcon_gaze",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "ascendancy": "falconer",
       "color": "green",
@@ -1745,7 +1745,7 @@
     },
     {
       "id": "panther_at_side",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "ascendancy": "beast_tamer",
       "color": "green",
@@ -1758,7 +1758,7 @@
     },
     {
       "id": "ahead_of_thunder",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "ascendancy": "thunder_maiden",
       "color": "green",
@@ -1770,7 +1770,7 @@
     },
     {
       "id": "poison_vine_sap",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "role": "fast",
@@ -1784,7 +1784,7 @@
     },
     {
       "id": "reed_arrow",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "role": "fast",
@@ -1798,7 +1798,7 @@
     },
     {
       "id": "agave_thorn",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "role": "fast",
@@ -1813,7 +1813,7 @@
     },
     {
       "id": "three_arrows_in_a_row",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "role": "heavy",
@@ -1828,7 +1828,7 @@
     },
     {
       "id": "heavy_arrow",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "role": "heavy",
@@ -1842,7 +1842,7 @@
     },
     {
       "id": "ambush_in_the_grass",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "role": "heavy",
@@ -1857,7 +1857,7 @@
     },
     {
       "id": "smell_of_rain",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "short_bow",
       "tier": "common",
       "color": "green",
@@ -1871,7 +1871,7 @@
     },
     {
       "id": "jungle_song",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "color": "green",
@@ -1885,7 +1885,7 @@
     },
     {
       "id": "bowstring_calluses",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "color": "green",
@@ -1898,7 +1898,7 @@
     },
     {
       "id": "keen_eye",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "color": "green",
@@ -1911,7 +1911,7 @@
     },
     {
       "id": "market_stall",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
       "color": "green",
@@ -1924,7 +1924,7 @@
     },
     {
       "id": "sheaf_of_arrows",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "rare",
       "role": "fast",
@@ -1938,7 +1938,7 @@
     },
     {
       "id": "own_territory",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "rare",
       "role": "heavy",
@@ -1953,7 +1953,7 @@
     },
     {
       "id": "path_through_the_thicket",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "short_bow",
       "tier": "rare",
       "color": "green",
@@ -1967,7 +1967,7 @@
     },
     {
       "id": "arrow_to_the_knee",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "rare",
       "role": "fast",
@@ -1981,7 +1981,7 @@
     },
     {
       "id": "two_bowstrings",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "rare",
       "role": "fast",
@@ -1996,7 +1996,7 @@
     },
     {
       "id": "roots_hold",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "rare",
       "role": "heavy",
@@ -2011,7 +2011,7 @@
     },
     {
       "id": "rainy_season",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "short_bow",
       "tier": "rare",
       "color": "green",
@@ -2024,7 +2024,7 @@
     },
     {
       "id": "fertile_ground",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "rare",
       "color": "green",
@@ -2037,7 +2037,7 @@
     },
     {
       "id": "knows_every_plant",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "rare",
       "color": "green",
@@ -2050,7 +2050,7 @@
     },
     {
       "id": "tropical_downpour",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "epic",
       "role": "heavy",
@@ -2065,7 +2065,7 @@
     },
     {
       "id": "seed_arrow",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "epic",
       "role": "heavy",
@@ -2080,7 +2080,7 @@
     },
     {
       "id": "arrow_to_the_heart",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "epic",
       "role": "fast",
@@ -2094,7 +2094,7 @@
     },
     {
       "id": "hunters_thrill",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "epic",
       "role": "fast",
@@ -2109,7 +2109,7 @@
     },
     {
       "id": "wind_in_the_canopy",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "epic",
       "color": "green",
@@ -2123,7 +2123,7 @@
     },
     {
       "id": "thousand_steps",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "epic",
       "color": "green",
@@ -2136,7 +2136,7 @@
     },
     {
       "id": "arrow_through_the_forest",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "legendary",
       "role": "fast",
@@ -2150,7 +2150,7 @@
     },
     {
       "id": "sky_of_arrows",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "legendary",
       "role": "heavy",
@@ -2165,7 +2165,7 @@
     },
     {
       "id": "huntress",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "legendary",
       "color": "green",
@@ -2178,7 +2178,7 @@
     },
     {
       "id": "the_arrow_that_returned",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "mythic",
       "role": "fast",
@@ -2192,7 +2192,7 @@
     },
     {
       "id": "green_wall",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "mythic",
       "role": "heavy",
@@ -2207,7 +2207,7 @@
     },
     {
       "id": "sprouting",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "mythic",
       "role": "heavy",
@@ -2221,7 +2221,7 @@
     },
     {
       "id": "heart_of_the_jungle",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "short_bow",
       "tier": "mythic",
       "color": "green",
@@ -2234,7 +2234,7 @@
     },
     {
       "id": "own_trail",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "short_bow",
       "tier": "mythic",
       "locked": true,
@@ -2246,7 +2246,7 @@
     },
     {
       "id": "noon_and_midnight",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "storm_wand",
       "ascendancy": "eclipser",
       "color": "green",
@@ -2259,7 +2259,7 @@
     },
     {
       "id": "rime_sphere",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "storm_wand",
       "ascendancy": "frost_giant",
       "color": "green",
@@ -2272,7 +2272,7 @@
     },
     {
       "id": "dust_whirl",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "ascendancy": "wind_dervish",
       "color": "green",
@@ -2285,7 +2285,7 @@
     },
     {
       "id": "lantern_at_a_distance",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "role": "fast",
@@ -2301,7 +2301,7 @@
     },
     {
       "id": "snap",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "role": "fast",
@@ -2316,7 +2316,7 @@
     },
     {
       "id": "lantern_wick",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "role": "fast",
@@ -2331,7 +2331,7 @@
     },
     {
       "id": "short_circuit",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "role": "heavy",
@@ -2346,7 +2346,7 @@
     },
     {
       "id": "strike_the_spire",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "role": "heavy",
@@ -2361,7 +2361,7 @@
     },
     {
       "id": "clouds_gather",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "role": "heavy",
@@ -2377,7 +2377,7 @@
     },
     {
       "id": "smell_of_ozone",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "storm_wand",
       "tier": "common",
       "color": "green",
@@ -2391,7 +2391,7 @@
     },
     {
       "id": "wet_wires",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "color": "green",
@@ -2405,7 +2405,7 @@
     },
     {
       "id": "woollen_cloak",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "color": "green",
@@ -2418,7 +2418,7 @@
     },
     {
       "id": "grey_sparks",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "color": "green",
@@ -2431,7 +2431,7 @@
     },
     {
       "id": "lamplighter",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "common",
       "color": "green",
@@ -2444,7 +2444,7 @@
     },
     {
       "id": "lightning_rod",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "rare",
       "role": "fast",
@@ -2459,7 +2459,7 @@
     },
     {
       "id": "dry_air",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "storm_wand",
       "tier": "rare",
       "color": "green",
@@ -2472,7 +2472,7 @@
     },
     {
       "id": "peal_of_thunder",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "rare",
       "role": "heavy",
@@ -2487,7 +2487,7 @@
     },
     {
       "id": "chain_over_the_roofs",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "rare",
       "role": "fast",
@@ -2502,7 +2502,7 @@
     },
     {
       "id": "tethered_ball",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "rare",
       "role": "fast",
@@ -2518,7 +2518,7 @@
     },
     {
       "id": "hail_shower",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "rare",
       "role": "heavy",
@@ -2533,7 +2533,7 @@
     },
     {
       "id": "rod_on_the_roof",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "storm_wand",
       "tier": "rare",
       "color": "green",
@@ -2546,7 +2546,7 @@
     },
     {
       "id": "electricity_in_the_air",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "rare",
       "color": "green",
@@ -2559,7 +2559,7 @@
     },
     {
       "id": "old_cloak",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "rare",
       "color": "green",
@@ -2572,7 +2572,7 @@
     },
     {
       "id": "cloud_cloak",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "epic",
       "role": "heavy",
@@ -2588,7 +2588,7 @@
     },
     {
       "id": "weather_over_the_edge",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "epic",
       "role": "heavy",
@@ -2604,7 +2604,7 @@
     },
     {
       "id": "lightning_in_the_back",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "epic",
       "role": "fast",
@@ -2619,7 +2619,7 @@
     },
     {
       "id": "discharge_after_discharge",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "epic",
       "role": "fast",
@@ -2635,7 +2635,7 @@
     },
     {
       "id": "storm_over_the_square",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "storm_wand",
       "tier": "epic",
       "color": "green",
@@ -2649,7 +2649,7 @@
     },
     {
       "id": "tension",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "epic",
       "color": "green",
@@ -2662,7 +2662,7 @@
     },
     {
       "id": "forked_lightning",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "legendary",
       "role": "fast",
@@ -2677,7 +2677,7 @@
     },
     {
       "id": "storm_over_the_rim",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "legendary",
       "role": "heavy",
@@ -2692,7 +2692,7 @@
     },
     {
       "id": "living_lightning_rod",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "legendary",
       "color": "green",
@@ -2705,7 +2705,7 @@
     },
     {
       "id": "lightning_on_a_clear_day",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "mythic",
       "role": "fast",
@@ -2720,7 +2720,7 @@
     },
     {
       "id": "night_without_lanterns",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "mythic",
       "role": "heavy",
@@ -2736,7 +2736,7 @@
     },
     {
       "id": "stopped_thunder",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "storm_wand",
       "tier": "mythic",
       "role": "heavy",
@@ -2751,7 +2751,7 @@
     },
     {
       "id": "cloak_of_all_clouds",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "mythic",
       "color": "green",
@@ -2764,7 +2764,7 @@
     },
     {
       "id": "the_sky_obeys",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "storm_wand",
       "tier": "mythic",
       "color": "green",
@@ -2777,7 +2777,7 @@
     },
     {
       "id": "oasis_silence",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "ascendancy": "hermit",
       "color": "white",
@@ -2789,7 +2789,7 @@
     },
     {
       "id": "own_storm",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "scimitar",
       "ascendancy": "djinn",
       "color": "white",
@@ -2802,7 +2802,7 @@
     },
     {
       "id": "cargo_delivered",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "scimitar",
       "ascendancy": "caravaneer",
       "color": "white",
@@ -2815,7 +2815,7 @@
     },
     {
       "id": "mirage_at_the_well",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "role": "fast",
@@ -2829,7 +2829,7 @@
     },
     {
       "id": "handful_of_sand",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "role": "fast",
@@ -2843,7 +2843,7 @@
     },
     {
       "id": "camel_thorn",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "role": "fast",
@@ -2857,7 +2857,7 @@
     },
     {
       "id": "caravan_strike",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "role": "heavy",
@@ -2871,7 +2871,7 @@
     },
     {
       "id": "noon_heat",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "role": "heavy",
@@ -2885,7 +2885,7 @@
     },
     {
       "id": "night_crossing",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "role": "heavy",
@@ -2900,7 +2900,7 @@
     },
     {
       "id": "caravan_bell",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "scimitar",
       "tier": "common",
       "color": "red",
@@ -2914,7 +2914,7 @@
     },
     {
       "id": "dunes",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "color": "red",
@@ -2928,7 +2928,7 @@
     },
     {
       "id": "weathered_face",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "color": "red",
@@ -2941,7 +2941,7 @@
     },
     {
       "id": "counting_stars",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "color": "red",
@@ -2954,7 +2954,7 @@
     },
     {
       "id": "sand_bazaar",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
       "color": "red",
@@ -2967,7 +2967,7 @@
     },
     {
       "id": "scorpion_sting",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "rare",
       "role": "fast",
@@ -2981,7 +2981,7 @@
     },
     {
       "id": "sand_from_the_pockets",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "rare",
       "role": "heavy",
@@ -2996,7 +2996,7 @@
     },
     {
       "id": "a_different_road_each_time",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "rare",
       "color": "red",
@@ -3009,7 +3009,7 @@
     },
     {
       "id": "twin_scimitars",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "rare",
       "role": "fast",
@@ -3023,7 +3023,7 @@
     },
     {
       "id": "dagger_throw",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "rare",
       "role": "fast",
@@ -3037,7 +3037,7 @@
     },
     {
       "id": "sand_whirlwind",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "rare",
       "role": "heavy",
@@ -3051,7 +3051,7 @@
     },
     {
       "id": "tent_shadow",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "scimitar",
       "tier": "rare",
       "color": "red",
@@ -3064,7 +3064,7 @@
     },
     {
       "id": "night_caravan",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "scimitar",
       "tier": "rare",
       "color": "red",
@@ -3078,7 +3078,7 @@
     },
     {
       "id": "map_of_wells",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "rare",
       "color": "red",
@@ -3091,7 +3091,7 @@
     },
     {
       "id": "companion_of_sand",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "epic",
       "role": "heavy",
@@ -3106,7 +3106,7 @@
     },
     {
       "id": "water_supply",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "epic",
       "role": "heavy",
@@ -3121,7 +3121,7 @@
     },
     {
       "id": "strike_from_the_mirage",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "epic",
       "role": "fast",
@@ -3135,7 +3135,7 @@
     },
     {
       "id": "three_roads",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "epic",
       "role": "fast",
@@ -3148,7 +3148,7 @@
     },
     {
       "id": "storm_at_the_bazaar",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "epic",
       "color": "red",
@@ -3162,7 +3162,7 @@
     },
     {
       "id": "the_long_way",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "epic",
       "color": "red",
@@ -3175,7 +3175,7 @@
     },
     {
       "id": "father_and_grandfathers_scimitar",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "legendary",
       "role": "fast",
@@ -3189,7 +3189,7 @@
     },
     {
       "id": "river_of_sand",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "legendary",
       "role": "heavy",
@@ -3203,7 +3203,7 @@
     },
     {
       "id": "hundred_wells",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "legendary",
       "color": "red",
@@ -3216,7 +3216,7 @@
     },
     {
       "id": "last_sip",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "mythic",
       "role": "fast",
@@ -3230,7 +3230,7 @@
     },
     {
       "id": "oasis_mid_fight",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "mythic",
       "role": "heavy",
@@ -3245,7 +3245,7 @@
     },
     {
       "id": "the_desert_waits",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "scimitar",
       "tier": "mythic",
       "role": "heavy",
@@ -3260,7 +3260,7 @@
     },
     {
       "id": "road_home",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "scimitar",
       "tier": "mythic",
       "color": "red",
@@ -3273,7 +3273,7 @@
     },
     {
       "id": "the_sand_remembers",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "scimitar",
       "tier": "mythic",
       "locked": true,
@@ -3285,7 +3285,7 @@
     },
     {
       "id": "snapped_string",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "ascendancy": "pit_fighter",
       "color": "red",
@@ -3298,7 +3298,7 @@
     },
     {
       "id": "two_parts",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "ascendancy": "conductor",
       "color": "red",
@@ -3311,7 +3311,7 @@
     },
     {
       "id": "sold_out",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "ascendancy": "headliner",
       "color": "red",
@@ -3324,7 +3324,7 @@
     },
     {
       "id": "fingerpicking",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "common",
       "role": "fast",
@@ -3338,7 +3338,7 @@
     },
     {
       "id": "pick_in_the_slot",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "common",
       "role": "fast",
@@ -3353,7 +3353,7 @@
     },
     {
       "id": "soundcheck",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "common",
       "role": "heavy",
@@ -3367,7 +3367,7 @@
     },
     {
       "id": "chorus",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "common",
       "role": "heavy",
@@ -3381,7 +3381,7 @@
     },
     {
       "id": "pause_before_the_drop",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "common",
       "role": "heavy",
@@ -3396,7 +3396,7 @@
     },
     {
       "id": "drinking_song",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "tier": "common",
       "color": "red",
@@ -3410,7 +3410,7 @@
     },
     {
       "id": "warm_up",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "tier": "common",
       "color": "red",
@@ -3424,7 +3424,7 @@
     },
     {
       "id": "calluses",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "common",
       "color": "red",
@@ -3437,7 +3437,7 @@
     },
     {
       "id": "old_cable",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "common",
       "color": "red",
@@ -3450,7 +3450,7 @@
     },
     {
       "id": "tips_in_the_hat",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "common",
       "color": "red",
@@ -3463,7 +3463,7 @@
     },
     {
       "id": "feedback",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "rare",
       "role": "fast",
@@ -3477,7 +3477,7 @@
     },
     {
       "id": "bass_to_the_floor",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "rare",
       "role": "fast",
@@ -3491,7 +3491,7 @@
     },
     {
       "id": "encore",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "rare",
       "role": "fast",
@@ -3506,7 +3506,7 @@
     },
     {
       "id": "wall_of_sound",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "rare",
       "role": "heavy",
@@ -3520,7 +3520,7 @@
     },
     {
       "id": "second_guitar",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "rare",
       "color": "red",
@@ -3533,7 +3533,7 @@
     },
     {
       "id": "the_crowd_knows_the_words",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "rare",
       "color": "red",
@@ -3546,7 +3546,7 @@
     },
     {
       "id": "one_string_solo",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "epic",
       "role": "fast",
@@ -3560,7 +3560,7 @@
     },
     {
       "id": "rhythm_section",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "epic",
       "role": "fast",
@@ -3574,7 +3574,7 @@
     },
     {
       "id": "the_tavern_hums",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "epic",
       "color": "red",
@@ -3588,7 +3588,7 @@
     },
     {
       "id": "live_sound",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "epic",
       "color": "red",
@@ -3601,7 +3601,7 @@
     },
     {
       "id": "burnt_out_amp",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "legendary",
       "role": "fast",
@@ -3615,7 +3615,7 @@
     },
     {
       "id": "endless_solo",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "legendary",
       "role": "heavy",
@@ -3628,7 +3628,7 @@
     },
     {
       "id": "song_till_morning",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "legendary",
       "color": "red",
@@ -3641,7 +3641,7 @@
     },
     {
       "id": "the_last_chord",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "mythic",
       "role": "fast",
@@ -3655,7 +3655,7 @@
     },
     {
       "id": "concert_at_the_gates",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "tier": "mythic",
       "role": "heavy",
@@ -3669,7 +3669,7 @@
     },
     {
       "id": "the_colossus_listens",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "electric_guitar",
       "tier": "mythic",
       "role": "heavy",
@@ -3684,7 +3684,7 @@
     },
     {
       "id": "guitar_from_the_underside",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "mythic",
       "color": "red",
@@ -3697,7 +3697,7 @@
     },
     {
       "id": "silence_after_the_song",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "electric_guitar",
       "tier": "mythic",
       "color": "red",
@@ -3709,7 +3709,7 @@
     },
     {
       "id": "white_fire",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "ascendancy": "white_mage",
       "color": "green",
@@ -3722,7 +3722,7 @@
     },
     {
       "id": "said_aloud",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "ascendancy": "seer",
       "color": "green",
@@ -3735,7 +3735,7 @@
     },
     {
       "id": "star_chart",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "ascendancy": "stargazer",
       "color": "green",
@@ -3747,7 +3747,7 @@
     },
     {
       "id": "mistake_in_the_details",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "common",
       "role": "fast",
@@ -3761,7 +3761,7 @@
     },
     {
       "id": "beam_from_the_orb",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "common",
       "role": "fast",
@@ -3775,7 +3775,7 @@
     },
     {
       "id": "premonition",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "common",
       "role": "fast",
@@ -3790,7 +3790,7 @@
     },
     {
       "id": "star_dust",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "common",
       "role": "heavy",
@@ -3804,7 +3804,7 @@
     },
     {
       "id": "clear_day",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "common",
       "role": "heavy",
@@ -3818,7 +3818,7 @@
     },
     {
       "id": "calm_before_the_storm",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "common",
       "role": "heavy",
@@ -3833,7 +3833,7 @@
     },
     {
       "id": "quiet_hour",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "common",
       "color": "green",
@@ -3847,7 +3847,7 @@
     },
     {
       "id": "weather_map",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "common",
       "color": "green",
@@ -3861,7 +3861,7 @@
     },
     {
       "id": "blindfold_habit",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "common",
       "color": "green",
@@ -3874,7 +3874,7 @@
     },
     {
       "id": "steps_behind_the_door",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "common",
       "color": "green",
@@ -3887,7 +3887,7 @@
     },
     {
       "id": "fortune_fee",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "common",
       "color": "green",
@@ -3900,7 +3900,7 @@
     },
     {
       "id": "under_the_blindfold",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "rare",
       "role": "fast",
@@ -3915,7 +3915,7 @@
     },
     {
       "id": "observatory_light",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "rare",
       "color": "green",
@@ -3928,7 +3928,7 @@
     },
     {
       "id": "unknown_potion",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "rare",
       "role": "heavy",
@@ -3943,7 +3943,7 @@
     },
     {
       "id": "mark_on_the_brow",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "rare",
       "role": "fast",
@@ -3958,7 +3958,7 @@
     },
     {
       "id": "hint_to_an_ally",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "rare",
       "role": "fast",
@@ -3972,7 +3972,7 @@
     },
     {
       "id": "lens_in_a_frame",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "rare",
       "role": "heavy",
@@ -3986,7 +3986,7 @@
     },
     {
       "id": "night_sky",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "rare",
       "color": "green",
@@ -3999,7 +3999,7 @@
     },
     {
       "id": "seen_this_before",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "rare",
       "locked": true,
@@ -4011,7 +4011,7 @@
     },
     {
       "id": "the_stars_aligned",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "rare",
       "color": "green",
@@ -4024,7 +4024,7 @@
     },
     {
       "id": "good_forecast",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "epic",
       "role": "heavy",
@@ -4039,7 +4039,7 @@
     },
     {
       "id": "light_through_the_lens",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "epic",
       "role": "heavy",
@@ -4054,7 +4054,7 @@
     },
     {
       "id": "prophetic_beam",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "epic",
       "role": "fast",
@@ -4068,7 +4068,7 @@
     },
     {
       "id": "three_omens",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "epic",
       "role": "fast",
@@ -4082,7 +4082,7 @@
     },
     {
       "id": "observatory_dome",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "epic",
       "color": "green",
@@ -4096,7 +4096,7 @@
     },
     {
       "id": "clairvoyance",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "epic",
       "color": "green",
@@ -4109,7 +4109,7 @@
     },
     {
       "id": "starfall",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "legendary",
       "role": "fast",
@@ -4123,7 +4123,7 @@
     },
     {
       "id": "sun_at_zenith",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "legendary",
       "role": "heavy",
@@ -4137,7 +4137,7 @@
     },
     {
       "id": "fate_is_sealed",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "legendary",
       "color": "green",
@@ -4150,7 +4150,7 @@
     },
     {
       "id": "vision",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "mythic",
       "role": "fast",
@@ -4164,7 +4164,7 @@
     },
     {
       "id": "all_roads_visible",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "mythic",
       "role": "heavy",
@@ -4178,7 +4178,7 @@
     },
     {
       "id": "the_weather_stopped",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "holy_orb",
       "tier": "mythic",
       "role": "heavy",
@@ -4193,7 +4193,7 @@
     },
     {
       "id": "blindfold_removed",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "mythic",
       "color": "green",
@@ -4206,7 +4206,7 @@
     },
     {
       "id": "star_over_the_party",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "holy_orb",
       "tier": "mythic",
       "color": "green",
@@ -4218,7 +4218,7 @@
     },
     {
       "id": "signed_hammer",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "ascendancy": "paladin",
       "color": "red",
@@ -4231,7 +4231,7 @@
     },
     {
       "id": "answer_from_the_shield",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "ascendancy": "bulwark",
       "color": "red",
@@ -4244,7 +4244,7 @@
     },
     {
       "id": "unanswered_question",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "ascendancy": "inquisitor",
       "color": "red",
@@ -4257,7 +4257,7 @@
     },
     {
       "id": "shaft_through",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "role": "fast",
@@ -4271,7 +4271,7 @@
     },
     {
       "id": "artel_pay",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "common",
       "color": "red",
@@ -4284,7 +4284,7 @@
     },
     {
       "id": "brick_in_hand",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "role": "fast",
@@ -4298,7 +4298,7 @@
     },
     {
       "id": "plumb_line",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "role": "fast",
@@ -4312,7 +4312,7 @@
     },
     {
       "id": "log_lift",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "role": "heavy",
@@ -4326,7 +4326,7 @@
     },
     {
       "id": "battering_ram",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "role": "heavy",
@@ -4340,7 +4340,7 @@
     },
     {
       "id": "smoke_break",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "role": "heavy",
@@ -4355,7 +4355,7 @@
     },
     {
       "id": "blueprint",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "common",
       "color": "red",
@@ -4368,7 +4368,7 @@
     },
     {
       "id": "shaft_calluses",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "color": "red",
@@ -4381,7 +4381,7 @@
     },
     {
       "id": "hard_hat",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "color": "red",
@@ -4394,7 +4394,7 @@
     },
     {
       "id": "payroll",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "common",
       "color": "red",
@@ -4407,7 +4407,7 @@
     },
     {
       "id": "storm_over_the_banner",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "rare",
       "color": "red",
@@ -4421,7 +4421,7 @@
     },
     {
       "id": "nobody_retreats",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "rare",
       "color": "red",
@@ -4434,7 +4434,7 @@
     },
     {
       "id": "shaft_blow",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "rare",
       "role": "fast",
@@ -4449,7 +4449,7 @@
     },
     {
       "id": "prop",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "rare",
       "role": "fast",
@@ -4464,7 +4464,7 @@
     },
     {
       "id": "nail_in_the_board",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "rare",
       "role": "fast",
@@ -4478,7 +4478,7 @@
     },
     {
       "id": "scaffolding",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "rare",
       "role": "heavy",
@@ -4492,7 +4492,7 @@
     },
     {
       "id": "relief_crew",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "rare",
       "role": "heavy",
@@ -4506,7 +4506,7 @@
     },
     {
       "id": "flag_on_the_roof",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "rare",
       "color": "red",
@@ -4519,7 +4519,7 @@
     },
     {
       "id": "over_the_plan",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "rare",
       "color": "red",
@@ -4532,7 +4532,7 @@
     },
     {
       "id": "the_banner_does_not_fall",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "epic",
       "role": "heavy",
@@ -4547,7 +4547,7 @@
     },
     {
       "id": "the_gates_stand",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "epic",
       "role": "heavy",
@@ -4562,7 +4562,7 @@
     },
     {
       "id": "spear_to_the_target",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "epic",
       "role": "fast",
@@ -4576,7 +4576,7 @@
     },
     {
       "id": "bookmark",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "epic",
       "role": "fast",
@@ -4591,7 +4591,7 @@
     },
     {
       "id": "gates_locked",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "epic",
       "color": "red",
@@ -4604,7 +4604,7 @@
     },
     {
       "id": "solid_foundation",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "epic",
       "color": "red",
@@ -4617,7 +4617,7 @@
     },
     {
       "id": "breach_in_the_wall",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "legendary",
       "role": "fast",
@@ -4631,7 +4631,7 @@
     },
     {
       "id": "rebuilt_overnight",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "legendary",
       "role": "heavy",
@@ -4645,7 +4645,7 @@
     },
     {
       "id": "banner_over_the_rim",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "legendary",
       "color": "red",
@@ -4658,7 +4658,7 @@
     },
     {
       "id": "the_banner_strikes",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "mythic",
       "role": "fast",
@@ -4672,7 +4672,7 @@
     },
     {
       "id": "the_whole_artel",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "mythic",
       "role": "heavy",
@@ -4687,7 +4687,7 @@
     },
     {
       "id": "the_gates_will_not_open",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "mythic",
       "role": "heavy",
@@ -4702,7 +4702,7 @@
     },
     {
       "id": "banner_from_the_underside",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "banner",
       "tier": "mythic",
       "locked": true,
@@ -4714,7 +4714,7 @@
     },
     {
       "id": "it_is_simply_a_fact",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "banner",
       "tier": "mythic",
       "locked": true,
@@ -4726,7 +4726,7 @@
     },
     {
       "id": "thursday_sabbath",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "ascendancy": "coven_queen",
       "color": "blue",
@@ -4740,7 +4740,7 @@
     },
     {
       "id": "patchwork_doll",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "ascendancy": "puppeteer",
       "color": "blue",
@@ -4753,7 +4753,7 @@
     },
     {
       "id": "fermented_curse",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "ascendancy": "rot_priestess",
       "color": "blue",
@@ -4767,7 +4767,7 @@
     },
     {
       "id": "pipe_smoke",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "role": "fast",
@@ -4783,7 +4783,7 @@
     },
     {
       "id": "pin",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "role": "fast",
@@ -4799,7 +4799,7 @@
     },
     {
       "id": "evil_eye",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "role": "fast",
@@ -4815,7 +4815,7 @@
     },
     {
       "id": "lucky_scrap",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "role": "heavy",
@@ -4829,7 +4829,7 @@
     },
     {
       "id": "heavy_gaze",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "role": "heavy",
@@ -4843,7 +4843,7 @@
     },
     {
       "id": "shopkeepers_patience",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "role": "heavy",
@@ -4858,7 +4858,7 @@
     },
     {
       "id": "pipe_smell",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "voodoo_doll",
       "tier": "common",
       "color": "blue",
@@ -4872,7 +4872,7 @@
     },
     {
       "id": "swamp_fog",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "color": "blue",
@@ -4886,7 +4886,7 @@
     },
     {
       "id": "doll_in_the_pocket",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "color": "blue",
@@ -4899,7 +4899,7 @@
     },
     {
       "id": "black_cat",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "color": "blue",
@@ -4912,7 +4912,7 @@
     },
     {
       "id": "curio_counter",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
       "color": "blue",
@@ -4925,7 +4925,7 @@
     },
     {
       "id": "swamp_dweller",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "rare",
       "role": "heavy",
@@ -4940,7 +4940,7 @@
     },
     {
       "id": "the_jam_ripens",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "rare",
       "color": "blue",
@@ -4953,7 +4953,7 @@
     },
     {
       "id": "curio_from_the_counter",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "rare",
       "role": "fast",
@@ -4967,7 +4967,7 @@
     },
     {
       "id": "memory_knot",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "rare",
       "role": "fast",
@@ -4983,7 +4983,7 @@
     },
     {
       "id": "feather_from_the_hat",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "rare",
       "role": "fast",
@@ -4999,7 +4999,7 @@
     },
     {
       "id": "night_in_the_swamp",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "rare",
       "role": "heavy",
@@ -5013,7 +5013,7 @@
     },
     {
       "id": "doll_whisper",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "voodoo_doll",
       "tier": "rare",
       "color": "blue",
@@ -5026,7 +5026,7 @@
     },
     {
       "id": "bad_eye",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "voodoo_doll",
       "tier": "rare",
       "color": "blue",
@@ -5040,7 +5040,7 @@
     },
     {
       "id": "brew_in_the_cauldron",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "rare",
       "color": "blue",
@@ -5053,7 +5053,7 @@
     },
     {
       "id": "long_wish",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "epic",
       "role": "heavy",
@@ -5068,7 +5068,7 @@
     },
     {
       "id": "skull_on_the_staff",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "epic",
       "role": "heavy",
@@ -5083,7 +5083,7 @@
     },
     {
       "id": "needle_to_the_heart",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "epic",
       "role": "fast",
@@ -5097,7 +5097,7 @@
     },
     {
       "id": "three_pins",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "epic",
       "role": "fast",
@@ -5113,7 +5113,7 @@
     },
     {
       "id": "the_coven_whispers",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "epic",
       "color": "blue",
@@ -5128,7 +5128,7 @@
     },
     {
       "id": "spiteful_memory",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "epic",
       "color": "blue",
@@ -5141,7 +5141,7 @@
     },
     {
       "id": "curse_on_the_whole_line",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "legendary",
       "role": "fast",
@@ -5157,7 +5157,7 @@
     },
     {
       "id": "night_of_the_dead",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "legendary",
       "role": "heavy",
@@ -5171,7 +5171,7 @@
     },
     {
       "id": "the_curse_ripens",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "legendary",
       "locked": true,
@@ -5183,7 +5183,7 @@
     },
     {
       "id": "last_wish",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "mythic",
       "role": "fast",
@@ -5197,7 +5197,7 @@
     },
     {
       "id": "doll_with_the_colossus_face",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "mythic",
       "role": "heavy",
@@ -5212,7 +5212,7 @@
     },
     {
       "id": "jam_for_winter",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "mythic",
       "role": "heavy",
@@ -5227,7 +5227,7 @@
     },
     {
       "id": "the_shop_is_always_open",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "mythic",
       "color": "blue",
@@ -5240,7 +5240,7 @@
     },
     {
       "id": "mama_zola_remembers",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "voodoo_doll",
       "tier": "mythic",
       "locked": true,
@@ -5252,7 +5252,7 @@
     },
     {
       "id": "bank_of_seconds",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "ascendancy": "chronomancer",
       "color": "blue",
@@ -5264,7 +5264,7 @@
     },
     {
       "id": "cracked_glass",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "ascendancy": "illusionist",
       "color": "blue",
@@ -5277,7 +5277,7 @@
     },
     {
       "id": "thread_of_doom",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "ascendancy": "fate_weaver",
       "color": "blue",
@@ -5290,7 +5290,7 @@
     },
     {
       "id": "clockwork_owl",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "role": "fast",
@@ -5305,7 +5305,7 @@
     },
     {
       "id": "tick_tock",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "role": "fast",
@@ -5319,7 +5319,7 @@
     },
     {
       "id": "spring",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "role": "fast",
@@ -5333,7 +5333,7 @@
     },
     {
       "id": "clockwork",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "role": "heavy",
@@ -5347,7 +5347,7 @@
     },
     {
       "id": "pendulum_backhand",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "role": "heavy",
@@ -5361,7 +5361,7 @@
     },
     {
       "id": "wound_for_a_day",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "role": "heavy",
@@ -5376,7 +5376,7 @@
     },
     {
       "id": "monocle",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "common",
       "color": "blue",
@@ -5390,7 +5390,7 @@
     },
     {
       "id": "measured_pace",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "common",
       "color": "blue",
@@ -5404,7 +5404,7 @@
     },
     {
       "id": "precise_hands",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "color": "blue",
@@ -5417,7 +5417,7 @@
     },
     {
       "id": "cogwheel",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "color": "blue",
@@ -5430,7 +5430,7 @@
     },
     {
       "id": "clock_repair",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
       "color": "blue",
@@ -5443,7 +5443,7 @@
     },
     {
       "id": "set_the_hands",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "rare",
       "role": "fast",
@@ -5458,7 +5458,7 @@
     },
     {
       "id": "sand_in_the_glass",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "rare",
       "color": "blue",
@@ -5471,7 +5471,7 @@
     },
     {
       "id": "time_with_character",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "rare",
       "role": "heavy",
@@ -5486,7 +5486,7 @@
     },
     {
       "id": "minute_hand",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "rare",
       "role": "fast",
@@ -5501,7 +5501,7 @@
     },
     {
       "id": "turn_back_the_clock",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "rare",
       "role": "fast",
@@ -5517,7 +5517,7 @@
     },
     {
       "id": "chime",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "rare",
       "role": "heavy",
@@ -5531,7 +5531,7 @@
     },
     {
       "id": "quiet_pendulum",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "rare",
       "color": "blue",
@@ -5544,7 +5544,7 @@
     },
     {
       "id": "sandstorm",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "rare",
       "color": "blue",
@@ -5558,7 +5558,7 @@
     },
     {
       "id": "cuckoo_clock",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "rare",
       "color": "blue",
@@ -5571,7 +5571,7 @@
     },
     {
       "id": "the_chimes_strike_again",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "epic",
       "role": "heavy",
@@ -5585,7 +5585,7 @@
     },
     {
       "id": "the_hands_froze",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "epic",
       "role": "heavy",
@@ -5600,7 +5600,7 @@
     },
     {
       "id": "strike_on_the_last_second",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "epic",
       "role": "fast",
@@ -5614,7 +5614,7 @@
     },
     {
       "id": "second_hand",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "epic",
       "role": "fast",
@@ -5627,7 +5627,7 @@
     },
     {
       "id": "assembled_mechanism",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "epic",
       "color": "blue",
@@ -5641,7 +5641,7 @@
     },
     {
       "id": "time_is_on_my_side",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "epic",
       "color": "blue",
@@ -5654,7 +5654,7 @@
     },
     {
       "id": "midnight",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "legendary",
       "role": "fast",
@@ -5668,7 +5668,7 @@
     },
     {
       "id": "clock_tower",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "legendary",
       "role": "heavy",
@@ -5682,7 +5682,7 @@
     },
     {
       "id": "eternal_winding",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "legendary",
       "locked": true,
@@ -5694,7 +5694,7 @@
     },
     {
       "id": "hand_at_twelve",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "mythic",
       "role": "fast",
@@ -5708,7 +5708,7 @@
     },
     {
       "id": "ten_seconds_is_a_lot",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "mythic",
       "role": "heavy",
@@ -5723,7 +5723,7 @@
     },
     {
       "id": "stop_the_clocks",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "mythic",
       "role": "heavy",
@@ -5738,7 +5738,7 @@
     },
     {
       "id": "hourglass_in_full_height",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pendulum",
       "tier": "mythic",
       "color": "blue",
@@ -5751,7 +5751,7 @@
     },
     {
       "id": "time_to_spare",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "mythic",
       "locked": true,
@@ -5763,7 +5763,7 @@
     },
     {
       "id": "rat_tide",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "syringe_cane",
       "ascendancy": "rat_king",
       "color": "red",
@@ -5776,7 +5776,7 @@
     },
     {
       "id": "lancet_cut",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "ascendancy": "blood_doctor",
       "color": "red",
@@ -5789,7 +5789,7 @@
     },
     {
       "id": "sure_to_blow",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "ascendancy": "bombardier",
       "color": "red",
@@ -5801,7 +5801,7 @@
     },
     {
       "id": "cane_jab",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "role": "fast",
@@ -5816,7 +5816,7 @@
     },
     {
       "id": "drop_from_the_needle",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "role": "fast",
@@ -5830,7 +5830,7 @@
     },
     {
       "id": "shattered_vial",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "role": "fast",
@@ -5844,7 +5844,7 @@
     },
     {
       "id": "ward_round",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "role": "heavy",
@@ -5858,7 +5858,7 @@
     },
     {
       "id": "heavy_dose",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "role": "heavy",
@@ -5872,7 +5872,7 @@
     },
     {
       "id": "waiting_game",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "role": "heavy",
@@ -5887,7 +5887,7 @@
     },
     {
       "id": "infirmary_smell",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "syringe_cane",
       "tier": "common",
       "color": "red",
@@ -5901,7 +5901,7 @@
     },
     {
       "id": "mixture_for_the_squad",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "color": "red",
@@ -5915,7 +5915,7 @@
     },
     {
       "id": "smell_mask",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "color": "red",
@@ -5928,7 +5928,7 @@
     },
     {
       "id": "observation_notebook",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "color": "red",
@@ -5941,7 +5941,7 @@
     },
     {
       "id": "treatment_fee",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
       "color": "red",
@@ -5954,7 +5954,7 @@
     },
     {
       "id": "assistant_lyova",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "rare",
       "role": "heavy",
@@ -5969,7 +5969,7 @@
     },
     {
       "id": "diagnosis",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "rare",
       "color": "red",
@@ -5982,7 +5982,7 @@
     },
     {
       "id": "quarantine_round",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "syringe_cane",
       "tier": "rare",
       "role": "heavy",
@@ -5997,7 +5997,7 @@
     },
     {
       "id": "lancet",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "rare",
       "role": "fast",
@@ -6012,7 +6012,7 @@
     },
     {
       "id": "second_appointment",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "rare",
       "role": "fast",
@@ -6026,7 +6026,7 @@
     },
     {
       "id": "lyovas_vial",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "rare",
       "role": "fast",
@@ -6040,7 +6040,7 @@
     },
     {
       "id": "quarantine_zone",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "syringe_cane",
       "tier": "rare",
       "color": "red",
@@ -6053,7 +6053,7 @@
     },
     {
       "id": "night_shift",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "syringe_cane",
       "tier": "rare",
       "color": "red",
@@ -6067,7 +6067,7 @@
     },
     {
       "id": "disease_chronicle",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "rare",
       "color": "red",
@@ -6080,7 +6080,7 @@
     },
     {
       "id": "worse_first",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "epic",
       "role": "heavy",
@@ -6095,7 +6095,7 @@
     },
     {
       "id": "not_enough_patience",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "epic",
       "role": "fast",
@@ -6109,7 +6109,7 @@
     },
     {
       "id": "autopsy",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "epic",
       "role": "fast",
@@ -6123,7 +6123,7 @@
     },
     {
       "id": "epidemic",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "epic",
       "role": "heavy",
@@ -6136,7 +6136,7 @@
     },
     {
       "id": "plague_quarter",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "syringe_cane",
       "tier": "epic",
       "color": "red",
@@ -6150,7 +6150,7 @@
     },
     {
       "id": "medical_secret",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "epic",
       "color": "red",
@@ -6163,7 +6163,7 @@
     },
     {
       "id": "plague_fog",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "legendary",
       "role": "fast",
@@ -6177,7 +6177,7 @@
     },
     {
       "id": "pestilence",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "legendary",
       "role": "heavy",
@@ -6191,7 +6191,7 @@
     },
     {
       "id": "cure_for_everything",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "legendary",
       "color": "red",
@@ -6204,7 +6204,7 @@
     },
     {
       "id": "final_diagnosis",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "mythic",
       "role": "fast",
@@ -6218,7 +6218,7 @@
     },
     {
       "id": "black_vial",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "syringe_cane",
       "tier": "mythic",
       "role": "heavy",
@@ -6233,7 +6233,7 @@
     },
     {
       "id": "pandemic",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "mythic",
       "role": "heavy",
@@ -6247,7 +6247,7 @@
     },
     {
       "id": "patience_of_the_cure",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "mythic",
       "color": "red",
@@ -6260,7 +6260,7 @@
     },
     {
       "id": "poison_is_medicine",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "syringe_cane",
       "tier": "mythic",
       "color": "red",
@@ -6272,7 +6272,7 @@
     },
     {
       "id": "sky_stone",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "ascendancy": "pyromancer",
       "color": "blue",
@@ -6284,7 +6284,7 @@
     },
     {
       "id": "scrap_saw",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "ascendancy": "chainsawyer",
       "color": "blue",
@@ -6297,7 +6297,7 @@
     },
     {
       "id": "exhale",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "ascendancy": "fire_breather",
       "color": "blue",
@@ -6310,7 +6310,7 @@
     },
     {
       "id": "by_eye",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "role": "fast",
@@ -6325,7 +6325,7 @@
     },
     {
       "id": "first_drop",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "color": "blue",
@@ -6339,7 +6339,7 @@
     },
     {
       "id": "little_flame",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "role": "fast",
@@ -6353,7 +6353,7 @@
     },
     {
       "id": "cork_popped",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "role": "fast",
@@ -6367,7 +6367,7 @@
     },
     {
       "id": "distillation",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "role": "heavy",
@@ -6381,7 +6381,7 @@
     },
     {
       "id": "keg_into_the_fire",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "role": "heavy",
@@ -6395,7 +6395,7 @@
     },
     {
       "id": "simmer",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "role": "heavy",
@@ -6410,7 +6410,7 @@
     },
     {
       "id": "warm_stove",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "still_burner",
       "tier": "common",
       "color": "blue",
@@ -6424,7 +6424,7 @@
     },
     {
       "id": "sooty_hands",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "color": "blue",
@@ -6437,7 +6437,7 @@
     },
     {
       "id": "smell_of_mash",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "color": "blue",
@@ -6450,7 +6450,7 @@
     },
     {
       "id": "bottle_for_sale",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
       "color": "blue",
@@ -6463,7 +6463,7 @@
     },
     {
       "id": "mash_barrel",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "rare",
       "role": "heavy",
@@ -6478,7 +6478,7 @@
     },
     {
       "id": "fire_through_the_coil",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "rare",
       "role": "fast",
@@ -6492,7 +6492,7 @@
     },
     {
       "id": "spirit_jet",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "rare",
       "role": "fast",
@@ -6506,7 +6506,7 @@
     },
     {
       "id": "add_firewood",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "rare",
       "role": "fast",
@@ -6520,7 +6520,7 @@
     },
     {
       "id": "coil_into_the_line",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "rare",
       "role": "heavy",
@@ -6534,7 +6534,7 @@
     },
     {
       "id": "steady_flame",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "still_burner",
       "tier": "rare",
       "color": "blue",
@@ -6547,7 +6547,7 @@
     },
     {
       "id": "night_brew",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "rare",
       "color": "blue",
@@ -6561,7 +6561,7 @@
     },
     {
       "id": "steam_whistle",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "rare",
       "color": "blue",
@@ -6574,7 +6574,7 @@
     },
     {
       "id": "the_still_remembers",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "rare",
       "locked": true,
@@ -6586,7 +6586,7 @@
     },
     {
       "id": "the_steam_will_tell",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "epic",
       "role": "heavy",
@@ -6600,7 +6600,7 @@
     },
     {
       "id": "broken_gauge",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "epic",
       "color": "blue",
@@ -6613,7 +6613,7 @@
     },
     {
       "id": "dry_run",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "epic",
       "role": "fast",
@@ -6627,7 +6627,7 @@
     },
     {
       "id": "three_drops",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "epic",
       "role": "fast",
@@ -6642,7 +6642,7 @@
     },
     {
       "id": "bucket_into_the_bonfire",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "epic",
       "role": "heavy",
@@ -6655,7 +6655,7 @@
     },
     {
       "id": "guild_workshop",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "still_burner",
       "tier": "epic",
       "color": "blue",
@@ -6669,7 +6669,7 @@
     },
     {
       "id": "the_whole_keg",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "legendary",
       "role": "fast",
@@ -6683,7 +6683,7 @@
     },
     {
       "id": "warehouse_fire",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "legendary",
       "role": "heavy",
@@ -6697,7 +6697,7 @@
     },
     {
       "id": "bottomless_fire",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "legendary",
       "color": "blue",
@@ -6710,7 +6710,7 @@
     },
     {
       "id": "last_drop",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "mythic",
       "role": "fast",
@@ -6724,7 +6724,7 @@
     },
     {
       "id": "big_exhale_of_the_still",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "still_burner",
       "tier": "mythic",
       "role": "heavy",
@@ -6739,7 +6739,7 @@
     },
     {
       "id": "the_steam_has_spoken",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "mythic",
       "role": "heavy",
@@ -6753,7 +6753,7 @@
     },
     {
       "id": "gauge_from_the_underside",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "still_burner",
       "tier": "mythic",
       "color": "blue",
@@ -6766,7 +6766,7 @@
     },
     {
       "id": "fire_that_remembers",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "still_burner",
       "tier": "mythic",
       "locked": true,
@@ -6778,7 +6778,7 @@
     },
     {
       "id": "restless_earth",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "ascendancy": "necromancer",
       "color": "blue",
@@ -6791,7 +6791,7 @@
     },
     {
       "id": "too_much_colossus",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "shovel",
       "ascendancy": "blood_demon",
       "color": "blue",
@@ -6804,7 +6804,7 @@
     },
     {
       "id": "night_round",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "ascendancy": "werewolf",
       "color": "blue",
@@ -6817,7 +6817,7 @@
     },
     {
       "id": "shovel_blow",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "common",
       "role": "fast",
@@ -6831,7 +6831,7 @@
     },
     {
       "id": "handful_of_earth",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "common",
       "role": "fast",
@@ -6845,7 +6845,7 @@
     },
     {
       "id": "name_plate",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "shovel",
       "tier": "common",
       "role": "fast",
@@ -6860,7 +6860,7 @@
     },
     {
       "id": "night_digger",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "common",
       "role": "heavy",
@@ -6874,7 +6874,7 @@
     },
     {
       "id": "tombstone",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "common",
       "role": "heavy",
@@ -6888,7 +6888,7 @@
     },
     {
       "id": "smoke_break_at_the_graveyard",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "common",
       "role": "heavy",
@@ -6903,7 +6903,7 @@
     },
     {
       "id": "evening_bell",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "shovel",
       "tier": "common",
       "color": "blue",
@@ -6917,7 +6917,7 @@
     },
     {
       "id": "grave_round",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "shovel",
       "tier": "common",
       "color": "blue",
@@ -6931,7 +6931,7 @@
     },
     {
       "id": "spade_calluses",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "common",
       "color": "blue",
@@ -6944,7 +6944,7 @@
     },
     {
       "id": "old_lantern",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "common",
       "color": "blue",
@@ -6957,7 +6957,7 @@
     },
     {
       "id": "excavation_fee",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "common",
       "color": "blue",
@@ -6970,7 +6970,7 @@
     },
     {
       "id": "bone_scree",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "rare",
       "role": "fast",
@@ -6984,7 +6984,7 @@
     },
     {
       "id": "lantern_light",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "shovel",
       "tier": "rare",
       "color": "blue",
@@ -6997,7 +6997,7 @@
     },
     {
       "id": "plenty_of_work",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "rare",
       "color": "blue",
@@ -7010,7 +7010,7 @@
     },
     {
       "id": "bone_throw",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "rare",
       "role": "fast",
@@ -7024,7 +7024,7 @@
     },
     {
       "id": "rise_up",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "rare",
       "role": "fast",
@@ -7038,7 +7038,7 @@
     },
     {
       "id": "diggers_crew",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "rare",
       "role": "heavy",
@@ -7052,7 +7052,7 @@
     },
     {
       "id": "the_crypt_is_open",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "shovel",
       "tier": "rare",
       "role": "heavy",
@@ -7067,7 +7067,7 @@
     },
     {
       "id": "fog_over_the_churchyard",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "rare",
       "color": "blue",
@@ -7081,7 +7081,7 @@
     },
     {
       "id": "bone_count",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "rare",
       "color": "blue",
@@ -7094,7 +7094,7 @@
     },
     {
       "id": "the_whole_shift",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "epic",
       "role": "heavy",
@@ -7109,7 +7109,7 @@
     },
     {
       "id": "museum_exhibit",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "epic",
       "role": "heavy",
@@ -7123,7 +7123,7 @@
     },
     {
       "id": "the_last_shovel",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "epic",
       "role": "fast",
@@ -7137,7 +7137,7 @@
     },
     {
       "id": "roll_call",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "shovel",
       "tier": "epic",
       "role": "fast",
@@ -7152,7 +7152,7 @@
     },
     {
       "id": "night_of_digging",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "shovel",
       "tier": "epic",
       "color": "blue",
@@ -7166,7 +7166,7 @@
     },
     {
       "id": "all_at_work",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "epic",
       "color": "blue",
@@ -7179,7 +7179,7 @@
     },
     {
       "id": "graveyard_collapse",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "legendary",
       "role": "fast",
@@ -7193,7 +7193,7 @@
     },
     {
       "id": "all_shifts_at_once",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "legendary",
       "role": "heavy",
@@ -7207,7 +7207,7 @@
     },
     {
       "id": "colleagues_do_not_leave",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "legendary",
       "color": "blue",
@@ -7220,7 +7220,7 @@
     },
     {
       "id": "shovel_of_colossus_bone",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "mythic",
       "role": "fast",
@@ -7234,7 +7234,7 @@
     },
     {
       "id": "night_museum",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "mythic",
       "role": "heavy",
@@ -7248,7 +7248,7 @@
     },
     {
       "id": "do_not_touch_the_bones",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "mythic",
       "role": "heavy",
@@ -7262,7 +7262,7 @@
     },
     {
       "id": "graveyard_keeper",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "shovel",
       "tier": "mythic",
       "color": "blue",
@@ -7275,7 +7275,7 @@
     },
     {
       "id": "skeleton_foreman",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "shovel",
       "tier": "mythic",
       "locked": true,
@@ -7287,7 +7287,7 @@
     },
     {
       "id": "one_more_cannon",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "ascendancy": "corsair",
       "color": "green",
@@ -7300,7 +7300,7 @@
     },
     {
       "id": "figurehead",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "ascendancy": "sea_witch",
       "color": "green",
@@ -7313,7 +7313,7 @@
     },
     {
       "id": "neighbour_from_below",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "ascendancy": "kraken_master",
       "color": "green",
@@ -7326,7 +7326,7 @@
     },
     {
       "id": "the_pistol_answers",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "role": "fast",
@@ -7340,7 +7340,7 @@
     },
     {
       "id": "shot_in_the_air",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "role": "fast",
@@ -7354,7 +7354,7 @@
     },
     {
       "id": "boarding_hook",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "role": "fast",
@@ -7368,7 +7368,7 @@
     },
     {
       "id": "six_shots",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "role": "heavy",
@@ -7382,7 +7382,7 @@
     },
     {
       "id": "bow_gun",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "role": "heavy",
@@ -7396,7 +7396,7 @@
     },
     {
       "id": "load_grapeshot",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "role": "heavy",
@@ -7411,7 +7411,7 @@
     },
     {
       "id": "rum_for_the_crew",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "tier": "common",
       "color": "green",
@@ -7425,7 +7425,7 @@
     },
     {
       "id": "boatswains_song",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "tier": "common",
       "color": "green",
@@ -7439,7 +7439,7 @@
     },
     {
       "id": "one_eye_but_true",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "color": "green",
@@ -7452,7 +7452,7 @@
     },
     {
       "id": "salty_tricorne",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "color": "green",
@@ -7465,7 +7465,7 @@
     },
     {
       "id": "share_of_the_loot",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "common",
       "color": "green",
@@ -7478,7 +7478,7 @@
     },
     {
       "id": "barrel_from_the_hold",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "rare",
       "role": "fast",
@@ -7492,7 +7492,7 @@
     },
     {
       "id": "chain_shot",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "rare",
       "color": "green",
@@ -7505,7 +7505,7 @@
     },
     {
       "id": "parrot_with_five_words",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "tier": "rare",
       "color": "green",
@@ -7518,7 +7518,7 @@
     },
     {
       "id": "shot_over_the_shoulder",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "rare",
       "role": "fast",
@@ -7532,7 +7532,7 @@
     },
     {
       "id": "powder_trail",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "rare",
       "role": "fast",
@@ -7546,7 +7546,7 @@
     },
     {
       "id": "longboat_with_a_cannon",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "tier": "rare",
       "role": "heavy",
@@ -7561,7 +7561,7 @@
     },
     {
       "id": "cannons_fire",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "tier": "rare",
       "role": "heavy",
@@ -7576,7 +7576,7 @@
     },
     {
       "id": "flag_on_the_mast",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "tier": "rare",
       "color": "green",
@@ -7590,7 +7590,7 @@
     },
     {
       "id": "old_gunner",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "rare",
       "color": "green",
@@ -7603,7 +7603,7 @@
     },
     {
       "id": "all_hands_on_deck",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "epic",
       "role": "heavy",
@@ -7618,7 +7618,7 @@
     },
     {
       "id": "ship_aground",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "epic",
       "role": "heavy",
@@ -7632,7 +7632,7 @@
     },
     {
       "id": "point_blank",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "epic",
       "role": "fast",
@@ -7646,7 +7646,7 @@
     },
     {
       "id": "broadside",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "tier": "epic",
       "role": "fast",
@@ -7661,7 +7661,7 @@
     },
     {
       "id": "fair_wind",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "tier": "epic",
       "color": "green",
@@ -7675,7 +7675,7 @@
     },
     {
       "id": "powder_magazine",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "epic",
       "color": "green",
@@ -7688,7 +7688,7 @@
     },
     {
       "id": "full_broadside",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "legendary",
       "role": "fast",
@@ -7702,7 +7702,7 @@
     },
     {
       "id": "fleet_at_ice_harbour",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "legendary",
       "role": "heavy",
@@ -7716,7 +7716,7 @@
     },
     {
       "id": "the_cannons_know_names",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "legendary",
       "color": "green",
@@ -7729,7 +7729,7 @@
     },
     {
       "id": "last_cannonball",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "mythic",
       "role": "fast",
@@ -7743,7 +7743,7 @@
     },
     {
       "id": "the_ship_is_afloat",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "mythic",
       "role": "heavy",
@@ -7758,7 +7758,7 @@
     },
     {
       "id": "the_cannon_answers_everyone",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "mythic",
       "role": "heavy",
@@ -7773,7 +7773,7 @@
     },
     {
       "id": "captains_bridge",
-      "kind": "skill",
+      "kind": "active",
       "weapon": "pistol",
       "tier": "mythic",
       "color": "green",
@@ -7786,7 +7786,7 @@
     },
     {
       "id": "the_parrot_learned_a_sixth_word",
-      "kind": "skill",
+      "kind": "aura",
       "weapon": "pistol",
       "tier": "mythic",
       "locked": true,
@@ -7912,6 +7912,9 @@
     {
       "id": "rebound",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Отскок", "en": "Rebound" },
       "effect": { "type": "rebound", "killCooldownSeconds": 1, "cooldownMultiplier": 0.9 }
@@ -7919,6 +7922,9 @@
     {
       "id": "chain",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "green",
       "name": { "ru": "Цепь", "en": "Chain" },
       "effect": { "type": "chain", "share": 0.3 }
@@ -7926,6 +7932,9 @@
     {
       "id": "executioner",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "blue",
       "name": { "ru": "Казнящий", "en": "Executioner" },
       "effect": { "type": "executioner", "below": 0.3, "multiplier": 2, "killCooldownSeconds": 2 }
@@ -7933,6 +7942,9 @@
     {
       "id": "apprentice",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Ученик", "en": "Apprentice" },
       "effect": { "type": "apprentice", "power": 0.9, "experienceMultiplier": 1.5 }
@@ -7940,6 +7952,9 @@
     {
       "id": "boss_hunter",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "blue",
       "name": { "ru": "Против боссов", "en": "Boss Hunter" },
       "effect": { "type": "bossHunter", "boss": 1.6, "normal": 0.95 }
@@ -7947,6 +7962,9 @@
     {
       "id": "death_mark",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "blue",
       "name": { "ru": "Метка смерти", "en": "Death Mark" },
       "effect": { "type": "deathMark", "killResource": 5, "markedMultiplier": 1.2 }
@@ -7954,6 +7972,9 @@
     {
       "id": "quiet_time",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Тихий час", "en": "Quiet Hour" },
       "effect": { "type": "quietHour", "idleSeconds": 30, "power": 2 }
@@ -7961,6 +7982,9 @@
     {
       "id": "blade_hunger",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "red",
       "name": { "ru": "Голод клинка", "en": "Blade Hunger" },
       "effect": { "type": "bladeHunger", "hitsPerStep": 4, "step": 0.01, "max": 0.4 }
@@ -7968,6 +7992,9 @@
     {
       "id": "acceleration",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "red",
       "name": { "ru": "Разгон", "en": "Acceleration" },
       "effect": { "type": "acceleration", "focusStep": 0.5, "bonus": 0.08, "max": 0.6 }
@@ -7975,6 +8002,9 @@
     {
       "id": "crit_focus",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "red",
       "name": { "ru": "Крит-фокус", "en": "Crit Focus" },
       "effect": { "type": "critFocus", "critPerStep": 0.03, "focusStep": 0.5, "critMultiplier": 1.2 }
@@ -7982,6 +8012,9 @@
     {
       "id": "wide_reach",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Широкий охват", "en": "Wide Reach" },
       "effect": { "type": "wideReach", "share": 0.2, "slot": 1 }
@@ -7989,6 +8022,9 @@
     {
       "id": "deferred_payment",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Отложенная плата", "en": "Deferred Payment" },
       "effect": { "type": "deferredPayment", "costMultiplier": 0.8, "perSecond": 0.1 }
@@ -7996,6 +8032,9 @@
     {
       "id": "double_charge",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Двойной заряд", "en": "Double Charge" },
       "effect": { "type": "doubleCharge", "extraCharges": 1, "power": 1.15 }
@@ -8003,6 +8042,9 @@
     {
       "id": "twins",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Близнецы", "en": "Twins" },
       "effect": { "type": "twins", "afterSeconds": 2, "power": 0.3 }
@@ -8010,6 +8052,9 @@
     {
       "id": "lingering",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Затяжной", "en": "Lingering" },
       "effect": { "type": "lingering", "durationMultiplier": 1.2, "lingerMax": 0.5 }
@@ -8017,6 +8062,9 @@
     {
       "id": "ink_poison",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "red",
       "name": { "ru": "Чернильный яд", "en": "Ink Poison" },
       "effect": { "type": "inkPoison", "stacksPerHit": 0.2, "maxHits": 3 }
@@ -8024,6 +8072,9 @@
     {
       "id": "series_rhythm",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "red",
       "name": { "ru": "Ритм серии", "en": "Series Rhythm" },
       "effect": { "type": "seriesRhythm", "every": 25, "cooldownSeconds": 1, "longSeries": 50, "power": 1.1 }
@@ -8031,6 +8082,9 @@
     {
       "id": "series_finish",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "red",
       "name": { "ru": "Финиш серии", "en": "Series Finish" },
       "effect": { "type": "seriesFinish", "afterHits": 20, "multiplier": 1.8, "resource": 5 }
@@ -8038,6 +8092,9 @@
     {
       "id": "long_swing",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "green",
       "name": { "ru": "Длинный взмах", "en": "Long Swing" },
       "effect": { "type": "longSwing", "distanceMultiplier": 1.3, "mouseDamage": 1.1 }
@@ -8045,6 +8102,9 @@
     {
       "id": "whirlpool",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "green",
       "name": { "ru": "Круговорот", "en": "Whirlpool" },
       "effect": { "type": "whirlpool", "cooldownSecondsPerCircle": 1, "circlesForPower": 3, "power": 1.1 }
@@ -8052,6 +8112,9 @@
     {
       "id": "tailwind_support",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "green",
       "name": { "ru": "Попутный ветер", "en": "Tailwind" },
       "effect": { "type": "tailwind", "pxPerSecond": 2000, "max": 1, "auraPower": 1.1 }
@@ -8059,6 +8122,9 @@
     {
       "id": "minion_trail",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "green",
       "name": { "ru": "След для слуг", "en": "Trail for Servants" },
       "effect": { "type": "minionTrail", "mouseSpeed": 1.3, "life": 1.2 }
@@ -8066,6 +8132,9 @@
     {
       "id": "sweeping",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "green",
       "name": { "ru": "Размашистый", "en": "Sweeping" },
       "effect": { "type": "sweeping", "maxTargets": 3, "share": 0.5, "queueDamage": 1.15 }
@@ -8073,6 +8142,9 @@
     {
       "id": "target_hunter",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "green",
       "name": { "ru": "Охотник за целью", "en": "Target Hunter" },
       "effect": { "type": "targetHunter", "multiplier": 1.3 }
@@ -8080,6 +8152,9 @@
     {
       "id": "cursed",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "blue",
       "name": { "ru": "Проклятый", "en": "Cursed" },
       "effect": { "type": "cursed", "damageTaken": 0.08, "seconds": 8 }
@@ -8087,6 +8162,9 @@
     {
       "id": "lingering_blight",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "blue",
       "name": { "ru": "Затяжная хворь", "en": "Lingering Blight" },
       "effect": { "type": "lingeringBlight", "afflictionMultiplier": 1.5, "stackCapMultiplier": 1.1 }
@@ -8094,6 +8172,9 @@
     {
       "id": "pawnbroker",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Скупщик", "en": "Pawnbroker" },
       "effect": { "type": "pawnbroker", "power": 0.7, "killReward": 1.4 }
@@ -8101,6 +8182,9 @@
     {
       "id": "key_echo",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "red",
       "name": { "ru": "Эхо клавиш", "en": "Key Echo" },
       "effect": { "type": "keyEcho", "everyKeys": 40, "power": 0.5, "keyDamage": 1.1 }
@@ -8108,6 +8192,9 @@
     {
       "id": "legacy",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "white",
       "name": { "ru": "Наследие", "en": "Legacy" },
       "effect": { "type": "legacy", "partyPower": 1.1 }
@@ -8115,6 +8202,9 @@
     {
       "id": "resonance",
       "kind": "support",
+      "supports": ["Skill"],
+      "damageMult": 1,
+      "manaMult": 1,
       "color": "blue",
       "name": { "ru": "Резонанс", "en": "Resonance" },
       "effect": { "type": "resonance", "allyPower": 1.2, "afterSeconds": 5 }

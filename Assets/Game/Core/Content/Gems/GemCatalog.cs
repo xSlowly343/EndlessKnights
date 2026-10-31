@@ -7,13 +7,16 @@ namespace Game.Core.Content.Gems
     public sealed class GemCatalog
     {
         public const string FileName = "gems.json";
-        public const int SupportedVersion = 1;
+        public const int SupportedVersion = 2;
+        public const double MinBranchMultiplier = 0.01;
+        public const double MaxBranchMultiplier = 100;
 
-        private static readonly Dictionary<string, GemKind> Kinds = new Dictionary<string, GemKind>(StringComparer.Ordinal)
+        private static readonly Dictionary<string, SkillType> Types = new Dictionary<string, SkillType>(StringComparer.Ordinal)
         {
-            ["skill"] = GemKind.Skill,
-            ["support"] = GemKind.Support,
-            ["trigger"] = GemKind.Trigger
+            ["active"] = SkillType.Active,
+            ["aura"] = SkillType.Aura,
+            ["support"] = SkillType.Support,
+            ["trigger"] = SkillType.Trigger
         };
 
         private static readonly Dictionary<string, SkillTier> Tiers = new Dictionary<string, SkillTier>(StringComparer.Ordinal)
@@ -200,7 +203,7 @@ namespace Game.Core.Content.Gems
         private static GemDef ReadGem(ContentNode node)
         {
             var id = node.Field("id").AsString();
-            var kind = Pick(node.Field("kind"), Kinds, "skill, support or trigger");
+            var type = Pick(node.Field("kind"), Types, "active, aura, support or trigger");
             var color = Pick(node.Field("color"), Colors, "red, green, blue or white");
             var name = node.Field("name");
             var tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None;
@@ -212,19 +215,96 @@ namespace Game.Core.Content.Gems
                 foreach (var attribute in node.Field("requires").FieldNames())
                     requires[attribute] = node.Field("requires").Field(attribute).AsNumber(0, 10000);
             }
-            switch (kind)
+            if (type != SkillType.Active && type != SkillType.Aura && node.HasField("branches"))
+                throw node.Field("branches").Error("only active skills and auras have branches");
+            if (type != SkillType.Support)
+                RejectSupportFields(node);
+            switch (type)
             {
-                case GemKind.Skill:
-                    return ReadSkillGem(node, id, color, nameRu, nameEn, tags, requires);
-                case GemKind.Trigger:
-                    return new GemDef(id, kind, color, nameRu, nameEn, tags, trigger: ReadTrigger(node), requires: requires);
+                case SkillType.Active:
+                case SkillType.Aura:
+                    return ReadSkillGem(node, id, type, color, nameRu, nameEn, tags, requires);
+                case SkillType.Trigger:
+                    return new GemDef(id, GemKind.Trigger, color, nameRu, nameEn, tags, trigger: ReadTrigger(node), requires: requires);
                 default:
-                    return new GemDef(id, kind, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(), requires: requires,
-                        support: SupportDef.Read(node.Field("effect")));
+                    return new GemDef(id, GemKind.Support, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(), requires: requires,
+                        support: SupportDef.Read(node.Field("effect")), supports: ReadSupported(node.Field("supports")),
+                        damageMultiplier: node.Field("damageMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
+                        manaMultiplier: node.Field("manaMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier));
             }
         }
 
-        private static GemDef ReadSkillGem(ContentNode node, string id, GemColor color, string nameRu, string nameEn, StatTags tags, Dictionary<string, double> requires)
+        private static void RejectSupportFields(ContentNode node)
+        {
+            foreach (var field in new[] { "supports", "damageMult", "manaMult" })
+            {
+                if (node.HasField(field))
+                    throw node.Field(field).Error("only a support has this field");
+            }
+        }
+
+        private static StatTags ReadSupported(ContentNode node)
+        {
+            var tags = ModifierReader.ReadTags(node);
+            if (tags == StatTags.None)
+                throw node.Error("a support needs at least one skill tag it supports");
+            return tags;
+        }
+
+        private static IReadOnlyList<SkillBranchTier> ReadBranches(ContentNode skill, double durationSeconds)
+        {
+            if (!skill.HasField("branches"))
+                return Array.Empty<SkillBranchTier>();
+            var node = skill.Field("branches");
+            var items = node.Items();
+            if (items.Count != SkillBranchTier.Count)
+                throw node.Error($"a skill has {SkillBranchTier.Count} branch tiers, got {items.Count}");
+            var tiers = new List<SkillBranchTier>(items.Count);
+            var ids = new HashSet<string>(StringComparer.Ordinal);
+            var previousLevel = 0;
+            foreach (var item in items)
+            {
+                var level = item.Field("level").AsInt(1, 1000);
+                if (level <= previousLevel)
+                    throw item.Field("level").Error($"tier level {level} must be above the previous tier level {previousLevel}");
+                previousLevel = level;
+                tiers.Add(new SkillBranchTier(level, ReadOptions(skill, item.Field("options"), ids, durationSeconds)));
+            }
+            return tiers;
+        }
+
+        private static IReadOnlyList<SkillBranch> ReadOptions(ContentNode skill, ContentNode node, HashSet<string> ids, double durationSeconds)
+        {
+            var items = node.Items();
+            if (items.Count != SkillBranchTier.OptionCount)
+                throw node.Error($"a tier has {SkillBranchTier.OptionCount} branches, got {items.Count}");
+            var options = new List<SkillBranch>(items.Count);
+            foreach (var item in items)
+            {
+                var id = item.Field("id").AsString();
+                if (!ids.Add(id))
+                    throw item.Field("id").Error($"branch id '{id}' is used twice in this skill");
+                var name = item.Field("name");
+                options.Add(new SkillBranch(id, name.Field("ru").AsString(), name.Field("en").AsString(),
+                    BranchMultiplier(item, "damage"), BranchMultiplier(item, "cooldown"), BranchMultiplier(item, "cost"), BranchMultiplier(item, "duration"),
+                    item.HasField("effect") ? ReadBranchEffect(skill, item.Field("effect"), durationSeconds) : null));
+            }
+            return options;
+        }
+
+        private static double BranchMultiplier(ContentNode node, string name) =>
+            node.HasField(name) ? node.Field(name).AsNumber(MinBranchMultiplier, MaxBranchMultiplier) : 1;
+
+        private static SkillEffect ReadBranchEffect(ContentNode skill, ContentNode overrides, double durationSeconds)
+        {
+            if (!skill.HasField("effect"))
+                throw overrides.Error("a locked skill has no effect to change");
+            if (overrides.HasField("type"))
+                throw overrides.Field("type").Error("a branch changes the numbers of the effect, not its type");
+            return ReadEffect(skill.Field("effect").MergedWith(overrides), durationSeconds);
+        }
+
+        private static GemDef ReadSkillGem(ContentNode node, string id, SkillType type, GemColor color, string nameRu, string nameEn, StatTags tags, Dictionary<string, double> requires)
         {
             var ascendancy = node.HasField("ascendancy") ? node.Field("ascendancy").AsString() : null;
             var locked = node.HasField("locked") && node.Field("locked").AsBool();
@@ -234,7 +314,11 @@ namespace Game.Core.Content.Gems
                 throw node.Field("locked").Error("only a class skill can wait for its mechanic");
             if (locked == node.HasField("effect"))
                 throw node.Error(locked ? "a locked skill has no effect yet" : "a skill needs an effect");
-            return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: ReadSkill(node, locked), requires: requires, ascendancy: ascendancy, locked: locked);
+            var skill = ReadSkill(node, locked);
+            if (!locked && (skill.Effect is AuraEffect) != (type == SkillType.Aura))
+                throw node.Field("kind").Error(type == SkillType.Aura ? "an aura needs an aura effect" : "a skill with an aura effect has kind aura");
+            return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, requires: requires, ascendancy: ascendancy, locked: locked,
+                type: type, branches: ReadBranches(node, skill.DurationSeconds));
         }
 
         private static SkillDef ReadSkill(ContentNode node, bool locked)
