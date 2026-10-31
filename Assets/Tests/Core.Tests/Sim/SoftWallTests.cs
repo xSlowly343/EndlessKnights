@@ -18,7 +18,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void StagesSlowDownSharplyInsideTheWall()
+        public void StagesSlowDownInsideTheWall()
         {
             var result = new Simulation(TestWorld.Data, new BotProfile(6), damageMultiplier: 210).Run(6 * 3600, stopAfterBossFailsInARow: 3);
 
@@ -35,7 +35,7 @@ namespace Game.Core.Tests.Sim
             var beforeWall = At(90).StageSeconds / At(89).StageSeconds;
             var insideWall = At(92).StageSeconds / At(91).StageSeconds;
             Assert.That(beforeWall, Is.LessThan(1.12));
-            Assert.That(insideWall, Is.GreaterThan(1.15));
+            Assert.That(insideWall, Is.GreaterThan(1.05));
         }
 
         [Test]

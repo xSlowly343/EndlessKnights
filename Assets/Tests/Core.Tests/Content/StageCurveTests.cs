@@ -62,7 +62,11 @@ namespace Game.Core.Tests.Content
             var real = TestWorld.Real.Stages;
 
             Assert.That((real.EnemyHp(51) / real.EnemyHp(50)).ToDouble(), Is.EqualTo(1.08).Within(1e-9));
-            Assert.That((real.EnemyHp(92) / real.EnemyHp(91)).ToDouble(), Is.EqualTo(1.2).Within(1e-9));
+            Assert.That((real.EnemyHp(92) / real.EnemyHp(91)).ToDouble(), Is.EqualTo(1.08 * 1.02).Within(1e-9));
+            Assert.That((real.EnemyHp(2051) / real.EnemyHp(2050)).ToDouble(), Is.EqualTo(1.012).Within(1e-9));
+            Assert.That((real.EnemyHp(20051) / real.EnemyHp(20050)).ToDouble(), Is.EqualTo(1.0045).Within(1e-9));
+            Assert.That((real.EnemyGold(20051) / real.EnemyGold(20050)).ToDouble(), Is.EqualTo(1.0168).Within(1e-9));
+            Assert.That(real.BossHp(50000).Log10(), Is.LessThan(200));
         }
     }
 }
