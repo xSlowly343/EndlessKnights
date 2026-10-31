@@ -737,6 +737,7 @@
     },
     {
       "id": "fathers_scimitar",
+      "formerIds": ["dagger_throw"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
@@ -747,7 +748,8 @@
       "cost": {"resource": 10},
       "cooldownSeconds": 4,
       "effect": {"type": "strike", "multiplier": 3},
-      "native": {"resourceOnHit": 2}
+      "native": {"resourceOnHit": 2},
+      "branches": [{ "level": 5, "options": [{ "id": "honed_blade", "name": { "ru": "Наточенный клинок", "en": "Honed Blade" }, "damage": 1.3 }, { "id": "quick_blade", "name": { "ru": "Быстрый клинок", "en": "Quick Blade" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "dagger_throw", "name": { "ru": "Бросок кинжала", "en": "Dagger Throw" }, "effect": { "queueTargets": 1, "queueMultiplier": 1 } }, { "id": "light_blade", "name": { "ru": "Лёгкий клинок", "en": "Light Blade" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "family_blade", "name": { "ru": "Родовой клинок", "en": "Family Blade" }, "damage": 1.7, "cooldown": 1.25 }, { "id": "two_blades", "name": { "ru": "Два клинка", "en": "Two Blades" }, "effect": { "queueTargets": 2, "queueMultiplier": 1.2 } }] }]
     },
     {
       "id": "by_the_gait",
@@ -2067,18 +2069,19 @@
       "id": "mirage_at_the_well",
       "kind": "active",
       "weapon": "scimitar",
-      "tier": "common",
-      "role": "fast",
+      "tier": "rare",
       "color": "red",
       "name": {"ru": "Мираж у колодца", "en": "Mirage at the Well"},
       "tags": ["Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 8,
       "effect": {"type": "weakenNext", "enemies": 1, "hpShare": 0.2},
-      "native": {"resetWithinSeconds": 2}
+      "native": {"resetWithinSeconds": 2},
+      "branches": [{ "level": 5, "options": [{ "id": "deeper_mirage", "name": { "ru": "Глубже мираж", "en": "Deeper Mirage" }, "effect": { "hpShare": 0.25 } }, { "id": "quick_mirage", "name": { "ru": "Быстрый мираж", "en": "Quick Mirage" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "double_mirage", "name": { "ru": "Двойной мираж", "en": "Double Mirage" }, "cooldown": 1.3, "effect": { "enemies": 2 } }, { "id": "cheap_mirage", "name": { "ru": "Мираж даром", "en": "Free Mirage" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "great_mirage", "name": { "ru": "Великий мираж", "en": "Great Mirage" }, "cooldown": 1.25, "effect": { "hpShare": 0.3 } }, { "id": "mirages_down_the_road", "name": { "ru": "Миражи вдоль дороги", "en": "Mirages down the Road" }, "cooldown": 1.4, "effect": { "enemies": 3, "hpShare": 0.15 } }] }]
     },
     {
       "id": "handful_of_sand",
+      "formerIds": ["twin_scimitars"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
@@ -2089,13 +2092,15 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 3,
       "effect": { "type": "strike", "multiplier": 3 },
-      "native": { "resourceOnCast": 2 }
+      "native": { "resourceOnCast": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "bigger_handful", "name": { "ru": "Полная горсть", "en": "Full Handful" }, "damage": 1.3 }, { "id": "quick_handful", "name": { "ru": "Быстрая горсть", "en": "Quick Handful" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "twin_scimitars", "name": { "ru": "Двойной ятаган", "en": "Twin Scimitars" }, "effect": { "queueTargets": 1 } }, { "id": "free_sand", "name": { "ru": "Песок даром", "en": "Free Sand" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "sand_in_the_eyes", "name": { "ru": "Песок в глаза", "en": "Sand in the Eyes" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "sand_down_the_line", "name": { "ru": "Песок по очереди", "en": "Sand Down the Line" }, "damage": 0.9, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "camel_thorn",
+      "formerIds": ["map_of_wells"],
       "kind": "active",
       "weapon": "scimitar",
-      "tier": "common",
+      "tier": "rare",
       "role": "fast",
       "color": "red",
       "name": { "ru": "Верблюжья колючка", "en": "Camel Thorn" },
@@ -2103,10 +2108,12 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} }
+      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_thorn", "name": { "ru": "Острее колючка", "en": "Sharper Thorn" }, "damage": 1.3 }, { "id": "quick_thorn_n", "name": { "ru": "Быстрая колючка", "en": "Quick Thorn" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "map_of_wells", "name": { "ru": "Карта колодцев", "en": "Map of Wells" }, "effect": { "queueTargets": 2 } }, { "id": "free_thorn", "name": { "ru": "Колючка даром", "en": "Free Thorn" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "thorn_bush_n", "name": { "ru": "Куст колючки", "en": "Thorn Bush" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "thorn_trail", "name": { "ru": "След колючек", "en": "Thorn Trail" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "caravan_strike",
+      "formerIds": ["night_crossing"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
@@ -2117,10 +2124,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 20,
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "resourceOnHit": 2 }
+      "native": { "resourceOnHit": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "more_strikes", "name": { "ru": "Больше ударов", "en": "More Strikes" }, "effect": { "hits": 8 } }, { "id": "heavy_strikes", "name": { "ru": "Тяжёлые удары", "en": "Heavy Strikes" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "night_crossing", "name": { "ru": "Ночной переход", "en": "Night Crossing" }, "cooldown": 0.7 }, { "id": "cheap_strike", "name": { "ru": "Удар даром", "en": "Free Strike" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "long_caravan", "name": { "ru": "Длинный караван", "en": "Long Caravan" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "caravan_down_the_line", "name": { "ru": "Караван по очереди", "en": "Caravan Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "noon_heat",
+      "formerIds": ["sand_whirlwind"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "common",
@@ -2131,25 +2140,12 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
       "effect": { "type": "strike", "multiplier": 10 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.4} }
-    },
-    {
-      "id": "night_crossing",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "common",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Ночной переход", "en": "Night Crossing" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 25,
-      "durationSeconds": 6,
-      "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "more", "value": 1}] }
+      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.4} },
+      "branches": [{ "level": 5, "options": [{ "id": "hotter_noon", "name": { "ru": "Жарче полдень", "en": "Hotter Noon" }, "damage": 1.3 }, { "id": "quick_noon", "name": { "ru": "Быстрый зной", "en": "Quick Heat" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "sand_whirlwind", "name": { "ru": "Песчаный смерч", "en": "Sand Whirlwind" }, "effect": { "queueTargets": 2 } }, { "id": "light_heat", "name": { "ru": "Лёгкий зной", "en": "Light Heat" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "white_sun", "name": { "ru": "Белое солнце", "en": "White Sun" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "long_noon", "name": { "ru": "Долгий полдень", "en": "Long Noon" }, "cooldown": 1.2, "effect": { "multiplier": 13 } }] }]
     },
     {
       "id": "caravan_bell",
+      "formerIds": ["weathered_face"],
       "kind": "aura",
       "weapon": "scimitar",
       "tier": "common",
@@ -2160,77 +2156,26 @@
       "cooldownSeconds": 20,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Click"]}] },
-      "native": { "resourceOnCast": 10 }
-    },
-    {
-      "id": "dunes",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Барханы", "en": "Dunes" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "inputHits", "pxPerHit": 500, "pxShare": 2 },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.2, "tags": ["Mouse"]}] }
-    },
-    {
-      "id": "weathered_face",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Обветренное лицо", "en": "Weathered Face" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}] },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}] }
-    },
-    {
-      "id": "counting_stars",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Счёт звёздам", "en": "Counting Stars" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.05}] },
-      "native": { "resourceOnCrit": 2 }
-    },
-    {
-      "id": "sand_bazaar",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Песчаный базар", "en": "Sand Bazaar" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "resourceOnKill": 3 }
+      "native": { "resourceOnCast": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_bell", "name": { "ru": "Звонче колокольчик", "en": "Louder Bell" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Click"] }] } }, { "id": "small_bell", "name": { "ru": "Маленький колокольчик", "en": "Small Bell" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "weathered_face", "name": { "ru": "Обветренное лицо", "en": "Weathered Face" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Click"] }, { "stat": "damage", "kind": "increased", "value": 0.05 }] } }, { "id": "long_ring", "name": { "ru": "Долгий звон", "en": "Long Ring" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "lead_camel", "name": { "ru": "Колокольчик вожака", "en": "Lead Camel's Bell" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Click"] }, { "stat": "critChance", "kind": "flat", "value": 0.05 }] } }, { "id": "ringing_all_day", "name": { "ru": "Звон весь день", "en": "Ringing All Day" }, "cooldown": 1.3, "duration": 2 }] }]
     },
     {
       "id": "scorpion_sting",
       "kind": "active",
       "weapon": "scimitar",
       "tier": "rare",
-      "role": "fast",
       "color": "red",
       "name": { "ru": "Жало скорпиона", "en": "Scorpion Sting" },
       "tags": ["DoT", "Skill"],
       "cost": { "resource": 15 },
       "cooldownSeconds": 5,
       "effect": { "type": "addStacks", "dot": "poison", "stacks": 5, "multiplier": 2 },
-      "native": { "when": {"dotStacksAtLeast": 1, "free": true} }
+      "native": { "when": {"dotStacksAtLeast": 1, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "deeper_sting", "name": { "ru": "Глубже жало", "en": "Deeper Sting" }, "effect": { "stacks": 6 } }, { "id": "quick_sting", "name": { "ru": "Быстрое жало", "en": "Quick Sting" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "black_scorpion", "name": { "ru": "Чёрный скорпион", "en": "Black Scorpion" }, "effect": { "multiplier": 2.6 } }, { "id": "cheap_sting", "name": { "ru": "Жало даром", "en": "Free Sting" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "scorpion_nest", "name": { "ru": "Гнездо скорпионов", "en": "Scorpion Nest" }, "cooldown": 1.3, "effect": { "stacks": 9 } }, { "id": "many_stings", "name": { "ru": "Много жал", "en": "Many Stings" }, "cooldown": 0.6, "effect": { "stacks": 4 } }] }]
     },
     {
       "id": "sand_from_the_pockets",
+      "formerIds": ["dunes"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "rare",
@@ -2242,65 +2187,27 @@
       "cooldownSeconds": 30,
       "durationSeconds": 10,
       "effect": {"type": "inputHits", "pxPerHit": 200, "pxShare": 1, "queueTargets": 3},
-      "native": {"resourceOnHit": 1}
+      "native": {"resourceOnHit": 1},
+      "branches": [{ "level": 5, "options": [{ "id": "deeper_pockets", "name": { "ru": "Глубже карманы", "en": "Deeper Pockets" }, "effect": { "pxShare": 1.3 } }, { "id": "finer_sand", "name": { "ru": "Мельче песок", "en": "Finer Sand" }, "effect": { "pxPerHit": 160 } }] }, { "level": 15, "options": [{ "id": "dunes", "name": { "ru": "Барханы", "en": "Dunes" }, "duration": 1.5 }, { "id": "quick_pockets", "name": { "ru": "Быстрые карманы", "en": "Quick Pockets" }, "cooldown": 0.75 }] }, { "level": 25, "options": [{ "id": "sandstorm_pockets", "name": { "ru": "Буря из карманов", "en": "Storm from the Pockets" }, "cooldown": 1.3, "effect": { "pxShare": 1.7 } }, { "id": "sand_for_everyone", "name": { "ru": "Песок на всех", "en": "Sand for Everyone" }, "cost": 0.6, "effect": { "pxShare": 0.9 } }] }]
     },
     {
       "id": "a_different_road_each_time",
-      "kind": "active",
+      "formerIds": ["three_roads"],
+      "kind": "aura",
       "weapon": "scimitar",
-      "tier": "rare",
+      "tier": "epic",
       "color": "red",
       "name": {"ru": "Каждый раз другая дорога", "en": "A Different Road Each Time"},
-      "tags": ["Skill"],
+      "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "passive", "modifiers": [{"stat": "damagePerInputKind", "kind": "flat", "value": 0.08}]},
-      "native": {"modifiers": [{"stat": "damagePerInputKind", "kind": "flat", "value": 0.04}]}
-    },
-    {
-      "id": "twin_scimitars",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "rare",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Двойной ятаган", "en": "Twin Scimitars" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 4,
-      "effect": { "type": "flurry", "hits": 2, "seconds": 0.2, "multiplier": 3 },
-      "native": { "carryOn": true }
-    },
-    {
-      "id": "dagger_throw",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "rare",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Бросок кинжала", "en": "Dagger Throw" },
-      "tags": ["Skill"],
-      "cost": { "resource": 15 },
-      "cooldownSeconds": 5,
-      "effect": { "type": "strike", "multiplier": 4, "queueTargets": 1, "skipCurrent": true },
-      "native": { "woundedSpawnResource": 10 }
-    },
-    {
-      "id": "sand_whirlwind",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Песчаный смерч", "en": "Sand Whirlwind" },
-      "tags": ["Skill"],
-      "cost": { "resource": 50 },
-      "cooldownSeconds": 30,
-      "effect": { "type": "strike", "multiplier": 12, "queueTargets": 2 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} }
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damagePerInputKind", "kind": "flat", "value": 0.08 }], "reserve": 20 },
+      "native": {"modifiers": [{"stat": "damagePerInputKind", "kind": "flat", "value": 0.04}]},
+      "branches": [{ "level": 5, "options": [{ "id": "new_road", "name": { "ru": "Новая дорога", "en": "New Road" }, "effect": { "modifiers": [{ "stat": "damagePerInputKind", "kind": "flat", "value": 0.1 }] } }, { "id": "light_road", "name": { "ru": "Налегке", "en": "Travelling Light" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "three_roads", "name": { "ru": "Три дороги", "en": "Three Roads" }, "effect": { "modifiers": [{ "stat": "damagePerInputKind", "kind": "flat", "value": 0.09 }, { "stat": "damage", "kind": "increased", "value": 0.05 }] } }, { "id": "crossroads_road", "name": { "ru": "Распутье", "en": "Crossroads" }, "effect": { "modifiers": [{ "stat": "damagePerInputKind", "kind": "flat", "value": 0.09 }, { "stat": "resourceGain", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "every_road", "name": { "ru": "Все дороги", "en": "Every Road" }, "effect": { "modifiers": [{ "stat": "damagePerInputKind", "kind": "flat", "value": 0.13 }], "reserve": 30 } }, { "id": "short_road", "name": { "ru": "Короткая дорога", "en": "Short Road" }, "effect": { "modifiers": [{ "stat": "damagePerInputKind", "kind": "flat", "value": 0.06 }], "reserve": 10 } }] }]
     },
     {
       "id": "tent_shadow",
+      "formerIds": ["sand_bazaar"],
       "kind": "aura",
       "weapon": "scimitar",
       "tier": "rare",
@@ -2310,10 +2217,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.25}], "reserve": 20 },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}] }
+      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}] },
+      "branches": [{ "level": 5, "options": [{ "id": "deeper_shadow", "name": { "ru": "Гуще тень", "en": "Deeper Shadow" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.3 }] } }, { "id": "small_tent", "name": { "ru": "Маленький шатёр", "en": "Small Tent" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "sand_bazaar", "name": { "ru": "Песчаный базар", "en": "Sand Bazaar" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.25 }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }, { "id": "cool_shadow", "name": { "ru": "Прохладная тень", "en": "Cool Shadow" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.25 }, { "stat": "damage", "kind": "increased", "value": 0.05 }] } }] }, { "level": 25, "options": [{ "id": "great_tent", "name": { "ru": "Большой шатёр", "en": "Great Tent" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.4 }], "reserve": 25 } }, { "id": "lean_to", "name": { "ru": "Навес", "en": "Lean-To" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.2 }], "reserve": 10 } }] }]
     },
     {
       "id": "night_caravan",
+      "formerIds": ["the_desert_waits"],
       "kind": "aura",
       "weapon": "scimitar",
       "tier": "rare",
@@ -2324,23 +2233,12 @@
       "cooldownSeconds": 30,
       "durationSeconds": 15,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 1, "tags": ["Click"]}] },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.5, "tags": ["Click"]}] }
-    },
-    {
-      "id": "map_of_wells",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "rare",
-      "color": "red",
-      "name": { "ru": "Карта колодцев", "en": "Map of Wells" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "any", "every": 25, "multiplier": 5 },
-      "native": { "resourceOnHit": 5 }
+      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.5, "tags": ["Click"]}] },
+      "branches": [{ "level": 5, "options": [{ "id": "darker_night_n", "name": { "ru": "Темнее ночь", "en": "Darker Night" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 1.2, "tags": ["Click"] }] } }, { "id": "quick_night", "name": { "ru": "Быстрый привал", "en": "Quick Halt" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "the_desert_waits", "name": { "ru": "Пустыня ждёт", "en": "The Desert Waits" }, "duration": 1.4 }, { "id": "light_caravan", "name": { "ru": "Лёгкий караван", "en": "Light Caravan" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "caravan_of_stars", "name": { "ru": "Караван под звёздами", "en": "Caravan under the Stars" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 1.5, "tags": ["Click"] }] } }, { "id": "endless_night", "name": { "ru": "Бесконечная ночь", "en": "Endless Night" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "companion_of_sand",
+      "formerIds": ["storm_at_the_bazaar"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "epic",
@@ -2352,10 +2250,12 @@
       "cooldownSeconds": 30,
       "durationSeconds": 15,
       "effect": {"type": "keyRepeat", "every": 1, "multiplier": 0.5},
-      "native": {"repeatInput": "any"}
+      "native": {"repeatInput": "any"},
+      "branches": [{ "level": 5, "options": [{ "id": "stronger_companion", "name": { "ru": "Крепче попутчик", "en": "Stronger Companion" }, "effect": { "multiplier": 0.65 } }, { "id": "longer_companion", "name": { "ru": "Дольше попутчик", "en": "Longer Company" }, "duration": 1.3 }] }, { "level": 15, "options": [{ "id": "storm_at_the_bazaar", "name": { "ru": "Буря на базаре", "en": "Storm at the Bazaar" }, "cooldown": 0.75 }, { "id": "cheap_companion", "name": { "ru": "Попутчик даром", "en": "Free Companion" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "old_friend", "name": { "ru": "Старый друг", "en": "Old Friend" }, "cooldown": 1.3, "effect": { "multiplier": 0.8 } }, { "id": "whole_caravan", "name": { "ru": "Весь караван", "en": "Whole Caravan" }, "duration": 1.6, "cooldown": 1.3 }] }]
     },
     {
       "id": "water_supply",
+      "formerIds": ["the_long_way"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "epic",
@@ -2367,7 +2267,8 @@
       "cooldownSeconds": 40,
       "durationSeconds": 15,
       "effect": {"type": "inputKinds", "perKind": 5},
-      "native": {"resourceOnEnd": 35}
+      "native": {"resourceOnEnd": 35},
+      "branches": [{ "level": 5, "options": [{ "id": "bigger_supply", "name": { "ru": "Больше воды", "en": "More Water" }, "effect": { "perKind": 6 } }, { "id": "quick_supply", "name": { "ru": "Быстрый запас", "en": "Quick Supply" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "the_long_way", "name": { "ru": "Долгая дорога", "en": "The Long Way" }, "duration": 1.4 }, { "id": "light_supply", "name": { "ru": "Лёгкие бурдюки", "en": "Light Waterskins" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "full_cistern", "name": { "ru": "Полная цистерна", "en": "Full Cistern" }, "cooldown": 1.3, "effect": { "perKind": 8 } }, { "id": "last_flask", "name": { "ru": "Последняя фляга", "en": "Last Flask" }, "duration": 1.7, "cooldown": 1.3 }] }]
     },
     {
       "id": "strike_from_the_mirage",
@@ -2381,50 +2282,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"resourceAtLeast": 50, "executeBelow": 0.2} }
-    },
-    {
-      "id": "three_roads",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "epic",
-      "role": "fast",
-      "locked": true,
-      "color": "red",
-      "name": { "ru": "Три дороги", "en": "Three Roads" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 8
-    },
-    {
-      "id": "storm_at_the_bazaar",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "epic",
-      "color": "red",
-      "name": { "ru": "Буря на базаре", "en": "Storm at the Bazaar" },
-      "tags": ["Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 40,
-      "durationSeconds": 15,
-      "effect": { "type": "queueHits", "share": 0.5, "targets": 1, "input": "any" },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "more", "value": 1}] }
-    },
-    {
-      "id": "the_long_way",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "epic",
-      "color": "red",
-      "name": { "ru": "Долгая дорога", "en": "The Long Way" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 2, "maxSteps": 50, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.01}] },
-      "native": { "when": {"resourceAtLeast": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}]} }
+      "native": { "when": {"resourceAtLeast": 50, "executeBelow": 0.2} },
+      "branches": [{ "level": 5, "options": [{ "id": "truer_mirage", "name": { "ru": "Точнее мираж", "en": "Truer Mirage" }, "damage": 1.3 }, { "id": "quick_mirage_strike", "name": { "ru": "Быстрый удар", "en": "Quick Strike" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "strike_from_nowhere", "name": { "ru": "Удар из ниоткуда", "en": "Strike from Nowhere" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_mirage_strike", "name": { "ru": "Удар даром", "en": "Free Strike" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "vanishing_strike", "name": { "ru": "Исчезающий удар", "en": "Vanishing Strike" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "heat_haze", "name": { "ru": "Марево", "en": "Heat Haze" }, "damage": 1.7 }] }]
     },
     {
       "id": "father_and_grandfathers_scimitar",
+      "formerIds": ["road_home"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "legendary",
@@ -2435,10 +2298,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 8,
       "effect": { "type": "strike", "multiplier": 15, "queueTargets": 3 },
-      "native": { "when": {"resourceAtLeast": 100, "free": true} }
+      "native": { "when": {"resourceAtLeast": 100, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "old_steel", "name": { "ru": "Старая сталь", "en": "Old Steel" }, "damage": 1.3 }, { "id": "quick_heirloom", "name": { "ru": "Быстрый клинок предков", "en": "Quick Heirloom" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "road_home", "name": { "ru": "Дорога домой", "en": "Road Home" }, "effect": { "queueMultiplier": 1.5 } }, { "id": "light_heirloom", "name": { "ru": "Лёгкая память", "en": "Light Memory" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "three_generations", "name": { "ru": "Три поколения", "en": "Three Generations" }, "damage": 0.9, "effect": { "queueMultiplier": 2 } }, { "id": "one_blow", "name": { "ru": "Один удар", "en": "One Blow" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "river_of_sand",
+      "formerIds": ["hundred_wells"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "legendary",
@@ -2449,23 +2314,12 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 10 }
-    },
-    {
-      "id": "hundred_wells",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "legendary",
-      "color": "red",
-      "name": { "ru": "Сто колодцев", "en": "A Hundred Wells" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "any", "every": 50, "multiplier": 25 },
-      "native": { "resourceOnHit": 20 }
+      "native": { "resourceOnKill": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_river", "name": { "ru": "Длиннее река", "en": "Longer River" }, "effect": { "hits": 36 } }, { "id": "heavier_river", "name": { "ru": "Тяжелее река", "en": "Heavier River" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "hundred_wells", "name": { "ru": "Сто колодцев", "en": "Hundred Wells" }, "cooldown": 0.75 }, { "id": "shallow_river", "name": { "ru": "Мелкая река", "en": "Shallow River" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "sand_sea", "name": { "ru": "Песчаное море", "en": "Sea of Sand" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "quicksand", "name": { "ru": "Зыбучий песок", "en": "Quicksand" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "last_sip",
+      "formerIds": ["counting_stars"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "mythic",
@@ -2476,10 +2330,12 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 20, "critChance": 1 },
-      "native": { "when": {"resourceAtLeast": 50, "free": true} }
+      "native": { "when": {"resourceAtLeast": 50, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "deeper_sip", "name": { "ru": "Глубокий глоток", "en": "Deep Sip" }, "damage": 1.3 }, { "id": "quick_sip", "name": { "ru": "Быстрый глоток", "en": "Quick Sip" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "counting_stars", "name": { "ru": "Счёт звёздам", "en": "Counting Stars" }, "cost": 0.5 }, { "id": "second_sip", "name": { "ru": "Второй глоток", "en": "Second Sip" }, "effect": { "queueTargets": 1 } }] }, { "level": 25, "options": [{ "id": "last_drop", "name": { "ru": "Последняя капля", "en": "Last Drop" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "sip_for_all", "name": { "ru": "Глоток на всех", "en": "A Sip for Everyone" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "oasis_mid_fight",
+      "formerIds": ["the_sand_remembers"],
       "kind": "active",
       "weapon": "scimitar",
       "tier": "mythic",
@@ -2491,47 +2347,8 @@
       "cooldownSeconds": 60,
       "durationSeconds": 5,
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 5, "queueTargets": 3, "input": "any" },
-      "native": { "durationMultiplier": 1.5 }
-    },
-    {
-      "id": "the_desert_waits",
-      "kind": "aura",
-      "weapon": "scimitar",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Пустыня ждёт", "en": "The Desert Waits" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 90,
-      "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}, {"stat": "damage", "kind": "more", "value": 1}] },
-      "native": { "when": {"resourceAtLeast": 100, "durationMultiplier": 1.5} }
-    },
-    {
-      "id": "road_home",
-      "kind": "active",
-      "weapon": "scimitar",
-      "tier": "mythic",
-      "color": "red",
-      "name": { "ru": "Дорога домой", "en": "The Road Home" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 10, "maxSteps": 5, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.05}], "from": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}] }
-    },
-    {
-      "id": "the_sand_remembers",
-      "kind": "aura",
-      "weapon": "scimitar",
-      "tier": "mythic",
-      "locked": true,
-      "color": "red",
-      "name": { "ru": "Песок помнит", "en": "The Sand Remembers" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "durationMultiplier": 1.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "greener_oasis", "name": { "ru": "Зеленее оазис", "en": "Greener Oasis" }, "effect": { "multiplier": 6 } }, { "id": "longer_oasis", "name": { "ru": "Дольше оазис", "en": "Longer Oasis" }, "duration": 1.3 }] }, { "level": 15, "options": [{ "id": "the_sand_remembers", "name": { "ru": "Песок помнит", "en": "The Sand Remembers" }, "cooldown": 0.75 }, { "id": "cheap_oasis", "name": { "ru": "Оазис даром", "en": "Free Oasis" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "palm_grove", "name": { "ru": "Пальмовая роща", "en": "Palm Grove" }, "duration": 1.6, "cooldown": 1.3 }, { "id": "single_palm", "name": { "ru": "Одна пальма", "en": "Single Palm" }, "effect": { "multiplier": 8, "queueTargets": 1 } }] }]
     },
     {
       "id": "snapped_string",
