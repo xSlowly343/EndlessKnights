@@ -250,6 +250,8 @@ namespace Game.Core.Sim
         public long ComboIdleTicks { get; set; }
         public int ComboTowardStrike { get; set; }
         public int KillsTowardRise { get; set; }
+        public double ClockworkSlow { get; set; }
+        public double ClockworkFloor { get; set; } = 1;
 
         public double KeyCarry { get; set; }
         public double MouseCarryPx { get; set; }

@@ -54,6 +54,20 @@ namespace Game.Core.Sim
 
         public void EndTick(int keyHits, double mousePx)
         {
+            Clockwork();
+            EndCombo(keyHits, mousePx);
+        }
+
+        private void Clockwork()
+        {
+            var running = _state.Is(HeroClass.Clockmaker) && _rules.ClockworkSlow > 0
+                && _state.Resource > _rules.ClockworkAbove + _hero.Value(CombatStats.ClockworkAbove, 0);
+            _state.ClockworkSlow = running ? System.Math.Min(1, _rules.ClockworkSlow + System.Math.Max(0, _hero.Value(CombatStats.ClockworkSlow, 0))) : 0;
+            _state.ClockworkFloor = _rules.ClockworkFloor;
+        }
+
+        private void EndCombo(int keyHits, double mousePx)
+        {
             if (keyHits > 0 || _state.Combo == 0)
                 return;
             if (mousePx > 0 && _state.Is(HeroClass.Ronin))

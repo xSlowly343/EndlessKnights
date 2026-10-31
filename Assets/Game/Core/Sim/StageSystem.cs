@@ -64,6 +64,9 @@ namespace Game.Core.Sim
                 SpawnNext();
         }
 
+        private double WithClockwork(double rate) =>
+            _state.ClockworkSlow > 0 ? System.Math.Min(rate, System.Math.Max(_state.ClockworkFloor, rate * (1 - _state.ClockworkSlow))) : rate;
+
         public void Tick()
         {
             if (Linked)
@@ -79,7 +82,7 @@ namespace Game.Core.Sim
                 _state.BossTimerRate = 0;
                 return;
             }
-            _state.BossTimerRate = System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1)) / System.Math.Max(1, _hero.Value(CombatStats.BossTimerSlow, 1));
+            _state.BossTimerRate = WithClockwork(System.Math.Max(0, _hero.Value(CombatStats.BossTimerSpeed, 1)) / System.Math.Max(1, _hero.Value(CombatStats.BossTimerSlow, 1)));
             _state.BossTimerCarry += _state.BossTimerRate;
             while (_state.BossTimerCarry >= 1 && _state.BossTicksLeft > 0)
             {

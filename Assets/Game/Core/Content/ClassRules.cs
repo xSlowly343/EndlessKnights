@@ -3,8 +3,11 @@ namespace Game.Core.Content
     public sealed class ClassRules
     {
         public ClassRules(double comboTimeoutSeconds, int comboStrikeEvery, double comboStrikeMultiplier, double whirlResource, double headbangPxPerSecond, double headbangMaxSeconds,
-            int breathEvery, int comboStrikeTargets, int comboStrikeEveryMin)
+            int breathEvery, int comboStrikeTargets, int comboStrikeEveryMin, double clockworkAbove = 0, double clockworkSlow = 0, double clockworkFloor = 1)
         {
+            ClockworkAbove = clockworkAbove;
+            ClockworkSlow = clockworkSlow;
+            ClockworkFloor = clockworkFloor;
             BreathEvery = breathEvery;
             ComboStrikeTargets = comboStrikeTargets;
             ComboStrikeEveryMin = comboStrikeEveryMin;
@@ -23,6 +26,9 @@ namespace Game.Core.Content
         public int BreathEvery { get; }
         public int ComboStrikeTargets { get; }
         public int ComboStrikeEveryMin { get; }
+        public double ClockworkAbove { get; }
+        public double ClockworkSlow { get; }
+        public double ClockworkFloor { get; }
         public double HeadbangPxPerSecond { get; }
         public double HeadbangMaxSeconds { get; }
 
@@ -30,6 +36,7 @@ namespace Game.Core.Content
         {
             var combo = node.Field("ronin").Field("combo");
             var headbang = node.Field("metalhead").Field("headbang");
+            var clockwork = node.Field("clockmaker").Field("clockwork");
             return new ClassRules(
                 combo.Field("timeoutSeconds").AsNumber(0.1, 60),
                 combo.Field("strikeEvery").AsInt(1, 10000),
@@ -39,7 +46,10 @@ namespace Game.Core.Content
                 headbang.Field("maxSeconds").AsNumber(0, 3600),
                 combo.Field("breathEvery").AsInt(1, 10000),
                 combo.Field("strikeTargets").AsInt(0, 100),
-                combo.Field("strikeEveryMin").AsInt(1, 10000));
+                combo.Field("strikeEveryMin").AsInt(1, 10000),
+                clockwork.Field("resourceAbove").AsNumber(0, 1e6),
+                clockwork.Field("slow").AsNumber(0, 1),
+                clockwork.Field("floor").AsNumber(0, 1));
         }
     }
 }
