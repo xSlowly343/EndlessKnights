@@ -17,7 +17,6 @@ namespace Game.Core.Build
 
         public static BookPlace Nowhere => default;
         public static BookPlace Skill(int row) => new BookPlace(BookSpot.Skill, row, null);
-        public static BookPlace Trigger(int row) => new BookPlace(BookSpot.Trigger, row, null);
         public static BookPlace Bag(GemDef? gem = null) => new BookPlace(BookSpot.Bag, -1, gem);
     }
 }

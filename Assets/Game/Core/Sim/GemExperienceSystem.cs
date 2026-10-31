@@ -23,8 +23,6 @@ namespace Game.Core.Sim
             foreach (var slot in state.Skills)
             {
                 state.ProgressOf(slot.Skill);
-                if (slot.Trigger != null)
-                    state.ProgressOf(slot.Trigger);
                 for (var i = 0; i < slot.Supports.Length; i++)
                 {
                     if (slot.Supports[i] != null)
@@ -54,8 +52,6 @@ namespace Game.Core.Sim
                 var slot = _state.Skills[index];
                 var gained = amount * SupportEffects.ExperienceMultiplier(slot);
                 Note(slot.Skill, gained, ref lowest, ref lowestGained);
-                if (slot.Trigger != null)
-                    Note(slot.Trigger, gained, ref lowest, ref lowestGained);
                 for (var i = 0; i < slot.Supports.Length; i++)
                 {
                     if (slot.Supports[i] != null)

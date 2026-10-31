@@ -308,19 +308,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void FirstSpecialBossGivesANewTrigger()
-        {
-            var loop = Viking();
-            var triggersBefore = loop.State.OwnedGems.Count(gem => gem.Kind == GemKind.Trigger);
-
-            Defeat(loop, Rules.FirstTriggerStage, Rules.FirstTriggerStage);
-
-            var gem = Gems(loop).Single();
-            Assert.That(gem.Kind, Is.EqualTo(GemKind.Trigger));
-            Assert.That(loop.State.OwnedGems.Count(owned => owned.Kind == GemKind.Trigger), Is.EqualTo(triggersBefore + 1));
-        }
-
-        [Test]
         public void WeaponTypesFavourTheOwnClass()
         {
             var loop = Viking(seed: 21);
@@ -521,7 +508,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(skills.Select(gem => gem.Ascendancy), Has.All.Null);
             Assert.That(skills.Select(gem => gem.Locked), Has.All.False);
             Assert.That(skills.Count, Is.EqualTo(kills / 300.0).Within(kills / 300.0 * 0.25));
-            Assert.That(gems.Count(gem => gem.Kind == GemKind.Trigger), Is.EqualTo(kills / 500.0).Within(kills / 500.0 * 0.3));
         }
 
         [Test]

@@ -17,7 +17,6 @@ interface PartyServerConfig extends PartyEncounterRules {
     relayCooldownSeconds: number;
     allyResourceMax: number;
     allyResourceCooldownSeconds: number;
-    castNoticeSeconds: number;
     synergyReactions: number;
 }
 
@@ -59,7 +58,6 @@ class PartyHost {
     private readonly lastRepeatTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastRelayTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastResourceTick = [PartyNever, PartyNever, PartyNever, PartyNever];
-    private readonly lastCastNoticeTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly reactions = [0, 0, 0, 0];
     private readonly marks = [0, 0, 0, 0];
     private enemyReactions = 0;
@@ -196,14 +194,6 @@ class PartyHost {
                 if (synergy !== null) {
                     this.reactions[slot] = synergy;
                     this.enemyReactions = (this.enemyReactions | synergy) >>> 0;
-                }
-                break;
-            }
-            case PartyMessageKind.AllyCast: {
-                const relayed = partyRelayAllyCast(data, slot);
-                if (relayed && this.encounter.tick - this.lastCastNoticeTick[slot] >= Math.max(1, partyTicks(this.config.castNoticeSeconds))) {
-                    this.lastCastNoticeTick[slot] = this.encounter.tick;
-                    this.broadcast(relayed, slot);
                 }
                 break;
             }
@@ -474,7 +464,6 @@ class PartyHost {
         this.lastRepeatTick[slot] = PartyNever;
         this.lastRelayTick[slot] = PartyNever;
         this.lastResourceTick[slot] = PartyNever;
-        this.lastCastNoticeTick[slot] = PartyNever;
         this.reactions[slot] = 0;
         this.marks[slot] = 0;
         this.ticksToState = 0;

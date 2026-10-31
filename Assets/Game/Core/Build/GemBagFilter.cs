@@ -4,7 +4,6 @@ namespace Game.Core.Build
     {
         All,
         Skills,
-        Triggers,
         Supports
     }
 }

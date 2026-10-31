@@ -383,7 +383,6 @@ namespace Game.Core.Sim
             _state.BossTicksLeft = (int)System.Math.Round((timer + _state.BankedSeconds) * GameLoop.TicksPerSecond);
             _state.BankedSeconds = 0;
             _state.BossTimerCarry = 0;
-            _state.BossStarts++;
             _events.Add(GameEvent.ForEnemy(GameEventKind.BossStarted, _state.Tick, stage, enemy));
         }
 

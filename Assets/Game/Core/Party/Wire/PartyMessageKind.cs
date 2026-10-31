@@ -16,8 +16,7 @@ namespace Game.Core.Party.Wire
         WorldRequest,
         FocusRelay,
         PartyResource,
-        AllyCast,
-        Synergy,
+        Synergy = 15,
         BossRequest,
         Marks,
         PartyLoadout
