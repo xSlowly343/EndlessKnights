@@ -704,6 +704,7 @@
     },
     {
       "id": "arrow_from_the_road",
+      "formerIds": ["arrow_to_the_knee"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
@@ -714,7 +715,8 @@
       "cost": { "resource": 5 },
       "cooldownSeconds": 3,
       "effect": { "type": "strike", "multiplier": 3, "critChance": 0.3, "arrow": true },
-      "native": { "resourceOnCrit": 5 }
+      "native": { "resourceOnCrit": 5 },
+      "branches": [{ "level": 5, "options": [{ "id": "dusty_arrow", "name": { "ru": "Пыльная стрела", "en": "Dusty Arrow" }, "damage": 1.3 }, { "id": "quick_draw", "name": { "ru": "Быстрый выстрел", "en": "Quick Draw" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "arrow_to_the_knee", "name": { "ru": "Стрела в колено", "en": "Arrow to the Knee" }, "effect": { "lowHpBelow": 0.5, "lowHpMultiplier": 4.5 } }, { "id": "sharp_eye", "name": { "ru": "Меткий глаз", "en": "Sharp Eye" }, "effect": { "critChance": 0.5 } }] }, { "level": 25, "options": [{ "id": "long_road", "name": { "ru": "Долгая дорога", "en": "Long Road" }, "damage": 1.7, "cooldown": 1.25 }, { "id": "road_for_two", "name": { "ru": "Дорога на двоих", "en": "Road for Two" }, "effect": { "queueTargets": 1, "queueMultiplier": 1 } }] }]
     },
     {
       "id": "finger_spark",
@@ -1394,20 +1396,22 @@
     },
     {
       "id": "poison_vine_sap",
+      "formerIds": ["knows_every_plant"],
       "kind": "active",
       "weapon": "short_bow",
-      "tier": "common",
-      "role": "fast",
+      "tier": "rare",
       "color": "green",
       "name": { "ru": "Сок ядовитой лозы", "en": "Poison Vine Sap" },
       "tags": ["DoT", "Skill"],
       "cost": { "resource": 10 },
       "cooldownSeconds": 5,
       "effect": { "type": "addStacks", "dot": "poison", "stacks": 5 },
-      "native": { "resourcePerPoisonTick": 0.5 }
+      "native": { "resourcePerPoisonTick": 0.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "thick_sap", "name": { "ru": "Густой сок", "en": "Thick Sap" }, "effect": { "stacks": 6 } }, { "id": "quick_sap", "name": { "ru": "Быстрый сок", "en": "Quick Sap" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "knows_every_plant", "name": { "ru": "Знает каждое растение", "en": "Knows Every Plant" }, "cooldown": 1.2, "effect": { "stacks": 7 } }, { "id": "cheap_sap", "name": { "ru": "Сок даром", "en": "Free Sap" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "strangler_vine", "name": { "ru": "Лоза-душитель", "en": "Strangler Vine" }, "cooldown": 1.3, "effect": { "stacks": 9 } }, { "id": "sap_on_every_arrow", "name": { "ru": "Сок на каждой стреле", "en": "Sap on Every Arrow" }, "cooldown": 0.6, "effect": { "stacks": 4 } }] }]
     },
     {
       "id": "reed_arrow",
+      "formerIds": ["sheaf_of_arrows"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
@@ -1418,13 +1422,14 @@
       "cost": { "resource": 5 },
       "cooldownSeconds": 2,
       "effect": { "type": "strike", "multiplier": 2, "arrow": true },
-      "native": { "resourceOnCrit": 5 }
+      "native": { "resourceOnCrit": 5 },
+      "branches": [{ "level": 5, "options": [{ "id": "hard_reed", "name": { "ru": "Крепкий тростник", "en": "Hard Reed" }, "damage": 1.3 }, { "id": "light_reed", "name": { "ru": "Лёгкий тростник", "en": "Light Reed" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "sheaf_of_arrows", "name": { "ru": "Сноп стрел", "en": "Sheaf of Arrows" }, "effect": { "queueTargets": 2 } }, { "id": "quick_reed", "name": { "ru": "Быстрый тростник", "en": "Quick Reed" }, "cooldown": 0.75 }] }, { "level": 25, "options": [{ "id": "reed_rain", "name": { "ru": "Тростниковый дождь", "en": "Reed Rain" }, "damage": 0.9, "effect": { "queueTargets": 3 } }, { "id": "river_reed", "name": { "ru": "Речной тростник", "en": "River Reed" }, "damage": 1.7, "cooldown": 1.3 }] }]
     },
     {
       "id": "agave_thorn",
       "kind": "active",
       "weapon": "short_bow",
-      "tier": "common",
+      "tier": "rare",
       "role": "fast",
       "color": "green",
       "name": { "ru": "Шип агавы", "en": "Agave Thorn" },
@@ -1433,10 +1438,12 @@
       "cooldownSeconds": 4,
       "durationSeconds": 5,
       "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "strikeMultiplier": 3, "tags": ["Mouse"] },
-      "native": { "durationMultiplier": 2 }
+      "native": { "durationMultiplier": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_thorn", "name": { "ru": "Длинный шип", "en": "Longer Thorn" }, "effect": { "strikeMultiplier": 4 } }, { "id": "quick_thorn", "name": { "ru": "Быстрый шип", "en": "Quick Thorn" }, "cooldown": 0.7 }] }, { "level": 15, "options": [{ "id": "deep_thorn", "name": { "ru": "Глубокий шип", "en": "Deep Thorn" }, "effect": { "damageTaken": 0.15 } }, { "id": "lasting_thorn", "name": { "ru": "Шип надолго", "en": "Lasting Thorn" }, "duration": 1.6 }] }, { "level": 25, "options": [{ "id": "bitter_thorn", "name": { "ru": "Горький шип", "en": "Bitter Thorn" }, "cooldown": 1.3, "effect": { "damageTaken": 0.2 } }, { "id": "thorn_bush", "name": { "ru": "Куст агавы", "en": "Agave Bush" }, "cost": 1.25, "effect": { "strikeMultiplier": 6 } }] }]
     },
     {
       "id": "three_arrows_in_a_row",
+      "formerIds": ["two_bowstrings"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
@@ -1448,10 +1455,12 @@
       "cooldownSeconds": 20,
       "marks": ["hunterMark"],
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "resourceOnHit": 1 }
+      "native": { "resourceOnHit": 1 },
+      "branches": [{ "level": 5, "options": [{ "id": "four_arrows", "name": { "ru": "Четыре стрелы", "en": "Four Arrows" }, "effect": { "hits": 8 } }, { "id": "hard_arrows", "name": { "ru": "Тугие стрелы", "en": "Taut Arrows" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "two_bowstrings", "name": { "ru": "Две тетивы", "en": "Two Bowstrings" }, "cooldown": 0.7 }, { "id": "cheap_volley", "name": { "ru": "Стрелы с земли", "en": "Arrows off the Ground" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "ten_arrows", "name": { "ru": "Десять стрел", "en": "Ten Arrows" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "volley_down_the_line", "name": { "ru": "Залп по очереди", "en": "Volley Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "heavy_arrow",
+      "formerIds": ["huntress"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "common",
@@ -1462,25 +1471,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 25,
       "effect": { "type": "strike", "multiplier": 10 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 1.4} }
-    },
-    {
-      "id": "ambush_in_the_grass",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "common",
-      "role": "heavy",
-      "color": "green",
-      "name": { "ru": "Засада в траве", "en": "Ambush in the Grass" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 25,
-      "durationSeconds": 6,
-      "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 1.5} }
+      "native": { "when": {"mouseMoving": true, "multiplier": 1.4} },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_arrow", "name": { "ru": "Ещё тяжелее", "en": "Even Heavier" }, "damage": 1.3 }, { "id": "quick_heavy", "name": { "ru": "Быстрая тетива", "en": "Quick String" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "huntress", "name": { "ru": "Хищница", "en": "Huntress" }, "cooldown": 1.2, "effect": { "multiplier": 13 } }, { "id": "cheap_heavy", "name": { "ru": "Своя стрела", "en": "Own Arrow" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "boulder_arrow", "name": { "ru": "Стрела-валун", "en": "Boulder Arrow" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "piercing_arrow", "name": { "ru": "Навылет", "en": "Clean Through" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "smell_of_rain",
+      "formerIds": ["market_stall"],
       "kind": "aura",
       "weapon": "short_bow",
       "tier": "common",
@@ -1491,77 +1487,27 @@
       "cooldownSeconds": 20,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Mouse"]}] },
-      "native": { "resourceOnCast": 25 }
-    },
-    {
-      "id": "jungle_song",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Песня джунглей", "en": "Jungle Song" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 10, "multiplier": 2, "input": "mouse" },
-      "native": { "resourceOnHit": 5 }
+      "native": { "resourceOnCast": 25 },
+      "branches": [{ "level": 5, "options": [{ "id": "heavy_rain", "name": { "ru": "Сильный дождь", "en": "Heavy Rain" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Mouse"] }] } }, { "id": "light_rain", "name": { "ru": "Морось", "en": "Drizzle" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "market_stall", "name": { "ru": "Рыночный лоток", "en": "Market Stall" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Mouse"] }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }, { "id": "long_rain", "name": { "ru": "Затяжной дождь", "en": "Long Rain" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "thunder_rain", "name": { "ru": "Ливень с грозой", "en": "Thunder Rain" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Mouse"] }, { "stat": "critChance", "kind": "flat", "value": 0.05 }] } }, { "id": "rain_all_day", "name": { "ru": "Дождь весь день", "en": "Rain All Day" }, "cooldown": 1.3, "duration": 2 }] }]
     },
     {
       "id": "bowstring_calluses",
-      "kind": "active",
+      "formerIds": ["fertile_ground"],
+      "kind": "aura",
       "weapon": "short_bow",
-      "tier": "common",
+      "tier": "epic",
       "color": "green",
       "name": { "ru": "Мозоли тетивы", "en": "Bowstring Calluses" },
-      "tags": ["Mouse", "Skill"],
+      "tags": ["Aura", "Mouse", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"]}] },
-      "native": { "when": {"resourceAtLeast": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"]}]} }
-    },
-    {
-      "id": "keen_eye",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Зоркий глаз", "en": "Keen Eye" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.05}] },
-      "native": { "resourceOnCrit": 5 }
-    },
-    {
-      "id": "market_stall",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Рыночный лоток", "en": "Market Stall" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "resourceOnKill": 5 }
-    },
-    {
-      "id": "sheaf_of_arrows",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "rare",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Сноп стрел", "en": "Sheaf of Arrows" },
-      "tags": ["Skill"],
-      "cost": { "resource": 15 },
-      "cooldownSeconds": 6,
-      "effect": { "type": "strike", "multiplier": 2, "queueTargets": 2, "arrow": true },
-      "native": { "when": {"resourceAtLeast": 100, "multiplier": 1.6666666666666667} }
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Mouse"] }], "reserve": 20 },
+      "native": { "when": {"resourceAtLeast": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"]}]} },
+      "branches": [{ "level": 5, "options": [{ "id": "hard_calluses", "name": { "ru": "Твёрдые мозоли", "en": "Hard Calluses" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Mouse"] }] } }, { "id": "thin_calluses", "name": { "ru": "Тонкие мозоли", "en": "Thin Calluses" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "fertile_ground", "name": { "ru": "Плодородная земля", "en": "Fertile Ground" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Mouse"] }, { "stat": "resourceGain", "kind": "increased", "value": 0.1, "tags": ["Mouse"] }] } }, { "id": "old_string", "name": { "ru": "Старая тетива", "en": "Old String" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Mouse"] }, { "stat": "critChance", "kind": "flat", "value": 0.03 }] } }] }, { "level": 25, "options": [{ "id": "iron_fingers", "name": { "ru": "Железные пальцы", "en": "Iron Fingers" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.4, "tags": ["Mouse"] }], "reserve": 30 } }, { "id": "soft_fingers", "name": { "ru": "Мягкие пальцы", "en": "Soft Fingers" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Mouse"] }], "reserve": 10 } }] }]
     },
     {
       "id": "own_territory",
+      "formerIds": ["own_trail"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "rare",
@@ -1573,10 +1519,12 @@
       "cooldownSeconds": 30,
       "durationSeconds": 15,
       "effect": { "type": "enemyDebuff", "damageTaken": 1, "tags": ["Mouse"] },
-      "native": { "resourceOnKill": 50 }
+      "native": { "resourceOnKill": 50 },
+      "branches": [{ "level": 5, "options": [{ "id": "marked_land", "name": { "ru": "Меченая земля", "en": "Marked Land" }, "duration": 1.3 }, { "id": "quick_claim", "name": { "ru": "Быстрый захват", "en": "Quick Claim" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "own_trail", "name": { "ru": "Своя тропа", "en": "Own Trail" }, "effect": { "damageTaken": 1.2 } }, { "id": "cheap_claim", "name": { "ru": "Земля даром", "en": "Free Land" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "hunting_ground", "name": { "ru": "Охотничьи угодья", "en": "Hunting Ground" }, "duration": 1.6, "cooldown": 1.3 }, { "id": "border_post", "name": { "ru": "Пограничный столб", "en": "Border Post" }, "cooldown": 1.4, "effect": { "damageTaken": 1.5 } }] }]
     },
     {
       "id": "path_through_the_thicket",
+      "formerIds": ["thousand_steps"],
       "kind": "aura",
       "weapon": "short_bow",
       "tier": "rare",
@@ -1587,36 +1535,8 @@
       "cooldownSeconds": 30,
       "durationSeconds": 15,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 2, "tags": ["Mouse"]}] },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "more", "value": 1, "tags": ["Mouse"]}] }
-    },
-    {
-      "id": "arrow_to_the_knee",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "rare",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Стрела в колено", "en": "Arrow to the Knee" },
-      "tags": ["Skill"],
-      "cost": { "resource": 10 },
-      "cooldownSeconds": 5,
-      "effect": { "type": "strike", "multiplier": 4, "lowHpBelow": 0.5, "lowHpMultiplier": 6 },
-      "native": { "resourceOnKill": 15 }
-    },
-    {
-      "id": "two_bowstrings",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "rare",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Две тетивы", "en": "Two Bowstrings" },
-      "tags": ["Skill"],
-      "cost": { "resource": 10 },
-      "cooldownSeconds": 4,
-      "marks": ["hunterMark"],
-      "effect": { "type": "flurry", "hits": 2, "seconds": 0.2, "multiplier": 3 },
-      "native": { "carryOn": true }
+      "native": { "modifiers": [{"stat": "resourceGain", "kind": "more", "value": 1, "tags": ["Mouse"]}] },
+      "branches": [{ "level": 5, "options": [{ "id": "wide_path", "name": { "ru": "Широкая тропа", "en": "Wide Path" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 2.4, "tags": ["Mouse"] }] } }, { "id": "quick_path", "name": { "ru": "Короткая тропа", "en": "Short Path" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "thousand_steps", "name": { "ru": "Тысяча шагов", "en": "Thousand Steps" }, "duration": 1.4 }, { "id": "trodden_path", "name": { "ru": "Протоптанная тропа", "en": "Trodden Path" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "path_of_the_beast", "name": { "ru": "Звериная тропа", "en": "Beast Path" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 3, "tags": ["Mouse"] }] } }, { "id": "endless_path", "name": { "ru": "Бесконечная тропа", "en": "Endless Path" }, "duration": 2, "cooldown": 1.3 }] }]
     },
     {
       "id": "roots_hold",
@@ -1631,10 +1551,12 @@
       "cooldownSeconds": 30,
       "durationSeconds": 10,
       "effect": { "type": "enemyDebuff", "damageTaken": 0.15, "tags": ["Mouse"], "bossTimerSlow": 0.3 },
-      "native": { "durationMultiplier": 1.5 }
+      "native": { "durationMultiplier": 1.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "strong_roots", "name": { "ru": "Крепкие корни", "en": "Strong Roots" }, "effect": { "damageTaken": 0.2 } }, { "id": "quick_roots", "name": { "ru": "Быстрые корни", "en": "Quick Roots" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "deep_roots", "name": { "ru": "Глубокие корни", "en": "Deep Roots" }, "effect": { "bossTimerSlow": 0.4 } }, { "id": "long_roots", "name": { "ru": "Долгие корни", "en": "Long Roots" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "old_roots", "name": { "ru": "Вековые корни", "en": "Ancient Roots" }, "cooldown": 1.3, "effect": { "damageTaken": 0.25 } }, { "id": "young_roots", "name": { "ru": "Молодые побеги", "en": "Young Shoots" }, "cost": 0.5, "cooldown": 0.8 }] }]
     },
     {
       "id": "rainy_season",
+      "formerIds": ["heart_of_the_jungle"],
       "kind": "aura",
       "weapon": "short_bow",
       "tier": "rare",
@@ -1644,36 +1566,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.4, "tags": ["Mouse"]}], "reserve": 20 },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.4, "tags": ["Mouse"]}] }
-    },
-    {
-      "id": "fertile_ground",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "rare",
-      "color": "green",
-      "name": { "ru": "Плодородная земля", "en": "Fertile Ground" },
-      "tags": ["Mouse", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "mouse", "every": 25, "multiplier": 5 },
-      "native": { "resourceOnHit": 10 }
-    },
-    {
-      "id": "knows_every_plant",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "rare",
-      "color": "green",
-      "name": { "ru": "Знает каждое растение", "en": "Knows Every Plant" },
-      "tags": ["DoT", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}] },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15, "tags": ["DoT"]}] }
+      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.4, "tags": ["Mouse"]}] },
+      "branches": [{ "level": 5, "options": [{ "id": "long_season", "name": { "ru": "Долгий сезон", "en": "Long Season" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.5, "tags": ["Mouse"] }] } }, { "id": "light_season", "name": { "ru": "Лёгкий сезон", "en": "Light Season" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "heart_of_the_jungle", "name": { "ru": "Сердце джунглей", "en": "Heart of the Jungle" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.4, "tags": ["Mouse"] }, { "stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"] }] } }, { "id": "wet_season", "name": { "ru": "Сырой сезон", "en": "Wet Season" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.4, "tags": ["Mouse"] }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "monsoon", "name": { "ru": "Муссон", "en": "Monsoon" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.6, "tags": ["Mouse"] }], "reserve": 25 } }, { "id": "dry_spell", "name": { "ru": "Сухая пора", "en": "Dry Spell" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.3, "tags": ["Mouse"] }], "reserve": 10 } }] }]
     },
     {
       "id": "tropical_downpour",
+      "formerIds": ["sprouting"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "epic",
@@ -1685,10 +1583,12 @@
       "cooldownSeconds": 25,
       "marks": ["hunterMark"],
       "effect": { "type": "flurry", "hits": 8, "seconds": 0.8, "multiplier": 2, "queueTargets": 1 },
-      "native": { "extraHitPerMousePx": 1000, "maxHits": 16 }
+      "native": { "extraHitPerMousePx": 1000, "maxHits": 16 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_downpour", "name": { "ru": "Долгий ливень", "en": "Longer Downpour" }, "effect": { "hits": 10 } }, { "id": "heavy_drops", "name": { "ru": "Тяжёлые капли", "en": "Heavy Drops" }, "effect": { "multiplier": 2.5 } }] }, { "level": 15, "options": [{ "id": "sprouting", "name": { "ru": "Прорастание", "en": "Sprouting" }, "cooldown": 0.75 }, { "id": "warm_rain", "name": { "ru": "Тёплый ливень", "en": "Warm Rain" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "flood", "name": { "ru": "Потоп", "en": "Flood" }, "effect": { "hits": 14, "seconds": 1.4 } }, { "id": "rain_down_the_line", "name": { "ru": "Ливень по очереди", "en": "Rain Down the Line" }, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "seed_arrow",
+      "formerIds": ["ambush_in_the_grass"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "epic",
@@ -1700,10 +1600,12 @@
       "cooldownSeconds": 35,
       "durationSeconds": 5,
       "effect": { "type": "storeHits", "releaseShare": 0.5 },
-      "native": { "releaseBonus": {"px": 500, "bonus": 0.1} }
+      "native": { "releaseBonus": {"px": 500, "bonus": 0.1} },
+      "branches": [{ "level": 5, "options": [{ "id": "deep_seed", "name": { "ru": "Глубокое семя", "en": "Deep Seed" }, "effect": { "releaseShare": 0.65 } }, { "id": "quick_seed", "name": { "ru": "Быстрое семя", "en": "Quick Seed" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "ambush_in_the_grass", "name": { "ru": "Засада в траве", "en": "Ambush in the Grass" }, "duration": 1.5 }, { "id": "cheap_seed", "name": { "ru": "Семя даром", "en": "Free Seed" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "great_tree", "name": { "ru": "Великое дерево", "en": "Great Tree" }, "cooldown": 1.3, "effect": { "releaseShare": 0.9 } }, { "id": "seed_for_all", "name": { "ru": "Семя для всех", "en": "Seed for Everyone" }, "effect": { "queue": true } }] }]
     },
     {
       "id": "arrow_to_the_heart",
+      "formerIds": ["hunters_thrill"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "epic",
@@ -1714,52 +1616,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"resourceAtLeast": 100, "executeBelow": 0.2} }
-    },
-    {
-      "id": "hunters_thrill",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "epic",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Охотничий азарт", "en": "Hunter's Thrill" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 8,
-      "durationSeconds": 10,
-      "effect": { "type": "keyRepeat", "every": 1, "multiplier": 2, "hits": 5, "input": "mouse" },
-      "native": { "resourceOnHit": 5 }
-    },
-    {
-      "id": "wind_in_the_canopy",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "epic",
-      "color": "green",
-      "name": { "ru": "Ветер в кронах", "en": "Wind in the Canopy" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 40,
-      "durationSeconds": 15,
-      "effect": { "type": "queueHits", "share": 0.5, "targets": 1, "input": "mouse" },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "more", "value": 1, "tags": ["Mouse"]}] }
-    },
-    {
-      "id": "thousand_steps",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "epic",
-      "color": "green",
-      "name": { "ru": "Тысяча шагов", "en": "A Thousand Steps" },
-      "tags": ["Mouse", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "distanceStacks", "pxPerStack": 500, "windowSeconds": 10, "perStack": {"stat": "damage", "kind": "increased", "value": 0.01}, "max": 0.5 },
-      "native": { "when": {"resourceAtLeast": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}]} }
+      "native": { "when": {"resourceAtLeast": 100, "executeBelow": 0.2} },
+      "branches": [{ "level": 5, "options": [{ "id": "truer_arrow", "name": { "ru": "Точнее в сердце", "en": "Truer Arrow" }, "damage": 1.3 }, { "id": "quick_heart", "name": { "ru": "Быстрое сердце", "en": "Quick Heart" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "hunters_thrill", "name": { "ru": "Охотничий азарт", "en": "Hunter's Thrill" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_heart", "name": { "ru": "Стрела даром", "en": "Free Arrow" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "final_arrow", "name": { "ru": "Последняя стрела", "en": "Final Arrow" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "heartseeker", "name": { "ru": "Ищущая сердце", "en": "Heartseeker" }, "damage": 1.7 }] }]
     },
     {
       "id": "arrow_through_the_forest",
+      "formerIds": ["wind_in_the_canopy"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "legendary",
@@ -1770,7 +1632,8 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 8,
       "effect": { "type": "strike", "multiplier": 15, "queueTargets": 3 },
-      "native": { "when": {"resourceAtLeast": 100, "free": true} }
+      "native": { "when": {"resourceAtLeast": 100, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "deep_forest", "name": { "ru": "Глухой лес", "en": "Deep Forest" }, "damage": 1.3 }, { "id": "quick_forest", "name": { "ru": "Быстрый лес", "en": "Quick Forest" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "wind_in_the_canopy", "name": { "ru": "Ветер в кронах", "en": "Wind in the Canopy" }, "effect": { "queueMultiplier": 1.5 } }, { "id": "light_forest", "name": { "ru": "Светлый лес", "en": "Light Forest" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "whole_forest", "name": { "ru": "Весь лес", "en": "Whole Forest" }, "damage": 0.9, "effect": { "queueMultiplier": 2 } }, { "id": "one_tree", "name": { "ru": "Одно дерево", "en": "One Tree" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "sky_of_arrows",
@@ -1785,23 +1648,12 @@
       "cooldownSeconds": 45,
       "marks": ["hunterMark"],
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 10 }
-    },
-    {
-      "id": "huntress",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "legendary",
-      "color": "green",
-      "name": { "ru": "Хищница", "en": "Huntress" },
-      "tags": ["Mouse", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "mouse", "every": 50, "multiplier": 25 },
-      "native": { "resourceOnHit": 100 }
+      "native": { "resourceOnKill": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "darker_sky", "name": { "ru": "Темнее небо", "en": "Darker Sky" }, "effect": { "hits": 36 } }, { "id": "heavier_sky", "name": { "ru": "Тяжёлое небо", "en": "Heavier Sky" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "quick_sky", "name": { "ru": "Быстрое небо", "en": "Quick Sky" }, "cooldown": 0.75 }, { "id": "open_sky", "name": { "ru": "Открытое небо", "en": "Open Sky" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "sky_falls", "name": { "ru": "Небо падает", "en": "The Sky Falls" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "eye_of_the_sky", "name": { "ru": "Глаз неба", "en": "Eye of the Sky" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "the_arrow_that_returned",
+      "formerIds": ["keen_eye"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "mythic",
@@ -1812,10 +1664,12 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 20, "critChance": 1, "arrow": true },
-      "native": { "resourceOnCast": 20 }
+      "native": { "resourceOnCast": 20 },
+      "branches": [{ "level": 5, "options": [{ "id": "returning_faster", "name": { "ru": "Вернулась быстрее", "en": "Back Faster" }, "cooldown": 0.75 }, { "id": "heavier_return", "name": { "ru": "Вернулась тяжелее", "en": "Back Heavier" }, "damage": 1.3 }] }, { "level": 15, "options": [{ "id": "keen_eye", "name": { "ru": "Зоркий глаз", "en": "Keen Eye" }, "cost": 0.5 }, { "id": "twice_returned", "name": { "ru": "Вернулась дважды", "en": "Back Twice" }, "effect": { "queueTargets": 1 } }] }, { "level": 25, "options": [{ "id": "boomerang", "name": { "ru": "Бумеранг", "en": "Boomerang" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "homecoming", "name": { "ru": "Домой", "en": "Homecoming" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "green_wall",
+      "formerIds": ["jungle_song"],
       "kind": "active",
       "weapon": "short_bow",
       "tier": "mythic",
@@ -1827,46 +1681,8 @@
       "cooldownSeconds": 60,
       "durationSeconds": 5,
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 5, "queueTargets": 3, "input": "mouse" },
-      "native": { "resourceOnHit": 5 }
-    },
-    {
-      "id": "sprouting",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "mythic",
-      "role": "heavy",
-      "locked": true,
-      "color": "green",
-      "name": { "ru": "Прорастание", "en": "Sprouting" },
-      "tags": ["Skill"],
-      "cost": { "resource": 80 },
-      "cooldownSeconds": 90,
-      "durationSeconds": 5
-    },
-    {
-      "id": "heart_of_the_jungle",
-      "kind": "active",
-      "weapon": "short_bow",
-      "tier": "mythic",
-      "color": "green",
-      "name": { "ru": "Сердце джунглей", "en": "Heart of the Jungle" },
-      "tags": ["Mouse", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 5, "maxSteps": 10, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.02}], "from": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Mouse"]}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}] }
-    },
-    {
-      "id": "own_trail",
-      "kind": "aura",
-      "weapon": "short_bow",
-      "tier": "mythic",
-      "locked": true,
-      "color": "green",
-      "name": { "ru": "Своя тропа", "en": "Her Own Trail" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "resourceOnHit": 5 },
+      "branches": [{ "level": 5, "options": [{ "id": "thicker_wall", "name": { "ru": "Гуще стена", "en": "Thicker Wall" }, "effect": { "multiplier": 6 } }, { "id": "longer_wall", "name": { "ru": "Длиннее стена", "en": "Longer Wall" }, "duration": 1.3 }] }, { "level": 15, "options": [{ "id": "jungle_song", "name": { "ru": "Песня джунглей", "en": "Jungle Song" }, "cooldown": 0.75 }, { "id": "cheap_wall", "name": { "ru": "Стена даром", "en": "Free Wall" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "endless_jungle", "name": { "ru": "Бескрайние джунгли", "en": "Endless Jungle" }, "duration": 1.6, "cooldown": 1.3 }, { "id": "single_vine", "name": { "ru": "Одна лоза", "en": "Single Vine" }, "effect": { "multiplier": 8, "queueTargets": 1 } }] }]
     },
     {
       "id": "noon_and_midnight",
