@@ -113,6 +113,7 @@ namespace Game.Core.Sim
         public MouseWindow MouseWindow { get; } = new MouseWindow();
         public bool Reading { get; set; }
         public long IdleTicks { get; set; }
+        public long FocusPauseTicks { get; set; }
         public long IdleTicksBeforeInput { get; set; }
         public long MacroRhythmTicks { get; set; }
 

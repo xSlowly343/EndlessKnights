@@ -3,7 +3,7 @@ namespace Game.Core.Content
     public sealed class FocusRules
     {
         public FocusRules(double min, double max, double perEvent, double mousePxPerEvent, double resetAfterIdleSeconds,
-            double macroCvBelow, double macroAfterSeconds)
+            double macroCvBelow, double macroAfterSeconds, double pauseEventsPerSecond = 0, double countBonusCap = 0)
         {
             Min = min;
             Max = max;
@@ -12,6 +12,8 @@ namespace Game.Core.Content
             ResetAfterIdleSeconds = resetAfterIdleSeconds;
             MacroCvBelow = macroCvBelow;
             MacroAfterSeconds = macroAfterSeconds;
+            PauseEventsPerSecond = pauseEventsPerSecond;
+            CountBonusCap = countBonusCap;
         }
 
         public double Min { get; }
@@ -21,6 +23,8 @@ namespace Game.Core.Content
         public double ResetAfterIdleSeconds { get; }
         public double MacroCvBelow { get; }
         public double MacroAfterSeconds { get; }
+        public double PauseEventsPerSecond { get; }
+        public double CountBonusCap { get; }
 
         public static FocusRules Read(ContentNode node)
         {
@@ -36,7 +40,9 @@ namespace Game.Core.Content
                 node.Field("mousePxPerEvent").AsNumber(1, 1e6),
                 node.Field("resetAfterIdleSeconds").AsNumber(0.1, 3600),
                 macro.Field("cvBelow").AsNumber(0, 10),
-                macro.Field("afterSeconds").AsNumber(0.1, 3600));
+                macro.Field("afterSeconds").AsNumber(0.1, 3600),
+                node.Field("pauseEventsPerSecond").AsNumber(0, 1000),
+                node.Field("countBonusCap").AsNumber(0, 1000));
         }
     }
 }

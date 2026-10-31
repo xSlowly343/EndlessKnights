@@ -10,6 +10,8 @@
     "perEvent": 0.02,
     "mousePxPerEvent": 1500,
     "resetAfterIdleSeconds": 3,
+    "pauseEventsPerSecond": 5,
+    "countBonusCap": 10,
     "macroRhythm": { "cvBelow": 0.05, "afterSeconds": 60 }
   },
   "resources": {

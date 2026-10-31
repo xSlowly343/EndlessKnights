@@ -7,6 +7,7 @@ namespace Game.Core.Stats
         public const ModifierCondition FirstMark = ModifierCondition.Stun;
         public const ModifierCondition LastMark = ModifierCondition.Blood;
         public const ModifierCondition FirstAllyMark = ModifierCondition.AllyStun;
+        public const ModifierCondition LastAllyMark = ModifierCondition.AllyBlood;
         public const int Marks = LastMark - FirstMark + 1;
         private const string AllyPrefix = "Ally";
 
@@ -14,7 +15,7 @@ namespace Game.Core.Stats
 
         public static ModifierCondition AllyMark(int offset) => (ModifierCondition)((int)FirstAllyMark + offset);
 
-        public static bool IsAlly(ModifierCondition condition) => condition >= FirstAllyMark;
+        public static bool IsAlly(ModifierCondition condition) => condition >= FirstAllyMark && condition <= LastAllyMark;
 
         public static ulong Bit(ModifierCondition condition) => condition == ModifierCondition.Always ? 0 : 1UL << (int)condition;
 

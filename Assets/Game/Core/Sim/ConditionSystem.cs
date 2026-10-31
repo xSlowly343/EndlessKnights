@@ -65,6 +65,10 @@ namespace Game.Core.Sim
         {
             var fill = _state.ResourceFill;
             var conditions = 0UL;
+            if (_state.Resource > 0)
+                conditions |= ModifierConditions.Bit(ModifierCondition.HasResource);
+            if (_state.Reading)
+                conditions |= ModifierConditions.Bit(ModifierCondition.Reading);
             if (fill > 0.3)
                 conditions |= ModifierConditions.Bit(ModifierCondition.ResourceAbove30);
             if (fill > 0.5)

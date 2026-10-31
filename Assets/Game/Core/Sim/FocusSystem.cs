@@ -35,7 +35,7 @@ namespace Game.Core.Sim
             if (_state.IdleTicks > SecondsToTicks(ResetAfterIdleSeconds) && _hero.Value(CombatStats.FocusHold, 0) <= 0)
                 Drop();
             else
-                _state.Focus = Clamp(_state.Focus + _rules.PerEvent * _hero.Value(CombatStats.FocusGain, 1) * Events(input));
+                _state.Focus = Clamp(_state.Focus + _rules.PerEvent * _hero.Value(CombatStats.FocusGain, 1) * (Events(input) + PauseEvents()));
 
             if (_state.FocusLockTicks > 0)
                 _state.FocusLockTicks--;
@@ -76,6 +76,18 @@ namespace Game.Core.Sim
                 _state.IdleTicks = 0;
             else
                 _state.IdleTicks++;
+            if (input.Keys + input.Clicks > 0)
+                _state.FocusPauseTicks = 0;
+            else
+                _state.FocusPauseTicks++;
+        }
+
+        private double PauseEvents()
+        {
+            if (_state.FocusPauseTicks == 0)
+                return 0;
+            var seconds = _hero.Value(CombatStats.FocusInPauseSeconds, 0);
+            return seconds > 0 && _state.FocusPauseTicks <= SecondsToTicks(seconds) ? _rules.PauseEventsPerSecond * GameLoop.TickSeconds : 0;
         }
 
         private void TrackRhythm(double rhythmCv)
@@ -89,7 +101,28 @@ namespace Game.Core.Sim
         private double Events(in EffectiveInput input) =>
             input.Keys + input.Clicks + input.MousePx / _rules.MousePxPerEvent;
 
-        public double Max => System.Math.Max(_rules.Min, _rules.Max + _hero.Value(CombatStats.FocusMax, 0));
+        public double Max => System.Math.Max(_rules.Min, _rules.Max + _hero.Value(CombatStats.FocusMax, 0) + CountBonus());
+
+        private double CountBonus()
+        {
+            var bonus = _hero.Value(CombatStats.FocusMaxPerAura, 0) * _state.ActiveAuras
+                + _hero.Value(CombatStats.FocusMaxPerMinion, 0) * StandingMinions()
+                + _hero.Value(CombatStats.FocusMaxPerPoisonStack, 0) * _state.PoisonStacks
+                + _hero.Value(CombatStats.FocusMaxPerResourceFill, 0) * _state.ResourceFill;
+            return System.Math.Min(_rules.CountBonusCap, System.Math.Max(0, bonus));
+        }
+
+        private int StandingMinions()
+        {
+            var minions = _state.Minions;
+            var standing = 0;
+            for (var i = 0; i < minions.Length; i++)
+            {
+                if (minions[i].Standing)
+                    standing++;
+            }
+            return standing;
+        }
 
         public double ResetAfterIdleSeconds => System.Math.Max(0, _rules.ResetAfterIdleSeconds + _hero.Value(CombatStats.FocusResetSeconds, 0));
 

@@ -49,6 +49,11 @@ namespace Game.Core.Sim
         public static readonly StatId FrozenFirstHit = new StatId("frozenFirstHit");
         public static readonly StatId ComboHold = new StatId("comboHold");
         public static readonly StatId FocusHold = new StatId("focusHold");
+        public static readonly StatId FocusInPauseSeconds = new StatId("focusInPauseSeconds");
+        public static readonly StatId FocusMaxPerAura = new StatId("focusMaxPerAura");
+        public static readonly StatId FocusMaxPerMinion = new StatId("focusMaxPerMinion");
+        public static readonly StatId FocusMaxPerPoisonStack = new StatId("focusMaxPerPoisonStack");
+        public static readonly StatId FocusMaxPerResourceFill = new StatId("focusMaxPerResourceFill");
         public static readonly StatId SureCrits = new StatId("sureCrits");
         public static readonly StatId OverloadKeep = new StatId("overloadKeep");
         public static readonly StatId CullThreshold = new StatId("cullThreshold");

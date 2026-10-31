@@ -36,6 +36,8 @@ namespace Game.Core.Stats
         AllyBlind,
         AllyCold,
         AllyBond,
-        AllyBlood
+        AllyBlood,
+        Reading,
+        HasResource
     }
 }
