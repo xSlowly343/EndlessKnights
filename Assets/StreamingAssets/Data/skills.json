@@ -575,16 +575,18 @@
     },
     {
       "id": "cannon_by_name",
+      "formerIds": ["powder_trail"],
       "kind": "active",
       "weapon": "pistol",
-      "tier": "common",
+      "tier": "rare",
       "role": "fast",
       "color": "green",
       "name": { "ru": "Пушка по имени", "en": "Cannon by Name" },
       "tags": ["Minion", "Skill"],
       "cost": { "resource": 20 },
       "cooldownSeconds": 5,
-      "effect": { "type": "summon", "minion": "cannon", "seconds": 30, "hitsPerSecond": 1, "multiplier": 1.5 }
+      "effect": { "type": "summon", "minion": "cannon", "seconds": 30, "hitsPerSecond": 1, "multiplier": 1.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "bigger_cannon", "name": { "ru": "Пушка покрупнее", "en": "Bigger Cannon" }, "effect": { "multiplier": 1.9 } }, { "id": "quick_cannon", "name": { "ru": "Быстрая пушка", "en": "Quick Cannon" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "powder_trail", "name": { "ru": "Пороховая дорожка", "en": "Powder Trail" }, "effect": { "seconds": 45 } }, { "id": "cheap_cannon", "name": { "ru": "Пушка даром", "en": "Free Cannon" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "named_cannon", "name": { "ru": "Именная пушка", "en": "Named Cannon" }, "cooldown": 1.3, "effect": { "multiplier": 2.5 } }, { "id": "rapid_cannon", "name": { "ru": "Скорострельная пушка", "en": "Rapid Cannon" }, "effect": { "hitsPerSecond": 1.4, "seconds": 20 } }] }]
     },
     {
       "id": "call_a_colleague",
@@ -4929,6 +4931,7 @@
     },
     {
       "id": "the_pistol_answers",
+      "formerIds": ["one_eye_but_true"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "common",
@@ -4939,10 +4942,12 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 3,
       "effect": { "type": "strike", "multiplier": 4, "critChance": 0.2 },
-      "native": { "resourceOnCrit": 5 }
+      "native": { "resourceOnCrit": 5 },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_answer", "name": { "ru": "Громче ответ", "en": "Louder Answer" }, "damage": 1.3 }, { "id": "quick_answer", "name": { "ru": "Быстрый ответ", "en": "Quick Answer" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "one_eye_but_true", "name": { "ru": "Один глаз, но меткий", "en": "One Eye but True" }, "effect": { "critChance": 0.4 } }, { "id": "cheap_answer", "name": { "ru": "Ответ даром", "en": "Free Answer" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "duelling_pistol", "name": { "ru": "Дуэльный пистоль", "en": "Duelling Pistol" }, "damage": 1.7, "cooldown": 1.25 }, { "id": "pair_of_pistols", "name": { "ru": "Пара пистолей", "en": "Pair of Pistols" }, "effect": { "queueTargets": 1, "queueMultiplier": 2 } }] }]
     },
     {
       "id": "shot_in_the_air",
+      "formerIds": ["boarding_hook"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "common",
@@ -4953,24 +4958,12 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 3,
       "effect": { "type": "strike", "multiplier": 3 },
-      "native": { "resourceOnCast": 3 }
-    },
-    {
-      "id": "boarding_hook",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "common",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Абордажный крюк", "en": "Boarding Hook" },
-      "tags": ["Skill"],
-      "cost": { "resource": 15 },
-      "cooldownSeconds": 4,
-      "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1 },
-      "native": { "resourceOnCast": 2 }
+      "native": { "resourceOnCast": 3 },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_shot", "name": { "ru": "Громче выстрел", "en": "Louder Shot" }, "damage": 1.3 }, { "id": "quick_shot", "name": { "ru": "Быстрый выстрел", "en": "Quick Shot" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "boarding_hook", "name": { "ru": "Абордажный крюк", "en": "Boarding Hook" }, "effect": { "queueTargets": 2 } }, { "id": "free_shot", "name": { "ru": "Выстрел даром", "en": "Free Shot" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "signal_shot", "name": { "ru": "Сигнальный выстрел", "en": "Signal Shot" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "warning_shots", "name": { "ru": "Предупредительные", "en": "Warning Shots" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "six_shots",
+      "formerIds": ["old_gunner"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "common",
@@ -4981,10 +4974,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 20,
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "resourceOnHit": 2 }
+      "native": { "resourceOnHit": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "seven_shots", "name": { "ru": "Семь выстрелов", "en": "Seven Shots" }, "effect": { "hits": 8 } }, { "id": "heavy_shots", "name": { "ru": "Тяжёлые пули", "en": "Heavy Shots" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "old_gunner", "name": { "ru": "Старый канонир", "en": "Old Gunner" }, "cooldown": 0.7 }, { "id": "cheap_shots", "name": { "ru": "Выстрелы даром", "en": "Free Shots" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "twelve_shots", "name": { "ru": "Двенадцать выстрелов", "en": "Twelve Shots" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "shots_down_the_line", "name": { "ru": "Выстрелы по очереди", "en": "Shots Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "bow_gun",
+      "formerIds": ["share_of_the_loot"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "common",
@@ -4995,13 +4990,15 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
       "effect": { "type": "strike", "multiplier": 10 },
-      "native": { "when": {"boss": true, "multiplier": 1.4} }
+      "native": { "when": {"boss": true, "multiplier": 1.4} },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_gun", "name": { "ru": "Тяжелее орудие", "en": "Heavier Gun" }, "damage": 1.3 }, { "id": "quick_gun", "name": { "ru": "Быстрое орудие", "en": "Quick Gun" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "share_of_the_loot", "name": { "ru": "Доля добычи", "en": "Share of the Loot" }, "cost": 0.6 }, { "id": "double_charge", "name": { "ru": "Двойной заряд", "en": "Double Charge" }, "cooldown": 1.2, "effect": { "multiplier": 13 } }] }, { "level": 25, "options": [{ "id": "chaser_gun", "name": { "ru": "Погонное орудие", "en": "Chaser Gun" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "raking_shot", "name": { "ru": "Продольный огонь", "en": "Raking Fire" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "load_grapeshot",
+      "formerIds": ["powder_magazine"],
       "kind": "active",
       "weapon": "pistol",
-      "tier": "common",
+      "tier": "rare",
       "role": "heavy",
       "color": "green",
       "name": { "ru": "Зарядить картечь", "en": "Load Grapeshot" },
@@ -5010,10 +5007,12 @@
       "cooldownSeconds": 25,
       "durationSeconds": 6,
       "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "modifiers": [{"stat": "minionSpeed", "kind": "increased", "value": 0.2, "tags": ["Minion"]}] }
+      "native": { "modifiers": [{"stat": "minionSpeed", "kind": "increased", "value": 0.2, "tags": ["Minion"]}] },
+      "branches": [{ "level": 5, "options": [{ "id": "more_grapeshot", "name": { "ru": "Больше картечи", "en": "More Grapeshot" }, "effect": { "releaseShare": 1.8 } }, { "id": "quick_load", "name": { "ru": "Быстрая зарядка", "en": "Quick Load" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "powder_magazine", "name": { "ru": "Пороховой погреб", "en": "Powder Magazine" }, "duration": 1.5 }, { "id": "cheap_load", "name": { "ru": "Зарядка даром", "en": "Free Load" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "double_grapeshot", "name": { "ru": "Двойная картечь", "en": "Double Grapeshot" }, "cooldown": 1.3, "effect": { "releaseShare": 2.4 } }, { "id": "grapeshot_for_all", "name": { "ru": "Картечь на всех", "en": "Grapeshot for Everyone" }, "effect": { "queue": true } }] }]
     },
     {
       "id": "rum_for_the_crew",
+      "formerIds": ["salty_tricorne"],
       "kind": "aura",
       "weapon": "pistol",
       "tier": "common",
@@ -5024,63 +5023,12 @@
       "cooldownSeconds": 20,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Mouse"]}] },
-      "native": { "resourceOnCast": 10 }
-    },
-    {
-      "id": "boatswains_song",
-      "kind": "aura",
-      "weapon": "pistol",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Песня боцмана", "en": "Boatswain's Song" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 0.2, "tags": ["Minion"]}] },
-      "native": { "resourceOnCast": 5 }
-    },
-    {
-      "id": "one_eye_but_true",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Один глаз, но меткий", "en": "One Eye, but True" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.05}] },
-      "native": { "resourceOnCrit": 2 }
-    },
-    {
-      "id": "salty_tricorne",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Солёная треуголка", "en": "Salty Tricorne" },
-      "tags": ["Mouse", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"]}] },
-      "native": { "when": {"minionsAtLeast": 2, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"]}]} }
-    },
-    {
-      "id": "share_of_the_loot",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "common",
-      "color": "green",
-      "name": { "ru": "Доля добычи", "en": "Share of the Loot" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "resourceOnKill": 2 }
+      "native": { "resourceOnCast": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "stronger_rum", "name": { "ru": "Крепче ром", "en": "Stronger Rum" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Mouse"] }] } }, { "id": "watered_rum", "name": { "ru": "Разбавленный ром", "en": "Watered Rum" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "salty_tricorne", "name": { "ru": "Солёная треуголка", "en": "Salty Tricorne" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Mouse"] }, { "stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Minion"] }] } }, { "id": "long_rum", "name": { "ru": "Ром до утра", "en": "Rum till Morning" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "captains_rum", "name": { "ru": "Капитанский ром", "en": "Captain's Rum" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Mouse"] }, { "stat": "critChance", "kind": "flat", "value": 0.05 }] } }, { "id": "barrel_of_rum", "name": { "ru": "Бочка рома", "en": "Barrel of Rum" }, "cooldown": 1.3, "duration": 2 }] }]
     },
     {
       "id": "barrel_from_the_hold",
+      "formerIds": ["shot_over_the_shoulder"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "rare",
@@ -5091,10 +5039,12 @@
       "cost": {"resource": 25},
       "cooldownSeconds": 8,
       "effect": {"type": "barrel", "multiplier": 8, "seconds": 5},
-      "native": {"barrels": 2}
+      "native": {"barrels": 2},
+      "branches": [{ "level": 5, "options": [{ "id": "bigger_barrel", "name": { "ru": "Бочка побольше", "en": "Bigger Barrel" }, "effect": { "multiplier": 10 } }, { "id": "quick_barrel", "name": { "ru": "Быстрая бочка", "en": "Quick Barrel" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "shot_over_the_shoulder", "name": { "ru": "Выстрел через плечо", "en": "Shot over the Shoulder" }, "effect": { "seconds": 3.5 } }, { "id": "cheap_barrel", "name": { "ru": "Бочка даром", "en": "Free Barrel" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "powder_barrel", "name": { "ru": "Пороховая бочка", "en": "Powder Barrel" }, "cooldown": 1.3, "effect": { "multiplier": 13 } }, { "id": "short_fuse", "name": { "ru": "Короткий фитиль", "en": "Short Fuse" }, "cooldown": 0.8, "effect": { "seconds": 2.5 } }] }]
     },
     {
       "id": "chain_shot",
+      "formerIds": ["the_cannons_know_names"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "rare",
@@ -5104,10 +5054,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": {"type": "passive", "modifiers": [{"stat": "cannonShotDamage", "kind": "flat", "value": 0.01}, {"stat": "cannonShotDamageMax", "kind": "flat", "value": 0.15}]},
-      "native": {"modifiers": [{"stat": "cannonShotDamageMax", "kind": "flat", "value": 0.1}]}
+      "native": {"modifiers": [{"stat": "cannonShotDamageMax", "kind": "flat", "value": 0.1}]},
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_chain", "name": { "ru": "Тяжелее цепь", "en": "Heavier Chain" }, "effect": { "modifiers": [{ "stat": "cannonShotDamage", "kind": "flat", "value": 0.012 }, { "stat": "cannonShotDamageMax", "kind": "flat", "value": 0.15 }] } }, { "id": "longer_chain", "name": { "ru": "Длиннее цепь", "en": "Longer Chain" }, "effect": { "modifiers": [{ "stat": "cannonShotDamage", "kind": "flat", "value": 0.01 }, { "stat": "cannonShotDamageMax", "kind": "flat", "value": 0.2 }] } }] }, { "level": 15, "options": [{ "id": "the_cannons_know_names", "name": { "ru": "Пушки знают имена", "en": "The Cannons Know Names" }, "effect": { "modifiers": [{ "stat": "cannonShotDamage", "kind": "flat", "value": 0.01 }, { "stat": "cannonShotDamageMax", "kind": "flat", "value": 0.15 }, { "stat": "minionSpeed", "kind": "increased", "value": 0.1, "tags": ["Minion"] }] } }, { "id": "bar_shot", "name": { "ru": "Книппель", "en": "Bar Shot" }, "effect": { "modifiers": [{ "stat": "cannonShotDamage", "kind": "flat", "value": 0.014 }, { "stat": "cannonShotDamageMax", "kind": "flat", "value": 0.12 }] } }] }, { "level": 25, "options": [{ "id": "anchor_chain", "name": { "ru": "Якорная цепь", "en": "Anchor Chain" }, "effect": { "modifiers": [{ "stat": "cannonShotDamage", "kind": "flat", "value": 0.01 }, { "stat": "cannonShotDamageMax", "kind": "flat", "value": 0.3 }] } }, { "id": "quick_chain", "name": { "ru": "Быстрая цепь", "en": "Quick Chain" }, "effect": { "modifiers": [{ "stat": "cannonShotDamage", "kind": "flat", "value": 0.02 }, { "stat": "cannonShotDamageMax", "kind": "flat", "value": 0.15 }] } }] }]
     },
     {
       "id": "parrot_with_five_words",
+      "formerIds": ["the_parrot_learned_a_sixth_word"],
       "kind": "aura",
       "weapon": "pistol",
       "tier": "rare",
@@ -5117,38 +5069,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": {"type": "aura", "modifiers": [{"stat": "cannonNextShare", "kind": "flat", "value": 0.3, "tags": ["Minion"]}], "reserve": 15},
-      "native": {"modifiers": [{"stat": "resourcePerSecond", "kind": "flat", "value": 0.2}]}
-    },
-    {
-      "id": "shot_over_the_shoulder",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "rare",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Выстрел через плечо", "en": "Shot over the Shoulder" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 5,
-      "effect": { "type": "strike", "multiplier": 4, "lowHpBelow": 0.5, "lowHpMultiplier": 6 },
-      "native": { "resourceOnKill": 5 }
-    },
-    {
-      "id": "powder_trail",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "rare",
-      "role": "fast",
-      "color": "green",
-      "name": { "ru": "Пороховая дорожка", "en": "Powder Trail" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 6,
-      "effect": { "type": "strike", "multiplier": 6 },
-      "native": { "when": {"minionsAtLeast": 3, "multiplier": 1.5} }
+      "native": {"modifiers": [{"stat": "resourcePerSecond", "kind": "flat", "value": 0.2}]},
+      "branches": [{ "level": 5, "options": [{ "id": "louder_parrot", "name": { "ru": "Громче попугай", "en": "Louder Parrot" }, "effect": { "modifiers": [{ "stat": "cannonNextShare", "kind": "flat", "value": 0.36, "tags": ["Minion"] }] } }, { "id": "quiet_parrot", "name": { "ru": "Тихий попугай", "en": "Quiet Parrot" }, "effect": { "reserve": 10 } }] }, { "level": 15, "options": [{ "id": "the_parrot_learned_a_sixth_word", "name": { "ru": "Попугай выучил шестое слово", "en": "The Parrot Learned a Sixth Word" }, "effect": { "modifiers": [{ "stat": "cannonNextShare", "kind": "flat", "value": 0.3, "tags": ["Minion"] }, { "stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Minion"] }] } }, { "id": "rude_parrot", "name": { "ru": "Грубый попугай", "en": "Rude Parrot" }, "effect": { "modifiers": [{ "stat": "cannonNextShare", "kind": "flat", "value": 0.3, "tags": ["Minion"] }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "parrot_with_ten_words", "name": { "ru": "Попугай с десятью словами", "en": "Parrot with Ten Words" }, "effect": { "modifiers": [{ "stat": "cannonNextShare", "kind": "flat", "value": 0.45, "tags": ["Minion"] }], "reserve": 25 } }, { "id": "young_parrot", "name": { "ru": "Молодой попугай", "en": "Young Parrot" }, "effect": { "modifiers": [{ "stat": "cannonNextShare", "kind": "flat", "value": 0.2, "tags": ["Minion"] }], "reserve": 8 } }] }]
     },
     {
       "id": "longboat_with_a_cannon",
+      "formerIds": ["cannons_fire"],
       "kind": "aura",
       "weapon": "pistol",
       "tier": "rare",
@@ -5160,52 +5086,12 @@
       "cooldownSeconds": 35,
       "durationSeconds": 20,
       "effect": { "type": "aura", "modifiers": [{"stat": "cannonCount", "kind": "flat", "value": 1}] },
-      "native": { "modifiers": [{"stat": "cannonCount", "kind": "flat", "value": 1}] }
-    },
-    {
-      "id": "cannons_fire",
-      "kind": "aura",
-      "weapon": "pistol",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "green",
-      "name": { "ru": "Пушки, огонь!", "en": "Cannons, Fire!" },
-      "tags": ["Minion", "Aura", "Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{"stat": "minionSpeed", "kind": "more", "value": 1, "tags": ["Minion"]}] },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.5, "tags": ["Mouse"]}] }
-    },
-    {
-      "id": "flag_on_the_mast",
-      "kind": "aura",
-      "weapon": "pistol",
-      "tier": "rare",
-      "color": "green",
-      "name": { "ru": "Флаг на мачте", "en": "Flag on the Mast" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Minion"]}] },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15, "tags": ["Minion"]}] }
-    },
-    {
-      "id": "old_gunner",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "rare",
-      "color": "green",
-      "name": { "ru": "Старый канонир", "en": "Old Gunner" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "any", "every": 25, "multiplier": 5, "queueTargets": 3 },
-      "native": { "resourceOnHit": 5 }
+      "native": { "modifiers": [{"stat": "cannonCount", "kind": "flat", "value": 1}] },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_longboat", "name": { "ru": "Дольше шлюпка", "en": "Longer Longboat" }, "duration": 1.3 }, { "id": "quick_longboat", "name": { "ru": "Быстрая шлюпка", "en": "Quick Longboat" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "cannons_fire", "name": { "ru": "Пушки, огонь!", "en": "Cannons, Fire!" }, "effect": { "modifiers": [{ "stat": "cannonCount", "kind": "flat", "value": 1 }, { "stat": "minionSpeed", "kind": "increased", "value": 0.2, "tags": ["Minion"] }] } }, { "id": "cheap_longboat", "name": { "ru": "Шлюпка даром", "en": "Free Longboat" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "two_longboats", "name": { "ru": "Две шлюпки", "en": "Two Longboats" }, "cooldown": 1.5, "effect": { "modifiers": [{ "stat": "cannonCount", "kind": "flat", "value": 2 }] } }, { "id": "longboat_at_anchor", "name": { "ru": "Шлюпка на якоре", "en": "Longboat at Anchor" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "all_hands_on_deck",
+      "formerIds": ["fair_wind"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "epic",
@@ -5217,7 +5103,8 @@
       "cooldownSeconds": 35,
       "durationSeconds": 15,
       "effect": { "type": "pulse", "everySeconds": 0.16666666666666666, "multiplier": 1 },
-      "native": { "modifiers": [{"stat": "minionSpeed", "kind": "more", "value": 1, "tags": ["Minion"]}] }
+      "native": { "modifiers": [{"stat": "minionSpeed", "kind": "more", "value": 1, "tags": ["Minion"]}] },
+      "branches": [{ "level": 5, "options": [{ "id": "more_hands_c", "name": { "ru": "Больше рук", "en": "More Hands" }, "effect": { "multiplier": 1.3 } }, { "id": "quick_hands", "name": { "ru": "Быстрее на палубу", "en": "Quicker on Deck" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "fair_wind", "name": { "ru": "Попутный ветер", "en": "Fair Wind" }, "duration": 1.4 }, { "id": "cheap_hands", "name": { "ru": "Команда даром", "en": "Free Crew" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "veteran_crew_c", "name": { "ru": "Бывалая команда", "en": "Seasoned Crew" }, "cooldown": 1.3, "effect": { "multiplier": 1.6 } }, { "id": "hands_down_the_line", "name": { "ru": "Команда по очереди", "en": "Crew Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "ship_aground",
@@ -5231,7 +5118,8 @@
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
       "effect": {"type": "flurry", "hits": 30, "seconds": 3, "multiplier": 1, "queueTargets": 3},
-      "native": {"extraHitPerMousePx": 200, "maxHits": 100}
+      "native": {"extraHitPerMousePx": 200, "maxHits": 100},
+      "branches": [{ "level": 5, "options": [{ "id": "harder_aground", "name": { "ru": "Крепче на мели", "en": "Harder Aground" }, "effect": { "multiplier": 1.3 } }, { "id": "quick_aground", "name": { "ru": "Быстро на мель", "en": "Quick Aground" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "broadside_aground", "name": { "ru": "Залп с мели", "en": "Broadside from the Shoal" }, "cost": 0.6 }, { "id": "longer_aground", "name": { "ru": "Дольше на мели", "en": "Longer Aground" }, "effect": { "hits": 36 } }] }, { "level": 25, "options": [{ "id": "wreck", "name": { "ru": "Крушение", "en": "Wreck" }, "cooldown": 1.3, "effect": { "multiplier": 1.6 } }, { "id": "sandbank", "name": { "ru": "Отмель", "en": "Sandbank" }, "effect": { "hits": 40, "seconds": 4 } }] }]
     },
     {
       "id": "point_blank",
@@ -5245,10 +5133,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"minionsAtLeast": 3, "executeBelow": 0.2} }
+      "native": { "when": {"minionsAtLeast": 3, "executeBelow": 0.2} },
+      "branches": [{ "level": 5, "options": [{ "id": "closer_shot", "name": { "ru": "Ещё ближе", "en": "Even Closer" }, "damage": 1.3 }, { "id": "quick_blank", "name": { "ru": "Быстрый выстрел", "en": "Quick Shot" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "face_to_face", "name": { "ru": "Лицом к лицу", "en": "Face to Face" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_blank", "name": { "ru": "Выстрел даром", "en": "Free Shot" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "coup_de_grace", "name": { "ru": "Добивающий", "en": "Coup de Grâce" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "muzzle_flash", "name": { "ru": "Вспышка у дула", "en": "Muzzle Flash" }, "damage": 1.7 }] }]
     },
     {
       "id": "broadside",
+      "formerIds": ["boatswains_song"],
       "kind": "aura",
       "weapon": "pistol",
       "tier": "epic",
@@ -5260,37 +5150,12 @@
       "cooldownSeconds": 8,
       "durationSeconds": 5,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 2, "tags": ["Minion"]}] },
-      "native": { "durationMultiplier": 1.6 }
-    },
-    {
-      "id": "fair_wind",
-      "kind": "aura",
-      "weapon": "pistol",
-      "tier": "epic",
-      "color": "green",
-      "name": { "ru": "Попутный ветер", "en": "Fair Wind" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 40,
-      "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.5, "tags": ["Minion"]}] },
-      "native": { "modifiers": [{"stat": "mouseDistance", "kind": "more", "value": 1}] }
-    },
-    {
-      "id": "powder_magazine",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "epic",
-      "color": "green",
-      "name": { "ru": "Пороховой погреб", "en": "Powder Magazine" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 2, "maxSteps": 50, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.01, "tags": ["Minion"]}] },
-      "native": { "when": {"resourceAtLeast": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Minion"]}]} }
+      "native": { "durationMultiplier": 1.6 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_broadside", "name": { "ru": "Дольше залп", "en": "Longer Broadside" }, "duration": 1.3 }, { "id": "quick_broadside", "name": { "ru": "Быстрый залп", "en": "Quick Broadside" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "boatswains_song", "name": { "ru": "Песня боцмана", "en": "Boatswain's Song" }, "cost": 0.6 }, { "id": "double_broadside", "name": { "ru": "Двойной залп", "en": "Double Broadside" }, "duration": 1.6, "cooldown": 1.3 }] }, { "level": 25, "options": [{ "id": "thunder_broadside", "name": { "ru": "Громовой залп", "en": "Thunder Broadside" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 2.6, "tags": ["Minion"] }] } }, { "id": "rolling_broadside", "name": { "ru": "Беглый залп", "en": "Rolling Broadside" }, "cooldown": 0.6, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 1.4, "tags": ["Minion"] }] } }] }]
     },
     {
       "id": "full_broadside",
+      "formerIds": ["flag_on_the_mast"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "legendary",
@@ -5301,10 +5166,12 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 8,
       "effect": { "type": "strike", "multiplier": 15, "queueTargets": 3 },
-      "native": { "when": {"resourceAtLeast": 100, "free": true} }
+      "native": { "when": {"resourceAtLeast": 100, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_broadside", "name": { "ru": "Тяжелее залп", "en": "Heavier Broadside" }, "damage": 1.3 }, { "id": "quick_full", "name": { "ru": "Быстрый залп", "en": "Quick Volley" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "flag_on_the_mast", "name": { "ru": "Флаг на мачте", "en": "Flag on the Mast" }, "effect": { "queueMultiplier": 1.5 } }, { "id": "cheap_full", "name": { "ru": "Залп даром", "en": "Free Volley" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "both_sides", "name": { "ru": "Оба борта", "en": "Both Sides" }, "damage": 0.9, "effect": { "queueMultiplier": 2 } }, { "id": "single_cannonball", "name": { "ru": "Одно ядро", "en": "Single Cannonball" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "fleet_at_ice_harbour",
+      "formerIds": ["captains_bridge"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "legendary",
@@ -5315,20 +5182,8 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 10 }
-    },
-    {
-      "id": "the_cannons_know_names",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "legendary",
-      "color": "green",
-      "name": { "ru": "Пушки знают имена", "en": "The Cannons Know Names" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "cannonCount", "kind": "flat", "value": 2}] },
-      "native": { "modifiers": [{"stat": "minionSeconds", "kind": "increased", "value": 1, "tags": ["Minion"]}] }
+      "native": { "resourceOnKill": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "bigger_fleet", "name": { "ru": "Больше флот", "en": "Bigger Fleet" }, "effect": { "hits": 36 } }, { "id": "heavier_fleet", "name": { "ru": "Тяжелее флот", "en": "Heavier Fleet" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "captains_bridge", "name": { "ru": "Капитанский мостик", "en": "Captain's Bridge" }, "cooldown": 0.75 }, { "id": "cheap_fleet", "name": { "ru": "Флот даром", "en": "Free Fleet" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "armada", "name": { "ru": "Армада", "en": "Armada" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "flagship", "name": { "ru": "Флагман", "en": "Flagship" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "last_cannonball",
@@ -5342,10 +5197,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 20, "critChance": 1 },
-      "native": { "when": {"minionsAtLeast": 3, "multiplier": 1.3} }
+      "native": { "when": {"minionsAtLeast": 3, "multiplier": 1.3} },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_ball", "name": { "ru": "Тяжелее ядро", "en": "Heavier Ball" }, "damage": 1.3 }, { "id": "quick_ball", "name": { "ru": "Быстрое ядро", "en": "Quick Ball" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "hot_shot", "name": { "ru": "Калёное ядро", "en": "Hot Shot" }, "cost": 0.5 }, { "id": "second_ball", "name": { "ru": "Второе ядро", "en": "Second Ball" }, "effect": { "queueTargets": 1 } }] }, { "level": 25, "options": [{ "id": "golden_ball", "name": { "ru": "Золотое ядро", "en": "Golden Ball" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "skipping_ball", "name": { "ru": "Ядро рикошетом", "en": "Skipping Ball" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "the_ship_is_afloat",
+      "formerIds": ["the_cannon_answers_everyone"],
       "kind": "active",
       "weapon": "pistol",
       "tier": "mythic",
@@ -5357,47 +5214,8 @@
       "cooldownSeconds": 60,
       "durationSeconds": 20,
       "effect": { "type": "pulse", "everySeconds": 0.3333333333333333, "multiplier": 5, "queueTargets": 3 },
-      "native": { "when": {"mouseMoving": true, "durationMultiplier": 1.25} }
-    },
-    {
-      "id": "the_cannon_answers_everyone",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "green",
-      "name": { "ru": "Пушка отвечает всем", "en": "The Cannon Answers Everyone" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 90,
-      "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 1, "multiplier": 3, "input": "mouse" },
-      "native": { "durationMultiplier": 1.3333333333333333 }
-    },
-    {
-      "id": "captains_bridge",
-      "kind": "active",
-      "weapon": "pistol",
-      "tier": "mythic",
-      "color": "green",
-      "name": { "ru": "Капитанский мостик", "en": "Captain's Bridge" },
-      "tags": ["Minion", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 10, "maxSteps": 5, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["Minion"]}], "from": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Minion"]}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}] }
-    },
-    {
-      "id": "the_parrot_learned_a_sixth_word",
-      "kind": "aura",
-      "weapon": "pistol",
-      "tier": "mythic",
-      "locked": true,
-      "color": "green",
-      "name": { "ru": "Попугай выучил шестое слово", "en": "The Parrot Learned a Sixth Word" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "when": {"mouseMoving": true, "durationMultiplier": 1.25} },
+      "branches": [{ "level": 5, "options": [{ "id": "stronger_tide", "name": { "ru": "Сильнее прилив", "en": "Stronger Tide" }, "effect": { "multiplier": 6 } }, { "id": "longer_voyage", "name": { "ru": "Дольше плавание", "en": "Longer Voyage" }, "duration": 1.3 }] }, { "level": 15, "options": [{ "id": "the_cannon_answers_everyone", "name": { "ru": "Пушка отвечает всем", "en": "The Cannon Answers Everyone" }, "cooldown": 0.75 }, { "id": "cheap_voyage", "name": { "ru": "Плавание даром", "en": "Free Voyage" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "full_sail", "name": { "ru": "Все паруса", "en": "Full Sail" }, "duration": 1.6, "cooldown": 1.3 }, { "id": "single_mast", "name": { "ru": "Одна мачта", "en": "Single Mast" }, "effect": { "multiplier": 8, "queueTargets": 1 } }] }]
     },
     {
       "id": "cast_on_mouse_distance",

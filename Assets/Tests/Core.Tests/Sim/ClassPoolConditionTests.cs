@@ -40,24 +40,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SaltyTricorneAddsMouseDamageOnceTwoCannonsStand()
-        {
-            var captain = SkillTestHero.Of(HeroClass.Captain, "salty_tricorne", "cannon_by_name");
-            captain.Ticks(1);
-            var before = Damage(captain, StatTags.Mouse);
-            captain.Cast(1);
-            captain.Ticks(1);
-            Assert.That(Damage(captain, StatTags.Mouse), Is.EqualTo(before).Within(1e-6));
-
-            captain.Ticks(50);
-            captain.State.Resource = 100;
-            captain.Cast(1);
-            captain.Ticks(1);
-
-            Assert.That(Damage(captain, StatTags.Mouse) - before, Is.EqualTo(10).Within(1e-6));
-        }
-
-        [Test]
         public void ClearDayHitsHarderWhileTheOracleReads()
         {
             var oracle = SkillTestHero.Of(HeroClass.Oracle, "clear_day");

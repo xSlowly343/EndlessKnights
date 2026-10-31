@@ -35,7 +35,7 @@
     {"id": "syringe_cane", "class": "plague_doctor", "color": "red", "name": {"ru": "Трость-шприц", "en": "Syringe Cane"}, "starterSkills": ["vial_from_belt", "cane_jab", "drop_from_the_needle", "heavy_dose", "infirmary_smell", "ward_round", "lancet"], "innate": [{"stat": "dotDamage", "kind": "increased", "value": 0.15}]},
     {"id": "still_burner", "class": "moonshiner", "color": "blue", "name": {"ru": "Бутыль-горелка", "en": "Still Burner"}, "starterSkills": ["fuse_bottle", "little_flame", "cork_popped", "keg_into_the_fire", "warm_stove", "distillation", "mash_barrel"], "innate": [{"stat": "dotStacks", "kind": "flat", "value": 5}]},
     {"id": "shovel", "class": "gravedigger", "color": "blue", "name": {"ru": "Лопата", "en": "Shovel"}, "starterSkills": ["call_a_colleague", "shovel_blow", "handful_of_earth", "tombstone", "evening_bell", "night_digger", "bone_scree"], "innate": [{"stat": "minionSeconds", "kind": "increased", "value": 0.2}]},
-    {"id": "pistol", "class": "captain", "color": "green", "name": {"ru": "Пистоль", "en": "Pistol"}, "starterSkills": ["cannon_by_name", "bow_gun", "shot_in_the_air", "the_pistol_answers", "rum_for_the_crew", "salty_tricorne", "share_of_the_loot"], "innate": [{"stat": "minionSpeed", "kind": "increased", "value": 0.1}]}
+    {"id": "pistol", "class": "captain", "color": "green", "name": {"ru": "Пистоль", "en": "Pistol"}, "starterSkills": ["cannon_by_name", "the_pistol_answers", "shot_in_the_air", "bow_gun", "rum_for_the_crew", "six_shots", "barrel_from_the_hold"], "innate": [{"stat": "minionSpeed", "kind": "increased", "value": 0.1}]}
   ],
   "bases": [
     {"id": "woodcutter_axe", "type": "axe", "fromBiome": 1, "name": {"ru": "Топор лесоруба", "en": "Woodcutter's Axe"}},
