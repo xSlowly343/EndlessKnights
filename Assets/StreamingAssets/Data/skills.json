@@ -591,6 +591,7 @@
     },
     {
       "id": "thin_cut",
+      "formerIds": ["pinch_of_salt", "fish_knife"],
       "kind": "active",
       "weapon": "katana",
       "tier": "common",
@@ -601,7 +602,8 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 3,
       "effect": { "type": "strike", "multiplier": 2, "critChance": 1 },
-      "native": { "freeAboveCombo": 50 }
+      "native": { "freeAboveCombo": 50 },
+      "branches": [{ "level": 5, "options": [{ "id": "keen_edge", "name": { "ru": "Острая кромка", "en": "Keen Edge" }, "damage": 1.3 }, { "id": "quick_slice", "name": { "ru": "Быстрый срез", "en": "Quick Slice" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "fish_knife", "name": { "ru": "Нож для рыбы", "en": "Fish Knife" }, "effect": { "lowHpBelow": 0.5, "lowHpMultiplier": 3 } }, { "id": "pinch_of_salt", "name": { "ru": "Щепоть соли", "en": "Pinch of Salt" }, "effect": { "queueTargets": 1, "queueMultiplier": 1 } }] }, { "level": 25, "options": [{ "id": "paper_thin", "name": { "ru": "Тоньше бумаги", "en": "Paper Thin" }, "damage": 1.7, "cooldown": 1.25 }, { "id": "cross_cut", "name": { "ru": "Крест-накрест", "en": "Cross Cut" }, "effect": { "queueTargets": 2, "queueMultiplier": 1.2 } }] }]
     },
     {
       "id": "hundred_cuts",
@@ -616,10 +618,12 @@
       "cooldownSeconds": 20,
       "marks": ["series"],
       "effect": { "type": "flurry", "hits": 15, "seconds": 1.5, "multiplier": 2, "queueTargets": 1 },
-      "native": { "carryOn": true }
+      "native": { "carryOn": true },
+      "branches": [{ "level": 5, "options": [{ "id": "more_cuts_h", "name": { "ru": "Сто десять срезов", "en": "Hundred and Ten Cuts" }, "effect": { "hits": 18 } }, { "id": "keener_cuts", "name": { "ru": "Острее срезы", "en": "Keener Cuts" }, "effect": { "multiplier": 2.5 } }] }, { "level": 15, "options": [{ "id": "quick_hundred", "name": { "ru": "Быстрая сотня", "en": "Quick Hundred" }, "cooldown": 0.75 }, { "id": "cheap_hundred", "name": { "ru": "Сотня в долг", "en": "Hundred on Credit" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "two_hundred", "name": { "ru": "Двести срезов", "en": "Two Hundred Cuts" }, "effect": { "hits": 25, "seconds": 2.5 } }, { "id": "cuts_down_the_line", "name": { "ru": "Срезы по очереди", "en": "Cuts Down the Line" }, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "no_rush",
+      "formerIds": ["kitchen_silence"],
       "kind": "active",
       "weapon": "katana",
       "tier": "common",
@@ -631,10 +635,12 @@
       "cooldownSeconds": 6,
       "durationSeconds": 10,
       "effect": { "type": "pauseStrike", "pauseSeconds": 1, "multiplier": 6 },
-      "native": { "holdCombo": true }
+      "native": { "holdCombo": true },
+      "branches": [{ "level": 5, "options": [{ "id": "deep_breath", "name": { "ru": "Глубокий вдох", "en": "Deep Breath" }, "effect": { "multiplier": 7.5 } }, { "id": "short_pause", "name": { "ru": "Короткая пауза", "en": "Short Pause" }, "effect": { "pauseSeconds": 0.7 } }] }, { "level": 15, "options": [{ "id": "kitchen_silence", "name": { "ru": "Тишина кухни", "en": "Kitchen Silence" }, "effect": { "pauseSeconds": 2, "multiplier": 10 } }, { "id": "long_patience", "name": { "ru": "Долгое терпение", "en": "Long Patience" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "still_hand", "name": { "ru": "Неподвижная рука", "en": "Still Hand" }, "cooldown": 1.25, "effect": { "multiplier": 9 } }, { "id": "patient_cook", "name": { "ru": "Терпеливый повар", "en": "Patient Cook" }, "cost": 0.5, "cooldown": 0.75 }] }]
     },
     {
       "id": "kitchen_rhythm",
+      "formerIds": ["debt_paid"],
       "kind": "active",
       "weapon": "katana",
       "tier": "rare",
@@ -645,10 +651,12 @@
       "cooldownSeconds": 30,
       "durationSeconds": 12,
       "effect": { "type": "keyRepeat", "every": 10, "multiplier": 1 },
-      "native": { "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0 }] }
+      "native": { "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0 }] },
+      "branches": [{ "level": 5, "options": [{ "id": "faster_rhythm", "name": { "ru": "Частый ритм", "en": "Faster Rhythm" }, "effect": { "every": 8 } }, { "id": "steady_rhythm", "name": { "ru": "Ровный ритм", "en": "Steady Rhythm" }, "duration": 1.4 }] }, { "level": 15, "options": [{ "id": "debt_paid", "name": { "ru": "Долг уплачен", "en": "Debt Paid" }, "cooldown": 1.2, "effect": { "multiplier": 1.5 } }, { "id": "cheap_rhythm", "name": { "ru": "Ритм без затрат", "en": "Effortless Rhythm" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "full_kitchen", "name": { "ru": "Полная кухня", "en": "Full Kitchen" }, "cooldown": 1.3, "effect": { "every": 5 } }, { "id": "two_knives", "name": { "ru": "Два ножа", "en": "Two Knives" }, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "what_remains_of_the_debt",
+      "formerIds": ["steady_knock", "memory_of_the_knife"],
       "kind": "active",
       "weapon": "katana",
       "tier": "rare",
@@ -658,10 +666,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "comboStacks", "hitsPerStack": 10, "perStack": { "stat": "critMultiplier", "kind": "increased", "value": 0.01 }, "max": 0.5 },
-      "native": { "fullResourceBonus": 0.25 }
+      "native": { "fullResourceBonus": 0.25 },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_debt", "name": { "ru": "Острый счёт", "en": "Sharp Count" }, "effect": { "perStack": { "stat": "critMultiplier", "kind": "increased", "value": 0.012 } } }, { "id": "quick_debt", "name": { "ru": "Быстрый счёт", "en": "Quick Count" }, "effect": { "hitsPerStack": 8 } }] }, { "level": 15, "options": [{ "id": "steady_knock", "name": { "ru": "Ровный стук", "en": "Steady Knock" }, "effect": { "max": 0.6 } }, { "id": "memory_of_the_knife", "name": { "ru": "Память ножа", "en": "Memory of the Knife" }, "effect": { "perStack": { "stat": "damage", "kind": "increased", "value": 0.01 } } }] }, { "level": 25, "options": [{ "id": "old_debt", "name": { "ru": "Старый долг", "en": "Old Debt" }, "effect": { "perStack": { "stat": "critMultiplier", "kind": "increased", "value": 0.015 }, "max": 0.75 } }, { "id": "small_change", "name": { "ru": "Мелочь", "en": "Small Change" }, "effect": { "hitsPerStack": 5, "max": 0.4 } }] }]
     },
     {
       "id": "sweep_over_the_queue",
+      "formerIds": ["through_three_boards"],
       "kind": "active",
       "weapon": "katana",
       "tier": "epic",
@@ -672,10 +682,12 @@
       "cost": { "resource": 60 },
       "cooldownSeconds": 25,
       "effect": { "type": "strike", "multiplier": 20, "queueTargets": 3 },
-      "native": { "repeatAboveCombo": 100 }
+      "native": { "repeatAboveCombo": 100 },
+      "branches": [{ "level": 5, "options": [{ "id": "wide_sweep", "name": { "ru": "Широкий взмах", "en": "Wide Sweep" }, "damage": 1.3 }, { "id": "quick_sweep", "name": { "ru": "Быстрый взмах", "en": "Quick Sweep" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "through_three_boards", "name": { "ru": "Сквозь три доски", "en": "Through Three Boards" }, "cooldown": 1.2, "effect": { "multiplier": 24 } }, { "id": "light_sweep", "name": { "ru": "Лёгкий взмах", "en": "Light Sweep" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "whole_queue", "name": { "ru": "Вся очередь", "en": "Whole Queue" }, "damage": 0.9, "effect": { "queueMultiplier": 1.5 } }, { "id": "single_sweep", "name": { "ru": "Один взмах", "en": "One Sweep" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "slow_simmer",
+      "formerIds": ["pot_on_the_fire"],
       "kind": "active",
       "weapon": "katana",
       "tier": "rare",
@@ -687,7 +699,8 @@
       "cooldownSeconds": 40,
       "durationSeconds": 5,
       "effect": { "type": "storeHits", "releaseShare": 2 },
-      "native": { "bossReleaseShare": 2.5 }
+      "native": { "bossReleaseShare": 2.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "long_simmer", "name": { "ru": "Долгое томление", "en": "Long Simmer" }, "effect": { "releaseShare": 2.4 } }, { "id": "hot_stove", "name": { "ru": "Горячая плита", "en": "Hot Stove" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "pot_on_the_fire", "name": { "ru": "Котёл на огне", "en": "Pot on the Fire" }, "cost": 0.5 }, { "id": "big_pot", "name": { "ru": "Большой котёл", "en": "Big Pot" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "overnight", "name": { "ru": "Томить до утра", "en": "Overnight" }, "cooldown": 1.3, "effect": { "releaseShare": 3.2 } }, { "id": "pot_for_all", "name": { "ru": "Котёл на всех", "en": "Pot for Everyone" }, "effect": { "queue": true } }] }]
     },
     {
       "id": "arrow_from_the_road",
@@ -1153,35 +1166,8 @@
       "effect": { "type": "stacks", "on": "keyHit", "perStack": { "stat": "damage", "kind": "increased", "value": 0.01 }, "max": 100000 }
     },
     {
-      "id": "pinch_of_salt",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "common",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Щепоть соли", "en": "Pinch of Salt" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 4,
-      "effect": { "type": "strike", "multiplier": 3, "queueTargets": 1, "queueMultiplier": 1 },
-      "native": { "comboOnCast": 5 }
-    },
-    {
-      "id": "fish_knife",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "common",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Нож для рыбы", "en": "Fish Knife" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 5,
-      "effect": { "type": "strike", "multiplier": 4, "lowHpBelow": 0.5, "lowHpMultiplier": 6 },
-      "native": { "resourceOnKill": 20 }
-    },
-    {
       "id": "carving",
+      "formerIds": ["rice_grain"],
       "kind": "active",
       "weapon": "katana",
       "tier": "common",
@@ -1193,10 +1179,12 @@
       "cooldownSeconds": 20,
       "marks": ["series"],
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "comboPerHit": 1 }
+      "native": { "comboPerHit": 1 },
+      "branches": [{ "level": 5, "options": [{ "id": "more_cuts", "name": { "ru": "Мельче нарезка", "en": "Finer Cuts" }, "effect": { "hits": 8 } }, { "id": "heavy_cleaver", "name": { "ru": "Тяжёлый тесак", "en": "Heavy Cleaver" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "rice_grain", "name": { "ru": "Рисовое зерно", "en": "Rice Grain" }, "cost": 0.5 }, { "id": "quick_carving", "name": { "ru": "Быстрая разделка", "en": "Quick Carving" }, "cooldown": 0.7 }] }, { "level": 25, "options": [{ "id": "whole_fish", "name": { "ru": "Рыба целиком", "en": "Whole Fish" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "carving_board", "name": { "ru": "Разделочная доска", "en": "Carving Board" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "night_order",
+      "formerIds": ["cold_water"],
       "kind": "active",
       "weapon": "katana",
       "tier": "common",
@@ -1207,22 +1195,8 @@
       "cost": { "resource": 60 },
       "cooldownSeconds": 25,
       "effect": { "type": "strike", "multiplier": 12 },
-      "native": { "when": {"bossLastSeconds": 10, "multiplier": 1.5} }
-    },
-    {
-      "id": "pot_on_the_fire",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "common",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Котёл на огне", "en": "Pot on the Fire" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 25,
-      "durationSeconds": 8,
-      "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "more", "value": 0.5}] }
+      "native": { "when": {"bossLastSeconds": 10, "multiplier": 1.5} },
+      "branches": [{ "level": 5, "options": [{ "id": "late_order", "name": { "ru": "Поздний заказ", "en": "Late Order" }, "damage": 1.3 }, { "id": "rushed_order", "name": { "ru": "Срочный заказ", "en": "Rush Order" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "cold_water", "name": { "ru": "Холодная вода", "en": "Cold Water" }, "cooldown": 1.2, "effect": { "multiplier": 15 } }, { "id": "cheap_order", "name": { "ru": "Заказ подешевле", "en": "Cheap Order" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "last_customer", "name": { "ru": "Последний гость", "en": "Last Customer" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "order_for_all", "name": { "ru": "Заказ на всех", "en": "Order for Everyone" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "cooks_apron",
@@ -1236,52 +1210,14 @@
       "cooldownSeconds": 20,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Keyboard"]}] },
-      "native": { "modifiers": [{"stat": "comboTimeoutSeconds", "kind": "flat", "value": 1}] }
-    },
-    {
-      "id": "steady_knock",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Ровный стук", "en": "Steady Knock" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "comboStrikeMultiplier", "kind": "flat", "value": 1.5}] },
-      "native": { "modifiers": [{"stat": "comboStrikeResource", "kind": "flat", "value": 5}] }
-    },
-    {
-      "id": "sharp_edge",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Острый край", "en": "Sharp Edge" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.05, "tags": ["Keyboard"]}] },
-      "native": { "when": {"resourceAtLeast": 60, "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.05, "tags": ["Keyboard"]}]} }
-    },
-    {
-      "id": "kitchen_silence",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Тишина кухни", "en": "Kitchen Silence" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 10,
-      "effect": { "type": "idleStrike", "chargePerSecond": 1, "maxChargeSeconds": 3, "minIdleSeconds": 3 },
-      "native": { "resourceOnCast": 20 }
+      "native": { "modifiers": [{"stat": "comboTimeoutSeconds", "kind": "flat", "value": 1}] },
+      "branches": [{ "level": 5, "options": [{ "id": "thick_apron", "name": { "ru": "Плотный фартук", "en": "Thick Apron" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Keyboard"] }] } }, { "id": "worn_apron", "name": { "ru": "Старый фартук", "en": "Old Apron" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "long_shift", "name": { "ru": "Длинная смена", "en": "Long Shift" }, "duration": 1.5 }, { "id": "quick_knot", "name": { "ru": "Быстрый узел", "en": "Quick Knot" }, "cooldown": 0.7 }] }, { "level": 25, "options": [{ "id": "head_cook_apron", "name": { "ru": "Фартук шефа", "en": "Head Cook's Apron" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Keyboard"] }, { "stat": "critChance", "kind": "flat", "value": 0.05, "tags": ["Keyboard"] }] } }, { "id": "never_off", "name": { "ru": "Не снимая", "en": "Never Off" }, "cooldown": 1.3, "duration": 2 }] }]
     },
     {
       "id": "morning_market",
       "kind": "aura",
       "weapon": "katana",
-      "tier": "common",
+      "tier": "rare",
       "color": "red",
       "name": { "ru": "Утренний рынок", "en": "Morning Market" },
       "tags": ["Aura", "Skill"],
@@ -1289,21 +1225,8 @@
       "cooldownSeconds": 30,
       "durationSeconds": 15,
       "effect": { "type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.15}] },
-      "native": { "when": {"comboAbove": 50, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.15}]} }
-    },
-    {
-      "id": "rice_grain",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "rare",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Рисовое зерно", "en": "Rice Grain" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 3,
-      "effect": { "type": "strike", "multiplier": 3 },
-      "native": { "when": {"afterComboStrikeSeconds": 2, "free": true} }
+      "native": { "when": {"comboAbove": 50, "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.15}]} },
+      "branches": [{ "level": 5, "options": [{ "id": "rich_market", "name": { "ru": "Богатый рынок", "en": "Rich Market" }, "effect": { "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.2 }] } }, { "id": "early_market", "name": { "ru": "Ранний рынок", "en": "Early Market" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "long_market", "name": { "ru": "Рынок до обеда", "en": "Market Till Noon" }, "duration": 1.5 }, { "id": "cheap_stall", "name": { "ru": "Дешёвый прилавок", "en": "Cheap Stall" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "market_day", "name": { "ru": "Базарный день", "en": "Market Day" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.3 }] } }, { "id": "fish_row", "name": { "ru": "Рыбный ряд", "en": "Fish Row" }, "effect": { "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.12 }, { "stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"] }] } }] }]
     },
     {
       "id": "trim_the_edge",
@@ -1318,37 +1241,12 @@
       "cooldownSeconds": 5,
       "durationSeconds": 5,
       "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "strikeMultiplier": 4 },
-      "native": { "durationMultiplier": 2 }
-    },
-    {
-      "id": "reflection_in_the_blade",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "rare",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Отражение в лезвии", "en": "Reflection in the Blade" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 4,
-      "effect": { "type": "strike", "multiplier": 5, "lastKeyHit": true }
-    },
-    {
-      "id": "through_three_boards",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Сквозь три доски", "en": "Through Three Boards" },
-      "tags": ["Skill"],
-      "cost": { "resource": 60 },
-      "cooldownSeconds": 25,
-      "effect": { "type": "strike", "multiplier": 10, "queueTargets": 2 },
-      "native": { "when": {"resourceAtLeast": 100, "multiplier": 1.4} }
+      "native": { "durationMultiplier": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "deeper_trim", "name": { "ru": "Глубже подрезать", "en": "Deeper Trim" }, "effect": { "strikeMultiplier": 5.5 } }, { "id": "quick_trim", "name": { "ru": "Быстрая подрезка", "en": "Quick Trim" }, "cooldown": 0.7 }] }, { "level": 15, "options": [{ "id": "open_wound", "name": { "ru": "Открытый край", "en": "Open Edge" }, "effect": { "damageTaken": 0.15 } }, { "id": "long_trim", "name": { "ru": "Долгий надрез", "en": "Long Trim" }, "duration": 1.6 }] }, { "level": 25, "options": [{ "id": "split_edge", "name": { "ru": "Расколотый край", "en": "Split Edge" }, "cooldown": 1.3, "effect": { "damageTaken": 0.2 } }, { "id": "sure_trim", "name": { "ru": "Верная рука", "en": "Sure Hand" }, "cost": 1.25, "effect": { "strikeMultiplier": 8 } }] }]
     },
     {
       "id": "polished_rice",
+      "formerIds": ["sharp_edge"],
       "kind": "aura",
       "weapon": "katana",
       "tier": "rare",
@@ -1358,23 +1256,12 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 30,
       "durationSeconds": 12,
-      "effect": { "type": "aura", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.15, "tags": ["Keyboard"]}] }
-    },
-    {
-      "id": "cold_water",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "rare",
-      "color": "red",
-      "name": { "ru": "Холодная вода", "en": "Cold Water" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}], "when": {"bossRetry": true} },
-      "native": { "modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 5}] }
+      "effect": { "type": "aura", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.15, "tags": ["Keyboard"]}] },
+      "branches": [{ "level": 5, "options": [{ "id": "brighter_rice", "name": { "ru": "Ярче блеск", "en": "Brighter Shine" }, "effect": { "modifiers": [{ "stat": "critChance", "kind": "flat", "value": 0.18, "tags": ["Keyboard"] }] } }, { "id": "quick_polish", "name": { "ru": "Быстрая полировка", "en": "Quick Polish" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "sharp_edge", "name": { "ru": "Острый край", "en": "Sharp Edge" }, "effect": { "modifiers": [{ "stat": "critChance", "kind": "flat", "value": 0.15, "tags": ["Keyboard"] }, { "stat": "critMultiplier", "kind": "increased", "value": 0.1 }] } }, { "id": "long_shine", "name": { "ru": "Долгий блеск", "en": "Long Shine" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "mirror_rice", "name": { "ru": "Рис как зеркало", "en": "Mirror Rice" }, "cooldown": 1.25, "effect": { "modifiers": [{ "stat": "critChance", "kind": "flat", "value": 0.22, "tags": ["Keyboard"] }] } }, { "id": "cheap_polish", "name": { "ru": "Полировка даром", "en": "Free Polish" }, "cost": 0.5, "cooldown": 0.8 }] }]
     },
     {
       "id": "one_cut",
+      "formerIds": ["reflection_in_the_blade"],
       "kind": "active",
       "weapon": "katana",
       "tier": "epic",
@@ -1385,25 +1272,12 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"comboAbove": 100, "executeBelow": 0.2} }
-    },
-    {
-      "id": "dance_without_music",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "epic",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Танец без музыки", "en": "Dance Without Music" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 4,
-      "durationSeconds": 10,
-      "effect": { "type": "keyRepeat", "every": 1, "multiplier": 1, "hits": 5 },
-      "native": { "resourceOnHit": 4 }
+      "native": { "when": {"comboAbove": 100, "executeBelow": 0.2} },
+      "branches": [{ "level": 5, "options": [{ "id": "deeper_cut", "name": { "ru": "Глубже надрез", "en": "Deeper Cut" }, "damage": 1.3 }, { "id": "quick_one", "name": { "ru": "Быстрый надрез", "en": "Quick Cut" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "reflection_in_the_blade", "name": { "ru": "Отражение в лезвии", "en": "Reflection in the Blade" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_cut", "name": { "ru": "Надрез даром", "en": "Free Cut" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "final_cut", "name": { "ru": "Последний надрез", "en": "Final Cut" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "clean_cut", "name": { "ru": "Чистый надрез", "en": "Clean Cut" }, "damage": 1.7 }] }]
     },
     {
       "id": "cooks_breath",
+      "formerIds": ["heavenly_square"],
       "kind": "aura",
       "weapon": "katana",
       "tier": "epic",
@@ -1414,23 +1288,12 @@
       "cooldownSeconds": 40,
       "durationSeconds": 15,
       "effect": { "type": "aura", "modifiers": [{"stat": "comboTimeoutSeconds", "kind": "flat", "value": 15}, {"stat": "keyStrikeEvery", "kind": "flat", "value": 10}, {"stat": "keyStrikeMultiplier", "kind": "flat", "value": 3}] },
-      "native": { "resourceOnCast": 20 }
-    },
-    {
-      "id": "memory_of_the_knife",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "epic",
-      "color": "red",
-      "name": { "ru": "Память ножа", "en": "Memory of the Knife" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "comboStacks", "hitsPerStack": 20, "perStack": {"stat": "damage", "kind": "increased", "value": 0.01}, "max": 0.5 },
-      "native": { "modifiers": [{"stat": "comboKeepShare", "kind": "flat", "value": 0.5}] }
+      "native": { "resourceOnCast": 20 },
+      "branches": [{ "level": 5, "options": [{ "id": "long_breath", "name": { "ru": "Долгое дыхание", "en": "Long Breath" }, "duration": 1.3 }, { "id": "quick_breath", "name": { "ru": "Быстрое дыхание", "en": "Quick Breath" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "calm_breath", "name": { "ru": "Спокойное дыхание", "en": "Calm Breath" }, "effect": { "modifiers": [{ "stat": "comboTimeoutSeconds", "kind": "flat", "value": 15 }, { "stat": "keyStrikeEvery", "kind": "flat", "value": 8 }, { "stat": "keyStrikeMultiplier", "kind": "flat", "value": 3 }] } }, { "id": "light_breath", "name": { "ru": "Лёгкое дыхание", "en": "Light Breath" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "heavenly_square", "name": { "ru": "Небесная площадь", "en": "Heavenly Square" }, "cooldown": 2, "duration": 0.7, "effect": { "modifiers": [{ "stat": "comboTimeoutSeconds", "kind": "flat", "value": 15 }, { "stat": "keyStrikeEvery", "kind": "flat", "value": 10 }, { "stat": "keyStrikeMultiplier", "kind": "flat", "value": 3 }, { "stat": "damage", "kind": "more", "value": 0.5 }] } }, { "id": "deep_breath_c", "name": { "ru": "Вдох на всю кухню", "en": "Breath for the Whole Kitchen" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "comboTimeoutSeconds", "kind": "flat", "value": 15 }, { "stat": "keyStrikeEvery", "kind": "flat", "value": 10 }, { "stat": "keyStrikeMultiplier", "kind": "flat", "value": 4.5 }] } }] }]
     },
     {
       "id": "moon_cut",
+      "formerIds": ["the_last_ronin"],
       "kind": "active",
       "weapon": "katana",
       "tier": "legendary",
@@ -1441,7 +1304,8 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 8,
       "effect": { "type": "strike", "multiplier": 15, "critChance": 1 },
-      "native": { "freeAboveCombo": 100 }
+      "native": { "freeAboveCombo": 100 },
+      "branches": [{ "level": 5, "options": [{ "id": "full_moon", "name": { "ru": "Полная луна", "en": "Full Moon" }, "damage": 1.3 }, { "id": "crescent", "name": { "ru": "Месяц", "en": "Crescent" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "the_last_ronin", "name": { "ru": "Последний ронин", "en": "The Last Ronin" }, "cost": 0.6 }, { "id": "moonlight", "name": { "ru": "Лунный свет", "en": "Moonlight" }, "effect": { "queueTargets": 1 } }] }, { "level": 25, "options": [{ "id": "eclipse", "name": { "ru": "Затмение", "en": "Eclipse" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "moon_path", "name": { "ru": "Лунная дорожка", "en": "Moon Path" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "last_order_of_the_day",
@@ -1456,23 +1320,12 @@
       "cooldownSeconds": 45,
       "marks": ["series"],
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 20 }
-    },
-    {
-      "id": "debt_paid",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "legendary",
-      "color": "red",
-      "name": { "ru": "Долг уплачен", "en": "Debt Paid" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "combo", "every": 100, "multiplier": 25 },
-      "native": { "resourceOnHit": 40 }
+      "native": { "resourceOnKill": 20 },
+      "branches": [{ "level": 5, "options": [{ "id": "more_orders", "name": { "ru": "Ещё заказ", "en": "One More Order" }, "effect": { "hits": 36 } }, { "id": "heavy_order", "name": { "ru": "Сытный заказ", "en": "Hearty Order" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "quick_close", "name": { "ru": "Быстрое закрытие", "en": "Quick Close" }, "cooldown": 0.75 }, { "id": "leftovers", "name": { "ru": "Остатки", "en": "Leftovers" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "closing_time", "name": { "ru": "Закрываемся", "en": "Closing Time" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "chefs_special", "name": { "ru": "Блюдо от шефа", "en": "Chef's Special" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "the_knife_that_does_not_hurry",
+      "formerIds": ["clean_board"],
       "kind": "active",
       "weapon": "katana",
       "tier": "mythic",
@@ -1482,10 +1335,12 @@
       "tags": ["Skill"],
       "cost": { "resource": 20 },
       "cooldownSeconds": 3,
-      "effect": { "type": "strike", "multiplier": 5, "pauseSeconds": 1, "pauseMultiplier": 20, "critChance": 1 }
+      "effect": { "type": "strike", "multiplier": 5, "pauseSeconds": 1, "pauseMultiplier": 20, "critChance": 1 },
+      "branches": [{ "level": 5, "options": [{ "id": "slower_knife", "name": { "ru": "Ещё медленнее", "en": "Even Slower" }, "effect": { "pauseMultiplier": 24 } }, { "id": "shorter_wait", "name": { "ru": "Короче ожидание", "en": "Shorter Wait" }, "effect": { "pauseSeconds": 0.7 } }] }, { "level": 15, "options": [{ "id": "clean_board", "name": { "ru": "Чистая доска", "en": "Clean Board" }, "effect": { "multiplier": 7 } }, { "id": "light_knife", "name": { "ru": "Лёгкий нож", "en": "Light Knife" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "one_breath", "name": { "ru": "На одном вдохе", "en": "In One Breath" }, "effect": { "pauseSeconds": 1.5, "pauseMultiplier": 32 } }, { "id": "steady_knife", "name": { "ru": "Ровный нож", "en": "Steady Knife" }, "cooldown": 0.7, "effect": { "pauseMultiplier": 16 } }] }]
     },
     {
       "id": "thousand_cuts",
+      "formerIds": ["dance_without_music"],
       "kind": "active",
       "weapon": "katana",
       "tier": "mythic",
@@ -1497,47 +1352,8 @@
       "cooldownSeconds": 60,
       "durationSeconds": 5,
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 5, "queueTargets": 3 },
-      "native": { "comboPerKeyHit": 4 }
-    },
-    {
-      "id": "heavenly_square",
-      "kind": "aura",
-      "weapon": "katana",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Небесная площадь", "en": "Heavenly Square" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 90,
-      "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}, {"stat": "damage", "kind": "more", "value": 1}] },
-      "native": { "when": {"resourceAtLeast": 100, "durationMultiplier": 1.5} }
-    },
-    {
-      "id": "the_last_ronin",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "mythic",
-      "color": "red",
-      "name": { "ru": "Последний ронин", "en": "The Last Ronin" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 20, "maxSteps": 2, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.1}], "from": 100, "modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.2}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 40}] }
-    },
-    {
-      "id": "clean_board",
-      "kind": "active",
-      "weapon": "katana",
-      "tier": "mythic",
-      "color": "red",
-      "name": { "ru": "Чистая доска", "en": "Clean Board" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "enemySeconds", "per": 1, "maxSteps": 20, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.05}] }
+      "native": { "comboPerKeyHit": 4 },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_thousand", "name": { "ru": "Острее тысяча", "en": "Keener Thousand" }, "effect": { "multiplier": 6 } }, { "id": "longer_thousand", "name": { "ru": "Тысяча с лишним", "en": "A Thousand and More" }, "duration": 1.3 }] }, { "level": 15, "options": [{ "id": "dance_without_music", "name": { "ru": "Танец без музыки", "en": "Dance Without Music" }, "cooldown": 0.75 }, { "id": "cheap_thousand", "name": { "ru": "Тысяча в долг", "en": "Thousand on Credit" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "endless_cuts", "name": { "ru": "Без счёта", "en": "Countless Cuts" }, "duration": 1.6, "cooldown": 1.3 }, { "id": "single_line", "name": { "ru": "В одну линию", "en": "In One Line" }, "effect": { "multiplier": 8, "queueTargets": 1 } }] }]
     },
     {
       "id": "falcon_gaze",
