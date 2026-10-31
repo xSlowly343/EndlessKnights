@@ -68,6 +68,17 @@ namespace Game.Core.Stats
             return (baseValue + totals.Flat) * totals.IncreasedMultiplier * totals.MoreMultiplier;
         }
 
+        public double FlatWhen(StatId stat, ulong conditions)
+        {
+            var total = 0.0;
+            foreach (var modifier in _modifiers)
+            {
+                if (modifier.Stat == stat && modifier.Kind == ModifierKind.Flat && (ModifierConditions.Bit(modifier.When) & conditions) != 0)
+                    total += modifier.Value;
+            }
+            return total;
+        }
+
         public Totals TotalsOf(StatId stat, StatTags tags = StatTags.None) => TotalsFor(stat, tags);
 
         private Totals TotalsFor(StatId stat, StatTags tags)

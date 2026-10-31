@@ -7,12 +7,15 @@ namespace Game.Core.Sim
 {
     public sealed class ConditionSystem
     {
+        private static readonly ulong AllyMask = AllyMarkConditions();
+
         private readonly GameState _state;
         private readonly StatSheet _hero;
         private readonly CombatSystem _combat;
         private readonly SynergySystem _synergy;
         private readonly int[] _markMasks = new int[ModifierConditions.Marks];
         private SynergyRules? _markRules;
+        private ulong _allyConditions;
 
         public ConditionSystem(GameState state, StatSheet hero, CombatSystem combat, SynergySystem synergy)
         {
@@ -22,7 +25,29 @@ namespace Game.Core.Sim
             _synergy = synergy;
         }
 
-        public void Tick() => _hero.SetConditions(Current());
+        public void Tick()
+        {
+            var conditions = Current();
+            _hero.SetConditions(conditions);
+            GrantOnRisingAllyMarks(conditions);
+        }
+
+        private void GrantOnRisingAllyMarks(ulong conditions)
+        {
+            var allies = conditions & AllyMask;
+            var rising = allies & ~_allyConditions;
+            _allyConditions = allies;
+            if (rising != 0)
+                _state.PendingResource += System.Math.Max(0, _hero.FlatWhen(CombatStats.ResourceOnAllyMark, rising));
+        }
+
+        private static ulong AllyMarkConditions()
+        {
+            var mask = 0UL;
+            for (var i = 0; i < ModifierConditions.Marks; i++)
+                mask |= ModifierConditions.Bit(ModifierConditions.AllyMark(i));
+            return mask;
+        }
 
         public ulong Current() => BossConditions() | ResourceConditions() | MarkConditionsOn(_synergy.OwnMarks, _synergy.AllyMarks);
 

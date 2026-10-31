@@ -100,6 +100,8 @@ namespace Game.Core.Sim
         public static readonly StatId CloneMultiplier = new StatId("cloneMultiplier");
         public static readonly StatId ComboStrikeCrit = new StatId("comboStrikeCrit");
         public static readonly StatId SecondResponse = new StatId("secondResponse");
+        public static readonly StatId ResourceOnAllyMark = new StatId("resourceOnAllyMark");
+        public static readonly StatId ReactionSteam = new StatId("reactionSteam");
         public static readonly StatId ReactionShatter = new StatId("reactionShatter");
         public static readonly StatId ReactionScentOfBlood = new StatId("reactionScentOfBlood");
         public static readonly StatId ReactionSharedChoir = new StatId("reactionSharedChoir");

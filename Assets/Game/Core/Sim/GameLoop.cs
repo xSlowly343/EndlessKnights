@@ -147,6 +147,7 @@ namespace Game.Core.Sim
         public StageSystem Stages => _stage;
         public FocusSystem Focus => _focus;
         public ResourceSystem Resource => _resource;
+        public ConditionSystem Conditions => _conditions;
         public LootSystem Loot => _loot;
         public SkillSystem Skills => _skills;
         public LevelSystem Levels => _levels;

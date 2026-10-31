@@ -110,5 +110,30 @@ namespace Game.Core.Tests.Party
 
             Assert.That(loop.Hero.Value(new StatId("crushRageThreshold"), 0), Is.EqualTo(-0.1).Within(1e-9));
         }
+        [Test]
+        public void AnAllySettingTheMarkGivesResourceOnceWhenItAppears()
+        {
+            var loop = Hero(HeroClass.Nomad, new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 2, StatTags.None, ModifierPool.General, ModifierCondition.AllyFire));
+            loop.Tick();
+            loop.State.PendingResource = 0;
+
+            loop.Synergy.SetAlly(1, true, HeroClass.Moonshiner, Mark("fire"));
+            loop.Synergy.Tick();
+            loop.Conditions.Tick();
+            Assert.That(loop.State.PendingResource, Is.EqualTo(2).Within(1e-9));
+
+            loop.Conditions.Tick();
+            Assert.That(loop.State.PendingResource, Is.EqualTo(2).Within(1e-9));
+        }
+
+        [Test]
+        public void ResourceOnAMarkCountsOnlyTheMarkThatAppeared()
+        {
+            var sheet = new StatSheet();
+            sheet.Add(new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 2, StatTags.None, ModifierPool.General, ModifierCondition.AllyFire));
+            sheet.Add(new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 3, StatTags.None, ModifierPool.General, ModifierCondition.AllyStun));
+
+            Assert.That(sheet.FlatWhen(CombatStats.ResourceOnAllyMark, ModifierConditions.Bit(ModifierCondition.AllyStun)), Is.EqualTo(3));
+        }
     }
 }
