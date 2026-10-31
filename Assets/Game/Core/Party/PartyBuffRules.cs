@@ -25,6 +25,8 @@ namespace Game.Core.Party
         public double AllyResourceMax { get; }
         public double AllyResourceCooldownSeconds { get; }
         public double CastNoticeSeconds { get; }
+        public double ClearDayAbove { get; private set; }
+        public double ClearDayCritChance { get; private set; }
 
         public static PartyBuffRules Read(ContentNode node)
         {
@@ -39,8 +41,14 @@ namespace Game.Core.Party
                     ModifierReader.ReadKind(item.Field("kind"))));
             }
             var allyResource = node.Field("allyResource");
-            return new PartyBuffRules(node.Field("selfShare").AsNumber(0, 1), node.Field("offerSeconds").AsNumber(0.1, 60), stats,
+            var rules = new PartyBuffRules(node.Field("selfShare").AsNumber(0, 1), node.Field("offerSeconds").AsNumber(0.1, 60), stats,
                 allyResource.Field("max").AsNumber(0, 1000), allyResource.Field("cooldownSeconds").AsNumber(0, 600), node.Field("castNoticeSeconds").AsNumber(0, 60));
+            if (!node.HasField("clearDay"))
+                return rules;
+            var clearDay = node.Field("clearDay");
+            rules.ClearDayAbove = clearDay.Field("resourceAbove").AsNumber(0, 1e6);
+            rules.ClearDayCritChance = clearDay.Field("partyCritChance").AsNumber(0, 10);
+            return rules;
         }
     }
 }

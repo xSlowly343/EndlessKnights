@@ -8,7 +8,7 @@ namespace Game.Core.Stats
     {
         private static readonly HashSet<string> FlatPercent = new HashSet<string>
         {
-            "critChance", "critMultiplier", "comboStrikeMultiplier", "comboStrikeCritMultiplier", "clockworkSlow", "crushCleave", "crushMultiplier", "damagePerSector",
+            "critChance", "critMultiplier", "comboStrikeMultiplier", "comboStrikeCritMultiplier", "clockworkSlow", "clearDayCritChance", "crushCleave", "crushMultiplier", "damagePerSector",
             "doomedCritChance", "doomedCritMultiplier", "dotSpread", "doubleStrike", "flareMultiplier", "flareSplash",
             "focusMax", "partyContribution", "partyCritChance", "partyCritMultiplier", "pierceShare", "volleySplash",
             "windupKeptAfterCrush", "gemDrop", "uncutGemChance", "frozenFirstHit", "overloadKeep", "keyHitQueueAll", "damagePerInputKind", "damagePerTenPoison", "cannonNextShare", "cannonShotDamage", "cannonShotDamageMax", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",

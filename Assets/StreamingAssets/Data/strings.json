@@ -122,6 +122,8 @@
     "stat.riseEveryAtFullResource": { "ru": "убийств до скелета на полных Тенях", "en": "kills to a self-risen skeleton at full Shades" },
     "stat.clockworkSlow": { "ru": "замедления таймера от «Хода часов»", "en": "boss timer slow from Clockwork" },
     "stat.clockworkAbove": { "ru": "Времени, с которого идёт «Ход часов»", "en": "Time at which Clockwork starts" },
+    "stat.clearDayAbove": { "ru": "Видений, с которых идёт «Ясный день»", "en": "Visions at which Clear Day starts" },
+    "stat.clearDayCritChance": { "ru": "шанса крита отряду от «Ясного дня»", "en": "party crit chance from Clear Day" },
     "stat.damageLongStreak": { "ru": "урона, если ввод идёт дольше 2 минут без пауз", "en": "damage while input goes on for over 2 minutes without pauses" },
     "stat.jewelEffect": { "ru": "эффекта самоцветов в гнёздах дерева", "en": "effect of jewels in tree sockets" },
     "stat.cooldownPerResource": { "ru": "отката скиллов за каждую единицу ресурса", "en": "skill cooldown per point of resource" },

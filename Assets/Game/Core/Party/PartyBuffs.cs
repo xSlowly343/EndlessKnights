@@ -15,6 +15,7 @@ namespace Game.Core.Party
         private readonly double[] _applied = new double[PartyBuffRules.MaxStats];
         private PartyBuffRules _rules;
         private bool _dirty;
+        private bool _clearDay;
 
         public PartyBuffs(PartyBuffRules rules, GameState state, StatSheet hero)
         {
@@ -34,7 +35,12 @@ namespace Game.Core.Party
 
         public AllyOffer Ally(int slot) => _allies[slot];
 
-        public double OwnValue(int index) => _rules.Stats[index].ValueOf(_hero);
+        public double OwnValue(int index) => _rules.Stats[index].ValueOf(_hero) + ClearDayBonus(index);
+
+        public bool ClearDay => _clearDay;
+
+        private double ClearDayBonus(int index) =>
+            _clearDay && _rules.Stats[index].From == CombatStats.PartyCritChance ? _rules.ClearDayCritChance + System.Math.Max(0, _hero.Value(CombatStats.ClearDayCritChance, 0)) : 0;
 
         public double AppliedValue(int index) => _applied[index];
 
@@ -80,6 +86,13 @@ namespace Game.Core.Party
                     TickAura(ally.Auras[i]);
             }
             _state.PartyMembers = members;
+            var clearDay = _state.Is(HeroClass.Oracle) && _rules.ClearDayCritChance > 0
+                && _state.Resource > _rules.ClearDayAbove + _hero.Value(CombatStats.ClearDayAbove, 0);
+            if (clearDay != _clearDay)
+            {
+                _clearDay = clearDay;
+                _dirty = true;
+            }
             if (_dirty)
                 Rebuild();
         }
@@ -118,7 +131,7 @@ namespace Game.Core.Party
                 _applied[i] = 0;
             for (var i = 0; i < stats.Count; i++)
             {
-                var best = stats[i].ValueOf(_hero) * _rules.SelfShare;
+                var best = OwnValue(i) * _rules.SelfShare;
                 for (var slot = 0; slot < _allies.Length; slot++)
                 {
                     if (_allies[slot].Present)

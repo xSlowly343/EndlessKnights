@@ -196,5 +196,13 @@ namespace Game.Core.Sim
         public static readonly StatId RiseEveryAtFullResource = new StatId("riseEveryAtFullResource");
         public static readonly StatId ClockworkSlow = new StatId("clockworkSlow");
         public static readonly StatId ClockworkAbove = new StatId("clockworkAbove");
+        public static readonly StatId PartyDamage = new StatId("partyDamage");
+        public static readonly StatId PartyGold = new StatId("partyGold");
+        public static readonly StatId PartyCritChance = new StatId("partyCritChance");
+        public static readonly StatId PartyCritMultiplier = new StatId("partyCritMultiplier");
+        public static readonly StatId PartyResource = new StatId("partyResource");
+        public static readonly StatId PartyGemDrop = new StatId("partyGemDrop");
+        public static readonly StatId ClearDayAbove = new StatId("clearDayAbove");
+        public static readonly StatId ClearDayCritChance = new StatId("clearDayCritChance");
     }
 }
