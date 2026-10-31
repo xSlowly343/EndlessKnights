@@ -100,20 +100,24 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void BlindfoldHabitAddsMouseDamageWhileTheOracleReads()
+        public void ClearDayHitsHarderWhileTheOracleReads()
         {
-            var oracle = SkillTestHero.Of(HeroClass.Oracle, "blindfold_habit");
-            oracle.Ticks(1);
-            var before = Damage(oracle, StatTags.Mouse);
-
+            var oracle = SkillTestHero.Of(HeroClass.Oracle, "clear_day");
+            oracle.Cast(0);
+            var plain = oracle.DamageFrom(DamageSource.Skill);
+            oracle.State.Skills[0].CooldownTicks = 0;
+            oracle.State.Resource = 100;
             for (var i = 0; i < 60; i++)
             {
                 oracle.Input.MoveMouse(50);
                 oracle.Ticks(1);
             }
+            oracle.Loop.Events.Clear();
+
+            oracle.Cast(0);
 
             Assert.That(oracle.State.Reading, Is.True);
-            Assert.That(Damage(oracle, StatTags.Mouse) - before, Is.EqualTo(10).Within(1e-6));
+            Assert.That(oracle.DamageFrom(DamageSource.Skill), Is.EqualTo(plain * 1.4).Within(plain * 1e-6));
         }
     }
 }
