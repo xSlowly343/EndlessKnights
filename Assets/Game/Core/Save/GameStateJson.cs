@@ -232,12 +232,8 @@ namespace Game.Core.Save
             {
                 if (!gems.TryGet(item.Field("gem").AsString(), out var skill) || skill.Skill == null)
                     continue;
-                var triggerNode = item.Field("trigger");
-                GemDef? trigger = null;
-                if (!triggerNode.IsNull && gems.TryGet(triggerNode.AsString(), out var found) && found.Trigger != null)
-                    trigger = found;
                 state.OtherPreset.Roles.Add(ReadRole(item, state.OtherPreset.Skills.Count) ?? (SkillLoadout.IsAura(skill) ? SkillSlotRole.Aura : SkillSlotRole.Auto));
-                state.OtherPreset.Skills.Add((skill, trigger));
+                state.OtherPreset.Skills.Add(skill);
                 var supports = new GemDef?[SkillSlot.SocketCapacity];
                 ReadSupports(item, gems, supports);
                 state.OtherPreset.Supports.Add(supports);
@@ -833,9 +829,9 @@ namespace Game.Core.Save
             var items = new JsonValue[preset.Skills.Count];
             for (var i = 0; i < items.Length; i++)
             {
-                var (skill, trigger) = preset.Skills[i];
+                var skill = preset.Skills[i];
                 var role = preset.RoleAt(i);
-                items[i] = Object(("gem", JsonValue.Of(skill.Id)), ("trigger", trigger == null ? JsonValue.Null() : JsonValue.Of(trigger.Id)),
+                items[i] = Object(("gem", JsonValue.Of(skill.Id)),
                     ("slot", role == null ? JsonValue.Null() : JsonValue.Of(RoleName(role.Value))),
                     ("supports", JsonValue.Array(WriteSupports(preset.SupportsAt(i)))));
             }
@@ -912,7 +908,6 @@ namespace Game.Core.Save
                 var slot = state.Skills[i];
                 skills[i] = Object(
                     ("gem", JsonValue.Of(slot.Skill.Id)),
-                    ("trigger", slot.Trigger == null ? JsonValue.Null() : JsonValue.Of(slot.Trigger.Id)),
                     ("cooldownTicks", JsonValue.Of(slot.CooldownTicks)),
                     ("activeTicks", JsonValue.Of(slot.ActiveTicks)),
                     ("hitsLeft", JsonValue.Of(slot.HitsLeft)),
@@ -1018,11 +1013,7 @@ namespace Game.Core.Save
             {
                 if (!gems.TryGet(item.Field("gem").AsString(), out var skill) || skill.Skill == null)
                     continue;
-                var triggerNode = item.Field("trigger");
-                GemDef? trigger = null;
-                if (!triggerNode.IsNull && gems.TryGet(triggerNode.AsString(), out var found) && found.Trigger != null)
-                    trigger = found;
-                var slot = new SkillSlot(skill, trigger)
+                var slot = new SkillSlot(skill)
                 {
                     CooldownTicks = item.Field("cooldownTicks").AsInt(0),
                     ActiveTicks = item.Field("activeTicks").AsInt(0),

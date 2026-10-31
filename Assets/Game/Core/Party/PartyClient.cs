@@ -304,10 +304,6 @@ namespace Game.Core.Party
                     if (InParty && loadout.Slot < PartyRules.MaxSlots && loadout.Slot != _ownSlot)
                         _allyLoadouts[loadout.Slot] = loadout;
                     break;
-                case PartyMessageKind.AllyCast when PartyCodec.TryDecode(_in, length, out AllyCastMessage cast):
-                    if (InParty && cast.Slot != _ownSlot && _loop.Data.Gems.TryGetByNetId(cast.GemNetId, out var castGem) && castGem.Skill != null)
-                        NoteAllyCast(castGem.Skill.CooldownSeconds);
-                    break;
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     if (InParty && resource.Slot != _ownSlot)
                         _loop.Resource.GiftFromAlly(System.Math.Min(resource.Amount, _rules.Buffs.AllyResourceMax));
@@ -379,16 +375,12 @@ namespace Game.Core.Party
             {
                 var offered = offer.Aura(i);
                 var aura = ally.Auras[i];
-                var previousGem = aura.Gem;
-                var previousTicks = aura.TicksLeft;
                 aura.Clear();
                 if (!offered.Active || !gems.TryGetByNetId(offered.GemNetId, out var gem) || !PartyBuffs.Shared(gem))
                     continue;
                 aura.Gem = gem;
                 aura.Strength = System.Math.Max(0, offered.Strength);
                 aura.TicksLeft = offered.TicksLeft;
-                if (gem.Skill!.Effect is AuraEffect { Reserves: false } && (!ReferenceEquals(previousGem, gem) || offered.TicksLeft > previousTicks + 1))
-                    NoteAllyCast(gem.Skill!.CooldownSeconds);
             }
             _loop.PartyBuffs.MarkChanged();
         }
@@ -768,8 +760,6 @@ namespace Game.Core.Party
                     SendToHost(PartyCodec.Encode(_out, new PartyResourceMessage { Amount = (float)gift.AllyResource }));
                 if (gameEvent.Kind != GameEventKind.SkillCast || gameEvent.Gem?.Skill == null)
                     continue;
-                if (gameEvent.Gem.Skill.Role == SkillRole.Heavy)
-                    SendToHost(PartyCodec.Encode(_out, new AllyCastMessage { GemNetId = gameEvent.Gem.NetId }));
                 ShareCurse(gameEvent.Gem);
             }
         }
@@ -1043,9 +1033,6 @@ namespace Game.Core.Party
             }
             return false;
         }
-
-        private void NoteAllyCast(double cooldownSeconds) =>
-            _loop.State.AllyHeavyCastSeconds = System.Math.Max(_loop.State.AllyHeavyCastSeconds, cooldownSeconds);
 
         private void SendToHost(int length) => _transport.Send(_hostId, _out, length);
 

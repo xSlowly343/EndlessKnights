@@ -34,12 +34,12 @@ namespace Game.Core.Build
             var reforged = new BuildPreset(tree) { CommonTrees = preset.CommonTrees };
             for (var i = 0; i < preset.Skills.Count; i++)
             {
-                var (skill, trigger) = preset.Skills[i];
+                var skill = preset.Skills[i];
                 if (skill.Ascendancy != null)
                     continue;
                 var role = preset.RoleAt(i);
                 reforged.Roles.Add(role != null && SkillLoadout.Accepts(role.Value, Of(skill)) ? role.Value : SkillLoadout.IsAura(Of(skill)) ? SkillSlotRole.Aura : SkillSlotRole.Auto);
-                reforged.Skills.Add((Of(skill), trigger));
+                reforged.Skills.Add(Of(skill));
                 reforged.Supports.Add(preset.SupportsAt(i));
             }
             return reforged;

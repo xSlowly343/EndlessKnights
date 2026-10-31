@@ -15,8 +15,7 @@
   ],
   "gems": {
     "skill": { "normal": 300, "boss": 10 },
-    "support": { "normal": 150, "boss": 0 },
-    "trigger": { "normal": 500, "boss": 0, "firstAtStage": 10 }
+    "support": { "normal": 150, "boss": 0 }
   },
   "shards": { "boss": 1, "specialBoss": 5, "guardian": 3, "dailyLimit": 20 },
   "uncut": { "share": 0.05, "shardCost": 30 },

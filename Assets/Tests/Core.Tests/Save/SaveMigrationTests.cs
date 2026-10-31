@@ -43,7 +43,7 @@ namespace Game.Core.Tests.Save
             Assert.That(save.State.Stage, Is.EqualTo(38));
             Assert.That(save.State.Skills.Count, Is.EqualTo(3));
             Assert.That(save.State.Skills[0].Skill.Id, Is.EqualTo("through_stride"));
-            Assert.That(save.State.Skills[0].Trigger!.Id, Is.EqualTo("cast_on_timer"));
+            Assert.That(save.State.OwnedGems.Select(gem => gem.Id), Has.No.Member("cast_on_timer"));
             Assert.That(save.State.Skills[0].HitsLeft, Is.EqualTo(18));
             Assert.That(save.State.Skills[0].CooldownTicks, Is.EqualTo(221));
             Assert.That(save.State.ChainDamage.ToDouble(), Is.EqualTo(480));
@@ -59,7 +59,8 @@ namespace Game.Core.Tests.Save
             Assert.That(save.State.HeroLevel, Is.EqualTo(15));
             Assert.That(save.State.ClassName, Is.EqualTo("metalhead"));
             Assert.That(save.State.TreePointsSpent, Is.EqualTo(0));
-            Assert.That(save.State.OwnedGems.Count, Is.EqualTo(3));
+            Assert.That(save.State.OwnedGems.Select(gem => gem.Id), Has.No.Member("cast_on_timer"));
+            Assert.That(save.State.OwnedGems.Count, Is.EqualTo(2));
         }
 
         [Test]

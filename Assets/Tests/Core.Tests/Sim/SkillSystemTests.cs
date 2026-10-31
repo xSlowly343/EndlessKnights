@@ -28,12 +28,11 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void OnlySkillGemsGoIntoSlotsAndOnlyTriggersIntoTriggerSlots()
+        public void OnlySkillGemsGoIntoSlots()
         {
             var loop = TestWorld.Loop();
 
-            Assert.Throws<ArgumentException>(() => loop.Skills.Equip(Gem("cast_on_timer")));
-            Assert.Throws<ArgumentException>(() => loop.Skills.Equip(Gem("march"), Gem("lull")));
+            Assert.Throws<ArgumentException>(() => loop.Skills.Equip(Gem("rebound")));
         }
 
         [Test]
@@ -110,19 +109,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TriggeredCastHasLongerCooldown()
-        {
-            var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("through_stride"), Gem("cast_on_timer"));
-            loop.State.Resource = 100;
-
-            loop.Skills.TryCast(slot, triggered: true);
-
-            var expected = Gem("through_stride").Skill!.CooldownSeconds * Gem("cast_on_timer").Trigger!.CooldownMultiplier;
-            Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(expected * GameLoop.TicksPerSecond));
-        }
-
-        [Test]
         public void PassiveSkillCannotBeCastAndEmptySlotIsReported()
         {
             var loop = TestWorld.Loop();
@@ -136,7 +122,7 @@ namespace Game.Core.Tests.Sim
         public void SkillSlotsAreSaved()
         {
             var loop = TestWorld.Loop();
-            var slot = loop.Skills.Equip(Gem("through_stride"), Gem("cast_on_timer"));
+            var slot = loop.Skills.Equip(Gem("through_stride"));
             loop.Skills.Equip(Gem("lull"));
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
@@ -147,9 +133,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loaded.Skills.Count, Is.EqualTo(2));
             Assert.That(loaded.Skills[0].Skill, Is.SameAs(Gem("through_stride")));
-            Assert.That(loaded.Skills[0].Trigger, Is.SameAs(Gem("cast_on_timer")));
             Assert.That(loaded.Skills[0].CooldownTicks, Is.EqualTo(loop.State.Skills[0].CooldownTicks));
-            Assert.That(loaded.Skills[1].Trigger, Is.Null);
         }
     }
 }

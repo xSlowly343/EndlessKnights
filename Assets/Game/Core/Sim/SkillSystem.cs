@@ -84,13 +84,11 @@ namespace Game.Core.Sim
             RefreshAuras();
         }
 
-        public int Equip(GemDef skill, GemDef? trigger = null, SkillSlotRole? role = null)
+        public int Equip(GemDef skill, SkillSlotRole? role = null)
         {
             if (skill.Kind != GemKind.Skill || skill.Skill == null)
                 throw new ArgumentException($"{skill.Id} is not a skill gem.", nameof(skill));
-            if (trigger != null && (trigger.Kind != GemKind.Trigger || trigger.Trigger == null))
-                throw new ArgumentException($"{trigger.Id} is not a trigger gem.", nameof(trigger));
-            var slot = new SkillSlot(skill, trigger)
+            var slot = new SkillSlot(skill)
             {
                 EquipTick = _state.Tick,
                 ReadyTick = _state.Tick,
@@ -98,8 +96,6 @@ namespace Game.Core.Sim
                 Role = role ?? SkillLoadout.FreeRole(_state.Skills, skill) ?? SkillSlotRole.Auto
             };
             _state.ProgressOf(skill);
-            if (trigger != null)
-                _state.ProgressOf(trigger);
             ApplyBranches(slot);
             _state.Skills.Add(slot);
             KeepReserved(slot);
@@ -132,8 +128,6 @@ namespace Game.Core.Sim
                 if (gems.TryGet(slot.Skill.Id, out var skill) && skill.Skill != null)
                     slot.Skill = skill;
                 ApplyBranches(slot);
-                if (slot.Trigger != null && gems.TryGet(slot.Trigger.Id, out var trigger) && trigger.Trigger != null)
-                    slot.Trigger = trigger;
                 if (slot.Active)
                     ApplyAura(slot);
             }
@@ -188,7 +182,7 @@ namespace Game.Core.Sim
             return true;
         }
 
-        public CastResult TryCast(int index, bool triggered = false)
+        public CastResult TryCast(int index)
         {
             if (index < 0 || index >= _state.Skills.Count)
                 return CastResult.NoSkill;
@@ -217,7 +211,7 @@ namespace Game.Core.Sim
                 _resource.Gain(_hero.Value(CombatStats.ResourcePerFastSkill, 0));
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
-            var cooldown = skill.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot) * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
+            var cooldown = skill.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot);
             if (spare)
                 slot.SpareCharges--;
             else
@@ -1810,7 +1804,7 @@ namespace Game.Core.Sim
             if (_state.AutoCastKeys < every)
                 return;
             _state.AutoCastKeys %= every;
-            TryCast(SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Left), triggered: true);
+            TryCast(SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Left));
         }
 
         public double IdleStrikeCharge(int index)

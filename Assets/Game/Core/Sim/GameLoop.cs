@@ -31,7 +31,6 @@ namespace Game.Core.Sim
         private readonly LevelSystem _levels;
         private readonly DpsMeter _dps;
         private readonly SkillSystem _skills;
-        private readonly TriggerSystem _triggers;
         private readonly ModifierLayer _treeLayer;
         private readonly SkillBook _book;
         private readonly PrestigeSystem _prestige;
@@ -87,7 +86,6 @@ namespace Game.Core.Sim
             _overload = new OverloadSystem(state, hero, _resource, _combat);
             _skills = new SkillSystem(state, Events, _resource, _combat, hero, data.Weapons);
             _combat.OnKeyHit(_skills);
-            _triggers = new TriggerSystem(state, _skills, _resource);
             _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
             _gear = new GearSystem(data.Items, state, hero);
             _classAttribute = new ClassAttributeSystem(hero);
@@ -276,24 +274,24 @@ namespace Game.Core.Sim
             return ClassChangeResult.Changed;
         }
 
-        private List<(GemDef Skill, GemDef? Trigger, GemDef?[] Supports, SkillSlotRole Role)> TakeOffSkills()
+        private List<(GemDef Skill, GemDef?[] Supports, SkillSlotRole Role)> TakeOffSkills()
         {
-            var equipped = new List<(GemDef, GemDef?, GemDef?[], SkillSlotRole)>(State.Skills.Count);
+            var equipped = new List<(GemDef, GemDef?[], SkillSlotRole)>(State.Skills.Count);
             foreach (var slot in State.Skills)
-                equipped.Add((slot.Skill, slot.Trigger, (GemDef?[])slot.Supports.Clone(), slot.Role));
+                equipped.Add((slot.Skill, (GemDef?[])slot.Supports.Clone(), slot.Role));
             while (State.Skills.Count > 0)
                 _skills.Unequip(State.Skills.Count - 1);
             return equipped;
         }
 
-        private void PutOnSkills(List<(GemDef Skill, GemDef? Trigger, GemDef?[] Supports, SkillSlotRole Role)> equipped, GemReforge reforge)
+        private void PutOnSkills(List<(GemDef Skill, GemDef?[] Supports, SkillSlotRole Role)> equipped, GemReforge reforge)
         {
-            foreach (var (skill, trigger, supports, role) in equipped)
+            foreach (var (skill, supports, role) in equipped)
             {
                 if (skill.Ascendancy != null)
                     continue;
                 var reforged = reforge.Of(skill);
-                var slot = State.Skills[_skills.Equip(reforged, trigger, SkillLoadout.Accepts(role, reforged) ? role : (SkillSlotRole?)null)];
+                var slot = State.Skills[_skills.Equip(reforged, SkillLoadout.Accepts(role, reforged) ? role : (SkillSlotRole?)null)];
                 slot.StartCooldown((int)System.Math.Round(slot.Skill.Skill!.CooldownSeconds * TicksPerSecond));
                 supports.CopyTo(slot.Supports, 0);
             }
@@ -581,7 +579,7 @@ namespace Game.Core.Sim
             var current = new BuildPreset(State.ClassTree) { CommonTrees = State.CommonTrees };
             foreach (var slot in State.Skills)
             {
-                current.Skills.Add((slot.Skill, slot.Trigger));
+                current.Skills.Add(slot.Skill);
                 current.Supports.Add((GemDef?[])slot.Supports.Clone());
                 current.Roles.Add(slot.Role);
             }
@@ -598,7 +596,7 @@ namespace Game.Core.Sim
 
             for (var i = 0; i < next.Skills.Count; i++)
             {
-                var (skill, trigger) = next.Skills[i];
+                var skill = next.Skills[i];
                 if (_book.Equip(skill) != BookResult.Done)
                     continue;
                 var index = State.Skills.Count - 1;
@@ -606,8 +604,6 @@ namespace Game.Core.Sim
                 if (role != null)
                     _book.Assign(index, role.Value);
                 State.Skills[index].StartCooldown((int)System.Math.Round(skill.Skill!.CooldownSeconds * TicksPerSecond));
-                if (trigger != null)
-                    _book.SetTrigger(index, trigger);
                 var supports = next.SupportsAt(i);
                 for (var socket = 0; socket < supports.Length; socket++)
                 {
@@ -781,7 +777,6 @@ namespace Game.Core.Sim
             _skills.CastFromButtons(input);
             CastRequested();
             _skills.CastAutomatic();
-            _triggers.Tick(input);
             _partyBuffs.Tick();
             _ghost.NoteInput(input.HasInput);
             _ghost.Tick();
