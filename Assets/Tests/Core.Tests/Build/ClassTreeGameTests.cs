@@ -144,8 +144,8 @@ namespace Game.Core.Tests.Build
             var loop = Huscarl();
             Raise(loop, "axe", 4);
 
-            Assert.That(loop.ChangeClassFree(HeroClass.Ronin), Is.EqualTo(ClassChangeResult.Changed));
-            Assert.That(loop.State.ClassTreeActive, Is.False, "Wandering Blade still plays the old tree");
+            Assert.That(loop.ChangeClassFree(HeroClass.Captain), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.State.ClassTreeActive, Is.False, "Sea Wolf still plays the old tree");
             Assert.That(loop.State.TreePointsLeft, Is.EqualTo(loop.State.Tree.PointsEarned));
 
             Assert.That(loop.ChangeClassPaid(HeroClass.Viking), Is.EqualTo(ClassChangeResult.Changed));

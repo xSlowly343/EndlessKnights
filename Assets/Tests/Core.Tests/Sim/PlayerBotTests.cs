@@ -39,6 +39,24 @@ namespace Game.Core.Tests.Sim
             Assert.That(state.StrikeLevel, Is.GreaterThan(0));
         }
 
+        [TestCase(HeroClass.Ronin)]
+        [TestCase(HeroClass.Amazon)]
+        [TestCase(HeroClass.Stormweaver)]
+        public void BotSpendsEveryPointOnTheTreeOfItsClass(HeroClass heroClass)
+        {
+            var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(4), heroClass);
+
+            var day = simulation.Run(2, 2).Last();
+            var state = simulation.LastState!;
+
+            Assert.That(state.ClassTreeActive, Is.True);
+            Assert.That(state.ClassTree.TreeId, Is.EqualTo(HeroClassNames.Of(heroClass)));
+            Assert.That(state.TreePointsSpent, Is.GreaterThan(10));
+            Assert.That(state.TreePointsLeft, Is.EqualTo(0));
+            Assert.That(state.ClassTree.Majors, Is.Not.Empty);
+            Assert.That(day.RecordStage, Is.GreaterThan(TestWorld.Real.Stages.BiomeLength));
+        }
+
         [Test]
         public void TypistAvoidsKeystonesThatHurtItsDamage()
         {

@@ -19,14 +19,19 @@ namespace Game.Core.Tests.Build
             return loop;
         }
 
-        [Test]
-        public void RoninStartGivesLongerComboAndKeyCrits()
+        [TestCase(HeroClass.Ronin, "ronin_katana")]
+        [TestCase(HeroClass.Amazon, "amazon_short_bow")]
+        [TestCase(HeroClass.Stormweaver, "stormweaver_storm_rod")]
+        public void AClassOnTheNewTreeHasNoStartPassiveAndGrowsFromItsNodes(HeroClass heroClass, string node)
         {
-            var loop = Real(new GameState { Class = HeroClass.Ronin });
+            var loop = Real(new GameState { Class = heroClass, HeroLevel = 10 });
+            loop.Levels.SyncTreePoints();
+            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
 
-            Assert.That(loop.Hero.Value(CombatStats.CritChance, 1, StatTags.Keyboard), Is.EqualTo(1.10).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.ComboTimeoutSeconds, 1), Is.EqualTo(1.20).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100));
+            Assert.That(loop.State.ClassTreeActive, Is.True);
+            Assert.That(loop.State.Tree.Allocated, Is.Empty);
+            Assert.That(loop.RaiseNode(node), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(before + 4).Within(1e-9));
         }
 
         [Test]

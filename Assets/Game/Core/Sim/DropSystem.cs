@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
@@ -559,7 +560,7 @@ namespace Game.Core.Sim
             var slot = guarantee.Slot ?? EmptySlot(rng);
             if (slot != ItemSlot.Weapon)
             {
-                var color = guarantee.Color == GuaranteeColor.Own && slot != ItemSlot.Amulet ? OwnType.Color : RandomColor(slot, rng);
+                var color = guarantee.Color == GuaranteeColor.Own && slot != ItemSlot.Amulet && Array.IndexOf(GearColors, OwnType.Color) >= 0 ? OwnType.Color : RandomColor(slot, rng);
                 return PendingDrop.Gear(DropSource.Guarantee, stage, slot, rarity, color);
             }
             var type = guarantee.Color switch
