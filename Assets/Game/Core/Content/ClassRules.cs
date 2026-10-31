@@ -46,6 +46,10 @@ namespace Game.Core.Content
         public StandingAuraRules StandingAuras { get; private set; } = StandingAuraRules.None;
         public EvilEyeRules EvilEye { get; private set; } = EvilEyeRules.None;
         public int OverloadQueueTargets { get; private set; }
+        public BondRules Bonds { get; private set; } = BondRules.None;
+        public ColdRules Cold { get; private set; } = ColdRules.None;
+        public BloodRules Blood { get; private set; } = BloodRules.None;
+        public GolemRules Golem { get; private set; } = GolemRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -72,7 +76,11 @@ namespace Game.Core.Content
                 shield.Field("stunSeconds").AsNumber(0, 60)) { HunterMark = HunterMarkRules.Read(node.Field("amazon").Field("mark")), Sand = BlindRules.Read(node.Field("nomad").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("metalhead").Field("overdrive")),
                 StandingAuras = StandingAuraRules.Read(node.Field("bannerbearer").Field("standingAuras")),
                 EvilEye = EvilEyeRules.Read(node.Field("voodoo").Field("evilEye")),
-                OverloadQueueTargets = node.Field("stormweaver").Field("overload").Field("queueTargets").AsInt(0, 100) };
+                OverloadQueueTargets = node.Field("stormweaver").Field("overload").Field("queueTargets").AsInt(0, 100),
+                Bonds = BondRules.Read(node.Field("spinner").Field("bonds")),
+                Cold = ColdRules.Read(node.Field("rimecaller").Field("cold")),
+                Blood = BloodRules.Read(node.Field("thornmaiden").Field("blood")),
+                Golem = GolemRules.Read(node.Field("clayshaper").Field("golem")) };
         }
     }
 }

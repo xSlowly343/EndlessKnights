@@ -247,6 +247,10 @@ namespace Game.Core.Sim
         public static readonly StatId AuraInPause = new StatId("auraInPause");
         public static readonly StatId EvilEyeEffect = new StatId("evilEyeEffect");
         public static readonly StatId EvilEyePower = new StatId("evilEyePower");
+        public static readonly StatId BondPower = new StatId("bondPower");
+        public static readonly StatId ColdPower = new StatId("coldPower");
+        public static readonly StatId BloodPower = new StatId("bloodPower");
+        public static readonly StatId GolemPower = new StatId("golemPower");
         public static readonly StatId EvilEyeBossOnly = new StatId("evilEyeBossOnly");
         public static readonly StatId EvilEyeOnGuardians = new StatId("evilEyeOnGuardians");
         public static readonly StatId OverloadAt = new StatId("overloadAt");

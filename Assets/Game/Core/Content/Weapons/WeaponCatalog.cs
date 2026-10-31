@@ -210,6 +210,16 @@ namespace Game.Core.Content.Weapons
             return steps[System.Math.Min(step, steps.Count - 1)];
         }
 
+        public bool HasType(HeroClass heroClass)
+        {
+            foreach (var type in Types)
+            {
+                if (type.HeroClass == heroClass)
+                    return true;
+            }
+            return false;
+        }
+
         public WeaponBase StarterFor(HeroClass heroClass)
         {
             var type = TypeOf(heroClass);

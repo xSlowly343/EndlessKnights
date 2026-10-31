@@ -70,11 +70,13 @@ namespace Game.Core.Content
         public double DecayAfterKeylessSeconds { get; }
         public bool MouseHoldsDecay { get; }
         public double PerAllyHit { get; private set; }
+        public double PerCircle { get; private set; }
 
         public static ClassResource Read(ContentNode node)
         {
             var resource = ReadBase(node);
             resource.PerAllyHit = node.HasField("perAllyHit") ? node.Field("perAllyHit").AsNumber(0, 1000) : 0;
+            resource.PerCircle = node.HasField("perCircle") ? node.Field("perCircle").AsNumber(0, 1000) : 0;
             return resource;
         }
 
