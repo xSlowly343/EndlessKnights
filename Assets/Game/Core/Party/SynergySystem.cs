@@ -280,7 +280,7 @@ namespace Game.Core.Party
                 if (_reactionCooldown[i] > 0)
                     _reactionCooldown[i]--;
                 var reaction = reactions[i];
-                if (_reactionTicks[i] == 0 && (_reactionCooldown[i] == 0 || noCooldown) && Paired(reaction.First, reaction.Second, players))
+                if (_reactionTicks[i] == 0 && (_reactionCooldown[i] == 0 || noCooldown) && Unlocked(reaction) && Paired(reaction.First, reaction.Second, players))
                 {
                     _reactionTicks[i] = Ticks(reaction.Seconds);
                     _reactionCooldown[i] = Ticks(reaction.CooldownSeconds);
@@ -290,6 +290,8 @@ namespace Game.Core.Party
             }
             return active;
         }
+
+        private bool Unlocked(SynergyReaction reaction) => reaction.Unlock is not { } stat || _hero.Value(stat, 0) >= 1;
 
         private bool Paired(int first, int second, int players)
         {

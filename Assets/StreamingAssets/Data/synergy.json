@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon", "blind"],
+  "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon", "blind", "cold", "bond", "blood"],
   "roles": {
     "viking": "dd", "ronin": "dd", "amazon": "dd", "stormweaver": "dd", "nomad": "dd",
     "metalhead": "buffer", "oracle": "buffer", "bannerbearer": "buffer",
@@ -54,7 +54,14 @@
     { "id": "defenceless", "marks": ["hunterMark", "stun"], "seconds": 3, "cooldownSeconds": 10, "modifiers": [{ "stat": "critMultiplier", "kind": "more", "value": 0.5 }] },
     { "id": "rhythm", "marks": ["aura", "series"], "seconds": 10, "cooldownSeconds": 10, "modifiers": [{ "stat": "focusGain", "kind": "more", "value": 2 }] },
     { "id": "rot_of_ages", "marks": ["time", "poison"], "seconds": 5, "cooldownSeconds": 10, "modifiers": [{ "stat": "poisonNoDecay", "kind": "flat", "value": 1 }] },
-    { "id": "lightning_rod", "marks": ["lightning", "hunterMark"], "seconds": 3, "cooldownSeconds": 10, "modifiers": [{ "stat": "chainTargets", "kind": "flat", "value": 1 }] }
+    { "id": "lightning_rod", "marks": ["lightning", "hunterMark"], "seconds": 3, "cooldownSeconds": 10, "modifiers": [{ "stat": "chainTargets", "kind": "flat", "value": 1 }] },
+    { "id": "shatter", "marks": ["cold", "lightning"], "unlock": "reactionShatter", "seconds": 4, "cooldownSeconds": 10, "modifiers": [{ "stat": "critMultiplier", "kind": "more", "value": 0.5 }] },
+    { "id": "ice_prison", "marks": ["cold", "stun"], "seconds": 4, "cooldownSeconds": 10, "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.4, "when": "stun" }] },
+    { "id": "into_the_wounds", "marks": ["blood", "series"], "seconds": 5, "cooldownSeconds": 10, "modifiers": [{ "stat": "comboStrikeMultiplier", "kind": "more", "value": 0.3 }] },
+    { "id": "scent_of_blood", "marks": ["blood", "summon"], "unlock": "reactionScentOfBlood", "seconds": 5, "cooldownSeconds": 10, "modifiers": [{ "stat": "minionSpeed", "kind": "more", "value": 0.5, "tags": ["Minion"] }] },
+    { "id": "shared_choir", "marks": ["bond", "aura"], "unlock": "reactionSharedChoir", "seconds": 8, "cooldownSeconds": 10, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 0.25, "tags": ["Aura"] }] },
+    { "id": "blind_spot", "marks": ["blind", "hunterMark"], "seconds": 3, "cooldownSeconds": 10, "modifiers": [{ "stat": "sureCrits", "kind": "flat", "value": 1 }] },
+    { "id": "sand_in_the_hourglass", "marks": ["blind", "time"], "unlock": "reactionSandInTheHourglass", "seconds": 5, "cooldownSeconds": 10, "modifiers": [{ "stat": "bossTimerSlow", "kind": "flat", "value": 0.25 }] }
   ],
   "constellations": [
     { "id": "full_orchestra", "roles": [["dd"], ["buffer"], ["debuffer"], ["dot", "summon"]], "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.08 }, { "stat": "gold", "kind": "increased", "value": 0.15 }] },

@@ -5,8 +5,9 @@ namespace Game.Core.Content.Synergy
 {
     public sealed class SynergyReaction
     {
-        public SynergyReaction(string id, int first, int second, double seconds, double cooldownSeconds, IReadOnlyList<Modifier> modifiers)
+        public SynergyReaction(string id, int first, int second, double seconds, double cooldownSeconds, IReadOnlyList<Modifier> modifiers, StatId? unlock = null)
         {
+            Unlock = unlock;
             Id = id;
             First = first;
             Second = second;
@@ -21,5 +22,6 @@ namespace Game.Core.Content.Synergy
         public double Seconds { get; }
         public double CooldownSeconds { get; }
         public IReadOnlyList<Modifier> Modifiers { get; }
+        public StatId? Unlock { get; }
     }
 }

@@ -9,6 +9,7 @@ namespace Game.Core.Sim.Headless
         private const double AttributeWeight = 0.005;
         private const double ConditionalWeight = 0.5;
         private const double BossOpeningWeight = 0.1;
+        private const double AllyMarkWeight = 0;
 
         private static readonly Dictionary<string, double> Weights = new Dictionary<string, double>(System.StringComparer.Ordinal)
         {
@@ -74,11 +75,13 @@ namespace Game.Core.Sim.Headless
             return value * Uptime(modifier.When);
         }
 
-        private static double Uptime(ModifierCondition condition) => condition switch
+        private static double Uptime(ModifierCondition condition)
         {
-            ModifierCondition.Always => 1,
-            ModifierCondition.BossOpening => BossOpeningWeight,
-            _ => ConditionalWeight
-        };
+            if (condition == ModifierCondition.Always)
+                return 1;
+            if (condition == ModifierCondition.BossOpening)
+                return BossOpeningWeight;
+            return ModifierConditions.IsAlly(condition) ? AllyMarkWeight : ConditionalWeight;
+        }
     }
 }

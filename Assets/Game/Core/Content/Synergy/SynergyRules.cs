@@ -214,7 +214,8 @@ namespace Game.Core.Content.Synergy
                 throw node.Field("marks").Error("a reaction needs two different marks");
             return new SynergyReaction(node.Field("id").AsString(), first, second,
                 node.Field("seconds").AsNumber(0.1, 600), node.Field("cooldownSeconds").AsNumber(0, 3600),
-                ModifierReader.ReadList(node.Field("modifiers")));
+                ModifierReader.ReadList(node.Field("modifiers")),
+                node.HasField("unlock") ? new StatId(node.Field("unlock").AsString()) : (StatId?)null);
         }
 
         private static SynergyConstellation ReadConstellation(ContentNode node, Dictionary<string, int> markIndex, List<string> roles)

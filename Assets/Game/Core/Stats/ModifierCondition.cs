@@ -19,6 +19,23 @@ namespace Game.Core.Stats
         Poison,
         Fire,
         Summon,
-        Blind
+        Blind,
+        Cold,
+        Bond,
+        Blood,
+        AllyStun,
+        AllySeries,
+        AllyHunterMark,
+        AllyLightning,
+        AllyAura,
+        AllyCurse,
+        AllyTime,
+        AllyPoison,
+        AllyFire,
+        AllySummon,
+        AllyBlind,
+        AllyCold,
+        AllyBond,
+        AllyBlood
     }
 }

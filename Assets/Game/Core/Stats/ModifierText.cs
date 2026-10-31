@@ -48,7 +48,7 @@ namespace Game.Core.Stats
             if (condition == ModifierCondition.Always)
                 return string.Empty;
             var key = ModifierConditions.Key(condition);
-            return " " + (Texts.Has(key) ? Texts.Get(key) : ModifierConditions.MarkName(condition));
+            return " " + (Texts.Has(key) ? Texts.Get(key) : condition.ToString());
         }
 
         public static string FlatAmount(StatId stat, double value, bool signed)

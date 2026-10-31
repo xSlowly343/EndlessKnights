@@ -7,13 +7,11 @@ namespace Game.Core.Sim
 {
     public sealed class ConditionSystem
     {
-        private const int MarkConditions = ModifierConditions.LastMark - ModifierConditions.FirstMark + 1;
-
         private readonly GameState _state;
         private readonly StatSheet _hero;
         private readonly CombatSystem _combat;
         private readonly SynergySystem _synergy;
-        private readonly int[] _markMasks = new int[MarkConditions];
+        private readonly int[] _markMasks = new int[ModifierConditions.Marks];
         private SynergyRules? _markRules;
 
         public ConditionSystem(GameState state, StatSheet hero, CombatSystem combat, SynergySystem synergy)
@@ -26,7 +24,7 @@ namespace Game.Core.Sim
 
         public void Tick() => _hero.SetConditions(Current());
 
-        public ulong Current() => BossConditions() | ResourceConditions() | MarkConditionsOn(_synergy.OwnMarks | _synergy.AllyMarks);
+        public ulong Current() => BossConditions() | ResourceConditions() | MarkConditionsOn(_synergy.OwnMarks, _synergy.AllyMarks);
 
         private ulong BossConditions()
         {
@@ -53,16 +51,18 @@ namespace Game.Core.Sim
             return conditions;
         }
 
-        private ulong MarkConditionsOn(int marks)
+        private ulong MarkConditionsOn(int own, int allies)
         {
-            if (marks == 0)
+            if ((own | allies) == 0)
                 return 0;
             MapMarks();
             var conditions = 0UL;
-            for (var i = 0; i < MarkConditions; i++)
+            for (var i = 0; i < ModifierConditions.Marks; i++)
             {
-                if ((marks & _markMasks[i]) != 0)
+                if (((own | allies) & _markMasks[i]) != 0)
                     conditions |= ModifierConditions.Bit(ModifierConditions.Mark(i));
+                if ((allies & _markMasks[i]) != 0)
+                    conditions |= ModifierConditions.Bit(ModifierConditions.AllyMark(i));
             }
             return conditions;
         }
@@ -73,7 +73,7 @@ namespace Game.Core.Sim
             if (ReferenceEquals(rules, _markRules))
                 return;
             _markRules = rules;
-            for (var i = 0; i < MarkConditions; i++)
+            for (var i = 0; i < ModifierConditions.Marks; i++)
                 _markMasks[i] = rules.MarkMask(ModifierConditions.MarkName(ModifierConditions.Mark(i)));
         }
     }

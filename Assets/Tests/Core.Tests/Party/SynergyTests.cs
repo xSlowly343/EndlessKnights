@@ -249,7 +249,7 @@ namespace Game.Core.Tests.Party
             Assert.That(System.GC.GetAllocatedBytesForCurrentThread() - before, Is.EqualTo(0));
         }
 
-        [TestCase(@"""mark"": ""curse"", ""modifiers"": [{ ""stat"": ""resourceGain""", @"""mark"": ""blood"", ""modifiers"": [{ ""stat"": ""resourceGain""", "unknown mark 'blood'")]
+        [TestCase(@"""mark"": ""curse"", ""modifiers"": [{ ""stat"": ""resourceGain""", @"""mark"": ""moonlight"", ""modifiers"": [{ ""stat"": ""resourceGain""", "unknown mark 'moonlight'")]
         [TestCase(@"""viking"": ""dd"", ", "", "class 'viking' has no role")]
         [TestCase(@"""marks"": [""fire"", ""poison""]", @"""marks"": [""fire"", ""fire""]", "two different marks")]
         public void BrokenSynergyIsReported(string from, string to, string message)
