@@ -60,6 +60,7 @@ namespace Game.Core.Stats
 
             var flat = 0.0;
             var increased = 0.0;
+            var treeIncreased = 0.0;
             var more = 1.0;
             foreach (var modifier in _modifiers)
             {
@@ -70,6 +71,9 @@ namespace Game.Core.Stats
                     case ModifierKind.Flat:
                         flat += modifier.Value;
                         break;
+                    case ModifierKind.Increased when modifier.Pool == ModifierPool.Tree:
+                        treeIncreased += modifier.Value;
+                        break;
                     case ModifierKind.Increased:
                         increased += modifier.Value;
                         break;
@@ -79,7 +83,7 @@ namespace Game.Core.Stats
                 }
             }
 
-            var totals = new Totals(flat, 1.0 + increased, more);
+            var totals = new Totals(flat, (1.0 + increased) * (1.0 + treeIncreased), more);
             _cache[key] = totals;
             RecalculationCount++;
             return totals;

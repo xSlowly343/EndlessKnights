@@ -20,6 +20,29 @@ namespace Game.Core.Tests.Stats
         }
 
         [Test]
+        public void TreeIncreasesAddUpInTheirOwnPoolAndMultiplyWithTheRest()
+        {
+            var sheet = new StatSheet();
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 1));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.2, StatTags.None, ModifierPool.Tree));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.3, StatTags.None, ModifierPool.Tree));
+
+            Assert.That(Value(sheet, Damage, 10), Is.EqualTo(10 * 2 * 1.5).Within(Tolerance));
+            Assert.That(sheet.TotalsOf(Damage).IncreasedMultiplier, Is.EqualTo(3).Within(Tolerance));
+        }
+
+        [Test]
+        public void TheTreeLayerOfTheGameLoopUsesTheTreePool()
+        {
+            var loop = Sim.TestWorld.Loop(state: new Game.Core.Sim.GameState { HeroLevel = 10 });
+            loop.Levels.SyncTreePoints();
+            loop.RaiseNode("viking_axe");
+
+            Assert.That(loop.TreeModifiers, Is.Not.Empty);
+            Assert.That(System.Linq.Enumerable.All(loop.TreeModifiers, modifier => modifier.Pool == ModifierPool.Tree), Is.True);
+        }
+
+        [Test]
         public void FormulaMatchesPathOfExile()
         {
             var sheet = new StatSheet();

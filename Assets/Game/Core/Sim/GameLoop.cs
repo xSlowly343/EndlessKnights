@@ -565,6 +565,8 @@ namespace Game.Core.Sim
             State.ClassTreeActive = ClassTreeDef != null;
             modifiers.AddRange(CommonTreeModifiers());
             modifiers.AddRange(State.Ascendancy.Modifiers(_data.Ascendancy));
+            for (var i = 0; i < modifiers.Count; i++)
+                modifiers[i] = modifiers[i].InPool(ModifierPool.Tree);
             _treeLayer.Set(modifiers);
             _slates.Rebuild();
             _skills.RefreshAuras();
