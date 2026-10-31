@@ -17,7 +17,10 @@ namespace Game.Core.Content
         {
             var kind = ReadKind(node.Field("kind"));
             var tags = node.HasField("tags") ? ReadTags(node.Field("tags")) : StatTags.None;
-            return new Modifier(new StatId(node.Field("stat").AsString()), kind, node.Field("value").AsNumber(-1e6, 1e6), tags);
+            var stat = new StatId(node.Field("stat").AsString());
+            if (node.HasField("skill"))
+                stat = StatId.ForSkill(stat, node.Field("skill").AsString());
+            return new Modifier(stat, kind, node.Field("value").AsNumber(-1e6, 1e6), tags);
         }
 
         public static ModifierKind ReadKind(ContentNode node)

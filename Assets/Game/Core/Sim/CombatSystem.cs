@@ -238,6 +238,8 @@ namespace Game.Core.Sim
                 _state.Crits++;
                 if (source != DamageSource.Skill)
                     _keyHits?.OnCrit();
+                if (source == DamageSource.Keyboard)
+                    _state.PendingResource += System.Math.Max(0, _hero.Value(CombatStats.ResourcePerCrit, 0, StatTags.Keyboard));
             }
 
             if (supporting != null && Redirected(supporting, damage))

@@ -25,7 +25,7 @@ namespace Game.Core.Stats
 
         public static string Label(StatId stat)
         {
-            var key = "stat." + stat.Name;
+            var key = "stat." + stat.BaseName;
             return Texts.Has(key) ? Texts.Get(key) : stat.Name;
         }
 
@@ -44,7 +44,7 @@ namespace Game.Core.Stats
 
         public static string FlatAmount(StatId stat, double value, bool signed)
         {
-            var name = stat.Name;
+            var name = stat.BaseName;
             if (FlatPercent.Contains(name))
                 return Texts.Format("unit.percent", Number(value * 100, signed));
             if (name.EndsWith("Seconds"))

@@ -160,7 +160,7 @@ namespace Game.Core.Tests.Content
                 Assert.That(tree.Majors.Sum(slot => slot.Options.Count), Is.EqualTo(12), heroClass);
                 var stats = tree.Nodes.SelectMany(node => new[] { node.Template.First, node.Template.Second, node.Template.Third }).SelectMany(line => line.Modifiers)
                     .Concat(tree.Majors.SelectMany(slot => slot.Options).SelectMany(option => option.Modifiers))
-                    .Select(modifier => modifier.Stat.Name);
+                    .Select(modifier => modifier.Stat.BaseName);
                 Assert.That(stats.Where(stat => !known.Contains(stat)).Distinct(), Is.Empty, heroClass);
 
                 var allocation = new ClassTreeAllocation(heroClass) { PointsEarned = 180 };

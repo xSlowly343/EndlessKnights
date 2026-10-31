@@ -181,5 +181,11 @@ namespace Game.Core.Sim
         public static readonly StatId AuraReserveOnce = new StatId("auraReserveOnce");
         public static readonly StatId MinionExplode = new StatId("minionExplode");
         public static readonly StatId DamageLongStreak = new StatId("damageLongStreak");
+        public static readonly StatId SkillPower = new StatId("skillPower");
+        public static readonly StatId SkillDurationSeconds = new StatId("skillDurationSeconds");
+        public static readonly StatId ResourcePerCrit = new StatId("resourcePerCrit");
+        public static readonly StatId ResourcePerFastSkill = new StatId("resourcePerFastSkill");
+        public static readonly StatId ResourcePerCircle = new StatId("resourcePerCircle");
+        public static readonly StatId ResourcePerFlick = new StatId("resourcePerFlick");
     }
 }

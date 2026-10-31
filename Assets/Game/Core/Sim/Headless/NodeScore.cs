@@ -25,7 +25,13 @@ namespace Game.Core.Sim.Headless
             [CombatStats.OfflineCapHours.Name] = 0.05,
             [CombatStats.AuraEffect.Name] = 0.5,
             [CombatStats.AuraDuration.Name] = 0.2,
-            ["concurrentAuras"] = 0.3
+            ["concurrentAuras"] = 0.3,
+            [CombatStats.SkillPower.Name] = 0.3,
+            [CombatStats.SkillDurationSeconds.Name] = 0.02,
+            [CombatStats.ResourcePerCrit.Name] = 0.02,
+            [CombatStats.ResourcePerFastSkill.Name] = 0.02,
+            [CombatStats.ResourcePerCircle.Name] = 0.02,
+            [CombatStats.ResourcePerFlick.Name] = 0.02
         };
 
         private readonly StatTags _playedTags;
@@ -56,7 +62,7 @@ namespace Game.Core.Sim.Headless
                 if (modifier.Stat.Name == attribute)
                     return Attribute(modifier.Value);
             }
-            if (!Weights.TryGetValue(modifier.Stat.Name, out var weight))
+            if (!Weights.TryGetValue(modifier.Stat.BaseName, out var weight))
                 return 0;
             return modifier.Kind == ModifierKind.More ? modifier.Value * weight * MoreWeight : modifier.Value * weight;
         }

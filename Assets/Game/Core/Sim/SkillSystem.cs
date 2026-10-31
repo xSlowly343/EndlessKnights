@@ -176,8 +176,11 @@ namespace Game.Core.Sim
                 return CastResult.NotEnoughResource;
 
             var supportPower = SupportEffects.Power(slot, _state);
-            slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill) * supportPower;
-            slot.AuraPower = supportPower * SupportEffects.AuraPower(slot);
+            var ownPower = OwnPower(slot);
+            slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill) * supportPower * ownPower;
+            slot.AuraPower = supportPower * SupportEffects.AuraPower(slot) * ownPower;
+            if (skill.Role == SkillRole.Fast)
+                _resource.Gain(_hero.Value(CombatStats.ResourcePerFastSkill, 0));
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
             var cooldown = skill.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot) * (triggered && slot.Trigger != null ? slot.Trigger.Trigger!.CooldownMultiplier : 1);
@@ -218,6 +221,8 @@ namespace Game.Core.Sim
             return power;
         }
 
+        private double OwnPower(SkillSlot slot) => System.Math.Max(0, _hero.Value(slot.Skill.PowerStat, 1));
+
         private double SuperCast()
         {
             _state.SkillCasts++;
@@ -240,7 +245,8 @@ namespace Game.Core.Sim
             }
             var affliction = IsCurse(skill) || skill.Effect is CurseFlowEffect ? SupportEffects.Affliction(slot) : 1;
             slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast) * SupportEffects.DurationMultiplier(slot) * affliction)
-                + Ticks(System.Math.Max(0, spent - Cost(slot)) * native.ExtraSecondsPerPoint);
+                + Ticks(System.Math.Max(0, spent - Cost(slot)) * native.ExtraSecondsPerPoint)
+                + (skill.DurationSeconds > 0 ? Ticks(System.Math.Max(0, _hero.Value(slot.Skill.DurationStat, 0))) : 0);
             slot.ActiveTotalTicks = slot.ActiveTicks;
             slot.MouseExtendedTicks = 0;
             slot.LingerTicks = 0;

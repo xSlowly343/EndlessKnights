@@ -108,6 +108,30 @@ namespace Game.Core.Content.Tree
 
         public bool HasBar => BarEvery > 0;
 
+        public void RequireKnownSkills(Gems.GemCatalog gems)
+        {
+            foreach (var node in Nodes)
+            {
+                RequireKnownSkills(gems, node.Id, node.Template.First.Modifiers);
+                RequireKnownSkills(gems, node.Id, node.Template.Second.Modifiers);
+                RequireKnownSkills(gems, node.Id, node.Template.Third.Modifiers);
+            }
+            foreach (var slot in Majors)
+            {
+                foreach (var option in slot.Options)
+                    RequireKnownSkills(gems, option.Id, option.Modifiers);
+            }
+        }
+
+        private void RequireKnownSkills(Gems.GemCatalog gems, string owner, IReadOnlyList<Modifier> modifiers)
+        {
+            foreach (var modifier in modifiers)
+            {
+                if (modifier.Stat.IsForSkill && !gems.TryGet(modifier.Stat.SkillId, out _))
+                    throw new ContentException(Common ? ClassTreeLoader.CommonFileNameOf(Id) : ClassTreeLoader.FileNameOf(Id), owner, $"unknown skill '{modifier.Stat.SkillId}'");
+            }
+        }
+
         public bool OffersMajor(string talentId)
         {
             foreach (var slot in Majors)

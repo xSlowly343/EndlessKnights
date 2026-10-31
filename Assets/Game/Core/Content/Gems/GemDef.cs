@@ -21,6 +21,8 @@ namespace Game.Core.Content.Gems
             Trigger = trigger;
             SupportEffect = supportEffect;
             NetId = NetIdOf(id);
+            PowerStat = StatId.ForSkill(Sim.CombatStats.SkillPower, id);
+            DurationStat = StatId.ForSkill(Sim.CombatStats.SkillDurationSeconds, id);
             Ascendancy = ascendancy;
             Locked = locked;
         }
@@ -38,6 +40,8 @@ namespace Game.Core.Content.Gems
 
         public string Id { get; }
         public int NetId { get; }
+        public StatId PowerStat { get; }
+        public StatId DurationStat { get; }
         public GemKind Kind { get; }
         public GemColor Color { get; }
         public string NameRu { get; }

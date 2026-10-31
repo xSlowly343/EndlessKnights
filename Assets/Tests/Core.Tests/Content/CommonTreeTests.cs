@@ -93,7 +93,7 @@ namespace Game.Core.Tests.Content
             {
                 var lines = tree.Nodes.SelectMany(node => new[] { node.Template.First, node.Template.Second, node.Template.Third }).SelectMany(line => line.Modifiers)
                     .Concat(tree.Majors.SelectMany(slot => slot.Options).SelectMany(option => option.Modifiers));
-                Assert.That(lines.Select(modifier => modifier.Stat.Name).Where(stat => !known.Contains(stat)).Distinct(), Is.Empty, tree.Id);
+                Assert.That(lines.Select(modifier => modifier.Stat.BaseName).Where(stat => !known.Contains(stat)).Distinct(), Is.Empty, tree.Id);
             }
         }
 

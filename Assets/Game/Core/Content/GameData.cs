@@ -123,7 +123,10 @@ namespace Game.Core.Content
             var treeTemplates = TreeTemplates.Load(readFile(TreeTemplates.FileName));
             var classTrees = new Dictionary<string, ClassTree>(StringComparer.Ordinal);
             foreach (var heroClass in treeTemplates.Classes)
+            {
                 classTrees[heroClass] = ClassTreeLoader.Load(treeTemplates, heroClass, readFile(ClassTreeLoader.FileNameOf(heroClass)));
+                classTrees[heroClass].RequireKnownSkills(gems);
+            }
             var commonTrees = new Dictionary<string, ClassTree>(StringComparer.Ordinal);
             foreach (var treeId in treeTemplates.CommonTrees)
                 commonTrees[treeId] = ClassTreeLoader.LoadCommon(treeTemplates, treeId, readFile(ClassTreeLoader.CommonFileNameOf(treeId)));
