@@ -94,6 +94,7 @@ namespace Game.Core.Build
             progress.Rebirths++;
             progress.Level = 1;
             progress.Experience = 0;
+            _skills.RefreshBranches();
             return true;
         }
 

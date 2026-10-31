@@ -2,8 +2,9 @@ namespace Game.Core.Content.Gems
 {
     public sealed class GemLevels
     {
-        public GemLevels(int max, double effectPerLevel, ExponentialCurve experience, double experiencePerKill)
+        public GemLevels(int max, double effectPerLevel, ExponentialCurve experience, double experiencePerKill, double experiencePerCast = 0)
         {
+            ExperiencePerCast = experiencePerCast;
             ExperiencePerKill = experiencePerKill;
             Max = max;
             EffectPerLevel = effectPerLevel;
@@ -14,6 +15,7 @@ namespace Game.Core.Content.Gems
         public double EffectPerLevel { get; }
         public ExponentialCurve Experience { get; }
         public double ExperiencePerKill { get; }
+        public double ExperiencePerCast { get; }
 
         public double ToNext(int level) => Experience.At(level).ToDouble();
 
@@ -26,6 +28,7 @@ namespace Game.Core.Content.Gems
                 node.Field("max").AsInt(1, 100),
                 node.Field("effectPerLevel").AsNumber(0, 10),
                 ExponentialCurve.Read(node.Field("experience")),
-                node.Field("experiencePerKill").AsNumber(0, 1e9));
+                node.Field("experiencePerKill").AsNumber(0, 1e9),
+                node.Field("experiencePerCast").AsNumber(0, 1e9));
     }
 }

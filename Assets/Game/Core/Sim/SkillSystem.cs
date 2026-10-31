@@ -100,6 +100,7 @@ namespace Game.Core.Sim
             _state.ProgressOf(skill);
             if (trigger != null)
                 _state.ProgressOf(trigger);
+            ApplyBranches(slot);
             _state.Skills.Add(slot);
             KeepReserved(slot);
             return _state.Skills.Count - 1;
@@ -130,12 +131,39 @@ namespace Game.Core.Sim
                 DropStanding(slot);
                 if (gems.TryGet(slot.Skill.Id, out var skill) && skill.Skill != null)
                     slot.Skill = skill;
+                ApplyBranches(slot);
                 if (slot.Trigger != null && gems.TryGet(slot.Trigger.Id, out var trigger) && trigger.Trigger != null)
                     slot.Trigger = trigger;
                 if (slot.Active)
                     ApplyAura(slot);
             }
         }
+
+        public void RefreshBranches()
+        {
+            foreach (var slot in _state.Skills)
+            {
+                var combo = ComboOf(slot.Skill);
+                if (ReferenceEquals(slot.Variant, slot.Skill.VariantOf(combo)))
+                    continue;
+                RemoveAura(slot);
+                ClearStacks(slot);
+                DropStanding(slot);
+                ApplyBranches(slot);
+                if (slot.Active)
+                    ApplyAura(slot);
+            }
+        }
+
+        private void ApplyBranches(SkillSlot slot)
+        {
+            var combo = ComboOf(slot.Skill);
+            slot.Variant = slot.Skill.VariantOf(combo);
+            slot.BranchDamage = slot.Skill.BranchDamageOf(combo);
+        }
+
+        private int ComboOf(GemDef gem) =>
+            _state.GemProgress.TryGetValue(gem.Id, out var progress) ? SkillBranches.ComboOf(gem.Branches, progress.Branches, progress.Level) : SkillBranches.Plain;
 
         public bool IsNative(int index) => index >= 0 && index < _state.Skills.Count && IsNative(_state.Skills[index]);
 
@@ -183,8 +211,8 @@ namespace Game.Core.Sim
 
             var supportPower = SupportEffects.Power(slot, _state);
             var ownPower = OwnPower(slot);
-            slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill) * supportPower * ownPower;
-            slot.AuraPower = supportPower * SupportEffects.AuraPower(slot) * ownPower;
+            slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill) * supportPower * ownPower * slot.BranchDamage;
+            slot.AuraPower = supportPower * SupportEffects.AuraPower(slot) * ownPower * slot.BranchDamage;
             if (skill.Role == SkillRole.Fast)
                 _resource.Gain(_hero.Value(CombatStats.ResourcePerFastSkill, 0));
             if (!(skill.Effect is EchoEffect))

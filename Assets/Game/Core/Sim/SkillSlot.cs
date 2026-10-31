@@ -85,7 +85,9 @@ namespace Game.Core.Sim
         public double AuraStrength { get; set; }
         public List<Modifier> AuraModifiers { get; } = new List<Modifier>(AuraModifierCapacity);
 
-        public SkillDef Def => Skill.Skill!;
+        public SkillDef? Variant { get; set; }
+        public double BranchDamage { get; set; } = 1;
+        public SkillDef Def => Variant ?? Skill.Skill!;
         public bool Ready => CooldownTicks <= 0;
         public double CooldownFraction => Ready ? 0 : CooldownTicks / (double)System.Math.Max(CooldownTicks, CooldownTotalTicks);
         public bool Active => ActiveTicks > 0;

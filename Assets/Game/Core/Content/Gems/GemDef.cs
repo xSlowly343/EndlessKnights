@@ -5,11 +5,17 @@ namespace Game.Core.Content.Gems
 {
     public sealed class GemDef
     {
+        private readonly IReadOnlyList<SkillDef>? _variants;
+        private readonly IReadOnlyList<double>? _branchDamage;
+
         public GemDef(string id, GemKind kind, GemColor color, string nameRu, string nameEn, StatTags tags,
             SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null, IReadOnlyDictionary<string, double>? requires = null,
             string? ascendancy = null, bool locked = false, SupportDef? support = null, SkillType? type = null,
-            IReadOnlyList<SkillBranchTier>? branches = null, StatTags supports = StatTags.None, double damageMultiplier = 1, double manaMultiplier = 1)
+            IReadOnlyList<SkillBranchTier>? branches = null, StatTags supports = StatTags.None, double damageMultiplier = 1, double manaMultiplier = 1,
+            IReadOnlyList<SkillDef>? variants = null, IReadOnlyList<double>? branchDamage = null)
         {
+            _variants = variants;
+            _branchDamage = branchDamage;
             Type = type ?? TypeOf(kind, skill);
             Branches = branches ?? System.Array.Empty<SkillBranchTier>();
             Supports = supports;
@@ -72,6 +78,10 @@ namespace Game.Core.Content.Gems
         public StatTags Supports { get; }
         public double DamageMultiplier { get; }
         public double ManaMultiplier { get; }
+
+        public SkillDef? VariantOf(int combo) => _variants == null || combo == SkillBranches.Plain ? null : _variants[combo];
+
+        public double BranchDamageOf(int combo) => _branchDamage == null ? 1 : _branchDamage[combo];
 
         public bool CanSupport(GemDef skill) => Type == SkillType.Support && (skill.Type == SkillType.Active || skill.Type == SkillType.Aura) && (skill.Tags & Supports) == Supports;
     }

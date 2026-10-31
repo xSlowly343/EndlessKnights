@@ -124,6 +124,7 @@ namespace Game.Core.Sim
             _paths = new PathSystem(state, hero, _combat, _resource, _skills);
             _skills.Levels = data.Gems.Levels;
             _gemExperience = new GemExperienceSystem(data.Gems.Levels, state, hero, _skills, Events);
+            _skills.RefreshBranches();
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
@@ -395,6 +396,37 @@ namespace Game.Core.Sim
                     total += tree.Respec.NodeCost(node.Row, State.HeroLevel, false) * BigNumber.FromDouble(pair.Value);
             }
             return total * BigNumber.FromDouble(tree.Respec.FullResetShare);
+        }
+
+        public BigNumber BranchChangeCost(GemDef skill, int tier)
+        {
+            var chosen = State.GemProgress.TryGetValue(skill.Id, out var progress) && tier >= 0 && tier < progress.Branches.Length
+                ? progress.Branches[tier]
+                : SkillBranches.NoChoice;
+            if (chosen == SkillBranches.NoChoice || ClassTreeResetFree || ClassTreeDef is not { } tree)
+                return BigNumber.Zero;
+            return tree.Respec.NodeCost(tier + 1, State.HeroLevel, false);
+        }
+
+        public BranchResult ChooseBranch(GemDef skill, int tier, int option)
+        {
+            if (tier < 0 || tier >= skill.Branches.Count || option < 0 || option >= skill.Branches[tier].Options.Count)
+                return BranchResult.NoSuchBranch;
+            var progress = State.ProgressOf(skill);
+            if (progress.Level < skill.Branches[tier].Level)
+                return BranchResult.LevelTooLow;
+            if (progress.Branches[tier] == option)
+                return BranchResult.Done;
+            var row = SkillLoadout.RowOf(State.Skills, skill);
+            if (row != SkillLoadout.NoSlot && State.Skills[row].Active)
+                return BranchResult.SkillBusy;
+            var cost = BranchChangeCost(skill, tier);
+            if (State.Gold < cost)
+                return BranchResult.NotEnoughGold;
+            State.Gold -= cost;
+            progress.Branches[tier] = option;
+            _skills.RefreshBranches();
+            return BranchResult.Done;
         }
 
         public BigNumber ClassTreeResetCost() => ClassTreeDef is { } tree ? ResetCost(tree, State.ClassTree) : BigNumber.Zero;

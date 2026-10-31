@@ -266,7 +266,7 @@ namespace Game.Core.Tests.Build
             input.PressKeys(1);
             typing.Tick();
 
-            Assert.That(typing.State.GemProgress["iron_rim_bash"].Experience, Is.EqualTo(TestWorld.Data.Gems.Levels.ExperiencePerKill * 1.5).Within(1e-9));
+            Assert.That(typing.State.GemProgress["iron_rim_bash"].Experience, Is.EqualTo((TestWorld.Data.Gems.Levels.ExperiencePerKill + TestWorld.Data.Gems.Levels.ExperiencePerCast) * 1.5).Within(1e-9), "the cast before the tick also grows the skill");
         }
 
         [Test]

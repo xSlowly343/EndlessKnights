@@ -251,7 +251,7 @@ namespace Game.Core.Content.Gems
             return tags;
         }
 
-        private static IReadOnlyList<SkillBranchTier> ReadBranches(ContentNode skill, double durationSeconds)
+        private static IReadOnlyList<SkillBranchTier> ReadBranches(ContentNode skill, double durationSeconds, List<ContentNode?> overrides)
         {
             if (!skill.HasField("branches"))
                 return Array.Empty<SkillBranchTier>();
@@ -268,12 +268,12 @@ namespace Game.Core.Content.Gems
                 if (level <= previousLevel)
                     throw item.Field("level").Error($"tier level {level} must be above the previous tier level {previousLevel}");
                 previousLevel = level;
-                tiers.Add(new SkillBranchTier(level, ReadOptions(skill, item.Field("options"), ids, durationSeconds)));
+                tiers.Add(new SkillBranchTier(level, ReadOptions(skill, item.Field("options"), ids, durationSeconds, overrides)));
             }
             return tiers;
         }
 
-        private static IReadOnlyList<SkillBranch> ReadOptions(ContentNode skill, ContentNode node, HashSet<string> ids, double durationSeconds)
+        private static IReadOnlyList<SkillBranch> ReadOptions(ContentNode skill, ContentNode node, HashSet<string> ids, double durationSeconds, List<ContentNode?> overrides)
         {
             var items = node.Items();
             if (items.Count != SkillBranchTier.OptionCount)
@@ -285,6 +285,7 @@ namespace Game.Core.Content.Gems
                 if (!ids.Add(id))
                     throw item.Field("id").Error($"branch id '{id}' is used twice in this skill");
                 var name = item.Field("name");
+                overrides.Add(item.HasField("effect") ? item.Field("effect") : (ContentNode?)null);
                 options.Add(new SkillBranch(id, name.Field("ru").AsString(), name.Field("en").AsString(),
                     BranchMultiplier(item, "damage"), BranchMultiplier(item, "cooldown"), BranchMultiplier(item, "cost"), BranchMultiplier(item, "duration"),
                     item.HasField("effect") ? ReadBranchEffect(skill, item.Field("effect"), durationSeconds) : null));
@@ -317,8 +318,47 @@ namespace Game.Core.Content.Gems
             var skill = ReadSkill(node, locked);
             if (!locked && (skill.Effect is AuraEffect) != (type == SkillType.Aura))
                 throw node.Field("kind").Error(type == SkillType.Aura ? "an aura needs an aura effect" : "a skill with an aura effect has kind aura");
+            var overrides = new List<ContentNode?>();
+            var branches = ReadBranches(node, skill.DurationSeconds, overrides);
+            if (branches.Count == 0)
+                return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, requires: requires, ascendancy: ascendancy, locked: locked, type: type);
+            var (variants, damage) = BuildVariants(node, skill, branches, overrides);
             return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, requires: requires, ascendancy: ascendancy, locked: locked,
-                type: type, branches: ReadBranches(node, skill.DurationSeconds));
+                type: type, branches: branches, variants: variants, branchDamage: damage);
+        }
+
+        private static (SkillDef[] Variants, double[] Damage) BuildVariants(ContentNode node, SkillDef skill, IReadOnlyList<SkillBranchTier> tiers, List<ContentNode?> overrides)
+        {
+            var variants = new SkillDef[SkillBranches.Combos];
+            var damage = new double[SkillBranches.Combos];
+            for (var combo = 0; combo < SkillBranches.Combos; combo++)
+            {
+                double power = 1, cooldown = 1, cost = 1, duration = 1;
+                var effect = node.HasField("effect") ? node.Field("effect") : (ContentNode?)null;
+                var changed = false;
+                for (var tier = 0; tier < tiers.Count; tier++)
+                {
+                    var choice = SkillBranches.Choice(combo, tier);
+                    if (choice == SkillBranches.NoChoice)
+                        continue;
+                    var branch = tiers[tier].Options[choice];
+                    power *= branch.DamageMultiplier;
+                    cooldown *= branch.CooldownMultiplier;
+                    cost *= branch.CostMultiplier;
+                    duration *= branch.DurationMultiplier;
+                    var change = overrides[tier * SkillBranchTier.OptionCount + choice];
+                    if (change != null && effect != null)
+                    {
+                        effect = effect.Value.MergedWith(change.Value);
+                        changed = true;
+                    }
+                }
+                var seconds = skill.DurationSeconds * duration;
+                variants[combo] = skill.With(skill.ResourceCost * cost, skill.CooldownSeconds * cooldown, seconds,
+                    changed ? ReadEffect(effect!.Value, seconds) : skill.Effect);
+                damage[combo] = power;
+            }
+            return (variants, damage);
         }
 
         private static SkillDef ReadSkill(ContentNode node, bool locked)

@@ -927,7 +927,7 @@ namespace Game.Core.Save
             var map = new Dictionary<string, JsonValue>(state.GemProgress.Count);
             foreach (var pair in state.GemProgress)
                 map.Add(pair.Key, Object(("level", JsonValue.Of(pair.Value.Level)), ("experience", JsonValue.Of(pair.Value.Experience)),
-                    ("rebirths", JsonValue.Of(pair.Value.Rebirths))));
+                    ("rebirths", JsonValue.Of(pair.Value.Rebirths)), ("branches", WriteBranches(pair.Value.Branches))));
             return JsonValue.Object(map);
         }
 
@@ -963,6 +963,26 @@ namespace Game.Core.Save
                 progress.Experience = item.Field("experience").AsNumber(0, 1e15);
                 if (item.HasField("rebirths"))
                     progress.Rebirths = item.Field("rebirths").AsInt(0, 100);
+                if (item.HasField("branches"))
+                    ReadBranches(item.Field("branches"), gem, progress);
+            }
+        }
+
+        private static JsonValue WriteBranches(int[] branches)
+        {
+            var items = new JsonValue[branches.Length];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = JsonValue.Of(branches[i]);
+            return JsonValue.Array(items);
+        }
+
+        private static void ReadBranches(ContentNode node, GemDef gem, GemProgress progress)
+        {
+            var items = node.Items();
+            for (var tier = 0; tier < items.Count && tier < progress.Branches.Length; tier++)
+            {
+                var choice = items[tier].AsInt(SkillBranches.NoChoice, SkillBranchTier.OptionCount - 1);
+                progress.Branches[tier] = tier < gem.Branches.Count ? choice : SkillBranches.NoChoice;
             }
         }
 

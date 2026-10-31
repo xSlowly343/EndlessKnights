@@ -37,6 +37,7 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
+            GrantCasts();
             var kills = _state.Kills - _seenKills;
             _seenKills = _state.Kills;
             if (kills <= 0)
@@ -76,6 +77,19 @@ namespace Game.Core.Sim
             Grant(gem, gained);
         }
 
+        private void GrantCasts()
+        {
+            if (_levels.ExperiencePerCast <= 0)
+                return;
+            var amount = _levels.ExperiencePerCast * System.Math.Max(0, _hero.Value(CombatStats.GemExperience, 1));
+            for (var index = 0; index < _state.Skills.Count; index++)
+            {
+                var slot = _state.Skills[index];
+                if (slot.CastOn(_state.Tick))
+                    Grant(slot.Skill, amount * SupportEffects.ExperienceMultiplier(slot));
+            }
+        }
+
         public void Grant(GemDef gem, double amount)
         {
             if (!_state.GemProgress.TryGetValue(gem.Id, out var progress) || progress.Level >= _levels.Max)
@@ -86,9 +100,21 @@ namespace Game.Core.Sim
                 progress.Experience -= _levels.ToNext(progress.Level);
                 progress.Level++;
                 _events.Add(GameEvent.ForSkill(GameEventKind.GemLevelUp, _state.Tick, gem));
+                if (OpensTier(gem, progress.Level))
+                    _skills.RefreshBranches();
             }
             if (progress.Level >= _levels.Max)
                 progress.Experience = 0;
+        }
+
+        private static bool OpensTier(GemDef gem, int level)
+        {
+            foreach (var tier in gem.Branches)
+            {
+                if (tier.Level == level)
+                    return true;
+            }
+            return false;
         }
     }
 }

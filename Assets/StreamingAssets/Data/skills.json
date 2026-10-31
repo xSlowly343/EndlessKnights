@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "levels": { "max": 25, "effectPerLevel": 0.02, "experience": { "curve": "exp", "base": 100, "rate": 1.3 }, "experiencePerKill": 4 },
+  "levels": { "max": 25, "effectPerLevel": 0.02, "experience": { "curve": "exp", "base": 100, "rate": 1.3 }, "experiencePerKill": 4, "experiencePerCast": 4 },
   "gems": [
     {
       "id": "iron_rim_bash",

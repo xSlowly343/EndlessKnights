@@ -19,6 +19,9 @@ namespace Game.Core.Content.Gems
             Effect = effect;
         }
 
+        public SkillDef With(double resourceCost, double cooldownSeconds, double durationSeconds, SkillEffect effect) =>
+            new SkillDef(resourceCost, cooldownSeconds, durationSeconds, effect, Marks, Weapon, Native, Family, ArmOn, Tier, Role);
+
         public double ResourceCost { get; }
         public double CooldownSeconds { get; }
         public double DurationSeconds { get; }
