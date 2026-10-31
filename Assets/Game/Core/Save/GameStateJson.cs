@@ -42,6 +42,7 @@ namespace Game.Core.Save
                     ("macroRhythmTicks", JsonValue.Of(state.MacroRhythmTicks)),
                     ("combo", JsonValue.Of(state.Combo)),
                     ("comboTowardStrike", JsonValue.Of(state.ComboTowardStrike)),
+                    ("killsTowardRise", JsonValue.Of(state.KillsTowardRise)),
                     ("keyHits", JsonValue.Of(state.KeyHits)),
                     ("comboIdleTicks", JsonValue.Of(state.ComboIdleTicks)))),
                 ("stage", Object(
@@ -155,6 +156,7 @@ namespace Game.Core.Save
                 HeroXp = hero.Field("xp").AsNumber(0, 1e300),
                 Combo = hero.Field("combo").AsInt(0),
                 ComboTowardStrike = hero.HasField("comboTowardStrike") ? hero.Field("comboTowardStrike").AsInt(0, 1_000_000) : 0,
+                KillsTowardRise = hero.HasField("killsTowardRise") ? hero.Field("killsTowardRise").AsInt(0, 1_000_000) : 0,
                 KeyHits = hero.Field("keyHits").AsLong(0),
                 ComboIdleTicks = hero.Field("comboIdleTicks").AsLong(0),
                 Stage = stage.Field("current").AsLong(1),

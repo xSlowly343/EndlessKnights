@@ -192,5 +192,7 @@ namespace Game.Core.Sim
         public static readonly StatId ComboStrikeTargets = new StatId("comboStrikeTargets");
         public static readonly StatId ComboStrikeQueueShare = new StatId("comboStrikeQueueShare");
         public static readonly StatId ComboStrikeCritMultiplier = new StatId("comboStrikeCritMultiplier");
+        public static readonly StatId RiseEvery = new StatId("riseEvery");
+        public static readonly StatId RiseEveryAtFullResource = new StatId("riseEveryAtFullResource");
     }
 }

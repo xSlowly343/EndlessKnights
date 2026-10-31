@@ -118,6 +118,8 @@
     "stat.comboStrikeTargets": { "ru": "врагов в очереди под ударом серии", "en": "queued enemies hit by a streak strike" },
     "stat.comboStrikeQueueShare": { "ru": "урона удара серии по очереди", "en": "streak strike damage to the queue" },
     "stat.comboStrikeCritMultiplier": { "ru": "множителя крита удара серии", "en": "streak strike crit multiplier" },
+    "stat.riseEvery": { "ru": "убийств до скелета «Встают сами»", "en": "kills to a self-risen skeleton" },
+    "stat.riseEveryAtFullResource": { "ru": "убийств до скелета на полных Тенях", "en": "kills to a self-risen skeleton at full Shades" },
     "stat.damageLongStreak": { "ru": "урона, если ввод идёт дольше 2 минут без пауз", "en": "damage while input goes on for over 2 minutes without pauses" },
     "stat.jewelEffect": { "ru": "эффекта самоцветов в гнёздах дерева", "en": "effect of jewels in tree sockets" },
     "stat.cooldownPerResource": { "ru": "отката скиллов за каждую единицу ресурса", "en": "skill cooldown per point of resource" },

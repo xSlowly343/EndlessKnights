@@ -48,7 +48,27 @@ namespace Game.Core.Sim
             return count;
         }
 
-        public void Place(SummonEffect summon, StatTags tags)
+        public void Place(SummonEffect summon, StatTags tags) => Place(summon, tags, false);
+
+        public void Rise(SummonEffect summon, int max)
+        {
+            if (StandingRisen() < max)
+                Place(summon, StatTags.Skill, true);
+        }
+
+        public int StandingRisen()
+        {
+            var count = 0;
+            var minions = _state.Minions;
+            for (var i = 0; i < minions.Length; i++)
+            {
+                if (minions[i].Standing && minions[i].Risen)
+                    count++;
+            }
+            return count;
+        }
+
+        private void Place(SummonEffect summon, StatTags tags, bool risen)
         {
             var index = Standing(summon.Kind) < Limit(summon.Kind) ? FreeIndex() : OldestIndex(summon.Kind);
             if (index < 0)
@@ -62,7 +82,8 @@ namespace Game.Core.Sim
                 HitsPerSecond = summon.HitsPerSecond,
                 Multiplier = summon.Multiplier,
                 Tags = tags | StatTags.Minion,
-                MouseBonus = mouseBonus
+                MouseBonus = mouseBonus,
+                Risen = risen
             };
         }
 

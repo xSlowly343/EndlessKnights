@@ -49,6 +49,7 @@ namespace Game.Core.Sim
             _seenKills = _state.Kills;
             if (kills <= 0)
                 return;
+            RiseOnTheirOwn(kills);
             var rules = _combat.Paths;
             var skeleton = _hero.Value(CombatStats.SkeletonOnKill, 0, StatTags.Minion);
             var beast = _hero.Value(CombatStats.BeastOnKill, 0, StatTags.Minion);
@@ -57,6 +58,28 @@ namespace Game.Core.Sim
                 Raise(rules.SkeletonOnKill, skeleton);
                 Raise(rules.BeastOnKill, beast);
             }
+        }
+
+        private void RiseOnTheirOwn(long kills)
+        {
+            var rules = _combat.Skeletons;
+            if (!_state.Is(HeroClass.Gravedigger) || rules.Rise == null)
+                return;
+            _state.KillsTowardRise += (int)System.Math.Min(kills, MinionSystem.Capacity);
+            var every = RiseEvery(rules);
+            while (_state.KillsTowardRise >= every)
+            {
+                _state.KillsTowardRise -= every;
+                _skills.Minions.Rise(rules.Rise, rules.RiseMax);
+            }
+        }
+
+        private int RiseEvery(Content.MinionRules rules)
+        {
+            var every = rules.RiseEvery + _hero.Value(CombatStats.RiseEvery, 0, StatTags.Minion);
+            if (_state.ResourceFill >= 1)
+                every += _hero.Value(CombatStats.RiseEveryAtFullResource, 0, StatTags.Minion);
+            return System.Math.Max(rules.RiseEveryMin, (int)System.Math.Round(every));
         }
 
         private void Raise(Content.Gems.SummonEffect summon, double chance)
