@@ -40,7 +40,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void MouseHitsWithItsOwnDamageAndClicksDoNotHit()
+        public void MouseHitsWithItsOwnDamageAndClicksHitWithTheirs()
         {
             var (loop, input) = LoopWithEnemy(1000);
             var rules = TestWorld.Data.Combat;
@@ -49,9 +49,10 @@ namespace Game.Core.Tests.Sim
             input.MoveMouse((float)(rules.MousePxPerHit * 2));
             loop.Tick();
 
-            var expected = 1000 - 2 * rules.MouseDamage * loop.State.FocusMultiplier;
+            var expected = 1000 - (2 * rules.MouseDamage + rules.ClickDamage) * loop.State.FocusMultiplier;
+            Assert.That(rules.ClickDamage, Is.GreaterThan(0));
             Assert.That(loop.State.EnemyHp.ToDouble(), Is.EqualTo(expected).Within(1e-9));
-            Assert.That(loop.Events.Count, Is.EqualTo(2));
+            Assert.That(loop.Events.CountOf(GameEventKind.Damage), Is.EqualTo(3));
         }
 
         [Test]
@@ -71,7 +72,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void MouseButtonsAndWheelDealNoDamage()
+        public void EveryMouseButtonHitsAndTheWheelDealsNoDamage()
         {
             var (loop, input) = LoopWithEnemy(1000);
 
@@ -81,8 +82,22 @@ namespace Game.Core.Tests.Sim
             input.ScrollWheel(5);
             loop.Tick();
 
-            Assert.That(loop.Events.CountOf(GameEventKind.Damage), Is.EqualTo(0));
-            Assert.That(loop.State.EnemyHp.ToDouble(), Is.EqualTo(1000));
+            Assert.That(loop.Events.CountOf(GameEventKind.Damage), Is.EqualTo(5));
+            Assert.That(loop.Events[0].Source, Is.EqualTo(DamageSource.Click));
+            Assert.That(loop.State.EnemyHp.ToDouble(), Is.EqualTo(1000 - 5 * TestWorld.Data.Combat.ClickDamage * loop.State.FocusMultiplier).Within(1e-9));
+        }
+
+        [Test]
+        public void ClickModifiersApplyToClickHits()
+        {
+            var hero = new StatSheet();
+            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1.0, StatTags.Click));
+            var (loop, input) = LoopWithEnemy(1000, hero);
+
+            input.ClickLeft();
+            loop.Tick();
+
+            Assert.That(loop.Events[0].Amount.ToDouble(), Is.EqualTo(TestWorld.Data.Combat.ClickDamage * 2 * loop.State.FocusMultiplier).Within(1e-9));
         }
 
         [Test]

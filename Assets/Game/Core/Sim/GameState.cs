@@ -203,6 +203,7 @@ namespace Game.Core.Sim
         public long SkillCasts { get; set; }
         public double AutoCastKeys { get; set; }
         public long InputStreakTicks { get; set; }
+        public double ClickCarry { get; set; }
         public int AfterFastKillTicks { get; set; }
         public int AfterCircleTicks { get; set; }
         public int AfterFlickTicks { get; set; }

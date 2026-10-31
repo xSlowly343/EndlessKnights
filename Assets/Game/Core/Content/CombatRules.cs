@@ -32,6 +32,7 @@ namespace Game.Core.Content
         public double KeyDamage { get; }
         public double MouseDamage { get; }
         public double MousePxPerHit { get; }
+        public double ClickDamage { get; private set; }
         public FocusRules Focus { get; }
         public ResourceRules Resources { get; }
         public double CritChance { get; }
@@ -83,7 +84,8 @@ namespace Game.Core.Content
                 PathRules.Read(root.Field("paths")),
                 EncounterRules.Read(root.Field("encounters")))
             {
-                OvercritRate = crit.HasField("overcritRate") ? crit.Field("overcritRate").AsNumber(0, 100) : 0
+                OvercritRate = crit.HasField("overcritRate") ? crit.Field("overcritRate").AsNumber(0, 100) : 0,
+                ClickDamage = hits.HasField("click") ? hits.Field("click").Field("damage").AsNumber(0, 1e6) : 0
             };
         }
     }
