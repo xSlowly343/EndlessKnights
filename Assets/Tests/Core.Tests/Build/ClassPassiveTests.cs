@@ -28,6 +28,8 @@ namespace Game.Core.Tests.Build
         [TestCase(HeroClass.Bannerbearer, "bannerbearer_war_standard")]
         [TestCase(HeroClass.Voodoo, "voodoo_voodoo_doll")]
         [TestCase(HeroClass.Clockmaker, "clockmaker_pendulum")]
+        [TestCase(HeroClass.PlagueDoctor, "plague_doctor_syringe_cane")]
+        [TestCase(HeroClass.Moonshiner, "moonshiner_burner")]
         public void AClassOnTheNewTreeHasNoStartPassiveAndGrowsFromItsNodes(HeroClass heroClass, string node)
         {
             var loop = Real(new GameState { Class = heroClass, HeroLevel = 10 });
