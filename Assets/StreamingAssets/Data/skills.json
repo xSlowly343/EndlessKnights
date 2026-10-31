@@ -552,7 +552,8 @@
       "cooldownSeconds": 5,
       "durationSeconds": 10,
       "marks": ["curse"],
-      "effect": { "type": "enemyDebuff", "damageTaken": 0.15 }
+      "effect": { "type": "enemyDebuff", "damageTaken": 0.15 },
+      "branches": [{ "level": 5, "options": [{ "id": "deeper_prick", "name": { "ru": "Глубже укол", "en": "Deeper Prick" }, "effect": { "damageTaken": 0.18 } }, { "id": "quick_prick", "name": { "ru": "Быстрый укол", "en": "Quick Prick" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "second_prick", "name": { "ru": "Второй укол", "en": "Second Prick" }, "effect": { "strikeMultiplier": 3 } }, { "id": "long_prick", "name": { "ru": "Долгий укол", "en": "Long Prick" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "broken_charm", "name": { "ru": "Сломанный оберег", "en": "Broken Charm" }, "cooldown": 1.3, "effect": { "damageTaken": 0.24 } }, { "id": "cheap_prick", "name": { "ru": "Укол даром", "en": "Free Prick" }, "cost": 0.5 }] }]
     },
     {
       "id": "stretch_second",
@@ -3286,10 +3287,10 @@
     },
     {
       "id": "pipe_smoke",
+      "formerIds": ["brew_in_the_cauldron"],
       "kind": "active",
       "weapon": "voodoo_doll",
-      "tier": "common",
-      "role": "fast",
+      "tier": "rare",
       "color": "blue",
       "name": {"ru": "Дым трубки", "en": "Pipe Smoke"},
       "tags": ["Skill"],
@@ -3298,10 +3299,12 @@
       "durationSeconds": 10,
       "marks": ["curse"],
       "effect": {"type": "enemyDebuff", "damageTaken": 0.1, "tags": ["Keyboard"], "bossTimerSeconds": 3},
-      "native": {"bossTimerSeconds": 5}
+      "native": {"bossTimerSeconds": 5},
+      "branches": [{ "level": 5, "options": [{ "id": "thicker_smoke", "name": { "ru": "Гуще дым", "en": "Thicker Smoke" }, "effect": { "damageTaken": 0.13 } }, { "id": "quick_smoke", "name": { "ru": "Быстрый дым", "en": "Quick Smoke" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "brew_in_the_cauldron", "name": { "ru": "Варево в котле", "en": "Brew in the Cauldron" }, "effect": { "bossTimerSeconds": 4 } }, { "id": "cheap_smoke", "name": { "ru": "Дым даром", "en": "Free Smoke" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "smoke_ring", "name": { "ru": "Кольцо дыма", "en": "Smoke Ring" }, "cooldown": 1.3, "effect": { "damageTaken": 0.18 } }, { "id": "lingering_smoke", "name": { "ru": "Стоячий дым", "en": "Lingering Smoke" }, "duration": 1.6 }] }]
     },
     {
       "id": "pin",
+      "formerIds": ["three_pins"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
@@ -3314,13 +3317,15 @@
       "durationSeconds": 10,
       "marks": ["curse"],
       "effect": { "type": "enemyDebuff", "damageTaken": 0.05, "strikeMultiplier": 2 },
-      "native": { "resourceOnCast": 3 }
+      "native": { "resourceOnCast": 3 },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_pin", "name": { "ru": "Острее булавка", "en": "Sharper Pin" }, "effect": { "strikeMultiplier": 2.6 } }, { "id": "quick_pin", "name": { "ru": "Быстрая булавка", "en": "Quick Pin" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "three_pins", "name": { "ru": "Три булавки", "en": "Three Pins" }, "effect": { "damageTaken": 0.08 } }, { "id": "long_pin", "name": { "ru": "Долгая булавка", "en": "Long Pin" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "hat_pin", "name": { "ru": "Шляпная булавка", "en": "Hat Pin" }, "cooldown": 1.3, "effect": { "strikeMultiplier": 4 } }, { "id": "pin_cushion", "name": { "ru": "Игольница", "en": "Pin Cushion" }, "cost": 0.5, "cooldown": 0.8 }] }]
     },
     {
       "id": "evil_eye",
+      "formerIds": ["memory_knot"],
       "kind": "active",
       "weapon": "voodoo_doll",
-      "tier": "common",
+      "tier": "rare",
       "role": "fast",
       "color": "blue",
       "name": { "ru": "Сглаз", "en": "Evil Eye" },
@@ -3330,10 +3335,12 @@
       "durationSeconds": 10,
       "marks": ["curse"],
       "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "tags": ["Click"] },
-      "native": { "durationMultiplier": 1.5 }
+      "native": { "durationMultiplier": 1.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "darker_eye", "name": { "ru": "Чернее сглаз", "en": "Darker Eye" }, "effect": { "damageTaken": 0.13 } }, { "id": "quick_eye", "name": { "ru": "Быстрый сглаз", "en": "Quick Eye" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "memory_knot", "name": { "ru": "Узелок на память", "en": "Memory Knot" }, "duration": 1.5 }, { "id": "cheap_eye", "name": { "ru": "Сглаз даром", "en": "Free Eye" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "double_eye", "name": { "ru": "Двойной сглаз", "en": "Double Eye" }, "cooldown": 1.3, "effect": { "damageTaken": 0.18 } }, { "id": "passing_eye", "name": { "ru": "Мимоходом", "en": "In Passing" }, "cost": 0.6, "cooldown": 0.7 }] }]
     },
     {
       "id": "lucky_scrap",
+      "formerIds": ["shopkeepers_patience"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
@@ -3344,10 +3351,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 20,
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "resourceOnHit": 2 }
+      "native": { "resourceOnHit": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "more_scraps", "name": { "ru": "Больше лоскутов", "en": "More Scraps" }, "effect": { "hits": 8 } }, { "id": "lucky_knot", "name": { "ru": "Счастливый узел", "en": "Lucky Knot" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "shopkeepers_patience", "name": { "ru": "Терпение лавочницы", "en": "Shopkeeper's Patience" }, "cooldown": 0.7 }, { "id": "cheap_scrap", "name": { "ru": "Лоскут даром", "en": "Free Scrap" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "patchwork", "name": { "ru": "Лоскутное одеяло", "en": "Patchwork" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "scraps_down_the_line", "name": { "ru": "Лоскуты по очереди", "en": "Scraps Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "heavy_gaze",
+      "formerIds": ["night_in_the_swamp"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "common",
@@ -3358,25 +3367,12 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
       "effect": { "type": "strike", "multiplier": 10 },
-      "native": { "when": {"cursesAtLeast": 2, "multiplier": 1.4} }
-    },
-    {
-      "id": "shopkeepers_patience",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "common",
-      "role": "heavy",
-      "color": "blue",
-      "name": { "ru": "Терпение лавочницы", "en": "Shopkeeper's Patience" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 25,
-      "durationSeconds": 6,
-      "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "modifiers": [{"stat": "curseSeconds", "kind": "flat", "value": 6}] }
+      "native": { "when": {"cursesAtLeast": 2, "multiplier": 1.4} },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_gaze", "name": { "ru": "Тяжелее взгляд", "en": "Heavier Gaze" }, "damage": 1.3 }, { "id": "quick_gaze", "name": { "ru": "Быстрый взгляд", "en": "Quick Gaze" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "night_in_the_swamp", "name": { "ru": "Ночь на болоте", "en": "Night in the Swamp" }, "effect": { "queueTargets": 2 } }, { "id": "light_gaze", "name": { "ru": "Лёгкий взгляд", "en": "Light Gaze" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "stone_gaze", "name": { "ru": "Каменный взгляд", "en": "Stone Gaze" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "long_gaze", "name": { "ru": "Долгий взгляд", "en": "Long Stare" }, "cooldown": 1.2, "effect": { "multiplier": 13 } }] }]
     },
     {
       "id": "pipe_smell",
+      "formerIds": ["doll_in_the_pocket"],
       "kind": "aura",
       "weapon": "voodoo_doll",
       "tier": "common",
@@ -3387,60 +3383,8 @@
       "cooldownSeconds": 20,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Click"]}] },
-      "native": { "resourceOnCast": 10 }
-    },
-    {
-      "id": "swamp_fog",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Болотный туман", "en": "Swamp Fog" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 10, "multiplier": 2, "input": "mouse" },
-      "native": { "resourceOnHit": 2 }
-    },
-    {
-      "id": "doll_in_the_pocket",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Кукла в кармане", "en": "Doll in the Pocket" },
-      "tags": ["Click", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}] },
-      "native": { "when": {"cursesAtLeast": 1, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}]} }
-    },
-    {
-      "id": "black_cat",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Чёрная кошка", "en": "Black Cat" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.05}] },
-      "native": { "resourceOnCrit": 2 }
-    },
-    {
-      "id": "curio_counter",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Прилавок с диковинами", "en": "Curio Counter" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "resourceOnKill": 3 }
+      "native": { "resourceOnCast": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "stronger_smell", "name": { "ru": "Крепче табак", "en": "Stronger Tobacco" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Click"] }] } }, { "id": "light_smell", "name": { "ru": "Лёгкий дымок", "en": "Light Smoke" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "doll_in_the_pocket", "name": { "ru": "Кукла в кармане", "en": "Doll in the Pocket" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Click"] }, { "stat": "curseSeconds", "kind": "increased", "value": 0.1 }] } }, { "id": "long_smell", "name": { "ru": "Долгий запах", "en": "Lingering Smell" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "swamp_tobacco", "name": { "ru": "Болотный табак", "en": "Swamp Tobacco" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Click"] }, { "stat": "critChance", "kind": "flat", "value": 0.05 }] } }, { "id": "pipe_all_day", "name": { "ru": "Трубка весь день", "en": "Pipe All Day" }, "cooldown": 1.3, "duration": 2 }] }]
     },
     {
       "id": "swamp_dweller",
@@ -3455,23 +3399,27 @@
       "cooldownSeconds": 35,
       "durationSeconds": 30,
       "effect": {"type": "pulse", "everySeconds": 1, "multiplier": 2, "stacks": {"perStack": {"stat": "damage", "kind": "more", "value": 0.02}, "max": 0.2, "stackSeconds": 30}},
-      "native": {"lastsAboveResource": 50}
+      "native": {"lastsAboveResource": 50},
+      "branches": [{ "level": 5, "options": [{ "id": "bigger_dweller", "name": { "ru": "Жилец покрупнее", "en": "Bigger Dweller" }, "effect": { "multiplier": 2.5 } }, { "id": "quick_dweller", "name": { "ru": "Быстрый жилец", "en": "Quick Dweller" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "old_dweller", "name": { "ru": "Старый жилец", "en": "Old Dweller" }, "duration": 1.3 }, { "id": "cheap_dweller", "name": { "ru": "Жилец даром", "en": "Free Dweller" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "bog_king", "name": { "ru": "Болотный царь", "en": "Bog King" }, "cooldown": 1.3, "effect": { "multiplier": 3 } }, { "id": "restless_dweller", "name": { "ru": "Беспокойный жилец", "en": "Restless Dweller" }, "effect": { "everySeconds": 0.7 } }] }]
     },
     {
       "id": "the_jam_ripens",
-      "kind": "active",
+      "formerIds": ["the_coven_whispers"],
+      "kind": "aura",
       "weapon": "voodoo_doll",
-      "tier": "rare",
+      "tier": "epic",
       "color": "blue",
       "name": {"ru": "Варенье зреет", "en": "The Jam Ripens"},
-      "tags": ["Skill"],
+      "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "passive", "modifiers": [{"stat": "curseHitsPerSecond", "kind": "flat", "value": 0.5}]},
-      "native": {"modifiers": [{"stat": "curseHitsPerSecond", "kind": "flat", "value": 0.5}]}
+      "effect": { "type": "aura", "modifiers": [{ "stat": "curseHitsPerSecond", "kind": "flat", "value": 0.5 }], "reserve": 20 },
+      "native": {"modifiers": [{"stat": "curseHitsPerSecond", "kind": "flat", "value": 0.5}]},
+      "branches": [{ "level": 5, "options": [{ "id": "riper_jam", "name": { "ru": "Спелее варенье", "en": "Riper Jam" }, "effect": { "modifiers": [{ "stat": "curseHitsPerSecond", "kind": "flat", "value": 0.6 }] } }, { "id": "small_jar", "name": { "ru": "Маленькая банка", "en": "Small Jar" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "the_coven_whispers", "name": { "ru": "Ковен шепчет", "en": "The Coven Whispers" }, "effect": { "modifiers": [{ "stat": "curseHitsPerSecond", "kind": "flat", "value": 0.55 }, { "stat": "curseEffect", "kind": "increased", "value": 0.05 }] } }, { "id": "sweet_jam", "name": { "ru": "Сладкое варенье", "en": "Sweet Jam" }, "effect": { "modifiers": [{ "stat": "curseHitsPerSecond", "kind": "flat", "value": 0.55 }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "cellar_of_jam", "name": { "ru": "Погреб варенья", "en": "Cellar of Jam" }, "effect": { "modifiers": [{ "stat": "curseHitsPerSecond", "kind": "flat", "value": 0.8 }], "reserve": 30 } }, { "id": "spoonful", "name": { "ru": "Ложка варенья", "en": "A Spoonful" }, "effect": { "modifiers": [{ "stat": "curseHitsPerSecond", "kind": "flat", "value": 0.3 }], "reserve": 10 } }] }]
     },
     {
       "id": "curio_from_the_counter",
+      "formerIds": ["curio_counter"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "rare",
@@ -3482,56 +3430,12 @@
       "cost": {"resource": 15},
       "cooldownSeconds": 4,
       "effect": {"type": "weakenNext", "enemies": 1, "hpShare": 0, "vulnerability": {"share": 0.15, "seconds": 10}},
-      "native": {"weakenShare": 0.05}
-    },
-    {
-      "id": "memory_knot",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "rare",
-      "role": "fast",
-      "color": "blue",
-      "name": { "ru": "Узелок на память", "en": "Memory Knot" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 5,
-      "durationSeconds": 10,
-      "marks": ["curse"],
-      "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "strikeMultiplier": 4 },
-      "native": { "durationMultiplier": 1.5 }
-    },
-    {
-      "id": "feather_from_the_hat",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "rare",
-      "role": "fast",
-      "color": "blue",
-      "name": { "ru": "Перо из шляпы", "en": "Feather from the Hat" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 6,
-      "durationSeconds": 10,
-      "marks": ["curse"],
-      "effect": { "type": "curseFlow", "hitsPerSecond": 0 },
-      "native": { "durationMultiplier": 1.5 }
-    },
-    {
-      "id": "night_in_the_swamp",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "blue",
-      "name": { "ru": "Ночь на болоте", "en": "Night in the Swamp" },
-      "tags": ["Skill"],
-      "cost": { "resource": 50 },
-      "cooldownSeconds": 30,
-      "effect": { "type": "strike", "multiplier": 12, "queueTargets": 2 },
-      "native": { "when": {"cursesAtLeast": 1, "multiplier": 1.5} }
+      "native": {"weakenShare": 0.05},
+      "branches": [{ "level": 5, "options": [{ "id": "stranger_curio", "name": { "ru": "Диковина почуднее", "en": "Stranger Curio" }, "effect": { "vulnerability": { "share": 0.2, "seconds": 10 } } }, { "id": "quick_curio", "name": { "ru": "Быстрая диковина", "en": "Quick Curio" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "curio_counter", "name": { "ru": "Прилавок с диковинами", "en": "Curio Counter" }, "cost": 0.5 }, { "id": "long_curio", "name": { "ru": "Долгая диковина", "en": "Lasting Curio" }, "effect": { "vulnerability": { "share": 0.15, "seconds": 15 } } }] }, { "level": 25, "options": [{ "id": "cursed_curio", "name": { "ru": "Проклятая диковина", "en": "Cursed Curio" }, "cooldown": 1.3, "effect": { "vulnerability": { "share": 0.25, "seconds": 10 } } }, { "id": "two_curios", "name": { "ru": "Две диковины", "en": "Two Curios" }, "cooldown": 1.3, "effect": { "enemies": 2 } }] }]
     },
     {
       "id": "doll_whisper",
+      "formerIds": ["the_curse_ripens"],
       "kind": "aura",
       "weapon": "voodoo_doll",
       "tier": "rare",
@@ -3541,10 +3445,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "aura", "modifiers": [{"stat": "curseSeconds", "kind": "increased", "value": 0.25}], "reserve": 20 },
-      "native": { "modifiers": [{"stat": "curseSeconds", "kind": "increased", "value": 0.25}] }
+      "native": { "modifiers": [{"stat": "curseSeconds", "kind": "increased", "value": 0.25}] },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_whisper", "name": { "ru": "Громче шёпот", "en": "Louder Whisper" }, "effect": { "modifiers": [{ "stat": "curseSeconds", "kind": "increased", "value": 0.3 }] } }, { "id": "soft_whisper", "name": { "ru": "Тихий шёпот", "en": "Soft Whisper" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "the_curse_ripens", "name": { "ru": "Проклятие зреет само", "en": "The Curse Ripens" }, "effect": { "modifiers": [{ "stat": "curseSeconds", "kind": "increased", "value": 0.25 }, { "stat": "curseEffect", "kind": "increased", "value": 0.05 }] } }, { "id": "gossip", "name": { "ru": "Сплетни", "en": "Gossip" }, "effect": { "modifiers": [{ "stat": "curseSeconds", "kind": "increased", "value": 0.25 }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "endless_whisper", "name": { "ru": "Бесконечный шёпот", "en": "Endless Whisper" }, "effect": { "modifiers": [{ "stat": "curseSeconds", "kind": "increased", "value": 0.4 }], "reserve": 30 } }, { "id": "quick_whisper", "name": { "ru": "Шёпот на ухо", "en": "Whisper in the Ear" }, "effect": { "modifiers": [{ "stat": "curseSeconds", "kind": "increased", "value": 0.15 }], "reserve": 10 } }] }]
     },
     {
       "id": "bad_eye",
+      "formerIds": ["the_shop_is_always_open"],
       "kind": "aura",
       "weapon": "voodoo_doll",
       "tier": "rare",
@@ -3555,23 +3461,12 @@
       "cooldownSeconds": 30,
       "durationSeconds": 15,
       "effect": { "type": "aura", "modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.2}] },
-      "native": { "modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.1}] }
-    },
-    {
-      "id": "brew_in_the_cauldron",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "rare",
-      "color": "blue",
-      "name": { "ru": "Варево в котле", "en": "Brew in the Cauldron" },
-      "tags": ["Mouse", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "mouse", "every": 25, "multiplier": 5 },
-      "native": { "resourceOnHit": 5 }
+      "native": { "modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.1}] },
+      "branches": [{ "level": 5, "options": [{ "id": "worse_eye", "name": { "ru": "Хуже глаз", "en": "Worse Eye" }, "effect": { "modifiers": [{ "stat": "enemyDebuffEffect", "kind": "increased", "value": 0.25 }] } }, { "id": "quick_bad_eye", "name": { "ru": "Быстрый глаз", "en": "Quick Eye" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "the_shop_is_always_open", "name": { "ru": "Лавка открыта всегда", "en": "The Shop Is Always Open" }, "duration": 1.5 }, { "id": "cheap_bad_eye", "name": { "ru": "Глаз даром", "en": "Free Eye" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "evil_glare", "name": { "ru": "Злобный взгляд", "en": "Evil Glare" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "enemyDebuffEffect", "kind": "increased", "value": 0.35 }] } }, { "id": "eye_all_day", "name": { "ru": "Глаз весь день", "en": "Eye All Day" }, "duration": 2, "cooldown": 1.3 }] }]
     },
     {
       "id": "long_wish",
+      "formerIds": ["jam_for_winter"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "epic",
@@ -3583,10 +3478,12 @@
       "cooldownSeconds": 30,
       "durationSeconds": 8,
       "effect": {"type": "wish", "share": 0.3},
-      "native": {"carryOver": true}
+      "native": {"carryOver": true},
+      "branches": [{ "level": 5, "options": [{ "id": "deeper_wish", "name": { "ru": "Глубже желание", "en": "Deeper Wish" }, "effect": { "share": 0.36 } }, { "id": "quick_wish", "name": { "ru": "Быстрое желание", "en": "Quick Wish" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "jam_for_winter", "name": { "ru": "Варенье на зиму", "en": "Jam for Winter" }, "duration": 1.5 }, { "id": "cheap_wish", "name": { "ru": "Желание даром", "en": "Free Wish" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "heart_wish", "name": { "ru": "Заветное желание", "en": "Heart's Wish" }, "cooldown": 1.3, "effect": { "share": 0.45 } }, { "id": "many_wishes", "name": { "ru": "Много желаний", "en": "Many Wishes" }, "cooldown": 0.6, "effect": { "share": 0.2 } }] }]
     },
     {
       "id": "skull_on_the_staff",
+      "formerIds": ["spiteful_memory"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "epic",
@@ -3598,10 +3495,12 @@
       "cooldownSeconds": 45,
       "effect": {"type": "strike", "multiplier": 5, "perCurse": 5, "refreshCurses": true},
       "native": {"modifiers": [{"stat": "resourceGain", "kind": "more", "value": 1}]},
-      "durationSeconds": 10
+      "durationSeconds": 10,
+      "branches": [{ "level": 5, "options": [{ "id": "grinning_skull", "name": { "ru": "Скалящийся череп", "en": "Grinning Skull" }, "effect": { "perCurse": 6 } }, { "id": "quick_skull", "name": { "ru": "Быстрый череп", "en": "Quick Skull" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "spiteful_memory", "name": { "ru": "Злая память", "en": "Spiteful Memory" }, "effect": { "multiplier": 7 } }, { "id": "cheap_skull", "name": { "ru": "Череп даром", "en": "Free Skull" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "ancestor_skull", "name": { "ru": "Череп предка", "en": "Ancestor's Skull" }, "cooldown": 1.3, "effect": { "perCurse": 8 } }, { "id": "skull_down_the_line", "name": { "ru": "Череп по очереди", "en": "Skull Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "needle_to_the_heart",
+      "formerIds": ["mama_zola_remembers"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "epic",
@@ -3612,54 +3511,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"cursesAtLeast": 1, "executeBelow": 0.2} }
-    },
-    {
-      "id": "three_pins",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "epic",
-      "role": "fast",
-      "color": "blue",
-      "name": { "ru": "Три булавки", "en": "Three Pins" },
-      "tags": ["Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 8,
-      "durationSeconds": 10,
-      "marks": ["curse"],
-      "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "bossTimerSlow": 0.3 },
-      "native": { "durationMultiplier": 1.5 }
-    },
-    {
-      "id": "the_coven_whispers",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "epic",
-      "color": "blue",
-      "name": { "ru": "Ковен шепчет", "en": "The Coven Whispers" },
-      "tags": ["Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 40,
-      "durationSeconds": 15,
-      "marks": ["curse"],
-      "effect": { "type": "curseFlow", "hitsPerSecond": 0 },
-      "native": { "modifiers": [{"stat": "resourceGain", "kind": "more", "value": 1}] }
-    },
-    {
-      "id": "spiteful_memory",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "epic",
-      "color": "blue",
-      "name": { "ru": "Злая память", "en": "Spiteful Memory" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 2, "maxSteps": 50, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.01}] },
-      "native": { "when": {"resourceAtLeast": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}]} }
+      "native": { "when": {"cursesAtLeast": 1, "executeBelow": 0.2} },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_needle", "name": { "ru": "Длиннее игла", "en": "Longer Needle" }, "damage": 1.3 }, { "id": "quick_needle", "name": { "ru": "Быстрая игла", "en": "Quick Needle" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "mama_zola_remembers", "name": { "ru": "Мама Зола помнит", "en": "Mama Zola Remembers" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_needle", "name": { "ru": "Игла даром", "en": "Free Needle" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "final_needle", "name": { "ru": "Последняя игла", "en": "Final Needle" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "silver_needle", "name": { "ru": "Серебряная игла", "en": "Silver Needle" }, "damage": 1.7 }] }]
     },
     {
       "id": "curse_on_the_whole_line",
+      "formerIds": ["feather_from_the_hat"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "legendary",
@@ -3672,7 +3529,8 @@
       "durationSeconds": 15,
       "marks": ["curse"],
       "effect": { "type": "curseFlow", "hitsPerSecond": 1 },
-      "native": { "when": {"resourceAtLeast": 100, "free": true} }
+      "native": { "when": {"resourceAtLeast": 100, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "stronger_line", "name": { "ru": "Крепче порча", "en": "Stronger Hex" }, "effect": { "hitsPerSecond": 1.25 } }, { "id": "quick_line", "name": { "ru": "Быстрая порча", "en": "Quick Hex" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "feather_from_the_hat", "name": { "ru": "Перо из шляпы", "en": "Feather from the Hat" }, "duration": 1.4 }, { "id": "cheap_line", "name": { "ru": "Порча даром", "en": "Free Hex" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "seven_generations", "name": { "ru": "До седьмого колена", "en": "Seven Generations" }, "cooldown": 1.3, "effect": { "hitsPerSecond": 1.6 } }, { "id": "long_line", "name": { "ru": "Долгая порча", "en": "Lasting Hex" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "night_of_the_dead",
@@ -3686,22 +3544,12 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 10 }
-    },
-    {
-      "id": "the_curse_ripens",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "legendary",
-      "locked": true,
-      "color": "blue",
-      "name": { "ru": "Проклятие зреет само", "en": "The Curse Ripens on Its Own" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "resourceOnKill": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_night_v", "name": { "ru": "Дольше ночь", "en": "Longer Night" }, "effect": { "hits": 36 } }, { "id": "heavier_night", "name": { "ru": "Тяжелее ночь", "en": "Heavier Night" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "quick_night_v", "name": { "ru": "Быстрая ночь", "en": "Quick Night" }, "cooldown": 0.75 }, { "id": "cheap_night_v", "name": { "ru": "Ночь даром", "en": "Free Night" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "all_souls", "name": { "ru": "Все души", "en": "All Souls" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "midnight", "name": { "ru": "Полночь", "en": "Midnight" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "last_wish",
+      "formerIds": ["black_cat"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "mythic",
@@ -3712,10 +3560,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 20, "critChance": 1 },
-      "native": { "when": {"cursesAtLeast": 3, "free": true} }
+      "native": { "when": {"cursesAtLeast": 3, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "stronger_wish", "name": { "ru": "Сильнее желание", "en": "Stronger Wish" }, "damage": 1.3 }, { "id": "quick_last_wish", "name": { "ru": "Быстрое желание", "en": "Quick Wish" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "black_cat", "name": { "ru": "Чёрная кошка", "en": "Black Cat" }, "cost": 0.5 }, { "id": "second_wish", "name": { "ru": "Второе желание", "en": "Second Wish" }, "effect": { "queueTargets": 1 } }] }, { "level": 25, "options": [{ "id": "dying_wish", "name": { "ru": "Предсмертное желание", "en": "Dying Wish" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "wishes_for_all", "name": { "ru": "Желания для всех", "en": "Wishes for Everyone" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "doll_with_the_colossus_face",
+      "formerIds": ["swamp_fog"],
       "kind": "active",
       "weapon": "voodoo_doll",
       "tier": "mythic",
@@ -3727,47 +3577,8 @@
       "cooldownSeconds": 60,
       "durationSeconds": 10,
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 5, "input": "mouse" },
-      "native": { "durationMultiplier": 1.5 }
-    },
-    {
-      "id": "jam_for_winter",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "blue",
-      "name": { "ru": "Варенье на зиму", "en": "Jam for Winter" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 90,
-      "durationSeconds": 20,
-      "effect": { "type": "storeHits", "releaseShare": 3 },
-      "native": { "when": {"cursesAtLeast": 2, "multiplier": 1.5} }
-    },
-    {
-      "id": "the_shop_is_always_open",
-      "kind": "active",
-      "weapon": "voodoo_doll",
-      "tier": "mythic",
-      "color": "blue",
-      "name": { "ru": "Лавка открыта всегда", "en": "The Shop Is Always Open" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 10, "maxSteps": 5, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.05}], "from": 100, "modifiers": [{"stat": "curseEffect", "kind": "increased", "value": 0.2}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}] }
-    },
-    {
-      "id": "mama_zola_remembers",
-      "kind": "aura",
-      "weapon": "voodoo_doll",
-      "tier": "mythic",
-      "locked": true,
-      "color": "blue",
-      "name": { "ru": "Мама Зола помнит", "en": "Mama Zola Remembers" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "durationMultiplier": 1.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "uglier_doll", "name": { "ru": "Страшнее кукла", "en": "Uglier Doll" }, "effect": { "multiplier": 6 } }, { "id": "longer_doll", "name": { "ru": "Дольше кукла", "en": "Longer Doll" }, "duration": 1.3 }] }, { "level": 15, "options": [{ "id": "swamp_fog", "name": { "ru": "Болотный туман", "en": "Swamp Fog" }, "cooldown": 0.75 }, { "id": "cheap_doll", "name": { "ru": "Кукла даром", "en": "Free Doll" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "colossus_in_miniature", "name": { "ru": "Колосс в миниатюре", "en": "Colossus in Miniature" }, "duration": 1.6, "cooldown": 1.3 }, { "id": "single_doll", "name": { "ru": "Одна кукла", "en": "Single Doll" }, "effect": { "multiplier": 8, "queueTargets": 1 } }] }]
     },
     {
       "id": "bank_of_seconds",

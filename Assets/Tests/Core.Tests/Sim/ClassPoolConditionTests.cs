@@ -40,24 +40,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void DollInThePocketAddsClickDamageWhileACurseHangs()
-        {
-            var plain = SkillTestHero.Of(HeroClass.Voodoo, "evil_eye");
-            var voodoo = SkillTestHero.Of(HeroClass.Voodoo, "evil_eye", "doll_in_the_pocket");
-            voodoo.Ticks(1);
-            plain.Ticks(1);
-            var plainBefore = Damage(plain, StatTags.Click);
-            var before = Damage(voodoo, StatTags.Click) / plainBefore;
-
-            voodoo.Cast(0);
-            plain.Cast(0);
-            voodoo.Ticks(1);
-            plain.Ticks(1);
-
-            Assert.That(Damage(voodoo, StatTags.Click) / Damage(plain, StatTags.Click) - before, Is.EqualTo(10 / plainBefore).Within(1e-9));
-        }
-
-        [Test]
         public void SaltyTricorneAddsMouseDamageOnceTwoCannonsStand()
         {
             var captain = SkillTestHero.Of(HeroClass.Captain, "salty_tricorne", "cannon_by_name");
