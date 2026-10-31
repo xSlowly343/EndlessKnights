@@ -118,11 +118,11 @@ namespace Game.Sim
 
         private static HeroClass[] RandomParty(Random random)
         {
-            var all = (HeroClass[])Enum.GetValues(typeof(HeroClass));
+            var all = new List<HeroClass>(HeroClassNames.ByName.Values);
             var picked = new List<HeroClass>();
             while (picked.Count < 4)
             {
-                var heroClass = all[random.Next(all.Length)];
+                var heroClass = all[random.Next(all.Count)];
                 if (!picked.Contains(heroClass))
                     picked.Add(heroClass);
             }

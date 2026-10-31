@@ -27,6 +27,8 @@ namespace Game.Core.Sim
                 return HunterMarkHit();
             if (_state.Is(HeroClass.Nomad))
                 return SandHit();
+            if (_state.Is(HeroClass.Rimecaller))
+                return ColdHit();
             if (!_state.Is(HeroClass.Ronin))
                 return 1;
 
@@ -118,6 +120,27 @@ namespace Game.Core.Sim
             ? (_rules.EvilEye.DamageTaken + System.Math.Max(0, _hero.Value(CombatStats.EvilEyeEffect, 0))) * (1 + System.Math.Max(0, _hero.Value(CombatStats.EvilEyePower, 0)))
             : 0;
 
+        private double ColdHit()
+        {
+            if (_state.EnemyAlive)
+                _state.Cold = System.Math.Min(_rules.Cold.Max, _state.Cold + _rules.Cold.PerKeyHit);
+            return 1;
+        }
+
+        public double ColdShare => _state.Is(HeroClass.Rimecaller) && _state.EnemyAlive && _state.Cold > 0
+            ? _rules.Cold.DamageTaken * System.Math.Min(1, _state.Cold / _rules.Cold.Max)
+                * (1 + System.Math.Max(0, _hero.Value(CombatStats.ColdPower, 0))) * System.Math.Max(0, _hero.Value(CombatStats.EnemyDebuffEffect, 1))
+            : 0;
+
+        private void FadeCold()
+        {
+            if (_state.Cold <= 0)
+                return;
+            _state.Cold *= 1 - _rules.Cold.FadePerSecond * GameLoop.TickSeconds;
+            if (_state.Cold < 1e-6 || !_state.EnemyAlive)
+                _state.Cold = 0;
+        }
+
         public int ShieldEvery => System.Math.Max(_rules.ShieldEveryMin, (int)System.Math.Round(_rules.ShieldEvery + _hero.Value(CombatStats.ShieldEvery, 0, StatTags.Keyboard)));
 
         public int StrikeEvery
@@ -143,6 +166,7 @@ namespace Game.Core.Sim
             if (_state.BlindTicks > 0)
                 _state.BlindTicks = _state.EnemyAlive ? _state.BlindTicks - 1 : 0;
             Clockwork();
+            FadeCold();
             EndCombo(keyHits, mousePx);
         }
 

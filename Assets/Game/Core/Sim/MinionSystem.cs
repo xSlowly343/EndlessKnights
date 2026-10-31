@@ -26,9 +26,12 @@ namespace Game.Core.Sim
         public long CannonShots { get; private set; }
         public long SkeletonHits { get; private set; }
         public long BeastHits { get; private set; }
+        public long GolemHits { get; private set; }
 
         public int Limit(MinionKind kind)
         {
+            if (kind == MinionKind.Golem)
+                return 1;
             var limit = kind == MinionKind.Cannon
                 ? _combat.Cannons.Max + _hero.Value(CombatStats.CannonCount, 0)
                 : Rules(kind).Max + _hero.Value(CombatStats.MinionCount, 0, StatTags.Minion)
@@ -126,7 +129,7 @@ namespace Game.Core.Sim
             {
                 if (!minions[i].Standing)
                     continue;
-                var kindSpeed = minions[i].Kind != MinionKind.Cannon && input.MousePx > 0 ? speed * Rules(minions[i].Kind).MouseSpeed : speed;
+                var kindSpeed = minions[i].Kind != MinionKind.Cannon && minions[i].Kind != MinionKind.Golem && input.MousePx > 0 ? speed * Rules(minions[i].Kind).MouseSpeed : speed;
                 if (input.MousePx > 0 && minions[i].MouseBonus > 0)
                     kindSpeed *= minions[i].MouseBonus;
                 minions[i].HitCarry += minions[i].HitsPerSecond * kindSpeed * GameLoop.TickSeconds;
@@ -146,6 +149,8 @@ namespace Game.Core.Sim
         {
             if (_state.FightingBoss)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.MinionBoss, 0, StatTags.Minion));
+            if (kind == MinionKind.Golem)
+                multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.GolemPower, 0, StatTags.Minion));
             _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags);
             var share = _hero.Value(CombatStats.MinionQueueShare, 0, StatTags.Minion);
             if (share > 0)
@@ -155,6 +160,8 @@ namespace Game.Core.Sim
                 SkeletonHits++;
             if (kind == MinionKind.Beast)
                 BeastHits++;
+            if (kind == MinionKind.Golem)
+                GolemStun();
             if (kind != MinionKind.Cannon)
                 return;
             CannonShots++;
@@ -162,6 +169,15 @@ namespace Game.Core.Sim
             FireShot();
             CannonExtras(multiplier, tags);
             _resource.Gain(_combat.Cannons.ResourcePerShot * _hero.Value(CombatStats.ResourceGain, 1));
+        }
+
+        private void GolemStun()
+        {
+            GolemHits++;
+            if (!_state.EnemyAlive)
+                return;
+            var seconds = _combat.Classes.Golem.StunSeconds + _hero.Value(CombatStats.StunSeconds, 0);
+            _state.StunTicks = System.Math.Max(_state.StunTicks, (int)System.Math.Round(seconds * GameLoop.TicksPerSecond));
         }
 
         private void FireShot()

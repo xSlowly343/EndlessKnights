@@ -259,6 +259,9 @@ namespace Game.Core.Sim
         public int KeysTowardBlind { get; set; }
         public int BlindTicks { get; set; }
         public bool EvilEyeOnEnemy { get; set; }
+        public bool BondsUp { get; set; }
+        public double Cold { get; set; }
+        public double BloodStacks { get; set; }
         public int CompanionMarks { get; set; }
         public int OverdriveTicks { get; set; }
         public bool OverdriveSpent { get; set; }
@@ -296,6 +299,8 @@ namespace Game.Core.Sim
             PoisonStacks = 0;
             BurnStacks = 0;
             DotCarry = 0;
+            Cold = 0;
+            BloodStacks = 0;
             Doom = BigNumber.Zero;
             DoomTicks = 0;
             VulnerabilityShare = 0;

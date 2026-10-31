@@ -138,7 +138,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EveryCharacterHasStartingSkillsOnBothButtons()
         {
-            foreach (HeroClass heroClass in System.Enum.GetValues(typeof(HeroClass)))
+            foreach (var heroClass in HeroClassNames.ByName.Values)
             {
                 var loop = TestWorld.Loop(state: new GameState { Class = heroClass });
 

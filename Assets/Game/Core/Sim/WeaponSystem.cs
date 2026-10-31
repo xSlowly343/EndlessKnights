@@ -106,7 +106,7 @@ namespace Game.Core.Sim
         private void GiveStarter()
         {
             var weapons = _state.Weapons;
-            if (weapons.StarterGiven || !_state.ClassChosen)
+            if (weapons.StarterGiven || !_state.ClassChosen || !_catalog.HasType(_state.Class))
                 return;
             weapons.StarterGiven = true;
             if (weapons.Right == null && weapons.Left == null)

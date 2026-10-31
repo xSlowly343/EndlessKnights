@@ -1,7 +1,7 @@
 {
   "version": 6,
   "class": "clayshaper",
-  "attribute": {"name": "strength", "perPoint": [{"stat": "damage", "kind": "increased", "value": 0.01, "tags": ["Minion"]}]},
+  "attribute": {"name": "strength", "perPoint": [{"stat": "golemPower", "kind": "flat", "value": 0.01}]},
   "barPassives": [[{"stat": "classAttribute", "kind": "flat", "value": 3}], [{"stat": "damage", "kind": "increased", "value": 0.02, "tags": ["Minion"]}]],
   "nodes": [
     {"id": "clayshaper_potters_hammer", "row": 1, "column": 0, "name": {"ru": "Гончарный молот", "en": "Potter's Hammer"}, "a": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.04, "tags": ["Keyboard"]}]}, "b": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.02, "tags": ["Keyboard"]}]}, "c": {"text": {"ru": "каждый 30-й удар даёт 3 Глины", "en": "every 30th hit gives 3 Clay"}, "waits": "resourceOnHits"}},
