@@ -42,6 +42,9 @@ namespace Game.Core.Tests.Sim
         [TestCase(HeroClass.Ronin)]
         [TestCase(HeroClass.Amazon)]
         [TestCase(HeroClass.Stormweaver)]
+        [TestCase(HeroClass.Nomad)]
+        [TestCase(HeroClass.Metalhead)]
+        [TestCase(HeroClass.Oracle)]
         public void BotSpendsEveryPointOnTheTreeOfItsClass(HeroClass heroClass)
         {
             var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(4), heroClass);

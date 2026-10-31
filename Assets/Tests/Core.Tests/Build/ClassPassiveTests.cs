@@ -22,6 +22,9 @@ namespace Game.Core.Tests.Build
         [TestCase(HeroClass.Ronin, "ronin_katana")]
         [TestCase(HeroClass.Amazon, "amazon_short_bow")]
         [TestCase(HeroClass.Stormweaver, "stormweaver_storm_rod")]
+        [TestCase(HeroClass.Nomad, "nomad_scimitar")]
+        [TestCase(HeroClass.Metalhead, "metalhead_electric_guitar")]
+        [TestCase(HeroClass.Oracle, "oracle_holy_orb")]
         public void AClassOnTheNewTreeHasNoStartPassiveAndGrowsFromItsNodes(HeroClass heroClass, string node)
         {
             var loop = Real(new GameState { Class = heroClass, HeroLevel = 10 });
@@ -45,24 +48,6 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100).Within(1e-9));
             Assert.That(loop.RaiseNode("viking_axe"), Is.EqualTo(RankResult.Done));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(104).Within(1e-9));
-        }
-
-        [Test]
-        public void MetalheadStartGivesStrongerLongerSongs()
-        {
-            var loop = Real(new GameState { Class = HeroClass.Metalhead });
-
-            Assert.That(loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura), Is.EqualTo(1.10).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1.10).Within(1e-9));
-        }
-
-        [Test]
-        public void NomadStartGivesALittleOfEverything()
-        {
-            var loop = Real(new GameState { Class = HeroClass.Nomad });
-
-            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1.05).Within(1e-9));
-            Assert.That(loop.Hero.Value(new StatId("damagePerSector"), 0), Is.EqualTo(0.03).Within(1e-9));
         }
 
         [Test]
