@@ -26,7 +26,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(114));
+            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(115));
             Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(30));
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Aura && !gem.Locked).Select(gem => gem.Skill!.Effect), Is.All.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Active).Select(gem => gem.Skill!.Effect), Is.All.Not.InstanceOf<AuraEffect>());
@@ -72,7 +72,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void ASkillWithoutBranchesHasNone()
         {
-            Assert.That(GemCatalog.Load(RealFile())["iron_rim_bash"].Branches, Is.Empty);
+            Assert.That(GemCatalog.Load(RealFile())["thin_cut"].Branches, Is.Empty);
         }
 
         [TestCase("\"branches\": []", "3 branch tiers, got 0")]
@@ -159,14 +159,25 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
+        public void ARemovedHuscarlSkillLeadsToTheSkillThatTookItAsABranch()
+        {
+            var gems = GemCatalog.Load(RealFile());
+
+            Assert.That(gems.TryGet("rivet", out var rivet), Is.True);
+            Assert.That(rivet.Id, Is.EqualTo("iron_rim_bash"));
+            Assert.That(rivet.Branches.SelectMany(tier => tier.Options).Select(option => option.Id), Does.Contain("rivet"));
+            Assert.That(gems.TryGet("the_unfading_forge", out var forge) && forge.Type == SkillType.Aura, Is.True);
+        }
+
+        [Test]
         public void TheRosterNamesClassesWithoutFifteenSkillsAndFourAuras()
         {
             var gems = GemCatalog.Load(RealFile());
 
-            var problems = SkillRoster.Problems(gems, new[] { "axe", "nothing" });
+            var problems = SkillRoster.Problems(gems, new[] { "axe", "katana", "nothing" });
 
-            Assert.That(problems, Has.Member("axe: 32 active skills, expected 15"));
-            Assert.That(problems, Has.Member("axe: 3 auras, expected 4"));
+            Assert.That(problems.Where(problem => problem.StartsWith("axe")), Is.Empty, "the Huscarl is the reference class");
+            Assert.That(problems, Has.Member("katana: 30 active skills, expected 15"));
             Assert.That(problems, Has.Member("nothing: 0 active skills, expected 15"));
             Assert.That(problems, Has.Member("nothing: 0 auras, expected 4"));
         }

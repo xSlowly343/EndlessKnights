@@ -109,9 +109,10 @@ namespace Game.Core.Sim
 
         private static bool OpensTier(GemDef gem, int level)
         {
-            foreach (var tier in gem.Branches)
+            var tiers = gem.Branches;
+            for (var i = 0; i < tiers.Count; i++)
             {
-                if (tier.Level == level)
+                if (tiers[i].Level == level)
                     return true;
             }
             return false;

@@ -10,6 +10,8 @@ namespace Game.Core.Tests.Content
     public class WeaponPoolTests
     {
         private static readonly int[] TierSizes = { 12, 9, 6, 3, 5 };
+        private static readonly int[] ReferenceTierSizes = { 5, 6, 4, 2, 2 };
+        private static readonly string[] ReferencePools = { "axe" };
 
         private static IEnumerable<WeaponType> FullPools() =>
             TestWorld.Real.Weapons.Types.Where(type => ClassSkills(type).Count() >= 35);
@@ -20,7 +22,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void FilledPoolsHoldThirtyFiveSkillsSplitTwelveNineSixThreeFive()
         {
-            Assert.That(FullPools().Count(), Is.EqualTo(TestWorld.Real.Weapons.Types.Count()));
+            Assert.That(FullPools().Count(), Is.EqualTo(TestWorld.Real.Weapons.Types.Count() - ReferencePools.Length));
             foreach (var type in FullPools())
             {
                 var skills = ClassSkills(type).ToList();
@@ -31,9 +33,24 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
+        public void TheReferencePoolHoldsFifteenSkillsAndFourAuras()
+        {
+            foreach (var id in ReferencePools)
+            {
+                var type = TestWorld.Real.Weapons.Types.Single(weapon => weapon.Id == id);
+                var skills = ClassSkills(type).ToList();
+                Assert.That(skills.Count(gem => gem.Type == SkillType.Active), Is.EqualTo(SkillRoster.ActivePerClass), id);
+                Assert.That(skills.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(SkillRoster.AurasPerClass), id);
+                for (var tier = 0; tier < ReferenceTierSizes.Length; tier++)
+                    Assert.That(skills.Count(gem => (int)gem.Skill!.Tier == tier), Is.EqualTo(ReferenceTierSizes[tier]), id + " tier " + (SkillTier)tier);
+                Assert.That(skills.Where(gem => gem.Branches.Count == 0), Is.Empty, id + ": every skill of the reference class has branches");
+            }
+        }
+
+        [Test]
         public void EveryTierOfAFilledPoolHasAFastAndAHeavySkillToRoll()
         {
-            foreach (var type in FullPools())
+            foreach (var type in TestWorld.Real.Weapons.Types)
             {
                 var pool = TestWorld.Real.Weapons.PoolOf(type);
                 for (var tier = SkillTier.Common; tier <= SkillTier.Legendary; tier++)

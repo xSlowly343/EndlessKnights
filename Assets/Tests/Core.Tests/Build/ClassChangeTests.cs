@@ -56,7 +56,7 @@ namespace Game.Core.Tests.Build
             var table = Weapons.Reforge;
             foreach (var from in Weapons.Types)
             {
-                foreach (var to in Weapons.Types.Where(type => type != from))
+                foreach (var to in Weapons.Types.Where(type => type != from && ClassGems(type).Count == ClassGems(from).Count))
                 {
                     var targets = new HashSet<GemDef>();
                     foreach (var gem in ClassGems(from))

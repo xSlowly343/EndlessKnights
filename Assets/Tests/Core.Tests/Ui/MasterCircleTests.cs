@@ -63,7 +63,7 @@ namespace Game.Core.Tests.Ui
             var loop = Ronin(1);
 
             Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["no_rush"], Levels), Is.EqualTo(BookResult.NotOnWeapon));
-            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["rivet"], Levels), Is.EqualTo(BookResult.NotOnWeapon));
+            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["tempering"], Levels), Is.EqualTo(BookResult.NotOnWeapon));
             Assert.That(loop.State.Skills, Is.Empty);
         }
 

@@ -4,7 +4,7 @@
   "gems": [
     {
       "id": "iron_rim_bash",
-      "formerIds": ["shield_bash"],
+      "formerIds": ["shield_bash", "rivet"],
       "kind": "active",
       "weapon": "axe",
       "tier": "common",
@@ -15,7 +15,8 @@
       "cost": { "resource": 15 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 4 },
-      "native": { "holdDecaySeconds": 5 }
+      "native": { "holdDecaySeconds": 5 },
+      "branches": [{ "level": 5, "options": [{ "id": "heavy_rim", "name": { "ru": "Тяжёлый обод", "en": "Heavy Rim" }, "damage": 1.3 }, { "id": "quick_rim", "name": { "ru": "Быстрый щит", "en": "Quick Shield" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "rivet", "name": { "ru": "Клёпка", "en": "Rivet" }, "cost": 0.5 }, { "id": "stunning_rim", "name": { "ru": "Звон в ушах", "en": "Ringing Ears" }, "effect": { "multiplier": 5 } }] }, { "level": 25, "options": [{ "id": "two_shields", "name": { "ru": "Два щита", "en": "Two Shields" }, "effect": { "queueTargets": 1 } }, { "id": "crushing_rim", "name": { "ru": "Сминающий обод", "en": "Crushing Rim" }, "damage": 1.6, "cooldown": 1.25 }] }]
     },
     {
       "id": "no_mercy",
@@ -31,7 +32,8 @@
       "cooldownSeconds": 25,
       "marks": ["stun"],
       "effect": { "type": "strike", "multiplier": 5 },
-      "native": { "spendAll": { "perPoint": 0.1, "max": 10 } }
+      "native": { "spendAll": { "perPoint": 0.1, "max": 10 } },
+      "branches": [{ "level": 5, "options": [{ "id": "no_quarter", "name": { "ru": "Без пощады", "en": "No Quarter" }, "damage": 1.3 }, { "id": "quick_rage", "name": { "ru": "Быстрая ярость", "en": "Quick Rage" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "cold_mercy", "name": { "ru": "Холодный расчёт", "en": "Cold Reckoning" }, "cost": 0.6 }, { "id": "full_swing", "name": { "ru": "Полный замах", "en": "Full Swing" }, "effect": { "multiplier": 7 } }] }, { "level": 25, "options": [{ "id": "last_word", "name": { "ru": "Последнее слово", "en": "Last Word" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "no_mercy_line", "name": { "ru": "Никому пощады", "en": "Mercy for None" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "hearth_song",
@@ -68,7 +70,7 @@
     },
     {
       "id": "roar_from_the_door",
-      "formerIds": ["battle_cry"],
+      "formerIds": ["battle_cry", "torn_ear"],
       "kind": "aura",
       "weapon": "axe",
       "tier": "rare",
@@ -78,12 +80,13 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 30,
       "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.30, "tags": ["Keyboard"] }] },
-      "native": { "resourcePerKeyHit": 1 }
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Keyboard"] }] },
+      "native": { "resourcePerKeyHit": 1 },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_roar", "name": { "ru": "Громче", "en": "Louder" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.36, "tags": ["Keyboard"] }] } }, { "id": "long_roar", "name": { "ru": "Протяжный рёв", "en": "Long Roar" }, "duration": 1.4 }] }, { "level": 15, "options": [{ "id": "torn_ear", "name": { "ru": "Рваное ухо", "en": "Torn Ear" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Keyboard"] }, { "stat": "critChance", "kind": "flat", "value": 0.05 }] } }, { "id": "quick_roar", "name": { "ru": "Короткий рёв", "en": "Short Roar" }, "cooldown": 0.7 }] }, { "level": 25, "options": [{ "id": "war_roar", "name": { "ru": "Боевой рёв", "en": "War Roar" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.45, "tags": ["Keyboard"] }] }, "cost": 1.3 }, { "id": "endless_roar", "name": { "ru": "Бесконечный рёв", "en": "Endless Roar" }, "duration": 2, "cooldown": 1.2 }] }]
     },
     {
       "id": "hatchet_toss",
-      "formerIds": ["throwing_axe"],
+      "formerIds": ["throwing_axe", "sparks_from_the_hammer"],
       "kind": "active",
       "weapon": "axe",
       "tier": "common",
@@ -94,7 +97,8 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 3,
       "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1, "skipCurrent": true },
-      "native": { "woundedSpawnResource": 10 }
+      "native": { "woundedSpawnResource": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "sharp_hatchet", "name": { "ru": "Острый топорик", "en": "Sharp Hatchet" }, "damage": 1.3 }, { "id": "light_hatchet", "name": { "ru": "Лёгкий топорик", "en": "Light Hatchet" }, "cost": 0.6 }] }, { "level": 15, "options": [{ "id": "sparks", "name": { "ru": "Искры из-под молота", "en": "Sparks from the Hammer" }, "effect": { "queueTargets": 2 } }, { "id": "return_throw", "name": { "ru": "Обратный бросок", "en": "Return Throw" }, "effect": { "skipCurrent": false } }] }, { "level": 25, "options": [{ "id": "three_hatchets", "name": { "ru": "Три топорика", "en": "Three Hatchets" }, "effect": { "queueTargets": 3 }, "damage": 0.9 }, { "id": "heavy_hatchet", "name": { "ru": "Колун", "en": "Splitter" }, "damage": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "forge_heat",
@@ -108,11 +112,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "stacks", "on": "kill", "perStack": { "stat": "damage", "kind": "increased", "value": 0.05 }, "max": 0.25, "stackSeconds": 10 },
-      "native": { "holdStacksAboveResource": 50 }
+      "native": { "holdStacksAboveResource": 50 },
+      "branches": [{ "level": 5, "options": [{ "id": "hotter", "name": { "ru": "Жарче", "en": "Hotter" }, "effect": { "perStack": { "stat": "damage", "kind": "increased", "value": 0.06 } } }, { "id": "longer", "name": { "ru": "Дольше", "en": "Longer" }, "effect": { "stackSeconds": 15 } }] }, { "level": 15, "options": [{ "id": "bigger_forge", "name": { "ru": "Большой горн", "en": "Bigger Forge" }, "effect": { "max": 0.35 } }, { "id": "steady_heat", "name": { "ru": "Ровный жар", "en": "Steady Heat" }, "effect": { "stackSeconds": 20 } }] }, { "level": 25, "options": [{ "id": "white_heat", "name": { "ru": "Белый жар", "en": "White Heat" }, "effect": { "perStack": { "stat": "damage", "kind": "increased", "value": 0.08 }, "max": 0.4 } }, { "id": "banked_coals", "name": { "ru": "Угли под золой", "en": "Banked Coals" }, "effect": { "max": 0.5, "stackSeconds": 8 } }] }]
     },
     {
       "id": "anvil",
-      "formerIds": ["shield_wall"],
+      "formerIds": ["shield_wall", "wet_rope"],
       "kind": "active",
       "weapon": "axe",
       "tier": "rare",
@@ -125,11 +130,12 @@
       "durationSeconds": 10,
       "marks": ["stun"],
       "effect": { "type": "storeHits", "releaseShare": 0.5 },
-      "native": { "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0 }] }
+      "native": { "modifiers": [{ "stat": "resourceGain", "kind": "more", "value": 1.0 }] },
+      "branches": [{ "level": 5, "options": [{ "id": "ringing_anvil", "name": { "ru": "Звонкая наковальня", "en": "Ringing Anvil" }, "effect": { "releaseShare": 0.65 } }, { "id": "quick_anvil", "name": { "ru": "Быстрая наковальня", "en": "Quick Anvil" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "wet_rope", "name": { "ru": "Мокрый канат", "en": "Wet Rope" }, "duration": 0.6, "effect": { "releaseShare": 1.0 } }, { "id": "long_anvil", "name": { "ru": "Долгая ковка", "en": "Long Forging" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "anvil_line", "name": { "ru": "Наковальня на всех", "en": "Anvil for All" }, "effect": { "queue": true } }, { "id": "heavy_anvil", "name": { "ru": "Тяжёлая наковальня", "en": "Heavy Anvil" }, "effect": { "releaseShare": 1.2 }, "cooldown": 1.3 }] }]
     },
     {
       "id": "long_winter",
-      "formerIds": ["ragnarok_roar"],
+      "formerIds": ["ragnarok_roar", "smiths_row"],
       "kind": "active",
       "weapon": "axe",
       "tier": "epic",
@@ -142,7 +148,8 @@
       "durationSeconds": 8,
       "marks": ["stun"],
       "effect": { "type": "queueHits", "share": 0.4 },
-      "native": { "fullResourceDurationMultiplier": 2 }
+      "native": { "fullResourceDurationMultiplier": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "deep_winter", "name": { "ru": "Глубокая зима", "en": "Deep Winter" }, "effect": { "share": 0.5 } }, { "id": "early_winter", "name": { "ru": "Ранняя зима", "en": "Early Winter" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "smiths_row", "name": { "ru": "Кузнечный ряд", "en": "Smiths' Row" }, "duration": 1.5 }, { "id": "cheap_winter", "name": { "ru": "Скудная зима", "en": "Lean Winter" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "endless_winter", "name": { "ru": "Бесконечная зима", "en": "Endless Winter" }, "effect": { "share": 0.65 }, "duration": 1.25 }, { "id": "polar_night", "name": { "ru": "Полярная ночь", "en": "Polar Night" }, "effect": { "share": 0.8 }, "cooldown": 1.4 }] }]
     },
     {
       "id": "nail_chord",
@@ -913,34 +920,6 @@
       "locked": true
     },
     {
-      "id": "rivet",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "common",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Клёпка", "en": "Rivet" },
-      "tags": ["Skill"],
-      "cost": { "resource": 10 },
-      "cooldownSeconds": 3,
-      "effect": { "type": "strike", "multiplier": 3 },
-      "native": { "resourceOnCast": 5 }
-    },
-    {
-      "id": "sparks_from_the_hammer",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "common",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Искры из-под молота", "en": "Sparks from the Hammer" },
-      "tags": ["Skill"],
-      "cost": { "resource": 15 },
-      "cooldownSeconds": 4,
-      "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} }
-    },
-    {
       "id": "tempering",
       "kind": "active",
       "weapon": "axe",
@@ -953,7 +932,9 @@
       "cooldownSeconds": 20,
       "marks": ["stun"],
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "resourceOnHit": 2 }
+      "native": { "resourceOnHit": 2 },
+      "formerIds": ["double_swing"],
+      "branches": [{ "level": 5, "options": [{ "id": "more_blows", "name": { "ru": "Больше ударов", "en": "More Blows" }, "effect": { "hits": 8 } }, { "id": "hard_blows", "name": { "ru": "Тяжёлые удары", "en": "Hard Blows" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "double_swing", "name": { "ru": "Двойной замах", "en": "Double Swing" }, "cooldown": 0.6, "damage": 0.8 }, { "id": "cool_down", "name": { "ru": "Остудить", "en": "Quench" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "long_tempering", "name": { "ru": "Долгая закалка", "en": "Long Tempering" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "spread_sparks", "name": { "ru": "Сноп искр", "en": "Spray of Sparks" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "north_wind",
@@ -968,23 +949,9 @@
       "cooldownSeconds": 25,
       "marks": ["stun"],
       "effect": { "type": "strike", "multiplier": 10 },
-      "native": { "when": {"boss": true, "multiplier": 1.4} }
-    },
-    {
-      "id": "wet_rope",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "common",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Мокрый канат", "en": "Wet Rope" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 25,
-      "durationSeconds": 6,
-      "marks": ["stun"],
-      "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "holdDecaySeconds": 6 }
+      "native": { "when": { "boss": true, "multiplier": 1.4 } },
+      "formerIds": ["not_a_step_back", "blood_feud"],
+      "branches": [{ "level": 5, "options": [{ "id": "cold_wind", "name": { "ru": "Холодный ветер", "en": "Cold Wind" }, "damage": 1.3 }, { "id": "gust", "name": { "ru": "Порыв", "en": "Gust" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "not_a_step_back", "name": { "ru": "Ни шагу назад", "en": "Not a Step Back" }, "effect": { "multiplier": 13 }, "cooldown": 1.2 }, { "id": "tailwind", "name": { "ru": "Попутный ветер", "en": "Tailwind" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "blood_feud", "name": { "ru": "Кровная месть", "en": "Blood Feud" }, "damage": 1.6 }, { "id": "blizzard", "name": { "ru": "Пурга", "en": "Blizzard" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "leather_apron",
@@ -997,61 +964,10 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 20,
       "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Keyboard"]}] },
-      "native": { "resourceOnCast": 10 }
-    },
-    {
-      "id": "rowers_song",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Песня гребцов", "en": "Rowers' Song" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 10, "multiplier": 2 },
-      "native": { "resourceOnHit": 3 }
-    },
-    {
-      "id": "thick_hide",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Толстая кожа", "en": "Thick Hide" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}] },
-      "native": { "when": {"resourceAtLeast": 50, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]} }
-    },
-    {
-      "id": "torn_ear",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Рваное ухо", "en": "Torn Ear" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.05}] },
-      "native": { "resourceOnCrit": 2 }
-    },
-    {
-      "id": "salt_wind",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Солёный ветер", "en": "Salt Wind" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "resourceOnKill": 3 }
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Keyboard"] }] },
+      "native": { "resourceOnCast": 10 },
+      "formerIds": ["thick_hide"],
+      "branches": [{ "level": 5, "options": [{ "id": "thick_apron", "name": { "ru": "Толстый фартук", "en": "Thick Apron" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Keyboard"] }] } }, { "id": "worn_apron", "name": { "ru": "Ношеный фартук", "en": "Worn Apron" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "thick_hide", "name": { "ru": "Толстая кожа", "en": "Thick Hide" }, "duration": 1.5 }, { "id": "quick_apron", "name": { "ru": "Быстро надеть", "en": "Quick to Wear" }, "cooldown": 0.7 }] }, { "level": 25, "options": [{ "id": "master_apron", "name": { "ru": "Фартук мастера", "en": "Master's Apron" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Keyboard"] }, { "stat": "critMultiplier", "kind": "flat", "value": 0.2 }] } }, { "id": "apron_for_all", "name": { "ru": "Фартук не снимать", "en": "Never Off" }, "duration": 2, "cooldown": 1.3 }] }]
     },
     {
       "id": "butt_of_the_axe",
@@ -1066,35 +982,9 @@
       "cooldownSeconds": 5,
       "durationSeconds": 5,
       "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "strikeMultiplier": 5 },
-      "native": { "durationMultiplier": 2 }
-    },
-    {
-      "id": "double_swing",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "rare",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Двойной замах", "en": "Double Swing" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 4,
-      "effect": { "type": "flurry", "hits": 2, "seconds": 0.2, "multiplier": 3 },
-      "native": { "carryOn": true }
-    },
-    {
-      "id": "hot_blank",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "rare",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Горячая заготовка", "en": "Hot Blank" },
-      "tags": ["Skill"],
-      "cost": { "resource": 25 },
-      "cooldownSeconds": 6,
-      "effect": { "type": "strike", "multiplier": 4, "lowHpBelow": 0.5, "lowHpMultiplier": 7 },
-      "native": { "resourceOnKill": 10 }
+      "native": { "durationMultiplier": 2 },
+      "formerIds": ["hot_blank"],
+      "branches": [{ "level": 5, "options": [{ "id": "hard_butt", "name": { "ru": "Тяжёлый обух", "en": "Heavy Butt" }, "effect": { "strikeMultiplier": 7 } }, { "id": "quick_butt", "name": { "ru": "Быстрый обух", "en": "Quick Butt" }, "cooldown": 0.7 }] }, { "level": 15, "options": [{ "id": "hot_blank", "name": { "ru": "Горячая заготовка", "en": "Hot Blank" }, "effect": { "damageTaken": 0.15 } }, { "id": "long_bruise", "name": { "ru": "Долгий синяк", "en": "Long Bruise" }, "duration": 1.6 }] }, { "level": 25, "options": [{ "id": "cracked_skull", "name": { "ru": "Трещина", "en": "Cracked Skull" }, "effect": { "damageTaken": 0.2 }, "cooldown": 1.3 }, { "id": "dazed", "name": { "ru": "Оглушённый", "en": "Dazed" }, "effect": { "strikeMultiplier": 10 }, "cost": 1.25 }] }]
     },
     {
       "id": "surf_wall",
@@ -1109,7 +999,8 @@
       "cooldownSeconds": 30,
       "marks": ["stun"],
       "effect": { "type": "strike", "multiplier": 12, "queueTargets": 2 },
-      "native": { "when": {"resourceAtLeast": 100, "multiplier": 1.5} }
+      "native": { "when": { "resourceAtLeast": 100, "multiplier": 1.5 } },
+      "branches": [{ "level": 5, "options": [{ "id": "high_wave", "name": { "ru": "Высокая волна", "en": "High Wave" }, "damage": 1.3 }, { "id": "quick_tide", "name": { "ru": "Быстрый прилив", "en": "Quick Tide" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "wide_surf", "name": { "ru": "Широкий вал", "en": "Wide Surf" }, "effect": { "queueTargets": 3 } }, { "id": "cheap_surf", "name": { "ru": "Своя волна", "en": "Own Wave" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "ninth_wave", "name": { "ru": "Девятый вал", "en": "Ninth Wave" }, "damage": 1.7, "cooldown": 1.25 }, { "id": "undertow", "name": { "ru": "Отбойное течение", "en": "Undertow" }, "cooldown": 0.6, "damage": 0.8 }] }]
     },
     {
       "id": "forge_bellows",
@@ -1121,35 +1012,10 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.25}], "reserve": 20 },
-      "native": { "modifiers": [{"stat": "rageBurnDelaySeconds", "kind": "flat", "value": 2}] }
-    },
-    {
-      "id": "not_a_step_back",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "rare",
-      "color": "red",
-      "name": { "ru": "Ни шагу назад", "en": "Not a Step Back" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "bossHunt", "bonus": 0, "lastSeconds": 10, "lastBonus": 0.25 },
-      "native": { "when": {"bossLastSeconds": 10, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.15}]} }
-    },
-    {
-      "id": "shield_split",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "epic",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Раскол щита", "en": "Shield Split" },
-      "tags": ["Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 6,
-      "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"resourceAtLeast": 80, "executeBelow": 0.2} }
+      "effect": { "type": "aura", "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.25 }], "reserve": 20 },
+      "native": { "modifiers": [{ "stat": "rageBurnDelaySeconds", "kind": "flat", "value": 2 }] },
+      "formerIds": ["salt_wind"],
+      "branches": [{ "level": 5, "options": [{ "id": "big_bellows", "name": { "ru": "Большие мехи", "en": "Big Bellows" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.3 }] } }, { "id": "light_bellows", "name": { "ru": "Лёгкие мехи", "en": "Light Bellows" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "salt_wind", "name": { "ru": "Солёный ветер", "en": "Salt Wind" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.25 }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }, { "id": "steady_bellows", "name": { "ru": "Ровное дутьё", "en": "Steady Blowing" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.25 }, { "stat": "rageBurnDelaySeconds", "kind": "flat", "value": 1 }] } }] }, { "level": 25, "options": [{ "id": "roaring_bellows", "name": { "ru": "Ревущие мехи", "en": "Roaring Bellows" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.4 }], "reserve": 25 } }, { "id": "tiny_bellows", "name": { "ru": "Ручные мехи", "en": "Hand Bellows" }, "effect": { "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.2 }], "reserve": 10 } }] }]
     },
     {
       "id": "five_blows_to_a_forging",
@@ -1164,34 +1030,24 @@
       "cooldownSeconds": 8,
       "durationSeconds": 10,
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 2, "hits": 5 },
-      "native": { "resourceOnHit": 4 }
-    },
-    {
-      "id": "smiths_row",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "epic",
-      "color": "red",
-      "name": { "ru": "Кузнечный ряд", "en": "Smiths' Row" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 50 },
-      "cooldownSeconds": 40,
-      "durationSeconds": 15,
-      "effect": { "type": "queueHits", "share": 0.5, "targets": 1 },
-      "native": { "holdDecaySeconds": 15 }
+      "native": { "resourceOnHit": 4 },
+      "formerIds": ["rowers_song"],
+      "branches": [{ "level": 5, "options": [{ "id": "six_blows", "name": { "ru": "Шесть ударов", "en": "Six Blows" }, "effect": { "hits": 6 } }, { "id": "hard_blows", "name": { "ru": "Тяжёлые удары", "en": "Hard Blows" }, "effect": { "multiplier": 2.5 } }] }, { "level": 15, "options": [{ "id": "rowers_song", "name": { "ru": "Песня гребцов", "en": "Rowers' Song" }, "duration": 1.5 }, { "id": "quick_forging", "name": { "ru": "Быстрая поковка", "en": "Quick Forging" }, "cooldown": 0.7 }] }, { "level": 25, "options": [{ "id": "ten_blows", "name": { "ru": "Десять ударов", "en": "Ten Blows" }, "effect": { "hits": 10 }, "cost": 1.3 }, { "id": "master_blows", "name": { "ru": "Удары мастера", "en": "Master's Blows" }, "effect": { "multiplier": 3.2 } }] }]
     },
     {
       "id": "the_forge_never_cools",
-      "kind": "active",
+      "kind": "aura",
       "weapon": "axe",
       "tier": "epic",
       "color": "red",
       "name": { "ru": "Горн не остывает", "en": "The Forge Never Cools" },
-      "tags": ["Skill"],
+      "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 2, "maxSteps": 50, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.01}] },
-      "native": { "when": {"resourceAtLeast": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}]} }
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damagePerResource", "kind": "flat", "value": 0.1 }], "reserve": 25 },
+      "native": { "when": { "resourceAtLeast": 100, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25 }] } },
+      "formerIds": ["the_unfading_forge"],
+      "branches": [{ "level": 5, "options": [{ "id": "hot_forge", "name": { "ru": "Горячий горн", "en": "Hot Forge" }, "effect": { "modifiers": [{ "stat": "damagePerResource", "kind": "flat", "value": 0.12 }] } }, { "id": "small_forge", "name": { "ru": "Малый горн", "en": "Small Forge" }, "effect": { "reserve": 20 } }] }, { "level": 15, "options": [{ "id": "unfading_forge", "name": { "ru": "Неостывающий горн", "en": "The Unfading Forge" }, "effect": { "modifiers": [{ "stat": "damagePerResource", "kind": "flat", "value": 0.1 }, { "stat": "rageBurnDelaySeconds", "kind": "flat", "value": 1 }] } }, { "id": "forge_for_all", "name": { "ru": "Горн на всех", "en": "A Forge for All" }, "effect": { "modifiers": [{ "stat": "damagePerResource", "kind": "flat", "value": 0.08 }, { "stat": "resourceGain", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "white_forge", "name": { "ru": "Белый горн", "en": "White Forge" }, "effect": { "modifiers": [{ "stat": "damagePerResource", "kind": "flat", "value": 0.16 }], "reserve": 30 } }, { "id": "cold_forge", "name": { "ru": "Холодный горн", "en": "Cold Forge" }, "effect": { "modifiers": [{ "stat": "damagePerResource", "kind": "flat", "value": 0.08 }], "reserve": 10 } }] }]
     },
     {
       "id": "hammer_down_the_line",
@@ -1205,7 +1061,8 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 8,
       "effect": { "type": "strike", "multiplier": 15, "queueTargets": 3 },
-      "native": { "when": {"resourceAtLeast": 100, "free": true} }
+      "native": { "when": { "resourceAtLeast": 100, "free": true } },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_hammer", "name": { "ru": "Тяжелее молот", "en": "Heavier Hammer" }, "damage": 1.3 }, { "id": "lighter_hammer", "name": { "ru": "Легче молот", "en": "Lighter Hammer" }, "cost": 0.7 }] }, { "level": 15, "options": [{ "id": "longer_line", "name": { "ru": "Длинная очередь", "en": "Longer Line" }, "effect": { "queueMultiplier": 1.5 } }, { "id": "quick_hammer", "name": { "ru": "Быстрый молот", "en": "Quick Hammer" }, "cooldown": 0.75 }] }, { "level": 25, "options": [{ "id": "whole_line", "name": { "ru": "Вся очередь", "en": "The Whole Line" }, "effect": { "queueMultiplier": 2 }, "damage": 0.9 }, { "id": "one_blow", "name": { "ru": "Один удар", "en": "One Blow" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "storm_off_the_north_shore",
@@ -1220,20 +1077,9 @@
       "cooldownSeconds": 45,
       "marks": ["stun"],
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 10 }
-    },
-    {
-      "id": "smiths_blood",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "legendary",
-      "color": "red",
-      "name": { "ru": "Кровь кузнеца", "en": "Smith's Blood" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "keys", "every": 50, "multiplier": 25 },
-      "native": { "resourceOnHit": 20 }
+      "native": { "resourceOnKill": 10 },
+      "formerIds": ["ice_drift"],
+      "branches": [{ "level": 5, "options": [{ "id": "more_waves", "name": { "ru": "Больше волн", "en": "More Waves" }, "effect": { "hits": 36 } }, { "id": "harder_waves", "name": { "ru": "Сильнее волны", "en": "Harder Waves" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "ice_drift", "name": { "ru": "Ледоход", "en": "Ice Drift" }, "cooldown": 0.75 }, { "id": "shore_wind", "name": { "ru": "Береговой ветер", "en": "Shore Wind" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "wide_storm", "name": { "ru": "Шторм на весь берег", "en": "Storm Along the Shore" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "eye_of_storm", "name": { "ru": "Глаз бури", "en": "Eye of the Storm" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "the_last_nail",
@@ -1247,23 +1093,9 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 20, "critChance": 1 },
-      "native": { "when": {"resourceAtLeast": 100, "free": true} }
-    },
-    {
-      "id": "ice_drift",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Ледоход", "en": "Ice Drift" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 60,
-      "durationSeconds": 5,
-      "marks": ["stun"],
-      "effect": { "type": "keyRepeat", "every": 1, "multiplier": 5, "queueTargets": 3 },
-      "native": { "holdDecaySeconds": 15 }
+      "native": { "when": { "resourceAtLeast": 100, "free": true } },
+      "formerIds": ["shield_split", "smiths_blood"],
+      "branches": [{ "level": 5, "options": [{ "id": "long_nail", "name": { "ru": "Длинный гвоздь", "en": "Long Nail" }, "damage": 1.3 }, { "id": "quick_nail", "name": { "ru": "Быстрый гвоздь", "en": "Quick Nail" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "shield_split", "name": { "ru": "Раскол щита", "en": "Shield Split" }, "effect": { "executeBelow": 0.15 } }, { "id": "smiths_blood", "name": { "ru": "Кровь кузнеца", "en": "Smith's Blood" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "coffin_nail", "name": { "ru": "Гвоздь в крышку", "en": "Nail in the Coffin" }, "effect": { "executeBelow": 0.25 }, "cooldown": 1.25 }, { "id": "golden_nail", "name": { "ru": "Золотой гвоздь", "en": "Golden Nail" }, "damage": 1.7 }] }]
     },
     {
       "id": "the_hammer_that_remembers",
@@ -1279,32 +1111,8 @@
       "durationSeconds": 10,
       "marks": ["stun"],
       "effect": { "type": "storeHits", "releaseShare": 3, "queue": true },
-      "native": { "when": {"resourceAtLeast": 100, "multiplier": 1.3333333333333333} }
-    },
-    {
-      "id": "the_unfading_forge",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "mythic",
-      "color": "red",
-      "name": { "ru": "Неостывающий горн", "en": "The Unfading Forge" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 10, "maxSteps": 5, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.05}], "from": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Keyboard"]}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}] }
-    },
-    {
-      "id": "blood_feud",
-      "kind": "active",
-      "weapon": "axe",
-      "tier": "mythic",
-      "color": "red",
-      "name": { "ru": "Кровная месть", "en": "Blood Feud" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "bossFails", "per": 1, "maxSteps": 3, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.2}] }
+      "native": { "when": { "resourceAtLeast": 100, "multiplier": 1.3333333333333333 } },
+      "branches": [{ "level": 5, "options": [{ "id": "long_memory", "name": { "ru": "Долгая память", "en": "Long Memory" }, "duration": 1.3 }, { "id": "quick_memory", "name": { "ru": "Быстрая память", "en": "Quick Memory" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "vivid_memory", "name": { "ru": "Яркая память", "en": "Vivid Memory" }, "effect": { "releaseShare": 3.6 } }, { "id": "light_memory", "name": { "ru": "Лёгкая память", "en": "Light Memory" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "ancestral_memory", "name": { "ru": "Память предков", "en": "Ancestral Memory" }, "effect": { "releaseShare": 4.5 }, "cooldown": 1.3 }, { "id": "shared_memory", "name": { "ru": "Общая память", "en": "Shared Memory" }, "duration": 1.6, "effect": { "releaseShare": 3.3 } }] }]
     },
     {
       "id": "second_shadow",
