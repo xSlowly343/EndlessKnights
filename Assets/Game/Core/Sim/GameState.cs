@@ -205,6 +205,7 @@ namespace Game.Core.Sim
         public long SkillCasts { get; set; }
         public double AutoCastKeys { get; set; }
         public long InputStreakTicks { get; set; }
+        public double ClickCarry { get; set; }
         public HashSet<long> GatesCleared { get; } = new HashSet<long>();
         public int MentorCoopPoints { get; set; }
         public int ServerCoopHelpPoints { get; set; }

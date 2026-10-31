@@ -186,8 +186,22 @@ namespace Game.Core.Sim
             for (var i = 0; i < mouseHits; i++)
                 Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier);
             MouseBursts(input.MousePx);
+            ClickHits(input.Clicks);
             _class.EndTick(keyHits, input.MousePx);
             NoteRates(keyHits, input.MousePx / _rules.MousePxPerHit);
+        }
+
+        private void ClickHits(double clicks)
+        {
+            if (_rules.ClickDamage <= 0)
+            {
+                _state.ClickCarry = 0;
+                return;
+            }
+            var hits = TakeWhole(_state.ClickCarry + clicks, out var carry);
+            _state.ClickCarry = carry;
+            for (var i = 0; i < hits; i++)
+                Hit(DamageSource.Click, _rules.ClickDamage, StatTags.Click, HitFlags.None, _state.FocusMultiplier);
         }
 
         private void NoteRates(double keyHits, double mouseHits)

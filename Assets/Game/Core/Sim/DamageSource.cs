@@ -5,6 +5,7 @@ namespace Game.Core.Sim
         None,
         Keyboard,
         Mouse,
-        Skill
+        Skill,
+        Click
     }
 }

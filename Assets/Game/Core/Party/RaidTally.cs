@@ -134,6 +134,7 @@ namespace Game.Core.Party
         {
             DamageSource.Keyboard => RaidInput.Keys,
             DamageSource.Mouse => RaidInput.Mouse,
+            DamageSource.Click => RaidInput.Mouse,
             _ => RaidInput.Skill
         };
     }
