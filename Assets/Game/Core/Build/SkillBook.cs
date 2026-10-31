@@ -108,6 +108,20 @@ namespace Game.Core.Build
             }
         }
 
+        public void SupportsFor(int index, IReadOnlyList<GemDef> catalog, List<GemDef> into)
+        {
+            into.Clear();
+            if (index < 0 || index >= _state.Skills.Count)
+                return;
+            var skill = _state.Skills[index].Skill;
+            for (var i = 0; i < catalog.Count; i++)
+            {
+                var support = catalog[i];
+                if (support.Support != null && SupportOpen(support) && support.CanSupport(skill))
+                    into.Add(support);
+            }
+        }
+
         public bool InBuild(GemDef support)
         {
             foreach (var slot in _state.Skills)

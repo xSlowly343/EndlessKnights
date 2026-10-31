@@ -154,6 +154,28 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void TheSkillOffersOnlyTheSupportsThatFitIt()
+        {
+            var loop = Hero();
+            loop.State.HeroLevel = 100;
+            var slot = Equip(loop, "iron_rim_bash");
+            var catalog = new System.Collections.Generic.List<GemDef>(TestWorld.Data.Gems.All)
+            {
+                WithSupport("\"DoT\"", 1, 1)["plain_help"],
+            };
+            var offered = new System.Collections.Generic.List<GemDef>();
+
+            loop.Book.SupportsFor(slot, catalog, offered);
+
+            Assert.That(offered, Is.Not.Empty);
+            Assert.That(offered.Exists(g => g.Id == "plain_help"), Is.False);
+            foreach (var support in offered)
+                Assert.That(loop.Book.SetSupport(slot, 0, support), Is.Not.EqualTo(BookResult.DoesNotFit).And.Not.EqualTo(BookResult.LevelTooLow), support.Id);
+            loop.Book.SupportsFor(-1, catalog, offered);
+            Assert.That(offered, Is.Empty);
+        }
+
+        [Test]
         public void ASupportMultipliesDamageAndMana()
         {
             var plain = Hero();
