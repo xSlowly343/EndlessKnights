@@ -15,7 +15,7 @@ namespace Game.Core.Stats
             "laterHitsPenalty", "minionExplode", "damagePerResource", "keyHitQueueShare", "damagePerCombo", "damagePerComboMax",
             "damageAtBalance", "rampPerSecond", "rampMax", "overloadQueueShare", "goldPerResource", "enemyHpCut", "damagePerAura",
             "echoShare", "doomShare", "doomMultiplier", "dotQueueShare", "skeletonOnKill", "beastOnKill", "minionQueueShare",
-            "goldJackpotChance", "wandererChance", "offlineDpsShare", "cooldownPerResource", "cooldownPerResourceMax", "markDamage", "markPower", "companionPerMark", "typingPartyBonus", "overdriveSongs", "choirPower", "choirSoloShare", "auraInPause", "evilEyeEffect", "evilEyePower"
+            "goldJackpotChance", "wandererChance", "offlineDpsShare", "cooldownPerResource", "cooldownPerResourceMax", "markDamage", "markPower", "companionPerMark", "typingPartyBonus", "overdriveSongs", "choirPower", "choirSoloShare", "auraInPause", "evilEyeEffect", "evilEyePower", "overloadBoss"
         };
 
         private static readonly StatTags[] LabelledTags =

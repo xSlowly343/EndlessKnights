@@ -35,6 +35,7 @@
   },
   "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
   "classes": {
+    "stormweaver": { "overload": { "queueTargets": 2 } },
     "voodoo": { "evilEye": { "damageTaken": 0.05 } },
     "bannerbearer": { "standingAuras": { "count": 2, "pauseSeconds": 1 } },
     "nomad": { "sand": { "every": 10, "everyMin": 4, "seconds": 4 } },

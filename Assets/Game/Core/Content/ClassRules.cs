@@ -45,6 +45,7 @@ namespace Game.Core.Content
         public OverdriveRules Overdrive { get; private set; } = OverdriveRules.None;
         public StandingAuraRules StandingAuras { get; private set; } = StandingAuraRules.None;
         public EvilEyeRules EvilEye { get; private set; } = EvilEyeRules.None;
+        public int OverloadQueueTargets { get; private set; }
 
         public static ClassRules Read(ContentNode node)
         {
@@ -70,7 +71,8 @@ namespace Game.Core.Content
                 shield.Field("multiplier").AsNumber(1, 1000),
                 shield.Field("stunSeconds").AsNumber(0, 60)) { HunterMark = HunterMarkRules.Read(node.Field("amazon").Field("mark")), Sand = BlindRules.Read(node.Field("nomad").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("metalhead").Field("overdrive")),
                 StandingAuras = StandingAuraRules.Read(node.Field("bannerbearer").Field("standingAuras")),
-                EvilEye = EvilEyeRules.Read(node.Field("voodoo").Field("evilEye")) };
+                EvilEye = EvilEyeRules.Read(node.Field("voodoo").Field("evilEye")),
+                OverloadQueueTargets = node.Field("stormweaver").Field("overload").Field("queueTargets").AsInt(0, 100) };
         }
     }
 }

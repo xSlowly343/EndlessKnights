@@ -237,6 +237,9 @@ namespace Game.Core.Sim
         public static readonly StatId EvilEyePower = new StatId("evilEyePower");
         public static readonly StatId EvilEyeBossOnly = new StatId("evilEyeBossOnly");
         public static readonly StatId EvilEyeOnGuardians = new StatId("evilEyeOnGuardians");
+        public static readonly StatId OverloadAt = new StatId("overloadAt");
+        public static readonly StatId OverloadBoss = new StatId("overloadBoss");
+        public static readonly StatId OverloadCrit = new StatId("overloadCrit");
         public static readonly StatId SlateEffect = new StatId("slateEffect");
         public static readonly StatId SlateChance = new StatId("slateChance");
         public static readonly StatId SlateRarity = new StatId("slateRarity");

@@ -32,7 +32,7 @@ namespace Game.Core.Sim
             var multiplier = _resource.Rules.OverloadMultiplier;
             if (multiplier <= 0)
                 multiplier = _hero.Value(CombatStats.OverloadAtMax, 0, StatTags.Skill);
-            if (multiplier <= 0 || !_resource.IsFull || _resource.Max <= 0)
+            if (multiplier <= 0 || _resource.Max <= 0 || _state.Resource < OverloadAt)
                 return;
             if (_hero.Value(CombatStats.OverloadDisabled, 0) > 0)
                 return;
@@ -42,11 +42,26 @@ namespace Game.Core.Sim
             else
                 _resource.SpendAll();
             Discharges++;
-            var power = multiplier + _hero.Value(CombatStats.OverloadMultiplier, 0, StatTags.Skill);
-            _combat.SkillHit(_combat.BaseKeyDamage, power, StatTags.Skill);
+            var power = (multiplier + _hero.Value(CombatStats.OverloadMultiplier, 0, StatTags.Skill)) * BossBonus();
+            _combat.SkillHit(_combat.BaseKeyDamage, power, StatTags.Skill, _hero.Value(CombatStats.OverloadCrit, 0) >= 1 ? 1 : 0);
+            HitQueue(power);
             var share = _hero.Value(CombatStats.OverloadQueueShare, 0, StatTags.Skill);
             if (share > 0)
                 _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, power * share, StatTags.Skill));
+        }
+
+        public double OverloadAt => System.Math.Max(1, _resource.Max + System.Math.Min(0, _hero.Value(CombatStats.OverloadAt, 0)));
+
+        private double BossBonus() => _state.FightingBoss ? 1 + System.Math.Max(0, _hero.Value(CombatStats.OverloadBoss, 0)) : 1;
+
+        private void HitQueue(double power)
+        {
+            var targets = System.Math.Min(_state.QueueDamage.Length, _combat.Classes.OverloadQueueTargets);
+            if (targets <= 0 || !_state.Is(HeroClass.Stormweaver))
+                return;
+            var damage = _combat.SkillDamage(_combat.BaseKeyDamage, power, StatTags.Skill);
+            for (var i = 0; i < targets; i++)
+                _state.QueueDamage[i] += damage;
         }
 
         private void Burst()
