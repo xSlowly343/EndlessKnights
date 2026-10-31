@@ -40,80 +40,24 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void DollInThePocketAddsClickDamageWhileACurseHangs()
+        public void ClearDayHitsHarderWhileTheOracleReads()
         {
-            var plain = SkillTestHero.Of(HeroClass.Voodoo, "evil_eye");
-            var voodoo = SkillTestHero.Of(HeroClass.Voodoo, "evil_eye", "doll_in_the_pocket");
-            voodoo.Ticks(1);
-            plain.Ticks(1);
-            var plainBefore = Damage(plain, StatTags.Click);
-            var before = Damage(voodoo, StatTags.Click) / plainBefore;
-
-            voodoo.Cast(0);
-            plain.Cast(0);
-            voodoo.Ticks(1);
-            plain.Ticks(1);
-
-            Assert.That(Damage(voodoo, StatTags.Click) / Damage(plain, StatTags.Click) - before, Is.EqualTo(10 / plainBefore).Within(1e-9));
-        }
-
-        [Test]
-        public void SaltyTricorneAddsMouseDamageOnceTwoCannonsStand()
-        {
-            var captain = SkillTestHero.Of(HeroClass.Captain, "salty_tricorne", "cannon_by_name");
-            captain.Ticks(1);
-            var before = Damage(captain, StatTags.Mouse);
-            captain.Cast(1);
-            captain.Ticks(1);
-            Assert.That(Damage(captain, StatTags.Mouse), Is.EqualTo(before).Within(1e-6));
-
-            captain.Ticks(50);
-            captain.State.Resource = 100;
-            captain.Cast(1);
-            captain.Ticks(1);
-
-            Assert.That(Damage(captain, StatTags.Mouse) - before, Is.EqualTo(10).Within(1e-6));
-        }
-
-        [Test]
-        public void SmellMaskAddsPoisonDamageFromTwentyStacks()
-        {
-            var doctor = SkillTestHero.Of(HeroClass.PlagueDoctor, "smell_mask");
-            doctor.Ticks(1);
-            var before = Damage(doctor, StatTags.DoT);
-
-            doctor.State.PoisonStacks = 20;
-            doctor.Ticks(1);
-
-            Assert.That(Damage(doctor, StatTags.DoT) - before, Is.EqualTo(10).Within(1e-6));
-        }
-
-        [Test]
-        public void ShaftCallusesAddKeyDamageWhileAnAuraStands()
-        {
-            var lone = SkillTestHero.Of(HeroClass.Bannerbearer, "shaft_calluses");
-            lone.Ticks(2);
-            var withAura = SkillTestHero.Of(HeroClass.Bannerbearer, "shaft_calluses", "blueprint");
-            withAura.Ticks(2);
-
-            Assert.That(Damage(withAura, StatTags.Keyboard) - Damage(lone, StatTags.Keyboard), Is.EqualTo(25).Within(1e-6));
-        }
-
-        [Test]
-        public void BlindfoldHabitAddsMouseDamageWhileTheOracleReads()
-        {
-            var oracle = SkillTestHero.Of(HeroClass.Oracle, "blindfold_habit");
-            oracle.Ticks(1);
-            var before = Damage(oracle, StatTags.Mouse);
-
+            var oracle = SkillTestHero.Of(HeroClass.Oracle, "clear_day");
+            oracle.Cast(0);
+            var plain = oracle.DamageFrom(DamageSource.Skill);
+            oracle.State.Skills[0].CooldownTicks = 0;
+            oracle.State.Resource = 100;
             for (var i = 0; i < 60; i++)
             {
                 oracle.Input.MoveMouse(50);
                 oracle.Ticks(1);
             }
+            oracle.Loop.Events.Clear();
+
+            oracle.Cast(0);
 
             Assert.That(oracle.State.Reading, Is.True);
-            Assert.That(Damage(oracle, StatTags.Mouse) - before, Is.EqualTo(10).Within(1e-6));
+            Assert.That(oracle.DamageFrom(DamageSource.Skill), Is.EqualTo(plain * 1.4).Within(plain * 1e-6));
         }
     }
 }

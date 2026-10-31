@@ -106,6 +106,7 @@ namespace Game.Core.Content
             rift.Milestones.RequireGems(gems);
             var weapons = WeaponCatalog.Load(readFile(WeaponCatalog.FileName));
             weapons.BindGems(gems);
+            SkillRoster.Require(gems, weapons.Types);
             ascendancy.RequirePathSkills(gems, weapons);
             var items = ItemCatalog.Load(readFile(ItemCatalog.FileName));
             var drops = DropRules.Load(readFile(DropRules.FileName));
