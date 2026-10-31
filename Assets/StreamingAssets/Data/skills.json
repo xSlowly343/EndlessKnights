@@ -796,6 +796,7 @@
     },
     {
       "id": "vial_from_belt",
+      "formerIds": ["shattered_vial"],
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
@@ -805,7 +806,8 @@
       "tags": ["DoT", "Skill"],
       "cost": { "resource": 15 },
       "cooldownSeconds": 4,
-      "effect": { "type": "addStacks", "dot": "poison", "stacks": 3 }
+      "effect": { "type": "addStacks", "dot": "poison", "stacks": 3 },
+      "branches": [{ "level": 5, "options": [{ "id": "fuller_vial", "name": { "ru": "Полнее склянка", "en": "Fuller Vial" }, "effect": { "stacks": 4 } }, { "id": "quick_vial", "name": { "ru": "Быстрая склянка", "en": "Quick Vial" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "shattered_vial", "name": { "ru": "Пробирка вдребезги", "en": "Shattered Vial" }, "cooldown": 1.25, "effect": { "stacks": 5 } }, { "id": "cheap_vial", "name": { "ru": "Склянка даром", "en": "Free Vial" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "vial_of_tar", "name": { "ru": "Склянка дёгтя", "en": "Vial of Tar" }, "cooldown": 1.3, "effect": { "stacks": 6 } }, { "id": "many_vials", "name": { "ru": "Пояс склянок", "en": "Belt of Vials" }, "cooldown": 0.55, "effect": { "stacks": 2 } }] }]
     },
     {
       "id": "fuse_bottle",
@@ -3948,6 +3950,7 @@
     },
     {
       "id": "cane_jab",
+      "formerIds": ["disease_chronicle"],
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
@@ -3959,13 +3962,15 @@
       "cooldownSeconds": 3,
       "effect": {"type": "addStacks", "dot": "poison", "multiplier": 2, "whileActive": [{"stat": "dotDamage", "kind": "more", "value": 1, "tags": ["DoT"]}]},
       "native": {"when": {"dotStacksAtLeast": 20, "resource": 5}},
-      "durationSeconds": 5
+      "durationSeconds": 5,
+      "branches": [{ "level": 5, "options": [{ "id": "harder_jab", "name": { "ru": "Сильнее укол", "en": "Harder Jab" }, "effect": { "multiplier": 2.5 } }, { "id": "quick_jab", "name": { "ru": "Быстрый укол", "en": "Quick Jab" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "disease_chronicle", "name": { "ru": "Хроника болезни", "en": "Disease Chronicle" }, "duration": 1.5 }, { "id": "cheap_jab", "name": { "ru": "Укол даром", "en": "Free Jab" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "cane_and_needle", "name": { "ru": "Трость и игла", "en": "Cane and Needle" }, "cooldown": 1.3, "effect": { "multiplier": 3.2 } }, { "id": "long_jab", "name": { "ru": "Долгий укол", "en": "Lasting Jab" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "drop_from_the_needle",
+      "formerIds": ["lyovas_vial"],
       "kind": "active",
       "weapon": "syringe_cane",
-      "tier": "common",
+      "tier": "rare",
       "role": "fast",
       "color": "red",
       "name": { "ru": "Капля с иглы", "en": "Drop from the Needle" },
@@ -3973,24 +3978,12 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 3,
       "effect": { "type": "addStacks", "dot": "poison", "stacks": 2, "multiplier": 2 },
-      "native": { "resourceOnCast": 3 }
-    },
-    {
-      "id": "shattered_vial",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "common",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Пробирка вдребезги", "en": "Shattered Vial" },
-      "tags": ["DoT", "Skill"],
-      "cost": { "resource": 15 },
-      "cooldownSeconds": 4,
-      "effect": { "type": "addStacks", "dot": "poison", "stacks": 3 },
-      "native": { "resourceOnCast": 2 }
+      "native": { "resourceOnCast": 3 },
+      "branches": [{ "level": 5, "options": [{ "id": "bigger_drop", "name": { "ru": "Капля крупнее", "en": "Bigger Drop" }, "effect": { "stacks": 3 } }, { "id": "quick_drop", "name": { "ru": "Быстрая капля", "en": "Quick Drop" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "lyovas_vial", "name": { "ru": "Склянка Лёвы", "en": "Lyova's Vial" }, "effect": { "multiplier": 2.6 } }, { "id": "cheap_drop", "name": { "ru": "Капля даром", "en": "Free Drop" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "drip", "name": { "ru": "Капельница", "en": "Drip" }, "cooldown": 1.3, "effect": { "stacks": 5 } }, { "id": "quick_drops", "name": { "ru": "Частые капли", "en": "Quick Drops" }, "cooldown": 0.5, "effect": { "stacks": 1 } }] }]
     },
     {
       "id": "ward_round",
+      "formerIds": ["mixture_for_the_squad"],
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
@@ -4001,10 +3994,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 20,
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 1 },
-      "native": { "resourceOnHit": 2 }
+      "native": { "resourceOnHit": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_round", "name": { "ru": "Дольше обход", "en": "Longer Round" }, "effect": { "hits": 8 } }, { "id": "stricter_round", "name": { "ru": "Строже обход", "en": "Stricter Round" }, "effect": { "multiplier": 1.3 } }] }, { "level": 15, "options": [{ "id": "mixture_for_the_squad", "name": { "ru": "Микстура для отряда", "en": "Mixture for the Squad" }, "cooldown": 0.7 }, { "id": "cheap_round", "name": { "ru": "Обход даром", "en": "Free Round" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "grand_round", "name": { "ru": "Большой обход", "en": "Grand Round" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "round_down_the_line", "name": { "ru": "Обход по очереди", "en": "Round Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "heavy_dose",
+      "formerIds": ["treatment_fee"],
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "common",
@@ -4015,13 +4010,15 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
       "effect": { "type": "strike", "multiplier": 10 },
-      "native": { "when": {"dotStacksAtLeast": 20, "multiplier": 1.4} }
+      "native": { "when": {"dotStacksAtLeast": 20, "multiplier": 1.4} },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_dose", "name": { "ru": "Двойная доза", "en": "Double Dose" }, "damage": 1.3 }, { "id": "quick_dose", "name": { "ru": "Быстрая доза", "en": "Quick Dose" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "treatment_fee", "name": { "ru": "Плата за лечение", "en": "Treatment Fee" }, "cost": 0.6 }, { "id": "bitter_dose", "name": { "ru": "Горькая доза", "en": "Bitter Dose" }, "cooldown": 1.2, "effect": { "multiplier": 13 } }] }, { "level": 25, "options": [{ "id": "lethal_dose", "name": { "ru": "Смертельная доза", "en": "Lethal Dose" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "dose_for_the_ward", "name": { "ru": "Доза на палату", "en": "Dose for the Ward" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "waiting_game",
+      "formerIds": ["patience_of_the_cure"],
       "kind": "active",
       "weapon": "syringe_cane",
-      "tier": "common",
+      "tier": "rare",
       "role": "heavy",
       "color": "red",
       "name": { "ru": "Выжидание", "en": "Waiting Game" },
@@ -4030,10 +4027,12 @@
       "cooldownSeconds": 25,
       "durationSeconds": 6,
       "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25, "tags": ["DoT"]}] }
+      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25, "tags": ["DoT"]}] },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_wait", "name": { "ru": "Дольше ждать", "en": "Longer Wait" }, "effect": { "releaseShare": 1.8 } }, { "id": "quick_wait", "name": { "ru": "Быстрое ожидание", "en": "Quick Wait" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "patience_of_the_cure", "name": { "ru": "Терпение лекарства", "en": "Patience of the Cure" }, "duration": 1.5 }, { "id": "cheap_wait", "name": { "ru": "Ожидание даром", "en": "Free Wait" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "long_observation", "name": { "ru": "Долгое наблюдение", "en": "Long Observation" }, "cooldown": 1.3, "effect": { "releaseShare": 2.4 } }, { "id": "wait_for_all", "name": { "ru": "Ждать всех", "en": "Wait for Everyone" }, "effect": { "queue": true } }] }]
     },
     {
       "id": "infirmary_smell",
+      "formerIds": ["smell_mask"],
       "kind": "aura",
       "weapon": "syringe_cane",
       "tier": "common",
@@ -4044,66 +4043,14 @@
       "cooldownSeconds": 20,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}] },
-      "native": { "resourceOnCast": 10 }
-    },
-    {
-      "id": "mixture_for_the_squad",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Микстура для отряда", "en": "Mixture for the Squad" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 10, "multiplier": 2 },
-      "native": { "resourceOnHit": 3 }
-    },
-    {
-      "id": "smell_mask",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Маска от запаха", "en": "Smell Mask" },
-      "tags": ["DoT", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["DoT"]}] },
-      "native": { "when": {"dotStacksAtLeast": 20, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["DoT"]}]} }
-    },
-    {
-      "id": "observation_notebook",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Тетрадь наблюдений", "en": "Observation Notebook" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "critChance", "kind": "flat", "value": 0.05}] },
-      "native": { "resourceOnCrit": 2 }
-    },
-    {
-      "id": "treatment_fee",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Плата за лечение", "en": "Treatment Fee" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "resourceOnKill": 3 }
+      "native": { "resourceOnCast": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "stronger_smell_p", "name": { "ru": "Крепче запах", "en": "Stronger Smell" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["DoT"] }] } }, { "id": "light_smell_p", "name": { "ru": "Лёгкий запах", "en": "Faint Smell" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "smell_mask", "name": { "ru": "Маска от запаха", "en": "Smell Mask" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"] }, { "stat": "critChance", "kind": "flat", "value": 0.03 }] } }, { "id": "long_smell_p", "name": { "ru": "Стойкий запах", "en": "Lingering Smell" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "carbolic", "name": { "ru": "Карболка", "en": "Carbolic" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["DoT"] }, { "stat": "gold", "kind": "increased", "value": 0.05 }] } }, { "id": "smell_all_day", "name": { "ru": "Запах весь день", "en": "Smell All Day" }, "cooldown": 1.3, "duration": 2 }] }]
     },
     {
       "id": "assistant_lyova",
       "kind": "active",
       "weapon": "syringe_cane",
-      "tier": "rare",
+      "tier": "legendary",
       "role": "heavy",
       "color": "red",
       "name": {"ru": "Ассистент Лёва", "en": "Assistant Lyova"},
@@ -4112,23 +4059,27 @@
       "cooldownSeconds": 35,
       "durationSeconds": 20,
       "effect": {"type": "addStacks", "dot": "poison", "perSecond": 5, "endsOnKill": true},
-      "native": {"carryOver": true}
+      "native": {"carryOver": true},
+      "branches": [{ "level": 5, "options": [{ "id": "diligent_lyova", "name": { "ru": "Старательный Лёва", "en": "Diligent Lyova" }, "effect": { "perSecond": 6 } }, { "id": "quick_lyova", "name": { "ru": "Быстрый Лёва", "en": "Quick Lyova" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "lyova_on_duty", "name": { "ru": "Лёва на дежурстве", "en": "Lyova on Duty" }, "duration": 1.4 }, { "id": "cheap_lyova", "name": { "ru": "Лёва даром", "en": "Lyova for Free" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "senior_lyova", "name": { "ru": "Старший Лёва", "en": "Senior Lyova" }, "cooldown": 1.3, "effect": { "perSecond": 8 } }, { "id": "lyova_and_friend", "name": { "ru": "Лёва с другом", "en": "Lyova and a Friend" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "diagnosis",
-      "kind": "active",
+      "formerIds": ["plague_quarter"],
+      "kind": "aura",
       "weapon": "syringe_cane",
       "tier": "rare",
       "color": "red",
       "name": {"ru": "Диагноз", "en": "Diagnosis"},
-      "tags": ["DoT", "Skill"],
+      "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "passive", "modifiers": [{"stat": "damagePerTenPoison", "kind": "flat", "value": 0.03}]},
-      "native": {"modifiers": [{"stat": "damagePerTenPoison", "kind": "flat", "value": 0.02}]}
+      "effect": { "type": "aura", "modifiers": [{ "stat": "damagePerTenPoison", "kind": "flat", "value": 0.03 }], "reserve": 20 },
+      "native": {"modifiers": [{"stat": "damagePerTenPoison", "kind": "flat", "value": 0.02}]},
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_diagnosis", "name": { "ru": "Точнее диагноз", "en": "Sharper Diagnosis" }, "effect": { "modifiers": [{ "stat": "damagePerTenPoison", "kind": "flat", "value": 0.035 }] } }, { "id": "quick_diagnosis", "name": { "ru": "Быстрый диагноз", "en": "Quick Diagnosis" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "plague_quarter", "name": { "ru": "Чумной квартал", "en": "Plague Quarter" }, "effect": { "modifiers": [{ "stat": "damagePerTenPoison", "kind": "flat", "value": 0.03 }, { "stat": "damage", "kind": "increased", "value": 0.05 }] } }, { "id": "second_opinion", "name": { "ru": "Второе мнение", "en": "Second Opinion" }, "effect": { "modifiers": [{ "stat": "damagePerTenPoison", "kind": "flat", "value": 0.03 }, { "stat": "critChance", "kind": "flat", "value": 0.03 }] } }] }, { "level": 25, "options": [{ "id": "consilium", "name": { "ru": "Консилиум", "en": "Consilium" }, "effect": { "modifiers": [{ "stat": "damagePerTenPoison", "kind": "flat", "value": 0.045 }], "reserve": 30 } }, { "id": "quick_look", "name": { "ru": "Беглый осмотр", "en": "Quick Look" }, "effect": { "modifiers": [{ "stat": "damagePerTenPoison", "kind": "flat", "value": 0.02 }], "reserve": 10 } }] }]
     },
     {
       "id": "quarantine_round",
+      "formerIds": ["quarantine_zone"],
       "kind": "aura",
       "weapon": "syringe_cane",
       "tier": "rare",
@@ -4140,14 +4091,14 @@
       "cooldownSeconds": 40,
       "durationSeconds": 20,
       "effect": {"type": "aura", "modifiers": [{"stat": "dotSpread", "kind": "flat", "value": 0.5}]},
-      "native": {"modifiers": [{"stat": "dotSpread", "kind": "flat", "value": 0.25}]}
+      "native": {"modifiers": [{"stat": "dotSpread", "kind": "flat", "value": 0.25}]},
+      "branches": [{ "level": 5, "options": [{ "id": "wider_quarantine", "name": { "ru": "Шире карантин", "en": "Wider Quarantine" }, "effect": { "modifiers": [{ "stat": "dotSpread", "kind": "flat", "value": 0.6 }] } }, { "id": "quick_quarantine", "name": { "ru": "Быстрый карантин", "en": "Quick Quarantine" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "quarantine_zone", "name": { "ru": "Карантинная зона", "en": "Quarantine Zone" }, "effect": { "modifiers": [{ "stat": "dotSpread", "kind": "flat", "value": 0.5 }, { "stat": "damage", "kind": "increased", "value": 0.1, "tags": ["DoT"] }] } }, { "id": "long_quarantine", "name": { "ru": "Долгий карантин", "en": "Long Quarantine" }, "duration": 1.4 }] }, { "level": 25, "options": [{ "id": "sealed_quarter", "name": { "ru": "Закрытый квартал", "en": "Sealed Quarter" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "dotSpread", "kind": "flat", "value": 0.75 }] } }, { "id": "cheap_quarantine", "name": { "ru": "Карантин даром", "en": "Free Quarantine" }, "cost": 0.5 }] }]
     },
     {
       "id": "lancet",
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "rare",
-      "role": "fast",
       "color": "red",
       "name": { "ru": "Ланцет", "en": "Lancet" },
       "tags": ["DoT", "Skill"],
@@ -4155,7 +4106,8 @@
       "cooldownSeconds": 5,
       "durationSeconds": 5,
       "effect": { "type": "enemyDebuff", "damageTaken": 0.5, "strikeMultiplier": 5, "tags": ["DoT"] },
-      "native": { "durationMultiplier": 1.6 }
+      "native": { "durationMultiplier": 1.6 },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_lancet", "name": { "ru": "Острее ланцет", "en": "Sharper Lancet" }, "effect": { "strikeMultiplier": 6.5 } }, { "id": "quick_lancet", "name": { "ru": "Быстрый ланцет", "en": "Quick Lancet" }, "cooldown": 0.7 }] }, { "level": 15, "options": [{ "id": "deep_incision", "name": { "ru": "Глубокий надрез", "en": "Deep Incision" }, "effect": { "damageTaken": 0.6 } }, { "id": "long_lancet", "name": { "ru": "Долгий надрез", "en": "Long Incision" }, "duration": 1.6 }] }, { "level": 25, "options": [{ "id": "surgeons_lancet", "name": { "ru": "Ланцет хирурга", "en": "Surgeon's Lancet" }, "cooldown": 1.3, "effect": { "damageTaken": 0.75 } }, { "id": "blunt_lancet", "name": { "ru": "Тупой ланцет", "en": "Blunt Lancet" }, "cost": 0.6, "effect": { "strikeMultiplier": 4 } }] }]
     },
     {
       "id": "second_appointment",
@@ -4169,64 +4121,12 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 6,
       "effect": { "type": "addStacks", "dot": "poison", "stacks": 10 },
-      "native": { "resourceOnCast": 5 }
-    },
-    {
-      "id": "lyovas_vial",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "rare",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Склянка Лёвы", "en": "Lyova's Vial" },
-      "tags": ["DoT", "Skill"],
-      "cost": { "resource": 15 },
-      "cooldownSeconds": 4,
-      "effect": { "type": "addStacks", "dot": "poison", "stacks": 4 },
-      "native": { "resourceOnCast": 2 }
-    },
-    {
-      "id": "quarantine_zone",
-      "kind": "aura",
-      "weapon": "syringe_cane",
-      "tier": "rare",
-      "color": "red",
-      "name": { "ru": "Карантинная зона", "en": "Quarantine Zone" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15, "tags": ["DoT"]}], "reserve": 20 },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15, "tags": ["DoT"]}] }
-    },
-    {
-      "id": "night_shift",
-      "kind": "aura",
-      "weapon": "syringe_cane",
-      "tier": "rare",
-      "color": "red",
-      "name": { "ru": "Ночная смена", "en": "Night Shift" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 0.3, "tags": ["DoT"]}] },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}] }
-    },
-    {
-      "id": "disease_chronicle",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "rare",
-      "color": "red",
-      "name": { "ru": "Хроника болезни", "en": "Disease Chronicle" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "any", "every": 25, "multiplier": 5 },
-      "native": { "resourceOnHit": 5 }
+      "native": { "resourceOnCast": 5 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_appointment", "name": { "ru": "Долгий приём", "en": "Long Appointment" }, "effect": { "stacks": 12 } }, { "id": "quick_appointment", "name": { "ru": "Быстрый приём", "en": "Quick Appointment" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "follow_up", "name": { "ru": "Повторный осмотр", "en": "Follow-Up" }, "effect": { "multiplier": 1.5 } }, { "id": "cheap_appointment", "name": { "ru": "Приём даром", "en": "Free Appointment" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "third_appointment", "name": { "ru": "Третий приём", "en": "Third Appointment" }, "cooldown": 1.3, "effect": { "stacks": 16 } }, { "id": "walk_in", "name": { "ru": "Без записи", "en": "Walk-In" }, "cooldown": 0.6, "effect": { "stacks": 6 } }] }]
     },
     {
       "id": "worse_first",
+      "formerIds": ["epidemic"],
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "epic",
@@ -4238,10 +4138,12 @@
       "cooldownSeconds": 30,
       "durationSeconds": 15,
       "effect": {"type": "addStacks", "dot": "poison", "perSecond": 2, "whileActive": [{"stat": "dotSpread", "kind": "flat", "value": 0.5}]},
-      "native": {"modifiers": [{"stat": "dotSpread", "kind": "flat", "value": 0.5}]}
+      "native": {"modifiers": [{"stat": "dotSpread", "kind": "flat", "value": 0.5}]},
+      "branches": [{ "level": 5, "options": [{ "id": "much_worse", "name": { "ru": "Гораздо хуже", "en": "Much Worse" }, "effect": { "perSecond": 2.5 } }, { "id": "quick_worse", "name": { "ru": "Быстрее хуже", "en": "Worse Sooner" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "epidemic", "name": { "ru": "Эпидемия", "en": "Epidemic" }, "duration": 1.4 }, { "id": "cheap_worse", "name": { "ru": "Хуже даром", "en": "Worse for Free" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "crisis", "name": { "ru": "Кризис", "en": "Crisis" }, "cooldown": 1.3, "effect": { "perSecond": 3.2 } }, { "id": "slow_decline", "name": { "ru": "Медленный спад", "en": "Slow Decline" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "not_enough_patience",
+      "formerIds": ["medical_secret"],
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "epic",
@@ -4252,64 +4154,27 @@
       "cost": {"resource": 25},
       "cooldownSeconds": 8,
       "effect": {"type": "detonate", "seconds": 3, "keepStacks": true},
-      "native": {"stackGrowth": 0.2}
+      "native": {"stackGrowth": 0.2},
+      "branches": [{ "level": 5, "options": [{ "id": "less_patience", "name": { "ru": "Ещё меньше терпения", "en": "Even Less Patience" }, "effect": { "seconds": 3.5 } }, { "id": "quick_patience", "name": { "ru": "Быстрое решение", "en": "Quick Decision" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "medical_secret", "name": { "ru": "Врачебная тайна", "en": "Medical Secret" }, "cost": 0.6 }, { "id": "sharp_decision", "name": { "ru": "Резкое решение", "en": "Sharp Decision" }, "damage": 1.2 }] }, { "level": 25, "options": [{ "id": "snap_decision", "name": { "ru": "Мгновенное решение", "en": "Snap Decision" }, "cooldown": 1.3, "effect": { "seconds": 4.5 } }, { "id": "calm_decision", "name": { "ru": "Спокойное решение", "en": "Calm Decision" }, "damage": 1.4, "cooldown": 1.25 }] }]
     },
     {
       "id": "autopsy",
+      "formerIds": ["observation_notebook"],
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "epic",
-      "role": "fast",
       "color": "red",
       "name": { "ru": "Вскрытие", "en": "Autopsy" },
       "tags": ["Skill"],
       "cost": { "resource": 30 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"dotStacksAtLeast": 30, "executeBelow": 0.2} }
-    },
-    {
-      "id": "epidemic",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "epic",
-      "role": "heavy",
-      "locked": true,
-      "color": "red",
-      "name": { "ru": "Эпидемия", "en": "Epidemic" },
-      "tags": ["DoT", "Skill"],
-      "cost": { "resource": 60 },
-      "cooldownSeconds": 30
-    },
-    {
-      "id": "plague_quarter",
-      "kind": "aura",
-      "weapon": "syringe_cane",
-      "tier": "epic",
-      "color": "red",
-      "name": { "ru": "Чумной квартал", "en": "Plague Quarter" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 40,
-      "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "party": true },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.05}] }
-    },
-    {
-      "id": "medical_secret",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "epic",
-      "color": "red",
-      "name": { "ru": "Врачебная тайна", "en": "Medical Secret" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 2, "maxSteps": 50, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.01}] },
-      "native": { "when": {"resourceAtLeast": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}]} }
+      "native": { "when": {"dotStacksAtLeast": 30, "executeBelow": 0.2} },
+      "branches": [{ "level": 5, "options": [{ "id": "thorough_autopsy", "name": { "ru": "Тщательное вскрытие", "en": "Thorough Autopsy" }, "damage": 1.3 }, { "id": "quick_autopsy", "name": { "ru": "Быстрое вскрытие", "en": "Quick Autopsy" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "observation_notebook", "name": { "ru": "Тетрадь наблюдений", "en": "Observation Notebook" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_autopsy", "name": { "ru": "Вскрытие даром", "en": "Free Autopsy" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "final_report", "name": { "ru": "Заключение", "en": "Final Report" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "scalpel", "name": { "ru": "Скальпель", "en": "Scalpel" }, "damage": 1.7 }] }]
     },
     {
       "id": "plague_fog",
+      "formerIds": ["cure_for_everything"],
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "legendary",
@@ -4320,13 +4185,15 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 8,
       "effect": { "type": "addStacks", "dot": "poison", "stacks": 10 },
-      "native": { "when": {"resourceAtLeast": 100, "free": true} }
+      "native": { "when": {"resourceAtLeast": 100, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "thicker_fog", "name": { "ru": "Гуще туман", "en": "Thicker Fog" }, "effect": { "stacks": 12 } }, { "id": "quick_fog", "name": { "ru": "Быстрый туман", "en": "Quick Fog" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "cure_for_everything", "name": { "ru": "Лекарство от всего", "en": "Cure for Everything" }, "effect": { "multiplier": 1.5 } }, { "id": "light_fog", "name": { "ru": "Лёгкий туман", "en": "Light Fog" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "fog_over_the_city", "name": { "ru": "Туман над городом", "en": "Fog over the City" }, "cooldown": 1.3, "effect": { "stacks": 15 } }, { "id": "fog_patches", "name": { "ru": "Клочья тумана", "en": "Fog Patches" }, "cooldown": 0.6, "effect": { "stacks": 6 } }] }]
     },
     {
       "id": "pestilence",
+      "formerIds": ["pandemic"],
       "kind": "active",
       "weapon": "syringe_cane",
-      "tier": "legendary",
+      "tier": "mythic",
       "role": "heavy",
       "color": "red",
       "name": { "ru": "Мор", "en": "Pestilence" },
@@ -4334,23 +4201,12 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 10 }
-    },
-    {
-      "id": "cure_for_everything",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "legendary",
-      "color": "red",
-      "name": { "ru": "Лекарство от всего", "en": "Cure for Everything" },
-      "tags": ["DoT", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "poisonStacks", "kind": "flat", "value": 25}] },
-      "native": { "modifiers": [{"stat": "poisonStacks", "kind": "flat", "value": 25}] }
+      "native": { "resourceOnKill": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "wider_pestilence", "name": { "ru": "Шире мор", "en": "Wider Pestilence" }, "effect": { "hits": 36 } }, { "id": "heavier_pestilence", "name": { "ru": "Тяжелее мор", "en": "Heavier Pestilence" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "pandemic", "name": { "ru": "Пандемия", "en": "Pandemic" }, "cooldown": 0.75 }, { "id": "cheap_pestilence", "name": { "ru": "Мор даром", "en": "Free Pestilence" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "black_death", "name": { "ru": "Чёрная смерть", "en": "Black Death" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "plague_pit", "name": { "ru": "Чумная яма", "en": "Plague Pit" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "final_diagnosis",
+      "formerIds": ["poison_is_medicine"],
       "kind": "active",
       "weapon": "syringe_cane",
       "tier": "mythic",
@@ -4361,13 +4217,15 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 4,
       "effect": { "type": "detonate", "seconds": 2.5 },
-      "native": { "resourceOnCast": 10 }
+      "native": { "resourceOnCast": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "surer_diagnosis", "name": { "ru": "Вернее диагноз", "en": "Surer Diagnosis" }, "effect": { "seconds": 3 } }, { "id": "quick_final", "name": { "ru": "Быстрый вердикт", "en": "Quick Verdict" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "poison_is_medicine", "name": { "ru": "Яд это лекарство", "en": "Poison Is Medicine" }, "cost": 0.5 }, { "id": "final_word", "name": { "ru": "Последнее слово", "en": "Final Word" }, "damage": 1.2 }] }, { "level": 25, "options": [{ "id": "irrevocable", "name": { "ru": "Без обжалования", "en": "Irrevocable" }, "cooldown": 1.3, "effect": { "seconds": 3.5 } }, { "id": "second_verdict", "name": { "ru": "Второй вердикт", "en": "Second Verdict" }, "damage": 1.4, "cooldown": 1.25 }] }]
     },
     {
       "id": "black_vial",
+      "formerIds": ["night_shift"],
       "kind": "aura",
       "weapon": "syringe_cane",
-      "tier": "mythic",
+      "tier": "epic",
       "role": "heavy",
       "color": "red",
       "name": { "ru": "Чёрная склянка", "en": "Black Vial" },
@@ -4376,46 +4234,8 @@
       "cooldownSeconds": 60,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 4, "tags": ["DoT"]}] },
-      "native": { "durationMultiplier": 1.5 }
-    },
-    {
-      "id": "pandemic",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "mythic",
-      "role": "heavy",
-      "locked": true,
-      "color": "red",
-      "name": { "ru": "Пандемия", "en": "Pandemic" },
-      "tags": ["DoT", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 90,
-      "durationSeconds": 30
-    },
-    {
-      "id": "patience_of_the_cure",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "mythic",
-      "color": "red",
-      "name": { "ru": "Терпение лекарства", "en": "Patience of the Cure" },
-      "tags": ["DoT", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 10, "maxSteps": 5, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["DoT"]}], "from": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}] }
-    },
-    {
-      "id": "poison_is_medicine",
-      "kind": "active",
-      "weapon": "syringe_cane",
-      "tier": "mythic",
-      "color": "red",
-      "name": { "ru": "Яд это лекарство", "en": "Poison Is Medicine" },
-      "tags": ["DoT", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "enemySeconds", "per": 5, "maxSteps": 10, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["DoT"]}] }
+      "native": { "durationMultiplier": 1.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "darker_vial", "name": { "ru": "Чернее склянка", "en": "Darker Vial" }, "duration": 1.3 }, { "id": "quick_black", "name": { "ru": "Быстрая склянка", "en": "Quick Vial" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "night_shift", "name": { "ru": "Ночная смена", "en": "Night Shift" }, "cost": 0.6 }, { "id": "long_black", "name": { "ru": "Долгая склянка", "en": "Long Vial" }, "duration": 1.6, "cooldown": 1.3 }] }, { "level": 25, "options": [{ "id": "pitch_black", "name": { "ru": "Чернее ночи", "en": "Pitch Black" }, "cooldown": 1.4, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 5, "tags": ["DoT"] }] } }, { "id": "grey_vial", "name": { "ru": "Серая склянка", "en": "Grey Vial" }, "cooldown": 0.6, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 2.5, "tags": ["DoT"] }] } }] }]
     },
     {
       "id": "sky_stone",

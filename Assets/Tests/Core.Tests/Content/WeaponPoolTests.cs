@@ -11,7 +11,7 @@ namespace Game.Core.Tests.Content
     {
         private static readonly int[] TierSizes = { 12, 9, 6, 3, 5 };
         private static readonly int[] ReferenceTierSizes = { 5, 6, 4, 2, 2 };
-        internal static readonly string[] ReferencePools = { "axe", "katana", "short_bow", "storm_wand", "scimitar", "electric_guitar", "holy_orb", "banner", "voodoo_doll", "pendulum" };
+        internal static readonly string[] ReferencePools = { "axe", "katana", "short_bow", "storm_wand", "scimitar", "electric_guitar", "holy_orb", "banner", "voodoo_doll", "pendulum", "syringe_cane" };
 
         private static IEnumerable<WeaponType> FullPools() =>
             TestWorld.Real.Weapons.Types.Where(type => ClassSkills(type).Count() >= 35);

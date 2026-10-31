@@ -58,19 +58,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SmellMaskAddsPoisonDamageFromTwentyStacks()
-        {
-            var doctor = SkillTestHero.Of(HeroClass.PlagueDoctor, "smell_mask");
-            doctor.Ticks(1);
-            var before = Damage(doctor, StatTags.DoT);
-
-            doctor.State.PoisonStacks = 20;
-            doctor.Ticks(1);
-
-            Assert.That(Damage(doctor, StatTags.DoT) - before, Is.EqualTo(10).Within(1e-6));
-        }
-
-        [Test]
         public void ClearDayHitsHarderWhileTheOracleReads()
         {
             var oracle = SkillTestHero.Of(HeroClass.Oracle, "clear_day");
