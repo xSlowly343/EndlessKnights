@@ -28,7 +28,7 @@ namespace Game.Core.Content.Items
 
         private DropRules(double[] rarityWeights, ItemRarity firstCeiling, double[] slotWeights, DropTable record, int specialBossEvery,
             DropTable specialBoss, DropTable guardian, DailyDropRules daily, Dictionary<long, DropGuarantee> guarantees, Dictionary<GemKind, GemDropChance> gems,
-            long firstTriggerStage, int bagSize, double[] dust, double setChance, double setBossChance, double setGuardianChance, ShardRules shards)
+            int bagSize, double[] dust, double setChance, double setBossChance, double setGuardianChance, ShardRules shards)
         {
             Shards = shards;
             SetChance = setChance;
@@ -44,7 +44,6 @@ namespace Game.Core.Content.Items
             Daily = daily;
             _guarantees = guarantees;
             _gems = gems;
-            FirstTriggerStage = firstTriggerStage;
             BagSize = bagSize;
             _dust = dust;
         }
@@ -55,7 +54,6 @@ namespace Game.Core.Content.Items
         public DropTable SpecialBoss { get; }
         public DropTable Guardian { get; }
         public DailyDropRules Daily { get; }
-        public long FirstTriggerStage { get; }
         public int BagSize { get; }
         public double SetChance { get; }
         public double SetBossChance { get; }
@@ -107,7 +105,6 @@ namespace Game.Core.Content.Items
 
             var ceiling = root.Field("ceiling");
             var special = root.Field("specialBoss");
-            var triggers = root.Field("gems").Field("trigger");
             return new DropRules(
                 ReadRarities(root.Field("rarityWeights"), 0, 1e6, requirePositive: true),
                 DropTable.Rarity(ceiling, "first", ItemRarity.Rare),
@@ -119,7 +116,6 @@ namespace Game.Core.Content.Items
                 DailyDropRules.Read(root.Field("daily")),
                 ReadGuarantees(root.Field("guarantees")),
                 ReadGems(root.Field("gems")),
-                triggers.HasField("firstAtStage") ? triggers.Field("firstAtStage").AsLong(0) : 0,
                 root.Field("bag").Field("size").AsInt(1, 10000),
                 ReadRarities(root.Field("dust"), 0, 1e12, requirePositive: false),
                 root.Field("sets").Field("chance").AsNumber(0, 1),
@@ -210,8 +206,7 @@ namespace Game.Core.Content.Items
             new Dictionary<GemKind, GemDropChance>
             {
                 [GemKind.Skill] = GemDropChance.Read(node.Field("skill")),
-                [GemKind.Support] = GemDropChance.Read(node.Field("support")),
-                [GemKind.Trigger] = GemDropChance.Read(node.Field("trigger"))
+                [GemKind.Support] = GemDropChance.Read(node.Field("support"))
             };
     }
 }

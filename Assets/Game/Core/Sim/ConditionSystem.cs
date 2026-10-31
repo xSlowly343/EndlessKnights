@@ -14,17 +14,28 @@ namespace Game.Core.Sim
         private readonly CombatSystem _combat;
         private readonly SynergySystem _synergy;
         private readonly SkillSystem _skills;
+        private readonly FocusSystem _focus;
         private readonly int[] _markMasks = new int[ModifierConditions.Marks];
         private SynergyRules? _markRules;
         private ulong _allyConditions;
 
-        public ConditionSystem(GameState state, StatSheet hero, CombatSystem combat, SynergySystem synergy, SkillSystem skills)
+        public ConditionSystem(GameState state, StatSheet hero, CombatSystem combat, SynergySystem synergy, SkillSystem skills, FocusSystem focus)
         {
+            _focus = focus;
             _skills = skills;
             _state = state;
             _hero = hero;
             _combat = combat;
             _synergy = synergy;
+        }
+
+        public void NoteInput(in EffectiveInput input)
+        {
+            var rules = _combat.Conditions;
+            _state.AfterCircleTicks = input.CircleTurns >= 1 ? Ticks(rules.AfterGestureSeconds) : System.Math.Max(0, _state.AfterCircleTicks - 1);
+            _state.AfterFlickTicks = input.Flicks > 0 ? Ticks(rules.AfterGestureSeconds) : System.Math.Max(0, _state.AfterFlickTicks - 1);
+            if (_state.AfterFastKillTicks > 0)
+                _state.AfterFastKillTicks--;
         }
 
         public void Tick()
@@ -57,15 +68,43 @@ namespace Game.Core.Sim
             return mask;
         }
 
-        public ulong Current() => BossConditions() | ResourceConditions() | MarkConditionsOn(_synergy.OwnMarks, _synergy.AllyMarks);
+        public ulong Current() => BossConditions() | ResourceConditions() | MarkConditionsOn(_synergy.OwnMarks, _synergy.AllyMarks) | MomentConditions();
+
+        private ulong MomentConditions()
+        {
+            var rules = _combat.Conditions;
+            var conditions = 0UL;
+            if (_state.Focus >= _focus.Max - 1e-9)
+                conditions |= ModifierConditions.Bit(ModifierCondition.FocusFull);
+            if (_state.PartyAllies > 0)
+                conditions |= ModifierConditions.Bit(ModifierCondition.InParty);
+            if (_state.AfterFastKillTicks > 0)
+                conditions |= ModifierConditions.Bit(ModifierCondition.AfterFastKill);
+            if (_state.AfterCircleTicks > 0)
+                conditions |= ModifierConditions.Bit(ModifierCondition.AfterCircle);
+            if (_state.AfterFlickTicks > 0)
+                conditions |= ModifierConditions.Bit(ModifierCondition.AfterFlick);
+            if (_state.MouseIdleTicks < Ticks(rules.MouseMovingSeconds))
+                conditions |= ModifierConditions.Bit(ModifierCondition.MouseMoving);
+            if (_state.InputStreakTicks * GameLoop.TickSeconds >= rules.LongStreakSeconds)
+                conditions |= ModifierConditions.Bit(ModifierCondition.LongStreak);
+            return conditions;
+        }
+
+        private static int Ticks(double seconds) => (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);
 
         private ulong BossConditions()
         {
             if (!_state.EnemyAlive || _state.EnemyType != EnemyType.Boss)
                 return 0;
             var conditions = ModifierConditions.Bit(ModifierCondition.Boss);
-            if (_state.EnemyLifeSeconds < _combat.Conditions.BossOpeningSeconds)
+            var rules = _combat.Conditions;
+            if (_state.EnemyLifeSeconds < rules.BossOpeningSeconds)
                 conditions |= ModifierConditions.Bit(ModifierCondition.BossOpening);
+            if (_state.EnemyMaxHp.Sign > 0 && (_state.EnemyHp / _state.EnemyMaxHp).ToDouble() < rules.BossLowHpShare)
+                conditions |= ModifierConditions.Bit(ModifierCondition.BossLowHp);
+            if (_state.BossSecondsLeft <= rules.BossTimerEndSeconds)
+                conditions |= ModifierConditions.Bit(ModifierCondition.BossTimerEnd);
             return conditions;
         }
 
@@ -94,13 +133,21 @@ namespace Game.Core.Sim
                 return 0;
             MapMarks();
             var conditions = 0UL;
+            if (allies != 0)
+                conditions |= ModifierConditions.Bit(ModifierCondition.AnyAllyMark);
+            var marked = 0;
             for (var i = 0; i < ModifierConditions.Marks; i++)
             {
                 if (((own | allies) & _markMasks[i]) != 0)
+                {
                     conditions |= ModifierConditions.Bit(ModifierConditions.Mark(i));
+                    marked++;
+                }
                 if ((allies & _markMasks[i]) != 0)
                     conditions |= ModifierConditions.Bit(ModifierConditions.AllyMark(i));
             }
+            if (marked >= 2)
+                conditions |= ModifierConditions.Bit(ModifierCondition.TwoMarks);
             return conditions;
         }
 

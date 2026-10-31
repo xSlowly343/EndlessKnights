@@ -62,6 +62,21 @@ namespace Game.Core.Tests.Sim
             return test;
         }
 
+        public void Branch(string skill, string branch)
+        {
+            var gem = TestWorld.Data.Gems[skill];
+            State.ProgressOf(gem).Level = gem.Branches[gem.Branches.Count - 1].Level;
+            for (var tier = 0; tier < gem.Branches.Count; tier++)
+            {
+                var options = gem.Branches[tier].Options;
+                for (var option = 0; option < options.Count; option++)
+                {
+                    if (options[option].Id == branch)
+                        Loop.ChooseBranch(gem, tier, option);
+                }
+            }
+        }
+
         public CastResult Cast(int slot) => Loop.Skills.TryCast(slot);
 
         public void Ticks(int count, int keysPerTick = 0)

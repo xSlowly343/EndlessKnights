@@ -2,6 +2,7 @@ using System.Linq;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Stats;
+using Game.Core.Tests.Sim;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Content
@@ -26,7 +27,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(115));
+            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(79));
             Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(30));
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Aura && !gem.Locked).Select(gem => gem.Skill!.Effect), Is.All.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Active).Select(gem => gem.Skill!.Effect), Is.All.Not.InstanceOf<AuraEffect>());
@@ -72,7 +73,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void ASkillWithoutBranchesHasNone()
         {
-            Assert.That(GemCatalog.Load(RealFile())["thin_cut"].Branches, Is.Empty);
+            Assert.That(GemCatalog.Load(RealFile())["second_axe"].Branches, Is.Empty);
         }
 
         [TestCase("\"branches\": []", "3 branch tiers, got 0")]
@@ -174,12 +175,23 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            var problems = SkillRoster.Problems(gems, new[] { "axe", "katana", "nothing" });
+            var problems = SkillRoster.Problems(gems, TestWorld.Real.Weapons.Types.Select(type => type.Id).Append("nothing"));
 
-            Assert.That(problems.Where(problem => problem.StartsWith("axe")), Is.Empty, "the Huscarl is the reference class");
-            Assert.That(problems, Has.Member("katana: 30 active skills, expected 15"));
+            Assert.That(problems.Where(problem => !problem.StartsWith("nothing")), Is.Empty, "every class has fifteen skills and four auras");
             Assert.That(problems, Has.Member("nothing: 0 active skills, expected 15"));
             Assert.That(problems, Has.Member("nothing: 0 auras, expected 4"));
+        }
+
+        [Test]
+        public void TheGameDoesNotLoadAClassWithoutFifteenSkills()
+        {
+            var error = Assert.Throws<ContentException>(() => GameData.Load(name =>
+                name == GemCatalog.FileName
+                    ? TestData.ReadGameDataFile(name).Replace("\"formerIds\": [\"the_last_ronin\"],\n      \"kind\": \"active\",\n      \"weapon\": \"katana\"", "\"formerIds\": [\"the_last_ronin\"],\n      \"kind\": \"active\",\n      \"weapon\": \"axe\"")
+                    : TestData.ReadGameDataFile(name)));
+
+            Assert.That(error!.Message, Does.Contain("katana: 14 active skills, expected 15"));
+            Assert.That(error.Message, Does.Contain("axe: 16 active skills, expected 15"));
         }
     }
 }

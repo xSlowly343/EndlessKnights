@@ -40,6 +40,8 @@ namespace Game.Core.Sim
         public IReadOnlyList<SlateItem> Bag => _state.Slates.Bag;
         public IReadOnlyList<SlatePlacement> Board => _state.Slates.Board;
         public (int Width, int Height) Size => _rules.BoardSize(_state.GatesCleared.Count);
+        private double DustGain => System.Math.Max(0, _hero.Value(CombatStats.DustGain, 1));
+
         public double DropBonus => System.Math.Max(0, _hero.Value(CombatStats.SlateChance, 1));
 
         public void OnRecordBoss(long stage, EnemyType type, int biome)
@@ -162,7 +164,7 @@ namespace Game.Core.Sim
             var slates = _state.Slates;
             slates.Found++;
             if (slates.Bag.Count >= _rules.BagSize)
-                _state.Drops.Dust += _rules.Rarity(slate.Rarity).Dust;
+                _state.Drops.Dust += _rules.Rarity(slate.Rarity).Dust * DustGain;
             else
                 slates.Bag.Add(slate);
             _events.Add(GameEvent.WithAmount(GameEventKind.SlateDropped, _state.Tick, BigNumber.FromDouble((int)slate.Rarity), _state.Stage));
@@ -261,7 +263,7 @@ namespace Game.Core.Sim
         {
             if (!_state.Slates.Bag.Remove(slate))
                 return SlateResult.NotInBag;
-            _state.Drops.Dust += _rules.Rarity(slate.Rarity).Dust;
+            _state.Drops.Dust += _rules.Rarity(slate.Rarity).Dust * DustGain;
             return SlateResult.Done;
         }
 

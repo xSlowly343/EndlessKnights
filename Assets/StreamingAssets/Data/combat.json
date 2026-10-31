@@ -33,7 +33,11 @@
       "oracle": { "perKey": 0, "mousePxPerPoint": 600, "perAllyHit": 0.1, "reading": { "perSecond": 1, "afterKeylessSeconds": 5 } },
       "nomad": { "perKey": 0.5, "mousePxPerPoint": 500, "perClick": 1 },
       "stormweaver": { "perKey": 0.2, "mousePxPerPoint": 400, "overload": { "multiplier": 5 } },
-      "moonshiner": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } }
+      "moonshiner": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } },
+      "spinner": { "perKey": 0.2, "perCircle": 4, "decay": { "perSecond": 2, "afterKeylessSeconds": 5, "mouseHolds": true } },
+      "rimecaller": { "perKey": 0.5, "mousePxPerPoint": 500 },
+      "thornmaiden": { "perKey": 0.5 },
+      "clayshaper": { "perKey": 1, "perCircle": 5 }
     }
   },
   "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
@@ -46,7 +50,11 @@
     "viking": { "shield": { "every": 15, "everyMin": 5, "multiplier": 2, "stunSeconds": 2 } },
     "ronin": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 50, "strikeEveryMin": 10, "strikeMultiplier": 3, "strikeTargets": 1, "breathEvery": 25, "whirlResource": 20 } },
     "metalhead": { "headbang": { "pxPerSecond": 2000, "maxSeconds": 30 }, "overdrive": { "seconds": 8, "songs": 0.5 } },
-    "clockmaker": { "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 } }
+    "clockmaker": { "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 } },
+    "spinner": { "bonds": { "resourceAbove": 30, "auraDuration": 0.5 } },
+    "rimecaller": { "cold": { "perKeyHit": 1, "max": 100, "fadePerSecond": 0.05, "damageTaken": 0.2 } },
+    "thornmaiden": { "blood": { "perFlick": 3, "max": 30, "hitsPerStack": 0.2 } },
+    "clayshaper": { "golem": { "seconds": 20, "hitsPerSecond": 0.5, "multiplier": 12, "stunSeconds": 1 } }
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },
   "hero": {
@@ -79,7 +87,7 @@
     "afterIdle": { "pauseSeconds": 30, "seconds": 10 },
     "fastKillSeconds": 3,
     "inputKindSeconds": 10,
-    "bossOpeningSeconds": 3,
+    "bossOpeningSeconds": 3, "bossLowHp": 0.3, "afterFastKillSeconds": 3, "afterGestureSeconds": 3, "mouseMovingSeconds": 0.5,
     "longStreak": { "seconds": 120, "pauseSeconds": 3 }
   },
   "encounters": {

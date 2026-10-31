@@ -1,7 +1,7 @@
 {
   "version": 6,
   "class": "spinner",
-  "attribute": {"name": "dexterity", "perPoint": [{"stat": "auraDuration", "kind": "increased", "value": 0.01}]},
+  "attribute": {"name": "dexterity", "perPoint": [{"stat": "bondPower", "kind": "flat", "value": 0.01}]},
   "barPassives": [[{"stat": "classAttribute", "kind": "flat", "value": 3}], [{"stat": "auraDuration", "kind": "increased", "value": 0.02}]],
   "nodes": [
     {"id": "spinner_spindle", "row": 1, "column": 0, "name": {"ru": "Веретено", "en": "Spindle"}, "a": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.04, "tags": ["Keyboard"]}]}, "b": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.02, "tags": ["Keyboard"]}]}, "c": {"text": {"ru": "каждый 25-й удар — стежок: +1% урона по врагу до конца боя (до 10%)", "en": "every 25th hit is a stitch: +1% damage to the enemy for the fight (up to 10%)"}, "waits": "stitch"}},

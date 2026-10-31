@@ -40,11 +40,12 @@ namespace Game.Core.Sim.Headless
         public double IdleAfterSeconds { get; set; }
         public double SampleSeconds { get; set; }
         public int HeroLevel { get; set; }
+        public bool LossAfterJoin { get; set; }
 
         public PartySimulationResult Run(double seconds)
         {
             var synergy = Synergy ?? _data.Synergy;
-            var network = new LoopbackNetwork(_seed, MinLatencyMs, MaxLatencyMs, _loss, 4096);
+            var network = new LoopbackNetwork(_seed, MinLatencyMs, MaxLatencyMs, LossAfterJoin ? 0 : _loss, 4096);
             var host = new PartyHost(new PartyEncounter(_data.Party, _data.Stages, _seed), network.Connect(HostId), _data.Party, _data.Rift, synergy);
             var loops = new GameLoop[_classes.Count];
             var clients = new PartyClient[_classes.Count];
@@ -86,6 +87,8 @@ namespace Game.Core.Sim.Headless
             var totalTicks = (long)System.Math.Round(seconds * GameLoop.TicksPerSecond);
             for (var tick = 0L; tick < totalTicks; tick++)
             {
+                if (LossAfterJoin && network.Loss != _loss && AllLinked(clients))
+                    network.Loss = _loss;
                 network.Advance(GameLoop.TickSeconds * 1000);
                 for (var i = 0; i < loops.Length; i++)
                 {
@@ -131,6 +134,16 @@ namespace Game.Core.Sim.Headless
                 banks[i] = slot >= 0 ? host.Encounter.Member(slot).RestBankTicks / GameLoop.TicksPerSecond : 0;
             }
             return new PartySample(seconds, host.Kills, rewards, shares, banks);
+        }
+
+        private static bool AllLinked(PartyClient[] clients)
+        {
+            foreach (var client in clients)
+            {
+                if (client.Status != PartyLink.Linked)
+                    return false;
+            }
+            return true;
         }
 
         private static void CastEverything(GameLoop loop)

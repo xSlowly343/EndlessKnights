@@ -576,43 +576,6 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void AnAllysHeavyCastFiresCastWithAlly()
-        {
-            var rig = new Rig(2);
-            rig.Run(5);
-            var viking = rig.Members[0];
-            var friend = rig.Members[1];
-            var heavy = viking.Equip("no_mercy");
-            AddToWeapon(viking, "no_mercy");
-            var trigger = TestWorld.Data.Gems["cast_with_ally"];
-            friend.Loop.State.OwnedGems.Add(trigger);
-            var hatchet = friend.Equip("hatchet_toss");
-            AddToWeapon(friend, "hatchet_toss");
-            Assert.That(friend.Loop.Book.SetTrigger(hatchet, trigger), Is.EqualTo(Game.Core.Build.BookResult.Done));
-            friend.Loop.State.Resource = 1000;
-            var casts = 0;
-            for (var tick = 0; tick < 20; tick++)
-            {
-                if (tick == 0)
-                    viking.Cast(heavy);
-                rig.Network.Advance(100);
-                foreach (var member in rig.Members)
-                {
-                    member.Input.PressKeys(1);
-                    member.Loop.Tick();
-                    if (member == friend)
-                        casts += member.Loop.Events.CountOf(GameEventKind.SkillCast);
-                    member.Loop.Events.Clear();
-                }
-                rig.Host.Tick();
-            }
-
-            Assert.That(TestWorld.Data.Gems["no_mercy"].Skill!.Role, Is.EqualTo(Game.Core.Content.Gems.SkillRole.Heavy));
-            Assert.That(TestWorld.Data.Gems["no_mercy"].Skill!.CooldownSeconds, Is.GreaterThanOrEqualTo(20));
-            Assert.That(casts, Is.GreaterThan(0), "the ally's heavy strike reaches the friend's trigger");
-        }
-
-        [Test]
         public void OfferSurvivesTheWire()
         {
             var buffer = new byte[PartyCodec.MaxPacketBytes];

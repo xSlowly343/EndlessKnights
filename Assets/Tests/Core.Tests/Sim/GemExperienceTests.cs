@@ -33,10 +33,9 @@ namespace Game.Core.Tests.Sim
             var skill = Gem("iron_rim_bash");
             if (armed)
                 TestWorld.ArmFor(loop, skill);
-            loop.State.OwnedGems.AddRange(new[] { skill, Gem("rebound"), Gem("cast_on_timer") });
+            loop.State.OwnedGems.AddRange(new[] { skill, Gem("rebound") });
             loop.Skills.Equip(skill);
             loop.Book.SetSupport(0, 0, Gem("rebound"));
-            loop.Book.SetTrigger(0, Gem("cast_on_timer"));
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(10));
             return (loop, input);
         }
@@ -50,13 +49,13 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void KillsTeachTheSkillItsSupportsAndItsTrigger()
+        public void KillsTeachTheSkillAndItsSupports()
         {
             var (loop, input) = Hero(armed: true);
 
             Kill(loop, input);
 
-            foreach (var id in new[] { "iron_rim_bash", "rebound", "cast_on_timer" })
+            foreach (var id in new[] { "iron_rim_bash", "rebound" })
                 Assert.That(loop.State.GemProgress[id].Experience, Is.EqualTo(Levels.ExperiencePerKill).Within(1e-9), id);
         }
 

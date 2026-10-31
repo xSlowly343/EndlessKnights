@@ -169,7 +169,6 @@ namespace Game.Core.Sim
         public double NextKillReward { get; set; } = 1;
         public double NextKillShardChance { get; set; }
         public double NextKillShards { get; set; }
-        public long BossStarts { get; set; }
         public int HitsOnEnemy { get; set; }
         public int BossTimerStopTicks { get; set; }
         public int CannonShotsOnEnemy { get; set; }
@@ -198,7 +197,6 @@ namespace Game.Core.Sim
         public double BannerBonus { get; set; }
         public int BannerDecayTicks { get; set; }
         public double WeakenShare { get; set; }
-        public double AllyHeavyCastSeconds { get; set; }
         public double ResourceFill { get; set; }
         public double KeyHitRate { get; set; }
         public double MouseHitRate { get; set; }
@@ -206,6 +204,11 @@ namespace Game.Core.Sim
         public double AutoCastKeys { get; set; }
         public long InputStreakTicks { get; set; }
         public double ClickCarry { get; set; }
+        public int AfterFastKillTicks { get; set; }
+        public int AfterCircleTicks { get; set; }
+        public int AfterFlickTicks { get; set; }
+        public bool PauseCritArmed { get; set; }
+        public long CritsTowardBurst { get; set; }
         public HashSet<long> GatesCleared { get; } = new HashSet<long>();
         public int MentorCoopPoints { get; set; }
         public int ServerCoopHelpPoints { get; set; }
@@ -262,6 +265,9 @@ namespace Game.Core.Sim
         public int KeysTowardBlind { get; set; }
         public int BlindTicks { get; set; }
         public bool EvilEyeOnEnemy { get; set; }
+        public bool BondsUp { get; set; }
+        public double Cold { get; set; }
+        public double BloodStacks { get; set; }
         public int CompanionMarks { get; set; }
         public int OverdriveTicks { get; set; }
         public bool OverdriveSpent { get; set; }
@@ -299,6 +305,8 @@ namespace Game.Core.Sim
             PoisonStacks = 0;
             BurnStacks = 0;
             DotCarry = 0;
+            Cold = 0;
+            BloodStacks = 0;
             Doom = BigNumber.Zero;
             DoomTicks = 0;
             VulnerabilityShare = 0;

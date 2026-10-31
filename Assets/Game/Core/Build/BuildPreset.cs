@@ -13,7 +13,7 @@ namespace Game.Core.Build
 
         public ClassTreeAllocation ClassTree { get; set; }
         public List<ClassTreeAllocation?> CommonTrees { get; set; } = new List<ClassTreeAllocation?>();
-        public List<(GemDef Skill, GemDef? Trigger)> Skills { get; } = new List<(GemDef, GemDef?)>();
+        public List<GemDef> Skills { get; } = new List<GemDef>();
         public List<GemDef?[]> Supports { get; } = new List<GemDef?[]>();
         public List<SkillSlotRole> Roles { get; } = new List<SkillSlotRole>();
 

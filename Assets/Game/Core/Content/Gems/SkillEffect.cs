@@ -576,7 +576,8 @@ namespace Game.Core.Content.Gems
     {
         Cannon,
         Skeleton,
-        Beast
+        Beast,
+        Golem
     }
 
     public sealed class SummonEffect : SkillEffect

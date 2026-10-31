@@ -54,7 +54,6 @@ const rules = {
   relayCooldownSeconds: party.relay.cooldownSeconds,
   allyResourceMax: party.buffs.allyResource.max,
   allyResourceCooldownSeconds: party.buffs.allyResource.cooldownSeconds,
-  castNoticeSeconds: party.buffs.castNoticeSeconds,
   synergyReactions: synergy.reactions.length,
   barsPerSecond: party.caps.barsPerSecond,
   burstBars: party.caps.burstBars,

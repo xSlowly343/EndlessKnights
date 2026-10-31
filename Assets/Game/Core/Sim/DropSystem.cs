@@ -21,7 +21,7 @@ namespace Game.Core.Sim
         private readonly WeaponSystem _weapons;
         private readonly GearSystem _gear;
         private readonly double[] _rarityWeights = new double[DropRules.RarityCount];
-        private readonly List<GemDef>[] _gemPools = { new List<GemDef>(), new List<GemDef>(), new List<GemDef>() };
+        private readonly List<GemDef>[] _gemPools = { new List<GemDef>(), new List<GemDef>() };
         private readonly List<WeaponType> _types = new List<WeaponType>();
         private readonly List<WeaponBase> _bases = new List<WeaponBase>();
         private readonly PendingDrop[] _pending = new PendingDrop[PendingCapacity];
@@ -267,7 +267,6 @@ namespace Game.Core.Sim
             var bonus = System.Math.Max(0, _hero.Value(CombatStats.GemDrop, 1));
             RollGem(GemKind.Skill, type, bonus);
             RollGem(GemKind.Support, type, bonus);
-            RollGem(GemKind.Trigger, type, bonus);
         }
 
         private void RollGem(GemKind kind, EnemyType type, double bonus)
@@ -280,7 +279,7 @@ namespace Game.Core.Sim
                 GiveUncut();
                 return;
             }
-            Push(PendingDrop.OfGem(PickGem(_gemPools[(int)kind], preferNew: false)));
+            Push(PendingDrop.OfGem(PickGem(_gemPools[(int)kind])));
         }
 
         public void OnBossDefeated(long stage, EnemyType type, long recordBefore, bool raisesRecord)
@@ -351,8 +350,6 @@ namespace Game.Core.Sim
                 GiveRolled(_rules.Guardian, stage, DropSource.Guardian);
             else if (_rules.IsSpecialBoss(stage))
                 GiveRolled(_rules.SpecialBoss, stage, DropSource.SpecialBoss);
-            if (stage == _rules.FirstTriggerStage && _gemPools[(int)GemKind.Trigger].Count > 0)
-                Push(PendingDrop.OfGem(PickGem(_gemPools[(int)GemKind.Trigger], preferNew: true)));
         }
 
         private void RollDaily(long stage, DropSource source, double chance)
@@ -609,7 +606,7 @@ namespace Game.Core.Sim
             if (weapon?.Set != null)
                 _gear.NoteFound(weapon.Set, ItemSlot.Weapon);
             var salvaged = BagFull || ShouldSalvage(weapon, gear, rarity);
-            var dust = salvaged ? _rules.DustFor(rarity) : 0;
+            var dust = salvaged ? _rules.DustFor(rarity) * System.Math.Max(0, _hero.Value(CombatStats.DustGain, 1)) : 0;
             drops.Dust += dust;
             if (salvaged)
                 drops.SalvagedItems++;
@@ -665,21 +662,7 @@ namespace Game.Core.Sim
             return weapons.Right == null || weapons.Left == null || rarity > weapons.Right.Rarity || rarity > weapons.Left.Rarity;
         }
 
-        private GemDef PickGem(List<GemDef> pool, bool preferNew)
-        {
-            var rng = _state.Drops.Rng;
-            if (preferNew)
-            {
-                var start = rng.NextInt(0, pool.Count);
-                for (var i = 0; i < pool.Count; i++)
-                {
-                    var gem = pool[(start + i) % pool.Count];
-                    if (!_state.OwnedGems.Contains(gem))
-                        return gem;
-                }
-            }
-            return pool[rng.NextInt(0, pool.Count)];
-        }
+        private GemDef PickGem(List<GemDef> pool) => pool[_state.Drops.Rng.NextInt(0, pool.Count)];
 
         private void GiveShards(long stage, EnemyType type, long recordBefore)
         {

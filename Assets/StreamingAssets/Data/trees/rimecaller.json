@@ -1,7 +1,7 @@
 {
   "version": 6,
   "class": "rimecaller",
-  "attribute": {"name": "intelligence", "perPoint": [{"stat": "damage", "kind": "increased", "value": 0.005, "tags": ["Keyboard"]}]},
+  "attribute": {"name": "intelligence", "perPoint": [{"stat": "coldPower", "kind": "flat", "value": 0.01}]},
   "barPassives": [[{"stat": "classAttribute", "kind": "flat", "value": 3}], [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.02}]],
   "nodes": [
     {"id": "rimecaller_ice_staff", "row": 1, "column": 0, "name": {"ru": "Ледяной посох", "en": "Ice Staff"}, "a": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.04, "tags": ["Keyboard"]}]}, "b": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.02, "tags": ["Keyboard"]}]}, "c": {"text": {"ru": "каждый удар клавиш +1 Холода сверх обычного", "en": "each key hit adds 1 more Cold"}, "waits": "coldPerHit"}},

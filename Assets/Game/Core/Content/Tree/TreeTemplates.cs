@@ -77,6 +77,7 @@ namespace Game.Core.Content.Tree
                 ReadRising(bar.Field("majorsAt"), "major talent marks"), bar.Field("majorOptions").AsInt(2, 10));
             var passives = root.Field("passives").AsInt(0, classShape.NodeCount);
             var classes = new List<string>(Sim.HeroClassNames.ByName.Keys);
+            classes.AddRange(Sim.HeroClassNames.InDevelopment.Keys);
             var common = root.Field("commonTrees");
             var commonShape = new TreeShape(ReadRows(common.Field("rows")), common.Field("nodes").AsInt(1, 1000),
                 ReadRising(common.Field("majorsAt"), "major talent marks"), common.Field("majorOptions").AsInt(2, 10));
@@ -106,7 +107,7 @@ namespace Game.Core.Content.Tree
             foreach (var item in list.Items())
             {
                 var id = item.AsString();
-                if (ids.Contains(id) || classes.Contains(id) || Sim.HeroClassNames.ByName.ContainsKey(id))
+                if (ids.Contains(id) || classes.Contains(id))
                     throw item.Error($"common tree '{id}' is listed twice or shares a class name");
                 ids.Add(id);
             }

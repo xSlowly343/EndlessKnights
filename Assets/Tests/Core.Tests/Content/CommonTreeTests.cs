@@ -98,6 +98,18 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
+        public void NoCommonTreeLineWaitsForAMechanic()
+        {
+            var data = GameData.Load(TestData.ReadGameDataFile);
+            foreach (var tree in data.CommonTrees.Values)
+            {
+                var waits = tree.Nodes.SelectMany(node => new[] { node.Template.First, node.Template.Second, node.Template.Third }).Select(line => line.Waits)
+                    .Concat(tree.Majors.SelectMany(slot => slot.Options).Select(option => option.Waits));
+                Assert.That(waits.Where(mechanic => mechanic != null), Is.Empty, tree.Id);
+            }
+        }
+
+        [Test]
         public void GameDataLoadsTheCommonTrees()
         {
             var data = GameData.Load(TestData.ReadGameDataFile);

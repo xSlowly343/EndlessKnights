@@ -1,7 +1,7 @@
 {
   "version": 6,
   "class": "thornmaiden",
-  "attribute": {"name": "dexterity", "perPoint": [{"stat": "dotDamage", "kind": "increased", "value": 0.01}]},
+  "attribute": {"name": "dexterity", "perPoint": [{"stat": "bloodPower", "kind": "flat", "value": 0.01}]},
   "barPassives": [[{"stat": "classAttribute", "kind": "flat", "value": 3}], [{"stat": "dotDamage", "kind": "increased", "value": 0.02}]],
   "nodes": [
     {"id": "thornmaiden_thorn_whip", "row": 1, "column": 0, "name": {"ru": "Терновый хлыст", "en": "Thorn Whip"}, "a": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.04, "tags": ["Keyboard"]}]}, "b": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.02, "tags": ["Keyboard"]}]}, "c": {"text": {"ru": "каждый 25-й удар +1 стак Крови", "en": "every 25th hit adds a Blood stack"}, "waits": "bloodOnHits"}},
