@@ -236,6 +236,7 @@ namespace Game.Core.Save
                 GemDef? trigger = null;
                 if (!triggerNode.IsNull && gems.TryGet(triggerNode.AsString(), out var found) && found.Trigger != null)
                     trigger = found;
+                state.OtherPreset.Roles.Add(ReadRole(item, state.OtherPreset.Skills.Count) ?? (SkillLoadout.IsAura(skill) ? SkillSlotRole.Aura : SkillSlotRole.Auto));
                 state.OtherPreset.Skills.Add((skill, trigger));
                 var supports = new GemDef?[SkillSlot.SocketCapacity];
                 ReadSupports(item, gems, supports);
@@ -833,7 +834,9 @@ namespace Game.Core.Save
             for (var i = 0; i < items.Length; i++)
             {
                 var (skill, trigger) = preset.Skills[i];
+                var role = preset.RoleAt(i);
                 items[i] = Object(("gem", JsonValue.Of(skill.Id)), ("trigger", trigger == null ? JsonValue.Null() : JsonValue.Of(trigger.Id)),
+                    ("slot", role == null ? JsonValue.Null() : JsonValue.Of(RoleName(role.Value))),
                     ("supports", JsonValue.Array(WriteSupports(preset.SupportsAt(i)))));
             }
             return items;
@@ -913,6 +916,7 @@ namespace Game.Core.Save
                     ("cooldownTicks", JsonValue.Of(slot.CooldownTicks)),
                     ("activeTicks", JsonValue.Of(slot.ActiveTicks)),
                     ("hitsLeft", JsonValue.Of(slot.HitsLeft)),
+                    ("slot", JsonValue.Of(RoleName(slot.Role))),
                     ("supports", JsonValue.Array(WriteSupports(slot.Supports))));
             }
             return skills;
@@ -1002,11 +1006,38 @@ namespace Game.Core.Save
                 {
                     CooldownTicks = item.Field("cooldownTicks").AsInt(0),
                     ActiveTicks = item.Field("activeTicks").AsInt(0),
-                    HitsLeft = item.Field("hitsLeft").AsInt(0)
+                    HitsLeft = item.Field("hitsLeft").AsInt(0),
+                    Role = ReadRole(item, state.Skills.Count) ?? SkillLoadout.FreeRole(state.Skills, skill, SkillLoadout.AutoSlots) ?? SkillSlotRole.Auto
                 };
                 ReadSupports(item, gems, slot.Supports);
                 state.Skills.Add(slot);
             }
+        }
+
+        private static readonly Dictionary<string, SkillSlotRole> Roles = new Dictionary<string, SkillSlotRole>(System.StringComparer.Ordinal)
+        {
+            ["left"] = SkillSlotRole.Left,
+            ["right"] = SkillSlotRole.Right,
+            ["auto"] = SkillSlotRole.Auto,
+            ["aura"] = SkillSlotRole.Aura
+        };
+
+        private static string RoleName(SkillSlotRole role) => role switch
+        {
+            SkillSlotRole.Left => "left",
+            SkillSlotRole.Right => "right",
+            SkillSlotRole.Aura => "aura",
+            _ => "auto"
+        };
+
+        private static SkillSlotRole? ReadRole(ContentNode item, int position)
+        {
+            if (!item.HasField("slot") || item.Field("slot").IsNull)
+                return SkillLoadout.RoleAtPosition(position);
+            var name = item.Field("slot").AsString();
+            if (!Roles.TryGetValue(name, out var role))
+                throw item.Field("slot").Error($"unknown skill slot '{name}', expected left, right, auto or aura");
+            return role;
         }
 
         private static EnemyDef? ReadEnemyDef(ContentNode id, EnemyCatalog enemies)

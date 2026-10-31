@@ -6,8 +6,9 @@ namespace Game.Core.Stats
     public sealed class StatSheet
     {
         private const int CacheCapacity = 512;
+        private const int ModifierCapacity = 256;
 
-        private readonly List<Modifier> _modifiers = new List<Modifier>();
+        private readonly List<Modifier> _modifiers = new List<Modifier>(ModifierCapacity);
         private readonly Dictionary<(StatId Stat, StatTags Tags), Totals> _cache = new Dictionary<(StatId, StatTags), Totals>(CacheCapacity);
 
         private ulong _conditions;

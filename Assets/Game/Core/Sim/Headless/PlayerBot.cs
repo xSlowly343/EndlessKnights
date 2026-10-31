@@ -57,7 +57,7 @@ namespace Game.Core.Sim.Headless
 
         private void EquipOwnedSkills()
         {
-            if (_loop.State.Skills.Count >= _loop.Book.SlotCount)
+            if (_loop.State.Skills.Count >= _loop.Book.SlotCount + _loop.Book.AuraSlotCount)
                 return;
             _triedGems.Clear();
             foreach (var gem in _loop.State.OwnedGems)

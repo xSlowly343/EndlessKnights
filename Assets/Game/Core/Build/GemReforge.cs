@@ -37,6 +37,8 @@ namespace Game.Core.Build
                 var (skill, trigger) = preset.Skills[i];
                 if (skill.Ascendancy != null)
                     continue;
+                var role = preset.RoleAt(i);
+                reforged.Roles.Add(role != null && SkillLoadout.Accepts(role.Value, Of(skill)) ? role.Value : SkillLoadout.IsAura(Of(skill)) ? SkillSlotRole.Aura : SkillSlotRole.Auto);
                 reforged.Skills.Add((Of(skill), trigger));
                 reforged.Supports.Add(preset.SupportsAt(i));
             }

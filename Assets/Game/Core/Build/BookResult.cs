@@ -14,6 +14,7 @@ namespace Game.Core.Build
         AlreadyInBook,
         NoSuchSocket,
         AlreadyInBuild,
-        TooManyColored
+        TooManyColored,
+        WrongSlot
     }
 }

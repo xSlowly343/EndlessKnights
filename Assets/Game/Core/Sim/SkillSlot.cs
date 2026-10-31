@@ -8,6 +8,7 @@ namespace Game.Core.Sim
     public sealed class SkillSlot
     {
         public const int SocketCapacity = 8;
+        public const int AuraModifierCapacity = 8;
 
         public SkillSlot(GemDef skill, GemDef? trigger = null)
         {
@@ -18,6 +19,7 @@ namespace Game.Core.Sim
         }
 
         public GemDef Skill { get; set; }
+        public SkillSlotRole Role { get; set; }
         public GemDef? Trigger { get; set; }
         public GemDef?[] Supports { get; } = new GemDef?[SocketCapacity];
         public int CooldownTicks { get; set; }
@@ -81,7 +83,7 @@ namespace Game.Core.Sim
 
         public bool AuraApplied { get; set; }
         public double AuraStrength { get; set; }
-        public List<Modifier> AuraModifiers { get; } = new List<Modifier>();
+        public List<Modifier> AuraModifiers { get; } = new List<Modifier>(AuraModifierCapacity);
 
         public SkillDef Def => Skill.Skill!;
         public bool Ready => CooldownTicks <= 0;

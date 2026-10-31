@@ -74,9 +74,9 @@ namespace Game.Core.Sim
                 case TriggerCondition.ResourceBelow:
                     return _state.Resource < trigger.Value;
                 case TriggerCondition.WithLeft:
-                    return CastWith(index, SkillSystem.LeftButtonSlot);
+                    return CastWith(index, SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Left));
                 case TriggerCondition.WithRight:
-                    return CastWith(index, SkillSystem.RightButtonSlot);
+                    return CastWith(index, SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Right));
                 case TriggerCondition.Flick:
                     return input.Flicks > 0;
                 case TriggerCondition.AllyHeavyCast:
@@ -95,6 +95,6 @@ namespace Game.Core.Sim
         }
 
         private bool CastWith(int index, int buttonSlot) =>
-            index != buttonSlot && buttonSlot < _state.Skills.Count && _state.Skills[buttonSlot].CastOn(_state.Tick);
+            index != buttonSlot && buttonSlot >= 0 && buttonSlot < _state.Skills.Count && _state.Skills[buttonSlot].CastOn(_state.Tick);
     }
 }

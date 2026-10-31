@@ -41,6 +41,7 @@ namespace Game.Core.Ui
             BookResult.NoSuchSocket => Texts.Get("book.result.noSuchSocket"),
             BookResult.AlreadyInBuild => Texts.Get("book.result.alreadyInBuild"),
             BookResult.TooManyColored => Texts.Get("book.result.tooManyColored"),
+            BookResult.WrongSlot => Texts.Get("book.result.wrongSlot"),
             _ => string.Empty
         };
 

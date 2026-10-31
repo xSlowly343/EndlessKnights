@@ -39,6 +39,38 @@ namespace Game.Core.Build
 
         public int SlotCount => _rules.SlotsFor(_state.RecordStage, _state.EarlyBookSlot);
         public int MaxSlots => _rules.MaxSlots;
+        public int AutoSlotCount => System.Math.Max(0, SlotCount - SkillLoadout.HandSlots);
+        public int AuraSlotCount => SkillLoadout.AuraSlots;
+
+        public SkillSlotRole? FreeRoleFor(GemDef skill) => SkillLoadout.FreeRole(_state.Skills, skill, AutoSlotCount);
+
+        public bool HasRoomFor(GemDef skill) => FreeRoleFor(skill) != null;
+
+        public int Capacity(SkillSlotRole role) => SkillLoadout.Capacity(role, AutoSlotCount);
+
+        public BookResult Assign(int index, SkillSlotRole role)
+        {
+            if (index < 0 || index >= _state.Skills.Count)
+                return BookResult.NoSuchSlot;
+            var slot = _state.Skills[index];
+            if (slot.Role == role)
+                return BookResult.Done;
+            if (!SkillLoadout.Accepts(role, slot.Skill))
+                return BookResult.WrongSlot;
+            if (SkillLoadout.HasRoom(_state.Skills, role, AutoSlotCount))
+            {
+                slot.Role = role;
+                return BookResult.Done;
+            }
+            if (role != SkillSlotRole.Left && role != SkillSlotRole.Right)
+                return BookResult.NoFreeSlot;
+            var occupant = _state.Skills[SkillLoadout.IndexOf(_state.Skills, role)];
+            if (!SkillLoadout.Accepts(slot.Role, occupant.Skill))
+                return BookResult.WrongSlot;
+            occupant.Role = slot.Role;
+            slot.Role = role;
+            return BookResult.Done;
+        }
 
         public long UnlockStageOf(int slot) => _rules.UnlockStageOf(slot, _state.EarlyBookSlot);
 
@@ -165,11 +197,14 @@ namespace Game.Core.Build
                 return BookResult.WaitsForMechanic;
             if (skill.Ascendancy != null && skill.Ascendancy != _state.Ascendancy.Subclass)
                 return BookResult.WrongPath;
+            if (RowOf(skill) >= 0)
+                return BookResult.AlreadyInBook;
             if (!MeetsRequirements(skill))
                 return BookResult.AttributesTooLow;
-            if (_state.Skills.Count >= SlotCount)
+            var role = FreeRoleFor(skill);
+            if (role == null)
                 return BookResult.NoFreeSlot;
-            _skills.Equip(skill);
+            _skills.Equip(skill, role: role);
             return BookResult.Done;
         }
 
@@ -185,21 +220,14 @@ namespace Game.Core.Build
                 return BookResult.AlreadyInBook;
             if (!MeetsRequirements(skill))
                 return BookResult.AttributesTooLow;
-            if (_state.Skills.Count >= SlotCount)
+            var role = FreeRoleFor(skill);
+            if (role == null)
                 return BookResult.NoFreeSlot;
-            _skills.Equip(skill);
+            _skills.Equip(skill, role: role);
             return BookResult.Done;
         }
 
-        public int RowOf(GemDef skill)
-        {
-            for (var i = 0; i < _state.Skills.Count; i++)
-            {
-                if (ReferenceEquals(_state.Skills[i].Skill, skill))
-                    return i;
-            }
-            return -1;
-        }
+        public int RowOf(GemDef skill) => SkillLoadout.RowOf(_state.Skills, skill);
 
         public BookResult Unequip(int index)
         {
@@ -261,19 +289,19 @@ namespace Game.Core.Build
 
         private int PlaceClassSkill(GemDef skill, int position)
         {
-            if (_state.Skills.Count >= SlotCount)
-                FreeGeneralSlot();
+            if (!HasRoomFor(skill))
+                FreeGeneralSlot(SkillLoadout.IsAura(skill));
             if (Equip(skill) != BookResult.Done)
                 return 0;
             Move(_state.Skills.Count - 1, position);
             return 1;
         }
 
-        private void FreeGeneralSlot()
+        private void FreeGeneralSlot(bool aura)
         {
             for (var index = _state.Skills.Count - 1; index >= 0; index--)
             {
-                if (_state.Skills[index].Def.Weapon == null)
+                if (_state.Skills[index].Def.Weapon == null && SkillLoadout.IsAura(_state.Skills[index].Skill) == aura)
                 {
                     Unequip(index);
                     return;

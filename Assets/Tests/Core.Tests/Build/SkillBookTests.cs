@@ -70,13 +70,13 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NoMoreSkillsThanSlots()
         {
-            var loop = WithGems("through_stride", "march", "lull", "lull");
+            var loop = WithGems("through_stride", "key_drum", "lull", "space_hammer");
 
             loop.Book.Equip(Gem("through_stride"));
-            loop.Book.Equip(Gem("march"));
+            loop.Book.Equip(Gem("key_drum"));
             loop.Book.Equip(Gem("lull"));
 
-            Assert.That(loop.Book.Equip(Gem("lull")), Is.EqualTo(BookResult.NoFreeSlot));
+            Assert.That(loop.Book.Equip(Gem("space_hammer")), Is.EqualTo(BookResult.NoFreeSlot));
         }
 
         [Test]

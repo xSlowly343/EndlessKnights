@@ -29,13 +29,15 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = heroClass }), hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             foreach (var skill in skills)
-                loop.Skills.Equip(TestWorld.Data.Gems[skill]);
+                loop.Skills.Equip(TestWorld.Data.Gems[skill], role: ManualRole(loop.State.Skills.Count));
             PutOnTheWeapon(loop, skills);
             loop.State.Resource = 100;
             loop.State.OverdriveSpent = true;
             loop.Events.Clear();
             return new SkillTestHero(loop, input);
         }
+
+        public static SkillSlotRole ManualRole(int position) => position == 1 ? SkillSlotRole.Right : SkillSlotRole.Left;
 
         private static void PutOnTheWeapon(GameLoop loop, string[] skills)
         {

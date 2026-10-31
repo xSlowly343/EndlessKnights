@@ -86,9 +86,13 @@ namespace Game.Core.Content.Gems
                 starting[className] = list;
             }
 
+            var unlocks = ReadStages(slots.Field("unlockAfterStages"));
+            var baseSlots = slots.Field("base").AsInt(Sim.SkillLoadout.HandSlots, Sim.SkillLoadout.HandSlots + Sim.SkillLoadout.AutoSlots);
+            if (baseSlots + unlocks.Length != Sim.SkillLoadout.HandSlots + Sim.SkillLoadout.AutoSlots)
+                throw slots.Error($"base slots and unlocks give {baseSlots + unlocks.Length}, expected {Sim.SkillLoadout.HandSlots} hands and {Sim.SkillLoadout.AutoSlots} automatic slots");
             return new SkillBookRules(
-                slots.Field("base").AsInt(1, 20),
-                ReadStages(slots.Field("unlockAfterStages")),
+                baseSlots,
+                unlocks,
                 sockets.Field("base").AsInt(0, 20),
                 ReadStages(sockets.Field("recordStages")),
                 sockets.Field("rebirths").AsInt(0, 20),

@@ -14,8 +14,8 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = heroClass }));
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             foreach (var gem in before)
-                loop.Skills.Equip(TestWorld.Data.Gems[gem]);
-            loop.Skills.Equip(TestWorld.Data.Gems[skill], TestWorld.Data.Gems[trigger]);
+                loop.Skills.Equip(TestWorld.Data.Gems[gem], role: SkillTestHero.ManualRole(loop.State.Skills.Count));
+            loop.Skills.Equip(TestWorld.Data.Gems[skill], TestWorld.Data.Gems[trigger], SkillTestHero.ManualRole(loop.State.Skills.Count));
             loop.State.Resource = 90;
             loop.Events.Clear();
             return (loop, input);

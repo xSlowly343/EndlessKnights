@@ -267,23 +267,24 @@ namespace Game.Core.Sim
             return ClassChangeResult.Changed;
         }
 
-        private List<(GemDef Skill, GemDef? Trigger, GemDef?[] Supports)> TakeOffSkills()
+        private List<(GemDef Skill, GemDef? Trigger, GemDef?[] Supports, SkillSlotRole Role)> TakeOffSkills()
         {
-            var equipped = new List<(GemDef, GemDef?, GemDef?[])>(State.Skills.Count);
+            var equipped = new List<(GemDef, GemDef?, GemDef?[], SkillSlotRole)>(State.Skills.Count);
             foreach (var slot in State.Skills)
-                equipped.Add((slot.Skill, slot.Trigger, (GemDef?[])slot.Supports.Clone()));
+                equipped.Add((slot.Skill, slot.Trigger, (GemDef?[])slot.Supports.Clone(), slot.Role));
             while (State.Skills.Count > 0)
                 _skills.Unequip(State.Skills.Count - 1);
             return equipped;
         }
 
-        private void PutOnSkills(List<(GemDef Skill, GemDef? Trigger, GemDef?[] Supports)> equipped, GemReforge reforge)
+        private void PutOnSkills(List<(GemDef Skill, GemDef? Trigger, GemDef?[] Supports, SkillSlotRole Role)> equipped, GemReforge reforge)
         {
-            foreach (var (skill, trigger, supports) in equipped)
+            foreach (var (skill, trigger, supports, role) in equipped)
             {
                 if (skill.Ascendancy != null)
                     continue;
-                var slot = State.Skills[_skills.Equip(reforge.Of(skill), trigger)];
+                var reforged = reforge.Of(skill);
+                var slot = State.Skills[_skills.Equip(reforged, trigger, SkillLoadout.Accepts(role, reforged) ? role : (SkillSlotRole?)null)];
                 slot.StartCooldown((int)System.Math.Round(slot.Skill.Skill!.CooldownSeconds * TicksPerSecond));
                 supports.CopyTo(slot.Supports, 0);
             }
@@ -536,6 +537,7 @@ namespace Game.Core.Sim
             {
                 current.Skills.Add((slot.Skill, slot.Trigger));
                 current.Supports.Add((GemDef?[])slot.Supports.Clone());
+                current.Roles.Add(slot.Role);
             }
 
             var next = State.OtherPreset;
@@ -554,6 +556,9 @@ namespace Game.Core.Sim
                 if (_book.Equip(skill) != BookResult.Done)
                     continue;
                 var index = State.Skills.Count - 1;
+                var role = next.RoleAt(i);
+                if (role != null)
+                    _book.Assign(index, role.Value);
                 State.Skills[index].StartCooldown((int)System.Math.Round(skill.Skill!.CooldownSeconds * TicksPerSecond));
                 if (trigger != null)
                     _book.SetTrigger(index, trigger);
@@ -727,6 +732,7 @@ namespace Game.Core.Sim
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
             CastRequested();
+            _skills.CastAutomatic();
             _triggers.Tick(input);
             _partyBuffs.Tick();
             _ghost.NoteInput(input.HasInput);

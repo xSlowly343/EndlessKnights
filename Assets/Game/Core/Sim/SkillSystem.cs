@@ -84,13 +84,19 @@ namespace Game.Core.Sim
             RefreshAuras();
         }
 
-        public int Equip(GemDef skill, GemDef? trigger = null)
+        public int Equip(GemDef skill, GemDef? trigger = null, SkillSlotRole? role = null)
         {
             if (skill.Kind != GemKind.Skill || skill.Skill == null)
                 throw new ArgumentException($"{skill.Id} is not a skill gem.", nameof(skill));
             if (trigger != null && (trigger.Kind != GemKind.Trigger || trigger.Trigger == null))
                 throw new ArgumentException($"{trigger.Id} is not a trigger gem.", nameof(trigger));
-            var slot = new SkillSlot(skill, trigger) { EquipTick = _state.Tick, ReadyTick = _state.Tick, KeyHitsAtCast = _state.KeyHits };
+            var slot = new SkillSlot(skill, trigger)
+            {
+                EquipTick = _state.Tick,
+                ReadyTick = _state.Tick,
+                KeyHitsAtCast = _state.KeyHits,
+                Role = role ?? SkillLoadout.FreeRole(_state.Skills, skill, SkillLoadout.AutoSlots) ?? SkillSlotRole.Auto
+            };
             _state.ProgressOf(skill);
             if (trigger != null)
                 _state.ProgressOf(trigger);
@@ -1752,9 +1758,19 @@ namespace Game.Core.Sim
         {
             CastFromKeys(input.Keys);
             if (input.LeftClicks > 0)
-                TryCast(LeftButtonSlot);
+                TryCast(SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Left));
             if (input.HeavyClicks > 0)
-                TryCast(RightButtonSlot);
+                TryCast(SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Right));
+        }
+
+        public void CastAutomatic()
+        {
+            for (var index = 0; index < _state.Skills.Count; index++)
+            {
+                var slot = _state.Skills[index];
+                if (SkillLoadout.CastsByItself(slot.Role) && slot.Ready && !slot.Active && !slot.Primed && !slot.Def.IsPassive)
+                    TryCast(index);
+            }
         }
 
         private void CastFromKeys(double keys)
@@ -1766,7 +1782,7 @@ namespace Game.Core.Sim
             if (_state.AutoCastKeys < every)
                 return;
             _state.AutoCastKeys %= every;
-            TryCast(LeftButtonSlot, triggered: true);
+            TryCast(SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Left), triggered: true);
         }
 
         public double IdleStrikeCharge(int index)
