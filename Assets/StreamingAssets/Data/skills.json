@@ -557,9 +557,10 @@
     },
     {
       "id": "stretch_second",
+      "formerIds": ["turn_back_the_clock"],
       "kind": "active",
       "weapon": "pendulum",
-      "tier": "common",
+      "tier": "rare",
       "role": "fast",
       "color": "blue",
       "name": {"ru": "Растянуть секунду", "en": "Stretch the Second"},
@@ -569,7 +570,8 @@
       "durationSeconds": 10,
       "marks": ["time"],
       "effect": {"type": "enemyDebuff", "damageTaken": 0.1, "bossTimerSlow": 0.3},
-      "native": {"resourcePerSavedSecond": 1}
+      "native": {"resourcePerSavedSecond": 1},
+      "branches": [{ "level": 5, "options": [{ "id": "longer_second", "name": { "ru": "Длиннее секунда", "en": "Longer Second" }, "effect": { "bossTimerSlow": 0.35 } }, { "id": "quick_second", "name": { "ru": "Быстрая секунда", "en": "Quick Second" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "turn_back_the_clock", "name": { "ru": "Перевести часы", "en": "Turn Back the Clock" }, "duration": 1.4 }, { "id": "cheap_second", "name": { "ru": "Секунда даром", "en": "Free Second" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "endless_second", "name": { "ru": "Бесконечная секунда", "en": "Endless Second" }, "cooldown": 1.3, "effect": { "bossTimerSlow": 0.45 } }, { "id": "second_and_strike", "name": { "ru": "Секунда и удар", "en": "A Second and a Strike" }, "effect": { "damageTaken": 0.15 } }] }]
     },
     {
       "id": "cannon_by_name",
@@ -3620,10 +3622,10 @@
     },
     {
       "id": "clockwork_owl",
+      "formerIds": ["sandstorm"],
       "kind": "active",
       "weapon": "pendulum",
-      "tier": "common",
-      "role": "fast",
+      "tier": "epic",
       "color": "blue",
       "name": { "ru": "Заводная сова", "en": "Clockwork Owl" },
       "tags": ["Skill"],
@@ -3631,10 +3633,12 @@
       "cooldownSeconds": 8,
       "durationSeconds": 20,
       "effect": { "type": "pulse", "everySeconds": 0.7, "multiplier": 1 },
-      "native": { "durationMultiplier": 1.2 }
+      "native": { "durationMultiplier": 1.2 },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_owl", "name": { "ru": "Зорче сова", "en": "Keener Owl" }, "effect": { "multiplier": 1.3 } }, { "id": "quicker_owl", "name": { "ru": "Чаще клюёт", "en": "Pecks More" }, "effect": { "everySeconds": 0.55 } }] }, { "level": 15, "options": [{ "id": "sandstorm", "name": { "ru": "Песочная буря", "en": "Sandstorm" }, "duration": 1.4 }, { "id": "cheap_owl", "name": { "ru": "Сова даром", "en": "Free Owl" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "brass_owl", "name": { "ru": "Латунная сова", "en": "Brass Owl" }, "cooldown": 1.3, "effect": { "multiplier": 1.6 } }, { "id": "owl_over_the_queue", "name": { "ru": "Сова над очередью", "en": "Owl over the Queue" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "tick_tock",
+      "formerIds": ["cogwheel"],
       "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
@@ -3645,10 +3649,12 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 3,
       "effect": { "type": "strike", "multiplier": 3 },
-      "native": { "resourceOnCast": 3 }
+      "native": { "resourceOnCast": 3 },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_tick", "name": { "ru": "Громче тик", "en": "Louder Tick" }, "damage": 1.3 }, { "id": "quick_tick", "name": { "ru": "Быстрый тик", "en": "Quick Tick" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "cogwheel", "name": { "ru": "Шестерёнка", "en": "Cogwheel" }, "cooldown": 0.6, "cost": 1.2 }, { "id": "free_tick", "name": { "ru": "Тик даром", "en": "Free Tick" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "tick_tock_tick", "name": { "ru": "Тик-так-тик", "en": "Tick-Tock-Tick" }, "effect": { "queueTargets": 1, "queueMultiplier": 1 } }, { "id": "heavy_tick", "name": { "ru": "Тяжёлый тик", "en": "Heavy Tick" }, "damage": 1.7, "cooldown": 1.25 }] }]
     },
     {
       "id": "spring",
+      "formerIds": ["clock_repair"],
       "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
@@ -3659,10 +3665,12 @@
       "cost": { "resource": 15 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.3} }
+      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.3} },
+      "branches": [{ "level": 5, "options": [{ "id": "tighter_spring", "name": { "ru": "Туже пружина", "en": "Tighter Spring" }, "damage": 1.3 }, { "id": "quick_spring", "name": { "ru": "Быстрая пружина", "en": "Quick Spring" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "clock_repair", "name": { "ru": "Починка часов", "en": "Clock Repair" }, "cost": 0.5 }, { "id": "long_spring", "name": { "ru": "Длинная пружина", "en": "Long Spring" }, "effect": { "queueTargets": 2 } }] }, { "level": 25, "options": [{ "id": "mainspring", "name": { "ru": "Заводная пружина", "en": "Mainspring" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "coiled_spring", "name": { "ru": "Свернувшаяся пружина", "en": "Coiled Spring" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "clockwork",
+      "formerIds": ["time_is_on_my_side"],
       "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
@@ -3673,10 +3681,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 20,
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "resourceOnHit": 2 }
+      "native": { "resourceOnHit": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "more_ticks", "name": { "ru": "Больше тиков", "en": "More Ticks" }, "effect": { "hits": 8 } }, { "id": "stronger_gears", "name": { "ru": "Крепче шестерни", "en": "Stronger Gears" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "time_is_on_my_side", "name": { "ru": "Время на моей стороне", "en": "Time Is on My Side" }, "cooldown": 0.7 }, { "id": "oiled_gears", "name": { "ru": "Смазанные шестерни", "en": "Oiled Gears" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "full_movement", "name": { "ru": "Полный механизм", "en": "Full Movement" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "gears_down_the_line", "name": { "ru": "Шестерни по очереди", "en": "Gears Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "pendulum_backhand",
+      "formerIds": ["cuckoo_clock"],
       "kind": "active",
       "weapon": "pendulum",
       "tier": "common",
@@ -3687,13 +3697,15 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
       "effect": { "type": "strike", "multiplier": 10 },
-      "native": { "when": {"boss": true, "multiplier": 1.4} }
+      "native": { "when": {"boss": true, "multiplier": 1.4} },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_bob", "name": { "ru": "Тяжелее груз", "en": "Heavier Bob" }, "damage": 1.3 }, { "id": "quick_swing", "name": { "ru": "Быстрый мах", "en": "Quick Swing" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "cuckoo_clock", "name": { "ru": "Часы с кукушкой", "en": "Cuckoo Clock" }, "cooldown": 1.2, "effect": { "multiplier": 13 } }, { "id": "light_bob", "name": { "ru": "Лёгкий груз", "en": "Light Bob" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "grandfather_clock", "name": { "ru": "Напольные часы", "en": "Grandfather Clock" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "wide_swing", "name": { "ru": "Широкий мах", "en": "Wide Swing" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "wound_for_a_day",
+      "formerIds": ["eternal_winding"],
       "kind": "active",
       "weapon": "pendulum",
-      "tier": "common",
+      "tier": "rare",
       "role": "heavy",
       "color": "blue",
       "name": { "ru": "Завод на сутки", "en": "Wound for a Day" },
@@ -3702,10 +3714,12 @@
       "cooldownSeconds": 25,
       "durationSeconds": 6,
       "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -0.2}] }
+      "native": { "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -0.2}] },
+      "branches": [{ "level": 5, "options": [{ "id": "tighter_wind", "name": { "ru": "Туже завод", "en": "Tighter Wind" }, "effect": { "releaseShare": 1.8 } }, { "id": "quick_wind", "name": { "ru": "Быстрый завод", "en": "Quick Wind" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "eternal_winding", "name": { "ru": "Вечный завод", "en": "Eternal Winding" }, "duration": 1.5 }, { "id": "cheap_wind", "name": { "ru": "Завод даром", "en": "Free Wind" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "wound_for_a_week", "name": { "ru": "Завод на неделю", "en": "Wound for a Week" }, "cooldown": 1.3, "effect": { "releaseShare": 2.4 } }, { "id": "wind_for_all", "name": { "ru": "Завод на всех", "en": "Wound for Everyone" }, "effect": { "queue": true } }] }]
     },
     {
       "id": "monocle",
+      "formerIds": ["precise_hands"],
       "kind": "aura",
       "weapon": "pendulum",
       "tier": "common",
@@ -3716,63 +3730,12 @@
       "cooldownSeconds": 20,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Click"]}] },
-      "native": { "resourceOnCast": 10 }
-    },
-    {
-      "id": "measured_pace",
-      "kind": "aura",
-      "weapon": "pendulum",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Мерный ход", "en": "Measured Pace" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.15}] },
-      "native": { "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.1}] }
-    },
-    {
-      "id": "precise_hands",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Точные руки", "en": "Precise Hands" },
-      "tags": ["Click", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}] },
-      "native": { "when": {"boss": true, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}]} }
-    },
-    {
-      "id": "cogwheel",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Шестерёнка", "en": "Cogwheel" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.05}] },
-      "native": { "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.03}] }
-    },
-    {
-      "id": "clock_repair",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Починка часов", "en": "Clock Repair" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "resourceOnKill": 2 }
+      "native": { "resourceOnCast": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_lens", "name": { "ru": "Острее линза", "en": "Sharper Lens" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Click"] }] } }, { "id": "cheap_monocle", "name": { "ru": "Простой монокль", "en": "Plain Monocle" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "precise_hands", "name": { "ru": "Точные руки", "en": "Precise Hands" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Click"] }, { "stat": "damageVsBoss", "kind": "increased", "value": 0.1 }] } }, { "id": "long_look", "name": { "ru": "Долгий взгляд", "en": "Long Look" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "jewellers_loupe", "name": { "ru": "Лупа ювелира", "en": "Jeweller's Loupe" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["Click"] }, { "stat": "critChance", "kind": "flat", "value": 0.05 }] } }, { "id": "monocle_always", "name": { "ru": "Монокль не снимать", "en": "Never Without" }, "cooldown": 1.3, "duration": 2 }] }]
     },
     {
       "id": "set_the_hands",
+      "formerIds": ["measured_pace"],
       "kind": "aura",
       "weapon": "pendulum",
       "tier": "rare",
@@ -3784,23 +3747,27 @@
       "cooldownSeconds": 6,
       "durationSeconds": 8,
       "effect": { "type": "aura", "modifiers": [{"stat": "skillCooldown", "kind": "more", "value": -0.5}] },
-      "native": { "durationMultiplier": 1.2 }
+      "native": { "durationMultiplier": 1.2 },
+      "branches": [{ "level": 5, "options": [{ "id": "bolder_hands", "name": { "ru": "Смелее стрелки", "en": "Bolder Hands" }, "effect": { "modifiers": [{ "stat": "skillCooldown", "kind": "more", "value": -0.55 }] } }, { "id": "quick_set", "name": { "ru": "Быстро подвести", "en": "Quick Set" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "measured_pace", "name": { "ru": "Мерный ход", "en": "Measured Pace" }, "duration": 1.4 }, { "id": "cheap_set", "name": { "ru": "Подвести даром", "en": "Free Set" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "hands_spin", "name": { "ru": "Стрелки бегут", "en": "Hands Spin" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "skillCooldown", "kind": "more", "value": -0.6 }] } }, { "id": "steady_hands", "name": { "ru": "Ровные стрелки", "en": "Steady Hands" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "sand_in_the_glass",
-      "kind": "active",
+      "formerIds": ["hourglass_in_full_height"],
+      "kind": "aura",
       "weapon": "pendulum",
       "tier": "rare",
       "color": "blue",
       "name": {"ru": "Песок в часах", "en": "Sand in the Glass"},
-      "tags": ["Skill"],
+      "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "passive", "modifiers": [{"stat": "fastKillBank", "kind": "flat", "value": 1}, {"stat": "fastKillBankMax", "kind": "flat", "value": 15}]},
-      "native": {"modifiers": [{"stat": "fastKillBankMax", "kind": "flat", "value": 10}]}
+      "effect": { "type": "aura", "modifiers": [{ "stat": "fastKillBank", "kind": "flat", "value": 1 }, { "stat": "fastKillBankMax", "kind": "flat", "value": 15 }], "reserve": 20 },
+      "native": {"modifiers": [{"stat": "fastKillBankMax", "kind": "flat", "value": 10}]},
+      "branches": [{ "level": 5, "options": [{ "id": "finer_sand_c", "name": { "ru": "Мельче песок", "en": "Finer Sand" }, "effect": { "modifiers": [{ "stat": "fastKillBank", "kind": "flat", "value": 1.2 }, { "stat": "fastKillBankMax", "kind": "flat", "value": 15 }] } }, { "id": "small_glass", "name": { "ru": "Маленькие часы", "en": "Small Glass" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "hourglass_in_full_height", "name": { "ru": "Песочные часы в рост", "en": "Hourglass in Full Height" }, "effect": { "modifiers": [{ "stat": "fastKillBank", "kind": "flat", "value": 1 }, { "stat": "fastKillBankMax", "kind": "flat", "value": 20 }] } }, { "id": "gold_sand", "name": { "ru": "Золотой песок", "en": "Golden Sand" }, "effect": { "modifiers": [{ "stat": "fastKillBank", "kind": "flat", "value": 1 }, { "stat": "fastKillBankMax", "kind": "flat", "value": 15 }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "desert_glass", "name": { "ru": "Часы пустыни", "en": "Desert Glass" }, "effect": { "modifiers": [{ "stat": "fastKillBank", "kind": "flat", "value": 1.4 }, { "stat": "fastKillBankMax", "kind": "flat", "value": 20 }], "reserve": 30 } }, { "id": "pocket_glass", "name": { "ru": "Карманные часы", "en": "Pocket Glass" }, "effect": { "modifiers": [{ "stat": "fastKillBank", "kind": "flat", "value": 0.8 }, { "stat": "fastKillBankMax", "kind": "flat", "value": 12 }], "reserve": 10 } }] }]
     },
     {
       "id": "time_with_character",
+      "formerIds": ["quiet_pendulum"],
       "kind": "active",
       "weapon": "pendulum",
       "tier": "rare",
@@ -3812,14 +3779,14 @@
       "cooldownSeconds": 60,
       "durationSeconds": 20,
       "effect": {"type": "enemyDebuff", "damageTaken": 0, "bossTimerSeconds": 10, "bossTimerOncePerFight": true},
-      "native": {"restoresFocus": true}
+      "native": {"restoresFocus": true},
+      "branches": [{ "level": 5, "options": [{ "id": "more_character", "name": { "ru": "Больше характера", "en": "More Character" }, "effect": { "bossTimerSeconds": 12 } }, { "id": "quick_character", "name": { "ru": "Быстрый характер", "en": "Quick Temper" }, "cooldown": 0.8 }] }, { "level": 15, "options": [{ "id": "quiet_pendulum", "name": { "ru": "Тихий маятник", "en": "Quiet Pendulum" }, "cost": 0.6 }, { "id": "marked_time", "name": { "ru": "Отмеренное время", "en": "Measured Time" }, "effect": { "damageTaken": 0.1 } }] }, { "level": 25, "options": [{ "id": "stubborn_time", "name": { "ru": "Упрямое время", "en": "Stubborn Time" }, "cooldown": 1.3, "effect": { "bossTimerSeconds": 15 } }, { "id": "borrowed_time", "name": { "ru": "Время в долг", "en": "Borrowed Time" }, "cooldown": 0.6, "effect": { "bossTimerSeconds": 8 } }] }]
     },
     {
       "id": "minute_hand",
       "kind": "active",
       "weapon": "pendulum",
       "tier": "rare",
-      "role": "fast",
       "color": "blue",
       "name": { "ru": "Минутная стрелка", "en": "Minute Hand" },
       "tags": ["Skill"],
@@ -3827,29 +3794,15 @@
       "cooldownSeconds": 5,
       "durationSeconds": 5,
       "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "strikeMultiplier": 5 },
-      "native": { "durationMultiplier": 2 }
-    },
-    {
-      "id": "turn_back_the_clock",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "rare",
-      "role": "fast",
-      "color": "blue",
-      "name": { "ru": "Перевести часы", "en": "Turn Back the Clock" },
-      "tags": ["Skill"],
-      "cost": { "resource": 25 },
-      "cooldownSeconds": 10,
-      "durationSeconds": 6,
-      "marks": ["time"],
-      "effect": { "type": "enemyDebuff", "damageTaken": 0, "bossTimerSlow": 0.5 },
-      "native": { "durationMultiplier": 1.6666666666666667 }
+      "native": { "durationMultiplier": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_hand", "name": { "ru": "Острее стрелка", "en": "Sharper Hand" }, "effect": { "strikeMultiplier": 6.5 } }, { "id": "quick_hand", "name": { "ru": "Быстрая стрелка", "en": "Quick Hand" }, "cooldown": 0.7 }] }, { "level": 15, "options": [{ "id": "hand_in_the_gap", "name": { "ru": "Стрелка в зазор", "en": "Hand in the Gap" }, "effect": { "damageTaken": 0.15 } }, { "id": "long_minute", "name": { "ru": "Долгая минута", "en": "Long Minute" }, "duration": 1.6 }] }, { "level": 25, "options": [{ "id": "bent_hand", "name": { "ru": "Погнутая стрелка", "en": "Bent Hand" }, "cooldown": 1.3, "effect": { "damageTaken": 0.2 } }, { "id": "hour_hand", "name": { "ru": "Часовая стрелка", "en": "Hour Hand" }, "cost": 1.25, "effect": { "strikeMultiplier": 9 } }] }]
     },
     {
       "id": "chime",
+      "formerIds": ["stop_the_clocks"],
       "kind": "active",
       "weapon": "pendulum",
-      "tier": "rare",
+      "tier": "legendary",
       "role": "heavy",
       "color": "blue",
       "name": { "ru": "Бой часов", "en": "Chime" },
@@ -3857,50 +3810,12 @@
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
       "effect": { "type": "strike", "multiplier": 12, "queueTargets": 2 },
-      "native": { "when": {"bossLastSeconds": 10, "multiplier": 1.5} }
-    },
-    {
-      "id": "quiet_pendulum",
-      "kind": "aura",
-      "weapon": "pendulum",
-      "tier": "rare",
-      "color": "blue",
-      "name": { "ru": "Тихий маятник", "en": "Quiet Pendulum" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -0.1}], "reserve": 20 },
-      "native": { "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -0.05}] }
-    },
-    {
-      "id": "sandstorm",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "rare",
-      "color": "blue",
-      "name": { "ru": "Песочная буря", "en": "Sandstorm" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 10, "multiplier": 2, "input": "mouse" },
-      "native": { "resourceOnHit": 3 }
-    },
-    {
-      "id": "cuckoo_clock",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "rare",
-      "color": "blue",
-      "name": { "ru": "Часы с кукушкой", "en": "Cuckoo Clock" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "any", "every": 30, "multiplier": 5 },
-      "native": { "when": {"boss": true, "multiplier": 1.6} }
+      "native": { "when": {"bossLastSeconds": 10, "multiplier": 1.5} },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_chime", "name": { "ru": "Громче бой", "en": "Louder Chime" }, "damage": 1.3 }, { "id": "quick_chime", "name": { "ru": "Быстрый бой", "en": "Quick Chime" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "stop_the_clocks", "name": { "ru": "Остановить часы", "en": "Stop the Clocks" }, "effect": { "queueTargets": 3 } }, { "id": "light_chime", "name": { "ru": "Лёгкий бой", "en": "Light Chime" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "great_bell", "name": { "ru": "Большой колокол", "en": "Great Bell" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "chime_of_the_hour", "name": { "ru": "Бой часа", "en": "Chime of the Hour" }, "cooldown": 1.2, "effect": { "multiplier": 16 } }] }]
     },
     {
       "id": "the_chimes_strike_again",
+      "formerIds": ["assembled_mechanism"],
       "kind": "active",
       "weapon": "pendulum",
       "tier": "epic",
@@ -3911,10 +3826,12 @@
       "cost": {"resource": 80},
       "cooldownSeconds": 40,
       "effect": {"type": "repeatRecent", "seconds": 5},
-      "native": {"windowSeconds": 7}
+      "native": {"windowSeconds": 7},
+      "branches": [{ "level": 5, "options": [{ "id": "longer_chimes", "name": { "ru": "Дольше бой", "en": "Longer Chimes" }, "effect": { "seconds": 6 } }, { "id": "quick_chimes", "name": { "ru": "Быстрый бой", "en": "Quick Chimes" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "assembled_mechanism", "name": { "ru": "Механизм в сборе", "en": "Assembled Mechanism" }, "cost": 0.6 }, { "id": "louder_chimes", "name": { "ru": "Громче бой", "en": "Louder Chimes" }, "damage": 1.2 }] }, { "level": 25, "options": [{ "id": "cathedral_chimes", "name": { "ru": "Соборные куранты", "en": "Cathedral Chimes" }, "cooldown": 1.3, "effect": { "seconds": 8 } }, { "id": "quick_chime_twice", "name": { "ru": "Бьют дважды", "en": "Strike Twice" }, "damage": 1.4, "cooldown": 1.25 }] }]
     },
     {
       "id": "the_hands_froze",
+      "formerIds": ["ten_seconds_is_a_lot"],
       "kind": "aura",
       "weapon": "pendulum",
       "tier": "epic",
@@ -3926,10 +3843,12 @@
       "cooldownSeconds": 45,
       "durationSeconds": 4,
       "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}, {"stat": "damage", "kind": "more", "value": 0.5}]},
-      "native": {"durationMultiplier": 1.5}
+      "native": {"durationMultiplier": 1.5},
+      "branches": [{ "level": 5, "options": [{ "id": "longer_freeze", "name": { "ru": "Дольше замерли", "en": "Frozen Longer" }, "duration": 1.3 }, { "id": "quick_freeze", "name": { "ru": "Быстро замерли", "en": "Quick Freeze" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "ten_seconds_is_a_lot", "name": { "ru": "Десять секунд это много", "en": "Ten Seconds Is a Lot" }, "duration": 1.6, "cooldown": 1.3 }, { "id": "cheap_freeze", "name": { "ru": "Замереть даром", "en": "Free Freeze" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "frozen_hour", "name": { "ru": "Замерший час", "en": "Frozen Hour" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "bossTimerSpeed", "kind": "more", "value": -1 }, { "stat": "damage", "kind": "more", "value": 0.7 }] } }, { "id": "frozen_market", "name": { "ru": "Замерший рынок", "en": "Frozen Market" }, "effect": { "modifiers": [{ "stat": "bossTimerSpeed", "kind": "more", "value": -1 }, { "stat": "damage", "kind": "more", "value": 0.4 }, { "stat": "gold", "kind": "increased", "value": 0.15 }] } }] }]
     },
     {
       "id": "strike_on_the_last_second",
+      "formerIds": ["second_hand"],
       "kind": "active",
       "weapon": "pendulum",
       "tier": "epic",
@@ -3940,47 +3859,8 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"bossLastSeconds": 5, "multiplier": 2} }
-    },
-    {
-      "id": "second_hand",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "epic",
-      "role": "fast",
-      "locked": true,
-      "color": "blue",
-      "name": { "ru": "Секундная стрелка", "en": "Second Hand" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 8
-    },
-    {
-      "id": "assembled_mechanism",
-      "kind": "aura",
-      "weapon": "pendulum",
-      "tier": "epic",
-      "color": "blue",
-      "name": { "ru": "Механизм в сборе", "en": "Assembled Mechanism" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 40,
-      "durationSeconds": 15,
-      "effect": { "type": "aura", "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.2}], "party": true },
-      "native": { "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.1}] }
-    },
-    {
-      "id": "time_is_on_my_side",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "epic",
-      "color": "blue",
-      "name": { "ru": "Время на моей стороне", "en": "Time Is on My Side" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 2, "maxSteps": 50, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.01}] },
-      "native": { "when": {"resourceAtLeast": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}]} }
+      "native": { "when": {"bossLastSeconds": 5, "multiplier": 2} },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_last", "name": { "ru": "Точнее удар", "en": "Truer Strike" }, "damage": 1.3 }, { "id": "quick_last_s", "name": { "ru": "Быстрый удар", "en": "Quick Strike" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "second_hand", "name": { "ru": "Секундная стрелка", "en": "Second Hand" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_last", "name": { "ru": "Удар даром", "en": "Free Strike" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "stroke_of_midnight", "name": { "ru": "Удар полуночи", "en": "Stroke of Midnight" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "last_tick", "name": { "ru": "Последний тик", "en": "Last Tick" }, "damage": 1.7 }] }]
     },
     {
       "id": "midnight",
@@ -3994,13 +3874,14 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 8,
       "effect": { "type": "strike", "multiplier": 15, "queueTargets": 3 },
-      "native": { "when": {"resourceAtLeast": 100, "free": true} }
+      "native": { "when": {"resourceAtLeast": 100, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "darker_midnight", "name": { "ru": "Глубже полночь", "en": "Deeper Midnight" }, "damage": 1.3 }, { "id": "quick_midnight", "name": { "ru": "Быстрая полночь", "en": "Quick Midnight" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "twelve_strokes", "name": { "ru": "Двенадцать ударов", "en": "Twelve Strokes" }, "effect": { "queueMultiplier": 1.5 } }, { "id": "light_midnight", "name": { "ru": "Лёгкая полночь", "en": "Light Midnight" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "witching_hour", "name": { "ru": "Ведьмин час", "en": "Witching Hour" }, "damage": 0.9, "effect": { "queueMultiplier": 2 } }, { "id": "single_stroke", "name": { "ru": "Один удар", "en": "Single Stroke" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "clock_tower",
       "kind": "active",
       "weapon": "pendulum",
-      "tier": "legendary",
+      "tier": "mythic",
       "role": "heavy",
       "color": "blue",
       "name": { "ru": "Часовая башня", "en": "Clock Tower" },
@@ -4008,22 +3889,12 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 10 }
-    },
-    {
-      "id": "eternal_winding",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "legendary",
-      "locked": true,
-      "color": "blue",
-      "name": { "ru": "Вечный завод", "en": "Eternal Winding" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "resourceOnKill": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "taller_tower", "name": { "ru": "Выше башня", "en": "Taller Tower" }, "effect": { "hits": 36 } }, { "id": "heavier_bells", "name": { "ru": "Тяжелее колокола", "en": "Heavier Bells" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "quick_tower", "name": { "ru": "Быстрая башня", "en": "Quick Tower" }, "cooldown": 0.75 }, { "id": "cheap_tower", "name": { "ru": "Башня даром", "en": "Free Tower" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "tower_of_hours", "name": { "ru": "Башня часов", "en": "Tower of Hours" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "bell_tower", "name": { "ru": "Звонница", "en": "Bell Tower" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "hand_at_twelve",
+      "formerIds": ["time_to_spare"],
       "kind": "active",
       "weapon": "pendulum",
       "tier": "mythic",
@@ -4034,62 +3905,8 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 20, "critChance": 1 },
-      "native": { "resourceOnCast": 10 }
-    },
-    {
-      "id": "ten_seconds_is_a_lot",
-      "kind": "aura",
-      "weapon": "pendulum",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "blue",
-      "name": { "ru": "Десять секунд это много", "en": "Ten Seconds Is a Lot" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 60,
-      "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{"stat": "skillCooldown", "kind": "more", "value": -0.5}, {"stat": "damage", "kind": "more", "value": 1}] },
-      "native": { "durationMultiplier": 1.5 }
-    },
-    {
-      "id": "stop_the_clocks",
-      "kind": "aura",
-      "weapon": "pendulum",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "blue",
-      "name": { "ru": "Остановить часы", "en": "Stop the Clocks" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 90,
-      "durationSeconds": 12,
-      "effect": { "type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}] },
-      "native": { "when": {"resourceAtLeast": 100, "durationMultiplier": 1.5} }
-    },
-    {
-      "id": "hourglass_in_full_height",
-      "kind": "active",
-      "weapon": "pendulum",
-      "tier": "mythic",
-      "color": "blue",
-      "name": { "ru": "Песочные часы в рост", "en": "Hourglass at Full Height" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 10, "maxSteps": 5, "perStep": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 1}], "from": 100, "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.15}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}] }
-    },
-    {
-      "id": "time_to_spare",
-      "kind": "aura",
-      "weapon": "pendulum",
-      "tier": "mythic",
-      "locked": true,
-      "color": "blue",
-      "name": { "ru": "Время с запасом", "en": "Time to Spare" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "resourceOnCast": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "straighter_hand", "name": { "ru": "Ровнее стрелка", "en": "Straighter Hand" }, "damage": 1.3 }, { "id": "quick_twelve", "name": { "ru": "Быстро к двенадцати", "en": "Quick to Twelve" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "time_to_spare", "name": { "ru": "Время с запасом", "en": "Time to Spare" }, "cost": 0.5 }, { "id": "second_twelve", "name": { "ru": "Вторые двенадцать", "en": "Twelve Again" }, "effect": { "queueTargets": 1 } }] }, { "level": 25, "options": [{ "id": "high_noon", "name": { "ru": "Ровно полдень", "en": "High Noon" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "twelve_for_all", "name": { "ru": "Двенадцать для всех", "en": "Twelve for Everyone" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "rat_tide",
