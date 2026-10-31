@@ -45,6 +45,9 @@ namespace Game.Core.Tests.Sim
         [TestCase(HeroClass.Nomad)]
         [TestCase(HeroClass.Metalhead)]
         [TestCase(HeroClass.Oracle)]
+        [TestCase(HeroClass.Bannerbearer)]
+        [TestCase(HeroClass.Voodoo)]
+        [TestCase(HeroClass.Clockmaker)]
         public void BotSpendsEveryPointOnTheTreeOfItsClass(HeroClass heroClass)
         {
             var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(4), heroClass);
