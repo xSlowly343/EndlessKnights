@@ -20,6 +20,18 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void PartyAndAnyAllyMarkLinesCountOnlyInAParty()
+        {
+            foreach (var condition in new[] { ModifierCondition.InParty, ModifierCondition.AnyAllyMark })
+            {
+                var line = new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.05, StatTags.None, ModifierPool.General, condition);
+
+                Assert.That(Score(false, line), Is.EqualTo(0), condition.ToString());
+                Assert.That(Score(true, line), Is.GreaterThan(0), condition.ToString());
+            }
+        }
+
+        [Test]
         public void ReactionUnlocksAndTheSecondResponseCountOnlyInAParty()
         {
             var unlock = new Modifier(CombatStats.ReactionSteam, ModifierKind.Flat, 1);

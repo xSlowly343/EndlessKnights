@@ -609,7 +609,7 @@ namespace Game.Core.Sim
             if (weapon?.Set != null)
                 _gear.NoteFound(weapon.Set, ItemSlot.Weapon);
             var salvaged = BagFull || ShouldSalvage(weapon, gear, rarity);
-            var dust = salvaged ? _rules.DustFor(rarity) : 0;
+            var dust = salvaged ? _rules.DustFor(rarity) * System.Math.Max(0, _hero.Value(CombatStats.DustGain, 1)) : 0;
             drops.Dust += dust;
             if (salvaged)
                 drops.SalvagedItems++;

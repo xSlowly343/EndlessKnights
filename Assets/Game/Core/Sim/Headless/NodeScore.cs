@@ -83,7 +83,7 @@ namespace Game.Core.Sim.Headless
                 return 1;
             if (condition == ModifierCondition.BossOpening)
                 return BossOpeningWeight;
-            if (ModifierConditions.IsAlly(condition))
+            if (ModifierConditions.NeedsParty(condition))
                 return _inParty ? PartyLineWeight : 0;
             return ConditionalWeight;
         }

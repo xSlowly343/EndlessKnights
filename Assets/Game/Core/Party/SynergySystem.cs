@@ -293,6 +293,7 @@ namespace Game.Core.Party
                 {
                     _reactionTicks[i] = Ticks(reaction.Seconds);
                     _reactionCooldown[i] = Ticks(reaction.CooldownSeconds);
+                    _state.PendingResource += System.Math.Max(0, _hero.Value(CombatStats.ReactionResource, 0));
                 }
                 if (_reactionTicks[i] > 0)
                     active |= 1UL << i;
@@ -328,7 +329,7 @@ namespace Game.Core.Party
             for (var i = 0; i < _rules.Reactions.Count && i < 64; i++)
             {
                 if (ReactionActive(i))
-                    Add(_rules.Reactions[i].Modifiers, Favour((1 << _rules.Reactions[i].First) | (1 << _rules.Reactions[i].Second)));
+                    Add(_rules.Reactions[i].Modifiers, Favour((1 << _rules.Reactions[i].First) | (1 << _rules.Reactions[i].Second)) * ReactionEffect);
             }
             for (var i = 0; i < _rules.Constellations.Count && i < 64; i++)
             {
@@ -348,6 +349,8 @@ namespace Game.Core.Party
         private double WeakShare(int index) => (_weakResponses & (1UL << index)) != 0 ? _rules.WeakShareOf(_rules.Responses[index].Mark) : 1;
 
         private double Favour(int marks) => (marks & _favouredMarks) != 0 ? 1 + _favouredBonus : 1;
+
+        private double ReactionEffect => System.Math.Max(0, _hero.Value(CombatStats.ReactionEffect, 1));
 
         private void Add(IReadOnlyList<Modifier> modifiers, double times)
         {

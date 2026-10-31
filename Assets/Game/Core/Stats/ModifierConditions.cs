@@ -17,6 +17,9 @@ namespace Game.Core.Stats
 
         public static bool IsAlly(ModifierCondition condition) => condition >= FirstAllyMark && condition <= LastAllyMark;
 
+        public static bool NeedsParty(ModifierCondition condition) =>
+            IsAlly(condition) || condition == ModifierCondition.AnyAllyMark || condition == ModifierCondition.InParty;
+
         public static ulong Bit(ModifierCondition condition) => condition == ModifierCondition.Always ? 0 : 1UL << (int)condition;
 
         public static string MarkName(ModifierCondition condition)

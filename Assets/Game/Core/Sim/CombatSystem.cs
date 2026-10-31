@@ -68,10 +68,14 @@ namespace Game.Core.Sim
         public void NotePause(long idleTicksBefore, bool hasInput)
         {
             var conditions = _rules.Conditions;
-            var paused = !hasInput && (idleTicksBefore + 1) * GameLoop.TickSeconds >= conditions.LongStreakPauseSeconds;
+            var streakPause = conditions.LongStreakPauseSeconds + System.Math.Max(0, _hero.Value(CombatStats.LongStreakPauseSeconds, 0));
+            var paused = !hasInput && (idleTicksBefore + 1) * GameLoop.TickSeconds >= streakPause;
             _state.InputStreakTicks = paused ? 0 : _state.InputStreakTicks + 1;
             if (hasInput && idleTicksBefore * GameLoop.TickSeconds >= conditions.AfterIdlePauseSeconds)
+            {
                 _state.AfterIdleTicks = (int)System.Math.Round(conditions.AfterIdleSeconds * GameLoop.TicksPerSecond);
+                _state.PauseCritArmed = _hero.Value(CombatStats.PauseCrit, 0) > 0;
+            }
             else if (_state.AfterIdleTicks > 0)
                 _state.AfterIdleTicks--;
         }
@@ -251,7 +255,7 @@ namespace Game.Core.Sim
 
             if (ForcedCrit() || ComboStrikeCrit(flags) || RollCrit(tags, supporting))
             {
-                damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting)) * ComboStrikeCritBonus(flags);
+                damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting)) * ComboStrikeCritBonus(flags) * CritBurst();
                 flags |= HitFlags.Crit;
                 LastHitCrit = true;
                 _state.Crits++;
@@ -278,6 +282,8 @@ namespace Game.Core.Sim
                 SupportEffects.AfterHit(supporting, _state, damage, _rules.Dots.PoisonMax);
             else if (source == DamageSource.Mouse)
                 _keyHits?.OnMouseHit(damage);
+            if (source == DamageSource.Mouse)
+                PierceQueueWithMouse(damage);
             if (_state.EnemyAlive && !Culled(tags))
                 return;
 
@@ -336,6 +342,21 @@ namespace Game.Core.Sim
             var all = System.Math.Min(1, _hero.Value(CombatStats.KeyHitQueueAll, 0, StatTags.Keyboard));
             if (all > 0)
                 _state.AddToQueue(damage * all);
+        }
+
+        private void PierceQueueWithMouse(BigNumber damage)
+        {
+            var share = System.Math.Min(1, _hero.Value(CombatStats.MouseQueueShare, 0, StatTags.Mouse));
+            if (share > 0)
+                _state.QueueDamage[0] += damage * share;
+        }
+
+        private double CritBurst()
+        {
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.CritBurstEvery, 0));
+            if (every < 1)
+                return 1;
+            return ++_state.CritsTowardBurst % every == 0 ? System.Math.Max(1, _hero.Value(CombatStats.CritBurstMultiplier, 0)) : 1;
         }
 
         public int RecentInputKinds()
@@ -450,6 +471,13 @@ namespace Game.Core.Sim
 
         private bool ForcedCrit()
         {
+            if (_state.PauseCritArmed)
+            {
+                _state.PauseCritArmed = false;
+                return true;
+            }
+            if (_state.HitsOnEnemy == 1 && _hero.Value(CombatStats.FirstHitCrit, 0) > 0)
+                return true;
             if (_state.SureCritsLeft > 0)
             {
                 _state.SureCritsLeft--;
