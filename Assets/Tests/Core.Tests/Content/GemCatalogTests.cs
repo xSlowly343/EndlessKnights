@@ -14,11 +14,11 @@ namespace Game.Core.Tests.Content
         private static string WithExtraGem(string gemJson) => RealFile().Replace("\"gems\": [", "\"gems\": [\n    " + gemJson + ",");
 
         [Test]
-        public void MvpGemsArePrototypeSkillsClassSkillsAndTriggers()
+        public void MvpGemsArePrototypeSkillsAndClassSkills()
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Skill?.Weapon == null && gem.Kind != GemKind.Support), Is.EqualTo(51));
+            Assert.That(gems.All.Count(gem => gem.Skill?.Weapon == null && gem.Kind != GemKind.Support), Is.EqualTo(37));
             Assert.That(gems.All.Where(gem => gem.Kind == GemKind.Support).Select(gem => gem.Support), Is.All.Not.Null);
             Assert.That(gems["resonance"].Support!.AllyPower, Is.EqualTo(1.2));
             Assert.That(gems["resonance"].Support!.AfterSeconds, Is.EqualTo(5));
@@ -29,7 +29,7 @@ namespace Game.Core.Tests.Content
             Assert.That(gems["march"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["lull"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["charm_prick"].Skill!.Effect, Is.InstanceOf<EnemyDebuffEffect>());
-            Assert.That(gems["cast_on_timer"].Kind, Is.EqualTo(GemKind.Trigger));
+            Assert.That(gems.All.Any(gem => gem.Id.StartsWith("cast_on_") || gem.Id.StartsWith("cast_with_")), Is.False);
         }
 
         [Test]
@@ -103,42 +103,6 @@ namespace Game.Core.Tests.Content
             Assert.That(skill.CooldownSeconds, Is.EqualTo(60));
             Assert.That(effect.ChargePerSecond, Is.EqualTo(0.05));
             Assert.That(effect.MaxChargeSeconds, Is.EqualTo(60));
-        }
-
-        [Test]
-        public void TimerTriggerCastsEveryThirtySecondsWithLongerCooldown()
-        {
-            var trigger = GemCatalog.Load(RealFile())["cast_on_timer"].Trigger!;
-
-            Assert.That(trigger.Condition, Is.EqualTo(TriggerCondition.Every));
-            Assert.That(trigger.Value, Is.EqualTo(30));
-            Assert.That(trigger.CooldownMultiplier, Is.EqualTo(1.5));
-        }
-
-        [Test]
-        public void FourteenTriggersAndNoneListensToKeys()
-        {
-            var gems = GemCatalog.Load(RealFile());
-            var triggers = 0;
-            foreach (var gem in gems.All)
-            {
-                if (gem.Kind != GemKind.Trigger)
-                    continue;
-                triggers++;
-                Assert.That(gem.Trigger!.CooldownMultiplier, Is.EqualTo(1.5), gem.Id);
-            }
-
-            Assert.That(triggers, Is.EqualTo(14));
-            Assert.That(System.Enum.GetNames(typeof(TriggerCondition)), Has.No.Member("Enter"));
-        }
-
-        [Test]
-        public void OldCastOnEnterGemIsReadAsTheTimerTrigger()
-        {
-            var gems = GemCatalog.Load(RealFile());
-
-            Assert.That(gems.TryGet("cast_on_enter", out var gem), Is.True);
-            Assert.That(gem.Id, Is.EqualTo("cast_on_timer"));
         }
 
         [TestCase("shield_bash", "iron_rim_bash")]
@@ -246,7 +210,7 @@ namespace Game.Core.Tests.Content
         private static (double Cost, double Cooldown, double Duration) Numbers(SkillDef skill) =>
             (skill.ResourceCost, skill.CooldownSeconds, skill.DurationSeconds);
 
-        [TestCase("{ \"id\": \"lull\", \"kind\": \"trigger\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"every\", \"value\": 1 }, \"cooldownMultiplier\": 1 }", "gems[61].id: gem id 'lull' is used twice")]
+        [TestCase("{ \"id\": \"lull\", \"kind\": \"active\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"strike\", \"multiplier\": 1 } }", "gems[61].id: gem id 'lull' is used twice")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"spell\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'spell'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"pink\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].color: unknown value 'pink'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"aura\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds or reserve")]
@@ -254,7 +218,7 @@ namespace Game.Core.Tests.Content
         [TestCase("{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"strike\", \"multiplier\": 1 }, \"native\": { \"holdDecaySeconds\": 1 } }", "gems[0].native: a native trait needs a weapon")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"stacks\", \"on\": \"sneeze\", \"perStack\": { \"stat\": \"damage\", \"kind\": \"increased\", \"value\": 0.1 }, \"max\": 1 } }", "gems[0].effect.on: unknown value 'sneeze'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"fireball\" } }", "gems[0].effect.type: unknown skill effect 'fireball'")]
-        [TestCase("{ \"id\": \"x\", \"kind\": \"trigger\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"condition\": { \"type\": \"sneeze\" }, \"cooldownMultiplier\": 1 }", "gems[0].condition.type: unknown value 'sneeze'")]
+        [TestCase("{ \"id\": \"x\", \"kind\": \"trigger\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'trigger'")]
         public void BrokenGemsAreReportedByPath(string gem, string message)
         {
             var error = Assert.Throws<ContentException>(() => GemCatalog.Load(WithExtraGem(gem)))!;

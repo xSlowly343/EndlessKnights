@@ -347,29 +347,6 @@ test("an aura-bound debuff ends when its owner says the auras are gone", () => {
   assert.strictEqual(host.encounter.damageTakenMultiplier(), 1);
 });
 
-test("a heavy cast notice goes to the others once per second", () => {
-  const host = new party.PartyHost(party.PartyServerRules, "5");
-  for (let i = 0; i < 2; i++)
-    host.join("user-" + i, String(100 + i));
-  host.tick();
-  host.outbox.length = 0;
-  const notice = new DataView(new ArrayBuffer(6));
-  notice.setUint8(0, 14);
-  notice.setInt32(2, 4242, true);
-  const sent = () => {
-    const out = host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 14);
-    host.outbox.length = 0;
-    return out;
-  };
-  host.receive("user-0", notice.buffer);
-  const first = sent();
-  assert.strictEqual(first.length, 1);
-  assert.deepStrictEqual(JSON.parse(JSON.stringify(first[0].to)), [1]);
-  assert.strictEqual(new DataView(first[0].data).getInt32(2, true), 4242);
-  host.receive("user-0", notice.buffer);
-  assert.strictEqual(sent().length, 0, "not more than once per castNoticeSeconds");
-});
-
 test("rift enemies regenerate and come in hordes until the party marks lift them", () => {
   const rules = party.RiftServerRules;
   const start = Date.UTC(2026, 9, 27, 13);

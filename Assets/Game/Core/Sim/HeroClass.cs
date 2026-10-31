@@ -15,6 +15,10 @@ namespace Game.Core.Sim
         PlagueDoctor,
         Moonshiner,
         Gravedigger,
-        Captain
+        Captain,
+        Spinner,
+        Rimecaller,
+        Thornmaiden,
+        Clayshaper
     }
 }

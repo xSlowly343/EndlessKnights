@@ -11,7 +11,6 @@ namespace Game.Core.Ui
         public static string CompactHint => Texts.Get("book.compactHint");
         public static string EmptyRow => Texts.Get("book.emptyRow");
         public static string BagTitle => Texts.Get("book.bag");
-        public static string AddTrigger => Texts.Get("book.addTrigger");
         public static string Unarmed => Texts.Get("book.unarmed");
         public static string Remove => Texts.Get("book.remove");
 
@@ -70,7 +69,6 @@ namespace Game.Core.Ui
         public static string Kind(GemKind kind) => kind switch
         {
             GemKind.Skill => Texts.Get("book.kind.skill"),
-            GemKind.Trigger => Texts.Get("book.kind.trigger"),
             _ => Texts.Get("book.kind.support")
         };
 
@@ -79,7 +77,6 @@ namespace Game.Core.Ui
         public static string Filter(GemBagFilter filter) => filter switch
         {
             GemBagFilter.Skills => Texts.Get("book.filter.skills"),
-            GemBagFilter.Triggers => Texts.Get("book.filter.triggers"),
             GemBagFilter.Supports => Texts.Get("book.filter.supports"),
             _ => Texts.Get("book.filter.all")
         };

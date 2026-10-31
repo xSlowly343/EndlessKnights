@@ -38,7 +38,7 @@ namespace Game.Core.Tests.Content
             var rules = CombatRules.Load(RealFile());
 
             foreach (var name in rules.Resources.Classes)
-                Assert.That(Game.Core.Sim.HeroClassNames.ByName.ContainsKey(name), Is.True, name);
+                Assert.That(Game.Core.Sim.HeroClassNames.ByName.ContainsKey(name) || Game.Core.Sim.HeroClassNames.InDevelopment.ContainsKey(name), Is.True, name);
         }
 
         [Test]

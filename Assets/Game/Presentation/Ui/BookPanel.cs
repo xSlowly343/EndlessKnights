@@ -26,11 +26,9 @@ namespace Game.Presentation.Ui
         private const float RowInsetPx = 10f;
         private const float GemBoxPx = 40f;
         private const float RowGemPx = 26f;
-        private const float TriggerWidthPx = 46f;
-        private const float TriggerHeightPx = 30f;
-        private const float TriggerRadiusPx = 6f;
+        private const float RemoveHeightPx = 30f;
+        private const float RemoveRadiusPx = 6f;
         private const float RemoveWidthPx = 58f;
-        private const float DividerHeightPx = 30f;
         private const float BagHeaderPx = 24f;
         private const float FilterPaddingPx = 10f;
         private const float FilterIconInsetPx = 4f;
@@ -40,11 +38,9 @@ namespace Game.Presentation.Ui
         private const float HintPx = 16f;
         private const float ClickSlopPx = 6f;
 
-        private static readonly GemBagFilter[] Filters = { GemBagFilter.All, GemBagFilter.Skills, GemBagFilter.Supports, GemBagFilter.Triggers };
+        private static readonly GemBagFilter[] Filters = { GemBagFilter.All, GemBagFilter.Skills, GemBagFilter.Supports };
         private static readonly Color CellFill = new Color32(0x22, 0x30, 0x4A, 0xFF);
         private static readonly Color ActivePill = new Color32(0x2E, 0x3A, 0x58, 0xFF);
-        private static readonly Color TriggerFill = new Color32(0x4A, 0x3A, 0x16, 0xFF);
-        private static readonly Color TriggerText = new Color32(0xFF, 0xE2, 0xA0, 0xFF);
         private static readonly Color LockedBorder = new Color32(0x4A, 0x56, 0x77, 0xFF);
 
         private readonly UiTheme _theme;
@@ -221,8 +217,6 @@ namespace Game.Presentation.Ui
 
         public Vector2 WorldPointOfRow(int row) => _rows[row].Card.Rect.TransformPoint(_rows[row].Card.Rect.rect.center);
 
-        public Vector2 WorldPointOfTrigger(int row) => _rows[row].Trigger.Rect.TransformPoint(_rows[row].Trigger.Rect.rect.center);
-
         public Vector2 WorldPointOfBagCell(int index) => _bag[index].Back.rectTransform.TransformPoint(_bag[index].Back.rectTransform.rect.center);
 
         private void Arrange()
@@ -308,8 +302,6 @@ namespace Game.Presentation.Ui
             for (var i = 0; i < _rows.Count; i++)
             {
                 var row = _rows[i];
-                if (row.TriggerContains(worldPoint) && (!needsGem || row.TriggerGem != null))
-                    return BookPlace.Trigger(i);
                 if (row.Contains(worldPoint) && (!needsGem || row.SkillGem != null))
                     return BookPlace.Skill(i);
             }
@@ -332,7 +324,6 @@ namespace Game.Presentation.Ui
             {
                 BookSpot.Bag => place.Gem,
                 BookSpot.Skill when place.Row < skills.Count => skills[place.Row].Skill,
-                BookSpot.Trigger when place.Row < skills.Count => skills[place.Row].Trigger,
                 _ => null
             };
         }
@@ -413,7 +404,7 @@ namespace Game.Presentation.Ui
         private sealed class Row
         {
             private const float TextLeftPx = 2f * RowInsetPx + GemBoxPx;
-            private const float TextRightPx = 3f * RowInsetPx + TriggerWidthPx;
+            private const float TextRightPx = RowInsetPx;
             private const float LineGapPx = 2f;
 
             private readonly int _index;
@@ -421,12 +412,9 @@ namespace Game.Presentation.Ui
             private readonly GemIcon _gem;
             private readonly TextMeshProUGUI _name;
             private readonly TextMeshProUGUI _detail;
-            private readonly Image _divider;
-            private readonly TextMeshProUGUI _triggerText;
-            private readonly Image _triggerInner;
             private bool _locked;
 
-            private Row(int index, UiButton card, Image border, GemIcon gem, TextMeshProUGUI name, TextMeshProUGUI detail, Image divider, UiButton trigger, Image triggerInner, TextMeshProUGUI triggerText, UiButton remove)
+            private Row(int index, UiButton card, Image border, GemIcon gem, TextMeshProUGUI name, TextMeshProUGUI detail, UiButton remove)
             {
                 Remove = remove;
                 _index = index;
@@ -435,17 +423,11 @@ namespace Game.Presentation.Ui
                 _gem = gem;
                 _name = name;
                 _detail = detail;
-                _divider = divider;
-                Trigger = trigger;
-                _triggerInner = triggerInner;
-                _triggerText = triggerText;
             }
 
             public UiButton Card { get; }
-            public UiButton Trigger { get; }
             public UiButton Remove { get; }
             public GemDef? SkillGem { get; private set; }
-            public GemDef? TriggerGem { get; private set; }
             public float NaturalPx => _locked ? LockedRowPx : RowPx;
 
             public static Row Create(int index, RectTransform parent, UiTheme theme)
@@ -465,32 +447,21 @@ namespace Game.Presentation.Ui
                 Fit(name.rectTransform, textLeft, TextRightPx, 0.5f, 1f, LineGapPx);
                 Fit(detail.rectTransform, textLeft, TextRightPx, 0f, 0.5f, -LineGapPx);
                 var middleRight = new Vector2(1f, 0.5f);
-                var divider = UiElements.Fill("Divider", rect, theme.Border);
-                UiElements.Anchor(divider.rectTransform, middleRight, new Vector2(-(2f * RowInsetPx + TriggerWidthPx), 0f), new Vector2(PanelCanvas.BorderPx, DividerHeightPx));
-                var triggerBack = UiElements.Fill("Trigger", rect, theme.Gold, TriggerRadiusPx);
-                UiElements.Anchor(triggerBack.rectTransform, middleRight, new Vector2(-RowInsetPx, 0f), new Vector2(TriggerWidthPx, TriggerHeightPx));
-                var triggerInner = UiElements.Fill("Inner", triggerBack.rectTransform, theme.Card, TriggerRadiusPx - PanelCanvas.BorderPx);
-                UiElements.Stretch(triggerInner.rectTransform, PanelCanvas.BorderPx);
-                var triggerText = UiElements.Label("Text", triggerBack.rectTransform, theme.TextFont, 11f, theme.Gold, TextAlignmentOptions.Center);
-                UiElements.Stretch(triggerText.rectTransform, 2f);
-                triggerText.overflowMode = TextOverflowModes.Ellipsis;
-                var removeBack = UiElements.Fill("Remove", rect, theme.Alert, TriggerRadiusPx);
-                UiElements.Anchor(removeBack.rectTransform, middleRight, new Vector2(-(3f * RowInsetPx + TriggerWidthPx), 0f), new Vector2(RemoveWidthPx, TriggerHeightPx));
+                var removeBack = UiElements.Fill("Remove", rect, theme.Alert, RemoveRadiusPx);
+                UiElements.Anchor(removeBack.rectTransform, middleRight, new Vector2(-RowInsetPx, 0f), new Vector2(RemoveWidthPx, RemoveHeightPx));
                 var removeText = UiElements.Label("Text", removeBack.rectTransform, theme.BoldFont, 11f, Color.white, TextAlignmentOptions.Center);
                 UiElements.Stretch(removeText.rectTransform, 2f);
                 removeText.text = BookTexts.Remove;
                 var remove = new UiButton(removeBack, removeText);
                 remove.Show(false);
-                return new Row(index, new UiButton(border, name), border, gem, name, detail, divider, new UiButton(triggerBack, triggerText), triggerInner, triggerText, remove);
+                return new Row(index, new UiButton(border, name), border, gem, name, detail, remove);
             }
 
             public void Place(Vector2 position, Vector2 size) => UiElements.Anchor(Card.Rect, new Vector2(0f, 1f), position, size);
 
-            public bool Contains(Vector2 worldPoint) => !_locked && Card.Contains(worldPoint) && !Trigger.Contains(worldPoint) && !RemoveContains(worldPoint);
+            public bool Contains(Vector2 worldPoint) => !_locked && Card.Contains(worldPoint) && !RemoveContains(worldPoint);
 
             public bool RemoveContains(Vector2 worldPoint) => !_locked && Remove.Back.gameObject.activeSelf && Remove.Contains(worldPoint);
-
-            public bool TriggerContains(Vector2 worldPoint) => !_locked && Trigger.Contains(worldPoint);
 
             public void Show(SkillSlot slot, bool armed, bool selected, UiTheme theme)
             {
@@ -499,12 +470,10 @@ namespace Game.Presentation.Ui
                 Remove.Show(selected);
                 _name.margin = new Vector4(0f, 0f, selected ? RemoveWidthPx + RowInsetPx : 0f, 0f);
                 SkillGem = slot.Skill;
-                TriggerGem = slot.Trigger;
                 _gem.Show(slot.Skill, RowGemPx / 0.72f, theme);
                 _name.text = BookTexts.Name(slot.Skill);
                 _name.color = armed ? theme.Text : theme.TextDim;
                 _detail.text = armed ? BookTexts.RowKey(_index) : $"{BookTexts.RowKey(_index)} · <color=#{ColorUtility.ToHtmlStringRGB(theme.Alert)}>{BookTexts.Unarmed}</color>";
-                ShowTrigger(slot.Trigger, theme);
             }
 
             public void ShowEmpty(UiTheme theme)
@@ -513,12 +482,10 @@ namespace Game.Presentation.Ui
                 Remove.Show(false);
                 _name.margin = Vector4.zero;
                 SkillGem = null;
-                TriggerGem = null;
                 _gem.Show(null, RowGemPx, theme);
                 _name.text = BookTexts.EmptyRow;
                 _name.color = theme.TextDim;
                 _detail.text = BookTexts.RowKey(_index);
-                ShowTrigger(null, theme);
             }
 
             public void ShowLocked(long unlockStage, UiTheme theme)
@@ -526,12 +493,9 @@ namespace Game.Presentation.Ui
                 _locked = true;
                 Remove.Show(false);
                 SkillGem = null;
-                TriggerGem = null;
                 _border.color = LockedBorder;
                 Card.Rect.GetChild(0).GetComponent<Image>().color = theme.Background;
                 _gem.Hide();
-                _divider.gameObject.SetActive(false);
-                Trigger.Show(false);
                 _name.text = string.Empty;
                 _detail.text = BookTexts.Locked(unlockStage);
                 _detail.alignment = TextAlignmentOptions.MidlineLeft;
@@ -544,18 +508,9 @@ namespace Game.Presentation.Ui
                 _locked = false;
                 _border.color = Color.clear;
                 Card.Rect.GetChild(0).GetComponent<Image>().color = theme.Card;
-                _divider.gameObject.SetActive(true);
-                Trigger.Show(true);
                 _detail.alignment = TextAlignmentOptions.TopLeft;
                 _detail.fontSize = 11f;
                 Fit(_detail.rectTransform, TextLeftPx, TextRightPx, 0f, 0.5f, -LineGapPx);
-            }
-
-            private void ShowTrigger(GemDef? trigger, UiTheme theme)
-            {
-                _triggerInner.color = trigger != null ? TriggerFill : theme.Card;
-                _triggerText.color = trigger != null ? TriggerText : theme.Gold;
-                _triggerText.text = trigger != null ? BookTexts.Name(trigger) : BookTexts.AddTrigger;
             }
 
             private static void Fit(RectTransform rect, float leftPx, float rightPx, float bottom, float top, float shiftPx)

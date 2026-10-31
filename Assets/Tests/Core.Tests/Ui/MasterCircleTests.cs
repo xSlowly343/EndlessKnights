@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Ui
         public void ASkillWaitingForItsMechanicCannotBePlaced()
         {
             var loop = Ronin(50);
-            var locked = loop.Data.Gems["concert_at_the_gates"];
+            var locked = loop.Data.Gems["hook_and_cleaver"];
             loop.State.Weapons.Right = new WeaponItem(loop.State.Weapons.Right!.Base, loop.State.Weapons.Right.Rarity, new[] { locked.Id });
 
             Assert.That(loop.Book.PlaceFromWeapon(locked, Levels), Is.EqualTo(BookResult.WaitsForMechanic));

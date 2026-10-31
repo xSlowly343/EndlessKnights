@@ -9,7 +9,7 @@
     "gravedigger": "summon", "captain": "summon"
   },
   "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
-  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "evilEyeOnEnemy": "evilEye" },
+  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "evilEyeOnEnemy": "evilEye", "coldOnEnemy": "cold", "bloodOnEnemy": "blood", "bondsUp": "bond" },
   "weakMarks": { "evilEye": { "as": "curse", "share": 0.5 } },
   "secondResponseStat": "secondResponse",
   "allyPoisonStacks": 25,

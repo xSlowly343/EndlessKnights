@@ -9,14 +9,13 @@ namespace Game.Core.Party
         public const int MaxStats = 6;
         public const int MaxAuras = Sim.SkillLoadout.MaxSlots;
 
-        private PartyBuffRules(double selfShare, double offerSeconds, IReadOnlyList<PartyStatLink> stats, double allyResourceMax, double allyResourceCooldownSeconds, double castNoticeSeconds)
+        private PartyBuffRules(double selfShare, double offerSeconds, IReadOnlyList<PartyStatLink> stats, double allyResourceMax, double allyResourceCooldownSeconds)
         {
             SelfShare = selfShare;
             OfferSeconds = offerSeconds;
             Stats = stats;
             AllyResourceMax = allyResourceMax;
             AllyResourceCooldownSeconds = allyResourceCooldownSeconds;
-            CastNoticeSeconds = castNoticeSeconds;
         }
 
         public double SelfShare { get; }
@@ -24,7 +23,6 @@ namespace Game.Core.Party
         public IReadOnlyList<PartyStatLink> Stats { get; }
         public double AllyResourceMax { get; }
         public double AllyResourceCooldownSeconds { get; }
-        public double CastNoticeSeconds { get; }
         public double ClearDayAbove { get; private set; }
         public double ClearDayCritChance { get; private set; }
         public double TypingSeconds { get; private set; }
@@ -44,7 +42,7 @@ namespace Game.Core.Party
             }
             var allyResource = node.Field("allyResource");
             var rules = new PartyBuffRules(node.Field("selfShare").AsNumber(0, 1), node.Field("offerSeconds").AsNumber(0.1, 60), stats,
-                allyResource.Field("max").AsNumber(0, 1000), allyResource.Field("cooldownSeconds").AsNumber(0, 600), node.Field("castNoticeSeconds").AsNumber(0, 60));
+                allyResource.Field("max").AsNumber(0, 1000), allyResource.Field("cooldownSeconds").AsNumber(0, 600));
             if (node.HasField("heardByAll"))
             {
                 var heard = node.Field("heardByAll");

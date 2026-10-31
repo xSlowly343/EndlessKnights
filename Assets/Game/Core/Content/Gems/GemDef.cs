@@ -9,7 +9,7 @@ namespace Game.Core.Content.Gems
         private readonly IReadOnlyList<double>? _branchDamage;
 
         public GemDef(string id, GemKind kind, GemColor color, string nameRu, string nameEn, StatTags tags,
-            SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null,
+            SkillDef? skill = null, string? supportEffect = null,
             string? ascendancy = null, bool locked = false, SupportDef? support = null, SkillType? type = null,
             IReadOnlyList<SkillBranchTier>? branches = null, StatTags supports = StatTags.None, double damageMultiplier = 1, double manaMultiplier = 1,
             IReadOnlyList<SkillDef>? variants = null, IReadOnlyList<double>? branchDamage = null, int unlockLevel = 1)
@@ -30,7 +30,6 @@ namespace Game.Core.Content.Gems
             NameEn = nameEn;
             Tags = tags;
             Skill = skill;
-            Trigger = trigger;
             SupportEffect = supportEffect;
             NetId = NetIdOf(id);
             PowerStat = StatId.ForSkill(Sim.CombatStats.SkillPower, id);
@@ -42,7 +41,6 @@ namespace Game.Core.Content.Gems
         public static SkillType TypeOf(GemKind kind, SkillDef? skill) => kind switch
         {
             GemKind.Support => SkillType.Support,
-            GemKind.Trigger => SkillType.Trigger,
             _ => skill?.Effect is AuraEffect ? SkillType.Aura : SkillType.Active
         };
 
@@ -67,7 +65,6 @@ namespace Game.Core.Content.Gems
         public string NameEn { get; }
         public StatTags Tags { get; }
         public SkillDef? Skill { get; }
-        public TriggerDef? Trigger { get; }
         public string? SupportEffect { get; }
         public SupportDef? Support { get; }
         public string? Ascendancy { get; }

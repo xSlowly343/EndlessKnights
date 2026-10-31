@@ -68,9 +68,8 @@ def tile_color(icon, group, manifest, colors):
 def check_gems(manifest, colors):
     covered = {(icon["group"], icon["id"]) for icon in manifest["icons"]}
     missing = []
-    for gem_id, (kind, _) in colors.items():
-        group = "triggers" if kind == "trigger" else "skills"
-        if (group, gem_id) not in covered:
+    for gem_id in colors:
+        if ("skills", gem_id) not in covered:
             missing.append(gem_id)
     return missing
 

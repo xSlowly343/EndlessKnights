@@ -70,6 +70,7 @@ namespace Game.Core.Sim
             gained += input.Clicks * resource.PerClick * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Click);
             gained += FromGear(input);
             gained += FromGestures(input);
+            gained += input.CircleTurns * resource.PerCircle * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
             if (_state.Reading)
                 gained += resource.ReadingPerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse) * System.Math.Max(0, _hero.Value(CombatStats.ReadingGain, 1));
             gained += _state.PendingResource;
