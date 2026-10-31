@@ -50,6 +50,9 @@ namespace Game.Core.Party
         private int _ownSlot = PartyEncounter.NoSlot;
         private int _firstEvent;
         private bool _offerNow;
+        private bool _loadoutNow;
+        private PartyLoadoutMessage _sentLoadout;
+        private readonly PartyLoadoutMessage[] _allyLoadouts = new PartyLoadoutMessage[PartyRules.MaxSlots];
         private long _refusedRift;
         private long _guestLinkTick;
         private uint _sentReactions;
@@ -297,6 +300,10 @@ namespace Game.Core.Party
                     if (InParty && reaction.Slot < PartyRules.MaxSlots && reaction.Slot != _ownSlot && _rules.Reactions.Knows(reaction.Reaction))
                         ShowReaction(reaction.Slot, reaction.Reaction);
                     break;
+                case PartyMessageKind.PartyLoadout when PartyCodec.TryDecode(_in, length, out PartyLoadoutMessage loadout):
+                    if (InParty && loadout.Slot < PartyRules.MaxSlots && loadout.Slot != _ownSlot)
+                        _allyLoadouts[loadout.Slot] = loadout;
+                    break;
                 case PartyMessageKind.AllyCast when PartyCodec.TryDecode(_in, length, out AllyCastMessage cast):
                     if (InParty && cast.Slot != _ownSlot && _loop.Data.Gems.TryGetByNetId(cast.GemNetId, out var castGem) && castGem.Skill != null)
                         NoteAllyCast(castGem.Skill.CooldownSeconds);
@@ -344,13 +351,18 @@ namespace Game.Core.Party
 
         private void OnRoster(in RosterMessage roster)
         {
+            if (roster.Version != Roster.Version)
+                _loadoutNow = true;
             Roster = roster;
             _ownSlot = roster.SlotOf(_transport.LocalId);
             _inRoster = _ownSlot != PartyEncounter.NoSlot;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 if (slot == _ownSlot || roster.Player(slot) == 0 || roster.Presence(slot) == PartyPresence.Offline)
+                {
                     _loop.PartyBuffs.ClearAlly(slot);
+                    _allyLoadouts[slot] = default;
+                }
             }
         }
 
@@ -563,6 +575,7 @@ namespace Game.Core.Party
             _loop.Stages.Link(IsGuest);
             _loop.Skills.ShareEnemy(true);
             _offerNow = true;
+            _loadoutNow = true;
             if (_state.EnemyId > 0 && _state.EnemyId - 1 > _rewardedUpTo)
                 _rewardedUpTo = _state.EnemyId - 1;
             _settledUpTo = _rewardedUpTo;
@@ -574,8 +587,12 @@ namespace Game.Core.Party
             LastKillPaid = true;
         }
 
+        public PartyLoadoutMessage AllyLoadout(int slot) =>
+            slot >= 0 && slot < _allyLoadouts.Length && slot != _ownSlot ? _allyLoadouts[slot] : default;
+
         private void Unlink()
         {
+            System.Array.Clear(_allyLoadouts, 0, _allyLoadouts.Length);
             _loop.State.PartyAllies = 0;
             _loop.Stages.Unlink();
             _loop.Skills.ShareEnemy(false);
@@ -878,6 +895,8 @@ namespace Game.Core.Party
                 FlushBatch();
             if (InParty && (_offerNow || Every(_rules.Buffs.OfferSeconds)))
                 SendOffer();
+            if (InParty)
+                SendLoadout();
             if ((InParty || Status == PartyLink.Joining) && Every(_rules.PresenceSeconds))
                 SendToHost(PartyCodec.Encode(_out, new PresenceMessage
                 {
@@ -933,6 +952,45 @@ namespace Game.Core.Party
                 offer.SetAura(count++, new OfferedAura { GemNetId = _glowGem[i], Strength = _glowStrength[i], TicksLeft = (int)(_glowUntil[i] - _tick) });
             }
             SendToHost(PartyCodec.Encode(_out, offer));
+        }
+
+        private void SendLoadout()
+        {
+            if (!_loadoutNow && !Every(_rules.Buffs.OfferSeconds))
+                return;
+            var loadout = OwnLoadout();
+            if (!_loadoutNow && loadout.SameAs(_sentLoadout) && !Every(_rules.PresenceSeconds))
+                return;
+            _loadoutNow = false;
+            _sentLoadout = loadout;
+            SendToHost(PartyCodec.Encode(_out, loadout));
+        }
+
+        private PartyLoadoutMessage OwnLoadout()
+        {
+            var loadout = new PartyLoadoutMessage();
+            var autos = 0;
+            var auras = 0;
+            var skills = _loop.State.Skills;
+            for (var i = 0; i < skills.Count; i++)
+            {
+                var slot = skills[i];
+                var position = slot.Role switch
+                {
+                    SkillSlotRole.Auto => PartyLoadoutMessage.PositionOf(SkillSlotRole.Auto, autos++),
+                    SkillSlotRole.Aura => PartyLoadoutMessage.PositionOf(SkillSlotRole.Aura, auras++),
+                    _ => PartyLoadoutMessage.PositionOf(slot.Role, 0)
+                };
+                if (position < 0)
+                    continue;
+                loadout.Set(position, new LoadoutSkill
+                {
+                    GemNetId = slot.Skill.NetId,
+                    Level = (byte)System.Math.Min(byte.MaxValue, _loop.State.LevelOf(slot.Skill)),
+                    Combo = (byte)_loop.Skills.ComboOf(slot.Skill)
+                });
+            }
+            return loadout;
         }
 
         private OfferedAura Resonate(SkillSlot slot, double strength, int ticks)

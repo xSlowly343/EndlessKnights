@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, AllyCast = 14, Synergy = 15, BossRequest = 16, Marks = 17
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, AllyCast = 14, Synergy = 15, BossRequest = 16, Marks = 17, PartyLoadout = 18
 }
 
 class PartyWriter {
@@ -115,7 +115,7 @@ function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
         return PartyMessageKind.None;
     const kind = new DataView(data).getUint8(0);
-    return kind <= PartyMessageKind.Marks ? kind : PartyMessageKind.None;
+    return kind <= PartyMessageKind.PartyLoadout ? kind : PartyMessageKind.None;
 }
 
 function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
@@ -218,6 +218,16 @@ function partyRelayAllyCast(data: ArrayBuffer, slot: number): ArrayBuffer | null
     return copy;
 }
 
+const PartyLoadoutBytes = 2 + 9 * 6;
+
+function partyRelayLoadout(data: ArrayBuffer, slot: number): ArrayBuffer | null {
+    if (partyKindOf(data) !== PartyMessageKind.PartyLoadout || data.byteLength !== PartyLoadoutBytes)
+        return null;
+    const copy = data.slice(0);
+    new DataView(copy).setUint8(1, slot);
+    return copy;
+}
+
 function partyRelayOffer(data: ArrayBuffer, slot: number): ArrayBuffer | null {
     if (partyKindOf(data) !== PartyMessageKind.PartyOffer || data.byteLength < 2)
         return null;
@@ -229,7 +239,7 @@ function partyRelayOffer(data: ArrayBuffer, slot: number): ArrayBuffer | null {
 function partyOfferAuraTicks(data: ArrayBuffer): number {
     const view = new DataView(data);
     let ticks = 0;
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 9; i++) {
         const at = 26 + i * 12;
         if (data.byteLength < at + 12)
             break;

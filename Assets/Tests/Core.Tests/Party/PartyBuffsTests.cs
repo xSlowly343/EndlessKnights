@@ -83,6 +83,30 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AlliesSeeEachOthersSkillSlots()
+        {
+            var rig = new Rig(2);
+            var caster = rig.Members[0];
+            var friend = rig.Members[1];
+            while (caster.Loop.State.Skills.Count > 0)
+                caster.Loop.Skills.Unequip(0);
+            caster.Equip("iron_rim_bash");
+            rig.Run(5);
+            var casterSlot = friend.Client.Roster.SlotOf(10UL);
+            var left = caster.Loop.State.Skills[SkillLoadout.IndexOf(caster.Loop.State.Skills, SkillSlotRole.Left)].Skill;
+
+            Assert.That(friend.Client.AllyLoadout(casterSlot).Left.GemNetId, Is.EqualTo(left.NetId));
+            Assert.That(friend.Client.AllyLoadout(casterSlot).Left.Level, Is.EqualTo(caster.Loop.State.LevelOf(left)));
+            Assert.That(caster.Client.AllyLoadout(caster.Client.Roster.SlotOf(10UL)).Left.Empty, Is.True, "the own slot is not an ally");
+
+            while (caster.Loop.State.Skills.Count > 0)
+                caster.Loop.Skills.Unequip(0);
+            rig.Run(2);
+
+            Assert.That(friend.Client.AllyLoadout(casterSlot).Left.Empty, Is.True, "a changed loadout reaches the ally");
+        }
+
+        [Test]
         public void MembersSeeTheHordeAndTheColossusShieldOfTheHost()
         {
             var rift = TestWorld.Data.Rift;

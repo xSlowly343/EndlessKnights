@@ -7,7 +7,7 @@ namespace Game.Core.Party
     public sealed class PartyBuffRules
     {
         public const int MaxStats = 6;
-        public const int MaxAuras = 4;
+        public const int MaxAuras = Sim.SkillLoadout.MaxSlots;
 
         private PartyBuffRules(double selfShare, double offerSeconds, IReadOnlyList<PartyStatLink> stats, double allyResourceMax, double allyResourceCooldownSeconds, double castNoticeSeconds)
         {

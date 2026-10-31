@@ -162,7 +162,7 @@ namespace Game.Core.Sim
             slot.BranchDamage = slot.Skill.BranchDamageOf(combo);
         }
 
-        private int ComboOf(GemDef gem) =>
+        public int ComboOf(GemDef gem) =>
             _state.GemProgress.TryGetValue(gem.Id, out var progress) ? SkillBranches.ComboOf(gem.Branches, progress.Branches, progress.Level) : SkillBranches.Plain;
 
         public bool IsNative(int index) => index >= 0 && index < _state.Skills.Count && IsNative(_state.Skills[index]);

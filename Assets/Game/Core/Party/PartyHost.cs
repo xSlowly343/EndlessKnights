@@ -160,6 +160,10 @@ namespace Game.Core.Party
                     _encounter.NoteAuras(slot, offer.LongestAuraTicks);
                     BroadcastExcept(slot, PartyCodec.Encode(_out, offer));
                     break;
+                case PartyMessageKind.PartyLoadout when PartyCodec.TryDecode(_in, length, out PartyLoadoutMessage loadout):
+                    loadout.Slot = (byte)slot;
+                    BroadcastExcept(slot, PartyCodec.Encode(_out, loadout));
+                    break;
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     React(slot, reaction);
                     break;

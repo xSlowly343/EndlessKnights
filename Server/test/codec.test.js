@@ -110,4 +110,11 @@ test("a heavy cast notice is relayed with the sender slot", () => {
 test("offers are relayed with the sender slot", () => {
   const offer = vectors.decode.offerRelay;
   assert.strictEqual(hex(party.partyRelayOffer(bytes(offer.hex), offer.slot)), offer.relayedHex);
+  assert.strictEqual(party.partyOfferAuraTicks(bytes(offer.hex)), offer.auraTicks);
+});
+
+test("the skill loadout is relayed with the sender slot, a wrong size is dropped", () => {
+  const loadout = vectors.decode.loadoutRelay;
+  assert.strictEqual(hex(party.partyRelayLoadout(bytes(loadout.hex), loadout.slot)), loadout.relayedHex);
+  assert.strictEqual(party.partyRelayLoadout(bytes(loadout.hex.slice(0, -2)), loadout.slot), null);
 });

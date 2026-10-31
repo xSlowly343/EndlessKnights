@@ -170,6 +170,12 @@ class PartyHost {
                 }
                 break;
             }
+            case PartyMessageKind.PartyLoadout: {
+                const relayed = partyRelayLoadout(data, slot);
+                if (relayed)
+                    this.broadcast(relayed, slot);
+                break;
+            }
             case PartyMessageKind.WorldRequest: {
                 const request = partyDecodeWorldRequest(data);
                 if (request)

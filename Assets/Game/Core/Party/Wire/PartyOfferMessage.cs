@@ -13,6 +13,11 @@ namespace Game.Core.Party.Wire
         public OfferedAura Aura1;
         public OfferedAura Aura2;
         public OfferedAura Aura3;
+        public OfferedAura Aura4;
+        public OfferedAura Aura5;
+        public OfferedAura Aura6;
+        public OfferedAura Aura7;
+        public OfferedAura Aura8;
 
         public double Stat(int index) => index switch
         {
@@ -59,6 +64,11 @@ namespace Game.Core.Party.Wire
             1 => Aura1,
             2 => Aura2,
             3 => Aura3,
+            4 => Aura4,
+            5 => Aura5,
+            6 => Aura6,
+            7 => Aura7,
+            8 => Aura8,
             _ => default
         };
 
@@ -70,6 +80,11 @@ namespace Game.Core.Party.Wire
                 case 1: Aura1 = aura; break;
                 case 2: Aura2 = aura; break;
                 case 3: Aura3 = aura; break;
+                case 4: Aura4 = aura; break;
+                case 5: Aura5 = aura; break;
+                case 6: Aura6 = aura; break;
+                case 7: Aura7 = aura; break;
+                case 8: Aura8 = aura; break;
             }
         }
 

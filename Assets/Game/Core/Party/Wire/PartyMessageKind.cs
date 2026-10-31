@@ -19,6 +19,7 @@ namespace Game.Core.Party.Wire
         AllyCast,
         Synergy,
         BossRequest,
-        Marks
+        Marks,
+        PartyLoadout
     }
 }

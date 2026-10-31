@@ -84,15 +84,24 @@ namespace Game.Core.Tests.Party
             var offer = new PartyOfferMessage { Slot = 0 };
             offer.SetStat(0, 0.3);
             offer.SetAura(0, new OfferedAura { GemNetId = 5, Strength = 1.5f, TicksLeft = 200 });
+            offer.SetAura(8, new OfferedAura { GemNetId = 7, Strength = 0.5f, TicksLeft = 350 });
             var relayed = offer;
             relayed.Slot = 2;
-            builder.Append("    \"offerRelay\": { \"slot\": 2, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, offer)))
+            builder.Append("    \"offerRelay\": { \"slot\": 2, \"auraTicks\": 350, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, offer)))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, relayed))).Append("\" },\n");
             builder.Append("    \"reactionRelay\": { \"slot\": 1, \"reaction\": 4, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 0, Reaction = 4 })))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 1, Reaction = 4 }))).Append("\" },\n");
             builder.Append("    \"synergy\": { \"reactions\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new SynergyMessage { Reactions = 5 }))).Append("\" },\n");
             builder.Append("    \"allyCast\": { \"slot\": 2, \"gem\": 4242, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new AllyCastMessage { GemNetId = 4242 })))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new AllyCastMessage { Slot = 2, GemNetId = 4242 }))).Append("\" },\n");
+            var loadout = new PartyLoadoutMessage();
+            loadout.Set(0, new LoadoutSkill { GemNetId = 4242, Level = 7, Combo = 13 });
+            loadout.Set(PartyLoadoutMessage.PositionOf(Game.Core.Sim.SkillSlotRole.Auto, 1), new LoadoutSkill { GemNetId = 99, Level = 25, Combo = 26 });
+            loadout.Set(PartyLoadoutMessage.PositionOf(Game.Core.Sim.SkillSlotRole.Aura, 3), new LoadoutSkill { GemNetId = 5, Level = 1, Combo = 13 });
+            var loadoutRelayed = loadout;
+            loadoutRelayed.Slot = 3;
+            builder.Append("    \"loadoutRelay\": { \"slot\": 3, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, loadout)))
+                .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, loadoutRelayed))).Append("\" },\n");
             builder.Append("    \"allyResource\": { \"slot\": 3, \"amount\": 20, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyResourceMessage { Amount = 20 })))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyResourceMessage { Slot = 3, Amount = 20 }))).Append("\" },\n");
             builder.Append("    \"focusDropped\": { \"from\": 255, \"to\": 255, \"focus\": 1.75, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, FocusRelayMessage.Dropped(1.75)))).Append("\" },\n");
