@@ -2,6 +2,7 @@ using System.Linq;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Stats;
+using Game.Core.Tests.Sim;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Content
@@ -26,7 +27,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(84));
+            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(79));
             Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(30));
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Aura && !gem.Locked).Select(gem => gem.Skill!.Effect), Is.All.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Active).Select(gem => gem.Skill!.Effect), Is.All.Not.InstanceOf<AuraEffect>());
@@ -174,9 +175,9 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            var problems = SkillRoster.Problems(gems, WeaponPoolTests.ReferencePools.Append("nothing"));
+            var problems = SkillRoster.Problems(gems, TestWorld.Real.Weapons.Types.Select(type => type.Id).Append("nothing"));
 
-            Assert.That(problems.Where(problem => !problem.StartsWith("nothing")), Is.Empty, "rebuilt classes follow the Huscarl");
+            Assert.That(problems.Where(problem => !problem.StartsWith("nothing")), Is.Empty, "every class has fifteen skills and four auras");
             Assert.That(problems, Has.Member("nothing: 0 active skills, expected 15"));
             Assert.That(problems, Has.Member("nothing: 0 auras, expected 4"));
         }
