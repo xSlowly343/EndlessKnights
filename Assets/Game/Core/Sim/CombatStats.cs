@@ -233,6 +233,10 @@ namespace Game.Core.Sim
         public static readonly StatId ThirdAura = new StatId("thirdAura");
         public static readonly StatId ThirdAuraFree = new StatId("thirdAuraFree");
         public static readonly StatId AuraInPause = new StatId("auraInPause");
+        public static readonly StatId EvilEyeEffect = new StatId("evilEyeEffect");
+        public static readonly StatId EvilEyePower = new StatId("evilEyePower");
+        public static readonly StatId EvilEyeBossOnly = new StatId("evilEyeBossOnly");
+        public static readonly StatId EvilEyeOnGuardians = new StatId("evilEyeOnGuardians");
         public static readonly StatId SlateEffect = new StatId("slateEffect");
         public static readonly StatId SlateChance = new StatId("slateChance");
         public static readonly StatId SlateRarity = new StatId("slateRarity");

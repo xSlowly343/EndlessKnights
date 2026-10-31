@@ -108,6 +108,16 @@ namespace Game.Core.Sim
 
         public int BlindEvery => System.Math.Max(_rules.Sand.EveryMin, (int)System.Math.Round(_rules.Sand.Every + _hero.Value(CombatStats.BlindEvery, 0, StatTags.Keyboard)));
 
+        public bool EvilEyeOn =>
+            _state.Is(HeroClass.Voodoo) && _state.EnemyAlive && _rules.EvilEye.DamageTaken > 0
+            && (_hero.Value(CombatStats.EvilEyeBossOnly, 0) < 1
+                || _state.EnemyType == EnemyType.Boss
+                || (_state.EnemyType == EnemyType.Guardian && _hero.Value(CombatStats.EvilEyeOnGuardians, 0) >= 1));
+
+        public double EvilEyeShare => EvilEyeOn
+            ? (_rules.EvilEye.DamageTaken + System.Math.Max(0, _hero.Value(CombatStats.EvilEyeEffect, 0))) * (1 + System.Math.Max(0, _hero.Value(CombatStats.EvilEyePower, 0)))
+            : 0;
+
         public int ShieldEvery => System.Math.Max(_rules.ShieldEveryMin, (int)System.Math.Round(_rules.ShieldEvery + _hero.Value(CombatStats.ShieldEvery, 0, StatTags.Keyboard)));
 
         public int StrikeEvery

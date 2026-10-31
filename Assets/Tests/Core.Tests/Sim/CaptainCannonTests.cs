@@ -159,7 +159,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ShipFiresABroadsideForEveryThreeThousandPixels()
         {
-            var broadside = DamageFromMouse(HeroClass.Captain, Rules.BroadsidePx) - DamageFromMouse(HeroClass.Voodoo, Rules.BroadsidePx);
+            var broadside = DamageFromMouse(HeroClass.Captain, Rules.BroadsidePx) - DamageFromMouse(HeroClass.Clockmaker, Rules.BroadsidePx);
 
             Assert.That(broadside, Is.EqualTo(TestWorld.Data.Combat.KeyDamage * Rules.BroadsideBalls).Within(1e-6));
         }
@@ -169,7 +169,7 @@ namespace Game.Core.Tests.Sim
         {
             var px = Rules.BroadsidePx * 0.9;
 
-            Assert.That(DamageFromMouse(HeroClass.Captain, px), Is.EqualTo(DamageFromMouse(HeroClass.Voodoo, px)).Within(1e-6));
+            Assert.That(DamageFromMouse(HeroClass.Captain, px), Is.EqualTo(DamageFromMouse(HeroClass.Clockmaker, px)).Within(1e-6));
         }
 
         [Test]

@@ -172,7 +172,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(voodoo.Cast(0), Is.EqualTo(CastResult.Cast));
 
-            Assert.That(voodoo.DamageFrom(DamageSource.Skill), Is.EqualTo(voodoo.SkillDamage("skull_on_the_staff", 5)).Within(1e-6));
+            Assert.That(voodoo.DamageFrom(DamageSource.Skill), Is.EqualTo(voodoo.SkillDamage("skull_on_the_staff", 5) * (1 + voodoo.Loop.Combat.Class.EvilEyeShare)).Within(1e-6));
             Assert.That(curse.ActiveTicks, Is.EqualTo(curse.ActiveTotalTicks));
             Assert.That(voodoo.State.Skills[0].Active, Is.True);
         }
