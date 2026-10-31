@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = heroClass }), hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = heroClass }, hero);
             loop.State.SpawnEnemy(null, enemy, BigNumber.Create(1, 50));
             loop.State.BossTicksLeft = enemy == EnemyType.Normal ? 0 : 900;
             loop.State.HitsOnEnemy = Conditions.FirstHits;

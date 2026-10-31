@@ -25,7 +25,7 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e60, StatTags.Keyboard));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(TestWorld.Classless(new GameState { Class = HeroClass.Viking })), hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Viking }), hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             while (loop.State.Weapons.Left != null || loop.State.Weapons.Right != null)

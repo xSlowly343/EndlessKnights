@@ -181,6 +181,5 @@ namespace Game.Core.Sim
         public static readonly StatId AuraReserveOnce = new StatId("auraReserveOnce");
         public static readonly StatId MinionExplode = new StatId("minionExplode");
         public static readonly StatId DamageLongStreak = new StatId("damageLongStreak");
-        public static readonly StatId JewelEffect = new StatId("jewelEffect");
     }
 }

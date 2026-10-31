@@ -31,7 +31,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ApplyingOfflineToARunningLoopBringsTheNextEnemy()
         {
-            var loop = TestWorld.Loop(state: TestWorld.Classless(new GameState()));
+            var loop = TestWorld.Loop(state: new GameState());
             var away = new OfflineCalculator(TestWorld.Data, loop.Hero).Simulate(loop.State, 600, BigNumber.FromDouble(50), fightGuardians: false);
 
             loop.ApplyOffline(away);

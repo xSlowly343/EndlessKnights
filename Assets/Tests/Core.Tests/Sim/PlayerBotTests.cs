@@ -68,16 +68,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TypistAvoidsKeystonesThatHurtItsDamage()
-        {
-            var simulation = Typist();
-
-            simulation.Run(3, 2);
-
-            Assert.That(simulation.LastState!.Tree.Allocated, Does.Not.Contain("only_music"));
-        }
-
-        [Test]
         public void StuckBotPrestigesAndBuysArtifacts()
         {
             var days = Typist().Run(3, 2);

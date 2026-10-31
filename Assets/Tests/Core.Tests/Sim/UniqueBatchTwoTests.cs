@@ -9,7 +9,7 @@ namespace Game.Core.Tests.Sim
     {
         private static GameLoop Wearing(string id)
         {
-            var loop = TestWorld.Loop(state: TestWorld.Classless(new GameState(4) { Class = HeroClass.Viking }));
+            var loop = TestWorld.Loop(state: new GameState(4) { Class = HeroClass.Viking });
             Assert.That(TestWorld.Data.Items.TryGetUnique(id, out var unique), Is.True, id);
             var item = new GearItem(unique, 3);
             loop.State.Drops.Gear.Add(item);

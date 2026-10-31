@@ -127,7 +127,7 @@ namespace Game.Core.Tests.Sim
         public void RedGemEffectMakesRedSkillsStronger()
         {
             var helmet = Item("mail_coif");
-            var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(TestWorld.Classless(new GameState { Class = HeroClass.Viking })));
+            var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Viking }));
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             var gem = TestWorld.Data.Gems["iron_rim_bash"];

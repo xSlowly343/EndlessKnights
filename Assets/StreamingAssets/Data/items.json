@@ -158,29 +158,5 @@
     {"id": "overdrive_amulet", "name": {"ru": "Амулет разгона", "en": "Overdrive Amulet"}, "base": "crafter_amulet", "rarity": "legendary", "lines": [{"stat": "rampPerSecond", "kind": "flat", "value": 0.02}, {"stat": "rampMax", "kind": "flat", "value": 1}], "rule": {"ru": "+2% урона за каждую секунду боя с врагом, до +100%", "en": "+2% damage per second spent on an enemy, up to +100%"}},
     {"id": "marauder_ring", "name": {"ru": "Кольцо мародёра", "en": "Marauder's Ring"}, "base": "amber_ring", "rarity": "legendary", "lines": [{"stat": "goldPerResource", "kind": "flat", "value": 0.5}, {"stat": "gold", "kind": "increased", "value": 0.15, "tags": ["Gold"]}], "rule": {"ru": "золото до +50% при полной шкале ресурса", "en": "up to +50% gold with a full resource gauge"}},
     {"id": "warband_helm", "name": {"ru": "Шлем боевого отряда", "en": "Warband Helm"}, "base": "jarl_helm", "rarity": "ancient", "lines": [{"stat": "partyDamage", "kind": "increased", "value": 0.2}, {"stat": "partyCritChance", "kind": "increased", "value": 0.1}, {"stat": "damage", "kind": "increased", "value": 0.1}], "rule": {"ru": "отряд получает +20% урона и +10% шанса крита", "en": "the party gains +20% damage and +10% crit chance"}}
-  ],
-  "jewels": {
-    "maxAffixes": 4,
-    "affixes": [
-      {"id": "socketed_key_damage", "part": "prefix", "stats": [{"stat": "damage", "kind": "increased", "tags": ["Keyboard"]}], "tiers": [0.03, 0.12]},
-      {"id": "socketed_mouse_damage", "part": "prefix", "stats": [{"stat": "damage", "kind": "increased", "tags": ["Mouse"]}], "tiers": [0.03, 0.12]},
-      {"id": "socketed_skill_damage", "part": "prefix", "stats": [{"stat": "damage", "kind": "increased", "tags": ["Skill"]}], "tiers": [0.03, 0.12]},
-      {"id": "socketed_dot_damage", "part": "prefix", "stats": [{"stat": "dotDamage", "kind": "increased"}], "tiers": [0.03, 0.12]},
-      {"id": "socketed_minion_damage", "part": "prefix", "stats": [{"stat": "damage", "kind": "increased", "tags": ["Minion"]}], "tiers": [0.03, 0.12]},
-      {"id": "socketed_boss_damage", "part": "prefix", "stats": [{"stat": "damageVsBoss", "kind": "increased"}], "tiers": [0.04, 0.16]},
-      {"id": "socketed_long_streak", "part": "prefix", "stats": [{"stat": "damageLongStreak", "kind": "increased"}], "tiers": [0.05, 0.2]},
-      {"id": "socketed_after_idle", "part": "prefix", "stats": [{"stat": "damageAfterIdle", "kind": "increased"}], "tiers": [0.05, 0.2]},
-      {"id": "socketed_aura", "part": "prefix", "stats": [{"stat": "auraEffect", "kind": "increased"}], "tiers": [0.02, 0.08]},
-      {"id": "socketed_crit_multiplier", "part": "prefix", "stats": [{"stat": "critMultiplier", "kind": "increased"}], "tiers": [0.04, 0.16]},
-      {"id": "socketed_crit_chance", "part": "suffix", "stats": [{"stat": "critChance", "kind": "flat"}], "tiers": [0.003, 0.015]},
-      {"id": "socketed_focus", "part": "suffix", "stats": [{"stat": "focusGain", "kind": "increased"}], "tiers": [0.03, 0.12]},
-      {"id": "socketed_resource", "part": "suffix", "stats": [{"stat": "resourceGain", "kind": "increased"}], "tiers": [0.02, 0.08]},
-      {"id": "socketed_cooldown", "part": "suffix", "stats": [{"stat": "skillCooldown", "kind": "increased"}], "tiers": [-0.01, -0.05]},
-      {"id": "socketed_gold", "part": "suffix", "stats": [{"stat": "gold", "kind": "increased", "tags": ["Gold"]}], "tiers": [0.03, 0.12]},
-      {"id": "socketed_mouse_distance", "part": "suffix", "stats": [{"stat": "mouseDistance", "kind": "increased", "tags": ["Mouse"]}], "tiers": [0.03, 0.12]},
-      {"id": "socketed_strength", "part": "suffix", "stats": [{"stat": "strength", "kind": "flat"}], "tiers": [2, 10], "group": "attribute"},
-      {"id": "socketed_dexterity", "part": "suffix", "stats": [{"stat": "dexterity", "kind": "flat"}], "tiers": [2, 10], "group": "attribute"},
-      {"id": "socketed_intelligence", "part": "suffix", "stats": [{"stat": "intelligence", "kind": "flat"}], "tiers": [2, 10], "group": "attribute"}
-    ]
-  }
+  ]
 }

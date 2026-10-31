@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Game.Core.Build;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Tree;
 using Game.Core.Content.Weapons;
@@ -514,7 +515,7 @@ namespace Game.Core.Tests.Party
             var metalhead = rig.Members[0];
             var friend = rig.Members[1];
             var before = friend.Damage;
-            metalhead.Loop.Hero.Add(new Modifier(PassiveTree.AttributeStat("intelligence"), ModifierKind.Flat, 15));
+            metalhead.Loop.Hero.Add(new Modifier(HeroAttributes.Stat("intelligence"), ModifierKind.Flat, 15));
             var song = metalhead.Equip("hearth_song");
             metalhead.Loop.State.OwnedGems.Add(TestWorld.Data.Gems["resonance"]);
             Assert.That(metalhead.Loop.Book.SetSupport(song, 0, TestWorld.Data.Gems["resonance"]), Is.EqualTo(Game.Core.Build.BookResult.Done));
@@ -538,7 +539,7 @@ namespace Game.Core.Tests.Party
             var rig = new Rig(2);
             rig.Run(5);
             var caster = rig.Members[0];
-            caster.Loop.Hero.Add(new Modifier(PassiveTree.AttributeStat("intelligence"), ModifierKind.Flat, 15));
+            caster.Loop.Hero.Add(new Modifier(HeroAttributes.Stat("intelligence"), ModifierKind.Flat, 15));
             var skill = caster.Equip("hatchet_toss");
             AddToWeapon(caster, "hatchet_toss");
             caster.Loop.State.OwnedGems.Add(TestWorld.Data.Gems["cursed"]);

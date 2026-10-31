@@ -40,38 +40,6 @@ namespace Game.Core.Content.Items
         public IReadOnlyList<AffixDef> Affixes { get; }
         public IReadOnlyList<SetDef> Sets { get; }
         public IReadOnlyList<UniqueDef> Uniques { get; private set; } = Array.Empty<UniqueDef>();
-        public IReadOnlyList<AffixDef> JewelAffixes { get; private set; } = Array.Empty<AffixDef>();
-        public int JewelMaxAffixes { get; private set; } = 1;
-
-        public JewelItem RollJewel(ItemRarity rarity, int itemLevel, Rng rng)
-        {
-            var rule = RuleOf(rarity);
-            var count = System.Math.Max(1, System.Math.Min(JewelMaxAffixes, rule.Affixes));
-            var chosen = new List<GearAffix>();
-            var suffixes = (count + 1) / 2;
-            PickJewel(true, count - suffixes, rule, itemLevel, rng, chosen);
-            PickJewel(false, suffixes, rule, itemLevel, rng, chosen);
-            return new JewelItem(rarity, itemLevel, chosen);
-        }
-
-        private void PickJewel(bool prefix, int count, RarityRule rule, int itemLevel, Rng rng, List<GearAffix> chosen)
-        {
-            for (var n = 0; n < count; n++)
-            {
-                var pool = new List<AffixDef>();
-                foreach (var affix in JewelAffixes)
-                {
-                    if (affix.Prefix == prefix && Free(affix, chosen))
-                        pool.Add(affix);
-                }
-                if (pool.Count == 0)
-                    return;
-                var def = pool[rng.NextInt(0, pool.Count)];
-                var tier = RollTier(rule, itemLevel, rng);
-                chosen.Add(new GearAffix(def, tier, def.ValueAt(tier, Tiers)));
-            }
-        }
-
         public bool TryGetUnique(string id, out UniqueDef unique)
         {
             foreach (var candidate in Uniques)
@@ -280,25 +248,7 @@ namespace Game.Core.Content.Items
                 weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
             ReadCraft(root.Field("craft"), catalog);
             catalog.Uniques = ReadUniques(root.Field("uniques"), catalog);
-            ReadJewels(root.Field("jewels"), catalog);
             return catalog;
-        }
-
-        private static void ReadJewels(ContentNode node, ItemCatalog catalog)
-        {
-            var affixes = new List<AffixDef>();
-            foreach (var item in node.Field("affixes").Items())
-            {
-                var affix = ReadAffix(item, jewel: true);
-                if (catalog._affixes.ContainsKey(affix.Id))
-                    throw item.Field("id").Error($"affix id '{affix.Id}' is used twice");
-                catalog._affixes.Add(affix.Id, affix);
-                affixes.Add(affix);
-            }
-            if (affixes.Count == 0)
-                throw node.Field("affixes").Error("jewels need affixes");
-            catalog.JewelAffixes = affixes;
-            catalog.JewelMaxAffixes = node.Field("maxAffixes").AsInt(1, 20);
         }
 
         private static List<UniqueDef> ReadUniques(ContentNode node, ItemCatalog catalog)
@@ -397,10 +347,10 @@ namespace Game.Core.Content.Items
                 node.HasField("theme") ? node.Field("theme").AsString() : null, weaponTypes);
         }
 
-        private static AffixDef ReadAffix(ContentNode node, bool jewel = false)
+        private static AffixDef ReadAffix(ContentNode node)
         {
             var slots = new List<ItemSlot>();
-            foreach (var slotNode in jewel ? Array.Empty<ContentNode>() : node.Field("slots").Items())
+            foreach (var slotNode in node.Field("slots").Items())
             {
                 if (!ItemSlotNames.ByName.TryGetValue(slotNode.AsString(), out var slot) || slot == ItemSlot.Weapon)
                     throw slotNode.Error($"unknown gear slot '{slotNode.AsString()}'");

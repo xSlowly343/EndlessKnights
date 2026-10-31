@@ -3,7 +3,6 @@
   "features": {
     "artifacts": { "prestiges": 1 },
     "cutting": { "stage": 100 },
-    "jewels": { "stage": 150 },
     "resonance": { "stage": 300 },
     "spirits": { "stage": 1000 },
     "atlas": { "stage": 2500 },

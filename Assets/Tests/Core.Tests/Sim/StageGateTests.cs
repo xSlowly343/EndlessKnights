@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Sim
         private static (GameLoop Loop, FakeInputSource Input) Hero(long stage, long record, StatSheet? hero = null)
         {
             var input = new FakeInputSource();
-            var state = TestWorld.Classless(new GameState(9) { Class = HeroClass.Viking, Stage = stage, HighestStage = stage, RecordStage = record });
+            var state = new GameState(9) { Class = HeroClass.Viking, Stage = stage, HighestStage = stage, RecordStage = record };
             var loop = TestWorld.Loop(input, state, hero);
             return (loop, input);
         }
@@ -85,7 +85,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OfflineProgressStopsAtTheLimit()
         {
-            var state = TestWorld.Classless(new GameState(2) { Class = HeroClass.Viking, Stage = 49990, HighestStage = 49990, RecordStage = 49990 });
+            var state = new GameState(2) { Class = HeroClass.Viking, Stage = 49990, HighestStage = 49990, RecordStage = 49990 };
             var result = new OfflineCalculator(TestWorld.Data, new StatSheet()).Simulate(state, 3600 * 8, BigNumber.Create(1, 4000), fightGuardians: true);
 
             Assert.That(result.StageAfter, Is.EqualTo(50000));

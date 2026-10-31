@@ -5,13 +5,11 @@ namespace Game.Core.Build
 {
     public sealed class BuildPreset
     {
-        public BuildPreset(TreeAllocation tree, ClassTreeAllocation? classTree = null)
+        public BuildPreset(ClassTreeAllocation classTree)
         {
-            Tree = tree;
-            ClassTree = classTree ?? new ClassTreeAllocation(tree.StartClass);
+            ClassTree = classTree;
         }
 
-        public TreeAllocation Tree { get; set; }
         public ClassTreeAllocation ClassTree { get; set; }
         public List<ClassTreeAllocation?> CommonTrees { get; set; } = new List<ClassTreeAllocation?>();
         public List<(GemDef Skill, GemDef? Trigger)> Skills { get; } = new List<(GemDef, GemDef?)>();

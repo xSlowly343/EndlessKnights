@@ -78,7 +78,6 @@ namespace Game.Core.Save
                 ("resonance", WriteLevels(state.Resonance)),
                 ("spirits", WriteLevels(state.Spirits)),
                 ("gear", WriteWorn(state.Gear)),
-                ("jewels", WriteJewels(state.Jewels)),
                 ("gatesCleared", WriteStages(state.GatesCleared)),
                 ("mentorPerks", Object(
                     ("coopPoints", JsonValue.Of(state.MentorCoopPoints)),
@@ -103,13 +102,12 @@ namespace Game.Core.Save
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
                 ("gemProgress", WriteGemProgress(state)),
                 ("boundGems", WriteBoundGems(state)),
-                ("tree", WriteTree(state.Tree)),
+                ("treePointsEarned", JsonValue.Of(state.TreePointsEarned)),
                 ("classTree", WriteClassTree(state.ClassTree)),
                 ("commonTrees", WriteCommonTrees(state.CommonTrees)),
                 ("ascendancy", WriteAscendancy(state.Ascendancy)),
                 ("presets", Object(
                     ("active", JsonValue.Of(state.ActivePreset)),
-                    ("otherTree", WriteTree(state.OtherPreset.Tree)),
                     ("otherClassTree", WriteClassTree(state.OtherPreset.ClassTree)),
                     ("otherCommonTrees", WriteCommonTrees(state.OtherPreset.CommonTrees)),
                     ("otherSkills", JsonValue.Array(WritePresetSkills(state.OtherPreset))))),
@@ -194,7 +192,7 @@ namespace Game.Core.Save
                 if (gems.TryGet(id.AsString(), out var gem))
                     state.OwnedGems.Add(gem);
             }
-            state.Tree = ReadTree(node.Field("tree"));
+            state.TreePointsEarned = node.Field("treePointsEarned").AsInt(0, 1_000_000);
             state.ClassTree = ReadClassTree(node.Field("classTree"));
             state.CommonTrees = ReadCommonTrees(node.Field("commonTrees"));
             state.Ascendancy = ReadAscendancy(node.Field("ascendancy"));
@@ -214,7 +212,7 @@ namespace Game.Core.Save
                 state.StartedUnixMs = (long)ReadCount(input.Field("startedUnixMs"));
             var presets = node.Field("presets");
             state.ActivePreset = presets.Field("active").AsInt(0, 1);
-            state.OtherPreset = new BuildPreset(ReadTree(presets.Field("otherTree")), ReadClassTree(presets.Field("otherClassTree")))
+            state.OtherPreset = new BuildPreset(ReadClassTree(presets.Field("otherClassTree")))
             {
                 CommonTrees = ReadCommonTrees(presets.Field("otherCommonTrees"))
             };
@@ -265,8 +263,6 @@ namespace Game.Core.Save
             }
             if (node.HasField("clanBonus"))
                 ReadClanBonus(node.Field("clanBonus"), state.ClanBonus);
-            if (node.HasField("jewels") && items != null)
-                ReadJewels(node.Field("jewels"), items, state.Jewels);
             if (node.HasField("setCollection"))
             {
                 foreach (var key in node.Field("setCollection").Items())
@@ -515,45 +511,6 @@ namespace Game.Core.Save
             return JsonValue.Array(items);
         }
 
-        private static JsonValue WriteJewels(JewelState jewels)
-        {
-            var bag = new JsonValue[jewels.Bag.Count];
-            for (var i = 0; i < bag.Length; i++)
-                bag[i] = WriteJewel(jewels.Bag[i]);
-            var nodes = new List<string>(jewels.Sockets.Keys);
-            nodes.Sort(System.StringComparer.Ordinal);
-            var sockets = new JsonValue[nodes.Count];
-            for (var i = 0; i < sockets.Length; i++)
-                sockets[i] = Object(("node", JsonValue.Of(nodes[i])), ("jewel", WriteJewel(jewels.Sockets[nodes[i]])));
-            return Object(("found", JsonValue.Of(jewels.Found)), ("bag", JsonValue.Array(bag)), ("sockets", JsonValue.Array(sockets)));
-        }
-
-        private static JsonValue WriteJewel(JewelItem jewel)
-        {
-            var affixes = new JsonValue[jewel.Affixes.Count];
-            for (var i = 0; i < affixes.Length; i++)
-                affixes[i] = Object(("id", JsonValue.Of(jewel.Affixes[i].Def.Id)), ("tier", JsonValue.Of(jewel.Affixes[i].Tier)), ("value", JsonValue.Of(jewel.Affixes[i].Value)));
-            return Object(
-                ("rarity", JsonValue.Of(ItemRarityNames.Of(jewel.Rarity))),
-                ("itemLevel", JsonValue.Of(jewel.ItemLevel)),
-                ("affixes", JsonValue.Array(affixes)));
-        }
-
-        private static void ReadJewels(ContentNode node, ItemCatalog items, JewelState jewels)
-        {
-            jewels.Found = node.Field("found").AsLong(0);
-            foreach (var item in node.Field("bag").Items())
-                jewels.Bag.Add(ReadJewel(item, items));
-            foreach (var item in node.Field("sockets").Items())
-                jewels.Sockets[item.Field("node").AsString()] = ReadJewel(item.Field("jewel"), items);
-        }
-
-        private static JewelItem ReadJewel(ContentNode node, ItemCatalog items)
-        {
-            var rarity = ItemRarityNames.ByName.TryGetValue(node.Field("rarity").AsString(), out var found) ? found : ItemRarity.Simple;
-            return new JewelItem(rarity, node.Field("itemLevel").AsInt(1), ReadAffixes(node, items));
-        }
-
         private static SetDef? ReadSet(ContentNode node, ItemCatalog items, ItemSlot slot) =>
             node.HasField("set") && !node.Field("set").IsNull && items.TryGetSet(node.Field("set").AsString(), out var set) && set.Has(slot) ? set : null;
 
@@ -694,28 +651,6 @@ namespace Game.Core.Save
                 artifacts[item.Field("id").AsString()] = item.Field("level").AsInt(1);
         }
 
-        private static JsonValue WriteTree(TreeAllocation tree)
-        {
-            var ids = new List<string>(tree.Allocated);
-            ids.Sort(System.StringComparer.Ordinal);
-            var nodes = new JsonValue[ids.Count];
-            for (var i = 0; i < nodes.Length; i++)
-            {
-                var id = ids[i];
-                var fields = new Dictionary<string, JsonValue> { ["id"] = JsonValue.Of(id) };
-                if (tree.AttributeChoices.TryGetValue(id, out var attribute))
-                    fields["attribute"] = JsonValue.Of(attribute);
-                if (tree.MasteryChoices.TryGetValue(id, out var option))
-                    fields["option"] = JsonValue.Of(option);
-                nodes[i] = JsonValue.Object(fields);
-            }
-            return Object(
-                ("startClass", JsonValue.Of(tree.StartClass)),
-                ("pointsEarned", JsonValue.Of(tree.PointsEarned)),
-                ("lastFreeResetUnixMs", JsonValue.Of(tree.LastFreeResetUnixMs)),
-                ("allocated", JsonValue.Array(nodes)));
-        }
-
         private static JsonValue WriteClassTree(ClassTreeAllocation tree)
         {
             var ids = new List<string>(tree.Ranks.Keys);
@@ -797,23 +732,6 @@ namespace Game.Core.Save
             for (var i = 0; i < items.Length; i++)
                 items[i] = JsonValue.Of(sorted[i]);
             return items;
-        }
-
-        private static TreeAllocation ReadTree(ContentNode node)
-        {
-            var tree = new TreeAllocation(node.Field("startClass").AsString())
-            {
-                PointsEarned = node.Field("pointsEarned").AsInt(0),
-                LastFreeResetUnixMs = node.Field("lastFreeResetUnixMs").AsLong()
-            };
-            foreach (var item in node.Field("allocated").Items())
-            {
-                tree.Restore(
-                    item.Field("id").AsString(),
-                    item.HasField("attribute") ? item.Field("attribute").AsString() : null,
-                    item.HasField("option") ? item.Field("option").AsInt(0) : (int?)null);
-            }
-            return tree;
         }
 
         private static ulong ReadCount(ContentNode node)

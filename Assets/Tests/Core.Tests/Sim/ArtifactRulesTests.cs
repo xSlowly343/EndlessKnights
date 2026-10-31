@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Sim
 
         private static GameLoop With(HeroClass heroClass, params (string Id, int Level)[] artifacts)
         {
-            var state = TestWorld.Classless(new GameState(3) { Class = heroClass });
+            var state = new GameState(3) { Class = heroClass };
             foreach (var (id, level) in artifacts)
                 state.Artifacts[id] = level;
             var loop = TestWorld.Loop(state: state);
@@ -53,7 +53,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheNextGroupOpensOnlyAfterThePreviousIsFull()
         {
-            var loop = TestWorld.Loop(state: TestWorld.Classless(new GameState(5)));
+            var loop = TestWorld.Loop(state: new GameState(5));
             loop.State.Echo = BigNumber.FromDouble(1e12);
 
             for (var i = 0; i < 30; i++)
@@ -114,7 +114,7 @@ namespace Game.Core.Tests.Sim
             var json = Game.Core.Tests.Content.TestData.ReadGameDataFile(ArtifactCatalog.FileName)
                 .Replace("\"allDamagePerLevel\": 0.02,", "\"allDamagePerLevel\": 0.02, \"allDamageCompounds\": true,");
             var catalog = ArtifactCatalog.Load(json);
-            var state = TestWorld.Classless(new GameState(3) { Class = HeroClass.Viking });
+            var state = new GameState(3) { Class = HeroClass.Viking };
             state.Artifacts["hourglass"] = 10;
             state.Artifacts["anchor"] = 5;
             var hero = new StatSheet();
@@ -273,7 +273,7 @@ namespace Game.Core.Tests.Sim
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e12));
             hero.Add(new Modifier(CombatStats.WandererChance, ModifierKind.Flat, 1));
-            var state = TestWorld.Classless(new GameState(9) { Class = HeroClass.Viking, Stage = 40, HighestStage = 40, RecordStage = 300 });
+            var state = new GameState(9) { Class = HeroClass.Viking, Stage = 40, HighestStage = 40, RecordStage = 300 };
             var loop = TestWorld.Loop(input, state, hero);
             loop.Stages.Encounters = CombatRules.Load(json).Encounters;
 

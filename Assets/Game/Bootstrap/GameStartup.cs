@@ -95,7 +95,7 @@ namespace Game.Bootstrap
                 var save = SaveDriver.TryLoad(data.Current);
                 var battle = BattleDriver.Attach(host, data.Current, observedInput, save?.State);
                 battle.Loop.MarkStarted(System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
-                panels.Bind(battle.Loop, data.Current.Tree);
+                panels.Bind(battle.Loop);
                 router.UseSkillBar(battle.SkillBar);
                 router.UseHint(battle.Hint);
                 StripHintDriver.Attach(host, battle.Loop, battle.Hint, settings, panelMode);

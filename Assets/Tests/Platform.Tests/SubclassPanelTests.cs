@@ -26,7 +26,7 @@ namespace Game.Platform.Tests
             _loop = new GameLoop(_data, new FakeInputSource(), new GameState { Class = HeroClass.Viking }, new StatSheet());
             _loop.CompleteActivity(_data.Ascendancy.Activities[0].Id);
             _panel = PanelCanvas.Create();
-            _panel.Bind(_loop, _data.Tree);
+            _panel.Bind(_loop);
             _navigator = new PanelNavigator();
             _navigator.SelectTab(PanelSection.Tree);
             _navigator.SelectSubTab(1);
@@ -41,13 +41,12 @@ namespace Game.Platform.Tests
         {
             Assert.That(_panel.Subclass.IsShown, Is.True);
             Assert.That(_panel.Subclass.IsChoosing, Is.True);
-            Assert.That(_panel.Tree.IsShown, Is.False);
         }
 
         [Test]
         public void ChoosingAPathShowsItsTreeAndTakingANodeSpendsAPathPoint()
         {
-            var offered = _data.Ascendancy.SubclassesOf(_loop.State.Tree.StartClass)[0];
+            var offered = _data.Ascendancy.SubclassesOf(_loop.State.ClassName)[0];
 
             Assert.That(_panel.TryClick(_panel.Subclass.WorldPointOfChoice(0)), Is.True);
 
@@ -70,7 +69,7 @@ namespace Game.Platform.Tests
         [Test]
         public void HoveringAPathNodeShowsItsTooltipAndPointingAwayHidesIt()
         {
-            var offered = _data.Ascendancy.SubclassesOf(_loop.State.Tree.StartClass)[0];
+            var offered = _data.Ascendancy.SubclassesOf(_loop.State.ClassName)[0];
             _loop.ChooseSubclass(offered.Id);
             Open();
 

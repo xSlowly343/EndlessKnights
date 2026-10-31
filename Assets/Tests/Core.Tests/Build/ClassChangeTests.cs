@@ -36,11 +36,7 @@ namespace Game.Core.Tests.Build
 
         private static void SpendTreePoints(GameLoop loop, int count)
         {
-            for (var i = 0; i < count; i++)
-            {
-                var step = loop.State.Tree.Allocatable(TestWorld.Data.Tree).First(node => node.Type == TreeNodeType.Small);
-                Assert.That(loop.AllocateNode(step.Id), Is.EqualTo(AllocationResult.Allocated));
-            }
+            TestWorld.RaiseClassTree(loop, count);
         }
 
         private static string Snapshot(GameLoop loop)
@@ -123,7 +119,7 @@ namespace Game.Core.Tests.Build
         {
             var loop = Viking();
             SpendTreePoints(loop, 5);
-            var earned = loop.State.Tree.PointsEarned;
+            var earned = loop.State.TreePointsEarned;
             Assert.That(loop.CompleteActivity("garden"), Is.True);
             Assert.That(loop.ChooseSubclass("berserker"), Is.EqualTo(SubclassResult.Chosen));
             var pathNode = loop.State.Ascendancy.Allocatable(TestWorld.Data.Ascendancy).First();
@@ -133,17 +129,18 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.ChangeClassFree(HeroClass.Ronin), Is.EqualTo(ClassChangeResult.Changed));
 
             var state = loop.State;
-            Assert.That(state.Tree.StartClass, Is.EqualTo("ronin"));
-            Assert.That(state.Tree.PointsSpent, Is.Zero);
-            Assert.That(state.Tree.PointsLeft, Is.EqualTo(earned));
-            Assert.That(state.OtherPreset.Tree.StartClass, Is.EqualTo("ronin"));
+            Assert.That(state.ClassName, Is.EqualTo("ronin"));
+            Assert.That(state.TreePointsSpent, Is.Zero);
+            Assert.That(state.TreePointsLeft, Is.EqualTo(earned));
+            Assert.That(state.ClassTree.TreeId, Is.EqualTo("ronin"));
+            Assert.That(state.OtherPreset.ClassTree.TreeId, Is.EqualTo("ronin"));
             Assert.That(state.Ascendancy.Subclass, Is.Null);
             Assert.That(state.Ascendancy.PointsLeft(TestWorld.Data.Ascendancy), Is.EqualTo(pathPoints));
             Assert.That(state.OwnedGems.Any(gem => gem.Ascendancy != null), Is.False, "the skill of the old path goes away with it");
             Assert.That(loop.ChooseSubclass("ninja"), Is.EqualTo(SubclassResult.Chosen), "a path of the new class can be chosen at once");
             Assert.That(loop.Resource.Rules, Is.SameAs(TestWorld.Data.Combat.Resources.For("ronin")));
             SpendTreePoints(loop, earned);
-            Assert.That(state.Tree.PointsLeft, Is.Zero);
+            Assert.That(state.TreePointsLeft, Is.Zero);
         }
 
         [Test]

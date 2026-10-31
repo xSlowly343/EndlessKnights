@@ -17,7 +17,7 @@ namespace Game.Core.Tests.Sim
         private static int BiomeLength => TestWorld.Data.Stages.BiomeLength;
 
         private static GameLoop Viking(StatSheet? hero = null, ulong seed = 7) =>
-            TestWorld.Loop(state: TestWorld.Classless(new GameState(seed) { Class = HeroClass.Viking }), hero: hero);
+            TestWorld.Loop(state: new GameState(seed) { Class = HeroClass.Viking }, hero: hero);
 
         private static List<ItemDrop> Defeat(GameLoop loop, long stage, long recordBefore, EnemyType type = EnemyType.Boss)
         {
@@ -555,7 +555,7 @@ namespace Game.Core.Tests.Sim
         {
             var input = new FakeInputSource();
             var hero = With(CombatStats.Damage, ModifierKind.More, 1e12);
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState(3) { Class = HeroClass.Viking }), hero);
+            var loop = TestWorld.Loop(input, new GameState(3) { Class = HeroClass.Viking }, hero);
             var record = new List<ItemDrop>();
 
             for (var tick = 0; tick < 4000 && loop.State.Stage <= 2 * BiomeLength; tick++)

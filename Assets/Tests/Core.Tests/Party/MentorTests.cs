@@ -104,29 +104,29 @@ namespace Game.Core.Tests.Party
         public void MentorCoopPointsGoToTheTreeAsCoopHelpPoints()
         {
             var loop = TestWorld.Loop(new FakeInputSource());
-            var before = loop.State.Tree.PointsEarned;
+            var before = loop.State.TreePointsEarned;
 
             loop.Mentor.UsePerks(System.Array.Empty<string>(), 2);
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 2));
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(before + 2));
 
             loop.Mentor.UsePerks(System.Array.Empty<string>(), 1);
             Assert.That(loop.State.MentorCoopPoints, Is.EqualTo(2), "an older answer of the server takes nothing back");
             loop.Mentor.UsePerks(System.Array.Empty<string>(), 9);
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 5), "coop help gives five points at most");
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(before + 5), "coop help gives five points at most");
         }
 
         [Test]
         public void CoopHelpPointsOfTheServerGoToTheTreeAndNeverTakeMentorPointsAway()
         {
             var loop = TestWorld.Loop(new FakeInputSource());
-            var before = loop.State.Tree.PointsEarned;
+            var before = loop.State.TreePointsEarned;
             loop.Mentor.UsePerks(System.Array.Empty<string>(), 2);
 
             loop.Mentor.UseCoopHelp(1);
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 2), "an old save with mentor points keeps them");
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(before + 2), "an old save with mentor points keeps them");
 
             loop.Mentor.UseCoopHelp(4);
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 4));
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(before + 4));
             loop.Mentor.UseCoopHelp(3);
             Assert.That(loop.State.CoopHelpPoints, Is.EqualTo(4), "an older answer of the server takes nothing back");
         }

@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            var state = TestWorld.Classless(new GameState { Class = HeroClass.Oracle });
+            var state = new GameState { Class = HeroClass.Oracle };
             if (level > 0)
                 state.Resonance[branch] = level;
             var loop = TestWorld.Loop(input, state, hero);

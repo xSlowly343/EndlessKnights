@@ -29,7 +29,6 @@ namespace Game.Core.Sim
 
         public bool Is(HeroClass heroClass) => ClassChosen && Class == heroClass;
 
-        private TreeAllocation? _tree;
         private ClassTreeAllocation? _classTree;
 
         public ClassTreeAllocation ClassTree
@@ -41,14 +40,9 @@ namespace Game.Core.Sim
         public List<ClassTreeAllocation?> CommonTrees { get; set; } = new List<ClassTreeAllocation?>();
 
         public bool ClassTreeActive { get; set; }
-        public int TreePointsLeft => ClassTreeActive ? ClassTree.PointsLeft : Tree.PointsLeft;
-        public int TreePointsSpent => ClassTreeActive ? ClassTree.PointsSpent : Tree.PointsSpent;
-
-        public TreeAllocation Tree
-        {
-            get => _tree ??= new TreeAllocation(ClassName);
-            set => _tree = value;
-        }
+        public int TreePointsEarned { get; set; }
+        public int TreePointsLeft => TreePointsEarned - ClassTree.PointsSpent;
+        public int TreePointsSpent => ClassTree.PointsSpent;
 
         public AscendancyState Ascendancy { get; set; } = new AscendancyState();
 
@@ -128,7 +122,7 @@ namespace Game.Core.Sim
 
         public BuildPreset OtherPreset
         {
-            get => _otherPreset ??= new BuildPreset(new TreeAllocation(ClassName));
+            get => _otherPreset ??= new BuildPreset(new ClassTreeAllocation(ClassName));
             set => _otherPreset = value;
         }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
@@ -208,7 +202,6 @@ namespace Game.Core.Sim
         public long SkillCasts { get; set; }
         public double AutoCastKeys { get; set; }
         public long InputStreakTicks { get; set; }
-        public JewelState Jewels { get; } = new JewelState();
         public HashSet<long> GatesCleared { get; } = new HashSet<long>();
         public int MentorCoopPoints { get; set; }
         public int ServerCoopHelpPoints { get; set; }

@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.ChooseCommonTree(0, "blade"), Is.EqualTo(CommonTreeResult.SameTree));
             Assert.That(loop.ChooseCommonTree(1, "calm"), Is.EqualTo(CommonTreeResult.Chosen));
             Assert.That(loop.CommonTreeAllocation(1)!.PointsEarned, Is.EqualTo(70));
-            Assert.That(loop.State.ClassTree.PointsEarned, Is.EqualTo(loop.State.Tree.PointsEarned), "the class tree keeps its own points");
+            Assert.That(loop.State.ClassTree.PointsEarned, Is.EqualTo(loop.State.TreePointsEarned), "the class tree keeps its own points");
         }
 
         [Test]

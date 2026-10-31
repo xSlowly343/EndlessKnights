@@ -67,7 +67,7 @@ namespace Game.Core.Tests.Ui
             var state = new GameState();
             Assert.That(HeroSummary.Hint(state), Is.Null);
 
-            state.Tree.PointsEarned = 3;
+            state.TreePointsEarned = 3;
 
             Assert.That(HeroSummary.Hint(state), Is.EqualTo("Свободных очков дерева: 3"));
         }

@@ -28,7 +28,6 @@ namespace Game.Core.Ui
     {
         public const int Columns = 2;
 
-        private static readonly string[] Attributes = { "strength", "dexterity", "intelligence" };
 
         public static IReadOnlyList<HeroStatLine> Lines(GameLoop loop, NumberFormatSettings format)
         {
@@ -97,7 +96,7 @@ namespace Game.Core.Ui
         private static void AddAttributes(List<HeroStatLine> lines, GameLoop loop)
         {
             lines.Add(Header(1, "hero.stats.attributes"));
-            foreach (var attribute in Attributes)
+            foreach (var attribute in HeroAttributes.Names)
                 lines.Add(new HeroStatLine(1, TreeNodeText.AttributeName(attribute), ((long)System.Math.Floor(loop.Book.Attribute(attribute))).ToString(CultureInfo.InvariantCulture)));
         }
 

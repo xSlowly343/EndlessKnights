@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e12));
-            var state = TestWorld.Classless(new GameState(3) { Class = HeroClass.Viking });
+            var state = new GameState(3) { Class = HeroClass.Viking };
             state.Atlas.AddRange(atlas);
             var loop = TestWorld.Loop(input, state, hero);
             var guardianHp = 0.0;

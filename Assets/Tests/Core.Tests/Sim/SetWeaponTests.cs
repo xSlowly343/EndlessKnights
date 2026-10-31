@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Sim
         }
 
         private static GameLoop Hero(HeroClass heroClass, ulong seed = 7) =>
-            TestWorld.Loop(state: TestWorld.Classless(new GameState(seed) { Class = heroClass }));
+            TestWorld.Loop(state: new GameState(seed) { Class = heroClass });
 
         [Test]
         public void SetWeaponTypesFollowColourOrRole()

@@ -6,10 +6,9 @@ namespace Game.Core.Sim
 {
     public readonly struct PendingDrop
     {
-        private PendingDrop(DropSource source, long stage, ItemSlot slot, ItemRarity rarity, WeaponType? type, string? color, GemDef? gem, bool jewel = false, bool key = false)
+        private PendingDrop(DropSource source, long stage, ItemSlot slot, ItemRarity rarity, WeaponType? type, string? color, GemDef? gem, bool key = false)
         {
             IsKey = key;
-            IsJewel = jewel;
             Source = source;
             Stage = stage;
             Slot = slot;
@@ -26,7 +25,6 @@ namespace Game.Core.Sim
         public WeaponType? Type { get; }
         public string? Color { get; }
         public GemDef? Gem { get; }
-        public bool IsJewel { get; }
         public bool IsKey { get; }
 
         public static PendingDrop Weapon(DropSource source, long stage, ItemRarity rarity, WeaponType type) =>
@@ -34,9 +32,6 @@ namespace Game.Core.Sim
 
         public static PendingDrop Gear(DropSource source, long stage, ItemSlot slot, ItemRarity rarity, string? color) =>
             new PendingDrop(source, stage, slot, rarity, null, color, null);
-
-        public static PendingDrop Jewel(DropSource source, long stage, ItemRarity rarity) =>
-            new PendingDrop(source, stage, ItemSlot.Weapon, rarity, null, null, null, jewel: true);
 
         public static PendingDrop Key(long stage) =>
             new PendingDrop(DropSource.Record, stage, ItemSlot.Weapon, ItemRarity.Simple, null, null, null, key: true);

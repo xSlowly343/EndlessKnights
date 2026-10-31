@@ -35,9 +35,9 @@ namespace Game.Editor
             var store = GameDataFiles.TryLoadAll() ?? throw new InvalidOperationException("Game data did not load.");
             var data = store.Current;
             var loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Viking }, new StatSheet());
-            loop.State.Tree.PointsEarned = 5;
+            loop.State.TreePointsEarned = 5;
             loop.State.Gold = BigNumber.FromDouble(12345);
-            loop.AllocateNode("ronin_ring_1");
+            loop.RaiseNode("viking_axe");
             loop.State.HeroLevel = 42;
             loop.State.Stage = 37;
             loop.State.RecordStage = 120;
@@ -51,7 +51,7 @@ namespace Game.Editor
             loop.State.OwnedGems.AddRange(data.Gems.All.Where(gem => gem.Skill?.Weapon == null).Take(12));
 
             var panels = PanelCanvas.Create();
-            panels.Bind(loop, data.Tree);
+            panels.Bind(loop);
             var marks = new PanelMarks(data.Panel);
             marks.Refresh(loop.State, data.Ascendancy);
             panels.UseMarks(marks);
@@ -59,29 +59,12 @@ namespace Game.Editor
             navigator.SelectTab(PanelSection.Tree);
             var frame = ShowPanel(panels, navigator);
 
-            var target = panels.Tree.WorldPointOf(data.Tree["ronin_ring_1"]);
-            panels.Point(target, false);
-            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-tree.png"));
-            SaveTreeZoom(camera, panels, frame, 2, Path.Combine(folder, "panel-tree-close.png"));
-            SaveTreeZoom(camera, panels, frame, -2, Path.Combine(folder, "panel-tree-mid.png"));
-            SaveTreeZoom(camera, panels, frame, -20, Path.Combine(folder, "panel-tree-far.png"));
-            panels.Tree.FocusOwnPath();
-
-            navigator.ToggleWide();
-            frame = ShowPanel(panels, navigator);
-            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-tree-wide.png"));
-            navigator.ToggleWide();
-            frame = ShowPanel(panels, navigator);
-            panels.TryClick(panels.Tree.WorldPointOfReset());
-            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-tree-reset.png"));
-            panels.TryClick(panels.Tree.WorldPointOfZoomIn());
-
             foreach (var activity in data.Ascendancy.Activities.Take(4))
                 loop.CompleteActivity(activity.Id);
             navigator.SelectSubTab(1);
             frame = ShowPanel(panels, navigator);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-subclass-choose.png"));
-            var path = data.Ascendancy.SubclassesOf(loop.State.Tree.StartClass)[0];
+            var path = data.Ascendancy.SubclassesOf(loop.State.ClassName)[0];
             loop.ChooseSubclass(path.Id);
             foreach (var node in path.Start.Neighbours.Take(2))
                 loop.AllocateSubclassNode(node.Id);
@@ -232,18 +215,6 @@ namespace Game.Editor
                 letter.text = (i + 1).ToString();
             }
             return sample;
-        }
-
-        private static void SaveTreeZoom(Camera camera, PanelCanvas panels, PanelFrame frame, int steps, string path)
-        {
-            for (var i = 0; i < System.Math.Abs(steps); i++)
-            {
-                if (steps > 0)
-                    panels.Tree.ZoomIn();
-                else
-                    panels.Tree.ZoomOut();
-            }
-            Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, path);
         }
 
         private static void Save(Camera camera, PanelCanvas panels, int width, int height, string path)

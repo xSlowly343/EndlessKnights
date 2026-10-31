@@ -77,7 +77,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = AfterPrestige();
             var mouseBefore = loop.Hero.Value(CombatStats.Damage, 1, StatTags.Mouse);
-            var pointsBefore = loop.State.Tree.PointsEarned;
+            var pointsBefore = loop.State.TreePointsEarned;
             Assert.That(loop.StartTrial("only_mouse"), Is.EqualTo(TrialResult.Started));
             var goal = Catalog.All.First(trial => trial.Id == "only_mouse").GoalStage;
 
@@ -91,7 +91,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(Enumerable.Range(0, loop.Events.Count).Count(i => loop.Events[i].Kind == GameEventKind.TrialCompleted), Is.EqualTo(1));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.GreaterThan(0));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Mouse) / mouseBefore, Is.EqualTo(1.1).Within(1e-9));
-            Assert.That(loop.State.Tree.PointsEarned - pointsBefore, Is.EqualTo(2));
+            Assert.That(loop.State.TreePointsEarned - pointsBefore, Is.EqualTo(2));
         }
 
         [Test]
@@ -101,15 +101,15 @@ namespace Game.Core.Tests.Sim
             var ids = Catalog.All.Select(trial => trial.Id).ToList();
             loop.State.Chronicle.Completed.AddRange(ids.Take(2));
             loop.Levels.SyncTreePoints();
-            var two = loop.State.Tree.PointsEarned;
+            var two = loop.State.TreePointsEarned;
 
             loop.State.Chronicle.Completed.Add(ids[2]);
             loop.Levels.SyncTreePoints();
-            Assert.That(loop.State.Tree.PointsEarned - two, Is.EqualTo(2));
+            Assert.That(loop.State.TreePointsEarned - two, Is.EqualTo(2));
 
             loop.State.Chronicle.Completed.Add(ids[3]);
             loop.Levels.SyncTreePoints();
-            Assert.That(loop.State.Tree.PointsEarned - two, Is.EqualTo(3));
+            Assert.That(loop.State.TreePointsEarned - two, Is.EqualTo(3));
         }
 
         [Test]

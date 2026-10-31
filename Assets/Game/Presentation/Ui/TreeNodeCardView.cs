@@ -111,7 +111,7 @@ namespace Game.Presentation.Ui
             _frame.color = FrameOf(type);
             _head.color = HeadOf(type);
             _title.text = card.Name;
-            _title.color = type == TreeNodeType.Small || type == TreeNodeType.Attribute ? PlainTitle : GoldTitle;
+            _title.color = type == TreeNodeType.Small ? PlainTitle : GoldTitle;
             _kind.text = card.Kind;
             _status.text = card.Status;
             _status.color = look == TreeNodeLook.Taken ? TakenStatus : look == TreeNodeLook.Offered ? OfferedStatus : HintColor;
@@ -286,14 +286,14 @@ namespace Game.Presentation.Ui
         private static Color FrameOf(TreeNodeType type) => type switch
         {
             TreeNodeType.Keystone => KeystoneFrame,
-            TreeNodeType.Notable or TreeNodeType.Start or TreeNodeType.Mastery => NotableFrame,
+            TreeNodeType.Notable or TreeNodeType.Start => NotableFrame,
             _ => SmallFrame
         };
 
         private static Color HeadOf(TreeNodeType type) => type switch
         {
             TreeNodeType.Keystone => KeystoneHead,
-            TreeNodeType.Notable or TreeNodeType.Start or TreeNodeType.Mastery => NotableHead,
+            TreeNodeType.Notable or TreeNodeType.Start => NotableHead,
             _ => SmallHead
         };
     }

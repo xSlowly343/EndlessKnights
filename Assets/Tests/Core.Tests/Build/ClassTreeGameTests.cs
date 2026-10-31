@@ -32,15 +32,13 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void HuscarlPlaysTheNewTreeAndTheOldOneIsClosed()
+        public void HuscarlPlaysTheClassTreeRowByRow()
         {
             var loop = Huscarl();
 
             Assert.That(loop.ClassTreeDef, Is.Not.Null);
             Assert.That(loop.State.ClassTreeActive, Is.True);
-            Assert.That(loop.State.TreePointsLeft, Is.EqualTo(loop.State.Tree.PointsEarned));
-            var oldNode = TestWorld.Real.Tree.Nodes.First(node => node.Type == TreeNodeType.Small);
-            Assert.That(loop.AllocateNode(oldNode.Id), Is.EqualTo(AllocationResult.Locked));
+            Assert.That(loop.State.TreePointsLeft, Is.EqualTo(loop.State.TreePointsEarned));
             Assert.That(loop.RaiseNode("viking_heavy_swing"), Is.EqualTo(RankResult.RowClosed));
             Raise(loop, "axe", 5);
             Assert.That(loop.RaiseNode("viking_heavy_swing"), Is.EqualTo(RankResult.Done));
@@ -148,16 +146,16 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.ClassTreeActive, Is.True);
             Assert.That(loop.State.ClassTree.TreeId, Is.EqualTo("captain"));
             Assert.That(loop.State.ClassTree.PointsSpent, Is.Zero);
-            Assert.That(loop.State.TreePointsLeft, Is.EqualTo(loop.State.Tree.PointsEarned));
+            Assert.That(loop.State.TreePointsLeft, Is.EqualTo(loop.State.TreePointsEarned));
 
             Assert.That(loop.ChangeClassPaid(HeroClass.Viking), Is.EqualTo(ClassChangeResult.Changed));
             Assert.That(loop.State.ClassTreeActive, Is.True);
             Assert.That(loop.State.ClassTree.PointsSpent, Is.Zero);
-            Assert.That(loop.State.TreePointsLeft, Is.EqualTo(loop.State.Tree.PointsEarned));
+            Assert.That(loop.State.TreePointsLeft, Is.EqualTo(loop.State.TreePointsEarned));
         }
 
         [Test]
-        public void TheSaveKeepsRanksTalentsAndThePlanAndOldTreeNodesAreRefunded()
+        public void TheSaveKeepsRanksTalentsAndThePlan()
         {
             var loop = Huscarl(60);
             Raise(loop, "tempered_eye", 5);
@@ -165,7 +163,6 @@ namespace Game.Core.Tests.Build
             Raise(loop, "hirdman_spoils", 5);
             Raise(loop, "challenge", 5);
             loop.ChooseMajorTalent(20, "viking_warm_up");
-            loop.State.Tree.Restore(TestWorld.Real.Tree.Nodes.First(node => node.Type == TreeNodeType.Small).Id, null, null);
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, Clock), TestWorld.Real).State;
             var again = new GameLoop(TestWorld.Real, new FakeInputSource(), loaded, new StatSheet());
@@ -173,8 +170,9 @@ namespace Game.Core.Tests.Build
             Assert.That(loaded.ClassTree.RankOf("viking_tempered_eye"), Is.EqualTo(5));
             Assert.That(loaded.ClassTree.Majors[20], Is.EqualTo("viking_warm_up"));
             Assert.That(loaded.ClassTree.Plan.Count, Is.EqualTo(20));
-            Assert.That(again.State.Tree.PointsSpent, Is.Zero, "a node of the old tree is dropped and its point comes back");
-            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(13));
+            Assert.That(again.State.TreePointsSpent, Is.EqualTo(20));
+            Assert.That(again.State.TreePointsEarned, Is.EqualTo(loop.State.TreePointsEarned));
+            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(14));
         }
 
         private static StatId TreeStat(string name) => new StatId(name);

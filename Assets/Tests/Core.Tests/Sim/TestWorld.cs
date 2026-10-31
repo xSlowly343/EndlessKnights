@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Game.Core.Build;
 using Game.Core.Content;
@@ -23,26 +24,11 @@ namespace Game.Core.Tests.Sim
         private static string NeutralFile(string name)
         {
             var json = TestData.ReadGameDataFile(name);
-            if (name == PassiveTree.FileName)
-                return WithoutStartModifiers(json);
             if (name == UnlockRules.FileName)
                 return "{ \"version\": 1, \"features\": {}, \"artifactGroups\": [] }";
-            if (name == TreeTemplates.FileName)
-                return Regex.Replace(json, "\"classes\": \\[[^\\]]*\\]", "\"classes\": []");
             if (name == WeaponCatalog.FileName)
                 return Regex.Replace(json, "\"innate\": \\[.*\\]", "\"innate\": []");
             return json;
-        }
-
-        private static string WithoutStartModifiers(string tree) =>
-            Regex.Replace(tree, "(\"type\": \"start\"[^\n]*?), \"modifiers\": \\[[^\n]*?\\](?=, \"class\")", "$1");
-
-        public const string NoClass = "none";
-
-        public static GameState Classless(GameState state)
-        {
-            state.Tree = new TreeAllocation(NoClass);
-            return state;
         }
 
         public static GameState WithAllWeaponPlacesOpen(GameState state)
@@ -66,7 +52,18 @@ namespace Game.Core.Tests.Sim
             }
         }
 
+        public static void RaiseClassTree(GameLoop loop, int points)
+        {
+            var tree = loop.ClassTreeDef!;
+            for (var i = 0; i < points; i++)
+            {
+                var node = tree.Nodes.First(n => loop.State.ClassTree.CheckRaise(tree, n.Id) == RankResult.Done);
+                if (loop.RaiseNode(node.Id) != RankResult.Done)
+                    throw new InvalidOperationException(node.Id);
+            }
+        }
+
         public static GameLoop Loop(IInputSource? input = null, GameState? state = null, StatSheet? hero = null) =>
-            new GameLoop(Data, input ?? new FakeInputSource(), state ?? Classless(new GameState()), hero ?? new StatSheet());
+            new GameLoop(Data, input ?? new FakeInputSource(), state ?? new GameState(), hero ?? new StatSheet());
     }
 }

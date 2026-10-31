@@ -65,10 +65,9 @@ namespace Game.Core.Tests.Ui
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
             var empty = loop.TreeModifiers.Count;
-            loop.State.Tree.PointsEarned = 5;
+            loop.State.TreePointsEarned = 5;
 
-            var node = loop.State.Tree.Allocatable(loop.Data.Tree).First(def => def.Type == Game.Core.Content.Tree.TreeNodeType.Small);
-            Assert.That(loop.AllocateNode(node.Id), Is.EqualTo(Game.Core.Build.AllocationResult.Allocated));
+            Assert.That(loop.RaiseNode("viking_axe"), Is.EqualTo(Game.Core.Build.RankResult.Done));
             Assert.That(loop.TreeModifiers.Count, Is.GreaterThan(empty));
         }
     }

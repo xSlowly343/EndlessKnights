@@ -106,7 +106,7 @@ namespace Game.Platform.Tests
         {
             var marks = new PanelMarks(PanelUnlocks.Load(@"{ ""version"": 1, ""unlocks"": [ { ""section"": ""party"", ""stage"": 10 } ] }"));
             var state = new GameState();
-            state.Tree.PointsEarned = 1;
+            state.TreePointsEarned = 1;
             marks.Refresh(state, RealAscendancy());
             _panel.UseMarks(marks);
 
@@ -165,7 +165,7 @@ namespace Game.Platform.Tests
         {
             var data = Game.Core.Content.GameData.Load(name => File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Data", name)));
             var loop = new GameLoop(data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Viking }, new Game.Core.Stats.StatSheet());
-            _panel.Bind(loop, data.Tree);
+            _panel.Bind(loop);
             Open(PanelSection.Hero);
             Assert.That(_panel.Hero.IsShown, Is.True);
 

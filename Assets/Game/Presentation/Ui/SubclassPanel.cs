@@ -14,6 +14,8 @@ namespace Game.Presentation.Ui
     {
         public const int MaxChoices = 3;
 
+        private const int CompactBodyLines = 1;
+        private const float FullCardMinContentPx = 400f;
         private const float InsetPx = 10f;
         private const float HeaderHeightPx = 52f;
         private const float HintHeightPx = 34f;
@@ -136,7 +138,7 @@ namespace Game.Presentation.Ui
             _fieldPx = new Vector2(Mathf.Max(1f, widthPx - 2f * PanelCanvas.BorderPx), Mathf.Max(1f, contentPx - 2f * PanelCanvas.BorderPx));
             UiElements.TopEdge(_field, _fieldPx.y);
             _header.sizeDelta = new Vector2(_fieldPx.x - 2f * InsetPx, HeaderHeightPx);
-            _compact = contentPx < TreePanel.FullCardMinContentPx;
+            _compact = contentPx < FullCardMinContentPx;
             if (shown)
                 Refresh();
         }
@@ -263,7 +265,7 @@ namespace Game.Presentation.Ui
             var catalog = _loop!.Data.Ascendancy;
             var unlocked = _loop.State.Ascendancy.Unlocked(catalog);
             _offered.Clear();
-            _offered.AddRange(catalog.SubclassesOf(_loop.State.Tree.StartClass));
+            _offered.AddRange(catalog.SubclassesOf(_loop.State.ClassName));
             _chooserTitle.text = unlocked ? Texts.Get("subclass.pick") : SubclassView.Locked(catalog);
             var titleHeight = unlocked ? 24f : 40f;
             UiElements.TopEdge(_chooserTitle.rectTransform, titleHeight);
@@ -300,7 +302,7 @@ namespace Game.Presentation.Ui
                 _actions.Add(new TreeAction(TreeActionKind.Allocate, Texts.Get("tree.action.take")));
             var card = SubclassView.Card(state, catalog, path, _selected, _loop.Hero);
             _hint.gameObject.SetActive(false);
-            _card.Show(_compact ? card.Shortened(TreePanel.CompactBodyLines) : card, _selected.Type, LookOf(_selected), _fieldPx.x - 2f * InsetPx, _actions, string.Empty);
+            _card.Show(_compact ? card.Shortened(CompactBodyLines) : card, _selected.Type, LookOf(_selected), _fieldPx.x - 2f * InsetPx, _actions, string.Empty);
             _card.Root.anchorMin = _card.Root.anchorMax = new Vector2(0.5f, 0f);
             _card.Root.pivot = new Vector2(0.5f, 0f);
             _card.Root.anchoredPosition = new Vector2(0f, InsetPx);

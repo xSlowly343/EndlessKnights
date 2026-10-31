@@ -14,9 +14,9 @@ namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, PassiveTree.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName, ChronicleCatalog.FileName, AtlasCatalog.FileName, ResonanceCatalog.FileName, SpiritCatalog.FileName, UnlockRules.FileName, DungeonRules.FileName, RaidRules.FileName, ClanTreeCatalog.FileName, MentorRules.FileName, TreeTemplates.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName, ChronicleCatalog.FileName, AtlasCatalog.FileName, ResonanceCatalog.FileName, SpiritCatalog.FileName, UnlockRules.FileName, DungeonRules.FileName, RaidRules.FileName, ClanTreeCatalog.FileName, MentorRules.FileName, TreeTemplates.FileName };
 
-        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, PassiveTree tree, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift, WeaponCatalog weapons, ItemCatalog items, DropRules drops, PanelUnlocks panel, ChangeLog changeLog, ChronicleCatalog chronicle, AtlasCatalog atlas, ResonanceCatalog resonance, SpiritCatalog spirits)
+        private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift, WeaponCatalog weapons, ItemCatalog items, DropRules drops, PanelUnlocks panel, ChangeLog changeLog, ChronicleCatalog chronicle, AtlasCatalog atlas, ResonanceCatalog resonance, SpiritCatalog spirits)
         {
             Items = items;
             Stages = stages;
@@ -24,7 +24,6 @@ namespace Game.Core.Content
             InputCaps = inputCaps;
             Combat = combat;
             Gems = gems;
-            Tree = tree;
             TreePoints = treePoints;
             Ascendancy = ascendancy;
             SkillBook = skillBook;
@@ -50,7 +49,6 @@ namespace Game.Core.Content
         public InputCaps InputCaps { get; }
         public CombatRules Combat { get; }
         public GemCatalog Gems { get; }
-        public PassiveTree Tree { get; }
         public TreePointRules TreePoints { get; }
         public AscendancyCatalog Ascendancy { get; }
         public SkillBookRules SkillBook { get; }
@@ -92,10 +90,9 @@ namespace Game.Core.Content
             var combat = CombatRules.Load(readFile(CombatRules.FileName));
             var gems = GemCatalog.Load(readFile(GemCatalog.FileName));
             var skillBook = SkillBookRules.Load(readFile(SkillBookRules.FileName), gems);
-            var tree = PassiveTree.Load(readFile(PassiveTree.FileName));
             var treePoints = TreePointRules.Load(readFile(TreePointRules.FileName));
             var ascendancy = AscendancyCatalog.Load(readFile(AscendancyCatalog.FileName));
-            ascendancy.RequireClassesAndIds(tree);
+            ascendancy.RequireKnownClasses();
             var prestige = PrestigeRules.Load(readFile(PrestigeRules.FileName));
             var artifacts = ArtifactCatalog.Load(readFile(ArtifactCatalog.FileName));
             var party = PartyRules.Load(readFile(PartyRules.FileName));
@@ -130,7 +127,7 @@ namespace Game.Core.Content
             var commonTrees = new Dictionary<string, ClassTree>(StringComparer.Ordinal);
             foreach (var treeId in treeTemplates.CommonTrees)
                 commonTrees[treeId] = ClassTreeLoader.LoadCommon(treeTemplates, treeId, readFile(ClassTreeLoader.CommonFileNameOf(treeId)));
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, tree, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Unlocks = unlocks, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor, TreeTemplates = treeTemplates, ClassTrees = classTrees, CommonTrees = commonTrees };
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Unlocks = unlocks, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor, TreeTemplates = treeTemplates, ClassTrees = classTrees, CommonTrees = commonTrees };
         }
     }
 }

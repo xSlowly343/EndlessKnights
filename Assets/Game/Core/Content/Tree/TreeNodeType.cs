@@ -5,9 +5,6 @@ namespace Game.Core.Content.Tree
         Small,
         Notable,
         Keystone,
-        Mastery,
-        Jewel,
-        Attribute,
         Start
     }
 }

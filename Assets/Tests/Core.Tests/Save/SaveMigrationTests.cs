@@ -57,9 +57,8 @@ namespace Game.Core.Tests.Save
             Assert.That(save.StoredVersion, Is.EqualTo(4));
             Assert.That(save.State.Class, Is.EqualTo(HeroClass.Metalhead));
             Assert.That(save.State.HeroLevel, Is.EqualTo(15));
-            Assert.That(save.State.Tree.StartClass, Is.EqualTo("metalhead"));
-            Assert.That(save.State.Tree.PointsSpent, Is.EqualTo(0));
-            Assert.That(save.State.Tree.MasteryChoices, Is.Empty);
+            Assert.That(save.State.ClassName, Is.EqualTo("metalhead"));
+            Assert.That(save.State.TreePointsSpent, Is.EqualTo(0));
             Assert.That(save.State.OwnedGems.Count, Is.EqualTo(3));
         }
 
@@ -73,7 +72,7 @@ namespace Game.Core.Tests.Save
             Assert.That(save.State.RecordStage, Is.EqualTo(61));
             Assert.That(save.State.Artifacts.Count, Is.EqualTo(1));
             Assert.That(save.State.ActivePreset, Is.EqualTo(1));
-            Assert.That(save.State.OtherPreset.Tree.PointsSpent, Is.EqualTo(0));
+            Assert.That(save.State.OtherPreset.ClassTree.PointsSpent, Is.EqualTo(0));
             Assert.That(save.State.TotalInput.Keys, Is.EqualTo(10000));
         }
 
@@ -83,9 +82,9 @@ namespace Game.Core.Tests.Save
             var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v6.json"), TestWorld.Data);
 
             Assert.That(save.State.Class, Is.EqualTo(HeroClass.Ronin));
-            Assert.That(save.State.Tree.StartClass, Is.EqualTo("ronin"));
-            Assert.That(save.State.OtherPreset.Tree.StartClass, Is.EqualTo("ronin"));
-            Assert.That(save.State.Tree.Allocated, Is.Empty);
+            Assert.That(save.State.ClassName, Is.EqualTo("ronin"));
+            Assert.That(save.State.OtherPreset.ClassTree.TreeId, Is.EqualTo("ronin"));
+            Assert.That(save.State.ClassTree.Ranks, Is.Empty);
             Assert.That(save.State.Ascendancy.Subclass, Is.Null);
         }
 
@@ -97,10 +96,10 @@ namespace Game.Core.Tests.Save
             Assert.That(save.StoredVersion, Is.EqualTo(9));
             Assert.That(save.State.Class, Is.EqualTo(HeroClass.Metalhead));
             Assert.That(save.State.Resource, Is.EqualTo(55));
-            Assert.That(save.State.Tree.StartClass, Is.EqualTo("metalhead"));
-            Assert.That(save.State.OtherPreset.Tree.StartClass, Is.EqualTo("metalhead"));
-            Assert.That(save.State.Tree.Allocated, Is.Empty);
-            Assert.That(save.State.Tree.PointsEarned, Is.EqualTo(11));
+            Assert.That(save.State.ClassName, Is.EqualTo("metalhead"));
+            Assert.That(save.State.OtherPreset.ClassTree.TreeId, Is.EqualTo("metalhead"));
+            Assert.That(save.State.ClassTree.Ranks, Is.Empty);
+            Assert.That(save.State.TreePointsEarned, Is.EqualTo(11));
             Assert.That(save.State.Skills[0].Skill.Id, Is.EqualTo("march"));
             Assert.That(save.State.HeroLevel, Is.EqualTo(12));
         }

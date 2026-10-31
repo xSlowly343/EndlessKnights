@@ -7,9 +7,6 @@ namespace Game.Core.Build
         AlreadyAllocated,
         NotConnected,
         NoPoints,
-        Locked,
-        ChoiceRequired,
-        BadChoice,
-        ChooseClassFirst
+        Locked
     }
 }

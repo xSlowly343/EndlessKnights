@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
     {
         private static GameLoop Real(long record, int prestiges = 0)
         {
-            var state = TestWorld.Classless(new GameState(5) { Class = HeroClass.Viking, RecordStage = record, Prestiges = prestiges });
+            var state = new GameState(5) { Class = HeroClass.Viking, RecordStage = record, Prestiges = prestiges };
             var loop = new GameLoop(TestWorld.Real, new FakeInputSource(), state, new StatSheet());
             loop.State.Echo = BigNumber.FromDouble(1e30);
             return loop;
@@ -24,8 +24,7 @@ namespace Game.Core.Tests.Sim
             var rules = TestWorld.Real.Unlocks;
 
             Assert.That(rules.For(Feature.Artifacts).Prestiges, Is.EqualTo(1));
-            Assert.That(rules.For(Feature.Cutting).Stage, Is.LessThan(rules.For(Feature.Jewels).Stage));
-            Assert.That(rules.For(Feature.Jewels).Stage, Is.LessThan(rules.For(Feature.Resonance).Stage));
+            Assert.That(rules.For(Feature.Cutting).Stage, Is.LessThan(rules.For(Feature.Resonance).Stage));
             Assert.That(rules.For(Feature.Resonance).Stage, Is.LessThan(rules.For(Feature.Spirits).Stage));
             Assert.That(rules.For(Feature.Spirits).Stage, Is.LessThan(rules.For(Feature.Atlas).Stage));
             Assert.That(rules.For(Feature.Atlas).Stage, Is.LessThan(rules.For(Feature.Chronicle).Stage));
@@ -65,7 +64,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void JewelsAndCuttingWaitForTheirStage()
+        public void CuttingAndSetCraftWaitForTheirStage()
         {
             var early = Real(50);
             early.State.Drops.UncutGems = 1;
@@ -73,7 +72,6 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(early.CutGem(gem), Is.EqualTo(CutResult.Locked));
             Assert.That(early.State.Drops.UncutGems, Is.EqualTo(1));
-            Assert.That(early.Jewels.IsOpen("viking_jewel_1"), Is.False);
             Assert.That(early.CraftSetPiece("jarl_forge"), Is.EqualTo(CraftResult.Locked));
         }
     }

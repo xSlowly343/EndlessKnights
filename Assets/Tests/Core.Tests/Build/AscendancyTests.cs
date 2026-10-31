@@ -349,23 +349,13 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void SubclassClassMustStartOnTheTree()
+        public void SubclassClassMustBeAKnownClass()
         {
             var catalog = AscendancyCatalog.Load(Valid.Replace("\"class\": \"ronin\"", "\"class\": \"pirate\""));
 
-            var error = Assert.Throws<ContentException>(() => catalog.RequireClassesAndIds(TestWorld.Data.Tree))!;
+            var error = Assert.Throws<ContentException>(() => catalog.RequireKnownClasses())!;
 
-            Assert.That(error.Message, Does.Contain("class 'pirate' has no start on the passive tree"));
-        }
-
-        [Test]
-        public void SubclassNodeIdsMustNotRepeatTreeIds()
-        {
-            var catalog = AscendancyCatalog.Load(Valid.Replace("s_notable", "ronin_ring_1"));
-
-            var error = Assert.Throws<ContentException>(() => catalog.RequireClassesAndIds(TestWorld.Data.Tree))!;
-
-            Assert.That(error.Message, Does.Contain("already used on the passive tree"));
+            Assert.That(error.Message, Does.Contain("unknown class 'pirate'"));
         }
     }
 }

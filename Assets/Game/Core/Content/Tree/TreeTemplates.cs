@@ -76,13 +76,7 @@ namespace Game.Core.Content.Tree
             var classShape = new TreeShape(ReadRows(root.Field("rows")), root.Field("nodes").AsInt(1, 1000),
                 ReadRising(bar.Field("majorsAt"), "major talent marks"), bar.Field("majorOptions").AsInt(2, 10));
             var passives = root.Field("passives").AsInt(0, classShape.NodeCount);
-            var classes = new List<string>();
-            foreach (var item in root.Field("classes").Items())
-            {
-                if (!Sim.HeroClassNames.ByName.ContainsKey(item.AsString()) || classes.Contains(item.AsString()))
-                    throw item.Error($"'{item.AsString()}' is not a class or is listed twice");
-                classes.Add(item.AsString());
-            }
+            var classes = new List<string>(Sim.HeroClassNames.ByName.Keys);
             var common = root.Field("commonTrees");
             var commonShape = new TreeShape(ReadRows(common.Field("rows")), common.Field("nodes").AsInt(1, 1000),
                 ReadRising(common.Field("majorsAt"), "major talent marks"), common.Field("majorOptions").AsInt(2, 10));

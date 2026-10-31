@@ -82,8 +82,8 @@ namespace Game.Core.Sim
 
         public void SyncTreePoints()
         {
-            _state.Tree.PointsEarned = System.Math.Min(_state.HeroLevel, _rules.MaxLevel) + GuardianPoints + MilestonePoints;
-            _state.ClassTree.PointsEarned = _state.Tree.PointsEarned;
+            _state.TreePointsEarned = System.Math.Min(_state.HeroLevel, _rules.MaxLevel) + GuardianPoints + MilestonePoints;
+            _state.ClassTree.PointsEarned = _state.TreePointsEarned;
             for (var slot = 0; slot < _state.CommonTrees.Count && slot < CommonSlots.Count; slot++)
             {
                 if (_state.CommonTrees[slot] is { } common)

@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Ui
 
         private static GameLoop Ronin(int heroLevel)
         {
-            var loop = TestWorld.Loop(state: TestWorld.Classless(new GameState { Class = HeroClass.Ronin, HeroLevel = heroLevel }));
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin, HeroLevel = heroLevel });
             while (loop.State.Skills.Count > 0)
                 loop.Book.Unequip(0);
             return loop;

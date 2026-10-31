@@ -4,7 +4,6 @@
   "rows": [0, 5, 15, 30, 50, 75, 105],
   "nodes": 50,
   "passives": 20,
-  "classes": ["viking", "ronin", "amazon", "stormweaver", "nomad", "metalhead", "oracle", "bannerbearer", "voodoo", "clockmaker", "plague_doctor", "moonshiner", "gravedigger", "captain"],
   "bar": {"every": 10, "majorsAt": [20, 50, 90, 140], "majorOptions": 3},
   "majorTalentsAvoid": ["keyHitLightning", "keyHitPoison", "keyHitBurn", "summonsIgnite", "burnStacksFromAllyLightning", "lightningPoisonBurst", "skeletonOnKill", "beastOnKill", "beastCount", "cannonCount", "minionCount", "cloneEvery", "companionHitsPerSecond", "idleHitsPerSecond", "overloadDisabled", "overheatDisabled", "resourcePerIdleSecond", "resourcePerSecond", "omenPerAllyHit", "omenPerPartyCrit", "keyCastLeftEvery", "weaponInnateEffect", "curseHitsPerSecond", "doomShare", "echoShare"],
   "commonTrees": {

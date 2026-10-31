@@ -112,7 +112,7 @@ namespace Game.Core.Tests.Ui
         {
             var marks = new PanelMarks(PanelUnlocks.Load(Valid));
             var state = new GameState();
-            state.Tree.PointsEarned = 2;
+            state.TreePointsEarned = 2;
 
             marks.Refresh(state, TestWorld.Data.Ascendancy);
 

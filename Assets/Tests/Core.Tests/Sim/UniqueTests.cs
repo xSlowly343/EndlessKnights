@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Sim
 
         private static GameLoop Wearing(params string[] uniques)
         {
-            var loop = TestWorld.Loop(state: TestWorld.Classless(new GameState(4) { Class = HeroClass.Viking }));
+            var loop = TestWorld.Loop(state: new GameState(4) { Class = HeroClass.Viking });
             foreach (var id in uniques)
             {
                 var item = Unique(id);
@@ -91,7 +91,7 @@ namespace Game.Core.Tests.Sim
         public void GuardiansDropUniquesOnlyPastTheLimitAndAutoSalvageKeepsThem()
         {
             var stages = TestWorld.Data.Stages;
-            var loop = TestWorld.Loop(state: TestWorld.Classless(new GameState(11) { Class = HeroClass.Viking }));
+            var loop = TestWorld.Loop(state: new GameState(11) { Class = HeroClass.Viking });
             loop.Drops.UseData(AlwaysUnique(), stages, TestWorld.Data.Gems, Items);
             loop.State.Drops.SalvageUpTo = ItemRarity.Legendary;
 
@@ -175,7 +175,7 @@ namespace Game.Core.Tests.Sim
         private static double Resource(StatSheet hero, double mousePx, int keys)
         {
             var input = new FakeInputSource();
-            var state = TestWorld.Classless(new GameState(2) { Class = HeroClass.Viking });
+            var state = new GameState(2) { Class = HeroClass.Viking };
             var loop = TestWorld.Loop(input, state, hero);
             loop.State.Resource = 50;
             if (mousePx > 0)
@@ -206,7 +206,7 @@ namespace Game.Core.Tests.Sim
         }
 
         private static GameLoop Real() =>
-            new GameLoop(TestWorld.Real, new FakeInputSource(), TestWorld.Classless(new GameState(4) { Class = HeroClass.Viking }), new StatSheet());
+            new GameLoop(TestWorld.Real, new FakeInputSource(), new GameState(4) { Class = HeroClass.Viking }, new StatSheet());
 
         [Test]
         public void EyeOfTheDevourerRaisesEveryGemLevel()

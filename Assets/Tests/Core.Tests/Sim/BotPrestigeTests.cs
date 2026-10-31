@@ -9,7 +9,7 @@ namespace Game.Core.Tests.Sim
     {
         private static (GameLoop Loop, PlayerBot Bot) Bot()
         {
-            var state = TestWorld.Classless(new GameState(4) { Class = HeroClass.Viking, Stage = 60, HighestStage = 60, RecordStage = 60 });
+            var state = new GameState(4) { Class = HeroClass.Viking, Stage = 60, HighestStage = 60, RecordStage = 60 };
             var loop = TestWorld.Loop(state: state);
             loop.State.RunGoldEarned = BigNumber.FromDouble(1e9);
             return (loop, new PlayerBot(TestWorld.Data, loop, 20));

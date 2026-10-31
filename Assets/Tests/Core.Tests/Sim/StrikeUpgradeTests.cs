@@ -13,7 +13,7 @@ namespace Game.Core.Tests.Sim
     {
         private static StrikeUpgradeRules Rules => TestWorld.Data.Combat.StrikeUpgrade;
 
-        private static GameLoop WithGold(double gold) => TestWorld.Loop(state: TestWorld.Classless(new GameState { Gold = BigNumber.FromDouble(gold) }));
+        private static GameLoop WithGold(double gold) => TestWorld.Loop(state: new GameState { Gold = BigNumber.FromDouble(gold) });
 
         [Test]
         public void DamageGrowsPerLevelAndDoublesAtMilestones()
@@ -86,7 +86,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PrestigeBurnsTheUpgrades()
         {
-            var state = TestWorld.Classless(new GameState { Gold = BigNumber.FromDouble(1e6), HighestStage = TestWorld.Data.Prestige.MinStage, Stage = TestWorld.Data.Prestige.MinStage, RunGoldEarned = BigNumber.FromDouble(1e9) });
+            var state = new GameState { Gold = BigNumber.FromDouble(1e6), HighestStage = TestWorld.Data.Prestige.MinStage, Stage = TestWorld.Data.Prestige.MinStage, RunGoldEarned = BigNumber.FromDouble(1e9) };
             var loop = TestWorld.Loop(state: state);
             var plain = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             loop.Upgrades.BuyMax();

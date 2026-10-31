@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Sim
                 RunGoldEarned = BigNumber.FromDouble(runGold),
                 HeroLevel = 12
             });
-            loop.State.Tree.PointsEarned = 20;
+            loop.State.TreePointsEarned = 20;
             return loop;
         }
 
@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = AtStage(45, 80000);
             loop.State.OwnedGems.Add(TestWorld.Data.Gems["lull"]);
-            loop.AllocateNode("ronin_ring_1");
+            loop.RaiseNode("ronin_katana");
             var gain = loop.Prestige.EchoGain;
 
             Assert.That(loop.Prestige.TryPrestige(), Is.True);
@@ -73,7 +73,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(state.Prestiges, Is.EqualTo(1));
             Assert.That(state.RecordStage, Is.EqualTo(45));
             Assert.That(state.HeroLevel, Is.EqualTo(12));
-            Assert.That(state.Tree.PointsSpent, Is.EqualTo(1));
+            Assert.That(state.TreePointsSpent, Is.EqualTo(1));
             Assert.That(state.OwnedGems.Count, Is.EqualTo(1));
             Assert.That(state.EnemyAlive, Is.True);
             Assert.That(state.EnemyMaxHp, Is.EqualTo(TestWorld.Data.Stages.EnemyHp(1) * state.Enemy!.HpMultiplier));

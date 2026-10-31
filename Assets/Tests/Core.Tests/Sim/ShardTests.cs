@@ -18,7 +18,7 @@ namespace Game.Core.Tests.Sim
         private static IEnumerable<GemDef> AllGems => TestWorld.Data.Gems.All;
 
         private static GameLoop Viking(StatSheet? hero = null, ulong seed = 7) =>
-            TestWorld.Loop(state: TestWorld.Classless(new GameState(seed) { Class = HeroClass.Viking }), hero: hero);
+            TestWorld.Loop(state: new GameState(seed) { Class = HeroClass.Viking }, hero: hero);
 
         private static void Defeat(GameLoop loop, long stage, long recordBefore, EnemyType type = EnemyType.Boss, bool raisesRecord = true)
         {

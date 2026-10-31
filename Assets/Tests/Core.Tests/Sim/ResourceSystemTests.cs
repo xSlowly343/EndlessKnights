@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass)
         {
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = heroClass }));
+            var loop = TestWorld.Loop(input, new GameState { Class = heroClass });
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             return (loop, input);
         }
@@ -123,7 +123,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.ResourceGain, ModifierKind.Increased, 0.5, StatTags.Keyboard));
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Viking }), hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Viking }, hero);
 
             Type(loop, input, 10);
 

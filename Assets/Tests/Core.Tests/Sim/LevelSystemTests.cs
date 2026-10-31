@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop();
 
             Assert.That(loop.State.HeroLevel, Is.EqualTo(1));
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(1));
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(1));
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace Game.Core.Tests.Sim
             Kill(loop, input, 1);
             Assert.That(loop.State.HeroLevel, Is.EqualTo(2));
             Assert.That(loop.State.HeroXp, Is.EqualTo(0).Within(1e-9));
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(2));
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(2));
             Assert.That(loop.Events.CountOf(GameEventKind.LevelUp), Is.EqualTo(1));
         }
 
@@ -80,7 +80,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.HeroLevel, Is.EqualTo(Rules.MaxLevel));
             Assert.That(loop.State.HeroXp, Is.EqualTo(0));
             Assert.That(loop.Levels.XpToNextLevel, Is.EqualTo(0));
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(Rules.MaxLevel));
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(Rules.MaxLevel));
         }
 
         [Test]
@@ -88,14 +88,14 @@ namespace Game.Core.Tests.Sim
         {
             var length = TestWorld.Data.Stages.BiomeLength;
             var (loop, input) = Strong(new GameState { Stage = length, HighestStage = length, RecordStage = length });
-            var before = loop.State.Tree.PointsEarned;
+            var before = loop.State.TreePointsEarned;
 
             Kill(loop, input, TestWorld.Data.Stages.EnemiesOnStage(length) + 1);
 
             Assert.That(loop.State.Stage, Is.EqualTo(length + 1));
             Assert.That(loop.State.RecordStage, Is.EqualTo(length + 1));
             Assert.That(loop.Levels.GuardianPoints, Is.EqualTo(1));
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 1 + (loop.State.HeroLevel - 1)));
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(before + 1 + (loop.State.HeroLevel - 1)));
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(state: new GameState { RecordStage = 5000, HighestStage = 1 });
 
             Assert.That(loop.Levels.GuardianPoints, Is.EqualTo(Rules.MaxGuardianPoints));
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(1 + Rules.MaxGuardianPoints + loop.Levels.MilestonePoints));
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(1 + Rules.MaxGuardianPoints + loop.Levels.MilestonePoints));
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(state: state);
 
             Assert.That(loop.Levels.MilestonePoints, Is.EqualTo(2));
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(1 + 2));
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(1 + 2));
         }
 
         [Test]
@@ -154,7 +154,7 @@ namespace Game.Core.Tests.Sim
             var state = new GameState();
             state.TotalInput.IdleSeconds = 10 * 3600 - 5;
             var loop = TestWorld.Loop(input, state);
-            var before = loop.State.Tree.PointsEarned;
+            var before = loop.State.TreePointsEarned;
             var pause = TestWorld.Data.TreePoints.IdleAfterSeconds;
 
             for (var tick = 0; tick < pause * GameLoop.TicksPerSecond; tick++)
@@ -164,7 +164,7 @@ namespace Game.Core.Tests.Sim
             for (var tick = 0; tick < 6 * GameLoop.TicksPerSecond; tick++)
                 loop.Tick();
             Assert.That(loop.State.TotalInput.IdleSeconds, Is.GreaterThan(10 * 3600));
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 1), "ten idle hours give the first point at once");
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(before + 1), "ten idle hours give the first point at once");
 
             input.PressKeys(1);
             loop.Tick();
@@ -178,7 +178,7 @@ namespace Game.Core.Tests.Sim
         {
             var state = new GameState();
             var loop = TestWorld.Loop(new FakeInputSource(), state);
-            var before = loop.State.Tree.PointsEarned;
+            var before = loop.State.TreePointsEarned;
             var away = 101 * 3600.0;
 
             var result = new OfflineCalculator(TestWorld.Data, loop.Hero).Simulate(loop.State, away);
@@ -187,7 +187,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(result.Seconds, Is.LessThan(away), "offline rewards stop at their cap");
             Assert.That(result.AwaySeconds, Is.EqualTo(away));
             Assert.That(loop.State.TotalInput.IdleSeconds, Is.EqualTo(away).Within(1e-6));
-            Assert.That(loop.State.Tree.PointsEarned, Is.EqualTo(before + 2), "a hundred hours away give the first two idle points");
+            Assert.That(loop.State.TreePointsEarned, Is.EqualTo(before + 2), "a hundred hours away give the first two idle points");
             Assert.That(loop.SessionInput.IdleSeconds, Is.Zero, "time away is not part of the session");
         }
 

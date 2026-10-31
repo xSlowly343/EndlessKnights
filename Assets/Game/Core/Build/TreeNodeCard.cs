@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Game.Core.Content.Tree;
-using Game.Core.Math;
 using Game.Core.Stats;
 using Game.Core.Text;
 
@@ -49,35 +48,11 @@ namespace Game.Core.Build
             return new TreeNodeCard(Name, Kind, stats, string.Empty, Deltas, Status);
         }
 
-        public static TreeNodeCard ForPassive(PassiveTree tree, TreeAllocation allocation, TreeNodeDef node, BigNumber? refundCost, NumberFormatSettings format, StatSheet hero)
-        {
-            var taken = allocation.IsAllocated(tree, node.Id);
-            return Build(node, TreeNodeText.TypeLabel(node), TreeNodeText.StatLines(allocation, node), TreeNodeText.Status(tree, allocation, node, refundCost, format),
-                ActiveModifiers(allocation, node, taken), taken, hero);
-        }
-
         public static TreeNodeCard Build(TreeNodeDef node, string kind, IReadOnlyList<string> stats, string status, IReadOnlyList<Modifier> active, bool taken, StatSheet hero) =>
             new TreeNodeCard(Texts.Pick(node.NameRu, node.NameEn), kind, stats, DescriptionOf(node), DeltasOf(active, taken, hero), status);
 
         public static string DescriptionOf(TreeNodeDef node) =>
             node.HasDescription ? Texts.Pick(node.DescriptionRu, node.DescriptionEn) : Texts.Get("tree.about." + TypeKey(node.Type));
-
-        public static IReadOnlyList<Modifier> ActiveModifiers(TreeAllocation allocation, TreeNodeDef node, bool taken)
-        {
-            switch (node.Type)
-            {
-                case TreeNodeType.Start:
-                case TreeNodeType.Attribute:
-                case TreeNodeType.Jewel:
-                    return System.Array.Empty<Modifier>();
-                case TreeNodeType.Mastery:
-                    return taken && allocation.MasteryChoices.TryGetValue(node.Id, out var option) && option < node.Options.Count
-                        ? node.Options[option]
-                        : System.Array.Empty<Modifier>();
-                default:
-                    return node.Modifiers;
-            }
-        }
 
         public static IReadOnlyList<TreeNodeDelta> DeltasOf(IReadOnlyList<Modifier> active, bool taken, StatSheet hero)
         {
@@ -136,9 +111,6 @@ namespace Game.Core.Build
             TreeNodeType.Small => "small",
             TreeNodeType.Notable => "notable",
             TreeNodeType.Keystone => "keystone",
-            TreeNodeType.Mastery => "mastery",
-            TreeNodeType.Jewel => "jewel",
-            TreeNodeType.Attribute => "attribute",
             _ => "start"
         };
     }

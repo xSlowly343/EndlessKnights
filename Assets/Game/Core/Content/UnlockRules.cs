@@ -7,7 +7,6 @@ namespace Game.Core.Content
     {
         Artifacts,
         Cutting,
-        Jewels,
         Resonance,
         Spirits,
         Atlas,
@@ -37,7 +36,6 @@ namespace Game.Core.Content
         {
             ["artifacts"] = Feature.Artifacts,
             ["cutting"] = Feature.Cutting,
-            ["jewels"] = Feature.Jewels,
             ["resonance"] = Feature.Resonance,
             ["spirits"] = Feature.Spirits,
             ["atlas"] = Feature.Atlas,

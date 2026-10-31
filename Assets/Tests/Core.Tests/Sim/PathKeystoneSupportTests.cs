@@ -22,7 +22,7 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(TestWorld.Classless(new GameState { Class = heroClass })), hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = heroClass }), hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
@@ -294,7 +294,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.DoomedCritChance, ModifierKind.Increased, 0.4));
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Clockmaker }), hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Clockmaker }, hero);
             var before = loop.Combat.CritChance(StatTags.Keyboard);
 
             loop.State.Doom = BigNumber.FromDouble(1);

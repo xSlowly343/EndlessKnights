@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Build
             var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
 
             Assert.That(loop.State.ClassTreeActive, Is.True);
-            Assert.That(loop.State.Tree.Allocated, Is.Empty);
+            Assert.That(loop.State.TreePointsSpent, Is.Zero);
             Assert.That(loop.RaiseNode(node), Is.EqualTo(RankResult.Done));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(before + 4).Within(1e-9));
         }
@@ -55,33 +55,6 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100).Within(1e-9));
             Assert.That(loop.RaiseNode("viking_axe"), Is.EqualTo(RankResult.Done));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(104).Within(1e-9));
-        }
-
-        [Test]
-        public void OnlyTheOwnStartGivesItsPassive()
-        {
-            var tree = TestWorld.Real.Tree;
-            var ronin = new TreeAllocation("ronin").Modifiers(tree);
-
-            Assert.That(ronin, Is.EquivalentTo(tree.StartOf("ronin")!.Modifiers));
-        }
-
-        [Test]
-        public void EveryClassStartHasItsOwnPassive()
-        {
-            var starts = TestWorld.Real.Tree.Nodes.Where(node => node.Type == TreeNodeType.Start).ToList();
-
-            Assert.That(starts.All(start => start.Modifiers.Count >= 2), Is.True);
-            Assert.That(starts.Select(start => string.Join(",", start.Modifiers.Select(m => m.Stat.Name))).Distinct().Count(), Is.EqualTo(starts.Count));
-        }
-
-        [Test]
-        public void TreeOffersManyDifferentEffects()
-        {
-            var stats = TestWorld.Real.Tree.Nodes.SelectMany(node => node.Modifiers.Concat(node.Options.SelectMany(option => option)))
-                .Select(modifier => modifier.Stat.Name + "/" + modifier.Tags).Distinct().Count();
-
-            Assert.That(stats, Is.GreaterThanOrEqualTo(25));
         }
 
         [Test]
@@ -103,7 +76,7 @@ namespace Game.Core.Tests.Build
             hero.Add(new Modifier(CombatStats.ComboTimeoutSeconds, ModifierKind.Flat, 0.5));
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Ronin }), hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Ronin }, hero);
             loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Normal, BigNumber.Create(1, 40));
             var rules = TestWorld.Data.Combat.Classes;
 

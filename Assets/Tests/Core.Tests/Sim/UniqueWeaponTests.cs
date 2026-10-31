@@ -25,7 +25,7 @@ namespace Game.Core.Tests.Sim
         }
 
         private static GameLoop Real(HeroClass heroClass = HeroClass.Viking) =>
-            new GameLoop(TestWorld.Real, new FakeInputSource(), TestWorld.Classless(new GameState(6) { Class = heroClass }), new StatSheet());
+            new GameLoop(TestWorld.Real, new FakeInputSource(), new GameState(6) { Class = heroClass }, new StatSheet());
 
         [Test]
         public void EightUniqueWeaponsFiveOfThemDoubleTyped()
@@ -144,7 +144,7 @@ namespace Game.Core.Tests.Sim
             var hero = new StatSheet();
             if (withGuitar)
                 hero.Add(new Modifier(CombatStats.AuraReserveOnce, ModifierKind.Flat, 1));
-            var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(TestWorld.Classless(new GameState { Class = HeroClass.Ronin })), hero: hero);
+            var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Ronin }), hero: hero);
             loop.State.Resource = 100;
             loop.Skills.Equip(TestWorld.Data.Gems["tailwind"]);
             return loop.State;

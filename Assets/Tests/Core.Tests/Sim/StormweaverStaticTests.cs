@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Stormweaver }), hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Stormweaver }, hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(1e6));
@@ -81,7 +81,7 @@ namespace Game.Core.Tests.Sim
         public void OtherCharactersNeverOverload()
         {
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Metalhead }), new StatSheet());
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Metalhead }, new StatSheet());
             loop.State.Resource = TestWorld.Data.Combat.Resources.Max;
 
             loop.Tick();

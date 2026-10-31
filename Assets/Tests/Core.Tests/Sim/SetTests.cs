@@ -22,7 +22,7 @@ namespace Game.Core.Tests.Sim
         }
 
         private static GameLoop Viking() =>
-            TestWorld.Loop(state: TestWorld.Classless(new GameState(7) { Class = HeroClass.Viking }));
+            TestWorld.Loop(state: new GameState(7) { Class = HeroClass.Viking });
 
         [Test]
         public void ThirtySixSetsSixThemesInEachOfSixRarities()

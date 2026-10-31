@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, damage));
-            var state = TestWorld.Classless(new GameState(9) { Class = HeroClass.Viking, Stage = stage, HighestStage = stage, RecordStage = record });
+            var state = new GameState(9) { Class = HeroClass.Viking, Stage = stage, HighestStage = stage, RecordStage = record };
             var loop = TestWorld.Loop(input, state, hero);
             loop.Stages.Encounters = Always(encounter);
             return (loop, input);

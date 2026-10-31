@@ -34,8 +34,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.Skills.Select(slot => slot.Skill.Id), Is.EquivalentTo(new[] { "through_stride", "lull" }));
             Assert.That(loop.State.Skills.All(slot => slot.Def.Weapon == null), Is.True);
             Assert.That(loop.ClassChoiceReady, Is.False, "the choice opens on the second level");
-            var node = TestWorld.Data.Tree.Nodes.First(n => n.Type == TreeNodeType.Small);
-            Assert.That(loop.AllocateNode(node.Id), Is.EqualTo(AllocationResult.ChooseClassFirst));
+            Assert.That(loop.RaiseNode("ronin_katana"), Is.EqualTo(RankResult.ChooseClassFirst));
             Assert.That(loop.ChooseClass(HeroClass.Ronin), Is.EqualTo(ClassChoiceResult.NotYet));
         }
 
@@ -68,8 +67,8 @@ namespace Game.Core.Tests.Build
             Assert.That(state.ClassChosen, Is.True);
             Assert.That(Game.Core.Ui.HeroSummary.Title(state), Does.StartWith("Wandering Blade · "));
             Assert.That(state.Class, Is.EqualTo(HeroClass.Ronin));
-            Assert.That(state.Tree.StartClass, Is.EqualTo("ronin"));
-            Assert.That(state.Tree.PointsLeft, Is.GreaterThan(0), "points earned as a novice are kept");
+            Assert.That(state.ClassName, Is.EqualTo("ronin"));
+            Assert.That(state.TreePointsLeft, Is.GreaterThan(0), "points earned as a novice are kept");
             Assert.That(state.Weapons.Right?.Type.Id ?? state.Weapons.Left?.Type.Id, Is.EqualTo("katana"));
             Assert.That(state.Skills[0].Def.Weapon, Is.EqualTo("katana"));
             Assert.That(state.Skills[1].Def.Weapon, Is.EqualTo("katana"));
@@ -78,8 +77,8 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.ClassChoiceReady, Is.False);
             Assert.That(loop.ChooseClass(HeroClass.Viking), Is.EqualTo(ClassChoiceResult.AlreadyChosen));
 
-            var step = state.Tree.Allocatable(TestWorld.Data.Tree).First(node => node.Type == TreeNodeType.Small);
-            Assert.That(loop.AllocateNode(step.Id), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(state.ClassTreeActive, Is.True);
+            Assert.That(loop.RaiseNode("ronin_katana"), Is.EqualTo(RankResult.Done));
         }
 
         [Test]
@@ -90,7 +89,7 @@ namespace Game.Core.Tests.Build
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, Clock), TestWorld.Data).State;
 
             Assert.That(loaded.ClassChosen, Is.False);
-            Assert.That(loaded.Tree.StartClass, Is.EqualTo(HeroClassNames.Novice));
+            Assert.That(loaded.ClassName, Is.EqualTo(HeroClassNames.Novice));
             Assert.That(new GameState().ClassChosen, Is.True, "a state without the flag is a chosen class, as in saves before the novice");
         }
 
@@ -107,7 +106,7 @@ namespace Game.Core.Tests.Build
             bot.Act(1);
             Assert.That(loop.State.ClassChosen, Is.True);
             Assert.That(loop.State.Class, Is.EqualTo(HeroClass.Captain));
-            Assert.That(loop.State.Tree.PointsSpent, Is.GreaterThan(0));
+            Assert.That(loop.State.TreePointsSpent, Is.GreaterThan(0));
         }
     }
 }

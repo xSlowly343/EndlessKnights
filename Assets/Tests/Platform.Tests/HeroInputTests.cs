@@ -26,7 +26,7 @@ namespace Game.Platform.Tests
             _input = new FakeInputSource();
             _loop = new GameLoop(data, _input, new GameState { Class = HeroClass.Viking }, new StatSheet());
             _panel = PanelCanvas.Create();
-            _panel.Bind(_loop, data.Tree);
+            _panel.Bind(_loop);
         }
 
         [TearDown]

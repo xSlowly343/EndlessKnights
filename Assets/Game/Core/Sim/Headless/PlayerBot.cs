@@ -13,7 +13,6 @@ namespace Game.Core.Sim.Headless
         private readonly GameData _data;
         private readonly GameLoop _loop;
         private readonly NodeScore _score;
-        private readonly string _attribute;
         private readonly double _stuckSecondsBeforePrestige;
         private const int BossFailsBeforePrestige = 1;
         private const double SlowStageSeconds = 60;
@@ -29,8 +28,7 @@ namespace Game.Core.Sim.Headless
             _stuckSecondsBeforePrestige = stuckMinutesBeforePrestige * 60;
             var heroClass = loop.State.Class;
             _heroClass = heroClass;
-            _attribute = MainAttribute(heroClass);
-            _score = new NodeScore(PlayedTags(heroClass), data.Tree.Attributes);
+            _score = new NodeScore(PlayedTags(heroClass), HeroAttributes.Names);
         }
 
         public void Act(double secondsSinceLastAct)
@@ -39,7 +37,6 @@ namespace Game.Core.Sim.Headless
                 _loop.ChooseClass(_heroClass);
             EquipStartingSkills();
             SpendTreePoints();
-            SocketJewels();
             SpendSubclassPoints();
             PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
@@ -49,25 +46,6 @@ namespace Game.Core.Sim.Headless
 
         private static StatTags PlayedTags(HeroClass heroClass) =>
             heroClass == HeroClass.Metalhead ? StatTags.Keyboard | StatTags.Aura : StatTags.Keyboard;
-
-        private static string MainAttribute(HeroClass heroClass)
-        {
-            switch (heroClass)
-            {
-                case HeroClass.Oracle:
-                case HeroClass.Amazon:
-                case HeroClass.Stormweaver:
-                case HeroClass.Captain:
-                    return "dexterity";
-                case HeroClass.Gravedigger:
-                case HeroClass.Clockmaker:
-                case HeroClass.Voodoo:
-                case HeroClass.Moonshiner:
-                    return "intelligence";
-                default:
-                    return "strength";
-            }
-        }
 
         public void EquipStartingSkills()
         {
@@ -103,23 +81,7 @@ namespace Game.Core.Sim.Headless
         {
             SpendCommonTreePoints();
             if (_loop.ClassTreeDef is { } classTree)
-            {
                 SpendRankedPoints(classTree, _loop.State.ClassTree);
-                return;
-            }
-            var tree = _data.Tree;
-            while (_loop.State.Tree.PointsLeft > 0)
-            {
-                var step = NextTreeStep(tree);
-                if (step == null)
-                    return;
-                var node = step.Value.Node;
-                var result = _loop.AllocateNode(node.Id,
-                    node.Type == TreeNodeType.Attribute ? _attribute : null,
-                    node.Type == TreeNodeType.Mastery ? step.Value.Option : (int?)null);
-                if (result != AllocationResult.Allocated)
-                    return;
-            }
         }
 
         private void SpendCommonTreePoints()
@@ -195,114 +157,6 @@ namespace Game.Core.Sim.Headless
             }
         }
 
-        private (TreeNodeDef Node, int Option)? NextTreeStep(PassiveTree tree)
-        {
-            var allocation = _loop.State.Tree;
-            var start = tree.StartOf(allocation.StartClass);
-            var firstStep = new Dictionary<TreeNodeDef, TreeNodeDef>();
-            var distance = new Dictionary<TreeNodeDef, int>();
-            var queue = new Queue<TreeNodeDef>();
-            foreach (var node in tree.Nodes)
-            {
-                if (!allocation.IsAllocated(tree, node.Id))
-                    continue;
-                distance[node] = 0;
-                queue.Enqueue(node);
-            }
-
-            TreeNodeDef? best = null;
-            var bestValue = 0.0;
-            var bestOption = 0;
-            while (queue.Count > 0)
-            {
-                var node = queue.Dequeue();
-                foreach (var next in node.Neighbours)
-                {
-                    if (distance.ContainsKey(next) || next.Locked || next.Type == TreeNodeType.Start)
-                        continue;
-                    distance[next] = distance[node] + 1;
-                    firstStep[next] = distance[node] == 0 ? next : firstStep[node];
-                    queue.Enqueue(next);
-                    var (score, option) = Score(next);
-                    var value = score / distance[next];
-                    if (value > bestValue)
-                    {
-                        best = next;
-                        bestValue = value;
-                        bestOption = option;
-                    }
-                }
-            }
-            if (best == null)
-                return null;
-            var step = firstStep[best];
-            return (step, ReferenceEquals(step, best) ? bestOption : BestOption(step).Option);
-        }
-
-        private (double Score, int Option) Score(TreeNodeDef node)
-        {
-            switch (node.Type)
-            {
-                case TreeNodeType.Attribute:
-                    return (_score.Attribute(node.AttributeAmount), 0);
-                case TreeNodeType.Mastery:
-                    return BestOption(node);
-                case TreeNodeType.Jewel:
-                    return (BestJewel(out _), 0);
-                default:
-                    return (_score.Of(node.Modifiers), 0);
-            }
-        }
-
-        private void SocketJewels()
-        {
-            var tree = _data.Tree;
-            foreach (var node in tree.Nodes)
-            {
-                if (node.Type != TreeNodeType.Jewel || !_loop.Jewels.IsOpen(node.Id))
-                    continue;
-                var score = BestJewel(out var jewel);
-                var socketed = _loop.Jewels.In(node.Id);
-                if (jewel != null && (socketed == null || score > JewelScore(socketed)))
-                    _loop.Jewels.Socket(node.Id, jewel);
-            }
-        }
-
-        private double BestJewel(out JewelItem? best)
-        {
-            best = null;
-            var bestScore = 0.0;
-            foreach (var jewel in _loop.Jewels.Bag)
-            {
-                var score = JewelScore(jewel);
-                if (score > bestScore)
-                {
-                    best = jewel;
-                    bestScore = score;
-                }
-            }
-            return bestScore;
-        }
-
-        private double JewelScore(JewelItem jewel)
-        {
-            var modifiers = new List<Modifier>();
-            jewel.AddModifiers(modifiers, 1);
-            return _score.Of(modifiers);
-        }
-
-        private (double Score, int Option) BestOption(TreeNodeDef node)
-        {
-            var best = (Score: double.MinValue, Option: 0);
-            for (var i = 0; i < node.Options.Count; i++)
-            {
-                var score = _score.Of(node.Options[i]);
-                if (score > best.Score)
-                    best = (score, i);
-            }
-            return node.Options.Count == 0 ? (0, 0) : best;
-        }
-
         private void SpendSubclassPoints()
         {
             var catalog = _data.Ascendancy;
@@ -359,7 +213,7 @@ namespace Game.Core.Sim.Headless
         {
             SubclassDef? best = null;
             var bestScore = double.MinValue;
-            foreach (var subclass in catalog.SubclassesOf(_loop.State.Tree.StartClass))
+            foreach (var subclass in catalog.SubclassesOf(_loop.State.ClassName))
             {
                 var notables = new List<double>();
                 foreach (var node in subclass.Nodes)

@@ -14,7 +14,7 @@ namespace Game.Core.Tests.Sim
         private static (GameLoop Loop, FakeInputSource Input) Nomad()
         {
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Nomad }), new StatSheet());
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Nomad }, new StatSheet());
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(1e6));

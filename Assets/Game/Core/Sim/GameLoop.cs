@@ -57,7 +57,6 @@ namespace Game.Core.Sim
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
         private readonly GearSystem _gear;
-        private readonly JewelSystem _jewels;
         private readonly GateSystem _gates;
         private readonly Unlocks _unlocks;
         private readonly DungeonSystem _dungeons;
@@ -91,17 +90,14 @@ namespace Game.Core.Sim
             _drops = new DropSystem(data.Drops, data.Stages, data.Gems, data.Items, _weapons, _gear, state, hero, Events);
             _stage.Drops = _drops;
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
-            _jewels = new JewelSystem(data.Tree, state, hero);
             _gates = new GateSystem(data.Stages, state, hero, Events);
             _stage.Gates = _gates;
-            _artifacts.Rebuilt = _jewels.Rebuild;
             _chronicle = new ChronicleSystem(data.Chronicle, state, hero, Events, _levels);
             _atlas = new AtlasSystem(data.Atlas, state, hero);
             _resonance = new ResonanceSystem(data.Resonance, state, hero);
             _spirits = new SpiritSystem(data.Spirits, state, _combat);
             _unlocks = new Unlocks(data.Unlocks, state);
             _artifacts.Unlocks = _unlocks;
-            _jewels.Unlocks = _unlocks;
             _atlas.Unlocks = _unlocks;
             _resonance.Unlocks = _unlocks;
             _spirits.Unlocks = _unlocks;
@@ -163,7 +159,6 @@ namespace Game.Core.Sim
         public RiftSystem Rift => _rift;
         public WeaponSystem Weapons => _weapons;
         public GearSystem Gear => _gear;
-        public JewelSystem Jewels => _jewels;
         public GateSystem Gates => _gates;
         public Unlocks Unlocks => _unlocks;
         public DungeonSystem Dungeons => _dungeons;
@@ -217,9 +212,8 @@ namespace Game.Core.Sim
                 return ClassChoiceResult.NotYet;
             State.Class = heroClass;
             State.ClassChosen = true;
-            State.Tree = new TreeAllocation(State.ClassName);
             State.ClassTree = new ClassTreeAllocation(State.ClassName);
-            State.OtherPreset = new BuildPreset(new TreeAllocation(State.ClassName));
+            State.OtherPreset = new BuildPreset(new ClassTreeAllocation(State.ClassName));
             State.Resource = 0;
             _levels.SyncTreePoints();
             _weapons.GiveClassStarter();
@@ -249,9 +243,8 @@ namespace Game.Core.Sim
             State.ClassChanges++;
             reforge.Apply(State, _data.Gems);
             _weapons.Reforge(from, to);
-            State.Tree = FreshTree(State.Tree);
             State.ClassTree = new ClassTreeAllocation(State.ClassName);
-            State.OtherPreset = reforge.Preset(State.OtherPreset, FreshTree(State.OtherPreset.Tree));
+            State.OtherPreset = reforge.Preset(State.OtherPreset, new ClassTreeAllocation(State.ClassName));
             State.Ascendancy.Reset();
             State.Resource = 0;
             _levels.SyncTreePoints();
@@ -261,9 +254,6 @@ namespace Game.Core.Sim
             _skills.RefreshArmed();
             return ClassChangeResult.Changed;
         }
-
-        private TreeAllocation FreshTree(TreeAllocation old) =>
-            new TreeAllocation(State.ClassName) { PointsEarned = old.PointsEarned, LastFreeResetUnixMs = old.LastFreeResetUnixMs };
 
         private List<(GemDef Skill, GemDef? Trigger, GemDef?[] Supports)> TakeOffSkills()
         {
@@ -349,6 +339,8 @@ namespace Game.Core.Sim
 
         public RankResult RaiseNode(string nodeId)
         {
+            if (!State.ClassChosen)
+                return RankResult.ChooseClassFirst;
             if (TreeOfNode(nodeId) is not { } found)
                 return RankResult.UnknownNode;
             var result = found.Allocation.Raise(found.Tree, nodeId);
@@ -438,74 +430,6 @@ namespace Game.Core.Sim
             return result;
         }
 
-        public AllocationResult AllocateNode(string nodeId, string? attribute = null, int? masteryOption = null)
-        {
-            if (!State.ClassChosen)
-                return AllocationResult.ChooseClassFirst;
-            if (ClassTreeDef != null)
-                return AllocationResult.Locked;
-            var result = State.Tree.Allocate(_data.Tree, nodeId, attribute, masteryOption);
-            if (result == AllocationResult.Allocated)
-                RebuildTree();
-            return result;
-        }
-
-        public BigNumber? RefundCost(string nodeId) => State.Tree.RefundCost(_data.Tree, nodeId, State.HeroLevel);
-
-        public RefundResult RefundNode(string nodeId)
-        {
-            var cost = RefundCost(nodeId);
-            if (cost == null)
-                return RefundResult.NotAllocated;
-            if (!State.Tree.CanRemove(_data.Tree, nodeId))
-                return RefundResult.BreaksPath;
-            if (State.Gold < cost.Value)
-                return RefundResult.NotEnoughGold;
-            State.Gold -= cost.Value;
-            State.Tree.Remove(nodeId);
-            RebuildTree();
-            return RefundResult.Refunded;
-        }
-
-        public RefundResult FreeFullReset(long nowUnixMs)
-        {
-            if (!State.Tree.FreeResetReady(_data.Tree, nowUnixMs))
-                return RefundResult.NotYet;
-            State.Tree.Clear();
-            State.Tree.LastFreeResetUnixMs = nowUnixMs;
-            RebuildTree();
-            return RefundResult.Refunded;
-        }
-
-        public BigNumber FullResetCost(long nowUnixMs)
-        {
-            if (State.Tree.FreeResetReady(_data.Tree, nowUnixMs))
-                return BigNumber.Zero;
-            var total = BigNumber.Zero;
-            foreach (var id in State.Tree.Allocated)
-            {
-                var cost = RefundCost(id);
-                if (cost != null)
-                    total += cost.Value;
-            }
-            return total * BigNumber.FromDouble(_data.Tree.Respec.FullResetShare);
-        }
-
-        public RefundResult FullReset(long nowUnixMs)
-        {
-            if (State.Tree.PointsSpent == 0)
-                return RefundResult.NotAllocated;
-            if (State.Tree.FreeResetReady(_data.Tree, nowUnixMs))
-                return FreeFullReset(nowUnixMs);
-            var cost = FullResetCost(nowUnixMs);
-            if (State.Gold < cost)
-                return RefundResult.NotEnoughGold;
-            State.Gold -= cost;
-            State.Tree.Clear();
-            RebuildTree();
-            return RefundResult.Refunded;
-        }
-
         public void RequestCast(int slotIndex)
         {
             if (slotIndex >= 0 && slotIndex < MaxRequestedSlots)
@@ -544,13 +468,13 @@ namespace Game.Core.Sim
             _data.Ascendancy.IsActivity(activityId) && State.Ascendancy.Complete(activityId);
 
         public SubclassResult ChooseSubclass(string subclassId) =>
-            AfterSubclassChange(State.Ascendancy.Choose(_data.Ascendancy, State.Tree.StartClass, subclassId));
+            AfterSubclassChange(State.Ascendancy.Choose(_data.Ascendancy, State.ClassName, subclassId));
 
         public SubclassResult ChangeSubclassFree(string subclassId, long nowUnixMs) =>
-            AfterSubclassChange(State.Ascendancy.ChangeFree(_data.Ascendancy, State.Tree.StartClass, subclassId, nowUnixMs));
+            AfterSubclassChange(State.Ascendancy.ChangeFree(_data.Ascendancy, State.ClassName, subclassId, nowUnixMs));
 
         public SubclassResult ChangeSubclassPaid(string subclassId) =>
-            AfterSubclassChange(State.Ascendancy.ChangePaid(_data.Ascendancy, State.Tree.StartClass, subclassId));
+            AfterSubclassChange(State.Ascendancy.ChangePaid(_data.Ascendancy, State.ClassName, subclassId));
 
         public AllocationResult AllocateSubclassNode(string nodeId)
         {
@@ -593,17 +517,9 @@ namespace Game.Core.Sim
                 State.OwnedGems.Add(pathSkill);
         }
 
-        public bool ChangeMastery(string nodeId, int option)
-        {
-            if (!State.Tree.ChangeMastery(_data.Tree, nodeId, option))
-                return false;
-            RebuildTree();
-            return true;
-        }
-
         public void SwitchPreset()
         {
-            var current = new BuildPreset(State.Tree, State.ClassTree) { CommonTrees = State.CommonTrees };
+            var current = new BuildPreset(State.ClassTree) { CommonTrees = State.CommonTrees };
             foreach (var slot in State.Skills)
             {
                 current.Skills.Add((slot.Skill, slot.Trigger));
@@ -611,11 +527,9 @@ namespace Game.Core.Sim
             }
 
             var next = State.OtherPreset;
-            next.Tree.PointsEarned = State.Tree.PointsEarned;
-            next.ClassTree.PointsEarned = State.Tree.PointsEarned;
+            next.ClassTree.PointsEarned = State.TreePointsEarned;
             while (State.Skills.Count > 0)
                 _skills.Unequip(State.Skills.Count - 1);
-            State.Tree = next.Tree;
             State.ClassTree = next.ClassTree;
             State.CommonTrees = next.CommonTrees;
             State.OtherPreset = current;
@@ -642,28 +556,17 @@ namespace Game.Core.Sim
 
         public void RebuildTree()
         {
-            var modifiers = ClassTreeDef is { } tree ? ClassTreeModifiers(tree) : PassiveTreeModifiers();
+            var modifiers = ClassTreeDef is { } tree ? ClassTreeModifiers(tree) : new List<Modifier>();
+            State.ClassTreeActive = ClassTreeDef != null;
             modifiers.AddRange(CommonTreeModifiers());
             modifiers.AddRange(State.Ascendancy.Modifiers(_data.Ascendancy));
             _treeLayer.Set(modifiers);
-            _jewels.Rebuild();
             _skills.RefreshAuras();
             _partyBuffs.Rebuild();
         }
 
-        private List<Modifier> PassiveTreeModifiers()
-        {
-            State.ClassTreeActive = false;
-            State.Tree.DropUnreachable(_data.Tree);
-            State.OtherPreset.Tree.DropUnreachable(_data.Tree);
-            return new List<Modifier>(State.Tree.Modifiers(_data.Tree));
-        }
-
         private List<Modifier> ClassTreeModifiers(ClassTree tree)
         {
-            State.ClassTreeActive = true;
-            State.Tree.Clear();
-            State.OtherPreset.Tree.Clear();
             State.ClassTree = Fitted(State.ClassTree, tree);
             State.OtherPreset.ClassTree = Fitted(State.OtherPreset.ClassTree, tree);
             return State.ClassTree.Modifiers(tree);
@@ -708,7 +611,7 @@ namespace Game.Core.Sim
         {
             if (allocation.TreeId != tree.Id)
                 allocation = new ClassTreeAllocation(tree.Id);
-            allocation.PointsEarned = State.Tree.PointsEarned;
+            allocation.PointsEarned = State.TreePointsEarned;
             allocation.DropInvalid(tree);
             if (allocation.PointsSpent > allocation.PointsEarned)
                 allocation.Clear();
@@ -733,7 +636,6 @@ namespace Game.Core.Sim
             _weapons.UseCatalog(data.Weapons);
             _drops.UseData(data.Drops, data.Stages, data.Gems, data.Items);
             _gear.UseCatalog(data.Items);
-            _jewels.Tree = data.Tree;
             _gates.UseStages(data.Stages);
             _unlocks.Rules = data.Unlocks;
             _drops.Dungeons = data.Dungeons;

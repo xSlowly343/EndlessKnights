@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e12));
-            var state = TestWorld.Classless(new GameState(6) { Class = HeroClass.Viking, Stage = stage, HighestStage = stage, RecordStage = stage });
+            var state = new GameState(6) { Class = HeroClass.Viking, Stage = stage, HighestStage = stage, RecordStage = stage };
             return (TestWorld.Loop(input, state, hero), input);
         }
 
@@ -175,7 +175,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void DungeonsOpenAtStage150()
         {
-            var state = TestWorld.Classless(new GameState(5) { Class = HeroClass.Viking, RecordStage = 100 });
+            var state = new GameState(5) { Class = HeroClass.Viking, RecordStage = 100 };
             var loop = new GameLoop(TestWorld.Real, new FakeInputSource(), state, new StatSheet());
             var key = Key(1);
             loop.State.Dungeons.Keys.Add(key);

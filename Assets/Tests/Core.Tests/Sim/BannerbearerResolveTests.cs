@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Sim
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass)
         {
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = heroClass }), new StatSheet());
+            var loop = TestWorld.Loop(input, new GameState { Class = heroClass }, new StatSheet());
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(1e6));

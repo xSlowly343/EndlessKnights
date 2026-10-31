@@ -11,7 +11,7 @@ namespace Game.Core.Tests.Sim
         private static (GameLoop Loop, FakeInputSource Input) Hero(string trigger, string skill = "through_stride", HeroClass heroClass = HeroClass.Ronin, params string[] before)
         {
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(TestWorld.Classless(new GameState { Class = heroClass })));
+            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = heroClass }));
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             foreach (var gem in before)
                 loop.Skills.Equip(TestWorld.Data.Gems[gem]);

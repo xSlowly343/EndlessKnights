@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Sim
         private static (GameLoop Loop, FakeInputSource Input) AtTheLimit()
         {
             var input = new FakeInputSource();
-            var state = TestWorld.Classless(new GameState(9) { Class = HeroClass.Viking, Stage = 50000, HighestStage = 50000, RecordStage = 50000 });
+            var state = new GameState(9) { Class = HeroClass.Viking, Stage = 50000, HighestStage = 50000, RecordStage = 50000 };
             var loop = TestWorld.Loop(input, state);
             return (loop, input);
         }

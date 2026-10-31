@@ -104,17 +104,12 @@ namespace Game.Core.Content.Tree
             return found;
         }
 
-        public void RequireClassesAndIds(PassiveTree tree)
+        public void RequireKnownClasses()
         {
             foreach (var subclass in Subclasses)
             {
-                if (tree.StartOf(subclass.HeroClass) == null)
-                    throw new ContentException(FileName, subclass.Id, $"class '{subclass.HeroClass}' has no start on the passive tree");
-                foreach (var node in subclass.Nodes)
-                {
-                    if (tree.TryGet(node.Id, out _))
-                        throw new ContentException(FileName, node.Id, "this id is already used on the passive tree");
-                }
+                if (!Sim.HeroClassNames.ByName.ContainsKey(subclass.HeroClass))
+                    throw new ContentException(FileName, subclass.Id, $"unknown class '{subclass.HeroClass}'");
             }
         }
 
@@ -230,9 +225,11 @@ namespace Game.Core.Content.Tree
                 node.Field("id").AsString(), type,
                 node.Field("x").AsNumber(-1000, 1000), node.Field("y").AsNumber(-1000, 1000),
                 name.Field("ru").AsString(), name.Field("en").AsString(),
-                modifiers, Array.Empty<IReadOnlyList<Modifier>>(), 0, null, locked,
-                descriptionRu: PassiveTree.DescriptionText(node, "ru"), descriptionEn: PassiveTree.DescriptionText(node, "en"));
+                modifiers, locked, descriptionRu: DescriptionText(node, "ru"), descriptionEn: DescriptionText(node, "en"));
         }
+
+        private static string DescriptionText(ContentNode node, string language) =>
+            node.HasField("description") && node.Field("description").HasField(language) ? node.Field("description").Field(language).AsString() : string.Empty;
 
         private static TreeNodeDef Find(ContentNode id, Dictionary<string, TreeNodeDef> byId)
         {

@@ -21,7 +21,7 @@ namespace Game.Core.Build
             _hero = hero;
         }
 
-        public double Attribute(string attribute) => _hero.Value(PassiveTree.AttributeStat(attribute), 0);
+        public double Attribute(string attribute) => _hero.Value(HeroAttributes.Stat(attribute), 0);
 
         public bool MeetsRequirements(GemDef gem)
         {

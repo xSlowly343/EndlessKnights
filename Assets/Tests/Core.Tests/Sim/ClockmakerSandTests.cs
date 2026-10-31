@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Clockmaker }), hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Clockmaker }, hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             SpawnTough(loop);
@@ -106,7 +106,7 @@ namespace Game.Core.Tests.Sim
         public void OtherCharactersGetNoSandFromFastKills()
         {
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.Classless(new GameState { Class = HeroClass.Voodoo }), new StatSheet());
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Voodoo }, new StatSheet());
             var before = loop.State.Resource;
 
             KillAfter(loop, input, 1);

@@ -29,7 +29,7 @@ namespace Game.Core.Build
             MoveProgress(state.GemProgress, gems);
         }
 
-        public BuildPreset Preset(BuildPreset preset, TreeAllocation tree)
+        public BuildPreset Preset(BuildPreset preset, ClassTreeAllocation tree)
         {
             var reforged = new BuildPreset(tree) { CommonTrees = preset.CommonTrees };
             for (var i = 0; i < preset.Skills.Count; i++)

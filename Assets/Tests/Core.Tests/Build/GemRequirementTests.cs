@@ -1,8 +1,7 @@
-using Game.Core.Content.Tree;
-using System.Linq;
 using Game.Core.Build;
 using Game.Core.Content.Gems;
 using Game.Core.Sim;
+using Game.Core.Stats;
 using Game.Core.Tests.Content;
 using Game.Core.Tests.Sim;
 using NUnit.Framework;
@@ -29,24 +28,10 @@ namespace Game.Core.Tests.Build
             Assert.That(gem.Requires["strength"], Is.EqualTo(10));
         }
 
-        private static PassiveTree Tree => TestWorld.Data.Tree;
+        private static GameLoop Swordsman() => TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
 
-        private static GameLoop Swordsman()
-        {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
-            loop.State.Tree.PointsEarned = 120;
-            return loop;
-        }
-
-        private static void TakeAttributes(GameLoop loop, int count)
-        {
-            var nearest = Tree.Nodes.Where(node => node.Type == TreeNodeType.Attribute)
-                .OrderBy(node => TreePaths.To(Tree, "ronin", node.Id).Length).ThenBy(node => node.Id).Take(count);
-            foreach (var attribute in nearest)
-                TreePaths.Allocate(loop, Tree, TreePaths.To(Tree, "ronin", attribute.Id));
-        }
-
-        private static int Taken(GameLoop loop) => loop.State.Tree.AttributeChoices.Count;
+        private static void AddStrength(GameLoop loop, double amount) =>
+            loop.Hero.Add(new Modifier(HeroAttributes.Stat("strength"), ModifierKind.Flat, amount));
 
         [Test]
         public void GemNeedsEnoughAttributeFromTheTree()
@@ -57,12 +42,11 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.AttributesTooLow));
 
-            TakeAttributes(loop, 1);
-            Assert.That(loop.Book.Attribute("strength"), Is.EqualTo(5 * Taken(loop)));
-            if (Taken(loop) < 2)
-                Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.AttributesTooLow));
+            AddStrength(loop, 5);
+            Assert.That(loop.Book.Attribute("strength"), Is.EqualTo(5));
+            Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.AttributesTooLow));
 
-            TakeAttributes(loop, 2);
+            AddStrength(loop, 5);
             Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.Done));
         }
 
@@ -72,9 +56,10 @@ namespace Game.Core.Tests.Build
             var loop = Swordsman();
 
             Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(0));
-            TakeAttributes(loop, 3);
-            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(Taken(loop) * 5 / 15));
-            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.GreaterThanOrEqualTo(1));
+            AddStrength(loop, 15);
+            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(1));
+            AddStrength(loop, 14);
+            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(1));
             Assert.That(loop.Book.ColoredSupportLimit("dexterity"), Is.EqualTo(0));
         }
     }

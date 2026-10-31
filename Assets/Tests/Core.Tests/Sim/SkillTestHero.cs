@@ -26,7 +26,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(TestWorld.Classless(new GameState { Class = heroClass })), hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = heroClass }), hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             foreach (var skill in skills)
                 loop.Skills.Equip(TestWorld.Data.Gems[skill]);

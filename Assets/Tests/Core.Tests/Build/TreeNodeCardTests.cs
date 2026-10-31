@@ -1,7 +1,6 @@
 using System.Linq;
 using Game.Core.Build;
 using Game.Core.Content.Tree;
-using Game.Core.Math;
 using Game.Core.Sim;
 using Game.Core.Stats;
 using Game.Core.Tests.Sim;
@@ -11,45 +10,39 @@ namespace Game.Core.Tests.Build
 {
     public class TreeNodeCardTests
     {
-        private static PassiveTree Tree => TestWorld.Data.Tree;
+        private static AscendancyCatalog Paths => TestWorld.Data.Ascendancy;
 
-        private static GameLoop Ronin(int points)
-        {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
-            loop.State.Tree.PointsEarned = points;
-            return loop;
-        }
+        private static SubclassDef Kensei => Paths.Subclasses.Single(subclass => subclass.Id == "kensei");
 
-        private static TreeNodeCard CardOf(GameLoop loop, string id) =>
-            TreeNodeCard.ForPassive(Tree, loop.State.Tree, Tree[id], loop.RefundCost(id), NumberFormatSettings.Default, loop.Hero);
+        private static TreeNodeCard CardOf(TreeNodeDef node) =>
+            SubclassView.Card(new AscendancyState(), Paths, Kensei, node, new StatSheet());
 
         [Test]
         public void CardHasNameKindStatsAndStatus()
         {
-            var loop = Ronin(1);
-            var node = Tree["ronin_ring_1"];
+            var node = Kensei.Nodes.First(n => n.Type == TreeNodeType.Small);
 
-            var card = CardOf(loop, node.Id);
+            var card = CardOf(node);
 
             Assert.That(card.Name, Is.EqualTo(node.NameRu));
-            Assert.That(card.Kind, Is.EqualTo(TreeNodeText.TypeLabel(node)));
-            Assert.That(card.Stats, Is.EqualTo(TreeNodeText.StatLines(loop.State.Tree, node)));
-            Assert.That(card.Status, Is.EqualTo("Можно взять"));
+            Assert.That(card.Kind, Is.EqualTo(SubclassView.Kind(Kensei, node)));
+            Assert.That(card.Stats, Is.EqualTo(SubclassView.StatLines(node)));
         }
 
         [Test]
         public void DescriptionComesFromTheNodeOrFromItsType()
         {
-            var loop = Ronin(1);
+            var keystone = Kensei.Nodes.Single(n => n.Type == TreeNodeType.Keystone);
+            var small = Kensei.Nodes.First(n => n.Type == TreeNodeType.Small && !n.HasDescription);
 
-            Assert.That(CardOf(loop, "strength_keystone_3").Description, Does.StartWith("Таймер короче"));
-            Assert.That(CardOf(loop, "ronin_ring_1").Description, Is.EqualTo("Прибавка на пути к значимым узлам."));
+            Assert.That(CardOf(keystone).Description, Is.EqualTo(keystone.DescriptionRu));
+            Assert.That(CardOf(small).Description, Is.EqualTo("Прибавка на пути к значимым узлам."));
         }
 
         [Test]
         public void EveryKeystoneHasItsOwnDescriptionInBothLanguages()
         {
-            var keystones = Tree.Nodes.Where(node => node.Type == TreeNodeType.Keystone).ToList();
+            var keystones = Paths.Subclasses.SelectMany(subclass => subclass.Nodes).Where(node => node.Type == TreeNodeType.Keystone).ToList();
 
             Assert.That(keystones, Is.Not.Empty);
             Assert.That(keystones.Where(node => node.DescriptionRu.Length == 0 || node.DescriptionEn.Length == 0).Select(node => node.Id), Is.Empty);
@@ -109,19 +102,15 @@ namespace Game.Core.Tests.Build
         [Test]
         public void CardDeltasFollowTheHeroSheet()
         {
-            var loop = Ronin(1);
-            var node = Tree["ronin_ring_1"];
+            var node = Kensei.Nodes.First(n => n.Type == TreeNodeType.Notable && n.Modifiers.Count > 0);
 
-            var card = CardOf(loop, node.Id);
-
-            Assert.That(card.Deltas, Has.Count.EqualTo(System.Math.Min(TreeNodeCard.MaxDeltas, node.Modifiers.Count)));
+            Assert.That(CardOf(node).Deltas, Has.Count.EqualTo(System.Math.Min(TreeNodeCard.MaxDeltas, node.Modifiers.Count)));
         }
 
         [Test]
         public void ShortenedCardKeepsOneStatAndDropsTheDescription()
         {
-            var loop = Ronin(1);
-            var card = CardOf(loop, "strength_keystone_3");
+            var card = CardOf(Kensei.Nodes.Single(n => n.Type == TreeNodeType.Keystone));
 
             var shortened = card.Shortened(1);
 
