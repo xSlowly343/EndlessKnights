@@ -56,10 +56,23 @@ namespace Game.Core.Stats
             Invalidate();
         }
 
+        private const double ExactMultiplierLimit = 1e300;
+
         public BigNumber Compute(StatId stat, BigNumber baseValue, StatTags tags = StatTags.None)
         {
             var totals = TotalsFor(stat, tags);
-            return (baseValue + totals.Flat) * (totals.IncreasedMultiplier * totals.MoreMultiplier);
+            var multiplier = totals.IncreasedMultiplier * totals.MoreMultiplier;
+            if (multiplier < ExactMultiplierLimit)
+                return (baseValue + totals.Flat) * multiplier;
+            if (!(totals.IncreasedMultiplier > 0))
+                return BigNumber.Zero;
+            return (baseValue + totals.Flat) * FromLog10(System.Math.Log10(totals.IncreasedMultiplier) + totals.MoreLog10);
+        }
+
+        private static BigNumber FromLog10(double log10)
+        {
+            var whole = System.Math.Floor(log10);
+            return BigNumber.Create(System.Math.Pow(10d, log10 - whole), (long)whole);
         }
 
         public double Value(StatId stat, double baseValue, StatTags tags = StatTags.None)
@@ -91,6 +104,7 @@ namespace Game.Core.Stats
             var increased = 0.0;
             var treeIncreased = 0.0;
             var more = 1.0;
+            var moreLog10 = 0.0;
             foreach (var modifier in _modifiers)
             {
                 if (!modifier.AppliesTo(stat, tags) || !modifier.ActiveUnder(_conditions))
@@ -108,11 +122,12 @@ namespace Game.Core.Stats
                         break;
                     case ModifierKind.More:
                         more *= 1.0 + modifier.Value;
+                        moreLog10 += System.Math.Log10(System.Math.Max(0, 1.0 + modifier.Value));
                         break;
                 }
             }
 
-            var totals = new Totals(flat, (1.0 + increased) * (1.0 + treeIncreased), more);
+            var totals = new Totals(flat, (1.0 + increased) * (1.0 + treeIncreased), more, moreLog10);
             _cache[key] = totals;
             RecalculationCount++;
             return totals;
@@ -125,12 +140,14 @@ namespace Game.Core.Stats
             public readonly double Flat;
             public readonly double IncreasedMultiplier;
             public readonly double MoreMultiplier;
+            public readonly double MoreLog10;
 
-            public Totals(double flat, double increasedMultiplier, double moreMultiplier)
+            public Totals(double flat, double increasedMultiplier, double moreMultiplier, double moreLog10)
             {
                 Flat = flat;
                 IncreasedMultiplier = increasedMultiplier;
                 MoreMultiplier = moreMultiplier;
+                MoreLog10 = moreLog10;
             }
         }
     }

@@ -13,6 +13,7 @@ namespace Game.Core.Sim.Headless
         private readonly GameData _data;
         private readonly GameLoop _loop;
         private readonly NodeScore _score;
+        private readonly HashSet<Content.Gems.GemDef> _triedGems = new HashSet<Content.Gems.GemDef>();
         private readonly double _stuckSecondsBeforePrestige;
         private const int BossFailsBeforePrestige = 1;
         private const double SlowStageSeconds = 60;
@@ -56,9 +57,14 @@ namespace Game.Core.Sim.Headless
 
         private void EquipOwnedSkills()
         {
+            if (_loop.State.Skills.Count >= _loop.Book.SlotCount)
+                return;
+            _triedGems.Clear();
             foreach (var gem in _loop.State.OwnedGems)
             {
-                while (gem.Kind == Content.Gems.GemKind.Skill && _loop.Book.FreeCopies(gem) > 0 && _loop.Book.Equip(gem) == BookResult.Done)
+                if (gem.Kind != Content.Gems.GemKind.Skill || !_triedGems.Add(gem))
+                    continue;
+                while (_loop.Book.FreeCopies(gem) > 0 && _loop.Book.Equip(gem) == BookResult.Done)
                 {
                 }
             }

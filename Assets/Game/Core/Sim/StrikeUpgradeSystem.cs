@@ -9,11 +9,13 @@ namespace Game.Core.Sim
     {
         private const double ExactPowerLimit = 300;
         private const double MinCostShare = 0.1;
+        private const double ChunkLog10 = 300;
+        private const int MaxChunks = 16;
 
         private readonly GameState _state;
         private readonly StatSheet _hero;
         private readonly ModifierLayer _layer;
-        private readonly Modifier[] _modifier = new Modifier[1];
+        private readonly Modifier[][] _chunks = Chunks();
         private StrikeUpgradeRules _rules;
 
         public StrikeUpgradeSystem(StrikeUpgradeRules rules, GameState state, StatSheet hero)
@@ -106,10 +108,25 @@ namespace Game.Core.Sim
             Rebuild();
         }
 
+        public double DamageMultiplierLog10 => _rules.DamageMultiplierLog10(Level);
+
         public void Rebuild()
         {
-            _modifier[0] = new Modifier(CombatStats.Damage, ModifierKind.More, DamageMultiplier - 1);
-            _layer.Set(_modifier);
+            var log10 = DamageMultiplierLog10;
+            var count = System.Math.Min(MaxChunks, System.Math.Max(1, (int)System.Math.Ceiling(log10 / ChunkLog10)));
+            var chunk = _chunks[count - 1];
+            var more = count == 1 ? DamageMultiplier - 1 : System.Math.Pow(10, log10 / count) - 1;
+            for (var i = 0; i < count; i++)
+                chunk[i] = new Modifier(CombatStats.Damage, ModifierKind.More, more);
+            _layer.Set(chunk);
+        }
+
+        private static Modifier[][] Chunks()
+        {
+            var chunks = new Modifier[MaxChunks][];
+            for (var i = 0; i < MaxChunks; i++)
+                chunks[i] = new Modifier[i + 1];
+            return chunks;
         }
     }
 }

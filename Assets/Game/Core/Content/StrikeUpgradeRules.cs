@@ -18,6 +18,9 @@ namespace Game.Core.Content
         public double DamageMultiplier(int level) =>
             (1 + DamagePerLevel * level) * System.Math.Pow(MilestoneMultiplier, level / MilestoneEvery);
 
+        public double DamageMultiplierLog10(int level) =>
+            System.Math.Log10(1 + DamagePerLevel * level) + level / MilestoneEvery * System.Math.Log10(MilestoneMultiplier);
+
         public static StrikeUpgradeRules Read(ContentNode node)
         {
             var milestone = node.Field("milestone");
