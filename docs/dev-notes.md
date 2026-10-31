@@ -982,3 +982,5 @@
   - `UiElements.Icon` — картинка с `preserveAspect`; при отсутствии спрайта она выключается, а не рисует белый квадрат.
   - Титры CC BY: `SettingsScreen.Note(0)` — строка `settings.credits` под настройками вкладки «Игра» (строки там сжимаются под неё, как под заметку о звуке). Список авторов совпадает с `art/LICENSES.md`; новый автор иконки — дописать в оба места.
 
+
+- **Unity MCP (31.10.2026).** Пакет MCP for Unity закреплён на 10.3.0 в Packages/manifest.json, сервер описан в .mcp.json (HTTP, http://localhost:8080/mcp). На ПК стоит uv 0.13.6 (winget). Порядок запуска: сначала Unity с проектом, потом Claude Code.
