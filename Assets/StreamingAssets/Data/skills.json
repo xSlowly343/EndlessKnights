@@ -811,6 +811,7 @@
     },
     {
       "id": "fuse_bottle",
+      "formerIds": ["spirit_jet"],
       "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
@@ -820,7 +821,8 @@
       "tags": ["DoT", "Skill"],
       "cost": { "resource": 15 },
       "cooldownSeconds": 3,
-      "effect": { "type": "addStacks", "dot": "burn", "stacks": 3, "multiplier": 2 }
+      "effect": { "type": "addStacks", "dot": "burn", "stacks": 3, "multiplier": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_fuse", "name": { "ru": "Длиннее фитиль", "en": "Longer Fuse" }, "effect": { "stacks": 4 } }, { "id": "quick_fuse", "name": { "ru": "Быстрый фитиль", "en": "Quick Fuse" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "spirit_jet", "name": { "ru": "Струя спирта", "en": "Spirit Jet" }, "effect": { "multiplier": 2.6 } }, { "id": "cheap_bottle", "name": { "ru": "Бутыль даром", "en": "Free Bottle" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "big_bottle", "name": { "ru": "Четверть", "en": "Big Bottle" }, "cooldown": 1.3, "effect": { "stacks": 6 } }, { "id": "small_bottles", "name": { "ru": "Мерзавчики", "en": "Miniatures" }, "cooldown": 0.55, "effect": { "stacks": 2 } }] }]
     },
     {
       "id": "lull",
@@ -4277,10 +4279,10 @@
     },
     {
       "id": "by_eye",
+      "formerIds": ["steam_whistle"],
       "kind": "active",
       "weapon": "still_burner",
-      "tier": "common",
-      "role": "fast",
+      "tier": "rare",
       "color": "blue",
       "name": {"ru": "На глаз", "en": "By Eye"},
       "tags": ["DoT", "Skill"],
@@ -4288,13 +4290,15 @@
       "cooldownSeconds": 10,
       "effect": {"type": "addStacks", "dot": "burn", "stacks": 1, "multiplier": 2},
       "native": {"resourceRelief": 20, "modifiers": [{"stat": "overheatDisabled", "kind": "flat", "value": 1}]},
-      "durationSeconds": 5
+      "durationSeconds": 5,
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_eye_m", "name": { "ru": "Вернее глаз", "en": "Surer Eye" }, "effect": { "stacks": 2 } }, { "id": "quick_eye_m", "name": { "ru": "Быстрый глаз", "en": "Quick Eye" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "steam_whistle", "name": { "ru": "Пар в свисток", "en": "Steam Whistle" }, "duration": 1.4 }, { "id": "hot_eye", "name": { "ru": "Горячий глаз", "en": "Hot Eye" }, "effect": { "multiplier": 2.6 } }] }, { "level": 25, "options": [{ "id": "masters_eye", "name": { "ru": "Глаз мастера", "en": "Master's Eye" }, "cooldown": 1.3, "effect": { "stacks": 3 } }, { "id": "glance", "name": { "ru": "Мельком", "en": "Glance" }, "cooldown": 0.6, "duration": 0.8 }] }]
     },
     {
       "id": "first_drop",
+      "formerIds": ["night_brew"],
       "kind": "active",
       "weapon": "still_burner",
-      "tier": "common",
+      "tier": "rare",
       "color": "blue",
       "name": {"ru": "Первая капля", "en": "First Drop"},
       "tags": ["Keyboard", "Skill"],
@@ -4302,10 +4306,12 @@
       "cooldownSeconds": 30,
       "durationSeconds": 15,
       "effect": {"type": "keyRepeat", "every": 10, "multiplier": 0, "burnStacks": 1},
-      "native": {"repeatEvery": 6}
+      "native": {"repeatEvery": 6},
+      "branches": [{ "level": 5, "options": [{ "id": "richer_drop", "name": { "ru": "Крепче капля", "en": "Richer Drop" }, "effect": { "burnStacks": 1.25 } }, { "id": "quick_first", "name": { "ru": "Быстрая капля", "en": "Quick Drop" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "night_brew", "name": { "ru": "Ночная варка", "en": "Night Brew" }, "duration": 1.5 }, { "id": "cheap_first", "name": { "ru": "Капля даром", "en": "Free Drop" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "every_fifth", "name": { "ru": "Каждая пятая", "en": "Every Fifth" }, "cooldown": 1.3, "effect": { "every": 7 } }, { "id": "long_brew_m", "name": { "ru": "Долгая варка", "en": "Long Brew" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "little_flame",
+      "formerIds": ["fire_through_the_coil"],
       "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
@@ -4316,13 +4322,15 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 3,
       "effect": { "type": "addStacks", "dot": "burn", "stacks": 1, "multiplier": 2 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 2} }
+      "native": { "when": {"mouseMoving": true, "multiplier": 2} },
+      "branches": [{ "level": 5, "options": [{ "id": "brighter_flame", "name": { "ru": "Ярче огонёк", "en": "Brighter Flame" }, "effect": { "multiplier": 2.6 } }, { "id": "quick_flame", "name": { "ru": "Быстрый огонёк", "en": "Quick Flame" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "fire_through_the_coil", "name": { "ru": "Огонь по змеевику", "en": "Fire through the Coil" }, "effect": { "stacks": 2 } }, { "id": "cheap_flame", "name": { "ru": "Огонёк даром", "en": "Free Flame" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "will_o_wisp", "name": { "ru": "Блуждающий огонёк", "en": "Will-o'-the-Wisp" }, "cooldown": 1.3, "effect": { "stacks": 3 } }, { "id": "spark_flame", "name": { "ru": "Искорка", "en": "Spark" }, "cooldown": 0.6, "effect": { "stacks": 1 } }] }]
     },
     {
       "id": "cork_popped",
+      "formerIds": ["bottle_for_sale"],
       "kind": "active",
       "weapon": "still_burner",
-      "tier": "common",
+      "tier": "rare",
       "role": "fast",
       "color": "blue",
       "name": { "ru": "Пробка вылетела", "en": "The Cork Popped" },
@@ -4330,7 +4338,8 @@
       "cost": { "resource": 15 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} }
+      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_pop", "name": { "ru": "Громче хлопок", "en": "Louder Pop" }, "damage": 1.3 }, { "id": "quick_pop", "name": { "ru": "Быстрый хлопок", "en": "Quick Pop" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "bottle_for_sale", "name": { "ru": "Бутылка на продажу", "en": "Bottle for Sale" }, "cost": 0.5 }, { "id": "ricochet_cork", "name": { "ru": "Пробка рикошетом", "en": "Ricochet Cork" }, "effect": { "queueTargets": 2 } }] }, { "level": 25, "options": [{ "id": "champagne", "name": { "ru": "Шампанское", "en": "Champagne" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "corks_everywhere", "name": { "ru": "Пробки повсюду", "en": "Corks Everywhere" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "distillation",
@@ -4344,10 +4353,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 20,
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "carryOn": true }
+      "native": { "carryOn": true },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_run", "name": { "ru": "Дольше перегон", "en": "Longer Run" }, "effect": { "hits": 8 } }, { "id": "strong_spirit", "name": { "ru": "Крепкий спирт", "en": "Strong Spirit" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "double_distill", "name": { "ru": "Двойная перегонка", "en": "Double Distillation" }, "cooldown": 0.7 }, { "id": "cheap_run", "name": { "ru": "Перегон даром", "en": "Free Run" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "triple_distill", "name": { "ru": "Тройная перегонка", "en": "Triple Distillation" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "still_down_the_line", "name": { "ru": "Перегон по очереди", "en": "Run Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "keg_into_the_fire",
+      "formerIds": ["add_firewood"],
       "kind": "active",
       "weapon": "still_burner",
       "tier": "common",
@@ -4358,25 +4369,12 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
       "effect": { "type": "addStacks", "dot": "burn", "stacks": 5, "multiplier": 10 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.4} }
-    },
-    {
-      "id": "simmer",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "common",
-      "role": "heavy",
-      "color": "blue",
-      "name": { "ru": "Томить на огне", "en": "Simmer" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 25,
-      "durationSeconds": 6,
-      "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "modifiers": [{"stat": "pressureDecay", "kind": "increased", "value": 1}] }
+      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.4} },
+      "branches": [{ "level": 5, "options": [{ "id": "bigger_keg", "name": { "ru": "Бочонок побольше", "en": "Bigger Keg" }, "effect": { "stacks": 6 } }, { "id": "quick_keg", "name": { "ru": "Быстрый бочонок", "en": "Quick Keg" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "add_firewood", "name": { "ru": "Подкинуть дров", "en": "Add Firewood" }, "cooldown": 1.2, "effect": { "multiplier": 13 } }, { "id": "cheap_keg", "name": { "ru": "Бочонок даром", "en": "Free Keg" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "powder_keg", "name": { "ru": "Пороховая бочка", "en": "Powder Keg" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "keg_on_the_line", "name": { "ru": "Бочонок в очередь", "en": "Keg down the Line" }, "cooldown": 1.3, "effect": { "stacks": 8 } }] }]
     },
     {
       "id": "warm_stove",
+      "formerIds": ["sooty_hands"],
       "kind": "aura",
       "weapon": "still_burner",
       "tier": "common",
@@ -4387,49 +4385,12 @@
       "cooldownSeconds": 20,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}] },
-      "native": { "modifiers": [{"stat": "pressureDecay", "kind": "increased", "value": 0.5}] }
-    },
-    {
-      "id": "sooty_hands",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Закопчённые руки", "en": "Sooty Hands" },
-      "tags": ["Click", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}] },
-      "native": { "when": {"dotStacksAtLeast": 1, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Click"]}]} }
-    },
-    {
-      "id": "smell_of_mash",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Запах браги", "en": "Smell of Mash" },
-      "tags": ["DoT", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 20, "maxSteps": 5, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["DoT"]}] },
-      "native": { "when": {"resourceAtLeast": 50, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["DoT"]}]} }
-    },
-    {
-      "id": "bottle_for_sale",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "common",
-      "color": "blue",
-      "name": { "ru": "Бутылка на продажу", "en": "Bottle for Sale" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "modifiers": [{"stat": "pressureDecay", "kind": "increased", "value": 0.1}] }
+      "native": { "modifiers": [{"stat": "pressureDecay", "kind": "increased", "value": 0.5}] },
+      "branches": [{ "level": 5, "options": [{ "id": "hotter_stove", "name": { "ru": "Жарче печка", "en": "Hotter Stove" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["DoT"] }] } }, { "id": "small_stove", "name": { "ru": "Печурка", "en": "Little Stove" }, "cost": 0.5 }] }, { "level": 15, "options": [{ "id": "sooty_hands", "name": { "ru": "Закопчённые руки", "en": "Sooty Hands" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"] }, { "stat": "damage", "kind": "increased", "value": 0.08, "tags": ["Click"] }] } }, { "id": "long_stove", "name": { "ru": "Долгое тепло", "en": "Lasting Warmth" }, "duration": 1.5 }] }, { "level": 25, "options": [{ "id": "russian_stove", "name": { "ru": "Русская печь", "en": "Great Stove" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.3, "tags": ["DoT"] }, { "stat": "critChance", "kind": "flat", "value": 0.05 }] } }, { "id": "stove_all_night", "name": { "ru": "Печка всю ночь", "en": "Stove All Night" }, "cooldown": 1.3, "duration": 2 }] }]
     },
     {
       "id": "mash_barrel",
+      "formerIds": ["simmer"],
       "kind": "active",
       "weapon": "still_burner",
       "tier": "rare",
@@ -4441,66 +4402,12 @@
       "cooldownSeconds": 30,
       "effect": {"type": "addStacks", "dot": "burn", "stacks": 10, "multiplier": 10, "delaySeconds": 5},
       "native": {"when": {"resourceAtLeast": 70, "multiplier": 1.5}},
-      "durationSeconds": 5
-    },
-    {
-      "id": "fire_through_the_coil",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "rare",
-      "role": "fast",
-      "color": "blue",
-      "name": { "ru": "Огонь по змеевику", "en": "Fire through the Coil" },
-      "tags": ["DoT", "Skill"],
-      "cost": { "resource": 10 },
-      "cooldownSeconds": 5,
-      "effect": { "type": "addStacks", "dot": "burn", "stacks": 2, "multiplier": 2 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 2} }
-    },
-    {
-      "id": "spirit_jet",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "rare",
-      "role": "fast",
-      "color": "blue",
-      "name": { "ru": "Струя спирта", "en": "Spirit Jet" },
-      "tags": ["Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 5,
-      "effect": { "type": "strike", "multiplier": 4 },
-      "native": { "when": {"dotStacksAtLeast": 1, "multiplier": 1.5} }
-    },
-    {
-      "id": "add_firewood",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "rare",
-      "role": "fast",
-      "color": "blue",
-      "name": { "ru": "Подкинуть дров", "en": "Add Firewood" },
-      "tags": ["DoT", "Skill"],
-      "cost": { "resource": 20 },
-      "cooldownSeconds": 6,
-      "effect": { "type": "addStacks", "dot": "burn", "stacks": 5, "multiplier": 1 },
-      "native": { "when": {"mouseMoving": true, "multiplier": 1.6} }
-    },
-    {
-      "id": "coil_into_the_line",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "blue",
-      "name": { "ru": "Змеевик в очередь", "en": "Coil into the Line" },
-      "tags": ["Skill"],
-      "cost": { "resource": 50 },
-      "cooldownSeconds": 30,
-      "effect": { "type": "strike", "multiplier": 12, "queueTargets": 2 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} }
+      "durationSeconds": 5,
+      "branches": [{ "level": 5, "options": [{ "id": "riper_mash", "name": { "ru": "Спелее брага", "en": "Riper Mash" }, "effect": { "stacks": 12 } }, { "id": "quick_mash", "name": { "ru": "Быстрая брага", "en": "Quick Mash" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "simmer", "name": { "ru": "Томить на огне", "en": "Simmer" }, "cooldown": 1.15, "effect": { "multiplier": 12 } }, { "id": "cheap_mash", "name": { "ru": "Брага даром", "en": "Free Mash" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "old_barrel", "name": { "ru": "Старая бочка", "en": "Old Barrel" }, "cooldown": 1.3, "effect": { "stacks": 15 } }, { "id": "short_ferment", "name": { "ru": "Короткое брожение", "en": "Short Ferment" }, "cooldown": 0.85, "effect": { "delaySeconds": 3 } }] }]
     },
     {
       "id": "steady_flame",
+      "formerIds": ["the_still_remembers"],
       "kind": "aura",
       "weapon": "still_burner",
       "tier": "rare",
@@ -4510,49 +4417,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}], "reserve": 20 },
-      "native": { "when": {"mouseMoving": true, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15, "tags": ["DoT"]}]} }
-    },
-    {
-      "id": "night_brew",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "rare",
-      "color": "blue",
-      "name": { "ru": "Ночная варка", "en": "Night Brew" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 30,
-      "durationSeconds": 15,
-      "effect": { "type": "keyRepeat", "every": 10, "multiplier": 2, "input": "mouse" },
-      "native": { "modifiers": [{"stat": "pressureDecay", "kind": "increased", "value": 1}] }
-    },
-    {
-      "id": "steam_whistle",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "rare",
-      "color": "blue",
-      "name": { "ru": "Пар в свисток", "en": "Steam Whistle" },
-      "tags": ["Mouse", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "hitStrike", "input": "mouse", "every": 25, "multiplier": 5 },
-      "native": { "modifiers": [{"stat": "pressureDecay", "kind": "increased", "value": 0.2}] }
-    },
-    {
-      "id": "the_still_remembers",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "rare",
-      "locked": true,
-      "color": "blue",
-      "name": { "ru": "Аппарат помнит", "en": "The Still Remembers" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "when": {"mouseMoving": true, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15, "tags": ["DoT"]}]} },
+      "branches": [{ "level": 5, "options": [{ "id": "steadier_flame", "name": { "ru": "Ровнее пламя", "en": "Steadier Flame" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["DoT"] }] } }, { "id": "low_flame", "name": { "ru": "Слабый огонь", "en": "Low Flame" }, "effect": { "reserve": 15 } }] }, { "level": 15, "options": [{ "id": "the_still_remembers", "name": { "ru": "Аппарат помнит", "en": "The Still Remembers" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"] }, { "stat": "critChance", "kind": "flat", "value": 0.03 }] } }, { "id": "blue_flame", "name": { "ru": "Синее пламя", "en": "Blue Flame" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"] }, { "stat": "resourceGain", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "roaring_flame", "name": { "ru": "Ревущее пламя", "en": "Roaring Flame" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.35, "tags": ["DoT"] }], "reserve": 30 } }, { "id": "pilot_light", "name": { "ru": "Запальник", "en": "Pilot Light" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.12, "tags": ["DoT"] }], "reserve": 10 } }] }]
     },
     {
       "id": "the_steam_will_tell",
+      "formerIds": ["bucket_into_the_bonfire"],
       "kind": "active",
       "weapon": "still_burner",
       "tier": "epic",
@@ -4563,10 +4433,12 @@
       "cost": {"resource": 40},
       "cooldownSeconds": 20,
       "effect": {"type": "strike", "multiplier": 5, "burnStacks": 5},
-      "native": {"spendAll": {"perPoint": 0.1, "max": 10}}
+      "native": {"spendAll": {"perPoint": 0.1, "max": 10}},
+      "branches": [{ "level": 5, "options": [{ "id": "more_steam", "name": { "ru": "Больше пара", "en": "More Steam" }, "effect": { "burnStacks": 6 } }, { "id": "quick_steam", "name": { "ru": "Быстрый пар", "en": "Quick Steam" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "bucket_into_the_bonfire", "name": { "ru": "Ведро в костёр", "en": "Bucket into the Bonfire" }, "effect": { "multiplier": 6 } }, { "id": "cheap_steam", "name": { "ru": "Пар даром", "en": "Free Steam" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "steam_burst", "name": { "ru": "Выброс пара", "en": "Steam Burst" }, "cooldown": 1.3, "effect": { "burnStacks": 8 } }, { "id": "steam_down_the_line", "name": { "ru": "Пар по очереди", "en": "Steam Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "broken_gauge",
+      "formerIds": ["bottomless_fire"],
       "kind": "active",
       "weapon": "still_burner",
       "tier": "epic",
@@ -4576,10 +4448,12 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": {"type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}]},
-      "native": {"modifiers": [{"stat": "overheatBurst", "kind": "flat", "value": 20}, {"stat": "overheatDisabled", "kind": "flat", "value": 1}], "when": {"resourceAtLeast": 50, "resourceAtMost": 90, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.5, "tags": ["DoT"]}]}}
+      "native": {"modifiers": [{"stat": "overheatBurst", "kind": "flat", "value": 20}, {"stat": "overheatDisabled", "kind": "flat", "value": 1}], "when": {"resourceAtLeast": 50, "resourceAtMost": 90, "modifiers": [{"stat": "damage", "kind": "more", "value": 0.5, "tags": ["DoT"]}]}},
+      "branches": [{ "level": 5, "options": [{ "id": "cracked_glass_m", "name": { "ru": "Треснувшее стекло", "en": "Cracked Glass" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.25, "tags": ["DoT"] }] } }, { "id": "bent_needle", "name": { "ru": "Погнутая стрелка", "en": "Bent Needle" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.15, "tags": ["DoT"] }, { "stat": "resourceGain", "kind": "increased", "value": 0.1 }] } }] }, { "level": 15, "options": [{ "id": "bottomless_fire", "name": { "ru": "Огонь без дна", "en": "Bottomless Fire" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"] }, { "stat": "dotStacks", "kind": "flat", "value": 10 }] } }, { "id": "loose_valve", "name": { "ru": "Слабый клапан", "en": "Loose Valve" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"] }, { "stat": "critChance", "kind": "flat", "value": 0.03 }] } }] }, { "level": 25, "options": [{ "id": "no_gauge", "name": { "ru": "Без манометра", "en": "No Gauge at All" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.35, "tags": ["DoT"] }] } }, { "id": "gauge_on_a_string", "name": { "ru": "Манометр на верёвочке", "en": "Gauge on a String" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"] }, { "stat": "dotStacks", "kind": "flat", "value": 15 }] } }] }]
     },
     {
       "id": "dry_run",
+      "formerIds": ["three_drops"],
       "kind": "active",
       "weapon": "still_burner",
       "tier": "epic",
@@ -4590,41 +4464,15 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"dotStacksAtLeast": 30, "executeBelow": 0.2} }
-    },
-    {
-      "id": "three_drops",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "epic",
-      "role": "fast",
-      "color": "blue",
-      "name": { "ru": "Три капли", "en": "Three Drops" },
-      "tags": ["Mouse", "Skill"],
-      "cost": { "resource": 30 },
-      "cooldownSeconds": 8,
-      "durationSeconds": 10,
-      "effect": { "type": "keyRepeat", "every": 1, "multiplier": 1, "hits": 5, "input": "mouse" },
-      "native": { "durationMultiplier": 1.2 }
-    },
-    {
-      "id": "bucket_into_the_bonfire",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "epic",
-      "role": "heavy",
-      "locked": true,
-      "color": "blue",
-      "name": { "ru": "Ведро в костёр", "en": "Bucket into the Bonfire" },
-      "tags": ["DoT", "Skill"],
-      "cost": { "resource": 60 },
-      "cooldownSeconds": 30
+      "native": { "when": {"dotStacksAtLeast": 30, "executeBelow": 0.2} },
+      "branches": [{ "level": 5, "options": [{ "id": "drier_run", "name": { "ru": "Суше перегон", "en": "Drier Run" }, "damage": 1.3 }, { "id": "quick_dry", "name": { "ru": "Быстрый перегон", "en": "Quick Run" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "three_drops", "name": { "ru": "Три капли", "en": "Three Drops" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_dry", "name": { "ru": "Перегон даром", "en": "Free Run" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "bone_dry", "name": { "ru": "Досуха", "en": "Bone Dry" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "pure_spirit", "name": { "ru": "Чистый спирт", "en": "Pure Spirit" }, "damage": 1.7 }] }]
     },
     {
       "id": "guild_workshop",
+      "formerIds": ["smell_of_mash"],
       "kind": "aura",
       "weapon": "still_burner",
-      "tier": "epic",
+      "tier": "rare",
       "color": "blue",
       "name": { "ru": "Цех гильдии", "en": "Guild Workshop" },
       "tags": ["Aura", "Skill"],
@@ -4632,10 +4480,12 @@
       "cooldownSeconds": 40,
       "durationSeconds": 15,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.3, "tags": ["DoT"]}] },
-      "native": { "modifiers": [{"stat": "overheatDisabled", "kind": "flat", "value": 1}] }
+      "native": { "modifiers": [{"stat": "overheatDisabled", "kind": "flat", "value": 1}] },
+      "branches": [{ "level": 5, "options": [{ "id": "busier_workshop", "name": { "ru": "Шумнее цех", "en": "Busier Workshop" }, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.36, "tags": ["DoT"] }] } }, { "id": "quick_workshop", "name": { "ru": "Быстрый цех", "en": "Quick Workshop" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "smell_of_mash", "name": { "ru": "Запах браги", "en": "Smell of Mash" }, "duration": 1.4 }, { "id": "cheap_workshop", "name": { "ru": "Цех даром", "en": "Free Workshop" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "master_guild", "name": { "ru": "Гильдия мастеров", "en": "Master Guild" }, "cooldown": 1.3, "effect": { "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.45, "tags": ["DoT"] }] } }, { "id": "night_shift_m", "name": { "ru": "Цех в ночную", "en": "Workshop on Night Shift" }, "duration": 1.8, "cooldown": 1.3 }] }]
     },
     {
       "id": "the_whole_keg",
+      "formerIds": ["coil_into_the_line"],
       "kind": "active",
       "weapon": "still_burner",
       "tier": "legendary",
@@ -4646,7 +4496,8 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 8,
       "effect": { "type": "strike", "multiplier": 15, "queueTargets": 3 },
-      "native": { "when": {"resourceAtLeast": 90, "free": true} }
+      "native": { "when": {"resourceAtLeast": 90, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "fuller_keg", "name": { "ru": "Полнее бочонок", "en": "Fuller Keg" }, "damage": 1.3 }, { "id": "quick_whole", "name": { "ru": "Быстрый бочонок", "en": "Quick Keg" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "coil_into_the_line", "name": { "ru": "Змеевик в очередь", "en": "Coil into the Line" }, "effect": { "queueMultiplier": 1.5 } }, { "id": "light_keg", "name": { "ru": "Лёгкий бочонок", "en": "Light Keg" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "cellar_keg", "name": { "ru": "Весь погреб", "en": "The Whole Cellar" }, "damage": 0.9, "effect": { "queueMultiplier": 2 } }, { "id": "one_glass", "name": { "ru": "Одна стопка", "en": "One Glass" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "warehouse_fire",
@@ -4660,20 +4511,8 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "carryOn": true }
-    },
-    {
-      "id": "bottomless_fire",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "legendary",
-      "color": "blue",
-      "name": { "ru": "Огонь без дна", "en": "Bottomless Fire" },
-      "tags": ["DoT", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "dotStacks", "kind": "flat", "value": 20}] },
-      "native": { "modifiers": [{"stat": "dotStacks", "kind": "flat", "value": 10}] }
+      "native": { "carryOn": true },
+      "branches": [{ "level": 5, "options": [{ "id": "bigger_fire", "name": { "ru": "Больше огня", "en": "Bigger Fire" }, "effect": { "hits": 36 } }, { "id": "hotter_fire", "name": { "ru": "Жарче огонь", "en": "Hotter Fire" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "quick_fire", "name": { "ru": "Быстрый пожар", "en": "Quick Fire" }, "cooldown": 0.75 }, { "id": "cheap_fire", "name": { "ru": "Пожар даром", "en": "Free Fire" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "whole_quarter_burns", "name": { "ru": "Горит весь квартал", "en": "The Whole Quarter Burns" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "flashover", "name": { "ru": "Вспышка", "en": "Flashover" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "last_drop",
@@ -4687,13 +4526,15 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 4,
       "effect": { "type": "detonate", "seconds": 5 },
-      "native": { "carryOn": true }
+      "native": { "carryOn": true },
+      "branches": [{ "level": 5, "options": [{ "id": "sooner_drop", "name": { "ru": "Капля раньше", "en": "Sooner Drop" }, "effect": { "seconds": 4.5 } }, { "id": "quick_last_d", "name": { "ru": "Быстрая капля", "en": "Quick Drop" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "heavy_drop", "name": { "ru": "Тяжёлая капля", "en": "Heavy Drop" }, "damage": 1.2 }, { "id": "cheap_last_d", "name": { "ru": "Капля даром", "en": "Free Drop" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "cup_runneth_over", "name": { "ru": "Через край", "en": "Overflowing" }, "cooldown": 1.3, "effect": { "seconds": 4 } }, { "id": "slow_drop", "name": { "ru": "Медленная капля", "en": "Slow Drop" }, "damage": 1.4, "cooldown": 1.25 }] }]
     },
     {
       "id": "big_exhale_of_the_still",
+      "formerIds": ["gauge_from_the_underside"],
       "kind": "aura",
       "weapon": "still_burner",
-      "tier": "mythic",
+      "tier": "epic",
       "role": "heavy",
       "color": "blue",
       "name": { "ru": "Большой выдох аппарата", "en": "Big Exhale of the Still" },
@@ -4702,10 +4543,12 @@
       "cooldownSeconds": 60,
       "durationSeconds": 10,
       "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 4, "tags": ["DoT"]}] },
-      "native": { "durationMultiplier": 1.5 }
+      "native": { "durationMultiplier": 1.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_exhale", "name": { "ru": "Дольше выдох", "en": "Longer Exhale" }, "duration": 1.3 }, { "id": "quick_exhale", "name": { "ru": "Быстрый выдох", "en": "Quick Exhale" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "gauge_from_the_underside", "name": { "ru": "Манометр из Изнанки", "en": "Gauge from the Underside" }, "cost": 0.6 }, { "id": "long_exhale", "name": { "ru": "Глубокий выдох", "en": "Deep Exhale" }, "duration": 1.6, "cooldown": 1.3 }] }, { "level": 25, "options": [{ "id": "great_exhale", "name": { "ru": "Великий выдох", "en": "Great Exhale" }, "cooldown": 1.4, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 5, "tags": ["DoT"] }] } }, { "id": "sigh", "name": { "ru": "Вздох", "en": "Sigh" }, "cooldown": 0.6, "effect": { "modifiers": [{ "stat": "damage", "kind": "more", "value": 2.5, "tags": ["DoT"] }] } }] }]
     },
     {
       "id": "the_steam_has_spoken",
+      "formerIds": ["fire_that_remembers"],
       "kind": "active",
       "weapon": "still_burner",
       "tier": "mythic",
@@ -4716,32 +4559,8 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 90,
       "effect": { "type": "addStacks", "dot": "burn", "stacks": 30, "multiplier": 20 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} }
-    },
-    {
-      "id": "gauge_from_the_underside",
-      "kind": "active",
-      "weapon": "still_burner",
-      "tier": "mythic",
-      "color": "blue",
-      "name": { "ru": "Манометр из Изнанки", "en": "Gauge from the Underside" },
-      "tags": ["DoT", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "scaled", "by": "resource", "per": 10, "maxSteps": 5, "perStep": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["DoT"]}], "from": 100, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["DoT"]}] },
-      "native": { "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}] }
-    },
-    {
-      "id": "fire_that_remembers",
-      "kind": "aura",
-      "weapon": "still_burner",
-      "tier": "mythic",
-      "locked": true,
-      "color": "blue",
-      "name": { "ru": "Огонь, который помнит", "en": "Fire That Remembers" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} },
+      "branches": [{ "level": 5, "options": [{ "id": "louder_steam", "name": { "ru": "Громче пар", "en": "Louder Steam" }, "effect": { "stacks": 36 } }, { "id": "hotter_steam", "name": { "ru": "Горячее пар", "en": "Hotter Steam" }, "effect": { "multiplier": 24 } }] }, { "level": 15, "options": [{ "id": "fire_that_remembers", "name": { "ru": "Огонь, который помнит", "en": "Fire That Remembers" }, "cooldown": 0.75 }, { "id": "cheap_spoken", "name": { "ru": "Пар даром", "en": "Free Steam" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "boiler_burst", "name": { "ru": "Котёл лопнул", "en": "The Boiler Bursts" }, "cooldown": 1.3, "effect": { "stacks": 45 } }, { "id": "last_word_m", "name": { "ru": "Последнее слово пара", "en": "Steam's Last Word" }, "cooldown": 1.3, "effect": { "multiplier": 30 } }] }]
     },
     {
       "id": "restless_earth",
