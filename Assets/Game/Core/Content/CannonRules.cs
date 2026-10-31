@@ -10,6 +10,7 @@ namespace Game.Core.Content
             BroadsideBalls = broadsideBalls;
         }
 
+        public double IgniteStacks { get; private set; }
         public int Max { get; }
         public double ResourcePerShot { get; }
         public double BroadsidePx { get; }
@@ -22,7 +23,7 @@ namespace Game.Core.Content
                 node.Field("max").AsInt(0, Sim.MinionSystem.Capacity),
                 node.Field("resourcePerShot").AsNumber(0, 1000),
                 broadside.Field("mousePx").AsNumber(1, 1e9),
-                broadside.Field("balls").AsNumber(0, 1000));
+                broadside.Field("balls").AsNumber(0, 1000)) { IgniteStacks = node.Field("igniteStacks").AsNumber(0, 1000) };
         }
     }
 }

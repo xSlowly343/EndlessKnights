@@ -144,6 +144,8 @@ namespace Game.Core.Sim
 
         private void Hit(MinionKind kind, double multiplier, StatTags tags)
         {
+            if (_state.FightingBoss)
+                multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.MinionBoss, 0, StatTags.Minion));
             _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags);
             var share = _hero.Value(CombatStats.MinionQueueShare, 0, StatTags.Minion);
             if (share > 0)
@@ -157,8 +159,18 @@ namespace Game.Core.Sim
                 return;
             CannonShots++;
             _state.CannonShotsOnEnemy++;
+            FireShot();
             CannonExtras(multiplier, tags);
             _resource.Gain(_combat.Cannons.ResourcePerShot * _hero.Value(CombatStats.ResourceGain, 1));
+        }
+
+        private void FireShot()
+        {
+            if (!_state.Is(HeroClass.Captain) || !_state.EnemyAlive)
+                return;
+            var stacks = _combat.Cannons.IgniteStacks + _hero.Value(CombatStats.CannonIgnite, 0, StatTags.Minion);
+            if (stacks > 0)
+                _dots.AddBurn(stacks);
         }
 
         private void Ignite()
@@ -193,11 +205,23 @@ namespace Game.Core.Sim
                 return;
             var rules = _combat.Cannons;
             _state.BroadsidePx += input.MousePx;
-            while (_state.BroadsidePx >= rules.BroadsidePx)
+            var every = System.Math.Max(rules.BroadsidePx * 0.25, rules.BroadsidePx + System.Math.Min(0, _hero.Value(CombatStats.VolleyPx, 0, StatTags.Mouse)));
+            while (_state.BroadsidePx >= every)
             {
-                _state.BroadsidePx -= rules.BroadsidePx;
+                _state.BroadsidePx -= every;
                 _combat.SkillHit(_combat.BaseKeyDamage, rules.BroadsideBalls, StatTags.Skill | StatTags.Minion);
+                VolleyPierce(rules.BroadsideBalls);
             }
+        }
+
+        private void VolleyPierce(double balls)
+        {
+            var targets = System.Math.Min(_state.QueueDamage.Length, (int)System.Math.Round(System.Math.Max(0, _hero.Value(CombatStats.VolleyPierce, 0))));
+            if (targets <= 0)
+                return;
+            var damage = _combat.SkillDamage(_combat.BaseKeyDamage, balls, StatTags.Skill | StatTags.Minion);
+            for (var i = 0; i < targets; i++)
+                _state.QueueDamage[i] += damage;
         }
 
         private int FreeIndex()

@@ -29,6 +29,8 @@ namespace Game.Core.Tests.Sim
             return (loop, input);
         }
 
+        private static Modifier NoFire => new Modifier(CombatStats.CannonIgnite, ModifierKind.Flat, -Rules.IgniteStacks);
+
         private static void Wait(GameLoop loop, double seconds)
         {
             for (var i = 0; i < (int)System.Math.Round(seconds * GameLoop.TicksPerSecond); i++)
@@ -64,7 +66,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CannonFiresOncePerSecondByItselfAndFeedsPowder()
         {
-            var (loop, _) = Captain();
+            var (loop, _) = Captain(NoFire);
             Place(loop, 1);
             var hp = loop.State.EnemyHp;
 
@@ -130,7 +132,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void MinionDamageMakesCannonsHitHarder()
         {
-            var (loop, _) = Captain(new Modifier(CombatStats.Damage, ModifierKind.More, 0.5, StatTags.Minion));
+            var (loop, _) = Captain(NoFire, new Modifier(CombatStats.Damage, ModifierKind.More, 0.5, StatTags.Minion));
             Place(loop, 1);
             var hp = loop.State.EnemyHp;
 
