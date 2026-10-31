@@ -230,6 +230,9 @@ namespace Game.Core.Sim
         public static readonly StatId ChoirPartyOnly = new StatId("choirPartyOnly");
         public static readonly StatId ChoirPower = new StatId("choirPower");
         public static readonly StatId ChoirSoloShare = new StatId("choirSoloShare");
+        public static readonly StatId ThirdAura = new StatId("thirdAura");
+        public static readonly StatId ThirdAuraFree = new StatId("thirdAuraFree");
+        public static readonly StatId AuraInPause = new StatId("auraInPause");
         public static readonly StatId SlateEffect = new StatId("slateEffect");
         public static readonly StatId SlateChance = new StatId("slateChance");
         public static readonly StatId SlateRarity = new StatId("slateRarity");

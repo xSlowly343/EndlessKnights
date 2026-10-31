@@ -35,6 +35,7 @@
   },
   "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
   "classes": {
+    "bannerbearer": { "standingAuras": { "count": 2, "pauseSeconds": 1 } },
     "nomad": { "sand": { "every": 10, "everyMin": 4, "seconds": 4 } },
     "amazon": { "mark": { "every": 20, "everyMin": 5, "seconds": 8, "keyDamage": 0.2 } },
     "viking": { "shield": { "every": 15, "everyMin": 5, "multiplier": 2, "stunSeconds": 2 } },

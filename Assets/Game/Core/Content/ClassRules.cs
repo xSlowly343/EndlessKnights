@@ -43,6 +43,7 @@ namespace Game.Core.Content
         public HunterMarkRules HunterMark { get; private set; } = HunterMarkRules.None;
         public BlindRules Sand { get; private set; } = BlindRules.None;
         public OverdriveRules Overdrive { get; private set; } = OverdriveRules.None;
+        public StandingAuraRules StandingAuras { get; private set; } = StandingAuraRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -66,7 +67,8 @@ namespace Game.Core.Content
                 shield.Field("every").AsInt(1, 10000),
                 shield.Field("everyMin").AsInt(1, 10000),
                 shield.Field("multiplier").AsNumber(1, 1000),
-                shield.Field("stunSeconds").AsNumber(0, 60)) { HunterMark = HunterMarkRules.Read(node.Field("amazon").Field("mark")), Sand = BlindRules.Read(node.Field("nomad").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("metalhead").Field("overdrive")) };
+                shield.Field("stunSeconds").AsNumber(0, 60)) { HunterMark = HunterMarkRules.Read(node.Field("amazon").Field("mark")), Sand = BlindRules.Read(node.Field("nomad").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("metalhead").Field("overdrive")),
+                StandingAuras = StandingAuraRules.Read(node.Field("bannerbearer").Field("standingAuras")) };
         }
     }
 }

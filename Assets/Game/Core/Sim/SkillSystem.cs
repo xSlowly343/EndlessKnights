@@ -1722,7 +1722,31 @@ namespace Game.Core.Sim
         }
 
         private bool IdleOff(SkillSlot slot) =>
-            slot.Def.Effect is AuraEffect aura && aura.IdleOffSeconds > 0 && !IsNative(slot) && _state.IdleTicks > Ticks(aura.IdleOffSeconds);
+            slot.Def.Effect is AuraEffect aura && aura.IdleOffSeconds > 0 && !PauseProof(slot) && _state.IdleTicks > Ticks(aura.IdleOffSeconds);
+
+        private bool PauseProof(SkillSlot slot) => _state.Is(HeroClass.Bannerbearer) ? Standing(slot) : IsNative(slot);
+
+        public int StandingAuras =>
+            _state.Is(HeroClass.Bannerbearer) ? _combat.Classes.StandingAuras.Count + (_hero.Value(CombatStats.ThirdAura, 0) >= 1 ? 1 : 0) : 0;
+
+        public bool Standing(SkillSlot slot) => slot.Def.Reserves && StandingRank(slot) < StandingAuras;
+
+        private int StandingRank(SkillSlot slot)
+        {
+            var rank = 0;
+            var skills = _state.Skills;
+            for (var i = 0; i < skills.Count; i++)
+            {
+                if (ReferenceEquals(skills[i], slot))
+                    return rank;
+                if (skills[i].Def.Reserves)
+                    rank++;
+            }
+            return rank;
+        }
+
+        private bool FreeThirdAura(SkillSlot slot) =>
+            _state.Is(HeroClass.Bannerbearer) && _hero.Value(CombatStats.ThirdAuraFree, 0) >= 1 && StandingRank(slot) == _combat.Classes.StandingAuras.Count && Standing(slot);
 
         public void CastFromButtons(in EffectiveInput input)
         {
@@ -1879,7 +1903,7 @@ namespace Game.Core.Sim
         {
             if (aura == null || !aura.Reserves)
                 return;
-            var reserve = System.Math.Max(0, aura.Reserve + _hero.Value(CombatStats.AuraReserve, 0, StatTags.Aura));
+            var reserve = FreeThirdAura(slot) ? 0 : System.Math.Max(0, aura.Reserve + _hero.Value(CombatStats.AuraReserve, 0, StatTags.Aura));
             if (_hero.Value(CombatStats.AuraReserveOnce, 0, StatTags.Aura) > 0)
             {
                 _state.Resource = System.Math.Max(0, _state.Resource - reserve);
