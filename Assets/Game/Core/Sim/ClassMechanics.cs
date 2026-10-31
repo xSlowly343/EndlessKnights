@@ -23,6 +23,8 @@ namespace Game.Core.Sim
             flags = HitFlags.None;
             if (_state.Is(HeroClass.Viking))
                 return AncestorShield(ref flags);
+            if (_state.Is(HeroClass.Amazon))
+                return HunterMarkHit();
             if (!_state.Is(HeroClass.Ronin))
                 return 1;
 
@@ -50,6 +52,48 @@ namespace Game.Core.Sim
             return _rules.ShieldMultiplier * System.Math.Max(0, _hero.Value(CombatStats.ShieldDamage, 1, StatTags.Keyboard));
         }
 
+        private double HunterMarkHit()
+        {
+            var rules = _rules.HunterMark;
+            if (rules.Every <= 0 || ++_state.KeysTowardMark < MarkEvery)
+                return 1;
+            _state.KeysTowardMark = 0;
+            PlaceHunterMark();
+            return 1;
+        }
+
+        public int MarkEvery => System.Math.Max(_rules.HunterMark.EveryMin, (int)System.Math.Round(_rules.HunterMark.Every + _hero.Value(CombatStats.MarkEvery, 0, StatTags.Keyboard)));
+
+        public bool MarkFits =>
+            _hero.Value(CombatStats.MarkBossOnly, 0) < 1
+            || _state.EnemyType == EnemyType.Boss
+            || (_state.EnemyType == EnemyType.Guardian && _hero.Value(CombatStats.MarkOnGuardians, 0) >= 1);
+
+        private void PlaceHunterMark()
+        {
+            if (!_state.EnemyAlive || !MarkFits)
+                return;
+            if (_hero.Value(CombatStats.MarkForever, 0) >= 1)
+            {
+                _state.HunterMarkTicks = int.MaxValue;
+                return;
+            }
+            var seconds = _rules.HunterMark.Seconds + _hero.Value(CombatStats.MarkSeconds, 0);
+            _state.HunterMarkTicks = System.Math.Max(_state.HunterMarkTicks, (int)System.Math.Round(seconds * GameLoop.TicksPerSecond));
+        }
+
+        private void TickHunterMark()
+        {
+            if (_state.MarkedEnemyDied)
+            {
+                _state.MarkedEnemyDied = false;
+                if (_hero.Value(CombatStats.MarkJump, 0) >= 1)
+                    PlaceHunterMark();
+            }
+            if (_state.HunterMarkTicks > 0 && _state.HunterMarkTicks != int.MaxValue)
+                _state.HunterMarkTicks = _state.EnemyAlive ? _state.HunterMarkTicks - 1 : 0;
+        }
+
         public int ShieldEvery => System.Math.Max(_rules.ShieldEveryMin, (int)System.Math.Round(_rules.ShieldEvery + _hero.Value(CombatStats.ShieldEvery, 0, StatTags.Keyboard)));
 
         public int StrikeEvery
@@ -71,6 +115,7 @@ namespace Game.Core.Sim
         {
             if (_state.StunTicks > 0)
                 _state.StunTicks = _state.EnemyAlive ? _state.StunTicks - 1 : 0;
+            TickHunterMark();
             Clockwork();
             EndCombo(keyHits, mousePx);
         }

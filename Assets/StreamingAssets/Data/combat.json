@@ -35,6 +35,7 @@
   },
   "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
   "classes": {
+    "amazon": { "mark": { "every": 20, "everyMin": 5, "seconds": 8, "keyDamage": 0.2 } },
     "viking": { "shield": { "every": 15, "everyMin": 5, "multiplier": 2, "stunSeconds": 2 } },
     "ronin": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 50, "strikeEveryMin": 10, "strikeMultiplier": 3, "strikeTargets": 1, "breathEvery": 25, "whirlResource": 20 } },
     "metalhead": { "headbang": { "pxPerSecond": 2000, "maxSeconds": 30 } },

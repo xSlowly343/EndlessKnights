@@ -209,6 +209,14 @@ namespace Game.Core.Sim
         public static readonly StatId ShieldResource = new StatId("shieldResource");
         public static readonly StatId StunSeconds = new StatId("stunSeconds");
         public static readonly StatId DamageVsStunned = new StatId("damageVsStunned");
+        public static readonly StatId MarkEvery = new StatId("markEvery");
+        public static readonly StatId MarkSeconds = new StatId("markSeconds");
+        public static readonly StatId MarkDamage = new StatId("markDamage");
+        public static readonly StatId MarkPower = new StatId("markPower");
+        public static readonly StatId MarkForever = new StatId("markForever");
+        public static readonly StatId MarkJump = new StatId("markJump");
+        public static readonly StatId MarkBossOnly = new StatId("markBossOnly");
+        public static readonly StatId MarkOnGuardians = new StatId("markOnGuardians");
         public static readonly StatId SlateEffect = new StatId("slateEffect");
         public static readonly StatId SlateChance = new StatId("slateChance");
         public static readonly StatId SlateRarity = new StatId("slateRarity");

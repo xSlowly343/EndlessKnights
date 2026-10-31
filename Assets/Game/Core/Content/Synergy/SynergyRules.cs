@@ -180,10 +180,10 @@ namespace Game.Core.Content.Synergy
             int Mask(string field) => node.HasField(field) ? 1 << MarkOf(node.Field(field), markIndex) : 0;
             foreach (var name in node.FieldNames())
             {
-                if (name != SynergyStateMarks.PoisonField && name != SynergyStateMarks.BurnField && name != SynergyStateMarks.MinionsField && name != SynergyStateMarks.StunField)
-                    throw node.Field(name).Error($"unknown state '{name}', expected {SynergyStateMarks.PoisonField}, {SynergyStateMarks.BurnField}, {SynergyStateMarks.MinionsField} or {SynergyStateMarks.StunField}");
+                if (name != SynergyStateMarks.PoisonField && name != SynergyStateMarks.BurnField && name != SynergyStateMarks.MinionsField && name != SynergyStateMarks.StunField && name != SynergyStateMarks.HunterMarkField)
+                    throw node.Field(name).Error($"unknown state '{name}', expected {SynergyStateMarks.PoisonField}, {SynergyStateMarks.BurnField}, {SynergyStateMarks.MinionsField}, {SynergyStateMarks.StunField} or {SynergyStateMarks.HunterMarkField}");
             }
-            return new SynergyStateMarks(Mask(SynergyStateMarks.PoisonField), Mask(SynergyStateMarks.BurnField), Mask(SynergyStateMarks.MinionsField), Mask(SynergyStateMarks.StunField));
+            return new SynergyStateMarks(Mask(SynergyStateMarks.PoisonField), Mask(SynergyStateMarks.BurnField), Mask(SynergyStateMarks.MinionsField), Mask(SynergyStateMarks.StunField), Mask(SynergyStateMarks.HunterMarkField));
         }
 
         private static SynergyResponse ReadResponse(ContentNode node, Dictionary<string, int> markIndex)

@@ -237,7 +237,7 @@ namespace Game.Core.Sim
             else if (source == DamageSource.Mouse)
                 multiplier *= _state.SupportMouseBonus;
             LastHitCrit = false;
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags));
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags));
             if (damage.Sign <= 0)
                 return;
             _state.HitsOnEnemy++;
@@ -306,6 +306,14 @@ namespace Game.Core.Sim
 
         private double StunnedMultiplier(StatTags tags) =>
             _state.StunTicks > 0 ? System.Math.Max(0, _hero.Value(CombatStats.DamageVsStunned, 1, tags)) : 1;
+
+        public double MarkedMultiplier(StatTags tags)
+        {
+            if (_state.HunterMarkTicks <= 0)
+                return 1;
+            var bonus = ((tags & StatTags.Keyboard) != 0 ? _rules.Classes.HunterMark.KeyDamage : 0) + System.Math.Max(0, _hero.Value(CombatStats.MarkDamage, 0, tags));
+            return 1 + bonus * (1 + System.Math.Max(0, _hero.Value(CombatStats.MarkPower, 0)));
+        }
 
         private double ComboStrikeCritBonus(HitFlags flags) =>
             (flags & HitFlags.ComboStrike) != 0 ? 1 + System.Math.Max(0, _hero.Value(CombatStats.ComboStrikeCritMultiplier, 0, StatTags.Keyboard)) : 1;

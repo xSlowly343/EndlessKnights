@@ -254,6 +254,9 @@ namespace Game.Core.Sim
         public int KillsTowardRise { get; set; }
         public int KeysTowardShield { get; set; }
         public int StunTicks { get; set; }
+        public int KeysTowardMark { get; set; }
+        public int HunterMarkTicks { get; set; }
+        public bool MarkedEnemyDied { get; set; }
         public double ClockworkSlow { get; set; }
         public double ClockworkFloor { get; set; } = 1;
 
@@ -274,6 +277,8 @@ namespace Game.Core.Sim
             EnemyMaxHp = hp;
             HitsOnEnemy = 0;
             StunTicks = 0;
+            MarkedEnemyDied = HunterMarkTicks > 0;
+            HunterMarkTicks = 0;
             BossTimerStopTicks = 0;
             CannonShotsOnEnemy = 0;
             WandererBoss = false;

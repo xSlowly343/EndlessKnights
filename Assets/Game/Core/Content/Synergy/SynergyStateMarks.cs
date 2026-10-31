@@ -6,9 +6,11 @@ namespace Game.Core.Content.Synergy
         public const string BurnField = "burnOnEnemy";
         public const string MinionsField = "minionsOut";
         public const string StunField = "stunnedEnemy";
+        public const string HunterMarkField = "markedEnemy";
 
-        public SynergyStateMarks(int poison, int burn, int minions, int stun = 0)
+        public SynergyStateMarks(int poison, int burn, int minions, int stun = 0, int hunterMark = 0)
         {
+            HunterMark = hunterMark;
             Stun = stun;
             Poison = poison;
             Burn = burn;
@@ -19,5 +21,6 @@ namespace Game.Core.Content.Synergy
         public int Burn { get; }
         public int Minions { get; }
         public int Stun { get; }
+        public int HunterMark { get; }
     }
 }
