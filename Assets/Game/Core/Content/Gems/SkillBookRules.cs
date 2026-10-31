@@ -10,11 +10,13 @@ namespace Game.Core.Content.Gems
 
         private readonly long[] _slotUnlockStages;
         private readonly long[] _socketRecordStages;
+        private readonly int[] _auraSlotLevels;
         private readonly Dictionary<string, IReadOnlyList<GemDef>> _startingGems;
 
         private SkillBookRules(int baseSlots, long[] slotUnlockStages, int baseSockets, long[] socketRecordStages, int socketRebirths, int maxSockets,
-            Dictionary<string, IReadOnlyList<GemDef>> startingGems, double attributePerColoredSupport)
+            Dictionary<string, IReadOnlyList<GemDef>> startingGems, double attributePerColoredSupport, int[] auraSlotLevels)
         {
+            _auraSlotLevels = auraSlotLevels;
             AttributePerColoredSupport = attributePerColoredSupport;
             BaseSlots = baseSlots;
             _slotUnlockStages = slotUnlockStages;
@@ -48,6 +50,19 @@ namespace Game.Core.Content.Gems
             var step = slot - BaseSlots - (earlySlot ? 1 : 0);
             return step < 0 || slot >= MaxSlots ? 0 : _slotUnlockStages[step];
         }
+
+        public int AuraSlotsFor(int heroLevel)
+        {
+            var slots = 0;
+            foreach (var level in _auraSlotLevels)
+            {
+                if (heroLevel >= level)
+                    slots++;
+            }
+            return slots;
+        }
+
+        public int AuraSlotLevel(int slot) => slot >= 0 && slot < _auraSlotLevels.Length ? _auraSlotLevels[slot] : 0;
 
         public int SocketsFor(long recordStage, int rebirths)
         {
@@ -98,7 +113,23 @@ namespace Game.Core.Content.Gems
                 sockets.Field("rebirths").AsInt(0, 20),
                 sockets.Field("max").AsInt(1, Sim.SkillSlot.SocketCapacity),
                 starting,
-                sockets.Field("attributePerColoredSupport").AsNumber(1, 10000));
+                sockets.Field("attributePerColoredSupport").AsNumber(1, 10000),
+                ReadAuraSlotLevels(root.Field("auraSlots").Field("unlockLevels")));
+        }
+
+        private static int[] ReadAuraSlotLevels(ContentNode node)
+        {
+            var items = node.Items();
+            if (items.Count != Sim.SkillLoadout.AuraSlots)
+                throw node.Error($"expected {Sim.SkillLoadout.AuraSlots} aura slot levels, got {items.Count}");
+            var levels = new int[items.Count];
+            for (var i = 0; i < items.Count; i++)
+            {
+                levels[i] = items[i].AsInt(1, 1000);
+                if (i > 0 && levels[i] < levels[i - 1])
+                    throw items[i].Error("aura slot levels must not go down");
+            }
+            return levels;
         }
 
         private static long[] ReadStages(ContentNode node)

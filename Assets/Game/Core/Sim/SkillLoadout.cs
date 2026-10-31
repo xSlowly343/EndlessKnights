@@ -20,10 +20,10 @@ namespace Game.Core.Sim
 
         public static bool CastsByItself(SkillSlotRole role) => role == SkillSlotRole.Auto || role == SkillSlotRole.Aura;
 
-        public static int Capacity(SkillSlotRole role, int autoSlots) => role switch
+        public static int Capacity(SkillSlotRole role, int autoSlots, int auraSlots) => role switch
         {
             SkillSlotRole.Auto => autoSlots,
-            SkillSlotRole.Aura => AuraSlots,
+            SkillSlotRole.Aura => auraSlots,
             _ => 1
         };
 
@@ -58,14 +58,14 @@ namespace Game.Core.Sim
             return NoSlot;
         }
 
-        public static bool HasRoom(IReadOnlyList<SkillSlot> skills, SkillSlotRole role, int autoSlots) =>
-            Count(skills, role) < Capacity(role, autoSlots);
+        public static bool HasRoom(IReadOnlyList<SkillSlot> skills, SkillSlotRole role, int autoSlots, int auraSlots) =>
+            Count(skills, role) < Capacity(role, autoSlots, auraSlots);
 
-        public static SkillSlotRole? FreeRole(IReadOnlyList<SkillSlot> skills, GemDef skill, int autoSlots)
+        public static SkillSlotRole? FreeRole(IReadOnlyList<SkillSlot> skills, GemDef skill, int autoSlots = AutoSlots, int auraSlots = AuraSlots)
         {
             foreach (var role in IsAura(skill) ? AuraOrder : SkillOrder)
             {
-                if (HasRoom(skills, role, autoSlots))
+                if (HasRoom(skills, role, autoSlots, auraSlots))
                     return role;
             }
             return null;

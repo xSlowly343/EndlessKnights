@@ -95,7 +95,7 @@ namespace Game.Core.Sim
                 EquipTick = _state.Tick,
                 ReadyTick = _state.Tick,
                 KeyHitsAtCast = _state.KeyHits,
-                Role = role ?? SkillLoadout.FreeRole(_state.Skills, skill, SkillLoadout.AutoSlots) ?? SkillSlotRole.Auto
+                Role = role ?? SkillLoadout.FreeRole(_state.Skills, skill) ?? SkillSlotRole.Auto
             };
             _state.ProgressOf(skill);
             if (trigger != null)

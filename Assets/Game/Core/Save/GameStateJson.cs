@@ -1007,7 +1007,7 @@ namespace Game.Core.Save
                     CooldownTicks = item.Field("cooldownTicks").AsInt(0),
                     ActiveTicks = item.Field("activeTicks").AsInt(0),
                     HitsLeft = item.Field("hitsLeft").AsInt(0),
-                    Role = ReadRole(item, state.Skills.Count) ?? SkillLoadout.FreeRole(state.Skills, skill, SkillLoadout.AutoSlots) ?? SkillSlotRole.Auto
+                    Role = ReadRole(item, state.Skills.Count) ?? SkillLoadout.FreeRole(state.Skills, skill) ?? SkillSlotRole.Auto
                 };
                 ReadSupports(item, gems, slot.Supports);
                 state.Skills.Add(slot);

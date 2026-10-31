@@ -40,13 +40,15 @@ namespace Game.Core.Build
         public int SlotCount => _rules.SlotsFor(_state.RecordStage, _state.EarlyBookSlot);
         public int MaxSlots => _rules.MaxSlots;
         public int AutoSlotCount => System.Math.Max(0, SlotCount - SkillLoadout.HandSlots);
-        public int AuraSlotCount => SkillLoadout.AuraSlots;
+        public int AuraSlotCount => _rules.AuraSlotsFor(_state.HeroLevel);
 
-        public SkillSlotRole? FreeRoleFor(GemDef skill) => SkillLoadout.FreeRole(_state.Skills, skill, AutoSlotCount);
+        public int AuraSlotLevel(int slot) => _rules.AuraSlotLevel(slot);
+
+        public SkillSlotRole? FreeRoleFor(GemDef skill) => SkillLoadout.FreeRole(_state.Skills, skill, AutoSlotCount, AuraSlotCount);
 
         public bool HasRoomFor(GemDef skill) => FreeRoleFor(skill) != null;
 
-        public int Capacity(SkillSlotRole role) => SkillLoadout.Capacity(role, AutoSlotCount);
+        public int Capacity(SkillSlotRole role) => SkillLoadout.Capacity(role, AutoSlotCount, AuraSlotCount);
 
         public BookResult Assign(int index, SkillSlotRole role)
         {
@@ -57,7 +59,7 @@ namespace Game.Core.Build
                 return BookResult.Done;
             if (!SkillLoadout.Accepts(role, slot.Skill))
                 return BookResult.WrongSlot;
-            if (SkillLoadout.HasRoom(_state.Skills, role, AutoSlotCount))
+            if (SkillLoadout.HasRoom(_state.Skills, role, AutoSlotCount, AuraSlotCount))
             {
                 slot.Role = role;
                 return BookResult.Done;
