@@ -44,7 +44,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100) / before, Is.EqualTo(1.18).Within(1e-9));
             Assert.That(loop.Hero.Value(CombatStats.RedGemEffect, 1), Is.EqualTo(1.04).Within(1e-9));
             Assert.That(loop.Gear.In(GearSlot.Helmet), Is.SameAs(helmet));
-            Assert.That(loop.State.Drops.Gear, Does.Not.Contain(helmet));
+            Assert.That(loop.State.Drops.Gear, Has.No.Member(helmet));
 
             Assert.That(loop.Gear.Unequip(GearSlot.Helmet), Is.True);
             Assert.That(loop.Hero.Value(CombatStats.RedGemEffect, 1), Is.EqualTo(1).Within(1e-9));

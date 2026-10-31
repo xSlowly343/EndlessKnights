@@ -612,7 +612,7 @@ namespace Game.Presentation.Ui
             _mailPanel.Show(mailShown, _shownFrame.ContentPx);
             var settingsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Settings;
             _settingsPanel.Show(settingsShown, _shownFrame.HasSubTabs ? navigator.SubTab : 0, _shownFrame.ContentPx);
-            var placeholder = !navigator.ShowingMore && !_treeShown && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !partySearchShown && !statsShown && !mailShown && !settingsShown;
+            var placeholder = !navigator.ShowingMore && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !partySearchShown && !statsShown && !mailShown && !settingsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
