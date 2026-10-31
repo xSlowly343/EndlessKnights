@@ -12,7 +12,8 @@ namespace Game.Core.Content
         Atlas,
         Chronicle,
         SetCraft,
-        Dungeons
+        Dungeons,
+        Slates
     }
 
     public readonly struct UnlockCondition
@@ -41,7 +42,8 @@ namespace Game.Core.Content
             ["atlas"] = Feature.Atlas,
             ["chronicle"] = Feature.Chronicle,
             ["setCraft"] = Feature.SetCraft,
-            ["dungeons"] = Feature.Dungeons
+            ["dungeons"] = Feature.Dungeons,
+            ["slates"] = Feature.Slates
         };
 
         private readonly UnlockCondition[] _features;

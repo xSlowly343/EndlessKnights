@@ -4,6 +4,7 @@ using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Items;
 using Game.Core.Content.Json;
+using Game.Core.Content.Slates;
 using Game.Core.Content.Tree;
 using Game.Core.Content.Weapons;
 using Game.Core.Math;
@@ -76,6 +77,7 @@ namespace Game.Core.Save
                 ("rift", WriteRift(state.Rift)),
                 ("weapons", WriteWeapons(state.Weapons)),
                 ("drops", WriteDrops(state.Drops)),
+                ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
                 ("resonance", WriteLevels(state.Resonance)),
@@ -124,7 +126,7 @@ namespace Game.Core.Save
                     ("mousePx", JsonValue.Of(state.MouseCarryPx)))));
         }
 
-        public static GameState Read(ContentNode node, EnemyCatalog enemies, GemCatalog gems, WeaponCatalog weapons, ItemCatalog? items = null)
+        public static GameState Read(ContentNode node, EnemyCatalog enemies, GemCatalog gems, WeaponCatalog weapons, ItemCatalog? items = null, SlateRules? slates = null)
         {
             var rng = node.Field("rng").Items();
             if (rng.Count != 2)
@@ -242,6 +244,8 @@ namespace Game.Core.Save
                 ReadWeapons(node.Field("weapons"), weapons, items, state.Weapons);
             if (node.HasField("drops"))
                 ReadDrops(node.Field("drops"), state.Drops, items);
+            if (node.HasField("slates") && slates != null)
+                ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
                 ReadChronicle(node.Field("chronicle"), state.Chronicle);
             if (node.HasField("atlas"))
@@ -346,6 +350,78 @@ namespace Game.Core.Save
                 if (!chronicle.Completed.Contains(id))
                     chronicle.Completed.Add(id);
             }
+        }
+
+        private static JsonValue WriteSlates(SlateState slates)
+        {
+            var (rng0, rng1) = slates.Rng.State;
+            var bag = new JsonValue[slates.Bag.Count];
+            for (var i = 0; i < bag.Length; i++)
+                bag[i] = WriteSlate(slates.Bag[i]);
+            var board = new JsonValue[slates.Board.Count];
+            for (var i = 0; i < board.Length; i++)
+            {
+                var placement = slates.Board[i];
+                board[i] = Object(("slate", WriteSlate(placement.Slate)), ("x", JsonValue.Of(placement.X)), ("y", JsonValue.Of(placement.Y)),
+                    ("rotation", JsonValue.Of(placement.Rotation)));
+            }
+            return Object(
+                ("rng", JsonValue.Array(new[] { SaveValues.Of(rng0), SaveValues.Of(rng1) })),
+                ("found", JsonValue.Of(slates.Found)),
+                ("bag", JsonValue.Array(bag)),
+                ("board", JsonValue.Array(board)));
+        }
+
+        private static JsonValue WriteSlate(SlateItem slate)
+        {
+            var lines = new JsonValue[slate.Lines.Count];
+            for (var i = 0; i < lines.Length; i++)
+                lines[i] = JsonValue.Of(slate.Lines[i].Id);
+            return Object(
+                ("shape", JsonValue.Of(slate.Shape.Id)),
+                ("theme", JsonValue.Of(slate.Theme.Id)),
+                ("rarity", JsonValue.Of(SlateRarityNames.Of(slate.Rarity))),
+                ("tempered", JsonValue.Of(slate.Tempered)),
+                ("lines", JsonValue.Array(lines)));
+        }
+
+        private static void ReadSlates(ContentNode node, SlateRules rules, SlateState slates)
+        {
+            var rng = node.Field("rng").Items();
+            if (rng.Count == 2)
+            {
+                var rng0 = SaveValues.ReadULong(rng[0]);
+                var rng1 = SaveValues.ReadULong(rng[1]);
+                if (rng0 != 0 || rng1 != 0)
+                    slates.Rng = Rng.FromState(rng0, rng1);
+            }
+            slates.Found = node.Field("found").AsLong(0);
+            foreach (var item in node.Field("bag").Items())
+            {
+                var slate = ReadSlate(item, rules);
+                if (slate != null)
+                    slates.Bag.Add(slate);
+            }
+            foreach (var item in node.Field("board").Items())
+            {
+                var slate = ReadSlate(item.Field("slate"), rules);
+                if (slate != null)
+                    slates.Board.Add(new SlatePlacement(slate, item.Field("x").AsInt(0, 64), item.Field("y").AsInt(0, 64), item.Field("rotation").AsInt(0, 3)));
+            }
+        }
+
+        private static SlateItem? ReadSlate(ContentNode node, SlateRules rules)
+        {
+            if (!rules.TryGetShape(node.Field("shape").AsString(), out var shape) || !rules.TryGetTheme(node.Field("theme").AsString(), out var theme)
+                || !SlateRarityNames.TryParse(node.Field("rarity").AsString(), out var rarity))
+                return null;
+            var lines = new List<SlateLine>();
+            foreach (var id in node.Field("lines").Items())
+            {
+                if (rules.TryGetLine(id.AsString(), out var line))
+                    lines.Add(line);
+            }
+            return new SlateItem(shape, theme, rarity, lines, node.Field("tempered").AsBool());
         }
 
         private static JsonValue WriteDrops(DropState drops)

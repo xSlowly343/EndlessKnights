@@ -209,5 +209,8 @@ namespace Game.Core.Sim
         public static readonly StatId ShieldResource = new StatId("shieldResource");
         public static readonly StatId StunSeconds = new StatId("stunSeconds");
         public static readonly StatId DamageVsStunned = new StatId("damageVsStunned");
+        public static readonly StatId SlateEffect = new StatId("slateEffect");
+        public static readonly StatId SlateChance = new StatId("slateChance");
+        public static readonly StatId SlateRarity = new StatId("slateRarity");
     }
 }

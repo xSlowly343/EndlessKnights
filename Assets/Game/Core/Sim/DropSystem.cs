@@ -146,6 +146,7 @@ namespace Game.Core.Sim
         }
 
         public DungeonRules? Dungeons { get; set; }
+        public SlateSystem? Slates { get; set; }
 
         private void RollKey(long stage, EnemyType type)
         {
@@ -192,6 +193,7 @@ namespace Game.Core.Sim
             if (tier.UniqueChance > 0 && rng.NextDouble() < System.Math.Min(1, tier.UniqueChance * scale))
                 GiveUnique(tier.Stage, DropSource.Dungeon);
             _state.Drops.Shards += (long)System.Math.Round(tier.Shards * scale);
+            Slates?.OnDungeon();
         }
 
         public void GiveLimitUnique(long stage) => GiveUnique(stage, DropSource.Limit);
@@ -287,7 +289,10 @@ namespace Game.Core.Sim
                 return;
             GiveShards(stage, type, recordBefore);
             if (stage >= recordBefore)
+            {
                 GiveRecordItems(stage, type);
+                Slates?.OnRecordBoss(stage, type, BiomeNumber(stage));
+            }
             RollKey(stage, type);
             if (_rules.Daily.Allows(stage, recordBefore))
                 RollDaily(stage, DropSource.Daily, _rules.Daily.Chance);
@@ -325,6 +330,7 @@ namespace Game.Core.Sim
                     Deliver(drop);
             }
             _pendingCount = 0;
+            Slates?.Flush();
         }
 
         private void Push(PendingDrop drop)

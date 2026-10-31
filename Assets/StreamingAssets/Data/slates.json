@@ -1,0 +1,1275 @@
+{
+  "version": 1,
+  "board": {
+    "start": 4,
+    "max": 8
+  },
+  "bagSize": 60,
+  "adjacency": {
+    "perNeighbour": 0.1,
+    "max": 0.3
+  },
+  "patternSize": 4,
+  "temper": {
+    "shards": 50,
+    "chance": 0.6
+  },
+  "classLineChance": 0.2,
+  "drops": {
+    "boss": {
+      "chance": 0.05,
+      "perBiome": 0.01,
+      "max": 0.25
+    },
+    "guardian": {
+      "chance": 1,
+      "minRarity": "rare"
+    },
+    "dungeon": 0.5,
+    "rift": 0.1
+  },
+  "rarities": {
+    "common": {
+      "weight": 70,
+      "power": 1,
+      "maxLines": 1,
+      "dust": 2
+    },
+    "rare": {
+      "weight": 22,
+      "power": 1.25,
+      "dust": 5
+    },
+    "epic": {
+      "weight": 7,
+      "power": 1.25,
+      "extraLines": 1,
+      "dust": 15
+    },
+    "legendary": {
+      "weight": 1,
+      "power": 1.25,
+      "extraLines": 1,
+      "rule": true,
+      "dust": 40
+    }
+  },
+  "shapes": [
+    {
+      "id": "pebble",
+      "cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "lines": 1,
+      "power": 1
+    },
+    {
+      "id": "stick",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "lines": 1,
+      "power": 1
+    },
+    {
+      "id": "corner",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "lines": 2,
+      "power": 1.5
+    },
+    {
+      "id": "bar",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "lines": 2,
+      "power": 1.5
+    },
+    {
+      "id": "square",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "lines": 2,
+      "power": 2
+    },
+    {
+      "id": "tee",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "lines": 2,
+      "power": 2
+    },
+    {
+      "id": "zigzag",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "lines": 2,
+      "power": 2
+    }
+  ],
+  "themes": [
+    {
+      "id": "keys",
+      "lines": [
+        {
+          "id": "keys_damage",
+          "modifiers": [
+            {
+              "stat": "damage",
+              "kind": "increased",
+              "value": 0.06,
+              "tags": [
+                "Keyboard"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "keys_crit",
+          "modifiers": [
+            {
+              "stat": "critChance",
+              "kind": "increased",
+              "value": 0.05,
+              "tags": [
+                "Keyboard"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "keys_resource",
+          "modifiers": [
+            {
+              "stat": "resourceGain",
+              "kind": "increased",
+              "value": 0.04
+            }
+          ]
+        },
+        {
+          "id": "keys_crit_multiplier",
+          "modifiers": [
+            {
+              "stat": "critMultiplier",
+              "kind": "flat",
+              "value": 0.08,
+              "tags": [
+                "Keyboard"
+              ]
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "keys_pattern",
+        "modifiers": [
+          {
+            "stat": "damage",
+            "kind": "more",
+            "value": 0.05,
+            "tags": [
+              "Keyboard"
+            ]
+          }
+        ]
+      },
+      "rule": {
+        "id": "keys_rule",
+        "modifiers": [
+          {
+            "stat": "damage",
+            "kind": "more",
+            "value": 0.08,
+            "tags": [
+              "Keyboard"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "mouse",
+      "lines": [
+        {
+          "id": "mouse_damage",
+          "modifiers": [
+            {
+              "stat": "damage",
+              "kind": "increased",
+              "value": 0.06,
+              "tags": [
+                "Mouse"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mouse_clicks",
+          "modifiers": [
+            {
+              "stat": "damage",
+              "kind": "increased",
+              "value": 0.06,
+              "tags": [
+                "Click"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mouse_resource",
+          "modifiers": [
+            {
+              "stat": "resourceGain",
+              "kind": "increased",
+              "value": 0.04,
+              "tags": [
+                "Mouse"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mouse_distance",
+          "modifiers": [
+            {
+              "stat": "mouseDistance",
+              "kind": "increased",
+              "value": 0.05
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "mouse_pattern",
+        "modifiers": [
+          {
+            "stat": "damage",
+            "kind": "more",
+            "value": 0.05,
+            "tags": [
+              "Mouse"
+            ]
+          }
+        ]
+      },
+      "rule": {
+        "id": "mouse_rule",
+        "modifiers": [
+          {
+            "stat": "damage",
+            "kind": "more",
+            "value": 0.08,
+            "tags": [
+              "Mouse"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "skills",
+      "lines": [
+        {
+          "id": "skills_damage",
+          "modifiers": [
+            {
+              "stat": "damage",
+              "kind": "increased",
+              "value": 0.08,
+              "tags": [
+                "Skill"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "skills_cooldown",
+          "modifiers": [
+            {
+              "stat": "skillCooldown",
+              "kind": "increased",
+              "value": -0.04
+            }
+          ]
+        },
+        {
+          "id": "skills_resource",
+          "modifiers": [
+            {
+              "stat": "resourceGain",
+              "kind": "increased",
+              "value": 0.04
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "skills_pattern",
+        "modifiers": [
+          {
+            "stat": "damage",
+            "kind": "more",
+            "value": 0.05,
+            "tags": [
+              "Skill"
+            ]
+          }
+        ]
+      },
+      "rule": {
+        "id": "skills_rule",
+        "modifiers": [
+          {
+            "stat": "skillCooldown",
+            "kind": "increased",
+            "value": -0.1
+          }
+        ]
+      }
+    },
+    {
+      "id": "crit",
+      "lines": [
+        {
+          "id": "crit_chance",
+          "modifiers": [
+            {
+              "stat": "critChance",
+              "kind": "increased",
+              "value": 0.06
+            }
+          ]
+        },
+        {
+          "id": "crit_multiplier",
+          "modifiers": [
+            {
+              "stat": "critMultiplier",
+              "kind": "flat",
+              "value": 0.1
+            }
+          ]
+        },
+        {
+          "id": "crit_keys",
+          "modifiers": [
+            {
+              "stat": "critChance",
+              "kind": "increased",
+              "value": 0.05,
+              "tags": [
+                "Keyboard"
+              ]
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "crit_pattern",
+        "modifiers": [
+          {
+            "stat": "critMultiplier",
+            "kind": "flat",
+            "value": 0.2
+          }
+        ]
+      },
+      "rule": {
+        "id": "crit_rule",
+        "modifiers": [
+          {
+            "stat": "damage",
+            "kind": "more",
+            "value": 0.06,
+            "tags": [
+              "Crit"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "focus",
+      "lines": [
+        {
+          "id": "focus_gain",
+          "modifiers": [
+            {
+              "stat": "focusGain",
+              "kind": "increased",
+              "value": 0.05
+            }
+          ]
+        },
+        {
+          "id": "focus_max",
+          "modifiers": [
+            {
+              "stat": "focusMax",
+              "kind": "flat",
+              "value": 5
+            }
+          ]
+        },
+        {
+          "id": "focus_hold",
+          "modifiers": [
+            {
+              "stat": "focusResetSeconds",
+              "kind": "flat",
+              "value": 1
+            }
+          ],
+          "whole": true
+        }
+      ],
+      "pattern": {
+        "id": "focus_pattern",
+        "modifiers": [
+          {
+            "stat": "focusMax",
+            "kind": "flat",
+            "value": 10
+          }
+        ]
+      },
+      "rule": {
+        "id": "focus_rule",
+        "modifiers": [
+          {
+            "stat": "focusGain",
+            "kind": "increased",
+            "value": 0.15
+          }
+        ]
+      }
+    },
+    {
+      "id": "boss",
+      "lines": [
+        {
+          "id": "boss_damage",
+          "modifiers": [
+            {
+              "stat": "damageVsBoss",
+              "kind": "increased",
+              "value": 0.08
+            }
+          ]
+        },
+        {
+          "id": "boss_timer",
+          "modifiers": [
+            {
+              "stat": "bossTimerSeconds",
+              "kind": "flat",
+              "value": 1
+            }
+          ],
+          "whole": true
+        },
+        {
+          "id": "boss_gold",
+          "modifiers": [
+            {
+              "stat": "bossGold",
+              "kind": "increased",
+              "value": 0.1
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "boss_pattern",
+        "modifiers": [
+          {
+            "stat": "bossTimerSeconds",
+            "kind": "flat",
+            "value": 3
+          }
+        ]
+      },
+      "rule": {
+        "id": "boss_rule",
+        "modifiers": [
+          {
+            "stat": "damageVsBoss",
+            "kind": "increased",
+            "value": 0.2
+          }
+        ]
+      }
+    },
+    {
+      "id": "loot",
+      "lines": [
+        {
+          "id": "loot_gold",
+          "modifiers": [
+            {
+              "stat": "gold",
+              "kind": "increased",
+              "value": 0.08,
+              "tags": [
+                "Gold"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "loot_gems",
+          "modifiers": [
+            {
+              "stat": "gemDrop",
+              "kind": "increased",
+              "value": 0.05
+            }
+          ]
+        },
+        {
+          "id": "loot_slates",
+          "modifiers": [
+            {
+              "stat": "slateChance",
+              "kind": "increased",
+              "value": 0.1
+            }
+          ]
+        },
+        {
+          "id": "loot_shards",
+          "modifiers": [
+            {
+              "stat": "shardDrop",
+              "kind": "increased",
+              "value": 0.05
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "loot_pattern",
+        "modifiers": [
+          {
+            "stat": "slateChance",
+            "kind": "increased",
+            "value": 0.25
+          }
+        ]
+      },
+      "rule": {
+        "id": "loot_rule",
+        "modifiers": [
+          {
+            "stat": "gold",
+            "kind": "increased",
+            "value": 0.2,
+            "tags": [
+              "Gold"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "party",
+      "lines": [
+        {
+          "id": "party_damage",
+          "modifiers": [
+            {
+              "stat": "partyDamage",
+              "kind": "increased",
+              "value": 0.04
+            }
+          ]
+        },
+        {
+          "id": "party_resource",
+          "modifiers": [
+            {
+              "stat": "partyResource",
+              "kind": "increased",
+              "value": 0.04
+            }
+          ]
+        },
+        {
+          "id": "party_gold",
+          "modifiers": [
+            {
+              "stat": "partyGold",
+              "kind": "increased",
+              "value": 0.05
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "party_pattern",
+        "modifiers": [
+          {
+            "stat": "partyDamage",
+            "kind": "increased",
+            "value": 0.08
+          }
+        ]
+      },
+      "rule": {
+        "id": "party_rule",
+        "modifiers": [
+          {
+            "stat": "partyCritChance",
+            "kind": "increased",
+            "value": 0.05
+          }
+        ]
+      }
+    },
+    {
+      "id": "auras",
+      "lines": [
+        {
+          "id": "auras_effect",
+          "modifiers": [
+            {
+              "stat": "auraEffect",
+              "kind": "increased",
+              "value": 0.05
+            }
+          ]
+        },
+        {
+          "id": "auras_duration",
+          "modifiers": [
+            {
+              "stat": "auraDuration",
+              "kind": "increased",
+              "value": 0.06
+            }
+          ]
+        },
+        {
+          "id": "auras_damage",
+          "modifiers": [
+            {
+              "stat": "damagePerAura",
+              "kind": "flat",
+              "value": 0.01
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "auras_pattern",
+        "modifiers": [
+          {
+            "stat": "auraEffect",
+            "kind": "increased",
+            "value": 0.1
+          }
+        ]
+      },
+      "rule": {
+        "id": "auras_rule",
+        "modifiers": [
+          {
+            "stat": "auraEffect",
+            "kind": "increased",
+            "value": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "curses",
+      "lines": [
+        {
+          "id": "curses_effect",
+          "modifiers": [
+            {
+              "stat": "curseEffect",
+              "kind": "increased",
+              "value": 0.05
+            }
+          ]
+        },
+        {
+          "id": "curses_damage",
+          "modifiers": [
+            {
+              "stat": "curseDamage",
+              "kind": "increased",
+              "value": 0.08
+            }
+          ]
+        },
+        {
+          "id": "curses_debuff",
+          "modifiers": [
+            {
+              "stat": "enemyDebuffEffect",
+              "kind": "increased",
+              "value": 0.05
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "curses_pattern",
+        "modifiers": [
+          {
+            "stat": "curseEffect",
+            "kind": "increased",
+            "value": 0.1
+          }
+        ]
+      },
+      "rule": {
+        "id": "curses_rule",
+        "modifiers": [
+          {
+            "stat": "enemyDebuffEffect",
+            "kind": "increased",
+            "value": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "dots",
+      "lines": [
+        {
+          "id": "dots_damage",
+          "modifiers": [
+            {
+              "stat": "dotDamage",
+              "kind": "increased",
+              "value": 0.06
+            }
+          ]
+        },
+        {
+          "id": "dots_hits",
+          "modifiers": [
+            {
+              "stat": "damage",
+              "kind": "increased",
+              "value": 0.06,
+              "tags": [
+                "DoT"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "dots_burn",
+          "modifiers": [
+            {
+              "stat": "burnDamage",
+              "kind": "increased",
+              "value": 0.06
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "dots_pattern",
+        "modifiers": [
+          {
+            "stat": "dotDamage",
+            "kind": "increased",
+            "value": 0.1
+          }
+        ]
+      },
+      "rule": {
+        "id": "dots_rule",
+        "modifiers": [
+          {
+            "stat": "damage",
+            "kind": "more",
+            "value": 0.1,
+            "tags": [
+              "DoT"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "summons",
+      "lines": [
+        {
+          "id": "summons_damage",
+          "modifiers": [
+            {
+              "stat": "damage",
+              "kind": "increased",
+              "value": 0.06,
+              "tags": [
+                "Minion"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "summons_seconds",
+          "modifiers": [
+            {
+              "stat": "minionSeconds",
+              "kind": "increased",
+              "value": 0.08
+            }
+          ]
+        },
+        {
+          "id": "summons_speed",
+          "modifiers": [
+            {
+              "stat": "minionSpeed",
+              "kind": "increased",
+              "value": 0.05
+            }
+          ]
+        }
+      ],
+      "pattern": {
+        "id": "summons_pattern",
+        "modifiers": [
+          {
+            "stat": "damage",
+            "kind": "more",
+            "value": 0.05,
+            "tags": [
+              "Minion"
+            ]
+          }
+        ]
+      },
+      "rule": {
+        "id": "summons_rule",
+        "modifiers": [
+          {
+            "stat": "minionSeconds",
+            "kind": "increased",
+            "value": 0.2
+          }
+        ]
+      }
+    }
+  ],
+  "classLines": {
+    "viking": [
+      {
+        "id": "viking_shield_sooner",
+        "modifiers": [
+          {
+            "stat": "shieldEvery",
+            "kind": "flat",
+            "value": -1,
+            "tags": [
+              "Keyboard"
+            ]
+          }
+        ],
+        "whole": true
+      },
+      {
+        "id": "viking_shield_damage",
+        "modifiers": [
+          {
+            "stat": "shieldDamage",
+            "kind": "increased",
+            "value": 0.1,
+            "tags": [
+              "Keyboard"
+            ]
+          }
+        ]
+      }
+    ],
+    "ronin": [
+      {
+        "id": "ronin_series_sooner",
+        "modifiers": [
+          {
+            "stat": "comboStrikeEvery",
+            "kind": "flat",
+            "value": -2,
+            "tags": [
+              "Keyboard"
+            ]
+          }
+        ],
+        "whole": true
+      },
+      {
+        "id": "ronin_series_strike",
+        "modifiers": [
+          {
+            "stat": "comboStrikeMultiplier",
+            "kind": "flat",
+            "value": 0.2
+          }
+        ]
+      }
+    ],
+    "amazon": [
+      {
+        "id": "amazon_normal",
+        "modifiers": [
+          {
+            "stat": "damageVsNormal",
+            "kind": "increased",
+            "value": 0.06
+          }
+        ]
+      },
+      {
+        "id": "amazon_distance",
+        "modifiers": [
+          {
+            "stat": "mouseDistance",
+            "kind": "increased",
+            "value": 0.06
+          }
+        ]
+      }
+    ],
+    "stormweaver": [
+      {
+        "id": "stormweaver_overload",
+        "modifiers": [
+          {
+            "stat": "overloadMultiplier",
+            "kind": "flat",
+            "value": 0.2
+          }
+        ]
+      },
+      {
+        "id": "stormweaver_queue",
+        "modifiers": [
+          {
+            "stat": "overloadQueueShare",
+            "kind": "flat",
+            "value": 0.05
+          }
+        ]
+      }
+    ],
+    "nomad": [
+      {
+        "id": "nomad_kinds",
+        "modifiers": [
+          {
+            "stat": "damagePerInputKind",
+            "kind": "flat",
+            "value": 0.015
+          }
+        ]
+      },
+      {
+        "id": "nomad_resource",
+        "modifiers": [
+          {
+            "stat": "damagePerResource",
+            "kind": "flat",
+            "value": 0.05
+          }
+        ]
+      }
+    ],
+    "metalhead": [
+      {
+        "id": "metalhead_song",
+        "modifiers": [
+          {
+            "stat": "songMouseSeconds",
+            "kind": "flat",
+            "value": 2
+          }
+        ],
+        "whole": true
+      },
+      {
+        "id": "metalhead_auras",
+        "modifiers": [
+          {
+            "stat": "damagePerAura",
+            "kind": "flat",
+            "value": 0.01
+          }
+        ]
+      }
+    ],
+    "oracle": [
+      {
+        "id": "oracle_reading",
+        "modifiers": [
+          {
+            "stat": "readingGain",
+            "kind": "increased",
+            "value": 0.06
+          }
+        ]
+      },
+      {
+        "id": "oracle_hp",
+        "modifiers": [
+          {
+            "stat": "enemyHpCut",
+            "kind": "flat",
+            "value": 0.01
+          }
+        ]
+      }
+    ],
+    "bannerbearer": [
+      {
+        "id": "bannerbearer_auras",
+        "modifiers": [
+          {
+            "stat": "damagePerAura",
+            "kind": "flat",
+            "value": 0.01
+          }
+        ]
+      },
+      {
+        "id": "bannerbearer_banner",
+        "modifiers": [
+          {
+            "stat": "bannerAuraBonus",
+            "kind": "increased",
+            "value": 0.04
+          }
+        ]
+      }
+    ],
+    "voodoo": [
+      {
+        "id": "voodoo_curse",
+        "modifiers": [
+          {
+            "stat": "curseEffect",
+            "kind": "increased",
+            "value": 0.06
+          }
+        ]
+      },
+      {
+        "id": "voodoo_seconds",
+        "modifiers": [
+          {
+            "stat": "curseSeconds",
+            "kind": "flat",
+            "value": 1
+          }
+        ],
+        "whole": true
+      }
+    ],
+    "clockmaker": [
+      {
+        "id": "clockmaker_slow",
+        "modifiers": [
+          {
+            "stat": "bossTimerSlow",
+            "kind": "increased",
+            "value": 0.04
+          }
+        ]
+      },
+      {
+        "id": "clockmaker_clockwork",
+        "modifiers": [
+          {
+            "stat": "clockworkSlow",
+            "kind": "flat",
+            "value": 0.02
+          }
+        ]
+      }
+    ],
+    "plague_doctor": [
+      {
+        "id": "plague_doctor_stacks",
+        "modifiers": [
+          {
+            "stat": "poisonStacks",
+            "kind": "flat",
+            "value": 5
+          }
+        ],
+        "whole": true
+      },
+      {
+        "id": "plague_doctor_poison",
+        "modifiers": [
+          {
+            "stat": "damagePerTenPoison",
+            "kind": "flat",
+            "value": 0.008
+          }
+        ]
+      }
+    ],
+    "moonshiner": [
+      {
+        "id": "moonshiner_burn",
+        "modifiers": [
+          {
+            "stat": "burnDamage",
+            "kind": "increased",
+            "value": 0.08
+          }
+        ]
+      },
+      {
+        "id": "moonshiner_overheat",
+        "modifiers": [
+          {
+            "stat": "overheatSeconds",
+            "kind": "flat",
+            "value": 0.5
+          }
+        ]
+      }
+    ],
+    "gravedigger": [
+      {
+        "id": "gravedigger_skeleton",
+        "modifiers": [
+          {
+            "stat": "minionCount",
+            "kind": "flat",
+            "value": 1
+          }
+        ],
+        "whole": true
+      },
+      {
+        "id": "gravedigger_rise",
+        "modifiers": [
+          {
+            "stat": "riseEvery",
+            "kind": "flat",
+            "value": -1,
+            "tags": [
+              "Minion"
+            ]
+          }
+        ],
+        "whole": true
+      }
+    ],
+    "captain": [
+      {
+        "id": "captain_shot",
+        "modifiers": [
+          {
+            "stat": "cannonShotDamage",
+            "kind": "flat",
+            "value": 0.01
+          }
+        ]
+      },
+      {
+        "id": "captain_next",
+        "modifiers": [
+          {
+            "stat": "cannonNextShare",
+            "kind": "flat",
+            "value": 0.04
+          }
+        ]
+      }
+    ]
+  }
+}

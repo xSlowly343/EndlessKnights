@@ -65,6 +65,7 @@ namespace Game.Core.Sim.Headless
                 CountGold(state);
                 records.Add(Record(day, state, _goldTotal - goldBefore, state.Drops.ItemsFound - itemsBefore));
             }
+            Act(bot, state, 0);
             LastState = state;
             return records;
         }

@@ -60,6 +60,7 @@ namespace Game.Core.Sim
         private readonly GateSystem _gates;
         private readonly Unlocks _unlocks;
         private readonly DungeonSystem _dungeons;
+        private readonly SlateSystem _slates;
         private GameData _data;
         private double _pendingSeconds;
         private ulong _castRequests;
@@ -103,6 +104,9 @@ namespace Game.Core.Sim
             _spirits.Unlocks = _unlocks;
             _chronicle.Unlocks = _unlocks;
             _drops.Unlocks = _unlocks;
+            _slates = new SlateSystem(data.Slates, state, hero, Events) { Unlocks = _unlocks };
+            _drops.Slates = _slates;
+            _artifacts.Rebuilt = _slates.Rebuild;
             _drops.Dungeons = data.Dungeons;
             _dungeons = new DungeonSystem(data, state, hero, _stage, _drops, Events) { Unlocks = _unlocks };
             _stage.ChestGold = data.Atlas.ChestGold;
@@ -120,7 +124,7 @@ namespace Game.Core.Sim
             _synergy = new SynergySystem(data.Synergy, state, hero);
             _synergyStrikes = new SynergyStrikes(state, hero, _synergy, _skills.Dots, _resource);
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
-            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy);
+            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates };
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);
             _clanTree = new ClanTreeBonus(data.ClanTree, hero, state.ClanBonus);
             _mentor = new MentorBonus(data.Mentor, hero, _levels, state);
@@ -162,6 +166,7 @@ namespace Game.Core.Sim
         public GateSystem Gates => _gates;
         public Unlocks Unlocks => _unlocks;
         public DungeonSystem Dungeons => _dungeons;
+        public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
@@ -561,6 +566,7 @@ namespace Game.Core.Sim
             modifiers.AddRange(CommonTreeModifiers());
             modifiers.AddRange(State.Ascendancy.Modifiers(_data.Ascendancy));
             _treeLayer.Set(modifiers);
+            _slates.Rebuild();
             _skills.RefreshAuras();
             _partyBuffs.Rebuild();
         }
@@ -639,6 +645,7 @@ namespace Game.Core.Sim
             _gates.UseStages(data.Stages);
             _unlocks.Rules = data.Unlocks;
             _drops.Dungeons = data.Dungeons;
+            _slates.Rules = data.Slates;
             _dungeons.UseData(data);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);

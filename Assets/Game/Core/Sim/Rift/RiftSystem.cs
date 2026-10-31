@@ -27,6 +27,8 @@ namespace Game.Core.Sim.Rift
         private long _modifiersFor = -1;
         private int _marks = -1;
 
+        public SlateSystem? Slates { get; set; }
+
         public RiftSystem(GameData data, GameState state, StatSheet hero, StageSystem stage, ArtifactSystem artifacts, SynergySystem synergy)
         {
             _state = state;
@@ -158,8 +160,10 @@ namespace Game.Core.Sim.Rift
                 return;
             var shards = type == EnemyType.Guardian ? _rules.GuardianShards : _rules.BossShards;
             _state.Rift.Shards += BigNumber.FromDouble(shards);
-            if (_state.Stage > _state.Rift.Deepest)
-                _state.Rift.Deepest = _state.Stage;
+            if (_state.Stage <= _state.Rift.Deepest)
+                return;
+            _state.Rift.Deepest = _state.Stage;
+            Slates?.OnRiftBoss();
         }
 
         public void Tick()

@@ -8,7 +8,8 @@
     "atlas": { "stage": 2500 },
     "chronicle": { "stage": 5000 },
     "setCraft": { "stage": 10000 },
-    "dungeons": { "stage": 150 }
+    "dungeons": { "stage": 150 },
+    "slates": { "stage": 150 }
   },
   "artifactGroups": [0, 0, 50000, 100000]
 }

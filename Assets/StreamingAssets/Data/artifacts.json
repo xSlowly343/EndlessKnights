@@ -109,7 +109,7 @@
     {"id": "clockwork", "name": {"ru": "Механизм часовщика", "en": "Clockwork"}, "group": 4, "type": "late", "perLevel": []},
     {"id": "tri_prism", "name": {"ru": "Трёхцветная призма", "en": "Tricolor Prism"}, "group": 4, "type": "late", "perLevel": []},
     {"id": "bonds", "name": {"ru": "Узы четырёх", "en": "Bonds of Four"}, "group": 4, "type": "late", "perLevel": []},
-    {"id": "jewel_facet", "name": {"ru": "Грань самоцвета", "en": "Jewel Facet"}, "group": 4, "type": "late", "perLevel": [{"stat": "jewelEffect", "kind": "increased", "value": 0.03}]},
+    {"id": "jewel_facet", "name": {"ru": "Грань скрижали", "en": "Slate Facet"}, "group": 4, "type": "late", "perLevel": [{"stat": "slateEffect", "kind": "increased", "value": 0.03}]},
     {"id": "smith_hammer", "name": {"ru": "Молот кузнеца", "en": "Smith's Hammer"}, "group": 4, "type": "late", "perLevel": []},
     {"id": "jarl_belt", "name": {"ru": "Пояс ярла", "en": "Jarl's Belt"}, "group": 4, "type": "class", "class": "viking", "perLevel": [{"stat": "damagePerResource", "kind": "flat", "value": 0.03}]},
     {"id": "onryo_mask", "name": {"ru": "Маска онрё", "en": "Onryo Mask"}, "group": 4, "type": "class", "class": "ronin", "perLevel": [{"stat": "damagePerCombo", "kind": "flat", "value": 0.0002}, {"stat": "damagePerComboMax", "kind": "flat", "value": 0.05}]},

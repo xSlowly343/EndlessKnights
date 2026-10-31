@@ -17,6 +17,7 @@ namespace Game.Core.Sim
         {
             Rng = new Rng(seed);
             Drops = new DropState(seed);
+            Slates = new SlateState(seed);
         }
 
         public long Tick { get; set; }
@@ -74,6 +75,7 @@ namespace Game.Core.Sim
         public RiftState Rift { get; } = new RiftState();
         public WeaponState Weapons { get; } = new WeaponState();
         public DropState Drops { get; }
+        public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();
         public List<string> Atlas { get; } = new List<string>();
         public Dictionary<string, int> Resonance { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);

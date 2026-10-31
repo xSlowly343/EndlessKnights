@@ -24,6 +24,7 @@ namespace Game.Core.Sim
         GateCleared,
         DungeonKeyDropped,
         DungeonCompleted,
-        DungeonFailed
+        DungeonFailed,
+        SlateDropped
     }
 }

@@ -41,6 +41,7 @@ namespace Game.Core.Sim.Headless
             PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
             CutUncutGems();
+            PlaceSlates();
             _loop.Upgrades.BuyMax();
         }
 
@@ -75,6 +76,88 @@ namespace Game.Core.Sim.Headless
                 if (!_loop.State.OwnedGems.Contains(gem))
                     _loop.CutGem(gem);
             }
+        }
+
+        private void PlaceSlates()
+        {
+            var slates = _loop.Slates;
+            if (!slates.Open || slates.Bag.Count == 0)
+                return;
+            var bag = new List<SlateItem>(slates.Bag);
+            bag.Sort((a, b) => SlateScore(b).CompareTo(SlateScore(a)));
+            foreach (var slate in bag)
+            {
+                if (!TryPlace(slate))
+                    ReplaceWeakest(slate);
+            }
+        }
+
+        private double SlateScore(SlateItem slate)
+        {
+            var modifiers = new List<Modifier>();
+            _loop.Slates.ModifiersOf(slate, 0, modifiers);
+            return _score.Of(modifiers);
+        }
+
+        private bool TryPlace(SlateItem slate)
+        {
+            var slates = _loop.Slates;
+            var (width, height) = slates.Size;
+            var best = (X: -1, Y: -1, Rotation: 0, Touching: -1);
+            for (var y = 0; y < height; y++)
+            {
+                for (var x = 0; x < width; x++)
+                {
+                    for (var rotation = 0; rotation < Content.Slates.SlateShape.Rotations; rotation++)
+                    {
+                        if (slates.Fits(slate, x, y, rotation) != SlateResult.Done)
+                            continue;
+                        var touching = SameThemeAround(slate, x, y, rotation);
+                        if (touching > best.Touching)
+                            best = (x, y, rotation, touching);
+                    }
+                }
+            }
+            return best.Touching >= 0 && slates.Place(slate, best.X, best.Y, best.Rotation) == SlateResult.Done;
+        }
+
+        private int SameThemeAround(SlateItem slate, int x, int y, int rotation)
+        {
+            var seen = new HashSet<SlatePlacement>();
+            foreach (var (cellX, cellY) in slate.Shape.Cells(rotation))
+            {
+                foreach (var (dx, dy) in new[] { (1, 0), (-1, 0), (0, 1), (0, -1) })
+                {
+                    var neighbour = _loop.Slates.At(x + cellX + dx, y + cellY + dy);
+                    if (neighbour != null && neighbour.Slate.Theme == slate.Theme)
+                        seen.Add(neighbour);
+                }
+            }
+            return seen.Count;
+        }
+
+        private void ReplaceWeakest(SlateItem slate)
+        {
+            var slates = _loop.Slates;
+            var score = SlateScore(slate);
+            SlatePlacement? weakest = null;
+            var weakestScore = double.MaxValue;
+            foreach (var placement in slates.Board)
+            {
+                var placedScore = SlateScore(placement.Slate);
+                if (placement.Slate.Shape.Size >= slate.Shape.Size && placedScore < weakestScore)
+                {
+                    weakest = placement;
+                    weakestScore = placedScore;
+                }
+            }
+            if (weakest == null || weakestScore >= score)
+                return;
+            slates.Remove(weakest.Slate);
+            if (TryPlace(slate))
+                slates.Dismantle(weakest.Slate);
+            else
+                slates.Place(weakest.Slate, weakest.X, weakest.Y, weakest.Rotation);
         }
 
         private void SpendTreePoints()
