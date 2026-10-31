@@ -235,9 +235,10 @@ namespace Game.Core.Tests.Party
             Assert.That(rig.Host.Encounter.Boosting(bannerman.Client.OwnSlot), Is.True);
 
             var before = rig.Host.Encounter.Member(bannerman.Client.OwnSlot).CreditedShare;
-            rig.Host.Encounter.ApplyDamage(rig.Members[1].Client.OwnSlot, rig.Host.Encounter.EnemyId, 0.2);
+            var share = rig.Host.Encounter.BarLeft / 2;
+            rig.Host.Encounter.ApplyDamage(rig.Members[1].Client.OwnSlot, rig.Host.Encounter.EnemyId, share);
 
-            Assert.That(rig.Host.Encounter.Member(bannerman.Client.OwnSlot).CreditedShare - before, Is.EqualTo(0.2 * 0.05).Within(1e-9));
+            Assert.That(rig.Host.Encounter.Member(bannerman.Client.OwnSlot).CreditedShare - before, Is.EqualTo(share * 0.05).Within(1e-9));
         }
 
         [Test]

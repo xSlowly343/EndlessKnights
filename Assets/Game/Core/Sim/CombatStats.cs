@@ -204,5 +204,10 @@ namespace Game.Core.Sim
         public static readonly StatId PartyGemDrop = new StatId("partyGemDrop");
         public static readonly StatId ClearDayAbove = new StatId("clearDayAbove");
         public static readonly StatId ClearDayCritChance = new StatId("clearDayCritChance");
+        public static readonly StatId ShieldEvery = new StatId("shieldEvery");
+        public static readonly StatId ShieldDamage = new StatId("shieldDamage");
+        public static readonly StatId ShieldResource = new StatId("shieldResource");
+        public static readonly StatId StunSeconds = new StatId("stunSeconds");
+        public static readonly StatId DamageVsStunned = new StatId("damageVsStunned");
     }
 }

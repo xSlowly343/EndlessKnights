@@ -177,6 +177,8 @@ namespace Game.Core.Party
                 marks |= sources.Burn;
             if (sources.Minions != 0 && MinionsOut())
                 marks |= sources.Minions;
+            if (_state.EnemyAlive && _state.StunTicks > 0)
+                marks |= sources.Stun;
             return marks;
         }
 

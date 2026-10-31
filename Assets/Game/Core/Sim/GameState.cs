@@ -250,6 +250,8 @@ namespace Game.Core.Sim
         public long ComboIdleTicks { get; set; }
         public int ComboTowardStrike { get; set; }
         public int KillsTowardRise { get; set; }
+        public int KeysTowardShield { get; set; }
+        public int StunTicks { get; set; }
         public double ClockworkSlow { get; set; }
         public double ClockworkFloor { get; set; } = 1;
 
@@ -269,6 +271,7 @@ namespace Game.Core.Sim
             EnemyHp = hp;
             EnemyMaxHp = hp;
             HitsOnEnemy = 0;
+            StunTicks = 0;
             BossTimerStopTicks = 0;
             CannonShotsOnEnemy = 0;
             WandererBoss = false;

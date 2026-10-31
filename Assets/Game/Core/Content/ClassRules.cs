@@ -3,8 +3,13 @@ namespace Game.Core.Content
     public sealed class ClassRules
     {
         public ClassRules(double comboTimeoutSeconds, int comboStrikeEvery, double comboStrikeMultiplier, double whirlResource, double headbangPxPerSecond, double headbangMaxSeconds,
-            int breathEvery, int comboStrikeTargets, int comboStrikeEveryMin, double clockworkAbove = 0, double clockworkSlow = 0, double clockworkFloor = 1)
+            int breathEvery, int comboStrikeTargets, int comboStrikeEveryMin, double clockworkAbove = 0, double clockworkSlow = 0, double clockworkFloor = 1,
+            int shieldEvery = 0, int shieldEveryMin = 1, double shieldMultiplier = 1, double shieldStunSeconds = 0)
         {
+            ShieldEvery = shieldEvery;
+            ShieldEveryMin = shieldEveryMin;
+            ShieldMultiplier = shieldMultiplier;
+            ShieldStunSeconds = shieldStunSeconds;
             ClockworkAbove = clockworkAbove;
             ClockworkSlow = clockworkSlow;
             ClockworkFloor = clockworkFloor;
@@ -29,6 +34,10 @@ namespace Game.Core.Content
         public double ClockworkAbove { get; }
         public double ClockworkSlow { get; }
         public double ClockworkFloor { get; }
+        public int ShieldEvery { get; }
+        public int ShieldEveryMin { get; }
+        public double ShieldMultiplier { get; }
+        public double ShieldStunSeconds { get; }
         public double HeadbangPxPerSecond { get; }
         public double HeadbangMaxSeconds { get; }
 
@@ -37,6 +46,7 @@ namespace Game.Core.Content
             var combo = node.Field("ronin").Field("combo");
             var headbang = node.Field("metalhead").Field("headbang");
             var clockwork = node.Field("clockmaker").Field("clockwork");
+            var shield = node.Field("viking").Field("shield");
             return new ClassRules(
                 combo.Field("timeoutSeconds").AsNumber(0.1, 60),
                 combo.Field("strikeEvery").AsInt(1, 10000),
@@ -49,7 +59,11 @@ namespace Game.Core.Content
                 combo.Field("strikeEveryMin").AsInt(1, 10000),
                 clockwork.Field("resourceAbove").AsNumber(0, 1e6),
                 clockwork.Field("slow").AsNumber(0, 1),
-                clockwork.Field("floor").AsNumber(0, 1));
+                clockwork.Field("floor").AsNumber(0, 1),
+                shield.Field("every").AsInt(1, 10000),
+                shield.Field("everyMin").AsInt(1, 10000),
+                shield.Field("multiplier").AsNumber(1, 1000),
+                shield.Field("stunSeconds").AsNumber(0, 60));
         }
     }
 }

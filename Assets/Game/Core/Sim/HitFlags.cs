@@ -8,6 +8,7 @@ namespace Game.Core.Sim
         None = 0,
         Crit = 1 << 0,
         ComboStrike = 1 << 1,
-        HeavyStrike = 1 << 2
+        HeavyStrike = 1 << 2,
+        ShieldStrike = 1 << 3
     }
 }
