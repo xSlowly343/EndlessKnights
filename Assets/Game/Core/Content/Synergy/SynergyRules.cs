@@ -141,7 +141,7 @@ namespace Game.Core.Content.Synergy
                     roles.Add(role);
                 roleMask[(int)heroClass] = 1 << roles.IndexOf(role);
             }
-            foreach (HeroClass heroClass in Enum.GetValues(typeof(HeroClass)))
+            foreach (var heroClass in HeroClassNames.ByName.Values)
             {
                 if (roleMask[(int)heroClass] == 0)
                     throw rolesNode.Error($"class '{HeroClassNames.Of(heroClass)}' has no role");
@@ -213,10 +213,12 @@ namespace Game.Core.Content.Synergy
             int Mask(string field) => node.HasField(field) ? 1 << MarkOf(node.Field(field), markIndex) : 0;
             foreach (var name in node.FieldNames())
             {
-                if (name != SynergyStateMarks.PoisonField && name != SynergyStateMarks.BurnField && name != SynergyStateMarks.MinionsField && name != SynergyStateMarks.StunField && name != SynergyStateMarks.HunterMarkField && name != SynergyStateMarks.BlindField && name != SynergyStateMarks.EvilEyeField)
-                    throw node.Field(name).Error($"unknown state '{name}', expected {SynergyStateMarks.PoisonField}, {SynergyStateMarks.BurnField}, {SynergyStateMarks.MinionsField}, {SynergyStateMarks.StunField}, {SynergyStateMarks.HunterMarkField}, {SynergyStateMarks.BlindField} or {SynergyStateMarks.EvilEyeField}");
+                if (name != SynergyStateMarks.PoisonField && name != SynergyStateMarks.BurnField && name != SynergyStateMarks.MinionsField && name != SynergyStateMarks.StunField && name != SynergyStateMarks.HunterMarkField && name != SynergyStateMarks.BlindField && name != SynergyStateMarks.EvilEyeField
+                    && name != SynergyStateMarks.ColdField && name != SynergyStateMarks.BloodField && name != SynergyStateMarks.BondField)
+                    throw node.Field(name).Error($"unknown state '{name}', expected {SynergyStateMarks.PoisonField}, {SynergyStateMarks.BurnField}, {SynergyStateMarks.MinionsField}, {SynergyStateMarks.StunField}, {SynergyStateMarks.HunterMarkField}, {SynergyStateMarks.BlindField}, {SynergyStateMarks.EvilEyeField}, {SynergyStateMarks.ColdField}, {SynergyStateMarks.BloodField} or {SynergyStateMarks.BondField}");
             }
-            return new SynergyStateMarks(Mask(SynergyStateMarks.PoisonField), Mask(SynergyStateMarks.BurnField), Mask(SynergyStateMarks.MinionsField), Mask(SynergyStateMarks.StunField), Mask(SynergyStateMarks.HunterMarkField), Mask(SynergyStateMarks.BlindField), Mask(SynergyStateMarks.EvilEyeField));
+            return new SynergyStateMarks(Mask(SynergyStateMarks.PoisonField), Mask(SynergyStateMarks.BurnField), Mask(SynergyStateMarks.MinionsField), Mask(SynergyStateMarks.StunField), Mask(SynergyStateMarks.HunterMarkField), Mask(SynergyStateMarks.BlindField), Mask(SynergyStateMarks.EvilEyeField),
+                Mask(SynergyStateMarks.ColdField), Mask(SynergyStateMarks.BloodField), Mask(SynergyStateMarks.BondField));
         }
 
         private static SynergyResponse ReadResponse(ContentNode node, Dictionary<string, int> markIndex)

@@ -89,7 +89,7 @@ namespace Game.Core.Tests.Party
             var roles = Regex.Match(text, "\"classRoles\"\\s*:\\s*\\{([^}]*)\\}").Groups[1].Value;
             var names = Regex.Matches(roles, "\"([a-z_]+)\"\\s*:").Cast<Match>().Select(match => match.Groups[1].Value).ToArray();
 
-            Assert.That(names, Is.EqualTo(Enum.GetValues(typeof(HeroClass)).Cast<HeroClass>().Select(HeroClassNames.Of).ToArray()),
+            Assert.That(names, Is.EqualTo(HeroClassNames.ByName.Values.Select(HeroClassNames.Of).ToArray()),
                 "the server reads roles by class number in this order");
         }
     }

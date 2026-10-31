@@ -166,8 +166,6 @@ namespace Game.Core.Build
             {
                 if (ReferenceEquals(slot.Skill, gem))
                     owned--;
-                if (ReferenceEquals(slot.Trigger, gem))
-                    owned--;
                 for (var i = 0; i < slot.Supports.Length; i++)
                 {
                     if (ReferenceEquals(slot.Supports[i], gem))
@@ -223,21 +221,6 @@ namespace Game.Core.Build
             return BookResult.Done;
         }
 
-        public BookResult SetTrigger(int index, GemDef? trigger)
-        {
-            if (index < 0 || index >= _state.Skills.Count)
-                return BookResult.NoSuchSlot;
-            if (trigger != null && trigger.Kind != GemKind.Trigger)
-                return BookResult.WrongKind;
-            var slot = _state.Skills[index];
-            if (trigger != null && !ReferenceEquals(slot.Trigger, trigger) && FreeCopies(trigger) <= 0)
-                return BookResult.NotOwned;
-            slot.Trigger = trigger;
-            if (trigger != null)
-                _state.ProgressOf(trigger);
-            return BookResult.Done;
-        }
-
         public bool GrantStartingGems()
         {
             if (_state.OwnedGems.Count > 0)
@@ -247,11 +230,6 @@ namespace Game.Core.Build
             {
                 if (gem.Kind == GemKind.Skill)
                     Equip(gem);
-            }
-            foreach (var gem in _state.OwnedGems)
-            {
-                if (gem.Kind == GemKind.Trigger)
-                    AttachToFirstPaidSkill(gem);
             }
             return true;
         }
@@ -266,8 +244,6 @@ namespace Game.Core.Build
                 _state.OwnedGems.Add(gem);
                 if (gem.Kind == GemKind.Skill)
                     placed += PlaceClassSkill(gem, placed);
-                else if (gem.Kind == GemKind.Trigger)
-                    AttachToFirstPaidSkill(gem);
             }
         }
 
@@ -288,19 +264,6 @@ namespace Game.Core.Build
                 if (_state.Skills[index].Def.Weapon == null && SkillLoadout.IsAura(_state.Skills[index].Skill) == aura)
                 {
                     Unequip(index);
-                    return;
-                }
-            }
-        }
-
-        private void AttachToFirstPaidSkill(GemDef trigger)
-        {
-            for (var index = 0; index < _state.Skills.Count; index++)
-            {
-                var slot = _state.Skills[index];
-                if (slot.Trigger == null && slot.Def.ResourceCost > 0)
-                {
-                    SetTrigger(index, trigger);
                     return;
                 }
             }

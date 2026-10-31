@@ -4,7 +4,6 @@ namespace Game.Core.Content.Gems
     {
         Active,
         Aura,
-        Support,
-        Trigger
+        Support
     }
 }

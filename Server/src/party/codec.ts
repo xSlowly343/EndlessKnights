@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, AllyCast = 14, Synergy = 15, BossRequest = 16, Marks = 17, PartyLoadout = 18
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, Synergy = 15, BossRequest = 16, Marks = 17, PartyLoadout = 18
 }
 
 class PartyWriter {
@@ -208,14 +208,6 @@ function partyBitCount(mask: number): number {
     for (let rest = mask >>> 0; rest !== 0; rest = (rest & (rest - 1)) >>> 0)
         count++;
     return count;
-}
-
-function partyRelayAllyCast(data: ArrayBuffer, slot: number): ArrayBuffer | null {
-    if (partyKindOf(data) !== PartyMessageKind.AllyCast || data.byteLength !== 6)
-        return null;
-    const copy = data.slice(0);
-    new DataView(copy).setUint8(1, slot);
-    return copy;
 }
 
 const PartyLoadoutBytes = 2 + 9 * 6;

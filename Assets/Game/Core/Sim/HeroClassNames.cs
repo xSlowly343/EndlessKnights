@@ -25,6 +25,14 @@ namespace Game.Core.Sim
             ["captain"] = HeroClass.Captain
         };
 
+        public static readonly IReadOnlyDictionary<string, HeroClass> InDevelopment = new Dictionary<string, HeroClass>(StringComparer.Ordinal)
+        {
+            ["spinner"] = HeroClass.Spinner,
+            ["rimecaller"] = HeroClass.Rimecaller,
+            ["thornmaiden"] = HeroClass.Thornmaiden,
+            ["clayshaper"] = HeroClass.Clayshaper
+        };
+
         private static readonly string[] Names = NamesByIndex();
 
         public static string Of(HeroClass heroClass)
@@ -39,6 +47,8 @@ namespace Game.Core.Sim
         {
             var names = new string[Enum.GetValues(typeof(HeroClass)).Length];
             foreach (var pair in ByName)
+                names[(int)pair.Value] = pair.Key;
+            foreach (var pair in InDevelopment)
                 names[(int)pair.Value] = pair.Key;
             return names;
         }

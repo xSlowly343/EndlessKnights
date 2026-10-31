@@ -4,7 +4,6 @@ namespace Game.Core.Build
     {
         None,
         Skill,
-        Trigger,
         Bag
     }
 }

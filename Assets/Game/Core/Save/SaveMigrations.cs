@@ -300,11 +300,7 @@ namespace Game.Core.Save
         {
             var owned = new List<JsonValue>();
             foreach (var slot in skills.Items)
-            {
                 owned.Add(slot.Fields["gem"]);
-                if (slot.Fields["trigger"].Kind == JsonKind.String)
-                    owned.Add(slot.Fields["trigger"]);
-            }
             return owned.ToArray();
         }
     }

@@ -241,12 +241,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EveryCommonSkillSupportAndTriggerCanBeCut()
+        public void EveryCommonSkillAndSupportCanBeCut()
         {
             var loop = Viking();
             var cuttable = AllGems.Where(DropSystem.Cuttable).ToList();
 
-            foreach (var kind in new[] { GemKind.Skill, GemKind.Support, GemKind.Trigger })
+            foreach (var kind in new[] { GemKind.Skill, GemKind.Support })
                 Assert.That(loop.Drops.PoolOf(kind), Is.EquivalentTo(cuttable.Where(gem => gem.Kind == kind)), kind.ToString());
             Assert.That(cuttable.Any(gem => gem.Kind == GemKind.Support), Is.True);
         }

@@ -80,14 +80,6 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void TriggersAreNotSkills()
-        {
-            var loop = WithGems("cast_on_timer");
-
-            Assert.That(loop.Book.Equip(Gem("cast_on_timer")), Is.EqualTo(BookResult.WrongKind));
-        }
-
-        [Test]
         public void SkillsCanBeRearrangedFreely()
         {
             var loop = WithGems("through_stride", "march", "lull");
@@ -118,22 +110,6 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void TriggerGoesIntoItsOwnSlotOnASkill()
-        {
-            var loop = WithGems("through_stride", "lull", "cast_on_timer");
-            loop.Book.Equip(Gem("through_stride"));
-            loop.Book.Equip(Gem("lull"));
-
-            Assert.That(loop.Book.SetTrigger(0, Gem("cast_on_timer")), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.Book.SetTrigger(1, Gem("cast_on_timer")), Is.EqualTo(BookResult.NotOwned));
-            Assert.That(loop.Book.SetTrigger(0, Gem("lull")), Is.EqualTo(BookResult.WrongKind));
-
-            Assert.That(loop.Book.SetTrigger(0, null), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.Book.SetTrigger(1, Gem("cast_on_timer")), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.State.Skills.Count, Is.EqualTo(2));
-        }
-
-        [Test]
         public void VikingStartsWithShieldBashOnLeftOdinsFuryOnRightAndLull()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
@@ -145,7 +121,6 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("iron_rim_bash")));
             Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("no_mercy")));
             Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("lull")));
-            Assert.That(loop.State.Skills[0].Trigger, Is.Null);
             Assert.That(loop.Book.GrantStartingGems(), Is.False);
         }
 
@@ -163,7 +138,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EveryCharacterHasStartingSkillsOnBothButtons()
         {
-            foreach (HeroClass heroClass in System.Enum.GetValues(typeof(HeroClass)))
+            foreach (var heroClass in HeroClassNames.ByName.Values)
             {
                 var loop = TestWorld.Loop(state: new GameState { Class = heroClass });
 
@@ -190,7 +165,7 @@ namespace Game.Core.Tests.Build
         {
             var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v2.json"), TestWorld.Data);
 
-            Assert.That(save.State.OwnedGems.Count, Is.EqualTo(4));
+            Assert.That(save.State.OwnedGems.Count, Is.EqualTo(3));
         }
     }
 }
