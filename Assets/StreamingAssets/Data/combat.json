@@ -39,7 +39,7 @@
     "amazon": { "mark": { "every": 20, "everyMin": 5, "seconds": 8, "keyDamage": 0.2 } },
     "viking": { "shield": { "every": 15, "everyMin": 5, "multiplier": 2, "stunSeconds": 2 } },
     "ronin": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 50, "strikeEveryMin": 10, "strikeMultiplier": 3, "strikeTargets": 1, "breathEvery": 25, "whirlResource": 20 } },
-    "metalhead": { "headbang": { "pxPerSecond": 2000, "maxSeconds": 30 } },
+    "metalhead": { "headbang": { "pxPerSecond": 2000, "maxSeconds": 30 }, "overdrive": { "seconds": 8, "songs": 0.5 } },
     "clockmaker": { "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 } }
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },

@@ -32,6 +32,7 @@ namespace Game.Core.Tests.Sim
                 loop.Skills.Equip(TestWorld.Data.Gems[skill]);
             PutOnTheWeapon(loop, skills);
             loop.State.Resource = 100;
+            loop.State.OverdriveSpent = true;
             loop.Events.Clear();
             return new SkillTestHero(loop, input);
         }

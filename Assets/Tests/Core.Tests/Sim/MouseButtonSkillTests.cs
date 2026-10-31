@@ -22,6 +22,7 @@ namespace Game.Core.Tests.Sim
             foreach (var skill in skills)
                 loop.Skills.Equip(Gem(skill));
             loop.State.Resource = 100;
+            loop.State.OverdriveSpent = true;
             loop.Events.Clear();
             return (loop, input);
         }

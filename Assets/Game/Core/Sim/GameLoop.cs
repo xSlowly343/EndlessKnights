@@ -54,6 +54,7 @@ namespace Game.Core.Sim
         private readonly DropSystem _drops;
         private readonly OverloadSystem _overload;
         private readonly BannerSystem _banner;
+        private readonly OverdriveSystem _overdrive;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
         private readonly GearSystem _gear;
@@ -116,6 +117,7 @@ namespace Game.Core.Sim
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades, hero);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
             _banner = new BannerSystem(state, hero, _combat, _skills);
+            _overdrive = new OverdriveSystem(state, hero, _combat, _skills);
             _paths = new PathSystem(state, hero, _combat, _resource, _skills);
             _skills.Levels = data.Gems.Levels;
             _gemExperience = new GemExperienceSystem(data.Gems.Levels, state, hero, _skills, Events);
@@ -715,6 +717,7 @@ namespace Game.Core.Sim
             _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
             _banner.Tick(input);
+            _overdrive.Tick();
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
             CastRequested();

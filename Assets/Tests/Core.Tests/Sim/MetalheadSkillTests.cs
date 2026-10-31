@@ -94,7 +94,8 @@ namespace Game.Core.Tests.Sim
             Assert.That(metalhead.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(110).Within(1e-9));
 
             metalhead.Ticks(5, keysPerTick: 5);
-            Assert.That(metalhead.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(125).Within(1e-9));
+            var heardByAll = 100 * TestWorld.Data.Party.Buffs.TypingPartyDamage;
+            Assert.That(metalhead.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Mouse), Is.EqualTo(125 + heardByAll).Within(1e-9));
         }
 
         [Test]
