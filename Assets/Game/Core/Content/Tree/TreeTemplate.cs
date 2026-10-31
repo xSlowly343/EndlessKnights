@@ -5,8 +5,9 @@ namespace Game.Core.Content.Tree
 {
     public sealed class RankLine
     {
-        public RankLine(IReadOnlyList<Modifier> modifiers, string textRu, string textEn, string? waits)
+        public RankLine(IReadOnlyList<Modifier> modifiers, string textRu, string textEn, string? waits, IReadOnlyList<Modifier>? once = null)
         {
+            Once = once ?? System.Array.Empty<Modifier>();
             Modifiers = modifiers;
             TextRu = textRu;
             TextEn = textEn;
@@ -14,6 +15,7 @@ namespace Game.Core.Content.Tree
         }
 
         public IReadOnlyList<Modifier> Modifiers { get; }
+        public IReadOnlyList<Modifier> Once { get; }
         public string TextRu { get; }
         public string TextEn { get; }
         public string? Waits { get; }
@@ -58,10 +60,18 @@ namespace Game.Core.Content.Tree
                 if (repeats > 0)
                     modifiers.Add(modifier.WithValue(modifier.Value * repeats));
             }
+            if (repeats > 0)
+                modifiers.AddRange(First.Once);
             if (rank >= 3)
+            {
                 modifiers.AddRange(Second.Modifiers);
+                modifiers.AddRange(Second.Once);
+            }
             if (rank >= 5)
+            {
                 modifiers.AddRange(Third.Modifiers);
+                modifiers.AddRange(Third.Once);
+            }
             return modifiers;
         }
     }

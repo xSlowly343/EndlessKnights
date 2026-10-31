@@ -259,6 +259,7 @@ namespace Game.Core.Sim
         public bool MarkedEnemyDied { get; set; }
         public int KeysTowardBlind { get; set; }
         public int BlindTicks { get; set; }
+        public bool EvilEyeOnEnemy { get; set; }
         public int CompanionMarks { get; set; }
         public int OverdriveTicks { get; set; }
         public bool OverdriveSpent { get; set; }

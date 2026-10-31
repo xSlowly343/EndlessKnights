@@ -373,7 +373,7 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void VoodooCurseWakesTheVikingResponseOverTheNetwork()
+        public void VoodooCurseWakesTheVikingResponseOverTheNetworkAndTheEvilEyeWakesHalf()
         {
             var rig = new Rig(2);
             var voodoo = rig.Members[0];
@@ -382,7 +382,7 @@ namespace Game.Core.Tests.Party
             viking.Loop.State.Class = HeroClass.Viking;
             var rage = new StatId("resourceGain");
             rig.Run(5);
-            Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1));
+            Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1.125).Within(1e-9));
 
             voodoo.Cast(voodoo.Equip("charm_prick"));
             rig.Run(1);
@@ -390,7 +390,7 @@ namespace Game.Core.Tests.Party
             Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1.25).Within(1e-9));
             Assert.That(voodoo.Loop.Hero.Value(new StatId("curseEffect"), 1), Is.EqualTo(1));
             rig.Run(11);
-            Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1));
+            Assert.That(viking.Loop.Hero.Value(rage, 1), Is.EqualTo(1.125).Within(1e-9));
         }
 
         private static bool HasDamage(Member member, double value)

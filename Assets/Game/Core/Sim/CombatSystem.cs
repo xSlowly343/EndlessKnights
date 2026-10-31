@@ -163,6 +163,7 @@ namespace Game.Core.Sim
         public void Tick(in EffectiveInput input)
         {
             LastTickDamage = BigNumber.Zero;
+            _state.EvilEyeOnEnemy = _class.EvilEyeOn;
             ArmSureCrits();
             if (_state.VulnerabilityTicks > 0 && --_state.VulnerabilityTicks == 0)
                 _state.VulnerabilityShare = 0;

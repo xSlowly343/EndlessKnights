@@ -125,9 +125,10 @@ namespace Game.Core.Content.Tree
             var modifiers = node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>();
             var waits = node.HasField("waits") ? node.Field("waits").AsString() : null;
             var text = node.HasField("text") ? node.Field("text") : (ContentNode?)null;
-            if (modifiers.Count == 0 && (waits == null || text == null))
+            var once = node.HasField("once") ? ModifierReader.ReadList(node.Field("once")) : Array.Empty<Modifier>();
+            if (modifiers.Count + once.Count == 0 && (waits == null || text == null))
                 throw node.Error("a line needs modifiers, or a text and the mechanic it waits for");
-            return new RankLine(modifiers, text?.Field("ru").AsString() ?? string.Empty, text?.Field("en").AsString() ?? string.Empty, waits);
+            return new RankLine(modifiers, text?.Field("ru").AsString() ?? string.Empty, text?.Field("en").AsString() ?? string.Empty, waits, once);
         }
 
         private static List<int> ReadRows(ContentNode node)

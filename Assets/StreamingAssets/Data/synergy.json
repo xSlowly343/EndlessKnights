@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon", "blind", "cold", "bond", "blood"],
+  "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon", "blind", "cold", "bond", "blood", "evilEye"],
   "roles": {
     "viking": "dd", "ronin": "dd", "amazon": "dd", "stormweaver": "dd", "nomad": "dd",
     "metalhead": "buffer", "oracle": "buffer", "bannerbearer": "buffer",
@@ -9,7 +9,8 @@
     "gravedigger": "summon", "captain": "summon"
   },
   "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
-  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind" },
+  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "evilEyeOnEnemy": "evilEye" },
+  "weakMarks": { "evilEye": { "as": "curse", "share": 0.5 } },
   "secondResponseStat": "secondResponse",
   "allyPoisonStacks": 25,
   "responses": [
@@ -18,13 +19,13 @@
     { "id": "ronin_stopped_moment", "class": "ronin", "mark": "time", "modifiers": [{ "stat": "skillCost", "kind": "increased", "value": -0.25 }] },
     { "id": "ronin_precise_cut", "class": "ronin", "mark": "hunterMark", "second": true, "modifiers": [{ "stat": "critChance", "kind": "flat", "value": 1, "tags": ["Keyboard"] }] },
     { "id": "amazon_ricochet", "class": "amazon", "mark": "summon", "modifiers": [{ "stat": "resourcePerSecond", "kind": "flat", "value": 3 }] },
-    { "id": "amazon_extra_breath", "class": "amazon", "mark": "time", "second": true, "modifiers": [{ "stat": "volleyEvery", "kind": "flat", "value": -2 }] },
+    { "id": "amazon_extra_breath", "class": "amazon", "mark": "aura", "second": true, "modifiers": [{ "stat": "volleyEvery", "kind": "flat", "value": -2 }] },
     { "id": "stormweaver_electrolysis", "class": "stormweaver", "mark": "poison", "modifiers": [{ "stat": "lightningPoisonBurst", "kind": "flat", "value": 0.1 }] },
-    { "id": "stormweaver_plasma", "class": "stormweaver", "mark": "fire", "second": true, "modifiers": [{ "stat": "keyHitLightning", "kind": "more", "value": 0.5 }, { "stat": "resourcePerKey", "kind": "flat", "value": 2 }] },
+    { "id": "stormweaver_plasma", "class": "stormweaver", "mark": "hunterMark", "second": true, "modifiers": [{ "stat": "keyHitLightning", "kind": "more", "value": 0.5 }, { "stat": "resourcePerKey", "kind": "flat", "value": 2 }] },
     { "id": "nomad_fellow_traveller", "class": "nomad", "mark": "any", "perMark": true, "maxMarks": 5, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.03 }] },
     { "id": "nomad_tailwind", "class": "nomad", "mark": "series", "second": true, "modifiers": [{ "stat": "pathGain", "kind": "flat", "value": 10 }] },
     { "id": "metalhead_encore", "class": "metalhead", "mark": "series", "modifiers": [{ "stat": "auraDuration", "kind": "increased", "value": 0.4, "tags": ["Aura"] }] },
-    { "id": "metalhead_breakdown", "class": "metalhead", "mark": "stun", "second": true, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1, "tags": ["Aura"] }] },
+    { "id": "metalhead_breakdown", "class": "metalhead", "mark": "fire", "second": true, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1, "tags": ["Aura"] }] },
     { "id": "oracle_sign_of_fate", "class": "oracle", "mark": "hunterMark", "modifiers": [{ "stat": "omenPerPartyCrit", "kind": "flat", "value": 1 }] },
     { "id": "oracle_vision_of_doom", "class": "oracle", "mark": "curse", "second": true, "modifiers": [{ "stat": "partyCritChance", "kind": "flat", "value": 0.1 }] },
     { "id": "bannerbearer_under_the_banner", "class": "bannerbearer", "mark": "stun", "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1, "tags": ["Aura"] }] },
@@ -32,15 +33,15 @@
     { "id": "voodoo_bone_dolls", "class": "voodoo", "mark": "summon", "modifiers": [{ "stat": "curseEffect", "kind": "increased", "value": 0.5 }] },
     { "id": "voodoo_rotten_blood", "class": "voodoo", "mark": "poison", "second": true, "modifiers": [{ "stat": "poisonDamageTaken", "kind": "increased", "value": 0.3 }] },
     { "id": "clockmaker_eternal_song", "class": "clockmaker", "mark": "aura", "modifiers": [{ "stat": "loopExtendsAllyAuras", "kind": "flat", "value": 5 }] },
-    { "id": "clockmaker_quickened_gears", "class": "clockmaker", "mark": "series", "second": true, "modifiers": [{ "stat": "sandPerAllySquall", "kind": "flat", "value": 5 }] },
+    { "id": "clockmaker_quickened_gears", "class": "clockmaker", "mark": "stun", "second": true, "modifiers": [{ "stat": "sandPerAllySquall", "kind": "flat", "value": 5 }] },
     { "id": "plague_doctor_miasma", "class": "plague_doctor", "mark": "fire", "modifiers": [{ "stat": "miasmaBurstShare", "kind": "flat", "value": 0.2 }] },
-    { "id": "plague_doctor_plague_rats", "class": "plague_doctor", "mark": "summon", "second": true, "modifiers": [{ "stat": "allySummonPoison", "kind": "flat", "value": 1 }] },
+    { "id": "plague_doctor_plague_rats", "class": "plague_doctor", "mark": "series", "second": true, "modifiers": [{ "stat": "allySummonPoison", "kind": "flat", "value": 1 }] },
     { "id": "moonshiner_spark", "class": "moonshiner", "mark": "lightning", "modifiers": [{ "stat": "burnStacksFromAllyLightning", "kind": "flat", "value": 1 }, { "stat": "pressureDecay", "kind": "flat", "value": 3 }] },
     { "id": "moonshiner_to_the_music", "class": "moonshiner", "mark": "aura", "second": true, "modifiers": [{ "stat": "pressureDecay", "kind": "more", "value": -0.5 }, { "stat": "overheatThreshold", "kind": "flat", "value": 20 }] },
     { "id": "gravedigger_plague_corpses", "class": "gravedigger", "mark": "poison", "modifiers": [{ "stat": "soulsPerPoisonedKill", "kind": "flat", "value": 3 }] },
     { "id": "gravedigger_cursed_ground", "class": "gravedigger", "mark": "curse", "second": true, "modifiers": [{ "stat": "minionSpeed", "kind": "increased", "value": 0.4 }] },
     { "id": "captain_powder_keg", "class": "captain", "mark": "fire", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Minion"] }] },
-    { "id": "captain_thunder_shot", "class": "captain", "mark": "lightning", "second": true, "modifiers": [{ "stat": "cannonChargedShot", "kind": "flat", "value": 3 }] }
+    { "id": "captain_thunder_shot", "class": "captain", "mark": "stun", "second": true, "modifiers": [{ "stat": "cannonChargedShot", "kind": "flat", "value": 3 }] }
   ],
   "reactions": [
     { "id": "miasma_burst", "marks": ["fire", "poison"], "seconds": 1, "cooldownSeconds": 10, "modifiers": [{ "stat": "miasmaBurstShare", "kind": "flat", "value": 0.3 }] },
