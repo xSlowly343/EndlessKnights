@@ -43,9 +43,6 @@ namespace Game.Core.Tests.Build
             return loop.State.Skills.Count - 1;
         }
 
-        private static Modifier Attribute(string attribute, double value) =>
-            new Modifier(HeroAttributes.Stat(attribute), ModifierKind.Flat, value);
-
         private static double CastDamage(GameLoop loop, int slot)
         {
             loop.State.Resource = 100;
@@ -218,8 +215,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void ExecutionerDoublesItsSkillOnWoundedEnemies()
         {
-            var plain = Hero(Attribute("intelligence", 15));
-            var supported = Hero(Attribute("intelligence", 15));
+            var plain = Hero();
+            var supported = Hero();
             var plainSlot = Equip(plain, "iron_rim_bash");
             var slot = Equip(supported, "iron_rim_bash", "executioner");
             supported.Book.SetSupport(slot, 0, Gem("executioner"));
@@ -232,8 +229,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void ExecutionerDoesNothingOnHealthyEnemies()
         {
-            var plain = Hero(Attribute("intelligence", 15));
-            var supported = Hero(Attribute("intelligence", 15));
+            var plain = Hero();
+            var supported = Hero();
             var plainSlot = Equip(plain, "iron_rim_bash");
             var slot = Equip(supported, "iron_rim_bash", "executioner");
             supported.Book.SetSupport(slot, 0, Gem("executioner"));
@@ -244,7 +241,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void ChainSendsPartOfTheSkillHitToTheNextEnemy()
         {
-            var loop = Hero(Attribute("dexterity", 15));
+            var loop = Hero();
             var slot = Equip(loop, "iron_rim_bash", "chain");
             loop.Book.SetSupport(slot, 0, Gem("chain"));
 
@@ -257,7 +254,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SupportDoesNotChangeKeyHits()
         {
-            var loop = Hero(Attribute("dexterity", 15));
+            var loop = Hero();
             var slot = Equip(loop, "iron_rim_bash", "chain");
             loop.Book.SetSupport(slot, 0, Gem("chain"));
             var input = new FakeInputSource();
@@ -343,8 +340,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void BossHunterIsStrongOnBossesAndWeakerOnTheRest()
         {
-            var plain = Hero(Attribute("intelligence", 15));
-            var hunter = Hero(Attribute("intelligence", 15));
+            var plain = Hero();
+            var hunter = Hero();
             var plainSlot = Equip(plain, "iron_rim_bash");
             var slot = Equip(hunter, "iron_rim_bash", "boss_hunter");
             hunter.Book.SetSupport(slot, 0, Gem("boss_hunter"));
@@ -360,7 +357,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void DeathMarkHitsMarkedEnemiesHarderAndKillsGiveResource()
         {
-            var loop = Hero(Attribute("intelligence", 15));
+            var loop = Hero();
             var slot = Equip(loop, "iron_rim_bash", "death_mark");
             loop.Book.SetSupport(slot, 0, Gem("death_mark"));
             var support = Gem("death_mark").Support!;
@@ -377,7 +374,7 @@ namespace Game.Core.Tests.Build
 
         private static double CastPowerWith(string support, System.Action<GameLoop> setup)
         {
-            var loop = Hero(Attribute("strength", 30));
+            var loop = Hero();
             var slot = Equip(loop, "iron_rim_bash", support);
             Assert.That(loop.Book.SetSupport(slot, 0, Gem(support)), Is.EqualTo(BookResult.Done));
             setup(loop);
@@ -409,7 +406,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void BladeHungerStartsAgainAfterEveryCast()
         {
-            var loop = Hero(Attribute("strength", 30));
+            var loop = Hero();
             var slot = Equip(loop, "iron_rim_bash", "blade_hunger");
             loop.Book.SetSupport(slot, 0, Gem("blade_hunger"));
             loop.State.KeyHits += 1000;
@@ -435,8 +432,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void CritFocusLetsTheSkillCritFromFocusAndHitHarder()
         {
-            var plain = Hero(Attribute("strength", 30));
-            var focused = Hero(Attribute("strength", 30));
+            var plain = Hero();
+            var focused = Hero();
             var plainSlot = Equip(plain, "iron_rim_bash");
             var slot = Equip(focused, "iron_rim_bash", "crit_focus");
             focused.Book.SetSupport(slot, 0, Gem("crit_focus"));
@@ -585,7 +582,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void InkPoisonPoisonsTheEnemyOnTheFirstSkillHits()
         {
-            var loop = Hero(Attribute("strength", 30));
+            var loop = Hero();
             var slot = Supported(loop, "iron_rim_bash", "ink_poison");
             var support = Gem("ink_poison").Support!;
 
@@ -599,7 +596,7 @@ namespace Game.Core.Tests.Build
         public void SeriesRhythmCutsTheCooldownEveryTwentyFiveHitsAndRewardsLongSeries()
         {
             var support = Gem("series_rhythm").Support!;
-            var loop = Hero(Attribute("strength", 30));
+            var loop = Hero();
             var slot = Supported(loop, "iron_rim_bash", "series_rhythm");
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
@@ -620,7 +617,7 @@ namespace Game.Core.Tests.Build
         public void SeriesFinishStrikesOnTheTwentiethHitAfterTheCast()
         {
             var support = Gem("series_finish").Support!;
-            var loop = Hero(Attribute("strength", 30));
+            var loop = Hero();
             var slot = Supported(loop, "iron_rim_bash", "series_finish");
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
@@ -656,7 +653,7 @@ namespace Game.Core.Tests.Build
         public void LongSwingStretchesMouseDistanceAndBoostsMouseHitsWhileActive()
         {
             var support = Gem("long_swing").Support!;
-            var loop = Hero(Attribute("dexterity", 30));
+            var loop = Hero();
             var slot = Supported(loop, "space_hammer", "long_swing");
             Assert.That(SupportEffects.MouseDistance(loop.State.Skills[slot]), Is.EqualTo(support.MouseDistanceMultiplier).Within(1e-9));
 
@@ -672,7 +669,7 @@ namespace Game.Core.Tests.Build
         public void WhirlpoolCirclesCutTheCooldownAndPowerTheNextCast()
         {
             var support = Gem("whirlpool").Support!;
-            var loop = Hero(Attribute("dexterity", 30));
+            var loop = Hero();
             var slot = Supported(loop, "iron_rim_bash", "whirlpool");
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
@@ -695,7 +692,7 @@ namespace Game.Core.Tests.Build
         public void TailwindStretchesTheEffectWithMouseDistanceUpToItsCap()
         {
             var support = Gem("tailwind_support").Support!;
-            var loop = Hero(Attribute("dexterity", 30));
+            var loop = Hero();
             var slot = Supported(loop, "space_hammer", "tailwind_support");
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
@@ -720,7 +717,7 @@ namespace Game.Core.Tests.Build
         public void TailwindMakesAurasStronger()
         {
             var support = Gem("tailwind_support").Support!;
-            var loop = Hero(Attribute("dexterity", 30));
+            var loop = Hero();
             var slot = Supported(loop, "march", "tailwind_support");
             loop.State.Resource = 100;
 
@@ -733,8 +730,8 @@ namespace Game.Core.Tests.Build
         public void MinionTrailMakesItsSummonsLiveLongerAndRunFasterWithTheMouse()
         {
             var support = Gem("minion_trail").Support!;
-            var plain = Hero(Attribute("dexterity", 30));
-            var trail = Hero(Attribute("dexterity", 30));
+            var plain = Hero();
+            var trail = Hero();
             var plainSlot = Equip(plain, "call_a_colleague");
             var slot = Supported(trail, "call_a_colleague", "minion_trail");
             plain.State.Resource = 100;
@@ -754,7 +751,7 @@ namespace Game.Core.Tests.Build
         public void SweepingFlicksAddQueueTargetsToTheSkillHits()
         {
             var support = Gem("sweeping").Support!;
-            var loop = Hero(Attribute("dexterity", 30));
+            var loop = Hero();
             var slot = Supported(loop, "iron_rim_bash", "sweeping");
             var skill = loop.State.Skills[slot];
             skill.FlickTargets = 2;
@@ -771,8 +768,8 @@ namespace Game.Core.Tests.Build
         public void TargetHunterSendsTheSkillHitToTheNextEnemyStronger()
         {
             var support = Gem("target_hunter").Support!;
-            var plain = Hero(Attribute("dexterity", 30));
-            var hunter = Hero(Attribute("dexterity", 30));
+            var plain = Hero();
+            var hunter = Hero();
             var plainSlot = Equip(plain, "iron_rim_bash");
             var slot = Supported(hunter, "iron_rim_bash", "target_hunter");
             var hp = hunter.State.EnemyHp;
@@ -788,7 +785,7 @@ namespace Game.Core.Tests.Build
         public void CursedLeavesTheEnemyVulnerableForAWhile()
         {
             var support = Gem("cursed").Support!;
-            var loop = Hero(Attribute("intelligence", 30));
+            var loop = Hero();
             var slot = Supported(loop, "iron_rim_bash", "cursed");
 
             CastDamage(loop, slot);
@@ -803,8 +800,8 @@ namespace Game.Core.Tests.Build
         public void LingeringBlightAddsMoreStacksLongerCursesAndAHigherCap()
         {
             var support = Gem("lingering_blight").Support!;
-            var plain = Hero(Attribute("intelligence", 30));
-            var blight = Hero(Attribute("intelligence", 30));
+            var plain = Hero();
+            var blight = Hero();
             var plainSlot = Equip(plain, "vial_from_belt");
             var slot = Supported(blight, "vial_from_belt", "lingering_blight");
             plain.State.Resource = 100;
@@ -818,8 +815,8 @@ namespace Game.Core.Tests.Build
             blight.Tick();
             Assert.That(blight.Skills.Dots.PoisonMax, Is.EqualTo(plainMax * support.StackCapMultiplier).Within(1e-9));
 
-            var curser = Hero(Attribute("intelligence", 30));
-            var plainCurser = Hero(Attribute("intelligence", 30));
+            var curser = Hero();
+            var plainCurser = Hero();
             var curse = Supported(curser, "pin", "lingering_blight");
             var plainCurse = Equip(plainCurser, "pin");
             curser.State.Resource = 100;
@@ -849,7 +846,7 @@ namespace Game.Core.Tests.Build
         public void KeyEchoRepeatsTheSkillEveryFiftyKeysAtHalfPower()
         {
             var support = Gem("key_echo").Support!;
-            var loop = Hero(Attribute("strength", 30));
+            var loop = Hero();
             var slot = Supported(loop, "iron_rim_bash", "key_echo");
             var first = CastDamage(loop, slot);
             var input = new FakeInputSource();
@@ -887,7 +884,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void ResonanceGoesIntoASocketNowThatThePartyHasBuffs()
         {
-            var loop = Hero(Attribute("intelligence", 15));
+            var loop = Hero();
             var slot = Equip(loop, "iron_rim_bash", "resonance");
 
             Assert.That(loop.Book.SetSupport(slot, 0, Gem("resonance")), Is.EqualTo(BookResult.Done));

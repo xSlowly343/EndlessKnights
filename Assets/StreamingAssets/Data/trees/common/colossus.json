@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "tree": "colossus",
   "name": {"ru": "Колосс", "en": "Colossus"},
   "about": {"ru": "боссы, стражи, таймер", "en": "bosses, guardians, the timer"},

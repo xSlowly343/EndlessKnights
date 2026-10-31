@@ -9,7 +9,7 @@ namespace Game.Core.Content.Gems
         private readonly IReadOnlyList<double>? _branchDamage;
 
         public GemDef(string id, GemKind kind, GemColor color, string nameRu, string nameEn, StatTags tags,
-            SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null, IReadOnlyDictionary<string, double>? requires = null,
+            SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null,
             string? ascendancy = null, bool locked = false, SupportDef? support = null, SkillType? type = null,
             IReadOnlyList<SkillBranchTier>? branches = null, StatTags supports = StatTags.None, double damageMultiplier = 1, double manaMultiplier = 1,
             IReadOnlyList<SkillDef>? variants = null, IReadOnlyList<double>? branchDamage = null, int unlockLevel = 1)
@@ -23,7 +23,6 @@ namespace Game.Core.Content.Gems
             DamageMultiplier = damageMultiplier;
             ManaMultiplier = manaMultiplier;
             Support = support;
-            Requires = requires ?? new Dictionary<string, double>();
             Id = id;
             Kind = kind;
             Color = color;
@@ -71,7 +70,6 @@ namespace Game.Core.Content.Gems
         public TriggerDef? Trigger { get; }
         public string? SupportEffect { get; }
         public SupportDef? Support { get; }
-        public IReadOnlyDictionary<string, double> Requires { get; }
         public string? Ascendancy { get; }
         public bool Locked { get; }
         public SkillType Type { get; }

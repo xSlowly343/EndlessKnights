@@ -33,7 +33,6 @@ namespace Game.Core.Ui
             BookResult.WrongKind => Texts.Get("book.result.wrongKind"),
             BookResult.NoFreeSlot => Texts.Get("book.result.noFreeSlot"),
             BookResult.NoSuchSlot => Texts.Get("book.result.noSuchSlot"),
-            BookResult.AttributesTooLow => Texts.Get("book.result.attributesTooLow"),
             BookResult.WrongPath => Texts.Get("book.result.wrongPath"),
             BookResult.WaitsForMechanic => Texts.Get("book.result.waitsForMechanic"),
             BookResult.NotOnWeapon => Texts.Get("book.result.notOnWeapon"),

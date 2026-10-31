@@ -22,9 +22,10 @@ namespace Game.Core.Tests.Content
 }";
 
         private const string Tree = @"{
-  ""version"": 5,
+  ""version"": 6,
   ""class"": ""viking"",
-  ""barPassives"": [[{""stat"": ""strength"", ""kind"": ""flat"", ""value"": 3}], [{""stat"": ""resourceGain"", ""kind"": ""increased"", ""value"": 0.02}]],
+  ""attribute"": {""name"": ""strength"", ""perPoint"": [{""stat"": ""shieldDamage"", ""kind"": ""increased"", ""value"": 0.01}]},
+  ""barPassives"": [[{""stat"": ""classAttribute"", ""kind"": ""flat"", ""value"": 3}], [{""stat"": ""resourceGain"", ""kind"": ""increased"", ""value"": 0.02}]],
   ""nodes"": [
     {""id"": ""viking_axe"", ""row"": 1, ""column"": 0, ""name"": {""ru"": ""Топор"", ""en"": ""Axe""}, ""a"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.04}]}, ""b"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.02}]}, ""c"": {""modifiers"": [{""stat"": ""keyStrikeEvery"", ""kind"": ""flat"", ""value"": 30}]}},
     {""id"": ""viking_crit"", ""row"": 1, ""column"": 1, ""passive"": true, ""name"": {""ru"": ""Глаз"", ""en"": ""Eye""}, ""a"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.03}]}, ""b"": {""modifiers"": [{""stat"": ""critMultiplier"", ""kind"": ""flat"", ""value"": 0.05}]}, ""c"": {""text"": {""ru"": ""т"", ""en"": ""t""}, ""waits"": ""critFocusPause""}},
@@ -106,7 +107,7 @@ namespace Game.Core.Tests.Content
             allocation.Raise(tree, "viking_axe");
 
             Assert.That(allocation.ChooseMajor(tree, 4, "viking_cool"), Is.EqualTo(RankResult.MarkNotReached));
-            Assert.That(Sum(allocation.Modifiers(tree), "strength"), Is.EqualTo(3), "one bar step at 2 points");
+            Assert.That(Sum(allocation.Modifiers(tree), "classAttribute"), Is.EqualTo(3), "one bar step at 2 points");
             allocation.Raise(tree, "viking_axe");
             Assert.That(Sum(allocation.Modifiers(tree), "resourceGain"), Is.EqualTo(0.02).Within(1e-9), "the second step gives the second passive");
             Assert.That(allocation.ChooseMajor(tree, 4, "viking_nope"), Is.EqualTo(RankResult.UnknownMajor));
@@ -135,7 +136,9 @@ namespace Game.Core.Tests.Content
             Assert.That(Problem(Tree, Templates.Replace("\"majorsAt\": [4]", "\"majorsAt\": [6]")), Does.Contain("is at 6 points"));
             Assert.That(Problem(Tree, Templates.Replace("\"majorOptions\": 2", "\"majorOptions\": 3")), Does.Contain("offers 3"));
             Assert.That(Problem(Tree.Replace("\"waits\": \"warmUp\"", "\"x\": 1")), Does.Contain("needs modifiers, or a text and the mechanic"));
-            Assert.That(Problem(Tree.Replace("\"version\": 5", "\"version\": 4")), Does.Contain("version 4"));
+            Assert.That(Problem(Tree.Replace("\"version\": 6", "\"version\": 5")), Does.Contain("version 5"));
+            Assert.That(Problem(Tree.Replace("\"name\": \"strength\"", "\"name\": \"luck\"")), Does.Contain("class attribute is one of"));
+            Assert.That(Problem(Tree.Replace("\"perPoint\": [{\"stat\": \"shieldDamage\", \"kind\": \"increased\", \"value\": 0.01}]", "\"perPoint\": []")), Does.Contain("strengthen the class feature"));
             Assert.That(Assert.Throws<ContentException>(() => TreeTemplates.Load(Templates.Replace("\"rows\": [0, 3]", "\"rows\": [2, 3]")))!.Message, Does.Contain("threshold is 0"));
         }
 
@@ -148,7 +151,7 @@ namespace Game.Core.Tests.Content
             var known = typeof(Game.Core.Sim.CombatStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
                 .Where(field => field.FieldType == typeof(StatId))
                 .Select(field => ((StatId)field.GetValue(null)!).Name)
-                .Concat(new[] { "strength", "dexterity", "intelligence" })
+                .Concat(new[] { "classAttribute" })
                 .ToHashSet();
             var classes = Game.Core.Sim.HeroClassNames.ByName.Keys.Concat(NewClasses).ToList();
 

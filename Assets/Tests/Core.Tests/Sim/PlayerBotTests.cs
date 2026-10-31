@@ -80,7 +80,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ScoreIgnoresInputTheClassDoesNotUse()
         {
-            var typist = new NodeScore(StatTags.Keyboard, new[] { "tempo" });
+            var typist = new NodeScore(StatTags.Keyboard, Game.Core.Content.Tree.ClassAttributeDef.None);
             var mouseOnly = new[] { new Modifier(CombatStats.Damage, ModifierKind.More, -1, StatTags.Mouse) };
             var lessDamage = new[] { new Modifier(CombatStats.Damage, ModifierKind.More, -0.7) };
             var keyDamage = new[] { new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.1, StatTags.Keyboard) };

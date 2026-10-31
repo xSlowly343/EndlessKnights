@@ -209,12 +209,8 @@ namespace Game.Core.Content.Gems
             var tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None;
             var nameRu = name.Field("ru").AsString();
             var nameEn = name.Field("en").AsString();
-            var requires = new Dictionary<string, double>(StringComparer.Ordinal);
             if (node.HasField("requires"))
-            {
-                foreach (var attribute in node.Field("requires").FieldNames())
-                    requires[attribute] = node.Field("requires").Field(attribute).AsNumber(0, 10000);
-            }
+                throw node.Field("requires").Error("skills have no attribute requirements: the class attribute strengthens the class feature");
             if (type != SkillType.Active && type != SkillType.Aura && node.HasField("branches"))
                 throw node.Field("branches").Error("only active skills and auras have branches");
             if (type != SkillType.Support)
@@ -223,11 +219,11 @@ namespace Game.Core.Content.Gems
             {
                 case SkillType.Active:
                 case SkillType.Aura:
-                    return ReadSkillGem(node, id, type, color, nameRu, nameEn, tags, requires);
+                    return ReadSkillGem(node, id, type, color, nameRu, nameEn, tags);
                 case SkillType.Trigger:
-                    return new GemDef(id, GemKind.Trigger, color, nameRu, nameEn, tags, trigger: ReadTrigger(node), requires: requires);
+                    return new GemDef(id, GemKind.Trigger, color, nameRu, nameEn, tags, trigger: ReadTrigger(node));
                 default:
-                    return new GemDef(id, GemKind.Support, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(), requires: requires,
+                    return new GemDef(id, GemKind.Support, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(),
                         support: SupportDef.Read(node.Field("effect")), supports: ReadSupported(node.Field("supports")),
                         damageMultiplier: node.Field("damageMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
                         manaMultiplier: node.Field("manaMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
@@ -306,7 +302,7 @@ namespace Game.Core.Content.Gems
             return ReadEffect(skill.Field("effect").MergedWith(overrides), durationSeconds);
         }
 
-        private static GemDef ReadSkillGem(ContentNode node, string id, SkillType type, GemColor color, string nameRu, string nameEn, StatTags tags, Dictionary<string, double> requires)
+        private static GemDef ReadSkillGem(ContentNode node, string id, SkillType type, GemColor color, string nameRu, string nameEn, StatTags tags)
         {
             var ascendancy = node.HasField("ascendancy") ? node.Field("ascendancy").AsString() : null;
             var locked = node.HasField("locked") && node.Field("locked").AsBool();
@@ -322,9 +318,9 @@ namespace Game.Core.Content.Gems
             var overrides = new List<ContentNode?>();
             var branches = ReadBranches(node, skill.DurationSeconds, overrides);
             if (branches.Count == 0)
-                return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, requires: requires, ascendancy: ascendancy, locked: locked, type: type);
+                return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, ascendancy: ascendancy, locked: locked, type: type);
             var (variants, damage) = BuildVariants(node, skill, branches, overrides);
-            return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, requires: requires, ascendancy: ascendancy, locked: locked,
+            return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, ascendancy: ascendancy, locked: locked,
                 type: type, branches: branches, variants: variants, branchDamage: damage);
         }
 

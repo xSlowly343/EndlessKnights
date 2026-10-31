@@ -14,6 +14,7 @@ namespace Game.Core.Build
             _ => Texts.Get("tree.type.start")
         };
 
-        public static string AttributeName(string attribute) => ModifierText.Label(new StatId(attribute));
+        public static string AttributeName(ClassAttributeDef attribute) =>
+            ModifierText.Label(attribute.Name.Length == 0 ? ClassAttributeDef.Stat : new StatId(attribute.Name));
     }
 }

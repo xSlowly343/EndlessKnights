@@ -219,6 +219,24 @@ namespace Game.Core.Tests.Save
         }
 
         [Test]
+        public void FourteenthVersionGearKeepsOneClassAttributeAffix()
+        {
+            var step = SaveMigrations.Default.Steps.Single(migration => migration.FromVersion == 14);
+            var payload = JsonParser.Parse(@"{""state"": {""gear"": {""worn"": [{""slot"": ""helmet"", ""affixes"": [
+                {""id"": ""armor_damage"", ""tier"": 2, ""value"": 0.05},
+                {""id"": ""armor_dexterity"", ""tier"": 3, ""value"": 6},
+                {""id"": ""armor_strength"", ""tier"": 1, ""value"": 2}]}]},
+                ""drops"": {""gear"": [{""slot"": ""amulet"", ""affixes"": [{""id"": ""amulet_all_attributes"", ""tier"": 4, ""value"": 4}]}]}}}", "save");
+
+            var state = step.Upgrade(payload).Fields["state"];
+
+            var helmet = state.Fields["gear"].Fields["worn"].Items[0].Fields["affixes"].Items;
+            Assert.That(helmet.Select(affix => affix.Fields["id"].Text), Is.EqualTo(new[] { "armor_damage", "armor_attribute" }));
+            Assert.That(helmet[1].Fields["value"].Number, Is.EqualTo(6));
+            Assert.That(state.Fields["drops"].Fields["gear"].Items[0].Fields["affixes"].Items[0].Fields["id"].Text, Is.EqualTo("jewel_attribute"));
+        }
+
+        [Test]
         public void CurrentSaveSkipsMigrations()
         {
             var calls = 0;

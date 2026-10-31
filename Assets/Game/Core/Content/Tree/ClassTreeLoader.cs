@@ -7,7 +7,7 @@ namespace Game.Core.Content.Tree
 {
     public static class ClassTreeLoader
     {
-        public const int SupportedVersion = 5;
+        public const int SupportedVersion = 6;
 
         public static string FileNameOf(string heroClass) => "trees/" + heroClass + ".json";
 
@@ -32,7 +32,10 @@ namespace Game.Core.Content.Tree
             if (barPassives.Count == 0)
                 throw root.Field("barPassives").Error("the mastery bar needs at least one passive");
             var majors = ReadMajors(root.Field("majors"), shape, heroClass, nodes, templates.MajorTalentsAvoid);
-            return new ClassTree(heroClass, false, nodes, shape.RowThresholds, templates.BarEvery, barPassives, majors, templates.Respec);
+            return new ClassTree(heroClass, false, nodes, shape.RowThresholds, templates.BarEvery, barPassives, majors, templates.Respec)
+            {
+                Attribute = ClassAttributeDef.Read(root.Field("attribute")),
+            };
         }
 
         public static ClassTree LoadCommon(TreeTemplates templates, string treeId, string json)

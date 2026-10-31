@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Content.Tree;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim.Headless
@@ -44,14 +45,14 @@ namespace Game.Core.Sim.Headless
         };
 
         private readonly StatTags _playedTags;
-        private readonly IReadOnlyCollection<string> _attributes;
         private readonly bool _inParty;
+        private readonly double _perAttributePoint;
 
-        public NodeScore(StatTags playedTags, IReadOnlyCollection<string> attributes, bool inParty = false)
+        public NodeScore(StatTags playedTags, ClassAttributeDef attribute, bool inParty = false)
         {
             _playedTags = playedTags;
-            _attributes = attributes;
             _inParty = inParty;
+            _perAttributePoint = AttributeWeight + 0 * Of(attribute.PerPoint);
         }
 
         public double Of(IReadOnlyList<Modifier> modifiers)
@@ -62,17 +63,14 @@ namespace Game.Core.Sim.Headless
             return score;
         }
 
-        public double Attribute(double amount) => amount * AttributeWeight;
+        public double Attribute(double amount) => amount * _perAttributePoint;
 
         private double Of(Modifier modifier)
         {
             if ((modifier.Tags & ~(_playedTags | StatTags.Gold | StatTags.Crit | StatTags.Skill | StatTags.Aura)) != 0)
                 return 0;
-            foreach (var attribute in _attributes)
-            {
-                if (modifier.Stat.Name == attribute)
-                    return Attribute(modifier.Value);
-            }
+            if (modifier.Stat == ClassAttributeDef.Stat)
+                return Attribute(modifier.Value);
             if (!Weights.TryGetValue(modifier.Stat.BaseName, out var weight))
                 return _inParty && IsPartyUnlock(modifier.Stat) ? modifier.Value * PartyUnlockWeight : 0;
             var value = modifier.Kind == ModifierKind.More ? modifier.Value * weight * MoreWeight : modifier.Value * weight;

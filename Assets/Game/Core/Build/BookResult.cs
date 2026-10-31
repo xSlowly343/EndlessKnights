@@ -7,7 +7,6 @@ namespace Game.Core.Build
         WrongKind,
         NoFreeSlot,
         NoSuchSlot,
-        AttributesTooLow,
         WrongPath,
         WaitsForMechanic,
         NotOnWeapon,

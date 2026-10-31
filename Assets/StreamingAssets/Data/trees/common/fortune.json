@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "tree": "fortune",
   "name": {"ru": "Удача", "en": "Fortune"},
   "about": {"ru": "золото, офлайн, находки, скрижали", "en": "gold, offline, finds, slates"},

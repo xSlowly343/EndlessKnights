@@ -70,8 +70,6 @@ namespace Game.Core.Build
                 return BookResult.Done;
             if (book.FreeCopies(gem) <= 0)
                 return BookResult.NotOwned;
-            if (!book.MeetsRequirements(gem))
-                return BookResult.AttributesTooLow;
             var trigger = old.Trigger;
             book.Unequip(row);
             var result = EquipAt(book, state, gem, row);

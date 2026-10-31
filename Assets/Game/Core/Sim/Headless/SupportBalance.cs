@@ -16,7 +16,6 @@ namespace Game.Core.Sim.Headless
         public const string SummonHost = "call_a_colleague";
         public const string PoisonHost = "vial_from_belt";
         public const long Stage = 40;
-        public const double Attributes = 100;
 
         private readonly GameData _data;
         private readonly ulong _seed;
@@ -82,8 +81,6 @@ namespace Game.Core.Sim.Headless
             var levels = _data.Weapons.SkillRules.UnlockLevels;
             state.HeroLevel = levels[levels.Count - 1];
             var hero = new StatSheet();
-            foreach (var attribute in HeroAttributes.Names)
-                hero.Add(new Modifier(HeroAttributes.Stat(attribute), ModifierKind.Flat, Attributes));
             var loop = new GameLoop(_data, new BotInput(profile, _seed ^ 0x5EEDUL), state, hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);

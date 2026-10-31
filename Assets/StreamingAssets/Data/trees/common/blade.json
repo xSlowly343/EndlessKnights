@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "tree": "blade",
   "name": {"ru": "Клинок", "en": "Blade"},
   "about": {"ru": "удар клавиш, крит, серия", "en": "key strikes, crits, streaks"},

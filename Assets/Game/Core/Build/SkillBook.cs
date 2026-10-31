@@ -21,17 +21,7 @@ namespace Game.Core.Build
             _hero = hero;
         }
 
-        public double Attribute(string attribute) => _hero.Value(HeroAttributes.Stat(attribute), 0);
-
-        public bool MeetsRequirements(GemDef gem)
-        {
-            foreach (var requirement in gem.Requires)
-            {
-                if (Attribute(requirement.Key) < requirement.Value)
-                    return false;
-            }
-            return true;
-        }
+        public double ClassAttribute => _hero.Value(HeroAttributes.Stat, 0);
 
         public void UseRules(SkillBookRules rules) => _rules = rules;
 
@@ -199,8 +189,6 @@ namespace Game.Core.Build
                 return BookResult.WrongPath;
             if (RowOf(skill) >= 0)
                 return BookResult.AlreadyInBook;
-            if (!MeetsRequirements(skill))
-                return BookResult.AttributesTooLow;
             var role = FreeRoleFor(skill);
             if (role == null)
                 return BookResult.NoFreeSlot;
@@ -218,8 +206,6 @@ namespace Game.Core.Build
                 return BookResult.NotOnWeapon;
             if (RowOf(skill) >= 0)
                 return BookResult.AlreadyInBook;
-            if (!MeetsRequirements(skill))
-                return BookResult.AttributesTooLow;
             var role = FreeRoleFor(skill);
             if (role == null)
                 return BookResult.NoFreeSlot;
@@ -246,8 +232,6 @@ namespace Game.Core.Build
             var slot = _state.Skills[index];
             if (trigger != null && !ReferenceEquals(slot.Trigger, trigger) && FreeCopies(trigger) <= 0)
                 return BookResult.NotOwned;
-            if (trigger != null && !MeetsRequirements(trigger))
-                return BookResult.AttributesTooLow;
             slot.Trigger = trigger;
             if (trigger != null)
                 _state.ProgressOf(trigger);

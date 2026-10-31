@@ -98,7 +98,7 @@ namespace Game.Core.Tests.Build
             Raise(loop, "war_cry", 1);
             Assert.That(loop.ChooseMajorTalent(20, "viking_smoulder"), Is.EqualTo(RankResult.Done));
             Assert.That(loop.Hero.Value(CombatStats.ResourceDecay, 1), Is.LessThan(resource));
-            Assert.That(loop.Hero.Value(TreeStat("strength"), 0), Is.EqualTo(3), "two bar steps: +3 Strength and +2% Wrath gain");
+            Assert.That(loop.Hero.Value(TreeStat("classAttribute"), 0), Is.EqualTo(3), "two bar steps: +3 class attribute and +2% Wrath gain");
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loaded.ClassTree.Plan.Count, Is.EqualTo(20));
             Assert.That(again.State.TreePointsSpent, Is.EqualTo(20));
             Assert.That(again.State.TreePointsEarned, Is.EqualTo(loop.State.TreePointsEarned));
-            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(14));
+            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(15));
         }
 
         private static StatId TreeStat(string name) => new StatId(name);

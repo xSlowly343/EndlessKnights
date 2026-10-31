@@ -96,8 +96,9 @@ namespace Game.Core.Ui
         private static void AddAttributes(List<HeroStatLine> lines, GameLoop loop)
         {
             lines.Add(Header(1, "hero.stats.attributes"));
-            foreach (var attribute in HeroAttributes.Names)
-                lines.Add(new HeroStatLine(1, TreeNodeText.AttributeName(attribute), ((long)System.Math.Floor(loop.Book.Attribute(attribute))).ToString(CultureInfo.InvariantCulture)));
+            lines.Add(new HeroStatLine(1, TreeNodeText.AttributeName(loop.ClassAttributeDef), ((long)System.Math.Floor(loop.ClassAttribute)).ToString(CultureInfo.InvariantCulture)));
+            foreach (var modifier in loop.ClassAttributeModifiers)
+                lines.Add(new HeroStatLine(1, Texts.Get("hero.stats.classFeature"), ModifierText.Describe(modifier)));
         }
 
         private static void AddSources(List<HeroStatLine> lines, GameLoop loop)

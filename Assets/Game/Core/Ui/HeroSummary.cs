@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using Game.Core.Build;
 using Game.Core.Math;
 using Game.Core.Sim;
 using Game.Core.Stats;
@@ -25,8 +26,7 @@ namespace Game.Core.Ui
         public static string Progress(GameState state) => Texts.Format("hero.progress", state.Stage, System.Math.Max(state.RecordStage, state.HighestStage));
 
         public static string Attributes(GameLoop loop) =>
-            string.Format(CultureInfo.InvariantCulture, Texts.Get("hero.attributes"),
-                Whole(loop.Book.Attribute("strength")), Whole(loop.Book.Attribute("dexterity")), Whole(loop.Book.Attribute("intelligence")));
+            string.Format(CultureInfo.InvariantCulture, Texts.Get("hero.attributes"), TreeNodeText.AttributeName(loop.ClassAttributeDef), Whole(loop.ClassAttribute));
 
         public static HeroHand Hand(GameLoop loop, WeaponHand hand)
         {

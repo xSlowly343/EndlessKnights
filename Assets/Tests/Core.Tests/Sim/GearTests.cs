@@ -106,7 +106,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WornAndBaggedItemsSurviveSaveAndLoad()
         {
-            var helmet = Item("mail_coif", ("armor_damage", 4), ("armor_strength", 2));
+            var helmet = Item("mail_coif", ("armor_damage", 4), ("armor_attribute", 2));
             var ring = Item("gold_ring", ("jewel_gold", 6));
             var loop = Loop(helmet, ring);
             loop.Gear.Equip(helmet);

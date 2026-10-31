@@ -59,6 +59,7 @@ namespace Game.Core.Sim
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
         private readonly GearSystem _gear;
+        private readonly ClassAttributeSystem _classAttribute;
         private readonly GateSystem _gates;
         private readonly Unlocks _unlocks;
         private readonly DungeonSystem _dungeons;
@@ -89,7 +90,12 @@ namespace Game.Core.Sim
             _triggers = new TriggerSystem(state, _skills, _resource);
             _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
             _gear = new GearSystem(data.Items, state, hero);
-            _gear.Rebuilt = _weapons.RefreshInnate;
+            _classAttribute = new ClassAttributeSystem(hero);
+            _gear.Rebuilt = () =>
+            {
+                _weapons.RefreshInnate();
+                RefreshClassAttribute();
+            };
             _weapons.RefreshInnate();
             _drops = new DropSystem(data.Drops, data.Stages, data.Gems, data.Items, _weapons, _gear, state, hero, Events);
             _stage.Drops = _drops;
@@ -144,6 +150,8 @@ namespace Game.Core.Sim
 
         public StatSheet Hero { get; }
         public IReadOnlyList<Modifier> TreeModifiers => _treeLayer.Applied;
+
+        public IReadOnlyList<Modifier> ClassAttributeModifiers => _classAttribute.Modifiers;
         public CombatSystem Combat => _combat;
         public StageSystem Stages => _stage;
         public FocusSystem Focus => _focus;
@@ -292,6 +300,12 @@ namespace Game.Core.Sim
         }
 
         public ClassTree? ClassTreeDef => State.ClassChosen ? _data.ClassTreeOf(State.ClassName) : null;
+
+        public double ClassAttribute => _classAttribute.Points;
+
+        public ClassAttributeDef ClassAttributeDef => ClassTreeDef?.Attribute ?? ClassAttributeDef.None;
+
+        public void RefreshClassAttribute() => _classAttribute.Refresh(ClassAttributeDef);
 
         public bool ClassTreeResetFree => State.GatesCleared.Count == 0;
 
@@ -612,6 +626,7 @@ namespace Game.Core.Sim
             for (var i = 0; i < modifiers.Count; i++)
                 modifiers[i] = modifiers[i].InPool(ModifierPool.Tree);
             _treeLayer.Set(modifiers);
+            RefreshClassAttribute();
             _slates.Rebuild();
             _skills.RefreshAuras();
             _partyBuffs.Rebuild();
@@ -745,6 +760,7 @@ namespace Game.Core.Sim
         {
             Hook?.BeforeTick();
             var firstEvent = Events.Count;
+            RefreshClassAttribute();
             LastInput = Permissions.Apply(_input.Drain());
             SessionInput.Add(LastInput, MetersPerPixel);
             State.TotalInput.Add(LastInput, MetersPerPixel);

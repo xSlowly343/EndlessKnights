@@ -6,7 +6,7 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(14,
+        public static readonly SaveMigrations Default = new SaveMigrations(15,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
             new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
@@ -19,7 +19,8 @@ namespace Game.Core.Save
             new SaveMigration(10, "forty-two ascendancy paths of the fourteen characters", payload => JsonEdit.Update(payload, "state", StateToVersion11)),
             new SaveMigration(11, "class trees of fifty ranked nodes", payload => JsonEdit.Update(payload, "state", StateToVersion12)),
             new SaveMigration(12, "two slots for common trees", payload => JsonEdit.Update(payload, "state", StateToVersion13)),
-            new SaveMigration(13, "the old passive tree and its jewels are gone", payload => JsonEdit.Update(payload, "state", StateToVersion14)));
+            new SaveMigration(13, "the old passive tree and its jewels are gone", payload => JsonEdit.Update(payload, "state", StateToVersion14)),
+            new SaveMigration(14, "one class attribute instead of three", payload => JsonEdit.Update(payload, "state", WithClassAttributeAffixes)));
 
         private static readonly IReadOnlyDictionary<string, string> RenamedClasses = new Dictionary<string, string>(StringComparer.Ordinal)
         {
@@ -38,6 +39,17 @@ namespace Game.Core.Save
             ["priest"] = "oracle",
             ["witch"] = "voodoo",
             ["alchemist"] = "plague_doctor"
+        };
+
+        private static readonly IReadOnlyDictionary<string, string> AttributeAffixes = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["armor_strength"] = "armor_attribute",
+            ["armor_dexterity"] = "armor_attribute",
+            ["armor_intelligence"] = "armor_attribute",
+            ["jewel_strength"] = "jewel_attribute",
+            ["jewel_dexterity"] = "jewel_attribute",
+            ["jewel_intelligence"] = "jewel_attribute",
+            ["amulet_all_attributes"] = "jewel_attribute"
         };
 
         private static readonly IReadOnlyDictionary<string, string> RenamedSubclasses = new Dictionary<string, string>(StringComparer.Ordinal)
@@ -195,6 +207,44 @@ namespace Game.Core.Save
             var withoutTree = JsonEdit.Remove(JsonEdit.Set(state, "treePointsEarned", points), "tree");
             var withoutJewels = JsonEdit.Remove(withoutTree, "jewels");
             return JsonEdit.Update(withoutJewels, "presets", p => JsonEdit.Remove(p, "otherTree"));
+        }
+
+        private static JsonValue WithClassAttributeAffixes(JsonValue value)
+        {
+            if (value.Kind == JsonKind.Array)
+            {
+                var items = new List<JsonValue>(value.Items.Count);
+                foreach (var item in value.Items)
+                    items.Add(WithClassAttributeAffixes(item));
+                return JsonValue.Array(items);
+            }
+            if (value.Kind != JsonKind.Object)
+                return value;
+            var fields = new Dictionary<string, JsonValue>(StringComparer.Ordinal);
+            foreach (var pair in value.Fields)
+                fields[pair.Key] = pair.Key == "affixes" ? AttributeAffixesOf(pair.Value) : WithClassAttributeAffixes(pair.Value);
+            return JsonValue.Object(fields);
+        }
+
+        private static JsonValue AttributeAffixesOf(JsonValue affixes)
+        {
+            if (affixes.Kind != JsonKind.Array)
+                return affixes;
+            var items = new List<JsonValue>(affixes.Items.Count);
+            var attributeTaken = false;
+            foreach (var affix in affixes.Items)
+            {
+                if (affix.Kind != JsonKind.Object || !affix.Fields.TryGetValue("id", out var id) || id.Kind != JsonKind.String || !AttributeAffixes.TryGetValue(id.Text, out var renamed))
+                {
+                    items.Add(affix);
+                    continue;
+                }
+                if (attributeTaken)
+                    continue;
+                attributeTaken = true;
+                items.Add(JsonEdit.Set(affix, "id", JsonValue.Of(renamed)));
+            }
+            return JsonValue.Array(items);
         }
 
         private static JsonValue EmptyClassTree(string heroClass) =>

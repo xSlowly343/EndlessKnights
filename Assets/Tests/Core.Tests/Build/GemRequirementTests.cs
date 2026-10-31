@@ -1,7 +1,7 @@
 using Game.Core.Build;
+using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Sim;
-using Game.Core.Stats;
 using Game.Core.Tests.Content;
 using Game.Core.Tests.Sim;
 using NUnit.Framework;
@@ -10,44 +10,23 @@ namespace Game.Core.Tests.Build
 {
     public class GemRequirementTests
     {
-        private static GemCatalog GemsWithRequirement() =>
-            GemCatalog.Load(TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"tags\": [\"Keyboard\", \"Skill\"],", "\"tags\": [\"Keyboard\", \"Skill\"],\n      \"requires\": { \"strength\": 10 },"));
-
         [Test]
-        public void MvpGemsHaveNoRequirementsSoStartingGemsAlwaysFit()
+        public void SkillsJsonRejectsAttributeRequirements()
         {
-            foreach (var gem in TestWorld.Data.Gems.All)
-                Assert.That(gem.Requires, Is.Empty, gem.Id);
+            var json = TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"tags\": [\"Keyboard\", \"Skill\"],", "\"tags\": [\"Keyboard\", \"Skill\"],\n      \"requires\": { \"strength\": 10 },");
+
+            Assert.Throws<ContentException>(() => GemCatalog.Load(json));
         }
 
         [Test]
-        public void RequirementIsReadFromGemsJson()
+        public void ASkillNeedsNoAttribute()
         {
-            var gem = GemsWithRequirement()["through_stride"];
-
-            Assert.That(gem.Requires["strength"], Is.EqualTo(10));
-        }
-
-        private static GameLoop Swordsman() => TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
-
-        private static void AddStrength(GameLoop loop, double amount) =>
-            loop.Hero.Add(new Modifier(HeroAttributes.Stat("strength"), ModifierKind.Flat, amount));
-
-        [Test]
-        public void GemNeedsEnoughAttributeFromTheTree()
-        {
-            var gem = GemsWithRequirement()["through_stride"];
-            var loop = Swordsman();
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
+            var gem = TestWorld.Data.Gems["through_stride"];
             loop.State.OwnedGems.Add(gem);
 
-            Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.AttributesTooLow));
-
-            AddStrength(loop, 5);
-            Assert.That(loop.Book.Attribute("strength"), Is.EqualTo(5));
-            Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.AttributesTooLow));
-
-            AddStrength(loop, 5);
-            Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.ClassAttribute, Is.EqualTo(0));
+            Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.Done).Or.EqualTo(BookResult.AlreadyInBook));
         }
     }
 }

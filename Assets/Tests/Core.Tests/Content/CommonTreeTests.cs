@@ -87,7 +87,7 @@ namespace Game.Core.Tests.Content
             var known = typeof(Game.Core.Sim.CombatStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
                 .Where(field => field.FieldType == typeof(Game.Core.Stats.StatId))
                 .Select(field => ((Game.Core.Stats.StatId)field.GetValue(null)!).Name)
-                .Concat(new[] { "strength", "dexterity", "intelligence" })
+                .Concat(new[] { "classAttribute" })
                 .ToHashSet();
             foreach (var tree in data.ClassTrees.Values.Concat(data.CommonTrees.Values))
             {

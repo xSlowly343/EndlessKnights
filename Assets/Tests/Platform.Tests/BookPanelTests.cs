@@ -35,7 +35,7 @@ namespace Game.Platform.Tests
         [Test]
         public void DraggingABagSkillOntoAnEmptyRowEquipsIt()
         {
-            var skill = _loop.Data.Gems.All.First(gem => gem.Kind == GemKind.Skill && gem.Skill!.Weapon == null && _loop.Book.MeetsRequirements(gem));
+            var skill = _loop.Data.Gems.All.First(gem => gem.Kind == GemKind.Skill && gem.Skill!.Weapon == null);
             _loop.State.OwnedGems.Add(skill);
             Open();
 
@@ -67,7 +67,7 @@ namespace Game.Platform.Tests
         [Test]
         public void ClickingAnEquippedSkillOffersToRemoveItToTheBag()
         {
-            var skill = _loop.Data.Gems.All.First(gem => gem.Kind == GemKind.Skill && gem.Skill!.Weapon == null && _loop.Book.MeetsRequirements(gem));
+            var skill = _loop.Data.Gems.All.First(gem => gem.Kind == GemKind.Skill && gem.Skill!.Weapon == null);
             _loop.State.OwnedGems.Add(skill);
             Open();
             var bag = _panel.Book.WorldPointOfBagCell(0);

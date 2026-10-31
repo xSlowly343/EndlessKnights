@@ -93,6 +93,7 @@ namespace Game.Core.Content.Tree
         public string NameEn { get; internal set; } = string.Empty;
         public string AboutRu { get; internal set; } = string.Empty;
         public string AboutEn { get; internal set; } = string.Empty;
+        public ClassAttributeDef Attribute { get; internal set; } = ClassAttributeDef.None;
         public IReadOnlyList<ClassTreeNode> Nodes { get; }
         public IReadOnlyList<int> RowThresholds { get; }
         public int Rows => RowThresholds.Count;

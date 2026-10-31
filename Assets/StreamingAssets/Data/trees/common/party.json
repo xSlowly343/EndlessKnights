@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "tree": "party",
   "name": {"ru": "Отряд", "en": "Party"},
   "about": {"ru": "помощь отряду, ауры и метки союзников", "en": "helping the party, auras and allies' marks"},

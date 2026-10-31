@@ -29,7 +29,7 @@ namespace Game.Core.Sim.Headless
             _stuckSecondsBeforePrestige = stuckMinutesBeforePrestige * 60;
             var heroClass = loop.State.Class;
             _heroClass = heroClass;
-            _score = new NodeScore(PlayedTags(heroClass), HeroAttributes.Names, inParty);
+            _score = new NodeScore(PlayedTags(heroClass), data.ClassTreeOf(HeroClassNames.Of(heroClass))?.Attribute ?? ClassAttributeDef.None, inParty);
         }
 
         public void Act(double secondsSinceLastAct)
