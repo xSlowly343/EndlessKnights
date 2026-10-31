@@ -72,7 +72,7 @@ namespace Game.Core.Tests.Content
             var data = GameData.Load(TestData.ReadGameDataFile);
             var avoid = data.TreeTemplates.MajorTalentsAvoid;
 
-            Assert.That(avoid, Is.SupersetOf(new[] { "keyHitLightning", "keyHitPoison", "keyHitBurn", "skeletonOnKill", "cannonCount", "idleHitsPerSecond", "resourcePerIdleSecond", "overloadDisabled" }));
+            Assert.That(avoid, Is.SupersetOf(new[] { "keyHitLightning", "keyHitPoison", "keyHitBurn", "skeletonOnKill", "idleHitsPerSecond", "resourcePerIdleSecond", "overloadDisabled" }));
             foreach (var tree in data.ClassTrees.Values.Concat(data.CommonTrees.Values))
             {
                 foreach (var option in tree.Majors.SelectMany(slot => slot.Options))

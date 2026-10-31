@@ -21,7 +21,7 @@
 
 Ветки (каждая от предыдущей): `task/14v.6-huntress-hunter-mark` → `…-wayfarer-companion` → `…-skald-heard-by-all` → `…-herald-constant-auras` → `…-whisperer-evil-eye` → `…-stormcaller-overload` → `…-sea-wolf-fire-shot` → `task/14v.6-conditional-modifiers` → `task/14v.5-link-branch` → `task/10.8-stage-curves` → `task/day-summary-2026-10-31` (этот итог). Зипы — `/mnt/project-files/prs/PR-323.zip` … `PR-332.zip`. В `main` не слито: ждёт слова Сергея.
 
-### Ответы Сергея из файла сессии, которые ещё не сделаны
+### Ответы Сергея из файла сессии, которые ещё не сделаны (сделаны в PR 334)
 1. `class-trees.md` §19 п. 4: «минус слоты скилла у всех классов убрать и нодов тоже быть не должно». В данных строк с отрицательным слотом скилла нет. Вершины «Один клинок» (Wandering Blade) и «Ни в чём не лучший» (Wayfarer) по ответу «Убрать» нужно заменить другими большими талантами (в каждом дереве должно остаться 12).
 2. §19 п. 2 и 3: большим талантам теперь можно менять источник Добычи Huntress и число слуг — убрать `resourcePerSecond`, `minionCount`, `cannonCount` из `majorTalentsAvoid` там, где это нужно.
 3. `tree-v3.md` §7 п. 4: узлы особенности при Пути, который её убирает, Путь превращает в своё — делать с 14в.7.
