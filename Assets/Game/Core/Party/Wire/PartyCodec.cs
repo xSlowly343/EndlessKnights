@@ -128,20 +128,6 @@ namespace Game.Core.Party.Wire
             return reader.Complete;
         }
 
-        public static int Encode(byte[] buffer, AllyCastMessage message)
-        {
-            var writer = Start(buffer, PartyMessageKind.AllyCast);
-            message.Write(ref writer);
-            return writer.Length;
-        }
-
-        public static bool TryDecode(byte[] buffer, int length, out AllyCastMessage message)
-        {
-            var reader = Open(buffer, length, PartyMessageKind.AllyCast);
-            message = AllyCastMessage.Read(ref reader);
-            return reader.Complete;
-        }
-
         public static int Encode(byte[] buffer, PartyResourceMessage message)
         {
             var writer = Start(buffer, PartyMessageKind.PartyResource);

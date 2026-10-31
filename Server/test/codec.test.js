@@ -101,12 +101,6 @@ test("synergies on the enemy decode like the core", () => {
   assert.strictEqual(party.partyDecodeSynergy(bytes(synergy.hex.slice(0, -2)), 12), null);
 });
 
-test("a heavy cast notice is relayed with the sender slot", () => {
-  const cast = vectors.decode.allyCast;
-  assert.strictEqual(hex(party.partyRelayAllyCast(bytes(cast.hex), cast.slot)), cast.relayedHex);
-  assert.strictEqual(party.partyRelayAllyCast(bytes(cast.hex + "00"), cast.slot), null);
-});
-
 test("offers are relayed with the sender slot", () => {
   const offer = vectors.decode.offerRelay;
   assert.strictEqual(hex(party.partyRelayOffer(bytes(offer.hex), offer.slot)), offer.relayedHex);

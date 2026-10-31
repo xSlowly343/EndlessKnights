@@ -15,8 +15,7 @@ namespace Game.Core.Content.Gems
         {
             ["active"] = SkillType.Active,
             ["aura"] = SkillType.Aura,
-            ["support"] = SkillType.Support,
-            ["trigger"] = SkillType.Trigger
+            ["support"] = SkillType.Support
         };
 
         private static readonly Dictionary<string, SkillTier> Tiers = new Dictionary<string, SkillTier>(StringComparer.Ordinal)
@@ -57,36 +56,6 @@ namespace Game.Core.Content.Gems
             ["green"] = GemColor.Green,
             ["blue"] = GemColor.Blue,
             ["white"] = GemColor.White
-        };
-
-        private static readonly Dictionary<string, TriggerCondition> Conditions = new Dictionary<string, TriggerCondition>(StringComparer.Ordinal)
-        {
-            ["mouseDistance"] = TriggerCondition.MouseDistance,
-            ["bossTimerLeft"] = TriggerCondition.BossTimerLeft,
-            ["idle"] = TriggerCondition.Idle,
-            ["bossKilled"] = TriggerCondition.BossKilled,
-            ["resourceFull"] = TriggerCondition.ResourceFull,
-            ["withLeft"] = TriggerCondition.WithLeft,
-            ["withRight"] = TriggerCondition.WithRight,
-            ["everyKills"] = TriggerCondition.EveryKills,
-            ["bossSpawned"] = TriggerCondition.BossSpawned,
-            ["circle"] = TriggerCondition.Circle,
-            ["flick"] = TriggerCondition.Flick,
-            ["allyHeavyCast"] = TriggerCondition.AllyHeavyCast,
-            ["resourceBelow"] = TriggerCondition.ResourceBelow,
-            ["every"] = TriggerCondition.Every
-        };
-
-        private static readonly HashSet<TriggerCondition> ValuedConditions = new HashSet<TriggerCondition>
-        {
-            TriggerCondition.MouseDistance,
-            TriggerCondition.BossTimerLeft,
-            TriggerCondition.Idle,
-            TriggerCondition.EveryKills,
-            TriggerCondition.Circle,
-            TriggerCondition.AllyHeavyCast,
-            TriggerCondition.ResourceBelow,
-            TriggerCondition.Every
         };
 
         private static readonly Dictionary<string, SpecialKey> SpecialKeys = new Dictionary<string, SpecialKey>(StringComparer.Ordinal)
@@ -203,7 +172,7 @@ namespace Game.Core.Content.Gems
         private static GemDef ReadGem(ContentNode node)
         {
             var id = node.Field("id").AsString();
-            var type = Pick(node.Field("kind"), Types, "active, aura, support or trigger");
+            var type = Pick(node.Field("kind"), Types, "active, aura or support");
             var color = Pick(node.Field("color"), Colors, "red, green, blue or white");
             var name = node.Field("name");
             var tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None;
@@ -220,8 +189,6 @@ namespace Game.Core.Content.Gems
                 case SkillType.Active:
                 case SkillType.Aura:
                     return ReadSkillGem(node, id, type, color, nameRu, nameEn, tags);
-                case SkillType.Trigger:
-                    return new GemDef(id, GemKind.Trigger, color, nameRu, nameEn, tags, trigger: ReadTrigger(node));
                 default:
                     return new GemDef(id, GemKind.Support, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(),
                         support: SupportDef.Read(node.Field("effect")), supports: ReadSupported(node.Field("supports")),
@@ -747,14 +714,6 @@ namespace Game.Core.Content.Gems
 
         private static IReadOnlyList<Modifier> TimerSlowModifiers(double slow) =>
             slow > 0 ? new[] { new Modifier(Sim.CombatStats.BossTimerSpeed, ModifierKind.More, -slow) } : Array.Empty<Modifier>();
-
-        private static TriggerDef ReadTrigger(ContentNode node)
-        {
-            var condition = node.Field("condition");
-            var type = Pick(condition.Field("type"), Conditions, string.Join(", ", Conditions.Keys));
-            var value = ValuedConditions.Contains(type) ? condition.Field("value").AsNumber(0.001, 1e9) : 0;
-            return new TriggerDef(type, value, node.Field("cooldownMultiplier").AsNumber(1, 100));
-        }
 
         private static T Pick<T>(ContentNode node, Dictionary<string, T> names, string expected)
         {

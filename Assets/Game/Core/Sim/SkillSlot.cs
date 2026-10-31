@@ -10,17 +10,15 @@ namespace Game.Core.Sim
         public const int SocketCapacity = 8;
         public const int AuraModifierCapacity = 8;
 
-        public SkillSlot(GemDef skill, GemDef? trigger = null)
+        public SkillSlot(GemDef skill)
         {
             Skill = skill;
-            Trigger = trigger;
             if (skill.Skill?.Effect is DistanceStacksEffect distance)
                 Buckets = new double[distance.WindowSeconds];
         }
 
         public GemDef Skill { get; set; }
         public SkillSlotRole Role { get; set; }
-        public GemDef? Trigger { get; set; }
         public GemDef?[] Supports { get; } = new GemDef?[SocketCapacity];
         public int CooldownTicks { get; set; }
         public int CooldownTotalTicks { get; set; }
@@ -28,7 +26,6 @@ namespace Game.Core.Sim
         public int ActiveTotalTicks { get; set; }
         public long EquipTick { get; set; }
         public long LastCastTick { get; set; } = -1;
-        public double TriggerProgress { get; set; }
         public int HitCount { get; set; }
         public int InputKinds { get; set; }
         public int PotionChoice { get; set; } = -1;
@@ -92,6 +89,5 @@ namespace Game.Core.Sim
         public double CooldownFraction => Ready ? 0 : CooldownTicks / (double)System.Math.Max(CooldownTicks, CooldownTotalTicks);
         public bool Active => ActiveTicks > 0;
         public bool CastOn(long tick) => LastCastTick == tick;
-        public long QuietSince => System.Math.Max(EquipTick, LastCastTick);
     }
 }

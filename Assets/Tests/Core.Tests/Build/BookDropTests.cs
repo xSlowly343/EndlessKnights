@@ -45,19 +45,17 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void SkillDroppedOnAFullRowReplacesItAndKeepsTheTrigger()
+        public void SkillDroppedOnAFullRowReplacesIt()
         {
-            var loop = WithGems("through_stride", "march", "cast_on_timer");
+            var loop = WithGems("through_stride", "march");
             loop.Book.Equip(Gem("through_stride"));
             loop.Book.Equip(Gem("march"));
-            loop.Book.SetTrigger(0, Gem("cast_on_timer"));
             loop.State.OwnedGems.Add(Gem("lull"));
 
             Assert.That(Drop(loop, BookPlace.Bag(Gem("lull")), BookPlace.Skill(0)), Is.EqualTo(BookResult.Done));
 
             Assert.That(SkillAt(loop, 0), Is.EqualTo("lull"));
             Assert.That(SkillAt(loop, 1), Is.EqualTo("march"));
-            Assert.That(loop.State.Skills[0].Trigger, Is.SameAs(Gem("cast_on_timer")));
             Assert.That(loop.Book.FreeCopies(Gem("through_stride")), Is.EqualTo(1));
         }
 
@@ -105,53 +103,17 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void TriggerGoesOnARowAndBackToTheBag()
-        {
-            var loop = WithGems("through_stride", "cast_on_timer");
-            loop.Book.Equip(Gem("through_stride"));
-
-            Assert.That(Drop(loop, BookPlace.Bag(Gem("cast_on_timer")), BookPlace.Trigger(0)), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.State.Skills[0].Trigger, Is.SameAs(Gem("cast_on_timer")));
-
-            Assert.That(Drop(loop, BookPlace.Trigger(0), BookPlace.Bag()), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.State.Skills[0].Trigger, Is.Null);
-        }
-
-        [Test]
-        public void TriggerIsNotASkill()
-        {
-            var loop = WithGems("cast_on_timer");
-
-            Assert.That(Drop(loop, BookPlace.Bag(Gem("cast_on_timer")), BookPlace.Skill(0)), Is.EqualTo(BookResult.NoSuchSlot));
-            Assert.That(loop.State.Skills, Is.Empty);
-        }
-
-        [Test]
-        public void TriggerMovesBetweenRows()
-        {
-            var loop = WithGems("through_stride", "march", "cast_on_timer");
-            loop.Book.Equip(Gem("through_stride"));
-            loop.Book.Equip(Gem("march"));
-            loop.Book.SetTrigger(0, Gem("cast_on_timer"));
-
-            Assert.That(Drop(loop, BookPlace.Trigger(0), BookPlace.Trigger(1)), Is.EqualTo(BookResult.Done));
-
-            Assert.That(loop.State.Skills[0].Trigger, Is.Null);
-            Assert.That(loop.State.Skills[1].Trigger, Is.SameAs(Gem("cast_on_timer")));
-        }
-
-        [Test]
         public void BagShowsEachFreeGemOnceAndHonoursTheFilter()
         {
-            var loop = WithGems("through_stride", "through_stride", "march", "cast_on_timer");
+            var loop = WithGems("through_stride", "through_stride", "march", "rebound");
             loop.Book.Equip(Gem("march"));
             var bag = new List<GemDef>();
 
             GemBag.Fill(loop.Book, loop.State, GemBagFilter.All, bag);
-            Assert.That(bag, Is.EqualTo(new[] { Gem("through_stride"), Gem("cast_on_timer") }));
+            Assert.That(bag, Is.EqualTo(new[] { Gem("through_stride"), Gem("rebound") }));
 
-            GemBag.Fill(loop.Book, loop.State, GemBagFilter.Triggers, bag);
-            Assert.That(bag, Is.EqualTo(new[] { Gem("cast_on_timer") }));
+            GemBag.Fill(loop.Book, loop.State, GemBagFilter.Supports, bag);
+            Assert.That(bag, Is.EqualTo(new[] { Gem("rebound") }));
         }
 
         [Test]

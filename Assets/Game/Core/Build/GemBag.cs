@@ -20,7 +20,6 @@ namespace Game.Core.Build
         public static bool Matches(GemDef gem, GemBagFilter filter) => filter switch
         {
             GemBagFilter.Skills => gem.Kind == GemKind.Skill,
-            GemBagFilter.Triggers => gem.Kind == GemKind.Trigger,
             GemBagFilter.Supports => gem.Kind == GemKind.Support,
             _ => true
         };
