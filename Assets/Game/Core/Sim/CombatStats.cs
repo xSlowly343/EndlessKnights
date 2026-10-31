@@ -187,5 +187,10 @@ namespace Game.Core.Sim
         public static readonly StatId ResourcePerFastSkill = new StatId("resourcePerFastSkill");
         public static readonly StatId ResourcePerCircle = new StatId("resourcePerCircle");
         public static readonly StatId ResourcePerFlick = new StatId("resourcePerFlick");
+        public static readonly StatId ComboStrikeEvery = new StatId("comboStrikeEvery");
+        public static readonly StatId ComboStrikeEveryAtFullResource = new StatId("comboStrikeEveryAtFullResource");
+        public static readonly StatId ComboStrikeTargets = new StatId("comboStrikeTargets");
+        public static readonly StatId ComboStrikeQueueShare = new StatId("comboStrikeQueueShare");
+        public static readonly StatId ComboStrikeCritMultiplier = new StatId("comboStrikeCritMultiplier");
     }
 }

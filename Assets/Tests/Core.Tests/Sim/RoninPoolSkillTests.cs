@@ -178,15 +178,16 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SteadyKnockAddsFiveToTheDanceWhirl()
+        public void SteadyKnockAddsFiveToTheStreakStrike()
         {
             var ronin = SkillTestHero.Of(HeroClass.Ronin, "steady_knock");
             ronin.State.Resource = 0;
+            var rules = TestWorld.Data.Combat.Classes;
 
-            KeyHitsUntilCombo(ronin, 25);
+            KeyHitsUntilCombo(ronin, rules.ComboStrikeEvery);
             ronin.Ticks(1);
 
-            Assert.That(ronin.State.Resource, Is.EqualTo(25).Within(1e-9));
+            Assert.That(ronin.State.Resource, Is.EqualTo(rules.ComboStrikeEvery / rules.BreathEvery * rules.WhirlResource + 5).Within(1e-9));
         }
 
         [Test]

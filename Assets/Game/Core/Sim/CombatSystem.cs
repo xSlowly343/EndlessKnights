@@ -170,6 +170,8 @@ namespace Game.Core.Sim
             {
                 var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst();
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
+                if ((flags & HitFlags.ComboStrike) != 0)
+                    ComboStrikeQueue(_state.FocusMultiplier * multiplier);
                 KeyHitLightning();
                 ShadowClone();
                 QueueStrike();
@@ -203,6 +205,16 @@ namespace Game.Core.Sim
                 Hit(DamageSource.Skill, _rules.KeyDamage, StatTags.Keyboard, HitFlags.None, _state.FocusMultiplier * multiplier);
         }
 
+        private void ComboStrikeQueue(double multiplier)
+        {
+            var targets = System.Math.Min(_class.StrikeTargets, _state.QueueDamage.Length);
+            if (targets <= 0)
+                return;
+            var damage = SkillDamage(_rules.KeyDamage, multiplier * _class.StrikeQueueShare, StatTags.Keyboard);
+            for (var i = 0; i < targets; i++)
+                _state.QueueDamage[i] += damage;
+        }
+
         private void QueueStrike()
         {
             if (!EveryNthKeyHit(CombatStats.QueueStrikeEvery))
@@ -232,7 +244,7 @@ namespace Game.Core.Sim
 
             if (ForcedCrit() || ComboStrikeCrit(flags) || RollCrit(tags, supporting))
             {
-                damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting));
+                damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting)) * ComboStrikeCritBonus(flags);
                 flags |= HitFlags.Crit;
                 LastHitCrit = true;
                 _state.Crits++;
@@ -291,6 +303,9 @@ namespace Game.Core.Sim
                 _state.DoomTicks = System.Math.Max(1, (int)System.Math.Round((_rules.Paths.DoomSeconds + _hero.Value(CombatStats.DoomSeconds, 0)) * GameLoop.TicksPerSecond));
             return damage - withheld;
         }
+
+        private double ComboStrikeCritBonus(HitFlags flags) =>
+            (flags & HitFlags.ComboStrike) != 0 ? 1 + System.Math.Max(0, _hero.Value(CombatStats.ComboStrikeCritMultiplier, 0, StatTags.Keyboard)) : 1;
 
         private bool ComboStrikeCrit(HitFlags flags) =>
             (flags & HitFlags.ComboStrike) != 0 && _hero.Value(CombatStats.ComboStrikeCrit, 0, StatTags.Keyboard) > 0;

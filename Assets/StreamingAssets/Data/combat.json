@@ -35,7 +35,7 @@
   },
   "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
   "classes": {
-    "ronin": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 25, "strikeMultiplier": 3, "whirlResource": 20 } },
+    "ronin": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 50, "strikeEveryMin": 10, "strikeMultiplier": 3, "strikeTargets": 1, "breathEvery": 25, "whirlResource": 20 } },
     "metalhead": { "headbang": { "pxPerSecond": 2000, "maxSeconds": 30 } }
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },

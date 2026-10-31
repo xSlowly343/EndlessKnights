@@ -132,11 +132,11 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EveryComboStrikeGivesOneWhirl()
+        public void EveryBreathStepOfTheStreakGivesOneWhirl()
         {
             var (loop, input) = Hero(HeroClass.Ronin);
 
-            Keys(loop, input, Rules.ComboStrikeEvery);
+            Keys(loop, input, Rules.BreathEvery);
             loop.Tick();
 
             Assert.That(loop.State.Resource, Is.EqualTo(Rules.WhirlResource).Within(1e-9));

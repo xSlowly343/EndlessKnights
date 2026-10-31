@@ -26,14 +26,31 @@ namespace Game.Core.Sim
 
             _state.Combo++;
             _state.ComboIdleTicks = 0;
-            if (_state.Combo % _rules.ComboStrikeEvery != 0)
+            if (_state.Combo % _rules.BreathEvery == 0)
+                _state.PendingResource += _rules.WhirlResource * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
+            if (++_state.ComboTowardStrike < StrikeEvery)
                 return 1;
+            _state.ComboTowardStrike = 0;
             flags = HitFlags.ComboStrike;
             _state.LastComboStrikeTick = _state.Tick;
-            var whirl = _rules.WhirlResource + _hero.Value(CombatStats.ComboStrikeResource, 0, StatTags.Keyboard);
-            _state.PendingResource += whirl * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
-            return _rules.ComboStrikeMultiplier + _hero.Value(CombatStats.ComboStrikeMultiplier, 0, StatTags.Keyboard);
+            _state.PendingResource += _hero.Value(CombatStats.ComboStrikeResource, 0, StatTags.Keyboard) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
+            return System.Math.Max(1, _rules.ComboStrikeMultiplier + _hero.Value(CombatStats.ComboStrikeMultiplier, 0, StatTags.Keyboard));
         }
+
+        public int StrikeEvery
+        {
+            get
+            {
+                var every = _rules.ComboStrikeEvery + _hero.Value(CombatStats.ComboStrikeEvery, 0, StatTags.Keyboard);
+                if (_state.ResourceFill >= 1)
+                    every += _hero.Value(CombatStats.ComboStrikeEveryAtFullResource, 0, StatTags.Keyboard);
+                return System.Math.Max(_rules.ComboStrikeEveryMin, (int)System.Math.Round(every));
+            }
+        }
+
+        public int StrikeTargets => System.Math.Max(0, _rules.ComboStrikeTargets + (int)System.Math.Round(_hero.Value(CombatStats.ComboStrikeTargets, 0, StatTags.Keyboard)));
+
+        public double StrikeQueueShare => System.Math.Max(0, _hero.Value(CombatStats.ComboStrikeQueueShare, 1, StatTags.Keyboard));
 
         public void EndTick(int keyHits, double mousePx)
         {
@@ -49,6 +66,7 @@ namespace Game.Core.Sim
             {
                 var keep = System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.ComboKeepShare, 0, StatTags.Keyboard)));
                 _state.Combo = (int)System.Math.Floor(_state.Combo * keep);
+                _state.ComboTowardStrike = (int)System.Math.Floor(_state.ComboTowardStrike * keep);
                 _state.ComboIdleTicks = 0;
             }
         }

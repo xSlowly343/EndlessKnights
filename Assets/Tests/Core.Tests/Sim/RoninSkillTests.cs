@@ -154,7 +154,7 @@ namespace Game.Core.Tests.Sim
             var rules = TestWorld.Data.Combat.Classes;
 
             ronin.Cast(0);
-            KeyHitsUntilCombo(ronin, rules.ComboStrikeEvery);
+            KeyHitsUntilCombo(ronin, rules.BreathEvery);
             ronin.Ticks(1);
 
             Assert.That(ronin.State.Resource, Is.EqualTo(2 * rules.WhirlResource).Within(1e-9));

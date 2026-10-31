@@ -248,6 +248,7 @@ namespace Game.Core.Sim
         public int Combo { get; set; }
         public long LastComboStrikeTick { get; set; } = -1;
         public long ComboIdleTicks { get; set; }
+        public int ComboTowardStrike { get; set; }
 
         public double KeyCarry { get; set; }
         public double MouseCarryPx { get; set; }

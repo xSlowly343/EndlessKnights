@@ -91,6 +91,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.Combo, Is.EqualTo(3));
 
             loop.State.Combo = rules.ComboStrikeEvery - 1;
+            loop.State.ComboTowardStrike = rules.ComboStrikeEvery - 1;
             loop.Events.Clear();
             input.PressKeys(1);
             loop.Tick();
