@@ -79,7 +79,7 @@ namespace Game.Sim
 
         private static PartySimulation Party(GameData data, BotProfile profile, HeroClass[] classes, SimOptions options,
             IReadOnlyDictionary<HeroClass, IReadOnlyList<GemDef>> kits, SynergyRules? synergy) =>
-            new PartySimulation(data, profile, classes, options.Seed, options.Loss, options.DamageMultiplier) { Kits = kits, Synergy = synergy };
+            new PartySimulation(data, profile, classes, options.Seed, options.Loss, options.DamageMultiplier) { Kits = kits, Synergy = synergy, HeroLevel = options.HeroLevel };
 
         private static string Strip(string json, string? reaction)
         {

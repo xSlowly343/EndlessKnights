@@ -8,7 +8,7 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class viking|ronin|amazon|stormweaver|nomad|metalhead|oracle|bannerbearer|voodoo|clockmaker|plague_doctor|moonshiner|gravedigger|captain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--party viking,ronin,... | standard [--loss 0] [--idle <members> [--idle-after <minutes>]]] [--supports <hours>] [--synergy <hours> [--drops true]] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class viking|ronin|amazon|stormweaver|nomad|metalhead|oracle|bannerbearer|voodoo|clockmaker|plague_doctor|moonshiner|gravedigger|captain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--party viking,ronin,... | standard [--loss 0] [--idle <members> [--idle-after <minutes>]]] [--supports <hours>] [--synergy <hours> [--drops true] [--hero-level 0]] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
@@ -27,6 +27,7 @@ namespace Game.Sim
         public double SupportHours { get; private set; }
         public double SynergyHours { get; private set; }
         public bool SynergyDrops { get; private set; }
+        public int HeroLevel { get; private set; }
         public int IdleMembers { get; private set; }
         public double IdleAfterMinutes { get; private set; } = 60;
         public string? DataFolder { get; private set; }
@@ -58,6 +59,7 @@ namespace Game.Sim
                     case "--supports": options.SupportHours = Number(value); break;
                     case "--synergy": options.SynergyHours = Number(value); break;
                     case "--drops": options.SynergyDrops = bool.Parse(value); break;
+                    case "--hero-level": options.HeroLevel = (int)Number(value); break;
                     case "--idle": options.IdleMembers = int.Parse(value, CultureInfo.InvariantCulture); break;
                     case "--idle-after": options.IdleAfterMinutes = Number(value); break;
                     case "--data": options.DataFolder = value; break;

@@ -128,7 +128,7 @@ namespace Game.Core.Sim
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
             _synergyStrikes = new SynergyStrikes(state, hero, _synergy, _skills.Dots, _resource);
-            _conditions = new ConditionSystem(state, hero, _combat, _synergy);
+            _conditions = new ConditionSystem(state, hero, _combat, _synergy, _skills);
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates };
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);

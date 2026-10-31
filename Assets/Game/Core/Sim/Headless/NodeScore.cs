@@ -9,7 +9,9 @@ namespace Game.Core.Sim.Headless
         private const double AttributeWeight = 0.005;
         private const double ConditionalWeight = 0.5;
         private const double BossOpeningWeight = 0.1;
-        private const double AllyMarkWeight = 0;
+        private const double PartyLineWeight = 0.5;
+        private const double PartyUnlockWeight = 0.3;
+        private const string ReactionPrefix = "reaction";
 
         private static readonly Dictionary<string, double> Weights = new Dictionary<string, double>(System.StringComparer.Ordinal)
         {
@@ -43,11 +45,13 @@ namespace Game.Core.Sim.Headless
 
         private readonly StatTags _playedTags;
         private readonly IReadOnlyCollection<string> _attributes;
+        private readonly bool _inParty;
 
-        public NodeScore(StatTags playedTags, IReadOnlyCollection<string> attributes)
+        public NodeScore(StatTags playedTags, IReadOnlyCollection<string> attributes, bool inParty = false)
         {
             _playedTags = playedTags;
             _attributes = attributes;
+            _inParty = inParty;
         }
 
         public double Of(IReadOnlyList<Modifier> modifiers)
@@ -70,18 +74,23 @@ namespace Game.Core.Sim.Headless
                     return Attribute(modifier.Value);
             }
             if (!Weights.TryGetValue(modifier.Stat.BaseName, out var weight))
-                return 0;
+                return _inParty && IsPartyUnlock(modifier.Stat) ? modifier.Value * PartyUnlockWeight : 0;
             var value = modifier.Kind == ModifierKind.More ? modifier.Value * weight * MoreWeight : modifier.Value * weight;
             return value * Uptime(modifier.When);
         }
 
-        private static double Uptime(ModifierCondition condition)
+        private double Uptime(ModifierCondition condition)
         {
             if (condition == ModifierCondition.Always)
                 return 1;
             if (condition == ModifierCondition.BossOpening)
                 return BossOpeningWeight;
-            return ModifierConditions.IsAlly(condition) ? AllyMarkWeight : ConditionalWeight;
+            if (ModifierConditions.IsAlly(condition))
+                return _inParty ? PartyLineWeight : 0;
+            return ConditionalWeight;
         }
+
+        private static bool IsPartyUnlock(StatId stat) =>
+            stat.BaseName.StartsWith(ReactionPrefix, System.StringComparison.Ordinal) || stat.Equals(CombatStats.SecondResponse);
     }
 }

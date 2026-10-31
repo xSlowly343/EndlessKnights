@@ -39,6 +39,7 @@ namespace Game.Core.Sim.Headless
         public int IdleMembers { get; set; }
         public double IdleAfterSeconds { get; set; }
         public double SampleSeconds { get; set; }
+        public int HeroLevel { get; set; }
 
         public PartySimulationResult Run(double seconds)
         {
@@ -60,6 +61,8 @@ namespace Game.Core.Sim.Headless
                 if (_damageMultiplier != 1)
                     hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, _damageMultiplier - 1));
                 var state = new GameState(memberSeed) { Class = _classes[i] };
+                if (HeroLevel > 0)
+                    state.HeroLevel = HeroLevel;
                 if (Kits != null && Kits.TryGetValue(_classes[i], out var kit))
                     state.OwnedGems.AddRange(kit);
                 IInputSource input = new BotInput(_profile, memberSeed ^ 0x5EEDUL);
@@ -73,7 +76,10 @@ namespace Game.Core.Sim.Headless
                     loops[i].Synergy.UseRules(Synergy);
                 clients[i] = new PartyClient(loops[i], network.Connect(FirstMemberId + (ulong)i), HostId, _data.Party);
                 clients[i].Join();
-                new PlayerBot(_data, loops[i], double.PositiveInfinity).EquipStartingSkills();
+                var bot = new PlayerBot(_data, loops[i], double.PositiveInfinity, inParty: true);
+                bot.EquipStartingSkills();
+                if (HeroLevel > 0)
+                    bot.SpendTreePoints();
                 uptime[i] = new SynergyUptime(synergy);
             }
 

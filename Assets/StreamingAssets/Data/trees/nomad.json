@@ -61,7 +61,7 @@
       {"id": "nomad_road_song", "name": {"ru": "Песня дороги", "en": "Road Song"}, "modifiers": [{"stat": "damagePerInputKind", "kind": "flat", "value": 0.05}]}
     ]},
     {"at": 50, "options": [
-      {"id": "nomad_borrowed_fire", "name": {"ru": "Чужой огонь", "en": "Borrowed Fire"}, "text": {"ru": "+10% урона по горящему врагу", "en": "+10% damage to a burning enemy"}, "waits": "linkFire"},
+      {"id": "nomad_borrowed_fire", "name": {"ru": "Чужой огонь", "en": "Borrowed Fire"}, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "when": "allyFire"}]},
       {"id": "nomad_borrowed_count", "name": {"ru": "Чужой счёт", "en": "Borrowed Count"}, "modifiers": [{"stat": "comboTimeoutSeconds", "kind": "flat", "value": 0.5}, {"stat": "damageLongStreak", "kind": "increased", "value": 0.1}]},
       {"id": "nomad_borrowed_time", "name": {"ru": "Чужое время", "en": "Borrowed Time"}, "modifiers": [{"stat": "bossTimerSlow", "kind": "increased", "value": 0.1}, {"stat": "damage", "kind": "increased", "value": -0.05}]}
     ]},

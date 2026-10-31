@@ -21,14 +21,14 @@ namespace Game.Core.Sim.Headless
         private double _stageSeconds;
         private long _stage;
 
-        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige)
+        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige, bool inParty = false)
         {
             _data = data;
             _loop = loop;
             _stuckSecondsBeforePrestige = stuckMinutesBeforePrestige * 60;
             var heroClass = loop.State.Class;
             _heroClass = heroClass;
-            _score = new NodeScore(PlayedTags(heroClass), HeroAttributes.Names);
+            _score = new NodeScore(PlayedTags(heroClass), HeroAttributes.Names, inParty);
         }
 
         public void Act(double secondsSinceLastAct)
@@ -160,7 +160,7 @@ namespace Game.Core.Sim.Headless
                 slates.Place(weakest.Slate, weakest.X, weakest.Y, weakest.Rotation);
         }
 
-        private void SpendTreePoints()
+        public void SpendTreePoints()
         {
             SpendCommonTreePoints();
             if (_loop.ClassTreeDef is { } classTree)

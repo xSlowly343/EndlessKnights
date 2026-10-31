@@ -13,12 +13,14 @@ namespace Game.Core.Sim
         private readonly StatSheet _hero;
         private readonly CombatSystem _combat;
         private readonly SynergySystem _synergy;
+        private readonly SkillSystem _skills;
         private readonly int[] _markMasks = new int[ModifierConditions.Marks];
         private SynergyRules? _markRules;
         private ulong _allyConditions;
 
-        public ConditionSystem(GameState state, StatSheet hero, CombatSystem combat, SynergySystem synergy)
+        public ConditionSystem(GameState state, StatSheet hero, CombatSystem combat, SynergySystem synergy, SkillSystem skills)
         {
+            _skills = skills;
             _state = state;
             _hero = hero;
             _combat = combat;
@@ -28,7 +30,13 @@ namespace Game.Core.Sim
         public void Tick()
         {
             var conditions = Current();
+            var auraStrength = _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
+            var curseStrength = _hero.Value(CombatStats.CurseEffect, 1);
             _hero.SetConditions(conditions);
+            if (_hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura) != auraStrength)
+                _skills.RefreshAuraStrength();
+            if (_hero.Value(CombatStats.CurseEffect, 1) != curseStrength)
+                _skills.RefreshCurseStrength();
             GrantOnRisingAllyMarks(conditions);
         }
 
