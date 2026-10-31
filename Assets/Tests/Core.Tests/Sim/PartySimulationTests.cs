@@ -49,11 +49,13 @@ namespace Game.Core.Tests.Sim
             }
         }
 
-        [TestCase(0.0)]
-        [TestCase(0.2)]
-        public void KillsFasterThanTheStatesAreAllRewardedInOrder(double loss)
+        [Test]
+        public void KillsFasterThanTheStatesAreAllRewardedInOrder([Values(0.0, 0.2)] double loss, [Values(1UL, 2UL, 3UL)] ulong seed)
         {
-            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Viking, HeroClass.Ronin, HeroClass.Metalhead, HeroClass.Voodoo }, 9, loss, 1e9).Run(300);
+            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Viking, HeroClass.Ronin, HeroClass.Metalhead, HeroClass.Voodoo }, seed, loss, 1e9)
+            {
+                LossAfterJoin = true
+            }.Run(300);
 
             Assert.That(party.SecondsPerKill, Is.LessThan(0.5), "enemies die faster than the host sends its state");
             foreach (var member in party.Members)
