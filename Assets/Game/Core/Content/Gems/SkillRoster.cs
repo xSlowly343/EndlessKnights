@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Content.Weapons;
 
 namespace Game.Core.Content.Gems
 {
@@ -20,6 +21,16 @@ namespace Game.Core.Content.Gems
                     problems.Add($"{weapon}: {auras} auras, expected {AurasPerClass}");
             }
             return problems;
+        }
+
+        public static void Require(GemCatalog catalog, IReadOnlyList<WeaponType> weapons)
+        {
+            var ids = new List<string>(weapons.Count);
+            foreach (var weapon in weapons)
+                ids.Add(weapon.Id);
+            var problems = Problems(catalog, ids);
+            if (problems.Count > 0)
+                throw new ContentException(GemCatalog.FileName, "gems", string.Join("; ", problems));
         }
 
         private static int Count(GemCatalog catalog, string weapon, SkillType type)
