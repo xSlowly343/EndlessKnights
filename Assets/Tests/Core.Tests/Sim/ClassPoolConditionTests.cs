@@ -89,17 +89,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ShaftCallusesAddKeyDamageWhileAnAuraStands()
-        {
-            var lone = SkillTestHero.Of(HeroClass.Bannerbearer, "shaft_calluses");
-            lone.Ticks(2);
-            var withAura = SkillTestHero.Of(HeroClass.Bannerbearer, "shaft_calluses", "blueprint");
-            withAura.Ticks(2);
-
-            Assert.That(Damage(withAura, StatTags.Keyboard) - Damage(lone, StatTags.Keyboard), Is.EqualTo(25).Within(1e-6));
-        }
-
-        [Test]
         public void ClearDayHitsHarderWhileTheOracleReads()
         {
             var oracle = SkillTestHero.Of(HeroClass.Oracle, "clear_day");

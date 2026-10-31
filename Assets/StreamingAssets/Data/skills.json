@@ -777,6 +777,7 @@
     },
     {
       "id": "foreman_hammer",
+      "formerIds": ["solid_foundation"],
       "kind": "active",
       "weapon": "banner",
       "tier": "common",
@@ -787,7 +788,8 @@
       "cost": {"resource": 15},
       "cooldownSeconds": 4,
       "effect": {"type": "strike", "multiplier": 3, "stacks": {"perStack": {"stat": "damage", "kind": "increased", "value": 0.03}, "max": 0.15, "stackSeconds": 8, "party": true}},
-      "native": {"stackSeconds": 12}
+      "native": {"stackSeconds": 12},
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_hammer", "name": { "ru": "Тяжелее молот", "en": "Heavier Hammer" }, "damage": 1.3 }, { "id": "quick_hammer", "name": { "ru": "Быстрый молот", "en": "Quick Hammer" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "solid_foundation", "name": { "ru": "Крепкий фундамент", "en": "Solid Foundation" }, "cooldown": 1.15, "effect": { "multiplier": 4 } }, { "id": "cheap_hammer", "name": { "ru": "Молот даром", "en": "Free Hammer" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "masters_hammer", "name": { "ru": "Молот мастера", "en": "Master's Hammer" }, "damage": 1.7, "cooldown": 1.25 }, { "id": "hammer_down_the_line", "name": { "ru": "Молот по очереди", "en": "Hammer Down the Line" }, "effect": { "queueTargets": 1, "queueMultiplier": 1 } }] }]
     },
     {
       "id": "vial_from_belt",
@@ -2956,6 +2958,7 @@
     },
     {
       "id": "shaft_through",
+      "formerIds": ["plumb_line"],
       "kind": "active",
       "weapon": "banner",
       "tier": "common",
@@ -2966,10 +2969,12 @@
       "cost": { "resource": 20 },
       "cooldownSeconds": 5,
       "effect": { "type": "strike", "multiplier": 2, "queueTargets": 2 },
-      "native": { "resourceOnCast": 3 }
+      "native": { "resourceOnCast": 3 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_shaft", "name": { "ru": "Длиннее древко", "en": "Longer Shaft" }, "damage": 1.3 }, { "id": "quick_shaft", "name": { "ru": "Быстрое древко", "en": "Quick Shaft" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "plumb_line", "name": { "ru": "Отвес", "en": "Plumb Line" }, "effect": { "queueTargets": 3 } }, { "id": "cheap_shaft", "name": { "ru": "Древко даром", "en": "Free Shaft" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "shaft_through_all", "name": { "ru": "Древко сквозь всех", "en": "Through Them All" }, "damage": 0.9, "effect": { "queueTargets": 3, "queueMultiplier": 1.5 } }, { "id": "single_shaft", "name": { "ru": "Точно в цель", "en": "Dead Centre" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "artel_pay",
+      "formerIds": ["blueprint"],
       "kind": "aura",
       "weapon": "banner",
       "tier": "common",
@@ -2979,13 +2984,15 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "party": true, "reserve": 25, "idleOffSeconds": 10},
-      "native": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.05}]}
+      "native": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.05}]},
+      "branches": [{ "level": 5, "options": [{ "id": "better_pay", "name": { "ru": "Плата щедрее", "en": "Better Pay" }, "effect": { "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.13 }] } }, { "id": "light_pay", "name": { "ru": "Плата поменьше", "en": "Smaller Pay" }, "effect": { "reserve": 18 } }] }, { "level": 15, "options": [{ "id": "blueprint", "name": { "ru": "Чертёж", "en": "Blueprint" }, "effect": { "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.1 }, { "stat": "damage", "kind": "increased", "value": 0.08, "tags": ["Keyboard"] }] } }, { "id": "bonus_pay", "name": { "ru": "Премия", "en": "Bonus" }, "effect": { "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.1 }, { "stat": "resourceGain", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "rich_artel", "name": { "ru": "Богатая артель", "en": "Rich Artel" }, "effect": { "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.18 }], "reserve": 35 } }, { "id": "poor_artel", "name": { "ru": "Бедная артель", "en": "Poor Artel" }, "effect": { "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.07 }], "reserve": 12 } }] }]
     },
     {
       "id": "brick_in_hand",
+      "formerIds": ["payroll"],
       "kind": "active",
       "weapon": "banner",
-      "tier": "common",
+      "tier": "rare",
       "role": "fast",
       "color": "red",
       "name": { "ru": "Кирпич в руку", "en": "Brick in Hand" },
@@ -2993,24 +3000,12 @@
       "cost": { "resource": 10 },
       "cooldownSeconds": 3,
       "effect": { "type": "strike", "multiplier": 3 },
-      "native": { "resourceOnCast": 3 }
-    },
-    {
-      "id": "plumb_line",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "common",
-      "role": "fast",
-      "color": "red",
-      "name": { "ru": "Отвес", "en": "Plumb Line" },
-      "tags": ["Skill"],
-      "cost": { "resource": 15 },
-      "cooldownSeconds": 4,
-      "effect": { "type": "strike", "multiplier": 2, "queueTargets": 1 },
-      "native": { "resourceOnCast": 2 }
+      "native": { "resourceOnCast": 3 },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_brick", "name": { "ru": "Тяжелее кирпич", "en": "Heavier Brick" }, "damage": 1.3 }, { "id": "quick_brick", "name": { "ru": "Быстрый кирпич", "en": "Quick Brick" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "payroll", "name": { "ru": "Ведомость", "en": "Payroll" }, "cost": 0.5 }, { "id": "two_bricks", "name": { "ru": "Два кирпича", "en": "Two Bricks" }, "effect": { "queueTargets": 1 } }] }, { "level": 25, "options": [{ "id": "fired_brick", "name": { "ru": "Обожжённый кирпич", "en": "Fired Brick" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "brick_wall", "name": { "ru": "Кирпичная кладка", "en": "Brickwork" }, "damage": 0.9, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "log_lift",
+      "formerIds": ["shaft_calluses"],
       "kind": "active",
       "weapon": "banner",
       "tier": "common",
@@ -3021,10 +3016,12 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 20,
       "effect": { "type": "flurry", "hits": 6, "seconds": 0.6, "multiplier": 2 },
-      "native": { "resourceOnHit": 2 }
+      "native": { "resourceOnHit": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "more_logs", "name": { "ru": "Больше брёвен", "en": "More Logs" }, "effect": { "hits": 8 } }, { "id": "heavy_log", "name": { "ru": "Тяжёлое бревно", "en": "Heavy Log" }, "effect": { "multiplier": 2.6 } }] }, { "level": 15, "options": [{ "id": "shaft_calluses", "name": { "ru": "Мозоли от древка", "en": "Shaft Calluses" }, "cooldown": 0.7 }, { "id": "cheap_lift", "name": { "ru": "Подъём даром", "en": "Free Lift" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "whole_frame", "name": { "ru": "Весь сруб", "en": "Whole Frame" }, "effect": { "hits": 12, "seconds": 1.2 } }, { "id": "logs_down_the_line", "name": { "ru": "Брёвна по очереди", "en": "Logs Down the Line" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "battering_ram",
+      "formerIds": ["gates_locked"],
       "kind": "active",
       "weapon": "banner",
       "tier": "common",
@@ -3035,13 +3032,14 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 25,
       "effect": { "type": "strike", "multiplier": 10 },
-      "native": { "when": {"boss": true, "multiplier": 1.4} }
+      "native": { "when": {"boss": true, "multiplier": 1.4} },
+      "branches": [{ "level": 5, "options": [{ "id": "heavier_ram", "name": { "ru": "Тяжелее таран", "en": "Heavier Ram" }, "damage": 1.3 }, { "id": "quick_ram", "name": { "ru": "Быстрый таран", "en": "Quick Ram" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "gates_locked", "name": { "ru": "Ворота на замке", "en": "Gates Locked" }, "cooldown": 1.2, "effect": { "multiplier": 13 } }, { "id": "light_ram", "name": { "ru": "Лёгкий таран", "en": "Light Ram" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "siege_ram", "name": { "ru": "Осадный таран", "en": "Siege Ram" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "ram_through", "name": { "ru": "Таран насквозь", "en": "Ram Through" }, "effect": { "queueTargets": 2 } }] }]
     },
     {
       "id": "smoke_break",
       "kind": "active",
       "weapon": "banner",
-      "tier": "common",
+      "tier": "epic",
       "role": "heavy",
       "color": "red",
       "name": { "ru": "Перекур", "en": "Smoke Break" },
@@ -3050,62 +3048,12 @@
       "cooldownSeconds": 25,
       "durationSeconds": 6,
       "effect": { "type": "storeHits", "releaseShare": 1.5 },
-      "native": { "durationMultiplier": 1.5 }
-    },
-    {
-      "id": "blueprint",
-      "kind": "aura",
-      "weapon": "banner",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Чертёж", "en": "Blueprint" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}], "party": true, "reserve": 15 },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["Keyboard"]}] }
-    },
-    {
-      "id": "shaft_calluses",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Мозоли от древка", "en": "Shaft Calluses" },
-      "tags": ["Keyboard", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}] },
-      "native": { "when": {"aurasAtLeast": 1, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]} }
-    },
-    {
-      "id": "hard_hat",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Каска", "en": "Hard Hat" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 2}] },
-      "native": { "modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 2}] }
-    },
-    {
-      "id": "payroll",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "common",
-      "color": "red",
-      "name": { "ru": "Ведомость", "en": "Payroll" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}] },
-      "native": { "resourceOnKill": 2 }
+      "native": { "durationMultiplier": 1.5 },
+      "branches": [{ "level": 5, "options": [{ "id": "long_break", "name": { "ru": "Долгий перекур", "en": "Long Break" }, "effect": { "releaseShare": 1.8 } }, { "id": "quick_break", "name": { "ru": "Быстрый перекур", "en": "Quick Break" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "tea_break", "name": { "ru": "Чай с бригадой", "en": "Tea with the Crew" }, "duration": 1.5 }, { "id": "cheap_break", "name": { "ru": "Перекур даром", "en": "Free Break" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "lunch_break", "name": { "ru": "Обед", "en": "Lunch Break" }, "cooldown": 1.3, "effect": { "releaseShare": 2.4 } }, { "id": "break_for_all", "name": { "ru": "Перекур на всех", "en": "Break for Everyone" }, "effect": { "queue": true } }] }]
     },
     {
       "id": "storm_over_the_banner",
+      "formerIds": ["flag_on_the_roof"],
       "kind": "aura",
       "weapon": "banner",
       "tier": "rare",
@@ -3116,10 +3064,12 @@
       "cooldownSeconds": 0,
       "marks": ["lightning"],
       "effect": {"type": "aura", "modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.1}], "party": true, "reserve": 25, "idleOffSeconds": 10},
-      "native": {"modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.05}]}
+      "native": {"modifiers": [{"stat": "keyHitLightning", "kind": "flat", "value": 0.05}]},
+      "branches": [{ "level": 5, "options": [{ "id": "louder_storm_b", "name": { "ru": "Громче гроза", "en": "Louder Storm" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.13 }] } }, { "id": "light_storm_b", "name": { "ru": "Лёгкая гроза", "en": "Light Storm" }, "effect": { "reserve": 18 } }] }, { "level": 15, "options": [{ "id": "flag_on_the_roof", "name": { "ru": "Флаг на крыше", "en": "Flag on the Roof" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.1 }, { "stat": "damage", "kind": "increased", "value": 0.06 }] } }, { "id": "storm_season_b", "name": { "ru": "Сезон гроз", "en": "Storm Season" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.1 }, { "stat": "critChance", "kind": "flat", "value": 0.03 }] } }] }, { "level": 25, "options": [{ "id": "thunder_banner", "name": { "ru": "Громовое знамя", "en": "Thunder Banner" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.16 }], "reserve": 35 } }, { "id": "spark_banner", "name": { "ru": "Искра на знамени", "en": "Spark on the Banner" }, "effect": { "modifiers": [{ "stat": "keyHitLightning", "kind": "flat", "value": 0.07 }], "reserve": 12 } }] }]
     },
     {
       "id": "nobody_retreats",
+      "formerIds": ["hard_hat"],
       "kind": "aura",
       "weapon": "banner",
       "tier": "rare",
@@ -3129,7 +3079,8 @@
       "cost": {},
       "cooldownSeconds": 0,
       "effect": {"type": "aura", "modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 3}], "party": true, "reserve": 25, "idleOffSeconds": 10},
-      "native": {"modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 1}]}
+      "native": {"modifiers": [{"stat": "focusResetSeconds", "kind": "flat", "value": 1}]},
+      "branches": [{ "level": 5, "options": [{ "id": "firmer_line", "name": { "ru": "Твёрже строй", "en": "Firmer Line" }, "effect": { "modifiers": [{ "stat": "focusResetSeconds", "kind": "flat", "value": 4 }] } }, { "id": "light_line", "name": { "ru": "Лёгкий строй", "en": "Light Line" }, "effect": { "reserve": 18 } }] }, { "level": 15, "options": [{ "id": "hard_hat", "name": { "ru": "Каска", "en": "Hard Hat" }, "effect": { "modifiers": [{ "stat": "focusResetSeconds", "kind": "flat", "value": 3 }, { "stat": "damage", "kind": "increased", "value": 0.05 }] } }, { "id": "tight_line", "name": { "ru": "Плотный строй", "en": "Tight Line" }, "effect": { "modifiers": [{ "stat": "focusResetSeconds", "kind": "flat", "value": 3 }, { "stat": "resourceGain", "kind": "increased", "value": 0.1 }] } }] }, { "level": 25, "options": [{ "id": "last_stand", "name": { "ru": "Ни шагу", "en": "Last Stand" }, "effect": { "modifiers": [{ "stat": "focusResetSeconds", "kind": "flat", "value": 5 }], "reserve": 35 } }, { "id": "loose_line", "name": { "ru": "Свободный строй", "en": "Loose Line" }, "effect": { "modifiers": [{ "stat": "focusResetSeconds", "kind": "flat", "value": 2 }], "reserve": 12 } }] }]
     },
     {
       "id": "shaft_blow",
@@ -3144,14 +3095,16 @@
       "cooldownSeconds": 5,
       "durationSeconds": 5,
       "effect": { "type": "enemyDebuff", "damageTaken": 0.1, "strikeMultiplier": 5 },
-      "native": { "durationMultiplier": 2 }
+      "native": { "durationMultiplier": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "harder_blow", "name": { "ru": "Сильнее удар", "en": "Harder Blow" }, "effect": { "strikeMultiplier": 6.5 } }, { "id": "quick_blow", "name": { "ru": "Быстрый удар", "en": "Quick Blow" }, "cooldown": 0.7 }] }, { "level": 15, "options": [{ "id": "dented_armour", "name": { "ru": "Вмятина", "en": "Dent" }, "effect": { "damageTaken": 0.15 } }, { "id": "long_bruise_b", "name": { "ru": "Долгий синяк", "en": "Long Bruise" }, "duration": 1.6 }] }, { "level": 25, "options": [{ "id": "cracked_shield", "name": { "ru": "Треснувший щит", "en": "Cracked Shield" }, "cooldown": 1.3, "effect": { "damageTaken": 0.2 } }, { "id": "flat_blow", "name": { "ru": "Плашмя", "en": "Flat Blow" }, "cost": 1.25, "effect": { "strikeMultiplier": 9 } }] }]
     },
     {
       "id": "prop",
+      "formerIds": ["the_gates_will_not_open"],
       "kind": "active",
       "weapon": "banner",
       "tier": "rare",
-      "role": "fast",
+      "role": "heavy",
       "color": "red",
       "name": { "ru": "Подпорка", "en": "Prop" },
       "tags": ["Skill"],
@@ -3159,7 +3112,8 @@
       "cooldownSeconds": 6,
       "durationSeconds": 6,
       "effect": { "type": "enemyDebuff", "damageTaken": 0, "bossTimerSlow": 0.5 },
-      "native": { "durationMultiplier": 1.6666666666666667 }
+      "native": { "durationMultiplier": 1.6666666666666667 },
+      "branches": [{ "level": 5, "options": [{ "id": "sturdier_prop", "name": { "ru": "Крепче подпорка", "en": "Sturdier Prop" }, "effect": { "bossTimerSlow": 0.6 } }, { "id": "quick_prop", "name": { "ru": "Быстрая подпорка", "en": "Quick Prop" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "the_gates_will_not_open", "name": { "ru": "Ворота не откроются", "en": "The Gates Will Not Open" }, "duration": 1.4 }, { "id": "cheap_prop", "name": { "ru": "Подпорка даром", "en": "Free Prop" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "steel_prop", "name": { "ru": "Стальная подпорка", "en": "Steel Prop" }, "cooldown": 1.3, "effect": { "bossTimerSlow": 0.7 } }, { "id": "prop_and_strike", "name": { "ru": "Подпереть и ударить", "en": "Prop and Strike" }, "effect": { "damageTaken": 0.1 } }] }]
     },
     {
       "id": "nail_in_the_board",
@@ -3173,13 +3127,15 @@
       "cost": { "resource": 25 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 4, "lowHpBelow": 0.5, "lowHpMultiplier": 7 },
-      "native": { "resourceOnKill": 10 }
+      "native": { "resourceOnKill": 10 },
+      "branches": [{ "level": 5, "options": [{ "id": "longer_nail", "name": { "ru": "Длиннее гвоздь", "en": "Longer Nail" }, "damage": 1.3 }, { "id": "quick_nail", "name": { "ru": "Быстрый гвоздь", "en": "Quick Nail" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "to_the_head", "name": { "ru": "По шляпку", "en": "To the Head" }, "effect": { "lowHpBelow": 0.6 } }, { "id": "cheap_nail", "name": { "ru": "Гвоздь даром", "en": "Free Nail" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "square_nail", "name": { "ru": "Кованый гвоздь", "en": "Wrought Nail" }, "cooldown": 1.25, "effect": { "lowHpMultiplier": 10 } }, { "id": "nails_in_a_row", "name": { "ru": "Гвозди в ряд", "en": "Nails in a Row" }, "effect": { "queueTargets": 1, "queueMultiplier": 2 } }] }]
     },
     {
       "id": "scaffolding",
+      "formerIds": ["over_the_plan"],
       "kind": "active",
       "weapon": "banner",
-      "tier": "rare",
+      "tier": "legendary",
       "role": "heavy",
       "color": "red",
       "name": { "ru": "Леса", "en": "Scaffolding" },
@@ -3187,50 +3143,12 @@
       "cost": { "resource": 50 },
       "cooldownSeconds": 30,
       "effect": { "type": "strike", "multiplier": 12, "queueTargets": 2 },
-      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} }
-    },
-    {
-      "id": "relief_crew",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "rare",
-      "role": "heavy",
-      "locked": true,
-      "color": "red",
-      "name": { "ru": "Сменная бригада", "en": "Relief Crew" },
-      "tags": ["Skill"],
-      "cost": { "resource": 40 },
-      "cooldownSeconds": 35,
-      "durationSeconds": 15
-    },
-    {
-      "id": "flag_on_the_roof",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "rare",
-      "color": "red",
-      "name": { "ru": "Флаг на крыше", "en": "Flag on the Roof" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.05}] },
-      "native": { "when": {"aurasAtLeast": 2, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}]} }
-    },
-    {
-      "id": "over_the_plan",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "rare",
-      "color": "red",
-      "name": { "ru": "Сверх плана", "en": "Over the Plan" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.06}] },
-      "native": { "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}] }
+      "native": { "when": {"resourceAtLeast": 50, "multiplier": 1.5} },
+      "branches": [{ "level": 5, "options": [{ "id": "higher_scaffold", "name": { "ru": "Выше леса", "en": "Higher Scaffold" }, "damage": 1.3 }, { "id": "quick_scaffold", "name": { "ru": "Быстрые леса", "en": "Quick Scaffold" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "over_the_plan", "name": { "ru": "Сверх плана", "en": "Over the Plan" }, "effect": { "queueTargets": 3 } }, { "id": "light_scaffold", "name": { "ru": "Лёгкие леса", "en": "Light Scaffold" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "tower_scaffold", "name": { "ru": "Леса до неба", "en": "Scaffold to the Sky" }, "damage": 1.6, "cooldown": 1.25 }, { "id": "collapse", "name": { "ru": "Обрушение", "en": "Collapse" }, "cooldown": 1.2, "effect": { "multiplier": 16 } }] }]
     },
     {
       "id": "the_banner_does_not_fall",
+      "formerIds": ["the_gates_stand"],
       "kind": "aura",
       "weapon": "banner",
       "tier": "epic",
@@ -3242,25 +3160,12 @@
       "cooldownSeconds": 40,
       "durationSeconds": 8,
       "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}], "party": true},
-      "native": {"extraSecondsPerPoint": 0.1}
-    },
-    {
-      "id": "the_gates_stand",
-      "kind": "aura",
-      "weapon": "banner",
-      "tier": "epic",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Ворота стоят", "en": "The Gates Stand" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 60 },
-      "cooldownSeconds": 40,
-      "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}, {"stat": "damageAtBossTimerEnd", "kind": "increased", "value": 0.35}], "party": true },
-      "native": { "durationMultiplier": 1.2 }
+      "native": {"extraSecondsPerPoint": 0.1},
+      "branches": [{ "level": 5, "options": [{ "id": "longer_stand", "name": { "ru": "Дольше стоит", "en": "Stands Longer" }, "duration": 1.3 }, { "id": "quick_raise", "name": { "ru": "Быстро поднять", "en": "Quick Raise" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "the_gates_stand", "name": { "ru": "Ворота стоят", "en": "The Gates Stand" }, "cooldown": 1.2, "effect": { "modifiers": [{ "stat": "bossTimerSpeed", "kind": "more", "value": -1 }, { "stat": "damage", "kind": "increased", "value": 0.15 }] } }, { "id": "light_banner", "name": { "ru": "Лёгкое знамя", "en": "Light Banner" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "banner_of_iron", "name": { "ru": "Железное знамя", "en": "Iron Banner" }, "duration": 1.6, "cooldown": 1.3 }, { "id": "banner_for_all", "name": { "ru": "Знамя для всех", "en": "Banner for Everyone" }, "effect": { "modifiers": [{ "stat": "bossTimerSpeed", "kind": "more", "value": -1 }, { "stat": "gold", "kind": "increased", "value": 0.1 }] } }] }]
     },
     {
       "id": "spear_to_the_target",
+      "formerIds": ["it_is_simply_a_fact"],
       "kind": "active",
       "weapon": "banner",
       "tier": "epic",
@@ -3271,14 +3176,15 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 6,
       "effect": { "type": "strike", "multiplier": 8, "executeBelow": 0.15 },
-      "native": { "when": {"bossLastSeconds": 10, "executeBelow": 0.2} }
+      "native": { "when": {"bossLastSeconds": 10, "executeBelow": 0.2} },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_spear", "name": { "ru": "Острее копьё", "en": "Sharper Spear" }, "damage": 1.3 }, { "id": "quick_spear", "name": { "ru": "Быстрое копьё", "en": "Quick Spear" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "it_is_simply_a_fact", "name": { "ru": "Это просто факт", "en": "It Is Simply a Fact" }, "effect": { "executeBelow": 0.2 } }, { "id": "cheap_spear", "name": { "ru": "Копьё даром", "en": "Free Spear" }, "cost": 0.5 }] }, { "level": 25, "options": [{ "id": "spear_of_the_gate", "name": { "ru": "Копьё ворот", "en": "Spear of the Gate" }, "cooldown": 1.25, "effect": { "executeBelow": 0.25 } }, { "id": "heavy_spear", "name": { "ru": "Тяжёлое копьё", "en": "Heavy Spear" }, "damage": 1.7 }] }]
     },
     {
       "id": "bookmark",
+      "formerIds": ["relief_crew"],
       "kind": "active",
       "weapon": "banner",
       "tier": "epic",
-      "role": "fast",
       "color": "red",
       "name": { "ru": "Закладка", "en": "Bookmark" },
       "tags": ["Keyboard", "Skill"],
@@ -3286,36 +3192,12 @@
       "cooldownSeconds": 8,
       "durationSeconds": 10,
       "effect": { "type": "keyRepeat", "every": 1, "multiplier": 1, "hits": 5 },
-      "native": { "resourceOnHit": 2 }
-    },
-    {
-      "id": "gates_locked",
-      "kind": "aura",
-      "weapon": "banner",
-      "tier": "epic",
-      "color": "red",
-      "name": { "ru": "Ворота на замке", "en": "Gates Locked" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "party": true, "reserve": 30 },
-      "native": { "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.1}] }
-    },
-    {
-      "id": "solid_foundation",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "epic",
-      "color": "red",
-      "name": { "ru": "Крепкий фундамент", "en": "Solid Foundation" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}] },
-      "native": { "when": {"aurasAtLeast": 2, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15}]} }
+      "native": { "resourceOnHit": 2 },
+      "branches": [{ "level": 5, "options": [{ "id": "thicker_bookmark", "name": { "ru": "Толще закладка", "en": "Thicker Bookmark" }, "effect": { "hits": 6 } }, { "id": "heavy_bookmark", "name": { "ru": "Тяжёлая закладка", "en": "Heavy Bookmark" }, "effect": { "multiplier": 1.3 } }] }, { "level": 15, "options": [{ "id": "relief_crew", "name": { "ru": "Сменная бригада", "en": "Relief Crew" }, "duration": 1.5 }, { "id": "quick_bookmark", "name": { "ru": "Быстрая закладка", "en": "Quick Bookmark" }, "cooldown": 0.7 }] }, { "level": 25, "options": [{ "id": "ten_bookmarks", "name": { "ru": "Десять закладок", "en": "Ten Bookmarks" }, "cost": 1.3, "effect": { "hits": 10 } }, { "id": "marked_page", "name": { "ru": "Отмеченная страница", "en": "Marked Page" }, "effect": { "multiplier": 1.6 } }] }]
     },
     {
       "id": "breach_in_the_wall",
+      "formerIds": ["banner_over_the_rim"],
       "kind": "active",
       "weapon": "banner",
       "tier": "legendary",
@@ -3326,13 +3208,15 @@
       "cost": { "resource": 40 },
       "cooldownSeconds": 8,
       "effect": { "type": "strike", "multiplier": 15, "queueTargets": 3 },
-      "native": { "when": {"aurasAtLeast": 3, "free": true} }
+      "native": { "when": {"aurasAtLeast": 3, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "wider_breach", "name": { "ru": "Шире пролом", "en": "Wider Breach" }, "damage": 1.3 }, { "id": "quick_breach", "name": { "ru": "Быстрый пролом", "en": "Quick Breach" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "banner_over_the_rim", "name": { "ru": "Знамя над краем", "en": "Banner over the Rim" }, "effect": { "queueMultiplier": 1.5 } }, { "id": "cheap_breach", "name": { "ru": "Пролом даром", "en": "Free Breach" }, "cost": 0.6 }] }, { "level": 25, "options": [{ "id": "fallen_wall", "name": { "ru": "Рухнувшая стена", "en": "Fallen Wall" }, "damage": 0.9, "effect": { "queueMultiplier": 2 } }, { "id": "single_breach", "name": { "ru": "Одна брешь", "en": "Single Breach" }, "damage": 1.7, "effect": { "queueTargets": 1 } }] }]
     },
     {
       "id": "rebuilt_overnight",
+      "formerIds": ["the_whole_artel"],
       "kind": "active",
       "weapon": "banner",
-      "tier": "legendary",
+      "tier": "mythic",
       "role": "heavy",
       "color": "red",
       "name": { "ru": "Отстройка за ночь", "en": "Rebuilt Overnight" },
@@ -3340,23 +3224,12 @@
       "cost": { "resource": 100 },
       "cooldownSeconds": 45,
       "effect": { "type": "flurry", "hits": 30, "seconds": 3, "multiplier": 3, "queueTargets": 3 },
-      "native": { "resourceOnKill": 5 }
-    },
-    {
-      "id": "banner_over_the_rim",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "legendary",
-      "color": "red",
-      "name": { "ru": "Знамя над краем", "en": "Banner over the Rim" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": { "type": "passive", "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.25, "tags": ["Aura"]}] },
-      "native": { "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.1, "tags": ["Aura"]}] }
+      "native": { "resourceOnKill": 5 },
+      "branches": [{ "level": 5, "options": [{ "id": "more_hands", "name": { "ru": "Больше рук", "en": "More Hands" }, "effect": { "hits": 36 } }, { "id": "heavier_beams", "name": { "ru": "Тяжелее балки", "en": "Heavier Beams" }, "effect": { "multiplier": 3.6 } }] }, { "level": 15, "options": [{ "id": "the_whole_artel", "name": { "ru": "Вся артель", "en": "The Whole Artel" }, "cooldown": 0.75 }, { "id": "cheap_rebuild", "name": { "ru": "Отстройка даром", "en": "Free Rebuild" }, "cost": 0.7 }] }, { "level": 25, "options": [{ "id": "new_city", "name": { "ru": "Новый город", "en": "New City" }, "effect": { "hits": 40, "seconds": 4 } }, { "id": "keystone", "name": { "ru": "Замковый камень", "en": "Keystone" }, "effect": { "hits": 20, "seconds": 2, "multiplier": 6 } }] }]
     },
     {
       "id": "the_banner_strikes",
+      "formerIds": ["banner_from_the_underside"],
       "kind": "active",
       "weapon": "banner",
       "tier": "mythic",
@@ -3367,61 +3240,8 @@
       "cost": { "resource": 30 },
       "cooldownSeconds": 4,
       "effect": { "type": "strike", "multiplier": 20, "critChance": 1 },
-      "native": { "when": {"aurasAtLeast": 3, "free": true} }
-    },
-    {
-      "id": "the_whole_artel",
-      "kind": "aura",
-      "weapon": "banner",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Вся артель", "en": "The Whole Artel" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 60,
-      "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{"stat": "auraEffect", "kind": "more", "value": 2, "tags": ["Aura"]}] },
-      "native": { "durationMultiplier": 1.5 }
-    },
-    {
-      "id": "the_gates_will_not_open",
-      "kind": "aura",
-      "weapon": "banner",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "red",
-      "name": { "ru": "Ворота не откроются", "en": "The Gates Will Not Open" },
-      "tags": ["Aura", "Skill"],
-      "cost": { "resource": 100 },
-      "cooldownSeconds": 90,
-      "durationSeconds": 10,
-      "effect": { "type": "aura", "modifiers": [{"stat": "bossTimerSpeed", "kind": "more", "value": -1}, {"stat": "damage", "kind": "more", "value": 0.5}], "party": true },
-      "native": { "when": {"aurasAtLeast": 3, "durationMultiplier": 1.3} }
-    },
-    {
-      "id": "banner_from_the_underside",
-      "kind": "active",
-      "weapon": "banner",
-      "tier": "mythic",
-      "locked": true,
-      "color": "red",
-      "name": { "ru": "Знамя из Изнанки", "en": "Banner from the Underside" },
-      "tags": ["Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
-    },
-    {
-      "id": "it_is_simply_a_fact",
-      "kind": "aura",
-      "weapon": "banner",
-      "tier": "mythic",
-      "locked": true,
-      "color": "red",
-      "name": { "ru": "Это просто факт", "en": "It Is Simply a Fact" },
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0
+      "native": { "when": {"aurasAtLeast": 3, "free": true} },
+      "branches": [{ "level": 5, "options": [{ "id": "sharper_banner", "name": { "ru": "Острее навершие", "en": "Sharper Finial" }, "damage": 1.3 }, { "id": "quick_banner", "name": { "ru": "Быстрое знамя", "en": "Quick Banner" }, "cooldown": 0.75 }] }, { "level": 15, "options": [{ "id": "banner_from_the_underside", "name": { "ru": "Знамя из Изнанки", "en": "Banner from the Underside" }, "cost": 0.5 }, { "id": "second_banner", "name": { "ru": "Второе знамя", "en": "Second Banner" }, "effect": { "queueTargets": 1 } }] }, { "level": 25, "options": [{ "id": "planted_banner", "name": { "ru": "Вкопанное знамя", "en": "Planted Banner" }, "damage": 1.7, "cooldown": 1.3 }, { "id": "banner_down_the_line", "name": { "ru": "Знамя по очереди", "en": "Banner Down the Line" }, "damage": 0.9, "effect": { "queueTargets": 3 } }] }]
     },
     {
       "id": "thursday_sabbath",

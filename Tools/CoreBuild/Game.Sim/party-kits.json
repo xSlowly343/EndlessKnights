@@ -3,6 +3,6 @@
   "ronin": ["thin_cut", "hundred_cuts", "carving"],
   "amazon": ["arrow_from_the_road", "through_stride", "three_arrows_in_a_row"],
   "stormweaver": ["finger_spark", "through_stride", "strike_the_spire"],
-  "bannerbearer": ["foreman_hammer", "blueprint", "storm_over_the_banner"],
+  "bannerbearer": ["foreman_hammer", "artel_pay", "storm_over_the_banner"],
   "voodoo": ["charm_prick", "pin", "through_stride"]
 }
