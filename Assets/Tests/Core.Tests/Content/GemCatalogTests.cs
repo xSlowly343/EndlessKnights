@@ -177,7 +177,7 @@ namespace Game.Core.Tests.Content
         public void SupportGemsAlreadyFitTheFormat()
         {
             var gems = GemCatalog.Load(WithExtraGem(
-                "{ \"id\": \"echo_keys\", \"kind\": \"support\", \"supports\": [\"Skill\"], \"damageMult\": 1, \"manaMult\": 1, \"color\": \"red\", \"name\": { \"ru\": \"Эхо клавиш\", \"en\": \"Key Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\", \"keys\": 50 } }"));
+                "{ \"id\": \"echo_keys\", \"kind\": \"support\", \"supports\": [\"Skill\"], \"damageMult\": 1, \"manaMult\": 1, \"level\": 1, \"color\": \"red\", \"name\": { \"ru\": \"Эхо клавиш\", \"en\": \"Key Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\", \"keys\": 50 } }"));
 
             Assert.That(gems["echo_keys"].Kind, Is.EqualTo(GemKind.Support));
             Assert.That(gems["echo_keys"].SupportEffect, Is.EqualTo("repeatEveryKeys"));

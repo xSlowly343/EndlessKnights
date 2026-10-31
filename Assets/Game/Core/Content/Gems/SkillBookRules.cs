@@ -14,10 +14,9 @@ namespace Game.Core.Content.Gems
         private readonly Dictionary<string, IReadOnlyList<GemDef>> _startingGems;
 
         private SkillBookRules(int baseSlots, long[] slotUnlockStages, int baseSockets, long[] socketRecordStages, int socketRebirths, int maxSockets,
-            Dictionary<string, IReadOnlyList<GemDef>> startingGems, double attributePerColoredSupport, int[] auraSlotLevels)
+            Dictionary<string, IReadOnlyList<GemDef>> startingGems, int[] auraSlotLevels)
         {
             _auraSlotLevels = auraSlotLevels;
-            AttributePerColoredSupport = attributePerColoredSupport;
             BaseSlots = baseSlots;
             _slotUnlockStages = slotUnlockStages;
             BaseSockets = baseSockets;
@@ -32,7 +31,6 @@ namespace Game.Core.Content.Gems
         public int BaseSockets { get; }
         public int SocketRebirths { get; }
         public int MaxSockets { get; }
-        public double AttributePerColoredSupport { get; }
 
         public int SlotsFor(long recordStage, bool earlySlot = false)
         {
@@ -113,7 +111,6 @@ namespace Game.Core.Content.Gems
                 sockets.Field("rebirths").AsInt(0, 20),
                 sockets.Field("max").AsInt(1, Sim.SkillSlot.SocketCapacity),
                 starting,
-                sockets.Field("attributePerColoredSupport").AsNumber(1, 10000),
                 ReadAuraSlotLevels(root.Field("auraSlots").Field("unlockLevels")));
         }
 

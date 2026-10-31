@@ -120,7 +120,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void OnlySkillsAndAurasHaveBranches()
         {
-            var support = "{ \"id\": \"x\", \"kind\": \"support\", \"supports\": [\"Skill\"], \"damageMult\": 1.2, \"manaMult\": 1.3, \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"chain\", \"share\": 0.3 }, \"branches\": [] }";
+            var support = "{ \"id\": \"x\", \"kind\": \"support\", \"supports\": [\"Skill\"], \"damageMult\": 1.2, \"manaMult\": 1.3, \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"chain\", \"share\": 0.3 }, \"branches\": [] }";
 
             var error = Assert.Throws<ContentException>(() => WithExtra(support))!;
 
@@ -130,7 +130,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void ASupportNamesWhatItSupportsAndItsMultipliers()
         {
-            var support = WithExtra("{ \"id\": \"x\", \"kind\": \"support\", \"supports\": [\"DoT\"], \"damageMult\": 1.2, \"manaMult\": 1.3, \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"chain\", \"share\": 0.3 } }");
+            var support = WithExtra("{ \"id\": \"x\", \"kind\": \"support\", \"supports\": [\"DoT\"], \"damageMult\": 1.2, \"manaMult\": 1.3, \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"chain\", \"share\": 0.3 } }");
 
             var gem = support["x"];
             Assert.That(gem.Supports, Is.EqualTo(StatTags.DoT));

@@ -25,7 +25,7 @@ namespace Game.Core.Sim
                 var support = slot.Supports[i]?.Support;
                 if (support == null)
                     continue;
-                power *= support.Power;
+                power *= support.Power * slot.Supports[i]!.DamageMultiplier;
                 if (support.QuietSeconds > 0 && state.IdleTicksBeforeInput * GameLoop.TickSeconds >= support.QuietSeconds)
                     power *= support.QuietPower;
                 if (support.HungerHitsPerStep > 0)
@@ -172,7 +172,7 @@ namespace Game.Core.Sim
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null)
-                    multiplier *= support.CostMultiplier;
+                    multiplier *= support.CostMultiplier * slot.Supports[i]!.ManaMultiplier;
             }
             return multiplier;
         }

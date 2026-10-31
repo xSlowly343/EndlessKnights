@@ -518,7 +518,7 @@ namespace Game.Core.Tests.Party
             var before = friend.Damage;
             metalhead.Loop.Hero.Add(new Modifier(HeroAttributes.Stat("intelligence"), ModifierKind.Flat, 15));
             var song = metalhead.Equip("hearth_song");
-            metalhead.Loop.State.OwnedGems.Add(TestWorld.Data.Gems["resonance"]);
+            metalhead.Loop.State.HeroLevel = TestWorld.Data.Gems["resonance"].UnlockLevel;
             Assert.That(metalhead.Loop.Book.SetSupport(song, 0, TestWorld.Data.Gems["resonance"]), Is.EqualTo(Game.Core.Build.BookResult.Done));
             var seconds = TestWorld.Data.Gems["hearth_song"].Skill!.DurationSeconds;
 

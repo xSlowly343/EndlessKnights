@@ -12,8 +12,9 @@ namespace Game.Core.Content.Gems
             SkillDef? skill = null, TriggerDef? trigger = null, string? supportEffect = null, IReadOnlyDictionary<string, double>? requires = null,
             string? ascendancy = null, bool locked = false, SupportDef? support = null, SkillType? type = null,
             IReadOnlyList<SkillBranchTier>? branches = null, StatTags supports = StatTags.None, double damageMultiplier = 1, double manaMultiplier = 1,
-            IReadOnlyList<SkillDef>? variants = null, IReadOnlyList<double>? branchDamage = null)
+            IReadOnlyList<SkillDef>? variants = null, IReadOnlyList<double>? branchDamage = null, int unlockLevel = 1)
         {
+            UnlockLevel = unlockLevel;
             _variants = variants;
             _branchDamage = branchDamage;
             Type = type ?? TypeOf(kind, skill);
@@ -78,6 +79,7 @@ namespace Game.Core.Content.Gems
         public StatTags Supports { get; }
         public double DamageMultiplier { get; }
         public double ManaMultiplier { get; }
+        public int UnlockLevel { get; }
 
         public SkillDef? VariantOf(int combo) => _variants == null || combo == SkillBranches.Plain ? null : _variants[combo];
 

@@ -49,18 +49,5 @@ namespace Game.Core.Tests.Build
             AddStrength(loop, 5);
             Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.Done));
         }
-
-        [Test]
-        public void ColoredSupportsAreLimitedByFifteenPointsOfTheirAttribute()
-        {
-            var loop = Swordsman();
-
-            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(0));
-            AddStrength(loop, 15);
-            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(1));
-            AddStrength(loop, 14);
-            Assert.That(loop.Book.ColoredSupportLimit("strength"), Is.EqualTo(1));
-            Assert.That(loop.Book.ColoredSupportLimit("dexterity"), Is.EqualTo(0));
-        }
     }
 }

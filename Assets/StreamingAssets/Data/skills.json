@@ -7915,6 +7915,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 5,
       "color": "white",
       "name": { "ru": "Отскок", "en": "Rebound" },
       "effect": { "type": "rebound", "killCooldownSeconds": 1, "cooldownMultiplier": 0.9 }
@@ -7925,6 +7926,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 5,
       "color": "green",
       "name": { "ru": "Цепь", "en": "Chain" },
       "effect": { "type": "chain", "share": 0.3 }
@@ -7935,6 +7937,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 8,
       "color": "blue",
       "name": { "ru": "Казнящий", "en": "Executioner" },
       "effect": { "type": "executioner", "below": 0.3, "multiplier": 2, "killCooldownSeconds": 2 }
@@ -7945,6 +7948,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 8,
       "color": "white",
       "name": { "ru": "Ученик", "en": "Apprentice" },
       "effect": { "type": "apprentice", "power": 0.9, "experienceMultiplier": 1.5 }
@@ -7955,6 +7959,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 11,
       "color": "blue",
       "name": { "ru": "Против боссов", "en": "Boss Hunter" },
       "effect": { "type": "bossHunter", "boss": 1.6, "normal": 0.95 }
@@ -7965,6 +7970,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 11,
       "color": "blue",
       "name": { "ru": "Метка смерти", "en": "Death Mark" },
       "effect": { "type": "deathMark", "killResource": 5, "markedMultiplier": 1.2 }
@@ -7975,6 +7981,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 14,
       "color": "white",
       "name": { "ru": "Тихий час", "en": "Quiet Hour" },
       "effect": { "type": "quietHour", "idleSeconds": 30, "power": 2 }
@@ -7985,6 +7992,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 14,
       "color": "red",
       "name": { "ru": "Голод клинка", "en": "Blade Hunger" },
       "effect": { "type": "bladeHunger", "hitsPerStep": 4, "step": 0.01, "max": 0.4 }
@@ -7995,6 +8003,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 17,
       "color": "red",
       "name": { "ru": "Разгон", "en": "Acceleration" },
       "effect": { "type": "acceleration", "focusStep": 0.5, "bonus": 0.08, "max": 0.6 }
@@ -8005,6 +8014,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 17,
       "color": "red",
       "name": { "ru": "Крит-фокус", "en": "Crit Focus" },
       "effect": { "type": "critFocus", "critPerStep": 0.03, "focusStep": 0.5, "critMultiplier": 1.2 }
@@ -8015,6 +8025,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 20,
       "color": "white",
       "name": { "ru": "Широкий охват", "en": "Wide Reach" },
       "effect": { "type": "wideReach", "share": 0.2, "slot": 1 }
@@ -8025,6 +8036,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 20,
       "color": "white",
       "name": { "ru": "Отложенная плата", "en": "Deferred Payment" },
       "effect": { "type": "deferredPayment", "costMultiplier": 0.8, "perSecond": 0.1 }
@@ -8035,6 +8047,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 23,
       "color": "white",
       "name": { "ru": "Двойной заряд", "en": "Double Charge" },
       "effect": { "type": "doubleCharge", "extraCharges": 1, "power": 1.15 }
@@ -8045,6 +8058,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 23,
       "color": "white",
       "name": { "ru": "Близнецы", "en": "Twins" },
       "effect": { "type": "twins", "afterSeconds": 2, "power": 0.3 }
@@ -8055,6 +8069,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 26,
       "color": "white",
       "name": { "ru": "Затяжной", "en": "Lingering" },
       "effect": { "type": "lingering", "durationMultiplier": 1.2, "lingerMax": 0.5 }
@@ -8065,6 +8080,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 26,
       "color": "red",
       "name": { "ru": "Чернильный яд", "en": "Ink Poison" },
       "effect": { "type": "inkPoison", "stacksPerHit": 0.2, "maxHits": 3 }
@@ -8075,6 +8091,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 29,
       "color": "red",
       "name": { "ru": "Ритм серии", "en": "Series Rhythm" },
       "effect": { "type": "seriesRhythm", "every": 25, "cooldownSeconds": 1, "longSeries": 50, "power": 1.1 }
@@ -8085,6 +8102,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 29,
       "color": "red",
       "name": { "ru": "Финиш серии", "en": "Series Finish" },
       "effect": { "type": "seriesFinish", "afterHits": 20, "multiplier": 1.8, "resource": 5 }
@@ -8095,6 +8113,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 32,
       "color": "green",
       "name": { "ru": "Длинный взмах", "en": "Long Swing" },
       "effect": { "type": "longSwing", "distanceMultiplier": 1.3, "mouseDamage": 1.1 }
@@ -8105,6 +8124,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 32,
       "color": "green",
       "name": { "ru": "Круговорот", "en": "Whirlpool" },
       "effect": { "type": "whirlpool", "cooldownSecondsPerCircle": 1, "circlesForPower": 3, "power": 1.1 }
@@ -8115,6 +8135,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 35,
       "color": "green",
       "name": { "ru": "Попутный ветер", "en": "Tailwind" },
       "effect": { "type": "tailwind", "pxPerSecond": 2000, "max": 1, "auraPower": 1.1 }
@@ -8125,6 +8146,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 35,
       "color": "green",
       "name": { "ru": "След для слуг", "en": "Trail for Servants" },
       "effect": { "type": "minionTrail", "mouseSpeed": 1.3, "life": 1.2 }
@@ -8135,6 +8157,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 38,
       "color": "green",
       "name": { "ru": "Размашистый", "en": "Sweeping" },
       "effect": { "type": "sweeping", "maxTargets": 3, "share": 0.5, "queueDamage": 1.15 }
@@ -8145,6 +8168,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 38,
       "color": "green",
       "name": { "ru": "Охотник за целью", "en": "Target Hunter" },
       "effect": { "type": "targetHunter", "multiplier": 1.3 }
@@ -8155,6 +8179,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 41,
       "color": "blue",
       "name": { "ru": "Проклятый", "en": "Cursed" },
       "effect": { "type": "cursed", "damageTaken": 0.08, "seconds": 8 }
@@ -8165,6 +8190,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 41,
       "color": "blue",
       "name": { "ru": "Затяжная хворь", "en": "Lingering Blight" },
       "effect": { "type": "lingeringBlight", "afflictionMultiplier": 1.5, "stackCapMultiplier": 1.1 }
@@ -8175,6 +8201,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 44,
       "color": "white",
       "name": { "ru": "Скупщик", "en": "Pawnbroker" },
       "effect": { "type": "pawnbroker", "power": 0.7, "killReward": 1.4 }
@@ -8185,6 +8212,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 44,
       "color": "red",
       "name": { "ru": "Эхо клавиш", "en": "Key Echo" },
       "effect": { "type": "keyEcho", "everyKeys": 40, "power": 0.5, "keyDamage": 1.1 }
@@ -8195,6 +8223,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 47,
       "color": "white",
       "name": { "ru": "Наследие", "en": "Legacy" },
       "effect": { "type": "legacy", "partyPower": 1.1 }
@@ -8205,6 +8234,7 @@
       "supports": ["Skill"],
       "damageMult": 1,
       "manaMult": 1,
+      "level": 47,
       "color": "blue",
       "name": { "ru": "Резонанс", "en": "Resonance" },
       "effect": { "type": "resonance", "allyPower": 1.2, "afterSeconds": 5 }

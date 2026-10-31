@@ -33,8 +33,6 @@ namespace Game.Core.Build
             return true;
         }
 
-        public int ColoredSupportLimit(string attribute) => (int)System.Math.Floor(Attribute(attribute) / _rules.AttributePerColoredSupport);
-
         public void UseRules(SkillBookRules rules) => _rules = rules;
 
         public int SlotCount => _rules.SlotsFor(_state.RecordStage, _state.EarlyBookSlot);
@@ -98,13 +96,17 @@ namespace Game.Core.Build
             return true;
         }
 
-        public static string? AttributeOf(GemColor color) => color switch
+        public bool SupportOpen(GemDef support) => support.Type == SkillType.Support && _state.HeroLevel >= support.UnlockLevel;
+
+        public void OpenSupports(IReadOnlyList<GemDef> catalog, List<GemDef> into)
         {
-            GemColor.Red => "strength",
-            GemColor.Green => "dexterity",
-            GemColor.Blue => "intelligence",
-            _ => null
-        };
+            into.Clear();
+            for (var i = 0; i < catalog.Count; i++)
+            {
+                if (SupportOpen(catalog[i]))
+                    into.Add(catalog[i]);
+            }
+        }
 
         public bool InBuild(GemDef support)
         {
@@ -117,20 +119,6 @@ namespace Game.Core.Build
                 }
             }
             return false;
-        }
-
-        public int ColoredInBuild(GemColor color)
-        {
-            var count = 0;
-            foreach (var slot in _state.Skills)
-            {
-                for (var i = 0; i < slot.Supports.Length; i++)
-                {
-                    if (slot.Supports[i] != null && slot.Supports[i]!.Color == color)
-                        count++;
-                }
-            }
-            return count;
         }
 
         public BookResult SetSupport(int index, int socket, GemDef? support)
@@ -151,17 +139,12 @@ namespace Game.Core.Build
                 return BookResult.WaitsForMechanic;
             if (ReferenceEquals(slot.Supports[socket], support))
                 return BookResult.Done;
+            if (!support.CanSupport(slot.Skill))
+                return BookResult.DoesNotFit;
             if (InBuild(support))
                 return BookResult.AlreadyInBuild;
-            if (FreeCopies(support) <= 0)
-                return BookResult.NotOwned;
-            if (!MeetsRequirements(support))
-                return BookResult.AttributesTooLow;
-            var attribute = AttributeOf(support.Color);
-            var replaced = slot.Supports[socket];
-            var others = ColoredInBuild(support.Color) - (replaced != null && replaced.Color == support.Color ? 1 : 0);
-            if (attribute != null && others + 1 > ColoredSupportLimit(attribute))
-                return BookResult.TooManyColored;
+            if (!SupportOpen(support))
+                return BookResult.LevelTooLow;
             slot.Supports[socket] = support;
             _state.ProgressOf(support);
             return BookResult.Done;

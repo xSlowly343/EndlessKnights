@@ -230,13 +230,14 @@ namespace Game.Core.Content.Gems
                     return new GemDef(id, GemKind.Support, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(), requires: requires,
                         support: SupportDef.Read(node.Field("effect")), supports: ReadSupported(node.Field("supports")),
                         damageMultiplier: node.Field("damageMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
-                        manaMultiplier: node.Field("manaMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier));
+                        manaMultiplier: node.Field("manaMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
+                        unlockLevel: node.Field("level").AsInt(1, 1000));
             }
         }
 
         private static void RejectSupportFields(ContentNode node)
         {
-            foreach (var field in new[] { "supports", "damageMult", "manaMult" })
+            foreach (var field in new[] { "supports", "damageMult", "manaMult", "level" })
             {
                 if (node.HasField(field))
                     throw node.Field(field).Error("only a support has this field");

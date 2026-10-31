@@ -2,7 +2,7 @@
   "version": 1,
   "slots": { "base": 3, "unlockAfterStages": [100, 200] },
   "auraSlots": { "unlockLevels": [10, 25, 40, 55] },
-  "sockets": { "base": 1, "recordStages": [50, 250], "rebirths": 2, "max": 5, "attributePerColoredSupport": 15 },
+  "sockets": { "base": 1, "recordStages": [50, 250], "rebirths": 2, "max": 5 },
   "startingGems": {
     "novice": ["through_stride", "lull"],
     "viking": ["iron_rim_bash", "no_mercy", "lull"],

@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Build
         public void RebirthSocketOpensForSupports()
         {
             var loop = WithSkill();
-            loop.State.OwnedGems.Add(Gem("rebound"));
+            loop.State.HeroLevel = Gem("rebound").UnlockLevel;
             Assert.That(loop.Book.SetSupport(0, 1, Gem("rebound")), Is.EqualTo(BookResult.NoSuchSocket));
 
             MaxOut(loop);

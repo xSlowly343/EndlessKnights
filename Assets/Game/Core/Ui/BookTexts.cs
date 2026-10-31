@@ -40,8 +40,9 @@ namespace Game.Core.Ui
             BookResult.AlreadyInBook => Texts.Get("book.result.alreadyInBook"),
             BookResult.NoSuchSocket => Texts.Get("book.result.noSuchSocket"),
             BookResult.AlreadyInBuild => Texts.Get("book.result.alreadyInBuild"),
-            BookResult.TooManyColored => Texts.Get("book.result.tooManyColored"),
             BookResult.WrongSlot => Texts.Get("book.result.wrongSlot"),
+            BookResult.DoesNotFit => Texts.Get("book.result.doesNotFit"),
+            BookResult.LevelTooLow => Texts.Get("book.result.levelTooLow"),
             _ => string.Empty
         };
 

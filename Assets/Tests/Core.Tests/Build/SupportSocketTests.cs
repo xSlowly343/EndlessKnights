@@ -110,33 +110,82 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void SupportMustBeOwned()
+        public void ASupportOpensWithTheHeroLevel()
+        {
+            var loop = Hero();
+            var slot = Equip(loop, "iron_rim_bash");
+            loop.State.HeroLevel = Gem("rebound").UnlockLevel - 1;
+
+            Assert.That(loop.Book.SetSupport(slot, 0, Gem("rebound")), Is.EqualTo(BookResult.LevelTooLow));
+            Assert.That(loop.Book.SetSupport(slot, 0, Gem("march")), Is.EqualTo(BookResult.WrongKind));
+            loop.State.HeroLevel = Gem("rebound").UnlockLevel;
+            Assert.That(loop.Book.SetSupport(slot, 0, Gem("rebound")), Is.EqualTo(BookResult.Done), "no gem to own, the level opens it");
+        }
+
+        [Test]
+        public void TheOpenSupportsFollowTheHeroLevel()
+        {
+            var loop = Hero();
+            var open = new System.Collections.Generic.List<GemDef>();
+            loop.State.HeroLevel = 1;
+            loop.Book.OpenSupports(TestWorld.Data.Gems.All, open);
+            Assert.That(open, Is.Empty);
+
+            loop.State.HeroLevel = 100;
+            loop.Book.OpenSupports(TestWorld.Data.Gems.All, open);
+            Assert.That(open.Count, Is.EqualTo(30));
+        }
+
+        private static GemCatalog WithSupport(string supports, double damage, double mana) =>
+            GemCatalog.Load(TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"gems\": [",
+                "\"gems\": [\n    { \"id\": \"plain_help\", \"kind\": \"support\", \"supports\": [" + supports + "], \"damageMult\": " + damage.ToString(System.Globalization.CultureInfo.InvariantCulture) +
+                ", \"manaMult\": " + mana.ToString(System.Globalization.CultureInfo.InvariantCulture) + ", \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"apprentice\", \"power\": 1, \"experienceMultiplier\": 1 } },"));
+
+        [Test]
+        public void ASupportFitsOnlyTheSkillTypesItNames()
+        {
+            var loop = Hero();
+            var slot = Equip(loop, "iron_rim_bash");
+            var dots = WithSupport("\"DoT\"", 1, 1)["plain_help"];
+            var keys = WithSupport("\"Keyboard\", \"Skill\"", 1, 1)["plain_help"];
+
+            Assert.That(loop.Book.SetSupport(slot, 0, dots), Is.EqualTo(BookResult.DoesNotFit));
+            Assert.That(loop.Book.SetSupport(slot, 0, keys), Is.EqualTo(BookResult.Done));
+        }
+
+        [Test]
+        public void ASupportMultipliesDamageAndMana()
+        {
+            var plain = Hero();
+            var helped = Hero();
+            var plainSlot = Equip(plain, "iron_rim_bash");
+            var slot = Equip(helped, "iron_rim_bash");
+            Assert.That(helped.Book.SetSupport(slot, 0, WithSupport("\"Skill\"", 1.5, 2)["plain_help"]), Is.EqualTo(BookResult.Done));
+
+            Assert.That(CastDamage(helped, slot) / CastDamage(plain, plainSlot), Is.EqualTo(1.5).Within(1e-6));
+            plain.State.Resource = 100;
+            helped.State.Resource = 100;
+            plain.State.Skills[plainSlot].CooldownTicks = 0;
+            helped.State.Skills[slot].CooldownTicks = 0;
+            plain.Skills.TryCast(plainSlot);
+            helped.Skills.TryCast(slot);
+            Assert.That(100 - helped.State.Resource, Is.EqualTo(2 * (100 - plain.State.Resource)).Within(1e-9));
+        }
+
+        [Test]
+        public void ColoredSupportsNeedNoAttribute()
         {
             var loop = Hero();
             var slot = Equip(loop, "iron_rim_bash");
 
-            Assert.That(loop.Book.SetSupport(slot, 0, Gem("rebound")), Is.EqualTo(BookResult.NotOwned));
-            Assert.That(loop.Book.SetSupport(slot, 0, Gem("march")), Is.EqualTo(BookResult.WrongKind));
-        }
-
-        [Test]
-        public void ColoredSupportNeedsFifteenPointsOfItsAttribute()
-        {
-            var weak = Hero();
-            var strong = Hero(Attribute("dexterity", 15));
-            var weakSlot = Equip(weak, "iron_rim_bash", "chain");
-            var strongSlot = Equip(strong, "iron_rim_bash", "chain");
-
-            Assert.That(weak.Book.SetSupport(weakSlot, 0, Gem("chain")), Is.EqualTo(BookResult.TooManyColored));
-            Assert.That(strong.Book.SetSupport(strongSlot, 0, Gem("chain")), Is.EqualTo(BookResult.Done));
-            Assert.That(SkillBook.AttributeOf(GemColor.White), Is.Null);
+            Assert.That(loop.Book.SetSupport(slot, 0, Gem("chain")), Is.EqualTo(BookResult.Done));
         }
 
         [Test]
         public void SupportWithoutItsMechanicWaits()
         {
             var catalog = GemCatalog.Load(TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"gems\": [",
-                "\"gems\": [\n    { \"id\": \"echo_keys\", \"kind\": \"support\", \"supports\": [\"Skill\"], \"damageMult\": 1, \"manaMult\": 1, \"color\": \"white\", \"name\": { \"ru\": \"Эхо\", \"en\": \"Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\" } },"));
+                "\"gems\": [\n    { \"id\": \"echo_keys\", \"kind\": \"support\", \"supports\": [\"Skill\"], \"damageMult\": 1, \"manaMult\": 1, \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"Эхо\", \"en\": \"Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\" } },"));
             var loop = Hero();
             var slot = Equip(loop, "iron_rim_bash");
             loop.State.OwnedGems.Add(catalog["echo_keys"]);
