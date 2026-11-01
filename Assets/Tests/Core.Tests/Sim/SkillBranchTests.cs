@@ -133,6 +133,24 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheClockworkArtifactMakesABranchChangeCheaper()
+        {
+            var (plain, _) = Hero(5);
+            var (geared, _) = Hero(5);
+            foreach (var loop in new[] { plain, geared })
+            {
+                loop.ChooseBranch(Forked, 0, 0);
+                loop.State.GatesCleared.Add(500);
+            }
+            geared.State.Artifacts["clockwork"] = 10;
+            geared.Artifacts.Rebuild();
+
+            var ratio = (geared.BranchChangeCost(Forked, 0) / plain.BranchChangeCost(Forked, 0)).ToDouble();
+
+            Assert.That(ratio, Is.EqualTo(1 - 10 * 0.03).Within(1e-9));
+        }
+
+        [Test]
         public void AFirstChoiceIsAlwaysFree()
         {
             var (loop, _) = Hero(15);

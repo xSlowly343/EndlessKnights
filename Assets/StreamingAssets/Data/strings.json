@@ -266,6 +266,7 @@
     "stat.flickCurseBonus": { "ru": "бонус проклятий от росчерка", "en": "curse bonus from flicks" },
     "stat.bossTimerSlow": { "ru": "замедление таймера босса", "en": "boss timer slow" },
     "stat.skillCooldown": { "ru": "перезарядка скиллов", "en": "skill cooldown" },
+    "stat.branchChangeCost": { "ru": "цена смены ветки скилла", "en": "skill branch change cost" },
     "stat.loopShare": { "ru": "доля повтора Петли", "en": "Loop repeat share" },
     "stat.poisonStacks": { "ru": "предел стаков яда", "en": "poison stack limit" },
     "stat.pressureDecay": { "ru": "сброс Жара", "en": "Heat decay" },

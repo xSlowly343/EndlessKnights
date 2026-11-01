@@ -84,7 +84,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Artifacts.TryLevelUp("hourglass"), Is.False);
             Assert.That(loop.State.Artifacts["hourglass"], Is.EqualTo(30));
             Assert.That(loop.Artifacts.TryLevelUp("pathfinder_seal"), Is.True);
-            Assert.That(Catalog.All.Count(a => a.Capped), Is.EqualTo(1));
+            Assert.That(Catalog.All.Where(a => a.Capped).Select(a => a.Id), Is.EquivalentTo(new[] { "hourglass", "clockwork" }));
         }
 
         [Test]
