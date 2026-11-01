@@ -126,8 +126,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StenographerGlovesCastTheLeftSkillEveryTwoHundredKeys()
         {
-            var plain = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
-            var gloved = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
+            var plain = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_hit_1");
+            var gloved = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_hit_1");
             gloved.Loop.Hero.Add(new Modifier(CombatStats.KeyCastLeftEvery, ModifierKind.Flat, 200));
 
             var plainCasts = Casts(plain);
@@ -211,10 +211,10 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EyeOfTheDevourerRaisesEveryGemLevel()
         {
-            var plain = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
-            var eyed = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
+            var plain = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_hit_1");
+            var eyed = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_hit_1");
             eyed.Loop.Hero.Add(new Modifier(CombatStats.GemLevelBonus, ModifierKind.Flat, 1));
-            var gem = TestWorld.Data.Gems["iron_rim_bash"];
+            var gem = TestWorld.Data.Gems["runedancer_hit_1"];
             var perLevel = TestWorld.Data.Gems.Levels.EffectPerLevel;
 
             Assert.That(eyed.Loop.Skills.LevelPower(gem) - plain.Loop.Skills.LevelPower(gem), Is.EqualTo(perLevel * plain.Loop.Skills.ColorPower(gem)).Within(1e-9));
@@ -223,18 +223,18 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ApprenticeRingDoublesExperienceOfTheLowestGem()
         {
-            var plain = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
-            var ringed = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
+            var plain = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_hit_1", "runedancer_strong_1");
+            var ringed = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_hit_1", "runedancer_strong_1");
             ringed.Loop.Hero.Add(new Modifier(CombatStats.LowestGemExperience, ModifierKind.Flat, 1));
             foreach (var hero in new[] { plain, ringed })
             {
-                hero.State.ProgressOf(TestWorld.Data.Gems["iron_rim_bash"]).Level = 5;
+                hero.State.ProgressOf(TestWorld.Data.Gems["runedancer_hit_1"]).Level = 5;
                 hero.State.Kills += 1;
                 hero.Loop.Tick();
             }
 
-            var low = TestWorld.Data.Gems["no_mercy"];
-            var high = TestWorld.Data.Gems["iron_rim_bash"];
+            var low = TestWorld.Data.Gems["runedancer_strong_1"];
+            var high = TestWorld.Data.Gems["runedancer_hit_1"];
             Assert.That(ringed.State.ProgressOf(low).Experience, Is.EqualTo(2 * plain.State.ProgressOf(low).Experience).Within(1e-9));
             Assert.That(plain.State.ProgressOf(low).Experience, Is.GreaterThan(0));
             Assert.That(ringed.State.ProgressOf(high).Experience, Is.EqualTo(plain.State.ProgressOf(high).Experience).Within(1e-9));

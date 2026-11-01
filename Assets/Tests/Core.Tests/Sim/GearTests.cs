@@ -130,7 +130,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Runedancer }));
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
-            var gem = TestWorld.Data.Gems["iron_rim_bash"];
+            var gem = TestWorld.Data.Gems["runedancer_hit_1"];
             TestWorld.ArmFor(loop, gem);
             var slot = loop.Skills.Equip(gem);
             loop.State.Drops.Gear.Add(helmet);

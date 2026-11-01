@@ -60,29 +60,6 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void NinjaPathLetsTheComboSurviveALongerPause()
-        {
-            var (plain, plainInput) = Hero(HeroClass.Duelist);
-            var (series, seriesInput) = Hero(HeroClass.Duelist);
-            series.CompleteActivity("garden");
-            Assert.That(series.ChooseSubclass("ninja"), Is.EqualTo(SubclassResult.Chosen));
-            var pauseTicks = (int)((TestWorld.Data.Combat.Classes.ComboTimeoutSeconds + 0.3) * GameLoop.TicksPerSecond);
-
-            foreach (var (loop, input) in new[] { (plain, plainInput), (series, seriesInput) })
-            {
-                input.PressKeys(1);
-                loop.Tick();
-                for (var i = 0; i < pauseTicks; i++)
-                    loop.Tick();
-                input.PressKeys(1);
-                loop.Tick();
-            }
-
-            Assert.That(plain.State.Combo, Is.EqualTo(1));
-            Assert.That(series.State.Combo, Is.EqualTo(2));
-        }
-
-        [Test]
         public void GuitarNodeStretchesSongDuration()
         {
             var (loop, _) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.AuraDuration, ModifierKind.Increased, 0.06));

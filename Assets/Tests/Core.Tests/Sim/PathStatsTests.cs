@@ -216,7 +216,7 @@ namespace Game.Core.Tests.Sim
         public void SkillCooldownShortensCooldowns()
         {
             var (loop, _) = Hero(EnemyType.Normal, new Modifier(CombatStats.SkillCooldown, ModifierKind.Increased, -0.2));
-            var gem = TestWorld.Data.Gems["iron_rim_bash"];
+            var gem = TestWorld.Data.Gems["runedancer_hit_1"];
             loop.Skills.Equip(gem);
             loop.State.Resource = 100;
 

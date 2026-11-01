@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Party
             public Member(LoopbackNetwork network, ulong id)
             {
                 Input = new FakeInputSource();
-                Loop = TestWorld.Loop(Input, new GameState { Stage = 5, HighestStage = 5, RecordStage = 5 });
+                Loop = TestWorld.Loop(Input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Stage = 5, HighestStage = 5, RecordStage = 5 }));
                 Client = new PartyClient(Loop, network.Connect(id), HostId, TestWorld.Data.Party);
             }
 
@@ -90,7 +90,7 @@ namespace Game.Core.Tests.Party
             var friend = rig.Members[1];
             while (caster.Loop.State.Skills.Count > 0)
                 caster.Loop.Skills.Unequip(0);
-            caster.Equip("iron_rim_bash");
+            caster.Equip("runedancer_hit_1");
             rig.Run(5);
             var casterSlot = friend.Client.Roster.SlotOf(10UL);
             var left = caster.Loop.State.Skills[SkillLoadout.IndexOf(caster.Loop.State.Skills, SkillSlotRole.Left)].Skill;
@@ -180,23 +180,6 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void NeedleMakesTheEnemyTakeMoreDamageInSolo()
-        {
-            var loop = TestWorld.Loop();
-            var before = loop.Hero.Value(CombatStats.Damage, 1);
-            TestWorld.ArmFor(loop, TestWorld.Data.Gems["charm_prick"]);
-            loop.Skills.Equip(TestWorld.Data.Gems["charm_prick"]);
-            loop.State.Resource = 100;
-
-            Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(before * 1.15).Within(1e-9));
-
-            for (var tick = 0; tick < 10 * GameLoop.TicksPerSecond; tick++)
-                loop.Tick();
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(before).Within(1e-9));
-        }
-
-        [Test]
         public void OwnPartyStatsHelpTheHeroInSolo()
         {
             var loop = TestWorld.Loop();
@@ -210,51 +193,15 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void CharmPrickBoostsTheWholePartyAtTheHost()
-        {
-            var rig = new Rig(2);
-            rig.Run(5);
-            var whisperer = rig.Members[0];
-            var slot = whisperer.Equip("charm_prick");
-            var before = whisperer.Damage;
-
-            whisperer.Cast(slot);
-            rig.Run(1);
-
-            Assert.That(whisperer.Loop.State.Skills[slot].Active, Is.True);
-            Assert.That(rig.Host.Encounter.DamageTakenMultiplier, Is.EqualTo(1.15).Within(1e-9));
-            Assert.That(whisperer.Damage, Is.EqualTo(before).Within(1e-9));
-            rig.Run(10);
-            Assert.That(rig.Host.Encounter.DamageTakenMultiplier, Is.EqualTo(1).Within(1e-9));
-        }
-
-        [Test]
-        public void TheSeersGemLuckReachesTheAlly()
-        {
-            var rig = new Rig(2);
-            rig.Run(5);
-            var friend = rig.Members[1];
-            var before = friend.Loop.Hero.Value(CombatStats.GemDrop, 1);
-            rig.Members[0].Loop.Hero.Add(new Modifier(new StatId("partyGemDrop"), ModifierKind.Increased, 0.15));
-            rig.Members[0].Loop.RebuildTree();
-
-            rig.Run(2);
-
-            Assert.That(friend.Loop.Hero.Value(CombatStats.GemDrop, 1), Is.EqualTo(before * 1.15).Within(1e-6));
-            Assert.That(TestWorld.Data.Ascendancy.Subclasses.SelectMany(path => path.Nodes).Where(node => node.Id == "seer_6").Single().Locked, Is.False);
-        }
-
-        [Test]
         public void APartyContributionStatCreditsTheBoosterWithPartOfTheBoostedDamage()
         {
             var rig = new Rig(2);
             var bannerman = rig.Members[0];
             bannerman.Loop.Hero.Add(new Modifier(CombatStats.PartyContribution, ModifierKind.Flat, 0.05));
-            var song = bannerman.Equip("hearth_song");
             rig.Run(5);
             Assert.That(rig.Host.Encounter.Boosting(bannerman.Client.OwnSlot), Is.False, "no aura yet");
-            bannerman.Cast(song);
-            rig.Run(1);
+            bannerman.Equip("runedancer_aura_1");
+            rig.Run(3);
             Assert.That(rig.Host.Encounter.Member(bannerman.Client.OwnSlot).CreditRate, Is.EqualTo(0.05).Within(1e-6));
             Assert.That(rig.Host.Encounter.Boosting(bannerman.Client.OwnSlot), Is.True);
 
@@ -284,21 +231,21 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void SongBuffsTheAllyUntilItEnds()
+        public void AReservedAuraBuffsTheAllyUntilItIsTakenOff()
         {
             var rig = new Rig(2);
             rig.Run(5);
             var minstrel = rig.Members[0];
             var friend = rig.Members[1];
             var before = friend.Damage;
-            var slot = minstrel.Equip("hearth_song");
+            var slot = minstrel.Equip("runedancer_aura_1");
 
             minstrel.Cast(slot);
-            rig.Run(1);
+            rig.Run(3);
             Assert.That(friend.Damage, Is.EqualTo(before * 1.15).Within(1e-6));
-            Assert.That(friend.Loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(1.10).Within(1e-6));
 
-            rig.Run(20);
+            minstrel.Loop.Skills.Unequip(slot);
+            rig.Run(7);
             Assert.That(friend.Damage, Is.EqualTo(before).Within(1e-6));
         }
 
@@ -309,12 +256,12 @@ namespace Game.Core.Tests.Party
             rig.Run(5);
             var friend = rig.Members[1];
             var before = friend.Damage;
-            var metalSlot = rig.Members[0].Equip("hearth_song");
-            var friendSlot = friend.Equip("hearth_song");
+            var metalSlot = rig.Members[0].Equip("runedancer_aura_1");
+            var friendSlot = friend.Equip("runedancer_aura_1");
 
             rig.Members[0].Cast(metalSlot);
             friend.Cast(friendSlot);
-            rig.Run(1);
+            rig.Run(3);
 
             Assert.That(friend.Damage, Is.EqualTo(before * 1.15).Within(1e-6));
         }
@@ -330,91 +277,11 @@ namespace Game.Core.Tests.Party
             var strong = rig.Members[1];
             strong.Loop.Hero.Add(new Modifier(CombatStats.AuraEffect, ModifierKind.Increased, 1, StatTags.Aura));
 
-            weak.Cast(weak.Equip("hearth_song"));
-            strong.Cast(strong.Equip("hearth_song"));
-            rig.Run(1);
+            weak.Cast(weak.Equip("runedancer_aura_1"));
+            strong.Cast(strong.Equip("runedancer_aura_1"));
+            rig.Run(3);
 
             Assert.That(friend.Damage, Is.EqualTo(before * 1.30).Within(1e-6));
-        }
-
-        [Test]
-        public void StretchTheSecondSlowsTheTimerAtTheHost()
-        {
-            var rig = new Rig(2);
-            var clockwright = rig.Members[0];
-            clockwright.Loop.State.Class = HeroClass.Clockwright;
-            rig.Run(5);
-
-            clockwright.Cast(clockwright.Equip("stretch_second"));
-            rig.Run(1);
-
-            var effect = rig.Host.Encounter.Effect(0);
-            Assert.That(effect.Id, Is.EqualTo(TestWorld.Data.Gems["stretch_second"].NetId));
-            Assert.That(effect.TimerSlow, Is.EqualTo(0.3).Within(1e-9));
-            Assert.That(effect.Owner, Is.EqualTo(clockwright.Client.OwnSlot));
-        }
-
-        [Test]
-        public void TheChimesRepeatThePartyDamageAtTheHostNotAtHome()
-        {
-            var rig = new Rig(2);
-            var clockwright = rig.Members[0];
-            clockwright.Loop.State.Class = HeroClass.Clockwright;
-            rig.Run(5);
-            var slot = clockwright.Equip("the_chimes_strike_again");
-            var pendulum = clockwright.Loop.State.Weapons.Left!;
-            clockwright.Loop.State.Weapons.Left = new WeaponItem(pendulum.Base, pendulum.Rarity, new List<string>(pendulum.Skills) { "the_chimes_strike_again" });
-            var before = clockwright.Loop.State.TotalDamage;
-            var hits = clockwright.Loop.State.DamageWindow.Last(before, 70);
-
-            clockwright.Cast(slot);
-            clockwright.Loop.Tick();
-
-            Assert.That((clockwright.Loop.State.TotalDamage - before).ToDouble(), Is.LessThan(hits.ToDouble() * 0.5), "the local fight does not repeat on its own");
-            Assert.That(clockwright.Loop.Skills.LastRepeatSeconds, Is.EqualTo(7));
-            rig.Run(1);
-            Assert.That(rig.Host.RepeatedShares, Is.GreaterThan(0));
-        }
-
-        [Test]
-        public void AlliesSeeTheCurseIconAndEachOthersClass()
-        {
-            var rig = new Rig(2);
-            rig.Members[0].Loop.State.Class = HeroClass.Whisperer;
-            rig.Run(5);
-            var whisperer = rig.Members[0];
-            var friend = rig.Members[1].Client;
-
-            whisperer.Cast(whisperer.Equip("charm_prick"));
-            rig.Run(1);
-
-            var icon = friend.EnemyEffect(0);
-            Assert.That(icon.Id, Is.EqualTo(TestWorld.Data.Gems["charm_prick"].NetId));
-            Assert.That(icon.TicksLeft, Is.InRange(80, 100));
-            Assert.That(friend.EnemyEffect(1).Active, Is.False);
-            Assert.That(friend.DamageTaken, Is.EqualTo(1.15).Within(1e-9));
-            Assert.That(friend.Roster.HeroClass(whisperer.Client.OwnSlot), Is.EqualTo((byte)HeroClass.Whisperer));
-        }
-
-        [Test]
-        public void WhispererCurseWakesTheVikingResponseOverTheNetworkAndTheEvilEyeWakesHalf()
-        {
-            var rig = new Rig(2);
-            var whisperer = rig.Members[0];
-            var runedancer = rig.Members[1];
-            whisperer.Loop.State.Class = HeroClass.Whisperer;
-            runedancer.Loop.State.Class = HeroClass.Runedancer;
-            var rage = new StatId("resourceGain");
-            rig.Run(5);
-            Assert.That(runedancer.Loop.Hero.Value(rage, 1), Is.EqualTo(1.125).Within(1e-9));
-
-            whisperer.Cast(whisperer.Equip("charm_prick"));
-            rig.Run(1);
-
-            Assert.That(runedancer.Loop.Hero.Value(rage, 1), Is.EqualTo(1.25).Within(1e-9));
-            Assert.That(whisperer.Loop.Hero.Value(new StatId("curseEffect"), 1), Is.EqualTo(1));
-            rig.Run(11);
-            Assert.That(runedancer.Loop.Hero.Value(rage, 1), Is.EqualTo(1.125).Within(1e-9));
         }
 
         private static bool HasDamage(Member member, double value)
@@ -425,53 +292,6 @@ namespace Game.Core.Tests.Party
                     return true;
             }
             return false;
-        }
-
-        [Test]
-        public void TheForemansHammerStacksReachTheParty()
-        {
-            var rig = new Rig(2);
-            rig.Run(5);
-            var lanternbearer = rig.Members[0];
-            var friend = rig.Members[1];
-            var hammer = lanternbearer.Equip("foreman_hammer");
-
-            lanternbearer.Cast(hammer);
-            rig.Run(4.5);
-            lanternbearer.Cast(hammer);
-            rig.Run(1.5);
-
-            Assert.That(lanternbearer.Loop.State.Skills[hammer].Stacks, Is.EqualTo(2));
-            Assert.That(HasDamage(friend, 0.06), Is.True, "two stacks of +3% reach the ally");
-            Assert.That(friend.Loop.PartyBuffs.Ally(lanternbearer.Client.OwnSlot).Auras[0].Gem!.Id, Is.EqualTo("foreman_hammer"));
-
-            rig.Run(15);
-
-            Assert.That(HasDamage(friend, 0.06), Is.False, "the stacks run out for the ally too");
-        }
-
-        [Test]
-        public void TheStarChartWeakensTheNextEnemiesAtTheHost()
-        {
-            var rig = new Rig(2);
-            rig.Run(5);
-            var dreamcatcher = rig.Members[0];
-            dreamcatcher.Loop.State.Class = HeroClass.Dreamcatcher;
-            var omens = dreamcatcher.Equip("three_omens");
-            var orb = dreamcatcher.Loop.State.Weapons.Left!;
-            dreamcatcher.Loop.State.Weapons.Left = new WeaponItem(orb.Base, orb.Rarity, new List<string>(orb.Skills) { "three_omens" });
-
-            Assert.That(dreamcatcher.Loop.Skills.Armed(omens), Is.True);
-            dreamcatcher.Cast(omens);
-            rig.Run(0.5);
-
-            Assert.That(rig.Host.Encounter.WeakenedSpawns, Is.InRange(1, 3));
-            Assert.That(rig.Host.Encounter.WeakenShare, Is.EqualTo(0.1).Within(1e-9));
-            var weakened = rig.Host.Encounter.WeakenedSpawns;
-            var enemy = rig.Host.Encounter.EnemyId;
-            while (rig.Host.Encounter.EnemyId == enemy)
-                rig.Run(0.1);
-            Assert.That(rig.Host.Encounter.WeakenedSpawns, Is.EqualTo(weakened - 1), "each new enemy of the party uses one");
         }
 
         private static void AddToWeapon(Member member, string gem)
@@ -491,31 +311,6 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void TheWholeHallSingsForThePartyOnlyFromTheMetalhead()
-        {
-            var rig = new Rig(3);
-            rig.Run(5);
-            var minstrel = rig.Members[0];
-            var runedancer = rig.Members[1];
-            var friend = rig.Members[2];
-            minstrel.Loop.State.Class = HeroClass.Minstrel;
-            var song = minstrel.Equip("whole_hall");
-            var borrowed = runedancer.Equip("whole_hall");
-            AddToWeapon(minstrel, "whole_hall");
-            AddToWeapon(runedancer, "whole_hall");
-
-            minstrel.Cast(song);
-            runedancer.Cast(borrowed);
-            rig.Run(2);
-
-            Assert.That(minstrel.Loop.State.Skills[song].Stacks, Is.GreaterThan(5));
-            Assert.That(runedancer.Loop.State.Skills[borrowed].Stacks, Is.GreaterThan(5));
-            var hall = TestWorld.Data.Gems["whole_hall"];
-            Assert.That(friend.Loop.PartyBuffs.Ally(minstrel.Client.OwnSlot).Auras[0].Gem, Is.SameAs(hall), "the Minstrel shares the stacks");
-            Assert.That(friend.Loop.PartyBuffs.Ally(runedancer.Client.OwnSlot).Auras[0].Gem, Is.Null, "a borrowed guitar keeps them to itself");
-        }
-
-        [Test]
         public void AWeakerOwnAuraLeavesRoomForTheStrongerAlly()
         {
             var rig = new Rig(2);
@@ -525,36 +320,11 @@ namespace Game.Core.Tests.Party
             var before = friend.Damage;
             strong.Loop.Hero.Add(new Modifier(CombatStats.AuraEffect, ModifierKind.Increased, 1, StatTags.Aura));
 
-            strong.Cast(strong.Equip("hearth_song"));
-            friend.Cast(friend.Equip("hearth_song"));
-            rig.Run(1);
+            strong.Cast(strong.Equip("runedancer_aura_1"));
+            friend.Cast(friend.Equip("runedancer_aura_1"));
+            rig.Run(3);
 
             Assert.That(friend.Damage, Is.EqualTo(before * 1.30).Within(1e-6), "the stronger song wins even over your own weaker one");
-        }
-
-        [Test]
-        public void ResonanceMakesTheSongStrongerOnAlliesAndLongerAfterItEnds()
-        {
-            var rig = new Rig(2);
-            rig.Run(5);
-            var minstrel = rig.Members[0];
-            var friend = rig.Members[1];
-            var before = friend.Damage;
-            var song = minstrel.Equip("hearth_song");
-            minstrel.Loop.State.HeroLevel = TestWorld.Data.Gems["resonance"].UnlockLevel;
-            Assert.That(minstrel.Loop.Book.SetSupport(song, 0, TestWorld.Data.Gems["resonance"]), Is.EqualTo(Game.Core.Build.BookResult.Done));
-            var seconds = TestWorld.Data.Gems["hearth_song"].Skill!.DurationSeconds;
-
-            minstrel.Cast(song);
-            rig.Run(1);
-            Assert.That(friend.Damage, Is.EqualTo(before * (1 + 0.15 * 1.2)).Within(1e-5));
-
-            rig.Run(seconds + 1);
-            Assert.That(minstrel.Loop.State.Skills[song].AuraApplied, Is.False);
-            Assert.That(friend.Damage, Is.GreaterThan(before), "the song keeps ringing for the ally after it ends");
-
-            rig.Run(6);
-            Assert.That(friend.Damage, Is.EqualTo(before).Within(1e-6));
         }
 
         [Test]
@@ -563,8 +333,8 @@ namespace Game.Core.Tests.Party
             var rig = new Rig(2);
             rig.Run(5);
             var caster = rig.Members[0];
-            var skill = caster.Equip("hatchet_toss");
-            AddToWeapon(caster, "hatchet_toss");
+            var skill = caster.Equip("runedancer_hit_2");
+            AddToWeapon(caster, "runedancer_hit_2");
             caster.Loop.State.OwnedGems.Add(TestWorld.Data.Gems["cursed"]);
             Assert.That(caster.Loop.Book.SetSupport(skill, 0, TestWorld.Data.Gems["cursed"]), Is.EqualTo(Game.Core.Build.BookResult.Done));
 

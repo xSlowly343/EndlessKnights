@@ -13,10 +13,10 @@ namespace Game.Core.Tests.Build
         [Test]
         public void HoveringANodeLightsItsParentsAndEveryNodeThatGrowsFromIt()
         {
-            var chain = ClassTreeView.Chain(Huscarl, "runedancer_heavy_swing");
+            var chain = ClassTreeView.Chain(Huscarl, "runedancer_r2c0");
 
-            Assert.That(chain, Is.EquivalentTo(new[] { "runedancer_axe", "runedancer_heavy_swing", "runedancer_saga_song", "runedancer_jarl_axe", "runedancer_north_wind" }));
-            Assert.That(ClassTreeView.Chain(Huscarl, "runedancer_north_wind"), Is.EquivalentTo(new[] { "runedancer_axe", "runedancer_heavy_swing", "runedancer_jarl_axe", "runedancer_north_wind" }),
+            Assert.That(chain, Is.EquivalentTo(new[] { "runedancer_r1c0", "runedancer_r2c0", "runedancer_r3c4", "runedancer_r5c0", "runedancer_r6c0" }));
+            Assert.That(ClassTreeView.Chain(Huscarl, "runedancer_r6c0"), Is.EquivalentTo(new[] { "runedancer_r1c0", "runedancer_r2c0", "runedancer_r5c0", "runedancer_r6c0" }),
                 "from the top only the way down is lit, not the side branches of the parents");
             Assert.That(ClassTreeView.Chain(Huscarl, "runedancer_nope"), Is.Empty);
         }
@@ -25,22 +25,22 @@ namespace Game.Core.Tests.Build
         public void ThePreviewShowsWhatTheNextRankAdds()
         {
             var allocation = new ClassTreeAllocation("runedancer") { PointsEarned = 10 };
-            var axe = Huscarl["runedancer_axe"].Template;
+            var axe = Huscarl["runedancer_r1c0"].Template;
 
-            var first = ClassTreeView.Next(Huscarl, allocation, "runedancer_axe")!.Value;
+            var first = ClassTreeView.Next(Huscarl, allocation, "runedancer_r1c0")!.Value;
             Assert.That(first.Rank, Is.EqualTo(1));
             Assert.That(first.Line, Is.SameAs(axe.First));
             Assert.That(first.Strengthens, Is.False);
 
-            allocation.Raise(Huscarl, "runedancer_axe");
-            Assert.That(ClassTreeView.Next(Huscarl, allocation, "runedancer_axe")!.Value.Strengthens, Is.True, "rank 2 strengthens the first line");
-            allocation.Raise(Huscarl, "runedancer_axe");
-            Assert.That(ClassTreeView.Next(Huscarl, allocation, "runedancer_axe")!.Value.Line, Is.SameAs(axe.Second));
-            allocation.Raise(Huscarl, "runedancer_axe");
-            allocation.Raise(Huscarl, "runedancer_axe");
-            Assert.That(ClassTreeView.Next(Huscarl, allocation, "runedancer_axe")!.Value.Line, Is.SameAs(axe.Third));
-            allocation.Raise(Huscarl, "runedancer_axe");
-            Assert.That(ClassTreeView.Next(Huscarl, allocation, "runedancer_axe"), Is.Null, "nothing after rank 5");
+            allocation.Raise(Huscarl, "runedancer_r1c0");
+            Assert.That(ClassTreeView.Next(Huscarl, allocation, "runedancer_r1c0")!.Value.Strengthens, Is.True, "rank 2 strengthens the first line");
+            allocation.Raise(Huscarl, "runedancer_r1c0");
+            Assert.That(ClassTreeView.Next(Huscarl, allocation, "runedancer_r1c0")!.Value.Line, Is.SameAs(axe.Second));
+            allocation.Raise(Huscarl, "runedancer_r1c0");
+            allocation.Raise(Huscarl, "runedancer_r1c0");
+            Assert.That(ClassTreeView.Next(Huscarl, allocation, "runedancer_r1c0")!.Value.Line, Is.SameAs(axe.Third));
+            allocation.Raise(Huscarl, "runedancer_r1c0");
+            Assert.That(ClassTreeView.Next(Huscarl, allocation, "runedancer_r1c0"), Is.Null, "nothing after rank 5");
         }
     }
 }

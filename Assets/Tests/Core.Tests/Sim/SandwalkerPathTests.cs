@@ -57,9 +57,9 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FathersScimitarIsTheNomadsStartingSkill()
         {
-            var gem = TestWorld.Real.Gems["fathers_scimitar"];
+            var gem = TestWorld.Real.Gems["sandwalker_hit_1"];
 
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("sandwalker"), Has.Some.Property("Id").EqualTo("fathers_scimitar"));
+            Assert.That(TestWorld.Real.SkillBook.StartingGems("sandwalker"), Has.Some.Property("Id").EqualTo("sandwalker_hit_1"));
             Assert.That(gem.Skill!.Weapon, Is.EqualTo("scimitar"));
             Assert.That(gem.Skill.ResourceCost, Is.EqualTo(10));
         }

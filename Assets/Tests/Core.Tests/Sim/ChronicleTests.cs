@@ -115,7 +115,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void NoSkillsTrialForbidsCasting()
         {
-            var hero = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
+            var hero = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_hit_1");
             hero.State.Prestiges = 1;
             hero.State.HighestStage = 1;
 

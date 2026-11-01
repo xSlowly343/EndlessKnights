@@ -19,19 +19,24 @@ namespace Game.Core.Tests.Build
             return loop;
         }
 
-        [TestCase(HeroClass.Duelist, "duelist_katana")]
-        [TestCase(HeroClass.Windshot, "windshot_short_bow")]
-        [TestCase(HeroClass.Shardcaller, "shardcaller_storm_rod")]
-        [TestCase(HeroClass.Sandwalker, "sandwalker_scimitar")]
-        [TestCase(HeroClass.Minstrel, "minstrel_electric_guitar")]
-        [TestCase(HeroClass.Dreamcatcher, "dreamcatcher_holy_orb")]
-        [TestCase(HeroClass.Lanternbearer, "lanternbearer_war_standard")]
-        [TestCase(HeroClass.Whisperer, "whisperer_whisperer_doll")]
-        [TestCase(HeroClass.Clockwright, "clockwright_pendulum")]
-        [TestCase(HeroClass.Alchemist, "alchemist_syringe_cane")]
-        [TestCase(HeroClass.Dowser, "dowser_burner")]
-        [TestCase(HeroClass.Soulbinder, "soulbinder_shovel")]
-        [TestCase(HeroClass.Ghostcaptain, "ghostcaptain_pistol")]
+        [TestCase(HeroClass.Runedancer, "runedancer_r1c9")]
+        [TestCase(HeroClass.Duelist, "duelist_r1c9")]
+        [TestCase(HeroClass.Windshot, "windshot_r1c9")]
+        [TestCase(HeroClass.Shardcaller, "shardcaller_r1c9")]
+        [TestCase(HeroClass.Sandwalker, "sandwalker_r1c9")]
+        [TestCase(HeroClass.Minstrel, "minstrel_r1c9")]
+        [TestCase(HeroClass.Dreamcatcher, "dreamcatcher_r1c9")]
+        [TestCase(HeroClass.Lanternbearer, "lanternbearer_r1c9")]
+        [TestCase(HeroClass.Whisperer, "whisperer_r1c9")]
+        [TestCase(HeroClass.Clockwright, "clockwright_r1c9")]
+        [TestCase(HeroClass.Alchemist, "alchemist_r1c9")]
+        [TestCase(HeroClass.Dowser, "dowser_r1c9")]
+        [TestCase(HeroClass.Soulbinder, "soulbinder_r1c9")]
+        [TestCase(HeroClass.Ghostcaptain, "ghostcaptain_r1c9")]
+        [TestCase(HeroClass.Mothcaller, "mothcaller_r1c9")]
+        [TestCase(HeroClass.Cartomancer, "cartomancer_r1c9")]
+        [TestCase(HeroClass.Herbwitch, "herbwitch_r1c9")]
+        [TestCase(HeroClass.Golemancer, "golemancer_r1c9")]
         public void AClassOnTheNewTreeHasNoStartPassiveAndGrowsFromItsNodes(HeroClass heroClass, string node)
         {
             var loop = Real(new GameState { Class = heroClass, HeroLevel = 10 });
@@ -42,19 +47,6 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.TreePointsSpent, Is.Zero);
             Assert.That(loop.RaiseNode(node), Is.EqualTo(RankResult.Done));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(before + 4).Within(1e-9));
-        }
-
-        [Test]
-        public void HuscarlOnTheNewTreeHasNoStartPassiveAndGrowsFromItsNodes()
-        {
-            var loop = Real(new GameState { Class = HeroClass.Runedancer, HeroLevel = 10 });
-            loop.Levels.SyncTreePoints();
-
-            Assert.That(loop.State.ClassTreeActive, Is.True);
-            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100).Within(1e-9));
-            Assert.That(loop.RaiseNode("runedancer_axe"), Is.EqualTo(RankResult.Done));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(104).Within(1e-9));
         }
 
         [Test]

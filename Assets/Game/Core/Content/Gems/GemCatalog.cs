@@ -344,6 +344,8 @@ namespace Game.Core.Content.Gems
                     marks.Add(mark.AsString());
             }
             var weapon = node.HasField("weapon") ? node.Field("weapon").AsString() : null;
+            if (effect is AuraEffect classAura && weapon != null && !classAura.Reserves)
+                throw node.Field("effect").Error("a class aura reserves resource: add reserve");
             var native = node.HasField("native") ? ReadNative(node.Field("native")) : null;
             if (native != null && weapon == null)
                 throw node.Field("native").Error("a native trait needs a weapon: only class skills have one");

@@ -15,9 +15,9 @@ namespace Game.Core.Tests.Build
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Duelist, HeroLevel = 10 });
             loop.Book.GrantStartingGems();
             loop.Levels.SyncTreePoints();
-            loop.RaiseNode("duelist_katana");
-            loop.RaiseNode("duelist_katana");
-            loop.RaiseNode("duelist_katana");
+            loop.RaiseNode("duelist_r1c0");
+            loop.RaiseNode("duelist_r1c0");
+            loop.RaiseNode("duelist_r1c0");
             return loop;
         }
 
@@ -47,20 +47,20 @@ namespace Game.Core.Tests.Build
             var loop = TypistWithGems();
             var raised = KeyboardDamage(loop);
             loop.SwitchPreset();
-            loop.RaiseNode("duelist_breath");
+            loop.RaiseNode("duelist_r1c1");
             loop.Book.Equip(TestWorld.Data.Gems["lull"]);
 
             loop.SwitchPreset();
             Assert.That(loop.State.ActivePreset, Is.EqualTo(0));
             Assert.That(loop.State.TreePointsSpent, Is.EqualTo(3));
             Assert.That(KeyboardDamage(loop), Is.EqualTo(raised).Within(1e-9));
-            Assert.That(loop.State.ClassTree.RankOf("duelist_katana"), Is.EqualTo(3));
+            Assert.That(loop.State.ClassTree.RankOf("duelist_r1c0"), Is.EqualTo(3));
             Assert.That(loop.State.Skills.Count, Is.EqualTo(3));
-            Assert.That(loop.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["thin_cut"]));
+            Assert.That(loop.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["duelist_hit_1"]));
 
             loop.SwitchPreset();
-            Assert.That(loop.State.ClassTree.RankOf("duelist_breath"), Is.EqualTo(1));
-            Assert.That(loop.State.ClassTree.RankOf("duelist_katana"), Is.Zero);
+            Assert.That(loop.State.ClassTree.RankOf("duelist_r1c1"), Is.EqualTo(1));
+            Assert.That(loop.State.ClassTree.RankOf("duelist_r1c0"), Is.Zero);
             Assert.That(loop.State.Skills.Count, Is.EqualTo(1));
             Assert.That(loop.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["lull"]));
         }
@@ -82,7 +82,7 @@ namespace Game.Core.Tests.Build
         {
             var loop = TypistWithGems();
             loop.SwitchPreset();
-            loop.RaiseNode("duelist_breath");
+            loop.RaiseNode("duelist_r1c1");
             loop.Book.Equip(TestWorld.Data.Gems["lull"]);
 
             var loaded = TestWorld.Loop(state: SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State);
@@ -91,7 +91,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loaded.State.OtherPreset.ClassTree.PointsSpent, Is.EqualTo(3));
             Assert.That(loaded.State.OtherPreset.Skills.Count, Is.EqualTo(3));
             loaded.SwitchPreset();
-            Assert.That(loaded.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["thin_cut"]));
+            Assert.That(loaded.State.Skills[0].Skill, Is.SameAs(TestWorld.Data.Gems["duelist_hit_1"]));
         }
     }
 }

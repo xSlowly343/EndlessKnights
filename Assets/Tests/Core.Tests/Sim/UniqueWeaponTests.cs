@@ -113,8 +113,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TwinMoonKatanaCutsCooldownByResourceUpToItsCap()
         {
-            var plain = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
-            var katana = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
+            var plain = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_hit_1");
+            var katana = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_hit_1");
             katana.Loop.Hero.Add(new Modifier(CombatStats.CooldownPerResource, ModifierKind.Flat, 0.01));
             katana.Loop.Hero.Add(new Modifier(CombatStats.CooldownPerResourceMax, ModifierKind.Flat, 0.3));
 

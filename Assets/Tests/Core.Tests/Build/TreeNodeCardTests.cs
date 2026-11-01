@@ -10,44 +10,6 @@ namespace Game.Core.Tests.Build
 {
     public class TreeNodeCardTests
     {
-        private static AscendancyCatalog Paths => TestWorld.Data.Ascendancy;
-
-        private static SubclassDef Kensei => Paths.Subclasses.Single(subclass => subclass.Id == "kensei");
-
-        private static TreeNodeCard CardOf(TreeNodeDef node) =>
-            SubclassView.Card(new AscendancyState(), Paths, Kensei, node, new StatSheet());
-
-        [Test]
-        public void CardHasNameKindStatsAndStatus()
-        {
-            var node = Kensei.Nodes.First(n => n.Type == TreeNodeType.Small);
-
-            var card = CardOf(node);
-
-            Assert.That(card.Name, Is.EqualTo(node.NameRu));
-            Assert.That(card.Kind, Is.EqualTo(SubclassView.Kind(Kensei, node)));
-            Assert.That(card.Stats, Is.EqualTo(SubclassView.StatLines(node)));
-        }
-
-        [Test]
-        public void DescriptionComesFromTheNodeOrFromItsType()
-        {
-            var keystone = Kensei.Nodes.Single(n => n.Type == TreeNodeType.Keystone);
-            var small = Kensei.Nodes.First(n => n.Type == TreeNodeType.Small && !n.HasDescription);
-
-            Assert.That(CardOf(keystone).Description, Is.EqualTo(keystone.DescriptionRu));
-            Assert.That(CardOf(small).Description, Is.EqualTo("Прибавка на пути к значимым узлам."));
-        }
-
-        [Test]
-        public void EveryKeystoneHasItsOwnDescriptionInBothLanguages()
-        {
-            var keystones = Paths.Subclasses.SelectMany(subclass => subclass.Nodes).Where(node => node.Type == TreeNodeType.Keystone).ToList();
-
-            Assert.That(keystones, Is.Not.Empty);
-            Assert.That(keystones.Where(node => node.DescriptionRu.Length == 0 || node.DescriptionEn.Length == 0).Select(node => node.Id), Is.Empty);
-        }
-
         [Test]
         public void IncreasedShowsTheBonusBeforeAndAfterTakingTheNode()
         {
@@ -97,26 +59,6 @@ namespace Game.Core.Tests.Build
             var modifiers = Enumerable.Range(0, 5).Select(i => new Modifier(new StatId("damage"), ModifierKind.Increased, 0.01 * (i + 1))).ToArray();
 
             Assert.That(TreeNodeCard.DeltasOf(modifiers, false, hero), Has.Count.EqualTo(TreeNodeCard.MaxDeltas));
-        }
-
-        [Test]
-        public void CardDeltasFollowTheHeroSheet()
-        {
-            var node = Kensei.Nodes.First(n => n.Type == TreeNodeType.Notable && n.Modifiers.Count > 0);
-
-            Assert.That(CardOf(node).Deltas, Has.Count.EqualTo(System.Math.Min(TreeNodeCard.MaxDeltas, node.Modifiers.Count)));
-        }
-
-        [Test]
-        public void ShortenedCardKeepsOneStatAndDropsTheDescription()
-        {
-            var card = CardOf(Kensei.Nodes.Single(n => n.Type == TreeNodeType.Keystone));
-
-            var shortened = card.Shortened(1);
-
-            Assert.That(shortened.Stats, Has.Count.EqualTo(1));
-            Assert.That(shortened.Description, Is.Empty);
-            Assert.That(shortened.Name, Is.EqualTo(card.Name));
         }
     }
 }

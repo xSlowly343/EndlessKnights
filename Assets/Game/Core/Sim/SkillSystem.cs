@@ -1636,6 +1636,8 @@ namespace Game.Core.Sim
             }
             slot.ActiveTicks = Ticks(ReserveRefreshSeconds);
             slot.ActiveTotalTicks = slot.ActiveTicks;
+            if (!slot.AuraApplied)
+                slot.AuraPower = SupportEffects.Power(slot, _state) * SupportEffects.AuraPower(slot) * OwnPower(slot) * slot.BranchDamage;
             ApplyAura(slot);
         }
 

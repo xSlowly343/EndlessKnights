@@ -112,7 +112,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClickResonanceTenTakesTwoTenthsOfASecondOffEveryCooldownPerClick()
         {
-            var hero = SkillTestHero.Of(HeroClass.Dreamcatcher, "by_the_gait");
+            var hero = SkillTestHero.Of(HeroClass.Dreamcatcher, "dreamcatcher_hit_1");
             hero.State.Resonance["clicks"] = 10;
             hero.Loop.Resonance.UseCatalog(Catalog);
             Assert.That(hero.Cast(0), Is.EqualTo(CastResult.Cast));

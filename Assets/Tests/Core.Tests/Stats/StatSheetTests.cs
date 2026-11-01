@@ -36,7 +36,7 @@ namespace Game.Core.Tests.Stats
         {
             var loop = Sim.TestWorld.Loop(state: new Game.Core.Sim.GameState { HeroLevel = 10 });
             loop.Levels.SyncTreePoints();
-            loop.RaiseNode("runedancer_axe");
+            loop.RaiseNode("runedancer_r1c0");
 
             Assert.That(loop.TreeModifiers, Is.Not.Empty);
             Assert.That(System.Linq.Enumerable.All(loop.TreeModifiers, modifier => modifier.Pool == ModifierPool.Tree), Is.True);

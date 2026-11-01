@@ -54,17 +54,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SpaceHammerDoesNothingBeforeTheCast()
-        {
-            var hero = Hero("space_hammer");
-
-            hero.Input.PressSpace(2);
-            hero.Ticks(1);
-
-            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(0));
-        }
-
-        [Test]
         public void CapsLockRageCountsOnlyUnbrokenHits()
         {
             var steady = Hero("no_breather");

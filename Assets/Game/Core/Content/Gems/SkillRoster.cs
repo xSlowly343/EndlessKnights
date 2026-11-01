@@ -5,8 +5,8 @@ namespace Game.Core.Content.Gems
 {
     public static class SkillRoster
     {
-        public const int ActivePerClass = 15;
-        public const int AurasPerClass = 4;
+        public const int ActivePerClass = 12;
+        public const int AurasPerClass = 6;
 
         public static List<string> Problems(GemCatalog catalog, IEnumerable<string> weapons)
         {

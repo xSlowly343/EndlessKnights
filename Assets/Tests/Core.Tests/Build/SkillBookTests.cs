@@ -68,13 +68,13 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NoMoreSkillsThanSlots()
         {
-            var loop = WithGems("through_stride", "key_drum", "lull", "space_hammer");
+            var loop = WithGems("through_stride", "key_drum", "lull", "no_breather");
 
             loop.Book.Equip(Gem("through_stride"));
             loop.Book.Equip(Gem("key_drum"));
             loop.Book.Equip(Gem("lull"));
 
-            Assert.That(loop.Book.Equip(Gem("space_hammer")), Is.EqualTo(BookResult.NoFreeSlot));
+            Assert.That(loop.Book.Equip(Gem("no_breather")), Is.EqualTo(BookResult.NoFreeSlot));
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void RunedancerStartsWithShieldBashOnLeftOdinsFuryOnRightAndLull()
+        public void RunedancerStartsWithAHitOnLeftAStrongSkillOnRightAndLull()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
 
@@ -116,21 +116,21 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.State.OwnedGems.Count, Is.EqualTo(3));
             Assert.That(loop.State.Skills.Count, Is.EqualTo(3));
-            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("iron_rim_bash")));
-            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("no_mercy")));
+            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("runedancer_hit_1")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("runedancer_strong_1")));
             Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("lull")));
             Assert.That(loop.Book.GrantStartingGems(), Is.False);
         }
 
         [Test]
-        public void MinstrelStartsWithSongOnLeftAndGuitarSoloOnRight()
+        public void MinstrelStartsWithItsOwnHitAndStrongSkill()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Minstrel });
 
             loop.Book.GrantStartingGems();
 
-            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("hearth_song")));
-            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("louder")));
+            Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("minstrel_hit_1")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("minstrel_strong_1")));
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace Game.Core.Tests.Build
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;
 
             Assert.That(loaded.OwnedGems.Count, Is.EqualTo(3));
-            Assert.That(loaded.Skills[1].Skill, Is.SameAs(Gem("no_mercy")));
+            Assert.That(loaded.Skills[1].Skill, Is.SameAs(Gem("runedancer_strong_1")));
         }
 
         [Test]

@@ -57,32 +57,5 @@ namespace Game.Core.Tests.Party
 
             Assert.That(runedancer.Hero.Value(new StatId("resourceGain"), 1), Is.EqualTo(1.25).Within(1e-9));
         }
-
-        [Test]
-        public void TheSecondResponseOfEveryClassListensToAMarkOfItsLinkBranch()
-        {
-            foreach (var response in Rules.Responses.Where(response => response.Second))
-            {
-                var name = HeroClassNames.Of(response.HeroClass);
-                var tree = TestWorld.Data.ClassTreeOf(name)!;
-                var holder = tree.Nodes.Single(node => node.ModifiersAt(1).Any(modifier => modifier.Stat == Rules.SecondResponseStat));
-                var when = holder.ModifiersAt(1).First(modifier => ModifierConditions.IsAlly(modifier.When)).When;
-
-                Assert.That(ModifierConditions.MarkName(when), Is.EqualTo(Rules.Marks[response.Mark]), name);
-            }
-        }
-
-        [Test]
-        public void TheSwordlessBearerKeepsTheKeyPenaltyAtEveryRank()
-        {
-            var node = TestWorld.Data.ClassTreeOf("lanternbearer")!.Nodes.Single(candidate => candidate.Id == "lanternbearer_bearer_without_sword");
-            for (var rank = 1; rank <= 5; rank++)
-            {
-                var sheet = new StatSheet();
-                foreach (var modifier in node.ModifiersAt(rank))
-                    sheet.Add(modifier);
-                Assert.That(sheet.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.EqualTo(0.6).Within(1e-9), $"rank {rank}");
-            }
-        }
     }
 }

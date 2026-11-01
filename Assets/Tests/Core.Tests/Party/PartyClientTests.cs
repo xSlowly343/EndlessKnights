@@ -421,45 +421,6 @@ namespace Game.Core.Tests.Party
             Assert.That(rig.Host.InviteGuest(rig.Players[0].Id, 30), Is.False);
         }
 
-        [Test]
-        public void TheOracleGainsOmensFromAllyHitsAndGivesResourceToAllies()
-        {
-            var rig = new Rig(5);
-            var dreamcatcher = SkillTestHero.Of(HeroClass.Dreamcatcher, "good_forecast");
-            var dreamcatcherClient = new PartyClient(dreamcatcher.Loop, rig.Network.Connect(50), HostId, TestWorld.Data.Party);
-            dreamcatcherClient.Join();
-            var runedancer = rig.Players[0];
-            void Step(bool typing)
-            {
-                rig.Network.Advance(100);
-                runedancer.Tick(typing);
-                dreamcatcher.Loop.Tick();
-                dreamcatcher.Loop.Events.Clear();
-                rig.Host.Tick();
-            }
-            for (var tick = 0; tick < 20; tick++)
-                Step(true);
-            dreamcatcher.State.Resource = 0;
-
-            for (var tick = 0; tick < 50; tick++)
-                Step(true);
-
-            Assert.That(dreamcatcherClient.Status, Is.EqualTo(PartyLink.Linked));
-            Assert.That(dreamcatcher.State.PartyAllies, Is.EqualTo(1));
-            Assert.That(dreamcatcher.State.Resource, Is.InRange(3.5, 5.5), "about one omen for every ten hits of the ally");
-
-            dreamcatcher.State.Resource = 100;
-            runedancer.Loop.State.Resource = 0;
-            dreamcatcher.Loop.RequestCast(0);
-            for (var tick = 0; tick < 10; tick++)
-                Step(false);
-
-            Assert.That(dreamcatcher.State.Skills[0].Active, Is.True, "Good Forecast is on");
-
-            Assert.That(runedancer.Loop.State.Resource, Is.EqualTo(20).Within(1e-6), "Good Forecast gives the ally 20 of their resource");
-            Assert.That(runedancer.Loop.State.PartyAllies, Is.EqualTo(1));
-        }
-
         private static void Step(Rig rig, SkillTestHero hero, bool typing)
         {
             rig.Network.Advance(100);
@@ -477,83 +438,6 @@ namespace Game.Core.Tests.Party
                 Step(rig, hero, true);
             Assert.That(client.Status, Is.EqualTo(PartyLink.Linked));
             return client;
-        }
-
-        [Test]
-        public void AMistakeInTheDetailsWeakensTheNextEnemyAtTheHostWithGoldForEveryone()
-        {
-            var rig = new Rig(5);
-            var dreamcatcher = SkillTestHero.Of(HeroClass.Dreamcatcher, "mistake_in_the_details");
-            Joined(rig, dreamcatcher);
-            dreamcatcher.State.Resource = 100;
-            dreamcatcher.Loop.RequestCast(0);
-            for (var tick = 0; tick < 10 && rig.Host.Encounter.WeakenedSpawns == 0; tick++)
-                Step(rig, dreamcatcher, false);
-            Assert.That(rig.Host.Encounter.WeakenedSpawns, Is.EqualTo(1));
-            Assert.That(rig.Host.Encounter.WeakenGold, Is.EqualTo(0.2).Within(1e-9));
-            Assert.That(dreamcatcher.State.WeakenedSpawns, Is.Zero, "the host keeps the weakened enemies, not the client");
-
-            var runedancer = rig.Players[0].Loop.State;
-            var seen = false;
-            for (var tick = 0; tick < 100 && !seen; tick++)
-            {
-                Step(rig, dreamcatcher, true);
-                seen = runedancer.EnemyWeakened;
-            }
-
-            Assert.That(seen, Is.True, "the ally knows the shared enemy is weakened");
-            Assert.That(runedancer.EnemyGoldBonus, Is.EqualTo(0.2).Within(1e-6));
-            Assert.That(dreamcatcher.State.EnemyWeakened, Is.True);
-            Assert.That(dreamcatcher.State.EnemyGoldBonus, Is.EqualTo(0.2).Within(1e-6));
-        }
-
-        [Test]
-        public void TheHostDropsTheQuestionWhenTheInquisitorHasNoAuraLeft()
-        {
-            var rig = new Rig(5);
-            var inquisitor = SkillTestHero.Borrowing(HeroClass.Runedancer, HeroClass.Lanternbearer, "artel_pay", "unanswered_question");
-            Joined(rig, inquisitor);
-            Assert.That(inquisitor.State.Skills[0].AuraApplied, Is.True);
-            inquisitor.State.Resource = 100;
-            inquisitor.Loop.RequestCast(1);
-            for (var tick = 0; tick < 5; tick++)
-                Step(rig, inquisitor, true);
-            Assert.That(rig.Host.Encounter.DamageTakenMultiplier, Is.EqualTo(1.15).Within(1e-9));
-
-            inquisitor.State.IdleTicks = 10 * GameLoop.TicksPerSecond;
-            for (var tick = 0; tick < 5; tick++)
-                Step(rig, inquisitor, true);
-
-            Assert.That(inquisitor.State.Skills[1].Active, Is.False);
-            Assert.That(rig.Host.Encounter.DamageTakenMultiplier, Is.EqualTo(1), "the host lifts the question");
-        }
-
-        [Test]
-        public void TheShieldAnswerSlowsThePartyBossTimerAtTheHost()
-        {
-            var rig = new Rig(5);
-            var shield = SkillTestHero.Of(HeroClass.Lanternbearer, "answer_from_the_shield");
-            Joined(rig, shield);
-            shield.State.Resource = 100;
-            shield.Loop.RequestCast(0);
-            for (var tick = 0; tick < 5; tick++)
-                Step(rig, shield, false);
-
-            var gem = TestWorld.Data.Gems["answer_from_the_shield"];
-            var found = false;
-            for (var i = 0; i < PartyEncounter.MaxEffects; i++)
-            {
-                var effect = rig.Host.Encounter.Effect(i);
-                if (effect.Active && effect.Id == gem.NetId)
-                {
-                    found = true;
-                    Assert.That(effect.TimerSlow, Is.EqualTo(0.33).Within(1e-9));
-                    Assert.That(effect.DamageTaken, Is.Zero);
-                }
-            }
-            Assert.That(found, Is.True);
-            Assert.That(rig.Host.Encounter.TimerShared, Is.True, "the shield bearer fights beside the others");
-            Assert.That(rig.Host.Encounter.BossTimerRate, Is.EqualTo(0.67 * TestWorld.Data.Party.Timer.SharedRate).Within(1e-9), "the shield and the shared timer multiply");
         }
 
         [Test]

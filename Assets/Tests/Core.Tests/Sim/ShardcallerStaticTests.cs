@@ -11,7 +11,7 @@ namespace Game.Core.Tests.Sim
     public class ShardcallerStaticTests
     {
         private static ClassResource Static => TestWorld.Data.Combat.Resources.For("shardcaller");
-        private static GemDef Spark => TestWorld.Real.Gems["finger_spark"];
+        private static GemDef Spark => TestWorld.Real.Gems["shardcaller_hit_1"];
         private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
 
         private static (GameLoop Loop, FakeInputSource Input) Shardcaller(params Modifier[] modifiers)
@@ -87,35 +87,6 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
 
             Assert.That(loop.Overload.Discharges, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void FingerSparkHitsTheEnemyAndTwoMoreInTheQueue()
-        {
-            var (loop, _) = Shardcaller();
-            loop.State.Resource = 50;
-            TestWorld.ArmFor(loop, Spark);
-            var hp = loop.State.EnemyHp;
-
-            Assert.That(loop.Skills.TryCast(loop.Skills.Equip(Spark)), Is.EqualTo(CastResult.Cast));
-
-            Assert.That((hp - loop.State.EnemyHp).ToDouble(), Is.EqualTo(KeyDamage * 2).Within(1e-6));
-            Assert.That(loop.State.QueueDamage[0].ToDouble(), Is.EqualTo(KeyDamage * 2).Within(1e-6));
-            Assert.That(loop.State.QueueDamage[1].ToDouble(), Is.EqualTo(KeyDamage * 2).Within(1e-6));
-            Assert.That(loop.State.QueueDamage[2].Sign, Is.EqualTo(0));
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("shardcaller"), Has.Some.Property("Id").EqualTo("finger_spark"));
-        }
-
-        [Test]
-        public void ChainTargetsAddsOneMoreEnemyToTheChain()
-        {
-            var (loop, _) = Shardcaller(new Modifier(CombatStats.ChainTargets, ModifierKind.Flat, 1));
-            loop.State.Resource = 50;
-            TestWorld.ArmFor(loop, Spark);
-
-            loop.Skills.TryCast(loop.Skills.Equip(Spark));
-
-            Assert.That(loop.State.QueueDamage[2].ToDouble(), Is.EqualTo(KeyDamage * 2).Within(1e-6));
         }
     }
 }

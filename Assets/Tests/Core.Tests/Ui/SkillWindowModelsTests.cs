@@ -30,16 +30,16 @@ namespace Game.Core.Tests.Ui
         public void TheBarHasEightPlacesInTheOrderOfTheStrip()
         {
             var loop = Duelist(12);
-            loop.Skills.Equip(Gem("thin_cut"), role: SkillSlotRole.Right);
-            loop.Skills.Equip(Gem("cooks_apron"), role: SkillSlotRole.Aura);
+            loop.Skills.Equip(Gem("duelist_hit_1"), role: SkillSlotRole.Right);
+            loop.Skills.Equip(Gem("duelist_aura_2"), role: SkillSlotRole.Aura);
             var places = new SkillBarPlace[SkillBarLayout.Places];
 
             SkillBarLayout.Fill(loop.State.Skills, loop.Book, places);
 
             Assert.That(places.Select(p => p.Role), Is.EqualTo(new[] { SkillSlotRole.Left, SkillSlotRole.Right, SkillSlotRole.Auto, SkillSlotRole.Auto, SkillSlotRole.Aura, SkillSlotRole.Aura, SkillSlotRole.Aura, SkillSlotRole.Aura }));
             Assert.That(places[0].Empty, Is.True);
-            Assert.That(loop.State.Skills[places[1].Row].Skill, Is.SameAs(Gem("thin_cut")));
-            Assert.That(loop.State.Skills[places[4].Row].Skill, Is.SameAs(Gem("cooks_apron")));
+            Assert.That(loop.State.Skills[places[1].Row].Skill, Is.SameAs(Gem("duelist_hit_1")));
+            Assert.That(loop.State.Skills[places[4].Row].Skill, Is.SameAs(Gem("duelist_aura_2")));
             Assert.That(places[2].Open, Is.True);
             Assert.That(SkillBarTexts.Locked(places[3]), Is.EqualTo("этап 100"));
             Assert.That(SkillBarTexts.Locked(places[5]), Is.EqualTo("ур. 25"));
@@ -51,23 +51,23 @@ namespace Game.Core.Tests.Ui
         public void ABookSkillGoesIntoTheChosenSlotAndAnActiveNeverIntoAnAuraSlot()
         {
             var loop = Duelist(12);
-            loop.State.OwnedGems.AddRange(new[] { Gem("cooks_apron"), Gem("thin_cut") });
+            loop.State.OwnedGems.AddRange(new[] { Gem("duelist_aura_2"), Gem("duelist_hit_1") });
 
-            Assert.That(BookPlacing.PutInto(loop.Book, Gem("cooks_apron"), SkillSlotRole.Aura), Is.EqualTo(BookResult.Done));
-            Assert.That(BookPlacing.PutInto(loop.Book, Gem("thin_cut"), SkillSlotRole.Aura), Is.EqualTo(BookResult.WrongSlot));
-            Assert.That(BookPlacing.PutInto(loop.Book, Gem("thin_cut"), SkillSlotRole.Auto), Is.EqualTo(BookResult.Done));
-            Assert.That(BookPlacing.PutInto(loop.Book, Gem("cooks_apron"), SkillSlotRole.Left), Is.EqualTo(BookResult.Done));
+            Assert.That(BookPlacing.PutInto(loop.Book, Gem("duelist_aura_2"), SkillSlotRole.Aura), Is.EqualTo(BookResult.Done));
+            Assert.That(BookPlacing.PutInto(loop.Book, Gem("duelist_hit_1"), SkillSlotRole.Aura), Is.EqualTo(BookResult.WrongSlot));
+            Assert.That(BookPlacing.PutInto(loop.Book, Gem("duelist_hit_1"), SkillSlotRole.Auto), Is.EqualTo(BookResult.Done));
+            Assert.That(BookPlacing.PutInto(loop.Book, Gem("duelist_aura_2"), SkillSlotRole.Left), Is.EqualTo(BookResult.Done));
 
-            Assert.That(loop.State.Skills.Single(s => s.Skill == Gem("thin_cut")).Role, Is.EqualTo(SkillSlotRole.Auto));
-            Assert.That(loop.State.Skills.Single(s => s.Skill == Gem("cooks_apron")).Role, Is.EqualTo(SkillSlotRole.Left));
+            Assert.That(loop.State.Skills.Single(s => s.Skill == Gem("duelist_hit_1")).Role, Is.EqualTo(SkillSlotRole.Auto));
+            Assert.That(loop.State.Skills.Single(s => s.Skill == Gem("duelist_aura_2")).Role, Is.EqualTo(SkillSlotRole.Left));
         }
 
         [Test]
         public void TheSkillWindowShowsTiersAndTakesABranch()
         {
             var loop = Duelist(30);
-            var row = loop.Skills.Equip(Gem("thin_cut"), role: SkillSlotRole.Left);
-            loop.State.ProgressOf(Gem("thin_cut")).Level = 5;
+            var row = loop.Skills.Equip(Gem("duelist_hit_1"), role: SkillSlotRole.Left);
+            loop.State.ProgressOf(Gem("duelist_hit_1")).Level = 5;
             var window = new SkillWindowModel(loop);
 
             window.Show(row);
@@ -89,15 +89,15 @@ namespace Game.Core.Tests.Ui
         public void TheSkillWindowOffersOnlySupportsThatFitAndMarksTheBusyOnes()
         {
             var loop = Duelist(5);
-            var first = loop.Skills.Equip(Gem("thin_cut"), role: SkillSlotRole.Left);
-            var second = loop.Skills.Equip(Gem("hundred_cuts"), role: SkillSlotRole.Right);
+            var first = loop.Skills.Equip(Gem("duelist_hit_1"), role: SkillSlotRole.Left);
+            var second = loop.Skills.Equip(Gem("duelist_strong_1"), role: SkillSlotRole.Right);
             var window = new SkillWindowModel(loop);
             window.Show(second);
             Assert.That(loop.Book.SetSupport(first, 0, Gem("rebound")), Is.EqualTo(BookResult.Done));
 
             window.Refresh();
 
-            Assert.That(window.Supports.All(s => s.Gem.CanSupport(Gem("hundred_cuts"))), Is.True);
+            Assert.That(window.Supports.All(s => s.Gem.CanSupport(Gem("duelist_strong_1"))), Is.True);
             Assert.That(window.Supports.Single(s => s.Gem == Gem("rebound")).Offer, Is.EqualTo(BookResult.AlreadyInBuild));
             Assert.That(window.Supports.Single(s => s.Gem == Gem("executioner")).Offer, Is.EqualTo(BookResult.LevelTooLow));
             Assert.That(window.Supports.Single(s => s.Gem == Gem("chain")).Available, Is.True);
@@ -123,17 +123,17 @@ namespace Game.Core.Tests.Ui
         public void AnAllysLoadoutReadsBackIntoNamedPlaces()
         {
             var loadout = new PartyLoadoutMessage();
-            loadout.Set(0, new LoadoutSkill { GemNetId = Gem("thin_cut").NetId, Level = 7, Combo = (byte)SkillBranches.Index(1, -1, -1) });
-            loadout.Set(5, new LoadoutSkill { GemNetId = Gem("cooks_apron").NetId, Level = 3, Combo = (byte)SkillBranches.Plain });
+            loadout.Set(0, new LoadoutSkill { GemNetId = Gem("duelist_hit_1").NetId, Level = 7, Combo = (byte)SkillBranches.Index(1, -1, -1) });
+            loadout.Set(5, new LoadoutSkill { GemNetId = Gem("duelist_aura_2").NetId, Level = 3, Combo = (byte)SkillBranches.Plain });
             var places = new AllySkillPlace[SkillLoadout.MaxSlots];
 
             AllyLoadoutView.Fill(loadout, TestWorld.Data.Gems, places);
 
-            Assert.That(places[0].Skill, Is.SameAs(Gem("thin_cut")));
+            Assert.That(places[0].Skill, Is.SameAs(Gem("duelist_hit_1")));
             Assert.That(places[0].Level, Is.EqualTo(7));
             Assert.That(places[5].Role, Is.EqualTo(SkillSlotRole.Aura));
             Assert.That(places[1].Empty, Is.True);
-            var secondOption = BranchTexts.Name(Gem("thin_cut").Branches[0].Options[1]);
+            var secondOption = BranchTexts.Name(Gem("duelist_hit_1").Branches[0].Options[1]);
             Assert.That(AllyLoadoutView.Branches(places[0]), Is.EqualTo(secondOption + " · — · —"));
         }
     }

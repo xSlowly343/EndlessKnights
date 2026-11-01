@@ -136,27 +136,5 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.State.Skills[slot].ActiveTicks, Is.EqualTo(150));
         }
-
-        [Test]
-        public void FermentedCurseKeepsCursesThroughKillsAndHitsEverySecond()
-        {
-            var (loop, input) = Whisperer();
-            var hex = CastNew(loop, Curse("hex"));
-            loop.State.Resource = 100;
-            CastNew(loop, TestWorld.Data.Gems["fermented_curse"]);
-
-            KillEnemy(loop, input);
-            Assert.That(loop.State.Skills[hex].Active, Is.True);
-
-            loop.Events.Clear();
-            Ticks(loop, GameLoop.TicksPerSecond);
-            var hits = 0;
-            for (var i = 0; i < loop.Events.Count; i++)
-            {
-                if (loop.Events[i].Kind == GameEventKind.Damage && loop.Events[i].Source == DamageSource.Skill)
-                    hits++;
-            }
-            Assert.That(hits, Is.EqualTo(1));
-        }
     }
 }

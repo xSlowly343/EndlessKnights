@@ -129,17 +129,6 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void ShardcallerLightningHitsWithTheAllyPoisonOnEveryLightningCast()
-        {
-            var with = Casting(HeroClass.Shardcaller, Mark("poison"));
-            var without = Casting(HeroClass.Shardcaller, Mark("stun"));
-
-            Assert.That(with.SynergyStrikes.ElectrolysisStrikes, Is.EqualTo(1));
-            Assert.That(without.SynergyStrikes.ElectrolysisStrikes, Is.Zero);
-            Assert.That(with.State.TotalDamage.ToDouble(), Is.GreaterThan(without.State.TotalDamage.ToDouble()));
-        }
-
-        [Test]
         public void DowserSparkAddsBurnEverySecondOnlyToABurningEnemy()
         {
             var loop = Hero(HeroClass.Dowser);

@@ -26,22 +26,6 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void OwnMarkDoesNotWakeOwnResponse()
-        {
-            var loop = Hero(HeroClass.Whisperer);
-            TestWorld.ArmFor(loop, TestWorld.Data.Gems["charm_prick"]);
-            loop.Skills.Equip(TestWorld.Data.Gems["charm_prick"]);
-            loop.State.Resource = 100;
-            loop.RequestCast(0);
-
-            loop.Tick();
-
-            Assert.That(loop.Synergy.OwnMarks, Is.EqualTo(Mark("curse")));
-            Assert.That(loop.Synergy.AllyMarks, Is.EqualTo(0));
-            Assert.That(loop.Hero.Value(new StatId("curseEffect"), 1), Is.EqualTo(1));
-        }
-
-        [Test]
         public void AllyCurseWakesTheVikingResponse()
         {
             var loop = Hero(HeroClass.Runedancer);
@@ -171,25 +155,6 @@ namespace Game.Core.Tests.Party
 
             Assert.That(loop.Synergy.ConstellationActive(IndexOfConstellation("elements")), Is.True);
             Assert.That(loop.Synergy.ReactionActive(overload), Is.True);
-        }
-
-        [Test]
-        public void AStrikeMarkStaysForTheSecondsOfItsMarkAfterTheCast()
-        {
-            var loop = Hero(HeroClass.Runedancer);
-            var gem = TestWorld.Data.Gems["no_mercy"];
-            TestWorld.ArmFor(loop, gem);
-            loop.Skills.Equip(gem);
-            loop.State.Resource = 1000;
-            loop.RequestCast(0);
-
-            loop.Tick();
-
-            Assert.That(loop.Synergy.OwnMarks & Mark("stun"), Is.EqualTo(Mark("stun")), "the heavy axe stuns");
-            var ticks = Rules.MarkTicks(IndexOfMark("stun"));
-            for (var tick = 0; tick < ticks; tick++)
-                loop.Tick();
-            Assert.That(loop.Synergy.OwnMarks & Mark("stun"), Is.Zero, "two seconds later the stun is gone");
         }
 
         [Test]

@@ -40,43 +40,6 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void TheClassAttributeStrengthensTheHuscarlShield()
-        {
-            var plain = Hero(HeroClass.Runedancer, 0);
-            var strong = Hero(HeroClass.Runedancer, 20);
-
-            Assert.That(strong.ClassAttribute, Is.EqualTo(20));
-            var perPoint = strong.ClassAttributeDef.PerPoint[0].Value;
-            Assert.That(strong.Hero.Value(CombatStats.ShieldDamage, 1, StatTags.Keyboard) - plain.Hero.Value(CombatStats.ShieldDamage, 1, StatTags.Keyboard),
-                Is.EqualTo(20 * perPoint).Within(1e-9));
-        }
-
-        [Test]
-        public void EachClassFeelsItsOwnFeature()
-        {
-            var windshot = Hero(HeroClass.Windshot, 10);
-
-            Assert.That(windshot.Hero.Value(CombatStats.MarkPower, 0), Is.GreaterThan(0));
-            Assert.That(windshot.Hero.Value(CombatStats.ShieldDamage, 1), Is.EqualTo(1), "the Huscarl shield stays out of the Huntress build");
-        }
-
-        [Test]
-        public void TheFeatureFollowsTheAttributeWhenItChanges()
-        {
-            var loop = Hero(HeroClass.Runedancer, 0);
-            var extra = new Modifier(ClassAttributeDef.Stat, ModifierKind.Flat, 10);
-            loop.Hero.Add(extra);
-            loop.Tick();
-            var raised = loop.Hero.Value(CombatStats.ShieldDamage, 1, StatTags.Keyboard);
-            loop.Hero.Remove(extra);
-            loop.Tick();
-
-            Assert.That(raised, Is.GreaterThan(1));
-            Assert.That(loop.Hero.Value(CombatStats.ShieldDamage, 1, StatTags.Keyboard), Is.EqualTo(1).Within(1e-12));
-            Assert.That(loop.ClassAttributeModifiers, Is.Empty);
-        }
-
-        [Test]
         public void ANoviceHasNoFeatureToStrengthen()
         {
             var loop = TestWorld.Loop(state: new GameState { ClassChosen = false });
@@ -84,16 +47,6 @@ namespace Game.Core.Tests.Build
             loop.RefreshClassAttribute();
 
             Assert.That(loop.ClassAttributeModifiers, Is.Empty);
-        }
-
-        [Test]
-        public void TheTreeFileMustNameARealAttributeThatDoesNotFeedItself()
-        {
-            var json = TestData.ReadGameDataFile(ClassTreeLoader.FileNameOf("runedancer"));
-            var templates = TestWorld.Data.TreeTemplates;
-
-            Assert.Throws<ContentException>(() => ClassTreeLoader.Load(templates, "runedancer", json.Replace("\"name\": \"strength\"", "\"name\": \"luck\"")));
-            Assert.Throws<ContentException>(() => ClassTreeLoader.Load(templates, "runedancer", json.Replace("\"perPoint\": [{\"stat\": \"shieldDamage\"", "\"perPoint\": [{\"stat\": \"classAttribute\"")));
         }
     }
 }

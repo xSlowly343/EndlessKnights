@@ -22,32 +22,32 @@ test("a gem goes to a friend by mail for friendship tokens and arrives bound", (
   const { call, fails, tokens, friendship, gifts } = world("ann", "bob");
   tokens("ann", 20);
 
-  const sent = call("ann", "giftSendRpc", { userId: "bob", gemId: "hatchet_toss" });
+  const sent = call("ann", "giftSendRpc", { userId: "bob", gemId: "runedancer_hit_2" });
 
-  assert.strictEqual(sent.gemId, "hatchet_toss");
+  assert.strictEqual(sent.gemId, "runedancer_hit_2");
   assert.strictEqual(sent.mentor, false);
   assert.strictEqual(sent.left, rules.dailyLimit - 1);
   assert.strictEqual(friendship("ann"), 20 - rules.cost);
   assert.strictEqual(call("ann", "coopWalletRpc").ledger[0].source, "gift_sent");
   const letter = gifts("bob")[0];
-  assert.strictEqual(letter.gem, "hatchet_toss");
+  assert.strictEqual(letter.gem, "runedancer_hit_2");
   assert.strictEqual(letter.title, "ann");
-  assert.strictEqual(call("bob", "mailClaimRpc", { id: letter.id }).letter.gem, "hatchet_toss");
+  assert.strictEqual(call("bob", "mailClaimRpc", { id: letter.id }).letter.gem, "runedancer_hit_2");
   assert.deepStrictEqual(JSON.parse(JSON.stringify(call("ann", "giftStatusRpc"))), { left: rules.dailyLimit - 1, dailyLimit: rules.dailyLimit, perFriendDaily: rules.perFriendDaily, cost: rules.cost });
-  fails("ann", "giftSendRpc", { userId: "bob", gemId: "louder" }, "already gifted this friend today");
+  fails("ann", "giftSendRpc", { userId: "bob", gemId: "minstrel_aura_2" }, "already gifted this friend today");
 });
 
 test("path gems, strangers to the rules and empty wallets are refused", () => {
   const { nk, call, fails, tokens, friendship } = world("ann", "bob", "cid");
-  fails("ann", "giftSendRpc", { userId: "bob", gemId: "hatchet_toss" }, "not enough friendship");
+  fails("ann", "giftSendRpc", { userId: "bob", gemId: "runedancer_hit_2" }, "not enough friendship");
   tokens("ann", 20);
-  assert.ok(rules.giftable.indexOf("second_axe") < 0, "gems of a path are not giftable");
-  fails("ann", "giftSendRpc", { userId: "bob", gemId: "second_axe" }, "this gem cannot be gifted");
+  assert.ok(rules.giftable.indexOf("runedancer_path_1") < 0, "gems of a path are not giftable");
+  fails("ann", "giftSendRpc", { userId: "bob", gemId: "runedancer_path_1" }, "this gem cannot be gifted");
   fails("ann", "giftSendRpc", { userId: "bob", gemId: "no_such_gem" }, "this gem cannot be gifted");
-  fails("ann", "giftSendRpc", { userId: "ann", gemId: "hatchet_toss" }, "bad request");
-  fails("ann", "giftSendRpc", { userId: "nobody", gemId: "hatchet_toss" }, "bad request");
+  fails("ann", "giftSendRpc", { userId: "ann", gemId: "runedancer_hit_2" }, "bad request");
+  fails("ann", "giftSendRpc", { userId: "nobody", gemId: "runedancer_hit_2" }, "bad request");
   call("cid", "partyBlockRpc", { userId: "ann" });
-  fails("ann", "giftSendRpc", { userId: "cid", gemId: "hatchet_toss" }, "this player does not take gifts from you");
+  fails("ann", "giftSendRpc", { userId: "cid", gemId: "runedancer_hit_2" }, "this player does not take gifts from you");
   assert.strictEqual(friendship("ann"), 20, "a refused gift costs nothing");
   assert.strictEqual(nk.storageList("bob", "mail").objects.length, 0);
 });
@@ -58,8 +58,8 @@ test("a sender has a daily limit and a friend can take only so many gifts a day"
   for (const name of people)
     tokens(name, 100);
   for (let i = 0; i < rules.dailyLimit; i++)
-    call("ann", "giftSendRpc", { userId: people[1 + i], gemId: "hatchet_toss" });
-  fails("ann", "giftSendRpc", { userId: "hal", gemId: "hatchet_toss" }, "no gifts left today");
+    call("ann", "giftSendRpc", { userId: people[1 + i], gemId: "runedancer_hit_2" });
+  fails("ann", "giftSendRpc", { userId: "hal", gemId: "runedancer_hit_2" }, "no gifts left today");
   assert.strictEqual(call("ann", "giftStatusRpc").left, 0);
 
   const givers = people.slice(1).filter((name) => name !== "hal");
@@ -67,11 +67,11 @@ test("a sender has a daily limit and a friend can take only so many gifts a day"
   for (const giver of givers) {
     if (given === rules.receiveDailyLimit)
       break;
-    call(giver, "giftSendRpc", { userId: "hal", gemId: "louder" });
+    call(giver, "giftSendRpc", { userId: "hal", gemId: "minstrel_aura_2" });
     given++;
   }
   assert.strictEqual(given, rules.receiveDailyLimit);
-  fails(givers[given], "giftSendRpc", { userId: "hal", gemId: "louder" }, "this friend got enough gifts today");
+  fails(givers[given], "giftSendRpc", { userId: "hal", gemId: "minstrel_aura_2" }, "this friend got enough gifts today");
 });
 
 test("a mentor gifts the student without the daily limit", () => {
@@ -80,7 +80,7 @@ test("a mentor gifts the student without the daily limit", () => {
   nk.storageWrite([{ collection: "mentor", key: "profile", userId: "ann", value: { ready: true, studentId: "bob", studentUntil: Date.now() + day, mentorId: "", seconds: 0, level: 0, marks: [], perks: [], coopPoints: 0, graduates: 0 } }]);
 
   for (let i = 0; i < rules.dailyLimit + 2; i++)
-    assert.strictEqual(call("ann", "giftSendRpc", { userId: "bob", gemId: "hatchet_toss" }).mentor, true);
+    assert.strictEqual(call("ann", "giftSendRpc", { userId: "bob", gemId: "runedancer_hit_2" }).mentor, true);
 
   assert.strictEqual(gifts("bob").length, rules.dailyLimit + 2);
   assert.strictEqual(call("ann", "giftStatusRpc").left, rules.dailyLimit, "mentor gifts do not use up the limit");

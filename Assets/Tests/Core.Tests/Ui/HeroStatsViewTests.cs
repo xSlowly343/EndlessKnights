@@ -67,7 +67,7 @@ namespace Game.Core.Tests.Ui
             var empty = loop.TreeModifiers.Count;
             loop.State.TreePointsEarned = 5;
 
-            Assert.That(loop.RaiseNode("runedancer_axe"), Is.EqualTo(Game.Core.Build.RankResult.Done));
+            Assert.That(loop.RaiseNode("runedancer_r1c0"), Is.EqualTo(Game.Core.Build.RankResult.Done));
             Assert.That(loop.TreeModifiers.Count, Is.GreaterThan(empty));
         }
     }

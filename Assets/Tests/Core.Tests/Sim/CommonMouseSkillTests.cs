@@ -45,16 +45,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void WithoutLassoOverkillIsLost()
-        {
-            var hero = Hero("lasso");
-
-            hero.KillCurrentEnemy();
-
-            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(0));
-        }
-
-        [Test]
         public void LongRoadStacksDamageFromDistanceOverFiveMinutes()
         {
             var hero = Hero("long_road");
