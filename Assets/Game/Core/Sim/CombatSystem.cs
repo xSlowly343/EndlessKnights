@@ -12,6 +12,7 @@ namespace Game.Core.Sim
         private readonly ClassMechanics _class;
         private readonly RunedancerMechanics _runedancer;
         private readonly DuelistMechanics _duelist;
+        private readonly WindshotMechanics _windshot;
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
@@ -29,11 +30,13 @@ namespace Game.Core.Sim
             _class = new ClassMechanics(rules.Classes, state, hero);
             _runedancer = new RunedancerMechanics(rules.Classes.Runedancer, state, hero, this);
             _duelist = new DuelistMechanics(rules.Classes.Duelist, state, hero, this);
+            _windshot = new WindshotMechanics(rules.Classes.Windshot, state, hero, this);
         }
 
         public ClassMechanics Class => _class;
         public RunedancerMechanics Runedancer => _runedancer;
         public DuelistMechanics Duelist => _duelist;
+        public WindshotMechanics Windshot => _windshot;
         public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
@@ -42,6 +45,7 @@ namespace Game.Core.Sim
             _class.UseRules(rules.Classes);
             _runedancer.UseRules(rules.Classes.Runedancer);
             _duelist.UseRules(rules.Classes.Duelist);
+            _windshot.UseRules(rules.Classes.Windshot);
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
@@ -182,6 +186,7 @@ namespace Game.Core.Sim
             CountStreakTime();
             _runedancer.Tick();
             _duelist.Tick();
+            _windshot.Tick(input.MousePx);
             var keyHits = TakeWhole(_state.KeyCarry + input.Hits, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -189,7 +194,7 @@ namespace Game.Core.Sim
 
             for (var i = 0; i < keyHits; i++)
             {
-                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier();
+                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier();
                 var alive = _state.EnemyAlive;
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
                 if (alive)
@@ -197,6 +202,7 @@ namespace Game.Core.Sim
                     var crit = LastHitCrit;
                     _runedancer.AfterStrike(crit);
                     _duelist.AfterStrike(crit);
+                    _windshot.AfterStrike(crit);
                 }
                 KeyHitLightning();
                 ShadowClone();
@@ -260,9 +266,9 @@ namespace Game.Core.Sim
                 return;
             _state.HitsOnEnemy++;
 
-            if (ForcedCrit() || RollCrit(tags, supporting))
+            if (ForcedCrit() || _windshot.ForcesCrit(tags) || RollCrit(tags, supporting))
             {
-                damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting)) * CritBurst();
+                damage *= System.Math.Max(1, CritMultiplier(tags) * _windshot.CritScale(tags)) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting)) * CritBurst();
                 flags |= HitFlags.Crit;
                 LastHitCrit = true;
                 _state.Crits++;

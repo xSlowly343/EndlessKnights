@@ -19,6 +19,8 @@ namespace Game.Core.Party
         private double _traitDamage;
         private double _traitCritChance;
         private double _traitGold;
+        private double _traitCritMultiplier;
+        private double _traitResource;
 
         public PartyBuffs(PartyBuffRules rules, GameState state, StatSheet hero)
         {
@@ -47,6 +49,10 @@ namespace Game.Core.Party
                 return _state.TraitPartyDamage;
             if (from == CombatStats.PartyGold)
                 return _state.TraitPartyGold;
+            if (from == CombatStats.PartyCritMultiplier)
+                return _state.TraitPartyCritMultiplier;
+            if (from == CombatStats.PartyResource)
+                return _state.TraitPartyResource;
             return from == CombatStats.PartyCritChance ? _state.TraitPartyCritChance : 0;
         }
 
@@ -128,11 +134,14 @@ namespace Game.Core.Party
                 _state.HeardByAll = heard;
                 _dirty = true;
             }
-            if (_state.TraitPartyDamage != _traitDamage || _state.TraitPartyCritChance != _traitCritChance || _state.TraitPartyGold != _traitGold)
+            if (_state.TraitPartyDamage != _traitDamage || _state.TraitPartyCritChance != _traitCritChance || _state.TraitPartyGold != _traitGold
+                || _state.TraitPartyCritMultiplier != _traitCritMultiplier || _state.TraitPartyResource != _traitResource)
             {
                 _traitDamage = _state.TraitPartyDamage;
                 _traitCritChance = _state.TraitPartyCritChance;
                 _traitGold = _state.TraitPartyGold;
+                _traitCritMultiplier = _state.TraitPartyCritMultiplier;
+                _traitResource = _state.TraitPartyResource;
                 _dirty = true;
             }
             if (_dirty)

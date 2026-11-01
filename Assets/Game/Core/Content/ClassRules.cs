@@ -31,6 +31,7 @@ namespace Game.Core.Content
         public GolemRules Golem { get; private set; } = GolemRules.None;
         public RunedancerRules Runedancer { get; private set; } = RunedancerRules.None;
         public DuelistRules Duelist { get; private set; } = DuelistRules.None;
+        public WindshotRules Windshot { get; private set; } = WindshotRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -51,7 +52,8 @@ namespace Game.Core.Content
                 Blood = BloodRules.Read(node.Field("herbwitch").Field("blood")),
                 Golem = GolemRules.Read(node.Field("golemancer").Field("golem")),
                 Runedancer = RunedancerRules.Read(node.Field("runedancer")),
-                Duelist = DuelistRules.Read(node.Field("duelist")) };
+                Duelist = DuelistRules.Read(node.Field("duelist")),
+                Windshot = WindshotRules.Read(node.Field("windshot")) };
         }
     }
 }

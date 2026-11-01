@@ -21,8 +21,6 @@ namespace Game.Core.Sim
         public double OnKeyHit(out HitFlags flags)
         {
             flags = HitFlags.None;
-            if (_state.Is(HeroClass.Windshot))
-                return HunterMarkHit();
             if (_state.Is(HeroClass.Sandwalker))
                 return SandHit();
             if (_state.Is(HeroClass.Cartomancer))
@@ -30,24 +28,12 @@ namespace Game.Core.Sim
             return 1;
         }
 
-        private double HunterMarkHit()
-        {
-            var rules = _rules.HunterMark;
-            if (rules.Every <= 0 || ++_state.KeysTowardMark < MarkEvery)
-                return 1;
-            _state.KeysTowardMark = 0;
-            PlaceHunterMark();
-            return 1;
-        }
-
-        public int MarkEvery => System.Math.Max(_rules.HunterMark.EveryMin, (int)System.Math.Round(_rules.HunterMark.Every + _hero.Value(CombatStats.MarkEvery, 0, StatTags.Keyboard)));
-
         public bool MarkFits =>
             _hero.Value(CombatStats.MarkBossOnly, 0) < 1
             || _state.EnemyType == EnemyType.Boss
             || (_state.EnemyType == EnemyType.Guardian && _hero.Value(CombatStats.MarkOnGuardians, 0) >= 1);
 
-        private void PlaceHunterMark()
+        public void PlaceHunterMark()
         {
             if (!_state.EnemyAlive || !MarkFits)
                 return;

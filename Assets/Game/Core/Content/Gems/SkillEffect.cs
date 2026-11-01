@@ -64,6 +64,10 @@ namespace Game.Core.Content.Gems
         public bool Breach { get; set; }
         public int Touches { get; set; }
         public double PhantomSeconds { get; set; }
+        public double Tension { get; set; }
+        public int Gusts { get; set; }
+        public double CalmSeconds { get; set; }
+        public bool Shot { get; set; }
     }
 
     public sealed class PotionOption

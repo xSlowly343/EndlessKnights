@@ -154,6 +154,8 @@ namespace Game.Core.Tests.Content
                     .Select(field => ((Game.Core.Stats.StatId)field.GetValue(null)!).Name))
                 .Concat(typeof(Game.Core.Sim.DuelistStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
                     .Select(field => ((Game.Core.Stats.StatId)field.GetValue(null)!).Name))
+                .Concat(typeof(Game.Core.Sim.WindshotStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+                    .Select(field => ((Game.Core.Stats.StatId)field.GetValue(null)!).Name))
                 .Concat(new[] { "classAttribute" })
                 .ToHashSet();
             var classes = Game.Core.Sim.HeroClassNames.ByName.Keys.ToList();

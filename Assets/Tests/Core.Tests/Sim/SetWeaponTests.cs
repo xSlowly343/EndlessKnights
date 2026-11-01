@@ -27,8 +27,8 @@ namespace Game.Core.Tests.Sim
         public void SetWeaponTypesFollowColourOrRole()
         {
             Assert.That(Set("jarl_forge").AllowsType("rune_daggers"), Is.True);
-            Assert.That(Set("jarl_forge").AllowsType("short_bow"), Is.False);
-            Assert.That(Set("onslaught").WeaponTypes, Is.EquivalentTo(new[] { "rune_daggers", "spectral_rapier", "short_bow", "storm_wand", "scimitar" }));
+            Assert.That(Set("jarl_forge").AllowsType("wind_bow"), Is.False);
+            Assert.That(Set("onslaught").WeaponTypes, Is.EquivalentTo(new[] { "rune_daggers", "spectral_rapier", "wind_bow", "storm_wand", "scimitar" }));
             foreach (var set in TestWorld.Data.Items.Sets)
             {
                 foreach (var type in set.WeaponTypes)
@@ -61,7 +61,7 @@ namespace Game.Core.Tests.Sim
             foreach (var slot in Set("jarl_forge").Slots)
                 windshot.State.SetCollection.Add(SetDef.PieceKey("jarl_forge", slot));
 
-            Assert.That(windshot.CraftSetPiece("jarl_forge", ItemSlot.Weapon, "short_bow"), Is.EqualTo(CraftResult.WrongSlot));
+            Assert.That(windshot.CraftSetPiece("jarl_forge", ItemSlot.Weapon, "wind_bow"), Is.EqualTo(CraftResult.WrongSlot));
             Assert.That(windshot.State.Drops.Ingots, Is.EqualTo(1000));
             Assert.That(windshot.CraftSetPiece("jarl_forge", ItemSlot.Weapon, "spectral_rapier"), Is.EqualTo(CraftResult.Crafted));
             Assert.That(windshot.State.Weapons.Bag.Last().Type.Id, Is.EqualTo("spectral_rapier"));

@@ -20,7 +20,7 @@
     { "id": "duelist_stopped_moment", "class": "duelist", "mark": "time", "modifiers": [{ "stat": "skillCost", "kind": "increased", "value": -0.25 }] },
     { "id": "duelist_precise_cut", "class": "duelist", "mark": "hunterMark", "second": true, "modifiers": [{ "stat": "critChance", "kind": "flat", "value": 1, "tags": ["Keyboard"] }] },
     { "id": "windshot_ricochet", "class": "windshot", "mark": "summon", "modifiers": [{ "stat": "resourcePerSecond", "kind": "flat", "value": 3 }] },
-    { "id": "windshot_extra_breath", "class": "windshot", "mark": "aura", "second": true, "modifiers": [{ "stat": "volleyEvery", "kind": "flat", "value": -2 }] },
+    { "id": "windshot_extra_breath", "class": "windshot", "mark": "aura", "second": true, "modifiers": [{ "stat": "shotEvery", "kind": "flat", "value": -1 }] },
     { "id": "shardcaller_electrolysis", "class": "shardcaller", "mark": "poison", "modifiers": [{ "stat": "lightningPoisonBurst", "kind": "flat", "value": 0.1 }] },
     { "id": "shardcaller_plasma", "class": "shardcaller", "mark": "hunterMark", "second": true, "modifiers": [{ "stat": "keyHitLightning", "kind": "more", "value": 0.5 }, { "stat": "resourcePerKey", "kind": "flat", "value": 2 }] },
     { "id": "sandwalker_fellow_traveller", "class": "sandwalker", "mark": "any", "perMark": true, "maxMarks": 5, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.03 }] },

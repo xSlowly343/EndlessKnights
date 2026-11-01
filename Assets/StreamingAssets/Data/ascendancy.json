@@ -153,229 +153,70 @@
     {
       "id": "windshot_trait_1",
       "class": "windshot",
-      "name": {"ru": "Длинный выстрел", "en": "Длинный выстрел"},
-      "blurb": "Шаг копит Натяжение до 100. Каждый 6-й удар — выстрел ×(1 + Натяжение/25), тратит 25. Скилл «Стрела с перевала»",
+      "name": {"ru": "Длинный выстрел", "en": "Long Shot"},
+      "blurb": "Шаг копит Натяжение. Каждый 6-й удар — выстрел ×(1 + Натяжение/25), он тратит 25 Натяжения. Скилл Пути «Стрела с перевала» стреляет сразу",
       "trait": {
-        "partyText": {
-          "ru": "Выстрел на 100 ставит Метку ветра: союзники критуют на 10% чаще",
-          "en": "Выстрел на 100 ставит Метку ветра: союзники критуют на 10% чаще"
-        },
+        "partyText": {"ru": "Выстрел на полном Натяжении ставит Метку ветра на 8 с: союзники +10% шанса крита", "en": "A shot at full Tension leaves a Wind Mark for 8 s: allies get +10% critical chance"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "shotPower", "kind": "flat", "value": 1}]},
+          {"modifiers": [{"stat": "shotPower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "shotPower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "shotPower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "shotPause", "kind": "flat", "value": 1}], "text": {"ru": "Выдох: первый удар после паузы в 2 с — сразу выстрел", "en": "Exhale: the first hit after a 2 s pause is a shot at once"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "windshot_trait_1_f45a",
-                "name": {"ru": "Тугой лук", "en": "Тугой лук"},
-                "text": {"ru": "Тугой лук: до 150", "en": "Тугой лук: до 150"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "windshot_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "windshot_trait_1_f60a",
-                "name": {"ru": "Сквозная стрела", "en": "Сквозная стрела"},
-                "text": {"ru": "Сквозная стрела: бьёт и следующего", "en": "Сквозная стрела: бьёт и следующего"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "windshot_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "windshot_trait_1_f75a",
-                "name": {"ru": "Возврат ветра", "en": "Возврат ветра"},
-                "text": {"ru": "Возврат ветра: убийство не тратит Натяжение", "en": "Возврат ветра: убийство не тратит Натяжение"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "windshot_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "windshot_trait_1_f45a", "name": {"ru": "Тугой лук", "en": "Tight Bow"}, "text": {"ru": "Натяжение до 150, но выстрел тратит 40", "en": "Tension goes up to 150, but a shot spends 40"}, "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}, {"stat": "shotSpend", "kind": "flat", "value": 15}]}, {"id": "windshot_trait_1_f45b", "name": {"ru": "Быстрая тетива", "en": "Quick String"}, "text": {"ru": "Выстрел каждый 4-й удар, но его сила ×0,65", "en": "A shot every 4th hit, but its power is ×0.65"}, "modifiers": [{"stat": "shotEvery", "kind": "flat", "value": -2}, {"stat": "shotPower", "kind": "more", "value": -0.35}]}]},
+          {"level": 60, "options": [{"id": "windshot_trait_1_f60a", "name": {"ru": "Сквозная стрела", "en": "Piercing Arrow"}, "text": {"ru": "Выстрел бьёт и следующего в очереди с той же силой, но тратит на 10 Натяжения больше", "en": "A shot also hits the next enemy in the queue just as hard, but spends 10 more Tension"}, "modifiers": [{"stat": "shotPierce", "kind": "flat", "value": 1}, {"stat": "shotSpend", "kind": "flat", "value": 10}]}, {"id": "windshot_trait_1_f60b", "name": {"ru": "Возврат ветра", "en": "Returning Wind"}, "text": {"ru": "Убийство выстрелом возвращает потраченное Натяжение, но сила выстрела ×0,8", "en": "A kill by a shot gives back the Tension it spent, but the shot's power is ×0.8"}, "modifiers": [{"stat": "shotRefund", "kind": "flat", "value": 1}, {"stat": "shotPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 75, "options": [{"id": "windshot_trait_1_f75a", "name": {"ru": "Стрела бури", "en": "Storm Arrow"}, "text": {"ru": "Выстрел на полном Натяжении ×2, но тратит всё Натяжение", "en": "A shot at full Tension deals ×2, but spends all the Tension"}, "modifiers": [{"stat": "shotStorm", "kind": "flat", "value": 1}]}, {"id": "windshot_trait_1_f75b", "name": {"ru": "Терпеливая лучница", "en": "Patient Archer"}, "text": {"ru": "Выстрелы больше не идут от ударов: лук стреляет сам раз в 3 с, ×1,5", "en": "Hits no longer fire shots: the bow shoots by itself every 3 s at ×1.5"}, "modifiers": [{"stat": "shotAuto", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "windshot_trait_1_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Длинный выстрел", "en": "Длинный выстрел"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "windshot_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Длинный выстрел", "en": "Long Shot"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "windshot_trait_2",
       "class": "windshot",
-      "name": {"ru": "Штиль", "en": "Штиль"},
-      "blurb": "Если шага не было 4 с, ветер стихает: удары критуют всегда, но крит-урон −30%. Любой шаг снимает штиль на 2 с. Скилл «Выстрел в тишине»",
+      "name": {"ru": "Штиль", "en": "Calm"},
+      "blurb": "Если шага не было 4 с, ветер стихает: удары критуют всегда, но урон крита −30%. Любой шаг снимает штиль. Скилл Пути «Выстрел в тишине» даёт штиль сразу",
       "trait": {
-        "partyText": {"ru": "В штиль союзники +10% крит-урона", "en": "В штиль союзники +10% крит-урона"},
+        "partyText": {"ru": "В штиль союзники +10% к множителю крита", "en": "During a calm allies get +10% critical multiplier"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "calmPower", "kind": "flat", "value": 1}]},
+          {"modifiers": [{"stat": "calmPenalty", "kind": "flat", "value": -0.05}]},
+          {"modifiers": [{"stat": "calmPenalty", "kind": "flat", "value": -0.05}]},
+          {"modifiers": [{"stat": "calmPenalty", "kind": "flat", "value": -0.05}]},
+          {"modifiers": [{"stat": "calmTension", "kind": "flat", "value": 1}], "text": {"ru": "Дыхание штиля: каждый крит в штиль даёт 0,5 Натяжения", "en": "Breath of Calm: every critical hit during a calm gives 0.5 Tension"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "windshot_trait_2_f45a",
-                "name": {"ru": "Терпение", "en": "Терпение"},
-                "text": {"ru": "Терпение: 3 с", "en": "Терпение: 3 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "windshot_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "windshot_trait_2_f60a",
-                "name": {"ru": "Мёртвый штиль", "en": "Мёртвый штиль"},
-                "text": {"ru": "Мёртвый штиль: без штрафа", "en": "Мёртвый штиль: без штрафа"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "windshot_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "windshot_trait_2_f75a",
-                "name": {"ru": "Первая стрела штиля ×4", "en": "Первая стрела штиля ×4"},
-                "text": {"ru": "Первая стрела штиля ×4", "en": "Первая стрела штиля ×4"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "windshot_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "windshot_trait_2_f45a", "name": {"ru": "Терпение", "en": "Patience"}, "text": {"ru": "Штиль приходит через 3 с, но урон крита в штиль ещё −5%", "en": "The calm comes after 3 s, but critical damage in it is another 5% lower"}, "modifiers": [{"stat": "calmStill", "kind": "flat", "value": -1}, {"stat": "calmPenalty", "kind": "flat", "value": 0.05}]}, {"id": "windshot_trait_2_f45b", "name": {"ru": "Лёгкий шаг", "en": "Light Step"}, "text": {"ru": "Шаг до 250 px в секунду штиль не снимает, но ждать его 6 с, урон крита в штиль ещё −10%, и в штиль шаг не натягивает лук", "en": "Moving up to 250 px per second does not break the calm, but it takes 6 s to come, critical damage in it is another 10% lower, and during a calm movement gives no Tension"}, "modifiers": [{"stat": "calmDrift", "kind": "flat", "value": 250}, {"stat": "calmStill", "kind": "flat", "value": 2}, {"stat": "calmPenalty", "kind": "flat", "value": 0.1}]}]},
+          {"level": 60, "options": [{"id": "windshot_trait_2_f60a", "name": {"ru": "Мёртвый штиль", "en": "Dead Calm"}, "text": {"ru": "Штраф крита в штиль вдвое меньше, но вне штиля удары ×0,8", "en": "The critical penalty during a calm is halved, but outside it hits deal ×0.8"}, "modifiers": [{"stat": "calmDead", "kind": "flat", "value": 1}]}, {"id": "windshot_trait_2_f60b", "name": {"ru": "Первая стрела", "en": "First Arrow"}, "text": {"ru": "Первый удар штиля ×4, но ждать штиль на 1 с дольше", "en": "The first hit of a calm deals ×4, but the calm takes 1 s longer to come"}, "modifiers": [{"stat": "calmFirst", "kind": "flat", "value": 1}, {"stat": "calmStill", "kind": "flat", "value": 1}]}]},
+          {"level": 75, "options": [{"id": "windshot_trait_2_f75a", "name": {"ru": "Затишье перед бурей", "en": "Lull Before the Storm"}, "text": {"ru": "Когда штиль ломается, 5 следующих ударов ×3, но урон крита в штиль ещё −10%", "en": "When a calm breaks, the next 5 hits deal ×3, but critical damage in a calm is another 10% lower"}, "modifiers": [{"stat": "calmStorm", "kind": "flat", "value": 1}, {"stat": "calmPenalty", "kind": "flat", "value": 0.1}]}, {"id": "windshot_trait_2_f75b", "name": {"ru": "Вечный штиль", "en": "Endless Calm"}, "text": {"ru": "Штиль всегда, но урон крита в нём −50%", "en": "The calm never ends, but critical damage in it is 50% lower"}, "modifiers": [{"stat": "calmEternal", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [{"id": "windshot_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Штиль", "en": "Штиль"}, "modifiers": []}],
+      "nodes": [{"id": "windshot_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Штиль", "en": "Calm"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "windshot_trait_3",
       "class": "windshot",
-      "name": {"ru": "Попутный ветер", "en": "Попутный ветер"},
-      "blurb": "Каждые 3000 px шага — порыв: следующие 10 ударов пускают по 2 стрелы. Порывы копятся до 5. Скилл «Ураганная стрела»",
+      "name": {"ru": "Попутный ветер", "en": "Tailwind"},
+      "blurb": "Каждые 3000 px шага — порыв: 10 следующих ударов пускают по второй стреле. Порывы копятся до 5. Скилл Пути «Ураганная стрела» даёт 2 порыва",
       "trait": {
-        "partyText": {"ru": "Порыв: союзникам откаты на 10% быстрее 5 с", "en": "Порыв: союзникам откаты на 10% быстрее 5 с"},
+        "partyText": {"ru": "Порыв: союзники +10% прироста ресурса на 5 с", "en": "A gust gives allies +10% resource gain for 5 s"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "gustPower", "kind": "flat", "value": 0.6}]},
+          {"modifiers": [{"stat": "gustPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "gustPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "gustPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "gustTension", "kind": "flat", "value": 5}], "text": {"ru": "Ветер в колчане: каждый порыв приносит 5 Натяжения", "en": "Wind in the Quiver: every gust brings 5 Tension"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "windshot_trait_3_f45a",
-                "name": {"ru": "Шквал", "en": "Шквал"},
-                "text": {"ru": "Шквал: 3 стрелы", "en": "Шквал: 3 стрелы"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "windshot_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "windshot_trait_3_f60a",
-                "name": {"ru": "Ветер в спину", "en": "Ветер в спину"},
-                "text": {"ru": "Ветер в спину: порыв каждые 2000 px", "en": "Ветер в спину: порыв каждые 2000 px"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "windshot_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "windshot_trait_3_f75a",
-                "name": {"ru": "Буря", "en": "Буря"},
-                "text": {"ru": "Буря: 5 порывов разом — 8 с двойных стрел", "en": "Буря: 5 порывов разом — 8 с двойных стрел"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "windshot_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "windshot_trait_3_f45a", "name": {"ru": "Шквал", "en": "Squall"}, "text": {"ru": "Порыв пускает по 3 стрелы, но держится 6 ударов", "en": "A gust fires 3 arrows per hit, but lasts only 6 hits"}, "modifiers": [{"stat": "gustArrows", "kind": "flat", "value": 1}, {"stat": "gustHits", "kind": "flat", "value": -4}]}, {"id": "windshot_trait_3_f45b", "name": {"ru": "Ветер в спину", "en": "Wind at the Back"}, "text": {"ru": "Порыв каждые 2000 px, но копятся только 2", "en": "A gust every 2000 px, but only 2 can be stored"}, "modifiers": [{"stat": "gustPx", "kind": "flat", "value": -1000}, {"stat": "gustMax", "kind": "flat", "value": -3}]}]},
+          {"level": 60, "options": [{"id": "windshot_trait_3_f60a", "name": {"ru": "Буря", "en": "Gale"}, "text": {"ru": "Порывы не тратятся по одному: на 5 порывах — буря, 8 с каждый удар пускает вторую стрелу", "en": "Gusts are not spent one by one: at 5 gusts a gale rises, and for 8 s every hit fires a second arrow"}, "modifiers": [{"stat": "gustStorm", "kind": "flat", "value": 1}]}, {"id": "windshot_trait_3_f60b", "name": {"ru": "Штормовое предупреждение", "en": "Storm Warning"}, "text": {"ru": "Вклад отряду от порыва вдвое, но свои стрелы порыва ×0,7", "en": "A gust gives the party twice as much, but your own gust arrows deal ×0.7"}, "modifiers": [{"stat": "gustPartyDouble", "kind": "flat", "value": 1}, {"stat": "gustPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 75, "options": [{"id": "windshot_trait_3_f75a", "name": {"ru": "Ураган", "en": "Hurricane"}, "text": {"ru": "Стрелы порыва бьют и следующего в очереди, но порыв короче на 2 удара", "en": "Gust arrows also hit the next enemy in the queue, but a gust lasts 2 hits less"}, "modifiers": [{"stat": "gustQueue", "kind": "flat", "value": 1}, {"stat": "gustHits", "kind": "flat", "value": -2}]}, {"id": "windshot_trait_3_f75b", "name": {"ru": "Ветряная мельница", "en": "Windmill"}, "text": {"ru": "Порыв приходит и сам раз в 6 с, но от шага — вдвое реже", "en": "A gust also comes by itself every 6 s, but movement brings them half as often"}, "modifiers": [{"stat": "gustTimer", "kind": "flat", "value": 1}, {"stat": "gustPx", "kind": "flat", "value": 3000}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "windshot_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Попутный ветер", "en": "Попутный ветер"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "windshot_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Попутный ветер", "en": "Tailwind"}, "modifiers": []}],
       "links": []
     },
     {

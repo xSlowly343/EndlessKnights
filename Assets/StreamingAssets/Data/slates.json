@@ -1003,22 +1003,22 @@
     ],
     "windshot": [
       {
-        "id": "windshot_normal",
+        "id": "windshot_shot_power",
         "modifiers": [
           {
-            "stat": "damageVsNormal",
+            "stat": "shotPower",
             "kind": "increased",
-            "value": 0.06
+            "value": 0.1
           }
         ]
       },
       {
-        "id": "windshot_distance",
+        "id": "windshot_gust_sooner",
         "modifiers": [
           {
-            "stat": "mouseDistance",
-            "kind": "increased",
-            "value": 0.06
+            "stat": "gustPx",
+            "kind": "flat",
+            "value": -150
           }
         ]
       }

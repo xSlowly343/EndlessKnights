@@ -396,7 +396,11 @@ namespace Game.Core.Content.Gems
                         WhirlSeconds = Number(node, "whirlSeconds", 600),
                         Breach = node.HasField("breach") && node.Field("breach").AsBool(),
                         Touches = node.HasField("touches") ? node.Field("touches").AsInt(0, 100) : 0,
-                        PhantomSeconds = Number(node, "phantomSeconds", 600)
+                        PhantomSeconds = Number(node, "phantomSeconds", 600),
+                        Tension = Number(node, "tension", 1000),
+                        Gusts = node.HasField("gusts") ? node.Field("gusts").AsInt(0, 100) : 0,
+                        CalmSeconds = Number(node, "calmSeconds", 600),
+                        Shot = node.HasField("shot") && node.Field("shot").AsBool()
                     };
                 case "aura":
                     return new AuraEffect(
