@@ -6,7 +6,8 @@
     "metalhead": "buffer", "oracle": "buffer", "bannerbearer": "buffer",
     "voodoo": "debuffer", "clockmaker": "debuffer",
     "plague_doctor": "dot", "moonshiner": "dot",
-    "gravedigger": "summon", "captain": "summon"
+    "gravedigger": "summon", "captain": "summon",
+    "spinner": "buffer", "rimecaller": "debuffer", "thornmaiden": "dot", "clayshaper": "summon"
   },
   "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
   "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "evilEyeOnEnemy": "evilEye", "coldOnEnemy": "cold", "bloodOnEnemy": "blood", "bondsUp": "bond" },
@@ -41,7 +42,15 @@
     { "id": "gravedigger_plague_corpses", "class": "gravedigger", "mark": "poison", "modifiers": [{ "stat": "soulsPerPoisonedKill", "kind": "flat", "value": 3 }] },
     { "id": "gravedigger_cursed_ground", "class": "gravedigger", "mark": "curse", "second": true, "modifiers": [{ "stat": "minionSpeed", "kind": "increased", "value": 0.4 }] },
     { "id": "captain_powder_keg", "class": "captain", "mark": "fire", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Minion"] }] },
-    { "id": "captain_thunder_shot", "class": "captain", "mark": "stun", "second": true, "modifiers": [{ "stat": "cannonChargedShot", "kind": "flat", "value": 3 }] }
+    { "id": "captain_thunder_shot", "class": "captain", "mark": "stun", "second": true, "modifiers": [{ "stat": "cannonChargedShot", "kind": "flat", "value": 3 }] },
+    { "id": "spinner_shared_thread", "class": "spinner", "mark": "aura", "modifiers": [{ "stat": "bondPower", "kind": "flat", "value": 0.2 }] },
+    { "id": "spinner_blind_knot", "class": "spinner", "mark": "blind", "second": true, "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.25 }] },
+    { "id": "rimecaller_thaw", "class": "rimecaller", "mark": "fire", "modifiers": [{ "stat": "coldPower", "kind": "flat", "value": 0.2 }] },
+    { "id": "rimecaller_frozen_spark", "class": "rimecaller", "mark": "lightning", "second": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2 }] },
+    { "id": "thornmaiden_open_wounds", "class": "thornmaiden", "mark": "series", "modifiers": [{ "stat": "bloodPower", "kind": "flat", "value": 0.2 }] },
+    { "id": "thornmaiden_rooted_bond", "class": "thornmaiden", "mark": "bond", "second": true, "modifiers": [{ "stat": "dotDamage", "kind": "increased", "value": 0.25 }] },
+    { "id": "clayshaper_fired_clay", "class": "clayshaper", "mark": "bond", "modifiers": [{ "stat": "golemPower", "kind": "flat", "value": 0.2 }] },
+    { "id": "clayshaper_marked_quarry", "class": "clayshaper", "mark": "hunterMark", "second": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Minion"] }] }
   ],
   "reactions": [
     { "id": "miasma_burst", "marks": ["fire", "poison"], "seconds": 1, "cooldownSeconds": 10, "modifiers": [{ "stat": "miasmaBurstShare", "kind": "flat", "value": 0.3 }] },

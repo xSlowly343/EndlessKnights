@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Build
                 .Where(field => field.FieldType == typeof(StatId))
                 .Select(field => ((StatId)field.GetValue(null)!).Name)
                 .ToHashSet();
-            var classes = HeroClassNames.ByName.Keys.Concat(new[] { "spinner", "rimecaller", "thornmaiden", "clayshaper" }).ToList();
+            var classes = HeroClassNames.ByName.Keys.ToList();
             Assert.That(classes.Count, Is.EqualTo(18));
             foreach (var heroClass in classes)
             {
