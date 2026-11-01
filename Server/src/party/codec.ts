@@ -233,7 +233,7 @@ function partyOfferAuraTicks(data: ArrayBuffer): number {
     const view = new DataView(data);
     let ticks = 0;
     for (let i = 0; i < PartySkillSlots; i++) {
-        const at = 26 + i * 12;
+        const at = 30 + i * 12;
         if (data.byteLength < at + 12)
             break;
         const gem = view.getInt32(at, true);

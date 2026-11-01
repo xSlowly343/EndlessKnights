@@ -31,7 +31,7 @@ namespace Game.Core.Content
         public int GustHitsMin { get; private set; } = 1;
         public int GustMax { get; private set; } = 5;
         public double GustTension { get; private set; }
-        public double GustPartyResource { get; private set; }
+        public double GustPartyCooldown { get; private set; }
         public double GustPartySeconds { get; private set; } = 5;
         public double GustStormSeconds { get; private set; } = 8;
         public int GustStormGusts { get; private set; } = 5;
@@ -72,7 +72,7 @@ namespace Game.Core.Content
                 GustHitsMin = gust.Field("hitsMin").AsInt(1, 1000),
                 GustMax = gust.Field("max").AsInt(1, 100),
                 GustTension = gust.Field("tension").AsNumber(0, 1000),
-                GustPartyResource = gust.Field("partyResource").AsNumber(0, 10),
+                GustPartyCooldown = gust.Field("partyCooldown").AsNumber(0, 0.9),
                 GustPartySeconds = gust.Field("partySeconds").AsNumber(0, 600),
                 GustStormSeconds = gust.Field("stormSeconds").AsNumber(0.1, 600),
                 GustStormGusts = gust.Field("stormGusts").AsInt(1, 100),

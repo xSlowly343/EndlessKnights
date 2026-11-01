@@ -45,7 +45,8 @@
       { "from": "partyCritChance", "to": "critChance", "kind": "increased" },
       { "from": "partyCritMultiplier", "to": "critMultiplier", "kind": "flat" },
       { "from": "partyResource", "to": "resourceGain", "kind": "increased" },
-      { "from": "partyGemDrop", "to": "gemDrop", "kind": "increased" }
+      { "from": "partyGemDrop", "to": "gemDrop", "kind": "increased" },
+      { "from": "partySkillCooldown", "to": "skillCooldown", "kind": "increased", "negate": true }
     ]
   }
 }

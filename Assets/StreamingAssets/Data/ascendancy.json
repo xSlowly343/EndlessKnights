@@ -202,7 +202,7 @@
       "name": {"ru": "Попутный ветер", "en": "Tailwind"},
       "blurb": "Каждые 3000 px шага — порыв: 10 следующих ударов пускают по второй стреле. Порывы копятся до 5. Скилл Пути «Ураганная стрела» даёт 2 порыва",
       "trait": {
-        "partyText": {"ru": "Порыв: союзники +10% прироста ресурса на 5 с", "en": "A gust gives allies +10% resource gain for 5 s"},
+        "partyText": {"ru": "Порыв: откаты союзников на 10% быстрее 5 с", "en": "A gust makes allies' cooldowns 10% faster for 5 s"},
         "levels": [
           {"modifiers": [{"stat": "gustPower", "kind": "flat", "value": 0.6}]},
           {"modifiers": [{"stat": "gustPower", "kind": "flat", "value": 0.1}]},

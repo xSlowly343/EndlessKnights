@@ -6,7 +6,7 @@ namespace Game.Core.Party
 {
     public sealed class PartyBuffRules
     {
-        public const int MaxStats = 6;
+        public const int MaxStats = 7;
         public const int MaxAuras = Sim.SkillLoadout.MaxSlots;
 
         private PartyBuffRules(double selfShare, double offerSeconds, IReadOnlyList<PartyStatLink> stats, double allyResourceMax, double allyResourceCooldownSeconds)
@@ -38,7 +38,8 @@ namespace Game.Core.Party
                 stats.Add(new PartyStatLink(
                     new StatId(item.Field("from").AsString()),
                     new StatId(item.Field("to").AsString()),
-                    ModifierReader.ReadKind(item.Field("kind"))));
+                    ModifierReader.ReadKind(item.Field("kind")),
+                    item.HasField("negate") && item.Field("negate").AsBool()));
             }
             var allyResource = node.Field("allyResource");
             var rules = new PartyBuffRules(node.Field("selfShare").AsNumber(0, 1), node.Field("offerSeconds").AsNumber(0.1, 60), stats,

@@ -203,6 +203,7 @@ namespace Game.Core.Sim
         public static readonly StatId PartyCritChance = new StatId("partyCritChance");
         public static readonly StatId PartyCritMultiplier = new StatId("partyCritMultiplier");
         public static readonly StatId PartyResource = new StatId("partyResource");
+        public static readonly StatId PartySkillCooldown = new StatId("partySkillCooldown");
         public static readonly StatId PartyGemDrop = new StatId("partyGemDrop");
         public static readonly StatId ClearDayAbove = new StatId("clearDayAbove");
         public static readonly StatId ClearDayCritChance = new StatId("clearDayCritChance");
