@@ -2,6 +2,7 @@
 
 Формат: `- [ ] <ID задачи из roadmap> — описание`.
 
+- [ ] 14д.5 — после 14д.2 в данных и коде остались мёртвые механики жестов: скиллы `space_hammer`, `step_back`, `double_grip`, `dash`, `lasso`, `pendulum_strike`, `blade_whirl`, `lightning_zigzag` (и круговая часть `hurricane`), поддержки `whirlpool` и `sweeping` (они же в `rift.json` и серверном расписании Разлома), эффект `specialKeys`, поля `flick`/`reversal`/`circle` у `inputHits`, `armOn`, статы `resourcePerFlick`, `resourcePerCircle`, `flickCurseBonus`, `burnOnFlick`, `circleLightning`, `flickStreak`, условия `afterCircle`/`afterFlick`, `CurseRules.Flick*`, поля слота `CircleProgress`, `FlickTargets`, `CirclesSinceCast`, `CooldownCircles`, `Primed`. Бот (`BotProfile`) всё ещё «крутит круги и делает взмахи», бою это ничего не даёт. Убрать вместе со старым составом.
 - [ ] 14д.5 — после 14д.1 удар клика идёт под старыми внутренними именами клавиатуры: `DamageSource.Keyboard`, `StatTags.Keyboard`, `GameState.KeyHits`, `CombatRules.KeyDamage`, `combat.json` → `hits.keyboard`. Переименовать в «удар» вместе с данными и сейвом в 14д.5.
 - [ ] 14д.6–14д.23 — баланс после 14д.1 не подбирался: средний рекорд +8% (клик 8 → 10), разброс по классам большой; подобрать заново при переделке персонажей.
 - [x] 14г.1 — `gems.json` переименован в `skills.json` (слово Сергея 31.10.2026, PR 340); старые упоминания `gems.json` в документах убирает 14г.9.

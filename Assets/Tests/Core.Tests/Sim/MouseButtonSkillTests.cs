@@ -52,7 +52,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void RightAndMiddleClicksCastTheSecondSlot()
+        public void RightClickCastsTheSecondSlotAndMiddleClickOnlyHits()
         {
             var (right, rightInput) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
             rightInput.ClickRight();
@@ -62,11 +62,10 @@ namespace Game.Core.Tests.Sim
             middleInput.ClickMiddle();
             middle.Tick();
 
-            foreach (var loop in new[] { right, middle })
-            {
-                Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Ready, Is.True);
-                Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Ready, Is.False);
-            }
+            Assert.That(right.State.Skills[SkillSystem.LeftButtonSlot].Ready, Is.True);
+            Assert.That(right.State.Skills[SkillSystem.RightButtonSlot].Ready, Is.False);
+            Assert.That(middle.State.Skills[SkillSystem.RightButtonSlot].Ready, Is.True);
+            Assert.That(middle.State.KeyHits, Is.EqualTo(1));
         }
 
         [Test]

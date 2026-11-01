@@ -129,6 +129,16 @@
 
 Формат для каждой: что делает игрок, ввод, связь с боем, прогресс, персонажи, кооп, **уникальная фишка**, потолок пользы.
 
+**Жесты мыши и особые клавиши для активностей уже есть в коде** (решение Сергея 01.11.2026, задача 14д.2). С 14д.2 бой их не видит: в бою только удары (клавиши и все кнопки мыши), ЛКМ/ПКМ для скиллов и движение мыши. Но ввод по-прежнему их распознаёт и отдаёт в `InputSnapshot` (`Game.Core.Input`), так что мирным активностям не нужно писать распознавание заново:
+- круги мышью — `CircleTurns`, распознаёт `Platform/Input/CircleDetector.cs` (настройки `input_caps.json` → `detection.circle`); подходит для помешивания в алхимии, заводки катушки в рыбалке, гончарного круга;
+- резкие взмахи (свайпы) — `Flicks`, `Platform/Input/FlickDetector.cs` (`detection.flick`); подсечка в рыбалке, удар молота в кузнице;
+- развороты мыши — `Reversals`, `Platform/Input/ReversalDetector.cs`; раскопки, мешание;
+- колёсико — `WheelTicks`, `Platform/Input/WheelAccumulator.cs`; быстрая смена активности (§2), прокрутка;
+- Enter, Space, Backspace и сочетания клавиш — `EnterDowns`, `SpaceDowns`, `BackspaceDowns`, `ComboDowns` (`Platform/Input/KeyboardEventFilter.cs`, `KeyClass`);
+- ровность ритма — `RhythmCv`, `Platform/Input/RhythmMeter.cs` (в бою только для защиты от макросов); подходит для созерцания (§5.7).
+
+Для тестов ядра всё это умеет `FakeInputSource` (`Circle`, `Flick`, `Reverse`, `ScrollWheel`, `PressEnter`, `PressSpace`, `PressBackspace`, `PressCombo`). Тесты распознавания: `Assets/Tests/Platform.Tests/MouseGestureTests.cs`, `ReversalDetectorTests.cs`, `MouseButtonsTests.cs`.
+
 ### 5.1. Сад и травы
 - **Что делает игрок:** сажает семена, растения растут в реальном времени, нажатия «поливают» и ускоряют рост, клик собирает урожай.
 - **Ввод:** клавиши — полив, клик — сбор, остальное зависит от растения (ниже).

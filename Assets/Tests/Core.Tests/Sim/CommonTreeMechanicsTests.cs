@@ -51,21 +51,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void MouseGesturesHoldTheirConditionForAFewSeconds()
-        {
-            var input = new FakeInputSource();
-            var hero = Hero(input, EnemyType.Normal);
-            input.Circle(1);
-            input.Flick();
-            input.MoveMouse(200);
-            hero.Tick();
-
-            Assert.That(Holds(hero, ModifierCondition.AfterCircle) && Holds(hero, ModifierCondition.AfterFlick) && Holds(hero, ModifierCondition.MouseMoving), Is.True);
-            Ticks(hero, TestWorld.Data.Combat.Conditions.AfterGestureSeconds + 0.2);
-            Assert.That(Holds(hero, ModifierCondition.AfterCircle) || Holds(hero, ModifierCondition.AfterFlick) || Holds(hero, ModifierCondition.MouseMoving), Is.False);
-        }
-
-        [Test]
         public void AFastKillAndAPartyTurnTheirConditionsOn()
         {
             var hero = Hero(EnemyType.Normal);

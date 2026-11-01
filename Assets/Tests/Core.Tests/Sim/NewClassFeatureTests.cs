@@ -69,14 +69,15 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CirclesSpinThread()
+        public void MouseMovementSpinsThread()
         {
             var input = new FakeInputSource();
             var spinner = Hero(HeroClass.Spinner, input);
-            input.Circle(2);
+            var pxPerPoint = TestWorld.Data.Combat.Resources.For("spinner").MousePxPerPoint;
+            input.MoveMouse((float)(2 * pxPerPoint));
             spinner.Tick();
 
-            Assert.That(spinner.State.Resource, Is.EqualTo(2 * TestWorld.Data.Combat.Resources.For("spinner").PerCircle).Within(1e-9));
+            Assert.That(spinner.State.Resource, Is.EqualTo(2).Within(1e-6));
         }
 
         [Test]
@@ -144,14 +145,14 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ThornmaidenFlicksPutBloodThatBleedsInAPause()
+        public void ThornmaidenMouseMovementPutsBloodThatBleedsInAPause()
         {
             var input = new FakeInputSource();
             var thornmaiden = Hero(HeroClass.Thornmaiden, input);
-            input.Flick();
+            input.MoveMouse(1000);
             thornmaiden.Tick();
 
-            Assert.That(thornmaiden.State.BloodStacks, Is.EqualTo(Rules.Blood.PerFlick).Within(1e-9));
+            Assert.That(thornmaiden.State.BloodStacks, Is.EqualTo(Rules.Blood.PerThousandPx).Within(1e-6));
 
             var before = thornmaiden.State.TotalDamage;
             for (var i = 0; i < GameLoop.TicksPerSecond; i++)
@@ -169,14 +170,14 @@ namespace Game.Core.Tests.Sim
             var thornmaiden = Hero(HeroClass.Thornmaiden, input);
             for (var i = 0; i < 30; i++)
             {
-                input.Flick();
+                input.MoveMouse(1000);
                 thornmaiden.Tick();
             }
             Assert.That(thornmaiden.State.BloodStacks, Is.EqualTo(Rules.Blood.Max).Within(1e-9));
 
             var huscarlInput = new FakeInputSource();
             var huscarl = Hero(HeroClass.Viking, huscarlInput);
-            huscarlInput.Flick();
+            huscarlInput.MoveMouse(1000);
             huscarl.Tick();
             Assert.That(huscarl.State.BloodStacks, Is.Zero);
         }

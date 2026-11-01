@@ -75,7 +75,7 @@ namespace Game.Core.Sim
         public void Tick(in EffectiveInput input)
         {
             if (_state.Is(HeroClass.PlagueDoctor))
-                _state.StirTurns = System.Math.Min(Rules.StirMax, _state.StirTurns + input.CircleTurns);
+                _state.StirTurns = System.Math.Min(Rules.StirMax, _state.StirTurns + input.MousePx / Rules.StirPxPerTurn);
             StacksFromKeys(input);
             BurstAtMax();
             Miasma();

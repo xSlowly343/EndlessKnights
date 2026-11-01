@@ -31,9 +31,6 @@ namespace Game.Core.Sim
 
         public void NoteInput(in EffectiveInput input)
         {
-            var rules = _combat.Conditions;
-            _state.AfterCircleTicks = input.CircleTurns >= 1 ? Ticks(rules.AfterGestureSeconds) : System.Math.Max(0, _state.AfterCircleTicks - 1);
-            _state.AfterFlickTicks = input.Flicks > 0 ? Ticks(rules.AfterGestureSeconds) : System.Math.Max(0, _state.AfterFlickTicks - 1);
             if (_state.AfterFastKillTicks > 0)
                 _state.AfterFastKillTicks--;
         }

@@ -124,12 +124,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void StirringWithMouseCirclesAddsStacksToTheNextVial()
+        public void StirringWithTheMouseAddsStacksToTheNextVial()
         {
             var (loop, input) = Hero(HeroClass.PlagueDoctor);
             for (var i = 0; i < Rules.StirMax + 3; i++)
             {
-                input.Circle(1);
+                input.MoveMouse((float)Rules.StirPxPerTurn);
                 loop.Tick();
             }
 
