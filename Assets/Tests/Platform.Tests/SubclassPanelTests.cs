@@ -1,5 +1,4 @@
 using System.IO;
-using System.Linq;
 using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Input;
@@ -44,26 +43,15 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void ChoosingAPathShowsItsTreeAndTakingANodeSpendsAPathPoint()
+        public void ChoosingAPathInTheTabPicksItsTrait()
         {
             var offered = _data.Ascendancy.SubclassesOf(_loop.State.ClassName)[0];
 
             Assert.That(_panel.TryClick(_panel.Subclass.WorldPointOfChoice(0)), Is.True);
 
             Assert.That(_loop.State.Ascendancy.Subclass, Is.EqualTo(offered.Id));
+            Assert.That(_loop.State.Ascendancy.Trait(_data.Ascendancy), Is.Not.Null);
             Assert.That(_panel.Subclass.IsChoosing, Is.False);
-
-            var node = offered.Nodes.First(def => SubclassView.CanTake(_loop.State.Ascendancy, _data.Ascendancy, def));
-            Assert.That(_panel.TryClick(_panel.Subclass.WorldPointOf(node)), Is.True);
-
-            Assert.That(_panel.Subclass.Selected, Is.Null);
-            Assert.That(_loop.State.Ascendancy.IsAllocated(node.Id), Is.True);
-            Assert.That(_loop.State.Ascendancy.PointsLeft(_data.Ascendancy), Is.EqualTo(0));
-
-            Assert.That(_panel.TryClick(_panel.Subclass.WorldPointOf(node)), Is.True);
-
-            Assert.That(_loop.State.Ascendancy.IsAllocated(node.Id), Is.False);
-            Assert.That(_loop.State.Ascendancy.PointsLeft(_data.Ascendancy), Is.EqualTo(1));
         }
 
         [Test]

@@ -152,7 +152,7 @@ namespace Game.Core.Tests.Build
             var rolled = loop.Weapons.Give(Weapons.Roll(jarl, ItemRarity.Mythic, new Rng(7)));
             loop.Weapons.Equip(WeaponHand.Left, rolled);
             var bow = loop.Weapons.Give(Weapons.Roll(Weapons.StarterFor(HeroClass.Windshot), ItemRarity.Rare, new Rng(3)));
-            var corsair = loop.Weapons.Give(Weapons.RollUnique(Weapons.Uniques.First(unique => unique.Id == "corsair_axe"), new Rng(5)));
+            var corsair = loop.Weapons.Give(Weapons.RollUnique(Weapons.Uniques.First(unique => unique.Id == "corsair_daggers"), new Rng(5)));
             var fast = state.Skills[0].Skill;
             state.ProgressOf(fast).Level = 9;
             var support = TestWorld.Data.Gems.All.First(gem => gem.Kind == GemKind.Support);
@@ -178,8 +178,8 @@ namespace Game.Core.Tests.Build
             Assert.That(reforgedFast.Skill.Tier, Is.EqualTo(fast.Skill!.Tier));
             Assert.That(state.LevelOf(reforgedFast), Is.EqualTo(9), "the level moves to the new gem");
             Assert.That(state.Skills[0].Supports[0], Is.SameAs(support));
-            Assert.That(state.Skills.All(slot => slot.Skill.Skill!.Weapon != "axe"), Is.True);
-            Assert.That(state.OwnedGems.Any(gem => gem.Skill?.Weapon == "axe"), Is.False);
+            Assert.That(state.Skills.All(slot => slot.Skill.Skill!.Weapon != "rune_daggers"), Is.True);
+            Assert.That(state.OwnedGems.Any(gem => gem.Skill?.Weapon == "rune_daggers"), Is.False);
             Assert.That(state.OwnedGems.Select(gem => gem.Id), Does.Contain("lull"));
 
             Assert.That(loop.ChangeClassPaid(HeroClass.Runedancer), Is.EqualTo(ClassChangeResult.Changed));

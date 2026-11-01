@@ -10,6 +10,7 @@ namespace Game.Core.Sim
         private readonly GameState _state;
         private readonly EventQueue _events;
         private readonly ClassMechanics _class;
+        private readonly RunedancerMechanics _runedancer;
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
@@ -25,15 +26,18 @@ namespace Game.Core.Sim
             _state = state;
             _events = events;
             _class = new ClassMechanics(rules.Classes, state, hero);
+            _runedancer = new RunedancerMechanics(rules.Classes.Runedancer, state, hero, this);
         }
 
         public ClassMechanics Class => _class;
+        public RunedancerMechanics Runedancer => _runedancer;
         public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
         {
             _rules = rules;
             _class.UseRules(rules.Classes);
+            _runedancer.UseRules(rules.Classes.Runedancer);
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
@@ -139,7 +143,7 @@ namespace Game.Core.Sim
                 multiplier *= System.Math.Max(0, _hero.Value(CombatStats.DamageVsBlinded, 1, tags));
             if (_state.VulnerabilityTicks > 0 && !_state.SharedEnemy)
                 multiplier *= 1 + _state.VulnerabilityShare;
-            return multiplier;
+            return multiplier * _runedancer.SkillMultiplier(tags);
         }
 
         public double Balance()
@@ -172,6 +176,7 @@ namespace Game.Core.Sim
             if (_state.VulnerabilityTicks > 0 && --_state.VulnerabilityTicks == 0)
                 _state.VulnerabilityShare = 0;
             CountStreakTime();
+            _runedancer.Tick();
             var keyHits = TakeWhole(_state.KeyCarry + input.Hits, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -179,8 +184,11 @@ namespace Game.Core.Sim
 
             for (var i = 0; i < keyHits; i++)
             {
-                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst();
+                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier();
+                var alive = _state.EnemyAlive;
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
+                if (alive)
+                    _runedancer.AfterStrike(LastHitCrit);
                 if ((flags & HitFlags.ComboStrike) != 0)
                     ComboStrikeQueue(_state.FocusMultiplier * multiplier);
                 KeyHitLightning();
@@ -191,6 +199,7 @@ namespace Game.Core.Sim
                 Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier);
             MouseBursts(input.MousePx);
             _class.EndTick(keyHits, input.MousePx);
+            _runedancer.EndTick();
             NoteRates(keyHits, input.MousePx / _rules.MousePxPerHit);
         }
 

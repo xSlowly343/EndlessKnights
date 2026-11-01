@@ -16,6 +16,8 @@ namespace Game.Core.Party
         private PartyBuffRules _rules;
         private bool _dirty;
         private bool _clearDay;
+        private double _traitDamage;
+        private double _traitCritChance;
 
         public PartyBuffs(PartyBuffRules rules, GameState state, StatSheet hero)
         {
@@ -35,7 +37,15 @@ namespace Game.Core.Party
 
         public AllyOffer Ally(int slot) => _allies[slot];
 
-        public double OwnValue(int index) => _rules.Stats[index].ValueOf(_hero) + ClearDayBonus(index) + HeardByAllBonus(index);
+        public double OwnValue(int index) => _rules.Stats[index].ValueOf(_hero) + ClearDayBonus(index) + HeardByAllBonus(index) + TraitBonus(index);
+
+        private double TraitBonus(int index)
+        {
+            var from = _rules.Stats[index].From;
+            if (from == CombatStats.PartyDamage)
+                return _state.TraitPartyDamage;
+            return from == CombatStats.PartyCritChance ? _state.TraitPartyCritChance : 0;
+        }
 
         public bool HeardByAll => _state.HeardByAll;
 
@@ -113,6 +123,12 @@ namespace Game.Core.Party
             if (heard != _state.HeardByAll)
             {
                 _state.HeardByAll = heard;
+                _dirty = true;
+            }
+            if (_state.TraitPartyDamage != _traitDamage || _state.TraitPartyCritChance != _traitCritChance)
+            {
+                _traitDamage = _state.TraitPartyDamage;
+                _traitCritChance = _state.TraitPartyCritChance;
                 _dirty = true;
             }
             if (_dirty)

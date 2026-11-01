@@ -44,12 +44,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void RunedancerRageBurnsTenPerSecondAfterThreeSecondsWithoutKeys()
+        public void RunedancerRunesBurnTenPerSecondAfterTenSecondsWithoutHits()
         {
             var (loop, input) = Hero(HeroClass.Runedancer);
             Type(loop, input, 25);
 
-            Ticks(loop, 29);
+            Ticks(loop, 99);
             Assert.That(loop.State.Resource, Is.EqualTo(50).Within(1e-9));
 
             Ticks(loop, 10);

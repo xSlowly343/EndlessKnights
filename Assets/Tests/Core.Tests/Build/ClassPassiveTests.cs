@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Build
             return loop;
         }
 
-        [TestCase(HeroClass.Runedancer, "runedancer_r1c9")]
+        [TestCase(HeroClass.Runedancer, "runedancer_r1c1")]
         [TestCase(HeroClass.Duelist, "duelist_r1c9")]
         [TestCase(HeroClass.Windshot, "windshot_r1c9")]
         [TestCase(HeroClass.Shardcaller, "shardcaller_r1c9")]

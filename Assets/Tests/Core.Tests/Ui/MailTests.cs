@@ -50,7 +50,7 @@ namespace Game.Core.Tests.Ui
             Assert.That(milestones.StepAt(25)!.RareGem, Is.False);
             Assert.That(milestones.StepAt(75)!.From, Is.EqualTo(25));
             Assert.That(milestones.StepAt(250)!.Reward.Friendship, Is.GreaterThan(milestones.StepAt(25)!.Reward.Friendship));
-            Assert.That(milestones.GemsFor(1792497600), Has.Count.EqualTo(milestones.RareGemsPerRift));
+            Assert.That(milestones.GemsFor(1792497600).Count, Is.EqualTo(milestones.RareGemsPerRift));
             Assert.That(milestones.GemsFor(1792497600), Is.EqualTo(milestones.GemsFor(1792497600)), "the pool of a rift is the same every time");
         }
 

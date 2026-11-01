@@ -32,21 +32,21 @@ namespace Game.Core.Tests.Sim
         {
             Assert.That(Weapons.Uniques.Count, Is.EqualTo(8));
             Assert.That(Weapons.Uniques.Count(u => u.SecondType != null), Is.EqualTo(5));
-            Assert.That(Def("corsair_axe").SecondType!.Id, Is.EqualTo("pistol"));
+            Assert.That(Def("corsair_daggers").SecondType!.Id, Is.EqualTo("pistol"));
             Assert.That(Def("skull_shovel").SecondType, Is.Null);
         }
 
         [Test]
         public void DoubleTypedWeaponRollsSkillsOfBothTypes()
         {
-            var unique = Def("corsair_axe");
+            var unique = Def("corsair_daggers");
             var weapon = Weapons.RollUnique(unique, new Rng(5));
             var types = weapon.Skills.Select(id => TestWorld.Real.Gems[id].Skill!.Weapon).Distinct().ToList();
 
             Assert.That(weapon.Skills.Count, Is.LessThanOrEqualTo(Weapons.SkillRules.Places));
             Assert.That(weapon.Skills.Distinct().Count(), Is.EqualTo(weapon.Skills.Count));
-            Assert.That(types, Is.EquivalentTo(new[] { "axe", "pistol" }));
-            Assert.That(weapon.Counts("axe") && weapon.Counts("pistol"), Is.True);
+            Assert.That(types, Is.EquivalentTo(new[] { "rune_daggers", "pistol" }));
+            Assert.That(weapon.Counts("rune_daggers") && weapon.Counts("pistol"), Is.True);
             Assert.That(weapon.Counts("katana"), Is.False);
         }
 
@@ -55,11 +55,11 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Real();
             var plainCount = loop.Weapons.Modifiers.Count;
-            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("corsair_axe"), new Rng(2)));
+            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("corsair_daggers"), new Rng(2)));
             loop.Weapons.Equip(WeaponHand.Left, weapon);
 
             Assert.That(loop.State.Weapons.Holds("pistol"), Is.True);
-            Assert.That(loop.State.Weapons.Holds("axe"), Is.True);
+            Assert.That(loop.State.Weapons.Holds("rune_daggers"), Is.True);
             Assert.That(Weapons.TryGetType("pistol", out var pistol), Is.True);
             foreach (var innate in pistol.Innate)
                 Assert.That(loop.Weapons.Modifiers, Does.Contain(innate));

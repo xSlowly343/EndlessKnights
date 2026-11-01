@@ -3,13 +3,8 @@ namespace Game.Core.Content
     public sealed class ClassRules
     {
         public ClassRules(double comboTimeoutSeconds, int comboStrikeEvery, double comboStrikeMultiplier, double whirlResource, double headbangPxPerSecond, double headbangMaxSeconds,
-            int breathEvery, int comboStrikeTargets, int comboStrikeEveryMin, double clockworkAbove = 0, double clockworkSlow = 0, double clockworkFloor = 1,
-            int shieldEvery = 0, int shieldEveryMin = 1, double shieldMultiplier = 1, double shieldStunSeconds = 0)
+            int breathEvery, int comboStrikeTargets, int comboStrikeEveryMin, double clockworkAbove = 0, double clockworkSlow = 0, double clockworkFloor = 1)
         {
-            ShieldEvery = shieldEvery;
-            ShieldEveryMin = shieldEveryMin;
-            ShieldMultiplier = shieldMultiplier;
-            ShieldStunSeconds = shieldStunSeconds;
             ClockworkAbove = clockworkAbove;
             ClockworkSlow = clockworkSlow;
             ClockworkFloor = clockworkFloor;
@@ -34,10 +29,6 @@ namespace Game.Core.Content
         public double ClockworkAbove { get; }
         public double ClockworkSlow { get; }
         public double ClockworkFloor { get; }
-        public int ShieldEvery { get; }
-        public int ShieldEveryMin { get; }
-        public double ShieldMultiplier { get; }
-        public double ShieldStunSeconds { get; }
         public double HeadbangPxPerSecond { get; }
         public double HeadbangMaxSeconds { get; }
         public HunterMarkRules HunterMark { get; private set; } = HunterMarkRules.None;
@@ -50,13 +41,13 @@ namespace Game.Core.Content
         public ColdRules Cold { get; private set; } = ColdRules.None;
         public BloodRules Blood { get; private set; } = BloodRules.None;
         public GolemRules Golem { get; private set; } = GolemRules.None;
+        public RunedancerRules Runedancer { get; private set; } = RunedancerRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
             var combo = node.Field("duelist").Field("combo");
             var headbang = node.Field("minstrel").Field("headbang");
             var clockwork = node.Field("clockwright").Field("clockwork");
-            var shield = node.Field("runedancer").Field("shield");
             return new ClassRules(
                 combo.Field("timeoutSeconds").AsNumber(0.1, 60),
                 combo.Field("strikeEvery").AsInt(1, 10000),
@@ -69,18 +60,15 @@ namespace Game.Core.Content
                 combo.Field("strikeEveryMin").AsInt(1, 10000),
                 clockwork.Field("resourceAbove").AsNumber(0, 1e6),
                 clockwork.Field("slow").AsNumber(0, 1),
-                clockwork.Field("floor").AsNumber(0, 1),
-                shield.Field("every").AsInt(1, 10000),
-                shield.Field("everyMin").AsInt(1, 10000),
-                shield.Field("multiplier").AsNumber(1, 1000),
-                shield.Field("stunSeconds").AsNumber(0, 60)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")), Sand = BlindRules.Read(node.Field("sandwalker").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("minstrel").Field("overdrive")),
+                clockwork.Field("floor").AsNumber(0, 1)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")), Sand = BlindRules.Read(node.Field("sandwalker").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("minstrel").Field("overdrive")),
                 StandingAuras = StandingAuraRules.Read(node.Field("lanternbearer").Field("standingAuras")),
                 EvilEye = EvilEyeRules.Read(node.Field("whisperer").Field("evilEye")),
                 OverloadQueueTargets = node.Field("shardcaller").Field("overload").Field("queueTargets").AsInt(0, 100),
                 Bonds = BondRules.Read(node.Field("mothcaller").Field("bonds")),
                 Cold = ColdRules.Read(node.Field("cartomancer").Field("cold")),
                 Blood = BloodRules.Read(node.Field("herbwitch").Field("blood")),
-                Golem = GolemRules.Read(node.Field("golemancer").Field("golem")) };
+                Golem = GolemRules.Read(node.Field("golemancer").Field("golem")),
+                Runedancer = RunedancerRules.Read(node.Field("runedancer")) };
         }
     }
 }

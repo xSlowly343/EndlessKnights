@@ -9,7 +9,7 @@ namespace Game.Core.Tests.Content
 {
     public class SkillDataTests
     {
-        private const string Strike = "{ \"id\": \"x\", \"kind\": \"active\", \"weapon\": \"axe\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"tags\": [\"Keyboard\", \"Skill\"], \"cost\": { \"resource\": 10 }, \"cooldownSeconds\": 4, \"effect\": { \"type\": \"strike\", \"multiplier\": 4 }";
+        private const string Strike = "{ \"id\": \"x\", \"kind\": \"active\", \"weapon\": \"rune_daggers\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"tags\": [\"Keyboard\", \"Skill\"], \"cost\": { \"resource\": 10 }, \"cooldownSeconds\": 4, \"effect\": { \"type\": \"strike\", \"multiplier\": 4 }";
 
         private static string RealFile() => TestData.ReadGameDataFile(GemCatalog.FileName);
 
@@ -153,7 +153,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void AClassAuraMustReserveResource()
         {
-            var error = Assert.Throws<ContentException>(() => WithExtra("{ \"id\": \"x\", \"kind\": \"aura\", \"weapon\": \"axe\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"durationSeconds\": 5, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }"))!;
+            var error = Assert.Throws<ContentException>(() => WithExtra("{ \"id\": \"x\", \"kind\": \"aura\", \"weapon\": \"rune_daggers\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"durationSeconds\": 5, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }"))!;
 
             Assert.That(error.Message, Does.Contain("a class aura reserves resource"));
         }
@@ -183,11 +183,11 @@ namespace Game.Core.Tests.Content
         {
             var error = Assert.Throws<ContentException>(() => GameData.Load(name =>
                 name == GemCatalog.FileName
-                    ? TestData.ReadGameDataFile(name).Replace("\"id\": \"duelist_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"katana\"", "\"id\": \"duelist_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"axe\"")
+                    ? TestData.ReadGameDataFile(name).Replace("\r\n", "\n").Replace("\"id\": \"duelist_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"katana\"", "\"id\": \"duelist_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"rune_daggers\"")
                     : TestData.ReadGameDataFile(name)));
 
             Assert.That(error!.Message, Does.Contain("katana: 11 active skills, expected 12"));
-            Assert.That(error.Message, Does.Contain("axe: 13 active skills, expected 12"));
+            Assert.That(error.Message, Does.Contain("rune_daggers: 13 active skills, expected 12"));
         }
     }
 }

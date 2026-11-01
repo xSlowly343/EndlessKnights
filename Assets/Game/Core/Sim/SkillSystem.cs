@@ -194,6 +194,8 @@ namespace Game.Core.Sim
                 return CastResult.Passive;
             if (!Armed(slot))
                 return CastResult.NoWeapon;
+            if (_combat.Runedancer.Forbids(slot.Skill))
+                return CastResult.TraitCastsIt;
             var spare = !slot.Ready && slot.SpareCharges > 0;
             if (!slot.Ready && !spare)
                 return CastResult.OnCooldown;
@@ -313,6 +315,7 @@ namespace Game.Core.Sim
                 if (native.RepeatAboveCombo > 0 && _state.Combo > native.RepeatAboveCombo)
                     Strike(slot, strike, native, 0);
             }
+            _combat.Runedancer.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)

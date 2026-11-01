@@ -14,7 +14,7 @@ namespace Game.Core.Diagnostics
 
         private static readonly Regex WindowsUserFolder = new Regex(@"\b[a-z]:[\\/]+(?:users|documents and settings)[\\/]+[^\\/:*?""<>|\r\n]+", Options);
         private static readonly Regex UnixUserFolder = new Regex(@"(?<![\w.])/(?:home|users)/[^/\s]+", Options);
-        private static readonly Regex KeyCode = new Regex(@"\b(?:keycode|virtualkey|vkey|vk|scancode|scan code|makecode)\b\s*[.=:]?\s*[\w]+", Options);
+        private static readonly Regex KeyNumber = new Regex(@"\b(?:keycode|virtualkey|vkey|vk|scancode|scan code|makecode)\b\s*[.=:]?\s*[\w]+", Options);
 
         private readonly Regex? _profile;
         private readonly Regex? _userName;
@@ -36,7 +36,7 @@ namespace Game.Core.Diagnostics
             text = UnixUserFolder.Replace(text, UserMarker);
             if (_userName != null)
                 text = _userName.Replace(text, UserMarker);
-            text = KeyCode.Replace(text, KeyMarker);
+            text = KeyNumber.Replace(text, KeyMarker);
             return text.Length > MaxLineLength ? text.Substring(0, MaxLineLength) : text;
         }
 

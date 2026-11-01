@@ -15,7 +15,8 @@ namespace Game.Core.Stats
             "laterHitsPenalty", "minionExplode", "damagePerResource", "keyHitQueueShare", "damagePerCombo", "damagePerComboMax",
             "damageAtBalance", "rampPerSecond", "rampMax", "overloadQueueShare", "goldPerResource", "enemyHpCut", "damagePerAura",
             "echoShare", "doomShare", "doomMultiplier", "dotQueueShare", "skeletonOnKill", "beastOnKill", "minionQueueShare",
-            "goldJackpotChance", "wandererChance", "offlineDpsShare", "cooldownPerResource", "cooldownPerResourceMax", "markDamage", "markPower", "companionPerMark", "typingPartyBonus", "overdriveSongs", "choirPower", "choirSoloShare", "auraInPause", "evilEyeEffect", "evilEyePower", "bondPower", "coldPower", "bloodPower", "golemPower", "overloadBoss", "minionBoss", "mouseQueueShare", "focusIdleFloor"
+            "goldJackpotChance", "wandererChance", "offlineDpsShare", "cooldownPerResource", "cooldownPerResourceMax", "markDamage", "markPower", "companionPerMark", "typingPartyBonus", "overdriveSongs", "choirPower", "choirSoloShare", "auraInPause", "evilEyeEffect", "evilEyePower", "bondPower", "coldPower", "bloodPower", "golemPower", "overloadBoss", "minionBoss", "mouseQueueShare", "focusIdleFloor",
+            "traitHitWeight", "runeRhyme", "runeSealPower", "runeWeave", "runeFirstRune", "runeCapital", "bladeKeep", "bladePartyCrit", "whirlSkillPerFive", "whirlPartyDamage"
         };
 
         private static readonly StatTags[] LabelledTags =

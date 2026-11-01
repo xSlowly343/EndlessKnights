@@ -946,10 +946,10 @@
   "classLines": {
     "runedancer": [
       {
-        "id": "runedancer_shield_sooner",
+        "id": "runedancer_rune_sooner",
         "modifiers": [
           {
-            "stat": "shieldEvery",
+            "stat": "runeWordLength",
             "kind": "flat",
             "value": -1,
             "tags": [
@@ -960,10 +960,10 @@
         "whole": true
       },
       {
-        "id": "runedancer_shield_damage",
+        "id": "runedancer_rune_word",
         "modifiers": [
           {
-            "stat": "shieldDamage",
+            "stat": "runeWord",
             "kind": "increased",
             "value": 0.1,
             "tags": [

@@ -65,6 +65,15 @@ namespace Game.Core.Content.Tree
         public IReadOnlyList<CommonTreeSlotRule> CommonSlots { get; }
         public IReadOnlyList<string> CommonTrees { get; }
         public IReadOnlyCollection<string> MajorTalentsAvoid { get; private set; } = Array.Empty<string>();
+        public IReadOnlyList<TreeNodeKindRule> Kinds { get; private set; } = Array.Empty<TreeNodeKindRule>();
+
+        public static readonly IReadOnlyDictionary<string, TreeNodeKind> KindNames = new Dictionary<string, TreeNodeKind>(StringComparer.Ordinal)
+        {
+            ["small"] = TreeNodeKind.Small,
+            ["medium"] = TreeNodeKind.Medium,
+            ["legendary"] = TreeNodeKind.Legendary,
+            ["core"] = TreeNodeKind.Core
+        };
 
         public static TreeTemplates Load(string json)
         {
@@ -85,7 +94,34 @@ namespace Game.Core.Content.Tree
             foreach (var item in root.Field("majorTalentsAvoid").Items())
                 avoid.Add(item.AsString());
             return new TreeTemplates(RespecRules.Read(root.Field("respec")), classShape, passives, bar.Field("every").AsInt(1, 1000), classes,
-                commonShape, ReadSlots(common.Field("slots")), ReadCommonIds(common.Field("trees"), classes)) { MajorTalentsAvoid = avoid };
+                commonShape, ReadSlots(common.Field("slots")), ReadCommonIds(common.Field("trees"), classes))
+            {
+                MajorTalentsAvoid = avoid,
+                Kinds = root.HasField("kinds") ? ReadKinds(root.Field("kinds"), classShape) : Array.Empty<TreeNodeKindRule>()
+            };
+        }
+
+        public static TreeNodeKind ReadKind(ContentNode node)
+        {
+            if (!KindNames.TryGetValue(node.AsString(), out var kind))
+                throw node.Error($"unknown node kind '{node.AsString()}', expected small, medium, legendary or core");
+            return kind;
+        }
+
+        private static List<TreeNodeKindRule> ReadKinds(ContentNode node, TreeShape shape)
+        {
+            var rules = new List<TreeNodeKindRule>();
+            var total = 0;
+            foreach (var pair in KindNames)
+            {
+                var item = node.Field(pair.Key);
+                var count = item.Field("count").AsInt(0, shape.NodeCount);
+                rules.Add(new TreeNodeKindRule(pair.Value, count, item.Field("fromRow").AsInt(1, shape.RowThresholds.Count)));
+                total += count;
+            }
+            if (total != shape.NodeCount)
+                throw node.Error($"node kinds add up to {total}, the tree has {shape.NodeCount} nodes");
+            return rules;
         }
 
         private static List<CommonTreeSlotRule> ReadSlots(ContentNode list)
