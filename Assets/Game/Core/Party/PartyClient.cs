@@ -425,9 +425,7 @@ namespace Game.Core.Party
             _sharesSinceState = 0;
             if (InParty)
             {
-                var allyHits = AllyHits(state);
-                _loop.Resource.NoteAllyHits(allyHits);
-                _loop.Combat.Lanternbearer.AddAllyHits(allyHits);
+                _loop.Combat.Lanternbearer.AddAllyHits(AllyHits(state));
             }
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {

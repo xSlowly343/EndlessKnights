@@ -134,7 +134,6 @@ namespace Game.Core.Sim
         public static readonly StatId LoopShare = new StatId("loopShare");
         public static readonly StatId ReadingGain = new StatId("readingGain");
         public static readonly StatId AuraReserve = new StatId("auraReserve");
-        public static readonly StatId BannerAuraBonus = new StatId("bannerAuraBonus");
         public static readonly StatId BurnDamage = new StatId("burnDamage");
         public static readonly StatId DotSpread = new StatId("dotSpread");
         public static readonly StatId KeyHitPoison = new StatId("keyHitPoison");
@@ -177,7 +176,6 @@ namespace Game.Core.Sim
         public static readonly StatId KeyCastLeftEvery = new StatId("keyCastLeftEvery");
         public static readonly StatId ResourcePerThousandPx = new StatId("resourcePerThousandPx");
         public static readonly StatId ResourcePerIdleSecond = new StatId("resourcePerIdleSecond");
-        public static readonly StatId OmenPerAllyHit = new StatId("omenPerAllyHit");
         public static readonly StatId DamageVsNormal = new StatId("damageVsNormal");
         public static readonly StatId WeaponInnateEffect = new StatId("weaponInnateEffect");
         public static readonly StatId LowestGemExperience = new StatId("lowestGemExperience");
@@ -218,9 +216,6 @@ namespace Game.Core.Sim
         public static readonly StatId CompanionPerMark = new StatId("companionPerMark");
         public static readonly StatId CompanionLimit = new StatId("companionLimit");
         public static readonly StatId CompanionOwnMark = new StatId("companionOwnMark");
-        public static readonly StatId ThirdAura = new StatId("thirdAura");
-        public static readonly StatId ThirdAuraFree = new StatId("thirdAuraFree");
-        public static readonly StatId AuraInPause = new StatId("auraInPause");
         public static readonly StatId EvilEyeEffect = new StatId("evilEyeEffect");
         public static readonly StatId EvilEyePower = new StatId("evilEyePower");
         public static readonly StatId BondPower = new StatId("bondPower");

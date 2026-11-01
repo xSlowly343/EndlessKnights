@@ -14,7 +14,6 @@
 - [ ] 14д.13 — состояние особенности Lanternbearer (`LanternbearerState`, `GameState.Boons`) не пишется в сейв.
 - [ ] 14д.13 — иконка оружия: файл переименован в `weapons/lantern_staff.png`, картинка пока знамени.
 - [ ] 14д.13 — бот (`NodeScore`) не знает весов новых статов Lanternbearer (`lightPower`, `sparkPower`, `beaconPower` и т.п.).
-- [ ] 14д.13 — старые механики Lanternbearer выключены данными, а код остался: знамя от мыши (`BannerSystem`, `BannerRules`, `combat.json` → `banner.step` = 0), «стоячие ауры» (`StandingAuraSystem`, `StandingAuraRules`, `standingAuras.count` = 0, `SkillSystem.Standing*`, `ThirdAuraFree`), Масло от ударов союзников (`ResourceSystem.NoteAllyHits`, `perAllyHit`). Удалить файлы и тесты — нужно «да» Сергея.
 - [ ] 14д.13 — Маяк в симе самый слабый (448): бот в соло тратит освобождённый скилл на первый готовый; сила Маяка — в отряде, нужен сим отряда.
 - [ ] 14д.24 — после 14д.23 переделать вклад отряду у Runedancer, Duelist, Windshot, Shardcaller, Sandwalker и Minstrel по правилу `coop.md` §19: вместо процентов — механика от союзников, новое правило союзнику, общее состояние врага или совместный момент; каждый вклад виден на полоске союзника.
 - [ ] 14д.11 [R] — окно боя Minstrel: показать строки и куплеты (сколько до следующей строки, таймер куплета, припев), текущую мелодию (и вторую при «Дуэте», окно «Песни для всех»), ноты до сна, сон врага и накопленный урон сна, Гимн и Соло из `GameState.Minstrel`. В облаке Unity нет.

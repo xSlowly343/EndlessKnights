@@ -1127,8 +1127,8 @@
         "id": "lanternbearer_banner",
         "modifiers": [
           {
-            "stat": "bannerAuraBonus",
-            "kind": "increased",
+            "stat": "lightPower",
+            "kind": "flat",
             "value": 0.04
           }
         ]

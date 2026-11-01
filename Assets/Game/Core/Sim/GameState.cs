@@ -159,7 +159,6 @@ namespace Game.Core.Sim
 
         public double WoundedSpawnResource { get; set; }
         public double PendingResource { get; set; }
-        public int AllyHitStatTicks { get; set; }
         public int PartyAllies { get; set; }
         public long PartyWaveStage { get; set; }
         public int PartyEnemiesOnStage { get; set; }
@@ -199,9 +198,6 @@ namespace Game.Core.Sim
         public double StirTurns { get; set; }
         public int OverheatTicks { get; set; }
         public int WeakenedSpawns { get; set; }
-        public double BannerPx { get; set; }
-        public double BannerBonus { get; set; }
-        public int BannerDecayTicks { get; set; }
         public double WeakenShare { get; set; }
         public double ResourceFill { get; set; }
         public double KeyHitRate { get; set; }
