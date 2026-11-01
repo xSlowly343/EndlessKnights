@@ -124,6 +124,39 @@
 3. Широкий режим только у Дерева.
 4. Полоска выше: 480×180 с зонами из §7.
 
+## 10. Окна скилл-системы v3: что брать из ядра (PR 374, к задачам 14г.7а–д)
+
+Вся логика окон готова в `Game.Core.Ui` и покрыта тестами (`SkillWindowModelsTests`). В Unity остаётся вёрстка: создать элементы, раз в кадр (или раз в 0,25 с для панели) прочитать модель и показать, клики передать в методы ниже. Тексты — из `strings.json` через классы `*Texts`, своих строк в Presentation не писать.
+
+### 14г.7а — полоска: 9 мест (`SkillBarView`)
+- Массив `SkillBarPlace[SkillBarLayout.Places]` завести один раз, в `Show` вызывать `SkillBarLayout.Fill(state.Skills, loop.Book, places)` — без аллокаций.
+- Порядок мест: 0 ЛКМ, 1 ПКМ, 2–4 авто, 5–8 ауры (тот же, что `PartyLoadoutMessage.PositionOf`).
+- `place.Row` — индекс в `state.Skills` (или `SkillLoadout.NoSlot`, место пустое); иконку, откат и рамку брать из `state.Skills[place.Row]`, как сейчас.
+- Подпись кнопки — `SkillBarTexts.Key(place.Role)` («Л», «П», у остальных пусто). Константы `SkillSystem.LeftButtonSlot/RightButtonSlot` больше не нужны.
+- Закрытое место (`!place.Open`) — замок и `SkillBarTexts.Locked(place)`: «этап 100», «этап 200» у авто, «ур. 10/25/40/55» у аур.
+- У мест с `place.CastsByItself` (авто и ауры) значок `SkillBarTexts.Self` («сам»).
+- Клик по месту: `loop.RequestCast(place.Row)`, если место не пустое.
+
+### 14г.7б — Книга: слоты и перенос (`BookPanel`)
+- Те же `SkillBarPlace` и `SkillBarLayout.Fill`; заголовок места — `SkillBarTexts.Role(place.Role)` («ЛКМ», «ПКМ», «Авто», «Аура»).
+- Поставить скилл из сумки в место: `BookPlacing.PutInto(loop.Book, gem, place.Role)`; переставить уже стоящий — то же самое (внутри `Book.Assign`). Ответ показать строкой `BookTexts.Result(result)`: активный скилл в слот ауры — `WrongSlot`, нет места — `NoFreeSlot`.
+- Снять: `loop.Book.Unequip(place.Row)`.
+
+### 14г.7в — окно скилла: ветки и поддержки
+- `var window = new SkillWindowModel(loop)` один на панель; `window.Show(row)` при открытии, `window.Refresh()` раз в 0,25 с.
+- Шапка: `BookTexts.Name(window.Skill)`, уровень `window.Level` из `window.MaxLevel`, опыт `window.Experience` / `window.ExperienceToNext` (0 на максимуме), `window.IsAura`.
+- Ветки: `window.TierCount` ярусов (3), у яруса `window.Tier(i)`: `Def.Level` (порог 5/15/25, подпись `BranchTexts.Opens`), `Open`, `Chosen` (−1, если не выбрана), `ChangeCost` (`BranchTexts.Cost(cost, формат чисел)` — «бесплатно» или «смена: N золота»). Две карточки — `Def.Options[0..1]`: имя `BranchTexts.Name`, строка цифр `BranchTexts.Summary` («урон ×1.3 · откат ×0.75», «меняет эффект»). Клик — `window.Choose(tier, option)`, ответ — `BranchTexts.Result` (не дорос, скилл действует, нет золота).
+- Поддержки: `window.Supports` — только подходящие этому скиллу. `Socket >= 0` — уже стоит в этом скилле; `Offer == AlreadyInBuild` — серая, стоит в другом скилле; `Offer == LevelTooLow` — серая с уровнем открытия `Gem.UnlockLevel`; `Available` — можно ставить. Сокеты: открыто `window.Sockets` из `window.MaxSockets` (5), остальные — замок. Поставить или снять: `window.SetSupport(socket, gem или null)`, ответ — `BookTexts.Result`.
+
+### 14г.7г — окно деревьев: вкладки слева
+- `TreeTabs.Fill(loop, tabs)` в `List<TreeTab>`: дерево класса, по одной вкладке на слот общего дерева (сейчас 2), Путь.
+- Подпись — `TreeTabs.Title(tab)`, закрытая вкладка — `TreeTabs.Locked(tab)` («с 20-го уровня», «с 30-го уровня»), очки — `tab.PointsLeft`.
+- Содержимое вкладок — уже готовые вызовы: класс — `loop.ClassTreeDef` и `loop.RaiseNode`; общий слот без дерева — список `loop.Data.CommonTrees` и `loop.ChooseCommonTree(slot, id)`; Путь — как в `SubclassPanel`.
+
+### 14г.7д — окно отряда: слоты союзника
+- `AllyLoadoutView.Fill(partyClient.AllyLoadout(slot), loop.Data.Gems, places)` в `AllySkillPlace[SkillLoadout.MaxSlots]`.
+- У места: `Role`, `Skill` (null — пусто), `Level`, ветки строкой `AllyLoadoutView.Branches(place)` («Имя ветки · — · —»).
+
 ## Источники
 - [Tap Titans 2 Wiki](https://tap-titans-2.fandom.com/wiki/Tap_Titans_2_Wiki), [Equipment](https://tap-titans-2.fandom.com/wiki/Equipment), [TapTitans2 Guide](https://toptaptitans2.blogspot.com/p/guide.html): разделы и экраны TT2
 - [Giant Bomb: Tap Titans 2](https://www.giantbomb.com/tap-titans-2/3030-57373/)

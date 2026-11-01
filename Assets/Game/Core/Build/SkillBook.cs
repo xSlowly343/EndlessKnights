@@ -66,6 +66,8 @@ namespace Game.Core.Build
 
         public int SocketCount => _rules.SocketsFor(_state.RecordStage, 0);
 
+        public int MaxSockets => _rules.MaxSockets;
+
         public int SocketsAt(int index) =>
             index < 0 || index >= _state.Skills.Count ? 0 : _rules.SocketsFor(_state.RecordStage, RebirthsOf(_state.Skills[index].Skill));
 
