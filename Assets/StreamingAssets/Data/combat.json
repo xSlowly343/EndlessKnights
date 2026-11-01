@@ -33,10 +33,10 @@
       "nomad": { "perKey": 0.5, "mousePxPerPoint": 500, "perClick": 1 },
       "stormweaver": { "perKey": 0.2, "mousePxPerPoint": 400, "overload": { "multiplier": 5 } },
       "moonshiner": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } },
-      "spinner": { "perKey": 0.2, "perCircle": 4, "decay": { "perSecond": 2, "afterKeylessSeconds": 5, "mouseHolds": true } },
+      "spinner": { "perKey": 0.2, "mousePxPerPoint": 250, "decay": { "perSecond": 2, "afterKeylessSeconds": 5, "mouseHolds": true } },
       "rimecaller": { "perKey": 0.5, "mousePxPerPoint": 500 },
       "thornmaiden": { "perKey": 0.5 },
-      "clayshaper": { "perKey": 1, "perCircle": 5 }
+      "clayshaper": { "perKey": 1, "mousePxPerPoint": 200 }
     }
   },
   "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
@@ -52,7 +52,7 @@
     "clockmaker": { "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 } },
     "spinner": { "bonds": { "resourceAbove": 30, "auraDuration": 0.5 } },
     "rimecaller": { "cold": { "perKeyHit": 1, "max": 100, "fadePerSecond": 0.05, "damageTaken": 0.2 } },
-    "thornmaiden": { "blood": { "perFlick": 3, "max": 30, "hitsPerStack": 0.2 } },
+    "thornmaiden": { "blood": { "perThousandPx": 3, "max": 30, "hitsPerStack": 0.2 } },
     "clayshaper": { "golem": { "seconds": 20, "hitsPerSecond": 0.5, "multiplier": 12, "stunSeconds": 1 } }
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },
@@ -69,7 +69,7 @@
     "milestone": { "every": 25, "multiplier": 2 }
   },
   "dots": {
-    "poison": { "max": 50, "hitsPerStack": 0.2, "stirMax": 5, "vapourKeyHits": 10 },
+    "poison": { "max": 50, "hitsPerStack": 0.2, "stirMax": 5, "stirPxPerTurn": 1000, "vapourKeyHits": 10 },
     "burn": { "max": 30, "hitsPerStack": 0.3, "fanning": 1.5 },
     "miasma": { "everySeconds": 5, "stackSeconds": 5 }
   },

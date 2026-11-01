@@ -54,18 +54,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SpaceHammerMakesEverySpaceHitThreeTimesAsHard()
-        {
-            var hero = Hero("space_hammer");
-            hero.Cast(0);
-
-            hero.Input.PressSpace(2);
-            hero.Ticks(1);
-
-            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("space_hammer", 2 * 2)).Within(1e-9));
-        }
-
-        [Test]
         public void SpaceHammerDoesNothingBeforeTheCast()
         {
             var hero = Hero("space_hammer");
@@ -100,18 +88,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void StepBackTurnsEveryBackspaceIntoADoubleHit()
-        {
-            var hero = Hero("step_back");
-            Assert.That(hero.Cast(0), Is.EqualTo(CastResult.Passive));
-
-            hero.Input.PressBackspace(1);
-            hero.Ticks(1);
-
-            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("step_back", 1)).Within(1e-9));
-        }
-
-        [Test]
         public void QuickStrideDoublesResourceFromKeys()
         {
             var hero = Hero("quick_stride");
@@ -122,23 +98,6 @@ namespace Game.Core.Tests.Sim
             hero.Ticks(1, keysPerTick: 4);
 
             Assert.That(hero.State.Resource, Is.EqualTo(4 * perKey * 2).Within(1e-9));
-        }
-
-        [Test]
-        public void DoubleGripChargeTenCombos()
-        {
-            var hero = Hero("double_grip");
-            hero.Cast(0);
-            Assert.That(hero.State.Skills[0].HitsLeft, Is.EqualTo(10));
-
-            for (var i = 0; i < 6; i++)
-            {
-                hero.Input.PressCombo(2);
-                hero.Ticks(2);
-            }
-
-            Assert.That(hero.State.Skills[0].HitsLeft, Is.EqualTo(0));
-            Assert.That(hero.DamageFrom(DamageSource.Skill), Is.EqualTo(hero.SkillDamage("double_grip", 3 * 10)).Within(1e-6));
         }
 
         [Test]

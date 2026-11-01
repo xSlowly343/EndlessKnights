@@ -74,8 +74,8 @@ namespace Game.Core.Sim
             if (!_state.Is(HeroClass.Thornmaiden))
                 return;
             var rules = Rules.Blood;
-            if (input.Flicks > 0 && _state.EnemyAlive)
-                _state.BloodStacks = System.Math.Min(rules.Max, _state.BloodStacks + input.Flicks * rules.PerFlick);
+            if (input.MousePx > 0 && _state.EnemyAlive)
+                _state.BloodStacks = System.Math.Min(rules.Max, _state.BloodStacks + input.MousePx / 1000 * rules.PerThousandPx);
             if (_state.BloodStacks <= 0)
                 _bloodCarry = 0;
             _bloodCarry += BloodHitsPerSecond * GameLoop.TickSeconds;

@@ -666,29 +666,6 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void WhirlpoolCirclesCutTheCooldownAndPowerTheNextCast()
-        {
-            var support = Gem("whirlpool").Support!;
-            var loop = Hero();
-            var slot = Supported(loop, "iron_rim_bash", "whirlpool");
-            loop.State.Resource = 100;
-            loop.Skills.TryCast(slot);
-            var before = loop.State.Skills[slot].CooldownTicks;
-            var input = new FakeInputSource();
-            var circling = TestWorld.Loop(input, loop.State, loop.Hero);
-
-            input.Circle(support.CirclesForPower);
-            circling.Tick();
-
-            var cut = support.CirclesForPower * (int)(support.CircleCooldownSeconds * GameLoop.TicksPerSecond);
-            Assert.That(circling.State.Skills[slot].CooldownTicks, Is.EqualTo(System.Math.Max(0, before - 1 - cut)));
-            circling.State.Skills[slot].CooldownTicks = 0;
-            circling.State.Resource = 100;
-            circling.Skills.TryCast(slot);
-            Assert.That(circling.State.Skills[slot].CastPower, Is.EqualTo(support.CirclePower).Within(1e-9));
-        }
-
-        [Test]
         public void TailwindStretchesTheEffectWithMouseDistanceUpToItsCap()
         {
             var support = Gem("tailwind_support").Support!;

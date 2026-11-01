@@ -116,19 +116,16 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EnterAndOtherCountersPassThrough()
+        public void GesturesStayOutOfCombat()
         {
             var rules = new InputRules(RealCaps());
 
-            var effective = rules.Apply(new InputSnapshot(keyDowns: 1, enterDowns: 1, rightClicks: 2, middleClicks: 1, wheelTicks: 3, flicks: 1, circleTurns: 0.5f, rhythmCv: 0.4f));
+            var effective = rules.Apply(new InputSnapshot(keyDowns: 1, enterDowns: 1, rightClicks: 2, middleClicks: 1, wheelTicks: 3, flicks: 1, circleTurns: 0.5f, rhythmCv: 0.4f, comboDowns: 1, reversals: 2));
 
             Assert.That(effective.Hits, Is.EqualTo(4));
-            Assert.That(effective.EnterDowns, Is.EqualTo(1));
             Assert.That(effective.RightClicks, Is.EqualTo(2));
             Assert.That(effective.MiddleClicks, Is.EqualTo(1));
-            Assert.That(effective.WheelTicks, Is.EqualTo(3));
-            Assert.That(effective.Flicks, Is.EqualTo(1));
-            Assert.That(effective.CircleTurns, Is.EqualTo(0.5).Within(1e-6));
+            Assert.That(effective.MousePx, Is.EqualTo(0));
             Assert.That(effective.RhythmCv, Is.EqualTo(0.4).Within(1e-6));
         }
     }

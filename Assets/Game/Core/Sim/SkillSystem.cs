@@ -485,28 +485,12 @@ namespace Game.Core.Sim
             Release(target, NativeTrait.None, 0, false, announce: false);
         }
 
-        private void TickPrimed(SkillSlot slot, in EffectiveInput input)
-        {
-            if (!Armed(slot))
-            {
-                slot.Primed = false;
-                return;
-            }
-            var released = slot.Def.ArmOn == ArmOn.Flick ? input.Flicks > 0 : (slot.Progress += input.CircleTurns) >= 1;
-            if (!released)
-                return;
-            slot.Primed = false;
-            Release(slot, IsNative(slot) ? slot.Def.Native : NativeTrait.None, slot.PrimedSpent, slot.PrimedWasFull, announce: false);
-        }
-
         private void TickInputHits(SkillSlot slot, InputHitsEffect hits, in EffectiveInput input)
         {
             if (!slot.Active || (hits.MaxHits > 0 && slot.HitsLeft <= 0))
                 return;
-            var flicks = TakeHits(slot, hits, input.Flicks);
-            var reversals = TakeHits(slot, hits, input.Reversals);
-            var multiplier = hits.FlickMultiplier * flicks + hits.ReversalMultiplier * reversals;
-            var hitCount = (hits.FlickMultiplier > 0 ? flicks : 0) + (hits.ReversalMultiplier > 0 ? reversals : 0);
+            var multiplier = 0.0;
+            var hitCount = 0;
             if (hits.PxPerHit > 0)
             {
                 slot.Progress += input.MousePx * SupportEffects.MouseDistance(slot);
@@ -515,29 +499,12 @@ namespace Game.Core.Sim
                 multiplier += hits.PxShare * steps;
                 hitCount += steps;
             }
-            if (hits.CircleMultiplier > 0)
-            {
-                slot.CircleProgress += input.CircleTurns;
-                var turns = (int)System.Math.Floor(slot.CircleProgress + 1e-9);
-                slot.CircleProgress -= turns;
-                multiplier += hits.CircleMultiplier * turns;
-                hitCount += turns;
-            }
             if (multiplier > 0 && hits.QueueTargets > 0)
                 QueueShare(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * slot.CastPower, slot.Skill.Tags), hits.QueueTargets);
             if (multiplier > 0)
                 SkillHit(slot, multiplier);
             if (hitCount > 0 && IsNative(slot))
                 _resource.Gain(slot.Def.Native.ResourceOnHit * hitCount);
-        }
-
-        private static int TakeHits(SkillSlot slot, InputHitsEffect hits, int events)
-        {
-            if (events <= 0 || hits.MaxHits <= 0)
-                return events;
-            var taken = System.Math.Min(events, slot.HitsLeft);
-            slot.HitsLeft -= taken;
-            return taken;
         }
 
         private void TickDistanceStacks(SkillSlot slot, DistanceStacksEffect distance, in EffectiveInput input)
@@ -1002,37 +969,6 @@ namespace Game.Core.Sim
             SetPassive(slot, combo.Modifiers, value);
         }
 
-        private void SpecialKeyHits(SkillSlot slot, SpecialKeysEffect special, in EffectiveInput input)
-        {
-            if (!Armed(slot))
-                return;
-            var presses = System.Math.Min(Presses(special.Key, input), (int)System.Math.Ceiling(input.Hits));
-            if (special.Charges > 0)
-            {
-                presses = System.Math.Min(presses, slot.HitsLeft);
-                slot.HitsLeft -= presses;
-            }
-            else if (!special.Passive && !slot.Active)
-            {
-                return;
-            }
-            if (presses > 0)
-                SkillHit(slot, special.Bonus * presses);
-        }
-
-        private static int Presses(SpecialKey key, in EffectiveInput input)
-        {
-            switch (key)
-            {
-                case SpecialKey.Space:
-                    return input.SpaceDowns;
-                case SpecialKey.Backspace:
-                    return input.BackspaceDowns;
-                default:
-                    return input.ComboDowns;
-            }
-        }
-
         private void TickFlow(SkillSlot slot, FlowEffect flow)
         {
             if (!Armed(slot) || _state.KeylessTicks > Ticks(flow.MaxGapSeconds))
@@ -1068,7 +1004,6 @@ namespace Game.Core.Sim
             ExtendSongs(input);
             if (kills > 0 && !SharedEnemy && !CursesFlow())
                 EndDebuffs();
-            CountCurseFlicks(input);
             for (var index = 0; index < _state.Skills.Count; index++)
             {
                 var slot = _state.Skills[index];
@@ -1081,9 +1016,7 @@ namespace Game.Core.Sim
                 KeepReserved(slot);
                 RefillCharge(slot);
                 TickTwin(slot);
-                TickWhirlpool(slot, input);
                 TickTailwind(slot, input);
-                TickSweeping(slot, input);
                 if (slot.Def.Effect is WishEffect)
                     TickWish(slot, kills);
                 if (kills > 0 && slot.Active && slot.Def.Effect is AddStacksEffect { EndsOnKill: true } && !(IsNative(slot) && slot.Def.Native.CarryOver))
@@ -1120,12 +1053,8 @@ namespace Game.Core.Sim
                     _resource.Gain(slot.Def.Native.ResourcePerSavedSecond * GameLoop.TickSeconds * System.Math.Max(0, 1 - _state.BossTimerRate));
                 if (poisonTicks > 0 && slot.Def.Native.ResourcePerPoisonTick > 0 && IsNative(slot) && Armed(slot))
                     _resource.Gain(slot.Def.Native.ResourcePerPoisonTick * poisonTicks);
-                if (slot.Def.Effect is SpecialKeysEffect special)
-                    SpecialKeyHits(slot, special, input);
                 if (slot.Def.Effect is FlowEffect flow)
                     TickFlow(slot, flow);
-                if (slot.Primed)
-                    TickPrimed(slot, input);
                 if (slot.Def.Effect is InputHitsEffect inputHits)
                     TickInputHits(slot, inputHits, input);
                 if (slot.Def.Effect is DistanceStacksEffect distance)
@@ -1178,38 +1107,6 @@ namespace Game.Core.Sim
             for (var i = 0; i < _state.Skills.Count; i++)
                 cap *= SupportEffects.StackCap(_state.Skills[i]);
             _state.SupportStackCap = cap;
-        }
-
-        private void TickSweeping(SkillSlot slot, in EffectiveInput input)
-        {
-            if (input.Flicks <= 0 || !slot.Active)
-                return;
-            var sweeping = SupportEffects.Sweeping(slot);
-            if (sweeping != null)
-                slot.FlickTargets = System.Math.Min(sweeping.FlickTargetsMax, slot.FlickTargets + input.Flicks);
-        }
-
-        private void TickWhirlpool(SkillSlot slot, in EffectiveInput input)
-        {
-            if (input.CircleTurns <= 0)
-                return;
-            var whirlpool = SupportEffects.Whirlpool(slot);
-            if (whirlpool == null)
-                return;
-            slot.CirclesSinceCast += input.CircleTurns;
-            if (slot.CooldownTicks <= 0)
-            {
-                slot.CooldownCircles = 0;
-                return;
-            }
-            slot.CooldownCircles += input.CircleTurns;
-            var turns = (int)System.Math.Floor(slot.CooldownCircles + 1e-9);
-            if (turns <= 0)
-                return;
-            slot.CooldownCircles -= turns;
-            slot.CooldownTicks = System.Math.Max(0, slot.CooldownTicks - turns * Ticks(whirlpool.CircleCooldownSeconds));
-            if (slot.CooldownTicks == 0)
-                slot.ReadyTick = _state.Tick;
         }
 
         private void TickTailwind(SkillSlot slot, in EffectiveInput input)
@@ -1435,13 +1332,6 @@ namespace Game.Core.Sim
                 slot.ActiveTicks = 0;
                 End(slot);
             }
-        }
-
-        private void CountCurseFlicks(in EffectiveInput input)
-        {
-            if (!_state.Is(HeroClass.Voodoo) || input.Flicks <= 0)
-                return;
-            _state.CurseFlicks = System.Math.Min(_combat.Curses.FlicksToMax, _state.CurseFlicks + input.Flicks);
         }
 
         private void PrepareCurse(SkillSlot slot)
@@ -1781,7 +1671,7 @@ namespace Game.Core.Sim
             CastFromKeys(input.Hits);
             if (input.LeftClicks > 0)
                 TryCast(SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Left));
-            if (input.HeavyClicks > 0)
+            if (input.RightClicks > 0)
                 TryCast(SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Right));
         }
 

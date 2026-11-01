@@ -138,23 +138,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void FlicksStrengthenTheNextCurseUpToTheCap()
-        {
-            var (loop, input) = Voodoo();
-            input.Flick(2);
-            loop.Tick();
-
-            CastNew(loop, Curse("hex_a"));
-            Assert.That(DamageMore(loop), Is.EqualTo(1 + 0.2 * (1 + 2 * Rules.FlickBonus)).Within(1e-9));
-            Assert.That(loop.State.CurseFlicks, Is.EqualTo(0));
-
-            input.Flick(100);
-            loop.Tick();
-            CastNew(loop, Curse("hex_b"));
-            Assert.That(DamageMore(loop), Is.EqualTo(1 + 0.2 * (1 + Rules.FlickMax)).Within(1e-9));
-        }
-
-        [Test]
         public void FermentedCurseKeepsCursesThroughKillsAndHitsEverySecond()
         {
             var (loop, input) = Voodoo();

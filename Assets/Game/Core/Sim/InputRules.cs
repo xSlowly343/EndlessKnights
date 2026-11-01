@@ -34,21 +34,7 @@ namespace Game.Core.Sim
                 ? snapshot.MouseDistancePx * (_caps.MaxMousePxPerSecond / mouseRate)
                 : snapshot.MouseDistancePx;
 
-            return new EffectiveInput(
-                hits,
-                snapshot.EnterDowns,
-                snapshot.LeftClicks,
-                snapshot.RightClicks,
-                snapshot.MiddleClicks,
-                snapshot.WheelTicks,
-                mouse,
-                snapshot.Flicks,
-                snapshot.CircleTurns,
-                snapshot.RhythmCv,
-                snapshot.SpaceDowns,
-                snapshot.BackspaceDowns,
-                snapshot.ComboDowns,
-                snapshot.Reversals);
+            return new EffectiveInput(hits, snapshot.LeftClicks, snapshot.RightClicks, snapshot.MiddleClicks, mouse, snapshot.RhythmCv);
         }
 
         private static int MouseButtonHits(in InputSnapshot snapshot) =>

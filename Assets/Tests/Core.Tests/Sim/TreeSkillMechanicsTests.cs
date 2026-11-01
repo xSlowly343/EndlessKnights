@@ -141,21 +141,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CirclesAndFlicksGiveResource()
-        {
-            var (loop, input) = Hero(HeroClass.Ronin,
-                new Modifier(CombatStats.ResourcePerCircle, ModifierKind.Flat, 3, StatTags.Mouse),
-                new Modifier(CombatStats.ResourcePerFlick, ModifierKind.Flat, 2, StatTags.Mouse));
-
-            loop.State.Resource = 0;
-            input.Circle(1);
-            input.Flick(2);
-            loop.Tick();
-
-            Assert.That(loop.State.Resource, Is.EqualTo(3 + 2 * 2).Within(1e-9));
-        }
-
-        [Test]
         public void ATreeLineNamesAKnownSkill()
         {
             var tree = TestWorld.Real.ClassTreeOf("ronin")!;
