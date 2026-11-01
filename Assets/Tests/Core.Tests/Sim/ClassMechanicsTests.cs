@@ -85,7 +85,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ClicksDoNotKeepTheComboAlive()
+        public void ClicksKeepTheComboAliveLikeKeys()
         {
             var (loop, input) = Hero(HeroClass.Ronin);
             var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
@@ -97,7 +97,7 @@ namespace Game.Core.Tests.Sim
                 loop.Tick();
             }
 
-            Assert.That(loop.State.Combo, Is.EqualTo(0));
+            Assert.That(loop.State.Combo, Is.GreaterThan(5));
         }
 
         [Test]

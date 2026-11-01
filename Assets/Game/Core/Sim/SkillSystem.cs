@@ -944,7 +944,7 @@ namespace Game.Core.Sim
         }
 
         private static int InputKindBits(in EffectiveInput input) =>
-            (input.Keys > 0 ? 1 : 0) | (input.MousePx > 0 ? 2 : 0) | (input.Clicks > 0 || input.LeftClicks + input.RightClicks + input.MiddleClicks > 0 ? 4 : 0);
+            (input.Hits > 0 ? 1 : 0) | (input.MousePx > 0 ? 2 : 0) | (input.ButtonPresses > 0 ? 4 : 0);
 
         private int FlurryHits(FlurryEffect flurry, NativeTrait native)
         {
@@ -1006,7 +1006,7 @@ namespace Game.Core.Sim
         {
             if (!Armed(slot))
                 return;
-            var presses = System.Math.Min(Presses(special.Key, input), (int)System.Math.Ceiling(input.Keys));
+            var presses = System.Math.Min(Presses(special.Key, input), (int)System.Math.Ceiling(input.Hits));
             if (special.Charges > 0)
             {
                 presses = System.Math.Min(presses, slot.HitsLeft);
@@ -1293,9 +1293,9 @@ namespace Game.Core.Sim
         }
 
         private static bool SameInput(StatTags tags, in EffectiveInput input) =>
-            ((tags & StatTags.Keyboard) != 0 && input.Keys > 0)
+            ((tags & StatTags.Keyboard) != 0 && input.Hits > 0)
             || ((tags & StatTags.Mouse) != 0 && input.MousePx > 0)
-            || ((tags & StatTags.Click) != 0 && input.Clicks > 0);
+            || ((tags & StatTags.Click) != 0 && input.ButtonPresses > 0);
 
         private void PayDeferred(SkillSlot slot)
         {
@@ -1348,9 +1348,9 @@ namespace Game.Core.Sim
         private int KeyExtension(in EffectiveInput input)
         {
             var perKey = _hero.Value(CombatStats.AuraSecondsPerKey, 0, StatTags.Aura);
-            if (perKey <= 0 || input.Keys <= 0)
+            if (perKey <= 0 || input.Hits <= 0)
                 return 0;
-            _state.AuraKeyCarry += input.Keys * perKey * GameLoop.TicksPerSecond;
+            _state.AuraKeyCarry += input.Hits * perKey * GameLoop.TicksPerSecond;
             var ticks = (int)System.Math.Floor(_state.AuraKeyCarry + 1e-9);
             _state.AuraKeyCarry -= ticks;
             return ticks;
@@ -1778,7 +1778,7 @@ namespace Game.Core.Sim
 
         public void CastFromButtons(in EffectiveInput input)
         {
-            CastFromKeys(input.Keys);
+            CastFromKeys(input.Hits);
             if (input.LeftClicks > 0)
                 TryCast(SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Left));
             if (input.HeavyClicks > 0)

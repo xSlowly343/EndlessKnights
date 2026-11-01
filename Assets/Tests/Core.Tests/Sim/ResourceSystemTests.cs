@@ -96,16 +96,22 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ClicksAndWheelGiveNoResource()
+        public void AClickGivesResourceLikeAKeyAndTheWheelGivesNone()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead);
+            var (clicked, clicks) = Hero(HeroClass.Metalhead);
+            var (typed, keys) = Hero(HeroClass.Metalhead);
+            var (scrolled, wheel) = Hero(HeroClass.Metalhead);
 
-            input.ClickLeft(5);
-            input.ClickRight(2);
-            input.ScrollWheel(30);
-            loop.Tick();
+            clicks.ClickLeft();
+            keys.PressKeys(1);
+            wheel.ScrollWheel(30);
+            clicked.Tick();
+            typed.Tick();
+            scrolled.Tick();
 
-            Assert.That(loop.State.Resource, Is.EqualTo(0));
+            Assert.That(clicked.State.Resource, Is.GreaterThan(0));
+            Assert.That(clicked.State.Resource, Is.EqualTo(typed.State.Resource).Within(1e-9));
+            Assert.That(scrolled.State.Resource, Is.EqualTo(0));
         }
 
         [Test]

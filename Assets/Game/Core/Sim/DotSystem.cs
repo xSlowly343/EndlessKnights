@@ -93,16 +93,16 @@ namespace Game.Core.Sim
 
         private void StacksFromKeys(in EffectiveInput input)
         {
-            if (input.Keys <= 0)
+            if (input.Hits <= 0)
                 return;
             if (_state.Is(HeroClass.PlagueDoctor) && Rules.VapourKeyHits > 0)
-                Add(DotKind.Poison, input.Keys / Rules.VapourKeyHits);
+                Add(DotKind.Poison, input.Hits / Rules.VapourKeyHits);
             var poison = _hero.Value(CombatStats.KeyHitPoison, 0, StatTags.DoT);
             if (poison > 0)
-                Add(DotKind.Poison, poison * input.Keys);
+                Add(DotKind.Poison, poison * input.Hits);
             var burn = _hero.Value(CombatStats.KeyHitBurn, 0, StatTags.DoT);
             if (burn > 0)
-                Add(DotKind.Burn, burn * input.Keys);
+                Add(DotKind.Burn, burn * input.Hits);
         }
 
         private void BurstAtMax()
