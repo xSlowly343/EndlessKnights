@@ -116,7 +116,7 @@ namespace Game.Core.Tests.Content
 
             Assert.That(data.CommonTrees.Count, Is.EqualTo(6));
             Assert.That(data.CommonTreeOf("colossus")!.NameEn, Is.EqualTo("Colossus"));
-            Assert.That(data.CommonTreeOf("viking"), Is.Null);
+            Assert.That(data.CommonTreeOf("runedancer"), Is.Null);
         }
 
         [Test]

@@ -108,9 +108,9 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void VikingStartsWithShieldBashOnLeftOdinsFuryOnRightAndLull()
+        public void RunedancerStartsWithShieldBashOnLeftOdinsFuryOnRightAndLull()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
 
             Assert.That(loop.Book.GrantStartingGems(), Is.True);
 
@@ -123,9 +123,9 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void MetalheadStartsWithSongOnLeftAndGuitarSoloOnRight()
+        public void MinstrelStartsWithSongOnLeftAndGuitarSoloOnRight()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Metalhead });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Minstrel });
 
             loop.Book.GrantStartingGems();
 
@@ -149,7 +149,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void OwnedGemsAreSaved()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
             loop.Book.GrantStartingGems();
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;

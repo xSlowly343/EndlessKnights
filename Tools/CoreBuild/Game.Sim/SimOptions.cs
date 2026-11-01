@@ -8,13 +8,13 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class viking|ronin|amazon|stormweaver|nomad|metalhead|oracle|bannerbearer|voodoo|clockmaker|plague_doctor|moonshiner|gravedigger|captain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--party viking,ronin,... | standard [--loss 0] [--idle <members> [--idle-after <minutes>]]] [--supports <hours>] [--synergy <hours> [--drops true] [--hero-level 0]] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class runedancer|duelist|windshot|shardcaller|sandwalker|minstrel|dreamcatcher|lanternbearer|whisperer|clockwright|alchemist|dowser|soulbinder|ghostcaptain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--party runedancer,duelist,... | standard [--loss 0] [--idle <members> [--idle-after <minutes>]]] [--supports <hours>] [--synergy <hours> [--drops true] [--hero-level 0]] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
         public double MousePxPerSecond { get; private set; }
         public double Hours { get; private set; } = 1;
-        public HeroClass HeroClass { get; private set; } = HeroClass.Viking;
+        public HeroClass HeroClass { get; private set; } = HeroClass.Runedancer;
         public ulong Seed { get; private set; } = 1;
         public int StopAfterFails { get; private set; }
         public double DamageMultiplier { get; private set; } = 1;

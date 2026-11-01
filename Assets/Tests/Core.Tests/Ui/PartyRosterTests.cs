@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Ui
         {
             _ = TestWorld.Real;
             Texts.UseLanguage("ru");
-            _state = new GameState { Class = HeroClass.Viking, Stage = 37 };
+            _state = new GameState { Class = HeroClass.Runedancer, Stage = 37 };
         }
 
         [Test]
@@ -40,9 +40,9 @@ namespace Game.Core.Tests.Ui
         {
             var roster = new RosterMessage
             {
-                Player0 = 11, Class0 = (byte)HeroClass.Viking, Presence0 = (byte)PartyPresence.Fighting,
-                Player1 = 22, Class1 = (byte)HeroClass.Metalhead, Presence1 = (byte)PartyPresence.Resting,
-                Player3 = 44, Class3 = (byte)HeroClass.Voodoo, Presence3 = (byte)PartyPresence.Offline,
+                Player0 = 11, Class0 = (byte)HeroClass.Runedancer, Presence0 = (byte)PartyPresence.Fighting,
+                Player1 = 22, Class1 = (byte)HeroClass.Minstrel, Presence1 = (byte)PartyPresence.Resting,
+                Player3 = 44, Class3 = (byte)HeroClass.Whisperer, Presence3 = (byte)PartyPresence.Offline,
             };
 
             var rows = PartyRoster.From(_state, PartyLink.Linked, roster, 0);
@@ -50,7 +50,7 @@ namespace Game.Core.Tests.Ui
             Assert.That(rows.Count, Is.EqualTo(PartyRules.MaxSlots));
             Assert.That(rows[0].IsSelf, Is.True);
             Assert.That(rows[1].Name, Is.EqualTo("Игрок 2"));
-            Assert.That(rows[1].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Metalhead) + " · запас отдыха 0 мин"));
+            Assert.That(rows[1].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Minstrel) + " · запас отдыха 0 мин"));
             Assert.That(PartyRoster.Status(rows[1].Presence), Is.EqualTo("отдыхает"));
             Assert.That(PartyRoster.Status(rows[2].Presence), Is.EqualTo("нет связи"));
             Assert.That(rows[3].IsFree, Is.True);
@@ -62,7 +62,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void AFreshReactionIsShownOnItsRow()
         {
-            var roster = new RosterMessage { Player0 = 11, Player2 = 33, Class2 = (byte)HeroClass.Oracle };
+            var roster = new RosterMessage { Player0 = 11, Player2 = 33, Class2 = (byte)HeroClass.Dreamcatcher };
 
             var rows = PartyRoster.From(_state, PartyLink.Linked, roster, 0, null, true, slot => slot == 2 ? "Привет!" : string.Empty);
 
@@ -109,15 +109,15 @@ namespace Game.Core.Tests.Ui
         {
             var roster = new RosterMessage
             {
-                Player0 = 11, Class0 = (byte)HeroClass.Viking, Presence0 = (byte)PartyPresence.Fighting,
-                Player1 = 22, Class1 = (byte)HeroClass.Gravedigger, Presence1 = (byte)PartyPresence.Resting, RestBank1 = 25 * 60 + 40,
+                Player0 = 11, Class0 = (byte)HeroClass.Runedancer, Presence0 = (byte)PartyPresence.Fighting,
+                Player1 = 22, Class1 = (byte)HeroClass.Soulbinder, Presence1 = (byte)PartyPresence.Resting, RestBank1 = 25 * 60 + 40,
             };
             double Share(int slot) => slot == 0 ? 0.625 : 0.375;
 
             var rows = PartyRoster.From(_state, PartyLink.Linked, roster, 0, Share, false);
 
-            Assert.That(rows[0].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Viking) + " · этап 37 · вклад 63% · без награды: нет ввода и запаса отдыха"));
-            Assert.That(rows[1].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Gravedigger) + " · вклад 38% · запас отдыха 25 мин"));
+            Assert.That(rows[0].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Runedancer) + " · этап 37 · вклад 63% · без награды: нет ввода и запаса отдыха"));
+            Assert.That(rows[1].Details, Is.EqualTo(HeroSummary.ClassName(HeroClass.Soulbinder) + " · вклад 38% · запас отдыха 25 мин"));
         }
     }
 }

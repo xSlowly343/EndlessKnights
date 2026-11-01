@@ -206,7 +206,7 @@ namespace Game.Core.Tests.Sim.Rift
             var damageInside = loop.Hero.Value(CombatStats.Damage, 1);
             Assert.That(loop.Rift.ModifierActive(index), Is.True);
 
-            loop.Synergy.SetAlly(0, true, HeroClass.Voodoo, TestWorld.Data.Synergy.MaskOf(new[] { "curse" }));
+            loop.Synergy.SetAlly(0, true, HeroClass.Whisperer, TestWorld.Data.Synergy.MaskOf(new[] { "curse" }));
             loop.Tick();
 
             Assert.That(loop.Rift.ModifierActive(index), Is.False);
@@ -225,7 +225,7 @@ namespace Game.Core.Tests.Sim.Rift
             Assert.That(loop.Rift.LiftedBy(index), Is.EqualTo(RiftSystem.NotLifted));
             Assert.That(loop.Rift.LiftingMarks(index), Is.Zero);
 
-            loop.Synergy.SetAlly(2, true, HeroClass.Voodoo, curse);
+            loop.Synergy.SetAlly(2, true, HeroClass.Whisperer, curse);
             loop.Tick();
 
             Assert.That(loop.Rift.LiftedBy(index), Is.EqualTo(2), "the ally in slot 2 holds the curse");
@@ -256,9 +256,9 @@ namespace Game.Core.Tests.Sim.Rift
         public void FavouredMarkBoostsTheResponse()
         {
             var loop = TestWorld.Loop();
-            loop.State.Class = HeroClass.Viking;
+            loop.State.Class = HeroClass.Runedancer;
             var curse = TestWorld.Data.Synergy.MaskOf(new[] { "curse" });
-            loop.Synergy.SetAlly(2, true, HeroClass.Voodoo, curse);
+            loop.Synergy.SetAlly(2, true, HeroClass.Whisperer, curse);
             loop.Tick();
             var rage = new StatId("resourceGain");
             var plain = loop.Hero.Value(rage, 1) - 1;

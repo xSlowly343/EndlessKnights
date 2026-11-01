@@ -53,10 +53,10 @@ namespace Game.Core.Content
 
         public static ClassRules Read(ContentNode node)
         {
-            var combo = node.Field("ronin").Field("combo");
-            var headbang = node.Field("metalhead").Field("headbang");
-            var clockwork = node.Field("clockmaker").Field("clockwork");
-            var shield = node.Field("viking").Field("shield");
+            var combo = node.Field("duelist").Field("combo");
+            var headbang = node.Field("minstrel").Field("headbang");
+            var clockwork = node.Field("clockwright").Field("clockwork");
+            var shield = node.Field("runedancer").Field("shield");
             return new ClassRules(
                 combo.Field("timeoutSeconds").AsNumber(0.1, 60),
                 combo.Field("strikeEvery").AsInt(1, 10000),
@@ -73,14 +73,14 @@ namespace Game.Core.Content
                 shield.Field("every").AsInt(1, 10000),
                 shield.Field("everyMin").AsInt(1, 10000),
                 shield.Field("multiplier").AsNumber(1, 1000),
-                shield.Field("stunSeconds").AsNumber(0, 60)) { HunterMark = HunterMarkRules.Read(node.Field("amazon").Field("mark")), Sand = BlindRules.Read(node.Field("nomad").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("metalhead").Field("overdrive")),
-                StandingAuras = StandingAuraRules.Read(node.Field("bannerbearer").Field("standingAuras")),
-                EvilEye = EvilEyeRules.Read(node.Field("voodoo").Field("evilEye")),
-                OverloadQueueTargets = node.Field("stormweaver").Field("overload").Field("queueTargets").AsInt(0, 100),
-                Bonds = BondRules.Read(node.Field("spinner").Field("bonds")),
-                Cold = ColdRules.Read(node.Field("rimecaller").Field("cold")),
-                Blood = BloodRules.Read(node.Field("thornmaiden").Field("blood")),
-                Golem = GolemRules.Read(node.Field("clayshaper").Field("golem")) };
+                shield.Field("stunSeconds").AsNumber(0, 60)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")), Sand = BlindRules.Read(node.Field("sandwalker").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("minstrel").Field("overdrive")),
+                StandingAuras = StandingAuraRules.Read(node.Field("lanternbearer").Field("standingAuras")),
+                EvilEye = EvilEyeRules.Read(node.Field("whisperer").Field("evilEye")),
+                OverloadQueueTargets = node.Field("shardcaller").Field("overload").Field("queueTargets").AsInt(0, 100),
+                Bonds = BondRules.Read(node.Field("mothcaller").Field("bonds")),
+                Cold = ColdRules.Read(node.Field("cartomancer").Field("cold")),
+                Blood = BloodRules.Read(node.Field("herbwitch").Field("blood")),
+                Golem = GolemRules.Read(node.Field("golemancer").Field("golem")) };
         }
     }
 }

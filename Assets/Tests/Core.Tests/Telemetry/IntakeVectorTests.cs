@@ -43,7 +43,7 @@ namespace Game.Core.Tests.Telemetry
                 FirstPrestigeSeconds = 25200,
                 Prestiges = 2,
                 RecordStage = 412,
-                Character = "voodoo",
+                Character = "whisperer",
                 DaysSinceFirst = 7,
                 ReturnDays = new[] { 0, 1, 3, 7 }
             }).TrimEnd()).Append(",\n");
@@ -56,7 +56,7 @@ namespace Game.Core.Tests.Telemetry
                 SessionSeconds = 600,
                 KeysPerMinute = 95,
                 TotalPlaySeconds = 600,
-                Character = "viking",
+                Character = "runedancer",
                 ReturnDays = new[] { 0 }
             }).TrimEnd()).Append("\n  ],\n  \"errors\": [\n");
             builder.Append("    ").Append(ErrorReportJson.Write(new ErrorReport

@@ -41,7 +41,7 @@ namespace Game.Core.Tests.Build
             var state = new AscendancyState();
             foreach (var activity in catalog.Activities.Take(activities))
                 state.Complete(activity.Id);
-            Assert.That(state.Choose(catalog, "viking", "berserker"), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(state.Choose(catalog, "runedancer", "berserker"), Is.EqualTo(SubclassResult.Chosen));
             return state;
         }
 
@@ -92,7 +92,7 @@ namespace Game.Core.Tests.Build
             var state = Chosen(catalog, 3);
             state.PickFork(catalog, 75, "rhyme");
 
-            Assert.That(state.ChangePaid(catalog, "viking", "berserker"), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(state.ChangePaid(catalog, "runedancer", "berserker"), Is.EqualTo(SubclassResult.Chosen));
 
             Assert.That(state.ForkPicks, Is.Empty);
             Assert.That(state.PickFork(catalog, 75, "long_word"), Is.EqualTo(TraitForkResult.Picked));

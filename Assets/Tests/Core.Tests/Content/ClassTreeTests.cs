@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Content
   ""rows"": [0, 3],
   ""nodes"": 3,
   ""passives"": 1,
-  ""classes"": [""viking""],
+  ""classes"": [""runedancer""],
   ""bar"": {""every"": 2, ""majorsAt"": [4], ""majorOptions"": 2},
   ""majorTalentsAvoid"": [""keyHitPoison""],
   ""commonTrees"": {""rows"": [0, 2], ""nodes"": 2, ""majorsAt"": [3], ""majorOptions"": 2, ""slots"": [{""level"": 20, ""pointsPerLevel"": 1, ""maxPoints"": 70}], ""trees"": [""blade""]}
@@ -23,24 +23,24 @@ namespace Game.Core.Tests.Content
 
         private const string Tree = @"{
   ""version"": 6,
-  ""class"": ""viking"",
+  ""class"": ""runedancer"",
   ""attribute"": {""name"": ""strength"", ""perPoint"": [{""stat"": ""shieldDamage"", ""kind"": ""increased"", ""value"": 0.01}]},
   ""barPassives"": [[{""stat"": ""classAttribute"", ""kind"": ""flat"", ""value"": 3}], [{""stat"": ""resourceGain"", ""kind"": ""increased"", ""value"": 0.02}]],
   ""nodes"": [
-    {""id"": ""viking_axe"", ""row"": 1, ""column"": 0, ""name"": {""ru"": ""Топор"", ""en"": ""Axe""}, ""a"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.04}]}, ""b"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.02}]}, ""c"": {""modifiers"": [{""stat"": ""keyStrikeEvery"", ""kind"": ""flat"", ""value"": 30}]}},
-    {""id"": ""viking_crit"", ""row"": 1, ""column"": 1, ""passive"": true, ""name"": {""ru"": ""Глаз"", ""en"": ""Eye""}, ""a"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.03}]}, ""b"": {""modifiers"": [{""stat"": ""critMultiplier"", ""kind"": ""flat"", ""value"": 0.05}]}, ""c"": {""text"": {""ru"": ""т"", ""en"": ""t""}, ""waits"": ""critFocusPause""}},
-    {""id"": ""viking_swing"", ""row"": 2, ""column"": 0, ""parent"": ""viking_axe"", ""name"": {""ru"": ""Замах"", ""en"": ""Swing""}, ""a"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.06}]}, ""b"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.01}]}, ""c"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.02}]}}
+    {""id"": ""runedancer_axe"", ""row"": 1, ""column"": 0, ""name"": {""ru"": ""Топор"", ""en"": ""Axe""}, ""a"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.04}]}, ""b"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.02}]}, ""c"": {""modifiers"": [{""stat"": ""keyStrikeEvery"", ""kind"": ""flat"", ""value"": 30}]}},
+    {""id"": ""runedancer_crit"", ""row"": 1, ""column"": 1, ""passive"": true, ""name"": {""ru"": ""Глаз"", ""en"": ""Eye""}, ""a"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.03}]}, ""b"": {""modifiers"": [{""stat"": ""critMultiplier"", ""kind"": ""flat"", ""value"": 0.05}]}, ""c"": {""text"": {""ru"": ""т"", ""en"": ""t""}, ""waits"": ""critFocusPause""}},
+    {""id"": ""runedancer_swing"", ""row"": 2, ""column"": 0, ""parent"": ""runedancer_axe"", ""name"": {""ru"": ""Замах"", ""en"": ""Swing""}, ""a"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.06}]}, ""b"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.01}]}, ""c"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.02}]}}
   ],
   ""majors"": [
     {""at"": 4, ""options"": [
-      {""id"": ""viking_cool"", ""name"": {""ru"": ""Х"", ""en"": ""C""}, ""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.1}]},
-      {""id"": ""viking_warm"", ""name"": {""ru"": ""Р"", ""en"": ""W""}, ""text"": {""ru"": ""р"", ""en"": ""w""}, ""waits"": ""warmUp""}
+      {""id"": ""runedancer_cool"", ""name"": {""ru"": ""Х"", ""en"": ""C""}, ""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.1}]},
+      {""id"": ""runedancer_warm"", ""name"": {""ru"": ""Р"", ""en"": ""W""}, ""text"": {""ru"": ""р"", ""en"": ""w""}, ""waits"": ""warmUp""}
     ]}
   ]
 }";
 
         private static ClassTree Load(string tree = Tree, string templates = Templates) =>
-            ClassTreeLoader.Load(TreeTemplates.Load(templates), "viking", tree);
+            ClassTreeLoader.Load(TreeTemplates.Load(templates), "runedancer", tree);
 
         private static string Problem(string tree, string templates = Templates) =>
             Assert.Throws<ContentException>(() => Load(tree, templates))!.Message;
@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void TheFirstLineRepeatsOnRanksTwoAndFourAndNewLinesOpenOnThreeAndFive()
         {
-            var axe = Load()["viking_axe"];
+            var axe = Load()["runedancer_axe"];
 
             Assert.That(Sum(axe.ModifiersAt(1), "damage"), Is.EqualTo(0.04).Within(1e-9));
             Assert.That(Sum(axe.ModifiersAt(2), "damage"), Is.EqualTo(0.08).Within(1e-9));
@@ -66,21 +66,21 @@ namespace Game.Core.Tests.Content
         public void RowsOpenByPointsBelowAndNodesNeedTheirParent()
         {
             var tree = Load();
-            var allocation = new ClassTreeAllocation("viking") { PointsEarned = 20 };
+            var allocation = new ClassTreeAllocation("runedancer") { PointsEarned = 20 };
 
-            Assert.That(allocation.Raise(tree, "viking_swing"), Is.EqualTo(RankResult.RowClosed));
-            Assert.That(allocation.Raise(tree, "viking_crit"), Is.EqualTo(RankResult.Done));
-            Assert.That(allocation.Raise(tree, "viking_crit"), Is.EqualTo(RankResult.Done));
-            Assert.That(allocation.Raise(tree, "viking_crit"), Is.EqualTo(RankResult.Done));
-            Assert.That(allocation.Raise(tree, "viking_swing"), Is.EqualTo(RankResult.NeedsParent), "the row is open, the parent is not taken");
-            Assert.That(allocation.Raise(tree, "viking_axe"), Is.EqualTo(RankResult.Done));
-            Assert.That(allocation.Raise(tree, "viking_swing"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.Raise(tree, "runedancer_swing"), Is.EqualTo(RankResult.RowClosed));
+            Assert.That(allocation.Raise(tree, "runedancer_crit"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.Raise(tree, "runedancer_crit"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.Raise(tree, "runedancer_crit"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.Raise(tree, "runedancer_swing"), Is.EqualTo(RankResult.NeedsParent), "the row is open, the parent is not taken");
+            Assert.That(allocation.Raise(tree, "runedancer_axe"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.Raise(tree, "runedancer_swing"), Is.EqualTo(RankResult.Done));
 
-            Assert.That(allocation.Lower(tree, "viking_axe"), Is.EqualTo(RankResult.HoldsChild));
-            Assert.That(allocation.Lower(tree, "viking_crit"), Is.EqualTo(RankResult.Done), "4 points stay below row 2");
-            Assert.That(allocation.Lower(tree, "viking_crit"), Is.EqualTo(RankResult.HoldsRow));
-            Assert.That(allocation.Lower(tree, "viking_swing"), Is.EqualTo(RankResult.Done));
-            Assert.That(allocation.Lower(tree, "viking_axe"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.Lower(tree, "runedancer_axe"), Is.EqualTo(RankResult.HoldsChild));
+            Assert.That(allocation.Lower(tree, "runedancer_crit"), Is.EqualTo(RankResult.Done), "4 points stay below row 2");
+            Assert.That(allocation.Lower(tree, "runedancer_crit"), Is.EqualTo(RankResult.HoldsRow));
+            Assert.That(allocation.Lower(tree, "runedancer_swing"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.Lower(tree, "runedancer_axe"), Is.EqualTo(RankResult.Done));
             Assert.That(allocation.PointsSpent, Is.EqualTo(2));
         }
 
@@ -88,35 +88,35 @@ namespace Game.Core.Tests.Content
         public void ANodeStopsAtFiveRanksAndPointsRunOut()
         {
             var tree = Load();
-            var allocation = new ClassTreeAllocation("viking") { PointsEarned = 6 };
+            var allocation = new ClassTreeAllocation("runedancer") { PointsEarned = 6 };
 
             for (var rank = 0; rank < 5; rank++)
-                Assert.That(allocation.Raise(tree, "viking_axe"), Is.EqualTo(RankResult.Done));
-            Assert.That(allocation.Raise(tree, "viking_axe"), Is.EqualTo(RankResult.MaxRank));
-            Assert.That(allocation.Raise(tree, "viking_crit"), Is.EqualTo(RankResult.Done));
-            Assert.That(allocation.Raise(tree, "viking_crit"), Is.EqualTo(RankResult.NoPoints));
+                Assert.That(allocation.Raise(tree, "runedancer_axe"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.Raise(tree, "runedancer_axe"), Is.EqualTo(RankResult.MaxRank));
+            Assert.That(allocation.Raise(tree, "runedancer_crit"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.Raise(tree, "runedancer_crit"), Is.EqualTo(RankResult.NoPoints));
         }
 
         [Test]
         public void TheBarGivesPassivesAndMajorTalentsAtItsMarks()
         {
             var tree = Load();
-            var allocation = new ClassTreeAllocation("viking") { PointsEarned = 10 };
-            allocation.Raise(tree, "viking_axe");
-            allocation.Raise(tree, "viking_axe");
-            allocation.Raise(tree, "viking_axe");
+            var allocation = new ClassTreeAllocation("runedancer") { PointsEarned = 10 };
+            allocation.Raise(tree, "runedancer_axe");
+            allocation.Raise(tree, "runedancer_axe");
+            allocation.Raise(tree, "runedancer_axe");
 
-            Assert.That(allocation.ChooseMajor(tree, 4, "viking_cool"), Is.EqualTo(RankResult.MarkNotReached));
+            Assert.That(allocation.ChooseMajor(tree, 4, "runedancer_cool"), Is.EqualTo(RankResult.MarkNotReached));
             Assert.That(Sum(allocation.Modifiers(tree), "classAttribute"), Is.EqualTo(3), "one bar step at 2 points");
-            allocation.Raise(tree, "viking_axe");
+            allocation.Raise(tree, "runedancer_axe");
             Assert.That(Sum(allocation.Modifiers(tree), "resourceGain"), Is.EqualTo(0.02).Within(1e-9), "the second step gives the second passive");
-            Assert.That(allocation.ChooseMajor(tree, 4, "viking_nope"), Is.EqualTo(RankResult.UnknownMajor));
-            Assert.That(allocation.ChooseMajor(tree, 4, "viking_cool"), Is.EqualTo(RankResult.Done));
+            Assert.That(allocation.ChooseMajor(tree, 4, "runedancer_nope"), Is.EqualTo(RankResult.UnknownMajor));
+            Assert.That(allocation.ChooseMajor(tree, 4, "runedancer_cool"), Is.EqualTo(RankResult.Done));
             Assert.That(Sum(allocation.Modifiers(tree), "critChance"), Is.EqualTo(0.12).Within(1e-9), "rank 3 of the axe and the talent");
-            Assert.That(allocation.ChooseMajor(tree, 4, "viking_warm"), Is.EqualTo(RankResult.Done), "a major talent changes for free");
+            Assert.That(allocation.ChooseMajor(tree, 4, "runedancer_warm"), Is.EqualTo(RankResult.Done), "a major talent changes for free");
             Assert.That(Sum(allocation.Modifiers(tree), "critChance"), Is.EqualTo(0.02).Within(1e-9));
-            allocation.ChooseMajor(tree, 4, "viking_cool");
-            allocation.Lower(tree, "viking_axe");
+            allocation.ChooseMajor(tree, 4, "runedancer_cool");
+            allocation.Lower(tree, "runedancer_axe");
             Assert.That(allocation.MajorActive(4), Is.False, "below the mark the talent sleeps");
             Assert.That(Sum(allocation.Modifiers(tree), "critChance"), Is.EqualTo(0.02).Within(1e-9));
         }
@@ -126,11 +126,11 @@ namespace Game.Core.Tests.Content
         {
             Assert.That(Problem(Tree.Replace("\"stat\": \"critChance\", \"kind\": \"increased\", \"value\": 0.1", "\"stat\": \"keyHitPoison\", \"kind\": \"flat\", \"value\": 1")), Does.Contain("uses 'keyHitPoison'"));
             Assert.That(Problem(Tree.Replace("\"passive\": true, ", "")), Does.Contain("0 class passives, expected 1"));
-            Assert.That(Problem(Tree.Replace("\"viking_warm\"", "\"viking_swing\"")), Does.Contain("must differ from other talents and nodes"));
-            Assert.That(Problem(Tree.Replace("\"viking_crit\"", "\"ronin_crit\"")), Does.Contain("start with 'viking_'"));
+            Assert.That(Problem(Tree.Replace("\"runedancer_warm\"", "\"runedancer_swing\"")), Does.Contain("must differ from other talents and nodes"));
+            Assert.That(Problem(Tree.Replace("\"runedancer_crit\"", "\"duelist_crit\"")), Does.Contain("start with 'runedancer_'"));
             Assert.That(Problem(Tree.Replace("\"row\": 1, \"column\": 1", "\"row\": 1, \"column\": 0")), Does.Contain("already has a node in column 0"));
             Assert.That(Problem(Tree.Replace("\"row\": 2, \"column\": 0, \"parent\"", "\"row\": 1, \"column\": 2, \"parent\"")), Does.Contain("lower row"));
-            Assert.That(Problem(Tree.Replace("\"parent\": \"viking_axe\"", "\"parent\": \"viking_swing\"")), Does.Contain("listed earlier"));
+            Assert.That(Problem(Tree.Replace("\"parent\": \"runedancer_axe\"", "\"parent\": \"runedancer_swing\"")), Does.Contain("listed earlier"));
             Assert.That(Problem(Tree, Templates.Replace("\"nodes\": 3", "\"nodes\": 4")), Does.Contain("expected 4"));
             Assert.That(Problem(Tree, Templates.Replace("\"rows\": [0, 3]", "\"rows\": [0, 3, 6]")), Does.Contain("row 3 has no nodes"));
             Assert.That(Problem(Tree, Templates.Replace("\"majorsAt\": [4]", "\"majorsAt\": [6]")), Does.Contain("is at 6 points"));
@@ -180,7 +180,7 @@ namespace Game.Core.Tests.Content
         public void TheHuscarlTreeFromTheDesignLoadsAndAllPointsCanBeSpent()
         {
             var templates = TreeTemplates.Load(TestData.ReadGameDataFile(TreeTemplates.FileName));
-            var tree = ClassTreeLoader.Load(templates, "viking", TestData.ReadGameDataFile(ClassTreeLoader.FileNameOf("viking")));
+            var tree = ClassTreeLoader.Load(templates, "runedancer", TestData.ReadGameDataFile(ClassTreeLoader.FileNameOf("runedancer")));
 
             Assert.That(tree.Nodes.Count, Is.EqualTo(50));
             Assert.That(Enumerable.Range(1, 7).Select(row => tree.Nodes.Count(node => node.Row == row)), Is.EqualTo(new[] { 10, 9, 8, 7, 6, 5, 5 }));
@@ -191,7 +191,7 @@ namespace Game.Core.Tests.Content
             Assert.That(tree.Nodes.Count(node => node.Passive), Is.EqualTo(20));
             Assert.That(tree.Common, Is.False);
 
-            var allocation = new ClassTreeAllocation("viking") { PointsEarned = 180 };
+            var allocation = new ClassTreeAllocation("runedancer") { PointsEarned = 180 };
             while (allocation.PointsLeft > 0)
             {
                 var next = tree.Nodes.OrderByDescending(node => node.Row).FirstOrDefault(node => allocation.CheckRaise(tree, node.Id) == RankResult.Done);

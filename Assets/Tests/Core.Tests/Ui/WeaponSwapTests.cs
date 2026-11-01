@@ -22,7 +22,7 @@ namespace Game.Core.Tests.Ui
             var data = TestWorld.Real;
             Texts.UseLanguage("ru");
             var weaponSkills = data.Gems.All.Where(gem => gem.Skill?.Weapon != null).ToList();
-            _axe = data.Weapons.Starter(data.Weapons.StarterFor(HeroClass.Viking));
+            _axe = data.Weapons.Starter(data.Weapons.StarterFor(HeroClass.Runedancer));
             _axeSkill = weaponSkills.First(gem => gem.Skill!.Weapon == _axe.Type.Id);
             _otherSkill = weaponSkills.First(gem => gem.Skill!.Weapon != _axe.Type.Id);
             _other = data.Weapons.Starter(data.Weapons.Bases.First(weapon => weapon.Type.Id == _otherSkill.Skill!.Weapon));

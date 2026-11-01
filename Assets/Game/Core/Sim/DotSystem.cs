@@ -74,12 +74,12 @@ namespace Game.Core.Sim
 
         public void Tick(in EffectiveInput input)
         {
-            if (_state.Is(HeroClass.PlagueDoctor))
+            if (_state.Is(HeroClass.Alchemist))
                 _state.StirTurns = System.Math.Min(Rules.StirMax, _state.StirTurns + input.MousePx / Rules.StirPxPerTurn);
             StacksFromKeys(input);
             BurstAtMax();
             Miasma();
-            var fanning = _state.Is(HeroClass.Moonshiner) && input.MousePx > 0 ? Rules.FanningMultiplier : 1;
+            var fanning = _state.Is(HeroClass.Dowser) && input.MousePx > 0 ? Rules.FanningMultiplier : 1;
             _state.DotCarry += HitsPerSecond(fanning) * GameLoop.TickSeconds;
             if (--_ticksToHit > 0)
                 return;
@@ -95,7 +95,7 @@ namespace Game.Core.Sim
         {
             if (input.Hits <= 0)
                 return;
-            if (_state.Is(HeroClass.PlagueDoctor) && Rules.VapourKeyHits > 0)
+            if (_state.Is(HeroClass.Alchemist) && Rules.VapourKeyHits > 0)
                 Add(DotKind.Poison, input.Hits / Rules.VapourKeyHits);
             var poison = _hero.Value(CombatStats.KeyHitPoison, 0, StatTags.DoT);
             if (poison > 0)

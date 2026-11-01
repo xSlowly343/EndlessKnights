@@ -19,7 +19,7 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            var paused = _state.Is(HeroClass.Bannerbearer) && _state.IdleTicks * GameLoop.TickSeconds >= _combat.Classes.StandingAuras.PauseSeconds;
+            var paused = _state.Is(HeroClass.Lanternbearer) && _state.IdleTicks * GameLoop.TickSeconds >= _combat.Classes.StandingAuras.PauseSeconds;
             _boost.Apply(paused ? System.Math.Max(0, _hero.Value(CombatStats.AuraInPause, 0)) : 0);
         }
     }

@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
     {
         private static GameLoop Real(long record, int prestiges = 0)
         {
-            var state = new GameState(5) { Class = HeroClass.Viking, RecordStage = record, Prestiges = prestiges };
+            var state = new GameState(5) { Class = HeroClass.Runedancer, RecordStage = record, Prestiges = prestiges };
             var loop = new GameLoop(TestWorld.Real, new FakeInputSource(), state, new StatSheet());
             loop.State.Echo = BigNumber.FromDouble(1e30);
             return loop;

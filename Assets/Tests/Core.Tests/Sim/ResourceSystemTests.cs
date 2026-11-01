@@ -34,9 +34,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void VikingGainsTwoRagePerKey()
+        public void RunedancerGainsTwoRagePerKey()
         {
-            var (loop, input) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer);
 
             Type(loop, input, 5);
 
@@ -44,9 +44,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void VikingRageBurnsTenPerSecondAfterThreeSecondsWithoutKeys()
+        public void RunedancerRageBurnsTenPerSecondAfterThreeSecondsWithoutKeys()
         {
-            var (loop, input) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer);
             Type(loop, input, 25);
 
             Ticks(loop, 29);
@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void MovingMouseKeepsVikingRageFromBurning()
         {
-            var (loop, input) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer);
             Type(loop, input, 25);
 
             for (var i = 0; i < 60; i++)
@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ResourceNeverGoesBelowZeroOrAboveMax()
         {
-            var (loop, input) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer);
             Type(loop, input, 60);
             Assert.That(loop.State.Resource, Is.EqualTo(loop.Resource.Max));
 
@@ -83,9 +83,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void MetalheadDriveComesFromKeysAndDoesNotBurn()
+        public void MinstrelDriveComesFromKeysAndDoesNotBurn()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead);
+            var (loop, input) = Hero(HeroClass.Minstrel);
 
             Type(loop, input, 7);
             input.MoveMouse(5000);
@@ -98,9 +98,9 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AClickGivesResourceLikeAKeyAndTheWheelGivesNone()
         {
-            var (clicked, clicks) = Hero(HeroClass.Metalhead);
-            var (typed, keys) = Hero(HeroClass.Metalhead);
-            var (scrolled, wheel) = Hero(HeroClass.Metalhead);
+            var (clicked, clicks) = Hero(HeroClass.Minstrel);
+            var (typed, keys) = Hero(HeroClass.Minstrel);
+            var (scrolled, wheel) = Hero(HeroClass.Minstrel);
 
             clicks.ClickLeft();
             keys.PressKeys(1);
@@ -129,7 +129,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.ResourceGain, ModifierKind.Increased, 0.5, StatTags.Keyboard));
-            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Viking }, hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Runedancer }, hero);
 
             Type(loop, input, 10);
 

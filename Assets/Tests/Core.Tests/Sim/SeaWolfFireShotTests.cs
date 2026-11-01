@@ -44,7 +44,7 @@ namespace Game.Core.Tests.Sim
         public void CannonballsSetTheEnemyOnFireAndLightTheFireMark()
         {
             Assert.That(Rules.IgniteStacks, Is.EqualTo(1));
-            var (loop, _) = Hero(HeroClass.Captain, EnemyType.Normal);
+            var (loop, _) = Hero(HeroClass.Ghostcaptain, EnemyType.Normal);
             loop.Skills.Minions.Place(Cannon, CannonByName.Tags);
 
             Wait(loop, 1.05);
@@ -58,7 +58,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CannonsOfOtherClassesDoNotIgnite()
         {
-            var (loop, _) = Hero(HeroClass.Viking, EnemyType.Normal);
+            var (loop, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
             loop.Skills.Minions.Place(Cannon, CannonByName.Tags);
 
             Wait(loop, 1.05);
@@ -70,8 +70,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CannonsHitBossesHarderWithTheTree()
         {
-            var (plain, _) = Hero(HeroClass.Captain, EnemyType.Boss, new Modifier(CombatStats.CannonIgnite, ModifierKind.Flat, -1));
-            var (siege, _) = Hero(HeroClass.Captain, EnemyType.Boss, new Modifier(CombatStats.CannonIgnite, ModifierKind.Flat, -1), new Modifier(CombatStats.MinionBoss, ModifierKind.Flat, 0.1, StatTags.Minion));
+            var (plain, _) = Hero(HeroClass.Ghostcaptain, EnemyType.Boss, new Modifier(CombatStats.CannonIgnite, ModifierKind.Flat, -1));
+            var (siege, _) = Hero(HeroClass.Ghostcaptain, EnemyType.Boss, new Modifier(CombatStats.CannonIgnite, ModifierKind.Flat, -1), new Modifier(CombatStats.MinionBoss, ModifierKind.Flat, 0.1, StatTags.Minion));
             var plainHp = plain.State.EnemyHp;
             var siegeHp = siege.State.EnemyHp;
             plain.Skills.Minions.Place(Cannon, CannonByName.Tags);
@@ -86,7 +86,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheBroadsideComesSoonerAndHitsTheNextEnemyWithTheTree()
         {
-            var (loop, input) = Hero(HeroClass.Captain, EnemyType.Normal,
+            var (loop, input) = Hero(HeroClass.Ghostcaptain, EnemyType.Normal,
                 new Modifier(CombatStats.VolleyPx, ModifierKind.Flat, -200, StatTags.Mouse),
                 new Modifier(CombatStats.VolleyPierce, ModifierKind.Flat, 1));
             input.MoveMouse((float)(Rules.BroadsidePx - 200));

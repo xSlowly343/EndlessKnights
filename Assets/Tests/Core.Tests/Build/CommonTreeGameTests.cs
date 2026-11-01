@@ -14,7 +14,7 @@ namespace Game.Core.Tests.Build
     {
         private static readonly ClockStamp Clock = ClockStamp.First(new ClockReading(1_760_000_000_000, 3_600_000, 12));
 
-        private static GameLoop Hero(int level, HeroClass heroClass = HeroClass.Viking)
+        private static GameLoop Hero(int level, HeroClass heroClass = HeroClass.Runedancer)
         {
             var loop = new GameLoop(TestWorld.Real, new FakeInputSource(), new GameState { Class = heroClass, HeroLevel = level }, new StatSheet());
             loop.Levels.SyncTreePoints();
@@ -118,7 +118,7 @@ namespace Game.Core.Tests.Build
             loop.ChooseCommonTree(0, "party");
             Raise(loop, "party_banner", 2);
 
-            Assert.That(loop.ChangeClassFree(HeroClass.Ronin), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
 
             Assert.That(loop.CommonTreeAllocation(0)!.RankOf("party_banner"), Is.EqualTo(2));
         }

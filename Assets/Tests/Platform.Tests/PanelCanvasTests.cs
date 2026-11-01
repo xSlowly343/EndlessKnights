@@ -164,7 +164,7 @@ namespace Game.Platform.Tests
         public void HeroStatsSubTabListsDamageAndSources()
         {
             var data = Game.Core.Content.GameData.Load(name => File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Data", name)));
-            var loop = new GameLoop(data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Viking }, new Game.Core.Stats.StatSheet());
+            var loop = new GameLoop(data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Runedancer }, new Game.Core.Stats.StatSheet());
             _panel.Bind(loop);
             Open(PanelSection.Hero);
             Assert.That(_panel.Hero.IsShown, Is.True);

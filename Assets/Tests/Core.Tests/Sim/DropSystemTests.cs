@@ -16,8 +16,8 @@ namespace Game.Core.Tests.Sim
         private static DropRules Rules => TestWorld.Data.Drops;
         private static int BiomeLength => TestWorld.Data.Stages.BiomeLength;
 
-        private static GameLoop Viking(StatSheet? hero = null, ulong seed = 7) =>
-            TestWorld.Loop(state: new GameState(seed) { Class = HeroClass.Viking }, hero: hero);
+        private static GameLoop Runedancer(StatSheet? hero = null, ulong seed = 7) =>
+            TestWorld.Loop(state: new GameState(seed) { Class = HeroClass.Runedancer }, hero: hero);
 
         private static List<ItemDrop> Defeat(GameLoop loop, long stage, long recordBefore, EnemyType type = EnemyType.Boss)
         {
@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FirstPassOfAStageGivesOneItem()
         {
-            var loop = Viking();
+            var loop = Runedancer();
 
             var items = Defeat(loop, 7, 7);
 
@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PassingAStageAgainBelowTheDailyShareGivesNothing()
         {
-            var loop = Viking();
+            var loop = Runedancer();
 
             var items = Defeat(loop, 7, 100);
 
@@ -81,7 +81,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void RecordItemsNeverGoAboveRareEvenInTheLastBiome()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var stage = 6L * BiomeLength - 1;
 
             for (var i = 0; i < 500; i++)
@@ -94,7 +94,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SpecialBossAddsAnUncommonOrBetterItemUnderTheBiomeCeiling()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var specials = 0;
 
             for (var i = 0; i < 300; i++)
@@ -114,7 +114,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void GuardianGivesTwoRareOrBetterItems()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var stage = 2L * BiomeLength;
 
             for (var i = 0; i < 200; i++)
@@ -128,7 +128,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void RarityAboveTheBiomeCeilingMovesToTheCeiling()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var rng = new Rng(3);
             var table = new DropTable(1, ItemRarity.Simple, ItemRarity.Rift);
             var rolls = new int[DropRules.RarityCount];
@@ -155,8 +155,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ItemRarityStatMakesBetterItemsMoreLikely()
         {
-            var plain = Viking();
-            var lucky = Viking(With(CombatStats.ItemFind, ModifierKind.Increased, 2));
+            var plain = Runedancer();
+            var lucky = Runedancer(With(CombatStats.ItemFind, ModifierKind.Increased, 2));
             var table = new DropTable(1, ItemRarity.Simple, ItemRarity.Rift);
             var plainSimple = 0;
             var luckySimple = 0;
@@ -177,7 +177,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void DayOfBossesNeverGivesMoreThanTwentyDailyItemsOrAnyBelowEightyPercentOfTheRecord()
         {
-            var loop = Viking(seed: 11);
+            var loop = Runedancer(seed: 11);
             var rng = new Rng(42);
             const long record = 1000;
 
@@ -199,7 +199,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void DailyItemsDropWithTheConfiguredChance()
         {
-            var loop = Viking(seed: 13);
+            var loop = Runedancer(seed: 13);
             var drops = 0;
             const int bosses = 20000;
 
@@ -215,7 +215,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ItemQuantityRaisesTheBossChanceButNotTheLimit()
         {
-            var loop = Viking(With(CombatStats.ItemQuantity, ModifierKind.Increased, 3));
+            var loop = Runedancer(With(CombatStats.ItemQuantity, ModifierKind.Increased, 3));
             loop.SetLocalDay(1);
             var drops = 0;
 
@@ -228,7 +228,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void DailyLimitStatIsCappedByTheMaximum()
         {
-            var loop = Viking(With(CombatStats.DailyItems, ModifierKind.Flat, 100));
+            var loop = Runedancer(With(CombatStats.DailyItems, ModifierKind.Flat, 100));
 
             Assert.That(loop.Drops.DailyLimit, Is.EqualTo(Rules.Daily.MaxLimit));
         }
@@ -236,7 +236,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void NewDayResetsTheDailyLimit()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.SetLocalDay(10);
             loop.State.Drops.DailyItems = Rules.Daily.Limit;
 
@@ -249,7 +249,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StageThreeGivesAFineHelmetOfTheOwnColor()
         {
-            var item = Defeat(Viking(), 3, 3).Single();
+            var item = Defeat(Runedancer(), 3, 3).Single();
 
             Assert.That(item.Source, Is.EqualTo(DropSource.Guarantee));
             Assert.That(item.Gear!.Slot, Is.EqualTo(ItemSlot.Helmet));
@@ -260,7 +260,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StageTenGivesAnUncommonRingAndTheSpecialBossItem()
         {
-            var items = Defeat(Viking(), 10, 10);
+            var items = Defeat(Runedancer(), 10, 10);
 
             var ring = items.Single(item => item.Source == DropSource.Guarantee);
             Assert.That(ring.Gear!.Slot, Is.EqualTo(ItemSlot.Ring));
@@ -272,7 +272,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StageTwentyGivesAnUncommonWeaponOfAnotherClassInTheOwnColor()
         {
-            var loop = Viking();
+            var loop = Runedancer();
 
             var weapon = Defeat(loop, 20, 20).Single(item => item.Source == DropSource.Guarantee).Weapon!;
 
@@ -286,7 +286,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FirstGuardianGivesARareWeaponOfTheOwnTypeForTheEmptyHand()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             Assert.That(loop.State.Weapons.Left, Is.Null);
 
             var item = Defeat(loop, BiomeLength, BiomeLength, EnemyType.Guardian).Single(drop => drop.Source == DropSource.Guarantee);
@@ -298,8 +298,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FirstGuardianGivesRareGearWhenBothHandsHoldWeapons()
         {
-            var loop = Viking();
-            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Ronin)));
+            var loop = Runedancer();
+            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Duelist)));
 
             var item = Defeat(loop, BiomeLength, BiomeLength, EnemyType.Guardian).Single(drop => drop.Source == DropSource.Guarantee);
 
@@ -310,7 +310,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WeaponTypesFavourTheOwnClass()
         {
-            var loop = Viking(seed: 21);
+            var loop = Runedancer(seed: 21);
             var own = 0;
             var weapons = 0;
 
@@ -334,7 +334,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WeaponBasesOpenByBiome()
         {
-            var loop = Viking(seed: 23);
+            var loop = Runedancer(seed: 23);
 
             for (var i = 0; i < 2000; i++)
             {
@@ -348,7 +348,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ArmorDropsInAllFourSlotsAndJewelryInTheRest()
         {
-            var loop = Viking(seed: 29);
+            var loop = Runedancer(seed: 29);
             var slots = new HashSet<ItemSlot>();
 
             for (var i = 0; i < 300; i++)
@@ -386,7 +386,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AutoSalvageKeepsArmourBetterThanTheWornOne()
         {
-            var loop = Viking(seed: 31);
+            var loop = Runedancer(seed: 31);
             loop.State.Drops.SalvageUpTo = ItemRarity.Fine;
             var keptFine = 0;
 
@@ -406,7 +406,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AutoSalvageTurnsLowItemsIntoDust()
         {
-            var loop = Viking(seed: 31);
+            var loop = Runedancer(seed: 31);
             loop.State.Drops.SalvageUpTo = ItemRarity.Fine;
             WearMythicsEverywhere(loop);
             var kept = 0;
@@ -431,8 +431,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AutoSalvageKeepsAWeaponBetterThanAHeldOne()
         {
-            var loop = Viking(seed: 37);
-            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Ronin)));
+            var loop = Runedancer(seed: 37);
+            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Duelist)));
             loop.State.Drops.SalvageUpTo = ItemRarity.Fine;
             var fineWeapons = 0;
 
@@ -454,7 +454,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FullBagSalvagesNewItems()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             while (loop.Drops.BagCount < Rules.BagSize)
                 loop.State.Drops.Gear.Add(new GearItem(ItemSlot.Boots, ItemRarity.Simple, 1, "red"));
 
@@ -468,7 +468,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void NoItemsInsideTheRift()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.Drops.OnBossDefeated(7, EnemyType.Boss, 7, raisesRecord: false);
             loop.Drops.Flush();
 
@@ -478,7 +478,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OfflineGivesDailyItemsAtHalfChanceFromTheSameLimit()
         {
-            var loop = Viking(seed: 41);
+            var loop = Runedancer(seed: 41);
             loop.State.RecordStage = 1000;
             loop.SetLocalDay(1);
             loop.Events.Clear();
@@ -495,7 +495,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SkillGemsComeFromTheCommonPoolAndFollowTheChance()
         {
-            var loop = Viking(seed: 43);
+            var loop = Runedancer(seed: 43);
             const int kills = 60000;
 
             for (var i = 0; i < kills; i++)
@@ -513,7 +513,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void BossesDropSkillGemsMoreOften()
         {
-            var loop = Viking(seed: 47);
+            var loop = Runedancer(seed: 47);
             const int bosses = 4000;
 
             for (var i = 0; i < bosses; i++)
@@ -526,7 +526,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void GemDropStatRaisesTheGemChance()
         {
-            var loop = Viking(With(CombatStats.GemDrop, ModifierKind.Increased, 1), seed: 47);
+            var loop = Runedancer(With(CombatStats.GemDrop, ModifierKind.Increased, 1), seed: 47);
             const int bosses = 4000;
 
             for (var i = 0; i < bosses; i++)
@@ -541,7 +541,7 @@ namespace Game.Core.Tests.Sim
         {
             var input = new FakeInputSource();
             var hero = With(CombatStats.Damage, ModifierKind.More, 1e12);
-            var loop = TestWorld.Loop(input, new GameState(3) { Class = HeroClass.Viking }, hero);
+            var loop = TestWorld.Loop(input, new GameState(3) { Class = HeroClass.Runedancer }, hero);
             var record = new List<ItemDrop>();
 
             for (var tick = 0; tick < 4000 && loop.State.Stage <= 2 * BiomeLength; tick++)

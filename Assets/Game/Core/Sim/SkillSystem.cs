@@ -1255,7 +1255,7 @@ namespace Game.Core.Sim
 
         private int HeadbangTicks(in EffectiveInput input)
         {
-            if (!_state.Is(HeroClass.Metalhead) || input.MousePx <= 0)
+            if (!_state.Is(HeroClass.Minstrel) || input.MousePx <= 0)
                 return 0;
             var pxPerSecond = _combat.Classes.HeadbangPxPerSecond;
             _state.HeadbangPx += input.MousePx;
@@ -1642,10 +1642,10 @@ namespace Game.Core.Sim
         private bool IdleOff(SkillSlot slot) =>
             slot.Def.Effect is AuraEffect aura && aura.IdleOffSeconds > 0 && !PauseProof(slot) && _state.IdleTicks > Ticks(aura.IdleOffSeconds);
 
-        private bool PauseProof(SkillSlot slot) => _state.Is(HeroClass.Bannerbearer) ? Standing(slot) : IsNative(slot);
+        private bool PauseProof(SkillSlot slot) => _state.Is(HeroClass.Lanternbearer) ? Standing(slot) : IsNative(slot);
 
         public int StandingAuras =>
-            _state.Is(HeroClass.Bannerbearer) ? _combat.Classes.StandingAuras.Count + (_hero.Value(CombatStats.ThirdAura, 0) >= 1 ? 1 : 0) : 0;
+            _state.Is(HeroClass.Lanternbearer) ? _combat.Classes.StandingAuras.Count + (_hero.Value(CombatStats.ThirdAura, 0) >= 1 ? 1 : 0) : 0;
 
         public bool Standing(SkillSlot slot) => slot.Def.Reserves && StandingRank(slot) < StandingAuras;
 
@@ -1664,7 +1664,7 @@ namespace Game.Core.Sim
         }
 
         private bool FreeThirdAura(SkillSlot slot) =>
-            _state.Is(HeroClass.Bannerbearer) && _hero.Value(CombatStats.ThirdAuraFree, 0) >= 1 && StandingRank(slot) == _combat.Classes.StandingAuras.Count && Standing(slot);
+            _state.Is(HeroClass.Lanternbearer) && _hero.Value(CombatStats.ThirdAuraFree, 0) >= 1 && StandingRank(slot) == _combat.Classes.StandingAuras.Count && Standing(slot);
 
         public void CastFromButtons(in EffectiveInput input)
         {

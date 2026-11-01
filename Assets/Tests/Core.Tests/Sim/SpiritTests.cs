@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Sim
 
         private static SkillTestHero With(string spirit, int level = 1, params string[] skills)
         {
-            var hero = SkillTestHero.Of(HeroClass.Oracle, skills);
+            var hero = SkillTestHero.Of(HeroClass.Dreamcatcher, skills);
             hero.State.Spirits[spirit] = level;
             hero.Loop.Events.Clear();
             return hero;
@@ -31,7 +31,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AwakeningAndRaisingCostEcho()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking, Echo = BigNumber.FromDouble(100) });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, Echo = BigNumber.FromDouble(100) });
 
             Assert.That(loop.RaiseSpirit("wind_spirit"), Is.EqualTo(SpiritResult.Awakened));
             Assert.That(loop.State.Echo.ToDouble(), Is.EqualTo(50).Within(1e-9));
@@ -43,7 +43,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SpiritsNeedEchoAndStopAtTheMaximum()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking, Echo = BigNumber.FromDouble(10) });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, Echo = BigNumber.FromDouble(10) });
             loop.State.Spirits["tide_spirit"] = 10;
 
             Assert.That(loop.RaiseSpirit("ghost"), Is.EqualTo(SpiritResult.UnknownSpirit));
@@ -54,7 +54,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SleepingSpiritsDoNothing()
         {
-            var hero = SkillTestHero.Of(HeroClass.Oracle);
+            var hero = SkillTestHero.Of(HeroClass.Dreamcatcher);
 
             hero.Ticks(20 * GameLoop.TicksPerSecond);
 
@@ -144,7 +144,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SpiritsSurviveSavingAndPrestige()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking, Echo = BigNumber.FromDouble(100) });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, Echo = BigNumber.FromDouble(100) });
             Assert.That(loop.RaiseSpirit("owl_spirit"), Is.EqualTo(SpiritResult.Awakened));
             var clock = ClockStamp.First(new ClockReading(1_760_000_000_000, 3_600_000, 12));
 

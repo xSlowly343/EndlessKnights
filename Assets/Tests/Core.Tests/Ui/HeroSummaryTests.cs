@@ -20,9 +20,9 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void TitleNamesTheClassAndLevel()
         {
-            var state = new GameState { Class = HeroClass.Viking, HeroLevel = 42 };
+            var state = new GameState { Class = HeroClass.Runedancer, HeroLevel = 42 };
 
-            Assert.That(HeroSummary.Title(state), Is.EqualTo("Huscarl · ур. 42"));
+            Assert.That(HeroSummary.Title(state), Is.EqualTo("Runedancer · ур. 42"));
         }
 
         [Test]
@@ -35,8 +35,8 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void StarterWeaponIsShownInTheRightHand()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
-            var starter = loop.Weapons.Give(loop.Data.Weapons.StarterFor(HeroClass.Viking));
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
+            var starter = loop.Weapons.Give(loop.Data.Weapons.StarterFor(HeroClass.Runedancer));
             loop.Weapons.Equip(WeaponHand.Right, starter);
 
             var right = HeroSummary.Hand(loop, WeaponHand.Right);

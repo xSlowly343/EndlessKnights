@@ -40,19 +40,19 @@ namespace Game.Core.Tests.Sim
             Assert.That(state.StrikeLevel, Is.GreaterThan(0));
         }
 
-        [TestCase(HeroClass.Ronin)]
-        [TestCase(HeroClass.Amazon)]
-        [TestCase(HeroClass.Stormweaver)]
-        [TestCase(HeroClass.Nomad)]
-        [TestCase(HeroClass.Metalhead)]
-        [TestCase(HeroClass.Oracle)]
-        [TestCase(HeroClass.Bannerbearer)]
-        [TestCase(HeroClass.Voodoo)]
-        [TestCase(HeroClass.Clockmaker)]
-        [TestCase(HeroClass.PlagueDoctor)]
-        [TestCase(HeroClass.Moonshiner)]
-        [TestCase(HeroClass.Gravedigger)]
-        [TestCase(HeroClass.Captain)]
+        [TestCase(HeroClass.Duelist)]
+        [TestCase(HeroClass.Windshot)]
+        [TestCase(HeroClass.Shardcaller)]
+        [TestCase(HeroClass.Sandwalker)]
+        [TestCase(HeroClass.Minstrel)]
+        [TestCase(HeroClass.Dreamcatcher)]
+        [TestCase(HeroClass.Lanternbearer)]
+        [TestCase(HeroClass.Whisperer)]
+        [TestCase(HeroClass.Clockwright)]
+        [TestCase(HeroClass.Alchemist)]
+        [TestCase(HeroClass.Dowser)]
+        [TestCase(HeroClass.Soulbinder)]
+        [TestCase(HeroClass.Ghostcaptain)]
         public void BotSpendsEveryPointOnTheTreeOfItsClass(HeroClass heroClass)
         {
             var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(4), heroClass);
@@ -81,7 +81,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void BotPlaysTheSkillsOfItsWeaponAndKeepsAurasInAuraSlots()
         {
-            var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(6, 1), HeroClass.Metalhead);
+            var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(6, 1), HeroClass.Minstrel);
 
             simulation.Run(2, 2);
             var state = simulation.LastState!;
@@ -94,7 +94,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void BotChoosesABranchOnEveryTierItsSkillsReached()
         {
-            var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(6, 1), HeroClass.Viking);
+            var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(6, 1), HeroClass.Runedancer);
 
             simulation.Run(2, 2);
             var state = simulation.LastState!;

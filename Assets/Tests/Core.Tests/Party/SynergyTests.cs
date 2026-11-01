@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void OwnMarkDoesNotWakeOwnResponse()
         {
-            var loop = Hero(HeroClass.Voodoo);
+            var loop = Hero(HeroClass.Whisperer);
             TestWorld.ArmFor(loop, TestWorld.Data.Gems["charm_prick"]);
             loop.Skills.Equip(TestWorld.Data.Gems["charm_prick"]);
             loop.State.Resource = 100;
@@ -44,13 +44,13 @@ namespace Game.Core.Tests.Party
         [Test]
         public void AllyCurseWakesTheVikingResponse()
         {
-            var loop = Hero(HeroClass.Viking);
-            loop.Synergy.SetAlly(2, true, HeroClass.Voodoo, Mark("curse"));
+            var loop = Hero(HeroClass.Runedancer);
+            loop.Synergy.SetAlly(2, true, HeroClass.Whisperer, Mark("curse"));
 
             loop.Tick();
 
             Assert.That(loop.Hero.Value(RageGain, 1), Is.EqualTo(1.25).Within(1e-9));
-            loop.Synergy.SetAlly(2, true, HeroClass.Voodoo, 0);
+            loop.Synergy.SetAlly(2, true, HeroClass.Whisperer, 0);
             loop.Tick();
             Assert.That(loop.Hero.Value(RageGain, 1), Is.EqualTo(1).Within(1e-9));
         }
@@ -58,9 +58,9 @@ namespace Game.Core.Tests.Party
         [Test]
         public void SecondResponseNeedsTheNotable()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             var threshold = new StatId("crushRageThreshold");
-            loop.Synergy.SetAlly(0, true, HeroClass.Metalhead, Mark("aura"));
+            loop.Synergy.SetAlly(0, true, HeroClass.Minstrel, Mark("aura"));
 
             loop.Tick();
             Assert.That(loop.Hero.Value(threshold, 0), Is.EqualTo(0));
@@ -71,12 +71,12 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void NomadGainsPerDistinctAllyMark()
+        public void SandwalkerGainsPerDistinctAllyMark()
         {
-            var loop = Hero(HeroClass.Nomad);
+            var loop = Hero(HeroClass.Sandwalker);
             var before = loop.Hero.Value(CombatStats.Damage, 1);
-            loop.Synergy.SetAlly(0, true, HeroClass.Voodoo, Mark("curse") | Mark("time"));
-            loop.Synergy.SetAlly(1, true, HeroClass.PlagueDoctor, Mark("poison") | Mark("curse"));
+            loop.Synergy.SetAlly(0, true, HeroClass.Whisperer, Mark("curse") | Mark("time"));
+            loop.Synergy.SetAlly(1, true, HeroClass.Alchemist, Mark("poison") | Mark("curse"));
 
             loop.Tick();
 
@@ -87,10 +87,10 @@ namespace Game.Core.Tests.Party
         [Test]
         public void FireAndPoisonFromTwoPlayersMakeMiasmaWithCooldown()
         {
-            var loop = Hero(HeroClass.Ronin);
+            var loop = Hero(HeroClass.Duelist);
             var miasma = IndexOfReaction("miasma_burst");
-            loop.Synergy.SetAlly(0, true, HeroClass.PlagueDoctor, Mark("poison"));
-            loop.Synergy.SetAlly(1, true, HeroClass.Moonshiner, Mark("fire"));
+            loop.Synergy.SetAlly(0, true, HeroClass.Alchemist, Mark("poison"));
+            loop.Synergy.SetAlly(1, true, HeroClass.Dowser, Mark("fire"));
 
             loop.Tick();
             Assert.That(loop.Synergy.ReactionActive(miasma), Is.True);
@@ -109,8 +109,8 @@ namespace Game.Core.Tests.Party
         [Test]
         public void OnePlayerWithBothMarksIsNoReaction()
         {
-            var loop = Hero(HeroClass.Ronin);
-            loop.Synergy.SetAlly(0, true, HeroClass.Captain, Mark("poison") | Mark("fire"));
+            var loop = Hero(HeroClass.Duelist);
+            loop.Synergy.SetAlly(0, true, HeroClass.Ghostcaptain, Mark("poison") | Mark("fire"));
 
             loop.Tick();
 
@@ -120,14 +120,14 @@ namespace Game.Core.Tests.Party
         [Test]
         public void FullOrchestraNeedsFourRoles()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             var before = loop.Hero.Value(CombatStats.Gold, 1);
-            loop.Synergy.SetAlly(0, true, HeroClass.Metalhead, 0);
-            loop.Synergy.SetAlly(1, true, HeroClass.Voodoo, 0);
+            loop.Synergy.SetAlly(0, true, HeroClass.Minstrel, 0);
+            loop.Synergy.SetAlly(1, true, HeroClass.Whisperer, 0);
             loop.Tick();
             Assert.That(loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(before).Within(1e-9));
 
-            loop.Synergy.SetAlly(3, true, HeroClass.Gravedigger, 0);
+            loop.Synergy.SetAlly(3, true, HeroClass.Soulbinder, 0);
             loop.Tick();
 
             Assert.That(loop.Synergy.ConstellationActive(IndexOfConstellation("full_orchestra")), Is.True);
@@ -137,15 +137,15 @@ namespace Game.Core.Tests.Party
         [Test]
         public void AConstellationHoldsOnlyWhileEveryMemberFights()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             var orchestra = IndexOfConstellation("full_orchestra");
-            loop.Synergy.SetAlly(0, true, HeroClass.Metalhead, 0);
-            loop.Synergy.SetAlly(1, true, HeroClass.Voodoo, 0);
-            loop.Synergy.SetAlly(3, true, HeroClass.Gravedigger, 0, fighting: false);
+            loop.Synergy.SetAlly(0, true, HeroClass.Minstrel, 0);
+            loop.Synergy.SetAlly(1, true, HeroClass.Whisperer, 0);
+            loop.Synergy.SetAlly(3, true, HeroClass.Soulbinder, 0, fighting: false);
             loop.Tick();
             Assert.That(loop.Synergy.ConstellationActive(orchestra), Is.False, "the summoner rests");
 
-            loop.Synergy.SetAlly(3, true, HeroClass.Gravedigger, 0);
+            loop.Synergy.SetAlly(3, true, HeroClass.Soulbinder, 0);
             loop.Tick();
             Assert.That(loop.Synergy.ConstellationActive(orchestra), Is.True);
 
@@ -160,11 +160,11 @@ namespace Game.Core.Tests.Party
         [Test]
         public void ElementsRemoveTheReactionCooldown()
         {
-            var loop = Hero(HeroClass.Stormweaver);
+            var loop = Hero(HeroClass.Shardcaller);
             var overload = IndexOfReaction("overload");
-            loop.Synergy.SetAlly(0, true, HeroClass.PlagueDoctor, Mark("poison"));
-            loop.Synergy.SetAlly(1, true, HeroClass.Moonshiner, Mark("fire") | Mark("lightning"));
-            loop.Synergy.SetAlly(2, true, HeroClass.Stormweaver, Mark("lightning"));
+            loop.Synergy.SetAlly(0, true, HeroClass.Alchemist, Mark("poison"));
+            loop.Synergy.SetAlly(1, true, HeroClass.Dowser, Mark("fire") | Mark("lightning"));
+            loop.Synergy.SetAlly(2, true, HeroClass.Shardcaller, Mark("lightning"));
 
             for (var tick = 0; tick < 35; tick++)
                 loop.Tick();
@@ -176,7 +176,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void AStrikeMarkStaysForTheSecondsOfItsMarkAfterTheCast()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             var gem = TestWorld.Data.Gems["no_mercy"];
             TestWorld.ArmFor(loop, gem);
             loop.Skills.Equip(gem);
@@ -195,7 +195,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void PoisonFireAndMinionsAreMarksWhileTheyAreThere()
         {
-            var loop = Hero(HeroClass.Captain);
+            var loop = Hero(HeroClass.Ghostcaptain);
             loop.State.PoisonStacks = 3;
             loop.State.BurnStacks = 2;
             loop.State.Minions[1] = new MinionState { Kind = MinionKind.Cannon, TicksLeft = 1000 };
@@ -236,9 +236,9 @@ namespace Game.Core.Tests.Party
             var probe = new byte[1024];
             if (System.GC.GetAllocatedBytesForCurrentThread() - probeBefore < probe.Length)
                 Assert.Ignore("This runtime does not report allocated bytes per thread.");
-            var loop = Hero(HeroClass.Nomad);
-            loop.Synergy.SetAlly(0, true, HeroClass.PlagueDoctor, Mark("poison"));
-            loop.Synergy.SetAlly(1, true, HeroClass.Moonshiner, Mark("fire"));
+            var loop = Hero(HeroClass.Sandwalker);
+            loop.Synergy.SetAlly(0, true, HeroClass.Alchemist, Mark("poison"));
+            loop.Synergy.SetAlly(1, true, HeroClass.Dowser, Mark("fire"));
             for (var tick = 0; tick < 200; tick++)
                 loop.Tick();
 
@@ -250,7 +250,7 @@ namespace Game.Core.Tests.Party
         }
 
         [TestCase(@"""mark"": ""curse"", ""modifiers"": [{ ""stat"": ""resourceGain""", @"""mark"": ""moonlight"", ""modifiers"": [{ ""stat"": ""resourceGain""", "unknown mark 'moonlight'")]
-        [TestCase(@"""viking"": ""dd"", ", "", "class 'viking' has no role")]
+        [TestCase(@"""runedancer"": ""dd"", ", "", "class 'runedancer' has no role")]
         [TestCase(@"""marks"": [""fire"", ""poison""]", @"""marks"": [""fire"", ""fire""]", "two different marks")]
         public void BrokenSynergyIsReported(string from, string to, string message)
         {

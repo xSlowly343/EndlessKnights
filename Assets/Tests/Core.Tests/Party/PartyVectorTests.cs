@@ -38,7 +38,7 @@ namespace Game.Core.Tests.Party
                 Disconnects(),
                 RestAndPeace(),
                 Contribution(),
-                Clockmaker(),
+                Clockwright(),
                 Worlds(),
                 FocusRelay(),
                 HelpCall(),
@@ -466,7 +466,7 @@ namespace Game.Core.Tests.Party
             return r.ToJson();
         }
 
-        private static string Clockmaker()
+        private static string Clockwright()
         {
             var r = Recorder("timer slows and the chimes repeat party damage", 4242);
             r.Join(51);

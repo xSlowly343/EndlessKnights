@@ -77,9 +77,9 @@ namespace Game.Core.Tests.Sim
         public void FullResourceMakesKeyHitsStronger()
         {
             var perResource = new Modifier(CombatStats.DamagePerResource, ModifierKind.Flat, 0.8, StatTags.Keyboard);
-            var (plain, plainInput) = Hero(HeroClass.Viking);
-            var (empty, emptyInput) = Hero(HeroClass.Viking, perResource);
-            var (full, fullInput) = Hero(HeroClass.Viking, perResource);
+            var (plain, plainInput) = Hero(HeroClass.Runedancer);
+            var (empty, emptyInput) = Hero(HeroClass.Runedancer, perResource);
+            var (full, fullInput) = Hero(HeroClass.Runedancer, perResource);
             full.State.ResourceFill = 1;
             full.State.Resource = 1000;
 
@@ -92,7 +92,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ResourceFillFollowsTheBar()
         {
-            var (loop, _) = Hero(HeroClass.Viking);
+            var (loop, _) = Hero(HeroClass.Runedancer);
             loop.State.Resource = 50;
 
             loop.Tick();
@@ -103,9 +103,9 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FasterDecayBurnsRageTwiceAsFast()
         {
-            var rules = TestWorld.Data.Combat.Resources.For("viking");
-            var (plain, _) = Hero(HeroClass.Viking);
-            var (fast, _) = Hero(HeroClass.Viking, new Modifier(CombatStats.ResourceDecay, ModifierKind.More, 1));
+            var rules = TestWorld.Data.Combat.Resources.For("runedancer");
+            var (plain, _) = Hero(HeroClass.Runedancer);
+            var (fast, _) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ResourceDecay, ModifierKind.More, 1));
             foreach (var loop in new[] { plain, fast })
             {
                 loop.State.Resource = 100;
@@ -123,8 +123,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void KeysCanFillTheQuiver()
         {
-            var (loop, input) = Hero(HeroClass.Amazon, new Modifier(CombatStats.ResourcePerKey, ModifierKind.Flat, 0.5));
-            var bySelf = TestWorld.Data.Combat.Resources.For("amazon").PerSecond * GameLoop.TickSeconds;
+            var (loop, input) = Hero(HeroClass.Windshot, new Modifier(CombatStats.ResourcePerKey, ModifierKind.Flat, 0.5));
+            var bySelf = TestWorld.Data.Combat.Resources.For("windshot").PerSecond * GameLoop.TickSeconds;
 
             Type(loop, input, 10);
 
@@ -134,8 +134,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void KeysBuildPressureAndCanOverheat()
         {
-            var (loop, input) = Hero(HeroClass.Moonshiner, new Modifier(CombatStats.ResourcePerKey, ModifierKind.Flat, 1));
-            var decay = TestWorld.Data.Combat.Resources.For("moonshiner").InverseDecayPerSecond * GameLoop.TickSeconds;
+            var (loop, input) = Hero(HeroClass.Dowser, new Modifier(CombatStats.ResourcePerKey, ModifierKind.Flat, 1));
+            var decay = TestWorld.Data.Combat.Resources.For("dowser").InverseDecayPerSecond * GameLoop.TickSeconds;
 
             input.PressKeys(1);
             loop.Tick();
@@ -151,7 +151,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PiercingKeyHitsWaitForTheNextEnemy()
         {
-            var (loop, input) = Hero(HeroClass.Viking, new Modifier(CombatStats.KeyHitQueueShare, ModifierKind.Flat, 0.35));
+            var (loop, input) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.KeyHitQueueShare, ModifierKind.Flat, 0.35));
 
             var hit = KeyHit(loop, input);
 
@@ -162,7 +162,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryTenthKeyHitCleavesTheWholeQueue()
         {
-            var (loop, input) = Hero(HeroClass.Viking,
+            var (loop, input) = Hero(HeroClass.Runedancer,
                 new Modifier(CombatStats.QueueStrikeEvery, ModifierKind.Flat, 10),
                 new Modifier(CombatStats.QueueStrikeMultiplier, ModifierKind.Flat, 3));
 
@@ -179,7 +179,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ShadowRepeatsEveryFifthKeyHit()
         {
-            var (loop, input) = Hero(HeroClass.Viking,
+            var (loop, input) = Hero(HeroClass.Runedancer,
                 new Modifier(CombatStats.CloneEvery, ModifierKind.Flat, 5),
                 new Modifier(CombatStats.CloneMultiplier, ModifierKind.Flat, 1));
 
@@ -194,8 +194,8 @@ namespace Game.Core.Tests.Sim
         public void SeriesStrikeAlwaysCritsWithTheKeystone()
         {
             var every = TestWorld.Data.Combat.Classes.ComboStrikeEvery;
-            var (loop, input) = Hero(HeroClass.Ronin, new Modifier(CombatStats.ComboStrikeCrit, ModifierKind.Flat, 1));
-            var (plain, plainInput) = Hero(HeroClass.Ronin);
+            var (loop, input) = Hero(HeroClass.Duelist, new Modifier(CombatStats.ComboStrikeCrit, ModifierKind.Flat, 1));
+            var (plain, plainInput) = Hero(HeroClass.Duelist);
 
             Type(loop, input, every);
             Type(plain, plainInput, every);
@@ -220,9 +220,9 @@ namespace Game.Core.Tests.Sim
         {
             var perCombo = new Modifier(CombatStats.DamagePerCombo, ModifierKind.Flat, 0.005, StatTags.Keyboard);
             var cap = new Modifier(CombatStats.DamagePerComboMax, ModifierKind.Flat, 1, StatTags.Keyboard);
-            var (plain, plainInput) = Hero(HeroClass.Viking);
-            var (mid, midInput) = Hero(HeroClass.Viking, perCombo, cap);
-            var (long_, longInput) = Hero(HeroClass.Viking, perCombo, cap);
+            var (plain, plainInput) = Hero(HeroClass.Runedancer);
+            var (mid, midInput) = Hero(HeroClass.Runedancer, perCombo, cap);
+            var (long_, longInput) = Hero(HeroClass.Runedancer, perCombo, cap);
             mid.State.Combo = 100;
             long_.State.Combo = 1000;
 
@@ -235,7 +235,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryFourthCastIsASuperCast()
         {
-            var (loop, _) = Hero(HeroClass.Viking,
+            var (loop, _) = Hero(HeroClass.Runedancer,
                 new Modifier(CombatStats.SkillSuperEvery, ModifierKind.Flat, 4),
                 new Modifier(CombatStats.SkillSuperMultiplier, ModifierKind.Flat, 4));
             var slot = loop.Skills.Equip(TestWorld.Data.Gems["through_stride"]);
@@ -255,7 +255,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CompanionStrikesEvenWithoutInput()
         {
-            var (loop, _) = Hero(HeroClass.Amazon,
+            var (loop, _) = Hero(HeroClass.Windshot,
                 new Modifier(CombatStats.CompanionHitsPerSecond, ModifierKind.Flat, 1.2),
                 new Modifier(CombatStats.CompanionMultiplier, ModifierKind.Flat, 0.5));
 
@@ -268,8 +268,8 @@ namespace Game.Core.Tests.Sim
         public void BalancedKeysAndMouseHitHarder()
         {
             var balance = new Modifier(CombatStats.DamageAtBalance, ModifierKind.Flat, 0.6);
-            var (even, evenInput) = Hero(HeroClass.Viking, balance);
-            var (keys, keysInput) = Hero(HeroClass.Viking, balance);
+            var (even, evenInput) = Hero(HeroClass.Runedancer, balance);
+            var (keys, keysInput) = Hero(HeroClass.Runedancer, balance);
             var pxPerHit = TestWorld.Data.Combat.MousePxPerHit;
 
             for (var i = 0; i < 200; i++)
@@ -292,7 +292,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void LongFightWithOneEnemyRampsUpToTheCap()
         {
-            var (loop, _) = Hero(HeroClass.Stormweaver,
+            var (loop, _) = Hero(HeroClass.Shardcaller,
                 new Modifier(CombatStats.RampPerSecond, ModifierKind.Flat, 0.05),
                 new Modifier(CombatStats.RampMax, ModifierKind.Flat, 1));
 
@@ -306,7 +306,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OverloadAlsoHitsTheWholeQueue()
         {
-            var (loop, _) = Hero(HeroClass.Stormweaver, new Modifier(CombatStats.OverloadQueueShare, ModifierKind.Flat, 1));
+            var (loop, _) = Hero(HeroClass.Shardcaller, new Modifier(CombatStats.OverloadQueueShare, ModifierKind.Flat, 1));
             loop.State.Resource = 1000;
 
             loop.Tick();
@@ -319,7 +319,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void IdleHeroStrikesOnlyWithoutInput()
         {
-            var (loop, input) = Hero(HeroClass.Nomad, new Modifier(CombatStats.IdleHitsPerSecond, ModifierKind.Flat, 2));
+            var (loop, input) = Hero(HeroClass.Sandwalker, new Modifier(CombatStats.IdleHitsPerSecond, ModifierKind.Flat, 2));
 
             Wait(loop, 5);
             Assert.That(loop.Paths.IdleHits, Is.EqualTo(10));

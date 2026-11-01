@@ -20,7 +20,7 @@ namespace Game.Platform.Tests
         public void SetUp()
         {
             var data = GameData.Load(name => File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Data", name)));
-            _loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Viking, RecordStage = 500 }, new StatSheet());
+            _loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Runedancer, RecordStage = 500 }, new StatSheet());
             _panel = PanelCanvas.Create();
             _panel.Items.Bind(_loop);
         }

@@ -6,7 +6,7 @@ const { FakeNakama, logger } = require("./fake-nakama");
 const party = loadModule();
 const rules = party.ChronicleServerRules;
 const plain = (o) => JSON.parse(JSON.stringify(o));
-const viking = 0, metalhead = 5, voodoo = 8, plagueDoctor = 10;
+const runedancer = 0, minstrel = 5, whisperer = 8, plagueDoctor = 10;
 
 function stats(bosses, hours, orchestra, night) {
   return { bossesTogether: bosses, ticksTogether: Math.round(hours * 36000), fullOrchestra: orchestra, nightBosses: night || 0 };
@@ -64,9 +64,9 @@ test("the record list keeps only the newest entries", () => {
 test("the host counts bosses killed together and a full orchestra", () => {
   const host = new party.PartyHost(party.PartyServerRules, "5");
   ["a", "b", "c", "d"].forEach((name, i) => host.join("user-" + name, String(11 + i)));
-  host.encounter.setHeroClass(0, viking);
-  host.encounter.setHeroClass(1, metalhead);
-  host.encounter.setHeroClass(2, voodoo);
+  host.encounter.setHeroClass(0, runedancer);
+  host.encounter.setHeroClass(1, minstrel);
+  host.encounter.setHeroClass(2, whisperer);
   host.encounter.setHeroClass(3, plagueDoctor);
   killBoss(host, [0]);
   assert.strictEqual(host.chronicle.bossesTogether, 0, "a boss one player killed alone is not together");
@@ -223,7 +223,7 @@ test("three different synergies on one enemy make a chain reaction", () => {
 test("four different heroes of four roles count wanderer bosses and earn the wanderers", () => {
   const host = new party.PartyHost(party.PartyServerRules, "5");
   ["a", "b", "c", "d"].forEach((name, i) => host.join("user-" + name, String(11 + i)));
-  [viking, metalhead, voodoo, plagueDoctor].forEach((heroClass, slot) => host.encounter.setHeroClass(slot, heroClass));
+  [runedancer, minstrel, whisperer, plagueDoctor].forEach((heroClass, slot) => host.encounter.setHeroClass(slot, heroClass));
   killBoss(host, [0, 1, 2]);
   assert.strictEqual(host.chronicle.wanderersBosses, 0, "three are not wanderers");
   killBoss(host, [0, 1, 2, 3]);

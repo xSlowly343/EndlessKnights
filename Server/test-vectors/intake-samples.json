@@ -2,7 +2,7 @@
   "version": 1,
   "telemetry": [
     {
-  "character": "voodoo",
+  "character": "whisperer",
   "clicksPerMinute": 21.25,
   "closed": true,
   "daysSinceFirst": 7,
@@ -25,7 +25,7 @@
   "totalPlaySeconds": 36000
 },
     {
-  "character": "viking",
+  "character": "runedancer",
   "clicksPerMinute": 0,
   "closed": false,
   "daysSinceFirst": 0,

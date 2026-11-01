@@ -20,12 +20,12 @@ namespace Game.Core.Tests.Content
             Assert.That(rules.Focus.PerEvent, Is.EqualTo(0.02));
             Assert.That(rules.Focus.ResetAfterIdleSeconds, Is.EqualTo(3));
             Assert.That(rules.Resources.Max, Is.EqualTo(100));
-            Assert.That(rules.Resources.For("viking").PerKey, Is.EqualTo(2));
-            Assert.That(rules.Resources.For("viking").DecayPerSecond, Is.EqualTo(10));
-            Assert.That(rules.Resources.For("viking").DecayAfterKeylessSeconds, Is.EqualTo(3));
-            Assert.That(rules.Resources.For("viking").MouseHoldsDecay, Is.True);
-            Assert.That(rules.Resources.For("metalhead").PerKey, Is.EqualTo(1));
-            Assert.That(rules.Resources.For("metalhead").DecayPerSecond, Is.EqualTo(0));
+            Assert.That(rules.Resources.For("runedancer").PerKey, Is.EqualTo(2));
+            Assert.That(rules.Resources.For("runedancer").DecayPerSecond, Is.EqualTo(10));
+            Assert.That(rules.Resources.For("runedancer").DecayAfterKeylessSeconds, Is.EqualTo(3));
+            Assert.That(rules.Resources.For("runedancer").MouseHoldsDecay, Is.True);
+            Assert.That(rules.Resources.For("minstrel").PerKey, Is.EqualTo(1));
+            Assert.That(rules.Resources.For("minstrel").DecayPerSecond, Is.EqualTo(0));
             Assert.That(rules.CritChance, Is.EqualTo(0.05));
             Assert.That(rules.CritMultiplier, Is.EqualTo(2));
             Assert.That(rules.Offline.CapHours, Is.EqualTo(8));

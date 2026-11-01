@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Build
         private static AscendancyCatalog Catalog => TestWorld.Data.Ascendancy;
 
         private static GameLoop TypistLoop(GameState? state = null) =>
-            new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), state ?? new GameState { Class = HeroClass.Ronin }, new StatSheet());
+            new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), state ?? new GameState { Class = HeroClass.Duelist }, new StatSheet());
 
         private static SubclassDef Subclass(string id) => Catalog.Subclasses.Single(s => s.Id == id);
 
@@ -84,7 +84,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void FirstGuardianAndFirstPrestigeCountAsActivities()
         {
-            var state = new GameState { Class = HeroClass.Ronin, RecordStage = TestWorld.Data.Stages.BiomeLength + 1, Prestiges = 1 };
+            var state = new GameState { Class = HeroClass.Duelist, RecordStage = TestWorld.Data.Stages.BiomeLength + 1, Prestiges = 1 };
 
             var loop = TypistLoop(state);
 
@@ -147,7 +147,7 @@ namespace Game.Core.Tests.Build
             var catalog = AscendancyCatalog.Load(Valid.Replace("\"id\": \"s_notable\", \"type\": \"notable\"", "\"id\": \"s_notable\", \"type\": \"notable\", \"locked\": true"));
             var state = new AscendancyState();
             state.Complete("a");
-            state.Choose(catalog, "ronin", "s");
+            state.Choose(catalog, "duelist", "s");
 
             Assert.That(state.Allocate(catalog, "s_small"), Is.EqualTo(AllocationResult.Allocated));
             Assert.That(state.Allocate(catalog, "s_notable"), Is.EqualTo(AllocationResult.Locked));
@@ -214,7 +214,7 @@ namespace Game.Core.Tests.Build
         {
             var keystone = Subclass("djinn").Nodes.Single(n => n.Type == TreeNodeType.Keystone);
             var path = TreePaths.SubclassPath(Subclass("djinn"), keystone.Id);
-            var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Nomad }, new StatSheet());
+            var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Sandwalker }, new StatSheet());
             foreach (var activity in Catalog.Activities.Take(path.Length))
                 loop.CompleteActivity(activity.Id);
             loop.ChooseSubclass("djinn");
@@ -315,7 +315,7 @@ namespace Game.Core.Tests.Build
   ""activities"": [{ ""id"": ""a"", ""name"": { ""ru"": ""А"", ""en"": ""A"" } }],
   ""change"": { ""freeEveryHours"": 24, ""crystalCost"": 100, ""freeClassChanges"": 1 },
   ""subclasses"": [
-    { ""id"": ""s"", ""class"": ""ronin"", ""name"": { ""ru"": ""С"", ""en"": ""S"" },
+    { ""id"": ""s"", ""class"": ""duelist"", ""name"": { ""ru"": ""С"", ""en"": ""S"" },
       ""nodes"": [
         { ""id"": ""s_start"", ""type"": ""start"", ""x"": 0, ""y"": 0, ""name"": { ""ru"": ""С"", ""en"": ""S"" } },
         { ""id"": ""s_small"", ""type"": ""small"", ""x"": 0, ""y"": 1, ""name"": { ""ru"": ""М"", ""en"": ""M"" } },
@@ -351,7 +351,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SubclassClassMustBeAKnownClass()
         {
-            var catalog = AscendancyCatalog.Load(Valid.Replace("\"class\": \"ronin\"", "\"class\": \"pirate\""));
+            var catalog = AscendancyCatalog.Load(Valid.Replace("\"class\": \"duelist\"", "\"class\": \"pirate\""));
 
             var error = Assert.Throws<ContentException>(() => catalog.RequireKnownClasses())!;
 

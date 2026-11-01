@@ -45,7 +45,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TypistComboGrowsWithEachKey()
         {
-            var (loop, input) = Hero(HeroClass.Ronin);
+            var (loop, input) = Hero(HeroClass.Duelist);
 
             Keys(loop, input, 7);
 
@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryNthKeyIsAComboStrike()
         {
-            var (loop, input) = Hero(HeroClass.Ronin);
+            var (loop, input) = Hero(HeroClass.Duelist);
 
             Keys(loop, input, Rules.ComboStrikeEvery - 1);
             var normal = LastHit(loop);
@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ComboSurvivesShortPausesAndBreaksOnLongOnes()
         {
-            var (loop, input) = Hero(HeroClass.Ronin);
+            var (loop, input) = Hero(HeroClass.Duelist);
             var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
             Keys(loop, input, 10);
 
@@ -87,7 +87,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClicksKeepTheComboAliveLikeKeys()
         {
-            var (loop, input) = Hero(HeroClass.Ronin);
+            var (loop, input) = Hero(HeroClass.Duelist);
             var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
             Keys(loop, input, 5);
 
@@ -103,7 +103,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void BladeDanceKeepsTheComboAliveWhileTheMouseMoves()
         {
-            var (loop, input) = Hero(HeroClass.Ronin);
+            var (loop, input) = Hero(HeroClass.Duelist);
             var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
             Keys(loop, input, 5);
 
@@ -119,7 +119,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ThinCutAlwaysCrits()
         {
-            var (loop, _) = Hero(HeroClass.Ronin);
+            var (loop, _) = Hero(HeroClass.Duelist);
             var gem = TestWorld.Real.Gems["thin_cut"];
             loop.State.Resource = 100;
             TestWorld.ArmFor(loop, gem);
@@ -128,13 +128,13 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Skills.TryCast(loop.Skills.Equip(gem)), Is.EqualTo(CastResult.Cast));
 
             Assert.That(LastHit(loop).Flags & HitFlags.Crit, Is.EqualTo(HitFlags.Crit));
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("ronin"), Has.Some.Property("Id").EqualTo("thin_cut"));
+            Assert.That(TestWorld.Real.SkillBook.StartingGems("duelist"), Has.Some.Property("Id").EqualTo("thin_cut"));
         }
 
         [Test]
         public void EveryBreathStepOfTheStreakGivesOneWhirl()
         {
-            var (loop, input) = Hero(HeroClass.Ronin);
+            var (loop, input) = Hero(HeroClass.Duelist);
 
             Keys(loop, input, Rules.BreathEvery);
             loop.Tick();
@@ -143,9 +143,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void MetalheadHasNoCombo()
+        public void MinstrelHasNoCombo()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead);
+            var (loop, input) = Hero(HeroClass.Minstrel);
 
             Keys(loop, input, Rules.ComboStrikeEvery);
 

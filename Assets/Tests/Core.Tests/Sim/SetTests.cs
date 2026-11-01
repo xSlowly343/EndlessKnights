@@ -21,8 +21,8 @@ namespace Game.Core.Tests.Sim
             return set;
         }
 
-        private static GameLoop Viking() =>
-            TestWorld.Loop(state: new GameState(7) { Class = HeroClass.Viking });
+        private static GameLoop Runedancer() =>
+            TestWorld.Loop(state: new GameState(7) { Class = HeroClass.Runedancer });
 
         [Test]
         public void ThirtySixSetsSixThemesInEachOfSixRarities()
@@ -68,7 +68,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CraftingGivesAPieceThatIsNotYetInTheCollectionAndTheCostGrows()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.State.Drops.Ingots = 1000;
             var set = Set("jarl_forge");
             var costs = new List<double>();
@@ -93,7 +93,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ACollectedSetCraftsThePieceThePlayerChooses()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.State.Drops.Ingots = 100;
             foreach (var slot in Set("onslaught").Slots)
                 loop.State.SetCollection.Add(SetDef.PieceKey("onslaught", slot));
@@ -112,7 +112,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CraftingNeedsIngotsAndAKnownSet()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.State.Drops.Ingots = 5;
 
             Assert.That(loop.CraftSetPiece("no_such_set"), Is.EqualTo(CraftResult.UnknownSet));
@@ -123,7 +123,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WornSetPieceAddsItsSetLine()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var piece = Items.RollSetPiece(Set("jarl_forge"), ItemSlot.Chest, null, ItemRarity.Rare, 1, new Rng(1));
             Assert.That(piece.Base!.Color, Is.EqualTo("red"));
             loop.State.Drops.Gear.Add(piece);
@@ -140,7 +140,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CollectedSetGivesItsBonusForeverEvenUnworn()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var set = Set("jarl_forge");
             var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             var rng = new Rng(3);
@@ -162,7 +162,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void GuardiansDropSetPiecesThatEnterTheCollection()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var sets = 0;
 
             for (var i = 0; i < 400; i++)
@@ -187,7 +187,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void DroppedArmourIsARealItem()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.Events.Clear();
             loop.Drops.OnBossDefeated(3, EnemyType.Boss, 3, raisesRecord: true);
             loop.Drops.Flush();
@@ -202,8 +202,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StageFiftyGuaranteeFillsAnEmptyGearSlot()
         {
-            var loop = Viking();
-            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Ronin)));
+            var loop = Runedancer();
+            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Duelist)));
             var rng = new Rng(9);
             foreach (var slot in new[] { GearSlot.Helmet, GearSlot.Chest, GearSlot.Gloves })
             {
@@ -223,7 +223,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SetPiecesAndTheCollectionSurviveSaveAndLoad()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var piece = Items.RollSetPiece(Set("onslaught"), ItemSlot.Gloves, "blue", ItemRarity.Rare, 2, new Rng(4));
             loop.State.Drops.Gear.Add(piece);
             loop.Gear.NoteFound(piece);

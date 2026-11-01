@@ -97,7 +97,7 @@ test("the summary answers time to first prestige, keys per minute and retention"
     installs.push(id);
     push(nk, "telemetryPushRpc", Object.assign({}, telemetry, {
       installId: id, session: 1, keysPerMinute: 100 + i * 10, firstPrestigeSeconds: i < 4 ? 3600 * (i + 1) : null,
-      daysSinceFirst: i < 8 ? 7 : 0, returnDays: i < 3 ? [0, 1, 7] : [0], character: i % 2 ? "viking" : "voodoo"
+      daysSinceFirst: i < 8 ? 7 : 0, returnDays: i < 3 ? [0, 1, 7] : [0], character: i % 2 ? "runedancer" : "whisperer"
     }));
   }
   push(nk, "telemetryPushRpc", Object.assign({}, telemetry, { installId: installs[0], session: 2, keysPerMinute: 300, firstPrestigeSeconds: 3600, daysSinceFirst: 7, returnDays: [0, 1, 7] }));
@@ -111,5 +111,5 @@ test("the summary answers time to first prestige, keys per minute and retention"
   assert.strictEqual(summary.withoutPrestige, 6);
   assert.strictEqual(summary.keysPerMinute.count, 11);
   assert.strictEqual(summary.keysPerMinute.p90, 190);
-  assert.deepStrictEqual(summary.characters, { voodoo: 5, viking: 5 });
+  assert.deepStrictEqual(summary.characters, { whisperer: 5, runedancer: 5 });
 });

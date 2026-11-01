@@ -8,7 +8,7 @@ namespace Game.Core.Tests.Sim
 {
     public class CommonUniversalSkillTests
     {
-        private static SkillTestHero Hero(params string[] skills) => SkillTestHero.Of(HeroClass.Ronin, skills);
+        private static SkillTestHero Hero(params string[] skills) => SkillTestHero.Of(HeroClass.Duelist, skills);
 
         [Test]
         public void GoldenFeverTradesAThirdOfDamageForDoubleGold()

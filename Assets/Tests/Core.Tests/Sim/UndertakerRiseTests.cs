@@ -33,7 +33,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryFifthKillRisesASkeletonForTwentySeconds()
         {
-            var loop = Hero(HeroClass.Gravedigger);
+            var loop = Hero(HeroClass.Soulbinder);
 
             Kill(loop, Rules.RiseEvery - 1);
             Assert.That(loop.Skills.Minions.StandingRisen(), Is.Zero);
@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void NoMoreThanThreeRiseOnTheirOwn()
         {
-            var loop = Hero(HeroClass.Gravedigger);
+            var loop = Hero(HeroClass.Soulbinder);
 
             Kill(loop, Rules.RiseEvery * 5);
 
@@ -62,7 +62,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OnlyTheUndertakerRaisesTheKilled()
         {
-            var loop = Hero(HeroClass.Ronin);
+            var loop = Hero(HeroClass.Duelist);
 
             Kill(loop, Rules.RiseEvery * 2);
 
@@ -73,7 +73,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TreeLinesRaiseTheKilledMoreOften()
         {
-            var loop = Hero(HeroClass.Gravedigger, new Modifier(CombatStats.RiseEvery, ModifierKind.Flat, -1, StatTags.Minion));
+            var loop = Hero(HeroClass.Soulbinder, new Modifier(CombatStats.RiseEvery, ModifierKind.Flat, -1, StatTags.Minion));
 
             Kill(loop, Rules.RiseEvery - 1);
 
@@ -83,7 +83,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheCountTowardTheNextRiseIsSaved()
         {
-            var loop = Hero(HeroClass.Gravedigger);
+            var loop = Hero(HeroClass.Soulbinder);
             Kill(loop, 3);
 
             var loaded = Game.Core.Save.SaveCodec.Decode(Game.Core.Save.SaveCodec.Encode(loop.State, Game.Core.Clock.ClockStamp.First(new Game.Core.Clock.ClockReading(1, 1, 1))), TestWorld.Data).State;

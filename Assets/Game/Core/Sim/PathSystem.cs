@@ -63,7 +63,7 @@ namespace Game.Core.Sim
         private void RiseOnTheirOwn(long kills)
         {
             var rules = _combat.Skeletons;
-            if (!_state.Is(HeroClass.Gravedigger) || rules.Rise == null)
+            if (!_state.Is(HeroClass.Soulbinder) || rules.Rise == null)
                 return;
             _state.KillsTowardRise += (int)System.Math.Min(kills, MinionSystem.Capacity);
             var every = RiseEvery(rules);

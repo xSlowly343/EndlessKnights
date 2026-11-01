@@ -60,7 +60,7 @@ namespace Game.Core.Tests.Sim
         {
             Assert.That(Rules.ShieldEvery, Is.EqualTo(15));
             Assert.That(Rules.ShieldStunSeconds, Is.EqualTo(2));
-            var (loop, input) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer);
 
             Assert.That(ShieldAt(loop, input, Rules.ShieldEvery - 1), Is.Zero);
             var shield = Key(loop, input);
@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheStunIsAMarkForAlliesAndWearsOff()
         {
-            var (loop, input) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer);
             ShieldAt(loop, input, Rules.ShieldEvery);
             loop.Tick();
             Assert.That(Stunned(loop), Is.True);
@@ -90,18 +90,18 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ShieldEveryFromTheTreeBringsTheStrikeCloserButNotBelowTheFloor()
         {
-            var (loop, input) = Hero(HeroClass.Viking, new Modifier(CombatStats.ShieldEvery, ModifierKind.Flat, -1));
+            var (loop, input) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ShieldEvery, ModifierKind.Flat, -1));
             Assert.That(ShieldAt(loop, input, Rules.ShieldEvery), Is.EqualTo(Rules.ShieldEvery - 1));
 
-            var (fast, fastInput) = Hero(HeroClass.Viking, new Modifier(CombatStats.ShieldEvery, ModifierKind.Flat, -100));
+            var (fast, fastInput) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ShieldEvery, ModifierKind.Flat, -100));
             Assert.That(ShieldAt(fast, fastInput, Rules.ShieldEvery), Is.EqualTo(Rules.ShieldEveryMin));
         }
 
         [Test]
         public void ShieldDamageAndDamageVsStunnedStrengthenTheBlow()
         {
-            var (plain, plainInput) = Hero(HeroClass.Viking);
-            var (strong, strongInput) = Hero(HeroClass.Viking,
+            var (plain, plainInput) = Hero(HeroClass.Runedancer);
+            var (strong, strongInput) = Hero(HeroClass.Runedancer,
                 new Modifier(CombatStats.ShieldDamage, ModifierKind.Increased, 0.5),
                 new Modifier(CombatStats.DamageVsStunned, ModifierKind.Increased, 0.2));
             ShieldAt(plain, plainInput, Rules.ShieldEvery);
@@ -116,8 +116,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ShieldResourceIsGainedOnTheBlow()
         {
-            var (loop, input) = Hero(HeroClass.Viking, new Modifier(CombatStats.ShieldResource, ModifierKind.Flat, 10));
-            var (plain, plainInput) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ShieldResource, ModifierKind.Flat, 10));
+            var (plain, plainInput) = Hero(HeroClass.Runedancer);
             ShieldAt(loop, input, Rules.ShieldEvery);
             ShieldAt(plain, plainInput, Rules.ShieldEvery);
             loop.Tick();
@@ -129,7 +129,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OtherClassesHaveNoShield()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead);
+            var (loop, input) = Hero(HeroClass.Minstrel);
 
             Assert.That(ShieldAt(loop, input, Rules.ShieldEvery * 2), Is.Zero);
             Assert.That(loop.State.KeysTowardShield, Is.Zero);
@@ -138,7 +138,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheCountTowardTheShieldIsSaved()
         {
-            var (loop, input) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer);
             ShieldAt(loop, input, 7);
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;

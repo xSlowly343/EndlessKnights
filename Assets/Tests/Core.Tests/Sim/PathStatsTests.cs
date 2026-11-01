@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
         private static ConditionRules Conditions => TestWorld.Data.Combat.Conditions;
 
         private static (GameLoop Loop, FakeInputSource Input) Hero(EnemyType enemy, params Modifier[] modifiers) =>
-            Hero(HeroClass.Viking, enemy, modifiers);
+            Hero(HeroClass.Runedancer, enemy, modifiers);
 
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass, EnemyType enemy, params Modifier[] modifiers)
         {

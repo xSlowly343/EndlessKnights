@@ -37,11 +37,11 @@ namespace Game.Core.Tests.Content
         [Test]
         public void StarterIsTheEarlyBaseOfTheOwnType()
         {
-            var starter = Catalog.StarterFor(HeroClass.Viking);
+            var starter = Catalog.StarterFor(HeroClass.Runedancer);
 
             Assert.That(starter.Id, Is.EqualTo("woodcutter_axe"));
             Assert.That(starter.Type.Id, Is.EqualTo("axe"));
-            Assert.That(Catalog.StarterFor(HeroClass.Captain).Id, Is.EqualTo("flintlock_pistol"));
+            Assert.That(Catalog.StarterFor(HeroClass.Ghostcaptain).Id, Is.EqualTo("flintlock_pistol"));
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace Game.Core.Tests.Content
         {
             Assert.That(TestWorld.Real.Gems["iron_rim_bash"].Skill!.Weapon, Is.EqualTo("axe"));
             Assert.That(TestWorld.Real.Gems["hearth_song"].Skill!.Weapon, Is.EqualTo("electric_guitar"));
-            Assert.That(TestWorld.Real.Gems["charm_prick"].Skill!.Weapon, Is.EqualTo("voodoo_doll"));
+            Assert.That(TestWorld.Real.Gems["charm_prick"].Skill!.Weapon, Is.EqualTo("whisperer_doll"));
             Assert.That(TestWorld.Real.Gems["through_stride"].Skill!.Weapon, Is.Null);
         }
 
@@ -66,7 +66,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void EveryClassNeedsAType()
         {
-            var json = TestData.ReadGameDataFile(WeaponCatalog.FileName).Replace("\"class\": \"captain\"", "\"class\": \"viking\"");
+            var json = TestData.ReadGameDataFile(WeaponCatalog.FileName).Replace("\"class\": \"ghostcaptain\"", "\"class\": \"runedancer\"");
 
             Assert.Throws<ContentException>(() => WeaponCatalog.Load(json));
         }

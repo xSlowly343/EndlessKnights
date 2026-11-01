@@ -17,9 +17,9 @@ namespace Game.Core.Tests.Party
         public void TheEvilEyeSetsItsOwnMarkOnlyForTheWhisperer()
         {
             var whisperer = TestWorld.Loop();
-            whisperer.State.Class = HeroClass.Voodoo;
+            whisperer.State.Class = HeroClass.Whisperer;
             var other = TestWorld.Loop();
-            other.State.Class = HeroClass.Viking;
+            other.State.Class = HeroClass.Runedancer;
             whisperer.Tick();
             whisperer.Tick();
             other.Tick();
@@ -33,29 +33,29 @@ namespace Game.Core.Tests.Party
         [Test]
         public void AnAllysEvilEyeWakesCurseResponsesAtHalfButNotTreeLinesOrReactions()
         {
-            var viking = TestWorld.Loop();
-            viking.State.Class = HeroClass.Viking;
-            viking.Hero.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.05, StatTags.None, ModifierPool.General, ModifierCondition.AllyCurse));
-            viking.Synergy.SetAlly(1, true, HeroClass.Voodoo, Mark("evilEye"));
-            viking.Tick();
+            var runedancer = TestWorld.Loop();
+            runedancer.State.Class = HeroClass.Runedancer;
+            runedancer.Hero.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.05, StatTags.None, ModifierPool.General, ModifierCondition.AllyCurse));
+            runedancer.Synergy.SetAlly(1, true, HeroClass.Whisperer, Mark("evilEye"));
+            runedancer.Tick();
 
-            Assert.That(viking.Hero.Value(new StatId("resourceGain"), 1), Is.EqualTo(1.125).Within(1e-9));
-            Assert.That(viking.Hero.Conditions & ModifierConditions.Bit(ModifierCondition.AllyCurse), Is.Zero);
+            Assert.That(runedancer.Hero.Value(new StatId("resourceGain"), 1), Is.EqualTo(1.125).Within(1e-9));
+            Assert.That(runedancer.Hero.Conditions & ModifierConditions.Bit(ModifierCondition.AllyCurse), Is.Zero);
             var broken = Rules.Reactions.ToList().FindIndex(reaction => reaction.Id == "broken");
-            viking.Synergy.SetAlly(2, true, HeroClass.Viking, Mark("stun"));
-            viking.Tick();
-            Assert.That(viking.Synergy.ReactionActive(broken), Is.False);
+            runedancer.Synergy.SetAlly(2, true, HeroClass.Runedancer, Mark("stun"));
+            runedancer.Tick();
+            Assert.That(runedancer.Synergy.ReactionActive(broken), Is.False);
         }
 
         [Test]
         public void AFullCurseStillWakesTheWholeResponse()
         {
-            var viking = TestWorld.Loop();
-            viking.State.Class = HeroClass.Viking;
-            viking.Synergy.SetAlly(1, true, HeroClass.Voodoo, Mark("evilEye") | Mark("curse"));
-            viking.Tick();
+            var runedancer = TestWorld.Loop();
+            runedancer.State.Class = HeroClass.Runedancer;
+            runedancer.Synergy.SetAlly(1, true, HeroClass.Whisperer, Mark("evilEye") | Mark("curse"));
+            runedancer.Tick();
 
-            Assert.That(viking.Hero.Value(new StatId("resourceGain"), 1), Is.EqualTo(1.25).Within(1e-9));
+            Assert.That(runedancer.Hero.Value(new StatId("resourceGain"), 1), Is.EqualTo(1.25).Within(1e-9));
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void TheSwordlessBearerKeepsTheKeyPenaltyAtEveryRank()
         {
-            var node = TestWorld.Data.ClassTreeOf("bannerbearer")!.Nodes.Single(candidate => candidate.Id == "bannerbearer_bearer_without_sword");
+            var node = TestWorld.Data.ClassTreeOf("lanternbearer")!.Nodes.Single(candidate => candidate.Id == "lanternbearer_bearer_without_sword");
             for (var rank = 1; rank <= 5; rank++)
             {
                 var sheet = new StatSheet();

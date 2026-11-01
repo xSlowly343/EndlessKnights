@@ -30,15 +30,15 @@ namespace Game.Core.Save
 
         private static readonly IReadOnlyDictionary<string, string> Characters = new Dictionary<string, string>(StringComparer.Ordinal)
         {
-            ["barbarian"] = "viking",
-            ["swordsman"] = "ronin",
-            ["ranger"] = "amazon",
-            ["sorcerer"] = "stormweaver",
-            ["wanderer"] = "nomad",
-            ["bard"] = "metalhead",
-            ["priest"] = "oracle",
-            ["witch"] = "voodoo",
-            ["alchemist"] = "plague_doctor"
+            ["barbarian"] = "runedancer",
+            ["swordsman"] = "duelist",
+            ["ranger"] = "windshot",
+            ["sorcerer"] = "shardcaller",
+            ["wanderer"] = "sandwalker",
+            ["bard"] = "minstrel",
+            ["priest"] = "dreamcatcher",
+            ["witch"] = "whisperer",
+            ["alchemist"] = "alchemist"
         };
 
         private static readonly IReadOnlyDictionary<string, string> AttributeAffixes = new Dictionary<string, string>(StringComparer.Ordinal)
@@ -54,7 +54,7 @@ namespace Game.Core.Save
 
         private static readonly IReadOnlyDictionary<string, string> RenamedSubclasses = new Dictionary<string, string>(StringComparer.Ordinal)
         {
-            ["plague_doctor"] = "plague_bringer"
+            ["alchemist"] = "plague_bringer"
         };
 
         private static readonly HashSet<string> KeptSubclasses = new HashSet<string>(StringComparer.Ordinal)

@@ -23,7 +23,7 @@ namespace Game.Platform.Tests
         {
             var data = GameData.Load(name => File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Data", name)));
             Texts.UseLanguage("ru");
-            _loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Viking }, new StatSheet());
+            _loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Runedancer }, new StatSheet());
             _loop.Book.GrantStartingGems();
             _battle = BattleView.Create();
             _skillBar = SkillBarView.Create(_battle.transform);

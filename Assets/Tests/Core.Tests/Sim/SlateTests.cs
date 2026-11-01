@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Sim
 
         private static SlateTheme Theme(string id) => Rules.Themes.Single(theme => theme.Id == id);
 
-        private static GameLoop Hero(HeroClass heroClass = HeroClass.Viking, StatSheet? hero = null) =>
+        private static GameLoop Hero(HeroClass heroClass = HeroClass.Runedancer, StatSheet? hero = null) =>
             TestWorld.Loop(new FakeInputSource(), new GameState { Class = heroClass }, hero ?? new StatSheet());
 
         private static SlateItem Give(GameLoop loop, string shape, string theme, SlateRarity rarity = SlateRarity.Common, int line = 0)
@@ -187,14 +187,14 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AClassLineWorksOnlyForItsClass()
         {
-            var loop = Hero(HeroClass.Viking);
-            var line = Rules.ClassLines(HeroClass.Viking).Single(classLine => classLine.Id == "viking_shield_damage");
+            var loop = Hero(HeroClass.Runedancer);
+            var line = Rules.ClassLines(HeroClass.Runedancer).Single(classLine => classLine.Id == "runedancer_shield_damage");
             var slate = new SlateItem(Shape("pebble"), Theme("keys"), SlateRarity.Common, new[] { line }, false);
             loop.Slates.Give(slate);
             loop.Slates.Place(slate, 0, 0, 0);
             Assert.That(Sum(loop, "shieldDamage"), Is.EqualTo(0.1).Within(1e-9));
 
-            Assert.That(loop.ChangeClassFree(HeroClass.Ronin), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
 
             Assert.That(Sum(loop, "shieldDamage"), Is.Zero);
             Assert.That(loop.Slates.PlacementOf(slate), Is.Not.Null, "the slate stays on the board");
@@ -203,8 +203,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WholeLinesStayWholeNumbers()
         {
-            var loop = Hero(HeroClass.Viking);
-            var line = Rules.ClassLines(HeroClass.Viking).Single(classLine => classLine.Id == "viking_shield_sooner");
+            var loop = Hero(HeroClass.Runedancer);
+            var line = Rules.ClassLines(HeroClass.Runedancer).Single(classLine => classLine.Id == "runedancer_shield_sooner");
             var slate = new SlateItem(Shape("corner"), Theme("keys"), SlateRarity.Common, new[] { line }, false);
             loop.Slates.Give(slate);
             loop.Slates.Place(slate, 0, 0, 0);

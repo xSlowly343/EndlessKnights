@@ -8,7 +8,7 @@ namespace Game.Core.Tests.Sim
 {
     public class CommonIntellectSkillTests
     {
-        private static SkillTestHero Hero(params string[] skills) => SkillTestHero.Of(HeroClass.Ronin, skills);
+        private static SkillTestHero Hero(params string[] skills) => SkillTestHero.Of(HeroClass.Duelist, skills);
 
         private static void PressKeys(SkillTestHero hero, int keys)
         {

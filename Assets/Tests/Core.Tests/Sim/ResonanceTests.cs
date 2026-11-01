@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            var state = new GameState { Class = HeroClass.Oracle };
+            var state = new GameState { Class = HeroClass.Dreamcatcher };
             if (level > 0)
                 state.Resonance[branch] = level;
             var loop = TestWorld.Loop(input, state, hero);
@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void RaisingABranchCostsEchoAndAddsDamageOfItsInput()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking, Echo = BigNumber.FromDouble(100) });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, Echo = BigNumber.FromDouble(100) });
             var before = loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard);
 
             Assert.That(loop.RaiseResonance("keys"), Is.EqualTo(ResonanceResult.Raised));
@@ -61,7 +61,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void BranchesStopAtTheMaximumAndNeedEcho()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking, Echo = BigNumber.FromDouble(5) });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, Echo = BigNumber.FromDouble(5) });
             loop.State.Resonance["mouse"] = 15;
 
             Assert.That(loop.RaiseResonance("nothing"), Is.EqualTo(ResonanceResult.UnknownBranch));
@@ -112,7 +112,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClickResonanceTenTakesTwoTenthsOfASecondOffEveryCooldownPerClick()
         {
-            var hero = SkillTestHero.Of(HeroClass.Oracle, "by_the_gait");
+            var hero = SkillTestHero.Of(HeroClass.Dreamcatcher, "by_the_gait");
             hero.State.Resonance["clicks"] = 10;
             hero.Loop.Resonance.UseCatalog(Catalog);
             Assert.That(hero.Cast(0), Is.EqualTo(CastResult.Cast));
@@ -138,7 +138,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ResonanceSurvivesSavingAndPrestige()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking, Echo = BigNumber.FromDouble(100) });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, Echo = BigNumber.FromDouble(100) });
             Assert.That(loop.RaiseResonance("idle"), Is.EqualTo(ResonanceResult.Raised));
             var clock = ClockStamp.First(new ClockReading(1_760_000_000_000, 3_600_000, 12));
 

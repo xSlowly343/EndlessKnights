@@ -13,7 +13,7 @@ namespace Game.Core.Tests.Sim
         private static ChronicleCatalog Catalog => TestWorld.Data.Chronicle;
 
         private static GameLoop AfterPrestige(int prestiges = 1) =>
-            TestWorld.Loop(state: new GameState { Class = HeroClass.Viking, Prestiges = prestiges });
+            TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, Prestiges = prestiges });
 
         private static void Reach(GameLoop loop, long stage)
         {
@@ -115,7 +115,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void NoSkillsTrialForbidsCasting()
         {
-            var hero = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash");
+            var hero = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
             hero.State.Prestiges = 1;
             hero.State.HighestStage = 1;
 

@@ -35,7 +35,7 @@ namespace Game.Core.Sim
 
         public double BondShare => _state.BondsUp ? Rules.Bonds.AuraDuration * (1 + System.Math.Max(0, _hero.Value(CombatStats.BondPower, 0))) : 0;
 
-        public double BloodHitsPerSecond => _state.Is(HeroClass.Thornmaiden) && _state.EnemyAlive
+        public double BloodHitsPerSecond => _state.Is(HeroClass.Herbwitch) && _state.EnemyAlive
             ? _state.BloodStacks * Rules.Blood.HitsPerStack * (1 + System.Math.Max(0, _hero.Value(CombatStats.BloodPower, 0, StatTags.DoT)))
             : 0;
 
@@ -47,7 +47,7 @@ namespace Game.Core.Sim
 
         private void Bonds()
         {
-            _state.BondsUp = _state.Is(HeroClass.Spinner) && Rules.Bonds.AuraDuration > 0 && _state.Resource > Rules.Bonds.ResourceAbove;
+            _state.BondsUp = _state.Is(HeroClass.Mothcaller) && Rules.Bonds.AuraDuration > 0 && _state.Resource > Rules.Bonds.ResourceAbove;
             var share = BondShare;
             if (share == _bondShare)
                 return;
@@ -60,7 +60,7 @@ namespace Game.Core.Sim
 
         private void RaiseGolem()
         {
-            if (!_state.Is(HeroClass.Clayshaper) || Rules.Golem.Summon.Multiplier <= 0 || !_resource.IsFull || _resource.Max <= 0)
+            if (!_state.Is(HeroClass.Golemancer) || Rules.Golem.Summon.Multiplier <= 0 || !_resource.IsFull || _resource.Max <= 0)
                 return;
             if (_skills.Minions.Standing(MinionKind.Golem) > 0)
                 return;
@@ -71,7 +71,7 @@ namespace Game.Core.Sim
 
         public void Bleed(in EffectiveInput input)
         {
-            if (!_state.Is(HeroClass.Thornmaiden))
+            if (!_state.Is(HeroClass.Herbwitch))
                 return;
             var rules = Rules.Blood;
             if (input.MousePx > 0 && _state.EnemyAlive)

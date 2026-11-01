@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void ASkillNeedsNoAttribute()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Duelist });
             var gem = TestWorld.Data.Gems["through_stride"];
             loop.State.OwnedGems.Add(gem);
 

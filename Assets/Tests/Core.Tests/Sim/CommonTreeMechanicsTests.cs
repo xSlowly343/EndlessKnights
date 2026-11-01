@@ -18,7 +18,7 @@ namespace Game.Core.Tests.Sim
             var hero = new StatSheet();
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Viking }, hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Runedancer }, hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             loop.State.SpawnEnemy(null, enemy, BigNumber.Create(1, 50));

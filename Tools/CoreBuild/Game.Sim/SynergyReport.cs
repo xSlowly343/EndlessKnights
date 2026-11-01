@@ -18,10 +18,10 @@ namespace Game.Sim
 
         private static readonly (string Name, HeroClass[] Classes)[] Combos =
         {
-            ("poison_fire_lightning", new[] { HeroClass.PlagueDoctor, HeroClass.Moonshiner, HeroClass.Stormweaver, HeroClass.Nomad }),
-            ("army", new[] { HeroClass.Gravedigger, HeroClass.Voodoo, HeroClass.Amazon, HeroClass.Nomad }),
-            ("stun_and_finish", new[] { HeroClass.Viking, HeroClass.Bannerbearer, HeroClass.Voodoo, HeroClass.Nomad }),
-            ("time_and_series", new[] { HeroClass.Ronin, HeroClass.Clockmaker, HeroClass.Metalhead, HeroClass.Nomad })
+            ("poison_fire_lightning", new[] { HeroClass.Alchemist, HeroClass.Dowser, HeroClass.Shardcaller, HeroClass.Sandwalker }),
+            ("army", new[] { HeroClass.Soulbinder, HeroClass.Whisperer, HeroClass.Windshot, HeroClass.Sandwalker }),
+            ("stun_and_finish", new[] { HeroClass.Runedancer, HeroClass.Lanternbearer, HeroClass.Whisperer, HeroClass.Sandwalker }),
+            ("time_and_series", new[] { HeroClass.Duelist, HeroClass.Clockwright, HeroClass.Minstrel, HeroClass.Sandwalker })
         };
 
         public static int Run(GameData data, string dataFolder, BotProfile profile, SimOptions options)

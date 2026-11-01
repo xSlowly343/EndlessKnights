@@ -23,7 +23,7 @@ namespace Game.Core.Tests.Sim
             return loop;
         }
 
-        private static GameLoop With(params (string Id, int Level)[] artifacts) => With(HeroClass.Viking, artifacts);
+        private static GameLoop With(params (string Id, int Level)[] artifacts) => With(HeroClass.Runedancer, artifacts);
 
         [Test]
         public void EveryGroupHasOneClassArtifactPerHero()
@@ -100,12 +100,12 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClassArtifactWorksOnlyForItsHero()
         {
-            var viking = With(HeroClass.Viking, ("jarl_horn", 5));
-            var ronin = With(HeroClass.Ronin, ("jarl_horn", 5));
+            var runedancer = With(HeroClass.Runedancer, ("jarl_horn", 5));
+            var duelist = With(HeroClass.Duelist, ("jarl_horn", 5));
 
-            Assert.That(viking.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1.2).Within(1e-9));
-            Assert.That(ronin.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1).Within(1e-9));
-            Assert.That(ronin.Hero.Value(CombatStats.Damage, 100), Is.EqualTo(100 * (1 + 5 * Catalog.AllDamagePerLevel)).Within(1e-9));
+            Assert.That(runedancer.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1.2).Within(1e-9));
+            Assert.That(duelist.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1).Within(1e-9));
+            Assert.That(duelist.Hero.Value(CombatStats.Damage, 100), Is.EqualTo(100 * (1 + 5 * Catalog.AllDamagePerLevel)).Within(1e-9));
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace Game.Core.Tests.Sim
             var json = Game.Core.Tests.Content.TestData.ReadGameDataFile(ArtifactCatalog.FileName)
                 .Replace("\"allDamagePerLevel\": 0.02,", "\"allDamagePerLevel\": 0.02, \"allDamageCompounds\": true,");
             var catalog = ArtifactCatalog.Load(json);
-            var state = new GameState(3) { Class = HeroClass.Viking };
+            var state = new GameState(3) { Class = HeroClass.Runedancer };
             state.Artifacts["hourglass"] = 10;
             state.Artifacts["anchor"] = 5;
             var hero = new StatSheet();
@@ -273,7 +273,7 @@ namespace Game.Core.Tests.Sim
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e12));
             hero.Add(new Modifier(CombatStats.WandererChance, ModifierKind.Flat, 1));
-            var state = new GameState(9) { Class = HeroClass.Viking, Stage = 40, HighestStage = 40, RecordStage = 300 };
+            var state = new GameState(9) { Class = HeroClass.Runedancer, Stage = 40, HighestStage = 40, RecordStage = 300 };
             var loop = TestWorld.Loop(input, state, hero);
             loop.Stages.Encounters = CombatRules.Load(json).Encounters;
 

@@ -101,14 +101,14 @@ namespace Game.Core.Party
                     TickAura(ally.Auras[i]);
             }
             _state.PartyMembers = members;
-            var clearDay = _state.Is(HeroClass.Oracle) && _rules.ClearDayCritChance > 0
+            var clearDay = _state.Is(HeroClass.Dreamcatcher) && _rules.ClearDayCritChance > 0
                 && _state.Resource > _rules.ClearDayAbove + _hero.Value(CombatStats.ClearDayAbove, 0);
             if (clearDay != _clearDay)
             {
                 _clearDay = clearDay;
                 _dirty = true;
             }
-            var heard = _state.Is(HeroClass.Metalhead) && _rules.TypingPartyDamage > 0 && _state.KeyHits > 0
+            var heard = _state.Is(HeroClass.Minstrel) && _rules.TypingPartyDamage > 0 && _state.KeyHits > 0
                 && _state.KeylessTicks * GameLoop.TickSeconds < _rules.TypingSeconds + System.Math.Max(0, _hero.Value(CombatStats.TypingHoldSeconds, 0));
             if (heard != _state.HeardByAll)
             {

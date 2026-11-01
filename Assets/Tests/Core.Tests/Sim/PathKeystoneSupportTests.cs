@@ -57,8 +57,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void GoldGrowsWithTheResourceBar()
         {
-            var (plain, _) = Hero(HeroClass.Metalhead);
-            var (loud, _) = Hero(HeroClass.Metalhead, new Modifier(CombatStats.GoldPerResource, ModifierKind.Flat, 1));
+            var (plain, _) = Hero(HeroClass.Minstrel);
+            var (loud, _) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.GoldPerResource, ModifierKind.Flat, 1));
             loud.State.ResourceFill = 1;
 
             var ratio = (loud.Loot.GoldFor(1, EnemyType.Normal, null) / plain.Loot.GoldFor(1, EnemyType.Normal, null)).ToDouble();
@@ -69,8 +69,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClicksHitAgainWithTheKeystone()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead, new Modifier(CombatStats.ClickHitMultiplier, ModifierKind.Flat, 1.5));
-            var (plain, plainInput) = Hero(HeroClass.Metalhead);
+            var (loop, input) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.ClickHitMultiplier, ModifierKind.Flat, 1.5));
+            var (plain, plainInput) = Hero(HeroClass.Minstrel);
 
             input.ClickLeft();
             plainInput.ClickLeft();
@@ -85,7 +85,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TypingKeepsSongsUpToTheirFullLength()
         {
-            var (loop, input) = Hero(HeroClass.Viking, new Modifier(CombatStats.AuraSecondsPerKey, ModifierKind.Flat, 0.5, StatTags.Aura));
+            var (loop, input) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.AuraSecondsPerKey, ModifierKind.Flat, 0.5, StatTags.Aura));
             var slot = Equip(loop, Gem("hearth_song"));
             loop.State.Resource = 100;
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
@@ -111,7 +111,7 @@ namespace Game.Core.Tests.Sim
         public void HeadbangExtendsTheSongUpToTheCap()
         {
             var rules = TestWorld.Data.Combat.Classes;
-            var (loop, input) = Hero(HeroClass.Metalhead, new Modifier(CombatStats.SongMouseSeconds, ModifierKind.Flat, 10, StatTags.Aura));
+            var (loop, input) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.SongMouseSeconds, ModifierKind.Flat, 10, StatTags.Aura));
             var slot = Equip(loop, Gem("hearth_song"));
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
@@ -133,7 +133,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OnlyTheMetalheadHeadbangs()
         {
-            var (loop, input) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer);
             var slot = Equip(loop, Gem("hearth_song"));
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
@@ -148,8 +148,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void GainedOmensBurnTheEnemy()
         {
-            var (loop, input) = Hero(HeroClass.Oracle, new Modifier(CombatStats.ResourceGainDamage, ModifierKind.Flat, 0.5));
-            var pxPerOmen = TestWorld.Data.Combat.Resources.For("oracle").MousePxPerPoint;
+            var (loop, input) = Hero(HeroClass.Dreamcatcher, new Modifier(CombatStats.ResourceGainDamage, ModifierKind.Flat, 0.5));
+            var pxPerOmen = TestWorld.Data.Combat.Resources.For("dreamcatcher").MousePxPerPoint;
 
             input.MoveMouse((float)pxPerOmen * 2);
             loop.Tick();
@@ -162,7 +162,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SkillCostCanGrow()
         {
-            var (loop, _) = Hero(HeroClass.Metalhead, new Modifier(CombatStats.SkillCost, ModifierKind.More, 0.5));
+            var (loop, _) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.SkillCost, ModifierKind.More, 0.5));
             var gem = Gem("hearth_song");
             var slot = Equip(loop, gem);
             loop.State.Resource = 100;
@@ -176,8 +176,8 @@ namespace Game.Core.Tests.Sim
         public void RegularEnemiesArriveWeakened()
         {
             var strong = new Modifier(CombatStats.Damage, ModifierKind.More, 1e60);
-            var (plain, plainInput) = Hero(HeroClass.Oracle, strong);
-            var (cut, cutInput) = Hero(HeroClass.Oracle, strong, new Modifier(CombatStats.EnemyHpCut, ModifierKind.Flat, 0.25));
+            var (plain, plainInput) = Hero(HeroClass.Dreamcatcher, strong);
+            var (cut, cutInput) = Hero(HeroClass.Dreamcatcher, strong, new Modifier(CombatStats.EnemyHpCut, ModifierKind.Flat, 0.25));
 
             plainInput.PressKeys(1);
             cutInput.PressKeys(1);
@@ -191,7 +191,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ActiveAurasAddDamage()
         {
-            var (loop, _) = Hero(HeroClass.Bannerbearer, new Modifier(CombatStats.DamagePerAura, ModifierKind.Flat, 0.15));
+            var (loop, _) = Hero(HeroClass.Lanternbearer, new Modifier(CombatStats.DamagePerAura, ModifierKind.Flat, 0.15));
             var slot = Equip(loop, Gem("artel_pay"));
             loop.State.Resource = 100;
             loop.Tick();
@@ -204,8 +204,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ReservationCanShrink()
         {
-            var (plain, _) = Hero(HeroClass.Bannerbearer);
-            var (light, _) = Hero(HeroClass.Bannerbearer, new Modifier(CombatStats.AuraReserve, ModifierKind.Flat, -5));
+            var (plain, _) = Hero(HeroClass.Lanternbearer);
+            var (light, _) = Hero(HeroClass.Lanternbearer, new Modifier(CombatStats.AuraReserve, ModifierKind.Flat, -5));
             Equip(plain, Gem("artel_pay"));
             Equip(light, Gem("artel_pay"));
             plain.Tick();
@@ -217,7 +217,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CursesStrikeByThemselves()
         {
-            var (loop, _) = Hero(HeroClass.Voodoo, new Modifier(CombatStats.CurseHitsPerSecond, ModifierKind.Flat, 1));
+            var (loop, _) = Hero(HeroClass.Whisperer, new Modifier(CombatStats.CurseHitsPerSecond, ModifierKind.Flat, 1));
             var slot = Equip(loop, Gem("pin"));
             loop.State.Resource = 100;
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
@@ -232,7 +232,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EchoRepeatsAShareOfTheLastSeconds()
         {
-            var (loop, input) = Hero(HeroClass.Clockmaker,
+            var (loop, input) = Hero(HeroClass.Clockwright,
                 new Modifier(CombatStats.EchoEverySeconds, ModifierKind.Flat, 1),
                 new Modifier(CombatStats.EchoShare, ModifierKind.Flat, 0.5));
             var dealt = 0.0;
@@ -254,8 +254,8 @@ namespace Game.Core.Tests.Sim
         public void DoomHoldsDamageBackAndLandsItLater()
         {
             var seconds = TestWorld.Data.Combat.Paths.DoomSeconds;
-            var (plain, plainInput) = Hero(HeroClass.Clockmaker);
-            var (loop, input) = Hero(HeroClass.Clockmaker,
+            var (plain, plainInput) = Hero(HeroClass.Clockwright);
+            var (loop, input) = Hero(HeroClass.Clockwright,
                 new Modifier(CombatStats.DoomShare, ModifierKind.Flat, 0.6),
                 new Modifier(CombatStats.DoomMultiplier, ModifierKind.Flat, 0.5));
 
@@ -278,7 +278,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void DoomIsLostWithTheEnemy()
         {
-            var (loop, _) = Hero(HeroClass.Clockmaker);
+            var (loop, _) = Hero(HeroClass.Clockwright);
             loop.State.Doom = BigNumber.FromDouble(100);
             loop.State.DoomTicks = 5;
 
@@ -294,7 +294,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.DoomedCritChance, ModifierKind.Increased, 0.4));
-            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Clockmaker }, hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Clockwright }, hero);
             var before = loop.Combat.CritChance(StatTags.Keyboard);
 
             loop.State.Doom = BigNumber.FromDouble(1);
@@ -305,9 +305,9 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ReadingGivesMoreOmens()
         {
-            var rules = TestWorld.Data.Combat.Resources.For("oracle");
-            var (plain, plainInput) = Hero(HeroClass.Oracle);
-            var (reader, readerInput) = Hero(HeroClass.Oracle, new Modifier(CombatStats.ReadingGain, ModifierKind.Increased, 0.5));
+            var rules = TestWorld.Data.Combat.Resources.For("dreamcatcher");
+            var (plain, plainInput) = Hero(HeroClass.Dreamcatcher);
+            var (reader, readerInput) = Hero(HeroClass.Dreamcatcher, new Modifier(CombatStats.ReadingGain, ModifierKind.Increased, 0.5));
             foreach (var loop in new[] { plain, reader })
                 loop.State.KeylessTicks = 1000;
 
