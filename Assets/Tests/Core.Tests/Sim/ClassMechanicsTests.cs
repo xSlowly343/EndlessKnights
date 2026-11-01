@@ -9,7 +9,6 @@ namespace Game.Core.Tests.Sim
 {
     public class ClassMechanicsTests
     {
-        private static ClassRules Rules => TestWorld.Data.Combat.Classes;
 
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass)
         {
@@ -32,110 +31,15 @@ namespace Game.Core.Tests.Sim
             }
         }
 
-        private static GameEvent LastHit(GameLoop loop)
-        {
-            for (var i = loop.Events.Count - 1; i >= 0; i--)
-            {
-                if (loop.Events[i].Kind == GameEventKind.Damage)
-                    return loop.Events[i];
-            }
-            throw new AssertionException("no damage events");
-        }
-
         [Test]
-        public void TypistComboGrowsWithEachKey()
+        public void DuelistHitsNoLongerBuildTheOldSeries()
         {
             var (loop, input) = Hero(HeroClass.Duelist);
 
-            Keys(loop, input, 7);
+            Keys(loop, input, 60);
 
-            Assert.That(loop.State.Combo, Is.EqualTo(7));
-        }
-
-        [Test]
-        public void EveryNthKeyIsAComboStrike()
-        {
-            var (loop, input) = Hero(HeroClass.Duelist);
-
-            Keys(loop, input, Rules.ComboStrikeEvery - 1);
-            var normal = LastHit(loop);
-            Keys(loop, input, 1);
-            var strike = LastHit(loop);
-
-            Assert.That((normal.Flags & HitFlags.ComboStrike) == 0, Is.True);
-            Assert.That((strike.Flags & HitFlags.ComboStrike) != 0, Is.True);
-            var normalDamage = normal.Amount.ToDouble();
-            Assert.That(strike.Amount.ToDouble() / normalDamage, Is.EqualTo(Rules.ComboStrikeMultiplier).Within(0.05));
-        }
-
-        [Test]
-        public void ComboSurvivesShortPausesAndBreaksOnLongOnes()
-        {
-            var (loop, input) = Hero(HeroClass.Duelist);
-            var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
-            Keys(loop, input, 10);
-
-            for (var i = 0; i < timeoutTicks - 1; i++)
-                loop.Tick();
-            Assert.That(loop.State.Combo, Is.EqualTo(10));
-
-            for (var i = 0; i < 2; i++)
-                loop.Tick();
-            Assert.That(loop.State.Combo, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void ClicksKeepTheComboAliveLikeKeys()
-        {
-            var (loop, input) = Hero(HeroClass.Duelist);
-            var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
-            Keys(loop, input, 5);
-
-            for (var i = 0; i < timeoutTicks + 2; i++)
-            {
-                input.ClickLeft();
-                loop.Tick();
-            }
-
-            Assert.That(loop.State.Combo, Is.GreaterThan(5));
-        }
-
-        [Test]
-        public void BladeDanceKeepsTheComboAliveWhileTheMouseMoves()
-        {
-            var (loop, input) = Hero(HeroClass.Duelist);
-            var timeoutTicks = (int)System.Math.Round(Rules.ComboTimeoutSeconds * GameLoop.TicksPerSecond);
-            Keys(loop, input, 5);
-
-            for (var i = 0; i < timeoutTicks * 3; i++)
-            {
-                input.MoveMouse(500);
-                loop.Tick();
-            }
-
-            Assert.That(loop.State.Combo, Is.EqualTo(5));
-        }
-
-        [Test]
-        public void EveryBreathStepOfTheStreakGivesOneWhirl()
-        {
-            var (loop, input) = Hero(HeroClass.Duelist);
-
-            Keys(loop, input, Rules.BreathEvery);
-            loop.Tick();
-
-            Assert.That(loop.State.Resource, Is.EqualTo(Rules.WhirlResource).Within(1e-9));
-        }
-
-        [Test]
-        public void MinstrelHasNoCombo()
-        {
-            var (loop, input) = Hero(HeroClass.Minstrel);
-
-            Keys(loop, input, Rules.ComboStrikeEvery);
-
-            Assert.That(loop.State.Combo, Is.EqualTo(0));
-            Assert.That((LastHit(loop).Flags & HitFlags.ComboStrike) == 0, Is.True);
+            Assert.That(loop.State.Combo, Is.Zero);
+            Assert.That(loop.State.Resource, Is.EqualTo(60 * TestWorld.Data.Combat.Resources.For("duelist").PerKey).Within(1e-6));
         }
     }
 }

@@ -69,9 +69,9 @@ namespace Game.Core.Tests.Build
             Assert.That(state.Class, Is.EqualTo(HeroClass.Duelist));
             Assert.That(state.ClassName, Is.EqualTo("duelist"));
             Assert.That(state.TreePointsLeft, Is.GreaterThan(0), "points earned as a novice are kept");
-            Assert.That(state.Weapons.Right?.Type.Id ?? state.Weapons.Left?.Type.Id, Is.EqualTo("katana"));
-            Assert.That(state.Skills[0].Def.Weapon, Is.EqualTo("katana"));
-            Assert.That(state.Skills[1].Def.Weapon, Is.EqualTo("katana"));
+            Assert.That(state.Weapons.Right?.Type.Id ?? state.Weapons.Left?.Type.Id, Is.EqualTo("spectral_rapier"));
+            Assert.That(state.Skills[0].Def.Weapon, Is.EqualTo("spectral_rapier"));
+            Assert.That(state.Skills[1].Def.Weapon, Is.EqualTo("spectral_rapier"));
             Assert.That(state.OwnedGems.Select(gem => gem.Id), Does.Contain("through_stride").And.Contain("lull"), "general skills stay with the hero");
             Assert.That(loop.Resource.Rules, Is.SameAs(TestWorld.Data.Combat.Resources.For("duelist")));
             Assert.That(loop.ClassChoiceReady, Is.False);

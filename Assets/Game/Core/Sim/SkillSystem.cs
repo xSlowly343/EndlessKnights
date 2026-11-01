@@ -316,6 +316,7 @@ namespace Game.Core.Sim
                     Strike(slot, strike, native, 0);
             }
             _combat.Runedancer.OnSkillCast(slot.Skill);
+            _combat.Duelist.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)
@@ -670,7 +671,6 @@ namespace Game.Core.Sim
             && (!condition.BossRetry || (_state.FightingBoss && _state.BossFailsInARow > 0))
             && (condition.BossLastSeconds <= 0 || (_state.FightingBoss && _state.BossTicksLeft > 0 && _state.BossTicksLeft <= Ticks(condition.BossLastSeconds)))
             && (condition.FamilyActive == null || AnyActive(condition.FamilyActive))
-            && (condition.AfterComboStrikeSeconds <= 0 || (_state.LastComboStrikeTick >= 0 && _state.Tick - _state.LastComboStrikeTick <= Ticks(condition.AfterComboStrikeSeconds)))
             && (!condition.MouseMoving || _state.MouseIdleTicks < Ticks(MouseMovingSeconds))
             && (!condition.Reading || _state.Reading)
             && (condition.DotStacksAtLeast <= 0 || _state.PoisonStacks + _state.BurnStacks >= condition.DotStacksAtLeast - 1e-9)
@@ -731,7 +731,7 @@ namespace Game.Core.Sim
         {
             _keyGapTicks = _state.Tick - _lastKeyHitTick;
             _lastKeyHitTick = _state.Tick;
-            _state.KeyStreak = _keyGapTicks > Ticks(_combat.Classes.ComboTimeoutSeconds) ? 1 : _state.KeyStreak + 1;
+            _state.KeyStreak = _keyGapTicks > Ticks(_combat.Classes.KeyStreakGapSeconds) ? 1 : _state.KeyStreak + 1;
             _lastKeyHitDamage = damage;
             var outer = _combat.Supporting;
             foreach (var slot in _state.Skills)

@@ -191,31 +191,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SeriesStrikeAlwaysCritsWithTheKeystone()
-        {
-            var every = TestWorld.Data.Combat.Classes.ComboStrikeEvery;
-            var (loop, input) = Hero(HeroClass.Duelist, new Modifier(CombatStats.ComboStrikeCrit, ModifierKind.Flat, 1));
-            var (plain, plainInput) = Hero(HeroClass.Duelist);
-
-            Type(loop, input, every);
-            Type(plain, plainInput, every);
-
-            Assert.That(CritHits(loop), Is.EqualTo(1));
-            Assert.That(CritHits(plain), Is.EqualTo(0));
-        }
-
-        private static int CritHits(GameLoop loop)
-        {
-            var count = 0;
-            for (var i = 0; i < loop.Events.Count; i++)
-            {
-                if (loop.Events[i].Kind == GameEventKind.Damage && (loop.Events[i].Flags & HitFlags.Crit) != 0)
-                    count++;
-            }
-            return count;
-        }
-
-        [Test]
         public void LongSeriesAddsDamageUpToTheCap()
         {
             var perCombo = new Modifier(CombatStats.DamagePerCombo, ModifierKind.Flat, 0.005, StatTags.Keyboard);

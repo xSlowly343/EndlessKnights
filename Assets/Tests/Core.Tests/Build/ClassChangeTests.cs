@@ -169,12 +169,12 @@ namespace Game.Core.Tests.Build
             Assert.That(left.Rarity, Is.EqualTo(ItemRarity.Mythic));
             Assert.That(left.Skills.Count, Is.EqualTo(rolled.Skills.Count));
             for (var i = 0; i < left.Skills.Count; i++)
-                Assert.That(TestWorld.Data.Gems[left.Skills[i]].Skill!.Weapon, Is.EqualTo("katana"));
+                Assert.That(TestWorld.Data.Gems[left.Skills[i]].Skill!.Weapon, Is.EqualTo("spectral_rapier"));
             Assert.That(state.Weapons.Bag, Does.Contain(bow), "a weapon of a third class stays as it is");
             Assert.That(state.Weapons.Bag, Does.Contain(corsair), "a unique weapon stays as it is");
 
             var reforgedFast = state.Skills[0].Skill;
-            Assert.That(reforgedFast.Skill!.Weapon, Is.EqualTo("katana"));
+            Assert.That(reforgedFast.Skill!.Weapon, Is.EqualTo("spectral_rapier"));
             Assert.That(reforgedFast.Skill.Tier, Is.EqualTo(fast.Skill!.Tier));
             Assert.That(state.LevelOf(reforgedFast), Is.EqualTo(9), "the level moves to the new gem");
             Assert.That(state.Skills[0].Supports[0], Is.SameAs(support));

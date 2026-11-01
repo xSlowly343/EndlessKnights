@@ -2,30 +2,18 @@ namespace Game.Core.Content
 {
     public sealed class ClassRules
     {
-        public ClassRules(double comboTimeoutSeconds, int comboStrikeEvery, double comboStrikeMultiplier, double whirlResource, double headbangPxPerSecond, double headbangMaxSeconds,
-            int breathEvery, int comboStrikeTargets, int comboStrikeEveryMin, double clockworkAbove = 0, double clockworkSlow = 0, double clockworkFloor = 1)
+        public ClassRules(double keyStreakGapSeconds, double headbangPxPerSecond, double headbangMaxSeconds,
+            double clockworkAbove = 0, double clockworkSlow = 0, double clockworkFloor = 1)
         {
             ClockworkAbove = clockworkAbove;
             ClockworkSlow = clockworkSlow;
             ClockworkFloor = clockworkFloor;
-            BreathEvery = breathEvery;
-            ComboStrikeTargets = comboStrikeTargets;
-            ComboStrikeEveryMin = comboStrikeEveryMin;
             HeadbangPxPerSecond = headbangPxPerSecond;
             HeadbangMaxSeconds = headbangMaxSeconds;
-            WhirlResource = whirlResource;
-            ComboTimeoutSeconds = comboTimeoutSeconds;
-            ComboStrikeEvery = comboStrikeEvery;
-            ComboStrikeMultiplier = comboStrikeMultiplier;
+            KeyStreakGapSeconds = keyStreakGapSeconds;
         }
 
-        public double ComboTimeoutSeconds { get; }
-        public int ComboStrikeEvery { get; }
-        public double ComboStrikeMultiplier { get; }
-        public double WhirlResource { get; }
-        public int BreathEvery { get; }
-        public int ComboStrikeTargets { get; }
-        public int ComboStrikeEveryMin { get; }
+        public double KeyStreakGapSeconds { get; }
         public double ClockworkAbove { get; }
         public double ClockworkSlow { get; }
         public double ClockworkFloor { get; }
@@ -42,22 +30,16 @@ namespace Game.Core.Content
         public BloodRules Blood { get; private set; } = BloodRules.None;
         public GolemRules Golem { get; private set; } = GolemRules.None;
         public RunedancerRules Runedancer { get; private set; } = RunedancerRules.None;
+        public DuelistRules Duelist { get; private set; } = DuelistRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
-            var combo = node.Field("duelist").Field("combo");
             var headbang = node.Field("minstrel").Field("headbang");
             var clockwork = node.Field("clockwright").Field("clockwork");
             return new ClassRules(
-                combo.Field("timeoutSeconds").AsNumber(0.1, 60),
-                combo.Field("strikeEvery").AsInt(1, 10000),
-                combo.Field("strikeMultiplier").AsNumber(1, 1000),
-                combo.Field("whirlResource").AsNumber(0, 1000),
+                node.Field("keyStreak").Field("gapSeconds").AsNumber(0.1, 60),
                 headbang.Field("pxPerSecond").AsNumber(1, 1e7),
                 headbang.Field("maxSeconds").AsNumber(0, 3600),
-                combo.Field("breathEvery").AsInt(1, 10000),
-                combo.Field("strikeTargets").AsInt(0, 100),
-                combo.Field("strikeEveryMin").AsInt(1, 10000),
                 clockwork.Field("resourceAbove").AsNumber(0, 1e6),
                 clockwork.Field("slow").AsNumber(0, 1),
                 clockwork.Field("floor").AsNumber(0, 1)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")), Sand = BlindRules.Read(node.Field("sandwalker").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("minstrel").Field("overdrive")),
@@ -68,7 +50,8 @@ namespace Game.Core.Content
                 Cold = ColdRules.Read(node.Field("cartomancer").Field("cold")),
                 Blood = BloodRules.Read(node.Field("herbwitch").Field("blood")),
                 Golem = GolemRules.Read(node.Field("golemancer").Field("golem")),
-                Runedancer = RunedancerRules.Read(node.Field("runedancer")) };
+                Runedancer = RunedancerRules.Read(node.Field("runedancer")),
+                Duelist = DuelistRules.Read(node.Field("duelist")) };
         }
     }
 }

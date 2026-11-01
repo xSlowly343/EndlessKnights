@@ -303,6 +303,7 @@ namespace Game.Core.Tests.Sim
         {
             var known = typeof(CombatStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
                 .Concat(typeof(RunedancerStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+                .Concat(typeof(DuelistStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Where(field => field.FieldType == typeof(StatId))
                 .Select(field => ((StatId)field.GetValue(null)!).Name)
                 .ToHashSet();

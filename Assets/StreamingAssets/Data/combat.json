@@ -26,7 +26,7 @@
       "ghostcaptain": { "perKey": 0.3333 },
       "alchemist": { "perKey": 1 },
       "soulbinder": { "perKey": 0.1, "perKill": 5 },
-      "duelist": { "perKey": 0 },
+      "duelist": { "perKey": 0.5 },
       "windshot": { "perKey": 0, "mousePxPerPoint": 160, "perSecond": 1 },
       "lanternbearer": { "perKey": 0.3333, "perAllyHit": 0.1 },
       "dreamcatcher": { "perKey": 0, "mousePxPerPoint": 600, "perAllyHit": 0.1, "reading": { "perSecond": 1, "afterKeylessSeconds": 5 } },
@@ -41,6 +41,7 @@
   },
   "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
   "classes": {
+    "keyStreak": { "gapSeconds": 1.5 },
     "shardcaller": { "overload": { "queueTargets": 2 } },
     "whisperer": { "evilEye": { "damageTaken": 0.05 } },
     "lanternbearer": { "standingAuras": { "count": 2, "pauseSeconds": 1 } },
@@ -51,7 +52,11 @@
       "blades": { "every": 3, "max": 12, "partyCritPerBlade": 0.003, "fallSeconds": 1, "shardMultiplier": 2 },
       "whirl": { "max": 8, "palmMax": 5, "hitsPerSecond": 1, "partyDamagePerBlade": 0.004, "gustSeconds": 2, "eyeMultiplier": 2 }
     },
-    "duelist": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 50, "strikeEveryMin": 10, "strikeMultiplier": 3, "strikeTargets": 1, "breathEvery": 25, "whirlResource": 20 } },
+    "duelist": {
+      "breach": { "everySeconds": 4, "everyMinSeconds": 1.5, "seconds": 1, "honor": 1.5, "partyDamage": 0.15, "pressMax": 2, "exposeSeconds": 4, "exposeMax": 0.4, "bossSoonerSeconds": 1, "outsidePenalty": 0.5, "doubleShare": 0.8 },
+      "touche": { "every": 10, "everyMin": 3, "marks": 5, "marksMin": 2, "bossShare": 0.5, "executeMax": 0.4, "markDamageMax": 0.5, "partyGold": 0.25, "partyGoldSeconds": 15, "publicSeconds": 5 },
+      "phantom": { "hitsPerSecond": 4, "selfPenalty": 0.2, "partyEverySeconds": 30, "partySeconds": 5, "partyDamage": 0.1, "pauseAfterSeconds": 1, "pauseHitsPerSecond": 3, "feintCrit": 0.15 }
+    },
     "minstrel": { "headbang": { "pxPerSecond": 2000, "maxSeconds": 30 }, "overdrive": { "seconds": 8, "songs": 0.5 } },
     "clockwright": { "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 } },
     "mothcaller": { "bonds": { "resourceAbove": 30, "auraDuration": 0.5 } },

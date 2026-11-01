@@ -975,26 +975,28 @@
     ],
     "duelist": [
       {
-        "id": "duelist_series_sooner",
+        "id": "duelist_breach_sooner",
         "modifiers": [
           {
-            "stat": "comboStrikeEvery",
+            "stat": "breachEvery",
             "kind": "flat",
-            "value": -2,
+            "value": -0.5,
             "tags": [
               "Keyboard"
             ]
           }
-        ],
-        "whole": true
+        ]
       },
       {
-        "id": "duelist_series_strike",
+        "id": "duelist_touche_power",
         "modifiers": [
           {
-            "stat": "comboStrikeMultiplier",
-            "kind": "flat",
-            "value": 0.2
+            "stat": "touchePower",
+            "kind": "increased",
+            "value": 0.1,
+            "tags": [
+              "Keyboard"
+            ]
           }
         ]
       }

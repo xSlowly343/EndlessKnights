@@ -126,7 +126,7 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
 
             Assert.That(loop.State.Crits, Is.GreaterThan(0));
-            Assert.That(loop.State.Resource, Is.EqualTo(2 * loop.State.Crits).Within(1e-9));
+            Assert.That(loop.State.Resource, Is.EqualTo(2 * loop.State.Crits + TestWorld.Data.Combat.Resources.For("duelist").PerKey).Within(1e-9));
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Build
         }
 
         [TestCase(HeroClass.Runedancer, "runedancer_r1c1")]
-        [TestCase(HeroClass.Duelist, "duelist_r1c9")]
+        [TestCase(HeroClass.Duelist, "duelist_r1c1")]
         [TestCase(HeroClass.Windshot, "windshot_r1c9")]
         [TestCase(HeroClass.Shardcaller, "shardcaller_r1c9")]
         [TestCase(HeroClass.Sandwalker, "sandwalker_r1c9")]
@@ -58,38 +58,6 @@ namespace Game.Core.Tests.Build
             var result = new OfflineCalculator(TestWorld.Data, hero).Simulate(new GameState(), 48 * 3600, BigNumber.FromDouble(50), fightGuardians: false);
 
             Assert.That(result.Seconds, Is.EqualTo(TestWorld.Data.Combat.Offline.CapSeconds + 3600));
-        }
-
-        [Test]
-        public void StreakNodesStretchTheComboAndHardenItsStrike()
-        {
-            var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.ComboStrikeMultiplier, ModifierKind.Flat, 0.5));
-            hero.Add(new Modifier(CombatStats.ComboTimeoutSeconds, ModifierKind.Flat, 0.5));
-            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Duelist }, hero);
-            loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Normal, BigNumber.Create(1, 40));
-            var rules = TestWorld.Data.Combat.Classes;
-
-            for (var i = 0; i < 3; i++)
-            {
-                input.PressKeys(1);
-                loop.Tick();
-                loop.Tick();
-            }
-            for (var i = 0; i < (rules.ComboTimeoutSeconds + 0.4) * GameLoop.TicksPerSecond; i++)
-                loop.Tick();
-            Assert.That(loop.State.Combo, Is.EqualTo(3));
-
-            loop.State.Combo = rules.ComboStrikeEvery - 1;
-            loop.State.ComboTowardStrike = rules.ComboStrikeEvery - 1;
-            loop.Events.Clear();
-            input.PressKeys(1);
-            loop.Tick();
-            var strike = loop.Events[0];
-            Assert.That((strike.Flags & HitFlags.ComboStrike) != 0, Is.True);
-            Assert.That(strike.Amount.ToDouble() / (TestWorld.Data.Combat.KeyDamage * loop.State.FocusMultiplier), Is.EqualTo(rules.ComboStrikeMultiplier + 0.5).Within(1e-9));
         }
     }
 }
