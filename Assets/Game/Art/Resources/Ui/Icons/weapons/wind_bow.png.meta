@@ -4,10 +4,10 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 3829446090001031036
-    second: short_bow_0
+    second: wind_bow_0
   - first:
       213: 5616512993385836817
-    second: short_bow_1
+    second: wind_bow_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -118,7 +118,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: short_bow_0
+      name: wind_bow_0
       rect:
         serializedVersion: 2
         x: 13
@@ -140,7 +140,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: short_bow_1
+      name: wind_bow_1
       rect:
         serializedVersion: 2
         x: 28

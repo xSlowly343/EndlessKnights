@@ -46,7 +46,12 @@
     "whisperer": { "evilEye": { "damageTaken": 0.05 } },
     "lanternbearer": { "standingAuras": { "count": 2, "pauseSeconds": 1 } },
     "sandwalker": { "sand": { "every": 10, "everyMin": 4, "seconds": 4 } },
-    "windshot": { "mark": { "every": 20, "everyMin": 5, "seconds": 8, "keyDamage": 0.2 } },
+    "windshot": {
+      "mark": { "seconds": 8, "keyDamage": 0.1 },
+      "shot": { "every": 6, "everyMin": 2, "per": 25, "spend": 25, "partyCrit": 0.1, "pauseSeconds": 2, "stormMultiplier": 2, "autoSeconds": 3, "autoMultiplier": 1.5, "pierceShare": 1 },
+      "calm": { "stillSeconds": 4, "stillMinSeconds": 1, "critPenalty": 0.3, "eternalPenalty": 0.5, "partyCritMultiplier": 0.1, "tensionPerCrit": 0.5, "deadOutside": 0.8, "deadShare": 0.5, "firstMultiplier": 4, "stormHits": 5, "stormMultiplier": 3 },
+      "gust": { "px": 3000, "pxMin": 500, "hits": 10, "hitsMin": 2, "max": 5, "tension": 0, "partyResource": 0.1, "partySeconds": 5, "stormSeconds": 8, "stormGusts": 5, "queueShare": 1, "timerSeconds": 6 }
+    },
     "runedancer": {
       "runes": { "wordLength": 5, "wordLengthMin": 2, "fadeSeconds": 10, "sealSeconds": 4, "sealDamage": 0.12, "weaveSeconds": 6, "shadowAfterSeconds": 1, "shadowHitsPerSecond": 3 },
       "blades": { "every": 3, "max": 12, "partyCritPerBlade": 0.003, "fallSeconds": 1, "shardMultiplier": 2 },

@@ -1,8 +1,6 @@
-using Game.Core.Clock;
 using Game.Core.Content;
 using Game.Core.Input;
 using Game.Core.Math;
-using Game.Core.Save;
 using Game.Core.Sim;
 using Game.Core.Stats;
 using NUnit.Framework;
@@ -13,6 +11,10 @@ namespace Game.Core.Tests.Sim
     {
         private static HunterMarkRules Rules => TestWorld.Data.Combat.Classes.HunterMark;
 
+        private static int ShotEvery => TestWorld.Data.Combat.Classes.Windshot.ShotEvery;
+
+        private static readonly Modifier LongShot = new Modifier(WindshotStats.ShotPower, ModifierKind.Flat, 1);
+
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass, params Modifier[] modifiers) =>
             Hero(heroClass, EnemyType.Normal, modifiers);
 
@@ -21,6 +23,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
+            hero.Add(LongShot);
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
             var loop = TestWorld.Loop(input, new GameState { Class = heroClass }, hero);
@@ -51,6 +54,8 @@ namespace Game.Core.Tests.Sim
         {
             for (var i = 1; i <= keys; i++)
             {
+                loop.State.Resource = 1000;
+                loop.Tick();
                 Key(loop, input);
                 if (loop.State.HunterMarkTicks > 0)
                     return i;
@@ -62,13 +67,12 @@ namespace Game.Core.Tests.Sim
             (loop.Synergy.OwnMarks & TestWorld.Data.Synergy.MaskOf(new[] { "hunterMark" })) != 0;
 
         [Test]
-        public void EveryTwentiethKeyMarksTheEnemyAndKeysHitItHarder()
+        public void AShotAtFullTensionMarksTheEnemyAndKeysHitItHarder()
         {
-            Assert.That(Rules.Every, Is.EqualTo(20));
             Assert.That(Rules.Seconds, Is.EqualTo(8));
             var (loop, input) = Hero(HeroClass.Windshot);
 
-            Assert.That(MarkAt(loop, input, Rules.Every), Is.EqualTo(Rules.Every));
+            Assert.That(MarkAt(loop, input, ShotEvery), Is.EqualTo(ShotEvery));
             var marked = Key(loop, input);
             loop.State.HunterMarkTicks = 0;
             var plain = Key(loop, input);
@@ -81,7 +85,7 @@ namespace Game.Core.Tests.Sim
         public void TheMarkIsShownToAlliesAndWearsOff()
         {
             var (loop, input) = Hero(HeroClass.Windshot);
-            MarkAt(loop, input, Rules.Every);
+            MarkAt(loop, input, ShotEvery);
             loop.Tick();
             Assert.That(MarkShown(loop), Is.True);
 
@@ -93,14 +97,13 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TreeLinesBringTheMarkCloserAndMakeItLastAndHitHarder()
+        public void TreeLinesMakeTheMarkLastAndHitHarder()
         {
             var (loop, input) = Hero(HeroClass.Windshot,
-                new Modifier(CombatStats.MarkEvery, ModifierKind.Flat, -2),
                 new Modifier(CombatStats.MarkSeconds, ModifierKind.Flat, 3),
                 new Modifier(CombatStats.MarkDamage, ModifierKind.Flat, 0.1));
 
-            Assert.That(MarkAt(loop, input, Rules.Every), Is.EqualTo(Rules.Every - 2));
+            Assert.That(MarkAt(loop, input, ShotEvery), Is.EqualTo(ShotEvery));
             Assert.That(loop.State.HunterMarkTicks, Is.EqualTo((int)((Rules.Seconds + 3) * GameLoop.TicksPerSecond) - 1).Within(1));
             Assert.That(loop.Combat.MarkedMultiplier(StatTags.Keyboard), Is.EqualTo(1 + Rules.KeyDamage + 0.1).Within(1e-9));
         }
@@ -111,7 +114,7 @@ namespace Game.Core.Tests.Sim
             var (loop, input) = Hero(HeroClass.Windshot,
                 new Modifier(CombatStats.MarkForever, ModifierKind.Flat, 1),
                 new Modifier(CombatStats.MarkJump, ModifierKind.Flat, 1));
-            MarkAt(loop, input, Rules.Every);
+            MarkAt(loop, input, ShotEvery);
             for (var i = 0; i < 200; i++)
                 loop.Tick();
             Assert.That(loop.State.HunterMarkTicks, Is.GreaterThan(0));
@@ -126,7 +129,7 @@ namespace Game.Core.Tests.Sim
         public void WithoutJumpTheMarkDiesWithTheEnemy()
         {
             var (loop, input) = Hero(HeroClass.Windshot);
-            MarkAt(loop, input, Rules.Every);
+            MarkAt(loop, input, ShotEvery);
 
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             loop.Tick();
@@ -139,18 +142,18 @@ namespace Game.Core.Tests.Sim
         {
             var bossOnly = new[] { new Modifier(CombatStats.MarkBossOnly, ModifierKind.Flat, 1), new Modifier(CombatStats.MarkPower, ModifierKind.Flat, 1) };
             var (normal, normalInput) = Hero(HeroClass.Windshot, bossOnly);
-            Assert.That(MarkAt(normal, normalInput, Rules.Every * 2), Is.Zero);
+            Assert.That(MarkAt(normal, normalInput, ShotEvery * 2), Is.Zero);
 
             var (guardian, guardianInput) = Hero(HeroClass.Windshot, EnemyType.Guardian, bossOnly);
-            Assert.That(MarkAt(guardian, guardianInput, Rules.Every * 2), Is.Zero);
+            Assert.That(MarkAt(guardian, guardianInput, ShotEvery * 2), Is.Zero);
 
             var (boss, bossInput) = Hero(HeroClass.Windshot, EnemyType.Boss, bossOnly);
-            Assert.That(MarkAt(boss, bossInput, Rules.Every), Is.EqualTo(Rules.Every));
+            Assert.That(MarkAt(boss, bossInput, ShotEvery), Is.EqualTo(ShotEvery));
             Assert.That(boss.Combat.MarkedMultiplier(StatTags.Keyboard), Is.EqualTo(1 + Rules.KeyDamage * 2).Within(1e-9));
 
             var (onGuardian, onGuardianInput) = Hero(HeroClass.Windshot, EnemyType.Guardian,
                 new Modifier(CombatStats.MarkBossOnly, ModifierKind.Flat, 1), new Modifier(CombatStats.MarkOnGuardians, ModifierKind.Flat, 1));
-            Assert.That(MarkAt(onGuardian, onGuardianInput, Rules.Every), Is.EqualTo(Rules.Every));
+            Assert.That(MarkAt(onGuardian, onGuardianInput, ShotEvery), Is.EqualTo(ShotEvery));
         }
 
         [Test]
@@ -158,19 +161,7 @@ namespace Game.Core.Tests.Sim
         {
             var (loop, input) = Hero(HeroClass.Runedancer);
 
-            Assert.That(MarkAt(loop, input, Rules.Every * 2), Is.Zero);
-            Assert.That(loop.State.KeysTowardMark, Is.Zero);
-        }
-
-        [Test]
-        public void TheCountTowardTheMarkIsSaved()
-        {
-            var (loop, input) = Hero(HeroClass.Windshot);
-            MarkAt(loop, input, 7);
-
-            var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;
-
-            Assert.That(loaded.KeysTowardMark, Is.EqualTo(7));
+            Assert.That(MarkAt(loop, input, ShotEvery * 2), Is.Zero);
         }
     }
 }

@@ -208,7 +208,6 @@ namespace Game.Core.Sim
         public static readonly StatId ClearDayCritChance = new StatId("clearDayCritChance");
         public static readonly StatId StunSeconds = new StatId("stunSeconds");
         public static readonly StatId DamageVsStunned = new StatId("damageVsStunned");
-        public static readonly StatId MarkEvery = new StatId("markEvery");
         public static readonly StatId MarkSeconds = new StatId("markSeconds");
         public static readonly StatId MarkDamage = new StatId("markDamage");
         public static readonly StatId MarkPower = new StatId("markPower");

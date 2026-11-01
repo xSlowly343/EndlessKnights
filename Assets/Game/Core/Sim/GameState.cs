@@ -256,11 +256,14 @@ namespace Game.Core.Sim
         public int KillsTowardRise { get; set; }
         public RunedancerState Runedancer { get; } = new RunedancerState();
         public DuelistState Duelist { get; } = new DuelistState();
+        public WindshotState Windshot { get; } = new WindshotState();
         public double TraitPartyDamage { get; set; }
         public double TraitPartyCritChance { get; set; }
         public double TraitPartyGold { get; set; }
+        public double TraitPartyCritMultiplier { get; set; }
+        public double TraitPartyResource { get; set; }
+        public bool StepTensionBlocked { get; set; }
         public int StunTicks { get; set; }
-        public int KeysTowardMark { get; set; }
         public int HunterMarkTicks { get; set; }
         public bool MarkedEnemyDied { get; set; }
         public int KeysTowardBlind { get; set; }
@@ -315,6 +318,7 @@ namespace Game.Core.Sim
             EnemyShieldFloor = BigNumber.Zero;
             Runedancer.OnSpawn();
             Duelist.OnSpawn();
+            Windshot.OnSpawn();
         }
     }
 }
