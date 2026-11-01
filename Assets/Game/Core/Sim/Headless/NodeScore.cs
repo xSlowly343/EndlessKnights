@@ -22,8 +22,6 @@ namespace Game.Core.Sim.Headless
             [CombatStats.FocusGain.Name] = 0.4,
             [CombatStats.FocusMax.Name] = 0.4,
             [CombatStats.FocusResetSeconds.Name] = 0.05,
-            [CombatStats.ComboStrikeMultiplier.Name] = 0.2,
-            [CombatStats.ComboTimeoutSeconds.Name] = 0.1,
             [CombatStats.KeyStrikeMultiplier.Name] = 0.05,
             [CombatStats.ResourceGain.Name] = 0.1,
             [CombatStats.Gold.Name] = 0.15,

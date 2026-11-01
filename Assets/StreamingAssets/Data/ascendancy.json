@@ -84,238 +84,70 @@
     {
       "id": "duelist_trait_1",
       "class": "duelist",
-      "name": {"ru": "Сияющая брешь", "en": "Сияющая брешь"},
-      "blurb": "Раз в 4 с на враге загорается брешь на 1 с, её видно на полоске. Удары в брешь — Выпады: ×3 и +Честь. Скилл «Вызов» зажигает брешь сразу",
+      "name": {"ru": "Сияющая брешь", "en": "Shining Breach"},
+      "blurb": "Раз в 4 с на враге загорается брешь на 1 с, её видно на полоске. Удары в брешь — Выпады: ×2 и +1,5 Чести. Скилл Пути «Вызов» зажигает брешь сразу",
       "trait": {
-        "partyText": {"ru": "В брешь союзники бьют на 15% сильнее", "en": "В брешь союзники бьют на 15% сильнее"},
+        "partyText": {"ru": "Пока брешь открыта, отряд +15% урона", "en": "While the breach is open, the party deals +15% damage"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 1}]},
+          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "breachPress", "kind": "flat", "value": 0.1}], "text": {"ru": "Натиск: каждый Выпад продлевает брешь на 0,1 с, но не дольше двойной длины", "en": "Press: every Lunge extends the breach by 0.1 s, up to twice its length"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "duelist_trait_1_f45a",
-                "name": {"ru": "Широкая брешь", "en": "Широкая брешь"},
-                "text": {"ru": "Широкая брешь: 1,5 с", "en": "Широкая брешь: 1,5 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "duelist_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "duelist_trait_1_f60a",
-                "name": {"ru": "Двойной выпад", "en": "Двойной выпад"},
-                "text": {"ru": "Двойной выпад", "en": "Двойной выпад"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "duelist_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "duelist_trait_1_f75a",
-                "name": {"ru": "Чтение врага", "en": "Чтение врага"},
-                "text": {"ru": "Чтение врага: брешь каждые 3 с", "en": "Чтение врага: брешь каждые 3 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "duelist_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "duelist_trait_1_f45a", "name": {"ru": "Широкая брешь", "en": "Wide Breach"}, "text": {"ru": "Брешь держится 1,5 с, но загорается раз в 5 с, а не в 4", "en": "The breach lasts 1.5 s, but opens every 5 s instead of 4"}, "modifiers": [{"stat": "breachSeconds", "kind": "flat", "value": 0.5}, {"stat": "breachEvery", "kind": "flat", "value": 1}]}, {"id": "duelist_trait_1_f45b", "name": {"ru": "Открытая стойка", "en": "Open Guard"}, "text": {"ru": "Брешь зажигают скиллы, а сама по таймеру она больше не загорается; держится 0,6 с", "en": "Skills open the breach, but it no longer opens by itself on a timer; it lasts 0.6 s"}, "modifiers": [{"stat": "breachOnCast", "kind": "flat", "value": 1}, {"stat": "breachSeconds", "kind": "flat", "value": -0.4}]}]},
+          {"level": 60, "options": [{"id": "duelist_trait_1_f60a", "name": {"ru": "Двойной выпад", "en": "Double Lunge"}, "text": {"ru": "Выпад бьёт дважды, каждый раз ×0,8, и Чести больше не даёт", "en": "A Lunge strikes twice at ×0.8 each and no longer gives Honor"}, "modifiers": [{"stat": "breachDouble", "kind": "flat", "value": 1}]}, {"id": "duelist_trait_1_f60b", "name": {"ru": "Обнажённая слабость", "en": "Exposed Weakness"}, "text": {"ru": "Выпады больше не усиливают удар, зато каждый даёт отряду +5% урона на 4 с, до +40%", "en": "Lunges no longer boost the hit, but each one gives the party +5% damage for 4 s, up to +40%"}, "modifiers": [{"stat": "breachExpose", "kind": "flat", "value": 0.05}]}]},
+          {"level": 75, "options": [{"id": "duelist_trait_1_f75a", "name": {"ru": "Чтение врага", "en": "Reading the Foe"}, "text": {"ru": "Брешь загорается на 1 с раньше и бонус Выпада ×1,5, но удары мимо бреши ×0,5", "en": "The breach opens 1 s sooner and the Lunge bonus is ×1.5, but hits outside the breach deal ×0.5"}, "modifiers": [{"stat": "breachEvery", "kind": "flat", "value": -1}, {"stat": "breachRead", "kind": "flat", "value": 1}, {"stat": "breachLunge", "kind": "more", "value": 0.5}]}, {"id": "duelist_trait_1_f75b", "name": {"ru": "Вечная брешь", "en": "Endless Opening"}, "text": {"ru": "Брешь открыта всегда, но бонус Выпада ×0,2 и Выпады не дают Чести", "en": "The breach is always open, but the Lunge bonus is ×0.2 and Lunges give no Honor"}, "modifiers": [{"stat": "breachAlways", "kind": "flat", "value": 1}, {"stat": "breachLunge", "kind": "more", "value": -0.8}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "duelist_trait_1_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Сияющая брешь", "en": "Сияющая брешь"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "duelist_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сияющая брешь", "en": "Shining Breach"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "duelist_trait_2",
       "class": "duelist",
-      "name": {"ru": "Правила дуэли", "en": "Правила дуэли"},
-      "blurb": "Каждый 10-й удар — Касание, сияющая отметина на враге. На 5 отметинах — Туше: враг ниже 12% HP (босс ниже 6%) падает сразу. Скилл «Салют клинком»: +2 отметины",
+      "name": {"ru": "Правила дуэли", "en": "Rules of the Duel"},
+      "blurb": "Каждый 10-й удар — Касание, сияющая отметина на враге. На 5 отметинах — Туше: удар ×8, и враг ниже 12% HP (босс ниже 6%) падает сразу. Скилл Пути «Салют клинком» ставит 2 отметины",
       "trait": {
-        "partyText": {"ru": "Туше на боссе даёт отряду +25% золота за него", "en": "Туше на боссе даёт отряду +25% золота за него"},
+        "partyText": {"ru": "Туше по боссу или стражу: отряд +25% золота 15 с", "en": "A Touché on a boss or guardian gives the party +25% gold for 15 s"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "touchePower", "kind": "flat", "value": 8}, {"stat": "toucheExecute", "kind": "flat", "value": 0.12}]},
+          {"modifiers": [{"stat": "touchePower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "touchePower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "touchePower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "toucheCarry", "kind": "flat", "value": 2}], "text": {"ru": "Второй раунд: Туше, которое добило врага, оставляет 2 отметины на следующем", "en": "Second Round: a Touché that kills leaves 2 marks on the next enemy"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "duelist_trait_2_f45a",
-                "name": {"ru": "Быстрый счёт", "en": "Быстрый счёт"},
-                "text": {"ru": "Быстрый счёт: каждый 8-й", "en": "Быстрый счёт: каждый 8-й"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "duelist_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "duelist_trait_2_f60a",
-                "name": {"ru": "Глубокое туше", "en": "Глубокое туше"},
-                "text": {"ru": "Глубокое туше: порог 15%", "en": "Глубокое туше: порог 15%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "duelist_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "duelist_trait_2_f75a",
-                "name": {"ru": "Незаконченная дуэль", "en": "Незаконченная дуэль"},
-                "text": {
-                  "ru": "Незаконченная дуэль: отметины не сгорают при смене врага",
-                  "en": "Незаконченная дуэль: отметины не сгорают при смене врага"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "duelist_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "duelist_trait_2_f45a", "name": {"ru": "Быстрый счёт", "en": "Quick Count"}, "text": {"ru": "Касание на каждом 8-м ударе, но Туше ×0,8", "en": "A touch on every 8th hit, but a Touché deals ×0.8"}, "modifiers": [{"stat": "toucheEvery", "kind": "flat", "value": -2}, {"stat": "touchePower", "kind": "more", "value": -0.2}]}, {"id": "duelist_trait_2_f45b", "name": {"ru": "Очко за укол", "en": "Point Scored"}, "text": {"ru": "Касание ставит каждый крит удара, а не каждый 10-й удар; без критов отметин нет", "en": "Every critical hit leaves a touch instead of every 10th hit; no criticals, no marks"}, "modifiers": [{"stat": "toucheOnCrit", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "duelist_trait_2_f60a", "name": {"ru": "Глубокое туше", "en": "Deep Touché"}, "text": {"ru": "Порог добивания 15% (босс 7,5%), но Туше нужно 6 отметин", "en": "The kill threshold is 15% (7.5% for a boss), but a Touché needs 6 marks"}, "modifiers": [{"stat": "toucheExecute", "kind": "flat", "value": 0.03}, {"stat": "toucheMarks", "kind": "flat", "value": 1}]}, {"id": "duelist_trait_2_f60b", "name": {"ru": "Публичная дуэль", "en": "Public Duel"}, "text": {"ru": "Туше не бьёт и не добивает, зато отряд +30% урона 5 с", "en": "A Touché neither strikes nor kills, but the party deals +30% damage for 5 s"}, "modifiers": [{"stat": "touchePublic", "kind": "flat", "value": 0.3}]}]},
+          {"level": 75, "options": [{"id": "duelist_trait_2_f75a", "name": {"ru": "Незаконченная дуэль", "en": "Unfinished Duel"}, "text": {"ru": "Отметины не сгорают при смене врага, но Туше ×0,7", "en": "Marks do not burn out when the enemy changes, but a Touché deals ×0.7"}, "modifiers": [{"stat": "toucheKeep", "kind": "flat", "value": 1}, {"stat": "touchePower", "kind": "more", "value": -0.3}]}, {"id": "duelist_trait_2_f75b", "name": {"ru": "Последнее слово", "en": "Final Word"}, "text": {"ru": "Порог добивания вдвое выше, но удары −25% урона", "en": "The kill threshold is doubled, but hits deal 25% less damage"}, "modifiers": [{"stat": "toucheExecute", "kind": "more", "value": 1}, {"stat": "toucheOffPenalty", "kind": "flat", "value": 0.25}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "duelist_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Правила дуэли", "en": "Правила дуэли"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "duelist_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Правила дуэли", "en": "Rules of the Duel"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "duelist_trait_3",
       "class": "duelist",
-      "name": {"ru": "Фантомная секундантка", "en": "Фантомная секундантка"},
-      "blurb": "Рядом стоит её секундантка-фантом. Если в секунду было больше 4 ударов, фантом вступает в бой и бьёт сам с силой 60%. Компромисс: сама Дуэлянтка бьёт на 20% слабее. Скилл «Поменяться местами»",
+      "name": {"ru": "Фантомная секундантка", "en": "Phantom Second"},
+      "blurb": "Рядом стоит её секундантка-фантом. Если в секунду было больше 4 ударов, фантом вступает в бой и за каждый удар Дуэлянтки бьёт сама с силой 60%. Цена: сама Дуэлянтка бьёт на 20% слабее. Скилл Пути «Поменяться местами» вводит фантом в бой на 6 с",
       "trait": {
-        "partyText": {"ru": "Фантом раз в 30 с встаёт секундантом к союзнику на 5 с", "en": "Фантом раз в 30 с встаёт секундантом к союзнику на 5 с"},
+        "partyText": {"ru": "Раз в 30 с фантом встаёт секундантом к отряду на 5 с: отряд +10% урона, но в это время она не бьёт за тебя", "en": "Every 30 s the phantom stands as the party's second for 5 s: the party deals +10% damage, but she does not strike for you meanwhile"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "phantomPower", "kind": "flat", "value": 0.6}]},
+          {"modifiers": [{"stat": "phantomPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "phantomPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "phantomPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "phantomEcho", "kind": "flat", "value": 0.3}], "text": {"ru": "Эхо клинка: каждый твой скилл фантом в бою повторяет с силой 30%", "en": "Blade Echo: a fighting phantom repeats each of your skills at 30% power"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "duelist_trait_3_f45a",
-                "name": {"ru": "Верная тень", "en": "Верная тень"},
-                "text": {"ru": "Верная тень: порог 3 удара", "en": "Верная тень: порог 3 удара"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "duelist_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "duelist_trait_3_f60a",
-                "name": {"ru": "Равные силы", "en": "Равные силы"},
-                "text": {"ru": "Равные силы: фантом 100%", "en": "Равные силы: фантом 100%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "duelist_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "duelist_trait_3_f75a",
-                "name": {"ru": "Две секундантки", "en": "Две секундантки"},
-                "text": {"ru": "Две секундантки", "en": "Две секундантки"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "duelist_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "duelist_trait_3_f45a", "name": {"ru": "Верная тень", "en": "Faithful Shadow"}, "text": {"ru": "Фантом вступает уже при 3 ударах в секунду, но бьёт ×0,85", "en": "The phantom joins at 3 hits per second already, but strikes ×0.85"}, "modifiers": [{"stat": "phantomThreshold", "kind": "flat", "value": -1}, {"stat": "phantomPower", "kind": "more", "value": -0.15}]}, {"id": "duelist_trait_3_f45b", "name": {"ru": "Терпеливая секундантка", "en": "Patient Second"}, "text": {"ru": "Фантом бьёт сама 3 раза в секунду, пока ты не бьёшь дольше 1 с, а во время набора стоит в стороне", "en": "The phantom strikes by herself 3 times per second while you have not hit for over 1 s, and stands aside while you type"}, "modifiers": [{"stat": "phantomPause", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "duelist_trait_3_f60a", "name": {"ru": "Равные силы", "en": "Equal Forces"}, "text": {"ru": "Фантом бьёт на 25% сильнее, но сама Дуэлянтка слабее уже на 40%", "en": "The phantom strikes 25% harder, but the Duelist herself is now 40% weaker"}, "modifiers": [{"stat": "phantomPower", "kind": "more", "value": 0.25}, {"stat": "phantomSelfPenalty", "kind": "flat", "value": 0.2}]}, {"id": "duelist_trait_3_f60b", "name": {"ru": "Отвлекающий манёвр", "en": "Feint"}, "text": {"ru": "Фантом не бьёт, зато пока она в бою, отряд +15% шанса крита", "en": "The phantom deals no damage, but while she is in the fight the party gets +15% critical chance"}, "modifiers": [{"stat": "phantomFeint", "kind": "flat", "value": 1}]}]},
+          {"level": 75, "options": [{"id": "duelist_trait_3_f75a", "name": {"ru": "Две секундантки", "en": "Two Seconds"}, "text": {"ru": "Фантомов два, но вступают они только при 6 ударах в секунду", "en": "There are two phantoms, but they join only at 6 hits per second"}, "modifiers": [{"stat": "phantomTwin", "kind": "flat", "value": 1}, {"stat": "phantomThreshold", "kind": "flat", "value": 2}]}, {"id": "duelist_trait_3_f75b", "name": {"ru": "Смена ролей", "en": "Role Swap"}, "text": {"ru": "Твои удары сами не ранят, зато фантом всегда в бою и бьёт ×2,5", "en": "Your hits deal no damage themselves, but the phantom is always in the fight and strikes ×2.5"}, "modifiers": [{"stat": "phantomSwap", "kind": "flat", "value": 1}, {"stat": "phantomPower", "kind": "more", "value": 1.5}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "duelist_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Фантомная секундантка", "en": "Фантомная секундантка"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "duelist_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Фантомная секундантка", "en": "Phantom Second"}, "modifiers": []}],
       "links": []
     },
     {

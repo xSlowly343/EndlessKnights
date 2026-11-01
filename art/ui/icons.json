@@ -53,7 +53,7 @@
     { "group": "slots", "id": "ring", "source": "delapouite/ring" },
 
     { "group": "weapons", "id": "rune_daggers", "source": "lorc/spinning-blades", "attribute": "red" },
-    { "group": "weapons", "id": "katana", "source": "delapouite/katana", "attribute": "red" },
+    { "group": "weapons", "id": "spectral_rapier", "source": "delapouite/katana", "attribute": "red" },
     { "group": "weapons", "id": "short_bow", "source": "delapouite/bow-arrow", "attribute": "green" },
     { "group": "weapons", "id": "storm_wand", "source": "lorc/wizard-staff", "attribute": "green" },
     { "group": "weapons", "id": "scimitar", "source": "lorc/sparkling-sabre", "attribute": "white" },

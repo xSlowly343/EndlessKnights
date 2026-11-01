@@ -125,7 +125,7 @@ namespace Game.Core.Tests.Sim.Weapons
                 Assert.That(skills.Distinct().Count(), Is.EqualTo(skills.Count));
                 Assert.That(skills.Count, Is.InRange(2, 7));
                 Assert.That(TestWorld.Real.Gems[skills[0]].Skill!.Role, Is.EqualTo(SkillRole.Fast));
-                Assert.That(skills.All(id => TestWorld.Real.Gems[id].Skill!.Weapon == "katana"), Is.True);
+                Assert.That(skills.All(id => TestWorld.Real.Gems[id].Skill!.Weapon == "spectral_rapier"), Is.True);
             }
         }
 
@@ -180,7 +180,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void SaveKeepsRarityAndRolledSkills()
         {
             var loop = Hero(HeroClass.Duelist);
-            var rolled = loop.Weapons.Give(Base("shogun_blade"), ItemRarity.Ancient, new Rng(7));
+            var rolled = loop.Weapons.Give(Base("century_rapier"), ItemRarity.Ancient, new Rng(7));
             loop.Weapons.Equip(WeaponHand.Left, rolled);
 
             var text = SaveCodec.Encode(loop.State, Clock);
@@ -197,7 +197,7 @@ namespace Game.Core.Tests.Sim.Weapons
         {
             var loop = Hero(HeroClass.Runedancer);
             var payload = JsonParser.Parse(SaveCodec.Encode(loop.State, Clock), "save").Fields["payload"];
-            var oldWeapons = JsonParser.Parse("{\"starterGiven\": true, \"right\": \"colossus_quills\", \"left\": null, \"bag\": [\"wanderer_katana\"]}", "old");
+            var oldWeapons = JsonParser.Parse("{\"starterGiven\": true, \"right\": \"colossus_quills\", \"left\": null, \"bag\": [\"phantom_rapier\"]}", "old");
             var edited = JsonEdit.Update(payload, "state", state => JsonEdit.Set(state, "weapons", oldWeapons));
             var state = GameStateJson.Read(new ContentNode(edited, "save", "payload").Field("state"), TestWorld.Real.Enemies, TestWorld.Real.Gems, Catalog);
 

@@ -393,7 +393,10 @@ namespace Game.Core.Content.Gems
                         Word = node.HasField("word") && node.Field("word").AsBool(),
                         Blades = node.HasField("blades") ? node.Field("blades").AsInt(0, 100) : 0,
                         BladeRain = node.HasField("bladeRain") && node.Field("bladeRain").AsBool(),
-                        WhirlSeconds = Number(node, "whirlSeconds", 600)
+                        WhirlSeconds = Number(node, "whirlSeconds", 600),
+                        Breach = node.HasField("breach") && node.Field("breach").AsBool(),
+                        Touches = node.HasField("touches") ? node.Field("touches").AsInt(0, 100) : 0,
+                        PhantomSeconds = Number(node, "phantomSeconds", 600)
                     };
                 case "aura":
                     return new AuraEffect(
@@ -704,7 +707,6 @@ namespace Game.Core.Content.Gems
                 Boss = node.HasField("boss") && node.Field("boss").AsBool(),
                 BossRetry = node.HasField("bossRetry") && node.Field("bossRetry").AsBool(),
                 FamilyActive = node.HasField("familyActive") ? node.Field("familyActive").AsString() : null,
-                AfterComboStrikeSeconds = Number(node, "afterComboStrikeSeconds", 3600),
                 MouseMoving = node.HasField("mouseMoving") && node.Field("mouseMoving").AsBool(),
                 Reading = node.HasField("reading") && node.Field("reading").AsBool(),
                 DotStacksAtLeast = Number(node, "dotStacksAtLeast", 1e6),

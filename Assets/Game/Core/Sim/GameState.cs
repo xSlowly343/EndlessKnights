@@ -252,13 +252,13 @@ namespace Game.Core.Sim
         public double VulnerabilityShare { get; set; }
         public int VulnerabilityTicks { get; set; }
         public int Combo { get; set; }
-        public long LastComboStrikeTick { get; set; } = -1;
         public long ComboIdleTicks { get; set; }
-        public int ComboTowardStrike { get; set; }
         public int KillsTowardRise { get; set; }
         public RunedancerState Runedancer { get; } = new RunedancerState();
+        public DuelistState Duelist { get; } = new DuelistState();
         public double TraitPartyDamage { get; set; }
         public double TraitPartyCritChance { get; set; }
+        public double TraitPartyGold { get; set; }
         public int StunTicks { get; set; }
         public int KeysTowardMark { get; set; }
         public int HunterMarkTicks { get; set; }
@@ -314,6 +314,7 @@ namespace Game.Core.Sim
             VulnerabilityTicks = 0;
             EnemyShieldFloor = BigNumber.Zero;
             Runedancer.OnSpawn();
+            Duelist.OnSpawn();
         }
     }
 }

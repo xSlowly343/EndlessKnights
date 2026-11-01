@@ -1012,766 +1012,373 @@
     {
       "id": "duelist_hit_1",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "common",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Укол", "en": "Укол"},
+      "name": {"ru": "Укол", "en": "Thrust"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 3,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "быстрый", "en": "быстрый"},
+      "effect": {"type": "strike", "multiplier": 3, "touches": 1},
+      "text": {"ru": "быстрый укол ×3, ставит отметину", "en": "quick thrust ×3, leaves a mark"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_hit_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_hit_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_hit_1_b15b", "name": {"ru": "Второе касание", "en": "Second Touch"}, "damage": 0.8, "effect": {"touches": 2}}]},
+        {"level": 25, "options": [{"id": "duelist_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_hit_2",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "rare",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Выпад", "en": "Выпад"},
+      "name": {"ru": "Выпад", "en": "Lunge"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 15},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 4},
-      "text": {"ru": "×3 в брешь", "en": "×3 в брешь"},
+      "effect": {"type": "strike", "multiplier": 4, "breach": true},
+      "text": {"ru": "выпад ×4 и сразу зажигает брешь", "en": "lunge ×4 and opens the breach at once"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_hit_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_hit_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_hit_2_b15b", "name": {"ru": "Глубокий выпад", "en": "Deep Lunge"}, "damage": 0.8, "effect": {"touches": 1}}]},
+        {"level": 25, "options": [{"id": "duelist_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_hit_3",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "epic",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Финт", "en": "Финт"},
+      "name": {"ru": "Финт", "en": "Feint"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 6},
-      "text": {"ru": "следующий удар — крит", "en": "следующий удар — крит"},
+      "effect": {"type": "strike", "multiplier": 6, "critChance": 0.5},
+      "text": {"ru": "удар ×6 с шансом крита +50%", "en": "strike ×6 with +50% critical chance"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_hit_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_hit_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_hit_3_b15b", "name": {"ru": "Финт с касанием", "en": "Touching Feint"}, "damage": 0.8, "effect": {"touches": 1}}]},
+        {"level": 25, "options": [{"id": "duelist_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_queue_1",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "common",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Флеш", "en": "Флеш"},
+      "name": {"ru": "Флеш", "en": "Flèche"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
-      "text": {"ru": "5 уколов по очереди", "en": "5 уколов по очереди"},
+      "effect": {"type": "flurry", "hits": 5, "seconds": 1, "multiplier": 1.5},
+      "text": {"ru": "5 уколов ×1,5 за секунду", "en": "5 thrusts ×1.5 within a second"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_queue_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_queue_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_queue_1_b15b", "name": {"ru": "Долгий флеш", "en": "Long Flèche"}, "damage": 0.75, "effect": {"hits": 8, "seconds": 1.5}}]},
+        {"level": 25, "options": [{"id": "duelist_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_queue_2",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "rare",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Перекрёстный вызов", "en": "Перекрёстный вызов"},
+      "name": {"ru": "Перекрёстный вызов", "en": "Cross Challenge"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "метка на 3 врагов", "en": "метка на 3 врагов"},
+      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "touches": 1},
+      "text": {"ru": "укол ×2,5 по 3 врагам очереди, ставит отметину", "en": "thrust ×2.5 at 3 queued enemies, leaves a mark"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_queue_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_queue_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_queue_2_b15b", "name": {"ru": "Двойной вызов", "en": "Double Challenge"}, "damage": 0.8, "effect": {"touches": 2}}]},
+        {"level": 25, "options": [{"id": "duelist_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_queue_3",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "legendary",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Круговая защита", "en": "Круговая защита"},
+      "name": {"ru": "Круговая защита", "en": "Circle Guard"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
-      "text": {"ru": "вся очередь", "en": "вся очередь"},
+      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "breach": true},
+      "text": {"ru": "вся очередь ×3, зажигает брешь", "en": "the whole queue ×3, opens the breach"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_queue_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_queue_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_queue_3_b15b", "name": {"ru": "Круг с касанием", "en": "Touching Circle"}, "damage": 0.8, "effect": {"touches": 1}}]},
+        {"level": 25, "options": [{"id": "duelist_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_auto_1",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Парад", "en": "Парад"},
+      "name": {"ru": "Парад", "en": "Parry"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "тратит Честь на крит", "en": "тратит Честь на крит"},
+      "effect": {"type": "strike", "multiplier": 3, "critChance": 0.25},
+      "text": {"ru": "раз в 4 с ответный удар ×3 с шансом крита +25%", "en": "every 4 s a riposte ×3 with +25% critical chance"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_auto_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_auto_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_auto_1_b15b", "name": {"ru": "Парад с касанием", "en": "Touching Parry"}, "damage": 0.8, "effect": {"touches": 1}}]},
+        {"level": 25, "options": [{"id": "duelist_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_auto_2",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Стойка", "en": "Стойка"},
+      "name": {"ru": "Стойка", "en": "Stance"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 5},
-      "text": {"ru": "раз в 5 с ответный укол", "en": "раз в 5 с ответный укол"},
+      "effect": {"type": "strike", "multiplier": 5, "touches": 1},
+      "text": {"ru": "раз в 6 с ответный укол ×5, ставит отметину", "en": "every 6 s a counter-thrust ×5, leaves a mark"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_auto_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_auto_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_auto_2_b15b", "name": {"ru": "Двойная стойка", "en": "Double Stance"}, "damage": 0.8, "effect": {"touches": 2}}]},
+        {"level": 25, "options": [{"id": "duelist_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_auto_3",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "mythic",
       "color": "red",
-      "name": {"ru": "Ремиз", "en": "Ремиз"},
+      "name": {"ru": "Ремиз", "en": "Remise"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 8},
-      "text": {"ru": "повтор последнего крита на 50%", "en": "повтор последнего крита на 50%"},
+      "effect": {"type": "strike", "multiplier": 4, "phantomSeconds": 2},
+      "text": {"ru": "раз в 10 с повторная атака ×4, фантом в бою 2 с", "en": "every 10 s a renewed attack ×4, the phantom fights for 2 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_auto_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_auto_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_auto_3_b15b", "name": {"ru": "Долгий ремиз", "en": "Long Remise"}, "damage": 0.8, "effect": {"phantomSeconds": 4}}]},
+        {"level": 25, "options": [{"id": "duelist_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_strong_1",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "epic",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Туше", "en": "Туше"},
+      "name": {"ru": "Туше", "en": "Touché"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 40},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 12},
-      "text": {"ru": "добивание ниже 15% HP", "en": "добивание ниже 15% HP"},
+      "effect": {"type": "strike", "multiplier": 6, "lowHpBelow": 0.15, "lowHpMultiplier": 3, "touches": 2},
+      "text": {"ru": "удар ×6, по врагу ниже 15% HP ×18, ставит 2 отметины", "en": "strike ×6, ×18 against an enemy below 15% HP, leaves 2 marks"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_strong_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_strong_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_strong_1_b15b", "name": {"ru": "Ниже порога", "en": "Lower Bar"}, "damage": 0.75, "effect": {"lowHpBelow": 0.3}}]},
+        {"level": 25, "options": [{"id": "duelist_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_strong_2",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "legendary",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Сотня уколов", "en": "Сотня уколов"},
+      "name": {"ru": "Сотня уколов", "en": "Hundred Thrusts"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 50},
       "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 18},
-      "text": {"ru": "4 с серия", "en": "4 с серия"},
+      "effect": {"type": "flurry", "hits": 20, "seconds": 4, "multiplier": 2},
+      "text": {"ru": "4 с серия: 20 уколов ×2", "en": "4 s of thrusts: 20 thrusts ×2"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_strong_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_strong_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_strong_2_b15b", "name": {"ru": "Долгая серия", "en": "Long Series"}, "damage": 0.75, "effect": {"hits": 30, "seconds": 6}}]},
+        {"level": 25, "options": [{"id": "duelist_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_strong_3",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "mythic",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Дуэль до конца", "en": "Дуэль до конца"},
+      "name": {"ru": "Дуэль до конца", "en": "Duel to the End"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 25},
-      "text": {"ru": "10 с: только босс, ×2", "en": "10 с: только босс, ×2"},
+      "effect": {"type": "strike", "multiplier": 8, "bossMultiplier": 2, "phantomSeconds": 10},
+      "text": {"ru": "удар ×8, по боссу ×16, фантом в бою 10 с", "en": "strike ×8, ×16 against a boss, the phantom fights for 10 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "duelist_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "duelist_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "duelist_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "duelist_strong_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "duelist_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "duelist_strong_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "duelist_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_strong_3_b15b", "name": {"ru": "Без отступления", "en": "No Retreat"}, "damage": 0.8, "effect": {"touches": 2}}]},
+        {"level": 25, "options": [{"id": "duelist_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "duelist_path_1",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "ascendancy": "duelist_trait_1",
       "color": "red",
-      "name": {"ru": "Вызов", "en": "Вызов"},
+      "name": {"ru": "Вызов", "en": "Challenge"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 4, "breach": true},
+      "text": {"ru": "удар ×4 и сразу зажигает брешь", "en": "strike ×4 and opens the breach at once"}
     },
     {
       "id": "duelist_path_2",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "ascendancy": "duelist_trait_2",
       "color": "red",
-      "name": {"ru": "Салют клинком", "en": "Салют клинком"},
+      "name": {"ru": "Салют клинком", "en": "Blade Salute"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 12,
+      "effect": {"type": "strike", "multiplier": 3, "touches": 2},
+      "text": {"ru": "удар ×3 и ставит 2 отметины", "en": "strike ×3 and leaves 2 marks"}
     },
     {
       "id": "duelist_path_3",
       "kind": "active",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "ascendancy": "duelist_trait_3",
       "color": "red",
-      "name": {"ru": "Поменяться местами", "en": "Поменяться местами"},
+      "name": {"ru": "Поменяться местами", "en": "Switch Places"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "phantomSeconds": 6},
+      "text": {"ru": "удар ×3, фантом вступает в бой на 6 с", "en": "strike ×3, the phantom joins the fight for 6 s"}
     },
     {
       "id": "duelist_aura_1",
       "kind": "aura",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Кодекс", "en": "Кодекс"},
+      "name": {"ru": "Кодекс", "en": "Code of Honor"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.2}], "reserve": 15, "party": true},
-      "text": {"ru": "+урон критов", "en": "+урон критов"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.15}, {"stat": "breachHonor", "kind": "flat", "value": 1}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +15% урона критов; её Выпад даёт на 1 Честь больше", "en": "party: +15% critical damage; her Lunge gives 1 more Honor"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "duelist_aura_1_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.24}]}
-            },
-            {"id": "duelist_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "duelist_aura_1_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.22}]}
-            },
-            {"id": "duelist_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "duelist_aura_1_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.26}]}
-            },
-            {"id": "duelist_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.18}, {"stat": "breachHonor", "kind": "flat", "value": 1.2}]}}, {"id": "duelist_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "duelist_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.165}, {"stat": "breachHonor", "kind": "flat", "value": 1.1}]}}, {"id": "duelist_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "duelist_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.195}, {"stat": "breachHonor", "kind": "flat", "value": 1.3}]}}, {"id": "duelist_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "duelist_aura_2",
       "kind": "aura",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Поклон", "en": "Поклон"},
+      "name": {"ru": "Поклон", "en": "Bow"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "reserve": 15},
-      "text": {"ru": "+урон отряда первые 3 с боя с боссом", "en": "+урон отряда первые 3 с боя с боссом"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.01}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +25% урона в первые секунды боя с боссом; её порог Туше +1%", "en": "party: +25% damage in the first seconds of a boss fight; her Touché threshold +1%"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "duelist_aura_2_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "duelist_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "duelist_aura_2_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "duelist_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "duelist_aura_2_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "duelist_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.3, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.012}]}}, {"id": "duelist_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "duelist_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.275, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.011}]}}, {"id": "duelist_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "duelist_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.325, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.013}]}}, {"id": "duelist_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "duelist_aura_3",
       "kind": "aura",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Честный бой", "en": "Честный бой"},
+      "name": {"ru": "Честный бой", "en": "Fair Fight"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}], "reserve": 20},
-      "text": {"ru": "+урон, когда в очереди никого нет", "en": "+урон, когда в очереди никого нет"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Keyboard"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.5}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: удары +12% урона; её фантом вступает на полудара в секунду раньше", "en": "party: hits +12% damage; her phantom joins half a hit per second sooner"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "duelist_aura_3_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "duelist_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "duelist_aura_3_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "duelist_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "duelist_aura_3_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "duelist_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Keyboard"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.6}]}}, {"id": "duelist_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "duelist_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Keyboard"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.55}]}}, {"id": "duelist_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "duelist_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Keyboard"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.65}]}}, {"id": "duelist_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "duelist_aura_4",
       "kind": "aura",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Фехтовальный зал", "en": "Фехтовальный зал"},
+      "name": {"ru": "Фехтовальный зал", "en": "Fencing Hall"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "reserve": 20},
-      "text": {"ru": "5% ударов отряда попадают в уязвимое место ×2", "en": "5% ударов отряда попадают в уязвимое место ×2"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 20}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: каждый 20-й удар попадает в уязвимое место ×2", "en": "party: every 20th hit lands on a weak spot ×2"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "duelist_aura_4_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "duelist_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "duelist_aura_4_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "duelist_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "duelist_aura_4_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "duelist_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 20}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.4}]}}, {"id": "duelist_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "duelist_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 20}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.2}]}}, {"id": "duelist_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "duelist_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 20}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.6}]}}, {"id": "duelist_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "duelist_aura_5",
       "kind": "aura",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "epic",
       "color": "red",
-      "name": {"ru": "Добивание", "en": "Добивание"},
+      "name": {"ru": "Добивание", "en": "Finishing Blow"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "+урон по врагам ниже 20% HP", "en": "+урон по врагам ниже 20% HP"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +15% урона по боссу на последнем издыхании; враги ниже 1% HP падают сразу", "en": "party: +15% damage against a boss on its last legs; enemies below 1% HP fall at once"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "duelist_aura_5_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "duelist_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "duelist_aura_5_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "duelist_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "duelist_aura_5_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "duelist_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.18, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.012}]}}, {"id": "duelist_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "duelist_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.165, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.011}]}}, {"id": "duelist_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "duelist_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.195, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.013}]}}, {"id": "duelist_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
       "id": "duelist_aura_6",
       "kind": "aura",
-      "weapon": "katana",
+      "weapon": "spectral_rapier",
       "tier": "legendary",
       "color": "red",
-      "name": {"ru": "Вызов принят", "en": "Вызов принят"},
+      "name": {"ru": "Вызов принят", "en": "Challenge Accepted"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "пока отряд бьёт без пауз, босс бьёт полосу слабее", "en": "пока отряд бьёт без пауз, босс бьёт полосу слабее"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "damageLongStreak", "kind": "increased", "value": 0.08}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: таймер босса +2 с; +8% урона в долгой серии ввода", "en": "party: boss timer +2 s; +8% damage during a long input streak"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "duelist_aura_6_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "duelist_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "duelist_aura_6_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "duelist_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "duelist_aura_6_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "duelist_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "duelist_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2.4}, {"stat": "damageLongStreak", "kind": "increased", "value": 0.096}]}}, {"id": "duelist_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "duelist_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2.2}, {"stat": "damageLongStreak", "kind": "increased", "value": 0.088}]}}, {"id": "duelist_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "duelist_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2.6}, {"stat": "damageLongStreak", "kind": "increased", "value": 0.104}]}}, {"id": "duelist_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

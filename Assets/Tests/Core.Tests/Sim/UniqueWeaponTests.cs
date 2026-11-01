@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(weapon.Skills.Distinct().Count(), Is.EqualTo(weapon.Skills.Count));
             Assert.That(types, Is.EquivalentTo(new[] { "rune_daggers", "pistol" }));
             Assert.That(weapon.Counts("rune_daggers") && weapon.Counts("pistol"), Is.True);
-            Assert.That(weapon.Counts("katana"), Is.False);
+            Assert.That(weapon.Counts("spectral_rapier"), Is.False);
         }
 
         [Test]
@@ -70,12 +70,12 @@ namespace Game.Core.Tests.Sim
         public void UniqueWeaponSurvivesSaveAndLoad()
         {
             var loop = Real();
-            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("twin_moon_katana"), new Rng(3)));
+            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("twin_moon_rapier"), new Rng(3)));
             loop.Weapons.Equip(WeaponHand.Left, weapon);
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Real).State;
 
-            Assert.That(loaded.Weapons.Left!.Unique!.Id, Is.EqualTo("twin_moon_katana"));
+            Assert.That(loaded.Weapons.Left!.Unique!.Id, Is.EqualTo("twin_moon_rapier"));
             Assert.That(loaded.Weapons.Left.Skills, Is.EqualTo(weapon.Skills));
             Assert.That(loaded.Weapons.Holds("pendulum"), Is.True);
         }

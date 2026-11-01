@@ -11,6 +11,7 @@ namespace Game.Core.Sim
         private readonly EventQueue _events;
         private readonly ClassMechanics _class;
         private readonly RunedancerMechanics _runedancer;
+        private readonly DuelistMechanics _duelist;
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
@@ -27,10 +28,12 @@ namespace Game.Core.Sim
             _events = events;
             _class = new ClassMechanics(rules.Classes, state, hero);
             _runedancer = new RunedancerMechanics(rules.Classes.Runedancer, state, hero, this);
+            _duelist = new DuelistMechanics(rules.Classes.Duelist, state, hero, this);
         }
 
         public ClassMechanics Class => _class;
         public RunedancerMechanics Runedancer => _runedancer;
+        public DuelistMechanics Duelist => _duelist;
         public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
@@ -38,6 +41,7 @@ namespace Game.Core.Sim
             _rules = rules;
             _class.UseRules(rules.Classes);
             _runedancer.UseRules(rules.Classes.Runedancer);
+            _duelist.UseRules(rules.Classes.Duelist);
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
@@ -177,6 +181,7 @@ namespace Game.Core.Sim
                 _state.VulnerabilityShare = 0;
             CountStreakTime();
             _runedancer.Tick();
+            _duelist.Tick();
             var keyHits = TakeWhole(_state.KeyCarry + input.Hits, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -184,13 +189,15 @@ namespace Game.Core.Sim
 
             for (var i = 0; i < keyHits; i++)
             {
-                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier();
+                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier();
                 var alive = _state.EnemyAlive;
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
                 if (alive)
-                    _runedancer.AfterStrike(LastHitCrit);
-                if ((flags & HitFlags.ComboStrike) != 0)
-                    ComboStrikeQueue(_state.FocusMultiplier * multiplier);
+                {
+                    var crit = LastHitCrit;
+                    _runedancer.AfterStrike(crit);
+                    _duelist.AfterStrike(crit);
+                }
                 KeyHitLightning();
                 ShadowClone();
                 QueueStrike();
@@ -200,6 +207,7 @@ namespace Game.Core.Sim
             MouseBursts(input.MousePx);
             _class.EndTick(keyHits, input.MousePx);
             _runedancer.EndTick();
+            _duelist.EndTick();
             NoteRates(keyHits, input.MousePx / _rules.MousePxPerHit);
         }
 
@@ -223,16 +231,6 @@ namespace Game.Core.Sim
             var multiplier = _hero.Value(CombatStats.CloneMultiplier, 0, StatTags.Keyboard);
             if (multiplier > 0)
                 Hit(DamageSource.Skill, _rules.KeyDamage, StatTags.Keyboard, HitFlags.None, _state.FocusMultiplier * multiplier);
-        }
-
-        private void ComboStrikeQueue(double multiplier)
-        {
-            var targets = System.Math.Min(_class.StrikeTargets, _state.QueueDamage.Length);
-            if (targets <= 0)
-                return;
-            var damage = SkillDamage(_rules.KeyDamage, multiplier * _class.StrikeQueueShare, StatTags.Keyboard);
-            for (var i = 0; i < targets; i++)
-                _state.QueueDamage[i] += damage;
         }
 
         private void QueueStrike()
@@ -262,9 +260,9 @@ namespace Game.Core.Sim
                 return;
             _state.HitsOnEnemy++;
 
-            if (ForcedCrit() || ComboStrikeCrit(flags) || RollCrit(tags, supporting))
+            if (ForcedCrit() || RollCrit(tags, supporting))
             {
-                damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting)) * ComboStrikeCritBonus(flags) * CritBurst();
+                damage *= CritMultiplier(tags) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting)) * CritBurst();
                 flags |= HitFlags.Crit;
                 LastHitCrit = true;
                 _state.Crits++;
@@ -336,12 +334,6 @@ namespace Game.Core.Sim
             var bonus = ((tags & StatTags.Keyboard) != 0 ? _rules.Classes.HunterMark.KeyDamage : 0) + System.Math.Max(0, _hero.Value(CombatStats.MarkDamage, 0, tags));
             return 1 + bonus * (1 + System.Math.Max(0, _hero.Value(CombatStats.MarkPower, 0)));
         }
-
-        private double ComboStrikeCritBonus(HitFlags flags) =>
-            (flags & HitFlags.ComboStrike) != 0 ? 1 + System.Math.Max(0, _hero.Value(CombatStats.ComboStrikeCritMultiplier, 0, StatTags.Keyboard)) : 1;
-
-        private bool ComboStrikeCrit(HitFlags flags) =>
-            (flags & HitFlags.ComboStrike) != 0 && _hero.Value(CombatStats.ComboStrikeCrit, 0, StatTags.Keyboard) > 0;
 
         private void PierceQueue(BigNumber damage)
         {

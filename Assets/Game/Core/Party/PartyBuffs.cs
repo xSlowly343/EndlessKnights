@@ -18,6 +18,7 @@ namespace Game.Core.Party
         private bool _clearDay;
         private double _traitDamage;
         private double _traitCritChance;
+        private double _traitGold;
 
         public PartyBuffs(PartyBuffRules rules, GameState state, StatSheet hero)
         {
@@ -44,6 +45,8 @@ namespace Game.Core.Party
             var from = _rules.Stats[index].From;
             if (from == CombatStats.PartyDamage)
                 return _state.TraitPartyDamage;
+            if (from == CombatStats.PartyGold)
+                return _state.TraitPartyGold;
             return from == CombatStats.PartyCritChance ? _state.TraitPartyCritChance : 0;
         }
 
@@ -125,10 +128,11 @@ namespace Game.Core.Party
                 _state.HeardByAll = heard;
                 _dirty = true;
             }
-            if (_state.TraitPartyDamage != _traitDamage || _state.TraitPartyCritChance != _traitCritChance)
+            if (_state.TraitPartyDamage != _traitDamage || _state.TraitPartyCritChance != _traitCritChance || _state.TraitPartyGold != _traitGold)
             {
                 _traitDamage = _state.TraitPartyDamage;
                 _traitCritChance = _state.TraitPartyCritChance;
+                _traitGold = _state.TraitPartyGold;
                 _dirty = true;
             }
             if (_dirty)

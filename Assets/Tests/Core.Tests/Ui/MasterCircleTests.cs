@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Ui
         {
             var places = Circle(Duelist(8));
 
-            Assert.That(places.Select(place => place.Gem.Id), Is.EqualTo(TestWorld.Data.Weapons.Types.First(type => type.Id == "katana").StarterSkills));
+            Assert.That(places.Select(place => place.Gem.Id), Is.EqualTo(TestWorld.Data.Weapons.Types.First(type => type.Id == "spectral_rapier").StarterSkills));
             Assert.That(places.Select(place => place.Open), Is.EqualTo(new[] { true, true, true, false, false, false, false }));
         }
 

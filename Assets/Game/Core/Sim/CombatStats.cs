@@ -24,7 +24,6 @@ namespace Game.Core.Sim
         public static readonly StatId BossTimerSeconds = new StatId("bossTimerSeconds");
         public static readonly StatId BossTimerSpeed = new StatId("bossTimerSpeed");
         public static readonly StatId OfflineCapHours = new StatId("offlineCapHours");
-        public static readonly StatId ComboTimeoutSeconds = new StatId("comboTimeoutSeconds");
         public static readonly StatId GemExperience = new StatId("gemExperience");
         public static readonly StatId GemDrop = new StatId("gemDrop");
         public static readonly StatId PartyContribution = new StatId("partyContribution");
@@ -38,16 +37,12 @@ namespace Game.Core.Sim
         public static readonly StatId DailyItems = new StatId("dailyItems");
         public static readonly StatId CritEvery = new StatId("critEvery");
         public static readonly StatId OverkillCarry = new StatId("overkillCarry");
-        public static readonly StatId ComboStrikeMultiplier = new StatId("comboStrikeMultiplier");
-        public static readonly StatId ComboStrikeResource = new StatId("comboStrikeResource");
-        public static readonly StatId ComboKeepShare = new StatId("comboKeepShare");
         public static readonly StatId DamageVsBoss = new StatId("damageVsBoss");
         public static readonly StatId DamageAtBossTimerEnd = new StatId("damageAtBossTimerEnd");
         public static readonly StatId BossTimerSlow = new StatId("bossTimerSlow");
         public static readonly StatId DamagePerKill = new StatId("damagePerKill");
         public static readonly StatId FirstHitsBonus = new StatId("firstHitsBonus");
         public static readonly StatId FrozenFirstHit = new StatId("frozenFirstHit");
-        public static readonly StatId ComboHold = new StatId("comboHold");
         public static readonly StatId FocusHold = new StatId("focusHold");
         public static readonly StatId FocusInPauseSeconds = new StatId("focusInPauseSeconds");
         public static readonly StatId FocusMaxPerAura = new StatId("focusMaxPerAura");
@@ -104,7 +99,6 @@ namespace Game.Core.Sim
         public static readonly StatId QueueStrikeMultiplier = new StatId("queueStrikeMultiplier");
         public static readonly StatId CloneEvery = new StatId("cloneEvery");
         public static readonly StatId CloneMultiplier = new StatId("cloneMultiplier");
-        public static readonly StatId ComboStrikeCrit = new StatId("comboStrikeCrit");
         public static readonly StatId SecondResponse = new StatId("secondResponse");
         public static readonly StatId ResourceOnAllyMark = new StatId("resourceOnAllyMark");
         public static readonly StatId ReactionSteam = new StatId("reactionSteam");
@@ -200,11 +194,6 @@ namespace Game.Core.Sim
         public static readonly StatId ResourcePerFastSkill = new StatId("resourcePerFastSkill");
         public static readonly StatId ResourcePerCircle = new StatId("resourcePerCircle");
         public static readonly StatId ResourcePerFlick = new StatId("resourcePerFlick");
-        public static readonly StatId ComboStrikeEvery = new StatId("comboStrikeEvery");
-        public static readonly StatId ComboStrikeEveryAtFullResource = new StatId("comboStrikeEveryAtFullResource");
-        public static readonly StatId ComboStrikeTargets = new StatId("comboStrikeTargets");
-        public static readonly StatId ComboStrikeQueueShare = new StatId("comboStrikeQueueShare");
-        public static readonly StatId ComboStrikeCritMultiplier = new StatId("comboStrikeCritMultiplier");
         public static readonly StatId RiseEvery = new StatId("riseEvery");
         public static readonly StatId RiseEveryAtFullResource = new StatId("riseEveryAtFullResource");
         public static readonly StatId ClockworkSlow = new StatId("clockworkSlow");
