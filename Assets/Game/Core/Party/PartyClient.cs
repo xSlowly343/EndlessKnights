@@ -59,6 +59,7 @@ namespace Game.Core.Party
         private int _auraBoundGem;
         private int _sentMarks = -1;
         private int _traitTimerTicks;
+        private double _traitTimerSent;
 
         public const int NoReaction = -1;
         private const double MaxAllyShares = 1000;
@@ -772,22 +773,27 @@ namespace Game.Core.Party
 
         private void ShareTraitTimer()
         {
-            var slow = _loop.State.TraitPartyTimerSlow;
-            if (!(slow > 0))
-            {
-                _traitTimerTicks = 0;
-                return;
-            }
-            if (_traitTimerTicks-- > 0)
+            var slow = _loop.State.TraitPartyTimerSlow > 0 ? System.Math.Min(1, _loop.State.TraitPartyTimerSlow) : 0;
+            if (slow < _traitTimerSent)
+                EndTraitTimer();
+            if (!(slow > 0) || _traitTimerTicks-- > 0)
                 return;
             _traitTimerTicks = TraitTimerResendTicks - 1;
+            _traitTimerSent = slow;
             SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
             {
                 EffectId = TraitTimerEffect,
                 OnEnemy = true,
                 Seconds = TraitTimerSeconds,
-                TimerSlow = System.Math.Min(1, slow)
+                TimerSlow = slow
             }));
+        }
+
+        private void EndTraitTimer()
+        {
+            SendToHost(PartyCodec.Encode(_out, new CastEffectMessage { EffectId = TraitTimerEffect, OnEnemy = true, End = true }));
+            _traitTimerSent = 0;
+            _traitTimerTicks = 0;
         }
 
         private void ShareTraitResource()
