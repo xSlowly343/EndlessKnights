@@ -50,7 +50,6 @@ namespace Game.Core.Sim
         public long BucketSecond { get; set; } = -1;
         public long ReadyTick { get; set; }
         public double CastPower { get; set; } = 1;
-        public int MouseExtendedTicks { get; set; }
         public long MarkedSpawnTick { get; set; } = -1;
         public long KeyHitsAtCast { get; set; }
         public double DeferredCost { get; set; }

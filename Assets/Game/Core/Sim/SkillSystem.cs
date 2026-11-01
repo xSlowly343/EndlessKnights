@@ -278,7 +278,6 @@ namespace Game.Core.Sim
                 + Ticks(System.Math.Max(0, spent - Cost(slot)) * native.ExtraSecondsPerPoint)
                 + (skill.DurationSeconds > 0 ? Ticks(System.Math.Max(0, _hero.Value(slot.Skill.DurationStat, 0))) : 0);
             slot.ActiveTotalTicks = slot.ActiveTicks;
-            slot.MouseExtendedTicks = 0;
             slot.LingerTicks = 0;
             slot.WindPx = 0;
             slot.WindTicks = 0;
@@ -320,6 +319,7 @@ namespace Game.Core.Sim
             _combat.Windshot.OnSkillCast(slot.Skill);
             _combat.Shardcaller.OnSkillCast(slot.Skill);
             _combat.Sandwalker.OnSkillCast(slot.Skill);
+            _combat.Minstrel.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)
@@ -1227,24 +1227,14 @@ namespace Game.Core.Sim
         private void ExtendSongs(in EffectiveInput input)
         {
             var keyTicks = KeyExtension(input);
-            var mouseTicks = HeadbangTicks(input);
-            if (keyTicks == 0 && mouseTicks == 0)
+            if (keyTicks == 0)
                 return;
-            var mouseCap = Ticks(_combat.Classes.HeadbangMaxSeconds + _hero.Value(CombatStats.SongMouseSeconds, 0, StatTags.Aura));
             for (var i = 0; i < _state.Skills.Count; i++)
             {
                 var slot = _state.Skills[i];
                 if (!IsSong(slot))
                     continue;
-                if (keyTicks > 0)
-                    slot.ActiveTicks = System.Math.Max(slot.ActiveTicks, System.Math.Min(slot.ActiveTotalTicks, slot.ActiveTicks + keyTicks));
-                var room = System.Math.Max(0, mouseCap - slot.MouseExtendedTicks);
-                var added = System.Math.Min(room, mouseTicks);
-                if (added <= 0)
-                    continue;
-                slot.MouseExtendedTicks += added;
-                slot.ActiveTicks += added;
-                slot.ActiveTotalTicks = System.Math.Max(slot.ActiveTotalTicks, slot.ActiveTicks);
+                slot.ActiveTicks = System.Math.Max(slot.ActiveTicks, System.Math.Min(slot.ActiveTotalTicks, slot.ActiveTicks + keyTicks));
             }
         }
 
@@ -1257,17 +1247,6 @@ namespace Game.Core.Sim
             var ticks = (int)System.Math.Floor(_state.AuraKeyCarry + 1e-9);
             _state.AuraKeyCarry -= ticks;
             return ticks;
-        }
-
-        private int HeadbangTicks(in EffectiveInput input)
-        {
-            if (!_state.Is(HeroClass.Minstrel) || input.MousePx <= 0)
-                return 0;
-            var pxPerSecond = _combat.Classes.HeadbangPxPerSecond;
-            _state.HeadbangPx += input.MousePx;
-            var seconds = (int)System.Math.Floor(_state.HeadbangPx / pxPerSecond + 1e-9);
-            _state.HeadbangPx -= seconds * pxPerSecond;
-            return seconds * GameLoop.TicksPerSecond;
         }
 
         public double DebuffStrength(GemDef gem)

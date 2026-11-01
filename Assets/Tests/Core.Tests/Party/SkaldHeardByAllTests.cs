@@ -102,36 +102,15 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void AtFullOverdriveSongsGetStrongerForEightSecondsOnce()
+        public void AFullGaugeNoLongerBoostsTheMinstrelAuras()
         {
             var (loop, _) = Hero(HeroClass.Minstrel);
             var plain = loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
             loop.State.Resource = 1000;
             loop.Tick();
-            Assert.That(loop.State.OverdriveTicks, Is.GreaterThan(0));
-            Assert.That(loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura) / plain, Is.EqualTo(1.5).Within(1e-9));
 
-            for (var i = 0; i < 8 * GameLoop.TicksPerSecond + 1; i++)
-            {
-                loop.State.Resource = 1000;
-                loop.Tick();
-            }
-            Assert.That(loop.State.OverdriveTicks, Is.Zero, "full Overdrive does not start it again until it falls");
+            Assert.That(loop.State.OverdriveTicks, Is.Zero);
             Assert.That(loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura), Is.EqualTo(plain).Within(1e-9));
-        }
-
-        [Test]
-        public void TreeLinesMakeTheOverdriveSongsLongerAndStronger()
-        {
-            var (loop, _) = Hero(HeroClass.Minstrel,
-                new Modifier(CombatStats.OverdriveSeconds, ModifierKind.Flat, 2),
-                new Modifier(CombatStats.OverdriveSongs, ModifierKind.Flat, 0.2));
-            var plain = loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
-            loop.State.Resource = 1000;
-            loop.Tick();
-
-            Assert.That(loop.State.OverdriveTicks, Is.EqualTo(10 * GameLoop.TicksPerSecond).Within(1));
-            Assert.That(loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura) / plain, Is.EqualTo(1.7).Within(1e-9));
         }
     }
 }

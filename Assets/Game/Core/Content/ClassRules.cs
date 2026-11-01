@@ -2,14 +2,12 @@ namespace Game.Core.Content
 {
     public sealed class ClassRules
     {
-        public ClassRules(double keyStreakGapSeconds, double headbangPxPerSecond, double headbangMaxSeconds,
+        public ClassRules(double keyStreakGapSeconds,
             double clockworkAbove = 0, double clockworkSlow = 0, double clockworkFloor = 1)
         {
             ClockworkAbove = clockworkAbove;
             ClockworkSlow = clockworkSlow;
             ClockworkFloor = clockworkFloor;
-            HeadbangPxPerSecond = headbangPxPerSecond;
-            HeadbangMaxSeconds = headbangMaxSeconds;
             KeyStreakGapSeconds = keyStreakGapSeconds;
         }
 
@@ -17,8 +15,6 @@ namespace Game.Core.Content
         public double ClockworkAbove { get; }
         public double ClockworkSlow { get; }
         public double ClockworkFloor { get; }
-        public double HeadbangPxPerSecond { get; }
-        public double HeadbangMaxSeconds { get; }
         public HunterMarkRules HunterMark { get; private set; } = HunterMarkRules.None;
         public OverdriveRules Overdrive { get; private set; } = OverdriveRules.None;
         public StandingAuraRules StandingAuras { get; private set; } = StandingAuraRules.None;
@@ -33,18 +29,17 @@ namespace Game.Core.Content
         public WindshotRules Windshot { get; private set; } = WindshotRules.None;
         public ShardcallerRules Shardcaller { get; private set; } = ShardcallerRules.None;
         public SandwalkerRules Sandwalker { get; private set; } = SandwalkerRules.None;
+        public MinstrelRules Minstrel { get; private set; } = MinstrelRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
-            var headbang = node.Field("minstrel").Field("headbang");
+            var minstrel = node.Field("minstrel");
             var clockwork = node.Field("clockwright").Field("clockwork");
             return new ClassRules(
                 node.Field("keyStreak").Field("gapSeconds").AsNumber(0.1, 60),
-                headbang.Field("pxPerSecond").AsNumber(1, 1e7),
-                headbang.Field("maxSeconds").AsNumber(0, 3600),
                 clockwork.Field("resourceAbove").AsNumber(0, 1e6),
                 clockwork.Field("slow").AsNumber(0, 1),
-                clockwork.Field("floor").AsNumber(0, 1)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")), Overdrive = OverdriveRules.Read(node.Field("minstrel").Field("overdrive")),
+                clockwork.Field("floor").AsNumber(0, 1)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")), Overdrive = minstrel.HasField("overdrive") ? OverdriveRules.Read(minstrel.Field("overdrive")) : OverdriveRules.None,
                 StandingAuras = StandingAuraRules.Read(node.Field("lanternbearer").Field("standingAuras")),
                 EvilEye = EvilEyeRules.Read(node.Field("whisperer").Field("evilEye")),
                 OverloadQueueTargets = node.Field("shardcaller").Field("overload").Field("queueTargets").AsInt(0, 100),
@@ -56,7 +51,8 @@ namespace Game.Core.Content
                 Duelist = DuelistRules.Read(node.Field("duelist")),
                 Windshot = WindshotRules.Read(node.Field("windshot")),
                 Shardcaller = ShardcallerRules.Read(node.Field("shardcaller")),
-                Sandwalker = SandwalkerRules.Read(node.Field("sandwalker")) };
+                Sandwalker = SandwalkerRules.Read(node.Field("sandwalker")),
+                Minstrel = MinstrelRules.Read(minstrel) };
         }
     }
 }

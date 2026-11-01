@@ -120,7 +120,6 @@ namespace Game.Core.Sim
         public static readonly StatId GoldPerResource = new StatId("goldPerResource");
         public static readonly StatId ClickHitMultiplier = new StatId("clickHitMultiplier");
         public static readonly StatId AuraSecondsPerKey = new StatId("auraSecondsPerKey");
-        public static readonly StatId SongMouseSeconds = new StatId("songMouseSeconds");
         public static readonly StatId ResourceGainDamage = new StatId("resourceGainDamage");
         public static readonly StatId SkillCost = new StatId("skillCost");
         public static readonly StatId EnemyHpCut = new StatId("enemyHpCut");

@@ -1072,9 +1072,9 @@
         "id": "minstrel_song",
         "modifiers": [
           {
-            "stat": "songMouseSeconds",
+            "stat": "partyDamage",
             "kind": "flat",
-            "value": 2
+            "value": 0.03
           }
         ],
         "whole": true

@@ -20,7 +20,8 @@ namespace Game.Core.Stats
             "breachExpose", "breachPartyDamage", "toucheExecute", "touchePublic", "toucheOffPenalty", "toucheMarkDamage", "toucheBossHalf", "touchePartyGold", "phantomPower", "phantomSelfPenalty", "phantomEcho", "phantomPartyDamage",
             "calmPenalty", "calmPartyCrit", "shotPartyCrit", "gustPartyCooldown", "partySkillCooldown",
             "shardArmor", "gardenArmor", "shellPenalty", "shellPartyDamage",
-            "flipPower", "flipPenalty", "mirageSelfPenalty", "caravanPartyCooldown"
+            "flipPower", "flipPenalty", "mirageSelfPenalty", "caravanPartyCooldown",
+            "versePower", "verseParty", "songPower", "songSelfPenalty", "songPartyPenalty", "songParty", "sleepParty"
         };
 
         private static readonly StatTags[] LabelledTags =

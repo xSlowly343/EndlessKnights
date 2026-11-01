@@ -417,7 +417,15 @@ namespace Game.Core.Content.Gems
                         AfterStep = Number(node, "afterStep", 100),
                         StepHit = Number(node, "stepHit", 100),
                         BlindSeconds = Number(node, "blindSeconds", 600),
-                        TimerSeconds = Number(node, "timerSeconds", 600)
+                        TimerSeconds = Number(node, "timerSeconds", 600),
+                        Lines = node.HasField("lines") ? node.Field("lines").AsInt(0, 100) : 0,
+                        Notes = node.HasField("notes") ? node.Field("notes").AsInt(0, 100) : 0,
+                        Tune = node.HasField("tune") && node.Field("tune").AsBool(),
+                        ClimaxHit = Number(node, "climaxHit", 100),
+                        Finale = Number(node, "finale", 100),
+                        HymnSeconds = Number(node, "hymnSeconds", 600),
+                        HymnPower = Number(node, "hymnPower", 10),
+                        SoloSeconds = Number(node, "soloSeconds", 600)
                     };
                 case "aura":
                     return new AuraEffect(

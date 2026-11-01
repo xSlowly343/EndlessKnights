@@ -272,6 +272,32 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AMinstrelSongAndChorusGiftReachTheAllyWithoutNewMessages()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var minstrel = rig.Members[0];
+            var friend = rig.Members[1];
+            var before = friend.Damage;
+            minstrel.Loop.State.Class = HeroClass.Minstrel;
+            rig.Run(2);
+            var heard = friend.Damage;
+            minstrel.Loop.Hero.Add(new Modifier(MinstrelStats.SongPower, ModifierKind.Flat, 0.15));
+            minstrel.Loop.RebuildTree();
+
+            rig.Run(2);
+            Assert.That(friend.Damage - heard, Is.EqualTo(before * 0.15).Within(1e-6));
+
+            friend.Loop.State.Resource = 0;
+            rig.Run(1);
+            var plain = friend.Loop.State.Resource;
+            friend.Loop.State.Resource = 0;
+            minstrel.Loop.State.TraitPartyResourceGift = 10;
+            rig.Run(1);
+            Assert.That(friend.Loop.State.Resource - plain, Is.EqualTo(10).Within(0.5));
+        }
+
+        [Test]
         public void TreePartyDamageReachesTheAlly()
         {
             var rig = new Rig(2);

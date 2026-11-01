@@ -30,7 +30,7 @@ namespace Game.Core.Tests.Sim.Weapons
         {
             var loop = Hero(HeroClass.Minstrel);
 
-            Assert.That(loop.Weapons.In(WeaponHand.Right)!.Id, Is.EqualTo("out_of_tune_guitar"));
+            Assert.That(loop.Weapons.In(WeaponHand.Right)!.Id, Is.EqualTo("shepherd_lute"));
             Assert.That(loop.Weapons.In(WeaponHand.Left), Is.Null);
             Assert.That(loop.Weapons.Bag, Is.Empty);
         }
@@ -80,7 +80,7 @@ namespace Game.Core.Tests.Sim.Weapons
             loop.State.Resource = 100;
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.NoWeapon));
 
-            var guitar = loop.Weapons.Give(Base("spark_guitar"));
+            var guitar = loop.Weapons.Give(Base("butterfly_lute"));
             Assert.That(loop.Weapons.Equip(WeaponHand.Left, guitar), Is.True);
 
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
@@ -141,7 +141,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void SaveKeepsHandsAndBag()
         {
             var loop = Hero(HeroClass.Runedancer);
-            var guitar = loop.Weapons.Give(Base("spark_guitar"));
+            var guitar = loop.Weapons.Give(Base("butterfly_lute"));
             loop.Weapons.Give(Base("colossus_quills"));
             loop.Weapons.Equip(WeaponHand.Left, guitar);
 
@@ -151,7 +151,7 @@ namespace Game.Core.Tests.Sim.Weapons
 
             Assert.That(SaveCodec.Encode(restored, Clock), Is.EqualTo(text));
             Assert.That(reloaded.Weapons.In(WeaponHand.Right)!.Id, Is.EqualTo("apprentice_daggers"));
-            Assert.That(reloaded.Weapons.In(WeaponHand.Left)!.Id, Is.EqualTo("spark_guitar"));
+            Assert.That(reloaded.Weapons.In(WeaponHand.Left)!.Id, Is.EqualTo("butterfly_lute"));
             Assert.That(reloaded.Weapons.Bag[0].Id, Is.EqualTo("colossus_quills"));
         }
 

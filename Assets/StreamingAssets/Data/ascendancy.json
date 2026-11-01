@@ -516,238 +516,70 @@
     {
       "id": "minstrel_trait_1",
       "class": "minstrel",
-      "name": {"ru": "Куплет и припев", "en": "Куплет и припев"},
-      "blurb": "10 ударов — строка, 4 строки — куплет (+10% урона на 12 с, до 3). Три куплета подряд — припев: все баффы ×2 на 8 с. Скилл «Запев»",
+      "name": {"ru": "Куплет и припев", "en": "Verse and Chorus"},
+      "blurb": "Каждые 10 ударов — строка песни, 4 строки — куплет: урон Minstrel +8% на 12 с, до 3 куплетов. Три куплета подряд — припев: 8 с все её баффы ×2. В паузе она допевает куплет и замолкает. Скилл Пути «Запев» добавляет 4 строки сразу",
       "trait": {
-        "partyText": {"ru": "Куплеты и припев на весь отряд", "en": "Куплеты и припев на весь отряд"},
+        "partyText": {"ru": "Куплеты и припев звучат для всего отряда: союзники получают ту же прибавку к урону", "en": "The verses and the chorus ring for the whole party: allies get the same damage bonus"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "versePower", "kind": "flat", "value": 0.08}]},
+          {"modifiers": [{"stat": "versePower", "kind": "flat", "value": 0.016}]},
+          {"modifiers": [{"stat": "versePower", "kind": "flat", "value": 0.016}]},
+          {"modifiers": [{"stat": "versePower", "kind": "flat", "value": 0.016}]},
+          {"modifiers": [{"stat": "chorusGift", "kind": "flat", "value": 1}], "text": {"ru": "Подпевка: каждый припев даёт 10 ресурса ей и союзникам", "en": "Sing-Along: every chorus gives 10 resource to her and the allies"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "minstrel_trait_1_f45a",
-                "name": {"ru": "Длинный куплет", "en": "Длинный куплет"},
-                "text": {"ru": "Длинный куплет: 16 с", "en": "Длинный куплет: 16 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "minstrel_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "minstrel_trait_1_f60a",
-                "name": {"ru": "Бис", "en": "Бис"},
-                "text": {"ru": "Бис: раз в бой припев повторяется", "en": "Бис: раз в бой припев повторяется"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "minstrel_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "minstrel_trait_1_f75a",
-                "name": {"ru": "Хор", "en": "Хор"},
-                "text": {"ru": "Хор: каждый союзник +1 к пределу куплетов", "en": "Хор: каждый союзник +1 к пределу куплетов"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "minstrel_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "minstrel_trait_1_f45a", "name": {"ru": "Длинный куплет", "en": "Long Verse"}, "text": {"ru": "Куплет звучит 16 с, но строка — это 12 ударов", "en": "A verse rings for 16 s, but a line takes 12 hits"}, "modifiers": [{"stat": "verseSeconds", "kind": "flat", "value": 4}, {"stat": "lineHits", "kind": "flat", "value": 2}]}, {"id": "minstrel_trait_1_f45b", "name": {"ru": "Скороговорка", "en": "Patter"}, "text": {"ru": "Строка каждые 7 ударов, но куплет на 30% слабее", "en": "A line every 7 hits, but a verse is 30% weaker"}, "modifiers": [{"stat": "lineHits", "kind": "flat", "value": -3}, {"stat": "versePower", "kind": "more", "value": -0.3}]}]},
+          {"level": 60, "options": [{"id": "minstrel_trait_1_f60a", "name": {"ru": "Бис", "en": "Encore"}, "text": {"ru": "Раз в бой припев повторяется сам, но припев ×1,7 вместо ×2", "en": "Once per fight the chorus repeats by itself, but the chorus is ×1.7 instead of ×2"}, "modifiers": [{"stat": "chorusEncore", "kind": "flat", "value": 1}, {"stat": "chorusBoost", "kind": "flat", "value": -0.3}]}, {"id": "minstrel_trait_1_f60b", "name": {"ru": "Громкий припев", "en": "Loud Chorus"}, "text": {"ru": "Припев ×2,5, но после припева все куплеты кончаются", "en": "The chorus is ×2.5, but after it every verse ends"}, "modifiers": [{"stat": "chorusBoost", "kind": "flat", "value": 0.5}, {"stat": "chorusSpend", "kind": "flat", "value": 1}]}]},
+          {"level": 75, "options": [{"id": "minstrel_trait_1_f75a", "name": {"ru": "Хор", "en": "Choir"}, "text": {"ru": "Каждый союзник даёт +1 к пределу куплетов, но куплет звучит на 4 с меньше", "en": "Every ally adds 1 to the verse limit, but a verse rings 4 s shorter"}, "modifiers": [{"stat": "chorusChoir", "kind": "flat", "value": 1}, {"stat": "verseSeconds", "kind": "flat", "value": -4}]}, {"id": "minstrel_trait_1_f75b", "name": {"ru": "Песня без конца", "en": "Endless Song"}, "text": {"ru": "Каждый куплет во время припева продлевает его на 4 с, но куплет на 30% слабее", "en": "Every verse during the chorus extends it by 4 s, but a verse is 30% weaker"}, "modifiers": [{"stat": "chorusEndless", "kind": "flat", "value": 1}, {"stat": "versePower", "kind": "more", "value": -0.3}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "minstrel_trait_1_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Куплет и припев", "en": "Куплет и припев"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "minstrel_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Куплет и припев", "en": "Verse and Chorus"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "minstrel_trait_2",
       "class": "minstrel",
-      "name": {"ru": "Песня на заказ", "en": "Песня на заказ"},
-      "blurb": "Каждому союзнику своя песня под его роль: Бойцу крит, Призывателю сила существ, Часовому откаты. Соло — песня себе. Скилл «Сменить мелодию»",
+      "name": {"ru": "Песня на заказ", "en": "Song on Request"},
+      "blurb": "Она поёт одну из трёх мелодий и меняет её каждые 40 ударов: Фанфара — удары +15%, Марш — откаты скиллов идут на 15% быстрее, Гимн — урон скиллов +15%. Союзникам она поёт под их роль. В паузе мелодия звучит дальше. Скилл Пути «Сменить мелодию» меняет её сразу",
       "trait": {
-        "partyText": {"ru": "+15% к главному стату роли каждого союзника", "en": "+15% к главному стату роли каждого союзника"},
+        "partyText": {"ru": "Каждый союзник слышит свою песню: +15% урона, откаты на 7,5% быстрее и +3% шанса крита", "en": "Every ally hears a song of their own: +15% damage, 7.5% faster cooldowns and +3% crit chance"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.15}]},
+          {"modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "songGift", "kind": "flat", "value": 1}], "text": {"ru": "Публика: каждая смена мелодии даёт 10 ресурса ей и союзникам", "en": "Audience: every change of melody gives 10 resource to her and the allies"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "minstrel_trait_2_f45a",
-                "name": {"ru": "Громче", "en": "Громче"},
-                "text": {"ru": "Громче: +25%", "en": "Громче: +25%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "minstrel_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "minstrel_trait_2_f60a",
-                "name": {"ru": "Дуэт", "en": "Дуэт"},
-                "text": {"ru": "Дуэт: две песни одному", "en": "Дуэт: две песни одному"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "minstrel_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "minstrel_trait_2_f75a",
-                "name": {"ru": "Песня для всех", "en": "Песня для всех"},
-                "text": {
-                  "ru": "Песня для всех: раз в 30 с все получают все песни на 5 с",
-                  "en": "Песня для всех: раз в 30 с все получают все песни на 5 с"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "minstrel_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "minstrel_trait_2_f45a", "name": {"ru": "Громче", "en": "Louder"}, "text": {"ru": "Песня на 10% сильнее, но сама она слышит её вполовину", "en": "The song is 10% stronger, but she hears only half of it herself"}, "modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.1}, {"stat": "songSelfPenalty", "kind": "flat", "value": 0.5}]}, {"id": "minstrel_trait_2_f45b", "name": {"ru": "Песня себе", "en": "Song for Herself"}, "text": {"ru": "В соло её песня вдвое сильнее, но союзникам — вполовину", "en": "When solo her song is twice as strong, but allies get only half"}, "modifiers": [{"stat": "songSolo", "kind": "flat", "value": 1}, {"stat": "songPartyPenalty", "kind": "flat", "value": 0.5}]}]},
+          {"level": 60, "options": [{"id": "minstrel_trait_2_f60a", "name": {"ru": "Дуэт", "en": "Duet"}, "text": {"ru": "Звучат две мелодии сразу, но песня на 40% слабее", "en": "Two melodies play at once, but the song is 40% weaker"}, "modifiers": [{"stat": "songDuet", "kind": "flat", "value": 1}, {"stat": "songPower", "kind": "more", "value": -0.4}]}, {"id": "minstrel_trait_2_f60b", "name": {"ru": "Попурри", "en": "Medley"}, "text": {"ru": "Мелодия меняется каждые 25 ударов и при смене бьёт ×3, но песня на 30% слабее", "en": "The melody changes every 25 hits and strikes ×3 on a change, but the song is 30% weaker"}, "modifiers": [{"stat": "songHits", "kind": "flat", "value": -15}, {"stat": "songChangeHit", "kind": "flat", "value": 3}, {"stat": "songPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 75, "options": [{"id": "minstrel_trait_2_f75a", "name": {"ru": "Песня для всех", "en": "Song for Everyone"}, "text": {"ru": "Раз в 30 с на 5 с звучат все три мелодии вдвое громче, но мелодия меняется на 20 ударов позже", "en": "Every 30 s all three melodies play twice as loud for 5 s, but the melody changes 20 hits later"}, "modifiers": [{"stat": "songAll", "kind": "flat", "value": 1}, {"stat": "songHits", "kind": "flat", "value": 20}]}, {"id": "minstrel_trait_2_f75b", "name": {"ru": "Ангажемент", "en": "Engagement"}, "text": {"ru": "Мелодия меняется только скиллом, но песня на 60% сильнее", "en": "The melody changes only by a skill, but the song is 60% stronger"}, "modifiers": [{"stat": "songStill", "kind": "flat", "value": 1}, {"stat": "songPower", "kind": "more", "value": 0.6}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "minstrel_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Песня на заказ", "en": "Песня на заказ"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "minstrel_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Песня на заказ", "en": "Song on Request"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "minstrel_trait_3",
       "class": "minstrel",
-      "name": {"ru": "Колыбельная", "en": "Колыбельная"},
-      "blurb": "Каждый 20-й удар — нота, на 7 нотах враг засыпает. Урон по спящему не наносится, а копится во сне ×1,4. Через 4 с кошмар будит врага, и всё накопленное падает разом. Скилл «Тихая нота»",
+      "name": {"ru": "Колыбельная", "en": "Lullaby"},
+      "blurb": "Каждый 20-й удар — нота, на 7 нотах враг засыпает на 4 с. Урон по спящему не наносится, а копится во сне ×1,4. Кошмар будит врага, и всё накопленное падает разом. В паузе сон идёт сам, а ноты ждут. Скилл Пути «Тихая нота» добавляет 3 ноты",
       "trait": {
-        "partyText": {"ru": "Урон союзников по спящему тоже ×1,4", "en": "Урон союзников по спящему тоже ×1,4"},
+        "partyText": {"ru": "Пока враг спит, союзники бьют его на 40% сильнее", "en": "While the enemy sleeps, allies strike it 40% harder"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 1.4}]},
+          {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "sleepByCast", "kind": "flat", "value": 1}], "text": {"ru": "Сонная пыль: каждый скилл добавляет ноту", "en": "Sleep Dust: every skill adds a note"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "minstrel_trait_3_f45a",
-                "name": {"ru": "Глубокий сон", "en": "Глубокий сон"},
-                "text": {"ru": "Глубокий сон: 5 с", "en": "Глубокий сон: 5 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "minstrel_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "minstrel_trait_3_f60a",
-                "name": {"ru": "Кошмар", "en": "Кошмар"},
-                "text": {"ru": "Кошмар: ×1,7", "en": "Кошмар: ×1,7"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "minstrel_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "minstrel_trait_3_f75a",
-                "name": {"ru": "Сон наяву", "en": "Сон наяву"},
-                "text": {"ru": "Сон наяву: раз в бой босс спит 8 с", "en": "Сон наяву: раз в бой босс спит 8 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "minstrel_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "minstrel_trait_3_f45a", "name": {"ru": "Глубокий сон", "en": "Deep Sleep"}, "text": {"ru": "Сон длится 5 с, но нужно 8 нот", "en": "Sleep lasts 5 s, but it takes 8 notes"}, "modifiers": [{"stat": "sleepSeconds", "kind": "flat", "value": 1}, {"stat": "sleepNotes", "kind": "flat", "value": 1}]}, {"id": "minstrel_trait_3_f45b", "name": {"ru": "Дрёма", "en": "Doze"}, "text": {"ru": "Нота каждые 12 ударов, но сон копит на 15% меньше", "en": "A note every 12 hits, but sleep stores 15% less"}, "modifiers": [{"stat": "noteHits", "kind": "flat", "value": -8}, {"stat": "sleepPower", "kind": "more", "value": -0.15}]}]},
+          {"level": 60, "options": [{"id": "minstrel_trait_3_f60a", "name": {"ru": "Кошмар", "en": "Nightmare"}, "text": {"ru": "Сон копит на 25% больше, но ноты пропадают со смертью врага", "en": "Sleep stores 25% more, but the notes vanish when the enemy dies"}, "modifiers": [{"stat": "sleepPower", "kind": "more", "value": 0.25}, {"stat": "sleepForget", "kind": "flat", "value": 1}]}, {"id": "minstrel_trait_3_f60b", "name": {"ru": "Беспокойный сон", "en": "Restless Sleep"}, "text": {"ru": "Враг засыпает от 4 нот, но спит 2 с", "en": "The enemy falls asleep at 4 notes, but sleeps 2 s"}, "modifiers": [{"stat": "sleepNotes", "kind": "flat", "value": -3}, {"stat": "sleepSeconds", "kind": "flat", "value": -2}]}]},
+          {"level": 75, "options": [{"id": "minstrel_trait_3_f75a", "name": {"ru": "Сон наяву", "en": "Waking Dream"}, "text": {"ru": "Каждый бой с боссом начинается со сна на 8 с, но обычные враги от нот не засыпают", "en": "Every boss fight starts with an 8 s sleep, but regular enemies do not fall asleep from notes"}, "modifiers": [{"stat": "sleepOnBoss", "kind": "flat", "value": 1}]}, {"id": "minstrel_trait_3_f75b", "name": {"ru": "Лёгкий сон", "en": "Light Sleep"}, "text": {"ru": "Урон по спящему не копится, а сразу проходит ×сон, но сон на 20% слабее", "en": "Damage to a sleeper is not stored but lands at once ×sleep, but sleep is 20% weaker"}, "modifiers": [{"stat": "sleepLight", "kind": "flat", "value": 1}, {"stat": "sleepPower", "kind": "more", "value": -0.2}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "minstrel_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Колыбельная", "en": "Колыбельная"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "minstrel_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Колыбельная", "en": "Lullaby"}, "modifiers": []}],
       "links": []
     },
     {
