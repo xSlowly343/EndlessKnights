@@ -82,7 +82,7 @@ namespace Game.Core.Sim
                 _state.IdleTicks = 0;
             else
                 _state.IdleTicks++;
-            if (input.Keys + input.Clicks > 0)
+            if (input.Hits > 0)
                 _state.FocusPauseTicks = 0;
             else
                 _state.FocusPauseTicks++;
@@ -105,7 +105,7 @@ namespace Game.Core.Sim
         }
 
         private double Events(in EffectiveInput input) =>
-            input.Keys + input.Clicks + input.MousePx / _rules.MousePxPerEvent * System.Math.Max(0, _hero.Value(CombatStats.FocusFromMouse, 1, StatTags.Mouse));
+            input.Hits + input.MousePx / _rules.MousePxPerEvent * System.Math.Max(0, _hero.Value(CombatStats.FocusFromMouse, 1, StatTags.Mouse));
 
         public double Max => System.Math.Max(_rules.Min, _rules.Max + _hero.Value(CombatStats.FocusMax, 0) + CountBonus());
 

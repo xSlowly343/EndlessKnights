@@ -142,12 +142,12 @@ namespace Game.Core.Sim
         private void ClickStrikes(in EffectiveInput input)
         {
             var multiplier = _hero.Value(CombatStats.ClickHitMultiplier, 0, StatTags.Click);
-            if (multiplier <= 0 || input.Clicks <= 0)
+            if (multiplier <= 0 || input.ButtonPresses <= 0)
             {
                 _state.ClickHitCarry = 0;
                 return;
             }
-            var hits = TakeHits(_state.ClickHitCarry + input.Clicks, out var carry);
+            var hits = TakeHits(_state.ClickHitCarry + input.ButtonPresses, out var carry);
             _state.ClickHitCarry = carry;
             for (var i = 0; i < hits; i++)
             {

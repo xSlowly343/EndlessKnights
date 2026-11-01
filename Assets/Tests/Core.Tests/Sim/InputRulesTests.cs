@@ -17,7 +17,7 @@ namespace Game.Core.Tests.Sim
             {
                 var effective = rules.Apply(snapshotForTick(tick));
                 if (tick >= GameLoop.TicksPerSecond)
-                    total += effective.Keys + effective.Clicks + effective.MousePx;
+                    total += effective.Hits + effective.MousePx;
             }
             return total / (seconds - 1);
         }
@@ -44,36 +44,38 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EightKeysPerSecondCountInFull()
+        public void TenHitsPerSecondCountInFull()
         {
-            var perSecond = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(keyDowns: tick % 5 < 4 ? 1 : 0));
+            var perSecond = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(keyDowns: 1));
 
-            Assert.That(perSecond, Is.EqualTo(8).Within(1e-6));
+            Assert.That(perSecond, Is.EqualTo(10).Within(1e-6));
         }
 
         [Test]
-        public void TwentyKeysPerSecondCountAsAboutEleven()
+        public void TwentyHitsPerSecondCountAsAboutThirteen()
         {
             var perSecond = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(keyDowns: 2));
 
-            Assert.That(perSecond, Is.EqualTo(System.Math.Sqrt(8 * 15)).Within(1e-6));
-            Assert.That(perSecond, Is.EqualTo(11).Within(0.1));
+            Assert.That(perSecond, Is.EqualTo(System.Math.Sqrt(10 * 16)).Within(1e-6));
         }
 
         [Test]
-        public void TwelveKeysPerSecondAreDiminishedBySquareRoot()
+        public void TwelveHitsPerSecondAreDiminishedBySquareRoot()
         {
             var perSecond = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(keyDowns: tick % 5 < 1 ? 2 : 1));
 
-            Assert.That(perSecond, Is.EqualTo(System.Math.Sqrt(8 * 12)).Within(1e-6));
+            Assert.That(perSecond, Is.EqualTo(System.Math.Sqrt(10 * 12)).Within(1e-6));
         }
 
         [Test]
-        public void ClicksHaveTheirOwnCap()
+        public void KeysAndClicksShareOneCap()
         {
-            var perSecond = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(leftClicks: 3));
+            var keysOnly = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(keyDowns: 2));
+            var mixed = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(keyDowns: 1, leftClicks: 1));
+            var clicksOnly = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(leftClicks: 2));
 
-            Assert.That(perSecond, Is.EqualTo(System.Math.Sqrt(10 * 16)).Within(1e-6));
+            Assert.That(mixed, Is.EqualTo(keysOnly).Within(1e-9));
+            Assert.That(clicksOnly, Is.EqualTo(keysOnly).Within(1e-9));
         }
 
         [Test]
@@ -86,7 +88,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void WheelAndAllButtonsShareTheClickCap()
+        public void AllButtonsShareTheHitCapAndTheWheelIsNoHit()
         {
             var perSecond = EffectivePerSecond(new InputRules(RealCaps()), 10, tick => new InputSnapshot(leftClicks: 1, rightClicks: 1, middleClicks: 1, wheelTicks: 5));
 
@@ -120,7 +122,7 @@ namespace Game.Core.Tests.Sim
 
             var effective = rules.Apply(new InputSnapshot(keyDowns: 1, enterDowns: 1, rightClicks: 2, middleClicks: 1, wheelTicks: 3, flicks: 1, circleTurns: 0.5f, rhythmCv: 0.4f));
 
-            Assert.That(effective.Keys, Is.EqualTo(1));
+            Assert.That(effective.Hits, Is.EqualTo(4));
             Assert.That(effective.EnterDowns, Is.EqualTo(1));
             Assert.That(effective.RightClicks, Is.EqualTo(2));
             Assert.That(effective.MiddleClicks, Is.EqualTo(1));

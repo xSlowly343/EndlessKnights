@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Content
             var rules = CombatRules.Load(RealFile());
             var caps = InputCaps.Load(TestData.ReadGameDataFile(InputCaps.FileName));
 
-            Assert.That(caps.MaxMousePxPerSecond / rules.Focus.MousePxPerEvent, Is.EqualTo(caps.Clicks.MaxEffectivePerSecond).Within(0.5));
+            Assert.That(caps.MaxMousePxPerSecond / rules.Focus.MousePxPerEvent, Is.EqualTo(caps.Hits.MaxEffectivePerSecond).Within(0.5));
         }
 
         [TestCase("\"version\": 2", "\"version\": 3", "version: version 3 is not supported, expected 2")]

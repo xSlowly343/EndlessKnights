@@ -110,16 +110,20 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ClicksAreNotChained()
+        public void ClicksAreChainedLikeKeys()
         {
-            var (loop, input, slot) = Typist(1e12);
-            loop.Skills.TryCast(slot);
+            var (clicked, clicks, clickSlot) = Typist(1e12);
+            var (typed, keys, keySlot) = Typist(1e12);
+            clicked.Skills.TryCast(clickSlot);
+            typed.Skills.TryCast(keySlot);
 
-            input.ClickLeft(3);
-            loop.Tick();
+            clicks.ClickMiddle(3);
+            keys.PressKeys(3);
+            clicked.Tick();
+            typed.Tick();
 
-            Assert.That(loop.State.ChainDamage.IsZero, Is.True);
-            Assert.That(loop.State.Skills[slot].HitsLeft, Is.EqualTo(Effect.Hits));
+            Assert.That(clicked.State.ChainDamage.IsZero, Is.False);
+            Assert.That(clicked.State.Skills[clickSlot].HitsLeft, Is.EqualTo(typed.State.Skills[keySlot].HitsLeft));
         }
     }
 }

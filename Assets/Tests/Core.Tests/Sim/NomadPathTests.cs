@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Sim
             input.ClickMiddle();
             loop.Tick();
 
-            Assert.That(loop.State.Resource, Is.EqualTo(Path.PerClick).Within(1e-9));
+            Assert.That(loop.State.Resource, Is.EqualTo(Path.PerClick + Path.PerKey).Within(1e-9));
         }
 
         [Test]

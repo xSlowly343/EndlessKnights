@@ -14,7 +14,7 @@ namespace Game.Core.Tests.Sim
         private static readonly EffectiveInput Mouse = Input(0, 300);
 
         private static EffectiveInput Input(double keys, double mousePx) =>
-            new EffectiveInput(keys, 0, 0, 0, 0, 0, 0, mousePx, 0, 0, 0);
+            new EffectiveInput(keys, 0, 0, 0, 0, 0, mousePx, 0, 0, 0);
 
         private static FocusSystem Focus(GameState state, params Modifier[] modifiers)
         {

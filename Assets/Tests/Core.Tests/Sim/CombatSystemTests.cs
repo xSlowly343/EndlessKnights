@@ -40,7 +40,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void MouseHitsWithItsOwnDamageAndClicksHitWithTheirs()
+        public void MouseHitsWithItsOwnDamageAndAClickIsAnOrdinaryHit()
         {
             var (loop, input) = LoopWithEnemy(1000);
             var rules = TestWorld.Data.Combat;
@@ -49,8 +49,7 @@ namespace Game.Core.Tests.Sim
             input.MoveMouse((float)(rules.MousePxPerHit * 2));
             loop.Tick();
 
-            var expected = 1000 - (2 * rules.MouseDamage + rules.ClickDamage) * loop.State.FocusMultiplier;
-            Assert.That(rules.ClickDamage, Is.GreaterThan(0));
+            var expected = 1000 - (2 * rules.MouseDamage + rules.KeyDamage) * loop.State.FocusMultiplier;
             Assert.That(loop.State.EnemyHp.ToDouble(), Is.EqualTo(expected).Within(1e-9));
             Assert.That(loop.Events.CountOf(GameEventKind.Damage), Is.EqualTo(3));
         }
@@ -72,6 +71,22 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void AClickCountsAsAHitExactlyLikeAKey()
+        {
+            var (clicked, clicks) = LoopWithEnemy(1000);
+            var (typed, keys) = LoopWithEnemy(1000);
+
+            clicks.ClickLeft(2);
+            keys.PressKeys(2);
+            clicked.Tick();
+            typed.Tick();
+
+            Assert.That(clicked.State.EnemyHp.ToDouble(), Is.EqualTo(typed.State.EnemyHp.ToDouble()).Within(1e-9));
+            Assert.That(clicked.State.KeyHits, Is.EqualTo(typed.State.KeyHits));
+            Assert.That(clicked.State.KeyHits, Is.EqualTo(2));
+        }
+
+        [Test]
         public void EveryMouseButtonHitsAndTheWheelDealsNoDamage()
         {
             var (loop, input) = LoopWithEnemy(1000);
@@ -83,21 +98,21 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
 
             Assert.That(loop.Events.CountOf(GameEventKind.Damage), Is.EqualTo(5));
-            Assert.That(loop.Events[0].Source, Is.EqualTo(DamageSource.Click));
-            Assert.That(loop.State.EnemyHp.ToDouble(), Is.EqualTo(1000 - 5 * TestWorld.Data.Combat.ClickDamage * loop.State.FocusMultiplier).Within(1e-9));
+            Assert.That(loop.Events[0].Source, Is.EqualTo(DamageSource.Keyboard));
+            Assert.That(loop.State.EnemyHp.ToDouble(), Is.EqualTo(1000 - 5 * TestWorld.Data.Combat.KeyDamage * loop.State.FocusMultiplier).Within(1e-9));
         }
 
         [Test]
-        public void ClickModifiersApplyToClickHits()
+        public void AClickAndAKeyHitTakeTheSameModifiers()
         {
             var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1.0, StatTags.Click));
+            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1.0, StatTags.Keyboard));
             var (loop, input) = LoopWithEnemy(1000, hero);
 
             input.ClickLeft();
             loop.Tick();
 
-            Assert.That(loop.Events[0].Amount.ToDouble(), Is.EqualTo(TestWorld.Data.Combat.ClickDamage * 2 * loop.State.FocusMultiplier).Within(1e-9));
+            Assert.That(loop.Events[0].Amount.ToDouble(), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 2 * loop.State.FocusMultiplier).Within(1e-9));
         }
 
         [Test]
@@ -161,7 +176,7 @@ namespace Game.Core.Tests.Sim
                 if (loop.Events[i].Tick >= 10)
                     hitsInLastNineSeconds++;
             }
-            Assert.That(hitsInLastNineSeconds / 9.0, Is.EqualTo(System.Math.Sqrt(8 * 15)).Within(0.15));
+            Assert.That(hitsInLastNineSeconds / 9.0, Is.EqualTo(System.Math.Sqrt(10 * 16)).Within(0.15));
         }
     }
 }

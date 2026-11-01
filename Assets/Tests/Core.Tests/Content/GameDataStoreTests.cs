@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Content
 
             Assert.That(data.Stages.EnemiesPerStage, Is.EqualTo(10));
             Assert.That(data.Enemies.Normals(data.Stages.Biome(1)).Count, Is.GreaterThan(0));
-            Assert.That(data.InputCaps.Keys.FullRatePerSecond, Is.GreaterThan(0));
+            Assert.That(data.InputCaps.Hits.FullRatePerSecond, Is.GreaterThan(0));
         }
 
         [Test]

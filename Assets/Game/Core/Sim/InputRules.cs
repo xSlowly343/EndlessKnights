@@ -7,8 +7,7 @@ namespace Game.Core.Sim
     {
         public const int WindowTicks = GameLoop.TicksPerSecond;
 
-        private readonly RateWindow _keys = new RateWindow(WindowTicks);
-        private readonly RateWindow _clicks = new RateWindow(WindowTicks);
+        private readonly RateWindow _hits = new RateWindow(WindowTicks);
         private readonly RateWindow _mouse = new RateWindow(WindowTicks);
         private InputCaps _caps;
 
@@ -23,24 +22,21 @@ namespace Game.Core.Sim
         {
             if (snapshot.Suppressed)
             {
-                _keys.PushAndGetRate(0);
-                _clicks.PushAndGetRate(0);
+                _hits.PushAndGetRate(0);
                 _mouse.PushAndGetRate(0);
                 return default;
             }
 
-            var keys = Scale(snapshot.KeyDowns, _keys.PushAndGetRate(snapshot.KeyDowns), _caps.Keys);
-            var rawClicks = MouseButtonHits(snapshot);
-            var clicks = Scale(rawClicks, _clicks.PushAndGetRate(rawClicks), _caps.Clicks);
+            var rawHits = snapshot.KeyDowns + MouseButtonHits(snapshot);
+            var hits = Scale(rawHits, _hits.PushAndGetRate(rawHits), _caps.Hits);
             var mouseRate = _mouse.PushAndGetRate(snapshot.MouseDistancePx);
             var mouse = mouseRate > _caps.MaxMousePxPerSecond
                 ? snapshot.MouseDistancePx * (_caps.MaxMousePxPerSecond / mouseRate)
                 : snapshot.MouseDistancePx;
 
             return new EffectiveInput(
-                keys,
+                hits,
                 snapshot.EnterDowns,
-                clicks,
                 snapshot.LeftClicks,
                 snapshot.RightClicks,
                 snapshot.MiddleClicks,

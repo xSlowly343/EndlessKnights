@@ -3,18 +3,16 @@ namespace Game.Core.Content
     public sealed class InputCaps
     {
         public const string FileName = "input_caps.json";
-        public const int SupportedVersion = 1;
+        public const int SupportedVersion = 2;
 
-        private InputCaps(RateCap keys, RateCap clicks, double maxMousePxPerSecond, InputDetection detection)
+        private InputCaps(RateCap hits, double maxMousePxPerSecond, InputDetection detection)
         {
-            Keys = keys;
-            Clicks = clicks;
+            Hits = hits;
             MaxMousePxPerSecond = maxMousePxPerSecond;
             Detection = detection;
         }
 
-        public RateCap Keys { get; }
-        public RateCap Clicks { get; }
+        public RateCap Hits { get; }
         public double MaxMousePxPerSecond { get; }
         public InputDetection Detection { get; }
 
@@ -26,8 +24,7 @@ namespace Game.Core.Content
                 throw root.Field("version").Error($"version {version} is not supported, expected {SupportedVersion}");
 
             return new InputCaps(
-                RateCap.Read(root.Field("keys")),
-                RateCap.Read(root.Field("clicks")),
+                RateCap.Read(root.Field("hits")),
                 root.Field("mouse").Field("maxPxPerSecond").AsNumber(1, 1e6),
                 InputDetection.Read(root.Field("detection")));
         }

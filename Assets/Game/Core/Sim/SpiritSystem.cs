@@ -99,7 +99,7 @@ namespace Game.Core.Sim
 
         private static double Amount(SpiritTrigger trigger, in EffectiveInput input, long kills, long crits, long casts) => trigger switch
         {
-            SpiritTrigger.Keys => input.Keys,
+            SpiritTrigger.Keys => input.Hits,
             SpiritTrigger.MousePx => input.MousePx,
             SpiritTrigger.Clicks => input.LeftClicks + input.RightClicks + input.MiddleClicks,
             SpiritTrigger.Casts => casts,

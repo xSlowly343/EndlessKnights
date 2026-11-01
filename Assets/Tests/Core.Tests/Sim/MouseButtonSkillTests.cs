@@ -115,12 +115,17 @@ namespace Game.Core.Tests.Sim
         public void NoMercyHitsForFiveKeyStrikes()
         {
             var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
+            var (bare, bareInput) = Hero(HeroClass.Viking);
             loop.State.Resource = 50;
+            bare.State.Resource = 50;
 
             input.ClickRight();
+            bareInput.ClickRight();
             loop.Tick();
+            bare.Tick();
 
-            Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 5).Within(1e-9));
+            var spent = bare.State.Resource;
+            Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 5 * spent / 50).Within(1e-9));
             Assert.That(loop.State.Resource, Is.EqualTo(0));
         }
 
@@ -140,11 +145,9 @@ namespace Game.Core.Tests.Sim
         public void LouderDoublesTheSongAndAddsLightningToEveryKeyHit()
         {
             var (loop, input) = Hero(HeroClass.Metalhead, "hearth_song", "louder");
-            input.ClickLeft();
             loop.Tick();
             loop.State.Resource = 100;
 
-            input.ClickRight();
             loop.Tick();
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(130).Within(1e-9));
 

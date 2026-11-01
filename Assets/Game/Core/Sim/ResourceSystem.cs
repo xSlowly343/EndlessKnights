@@ -50,10 +50,10 @@ namespace Game.Core.Sim
         {
             var resource = Current;
             GainedThisTick = 0;
-            _state.KeylessTicks = input.Keys > 0 ? 0 : _state.KeylessTicks + 1;
+            _state.KeylessTicks = input.Hits > 0 ? 0 : _state.KeylessTicks + 1;
             _state.MouseIdleTicks = input.MousePx > 0 ? 0 : _state.MouseIdleTicks + 1;
             _state.MouseWindow.Record(input.MousePx);
-            _state.ClicklessTicks = input.Clicks > 0 || input.LeftClicks + input.RightClicks + input.MiddleClicks > 0 ? 0 : _state.ClicklessTicks + 1;
+            _state.ClicklessTicks = input.ButtonPresses > 0 ? 0 : _state.ClicklessTicks + 1;
             _state.Reading = Reading(resource, input);
             if (_state.AllyHitStatTicks > 0)
                 _state.AllyHitStatTicks--;
@@ -63,11 +63,11 @@ namespace Game.Core.Sim
                 NoteFill();
                 return;
             }
-            var gained = input.Keys * PerKey(resource) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
+            var gained = input.Hits * PerKey(resource) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             if (resource.MousePxPerPoint > 0)
                 gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
             gained += (resource.PerSecond + System.Math.Max(0, _hero.Value(CombatStats.ResourcePerSecond, 0))) * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1);
-            gained += input.Clicks * resource.PerClick * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Click);
+            gained += input.ButtonPresses * resource.PerClick * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Click);
             gained += FromGear(input);
             gained += FromGestures(input);
             gained += input.CircleTurns * resource.PerCircle * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
@@ -92,7 +92,7 @@ namespace Game.Core.Sim
             if (perThousandPx > 0 && input.MousePx > 0)
                 gained += input.MousePx / 1000 * perThousandPx * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
             var perIdleSecond = _hero.Value(CombatStats.ResourcePerIdleSecond, 0, StatTags.Idle);
-            if (perIdleSecond > 0 && input.Keys == 0 && input.MousePx <= 0 && input.Clicks == 0)
+            if (perIdleSecond > 0 && input.Hits == 0 && input.MousePx <= 0)
                 gained += perIdleSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Idle);
             return gained;
         }
@@ -170,7 +170,7 @@ namespace Game.Core.Sim
             var decay = resource.InverseDecayPerSecond * System.Math.Max(0, _hero.Value(CombatStats.PressureDecay, 1)) * GameLoop.TickSeconds;
             _state.Resource = System.Math.Max(0, System.Math.Min(Max, _state.Resource + _state.PendingResource) - decay);
             _state.PendingResource = 0;
-            var fromKeys = input.Keys * System.Math.Max(0, _hero.Value(CombatStats.ResourcePerKey, 0)) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
+            var fromKeys = input.Hits * System.Math.Max(0, _hero.Value(CombatStats.ResourcePerKey, 0)) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             if (fromKeys > 0 && !Overheated)
                 Build(fromKeys);
         }
