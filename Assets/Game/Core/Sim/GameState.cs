@@ -258,16 +258,18 @@ namespace Game.Core.Sim
         public DuelistState Duelist { get; } = new DuelistState();
         public WindshotState Windshot { get; } = new WindshotState();
         public ShardcallerState Shardcaller { get; } = new ShardcallerState();
+        public SandwalkerState Sandwalker { get; } = new SandwalkerState();
         public double TraitPartyDamage { get; set; }
         public double TraitPartyCritChance { get; set; }
         public double TraitPartyGold { get; set; }
         public double TraitPartyCritMultiplier { get; set; }
         public double TraitPartyCooldown { get; set; }
+        public double TraitPartyTimerSlow { get; set; }
+        public double TraitPartyResourceGift { get; set; }
         public bool StepTensionBlocked { get; set; }
         public int StunTicks { get; set; }
         public int HunterMarkTicks { get; set; }
         public bool MarkedEnemyDied { get; set; }
-        public int KeysTowardBlind { get; set; }
         public int BlindTicks { get; set; }
         public bool EvilEyeOnEnemy { get; set; }
         public bool BondsUp { get; set; }
@@ -321,6 +323,7 @@ namespace Game.Core.Sim
             Duelist.OnSpawn();
             Windshot.OnSpawn();
             Shardcaller.OnSpawn();
+            Sandwalker.OnSpawn();
         }
     }
 }

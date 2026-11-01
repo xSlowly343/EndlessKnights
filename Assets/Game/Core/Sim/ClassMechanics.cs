@@ -21,8 +21,6 @@ namespace Game.Core.Sim
         public double OnKeyHit(out HitFlags flags)
         {
             flags = HitFlags.None;
-            if (_state.Is(HeroClass.Sandwalker))
-                return SandHit();
             if (_state.Is(HeroClass.Cartomancer))
                 return ColdHit();
             return 1;
@@ -57,18 +55,6 @@ namespace Game.Core.Sim
             if (_state.HunterMarkTicks > 0 && _state.HunterMarkTicks != int.MaxValue)
                 _state.HunterMarkTicks = _state.EnemyAlive ? _state.HunterMarkTicks - 1 : 0;
         }
-
-        private double SandHit()
-        {
-            if (_rules.Sand.Every <= 0 || ++_state.KeysTowardBlind < BlindEvery)
-                return 1;
-            _state.KeysTowardBlind = 0;
-            if (_state.EnemyAlive)
-                _state.BlindTicks = System.Math.Max(_state.BlindTicks, (int)System.Math.Round((_rules.Sand.Seconds + _hero.Value(CombatStats.BlindSeconds, 0)) * GameLoop.TicksPerSecond));
-            return 1;
-        }
-
-        public int BlindEvery => System.Math.Max(_rules.Sand.EveryMin, (int)System.Math.Round(_rules.Sand.Every + _hero.Value(CombatStats.BlindEvery, 0, StatTags.Keyboard)));
 
         public bool EvilEyeOn =>
             _state.Is(HeroClass.Whisperer) && _state.EnemyAlive && _rules.EvilEye.DamageTaken > 0

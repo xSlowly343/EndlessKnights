@@ -44,23 +44,24 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EveryClickGivesPath()
+        public void AClickIsJustAHitAndGivesNoExtraSand()
         {
             var (loop, input) = Sandwalker();
 
             input.ClickMiddle();
             loop.Tick();
 
-            Assert.That(loop.State.Resource, Is.EqualTo(Path.PerClick + Path.PerKey).Within(1e-9));
+            Assert.That(Path.PerClick, Is.Zero);
+            Assert.That(loop.State.Resource, Is.EqualTo(Path.PerKey).Within(1e-9));
         }
 
         [Test]
-        public void FathersScimitarIsTheNomadsStartingSkill()
+        public void TheSickleOfTimeIsTheStartingSkill()
         {
             var gem = TestWorld.Real.Gems["sandwalker_hit_1"];
 
             Assert.That(TestWorld.Real.SkillBook.StartingGems("sandwalker"), Has.Some.Property("Id").EqualTo("sandwalker_hit_1"));
-            Assert.That(gem.Skill!.Weapon, Is.EqualTo("scimitar"));
+            Assert.That(gem.Skill!.Weapon, Is.EqualTo("hourglass_sickle"));
             Assert.That(gem.Skill.ResourceCost, Is.EqualTo(10));
         }
     }

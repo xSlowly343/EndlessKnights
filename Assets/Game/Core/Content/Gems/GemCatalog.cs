@@ -408,7 +408,16 @@ namespace Game.Core.Content.Gems
                         PrisonSeconds = Number(node, "prisonSeconds", 600),
                         HeartSeconds = Number(node, "heartSeconds", 600),
                         Resonance = Number(node, "resonance", 1000),
-                        PerCrystal = Number(node, "perCrystal", 100)
+                        PerCrystal = Number(node, "perCrystal", 100),
+                        Sand = Number(node, "sand", 1000),
+                        Pour = node.HasField("pour") ? node.Field("pour").AsInt(0, 100_000) : 0,
+                        Camp = node.HasField("camp") && node.Field("camp").AsBool(),
+                        Mirages = node.HasField("mirages") ? node.Field("mirages").AsInt(0, 100) : 0,
+                        TopHit = Number(node, "topHit", 100),
+                        AfterStep = Number(node, "afterStep", 100),
+                        StepHit = Number(node, "stepHit", 100),
+                        BlindSeconds = Number(node, "blindSeconds", 600),
+                        TimerSeconds = Number(node, "timerSeconds", 600)
                     };
                 case "aura":
                     return new AuraEffect(

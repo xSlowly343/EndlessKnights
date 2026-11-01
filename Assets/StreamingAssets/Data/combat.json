@@ -30,7 +30,7 @@
       "windshot": { "perKey": 0, "mousePxPerPoint": 160, "perSecond": 1 },
       "lanternbearer": { "perKey": 0.3333, "perAllyHit": 0.1 },
       "dreamcatcher": { "perKey": 0, "mousePxPerPoint": 600, "perAllyHit": 0.1, "reading": { "perSecond": 1, "afterKeylessSeconds": 5 } },
-      "sandwalker": { "perKey": 0.5, "mousePxPerPoint": 500, "perClick": 1 },
+      "sandwalker": { "perKey": 0.5, "mousePxPerPoint": 500 },
       "shardcaller": { "perKey": 0.32, "overload": { "multiplier": 5 } },
       "dowser": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } },
       "mothcaller": { "perKey": 0.2, "mousePxPerPoint": 250, "decay": { "perSecond": 2, "afterKeylessSeconds": 5, "mouseHolds": true } },
@@ -51,7 +51,13 @@
     },
     "whisperer": { "evilEye": { "damageTaken": 0.05 } },
     "lanternbearer": { "standingAuras": { "count": 2, "pauseSeconds": 1 } },
-    "sandwalker": { "sand": { "every": 10, "everyMin": 4, "seconds": 4 } },
+    "sandwalker": {
+      "blind": { "seconds": 3, "damageTaken": 0.3 },
+      "common": { "pourPx": 30, "stepRecentSeconds": 1, "stepHitMax": 10, "partyTimeSlow": 0.5 },
+      "flip": { "every": 200, "everyMin": 40, "penalty": 0.5, "stepPx": 200, "partySlow": 1 },
+      "caravan": { "campPx": 3000, "campPxMin": 500, "sand": 10, "cutSeconds": 1, "idlePx": 100, "partyCooldown": 0.1, "partySeconds": 5, "oasisEvery": 5, "oasisMultiplier": 3, "oasisSandMultiplier": 2.5, "partyGold": 0.25, "goldSeconds": 10 },
+      "mirage": { "px": 2000, "pxMin": 500, "max": 5, "seconds": 20, "secondsMin": 2, "strikeSeconds": 1, "timeSeconds": 2, "selfPenalty": 0.4, "partySlow": 0.06, "blindSeconds": 1 }
+    },
     "windshot": {
       "mark": { "seconds": 8, "keyDamage": 0.1 },
       "shot": { "every": 6, "everyMin": 2, "per": 25, "spend": 25, "partyCrit": 0.1, "pauseSeconds": 2, "stormMultiplier": 2, "autoSeconds": 3, "autoMultiplier": 1.5, "pierceShare": 1 },

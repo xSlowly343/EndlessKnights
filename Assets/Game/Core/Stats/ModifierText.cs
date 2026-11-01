@@ -19,7 +19,8 @@ namespace Game.Core.Stats
             "traitHitWeight", "runeRhyme", "runeSealPower", "runeWeave", "runeFirstRune", "runeCapital", "bladeKeep", "bladePartyCrit", "whirlSkillPerFive", "whirlPartyDamage",
             "breachExpose", "breachPartyDamage", "toucheExecute", "touchePublic", "toucheOffPenalty", "toucheMarkDamage", "toucheBossHalf", "touchePartyGold", "phantomPower", "phantomSelfPenalty", "phantomEcho", "phantomPartyDamage",
             "calmPenalty", "calmPartyCrit", "shotPartyCrit", "gustPartyCooldown", "partySkillCooldown",
-            "shardArmor", "gardenArmor", "shellPenalty", "shellPartyDamage"
+            "shardArmor", "gardenArmor", "shellPenalty", "shellPartyDamage",
+            "flipPower", "flipPenalty", "mirageSelfPenalty", "caravanPartyCooldown"
         };
 
         private static readonly StatTags[] LabelledTags =

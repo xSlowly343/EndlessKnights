@@ -58,9 +58,13 @@ namespace Game.Core.Party
         private uint _sentReactions;
         private int _auraBoundGem;
         private int _sentMarks = -1;
+        private int _traitTimerTicks;
 
         public const int NoReaction = -1;
         private const double MaxAllyShares = 1000;
+        private const int TraitTimerResendTicks = 10;
+        private const double TraitTimerSeconds = 1.5;
+        public static readonly int TraitTimerEffect = GemDef.NetIdOf("trait_boss_timer");
 
         public PartyClient(GameLoop loop, IPartyTransport transport, ulong hostId, PartyRules rules)
         {
@@ -272,6 +276,8 @@ namespace Game.Core.Party
                 CountDamage();
                 WatchCasts();
                 EndAuraBoundDebuff();
+                ShareTraitTimer();
+                ShareTraitResource();
                 ShareReactions();
                 ShareMarks(Status == PartyLink.Linked);
             }
@@ -762,6 +768,35 @@ namespace Game.Core.Party
                     continue;
                 ShareCurse(gameEvent.Gem);
             }
+        }
+
+        private void ShareTraitTimer()
+        {
+            var slow = _loop.State.TraitPartyTimerSlow;
+            if (!(slow > 0))
+            {
+                _traitTimerTicks = 0;
+                return;
+            }
+            if (_traitTimerTicks-- > 0)
+                return;
+            _traitTimerTicks = TraitTimerResendTicks - 1;
+            SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
+            {
+                EffectId = TraitTimerEffect,
+                OnEnemy = true,
+                Seconds = TraitTimerSeconds,
+                TimerSlow = System.Math.Min(1, slow)
+            }));
+        }
+
+        private void ShareTraitResource()
+        {
+            var gift = _loop.State.TraitPartyResourceGift;
+            if (!(gift > 0))
+                return;
+            _loop.State.TraitPartyResourceGift = 0;
+            SendToHost(PartyCodec.Encode(_out, new PartyResourceMessage { Amount = (float)gift }));
         }
 
         private void EndAuraBoundDebuff()

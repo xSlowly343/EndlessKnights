@@ -2826,229 +2826,70 @@
     {
       "id": "sandwalker_trait_1",
       "class": "sandwalker",
-      "name": {"ru": "Переворот", "en": "Переворот"},
-      "blurb": "У часов две стороны. «Верх»: его удары +50%, но таймер босса идёт обычно. «Низ»: удары −50%, но таймер босса остановлен. Часы переворачиваются сами, когда песок пересыпался (200 ударов)",
+      "name": {"ru": "Переворот", "en": "Turn of the Glass"},
+      "blurb": "У часов две стороны. «Верх»: весь урон Sandwalker +50%, таймер босса идёт. «Низ»: урон −50%, но таймер босса стоит. Каждый удар пересыпает песчинку, через 200 ударов часы переворачиваются сами. В паузе песок стоит. Скилл Пути «Перевернуть часы» сыплет 50 песчинок сразу",
       "trait": {
-        "partyText": {"ru": "Остановленный таймер даёт отряду время добить", "en": "Остановленный таймер даёт отряду время добить"},
+        "partyText": {"ru": "Пока часы на «низе», таймер босса стоит для всего отряда", "en": "While the glass is on its bottom, the boss timer stands still for the whole party"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "flipSand", "kind": "flat", "value": 15}], "text": {"ru": "Тяжёлый песок: каждый переворот даёт 15 Песка", "en": "Heavy Sand: every turn of the glass gives 15 Sand"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "sandwalker_trait_1_f45a",
-                "name": {"ru": "часы можно перевернуть скиллом раньше", "en": "часы можно перевернуть скиллом раньше"},
-                "text": {"ru": "часы можно перевернуть скиллом раньше", "en": "часы можно перевернуть скиллом раньше"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "sandwalker_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "sandwalker_trait_1_f60a",
-                "name": {"ru": "на «низе» удары всего − 25%", "en": "на «низе» удары всего − 25%"},
-                "text": {"ru": "на «низе» удары всего − 25%", "en": "на «низе» удары всего − 25%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "sandwalker_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "sandwalker_trait_1_f75a",
-                "name": {"ru": "переворот сыплет песок в глаза", "en": "переворот сыплет песок в глаза"},
-                "text": {
-                  "ru": "переворот сыплет песок в глаза: враг 3 с получает +30%",
-                  "en": "переворот сыплет песок в глаза: враг 3 с получает +30%"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "sandwalker_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "sandwalker_trait_1_f45a", "name": {"ru": "Рука на часах", "en": "Hand on the Glass"}, "text": {"ru": "Скиллы, что сыплют песок, сразу переворачивают часы, но сами часы переворачиваются через 250 ударов", "en": "Skills that pour sand turn the glass at once, but by itself it turns only after 250 hits"}, "modifiers": [{"stat": "flipBySkill", "kind": "flat", "value": 1}, {"stat": "flipEvery", "kind": "flat", "value": 50}]}, {"id": "sandwalker_trait_1_f45b", "name": {"ru": "Песок из-под ног", "en": "Sand Underfoot"}, "text": {"ru": "Шаг тоже сыплет песок: песчинка за каждые 200 px шага, но «верх» на 10% слабее", "en": "Steps pour sand too: a grain for every 200 px of steps, but the top is 10% weaker"}, "modifiers": [{"stat": "flipStep", "kind": "flat", "value": 1}, {"stat": "flipPower", "kind": "flat", "value": -0.1}]}]},
+          {"level": 60, "options": [{"id": "sandwalker_trait_1_f60a", "name": {"ru": "Мягкий низ", "en": "Soft Bottom"}, "text": {"ru": "На «низе» урон −25% вместо −50%, но «верх» на 20% слабее", "en": "On the bottom damage is −25% instead of −50%, but the top is 20% weaker"}, "modifiers": [{"stat": "flipPenalty", "kind": "flat", "value": -0.25}, {"stat": "flipPower", "kind": "flat", "value": -0.2}]}, {"id": "sandwalker_trait_1_f60b", "name": {"ru": "Тяжёлый верх", "en": "Heavy Top"}, "text": {"ru": "«Верх» на 30% сильнее, но на «низе» урон −70%", "en": "The top is 30% stronger, but on the bottom damage is −70%"}, "modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.3}, {"stat": "flipPenalty", "kind": "flat", "value": 0.2}]}]},
+          {"level": 75, "options": [{"id": "sandwalker_trait_1_f75a", "name": {"ru": "Песок в глаза", "en": "Sand in the Eyes"}, "text": {"ru": "Каждый переворот ослепляет врага на 3 с: он получает от Sandwalker +30%, а отряд видит Ослепление. Но часы переворачиваются на 50 ударов позже", "en": "Every turn blinds the enemy for 3 s: he takes 30% more from the Sandwalker and the party sees the Blind. But the glass turns 50 hits later"}, "modifiers": [{"stat": "flipBlind", "kind": "flat", "value": 1}, {"stat": "flipEvery", "kind": "flat", "value": 50}]}, {"id": "sandwalker_trait_1_f75b", "name": {"ru": "Часы для Колоссов", "en": "Glass for Colossi"}, "text": {"ru": "Песок сыплется только в бою с боссом, с обычными врагами всегда «верх», но «верх» ×0,8", "en": "Sand flows only in a boss fight, against regular enemies it is always the top, but the top deals ×0.8"}, "modifiers": [{"stat": "flipBossOnly", "kind": "flat", "value": 1}, {"stat": "flipPower", "kind": "more", "value": -0.2}]}]}
         ]
       },
-      "nodes": [{"id": "sandwalker_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Переворот", "en": "Переворот"}, "modifiers": []}],
+      "nodes": [{"id": "sandwalker_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Переворот", "en": "Turn of the Glass"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "sandwalker_trait_2",
       "class": "sandwalker",
-      "name": {"ru": "Караван (шаг)", "en": "Караван (шаг)"},
-      "blurb": "Пройденный шаг — дорога каравана. Каждая пройденная «стоянка» (отрезок дистанции) даёт всему отряду 10% ресурса и − 1 с перезарядки самого долгого скилла. Без движения караван стоит",
+      "name": {"ru": "Караван", "en": "Caravan"},
+      "blurb": "Шаг — дорога каравана: каждые 3000 px шага караван встаёт на стоянку. Стоянка бьёт врага ×10, даёт 10 Песка ему и союзникам и сокращает самый долгий откат на 1 с. Без шага караван стоит. Скилл Пути «Привал» ставит стоянку сразу",
       "trait": {
-        "partyText": {"ru": "Ресурс и скиллы союзникам", "en": "Ресурс и скиллы союзникам"},
+        "partyText": {"ru": "Каждая стоянка: союзникам 10 ресурса, и 5 с откаты отряда быстрее на 10%", "en": "Every camp: allies get 10 resource, and for 5 s the party's cooldowns run 10% faster"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 10}]},
+          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "caravanIdle", "kind": "flat", "value": 1}], "text": {"ru": "Вьючные верблюды: без шага караван идёт сам, медленно", "en": "Pack Camels: without steps the caravan walks on by itself, slowly"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "sandwalker_trait_2_f45a",
-                "name": {"ru": "стоянки чаще", "en": "стоянки чаще"},
-                "text": {"ru": "стоянки чаще", "en": "стоянки чаще"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "sandwalker_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "sandwalker_trait_2_f60a",
-                "name": {"ru": "каждая 5-я стоянка — оазис", "en": "каждая 5-я стоянка — оазис"},
-                "text": {"ru": "каждая 5-я стоянка — оазис: лечит полосу", "en": "каждая 5-я стоянка — оазис: лечит полосу"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "sandwalker_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "sandwalker_trait_2_f75a",
-                "name": {"ru": "на стоянке караван оставляет золото", "en": "на стоянке караван оставляет золото"},
-                "text": {"ru": "на стоянке караван оставляет золото", "en": "на стоянке караван оставляет золото"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "sandwalker_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "sandwalker_trait_2_f45a", "name": {"ru": "Короткие перегоны", "en": "Short Legs"}, "text": {"ru": "Стоянка каждые 2000 px шага, но удар стоянки ×0,75", "en": "A camp every 2000 px of steps, but a camp strikes ×0.75"}, "modifiers": [{"stat": "campPx", "kind": "flat", "value": -1000}, {"stat": "caravanPower", "kind": "more", "value": -0.25}]}, {"id": "sandwalker_trait_2_f45b", "name": {"ru": "Дорога ударов", "en": "Road of Blows"}, "text": {"ru": "Каждый удар двигает караван на 40 px, но стоянка на 1000 px дальше", "en": "Every hit moves the caravan 40 px, but a camp is 1000 px further"}, "modifiers": [{"stat": "caravanHitPx", "kind": "flat", "value": 40}, {"stat": "campPx", "kind": "flat", "value": 1000}]}]},
+          {"level": 60, "options": [{"id": "sandwalker_trait_2_f60a", "name": {"ru": "Оазис", "en": "Oasis"}, "text": {"ru": "Каждая 5-я стоянка — оазис: удар ×3 и Песка ×2,5, но откат сокращается на 0,5 с", "en": "Every 5th camp is an oasis: a strike ×3 and ×2.5 Sand, but the cooldown cut is 0.5 s"}, "modifiers": [{"stat": "caravanOasis", "kind": "flat", "value": 1}, {"stat": "campCut", "kind": "flat", "value": -0.5}]}, {"id": "sandwalker_trait_2_f60b", "name": {"ru": "Торговый путь", "en": "Trade Road"}, "text": {"ru": "Стоянка сокращает откат на 2 с, но даёт 5 Песка", "en": "A camp cuts a cooldown by 2 s, but gives 5 Sand"}, "modifiers": [{"stat": "campCut", "kind": "flat", "value": 1}, {"stat": "campSand", "kind": "flat", "value": -5}]}]},
+          {"level": 75, "options": [{"id": "sandwalker_trait_2_f75a", "name": {"ru": "Золото каравана", "en": "Caravan Gold"}, "text": {"ru": "После стоянки отряд 10 с получает +25% золота, но удар стоянки ×0,7", "en": "After a camp the party gets 25% more gold for 10 s, but a camp strikes ×0.7"}, "modifiers": [{"stat": "caravanGold", "kind": "flat", "value": 1}, {"stat": "caravanPower", "kind": "more", "value": -0.3}]}, {"id": "sandwalker_trait_2_f75b", "name": {"ru": "Караван-сарай", "en": "Caravanserai"}, "text": {"ru": "Стоянка сокращает откаты всех скиллов, но она на 1000 px дальше", "en": "A camp cuts the cooldowns of every skill, but it is 1000 px further"}, "modifiers": [{"stat": "caravanAll", "kind": "flat", "value": 1}, {"stat": "campPx", "kind": "flat", "value": 1000}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "sandwalker_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Караван (шаг)", "en": "Караван (шаг)"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "sandwalker_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Караван", "en": "Caravan"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "sandwalker_trait_3",
       "class": "sandwalker",
-      "name": {"ru": "Мираж (шаг)", "en": "Мираж (шаг)"},
-      "blurb": "Шаг раскаляет воздух: за каждый отрезок дистанции появляется мираж — двойник кого-то из отряда. Босс бьёт по миражам: каждый мираж +2 с к таймеру босса, до 5. Урона Пескоходец сам почти не делает (−40%)",
+      "name": {"ru": "Мираж", "en": "Mirage"},
+      "blurb": "Шаг раскаляет воздух: каждые 2000 px шага встаёт мираж — двойник кого-то из отряда, до 5, живёт 20 с. Каждый мираж бьёт раз в секунду ×1,6, а в бою с боссом даёт +2 с к таймеру. Сам Sandwalker бьёт на 40% слабее. Скилл Пути «Мираж-двойник» зовёт мираж сразу",
       "trait": {
-        "partyText": {"ru": "+время на босса для всех", "en": "+время на босса для всех"},
+        "partyText": {"ru": "Босс бьёт по миражам: каждый мираж замедляет таймер босса для отряда на 6%", "en": "The boss strikes at the mirages: each one slows the boss timer for the party by 6%"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 1.6}]},
+          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "mirageOnBoss", "kind": "flat", "value": 1}], "text": {"ru": "Марево: бой с боссом начинается с миража", "en": "Haze: a boss fight starts with a mirage"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "sandwalker_trait_3_f45a",
-                "name": {"ru": "до 7 миражей", "en": "до 7 миражей"},
-                "text": {"ru": "до 7 миражей", "en": "до 7 миражей"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "sandwalker_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "sandwalker_trait_3_f60a",
-                "name": {"ru": "мираж повторяет удар своего оригинала на 10%", "en": "мираж повторяет удар своего оригинала на 10%"},
-                "text": {"ru": "мираж повторяет удар своего оригинала на 10%", "en": "мираж повторяет удар своего оригинала на 10%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "sandwalker_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "sandwalker_trait_3_f75a",
-                "name": {"ru": "исчезая, мираж ослепляет босса на 1 с", "en": "исчезая, мираж ослепляет босса на 1 с"},
-                "text": {"ru": "исчезая, мираж ослепляет босса на 1 с", "en": "исчезая, мираж ослепляет босса на 1 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "sandwalker_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "sandwalker_trait_3_f45a", "name": {"ru": "Толпа миражей", "en": "Crowd of Mirages"}, "text": {"ru": "До 7 миражей, но мираж на 500 px шага дальше", "en": "Up to 7 mirages, but a mirage is 500 px of steps further"}, "modifiers": [{"stat": "mirageMax", "kind": "flat", "value": 2}, {"stat": "miragePx", "kind": "flat", "value": 500}]}, {"id": "sandwalker_trait_3_f45b", "name": {"ru": "Мираж от ударов", "en": "Mirage of Blows"}, "text": {"ru": "Каждые 40 ударов тоже зовут мираж, но мираж даёт таймеру 1 с", "en": "Every 40 hits also call a mirage, but a mirage gives the timer 1 s"}, "modifiers": [{"stat": "mirageHits", "kind": "flat", "value": 40}, {"stat": "mirageTime", "kind": "flat", "value": -1}]}]},
+          {"level": 60, "options": [{"id": "sandwalker_trait_3_f60a", "name": {"ru": "Двойник", "en": "Double"}, "text": {"ru": "Миражи повторяют каждый его удар на 10% за мираж, но сами бьют ×0,5", "en": "Mirages repeat every hit of his at 10% per mirage, but strike ×0.5 themselves"}, "modifiers": [{"stat": "mirageEcho", "kind": "flat", "value": 0.1}, {"stat": "miragePower", "kind": "more", "value": -0.5}]}, {"id": "sandwalker_trait_3_f60b", "name": {"ru": "Жаркий мираж", "en": "Hot Mirage"}, "text": {"ru": "Мираж бьёт ×1,5, но живёт 10 с", "en": "A mirage strikes ×1.5, but lives 10 s"}, "modifiers": [{"stat": "miragePower", "kind": "more", "value": 0.5}, {"stat": "mirageSeconds", "kind": "flat", "value": -10}]}]},
+          {"level": 75, "options": [{"id": "sandwalker_trait_3_f75a", "name": {"ru": "Слепящий мираж", "en": "Blinding Mirage"}, "text": {"ru": "Исчезая, мираж ослепляет врага на 1 с, но живёт 15 с", "en": "A fading mirage blinds the enemy for 1 s, but lives 15 s"}, "modifiers": [{"stat": "mirageBlind", "kind": "flat", "value": 1}, {"stat": "mirageSeconds", "kind": "flat", "value": -5}]}, {"id": "sandwalker_trait_3_f75b", "name": {"ru": "Без тени", "en": "Shadowless"}, "text": {"ru": "Сам Sandwalker бьёт без штрафа, но миражей до 3", "en": "The Sandwalker strikes without the penalty, but there are only up to 3 mirages"}, "modifiers": [{"stat": "mirageSelfPenalty", "kind": "flat", "value": -0.4}, {"stat": "mirageMax", "kind": "flat", "value": -2}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "sandwalker_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Мираж (шаг)", "en": "Мираж (шаг)"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "sandwalker_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Мираж", "en": "Mirage"}, "modifiers": []}],
       "links": []
     },
     {
