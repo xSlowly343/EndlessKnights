@@ -1,4 +1,5 @@
 using System.Linq;
+using Game.Core.Content.Gems;
 using Game.Core.Sim;
 using Game.Core.Sim.Headless;
 using Game.Core.Stats;
@@ -75,6 +76,52 @@ namespace Game.Core.Tests.Sim
             Assert.That(days.Last().Prestiges, Is.GreaterThan(0));
             Assert.That(days.Last().Artifacts, Is.GreaterThan(0));
             Assert.That(days.Last().RecordStage, Is.GreaterThanOrEqualTo(days.First().RecordStage));
+        }
+
+        [Test]
+        public void BotPlaysTheSkillsOfItsWeaponAndKeepsAurasInAuraSlots()
+        {
+            var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(6, 1), HeroClass.Metalhead);
+
+            simulation.Run(2, 2);
+            var state = simulation.LastState!;
+
+            Assert.That(state.Skills.Count(slot => slot.Def.Weapon != null), Is.GreaterThanOrEqualTo(5));
+            Assert.That(state.Skills.Count(slot => slot.Role == SkillSlotRole.Aura), Is.GreaterThan(0));
+            Assert.That(state.Skills.Where(slot => slot.Role == SkillSlotRole.Aura).All(slot => SkillLoadout.IsAura(slot.Skill)), Is.True);
+        }
+
+        [Test]
+        public void BotChoosesABranchOnEveryTierItsSkillsReached()
+        {
+            var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(6, 1), HeroClass.Viking);
+
+            simulation.Run(2, 2);
+            var state = simulation.LastState!;
+
+            var reached = 0;
+            foreach (var slot in state.Skills)
+            {
+                var progress = state.GemProgress[slot.Skill.Id];
+                for (var tier = 0; tier < slot.Skill.Branches.Count; tier++)
+                {
+                    if (progress.Level < slot.Skill.Branches[tier].Level)
+                        continue;
+                    reached++;
+                    Assert.That(progress.Branches[tier], Is.Not.EqualTo(SkillBranches.NoChoice), slot.Skill.Id + " tier " + tier);
+                }
+            }
+            Assert.That(reached, Is.GreaterThan(5));
+        }
+
+        [Test]
+        public void WithoutATrialTheBotPrefersTheBranchWithMoreDamagePerSecond()
+        {
+            var faster = new SkillBranch("faster", "", "", 1, 0.7, 1, 1, null);
+            var harder = new SkillBranch("harder", "", "", 1.3, 1, 1, 1, null);
+
+            Assert.That(BranchScore.Best(new SkillBranchTier(5, new[] { harder, faster })), Is.EqualTo(1));
+            Assert.That(BranchScore.Best(new SkillBranchTier(5, new[] { faster, harder })), Is.EqualTo(0));
         }
 
         [Test]

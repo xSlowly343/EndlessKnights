@@ -13,17 +13,20 @@ namespace Game.Core.Sim.Headless
         private readonly GameData _data;
         private readonly GameLoop _loop;
         private readonly NodeScore _score;
-        private readonly HashSet<Content.Gems.GemDef> _triedGems = new HashSet<Content.Gems.GemDef>();
+        private readonly BotLoadout _loadout;
         private readonly double _stuckSecondsBeforePrestige;
         private const int BossFailsBeforePrestige = 1;
         private const double SlowStageSeconds = 60;
         private readonly HeroClass _heroClass;
+        private readonly BranchTrial? _branchTrial;
         private double _stuckSeconds;
         private double _stageSeconds;
         private long _stage;
 
-        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige, bool inParty = false)
+        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige, bool inParty = false, BranchTrial? branchTrial = null)
         {
+            _branchTrial = branchTrial;
+            _loadout = new BotLoadout(loop);
             _data = data;
             _loop = loop;
             _stuckSecondsBeforePrestige = stuckMinutesBeforePrestige * 60;
@@ -37,6 +40,7 @@ namespace Game.Core.Sim.Headless
             if (_loop.ClassChoiceReady)
                 _loop.ChooseClass(_heroClass);
             EquipStartingSkills();
+            ChooseSkillBranches();
             SpendTreePoints();
             SpendSubclassPoints();
             PrestigeWhenStuck(secondsSinceLastAct);
@@ -52,23 +56,27 @@ namespace Game.Core.Sim.Headless
         public void EquipStartingSkills()
         {
             _loop.Book.GrantStartingGems();
-            EquipOwnedSkills();
+            _loadout.Arrange();
         }
 
-        private void EquipOwnedSkills()
+        public void ChooseSkillBranches()
         {
-            if (_loop.State.Skills.Count >= _loop.Book.SlotCount + _loop.Book.AuraSlotCount)
-                return;
-            _triedGems.Clear();
-            foreach (var gem in _loop.State.OwnedGems)
+            var state = _loop.State;
+            for (var row = 0; row < state.Skills.Count; row++)
             {
-                if (gem.Kind != Content.Gems.GemKind.Skill || !_triedGems.Add(gem))
+                var skill = state.Skills[row].Skill;
+                if (!state.GemProgress.TryGetValue(skill.Id, out var progress))
                     continue;
-                while (_loop.Book.FreeCopies(gem) > 0 && _loop.Book.Equip(gem) == BookResult.Done)
+                for (var tier = 0; tier < skill.Branches.Count && tier < progress.Branches.Length; tier++)
                 {
+                    if (progress.Level >= skill.Branches[tier].Level && progress.Branches[tier] == Content.Gems.SkillBranches.NoChoice)
+                        BotBranches.Choose(_loop, _loadout, skill, tier, BestBranch(skill, tier));
                 }
             }
         }
+
+        private int BestBranch(Content.Gems.GemDef skill, int tier) =>
+            _branchTrial?.Best(_loop.State, skill, tier) ?? BranchScore.Best(skill.Branches[tier]);
 
         private void CutUncutGems()
         {
