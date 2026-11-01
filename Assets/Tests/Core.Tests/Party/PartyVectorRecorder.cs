@@ -175,6 +175,6 @@ namespace Game.Core.Tests.Party
 
         private static string Bool(bool value) => value ? "true" : "false";
 
-        private static string Number(double value) => value.ToString("R", CultureInfo.InvariantCulture);
+        private static string Number(double value) => value.ToString("G17", CultureInfo.InvariantCulture);
     }
 }

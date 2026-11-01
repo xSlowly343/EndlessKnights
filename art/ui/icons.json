@@ -29,6 +29,7 @@
     { "group": "tabs", "id": "stats", "source": "delapouite/chart" },
     { "group": "tabs", "id": "camp", "source": "lorc/campfire" },
     { "group": "tabs", "id": "shop", "source": "delapouite/shop" },
+    { "group": "tabs", "id": "mail", "source": "lorc/quill-ink" },
     { "group": "tabs", "id": "settings", "source": "lorc/cog" },
     { "group": "tabs", "id": "more", "source": "delapouite/hamburger-menu" },
 
@@ -51,7 +52,7 @@
     { "group": "slots", "id": "amulet", "source": "lorc/gem-pendant" },
     { "group": "slots", "id": "ring", "source": "delapouite/ring" },
 
-    { "group": "weapons", "id": "rune_daggers", "source": "lorc/plain-dagger", "attribute": "red" },
+    { "group": "weapons", "id": "rune_daggers", "source": "lorc/spinning-blades", "attribute": "red" },
     { "group": "weapons", "id": "katana", "source": "delapouite/katana", "attribute": "red" },
     { "group": "weapons", "id": "short_bow", "source": "delapouite/bow-arrow", "attribute": "green" },
     { "group": "weapons", "id": "storm_wand", "source": "lorc/wizard-staff", "attribute": "green" },
