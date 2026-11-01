@@ -31,7 +31,7 @@
       "lanternbearer": { "perKey": 0.3333, "perAllyHit": 0.1 },
       "dreamcatcher": { "perKey": 0, "mousePxPerPoint": 600, "perAllyHit": 0.1, "reading": { "perSecond": 1, "afterKeylessSeconds": 5 } },
       "sandwalker": { "perKey": 0.5, "mousePxPerPoint": 500, "perClick": 1 },
-      "shardcaller": { "perKey": 0.2, "mousePxPerPoint": 400, "overload": { "multiplier": 5 } },
+      "shardcaller": { "perKey": 0.32, "overload": { "multiplier": 5 } },
       "dowser": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } },
       "mothcaller": { "perKey": 0.2, "mousePxPerPoint": 250, "decay": { "perSecond": 2, "afterKeylessSeconds": 5, "mouseHolds": true } },
       "cartomancer": { "perKey": 0.5, "mousePxPerPoint": 500 },
@@ -42,7 +42,13 @@
   "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
   "classes": {
     "keyStreak": { "gapSeconds": 1.5 },
-    "shardcaller": { "overload": { "queueTargets": 2 } },
+    "shardcaller": {
+      "overload": { "queueTargets": 2 },
+      "shards": { "every": 8, "everyMin": 2, "max": 10, "armor": 0.03, "onKillShare": 0.5, "echoKeep": 0.5 },
+      "garden": { "every": 16, "everyMin": 4, "max": 10, "growSeconds": 3, "growMinSeconds": 1, "sizeMax": 5, "armor": 0.006, "queueShare": 1, "bloomMultiplier": 5 },
+      "shell": { "penalty": 0.2, "everySeconds": 5, "everyMinSeconds": 2, "crackSeconds": 1, "partyDamage": 0.3, "shatterEvery": 5, "shatterMultiplier": 2, "critHasteSeconds": 0.5 },
+      "skills": { "prisonMultiplier": 1.5, "heartPartyDamage": 0.25 }
+    },
     "whisperer": { "evilEye": { "damageTaken": 0.05 } },
     "lanternbearer": { "standingAuras": { "count": 2, "pauseSeconds": 1 } },
     "sandwalker": { "sand": { "every": 10, "everyMin": 4, "seconds": 4 } },

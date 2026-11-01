@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 6816155706960838608
-    second: storm_wand_0
+    second: crystal_wand_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: storm_wand_0
+      name: crystal_wand_0
       rect:
         serializedVersion: 2
         x: 5

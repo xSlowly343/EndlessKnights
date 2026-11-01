@@ -222,226 +222,70 @@
     {
       "id": "shardcaller_trait_1",
       "class": "shardcaller",
-      "name": {"ru": "Осколки", "en": "Осколки"},
-      "blurb": "Каждый 8-й удар вонзает во врага кристалл, до 10. Скилл Пути «Резонанс» взрывает их: урон × число кристаллов",
+      "name": {"ru": "Осколки", "en": "Shards"},
+      "blurb": "Каждый 8-й удар вонзает во врага кристалл, до 10. Скилл Пути «Резонанс» взрывает их: удар × число кристаллов. Кристаллы пропадают со смертью врага",
       "trait": {
-        "partyText": {"ru": "Каждый кристалл: −3% защиты врага для всех", "en": "Каждый кристалл: −3% защиты врага для всех"},
+        "partyText": {"ru": "Каждый кристалл во враге: отряд бьёт его на 3% сильнее", "en": "Every crystal in the enemy: the party hits it 3% harder"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "shardPower", "kind": "flat", "value": 1}]},
+          {"modifiers": [{"stat": "shardPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "shardPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "shardPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "shardOnKill", "kind": "flat", "value": 1}], "text": {"ru": "Осколки летят дальше: кристаллы погибшего врага взрываются по следующему с силой ×0,5", "en": "Flying Shards: the crystals of a slain enemy burst on the next one at ×0.5"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "shardcaller_trait_1_f45a",
-                "name": {"ru": "Глубокий кристалл", "en": "Глубокий кристалл"},
-                "text": {"ru": "Глубокий кристалл: −4%", "en": "Глубокий кристалл: −4%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "shardcaller_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "shardcaller_trait_1_f60a",
-                "name": {"ru": "Эхо резонанса", "en": "Эхо резонанса"},
-                "text": {"ru": "Эхо резонанса: половина кристаллов остаётся", "en": "Эхо резонанса: половина кристаллов остаётся"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "shardcaller_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "shardcaller_trait_1_f75a",
-                "name": {"ru": "Друза", "en": "Друза"},
-                "text": {"ru": "Друза: до 14", "en": "Друза: до 14"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "shardcaller_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "shardcaller_trait_1_f45a", "name": {"ru": "Глубокий кристалл", "en": "Deep Crystal"}, "text": {"ru": "Каждый кристалл даёт отряду 4%, но кристалл каждые 10 ударов", "en": "Every crystal gives the party 4%, but a crystal comes every 10 hits"}, "modifiers": [{"stat": "shardArmor", "kind": "flat", "value": 0.01}, {"stat": "shardEvery", "kind": "flat", "value": 2}]}, {"id": "shardcaller_trait_1_f45b", "name": {"ru": "Мелкий скол", "en": "Splinters"}, "text": {"ru": "Кристалл каждые 5 ударов, но их до 6", "en": "A crystal every 5 hits, but only up to 6"}, "modifiers": [{"stat": "shardEvery", "kind": "flat", "value": -3}, {"stat": "shardMax", "kind": "flat", "value": -4}]}]},
+          {"level": 60, "options": [{"id": "shardcaller_trait_1_f60a", "name": {"ru": "Эхо резонанса", "en": "Resonant Echo"}, "text": {"ru": "После взрыва половина кристаллов остаётся, но взрыв ×0,7", "en": "Half of the crystals stay after a burst, but the burst deals ×0.7"}, "modifiers": [{"stat": "shardEcho", "kind": "flat", "value": 1}, {"stat": "shardPower", "kind": "more", "value": -0.3}]}, {"id": "shardcaller_trait_1_f60b", "name": {"ru": "Шрапнель", "en": "Shrapnel"}, "text": {"ru": "Взрыв бьёт и следующего в очереди с той же силой, но кристалл даёт отряду на 1% меньше", "en": "A burst also hits the next queued enemy just as hard, but a crystal gives the party 1% less"}, "modifiers": [{"stat": "shardQueue", "kind": "flat", "value": 1}, {"stat": "shardArmor", "kind": "flat", "value": -0.01}]}]},
+          {"level": 75, "options": [{"id": "shardcaller_trait_1_f75a", "name": {"ru": "Друза", "en": "Druse"}, "text": {"ru": "Кристаллов до 14, но каждый даёт отряду на 0,5% меньше", "en": "Up to 14 crystals, but each gives the party 0.5% less"}, "modifiers": [{"stat": "shardMax", "kind": "flat", "value": 4}, {"stat": "shardArmor", "kind": "flat", "value": -0.005}]}, {"id": "shardcaller_trait_1_f75b", "name": {"ru": "Обвал", "en": "Rockslide"}, "text": {"ru": "На полном числе кристаллы взрываются сами, но взрыв ×0,75", "en": "At full count the crystals burst by themselves, but the burst deals ×0.75"}, "modifiers": [{"stat": "shardAvalanche", "kind": "flat", "value": 1}, {"stat": "shardPower", "kind": "more", "value": -0.25}]}]}
         ]
       },
-      "nodes": [{"id": "shardcaller_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Осколки", "en": "Осколки"}, "modifiers": []}],
+      "nodes": [{"id": "shardcaller_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Осколки", "en": "Shards"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "shardcaller_trait_2",
       "class": "shardcaller",
-      "name": {"ru": "Кристальный сад", "en": "Кристальный сад"},
-      "blurb": "Кристаллы растут сами: каждые 3 с +1 размер, до 5. Каждый размер снимает ещё −2% защиты. Компромисс: кристаллы втыкаются вдвое реже. Скилл «Полить сад»: все +1 размер",
+      "name": {"ru": "Кристальный сад", "en": "Crystal Garden"},
+      "blurb": "Кристалл каждые 16 ударов, до 10. Каждые 3 с кристаллы растут на размер (до 5) и звенят: удар × кристаллы × размер, даже в паузе. Скилл Пути «Полить сад»: +1 размер сразу",
       "trait": {
-        "partyText": {"ru": "Растущая уязвимость для всех, даже когда он не бьёт", "en": "Растущая уязвимость для всех, даже когда он не бьёт"},
+        "partyText": {"ru": "Растущая уязвимость: отряд бьёт врага сильнее на 0,6% за каждый кристалл и размер, даже когда он не бьёт", "en": "Growing weakness: the party hits the enemy 0.6% harder per crystal and size, even when he is idle"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "gardenPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "gardenPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "gardenPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "gardenPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "gardenSeed", "kind": "flat", "value": 1}], "text": {"ru": "Семя: новый враг сразу получает кристалл размера 1", "en": "Seed: a new enemy starts with a crystal of size 1"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "shardcaller_trait_2_f45a",
-                "name": {"ru": "Тёплая земля", "en": "Тёплая земля"},
-                "text": {"ru": "Тёплая земля: рост раз в 2 с", "en": "Тёплая земля: рост раз в 2 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "shardcaller_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "shardcaller_trait_2_f60a",
-                "name": {"ru": "Гигант", "en": "Гигант"},
-                "text": {"ru": "Гигант: размер до 8", "en": "Гигант: размер до 8"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "shardcaller_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "shardcaller_trait_2_f75a",
-                "name": {"ru": "Пересадка", "en": "Пересадка"},
-                "text": {"ru": "Пересадка: сад переходит на нового врага", "en": "Пересадка: сад переходит на нового врага"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "shardcaller_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "shardcaller_trait_2_f45a", "name": {"ru": "Тёплая земля", "en": "Warm Soil"}, "text": {"ru": "Рост раз в 2 с, но размер до 4", "en": "Growth every 2 s, but size only up to 4"}, "modifiers": [{"stat": "gardenGrow", "kind": "flat", "value": -1}, {"stat": "gardenSize", "kind": "flat", "value": -1}]}, {"id": "shardcaller_trait_2_f45b", "name": {"ru": "Тучная земля", "en": "Rich Soil"}, "text": {"ru": "Кристалл каждые 12 ударов, но рост раз в 4 с", "en": "A crystal every 12 hits, but growth every 4 s"}, "modifiers": [{"stat": "gardenEvery", "kind": "flat", "value": -4}, {"stat": "gardenGrow", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "shardcaller_trait_2_f60a", "name": {"ru": "Гигант", "en": "Giant"}, "text": {"ru": "Размер до 8, но кристаллов до 6", "en": "Size up to 8, but only up to 6 crystals"}, "modifiers": [{"stat": "gardenSize", "kind": "flat", "value": 3}, {"stat": "gardenMax", "kind": "flat", "value": -4}]}, {"id": "shardcaller_trait_2_f60b", "name": {"ru": "Звонкий сад", "en": "Ringing Garden"}, "text": {"ru": "Звон сада бьёт и следующего в очереди, но звон ×0,7", "en": "The garden's ring also hits the next queued enemy, but rings deal ×0.7"}, "modifiers": [{"stat": "gardenQueue", "kind": "flat", "value": 1}, {"stat": "gardenPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 75, "options": [{"id": "shardcaller_trait_2_f75a", "name": {"ru": "Пересадка", "en": "Transplant"}, "text": {"ru": "Сад переходит на нового врага, но растёт на 1 с медленнее", "en": "The garden moves to the next enemy, but grows 1 s slower"}, "modifiers": [{"stat": "gardenTransplant", "kind": "flat", "value": 1}, {"stat": "gardenGrow", "kind": "flat", "value": 1}]}, {"id": "shardcaller_trait_2_f75b", "name": {"ru": "Цветение", "en": "Bloom"}, "text": {"ru": "На полном размере сад цветёт: звон ×5, и размер падает до 1", "en": "At full size the garden blooms: a ring ×5, and the size drops to 1"}, "modifiers": [{"stat": "gardenBloom", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "shardcaller_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Кристальный сад", "en": "Кристальный сад"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "shardcaller_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Кристальный сад", "en": "Crystal Garden"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "shardcaller_trait_3",
       "class": "shardcaller",
-      "name": {"ru": "Стеклянный панцирь", "en": "Стеклянный панцирь"},
-      "blurb": "Компромисс в духе TLI: он заковывает врага в кристалл, и тот получает на 20% меньше урона. Зато раз в 5 с панцирь трескается на 1 с, и все удары в эту секунду ×4. Скилл «Звон стекла» трескает панцирь сразу",
+      "name": {"ru": "Стеклянный панцирь", "en": "Glass Shell"},
+      "blurb": "Враг закован в кристалл: весь урон Shardcaller по нему на 20% слабее. Раз в 5 с панцирь трескается на 1 с, и весь урон Shardcaller в эту секунду ×4. Скилл Пути «Звон стекла» трескает панцирь сразу",
       "trait": {
-        "partyText": {"ru": "Секунда ×4 для всех: отряд бьёт в ритм трещин", "en": "Секунда ×4 для всех: отряд бьёт в ритм трещин"},
+        "partyText": {"ru": "Пока панцирь треснул, отряд бьёт на 30% сильнее", "en": "While the shell is cracked the party hits 30% harder"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 4}]},
+          {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "shellResonance", "kind": "flat", "value": 10}], "text": {"ru": "Звон: каждая трещина даёт 10 Резонанса", "en": "Chime: every crack gives 10 Resonance"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "shardcaller_trait_3_f45a",
-                "name": {"ru": "Тонкое стекло", "en": "Тонкое стекло"},
-                "text": {"ru": "Тонкое стекло: штраф −10%", "en": "Тонкое стекло: штраф −10%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "shardcaller_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "shardcaller_trait_3_f60a",
-                "name": {"ru": "Долгая трещина", "en": "Долгая трещина"},
-                "text": {"ru": "Долгая трещина: 1,5 с", "en": "Долгая трещина: 1,5 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "shardcaller_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "shardcaller_trait_3_f75a",
-                "name": {"ru": "Вдребезги", "en": "Вдребезги"},
-                "text": {"ru": "Вдребезги: каждая 5-я трещина ×8", "en": "Вдребезги: каждая 5-я трещина ×8"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "shardcaller_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "shardcaller_trait_3_f45a", "name": {"ru": "Тонкое стекло", "en": "Thin Glass"}, "text": {"ru": "Штраф панциря −10% вместо −20%, но трещина ×0,75", "en": "The shell penalty is 10% instead of 20%, but a crack deals ×0.75"}, "modifiers": [{"stat": "shellPenalty", "kind": "flat", "value": -0.1}, {"stat": "shellPower", "kind": "more", "value": -0.25}]}, {"id": "shardcaller_trait_3_f45b", "name": {"ru": "Частые трещины", "en": "Frequent Cracks"}, "text": {"ru": "Трещина раз в 4 с, но штраф панциря −25%", "en": "A crack every 4 s, but the shell penalty is 25%"}, "modifiers": [{"stat": "shellEvery", "kind": "flat", "value": -1}, {"stat": "shellPenalty", "kind": "flat", "value": 0.05}]}]},
+          {"level": 60, "options": [{"id": "shardcaller_trait_3_f60a", "name": {"ru": "Долгая трещина", "en": "Long Crack"}, "text": {"ru": "Трещина держится 1,5 с, но приходит раз в 6 с", "en": "A crack lasts 1.5 s, but comes every 6 s"}, "modifiers": [{"stat": "shellCrack", "kind": "flat", "value": 0.5}, {"stat": "shellEvery", "kind": "flat", "value": 1}]}, {"id": "shardcaller_trait_3_f60b", "name": {"ru": "Чуткое стекло", "en": "Sensitive Glass"}, "text": {"ru": "Каждый крит приближает трещину на 0,5 с, но трещина ×0,85", "en": "Every critical hit brings the crack 0.5 s closer, but a crack deals ×0.85"}, "modifiers": [{"stat": "shellCritHaste", "kind": "flat", "value": 1}, {"stat": "shellPower", "kind": "more", "value": -0.15}]}]},
+          {"level": 75, "options": [{"id": "shardcaller_trait_3_f75a", "name": {"ru": "Вдребезги", "en": "Shatter"}, "text": {"ru": "Каждая 5-я трещина ×2, но остальные слабее на 0,5", "en": "Every 5th crack is doubled, but the others are 0.5 weaker"}, "modifiers": [{"stat": "shellShatter", "kind": "flat", "value": 1}, {"stat": "shellPower", "kind": "flat", "value": -0.5}]}, {"id": "shardcaller_trait_3_f75b", "name": {"ru": "Стекло для всех", "en": "Glass for All"}, "text": {"ru": "Вклад отряду от трещины вдвое, но своя трещина ×0,75", "en": "A crack gives the party twice as much, but his own crack deals ×0.75"}, "modifiers": [{"stat": "shellPartyDouble", "kind": "flat", "value": 1}, {"stat": "shellPower", "kind": "more", "value": -0.25}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "shardcaller_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Стеклянный панцирь", "en": "Стеклянный панцирь"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "shardcaller_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Стеклянный панцирь", "en": "Glass Shell"}, "modifiers": []}],
       "links": []
     },
     {

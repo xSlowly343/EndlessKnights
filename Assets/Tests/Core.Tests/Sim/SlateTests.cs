@@ -305,6 +305,7 @@ namespace Game.Core.Tests.Sim
                 .Concat(typeof(RunedancerStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Concat(typeof(DuelistStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Concat(typeof(WindshotStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+                .Concat(typeof(ShardcallerStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Where(field => field.FieldType == typeof(StatId))
                 .Select(field => ((StatId)field.GetValue(null)!).Name)
                 .ToHashSet();

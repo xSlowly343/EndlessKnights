@@ -318,6 +318,7 @@ namespace Game.Core.Sim
             _combat.Runedancer.OnSkillCast(slot.Skill);
             _combat.Duelist.OnSkillCast(slot.Skill);
             _combat.Windshot.OnSkillCast(slot.Skill);
+            _combat.Shardcaller.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)
