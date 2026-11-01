@@ -118,7 +118,7 @@ namespace Game.Core.Sim
             if (!On)
             {
                 _state.TraitPartyCritMultiplier = 0;
-                _state.TraitPartyResource = 0;
+                _state.TraitPartyCooldown = 0;
                 _state.StepTensionBlocked = false;
                 return;
             }
@@ -128,8 +128,8 @@ namespace Game.Core.Sim
             _state.StepTensionBlocked = InCalm && Positive(WindshotStats.CalmDrift) > 0;
             _state.TraitPartyCritChance = LongShot && _state.HunterMarkTicks > 0 ? _rules.ShotPartyCrit + Positive(WindshotStats.ShotPartyCrit) : 0;
             _state.TraitPartyCritMultiplier = InCalm ? _rules.CalmPartyCritMultiplier + Positive(WindshotStats.CalmPartyCrit) : 0;
-            _state.TraitPartyResource = Tailwind && S.GustPartyTicks > 0
-                ? (_rules.GustPartyResource + Positive(WindshotStats.GustPartyResource)) * (Flag(WindshotStats.GustPartyDouble) ? 2 : 1)
+            _state.TraitPartyCooldown = Tailwind && S.GustPartyTicks > 0
+                ? (_rules.GustPartyCooldown + Positive(WindshotStats.GustPartyCooldown)) * (Flag(WindshotStats.GustPartyDouble) ? 2 : 1)
                 : 0;
         }
 

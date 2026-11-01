@@ -7,12 +7,14 @@ namespace Game.Core.Party
         public readonly StatId From;
         public readonly StatId To;
         public readonly ModifierKind Kind;
+        public readonly bool Negate;
 
-        public PartyStatLink(StatId from, StatId to, ModifierKind kind)
+        public PartyStatLink(StatId from, StatId to, ModifierKind kind, bool negate = false)
         {
             From = from;
             To = to;
             Kind = kind;
+            Negate = negate;
         }
 
         public double ValueOf(StatSheet sheet) =>

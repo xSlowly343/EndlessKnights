@@ -9,6 +9,7 @@ namespace Game.Core.Party.Wire
         public float Stat3;
         public float Stat4;
         public float Stat5;
+        public float Stat6;
         public OfferedAura Aura0;
         public OfferedAura Aura1;
         public OfferedAura Aura2;
@@ -27,6 +28,7 @@ namespace Game.Core.Party.Wire
             3 => Stat3,
             4 => Stat4,
             5 => Stat5,
+            6 => Stat6,
             _ => 0
         };
 
@@ -41,6 +43,7 @@ namespace Game.Core.Party.Wire
                 case 3: Stat3 = single; break;
                 case 4: Stat4 = single; break;
                 case 5: Stat5 = single; break;
+                case 6: Stat6 = single; break;
             }
         }
 

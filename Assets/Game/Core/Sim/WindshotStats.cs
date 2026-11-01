@@ -35,6 +35,6 @@ namespace Game.Core.Sim
         public static readonly StatId GustPartyDouble = new StatId("gustPartyDouble");
         public static readonly StatId GustQueue = new StatId("gustQueue");
         public static readonly StatId GustTimer = new StatId("gustTimer");
-        public static readonly StatId GustPartyResource = new StatId("gustPartyResource");
+        public static readonly StatId GustPartyCooldown = new StatId("gustPartyCooldown");
     }
 }

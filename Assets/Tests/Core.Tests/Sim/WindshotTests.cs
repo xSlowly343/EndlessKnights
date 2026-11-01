@@ -286,13 +286,15 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void GustsStoreUpToFiveAndGiveThePartyResource()
+        public void GustsStoreUpToFiveAndSpeedUpThePartyCooldowns()
         {
             var (loop, input) = Hero(Flat(WindshotStats.GustPower, 0.5));
+            var cooldown = loop.Hero.Value(CombatStats.SkillCooldown, 1);
             Move(loop, input, 30000, 20);
 
             Assert.That(loop.State.Windshot.Gusts, Is.EqualTo(Rules.GustMax));
-            Assert.That(loop.State.TraitPartyResource, Is.EqualTo(Rules.GustPartyResource).Within(1e-9));
+            Assert.That(loop.State.TraitPartyCooldown, Is.EqualTo(Rules.GustPartyCooldown).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.SkillCooldown, 1), Is.EqualTo(cooldown - Rules.GustPartyCooldown).Within(1e-9));
         }
 
         [Test]

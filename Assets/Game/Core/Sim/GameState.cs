@@ -261,7 +261,7 @@ namespace Game.Core.Sim
         public double TraitPartyCritChance { get; set; }
         public double TraitPartyGold { get; set; }
         public double TraitPartyCritMultiplier { get; set; }
-        public double TraitPartyResource { get; set; }
+        public double TraitPartyCooldown { get; set; }
         public bool StepTensionBlocked { get; set; }
         public int StunTicks { get; set; }
         public int HunterMarkTicks { get; set; }
