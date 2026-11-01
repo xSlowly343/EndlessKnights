@@ -20,7 +20,6 @@ namespace Game.Core.Content
         public double HeadbangPxPerSecond { get; }
         public double HeadbangMaxSeconds { get; }
         public HunterMarkRules HunterMark { get; private set; } = HunterMarkRules.None;
-        public BlindRules Sand { get; private set; } = BlindRules.None;
         public OverdriveRules Overdrive { get; private set; } = OverdriveRules.None;
         public StandingAuraRules StandingAuras { get; private set; } = StandingAuraRules.None;
         public EvilEyeRules EvilEye { get; private set; } = EvilEyeRules.None;
@@ -33,6 +32,7 @@ namespace Game.Core.Content
         public DuelistRules Duelist { get; private set; } = DuelistRules.None;
         public WindshotRules Windshot { get; private set; } = WindshotRules.None;
         public ShardcallerRules Shardcaller { get; private set; } = ShardcallerRules.None;
+        public SandwalkerRules Sandwalker { get; private set; } = SandwalkerRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -44,7 +44,7 @@ namespace Game.Core.Content
                 headbang.Field("maxSeconds").AsNumber(0, 3600),
                 clockwork.Field("resourceAbove").AsNumber(0, 1e6),
                 clockwork.Field("slow").AsNumber(0, 1),
-                clockwork.Field("floor").AsNumber(0, 1)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")), Sand = BlindRules.Read(node.Field("sandwalker").Field("sand")), Overdrive = OverdriveRules.Read(node.Field("minstrel").Field("overdrive")),
+                clockwork.Field("floor").AsNumber(0, 1)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")), Overdrive = OverdriveRules.Read(node.Field("minstrel").Field("overdrive")),
                 StandingAuras = StandingAuraRules.Read(node.Field("lanternbearer").Field("standingAuras")),
                 EvilEye = EvilEyeRules.Read(node.Field("whisperer").Field("evilEye")),
                 OverloadQueueTargets = node.Field("shardcaller").Field("overload").Field("queueTargets").AsInt(0, 100),
@@ -55,7 +55,8 @@ namespace Game.Core.Content
                 Runedancer = RunedancerRules.Read(node.Field("runedancer")),
                 Duelist = DuelistRules.Read(node.Field("duelist")),
                 Windshot = WindshotRules.Read(node.Field("windshot")),
-                Shardcaller = ShardcallerRules.Read(node.Field("shardcaller")) };
+                Shardcaller = ShardcallerRules.Read(node.Field("shardcaller")),
+                Sandwalker = SandwalkerRules.Read(node.Field("sandwalker")) };
         }
     }
 }

@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 7284219647814240080
-    second: scimitar_0
+    second: hourglass_sickle_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: scimitar_0
+      name: hourglass_sickle_0
       rect:
         serializedVersion: 2
         x: 5

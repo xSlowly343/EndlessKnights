@@ -76,6 +76,15 @@ namespace Game.Core.Content.Gems
         public double HeartSeconds { get; set; }
         public double Resonance { get; set; }
         public double PerCrystal { get; set; }
+        public double Sand { get; set; }
+        public int Pour { get; set; }
+        public bool Camp { get; set; }
+        public int Mirages { get; set; }
+        public double TopHit { get; set; }
+        public double AfterStep { get; set; }
+        public double StepHit { get; set; }
+        public double BlindSeconds { get; set; }
+        public double TimerSeconds { get; set; }
     }
 
     public sealed class PotionOption

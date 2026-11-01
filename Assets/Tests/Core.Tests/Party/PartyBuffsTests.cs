@@ -213,6 +213,34 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void ASandwalkerStopsThePartyBossTimerAndGivesAlliesSand()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var walker = rig.Members[0];
+            var friend = rig.Members[1];
+            walker.Loop.State.Class = HeroClass.Sandwalker;
+            var running = rig.Host.Encounter.BossTimerRate;
+
+            walker.Loop.State.Sandwalker.PartyStopTicks = 50;
+            rig.Run(1);
+            Assert.That(rig.Host.Encounter.BossTimerRate, Is.EqualTo(TestWorld.Data.Party.Timer.MinBossRate).Within(1e-9));
+            Assert.That(rig.Host.Encounter.BossTimerRate, Is.LessThan(running));
+            rig.Run(6);
+            Assert.That(rig.Host.Encounter.BossTimerRate, Is.EqualTo(running).Within(1e-9));
+
+            friend.Loop.State.Resource = 0;
+            rig.Run(1);
+            var plain = friend.Loop.State.Resource;
+            friend.Loop.State.Resource = 0;
+            walker.Loop.State.TraitPartyResourceGift = 10;
+            rig.Run(1);
+
+            Assert.That(walker.Loop.State.TraitPartyResourceGift, Is.Zero);
+            Assert.That(friend.Loop.State.Resource - plain, Is.EqualTo(10).Within(0.5));
+        }
+
+        [Test]
         public void TreePartyDamageReachesTheAlly()
         {
             var rig = new Rig(2);

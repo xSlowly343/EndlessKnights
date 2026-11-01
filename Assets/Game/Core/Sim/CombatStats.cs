@@ -216,7 +216,6 @@ namespace Game.Core.Sim
         public static readonly StatId MarkJump = new StatId("markJump");
         public static readonly StatId MarkBossOnly = new StatId("markBossOnly");
         public static readonly StatId MarkOnGuardians = new StatId("markOnGuardians");
-        public static readonly StatId BlindEvery = new StatId("blindEvery");
         public static readonly StatId BlindSeconds = new StatId("blindSeconds");
         public static readonly StatId DamageVsBlinded = new StatId("damageVsBlinded");
         public static readonly StatId CompanionPerMark = new StatId("companionPerMark");

@@ -24,7 +24,7 @@
     { "id": "shardcaller_electrolysis", "class": "shardcaller", "mark": "poison", "modifiers": [{ "stat": "shardPower", "kind": "flat", "value": 0.1 }, { "stat": "gardenPower", "kind": "flat", "value": 0.02 }, { "stat": "shellPower", "kind": "flat", "value": 0.1 }] },
     { "id": "shardcaller_plasma", "class": "shardcaller", "mark": "hunterMark", "second": true, "modifiers": [{ "stat": "shardArmor", "kind": "flat", "value": 0.005 }, { "stat": "gardenArmor", "kind": "flat", "value": 0.001 }, { "stat": "shellPartyDamage", "kind": "flat", "value": 0.05 }, { "stat": "resourcePerKey", "kind": "flat", "value": 2 }] },
     { "id": "sandwalker_fellow_traveller", "class": "sandwalker", "mark": "any", "perMark": true, "maxMarks": 5, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.03 }] },
-    { "id": "sandwalker_tailwind", "class": "sandwalker", "mark": "series", "second": true, "modifiers": [{ "stat": "pathGain", "kind": "flat", "value": 10 }] },
+    { "id": "sandwalker_tailwind", "class": "sandwalker", "mark": "series", "second": true, "modifiers": [{ "stat": "flipEvery", "kind": "flat", "value": -10 }, { "stat": "campPx", "kind": "flat", "value": -300 }, { "stat": "miragePx", "kind": "flat", "value": -250 }] },
     { "id": "minstrel_encore", "class": "minstrel", "mark": "series", "modifiers": [{ "stat": "auraDuration", "kind": "increased", "value": 0.4, "tags": ["Aura"] }] },
     { "id": "minstrel_breakdown", "class": "minstrel", "mark": "fire", "second": true, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1, "tags": ["Aura"] }] },
     { "id": "dreamcatcher_sign_of_fate", "class": "dreamcatcher", "mark": "hunterMark", "modifiers": [{ "stat": "omenPerPartyCrit", "kind": "flat", "value": 1 }] },
