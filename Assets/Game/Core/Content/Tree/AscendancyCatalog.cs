@@ -22,7 +22,7 @@ namespace Game.Core.Content.Tree
     {
         private readonly Dictionary<string, TreeNodeDef> _byId;
 
-        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, TreeNodeDef start, IReadOnlyList<TreeNodeDef> nodes, string blurb = "")
+        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, TreeNodeDef start, IReadOnlyList<TreeNodeDef> nodes, string blurb = "", TraitDef? trait = null)
         {
             Id = id;
             HeroClass = heroClass;
@@ -31,6 +31,7 @@ namespace Game.Core.Content.Tree
             Start = start;
             Nodes = nodes;
             Blurb = blurb;
+            Trait = trait;
             _byId = new Dictionary<string, TreeNodeDef>(StringComparer.Ordinal);
             foreach (var node in nodes)
                 _byId.Add(node.Id, node);
@@ -43,6 +44,7 @@ namespace Game.Core.Content.Tree
         public TreeNodeDef Start { get; }
         public IReadOnlyList<TreeNodeDef> Nodes { get; }
         public string Blurb { get; }
+        public TraitDef? Trait { get; }
 
         public bool TryGet(string id, out TreeNodeDef node) => _byId.TryGetValue(id, out node!);
     }
@@ -139,9 +141,10 @@ namespace Game.Core.Content.Tree
             var subclasses = new List<SubclassDef>();
             var subclassIds = new HashSet<string>(StringComparer.Ordinal);
             var nodeIds = new HashSet<string>(StringComparer.Ordinal);
+            var optionIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (var item in root.Field("subclasses").Items())
             {
-                var subclass = ReadSubclass(item, nodeIds);
+                var subclass = ReadSubclass(item, nodeIds, optionIds);
                 if (!subclassIds.Add(subclass.Id))
                     throw item.Field("id").Error($"subclass id '{subclass.Id}' is used twice");
                 subclasses.Add(subclass);
@@ -169,7 +172,7 @@ namespace Game.Core.Content.Tree
             return activities;
         }
 
-        private static SubclassDef ReadSubclass(ContentNode item, HashSet<string> nodeIds)
+        private static SubclassDef ReadSubclass(ContentNode item, HashSet<string> nodeIds, HashSet<string> optionIds)
         {
             var id = item.Field("id").AsString();
             var nodes = new List<TreeNodeDef>();
@@ -210,7 +213,8 @@ namespace Game.Core.Content.Tree
 
             var name = item.Field("name");
             var blurb = item.HasField("blurb") ? item.Field("blurb").AsString() : string.Empty;
-            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes, blurb);
+            var trait = item.HasField("trait") ? TraitDef.Read(item.Field("trait"), optionIds) : null;
+            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes, blurb, trait);
         }
 
         private static TreeNodeDef ReadNode(ContentNode node)

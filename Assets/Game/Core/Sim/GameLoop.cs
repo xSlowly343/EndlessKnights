@@ -524,8 +524,22 @@ namespace Game.Core.Sim
 
         public CutResult CutGem(GemDef gem) => _drops.Cut(gem);
 
-        public bool CompleteActivity(string activityId) =>
-            _data.Ascendancy.IsActivity(activityId) && State.Ascendancy.Complete(activityId);
+        public bool CompleteActivity(string activityId)
+        {
+            if (!_data.Ascendancy.IsActivity(activityId) || !State.Ascendancy.Complete(activityId))
+                return false;
+            if (State.Ascendancy.Trait(_data.Ascendancy) != null)
+                RebuildTree();
+            return true;
+        }
+
+        public TraitForkResult PickTraitFork(string optionId)
+        {
+            var result = State.Ascendancy.PickFork(_data.Ascendancy, State.HeroLevel, optionId);
+            if (result == TraitForkResult.Picked)
+                RebuildTree();
+            return result;
+        }
 
         public SubclassResult ChooseSubclass(string subclassId) =>
             AfterSubclassChange(State.Ascendancy.Choose(_data.Ascendancy, State.ClassName, subclassId));
