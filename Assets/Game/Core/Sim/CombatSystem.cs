@@ -17,6 +17,7 @@ namespace Game.Core.Sim
         private readonly SandwalkerMechanics _sandwalker;
         private readonly MinstrelMechanics _minstrel;
         private readonly DreamcatcherMechanics _dreamcatcher;
+        private readonly LanternbearerMechanics _lanternbearer;
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
@@ -39,6 +40,7 @@ namespace Game.Core.Sim
             _sandwalker = new SandwalkerMechanics(rules.Classes.Sandwalker, state, hero, this);
             _minstrel = new MinstrelMechanics(rules.Classes.Minstrel, state, hero, this);
             _dreamcatcher = new DreamcatcherMechanics(rules.Classes.Dreamcatcher, state, hero, this);
+            _lanternbearer = new LanternbearerMechanics(rules.Classes.Lanternbearer, state, hero, this);
         }
 
         public ClassMechanics Class => _class;
@@ -49,6 +51,7 @@ namespace Game.Core.Sim
         public SandwalkerMechanics Sandwalker => _sandwalker;
         public MinstrelMechanics Minstrel => _minstrel;
         public DreamcatcherMechanics Dreamcatcher => _dreamcatcher;
+        public LanternbearerMechanics Lanternbearer => _lanternbearer;
         public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
@@ -62,6 +65,7 @@ namespace Game.Core.Sim
             _sandwalker.UseRules(rules.Classes.Sandwalker);
             _minstrel.UseRules(rules.Classes.Minstrel);
             _dreamcatcher.UseRules(rules.Classes.Dreamcatcher);
+            _lanternbearer.UseRules(rules.Classes.Lanternbearer);
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
@@ -207,6 +211,7 @@ namespace Game.Core.Sim
             _sandwalker.Tick(input.MousePx);
             _minstrel.Tick();
             _dreamcatcher.Tick(input.MousePx);
+            _lanternbearer.Tick();
             var keyHits = TakeWhole(_state.KeyCarry + input.Hits, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -227,6 +232,7 @@ namespace Game.Core.Sim
                     _sandwalker.AfterStrike();
                     _minstrel.AfterStrike();
                     _dreamcatcher.AfterStrike();
+                    _lanternbearer.AfterStrike(crit);
                 }
                 KeyHitLightning();
                 ShadowClone();
@@ -285,7 +291,7 @@ namespace Game.Core.Sim
             else if (source == DamageSource.Mouse)
                 multiplier *= _state.SupportMouseBonus;
             LastHitCrit = false;
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken());
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken());
             if (damage.Sign <= 0)
                 return;
             _state.HitsOnEnemy++;

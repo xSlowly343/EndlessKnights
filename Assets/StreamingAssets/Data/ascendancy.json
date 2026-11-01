@@ -585,241 +585,70 @@
     {
       "id": "lanternbearer_trait_1",
       "class": "lanternbearer",
-      "name": {"ru": "Тени и свет", "en": "Тени и свет"},
-      "blurb": "Каждый удар освещает врага на 1%. Полностью освещённый враг получает +35% урона от всех. Каждые 10 с тень возвращается и гасит 25% света",
+      "name": {"ru": "Тени и свет", "en": "Light and Shadow"},
+      "blurb": "Каждый удар освещает врага на 1%. Полностью освещённый враг получает +35% урона от всех. Каждые 10 с тень возвращается и гасит 25% света. В паузе фонарь тлеет: новый свет не копится, а тень гасит старый. Скилл Пути «Яркий луч» освещает врага на 25%",
       "trait": {
-        "partyText": {
-          "ru": "Освещение общее: удары союзников по освещённому врагу тоже его подсвечивают",
-          "en": "Освещение общее: удары союзников по освещённому врагу тоже его подсвечивают"
-        },
+        "partyText": {"ru": "Свет общий: удары союзников тоже освещают врага, шкалу света видят все, а полностью освещённый враг получает +35% урона от всего отряда", "en": "The light is shared: allies' hits light the enemy too, everyone sees the light gauge, and a fully lit enemy takes 35% more damage from the whole party"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.35}]},
+          {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "lightBoss", "kind": "flat", "value": 1}], "text": {"ru": "Свет у Колоссов: на боссах тень не гасит свет", "en": "Light at the Colossi: on bosses the shadow does not dim the light"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "lanternbearer_trait_1_f45a",
-                "name": {"ru": "свет не гаснет у Колоссов", "en": "свет не гаснет у Колоссов"},
-                "text": {"ru": "свет не гаснет у Колоссов", "en": "свет не гаснет у Колоссов"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "lanternbearer_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "lanternbearer_trait_1_f60a",
-                "name": {"ru": "освещение растёт вдвое быстрее, бонус +25%", "en": "освещение растёт вдвое быстрее, бонус +25%"},
-                "text": {"ru": "освещение растёт вдвое быстрее, бонус +25%", "en": "освещение растёт вдвое быстрее, бонус +25%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "lanternbearer_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "lanternbearer_trait_1_f75a",
-                "name": {
-                  "ru": "полностью освещённый враг отдаёт 10% Масла всему отряду",
-                  "en": "полностью освещённый враг отдаёт 10% Масла всему отряду"
-                },
-                "text": {
-                  "ru": "полностью освещённый враг отдаёт 10% Масла всему отряду",
-                  "en": "полностью освещённый враг отдаёт 10% Масла всему отряду"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "lanternbearer_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "lanternbearer_trait_1_f45a", "name": {"ru": "Яркий фонарь", "en": "Bright Lantern"}, "text": {"ru": "Свет растёт вдвое быстрее, но полностью освещённый враг получает +25% вместо +35%", "en": "The light grows twice as fast, but a fully lit enemy takes +25% instead of +35%"}, "modifiers": [{"stat": "lightPerHit", "kind": "flat", "value": 0.01}, {"stat": "lightPower", "kind": "flat", "value": -0.1}]}, {"id": "lanternbearer_trait_1_f45b", "name": {"ru": "Долгий свет", "en": "Lasting Light"}, "text": {"ru": "Тень приходит раз в 15 с, но удар освещает на 0,7%", "en": "The shadow comes every 15 s, but a hit lights 0.7%"}, "modifiers": [{"stat": "lightShadowSeconds", "kind": "flat", "value": 5}, {"stat": "lightPerHit", "kind": "flat", "value": -0.003}]}]},
+          {"level": 60, "options": [{"id": "lanternbearer_trait_1_f60a", "name": {"ru": "Масло из света", "en": "Oil from Light"}, "text": {"ru": "Полностью освещённый враг даёт 10 Масла ей и союзникам, но тень гасит 35%", "en": "A fully lit enemy gives 10 Oil to her and the allies, but the shadow dims 35%"}, "modifiers": [{"stat": "lightOil", "kind": "flat", "value": 1}, {"stat": "lightShadow", "kind": "flat", "value": 0.1}]}, {"id": "lanternbearer_trait_1_f60b", "name": {"ru": "Свет переходит", "en": "Passing Light"}, "text": {"ru": "Половина света переходит на следующего врага, но бонус на 20% меньше", "en": "Half of the light passes to the next enemy, but the bonus is 20% lower"}, "modifiers": [{"stat": "lightCarry", "kind": "flat", "value": 0.5}, {"stat": "lightPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 75, "options": [{"id": "lanternbearer_trait_1_f75a", "name": {"ru": "Полдень", "en": "Noon"}, "text": {"ru": "Полностью освещённый враг больше не темнеет, но удар освещает на 0,5%", "en": "A fully lit enemy no longer darkens, but a hit lights 0.5%"}, "modifiers": [{"stat": "lightNoon", "kind": "flat", "value": 1}, {"stat": "lightPerHit", "kind": "flat", "value": -0.005}]}, {"id": "lanternbearer_trait_1_f75b", "name": {"ru": "Вспышка света", "en": "Burst of Light"}, "text": {"ru": "Полное освещение 5 с даёт бонус ×1,5, потом свет падает до половины", "en": "Full light gives ×1.5 bonus for 5 s, then the light drops to half"}, "modifiers": [{"stat": "lightFlare", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "lanternbearer_trait_1_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Тени и свет", "en": "Тени и свет"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "lanternbearer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Тени и свет", "en": "Light and Shadow"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "lanternbearer_trait_2",
       "class": "lanternbearer",
-      "name": {"ru": "Светлячки", "en": "Светлячки"},
-      "blurb": "Каждые 20 ударов из фонаря вылетает светлячок и садится на союзника: +5% урона на 20 с, до 10 светлячков в отряде",
+      "name": {"ru": "Светлячки", "en": "Fireflies"},
+      "blurb": "Каждые 20 ударов из фонаря вылетает светлячок и садится на союзника на 20 с, до 10. Пока на союзнике светлячок, каждый его крит зажигает искру — удар ×2, а Lanternbearer получает 1 Масло. В соло светлячки кружат над ней самой. В паузе светлячки догорают. Скилл Пути «Рой светлячков» выпускает 3 сразу",
       "trait": {
-        "partyText": {"ru": "Светлячки садятся только на союзников, на себя — нет", "en": "Светлячки садятся только на союзников, на себя — нет"},
+        "partyText": {"ru": "Светлячок даёт союзнику новое правило: каждый его крит зажигает искру ×2, а фонарщица получает 1 Масло", "en": "A firefly gives an ally a new rule: every crit of theirs lights a spark ×2, and the lanternbearer gets 1 Oil"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "sparkPower", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "sparkPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "sparkPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "sparkPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "fireflyBurst", "kind": "flat", "value": 1}], "text": {"ru": "Догорающий светлячок: исчезая, светлячок вспыхивает ×3", "en": "Dying Firefly: a fading firefly flares ×3"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "lanternbearer_trait_2_f45a",
-                "name": {"ru": "светлячки живут 40 с", "en": "светлячки живут 40 с"},
-                "text": {"ru": "светлячки живут 40 с", "en": "светлячки живут 40 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "lanternbearer_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "lanternbearer_trait_2_f60a",
-                "name": {"ru": "потолок 15", "en": "потолок 15"},
-                "text": {"ru": "потолок 15", "en": "потолок 15"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "lanternbearer_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "lanternbearer_trait_2_f75a",
-                "name": {
-                  "ru": "светлячок, сгоревший до конца, лечит полосу HP отряда на 1%",
-                  "en": "светлячок, сгоревший до конца, лечит полосу HP отряда на 1%"
-                },
-                "text": {
-                  "ru": "светлячок, сгоревший до конца, лечит полосу HP отряда на 1%",
-                  "en": "светлячок, сгоревший до конца, лечит полосу HP отряда на 1%"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "lanternbearer_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "lanternbearer_trait_2_f45a", "name": {"ru": "Долгие светлячки", "en": "Long Fireflies"}, "text": {"ru": "Светлячок живёт 40 с, но вылетает раз в 30 ударов", "en": "A firefly lives 40 s, but comes every 30 hits"}, "modifiers": [{"stat": "fireflySeconds", "kind": "flat", "value": 20}, {"stat": "fireflyHits", "kind": "flat", "value": 10}]}, {"id": "lanternbearer_trait_2_f45b", "name": {"ru": "Стайка", "en": "Little Flock"}, "text": {"ru": "Светлячок каждые 12 ударов, но живёт 10 с", "en": "A firefly every 12 hits, but it lives 10 s"}, "modifiers": [{"stat": "fireflyHits", "kind": "flat", "value": -8}, {"stat": "fireflySeconds", "kind": "flat", "value": -10}]}]},
+          {"level": 60, "options": [{"id": "lanternbearer_trait_2_f60a", "name": {"ru": "Большой рой", "en": "Big Swarm"}, "text": {"ru": "До 15 светлячков, но искра на 20% слабее", "en": "Up to 15 fireflies, but a spark is 20% weaker"}, "modifiers": [{"stat": "fireflyMax", "kind": "flat", "value": 5}, {"stat": "sparkPower", "kind": "more", "value": -0.2}]}, {"id": "lanternbearer_trait_2_f60b", "name": {"ru": "Яркая искра", "en": "Bright Spark"}, "text": {"ru": "Искра на 50% сильнее, но светлячков до 5", "en": "A spark is 50% stronger, but only 5 fireflies"}, "modifiers": [{"stat": "sparkPower", "kind": "more", "value": 0.5}, {"stat": "fireflyMax", "kind": "flat", "value": -5}]}]},
+          {"level": 75, "options": [{"id": "lanternbearer_trait_2_f75a", "name": {"ru": "Искра от удара", "en": "Spark of a Blow"}, "text": {"ru": "Искру зажигает и каждый 10-й удар, но она на 40% слабее", "en": "Every 10th hit also lights a spark, but it is 40% weaker"}, "modifiers": [{"stat": "sparkEvery", "kind": "flat", "value": 1}, {"stat": "sparkPower", "kind": "more", "value": -0.4}]}, {"id": "lanternbearer_trait_2_f75b", "name": {"ru": "Масляные крылья", "en": "Oily Wings"}, "text": {"ru": "Искра даёт 3 Масла, но светлячков до 6", "en": "A spark gives 3 Oil, but only 6 fireflies"}, "modifiers": [{"stat": "sparkOil", "kind": "flat", "value": 2}, {"stat": "fireflyMax", "kind": "flat", "value": -4}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "lanternbearer_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Светлячки", "en": "Светлячки"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "lanternbearer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Светлячки", "en": "Fireflies"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "lanternbearer_trait_3",
       "class": "lanternbearer",
-      "name": {"ru": "Маяк", "en": "Маяк"},
-      "blurb": "Раз в 60 с фонарь вспыхивает: у каждого союзника следующий скилл бесплатный и без перезарядки. Сама Фонарщица скиллы не применяет, только удары",
+      "name": {"ru": "Маяк", "en": "Beacon"},
+      "blurb": "Раз в 60 с фонарь вспыхивает: у неё и у каждого союзника следующий скилл бесплатный, без перезарядки и на 50% сильнее. В паузе Маяк копит вспышку. Скилл Пути «Вспышка маяка» вспыхивает сразу",
       "trait": {
-        "partyText": {"ru": "Это и есть суть особенности: сила целиком уходит отряду", "en": "Это и есть суть особенности: сила целиком уходит отряду"},
+        "partyText": {"ru": "Вспышка дарит каждому союзнику правило: его следующий скилл бесплатный, без перезарядки и на 50% сильнее", "en": "The flash gives every ally a rule: their next skill is free, has no cooldown and is 50% stronger"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "beaconStrike", "kind": "flat", "value": 1}], "text": {"ru": "Вспышка ударов: после вспышки отряд 5 с бьёт на 20% сильнее", "en": "Strike Flash: after a flash the party hits 20% harder for 5 s"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "lanternbearer_trait_3_f45a",
-                "name": {"ru": "Маяк раз в 45 с", "en": "Маяк раз в 45 с"},
-                "text": {"ru": "Маяк раз в 45 с", "en": "Маяк раз в 45 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "lanternbearer_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "lanternbearer_trait_3_f60a",
-                "name": {"ru": "вспышка заодно даёт +20% урона ударов на 5 с", "en": "вспышка заодно даёт +20% урона ударов на 5 с"},
-                "text": {"ru": "вспышка заодно даёт +20% урона ударов на 5 с", "en": "вспышка заодно даёт +20% урона ударов на 5 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "lanternbearer_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "lanternbearer_trait_3_f75a",
-                "name": {"ru": "в соло Маяк работает на неё саму", "en": "в соло Маяк работает на неё саму"},
-                "text": {"ru": "в соло Маяк работает на неё саму", "en": "в соло Маяк работает на неё саму"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "lanternbearer_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "lanternbearer_trait_3_f45a", "name": {"ru": "Частый маяк", "en": "Frequent Beacon"}, "text": {"ru": "Вспышка раз в 45 с, но скилл на 30% слабее", "en": "A flash every 45 s, but the skill is 30% weaker"}, "modifiers": [{"stat": "beaconSeconds", "kind": "flat", "value": -15}, {"stat": "beaconPower", "kind": "more", "value": -0.3}]}, {"id": "lanternbearer_trait_3_f45b", "name": {"ru": "Яркий маяк", "en": "Bright Beacon"}, "text": {"ru": "Скилл после вспышки на 50% сильнее, но вспышка раз в 90 с", "en": "The skill after a flash is 50% stronger, but a flash comes every 90 s"}, "modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.5}, {"stat": "beaconSeconds", "kind": "flat", "value": 30}]}]},
+          {"level": 60, "options": [{"id": "lanternbearer_trait_3_f60a", "name": {"ru": "Два скилла", "en": "Two Skills"}, "text": {"ru": "Вспышка освобождает два скилла, но раз в 90 с", "en": "A flash frees two skills, but comes every 90 s"}, "modifiers": [{"stat": "beaconCharges", "kind": "flat", "value": 1}, {"stat": "beaconSeconds", "kind": "flat", "value": 30}]}, {"id": "lanternbearer_trait_3_f60b", "name": {"ru": "Сигнальный огонь", "en": "Signal Fire"}, "text": {"ru": "Вспышка ещё сокращает все откаты на 2 с, но скилл на 30% слабее", "en": "A flash also cuts every cooldown by 2 s, but the skill is 30% weaker"}, "modifiers": [{"stat": "beaconCut", "kind": "flat", "value": 2}, {"stat": "beaconPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 75, "options": [{"id": "lanternbearer_trait_3_f75a", "name": {"ru": "Немой фонарь", "en": "Silent Lantern"}, "text": {"ru": "Сама она скиллы не применяет, но вспышка раз в 30 с", "en": "She casts no skills herself, but a flash comes every 30 s"}, "modifiers": [{"stat": "beaconMute", "kind": "flat", "value": 1}, {"stat": "beaconSeconds", "kind": "flat", "value": -30}]}, {"id": "lanternbearer_trait_3_f75b", "name": {"ru": "Свет в тумане", "en": "Light in the Fog"}, "text": {"ru": "Вспышка ещё и на появлении босса, но раз в 90 с", "en": "A flash also comes when a boss appears, but every 90 s"}, "modifiers": [{"stat": "beaconBoss", "kind": "flat", "value": 1}, {"stat": "beaconSeconds", "kind": "flat", "value": 30}]}]}
         ]
       },
-      "nodes": [{"id": "lanternbearer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Маяк", "en": "Маяк"}, "modifiers": []}],
+      "nodes": [{"id": "lanternbearer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Маяк", "en": "Beacon"}, "modifiers": []}],
       "links": []
     },
     {

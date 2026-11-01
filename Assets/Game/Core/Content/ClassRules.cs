@@ -30,6 +30,7 @@ namespace Game.Core.Content
         public SandwalkerRules Sandwalker { get; private set; } = SandwalkerRules.None;
         public MinstrelRules Minstrel { get; private set; } = MinstrelRules.None;
         public DreamcatcherRules Dreamcatcher { get; private set; } = DreamcatcherRules.None;
+        public LanternbearerRules Lanternbearer { get; private set; } = LanternbearerRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -53,7 +54,8 @@ namespace Game.Core.Content
                 Shardcaller = ShardcallerRules.Read(node.Field("shardcaller")),
                 Sandwalker = SandwalkerRules.Read(node.Field("sandwalker")),
                 Minstrel = MinstrelRules.Read(minstrel),
-                Dreamcatcher = DreamcatcherRules.Read(node.Field("dreamcatcher")) };
+                Dreamcatcher = DreamcatcherRules.Read(node.Field("dreamcatcher")),
+                Lanternbearer = LanternbearerRules.Read(node.Field("lanternbearer")) };
         }
     }
 }

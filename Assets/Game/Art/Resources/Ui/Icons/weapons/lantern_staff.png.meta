@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 4763415714078566847
-    second: banner_0
+    second: lantern_staff_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: banner_0
+      name: lantern_staff_0
       rect:
         serializedVersion: 2
         x: 6

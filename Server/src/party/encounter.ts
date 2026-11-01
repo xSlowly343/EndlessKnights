@@ -104,6 +104,7 @@ class PartyEncounter {
     enemyRegen = 0;
     bossShield = 0;
     enemySpirit = false;
+    enemyLight = 0;
     spiritCalls = 0;
     spiritHp = 1;
     extraStageEnemies = 0;
@@ -385,6 +386,13 @@ class PartyEncounter {
         this.spiritCalls = Math.min(this.rules.spiritCallsMax, this.spiritCalls + Math.floor(count));
         this.spiritHp = Math.min(this.rules.spiritHpMax, hp);
         return this.spiritCalls > 0;
+    }
+
+    setLight(enemyId: number, light: number): boolean {
+        if (!this.started || enemyId !== this.enemyId || !(light >= 0))
+            return false;
+        this.enemyLight = Math.min(1, light);
+        return true;
     }
 
     extendEnemyEffect(effectId: number, seconds: number): boolean {
@@ -708,6 +716,7 @@ class PartyEncounter {
             this.barFull *= 1 + this.bossShield;
         }
         this.takeSpirit(kind);
+        this.enemyLight = 0;
         this.barLeft = this.barFull * (1 - this.takeWeaken());
         this.addEvent(PartyEventKind.EnemySpawned);
         if (this.enemyWeakened && this.weakenVulnerability > 0)

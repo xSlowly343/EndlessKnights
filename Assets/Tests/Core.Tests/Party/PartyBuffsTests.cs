@@ -347,6 +347,42 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void ALanternbearerFireflyAndFlashReachTheAllyAndTheLightReachesTheHost()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var lantern = rig.Members[0];
+            var friend = rig.Members[1];
+            lantern.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Firefly, To = LanternbearerMechanics.AnyAlly, Count = 2, Max = 10, Value = 2, Seconds = 20 });
+            lantern.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Beacon, To = TraitRelay.AllSlots, Count = 1, Value = 0.5 });
+            lantern.Loop.State.TraitLight = 0.4;
+            var hostLight = 0.0;
+            var seenLight = 0.0;
+            for (var i = 0; i < 20; i++)
+            {
+                rig.Run(0.1);
+                hostLight = System.Math.Max(hostLight, rig.Host.Encounter.EnemyLight);
+                seenLight = System.Math.Max(seenLight, friend.Client.EnemyLight);
+            }
+
+            Assert.That(friend.Loop.State.Boons.Fireflies, Is.EqualTo(2));
+            Assert.That(friend.Loop.State.Boons.FireflyOwner, Is.EqualTo(lantern.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.BeaconCharges, Is.EqualTo(1));
+            Assert.That(friend.Loop.State.Boons.BeaconPower, Is.EqualTo(0.5).Within(1e-6));
+            Assert.That(lantern.Loop.State.Boons.Fireflies, Is.Zero);
+            Assert.That(hostLight, Is.EqualTo(0.4).Within(1e-6));
+            Assert.That(seenLight, Is.EqualTo(0.4).Within(1e-6));
+
+            lantern.Loop.State.Class = HeroClass.Lanternbearer;
+            lantern.Loop.Hero.Add(new Modifier(LanternbearerStats.SparkPower, ModifierKind.Flat, 2));
+            var pending = lantern.Loop.State.PendingResource;
+            friend.Loop.State.Boons.SparksOwed = 3;
+            rig.Run(0.2);
+            Assert.That(friend.Loop.State.Boons.SparksOwed, Is.Zero);
+            Assert.That(lantern.Loop.State.PendingResource + lantern.Loop.State.Resource, Is.GreaterThan(pending));
+        }
+
+        [Test]
         public void TreePartyDamageReachesTheAlly()
         {
             var rig = new Rig(2);

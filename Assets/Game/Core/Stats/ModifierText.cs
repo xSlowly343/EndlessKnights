@@ -22,7 +22,8 @@ namespace Game.Core.Stats
             "shardArmor", "gardenArmor", "shellPenalty", "shellPartyDamage",
             "flipPower", "flipPenalty", "mirageSelfPenalty", "caravanPartyCooldown",
             "versePower", "verseParty", "songPower", "songSelfPenalty", "songPartyPenalty", "songParty", "sleepParty",
-            "netPower", "netTrophy", "netParty", "albumPower", "albumMax", "prophecyPower", "albumParty"
+            "netPower", "netTrophy", "netParty", "albumPower", "albumMax", "prophecyPower", "albumParty",
+            "lightPower", "lightPerHit", "lightShadow", "lightCarry", "lightParty", "beaconPower", "beaconParty"
         };
 
         private static readonly StatTags[] LabelledTags =

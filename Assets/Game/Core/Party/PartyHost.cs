@@ -171,6 +171,13 @@ namespace Game.Core.Party
                     _reactions[slot] = synergy.Reactions;
                     _enemyReactions |= synergy.Reactions;
                     break;
+                case PartyMessageKind.TraitRelay when PartyCodec.TryDecode(_in, length, out TraitRelayMessage relay):
+                    relay.From = (byte)slot;
+                    BroadcastExcept(slot, PartyCodec.Encode(_out, relay));
+                    break;
+                case PartyMessageKind.TraitLight when PartyCodec.TryDecode(_in, length, out TraitLightMessage light):
+                    _encounter.SetLight(light.EnemyId, light.Light);
+                    break;
                 case PartyMessageKind.SpiritCall when PartyCodec.TryDecode(_in, length, out SpiritCallMessage call):
                     _encounter.CallSpirit(call.Count, call.Hp);
                     break;
