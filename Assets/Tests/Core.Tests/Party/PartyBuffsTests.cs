@@ -241,6 +241,37 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AWeakerSandwalkerSlowReplacesTheStopInsteadOfHoldingIt()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var walker = rig.Members[0];
+            walker.Loop.State.Class = HeroClass.Sandwalker;
+
+            walker.Loop.State.Sandwalker.PartyStopTicks = 10;
+            walker.Loop.State.Sandwalker.PartyTimeTicks = 60;
+            rig.Run(0.5);
+            Assert.That(TraitTimerSlow(rig), Is.EqualTo(1).Within(1e-9));
+
+            rig.Run(1.5);
+            Assert.That(TraitTimerSlow(rig), Is.EqualTo(TestWorld.Data.Combat.Classes.Sandwalker.PartyTimeSlow).Within(1e-9));
+
+            rig.Run(4.5);
+            Assert.That(TraitTimerSlow(rig), Is.Zero);
+        }
+
+        private static double TraitTimerSlow(Rig rig)
+        {
+            for (var i = 0; i < PartyEncounter.MaxEffects; i++)
+            {
+                var effect = rig.Host.Encounter.Effect(i);
+                if (effect.Active && effect.Id == PartyClient.TraitTimerEffect)
+                    return effect.TimerSlow;
+            }
+            return 0;
+        }
+
+        [Test]
         public void TreePartyDamageReachesTheAlly()
         {
             var rig = new Rig(2);
