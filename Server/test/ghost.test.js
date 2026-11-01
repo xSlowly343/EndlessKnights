@@ -20,7 +20,7 @@ const upload = (call, user, rate) => call(user, "ghostUploadRpc", { share: true,
 
 test("a snapshot is checked before it is kept", () => {
   const { call, fails } = world("ann");
-  fails("ann", "ghostUploadRpc", { share: true, heroClass: 14, shareRate: 1, marks: [], activeSeconds: 0 });
+  fails("ann", "ghostUploadRpc", { share: true, heroClass: 18, shareRate: 1, marks: [], activeSeconds: 0 });
   fails("ann", "ghostUploadRpc", { share: true, heroClass: 1.5, shareRate: 1, marks: [], activeSeconds: 0 });
   fails("ann", "ghostUploadRpc", { share: true, heroClass: 1, shareRate: -1, marks: [], activeSeconds: 0 });
   fails("ann", "ghostUploadRpc", { share: true, heroClass: 1, shareRate: 1, marks: ["<script>"], activeSeconds: 0 });

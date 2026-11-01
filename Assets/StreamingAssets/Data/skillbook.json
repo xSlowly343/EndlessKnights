@@ -18,6 +18,10 @@
     "plague_doctor": ["vial_from_belt", "through_stride", "lull"],
     "moonshiner": ["fuse_bottle", "through_stride", "lull"],
     "gravedigger": ["call_a_colleague", "through_stride", "lull"],
-    "captain": ["cannon_by_name", "through_stride", "lull"]
+    "captain": ["cannon_by_name", "through_stride", "lull"],
+    "spinner": ["warm_yarn", "through_stride", "lull"],
+    "rimecaller": ["ice_needle", "through_stride", "lull"],
+    "thornmaiden": ["lash", "through_stride", "lull"],
+    "clayshaper": ["clay_slap", "through_stride", "lull"]
   }
 }

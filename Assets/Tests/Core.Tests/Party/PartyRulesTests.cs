@@ -39,7 +39,8 @@ namespace Game.Core.Tests.Party
       ""metalhead"": ""buffer"", ""oracle"": ""buffer"", ""bannerbearer"": ""buffer"",
       ""voodoo"": ""debuffer"", ""clockmaker"": ""debuffer"",
       ""plague_doctor"": ""dot"", ""moonshiner"": ""dot"",
-      ""gravedigger"": ""summoner"", ""captain"": ""summoner""
+      ""gravedigger"": ""summoner"", ""captain"": ""summoner"",
+      ""spinner"": ""buffer"", ""rimecaller"": ""debuffer"", ""thornmaiden"": ""dot"", ""clayshaper"": ""summoner""
     }
   },
   ""buffs"": { ""selfShare"": 1.0, ""offerSeconds"": 1.0, ""allyResource"": { ""max"": 50, ""cooldownSeconds"": 5 }, ""stats"": [{ ""from"": ""partyDamage"", ""to"": ""damage"", ""kind"": ""increased"" }] }

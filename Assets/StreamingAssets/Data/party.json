@@ -30,7 +30,8 @@
       "metalhead": "buffer", "oracle": "buffer", "bannerbearer": "buffer",
       "voodoo": "debuffer", "clockmaker": "debuffer",
       "plague_doctor": "dot", "moonshiner": "dot",
-      "gravedigger": "summoner", "captain": "summoner"
+      "gravedigger": "summoner", "captain": "summoner",
+      "spinner": "buffer", "rimecaller": "debuffer", "thornmaiden": "dot", "clayshaper": "summoner"
     }
   },
   "buffs": {

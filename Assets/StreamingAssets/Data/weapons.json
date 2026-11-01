@@ -35,7 +35,11 @@
     {"id": "syringe_cane", "class": "plague_doctor", "color": "red", "name": {"ru": "Трость-шприц", "en": "Syringe Cane"}, "starterSkills": ["vial_from_belt", "cane_jab", "drop_from_the_needle", "heavy_dose", "infirmary_smell", "ward_round", "lancet"], "innate": [{"stat": "dotDamage", "kind": "increased", "value": 0.15}]},
     {"id": "still_burner", "class": "moonshiner", "color": "blue", "name": {"ru": "Бутыль-горелка", "en": "Still Burner"}, "starterSkills": ["fuse_bottle", "little_flame", "cork_popped", "keg_into_the_fire", "warm_stove", "distillation", "mash_barrel"], "innate": [{"stat": "dotStacks", "kind": "flat", "value": 5}]},
     {"id": "shovel", "class": "gravedigger", "color": "blue", "name": {"ru": "Лопата", "en": "Shovel"}, "starterSkills": ["call_a_colleague", "shovel_blow", "handful_of_earth", "tombstone", "evening_bell", "night_digger", "bone_scree"], "innate": [{"stat": "minionSeconds", "kind": "increased", "value": 0.2}]},
-    {"id": "pistol", "class": "captain", "color": "green", "name": {"ru": "Пистоль", "en": "Pistol"}, "starterSkills": ["cannon_by_name", "the_pistol_answers", "shot_in_the_air", "bow_gun", "rum_for_the_crew", "six_shots", "barrel_from_the_hold"], "innate": [{"stat": "minionSpeed", "kind": "increased", "value": 0.1}]}
+    {"id": "pistol", "class": "captain", "color": "green", "name": {"ru": "Пистоль", "en": "Pistol"}, "starterSkills": ["cannon_by_name", "the_pistol_answers", "shot_in_the_air", "bow_gun", "rum_for_the_crew", "six_shots", "barrel_from_the_hold"], "innate": [{"stat": "minionSpeed", "kind": "increased", "value": 0.1}]},
+    {"id": "spindle", "class": "spinner", "color": "green", "name": {"ru": "Веретено", "en": "Spindle"}, "starterSkills": ["warm_yarn", "knot_to_remember", "loop", "cradle_of_threads", "whole_guild_at_the_loom", "wrong_side_seam", "patch"], "innate": [{"stat": "bondPower", "kind": "flat", "value": 0.1}]},
+    {"id": "ice_staff", "class": "rimecaller", "color": "blue", "name": {"ru": "Ледяной посох", "en": "Ice Staff"}, "starterSkills": ["ice_needle", "ice_block", "icicle", "moranas_gaze", "frost_on_the_windows", "sleet", "ice_peak"], "innate": [{"stat": "coldPower", "kind": "flat", "value": 0.1}]},
+    {"id": "thorn_whip", "class": "thornmaiden", "color": "green", "name": {"ru": "Терновый хлыст", "en": "Thorn Whip"}, "starterSkills": ["lash", "thorn_prick", "drop_of_sap", "heavy_bud", "scent_of_roses", "garden_round", "garden_shears"], "innate": [{"stat": "bloodPower", "kind": "flat", "value": 0.1}]},
+    {"id": "potter_mallet", "class": "clayshaper", "color": "red", "name": {"ru": "Гончарный молот", "en": "Potter's Mallet"}, "starterSkills": ["clay_slap", "mallet_blow", "handful_of_clay", "brick", "warm_kiln", "potters_wheel", "potsherds"], "innate": [{"stat": "golemPower", "kind": "flat", "value": 0.1}]}
   ],
   "bases": [
     {"id": "woodcutter_axe", "type": "axe", "fromBiome": 1, "name": {"ru": "Топор лесоруба", "en": "Woodcutter's Axe"}},
@@ -79,7 +83,19 @@
     {"id": "reaper_shovel", "type": "shovel", "fromBiome": 5, "name": {"ru": "Лопата жнеца", "en": "Reaper's Shovel"}, "innate": [{"stat": "minionCount", "kind": "flat", "value": 1}]},
     {"id": "flintlock_pistol", "type": "pistol", "fromBiome": 1, "name": {"ru": "Кремнёвый пистоль", "en": "Flintlock Pistol"}},
     {"id": "boarding_pistol", "type": "pistol", "fromBiome": 3, "name": {"ru": "Пистоль абордажника", "en": "Boarding Pistol"}},
-    {"id": "admiral_pistol", "type": "pistol", "fromBiome": 5, "name": {"ru": "Пистоль адмирала", "en": "Admiral's Pistol"}, "innate": [{"stat": "cannonCount", "kind": "flat", "value": 1}]}
+    {"id": "admiral_pistol", "type": "pistol", "fromBiome": 5, "name": {"ru": "Пистоль адмирала", "en": "Admiral's Pistol"}, "innate": [{"stat": "cannonCount", "kind": "flat", "value": 1}]},
+    {"id": "cracked_spindle", "type": "spindle", "fromBiome": 1, "name": {"ru": "Треснувшее веретено", "en": "Cracked Spindle"}},
+    {"id": "guild_spindle", "type": "spindle", "fromBiome": 3, "name": {"ru": "Гильдейское веретено", "en": "Guild Spindle"}},
+    {"id": "rift_spindle", "type": "spindle", "fromBiome": 5, "name": {"ru": "Веретено с края", "en": "Spindle from the Edge"}, "innate": [{"stat": "auraDuration", "kind": "increased", "value": 0.15}]},
+    {"id": "frosted_branch", "type": "ice_staff", "fromBiome": 1, "name": {"ru": "Заиндевелая ветка", "en": "Frosted Branch"}},
+    {"id": "peak_staff", "type": "ice_staff", "fromBiome": 3, "name": {"ru": "Посох с Ледяного пика", "en": "Ice Peak Staff"}},
+    {"id": "winter_staff", "type": "ice_staff", "fromBiome": 5, "name": {"ru": "Посох долгой зимы", "en": "Staff of the Long Winter"}, "innate": [{"stat": "coldPower", "kind": "flat", "value": 0.15}]},
+    {"id": "bramble_switch", "type": "thorn_whip", "fromBiome": 1, "name": {"ru": "Прут шиповника", "en": "Bramble Switch"}},
+    {"id": "rose_whip", "type": "thorn_whip", "fromBiome": 3, "name": {"ru": "Хлыст из роз", "en": "Rose Whip"}},
+    {"id": "edge_briar", "type": "thorn_whip", "fromBiome": 5, "name": {"ru": "Шиповник с края", "en": "Briar from the Edge"}, "innate": [{"stat": "dotDamage", "kind": "increased", "value": 0.15}]},
+    {"id": "wooden_mallet", "type": "potter_mallet", "fromBiome": 1, "name": {"ru": "Деревянная колотушка", "en": "Wooden Mallet"}},
+    {"id": "potters_mallet", "type": "potter_mallet", "fromBiome": 3, "name": {"ru": "Молот гончара", "en": "Potter's Mallet"}},
+    {"id": "kiln_mallet", "type": "potter_mallet", "fromBiome": 5, "name": {"ru": "Молот обжиговой печи", "en": "Kiln Mallet"}, "innate": [{"stat": "minionCount", "kind": "flat", "value": 1}]}
   ],
   "uniques": [
     {"id": "corsair_axe", "name": {"ru": "Секира корсара", "en": "Corsair's Axe"}, "base": "battle_axe", "alsoType": "pistol", "rarity": "legendary", "lines": [{"stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Keyboard"]}, {"stat": "critMultiplier", "kind": "increased", "value": 0.15}], "rule": {"ru": "считается топором и пистолем сразу", "en": "counts as an axe and a pistol at once"}},

@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Build
         public void EveryCharacterHasThreeSubclassesAndEightActivitiesGivePoints()
         {
             Assert.That(Catalog.MaxPoints, Is.EqualTo(8));
-            Assert.That(Catalog.Subclasses.Count, Is.EqualTo(42));
+            Assert.That(Catalog.Subclasses.Count, Is.EqualTo(54));
             foreach (var heroClass in HeroClassNames.ByName.Keys)
                 Assert.That(Catalog.SubclassesOf(heroClass).Count, Is.EqualTo(3), heroClass);
         }
