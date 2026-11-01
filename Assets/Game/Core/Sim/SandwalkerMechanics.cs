@@ -134,7 +134,6 @@ namespace Game.Core.Sim
             if (!On)
             {
                 _state.TraitPartyTimerSlow = 0;
-                _state.TraitPartyResourceGift = 0;
                 return;
             }
             if (S.SpawnPending)

@@ -85,6 +85,14 @@ namespace Game.Core.Content.Gems
         public double StepHit { get; set; }
         public double BlindSeconds { get; set; }
         public double TimerSeconds { get; set; }
+        public int Lines { get; set; }
+        public int Notes { get; set; }
+        public bool Tune { get; set; }
+        public double ClimaxHit { get; set; }
+        public double Finale { get; set; }
+        public double HymnSeconds { get; set; }
+        public double HymnPower { get; set; }
+        public double SoloSeconds { get; set; }
     }
 
     public sealed class PotionOption

@@ -83,9 +83,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void OnlyTheMetalheadHeadbangs()
+        public void MouseMovementNoLongerExtendsMinstrelAuras()
         {
-            var (loop, input) = Hero(HeroClass.Runedancer);
+            var (loop, input) = Hero(HeroClass.Minstrel);
             var slot = Equip(loop, Gem("minstrel_aura_1"));
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);

@@ -86,7 +86,7 @@
     {"id": "viper_tip", "name": {"ru": "Наконечник гадюки", "en": "Viper Tip"}, "group": 3, "type": "class", "class": "windshot", "perLevel": [{"stat": "critChance", "kind": "flat", "value": 0.01, "tags": ["Skill"]}]},
     {"id": "lightning_rod", "name": {"ru": "Громоотвод", "en": "Lightning Rod"}, "group": 3, "type": "class", "class": "shardcaller", "perLevel": [{"stat": "overloadMultiplier", "kind": "flat", "value": 0.1}]},
     {"id": "scimitar_charm", "name": {"ru": "Оберег серпа", "en": "Sickle Charm"}, "group": 3, "type": "class", "class": "sandwalker", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.08, "tags": ["Skill"]}]},
-    {"id": "headband", "name": {"ru": "Бандана хэдбэнгера", "en": "Headbanger's Bandana"}, "group": 3, "type": "class", "class": "minstrel", "perLevel": [{"stat": "songMouseSeconds", "kind": "flat", "value": 0.3}]},
+    {"id": "headband", "name": {"ru": "Лента лютни", "en": "Lute Ribbon"}, "group": 3, "type": "class", "class": "minstrel", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.08, "tags": ["Skill"]}]},
     {"id": "foresight_eye", "name": {"ru": "Око предвидения", "en": "Eye of Foresight"}, "group": 3, "type": "class", "class": "dreamcatcher", "perLevel": [{"stat": "partyCritChance", "kind": "increased", "value": 0.02}]},
     {"id": "heaven_hammer", "name": {"ru": "Мощи молота", "en": "Hammer Relic"}, "group": 3, "type": "class", "class": "lanternbearer", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.06, "tags": ["Skill"]}]},
     {"id": "needle_case", "name": {"ru": "Игольница", "en": "Needle Case"}, "group": 3, "type": "class", "class": "whisperer", "perLevel": []},

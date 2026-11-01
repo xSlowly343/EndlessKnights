@@ -120,7 +120,6 @@ namespace Game.Core.Sim
         public static readonly StatId GoldPerResource = new StatId("goldPerResource");
         public static readonly StatId ClickHitMultiplier = new StatId("clickHitMultiplier");
         public static readonly StatId AuraSecondsPerKey = new StatId("auraSecondsPerKey");
-        public static readonly StatId SongMouseSeconds = new StatId("songMouseSeconds");
         public static readonly StatId ResourceGainDamage = new StatId("resourceGainDamage");
         public static readonly StatId SkillCost = new StatId("skillCost");
         public static readonly StatId EnemyHpCut = new StatId("enemyHpCut");
@@ -221,13 +220,6 @@ namespace Game.Core.Sim
         public static readonly StatId CompanionPerMark = new StatId("companionPerMark");
         public static readonly StatId CompanionLimit = new StatId("companionLimit");
         public static readonly StatId CompanionOwnMark = new StatId("companionOwnMark");
-        public static readonly StatId OverdriveSeconds = new StatId("overdriveSeconds");
-        public static readonly StatId OverdriveSongs = new StatId("overdriveSongs");
-        public static readonly StatId TypingPartyBonus = new StatId("typingPartyBonus");
-        public static readonly StatId TypingHoldSeconds = new StatId("typingHoldSeconds");
-        public static readonly StatId ChoirPartyOnly = new StatId("choirPartyOnly");
-        public static readonly StatId ChoirPower = new StatId("choirPower");
-        public static readonly StatId ChoirSoloShare = new StatId("choirSoloShare");
         public static readonly StatId ThirdAura = new StatId("thirdAura");
         public static readonly StatId ThirdAuraFree = new StatId("thirdAuraFree");
         public static readonly StatId AuraInPause = new StatId("auraInPause");

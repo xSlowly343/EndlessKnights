@@ -48,7 +48,7 @@ namespace Game.Core.Tests.Content
         public void StartingClassSkillsNeedTheirWeapon()
         {
             Assert.That(TestWorld.Real.Gems["runedancer_hit_1"].Skill!.Weapon, Is.EqualTo("rune_daggers"));
-            Assert.That(TestWorld.Real.Gems["minstrel_aura_1"].Skill!.Weapon, Is.EqualTo("electric_guitar"));
+            Assert.That(TestWorld.Real.Gems["minstrel_aura_1"].Skill!.Weapon, Is.EqualTo("enchanted_lute"));
             Assert.That(TestWorld.Real.Gems["whisperer_hit_1"].Skill!.Weapon, Is.EqualTo("whisperer_doll"));
             Assert.That(TestWorld.Real.Gems["through_stride"].Skill!.Weapon, Is.Null);
         }

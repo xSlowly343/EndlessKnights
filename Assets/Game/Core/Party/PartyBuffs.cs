@@ -40,7 +40,7 @@ namespace Game.Core.Party
 
         public AllyOffer Ally(int slot) => _allies[slot];
 
-        public double OwnValue(int index) => _rules.Stats[index].ValueOf(_hero) + ClearDayBonus(index) + HeardByAllBonus(index) + TraitBonus(index);
+        public double OwnValue(int index) => _rules.Stats[index].ValueOf(_hero) + ClearDayBonus(index) + TraitBonus(index);
 
         private double TraitBonus(int index)
         {
@@ -54,21 +54,6 @@ namespace Game.Core.Party
             if (from == CombatStats.PartySkillCooldown)
                 return _state.TraitPartyCooldown;
             return from == CombatStats.PartyCritChance ? _state.TraitPartyCritChance : 0;
-        }
-
-        public bool HeardByAll => _state.HeardByAll;
-
-        private double HeardByAllBonus(int index) =>
-            _state.HeardByAll && _rules.Stats[index].From == CombatStats.PartyDamage
-                ? (_rules.TypingPartyDamage + System.Math.Max(0, _hero.Value(CombatStats.TypingPartyBonus, 0))) * ChoirShare()
-                : 0;
-
-        private double ChoirShare()
-        {
-            var power = 1 + System.Math.Max(0, _hero.Value(CombatStats.ChoirPower, 0));
-            if (_hero.Value(CombatStats.ChoirPartyOnly, 0) < 1 || _state.PartyMembers > 1)
-                return power;
-            return power * System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.ChoirSoloShare, 0)));
         }
 
         public bool ClearDay => _clearDay;
@@ -125,13 +110,6 @@ namespace Game.Core.Party
             if (clearDay != _clearDay)
             {
                 _clearDay = clearDay;
-                _dirty = true;
-            }
-            var heard = _state.Is(HeroClass.Minstrel) && _rules.TypingPartyDamage > 0 && _state.KeyHits > 0
-                && _state.KeylessTicks * GameLoop.TickSeconds < _rules.TypingSeconds + System.Math.Max(0, _hero.Value(CombatStats.TypingHoldSeconds, 0));
-            if (heard != _state.HeardByAll)
-            {
-                _state.HeardByAll = heard;
                 _dirty = true;
             }
             if (_state.TraitPartyDamage != _traitDamage || _state.TraitPartyCritChance != _traitCritChance || _state.TraitPartyGold != _traitGold

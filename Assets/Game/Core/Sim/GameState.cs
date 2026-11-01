@@ -224,7 +224,6 @@ namespace Game.Core.Sim
         public BigNumber EchoDamage { get; set; }
         public int EchoTicks { get; set; }
         public double AuraKeyCarry { get; set; }
-        public double HeadbangPx { get; set; }
         public double ClickHitCarry { get; set; }
 
         public void AddToQueue(BigNumber damage)
@@ -259,6 +258,7 @@ namespace Game.Core.Sim
         public WindshotState Windshot { get; } = new WindshotState();
         public ShardcallerState Shardcaller { get; } = new ShardcallerState();
         public SandwalkerState Sandwalker { get; } = new SandwalkerState();
+        public MinstrelState Minstrel { get; } = new MinstrelState();
         public double TraitPartyDamage { get; set; }
         public double TraitPartyCritChance { get; set; }
         public double TraitPartyGold { get; set; }
@@ -276,9 +276,6 @@ namespace Game.Core.Sim
         public double Cold { get; set; }
         public double BloodStacks { get; set; }
         public int CompanionMarks { get; set; }
-        public int OverdriveTicks { get; set; }
-        public bool OverdriveSpent { get; set; }
-        public bool HeardByAll { get; set; }
         public double ClockworkSlow { get; set; }
         public double ClockworkFloor { get; set; } = 1;
 
@@ -324,6 +321,7 @@ namespace Game.Core.Sim
             Windshot.OnSpawn();
             Shardcaller.OnSpawn();
             Sandwalker.OnSpawn();
+            Minstrel.OnSpawn();
         }
     }
 }

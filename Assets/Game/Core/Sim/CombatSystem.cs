@@ -15,6 +15,7 @@ namespace Game.Core.Sim
         private readonly WindshotMechanics _windshot;
         private readonly ShardcallerMechanics _shardcaller;
         private readonly SandwalkerMechanics _sandwalker;
+        private readonly MinstrelMechanics _minstrel;
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
@@ -35,6 +36,7 @@ namespace Game.Core.Sim
             _windshot = new WindshotMechanics(rules.Classes.Windshot, state, hero, this);
             _shardcaller = new ShardcallerMechanics(rules.Classes.Shardcaller, state, hero, this);
             _sandwalker = new SandwalkerMechanics(rules.Classes.Sandwalker, state, hero, this);
+            _minstrel = new MinstrelMechanics(rules.Classes.Minstrel, state, hero, this);
         }
 
         public ClassMechanics Class => _class;
@@ -43,6 +45,7 @@ namespace Game.Core.Sim
         public WindshotMechanics Windshot => _windshot;
         public ShardcallerMechanics Shardcaller => _shardcaller;
         public SandwalkerMechanics Sandwalker => _sandwalker;
+        public MinstrelMechanics Minstrel => _minstrel;
         public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
@@ -54,6 +57,7 @@ namespace Game.Core.Sim
             _windshot.UseRules(rules.Classes.Windshot);
             _shardcaller.UseRules(rules.Classes.Shardcaller);
             _sandwalker.UseRules(rules.Classes.Sandwalker);
+            _minstrel.UseRules(rules.Classes.Minstrel);
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
@@ -197,6 +201,7 @@ namespace Game.Core.Sim
             _windshot.Tick(input.MousePx);
             _shardcaller.Tick();
             _sandwalker.Tick(input.MousePx);
+            _minstrel.Tick();
             var keyHits = TakeWhole(_state.KeyCarry + input.Hits, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -204,7 +209,7 @@ namespace Game.Core.Sim
 
             for (var i = 0; i < keyHits; i++)
             {
-                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier();
+                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier() * _minstrel.StrikeMultiplier();
                 var alive = _state.EnemyAlive;
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
                 if (alive)
@@ -215,6 +220,7 @@ namespace Game.Core.Sim
                     _windshot.AfterStrike(crit);
                     _shardcaller.AfterStrike(crit);
                     _sandwalker.AfterStrike();
+                    _minstrel.AfterStrike();
                 }
                 KeyHitLightning();
                 ShadowClone();
@@ -273,7 +279,7 @@ namespace Game.Core.Sim
             else if (source == DamageSource.Mouse)
                 multiplier *= _state.SupportMouseBonus;
             LastHitCrit = false;
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken());
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source));
             if (damage.Sign <= 0)
                 return;
             _state.HitsOnEnemy++;
@@ -291,6 +297,8 @@ namespace Game.Core.Sim
             }
 
             if (supporting != null && Redirected(supporting, damage))
+                return;
+            if (_minstrel.Dream(damage))
                 return;
             damage = WithholdDoom(damage);
             var hpBefore = _state.EnemyHp;

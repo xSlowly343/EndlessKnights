@@ -2893,766 +2893,373 @@
     {
       "id": "minstrel_hit_1",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "common",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Аккорд", "en": "Аккорд"},
+      "name": {"ru": "Аккорд", "en": "Chord"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 3,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "удар звуком", "en": "удар звуком"},
+      "effect": {"type": "strike", "multiplier": 3, "lines": 1},
+      "text": {"ru": "аккорд ×3 и строка песни", "en": "a chord ×3 and a line of the song"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_hit_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_hit_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_1_b15b", "name": {"ru": "Полный аккорд", "en": "Full Chord"}, "damage": 0.8, "effect": {"lines": 2}}]},
+        {"level": 25, "options": [{"id": "minstrel_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_hit_2",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "rare",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Пиццикато", "en": "Пиццикато"},
+      "name": {"ru": "Пиццикато", "en": "Pizzicato"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 15},
+      "cost": {"resource": 5},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 4},
-      "text": {"ru": "быстрый, +строка", "en": "быстрый, +строка"},
+      "effect": {"type": "strike", "multiplier": 2.5, "lines": 2},
+      "text": {"ru": "щипок ×2,5 и 2 строки песни", "en": "a pluck ×2.5 and 2 lines of the song"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_hit_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_hit_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_2_b15b", "name": {"ru": "Двойной щипок", "en": "Double Pluck"}, "damage": 0.8, "effect": {"lines": 3}}]},
+        {"level": 25, "options": [{"id": "minstrel_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_hit_3",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "epic",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Высокая нота", "en": "Высокая нота"},
+      "name": {"ru": "Высокая нота", "en": "High Note"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 6},
-      "text": {"ru": "крит, если строка полная", "en": "крит, если строка полная"},
+      "effect": {"type": "strike", "multiplier": 4, "climaxHit": 3},
+      "text": {"ru": "нота ×4 и ещё ×3 в кульминации: припев, гимн, песня для всех или сон врага", "en": "a note ×4 and another ×3 at the climax: a chorus, a hymn, the song for everyone or a sleeping enemy"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_hit_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_hit_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_3_b15b", "name": {"ru": "Звенящая нота", "en": "Ringing Note"}, "damage": 0.8, "effect": {"climaxHit": 4.5}}]},
+        {"level": 25, "options": [{"id": "minstrel_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_queue_1",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "common",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Трель", "en": "Трель"},
+      "name": {"ru": "Трель", "en": "Trill"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
-      "text": {"ru": "серия по очереди", "en": "серия по очереди"},
+      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3, "notes": 2},
+      "text": {"ru": "трель ×2 по 3 врагам очереди и 2 ноты колыбельной", "en": "a trill ×2 at 3 queued enemies and 2 lullaby notes"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_queue_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_queue_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_1_b15b", "name": {"ru": "Долгая трель", "en": "Long Trill"}, "damage": 0.8, "effect": {"notes": 3}}]},
+        {"level": 25, "options": [{"id": "minstrel_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_queue_2",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "rare",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Звуковая волна", "en": "Звуковая волна"},
+      "name": {"ru": "Звуковая волна", "en": "Sound Wave"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "вся очередь", "en": "вся очередь"},
+      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "lines": 1},
+      "text": {"ru": "волна ×2,5 по 3 врагам очереди и строка песни", "en": "a wave ×2.5 at 3 queued enemies and a line of the song"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_queue_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_queue_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_2_b15b", "name": {"ru": "Широкая волна", "en": "Wide Wave"}, "damage": 0.8, "effect": {"lines": 2}}]},
+        {"level": 25, "options": [{"id": "minstrel_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_queue_3",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "legendary",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Канон", "en": "Канон"},
+      "name": {"ru": "Канон", "en": "Canon"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
-      "text": {"ru": "удар повторяется на 3 врагах", "en": "удар повторяется на 3 врагах"},
+      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "lines": 1, "notes": 1},
+      "text": {"ru": "канон ×3 по 3 врагам, строка песни и нота колыбельной", "en": "a canon ×3 at 3 enemies, a line of the song and a lullaby note"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_queue_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_queue_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_3_b15b", "name": {"ru": "Канон в три голоса", "en": "Three-Voice Canon"}, "damage": 0.8, "effect": {"lines": 2, "notes": 2}}]},
+        {"level": 25, "options": [{"id": "minstrel_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_auto_1",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Припляс", "en": "Припляс"},
+      "name": {"ru": "Припляс", "en": "Jig"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "+строка", "en": "+строка"},
+      "cooldownSeconds": 3,
+      "effect": {"type": "strike", "multiplier": 2.5, "lines": 1},
+      "text": {"ru": "раз в 3 с припляс ×2,5 и строка песни", "en": "every 3 s a jig ×2.5 and a line of the song"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_auto_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_auto_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_1_b15b", "name": {"ru": "Лихой припляс", "en": "Lively Jig"}, "damage": 0.8, "effect": {"lines": 2}}]},
+        {"level": 25, "options": [{"id": "minstrel_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_auto_2",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Струна-эхо", "en": "Струна-эхо"},
+      "name": {"ru": "Струна-эхо", "en": "Echo String"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 5},
-      "text": {"ru": "повтор удара раз в 4 с", "en": "повтор удара раз в 4 с"},
+      "cooldownSeconds": 4,
+      "effect": {"type": "strike", "multiplier": 3, "notes": 1},
+      "text": {"ru": "раз в 4 с струна ×3 и нота колыбельной", "en": "every 4 s a string ×3 and a lullaby note"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_auto_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_auto_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_2_b15b", "name": {"ru": "Долгое эхо", "en": "Long Echo"}, "damage": 0.8, "effect": {"notes": 2}}]},
+        {"level": 25, "options": [{"id": "minstrel_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_auto_3",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "mythic",
       "color": "red",
-      "name": {"ru": "Бубенцы", "en": "Бубенцы"},
+      "name": {"ru": "Бубенцы", "en": "Jingle Bells"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 8},
-      "text": {"ru": "раз в 8 с бафф союзнику", "en": "раз в 8 с бафф союзнику"},
+      "cooldownSeconds": 8,
+      "effect": {"type": "strike", "multiplier": 4, "hymnSeconds": 8, "hymnPower": 0.1},
+      "text": {"ru": "раз в 8 с бубенцы ×4: ей и отряду +10% урона на 8 с", "en": "every 8 s bells ×4: she and the party deal 10% more damage for 8 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_auto_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_auto_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_3_b15b", "name": {"ru": "Звонкие бубенцы", "en": "Bright Bells"}, "damage": 0.8, "effect": {"hymnPower": 0.15}}]},
+        {"level": 25, "options": [{"id": "minstrel_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_strong_1",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "epic",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Финал", "en": "Финал"},
+      "name": {"ru": "Финал", "en": "Finale"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 40},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 12},
-      "text": {"ru": "все строки в урон", "en": "все строки в урон"},
+      "effect": {"type": "strike", "multiplier": 6, "finale": 4},
+      "text": {"ru": "финал ×6 и ещё ×4 за каждый куплет; куплеты кончаются", "en": "a finale ×6 and another ×4 per verse; the verses end"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_strong_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_strong_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_1_b15b", "name": {"ru": "Громкий финал", "en": "Grand Finale"}, "damage": 0.8, "effect": {"finale": 6}}]},
+        {"level": 25, "options": [{"id": "minstrel_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_strong_2",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "legendary",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Гимн", "en": "Гимн"},
+      "name": {"ru": "Гимн", "en": "Anthem"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 50},
       "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 18},
-      "text": {"ru": "отряду +30% на 8 с", "en": "отряду +30% на 8 с"},
+      "effect": {"type": "strike", "multiplier": 5, "hymnSeconds": 8, "hymnPower": 0.3},
+      "text": {"ru": "гимн ×5: ей и отряду +30% урона на 8 с", "en": "an anthem ×5: she and the party deal 30% more damage for 8 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_strong_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_strong_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_2_b15b", "name": {"ru": "Долгий гимн", "en": "Long Anthem"}, "damage": 0.8, "effect": {"hymnSeconds": 12}}]},
+        {"level": 25, "options": [{"id": "minstrel_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_strong_3",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "mythic",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Соло", "en": "Соло"},
+      "name": {"ru": "Соло", "en": "Solo"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 25},
-      "text": {"ru": "10 с её удары ×2", "en": "10 с её удары ×2"},
+      "effect": {"type": "strike", "multiplier": 8, "soloSeconds": 10},
+      "text": {"ru": "соло ×8: 10 с её удары ×2", "en": "a solo ×8: for 10 s her hits deal ×2"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "minstrel_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "minstrel_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "minstrel_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "minstrel_strong_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "minstrel_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "minstrel_strong_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "minstrel_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_3_b15b", "name": {"ru": "Долгое соло", "en": "Long Solo"}, "damage": 0.8, "effect": {"soloSeconds": 15}}]},
+        {"level": 25, "options": [{"id": "minstrel_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "minstrel_path_1",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "ascendancy": "minstrel_trait_1",
       "color": "red",
-      "name": {"ru": "Запев", "en": "Запев"},
+      "name": {"ru": "Запев", "en": "Lead-In"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "lines": 4},
+      "text": {"ru": "удар ×3 и 4 строки песни — целый куплет", "en": "a blow ×3 and 4 lines of the song, a whole verse"}
     },
     {
       "id": "minstrel_path_2",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "ascendancy": "minstrel_trait_2",
       "color": "red",
-      "name": {"ru": "Сменить мелодию", "en": "Сменить мелодию"},
+      "name": {"ru": "Сменить мелодию", "en": "Change the Tune"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 12,
+      "effect": {"type": "strike", "multiplier": 3, "tune": true},
+      "text": {"ru": "удар ×3 и следующая мелодия сразу", "en": "a blow ×3 and the next melody at once"}
     },
     {
       "id": "minstrel_path_3",
       "kind": "active",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "ascendancy": "minstrel_trait_3",
       "color": "red",
-      "name": {"ru": "Тихая нота", "en": "Тихая нота"},
+      "name": {"ru": "Тихая нота", "en": "Quiet Note"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 12,
+      "effect": {"type": "strike", "multiplier": 3, "notes": 3},
+      "text": {"ru": "удар ×3 и 3 ноты колыбельной", "en": "a blow ×3 and 3 lullaby notes"}
     },
     {
       "id": "minstrel_aura_1",
       "kind": "aura",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Походная песня", "en": "Походная песня"},
+      "name": {"ru": "Походная песня", "en": "Marching Song"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.15}], "reserve": 15, "party": true},
-      "text": {"ru": "+прирост ресурса", "en": "+прирост ресурса"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.15}, {"stat": "versePower", "kind": "flat", "value": 0.005}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +15% к накоплению ресурса; её куплет на 0,5% сильнее", "en": "party: +15% resource gain; her verse is 0.5% stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "minstrel_aura_1_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "minstrel_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "minstrel_aura_1_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "minstrel_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "minstrel_aura_1_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "minstrel_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.18}, {"stat": "versePower", "kind": "flat", "value": 0.006}]}}, {"id": "minstrel_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.165}, {"stat": "versePower", "kind": "flat", "value": 0.0055}]}}, {"id": "minstrel_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.195}, {"stat": "versePower", "kind": "flat", "value": 0.0065}]}}, {"id": "minstrel_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "minstrel_aura_2",
       "kind": "aura",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Барабан", "en": "Барабан"},
+      "name": {"ru": "Барабан", "en": "Drum"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "reserve": 15},
-      "text": {"ru": "+1% урона за каждые 10 ударов подряд, до 20%", "en": "+1% урона за каждые 10 ударов подряд, до 20%"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "when": "series"}, {"stat": "lineHits", "kind": "flat", "value": -0.5}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +10% урона в серии ударов; её строка чуть короче", "en": "party: +10% damage during a series of hits; her line is a bit shorter"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "minstrel_aura_2_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "minstrel_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "minstrel_aura_2_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "minstrel_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "minstrel_aura_2_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "minstrel_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "series"}, {"stat": "lineHits", "kind": "flat", "value": -0.6}]}}, {"id": "minstrel_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11, "when": "series"}, {"stat": "lineHits", "kind": "flat", "value": -0.55}]}}, {"id": "minstrel_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13, "when": "series"}, {"stat": "lineHits", "kind": "flat", "value": -0.65}]}}, {"id": "minstrel_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "minstrel_aura_3",
       "kind": "aura",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Эхо", "en": "Эхо"},
+      "name": {"ru": "Эхо", "en": "Echo"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}], "reserve": 20},
-      "text": {"ru": "+длительность баффов отряда", "en": "+длительность баффов отряда"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.15}, {"stat": "verseSeconds", "kind": "flat", "value": 1}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: аура длится на 15% дольше; её куплет звучит на 1 с дольше", "en": "party: auras last 15% longer; her verse rings 1 s longer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "minstrel_aura_3_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "minstrel_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "minstrel_aura_3_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "minstrel_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "minstrel_aura_3_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "minstrel_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.18}, {"stat": "verseSeconds", "kind": "flat", "value": 1.2}]}}, {"id": "minstrel_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.165}, {"stat": "verseSeconds", "kind": "flat", "value": 1.1}]}}, {"id": "minstrel_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.195}, {"stat": "verseSeconds", "kind": "flat", "value": 1.3}]}}, {"id": "minstrel_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "minstrel_aura_4",
       "kind": "aura",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Тихая струна", "en": "Тихая струна"},
+      "name": {"ru": "Тихая струна", "en": "Quiet String"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "reserve": 20},
-      "text": {"ru": "5 с после паузы игрока его урон не падает", "en": "5 с после паузы игрока его урон не падает"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damageAfterIdle", "kind": "increased", "value": 0.15}, {"stat": "sleepSeconds", "kind": "flat", "value": 0.3}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +15% урона сразу после паузы; её сон длится на 0,3 с дольше", "en": "party: +15% damage right after a pause; her sleep lasts 0.3 s longer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "minstrel_aura_4_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "minstrel_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "minstrel_aura_4_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "minstrel_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "minstrel_aura_4_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "minstrel_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageAfterIdle", "kind": "increased", "value": 0.18}, {"stat": "sleepSeconds", "kind": "flat", "value": 0.36}]}}, {"id": "minstrel_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageAfterIdle", "kind": "increased", "value": 0.165}, {"stat": "sleepSeconds", "kind": "flat", "value": 0.33}]}}, {"id": "minstrel_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageAfterIdle", "kind": "increased", "value": 0.195}, {"stat": "sleepSeconds", "kind": "flat", "value": 0.39}]}}, {"id": "minstrel_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "minstrel_aura_5",
       "kind": "aura",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "epic",
       "color": "red",
-      "name": {"ru": "Ритм", "en": "Ритм"},
+      "name": {"ru": "Ритм", "en": "Rhythm"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "каждые 4 с один удар отряда в такт ×2", "en": "каждые 4 с один удар отряда в такт ×2"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.15}, {"stat": "songPower", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +15% к урону крита; её песня на 1% сильнее", "en": "party: +15% crit damage; her song is 1% stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "minstrel_aura_5_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "minstrel_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "minstrel_aura_5_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "minstrel_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "minstrel_aura_5_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "minstrel_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.18}, {"stat": "songPower", "kind": "flat", "value": 0.012}]}}, {"id": "minstrel_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.165}, {"stat": "songPower", "kind": "flat", "value": 0.011}]}}, {"id": "minstrel_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.195}, {"stat": "songPower", "kind": "flat", "value": 0.013}]}}, {"id": "minstrel_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
       "id": "minstrel_aura_6",
       "kind": "aura",
-      "weapon": "electric_guitar",
+      "weapon": "enchanted_lute",
       "tier": "legendary",
       "color": "red",
-      "name": {"ru": "Баллада", "en": "Баллада"},
+      "name": {"ru": "Баллада", "en": "Ballad"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "+опыт героев отряда", "en": "+опыт героев отряда"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "gemExperience", "kind": "increased", "value": 0.15}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.08}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +15% опыта гемов и +8% урона по боссу", "en": "party: +15% gem experience and +8% damage against bosses"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "minstrel_aura_6_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "minstrel_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "minstrel_aura_6_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "minstrel_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "minstrel_aura_6_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "minstrel_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "minstrel_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "gemExperience", "kind": "increased", "value": 0.18}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.096}]}}, {"id": "minstrel_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "gemExperience", "kind": "increased", "value": 0.165}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.088}]}}, {"id": "minstrel_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "gemExperience", "kind": "increased", "value": 0.195}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.104}]}}, {"id": "minstrel_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
