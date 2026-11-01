@@ -75,7 +75,8 @@ namespace Game.Sim
         private static int RunPlayer(GameData data, BotProfile profile, SimOptions options)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            var days = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes).Run(options.Days, options.ActiveHours);
+            var simulation = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes);
+            var days = simulation.Run(options.Days, options.ActiveHours);
             watch.Stop();
 
             if (options.OutFile == null)
@@ -93,7 +94,20 @@ namespace Game.Sim
                 "{0} days x {1:0.##} h active, {2} at {3:0.#} keys/s, {4:0.#} clicks/s: record stage {5}, level {6}, prestiges {7}, artifacts {8}; simulated in {9:0.00} s",
                 days.Count, options.ActiveHours, options.HeroClass, options.KeysPerSecond, options.ClicksPerSecond,
                 last.RecordStage, last.HeroLevel, last.Prestiges, last.Artifacts, watch.Elapsed.TotalSeconds));
+            Console.Error.WriteLine("skills: " + SkillLine(simulation.LastState!));
             return 0;
+        }
+
+        private static string SkillLine(GameState state)
+        {
+            var parts = new List<string>();
+            foreach (var slot in state.Skills)
+            {
+                var progress = state.GemProgress.TryGetValue(slot.Skill.Id, out var found) ? found : null;
+                var branches = progress == null ? "---" : string.Concat(System.Array.ConvertAll(progress.Branches, b => b < 0 ? "-" : b.ToString(CultureInfo.InvariantCulture)));
+                parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", slot.Skill.Id, progress?.Level ?? 1, branches));
+            }
+            return string.Join(", ", parts);
         }
 
         private const double SupportLow = 1.15;
