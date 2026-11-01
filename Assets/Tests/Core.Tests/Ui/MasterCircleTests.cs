@@ -48,13 +48,13 @@ namespace Game.Core.Tests.Ui
         {
             var loop = Duelist(1);
 
-            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["thin_cut"], Levels), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["duelist_hit_1"], Levels), Is.EqualTo(BookResult.Done));
 
             var place = Circle(loop)[0];
             Assert.That(place.InBook, Is.True);
             Assert.That(place.BookRow, Is.EqualTo(0));
             Assert.That(place.CanPlace, Is.False);
-            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["thin_cut"], Levels), Is.EqualTo(BookResult.AlreadyInBook));
+            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["duelist_hit_1"], Levels), Is.EqualTo(BookResult.AlreadyInBook));
         }
 
         [Test]
@@ -62,20 +62,9 @@ namespace Game.Core.Tests.Ui
         {
             var loop = Duelist(1);
 
-            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["no_rush"], Levels), Is.EqualTo(BookResult.NotOnWeapon));
-            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["tempering"], Levels), Is.EqualTo(BookResult.NotOnWeapon));
+            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["duelist_queue_1"], Levels), Is.EqualTo(BookResult.NotOnWeapon));
+            Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["runedancer_strong_3"], Levels), Is.EqualTo(BookResult.NotOnWeapon));
             Assert.That(loop.State.Skills, Is.Empty);
-        }
-
-        [Test]
-        public void ASkillWaitingForItsMechanicCannotBePlaced()
-        {
-            var loop = Duelist(50);
-            var locked = loop.Data.Gems["hook_and_cleaver"];
-            loop.State.Weapons.Right = new WeaponItem(loop.State.Weapons.Right!.Base, loop.State.Weapons.Right.Rarity, new[] { locked.Id });
-
-            Assert.That(loop.Book.PlaceFromWeapon(locked, Levels), Is.EqualTo(BookResult.WaitsForMechanic));
-            Assert.That(Circle(loop)[0].CanPlace, Is.False);
         }
 
         [Test]
@@ -106,9 +95,9 @@ namespace Game.Core.Tests.Ui
 
             Assert.That(MasterTexts.Hand(katana), Is.EqualTo(katana.NameRu + " · Легендарная"));
             Assert.That(MasterTexts.Tier(SkillTier.Rare), Is.EqualTo("Редкий"));
-            Assert.That(MasterTexts.Line(gems["thin_cut"].Skill!), Is.EqualTo("быстрый · 20 · 3 с"));
-            Assert.That(MasterTexts.Line(gems["forge_bellows"].Skill!), Is.EqualTo("аура, резерв 20"));
-            Assert.That(MasterTexts.Line(gems["kitchen_rhythm"].Skill!), Is.EqualTo("скилл · 40 · 30 с"));
+            Assert.That(MasterTexts.Line(gems["duelist_hit_1"].Skill!), Is.EqualTo("быстрый · 10 · 3 с"));
+            Assert.That(MasterTexts.Line(gems["runedancer_aura_3"].Skill!), Is.EqualTo("аура, резерв 20"));
+            Assert.That(MasterTexts.Line(gems["duelist_auto_1"].Skill!), Is.EqualTo("скилл · 10 · 4 с"));
         }
     }
 }

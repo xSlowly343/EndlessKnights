@@ -27,8 +27,8 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(100));
-            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(30));
+            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(118));
+            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(28));
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Aura && !gem.Locked).Select(gem => gem.Skill!.Effect), Is.All.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Active).Select(gem => gem.Skill!.Effect), Is.All.Not.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Support).Select(gem => gem.Supports), Is.All.EqualTo(StatTags.Skill));
@@ -73,7 +73,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void ASkillWithoutBranchesHasNone()
         {
-            Assert.That(GemCatalog.Load(RealFile())["second_axe"].Branches, Is.Empty);
+            Assert.That(GemCatalog.Load(RealFile())["runedancer_path_1"].Branches, Is.Empty);
         }
 
         [TestCase("\"branches\": []", "3 branch tiers, got 0")]
@@ -137,8 +137,7 @@ namespace Game.Core.Tests.Content
             Assert.That(gem.Supports, Is.EqualTo(StatTags.DoT));
             Assert.That(gem.DamageMultiplier, Is.EqualTo(1.2));
             Assert.That(gem.ManaMultiplier, Is.EqualTo(1.3));
-            Assert.That(gem.CanSupport(support.All.First(skill => skill.Type == SkillType.Active && (skill.Tags & StatTags.DoT) != 0)), Is.True);
-            Assert.That(gem.CanSupport(support["iron_rim_bash"]), Is.False);
+            Assert.That(gem.CanSupport(support["runedancer_hit_1"]), Is.False);
             Assert.That(gem.CanSupport(support["chain"]), Is.False);
         }
 
@@ -152,6 +151,14 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
+        public void AClassAuraMustReserveResource()
+        {
+            var error = Assert.Throws<ContentException>(() => WithExtra("{ \"id\": \"x\", \"kind\": \"aura\", \"weapon\": \"axe\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"durationSeconds\": 5, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }"))!;
+
+            Assert.That(error.Message, Does.Contain("a class aura reserves resource"));
+        }
+
+        [Test]
         public void OnlyASupportHasSupportFields()
         {
             var error = Assert.Throws<ContentException>(() => WithExtra(Strike + ", \"damageMult\": 2 }"))!;
@@ -160,38 +167,27 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void ARemovedHuscarlSkillLeadsToTheSkillThatTookItAsABranch()
-        {
-            var gems = GemCatalog.Load(RealFile());
-
-            Assert.That(gems.TryGet("rivet", out var rivet), Is.True);
-            Assert.That(rivet.Id, Is.EqualTo("iron_rim_bash"));
-            Assert.That(rivet.Branches.SelectMany(tier => tier.Options).Select(option => option.Id), Does.Contain("rivet"));
-            Assert.That(gems.TryGet("the_unfading_forge", out var forge) && forge.Type == SkillType.Aura, Is.True);
-        }
-
-        [Test]
-        public void TheRosterNamesClassesWithoutFifteenSkillsAndFourAuras()
+        public void TheRosterNamesClassesWithoutTwelveSkillsAndSixAuras()
         {
             var gems = GemCatalog.Load(RealFile());
 
             var problems = SkillRoster.Problems(gems, TestWorld.Real.Weapons.Types.Select(type => type.Id).Append("nothing"));
 
-            Assert.That(problems.Where(problem => !problem.StartsWith("nothing")), Is.Empty, "every class has fifteen skills and four auras");
-            Assert.That(problems, Has.Member("nothing: 0 active skills, expected 15"));
-            Assert.That(problems, Has.Member("nothing: 0 auras, expected 4"));
+            Assert.That(problems.Where(problem => !problem.StartsWith("nothing")), Is.Empty, "every class has twelve skills and six auras");
+            Assert.That(problems, Has.Member("nothing: 0 active skills, expected 12"));
+            Assert.That(problems, Has.Member("nothing: 0 auras, expected 6"));
         }
 
         [Test]
-        public void TheGameDoesNotLoadAClassWithoutFifteenSkills()
+        public void TheGameDoesNotLoadAClassWithoutTwelveSkills()
         {
             var error = Assert.Throws<ContentException>(() => GameData.Load(name =>
                 name == GemCatalog.FileName
-                    ? TestData.ReadGameDataFile(name).Replace("\"formerIds\": [\"the_last_duelist\"],\n      \"kind\": \"active\",\n      \"weapon\": \"katana\"", "\"formerIds\": [\"the_last_duelist\"],\n      \"kind\": \"active\",\n      \"weapon\": \"axe\"")
+                    ? TestData.ReadGameDataFile(name).Replace("\"id\": \"duelist_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"katana\"", "\"id\": \"duelist_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"axe\"")
                     : TestData.ReadGameDataFile(name)));
 
-            Assert.That(error!.Message, Does.Contain("katana: 14 active skills, expected 15"));
-            Assert.That(error.Message, Does.Contain("axe: 16 active skills, expected 15"));
+            Assert.That(error!.Message, Does.Contain("katana: 11 active skills, expected 12"));
+            Assert.That(error.Message, Does.Contain("axe: 13 active skills, expected 12"));
         }
     }
 }

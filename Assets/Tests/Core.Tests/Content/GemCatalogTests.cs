@@ -18,17 +18,16 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Skill?.Weapon == null && gem.Kind != GemKind.Support), Is.EqualTo(37));
+            Assert.That(gems.All.Count(gem => gem.Skill?.Weapon == null && gem.Kind != GemKind.Support), Is.EqualTo(29));
             Assert.That(gems.All.Where(gem => gem.Kind == GemKind.Support).Select(gem => gem.Support), Is.All.Not.Null);
             Assert.That(gems["resonance"].Support!.AllyPower, Is.EqualTo(1.2));
             Assert.That(gems["resonance"].Support!.AfterSeconds, Is.EqualTo(5));
-            Assert.That(gems.All.Count(gem => gem.Kind == GemKind.Support), Is.EqualTo(30));
-            foreach (var id in new[] { "iron_rim_bash", "no_mercy", "hearth_song", "louder" })
+            Assert.That(gems.All.Count(gem => gem.Kind == GemKind.Support), Is.EqualTo(28));
+            foreach (var id in new[] { "runedancer_hit_1", "runedancer_strong_1", "minstrel_aura_1", "minstrel_aura_2" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["through_stride"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["march"].Kind, Is.EqualTo(GemKind.Skill));
             Assert.That(gems["lull"].Kind, Is.EqualTo(GemKind.Skill));
-            Assert.That(gems["charm_prick"].Skill!.Effect, Is.InstanceOf<EnemyDebuffEffect>());
             Assert.That(gems.All.Any(gem => gem.Id.StartsWith("cast_on_") || gem.Id.StartsWith("cast_with_")), Is.False);
         }
 
@@ -59,41 +58,6 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void RunedancerStartingSkillsMatchSkillsDoc()
-        {
-            var gems = GemCatalog.Load(RealFile());
-            var bash = gems["iron_rim_bash"].Skill!;
-            var fury = gems["no_mercy"].Skill!;
-
-            Assert.That(bash.ResourceCost, Is.EqualTo(15));
-            Assert.That(bash.CooldownSeconds, Is.EqualTo(4));
-            Assert.That(((StrikeEffect)bash.Effect).Multiplier, Is.EqualTo(4));
-            Assert.That(fury.ResourceCost, Is.EqualTo(50));
-            Assert.That(fury.CooldownSeconds, Is.EqualTo(25));
-            Assert.That(((StrikeEffect)fury.Effect).Multiplier, Is.EqualTo(5));
-        }
-
-        [Test]
-        public void MinstrelStartingSkillsMatchSkillsDoc()
-        {
-            var gems = GemCatalog.Load(RealFile());
-            var song = gems["hearth_song"].Skill!;
-            var solo = gems["louder"].Skill!;
-
-            Assert.That(song.ResourceCost, Is.EqualTo(30));
-            Assert.That(song.CooldownSeconds, Is.EqualTo(5));
-            Assert.That(song.DurationSeconds, Is.EqualTo(20));
-            Assert.That(((AuraEffect)song.Effect).Modifiers, Is.EqualTo(new[]
-            {
-                new Modifier(new StatId("damage"), ModifierKind.Increased, 0.15),
-                new Modifier(new StatId("gold"), ModifierKind.Increased, 0.10)
-            }));
-            Assert.That(solo.ResourceCost, Is.EqualTo(80));
-            Assert.That(solo.CooldownSeconds, Is.EqualTo(35));
-            Assert.That(solo.DurationSeconds, Is.EqualTo(10));
-        }
-
-        [Test]
         public void LullIsAPassiveIdleStrike()
         {
             var skill = GemCatalog.Load(RealFile())["lull"].Skill!;
@@ -105,25 +69,8 @@ namespace Game.Core.Tests.Content
             Assert.That(effect.MaxChargeSeconds, Is.EqualTo(60));
         }
 
-        [TestCase("shield_bash", "iron_rim_bash")]
-        [TestCase("odins_fury", "no_mercy")]
-        [TestCase("battle_cry", "roar_from_the_door")]
-        [TestCase("throwing_axe", "hatchet_toss")]
-        [TestCase("blood_harvest", "forge_heat")]
-        [TestCase("shield_wall", "anvil")]
-        [TestCase("ragnarok_roar", "long_winter")]
-        [TestCase("song", "hearth_song")]
-        [TestCase("guitar_solo", "louder")]
-        [TestCase("power_chord", "nail_chord")]
-        [TestCase("ballad", "colossus_lullaby")]
-        [TestCase("mosh_pit", "whole_hall")]
-        [TestCase("amp_eleven", "underside_amp")]
-        [TestCase("stage_dive", "still_alive")]
-        [TestCase("whisperer_needle", "charm_prick")]
         [TestCase("stenography", "through_stride")]
-        [TestCase("typo", "step_back")]
         [TestCase("typist", "quick_stride")]
-        [TestCase("hotkeys", "double_grip")]
         [TestCase("touch_typing", "steady_pace")]
         [TestCase("coffee_break", "caravan_halt")]
         [TestCase("call", "blade_on_watch")]
@@ -160,57 +107,10 @@ namespace Game.Core.Tests.Content
             Assert.That(levels.Experience.At(2).ToDouble(), Is.GreaterThan(levels.Experience.At(1).ToDouble()));
         }
 
-        [Test]
-        public void RunedancerAndMetalheadHaveSevenClassSkillsEachOnTheirWeapon()
-        {
-            var gems = GemCatalog.Load(RealFile());
-            var axe = new[] { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };
-            var guitar = new[] { "hearth_song", "louder", "nail_chord", "colossus_lullaby", "whole_hall", "underside_amp", "still_alive" };
-
-            foreach (var id in axe)
-                Assert.That(gems[id].Skill!.Weapon, Is.EqualTo("axe"), id);
-            foreach (var id in guitar)
-                Assert.That(gems[id].Skill!.Weapon, Is.EqualTo("electric_guitar"), id);
-        }
-
-        [Test]
-        public void NewVikingSkillsMatchSkillsDoc()
-        {
-            var gems = GemCatalog.Load(RealFile());
-
-            Assert.That(Numbers(gems["roar_from_the_door"].Skill!), Is.EqualTo((30d, 30d, 15d)));
-            Assert.That(Numbers(gems["hatchet_toss"].Skill!), Is.EqualTo((10d, 3d, 0d)));
-            Assert.That(Numbers(gems["anvil"].Skill!), Is.EqualTo((40d, 35d, 10d)));
-            Assert.That(Numbers(gems["long_winter"].Skill!), Is.EqualTo((70d, 45d, 8d)));
-            Assert.That(gems["forge_heat"].Skill!.IsPassive, Is.True);
-            Assert.That(((StrikeEffect)gems["hatchet_toss"].Skill!.Effect).SkipCurrent, Is.True);
-            Assert.That(((StoreHitsEffect)gems["anvil"].Skill!.Effect).ReleaseShare, Is.EqualTo(0.5));
-            Assert.That(((QueueHitsEffect)gems["long_winter"].Skill!.Effect).Share, Is.EqualTo(0.4));
-            Assert.That(gems["iron_rim_bash"].Skill!.Native.HoldDecaySeconds, Is.EqualTo(5));
-            Assert.That(gems["no_mercy"].Skill!.Native.SpendAllMax, Is.EqualTo(10));
-            Assert.That(gems["forge_heat"].Skill!.Native.HoldStacksAboveResource, Is.EqualTo(50));
-        }
-
-        [Test]
-        public void NewMetalheadSkillsMatchSkillsDoc()
-        {
-            var gems = GemCatalog.Load(RealFile());
-
-            Assert.That(Numbers(gems["nail_chord"].Skill!), Is.EqualTo((15d, 4d, 0d)));
-            Assert.That(Numbers(gems["colossus_lullaby"].Skill!), Is.EqualTo((30d, 30d, 15d)));
-            Assert.That(Numbers(gems["whole_hall"].Skill!), Is.EqualTo((50d, 30d, 10d)));
-            Assert.That(Numbers(gems["still_alive"].Skill!), Is.EqualTo((60d, 40d, 0d)));
-            Assert.That(((AuraEffect)gems["underside_amp"].Skill!.Effect).Reserve, Is.EqualTo(25));
-            Assert.That(gems["underside_amp"].Skill!.IsPassive, Is.True);
-            Assert.That(gems["hearth_song"].Skill!.Family, Is.EqualTo("song"));
-            Assert.That(gems["colossus_lullaby"].Skill!.Family, Is.EqualTo("song"));
-            Assert.That(((StrikeEffect)gems["still_alive"].Skill!.Effect).KillRefundShare, Is.EqualTo(0.5));
-        }
-
         private static (double Cost, double Cooldown, double Duration) Numbers(SkillDef skill) =>
             (skill.ResourceCost, skill.CooldownSeconds, skill.DurationSeconds);
 
-        [TestCase("{ \"id\": \"lull\", \"kind\": \"active\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"strike\", \"multiplier\": 1 } }", "gems[61].id: gem id 'lull' is used twice")]
+        [TestCase("{ \"id\": \"lull\", \"kind\": \"active\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"strike\", \"multiplier\": 1 } }", "gems[21].id: gem id 'lull' is used twice")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"spell\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'spell'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"pink\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].color: unknown value 'pink'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"aura\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds or reserve")]

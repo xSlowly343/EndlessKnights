@@ -22,23 +22,6 @@ namespace Game.Core.Tests.Content
             }
         }
 
-        [TestCase("duelist", "duelist_one_blade")]
-        [TestCase("sandwalker", "sandwalker_best_at_nothing")]
-        [TestCase("duelist", "duelist_thousand_steps")]
-        [TestCase("runedancer", "runedancer_ancestor_shore")]
-        public void FormerCompromiseVerticesHaveNoDownside(string heroClass, string nodeId)
-        {
-            var node = TestWorld.Data.ClassTreeOf(heroClass)!.Nodes.Single(candidate => candidate.Id == nodeId);
-            for (var rank = 1; rank <= 5; rank++)
-            {
-                var sheet = new StatSheet();
-                foreach (var modifier in node.ModifiersAt(rank))
-                    sheet.Add(modifier);
-                Assert.That(sheet.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.GreaterThanOrEqualTo(1), $"{nodeId} rank {rank}");
-                Assert.That(sheet.Value(CombatStats.SkillCooldown, 1), Is.LessThanOrEqualTo(1), $"{nodeId} rank {rank}");
-            }
-        }
-
         [Test]
         public void MajorTalentsMayChangeMinionsAndPassiveResource()
         {

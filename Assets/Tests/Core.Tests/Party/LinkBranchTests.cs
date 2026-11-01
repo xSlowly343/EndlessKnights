@@ -80,36 +80,6 @@ namespace Game.Core.Tests.Party
             foreach (var mark in new[] { "blind", "cold", "bond", "blood" })
                 Assert.That(Mark(mark), Is.Not.Zero, mark);
         }
-
-        [Test]
-        public void EveryClassInTheGameHasFourLinkNodesAndOneSecondResponse()
-        {
-            foreach (var heroClass in InGame)
-            {
-                var tree = TestWorld.Data.ClassTreeOf(heroClass)!;
-                var links = tree.Nodes.Where(node => node.ModifiersAt(1).Any(modifier => ModifierConditions.IsAlly(modifier.When))).ToList();
-                var second = tree.Nodes.Where(node => node.ModifiersAt(1).Any(modifier => modifier.Stat == Rules.SecondResponseStat)).ToList();
-
-                Assert.That(links.Count, Is.EqualTo(4), heroClass);
-                Assert.That(second.Count, Is.EqualTo(1), heroClass);
-                Assert.That(links, Does.Contain(second[0]), heroClass);
-            }
-        }
-
-        [Test]
-        public void TheLinkNodeWakesTheSecondResponse()
-        {
-            var tree = TestWorld.Data.ClassTreeOf("runedancer")!;
-            var node = tree.Nodes.Single(candidate => candidate.ModifiersAt(1).Any(modifier => modifier.Stat == Rules.SecondResponseStat));
-            var loop = Hero(HeroClass.Runedancer);
-            foreach (var modifier in node.ModifiersAt(1))
-                loop.Hero.Add(modifier);
-            loop.Synergy.SetAlly(0, true, HeroClass.Minstrel, Mark("aura"));
-
-            loop.Tick();
-
-            Assert.That(loop.Hero.Value(new StatId("crushRageThreshold"), 0), Is.EqualTo(-0.1).Within(1e-9));
-        }
         [Test]
         public void AnAllySettingTheMarkGivesResourceOnceWhenItAppears()
         {

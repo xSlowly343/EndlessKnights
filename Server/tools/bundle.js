@@ -202,6 +202,17 @@ if (raid.version !== 1)
   throw new Error("raid.json: version " + raid.version + " is not supported");
 if (days.indexOf(raid.week.startDay) < 0)
   throw new Error("raid.json: unknown day " + raid.week.startDay);
+function curseClanShare(modifiers) {
+  return modifiers.filter((modifier) => modifier.stat === "curseClanShare").reduce((all, modifier) => all + modifier.value, 0);
+}
+
+function traitModifiers(trait) {
+  if (!trait)
+    return [];
+  const forks = trait.forks.flatMap((fork) => fork.options.reduce((best, option) => curseClanShare(option.modifiers) > curseClanShare(best) ? option.modifiers : best, []));
+  return trait.levels.flatMap((level) => level.modifiers).concat(trait.party || [], forks);
+}
+
 const raidRules = {
   boss: raid.boss,
   weekStartDay: days.indexOf(raid.week.startDay),
@@ -216,7 +227,7 @@ const raidRules = {
   minSeals: raid.rewards.minSeals,
   covenActiveMs: Math.round(raid.coven.activeMinutes * 60000),
   covenMaxBonus: raid.coven.maxBonus,
-  covenMaxShare: ascendancy.subclasses.reduce((sum, subclass) => sum + subclass.nodes.reduce((nodes, node) => nodes + (node.modifiers || []).filter((modifier) => modifier.stat === "curseClanShare").reduce((all, modifier) => all + modifier.value, 0), 0), 0)
+  covenMaxShare: ascendancy.subclasses.reduce((sum, subclass) => sum + curseClanShare(subclass.nodes.flatMap((node) => node.modifiers || []).concat(traitModifiers(subclass.trait))), 0)
 };
 
 if (challenges.version !== 1)

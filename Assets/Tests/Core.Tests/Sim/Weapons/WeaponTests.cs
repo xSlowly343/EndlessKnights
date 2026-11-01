@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void TakingTheWeaponOffDimsTheSkillAndBlocksTheCast()
         {
             var loop = Hero(HeroClass.Runedancer);
-            loop.Skills.Equip(TestWorld.Real.Gems["iron_rim_bash"]);
+            loop.Skills.Equip(TestWorld.Real.Gems["runedancer_hit_1"]);
             loop.State.Resource = 100;
 
             loop.Weapons.Unequip(WeaponHand.Right);
@@ -59,23 +59,24 @@ namespace Game.Core.Tests.Sim.Weapons
         public void ActiveAuraGoesOutWithItsWeapon()
         {
             var loop = Hero(HeroClass.Minstrel);
-            loop.Skills.Equip(TestWorld.Real.Gems["hearth_song"]);
+            loop.State.HeroLevel = TestWorld.Real.Weapons.SkillRules.UnlockLevels[^1];
+            var before = loop.Hero.Value(CombatStats.ResourceGain, 1);
+            loop.Skills.Equip(TestWorld.Real.Gems["minstrel_aura_1"]);
             loop.State.Resource = 100;
-            var before = loop.Hero.Value(CombatStats.Damage, 1);
-            Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.GreaterThan(before));
+            loop.Tick();
+            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.GreaterThan(before));
 
             loop.Weapons.Unequip(WeaponHand.Right);
 
             Assert.That(loop.State.Skills[0].Active, Is.False);
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(before).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(before).Within(1e-9));
         }
 
         [Test]
         public void SecondHandOpensAnotherClassSkills()
         {
             var loop = Hero(HeroClass.Runedancer);
-            loop.Skills.Equip(TestWorld.Real.Gems["hearth_song"]);
+            loop.Skills.Equip(TestWorld.Real.Gems["minstrel_hit_1"]);
             loop.State.Resource = 100;
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.NoWeapon));
 

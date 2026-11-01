@@ -37,7 +37,7 @@ namespace Game.Editor
             var loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Runedancer }, new StatSheet());
             loop.State.TreePointsEarned = 5;
             loop.State.Gold = BigNumber.FromDouble(12345);
-            loop.RaiseNode("runedancer_axe");
+            loop.RaiseNode("runedancer_r1c0");
             loop.State.HeroLevel = 42;
             loop.State.Stage = 37;
             loop.State.RecordStage = 120;

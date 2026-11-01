@@ -61,23 +61,27 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SkillPowerOfOneSkillMakesOnlyThatSkillStronger()
         {
-            var power = ForSkill(CombatStats.SkillPower, "iron_rim_bash", ModifierKind.Increased, 0.5);
+            var power = ForSkill(CombatStats.SkillPower, "runedancer_hit_1", ModifierKind.Increased, 0.5);
             var (plain, _) = Hero(HeroClass.Runedancer);
             var (strong, _) = Hero(HeroClass.Runedancer, power);
 
-            Assert.That(CastDamage(strong, "iron_rim_bash") / CastDamage(plain, "iron_rim_bash"), Is.EqualTo(1.5).Within(1e-9));
-            Assert.That(CastDamage(strong, "no_mercy") / CastDamage(plain, "no_mercy"), Is.EqualTo(1).Within(1e-9));
+            Assert.That(CastDamage(strong, "runedancer_hit_1") / CastDamage(plain, "runedancer_hit_1"), Is.EqualTo(1.5).Within(1e-9));
+            Assert.That(CastDamage(strong, "runedancer_strong_1") / CastDamage(plain, "runedancer_strong_1"), Is.EqualTo(1).Within(1e-9));
         }
 
         [Test]
         public void SkillPowerOfAnAuraMakesItsEffectStronger()
         {
-            var gem = TestWorld.Data.Gems["hearth_song"];
-            var (plain, _) = Hero(HeroClass.Minstrel);
-            var (strong, _) = Hero(HeroClass.Minstrel, ForSkill(CombatStats.SkillPower, gem.Id, ModifierKind.Increased, 0.5));
+            var gem = TestWorld.Data.Gems["runedancer_aura_1"];
+            var (plain, _) = Hero(HeroClass.Runedancer);
+            var (strong, _) = Hero(HeroClass.Runedancer, ForSkill(CombatStats.SkillPower, gem.Id, ModifierKind.Increased, 0.5));
 
-            CastDamage(plain, gem.Id);
-            CastDamage(strong, gem.Id);
+            plain.State.HeroLevel = TestWorld.Data.Weapons.SkillRules.UnlockLevels[^1];
+            strong.State.HeroLevel = plain.State.HeroLevel;
+            SlotOf(plain, gem.Id);
+            SlotOf(strong, gem.Id);
+            plain.Tick();
+            strong.Tick();
 
             var weak = plain.State.Skills[SlotOf(plain, gem.Id)].AuraModifiers.Sum(modifier => modifier.Value);
             var boosted = strong.State.Skills[SlotOf(strong, gem.Id)].AuraModifiers.Sum(modifier => modifier.Value);
@@ -86,27 +90,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SkillDurationOfOneSkillAddsSecondsToItsEffect()
-        {
-            var gem = TestWorld.Data.Gems["hearth_song"];
-            var (plain, _) = Hero(HeroClass.Minstrel);
-            var (longer, _) = Hero(HeroClass.Minstrel, ForSkill(CombatStats.SkillDurationSeconds, gem.Id, ModifierKind.Flat, 2));
-
-            CastDamage(plain, gem.Id);
-            CastDamage(longer, gem.Id);
-
-            var plainTicks = plain.State.Skills[SlotOf(plain, gem.Id)].ActiveTicks;
-            var longerTicks = longer.State.Skills[SlotOf(longer, gem.Id)].ActiveTicks;
-            Assert.That(longerTicks - plainTicks, Is.EqualTo(2 * GameLoop.TicksPerSecond));
-        }
-
-        [Test]
         public void AFastSkillGivesResource()
         {
             var (loop, _) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ResourcePerFastSkill, ModifierKind.Flat, 5));
-            var index = SlotOf(loop, "iron_rim_bash");
+            var index = SlotOf(loop, "runedancer_hit_1");
             loop.State.Resource = 50;
-            var cost = TestWorld.Data.Gems["iron_rim_bash"].Skill!.ResourceCost;
+            var cost = TestWorld.Data.Gems["runedancer_hit_1"].Skill!.ResourceCost;
 
             Assert.That(loop.Skills.TryCast(index), Is.EqualTo(CastResult.Cast));
 
@@ -119,8 +108,8 @@ namespace Game.Core.Tests.Sim
             var (plain, _) = Hero(HeroClass.Runedancer);
             var (loop, _) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ResourcePerFastSkill, ModifierKind.Flat, 5));
 
-            CastDamage(plain, "no_mercy");
-            CastDamage(loop, "no_mercy");
+            CastDamage(plain, "runedancer_strong_1");
+            CastDamage(loop, "runedancer_strong_1");
 
             Assert.That(loop.State.Resource, Is.EqualTo(plain.State.Resource).Within(1e-9));
         }
@@ -138,17 +127,6 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.State.Crits, Is.GreaterThan(0));
             Assert.That(loop.State.Resource, Is.EqualTo(2 * loop.State.Crits).Within(1e-9));
-        }
-
-        [Test]
-        public void ATreeLineNamesAKnownSkill()
-        {
-            var tree = TestWorld.Real.ClassTreeOf("duelist")!;
-            var stats = tree.Nodes.SelectMany(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers))
-                .Select(modifier => modifier.Stat).Where(stat => stat.IsForSkill).ToList();
-
-            Assert.That(stats.Select(stat => stat.Name), Does.Contain("skillPower:thin_cut"));
-            Assert.That(stats.All(stat => TestWorld.Real.Gems.TryGet(stat.SkillId, out _)), Is.True);
         }
     }
 }

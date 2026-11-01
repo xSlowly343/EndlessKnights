@@ -12,8 +12,8 @@ namespace Game.Core.Tests.Sim
     {
         private static DotRules Rules => TestWorld.Data.Combat.Dots;
         private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
-        private static GemDef Vial => TestWorld.Real.Gems["vial_from_belt"];
-        private static GemDef Bottle => TestWorld.Real.Gems["fuse_bottle"];
+        private static GemDef Vial => TestWorld.Real.Gems["alchemist_hit_1"];
+        private static GemDef Bottle => TestWorld.Real.Gems["dowser_hit_1"];
 
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass, params Modifier[] modifiers)
         {
@@ -76,17 +76,6 @@ namespace Game.Core.Tests.Sim
             }
 
             Assert.That(loop.State.PoisonStacks, Is.EqualTo(loop.Skills.Dots.PoisonMax).Within(1e-9));
-        }
-
-        [Test]
-        public void VialAddsThreePoisonStacks()
-        {
-            var (loop, _) = Hero(HeroClass.Alchemist);
-            loop.State.Resource = 100;
-
-            Assert.That(loop.Skills.TryCast(Equip(loop, Vial)), Is.EqualTo(CastResult.Cast));
-
-            Assert.That(loop.State.PoisonStacks, Is.EqualTo(3));
         }
 
         [Test]
@@ -167,18 +156,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void FuseBottleStrikesAndSetsTheEnemyOnFire()
-        {
-            var (loop, _) = Hero(HeroClass.Dowser);
-            var hp = loop.State.EnemyHp;
-
-            Assert.That(loop.Skills.TryCast(Equip(loop, Bottle)), Is.EqualTo(CastResult.Cast));
-
-            Assert.That(loop.State.BurnStacks, Is.EqualTo(3));
-            Assert.That(Dealt(loop, hp), Is.EqualTo(KeyDamage * 2).Within(1e-6));
-        }
-
-        [Test]
         public void MovingTheMouseFansTheFire()
         {
             var (still, _) = Hero(HeroClass.Dowser);
@@ -240,38 +217,6 @@ namespace Game.Core.Tests.Sim
             loop.Skills.TryCast(index);
 
             Assert.That(loop.Resource.Overheated, Is.False);
-        }
-
-        [Test]
-        public void SureToBlowDetonatesTenSecondsOfStacks()
-        {
-            var (loop, _) = Hero(HeroClass.Alchemist);
-            loop.State.PoisonStacks = 10;
-            var hp = loop.State.EnemyHp;
-
-            loop.Skills.Dots.Detonate((DetonateEffect)TestWorld.Real.Gems["sure_to_blow"].Skill!.Effect);
-
-            Assert.That(Dealt(loop, hp), Is.EqualTo(KeyDamage * 10 * Rules.PoisonHitsPerStack * 10).Within(1e-6));
-            Assert.That(loop.State.PoisonStacks, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void ExhaleBurnsThreeStacksASecond()
-        {
-            var (loop, _) = Hero(HeroClass.Dowser);
-            var exhale = (AddStacksEffect)TestWorld.Real.Gems["exhale"].Skill!.Effect;
-
-            for (var i = 0; i < GameLoop.TicksPerSecond; i++)
-                loop.Skills.Dots.Flow(exhale);
-
-            Assert.That(loop.State.BurnStacks, Is.EqualTo(3).Within(1e-9));
-        }
-
-        [Test]
-        public void DotPathSkillsAreOpen()
-        {
-            foreach (var id in new[] { "sure_to_blow", "sky_stone", "exhale" })
-                Assert.That(TestWorld.Real.Gems[id].Locked, Is.False, id);
         }
     }
 }

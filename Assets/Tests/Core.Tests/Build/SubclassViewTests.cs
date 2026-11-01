@@ -30,54 +30,6 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void NodeNextToTheStartCanBeTakenAndFarNodeIsNotConnected()
-        {
-            var loop = Berserker("first_guardian");
-            var state = loop.State.Ascendancy;
-
-            Assert.That(SubclassView.Status(state, Catalog, Path.Start), Is.EqualTo("Начало Пути"));
-            Assert.That(SubclassView.Status(state, Catalog, Node("berserker_b0_1")), Is.EqualTo("Можно взять · 1 очко Пути"));
-            Assert.That(SubclassView.Status(state, Catalog, Node("berserker_1")), Is.EqualTo("Нет связи со взятыми узлами"));
-            Assert.That(SubclassView.CanTake(state, Catalog, Node("berserker_b0_1")), Is.True);
-        }
-
-        [Test]
-        public void CheckDoesNotSpendThePoint()
-        {
-            var loop = Berserker("first_guardian");
-            var state = loop.State.Ascendancy;
-
-            state.Check(Catalog, "berserker_b0_1");
-
-            Assert.That(state.PointsLeft(Catalog), Is.EqualTo(1));
-            Assert.That(loop.AllocateSubclassNode("berserker_b0_1"), Is.EqualTo(AllocationResult.Allocated));
-            Assert.That(SubclassView.Status(state, Catalog, Node("berserker_b0_1")), Is.EqualTo("Взят"));
-            Assert.That(SubclassView.Status(state, Catalog, Node("berserker_1")), Is.EqualTo("Нет свободных очков"));
-        }
-
-        [Test]
-        public void CardNamesThePathAndShowsTheNodeStats()
-        {
-            var loop = Berserker("first_guardian");
-
-            var card = SubclassView.Card(loop.State.Ascendancy, Catalog, Path, Node("berserker_1"), loop.Hero);
-
-            Assert.That(card.Name, Is.EqualTo("Без щита"));
-            Assert.That(card.Kind, Does.EndWith("Berserker"));
-            Assert.That(card.Stats, Has.Count.EqualTo(Node("berserker_1").Modifiers.Count));
-            Assert.That(card.Deltas, Is.Not.Empty);
-        }
-
-        [Test]
-        public void HeaderCountsPointsAndTakenNodes()
-        {
-            var loop = Berserker("first_guardian", "first_prestige");
-            loop.AllocateSubclassNode("berserker_b0_1");
-
-            Assert.That(SubclassView.Points(loop.State.Ascendancy, Catalog, Path), Is.EqualTo($"Очков Пути: 1 · взято 1 / {Path.Nodes.Count - 1}"));
-        }
-
-        [Test]
         public void EveryPathHasABlurbAndAPathSkill()
         {
             Assert.That(Catalog.Subclasses.Where(subclass => subclass.Blurb.Length == 0).Select(subclass => subclass.Id), Is.Empty);

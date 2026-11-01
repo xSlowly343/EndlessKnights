@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
     {
         private static MinionRules Rules => TestWorld.Data.Combat.Skeletons;
         private static ClassResource Souls => TestWorld.Data.Combat.Resources.For("soulbinder");
-        private static GemDef Colleague => TestWorld.Real.Gems["call_a_colleague"];
+        private static GemDef Colleague => TestWorld.Real.Gems["soulbinder_hit_2"];
         private static SummonEffect Skeleton => (SummonEffect)Colleague.Skill!.Effect;
         private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
 
@@ -41,82 +41,6 @@ namespace Game.Core.Tests.Sim
         {
             for (var i = 0; i < count; i++)
                 loop.Skills.Minions.Place(Skeleton, Colleague.Tags);
-        }
-
-        [Test]
-        public void CallAColleagueIsTheGravediggersStartingSkill()
-        {
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("soulbinder"), Has.Some.Property("Id").EqualTo("call_a_colleague"));
-            Assert.That(Colleague.Skill!.Weapon, Is.EqualTo("shovel"));
-        }
-
-        [Test]
-        public void CastingRaisesASkeleton()
-        {
-            var (loop, _) = Soulbinder();
-            loop.State.Resource = 100;
-            TestWorld.ArmFor(loop, Colleague);
-
-            Assert.That(loop.Skills.TryCast(loop.Skills.Equip(Colleague)), Is.EqualTo(CastResult.Cast));
-
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Skeleton), Is.EqualTo(1));
-        }
-
-        [Test]
-        public void SkeletonHitsOncePerSecondForSixtySeconds()
-        {
-            var (loop, _) = Soulbinder();
-            Summon(loop, 1);
-            var hp = loop.State.EnemyHp;
-
-            Wait(loop, 3);
-            Assert.That((hp - loop.State.EnemyHp).ToDouble(), Is.EqualTo(KeyDamage * Skeleton.Multiplier * 3).Within(1e-6));
-
-            Wait(loop, Skeleton.Seconds - 3);
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Skeleton), Is.EqualTo(0));
-            Assert.That(loop.Skills.Minions.SkeletonHits, Is.EqualTo((long)Skeleton.Seconds));
-        }
-
-        [Test]
-        public void FiveSkeletonsStandAndMinionCountAddsMore()
-        {
-            var (plain, _) = Soulbinder();
-            var (more, _) = Soulbinder(new Modifier(CombatStats.MinionCount, ModifierKind.Flat, 2));
-
-            Summon(plain, Rules.Max + 3);
-            Summon(more, Rules.Max + 3);
-
-            Assert.That(plain.Skills.Minions.Standing(MinionKind.Skeleton), Is.EqualTo(Rules.Max));
-            Assert.That(more.Skills.Minions.Standing(MinionKind.Skeleton), Is.EqualTo(Rules.Max + 2));
-        }
-
-        [Test]
-        public void SkeletonsAndCannonsHaveSeparateLimits()
-        {
-            var (loop, _) = Soulbinder();
-            var cannon = (SummonEffect)TestWorld.Real.Gems["cannon_by_name"].Skill!.Effect;
-
-            Summon(loop, Rules.Max);
-            for (var i = 0; i < 3; i++)
-                loop.Skills.Minions.Place(cannon, StatTags.Skill);
-
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Skeleton), Is.EqualTo(Rules.Max));
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(3));
-        }
-
-        [Test]
-        public void LanternMakesSkeletonsHitFasterWhileTheMouseMoves()
-        {
-            var (loop, input) = Soulbinder();
-            Summon(loop, 1);
-
-            for (var i = 0; i < 10 * GameLoop.TicksPerSecond; i++)
-            {
-                input.MoveMouse(1);
-                loop.Tick();
-            }
-
-            Assert.That(loop.Skills.Minions.SkeletonHits, Is.EqualTo((long)(10 * Rules.MouseSpeed)));
         }
 
         [Test]

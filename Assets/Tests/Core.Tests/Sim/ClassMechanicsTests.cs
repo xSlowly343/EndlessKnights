@@ -117,21 +117,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ThinCutAlwaysCrits()
-        {
-            var (loop, _) = Hero(HeroClass.Duelist);
-            var gem = TestWorld.Real.Gems["thin_cut"];
-            loop.State.Resource = 100;
-            TestWorld.ArmFor(loop, gem);
-            loop.Events.Clear();
-
-            Assert.That(loop.Skills.TryCast(loop.Skills.Equip(gem)), Is.EqualTo(CastResult.Cast));
-
-            Assert.That(LastHit(loop).Flags & HitFlags.Crit, Is.EqualTo(HitFlags.Crit));
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("duelist"), Has.Some.Property("Id").EqualTo("thin_cut"));
-        }
-
-        [Test]
         public void EveryBreathStepOfTheStreakGivesOneWhirl()
         {
             var (loop, input) = Hero(HeroClass.Duelist);

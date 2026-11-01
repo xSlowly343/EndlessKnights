@@ -230,27 +230,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheClassAttributeStrengthensEachNewFeature()
-        {
-            var bonds = Hero(HeroClass.Mothcaller, new FakeInputSource(), 20);
-            bonds.State.Resource = 80;
-            bonds.Tick();
-            Assert.That(bonds.Features.BondShare, Is.EqualTo(Rules.Bonds.AuraDuration * (1 + 20 * PerPoint(bonds))).Within(1e-9));
-
-            var plainCold = Hero(HeroClass.Cartomancer, new FakeInputSource());
-            var strongCold = Hero(HeroClass.Cartomancer, new FakeInputSource(), 20);
-            plainCold.State.Cold = strongCold.State.Cold = 50;
-            Assert.That(strongCold.Combat.Class.ColdShare / plainCold.Combat.Class.ColdShare, Is.EqualTo(1 + 20 * PerPoint(strongCold)).Within(1e-9));
-
-            var plainBlood = Hero(HeroClass.Herbwitch, new FakeInputSource());
-            var strongBlood = Hero(HeroClass.Herbwitch, new FakeInputSource(), 20);
-            plainBlood.State.BloodStacks = strongBlood.State.BloodStacks = 10;
-            Assert.That(strongBlood.Features.BloodHitsPerSecond / plainBlood.Features.BloodHitsPerSecond, Is.EqualTo(1 + 20 * PerPoint(strongBlood)).Within(1e-9));
-
-            Assert.That(GolemDamage(20) / GolemDamage(0), Is.EqualTo(1 + 20 * PerPoint(Hero(HeroClass.Golemancer, new FakeInputSource()))).Within(1e-6));
-        }
-
-        [Test]
         public void ANoviceHasNoneOfTheNewFeatures()
         {
             var input = new FakeInputSource();

@@ -11,7 +11,7 @@ namespace Game.Core.Tests.Sim
     public class SeaWolfFireShotTests
     {
         private static CannonRules Rules => TestWorld.Data.Combat.Cannons;
-        private static GemDef CannonByName => TestWorld.Real.Gems["cannon_by_name"];
+        private static GemDef CannonByName => TestWorld.Real.Gems["ghostcaptain_hit_1"];
         private static SummonEffect Cannon => (SummonEffect)CannonByName.Skill!.Effect;
 
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass, EnemyType enemy, params Modifier[] modifiers)
@@ -39,49 +39,6 @@ namespace Game.Core.Tests.Sim
 
         private static bool Burning(GameLoop loop) =>
             (loop.Synergy.OwnMarks & TestWorld.Data.Synergy.MaskOf(new[] { "fire" })) != 0;
-
-        [Test]
-        public void CannonballsSetTheEnemyOnFireAndLightTheFireMark()
-        {
-            Assert.That(Rules.IgniteStacks, Is.EqualTo(1));
-            var (loop, _) = Hero(HeroClass.Ghostcaptain, EnemyType.Normal);
-            loop.Skills.Minions.Place(Cannon, CannonByName.Tags);
-
-            Wait(loop, 1.05);
-
-            Assert.That(loop.Skills.Minions.CannonShots, Is.EqualTo(1));
-            Assert.That(loop.State.BurnStacks, Is.GreaterThan(0));
-            loop.Tick();
-            Assert.That(Burning(loop), Is.True);
-        }
-
-        [Test]
-        public void CannonsOfOtherClassesDoNotIgnite()
-        {
-            var (loop, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            loop.Skills.Minions.Place(Cannon, CannonByName.Tags);
-
-            Wait(loop, 1.05);
-
-            Assert.That(loop.Skills.Minions.CannonShots, Is.EqualTo(1));
-            Assert.That(loop.State.BurnStacks, Is.Zero);
-        }
-
-        [Test]
-        public void CannonsHitBossesHarderWithTheTree()
-        {
-            var (plain, _) = Hero(HeroClass.Ghostcaptain, EnemyType.Boss, new Modifier(CombatStats.CannonIgnite, ModifierKind.Flat, -1));
-            var (siege, _) = Hero(HeroClass.Ghostcaptain, EnemyType.Boss, new Modifier(CombatStats.CannonIgnite, ModifierKind.Flat, -1), new Modifier(CombatStats.MinionBoss, ModifierKind.Flat, 0.1, StatTags.Minion));
-            var plainHp = plain.State.EnemyHp;
-            var siegeHp = siege.State.EnemyHp;
-            plain.Skills.Minions.Place(Cannon, CannonByName.Tags);
-            siege.Skills.Minions.Place(Cannon, CannonByName.Tags);
-
-            Wait(plain, 1.05);
-            Wait(siege, 1.05);
-
-            Assert.That((siegeHp - siege.State.EnemyHp).ToDouble() / (plainHp - plain.State.EnemyHp).ToDouble(), Is.EqualTo(1.1).Within(1e-6));
-        }
 
         [Test]
         public void TheBroadsideComesSoonerAndHitsTheNextEnemyWithTheTree()

@@ -34,7 +34,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.Skills.Select(slot => slot.Skill.Id), Is.EquivalentTo(new[] { "through_stride", "lull" }));
             Assert.That(loop.State.Skills.All(slot => slot.Def.Weapon == null), Is.True);
             Assert.That(loop.ClassChoiceReady, Is.False, "the choice opens on the second level");
-            Assert.That(loop.RaiseNode("duelist_katana"), Is.EqualTo(RankResult.ChooseClassFirst));
+            Assert.That(loop.RaiseNode("duelist_r1c0"), Is.EqualTo(RankResult.ChooseClassFirst));
             Assert.That(loop.ChooseClass(HeroClass.Duelist), Is.EqualTo(ClassChoiceResult.NotYet));
         }
 
@@ -78,7 +78,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.ChooseClass(HeroClass.Runedancer), Is.EqualTo(ClassChoiceResult.AlreadyChosen));
 
             Assert.That(state.ClassTreeActive, Is.True);
-            Assert.That(loop.RaiseNode("duelist_katana"), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.RaiseNode("duelist_r1c0"), Is.EqualTo(RankResult.Done));
         }
 
         [Test]

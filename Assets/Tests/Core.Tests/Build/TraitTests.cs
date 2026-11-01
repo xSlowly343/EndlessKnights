@@ -31,17 +31,26 @@ namespace Game.Core.Tests.Build
             ]
         },";
 
-        private static string WithTrait(string trait = Trait) =>
-            TestData.ReadGameDataFile(AscendancyCatalog.FileName).Replace(@"""id"": ""berserker"",", @"""id"": ""berserker"", " + trait);
+        private static string Activities() =>
+            string.Join(", ", Enumerable.Range(1, 8).Select(i => @"{ ""id"": ""a" + i + @""", ""name"": { ""ru"": ""А"", ""en"": ""A"" } }"));
 
-        private static AscendancyCatalog Catalog(string trait = Trait) => AscendancyCatalog.Load(WithTrait(trait));
+        private static string Path(string id, string trait) =>
+            @"{ ""id"": """ + id + @""", ""class"": ""runedancer"", ""name"": { ""ru"": ""П"", ""en"": ""P"" }, " + trait + @"
+              ""nodes"": [{ ""id"": """ + id + @"_start"", ""type"": ""start"", ""x"": 0, ""y"": 0, ""name"": { ""ru"": ""П"", ""en"": ""P"" } }], ""links"": [] }";
 
-        private static AscendancyState Chosen(AscendancyCatalog catalog, int activities)
+        private static AscendancyCatalog Catalog(string trait = Trait) => AscendancyCatalog.Load(@"{
+  ""version"": 1,
+  ""activities"": [" + Activities() + @"],
+  ""change"": { ""freeEveryHours"": 24, ""crystalCost"": 100, ""freeClassChanges"": 1 },
+  ""subclasses"": [" + Path("berserker", trait) + ", " + Path("plain", "") + @"]
+}");
+
+        private static AscendancyState Chosen(AscendancyCatalog catalog, int activities, string path = "berserker")
         {
             var state = new AscendancyState();
             foreach (var activity in catalog.Activities.Take(activities))
                 state.Complete(activity.Id);
-            Assert.That(state.Choose(catalog, "runedancer", "berserker"), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(state.Choose(catalog, "runedancer", path), Is.EqualTo(SubclassResult.Chosen));
             return state;
         }
 
@@ -99,10 +108,10 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void AnOldPathWithoutATraitHasNoForks()
+        public void APathWithoutATraitHasNoForks()
         {
-            var catalog = TestWorld.Data.Ascendancy;
-            var state = Chosen(catalog, 3);
+            var catalog = Catalog();
+            var state = Chosen(catalog, 3, "plain");
 
             Assert.That(state.TraitLevel(catalog), Is.Zero);
             Assert.That(state.PickFork(catalog, 75, "long_word"), Is.EqualTo(TraitForkResult.NoTrait));
@@ -130,6 +139,24 @@ namespace Game.Core.Tests.Build
             var error = Assert.Throws<ContentException>(() => Catalog(Trait.Replace(original, broken)))!;
 
             Assert.That(error.Message, Does.Contain(message));
+        }
+
+        [Test]
+        public void EveryCharacterHasThreeTraitsWithForksAt45And60And75()
+        {
+            var catalog = TestWorld.Data.Ascendancy;
+
+            foreach (var heroClass in HeroClassNames.ByName.Keys.Where(name => name != HeroClassNames.Novice))
+            {
+                var paths = catalog.SubclassesOf(heroClass);
+                Assert.That(paths.Count, Is.EqualTo(3), heroClass);
+                foreach (var path in paths)
+                {
+                    Assert.That(path.Trait, Is.Not.Null, path.Id);
+                    Assert.That(path.Trait!.Forks.Select(fork => fork.HeroLevel), Is.EqualTo(new[] { 45, 60, 75 }), path.Id);
+                    Assert.That(path.Trait.Party, Is.Not.Empty, path.Id);
+                }
+            }
         }
     }
 }

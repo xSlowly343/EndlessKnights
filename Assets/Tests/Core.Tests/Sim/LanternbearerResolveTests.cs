@@ -103,8 +103,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ForemansHammerIsTheStartingSkill()
         {
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("lanternbearer"), Has.Some.Property("Id").EqualTo("foreman_hammer"));
-            Assert.That(TestWorld.Real.Gems["foreman_hammer"].Skill!.Weapon, Is.EqualTo("banner"));
+            Assert.That(TestWorld.Real.SkillBook.StartingGems("lanternbearer"), Has.Some.Property("Id").EqualTo("lanternbearer_hit_1"));
+            Assert.That(TestWorld.Real.Gems["lanternbearer_hit_1"].Skill!.Weapon, Is.EqualTo("banner"));
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = AtStage(45, 80000);
             loop.State.OwnedGems.Add(TestWorld.Data.Gems["lull"]);
-            loop.RaiseNode("duelist_katana");
+            loop.RaiseNode("duelist_r1c0");
             var gain = loop.Prestige.EchoGain;
 
             Assert.That(loop.Prestige.TryPrestige(), Is.True);

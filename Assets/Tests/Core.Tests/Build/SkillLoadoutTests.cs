@@ -62,7 +62,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void AurasTakeTheAuraSlotsFirstAndThenAnySlot()
         {
-            var auras = new[] { "march", "golden_fever", "tailwind", "exposure", "freeze_frame", "overheat", "quick_stride", "lasso" };
+            var auras = new[] { "march", "golden_fever", "tailwind", "exposure", "freeze_frame", "overheat", "quick_stride", "mark" };
             var loop = WithGems(auras);
 
             for (var i = 0; i < 7; i++)
@@ -154,7 +154,7 @@ namespace Game.Core.Tests.Build
             var input = new FakeInputSource();
             var loop = Fighting(input);
             loop.Skills.Equip(Gem("through_stride"), role: SkillSlotRole.Left);
-            loop.Skills.Equip(Gem("lightning_zigzag"), role: SkillSlotRole.Right);
+            loop.Skills.Equip(Gem("execute"), role: SkillSlotRole.Right);
 
             Assert.That(CastsOver(loop, 50), Is.EqualTo(0));
             input.ClickLeft();

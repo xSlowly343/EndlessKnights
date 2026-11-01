@@ -30,7 +30,7 @@ namespace Game.Core.Tests.Sim
                 loop.Skills.Unequip(0);
             while (loop.State.Weapons.Left != null || loop.State.Weapons.Right != null)
                 loop.Weapons.Unequip(loop.State.Weapons.Left != null ? WeaponHand.Left : WeaponHand.Right);
-            var skill = Gem("iron_rim_bash");
+            var skill = Gem("runedancer_hit_1");
             if (armed)
                 TestWorld.ArmFor(loop, skill);
             loop.State.OwnedGems.AddRange(new[] { skill, Gem("rebound") });
@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Sim
 
             Kill(loop, input);
 
-            foreach (var id in new[] { "iron_rim_bash", "rebound" })
+            foreach (var id in new[] { "runedancer_hit_1", "rebound" })
                 Assert.That(loop.State.GemProgress[id].Experience, Is.EqualTo(Levels.ExperiencePerKill).Within(1e-9), id);
         }
 
@@ -67,7 +67,7 @@ namespace Game.Core.Tests.Sim
 
             Kill(loop, input);
 
-            Assert.That(loop.State.GemProgress["iron_rim_bash"].Experience, Is.EqualTo(0));
+            Assert.That(loop.State.GemProgress["runedancer_hit_1"].Experience, Is.EqualTo(0));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace Game.Core.Tests.Sim
 
             Kill(loop, input);
 
-            Assert.That(loop.State.GemProgress["iron_rim_bash"].Experience, Is.EqualTo(Levels.ExperiencePerKill * 1.5).Within(1e-9));
+            Assert.That(loop.State.GemProgress["runedancer_hit_1"].Experience, Is.EqualTo(Levels.ExperiencePerKill * 1.5).Within(1e-9));
         }
 
         [Test]
@@ -86,9 +86,9 @@ namespace Game.Core.Tests.Sim
             var (loop, _) = Hero(armed: true);
             loop.Events.Clear();
 
-            loop.GemExperience.Grant(Gem("iron_rim_bash"), Levels.ToNext(1) + 1);
+            loop.GemExperience.Grant(Gem("runedancer_hit_1"), Levels.ToNext(1) + 1);
 
-            var progress = loop.State.GemProgress["iron_rim_bash"];
+            var progress = loop.State.GemProgress["runedancer_hit_1"];
             Assert.That(progress.Level, Is.EqualTo(2));
             Assert.That(progress.Experience, Is.EqualTo(1).Within(1e-6));
             Assert.That(loop.Events.CountOf(GameEventKind.GemLevelUp), Is.EqualTo(1));
@@ -99,17 +99,17 @@ namespace Game.Core.Tests.Sim
         {
             var (loop, _) = Hero(armed: true);
 
-            loop.GemExperience.Grant(Gem("iron_rim_bash"), 1e15);
+            loop.GemExperience.Grant(Gem("runedancer_hit_1"), 1e15);
 
-            Assert.That(loop.State.GemProgress["iron_rim_bash"].Level, Is.EqualTo(Levels.Max));
-            Assert.That(loop.State.GemProgress["iron_rim_bash"].Experience, Is.EqualTo(0));
+            Assert.That(loop.State.GemProgress["runedancer_hit_1"].Level, Is.EqualTo(Levels.Max));
+            Assert.That(loop.State.GemProgress["runedancer_hit_1"].Experience, Is.EqualTo(0));
         }
 
         [Test]
         public void HigherLevelMakesTheCastStronger()
         {
             var (loop, _) = Hero(armed: true);
-            loop.State.GemProgress["iron_rim_bash"].Level = 11;
+            loop.State.GemProgress["runedancer_hit_1"].Level = 11;
             loop.State.Resource = 100;
 
             loop.Skills.TryCast(0);
@@ -122,13 +122,13 @@ namespace Game.Core.Tests.Sim
         public void ProgressSurvivesSaveAndLoad()
         {
             var (loop, _) = Hero(armed: true);
-            loop.State.GemProgress["iron_rim_bash"].Level = 7;
-            loop.State.GemProgress["iron_rim_bash"].Experience = 42;
+            loop.State.GemProgress["runedancer_hit_1"].Level = 7;
+            loop.State.GemProgress["runedancer_hit_1"].Experience = 42;
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;
 
-            Assert.That(loaded.LevelOf(Gem("iron_rim_bash")), Is.EqualTo(7));
-            Assert.That(loaded.GemProgress["iron_rim_bash"].Experience, Is.EqualTo(42).Within(1e-9));
+            Assert.That(loaded.LevelOf(Gem("runedancer_hit_1")), Is.EqualTo(7));
+            Assert.That(loaded.GemProgress["runedancer_hit_1"].Experience, Is.EqualTo(42).Within(1e-9));
         }
 
         [Test]
@@ -142,14 +142,6 @@ namespace Game.Core.Tests.Sim
                 Assert.That(loop.State.LevelOf(slot.Skill), Is.EqualTo(1));
                 Assert.That(loop.State.GemProgress.ContainsKey(slot.Skill.Id), Is.True);
             }
-        }
-
-        [Test]
-        public void CaravaneerCargoNodeIsOpen()
-        {
-            var caravaneer = TestWorld.Data.Ascendancy.Subclasses.Single(s => s.Id == "caravaneer");
-
-            Assert.That(caravaneer.Nodes.Where(n => n.Locked), Is.Empty);
         }
     }
 }

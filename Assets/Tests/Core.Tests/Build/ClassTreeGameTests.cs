@@ -39,40 +39,40 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.ClassTreeDef, Is.Not.Null);
             Assert.That(loop.State.ClassTreeActive, Is.True);
             Assert.That(loop.State.TreePointsLeft, Is.EqualTo(loop.State.TreePointsEarned));
-            Assert.That(loop.RaiseNode("runedancer_heavy_swing"), Is.EqualTo(RankResult.RowClosed));
-            Raise(loop, "axe", 5);
-            Assert.That(loop.RaiseNode("runedancer_heavy_swing"), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.RaiseNode("runedancer_r2c0"), Is.EqualTo(RankResult.RowClosed));
+            Raise(loop, "r1c0", 5);
+            Assert.That(loop.RaiseNode("runedancer_r2c0"), Is.EqualTo(RankResult.Done));
             Assert.That(loop.State.TreePointsSpent, Is.EqualTo(6));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(118).Within(1e-9), "axe ×3 lines 12% and the swing 6%");
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(104).Within(1e-9), "the third line of the first node gives 4%, the second row starts with crits");
         }
 
         [Test]
         public void TakingBackARankIsFreeUntilTheFirstLimitAndCostsGoldAfter()
         {
             var loop = Huscarl();
-            Raise(loop, "axe", 2);
+            Raise(loop, "r1c0", 2);
 
             Assert.That(loop.ClassTreeResetFree, Is.True);
-            Assert.That(loop.LowerCost("runedancer_axe"), Is.EqualTo(BigNumber.Zero));
-            Assert.That(loop.LowerNode("runedancer_axe"), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.LowerCost("runedancer_r1c0"), Is.EqualTo(BigNumber.Zero));
+            Assert.That(loop.LowerNode("runedancer_r1c0"), Is.EqualTo(RefundResult.Refunded));
 
             loop.State.GatesCleared.Add(10_000);
             loop.State.Gold = BigNumber.Zero;
-            Assert.That(loop.LowerCost("runedancer_axe")!.Value.Sign, Is.GreaterThan(0));
-            Assert.That(loop.LowerNode("runedancer_axe"), Is.EqualTo(RefundResult.NotEnoughGold));
+            Assert.That(loop.LowerCost("runedancer_r1c0")!.Value.Sign, Is.GreaterThan(0));
+            Assert.That(loop.LowerNode("runedancer_r1c0"), Is.EqualTo(RefundResult.NotEnoughGold));
             loop.State.Gold = BigNumber.FromDouble(1e9);
-            Assert.That(loop.LowerNode("runedancer_axe"), Is.EqualTo(RefundResult.Refunded));
-            Assert.That(loop.State.ClassTree.RankOf("runedancer_axe"), Is.Zero);
-            Assert.That(loop.LowerNode("runedancer_axe"), Is.EqualTo(RefundResult.NotAllocated));
+            Assert.That(loop.LowerNode("runedancer_r1c0"), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(loop.State.ClassTree.RankOf("runedancer_r1c0"), Is.Zero);
+            Assert.That(loop.LowerNode("runedancer_r1c0"), Is.EqualTo(RefundResult.NotAllocated));
         }
 
         [Test]
         public void AFreeResetAndFillBringTheSameBuildBack()
         {
             var loop = Huscarl();
-            Raise(loop, "wrath", 5);
-            Raise(loop, "blood_boils", 3);
-            Raise(loop, "tempered_eye", 2);
+            Raise(loop, "r1c1", 5);
+            Raise(loop, "r2c1", 3);
+            Raise(loop, "r1c4", 2);
             var before = loop.State.ClassTree.Ranks.ToDictionary(pair => pair.Key, pair => pair.Value);
 
             Assert.That(loop.ClassTreeResetCost(), Is.EqualTo(BigNumber.Zero));
@@ -87,17 +87,17 @@ namespace Game.Core.Tests.Build
         public void AMajorTalentOnTheBarWorksFromItsMark()
         {
             var loop = Huscarl(60);
-            Raise(loop, "tempered_eye", 5);
-            Raise(loop, "battle_trance", 5);
-            Raise(loop, "hirdman_spoils", 5);
-            Raise(loop, "challenge", 4);
+            Raise(loop, "r1c4", 5);
+            Raise(loop, "r1c5", 5);
+            Raise(loop, "r1c6", 5);
+            Raise(loop, "r1c7", 4);
 
-            Assert.That(loop.ChooseMajorTalent(20, "runedancer_cool_head"), Is.EqualTo(RankResult.UnknownMajor), "Cool Head is on the 50 mark");
-            Assert.That(loop.ChooseMajorTalent(20, "runedancer_smoulder"), Is.EqualTo(RankResult.MarkNotReached));
-            var resource = loop.Hero.Value(CombatStats.ResourceDecay, 1);
-            Raise(loop, "war_cry", 1);
-            Assert.That(loop.ChooseMajorTalent(20, "runedancer_smoulder"), Is.EqualTo(RankResult.Done));
-            Assert.That(loop.Hero.Value(CombatStats.ResourceDecay, 1), Is.LessThan(resource));
+            Assert.That(loop.ChooseMajorTalent(20, "runedancer_m50_2"), Is.EqualTo(RankResult.UnknownMajor), "Cool Head is on the 50 mark");
+            Assert.That(loop.ChooseMajorTalent(20, "runedancer_m20_1"), Is.EqualTo(RankResult.MarkNotReached));
+            var damage = loop.Hero.Value(CombatStats.Damage, 1);
+            Raise(loop, "r1c8", 1);
+            Assert.That(loop.ChooseMajorTalent(20, "runedancer_m20_1"), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.GreaterThan(damage));
             Assert.That(loop.Hero.Value(TreeStat("classAttribute"), 0), Is.EqualTo(3), "two bar steps: +3 class attribute and +2% Wrath gain");
         }
 
@@ -105,42 +105,42 @@ namespace Game.Core.Tests.Build
         public void AMajorTalentChangesOnlyOutsideABossFight()
         {
             var loop = Huscarl(60);
-            Raise(loop, "tempered_eye", 5);
-            Raise(loop, "battle_trance", 5);
-            Raise(loop, "hirdman_spoils", 5);
-            Raise(loop, "challenge", 5);
+            Raise(loop, "r1c4", 5);
+            Raise(loop, "r1c5", 5);
+            Raise(loop, "r1c6", 5);
+            Raise(loop, "r1c7", 5);
             loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Boss, BigNumber.FromDouble(1e9));
 
-            Assert.That(loop.ChooseMajorTalent(20, "runedancer_smoulder"), Is.EqualTo(RankResult.Done), "the first choice is a new talent, like a new rank");
-            Assert.That(loop.ChooseMajorTalent(20, "runedancer_smoulder"), Is.EqualTo(RankResult.Done));
-            Assert.That(loop.ChooseMajorTalent(20, "runedancer_warm_up"), Is.EqualTo(RankResult.InBossFight));
-            Assert.That(loop.State.ClassTree.Majors[20], Is.EqualTo("runedancer_smoulder"));
+            Assert.That(loop.ChooseMajorTalent(20, "runedancer_m20_1"), Is.EqualTo(RankResult.Done), "the first choice is a new talent, like a new rank");
+            Assert.That(loop.ChooseMajorTalent(20, "runedancer_m20_1"), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.ChooseMajorTalent(20, "runedancer_m20_2"), Is.EqualTo(RankResult.InBossFight));
+            Assert.That(loop.State.ClassTree.Majors[20], Is.EqualTo("runedancer_m20_1"));
 
             loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Normal, BigNumber.FromDouble(1e9));
-            Assert.That(loop.ChooseMajorTalent(20, "runedancer_warm_up"), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.ChooseMajorTalent(20, "runedancer_m20_2"), Is.EqualTo(RankResult.Done));
         }
 
         [Test]
         public void EachPresetKeepsItsOwnClassTree()
         {
             var loop = Huscarl();
-            Raise(loop, "axe", 3);
+            Raise(loop, "r1c0", 3);
 
             loop.SwitchPreset();
             Assert.That(loop.State.TreePointsSpent, Is.Zero);
-            Raise(loop, "wrath", 2);
+            Raise(loop, "r1c1", 2);
             loop.SwitchPreset();
 
-            Assert.That(loop.State.ClassTree.RankOf("runedancer_axe"), Is.EqualTo(3));
-            Assert.That(loop.State.ClassTree.RankOf("runedancer_wrath"), Is.Zero);
-            Assert.That(loop.State.OtherPreset.ClassTree.RankOf("runedancer_wrath"), Is.EqualTo(2));
+            Assert.That(loop.State.ClassTree.RankOf("runedancer_r1c0"), Is.EqualTo(3));
+            Assert.That(loop.State.ClassTree.RankOf("runedancer_r1c1"), Is.Zero);
+            Assert.That(loop.State.OtherPreset.ClassTree.RankOf("runedancer_r1c1"), Is.EqualTo(2));
         }
 
         [Test]
         public void ChangingTheClassGivesTheTreeOfTheNewClassWithAllPoints()
         {
             var loop = Huscarl();
-            Raise(loop, "axe", 4);
+            Raise(loop, "r1c0", 4);
 
             Assert.That(loop.ChangeClassFree(HeroClass.Ghostcaptain), Is.EqualTo(ClassChangeResult.Changed));
             Assert.That(loop.State.ClassTreeActive, Is.True);
@@ -158,17 +158,17 @@ namespace Game.Core.Tests.Build
         public void TheSaveKeepsRanksTalentsAndThePlan()
         {
             var loop = Huscarl(60);
-            Raise(loop, "tempered_eye", 5);
-            Raise(loop, "battle_trance", 5);
-            Raise(loop, "hirdman_spoils", 5);
-            Raise(loop, "challenge", 5);
-            loop.ChooseMajorTalent(20, "runedancer_warm_up");
+            Raise(loop, "r1c4", 5);
+            Raise(loop, "r1c5", 5);
+            Raise(loop, "r1c6", 5);
+            Raise(loop, "r1c7", 5);
+            loop.ChooseMajorTalent(20, "runedancer_m20_2");
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, Clock), TestWorld.Real).State;
             var again = new GameLoop(TestWorld.Real, new FakeInputSource(), loaded, new StatSheet());
 
-            Assert.That(loaded.ClassTree.RankOf("runedancer_tempered_eye"), Is.EqualTo(5));
-            Assert.That(loaded.ClassTree.Majors[20], Is.EqualTo("runedancer_warm_up"));
+            Assert.That(loaded.ClassTree.RankOf("runedancer_r1c4"), Is.EqualTo(5));
+            Assert.That(loaded.ClassTree.Majors[20], Is.EqualTo("runedancer_m20_2"));
             Assert.That(loaded.ClassTree.Plan.Count, Is.EqualTo(20));
             Assert.That(again.State.TreePointsSpent, Is.EqualTo(20));
             Assert.That(again.State.TreePointsEarned, Is.EqualTo(loop.State.TreePointsEarned));

@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Sim.Weapons
         private static readonly ClockStamp Clock = ClockStamp.First(new ClockReading(1_760_000_000_000, 3_600_000, 12));
         private static readonly string[] KatanaStarter =
         {
-            "thin_cut", "hundred_cuts", "no_rush", "kitchen_rhythm", "what_remains_of_the_debt", "sweep_over_the_queue", "slow_simmer"
+            "duelist_hit_1", "duelist_strong_1", "duelist_queue_1", "duelist_auto_1", "duelist_aura_1", "duelist_hit_2", "duelist_queue_2"
         };
 
         private static WeaponCatalog Catalog => TestWorld.Real.Weapons;
@@ -60,8 +60,8 @@ namespace Game.Core.Tests.Sim.Weapons
 
             Assert.That(katana.Rarity, Is.EqualTo(ItemRarity.Simple));
             Assert.That(katana.Skills, Is.EqualTo(KatanaStarter));
-            Assert.That(TestWorld.Real.Gems["thin_cut"].Skill!.Role, Is.EqualTo(SkillRole.Fast));
-            Assert.That(TestWorld.Real.Gems["hundred_cuts"].Skill!.Role, Is.EqualTo(SkillRole.Heavy));
+            Assert.That(TestWorld.Real.Gems["duelist_hit_1"].Skill!.Role, Is.EqualTo(SkillRole.Fast));
+            Assert.That(TestWorld.Real.Gems["duelist_strong_1"].Skill!.Role, Is.EqualTo(SkillRole.Heavy));
         }
 
         [Test]
@@ -91,10 +91,10 @@ namespace Game.Core.Tests.Sim.Weapons
             loop.State.HeroLevel = 50;
             var katana = loop.Weapons.In(WeaponHand.Right)!;
             loop.Weapons.Unequip(WeaponHand.Right);
-            var shortKatana = loop.Weapons.Give(new WeaponItem(katana.Base, ItemRarity.Rare, new[] { "thin_cut", "slow_simmer" }));
+            var shortKatana = loop.Weapons.Give(new WeaponItem(katana.Base, ItemRarity.Rare, new[] { "duelist_hit_1", "duelist_queue_2" }));
             loop.Weapons.Equip(WeaponHand.Right, shortKatana);
-            loop.Skills.Equip(TestWorld.Real.Gems["slow_simmer"]);
-            loop.Skills.Equip(TestWorld.Real.Gems["no_rush"]);
+            loop.Skills.Equip(TestWorld.Real.Gems["duelist_queue_2"]);
+            loop.Skills.Equip(TestWorld.Real.Gems["duelist_strong_1"]);
 
             Assert.That(loop.Skills.Armed(0), Is.True);
             Assert.That(loop.Skills.Armed(1), Is.False);
@@ -107,7 +107,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void PathSkillsStillNeedOnlyTheWeaponType()
         {
             var loop = Hero(HeroClass.Runedancer);
-            loop.Skills.Equip(TestWorld.Real.Gems["second_axe"]);
+            loop.Skills.Equip(TestWorld.Real.Gems["runedancer_path_1"]);
 
             Assert.That(loop.Skills.Armed(0), Is.True);
             loop.Weapons.Unequip(WeaponHand.Right);
@@ -210,12 +210,12 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void StarterSkillOfAnotherTypeIsRejected()
         {
-            var json = TestData.ReadGameDataFile(WeaponCatalog.FileName).Replace("\"starterSkills\": [\"thin_cut\"", "\"starterSkills\": [\"iron_rim_bash\"");
+            var json = TestData.ReadGameDataFile(WeaponCatalog.FileName).Replace("\"starterSkills\": [\"duelist_hit_1\"", "\"starterSkills\": [\"runedancer_hit_1\"");
             var catalog = WeaponCatalog.Load(json);
 
             var error = Assert.Throws<ContentException>(() => catalog.BindGems(TestWorld.Real.Gems))!;
 
-            Assert.That(error.Message, Does.Contain("iron_rim_bash"));
+            Assert.That(error.Message, Does.Contain("runedancer_hit_1"));
         }
 
         [Test]

@@ -9,13 +9,13 @@ namespace Game.Core.Tests.Content
 {
     public class WeaponPoolTests
     {
-        private static readonly int[] TierSizes = { 5, 6, 4, 2, 2 };
+        private static readonly int[] TierSizes = { 5, 5, 3, 3, 2 };
 
         private static IEnumerable<GemDef> ClassSkills(WeaponType type) =>
             TestWorld.Real.Gems.All.Where(gem => gem.Skill?.Weapon == type.Id && gem.Ascendancy == null);
 
         [Test]
-        public void EveryPoolHoldsFifteenSkillsAndFourAurasSplitFiveSixFourTwoTwo()
+        public void EveryPoolHoldsTwelveSkillsAndSixAurasSplitFiveFiveThreeThreeTwo()
         {
             foreach (var type in TestWorld.Real.Weapons.Types)
             {

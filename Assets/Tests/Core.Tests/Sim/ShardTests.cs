@@ -221,15 +221,14 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void PathWeaponAndLockedGemsCannotBeCut()
+        public void PathAndWeaponGemsCannotBeCut()
         {
             var loop = Runedancer();
             loop.State.Drops.UncutGems = 3;
             var closed = new[]
             {
                 AllGems.First(gem => gem.Ascendancy != null),
-                AllGems.First(gem => gem.Kind == GemKind.Skill && gem.Skill?.Weapon != null),
-                AllGems.First(gem => gem.Locked)
+                AllGems.First(gem => gem.Kind == GemKind.Skill && gem.Skill?.Weapon != null)
             };
 
             foreach (var gem in closed)

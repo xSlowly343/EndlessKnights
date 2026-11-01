@@ -83,58 +83,10 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TypingKeepsSongsUpToTheirFullLength()
-        {
-            var (loop, input) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.AuraSecondsPerKey, ModifierKind.Flat, 0.5, StatTags.Aura));
-            var slot = Equip(loop, Gem("hearth_song"));
-            loop.State.Resource = 100;
-            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
-            var song = loop.State.Skills[slot];
-            var full = song.ActiveTotalTicks;
-
-            Wait(loop, 3);
-            Assert.That(song.ActiveTicks, Is.EqualTo(full - 30));
-
-            input.PressKeys(1);
-            loop.Tick();
-            Assert.That(song.ActiveTicks, Is.EqualTo(full - 31 + 5));
-
-            for (var i = 0; i < 10; i++)
-            {
-                input.PressKeys(1);
-                loop.Tick();
-            }
-            Assert.That(song.ActiveTicks, Is.EqualTo(full - 1));
-        }
-
-        [Test]
-        public void HeadbangExtendsTheSongUpToTheCap()
-        {
-            var rules = TestWorld.Data.Combat.Classes;
-            var (loop, input) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.SongMouseSeconds, ModifierKind.Flat, 10, StatTags.Aura));
-            var slot = Equip(loop, Gem("hearth_song"));
-            loop.State.Resource = 100;
-            loop.Skills.TryCast(slot);
-            var song = loop.State.Skills[slot];
-            var full = song.ActiveTicks;
-
-            input.MoveMouse((float)rules.HeadbangPxPerSecond);
-            loop.Tick();
-            Assert.That(song.ActiveTicks, Is.EqualTo(full - 1 + GameLoop.TicksPerSecond));
-
-            for (var i = 0; i < 200; i++)
-            {
-                input.MoveMouse((float)rules.HeadbangPxPerSecond);
-                loop.Tick();
-            }
-            Assert.That(song.MouseExtendedTicks, Is.EqualTo((int)((rules.HeadbangMaxSeconds + 10) * GameLoop.TicksPerSecond)));
-        }
-
-        [Test]
         public void OnlyTheMetalheadHeadbangs()
         {
             var (loop, input) = Hero(HeroClass.Runedancer);
-            var slot = Equip(loop, Gem("hearth_song"));
+            var slot = Equip(loop, Gem("minstrel_aura_1"));
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
             var full = loop.State.Skills[slot].ActiveTicks;
@@ -163,7 +115,7 @@ namespace Game.Core.Tests.Sim
         public void SkillCostCanGrow()
         {
             var (loop, _) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.SkillCost, ModifierKind.More, 0.5));
-            var gem = Gem("hearth_song");
+            var gem = Gem("minstrel_aura_1");
             var slot = Equip(loop, gem);
             loop.State.Resource = 100;
 
@@ -186,47 +138,6 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(cut.State.EnemyType, Is.EqualTo(EnemyType.Normal));
             Assert.That((cut.State.EnemyMaxHp / plain.State.EnemyMaxHp).ToDouble(), Is.EqualTo(0.75).Within(1e-9));
-        }
-
-        [Test]
-        public void ActiveAurasAddDamage()
-        {
-            var (loop, _) = Hero(HeroClass.Lanternbearer, new Modifier(CombatStats.DamagePerAura, ModifierKind.Flat, 0.15));
-            var slot = Equip(loop, Gem("artel_pay"));
-            loop.State.Resource = 100;
-            loop.Tick();
-
-            Assert.That(loop.State.ActiveAuras, Is.EqualTo(1));
-            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1.15).Within(1e-9));
-            Assert.That(slot, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void ReservationCanShrink()
-        {
-            var (plain, _) = Hero(HeroClass.Lanternbearer);
-            var (light, _) = Hero(HeroClass.Lanternbearer, new Modifier(CombatStats.AuraReserve, ModifierKind.Flat, -5));
-            Equip(plain, Gem("artel_pay"));
-            Equip(light, Gem("artel_pay"));
-            plain.Tick();
-            light.Tick();
-
-            Assert.That(light.State.ReservedResource, Is.EqualTo(plain.State.ReservedResource - 5).Within(1e-9));
-        }
-
-        [Test]
-        public void CursesStrikeByThemselves()
-        {
-            var (loop, _) = Hero(HeroClass.Whisperer, new Modifier(CombatStats.CurseHitsPerSecond, ModifierKind.Flat, 1));
-            var slot = Equip(loop, Gem("pin"));
-            loop.State.Resource = 100;
-            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
-            loop.Events.Clear();
-
-            Wait(loop, 2);
-
-            Assert.That(loop.Skills.ActiveCurses, Is.EqualTo(1));
-            Assert.That(Damage(loop, DamageSource.Skill), Is.GreaterThan(0));
         }
 
         [Test]

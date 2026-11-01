@@ -49,11 +49,11 @@ namespace Game.Core.Tests.Build
         public void ChoosingAPathGivesItsSkill()
         {
             var loop = Duelist();
-            Assert.That(Owns(loop, "second_shadow"), Is.False);
+            Assert.That(Owns(loop, "duelist_path_2"), Is.False);
 
-            Assert.That(loop.ChooseSubclass("ninja"), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(loop.ChooseSubclass("duelist_trait_2"), Is.EqualTo(SubclassResult.Chosen));
 
-            Assert.That(Owns(loop, "second_shadow"), Is.True);
+            Assert.That(Owns(loop, "duelist_path_2"), Is.True);
             Assert.That(loop.State.OwnedGems.Count(gem => gem.Ascendancy != null), Is.EqualTo(1));
         }
 
@@ -61,82 +61,37 @@ namespace Game.Core.Tests.Build
         public void ChangingThePathTakesTheOldSkillAndGivesTheNewOne()
         {
             var loop = Duelist();
-            loop.ChooseSubclass("ninja");
-            TestWorld.ArmFor(loop, Gems["second_shadow"]);
-            Assert.That(loop.Book.Equip(Gems["second_shadow"]), Is.EqualTo(BookResult.Done));
+            loop.ChooseSubclass("duelist_trait_2");
+            TestWorld.ArmFor(loop, Gems["duelist_path_2"]);
+            Assert.That(loop.Book.Equip(Gems["duelist_path_2"]), Is.EqualTo(BookResult.Done));
 
-            Assert.That(loop.ChangeSubclassPaid("kensei"), Is.EqualTo(SubclassResult.Chosen));
+            Assert.That(loop.ChangeSubclassPaid("duelist_trait_1"), Is.EqualTo(SubclassResult.Chosen));
 
-            Assert.That(Owns(loop, "second_shadow"), Is.False);
-            Assert.That(Owns(loop, "lift_the_anchor"), Is.True);
-            Assert.That(loop.State.Skills.Any(slot => slot.Skill.Id == "second_shadow"), Is.False);
+            Assert.That(Owns(loop, "duelist_path_2"), Is.False);
+            Assert.That(Owns(loop, "duelist_path_1"), Is.True);
+            Assert.That(loop.State.Skills.Any(slot => slot.Skill.Id == "duelist_path_2"), Is.False);
         }
 
         [Test]
         public void PathSkillOfAnotherPathCannotBeEquipped()
         {
             var loop = Duelist();
-            loop.ChooseSubclass("ninja");
-            loop.State.OwnedGems.Add(Gems["lift_the_anchor"]);
-            TestWorld.ArmFor(loop, Gems["lift_the_anchor"]);
+            loop.ChooseSubclass("duelist_trait_2");
+            loop.State.OwnedGems.Add(Gems["duelist_path_1"]);
+            TestWorld.ArmFor(loop, Gems["duelist_path_1"]);
 
-            Assert.That(loop.Book.Equip(Gems["lift_the_anchor"]), Is.EqualTo(BookResult.WrongPath));
+            Assert.That(loop.Book.Equip(Gems["duelist_path_1"]), Is.EqualTo(BookResult.WrongPath));
         }
 
         [Test]
         public void SavedPathSkillOfAnotherPathIsTakenAwayOnLoad()
         {
             var state = new GameState { Class = HeroClass.Duelist };
-            state.OwnedGems.Add(Gems["lift_the_anchor"]);
+            state.OwnedGems.Add(Gems["duelist_path_1"]);
 
             var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), state, new StatSheet());
 
-            Assert.That(Owns(loop, "lift_the_anchor"), Is.False);
-        }
-
-        [Test]
-        public void PathSkillWithoutItsMechanicWaits()
-        {
-            var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Runedancer }, new StatSheet());
-            Assert.That(loop.CompleteActivity("garden"), Is.True);
-            loop.ChooseSubclass("butcher");
-            var gem = Gems["hook_and_cleaver"];
-            TestWorld.ArmFor(loop, gem);
-
-            Assert.That(gem.Locked, Is.True);
-            Assert.That(Owns(loop, gem.Id), Is.True);
-            Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.WaitsForMechanic));
-        }
-
-        [Test]
-        public void SecondShadowRepeatsEveryFifthKeyHitTwice()
-        {
-            var input = new Game.Core.Input.FakeInputSource();
-            var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            var loop = new GameLoop(TestWorld.Data, input, new GameState { Class = HeroClass.Duelist }, hero);
-            loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
-            loop.CompleteActivity("garden");
-            loop.ChooseSubclass("ninja");
-            TestWorld.ArmFor(loop, Gems["second_shadow"]);
-            Assert.That(loop.Book.Equip(Gems["second_shadow"]), Is.EqualTo(BookResult.Done));
-            loop.State.Resource = 100;
-            Assert.That(loop.Skills.TryCast(loop.State.Skills.Count - 1), Is.EqualTo(CastResult.Cast));
-            loop.Events.Clear();
-
-            for (var i = 0; i < 5; i++)
-            {
-                input.PressKeys(1);
-                loop.Tick();
-            }
-
-            var skillHits = 0;
-            for (var i = 0; i < loop.Events.Count; i++)
-            {
-                if (loop.Events[i].Kind == GameEventKind.Damage && loop.Events[i].Source == DamageSource.Skill)
-                    skillHits++;
-            }
-            Assert.That(skillHits, Is.EqualTo(1));
+            Assert.That(Owns(loop, "duelist_path_1"), Is.False);
         }
 
         [Test]

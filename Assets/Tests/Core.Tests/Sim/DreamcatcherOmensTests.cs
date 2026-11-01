@@ -67,43 +67,5 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.State.Resource, Is.EqualTo(0));
         }
-
-        [Test]
-        public void ByTheGaitGivesThePartyCritChance()
-        {
-            var (loop, _) = Dreamcatcher();
-            var gem = TestWorld.Real.Gems["by_the_gait"];
-            loop.State.Resource = 100;
-            TestWorld.ArmFor(loop, gem);
-            var before = loop.Hero.Value(CombatStats.CritChance, 0);
-
-            Assert.That(loop.Skills.TryCast(loop.Skills.Equip(gem)), Is.EqualTo(CastResult.Cast));
-
-            Assert.That(loop.Hero.Value(CombatStats.CritChance, 0) - before, Is.EqualTo(0.1).Within(1e-9));
-            Assert.That(((AuraEffect)gem.Skill!.Effect).Party, Is.True);
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("dreamcatcher"), Has.Some.Property("Id").EqualTo("by_the_gait"));
-        }
-
-        [Test]
-        public void StarChartWeakensTheNextFiveEnemies()
-        {
-            var (loop, _) = Dreamcatcher();
-            var chart = (WeakenNextEffect)TestWorld.Real.Gems["star_chart"].Skill!.Effect;
-            loop.State.Farming = true;
-            loop.State.WeakenedSpawns = chart.Enemies;
-            loop.State.WeakenShare = chart.HpShare;
-            var full = TestWorld.Data.Stages.EnemyHp(loop.State.Stage).ToDouble();
-
-            for (var i = 0; i < chart.Enemies; i++)
-            {
-                loop.State.EnemyHp = BigNumber.FromDouble(1e-9);
-                loop.Stages.OnEnemyKilled();
-                var multiplier = loop.State.Enemy?.HpMultiplier ?? 1;
-                Assert.That(loop.State.EnemyMaxHp.ToDouble() / multiplier, Is.EqualTo(full * (1 - chart.HpShare)).Within(full * 1e-9), $"enemy {i}");
-            }
-            Assert.That(loop.State.WeakenedSpawns, Is.EqualTo(0));
-            Assert.That(loop.State.WeakenShare, Is.EqualTo(0));
-            Assert.That(TestWorld.Real.Gems["star_chart"].Locked, Is.False);
-        }
     }
 }

@@ -41,24 +41,24 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void LeftClickCastsTheFirstSlot()
         {
-            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
+            var (loop, input) = Hero(HeroClass.Runedancer, "runedancer_hit_1", "runedancer_strong_1");
 
             input.ClickLeft();
             loop.Tick();
 
             Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Ready, Is.False);
             Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Ready, Is.True);
-            Assert.That(loop.State.Resource, Is.EqualTo(85));
+            Assert.That(loop.State.Resource, Is.EqualTo(90));
         }
 
         [Test]
         public void RightClickCastsTheSecondSlotAndMiddleClickOnlyHits()
         {
-            var (right, rightInput) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
+            var (right, rightInput) = Hero(HeroClass.Runedancer, "runedancer_hit_1", "runedancer_strong_1");
             rightInput.ClickRight();
             right.Tick();
 
-            var (middle, middleInput) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
+            var (middle, middleInput) = Hero(HeroClass.Runedancer, "runedancer_hit_1", "runedancer_strong_1");
             middleInput.ClickMiddle();
             middle.Tick();
 
@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WheelCastsNothing()
         {
-            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
+            var (loop, input) = Hero(HeroClass.Runedancer, "runedancer_hit_1", "runedancer_strong_1");
 
             input.ScrollWheel(20);
             loop.Tick();
@@ -82,7 +82,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClickWhileOnCooldownDoesNothingAndTheFirstClickAfterCasts()
         {
-            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash");
+            var (loop, input) = Hero(HeroClass.Runedancer, "runedancer_hit_1");
             input.ClickLeft();
             loop.Tick();
             var cooldown = loop.State.Skills[0].CooldownTicks;
@@ -100,77 +100,14 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void IronRimBashHitsForFourKeyStrikes()
+        public void AHitSkillHitsForItsMultiplierInKeyStrikes()
         {
-            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash");
+            var (loop, input) = Hero(HeroClass.Runedancer, "runedancer_hit_1");
 
             input.ClickLeft();
             loop.Tick();
 
-            Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 4).Within(1e-9));
-        }
-
-        [Test]
-        public void NoMercyHitsForFiveKeyStrikes()
-        {
-            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
-            var (bare, bareInput) = Hero(HeroClass.Runedancer);
-            loop.State.Resource = 50;
-            bare.State.Resource = 50;
-
-            input.ClickRight();
-            bareInput.ClickRight();
-            loop.Tick();
-            bare.Tick();
-
-            var spent = bare.State.Resource;
-            Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 5 * spent / 50).Within(1e-9));
-            Assert.That(loop.State.Resource, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void SongRaisesDamageAndGold()
-        {
-            var (loop, input) = Hero(HeroClass.Minstrel, "hearth_song");
-
-            input.ClickLeft();
-            loop.Tick();
-
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(115).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Gold, 100, StatTags.Gold), Is.EqualTo(110).Within(1e-9));
-        }
-
-        [Test]
-        public void LouderDoublesTheSongAndAddsLightningToEveryKeyHit()
-        {
-            var (loop, input) = Hero(HeroClass.Minstrel, "hearth_song", "louder");
-            loop.Tick();
-            loop.State.Resource = 100;
-
-            loop.Tick();
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(130).Within(1e-9));
-
-            loop.Events.Clear();
-            input.PressKeys(1);
-            loop.Tick();
-            Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 0.2 * 1.3).Within(1e-9));
-        }
-
-        [Test]
-        public void SongReturnsToNormalWhenTheSoloEnds()
-        {
-            var (loop, input) = Hero(HeroClass.Minstrel, "hearth_song", "louder");
-            input.ClickLeft();
-            loop.Tick();
-            loop.State.Resource = 100;
-            input.ClickRight();
-            loop.Tick();
-
-            for (var i = 0; i < Gem("louder").Skill!.DurationSeconds * GameLoop.TicksPerSecond; i++)
-                loop.Tick();
-
-            Assert.That(loop.State.Skills[0].Active, Is.True);
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(115).Within(1e-9));
+            Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 3).Within(1e-9));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Game.Core.Tests.Sim
     public class GhostcaptainCannonTests
     {
         private static CannonRules Rules => TestWorld.Data.Combat.Cannons;
-        private static GemDef CannonByName => TestWorld.Real.Gems["cannon_by_name"];
+        private static GemDef CannonByName => TestWorld.Real.Gems["ghostcaptain_hit_1"];
         private static SummonEffect Cannon => (SummonEffect)CannonByName.Skill!.Effect;
 
         private static (GameLoop Loop, FakeInputSource Input) Ghostcaptain(params Modifier[] modifiers)
@@ -46,100 +46,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CannonByNameIsTheCaptainsStartingSkill()
         {
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("ghostcaptain"), Has.Some.Property("Id").EqualTo("cannon_by_name"));
+            Assert.That(TestWorld.Real.SkillBook.StartingGems("ghostcaptain"), Has.Some.Property("Id").EqualTo("ghostcaptain_hit_1"));
             Assert.That(CannonByName.Skill!.Weapon, Is.EqualTo("pistol"));
-        }
-
-        [Test]
-        public void CastingPlacesACannon()
-        {
-            var (loop, _) = Ghostcaptain();
-            loop.State.Resource = 100;
-            TestWorld.ArmFor(loop, CannonByName);
-            var index = loop.Skills.Equip(CannonByName);
-
-            Assert.That(loop.Skills.TryCast(index), Is.EqualTo(CastResult.Cast));
-
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(1));
-        }
-
-        [Test]
-        public void CannonFiresOncePerSecondByItselfAndFeedsPowder()
-        {
-            var (loop, _) = Ghostcaptain(NoFire);
-            Place(loop, 1);
-            var hp = loop.State.EnemyHp;
-
-            Wait(loop, 3);
-
-            Assert.That(loop.Skills.Minions.CannonShots, Is.EqualTo(3));
-            Assert.That(loop.State.Resource, Is.EqualTo(3 * Rules.ResourcePerShot).Within(1e-9));
-            var expected = TestWorld.Data.Combat.KeyDamage * Cannon.Multiplier * 3;
-            Assert.That((hp - loop.State.EnemyHp).ToDouble(), Is.EqualTo(expected).Within(1e-6));
-        }
-
-        [Test]
-        public void CannonStandsForItsSecondsThenLeaves()
-        {
-            var (loop, _) = Ghostcaptain();
-            Place(loop, 1);
-
-            Wait(loop, Cannon.Seconds - 1);
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(1));
-            Wait(loop, 1);
-
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(0));
-            Assert.That(loop.Skills.Minions.CannonShots, Is.EqualTo((long)Cannon.Seconds));
-        }
-
-        [Test]
-        public void OnlyThreeCannonsStandAndTheOldestMakesWay()
-        {
-            var (loop, _) = Ghostcaptain();
-            Place(loop, 1);
-            Wait(loop, 5);
-            Place(loop, Rules.Max);
-
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(Rules.Max));
-            Wait(loop, Cannon.Seconds - 5);
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(Rules.Max));
-        }
-
-        [Test]
-        public void CannonCountRaisesTheLimit()
-        {
-            var (loop, _) = Ghostcaptain(new Modifier(CombatStats.CannonCount, ModifierKind.Flat, 2));
-
-            Place(loop, Rules.Max + 3);
-
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(Rules.Max + 2));
-        }
-
-        [Test]
-        public void MinionSpeedAndSecondsChangeTheCannon()
-        {
-            var (loop, _) = Ghostcaptain(
-                new Modifier(CombatStats.MinionSpeed, ModifierKind.Increased, 1),
-                new Modifier(CombatStats.MinionSeconds, ModifierKind.More, -0.5));
-            Place(loop, 1);
-
-            Wait(loop, Cannon.Seconds);
-
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Cannon), Is.EqualTo(0));
-            Assert.That(loop.Skills.Minions.CannonShots, Is.EqualTo((long)Cannon.Seconds));
-        }
-
-        [Test]
-        public void MinionDamageMakesCannonsHitHarder()
-        {
-            var (loop, _) = Ghostcaptain(NoFire, new Modifier(CombatStats.Damage, ModifierKind.More, 0.5, StatTags.Minion));
-            Place(loop, 1);
-            var hp = loop.State.EnemyHp;
-
-            Wait(loop, 1);
-
-            var expected = TestWorld.Data.Combat.KeyDamage * Cannon.Multiplier * 1.5;
-            Assert.That((hp - loop.State.EnemyHp).ToDouble(), Is.EqualTo(expected).Within(1e-6));
         }
 
         private static double DamageFromMouse(HeroClass heroClass, double px)
@@ -188,18 +96,6 @@ namespace Game.Core.Tests.Sim
             }
 
             Assert.That(loop.State.Resource, Is.EqualTo(1).Within(1e-3));
-        }
-
-        [Test]
-        public void OneMoreCannonAddsTwoCannonsForThirtySeconds()
-        {
-            var gem = TestWorld.Real.Gems["one_more_cannon"];
-
-            Assert.That(gem.Locked, Is.False);
-            var aura = (AuraEffect)gem.Skill!.Effect;
-            Assert.That(aura.Modifiers[0].Stat, Is.EqualTo(CombatStats.CannonCount));
-            Assert.That(aura.Modifiers[0].Value, Is.EqualTo(2));
-            Assert.That(gem.Skill.DurationSeconds, Is.EqualTo(30));
         }
     }
 }

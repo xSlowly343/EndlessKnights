@@ -77,7 +77,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void HearthSpiritStrikesEveryThirdSkillCast()
         {
-            var hero = With("hearth_spirit", 1, "by_the_gait");
+            var hero = With("hearth_spirit", 1, "dreamcatcher_hit_1");
             for (var i = 0; i < 3; i++)
             {
                 hero.State.Resource = 100;

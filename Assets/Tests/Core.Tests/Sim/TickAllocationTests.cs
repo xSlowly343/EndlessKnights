@@ -44,18 +44,18 @@ namespace Game.Core.Tests.Sim
             return (loop, input);
         }
 
-        private static readonly string[] RunedancerSkills = { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };
-        private static readonly string[] MinstrelSkills = { "hearth_song", "louder", "nail_chord", "colossus_lullaby", "whole_hall", "underside_amp", "still_alive" };
-        private static readonly string[] DuelistSkills = { "thin_cut", "hundred_cuts", "no_rush", "kitchen_rhythm", "what_remains_of_the_debt", "sweep_over_the_queue", "slow_simmer" };
-        private static readonly string[] GhostcaptainSkills = { "cannon_by_name" };
-        private static readonly string[] AlchemistSkills = { "vial_from_belt" };
-        private static readonly string[] DowserSkills = { "fuse_bottle" };
-        private static readonly string[] SoulbinderSkills = { "call_a_colleague" };
+        private static readonly string[] RunedancerSkills = { "runedancer_hit_1", "runedancer_strong_1", "runedancer_aura_1", "runedancer_queue_1", "runedancer_auto_1", "runedancer_aura_2", "runedancer_hit_2" };
+        private static readonly string[] MinstrelSkills = { "minstrel_hit_1", "minstrel_strong_1", "minstrel_aura_1", "minstrel_queue_1", "minstrel_auto_1", "minstrel_aura_2", "minstrel_hit_2" };
+        private static readonly string[] DuelistSkills = { "duelist_hit_1", "duelist_strong_1", "duelist_aura_1", "duelist_queue_1", "duelist_auto_1", "duelist_aura_2", "duelist_hit_2" };
+        private static readonly string[] GhostcaptainSkills = { "ghostcaptain_hit_1" };
+        private static readonly string[] AlchemistSkills = { "alchemist_hit_1" };
+        private static readonly string[] DowserSkills = { "dowser_hit_1" };
+        private static readonly string[] SoulbinderSkills = { "soulbinder_hit_2" };
 
         private static readonly string[] CommonSkills =
         {
-            "through_stride", "key_drum", "overheat", "space_hammer", "no_breather", "step_back", "quick_stride", "double_grip", "steady_pace",
-            "hurricane", "dash", "lasso", "pendulum_strike", "long_road", "comet_trail", "blade_whirl", "tailwind", "lightning_zigzag",
+            "through_stride", "key_drum", "overheat", "no_breather", "quick_stride", "steady_pace",
+            "hurricane", "long_road", "comet_trail", "tailwind",
             "mark", "weak_spot", "execute", "exposure", "boss_hunt", "ricochet", "lucky_coin", "composure", "freeze_frame",
             "lull", "golden_fever", "second_wind", "echo", "caravan_halt", "blade_on_watch", "shoulder_to_shoulder", "prokhors_ledger", "rift_crystal"
         };

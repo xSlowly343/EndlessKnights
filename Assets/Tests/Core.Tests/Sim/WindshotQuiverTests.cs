@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
     {
         private const double Arrow = 5;
         private static ClassResource Quiver => TestWorld.Data.Combat.Resources.For("windshot");
-        private static GemDef RoadArrow => TestWorld.Real.Gems["arrow_from_the_road"];
+        private static GemDef RoadArrow => TestWorld.Real.Gems["windshot_hit_1"];
         private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
 
         private static (GameLoop Loop, FakeInputSource Input) Windshot(params Modifier[] modifiers)
@@ -70,54 +70,6 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
 
             Assert.That(loop.State.Resource, Is.EqualTo(Quiver.PerSecond * GameLoop.TickSeconds).Within(1e-9));
-        }
-
-        [Test]
-        public void RoadArrowCostsOneArrowAndArrowDamageMakesItStronger()
-        {
-            var (loop, _) = Windshot(new Modifier(CombatStats.ArrowDamage, ModifierKind.Increased, 0.5));
-            loop.State.Resource = Arrow;
-            TestWorld.ArmFor(loop, RoadArrow);
-            var hp = loop.State.EnemyHp;
-
-            Assert.That(loop.Skills.TryCast(loop.Skills.Equip(RoadArrow)), Is.EqualTo(CastResult.Cast));
-
-            Assert.That(loop.State.Resource, Is.EqualTo(0).Within(1e-9));
-            var dealt = (hp - loop.State.EnemyHp).ToDouble();
-            var hit = KeyDamage * 3 * 1.5;
-            Assert.That(dealt, Is.EqualTo(hit).Within(1e-6).Or.EqualTo(hit * TestWorld.Data.Combat.CritMultiplier).Within(1e-6));
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("windshot"), Has.Some.Property("Id").EqualTo("arrow_from_the_road"));
-        }
-
-        [Test]
-        public void FalconGazeIsAnArrowThatAlwaysCrits()
-        {
-            var strike = (StrikeEffect)TestWorld.Real.Gems["falcon_gaze"].Skill!.Effect;
-
-            Assert.That(strike.CritChance, Is.EqualTo(1));
-            Assert.That(strike.Arrow, Is.True);
-        }
-
-        [Test]
-        public void PantherHitsTwiceASecondAndFasterWhileTheMouseMoves()
-        {
-            var (still, _) = Windshot();
-            var (running, input) = Windshot();
-            var gem = TestWorld.Real.Gems["panther_at_side"];
-            var panther = (SummonEffect)gem.Skill!.Effect;
-            still.Skills.Minions.Place(panther, gem.Tags);
-            running.Skills.Minions.Place(panther, gem.Tags);
-
-            Wait(still, 10);
-            for (var i = 0; i < 10 * GameLoop.TicksPerSecond; i++)
-            {
-                input.MoveMouse(1);
-                running.Tick();
-            }
-
-            Assert.That(still.Skills.Minions.BeastHits, Is.EqualTo(20));
-            Assert.That(running.Skills.Minions.BeastHits, Is.EqualTo((long)(20 * TestWorld.Data.Combat.Beasts.MouseSpeed)));
-            Assert.That(gem.Locked, Is.False);
         }
     }
 }

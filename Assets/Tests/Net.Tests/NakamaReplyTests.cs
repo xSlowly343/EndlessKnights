@@ -60,12 +60,12 @@ namespace Game.Net.Tests
         public void AGiftLetterAndTheGiftRepliesAreRead()
         {
             var letter = MailDirectory.Letter(NakamaJson.Parse("{\"id\":\"gift-1\",\"kind\":\"gift\",\"at\":1793189100000,\"place\":0,\"of\":0,\"depth\":0,\"title\":\"Ann\","
-                + "\"reward\":{\"shards\":0,\"uncutGems\":0,\"ingots\":0},\"claimed\":false,\"claimedAt\":0,\"gem\":\"hatchet_toss\"}"));
-            var sent = GiftDirectory.Sent(NakamaJson.Parse("{\"gemId\":\"hatchet_toss\",\"mentor\":true,\"left\":2}"));
+                + "\"reward\":{\"shards\":0,\"uncutGems\":0,\"ingots\":0},\"claimed\":false,\"claimedAt\":0,\"gem\":\"runedancer_hit_2\"}"));
+            var sent = GiftDirectory.Sent(NakamaJson.Parse("{\"gemId\":\"runedancer_hit_2\",\"mentor\":true,\"left\":2}"));
             var status = GiftDirectory.Status(NakamaJson.Parse("{\"left\":1,\"dailyLimit\":3,\"perFriendDaily\":1,\"cost\":5}"));
 
             Assert.That(letter.Kind, Is.EqualTo(Game.Core.Mail.MailLetter.GiftKind));
-            Assert.That(letter.Gem, Is.EqualTo("hatchet_toss"));
+            Assert.That(letter.Gem, Is.EqualTo("runedancer_hit_2"));
             Assert.That(letter.Title, Is.EqualTo("Ann"));
             Assert.That(sent.Mentor, Is.True);
             Assert.That(sent.Left, Is.EqualTo(2));

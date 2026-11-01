@@ -9,12 +9,8 @@ namespace Game.Core.Sim.Headless
 {
     public sealed class SupportBalance
     {
-        public const string FastHost = "iron_rim_bash";
-        public const string HeavyHost = "no_mercy";
-        public const string DurationHost = "tethered_ball";
-        public const string MouseHost = "lantern_at_a_distance";
-        public const string SummonHost = "call_a_colleague";
-        public const string PoisonHost = "vial_from_belt";
+        public const string FastHost = "runedancer_hit_1";
+        public const string HeavyHost = "runedancer_strong_1";
         public const long Stage = 40;
 
         private readonly GameData _data;

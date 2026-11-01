@@ -85,7 +85,7 @@ namespace Game.Core.Tests.Build
                 Assert.That(sameRole, Is.GreaterThanOrEqualTo(gems.Count - 5), to.Id);
             }
             var bow = Weapons.TypeOf(HeroClass.Windshot);
-            Assert.That(table.Gem(TestWorld.Data.Gems["iron_rim_bash"], bow, axe), Is.Null, "only gems of the class being left are reforged");
+            Assert.That(table.Gem(TestWorld.Data.Gems["runedancer_hit_1"], bow, axe), Is.Null, "only gems of the class being left are reforged");
             Assert.That(table.Gem(TestWorld.Data.Gems["lull"], axe, bow), Is.Null, "general gems stay as they are");
         }
 
@@ -121,9 +121,7 @@ namespace Game.Core.Tests.Build
             SpendTreePoints(loop, 5);
             var earned = loop.State.TreePointsEarned;
             Assert.That(loop.CompleteActivity("garden"), Is.True);
-            Assert.That(loop.ChooseSubclass("berserker"), Is.EqualTo(SubclassResult.Chosen));
-            var pathNode = loop.State.Ascendancy.Allocatable(TestWorld.Data.Ascendancy).First();
-            Assert.That(loop.AllocateSubclassNode(pathNode.Id), Is.EqualTo(AllocationResult.Allocated));
+            Assert.That(loop.ChooseSubclass("runedancer_trait_1"), Is.EqualTo(SubclassResult.Chosen));
             var pathPoints = loop.State.Ascendancy.PointsEarned(TestWorld.Data.Ascendancy);
 
             Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
@@ -137,7 +135,7 @@ namespace Game.Core.Tests.Build
             Assert.That(state.Ascendancy.Subclass, Is.Null);
             Assert.That(state.Ascendancy.PointsLeft(TestWorld.Data.Ascendancy), Is.EqualTo(pathPoints));
             Assert.That(state.OwnedGems.Any(gem => gem.Ascendancy != null), Is.False, "the skill of the old path goes away with it");
-            Assert.That(loop.ChooseSubclass("ninja"), Is.EqualTo(SubclassResult.Chosen), "a path of the new class can be chosen at once");
+            Assert.That(loop.ChooseSubclass("duelist_trait_2"), Is.EqualTo(SubclassResult.Chosen), "a path of the new class can be chosen at once");
             Assert.That(loop.Resource.Rules, Is.SameAs(TestWorld.Data.Combat.Resources.For("duelist")));
             SpendTreePoints(loop, earned);
             Assert.That(state.TreePointsLeft, Is.Zero);

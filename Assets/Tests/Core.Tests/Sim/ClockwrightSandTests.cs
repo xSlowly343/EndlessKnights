@@ -46,7 +46,7 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
         }
 
-        private static GemDef StretchSecond => TestWorld.Real.Gems["stretch_second"];
+        private static GemDef StretchSecond => TestWorld.Real.Gems["clockwright_hit_1"];
 
         [Test]
         public void SandComesFromKeysAndMouse()
@@ -116,23 +116,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void StretchSecondSlowsTheBossTimerAndMakesTheEnemyTakeMore()
-        {
-            var (loop, _) = Clockwright();
-            loop.State.Resource = 100;
-            TestWorld.ArmFor(loop, StretchSecond);
-            var index = loop.Skills.Equip(StretchSecond);
-
-            Assert.That(loop.Skills.TryCast(index), Is.EqualTo(CastResult.Cast));
-
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(1.1).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.BossTimerSpeed, 1), Is.EqualTo(0.7).Within(1e-9));
-        }
-
-        [Test]
         public void StretchSecondIsTheClockmakersStartingSkill()
         {
-            Assert.That(TestWorld.Real.SkillBook.StartingGems("clockwright"), Has.Some.Property("Id").EqualTo("stretch_second"));
+            Assert.That(TestWorld.Real.SkillBook.StartingGems("clockwright"), Has.Some.Property("Id").EqualTo("clockwright_hit_1"));
             Assert.That(StretchSecond.Skill!.Weapon, Is.EqualTo("pendulum"));
         }
 
@@ -165,18 +151,6 @@ namespace Game.Core.Tests.Sim
             KillAfter(loop, input, 1);
 
             Assert.That(loop.State.BankedSeconds, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void BankOfSecondsIsAPassiveWithAThirtySecondBank()
-        {
-            var gem = TestWorld.Real.Gems["bank_of_seconds"];
-
-            Assert.That(gem.Locked, Is.False);
-            Assert.That(gem.Skill!.IsPassive, Is.True);
-            var passive = (PassiveEffect)gem.Skill.Effect;
-            Assert.That(passive.Modifiers[0].Stat, Is.EqualTo(CombatStats.BossTimerBank));
-            Assert.That(passive.Modifiers[0].Value, Is.EqualTo(30));
         }
     }
 }
