@@ -58,7 +58,7 @@
     { "group": "weapons", "id": "crystal_wand", "source": "lorc/wizard-staff", "attribute": "green" },
     { "group": "weapons", "id": "hourglass_sickle", "source": "lorc/sparkling-sabre", "attribute": "white" },
     { "group": "weapons", "id": "enchanted_lute", "source": "lorc/guitar", "attribute": "red" },
-    { "group": "weapons", "id": "holy_orb", "source": "lorc/crystal-ball", "attribute": "green" },
+    { "group": "weapons", "id": "dream_hoop", "source": "lorc/crystal-ball", "attribute": "green" },
     { "group": "weapons", "id": "banner", "source": "lorc/flying-flag", "attribute": "red" },
     { "group": "weapons", "id": "voodoo_doll", "source": "lorc/voodoo-doll", "attribute": "blue" },
     { "group": "weapons", "id": "pendulum", "source": "delapouite/pendulum-swing", "attribute": "blue" },

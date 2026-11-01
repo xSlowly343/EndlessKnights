@@ -99,6 +99,8 @@ namespace Game.Core.Tests.Content
                     .Select(field => ((Game.Core.Stats.StatId)field.GetValue(null)!).Name))
                 .Concat(typeof(Game.Core.Sim.MinstrelStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
                     .Select(field => ((Game.Core.Stats.StatId)field.GetValue(null)!).Name))
+                .Concat(typeof(Game.Core.Sim.DreamcatcherStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+                    .Select(field => ((Game.Core.Stats.StatId)field.GetValue(null)!).Name))
                 .Concat(new[] { "classAttribute" })
                 .ToHashSet();
             foreach (var tree in data.ClassTrees.Values.Concat(data.CommonTrees.Values))

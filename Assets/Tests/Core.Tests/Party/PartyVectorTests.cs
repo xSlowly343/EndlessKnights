@@ -47,7 +47,8 @@ namespace Game.Core.Tests.Party
                 MedianWaves(),
                 AllyCredit(),
                 RiftEnemies(),
-                SharedTimer()
+                SharedTimer(),
+                DreamTraits()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -80,8 +81,34 @@ namespace Game.Core.Tests.Party
                    $"    \"waveMaxEnemies\": {stages.Waves.MaxEnemies},\n" +
                    $"    \"bossRetryAfterKills\": {stages.BossRetryAfterKills},\n" +
                    $"    \"bossTimerSeconds\": {N(stages.BossTimerSeconds)},\n" +
-                   $"    \"bossHpMultiplier\": {N(stages.BossHpMultiplier)}\n" +
+                   $"    \"bossHpMultiplier\": {N(stages.BossHpMultiplier)},\n" +
+                   $"    \"pullMaxSeconds\": {N(rules.Traits.PullMaxSeconds)},\n" +
+                   $"    \"pullStepSeconds\": {N(rules.Traits.PullStepSeconds)},\n" +
+                   $"    \"pullCooldownSeconds\": {N(rules.Traits.PullCooldownSeconds)},\n" +
+                   $"    \"spiritCallsMax\": {rules.Traits.SpiritCallsMax},\n" +
+                   $"    \"spiritHpMax\": {N(rules.Traits.SpiritHpMax)}\n" +
                    "  },\n  \"scenarios\": [\n" + string.Join(",\n", scenarios) + "\n  ]\n}\n";
+        }
+
+        private static string DreamTraits()
+        {
+            var r = Recorder("a dream spirit comes out tougher and a net is pulled longer", 1919);
+            r.Spirit(1, 3);
+            r.Join(1);
+            r.Join(2);
+            r.Spirit(2, 3);
+            r.Spirit(9, 50);
+            r.Hit(0, 2);
+            r.Effect(-777, 0.5, 3);
+            r.Pull(-777, 0.5);
+            r.Pull(-777, 5);
+            r.Pull(42, 1);
+            r.Hit(1, 10);
+            r.Hit(0, 10);
+            r.Hit(1, 10);
+            r.Hit(0, 10);
+            r.Hit(1, 10);
+            return r.ToJson();
         }
 
         private static string WeakenNext()

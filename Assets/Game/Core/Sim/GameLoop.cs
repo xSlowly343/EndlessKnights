@@ -97,6 +97,9 @@ namespace Game.Core.Sim
             _weapons.RefreshInnate();
             _drops = new DropSystem(data.Drops, data.Stages, data.Gems, data.Items, _weapons, _gear, state, hero, Events);
             _stage.Drops = _drops;
+            _combat.Dreamcatcher.UseLoot(_drops, _loot);
+            _combat.Dreamcatcher.UseEnemies(data.Enemies);
+            _stage.RewardListener = _combat.Dreamcatcher;
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
             _gates = new GateSystem(data.Stages, state, hero, Events);
             _stage.Gates = _gates;
@@ -704,6 +707,7 @@ namespace Game.Core.Sim
             _resource.UseRules(data.Combat.Resources);
             _combat.UseRules(data.Combat);
             _stage.UseData(data.Stages, data.Enemies);
+            _combat.Dreamcatcher.UseEnemies(data.Enemies);
             _loot.UseData(data.Stages);
             _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
             _levels.CommonSlots = data.TreeTemplates.CommonSlots;

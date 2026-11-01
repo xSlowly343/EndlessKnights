@@ -59,6 +59,9 @@ namespace Game.Core.Party
         private int _auraBoundGem;
         private int _sentMarks = -1;
         private int _traitTimerTicks;
+        private uint _nettedEnemy;
+        private long _lastCrits;
+        private long _lastPullTick = long.MinValue / 2;
         private double _traitTimerSent;
 
         public const int NoReaction = -1;
@@ -279,6 +282,9 @@ namespace Game.Core.Party
                 EndAuraBoundDebuff();
                 ShareTraitTimer();
                 ShareTraitResource();
+                ShareTraitEffects();
+                ShareSpiritCalls();
+                WatchNet();
                 ShareReactions();
                 ShareMarks(Status == PartyLink.Linked);
             }
@@ -515,6 +521,7 @@ namespace Game.Core.Party
             _contributionKills++;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 _contribution[slot] += killed.Contribution(slot);
+            RewardDream(killed);
         }
 
         private void EndLocalEnemy(bool bossFailed) => EndLocalEnemy(bossFailed, LocallyPaid());
@@ -643,6 +650,7 @@ namespace Game.Core.Party
             _localStage = _loop.State.Stage;
             var weakened = _state.EnemyId == enemyId && _state.Weakened;
             _unit = _loop.Stages.SpawnLinked(boss, seed, barFull, killsOnStage, farming, bossTicksLeft, weakened, weakened ? _state.WeakenedGold : 0, _state.WaveStage);
+            _loop.State.EnemySpirit = _state.EnemyId == enemyId && _state.Spirit;
         }
 
         private void HitWithChain()
@@ -794,6 +802,83 @@ namespace Game.Core.Party
             SendToHost(PartyCodec.Encode(_out, new CastEffectMessage { EffectId = TraitTimerEffect, OnEnemy = true, End = true }));
             _traitTimerSent = 0;
             _traitTimerTicks = 0;
+        }
+
+        private void ShareTraitEffects()
+        {
+            var effects = _loop.State.TraitEnemyEffects;
+            for (var i = 0; i < effects.Count; i++)
+            {
+                var effect = effects[i];
+                SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
+                {
+                    EffectId = effect.Id,
+                    OnEnemy = true,
+                    Strength = effect.Strength,
+                    Seconds = effect.Seconds,
+                    TimerSlow = effect.TimerSlow
+                }));
+            }
+            effects.Clear();
+        }
+
+        private void ShareSpiritCalls()
+        {
+            var calls = _loop.State.TraitSpiritCalls;
+            if (calls <= 0)
+                return;
+            _loop.State.TraitSpiritCalls = 0;
+            SendToHost(PartyCodec.Encode(_out, new SpiritCallMessage { Count = (byte)System.Math.Min(byte.MaxValue, calls), Hp = (float)_loop.State.TraitSpiritHp }));
+        }
+
+        public bool EnemyNetted => NetShown();
+
+        private bool NetShown()
+        {
+            for (var i = 0; i < ShownEffect.MaxShown; i++)
+            {
+                if (EnemyEffect(i).Id == DreamcatcherMechanics.NetEffect)
+                    return true;
+            }
+            return false;
+        }
+
+        private void WatchNet()
+        {
+            var crits = _loop.State.Crits;
+            var critted = crits > _lastCrits;
+            _lastCrits = crits;
+            var netted = NetShown();
+            _loop.Combat.Dreamcatcher.EnemyCaughtByParty = netted;
+            if (!netted)
+                return;
+            _nettedEnemy = _localEnemyId;
+            var rules = _loop.Combat.Classes.Dreamcatcher;
+            if (!critted || _tick - _lastPullTick < (long)System.Math.Round(rules.NetPullCooldownSeconds * GameLoop.TicksPerSecond))
+                return;
+            _lastPullTick = _tick;
+            SendToHost(PartyCodec.Encode(_out, new NetPullMessage { EffectId = DreamcatcherMechanics.NetEffect, Seconds = (float)rules.NetPullSeconds }));
+        }
+
+        private void RewardDream(in EnemyKilledMessage killed)
+        {
+            if (_ownSlot < 0 || !(killed.Contribution(_ownSlot) > 0))
+                return;
+            var dream = _loop.Combat.Dreamcatcher;
+            if (killed.EnemyId == _nettedEnemy && _loop.State.Rng.Chance(dream.TrophyChance))
+                dream.GrantTrophy();
+            if (killed.Spirit)
+                dream.GrantSpiritLoot(EveryoneHunted(killed), _loop.State.Is(HeroClass.Dreamcatcher));
+        }
+
+        private bool EveryoneHunted(in EnemyKilledMessage killed)
+        {
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if ((_state.WeightMask & (1 << slot)) != 0 && !(killed.Contribution(slot) > 0))
+                    return false;
+            }
+            return true;
         }
 
         private void ShareTraitResource()

@@ -298,6 +298,55 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void ADreamcatcherNetHangsOnThePartyEnemyAndAnAllyCritHoldsIt()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var catcher = rig.Members[0];
+            var friend = rig.Members[1];
+            catcher.Loop.State.TraitEnemyEffects.Add(DreamcatcherMechanics.NetEffect, 0.5, 3);
+            rig.Run(1);
+
+            var effect = Enumerable.Range(0, PartyEncounter.MaxEffects).Select(i => rig.Host.Encounter.Effect(i)).Single(e => e.Active && e.Id == DreamcatcherMechanics.NetEffect);
+            Assert.That(effect.DamageTaken, Is.EqualTo(0.5).Within(1e-9));
+            Assert.That(friend.Client.EnemyNetted, Is.True);
+
+            var left = effect.TicksLeft;
+            Assert.That(rig.Host.Encounter.ExtendEnemyEffect(DreamcatcherMechanics.NetEffect, TestWorld.Data.Combat.Classes.Dreamcatcher.NetPullSeconds), Is.True);
+            var pulled = Enumerable.Range(0, PartyEncounter.MaxEffects).Select(i => rig.Host.Encounter.Effect(i)).Single(e => e.Active && e.Id == DreamcatcherMechanics.NetEffect);
+            Assert.That(pulled.TicksLeft - left, Is.EqualTo(TestWorld.Data.Combat.Classes.Dreamcatcher.NetPullSeconds * GameLoop.TicksPerSecond));
+        }
+
+        [Test]
+        public void ADreamSpiritCalledByOneMemberComesOutTougherForTheWholeParty()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var catcher = rig.Members[0];
+            catcher.Loop.State.TraitSpiritCalls = 1;
+            catcher.Loop.State.TraitSpiritHp = 3;
+            rig.Run(1);
+            Assert.That(rig.Host.Encounter.SpiritCalls, Is.EqualTo(1));
+
+            var encounter = new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 5);
+            encounter.Join(1);
+            encounter.Join(2);
+            encounter.Advance();
+            var plain = encounter.BarFull;
+            Assert.That(encounter.CallSpirit(1, 3), Is.True);
+            encounter.ApplyDamage(0, encounter.EnemyId, plain * 2);
+            encounter.Advance();
+            Assert.That(encounter.EnemySpirit, Is.True);
+            Assert.That(encounter.BarFull, Is.EqualTo(TestWorld.Data.Party.HpMultiplier(encounter.Fighters) * 3).Within(1e-9));
+            encounter.Events.Clear();
+            encounter.ApplyDamage(1, encounter.EnemyId, encounter.BarFull * 2);
+            encounter.Advance();
+            var killed = Enumerable.Range(0, encounter.Events.Count).Select(i => encounter.Events[i]).First(e => e.Kind == PartyEventKind.EnemyKilled);
+            Assert.That(killed.Spirit, Is.True);
+            Assert.That(encounter.EnemySpirit, Is.False);
+        }
+
+        [Test]
         public void TreePartyDamageReachesTheAlly()
         {
             var rig = new Rig(2);

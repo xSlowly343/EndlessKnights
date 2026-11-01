@@ -65,6 +65,12 @@ namespace Game.Core.Sim
         public BigNumber EnemyHp { get; set; }
         public BigNumber EnemyMaxHp { get; private set; }
 
+        public void ScaleEnemyHp(double multiplier)
+        {
+            EnemyHp *= multiplier;
+            EnemyMaxHp *= multiplier;
+        }
+
         public BigNumber Gold { get; set; }
         public BigNumber RunGoldEarned { get; set; }
         public BigNumber RecentDps { get; set; }
@@ -259,6 +265,11 @@ namespace Game.Core.Sim
         public ShardcallerState Shardcaller { get; } = new ShardcallerState();
         public SandwalkerState Sandwalker { get; } = new SandwalkerState();
         public MinstrelState Minstrel { get; } = new MinstrelState();
+        public DreamcatcherState Dreamcatcher { get; } = new DreamcatcherState();
+        public TraitEnemyEffects TraitEnemyEffects { get; } = new TraitEnemyEffects();
+        public int TraitSpiritCalls { get; set; }
+        public double TraitSpiritHp { get; set; }
+        public bool EnemySpirit { get; set; }
         public double TraitPartyDamage { get; set; }
         public double TraitPartyCritChance { get; set; }
         public double TraitPartyGold { get; set; }
@@ -300,6 +311,7 @@ namespace Game.Core.Sim
             HunterMarkTicks = 0;
             BlindTicks = 0;
             BossTimerStopTicks = 0;
+            EnemySpirit = false;
             CannonShotsOnEnemy = 0;
             WandererBoss = false;
             GoldenTicks = 0;
@@ -322,6 +334,7 @@ namespace Game.Core.Sim
             Shardcaller.OnSpawn();
             Sandwalker.OnSpawn();
             Minstrel.OnSpawn();
+            Dreamcatcher.OnSpawn();
         }
     }
 }

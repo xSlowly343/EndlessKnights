@@ -8,7 +8,7 @@ namespace Game.Core.Stats
     {
         private static readonly HashSet<string> FlatPercent = new HashSet<string>
         {
-            "critChance", "critMultiplier", "clockworkSlow", "clearDayCritChance", "crushCleave", "crushMultiplier", "damagePerSector",
+            "critChance", "critMultiplier", "clockworkSlow", "crushCleave", "crushMultiplier", "damagePerSector",
             "doomedCritChance", "doomedCritMultiplier", "dotSpread", "doubleStrike", "flareMultiplier", "flareSplash",
             "focusMax", "partyContribution", "partyCritChance", "partyCritMultiplier", "pierceShare", "volleySplash",
             "windupKeptAfterCrush", "gemDrop", "uncutGemChance", "frozenFirstHit", "overloadKeep", "keyHitQueueAll", "damagePerInputKind", "damagePerTenPoison", "cannonNextShare", "cannonShotDamage", "cannonShotDamageMax", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",
@@ -21,7 +21,8 @@ namespace Game.Core.Stats
             "calmPenalty", "calmPartyCrit", "shotPartyCrit", "gustPartyCooldown", "partySkillCooldown",
             "shardArmor", "gardenArmor", "shellPenalty", "shellPartyDamage",
             "flipPower", "flipPenalty", "mirageSelfPenalty", "caravanPartyCooldown",
-            "versePower", "verseParty", "songPower", "songSelfPenalty", "songPartyPenalty", "songParty", "sleepParty"
+            "versePower", "verseParty", "songPower", "songSelfPenalty", "songPartyPenalty", "songParty", "sleepParty",
+            "netPower", "netTrophy", "netParty", "albumPower", "albumMax", "prophecyPower", "albumParty"
         };
 
         private static readonly StatTags[] LabelledTags =

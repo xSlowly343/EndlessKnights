@@ -11293,766 +11293,373 @@
     {
       "id": "dreamcatcher_hit_1",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "common",
       "role": "fast",
       "color": "green",
-      "name": {"ru": "Колыбельная", "en": "Колыбельная"},
+      "name": {"ru": "Колыбельная", "en": "Lullaby"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 3,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "враг не лечится 3 с", "en": "враг не лечится 3 с"},
+      "effect": {"type": "strike", "multiplier": 3, "bait": 3},
+      "text": {"ru": "напев ×3 и 3 Приманки", "en": "a hum ×3 and 3 Bait"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_hit_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_hit_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_hit_1_b15b", "name": {"ru": "Тихий напев", "en": "Soft Hum"}, "damage": 0.8, "effect": {"bait": 5}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_hit_2",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "rare",
       "role": "fast",
       "color": "green",
-      "name": {"ru": "Зевок", "en": "Зевок"},
+      "name": {"ru": "Зевок", "en": "Yawn"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 15},
+      "cost": {"resource": 5},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 4},
-      "text": {"ru": "быстрый, +Дрёма", "en": "быстрый, +Дрёма"},
+      "effect": {"type": "strike", "multiplier": 2.5, "dream": 8},
+      "text": {"ru": "зевок ×2,5 и +8 Дрёмы", "en": "a yawn ×2.5 and +8 Drowse"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_hit_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_hit_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_hit_2_b15b", "name": {"ru": "Сладкий зевок", "en": "Sweet Yawn"}, "damage": 0.8, "effect": {"dream": 12}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_hit_3",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "epic",
       "role": "fast",
       "color": "green",
-      "name": {"ru": "Укол сна", "en": "Укол сна"},
+      "name": {"ru": "Укол сна", "en": "Sleep Prick"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 6},
-      "text": {"ru": "сильнее по пойманному в сеть", "en": "сильнее по пойманному в сеть"},
+      "effect": {"type": "strike", "multiplier": 4, "caughtHit": 4},
+      "text": {"ru": "укол ×4 и ещё ×4 по пойманному в сеть или спящему", "en": "a prick ×4 and another ×4 against a netted or sleeping enemy"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_hit_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_hit_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_hit_3_b15b", "name": {"ru": "Глубокий укол", "en": "Deep Prick"}, "damage": 0.8, "effect": {"caughtHit": 6}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_queue_1",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "common",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Вещий сон", "en": "Вещий сон"},
+      "name": {"ru": "Вещий сон", "en": "Prophetic Dream"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
-      "text": {"ru": "бьёт очередь", "en": "бьёт очередь"},
+      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3, "bait": 5},
+      "text": {"ru": "сон ×2 по 3 врагам очереди и 5 Приманки", "en": "a dream ×2 at 3 queued enemies and 5 Bait"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_queue_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_queue_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_queue_1_b15b", "name": {"ru": "Долгий сон", "en": "Long Dream"}, "damage": 0.8, "effect": {"bait": 8}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_queue_2",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "rare",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Сонная дорожка", "en": "Сонная дорожка"},
+      "name": {"ru": "Сонная дорожка", "en": "Sleepy Path"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "сеть сразу на двух", "en": "сеть сразу на двух"},
+      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "nets": 1},
+      "text": {"ru": "дорожка ×2,5 по 3 врагам и сеть сразу", "en": "a path ×2.5 at 3 enemies and a net at once"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_queue_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_queue_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_queue_2_b15b", "name": {"ru": "Двойная дорожка", "en": "Double Path"}, "damage": 0.8, "effect": {"nets": 2}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_queue_3",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "legendary",
       "role": "fast",
       "color": "green",
-      "name": {"ru": "Считать овец", "en": "Считать овец"},
+      "name": {"ru": "Считать овец", "en": "Counting Sheep"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
-      "text": {"ru": "овцы из сна бьют всю очередь", "en": "овцы из сна бьют всю очередь"},
+      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "caughtHit": 2},
+      "text": {"ru": "овцы ×3 по 3 врагам и ещё ×2 по пойманному или спящему", "en": "sheep ×3 at 3 enemies and another ×2 against a netted or sleeping one"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_queue_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_queue_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_queue_3_b15b", "name": {"ru": "Стадо овец", "en": "Flock of Sheep"}, "damage": 0.8, "effect": {"caughtHit": 3}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_auto_1",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "common",
       "color": "green",
-      "name": {"ru": "Пёрышко", "en": "Пёрышко"},
+      "name": {"ru": "Пёрышко", "en": "Little Feather"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "раз в 4 с", "en": "раз в 4 с"},
+      "effect": {"type": "strike", "multiplier": 2.5, "bait": 3},
+      "text": {"ru": "раз в 4 с пёрышко ×2,5 и 3 Приманки", "en": "every 4 s a feather ×2.5 and 3 Bait"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_auto_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_auto_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_auto_1_b15b", "name": {"ru": "Пушистое пёрышко", "en": "Fluffy Feather"}, "damage": 0.8, "effect": {"bait": 5}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_auto_2",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "rare",
       "color": "green",
-      "name": {"ru": "Сонный кот", "en": "Сонный кот"},
+      "name": {"ru": "Сонный кот", "en": "Sleepy Cat"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 5},
-      "text": {"ru": "ловит слабого врага", "en": "ловит слабого врага"},
+      "effect": {"type": "strike", "multiplier": 3, "lowHpBelow": 0.3, "lowHpMultiplier": 6},
+      "text": {"ru": "раз в 6 с кот ×3, по врагу ниже 30% HP ×6", "en": "every 6 s a cat ×3, ×6 against an enemy below 30% HP"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_auto_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_auto_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_auto_2_b15b", "name": {"ru": "Ленивый кот", "en": "Lazy Cat"}, "damage": 0.8, "effect": {"lowHpBelow": 0.4}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_auto_3",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "mythic",
       "color": "green",
-      "name": {"ru": "Бусины ловца", "en": "Бусины ловца"},
+      "name": {"ru": "Бусины ловца", "en": "Catcher's Beads"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 8},
-      "text": {"ru": "раз в 15 с чинят сеть", "en": "раз в 15 с чинят сеть"},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 5, "nets": 1},
+      "text": {"ru": "раз в 15 с бусины ×5 и чинят одну сеть", "en": "every 15 s beads ×5 that mend one net"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_auto_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_auto_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_auto_3_b15b", "name": {"ru": "Нитка бусин", "en": "String of Beads"}, "damage": 0.8, "effect": {"nets": 2}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_strong_1",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "epic",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Глубокий сон", "en": "Глубокий сон"},
+      "name": {"ru": "Глубокий сон", "en": "Deep Sleep"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 40},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 12},
-      "text": {"ru": "враг спит 5 с и получает ×1,5", "en": "враг спит 5 с и получает ×1,5"},
+      "effect": {"type": "strike", "multiplier": 6, "dozeSeconds": 5},
+      "text": {"ru": "сон ×6: 5 с враг дремлет и получает от неё ×1,5", "en": "a sleep ×6: for 5 s the enemy dozes and takes ×1.5 from her"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_strong_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_strong_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_strong_1_b15b", "name": {"ru": "Долгий сон", "en": "Long Sleep"}, "damage": 0.8, "effect": {"dozeSeconds": 8}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_strong_2",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "legendary",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Кошмар", "en": "Кошмар"},
+      "name": {"ru": "Кошмар", "en": "Nightmare"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 50},
       "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 18},
-      "text": {"ru": "×20 по спящему", "en": "×20 по спящему"},
+      "effect": {"type": "strike", "multiplier": 5, "caughtHit": 15},
+      "text": {"ru": "кошмар ×5 и ещё ×15 по пойманному или спящему", "en": "a nightmare ×5 and another ×15 against a netted or sleeping enemy"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_strong_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_strong_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_strong_2_b15b", "name": {"ru": "Жуткий кошмар", "en": "Dreadful Nightmare"}, "damage": 0.8, "effect": {"caughtHit": 22}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_strong_3",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "mythic",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Осознанный сон", "en": "Осознанный сон"},
+      "name": {"ru": "Осознанный сон", "en": "Lucid Dream"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 25},
-      "text": {"ru": "коллекция действует на всех врагов 10 с", "en": "коллекция действует на всех врагов 10 с"},
+      "effect": {"type": "strike", "multiplier": 8, "lucidSeconds": 10},
+      "text": {"ru": "сон ×8: 10 с её урон растёт, будто альбом полон", "en": "a dream ×8: for 10 s her damage grows as if the album were full"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dreamcatcher_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dreamcatcher_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dreamcatcher_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dreamcatcher_strong_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dreamcatcher_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dreamcatcher_strong_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dreamcatcher_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dreamcatcher_strong_3_b15b", "name": {"ru": "Долгий осознанный сон", "en": "Long Lucid Dream"}, "damage": 0.8, "effect": {"lucidSeconds": 15}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dreamcatcher_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dreamcatcher_path_1",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "ascendancy": "dreamcatcher_trait_1",
       "color": "green",
-      "name": {"ru": "Сплести сеть", "en": "Сплести сеть"},
+      "name": {"ru": "Сплести сеть", "en": "Weave a Net"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "nets": 2},
+      "text": {"ru": "удар ×3 и 2 сети сразу", "en": "a blow ×3 and 2 nets at once"}
     },
     {
       "id": "dreamcatcher_path_2",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "ascendancy": "dreamcatcher_trait_2",
       "color": "green",
-      "name": {"ru": "Альбом снов", "en": "Альбом снов"},
+      "name": {"ru": "Альбом снов", "en": "Dream Album"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 12,
+      "effect": {"type": "strike", "multiplier": 3, "album": 3},
+      "text": {"ru": "удар ×3 и 3 экземпляра текущего врага в альбом", "en": "a blow ×3 and 3 specimens of the current enemy in the album"}
     },
     {
       "id": "dreamcatcher_path_3",
       "kind": "active",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "ascendancy": "dreamcatcher_trait_3",
       "color": "green",
-      "name": {"ru": "Бросить приманку", "en": "Бросить приманку"},
+      "name": {"ru": "Бросить приманку", "en": "Throw the Bait"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "bait": 50},
+      "text": {"ru": "удар ×3 и 50 Приманки", "en": "a blow ×3 and 50 Bait"}
     },
     {
       "id": "dreamcatcher_aura_1",
       "kind": "aura",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "common",
       "color": "green",
-      "name": {"ru": "Сладкие сны", "en": "Сладкие сны"},
+      "name": {"ru": "Сладкие сны", "en": "Sweet Dreams"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.1}], "reserve": 15, "party": true},
-      "text": {"ru": "шанс выпадения предметов", "en": "шанс выпадения предметов"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.1}, {"stat": "damage", "kind": "increased", "value": 0.05}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +10% выпадения предметов и +5% урона", "en": "party: +10% item drops and +5% damage"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_1_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "dreamcatcher_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_1_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "dreamcatcher_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_1_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "dreamcatcher_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.12}, {"stat": "damage", "kind": "increased", "value": 0.06}]}}, {"id": "dreamcatcher_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.11}, {"stat": "damage", "kind": "increased", "value": 0.055}]}}, {"id": "dreamcatcher_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.13}, {"stat": "damage", "kind": "increased", "value": 0.065}]}}, {"id": "dreamcatcher_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "dreamcatcher_aura_2",
       "kind": "aura",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "common",
       "color": "green",
-      "name": {"ru": "Колыбель", "en": "Колыбель"},
+      "name": {"ru": "Колыбель", "en": "Cradle"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "reserve": 15},
-      "text": {"ru": "+редкость предметов", "en": "+редкость предметов"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.1}, {"stat": "damage", "kind": "increased", "value": 0.05}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +10% редкости предметов и +5% урона", "en": "party: +10% item rarity and +5% damage"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_2_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "dreamcatcher_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_2_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "dreamcatcher_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_2_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "dreamcatcher_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.12}, {"stat": "damage", "kind": "increased", "value": 0.06}]}}, {"id": "dreamcatcher_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.11}, {"stat": "damage", "kind": "increased", "value": 0.055}]}}, {"id": "dreamcatcher_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.13}, {"stat": "damage", "kind": "increased", "value": 0.065}]}}, {"id": "dreamcatcher_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "dreamcatcher_aura_3",
       "kind": "aura",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "rare",
       "color": "green",
-      "name": {"ru": "Вещий сон", "en": "Вещий сон"},
+      "name": {"ru": "Ловец видений", "en": "Vision Catcher"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}], "reserve": 20},
-      "text": {"ru": "+шанс уникального предмета", "en": "+шанс уникального предмета"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.1}, {"stat": "prophecyPower", "kind": "flat", "value": 0.02}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +10% урона по боссу; её вещий сон на 2% сильнее", "en": "party: +10% damage against bosses; her prophetic dream is 2% stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_3_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "dreamcatcher_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_3_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "dreamcatcher_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_3_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "dreamcatcher_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "prophecyPower", "kind": "flat", "value": 0.024}]}}, {"id": "dreamcatcher_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.11}, {"stat": "prophecyPower", "kind": "flat", "value": 0.022}]}}, {"id": "dreamcatcher_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.13}, {"stat": "prophecyPower", "kind": "flat", "value": 0.026}]}}, {"id": "dreamcatcher_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "dreamcatcher_aura_4",
       "kind": "aura",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "rare",
       "color": "green",
-      "name": {"ru": "Сонная пыль", "en": "Сонная пыль"},
+      "name": {"ru": "Сонная пыль", "en": "Sleep Dust"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "reserve": 20},
-      "text": {"ru": "первый удар по новому врагу ×3", "en": "первый удар по новому врагу ×3"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "firstHitsBonus", "kind": "flat", "value": 0.15}, {"stat": "netSeconds", "kind": "flat", "value": 0.2}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +15% урона первым ударам по врагу; её сеть держит на 0,2 с дольше", "en": "party: +15% damage on the first hits on an enemy; her net holds 0.2 s longer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_4_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "dreamcatcher_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_4_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "dreamcatcher_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_4_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "dreamcatcher_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "firstHitsBonus", "kind": "flat", "value": 0.18}, {"stat": "netSeconds", "kind": "flat", "value": 0.24}]}}, {"id": "dreamcatcher_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "firstHitsBonus", "kind": "flat", "value": 0.165}, {"stat": "netSeconds", "kind": "flat", "value": 0.22}]}}, {"id": "dreamcatcher_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "firstHitsBonus", "kind": "flat", "value": 0.195}, {"stat": "netSeconds", "kind": "flat", "value": 0.26}]}}, {"id": "dreamcatcher_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "dreamcatcher_aura_5",
       "kind": "aura",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "epic",
       "color": "green",
-      "name": {"ru": "Перо", "en": "Перо"},
+      "name": {"ru": "Перо", "en": "Feather"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "+шанс выпадения гемов", "en": "+шанс выпадения гемов"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.15}, {"stat": "spiritLoot", "kind": "flat", "value": 0.02}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +15% выпадения гемов; добыча её духа на 2% больше", "en": "party: +15% gem drops; her spirit drops 2% more loot"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_5_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "dreamcatcher_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_5_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "dreamcatcher_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_5_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "dreamcatcher_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.18}, {"stat": "spiritLoot", "kind": "flat", "value": 0.024}]}}, {"id": "dreamcatcher_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.165}, {"stat": "spiritLoot", "kind": "flat", "value": 0.022}]}}, {"id": "dreamcatcher_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.195}, {"stat": "spiritLoot", "kind": "flat", "value": 0.026}]}}, {"id": "dreamcatcher_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
       "id": "dreamcatcher_aura_6",
       "kind": "aura",
-      "weapon": "holy_orb",
+      "weapon": "dream_hoop",
       "tier": "legendary",
       "color": "green",
-      "name": {"ru": "Ловля", "en": "Ловля"},
+      "name": {"ru": "Ловля", "en": "Catch"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "+шанс трофея с врагов", "en": "+шанс трофея с врагов"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.05}, {"stat": "damage", "kind": "increased", "value": 0.08}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +5% шанса трофея с пойманных врагов и +8% урона", "en": "party: +5% trophy chance from netted enemies and +8% damage"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_6_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "dreamcatcher_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_6_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "dreamcatcher_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dreamcatcher_aura_6_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "dreamcatcher_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.06}, {"stat": "damage", "kind": "increased", "value": 0.096}]}}, {"id": "dreamcatcher_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.055}, {"stat": "damage", "kind": "increased", "value": 0.088}]}}, {"id": "dreamcatcher_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.065}, {"stat": "damage", "kind": "increased", "value": 0.104}]}}, {"id": "dreamcatcher_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     }
   ]

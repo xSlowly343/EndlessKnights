@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, Synergy = 15, BossRequest = 16, Marks = 17, PartyLoadout = 18
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, Synergy = 15, BossRequest = 16, Marks = 17, PartyLoadout = 18, SpiritCall = 19, NetPull = 20
 }
 
 class PartyWriter {
@@ -115,7 +115,7 @@ function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
         return PartyMessageKind.None;
     const kind = new DataView(data).getUint8(0);
-    return kind <= PartyMessageKind.PartyLoadout ? kind : PartyMessageKind.None;
+    return kind <= PartyMessageKind.NetPull ? kind : PartyMessageKind.None;
 }
 
 function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
@@ -195,6 +195,18 @@ function partyDecodeSynergy(data: ArrayBuffer, reactions: number): number | null
         return null;
     const known = Math.pow(2, Math.min(32, reactions)) - 1;
     return mask % (known + 1);
+}
+
+function partyDecodeSpiritCall(data: ArrayBuffer): { count: number, hp: number } | null {
+    const r = partyOpen(data, PartyMessageKind.SpiritCall);
+    const message = { count: r.byte(), hp: r.float() };
+    return r.complete ? message : null;
+}
+
+function partyDecodeNetPull(data: ArrayBuffer): { effectId: number, seconds: number } | null {
+    const r = partyOpen(data, PartyMessageKind.NetPull);
+    const message = { effectId: r.int(), seconds: r.float() };
+    return r.complete ? message : null;
 }
 
 function partyDecodeMarks(data: ArrayBuffer): number | null {
@@ -309,6 +321,7 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
         w.uint(marks && encounter.members[slot].joined ? marks[slot] >>> 0 : 0);
     w.uint(Math.max(0, encounter.enemiesOnStage()));
     w.double(encounter.shieldFloor);
+    w.bool(encounter.enemySpirit);
     return w.bytes();
 }
 
@@ -322,6 +335,7 @@ function partyEncodeEnemyKilled(event: PartyEvent): ArrayBuffer {
     w.byte(event.rewarded);
     w.float(event.loop || 0);
     w.float(event.saved || 0);
+    w.bool(event.spirit === true);
     return w.bytes();
 }
 

@@ -29,7 +29,7 @@
       "duelist": { "perKey": 0.5 },
       "windshot": { "perKey": 0, "mousePxPerPoint": 160, "perSecond": 1 },
       "lanternbearer": { "perKey": 0.3333, "perAllyHit": 0.1 },
-      "dreamcatcher": { "perKey": 0, "mousePxPerPoint": 600, "perAllyHit": 0.1, "reading": { "perSecond": 1, "afterKeylessSeconds": 5 } },
+      "dreamcatcher": { "perKey": 0.3, "mousePxPerPoint": 600 },
       "sandwalker": { "perKey": 0.5, "mousePxPerPoint": 500 },
       "shardcaller": { "perKey": 0.32, "overload": { "multiplier": 5 } },
       "dowser": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } },
@@ -73,6 +73,12 @@
       "breach": { "everySeconds": 4, "everyMinSeconds": 1.5, "seconds": 1, "honor": 1.5, "partyDamage": 0.15, "pressMax": 2, "exposeSeconds": 4, "exposeMax": 0.4, "bossSoonerSeconds": 1, "outsidePenalty": 0.5, "doubleShare": 0.8 },
       "touche": { "every": 10, "everyMin": 3, "marks": 5, "marksMin": 2, "bossShare": 0.5, "executeMax": 0.4, "markDamageMax": 0.5, "partyGold": 0.25, "partyGoldSeconds": 15, "publicSeconds": 5 },
       "phantom": { "hitsPerSecond": 4, "selfPenalty": 0.2, "partyEverySeconds": 30, "partySeconds": 5, "partyDamage": 0.1, "pauseAfterSeconds": 1, "pauseHitsPerSecond": 3, "feintCrit": 0.15 }
+    },
+    "dreamcatcher": {
+      "common": { "dozeMultiplier": 1.5, "lucidPower": 0.3 },
+      "net": { "px": 2000, "pxMin": 300, "max": 3, "seconds": 3, "secondsMin": 0.5, "trophy": 0.2, "pullSeconds": 0.5, "pullCooldownSeconds": 1, "maxSeconds": 10 },
+      "album": { "max": 0.5, "pageMin": 10, "pageMinFloor": 1, "prophecyPower": 0.25, "prophecySeconds": 10, "allShare": 0.5 },
+      "bait": { "hits": 100, "hitsMin": 10, "perCast": 5, "spiritHp": 3, "spiritHpMax": 20, "gems": 1, "shards": 2, "chest": 1, "rich": 2, "twinChance": 0.25, "hornPower": 0.3, "hornSeconds": 15, "gift": 30 }
     },
     "minstrel": {
       "common": { "soloMultiplier": 2 },

@@ -41,6 +41,7 @@ namespace Game.Core.Party.Wire
         public uint Marks3;
         public uint EnemiesOnStage;
         public double ShieldFloor;
+        public bool Spirit;
 
         public int Marks(int slot) => (int)(slot switch
         {
@@ -158,6 +159,7 @@ namespace Game.Core.Party.Wire
                 writer.UInt((uint)Marks(slot));
             writer.UInt(EnemiesOnStage);
             writer.Double(ShieldFloor);
+            writer.Bool(Spirit);
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -182,6 +184,7 @@ namespace Game.Core.Party.Wire
                 message.SetMarks(slot, reader.UInt());
             message.EnemiesOnStage = reader.UInt();
             message.ShieldFloor = reader.Double();
+            message.Spirit = reader.Bool();
             return message;
         }
 
@@ -233,7 +236,8 @@ namespace Game.Core.Party.Wire
                 History = encounter.History,
                 WaveStage = (uint)System.Math.Min(uint.MaxValue, encounter.WaveStage),
                 EnemiesOnStage = (uint)System.Math.Max(0, encounter.EnemiesOnStage),
-                ShieldFloor = encounter.ShieldFloor
+                ShieldFloor = encounter.ShieldFloor,
+                Spirit = encounter.EnemySpirit
             };
             var shown = 0;
             for (var i = 0; i < PartyEncounter.MaxEffects && shown < ShownEffect.MaxShown; i++)

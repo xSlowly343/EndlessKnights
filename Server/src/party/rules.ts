@@ -28,6 +28,11 @@ interface PartyEncounterRules {
     allyCreditMax: number;
     relaySenderSeconds: number;
     relayRecipientSeconds: number;
+    pullMaxSeconds: number;
+    pullStepSeconds: number;
+    pullCooldownSeconds: number;
+    spiritCallsMax: number;
+    spiritHpMax: number;
 }
 
 const PartyTicksPerSecond = 10;
