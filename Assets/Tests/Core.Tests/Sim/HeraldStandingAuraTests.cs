@@ -11,7 +11,7 @@ namespace Game.Core.Tests.Sim
 
         private static SkillTestHero Herald(params Modifier[] modifiers)
         {
-            var herald = SkillTestHero.Of(HeroClass.Bannerbearer, "artel_pay", "storm_over_the_banner", "nobody_retreats");
+            var herald = SkillTestHero.Of(HeroClass.Lanternbearer, "artel_pay", "storm_over_the_banner", "nobody_retreats");
             foreach (var modifier in modifiers)
                 herald.Loop.Hero.Add(modifier);
             herald.Ticks(1);
@@ -67,13 +67,13 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OtherClassesKeepTheirOwnAurasInPausesAsBefore()
         {
-            var ronin = SkillTestHero.Borrowing(HeroClass.Ronin, HeroClass.Bannerbearer, "artel_pay");
-            ronin.Ticks(1);
-            Assert.That(ronin.Loop.Skills.StandingAuras, Is.Zero);
+            var duelist = SkillTestHero.Borrowing(HeroClass.Duelist, HeroClass.Lanternbearer, "artel_pay");
+            duelist.Ticks(1);
+            Assert.That(duelist.Loop.Skills.StandingAuras, Is.Zero);
 
-            Pause(ronin, 15);
+            Pause(duelist, 15);
 
-            Assert.That(ronin.State.Skills[0].AuraApplied, Is.False);
+            Assert.That(duelist.State.Skills[0].AuraApplied, Is.False);
         }
     }
 }

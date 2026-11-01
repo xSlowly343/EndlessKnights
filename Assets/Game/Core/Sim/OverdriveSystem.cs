@@ -20,7 +20,7 @@ namespace Game.Core.Sim
         public void Tick()
         {
             var rules = _combat.Classes.Overdrive;
-            if (!_state.Is(HeroClass.Metalhead) || rules.Songs <= 0)
+            if (!_state.Is(HeroClass.Minstrel) || rules.Songs <= 0)
             {
                 _state.OverdriveTicks = 0;
                 _state.OverdriveSpent = false;

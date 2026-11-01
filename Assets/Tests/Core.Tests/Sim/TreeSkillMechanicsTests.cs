@@ -62,8 +62,8 @@ namespace Game.Core.Tests.Sim
         public void SkillPowerOfOneSkillMakesOnlyThatSkillStronger()
         {
             var power = ForSkill(CombatStats.SkillPower, "iron_rim_bash", ModifierKind.Increased, 0.5);
-            var (plain, _) = Hero(HeroClass.Viking);
-            var (strong, _) = Hero(HeroClass.Viking, power);
+            var (plain, _) = Hero(HeroClass.Runedancer);
+            var (strong, _) = Hero(HeroClass.Runedancer, power);
 
             Assert.That(CastDamage(strong, "iron_rim_bash") / CastDamage(plain, "iron_rim_bash"), Is.EqualTo(1.5).Within(1e-9));
             Assert.That(CastDamage(strong, "no_mercy") / CastDamage(plain, "no_mercy"), Is.EqualTo(1).Within(1e-9));
@@ -73,8 +73,8 @@ namespace Game.Core.Tests.Sim
         public void SkillPowerOfAnAuraMakesItsEffectStronger()
         {
             var gem = TestWorld.Data.Gems["hearth_song"];
-            var (plain, _) = Hero(HeroClass.Metalhead);
-            var (strong, _) = Hero(HeroClass.Metalhead, ForSkill(CombatStats.SkillPower, gem.Id, ModifierKind.Increased, 0.5));
+            var (plain, _) = Hero(HeroClass.Minstrel);
+            var (strong, _) = Hero(HeroClass.Minstrel, ForSkill(CombatStats.SkillPower, gem.Id, ModifierKind.Increased, 0.5));
 
             CastDamage(plain, gem.Id);
             CastDamage(strong, gem.Id);
@@ -89,8 +89,8 @@ namespace Game.Core.Tests.Sim
         public void SkillDurationOfOneSkillAddsSecondsToItsEffect()
         {
             var gem = TestWorld.Data.Gems["hearth_song"];
-            var (plain, _) = Hero(HeroClass.Metalhead);
-            var (longer, _) = Hero(HeroClass.Metalhead, ForSkill(CombatStats.SkillDurationSeconds, gem.Id, ModifierKind.Flat, 2));
+            var (plain, _) = Hero(HeroClass.Minstrel);
+            var (longer, _) = Hero(HeroClass.Minstrel, ForSkill(CombatStats.SkillDurationSeconds, gem.Id, ModifierKind.Flat, 2));
 
             CastDamage(plain, gem.Id);
             CastDamage(longer, gem.Id);
@@ -103,7 +103,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AFastSkillGivesResource()
         {
-            var (loop, _) = Hero(HeroClass.Viking, new Modifier(CombatStats.ResourcePerFastSkill, ModifierKind.Flat, 5));
+            var (loop, _) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ResourcePerFastSkill, ModifierKind.Flat, 5));
             var index = SlotOf(loop, "iron_rim_bash");
             loop.State.Resource = 50;
             var cost = TestWorld.Data.Gems["iron_rim_bash"].Skill!.ResourceCost;
@@ -116,8 +116,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AHeavySkillGivesNoResourceForFastSkills()
         {
-            var (plain, _) = Hero(HeroClass.Viking);
-            var (loop, _) = Hero(HeroClass.Viking, new Modifier(CombatStats.ResourcePerFastSkill, ModifierKind.Flat, 5));
+            var (plain, _) = Hero(HeroClass.Runedancer);
+            var (loop, _) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ResourcePerFastSkill, ModifierKind.Flat, 5));
 
             CastDamage(plain, "no_mercy");
             CastDamage(loop, "no_mercy");
@@ -128,7 +128,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AKeyCritGivesResource()
         {
-            var (loop, input) = Hero(HeroClass.Ronin, false,
+            var (loop, input) = Hero(HeroClass.Duelist, false,
                 new Modifier(CombatStats.CritChance, ModifierKind.Flat, 10),
                 new Modifier(CombatStats.ResourcePerCrit, ModifierKind.Flat, 2, StatTags.Keyboard));
 
@@ -143,7 +143,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ATreeLineNamesAKnownSkill()
         {
-            var tree = TestWorld.Real.ClassTreeOf("ronin")!;
+            var tree = TestWorld.Real.ClassTreeOf("duelist")!;
             var stats = tree.Nodes.SelectMany(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers))
                 .Select(modifier => modifier.Stat).Where(stat => stat.IsForSkill).ToList();
 

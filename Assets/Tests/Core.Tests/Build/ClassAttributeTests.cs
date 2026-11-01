@@ -42,8 +42,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TheClassAttributeStrengthensTheHuscarlShield()
         {
-            var plain = Hero(HeroClass.Viking, 0);
-            var strong = Hero(HeroClass.Viking, 20);
+            var plain = Hero(HeroClass.Runedancer, 0);
+            var strong = Hero(HeroClass.Runedancer, 20);
 
             Assert.That(strong.ClassAttribute, Is.EqualTo(20));
             var perPoint = strong.ClassAttributeDef.PerPoint[0].Value;
@@ -54,16 +54,16 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EachClassFeelsItsOwnFeature()
         {
-            var amazon = Hero(HeroClass.Amazon, 10);
+            var windshot = Hero(HeroClass.Windshot, 10);
 
-            Assert.That(amazon.Hero.Value(CombatStats.MarkPower, 0), Is.GreaterThan(0));
-            Assert.That(amazon.Hero.Value(CombatStats.ShieldDamage, 1), Is.EqualTo(1), "the Huscarl shield stays out of the Huntress build");
+            Assert.That(windshot.Hero.Value(CombatStats.MarkPower, 0), Is.GreaterThan(0));
+            Assert.That(windshot.Hero.Value(CombatStats.ShieldDamage, 1), Is.EqualTo(1), "the Huscarl shield stays out of the Huntress build");
         }
 
         [Test]
         public void TheFeatureFollowsTheAttributeWhenItChanges()
         {
-            var loop = Hero(HeroClass.Viking, 0);
+            var loop = Hero(HeroClass.Runedancer, 0);
             var extra = new Modifier(ClassAttributeDef.Stat, ModifierKind.Flat, 10);
             loop.Hero.Add(extra);
             loop.Tick();
@@ -89,11 +89,11 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TheTreeFileMustNameARealAttributeThatDoesNotFeedItself()
         {
-            var json = TestData.ReadGameDataFile(ClassTreeLoader.FileNameOf("viking"));
+            var json = TestData.ReadGameDataFile(ClassTreeLoader.FileNameOf("runedancer"));
             var templates = TestWorld.Data.TreeTemplates;
 
-            Assert.Throws<ContentException>(() => ClassTreeLoader.Load(templates, "viking", json.Replace("\"name\": \"strength\"", "\"name\": \"luck\"")));
-            Assert.Throws<ContentException>(() => ClassTreeLoader.Load(templates, "viking", json.Replace("\"perPoint\": [{\"stat\": \"shieldDamage\"", "\"perPoint\": [{\"stat\": \"classAttribute\"")));
+            Assert.Throws<ContentException>(() => ClassTreeLoader.Load(templates, "runedancer", json.Replace("\"name\": \"strength\"", "\"name\": \"luck\"")));
+            Assert.Throws<ContentException>(() => ClassTreeLoader.Load(templates, "runedancer", json.Replace("\"perPoint\": [{\"stat\": \"shieldDamage\"", "\"perPoint\": [{\"stat\": \"classAttribute\"")));
         }
     }
 }

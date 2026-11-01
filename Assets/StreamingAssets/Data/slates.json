@@ -944,9 +944,9 @@
     }
   ],
   "classLines": {
-    "viking": [
+    "runedancer": [
       {
-        "id": "viking_shield_sooner",
+        "id": "runedancer_shield_sooner",
         "modifiers": [
           {
             "stat": "shieldEvery",
@@ -960,7 +960,7 @@
         "whole": true
       },
       {
-        "id": "viking_shield_damage",
+        "id": "runedancer_shield_damage",
         "modifiers": [
           {
             "stat": "shieldDamage",
@@ -973,9 +973,9 @@
         ]
       }
     ],
-    "ronin": [
+    "duelist": [
       {
-        "id": "ronin_series_sooner",
+        "id": "duelist_series_sooner",
         "modifiers": [
           {
             "stat": "comboStrikeEvery",
@@ -989,7 +989,7 @@
         "whole": true
       },
       {
-        "id": "ronin_series_strike",
+        "id": "duelist_series_strike",
         "modifiers": [
           {
             "stat": "comboStrikeMultiplier",
@@ -999,9 +999,9 @@
         ]
       }
     ],
-    "amazon": [
+    "windshot": [
       {
-        "id": "amazon_normal",
+        "id": "windshot_normal",
         "modifiers": [
           {
             "stat": "damageVsNormal",
@@ -1011,7 +1011,7 @@
         ]
       },
       {
-        "id": "amazon_distance",
+        "id": "windshot_distance",
         "modifiers": [
           {
             "stat": "mouseDistance",
@@ -1021,9 +1021,9 @@
         ]
       }
     ],
-    "stormweaver": [
+    "shardcaller": [
       {
-        "id": "stormweaver_overload",
+        "id": "shardcaller_overload",
         "modifiers": [
           {
             "stat": "overloadMultiplier",
@@ -1033,7 +1033,7 @@
         ]
       },
       {
-        "id": "stormweaver_queue",
+        "id": "shardcaller_queue",
         "modifiers": [
           {
             "stat": "overloadQueueShare",
@@ -1043,9 +1043,9 @@
         ]
       }
     ],
-    "nomad": [
+    "sandwalker": [
       {
-        "id": "nomad_kinds",
+        "id": "sandwalker_kinds",
         "modifiers": [
           {
             "stat": "damagePerInputKind",
@@ -1055,7 +1055,7 @@
         ]
       },
       {
-        "id": "nomad_resource",
+        "id": "sandwalker_resource",
         "modifiers": [
           {
             "stat": "damagePerResource",
@@ -1065,9 +1065,9 @@
         ]
       }
     ],
-    "metalhead": [
+    "minstrel": [
       {
-        "id": "metalhead_song",
+        "id": "minstrel_song",
         "modifiers": [
           {
             "stat": "songMouseSeconds",
@@ -1078,7 +1078,7 @@
         "whole": true
       },
       {
-        "id": "metalhead_auras",
+        "id": "minstrel_auras",
         "modifiers": [
           {
             "stat": "damagePerAura",
@@ -1088,9 +1088,9 @@
         ]
       }
     ],
-    "oracle": [
+    "dreamcatcher": [
       {
-        "id": "oracle_reading",
+        "id": "dreamcatcher_reading",
         "modifiers": [
           {
             "stat": "readingGain",
@@ -1100,7 +1100,7 @@
         ]
       },
       {
-        "id": "oracle_hp",
+        "id": "dreamcatcher_hp",
         "modifiers": [
           {
             "stat": "enemyHpCut",
@@ -1110,9 +1110,9 @@
         ]
       }
     ],
-    "bannerbearer": [
+    "lanternbearer": [
       {
-        "id": "bannerbearer_auras",
+        "id": "lanternbearer_auras",
         "modifiers": [
           {
             "stat": "damagePerAura",
@@ -1122,7 +1122,7 @@
         ]
       },
       {
-        "id": "bannerbearer_banner",
+        "id": "lanternbearer_banner",
         "modifiers": [
           {
             "stat": "bannerAuraBonus",
@@ -1132,9 +1132,9 @@
         ]
       }
     ],
-    "voodoo": [
+    "whisperer": [
       {
-        "id": "voodoo_curse",
+        "id": "whisperer_curse",
         "modifiers": [
           {
             "stat": "curseEffect",
@@ -1144,7 +1144,7 @@
         ]
       },
       {
-        "id": "voodoo_seconds",
+        "id": "whisperer_seconds",
         "modifiers": [
           {
             "stat": "curseSeconds",
@@ -1155,9 +1155,9 @@
         "whole": true
       }
     ],
-    "clockmaker": [
+    "clockwright": [
       {
-        "id": "clockmaker_slow",
+        "id": "clockwright_slow",
         "modifiers": [
           {
             "stat": "bossTimerSlow",
@@ -1167,7 +1167,7 @@
         ]
       },
       {
-        "id": "clockmaker_clockwork",
+        "id": "clockwright_clockwork",
         "modifiers": [
           {
             "stat": "clockworkSlow",
@@ -1177,9 +1177,9 @@
         ]
       }
     ],
-    "plague_doctor": [
+    "alchemist": [
       {
-        "id": "plague_doctor_stacks",
+        "id": "alchemist_stacks",
         "modifiers": [
           {
             "stat": "poisonStacks",
@@ -1190,7 +1190,7 @@
         "whole": true
       },
       {
-        "id": "plague_doctor_poison",
+        "id": "alchemist_poison",
         "modifiers": [
           {
             "stat": "damagePerTenPoison",
@@ -1200,9 +1200,9 @@
         ]
       }
     ],
-    "moonshiner": [
+    "dowser": [
       {
-        "id": "moonshiner_burn",
+        "id": "dowser_burn",
         "modifiers": [
           {
             "stat": "burnDamage",
@@ -1212,7 +1212,7 @@
         ]
       },
       {
-        "id": "moonshiner_overheat",
+        "id": "dowser_overheat",
         "modifiers": [
           {
             "stat": "overheatSeconds",
@@ -1222,9 +1222,9 @@
         ]
       }
     ],
-    "gravedigger": [
+    "soulbinder": [
       {
-        "id": "gravedigger_skeleton",
+        "id": "soulbinder_skeleton",
         "modifiers": [
           {
             "stat": "minionCount",
@@ -1235,7 +1235,7 @@
         "whole": true
       },
       {
-        "id": "gravedigger_rise",
+        "id": "soulbinder_rise",
         "modifiers": [
           {
             "stat": "riseEvery",
@@ -1249,9 +1249,9 @@
         "whole": true
       }
     ],
-    "captain": [
+    "ghostcaptain": [
       {
-        "id": "captain_shot",
+        "id": "ghostcaptain_shot",
         "modifiers": [
           {
             "stat": "cannonShotDamage",
@@ -1261,7 +1261,7 @@
         ]
       },
       {
-        "id": "captain_next",
+        "id": "ghostcaptain_next",
         "modifiers": [
           {
             "stat": "cannonNextShare",
@@ -1271,9 +1271,9 @@
         ]
       }
     ],
-    "spinner": [
+    "mothcaller": [
       {
-        "id": "spinner_bonds",
+        "id": "mothcaller_bonds",
         "modifiers": [
           {
             "stat": "bondPower",
@@ -1283,7 +1283,7 @@
         ]
       },
       {
-        "id": "spinner_auras",
+        "id": "mothcaller_auras",
         "modifiers": [
           {
             "stat": "damagePerAura",
@@ -1293,9 +1293,9 @@
         ]
       }
     ],
-    "rimecaller": [
+    "cartomancer": [
       {
-        "id": "rimecaller_cold",
+        "id": "cartomancer_cold",
         "modifiers": [
           {
             "stat": "coldPower",
@@ -1305,7 +1305,7 @@
         ]
       },
       {
-        "id": "rimecaller_curse",
+        "id": "cartomancer_curse",
         "modifiers": [
           {
             "stat": "enemyDebuffEffect",
@@ -1315,9 +1315,9 @@
         ]
       }
     ],
-    "thornmaiden": [
+    "herbwitch": [
       {
-        "id": "thornmaiden_blood",
+        "id": "herbwitch_blood",
         "modifiers": [
           {
             "stat": "bloodPower",
@@ -1327,7 +1327,7 @@
         ]
       },
       {
-        "id": "thornmaiden_dot",
+        "id": "herbwitch_dot",
         "modifiers": [
           {
             "stat": "dotDamage",
@@ -1337,9 +1337,9 @@
         ]
       }
     ],
-    "clayshaper": [
+    "golemancer": [
       {
-        "id": "clayshaper_golem",
+        "id": "golemancer_golem",
         "modifiers": [
           {
             "stat": "golemPower",
@@ -1349,7 +1349,7 @@
         ]
       },
       {
-        "id": "clayshaper_minion",
+        "id": "golemancer_minion",
         "modifiers": [
           {
             "stat": "minionSeconds",

@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.Loop(state: new GameState
             {
-                Class = HeroClass.Ronin,
+                Class = HeroClass.Duelist,
                 Stage = stage,
                 HighestStage = stage,
                 RecordStage = stage,
@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = AtStage(45, 80000);
             loop.State.OwnedGems.Add(TestWorld.Data.Gems["lull"]);
-            loop.RaiseNode("ronin_katana");
+            loop.RaiseNode("duelist_katana");
             var gain = loop.Prestige.EchoGain;
 
             Assert.That(loop.Prestige.TryPrestige(), Is.True);

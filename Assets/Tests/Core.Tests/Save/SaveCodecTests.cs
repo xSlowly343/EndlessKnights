@@ -58,7 +58,7 @@ namespace Game.Core.Tests.Save
         [Test]
         public void DamageQueuedForLaterEnemiesSurvivesSaving()
         {
-            var state = PlayedLoop(HeroClass.Viking, 10).State;
+            var state = PlayedLoop(HeroClass.Runedancer, 10).State;
             state.QueueDamage[0] = BigNumber.FromDouble(30);
             state.QueueDamage[1] = BigNumber.FromDouble(20);
             state.QueueDamage[2] = BigNumber.FromDouble(10);
@@ -70,8 +70,8 @@ namespace Game.Core.Tests.Save
             Assert.That(loaded.QueueDamage[2].ToDouble(), Is.EqualTo(10));
         }
 
-        [TestCase(HeroClass.Ronin)]
-        [TestCase(HeroClass.Metalhead)]
+        [TestCase(HeroClass.Duelist)]
+        [TestCase(HeroClass.Minstrel)]
         public void SaveThenLoadGivesEqualState(HeroClass heroClass)
         {
             var state = PlayedLoop(heroClass, 3000).State;
@@ -92,7 +92,7 @@ namespace Game.Core.Tests.Save
         public void LoadedGameContinuesExactlyLikeTheOriginal()
         {
             var input = new FakeInputSource();
-            var original = PlayedLoop(HeroClass.Ronin, 2000, input);
+            var original = PlayedLoop(HeroClass.Duelist, 2000, input);
             var restoredInput = new FakeInputSource();
             var restored = TestWorld.Loop(restoredInput, RoundTrip(original.State).State);
 
@@ -105,7 +105,7 @@ namespace Game.Core.Tests.Save
         [Test]
         public void DropsSurviveSaving()
         {
-            var loop = PlayedLoop(HeroClass.Viking, 50);
+            var loop = PlayedLoop(HeroClass.Runedancer, 50);
             loop.SetLocalDay(20_000);
             loop.Drops.OnBossDefeated(3, EnemyType.Boss, 3, raisesRecord: true);
             loop.Drops.OnBossDefeated(20, EnemyType.Boss, 20, raisesRecord: true);
@@ -181,7 +181,7 @@ namespace Game.Core.Tests.Save
         [Test]
         public void EditedSaveIsRejected()
         {
-            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Ronin, 500).State, Clock);
+            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Duelist, 500).State, Clock);
             var edited = text.Replace("\"current\": ", "\"current\": 9");
 
             var error = Assert.Throws<ContentException>(() => SaveCodec.Decode(edited, TestWorld.Data))!;
@@ -192,7 +192,7 @@ namespace Game.Core.Tests.Save
         [Test]
         public void CutSaveIsRejected()
         {
-            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Ronin, 500).State, Clock);
+            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Duelist, 500).State, Clock);
 
             Assert.Throws<ContentException>(() => SaveCodec.Decode(text.Substring(0, text.Length / 2), TestWorld.Data));
         }
@@ -225,12 +225,12 @@ namespace Game.Core.Tests.Save
         [Test]
         public void WriterAndParserAgree()
         {
-            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Metalhead, 300).State, Clock);
+            var text = SaveCodec.Encode(PlayedLoop(HeroClass.Minstrel, 300).State, Clock);
 
             var parsed = JsonParser.Parse(text, SaveCodec.FileName);
 
             Assert.That(parsed.Fields.ContainsKey("checksum"), Is.True);
-            Assert.That(parsed.Fields["payload"].Fields["state"].Fields["hero"].Fields["class"].Text, Is.EqualTo("metalhead"));
+            Assert.That(parsed.Fields["payload"].Fields["state"].Fields["hero"].Fields["class"].Text, Is.EqualTo("minstrel"));
         }
 
         private static string ReplaceChecksum(string text, string payload)

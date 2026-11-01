@@ -182,7 +182,7 @@ namespace Game.Core.Sim
 
         private void FireShot()
         {
-            if (!_state.Is(HeroClass.Captain) || !_state.EnemyAlive)
+            if (!_state.Is(HeroClass.Ghostcaptain) || !_state.EnemyAlive)
                 return;
             var stacks = _combat.Cannons.IgniteStacks + _hero.Value(CombatStats.CannonIgnite, 0, StatTags.Minion);
             if (stacks > 0)
@@ -217,7 +217,7 @@ namespace Game.Core.Sim
 
         private void Broadside(in EffectiveInput input)
         {
-            if (!_state.Is(HeroClass.Captain))
+            if (!_state.Is(HeroClass.Ghostcaptain))
                 return;
             var rules = _combat.Cannons;
             _state.BroadsidePx += input.MousePx;

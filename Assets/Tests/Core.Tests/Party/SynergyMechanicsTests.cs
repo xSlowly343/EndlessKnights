@@ -31,8 +31,8 @@ namespace Game.Core.Tests.Party
         [Test]
         public void MiasmaReactionBurstsTheOwnStacksOnceAndThenWaitsForItsCooldown()
         {
-            var loop = Poisoned(HeroClass.Ronin, 20);
-            loop.Synergy.SetAlly(0, true, HeroClass.Moonshiner, Mark("fire"));
+            var loop = Poisoned(HeroClass.Duelist, 20);
+            loop.Synergy.SetAlly(0, true, HeroClass.Dowser, Mark("fire"));
 
             loop.Tick();
             Assert.That(loop.Skills.Dots.MiasmaBursts, Is.EqualTo(1));
@@ -49,10 +49,10 @@ namespace Game.Core.Tests.Party
         [Test]
         public void MiasmaBurstDealsTheShareOfTheStacksDamageOverItsSeconds()
         {
-            var with = Poisoned(HeroClass.Ronin, 20);
-            var without = Poisoned(HeroClass.Ronin, 20);
-            with.Synergy.SetAlly(0, true, HeroClass.Moonshiner, Mark("fire"));
-            without.Synergy.SetAlly(0, true, HeroClass.Viking, Mark("stun"));
+            var with = Poisoned(HeroClass.Duelist, 20);
+            var without = Poisoned(HeroClass.Duelist, 20);
+            with.Synergy.SetAlly(0, true, HeroClass.Dowser, Mark("fire"));
+            without.Synergy.SetAlly(0, true, HeroClass.Runedancer, Mark("stun"));
 
             with.Tick();
             without.Tick();
@@ -67,10 +67,10 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void PlagueDoctorBurstsEveryFewSecondsWhileAnAllyBurns()
+        public void AlchemistBurstsEveryFewSecondsWhileAnAllyBurns()
         {
-            var loop = Poisoned(HeroClass.PlagueDoctor, 20);
-            loop.Synergy.SetAlly(0, true, HeroClass.Captain, Mark("fire"));
+            var loop = Poisoned(HeroClass.Alchemist, 20);
+            loop.Synergy.SetAlly(0, true, HeroClass.Ghostcaptain, Mark("fire"));
             var every = TestWorld.Data.Combat.Dots.MiasmaEverySeconds;
 
             for (var tick = 0; tick < 3 * every * GameLoop.TicksPerSecond; tick++)
@@ -82,8 +82,8 @@ namespace Game.Core.Tests.Party
         [Test]
         public void NoStacksNoBurst()
         {
-            var loop = Hero(HeroClass.PlagueDoctor);
-            loop.Synergy.SetAlly(0, true, HeroClass.Moonshiner, Mark("fire"));
+            var loop = Hero(HeroClass.Alchemist);
+            loop.Synergy.SetAlly(0, true, HeroClass.Dowser, Mark("fire"));
 
             for (var tick = 0; tick < 20; tick++)
                 loop.Tick();
@@ -94,9 +94,9 @@ namespace Game.Core.Tests.Party
         [Test]
         public void FireLegionLetsOwnMinionsIgniteTheEnemy()
         {
-            var with = Summoned(HeroClass.Gravedigger);
-            var without = Summoned(HeroClass.Gravedigger);
-            with.Synergy.SetAlly(0, true, HeroClass.Moonshiner, Mark("fire"));
+            var with = Summoned(HeroClass.Soulbinder);
+            var without = Summoned(HeroClass.Soulbinder);
+            with.Synergy.SetAlly(0, true, HeroClass.Dowser, Mark("fire"));
 
             for (var tick = 0; tick < 30; tick++)
             {
@@ -113,10 +113,10 @@ namespace Game.Core.Tests.Party
         [Test]
         public void RotOfAgesCarriesThePoisonToTheNextEnemy()
         {
-            var with = Poisoned(HeroClass.Ronin, 20);
-            var without = Poisoned(HeroClass.Ronin, 20);
-            with.Synergy.SetAlly(0, true, HeroClass.Clockmaker, Mark("time"));
-            without.Synergy.SetAlly(0, true, HeroClass.Viking, Mark("stun"));
+            var with = Poisoned(HeroClass.Duelist, 20);
+            var without = Poisoned(HeroClass.Duelist, 20);
+            with.Synergy.SetAlly(0, true, HeroClass.Clockwright, Mark("time"));
+            without.Synergy.SetAlly(0, true, HeroClass.Runedancer, Mark("stun"));
             with.Tick();
             without.Tick();
             Assert.That(with.Synergy.ReactionActive(IndexOfReaction("rot_of_ages")), Is.True);
@@ -129,10 +129,10 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void StormweaverLightningHitsWithTheAllyPoisonOnEveryLightningCast()
+        public void ShardcallerLightningHitsWithTheAllyPoisonOnEveryLightningCast()
         {
-            var with = Casting(HeroClass.Stormweaver, Mark("poison"));
-            var without = Casting(HeroClass.Stormweaver, Mark("stun"));
+            var with = Casting(HeroClass.Shardcaller, Mark("poison"));
+            var without = Casting(HeroClass.Shardcaller, Mark("stun"));
 
             Assert.That(with.SynergyStrikes.ElectrolysisStrikes, Is.EqualTo(1));
             Assert.That(without.SynergyStrikes.ElectrolysisStrikes, Is.Zero);
@@ -140,12 +140,12 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void MoonshinerSparkAddsBurnEverySecondOnlyToABurningEnemy()
+        public void DowserSparkAddsBurnEverySecondOnlyToABurningEnemy()
         {
-            var loop = Hero(HeroClass.Moonshiner);
+            var loop = Hero(HeroClass.Dowser);
             loop.Tick();
             loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e30);
-            loop.Synergy.SetAlly(0, true, HeroClass.Stormweaver, Mark("lightning"));
+            loop.Synergy.SetAlly(0, true, HeroClass.Shardcaller, Mark("lightning"));
             for (var tick = 0; tick < 20; tick++)
                 loop.Tick();
             Assert.That(loop.SynergyStrikes.Sparks, Is.Zero, "nothing burns yet");
@@ -158,11 +158,11 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void OracleCritsUnderTheHunterMarkGiveOmens()
+        public void DreamcatcherCritsUnderTheHunterMarkGiveOmens()
         {
-            var with = Hero(HeroClass.Oracle);
-            var without = Hero(HeroClass.Oracle);
-            with.Synergy.SetAlly(0, true, HeroClass.Amazon, Mark("hunterMark"));
+            var with = Hero(HeroClass.Dreamcatcher);
+            var without = Hero(HeroClass.Dreamcatcher);
+            with.Synergy.SetAlly(0, true, HeroClass.Windshot, Mark("hunterMark"));
             with.Tick();
             without.Tick();
 
@@ -184,7 +184,7 @@ namespace Game.Core.Tests.Party
             loop.Skills.Equip(gem);
             loop.Tick();
             loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e30);
-            loop.Synergy.SetAlly(0, true, HeroClass.PlagueDoctor, allyMarks);
+            loop.Synergy.SetAlly(0, true, HeroClass.Alchemist, allyMarks);
             loop.Tick();
             loop.State.Resource = 1000;
             loop.RequestCast(0);

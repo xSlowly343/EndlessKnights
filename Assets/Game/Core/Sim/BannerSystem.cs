@@ -24,7 +24,7 @@ namespace Game.Core.Sim
 
         public void Tick(in EffectiveInput input)
         {
-            if (!_state.Is(HeroClass.Bannerbearer))
+            if (!_state.Is(HeroClass.Lanternbearer))
             {
                 Apply(0);
                 return;

@@ -24,7 +24,7 @@ namespace Game.Platform.Tests
             var data = GameData.Load(name => File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Data", name)));
             Texts.UseLanguage("ru");
             _input = new FakeInputSource();
-            _loop = new GameLoop(data, _input, new GameState { Class = HeroClass.Viking }, new StatSheet());
+            _loop = new GameLoop(data, _input, new GameState { Class = HeroClass.Runedancer }, new StatSheet());
             _panel = PanelCanvas.Create();
             _panel.Bind(_loop);
         }

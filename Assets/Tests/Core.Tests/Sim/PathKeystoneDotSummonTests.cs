@@ -58,7 +58,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void KeyHitsApplyPoisonAndBurning()
         {
-            var (loop, input) = Hero(HeroClass.Moonshiner,
+            var (loop, input) = Hero(HeroClass.Dowser,
                 new Modifier(CombatStats.KeyHitPoison, ModifierKind.Flat, 0.15),
                 new Modifier(CombatStats.KeyHitBurn, ModifierKind.Flat, 0.1));
 
@@ -72,8 +72,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void BurnDamageMakesOnlyBurningStronger()
         {
-            var (plain, _) = Hero(HeroClass.Viking);
-            var (hot, _) = Hero(HeroClass.Viking, new Modifier(CombatStats.BurnDamage, ModifierKind.More, 1));
+            var (plain, _) = Hero(HeroClass.Runedancer);
+            var (hot, _) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.BurnDamage, ModifierKind.More, 1));
             plain.State.BurnStacks = 10;
             hot.State.BurnStacks = 10;
 
@@ -86,7 +86,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StacksAtTheCapBlowUp()
         {
-            var (loop, _) = Hero(HeroClass.PlagueDoctor, new Modifier(CombatStats.DetonateAtMax, ModifierKind.Flat, 6));
+            var (loop, _) = Hero(HeroClass.Alchemist, new Modifier(CombatStats.DetonateAtMax, ModifierKind.Flat, 6));
             loop.State.PoisonStacks = loop.Skills.Dots.PoisonMax;
 
             loop.Tick();
@@ -99,7 +99,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void DotAlsoHitsTheWholeQueue()
         {
-            var (loop, _) = Hero(HeroClass.Moonshiner, new Modifier(CombatStats.DotQueueShare, ModifierKind.Flat, 0.5));
+            var (loop, _) = Hero(HeroClass.Dowser, new Modifier(CombatStats.DotQueueShare, ModifierKind.Flat, 0.5));
             loop.State.BurnStacks = 10;
 
             Wait(loop, 1);
@@ -111,8 +111,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PoisonSpreadsToTheNextEnemy()
         {
-            var (loop, input) = Hero(HeroClass.PlagueDoctor, Overwhelming, new Modifier(CombatStats.DotSpread, ModifierKind.Flat, 0.6));
-            var (plain, plainInput) = Hero(HeroClass.PlagueDoctor, Overwhelming);
+            var (loop, input) = Hero(HeroClass.Alchemist, Overwhelming, new Modifier(CombatStats.DotSpread, ModifierKind.Flat, 0.6));
+            var (plain, plainInput) = Hero(HeroClass.Alchemist, Overwhelming);
             loop.State.PoisonStacks = 20;
             plain.State.PoisonStacks = 20;
 
@@ -126,7 +126,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void MeteorFallsInsteadOfOverheating()
         {
-            var (loop, input) = Hero(HeroClass.Moonshiner,
+            var (loop, input) = Hero(HeroClass.Dowser,
                 new Modifier(CombatStats.OverheatDisabled, ModifierKind.Flat, 1),
                 new Modifier(CombatStats.OverheatBurst, ModifierKind.Flat, 12),
                 new Modifier(CombatStats.ResourcePerKey, ModifierKind.Flat, 200));
@@ -143,8 +143,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FullPowderDischargesOnlyWithTheKeystone()
         {
-            var (loop, _) = Hero(HeroClass.Captain, new Modifier(CombatStats.OverloadAtMax, ModifierKind.Flat, 8));
-            var (plain, _) = Hero(HeroClass.Captain);
+            var (loop, _) = Hero(HeroClass.Ghostcaptain, new Modifier(CombatStats.OverloadAtMax, ModifierKind.Flat, 8));
+            var (plain, _) = Hero(HeroClass.Ghostcaptain);
             loop.State.Resource = loop.Resource.Max;
             plain.State.Resource = plain.Resource.Max;
 
@@ -159,7 +159,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SlainEnemiesRiseAsSkeletons()
         {
-            var (loop, input) = Hero(HeroClass.Gravedigger, Overwhelming, new Modifier(CombatStats.SkeletonOnKill, ModifierKind.Flat, 1));
+            var (loop, input) = Hero(HeroClass.Soulbinder, Overwhelming, new Modifier(CombatStats.SkeletonOnKill, ModifierKind.Flat, 1));
 
             Kill(loop, input);
             loop.Tick();
@@ -171,7 +171,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SlainEnemiesJoinThePack()
         {
-            var (loop, input) = Hero(HeroClass.Gravedigger, Overwhelming, new Modifier(CombatStats.BeastOnKill, ModifierKind.Flat, 1));
+            var (loop, input) = Hero(HeroClass.Soulbinder, Overwhelming, new Modifier(CombatStats.BeastOnKill, ModifierKind.Flat, 1));
 
             Kill(loop, input);
 
@@ -181,7 +181,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void DemonFormLeavesNoRoomForSkeletons()
         {
-            var (loop, _) = Hero(HeroClass.Gravedigger, new Modifier(CombatStats.MinionCount, ModifierKind.Flat, -99));
+            var (loop, _) = Hero(HeroClass.Soulbinder, new Modifier(CombatStats.MinionCount, ModifierKind.Flat, -99));
 
             loop.Skills.Minions.Place(Rules.SkeletonOnKill, StatTags.Skill);
 
@@ -191,7 +191,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SummonsAlsoHitTheQueue()
         {
-            var (loop, _) = Hero(HeroClass.Captain, new Modifier(CombatStats.MinionQueueShare, ModifierKind.Flat, 0.4));
+            var (loop, _) = Hero(HeroClass.Ghostcaptain, new Modifier(CombatStats.MinionQueueShare, ModifierKind.Flat, 0.4));
             loop.Skills.Minions.Place(Rules.SkeletonOnKill, StatTags.Skill);
 
             Wait(loop, 1);

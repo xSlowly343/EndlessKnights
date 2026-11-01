@@ -19,19 +19,19 @@ namespace Game.Core.Tests.Build
             return loop;
         }
 
-        [TestCase(HeroClass.Ronin, "ronin_katana")]
-        [TestCase(HeroClass.Amazon, "amazon_short_bow")]
-        [TestCase(HeroClass.Stormweaver, "stormweaver_storm_rod")]
-        [TestCase(HeroClass.Nomad, "nomad_scimitar")]
-        [TestCase(HeroClass.Metalhead, "metalhead_electric_guitar")]
-        [TestCase(HeroClass.Oracle, "oracle_holy_orb")]
-        [TestCase(HeroClass.Bannerbearer, "bannerbearer_war_standard")]
-        [TestCase(HeroClass.Voodoo, "voodoo_voodoo_doll")]
-        [TestCase(HeroClass.Clockmaker, "clockmaker_pendulum")]
-        [TestCase(HeroClass.PlagueDoctor, "plague_doctor_syringe_cane")]
-        [TestCase(HeroClass.Moonshiner, "moonshiner_burner")]
-        [TestCase(HeroClass.Gravedigger, "gravedigger_shovel")]
-        [TestCase(HeroClass.Captain, "captain_pistol")]
+        [TestCase(HeroClass.Duelist, "duelist_katana")]
+        [TestCase(HeroClass.Windshot, "windshot_short_bow")]
+        [TestCase(HeroClass.Shardcaller, "shardcaller_storm_rod")]
+        [TestCase(HeroClass.Sandwalker, "sandwalker_scimitar")]
+        [TestCase(HeroClass.Minstrel, "minstrel_electric_guitar")]
+        [TestCase(HeroClass.Dreamcatcher, "dreamcatcher_holy_orb")]
+        [TestCase(HeroClass.Lanternbearer, "lanternbearer_war_standard")]
+        [TestCase(HeroClass.Whisperer, "whisperer_whisperer_doll")]
+        [TestCase(HeroClass.Clockwright, "clockwright_pendulum")]
+        [TestCase(HeroClass.Alchemist, "alchemist_syringe_cane")]
+        [TestCase(HeroClass.Dowser, "dowser_burner")]
+        [TestCase(HeroClass.Soulbinder, "soulbinder_shovel")]
+        [TestCase(HeroClass.Ghostcaptain, "ghostcaptain_pistol")]
         public void AClassOnTheNewTreeHasNoStartPassiveAndGrowsFromItsNodes(HeroClass heroClass, string node)
         {
             var loop = Real(new GameState { Class = heroClass, HeroLevel = 10 });
@@ -47,13 +47,13 @@ namespace Game.Core.Tests.Build
         [Test]
         public void HuscarlOnTheNewTreeHasNoStartPassiveAndGrowsFromItsNodes()
         {
-            var loop = Real(new GameState { Class = HeroClass.Viking, HeroLevel = 10 });
+            var loop = Real(new GameState { Class = HeroClass.Runedancer, HeroLevel = 10 });
             loop.Levels.SyncTreePoints();
 
             Assert.That(loop.State.ClassTreeActive, Is.True);
             Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(1).Within(1e-9));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100).Within(1e-9));
-            Assert.That(loop.RaiseNode("viking_axe"), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.RaiseNode("runedancer_axe"), Is.EqualTo(RankResult.Done));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(104).Within(1e-9));
         }
 
@@ -76,7 +76,7 @@ namespace Game.Core.Tests.Build
             hero.Add(new Modifier(CombatStats.ComboTimeoutSeconds, ModifierKind.Flat, 0.5));
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Ronin }, hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Duelist }, hero);
             loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Normal, BigNumber.Create(1, 40));
             var rules = TestWorld.Data.Combat.Classes;
 

@@ -45,7 +45,7 @@ namespace Game.Core.Tests.Sim.Weapons
 
         private static IEnumerable<IReadOnlyList<string>> Rolls(WeaponCatalog catalog, ItemRarity rarity, int count)
         {
-            var katana = catalog.TypeOf(HeroClass.Ronin);
+            var katana = catalog.TypeOf(HeroClass.Duelist);
             for (var seed = 1; seed <= count; seed++)
                 yield return catalog.RollSkills(katana, rarity, new Rng((ulong)seed));
         }
@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void StarterKatanaHoldsTheRoninsSevenSkillsInPlaceOrder()
         {
-            var loop = Hero(HeroClass.Ronin);
+            var loop = Hero(HeroClass.Duelist);
             var katana = loop.Weapons.In(WeaponHand.Right)!;
 
             Assert.That(katana.Rarity, Is.EqualTo(ItemRarity.Simple));
@@ -68,7 +68,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void PlacesOpenWithHeroLevelOneOneEightFifteenTwentyFiveThirtyFiveFifty()
         {
             Assert.That(Catalog.SkillRules.UnlockLevels, Is.EqualTo(new[] { 1, 1, 8, 15, 25, 35, 50 }));
-            var loop = Hero(HeroClass.Ronin);
+            var loop = Hero(HeroClass.Duelist);
             foreach (var id in KatanaStarter)
                 loop.Skills.Equip(TestWorld.Real.Gems[id]);
 
@@ -87,7 +87,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void SkillOfTheRightTypeButNotOnTheWeaponStaysDark()
         {
-            var loop = Hero(HeroClass.Ronin);
+            var loop = Hero(HeroClass.Duelist);
             loop.State.HeroLevel = 50;
             var katana = loop.Weapons.In(WeaponHand.Right)!;
             loop.Weapons.Unequip(WeaponHand.Right);
@@ -106,7 +106,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void PathSkillsStillNeedOnlyTheWeaponType()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             loop.Skills.Equip(TestWorld.Real.Gems["second_axe"]);
 
             Assert.That(loop.Skills.Armed(0), Is.True);
@@ -160,7 +160,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void MythicSkillsOnlyOnAstralAndPrimordialAtMostTwo()
         {
             var catalog = WithMythicRoninSkills();
-            int Mythic(IReadOnlyList<string> skills) => skills.Count(id => catalog.PoolOf(catalog.TypeOf(HeroClass.Ronin)).First(gem => gem.Id == id).Skill!.Tier == SkillTier.Mythic);
+            int Mythic(IReadOnlyList<string> skills) => skills.Count(id => catalog.PoolOf(catalog.TypeOf(HeroClass.Duelist)).First(gem => gem.Id == id).Skill!.Tier == SkillTier.Mythic);
 
             Assert.That(Rolls(catalog, ItemRarity.Rift, 300).Select(Mythic), Has.All.EqualTo(0));
             Assert.That(Rolls(catalog, ItemRarity.Astral, 300).Select(Mythic), Has.All.InRange(0, 2));
@@ -171,7 +171,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void SameSeedRollsTheSameSkills()
         {
-            var katana = Catalog.TypeOf(HeroClass.Ronin);
+            var katana = Catalog.TypeOf(HeroClass.Duelist);
 
             Assert.That(Catalog.RollSkills(katana, ItemRarity.Ancient, new Rng(42)), Is.EqualTo(Catalog.RollSkills(katana, ItemRarity.Ancient, new Rng(42))));
         }
@@ -179,7 +179,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void SaveKeepsRarityAndRolledSkills()
         {
-            var loop = Hero(HeroClass.Ronin);
+            var loop = Hero(HeroClass.Duelist);
             var rolled = loop.Weapons.Give(Base("shogun_blade"), ItemRarity.Ancient, new Rng(7));
             loop.Weapons.Equip(WeaponHand.Left, rolled);
 
@@ -195,7 +195,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void OldSaveWeaponsBecomeSimpleWithTheStarterSkills()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             var payload = JsonParser.Parse(SaveCodec.Encode(loop.State, Clock), "save").Fields["payload"];
             var oldWeapons = JsonParser.Parse("{\"starterGiven\": true, \"right\": \"jarl_axe\", \"left\": null, \"bag\": [\"wanderer_katana\"]}", "old");
             var edited = JsonEdit.Update(payload, "state", state => JsonEdit.Set(state, "weapons", oldWeapons));
@@ -203,7 +203,7 @@ namespace Game.Core.Tests.Sim.Weapons
 
             Assert.That(state.Weapons.Right!.Id, Is.EqualTo("jarl_axe"));
             Assert.That(state.Weapons.Right.Rarity, Is.EqualTo(ItemRarity.Simple));
-            Assert.That(state.Weapons.Right.Skills, Is.EqualTo(Catalog.TypeOf(HeroClass.Viking).StarterSkills));
+            Assert.That(state.Weapons.Right.Skills, Is.EqualTo(Catalog.TypeOf(HeroClass.Runedancer).StarterSkills));
             Assert.That(state.Weapons.Bag[0].Skills, Is.EqualTo(KatanaStarter));
         }
 

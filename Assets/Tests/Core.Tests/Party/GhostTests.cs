@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Party
         }
 
         private static GhostSnapshot Friend(double shareRate, double activity, int marks = 0) =>
-            new GhostSnapshot("friend", "Аня", HeroClass.Voodoo, shareRate, marks, activity);
+            new GhostSnapshot("friend", "Аня", HeroClass.Whisperer, shareRate, marks, activity);
 
         [Test]
         public void TheGhostHitsAShareOfYourOwnEnemyEverySecond()

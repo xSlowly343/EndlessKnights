@@ -44,13 +44,13 @@ namespace Game.Core.Tests.Sim
             return (loop, input);
         }
 
-        private static readonly string[] VikingSkills = { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };
-        private static readonly string[] MetalheadSkills = { "hearth_song", "louder", "nail_chord", "colossus_lullaby", "whole_hall", "underside_amp", "still_alive" };
-        private static readonly string[] RoninSkills = { "thin_cut", "hundred_cuts", "no_rush", "kitchen_rhythm", "what_remains_of_the_debt", "sweep_over_the_queue", "slow_simmer" };
-        private static readonly string[] CaptainSkills = { "cannon_by_name" };
-        private static readonly string[] PlagueDoctorSkills = { "vial_from_belt" };
-        private static readonly string[] MoonshinerSkills = { "fuse_bottle" };
-        private static readonly string[] GravediggerSkills = { "call_a_colleague" };
+        private static readonly string[] RunedancerSkills = { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };
+        private static readonly string[] MinstrelSkills = { "hearth_song", "louder", "nail_chord", "colossus_lullaby", "whole_hall", "underside_amp", "still_alive" };
+        private static readonly string[] DuelistSkills = { "thin_cut", "hundred_cuts", "no_rush", "kitchen_rhythm", "what_remains_of_the_debt", "sweep_over_the_queue", "slow_simmer" };
+        private static readonly string[] GhostcaptainSkills = { "cannon_by_name" };
+        private static readonly string[] AlchemistSkills = { "vial_from_belt" };
+        private static readonly string[] DowserSkills = { "fuse_bottle" };
+        private static readonly string[] SoulbinderSkills = { "call_a_colleague" };
 
         private static readonly string[] CommonSkills =
         {
@@ -66,13 +66,13 @@ namespace Game.Core.Tests.Sim
         private static string[] ClassSkills(HeroClass heroClass) =>
             heroClass switch
             {
-                HeroClass.Viking => VikingSkills,
-                HeroClass.Ronin => RoninSkills,
-                HeroClass.Captain => CaptainSkills,
-                HeroClass.PlagueDoctor => PlagueDoctorSkills,
-                HeroClass.Moonshiner => MoonshinerSkills,
-                HeroClass.Gravedigger => GravediggerSkills,
-                _ => MetalheadSkills
+                HeroClass.Runedancer => RunedancerSkills,
+                HeroClass.Duelist => DuelistSkills,
+                HeroClass.Ghostcaptain => GhostcaptainSkills,
+                HeroClass.Alchemist => AlchemistSkills,
+                HeroClass.Dowser => DowserSkills,
+                HeroClass.Soulbinder => SoulbinderSkills,
+                _ => MinstrelSkills
             };
 
         private static (GameLoop Loop, FakeInputSource Input) SkillHero(HeroClass heroClass, string[] skills)
@@ -111,9 +111,9 @@ namespace Game.Core.Tests.Sim
         public void CommonSkillTicksDoNotAllocate()
         {
             RequireAllocationCounter();
-            var (warmUp, warmUpInput) = SkillHero(HeroClass.Ronin, CommonSkills);
+            var (warmUp, warmUpInput) = SkillHero(HeroClass.Duelist, CommonSkills);
             FightWithEveryInput(warmUp, warmUpInput, 3000);
-            var (loop, input) = SkillHero(HeroClass.Ronin, CommonSkills);
+            var (loop, input) = SkillHero(HeroClass.Duelist, CommonSkills);
             FightWithEveryInput(loop, input, 2000);
 
             var before = GC.GetAllocatedBytesForCurrentThread();
@@ -136,13 +136,13 @@ namespace Game.Core.Tests.Sim
             }
         }
 
-        [TestCase(HeroClass.Viking)]
-        [TestCase(HeroClass.Ronin)]
-        [TestCase(HeroClass.Metalhead)]
-        [TestCase(HeroClass.Captain)]
-        [TestCase(HeroClass.PlagueDoctor)]
-        [TestCase(HeroClass.Moonshiner)]
-        [TestCase(HeroClass.Gravedigger)]
+        [TestCase(HeroClass.Runedancer)]
+        [TestCase(HeroClass.Duelist)]
+        [TestCase(HeroClass.Minstrel)]
+        [TestCase(HeroClass.Ghostcaptain)]
+        [TestCase(HeroClass.Alchemist)]
+        [TestCase(HeroClass.Dowser)]
+        [TestCase(HeroClass.Soulbinder)]
         public void ClassSkillTicksDoNotAllocate(HeroClass heroClass)
         {
             RequireAllocationCounter();
@@ -159,8 +159,8 @@ namespace Game.Core.Tests.Sim
             Assert.That(allocated, Is.EqualTo(0));
         }
 
-        [TestCase(HeroClass.Ronin)]
-        [TestCase(HeroClass.Metalhead)]
+        [TestCase(HeroClass.Duelist)]
+        [TestCase(HeroClass.Minstrel)]
         public void CombatTicksDoNotAllocate(HeroClass heroClass)
         {
             RequireAllocationCounter();

@@ -34,7 +34,7 @@ namespace Game.Core.Tests.Sim
         public void TheFourClassesAreOfferedToPlayersWithAWeaponAStartAndThreePaths()
         {
             Assert.That(HeroClassNames.InDevelopment, Is.Empty);
-            foreach (var heroClass in new[] { HeroClass.Spinner, HeroClass.Rimecaller, HeroClass.Thornmaiden, HeroClass.Clayshaper })
+            foreach (var heroClass in new[] { HeroClass.Mothcaller, HeroClass.Cartomancer, HeroClass.Herbwitch, HeroClass.Golemancer })
             {
                 var name = HeroClassNames.Of(heroClass);
                 Assert.That(HeroClassNames.ByName[name], Is.EqualTo(heroClass));
@@ -46,44 +46,44 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SpinnerBondsHoldAurasLongerAboveThirtyThread()
+        public void MothcallerBondsHoldAurasLongerAboveThirtyThread()
         {
-            var spinner = Hero(HeroClass.Spinner, new FakeInputSource());
-            spinner.State.Resource = Rules.Bonds.ResourceAbove - 5;
-            spinner.Tick();
+            var mothcaller = Hero(HeroClass.Mothcaller, new FakeInputSource());
+            mothcaller.State.Resource = Rules.Bonds.ResourceAbove - 5;
+            mothcaller.Tick();
 
-            Assert.That(spinner.State.BondsUp, Is.False);
-            Assert.That(spinner.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1).Within(1e-9));
+            Assert.That(mothcaller.State.BondsUp, Is.False);
+            Assert.That(mothcaller.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1).Within(1e-9));
 
-            spinner.State.Resource = Rules.Bonds.ResourceAbove + 20;
-            spinner.Tick();
+            mothcaller.State.Resource = Rules.Bonds.ResourceAbove + 20;
+            mothcaller.Tick();
 
-            Assert.That(spinner.State.BondsUp, Is.True);
-            Assert.That(spinner.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1 + Rules.Bonds.AuraDuration).Within(1e-9));
-            Assert.That(spinner.Synergy.OwnMarks & Mark("bond"), Is.Not.Zero);
+            Assert.That(mothcaller.State.BondsUp, Is.True);
+            Assert.That(mothcaller.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1 + Rules.Bonds.AuraDuration).Within(1e-9));
+            Assert.That(mothcaller.Synergy.OwnMarks & Mark("bond"), Is.Not.Zero);
 
-            spinner.State.Resource = 0;
-            spinner.Tick();
+            mothcaller.State.Resource = 0;
+            mothcaller.Tick();
 
-            Assert.That(spinner.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1).Within(1e-9));
+            Assert.That(mothcaller.Hero.Value(CombatStats.AuraDuration, 1, StatTags.Aura), Is.EqualTo(1).Within(1e-9));
         }
 
         [Test]
         public void MouseMovementSpinsThread()
         {
             var input = new FakeInputSource();
-            var spinner = Hero(HeroClass.Spinner, input);
-            var pxPerPoint = TestWorld.Data.Combat.Resources.For("spinner").MousePxPerPoint;
+            var mothcaller = Hero(HeroClass.Mothcaller, input);
+            var pxPerPoint = TestWorld.Data.Combat.Resources.For("mothcaller").MousePxPerPoint;
             input.MoveMouse((float)(2 * pxPerPoint));
-            spinner.Tick();
+            mothcaller.Tick();
 
-            Assert.That(spinner.State.Resource, Is.EqualTo(2).Within(1e-6));
+            Assert.That(mothcaller.State.Resource, Is.EqualTo(2).Within(1e-6));
         }
 
         [Test]
         public void OtherClassesHaveNoBonds()
         {
-            var huscarl = Hero(HeroClass.Viking, new FakeInputSource());
+            var huscarl = Hero(HeroClass.Runedancer, new FakeInputSource());
             huscarl.State.Resource = 80;
             huscarl.Tick();
 
@@ -91,52 +91,52 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void RimecallerKeyHitsLayColdThatRaisesDamageAndFades()
+        public void CartomancerKeyHitsLayColdThatRaisesDamageAndFades()
         {
             var input = new FakeInputSource();
-            var rimecaller = Hero(HeroClass.Rimecaller, input);
+            var cartomancer = Hero(HeroClass.Cartomancer, input);
             for (var i = 0; i < 5; i++)
             {
                 input.PressKeys(5);
-                rimecaller.Tick();
+                cartomancer.Tick();
             }
 
-            var cold = rimecaller.State.Cold;
+            var cold = cartomancer.State.Cold;
             Assert.That(cold, Is.GreaterThan(10).And.LessThanOrEqualTo(25));
-            Assert.That(rimecaller.Combat.Class.ColdShare, Is.EqualTo(Rules.Cold.DamageTaken * cold / Rules.Cold.Max).Within(1e-9));
-            Assert.That(rimecaller.Synergy.OwnMarks & Mark("cold"), Is.Not.Zero);
+            Assert.That(cartomancer.Combat.Class.ColdShare, Is.EqualTo(Rules.Cold.DamageTaken * cold / Rules.Cold.Max).Within(1e-9));
+            Assert.That(cartomancer.Synergy.OwnMarks & Mark("cold"), Is.Not.Zero);
 
-            var solo = rimecaller.Combat.ConditionMultiplier(StatTags.Keyboard);
-            rimecaller.State.SharedEnemy = true;
-            Assert.That(solo / rimecaller.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1 + rimecaller.Combat.Class.ColdShare).Within(1e-9));
-            rimecaller.State.SharedEnemy = false;
+            var solo = cartomancer.Combat.ConditionMultiplier(StatTags.Keyboard);
+            cartomancer.State.SharedEnemy = true;
+            Assert.That(solo / cartomancer.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1 + cartomancer.Combat.Class.ColdShare).Within(1e-9));
+            cartomancer.State.SharedEnemy = false;
 
             for (var i = 0; i < 10; i++)
-                rimecaller.Tick();
-            Assert.That(rimecaller.State.Cold, Is.LessThan(cold));
+                cartomancer.Tick();
+            Assert.That(cartomancer.State.Cold, Is.LessThan(cold));
 
-            rimecaller.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
-            Assert.That(rimecaller.State.Cold, Is.Zero);
+            cartomancer.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
+            Assert.That(cartomancer.State.Cold, Is.Zero);
         }
 
         [Test]
         public void ColdCapsAtItsMaximum()
         {
             var input = new FakeInputSource();
-            var rimecaller = Hero(HeroClass.Rimecaller, input);
-            rimecaller.State.Cold = Rules.Cold.Max;
+            var cartomancer = Hero(HeroClass.Cartomancer, input);
+            cartomancer.State.Cold = Rules.Cold.Max;
             input.PressKeys(5);
-            rimecaller.Tick();
+            cartomancer.Tick();
 
-            Assert.That(rimecaller.State.Cold, Is.LessThanOrEqualTo(Rules.Cold.Max));
-            Assert.That(rimecaller.Combat.Class.ColdShare, Is.LessThanOrEqualTo(Rules.Cold.DamageTaken + 1e-9));
+            Assert.That(cartomancer.State.Cold, Is.LessThanOrEqualTo(Rules.Cold.Max));
+            Assert.That(cartomancer.Combat.Class.ColdShare, Is.LessThanOrEqualTo(Rules.Cold.DamageTaken + 1e-9));
         }
 
         [Test]
         public void OtherClassesLayNoCold()
         {
             var input = new FakeInputSource();
-            var huscarl = Hero(HeroClass.Viking, input);
+            var huscarl = Hero(HeroClass.Runedancer, input);
             input.PressKeys(5);
             huscarl.Tick();
 
@@ -145,84 +145,84 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ThornmaidenMouseMovementPutsBloodThatBleedsInAPause()
+        public void HerbwitchMouseMovementPutsBloodThatBleedsInAPause()
         {
             var input = new FakeInputSource();
-            var thornmaiden = Hero(HeroClass.Thornmaiden, input);
+            var herbwitch = Hero(HeroClass.Herbwitch, input);
             input.MoveMouse(1000);
-            thornmaiden.Tick();
+            herbwitch.Tick();
 
-            Assert.That(thornmaiden.State.BloodStacks, Is.EqualTo(Rules.Blood.PerThousandPx).Within(1e-6));
+            Assert.That(herbwitch.State.BloodStacks, Is.EqualTo(Rules.Blood.PerThousandPx).Within(1e-6));
 
-            var before = thornmaiden.State.TotalDamage;
+            var before = herbwitch.State.TotalDamage;
             for (var i = 0; i < GameLoop.TicksPerSecond; i++)
-                thornmaiden.Tick();
+                herbwitch.Tick();
 
-            Assert.That(thornmaiden.Features.BloodTicks, Is.EqualTo(1));
-            Assert.That(thornmaiden.Synergy.OwnMarks & Mark("blood"), Is.Not.Zero);
-            Assert.That((thornmaiden.State.TotalDamage - before).Sign, Is.GreaterThan(0));
+            Assert.That(herbwitch.Features.BloodTicks, Is.EqualTo(1));
+            Assert.That(herbwitch.Synergy.OwnMarks & Mark("blood"), Is.Not.Zero);
+            Assert.That((herbwitch.State.TotalDamage - before).Sign, Is.GreaterThan(0));
         }
 
         [Test]
         public void BloodCapsAndOtherClassesPutNone()
         {
             var input = new FakeInputSource();
-            var thornmaiden = Hero(HeroClass.Thornmaiden, input);
+            var herbwitch = Hero(HeroClass.Herbwitch, input);
             for (var i = 0; i < 30; i++)
             {
                 input.MoveMouse(1000);
-                thornmaiden.Tick();
+                herbwitch.Tick();
             }
-            Assert.That(thornmaiden.State.BloodStacks, Is.EqualTo(Rules.Blood.Max).Within(1e-9));
+            Assert.That(herbwitch.State.BloodStacks, Is.EqualTo(Rules.Blood.Max).Within(1e-9));
 
             var huscarlInput = new FakeInputSource();
-            var huscarl = Hero(HeroClass.Viking, huscarlInput);
+            var huscarl = Hero(HeroClass.Runedancer, huscarlInput);
             huscarlInput.MoveMouse(1000);
             huscarl.Tick();
             Assert.That(huscarl.State.BloodStacks, Is.Zero);
         }
 
         [Test]
-        public void ClayshaperRaisesOneGolemOnFullClayThatStunsWithEveryHit()
+        public void GolemancerRaisesOneGolemOnFullClayThatStunsWithEveryHit()
         {
-            var clayshaper = Hero(HeroClass.Clayshaper, new FakeInputSource());
-            clayshaper.State.Resource = 1000;
-            clayshaper.Tick();
+            var golemancer = Hero(HeroClass.Golemancer, new FakeInputSource());
+            golemancer.State.Resource = 1000;
+            golemancer.Tick();
 
-            Assert.That(clayshaper.Features.GolemsRaised, Is.EqualTo(1));
-            Assert.That(clayshaper.Skills.Minions.Standing(MinionKind.Golem), Is.EqualTo(1));
-            Assert.That(clayshaper.State.Resource, Is.LessThan(1));
-            Assert.That(clayshaper.Synergy.OwnMarks & Mark("summon"), Is.Not.Zero);
+            Assert.That(golemancer.Features.GolemsRaised, Is.EqualTo(1));
+            Assert.That(golemancer.Skills.Minions.Standing(MinionKind.Golem), Is.EqualTo(1));
+            Assert.That(golemancer.State.Resource, Is.LessThan(1));
+            Assert.That(golemancer.Synergy.OwnMarks & Mark("summon"), Is.Not.Zero);
 
-            clayshaper.State.Resource = 1000;
+            golemancer.State.Resource = 1000;
             for (var i = 0; i < 2 * GameLoop.TicksPerSecond; i++)
-                clayshaper.Tick();
+                golemancer.Tick();
 
-            Assert.That(clayshaper.Features.GolemsRaised, Is.EqualTo(1), "only one golem at a time");
-            Assert.That(clayshaper.Skills.Minions.GolemHits, Is.EqualTo(1));
-            Assert.That(clayshaper.State.StunTicks, Is.GreaterThan(0));
+            Assert.That(golemancer.Features.GolemsRaised, Is.EqualTo(1), "only one golem at a time");
+            Assert.That(golemancer.Skills.Minions.GolemHits, Is.EqualTo(1));
+            Assert.That(golemancer.State.StunTicks, Is.GreaterThan(0));
         }
 
         [Test]
         public void TheGolemFallsAndRisesAgainOnFullClay()
         {
-            var clayshaper = Hero(HeroClass.Clayshaper, new FakeInputSource());
-            clayshaper.State.Resource = 1000;
-            clayshaper.Tick();
+            var golemancer = Hero(HeroClass.Golemancer, new FakeInputSource());
+            golemancer.State.Resource = 1000;
+            golemancer.Tick();
             for (var i = 0; i < Rules.Golem.Summon.Seconds * GameLoop.TicksPerSecond + 1; i++)
-                clayshaper.Tick();
+                golemancer.Tick();
 
-            Assert.That(clayshaper.Skills.Minions.Standing(MinionKind.Golem), Is.Zero);
+            Assert.That(golemancer.Skills.Minions.Standing(MinionKind.Golem), Is.Zero);
 
-            clayshaper.State.Resource = 1000;
-            clayshaper.Tick();
-            Assert.That(clayshaper.Features.GolemsRaised, Is.EqualTo(2));
+            golemancer.State.Resource = 1000;
+            golemancer.Tick();
+            Assert.That(golemancer.Features.GolemsRaised, Is.EqualTo(2));
         }
 
         [Test]
         public void OtherClassesRaiseNoGolem()
         {
-            var huscarl = Hero(HeroClass.Viking, new FakeInputSource());
+            var huscarl = Hero(HeroClass.Runedancer, new FakeInputSource());
             huscarl.State.Resource = 1000;
             huscarl.Tick();
 
@@ -232,29 +232,29 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheClassAttributeStrengthensEachNewFeature()
         {
-            var bonds = Hero(HeroClass.Spinner, new FakeInputSource(), 20);
+            var bonds = Hero(HeroClass.Mothcaller, new FakeInputSource(), 20);
             bonds.State.Resource = 80;
             bonds.Tick();
             Assert.That(bonds.Features.BondShare, Is.EqualTo(Rules.Bonds.AuraDuration * (1 + 20 * PerPoint(bonds))).Within(1e-9));
 
-            var plainCold = Hero(HeroClass.Rimecaller, new FakeInputSource());
-            var strongCold = Hero(HeroClass.Rimecaller, new FakeInputSource(), 20);
+            var plainCold = Hero(HeroClass.Cartomancer, new FakeInputSource());
+            var strongCold = Hero(HeroClass.Cartomancer, new FakeInputSource(), 20);
             plainCold.State.Cold = strongCold.State.Cold = 50;
             Assert.That(strongCold.Combat.Class.ColdShare / plainCold.Combat.Class.ColdShare, Is.EqualTo(1 + 20 * PerPoint(strongCold)).Within(1e-9));
 
-            var plainBlood = Hero(HeroClass.Thornmaiden, new FakeInputSource());
-            var strongBlood = Hero(HeroClass.Thornmaiden, new FakeInputSource(), 20);
+            var plainBlood = Hero(HeroClass.Herbwitch, new FakeInputSource());
+            var strongBlood = Hero(HeroClass.Herbwitch, new FakeInputSource(), 20);
             plainBlood.State.BloodStacks = strongBlood.State.BloodStacks = 10;
             Assert.That(strongBlood.Features.BloodHitsPerSecond / plainBlood.Features.BloodHitsPerSecond, Is.EqualTo(1 + 20 * PerPoint(strongBlood)).Within(1e-9));
 
-            Assert.That(GolemDamage(20) / GolemDamage(0), Is.EqualTo(1 + 20 * PerPoint(Hero(HeroClass.Clayshaper, new FakeInputSource()))).Within(1e-6));
+            Assert.That(GolemDamage(20) / GolemDamage(0), Is.EqualTo(1 + 20 * PerPoint(Hero(HeroClass.Golemancer, new FakeInputSource()))).Within(1e-6));
         }
 
         [Test]
         public void ANoviceHasNoneOfTheNewFeatures()
         {
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Clayshaper, ClassChosen = false });
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Golemancer, ClassChosen = false });
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             loop.State.Resource = 1000;
             input.Flick();
@@ -271,14 +271,14 @@ namespace Game.Core.Tests.Sim
 
         private static double GolemDamage(double attribute)
         {
-            var clayshaper = Hero(HeroClass.Clayshaper, new FakeInputSource(), attribute);
-            clayshaper.State.Resource = 1000;
-            clayshaper.Tick();
-            var before = clayshaper.State.TotalDamage;
+            var golemancer = Hero(HeroClass.Golemancer, new FakeInputSource(), attribute);
+            golemancer.State.Resource = 1000;
+            golemancer.Tick();
+            var before = golemancer.State.TotalDamage;
             for (var i = 0; i < 4 * GameLoop.TicksPerSecond; i++)
-                clayshaper.Tick();
-            Assert.That(clayshaper.Skills.Minions.GolemHits, Is.EqualTo(2));
-            return (clayshaper.State.TotalDamage - before).ToDouble();
+                golemancer.Tick();
+            Assert.That(golemancer.Skills.Minions.GolemHits, Is.EqualTo(2));
+            return (golemancer.State.TotalDamage - before).ToDouble();
         }
     }
 }

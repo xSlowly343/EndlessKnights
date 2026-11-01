@@ -8,7 +8,7 @@ namespace Game.Core.Tests.Sim
 {
     public class CommonMouseSkillTests
     {
-        private static SkillTestHero Hero(params string[] skills) => SkillTestHero.Of(HeroClass.Ronin, skills);
+        private static SkillTestHero Hero(params string[] skills) => SkillTestHero.Of(HeroClass.Duelist, skills);
 
         private static void Move(SkillTestHero hero, double px, int ticks)
         {

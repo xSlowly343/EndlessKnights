@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void VikingStartingSkillsMatchSkillsDoc()
+        public void RunedancerStartingSkillsMatchSkillsDoc()
         {
             var gems = GemCatalog.Load(RealFile());
             var bash = gems["iron_rim_bash"].Skill!;
@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void MetalheadStartingSkillsMatchSkillsDoc()
+        public void MinstrelStartingSkillsMatchSkillsDoc()
         {
             var gems = GemCatalog.Load(RealFile());
             var song = gems["hearth_song"].Skill!;
@@ -119,7 +119,7 @@ namespace Game.Core.Tests.Content
         [TestCase("mosh_pit", "whole_hall")]
         [TestCase("amp_eleven", "underside_amp")]
         [TestCase("stage_dive", "still_alive")]
-        [TestCase("voodoo_needle", "charm_prick")]
+        [TestCase("whisperer_needle", "charm_prick")]
         [TestCase("stenography", "through_stride")]
         [TestCase("typo", "step_back")]
         [TestCase("typist", "quick_stride")]
@@ -161,7 +161,7 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void VikingAndMetalheadHaveSevenClassSkillsEachOnTheirWeapon()
+        public void RunedancerAndMetalheadHaveSevenClassSkillsEachOnTheirWeapon()
         {
             var gems = GemCatalog.Load(RealFile());
             var axe = new[] { "iron_rim_bash", "no_mercy", "roar_from_the_door", "hatchet_toss", "forge_heat", "anvil", "long_winter" };

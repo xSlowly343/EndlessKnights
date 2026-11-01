@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Sim
         public void EveryTenthKeyThrowsSandAndBlindsTheEnemyForAllies()
         {
             Assert.That(Rules.Every, Is.EqualTo(10));
-            var (loop, input) = Hero(HeroClass.Nomad);
+            var (loop, input) = Hero(HeroClass.Sandwalker);
 
             Assert.That(BlindAt(loop, input, Rules.Every), Is.EqualTo(Rules.Every));
             loop.Tick();
@@ -63,7 +63,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TreeLinesThrowSandMoreOftenForLongerAndHitTheBlindedHarder()
         {
-            var (loop, input) = Hero(HeroClass.Nomad,
+            var (loop, input) = Hero(HeroClass.Sandwalker,
                 new Modifier(CombatStats.BlindEvery, ModifierKind.Flat, -2),
                 new Modifier(CombatStats.BlindSeconds, ModifierKind.Flat, 2),
                 new Modifier(CombatStats.DamageVsBlinded, ModifierKind.Increased, 0.1));
@@ -73,19 +73,19 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.BlindTicks, Is.EqualTo((int)((Rules.Seconds + 2) * GameLoop.TicksPerSecond) - 1).Within(1));
             Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard) / plain, Is.EqualTo(1.1).Within(1e-9));
 
-            var (fast, fastInput) = Hero(HeroClass.Nomad, new Modifier(CombatStats.BlindEvery, ModifierKind.Flat, -100));
+            var (fast, fastInput) = Hero(HeroClass.Sandwalker, new Modifier(CombatStats.BlindEvery, ModifierKind.Flat, -100));
             Assert.That(BlindAt(fast, fastInput, Rules.Every), Is.EqualTo(Rules.EveryMin));
         }
 
         [Test]
         public void CompanionLinesAddDamagePerMarkRaiseTheLimitAndCountOwnBlind()
         {
-            var (loop, input) = Hero(HeroClass.Nomad,
+            var (loop, input) = Hero(HeroClass.Sandwalker,
                 new Modifier(CombatStats.CompanionPerMark, ModifierKind.Flat, 0.01),
                 new Modifier(CombatStats.CompanionLimit, ModifierKind.Flat, 1),
                 new Modifier(CombatStats.CompanionOwnMark, ModifierKind.Flat, 1));
-            loop.Synergy.SetAlly(0, true, HeroClass.Voodoo, Mark("curse") | Mark("time") | Mark("aura"));
-            loop.Synergy.SetAlly(1, true, HeroClass.PlagueDoctor, Mark("poison") | Mark("fire"));
+            loop.Synergy.SetAlly(0, true, HeroClass.Whisperer, Mark("curse") | Mark("time") | Mark("aura"));
+            loop.Synergy.SetAlly(1, true, HeroClass.Alchemist, Mark("poison") | Mark("fire"));
             loop.Tick();
             Assert.That(loop.Synergy.PerMarkCount, Is.EqualTo(5));
 
@@ -99,9 +99,9 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WithoutTheTreeTheCompanionStopsAtFiveMarksAndIgnoresOwnBlind()
         {
-            var (loop, input) = Hero(HeroClass.Nomad);
-            loop.Synergy.SetAlly(0, true, HeroClass.Voodoo, Mark("curse") | Mark("time") | Mark("aura"));
-            loop.Synergy.SetAlly(1, true, HeroClass.PlagueDoctor, Mark("poison") | Mark("fire") | Mark("summon"));
+            var (loop, input) = Hero(HeroClass.Sandwalker);
+            loop.Synergy.SetAlly(0, true, HeroClass.Whisperer, Mark("curse") | Mark("time") | Mark("aura"));
+            loop.Synergy.SetAlly(1, true, HeroClass.Alchemist, Mark("poison") | Mark("fire") | Mark("summon"));
             BlindAt(loop, input, Rules.Every);
             loop.Tick();
 
@@ -111,7 +111,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OtherClassesThrowNoSand()
         {
-            var (loop, input) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer);
 
             Assert.That(BlindAt(loop, input, Rules.Every * 2), Is.Zero);
             Assert.That(loop.State.KeysTowardBlind, Is.Zero);
@@ -120,7 +120,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheCountTowardTheSandIsSaved()
         {
-            var (loop, input) = Hero(HeroClass.Nomad);
+            var (loop, input) = Hero(HeroClass.Sandwalker);
             BlindAt(loop, input, 7);
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;

@@ -11,14 +11,14 @@ namespace Game.Core.Tests.Sim
     {
         private static ClassRules Rules => TestWorld.Data.Combat.Classes;
 
-        private static (GameLoop Loop, FakeInputSource Input) Ronin(params Modifier[] modifiers)
+        private static (GameLoop Loop, FakeInputSource Input) Duelist(params Modifier[] modifiers)
         {
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Ronin }, hero);
+            var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Duelist }, hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             loop.Events.Clear();
             return (loop, input);
@@ -44,7 +44,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheStreakStrikeComesEveryFiftyHitsAndBreathEveryTwentyFive()
         {
-            var (loop, input) = Ronin();
+            var (loop, input) = Duelist();
 
             Assert.That(Rules.ComboStrikeEvery, Is.EqualTo(50));
             Assert.That(KeysUntilStrike(loop, input, 100), Is.EqualTo(50));
@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheStreakStrikeAlsoHitsTheNextEnemyInTheQueue()
         {
-            var (loop, input) = Ronin();
+            var (loop, input) = Duelist();
 
             KeysUntilStrike(loop, input, 100);
 
@@ -66,7 +66,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TreeLinesShortenTheStreakAndHitMoreOfTheQueue()
         {
-            var (loop, input) = Ronin(
+            var (loop, input) = Duelist(
                 new Modifier(CombatStats.ComboStrikeEvery, ModifierKind.Flat, -10, StatTags.Keyboard),
                 new Modifier(CombatStats.ComboStrikeTargets, ModifierKind.Flat, 1, StatTags.Keyboard));
 
@@ -78,7 +78,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheStreakNeverGetsShorterThanItsFloor()
         {
-            var (loop, input) = Ronin(new Modifier(CombatStats.ComboStrikeEvery, ModifierKind.Flat, -100, StatTags.Keyboard));
+            var (loop, input) = Duelist(new Modifier(CombatStats.ComboStrikeEvery, ModifierKind.Flat, -100, StatTags.Keyboard));
 
             Assert.That(KeysUntilStrike(loop, input, 100), Is.EqualTo(Rules.ComboStrikeEveryMin));
         }
@@ -86,7 +86,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AtFullBreathTheStrikeComesSooner()
         {
-            var (loop, input) = Ronin(new Modifier(CombatStats.ComboStrikeEveryAtFullResource, ModifierKind.Flat, -10, StatTags.Keyboard));
+            var (loop, input) = Duelist(new Modifier(CombatStats.ComboStrikeEveryAtFullResource, ModifierKind.Flat, -10, StatTags.Keyboard));
             loop.State.Resource = 100;
             loop.Tick();
 
@@ -97,8 +97,8 @@ namespace Game.Core.Tests.Sim
         public void ACritOfTheStreakStrikeHitsHarderWithItsLine()
         {
             var crit = new Modifier(CombatStats.ComboStrikeCrit, ModifierKind.Flat, 1, StatTags.Keyboard);
-            var (plain, plainInput) = Ronin(crit);
-            var (strong, strongInput) = Ronin(crit, new Modifier(CombatStats.ComboStrikeCritMultiplier, ModifierKind.Flat, 0.5, StatTags.Keyboard));
+            var (plain, plainInput) = Duelist(crit);
+            var (strong, strongInput) = Duelist(crit, new Modifier(CombatStats.ComboStrikeCritMultiplier, ModifierKind.Flat, 0.5, StatTags.Keyboard));
 
             KeysUntilStrike(plain, plainInput, 100);
             KeysUntilStrike(strong, strongInput, 100);

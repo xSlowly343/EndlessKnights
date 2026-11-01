@@ -13,7 +13,7 @@ namespace Game.Core.Tests.Build
 
         private static GameLoop Berserker(params string[] activities)
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
             foreach (var activity in activities)
                 loop.CompleteActivity(activity);
             Assert.That(loop.ChooseSubclass("berserker"), Is.EqualTo(SubclassResult.Chosen));

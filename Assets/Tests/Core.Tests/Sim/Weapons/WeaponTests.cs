@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void NewHeroHoldsTheStarterOfOwnClass()
         {
-            var loop = Hero(HeroClass.Metalhead);
+            var loop = Hero(HeroClass.Minstrel);
 
             Assert.That(loop.Weapons.In(WeaponHand.Right)!.Id, Is.EqualTo("out_of_tune_guitar"));
             Assert.That(loop.Weapons.In(WeaponHand.Left), Is.Null);
@@ -38,7 +38,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void TakingTheWeaponOffDimsTheSkillAndBlocksTheCast()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             loop.Skills.Equip(TestWorld.Real.Gems["iron_rim_bash"]);
             loop.State.Resource = 100;
 
@@ -58,7 +58,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void ActiveAuraGoesOutWithItsWeapon()
         {
-            var loop = Hero(HeroClass.Metalhead);
+            var loop = Hero(HeroClass.Minstrel);
             loop.Skills.Equip(TestWorld.Real.Gems["hearth_song"]);
             loop.State.Resource = 100;
             var before = loop.Hero.Value(CombatStats.Damage, 1);
@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void SecondHandOpensAnotherClassSkills()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             loop.Skills.Equip(TestWorld.Real.Gems["hearth_song"]);
             loop.State.Resource = 100;
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.NoWeapon));
@@ -89,7 +89,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void CommonSkillsNeedNoWeapon()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             loop.Weapons.Unequip(WeaponHand.Right);
             loop.Skills.Equip(TestWorld.Real.Gems["through_stride"]);
             loop.State.Resource = 100;
@@ -100,7 +100,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void InnatePropertiesOfTwoWeaponsAddUp()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             var keyDamage = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             loop.Weapons.Unequip(WeaponHand.Right);
             var bare = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
@@ -116,7 +116,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void LateBaseAddsItsSecondLine()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             var rage = new StatId("rageEveryTwentyHits");
             Assert.That(loop.Hero.Value(rage, 0), Is.EqualTo(0));
             var greataxe = loop.Weapons.Give(Base("jarl_axe"));
@@ -130,7 +130,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void EquippingSomethingNotInTheBagFails()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
 
             Assert.That(loop.Weapons.Equip(WeaponHand.Left, Catalog.Starter(Base("battle_axe"))), Is.False);
             Assert.That(loop.Weapons.Unequip(WeaponHand.Left), Is.False);
@@ -139,7 +139,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void SaveKeepsHandsAndBag()
         {
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             var guitar = loop.Weapons.Give(Base("spark_guitar"));
             loop.Weapons.Give(Base("jarl_axe"));
             loop.Weapons.Equip(WeaponHand.Left, guitar);
@@ -157,7 +157,7 @@ namespace Game.Core.Tests.Sim.Weapons
         [Test]
         public void SaveWithoutWeaponsGetsTheStarterOnce()
         {
-            var loop = Hero(HeroClass.Voodoo);
+            var loop = Hero(HeroClass.Whisperer);
             var payload = JsonParser.Parse(SaveCodec.Encode(loop.State, Clock), "save").Fields["payload"];
             var withoutWeapons = JsonEdit.Update(payload, "state", state => JsonEdit.Remove(state, "weapons"));
             var state = GameStateJson.Read(new ContentNode(withoutWeapons, "save", "payload").Field("state"), TestWorld.Real.Enemies, TestWorld.Real.Gems, Catalog);

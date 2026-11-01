@@ -18,9 +18,9 @@ namespace Game.Core.Tests.Ui
 
         private static GemDef Gem(string id) => TestWorld.Data.Gems[id];
 
-        private static GameLoop Ronin(int heroLevel)
+        private static GameLoop Duelist(int heroLevel)
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin, HeroLevel = heroLevel });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Duelist, HeroLevel = heroLevel });
             while (loop.State.Skills.Count > 0)
                 loop.Book.Unequip(0);
             return loop;
@@ -29,7 +29,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void TheBarHasEightPlacesInTheOrderOfTheStrip()
         {
-            var loop = Ronin(12);
+            var loop = Duelist(12);
             loop.Skills.Equip(Gem("thin_cut"), role: SkillSlotRole.Right);
             loop.Skills.Equip(Gem("cooks_apron"), role: SkillSlotRole.Aura);
             var places = new SkillBarPlace[SkillBarLayout.Places];
@@ -50,7 +50,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void ABookSkillGoesIntoTheChosenSlotAndAnActiveNeverIntoAnAuraSlot()
         {
-            var loop = Ronin(12);
+            var loop = Duelist(12);
             loop.State.OwnedGems.AddRange(new[] { Gem("cooks_apron"), Gem("thin_cut") });
 
             Assert.That(BookPlacing.PutInto(loop.Book, Gem("cooks_apron"), SkillSlotRole.Aura), Is.EqualTo(BookResult.Done));
@@ -65,7 +65,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void TheSkillWindowShowsTiersAndTakesABranch()
         {
-            var loop = Ronin(30);
+            var loop = Duelist(30);
             var row = loop.Skills.Equip(Gem("thin_cut"), role: SkillSlotRole.Left);
             loop.State.ProgressOf(Gem("thin_cut")).Level = 5;
             var window = new SkillWindowModel(loop);
@@ -88,7 +88,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void TheSkillWindowOffersOnlySupportsThatFitAndMarksTheBusyOnes()
         {
-            var loop = Ronin(5);
+            var loop = Duelist(5);
             var first = loop.Skills.Equip(Gem("thin_cut"), role: SkillSlotRole.Left);
             var second = loop.Skills.Equip(Gem("hundred_cuts"), role: SkillSlotRole.Right);
             var window = new SkillWindowModel(loop);
@@ -107,7 +107,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void TreeTabsShowTheClassTreeCommonSlotsAndThePath()
         {
-            var loop = Ronin(1);
+            var loop = Duelist(1);
             var tabs = new List<TreeTab>();
 
             TreeTabs.Fill(loop, tabs);

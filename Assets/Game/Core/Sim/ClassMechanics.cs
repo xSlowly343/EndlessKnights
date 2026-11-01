@@ -21,15 +21,15 @@ namespace Game.Core.Sim
         public double OnKeyHit(out HitFlags flags)
         {
             flags = HitFlags.None;
-            if (_state.Is(HeroClass.Viking))
+            if (_state.Is(HeroClass.Runedancer))
                 return AncestorShield(ref flags);
-            if (_state.Is(HeroClass.Amazon))
+            if (_state.Is(HeroClass.Windshot))
                 return HunterMarkHit();
-            if (_state.Is(HeroClass.Nomad))
+            if (_state.Is(HeroClass.Sandwalker))
                 return SandHit();
-            if (_state.Is(HeroClass.Rimecaller))
+            if (_state.Is(HeroClass.Cartomancer))
                 return ColdHit();
-            if (!_state.Is(HeroClass.Ronin))
+            if (!_state.Is(HeroClass.Duelist))
                 return 1;
 
             _state.Combo++;
@@ -111,7 +111,7 @@ namespace Game.Core.Sim
         public int BlindEvery => System.Math.Max(_rules.Sand.EveryMin, (int)System.Math.Round(_rules.Sand.Every + _hero.Value(CombatStats.BlindEvery, 0, StatTags.Keyboard)));
 
         public bool EvilEyeOn =>
-            _state.Is(HeroClass.Voodoo) && _state.EnemyAlive && _rules.EvilEye.DamageTaken > 0
+            _state.Is(HeroClass.Whisperer) && _state.EnemyAlive && _rules.EvilEye.DamageTaken > 0
             && (_hero.Value(CombatStats.EvilEyeBossOnly, 0) < 1
                 || _state.EnemyType == EnemyType.Boss
                 || (_state.EnemyType == EnemyType.Guardian && _hero.Value(CombatStats.EvilEyeOnGuardians, 0) >= 1));
@@ -127,7 +127,7 @@ namespace Game.Core.Sim
             return 1;
         }
 
-        public double ColdShare => _state.Is(HeroClass.Rimecaller) && _state.EnemyAlive && _state.Cold > 0
+        public double ColdShare => _state.Is(HeroClass.Cartomancer) && _state.EnemyAlive && _state.Cold > 0
             ? _rules.Cold.DamageTaken * System.Math.Min(1, _state.Cold / _rules.Cold.Max)
                 * (1 + System.Math.Max(0, _hero.Value(CombatStats.ColdPower, 0))) * System.Math.Max(0, _hero.Value(CombatStats.EnemyDebuffEffect, 1))
             : 0;
@@ -172,7 +172,7 @@ namespace Game.Core.Sim
 
         private void Clockwork()
         {
-            var running = _state.Is(HeroClass.Clockmaker) && _rules.ClockworkSlow > 0
+            var running = _state.Is(HeroClass.Clockwright) && _rules.ClockworkSlow > 0
                 && _state.Resource > _rules.ClockworkAbove + _hero.Value(CombatStats.ClockworkAbove, 0);
             _state.ClockworkSlow = running ? System.Math.Min(1, _rules.ClockworkSlow + System.Math.Max(0, _hero.Value(CombatStats.ClockworkSlow, 0))) : 0;
             _state.ClockworkFloor = _rules.ClockworkFloor;
@@ -182,7 +182,7 @@ namespace Game.Core.Sim
         {
             if (keyHits > 0 || _state.Combo == 0)
                 return;
-            if (mousePx > 0 && _state.Is(HeroClass.Ronin))
+            if (mousePx > 0 && _state.Is(HeroClass.Duelist))
                 return;
             if (_hero.Value(CombatStats.ComboHold, 0) > 0)
                 return;

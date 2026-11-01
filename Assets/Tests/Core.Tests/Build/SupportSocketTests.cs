@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Build
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(new FakeInputSource(), TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Viking }), hero);
+            var loop = TestWorld.Loop(new FakeInputSource(), TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Runedancer }), hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             loop.State.OwnedGems.Clear();

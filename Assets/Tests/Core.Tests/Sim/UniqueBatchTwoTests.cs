@@ -9,7 +9,7 @@ namespace Game.Core.Tests.Sim
     {
         private static GameLoop Wearing(string id)
         {
-            var loop = TestWorld.Loop(state: new GameState(4) { Class = HeroClass.Viking });
+            var loop = TestWorld.Loop(state: new GameState(4) { Class = HeroClass.Runedancer });
             Assert.That(TestWorld.Data.Items.TryGetUnique(id, out var unique), Is.True, id);
             var item = new GearItem(unique, 3);
             loop.State.Drops.Gear.Add(item);
@@ -36,8 +36,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ShadowTwinRingRepeatsKeyHits()
         {
-            var plain = SkillTestHero.Of(HeroClass.Viking);
-            var ringed = SkillTestHero.Of(HeroClass.Viking);
+            var plain = SkillTestHero.Of(HeroClass.Runedancer);
+            var ringed = SkillTestHero.Of(HeroClass.Runedancer);
             Assert.That(TestWorld.Data.Items.TryGetUnique("shadow_twin_ring", out var ring), Is.True);
             var item = new GearItem(ring, 3);
             ringed.State.Drops.Gear.Add(item);

@@ -11,8 +11,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FourDamageDealersKillAboutAsFastAsSolo()
         {
-            var solo = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Viking }).Run(600);
-            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Viking, HeroClass.Ronin, HeroClass.Amazon, HeroClass.Stormweaver }).Run(600);
+            var solo = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Runedancer }).Run(600);
+            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Runedancer, HeroClass.Duelist, HeroClass.Windshot, HeroClass.Shardcaller }).Run(600);
 
             Assert.That(party.SecondsPerKill, Is.EqualTo(solo.SecondsPerKill).Within(solo.SecondsPerKill * 0.2));
         }
@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ATwinkThatStopsTypingIsPaidOnlyFromItsRestBankAndThenNoMore()
         {
-            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Viking, HeroClass.Ronin }, 5)
+            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Runedancer, HeroClass.Duelist }, 5)
             {
                 IdleMembers = 1,
                 IdleAfterSeconds = 120,
@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryMemberGetsEveryPartyKillAndTheSameStages()
         {
-            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Viking, HeroClass.Metalhead }, 3, 0.05).Run(600);
+            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Runedancer, HeroClass.Minstrel }, 3, 0.05).Run(600);
 
             Assert.That(party.HostKills, Is.GreaterThan(50));
             foreach (var member in party.Members)
@@ -52,7 +52,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void KillsFasterThanTheStatesAreAllRewardedInOrder([Values(0.0, 0.2)] double loss, [Values(1UL, 2UL, 3UL)] ulong seed)
         {
-            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Viking, HeroClass.Ronin, HeroClass.Metalhead, HeroClass.Voodoo }, seed, loss, 1e9)
+            var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Runedancer, HeroClass.Duelist, HeroClass.Minstrel, HeroClass.Whisperer }, seed, loss, 1e9)
             {
                 LossAfterJoin = true
             }.Run(300);

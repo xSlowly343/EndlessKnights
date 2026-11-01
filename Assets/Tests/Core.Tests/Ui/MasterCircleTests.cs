@@ -17,9 +17,9 @@ namespace Game.Core.Tests.Ui
         [SetUp]
         public void SetUp() => Texts.UseLanguage("ru");
 
-        private static GameLoop Ronin(int heroLevel)
+        private static GameLoop Duelist(int heroLevel)
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin, HeroLevel = heroLevel });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Duelist, HeroLevel = heroLevel });
             while (loop.State.Skills.Count > 0)
                 loop.Book.Unequip(0);
             return loop;
@@ -37,7 +37,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void TheCircleShowsAllSevenPlacesAndGreysTheClosedOnes()
         {
-            var places = Circle(Ronin(8));
+            var places = Circle(Duelist(8));
 
             Assert.That(places.Select(place => place.Gem.Id), Is.EqualTo(TestWorld.Data.Weapons.Types.First(type => type.Id == "katana").StarterSkills));
             Assert.That(places.Select(place => place.Open), Is.EqualTo(new[] { true, true, true, false, false, false, false }));
@@ -46,7 +46,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void PuttingAnOpenSkillInTheBookMarksItsPlace()
         {
-            var loop = Ronin(1);
+            var loop = Duelist(1);
 
             Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["thin_cut"], Levels), Is.EqualTo(BookResult.Done));
 
@@ -60,7 +60,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void AClosedPlaceOrAnotherWeaponsSkillStaysOutOfTheBook()
         {
-            var loop = Ronin(1);
+            var loop = Duelist(1);
 
             Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["no_rush"], Levels), Is.EqualTo(BookResult.NotOnWeapon));
             Assert.That(loop.Book.PlaceFromWeapon(loop.Data.Gems["tempering"], Levels), Is.EqualTo(BookResult.NotOnWeapon));
@@ -70,7 +70,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void ASkillWaitingForItsMechanicCannotBePlaced()
         {
-            var loop = Ronin(50);
+            var loop = Duelist(50);
             var locked = loop.Data.Gems["hook_and_cleaver"];
             loop.State.Weapons.Right = new WeaponItem(loop.State.Weapons.Right!.Base, loop.State.Weapons.Right.Rarity, new[] { locked.Id });
 
@@ -81,7 +81,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void HandsListOnlyTheFilledOnes()
         {
-            var loop = Ronin(1);
+            var loop = Duelist(1);
             var hands = new List<WeaponHand>();
 
             MasterCircle.Hands(loop.State, hands);
@@ -102,7 +102,7 @@ namespace Game.Core.Tests.Ui
         public void TextsNameTheHandTierAndKind()
         {
             var gems = TestWorld.Real.Gems;
-            var katana = TestWorld.Real.Weapons.Roll(TestWorld.Real.Weapons.StarterFor(HeroClass.Ronin), Game.Core.Content.Items.ItemRarity.Legendary, new Rng(3));
+            var katana = TestWorld.Real.Weapons.Roll(TestWorld.Real.Weapons.StarterFor(HeroClass.Duelist), Game.Core.Content.Items.ItemRarity.Legendary, new Rng(3));
 
             Assert.That(MasterTexts.Hand(katana), Is.EqualTo(katana.NameRu + " · Легендарная"));
             Assert.That(MasterTexts.Tier(SkillTier.Rare), Is.EqualTo("Редкий"));

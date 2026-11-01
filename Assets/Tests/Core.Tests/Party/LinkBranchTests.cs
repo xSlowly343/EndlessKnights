@@ -10,7 +10,7 @@ namespace Game.Core.Tests.Party
     public class LinkBranchTests
     {
         private static readonly StatId Damage = new StatId("damage");
-        private static readonly string[] InGame = { "viking", "ronin", "amazon", "stormweaver", "nomad", "metalhead", "oracle", "bannerbearer", "voodoo", "clockmaker", "plague_doctor", "moonshiner", "gravedigger", "captain" };
+        private static readonly string[] InGame = { "runedancer", "duelist", "windshot", "shardcaller", "sandwalker", "minstrel", "dreamcatcher", "lanternbearer", "whisperer", "clockwright", "alchemist", "dowser", "soulbinder", "ghostcaptain" };
 
         private static SynergyRules Rules => TestWorld.Data.Synergy;
 
@@ -30,7 +30,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void ALinkLineCountsOnlyForAnAllysMark()
         {
-            var loop = Hero(HeroClass.Viking, AllyPoisonLine);
+            var loop = Hero(HeroClass.Runedancer, AllyPoisonLine);
             loop.Tick();
             var plain = loop.Hero.Value(Damage, 1);
 
@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Party
             Assert.That(loop.Hero.Value(Damage, 1), Is.EqualTo(plain));
 
             loop.State.PoisonStacks = 0;
-            loop.Synergy.SetAlly(1, true, HeroClass.PlagueDoctor, Mark("poison"));
+            loop.Synergy.SetAlly(1, true, HeroClass.Alchemist, Mark("poison"));
             loop.Tick();
             Assert.That(loop.Hero.Value(Damage, 1) / plain, Is.EqualTo(1.05).Within(1e-9));
         }
@@ -47,8 +47,8 @@ namespace Game.Core.Tests.Party
         [Test]
         public void AnAllysMarkAlsoCountsAsTheMarkOnTheEnemy()
         {
-            var loop = Hero(HeroClass.Viking);
-            loop.Synergy.SetAlly(1, true, HeroClass.PlagueDoctor, Mark("poison"));
+            var loop = Hero(HeroClass.Runedancer);
+            loop.Synergy.SetAlly(1, true, HeroClass.Alchemist, Mark("poison"));
             loop.Tick();
 
             Assert.That(loop.Hero.Conditions & ModifierConditions.Bit(ModifierCondition.Poison), Is.Not.Zero);
@@ -60,12 +60,12 @@ namespace Game.Core.Tests.Party
         {
             var index = Rules.Reactions.ToList().FindIndex(reaction => reaction.Id == "sand_in_the_hourglass");
             Assert.That(Rules.Reactions[index].Unlock?.Name, Is.EqualTo("reactionSandInTheHourglass"));
-            var without = Hero(HeroClass.Nomad);
-            var with = Hero(HeroClass.Nomad, new Modifier(Rules.Reactions[index].Unlock!.Value, ModifierKind.Flat, 1));
+            var without = Hero(HeroClass.Sandwalker);
+            var with = Hero(HeroClass.Sandwalker, new Modifier(Rules.Reactions[index].Unlock!.Value, ModifierKind.Flat, 1));
             foreach (var loop in new[] { without, with })
             {
                 loop.State.BlindTicks = 50;
-                loop.Synergy.SetAlly(1, true, HeroClass.Clockmaker, Mark("time"));
+                loop.Synergy.SetAlly(1, true, HeroClass.Clockwright, Mark("time"));
                 loop.Tick();
             }
 
@@ -99,12 +99,12 @@ namespace Game.Core.Tests.Party
         [Test]
         public void TheLinkNodeWakesTheSecondResponse()
         {
-            var tree = TestWorld.Data.ClassTreeOf("viking")!;
+            var tree = TestWorld.Data.ClassTreeOf("runedancer")!;
             var node = tree.Nodes.Single(candidate => candidate.ModifiersAt(1).Any(modifier => modifier.Stat == Rules.SecondResponseStat));
-            var loop = Hero(HeroClass.Viking);
+            var loop = Hero(HeroClass.Runedancer);
             foreach (var modifier in node.ModifiersAt(1))
                 loop.Hero.Add(modifier);
-            loop.Synergy.SetAlly(0, true, HeroClass.Metalhead, Mark("aura"));
+            loop.Synergy.SetAlly(0, true, HeroClass.Minstrel, Mark("aura"));
 
             loop.Tick();
 
@@ -113,11 +113,11 @@ namespace Game.Core.Tests.Party
         [Test]
         public void AnAllySettingTheMarkGivesResourceOnceWhenItAppears()
         {
-            var loop = Hero(HeroClass.Nomad, new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 2, StatTags.None, ModifierPool.General, ModifierCondition.AllyFire));
+            var loop = Hero(HeroClass.Sandwalker, new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 2, StatTags.None, ModifierPool.General, ModifierCondition.AllyFire));
             loop.Tick();
             loop.State.PendingResource = 0;
 
-            loop.Synergy.SetAlly(1, true, HeroClass.Moonshiner, Mark("fire"));
+            loop.Synergy.SetAlly(1, true, HeroClass.Dowser, Mark("fire"));
             loop.Synergy.Tick();
             loop.Conditions.Tick();
             Assert.That(loop.State.PendingResource, Is.EqualTo(2).Within(1e-9));

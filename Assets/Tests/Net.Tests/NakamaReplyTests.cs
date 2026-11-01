@@ -224,7 +224,7 @@ namespace Game.Net.Tests
             var ghost = GhostDirectory.Snapshot(json, synergy);
 
             Assert.That(ghost.Name, Is.EqualTo("Ann"));
-            Assert.That(ghost.HeroClass, Is.EqualTo(Game.Core.Sim.HeroClass.Voodoo));
+            Assert.That(ghost.HeroClass, Is.EqualTo(Game.Core.Sim.HeroClass.Whisperer));
             Assert.That(ghost.ShareRate, Is.EqualTo(0.4));
             Assert.That(ghost.Activity, Is.EqualTo(0.75));
             Assert.That(ghost.Marks, Is.EqualTo(synergy.MaskOf(new[] { "curse", "stun" })));

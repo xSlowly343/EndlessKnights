@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void EveryLineHasATranslatedLabelAndSitsInAColumn()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
 
             var lines = HeroStatsView.Lines(loop, NumberFormatSettings.Default);
 
@@ -63,11 +63,11 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void TakenTreeNodesShowUpAsTheTreeSource()
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Viking });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
             var empty = loop.TreeModifiers.Count;
             loop.State.TreePointsEarned = 5;
 
-            Assert.That(loop.RaiseNode("viking_axe"), Is.EqualTo(Game.Core.Build.RankResult.Done));
+            Assert.That(loop.RaiseNode("runedancer_axe"), Is.EqualTo(Game.Core.Build.RankResult.Done));
             Assert.That(loop.TreeModifiers.Count, Is.GreaterThan(empty));
         }
     }

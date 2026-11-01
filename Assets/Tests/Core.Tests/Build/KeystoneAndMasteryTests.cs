@@ -44,8 +44,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void OneSongDoublesTheSong()
         {
-            var (plain, _) = Hero(HeroClass.Metalhead);
-            var (keystone, _) = Hero(HeroClass.Metalhead, OneSong);
+            var (plain, _) = Hero(HeroClass.Minstrel);
+            var (keystone, _) = Hero(HeroClass.Minstrel, OneSong);
             var silent = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             foreach (var loop in new[] { plain, keystone })
             {
@@ -62,8 +62,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NinjaPathLetsTheComboSurviveALongerPause()
         {
-            var (plain, plainInput) = Hero(HeroClass.Ronin);
-            var (series, seriesInput) = Hero(HeroClass.Ronin);
+            var (plain, plainInput) = Hero(HeroClass.Duelist);
+            var (series, seriesInput) = Hero(HeroClass.Duelist);
             series.CompleteActivity("garden");
             Assert.That(series.ChooseSubclass("ninja"), Is.EqualTo(SubclassResult.Chosen));
             var pauseTicks = (int)((TestWorld.Data.Combat.Classes.ComboTimeoutSeconds + 0.3) * GameLoop.TicksPerSecond);
@@ -85,7 +85,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void GuitarNodeStretchesSongDuration()
         {
-            var (loop, _) = Hero(HeroClass.Metalhead, new Modifier(CombatStats.AuraDuration, ModifierKind.Increased, 0.06));
+            var (loop, _) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.AuraDuration, ModifierKind.Increased, 0.06));
             loop.Skills.Equip(TestWorld.Data.Gems["march"]);
             loop.State.Resource = 100;
 
@@ -98,8 +98,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void NoMouseDamageModifierSilencesTheMouse()
         {
-            var (plain, plainInput) = Hero(HeroClass.Ronin);
-            var (silent, silentInput) = Hero(HeroClass.Ronin, new Modifier(CombatStats.Damage, ModifierKind.More, -1, StatTags.Mouse));
+            var (plain, plainInput) = Hero(HeroClass.Duelist);
+            var (silent, silentInput) = Hero(HeroClass.Duelist, new Modifier(CombatStats.Damage, ModifierKind.More, -1, StatTags.Mouse));
 
             foreach (var (loop, input) in new[] { (plain, plainInput), (silent, silentInput) })
             {
@@ -114,7 +114,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EveryTenthKeyHitsHarderWithTheHeavyStrikeStats()
         {
-            var (typist, typistInput) = Hero(HeroClass.Ronin,
+            var (typist, typistInput) = Hero(HeroClass.Duelist,
                 new Modifier(CombatStats.KeyStrikeEvery, ModifierKind.Flat, 10),
                 new Modifier(CombatStats.KeyStrikeMultiplier, ModifierKind.Flat, 5));
 
@@ -138,7 +138,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void FocusResetDelayKeepsFocusThroughFourSecondPause()
         {
-            var (loop, input) = Hero(HeroClass.Ronin, new Modifier(CombatStats.FocusResetSeconds, ModifierKind.Flat, 2));
+            var (loop, input) = Hero(HeroClass.Duelist, new Modifier(CombatStats.FocusResetSeconds, ModifierKind.Flat, 2));
             for (var i = 0; i < 50; i++)
             {
                 input.PressKeys(1);
@@ -157,7 +157,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void FocusGainGrowsFocusFaster()
         {
-            var (loop, input) = Hero(HeroClass.Ronin, new Modifier(CombatStats.FocusGain, ModifierKind.Increased, 0.08));
+            var (loop, input) = Hero(HeroClass.Duelist, new Modifier(CombatStats.FocusGain, ModifierKind.Increased, 0.08));
 
             input.PressKeys(1);
             loop.Tick();
@@ -168,8 +168,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EnterHitsLikeAnyOtherKey()
         {
-            var (enter, enterInput) = Hero(HeroClass.Ronin);
-            var (plain, plainInput) = Hero(HeroClass.Ronin);
+            var (enter, enterInput) = Hero(HeroClass.Duelist);
+            var (plain, plainInput) = Hero(HeroClass.Duelist);
 
             enterInput.PressEnter();
             enter.Tick();
@@ -182,7 +182,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void ResourceGainGivesMoreResourceFromKeys()
         {
-            var (energy, energyInput) = Hero(HeroClass.Metalhead, new Modifier(CombatStats.ResourceGain, ModifierKind.Increased, 0.15, StatTags.Keyboard));
+            var (energy, energyInput) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.ResourceGain, ModifierKind.Increased, 0.15, StatTags.Keyboard));
 
             energyInput.PressKeys(1);
             energy.Tick();
@@ -193,7 +193,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void IdleStartSecondsBringsLullTenSecondsEarlier()
         {
-            var (hermit, hermitInput) = Hero(HeroClass.Nomad, new Modifier(CombatStats.IdleStartSeconds, ModifierKind.Flat, -10));
+            var (hermit, hermitInput) = Hero(HeroClass.Sandwalker, new Modifier(CombatStats.IdleStartSeconds, ModifierKind.Flat, -10));
             hermit.Skills.Equip(TestWorld.Data.Gems["lull"]);
 
             for (var i = 0; i < 25 * GameLoop.TicksPerSecond; i++)

@@ -29,8 +29,8 @@ namespace Game.Core.Tests.Sim
         public void EveryNewEnemyOfTheWhispererTakesFivePercentMore()
         {
             Assert.That(Rules.DamageTaken, Is.EqualTo(0.05));
-            var whisperer = Hero(HeroClass.Voodoo, EnemyType.Normal);
-            var other = Hero(HeroClass.Viking, EnemyType.Normal);
+            var whisperer = Hero(HeroClass.Whisperer, EnemyType.Normal);
+            var other = Hero(HeroClass.Runedancer, EnemyType.Normal);
             whisperer.Tick();
 
             Assert.That(whisperer.Combat.Class.EvilEyeShare, Is.EqualTo(0.05).Within(1e-9));
@@ -40,7 +40,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheEvilEyeRaisesOwnDamageWhenTheEnemyIsNotShared()
         {
-            var whisperer = Hero(HeroClass.Voodoo, EnemyType.Normal);
+            var whisperer = Hero(HeroClass.Whisperer, EnemyType.Normal);
             var solo = whisperer.Combat.ConditionMultiplier(StatTags.Keyboard);
 
             whisperer.State.SharedEnemy = true;
@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TreeLinesStrengthenTheEvilEye()
         {
-            var whisperer = Hero(HeroClass.Voodoo, EnemyType.Normal, new Modifier(CombatStats.EvilEyeEffect, ModifierKind.Flat, 0.03));
+            var whisperer = Hero(HeroClass.Whisperer, EnemyType.Normal, new Modifier(CombatStats.EvilEyeEffect, ModifierKind.Flat, 0.03));
 
             Assert.That(whisperer.Combat.Class.EvilEyeShare, Is.EqualTo(0.08).Within(1e-9));
         }
@@ -61,10 +61,10 @@ namespace Game.Core.Tests.Sim
         {
             var bossOnly = new[] { new Modifier(CombatStats.EvilEyeBossOnly, ModifierKind.Flat, 1), new Modifier(CombatStats.EvilEyePower, ModifierKind.Flat, 1) };
 
-            Assert.That(Hero(HeroClass.Voodoo, EnemyType.Normal, bossOnly).Combat.Class.EvilEyeShare, Is.Zero);
-            Assert.That(Hero(HeroClass.Voodoo, EnemyType.Guardian, bossOnly).Combat.Class.EvilEyeShare, Is.Zero);
-            Assert.That(Hero(HeroClass.Voodoo, EnemyType.Boss, bossOnly).Combat.Class.EvilEyeShare, Is.EqualTo(0.1).Within(1e-9));
-            Assert.That(Hero(HeroClass.Voodoo, EnemyType.Guardian, bossOnly[0], new Modifier(CombatStats.EvilEyeOnGuardians, ModifierKind.Flat, 1)).Combat.Class.EvilEyeShare,
+            Assert.That(Hero(HeroClass.Whisperer, EnemyType.Normal, bossOnly).Combat.Class.EvilEyeShare, Is.Zero);
+            Assert.That(Hero(HeroClass.Whisperer, EnemyType.Guardian, bossOnly).Combat.Class.EvilEyeShare, Is.Zero);
+            Assert.That(Hero(HeroClass.Whisperer, EnemyType.Boss, bossOnly).Combat.Class.EvilEyeShare, Is.EqualTo(0.1).Within(1e-9));
+            Assert.That(Hero(HeroClass.Whisperer, EnemyType.Guardian, bossOnly[0], new Modifier(CombatStats.EvilEyeOnGuardians, ModifierKind.Flat, 1)).Combat.Class.EvilEyeShare,
                 Is.EqualTo(0.05).Within(1e-9));
         }
     }

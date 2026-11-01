@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Build
     {
         private static readonly ClockStamp Clock = ClockStamp.First(new ClockReading(1_760_000_000_000, 3_600_000, 12));
 
-        private static GameLoop Novice(FakeInputSource? input = null, HeroClass placeholder = HeroClass.Viking)
+        private static GameLoop Novice(FakeInputSource? input = null, HeroClass placeholder = HeroClass.Runedancer)
         {
             var loop = TestWorld.Loop(input ?? new FakeInputSource(), new GameState { Class = placeholder, ClassChosen = false });
             loop.Book.GrantStartingGems();
@@ -34,15 +34,15 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.State.Skills.Select(slot => slot.Skill.Id), Is.EquivalentTo(new[] { "through_stride", "lull" }));
             Assert.That(loop.State.Skills.All(slot => slot.Def.Weapon == null), Is.True);
             Assert.That(loop.ClassChoiceReady, Is.False, "the choice opens on the second level");
-            Assert.That(loop.RaiseNode("ronin_katana"), Is.EqualTo(RankResult.ChooseClassFirst));
-            Assert.That(loop.ChooseClass(HeroClass.Ronin), Is.EqualTo(ClassChoiceResult.NotYet));
+            Assert.That(loop.RaiseNode("duelist_katana"), Is.EqualTo(RankResult.ChooseClassFirst));
+            Assert.That(loop.ChooseClass(HeroClass.Duelist), Is.EqualTo(ClassChoiceResult.NotYet));
         }
 
         [Test]
         public void NoviceKeysDoNotRunTheMechanicsOfThePlaceholderClass()
         {
             var input = new FakeInputSource();
-            var loop = Novice(input, HeroClass.Ronin);
+            var loop = Novice(input, HeroClass.Duelist);
 
             for (var tick = 0; tick < 20; tick++)
             {
@@ -61,24 +61,24 @@ namespace Game.Core.Tests.Build
             loop.State.HeroLevel = TestWorld.Data.TreePoints.ClassChoiceLevel;
 
             Assert.That(loop.ClassChoiceReady, Is.True);
-            Assert.That(loop.ChooseClass(HeroClass.Ronin), Is.EqualTo(ClassChoiceResult.Chosen));
+            Assert.That(loop.ChooseClass(HeroClass.Duelist), Is.EqualTo(ClassChoiceResult.Chosen));
 
             var state = loop.State;
             Assert.That(state.ClassChosen, Is.True);
-            Assert.That(Game.Core.Ui.HeroSummary.Title(state), Does.StartWith("Wandering Blade · "));
-            Assert.That(state.Class, Is.EqualTo(HeroClass.Ronin));
-            Assert.That(state.ClassName, Is.EqualTo("ronin"));
+            Assert.That(Game.Core.Ui.HeroSummary.Title(state), Does.StartWith("Duelist · "));
+            Assert.That(state.Class, Is.EqualTo(HeroClass.Duelist));
+            Assert.That(state.ClassName, Is.EqualTo("duelist"));
             Assert.That(state.TreePointsLeft, Is.GreaterThan(0), "points earned as a novice are kept");
             Assert.That(state.Weapons.Right?.Type.Id ?? state.Weapons.Left?.Type.Id, Is.EqualTo("katana"));
             Assert.That(state.Skills[0].Def.Weapon, Is.EqualTo("katana"));
             Assert.That(state.Skills[1].Def.Weapon, Is.EqualTo("katana"));
             Assert.That(state.OwnedGems.Select(gem => gem.Id), Does.Contain("through_stride").And.Contain("lull"), "general skills stay with the hero");
-            Assert.That(loop.Resource.Rules, Is.SameAs(TestWorld.Data.Combat.Resources.For("ronin")));
+            Assert.That(loop.Resource.Rules, Is.SameAs(TestWorld.Data.Combat.Resources.For("duelist")));
             Assert.That(loop.ClassChoiceReady, Is.False);
-            Assert.That(loop.ChooseClass(HeroClass.Viking), Is.EqualTo(ClassChoiceResult.AlreadyChosen));
+            Assert.That(loop.ChooseClass(HeroClass.Runedancer), Is.EqualTo(ClassChoiceResult.AlreadyChosen));
 
             Assert.That(state.ClassTreeActive, Is.True);
-            Assert.That(loop.RaiseNode("ronin_katana"), Is.EqualTo(RankResult.Done));
+            Assert.That(loop.RaiseNode("duelist_katana"), Is.EqualTo(RankResult.Done));
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TheBotChoosesItsClassWhenTheChoiceOpens()
         {
-            var loop = Novice(placeholder: HeroClass.Captain);
+            var loop = Novice(placeholder: HeroClass.Ghostcaptain);
             var bot = new PlayerBot(TestWorld.Data, loop, 20);
 
             bot.Act(1);
@@ -105,7 +105,7 @@ namespace Game.Core.Tests.Build
             loop.State.HeroLevel = TestWorld.Data.TreePoints.ClassChoiceLevel;
             bot.Act(1);
             Assert.That(loop.State.ClassChosen, Is.True);
-            Assert.That(loop.State.Class, Is.EqualTo(HeroClass.Captain));
+            Assert.That(loop.State.Class, Is.EqualTo(HeroClass.Ghostcaptain));
             Assert.That(loop.State.TreePointsSpent, Is.GreaterThan(0));
         }
     }

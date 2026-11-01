@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Sim
         private static AtlasCatalog Catalog => TestWorld.Data.Atlas;
 
         private static GameLoop WithEcho(double echo) =>
-            TestWorld.Loop(state: new GameState { Class = HeroClass.Viking, Echo = BigNumber.FromDouble(echo) });
+            TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, Echo = BigNumber.FromDouble(echo) });
 
         [Test]
         public void TheAtlasStartsFromOneNodeAndEveryNodeIsReachable()
@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e12));
-            var state = new GameState(3) { Class = HeroClass.Viking };
+            var state = new GameState(3) { Class = HeroClass.Runedancer };
             state.Atlas.AddRange(atlas);
             var loop = TestWorld.Loop(input, state, hero);
             var guardianHp = 0.0;
@@ -111,7 +111,7 @@ namespace Game.Core.Tests.Sim
         {
             var plain = Fight().Gold;
             var chests = Fight("stage_chests").Gold;
-            var expected = 3 * TestWorld.Loop(state: new GameState { Class = HeroClass.Viking }).Loot.GoldFor(5, EnemyType.Boss, null).ToDouble();
+            var expected = 3 * TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer }).Loot.GoldFor(5, EnemyType.Boss, null).ToDouble();
 
             Assert.That(chests.Count - plain.Count, Is.EqualTo(1));
             Assert.That(chests.Sum(e => e.Amount.ToDouble()) - plain.Sum(e => e.Amount.ToDouble()), Is.EqualTo(expected).Within(expected * 1e-6));

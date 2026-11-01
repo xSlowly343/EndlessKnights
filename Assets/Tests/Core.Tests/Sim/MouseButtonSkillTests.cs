@@ -41,7 +41,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void LeftClickCastsTheFirstSlot()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
+            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
 
             input.ClickLeft();
             loop.Tick();
@@ -54,11 +54,11 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void RightClickCastsTheSecondSlotAndMiddleClickOnlyHits()
         {
-            var (right, rightInput) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
+            var (right, rightInput) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
             rightInput.ClickRight();
             right.Tick();
 
-            var (middle, middleInput) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
+            var (middle, middleInput) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
             middleInput.ClickMiddle();
             middle.Tick();
 
@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WheelCastsNothing()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
+            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
 
             input.ScrollWheel(20);
             loop.Tick();
@@ -82,7 +82,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ClickWhileOnCooldownDoesNothingAndTheFirstClickAfterCasts()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash");
+            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash");
             input.ClickLeft();
             loop.Tick();
             var cooldown = loop.State.Skills[0].CooldownTicks;
@@ -102,7 +102,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void IronRimBashHitsForFourKeyStrikes()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash");
+            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash");
 
             input.ClickLeft();
             loop.Tick();
@@ -113,8 +113,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void NoMercyHitsForFiveKeyStrikes()
         {
-            var (loop, input) = Hero(HeroClass.Viking, "iron_rim_bash", "no_mercy");
-            var (bare, bareInput) = Hero(HeroClass.Viking);
+            var (loop, input) = Hero(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
+            var (bare, bareInput) = Hero(HeroClass.Runedancer);
             loop.State.Resource = 50;
             bare.State.Resource = 50;
 
@@ -131,7 +131,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SongRaisesDamageAndGold()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead, "hearth_song");
+            var (loop, input) = Hero(HeroClass.Minstrel, "hearth_song");
 
             input.ClickLeft();
             loop.Tick();
@@ -143,7 +143,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void LouderDoublesTheSongAndAddsLightningToEveryKeyHit()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead, "hearth_song", "louder");
+            var (loop, input) = Hero(HeroClass.Minstrel, "hearth_song", "louder");
             loop.Tick();
             loop.State.Resource = 100;
 
@@ -159,7 +159,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SongReturnsToNormalWhenTheSoloEnds()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead, "hearth_song", "louder");
+            var (loop, input) = Hero(HeroClass.Minstrel, "hearth_song", "louder");
             input.ClickLeft();
             loop.Tick();
             loop.State.Resource = 100;

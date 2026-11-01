@@ -42,7 +42,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(Rules.ClockworkAbove, Is.EqualTo(50));
             Assert.That(Rules.ClockworkSlow, Is.EqualTo(0.1));
 
-            var slow = OnBoss(HeroClass.Clockmaker, 80);
+            var slow = OnBoss(HeroClass.Clockwright, 80);
             TimerTicksSpent(slow, 1);
 
             Assert.That(TimerTicksSpent(slow, 100), Is.EqualTo(90).Within(1));
@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AtFiftyTimeOrBelowTheTimerRunsAsUsual()
         {
-            var loop = OnBoss(HeroClass.Clockmaker, 40);
+            var loop = OnBoss(HeroClass.Clockwright, 40);
             TimerTicksSpent(loop, 1);
 
             Assert.That(TimerTicksSpent(loop, 100), Is.EqualTo(100));
@@ -60,7 +60,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OtherClassesDoNotWindTheClock()
         {
-            var loop = OnBoss(HeroClass.Ronin, 80);
+            var loop = OnBoss(HeroClass.Duelist, 80);
             TimerTicksSpent(loop, 1);
 
             Assert.That(TimerTicksSpent(loop, 100), Is.EqualTo(100));
@@ -69,8 +69,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TogetherWithOtherSlowsTheTimerNeverGoesBelowAQuarter()
         {
-            var nearFloor = OnBoss(HeroClass.Clockmaker, 80, new Modifier(CombatStats.BossTimerSpeed, ModifierKind.More, -0.73));
-            var belowFloor = OnBoss(HeroClass.Clockmaker, 80, new Modifier(CombatStats.BossTimerSpeed, ModifierKind.More, -0.8));
+            var nearFloor = OnBoss(HeroClass.Clockwright, 80, new Modifier(CombatStats.BossTimerSpeed, ModifierKind.More, -0.73));
+            var belowFloor = OnBoss(HeroClass.Clockwright, 80, new Modifier(CombatStats.BossTimerSpeed, ModifierKind.More, -0.8));
 
             nearFloor.Tick();
             nearFloor.Tick();
@@ -84,7 +84,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ATreeLineStartsTheClockworkEarlier()
         {
-            var loop = OnBoss(HeroClass.Clockmaker, 47, new Modifier(CombatStats.ClockworkAbove, ModifierKind.Flat, -5));
+            var loop = OnBoss(HeroClass.Clockwright, 47, new Modifier(CombatStats.ClockworkAbove, ModifierKind.Flat, -5));
             loop.Tick();
             loop.Tick();
 

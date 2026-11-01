@@ -37,7 +37,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void AboveFiftyVisionsThePartyGetsFivePercentCritChance()
         {
-            var loop = Hero(HeroClass.Oracle, 60);
+            var loop = Hero(HeroClass.Dreamcatcher, 60);
 
             Assert.That(Rules.ClearDayAbove, Is.EqualTo(50));
             Assert.That(loop.PartyBuffs.ClearDay, Is.True);
@@ -48,7 +48,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void TheClearDayEndsWhenVisionsFall()
         {
-            var loop = Hero(HeroClass.Oracle, 60);
+            var loop = Hero(HeroClass.Dreamcatcher, 60);
 
             loop.State.Resource = 30;
             loop.Tick();
@@ -62,7 +62,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void OnlyTheSeerBringsTheClearDay()
         {
-            var loop = Hero(HeroClass.Ronin, 60);
+            var loop = Hero(HeroClass.Duelist, 60);
 
             Assert.That(loop.PartyBuffs.ClearDay, Is.False);
         }
@@ -70,7 +70,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void TreeLinesStartItEarlierAndMakeItStronger()
         {
-            var loop = Hero(HeroClass.Oracle, 47,
+            var loop = Hero(HeroClass.Dreamcatcher, 47,
                 new Modifier(CombatStats.ClearDayAbove, ModifierKind.Flat, -5),
                 new Modifier(CombatStats.ClearDayCritChance, ModifierKind.Flat, 0.01));
 

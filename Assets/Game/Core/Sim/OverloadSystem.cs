@@ -57,7 +57,7 @@ namespace Game.Core.Sim
         private void HitQueue(double power)
         {
             var targets = System.Math.Min(_state.QueueDamage.Length, _combat.Classes.OverloadQueueTargets);
-            if (targets <= 0 || !_state.Is(HeroClass.Stormweaver))
+            if (targets <= 0 || !_state.Is(HeroClass.Shardcaller))
                 return;
             var damage = _combat.SkillDamage(_combat.BaseKeyDamage, power, StatTags.Skill);
             for (var i = 0; i < targets; i++)

@@ -100,7 +100,7 @@ namespace Game.Core.Tests.Party
         public void AFriendsGhostDoesNotCountForYourRaid()
         {
             var (loop, _) = Hero();
-            loop.Ghost.Use(new GhostSnapshot("friend", "Аня", HeroClass.Voodoo, 0.5, 0, 1));
+            loop.Ghost.Use(new GhostSnapshot("friend", "Аня", HeroClass.Whisperer, 0.5, 0, 1));
 
             for (var i = 0; i < 50; i++)
                 loop.Tick();

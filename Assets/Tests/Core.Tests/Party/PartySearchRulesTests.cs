@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Party
                 Assert.That(role, Is.Not.EqualTo(PartySearchRules.AnyRole), pair.Key);
                 Assert.That(Search.Roles, Does.Contain(role), pair.Key);
             }
-            Assert.That(Search.RoleOf(HeroClass.Voodoo), Is.EqualTo("debuffer"));
+            Assert.That(Search.RoleOf(HeroClass.Whisperer), Is.EqualTo("debuffer"));
         }
 
         [TestCase("ru")]
@@ -76,11 +76,11 @@ namespace Game.Core.Tests.Party
         [Test]
         public void AClassWithoutARoleIsRejected()
         {
-            var json = TestData.ReadGameDataFile(PartyRules.FileName).Replace(@"""captain"": ""summoner""", @"""captain"": ""any""");
+            var json = TestData.ReadGameDataFile(PartyRules.FileName).Replace(@"""ghostcaptain"": ""summoner""", @"""ghostcaptain"": ""any""");
 
             var error = Assert.Throws<ContentException>(() => PartyRules.Load(json));
 
-            Assert.That(error!.Message, Does.Contain("captain"));
+            Assert.That(error!.Message, Does.Contain("ghostcaptain"));
         }
     }
 }

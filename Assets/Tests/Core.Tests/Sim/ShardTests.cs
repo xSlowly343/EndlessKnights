@@ -17,8 +17,8 @@ namespace Game.Core.Tests.Sim
         private static ShardRules Rules => TestWorld.Data.Drops.Shards;
         private static IEnumerable<GemDef> AllGems => TestWorld.Data.Gems.All;
 
-        private static GameLoop Viking(StatSheet? hero = null, ulong seed = 7) =>
-            TestWorld.Loop(state: new GameState(seed) { Class = HeroClass.Viking }, hero: hero);
+        private static GameLoop Runedancer(StatSheet? hero = null, ulong seed = 7) =>
+            TestWorld.Loop(state: new GameState(seed) { Class = HeroClass.Runedancer }, hero: hero);
 
         private static void Defeat(GameLoop loop, long stage, long recordBefore, EnemyType type = EnemyType.Boss, bool raisesRecord = true)
         {
@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FirstPassBossesGiveShardsByType()
         {
-            var loop = Viking();
+            var loop = Runedancer();
 
             Defeat(loop, 7, 7);
             Assert.That(loop.Drops.Shards, Is.EqualTo(Rules.Boss));
@@ -63,7 +63,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void RepeatedBossesNearTheRecordGiveShardsUpToTheDailyLimit()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.SetLocalDay(1);
 
             for (var i = 0; i < 100; i++)
@@ -76,7 +76,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void BossesFarBelowTheRecordGiveNoShards()
         {
-            var loop = Viking();
+            var loop = Runedancer();
 
             Defeat(loop, 7, 100);
 
@@ -86,7 +86,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void NewDayOpensTheDailyShardsAgain()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.SetLocalDay(1);
             for (var i = 0; i < 100; i++)
                 Defeat(loop, 91, 100);
@@ -100,7 +100,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FirstPassShardsDoNotUseTheDailyLimit()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.SetLocalDay(1);
 
             for (var stage = 1; stage <= 50; stage++)
@@ -113,7 +113,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void NoHomeShardsInsideTheRift()
         {
-            var loop = Viking();
+            var loop = Runedancer();
 
             Defeat(loop, 7, 7, raisesRecord: false);
 
@@ -123,7 +123,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ShardDropStatRaisesShardsFromBosses()
         {
-            var loop = Viking(With(CombatStats.ShardDrop, ModifierKind.Increased, 1));
+            var loop = Runedancer(With(CombatStats.ShardDrop, ModifierKind.Increased, 1));
 
             Defeat(loop, 10, 10);
 
@@ -133,7 +133,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SmallShardBonusAddsUpOverManyBosses()
         {
-            var loop = Viking(With(CombatStats.ShardDrop, ModifierKind.Increased, 0.1));
+            var loop = Runedancer(With(CombatStats.ShardDrop, ModifierKind.Increased, 0.1));
 
             for (var stage = 1; stage <= 100; stage++)
             {
@@ -148,7 +148,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OfflineBossesGiveShardsFromTheSameDailyLimit()
         {
-            var loop = Viking(seed: 41);
+            var loop = Runedancer(seed: 41);
             loop.State.RecordStage = 1000;
             loop.SetLocalDay(1);
             loop.Events.Clear();
@@ -163,7 +163,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AboutFivePercentOfDroppedGemsAreUncut()
         {
-            var loop = Viking(seed: 47);
+            var loop = Runedancer(seed: 47);
             const int bosses = 40000;
 
             for (var i = 0; i < bosses; i++)
@@ -180,7 +180,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void UncutGemChanceStatAddsToTheShare()
         {
-            var loop = Viking(With(CombatStats.UncutGemChance, ModifierKind.Flat, 0.15), seed: 47);
+            var loop = Runedancer(With(CombatStats.UncutGemChance, ModifierKind.Flat, 0.15), seed: 47);
             const int bosses = 40000;
 
             for (var i = 0; i < bosses; i++)
@@ -195,7 +195,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ShardsBuyAnUncutGem()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.State.Drops.Shards = Rules.UncutCost + 1;
 
             Assert.That(loop.BuyUncutGem(), Is.True);
@@ -208,7 +208,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void CuttingTurnsAnUncutGemIntoTheChosenOne()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var chosen = AllGems.First(gem => gem.Kind == GemKind.Support && DropSystem.Cuttable(gem));
             loop.State.Drops.UncutGems = 1;
             loop.Events.Clear();
@@ -223,7 +223,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PathWeaponAndLockedGemsCannotBeCut()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             loop.State.Drops.UncutGems = 3;
             var closed = new[]
             {
@@ -243,7 +243,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryCommonSkillAndSupportCanBeCut()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var cuttable = AllGems.Where(DropSystem.Cuttable).ToList();
 
             foreach (var kind in new[] { GemKind.Skill, GemKind.Support })
@@ -254,7 +254,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ShardsAndUncutGemsSurviveSavingAndPrestige()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var drops = loop.State.Drops;
             drops.Shards = 42;
             drops.ShardCarry = 0.5;

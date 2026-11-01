@@ -22,9 +22,9 @@ namespace Game.Core.Tests.Build
 
         private static WeaponCatalog Weapons => TestWorld.Data.Weapons;
 
-        private static GameLoop Viking()
+        private static GameLoop Runedancer()
         {
-            var state = new GameState { Class = HeroClass.Viking, HeroLevel = 30 };
+            var state = new GameState { Class = HeroClass.Runedancer, HeroLevel = 30 };
             var loop = new GameLoop(TestWorld.Data, new FakeInputSource(), state, new StatSheet());
             loop.Book.GrantStartingGems();
             loop.Levels.SyncTreePoints();
@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Build
         public void ReforgedGemsKeepTheirTierAndMostlyTheirRole()
         {
             var table = Weapons.Reforge;
-            var axe = Weapons.TypeOf(HeroClass.Viking);
+            var axe = Weapons.TypeOf(HeroClass.Runedancer);
             foreach (var to in Weapons.Types.Where(type => type != axe))
             {
                 var gems = ClassGems(axe).Where(gem => !gem.Locked).ToList();
@@ -84,7 +84,7 @@ namespace Game.Core.Tests.Build
                 Assert.That(sameTier, Is.GreaterThanOrEqualTo(gems.Count - 3), to.Id);
                 Assert.That(sameRole, Is.GreaterThanOrEqualTo(gems.Count - 5), to.Id);
             }
-            var bow = Weapons.TypeOf(HeroClass.Amazon);
+            var bow = Weapons.TypeOf(HeroClass.Windshot);
             Assert.That(table.Gem(TestWorld.Data.Gems["iron_rim_bash"], bow, axe), Is.Null, "only gems of the class being left are reforged");
             Assert.That(table.Gem(TestWorld.Data.Gems["lull"], axe, bow), Is.Null, "general gems stay as they are");
         }
@@ -92,15 +92,15 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TheFirstChangeIsFreeAndTheNextOnesArePaid()
         {
-            var loop = Viking();
+            var loop = Runedancer();
 
             Assert.That(loop.ClassChangeIsFree, Is.True);
-            Assert.That(loop.ChangeClassFree(HeroClass.Viking), Is.EqualTo(ClassChangeResult.SameClass));
-            Assert.That(loop.ChangeClassFree(HeroClass.Ronin), Is.EqualTo(ClassChangeResult.Changed));
-            Assert.That(loop.State.Class, Is.EqualTo(HeroClass.Ronin));
+            Assert.That(loop.ChangeClassFree(HeroClass.Runedancer), Is.EqualTo(ClassChangeResult.SameClass));
+            Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.State.Class, Is.EqualTo(HeroClass.Duelist));
             Assert.That(loop.ClassChangeIsFree, Is.False);
-            Assert.That(loop.ChangeClassFree(HeroClass.Viking), Is.EqualTo(ClassChangeResult.NotFree));
-            Assert.That(loop.ChangeClassPaid(HeroClass.Viking), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.ChangeClassFree(HeroClass.Runedancer), Is.EqualTo(ClassChangeResult.NotFree));
+            Assert.That(loop.ChangeClassPaid(HeroClass.Runedancer), Is.EqualTo(ClassChangeResult.Changed));
             Assert.That(loop.State.ClassChanges, Is.EqualTo(2));
             Assert.That(TestWorld.Data.Ascendancy.CrystalChangeCost, Is.EqualTo(100));
         }
@@ -110,14 +110,14 @@ namespace Game.Core.Tests.Build
         {
             var loop = TestWorld.Loop(new FakeInputSource(), new GameState { ClassChosen = false });
 
-            Assert.That(loop.ChangeClassFree(HeroClass.Ronin), Is.EqualTo(ClassChangeResult.NoClassYet));
+            Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.NoClassYet));
             Assert.That(loop.State.ClassChanges, Is.Zero);
         }
 
         [Test]
         public void TheTreeAndThePathAreResetAndAllTheirPointsMoveToTheNewClass()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             SpendTreePoints(loop, 5);
             var earned = loop.State.TreePointsEarned;
             Assert.That(loop.CompleteActivity("garden"), Is.True);
@@ -126,19 +126,19 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.AllocateSubclassNode(pathNode.Id), Is.EqualTo(AllocationResult.Allocated));
             var pathPoints = loop.State.Ascendancy.PointsEarned(TestWorld.Data.Ascendancy);
 
-            Assert.That(loop.ChangeClassFree(HeroClass.Ronin), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
 
             var state = loop.State;
-            Assert.That(state.ClassName, Is.EqualTo("ronin"));
+            Assert.That(state.ClassName, Is.EqualTo("duelist"));
             Assert.That(state.TreePointsSpent, Is.Zero);
             Assert.That(state.TreePointsLeft, Is.EqualTo(earned));
-            Assert.That(state.ClassTree.TreeId, Is.EqualTo("ronin"));
-            Assert.That(state.OtherPreset.ClassTree.TreeId, Is.EqualTo("ronin"));
+            Assert.That(state.ClassTree.TreeId, Is.EqualTo("duelist"));
+            Assert.That(state.OtherPreset.ClassTree.TreeId, Is.EqualTo("duelist"));
             Assert.That(state.Ascendancy.Subclass, Is.Null);
             Assert.That(state.Ascendancy.PointsLeft(TestWorld.Data.Ascendancy), Is.EqualTo(pathPoints));
             Assert.That(state.OwnedGems.Any(gem => gem.Ascendancy != null), Is.False, "the skill of the old path goes away with it");
             Assert.That(loop.ChooseSubclass("ninja"), Is.EqualTo(SubclassResult.Chosen), "a path of the new class can be chosen at once");
-            Assert.That(loop.Resource.Rules, Is.SameAs(TestWorld.Data.Combat.Resources.For("ronin")));
+            Assert.That(loop.Resource.Rules, Is.SameAs(TestWorld.Data.Combat.Resources.For("duelist")));
             SpendTreePoints(loop, earned);
             Assert.That(state.TreePointsLeft, Is.Zero);
         }
@@ -146,14 +146,14 @@ namespace Game.Core.Tests.Build
         [Test]
         public void WeaponsAndGemsAreReforgedAndChangingBackLosesNothing()
         {
-            var loop = Viking();
+            var loop = Runedancer();
             var state = loop.State;
-            var axe = Weapons.TypeOf(HeroClass.Viking);
-            var katana = Weapons.TypeOf(HeroClass.Ronin);
+            var axe = Weapons.TypeOf(HeroClass.Runedancer);
+            var katana = Weapons.TypeOf(HeroClass.Duelist);
             var jarl = Weapons.Bases.Last(weaponBase => weaponBase.Type == axe);
             var rolled = loop.Weapons.Give(Weapons.Roll(jarl, ItemRarity.Mythic, new Rng(7)));
             loop.Weapons.Equip(WeaponHand.Left, rolled);
-            var bow = loop.Weapons.Give(Weapons.Roll(Weapons.StarterFor(HeroClass.Amazon), ItemRarity.Rare, new Rng(3)));
+            var bow = loop.Weapons.Give(Weapons.Roll(Weapons.StarterFor(HeroClass.Windshot), ItemRarity.Rare, new Rng(3)));
             var corsair = loop.Weapons.Give(Weapons.RollUnique(Weapons.Uniques.First(unique => unique.Id == "corsair_axe"), new Rng(5)));
             var fast = state.Skills[0].Skill;
             state.ProgressOf(fast).Level = 9;
@@ -161,7 +161,7 @@ namespace Game.Core.Tests.Build
             state.Skills[0].Supports[0] = support;
             var before = Snapshot(loop);
 
-            Assert.That(loop.ChangeClassFree(HeroClass.Ronin), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
 
             Assert.That(state.Weapons.Right!.Type, Is.SameAs(katana));
             Assert.That(state.Weapons.Right.Base.FromBiome, Is.EqualTo(1));
@@ -184,7 +184,7 @@ namespace Game.Core.Tests.Build
             Assert.That(state.OwnedGems.Any(gem => gem.Skill?.Weapon == "axe"), Is.False);
             Assert.That(state.OwnedGems.Select(gem => gem.Id), Does.Contain("lull"));
 
-            Assert.That(loop.ChangeClassPaid(HeroClass.Viking), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.ChangeClassPaid(HeroClass.Runedancer), Is.EqualTo(ClassChangeResult.Changed));
 
             Assert.That(Snapshot(loop), Is.EqualTo(before));
         }
@@ -192,13 +192,13 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TheSaveRemembersHowManyTimesTheClassWasChanged()
         {
-            var loop = Viking();
-            loop.ChangeClassFree(HeroClass.Captain);
+            var loop = Runedancer();
+            loop.ChangeClassFree(HeroClass.Ghostcaptain);
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, Clock), TestWorld.Data).State;
 
             Assert.That(loaded.ClassChanges, Is.EqualTo(1));
-            Assert.That(loaded.Class, Is.EqualTo(HeroClass.Captain));
+            Assert.That(loaded.Class, Is.EqualTo(HeroClass.Ghostcaptain));
             Assert.That(new GameState().ClassChanges, Is.Zero);
         }
     }

@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Sim
 
         private static GameLoop Wearing(params string[] uniques)
         {
-            var loop = TestWorld.Loop(state: new GameState(4) { Class = HeroClass.Viking });
+            var loop = TestWorld.Loop(state: new GameState(4) { Class = HeroClass.Runedancer });
             foreach (var id in uniques)
             {
                 var item = Unique(id);
@@ -91,7 +91,7 @@ namespace Game.Core.Tests.Sim
         public void GuardiansDropUniquesOnlyPastTheLimitAndAutoSalvageKeepsThem()
         {
             var stages = TestWorld.Data.Stages;
-            var loop = TestWorld.Loop(state: new GameState(11) { Class = HeroClass.Viking });
+            var loop = TestWorld.Loop(state: new GameState(11) { Class = HeroClass.Runedancer });
             loop.Drops.UseData(AlwaysUnique(), stages, TestWorld.Data.Gems, Items);
             loop.State.Drops.SalvageUpTo = ItemRarity.Legendary;
 
@@ -126,8 +126,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StenographerGlovesCastTheLeftSkillEveryTwoHundredKeys()
         {
-            var plain = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash");
-            var gloved = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash");
+            var plain = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
+            var gloved = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
             gloved.Loop.Hero.Add(new Modifier(CombatStats.KeyCastLeftEvery, ModifierKind.Flat, 200));
 
             var plainCasts = Casts(plain);
@@ -175,7 +175,7 @@ namespace Game.Core.Tests.Sim
         private static double Resource(StatSheet hero, double mousePx, int keys)
         {
             var input = new FakeInputSource();
-            var state = new GameState(2) { Class = HeroClass.Viking };
+            var state = new GameState(2) { Class = HeroClass.Runedancer };
             var loop = TestWorld.Loop(input, state, hero);
             loop.State.Resource = 50;
             if (mousePx > 0)
@@ -206,13 +206,13 @@ namespace Game.Core.Tests.Sim
         }
 
         private static GameLoop Real() =>
-            new GameLoop(TestWorld.Real, new FakeInputSource(), new GameState(4) { Class = HeroClass.Viking }, new StatSheet());
+            new GameLoop(TestWorld.Real, new FakeInputSource(), new GameState(4) { Class = HeroClass.Runedancer }, new StatSheet());
 
         [Test]
         public void EyeOfTheDevourerRaisesEveryGemLevel()
         {
-            var plain = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash");
-            var eyed = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash");
+            var plain = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
+            var eyed = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
             eyed.Loop.Hero.Add(new Modifier(CombatStats.GemLevelBonus, ModifierKind.Flat, 1));
             var gem = TestWorld.Data.Gems["iron_rim_bash"];
             var perLevel = TestWorld.Data.Gems.Levels.EffectPerLevel;
@@ -223,8 +223,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ApprenticeRingDoublesExperienceOfTheLowestGem()
         {
-            var plain = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash", "no_mercy");
-            var ringed = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash", "no_mercy");
+            var plain = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
+            var ringed = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash", "no_mercy");
             ringed.Loop.Hero.Add(new Modifier(CombatStats.LowestGemExperience, ModifierKind.Flat, 1));
             foreach (var hero in new[] { plain, ringed })
             {

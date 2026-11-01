@@ -63,8 +63,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SameSeedGivesSameRun()
         {
-            var first = new Simulation(TestWorld.Data, new BotProfile(6, 1), HeroClass.Metalhead, seed: 9).Run(1200);
-            var second = new Simulation(TestWorld.Data, new BotProfile(6, 1), HeroClass.Metalhead, seed: 9).Run(1200);
+            var first = new Simulation(TestWorld.Data, new BotProfile(6, 1), HeroClass.Minstrel, seed: 9).Run(1200);
+            var second = new Simulation(TestWorld.Data, new BotProfile(6, 1), HeroClass.Minstrel, seed: 9).Run(1200);
 
             Assert.That(second.HighestStage, Is.EqualTo(first.HighestStage));
             Assert.That(second.GoldEarned, Is.EqualTo(first.GoldEarned));

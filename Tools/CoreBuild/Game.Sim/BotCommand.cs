@@ -17,7 +17,7 @@ namespace Game.Sim
     public static class BotCommand
     {
         public const string Usage =
-            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift] | --help-call | --ghost | --clan new|open|quick|K7M-Q2X [--count 1] | --raid [--count 3]) [--seconds 60] [--kps 6] [--class viking] [--stay] [--chronicle] [--report cheating]";
+            "sim bot --server https://host --key <server key> (--create [--open] | --code K7M-Q2X | --find | --quick | --pair [--rift] | --help-call | --ghost | --clan new|open|quick|K7M-Q2X [--count 1] | --raid [--count 3]) [--seconds 60] [--kps 6] [--class runedancer] [--stay] [--chronicle] [--report cheating]";
 
         private const ulong BotSteamBase = 76561190000000000UL;
         private const double ChronicleFlushWait = 65;
@@ -40,7 +40,7 @@ namespace Game.Sim
                 return Fail("--server and --key are required");
             var seconds = Number(options, "--seconds", 60);
             var profile = new BotProfile(Number(options, "--kps", 6));
-            var heroClass = options.TryGetValue("--class", out var className) && HeroClassNames.ByName.TryGetValue(className, out var named) ? named : HeroClass.Viking;
+            var heroClass = options.TryGetValue("--class", out var className) && HeroClassNames.ByName.TryGetValue(className, out var named) ? named : HeroClass.Runedancer;
             var client = new NakamaClient(server, key);
             try
             {
@@ -121,7 +121,7 @@ namespace Game.Sim
             string? code = null;
             for (var i = 0; i < count; i++)
             {
-                var bot = await Bot.LoginAsync(data, client, profile, (HeroClass)(i % ((int)HeroClass.Captain + 1)), i + 1).ConfigureAwait(false);
+                var bot = await Bot.LoginAsync(data, client, profile, (HeroClass)(i % ((int)HeroClass.Ghostcaptain + 1)), i + 1).ConfigureAwait(false);
                 code = await bot.EnterClanAsync(code).ConfigureAwait(false);
                 bots.Add(bot);
             }
@@ -169,8 +169,8 @@ namespace Game.Sim
 
         private static async Task<int> RunPair(GameData data, NakamaClient client, BotProfile profile, double seconds, bool rift)
         {
-            var leader = await Bot.LoginAsync(data, client, profile, HeroClass.Viking, 1).ConfigureAwait(false);
-            var friend = await Bot.LoginAsync(data, client, profile, HeroClass.Voodoo, 2).ConfigureAwait(false);
+            var leader = await Bot.LoginAsync(data, client, profile, HeroClass.Runedancer, 1).ConfigureAwait(false);
+            var friend = await Bot.LoginAsync(data, client, profile, HeroClass.Whisperer, 2).ConfigureAwait(false);
             await leader.CreateAsync(false).ConfigureAwait(false);
             await friend.JoinAsync(leader.Party!.Code.ToLowerInvariant()).ConfigureAwait(false);
             Console.WriteLine("party code " + PartySearchRules.FormatCode(leader.Party.Code) + ", members " + friend.Party!.Members.Count);
@@ -198,9 +198,9 @@ namespace Game.Sim
 
         private static async Task<int> RunHelp(GameData data, NakamaClient client, BotProfile profile, double seconds)
         {
-            var leader = await Bot.LoginAsync(data, client, profile, HeroClass.Viking, 1).ConfigureAwait(false);
-            var friend = await Bot.LoginAsync(data, client, profile, HeroClass.Voodoo, 2).ConfigureAwait(false);
-            var helper = await Bot.LoginAsync(data, client, profile, HeroClass.Ronin, 3).ConfigureAwait(false);
+            var leader = await Bot.LoginAsync(data, client, profile, HeroClass.Runedancer, 1).ConfigureAwait(false);
+            var friend = await Bot.LoginAsync(data, client, profile, HeroClass.Whisperer, 2).ConfigureAwait(false);
+            var helper = await Bot.LoginAsync(data, client, profile, HeroClass.Duelist, 3).ConfigureAwait(false);
             Console.WriteLine("helper takes calls from: " + await helper.Online.Help.AcceptAsync("all").ConfigureAwait(false));
             await leader.CreateAsync(false).ConfigureAwait(false);
             await friend.JoinAsync(leader.Party!.Code.ToLowerInvariant()).ConfigureAwait(false);

@@ -22,10 +22,10 @@ namespace Game.Core.Tests.Content
             }
         }
 
-        [TestCase("ronin", "ronin_one_blade")]
-        [TestCase("nomad", "nomad_best_at_nothing")]
-        [TestCase("ronin", "ronin_thousand_steps")]
-        [TestCase("viking", "viking_ancestor_shore")]
+        [TestCase("duelist", "duelist_one_blade")]
+        [TestCase("sandwalker", "sandwalker_best_at_nothing")]
+        [TestCase("duelist", "duelist_thousand_steps")]
+        [TestCase("runedancer", "runedancer_ancestor_shore")]
         public void FormerCompromiseVerticesHaveNoDownside(string heroClass, string nodeId)
         {
             var node = TestWorld.Data.ClassTreeOf(heroClass)!.Nodes.Single(candidate => candidate.Id == nodeId);

@@ -34,7 +34,7 @@ namespace Game.Core.Tests.Telemetry
         private TelemetryService Service(ITelemetrySink? sink = null) => new TelemetryService(_store, sink ?? NoTelemetrySink.Instance, Version);
 
         private static TelemetryProgress Progress(int prestiges = 0, double playSeconds = 0, long record = 12) =>
-            new TelemetryProgress(record, prestiges, "viking", playSeconds);
+            new TelemetryProgress(record, prestiges, "runedancer", playSeconds);
 
         private static InputStats Session(double seconds = 0, ulong keys = 0, ulong leftClicks = 0, double meters = 0) =>
             new InputStats { PlaySeconds = seconds, Keys = keys, LeftClicks = leftClicks, MouseMeters = meters };
@@ -91,7 +91,7 @@ namespace Game.Core.Tests.Telemetry
             Assert.That(packet.MouseMeters, Is.EqualTo(12.5));
             Assert.That(packet.TotalPlaySeconds, Is.EqualTo(1120));
             Assert.That(packet.RecordStage, Is.EqualTo(40));
-            Assert.That(packet.Character, Is.EqualTo("viking"));
+            Assert.That(packet.Character, Is.EqualTo("runedancer"));
             Assert.That(packet.Closed, Is.True);
             Assert.That(packet.GameVersion, Is.EqualTo(Version));
             Assert.That(_store.QueuedFiles().Count, Is.EqualTo(1));
@@ -238,7 +238,7 @@ namespace Game.Core.Tests.Telemetry
         public void QueueKeepsOnlyTheNewestPackets()
         {
             for (var i = 1; i <= TelemetryStore.MaxQueued + 5; i++)
-                _store.Enqueue(new TelemetryPacket { InstallId = TelemetryService.NewInstallId(), GameVersion = Version, Character = "viking", Session = i });
+                _store.Enqueue(new TelemetryPacket { InstallId = TelemetryService.NewInstallId(), GameVersion = Version, Character = "runedancer", Session = i });
 
             var queued = _store.QueuedFiles();
 

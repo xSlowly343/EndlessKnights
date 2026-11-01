@@ -7,7 +7,7 @@ namespace Game.Core.Tests.Sim
 {
     public class CommonKeySkillTests
     {
-        private static SkillTestHero Hero(params string[] skills) => SkillTestHero.Of(HeroClass.Ronin, skills);
+        private static SkillTestHero Hero(params string[] skills) => SkillTestHero.Of(HeroClass.Duelist, skills);
 
         [Test]
         public void KeyDrumrollMakesEveryFifthKeyHitTwice()
@@ -93,7 +93,7 @@ namespace Game.Core.Tests.Sim
             var hero = Hero("quick_stride");
             hero.State.Resource = 50;
             hero.Cast(0);
-            var perKey = TestWorld.Data.Combat.Resources.For("ronin").PerKey;
+            var perKey = TestWorld.Data.Combat.Resources.For("duelist").PerKey;
 
             hero.Ticks(1, keysPerTick: 4);
 

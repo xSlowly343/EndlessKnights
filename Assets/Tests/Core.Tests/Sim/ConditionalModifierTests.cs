@@ -80,20 +80,20 @@ namespace Game.Core.Tests.Sim
         public void TheBossOpeningLastsTheFirstSecondsOfABossFight()
         {
             var seconds = TestWorld.Data.Combat.Conditions.BossOpeningSeconds;
-            var boss = Hero(HeroClass.Viking, EnemyType.Boss);
+            var boss = Hero(HeroClass.Runedancer, EnemyType.Boss);
 
             Assert.That(Holds(boss, ModifierCondition.Boss) && Holds(boss, ModifierCondition.BossOpening), Is.True);
             for (var tick = 0; tick < seconds * GameLoop.TicksPerSecond; tick++)
                 boss.Tick();
             Assert.That(Holds(boss, ModifierCondition.Boss), Is.True);
             Assert.That(Holds(boss, ModifierCondition.BossOpening), Is.False);
-            Assert.That(Holds(Hero(HeroClass.Viking, EnemyType.Guardian), ModifierCondition.Boss), Is.False);
+            Assert.That(Holds(Hero(HeroClass.Runedancer, EnemyType.Guardian), ModifierCondition.Boss), Is.False);
         }
 
         [Test]
         public void ResourceConditionsFollowTheFill()
         {
-            var hero = Hero(HeroClass.Viking, EnemyType.Normal);
+            var hero = Hero(HeroClass.Runedancer, EnemyType.Normal);
             hero.State.Resource = 0.6 * hero.Resource.Max;
             hero.Tick();
 
@@ -107,7 +107,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AMarkOnTheEnemyTurnsItsConditionOn()
         {
-            var huntress = Hero(HeroClass.Amazon, EnemyType.Normal, new Modifier(new StatId("gold"), ModifierKind.Increased, 0.1, StatTags.Gold, ModifierPool.General, ModifierCondition.HunterMark));
+            var huntress = Hero(HeroClass.Windshot, EnemyType.Normal, new Modifier(new StatId("gold"), ModifierKind.Increased, 0.1, StatTags.Gold, ModifierPool.General, ModifierCondition.HunterMark));
             var plain = huntress.Hero.Value(new StatId("gold"), 1, StatTags.Gold);
 
             huntress.State.HunterMarkTicks = 100;

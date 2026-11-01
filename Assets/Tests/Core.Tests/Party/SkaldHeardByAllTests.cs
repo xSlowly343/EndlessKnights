@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void WhileTheSkaldTypesThePartyGetsFivePercentDamage()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead);
+            var (loop, input) = Hero(HeroClass.Minstrel);
             Type(loop, input, 5);
 
             Assert.That(loop.PartyBuffs.HeardByAll, Is.True);
@@ -62,13 +62,13 @@ namespace Game.Core.Tests.Party
         [Test]
         public void TheBonusFadesAfterASecondWithoutKeysUnlessTheTreeHoldsIt()
         {
-            var (loop, input) = Hero(HeroClass.Metalhead);
+            var (loop, input) = Hero(HeroClass.Minstrel);
             Type(loop, input, 5);
             Wait(loop, Rules.TypingSeconds + 0.3);
             Assert.That(loop.PartyBuffs.HeardByAll, Is.False);
             Assert.That(loop.PartyBuffs.AppliedValue(DamageIndex()), Is.Zero);
 
-            var (held, heldInput) = Hero(HeroClass.Metalhead, new Modifier(CombatStats.TypingHoldSeconds, ModifierKind.Flat, 2));
+            var (held, heldInput) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.TypingHoldSeconds, ModifierKind.Flat, 2));
             Type(held, heldInput, 5);
             Wait(held, Rules.TypingSeconds + 1.5);
             Assert.That(held.PartyBuffs.HeardByAll, Is.True);
@@ -77,7 +77,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void OnlyTheSkaldIsHeardByAll()
         {
-            var (loop, input) = Hero(HeroClass.Ronin);
+            var (loop, input) = Hero(HeroClass.Duelist);
             Type(loop, input, 5);
 
             Assert.That(loop.PartyBuffs.HeardByAll, Is.False);
@@ -93,7 +93,7 @@ namespace Game.Core.Tests.Party
                 new Modifier(CombatStats.ChoirPower, ModifierKind.Flat, 1),
                 new Modifier(CombatStats.ChoirSoloShare, ModifierKind.Flat, 0.5)
             };
-            var (solo, soloInput) = Hero(HeroClass.Metalhead, choir);
+            var (solo, soloInput) = Hero(HeroClass.Minstrel, choir);
             Type(solo, soloInput, 5);
             Assert.That(solo.PartyBuffs.OwnValue(DamageIndex()), Is.EqualTo(0.06).Within(1e-9));
 
@@ -104,7 +104,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void AtFullOverdriveSongsGetStrongerForEightSecondsOnce()
         {
-            var (loop, _) = Hero(HeroClass.Metalhead);
+            var (loop, _) = Hero(HeroClass.Minstrel);
             var plain = loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
             loop.State.Resource = 1000;
             loop.Tick();
@@ -123,7 +123,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void TreeLinesMakeTheOverdriveSongsLongerAndStronger()
         {
-            var (loop, _) = Hero(HeroClass.Metalhead,
+            var (loop, _) = Hero(HeroClass.Minstrel,
                 new Modifier(CombatStats.OverdriveSeconds, ModifierKind.Flat, 2),
                 new Modifier(CombatStats.OverdriveSongs, ModifierKind.Flat, 0.2));
             var plain = loop.Hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);

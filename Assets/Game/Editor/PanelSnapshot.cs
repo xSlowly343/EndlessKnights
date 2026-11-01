@@ -34,14 +34,14 @@ namespace Game.Editor
 
             var store = GameDataFiles.TryLoadAll() ?? throw new InvalidOperationException("Game data did not load.");
             var data = store.Current;
-            var loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Viking }, new StatSheet());
+            var loop = new GameLoop(data, new FakeInputSource(), new GameState { Class = HeroClass.Runedancer }, new StatSheet());
             loop.State.TreePointsEarned = 5;
             loop.State.Gold = BigNumber.FromDouble(12345);
-            loop.RaiseNode("viking_axe");
+            loop.RaiseNode("runedancer_axe");
             loop.State.HeroLevel = 42;
             loop.State.Stage = 37;
             loop.State.RecordStage = 120;
-            var starter = loop.Weapons.Give(data.Weapons.StarterFor(HeroClass.Viking));
+            var starter = loop.Weapons.Give(data.Weapons.StarterFor(HeroClass.Runedancer));
             loop.Weapons.Equip(WeaponHand.Right, starter);
             loop.Book.GrantStartingGems();
             var rng = new Rng(7);

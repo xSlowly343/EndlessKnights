@@ -187,7 +187,7 @@ namespace Game.Core.Tests.Content
         {
             var error = Assert.Throws<ContentException>(() => GameData.Load(name =>
                 name == GemCatalog.FileName
-                    ? TestData.ReadGameDataFile(name).Replace("\"formerIds\": [\"the_last_ronin\"],\n      \"kind\": \"active\",\n      \"weapon\": \"katana\"", "\"formerIds\": [\"the_last_ronin\"],\n      \"kind\": \"active\",\n      \"weapon\": \"axe\"")
+                    ? TestData.ReadGameDataFile(name).Replace("\"formerIds\": [\"the_last_duelist\"],\n      \"kind\": \"active\",\n      \"weapon\": \"katana\"", "\"formerIds\": [\"the_last_duelist\"],\n      \"kind\": \"active\",\n      \"weapon\": \"axe\"")
                     : TestData.ReadGameDataFile(name)));
 
             Assert.That(error!.Message, Does.Contain("katana: 14 active skills, expected 15"));

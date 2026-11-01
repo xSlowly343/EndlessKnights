@@ -47,8 +47,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryTenthKeyHitOfAVenomistAddsAPoisonStack()
         {
-            var (venomist, venomistKeys) = Hero(HeroClass.PlagueDoctor);
-            var (huscarl, huscarlKeys) = Hero(HeroClass.Viking);
+            var (venomist, venomistKeys) = Hero(HeroClass.Alchemist);
+            var (huscarl, huscarlKeys) = Hero(HeroClass.Runedancer);
 
             for (var tick = 0; tick < 10; tick++)
             {
@@ -67,7 +67,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PoisonousVapoursStopAtThePoisonCap()
         {
-            var (loop, input) = Hero(HeroClass.PlagueDoctor);
+            var (loop, input) = Hero(HeroClass.Alchemist);
 
             for (var tick = 0; tick < 3000; tick++)
             {
@@ -81,7 +81,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void VialAddsThreePoisonStacks()
         {
-            var (loop, _) = Hero(HeroClass.PlagueDoctor);
+            var (loop, _) = Hero(HeroClass.Alchemist);
             loop.State.Resource = 100;
 
             Assert.That(loop.Skills.TryCast(Equip(loop, Vial)), Is.EqualTo(CastResult.Cast));
@@ -92,7 +92,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PoisonTicksOncePerSecondEvenWithoutInput()
         {
-            var (loop, _) = Hero(HeroClass.PlagueDoctor);
+            var (loop, _) = Hero(HeroClass.Alchemist);
             loop.State.PoisonStacks = 10;
             var hp = loop.State.EnemyHp;
 
@@ -104,7 +104,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PoisonStacksStopAtTheLimit()
         {
-            var (loop, _) = Hero(HeroClass.PlagueDoctor);
+            var (loop, _) = Hero(HeroClass.Alchemist);
             loop.State.PoisonStacks = Rules.PoisonMax - 1;
 
             loop.Skills.Dots.Apply(new AddStacksEffect(DotKind.Poison, 3, 0, 0));
@@ -115,7 +115,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PoisonStacksStatRaisesTheLimit()
         {
-            var (loop, _) = Hero(HeroClass.PlagueDoctor, new Modifier(CombatStats.PoisonStacks, ModifierKind.Flat, 2));
+            var (loop, _) = Hero(HeroClass.Alchemist, new Modifier(CombatStats.PoisonStacks, ModifierKind.Flat, 2));
             loop.State.PoisonStacks = Rules.PoisonMax;
 
             loop.Skills.Dots.Apply(new AddStacksEffect(DotKind.Poison, 3, 0, 0));
@@ -126,7 +126,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StirringWithTheMouseAddsStacksToTheNextVial()
         {
-            var (loop, input) = Hero(HeroClass.PlagueDoctor);
+            var (loop, input) = Hero(HeroClass.Alchemist);
             for (var i = 0; i < Rules.StirMax + 3; i++)
             {
                 input.MoveMouse((float)Rules.StirPxPerTurn);
@@ -142,7 +142,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void StacksLeaveWithTheEnemy()
         {
-            var (loop, _) = Hero(HeroClass.PlagueDoctor);
+            var (loop, _) = Hero(HeroClass.Alchemist);
             loop.State.PoisonStacks = 10;
             loop.State.BurnStacks = 5;
 
@@ -155,7 +155,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void DotDamageAndDotTaggedDamageMakeTicksStronger()
         {
-            var (loop, _) = Hero(HeroClass.PlagueDoctor,
+            var (loop, _) = Hero(HeroClass.Alchemist,
                 new Modifier(CombatStats.DotDamage, ModifierKind.Increased, 0.5),
                 new Modifier(CombatStats.Damage, ModifierKind.More, 1, StatTags.DoT));
             loop.State.PoisonStacks = 10;
@@ -169,7 +169,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FuseBottleStrikesAndSetsTheEnemyOnFire()
         {
-            var (loop, _) = Hero(HeroClass.Moonshiner);
+            var (loop, _) = Hero(HeroClass.Dowser);
             var hp = loop.State.EnemyHp;
 
             Assert.That(loop.Skills.TryCast(Equip(loop, Bottle)), Is.EqualTo(CastResult.Cast));
@@ -181,8 +181,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void MovingTheMouseFansTheFire()
         {
-            var (still, _) = Hero(HeroClass.Moonshiner);
-            var (fanned, input) = Hero(HeroClass.Moonshiner);
+            var (still, _) = Hero(HeroClass.Dowser);
+            var (fanned, input) = Hero(HeroClass.Dowser);
             still.State.BurnStacks = 10;
             fanned.State.BurnStacks = 10;
             var hp = still.State.EnemyHp;
@@ -202,7 +202,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void PressureGrowsFromSkillsAndFallsByItself()
         {
-            var (loop, _) = Hero(HeroClass.Moonshiner);
+            var (loop, _) = Hero(HeroClass.Dowser);
             var index = Equip(loop, Bottle);
 
             loop.Skills.TryCast(index);
@@ -215,7 +215,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FullPressureOverheatsAndBlocksSkills()
         {
-            var (loop, _) = Hero(HeroClass.Moonshiner);
+            var (loop, _) = Hero(HeroClass.Dowser);
             var index = Equip(loop, Bottle);
             loop.State.Resource = 95;
 
@@ -233,7 +233,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OverheatDisabledLetsPressureStayFull()
         {
-            var (loop, _) = Hero(HeroClass.Moonshiner, new Modifier(CombatStats.OverheatDisabled, ModifierKind.Flat, 1));
+            var (loop, _) = Hero(HeroClass.Dowser, new Modifier(CombatStats.OverheatDisabled, ModifierKind.Flat, 1));
             var index = Equip(loop, Bottle);
             loop.State.Resource = 95;
 
@@ -245,7 +245,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SureToBlowDetonatesTenSecondsOfStacks()
         {
-            var (loop, _) = Hero(HeroClass.PlagueDoctor);
+            var (loop, _) = Hero(HeroClass.Alchemist);
             loop.State.PoisonStacks = 10;
             var hp = loop.State.EnemyHp;
 
@@ -258,7 +258,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ExhaleBurnsThreeStacksASecond()
         {
-            var (loop, _) = Hero(HeroClass.Moonshiner);
+            var (loop, _) = Hero(HeroClass.Dowser);
             var exhale = (AddStacksEffect)TestWorld.Real.Gems["exhale"].Skill!.Effect;
 
             for (var i = 0; i < GameLoop.TicksPerSecond; i++)

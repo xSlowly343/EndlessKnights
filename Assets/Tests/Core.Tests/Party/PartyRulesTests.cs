@@ -35,12 +35,12 @@ namespace Game.Core.Tests.Party
     ""reportReasons"": [""cheating"", ""idle_farming"", ""offensive_name""],
     ""timeSlots"": [{ ""id"": ""night"", ""fromHour"": 0 }, { ""id"": ""morning"", ""fromHour"": 6 }, { ""id"": ""day"", ""fromHour"": 12 }, { ""id"": ""evening"", ""fromHour"": 18 }],
     ""classRoles"": {
-      ""viking"": ""damage"", ""ronin"": ""damage"", ""amazon"": ""damage"", ""stormweaver"": ""damage"", ""nomad"": ""damage"",
-      ""metalhead"": ""buffer"", ""oracle"": ""buffer"", ""bannerbearer"": ""buffer"",
-      ""voodoo"": ""debuffer"", ""clockmaker"": ""debuffer"",
-      ""plague_doctor"": ""dot"", ""moonshiner"": ""dot"",
-      ""gravedigger"": ""summoner"", ""captain"": ""summoner"",
-      ""spinner"": ""buffer"", ""rimecaller"": ""debuffer"", ""thornmaiden"": ""dot"", ""clayshaper"": ""summoner""
+      ""runedancer"": ""damage"", ""duelist"": ""damage"", ""windshot"": ""damage"", ""shardcaller"": ""damage"", ""sandwalker"": ""damage"",
+      ""minstrel"": ""buffer"", ""dreamcatcher"": ""buffer"", ""lanternbearer"": ""buffer"",
+      ""whisperer"": ""debuffer"", ""clockwright"": ""debuffer"",
+      ""alchemist"": ""dot"", ""dowser"": ""dot"",
+      ""soulbinder"": ""summoner"", ""ghostcaptain"": ""summoner"",
+      ""mothcaller"": ""buffer"", ""cartomancer"": ""debuffer"", ""herbwitch"": ""dot"", ""golemancer"": ""summoner""
     }
   },
   ""buffs"": { ""selfShare"": 1.0, ""offerSeconds"": 1.0, ""allyResource"": { ""max"": 50, ""cooldownSeconds"": 5 }, ""stats"": [{ ""from"": ""partyDamage"", ""to"": ""damage"", ""kind"": ""increased"" }] }

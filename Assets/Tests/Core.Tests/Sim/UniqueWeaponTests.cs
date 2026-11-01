@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Sim
             return unique;
         }
 
-        private static GameLoop Real(HeroClass heroClass = HeroClass.Viking) =>
+        private static GameLoop Real(HeroClass heroClass = HeroClass.Runedancer) =>
             new GameLoop(TestWorld.Real, new FakeInputSource(), new GameState(6) { Class = heroClass }, new StatSheet());
 
         [Test]
@@ -113,8 +113,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TwinMoonKatanaCutsCooldownByResourceUpToItsCap()
         {
-            var plain = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash");
-            var katana = SkillTestHero.Of(HeroClass.Viking, "iron_rim_bash");
+            var plain = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
+            var katana = SkillTestHero.Of(HeroClass.Runedancer, "iron_rim_bash");
             katana.Loop.Hero.Add(new Modifier(CombatStats.CooldownPerResource, ModifierKind.Flat, 0.01));
             katana.Loop.Hero.Add(new Modifier(CombatStats.CooldownPerResourceMax, ModifierKind.Flat, 0.3));
 
@@ -144,7 +144,7 @@ namespace Game.Core.Tests.Sim
             var hero = new StatSheet();
             if (withGuitar)
                 hero.Add(new Modifier(CombatStats.AuraReserveOnce, ModifierKind.Flat, 1));
-            var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Ronin }), hero: hero);
+            var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Duelist }), hero: hero);
             loop.State.Resource = 100;
             loop.Skills.Equip(TestWorld.Data.Gems["tailwind"]);
             return loop.State;
@@ -162,7 +162,7 @@ namespace Game.Core.Tests.Sim
 
         private static double Summoned(double explode)
         {
-            var hero = SkillTestHero.Of(HeroClass.Gravedigger);
+            var hero = SkillTestHero.Of(HeroClass.Soulbinder);
             if (explode > 0)
                 hero.Loop.Hero.Add(new Modifier(CombatStats.MinionExplode, ModifierKind.Flat, explode));
             var minions = hero.Loop.Skills.Minions;

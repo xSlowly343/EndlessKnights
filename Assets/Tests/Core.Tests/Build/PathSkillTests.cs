@@ -14,9 +14,9 @@ namespace Game.Core.Tests.Build
     {
         private static GemCatalog Gems => TestWorld.Data.Gems;
 
-        private static GameLoop Ronin()
+        private static GameLoop Duelist()
         {
-            var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Ronin }, new StatSheet());
+            var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Duelist }, new StatSheet());
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             Assert.That(loop.CompleteActivity("garden"), Is.True);
             return loop;
@@ -48,7 +48,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void ChoosingAPathGivesItsSkill()
         {
-            var loop = Ronin();
+            var loop = Duelist();
             Assert.That(Owns(loop, "second_shadow"), Is.False);
 
             Assert.That(loop.ChooseSubclass("ninja"), Is.EqualTo(SubclassResult.Chosen));
@@ -60,7 +60,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void ChangingThePathTakesTheOldSkillAndGivesTheNewOne()
         {
-            var loop = Ronin();
+            var loop = Duelist();
             loop.ChooseSubclass("ninja");
             TestWorld.ArmFor(loop, Gems["second_shadow"]);
             Assert.That(loop.Book.Equip(Gems["second_shadow"]), Is.EqualTo(BookResult.Done));
@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void PathSkillOfAnotherPathCannotBeEquipped()
         {
-            var loop = Ronin();
+            var loop = Duelist();
             loop.ChooseSubclass("ninja");
             loop.State.OwnedGems.Add(Gems["lift_the_anchor"]);
             TestWorld.ArmFor(loop, Gems["lift_the_anchor"]);
@@ -86,7 +86,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SavedPathSkillOfAnotherPathIsTakenAwayOnLoad()
         {
-            var state = new GameState { Class = HeroClass.Ronin };
+            var state = new GameState { Class = HeroClass.Duelist };
             state.OwnedGems.Add(Gems["lift_the_anchor"]);
 
             var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), state, new StatSheet());
@@ -97,7 +97,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void PathSkillWithoutItsMechanicWaits()
         {
-            var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Viking }, new StatSheet());
+            var loop = new GameLoop(TestWorld.Data, new Game.Core.Input.FakeInputSource(), new GameState { Class = HeroClass.Runedancer }, new StatSheet());
             Assert.That(loop.CompleteActivity("garden"), Is.True);
             loop.ChooseSubclass("butcher");
             var gem = Gems["hook_and_cleaver"];
@@ -114,7 +114,7 @@ namespace Game.Core.Tests.Build
             var input = new Game.Core.Input.FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            var loop = new GameLoop(TestWorld.Data, input, new GameState { Class = HeroClass.Ronin }, hero);
+            var loop = new GameLoop(TestWorld.Data, input, new GameState { Class = HeroClass.Duelist }, hero);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             loop.CompleteActivity("garden");
             loop.ChooseSubclass("ninja");

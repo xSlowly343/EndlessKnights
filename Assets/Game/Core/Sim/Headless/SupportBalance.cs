@@ -77,7 +77,7 @@ namespace Game.Core.Sim.Headless
 
         private GameLoop Hero(BotProfile profile)
         {
-            var state = new GameState(_seed) { Class = HeroClass.Viking, Stage = Stage, HighestStage = Stage, RecordStage = Stage };
+            var state = new GameState(_seed) { Class = HeroClass.Runedancer, Stage = Stage, HighestStage = Stage, RecordStage = Stage };
             var levels = _data.Weapons.SkillRules.UnlockLevels;
             state.HeroLevel = levels[levels.Count - 1];
             var hero = new StatSheet();

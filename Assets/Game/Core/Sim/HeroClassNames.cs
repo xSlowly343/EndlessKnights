@@ -9,24 +9,24 @@ namespace Game.Core.Sim
 
         public static readonly IReadOnlyDictionary<string, HeroClass> ByName = new Dictionary<string, HeroClass>(StringComparer.Ordinal)
         {
-            ["viking"] = HeroClass.Viking,
-            ["ronin"] = HeroClass.Ronin,
-            ["amazon"] = HeroClass.Amazon,
-            ["stormweaver"] = HeroClass.Stormweaver,
-            ["nomad"] = HeroClass.Nomad,
-            ["metalhead"] = HeroClass.Metalhead,
-            ["oracle"] = HeroClass.Oracle,
-            ["bannerbearer"] = HeroClass.Bannerbearer,
-            ["voodoo"] = HeroClass.Voodoo,
-            ["clockmaker"] = HeroClass.Clockmaker,
-            ["plague_doctor"] = HeroClass.PlagueDoctor,
-            ["moonshiner"] = HeroClass.Moonshiner,
-            ["gravedigger"] = HeroClass.Gravedigger,
-            ["captain"] = HeroClass.Captain,
-            ["spinner"] = HeroClass.Spinner,
-            ["rimecaller"] = HeroClass.Rimecaller,
-            ["thornmaiden"] = HeroClass.Thornmaiden,
-            ["clayshaper"] = HeroClass.Clayshaper
+            ["runedancer"] = HeroClass.Runedancer,
+            ["duelist"] = HeroClass.Duelist,
+            ["windshot"] = HeroClass.Windshot,
+            ["shardcaller"] = HeroClass.Shardcaller,
+            ["sandwalker"] = HeroClass.Sandwalker,
+            ["minstrel"] = HeroClass.Minstrel,
+            ["dreamcatcher"] = HeroClass.Dreamcatcher,
+            ["lanternbearer"] = HeroClass.Lanternbearer,
+            ["whisperer"] = HeroClass.Whisperer,
+            ["clockwright"] = HeroClass.Clockwright,
+            ["alchemist"] = HeroClass.Alchemist,
+            ["dowser"] = HeroClass.Dowser,
+            ["soulbinder"] = HeroClass.Soulbinder,
+            ["ghostcaptain"] = HeroClass.Ghostcaptain,
+            ["mothcaller"] = HeroClass.Mothcaller,
+            ["cartomancer"] = HeroClass.Cartomancer,
+            ["herbwitch"] = HeroClass.Herbwitch,
+            ["golemancer"] = HeroClass.Golemancer
         };
 
         public static readonly IReadOnlyDictionary<string, HeroClass> InDevelopment = new Dictionary<string, HeroClass>(StringComparer.Ordinal)

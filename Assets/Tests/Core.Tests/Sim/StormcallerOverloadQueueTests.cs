@@ -9,17 +9,17 @@ namespace Game.Core.Tests.Sim
 {
     public class StormcallerOverloadQueueTests
     {
-        private static ClassResource Static => TestWorld.Data.Combat.Resources.For("stormweaver");
+        private static ClassResource Static => TestWorld.Data.Combat.Resources.For("shardcaller");
         private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
         private static double Max => TestWorld.Data.Combat.Resources.Max;
 
-        private static GameLoop Stormweaver(EnemyType enemy, params Modifier[] modifiers)
+        private static GameLoop Shardcaller(EnemyType enemy, params Modifier[] modifiers)
         {
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(new FakeInputSource(), new GameState { Class = HeroClass.Stormweaver }, hero);
+            var loop = TestWorld.Loop(new FakeInputSource(), new GameState { Class = HeroClass.Shardcaller }, hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             loop.State.SpawnEnemy(null, enemy, BigNumber.FromDouble(1e6));
@@ -33,7 +33,7 @@ namespace Game.Core.Tests.Sim
         public void TheDischargeHitsTheEnemyAndTheNextTwoInTheQueue()
         {
             Assert.That(TestWorld.Data.Combat.Classes.OverloadQueueTargets, Is.EqualTo(2));
-            var loop = Stormweaver(EnemyType.Normal);
+            var loop = Shardcaller(EnemyType.Normal);
             loop.State.Resource = Max;
 
             loop.Tick();
@@ -49,7 +49,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OverloadAtFromTheTreeDischargesBeforeTheBarIsFull()
         {
-            var loop = Stormweaver(EnemyType.Normal, new Modifier(CombatStats.OverloadAt, ModifierKind.Flat, -5));
+            var loop = Shardcaller(EnemyType.Normal, new Modifier(CombatStats.OverloadAt, ModifierKind.Flat, -5));
             loop.State.Resource = Max - 5;
 
             loop.Tick();
@@ -60,13 +60,13 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void OverloadIsStrongerOnABossAndAlwaysCritsWithTheTree()
         {
-            var boss = Stormweaver(EnemyType.Boss, new Modifier(CombatStats.OverloadBoss, ModifierKind.Flat, 0.2));
+            var boss = Shardcaller(EnemyType.Boss, new Modifier(CombatStats.OverloadBoss, ModifierKind.Flat, 0.2));
             boss.State.Resource = Max;
             var hp = boss.State.EnemyHp;
             boss.Tick();
             Assert.That((hp - boss.State.EnemyHp).ToDouble() / (KeyDamage * Static.OverloadMultiplier), Is.EqualTo(1.2).Within(0.05));
 
-            var crit = Stormweaver(EnemyType.Normal, new Modifier(CombatStats.OverloadCrit, ModifierKind.Flat, 1));
+            var crit = Shardcaller(EnemyType.Normal, new Modifier(CombatStats.OverloadCrit, ModifierKind.Flat, 1));
             crit.State.Resource = Max;
             crit.Tick();
             Assert.That(crit.State.Crits, Is.EqualTo(1));

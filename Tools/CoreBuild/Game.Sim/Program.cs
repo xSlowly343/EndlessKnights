@@ -181,9 +181,9 @@ namespace Game.Sim
 
         private static readonly (string Name, HeroClass[] Classes)[] StandardParties =
         {
-            ("solo", new[] { HeroClass.Viking }),
-            ("4 dd", new[] { HeroClass.Viking, HeroClass.Ronin, HeroClass.Amazon, HeroClass.Stormweaver }),
-            ("2 dd + 2 support", new[] { HeroClass.Viking, HeroClass.Ronin, HeroClass.Metalhead, HeroClass.Voodoo })
+            ("solo", new[] { HeroClass.Runedancer }),
+            ("4 dd", new[] { HeroClass.Runedancer, HeroClass.Duelist, HeroClass.Windshot, HeroClass.Shardcaller }),
+            ("2 dd + 2 support", new[] { HeroClass.Runedancer, HeroClass.Duelist, HeroClass.Minstrel, HeroClass.Whisperer })
         };
 
         private static int RunParties(GameData data, BotProfile profile, SimOptions options)
