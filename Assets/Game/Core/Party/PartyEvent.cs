@@ -13,10 +13,12 @@ namespace Game.Core.Party
         public readonly byte Rewarded;
         public readonly double Loop;
         public readonly double SavedSeconds;
+        public readonly bool Spirit;
 
         public PartyEvent(PartyEventKind kind, long tick, uint enemyId, PartyEnemyKind enemyKind, double share0 = 0, double share1 = 0, double share2 = 0, double share3 = 0, byte rewarded = 0,
-            double loop = 0, double savedSeconds = 0)
+            double loop = 0, double savedSeconds = 0, bool spirit = false)
         {
+            Spirit = spirit;
             Loop = loop;
             SavedSeconds = savedSeconds;
             Rewarded = rewarded;

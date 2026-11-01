@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 5315597757025954917
-    second: holy_orb_0
+    second: dream_hoop_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: holy_orb_0
+      name: dream_hoop_0
       rect:
         serializedVersion: 2
         x: 9

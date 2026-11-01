@@ -2937,235 +2937,70 @@
     {
       "id": "dreamcatcher_trait_1",
       "class": "dreamcatcher",
-      "name": {"ru": "Сети снов (шаг)", "en": "Сети снов (шаг)"},
-      "blurb": "Шаг плетёт сеть поперёк очереди. Враг, выходящий из очереди в сеть, 3 с беспомощен: +50% урона от всех, а если умер за эти 3 с — шанс на трофей. До 3 сетей",
+      "name": {"ru": "Сети снов", "en": "Dream Nets"},
+      "blurb": "Шаг плетёт сети поперёк очереди: сеть на каждые 2000 px шага, до 3. Враг, вышедший из очереди в сеть, 3 с беспомощен: урон по нему +50%, а если он умер за это время — шанс 20% на трофей (гем). В паузе сети висят, новые не плетутся. Скилл Пути «Сплести сеть» плетёт 2 сети сразу",
       "trait": {
-        "partyText": {"ru": "Урон отряда по пойманным", "en": "Урон отряда по пойманным"},
+        "partyText": {"ru": "Сеть общая и видна всем: по пойманному врагу весь отряд бьёт на 50% сильнее, каждый, кто бил пойманного, получает шанс на трофей, а крит союзника по пойманному держит сеть ещё 0,5 с", "en": "The net is shared and everyone sees it: the whole party hits a caught enemy 50% harder, everyone who struck it gets a trophy chance, and an ally's crit on it holds the net 0.5 s longer"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "netBoss", "kind": "flat", "value": 1}], "text": {"ru": "Сеть на Колосса: сети ловят и боссов", "en": "Net for Colossi: nets catch bosses too"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "dreamcatcher_trait_1_f45a",
-                "name": {"ru": "4 с беспомощности", "en": "4 с беспомощности"},
-                "text": {"ru": "4 с беспомощности", "en": "4 с беспомощности"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dreamcatcher_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "dreamcatcher_trait_1_f60a",
-                "name": {"ru": "сеть на боссе останавливает его таймер", "en": "сеть на боссе останавливает его таймер"},
-                "text": {"ru": "сеть на боссе останавливает его таймер", "en": "сеть на боссе останавливает его таймер"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dreamcatcher_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "dreamcatcher_trait_1_f75a",
-                "name": {"ru": "до 5 сетей", "en": "до 5 сетей"},
-                "text": {"ru": "до 5 сетей", "en": "до 5 сетей"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dreamcatcher_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "dreamcatcher_trait_1_f45a", "name": {"ru": "Долгая сеть", "en": "Long Net"}, "text": {"ru": "Враг беспомощен 4 с, но сеть плетётся на 500 px дольше", "en": "An enemy is helpless for 4 s, but a net takes 500 px longer"}, "modifiers": [{"stat": "netSeconds", "kind": "flat", "value": 1}, {"stat": "netPx", "kind": "flat", "value": 500}]}, {"id": "dreamcatcher_trait_1_f45b", "name": {"ru": "Частая сеть", "en": "Close Net"}, "text": {"ru": "Сеть каждые 1200 px шага, но враг беспомощен 2 с", "en": "A net every 1200 px of steps, but an enemy is helpless for 2 s"}, "modifiers": [{"stat": "netPx", "kind": "flat", "value": -800}, {"stat": "netSeconds", "kind": "flat", "value": -1}]}]},
+          {"level": 60, "options": [{"id": "dreamcatcher_trait_1_f60a", "name": {"ru": "Сеть с часами", "en": "Net with a Clock"}, "text": {"ru": "Пойманный босс стоит: его таймер не идёт, пока он в сети, но сетей до 2", "en": "A caught boss stands still: his timer stops while he is in the net, but there are only 2 nets"}, "modifiers": [{"stat": "netTimer", "kind": "flat", "value": 1}, {"stat": "netMax", "kind": "flat", "value": -1}]}, {"id": "dreamcatcher_trait_1_f60b", "name": {"ru": "Ловчая яма", "en": "Pitfall"}, "text": {"ru": "Шанс трофея +20%, но пойманный получает на 30% меньше", "en": "Trophy chance +20%, but a caught enemy takes 30% less"}, "modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.2}, {"stat": "netPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 75, "options": [{"id": "dreamcatcher_trait_1_f75a", "name": {"ru": "Пять сетей", "en": "Five Nets"}, "text": {"ru": "До 5 сетей, но пойманный получает на 20% меньше", "en": "Up to 5 nets, but a caught enemy takes 20% less"}, "modifiers": [{"stat": "netMax", "kind": "flat", "value": 2}, {"stat": "netPower", "kind": "more", "value": -0.2}]}, {"id": "dreamcatcher_trait_1_f75b", "name": {"ru": "Тугая сеть", "en": "Tight Net"}, "text": {"ru": "Враг, умерший в сети, возвращает сеть, но беспомощен на 1 с меньше", "en": "An enemy that dies in the net gives it back, but is helpless 1 s shorter"}, "modifiers": [{"stat": "netReturn", "kind": "flat", "value": 1}, {"stat": "netSeconds", "kind": "flat", "value": -1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "dreamcatcher_trait_1_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Сети снов (шаг)", "en": "Сети снов (шаг)"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "dreamcatcher_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сети снов", "en": "Dream Nets"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "dreamcatcher_trait_2",
       "class": "dreamcatcher",
-      "name": {"ru": "Коллекция снов", "en": "Коллекция снов"},
-      "blurb": "Каждый новый вид врага, пойманный в сеть, попадает в коллекцию: +1% урона по этому виду за каждый пойманный экземпляр, до 50%. Коллекция живёт до перерождения",
+      "name": {"ru": "Коллекция снов", "en": "Dream Collection"},
+      "blurb": "Каждый убитый враг ложится в альбом снов: урон по этому виду врага +1% за экземпляр, до 50%. Полная страница биома (по 10 экземпляров каждого вида) — вещий сон: следующий босс этого биома 10 с получает +25% урона. Альбом живёт до перерождения. Скилл Пути «Альбом снов» добавляет 3 экземпляра текущего врага",
       "trait": {
-        "partyText": {"ru": "Коллекция действует на весь отряд", "en": "Коллекция действует на весь отряд"},
+        "partyText": {"ru": "Альбом общий: враги, которых бьют союзники, тоже ложатся в её альбом, бонус по виду получает весь отряд, а вещий сон висит на боссе для всех", "en": "The album is shared: enemies the allies fight go into her album too, the whole party gets the bonus against a kind, and the prophetic dream hangs on the boss for everyone"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.01}]},
+          {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.002}]},
+          {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.002}]},
+          {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.002}]},
+          {"modifiers": [{"stat": "albumKeep", "kind": "flat", "value": 1}], "text": {"ru": "Память: после перерождения в альбоме остаётся половина", "en": "Memory: after a rebirth half of the album stays"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "dreamcatcher_trait_2_f45a",
-                "name": {"ru": "до 75%", "en": "до 75%"},
-                "text": {"ru": "до 75%", "en": "до 75%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dreamcatcher_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "dreamcatcher_trait_2_f60a",
-                "name": {"ru": "полная страница биома даёт общий бонус +5%", "en": "полная страница биома даёт общий бонус +5%"},
-                "text": {"ru": "полная страница биома даёт общий бонус +5%", "en": "полная страница биома даёт общий бонус +5%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dreamcatcher_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "dreamcatcher_trait_2_f75a",
-                "name": {"ru": "после перерождения остаётся половина", "en": "после перерождения остаётся половина"},
-                "text": {"ru": "после перерождения остаётся половина", "en": "после перерождения остаётся половина"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dreamcatcher_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "dreamcatcher_trait_2_f45a", "name": {"ru": "Толстый альбом", "en": "Thick Album"}, "text": {"ru": "Бонус до 75%, но экземпляр даёт на 30% меньше", "en": "The bonus goes up to 75%, but a specimen gives 30% less"}, "modifiers": [{"stat": "albumMax", "kind": "flat", "value": 0.25}, {"stat": "albumPower", "kind": "more", "value": -0.3}]}, {"id": "dreamcatcher_trait_2_f45b", "name": {"ru": "Быстрые зарисовки", "en": "Quick Sketches"}, "text": {"ru": "Каждый враг ложится в альбом дважды, но бонус до 30%", "en": "Every enemy goes into the album twice, but the bonus is capped at 30%"}, "modifiers": [{"stat": "albumDouble", "kind": "flat", "value": 1}, {"stat": "albumMax", "kind": "flat", "value": -0.2}]}]},
+          {"level": 60, "options": [{"id": "dreamcatcher_trait_2_f60a", "name": {"ru": "Тонкая страница", "en": "Thin Page"}, "text": {"ru": "Страница полна при 5 экземплярах, но вещий сон +15% вместо +25%", "en": "A page is full at 5 specimens, but the prophetic dream gives +15% instead of +25%"}, "modifiers": [{"stat": "pageMin", "kind": "flat", "value": -5}, {"stat": "prophecyPower", "kind": "flat", "value": -0.1}]}, {"id": "dreamcatcher_trait_2_f60b", "name": {"ru": "Яркий сон", "en": "Vivid Dream"}, "text": {"ru": "Вещий сон +50%, но страница полна при 20 экземплярах", "en": "The prophetic dream gives +50%, but a page needs 20 specimens"}, "modifiers": [{"stat": "prophecyPower", "kind": "flat", "value": 0.25}, {"stat": "pageMin", "kind": "flat", "value": 10}]}]},
+          {"level": 75, "options": [{"id": "dreamcatcher_trait_2_f75a", "name": {"ru": "Осознанный альбом", "en": "Lucid Album"}, "text": {"ru": "Бонус по любому врагу — не меньше половины лучшего, но экземпляр даёт на 20% меньше", "en": "The bonus against any enemy is at least half of the best one, but a specimen gives 20% less"}, "modifiers": [{"stat": "albumAll", "kind": "flat", "value": 1}, {"stat": "albumPower", "kind": "more", "value": -0.2}]}, {"id": "dreamcatcher_trait_2_f75b", "name": {"ru": "Чужие страницы", "en": "Others' Pages"}, "text": {"ru": "В отряде каждый враг ложится в альбом дважды, но в соло альбом не растёт", "en": "In a party every enemy goes into the album twice, but solo the album does not grow"}, "modifiers": [{"stat": "albumAllies", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "dreamcatcher_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Коллекция снов", "en": "Коллекция снов"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "dreamcatcher_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Коллекция снов", "en": "Dream Collection"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "dreamcatcher_trait_3",
       "class": "dreamcatcher",
-      "name": {"ru": "Приманка-сон", "en": "Приманка-сон"},
-      "blurb": "Удары копят Приманку. На 100 в очередь выходит редкий дух-сон: крепче обычных, но всегда роняет свиток, артефактную пыль или гем. Сети по нему не работают",
+      "name": {"ru": "Приманка-сон", "en": "Dream Bait"},
+      "blurb": "Каждый удар кладёт крошку Приманки, на 100 из очереди выходит дух-сон: втрое крепче обычного врага, но всегда роняет гем, осколки и сундук золота. Сети по нему не работают. В паузе Приманка лежит. Скилл Пути «Бросить приманку» кладёт 50 сразу",
       "trait": {
-        "partyText": {"ru": "Добыча духа падает каждому в отряде", "en": "Добыча духа падает каждому в отряде"},
+        "partyText": {"ru": "Дух выходит на весь отряд: добыча падает каждому, кто его бил, а если по нему ударили все — вдвое больше", "en": "The spirit comes out for the whole party: loot drops for everyone who struck it, and twice as much if everyone did"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 1}]},
+          {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 0.15}]},
+          {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 0.15}]},
+          {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 0.15}]},
+          {"modifiers": [{"stat": "baitByCast", "kind": "flat", "value": 1}], "text": {"ru": "Сладкая приманка: каждый скилл кладёт 5 Приманки", "en": "Sweet Bait: every skill adds 5 Bait"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "dreamcatcher_trait_3_f45a",
-                "name": {"ru": "Приманка копится и от ударов союзников", "en": "Приманка копится и от ударов союзников"},
-                "text": {"ru": "Приманка копится и от ударов союзников", "en": "Приманка копится и от ударов союзников"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dreamcatcher_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "dreamcatcher_trait_3_f60a",
-                "name": {"ru": "дух иногда выходит двойным", "en": "дух иногда выходит двойным"},
-                "text": {"ru": "дух иногда выходит двойным", "en": "дух иногда выходит двойным"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dreamcatcher_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "dreamcatcher_trait_3_f75a",
-                "name": {"ru": "кошмарный дух — крепче втрое, добыча втрое", "en": "кошмарный дух — крепче втрое, добыча втрое"},
-                "text": {"ru": "кошмарный дух — крепче втрое, добыча втрое", "en": "кошмарный дух — крепче втрое, добыча втрое"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dreamcatcher_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "dreamcatcher_trait_3_f45a", "name": {"ru": "Двойной дух", "en": "Twin Spirit"}, "text": {"ru": "Дух иногда выходит двойным, но Приманки нужно 130", "en": "A spirit sometimes comes in a pair, but it takes 130 Bait"}, "modifiers": [{"stat": "spiritTwin", "kind": "flat", "value": 1}, {"stat": "baitHits", "kind": "flat", "value": 30}]}, {"id": "dreamcatcher_trait_3_f45b", "name": {"ru": "Быстрая приманка", "en": "Quick Bait"}, "text": {"ru": "Дух на 70 Приманки, но добычи на 30% меньше", "en": "A spirit at 70 Bait, but 30% less loot"}, "modifiers": [{"stat": "baitHits", "kind": "flat", "value": -30}, {"stat": "spiritLoot", "kind": "more", "value": -0.3}]}]},
+          {"level": 60, "options": [{"id": "dreamcatcher_trait_3_f60a", "name": {"ru": "Кошмарный дух", "en": "Nightmare Spirit"}, "text": {"ru": "Дух крепче втрое, но и добычи втрое", "en": "The spirit is three times tougher, but drops three times the loot"}, "modifiers": [{"stat": "spiritHp", "kind": "flat", "value": 6}, {"stat": "spiritLoot", "kind": "more", "value": 2}]}, {"id": "dreamcatcher_trait_3_f60b", "name": {"ru": "Сонный дух", "en": "Drowsy Spirit"}, "text": {"ru": "Дух крепче обычного врага лишь в 1,5 раза, но добычи на 40% меньше", "en": "The spirit is only 1.5 times tougher than a regular enemy, but drops 40% less loot"}, "modifiers": [{"stat": "spiritHp", "kind": "flat", "value": -1.5}, {"stat": "spiritLoot", "kind": "more", "value": -0.4}]}]},
+          {"level": 75, "options": [{"id": "dreamcatcher_trait_3_f75a", "name": {"ru": "Охотничий рог", "en": "Hunting Horn"}, "text": {"ru": "Вышедший дух 15 с получает +30% урона от всех, но Приманки нужно 150", "en": "A spirit takes 30% more damage from everyone for 15 s, but it takes 150 Bait"}, "modifiers": [{"stat": "spiritHorn", "kind": "flat", "value": 1}, {"stat": "baitHits", "kind": "flat", "value": 50}]}, {"id": "dreamcatcher_trait_3_f75b", "name": {"ru": "Дух-проводник", "en": "Guide Spirit"}, "text": {"ru": "Убитый дух даёт 30 ресурса ей и союзникам, но Приманки нужно 120", "en": "A slain spirit gives 30 resource to her and the allies, but it takes 120 Bait"}, "modifiers": [{"stat": "spiritGift", "kind": "flat", "value": 1}, {"stat": "baitHits", "kind": "flat", "value": 20}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "dreamcatcher_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Приманка-сон", "en": "Приманка-сон"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "dreamcatcher_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Приманка-сон", "en": "Dream Bait"}, "modifiers": []}],
       "links": []
     }
   ]

@@ -21,7 +21,8 @@ namespace Game.Core.Stats
             "calmPenalty", "calmPartyCrit", "shotPartyCrit", "gustPartyCooldown", "partySkillCooldown",
             "shardArmor", "gardenArmor", "shellPenalty", "shellPartyDamage",
             "flipPower", "flipPenalty", "mirageSelfPenalty", "caravanPartyCooldown",
-            "versePower", "verseParty", "songPower", "songSelfPenalty", "songPartyPenalty", "songParty", "sleepParty"
+            "versePower", "verseParty", "songPower", "songSelfPenalty", "songPartyPenalty", "songParty", "sleepParty",
+            "netPower", "netTrophy", "netParty", "albumPower", "albumMax", "prophecyPower", "albumParty"
         };
 
         private static readonly StatTags[] LabelledTags =

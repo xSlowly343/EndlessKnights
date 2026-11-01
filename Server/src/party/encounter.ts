@@ -7,6 +7,7 @@ interface PartyEvent {
     rewarded: number;
     loop: number;
     saved: number;
+    spirit?: boolean;
 }
 
 class PartyMember {
@@ -102,6 +103,9 @@ class PartyEncounter {
     riftStagesCleared = 0;
     enemyRegen = 0;
     bossShield = 0;
+    enemySpirit = false;
+    spiritCalls = 0;
+    spiritHp = 1;
     extraStageEnemies = 0;
     shieldFloor = 0;
     weakenGold = 0;
@@ -375,6 +379,38 @@ class PartyEncounter {
         return true;
     }
 
+    callSpirit(count: number, hp: number): boolean {
+        if (!(count > 0) || !(hp >= 1) || !this.started)
+            return false;
+        this.spiritCalls = Math.min(this.rules.spiritCallsMax, this.spiritCalls + Math.floor(count));
+        this.spiritHp = Math.min(this.rules.spiritHpMax, hp);
+        return this.spiritCalls > 0;
+    }
+
+    extendEnemyEffect(effectId: number, seconds: number): boolean {
+        if (!(seconds > 0))
+            return false;
+        const step = partyTicks(Math.min(this.rules.pullStepSeconds, seconds));
+        const cap = partyTicks(this.rules.pullMaxSeconds);
+        for (const effect of this.effects) {
+            if (!(effect.ticksLeft > 0) || effect.id !== effectId)
+                continue;
+            if (effect.ticksLeft >= cap)
+                return false;
+            effect.ticksLeft = Math.min(cap, effect.ticksLeft + step);
+            return true;
+        }
+        return false;
+    }
+
+    private takeSpirit(kind: PartyEnemyKind): void {
+        this.enemySpirit = kind === PartyEnemyKind.Normal && this.world === PartyWorld.Home && this.spiritCalls > 0;
+        if (!this.enemySpirit)
+            return;
+        this.spiritCalls--;
+        this.barFull *= this.spiritHp;
+    }
+
     applyDamage(slot: number, enemyId: number, share: number, limit?: number): number {
         const applicable = this.applicable(slot, enemyId, share);
         const applied = limit === undefined ? applicable : Math.min(applicable, limit);
@@ -597,7 +633,7 @@ class PartyEncounter {
         this.enemyRewarded = rewarded;
         this.events.push({
             kind: PartyEventKind.EnemyKilled, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: shares, rewarded: rewarded,
-            loop: damage > 0 ? this.loopShare / damage : 0, saved: this.savedBossTicks / PartyTicksPerSecond
+            loop: damage > 0 ? this.loopShare / damage : 0, saved: this.savedBossTicks / PartyTicksPerSecond, spirit: this.enemySpirit
         });
         this.previousEnemyId = this.enemyId;
         this.previousKind = this.enemyKind;
@@ -671,6 +707,7 @@ class PartyEncounter {
             this.shieldFloor = this.barFull;
             this.barFull *= 1 + this.bossShield;
         }
+        this.takeSpirit(kind);
         this.barLeft = this.barFull * (1 - this.takeWeaken());
         this.addEvent(PartyEventKind.EnemySpawned);
         if (this.enemyWeakened && this.weakenVulnerability > 0)

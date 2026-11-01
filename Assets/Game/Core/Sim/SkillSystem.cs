@@ -320,6 +320,7 @@ namespace Game.Core.Sim
             _combat.Shardcaller.OnSkillCast(slot.Skill);
             _combat.Sandwalker.OnSkillCast(slot.Skill);
             _combat.Minstrel.OnSkillCast(slot.Skill);
+            _combat.Dreamcatcher.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)

@@ -93,6 +93,13 @@ namespace Game.Core.Content.Gems
         public double HymnSeconds { get; set; }
         public double HymnPower { get; set; }
         public double SoloSeconds { get; set; }
+        public double Dream { get; set; }
+        public double CaughtHit { get; set; }
+        public int Nets { get; set; }
+        public int AlbumAdd { get; set; }
+        public int Bait { get; set; }
+        public double DozeSeconds { get; set; }
+        public double LucidSeconds { get; set; }
     }
 
     public sealed class PotionOption

@@ -425,7 +425,14 @@ namespace Game.Core.Content.Gems
                         Finale = Number(node, "finale", 100),
                         HymnSeconds = Number(node, "hymnSeconds", 600),
                         HymnPower = Number(node, "hymnPower", 10),
-                        SoloSeconds = Number(node, "soloSeconds", 600)
+                        SoloSeconds = Number(node, "soloSeconds", 600),
+                        Dream = Number(node, "dream", 1000),
+                        CaughtHit = Number(node, "caughtHit", 100),
+                        Nets = node.HasField("nets") ? node.Field("nets").AsInt(0, 100) : 0,
+                        AlbumAdd = node.HasField("album") ? node.Field("album").AsInt(0, 1000) : 0,
+                        Bait = node.HasField("bait") ? node.Field("bait").AsInt(0, 100_000) : 0,
+                        DozeSeconds = Number(node, "dozeSeconds", 600),
+                        LucidSeconds = Number(node, "lucidSeconds", 600)
                     };
                 case "aura":
                     return new AuraEffect(

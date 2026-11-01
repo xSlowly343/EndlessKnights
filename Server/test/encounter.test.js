@@ -28,6 +28,8 @@ function run(encounter, step) {
     case "credit": return encounter.setCredit(step.slot, step.rate);
     case "riftEnemy": return encounter.setRiftEnemy(step.regen, step.shield, step.extra);
     case "auras": return encounter.noteAuras(step.slot, step.ticks);
+    case "spirit": return encounter.callSpirit(step.count, step.hp);
+    case "pull": return encounter.extendEnemyEffect(step.id, step.seconds);
     case "weaken": return encounter.weakenNext(step.enemies, step.share, step.gold, step.vulnerability, step.vulnerabilitySeconds, step.effectId, step.owner);
     case "proposeWorld": return encounter.proposeWorld(step.world, step.riftId);
     case "cancelWorld": return encounter.cancelWorld();
@@ -41,7 +43,7 @@ function run(encounter, step) {
 }
 
 function compare(encounter, expect, where) {
-  for (const key of ["tick", "enemyId", "enemyKind", "killsOnStage", "farming", "farmKills", "bossTicksLeft", "fighters", "world", "riftId", "pendingWorld", "switchTicksLeft", "weakenedSpawns", "enemyWeakened"])
+  for (const key of ["tick", "enemyId", "enemyKind", "killsOnStage", "farming", "farmKills", "bossTicksLeft", "fighters", "world", "riftId", "pendingWorld", "switchTicksLeft", "weakenedSpawns", "enemyWeakened", "enemySpirit", "spiritCalls"])
     assert.strictEqual(encounter[key], expect[key], `${where}: ${key}`);
   assert.strictEqual(encounter.enemySeed, expect.enemySeed, `${where}: enemySeed`);
   close(encounter.barFull, expect.barFull, `${where}: barFull`);
@@ -86,6 +88,7 @@ function compare(encounter, expect, where) {
     event.shares.forEach((share, slot) => close(actual.shares[slot], share, `${where}: event ${i} share ${slot}`));
     close(actual.loop, event.loop, `${where}: event ${i} loop`);
     close(actual.saved, event.saved, `${where}: event ${i} saved`);
+    assert.strictEqual(actual.spirit === true, event.spirit, `${where}: event ${i} spirit`);
   });
   encounter.events.length = 0;
 }

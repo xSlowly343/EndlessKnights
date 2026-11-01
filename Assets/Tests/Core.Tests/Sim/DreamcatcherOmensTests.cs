@@ -32,16 +32,16 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void OmensComeFromMouseNotKeys()
+        public void DrowseComesFromHitsAndSteps()
         {
             var (loop, input) = Dreamcatcher();
 
             input.PressKeys(1);
             loop.Tick();
-            Assert.That(loop.State.Resource, Is.EqualTo(0));
+            Assert.That(loop.State.Resource, Is.EqualTo(Omens.PerKey).Within(0.05));
 
             Move(loop, input, 6, (float)Omens.MousePxPerPoint / 6);
-            Assert.That(loop.State.Resource, Is.EqualTo(1).Within(0.05));
+            Assert.That(loop.State.Resource, Is.EqualTo(Omens.PerKey + 1).Within(0.05));
         }
 
         [Test]

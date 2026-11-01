@@ -198,6 +198,21 @@ namespace Game.Core.Sim
 
         public void GiveLimitUnique(long stage) => GiveUnique(stage, DropSource.Limit);
 
+        public void GiveTrophy()
+        {
+            var pool = _gemPools[(int)GemKind.Skill];
+            if (pool.Count == 0)
+                return;
+            Push(PendingDrop.OfGem(PickGem(pool)));
+        }
+
+        public void GiveSpiritLoot(int gems, long shards)
+        {
+            for (var i = 0; i < gems; i++)
+                GiveTrophy();
+            AddShards(shards);
+        }
+
         private void GiveUnique(long stage, DropSource source)
         {
             var gear = _items.Uniques;

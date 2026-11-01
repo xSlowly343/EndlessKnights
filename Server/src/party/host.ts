@@ -58,6 +58,7 @@ class PartyHost {
     private readonly lastRepeatTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastRelayTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastResourceTick = [PartyNever, PartyNever, PartyNever, PartyNever];
+    private readonly lastPullTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly reactions = [0, 0, 0, 0];
     private readonly marks = [0, 0, 0, 0];
     private enemyReactions = 0;
@@ -195,6 +196,19 @@ class PartyHost {
                     this.reactions[slot] = synergy;
                     this.enemyReactions = (this.enemyReactions | synergy) >>> 0;
                 }
+                break;
+            }
+            case PartyMessageKind.SpiritCall: {
+                const call = partyDecodeSpiritCall(data);
+                if (call)
+                    this.encounter.callSpirit(call.count, call.hp);
+                break;
+            }
+            case PartyMessageKind.NetPull: {
+                const pull = partyDecodeNetPull(data);
+                if (pull && this.encounter.tick - this.lastPullTick[slot] >= partyTicks(this.config.pullCooldownSeconds)
+                    && this.encounter.extendEnemyEffect(pull.effectId, pull.seconds))
+                    this.lastPullTick[slot] = this.encounter.tick;
                 break;
             }
             case PartyMessageKind.PartyResource: {
@@ -464,6 +478,7 @@ class PartyHost {
         this.lastRepeatTick[slot] = PartyNever;
         this.lastRelayTick[slot] = PartyNever;
         this.lastResourceTick[slot] = PartyNever;
+        this.lastPullTick[slot] = PartyNever;
         this.reactions[slot] = 0;
         this.marks[slot] = 0;
         this.ticksToState = 0;

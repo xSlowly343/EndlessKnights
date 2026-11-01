@@ -19,6 +19,8 @@ namespace Game.Core.Party.Wire
         Synergy = 15,
         BossRequest,
         Marks,
-        PartyLoadout
+        PartyLoadout,
+        SpiritCall,
+        NetPull
     }
 }
