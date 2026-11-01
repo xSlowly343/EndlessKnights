@@ -3,7 +3,7 @@
   "hits": {
     "keyboard": { "damage": 10 },
     "mouse": { "damage": 3.4, "pxPerHit": 1000 },
-    "click": { "damage": 5 }
+    "click": { "damage": 8 }
   },
   "focus": {
     "min": 1,
