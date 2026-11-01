@@ -1,0 +1,141 @@
+using System.Collections.Generic;
+using System.Linq;
+using Game.Core.Build;
+using Game.Core.Content.Gems;
+using Game.Core.Party.Wire;
+using Game.Core.Sim;
+using Game.Core.Tests.Sim;
+using Game.Core.Text;
+using Game.Core.Ui;
+using NUnit.Framework;
+
+namespace Game.Core.Tests.Ui
+{
+    public class SkillWindowModelsTests
+    {
+        [SetUp]
+        public void SetUp() => Texts.UseLanguage("ru");
+
+        private static GemDef Gem(string id) => TestWorld.Data.Gems[id];
+
+        private static GameLoop Ronin(int heroLevel)
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Ronin, HeroLevel = heroLevel });
+            while (loop.State.Skills.Count > 0)
+                loop.Book.Unequip(0);
+            return loop;
+        }
+
+        [Test]
+        public void TheBarHasNinePlacesInTheOrderOfTheStrip()
+        {
+            var loop = Ronin(12);
+            loop.Skills.Equip(Gem("thin_cut"), role: SkillSlotRole.Right);
+            loop.Skills.Equip(Gem("cooks_apron"), role: SkillSlotRole.Aura);
+            var places = new SkillBarPlace[SkillBarLayout.Places];
+
+            SkillBarLayout.Fill(loop.State.Skills, loop.Book, places);
+
+            Assert.That(places.Select(p => p.Role), Is.EqualTo(new[] { SkillSlotRole.Left, SkillSlotRole.Right, SkillSlotRole.Auto, SkillSlotRole.Auto, SkillSlotRole.Auto, SkillSlotRole.Aura, SkillSlotRole.Aura, SkillSlotRole.Aura, SkillSlotRole.Aura }));
+            Assert.That(places[0].Empty, Is.True);
+            Assert.That(loop.State.Skills[places[1].Row].Skill, Is.SameAs(Gem("thin_cut")));
+            Assert.That(loop.State.Skills[places[5].Row].Skill, Is.SameAs(Gem("cooks_apron")));
+            Assert.That(places[2].Open, Is.True);
+            Assert.That(SkillBarTexts.Locked(places[3]), Is.EqualTo("этап 100"));
+            Assert.That(SkillBarTexts.Locked(places[4]), Is.EqualTo("этап 200"));
+            Assert.That(SkillBarTexts.Locked(places[6]), Is.EqualTo("ур. 25"));
+            Assert.That(SkillBarTexts.Key(places[0].Role) + SkillBarTexts.Key(places[1].Role), Is.EqualTo("ЛП"));
+            Assert.That(places[5].CastsByItself, Is.True);
+        }
+
+        [Test]
+        public void ABookSkillGoesIntoTheChosenSlotAndAnActiveNeverIntoAnAuraSlot()
+        {
+            var loop = Ronin(12);
+            loop.State.OwnedGems.AddRange(new[] { Gem("cooks_apron"), Gem("thin_cut") });
+
+            Assert.That(BookPlacing.PutInto(loop.Book, Gem("cooks_apron"), SkillSlotRole.Aura), Is.EqualTo(BookResult.Done));
+            Assert.That(BookPlacing.PutInto(loop.Book, Gem("thin_cut"), SkillSlotRole.Aura), Is.EqualTo(BookResult.WrongSlot));
+            Assert.That(BookPlacing.PutInto(loop.Book, Gem("thin_cut"), SkillSlotRole.Auto), Is.EqualTo(BookResult.Done));
+            Assert.That(BookPlacing.PutInto(loop.Book, Gem("cooks_apron"), SkillSlotRole.Left), Is.EqualTo(BookResult.Done));
+
+            Assert.That(loop.State.Skills.Single(s => s.Skill == Gem("thin_cut")).Role, Is.EqualTo(SkillSlotRole.Auto));
+            Assert.That(loop.State.Skills.Single(s => s.Skill == Gem("cooks_apron")).Role, Is.EqualTo(SkillSlotRole.Left));
+        }
+
+        [Test]
+        public void TheSkillWindowShowsTiersAndTakesABranch()
+        {
+            var loop = Ronin(30);
+            var row = loop.Skills.Equip(Gem("thin_cut"), role: SkillSlotRole.Left);
+            loop.State.ProgressOf(Gem("thin_cut")).Level = 5;
+            var window = new SkillWindowModel(loop);
+
+            window.Show(row);
+
+            Assert.That(window.TierCount, Is.EqualTo(3));
+            Assert.That(window.Tier(0).Open, Is.True);
+            Assert.That(window.Tier(1).Open, Is.False);
+            Assert.That(window.Tier(0).HasChoice, Is.False);
+            Assert.That(window.ExperienceToNext, Is.GreaterThan(0));
+            Assert.That(window.Choose(1, 0), Is.EqualTo(BranchResult.LevelTooLow));
+            Assert.That(BranchTexts.Result(BranchResult.LevelTooLow), Is.Not.Empty.And.Not.EqualTo("branch.result.levelTooLow"));
+            Assert.That(window.Choose(0, 1), Is.EqualTo(BranchResult.Done));
+            Assert.That(window.Tier(0).Chosen, Is.EqualTo(1));
+            Assert.That(BranchTexts.Cost(window.Tier(0).ChangeCost, default), Is.EqualTo("бесплатно"));
+            Assert.That(BranchTexts.Summary(new SkillBranch("x", "x", "x", 1.3, 0.75, 1, 1, null)), Is.EqualTo("урон ×1.3 · откат ×0.75"));
+        }
+
+        [Test]
+        public void TheSkillWindowOffersOnlySupportsThatFitAndMarksTheBusyOnes()
+        {
+            var loop = Ronin(5);
+            var first = loop.Skills.Equip(Gem("thin_cut"), role: SkillSlotRole.Left);
+            var second = loop.Skills.Equip(Gem("hundred_cuts"), role: SkillSlotRole.Right);
+            var window = new SkillWindowModel(loop);
+            window.Show(second);
+            Assert.That(loop.Book.SetSupport(first, 0, Gem("rebound")), Is.EqualTo(BookResult.Done));
+
+            window.Refresh();
+
+            Assert.That(window.Supports.All(s => s.Gem.CanSupport(Gem("hundred_cuts"))), Is.True);
+            Assert.That(window.Supports.Single(s => s.Gem == Gem("rebound")).Offer, Is.EqualTo(BookResult.AlreadyInBuild));
+            Assert.That(window.Supports.Single(s => s.Gem == Gem("executioner")).Offer, Is.EqualTo(BookResult.LevelTooLow));
+            Assert.That(window.Supports.Single(s => s.Gem == Gem("chain")).Available, Is.True);
+            Assert.That(window.MaxSockets, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void TreeTabsShowTheClassTreeCommonSlotsAndThePath()
+        {
+            var loop = Ronin(1);
+            var tabs = new List<TreeTab>();
+
+            TreeTabs.Fill(loop, tabs);
+
+            Assert.That(tabs.Select(t => t.Kind), Is.EqualTo(new[] { TreeTabKind.Class, TreeTabKind.Common, TreeTabKind.Common, TreeTabKind.Path }));
+            Assert.That(tabs[1].Open, Is.False);
+            Assert.That(TreeTabs.Locked(tabs[1]), Is.EqualTo("с 20-го уровня"));
+            Assert.That(TreeTabs.Locked(tabs[2]), Is.EqualTo("с 30-го уровня"));
+            Assert.That(TreeTabs.Title(tabs[0]), Is.EqualTo("Дерево класса"));
+        }
+
+        [Test]
+        public void AnAllysLoadoutReadsBackIntoNamedPlaces()
+        {
+            var loadout = new PartyLoadoutMessage();
+            loadout.Set(0, new LoadoutSkill { GemNetId = Gem("thin_cut").NetId, Level = 7, Combo = (byte)SkillBranches.Index(1, -1, -1) });
+            loadout.Set(5, new LoadoutSkill { GemNetId = Gem("cooks_apron").NetId, Level = 3, Combo = (byte)SkillBranches.Plain });
+            var places = new AllySkillPlace[SkillLoadout.MaxSlots];
+
+            AllyLoadoutView.Fill(loadout, TestWorld.Data.Gems, places);
+
+            Assert.That(places[0].Skill, Is.SameAs(Gem("thin_cut")));
+            Assert.That(places[0].Level, Is.EqualTo(7));
+            Assert.That(places[5].Role, Is.EqualTo(SkillSlotRole.Aura));
+            Assert.That(places[1].Empty, Is.True);
+            var secondOption = BranchTexts.Name(Gem("thin_cut").Branches[0].Options[1]);
+            Assert.That(AllyLoadoutView.Branches(places[0]), Is.EqualTo(secondOption + " · — · —"));
+        }
+    }
+}

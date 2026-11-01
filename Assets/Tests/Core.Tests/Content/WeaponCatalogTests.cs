@@ -13,10 +13,10 @@ namespace Game.Core.Tests.Content
         private static WeaponCatalog Catalog => TestWorld.Real.Weapons;
 
         [Test]
-        public void FourteenTypesOnePerCharacterAndFortyTwoBases()
+        public void EighteenTypesOnePerCharacterAndFiftyFourBases()
         {
-            Assert.That(Catalog.Types.Count, Is.EqualTo(14));
-            Assert.That(Catalog.Bases.Count, Is.EqualTo(42));
+            Assert.That(Catalog.Types.Count, Is.EqualTo(18));
+            Assert.That(Catalog.Bases.Count, Is.EqualTo(54));
             Assert.That(Catalog.Types.Select(type => type.HeroClass).Distinct().Count(), Is.EqualTo(HeroClassNames.ByName.Count));
         }
 

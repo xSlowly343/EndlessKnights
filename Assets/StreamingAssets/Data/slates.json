@@ -1270,6 +1270,94 @@
           }
         ]
       }
+    ],
+    "spinner": [
+      {
+        "id": "spinner_bonds",
+        "modifiers": [
+          {
+            "stat": "bondPower",
+            "kind": "flat",
+            "value": 0.04
+          }
+        ]
+      },
+      {
+        "id": "spinner_auras",
+        "modifiers": [
+          {
+            "stat": "damagePerAura",
+            "kind": "flat",
+            "value": 0.01
+          }
+        ]
+      }
+    ],
+    "rimecaller": [
+      {
+        "id": "rimecaller_cold",
+        "modifiers": [
+          {
+            "stat": "coldPower",
+            "kind": "flat",
+            "value": 0.04
+          }
+        ]
+      },
+      {
+        "id": "rimecaller_curse",
+        "modifiers": [
+          {
+            "stat": "enemyDebuffEffect",
+            "kind": "increased",
+            "value": 0.04
+          }
+        ]
+      }
+    ],
+    "thornmaiden": [
+      {
+        "id": "thornmaiden_blood",
+        "modifiers": [
+          {
+            "stat": "bloodPower",
+            "kind": "flat",
+            "value": 0.04
+          }
+        ]
+      },
+      {
+        "id": "thornmaiden_dot",
+        "modifiers": [
+          {
+            "stat": "dotDamage",
+            "kind": "increased",
+            "value": 0.06
+          }
+        ]
+      }
+    ],
+    "clayshaper": [
+      {
+        "id": "clayshaper_golem",
+        "modifiers": [
+          {
+            "stat": "golemPower",
+            "kind": "flat",
+            "value": 0.04
+          }
+        ]
+      },
+      {
+        "id": "clayshaper_minion",
+        "modifiers": [
+          {
+            "stat": "minionSeconds",
+            "kind": "increased",
+            "value": 0.06
+          }
+        ]
+      }
     ]
   }
 }

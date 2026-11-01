@@ -1,3 +1,4 @@
+using System.Linq;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Tree;
@@ -30,14 +31,17 @@ namespace Game.Core.Tests.Sim
         private static int Mark(string name) => TestWorld.Data.Synergy.MaskOf(new[] { name });
 
         [Test]
-        public void TheFourClassesAreKnownButNotYetOfferedToPlayers()
+        public void TheFourClassesAreOfferedToPlayersWithAWeaponAStartAndThreePaths()
         {
-            Assert.That(HeroClassNames.InDevelopment.Count, Is.EqualTo(4));
-            foreach (var pair in HeroClassNames.InDevelopment)
+            Assert.That(HeroClassNames.InDevelopment, Is.Empty);
+            foreach (var heroClass in new[] { HeroClass.Spinner, HeroClass.Rimecaller, HeroClass.Thornmaiden, HeroClass.Clayshaper })
             {
-                Assert.That(HeroClassNames.Of(pair.Value), Is.EqualTo(pair.Key));
-                Assert.That(HeroClassNames.ByName.ContainsKey(pair.Key), Is.False, pair.Key);
-                Assert.That(TestWorld.Data.ClassTreeOf(pair.Key), Is.Not.Null, pair.Key);
+                var name = HeroClassNames.Of(heroClass);
+                Assert.That(HeroClassNames.ByName[name], Is.EqualTo(heroClass));
+                Assert.That(TestWorld.Data.ClassTreeOf(name), Is.Not.Null, name);
+                Assert.That(TestWorld.Data.Weapons.Types.Count(type => type.HeroClass == heroClass), Is.EqualTo(1), name);
+                Assert.That(TestWorld.Data.Ascendancy.SubclassesOf(name).Count, Is.EqualTo(3), name);
+                Assert.That(TestWorld.Data.SkillBook.StartingGems(name), Is.Not.Empty, name);
             }
         }
 

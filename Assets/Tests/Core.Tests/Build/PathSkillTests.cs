@@ -35,7 +35,7 @@ namespace Game.Core.Tests.Build
                 Assert.That(TestWorld.Data.Weapons.TryGetType(gem.Skill!.Weapon!, out var weapon), Is.True, path.Id);
                 Assert.That(HeroClassNames.Of(weapon.HeroClass), Is.EqualTo(path.HeroClass), path.Id);
             }
-            Assert.That(Gems.All.Count(gem => gem.Ascendancy != null), Is.EqualTo(42));
+            Assert.That(Gems.All.Count(gem => gem.Ascendancy != null), Is.EqualTo(54));
         }
 
         [Test]

@@ -22,15 +22,15 @@ namespace Game.Core.Sim
             ["plague_doctor"] = HeroClass.PlagueDoctor,
             ["moonshiner"] = HeroClass.Moonshiner,
             ["gravedigger"] = HeroClass.Gravedigger,
-            ["captain"] = HeroClass.Captain
-        };
-
-        public static readonly IReadOnlyDictionary<string, HeroClass> InDevelopment = new Dictionary<string, HeroClass>(StringComparer.Ordinal)
-        {
+            ["captain"] = HeroClass.Captain,
             ["spinner"] = HeroClass.Spinner,
             ["rimecaller"] = HeroClass.Rimecaller,
             ["thornmaiden"] = HeroClass.Thornmaiden,
             ["clayshaper"] = HeroClass.Clayshaper
+        };
+
+        public static readonly IReadOnlyDictionary<string, HeroClass> InDevelopment = new Dictionary<string, HeroClass>(StringComparer.Ordinal)
+        {
         };
 
         private static readonly string[] Names = NamesByIndex();

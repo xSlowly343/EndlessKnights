@@ -55,7 +55,7 @@ namespace Game.Net.Nakama
                 marks.Add(mark.Text);
             var heroClass = (int)NakamaJson.Number(ghost, "heroClass");
             return new GhostSnapshot(NakamaJson.Text(ghost, "userId"), NakamaJson.Text(ghost, "name"),
-                heroClass >= 0 && heroClass <= (int)HeroClass.Captain ? (HeroClass)heroClass : HeroClass.Viking,
+                heroClass >= 0 && heroClass <= (int)HeroClass.Clayshaper ? (HeroClass)heroClass : HeroClass.Viking,
                 System.Math.Max(0, NakamaJson.Number(ghost, "shareRate")), synergy.MaskOf(marks), System.Math.Max(0, System.Math.Min(1, NakamaJson.Number(ghost, "activity"))));
         }
 

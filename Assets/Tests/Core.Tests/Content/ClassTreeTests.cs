@@ -142,7 +142,6 @@ namespace Game.Core.Tests.Content
             Assert.That(Assert.Throws<ContentException>(() => TreeTemplates.Load(Templates.Replace("\"rows\": [0, 3]", "\"rows\": [2, 3]")))!.Message, Does.Contain("threshold is 0"));
         }
 
-        private static readonly string[] NewClasses = { "spinner", "rimecaller", "thornmaiden", "clayshaper" };
 
         [Test]
         public void EveryClassHasATreeFileWithTwentyPassivesAndTwelveMajorTalents()
@@ -153,7 +152,7 @@ namespace Game.Core.Tests.Content
                 .Select(field => ((StatId)field.GetValue(null)!).Name)
                 .Concat(new[] { "classAttribute" })
                 .ToHashSet();
-            var classes = Game.Core.Sim.HeroClassNames.ByName.Keys.Concat(NewClasses).ToList();
+            var classes = Game.Core.Sim.HeroClassNames.ByName.Keys.ToList();
 
             Assert.That(classes.Count, Is.EqualTo(18));
             foreach (var heroClass in classes)

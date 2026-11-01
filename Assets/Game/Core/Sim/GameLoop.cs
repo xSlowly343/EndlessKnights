@@ -420,7 +420,7 @@ namespace Game.Core.Sim
                 : SkillBranches.NoChoice;
             if (chosen == SkillBranches.NoChoice || ClassTreeResetFree || ClassTreeDef is not { } tree)
                 return BigNumber.Zero;
-            return tree.Respec.NodeCost(tier + 1, State.HeroLevel, false);
+            return tree.Respec.NodeCost(tier + 1, State.HeroLevel, false) * BigNumber.FromDouble(System.Math.Max(0, Hero.Value(CombatStats.BranchChangeCost, 1)));
         }
 
         public BranchResult ChooseBranch(GemDef skill, int tier, int option)
