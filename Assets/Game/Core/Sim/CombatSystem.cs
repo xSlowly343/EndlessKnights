@@ -79,7 +79,6 @@ namespace Game.Core.Sim
         public DotRules Dots => _rules.Dots;
         public MinionRules Skeletons => _rules.Skeletons;
         public MinionRules Beasts => _rules.Beasts;
-        public BannerRules Banner => _rules.Banner;
         public ClassRules Classes => _rules.Classes;
         public PathRules Paths => _rules.Paths;
         public bool LastHitCrit { get; private set; }

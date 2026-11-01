@@ -55,8 +55,6 @@ namespace Game.Core.Sim
             _state.MouseWindow.Record(input.MousePx);
             _state.ClicklessTicks = input.ButtonPresses > 0 ? 0 : _state.ClicklessTicks + 1;
             _state.Reading = Reading(resource, input);
-            if (_state.AllyHitStatTicks > 0)
-                _state.AllyHitStatTicks--;
             if (resource.Inverse)
             {
                 TickInverse(resource, input);
@@ -111,18 +109,6 @@ namespace Game.Core.Sim
             _state.Resource = System.Math.Min(Max, _state.Resource + amount);
             if (!Current.Inverse)
                 GainedThisTick += System.Math.Max(0, _state.Resource - before);
-        }
-
-        public void NoteAllyHits(int hits)
-        {
-            if (hits <= 0 || Current.Inverse)
-                return;
-            _state.PendingResource += hits * Current.PerAllyHit * _hero.Value(CombatStats.ResourceGain, 1);
-            var perHit = _hero.Value(CombatStats.OmenPerAllyHit, 0);
-            if (perHit <= 0 || _state.AllyHitStatTicks > 0)
-                return;
-            _state.PendingResource += perHit;
-            _state.AllyHitStatTicks = (int)System.Math.Round(_rules.AllyHitStatSeconds * GameLoop.TicksPerSecond);
         }
 
         public void GiftFromAlly(double amount)

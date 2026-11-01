@@ -52,8 +52,6 @@ namespace Game.Core.Sim
         private readonly WeaponSystem _weapons;
         private readonly DropSystem _drops;
         private readonly OverloadSystem _overload;
-        private readonly BannerSystem _banner;
-        private readonly StandingAuraSystem _standingAuras;
         private readonly ClassFeatureSystem _features;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -125,8 +123,6 @@ namespace Game.Core.Sim
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades, hero);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
-            _banner = new BannerSystem(state, hero, _combat, _skills);
-            _standingAuras = new StandingAuraSystem(state, hero, _combat, _skills);
             _features = new ClassFeatureSystem(state, hero, _combat, _resource, _skills);
             _paths = new PathSystem(state, hero, _combat, _resource, _skills);
             _skills.Levels = data.Gems.Levels;
@@ -790,8 +786,6 @@ namespace Game.Core.Sim
             _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
             _features.Tick();
-            _banner.Tick(input);
-            _standingAuras.Tick();
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
             CastRequested();
