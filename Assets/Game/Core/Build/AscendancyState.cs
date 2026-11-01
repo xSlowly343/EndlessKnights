@@ -11,11 +11,39 @@ namespace Game.Core.Build
 
         private readonly HashSet<string> _allocated = new HashSet<string>(StringComparer.Ordinal);
         private readonly HashSet<string> _activities = new HashSet<string>(ActivityCapacity, StringComparer.Ordinal);
+        private readonly HashSet<string> _forkPicks = new HashSet<string>(StringComparer.Ordinal);
 
         public string? Subclass { get; private set; }
         public long LastFreeChangeUnixMs { get; set; }
         public IReadOnlyCollection<string> Allocated => _allocated;
         public IReadOnlyCollection<string> CompletedActivities => _activities;
+        public IReadOnlyCollection<string> ForkPicks => _forkPicks;
+
+        public TraitDef? Trait(AscendancyCatalog catalog) =>
+            Subclass != null && catalog.TryGet(Subclass, out var subclass) ? subclass.Trait : null;
+
+        public int TraitLevel(AscendancyCatalog catalog) =>
+            Trait(catalog) == null ? 0 : System.Math.Min(TraitDef.MaxLevel, PointsEarned(catalog));
+
+        public bool Picked(string optionId) => _forkPicks.Contains(optionId);
+
+        public TraitForkResult PickFork(AscendancyCatalog catalog, int heroLevel, string optionId)
+        {
+            var trait = Trait(catalog);
+            if (trait == null)
+                return TraitForkResult.NoTrait;
+            if (!trait.TryFind(optionId, out var fork, out _))
+                return TraitForkResult.UnknownOption;
+            if (heroLevel < fork.HeroLevel)
+                return TraitForkResult.HeroLevelTooLow;
+            foreach (var choice in fork.Choices)
+            {
+                if (_forkPicks.Contains(choice.Id))
+                    return TraitForkResult.AlreadyPicked;
+            }
+            _forkPicks.Add(optionId);
+            return TraitForkResult.Picked;
+        }
 
         public int PointsEarned(AscendancyCatalog catalog)
         {
@@ -67,6 +95,7 @@ namespace Game.Core.Build
         {
             Subclass = null;
             _allocated.Clear();
+            _forkPicks.Clear();
         }
 
         public AllocationResult Allocate(AscendancyCatalog catalog, string nodeId)
@@ -141,6 +170,8 @@ namespace Game.Core.Build
             if (Subclass == null || !catalog.TryGet(Subclass, out var subclass))
                 return modifiers;
             modifiers.AddRange(subclass.Start.Modifiers);
+            if (subclass.Trait is { } trait)
+                AddTrait(trait, TraitLevel(catalog), modifiers);
             foreach (var id in _allocated)
             {
                 if (subclass.TryGet(id, out var node))
@@ -149,12 +180,18 @@ namespace Game.Core.Build
             return modifiers;
         }
 
-        public void Restore(string? subclass, IEnumerable<string> allocated, IEnumerable<string> activities)
+        public void Restore(string? subclass, IEnumerable<string> allocated, IEnumerable<string> activities, IEnumerable<string>? forkPicks = null)
         {
             Subclass = subclass;
             _allocated.Clear();
             foreach (var id in allocated)
                 _allocated.Add(id);
+            _forkPicks.Clear();
+            if (forkPicks != null)
+            {
+                foreach (var id in forkPicks)
+                    _forkPicks.Add(id);
+            }
             _activities.Clear();
             foreach (var id in activities)
                 _activities.Add(id);
@@ -167,7 +204,23 @@ namespace Game.Core.Build
                 return check;
             Subclass = subclassId;
             _allocated.Clear();
+            _forkPicks.Clear();
             return SubclassResult.Chosen;
+        }
+
+        private void AddTrait(TraitDef trait, int level, List<Modifier> modifiers)
+        {
+            for (var i = 0; i < level; i++)
+                modifiers.AddRange(trait.Levels[i]);
+            modifiers.AddRange(trait.Party);
+            foreach (var fork in trait.Forks)
+            {
+                foreach (var choice in fork.Choices)
+                {
+                    if (_forkPicks.Contains(choice.Id))
+                        modifiers.AddRange(choice.Modifiers);
+                }
+            }
         }
 
         private SubclassResult CheckSubclass(AscendancyCatalog catalog, string heroClass, string subclassId)

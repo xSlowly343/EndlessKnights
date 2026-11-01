@@ -2,6 +2,8 @@
 
 Формат: `- [ ] <ID задачи из roadmap> — описание`.
 
+- [ ] 14д.4 [R] — окно особенности в Unity: 5 уровней, вклад отряду и развилки 45/60/75 с выбором одной из двух (`GameLoop.PickTraitFork`, `AscendancyState.Trait/TraitLevel/Picked`). Сейчас окно Пути показывает мини-дерево; у Пути с `trait` его не будет. Бот развилки не выбирает.
+- [ ] 14д.5 — у новых Путей `nodes` не нужны, но загрузчик пока требует стартовый узел: разрешить Путь только с `trait` или давать пустой старт.
 - [ ] 14д.5 — каждая аура держит резерв ресурса (решение Сергея 01.11.2026): у новых аур `reserve` обязателен, загрузчик должен падать без него. Сейчас у 72 из 98 старых аур (песни на время) резерва нет, поэтому правило введено не в 14д.3, а вместе с новыми аурами.
 - [ ] 14д.3 [R] — в Unity проверить полоску: 8 мест вместо 9 (ЛКМ, ПКМ, 2 авто, 4 ауры), первая аура открыта с 1 уровня. В облаке Unity нет.
 - [ ] 14д.5 — после 14д.2 в данных и коде остались мёртвые механики жестов: скиллы `space_hammer`, `step_back`, `double_grip`, `dash`, `lasso`, `pendulum_strike`, `blade_whirl`, `lightning_zigzag` (и круговая часть `hurricane`), поддержки `whirlpool` и `sweeping` (они же в `rift.json` и серверном расписании Разлома), эффект `specialKeys`, поля `flick`/`reversal`/`circle` у `inputHits`, `armOn`, статы `resourcePerFlick`, `resourcePerCircle`, `flickCurseBonus`, `burnOnFlick`, `circleLightning`, `flickStreak`, условия `afterCircle`/`afterFlick`, `CurseRules.Flick*`, поля слота `CircleProgress`, `FlickTargets`, `CirclesSinceCast`, `CooldownCircles`, `Primed`. Бот (`BotProfile`) всё ещё «крутит круги и делает взмахи», бою это ничего не даёт. Убрать вместе со старым составом.
