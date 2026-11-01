@@ -76,7 +76,7 @@ namespace Game.Core.Tests.Content
             foreach (var tree in data.ClassTrees.Values.Concat(data.CommonTrees.Values))
             {
                 foreach (var option in tree.Majors.SelectMany(slot => slot.Options))
-                    Assert.That(option.Modifiers.Select(modifier => modifier.Stat.Name), Has.None.AnyOf(avoid.ToArray()), option.Id);
+                    Assert.That(option.Modifiers.Select(modifier => modifier.Stat.Name).Intersect(avoid), Is.Empty, option.Id);
             }
         }
 

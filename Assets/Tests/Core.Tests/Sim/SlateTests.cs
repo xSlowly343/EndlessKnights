@@ -245,7 +245,7 @@ namespace Game.Core.Tests.Sim
             }
 
             Assert.That(loop.State.Drops.Shards, Is.Zero);
-            Assert.That(outcomes, Does.Contain(SlateResult.Done).And.Contain(SlateResult.TemperFailed));
+            Assert.That(outcomes, Has.Member(SlateResult.Done).And.Member(SlateResult.TemperFailed));
             Assert.That(loop.Slates.Temper(Give(loop, "pebble", "keys")), Is.EqualTo(SlateResult.NotEnoughShards));
         }
 
