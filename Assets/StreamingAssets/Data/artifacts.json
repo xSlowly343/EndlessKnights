@@ -106,7 +106,7 @@
     {"id": "warden_mirror", "name": {"ru": "Зеркало стража", "en": "Warden's Mirror"}, "group": 4, "type": "tempo", "perLevel": [{"stat": "guardianHp", "kind": "increased", "value": -0.01}]},
     {"id": "ancient_treasury", "name": {"ru": "Казна древних", "en": "Ancient Treasury"}, "group": 4, "type": "meta", "perLevel": [], "boost": {"types": ["economy"], "value": 0.02}},
     {"id": "star_dust", "name": {"ru": "Звёздная пыль", "en": "Star Dust"}, "group": 4, "type": "meta", "perLevel": [], "perArtifact": [{"stat": "damage", "kind": "increased", "value": 0.001}]},
-    {"id": "clockwork", "name": {"ru": "Механизм часовщика", "en": "Clockwork"}, "group": 4, "type": "late", "perLevel": []},
+    {"id": "clockwork", "name": {"ru": "Механизм часовщика", "en": "Clockwork"}, "group": 4, "type": "late", "maxLevel": 25, "perLevel": [{"stat": "branchChangeCost", "kind": "increased", "value": -0.03}]},
     {"id": "tri_prism", "name": {"ru": "Трёхцветная призма", "en": "Tricolor Prism"}, "group": 4, "type": "late", "perLevel": []},
     {"id": "bonds", "name": {"ru": "Узы четырёх", "en": "Bonds of Four"}, "group": 4, "type": "late", "perLevel": []},
     {"id": "jewel_facet", "name": {"ru": "Грань скрижали", "en": "Slate Facet"}, "group": 4, "type": "late", "perLevel": [{"stat": "slateEffect", "kind": "increased", "value": 0.03}]},
