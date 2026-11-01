@@ -6,7 +6,7 @@ namespace Game.Core.Sim
     public static class SkillLoadout
     {
         public const int HandSlots = 2;
-        public const int AutoSlots = 3;
+        public const int AutoSlots = 2;
         public const int AuraSlots = 4;
         public const int MaxSlots = HandSlots + AutoSlots + AuraSlots;
         public const int NoSlot = -1;

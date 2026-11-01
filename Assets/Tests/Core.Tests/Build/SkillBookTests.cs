@@ -27,11 +27,11 @@ namespace Game.Core.Tests.Build
             var loop = TestWorld.Loop();
 
             Assert.That(loop.Book.SlotCount, Is.EqualTo(3));
-            Assert.That(TestWorld.Data.SkillBook.MaxSlots, Is.EqualTo(5));
+            Assert.That(TestWorld.Data.SkillBook.MaxSlots, Is.EqualTo(4));
         }
 
         [Test]
-        public void FourthAndFifthSlotsOpenAfterGuardiansOfStageHundredAndTwoHundred()
+        public void TheFourthSlotOpensAfterTheGuardianOfStageHundred()
         {
             var loop = TestWorld.Loop();
 
@@ -39,10 +39,8 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.Book.SlotCount, Is.EqualTo(3));
             loop.State.RecordStage = 101;
             Assert.That(loop.Book.SlotCount, Is.EqualTo(4));
-            loop.State.RecordStage = 201;
-            Assert.That(loop.Book.SlotCount, Is.EqualTo(5));
             loop.State.RecordStage = 100000;
-            Assert.That(loop.Book.SlotCount, Is.EqualTo(5));
+            Assert.That(loop.Book.SlotCount, Is.EqualTo(4));
         }
 
         [Test]

@@ -123,7 +123,7 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.Book.UnlockStageOf(0), Is.EqualTo(0));
             Assert.That(loop.Book.UnlockStageOf(3), Is.EqualTo(100));
-            Assert.That(loop.Book.UnlockStageOf(4), Is.EqualTo(200));
+            Assert.That(loop.Book.UnlockStageOf(4), Is.EqualTo(0));
         }
     }
 }

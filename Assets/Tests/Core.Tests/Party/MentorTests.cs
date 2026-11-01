@@ -87,15 +87,13 @@ namespace Game.Core.Tests.Party
             var loop = TestWorld.Loop(new FakeInputSource());
             var book = TestWorld.Data.SkillBook;
             Assert.That(loop.Book.SlotCount, Is.EqualTo(book.BaseSlots));
-            var later = loop.Book.UnlockStageOf(book.BaseSlots + 1);
+            Assert.That(loop.Book.UnlockStageOf(book.BaseSlots), Is.GreaterThan(0));
 
             loop.Mentor.UsePerks(new[] { "graduate_frame", MentorRules.EarlyBookSlotPerk }, 0);
 
             Assert.That(loop.State.EarlyBookSlot, Is.True);
             Assert.That(loop.Book.SlotCount, Is.EqualTo(book.BaseSlots + 1));
             Assert.That(loop.Book.UnlockStageOf(book.BaseSlots), Is.Zero, "the early slot is open");
-            Assert.That(loop.Book.UnlockStageOf(book.BaseSlots + 1), Is.EqualTo(TestWorld.Data.SkillBook.UnlockStageOf(book.BaseSlots)), "the next slot opens one milestone earlier");
-            Assert.That(later, Is.GreaterThan(loop.Book.UnlockStageOf(book.BaseSlots + 1)));
             loop.State.RecordStage = 100_000;
             Assert.That(loop.Book.SlotCount, Is.EqualTo(book.MaxSlots), "the perk never gives more than all the slots");
         }

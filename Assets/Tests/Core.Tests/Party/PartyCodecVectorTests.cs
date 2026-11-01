@@ -84,7 +84,7 @@ namespace Game.Core.Tests.Party
             var offer = new PartyOfferMessage { Slot = 0 };
             offer.SetStat(0, 0.3);
             offer.SetAura(0, new OfferedAura { GemNetId = 5, Strength = 1.5f, TicksLeft = 200 });
-            offer.SetAura(8, new OfferedAura { GemNetId = 7, Strength = 0.5f, TicksLeft = 350 });
+            offer.SetAura(7, new OfferedAura { GemNetId = 7, Strength = 0.5f, TicksLeft = 350 });
             var relayed = offer;
             relayed.Slot = 2;
             builder.Append("    \"offerRelay\": { \"slot\": 2, \"auraTicks\": 350, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, offer)))

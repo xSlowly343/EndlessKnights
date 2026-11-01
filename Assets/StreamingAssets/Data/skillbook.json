@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "slots": { "base": 3, "unlockAfterStages": [100, 200] },
-  "auraSlots": { "unlockLevels": [10, 25, 40, 55] },
+  "slots": { "base": 3, "unlockAfterStages": [100] },
+  "auraSlots": { "unlockLevels": [1, 25, 50, 75] },
   "sockets": { "base": 1, "recordStages": [50, 250], "rebirths": 2, "max": 5 },
   "startingGems": {
     "novice": ["through_stride", "lull"],
