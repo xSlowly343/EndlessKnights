@@ -48,7 +48,7 @@ namespace Game.Core.Tests.Sim.Weapons
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.NoWeapon));
             Assert.That(loop.State.Skills[0].Ready, Is.True);
             Assert.That(loop.State.Resource, Is.EqualTo(100));
-            Assert.That(loop.Weapons.Bag[0].Id, Is.EqualTo("woodcutter_axe"));
+            Assert.That(loop.Weapons.Bag[0].Id, Is.EqualTo("apprentice_daggers"));
 
             loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Bag[0]);
             Assert.That(loop.Skills.Armed(0), Is.True);
@@ -84,7 +84,7 @@ namespace Game.Core.Tests.Sim.Weapons
             Assert.That(loop.Weapons.Equip(WeaponHand.Left, guitar), Is.True);
 
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
-            Assert.That(loop.Weapons.In(WeaponHand.Right)!.Type.Id, Is.EqualTo("axe"));
+            Assert.That(loop.Weapons.In(WeaponHand.Right)!.Type.Id, Is.EqualTo("rune_daggers"));
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace Game.Core.Tests.Sim.Weapons
             var bare = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
             var axe = loop.Weapons.Bag[0];
             loop.Weapons.Equip(WeaponHand.Right, axe);
-            var second = loop.Weapons.Give(Base("battle_axe"));
+            var second = loop.Weapons.Give(Base("twin_daggers"));
             loop.Weapons.Equip(WeaponHand.Left, second);
 
             Assert.That(keyDamage - bare, Is.EqualTo(10).Within(1e-9));
@@ -118,14 +118,14 @@ namespace Game.Core.Tests.Sim.Weapons
         public void LateBaseAddsItsSecondLine()
         {
             var loop = Hero(HeroClass.Runedancer);
-            var rage = new StatId("rageEveryTwentyHits");
-            Assert.That(loop.Hero.Value(rage, 0), Is.EqualTo(0));
-            var greataxe = loop.Weapons.Give(Base("jarl_axe"));
+            var word = RunedancerStats.RuneWord;
+            Assert.That(loop.Hero.Value(word, 0), Is.EqualTo(0));
+            var quills = loop.Weapons.Give(Base("colossus_quills"));
 
-            loop.Weapons.Equip(WeaponHand.Right, greataxe);
+            loop.Weapons.Equip(WeaponHand.Right, quills);
 
-            Assert.That(loop.Hero.Value(rage, 0), Is.EqualTo(1).Within(1e-9));
-            Assert.That(loop.Weapons.Bag[0].Id, Is.EqualTo("woodcutter_axe"));
+            Assert.That(loop.Hero.Value(word, 0), Is.EqualTo(1).Within(1e-9));
+            Assert.That(loop.Weapons.Bag[0].Id, Is.EqualTo("apprentice_daggers"));
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace Game.Core.Tests.Sim.Weapons
         {
             var loop = Hero(HeroClass.Runedancer);
 
-            Assert.That(loop.Weapons.Equip(WeaponHand.Left, Catalog.Starter(Base("battle_axe"))), Is.False);
+            Assert.That(loop.Weapons.Equip(WeaponHand.Left, Catalog.Starter(Base("twin_daggers"))), Is.False);
             Assert.That(loop.Weapons.Unequip(WeaponHand.Left), Is.False);
         }
 
@@ -142,7 +142,7 @@ namespace Game.Core.Tests.Sim.Weapons
         {
             var loop = Hero(HeroClass.Runedancer);
             var guitar = loop.Weapons.Give(Base("spark_guitar"));
-            loop.Weapons.Give(Base("jarl_axe"));
+            loop.Weapons.Give(Base("colossus_quills"));
             loop.Weapons.Equip(WeaponHand.Left, guitar);
 
             var text = SaveCodec.Encode(loop.State, Clock);
@@ -150,9 +150,9 @@ namespace Game.Core.Tests.Sim.Weapons
             var reloaded = new GameLoop(TestWorld.Real, new FakeInputSource(), restored, new StatSheet());
 
             Assert.That(SaveCodec.Encode(restored, Clock), Is.EqualTo(text));
-            Assert.That(reloaded.Weapons.In(WeaponHand.Right)!.Id, Is.EqualTo("woodcutter_axe"));
+            Assert.That(reloaded.Weapons.In(WeaponHand.Right)!.Id, Is.EqualTo("apprentice_daggers"));
             Assert.That(reloaded.Weapons.In(WeaponHand.Left)!.Id, Is.EqualTo("spark_guitar"));
-            Assert.That(reloaded.Weapons.Bag[0].Id, Is.EqualTo("jarl_axe"));
+            Assert.That(reloaded.Weapons.Bag[0].Id, Is.EqualTo("colossus_quills"));
         }
 
         [Test]

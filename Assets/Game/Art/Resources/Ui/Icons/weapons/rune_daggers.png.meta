@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 6674386295937086461
-    second: axe_0
+    second: rune_daggers_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: axe_0
+      name: rune_daggers_0
       rect:
         serializedVersion: 2
         x: 5

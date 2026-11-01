@@ -51,7 +51,7 @@
     { "group": "slots", "id": "amulet", "source": "lorc/gem-pendant" },
     { "group": "slots", "id": "ring", "source": "delapouite/ring" },
 
-    { "group": "weapons", "id": "axe", "source": "lorc/battle-axe", "attribute": "red" },
+    { "group": "weapons", "id": "rune_daggers", "source": "lorc/plain-dagger", "attribute": "red" },
     { "group": "weapons", "id": "katana", "source": "delapouite/katana", "attribute": "red" },
     { "group": "weapons", "id": "short_bow", "source": "delapouite/bow-arrow", "attribute": "green" },
     { "group": "weapons", "id": "storm_wand", "source": "lorc/wizard-staff", "attribute": "green" },

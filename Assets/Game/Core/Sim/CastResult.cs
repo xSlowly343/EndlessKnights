@@ -8,6 +8,7 @@ namespace Game.Core.Sim
         OnCooldown,
         NotEnoughResource,
         NoWeapon,
-        TrialForbids
+        TrialForbids,
+        TraitCastsIt
     }
 }

@@ -277,7 +277,7 @@ namespace Game.Core.Tests.Sim
             var weapon = Defeat(loop, 20, 20).Single(item => item.Source == DropSource.Guarantee).Weapon!;
 
             Assert.That(weapon.Rarity, Is.EqualTo(ItemRarity.Uncommon));
-            Assert.That(weapon.Type.Id, Is.Not.EqualTo("axe"));
+            Assert.That(weapon.Type.Id, Is.Not.EqualTo("rune_daggers"));
             Assert.That(weapon.Type.Color, Is.EqualTo("red"));
             Assert.That(weapon.Skills, Is.Not.Empty);
             Assert.That(loop.State.Weapons.Bag, Does.Contain(weapon));
@@ -291,7 +291,7 @@ namespace Game.Core.Tests.Sim
 
             var item = Defeat(loop, BiomeLength, BiomeLength, EnemyType.Guardian).Single(drop => drop.Source == DropSource.Guarantee);
 
-            Assert.That(item.Weapon!.Type.Id, Is.EqualTo("axe"));
+            Assert.That(item.Weapon!.Type.Id, Is.EqualTo("rune_daggers"));
             Assert.That(item.Rarity, Is.EqualTo(ItemRarity.Rare));
         }
 
@@ -321,7 +321,7 @@ namespace Game.Core.Tests.Sim
                 foreach (var item in Defeat(loop, 7, 7).Where(item => item.Weapon != null))
                 {
                     weapons++;
-                    if (item.Weapon!.Type.Id == "axe")
+                    if (item.Weapon!.Type.Id == "rune_daggers")
                         own++;
                 }
             }

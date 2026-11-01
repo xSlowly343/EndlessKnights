@@ -19,7 +19,7 @@
     "allyHitStatSeconds": 2,
     "default": { "perKey": 1, "mousePxPerPoint": 1500 },
     "classes": {
-      "runedancer": { "perKey": 2, "decay": { "perSecond": 10, "afterKeylessSeconds": 3, "mouseHolds": true } },
+      "runedancer": { "perKey": 2, "decay": { "perSecond": 10, "afterKeylessSeconds": 10, "mouseHolds": true } },
       "minstrel": { "perKey": 1 },
       "whisperer": { "perKey": 0.2, "perSecond": 3 },
       "clockwright": { "perKey": 0.1, "mousePxPerPoint": 1000, "perFastKillSecond": 5 },
@@ -46,7 +46,11 @@
     "lanternbearer": { "standingAuras": { "count": 2, "pauseSeconds": 1 } },
     "sandwalker": { "sand": { "every": 10, "everyMin": 4, "seconds": 4 } },
     "windshot": { "mark": { "every": 20, "everyMin": 5, "seconds": 8, "keyDamage": 0.2 } },
-    "runedancer": { "shield": { "every": 15, "everyMin": 5, "multiplier": 2, "stunSeconds": 2 } },
+    "runedancer": {
+      "runes": { "wordLength": 5, "wordLengthMin": 2, "fadeSeconds": 10, "sealSeconds": 4, "sealDamage": 0.12, "weaveSeconds": 6, "shadowAfterSeconds": 1, "shadowHitsPerSecond": 3 },
+      "blades": { "every": 3, "max": 12, "partyCritPerBlade": 0.003, "fallSeconds": 1, "shardMultiplier": 2 },
+      "whirl": { "max": 8, "palmMax": 5, "hitsPerSecond": 1, "partyDamagePerBlade": 0.004, "gustSeconds": 2, "eyeMultiplier": 2 }
+    },
     "duelist": { "combo": { "timeoutSeconds": 1.5, "strikeEvery": 50, "strikeEveryMin": 10, "strikeMultiplier": 3, "strikeTargets": 1, "breathEvery": 25, "whirlResource": 20 } },
     "minstrel": { "headbang": { "pxPerSecond": 2000, "maxSeconds": 30 }, "overdrive": { "seconds": 8, "songs": 0.5 } },
     "clockwright": { "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 } },

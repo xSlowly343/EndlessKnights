@@ -39,15 +39,15 @@ namespace Game.Core.Tests.Content
         {
             var starter = Catalog.StarterFor(HeroClass.Runedancer);
 
-            Assert.That(starter.Id, Is.EqualTo("woodcutter_axe"));
-            Assert.That(starter.Type.Id, Is.EqualTo("axe"));
+            Assert.That(starter.Id, Is.EqualTo("apprentice_daggers"));
+            Assert.That(starter.Type.Id, Is.EqualTo("rune_daggers"));
             Assert.That(Catalog.StarterFor(HeroClass.Ghostcaptain).Id, Is.EqualTo("flintlock_pistol"));
         }
 
         [Test]
         public void StartingClassSkillsNeedTheirWeapon()
         {
-            Assert.That(TestWorld.Real.Gems["runedancer_hit_1"].Skill!.Weapon, Is.EqualTo("axe"));
+            Assert.That(TestWorld.Real.Gems["runedancer_hit_1"].Skill!.Weapon, Is.EqualTo("rune_daggers"));
             Assert.That(TestWorld.Real.Gems["minstrel_aura_1"].Skill!.Weapon, Is.EqualTo("electric_guitar"));
             Assert.That(TestWorld.Real.Gems["whisperer_hit_1"].Skill!.Weapon, Is.EqualTo("whisperer_doll"));
             Assert.That(TestWorld.Real.Gems["through_stride"].Skill!.Weapon, Is.Null);
@@ -56,7 +56,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void UnknownGemWeaponIsRejected()
         {
-            var gems = GemCatalog.Load(TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"weapon\": \"axe\"", "\"weapon\": \"axee\""));
+            var gems = GemCatalog.Load(TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"weapon\": \"rune_daggers\"", "\"weapon\": \"axee\""));
 
             var error = Assert.Throws<ContentException>(() => Catalog.BindGems(gems))!;
 

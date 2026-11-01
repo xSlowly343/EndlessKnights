@@ -15,220 +15,70 @@
     {
       "id": "runedancer_trait_1",
       "class": "runedancer",
-      "name": {"ru": "Танец рун", "en": "Танец рун"},
-      "blurb": "Каждый удар выжигает на враге следующую руну из пяти: Пламя, Иней, Гром, Тень, Свет. Пять разных подряд складываются в Слово: вспышка ×10 удара. Скилл Пути «Написать Слово» дописывает недостающие руны",
+      "name": {"ru": "Танец рун", "en": "Rune Dance"},
+      "blurb": "Каждый удар выжигает на враге следующую руну из пяти: Пламя, Иней, Гром, Тень, Свет. Пять рун складываются в Слово: вспышка ×10 удара. В паузе руны тлеют 10 с. Скилл Пути «Написать Слово» дописывает недостающие руны",
       "trait": {
-        "partyText": {"ru": "Слово оставляет на враге печать: отряд +12% урона 4 с", "en": "Слово оставляет на враге печать: отряд +12% урона 4 с"},
+        "partyText": {"ru": "Слово оставляет на враге печать: отряд +12% урона 4 с", "en": "A Word leaves a seal on the enemy: the party deals +12% damage for 4 s"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "runeWord", "kind": "flat", "value": 10}]},
+          {"modifiers": [{"stat": "runeWord", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "runeWord", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "runeWord", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "runeDouble", "kind": "flat", "value": 5}], "text": {"ru": "Росчерк: после Слова следующие 5 ударов кладут по две руны", "en": "Flourish: after a Word the next 5 hits lay two runes each"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "runedancer_trait_1_f45a",
-                "name": {"ru": "Длинное слово", "en": "Длинное слово"},
-                "text": {"ru": "Длинное слово: 7 рун, ×18", "en": "Длинное слово: 7 рун, ×18"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "runedancer_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "runedancer_trait_1_f60a",
-                "name": {"ru": "Рифма", "en": "Рифма"},
-                "text": {"ru": "Рифма: Слово повторяется на следующем враге", "en": "Рифма: Слово повторяется на следующем враге"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "runedancer_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "runedancer_trait_1_f75a",
-                "name": {"ru": "Имя руны", "en": "Имя руны"},
-                "text": {"ru": "Имя руны: руна, стоящая первой, вдвое сильнее", "en": "Имя руны: руна, стоящая первой, вдвое сильнее"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "runedancer_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "runedancer_trait_1_f45a", "name": {"ru": "Длинное слово", "en": "Long Word"}, "text": {"ru": "Слово из 7 рун и в 1,8 раза сильнее, но в паузе руны гаснут через 5 с, а не через 10", "en": "A Word takes 7 runes and is 1.8 times stronger, but runes fade after 5 s of pause instead of 10"}, "modifiers": [{"stat": "runeWordLength", "kind": "flat", "value": 2}, {"stat": "runeWord", "kind": "more", "value": 0.8}, {"stat": "runeFadeSeconds", "kind": "flat", "value": -5}]}, {"id": "runedancer_trait_1_f45b", "name": {"ru": "Скоропись", "en": "Shorthand"}, "text": {"ru": "Каждый скилл тоже кладёт руну, но Слово ×0,8", "en": "Every skill also lays a rune, but a Word deals ×0.8"}, "modifiers": [{"stat": "runeOnCast", "kind": "flat", "value": 1}, {"stat": "runeWord", "kind": "more", "value": -0.2}]}]},
+          {"level": 60, "options": [{"id": "runedancer_trait_1_f60a", "name": {"ru": "Рифма", "en": "Rhyme"}, "text": {"ru": "Слово целиком повторяется на следующем враге очереди, но печать держится 2 с, а не 4", "en": "A Word repeats in full on the next enemy in the queue, but the seal lasts 2 s instead of 4"}, "modifiers": [{"stat": "runeRhyme", "kind": "flat", "value": 1}, {"stat": "runeSealSeconds", "kind": "flat", "value": -2}]}, {"id": "runedancer_trait_1_f60b", "name": {"ru": "Вязь", "en": "Weave"}, "text": {"ru": "Слово не бьёт, а оплетает врага вязью: отряд +40% урона 6 с", "en": "A Word deals no damage and weaves the enemy instead: the party deals +40% damage for 6 s"}, "modifiers": [{"stat": "runeWeave", "kind": "flat", "value": 0.4}]}]},
+          {"level": 75, "options": [{"id": "runedancer_trait_1_f75a", "name": {"ru": "Имя руны", "en": "True Name"}, "text": {"ru": "Удар, который кладёт первую руну Слова, ×3, но Слову нужна ещё одна руна", "en": "The hit that lays the first rune of a Word deals ×3, but a Word needs one more rune"}, "modifiers": [{"stat": "runeFirstRune", "kind": "flat", "value": 2}, {"stat": "runeWordLength", "kind": "flat", "value": 1}]}, {"id": "runedancer_trait_1_f75b", "name": {"ru": "Немое письмо", "en": "Silent Script"}, "text": {"ru": "Удары сами не ранят, зато Слово ×4 и сразу перезаряжает скилл ПКМ", "en": "Hits deal no damage themselves, but a Word deals ×4 and resets the right-click skill"}, "modifiers": [{"stat": "runeSilent", "kind": "flat", "value": 1}, {"stat": "runeWord", "kind": "more", "value": 3}]}]}
         ]
       },
-      "nodes": [{"id": "runedancer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Танец рун", "en": "Танец рун"}, "modifiers": []}],
+      "nodes": [{"id": "runedancer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Танец рун", "en": "Rune Dance"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "runedancer_trait_2",
       "class": "runedancer",
-      "name": {"ru": "Зеркальные клинки", "en": "Зеркальные клинки"},
-      "blurb": "Каждый 3-й удар вызывает призрачный кинжал, он висит над врагом, до 12. Скилл «Дождь клинков» обрушивает все разом",
+      "name": {"ru": "Зеркальные клинки", "en": "Mirror Blades"},
+      "blurb": "Каждый 3-й удар вызывает призрачный кинжал, он висит над врагом, до 12. Скилл Пути «Дождь клинков» обрушивает все разом, каждый бьёт ×1,5 удара. Со смертью врага кинжалы пропадают",
       "trait": {
-        "partyText": {"ru": "За каждый висящий кинжал союзники +1% шанса крита", "en": "За каждый висящий кинжал союзники +1% шанса крита"},
+        "partyText": {"ru": "За каждый висящий кинжал отряд +0,3% шанса крита", "en": "Each hanging dagger gives the party +0.3% critical chance"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "bladeDamage", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "bladeDamage", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "bladeDamage", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "bladeDamage", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "bladeKeep", "kind": "flat", "value": 0.5}], "text": {"ru": "Остаток: когда враг умирает, половина его кинжалов переходит на следующего", "en": "Remnant: when the enemy dies, half of its daggers move on to the next one"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "runedancer_trait_2_f45a",
-                "name": {"ru": "Лёгкая рука", "en": "Лёгкая рука"},
-                "text": {"ru": "Лёгкая рука: каждый 2-й удар", "en": "Лёгкая рука: каждый 2-й удар"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "runedancer_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "runedancer_trait_2_f60a",
-                "name": {"ru": "Остриём вниз", "en": "Остриём вниз"},
-                "text": {"ru": "Остриём вниз: клинки бьют по очереди", "en": "Остриём вниз: клинки бьют по очереди"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "runedancer_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "runedancer_trait_2_f75a",
-                "name": {"ru": "Стена клинков", "en": "Стена клинков"},
-                "text": {"ru": "Стена клинков: до 20", "en": "Стена клинков: до 20"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "runedancer_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "runedancer_trait_2_f45a", "name": {"ru": "Лёгкая рука", "en": "Light Hand"}, "text": {"ru": "Кинжал на каждом 2-м ударе, но каждый ×0,7", "en": "A dagger every 2nd hit, but each deals ×0.7"}, "modifiers": [{"stat": "bladeEvery", "kind": "flat", "value": -1}, {"stat": "bladeDamage", "kind": "more", "value": -0.3}]}, {"id": "runedancer_trait_2_f45b", "name": {"ru": "Блик", "en": "Glint"}, "text": {"ru": "Кинжал появляется на каждом крите, а не на каждом 3-м ударе", "en": "A dagger appears on every critical hit instead of every 3rd hit"}, "modifiers": [{"stat": "bladeOnCrit", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "runedancer_trait_2_f60a", "name": {"ru": "Остриём вниз", "en": "Point Down"}, "text": {"ru": "Кинжалы сами падают по одному раз в секунду, но каждый ×0,75", "en": "Daggers fall on their own, one per second, but each deals ×0.75"}, "modifiers": [{"stat": "bladeFall", "kind": "flat", "value": 1}, {"stat": "bladeDamage", "kind": "more", "value": -0.25}]}, {"id": "runedancer_trait_2_f60b", "name": {"ru": "Тяжёлая сталь", "en": "Heavy Steel"}, "text": {"ru": "Не больше 6 кинжалов, зато каждый ×3", "en": "No more than 6 daggers, but each deals ×3"}, "modifiers": [{"stat": "bladeMax", "kind": "flat", "value": -6}, {"stat": "bladeDamage", "kind": "more", "value": 2}]}]},
+          {"level": 75, "options": [{"id": "runedancer_trait_2_f75a", "name": {"ru": "Стена клинков", "en": "Wall of Blades"}, "text": {"ru": "До 20 кинжалов, но кинжал появляется только на каждом 4-м ударе", "en": "Up to 20 daggers, but a dagger appears only every 4th hit"}, "modifiers": [{"stat": "bladeMax", "kind": "flat", "value": 8}, {"stat": "bladeEvery", "kind": "flat", "value": 1}]}, {"id": "runedancer_trait_2_f75b", "name": {"ru": "Сотня рук", "en": "Hundred Hands"}, "text": {"ru": "«Дождь клинков» обрушивается сам, как только кинжалов до предела, но вручную его уже не вызвать", "en": "Blade Rain falls by itself as soon as the daggers reach the limit, but it can no longer be cast by hand"}, "modifiers": [{"stat": "bladeAutoRain", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "runedancer_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Зеркальные клинки", "en": "Зеркальные клинки"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "runedancer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Зеркальные клинки", "en": "Mirror Blades"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "runedancer_trait_3",
       "class": "runedancer",
-      "name": {"ru": "Вихрь", "en": "Вихрь"},
-      "blurb": "Чем чаще удары, тем больше кинжалов кружит вокруг неё: один на каждый удар в секунду. Каждый кинжал бьёт сам раз в секунду, вихрь крутится ещё 3 с после остановки. Скилл «Смерч» раскручивает вихрь до предела",
+      "name": {"ru": "Вихрь", "en": "Whirlwind"},
+      "blurb": "Чем чаще удары, тем больше кинжалов кружит вокруг неё: один на каждый удар в секунду, до 8. Раз в секунду вихрь бьёт всеми кинжалами сразу, каждый на 10% силы удара; вихрь крутится ещё 3 с после остановки. Скилл Пути «Смерч» раскручивает вихрь до предела",
       "trait": {
-        "partyText": {
-          "ru": "Вихрь сдувает с врага защиту от призванных: существа союзников +10%",
-          "en": "Вихрь сдувает с врага защиту от призванных: существа союзников +10%"
-        },
+        "partyText": {"ru": "За каждый кинжал вихря отряд +0,4% урона", "en": "Each whirling dagger gives the party +0.4% damage"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "whirlDamage", "kind": "flat", "value": 0.1}, {"stat": "whirlLinger", "kind": "flat", "value": 3}]},
+          {"modifiers": [{"stat": "whirlLinger", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "whirlLinger", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "whirlLinger", "kind": "flat", "value": 1}]},
+          {"modifiers": [{"stat": "whirlGust", "kind": "flat", "value": 1}], "text": {"ru": "Попутный ветер: каждый крит удара добавляет в вихрь кинжал на 2 с", "en": "Tailwind: every critical hit adds a dagger to the whirl for 2 s"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "runedancer_trait_3_f45a",
-                "name": {"ru": "Широкий круг", "en": "Широкий круг"},
-                "text": {"ru": "Широкий круг: +2 кинжала", "en": "Широкий круг: +2 кинжала"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "runedancer_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "runedancer_trait_3_f60a",
-                "name": {"ru": "Долгий вихрь", "en": "Долгий вихрь"},
-                "text": {"ru": "Долгий вихрь: 6 с", "en": "Долгий вихрь: 6 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "runedancer_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "runedancer_trait_3_f75a",
-                "name": {"ru": "Око бури", "en": "Око бури"},
-                "text": {"ru": "Око бури: на пределе кинжалы бьют дважды", "en": "Око бури: на пределе кинжалы бьют дважды"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "runedancer_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "runedancer_trait_3_f45a", "name": {"ru": "Широкий круг", "en": "Wide Circle"}, "text": {"ru": "+2 кинжала в вихре, но каждый ×0,8", "en": "+2 daggers in the whirl, but each deals ×0.8"}, "modifiers": [{"stat": "whirlExtra", "kind": "flat", "value": 2}, {"stat": "whirlDamage", "kind": "more", "value": -0.2}]}, {"id": "runedancer_trait_3_f45b", "name": {"ru": "Тихий центр", "en": "Quiet Centre"}, "text": {"ru": "Вихрь всегда держит 4 кинжала, даже в паузе, но удары его больше не раскручивают", "en": "The whirl always keeps 4 daggers, even in a pause, but hits no longer spin it up"}, "modifiers": [{"stat": "whirlSteady", "kind": "flat", "value": 4}]}]},
+          {"level": 60, "options": [{"id": "runedancer_trait_3_f60a", "name": {"ru": "Долгий вихрь", "en": "Long Whirl"}, "text": {"ru": "Вихрь крутится ещё 3 с дольше после остановки, но предел кинжалов на 2 меньше", "en": "The whirl keeps spinning 3 s longer after you stop, but holds 2 fewer daggers"}, "modifiers": [{"stat": "whirlLinger", "kind": "flat", "value": 3}, {"stat": "whirlMax", "kind": "flat", "value": -2}]}, {"id": "runedancer_trait_3_f60b", "name": {"ru": "Шквал", "en": "Squall"}, "text": {"ru": "Вихрь гаснет сразу, как стихают удары, зато кинжалы бьют вдвое чаще", "en": "The whirl dies out as soon as the hits stop, but its daggers strike twice as often"}, "modifiers": [{"stat": "whirlGale", "kind": "flat", "value": 1}]}]},
+          {"level": 75, "options": [{"id": "runedancer_trait_3_f75a", "name": {"ru": "Око бури", "en": "Eye of the Storm"}, "text": {"ru": "На пределе кинжалы бьют вдвое сильнее, но в целом кинжалы ×0,85", "en": "At the limit the daggers strike twice as hard, but daggers deal ×0.85 overall"}, "modifiers": [{"stat": "whirlEye", "kind": "flat", "value": 1}, {"stat": "whirlDamage", "kind": "more", "value": -0.15}]}, {"id": "runedancer_trait_3_f75b", "name": {"ru": "Буря в ладони", "en": "Storm in the Palm"}, "text": {"ru": "Не больше 5 кинжалов, и сами они не бьют, зато каждый удар героини бьёт всеми кинжалами сразу", "en": "No more than 5 daggers and they do not strike on their own, but every hit of the heroine strikes with all of them"}, "modifiers": [{"stat": "whirlPalm", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [{"id": "runedancer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Вихрь", "en": "Вихрь"}, "modifiers": []}],
+      "nodes": [{"id": "runedancer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Вихрь", "en": "Whirlwind"}, "modifiers": []}],
       "links": []
     },
     {

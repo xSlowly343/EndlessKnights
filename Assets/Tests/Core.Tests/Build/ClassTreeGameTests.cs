@@ -43,7 +43,7 @@ namespace Game.Core.Tests.Build
             Raise(loop, "r1c0", 5);
             Assert.That(loop.RaiseNode("runedancer_r2c0"), Is.EqualTo(RankResult.Done));
             Assert.That(loop.State.TreePointsSpent, Is.EqualTo(6));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(104).Within(1e-9), "the third line of the first node gives 4%, the second row starts with crits");
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(106).Within(1e-9), "the fifth level of the first node gives hits 6%, the second row starts with crits");
         }
 
         [Test]

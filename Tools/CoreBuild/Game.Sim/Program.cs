@@ -75,7 +75,7 @@ namespace Game.Sim
         private static int RunPlayer(GameData data, BotProfile profile, SimOptions options)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            var simulation = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes);
+            var simulation = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes, options.Path);
             var days = simulation.Run(options.Days, options.ActiveHours);
             watch.Stop();
 
@@ -95,7 +95,14 @@ namespace Game.Sim
                 days.Count, options.ActiveHours, options.HeroClass, options.KeysPerSecond, options.ClicksPerSecond,
                 last.RecordStage, last.HeroLevel, last.Prestiges, last.Artifacts, watch.Elapsed.TotalSeconds));
             Console.Error.WriteLine("skills: " + SkillLine(simulation.LastState!));
+            Console.Error.WriteLine("path: " + PathLine(simulation.LastState!));
             return 0;
+        }
+
+        private static string PathLine(GameState state)
+        {
+            var ascendancy = state.Ascendancy;
+            return (ascendancy.Subclass ?? "-") + " " + string.Join(",", ascendancy.ForkPicks);
         }
 
         private static string SkillLine(GameState state)

@@ -37,11 +37,14 @@ namespace Game.Core.Sim.Headless
             return best;
         }
 
-        private BigNumber DamageWith(GameState state, GemDef skill, int tier, int option)
+        private BigNumber DamageWith(GameState state, GemDef skill, int tier, int option) =>
+            DamageAfter(state, loop => BotBranches.Choose(loop, new BotLoadout(loop), skill, tier, option) == Build.BranchResult.Done);
+
+        public BigNumber DamageAfter(GameState state, System.Func<GameLoop, bool> change)
         {
             var copy = Copy(state);
             var loop = new GameLoop(_data, new BotInput(_profile, (ulong)state.Tick ^ 0x7121A1UL), copy, new StatSheet());
-            if (BotBranches.Choose(loop, new BotLoadout(loop), skill, tier, option) != Build.BranchResult.Done)
+            if (!change(loop))
                 return BigNumber.Zero;
             var before = copy.TotalDamage;
             for (var tick = 0L; tick < _ticks; tick++)

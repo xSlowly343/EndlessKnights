@@ -31,6 +31,7 @@ namespace Game.Core.Content.Tree
                 barPassives.Add(ModifierReader.ReadList(item));
             if (barPassives.Count == 0)
                 throw root.Field("barPassives").Error("the mastery bar needs at least one passive");
+            CheckKinds(root.Field("nodes"), nodes, templates.Kinds);
             var majors = ReadMajors(root.Field("majors"), shape, heroClass, nodes, templates.MajorTalentsAvoid);
             return new ClassTree(heroClass, false, nodes, shape.RowThresholds, templates.BarEvery, barPassives, majors, templates.Respec)
             {
@@ -100,7 +101,10 @@ namespace Game.Core.Content.Tree
                         throw item.Field("parent").Error($"parent '{parentId}' is in row {parent.Row}, it must be in a lower row than {row}");
                 }
                 var passive = item.HasField("passive") && item.Field("passive").AsBool();
-                var node = new ClassTreeNode(id, row, column, parentId, TreeTemplates.ReadTemplate(item, id), passive);
+                var node = new ClassTreeNode(id, row, column, parentId, TreeTemplates.ReadTemplate(item, id), passive)
+                {
+                    Kind = item.HasField("kind") ? TreeTemplates.ReadKind(item.Field("kind")) : TreeNodeKind.None
+                };
                 byId.Add(id, node);
                 nodes.Add(node);
                 rowsUsed.Add(row);
@@ -114,6 +118,31 @@ namespace Game.Core.Content.Tree
             }
             return nodes;
         }
+
+        private static void CheckKinds(ContentNode list, List<ClassTreeNode> nodes, IReadOnlyList<TreeNodeKindRule> rules)
+        {
+            var marked = nodes.Count(node => node.Kind != TreeNodeKind.None);
+            if (marked == 0)
+                return;
+            if (marked != nodes.Count)
+                throw list.Error($"{marked} of {nodes.Count} nodes have a kind: give every node a kind or none");
+            foreach (var rule in rules)
+            {
+                var count = 0;
+                foreach (var node in nodes)
+                {
+                    if (node.Kind != rule.Kind)
+                        continue;
+                    count++;
+                    if (node.Row < rule.FromRow)
+                        throw list.Error($"node '{node.Id}' is {Name(rule.Kind)}: such nodes start from row {rule.FromRow}, it is in row {node.Row}");
+                }
+                if (count != rule.Count)
+                    throw list.Error($"the tree has {count} {Name(rule.Kind)} nodes, expected {rule.Count} ({TreeTemplates.FileName} → kinds)");
+            }
+        }
+
+        private static string Name(TreeNodeKind kind) => kind.ToString().ToLowerInvariant();
 
         private static List<MajorTalentSlot> ReadMajors(ContentNode list, TreeShape shape, string treeId, List<ClassTreeNode> nodes, IReadOnlyCollection<string> avoid)
         {

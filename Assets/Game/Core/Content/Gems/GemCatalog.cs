@@ -388,7 +388,12 @@ namespace Game.Core.Content.Gems
                         PerCurse = Number(node, "perCurse", 1e6),
                         ConsumeMinion = node.HasField("consumeMinion") && node.Field("consumeMinion").AsBool(),
                         BurnStacks = Number(node, "burnStacks", 1000),
-                        RefreshCurses = node.HasField("refreshCurses") && node.Field("refreshCurses").AsBool()
+                        RefreshCurses = node.HasField("refreshCurses") && node.Field("refreshCurses").AsBool(),
+                        Runes = node.HasField("runes") ? node.Field("runes").AsInt(0, 100) : 0,
+                        Word = node.HasField("word") && node.Field("word").AsBool(),
+                        Blades = node.HasField("blades") ? node.Field("blades").AsInt(0, 100) : 0,
+                        BladeRain = node.HasField("bladeRain") && node.Field("bladeRain").AsBool(),
+                        WhirlSeconds = Number(node, "whirlSeconds", 600)
                     };
                 case "aura":
                     return new AuraEffect(

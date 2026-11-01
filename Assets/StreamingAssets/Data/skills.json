@@ -640,769 +640,373 @@
     {
       "id": "runedancer_hit_1",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "common",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Надрез", "en": "Надрез"},
+      "name": {"ru": "Надрез", "en": "Nick"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 3,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "быстрый, +руна", "en": "быстрый, +руна"},
+      "effect": {"type": "strike", "multiplier": 3, "runes": 1},
+      "text": {"ru": "быстрый удар ×3, кладёт руну", "en": "quick strike ×3, lays a rune"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_hit_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_hit_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_hit_1_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_hit_2",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "rare",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Двойной росчерк", "en": "Двойной росчерк"},
+      "name": {"ru": "Двойной росчерк", "en": "Double Stroke"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 15},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 4},
-      "text": {"ru": "две руны сразу", "en": "две руны сразу"},
+      "effect": {"type": "strike", "multiplier": 4, "runes": 2},
+      "text": {"ru": "удар ×4, кладёт две руны", "en": "strike ×4, lays two runes"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_hit_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_hit_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 3}, "id": "runedancer_hit_2_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_hit_3",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "epic",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Огненная буква", "en": "Огненная буква"},
+      "name": {"ru": "Огненная буква", "en": "Fire Letter"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 6},
-      "text": {"ru": "руна Пламени ×3", "en": "руна Пламени ×3"},
+      "effect": {"type": "strike", "multiplier": 6, "critChance": 0.25, "runes": 1},
+      "text": {"ru": "удар ×6 с шансом крита +25%, кладёт руну", "en": "strike ×6 with +25% critical chance, lays a rune"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_hit_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_hit_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_hit_3_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_queue_1",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "common",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Рунный бросок", "en": "Рунный бросок"},
+      "name": {"ru": "Рунный бросок", "en": "Rune Throw"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
-      "text": {"ru": "кинжал в следующего", "en": "кинжал в следующего"},
+      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 1, "blades": 1},
+      "text": {"ru": "кинжал ×2 в текущего и следующего врага, вешает кинжал", "en": "dagger ×2 into this and the next enemy, hangs a dagger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_queue_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_queue_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Второй клинок", "en": "Second Blade"}, "damage": 0.8, "effect": {"blades": 2}, "id": "runedancer_queue_1_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_queue_2",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "rare",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Цепочка знаков", "en": "Цепочка знаков"},
+      "name": {"ru": "Цепочка знаков", "en": "Chain of Signs"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "руна прыгает на 3 врагов", "en": "руна прыгает на 3 врагов"},
+      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "runes": 1},
+      "text": {"ru": "руна прыгает на 3 врагов очереди ×2,5, кладёт руну", "en": "a rune jumps to 3 queued enemies ×2.5, lays a rune"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_queue_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_queue_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_queue_2_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_queue_3",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "legendary",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Веер кинжалов", "en": "Веер кинжалов"},
+      "name": {"ru": "Веер кинжалов", "en": "Dagger Fan"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
-      "text": {"ru": "вся очередь", "en": "вся очередь"},
+      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "blades": 2},
+      "text": {"ru": "вся очередь ×3, вешает 2 кинжала", "en": "the whole queue ×3, hangs 2 daggers"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_queue_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_queue_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Второй клинок", "en": "Second Blade"}, "damage": 0.8, "effect": {"blades": 3}, "id": "runedancer_queue_3_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_auto_1",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Теневой шаг", "en": "Теневой шаг"},
+      "name": {"ru": "Теневой шаг", "en": "Shadow Step"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "раз в 4 с удар из тени, +руна", "en": "раз в 4 с удар из тени, +руна"},
+      "effect": {"type": "strike", "multiplier": 3, "runes": 1},
+      "text": {"ru": "раз в 4 с удар из тени ×3, кладёт руну", "en": "every 4 s a strike from the shadows ×3, lays a rune"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_auto_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_auto_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_auto_1_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_auto_2",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Парящий клинок", "en": "Парящий клинок"},
+      "name": {"ru": "Парящий клинок", "en": "Hovering Blade"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 5},
-      "text": {"ru": "кинжал бьёт сам", "en": "кинжал бьёт сам"},
+      "effect": {"type": "strike", "multiplier": 5, "blades": 2},
+      "text": {"ru": "раз в 6 с клинок бьёт сам ×5 и вешает 2 кинжала", "en": "every 6 s a blade strikes by itself ×5 and hangs 2 daggers"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_auto_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_auto_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Второй клинок", "en": "Second Blade"}, "damage": 0.8, "effect": {"blades": 3}, "id": "runedancer_auto_2_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_auto_3",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "mythic",
       "color": "red",
-      "name": {"ru": "Рунный страж", "en": "Рунный страж"},
+      "name": {"ru": "Рунный страж", "en": "Rune Warden"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 8},
-      "text": {"ru": "раз в 10 с дописывает руну", "en": "раз в 10 с дописывает руну"},
+      "effect": {"type": "strike", "multiplier": 4, "runes": 2},
+      "text": {"ru": "раз в 10 с удар ×4, дописывает две руны", "en": "every 10 s a strike ×4, writes two runes"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_auto_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_auto_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 3}, "id": "runedancer_auto_3_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_strong_1",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "epic",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Алфавит", "en": "Алфавит"},
+      "name": {"ru": "Алфавит", "en": "Alphabet"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 40},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 12},
-      "text": {"ru": "все 5 рун разом", "en": "все 5 рун разом"},
+      "effect": {"type": "strike", "multiplier": 6, "word": true},
+      "text": {"ru": "удар ×6 и сразу дописывает Слово", "en": "strike ×6 and finishes a Word at once"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_strong_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_strong_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Эхо слова", "en": "Word Echo"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_strong_1_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_strong_2",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "legendary",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Танец смерти", "en": "Танец смерти"},
+      "name": {"ru": "Танец смерти", "en": "Death Dance"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 50},
       "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 18},
-      "text": {"ru": "3 с ударов ×2", "en": "3 с ударов ×2"},
+      "effect": {"type": "flurry", "hits": 15, "seconds": 3, "multiplier": 2},
+      "text": {"ru": "3 с вихрь ударов: 15 ударов ×2", "en": "3 s of whirling strikes: 15 strikes ×2"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_strong_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_strong_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Долгий танец", "en": "Long Dance"}, "damage": 0.75, "effect": {"hits": 25, "seconds": 5}, "id": "runedancer_strong_2_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_strong_3",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "mythic",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Последняя буква", "en": "Последняя буква"},
+      "name": {"ru": "Последняя буква", "en": "Last Letter"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 25},
-      "text": {"ru": "×20 по врагу ниже 30% HP", "en": "×20 по врагу ниже 30% HP"},
+      "effect": {"type": "strike", "multiplier": 8, "lowHpBelow": 0.3, "lowHpMultiplier": 2.5},
+      "text": {"ru": "удар ×8, по врагу ниже 30% HP ×20", "en": "strike ×8, ×20 against an enemy below 30% HP"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "runedancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "runedancer_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "runedancer_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "runedancer_strong_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "runedancer_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "runedancer_strong_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "runedancer_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Ниже порога", "en": "Lower Bar"}, "damage": 0.75, "effect": {"lowHpBelow": 0.5}, "id": "runedancer_strong_3_b15b"}]},
+        {"level": 25, "options": [{"id": "runedancer_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "runedancer_path_1",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "ascendancy": "runedancer_trait_1",
       "color": "red",
-      "name": {"ru": "Написать Слово", "en": "Написать Слово"},
+      "name": {"ru": "Написать Слово", "en": "Write the Word"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 4, "word": true},
+      "text": {"ru": "удар ×4 и дописывает недостающие руны: Слово сразу", "en": "strike ×4 and writes the missing runes: a Word at once"}
     },
     {
       "id": "runedancer_path_2",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "ascendancy": "runedancer_trait_2",
       "color": "red",
-      "name": {"ru": "Дождь клинков", "en": "Дождь клинков"},
+      "name": {"ru": "Дождь клинков", "en": "Blade Rain"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 12,
+      "effect": {"type": "strike", "multiplier": 2, "bladeRain": true},
+      "text": {"ru": "удар ×2 и обрушивает все висящие кинжалы", "en": "strike ×2 and drops all hanging daggers"}
     },
     {
       "id": "runedancer_path_3",
       "kind": "active",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "ascendancy": "runedancer_trait_3",
       "color": "red",
-      "name": {"ru": "Смерч", "en": "Смерч"},
+      "name": {"ru": "Смерч", "en": "Twister"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "whirlSeconds": 6},
+      "text": {"ru": "удар ×3 и раскручивает вихрь до предела на 6 с", "en": "strike ×3 and spins the whirl to its limit for 6 s"}
     },
     {
       "id": "runedancer_aura_1",
       "kind": "aura",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Шепот рун", "en": "Шепот рун"},
+      "name": {"ru": "Шепот рун", "en": "Whisper of Runes"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15}], "reserve": 15, "party": true},
-      "text": {"ru": "+скорость ударов", "en": "+скорость ударов"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Keyboard"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.2}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: удары +12% урона; у неё каждый удар считается за 1,2 для рун, кинжалов и вихря", "en": "party: hits +12% damage; her hits count as 1.2 for runes, daggers and the whirl"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "runedancer_aura_1_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "runedancer_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "runedancer_aura_1_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "runedancer_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "runedancer_aura_1_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "runedancer_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Keyboard"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.24}]}}, {"id": "runedancer_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Keyboard"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.22}]}}, {"id": "runedancer_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Keyboard"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.26}]}}, {"id": "runedancer_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "runedancer_aura_2",
       "kind": "aura",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Пляска клинков", "en": "Пляска клинков"},
+      "name": {"ru": "Пляска клинков", "en": "Dance of Blades"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "reserve": 15},
-      "text": {"ru": "шанс двойного удара", "en": "шанс двойного удара"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: каждый 8-й удар бьёт дважды", "en": "party: every 8th hit strikes twice"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "runedancer_aura_2_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "runedancer_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "runedancer_aura_2_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "runedancer_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "runedancer_aura_2_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "runedancer_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.4}]}}, {"id": "runedancer_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.2}]}}, {"id": "runedancer_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.6}]}}, {"id": "runedancer_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "runedancer_aura_3",
       "kind": "aura",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Рунная вязь", "en": "Рунная вязь"},
+      "name": {"ru": "Рунная вязь", "en": "Rune Lattice"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}], "reserve": 20},
-      "text": {
-        "ru": "2% ударов отряда кладут на врага случайную руну-уязвимость",
-        "en": "2% ударов отряда кладут на врага случайную руну-уязвимость"
-      },
+      "effect": {"type": "aura", "modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.2}, {"stat": "runeSealPower", "kind": "flat", "value": 0.5}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: проклятия и метки на враге +20% сильнее; её печать Слова +50% сильнее", "en": "party: curses and marks on the enemy are 20% stronger; her Word seal is 50% stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "runedancer_aura_3_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "runedancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "runedancer_aura_3_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "runedancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "runedancer_aura_3_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "runedancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.24}, {"stat": "runeSealPower", "kind": "flat", "value": 0.6}]}}, {"id": "runedancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.22}, {"stat": "runeSealPower", "kind": "flat", "value": 0.55}]}}, {"id": "runedancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.26}, {"stat": "runeSealPower", "kind": "flat", "value": 0.65}]}}, {"id": "runedancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "runedancer_aura_4",
       "kind": "aura",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Тень за спиной", "en": "Тень за спиной"},
+      "name": {"ru": "Тень за спиной", "en": "Shadow at the Back"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "reserve": 20},
-      "text": {"ru": "шанс, что полоса HP не теряет здоровье от удара", "en": "шанс, что полоса HP не теряет здоровье от удара"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.1}], "reserve": 20, "party": true, "keylessStrike": {"everySeconds": 2, "multiplier": 3}},
+      "text": {"ru": "отряд: +10% урона критов; пока ты не бьёшь, тень бьёт раз в 2 с ×3", "en": "party: +10% critical damage; while you do not hit, a shadow strikes every 2 s ×3"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "runedancer_aura_4_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "runedancer_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "runedancer_aura_4_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "runedancer_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "runedancer_aura_4_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "runedancer_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.12}]}}, {"id": "runedancer_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.11}]}}, {"id": "runedancer_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.13}]}}, {"id": "runedancer_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "runedancer_aura_5",
       "kind": "aura",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "epic",
       "color": "red",
-      "name": {"ru": "Рунный алфавит", "en": "Рунный алфавит"},
+      "name": {"ru": "Рунный алфавит", "en": "Rune Alphabet"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "+урон за каждую стихию, которой отряд бил врага за 5 с", "en": "+урон за каждую стихию, которой отряд бил врага за 5 с"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damagePerAura", "kind": "flat", "value": 0.04}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +4% урона за каждую ауру на герое", "en": "party: +4% damage for every aura on the hero"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "runedancer_aura_5_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "runedancer_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "runedancer_aura_5_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "runedancer_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "runedancer_aura_5_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "runedancer_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damagePerAura", "kind": "flat", "value": 0.048}]}}, {"id": "runedancer_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damagePerAura", "kind": "flat", "value": 0.044}]}}, {"id": "runedancer_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damagePerAura", "kind": "flat", "value": 0.052}]}}, {"id": "runedancer_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
       "id": "runedancer_aura_6",
       "kind": "aura",
-      "weapon": "axe",
+      "weapon": "rune_daggers",
       "tier": "legendary",
       "color": "red",
-      "name": {"ru": "Лёгкие ноги", "en": "Лёгкие ноги"},
+      "name": {"ru": "Лёгкие ноги", "en": "Light Feet"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "враги из очереди выходят на 10% быстрее", "en": "враги из очереди выходят на 10% быстрее"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "overkillCarry", "kind": "flat", "value": 0.25}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: 25% перебитого урона убитого врага переходит в следующего", "en": "party: 25% of the overkill damage carries over to the next enemy"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "runedancer_aura_6_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "runedancer_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "runedancer_aura_6_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "runedancer_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "runedancer_aura_6_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "runedancer_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "runedancer_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "overkillCarry", "kind": "flat", "value": 0.3}]}}, {"id": "runedancer_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "overkillCarry", "kind": "flat", "value": 0.275}]}}, {"id": "runedancer_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "overkillCarry", "kind": "flat", "value": 0.325}]}}, {"id": "runedancer_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

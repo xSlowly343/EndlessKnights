@@ -18,6 +18,8 @@ namespace Game.Core.Content.Tree
         public string NameRu { get; }
         public string NameEn { get; }
         public IReadOnlyList<Modifier> Modifiers { get; }
+        public string TextRu { get; set; } = string.Empty;
+        public string TextEn { get; set; } = string.Empty;
     }
 
     public sealed class TraitFork
@@ -48,6 +50,8 @@ namespace Game.Core.Content.Tree
         public IReadOnlyList<IReadOnlyList<Modifier>> Levels { get; }
         public IReadOnlyList<Modifier> Party { get; }
         public IReadOnlyList<TraitFork> Forks { get; }
+        public string PartyTextRu { get; private set; } = string.Empty;
+        public string PartyTextEn { get; private set; } = string.Empty;
 
         public bool TryFind(string optionId, out TraitFork fork, out TraitForkOption option)
         {
@@ -76,7 +80,12 @@ namespace Game.Core.Content.Tree
             if (levels.Count != MaxLevel)
                 throw node.Field("levels").Error($"a trait has exactly {MaxLevel} levels, got {levels.Count}");
             var party = node.HasField("party") ? ModifierReader.ReadList(node.Field("party")) : Array.Empty<Modifier>();
-            return new TraitDef(levels, party, ReadForks(node.Field("forks"), optionIds));
+            var partyText = node.HasField("partyText") ? node.Field("partyText") : (ContentNode?)null;
+            return new TraitDef(levels, party, ReadForks(node.Field("forks"), optionIds))
+            {
+                PartyTextRu = partyText?.Field("ru").AsString() ?? string.Empty,
+                PartyTextEn = partyText?.Field("en").AsString() ?? string.Empty
+            };
         }
 
         private static List<TraitFork> ReadForks(ContentNode node, HashSet<string> optionIds)
@@ -94,7 +103,12 @@ namespace Game.Core.Content.Tree
                     if (!optionIds.Add(id))
                         throw option.Field("id").Error($"fork option id '{id}' is used twice");
                     var name = option.Field("name");
-                    choices.Add(new TraitForkOption(id, name.Field("ru").AsString(), name.Field("en").AsString(), ModifierReader.ReadList(option.Field("modifiers"))));
+                    var text = option.HasField("text") ? option.Field("text") : (ContentNode?)null;
+                    choices.Add(new TraitForkOption(id, name.Field("ru").AsString(), name.Field("en").AsString(), ModifierReader.ReadList(option.Field("modifiers")))
+                    {
+                        TextRu = text?.Field("ru").AsString() ?? string.Empty,
+                        TextEn = text?.Field("en").AsString() ?? string.Empty
+                    });
                 }
                 if (choices.Count != TraitFork.Options)
                     throw item.Field("options").Error($"a fork offers exactly {TraitFork.Options} options, got {choices.Count}");

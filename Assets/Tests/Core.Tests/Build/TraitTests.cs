@@ -154,7 +154,7 @@ namespace Game.Core.Tests.Build
                 {
                     Assert.That(path.Trait, Is.Not.Null, path.Id);
                     Assert.That(path.Trait!.Forks.Select(fork => fork.HeroLevel), Is.EqualTo(new[] { 45, 60, 75 }), path.Id);
-                    Assert.That(path.Trait.Party, Is.Not.Empty, path.Id);
+                    Assert.That(path.Trait.Party.Count > 0 || path.Trait.PartyTextRu.Length > 0, Is.True, path.Id);
                 }
             }
         }

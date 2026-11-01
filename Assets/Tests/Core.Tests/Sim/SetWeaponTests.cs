@@ -26,9 +26,9 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SetWeaponTypesFollowColourOrRole()
         {
-            Assert.That(Set("jarl_forge").AllowsType("axe"), Is.True);
+            Assert.That(Set("jarl_forge").AllowsType("rune_daggers"), Is.True);
             Assert.That(Set("jarl_forge").AllowsType("short_bow"), Is.False);
-            Assert.That(Set("onslaught").WeaponTypes, Is.EquivalentTo(new[] { "axe", "katana", "short_bow", "storm_wand", "scimitar" }));
+            Assert.That(Set("onslaught").WeaponTypes, Is.EquivalentTo(new[] { "rune_daggers", "katana", "short_bow", "storm_wand", "scimitar" }));
             foreach (var set in TestWorld.Data.Items.Sets)
             {
                 foreach (var type in set.WeaponTypes)
@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(runedancer.CraftSetPiece("jarl_forge"), Is.EqualTo(CraftResult.Crafted));
 
             var weapon = runedancer.State.Weapons.Bag.Last();
-            Assert.That(weapon.Type.Id, Is.EqualTo("axe"));
+            Assert.That(weapon.Type.Id, Is.EqualTo("rune_daggers"));
             Assert.That(weapon.Set!.Id, Is.EqualTo("jarl_forge"));
             Assert.That(weapon.Rarity, Is.EqualTo(ItemRarity.Rare));
             Assert.That(runedancer.Gear.Collected(Set("jarl_forge")), Is.True);

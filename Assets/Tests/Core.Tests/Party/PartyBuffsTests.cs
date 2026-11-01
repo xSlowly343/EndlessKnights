@@ -200,7 +200,7 @@ namespace Game.Core.Tests.Party
             bannerman.Loop.Hero.Add(new Modifier(CombatStats.PartyContribution, ModifierKind.Flat, 0.05));
             rig.Run(5);
             Assert.That(rig.Host.Encounter.Boosting(bannerman.Client.OwnSlot), Is.False, "no aura yet");
-            bannerman.Equip("runedancer_aura_1");
+            bannerman.Equip("lanternbearer_aura_1");
             rig.Run(3);
             Assert.That(rig.Host.Encounter.Member(bannerman.Client.OwnSlot).CreditRate, Is.EqualTo(0.05).Within(1e-6));
             Assert.That(rig.Host.Encounter.Boosting(bannerman.Client.OwnSlot), Is.True);
@@ -238,7 +238,7 @@ namespace Game.Core.Tests.Party
             var minstrel = rig.Members[0];
             var friend = rig.Members[1];
             var before = friend.Damage;
-            var slot = minstrel.Equip("runedancer_aura_1");
+            var slot = minstrel.Equip("lanternbearer_aura_1");
 
             minstrel.Cast(slot);
             rig.Run(3);
@@ -256,8 +256,8 @@ namespace Game.Core.Tests.Party
             rig.Run(5);
             var friend = rig.Members[1];
             var before = friend.Damage;
-            var metalSlot = rig.Members[0].Equip("runedancer_aura_1");
-            var friendSlot = friend.Equip("runedancer_aura_1");
+            var metalSlot = rig.Members[0].Equip("lanternbearer_aura_1");
+            var friendSlot = friend.Equip("lanternbearer_aura_1");
 
             rig.Members[0].Cast(metalSlot);
             friend.Cast(friendSlot);
@@ -277,8 +277,8 @@ namespace Game.Core.Tests.Party
             var strong = rig.Members[1];
             strong.Loop.Hero.Add(new Modifier(CombatStats.AuraEffect, ModifierKind.Increased, 1, StatTags.Aura));
 
-            weak.Cast(weak.Equip("runedancer_aura_1"));
-            strong.Cast(strong.Equip("runedancer_aura_1"));
+            weak.Cast(weak.Equip("lanternbearer_aura_1"));
+            strong.Cast(strong.Equip("lanternbearer_aura_1"));
             rig.Run(3);
 
             Assert.That(friend.Damage, Is.EqualTo(before * 1.30).Within(1e-6));
@@ -320,8 +320,8 @@ namespace Game.Core.Tests.Party
             var before = friend.Damage;
             strong.Loop.Hero.Add(new Modifier(CombatStats.AuraEffect, ModifierKind.Increased, 1, StatTags.Aura));
 
-            strong.Cast(strong.Equip("runedancer_aura_1"));
-            friend.Cast(friend.Equip("runedancer_aura_1"));
+            strong.Cast(strong.Equip("lanternbearer_aura_1"));
+            friend.Cast(friend.Equip("lanternbearer_aura_1"));
             rig.Run(3);
 
             Assert.That(friend.Damage, Is.EqualTo(before * 1.30).Within(1e-6), "the stronger song wins even over your own weaker one");

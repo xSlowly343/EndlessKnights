@@ -18,11 +18,13 @@ namespace Game.Core.Sim.Headless
         private readonly HeroClass _heroClass;
         private readonly ulong _seed;
         private readonly double _stuckMinutes;
+        private readonly string? _path;
         private BigNumber _goldSeen = BigNumber.Zero;
         private BigNumber _goldTotal = BigNumber.Zero;
 
-        public PlayerSimulation(GameData data, BotProfile profile, HeroClass heroClass = HeroClass.Runedancer, ulong seed = 1, double stuckMinutes = DefaultStuckMinutes)
+        public PlayerSimulation(GameData data, BotProfile profile, HeroClass heroClass = HeroClass.Runedancer, ulong seed = 1, double stuckMinutes = DefaultStuckMinutes, string? path = null)
         {
+            _path = path;
             _data = data;
             _profile = profile;
             _heroClass = heroClass;
@@ -37,7 +39,7 @@ namespace Game.Core.Sim.Headless
             var state = new GameState(_seed) { Class = _heroClass };
             var hero = new StatSheet();
             var loop = new GameLoop(_data, new BotInput(_profile, _seed ^ 0x5EEDUL), state, hero);
-            var bot = new PlayerBot(_data, loop, _stuckMinutes, branchTrial: new BranchTrial(_data, _profile));
+            var bot = new PlayerBot(_data, loop, _stuckMinutes, branchTrial: new BranchTrial(_data, _profile), path: _path);
             var offline = new OfflineCalculator(_data, hero);
             var activeTicks = (long)System.Math.Round(activeHoursPerDay * 3600 * GameLoop.TicksPerSecond);
             var offlineSeconds = System.Math.Max(0, SecondsPerDay - activeHoursPerDay * 3600);

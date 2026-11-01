@@ -188,15 +188,15 @@ namespace Game.Core.Tests.Sim
         public void AClassLineWorksOnlyForItsClass()
         {
             var loop = Hero(HeroClass.Runedancer);
-            var line = Rules.ClassLines(HeroClass.Runedancer).Single(classLine => classLine.Id == "runedancer_shield_damage");
+            var line = Rules.ClassLines(HeroClass.Runedancer).Single(classLine => classLine.Id == "runedancer_rune_word");
             var slate = new SlateItem(Shape("pebble"), Theme("keys"), SlateRarity.Common, new[] { line }, false);
             loop.Slates.Give(slate);
             loop.Slates.Place(slate, 0, 0, 0);
-            Assert.That(Sum(loop, "shieldDamage"), Is.EqualTo(0.1).Within(1e-9));
+            Assert.That(Sum(loop, "runeWord"), Is.EqualTo(0.1).Within(1e-9));
 
             Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
 
-            Assert.That(Sum(loop, "shieldDamage"), Is.Zero);
+            Assert.That(Sum(loop, "runeWord"), Is.Zero);
             Assert.That(loop.Slates.PlacementOf(slate), Is.Not.Null, "the slate stays on the board");
         }
 
@@ -204,12 +204,12 @@ namespace Game.Core.Tests.Sim
         public void WholeLinesStayWholeNumbers()
         {
             var loop = Hero(HeroClass.Runedancer);
-            var line = Rules.ClassLines(HeroClass.Runedancer).Single(classLine => classLine.Id == "runedancer_shield_sooner");
+            var line = Rules.ClassLines(HeroClass.Runedancer).Single(classLine => classLine.Id == "runedancer_rune_sooner");
             var slate = new SlateItem(Shape("corner"), Theme("keys"), SlateRarity.Common, new[] { line }, false);
             loop.Slates.Give(slate);
             loop.Slates.Place(slate, 0, 0, 0);
 
-            Assert.That(Sum(loop, "shieldEvery"), Is.EqualTo(-2));
+            Assert.That(Sum(loop, "runeWordLength"), Is.EqualTo(-2));
         }
 
         [Test]
@@ -302,6 +302,7 @@ namespace Game.Core.Tests.Sim
         public void EverySlateStatHasAMechanic()
         {
             var known = typeof(CombatStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+                .Concat(typeof(RunedancerStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Where(field => field.FieldType == typeof(StatId))
                 .Select(field => ((StatId)field.GetValue(null)!).Name)
                 .ToHashSet();

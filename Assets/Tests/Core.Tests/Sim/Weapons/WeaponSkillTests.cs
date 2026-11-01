@@ -197,11 +197,11 @@ namespace Game.Core.Tests.Sim.Weapons
         {
             var loop = Hero(HeroClass.Runedancer);
             var payload = JsonParser.Parse(SaveCodec.Encode(loop.State, Clock), "save").Fields["payload"];
-            var oldWeapons = JsonParser.Parse("{\"starterGiven\": true, \"right\": \"jarl_axe\", \"left\": null, \"bag\": [\"wanderer_katana\"]}", "old");
+            var oldWeapons = JsonParser.Parse("{\"starterGiven\": true, \"right\": \"colossus_quills\", \"left\": null, \"bag\": [\"wanderer_katana\"]}", "old");
             var edited = JsonEdit.Update(payload, "state", state => JsonEdit.Set(state, "weapons", oldWeapons));
             var state = GameStateJson.Read(new ContentNode(edited, "save", "payload").Field("state"), TestWorld.Real.Enemies, TestWorld.Real.Gems, Catalog);
 
-            Assert.That(state.Weapons.Right!.Id, Is.EqualTo("jarl_axe"));
+            Assert.That(state.Weapons.Right!.Id, Is.EqualTo("colossus_quills"));
             Assert.That(state.Weapons.Right.Rarity, Is.EqualTo(ItemRarity.Simple));
             Assert.That(state.Weapons.Right.Skills, Is.EqualTo(Catalog.TypeOf(HeroClass.Runedancer).StarterSkills));
             Assert.That(state.Weapons.Bag[0].Skills, Is.EqualTo(KatanaStarter));

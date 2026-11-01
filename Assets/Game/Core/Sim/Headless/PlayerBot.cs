@@ -19,13 +19,15 @@ namespace Game.Core.Sim.Headless
         private const double SlowStageSeconds = 60;
         private readonly HeroClass _heroClass;
         private readonly BranchTrial? _branchTrial;
+        private readonly string? _path;
         private double _stuckSeconds;
         private double _stageSeconds;
         private long _stage;
 
-        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige, bool inParty = false, BranchTrial? branchTrial = null)
+        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige, bool inParty = false, BranchTrial? branchTrial = null, string? path = null)
         {
             _branchTrial = branchTrial;
+            _path = path;
             _loadout = new BotLoadout(loop);
             _data = data;
             _loop = loop;
@@ -262,10 +264,11 @@ namespace Game.Core.Sim.Headless
                 return;
             if (ascendancy.Subclass == null)
             {
-                var chosen = BestSubclass(catalog);
+                var chosen = ChosenSubclass(catalog);
                 if (chosen == null || _loop.ChooseSubclass(chosen.Id) != SubclassResult.Chosen)
                     return;
             }
+            PickTraitForks(catalog, ascendancy);
             while (ascendancy.PointsLeft(catalog) > 0)
             {
                 TreeNodeDef? best = null;
@@ -304,6 +307,82 @@ namespace Game.Core.Sim.Headless
                     return true;
             }
             return false;
+        }
+
+        private SubclassDef? ChosenSubclass(AscendancyCatalog catalog)
+        {
+            if (_path != null && catalog.TryGet(_path, out var forced))
+                return forced;
+            return HasTraits(catalog) && _branchTrial != null ? BestTraitByTrial(catalog, _branchTrial) : BestSubclass(catalog);
+        }
+
+        private bool HasTraits(AscendancyCatalog catalog)
+        {
+            foreach (var subclass in catalog.SubclassesOf(_loop.State.ClassName))
+            {
+                if (subclass.Trait != null)
+                    return true;
+            }
+            return false;
+        }
+
+        private SubclassDef? BestTraitByTrial(AscendancyCatalog catalog, BranchTrial trial)
+        {
+            SubclassDef? best = null;
+            var bestDamage = BigNumber.Zero;
+            foreach (var subclass in catalog.SubclassesOf(_loop.State.ClassName))
+            {
+                var id = subclass.Id;
+                var damage = trial.DamageAfter(_loop.State, loop => loop.ChooseSubclass(id) == SubclassResult.Chosen);
+                if (best == null || damage > bestDamage)
+                {
+                    best = subclass;
+                    bestDamage = damage;
+                }
+            }
+            return best;
+        }
+
+        private void PickTraitForks(AscendancyCatalog catalog, AscendancyState ascendancy)
+        {
+            var trait = ascendancy.Trait(catalog);
+            if (trait == null)
+                return;
+            foreach (var fork in trait.Forks)
+            {
+                if (fork.HeroLevel > _loop.State.HeroLevel || AnyPicked(ascendancy, fork))
+                    continue;
+                _loop.PickTraitFork(BestForkOption(fork).Id);
+            }
+        }
+
+        private static bool AnyPicked(AscendancyState ascendancy, TraitFork fork)
+        {
+            foreach (var choice in fork.Choices)
+            {
+                if (ascendancy.Picked(choice.Id))
+                    return true;
+            }
+            return false;
+        }
+
+        private TraitForkOption BestForkOption(TraitFork fork)
+        {
+            var best = fork.Choices[0];
+            if (_branchTrial == null)
+                return best;
+            var bestDamage = BigNumber.Zero;
+            foreach (var choice in fork.Choices)
+            {
+                var id = choice.Id;
+                var damage = _branchTrial.DamageAfter(_loop.State, loop => loop.PickTraitFork(id) == TraitForkResult.Picked);
+                if (choice == fork.Choices[0] || damage > bestDamage)
+                {
+                    best = choice;
+                    bestDamage = damage;
+                }
+            }
+            return best;
         }
 
         private SubclassDef? BestSubclass(AscendancyCatalog catalog)

@@ -23,6 +23,7 @@ namespace Game.Core.Content.Tree
         public ClassTreeNode? Parent { get; internal set; }
         public TreeTemplate Template { get; }
         public bool Passive { get; }
+        public TreeNodeKind Kind { get; internal set; }
         public string NameRu => Template.NameRu;
         public string NameEn => Template.NameEn;
 

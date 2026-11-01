@@ -21,8 +21,6 @@ namespace Game.Core.Sim
         public double OnKeyHit(out HitFlags flags)
         {
             flags = HitFlags.None;
-            if (_state.Is(HeroClass.Runedancer))
-                return AncestorShield(ref flags);
             if (_state.Is(HeroClass.Windshot))
                 return HunterMarkHit();
             if (_state.Is(HeroClass.Sandwalker))
@@ -43,17 +41,6 @@ namespace Game.Core.Sim
             _state.LastComboStrikeTick = _state.Tick;
             _state.PendingResource += _hero.Value(CombatStats.ComboStrikeResource, 0, StatTags.Keyboard) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             return System.Math.Max(1, _rules.ComboStrikeMultiplier + _hero.Value(CombatStats.ComboStrikeMultiplier, 0, StatTags.Keyboard));
-        }
-
-        private double AncestorShield(ref HitFlags flags)
-        {
-            if (_rules.ShieldEvery <= 0 || ++_state.KeysTowardShield < ShieldEvery)
-                return 1;
-            _state.KeysTowardShield = 0;
-            flags |= HitFlags.ShieldStrike;
-            _state.StunTicks = System.Math.Max(_state.StunTicks, (int)System.Math.Round((_rules.ShieldStunSeconds + _hero.Value(CombatStats.StunSeconds, 0)) * GameLoop.TicksPerSecond));
-            _state.PendingResource += System.Math.Max(0, _hero.Value(CombatStats.ShieldResource, 0, StatTags.Keyboard));
-            return _rules.ShieldMultiplier * System.Math.Max(0, _hero.Value(CombatStats.ShieldDamage, 1, StatTags.Keyboard));
         }
 
         private double HunterMarkHit()
@@ -140,8 +127,6 @@ namespace Game.Core.Sim
             if (_state.Cold < 1e-6 || !_state.EnemyAlive)
                 _state.Cold = 0;
         }
-
-        public int ShieldEvery => System.Math.Max(_rules.ShieldEveryMin, (int)System.Math.Round(_rules.ShieldEvery + _hero.Value(CombatStats.ShieldEvery, 0, StatTags.Keyboard)));
 
         public int StrikeEvery
         {

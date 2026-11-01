@@ -56,6 +56,11 @@ namespace Game.Core.Content.Gems
         public bool ConsumeMinion { get; set; }
         public double BurnStacks { get; set; }
         public bool RefreshCurses { get; set; }
+        public int Runes { get; set; }
+        public bool Word { get; set; }
+        public int Blades { get; set; }
+        public bool BladeRain { get; set; }
+        public double WhirlSeconds { get; set; }
     }
 
     public sealed class PotionOption

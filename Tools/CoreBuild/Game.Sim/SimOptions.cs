@@ -8,7 +8,7 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class runedancer|duelist|windshot|shardcaller|sandwalker|minstrel|dreamcatcher|lanternbearer|whisperer|clockwright|alchemist|dowser|soulbinder|ghostcaptain] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--party runedancer,duelist,... | standard [--loss 0] [--idle <members> [--idle-after <minutes>]]] [--supports <hours>] [--synergy <hours> [--drops true] [--hero-level 0]] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class runedancer|duelist|windshot|shardcaller|sandwalker|minstrel|dreamcatcher|lanternbearer|whisperer|clockwright|alchemist|dowser|soulbinder|ghostcaptain] [--path <subclass id>] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20]] [--party runedancer,duelist,... | standard [--loss 0] [--idle <members> [--idle-after <minutes>]]] [--supports <hours>] [--synergy <hours> [--drops true] [--hero-level 0]] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
@@ -16,6 +16,7 @@ namespace Game.Sim
         public double Hours { get; private set; } = 1;
         public HeroClass HeroClass { get; private set; } = HeroClass.Runedancer;
         public ulong Seed { get; private set; } = 1;
+        public string? Path { get; private set; }
         public int StopAfterFails { get; private set; }
         public double DamageMultiplier { get; private set; } = 1;
         public int Days { get; private set; }
@@ -48,6 +49,7 @@ namespace Game.Sim
                     case "--mouse": options.MousePxPerSecond = Number(value); break;
                     case "--hours": options.Hours = Number(value); break;
                     case "--class": options.HeroClass = Class(value); break;
+                    case "--path": options.Path = value; break;
                     case "--seed": options.Seed = ulong.Parse(value, CultureInfo.InvariantCulture); break;
                     case "--damage": options.DamageMultiplier = Number(value); break;
                     case "--stop-after-fails": options.StopAfterFails = int.Parse(value, CultureInfo.InvariantCulture); break;

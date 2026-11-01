@@ -205,7 +205,7 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
             var afterKey = loop.State.Resource;
 
-            Ticks(loop, 49);
+            Ticks(loop, 119);
             Assert.That(loop.State.Resource, Is.EqualTo(afterKey).Within(1e-9));
 
             Ticks(loop, 3);

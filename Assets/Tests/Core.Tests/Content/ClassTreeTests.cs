@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Content
         private const string Tree = @"{
   ""version"": 6,
   ""class"": ""runedancer"",
-  ""attribute"": {""name"": ""strength"", ""perPoint"": [{""stat"": ""shieldDamage"", ""kind"": ""increased"", ""value"": 0.01}]},
+  ""attribute"": {""name"": ""strength"", ""perPoint"": [{""stat"": ""runeWord"", ""kind"": ""increased"", ""value"": 0.01}]},
   ""barPassives"": [[{""stat"": ""classAttribute"", ""kind"": ""flat"", ""value"": 3}], [{""stat"": ""resourceGain"", ""kind"": ""increased"", ""value"": 0.02}]],
   ""nodes"": [
     {""id"": ""runedancer_axe"", ""row"": 1, ""column"": 0, ""name"": {""ru"": ""Топор"", ""en"": ""Axe""}, ""a"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.04}]}, ""b"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.02}]}, ""c"": {""modifiers"": [{""stat"": ""keyStrikeEvery"", ""kind"": ""flat"", ""value"": 30}]}},
@@ -138,7 +138,7 @@ namespace Game.Core.Tests.Content
             Assert.That(Problem(Tree.Replace("\"waits\": \"warmUp\"", "\"x\": 1")), Does.Contain("needs modifiers, or a text and the mechanic"));
             Assert.That(Problem(Tree.Replace("\"version\": 6", "\"version\": 5")), Does.Contain("version 5"));
             Assert.That(Problem(Tree.Replace("\"name\": \"strength\"", "\"name\": \"luck\"")), Does.Contain("class attribute is one of"));
-            Assert.That(Problem(Tree.Replace("\"perPoint\": [{\"stat\": \"shieldDamage\", \"kind\": \"increased\", \"value\": 0.01}]", "\"perPoint\": []")), Does.Contain("strengthen the class feature"));
+            Assert.That(Problem(Tree.Replace("\"perPoint\": [{\"stat\": \"runeWord\", \"kind\": \"increased\", \"value\": 0.01}]", "\"perPoint\": []")), Does.Contain("strengthen the class feature"));
             Assert.That(Assert.Throws<ContentException>(() => TreeTemplates.Load(Templates.Replace("\"rows\": [0, 3]", "\"rows\": [2, 3]")))!.Message, Does.Contain("threshold is 0"));
         }
 
@@ -150,6 +150,8 @@ namespace Game.Core.Tests.Content
             var known = typeof(Game.Core.Sim.CombatStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
                 .Where(field => field.FieldType == typeof(StatId))
                 .Select(field => ((StatId)field.GetValue(null)!).Name)
+                .Concat(typeof(Game.Core.Sim.RunedancerStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+                    .Select(field => ((Game.Core.Stats.StatId)field.GetValue(null)!).Name))
                 .Concat(new[] { "classAttribute" })
                 .ToHashSet();
             var classes = Game.Core.Sim.HeroClassNames.ByName.Keys.ToList();
