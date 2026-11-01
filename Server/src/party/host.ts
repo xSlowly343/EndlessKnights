@@ -198,6 +198,18 @@ class PartyHost {
                 }
                 break;
             }
+            case PartyMessageKind.TraitRelay: {
+                const relayed = partyRelayTrait(data, slot);
+                if (relayed)
+                    this.broadcast(relayed, slot);
+                break;
+            }
+            case PartyMessageKind.TraitLight: {
+                const light = partyDecodeTraitLight(data);
+                if (light)
+                    this.encounter.setLight(light.enemyId, light.light);
+                break;
+            }
             case PartyMessageKind.SpiritCall: {
                 const call = partyDecodeSpiritCall(data);
                 if (call)

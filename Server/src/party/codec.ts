@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, Synergy = 15, BossRequest = 16, Marks = 17, PartyLoadout = 18, SpiritCall = 19, NetPull = 20
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, Synergy = 15, BossRequest = 16, Marks = 17, PartyLoadout = 18, SpiritCall = 19, NetPull = 20, TraitRelay = 21, TraitLight = 22
 }
 
 class PartyWriter {
@@ -115,7 +115,7 @@ function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
         return PartyMessageKind.None;
     const kind = new DataView(data).getUint8(0);
-    return kind <= PartyMessageKind.NetPull ? kind : PartyMessageKind.None;
+    return kind <= PartyMessageKind.TraitLight ? kind : PartyMessageKind.None;
 }
 
 function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
@@ -206,6 +206,22 @@ function partyDecodeSpiritCall(data: ArrayBuffer): { count: number, hp: number }
 function partyDecodeNetPull(data: ArrayBuffer): { effectId: number, seconds: number } | null {
     const r = partyOpen(data, PartyMessageKind.NetPull);
     const message = { effectId: r.int(), seconds: r.float() };
+    return r.complete ? message : null;
+}
+
+const PartyTraitRelayBytes = 19;
+
+function partyRelayTrait(data: ArrayBuffer, slot: number): ArrayBuffer | null {
+    if (partyKindOf(data) !== PartyMessageKind.TraitRelay || data.byteLength !== PartyTraitRelayBytes)
+        return null;
+    const copy = data.slice(0);
+    new DataView(copy).setUint8(2, slot);
+    return copy;
+}
+
+function partyDecodeTraitLight(data: ArrayBuffer): { enemyId: number, light: number } | null {
+    const r = partyOpen(data, PartyMessageKind.TraitLight);
+    const message = { enemyId: r.uint(), light: r.float() };
     return r.complete ? message : null;
 }
 
@@ -322,6 +338,7 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
     w.uint(Math.max(0, encounter.enemiesOnStage()));
     w.double(encounter.shieldFloor);
     w.bool(encounter.enemySpirit);
+    w.float(encounter.enemyLight);
     return w.bytes();
 }
 

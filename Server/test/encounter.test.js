@@ -30,6 +30,7 @@ function run(encounter, step) {
     case "auras": return encounter.noteAuras(step.slot, step.ticks);
     case "spirit": return encounter.callSpirit(step.count, step.hp);
     case "pull": return encounter.extendEnemyEffect(step.id, step.seconds);
+    case "light": return encounter.setLight(step.enemyId, step.light);
     case "weaken": return encounter.weakenNext(step.enemies, step.share, step.gold, step.vulnerability, step.vulnerabilitySeconds, step.effectId, step.owner);
     case "proposeWorld": return encounter.proposeWorld(step.world, step.riftId);
     case "cancelWorld": return encounter.cancelWorld();
@@ -59,6 +60,7 @@ function compare(encounter, expect, where) {
   assert.strictEqual(encounter.enemiesOnStage(), expect.enemiesOnStage, `${where}: enemiesOnStage`);
   assert.strictEqual(encounter.riftStagesCleared, expect.riftStagesCleared, `${where}: riftStagesCleared`);
   close(encounter.shieldFloor, expect.shieldFloor, `${where}: shieldFloor`);
+  close(encounter.enemyLight, expect.enemyLight, `${where}: enemyLight`);
   const history = encounter.history;
   assert.deepStrictEqual([history.killed, history.bosses].concat(history.rewards), expect.history, `${where}: history`);
   expect.members.forEach((member, slot) => {

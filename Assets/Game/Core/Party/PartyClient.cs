@@ -60,6 +60,10 @@ namespace Game.Core.Party
         private int _sentMarks = -1;
         private int _traitTimerTicks;
         private uint _nettedEnemy;
+        private int _nextFireflySlot;
+        private float _sentLight = -1;
+        private uint _sentLightEnemy;
+        private int _lightTicks;
         private long _lastCrits;
         private long _lastPullTick = long.MinValue / 2;
         private double _traitTimerSent;
@@ -283,6 +287,8 @@ namespace Game.Core.Party
                 ShareTraitTimer();
                 ShareTraitResource();
                 ShareTraitEffects();
+                ShareTraitRelays();
+                ShareLight();
                 ShareSpiritCalls();
                 WatchNet();
                 ShareReactions();
@@ -320,6 +326,10 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     if (InParty && resource.Slot != _ownSlot)
                         _loop.Resource.GiftFromAlly(System.Math.Min(resource.Amount, _rules.Buffs.AllyResourceMax));
+                    break;
+                case PartyMessageKind.TraitRelay when PartyCodec.TryDecode(_in, length, out TraitRelayMessage trait):
+                    if (InParty && trait.From != _ownSlot && trait.Reaches(_ownSlot))
+                        OnTraitRelay(trait);
                     break;
                 case PartyMessageKind.FocusRelay when PartyCodec.TryDecode(_in, length, out FocusRelayMessage relay):
                     if (InParty)
@@ -414,7 +424,11 @@ namespace Game.Core.Party
             _stateArrivalTick = _tick;
             _sharesSinceState = 0;
             if (InParty)
-                _loop.Resource.NoteAllyHits(AllyHits(state));
+            {
+                var allyHits = AllyHits(state);
+                _loop.Resource.NoteAllyHits(allyHits);
+                _loop.Combat.Lanternbearer.AddAllyHits(allyHits);
+            }
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 if (slot != _ownSlot && InParty)
@@ -829,6 +843,93 @@ namespace Game.Core.Party
                 return;
             _loop.State.TraitSpiritCalls = 0;
             SendToHost(PartyCodec.Encode(_out, new SpiritCallMessage { Count = (byte)System.Math.Min(byte.MaxValue, calls), Hp = (float)_loop.State.TraitSpiritHp }));
+        }
+
+        public double EnemyLight => InParty && _state.EnemyId == _localEnemyId ? _state.Light : 0;
+
+        private void OnTraitRelay(in TraitRelayMessage relay)
+        {
+            var boons = _loop.State.Boons;
+            switch (relay.Kind)
+            {
+                case TraitRelayKind.Firefly:
+                    boons.Land(relay.Count, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond), relay.Value, relay.Every, relay.Extra, relay.From, System.Math.Max(1, (int)relay.Max));
+                    break;
+                case TraitRelayKind.Spark:
+                    _loop.Combat.Lanternbearer.ReceiveSparks(relay.Count);
+                    break;
+                case TraitRelayKind.Beacon:
+                    boons.Flash(relay.Count, relay.Value);
+                    _loop.Combat.Lanternbearer.CutCooldowns(relay.Seconds);
+                    break;
+            }
+        }
+
+        private void ShareTraitRelays()
+        {
+            var relays = _loop.State.TraitRelays;
+            for (var i = 0; i < relays.Count; i++)
+            {
+                var relay = relays[i];
+                var to = relay.To == LanternbearerMechanics.AnyAlly ? NextAlly() : relay.To;
+                if (to == PartyEncounter.NoSlot)
+                {
+                    LandHere(relay);
+                    continue;
+                }
+                SendToHost(PartyCodec.Encode(_out, new TraitRelayMessage
+                {
+                    Kind = relay.Kind,
+                    To = (byte)to,
+                    Count = relay.Count,
+                    Every = relay.Every,
+                    Max = relay.Max,
+                    Value = (float)relay.Value,
+                    Seconds = (float)relay.Seconds,
+                    Extra = (float)relay.Extra
+                }));
+            }
+            relays.Clear();
+            var boons = _loop.State.Boons;
+            if (boons.SparksOwed <= 0 || boons.FireflyOwner < 0)
+                return;
+            SendToHost(PartyCodec.Encode(_out, new TraitRelayMessage { Kind = TraitRelayKind.Spark, To = (byte)boons.FireflyOwner, Count = (byte)System.Math.Min(byte.MaxValue, boons.SparksOwed) }));
+            boons.SparksOwed = 0;
+        }
+
+        private void LandHere(in TraitRelay relay)
+        {
+            if (relay.Kind == TraitRelayKind.Firefly)
+                _loop.State.Boons.Land(relay.Count, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond), relay.Value, relay.Every, relay.Extra, -1, System.Math.Max(1, (int)relay.Max));
+        }
+
+        private int NextAlly()
+        {
+            for (var step = 0; step < PartyRules.MaxSlots; step++)
+            {
+                var slot = (_nextFireflySlot + step) % PartyRules.MaxSlots;
+                if (slot == _ownSlot || Roster.Player(slot) == 0 || Roster.Presence(slot) == PartyPresence.Offline)
+                    continue;
+                _nextFireflySlot = slot + 1;
+                return slot;
+            }
+            return PartyEncounter.NoSlot;
+        }
+
+        private void ShareLight()
+        {
+            var light = (float)_loop.State.TraitLight;
+            if (light < 0)
+            {
+                _sentLight = -1;
+                return;
+            }
+            if (_lightTicks-- > 0 && System.Math.Abs(light - _sentLight) < 0.05f && _sentLightEnemy == _localEnemyId)
+                return;
+            _lightTicks = GameLoop.TicksPerSecond - 1;
+            _sentLight = light;
+            _sentLightEnemy = _localEnemyId;
+            SendToHost(PartyCodec.Encode(_out, new TraitLightMessage { EnemyId = _localEnemyId, Light = light }));
         }
 
         public bool EnemyNetted => NetShown();

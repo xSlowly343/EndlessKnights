@@ -194,7 +194,7 @@ namespace Game.Core.Sim
                 return CastResult.Passive;
             if (!Armed(slot))
                 return CastResult.NoWeapon;
-            if (_combat.Runedancer.Forbids(slot.Skill))
+            if (_combat.Runedancer.Forbids(slot.Skill) || _combat.Lanternbearer.Forbids(slot.Skill))
                 return CastResult.TraitCastsIt;
             var spare = !slot.Ready && slot.SpareCharges > 0;
             if (!slot.Ready && !spare)
@@ -202,19 +202,25 @@ namespace Game.Core.Sim
             var native = IsNative(slot) ? skill.Native : NativeTrait.None;
             var wasFull = _resource.IsFull;
             slot.WhenAtCast = WhenHolds(native);
-            if (!Pay(slot, native, slot.WhenAtCast, out var spent))
+            var beacon = _state.Boons.BeaconCharges > 0 && !(skill.Effect is AuraEffect);
+            var spent = 0.0;
+            if (!beacon && !Pay(slot, native, slot.WhenAtCast, out spent))
                 return CastResult.NotEnoughResource;
 
             var supportPower = SupportEffects.Power(slot, _state);
             var ownPower = OwnPower(slot);
             slot.CastPower = CastPower(slot) * SuperCast() * LevelPower(slot.Skill) * supportPower * ownPower * slot.BranchDamage;
             slot.AuraPower = supportPower * SupportEffects.AuraPower(slot) * ownPower * slot.BranchDamage;
+            if (beacon)
+                slot.CastPower *= 1 + _state.Boons.BeaconPower;
             if (skill.Role == SkillRole.Fast)
                 _resource.Gain(_hero.Value(CombatStats.ResourcePerFastSkill, 0));
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
             var cooldown = skill.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot);
-            if (spare)
+            if (beacon)
+                TakeBeacon();
+            else if (spare)
                 slot.SpareCharges--;
             else
                 slot.StartCooldown(Ticks(cooldown));
@@ -236,6 +242,12 @@ namespace Game.Core.Sim
             Release(slot, native, spent, wasFull, announce: true);
             _combat.Supporting = outer;
             return CastResult.Cast;
+        }
+
+        private void TakeBeacon()
+        {
+            if (--_state.Boons.BeaconCharges <= 0)
+                _state.Boons.BeaconPower = 0;
         }
 
         private double CastPower(SkillSlot slot)
@@ -321,6 +333,7 @@ namespace Game.Core.Sim
             _combat.Sandwalker.OnSkillCast(slot.Skill);
             _combat.Minstrel.OnSkillCast(slot.Skill);
             _combat.Dreamcatcher.OnSkillCast(slot.Skill);
+            _combat.Lanternbearer.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)

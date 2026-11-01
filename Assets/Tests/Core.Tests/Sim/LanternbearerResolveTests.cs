@@ -55,38 +55,14 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void BannerMakesAurasStrongerForEveryFiveThousandPixels()
-        {
-            var (loop, input) = Hero(HeroClass.Lanternbearer);
-            loop.Skills.TryCast(loop.Skills.Equip(Aura));
-            Assert.That(AuraDamage(loop), Is.EqualTo(1.2).Within(1e-9));
-
-            Move(loop, input, Rules.MousePx * 1.02);
-
-            Assert.That(loop.State.BannerBonus, Is.EqualTo(Rules.Step).Within(1e-9));
-            Assert.That(AuraDamage(loop), Is.EqualTo(1 + 0.2 * (1 + Rules.Step)).Within(1e-9));
-        }
-
-        [Test]
-        public void BannerStopsAtItsMaximum()
+        public void TheMouseNoLongerRaisesABanner()
         {
             var (loop, input) = Hero(HeroClass.Lanternbearer);
 
             Move(loop, input, Rules.MousePx * 20);
 
-            Assert.That(loop.State.BannerBonus, Is.EqualTo(Rules.Max).Within(1e-9));
-        }
-
-        [Test]
-        public void BannerFadesOnePercentEveryTenSeconds()
-        {
-            var (loop, input) = Hero(HeroClass.Lanternbearer);
-            Move(loop, input, Rules.MousePx * 1.02);
-
-            for (var i = 0; i < (int)(Rules.DecayEverySeconds * GameLoop.TicksPerSecond); i++)
-                loop.Tick();
-
-            Assert.That(loop.State.BannerBonus, Is.EqualTo(Rules.Step - Rules.Decay).Within(1e-9));
+            Assert.That(Rules.Step, Is.Zero);
+            Assert.That(loop.State.BannerBonus, Is.Zero);
         }
 
         [Test]
@@ -104,7 +80,7 @@ namespace Game.Core.Tests.Sim
         public void ForemansHammerIsTheStartingSkill()
         {
             Assert.That(TestWorld.Real.SkillBook.StartingGems("lanternbearer"), Has.Some.Property("Id").EqualTo("lanternbearer_hit_1"));
-            Assert.That(TestWorld.Real.Gems["lanternbearer_hit_1"].Skill!.Weapon, Is.EqualTo("banner"));
+            Assert.That(TestWorld.Real.Gems["lanternbearer_hit_1"].Skill!.Weapon, Is.EqualTo("lantern_staff"));
         }
     }
 }

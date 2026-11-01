@@ -432,7 +432,14 @@ namespace Game.Core.Content.Gems
                         AlbumAdd = node.HasField("album") ? node.Field("album").AsInt(0, 1000) : 0,
                         Bait = node.HasField("bait") ? node.Field("bait").AsInt(0, 100_000) : 0,
                         DozeSeconds = Number(node, "dozeSeconds", 600),
-                        LucidSeconds = Number(node, "lucidSeconds", 600)
+                        LucidSeconds = Number(node, "lucidSeconds", 600),
+                        LitHit = Number(node, "litHit", 100),
+                        Oil = Number(node, "oil", 1000),
+                        Light = Number(node, "light", 1),
+                        Fireflies = node.HasField("fireflies") ? node.Field("fireflies").AsInt(0, 100) : 0,
+                        Flash = node.HasField("flash") && node.Field("flash").AsBool(),
+                        GlowSeconds = Number(node, "glowSeconds", 600),
+                        GlowPerOil = Number(node, "glowPerOil", 1)
                     };
                 case "aura":
                     return new AuraEffect(

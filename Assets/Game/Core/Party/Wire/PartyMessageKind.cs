@@ -21,6 +21,8 @@ namespace Game.Core.Party.Wire
         Marks,
         PartyLoadout,
         SpiritCall,
-        NetPull
+        NetPull,
+        TraitRelay,
+        TraitLight
     }
 }

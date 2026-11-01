@@ -48,7 +48,8 @@ namespace Game.Core.Tests.Party
                 AllyCredit(),
                 RiftEnemies(),
                 SharedTimer(),
-                DreamTraits()
+                DreamTraits(),
+                LanternTraits()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -107,6 +108,21 @@ namespace Game.Core.Tests.Party
             r.Hit(0, 10);
             r.Hit(1, 10);
             r.Hit(0, 10);
+            r.Hit(1, 10);
+            return r.ToJson();
+        }
+
+        private static string LanternTraits()
+        {
+            var r = Recorder("the lantern light on the party enemy is shown to everyone and ends with the enemy", 2121);
+            r.Light(0.5);
+            r.Join(1);
+            r.Join(2);
+            r.Light(0.25);
+            r.Light(1.75);
+            r.Light(-1);
+            r.Hit(0, 10);
+            r.Light(0.4);
             r.Hit(1, 10);
             return r.ToJson();
         }

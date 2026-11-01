@@ -100,6 +100,13 @@ namespace Game.Core.Content.Gems
         public int Bait { get; set; }
         public double DozeSeconds { get; set; }
         public double LucidSeconds { get; set; }
+        public double LitHit { get; set; }
+        public double Oil { get; set; }
+        public double Light { get; set; }
+        public int Fireflies { get; set; }
+        public bool Flash { get; set; }
+        public double GlowSeconds { get; set; }
+        public double GlowPerOil { get; set; }
     }
 
     public sealed class PotionOption

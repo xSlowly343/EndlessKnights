@@ -266,6 +266,10 @@ namespace Game.Core.Sim
         public SandwalkerState Sandwalker { get; } = new SandwalkerState();
         public MinstrelState Minstrel { get; } = new MinstrelState();
         public DreamcatcherState Dreamcatcher { get; } = new DreamcatcherState();
+        public LanternbearerState Lanternbearer { get; } = new LanternbearerState();
+        public AllyBoons Boons { get; } = new AllyBoons();
+        public TraitRelays TraitRelays { get; } = new TraitRelays();
+        public double TraitLight { get; set; } = -1;
         public TraitEnemyEffects TraitEnemyEffects { get; } = new TraitEnemyEffects();
         public int TraitSpiritCalls { get; set; }
         public double TraitSpiritHp { get; set; }
@@ -335,6 +339,7 @@ namespace Game.Core.Sim
             Sandwalker.OnSpawn();
             Minstrel.OnSpawn();
             Dreamcatcher.OnSpawn();
+            Lanternbearer.OnSpawn();
         }
     }
 }

@@ -70,6 +70,7 @@ namespace Game.Core.Party
         public bool EnemyWeakened { get; private set; }
         public double EnemyWeakenGold { get; private set; }
         public bool EnemySpirit { get; private set; }
+        public double EnemyLight { get; private set; }
         public int SpiritCalls { get; private set; }
         public double SpiritHp { get; private set; } = 1;
         public bool Switching => PendingWorld != NoWorld;
@@ -712,6 +713,7 @@ namespace Game.Core.Party
                 BarFull *= 1 + BossShield;
             }
             TakeSpirit(kind);
+            EnemyLight = 0;
             BarLeft = BarFull * (1 - TakeWeaken());
             Events.Add(new PartyEvent(PartyEventKind.EnemySpawned, Tick, EnemyId, kind));
             if (EnemyWeakened && WeakenVulnerability > 0)
@@ -732,6 +734,14 @@ namespace Game.Core.Party
             SpiritCalls = System.Math.Min(traits.SpiritCallsMax, SpiritCalls + count);
             SpiritHp = System.Math.Min(traits.SpiritHpMax, hp);
             return SpiritCalls > 0;
+        }
+
+        public bool SetLight(uint enemyId, double light)
+        {
+            if (!Started || enemyId != EnemyId || !(light >= 0))
+                return false;
+            EnemyLight = System.Math.Min(1, light);
+            return true;
         }
 
         public bool ExtendEnemyEffect(int effectId, double seconds)

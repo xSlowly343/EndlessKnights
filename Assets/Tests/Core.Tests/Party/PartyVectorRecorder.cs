@@ -48,6 +48,9 @@ namespace Game.Core.Tests.Party
         public bool Spirit(int count, double hp) =>
             Record($"\"op\": \"spirit\", \"count\": {count}, \"hp\": {Number(hp)}", () => _encounter.CallSpirit(count, hp));
 
+        public bool Light(double light) =>
+            Record($"\"op\": \"light\", \"enemyId\": {_encounter.EnemyId}, \"light\": {Number(light)}", () => _encounter.SetLight(_encounter.EnemyId, light));
+
         public bool Pull(int id, double seconds) =>
             Record($"\"op\": \"pull\", \"id\": {id}, \"seconds\": {Number(seconds)}", () => _encounter.ExtendEnemyEffect(id, seconds));
 
@@ -148,6 +151,7 @@ namespace Game.Core.Tests.Party
                 .Append(", \"shieldFloor\": ").Append(Number(e.ShieldFloor))
                 .Append(", \"enemySpirit\": ").Append(Bool(e.EnemySpirit))
                 .Append(", \"spiritCalls\": ").Append(e.SpiritCalls)
+                .Append(", \"enemyLight\": ").Append(Number(e.EnemyLight))
                 .Append(", \"history\": [").Append(e.History.Killed).Append(", ").Append(e.History.Bosses).Append(", ").Append(e.History.Rewards0).Append(", ")
                 .Append(e.History.Rewards1).Append(", ").Append(e.History.Rewards2).Append(", ").Append(e.History.Rewards3).Append("]")
                 .Append(", \"members\": [");
