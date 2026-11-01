@@ -15,7 +15,6 @@ namespace Game.Core.Party
         private readonly double[] _applied = new double[PartyBuffRules.MaxStats];
         private PartyBuffRules _rules;
         private bool _dirty;
-        private bool _clearDay;
         private double _traitDamage;
         private double _traitCritChance;
         private double _traitGold;
@@ -40,7 +39,7 @@ namespace Game.Core.Party
 
         public AllyOffer Ally(int slot) => _allies[slot];
 
-        public double OwnValue(int index) => _rules.Stats[index].ValueOf(_hero) + ClearDayBonus(index) + TraitBonus(index);
+        public double OwnValue(int index) => _rules.Stats[index].ValueOf(_hero) + TraitBonus(index);
 
         private double TraitBonus(int index)
         {
@@ -55,11 +54,6 @@ namespace Game.Core.Party
                 return _state.TraitPartyCooldown;
             return from == CombatStats.PartyCritChance ? _state.TraitPartyCritChance : 0;
         }
-
-        public bool ClearDay => _clearDay;
-
-        private double ClearDayBonus(int index) =>
-            _clearDay && _rules.Stats[index].From == CombatStats.PartyCritChance ? _rules.ClearDayCritChance + System.Math.Max(0, _hero.Value(CombatStats.ClearDayCritChance, 0)) : 0;
 
         public double AppliedValue(int index) => _applied[index];
 
@@ -105,13 +99,6 @@ namespace Game.Core.Party
                     TickAura(ally.Auras[i]);
             }
             _state.PartyMembers = members;
-            var clearDay = _state.Is(HeroClass.Dreamcatcher) && _rules.ClearDayCritChance > 0
-                && _state.Resource > _rules.ClearDayAbove + _hero.Value(CombatStats.ClearDayAbove, 0);
-            if (clearDay != _clearDay)
-            {
-                _clearDay = clearDay;
-                _dirty = true;
-            }
             if (_state.TraitPartyDamage != _traitDamage || _state.TraitPartyCritChance != _traitCritChance || _state.TraitPartyGold != _traitGold
                 || _state.TraitPartyCritMultiplier != _traitCritMultiplier || _state.TraitPartyCooldown != _traitCooldown)
             {
