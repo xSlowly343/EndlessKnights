@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Sim
         {
             Assert.That(Set("jarl_forge").AllowsType("rune_daggers"), Is.True);
             Assert.That(Set("jarl_forge").AllowsType("wind_bow"), Is.False);
-            Assert.That(Set("onslaught").WeaponTypes, Is.EquivalentTo(new[] { "rune_daggers", "spectral_rapier", "wind_bow", "storm_wand", "scimitar" }));
+            Assert.That(Set("onslaught").WeaponTypes, Is.EquivalentTo(new[] { "rune_daggers", "spectral_rapier", "wind_bow", "crystal_wand", "scimitar" }));
             foreach (var set in TestWorld.Data.Items.Sets)
             {
                 foreach (var type in set.WeaponTypes)

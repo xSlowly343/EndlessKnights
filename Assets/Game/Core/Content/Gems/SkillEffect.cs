@@ -68,6 +68,14 @@ namespace Game.Core.Content.Gems
         public int Gusts { get; set; }
         public double CalmSeconds { get; set; }
         public bool Shot { get; set; }
+        public int Crystals { get; set; }
+        public double Shatter { get; set; }
+        public int Grow { get; set; }
+        public bool Crack { get; set; }
+        public double PrisonSeconds { get; set; }
+        public double HeartSeconds { get; set; }
+        public double Resonance { get; set; }
+        public double PerCrystal { get; set; }
     }
 
     public sealed class PotionOption

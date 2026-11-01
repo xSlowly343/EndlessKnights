@@ -400,7 +400,15 @@ namespace Game.Core.Content.Gems
                         Tension = Number(node, "tension", 1000),
                         Gusts = node.HasField("gusts") ? node.Field("gusts").AsInt(0, 100) : 0,
                         CalmSeconds = Number(node, "calmSeconds", 600),
-                        Shot = node.HasField("shot") && node.Field("shot").AsBool()
+                        Shot = node.HasField("shot") && node.Field("shot").AsBool(),
+                        Crystals = node.HasField("crystals") ? node.Field("crystals").AsInt(0, 100) : 0,
+                        Shatter = Number(node, "shatter", 100),
+                        Grow = node.HasField("grow") ? node.Field("grow").AsInt(0, 100) : 0,
+                        Crack = node.HasField("crack") && node.Field("crack").AsBool(),
+                        PrisonSeconds = Number(node, "prisonSeconds", 600),
+                        HeartSeconds = Number(node, "heartSeconds", 600),
+                        Resonance = Number(node, "resonance", 1000),
+                        PerCrystal = Number(node, "perCrystal", 100)
                     };
                 case "aura":
                     return new AuraEffect(

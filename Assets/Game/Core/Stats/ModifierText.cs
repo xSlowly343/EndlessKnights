@@ -18,7 +18,8 @@ namespace Game.Core.Stats
             "goldJackpotChance", "wandererChance", "offlineDpsShare", "cooldownPerResource", "cooldownPerResourceMax", "markDamage", "markPower", "companionPerMark", "typingPartyBonus", "overdriveSongs", "choirPower", "choirSoloShare", "auraInPause", "evilEyeEffect", "evilEyePower", "bondPower", "coldPower", "bloodPower", "golemPower", "overloadBoss", "minionBoss", "mouseQueueShare", "focusIdleFloor",
             "traitHitWeight", "runeRhyme", "runeSealPower", "runeWeave", "runeFirstRune", "runeCapital", "bladeKeep", "bladePartyCrit", "whirlSkillPerFive", "whirlPartyDamage",
             "breachExpose", "breachPartyDamage", "toucheExecute", "touchePublic", "toucheOffPenalty", "toucheMarkDamage", "toucheBossHalf", "touchePartyGold", "phantomPower", "phantomSelfPenalty", "phantomEcho", "phantomPartyDamage",
-            "calmPenalty", "calmPartyCrit", "shotPartyCrit", "gustPartyCooldown", "partySkillCooldown"
+            "calmPenalty", "calmPartyCrit", "shotPartyCrit", "gustPartyCooldown", "partySkillCooldown",
+            "shardArmor", "gardenArmor", "shellPenalty", "shellPartyDamage"
         };
 
         private static readonly StatTags[] LabelledTags =

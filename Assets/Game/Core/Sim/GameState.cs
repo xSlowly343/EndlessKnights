@@ -257,6 +257,7 @@ namespace Game.Core.Sim
         public RunedancerState Runedancer { get; } = new RunedancerState();
         public DuelistState Duelist { get; } = new DuelistState();
         public WindshotState Windshot { get; } = new WindshotState();
+        public ShardcallerState Shardcaller { get; } = new ShardcallerState();
         public double TraitPartyDamage { get; set; }
         public double TraitPartyCritChance { get; set; }
         public double TraitPartyGold { get; set; }
@@ -319,6 +320,7 @@ namespace Game.Core.Sim
             Runedancer.OnSpawn();
             Duelist.OnSpawn();
             Windshot.OnSpawn();
+            Shardcaller.OnSpawn();
         }
     }
 }

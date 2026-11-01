@@ -32,6 +32,7 @@ namespace Game.Core.Content
         public RunedancerRules Runedancer { get; private set; } = RunedancerRules.None;
         public DuelistRules Duelist { get; private set; } = DuelistRules.None;
         public WindshotRules Windshot { get; private set; } = WindshotRules.None;
+        public ShardcallerRules Shardcaller { get; private set; } = ShardcallerRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -53,7 +54,8 @@ namespace Game.Core.Content
                 Golem = GolemRules.Read(node.Field("golemancer").Field("golem")),
                 Runedancer = RunedancerRules.Read(node.Field("runedancer")),
                 Duelist = DuelistRules.Read(node.Field("duelist")),
-                Windshot = WindshotRules.Read(node.Field("windshot")) };
+                Windshot = WindshotRules.Read(node.Field("windshot")),
+                Shardcaller = ShardcallerRules.Read(node.Field("shardcaller")) };
         }
     }
 }

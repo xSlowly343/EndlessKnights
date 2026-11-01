@@ -30,20 +30,21 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void StaticComesFromMouseFrictionAndKeys()
+        public void ResonanceComesFromHitsButNotFromTheMouse()
         {
             var (loop, input) = Shardcaller();
 
             for (var i = 0; i < 5; i++)
             {
                 input.PressKeys(1);
-                input.MoveMouse((float)Static.MousePxPerPoint / 5);
+                input.MoveMouse(400);
                 loop.Tick();
                 loop.Tick();
                 loop.Tick();
             }
 
-            Assert.That(loop.State.Resource, Is.EqualTo(2).Within(0.05));
+            Assert.That(Static.MousePxPerPoint, Is.Zero);
+            Assert.That(loop.State.Resource, Is.EqualTo(5 * Static.PerKey).Within(0.05));
         }
 
         [Test]
