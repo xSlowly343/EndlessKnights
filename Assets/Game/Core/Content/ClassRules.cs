@@ -16,7 +16,6 @@ namespace Game.Core.Content
         public double ClockworkSlow { get; }
         public double ClockworkFloor { get; }
         public HunterMarkRules HunterMark { get; private set; } = HunterMarkRules.None;
-        public OverdriveRules Overdrive { get; private set; } = OverdriveRules.None;
         public StandingAuraRules StandingAuras { get; private set; } = StandingAuraRules.None;
         public EvilEyeRules EvilEye { get; private set; } = EvilEyeRules.None;
         public int OverloadQueueTargets { get; private set; }
@@ -39,7 +38,7 @@ namespace Game.Core.Content
                 node.Field("keyStreak").Field("gapSeconds").AsNumber(0.1, 60),
                 clockwork.Field("resourceAbove").AsNumber(0, 1e6),
                 clockwork.Field("slow").AsNumber(0, 1),
-                clockwork.Field("floor").AsNumber(0, 1)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")), Overdrive = minstrel.HasField("overdrive") ? OverdriveRules.Read(minstrel.Field("overdrive")) : OverdriveRules.None,
+                clockwork.Field("floor").AsNumber(0, 1)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")),
                 StandingAuras = StandingAuraRules.Read(node.Field("lanternbearer").Field("standingAuras")),
                 EvilEye = EvilEyeRules.Read(node.Field("whisperer").Field("evilEye")),
                 OverloadQueueTargets = node.Field("shardcaller").Field("overload").Field("queueTargets").AsInt(0, 100),

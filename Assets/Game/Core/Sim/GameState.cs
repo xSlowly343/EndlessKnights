@@ -276,9 +276,6 @@ namespace Game.Core.Sim
         public double Cold { get; set; }
         public double BloodStacks { get; set; }
         public int CompanionMarks { get; set; }
-        public int OverdriveTicks { get; set; }
-        public bool OverdriveSpent { get; set; }
-        public bool HeardByAll { get; set; }
         public double ClockworkSlow { get; set; }
         public double ClockworkFloor { get; set; } = 1;
 

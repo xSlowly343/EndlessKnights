@@ -32,7 +32,6 @@ namespace Game.Core.Tests.Sim
                 loop.Skills.Equip(TestWorld.Data.Gems[skill], role: ManualRole(loop.State.Skills.Count));
             PutOnTheWeapon(loop, skills);
             loop.State.Resource = 100;
-            loop.State.OverdriveSpent = true;
             loop.Events.Clear();
             return new SkillTestHero(loop, input);
         }
