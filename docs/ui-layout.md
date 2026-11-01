@@ -128,12 +128,12 @@
 
 Вся логика окон готова в `Game.Core.Ui` и покрыта тестами (`SkillWindowModelsTests`). В Unity остаётся вёрстка: создать элементы, раз в кадр (или раз в 0,25 с для панели) прочитать модель и показать, клики передать в методы ниже. Тексты — из `strings.json` через классы `*Texts`, своих строк в Presentation не писать.
 
-### 14г.7а — полоска: 9 мест (`SkillBarView`)
+### 14г.7а — полоска: 8 мест (`SkillBarView`; было 9, 14д.3)
 - Массив `SkillBarPlace[SkillBarLayout.Places]` завести один раз, в `Show` вызывать `SkillBarLayout.Fill(state.Skills, loop.Book, places)` — без аллокаций.
 - Порядок мест: 0 ЛКМ, 1 ПКМ, 2–4 авто, 5–8 ауры (тот же, что `PartyLoadoutMessage.PositionOf`).
 - `place.Row` — индекс в `state.Skills` (или `SkillLoadout.NoSlot`, место пустое); иконку, откат и рамку брать из `state.Skills[place.Row]`, как сейчас.
 - Подпись кнопки — `SkillBarTexts.Key(place.Role)` («Л», «П», у остальных пусто). Константы `SkillSystem.LeftButtonSlot/RightButtonSlot` больше не нужны.
-- Закрытое место (`!place.Open`) — замок и `SkillBarTexts.Locked(place)`: «этап 100», «этап 200» у авто, «ур. 10/25/40/55» у аур.
+- Закрытое место (`!place.Open`) — замок и `SkillBarTexts.Locked(place)`: «этап 100» у второго авто, «ур. 25/50/75» у аур (первая аура открыта сразу, 14д.3).
 - У мест с `place.CastsByItself` (авто и ауры) значок `SkillBarTexts.Self` («сам»).
 - Клик по месту: `loop.RequestCast(place.Row)`, если место не пустое.
 

@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Build
     {
         private static GemDef Gem(string id) => TestWorld.Data.Gems[id];
 
-        private static GameLoop WithGems(params string[] ids) => WithGemsAt(55, ids);
+        private static GameLoop WithGems(params string[] ids) => WithGemsAt(75, ids);
 
         private static GameLoop WithGemsAt(int heroLevel, params string[] ids)
         {
@@ -74,26 +74,30 @@ namespace Game.Core.Tests.Build
                 SkillSlotRole.Left, SkillSlotRole.Right, SkillSlotRole.Auto
             }));
             Assert.That(loop.Book.Equip(Gem(auras[7])), Is.EqualTo(BookResult.NoFreeSlot));
+            Assert.That(loop.State.Skills.Count, Is.EqualTo(SkillLoadout.HandSlots + 1 + SkillLoadout.AuraSlots));
         }
 
         [Test]
         public void AuraSlotsOpenWithTheHeroLevel()
         {
-            Assert.That(WithGemsAt(1).Book.AuraSlotCount, Is.EqualTo(0));
-            Assert.That(WithGemsAt(10).Book.AuraSlotCount, Is.EqualTo(1));
-            Assert.That(WithGemsAt(54).Book.AuraSlotCount, Is.EqualTo(3));
-            Assert.That(WithGemsAt(55).Book.AuraSlotCount, Is.EqualTo(4));
-            Assert.That(WithGemsAt(1).Book.AuraSlotLevel(3), Is.EqualTo(55));
+            Assert.That(WithGemsAt(1).Book.AuraSlotCount, Is.EqualTo(1));
+            Assert.That(WithGemsAt(24).Book.AuraSlotCount, Is.EqualTo(1));
+            Assert.That(WithGemsAt(25).Book.AuraSlotCount, Is.EqualTo(2));
+            Assert.That(WithGemsAt(50).Book.AuraSlotCount, Is.EqualTo(3));
+            Assert.That(WithGemsAt(74).Book.AuraSlotCount, Is.EqualTo(3));
+            Assert.That(WithGemsAt(75).Book.AuraSlotCount, Is.EqualTo(4));
+            Assert.That(WithGemsAt(1).Book.AuraSlotLevel(3), Is.EqualTo(75));
         }
 
         [Test]
-        public void BeforeTheFirstAuraSlotAnAuraTakesAButton()
+        public void TheFirstAuraSlotIsOpenFromTheStart()
         {
-            var loop = WithGemsAt(1, "march");
+            var loop = WithGemsAt(1, "march", "golden_fever");
 
             Assert.That(loop.Book.Equip(Gem("march")), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.State.Skills[0].Role, Is.EqualTo(SkillSlotRole.Left));
-            Assert.That(loop.Book.Assign(0, SkillSlotRole.Aura), Is.EqualTo(BookResult.NoFreeSlot));
+            Assert.That(loop.State.Skills[0].Role, Is.EqualTo(SkillSlotRole.Aura));
+            Assert.That(loop.Book.Equip(Gem("golden_fever")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.State.Skills[1].Role, Is.EqualTo(SkillSlotRole.Left));
         }
 
         [Test]

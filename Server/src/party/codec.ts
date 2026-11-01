@@ -210,7 +210,8 @@ function partyBitCount(mask: number): number {
     return count;
 }
 
-const PartyLoadoutBytes = 2 + 9 * 6;
+const PartySkillSlots = 8;
+const PartyLoadoutBytes = 2 + PartySkillSlots * 6;
 
 function partyRelayLoadout(data: ArrayBuffer, slot: number): ArrayBuffer | null {
     if (partyKindOf(data) !== PartyMessageKind.PartyLoadout || data.byteLength !== PartyLoadoutBytes)
@@ -231,7 +232,7 @@ function partyRelayOffer(data: ArrayBuffer, slot: number): ArrayBuffer | null {
 function partyOfferAuraTicks(data: ArrayBuffer): number {
     const view = new DataView(data);
     let ticks = 0;
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < PartySkillSlots; i++) {
         const at = 26 + i * 12;
         if (data.byteLength < at + 12)
             break;
