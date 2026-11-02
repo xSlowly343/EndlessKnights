@@ -433,6 +433,7 @@ namespace Game.Core.Party
                 _loop.Combat.Dowser.AddAllyHits(allyHits);
                 _loop.Combat.Soulbinder.AddAllyHits(allyHits);
                 _loop.Combat.Cartomancer.AddAllyHits(allyHits);
+                _loop.Combat.Golemancer.AddAllyHits(allyHits);
             }
             _loop.State.PartyAllHitting = InParty && AllAlliesHitting(state);
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
@@ -1025,6 +1026,15 @@ namespace Game.Core.Party
                 case TraitRelayKind.GulpBack:
                     _loop.Combat.Herbwitch.ReceiveGulp(relay.Count);
                     break;
+                case TraitRelayKind.Corner:
+                    GolemancerMechanics.OfferCorner(boons, relay.From, relay.Every, relay.Count, relay.Seconds);
+                    break;
+                case TraitRelayKind.CornerDone:
+                    _loop.Combat.Golemancer.ReceiveCorner(relay.From);
+                    break;
+                case TraitRelayKind.Golemling:
+                    GolemancerMechanics.LandGolemling(boons, relay.Value, relay.Seconds);
+                    break;
                 case TraitRelayKind.ParrotPerch:
                     boons.ParrotOwner = relay.From;
                     boons.ParrotPower = relay.Value;
@@ -1082,6 +1092,8 @@ namespace Game.Core.Party
                 _loop.State.Boons.LendPower = relay.Value;
                 _loop.State.Boons.LendTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
             }
+            else if (relay.Kind == TraitRelayKind.Golemling)
+                GolemancerMechanics.LandGolemling(_loop.State.Boons, relay.Value, relay.Seconds);
             else if (relay.Kind == TraitRelayKind.Petal)
                 HerbwitchMechanics.LandPetal(_loop.State.Boons, relay.Every, relay.Value, relay.Seconds, -1, relay.Max);
             else if (relay.Kind == TraitRelayKind.Mate)

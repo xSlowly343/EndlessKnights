@@ -152,7 +152,12 @@
       "mycelium": { "max": 50, "carry": 0.5, "deepCarry": 0.75, "queueShare": 0.25, "fastMultiplier": 2, "sporeHits": 5, "sporeStacks": 1, "relaySeconds": 2 },
       "sap": { "perHit": 2, "max": 200, "drinkHits": 20, "drinkHitsMin": 5, "sapPerStack": 0.2, "gulpHits": 10, "gulpResource": 5, "gulpShare": 0.5, "relaySeconds": 2, "leaveShare": 0.3, "partyPoisonSeconds": 10 }
     },
-    "golemancer": { "golem": { "seconds": 20, "hitsPerSecond": 0.5, "multiplier": 12, "stunSeconds": 1 } }
+    "golemancer": {
+      "golem": { "seconds": 20, "hitsPerSecond": 0.5, "multiplier": 12, "stunSeconds": 1 },
+      "seal": { "hits": 100, "hitsMin": 20, "golemSeconds": 20, "cornerBonus": 0.25, "cornerHits": 25, "cornerOfferSeconds": 5, "crumbleMultiplier": 5, "crystalPenalty": 0.2, "guardStopSeconds": 2, "twoShare": 0.6, "titanSeconds": 10 },
+      "eternal": { "runeHits": 100, "runeHitsMin": 20, "runeBonus": 0.05, "runesMax": 40, "runesCap": 80, "heavyEverySeconds": 2, "heavyMultiplier": 2.5, "brandMax": 10, "brandHits": 20, "brandSoloShare": 0.5, "brandMultiplier": 3, "effectSeconds": 1, "queueShare": 0.5, "bossMultiplier": 2, "normalPenalty": 0.3 },
+      "minor": { "hits": 20, "hitsMin": 5, "seconds": 15, "max": 4, "cap": 12, "queueShare": 0.5, "birth": 3 }
+    }
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },
   "hero": {

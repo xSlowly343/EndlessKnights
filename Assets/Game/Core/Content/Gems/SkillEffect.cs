@@ -157,6 +157,12 @@ namespace Game.Core.Content.Gems
         public double Venom { get; set; }
         public double VenomBurst { get; set; }
         public bool Drink { get; set; }
+        public int SealHits { get; set; }
+        public double GolemHit { get; set; }
+        public double GolemSeconds { get; set; }
+        public bool CompleteSeal { get; set; }
+        public int GolemRunes { get; set; }
+        public int Golemlings { get; set; }
     }
 
     public sealed class PotionOption

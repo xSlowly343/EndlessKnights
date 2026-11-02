@@ -131,6 +131,18 @@ namespace Game.Core.Sim
         public int GulpsOwed { get; set; }
         public long Gulps { get; set; }
         public double GulpResource { get; set; }
+        public int CornerOwner { get; set; } = -1;
+        public int CornerEvery { get; set; }
+        public int CornerTicks { get; set; }
+        public int CornerHits { get; set; }
+        public int CornerSeal { get; set; } = -1;
+        public bool CornerDone { get; set; }
+        public long CornersWritten { get; set; }
+        public int Golemlings { get; set; }
+        public double GolemlingPower { get; set; }
+        public int GolemlingTicks { get; set; }
+        public double GolemlingCarry { get; set; }
+        public long GolemlingHits { get; set; }
 
         public double GoldMultiplier => GoldTicks > 0 ? 1 + ElixirGold : 1;
 

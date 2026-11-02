@@ -44,6 +44,9 @@ namespace Game.Core.Sim
         Spores,
         SporeHit,
         Gulp,
-        GulpBack
+        GulpBack,
+        Corner,
+        CornerDone,
+        Golemling
     }
 }

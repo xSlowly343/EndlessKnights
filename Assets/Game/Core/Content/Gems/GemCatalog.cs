@@ -489,7 +489,13 @@ namespace Game.Core.Content.Gems
                         Bloom = node.HasField("bloom") && node.Field("bloom").AsBool(),
                         Venom = Number(node, "venom", 1000),
                         VenomBurst = Number(node, "venomBurst", 100),
-                        Drink = node.HasField("drink") && node.Field("drink").AsBool()
+                        Drink = node.HasField("drink") && node.Field("drink").AsBool(),
+                        SealHits = node.HasField("sealHits") ? node.Field("sealHits").AsInt(0, 1000) : 0,
+                        GolemHit = Number(node, "golemHit", 1000),
+                        GolemSeconds = Number(node, "golemSeconds", 600),
+                        CompleteSeal = node.HasField("seal") && node.Field("seal").AsBool(),
+                        GolemRunes = node.HasField("golemRunes") ? node.Field("golemRunes").AsInt(0, 100) : 0,
+                        Golemlings = node.HasField("golemlings") ? node.Field("golemlings").AsInt(0, 20) : 0
                     };
                 case "aura":
                     return new AuraEffect(
