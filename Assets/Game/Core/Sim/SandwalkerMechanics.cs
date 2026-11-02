@@ -146,10 +146,6 @@ namespace Game.Core.Sim
             TickMirages(mousePx);
             if (OnBottom && _state.FightingBoss && _state.EnemyAlive && !_state.SharedEnemy)
                 _state.BossTimerStopTicks = System.Math.Max(_state.BossTimerStopTicks, 2);
-            if (S.CaravanPartyTicks > 0)
-                S.CaravanPartyTicks--;
-            if (S.CaravanGoldTicks > 0)
-                S.CaravanGoldTicks--;
             if (S.PartyTimeTicks > 0)
                 S.PartyTimeTicks--;
             if (S.PartyStopTicks > 0)
@@ -161,20 +157,11 @@ namespace Game.Core.Sim
             if (!Mirage)
                 S.ClearMirages();
             _state.TraitPartyTimerSlow = PartyTimerSlow();
-            _state.TraitPartyCooldown = S.CaravanPartyTicks > 0 ? _rules.CaravanPartyCooldown + Positive(SandwalkerStats.CaravanPartyCooldown) : 0;
-            _state.TraitPartyGold = S.CaravanGoldTicks > 0 ? _rules.CaravanPartyGold : 0;
         }
 
         public double PartyTimerSlow()
         {
-            var slow = S.PartyStopTicks > 0 ? 1 : S.PartyTimeTicks > 0 ? _rules.PartyTimeSlow : 0;
-            if (!_state.FightingBoss)
-                return slow;
-            if (OnBottom)
-                slow = System.Math.Max(slow, _rules.FlipPartySlow);
-            if (Mirage && S.Mirages > 0 && _rules.MirageTime > 0)
-                slow = System.Math.Max(slow, System.Math.Min(1, S.Mirages * _rules.MiragePartySlow * MirageTime / _rules.MirageTime));
-            return slow;
+            return S.PartyStopTicks > 0 ? 1 : S.PartyTimeTicks > 0 ? _rules.PartyTimeSlow : 0;
         }
 
         private void OnNewEnemy()
@@ -266,9 +253,6 @@ namespace Game.Core.Sim
             _state.PendingResource += sand;
             _state.TraitPartyResourceGift = System.Math.Max(_state.TraitPartyResourceGift, sand);
             CutCooldowns(CampCutSeconds, Flag(SandwalkerStats.CaravanAll));
-            S.CaravanPartyTicks = Ticks(_rules.CaravanPartySeconds);
-            if (Flag(SandwalkerStats.CaravanGold))
-                S.CaravanGoldTicks = Ticks(_rules.CaravanGoldSeconds);
         }
 
         private void CutCooldowns(double seconds, bool all)

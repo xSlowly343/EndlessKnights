@@ -258,6 +258,7 @@ namespace Game.Core.Sim
             if (_state.VulnerabilityTicks > 0 && --_state.VulnerabilityTicks == 0)
                 _state.VulnerabilityShare = 0;
             CountStreakTime();
+            ClearTraitParty();
             _runedancer.Tick();
             _duelist.Tick();
             _windshot.Tick(input.MousePx);
@@ -381,6 +382,9 @@ namespace Game.Core.Sim
                 if (source == DamageSource.Keyboard)
                     _state.PendingResource += System.Math.Max(0, _hero.Value(CombatStats.ResourcePerCrit, 0, StatTags.Keyboard));
             }
+
+            if (RollDoubleHit(tags))
+                damage *= 2;
 
             if (supporting != null && Redirected(supporting, damage))
                 return;
@@ -603,6 +607,25 @@ namespace Game.Core.Sim
                 return false;
             }
             return ++_hitsTowardCrit % every == 0;
+        }
+
+        private void ClearTraitParty()
+        {
+            _state.TraitPartyDamage = 0;
+            _state.TraitPartyCritChance = 0;
+            _state.TraitPartyCritMultiplier = 0;
+            _state.TraitPartyGold = 0;
+            _state.TraitPartyCooldown = 0;
+            _state.TraitShareDamage = 0;
+            _state.TraitShareCritChance = 0;
+            _state.TraitShareCritMultiplier = 0;
+            _state.TraitShareGold = 0;
+        }
+
+        private bool RollDoubleHit(StatTags tags)
+        {
+            var chance = System.Math.Min(1, _hero.Value(CombatStats.DoubleHitChance, 0, tags));
+            return chance > 0 && _state.Rng.NextDouble() < chance;
         }
 
         private bool RollCrit(StatTags tags, SkillSlot? supporting)

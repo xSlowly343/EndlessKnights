@@ -18,8 +18,6 @@ namespace Game.Core.Content
         public double ChorusGift { get; private set; } = 10;
         public int SongHits { get; private set; } = 40;
         public int SongHitsMin { get; private set; } = 5;
-        public double SongPartyCooldown { get; private set; } = 0.5;
-        public double SongPartyCrit { get; private set; } = 0.2;
         public double SongSoloMultiplier { get; private set; } = 2;
         public double SongAllEverySeconds { get; private set; } = 30;
         public double SongAllSeconds { get; private set; } = 5;
@@ -55,8 +53,6 @@ namespace Game.Core.Content
                 ChorusGift = verse.Field("gift").AsNumber(0, 1000),
                 SongHits = song.Field("hits").AsInt(1, 10_000),
                 SongHitsMin = song.Field("hitsMin").AsInt(1, 10_000),
-                SongPartyCooldown = song.Field("partyCooldown").AsNumber(0, 10),
-                SongPartyCrit = song.Field("partyCrit").AsNumber(0, 10),
                 SongSoloMultiplier = song.Field("soloMultiplier").AsNumber(1, 100),
                 SongAllEverySeconds = song.Field("allEverySeconds").AsNumber(0.1, 3600),
                 SongAllSeconds = song.Field("allSeconds").AsNumber(0, 3600),

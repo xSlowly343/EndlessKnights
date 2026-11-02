@@ -114,7 +114,7 @@ namespace Game.Core.Sim
             }
             if (Luck)
             {
-                _state.TraitPartyGold = Flag(DowserStats.LuckGold) ? S.LuckGold : 0;
+                _state.TraitShareGold = Flag(DowserStats.LuckGold) ? S.LuckGold : 0;
                 ShareLuck();
             }
             if (Artel && InParty && S.CallTicks-- <= 0)

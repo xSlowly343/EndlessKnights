@@ -255,7 +255,7 @@ namespace Game.Core.Tests.Sim
             Party(gold, 2);
             Kill(gold);
             gold.Combat.Dowser.Tick();
-            Assert.That(gold.State.TraitPartyGold, Is.EqualTo(Rules.LuckGoldPerKill).Within(1e-9));
+            Assert.That(gold.State.TraitShareGold, Is.EqualTo(Rules.LuckGoldPerKill).Within(1e-9));
         }
 
         [Test]
@@ -353,7 +353,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => modifier.Stat.Name.StartsWith("party") || modifier.When == ModifierCondition.InParty
+                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat) || modifier.Stat.Name.EndsWith("Party")
                     || modifier.Stat.Name == DowserStats.LuckParty.Name || modifier.Stat.Name == DowserStats.ArtelParty.Name)), Is.GreaterThanOrEqualTo(5));
         }
 

@@ -40,6 +40,7 @@ namespace Game.Core.Sim
         public static readonly StatId DamageVsBoss = new StatId("damageVsBoss");
         public static readonly StatId DamageAtBossTimerEnd = new StatId("damageAtBossTimerEnd");
         public static readonly StatId BossTimerSlow = new StatId("bossTimerSlow");
+        public static readonly StatId DoubleHitChance = new StatId("doubleHitChance");
         public static readonly StatId DamagePerKill = new StatId("damagePerKill");
         public static readonly StatId FirstHitsBonus = new StatId("firstHitsBonus");
         public static readonly StatId FrozenFirstHit = new StatId("frozenFirstHit");

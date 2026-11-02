@@ -4,6 +4,7 @@ using Game.Core.Content;
 using Game.Core.Content.Tree;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Stats;
 using NUnit.Framework;
@@ -104,7 +105,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.State.Minstrel.Verses, Is.EqualTo(1));
             Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Keyboard), Is.EqualTo(1.1).Within(1e-9));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(0.1).Within(1e-9));
+            Assert.That(loop.State.Minstrel.PartyVerse, Is.EqualTo(0.1).Within(1e-9));
         }
 
         [Test]
@@ -119,7 +120,7 @@ namespace Game.Core.Tests.Sim
             Wait(loop, 1.5);
 
             Assert.That(loop.State.Minstrel.Verses, Is.Zero);
-            Assert.That(loop.State.TraitPartyDamage, Is.Zero);
+            Assert.That(loop.State.Minstrel.PartyVerse, Is.Zero);
         }
 
         [Test]
@@ -136,7 +137,8 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Minstrel.Choruses, Is.EqualTo(1));
             Assert.That(loop.Combat.Minstrel.InChorus, Is.True);
             Assert.That(loop.Combat.Minstrel.VerseBonus, Is.EqualTo(3 * 0.1 * 2).Within(1e-9));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(0.6 + 0.3 * 2).Within(1e-9));
+            Assert.That(loop.State.Minstrel.PartyVerse, Is.EqualTo(0.6).Within(1e-9));
+            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(0.3 * 2).Within(1e-9), "the hymn of the skill still doubles in the chorus");
 
             Wait(loop, Rules.ChorusSeconds);
             Assert.That(loop.Combat.Minstrel.InChorus, Is.False);
@@ -222,9 +224,9 @@ namespace Game.Core.Tests.Sim
             var (loop, input) = Hero(Flat(MinstrelStats.SongPower, 0.15), Flat(MinstrelStats.SongGift, 1));
             loop.Tick();
 
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(0.15).Within(1e-9));
-            Assert.That(loop.State.TraitPartyCooldown, Is.EqualTo(0.15 * Rules.SongPartyCooldown).Within(1e-9));
-            Assert.That(loop.State.TraitPartyCritChance, Is.EqualTo(0.15 * Rules.SongPartyCrit).Within(1e-9));
+            Assert.That(loop.State.Minstrel.PartySong, Is.EqualTo(0.15).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.SongShare, loop.State), Is.EqualTo(0.15).Within(1e-9));
+            Assert.That(loop.State.TraitPartyDamage, Is.Zero, "the song reaches the party through the buff lines of the Path");
 
             var pending = loop.State.PendingResource;
             Cast(loop, "minstrel_path_2");
@@ -238,12 +240,12 @@ namespace Game.Core.Tests.Sim
             var (louder, _) = Hero(Flat(MinstrelStats.SongPower, 0.25), Flat(MinstrelStats.SongSelfPenalty, 0.5));
             louder.Tick();
             Assert.That(louder.Combat.Minstrel.SelfSong, Is.EqualTo(0.125).Within(1e-9));
-            Assert.That(louder.State.TraitPartyDamage, Is.EqualTo(0.25).Within(1e-9));
+            Assert.That(louder.State.Minstrel.PartySong, Is.EqualTo(0.25).Within(1e-9));
 
             var (herself, _) = Hero(Flat(MinstrelStats.SongPower, 0.15), Flat(MinstrelStats.SongSolo, 1), Flat(MinstrelStats.SongPartyPenalty, 0.5));
             herself.Tick();
             Assert.That(herself.Combat.Minstrel.SelfSong, Is.EqualTo(0.3).Within(1e-9));
-            Assert.That(herself.State.TraitPartyDamage, Is.EqualTo(0.075).Within(1e-9));
+            Assert.That(herself.State.Minstrel.PartySong, Is.EqualTo(0.075).Within(1e-9));
             herself.State.PartyMembers = 2;
             Assert.That(herself.Combat.Minstrel.SelfSong, Is.EqualTo(0.15).Within(1e-9));
         }
@@ -294,7 +296,7 @@ namespace Game.Core.Tests.Sim
             Hits(loop, input, 19);
             Assert.That(Hit(loop, input), Has.Count.EqualTo(1));
             Assert.That(loop.State.Minstrel.Asleep, Is.True);
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(0.4).Within(1e-9));
+            Assert.That(loop.State.Minstrel.PartySleep, Is.EqualTo(0.4).Within(1e-9));
 
             loop.Events.Clear();
             for (var i = 0; i < 5; i++)
@@ -311,7 +313,7 @@ namespace Game.Core.Tests.Sim
             var wake = Damage(loop);
             Assert.That(loop.State.Minstrel.Asleep, Is.False);
             Assert.That(wake.Single(), Is.EqualTo(stored).Within(stored * 1e-9));
-            Assert.That(loop.State.TraitPartyDamage, Is.Zero);
+            Assert.That(loop.State.Minstrel.PartySleep, Is.Zero);
         }
 
         [Test]
@@ -414,8 +416,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => modifier.Stat.Name.StartsWith("party") || modifier.When == ModifierCondition.InParty
-                    || modifier.Stat.Name == MinstrelStats.VerseParty.Name || modifier.Stat.Name == MinstrelStats.SongParty.Name || modifier.Stat.Name == MinstrelStats.SleepParty.Name)), Is.GreaterThanOrEqualTo(5));
+                .Any(modifier => CoopLine.IsCoop(modifier.Stat))), Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

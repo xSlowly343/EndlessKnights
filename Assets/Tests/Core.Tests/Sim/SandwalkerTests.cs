@@ -4,8 +4,10 @@ using Game.Core.Content;
 using Game.Core.Content.Tree;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Stats;
+using Game.Core.Tests.Party;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Sim
@@ -138,7 +140,7 @@ namespace Game.Core.Tests.Sim
             var running = loop.State.BossTicksLeft;
             Wait(loop, 1);
             Assert.That(loop.State.BossTicksLeft, Is.LessThan(running));
-            Assert.That(loop.State.TraitPartyTimerSlow, Is.Zero);
+            Assert.That(CoopSignals.Read(CoopSignal.SandBottom, loop.State), Is.Zero);
 
             Cast(loop, "sandwalker_path_1");
             Hits(loop, input, 150);
@@ -148,7 +150,7 @@ namespace Game.Core.Tests.Sim
             Wait(loop, 3);
 
             Assert.That(loop.State.BossTicksLeft, Is.EqualTo(stopped));
-            Assert.That(loop.State.TraitPartyTimerSlow, Is.EqualTo(Rules.FlipPartySlow));
+            Assert.That(CoopSignals.Read(CoopSignal.SandBottom, loop.State), Is.EqualTo(1), "the bottom line stops the timer for the party");
         }
 
         [Test]
@@ -204,12 +206,9 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Skills[slot].CooldownTicks, Is.EqualTo(300 - 1 - Rules.CampCutSeconds * GameLoop.TicksPerSecond).Within(1));
             Assert.That(loop.State.Skills[shortSlot].CooldownTicks, Is.EqualTo(29).Within(1));
             Assert.That(loop.State.TraitPartyResourceGift, Is.EqualTo(Rules.CampSand));
-            Assert.That(loop.State.TraitPartyCooldown, Is.EqualTo(Rules.CaravanPartyCooldown).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.Camp, loop.State), Is.EqualTo(1));
             loop.Tick();
             Assert.That(loop.State.Resource, Is.GreaterThanOrEqualTo(Rules.CampSand));
-
-            Wait(loop, Rules.CaravanPartySeconds + 0.5);
-            Assert.That(loop.State.TraitPartyCooldown, Is.Zero);
             Assert.That(loop.State.Sandwalker.Camps, Is.EqualTo(1), "without steps the caravan stands");
         }
 
@@ -237,7 +236,8 @@ namespace Game.Core.Tests.Sim
             Assert.That(Damage(oasis).Max() / expected, Is.EqualTo(1).Within(0.05));
             Assert.That(oasis.State.TraitPartyResourceGift, Is.EqualTo(Rules.CampSand * Rules.OasisSandMultiplier).Within(1e-9));
 
-            var (all, allInput) = Hero(Flat(SandwalkerStats.CaravanPower, 6), Flat(SandwalkerStats.CaravanAll, 1), Flat(SandwalkerStats.CaravanGold, 1));
+            var (all, allInput) = Hero(Flat(SandwalkerStats.CaravanPower, 6), Flat(SandwalkerStats.CaravanAll, 1),
+                CoopStatNames.Line("{ 'to': 'party', 'stat': 'gold', 'kind': 'increased', 'value': 0.25, 'after': { 'signal': 'camp', 'seconds': 10 } }"));
             var first = Equip(all, "sandwalker_strong_3");
             var second = Equip(all, "sandwalker_strong_2");
             all.State.Skills[first].CooldownTicks = 300;
@@ -245,7 +245,8 @@ namespace Game.Core.Tests.Sim
             Step(all, allInput, Rules.CampPx);
             Assert.That(all.State.Skills[first].CooldownTicks, Is.EqualTo(289).Within(1));
             Assert.That(all.State.Skills[second].CooldownTicks, Is.EqualTo(189).Within(1));
-            Assert.That(all.State.TraitPartyGold, Is.EqualTo(Rules.CaravanPartyGold).Within(1e-9));
+            all.Tick();
+            Assert.That(all.PartyBuffs.CoopApplied(TestWorld.Data.Party.Buffs.Coop.IndexOf(CombatStats.Gold, ModifierKind.Increased)), Is.EqualTo(0.25).Within(1e-9));
         }
 
         [Test]
@@ -286,7 +287,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.State.Sandwalker.Mirages, Is.EqualTo(2), "the haze brings a mirage to the boss");
             Assert.That(loop.State.BossTicksLeft - before, Is.EqualTo(2 * Rules.MirageTime * GameLoop.TicksPerSecond - 1).Within(1));
-            Assert.That(loop.State.TraitPartyTimerSlow, Is.EqualTo(2 * Rules.MiragePartySlow).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.Mirages, loop.State), Is.EqualTo(2));
 
             var mid = loop.State.BossTicksLeft;
             Cast(loop, "sandwalker_path_3");
@@ -398,8 +399,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => modifier.Stat.Name.StartsWith("party") || modifier.When == ModifierCondition.InParty
-                    || modifier.Stat.Name == SandwalkerStats.CampSand.Name || modifier.Stat.Name == SandwalkerStats.CaravanPartyCooldown.Name || modifier.Stat.Name == SandwalkerStats.MirageTime.Name)), Is.GreaterThanOrEqualTo(5));
+                .Any(modifier => CoopLine.IsCoop(modifier.Stat))), Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

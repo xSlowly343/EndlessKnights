@@ -12,8 +12,6 @@ namespace Game.Core.Sim
         public long Flips { get; set; }
         public double RoadPx { get; set; }
         public long Camps { get; set; }
-        public int CaravanPartyTicks { get; set; }
-        public int CaravanGoldTicks { get; set; }
         public double HazePx { get; set; }
         public int MirageHits { get; set; }
         public int Mirages { get; private set; }

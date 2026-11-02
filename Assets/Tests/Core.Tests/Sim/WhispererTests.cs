@@ -146,8 +146,8 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.State.Whisperer.Knots, Is.EqualTo(WhispererState.MaxKnots));
             Assert.That(loop.Combat.Whisperer.DamageTaken(), Is.EqualTo(1 + 0.1 * 3 * Rules.KnotSeventh).Within(1e-9));
-            Assert.That(loop.State.TraitPartyCritMultiplier, Is.EqualTo(Rules.KnotCritMultiplier * Rules.KnotSeventh).Within(1e-9));
-            Assert.That(loop.State.TraitPartyGold, Is.EqualTo(Rules.KnotGold * Rules.KnotSeventh).Within(1e-9));
+            Assert.That(loop.State.TraitShareCritMultiplier, Is.EqualTo(Rules.KnotCritMultiplier * Rules.KnotSeventh).Within(1e-9));
+            Assert.That(loop.State.TraitShareGold, Is.EqualTo(Rules.KnotGold * Rules.KnotSeventh).Within(1e-9));
             Assert.That(loop.State.TraitTimerSlow, Is.EqualTo(Rules.KnotSlow * Rules.KnotSeventh).Within(1e-9));
         }
 
@@ -438,7 +438,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => modifier.Stat.Name.StartsWith("party") || modifier.When == ModifierCondition.InParty
+                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat) || modifier.Stat.Name.EndsWith("Party")
                     || modifier.Stat.Name == WhispererStats.KnotParty.Name || modifier.Stat.Name == WhispererStats.NameParty.Name
                     || modifier.Stat.Name == WhispererStats.HushParty.Name)), Is.GreaterThanOrEqualTo(5));
         }

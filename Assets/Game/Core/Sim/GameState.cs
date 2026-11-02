@@ -171,6 +171,7 @@ namespace Game.Core.Sim
         public long Kills { get; set; }
         public long BossKills { get; set; }
         public int PartyMembers { get; set; } = 1;
+        public Game.Core.Party.PartyGiveMode PartyMode { get; set; }
         public double NextKillReward { get; set; } = 1;
         public double NextKillShardChance { get; set; }
         public double NextKillShards { get; set; }
@@ -284,6 +285,10 @@ namespace Game.Core.Sim
         public double TraitPartyCooldown { get; set; }
         public double TraitPartyTimerSlow { get; set; }
         public double TraitPartyResourceGift { get; set; }
+        public double TraitShareDamage { get; set; }
+        public double TraitShareCritChance { get; set; }
+        public double TraitShareCritMultiplier { get; set; }
+        public double TraitShareGold { get; set; }
         public double TraitTimerSlow { get; set; }
         public double TraitLoopSeconds { get; set; }
         public double TraitLoopShare { get; set; }

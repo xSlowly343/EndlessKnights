@@ -8,7 +8,6 @@ namespace Game.Core.Sim
         public static readonly StatId LineHits = new StatId("lineHits");
         public static readonly StatId VerseSeconds = new StatId("verseSeconds");
         public static readonly StatId VerseMax = new StatId("verseMax");
-        public static readonly StatId VerseParty = new StatId("verseParty");
         public static readonly StatId ChorusBoost = new StatId("chorusBoost");
         public static readonly StatId ChorusEncore = new StatId("chorusEncore");
         public static readonly StatId ChorusSpend = new StatId("chorusSpend");
@@ -26,7 +25,6 @@ namespace Game.Core.Sim
         public static readonly StatId SongAll = new StatId("songAll");
         public static readonly StatId SongStill = new StatId("songStill");
         public static readonly StatId SongGift = new StatId("songGift");
-        public static readonly StatId SongParty = new StatId("songParty");
 
         public static readonly StatId SleepPower = new StatId("sleepPower");
         public static readonly StatId NoteHits = new StatId("noteHits");
@@ -36,6 +34,5 @@ namespace Game.Core.Sim
         public static readonly StatId SleepOnBoss = new StatId("sleepOnBoss");
         public static readonly StatId SleepLight = new StatId("sleepLight");
         public static readonly StatId SleepByCast = new StatId("sleepByCast");
-        public static readonly StatId SleepParty = new StatId("sleepParty");
     }
 }

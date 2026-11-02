@@ -47,9 +47,7 @@ namespace Game.Core.Sim
 
         public int GrowTicks => Ticks(System.Math.Max(_rules.GardenGrowMinSeconds, _rules.GardenGrowSeconds + _hero.Value(ShardcallerStats.GardenGrow, 0)));
 
-        public double ShardArmor => System.Math.Max(0, _rules.ShardArmor + _hero.Value(ShardcallerStats.ShardArmor, 0));
 
-        public double GardenArmor => System.Math.Max(0, _rules.GardenArmor + _hero.Value(ShardcallerStats.GardenArmor, 0));
 
         public double ShellPenalty => System.Math.Min(0.9, System.Math.Max(0, _rules.ShellPenalty + _hero.Value(ShardcallerStats.ShellPenalty, 0)));
 
@@ -125,14 +123,7 @@ namespace Game.Core.Sim
 
         public double PartyDamage()
         {
-            var damage = S.HeartTicks > 0 ? _rules.HeartPartyDamage : 0;
-            if (Shards)
-                damage += S.Crystals * ShardArmor;
-            else if (Garden)
-                damage += S.Crystals * S.Size * GardenArmor;
-            if (Shell && S.Cracked)
-                damage += (_rules.ShellPartyDamage + Positive(ShardcallerStats.ShellPartyDamage)) * (Flag(ShardcallerStats.ShellPartyDouble) ? 2 : 1);
-            return damage;
+            return S.HeartTicks > 0 ? _rules.HeartPartyDamage : 0;
         }
 
         private void OnNewEnemy()

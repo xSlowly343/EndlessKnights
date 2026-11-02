@@ -125,40 +125,14 @@ namespace Game.Core.Sim
         public void Tick()
         {
             if (!On)
-            {
-                _state.TraitPartyGold = 0;
                 return;
-            }
             if (S.NewEnemy)
                 CarryToNewEnemy();
             TickBreach();
             TickPhantom();
-            if (S.ExposeTicks > 0 && --S.ExposeTicks == 0)
-                S.ExposeShare = 0;
-            if (S.PublicTicks > 0 && --S.PublicTicks == 0)
-                S.PublicShare = 0;
-            if (S.GoldTicks > 0)
-                S.GoldTicks--;
-            _state.TraitPartyDamage = PartyDamage();
-            _state.TraitPartyCritChance = Phantom && S.PhantomFighting && Flag(DuelistStats.PhantomFeint) ? _rules.PhantomFeintCrit : 0;
-            _state.TraitPartyGold = S.GoldTicks > 0 ? _rules.TouchePartyGold + Positive(DuelistStats.TouchePartyGold) : 0;
         }
 
         public void EndTick() => S.PushHits();
-
-        private double PartyDamage()
-        {
-            var damage = 0.0;
-            if (Breach && S.BreachOpen)
-                damage += _rules.BreachPartyDamage + Positive(DuelistStats.BreachPartyDamage);
-            if (S.ExposeTicks > 0)
-                damage += S.ExposeShare;
-            if (S.PublicTicks > 0)
-                damage += S.PublicShare;
-            if (Phantom && S.PhantomAwayTicks > 0)
-                damage += _rules.PhantomPartyDamage + Positive(DuelistStats.PhantomPartyDamage);
-            return damage;
-        }
 
         private void CarryToNewEnemy()
         {
@@ -219,11 +193,6 @@ namespace Game.Core.Sim
             if (!Flag(DuelistStats.BreachDouble) && !Flag(DuelistStats.BreachAlways))
                 _state.PendingResource += (_rules.BreachHonor + _hero.Value(DuelistStats.BreachHonor, 0)) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             Press();
-            var expose = Positive(DuelistStats.BreachExpose);
-            if (expose <= 0)
-                return;
-            S.ExposeShare = System.Math.Min(_rules.BreachExposeMax, S.ExposeShare + expose);
-            S.ExposeTicks = Ticks(_rules.BreachExposeSeconds);
         }
 
         private void Press()
@@ -265,15 +234,8 @@ namespace Game.Core.Sim
         private void Strike()
         {
             S.Touches++;
-            if (_state.FightingBoss && _rules.TouchePartyGold + Positive(DuelistStats.TouchePartyGold) > 0)
-                S.GoldTicks = Ticks(_rules.TouchePartyGoldSeconds);
-            var share = Positive(DuelistStats.TouchePublic);
-            if (share > 0)
-            {
-                S.PublicShare = share;
-                S.PublicTicks = Ticks(_rules.TouchePublicSeconds);
+            if (Flag(DuelistStats.TouchePublic))
                 return;
-            }
             var spawns = S.Spawns;
             TraitHit(TouchePower * BossHalfMultiplier());
             Execute();
@@ -299,21 +261,17 @@ namespace Game.Core.Sim
             if (!Phantom)
             {
                 S.PhantomFighting = false;
-                S.PhantomAwayTicks = 0;
-                S.PhantomPartyWaitTicks = 0;
                 S.PhantomPauseCarry = 0;
                 return;
             }
-            TickPhantomParty();
-            var away = S.PhantomAwayTicks > 0;
             if (S.PhantomSwitchTicks > 0)
                 S.PhantomSwitchTicks--;
             if (Flag(DuelistStats.PhantomSwap))
-                S.PhantomFighting = !away;
+                S.PhantomFighting = true;
             else if (Flag(DuelistStats.PhantomPause))
-                S.PhantomFighting = !away && (S.PhantomSwitchTicks > 0 || _state.KeylessTicks * GameLoop.TickSeconds >= _rules.PhantomPauseAfterSeconds);
+                S.PhantomFighting = S.PhantomSwitchTicks > 0 || _state.KeylessTicks * GameLoop.TickSeconds >= _rules.PhantomPauseAfterSeconds;
             else
-                S.PhantomFighting = !away && (S.PhantomSwitchTicks > 0 || Fast());
+                S.PhantomFighting = S.PhantomSwitchTicks > 0 || Fast();
             PauseStrikes();
         }
 
@@ -330,20 +288,6 @@ namespace Game.Core.Sim
                 return false;
             S.PhantomLingerTicks--;
             return true;
-        }
-
-        private void TickPhantomParty()
-        {
-            if (S.PhantomAwayTicks > 0)
-            {
-                S.PhantomAwayTicks--;
-                return;
-            }
-            var every = Ticks(System.Math.Max(1, _rules.PhantomPartyEverySeconds + _hero.Value(DuelistStats.PhantomPartyEvery, 0)));
-            if (++S.PhantomPartyWaitTicks < every)
-                return;
-            S.PhantomPartyWaitTicks = 0;
-            S.PhantomAwayTicks = Ticks(_rules.PhantomPartySeconds);
         }
 
         private void PauseStrikes()

@@ -404,7 +404,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => modifier.Stat.Name.StartsWith("party") || modifier.When == ModifierCondition.InParty
+                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat) || modifier.Stat.Name.EndsWith("Party")
                     || modifier.Stat.Name == AlchemistStats.MixParty.Name || modifier.Stat.Name == AlchemistStats.SolventParty.Name
                     || modifier.Stat.Name == AlchemistStats.ElixirParty.Name)), Is.GreaterThanOrEqualTo(5));
         }

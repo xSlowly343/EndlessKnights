@@ -45,6 +45,7 @@ namespace Game.Core.Content.Tree
         public IReadOnlyList<TreeNodeDef> Nodes { get; }
         public string Blurb { get; }
         public TraitDef? Trait { get; }
+        public Game.Core.Party.PartyGiveMode PartyMode { get; set; }
 
         public bool TryGet(string id, out TreeNodeDef node) => _byId.TryGetValue(id, out node!);
     }
@@ -214,7 +215,10 @@ namespace Game.Core.Content.Tree
             var name = item.Field("name");
             var blurb = item.HasField("blurb") ? item.Field("blurb").AsString() : string.Empty;
             var trait = item.HasField("trait") ? TraitDef.Read(item.Field("trait"), optionIds) : null;
-            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes, blurb, trait);
+            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes, blurb, trait)
+            {
+                PartyMode = item.HasField("partyMode") ? Game.Core.Party.CoopRules.ReadMode(item.Field("partyMode")) : Game.Core.Party.PartyGiveMode.Together
+            };
         }
 
         private static TreeNodeDef ReadNode(ContentNode node)

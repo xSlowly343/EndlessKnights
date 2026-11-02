@@ -16,7 +16,6 @@ namespace Game.Core.Sim
         public static readonly StatId BreachAlways = new StatId("breachAlways");
         public static readonly StatId BreachRiposte = new StatId("breachRiposte");
         public static readonly StatId BreachBossFast = new StatId("breachBossFast");
-        public static readonly StatId BreachPartyDamage = new StatId("breachPartyDamage");
 
         public static readonly StatId TouchePower = new StatId("touchePower");
         public static readonly StatId ToucheExecute = new StatId("toucheExecute");
@@ -30,7 +29,6 @@ namespace Game.Core.Sim
         public static readonly StatId ToucheMarkDamage = new StatId("toucheMarkDamage");
         public static readonly StatId ToucheBossHalf = new StatId("toucheBossHalf");
         public static readonly StatId ToucheFlawless = new StatId("toucheFlawless");
-        public static readonly StatId TouchePartyGold = new StatId("touchePartyGold");
 
         public static readonly StatId PhantomPower = new StatId("phantomPower");
         public static readonly StatId PhantomThreshold = new StatId("phantomThreshold");
@@ -43,7 +41,5 @@ namespace Game.Core.Sim
         public static readonly StatId PhantomSwap = new StatId("phantomSwap");
         public static readonly StatId PhantomBossHold = new StatId("phantomBossHold");
         public static readonly StatId PhantomLunge = new StatId("phantomLunge");
-        public static readonly StatId PhantomPartyEvery = new StatId("phantomPartyEvery");
-        public static readonly StatId PhantomPartyDamage = new StatId("phantomPartyDamage");
     }
 }

@@ -114,8 +114,7 @@ namespace Game.Core.Sim
         {
             if (!On)
             {
-                _state.TraitPartyDamage = 0;
-                _state.TraitPartyCritChance = 0;
+                S.WhirlFull = false;
                 return;
             }
             if (S.NewEnemy)
@@ -124,10 +123,9 @@ namespace Game.Core.Sim
             FadeRunes();
             FallBlades();
             SpinWhirl();
+            S.WhirlFull = Whirl && S.WhirlBlades >= WhirlMax;
             if (S.SealTicks > 0)
                 S.SealTicks--;
-            _state.TraitPartyDamage = (S.SealTicks > 0 ? S.SealShare : 0) + (Whirl ? S.WhirlBlades * (_rules.WhirlPartyDamage + System.Math.Max(0, _hero.Value(RunedancerStats.WhirlPartyDamage, 0))) : 0);
-            _state.TraitPartyCritChance = Blades ? S.Blades * (_rules.BladePartyCrit + System.Math.Max(0, _hero.Value(RunedancerStats.BladePartyCrit, 0))) : 0;
         }
 
         public void EndTick() => S.PushHits();
@@ -168,14 +166,9 @@ namespace Game.Core.Sim
                 if (rhyme > 0)
                     _state.QueueDamage[0] += _combat.SkillDamage(_combat.BaseKeyDamage, power * rhyme * _state.FocusMultiplier, StatTags.Keyboard);
             }
-            var sealPower = 1 + System.Math.Max(0, _hero.Value(RunedancerStats.RuneSealPower, 0));
-            var share = (weave > 0 ? weave : _rules.SealDamage) * sealPower;
             var seconds = weave > 0 ? _rules.WeaveSeconds : _rules.SealSeconds + _hero.Value(RunedancerStats.RuneSealSeconds, 0);
-            if (share > 0 && seconds > 0)
-            {
-                S.SealShare = S.SealTicks > 0 ? System.Math.Max(S.SealShare, share) : share;
+            if (seconds > 0)
                 S.SealTicks = System.Math.Max(S.SealTicks, Ticks(seconds));
-            }
             S.DoubleRunesLeft = (int)System.Math.Round(System.Math.Max(0, _hero.Value(RunedancerStats.RuneDouble, 0)));
             if (Flag(RunedancerStats.RuneSilent))
                 RefreshRightSkill();
@@ -232,6 +225,7 @@ namespace Game.Core.Sim
 
         private void Rain()
         {
+            S.Rains++;
             var blades = S.Blades;
             S.Blades = 0;
             if (blades > 0)
