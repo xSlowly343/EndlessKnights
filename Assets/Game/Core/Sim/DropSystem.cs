@@ -198,6 +198,14 @@ namespace Game.Core.Sim
 
         public void GiveLimitUnique(long stage) => GiveUnique(stage, DropSource.Limit);
 
+        public void GiveFind(long stage)
+        {
+            Push(Rolled(_rules.Guardian, stage, DropSource.Find));
+            Flush();
+        }
+
+        public void GiveShards(long shards) => AddShards(shards);
+
         public void GiveTrophy()
         {
             var pool = _gemPools[(int)GemKind.Skill];

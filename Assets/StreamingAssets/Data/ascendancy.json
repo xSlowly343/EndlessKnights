@@ -1224,238 +1224,70 @@
     {
       "id": "soulbinder_trait_1",
       "class": "soulbinder",
-      "name": {"ru": "Сфера душ", "en": "Сфера душ"},
-      "blurb": "Каждое убийство кладёт душу в сферу, до 6. Каждая душа — отдельный дух, который бьёт сам, сила духа растёт от силы убитого врага",
+      "name": {"ru": "Сфера душ", "en": "Orb of Souls"},
+      "blurb": "Каждое убийство кладёт душу в сферу, до 6. Каждая душа — отдельный дух, он бьёт сам раз в секунду; душа стража вдвое сильнее, душа босса — втрое. В паузе духи бьют сами, но сфера не наполняется. Скилл Пути «Призвать души» кладёт две души сразу",
       "trait": {
-        "partyText": {"ru": "Духи бьют того же врага, что и отряд", "en": "Духи бьют того же врага, что и отряд"},
+        "partyText": {"ru": "Души от всех: убийства союзников тоже кладут души в её сферу, духи бьют общего врага отряда, а число духов видно у союзника", "en": "Souls from everyone: allies' kills put souls into her orb too, the spirits strike the party's shared enemy, and the number of spirits shows on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "soulPower", "kind": "flat", "value": 0.18}]},
+          {"modifiers": [{"stat": "soulPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "soulPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "soulPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "soulPush", "kind": "flat", "value": 1}], "text": {"ru": "Вечный покой: убийство при полной сфере выталкивает старшую душу со взрывом ×5", "en": "Eternal Rest: a kill with a full orb pushes the oldest soul out with a blast ×5"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "soulbinder_trait_1_f45a",
-                "name": {"ru": "до 8 духов", "en": "до 8 духов"},
-                "text": {"ru": "до 8 духов", "en": "до 8 духов"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "soulbinder_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "soulbinder_trait_1_f60a",
-                "name": {"ru": "душа мини-босса — двойная", "en": "душа мини-босса — двойная"},
-                "text": {"ru": "душа мини-босса — двойная", "en": "душа мини-босса — двойная"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "soulbinder_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "soulbinder_trait_1_f75a",
-                "name": {
-                  "ru": "при заполненной сфере каждый новый дух выталкивает старого со взрывом",
-                  "en": "при заполненной сфере каждый новый дух выталкивает старого со взрывом"
-                },
-                "text": {
-                  "ru": "при заполненной сфере каждый новый дух выталкивает старого со взрывом",
-                  "en": "при заполненной сфере каждый новый дух выталкивает старого со взрывом"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "soulbinder_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "soulbinder_trait_1_f45a", "name": {"ru": "Большая сфера", "en": "Big Orb"}, "text": {"ru": "До 8 духов, но каждый на 20% слабее", "en": "Up to 8 spirits, but each is 20% weaker"}, "modifiers": [{"stat": "soulMax", "kind": "flat", "value": 2}, {"stat": "soulPower", "kind": "more", "value": -0.2}]}, {"id": "soulbinder_trait_1_f45b", "name": {"ru": "Голодные духи", "en": "Hungry Spirits"}, "text": {"ru": "Духи бьют вдвое чаще, но в сфере до 4 душ", "en": "Spirits strike twice as often, but the orb holds up to 4 souls"}, "modifiers": [{"stat": "soulHungry", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "soulbinder_trait_1_f60a", "name": {"ru": "Душа Колосса", "en": "Colossus Soul"}, "text": {"ru": "Душа стража и босса занимает два места, но духи на 15% слабее", "en": "A guardian's or boss's soul takes two places, but spirits are 15% weaker"}, "modifiers": [{"stat": "soulMini", "kind": "flat", "value": 1}, {"stat": "soulPower", "kind": "more", "value": -0.15}]}, {"id": "soulbinder_trait_1_f60b", "name": {"ru": "Духи очереди", "en": "Spirits of the Queue"}, "text": {"ru": "Духи бьют и врагов очереди, но на 30% слабее", "en": "Spirits also strike the queued enemies, but 30% weaker"}, "modifiers": [{"stat": "soulQueue", "kind": "flat", "value": 1}, {"stat": "soulPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 75, "options": [{"id": "soulbinder_trait_1_f75a", "name": {"ru": "Парад на Колосса", "en": "Parade on the Colossus"}, "text": {"ru": "На боссе раз в 30 с все духи бьют разом ×3, но духи на 15% слабее", "en": "On a boss every 30 s all spirits strike at once ×3, but spirits are 15% weaker"}, "modifiers": [{"stat": "soulRelease", "kind": "flat", "value": 1}, {"stat": "soulPower", "kind": "more", "value": -0.15}]}, {"id": "soulbinder_trait_1_f75b", "name": {"ru": "Сильные души", "en": "Strong Souls"}, "text": {"ru": "Духи на 40% сильнее, но в сфере на 2 души меньше", "en": "Spirits are 40% stronger, but the orb holds 2 souls fewer"}, "modifiers": [{"stat": "soulPower", "kind": "more", "value": 0.4}, {"stat": "soulMax", "kind": "flat", "value": -2}]}]}
         ]
       },
-      "nodes": [{"id": "soulbinder_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сфера душ", "en": "Сфера душ"}, "modifiers": []}],
+      "nodes": [{"id": "soulbinder_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сфера душ", "en": "Orb of Souls"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "soulbinder_trait_2",
       "class": "soulbinder",
-      "name": {"ru": "Последний вздох", "en": "Последний вздох"},
-      "blurb": "Духи не бьют вовсе. Когда сфера полна и приходит новая душа, самая старая уходит с последним вздохом: бьёт текущего врага на 5% HP того, от кого пришла. Урон приходит только из убийств",
+      "name": {"ru": "Последний вздох", "en": "Last Breath"},
+      "blurb": "Духи не бьют вовсе. Когда сфера полна и приходит новая душа, самая старая уходит с последним вздохом — бьёт текущего врага на 4% HP того врага, от которого пришла, и оставляет на нём холод на 5 с: враг получает на 15% больше. Урон приходит только из убийств. В паузе сфера ждёт. Скилл Пути «Последний вздох» выпускает старшую душу сразу",
       "trait": {
-        "partyText": {"ru": "Вздох оставляет на враге холод: отряд бьёт его +15% 5 с", "en": "Вздох оставляет на враге холод: отряд бьёт его +15% 5 с"},
+        "partyText": {"ru": "Холод вздоха: холод висит на общем враге у хоста и виден всем; удары союзников по замёрзшему врагу приближают следующий вздох", "en": "The chill of a breath: the chill hangs on the shared enemy at the host for everyone to see; allies' hits on the frozen enemy bring the next breath closer"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.04}]},
+          {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.007}]},
+          {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.007}]},
+          {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.007}]},
+          {"modifiers": [{"stat": "breathQueue", "kind": "flat", "value": 1}], "text": {"ru": "Вздох по очереди: вздох задевает и врагов очереди", "en": "Breath down the queue: a breath also hits the queued enemies"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "soulbinder_trait_2_f45a",
-                "name": {"ru": "душа босса уходит с вздохом на 10%", "en": "душа босса уходит с вздохом на 10%"},
-                "text": {"ru": "душа босса уходит с вздохом на 10%", "en": "душа босса уходит с вздохом на 10%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "soulbinder_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "soulbinder_trait_2_f60a",
-                "name": {"ru": "сфера на 3 души, вздохи чаще", "en": "сфера на 3 души, вздохи чаще"},
-                "text": {"ru": "сфера на 3 души, вздохи чаще", "en": "сфера на 3 души, вздохи чаще"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "soulbinder_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "soulbinder_trait_2_f75a",
-                "name": {"ru": "вздох задевает и первого врага очереди", "en": "вздох задевает и первого врага очереди"},
-                "text": {"ru": "вздох задевает и первого врага очереди", "en": "вздох задевает и первого врага очереди"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "soulbinder_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "soulbinder_trait_2_f45a", "name": {"ru": "Вздох Колосса", "en": "Colossus Breath"}, "text": {"ru": "Душа стража и босса уходит с вдвое сильным вздохом, но вздох на 15% слабее", "en": "A guardian's or boss's soul leaves with a twice as strong breath, but breaths are 15% weaker"}, "modifiers": [{"stat": "breathBoss", "kind": "flat", "value": 1}, {"stat": "breathPower", "kind": "more", "value": -0.15}]}, {"id": "soulbinder_trait_2_f45b", "name": {"ru": "Долгий холод", "en": "Long Chill"}, "text": {"ru": "Холод держится 8 с, но вздох на 20% слабее", "en": "The chill lasts 8 s, but a breath is 20% weaker"}, "modifiers": [{"stat": "breathColdSeconds", "kind": "flat", "value": 3}, {"stat": "breathPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 60, "options": [{"id": "soulbinder_trait_2_f60a", "name": {"ru": "Малая сфера", "en": "Small Orb"}, "text": {"ru": "Сфера на 3 души, вздохи чаще, но на 30% слабее", "en": "The orb holds 3 souls, breaths come more often, but 30% weaker"}, "modifiers": [{"stat": "breathSmall", "kind": "flat", "value": 1}, {"stat": "breathPower", "kind": "more", "value": -0.3}]}, {"id": "soulbinder_trait_2_f60b", "name": {"ru": "Ломкий лёд", "en": "Brittle Ice"}, "text": {"ru": "По замёрзшему врагу вздох приходит за 15 ударов, но вздох на 20% слабее", "en": "On a frozen enemy a breath comes in 15 hits, but breaths are 20% weaker"}, "modifiers": [{"stat": "breathColdHits", "kind": "flat", "value": -10}, {"stat": "breathPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 75, "options": [{"id": "soulbinder_trait_2_f75a", "name": {"ru": "Двойной вздох", "en": "Double Breath"}, "text": {"ru": "Вздох бьёт ещё раз на половину силы, но сфера на 8 душ", "en": "A breath strikes once more at half strength, but the orb holds 8 souls"}, "modifiers": [{"stat": "breathTwice", "kind": "flat", "value": 1}]}, {"id": "soulbinder_trait_2_f75b", "name": {"ru": "Тяжёлый вздох", "en": "Heavy Breath"}, "text": {"ru": "Вздох на 50% сильнее, но холода нет", "en": "A breath is 50% stronger, but there is no chill"}, "modifiers": [{"stat": "breathPower", "kind": "more", "value": 0.5}, {"stat": "breathNoCold", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "soulbinder_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Последний вздох", "en": "Последний вздох"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "soulbinder_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Последний вздох", "en": "Last Breath"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "soulbinder_trait_3",
       "class": "soulbinder",
-      "name": {"ru": "Одолжить душу", "en": "Одолжить душу"},
-      "blurb": "Каждые 50 ударов Душеплёт вселяет духа в союзника: +25% к частоте ударов союзника на 10 с. Самому — духи на 10 с слабее",
+      "name": {"ru": "Одолжить душу", "en": "Lend a Soul"},
+      "blurb": "Каждые 50 ударов Душеплёт вселяет духа в союзника на 10 с (в соло — в себя): дух бьёт вместе с каждым ударом на 12% силы. Убийство за это время возвращает ей душу — 2 Эктоплазмы. В паузе духи не вселяются. Скилл Пути «Отдать душу» вселяет духа сразу",
       "trait": {
-        "partyText": {"ru": "Прямое усиление союзников", "en": "Прямое усиление союзников"},
+        "partyText": {"ru": "Дух в теле: вселённый дух бьёт вместе с каждым ударом союзника, а убийство союзника за это время возвращает Душеплёту душу; значок духа на его полоске", "en": "A spirit in the body: the lent spirit strikes along with every ally hit, and an ally's kill meanwhile returns a soul to the soulbinder; a spirit icon on their bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.12}]},
+          {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.02}]},
+          {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.02}]},
+          {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.02}]},
+          {"modifiers": [{"stat": "lendTwo", "kind": "flat", "value": 1}], "text": {"ru": "Два духа: дух достаётся двоим союзникам (в соло держится вдвое дольше)", "en": "Two Spirits: a spirit goes to two allies (solo it lasts twice as long)"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "soulbinder_trait_3_f45a",
-                "name": {"ru": "15 с", "en": "15 с"},
-                "text": {"ru": "15 с", "en": "15 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "soulbinder_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "soulbinder_trait_3_f60a",
-                "name": {"ru": "душа достаётся самому слабому по урону", "en": "душа достаётся самому слабому по урону"},
-                "text": {"ru": "душа достаётся самому слабому по урону", "en": "душа достаётся самому слабому по урону"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "soulbinder_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "soulbinder_trait_3_f75a",
-                "name": {
-                  "ru": "союзник с душой оставляет свою душу Душеплёту после убийства",
-                  "en": "союзник с душой оставляет свою душу Душеплёту после убийства"
-                },
-                "text": {
-                  "ru": "союзник с душой оставляет свою душу Душеплёту после убийства",
-                  "en": "союзник с душой оставляет свою душу Душеплёту после убийства"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "soulbinder_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "soulbinder_trait_3_f45a", "name": {"ru": "Долгое вселение", "en": "Long Possession"}, "text": {"ru": "Дух держится 15 с, но вселяется раз в 60 ударов", "en": "A spirit stays 15 s, but comes every 60 hits"}, "modifiers": [{"stat": "lendSeconds", "kind": "flat", "value": 5}, {"stat": "lendHits", "kind": "flat", "value": 10}]}, {"id": "soulbinder_trait_3_f45b", "name": {"ru": "Частое вселение", "en": "Frequent Possession"}, "text": {"ru": "Дух каждые 35 ударов, но на 20% слабее", "en": "A spirit every 35 hits, but 20% weaker"}, "modifiers": [{"stat": "lendHits", "kind": "flat", "value": -15}, {"stat": "lendPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 60, "options": [{"id": "soulbinder_trait_3_f60a", "name": {"ru": "Душа возвращается", "en": "The Soul Returns"}, "text": {"ru": "Вернувшаяся душа приближает следующее вселение на 10 ударов, но дух на 15% слабее", "en": "A returned soul brings the next possession 10 hits closer, but the spirit is 15% weaker"}, "modifiers": [{"stat": "lendBack", "kind": "flat", "value": 1}, {"stat": "lendPower", "kind": "more", "value": -0.15}]}, {"id": "soulbinder_trait_3_f60b", "name": {"ru": "Крепкий дух", "en": "Strong Spirit"}, "text": {"ru": "Дух на 40% сильнее, но вселяется раз в 70 ударов", "en": "The spirit is 40% stronger, but comes every 70 hits"}, "modifiers": [{"stat": "lendPower", "kind": "more", "value": 0.4}, {"stat": "lendHits", "kind": "flat", "value": 20}]}]},
+          {"level": 75, "options": [{"id": "soulbinder_trait_3_f75a", "name": {"ru": "Духи для всех", "en": "Spirits for All"}, "text": {"ru": "Дух вселяется во всех союзников на 5 с, но на 40% слабее", "en": "A spirit enters every ally for 5 s, but 40% weaker"}, "modifiers": [{"stat": "lendAll", "kind": "flat", "value": 1}]}, {"id": "soulbinder_trait_3_f75b", "name": {"ru": "Голос предков", "en": "Voice of the Ancestors"}, "text": {"ru": "Дух на 25% сильнее и держится 12 с, но вселяется раз в 65 ударов", "en": "The spirit is 25% stronger and stays 12 s, but comes every 65 hits"}, "modifiers": [{"stat": "lendPower", "kind": "more", "value": 0.25}, {"stat": "lendSeconds", "kind": "flat", "value": 2}, {"stat": "lendHits", "kind": "flat", "value": 15}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "soulbinder_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Одолжить душу", "en": "Одолжить душу"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "soulbinder_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Одолжить душу", "en": "Lend a Soul"}, "modifiers": []}],
       "links": []
     },
     {
@@ -2076,211 +1908,70 @@
     {
       "id": "dowser_trait_1",
       "class": "dowser",
-      "name": {"ru": "Жила", "en": "Жила"},
-      "blurb": "В каждом враге есть скрытая золотая жила — случайный удар из первых 50. Лоза светится, когда жила близко. Попал — золото с врага ×20 для всех",
+      "name": {"ru": "Жила", "en": "Vein"},
+      "blurb": "В каждом обычном враге скрытая золотая жила — случайный удар из первых 50. Лоза светится тем ярче, чем ближе жила. Попал — враг отдаст в 2,5 раза больше золота. В паузе лоза дремлет. Скилл Пути «Вскрыть жилу» вскрывает её сразу",
       "trait": {
-        "partyText": {"ru": "Золото отряду", "en": "Золото отряду"},
+        "partyText": {"ru": "Одна жила на всех: жила одна на общего врага, близость жилы видят все, удары союзников тоже приближают её, и в 2,5 раза больше золота получает весь отряд", "en": "One vein for all: one vein on the shared enemy, everyone sees how close it is, allies' hits bring it closer too, and the whole party gets 2.5 times the gold"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "veinStrike", "kind": "flat", "value": 1}], "text": {"ru": "Звонкая жила: попадание в жилу ещё и бьёт врага ×10", "en": "Ringing Vein: striking the vein also hits the enemy ×10"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "dowser_trait_1_f45a",
-                "name": {"ru": "жила и в мини-боссах, ×40", "en": "жила и в мини-боссах, ×40"},
-                "text": {"ru": "жила и в мини-боссах, ×40", "en": "жила и в мини-боссах, ×40"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dowser_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "dowser_trait_1_f60a",
-                "name": {"ru": "попадание в жилу — крит на 10 с", "en": "попадание в жилу — крит на 10 с"},
-                "text": {"ru": "попадание в жилу — крит на 10 с", "en": "попадание в жилу — крит на 10 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dowser_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "dowser_trait_1_f75a",
-                "name": {"ru": "иногда жила самоцветная", "en": "иногда жила самоцветная"},
-                "text": {"ru": "иногда жила самоцветная: вместо золота предмет", "en": "иногда жила самоцветная: вместо золота предмет"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dowser_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "dowser_trait_1_f45a", "name": {"ru": "Жила Колосса", "en": "Colossus Vein"}, "text": {"ru": "Жила есть и в боссах и стражах, там вдвое богаче, но жила на 40% беднее", "en": "There is a vein in bosses and guardians too, twice as rich there, but the vein is 40% poorer"}, "modifiers": [{"stat": "veinBoss", "kind": "flat", "value": 1}, {"stat": "veinPower", "kind": "more", "value": -0.4}]}, {"id": "dowser_trait_1_f45b", "name": {"ru": "Близкая жила", "en": "Near Vein"}, "text": {"ru": "Жила всегда в первых 25 ударах, но на 30% беднее", "en": "The vein is always within the first 25 hits, but 30% poorer"}, "modifiers": [{"stat": "veinNear", "kind": "flat", "value": 1}, {"stat": "veinPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 60, "options": [{"id": "dowser_trait_1_f60a", "name": {"ru": "Удар в жилу", "en": "Strike the Vein"}, "text": {"ru": "После попадания в жилу её удары 10 с всегда критуют, но жила на 20% беднее", "en": "After striking the vein her hits always crit for 10 s, but the vein is 20% poorer"}, "modifiers": [{"stat": "veinCrit", "kind": "flat", "value": 1}, {"stat": "veinPower", "kind": "more", "value": -0.2}]}, {"id": "dowser_trait_1_f60b", "name": {"ru": "Две жилы", "en": "Two Veins"}, "text": {"ru": "В каждом враге две жилы, но каждая вдвое беднее", "en": "Every enemy has two veins, but each is half as rich"}, "modifiers": [{"stat": "veinTwice", "kind": "flat", "value": 1}]}]},
+          {"level": 75, "options": [{"id": "dowser_trait_1_f75a", "name": {"ru": "Самоцветная жила", "en": "Gem Vein"}, "text": {"ru": "Каждая четвёртая жила самоцветная: вместо золота предмет", "en": "Every fourth vein is a gem vein: an item instead of gold"}, "modifiers": [{"stat": "veinGem", "kind": "flat", "value": 1}]}, {"id": "dowser_trait_1_f75b", "name": {"ru": "Жила для артели", "en": "Vein for the Crew"}, "text": {"ru": "Союзникам золото жилы на 50% больше, ей — вдвое меньше", "en": "Allies get 50% more vein gold, she gets half"}, "modifiers": [{"stat": "veinParty", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [{"id": "dowser_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Жила", "en": "Жила"}, "modifiers": []}],
+      "nodes": [{"id": "dowser_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Жила", "en": "Vein"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "dowser_trait_2",
       "class": "dowser",
-      "name": {"ru": "Удача", "en": "Удача"},
-      "blurb": "Каждый враг без находки повышает шанс следующей на редкий предмет. Нашёл — шанс сбрасывается. Выпадение реже, но гарантированно",
+      "name": {"ru": "Удача", "en": "Luck"},
+      "blurb": "Каждый враг без находки повышает шанс находки на 0,2%; находка — предмет, после неё шанс сбрасывается. Выпадает реже, но наверняка. В паузе удача не растёт. Скилл Пути «Счастливая монета» добавляет 10% удачи",
       "trait": {
-        "partyText": {
-          "ru": "Удача общая: счётчик растёт от любого убийства отряда, находка падает тому, кто убил",
-          "en": "Удача общая: счётчик растёт от любого убийства отряда, находка падает тому, кто убил"
-        },
+        "partyText": {"ru": "Удача от всех: счётчик растёт от убийств всего отряда, находка падает тому, кто убил, а шанс виден всем", "en": "Luck from everyone: the counter grows from every party kill, the find drops to whoever killed, and everyone sees the chance"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "luckPower", "kind": "flat", "value": 0.002}]},
+          {"modifiers": [{"stat": "luckPower", "kind": "flat", "value": 0.0003}]},
+          {"modifiers": [{"stat": "luckPower", "kind": "flat", "value": 0.0003}]},
+          {"modifiers": [{"stat": "luckPower", "kind": "flat", "value": 0.0003}]},
+          {"modifiers": [{"stat": "luckShards", "kind": "flat", "value": 1}], "text": {"ru": "Счастливый осколок: каждая находка ещё даёт 5 Осколков Разлома", "en": "Lucky Shard: every find also gives 5 Rift Shards"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "dowser_trait_2_f45a",
-                "name": {"ru": "находка не сбрасывает целиком, а вдвое", "en": "находка не сбрасывает целиком, а вдвое"},
-                "text": {"ru": "находка не сбрасывает целиком, а вдвое", "en": "находка не сбрасывает целиком, а вдвое"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dowser_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "dowser_trait_2_f60a",
-                "name": {"ru": "через ступень редкости выше", "en": "через ступень редкости выше"},
-                "text": {"ru": "через ступень редкости выше", "en": "через ступень редкости выше"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dowser_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "dowser_trait_2_f75a",
-                "name": {"ru": "раз в час — гарантия уникального", "en": "раз в час — гарантия уникального"},
-                "text": {"ru": "раз в час — гарантия уникального", "en": "раз в час — гарантия уникального"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dowser_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "dowser_trait_2_f45a", "name": {"ru": "Не всё сразу", "en": "Not All at Once"}, "text": {"ru": "Находка сбрасывает удачу только наполовину, но удача растёт на 20% медленнее", "en": "A find only halves the luck, but luck grows 20% slower"}, "modifiers": [{"stat": "luckKeep", "kind": "flat", "value": 1}, {"stat": "luckPower", "kind": "more", "value": -0.2}]}, {"id": "dowser_trait_2_f45b", "name": {"ru": "Удача на Колосса", "en": "Luck on the Colossus"}, "text": {"ru": "На боссе шанс втрое выше, но удача растёт на 25% медленнее", "en": "On a boss the chance is three times higher, but luck grows 25% slower"}, "modifiers": [{"stat": "luckBoss", "kind": "flat", "value": 1}, {"stat": "luckPower", "kind": "more", "value": -0.25}]}]},
+          {"level": 60, "options": [{"id": "dowser_trait_2_f60a", "name": {"ru": "Счастливая находка", "en": "Lucky Find"}, "text": {"ru": "Каждая пятая находка — уникальный предмет, но удача растёт на 25% медленнее", "en": "Every fifth find is a unique item, but luck grows 25% slower"}, "modifiers": [{"stat": "luckUnique", "kind": "flat", "value": 1}, {"stat": "luckPower", "kind": "more", "value": -0.25}]}, {"id": "dowser_trait_2_f60b", "name": {"ru": "Золото на удачу", "en": "Gold for Luck"}, "text": {"ru": "Каждый враг без находки даёт отряду +1% золота, до 30%, находка сбрасывает; удача растёт на 30% медленнее", "en": "Every enemy without a find gives the party +1% gold, up to 30%, a find resets it; luck grows 30% slower"}, "modifiers": [{"stat": "luckGold", "kind": "flat", "value": 1}, {"stat": "luckPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 75, "options": [{"id": "dowser_trait_2_f75a", "name": {"ru": "Час удачи", "en": "Lucky Hour"}, "text": {"ru": "Раз в час — уникальный предмет наверняка, но удача растёт на 30% медленнее", "en": "Once an hour a unique item for sure, but luck grows 30% slower"}, "modifiers": [{"stat": "luckHour", "kind": "flat", "value": 1}, {"stat": "luckPower", "kind": "more", "value": -0.3}]}, {"id": "dowser_trait_2_f75b", "name": {"ru": "Счастливая артель", "en": "Lucky Crew"}, "text": {"ru": "Убийства отряда растят удачу на 50% быстрее, но находка ей — на 30% реже", "en": "Party kills grow luck 50% faster, but her finds come 30% less often"}, "modifiers": [{"stat": "luckParty", "kind": "flat", "value": 0.5}, {"stat": "luckPower", "kind": "more", "value": -0.3}]}]}
         ]
       },
-      "nodes": [{"id": "dowser_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Удача", "en": "Удача"}, "modifiers": []}],
+      "nodes": [{"id": "dowser_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Удача", "en": "Luck"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "dowser_trait_3",
       "class": "dowser",
-      "name": {"ru": "Артель", "en": "Артель"},
-      "blurb": "Жёсткий обмен: свой урон − 40%. Взамен союзники получают +15% золота и +5% выпадения предметов за каждого члена отряда",
+      "name": {"ru": "Артель", "en": "Prospectors' Crew"},
+      "blurb": "Жёсткий обмен: её удары на 40% слабее. Взамен каждое убийство даёт самородок; 10 самородков — сундук золота и 10% шанс предмета. В паузе самородки не копятся. Скилл Пути «Общий котёл» даёт 5 самородков сразу",
       "trait": {
-        "partyText": {"ru": "Отряд богаче с каждым игроком", "en": "Отряд богаче с каждым игроком"},
+        "partyText": {"ru": "Доля артели: каждое убийство союзника даёт ему самородок, 10 самородков — сундук золота и шанс предмета; самородки видны на его полоске. В соло самородки копит она сама", "en": "A share of the crew: every ally kill gives them a nugget, 10 nuggets — a gold chest and an item chance; the nuggets show on their bar. Solo she collects them herself"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "artelPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "artelPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "artelPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "artelPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "artelBoss", "kind": "flat", "value": 1}], "text": {"ru": "Добыча Колосса: на боссе самородок двойной", "en": "Colossus Haul: on a boss a nugget counts double"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "dowser_trait_3_f45a",
-                "name": {"ru": "штраф −30%", "en": "штраф −30%"},
-                "text": {"ru": "штраф −30%", "en": "штраф −30%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dowser_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "dowser_trait_3_f60a",
-                "name": {"ru": "на боссах бонус вдвое", "en": "на боссах бонус вдвое"},
-                "text": {"ru": "на боссах бонус вдвое", "en": "на боссах бонус вдвое"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dowser_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "dowser_trait_3_f75a",
-                "name": {"ru": "в соло бонус действует на него самого", "en": "в соло бонус действует на него самого"},
-                "text": {"ru": "в соло бонус действует на него самого", "en": "в соло бонус действует на него самого"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "dowser_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "dowser_trait_3_f45a", "name": {"ru": "Лёгкий штраф", "en": "Light Penalty"}, "text": {"ru": "Её удары слабее только на 30%, но сундук за 12 самородков", "en": "Her hits are only 30% weaker, but a chest takes 12 nuggets"}, "modifiers": [{"stat": "artelPenalty", "kind": "flat", "value": -0.1}, {"stat": "artelNuggets", "kind": "flat", "value": 2}]}, {"id": "dowser_trait_3_f45b", "name": {"ru": "Быстрая артель", "en": "Quick Crew"}, "text": {"ru": "Сундук за 7 самородков, но он на 30% беднее", "en": "A chest takes 7 nuggets, but it is 30% poorer"}, "modifiers": [{"stat": "artelNuggets", "kind": "flat", "value": -3}, {"stat": "artelPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 60, "options": [{"id": "dowser_trait_3_f60a", "name": {"ru": "Самоцвет в сундуке", "en": "Gem in the Chest"}, "text": {"ru": "Её сундук ещё и даёт гем, но удары слабее на 50%", "en": "Her chest also gives a gem, but her hits are 50% weaker"}, "modifiers": [{"stat": "artelGem", "kind": "flat", "value": 1}, {"stat": "artelPenalty", "kind": "flat", "value": 0.1}]}, {"id": "dowser_trait_3_f60b", "name": {"ru": "Богатый сундук", "en": "Rich Chest"}, "text": {"ru": "Сундук на 60% богаче, но за 15 самородков", "en": "A chest is 60% richer, but takes 15 nuggets"}, "modifiers": [{"stat": "artelPower", "kind": "more", "value": 0.6}, {"stat": "artelNuggets", "kind": "flat", "value": 5}]}]},
+          {"level": 75, "options": [{"id": "dowser_trait_3_f75a", "name": {"ru": "Сундук с находкой", "en": "Chest with a Find"}, "text": {"ru": "Шанс предмета в сундуке 25%, но золота в нём на 30% меньше", "en": "The item chance in a chest is 25%, but there is 30% less gold"}, "modifiers": [{"stat": "artelItem", "kind": "flat", "value": 1}]}, {"id": "dowser_trait_3_f75b", "name": {"ru": "Осколки в сундуке", "en": "Shards in the Chest"}, "text": {"ru": "Её сундук ещё и даёт 10 Осколков, но удары слабее на 50%", "en": "Her chest also gives 10 Shards, but her hits are 50% weaker"}, "modifiers": [{"stat": "artelShards", "kind": "flat", "value": 1}, {"stat": "artelPenalty", "kind": "flat", "value": 0.1}]}]}
         ]
       },
-      "nodes": [{"id": "dowser_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Артель", "en": "Артель"}, "modifiers": []}],
+      "nodes": [{"id": "dowser_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Артель", "en": "Prospectors' Crew"}, "modifiers": []}],
       "links": []
     },
     {

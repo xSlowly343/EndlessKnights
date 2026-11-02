@@ -11,5 +11,6 @@ namespace Game.Core.Content.Items
         Craft,
         Limit,
         Dungeon,
+        Find,
     }
 }

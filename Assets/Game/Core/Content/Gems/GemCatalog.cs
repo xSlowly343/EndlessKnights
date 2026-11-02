@@ -461,7 +461,17 @@ namespace Game.Core.Content.Gems
                         Layers = node.HasField("layers") ? node.Field("layers").AsInt(0, 20) : 0,
                         Elixir = node.HasField("elixir") && node.Field("elixir").AsBool(),
                         Corrode = Number(node, "corrode", 10),
-                        CorrodeSeconds = Number(node, "corrodeSeconds", 600)
+                        CorrodeSeconds = Number(node, "corrodeSeconds", 600),
+                        VeinHits = Number(node, "veinHits", 1000),
+                        Luck = Number(node, "luck", 1),
+                        Nuggets = node.HasField("nuggets") ? node.Field("nuggets").AsInt(0, 100) : 0,
+                        GoldHit = Number(node, "goldHit", 1000),
+                        VeinGold = Number(node, "veinGold", 1000),
+                        Souls = node.HasField("souls") ? node.Field("souls").AsInt(0, 16) : 0,
+                        SpiritsHit = Number(node, "spiritsHit", 1000),
+                        ReleaseAll = node.HasField("releaseAll") && node.Field("releaseAll").AsBool(),
+                        Lend = node.HasField("lend") && node.Field("lend").AsBool(),
+                        Breathe = node.HasField("breathe") && node.Field("breathe").AsBool()
                     };
                 case "aura":
                     return new AuraEffect(

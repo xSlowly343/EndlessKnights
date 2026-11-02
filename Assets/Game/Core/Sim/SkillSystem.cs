@@ -338,6 +338,8 @@ namespace Game.Core.Sim
             _combat.Whisperer.OnSkillCast(slot.Skill);
             _combat.Clockwright.OnSkillCast(slot.Skill);
             _combat.Alchemist.OnSkillCast(slot.Skill);
+            _combat.Dowser.OnSkillCast(slot.Skill);
+            _combat.Soulbinder.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)

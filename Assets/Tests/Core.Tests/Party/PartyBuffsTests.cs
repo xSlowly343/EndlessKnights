@@ -347,6 +347,59 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void ASoulbindersSpiritReachesTheAllyAndTheAllysSoulComesBack()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var soulbinder = rig.Members[0];
+            var friend = rig.Members[1];
+            soulbinder.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Lend, To = LanternbearerMechanics.AnyAlly, Value = 0.25, Seconds = 10 });
+            soulbinder.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Souls, To = TraitRelay.AllSlots, Count = 4 });
+            soulbinder.Loop.State.TraitEnemyEffects.Add(SoulbinderMechanics.ColdEffect, 0.15, 1);
+            rig.Run(0.5);
+
+            Assert.That(friend.Loop.State.Boons.LendOwner, Is.EqualTo(soulbinder.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.LendPower, Is.EqualTo(0.25).Within(1e-6));
+            Assert.That(friend.Loop.State.Boons.SoulsShown, Is.EqualTo(4));
+
+            soulbinder.Loop.State.Class = HeroClass.Soulbinder;
+            soulbinder.Loop.Hero.Add(new Modifier(SoulbinderStats.LendPower, ModifierKind.Flat, 0.25));
+            rig.Run(0.1);
+            var back = soulbinder.Loop.State.Soulbinder.SoulsBack;
+            friend.Loop.State.Boons.SoulsOwed = 2;
+            friend.Loop.State.Boons.LendTicks = 100;
+            rig.Run(0.3);
+            Assert.That(soulbinder.Loop.State.Soulbinder.SoulsBack, Is.GreaterThanOrEqualTo(back + 2));
+        }
+
+        [Test]
+        public void ADowsersVeinLuckAndCrewReachTheAllyAndTheAllysFindComesBack()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var dowser = rig.Members[0];
+            var friend = rig.Members[1];
+            dowser.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.VeinHint, To = TraitRelay.AllSlots, Value = 0.6, Seconds = 5 });
+            dowser.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Luck, To = TraitRelay.AllSlots, Value = 0.3, Seconds = 30 });
+            dowser.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Artel, To = TraitRelay.AllSlots, Every = 10, Value = 0.5, Extra = 0.1, Seconds = 30 });
+            rig.Run(0.5);
+
+            Assert.That(friend.Loop.State.Boons.VeinHint, Is.EqualTo(0.6).Within(1e-6));
+            Assert.That(friend.Loop.State.Boons.LuckOwner, Is.EqualTo(dowser.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.LuckChance, Is.EqualTo(0.3).Within(1e-6));
+            Assert.That(friend.Loop.State.Boons.ArtelOwner, Is.EqualTo(dowser.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.ArtelEvery, Is.EqualTo(10));
+
+            dowser.Loop.State.Class = HeroClass.Dowser;
+            dowser.Loop.Hero.Add(new Modifier(DowserStats.LuckPower, ModifierKind.Flat, 0.003));
+            rig.Run(0.1);
+            dowser.Loop.State.Dowser.Luck = 0.5;
+            friend.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.LuckFound, To = (byte)dowser.Client.OwnSlot, Count = 1 });
+            rig.Run(0.3);
+            Assert.That(dowser.Loop.State.Dowser.Luck, Is.LessThan(0.5));
+        }
+
+        [Test]
         public void AnAlchemistsElixirAcidAndReagentCallReachTheAllyAndTheAllysReagentComesBack()
         {
             var rig = new Rig(2);

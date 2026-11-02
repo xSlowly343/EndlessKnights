@@ -5914,766 +5914,373 @@
     {
       "id": "soulbinder_hit_1",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "common",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Касание сферы", "en": "Касание сферы"},
+      "name": {"ru": "Касание сферы", "en": "Orb Touch"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 3,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "душа бьёт вместе с ним", "en": "душа бьёт вместе с ним"},
+      "effect": {"type": "strike", "multiplier": 3, "spiritsHit": 0.4},
+      "text": {"ru": "касание ×3, и каждая душа бьёт вместе с ним на 40%", "en": "a touch ×3, and every soul strikes along at 40%"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_hit_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_hit_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_hit_1_b15b", "name": {"ru": "Холодное касание", "en": "Cold Touch"}, "damage": 0.8, "effect": {"spiritsHit": 0.6}}]},
+        {"level": 25, "options": [{"id": "soulbinder_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_hit_2",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "rare",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Холодный палец", "en": "Холодный палец"},
+      "name": {"ru": "Холодный палец", "en": "Cold Finger"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 15},
+      "cost": {"resource": 5},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 4},
-      "text": {"ru": "+Эктоплазма", "en": "+Эктоплазма"},
+      "effect": {"type": "strike", "multiplier": 2.5},
+      "text": {"ru": "палец ×2,5", "en": "a finger ×2.5"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_hit_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_hit_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_hit_2_b15b", "name": {"ru": "Ледяной палец", "en": "Icy Finger"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
+        {"level": 25, "options": [{"id": "soulbinder_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_hit_3",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "epic",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Зов", "en": "Зов"},
+      "name": {"ru": "Зов", "en": "Call"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
-      "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 6},
-      "text": {"ru": "духи бьют сразу", "en": "духи бьют сразу"},
+      "cooldownSeconds": 6,
+      "effect": {"type": "strike", "multiplier": 3, "spiritsHit": 2},
+      "text": {"ru": "зов ×3: духи бьют сразу, каждый ×2", "en": "a call ×3: the spirits strike at once, each ×2"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_hit_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_hit_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_hit_3_b15b", "name": {"ru": "Громкий зов", "en": "Loud Call"}, "damage": 0.8, "effect": {"spiritsHit": 3}}]},
+        {"level": 25, "options": [{"id": "soulbinder_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_queue_1",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "common",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Хоровод", "en": "Хоровод"},
+      "name": {"ru": "Хоровод", "en": "Round Dance"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
-      "text": {"ru": "духи облетают очередь", "en": "духи облетают очередь"},
+      "text": {"ru": "хоровод ×2 по 3 врагам очереди", "en": "a dance ×2 at 3 queued enemies"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_queue_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_queue_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_queue_1_b15b", "name": {"ru": "Быстрый хоровод", "en": "Quick Dance"}, "damage": 0.8, "effect": {"multiplier": 2.6}}]},
+        {"level": 25, "options": [{"id": "soulbinder_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_queue_2",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "rare",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Вой", "en": "Вой"},
+      "name": {"ru": "Вой", "en": "Howl"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "вся очередь слабее", "en": "вся очередь слабее"},
+      "text": {"ru": "вой ×2,5 по 3 врагам", "en": "a howl ×2.5 at 3 enemies"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_queue_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_queue_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_queue_2_b15b", "name": {"ru": "Долгий вой", "en": "Long Howl"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
+        {"level": 25, "options": [{"id": "soulbinder_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_queue_3",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "legendary",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Свеча за упокой", "en": "Свеча за упокой"},
+      "name": {"ru": "Свеча за упокой", "en": "Candle for the Dead"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
-      "text": {"ru": "слабый враг очереди погибает, даёт душу", "en": "слабый враг очереди погибает, даёт душу"},
+      "cooldownSeconds": 8,
+      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "souls": 1},
+      "text": {"ru": "свеча ×3 по 3 врагам и душа в сферу", "en": "a candle ×3 at 3 enemies and a soul into the orb"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_queue_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_queue_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_queue_3_b15b", "name": {"ru": "Две свечи", "en": "Two Candles"}, "damage": 0.8, "effect": {"souls": 2}}]},
+        {"level": 25, "options": [{"id": "soulbinder_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_auto_1",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "common",
       "color": "blue",
-      "name": {"ru": "Голодный дух", "en": "Голодный дух"},
+      "name": {"ru": "Голодный дух", "en": "Hungry Spirit"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "раз в 6 с впятеро", "en": "раз в 6 с впятеро"},
+      "cooldownSeconds": 10,
+      "effect": {"type": "strike", "multiplier": 4},
+      "text": {"ru": "раз в 10 с дух бьёт ×4", "en": "every 10 s a spirit strikes ×4"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_auto_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_auto_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_auto_1_b15b", "name": {"ru": "Очень голодный дух", "en": "Very Hungry Spirit"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
+        {"level": 25, "options": [{"id": "soulbinder_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_auto_2",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "rare",
       "color": "blue",
-      "name": {"ru": "Старый сторож", "en": "Старый сторож"},
+      "name": {"ru": "Старый сторож", "en": "Old Watchman"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 5},
-      "text": {"ru": "дух-страж, держит полосу", "en": "дух-страж, держит полосу"},
+      "cooldownSeconds": 8,
+      "effect": {"type": "strike", "multiplier": 3, "spiritsHit": 1},
+      "text": {"ru": "раз в 8 с сторож ×3 и удар всех душ", "en": "every 8 s a watchman ×3 and a strike of every soul"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_auto_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_auto_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_auto_2_b15b", "name": {"ru": "Бдительный сторож", "en": "Watchful Watchman"}, "damage": 0.8, "effect": {"spiritsHit": 1.5}}]},
+        {"level": 25, "options": [{"id": "soulbinder_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_auto_3",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "mythic",
       "color": "blue",
-      "name": {"ru": "Блудный огонек", "en": "Блудный огонек"},
+      "name": {"ru": "Блудный огонёк", "en": "Stray Light"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 8},
-      "text": {"ru": "раз в 10 с новая душа", "en": "раз в 10 с новая душа"},
+      "effect": {"type": "strike", "multiplier": 4, "souls": 1},
+      "text": {"ru": "раз в 10 с огонёк ×4 и новая душа", "en": "every 10 s a light ×4 and a new soul"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_auto_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_auto_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_auto_3_b15b", "name": {"ru": "Яркий огонёк", "en": "Bright Light"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
+        {"level": 25, "options": [{"id": "soulbinder_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_strong_1",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "epic",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Парад духов", "en": "Парад духов"},
+      "name": {"ru": "Парад духов", "en": "Spirit Parade"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 12},
-      "text": {"ru": "все духи ×3 на 5 с", "en": "все духи ×3 на 5 с"},
+      "cooldownSeconds": 25,
+      "effect": {"type": "strike", "multiplier": 6, "spiritsHit": 1.5},
+      "text": {"ru": "парад ×6: все духи бьют ×1,5", "en": "a parade ×6: every spirit strikes ×1.5"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_strong_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_strong_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_strong_1_b15b", "name": {"ru": "Большой парад", "en": "Grand Parade"}, "damage": 0.8, "effect": {"spiritsHit": 2}}]},
+        {"level": 25, "options": [{"id": "soulbinder_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_strong_2",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "legendary",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Сеанс", "en": "Сеанс"},
+      "name": {"ru": "Сеанс", "en": "Seance"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 50},
+      "cost": {"resource": 30},
       "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 18},
-      "text": {"ru": "вызвать дух босса на 10 с", "en": "вызвать дух босса на 10 с"},
+      "effect": {"type": "strike", "multiplier": 8, "souls": 3},
+      "text": {"ru": "сеанс ×8: три души сразу", "en": "a seance ×8: three souls at once"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_strong_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_strong_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_strong_2_b15b", "name": {"ru": "Долгий сеанс", "en": "Long Seance"}, "damage": 0.8, "effect": {"multiplier": 10}}]},
+        {"level": 25, "options": [{"id": "soulbinder_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_strong_3",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "mythic",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Отпустить всех", "en": "Отпустить всех"},
+      "name": {"ru": "Отпустить всех", "en": "Release Them All"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 25},
-      "text": {"ru": "сфера пустеет, взрыв за каждую душу", "en": "сфера пустеет, взрыв за каждую душу"},
+      "effect": {"type": "strike", "multiplier": 12, "releaseAll": true},
+      "text": {"ru": "все души разом в удар ×12", "en": "every soul at once in a blow ×12"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "soulbinder_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "soulbinder_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "soulbinder_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "soulbinder_strong_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "soulbinder_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "soulbinder_strong_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "soulbinder_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_strong_3_b15b", "name": {"ru": "Тихий уход", "en": "Quiet Parting"}, "damage": 0.8, "effect": {"multiplier": 15}}]},
+        {"level": 25, "options": [{"id": "soulbinder_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "soulbinder_path_1",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "ascendancy": "soulbinder_trait_1",
       "color": "blue",
-      "name": {"ru": "Призвать души", "en": "Призвать души"},
+      "name": {"ru": "Призвать души", "en": "Summon Souls"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "souls": 2},
+      "text": {"ru": "удар ×3 и две души в сферу", "en": "a blow ×3 and two souls into the orb"}
     },
     {
       "id": "soulbinder_path_2",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "ascendancy": "soulbinder_trait_2",
       "color": "blue",
-      "name": {"ru": "Последний вздох", "en": "Последний вздох"},
+      "name": {"ru": "Последний вздох", "en": "Last Breath"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "breathe": true},
+      "text": {"ru": "удар ×3 и вздох старшей души сразу", "en": "a blow ×3 and the oldest soul's breath at once"}
     },
     {
       "id": "soulbinder_path_3",
       "kind": "active",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "ascendancy": "soulbinder_trait_3",
       "color": "blue",
-      "name": {"ru": "Отдать душу", "en": "Отдать душу"},
+      "name": {"ru": "Отдать душу", "en": "Give a Soul"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "lend": true},
+      "text": {"ru": "удар ×3 и дух в союзника сразу", "en": "a blow ×3 and a spirit into an ally at once"}
     },
     {
       "id": "soulbinder_aura_1",
       "kind": "aura",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "common",
       "color": "blue",
-      "name": {"ru": "Тишина кладбища", "en": "Тишина кладбища"},
+      "name": {"ru": "Тишина кладбища", "en": "Graveyard Hush"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}], "reserve": 15, "party": true},
-      "text": {"ru": "урон призванных", "en": "урон призванных"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.01}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +12% урона призванных; её духи чуть сильнее", "en": "party: +12% minion damage; her spirits are a little stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "soulbinder_aura_1_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144}]}
-            },
-            {"id": "soulbinder_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "soulbinder_aura_1_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132}]}
-            },
-            {"id": "soulbinder_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "soulbinder_aura_1_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156}]}
-            },
-            {"id": "soulbinder_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.012}]}}, {"id": "soulbinder_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.011}]}}, {"id": "soulbinder_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.013}]}}, {"id": "soulbinder_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "soulbinder_aura_2",
       "kind": "aura",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "common",
       "color": "blue",
-      "name": {"ru": "Эктоплазма", "en": "Эктоплазма"},
+      "name": {"ru": "Эктоплазма", "en": "Ectoplasm"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "reserve": 15},
-      "text": {"ru": "призванные живут дольше", "en": "призванные живут дольше"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}, {"stat": "breathPower", "kind": "flat", "value": 0.001}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +10% прироста ресурса; её вздох чуть сильнее", "en": "party: +10% resource gain; her breath is a little stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "soulbinder_aura_2_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "soulbinder_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "soulbinder_aura_2_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "soulbinder_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "soulbinder_aura_2_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "soulbinder_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}, {"stat": "breathPower", "kind": "flat", "value": 0.0012}]}}, {"id": "soulbinder_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}, {"stat": "breathPower", "kind": "flat", "value": 0.0011}]}}, {"id": "soulbinder_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}, {"stat": "breathPower", "kind": "flat", "value": 0.0013}]}}, {"id": "soulbinder_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "soulbinder_aura_3",
       "kind": "aura",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "rare",
       "color": "blue",
-      "name": {"ru": "Вечный покой", "en": "Вечный покой"},
+      "name": {"ru": "Вечный покой", "en": "Eternal Rest"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}], "reserve": 20},
-      "text": {"ru": "каждое убийство +1% урона на 10 с, до 10%", "en": "каждое убийство +1% урона на 10 с, до 10%"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "lendPower", "kind": "flat", "value": 0.01}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +10% урона; её дух в союзнике чуть сильнее", "en": "party: +10% damage; her spirit in an ally is a little stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "soulbinder_aura_3_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "soulbinder_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "soulbinder_aura_3_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "soulbinder_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "soulbinder_aura_3_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "soulbinder_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "lendPower", "kind": "flat", "value": 0.012}]}}, {"id": "soulbinder_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "lendPower", "kind": "flat", "value": 0.011}]}}, {"id": "soulbinder_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "lendPower", "kind": "flat", "value": 0.013}]}}, {"id": "soulbinder_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "soulbinder_aura_4",
       "kind": "aura",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "rare",
       "color": "blue",
-      "name": {"ru": "Связь душ", "en": "Связь душ"},
+      "name": {"ru": "Связь душ", "en": "Soul Bond"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "reserve": 20},
-      "text": {"ru": "10% урона по полосе забирают призванные", "en": "10% урона по полосе забирают призванные"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "soulPower", "kind": "flat", "value": 0.01}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +12% урона по боссу; её духи чуть сильнее", "en": "party: +12% damage against bosses; her spirits are a little stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "soulbinder_aura_4_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "soulbinder_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "soulbinder_aura_4_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "soulbinder_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "soulbinder_aura_4_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "soulbinder_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.144}, {"stat": "soulPower", "kind": "flat", "value": 0.012}]}}, {"id": "soulbinder_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.132}, {"stat": "soulPower", "kind": "flat", "value": 0.011}]}}, {"id": "soulbinder_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.156}, {"stat": "soulPower", "kind": "flat", "value": 0.013}]}}, {"id": "soulbinder_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "soulbinder_aura_5",
       "kind": "aura",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "epic",
       "color": "blue",
-      "name": {"ru": "Холод загробья", "en": "Холод загробья"},
+      "name": {"ru": "Холод загробья", "en": "Afterlife Chill"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "каждый убитый враг забирает 5% HP у следующего", "en": "каждый убитый враг забирает 5% HP у следующего"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.5}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +12% урона по слабеющему боссу; её холод на 0,5 с дольше", "en": "party: +12% damage against a weakening boss; her chill lasts 0.5 s longer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "soulbinder_aura_5_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "soulbinder_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "soulbinder_aura_5_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "soulbinder_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "soulbinder_aura_5_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "soulbinder_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.6}]}}, {"id": "soulbinder_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.55}]}}, {"id": "soulbinder_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.65}]}}, {"id": "soulbinder_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
       "id": "soulbinder_aura_6",
       "kind": "aura",
-      "weapon": "shovel",
+      "weapon": "spirit_orb",
       "tier": "legendary",
       "color": "blue",
-      "name": {"ru": "Память предков", "en": "Память предков"},
+      "name": {"ru": "Память предков", "en": "Ancestors' Memory"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "призванные отряда бьют и врагов очереди", "en": "призванные отряда бьют и врагов очереди"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "lendSeconds", "kind": "flat", "value": 0.5}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +8% урона; её дух в союзнике на 0,5 с дольше", "en": "party: +8% damage; her spirit in an ally lasts 0.5 s longer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "soulbinder_aura_6_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "soulbinder_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "soulbinder_aura_6_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "soulbinder_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "soulbinder_aura_6_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "soulbinder_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "soulbinder_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "lendSeconds", "kind": "flat", "value": 0.6}]}}, {"id": "soulbinder_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "lendSeconds", "kind": "flat", "value": 0.55}]}}, {"id": "soulbinder_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "lendSeconds", "kind": "flat", "value": 0.65}]}}, {"id": "soulbinder_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -8956,766 +8563,373 @@
     {
       "id": "dowser_hit_1",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "common",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Раскоп", "en": "Раскоп"},
+      "name": {"ru": "Раскоп", "en": "Dig"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 3,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "двойной шанс жилы", "en": "двойной шанс жилы"},
+      "cooldownSeconds": 4,
+      "effect": {"type": "strike", "multiplier": 3, "veinHits": 5},
+      "text": {"ru": "раскоп ×3 и на 5 ударов ближе к жиле", "en": "a dig ×3 and 5 hits closer to the vein"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_hit_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_hit_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_hit_1_b15b", "name": {"ru": "Глубокий раскоп", "en": "Deep Dig"}, "damage": 0.8, "effect": {"veinHits": 8}}]},
+        {"level": 25, "options": [{"id": "dowser_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_hit_2",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "rare",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Постукивание", "en": "Постукивание"},
+      "name": {"ru": "Постукивание", "en": "Tapping"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 15},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 4},
-      "text": {"ru": "быстрый, +Чутьё", "en": "быстрый, +Чутьё"},
+      "cost": {"resource": 5},
+      "cooldownSeconds": 3,
+      "effect": {"type": "strike", "multiplier": 2.5, "luck": 0.01},
+      "text": {"ru": "постукивание ×2,5 и +1% удачи", "en": "tapping ×2.5 and +1% luck"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_hit_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_hit_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_hit_2_b15b", "name": {"ru": "Чуткое постукивание", "en": "Keen Tapping"}, "damage": 0.8, "effect": {"luck": 0.015}}]},
+        {"level": 25, "options": [{"id": "dowser_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_hit_3",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "epic",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Золотой зубец", "en": "Золотой зубец"},
+      "name": {"ru": "Золотой зубец", "en": "Golden Tine"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 6},
-      "text": {"ru": "сила растёт от золота на руках", "en": "сила растёт от золота на руках"},
+      "effect": {"type": "strike", "multiplier": 3, "goldHit": 3},
+      "text": {"ru": "зубец ×3 и ещё сильнее от золота на руках", "en": "a tine ×3 and stronger still from gold in hand"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_hit_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_hit_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_hit_3_b15b", "name": {"ru": "Тяжёлый зубец", "en": "Heavy Tine"}, "damage": 0.8, "effect": {"goldHit": 4.5}}]},
+        {"level": 25, "options": [{"id": "dowser_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_queue_1",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "common",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Вереск лозы", "en": "Вереск лозы"},
+      "name": {"ru": "Вереск лозы", "en": "Rod Heather"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
-      "text": {"ru": "показывает жилы", "en": "показывает жилы"},
+      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3, "veinHits": 3},
+      "text": {"ru": "вереск ×2 по 3 врагам очереди и на 3 удара ближе к жиле", "en": "heather ×2 at 3 queued enemies and 3 hits closer to the vein"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_queue_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_queue_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_queue_1_b15b", "name": {"ru": "Густой вереск", "en": "Thick Heather"}, "damage": 0.8, "effect": {"veinHits": 5}}]},
+        {"level": 25, "options": [{"id": "dowser_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_queue_2",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "rare",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Разведка", "en": "Разведка"},
+      "name": {"ru": "Разведка", "en": "Scouting"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "жила каждого в очереди ближе", "en": "жила каждого в очереди ближе"},
+      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "luck": 0.01},
+      "text": {"ru": "разведка ×2,5 по 3 врагам и +1% удачи", "en": "scouting ×2.5 at 3 enemies and +1% luck"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_queue_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_queue_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_queue_2_b15b", "name": {"ru": "Дальняя разведка", "en": "Far Scouting"}, "damage": 0.8, "effect": {"luck": 0.015}}]},
+        {"level": 25, "options": [{"id": "dowser_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_queue_3",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "legendary",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Обвал штольни", "en": "Обвал штольни"},
+      "name": {"ru": "Обвал штольни", "en": "Shaft Collapse"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
-      "text": {"ru": "вся очередь", "en": "вся очередь"},
+      "text": {"ru": "обвал ×3 по 3 врагам", "en": "a collapse ×3 at 3 enemies"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_queue_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_queue_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_queue_3_b15b", "name": {"ru": "Большой обвал", "en": "Big Collapse"}, "damage": 0.8, "effect": {"multiplier": 3.8}}]},
+        {"level": 25, "options": [{"id": "dowser_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_auto_1",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "common",
       "color": "blue",
-      "name": {"ru": "Кладоискатель", "en": "Кладоискатель"},
+      "name": {"ru": "Кладоискатель", "en": "Treasure Seeker"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "раз в 10 с бьёт по жиле", "en": "раз в 10 с бьёт по жиле"},
+      "cooldownSeconds": 10,
+      "effect": {"type": "strike", "multiplier": 4, "veinHits": 10},
+      "text": {"ru": "раз в 10 с удар по жиле ×4: на 10 ударов ближе", "en": "every 10 s a strike along the vein ×4: 10 hits closer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_auto_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_auto_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_auto_1_b15b", "name": {"ru": "Опытный кладоискатель", "en": "Seasoned Seeker"}, "damage": 0.8, "effect": {"veinHits": 15}}]},
+        {"level": 25, "options": [{"id": "dowser_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_auto_2",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "rare",
       "color": "blue",
-      "name": {"ru": "Крот-помощник", "en": "Крот-помощник"},
+      "name": {"ru": "Крот-помощник", "en": "Mole Helper"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 5},
-      "text": {"ru": "раз в 5 с подбирает золото", "en": "раз в 5 с подбирает золото"},
+      "cooldownSeconds": 5,
+      "effect": {"type": "strike", "multiplier": 3, "nuggets": 1},
+      "text": {"ru": "раз в 5 с крот ×3 и самородок", "en": "every 5 s a mole ×3 and a nugget"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_auto_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_auto_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_auto_2_b15b", "name": {"ru": "Два крота", "en": "Two Moles"}, "damage": 0.8, "effect": {"nuggets": 2}}]},
+        {"level": 25, "options": [{"id": "dowser_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_auto_3",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "mythic",
       "color": "blue",
-      "name": {"ru": "Дрожь лозы", "en": "Дрожь лозы"},
+      "name": {"ru": "Дрожь лозы", "en": "Rod Tremor"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 8},
-      "text": {"ru": "раз в 20 с +чутьё", "en": "раз в 20 с +чутьё"},
+      "cooldownSeconds": 20,
+      "effect": {"type": "strike", "multiplier": 5, "luck": 0.02},
+      "text": {"ru": "раз в 20 с дрожь ×5 и +2% удачи", "en": "every 20 s a tremor ×5 and +2% luck"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_auto_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_auto_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_auto_3_b15b", "name": {"ru": "Сильная дрожь", "en": "Strong Tremor"}, "damage": 0.8, "effect": {"luck": 0.03}}]},
+        {"level": 25, "options": [{"id": "dowser_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_strong_1",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "epic",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Золотая жила", "en": "Золотая жила"},
+      "name": {"ru": "Золотая жила", "en": "Gold Vein"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 12},
-      "text": {"ru": "все удары 5 с бьют в жилу", "en": "все удары 5 с бьют в жилу"},
+      "cooldownSeconds": 25,
+      "effect": {"type": "strike", "multiplier": 6, "veinGold": 5},
+      "text": {"ru": "жила ×6: враг отдаст на 500% больше золота", "en": "a vein ×6: the enemy gives 500% more gold"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_strong_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_strong_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_strong_1_b15b", "name": {"ru": "Богатая жила", "en": "Rich Vein"}, "damage": 0.8, "effect": {"veinGold": 8}}]},
+        {"level": 25, "options": [{"id": "dowser_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_strong_2",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "legendary",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Камнепад", "en": "Камнепад"},
+      "name": {"ru": "Камнепад", "en": "Rockfall"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 50},
+      "cost": {"resource": 30},
       "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 18},
-      "text": {"ru": "×20 и золото за урон", "en": "×20 и золото за урон"},
+      "effect": {"type": "strike", "multiplier": 12, "goldHit": 6},
+      "text": {"ru": "камнепад ×12 и ещё сильнее от золота", "en": "a rockfall ×12 and stronger still from gold"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_strong_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_strong_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_strong_2_b15b", "name": {"ru": "Большой камнепад", "en": "Big Rockfall"}, "damage": 0.8, "effect": {"goldHit": 9}}]},
+        {"level": 25, "options": [{"id": "dowser_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_strong_3",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "mythic",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Подземный ключ", "en": "Подземный ключ"},
+      "name": {"ru": "Подземный ключ", "en": "Underground Spring"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 25},
-      "text": {"ru": "на 10 с добыча ×2", "en": "на 10 с добыча ×2"},
+      "effect": {"type": "strike", "multiplier": 15, "nuggets": 3},
+      "text": {"ru": "ключ ×15 и три самородка", "en": "a spring ×15 and three nuggets"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "dowser_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "dowser_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "dowser_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "dowser_strong_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "dowser_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "dowser_strong_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "dowser_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "dowser_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "dowser_strong_3_b15b", "name": {"ru": "Бурный ключ", "en": "Rushing Spring"}, "damage": 0.8, "effect": {"multiplier": 20}}]},
+        {"level": 25, "options": [{"id": "dowser_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "dowser_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "dowser_path_1",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "ascendancy": "dowser_trait_1",
       "color": "blue",
-      "name": {"ru": "Вскрыть жилу", "en": "Вскрыть жилу"},
+      "name": {"ru": "Вскрыть жилу", "en": "Open the Vein"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
+      "cost": {"resource": 30},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "effect": {"type": "strike", "multiplier": 3, "veinHits": 50},
+      "text": {"ru": "удар ×3 и жила вскрыта сразу", "en": "a blow ×3 and the vein is opened at once"}
     },
     {
       "id": "dowser_path_2",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "ascendancy": "dowser_trait_2",
       "color": "blue",
-      "name": {"ru": "Счастливая монета", "en": "Счастливая монета"},
+      "name": {"ru": "Счастливая монета", "en": "Lucky Coin"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
+      "cost": {"resource": 30},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "effect": {"type": "strike", "multiplier": 3, "luck": 0.1},
+      "text": {"ru": "удар ×3 и +10% удачи", "en": "a blow ×3 and +10% luck"}
     },
     {
       "id": "dowser_path_3",
       "kind": "active",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "ascendancy": "dowser_trait_3",
       "color": "blue",
-      "name": {"ru": "Общий котёл", "en": "Общий котёл"},
+      "name": {"ru": "Общий котёл", "en": "Common Pot"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
+      "cost": {"resource": 30},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "effect": {"type": "strike", "multiplier": 3, "nuggets": 5},
+      "text": {"ru": "удар ×3 и 5 самородков", "en": "a blow ×3 and 5 nuggets"}
     },
     {
       "id": "dowser_aura_1",
       "kind": "aura",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "common",
       "color": "blue",
-      "name": {"ru": "Золотая лихорадка", "en": "Золотая лихорадка"},
+      "name": {"ru": "Золотая лихорадка", "en": "Gold Fever"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.2}], "reserve": 15, "party": true},
-      "text": {"ru": "золото", "en": "золото"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.15}, {"stat": "veinPower", "kind": "flat", "value": 0.08}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +15% золота; её жила чуть богаче", "en": "party: +15% gold; her vein is a little richer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dowser_aura_1_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.24}]}
-            },
-            {"id": "dowser_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dowser_aura_1_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.22}]}
-            },
-            {"id": "dowser_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dowser_aura_1_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.26}]}
-            },
-            {"id": "dowser_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.18}, {"stat": "veinPower", "kind": "flat", "value": 0.096}]}}, {"id": "dowser_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "dowser_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.165}, {"stat": "veinPower", "kind": "flat", "value": 0.088}]}}, {"id": "dowser_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "dowser_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.195}, {"stat": "veinPower", "kind": "flat", "value": 0.104}]}}, {"id": "dowser_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "dowser_aura_2",
       "kind": "aura",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "common",
       "color": "blue",
-      "name": {"ru": "Самородок", "en": "Самородок"},
+      "name": {"ru": "Самородок", "en": "Nugget"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "reserve": 15},
-      "text": {"ru": "1% убийств даёт золото ×10", "en": "1% убийств даёт золото ×10"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "artelPower", "kind": "flat", "value": 0.02}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +10% урона; её сундук артели чуть богаче", "en": "party: +10% damage; her artel chest is a little richer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dowser_aura_2_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "dowser_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dowser_aura_2_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "dowser_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dowser_aura_2_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "dowser_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "artelPower", "kind": "flat", "value": 0.024}]}}, {"id": "dowser_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "dowser_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "artelPower", "kind": "flat", "value": 0.022}]}}, {"id": "dowser_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "dowser_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "artelPower", "kind": "flat", "value": 0.026}]}}, {"id": "dowser_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "dowser_aura_3",
       "kind": "aura",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "rare",
       "color": "blue",
-      "name": {"ru": "Скупщик", "en": "Скупщик"},
+      "name": {"ru": "Скупщик", "en": "Buyer"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}], "reserve": 20},
-      "text": {"ru": "улучшения за золото на 5% дешевле", "en": "улучшения за золото на 5% дешевле"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "bossGold", "kind": "increased", "value": 0.15}, {"stat": "luckPower", "kind": "flat", "value": 0.0001}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +15% золота с боссов; её удача растёт чуть быстрее", "en": "party: +15% boss gold; her luck grows a little faster"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dowser_aura_3_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "dowser_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dowser_aura_3_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "dowser_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dowser_aura_3_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "dowser_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "bossGold", "kind": "increased", "value": 0.18}, {"stat": "luckPower", "kind": "flat", "value": 0.00012}]}}, {"id": "dowser_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "dowser_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "bossGold", "kind": "increased", "value": 0.165}, {"stat": "luckPower", "kind": "flat", "value": 0.00011}]}}, {"id": "dowser_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "dowser_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "bossGold", "kind": "increased", "value": 0.195}, {"stat": "luckPower", "kind": "flat", "value": 0.00013}]}}, {"id": "dowser_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "dowser_aura_4",
       "kind": "aura",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "rare",
       "color": "blue",
-      "name": {"ru": "Рудная пыль", "en": "Рудная пыль"},
+      "name": {"ru": "Рудная пыль", "en": "Ore Dust"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "reserve": 20},
-      "text": {"ru": "+материалы для крафта", "en": "+материалы для крафта"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "veinPower", "kind": "flat", "value": 0.08}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +12% урона по боссу; её жила чуть богаче", "en": "party: +12% damage against bosses; her vein is a little richer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dowser_aura_4_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "dowser_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dowser_aura_4_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "dowser_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dowser_aura_4_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "dowser_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.144}, {"stat": "veinPower", "kind": "flat", "value": 0.096}]}}, {"id": "dowser_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "dowser_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.132}, {"stat": "veinPower", "kind": "flat", "value": 0.088}]}}, {"id": "dowser_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "dowser_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.156}, {"stat": "veinPower", "kind": "flat", "value": 0.104}]}}, {"id": "dowser_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "dowser_aura_5",
       "kind": "aura",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "epic",
       "color": "blue",
-      "name": {"ru": "Компас лозы", "en": "Компас лозы"},
+      "name": {"ru": "Компас лозы", "en": "Rod Compass"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "+шанс редкого врага в очереди", "en": "+шанс редкого врага в очереди"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.06}, {"stat": "luckPower", "kind": "flat", "value": 0.0002}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +6% предметов; её удача растёт быстрее", "en": "party: +6% items; her luck grows faster"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dowser_aura_5_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "dowser_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dowser_aura_5_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "dowser_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dowser_aura_5_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "dowser_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.072}, {"stat": "luckPower", "kind": "flat", "value": 0.00024}]}}, {"id": "dowser_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "dowser_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.066}, {"stat": "luckPower", "kind": "flat", "value": 0.00022}]}}, {"id": "dowser_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "dowser_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.078}, {"stat": "luckPower", "kind": "flat", "value": 0.00026}]}}, {"id": "dowser_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
       "id": "dowser_aura_6",
       "kind": "aura",
-      "weapon": "still_burner",
+      "weapon": "divining_rod",
       "tier": "legendary",
       "color": "blue",
-      "name": {"ru": "Клад", "en": "Клад"},
+      "name": {"ru": "Клад", "en": "Hoard"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "+валюта престижа", "en": "+валюта престижа"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "artelNuggets", "kind": "flat", "value": -0.5}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +8% урона; ей сундук артели чуть раньше", "en": "party: +8% damage; her artel chest comes a little sooner"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "dowser_aura_6_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "dowser_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "dowser_aura_6_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "dowser_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "dowser_aura_6_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "dowser_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "dowser_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "artelNuggets", "kind": "flat", "value": -0.6}]}}, {"id": "dowser_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "dowser_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "artelNuggets", "kind": "flat", "value": -0.55}]}}, {"id": "dowser_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "dowser_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "artelNuggets", "kind": "flat", "value": -0.65}]}}, {"id": "dowser_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

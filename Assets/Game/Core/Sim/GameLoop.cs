@@ -97,7 +97,8 @@ namespace Game.Core.Sim
             _stage.Drops = _drops;
             _combat.Dreamcatcher.UseLoot(_drops, _loot);
             _combat.Dreamcatcher.UseEnemies(data.Enemies);
-            _stage.RewardListener = _combat.Dreamcatcher;
+            _combat.Dowser.UseLoot(_drops, _loot);
+            _stage.RewardListener = new KillRewardListeners(_combat.Dreamcatcher, _combat.Dowser, _combat.Soulbinder);
             _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
             _gates = new GateSystem(data.Stages, state, hero, Events);
             _stage.Gates = _gates;
