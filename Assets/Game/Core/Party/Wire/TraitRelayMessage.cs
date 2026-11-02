@@ -16,6 +16,8 @@ namespace Game.Core.Party.Wire
 
         public bool Reaches(int slot) => To == TraitRelay.AllSlots || To == slot;
 
+        public TraitRelay Into() => new TraitRelay { Kind = Kind, To = To, Count = Count, Every = Every, Max = Max, Value = Value, Seconds = Seconds, Extra = Extra };
+
         public void Write(ref PartyWriter writer)
         {
             writer.Byte((byte)Kind);

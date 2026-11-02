@@ -25,7 +25,8 @@ namespace Game.Core.Stats
             "netPower", "netTrophy", "netParty", "albumPower", "albumMax", "prophecyPower", "albumParty",
             "lightPower", "lightPerHit", "lightShadow", "lightCarry", "lightParty", "beaconPower", "beaconParty",
             "knotPower", "knotParty", "namePower", "nameParty", "hushParty",
-            "springPower", "springDrain", "springParty", "loopPower", "loopParty"
+            "springPower", "springDrain", "springParty", "loopPower", "loopParty",
+            "solventPower", "solventParty", "mixParty", "elixirParty"
         };
 
         private static readonly StatTags[] LabelledTags =

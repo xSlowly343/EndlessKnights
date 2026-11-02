@@ -291,226 +291,70 @@
     {
       "id": "alchemist_trait_1",
       "class": "alchemist",
-      "name": {"ru": "Смесь", "en": "Смесь"},
-      "blurb": "Удары по кругу меняют реактив (алый, лазурный, золотой). Скилл «Колба» бросает последние три: 10 смесей, у каждой свой эффект (взрыв, разъедание, пена, кристаллизация и др.)",
+      "name": {"ru": "Смесь", "en": "Mixture"},
+      "blurb": "Удары по кругу меняют реактив: алый, лазурный, золотой. Каждые 8 ударов и каждый крит текущий реактив падает в колбу; три реактива — смесь, у каждой из 10 своё действие (взрыв, разъедание, пена, кристаллизация, золотая смесь и др.). В паузе колба ждёт. Скилл Пути «Колба» бросает колбу сразу, добирая реактивы, и смесь на 50% сильнее",
       "trait": {
-        "partyText": {"ru": "Смесь из трёх золотых даёт союзникам +20 ресурса", "en": "Смесь из трёх золотых даёт союзникам +20 ресурса"},
+        "partyText": {"ru": "Реактивы от союзников: крит союзника кладёт в её колбу реактив его цвета, так смеси в отряде чаще и разнообразнее; реактивы в колбе видны всем", "en": "Reagents from allies: an ally's crit puts a reagent of their colour into her flask, so mixes come more often and vary more in a party; everyone sees the reagents in the flask"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.8}]},
+          {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
+          {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
+          {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
+          {"modifiers": [{"stat": "mixQueue", "kind": "flat", "value": 1}], "text": {"ru": "Летучая смесь: каждая смесь задевает и очередь ударом ×5", "en": "Volatile Mix: every mix also hits the queue ×5"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "alchemist_trait_1_f45a",
-                "name": {"ru": "Знаток рецептов", "en": "Знаток рецептов"},
-                "text": {"ru": "Знаток рецептов: видна следующая смесь", "en": "Знаток рецептов: видна следующая смесь"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "alchemist_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "alchemist_trait_1_f60a",
-                "name": {"ru": "Четвёртый реактив", "en": "Четвёртый реактив"},
-                "text": {"ru": "Четвёртый реактив: 15 смесей", "en": "Четвёртый реактив: 15 смесей"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "alchemist_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "alchemist_trait_1_f75a",
-                "name": {"ru": "Удачный опыт", "en": "Удачный опыт"},
-                "text": {"ru": "Удачный опыт: 10% смесь двойная", "en": "Удачный опыт: 10% смесь двойная"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "alchemist_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "alchemist_trait_1_f45a", "name": {"ru": "Чистый реактив", "en": "Pure Reagent"}, "text": {"ru": "Смесь из трёх одинаковых вдвое сильнее, но реактив раз в 10 ударов", "en": "A mix of three alike is twice as strong, but a reagent comes every 10 hits"}, "modifiers": [{"stat": "mixPure", "kind": "flat", "value": 1}, {"stat": "reagentHits", "kind": "flat", "value": 2}]}, {"id": "alchemist_trait_1_f45b", "name": {"ru": "Частые колбы", "en": "Frequent Flasks"}, "text": {"ru": "Реактив каждые 5 ударов, но смеси на 30% слабее", "en": "A reagent every 5 hits, but mixes are 30% weaker"}, "modifiers": [{"stat": "reagentHits", "kind": "flat", "value": -3}, {"stat": "mixPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 60, "options": [{"id": "alchemist_trait_1_f60a", "name": {"ru": "Цепная реакция", "en": "Chain Reaction"}, "text": {"ru": "Каждая смесь ещё и бьёт ×2, но реактив раз в 10 ударов", "en": "Every mix also hits ×2, but a reagent comes every 10 hits"}, "modifiers": [{"stat": "mixChain", "kind": "flat", "value": 1}, {"stat": "reagentHits", "kind": "flat", "value": 2}]}, {"id": "alchemist_trait_1_f60b", "name": {"ru": "Долгий раствор", "en": "Lasting Solution"}, "text": {"ru": "Действия смесей держатся вдвое дольше, но смеси на 20% слабее", "en": "Mix effects last twice as long, but mixes are 20% weaker"}, "modifiers": [{"stat": "mixLong", "kind": "flat", "value": 1}, {"stat": "mixPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 75, "options": [{"id": "alchemist_trait_1_f75a", "name": {"ru": "Удачный опыт", "en": "Lucky Experiment"}, "text": {"ru": "Каждая 5-я смесь срабатывает дважды, но смеси на 15% слабее", "en": "Every 5th mix works twice, but mixes are 15% weaker"}, "modifiers": [{"stat": "mixLucky", "kind": "flat", "value": 1}, {"stat": "mixPower", "kind": "more", "value": -0.15}]}, {"id": "alchemist_trait_1_f75b", "name": {"ru": "Философский камень", "en": "Philosopher's Stone"}, "text": {"ru": "Смесь из трёх разных реактивов втрое сильнее, остальные на 30% слабее", "en": "A mix of three different reagents is three times stronger, the rest are 30% weaker"}, "modifiers": [{"stat": "mixStone", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [{"id": "alchemist_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Смесь", "en": "Смесь"}, "modifiers": []}],
+      "nodes": [{"id": "alchemist_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Смесь", "en": "Mixture"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "alchemist_trait_2",
       "class": "alchemist",
-      "name": {"ru": "Растворитель", "en": "Растворитель"},
-      "blurb": "У врага 5 слоёв панциря, каждый растворяется после серии ударов. Скилл «Плеснуть» снимает слой сразу",
+      "name": {"ru": "Растворитель", "en": "Solvent"},
+      "blurb": "У врага 5 слоёв панциря, каждый растворяется после серии из 30 ударов; каждый снятый слой — враг получает на 7% больше урона. Снятый слой даёт кислоту на клинок: 10 с её удары растворяют вдвое быстрее. В паузе растворитель стоит. Скилл Пути «Плеснуть» снимает слой сразу",
       "trait": {
-        "partyText": {"ru": "Каждый снятый слой: −6% сопротивлений для всех", "en": "Каждый снятый слой: −6% сопротивлений для всех"},
+        "partyText": {"ru": "Кислота на клинке: слои общие на враге у хоста и видны всем; когда слой снят, союзник по кругу получает кислоту на 10 с — его удары тоже растворяют следующий слой", "en": "Acid on the blade: the layers are shared on the enemy at the host and seen by all; when a layer is off, an ally in turn gets acid for 10 s — their hits dissolve the next layer too"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "solventPower", "kind": "flat", "value": 0.07}]},
+          {"modifiers": [{"stat": "solventPower", "kind": "flat", "value": 0.014}]},
+          {"modifiers": [{"stat": "solventPower", "kind": "flat", "value": 0.014}]},
+          {"modifiers": [{"stat": "solventPower", "kind": "flat", "value": 0.014}]},
+          {"modifiers": [{"stat": "layerBlast", "kind": "flat", "value": 1}], "text": {"ru": "Глубокий раствор: каждый снятый слой бьёт врага ×8", "en": "Deep Solution: every layer taken off hits the enemy ×8"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "alchemist_trait_2_f45a",
-                "name": {"ru": "Крепкий раствор", "en": "Крепкий раствор"},
-                "text": {"ru": "Крепкий раствор: на 30% быстрее", "en": "Крепкий раствор: на 30% быстрее"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "alchemist_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "alchemist_trait_2_f60a",
-                "name": {"ru": "До сердцевины", "en": "До сердцевины"},
-                "text": {"ru": "До сердцевины: все 5 сняты — отряду +25%", "en": "До сердцевины: все 5 сняты — отряду +25%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "alchemist_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "alchemist_trait_2_f75a",
-                "name": {"ru": "Пары", "en": "Пары"},
-                "text": {"ru": "Пары: следующий враг без одного слоя", "en": "Пары: следующий враг без одного слоя"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "alchemist_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "alchemist_trait_2_f45a", "name": {"ru": "Крепкий раствор", "en": "Strong Solution"}, "text": {"ru": "Слой растворяется на 30% быстрее, но каждый слой на 20% слабее", "en": "A layer dissolves 30% faster, but every layer is 20% weaker"}, "modifiers": [{"stat": "layerHits", "kind": "flat", "value": -9}, {"stat": "solventPower", "kind": "more", "value": -0.2}]}, {"id": "alchemist_trait_2_f45b", "name": {"ru": "Долгая кислота", "en": "Lasting Acid"}, "text": {"ru": "Кислота держится 20 с, но слой за 40 ударов", "en": "Acid lasts 20 s, but a layer takes 40 hits"}, "modifiers": [{"stat": "acidSeconds", "kind": "flat", "value": 10}, {"stat": "layerHits", "kind": "flat", "value": 10}]}]},
+          {"level": 60, "options": [{"id": "alchemist_trait_2_f60a", "name": {"ru": "До сердцевины", "en": "To the Core"}, "text": {"ru": "Когда сняты все 5 слоёв, враг получает ещё +25%, но слой за 36 ударов", "en": "When all 5 layers are off, the enemy takes another 25%, but a layer takes 36 hits"}, "modifiers": [{"stat": "solventCore", "kind": "flat", "value": 1}, {"stat": "layerHits", "kind": "flat", "value": 6}]}, {"id": "alchemist_trait_2_f60b", "name": {"ru": "Едкий пар", "en": "Caustic Steam"}, "text": {"ru": "Каждый её скилл растворяет как 5 ударов, но слои на 20% слабее", "en": "Each of her skills dissolves like 5 hits, but layers are 20% weaker"}, "modifiers": [{"stat": "solventSkills", "kind": "flat", "value": 1}, {"stat": "solventPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 75, "options": [{"id": "alchemist_trait_2_f75a", "name": {"ru": "Пары", "en": "Fumes"}, "text": {"ru": "Следующий враг выходит без одного слоя, но слои на 15% слабее", "en": "The next enemy comes without one layer, but layers are 15% weaker"}, "modifiers": [{"stat": "solventCarry", "kind": "flat", "value": 1}, {"stat": "solventPower", "kind": "more", "value": -0.15}]}, {"id": "alchemist_trait_2_f75b", "name": {"ru": "Кислотный дождь", "en": "Acid Rain"}, "text": {"ru": "Кислота достаётся всем союзникам сразу (в соло — на 50% дольше), но слой за 40 ударов", "en": "Acid goes to every ally at once (solo — 50% longer), but a layer takes 40 hits"}, "modifiers": [{"stat": "acidAll", "kind": "flat", "value": 1}, {"stat": "layerHits", "kind": "flat", "value": 10}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "alchemist_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Растворитель", "en": "Растворитель"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "alchemist_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Растворитель", "en": "Solvent"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "alchemist_trait_3",
       "class": "alchemist",
-      "name": {"ru": "Эликсиры для друзей", "en": "Эликсиры для друзей"},
-      "blurb": "Каждые 50 ударов — эликсир случайному союзнику (соло — себе): +30% урона 8 с. Три эликсира одному подряд сливаются в философский: ×2 на 5 с. Сама бьёт на 25% слабее. Скилл «Угощение»",
+      "name": {"ru": "Эликсиры для друзей", "en": "Elixirs for Friends"},
+      "blurb": "Каждые 50 ударов — эликсир союзнику по кругу (в соло — себе) на 8 с, цвета по очереди: алый — каждый 5-й удар взрывается ×3, лазурный — скиллы не тратят ресурс, золотой — убийства дают на 50% больше золота. Каждый третий эликсир у одного героя — философский: все три свойства на 5 с. Сама бьёт на 25% слабее. В паузе эликсиры не варятся. Скилл Пути «Угощение» даёт эликсир сразу",
       "trait": {
-        "partyText": {"ru": "Эликсиры — главное, что она даёт отряду в этом Пути", "en": "Эликсиры — главное, что она даёт отряду в этом Пути"},
+        "partyText": {"ru": "Эликсир со свойством: союзник получает не голый бонус, а свойство по цвету — взрывы ударов, скиллы без ресурса или больше золота; значок цвета на его полоске", "en": "An elixir with a property: an ally gets not a bare bonus but a property by colour — exploding hits, skills without resource or more gold; a colour icon on their bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 3}]},
+          {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "elixirTwo", "kind": "flat", "value": 1}], "text": {"ru": "Двойная порция: эликсир достаётся двоим союзникам (в соло — держится вдвое дольше)", "en": "Double Serving: an elixir goes to two allies (solo — lasts twice as long)"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "alchemist_trait_3_f45a",
-                "name": {"ru": "Большая партия", "en": "Большая партия"},
-                "text": {"ru": "Большая партия: каждые 40", "en": "Большая партия: каждые 40"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "alchemist_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "alchemist_trait_3_f60a",
-                "name": {"ru": "На выбор", "en": "На выбор"},
-                "text": {"ru": "На выбор: эликсир сильнейшему", "en": "На выбор: эликсир сильнейшему"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "alchemist_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "alchemist_trait_3_f75a",
-                "name": {"ru": "Камень мудрецов", "en": "Камень мудрецов"},
-                "text": {"ru": "Камень мудрецов: философский на 8 с", "en": "Камень мудрецов: философский на 8 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "alchemist_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "alchemist_trait_3_f45a", "name": {"ru": "Большая партия", "en": "Big Batch"}, "text": {"ru": "Эликсир каждые 40 ударов, но держится 6 с", "en": "An elixir every 40 hits, but it lasts 6 s"}, "modifiers": [{"stat": "elixirHits", "kind": "flat", "value": -10}, {"stat": "elixirSeconds", "kind": "flat", "value": -2}]}, {"id": "alchemist_trait_3_f45b", "name": {"ru": "Крепкий настой", "en": "Strong Brew"}, "text": {"ru": "Эликсир держится 12 с, но варится раз в 70 ударов", "en": "An elixir lasts 12 s, but is brewed every 70 hits"}, "modifiers": [{"stat": "elixirSeconds", "kind": "flat", "value": 4}, {"stat": "elixirHits", "kind": "flat", "value": 20}]}]},
+          {"level": 60, "options": [{"id": "alchemist_trait_3_f60a", "name": {"ru": "Тройная доза", "en": "Triple Dose"}, "text": {"ru": "Каждый второй эликсир философский, но эликсиры на 25% слабее", "en": "Every second elixir is a philosopher's one, but elixirs are 25% weaker"}, "modifiers": [{"stat": "elixirDouble", "kind": "flat", "value": 1}, {"stat": "elixirPower", "kind": "more", "value": -0.25}]}, {"id": "alchemist_trait_3_f60b", "name": {"ru": "Твёрдая рука", "en": "Steady Hand"}, "text": {"ru": "Сама бьёт без штрафа, но эликсир раз в 70 ударов", "en": "She hits without the penalty, but an elixir comes every 70 hits"}, "modifiers": [{"stat": "elixirNoPenalty", "kind": "flat", "value": 1}, {"stat": "elixirHits", "kind": "flat", "value": 20}]}]},
+          {"level": 75, "options": [{"id": "alchemist_trait_3_f75a", "name": {"ru": "Камень мудрецов", "en": "Sages' Stone"}, "text": {"ru": "Философский эликсир держится 8 с, но эликсир раз в 60 ударов", "en": "A philosopher's elixir lasts 8 s, but an elixir comes every 60 hits"}, "modifiers": [{"stat": "elixirStone", "kind": "flat", "value": 1}, {"stat": "elixirHits", "kind": "flat", "value": 10}]}, {"id": "alchemist_trait_3_f75b", "name": {"ru": "Угощение для всех", "en": "Treat for All"}, "text": {"ru": "Каждый эликсир достаётся всем союзникам, но на 40% слабее", "en": "Every elixir goes to every ally, but 40% weaker"}, "modifiers": [{"stat": "elixirAll", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "alchemist_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Эликсиры для друзей", "en": "Эликсиры для друзей"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "alchemist_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Эликсиры для друзей", "en": "Elixirs for Friends"}, "modifiers": []}],
       "links": []
     },
     {

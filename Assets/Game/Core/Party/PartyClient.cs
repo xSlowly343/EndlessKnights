@@ -908,6 +908,26 @@ namespace Game.Core.Party
                 case TraitRelayKind.Cog:
                     _loop.Combat.Clockwright.ReceiveCog(relay.From);
                     break;
+                case TraitRelayKind.Reagents:
+                    boons.ReagentOwner = relay.From;
+                    boons.ReagentTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.Reagent:
+                    _loop.Combat.Alchemist.ReceiveReagent(relay.From);
+                    break;
+                case TraitRelayKind.Flask:
+                    boons.Flask = relay.Count;
+                    break;
+                case TraitRelayKind.Acid:
+                    boons.AcidOwner = relay.From;
+                    boons.AcidTicks = System.Math.Max(boons.AcidTicks, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond));
+                    break;
+                case TraitRelayKind.AcidHit:
+                    _loop.Combat.Alchemist.ReceiveAcidHits(relay.Count);
+                    break;
+                case TraitRelayKind.Elixir:
+                    AlchemistMechanics.DrinkRelay(boons, relay.Into());
+                    break;
                 case TraitRelayKind.GearTick:
                     boons.GearCuts++;
                     _loop.Combat.Clockwright.CutCooldowns(relay.Seconds, relay.Extra > 0);
@@ -953,6 +973,13 @@ namespace Game.Core.Party
                 _loop.State.Boons.Land(relay.Count, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond), relay.Value, relay.Every, relay.Extra, -1, System.Math.Max(1, (int)relay.Max));
             else if (relay.Kind == TraitRelayKind.Hush)
                 _loop.State.Boons.Hush(relay.Count, relay.Value, -1, relay.Max);
+            else if (relay.Kind == TraitRelayKind.Elixir)
+                AlchemistMechanics.DrinkRelay(_loop.State.Boons, relay);
+            else if (relay.Kind == TraitRelayKind.Acid)
+            {
+                _loop.State.Boons.AcidOwner = -1;
+                _loop.State.Boons.AcidTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+            }
         }
 
         private int NextAlly()

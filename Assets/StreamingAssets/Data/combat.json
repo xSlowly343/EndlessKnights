@@ -95,6 +95,26 @@
       "song": { "hits": 40, "hitsMin": 5, "partyCooldown": 0.5, "partyCrit": 0.2, "soloMultiplier": 2, "allEverySeconds": 30, "allSeconds": 5, "allMultiplier": 2, "gift": 10 },
       "lullaby": { "noteHits": 20, "noteHitsMin": 4, "notes": 7, "notesMin": 2, "seconds": 4, "secondsMin": 1, "bossSeconds": 8 }
     },
+    "alchemist": {
+      "mix": {
+        "reagentHits": 8, "reagentHitsMin": 2, "pureBoost": 2, "chainBlast": 2, "queueBlast": 5, "luckyEvery": 5, "philosopherBoost": 3, "flaskBoost": 1.5,
+        "callSeconds": 30, "reagentCooldownSeconds": 1, "effectSeconds": 2,
+        "recipes": {
+          "rrr": [{ "kind": "blast", "value": 10 }],
+          "bbb": [{ "kind": "corrode", "value": 0.3, "seconds": 8 }],
+          "ggg": [{ "kind": "resource", "value": 20 }],
+          "rrb": [{ "kind": "corrode", "value": 0.15, "seconds": 8 }, { "kind": "blast", "value": 4 }],
+          "rrg": [{ "kind": "blast", "value": 7 }],
+          "rbb": [{ "kind": "stop", "value": 1, "seconds": 2 }, { "kind": "corrode", "value": 0.1, "seconds": 8 }],
+          "bbg": [{ "kind": "crit", "value": 0.1, "seconds": 8 }],
+          "bgg": [{ "kind": "gold", "value": 0.3, "seconds": 10 }],
+          "rgg": [{ "kind": "cut", "value": 2 }],
+          "rbg": [{ "kind": "blast", "value": 5 }, { "kind": "corrode", "value": 0.15, "seconds": 8 }]
+        }
+      },
+      "solvent": { "layers": 5, "layerHits": 30, "layerHitsMin": 5, "layerBlast": 8, "coreBonus": 0.25, "acidSeconds": 10, "acidSoloShare": 1, "skillLayerHits": 5, "effectSeconds": 2 },
+      "elixir": { "hits": 50, "hitsMin": 10, "seconds": 8, "philosopherSeconds": 5, "stoneSeconds": 8, "philosopherEvery": 3, "redEvery": 5, "goldBonus": 0.5, "selfPenalty": 0.25 }
+    },
     "clockwright": {
       "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 },
       "spring": { "low": 0.1, "penalty": 0.1, "drainPerSecond": 1, "windPerHit": 0.5, "allyWind": 0.1, "fullAbove": 0.95, "fullSlow": 0.15, "strike": 0.2, "relaySeconds": 3, "burstEverySeconds": 30, "burstPerWind": 0.2 },

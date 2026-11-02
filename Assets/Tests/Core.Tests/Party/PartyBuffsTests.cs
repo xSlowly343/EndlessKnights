@@ -347,6 +347,32 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AnAlchemistsElixirAcidAndReagentCallReachTheAllyAndTheAllysReagentComesBack()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var alchemist = rig.Members[0];
+            var friend = rig.Members[1];
+            alchemist.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Elixir, To = LanternbearerMechanics.AnyAlly, Count = 1 | (5 << 2), Every = 5, Max = 3, Value = 3, Seconds = 8, Extra = 0.5 });
+            alchemist.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Acid, To = LanternbearerMechanics.AnyAlly, Seconds = 10 });
+            alchemist.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Reagents, To = TraitRelay.AllSlots, Seconds = 30 });
+            rig.Run(0.5);
+
+            Assert.That(friend.Loop.State.Boons.Elixirs, Is.EqualTo(1));
+            Assert.That(friend.Loop.State.Boons.BlueTicks, Is.GreaterThan(0));
+            Assert.That(friend.Loop.State.Boons.AcidOwner, Is.EqualTo(alchemist.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.ReagentOwner, Is.EqualTo(alchemist.Client.OwnSlot));
+
+            alchemist.Loop.State.Class = HeroClass.Alchemist;
+            alchemist.Loop.Hero.Add(new Modifier(AlchemistStats.MixPower, ModifierKind.Flat, 1));
+            rig.Run(0.1);
+            var before = alchemist.Loop.State.Alchemist.InFlask + 3 * alchemist.Loop.State.Alchemist.Mixes;
+            friend.Loop.State.Boons.ReagentOwed = true;
+            rig.Run(0.3);
+            Assert.That(alchemist.Loop.State.Alchemist.InFlask + 3 * alchemist.Loop.State.Alchemist.Mixes, Is.GreaterThan(before));
+        }
+
+        [Test]
         public void AClockwrightsLoopRepeatsAllyDamageAtTheHostAndHerSpringAndGearsReachTheAlly()
         {
             var rig = new Rig(2);

@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 2033956108705286805
-    second: syringe_cane_0
+    second: alchemy_flasks_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: syringe_cane_0
+      name: alchemy_flasks_0
       rect:
         serializedVersion: 2
         x: 5
