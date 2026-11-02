@@ -347,6 +347,25 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AMothcallersSwarmPollenAndClockReachTheAlly()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var mothcaller = rig.Members[0];
+            var friend = rig.Members[1];
+            mothcaller.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.SwarmGift, To = (byte)friend.Client.OwnSlot, Count = 20, Value = 0.02, Seconds = 10 });
+            mothcaller.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Pollen, To = TraitRelay.AllSlots, Value = 1, Seconds = 2, Extra = 4, Every = 1 });
+            mothcaller.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.MothClock, To = TraitRelay.AllSlots, Value = 12, Seconds = 3 });
+            rig.Run(0.5);
+
+            Assert.That(friend.Loop.State.Boons.GiftMoths, Is.EqualTo(20));
+            Assert.That(friend.Loop.State.Boons.GiftPower, Is.EqualTo(0.02).Within(1e-6));
+            Assert.That(friend.Loop.State.Boons.PollenOwner, Is.EqualTo(mothcaller.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.Pollen, Is.GreaterThan(0));
+            Assert.That(friend.Loop.State.Boons.MothWakeSeconds, Is.EqualTo(12).Within(1e-6));
+        }
+
+        [Test]
         public void AGhostcaptainsBoatswainAndParrotReachTheAllyAndTheAllysCallComesBack()
         {
             var rig = new Rig(2);

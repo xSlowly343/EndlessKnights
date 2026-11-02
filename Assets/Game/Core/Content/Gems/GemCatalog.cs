@@ -476,7 +476,10 @@ namespace Game.Core.Content.Gems
                         Volley = node.HasField("volley") && node.Field("volley").AsBool(),
                         Sailors = node.HasField("sailors") ? node.Field("sailors").AsInt(0, 100) : 0,
                         CrewHit = Number(node, "crewHit", 1000),
-                        ParrotRepeat = node.HasField("parrotRepeat") && node.Field("parrotRepeat").AsBool()
+                        ParrotRepeat = node.HasField("parrotRepeat") && node.Field("parrotRepeat").AsBool(),
+                        Moths = node.HasField("moths") ? node.Field("moths").AsInt(0, 200) : 0,
+                        SwarmHit = Number(node, "swarmHit", 1000),
+                        Wake = node.HasField("wake") && node.Field("wake").AsBool()
                     };
                 case "aura":
                     return new AuraEffect(

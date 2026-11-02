@@ -134,7 +134,12 @@
       "loop": { "everySeconds": 40, "everySecondsMin": 10, "windowSeconds": 5, "windowMax": 7, "solo": 0.5, "twice": 0.5, "stopSeconds": 3 },
       "gears": { "hits": 60, "hitsMin": 10, "own": 2, "ownSoft": 1.5, "meshSeconds": 1.5, "meshCooldownSeconds": 5, "resource": 5, "resetEvery": 10, "callSeconds": 30, "idleSeconds": 10 }
     },
-    "mothcaller": { "bonds": { "resourceAbove": 30, "auraDuration": 0.5 } },
+    "mothcaller": {
+      "bonds": { "resourceAbove": 30, "auraDuration": 0.5 },
+      "swarm": { "max": 50, "cap": 100, "hitsPerSecond": 1, "carry": 0.5, "keep": 0.75, "goldenEvery": 10, "goldenMultiplier": 3, "boss": 2, "queueShare": 0.5, "giftSeconds": 10 },
+      "pollen": { "burnSeconds": 4, "fastSeconds": 2, "max": 200, "relaySeconds": 2, "light": 5, "twoShare": 1.4 },
+      "moth": { "everySeconds": 30, "everySecondsMin": 5, "awakeSeconds": 8, "awakeSecondsMin": 2, "queueShare": 0.5, "normalPenalty": 0.3, "strike": 0.5, "timeSeconds": 1, "clockRelaySeconds": 2 }
+    },
     "cartomancer": { "cold": { "perKeyHit": 1, "max": 100, "fadePerSecond": 0.05, "damageTaken": 0.2 } },
     "herbwitch": { "blood": { "perThousandPx": 3, "max": 30, "hitsPerStack": 0.2 } },
     "golemancer": { "golem": { "seconds": 20, "hitsPerSecond": 0.5, "multiplier": 12, "stunSeconds": 1 } }

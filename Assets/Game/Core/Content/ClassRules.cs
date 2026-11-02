@@ -28,6 +28,7 @@ namespace Game.Core.Content
         public DowserRules Dowser { get; private set; } = DowserRules.None;
         public SoulbinderRules Soulbinder { get; private set; } = SoulbinderRules.None;
         public GhostcaptainRules Ghostcaptain { get; private set; } = GhostcaptainRules.None;
+        public MothcallerRules Mothcaller { get; private set; } = MothcallerRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -52,7 +53,8 @@ namespace Game.Core.Content
                 Alchemist = AlchemistRules.Read(node.Field("alchemist")),
                 Dowser = DowserRules.Read(node.Field("dowser")),
                 Soulbinder = SoulbinderRules.Read(node.Field("soulbinder")),
-                Ghostcaptain = GhostcaptainRules.Read(node.Field("ghostcaptain")) };
+                Ghostcaptain = GhostcaptainRules.Read(node.Field("ghostcaptain")),
+                Mothcaller = MothcallerRules.Read(node.Field("mothcaller")) };
         }
     }
 }

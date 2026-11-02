@@ -24,6 +24,7 @@ namespace Game.Core.Sim
         private readonly DowserMechanics _dowser;
         private readonly SoulbinderMechanics _soulbinder;
         private readonly GhostcaptainMechanics _ghostcaptain;
+        private readonly MothcallerMechanics _mothcaller;
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
@@ -53,6 +54,7 @@ namespace Game.Core.Sim
             _dowser = new DowserMechanics(rules.Classes.Dowser, state, hero, this);
             _soulbinder = new SoulbinderMechanics(rules.Classes.Soulbinder, state, hero, this);
             _ghostcaptain = new GhostcaptainMechanics(rules.Classes.Ghostcaptain, state, hero, this);
+            _mothcaller = new MothcallerMechanics(rules.Classes.Mothcaller, state, hero, this);
         }
 
         public ClassMechanics Class => _class;
@@ -70,6 +72,7 @@ namespace Game.Core.Sim
         public DowserMechanics Dowser => _dowser;
         public SoulbinderMechanics Soulbinder => _soulbinder;
         public GhostcaptainMechanics Ghostcaptain => _ghostcaptain;
+        public MothcallerMechanics Mothcaller => _mothcaller;
         public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
@@ -90,6 +93,7 @@ namespace Game.Core.Sim
             _dowser.UseRules(rules.Classes.Dowser);
             _soulbinder.UseRules(rules.Classes.Soulbinder);
             _ghostcaptain.UseRules(rules.Classes.Ghostcaptain);
+            _mothcaller.UseRules(rules.Classes.Mothcaller);
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
@@ -240,6 +244,7 @@ namespace Game.Core.Sim
             _dowser.Tick();
             _soulbinder.Tick();
             _ghostcaptain.Tick();
+            _mothcaller.Tick();
             var keyHits = TakeWhole(_state.KeyCarry + input.Hits, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -247,7 +252,7 @@ namespace Game.Core.Sim
 
             for (var i = 0; i < keyHits; i++)
             {
-                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier() * _minstrel.StrikeMultiplier() * _whisperer.StrikeMultiplier() * _clockwright.StrikeMultiplier() * _alchemist.StrikeMultiplier() * _dowser.StrikeMultiplier();
+                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier() * _minstrel.StrikeMultiplier() * _whisperer.StrikeMultiplier() * _clockwright.StrikeMultiplier() * _alchemist.StrikeMultiplier() * _dowser.StrikeMultiplier() * _mothcaller.StrikeMultiplier();
                 var alive = _state.EnemyAlive;
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
                 if (alive)
@@ -267,6 +272,7 @@ namespace Game.Core.Sim
                     _dowser.AfterStrike();
                     _soulbinder.AfterStrike();
                     _ghostcaptain.AfterStrike();
+                    _mothcaller.AfterStrike(crit);
                 }
                 KeyHitLightning();
                 ShadowClone();
