@@ -9,8 +9,9 @@ namespace Game.Core.Party
         public const int MaxStats = 7;
         public const int MaxAuras = Sim.SkillLoadout.MaxSlots;
 
-        private PartyBuffRules(double selfShare, double offerSeconds, IReadOnlyList<PartyStatLink> stats, double allyResourceMax, double allyResourceCooldownSeconds)
+        private PartyBuffRules(double selfShare, double offerSeconds, IReadOnlyList<PartyStatLink> stats, double allyResourceMax, double allyResourceCooldownSeconds, CoopRules coop)
         {
+            Coop = coop;
             SelfShare = selfShare;
             OfferSeconds = offerSeconds;
             Stats = stats;
@@ -23,6 +24,7 @@ namespace Game.Core.Party
         public IReadOnlyList<PartyStatLink> Stats { get; }
         public double AllyResourceMax { get; }
         public double AllyResourceCooldownSeconds { get; }
+        public CoopRules Coop { get; }
 
         public static PartyBuffRules Read(ContentNode node)
         {
@@ -39,7 +41,8 @@ namespace Game.Core.Party
             }
             var allyResource = node.Field("allyResource");
             var rules = new PartyBuffRules(node.Field("selfShare").AsNumber(0, 1), node.Field("offerSeconds").AsNumber(0.1, 60), stats,
-                allyResource.Field("max").AsNumber(0, 1000), allyResource.Field("cooldownSeconds").AsNumber(0, 600));
+                allyResource.Field("max").AsNumber(0, 1000), allyResource.Field("cooldownSeconds").AsNumber(0, 600),
+                node.HasField("coop") ? CoopRules.Read(node.Field("coop")) : CoopRules.Empty);
             return rules;
         }
     }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using Game.Core.Party;
 using Game.Core.Text;
 
 namespace Game.Core.Stats
@@ -9,7 +10,7 @@ namespace Game.Core.Stats
         private static readonly HashSet<string> FlatPercent = new HashSet<string>
         {
             "critChance", "critMultiplier", "crushCleave", "crushMultiplier", "damagePerSector",
-            "doomedCritChance", "doomedCritMultiplier", "dotSpread", "doubleStrike", "flareMultiplier", "flareSplash",
+            "doomedCritChance", "doomedCritMultiplier", "dotSpread", "doubleStrike", "doubleHitChance", "damageTaken", "flareMultiplier", "flareSplash",
             "focusMax", "partyContribution", "partyCritChance", "partyCritMultiplier", "pierceShare", "volleySplash",
             "windupKeptAfterCrush", "gemDrop", "uncutGemChance", "frozenFirstHit", "overloadKeep", "keyHitQueueAll", "damagePerInputKind", "damagePerTenPoison", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",
             "laterHitsPenalty", "minionExplode", "damagePerResource", "keyHitQueueShare", "damagePerCombo", "damagePerComboMax",
@@ -51,6 +52,8 @@ namespace Game.Core.Stats
 
         public static string Describe(Modifier modifier)
         {
+            if (CoopLine.IsCoop(modifier.Stat) && CoopLine.TryGet(modifier.Stat, out var line))
+                return DescribeCoop(modifier, line);
             var label = Subject(modifier);
             var text = modifier.Kind switch
             {
@@ -60,6 +63,27 @@ namespace Game.Core.Stats
             };
             return text + ConditionSuffix(modifier.When);
         }
+
+        private static string DescribeCoop(Modifier modifier, CoopLine line)
+        {
+            var buff = Describe(new Modifier(line.Target, line.To == CoopTarget.Enemy ? ModifierKind.Flat : line.Kind, modifier.Value, StatTags.None, modifier.Pool, modifier.When));
+            var text = Texts.Format("coop.to." + line.To.ToString().ToLowerInvariant(), buff);
+            if (line.HasPer)
+                text += " " + Texts.Format("coop.per", Number(line.PerStep), SignalLabel(line.PerSignal), line.PerCap);
+            if (line.HasAfter)
+                text += " " + Texts.Format("coop.after", SignalLabel(line.AfterSignal), Number(line.AfterSeconds), line.AfterStacks);
+            if (line.ShareStat is { } share)
+                text += " " + Texts.Format("coop.share", Label(share));
+            return text;
+        }
+
+        private static string SignalLabel(CoopSignal signal)
+        {
+            var key = "coop.signal." + signal;
+            return Texts.Has(key) ? Texts.Get(key) : signal.ToString();
+        }
+
+        private static string Number(double value) => System.Math.Round(value, 2).ToString(CultureInfo.InvariantCulture);
 
         public static string ConditionSuffix(ModifierCondition condition)
         {

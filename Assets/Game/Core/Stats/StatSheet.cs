@@ -16,6 +16,10 @@ namespace Game.Core.Stats
 
         public int RecalculationCount { get; private set; }
 
+        public int ModifierVersion { get; private set; }
+
+        public IReadOnlyList<Modifier> Modifiers => _modifiers;
+
         public ulong Conditions => _conditions;
 
         public void SetConditions(ulong conditions)
@@ -30,6 +34,7 @@ namespace Game.Core.Stats
         {
             _modifiers.Add(modifier);
             _usedConditions |= ModifierConditions.Bit(modifier.When);
+            ModifierVersion++;
             Invalidate();
         }
 
@@ -39,6 +44,7 @@ namespace Game.Core.Stats
             _modifiers.AddRange(modifiers);
             for (var i = first; i < _modifiers.Count; i++)
                 _usedConditions |= ModifierConditions.Bit(_modifiers[i].When);
+            ModifierVersion++;
             Invalidate();
         }
 
@@ -46,7 +52,10 @@ namespace Game.Core.Stats
         {
             var removed = _modifiers.Remove(modifier);
             if (removed)
+            {
+                ModifierVersion++;
                 Invalidate();
+            }
             return removed;
         }
 
@@ -54,6 +63,7 @@ namespace Game.Core.Stats
         {
             _modifiers.Clear();
             _usedConditions = 0;
+            ModifierVersion++;
             Invalidate();
         }
 

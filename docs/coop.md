@@ -660,6 +660,8 @@
 
 Уровни 1–4 растят числа, уровень 5 добавляет маленькое правило.
 
+**Запись в данных (14д.25):** строка — модификатор с полем `to`; несколько статов в строке — несколько модификаторов с одинаковыми условиями. Пример: `{ "to": "party", "stat": "damage", "kind": "increased", "value": 0.04, "when": "boss", "per": { "signal": "resourceFill", "step": 0.1, "cap": 5 } }`. Режим Пути — поле `partyMode` (`together`, `support`, `solo`) у Пути в `ascendancy.json` и у варианта развилки 75. Подробности — `dev-notes.md` (Net, 14д.25).
+
 ### 20.2. Формы условия (по типам строк TLI)
 1. **Пока** — `when`: пока штиль, пока враг освещён, пока брешь открыта.
 2. **За каждые N, с потолком** — `per`: за каждые 10 Масла, за каждый кристалл.
@@ -670,24 +672,26 @@
 7. **Ключевой узел с ценой** — например, «всё отряду ×1,6, себе ничего».
 
 ### 20.3. Что может получить отряд
-Около 35 видов вместо прежних 7 связок `buffs.stats`. У получателя почти все статы уже есть в `CombatStats`; новые отмечены ⚑.
+Каталог — `party.json → buffs.coop.stats` (34 стата, у каждого потолок; цифры — черновик агента), плюс два стата общего врага. Сделано в 14д.25.
 
 | Группа | Статы |
 |---|---|
 | Урон | `damage`, `damageVsBoss`, `damageVsGuardian`, `markDamage`, `damageVsBlinded`, `damageVsStunned` |
-| Крит | `critChance`, `critMultiplier`, `critEvery`, `firstHitCrit` |
-| Двойной удар и перелив | ⚑ `doubleHitChance`, `overkillCarry` |
-| Скиллы | `skillPower`, `skillCooldown`, `skillDurationSeconds`, `skillCost` |
-| Ауры | `auraEffect`, `auraDuration`, `auraReserve` |
-| Ресурс | `resourceGain`, `resourcePerKey`, мгновенный ресурс (`allyResource`) |
-| Фокус и серия | `focusGain`, `focusMax`, `focusHold`, `longStreakPauseSeconds` |
+| Крит | `critChance`, `critMultiplier` |
+| Двойной удар и перелив | `doubleHitChance` (новый), `overkillCarry` |
+| Скиллы | `skillCooldown`, `skillCost` (оба — меньше) |
+| Ауры | `auraEffect`, `auraDuration` |
+| Ресурс | `resourceGain`, `resourcePerKey` |
+| Фокус и серия | `focusGain`, `longStreakPauseSeconds` |
 | Урон со временем | `dotDamage`, `burnDamage`, `dotStacks` |
 | Слуги | `minionSpeed`, `minionSeconds`, `companionMultiplier` |
-| Метки и реакции | `markSeconds`, `reactionEffect`, `stunSeconds`, `blindSeconds` |
+| Метки и реакции | `markSeconds`, `reactionEffect`, `blindSeconds` |
 | Босс | `bossTimerSeconds`, `bossTimerSlow` |
-| Враг (у хоста) | ⚑ `damageTaken`, `enemyRegen`, `bossShield`, `enemyHpCut` |
-| Добыча | `gold`, `gemDrop`, `gemExperience`, `slateChance`, `itemRarity`, `dustGain` |
-| Доля своего | ⚑ `shareToParty` |
+| Добыча | `gold`, `gemDrop`, `gemExperience`, `slateChance`, `dustGain` |
+| Враг (у хоста) | `damageTaken`, `bossTimerSlow` |
+| Доля своего | поле `share` у строки: доля своего бонуса указанного стата |
+
+Не вошли (нет общей механики у получателя или смысл зависит от класса): сила одного скилла, резерв аур, «каждый N-й удар — крит», реген и щит врага, срез HP. Добавляются строкой в каталог, когда появится механика.
 
 ### 20.4. Сложение
 Один и тот же бафф от одного класса не складывается — берётся больший. От **разных классов** баффы **складываются** с потолком на стат (потолки в `party.json`, черновик агента).

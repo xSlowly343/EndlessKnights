@@ -382,6 +382,9 @@ namespace Game.Core.Sim
                     _state.PendingResource += System.Math.Max(0, _hero.Value(CombatStats.ResourcePerCrit, 0, StatTags.Keyboard));
             }
 
+            if (RollDoubleHit(tags))
+                damage *= 2;
+
             if (supporting != null && Redirected(supporting, damage))
                 return;
             if (_minstrel.Dream(damage))
@@ -603,6 +606,12 @@ namespace Game.Core.Sim
                 return false;
             }
             return ++_hitsTowardCrit % every == 0;
+        }
+
+        private bool RollDoubleHit(StatTags tags)
+        {
+            var chance = System.Math.Min(1, _hero.Value(CombatStats.DoubleHitChance, 0, tags));
+            return chance > 0 && _state.Rng.NextDouble() < chance;
         }
 
         private bool RollCrit(StatTags tags, SkillSlot? supporting)

@@ -394,6 +394,14 @@ namespace Game.Core.Party
             ally.Present = true;
             for (var i = 0; i < ally.Stats.Length; i++)
                 ally.Stats[i] = System.Math.Max(0, offer.Stat(i));
+            ally.HeroClass = Roster.HeroClass(offer.Slot);
+            System.Array.Clear(ally.Coop, 0, ally.Coop.Length);
+            for (var i = 0; i < offer.CoopCount; i++)
+            {
+                var coop = offer.Coop(i);
+                if (coop.Stat < ally.Coop.Length && coop.Value > 0)
+                    ally.Coop[coop.Stat] = coop.Value;
+            }
             var gems = _loop.Data.Gems;
             for (var i = 0; i < ally.Auras.Length; i++)
             {
@@ -1390,6 +1398,11 @@ namespace Game.Core.Party
             var offer = new PartyOfferMessage();
             for (var i = 0; i < buffs.Rules.Stats.Count; i++)
                 offer.SetStat(i, buffs.OwnValue(i));
+            for (var i = 0; i < buffs.Rules.Coop.Stats.Count; i++)
+            {
+                if (buffs.CoopOffered(i) > 0 && !offer.AddCoop(i, buffs.CoopOffered(i)))
+                    break;
+            }
             var count = 0;
             var skills = _loop.State.Skills;
             for (var i = 0; i < skills.Count && count < PartyBuffRules.MaxAuras; i++)

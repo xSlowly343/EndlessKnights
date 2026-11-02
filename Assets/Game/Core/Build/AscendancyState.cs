@@ -27,6 +27,24 @@ namespace Game.Core.Build
 
         public bool Picked(string optionId) => _forkPicks.Contains(optionId);
 
+        public Game.Core.Party.PartyGiveMode PartyMode(AscendancyCatalog catalog)
+        {
+            if (Subclass == null || !catalog.TryGet(Subclass, out var subclass))
+                return Game.Core.Party.PartyGiveMode.Together;
+            var mode = subclass.PartyMode;
+            if (subclass.Trait == null)
+                return mode;
+            foreach (var fork in subclass.Trait.Forks)
+            {
+                foreach (var choice in fork.Choices)
+                {
+                    if (choice.PartyMode is { } picked && _forkPicks.Contains(choice.Id))
+                        mode = picked;
+                }
+            }
+            return mode;
+        }
+
         public TraitForkResult PickFork(AscendancyCatalog catalog, int heroLevel, string optionId)
         {
             var trait = Trait(catalog);

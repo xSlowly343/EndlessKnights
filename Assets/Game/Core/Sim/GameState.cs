@@ -171,6 +171,7 @@ namespace Game.Core.Sim
         public long Kills { get; set; }
         public long BossKills { get; set; }
         public int PartyMembers { get; set; } = 1;
+        public Game.Core.Party.PartyGiveMode PartyMode { get; set; }
         public double NextKillReward { get; set; } = 1;
         public double NextKillShardChance { get; set; }
         public double NextKillShards { get; set; }

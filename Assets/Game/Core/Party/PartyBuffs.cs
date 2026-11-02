@@ -13,6 +13,14 @@ namespace Game.Core.Party
         private readonly List<Modifier> _buffer = new List<Modifier>(64);
         private readonly AllyOffer[] _allies = new AllyOffer[PartyRules.MaxSlots];
         private readonly double[] _applied = new double[PartyBuffRules.MaxStats];
+        private readonly CoopGiver _giver = new CoopGiver();
+        private readonly double[] _coopApplied = new double[CoopRules.MaxStats];
+        private readonly int[] _giverClass = new int[PartyRules.MaxSlots + 1];
+        private readonly double[] _giverValue = new double[PartyRules.MaxSlots + 1];
+        private readonly int[] _enemyEffectIds;
+        private int _enemyResendTicks;
+        private double _soloTaken;
+        private double _soloSlow;
         private PartyBuffRules _rules;
         private bool _dirty;
         private double _traitDamage;
@@ -29,7 +37,19 @@ namespace Game.Core.Party
             _layer = new ModifierLayer(hero);
             for (var i = 0; i < _allies.Length; i++)
                 _allies[i] = new AllyOffer();
+            var classes = System.Enum.GetValues(typeof(HeroClass));
+            _enemyEffectIds = new int[classes.Length];
+            foreach (HeroClass heroClass in classes)
+                _enemyEffectIds[(int)heroClass] = GemDef.NetIdOf("coop_enemy_" + heroClass);
         }
+
+        public CoopGiver Giver => _giver;
+
+        public double CoopOffered(int index) => _giver.Allies[index];
+
+        public double CoopApplied(int index) => _coopApplied[index];
+
+        public int EnemyEffectId(HeroClass heroClass) => _enemyEffectIds[(int)heroClass];
 
         public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
 
@@ -99,6 +119,7 @@ namespace Game.Core.Party
                     TickAura(ally.Auras[i]);
             }
             _state.PartyMembers = members;
+            TickCoop(members);
             if (_state.TraitPartyDamage != _traitDamage || _state.TraitPartyCritChance != _traitCritChance || _state.TraitPartyGold != _traitGold
                 || _state.TraitPartyCritMultiplier != _traitCritMultiplier || _state.TraitPartyCooldown != _traitCooldown)
             {
@@ -118,8 +139,97 @@ namespace Game.Core.Party
             _dirty = false;
             _buffer.Clear();
             AddStats();
+            AddCoop();
             AddAllyAuras();
             _layer.Set(_buffer);
+        }
+
+        private void TickCoop(int members)
+        {
+            var coop = _rules.Coop;
+            var mode = _state.PartyMode;
+            _giver.Tick(_hero, _state, coop, coop.ModeSelf(mode), coop.ModePower(mode));
+            var inParty = _state.SharedEnemy && members > 1;
+            ShareEnemy(inParty, coop);
+            var soloTaken = inParty ? 0 : _giver.EnemyDamageTaken;
+            var soloSlow = inParty ? 0 : System.Math.Min(0.9, _giver.EnemyTimerSlow);
+            if (soloTaken != _soloTaken || soloSlow != _soloSlow)
+            {
+                _soloTaken = soloTaken;
+                _soloSlow = soloSlow;
+                _dirty = true;
+            }
+            for (var i = 0; i < coop.Stats.Count; i++)
+            {
+                if (System.Math.Abs(Combined(i, coop.Stats[i].Cap) - _coopApplied[i]) > 1e-12)
+                {
+                    _dirty = true;
+                    return;
+                }
+            }
+        }
+
+        private void ShareEnemy(bool inParty, CoopRules coop)
+        {
+            var active = _giver.EnemyDamageTaken > 0 || _giver.EnemyTimerSlow > 0;
+            if (!inParty || !active)
+            {
+                _enemyResendTicks = 0;
+                return;
+            }
+            if (_enemyResendTicks-- > 0)
+                return;
+            _enemyResendTicks = System.Math.Max(1, (int)System.Math.Round(coop.EnemyResendSeconds * GameLoop.TicksPerSecond)) - 1;
+            _state.TraitEnemyEffects.Add(EnemyEffectId(_state.Class), _giver.EnemyDamageTaken, coop.EnemySeconds, System.Math.Min(1, _giver.EnemyTimerSlow));
+        }
+
+        private double Combined(int index, double cap)
+        {
+            var givers = 0;
+            givers = AddGiver(givers, (int)_state.Class, _giver.Self[index]);
+            for (var slot = 0; slot < _allies.Length; slot++)
+            {
+                var ally = _allies[slot];
+                if (ally.Present)
+                    givers = AddGiver(givers, ally.HeroClass, ally.Coop[index]);
+            }
+            var total = 0.0;
+            for (var i = 0; i < givers; i++)
+                total += _giverValue[i];
+            return System.Math.Min(cap, total);
+        }
+
+        private int AddGiver(int givers, int heroClass, double value)
+        {
+            if (!(value > 0))
+                return givers;
+            for (var i = 0; i < givers; i++)
+            {
+                if (_giverClass[i] != heroClass)
+                    continue;
+                _giverValue[i] = System.Math.Max(_giverValue[i], value);
+                return givers;
+            }
+            _giverClass[givers] = heroClass;
+            _giverValue[givers] = value;
+            return givers + 1;
+        }
+
+        private void AddCoop()
+        {
+            var stats = _rules.Coop.Stats;
+            System.Array.Clear(_coopApplied, 0, _coopApplied.Length);
+            for (var i = 0; i < stats.Count; i++)
+            {
+                var value = Combined(i, stats[i].Cap);
+                _coopApplied[i] = value;
+                if (value > 0)
+                    _buffer.Add(new Modifier(stats[i].Stat, stats[i].Kind, stats[i].Negate ? -value : value));
+            }
+            if (_soloTaken > 0)
+                _buffer.Add(new Modifier(CombatStats.Damage, ModifierKind.More, _soloTaken));
+            if (_soloSlow > 0)
+                _buffer.Add(new Modifier(CombatStats.BossTimerSpeed, ModifierKind.More, -_soloSlow));
         }
 
         private void TickAura(AllyAura aura)

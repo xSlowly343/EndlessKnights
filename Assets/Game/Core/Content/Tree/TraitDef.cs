@@ -20,11 +20,13 @@ namespace Game.Core.Content.Tree
         public IReadOnlyList<Modifier> Modifiers { get; }
         public string TextRu { get; set; } = string.Empty;
         public string TextEn { get; set; } = string.Empty;
+        public Game.Core.Party.PartyGiveMode? PartyMode { get; set; }
     }
 
     public sealed class TraitFork
     {
         public const int Options = 2;
+        public const int PartyModeLevel = 75;
 
         public TraitFork(int heroLevel, IReadOnlyList<TraitForkOption> choices)
         {
@@ -102,12 +104,15 @@ namespace Game.Core.Content.Tree
                     var id = option.Field("id").AsString();
                     if (!optionIds.Add(id))
                         throw option.Field("id").Error($"fork option id '{id}' is used twice");
+                    if (option.HasField("partyMode") && heroLevel != TraitFork.PartyModeLevel)
+                        throw option.Field("partyMode").Error($"the party mode changes only at the fork of level {TraitFork.PartyModeLevel}");
                     var name = option.Field("name");
                     var text = option.HasField("text") ? option.Field("text") : (ContentNode?)null;
                     choices.Add(new TraitForkOption(id, name.Field("ru").AsString(), name.Field("en").AsString(), ModifierReader.ReadList(option.Field("modifiers")))
                     {
                         TextRu = text?.Field("ru").AsString() ?? string.Empty,
-                        TextEn = text?.Field("en").AsString() ?? string.Empty
+                        TextEn = text?.Field("en").AsString() ?? string.Empty,
+                        PartyMode = option.HasField("partyMode") ? Game.Core.Party.CoopRules.ReadMode(option.Field("partyMode")) : (Game.Core.Party.PartyGiveMode?)null
                     });
                 }
                 if (choices.Count != TraitFork.Options)
