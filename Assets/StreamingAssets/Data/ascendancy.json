@@ -549,7 +549,7 @@
       "trait": {
         "partyText": {"ru": "Пока имя Колосса названо, отряд бьёт босса сильнее", "en": "While the Colossus's name is spoken, the party hits the boss harder"},
         "levels": [
-          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.7}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "damageVsBoss", "kind": "increased", "value": 0.15, "while": "named"}]},
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.7}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "damageVsBoss", "kind": "increased", "value": 0.15, "while": "named"}, {"stat": "curseClanShare", "kind": "flat", "value": 0.09}]},
           {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},

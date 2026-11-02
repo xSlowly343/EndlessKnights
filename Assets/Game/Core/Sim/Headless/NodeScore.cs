@@ -47,6 +47,8 @@ namespace Game.Core.Sim.Headless
             [CombatStats.PartyResource.Name] = 0.1
         };
 
+        private readonly HashSet<string> _traitStats = new HashSet<string>(System.StringComparer.Ordinal);
+        private TraitDef? _trait;
         private readonly StatTags _playedTags;
         private readonly bool _inParty;
         private readonly double _perAttributePoint;
@@ -67,6 +69,29 @@ namespace Game.Core.Sim.Headless
         }
 
         public double Attribute(double amount) => amount * _perAttributePoint;
+
+        public void UseTrait(TraitDef? trait)
+        {
+            if (ReferenceEquals(trait, _trait))
+                return;
+            _trait = trait;
+            _traitStats.Clear();
+            if (trait == null)
+                return;
+            foreach (var level in trait.Levels)
+                AddTraitStats(level);
+            foreach (var fork in trait.Forks)
+            {
+                foreach (var option in fork.Choices)
+                    AddTraitStats(option.Modifiers);
+            }
+        }
+
+        private void AddTraitStats(IReadOnlyList<Modifier> modifiers)
+        {
+            foreach (var modifier in modifiers)
+                _traitStats.Add(modifier.Stat.BaseName);
+        }
 
         private double Of(Modifier modifier)
         {
@@ -119,8 +144,8 @@ namespace Game.Core.Sim.Headless
             return ConditionalWeight;
         }
 
-        private static bool IsTraitPower(StatId stat) =>
-            stat.BaseName.EndsWith(TraitPowerSuffix, System.StringComparison.Ordinal);
+        private bool IsTraitPower(StatId stat) =>
+            stat.BaseName.EndsWith(TraitPowerSuffix, System.StringComparison.Ordinal) && _traitStats.Contains(stat.BaseName);
 
         private static bool IsPartyUnlock(StatId stat) =>
             stat.BaseName.StartsWith(ReactionPrefix, System.StringComparison.Ordinal) || stat.Equals(CombatStats.SecondResponse);

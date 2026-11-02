@@ -43,6 +43,7 @@ namespace Game.Core.Sim.Headless
                 _loop.ChooseClass(_heroClass);
             EquipStartingSkills();
             ChooseSkillBranches();
+            _score.UseTrait(ChosenTrait());
             SpendTreePoints();
             SpendSubclassPoints();
             PrestigeWhenStuck(secondsSinceLastAct);
@@ -50,6 +51,12 @@ namespace Game.Core.Sim.Headless
             CutUncutGems();
             PlaceSlates();
             _loop.Upgrades.BuyMax();
+        }
+
+        private TraitDef? ChosenTrait()
+        {
+            var subclass = _loop.State.Ascendancy.Subclass;
+            return subclass != null && _data.Ascendancy.TryGet(subclass, out SubclassDef chosen) ? chosen.Trait : null;
         }
 
         private static StatTags PlayedTags(HeroClass heroClass) =>
