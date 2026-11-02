@@ -484,7 +484,12 @@ namespace Game.Core.Content.Gems
                         Arcana = node.HasField("arcana") && node.Field("arcana").AsBool(),
                         Reveal = node.HasField("reveal") && node.Field("reveal").AsBool(),
                         HandHit = Number(node, "handHit", 1000),
-                        Forecast = node.HasField("forecast") && node.Field("forecast").AsBool()
+                        Forecast = node.HasField("forecast") && node.Field("forecast").AsBool(),
+                        Seeds = node.HasField("seeds") ? node.Field("seeds").AsInt(0, 20) : 0,
+                        Bloom = node.HasField("bloom") && node.Field("bloom").AsBool(),
+                        Venom = Number(node, "venom", 1000),
+                        VenomBurst = Number(node, "venomBurst", 100),
+                        Drink = node.HasField("drink") && node.Field("drink").AsBool()
                     };
                 case "aura":
                     return new AuraEffect(
