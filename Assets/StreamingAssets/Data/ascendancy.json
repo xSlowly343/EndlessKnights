@@ -654,247 +654,70 @@
     {
       "id": "whisperer_trait_1",
       "class": "whisperer",
-      "name": {"ru": "Семь узлов", "en": "Семь узлов"},
-      "blurb": "Каждые 25 ударов кукла завязывает на враге узел-проклятие. Узлы идут строго по порядку: слабость, медлительность, уязвимость… седьмой узел удваивает действие первых шести",
+      "name": {"ru": "Семь узлов", "en": "Seven Knots"},
+      "blurb": "Каждые 25 ударов кукла завязывает на враге узел-проклятие. Узлы идут строго по порядку: слабость (+8% урона по врагу), медлительность (таймер босса на 5% медленнее), уязвимость (ещё +8%), хрупкость (+10% к урону критов), порча (ещё +8%), жадность (+10% золота); седьмой узел удваивает действие первых шести. В паузе узлы не спадают. Скилл Пути «Затянуть узел» завязывает два узла сразу",
       "trait": {
-        "partyText": {"ru": "Все проклятия действуют на урон всего отряда", "en": "Все проклятия действуют на урон всего отряда"},
+        "partyText": {"ru": "Узлы общие: удары союзников тоже приближают следующий узел, узлы висят на враге у хоста и видны всем, а их действие — на весь отряд", "en": "The knots are shared: allies' hits bring the next knot closer, the knots hang on the enemy at the host for everyone to see, and they work for the whole party"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.045}]},
+          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.012}]},
+          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.012}]},
+          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.012}]},
+          {"modifiers": [{"stat": "knotBoss", "kind": "flat", "value": 1}], "text": {"ru": "Узел на Колосса: на боссе и страже узлы завязываются вдвое чаще", "en": "Knot on the Colossus: on a boss or guardian the knots are tied twice as often"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "whisperer_trait_1_f45a",
-                "name": {"ru": "узлы держатся после смерти врага на следующем", "en": "узлы держатся после смерти врага на следующем"},
-                "text": {"ru": "узлы держатся после смерти врага на следующем", "en": "узлы держатся после смерти врага на следующем"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "whisperer_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "whisperer_trait_1_f60a",
-                "name": {"ru": "узел каждые 18 ударов", "en": "узел каждые 18 ударов"},
-                "text": {"ru": "узел каждые 18 ударов", "en": "узел каждые 18 ударов"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "whisperer_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "whisperer_trait_1_f75a",
-                "name": {"ru": "седьмой узел утраивает", "en": "седьмой узел утраивает"},
-                "text": {"ru": "седьмой узел утраивает", "en": "седьмой узел утраивает"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "whisperer_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "whisperer_trait_1_f45a", "name": {"ru": "Память нити", "en": "Thread Memory"}, "text": {"ru": "Узлы держатся после смерти врага на следующем, но узел завязывается раз в 40 ударов, а узлы на 25% слабее", "en": "The knots stay on the next enemy after a death, but a knot is tied every 40 hits, and the knots are 25% weaker"}, "modifiers": [{"stat": "knotCarry", "kind": "flat", "value": 1}, {"stat": "knotHits", "kind": "flat", "value": 15}, {"stat": "knotPower", "kind": "more", "value": -0.25}]}, {"id": "whisperer_trait_1_f45b", "name": {"ru": "Частая нить", "en": "Quick Thread"}, "text": {"ru": "Узел каждые 18 ударов, но узлы на 30% слабее", "en": "A knot every 18 hits, but the knots are 30% weaker"}, "modifiers": [{"stat": "knotHits", "kind": "flat", "value": -7}, {"stat": "knotPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 60, "options": [{"id": "whisperer_trait_1_f60a", "name": {"ru": "Тройной узел", "en": "Triple Knot"}, "text": {"ru": "Седьмой узел утраивает, а не удваивает, но узел раз в 30 ударов", "en": "The seventh knot triples instead of doubling, but a knot comes every 30 hits"}, "modifiers": [{"stat": "knotTriple", "kind": "flat", "value": 1}, {"stat": "knotHits", "kind": "flat", "value": 5}]}, {"id": "whisperer_trait_1_f60b", "name": {"ru": "Двойная петля", "en": "Double Loop"}, "text": {"ru": "Узлы завязываются по два, но они на 40% слабее", "en": "Knots are tied two at a time, but they are 40% weaker"}, "modifiers": [{"stat": "knotDouble", "kind": "flat", "value": 1}, {"stat": "knotPower", "kind": "more", "value": -0.4}]}]},
+          {"level": 75, "options": [{"id": "whisperer_trait_1_f75a", "name": {"ru": "Тугая нить", "en": "Tight Thread"}, "text": {"ru": "Каждый новый узел бьёт врага ×10, но узлы на 20% слабее", "en": "Every new knot hits the enemy ×10, but the knots are 20% weaker"}, "modifiers": [{"stat": "knotBlast", "kind": "flat", "value": 1}, {"stat": "knotPower", "kind": "more", "value": -0.2}]}, {"id": "whisperer_trait_1_f75b", "name": {"ru": "Шепчущий узел", "en": "Whispering Knot"}, "text": {"ru": "Каждый узел даёт 10 Шёпота, но узел раз в 30 ударов", "en": "Every knot gives 10 Whisper, but a knot comes every 30 hits"}, "modifiers": [{"stat": "knotWhisper", "kind": "flat", "value": 1}, {"stat": "knotHits", "kind": "flat", "value": 5}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "whisperer_trait_1_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Семь узлов", "en": "Семь узлов"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "whisperer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Семь узлов", "en": "Seven Knots"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "whisperer_trait_2",
       "class": "whisperer",
-      "name": {"ru": "Имя Колосса", "en": "Имя Колосса"},
-      "blurb": "300 ударов по боссу — и Шептунья узнаёт его имя: +40% урона отряда по нему до конца боя. На обычных врагах особенность молчит",
+      "name": {"ru": "Имя Колосса", "en": "Name of the Colossus"},
+      "blurb": "150 её ударов по боссу или стражу — и Шептунья узнаёт его имя: +70% урона по нему до конца боя. На обычных врагах особенность молчит. В паузе узнанное имя не забывается. Скилл Пути «Назвать по имени» добавляет сразу 50 ударов к имени",
       "trait": {
-        "partyText": {"ru": "Имя слышат все: бонус общий", "en": "Имя слышат все: бонус общий"},
+        "partyText": {"ru": "Слоги от каждого: каждый союзник получает правило — его 25 ударов по боссу дописывают слог; когда слог дал каждый, имя звучит сразу, и бонус всем растёт на 5% за каждого участника", "en": "A syllable from everyone: every ally gets a rule — their 25 hits on the boss write a syllable; once everyone gave one, the name sounds at once, and everyone's bonus grows by 5% per participant"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.7}]},
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "nameBlast", "kind": "flat", "value": 1}], "text": {"ru": "Громкое имя: когда имя звучит, босс получает удар ×20", "en": "Loud Name: when the name sounds, the boss takes a blow ×20"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "whisperer_trait_2_f45a",
-                "name": {"ru": "имя за 200 ударов", "en": "имя за 200 ударов"},
-                "text": {"ru": "имя за 200 ударов", "en": "имя за 200 ударов"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "whisperer_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "whisperer_trait_2_f60a",
-                "name": {
-                  "ru": "узнанное имя запоминается на этот вид босса до смены биома",
-                  "en": "узнанное имя запоминается на этот вид босса до смены биома"
-                },
-                "text": {
-                  "ru": "узнанное имя запоминается на этот вид босса до смены биома",
-                  "en": "узнанное имя запоминается на этот вид босса до смены биома"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "whisperer_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "whisperer_trait_2_f75a",
-                "name": {"ru": "названный босс теряет 5 с таймера на регенерацию", "en": "названный босс теряет 5 с таймера на регенерацию"},
-                "text": {"ru": "названный босс теряет 5 с таймера на регенерацию", "en": "названный босс теряет 5 с таймера на регенерацию"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "whisperer_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "whisperer_trait_2_f45a", "name": {"ru": "Короткое имя", "en": "Short Name"}, "text": {"ru": "Имя за 100 ударов, но бонус на 20% меньше", "en": "The name takes 100 hits, but the bonus is 20% lower"}, "modifiers": [{"stat": "nameHits", "kind": "flat", "value": -50}, {"stat": "namePower", "kind": "more", "value": -0.2}]}, {"id": "whisperer_trait_2_f45b", "name": {"ru": "Звонкие слоги", "en": "Ringing Syllables"}, "text": {"ru": "Слог за 15 ударов союзника, но своё имя за 200", "en": "A syllable takes 15 ally hits, but her own name takes 200"}, "modifiers": [{"stat": "syllableHits", "kind": "flat", "value": -10}, {"stat": "nameHits", "kind": "flat", "value": 50}]}]},
+          {"level": 60, "options": [{"id": "whisperer_trait_2_f60a", "name": {"ru": "Память имён", "en": "Memory of Names"}, "text": {"ru": "Узнанное имя запоминается на этот вид босса: в следующем бою с ним имя звучит сразу, но бонус на 25% меньше", "en": "A learned name is remembered for this kind of boss: in the next fight with it the name sounds at once, but the bonus is 25% lower"}, "modifiers": [{"stat": "nameMemory", "kind": "flat", "value": 1}, {"stat": "namePower", "kind": "more", "value": -0.25}]}, {"id": "whisperer_trait_2_f60b", "name": {"ru": "Имя по буквам", "en": "Name Letter by Letter"}, "text": {"ru": "Пока имя не узнано, бонус растёт с каждым ударом до половины, но имя за 200 ударов", "en": "Until the name is learned, the bonus grows with every hit up to half, but the name takes 200 hits"}, "modifiers": [{"stat": "nameProgress", "kind": "flat", "value": 1}, {"stat": "nameHits", "kind": "flat", "value": 50}]}]},
+          {"level": 75, "options": [{"id": "whisperer_trait_2_f75a", "name": {"ru": "Имя отнимает время", "en": "The Name Takes Time"}, "text": {"ru": "Названный босс отдаёт отряду 5 с таймера, но бонус на 15% меньше", "en": "A named boss gives the party 5 s of timer, but the bonus is 15% lower"}, "modifiers": [{"stat": "nameTime", "kind": "flat", "value": 1}, {"stat": "namePower", "kind": "more", "value": -0.15}]}, {"id": "whisperer_trait_2_f75b", "name": {"ru": "Проклятое имя", "en": "Cursed Name"}, "text": {"ru": "Бонус имени на 30% больше, но имя за 175 ударов", "en": "The name bonus is 30% bigger, but the name takes 175 hits"}, "modifiers": [{"stat": "namePower", "kind": "more", "value": 0.3}, {"stat": "nameHits", "kind": "flat", "value": 25}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "whisperer_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Имя Колосса", "en": "Имя Колосса"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "whisperer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Имя Колосса", "en": "Name of the Colossus"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "whisperer_trait_3",
       "class": "whisperer",
-      "name": {"ru": "Обет молчания", "en": "Обет молчания"},
-      "blurb": "Её удары не наносят урона совсем. Взамен все её проклятия втрое сильнее и копят Шёпот вдвое быстрее",
+      "name": {"ru": "Обет молчания", "en": "Vow of Silence"},
+      "blurb": "Её удары не наносят урона совсем. Взамен все её проклятия втрое сильнее, а Шёпот копится вдвое быстрее. Каждые 6 немых ударов — немой шёпот: следующий удар проклят и бьёт ×(12 × (1 + сила проклятий)), а проклятие держится на 1 с дольше. В соло шёпот достаётся ей самой. В паузе проклятия не спадают. Скилл Пути «Немой укор» даёт 3 шёпота сразу",
       "trait": {
-        "partyText": {"ru": "Чистый заклинатель: урон делают союзники", "en": "Чистый заклинатель: урон делают союзники"},
+        "partyText": {"ru": "Немой шёпот: каждые 6 её немых ударов следующий удар союзника по кругу становится проклятым — бьёт сильнее от силы её проклятий и продлевает проклятия на враге на 1 с", "en": "Silent whisper: every 6 of her silent hits the next hit of an ally in turn becomes cursed — it hits harder with her curse strength and extends the curses on the enemy by 1 s"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 12}]},
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "hushAll", "kind": "flat", "value": 1}], "text": {"ru": "Немая волна: шёпот достаётся сразу всем союзникам (в соло — два шёпота)", "en": "Silent Wave: a whisper goes to every ally at once (solo — two whispers)"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "whisperer_trait_3_f45a",
-                "name": {"ru": "удары дают +1% силы проклятий до 50%", "en": "удары дают +1% силы проклятий до 50%"},
-                "text": {"ru": "удары дают +1% силы проклятий до 50%", "en": "удары дают +1% силы проклятий до 50%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "whisperer_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "whisperer_trait_3_f60a",
-                "name": {
-                  "ru": "обет можно нарушить на 10 с, проклятия слабеют на это время",
-                  "en": "обет можно нарушить на 10 с, проклятия слабеют на это время"
-                },
-                "text": {
-                  "ru": "обет можно нарушить на 10 с, проклятия слабеют на это время",
-                  "en": "обет можно нарушить на 10 с, проклятия слабеют на это время"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "whisperer_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "whisperer_trait_3_f75a",
-                "name": {"ru": "каждое 100-е «немое» касание проклинает всю очередь", "en": "каждое 100-е «немое» касание проклинает всю очередь"},
-                "text": {"ru": "каждое 100-е «немое» касание проклинает всю очередь", "en": "каждое 100-е «немое» касание проклинает всю очередь"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "whisperer_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "whisperer_trait_3_f45a", "name": {"ru": "Нарастающая немота", "en": "Growing Silence"}, "text": {"ru": "Каждый удар даёт +1% силы проклятий, до 50%, но шёпот раз в 9 ударов", "en": "Every hit gives +1% curse strength, up to 50%, but a whisper comes every 9 hits"}, "modifiers": [{"stat": "vowGrow", "kind": "flat", "value": 1}, {"stat": "hushHits", "kind": "flat", "value": 3}]}, {"id": "whisperer_trait_3_f45b", "name": {"ru": "Частый шёпот", "en": "Frequent Whisper"}, "text": {"ru": "Шёпот каждые 4 удара, но он на 30% слабее", "en": "A whisper every 4 hits, but it is 30% weaker"}, "modifiers": [{"stat": "hushHits", "kind": "flat", "value": -2}, {"stat": "vowPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 60, "options": [{"id": "whisperer_trait_3_f60a", "name": {"ru": "Нарушенный обет", "en": "Broken Vow"}, "text": {"ru": "Раз в 60 с обет рвётся на 10 с: её удары бьют в полную силу, а проклятия на это время вдвое слабее", "en": "Every 60 s the vow breaks for 10 s: her hits deal full damage, and the curses are half as strong meanwhile"}, "modifiers": [{"stat": "vowBreak", "kind": "flat", "value": 1}]}, {"id": "whisperer_trait_3_f60b", "name": {"ru": "Глубокий обет", "en": "Deep Vow"}, "text": {"ru": "Проклятия вчетверо сильнее, а не втрое, но шёпот раз в 9 ударов", "en": "The curses are four times stronger instead of three, but a whisper comes every 9 hits"}, "modifiers": [{"stat": "vowCurse", "kind": "flat", "value": 1}, {"stat": "hushHits", "kind": "flat", "value": 3}]}]},
+          {"level": 75, "options": [{"id": "whisperer_trait_3_f75a", "name": {"ru": "Немая очередь", "en": "Silent Queue"}, "text": {"ru": "Каждое 100-е немое касание проклинает всю очередь: удар ×5 от силы обета по ней, но шёпот на 20% слабее", "en": "Every 100th silent touch curses the whole queue: a blow ×5 of the vow's power at it, but a whisper is 20% weaker"}, "modifiers": [{"stat": "vowQueue", "kind": "flat", "value": 1}, {"stat": "vowPower", "kind": "more", "value": -0.2}]}, {"id": "whisperer_trait_3_f75b", "name": {"ru": "Громкое молчание", "en": "Loud Silence"}, "text": {"ru": "Шёпот на 40% сильнее, но приходит раз в 8 ударов", "en": "A whisper is 40% stronger, but comes every 8 hits"}, "modifiers": [{"stat": "vowPower", "kind": "more", "value": 0.4}, {"stat": "hushHits", "kind": "flat", "value": 2}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "whisperer_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Обет молчания", "en": "Обет молчания"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "whisperer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Обет молчания", "en": "Vow of Silence"}, "modifiers": []}],
       "links": []
     },
     {

@@ -347,6 +347,35 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AWhisperersKnotsReachTheHostAndHerWhisperAndNameCallReachTheAlly()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var whisperer = rig.Members[0];
+            var friend = rig.Members[1];
+            whisperer.Loop.State.TraitEnemyEffects.Add(WhispererMechanics.KnotEffect, 0.2, 2, 0.05);
+            whisperer.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Hush, To = LanternbearerMechanics.AnyAlly, Count = 1, Max = 3, Value = 4 });
+            whisperer.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.NameCall, To = TraitRelay.AllSlots, Every = 50, Seconds = 30 });
+            rig.Run(0.5);
+
+            var knots = Enumerable.Range(0, PartyEncounter.MaxEffects).Select(i => rig.Host.Encounter.Effect(i)).Single(e => e.Active && e.Id == WhispererMechanics.KnotEffect);
+            Assert.That(knots.DamageTaken, Is.EqualTo(0.2).Within(1e-6));
+            Assert.That(knots.TimerSlow, Is.EqualTo(0.05).Within(1e-6));
+            Assert.That(friend.Loop.State.Boons.Hushes + friend.Loop.State.Boons.HushHits, Is.EqualTo(1));
+            Assert.That(friend.Loop.State.Boons.HushOwner, Is.EqualTo(whisperer.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.NameOwner, Is.EqualTo(whisperer.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.NameEvery, Is.EqualTo(50));
+
+            whisperer.Loop.State.Class = HeroClass.Whisperer;
+            whisperer.Loop.Hero.Add(new Modifier(WhispererStats.VowPower, ModifierKind.Flat, 3));
+            rig.Run(0.1);
+            friend.Loop.State.Boons.HushesOwed = 2;
+            rig.Run(0.3);
+            Assert.That(friend.Loop.State.Boons.HushesOwed, Is.Zero);
+            Assert.That(whisperer.Loop.State.Whisperer.HushHitsBack, Is.GreaterThanOrEqualTo(2));
+        }
+
+        [Test]
         public void ALanternbearerFireflyAndFlashReachTheAllyAndTheLightReachesTheHost()
         {
             var rig = new Rig(2);

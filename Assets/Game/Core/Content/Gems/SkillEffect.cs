@@ -107,6 +107,15 @@ namespace Game.Core.Content.Gems
         public bool Flash { get; set; }
         public double GlowSeconds { get; set; }
         public double GlowPerOil { get; set; }
+        public double Curse { get; set; }
+        public double CurseSeconds { get; set; }
+        public double CurseHit { get; set; }
+        public double ExtendCurse { get; set; }
+        public double Whisper { get; set; }
+        public int Knots { get; set; }
+        public bool Seventh { get; set; }
+        public int NameHits { get; set; }
+        public int Hush { get; set; }
     }
 
     public sealed class PotionOption

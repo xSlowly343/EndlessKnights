@@ -20,7 +20,7 @@
     "classes": {
       "runedancer": { "perKey": 2, "decay": { "perSecond": 10, "afterKeylessSeconds": 10, "mouseHolds": true } },
       "minstrel": { "perKey": 1 },
-      "whisperer": { "perKey": 0.2, "perSecond": 3 },
+      "whisperer": { "perKey": 0.5, "perSecond": 1 },
       "clockwright": { "perKey": 0.1, "mousePxPerPoint": 1000, "perFastKillSecond": 5 },
       "ghostcaptain": { "perKey": 0.3333 },
       "alchemist": { "perKey": 1 },
@@ -48,7 +48,13 @@
       "shell": { "penalty": 0.2, "everySeconds": 5, "everyMinSeconds": 2, "crackSeconds": 1, "partyDamage": 0.3, "shatterEvery": 5, "shatterMultiplier": 2, "critHasteSeconds": 0.5 },
       "skills": { "prisonMultiplier": 1.5, "heartPartyDamage": 0.25 }
     },
-    "whisperer": { "evilEye": { "damageTaken": 0.05 } },
+    "whisperer": {
+      "evilEye": { "damageTaken": 0.05 },
+      "knots": { "hits": 25, "hitsMin": 5, "allyHitShare": 1, "seventh": 2, "triple": 3, "slow": 0.05, "critMultiplier": 0.1, "gold": 0.1, "blast": 10, "whisper": 10, "effectSeconds": 2 },
+      "name": { "hits": 150, "hitsMin": 20, "syllableHits": 25, "syllableHitsMin": 5, "syllable": 0.05, "callSeconds": 30, "blast": 20, "timeSeconds": 5, "effectSeconds": 2 },
+      "vow": { "curse": 3, "whisper": 0.5, "hushHits": 6, "hushHitsMin": 2, "hushMax": 3, "extendSeconds": 1, "growPerHit": 0.01, "growMax": 0.5, "breakEverySeconds": 60, "breakSeconds": 10, "breakCurse": 0.5, "queueHits": 100, "queueMultiplier": 5 },
+      "curse": { "seconds": 8, "effectSeconds": 2 }
+    },
     "lanternbearer": {
       "light": { "perHit": 0.01, "perHitMin": 0.001, "shadowSeconds": 10, "shadowSecondsMin": 1, "shadowShare": 0.25, "oil": 10, "flareMultiplier": 1.5, "flareSeconds": 5, "flareKeep": 0.5, "effectSeconds": 2 },
       "firefly": { "hits": 20, "hitsMin": 3, "seconds": 20, "secondsMin": 2, "max": 10, "oil": 1, "burstMultiplier": 3, "sparkEvery": 10 },

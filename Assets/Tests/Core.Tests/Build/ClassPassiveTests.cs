@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Build
         [TestCase(HeroClass.Minstrel, "minstrel_r1c1")]
         [TestCase(HeroClass.Dreamcatcher, "dreamcatcher_r1c1")]
         [TestCase(HeroClass.Lanternbearer, "lanternbearer_r1c1")]
-        [TestCase(HeroClass.Whisperer, "whisperer_r1c9")]
+        [TestCase(HeroClass.Whisperer, "whisperer_r1c1")]
         [TestCase(HeroClass.Clockwright, "clockwright_r1c9")]
         [TestCase(HeroClass.Alchemist, "alchemist_r1c9")]
         [TestCase(HeroClass.Dowser, "dowser_r1c9")]

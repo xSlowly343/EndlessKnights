@@ -425,7 +425,9 @@ namespace Game.Core.Party
             _sharesSinceState = 0;
             if (InParty)
             {
-                _loop.Combat.Lanternbearer.AddAllyHits(AllyHits(state));
+                var allyHits = AllyHits(state);
+                _loop.Combat.Lanternbearer.AddAllyHits(allyHits);
+                _loop.Combat.Whisperer.AddAllyHits(allyHits);
             }
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
@@ -860,6 +862,18 @@ namespace Game.Core.Party
                     boons.Flash(relay.Count, relay.Value);
                     _loop.Combat.Lanternbearer.CutCooldowns(relay.Seconds);
                     break;
+                case TraitRelayKind.NameCall:
+                    boons.CallName(relay.From, relay.Every, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond));
+                    break;
+                case TraitRelayKind.Syllable:
+                    _loop.Combat.Whisperer.ReceiveSyllable(relay.From);
+                    break;
+                case TraitRelayKind.Hush:
+                    boons.Hush(relay.Count, relay.Value, relay.From, relay.Max);
+                    break;
+                case TraitRelayKind.HushHit:
+                    _loop.Combat.Whisperer.ReceiveHushHits(relay.Count);
+                    break;
             }
         }
 
@@ -899,6 +913,8 @@ namespace Game.Core.Party
         {
             if (relay.Kind == TraitRelayKind.Firefly)
                 _loop.State.Boons.Land(relay.Count, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond), relay.Value, relay.Every, relay.Extra, -1, System.Math.Max(1, (int)relay.Max));
+            else if (relay.Kind == TraitRelayKind.Hush)
+                _loop.State.Boons.Hush(relay.Count, relay.Value, -1, relay.Max);
         }
 
         private int NextAlly()

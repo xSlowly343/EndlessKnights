@@ -439,7 +439,16 @@ namespace Game.Core.Content.Gems
                         Fireflies = node.HasField("fireflies") ? node.Field("fireflies").AsInt(0, 100) : 0,
                         Flash = node.HasField("flash") && node.Field("flash").AsBool(),
                         GlowSeconds = Number(node, "glowSeconds", 600),
-                        GlowPerOil = Number(node, "glowPerOil", 1)
+                        GlowPerOil = Number(node, "glowPerOil", 1),
+                        Curse = Number(node, "curse", 10),
+                        CurseSeconds = Number(node, "curseSeconds", 600),
+                        CurseHit = Number(node, "curseHit", 1000),
+                        ExtendCurse = Number(node, "extendCurse", 600),
+                        Whisper = Number(node, "whisper", 1000),
+                        Knots = node.HasField("knots") ? node.Field("knots").AsInt(0, 7) : 0,
+                        Seventh = node.HasField("seventh") && node.Field("seventh").AsBool(),
+                        NameHits = node.HasField("nameHits") ? node.Field("nameHits").AsInt(0, 100_000) : 0,
+                        Hush = node.HasField("hush") ? node.Field("hush").AsInt(0, 100) : 0
                     };
                 case "aura":
                     return new AuraEffect(

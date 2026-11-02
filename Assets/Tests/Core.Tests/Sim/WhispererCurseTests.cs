@@ -60,11 +60,11 @@ namespace Game.Core.Tests.Sim
         {
             var (loop, input) = Whisperer();
 
-            Assert.That(Ticks(loop, 10), Is.EqualTo(3).Within(1e-9));
+            Assert.That(Ticks(loop, 10), Is.EqualTo(1).Within(1e-9));
 
             input.PressKeys(5);
             loop.Tick();
-            Assert.That(loop.State.Resource, Is.EqualTo(3 + 0.3 + 1).Within(1e-9));
+            Assert.That(loop.State.Resource, Is.EqualTo(1 + 0.1 + 2.5).Within(1e-9));
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Sim
             input.MoveMouse(100000);
             loop.Tick();
 
-            Assert.That(loop.State.Resource, Is.EqualTo(0.3).Within(1e-9));
+            Assert.That(loop.State.Resource, Is.EqualTo(0.1).Within(1e-9));
         }
 
         [Test]

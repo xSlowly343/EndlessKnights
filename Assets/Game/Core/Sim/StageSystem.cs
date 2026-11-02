@@ -64,8 +64,11 @@ namespace Game.Core.Sim
                 SpawnNext();
         }
 
-        private double WithClockwork(double rate) =>
-            _state.ClockworkSlow > 0 ? System.Math.Min(rate, System.Math.Max(_state.ClockworkFloor, rate * (1 - _state.ClockworkSlow))) : rate;
+        private double WithClockwork(double rate) => WithTraitSlow(
+            _state.ClockworkSlow > 0 ? System.Math.Min(rate, System.Math.Max(_state.ClockworkFloor, rate * (1 - _state.ClockworkSlow))) : rate);
+
+        private double WithTraitSlow(double rate) =>
+            _state.TraitTimerSlow == 0 ? rate : System.Math.Max(0, rate * (1 - System.Math.Min(1, _state.TraitTimerSlow)));
 
         public void Tick()
         {

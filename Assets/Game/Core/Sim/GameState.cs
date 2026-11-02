@@ -263,6 +263,7 @@ namespace Game.Core.Sim
         public MinstrelState Minstrel { get; } = new MinstrelState();
         public DreamcatcherState Dreamcatcher { get; } = new DreamcatcherState();
         public LanternbearerState Lanternbearer { get; } = new LanternbearerState();
+        public WhispererState Whisperer { get; } = new WhispererState();
         public AllyBoons Boons { get; } = new AllyBoons();
         public TraitRelays TraitRelays { get; } = new TraitRelays();
         public double TraitLight { get; set; } = -1;
@@ -277,6 +278,7 @@ namespace Game.Core.Sim
         public double TraitPartyCooldown { get; set; }
         public double TraitPartyTimerSlow { get; set; }
         public double TraitPartyResourceGift { get; set; }
+        public double TraitTimerSlow { get; set; }
         public bool StepTensionBlocked { get; set; }
         public int StunTicks { get; set; }
         public int HunterMarkTicks { get; set; }
@@ -336,6 +338,7 @@ namespace Game.Core.Sim
             Minstrel.OnSpawn();
             Dreamcatcher.OnSpawn();
             Lanternbearer.OnSpawn();
+            Whisperer.OnSpawn();
         }
     }
 }
