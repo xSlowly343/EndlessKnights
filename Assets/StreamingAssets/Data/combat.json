@@ -78,9 +78,9 @@
       "gust": { "px": 3000, "pxMin": 500, "hits": 10, "hitsMin": 2, "max": 5, "tension": 0, "partyCooldown": 0.1, "partySeconds": 5, "stormSeconds": 8, "stormGusts": 5, "queueShare": 1, "timerSeconds": 6 }
     },
     "runedancer": {
-      "runes": { "wordLength": 5, "wordLengthMin": 2, "fadeSeconds": 10, "sealSeconds": 4, "sealDamage": 0.12, "weaveSeconds": 6, "shadowAfterSeconds": 1, "shadowHitsPerSecond": 3 },
-      "blades": { "every": 3, "max": 12, "partyCritPerBlade": 0.003, "fallSeconds": 1, "shardMultiplier": 2 },
-      "whirl": { "max": 8, "palmMax": 5, "hitsPerSecond": 1, "partyDamagePerBlade": 0.004, "gustSeconds": 2, "eyeMultiplier": 2 }
+      "runes": { "wordLength": 5, "wordLengthMin": 2, "fadeSeconds": 10, "sealSeconds": 4, "weaveSeconds": 6, "shadowAfterSeconds": 1, "shadowHitsPerSecond": 3 },
+      "blades": { "every": 3, "max": 12, "fallSeconds": 1, "shardMultiplier": 2 },
+      "whirl": { "max": 8, "palmMax": 5, "hitsPerSecond": 1, "gustSeconds": 2, "eyeMultiplier": 2 }
     },
     "duelist": {
       "breach": { "everySeconds": 4, "everyMinSeconds": 1.5, "seconds": 1, "honor": 1.5, "partyDamage": 0.15, "pressMax": 2, "exposeSeconds": 4, "exposeMax": 0.4, "bossSoonerSeconds": 1, "outsidePenalty": 0.5, "doubleShare": 0.8 },

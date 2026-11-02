@@ -17,7 +17,7 @@ namespace Game.Core.Stats
             "damageAtBalance", "rampPerSecond", "rampMax", "overloadQueueShare", "goldPerResource", "enemyHpCut", "damagePerAura",
             "echoShare", "doomShare", "doomMultiplier", "dotQueueShare", "skeletonOnKill", "beastOnKill", "minionQueueShare",
             "goldJackpotChance", "wandererChance", "offlineDpsShare", "cooldownPerResource", "cooldownPerResourceMax", "markDamage", "markPower", "companionPerMark", "auraInPause", "overloadBoss", "minionBoss", "mouseQueueShare", "focusIdleFloor",
-            "traitHitWeight", "runeRhyme", "runeSealPower", "runeWeave", "runeFirstRune", "runeCapital", "bladeKeep", "bladePartyCrit", "whirlSkillPerFive", "whirlPartyDamage",
+            "traitHitWeight", "runeRhyme", "runeWeave", "runeFirstRune", "runeCapital", "bladeKeep", "whirlSkillPerFive",
             "breachExpose", "breachPartyDamage", "toucheExecute", "touchePublic", "toucheOffPenalty", "toucheMarkDamage", "toucheBossHalf", "touchePartyGold", "phantomPower", "phantomSelfPenalty", "phantomEcho", "phantomPartyDamage",
             "calmPenalty", "calmPartyCrit", "shotPartyCrit", "gustPartyCooldown", "partySkillCooldown",
             "shardArmor", "gardenArmor", "shellPenalty", "shellPartyDamage",
@@ -72,6 +72,8 @@ namespace Game.Core.Stats
                 text += " " + Texts.Format("coop.per", Number(line.PerStep), SignalLabel(line.PerSignal), line.PerCap);
             if (line.HasAfter)
                 text += " " + Texts.Format("coop.after", SignalLabel(line.AfterSignal), Number(line.AfterSeconds), line.AfterStacks);
+            if (line.HasWhile)
+                text += " " + Texts.Format("coop.while", SignalLabel(line.WhileSignal));
             if (line.ShareStat is { } share)
                 text += " " + Texts.Format("coop.share", Label(share));
             return text;

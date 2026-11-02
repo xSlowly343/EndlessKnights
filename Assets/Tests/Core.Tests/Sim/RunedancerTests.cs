@@ -4,6 +4,7 @@ using Game.Core.Content;
 using Game.Core.Content.Tree;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Stats;
 using Game.Core.Tests.Content;
@@ -16,6 +17,9 @@ namespace Game.Core.Tests.Sim
         private static RunedancerRules Rules => TestWorld.Data.Combat.Classes.Runedancer;
 
         private static Modifier Flat(StatId stat, double value) => new Modifier(stat, ModifierKind.Flat, value);
+
+        private static Modifier SealLine(double value) =>
+            ModifierReader.Read(ContentNode.Root(@"{ ""to"": ""enemy"", ""stat"": ""damageTaken"", ""kind"": ""flat"", ""value"": " + value.ToString(System.Globalization.CultureInfo.InvariantCulture) + @", ""while"": ""runeSeal"" }", "test.json"));
 
         private static (GameLoop Loop, FakeInputSource Input) Hero(params Modifier[] modifiers)
         {
@@ -115,15 +119,16 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void AWordSealsTheEnemyAndTheSealRaisesThePartyForFourSeconds()
+        public void AWordSealsTheEnemyAndTheSealMakesItTakeMoreDamageForFourSeconds()
         {
-            var (loop, input) = Hero(Flat(RunedancerStats.RuneWord, 10));
+            var (loop, input) = Hero(Flat(RunedancerStats.RuneWord, 10), SealLine(0.1));
             Hits(loop, input, 5);
 
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(Rules.SealDamage).Within(1e-9));
-            Assert.That(loop.PartyBuffs.OwnValue(0), Is.GreaterThanOrEqualTo(Rules.SealDamage - 1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.RuneSeal, loop.State), Is.EqualTo(1));
+            Assert.That(loop.PartyBuffs.Giver.EnemyDamageTaken, Is.EqualTo(0.1).Within(1e-9), "the seal line of the trait works while the seal holds");
             Wait(loop, Rules.SealSeconds);
-            Assert.That(loop.State.TraitPartyDamage, Is.Zero);
+            Assert.That(CoopSignals.Read(CoopSignal.RuneSeal, loop.State), Is.Zero);
+            Assert.That(loop.PartyBuffs.Giver.EnemyDamageTaken, Is.Zero);
         }
 
         [Test]
@@ -134,7 +139,7 @@ namespace Game.Core.Tests.Sim
             var fifth = Hit(loop, input);
 
             Assert.That(fifth, Has.Count.EqualTo(1));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(0.4).Within(1e-9));
+            Assert.That(loop.State.Runedancer.SealTicks, Is.EqualTo((int)System.Math.Round(Rules.WeaveSeconds * GameLoop.TicksPerSecond) - 1));
         }
 
         [Test]
@@ -193,14 +198,41 @@ namespace Game.Core.Tests.Sim
             var single = Hit(loop, input)[0];
 
             Assert.That(loop.State.Runedancer.Blades, Is.EqualTo(2));
-            Assert.That(loop.State.TraitPartyCritChance, Is.EqualTo(2 * Rules.BladePartyCrit).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.Blades, loop.State), Is.EqualTo(2));
+            var rains = loop.State.Runedancer.Rains;
             loop.Events.Clear();
             loop.Combat.Runedancer.OnSkillCast(TestWorld.Data.Gems["runedancer_path_2"]);
             var rain = DamageEvents(loop).Single();
 
             Assert.That(loop.State.Runedancer.Blades, Is.Zero);
             Assert.That(rain / single, Is.EqualTo(3).Within(0.05));
+            Assert.That(loop.State.Runedancer.Rains, Is.EqualTo(rains + 1), "the rain is an event for the party buff lines");
         }
+
+        [Test]
+        public void ThePathsOfTheRunedancerGiveThePartyBuffsInTheirModes()
+        {
+            var catalog = TestWorld.Data.Ascendancy;
+            Assert.That(catalog.TryGet("runedancer_trait_1", out var dance) && dance.PartyMode == PartyGiveMode.Together, Is.True);
+            Assert.That(catalog.TryGet("runedancer_trait_2", out var blades) && blades.PartyMode == PartyGiveMode.Solo, Is.True);
+            Assert.That(catalog.TryGet("runedancer_trait_3", out var whirl) && whirl.PartyMode == PartyGiveMode.Solo, Is.True);
+            Assert.That(dance.Trait!.Forks.Single(fork => fork.HeroLevel == 75).Choices.Single(choice => choice.Id == "runedancer_trait_1_f75b").PartyMode, Is.EqualTo(PartyGiveMode.Support));
+            Assert.That(blades.Trait!.Forks.Single(fork => fork.HeroLevel == 75).Choices.Single(choice => choice.Id == "runedancer_trait_2_f75a").PartyMode, Is.EqualTo(PartyGiveMode.Together));
+            Assert.That(whirl.Trait!.Forks.Single(fork => fork.HeroLevel == 75).Choices.Single(choice => choice.Id == "runedancer_trait_3_f75a").PartyMode, Is.EqualTo(PartyGiveMode.Together));
+            foreach (var path in new[] { dance, blades, whirl })
+                Assert.That(path.Trait!.Levels[0].Any(modifier => CoopLine.IsCoop(modifier.Stat)), Is.True, $"{path.Id} gives the party a buff from level 1");
+        }
+
+        [Test]
+        public void TheRunedancerTreeHasNoOldPartyStats()
+        {
+            var tree = TestWorld.Data.ClassTreeOf("runedancer")!;
+            var stats = tree.Nodes.SelectMany(node => node.ModifiersAt(TreeTemplate.Ranks)).Select(modifier => modifier.Stat.Name).ToList();
+            Assert.That(stats, Has.None.StartsWith("party"), "no bare party stats or partyContribution");
+            Assert.That(stats.Count(CoopLineName), Is.GreaterThanOrEqualTo(20), "the co-op nodes give lines with a target");
+        }
+
+        private static bool CoopLineName(string name) => name.StartsWith(CoopLine.Prefix, System.StringComparison.Ordinal);
 
         [Test]
         public void DaggersStopAtTheLimitAndHalfMoveOnWithTheRemnant()
@@ -247,7 +279,8 @@ namespace Game.Core.Tests.Sim
             }
 
             Assert.That(loop.State.Runedancer.WhirlBlades, Is.EqualTo(Rules.WhirlMax));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(Rules.WhirlMax * Rules.WhirlPartyDamage).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.WhirlBlades, loop.State), Is.EqualTo(Rules.WhirlMax));
+            Assert.That(CoopSignals.Read(CoopSignal.WhirlFull, loop.State), Is.EqualTo(1));
             Wait(loop, 3);
             Assert.That(loop.State.Runedancer.WhirlBlades, Is.EqualTo(Rules.WhirlMax));
             Wait(loop, 1.5);
@@ -337,7 +370,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Where(node => node.Kind == TreeNodeKind.Core).All(node => node.Row >= 6), Is.True);
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => modifier.Stat.Name.StartsWith("party") || modifier.When == ModifierCondition.InParty)), Is.GreaterThanOrEqualTo(5));
+                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat))), Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

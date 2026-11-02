@@ -80,8 +80,15 @@ namespace Game.Core.Content
                 shareStat = new StatId(share.Field("stat").AsString());
                 shareKind = ReadKind(share.Field("kind"));
             }
+            var whileSignal = CoopSignal.None;
+            if (node.HasField("while"))
+            {
+                whileSignal = ReadSignal(node.Field("while"));
+                if (CoopSignals.IsEvent(whileSignal))
+                    throw node.Field("while").Error("'while' holds on a gauge, events go to 'after'");
+            }
             var when = node.HasField("when") ? ReadCondition(node.Field("when")) : ModifierCondition.Always;
-            var line = CoopLine.Register(to, target, kind, perSignal, perStep, perCap, afterSignal, afterSeconds, afterStacks, shareStat, shareKind);
+            var line = CoopLine.Register(to, target, kind, perSignal, perStep, perCap, afterSignal, afterSeconds, afterStacks, shareStat, shareKind, whileSignal);
             return new Modifier(line.Source, ModifierKind.Flat, node.Field("value").AsNumber(-1e6, 1e6), StatTags.None, ModifierPool.General, when);
         }
 

@@ -29,11 +29,13 @@ namespace Game.Core.Party
         public CoopSignal AfterSignal { get; private set; }
         public double AfterSeconds { get; private set; }
         public int AfterStacks { get; private set; }
+        public CoopSignal WhileSignal { get; private set; }
         public StatId? ShareStat { get; private set; }
         public ModifierKind ShareKind { get; private set; }
 
         public bool HasPer => PerSignal != CoopSignal.None;
         public bool HasAfter => AfterSignal != CoopSignal.None;
+        public bool HasWhile => WhileSignal != CoopSignal.None;
 
         public static bool IsCoop(StatId stat) => stat.Name.StartsWith(Prefix, StringComparison.Ordinal);
 
@@ -46,9 +48,9 @@ namespace Game.Core.Party
         public static CoopLine Register(CoopTarget to, StatId target, ModifierKind kind,
             CoopSignal perSignal = CoopSignal.None, double perStep = 0, int perCap = 0,
             CoopSignal afterSignal = CoopSignal.None, double afterSeconds = 0, int afterStacks = 0,
-            StatId? shareStat = null, ModifierKind shareKind = ModifierKind.Flat)
+            StatId? shareStat = null, ModifierKind shareKind = ModifierKind.Flat, CoopSignal whileSignal = CoopSignal.None)
         {
-            var name = NameOf(to, target, kind, perSignal, perStep, perCap, afterSignal, afterSeconds, afterStacks, shareStat, shareKind);
+            var name = NameOf(to, target, kind, perSignal, perStep, perCap, afterSignal, afterSeconds, afterStacks, shareStat, shareKind, whileSignal);
             lock (Registry)
             {
                 if (Registry.TryGetValue(name, out var known))
@@ -62,7 +64,8 @@ namespace Game.Core.Party
                     AfterSeconds = afterSeconds,
                     AfterStacks = afterStacks,
                     ShareStat = shareStat,
-                    ShareKind = shareKind
+                    ShareKind = shareKind,
+                    WhileSignal = whileSignal
                 };
                 Registry.Add(name, line);
                 return line;
@@ -70,7 +73,7 @@ namespace Game.Core.Party
         }
 
         private static string NameOf(CoopTarget to, StatId target, ModifierKind kind, CoopSignal perSignal, double perStep, int perCap,
-            CoopSignal afterSignal, double afterSeconds, int afterStacks, StatId? shareStat, ModifierKind shareKind)
+            CoopSignal afterSignal, double afterSeconds, int afterStacks, StatId? shareStat, ModifierKind shareKind, CoopSignal whileSignal)
         {
             var parts = new List<string> { to.ToString(), target.Name, kind.ToString() };
             if (perSignal != CoopSignal.None)
@@ -79,6 +82,8 @@ namespace Game.Core.Party
                 parts.Add($"after={afterSignal},{Number(afterSeconds)},{afterStacks}");
             if (shareStat is { } share)
                 parts.Add($"share={share.Name},{shareKind}");
+            if (whileSignal != CoopSignal.None)
+                parts.Add($"while={whileSignal}");
             return Prefix + string.Join("|", parts);
         }
 

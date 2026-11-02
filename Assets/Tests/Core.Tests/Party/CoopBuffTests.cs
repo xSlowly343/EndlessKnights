@@ -56,6 +56,7 @@ namespace Game.Core.Tests.Party
         [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""after"": { ""signal"": ""combo"", ""seconds"": 3 } }", "gauges go to 'per'")]
         [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""after"": { ""signal"": ""dance"", ""seconds"": 3 } }", "unknown party buff signal")]
         [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""tags"": [""Keyboard""] }", "no tags or skill")]
+        [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""while"": ""crit"" }", "'while' holds on a gauge")]
         public void AWrongLineIsRefusedOnLoad(string json, string problem)
         {
             var error = Assert.Throws<ContentException>(() => Line(json));

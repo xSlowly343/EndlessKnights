@@ -16,7 +16,8 @@ namespace Game.Core.Sim
         public bool WordOnEnemy { get; set; }
         public long Words { get; set; }
         public int SealTicks { get; set; }
-        public double SealShare { get; set; }
+        public long Rains { get; set; }
+        public bool WhirlFull { get; set; }
         public double BladeProgress { get; set; }
         public int Blades { get; set; }
         public int BladeFallTicks { get; set; }

@@ -81,6 +81,8 @@ namespace Game.Core.Party
 
         private double Multiplier(int index, CoopLine line, StatSheet hero, GameState state)
         {
+            if (line.HasWhile && !(CoopSignals.Read(line.WhileSignal, state) > 0))
+                return 0;
             var multiplier = 1.0;
             if (line.HasPer)
                 multiplier *= System.Math.Min(line.PerCap, System.Math.Floor(CoopSignals.Read(line.PerSignal, state) / line.PerStep + 1e-9));

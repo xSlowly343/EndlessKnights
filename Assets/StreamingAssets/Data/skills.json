@@ -947,12 +947,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.2}, {"stat": "runeSealPower", "kind": "flat", "value": 0.5}], "reserve": 20, "party": true},
-      "text": {"ru": "отряд: проклятия и метки на враге +20% сильнее; её печать Слова +50% сильнее", "en": "party: curses and marks on the enemy are 20% stronger; her Word seal is 50% stronger"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.2}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.05, "while": "runeSeal"}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: проклятия и метки на враге +20% сильнее; пока на враге её печать Слова, враг получает ещё +5% урона", "en": "party: curses and marks on the enemy are 20% stronger; while her Word seal is on the enemy, it takes another 5% damage"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.24}, {"stat": "runeSealPower", "kind": "flat", "value": 0.6}]}}, {"id": "runedancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "runedancer_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.22}, {"stat": "runeSealPower", "kind": "flat", "value": 0.55}]}}, {"id": "runedancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "runedancer_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.26}, {"stat": "runeSealPower", "kind": "flat", "value": 0.65}]}}, {"id": "runedancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "runedancer_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.24}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.06, "while": "runeSeal"}]}}, {"id": "runedancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.22}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.055, "while": "runeSeal"}]}}, {"id": "runedancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.26}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.065, "while": "runeSeal"}]}}, {"id": "runedancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {

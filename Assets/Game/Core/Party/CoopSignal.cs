@@ -11,6 +11,12 @@ namespace Game.Core.Party
         Kill,
         BossKill,
         SkillCast,
-        KeyHit
+        KeyHit,
+        RuneWord,
+        BladeRain,
+        RuneSeal,
+        Blades,
+        WhirlBlades,
+        WhirlFull
     }
 }

@@ -13,7 +13,6 @@ namespace Game.Core.Sim
         public static readonly StatId RuneOnCast = new StatId("runeOnCast");
         public static readonly StatId RuneRhyme = new StatId("runeRhyme");
         public static readonly StatId RuneSealSeconds = new StatId("runeSealSeconds");
-        public static readonly StatId RuneSealPower = new StatId("runeSealPower");
         public static readonly StatId RuneWeave = new StatId("runeWeave");
         public static readonly StatId RuneFirstRune = new StatId("runeFirstRune");
         public static readonly StatId RuneSilent = new StatId("runeSilent");
@@ -31,7 +30,6 @@ namespace Game.Core.Sim
         public static readonly StatId BladeAutoRain = new StatId("bladeAutoRain");
         public static readonly StatId BladeShard = new StatId("bladeShard");
         public static readonly StatId BladeBossFast = new StatId("bladeBossFast");
-        public static readonly StatId BladePartyCrit = new StatId("bladePartyCrit");
 
         public static readonly StatId WhirlDamage = new StatId("whirlDamage");
         public static readonly StatId WhirlLinger = new StatId("whirlLinger");
@@ -44,6 +42,5 @@ namespace Game.Core.Sim
         public static readonly StatId WhirlPalm = new StatId("whirlPalm");
         public static readonly StatId WhirlBossHold = new StatId("whirlBossHold");
         public static readonly StatId WhirlSkillPerFive = new StatId("whirlSkillPerFive");
-        public static readonly StatId WhirlPartyDamage = new StatId("whirlPartyDamage");
     }
 }
