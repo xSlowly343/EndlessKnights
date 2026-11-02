@@ -22,7 +22,7 @@ namespace Game.Core.Content.Tree
     {
         private readonly Dictionary<string, TreeNodeDef> _byId;
 
-        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, TreeNodeDef start, IReadOnlyList<TreeNodeDef> nodes, string blurb = "", TraitDef? trait = null)
+        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, TreeNodeDef start, IReadOnlyList<TreeNodeDef> nodes, string blurbRu = "", string blurbEn = "", TraitDef? trait = null)
         {
             Id = id;
             HeroClass = heroClass;
@@ -30,7 +30,8 @@ namespace Game.Core.Content.Tree
             NameEn = nameEn;
             Start = start;
             Nodes = nodes;
-            Blurb = blurb;
+            BlurbRu = blurbRu;
+            BlurbEn = blurbEn;
             Trait = trait;
             _byId = new Dictionary<string, TreeNodeDef>(StringComparer.Ordinal);
             foreach (var node in nodes)
@@ -43,7 +44,8 @@ namespace Game.Core.Content.Tree
         public string NameEn { get; }
         public TreeNodeDef Start { get; }
         public IReadOnlyList<TreeNodeDef> Nodes { get; }
-        public string Blurb { get; }
+        public string BlurbRu { get; }
+        public string BlurbEn { get; }
         public TraitDef? Trait { get; }
         public Game.Core.Party.PartyGiveMode PartyMode { get; set; }
 
@@ -213,9 +215,10 @@ namespace Game.Core.Content.Tree
             RequireReachable(item.Field("links"), start, nodes);
 
             var name = item.Field("name");
-            var blurb = item.HasField("blurb") ? item.Field("blurb").AsString() : string.Empty;
+            var blurbRu = item.HasField("blurb") ? item.Field("blurb").Field("ru").AsString() : string.Empty;
+            var blurbEn = item.HasField("blurb") ? item.Field("blurb").Field("en").AsString() : string.Empty;
             var trait = item.HasField("trait") ? TraitDef.Read(item.Field("trait"), optionIds) : null;
-            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes, blurb, trait)
+            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes, blurbRu, blurbEn, trait)
             {
                 PartyMode = item.HasField("partyMode") ? Game.Core.Party.CoopRules.ReadMode(item.Field("partyMode")) : Game.Core.Party.PartyGiveMode.Together
             };

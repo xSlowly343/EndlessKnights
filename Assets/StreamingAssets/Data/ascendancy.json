@@ -17,7 +17,7 @@
       "class": "runedancer",
       "partyMode": "together",
       "name": {"ru": "Танец рун", "en": "Rune Dance"},
-      "blurb": "Каждый удар выжигает на враге следующую руну из пяти: Пламя, Иней, Гром, Тень, Свет. Пять рун складываются в Слово: вспышка ×10 удара. В паузе руны тлеют 10 с. Скилл Пути «Написать Слово» дописывает недостающие руны",
+      "blurb": {"ru": "Каждый удар выжигает на враге следующую руну из пяти: Пламя, Иней, Гром, Тень, Свет. Пять рун складываются в Слово: вспышка ×10 удара. В паузе руны тлеют 10 с. Скилл Пути «Написать Слово» дописывает недостающие руны", "en": "Every hit burns the next of five runes into the enemy: Flame, Frost, Thunder, Shadow, Light. Five runes form a Word: a flash of ×10 a hit. In a pause the runes smoulder for 10 s. The path skill “Write the Word” adds the missing runes"},
       "trait": {
         "partyText": {"ru": "Пока на враге печать Слова, враг получает больше урона от всех; на 5 уровне отряд ещё и чаще критует", "en": "While the Word seal is on the enemy, it takes more damage from everyone; at level 5 the party also crits more often"},
         "levels": [
@@ -41,7 +41,7 @@
       "class": "runedancer",
       "partyMode": "solo",
       "name": {"ru": "Зеркальные клинки", "en": "Mirror Blades"},
-      "blurb": "Каждый 3-й удар вызывает призрачный кинжал, он висит над врагом, до 12. Скилл Пути «Дождь клинков» обрушивает все разом, каждый бьёт ×1,5 удара. Со смертью врага кинжалы пропадают",
+      "blurb": {"ru": "Каждый 3-й удар вызывает призрачный кинжал, он висит над врагом, до 12. Скилл Пути «Дождь клинков» обрушивает все разом, каждый бьёт ×1,5 удара. Со смертью врага кинжалы пропадают", "en": "Every 3rd hit calls a ghost dagger that hangs over the enemy, up to 12. The path skill “Rain of Blades” drops them all at once, each strikes for ×1.5 a hit. The daggers vanish when the enemy dies"},
       "trait": {
         "partyText": {"ru": "За каждый висящий кинжал отряд чаще и сильнее критует; после «Дождя клинков» отряд бьёт босса сильнее", "en": "Each hanging dagger makes the party crit more often and harder; after Rain of Blades the party hits the boss harder"},
         "levels": [
@@ -65,7 +65,7 @@
       "class": "runedancer",
       "partyMode": "solo",
       "name": {"ru": "Вихрь", "en": "Whirlwind"},
-      "blurb": "Чем чаще удары, тем больше кинжалов кружит вокруг неё: один на каждый удар в секунду, до 8. Раз в секунду вихрь бьёт всеми кинжалами сразу, каждый на 10% силы удара; вихрь крутится ещё 3 с после остановки. Скилл Пути «Смерч» раскручивает вихрь до предела",
+      "blurb": {"ru": "Чем чаще удары, тем больше кинжалов кружит вокруг неё: один на каждый удар в секунду, до 8. Раз в секунду вихрь бьёт всеми кинжалами сразу, каждый на 10% силы удара; вихрь крутится ещё 3 с после остановки. Скилл Пути «Смерч» раскручивает вихрь до предела", "en": "The faster she hits, the more daggers circle her: one per hit per second, up to 8. Once a second the whirl strikes with every dagger, each at 10% of a hit; the whirl keeps spinning 3 s after she stops. The path skill “Twister” spins the whirl to its limit"},
       "trait": {
         "partyText": {"ru": "За каждый кинжал вихря отряд бьёт сильнее и чаще бьёт дважды; пока вихрь на пределе, откаты отряда быстрее", "en": "Each whirling dagger makes the party hit harder and hit twice more often; while the whirl is full, the party's cooldowns are faster"},
         "levels": [
@@ -89,7 +89,7 @@
       "class": "duelist",
       "partyMode": "together",
       "name": {"ru": "Сияющая брешь", "en": "Shining Breach"},
-      "blurb": "Раз в 4 с на враге загорается брешь на 1 с, её видно на полоске. Удары в брешь — Выпады: ×2 и +1,5 Чести. Скилл Пути «Вызов» зажигает брешь сразу",
+      "blurb": {"ru": "Раз в 4 с на враге загорается брешь на 1 с, её видно на полоске. Удары в брешь — Выпады: ×2 и +1,5 Чести. Скилл Пути «Вызов» зажигает брешь сразу", "en": "Every 4 s an opening lights up on the enemy for 1 s, visible on the strip. Hits into the opening are Lunges: ×2 and +1.5 Honor. The path skill “Challenge” lights the opening at once"},
       "trait": {
         "partyText": {"ru": "Пока брешь открыта, отряд бьёт сильнее и крепче критует; на 5 уровне каждый Выпад добавляет отряду шанс крита", "en": "While the breach is open, the party hits harder and crits harder; at level 5 every Lunge adds critical chance to the party"},
         "levels": [
@@ -113,7 +113,7 @@
       "class": "duelist",
       "partyMode": "solo",
       "name": {"ru": "Правила дуэли", "en": "Rules of the Duel"},
-      "blurb": "Каждый 10-й удар — Касание, сияющая отметина на враге. На 5 отметинах — Туше: удар ×8, и враг ниже 12% HP (босс ниже 6%) падает сразу. Скилл Пути «Салют клинком» ставит 2 отметины",
+      "blurb": {"ru": "Каждый 10-й удар — Касание, сияющая отметина на враге. На 5 отметинах — Туше: удар ×8, и враг ниже 12% HP (босс ниже 6%) падает сразу. Скилл Пути «Салют клинком» ставит 2 отметины", "en": "Every 10th hit is a Touch, a glowing mark on the enemy. At 5 marks comes the Touché: a ×8 hit, and an enemy below 12% HP (a boss below 6%) falls at once. The path skill “Blade Salute” sets 2 marks"},
       "trait": {
         "partyText": {"ru": "За каждую отметину Касания отряд крепче критует; после Туше отряду больше золота и гемов, на 5 уровне — урон по стражам", "en": "Each Touch mark makes the party crit harder; after a Touché the party gets more gold and gems, at level 5 more damage to guardians"},
         "levels": [
@@ -137,7 +137,7 @@
       "class": "duelist",
       "partyMode": "solo",
       "name": {"ru": "Фантомная секундантка", "en": "Phantom Second"},
-      "blurb": "Рядом стоит её секундантка-фантом. Если в секунду было больше 4 ударов, фантом вступает в бой и за каждый удар Дуэлянтки бьёт сама с силой 60%. Цена: сама Дуэлянтка бьёт на 20% слабее. Скилл Пути «Поменяться местами» вводит фантом в бой на 6 с",
+      "blurb": {"ru": "Рядом стоит её секундантка-фантом. Если в секунду было больше 4 ударов, фантом вступает в бой и за каждый удар Дуэлянтки бьёт сама с силой 60%. Цена: сама Дуэлянтка бьёт на 20% слабее. Скилл Пути «Поменяться местами» вводит фантом в бой на 6 с", "en": "Her phantom second stands beside her. If there were more than 4 hits in a second, the phantom joins the fight and strikes at 60% power for every hit of the Duelist. The price: the Duelist herself hits 20% weaker. The path skill “Switch Places” brings the phantom in for 6 s"},
       "trait": {
         "partyText": {"ru": "Пока фантом в бою, отряд бьёт сильнее, а спутники и слуги отряда крепче; на 5 уровне скиллы отряда дешевле после её скиллов", "en": "While the phantom fights, the party hits harder and the party's companions and minions are stronger; at level 5 the party's skills cost less after her skills"},
         "levels": [
@@ -161,7 +161,7 @@
       "class": "windshot",
       "partyMode": "solo",
       "name": {"ru": "Длинный выстрел", "en": "Long Shot"},
-      "blurb": "Шаг копит Натяжение. Каждый 6-й удар — выстрел ×(1 + Натяжение/25), он тратит 25 Натяжения. Скилл Пути «Стрела с перевала» стреляет сразу",
+      "blurb": {"ru": "Шаг копит Натяжение. Каждый 6-й удар — выстрел ×(1 + Натяжение/25), он тратит 25 Натяжения. Скилл Пути «Стрела с перевала» стреляет сразу", "en": "Steps build Tension. Every 6th hit is a shot of ×(1 + Tension/25) that spends 25 Tension. The path skill “Arrow from the Pass” shoots at once"},
       "trait": {
         "partyText": {"ru": "Пока на враге Метка ветра, отряд чаще критует, а его метки держатся дольше; на 5 уровне каждый выстрел ненадолго усиливает отряд", "en": "While the Wind Mark is on the enemy, the party crits more often and its marks last longer; at level 5 every shot briefly empowers the party"},
         "levels": [
@@ -185,7 +185,7 @@
       "class": "windshot",
       "partyMode": "together",
       "name": {"ru": "Штиль", "en": "Calm"},
-      "blurb": "Если шага не было 4 с, ветер стихает: удары критуют всегда, но урон крита −30%. Любой шаг снимает штиль. Скилл Пути «Выстрел в тишине» даёт штиль сразу",
+      "blurb": {"ru": "Если шага не было 4 с, ветер стихает: удары критуют всегда, но урон крита −30%. Любой шаг снимает штиль. Скилл Пути «Выстрел в тишине» даёт штиль сразу", "en": "With no step for 4 s the wind dies down: hits always crit, but crit damage is −30%. Any step breaks the calm. The path skill “Shot in the Silence” brings the calm at once"},
       "trait": {
         "partyText": {"ru": "В штиль отряд крепче критует и быстрее копит Фокус; на 5 уровне криты в штиль добавляют отряду шанс крита", "en": "In a calm the party crits harder and gains Focus faster; at level 5 crits in a calm add critical chance to the party"},
         "levels": [
@@ -209,7 +209,7 @@
       "class": "windshot",
       "partyMode": "solo",
       "name": {"ru": "Попутный ветер", "en": "Tailwind"},
-      "blurb": "Каждые 3000 px шага — порыв: 10 следующих ударов пускают по второй стреле. Порывы копятся до 5. Скилл Пути «Ураганная стрела» даёт 2 порыва",
+      "blurb": {"ru": "Каждые 3000 px шага — порыв: 10 следующих ударов пускают по второй стреле. Порывы копятся до 5. Скилл Пути «Ураганная стрела» даёт 2 порыва", "en": "Every 3000 px of steps is a gust: the next 10 hits loose a second arrow. Gusts stack up to 5. The path skill “Hurricane Arrow” gives 2 gusts"},
       "trait": {
         "partyText": {"ru": "После порыва откаты отряда быстрее и ресурс копится быстрее; на 5 уровне каждый запасённый порыв приносит отряду золото", "en": "After a gust the party's cooldowns are faster and resource builds faster; at level 5 each stored gust brings the party gold"},
         "levels": [
@@ -233,7 +233,7 @@
       "class": "shardcaller",
       "partyMode": "solo",
       "name": {"ru": "Осколки", "en": "Shards"},
-      "blurb": "Каждый 8-й удар вонзает во врага кристалл, до 10. Скилл Пути «Резонанс» взрывает их: удар × число кристаллов. Кристаллы пропадают со смертью врага",
+      "blurb": {"ru": "Каждый 8-й удар вонзает во врага кристалл, до 10. Скилл Пути «Резонанс» взрывает их: удар × число кристаллов. Кристаллы пропадают со смертью врага", "en": "Every 8th hit drives a crystal into the enemy, up to 10. The path skill “Resonance” blows them up: a hit × the number of crystals. The crystals vanish when the enemy dies"},
       "trait": {
         "partyText": {"ru": "Каждый кристалл во враге делает его уязвимее для всего отряда; на 5 уровне кристаллы ещё и добавляют отряду шанс крита", "en": "Each crystal in the enemy makes it more vulnerable to the whole party; at level 5 the crystals also add critical chance to the party"},
         "levels": [
@@ -257,7 +257,7 @@
       "class": "shardcaller",
       "partyMode": "solo",
       "name": {"ru": "Кристальный сад", "en": "Crystal Garden"},
-      "blurb": "Кристалл каждые 16 ударов, до 10. Каждые 3 с кристаллы растут на размер (до 5) и звенят: удар × кристаллы × размер, даже в паузе. Скилл Пути «Полить сад»: +1 размер сразу",
+      "blurb": {"ru": "Кристалл каждые 16 ударов, до 10. Каждые 3 с кристаллы растут на размер (до 5) и звенят: удар × кристаллы × размер, даже в паузе. Скилл Пути «Полить сад»: +1 размер сразу", "en": "A crystal every 16 hits, up to 10. Every 3 s the crystals grow a size (up to 5) and ring: a hit × crystals × size, even in a pause. The path skill “Water the Garden”: +1 size at once"},
       "trait": {
         "partyText": {"ru": "Растущая уязвимость: враг получает больше урона от всего отряда за каждый кристалл и размер, даже в паузе; на 5 уровне сад приносит отряду золото", "en": "Growing weakness: the enemy takes more damage from the whole party per crystal and size, even in a pause; at level 5 the garden brings the party gold"},
         "levels": [
@@ -281,7 +281,7 @@
       "class": "shardcaller",
       "partyMode": "together",
       "name": {"ru": "Стеклянный панцирь", "en": "Glass Shell"},
-      "blurb": "Враг закован в кристалл: весь урон Shardcaller по нему на 20% слабее. Раз в 5 с панцирь трескается на 1 с, и весь урон Shardcaller в эту секунду ×4. Скилл Пути «Звон стекла» трескает панцирь сразу",
+      "blurb": {"ru": "Враг закован в кристалл: весь урон Shardcaller по нему на 20% слабее. Раз в 5 с панцирь трескается на 1 с, и весь урон Shardcaller в эту секунду ×4. Скилл Пути «Звон стекла» трескает панцирь сразу", "en": "The enemy is locked in crystal: all Shardcaller damage to it is 20% weaker. Every 5 s the shell cracks for 1 s, and all Shardcaller damage in that second is ×4. The path skill “Ring of Glass” cracks the shell at once"},
       "trait": {
         "partyText": {"ru": "Пока панцирь треснул, отряд бьёт сильнее и чаще критует; на 5 уровне каждая трещина ненадолго ускоряет откаты отряда", "en": "While the shell is cracked, the party hits harder and crits more often; at level 5 every crack briefly speeds up the party's cooldowns"},
         "levels": [
@@ -305,7 +305,7 @@
       "class": "alchemist",
       "partyMode": "together",
       "name": {"ru": "Смесь", "en": "Mixture"},
-      "blurb": "Удары по кругу меняют реактив: алый, лазурный, золотой. Каждые 8 ударов и каждый крит текущий реактив падает в колбу; три реактива — смесь, у каждой из 10 своё действие (взрыв, разъедание, пена, кристаллизация, золотая смесь и др.). В паузе колба ждёт. Скилл Пути «Колба» бросает колбу сразу, добирая реактивы, и смесь на 50% сильнее",
+      "blurb": {"ru": "Удары по кругу меняют реактив: алый, лазурный, золотой. Каждые 8 ударов и каждый крит текущий реактив падает в колбу; три реактива — смесь, у каждой из 10 своё действие (взрыв, разъедание, пена, кристаллизация, золотая смесь и др.). В паузе колба ждёт. Скилл Пути «Колба» бросает колбу сразу, добирая реактивы, и смесь на 50% сильнее", "en": "Hits cycle the reagent: crimson, azure, golden. Every 8 hits and every crit the current reagent drops into the flask; three reagents make a mix, each of the 10 mixes with its own effect (blast, corrosion, foam, crystallization, golden mix and more). In a pause the flask waits. The path skill “Flask” throws the flask at once, topping up the reagents, and the mix is 50% stronger"},
       "trait": {
         "partyText": {"ru": "Смесь в колбе: отряд чаще критует и получает больше золота; после каждой смеси 6 с реакции отряда сильнее", "en": "The mix in the flask: the party crits more often and gets more gold; for 6 s after each mix the party's reactions are stronger"},
         "levels": [
@@ -329,7 +329,7 @@
       "class": "alchemist",
       "partyMode": "together",
       "name": {"ru": "Растворитель", "en": "Solvent"},
-      "blurb": "У врага 5 слоёв панциря, каждый растворяется после серии из 30 ударов; каждый снятый слой — враг получает на 7% больше урона. Снятый слой даёт кислоту на клинок: 10 с её удары растворяют вдвое быстрее. В паузе растворитель стоит. Скилл Пути «Плеснуть» снимает слой сразу",
+      "blurb": {"ru": "У врага 5 слоёв панциря, каждый растворяется после серии из 30 ударов; каждый снятый слой — враг получает на 7% больше урона. Снятый слой даёт кислоту на клинок: 10 с её удары растворяют вдвое быстрее. В паузе растворитель стоит. Скилл Пути «Плеснуть» снимает слой сразу", "en": "The enemy has 5 layers of shell, each dissolves after a run of 30 hits; every layer removed makes the enemy take 7% more damage. A removed layer puts acid on her blade: for 10 s her hits dissolve twice as fast. In a pause the solvent stands still. The path skill “Splash” removes a layer at once"},
       "trait": {
         "partyText": {"ru": "Каждый растворённый слой на 10 с усиливает урон отряда со временем, до 5 стаков", "en": "Each dissolved layer empowers the party's damage over time for 10 s, up to 5 stacks"},
         "levels": [
@@ -353,7 +353,7 @@
       "class": "alchemist",
       "partyMode": "support",
       "name": {"ru": "Эликсиры для друзей", "en": "Elixirs for Friends"},
-      "blurb": "Каждые 50 ударов — эликсир союзнику по кругу (в соло — себе) на 8 с, цвета по очереди: алый — каждый 5-й удар взрывается ×3, лазурный — скиллы не тратят ресурс, золотой — убийства дают на 50% больше золота. Каждый третий эликсир у одного героя — философский: все три свойства на 5 с. Сама бьёт на 25% слабее. В паузе эликсиры не варятся. Скилл Пути «Угощение» даёт эликсир сразу",
+      "blurb": {"ru": "Каждые 50 ударов — эликсир союзнику по кругу (в соло — себе) на 8 с, цвета по очереди: алый — каждый 5-й удар взрывается ×3, лазурный — скиллы не тратят ресурс, золотой — убийства дают на 50% больше золота. Каждый третий эликсир у одного героя — философский: все три свойства на 5 с. Сама бьёт на 25% слабее. В паузе эликсиры не варятся. Скилл Пути «Угощение» даёт эликсир сразу", "en": "Every 50 hits an elixir goes to an ally in turn (in solo to herself) for 8 s, the colours in order: crimson — every 5th hit explodes ×3, azure — skills cost no resource, golden — kills give 50% more gold. Every third elixir for the same hero is the philosopher’s: all three effects for 5 s. She hits 25% weaker. In a pause no elixirs brew. The path skill “Treat” gives an elixir at once"},
       "trait": {
         "partyText": {"ru": "Каждый эликсир на 8 с: отряд бьёт сильнее, скиллы дешевле и золота больше", "en": "Each elixir for 8 s: the party hits harder, skills cost less and gold is higher"},
         "levels": [
@@ -377,7 +377,7 @@
       "class": "minstrel",
       "partyMode": "together",
       "name": {"ru": "Куплет и припев", "en": "Verse and Chorus"},
-      "blurb": "Каждые 10 ударов — строка песни, 4 строки — куплет: урон Minstrel +8% на 12 с, до 3 куплетов. Три куплета подряд — припев: 8 с все её баффы ×2. В паузе она допевает куплет и замолкает. Скилл Пути «Запев» добавляет 4 строки сразу",
+      "blurb": {"ru": "Каждые 10 ударов — строка песни, 4 строки — куплет: урон Minstrel +8% на 12 с, до 3 куплетов. Три куплета подряд — припев: 8 с все её баффы ×2. В паузе она допевает куплет и замолкает. Скилл Пути «Запев» добавляет 4 строки сразу", "en": "Every 10 hits is a line of the song, 4 lines a verse: Minstrel damage +8% for 12 s, up to 3 verses. Three verses in a row make a chorus: for 8 s all her buffs ×2. In a pause she finishes the verse and falls silent. The path skill “Lead-in” adds 4 lines at once"},
       "trait": {
         "partyText": {"ru": "Куплеты и припев звучат для всего отряда: союзники получают ту же прибавку к урону; на 5 уровне в припев отряд ещё и чаще критует", "en": "The verses and the chorus ring for the whole party: allies get the same damage bonus; at level 5 the party also crits more often during a chorus"},
         "levels": [
@@ -401,7 +401,7 @@
       "class": "minstrel",
       "partyMode": "support",
       "name": {"ru": "Песня на заказ", "en": "Song on Request"},
-      "blurb": "Она поёт одну из трёх мелодий и меняет её каждые 40 ударов: Фанфара — удары +15%, Марш — откаты скиллов идут на 15% быстрее, Гимн — урон скиллов +15%. Союзникам она поёт под их роль. В паузе мелодия звучит дальше. Скилл Пути «Сменить мелодию» меняет её сразу",
+      "blurb": {"ru": "Она поёт одну из трёх мелодий и меняет её каждые 40 ударов: Фанфара — удары +15%, Марш — откаты скиллов идут на 15% быстрее, Гимн — урон скиллов +15%. Союзникам она поёт под их роль. В паузе мелодия звучит дальше. Скилл Пути «Сменить мелодию» меняет её сразу", "en": "She sings one of three melodies and changes it every 40 hits: Fanfare — hits +15%, March — skill cooldowns run 15% faster, Hymn — skill damage +15%. For allies she sings to their role. In a pause the melody plays on. The path skill “Change the Melody” changes it at once"},
       "trait": {
         "partyText": {"ru": "Союзники слышат её песню: урон выше, откаты быстрее и шанс крита выше — всё растёт с силой песни", "en": "The allies hear her song: more damage, faster cooldowns and more critical chance, all growing with the song's power"},
         "levels": [
@@ -425,7 +425,7 @@
       "class": "minstrel",
       "partyMode": "together",
       "name": {"ru": "Колыбельная", "en": "Lullaby"},
-      "blurb": "Каждый 20-й удар — нота, на 7 нотах враг засыпает на 4 с. Урон по спящему не наносится, а копится во сне ×1,8. Кошмар будит врага, и всё накопленное падает разом. В паузе сон идёт сам, а ноты ждут. Скилл Пути «Тихая нота» добавляет 3 ноты",
+      "blurb": {"ru": "Каждый 20-й удар — нота, на 7 нотах враг засыпает на 4 с. Урон по спящему не наносится, а копится во сне ×1,8. Кошмар будит врага, и всё накопленное падает разом. В паузе сон идёт сам, а ноты ждут. Скилл Пути «Тихая нота» добавляет 3 ноты", "en": "Every 20th hit is a note; at 7 notes the enemy falls asleep for 4 s. Damage to a sleeper is not dealt but stored in the dream ×1.8. A nightmare wakes the enemy and everything stored lands at once. In a pause the sleep goes on by itself while the notes wait. The path skill “Quiet Note” adds 3 notes"},
       "trait": {
         "partyText": {"ru": "Пока враг спит, он получает больше урона от всего отряда; на 5 уровне отряд ещё и крепче критует по спящему", "en": "While the enemy sleeps, it takes more damage from the whole party; at level 5 the party also crits harder against the sleeper"},
         "levels": [
@@ -449,7 +449,7 @@
       "class": "lanternbearer",
       "partyMode": "together",
       "name": {"ru": "Тени и свет", "en": "Light and Shadow"},
-      "blurb": "Каждый удар освещает врага на 1%. Полностью освещённый враг получает +35% урона от всех. Каждые 10 с тень возвращается и гасит 25% света. В паузе фонарь тлеет: новый свет не копится, а тень гасит старый. Скилл Пути «Яркий луч» освещает врага на 25%",
+      "blurb": {"ru": "Каждый удар освещает врага на 1%. Полностью освещённый враг получает +35% урона от всех. Каждые 10 с тень возвращается и гасит 25% света. В паузе фонарь тлеет: новый свет не копится, а тень гасит старый. Скилл Пути «Яркий луч» освещает врага на 25%", "en": "Every hit lights the enemy by 1%. A fully lit enemy takes +35% damage from everyone. Every 10 s the shadow returns and puts out 25% of the light. In a pause the lantern smoulders: no new light builds and the shadow eats the old. The path skill “Bright Beam” lights the enemy by 25%"},
       "trait": {
         "partyText": {"ru": "Полностью освещённый враг получает больше урона от всех; пока он освещён, отряд ещё и чаще критует", "en": "A fully lit enemy takes more damage from everyone; while it is lit, the party also crits more often"},
         "levels": [
@@ -473,7 +473,7 @@
       "class": "lanternbearer",
       "partyMode": "support",
       "name": {"ru": "Светлячки", "en": "Fireflies"},
-      "blurb": "Каждые 20 ударов из фонаря вылетает светлячок и садится на союзника на 20 с, до 10. Пока на союзнике светлячок, каждый его крит зажигает искру — удар ×2, а Lanternbearer получает 1 Масло. В соло светлячки кружат над ней самой. В паузе светлячки догорают. Скилл Пути «Рой светлячков» выпускает 3 сразу",
+      "blurb": {"ru": "Каждые 20 ударов из фонаря вылетает светлячок и садится на союзника на 20 с, до 10. Пока на союзнике светлячок, каждый его крит зажигает искру — удар ×2, а Lanternbearer получает 1 Масло. В соло светлячки кружат над ней самой. В паузе светлячки догорают. Скилл Пути «Рой светлячков» выпускает 3 сразу", "en": "Every 20 hits a firefly flies from the lantern and lands on an ally for 20 s, up to 10. While an ally carries a firefly, each of their crits lights a spark — a ×2 hit, and the Lanternbearer gets 1 Oil. In solo the fireflies circle her. In a pause the fireflies burn out. The path skill “Firefly Swarm” releases 3 at once"},
       "trait": {
         "partyText": {"ru": "Светлячки кружат над отрядом: за каждого светлячка отряд крепче и чаще критует", "en": "Fireflies circle over the party: each firefly makes the party crit harder and more often"},
         "levels": [
@@ -497,7 +497,7 @@
       "class": "lanternbearer",
       "partyMode": "support",
       "name": {"ru": "Маяк", "en": "Beacon"},
-      "blurb": "Раз в 40 с фонарь вспыхивает: у неё и у каждого союзника следующий скилл бесплатный, без перезарядки и на 50% сильнее. В паузе Маяк копит вспышку. Скилл Пути «Вспышка маяка» вспыхивает сразу",
+      "blurb": {"ru": "Раз в 40 с фонарь вспыхивает: у неё и у каждого союзника следующий скилл бесплатный, без перезарядки и на 50% сильнее. В паузе Маяк копит вспышку. Скилл Пути «Вспышка маяка» вспыхивает сразу", "en": "Every 40 s the lantern flares: for her and every ally the next skill is free, has no cooldown and is 50% stronger. In a pause the Beacon builds its flare. The path skill “Beacon Flash” flares at once"},
       "trait": {
         "partyText": {"ru": "После вспышки маяка 6 с скиллы отряда дешевле и откаты быстрее", "en": "For 6 s after a beacon flash the party's skills cost less and cooldowns are faster"},
         "levels": [
@@ -521,7 +521,7 @@
       "class": "whisperer",
       "partyMode": "together",
       "name": {"ru": "Семь узлов", "en": "Seven Knots"},
-      "blurb": "Каждые 25 ударов кукла завязывает на враге узел-проклятие. Узлы идут строго по порядку: слабость (+8% урона по врагу), медлительность (таймер босса на 5% медленнее), уязвимость (ещё +8%), хрупкость (+10% к урону критов), порча (ещё +8%), жадность (+10% золота); седьмой узел удваивает действие первых шести. В паузе узлы не спадают. Скилл Пути «Затянуть узел» завязывает два узла сразу",
+      "blurb": {"ru": "Каждые 25 ударов кукла завязывает на враге узел-проклятие. Узлы идут строго по порядку: слабость (+8% урона по врагу), медлительность (таймер босса на 5% медленнее), уязвимость (ещё +8%), хрупкость (+10% к урону критов), порча (ещё +8%), жадность (+10% золота); седьмой узел удваивает действие первых шести. В паузе узлы не спадают. Скилл Пути «Затянуть узел» завязывает два узла сразу", "en": "Every 25 hits the doll ties a curse knot on the enemy. The knots go strictly in order: weakness (+8% damage to the enemy), slowness (boss timer 5% slower), vulnerability (another +8%), frailty (+10% crit damage), blight (another +8%), greed (+10% gold); the seventh knot doubles the first six. In a pause the knots hold. The path skill “Tighten the Knot” ties two knots at once"},
       "trait": {
         "partyText": {"ru": "Узлы висят на враге и видны всем; за каждый узел отряд чаще критует", "en": "The knots hang on the enemy for everyone to see; each knot makes the party crit more often"},
         "levels": [
@@ -545,7 +545,7 @@
       "class": "whisperer",
       "partyMode": "solo",
       "name": {"ru": "Имя Колосса", "en": "Name of the Colossus"},
-      "blurb": "100 её ударов по боссу или стражу — и Шептунья узнаёт его имя: +70% урона по нему до конца боя. На обычных врагах особенность молчит. В паузе узнанное имя не забывается. Скилл Пути «Назвать по имени» добавляет сразу 50 ударов к имени",
+      "blurb": {"ru": "100 её ударов по боссу или стражу — и Шептунья узнаёт его имя: +70% урона по нему до конца боя. На обычных врагах особенность молчит. В паузе узнанное имя не забывается. Скилл Пути «Назвать по имени» добавляет сразу 50 ударов к имени", "en": "100 of her hits on a boss or guardian and the Whisperer learns its name: +70% damage to it until the end of the fight. On ordinary enemies the feature stays silent. In a pause a learned name is not forgotten. The path skill “Call by Name” adds 50 hits to the name at once"},
       "trait": {
         "partyText": {"ru": "Пока имя Колосса названо, отряд бьёт босса сильнее", "en": "While the Colossus's name is spoken, the party hits the boss harder"},
         "levels": [
@@ -569,7 +569,7 @@
       "class": "whisperer",
       "partyMode": "support",
       "name": {"ru": "Обет молчания", "en": "Vow of Silence"},
-      "blurb": "Её удары не наносят урона совсем. Взамен все её проклятия втрое сильнее, а Шёпот копится вдвое быстрее. Каждые 6 немых ударов — немой шёпот: следующий удар проклят и бьёт ×(12 × (1 + сила проклятий)), а проклятие держится на 1 с дольше. В соло шёпот достаётся ей самой. В паузе проклятия не спадают. Скилл Пути «Немой укор» даёт 3 шёпота сразу",
+      "blurb": {"ru": "Её удары не наносят урона совсем. Взамен все её проклятия втрое сильнее, а Шёпот копится вдвое быстрее. Каждые 6 немых ударов — немой шёпот: следующий удар проклят и бьёт ×(12 × (1 + сила проклятий)), а проклятие держится на 1 с дольше. В соло шёпот достаётся ей самой. В паузе проклятия не спадают. Скилл Пути «Немой укор» даёт 3 шёпота сразу", "en": "Her hits deal no damage at all. In return all her curses are three times stronger and the Whisper builds twice as fast. Every 6 silent hits is a silent whisper: the next hit is cursed and strikes ×(12 × (1 + curse power)), and the curse lasts 1 s longer. In solo the whisper goes to her. In a pause the curses hold. The path skill “Silent Reproach” gives 3 whispers at once"},
       "trait": {
         "partyText": {"ru": "Каждый немой шёпот на 4 с усиливает урон отряда со временем и удары, до 5 стаков", "en": "Each silent whisper empowers the party's damage over time and hits for 4 s, up to 5 stacks"},
         "levels": [
@@ -593,7 +593,7 @@
       "class": "cartomancer",
       "partyMode": "together",
       "name": {"ru": "Расклад", "en": "Spread"},
-      "blurb": "Каждые 10 ударов в руку тянется карта одной из четырёх мастей: Кубки, Мечи, Монеты, Жезлы. Три карты одной масти — Старший аркан на 15 с: Мечи — её урон сильнее, Кубки — ресурс каждую секунду, Монеты — больше золота с врагов, Жезлы — перезарядка скиллов быстрее. В руке до 7 карт. В паузе колода тасуется, рука не теряется. Скилл Пути «Разложить карты» тянет три карты сразу",
+      "blurb": {"ru": "Каждые 10 ударов в руку тянется карта одной из четырёх мастей: Кубки, Мечи, Монеты, Жезлы. Три карты одной масти — Старший аркан на 15 с: Мечи — её урон сильнее, Кубки — ресурс каждую секунду, Монеты — больше золота с врагов, Жезлы — перезарядка скиллов быстрее. В руке до 7 карт. В паузе колода тасуется, рука не теряется. Скилл Пути «Разложить карты» тянет три карты сразу", "en": "Every 10 hits a card of one of four suits comes to hand: Cups, Swords, Coins, Wands. Three cards of one suit make a Major Arcana for 15 s: Swords — her damage is stronger, Cups — resource every second, Coins — more gold from enemies, Wands — faster skill cooldowns. Up to 7 cards in hand. In a pause the deck shuffles and the hand is kept. The path skill “Lay Out the Cards” draws three cards at once"},
       "trait": {
         "partyText": {"ru": "За каждую карту в руке отряд чаще критует и получает больше золота", "en": "Each card in hand makes the party crit more often and get more gold"},
         "levels": [
@@ -617,7 +617,7 @@
       "class": "cartomancer",
       "partyMode": "together",
       "name": {"ru": "Предсказание", "en": "Prophecy"},
-      "blurb": "Перед боссом Гадалка называет срок: «умрёт за N секунд» (60% таймера). Успели — награда за босса вдвое больше, не успели — её урон на 20% меньше до следующего босса. В паузе срок идёт, как и таймер. Скилл Пути «Срок вышел» называет новый срок на текущем боссе",
+      "blurb": {"ru": "Перед боссом Гадалка называет срок: «умрёт за N секунд» (60% таймера). Успели — награда за босса вдвое больше, не успели — её урон на 20% меньше до следующего босса. В паузе срок идёт, как и таймер. Скилл Пути «Срок вышел» называет новый срок на текущем боссе", "en": "Before a boss the Fortune-teller names a term: “it dies in N seconds” (60% of the timer). Made it — the boss reward is doubled; missed it — her damage is 20% lower until the next boss. In a pause the term runs like the timer. The path skill “Time’s Up” names a new term on the current boss"},
       "trait": {
         "partyText": {"ru": "Выигранный срок 20 с даёт отряду больше золота и гемов", "en": "A won term gives the party more gold and gems for 20 s"},
         "levels": [
@@ -641,7 +641,7 @@
       "class": "cartomancer",
       "partyMode": "support",
       "name": {"ru": "Перевёрнутая карта", "en": "Reversed Card"},
-      "blurb": "Карты ложатся рубашкой вверх: вместо пользы каждые 10 ударов карта ложится на врага и проклинает его по масти: Мечи — враг получает больше урона, Кубки — рана жжёт врага, Монеты — с врага падает больше золота, Жезлы — таймер босса медленнее. На враге до 7 карт, со сменой врага они спадают. Каждые 40 ударов одна карта вскрывается: её проклятие на 5 с вдвое сильнее. Скилл Пути «Перевернуть колоду» кладёт три карты и вскрывает старшую масть",
+      "blurb": {"ru": "Карты ложатся рубашкой вверх: вместо пользы каждые 10 ударов карта ложится на врага и проклинает его по масти: Мечи — враг получает больше урона, Кубки — рана жжёт врага, Монеты — с врага падает больше золота, Жезлы — таймер босса медленнее. На враге до 7 карт, со сменой врага они спадают. Каждые 40 ударов одна карта вскрывается: её проклятие на 5 с вдвое сильнее. Скилл Пути «Перевернуть колоду» кладёт три карты и вскрывает старшую масть", "en": "The cards fall face down: instead of helping, every 10 hits a card lands on the enemy and curses it by suit: Swords — the enemy takes more damage, Cups — a wound burns the enemy, Coins — the enemy drops more gold, Wands — the boss timer runs slower. Up to 7 cards on an enemy, they fall off when it changes. Every 40 hits one card is revealed: its curse is twice as strong for 5 s. The path skill “Turn the Deck” lays three cards and reveals the highest suit"},
       "trait": {
         "partyText": {"ru": "Карты лежат на враге и видны всем; за каждую карту отряд крепче критует", "en": "The cards lie on the enemy for everyone to see; each card makes the party crit harder"},
         "levels": [
@@ -665,7 +665,7 @@
       "class": "herbwitch",
       "partyMode": "together",
       "name": {"ru": "Цветение", "en": "Blossoming"},
-      "blurb": "Каждые 15 ударов во врага садится семя. Семя прорастает колючей лозой, которая жалит раз в секунду и растёт: росток → куст → цветок, каждые 5 с стадия, на каждой стадии урон вдвое больше. Лоз до 3. Новый враг — лозы начинают сначала. Каждый раскрытый цветок роняет лепесток. В паузе растения продолжают расти и жалить. Скилл Пути «Ускорить рост» доводит все лозы до цветка",
+      "blurb": {"ru": "Каждые 15 ударов во врага садится семя. Семя прорастает колючей лозой, которая жалит раз в секунду и растёт: росток → куст → цветок, каждые 5 с стадия, на каждой стадии урон вдвое больше. Лоз до 3. Новый враг — лозы начинают сначала. Каждый раскрытый цветок роняет лепесток. В паузе растения продолжают расти и жалить. Скилл Пути «Ускорить рост» доводит все лозы до цветка", "en": "Every 15 hits a seed is planted in the enemy. It sprouts a thorny vine that stings once a second and grows: sprout → bush → flower, a stage every 5 s, each stage doubling the damage. Up to 3 vines. A new enemy — the vines start over. Every open flower drops a petal. In a pause the plants keep growing and stinging. The path skill “Quicken Growth” brings all vines to flower"},
       "trait": {
         "partyText": {"ru": "Сад висит на враге; за каждую лозу урон отряда со временем сильнее", "en": "The garden hangs on the enemy; each vine empowers the party's damage over time"},
         "levels": [
@@ -689,7 +689,7 @@
       "class": "herbwitch",
       "partyMode": "together",
       "name": {"ru": "Грибница", "en": "Mycelium"},
-      "blurb": "Каждый удар добавляет врагу стак яда грибницы, до 50; каждый стак жалит раз в секунду. Яд не пропадает со смертью врага: половина перетекает на следующего. В паузе яд продолжает жалить. Скилл Пути «Споровый выброс» добавляет 15 стаков",
+      "blurb": {"ru": "Каждый удар добавляет врагу стак яда грибницы, до 50; каждый стак жалит раз в секунду. Яд не пропадает со смертью врага: половина перетекает на следующего. В паузе яд продолжает жалить. Скилл Пути «Споровый выброс» добавляет 15 стаков", "en": "Every hit adds a stack of mycelium poison to the enemy, up to 50; each stack stings once a second. The poison does not vanish when the enemy dies: half flows to the next one. In a pause the poison keeps stinging. The path skill “Spore Burst” adds 15 stacks"},
       "trait": {
         "partyText": {"ru": "За каждые 5 стаков яда грибницы урон отряда со временем сильнее", "en": "Every 5 stacks of mycelium poison empower the party's damage over time"},
         "levels": [
@@ -713,7 +713,7 @@
       "class": "herbwitch",
       "partyMode": "together",
       "name": {"ru": "Сок жизни", "en": "Lifesap"},
-      "blurb": "Яд не тикает, пока его не выпили, и копится вдвое быстрее: каждый удар даёт 2 стака. Каждый 20-й удар выпивает весь яд: он бьёт врага разом и превращается в Сок. Новый враг — невыпитый яд пропадает. В паузе Сок медленно капает сам. Скилл Пути «Глоток сока» выпивает яд сразу",
+      "blurb": {"ru": "Яд не тикает, пока его не выпили, и копится вдвое быстрее: каждый удар даёт 2 стака. Каждый 20-й удар выпивает весь яд: он бьёт врага разом и превращается в Сок. Новый враг — невыпитый яд пропадает. В паузе Сок медленно капает сам. Скилл Пути «Глоток сока» выпивает яд сразу", "en": "The poison does not tick until it is drunk and builds twice as fast: every hit gives 2 stacks. Every 20th hit drinks all the poison: it strikes the enemy at once and turns into Sap. A new enemy — undrunk poison is lost. In a pause the Sap slowly drips by itself. The path skill “Sip of Sap” drinks the poison at once"},
       "trait": {
         "partyText": {"ru": "Каждый глоток 5 с ускоряет накопление ресурса отряда", "en": "Each gulp speeds up the party's resource for 5 s"},
         "levels": [
@@ -737,7 +737,7 @@
       "class": "mothcaller",
       "partyMode": "together",
       "name": {"ru": "Рой", "en": "Swarm"},
-      "blurb": "Каждый удар выпускает мотылька, до 50. Мотыльки пьют свет врага: весь рой бьёт раз в секунду, сила растёт с каждым мотыльком. Враг умирает — половина роя перелетает на следующего, половина рассеивается. В паузе мотыльки продолжают пить врага, новые не вылетают. Скилл Пути «Выпустить рой» выпускает 20 мотыльков и бьёт всем роем",
+      "blurb": {"ru": "Каждый удар выпускает мотылька, до 50. Мотыльки пьют свет врага: весь рой бьёт раз в секунду, сила растёт с каждым мотыльком. Враг умирает — половина роя перелетает на следующего, половина рассеивается. В паузе мотыльки продолжают пить врага, новые не вылетают. Скилл Пути «Выпустить рой» выпускает 20 мотыльков и бьёт всем роем", "en": "Every hit releases a moth, up to 50. The moths drink the enemy’s light: the whole swarm strikes once a second, its power growing with every moth. When the enemy dies, half the swarm flies to the next one and half scatters. In a pause the moths keep drinking, new ones do not fly out. The path skill “Release the Swarm” releases 20 moths and strikes with the whole swarm"},
       "trait": {
         "partyText": {"ru": "За каждые 5 мотыльков роя отряд бьёт сильнее", "en": "Every 5 moths of the swarm make the party hit harder"},
         "levels": [
@@ -761,7 +761,7 @@
       "class": "mothcaller",
       "partyMode": "support",
       "name": {"ru": "Пыльца", "en": "Pollen"},
-      "blurb": "Мотыльки (до 50, по одному за удар) не бьют, а осыпают пыльцой: каждую секунду на героя оседает пыльца по числу мотыльков. Крит стряхивает всю пыльцу во врага — урон со временем за 4 с. Сама Мотылица от своего роя урона не получает. В паузе пыльца лежит и ждёт крита. Скилл Пути «Облако пыльцы» выпускает 20 мотыльков",
+      "blurb": {"ru": "Мотыльки (до 50, по одному за удар) не бьют, а осыпают пыльцой: каждую секунду на героя оседает пыльца по числу мотыльков. Крит стряхивает всю пыльцу во врага — урон со временем за 4 с. Сама Мотылица от своего роя урона не получает. В паузе пыльца лежит и ждёт крита. Скилл Пути «Облако пыльцы» выпускает 20 мотыльков", "en": "The moths (up to 50, one per hit) do not strike but shed pollen: every second pollen settles on the hero by the number of moths. A crit shakes all the pollen into the enemy — damage over 4 s. The Mothcaller takes no damage from her own swarm. In a pause the pollen lies waiting for a crit. The path skill “Pollen Cloud” releases 20 moths"},
       "trait": {
         "partyText": {"ru": "За каждые 5 мотыльков отряд чаще критует и сильнее жжёт", "en": "Every 5 moths make the party crit more often and burn harder"},
         "levels": [
@@ -785,7 +785,7 @@
       "class": "mothcaller",
       "partyMode": "solo",
       "name": {"ru": "Ночная бабочка", "en": "Night Moth"},
-      "blurb": "Жёсткий обмен: вместо роя мотыльки сливаются в одну огромную бабочку. Она не копится от ударов, а оживает раз в 30 с на 8 с и каждую секунду бьёт как весь рой. В паузе бабочка просыпается так же. Скилл Пути «Пробуждение бабочки» будит её сразу",
+      "blurb": {"ru": "Жёсткий обмен: вместо роя мотыльки сливаются в одну огромную бабочку. Она не копится от ударов, а оживает раз в 30 с на 8 с и каждую секунду бьёт как весь рой. В паузе бабочка просыпается так же. Скилл Пути «Пробуждение бабочки» будит её сразу", "en": "A hard trade: instead of a swarm the moths merge into one huge butterfly. It does not build from hits but wakes every 30 s for 8 s and strikes every second like the whole swarm. In a pause the butterfly wakes all the same. The path skill “Butterfly’s Waking” wakes it at once"},
       "trait": {
         "partyText": {"ru": "Пока бабочка летает, отряд бьёт сильнее", "en": "While the moth flies, the party hits harder"},
         "levels": [
@@ -809,7 +809,7 @@
       "class": "soulbinder",
       "partyMode": "solo",
       "name": {"ru": "Сфера душ", "en": "Orb of Souls"},
-      "blurb": "Каждое убийство кладёт душу в сферу, до 6. Каждая душа — отдельный дух, он бьёт сам раз в секунду; душа стража вдвое сильнее, душа босса — втрое. В паузе духи бьют сами, но сфера не наполняется. Скилл Пути «Призвать души» кладёт две души сразу",
+      "blurb": {"ru": "Каждое убийство кладёт душу в сферу, до 6. Каждая душа — отдельный дух, он бьёт сам раз в секунду; душа стража вдвое сильнее, душа босса — втрое. В паузе духи бьют сами, но сфера не наполняется. Скилл Пути «Призвать души» кладёт две души сразу", "en": "Every kill puts a soul into the orb, up to 6. Each soul is a spirit of its own that strikes once a second; a guardian’s soul is twice as strong, a boss’s three times. In a pause the spirits strike on their own but the orb does not fill. The path skill “Summon Souls” adds two souls at once"},
       "trait": {
         "partyText": {"ru": "За каждую душу в сфере спутники и слуги отряда сильнее и быстрее", "en": "Each soul in the sphere makes the party's companions and minions stronger and faster"},
         "levels": [
@@ -833,7 +833,7 @@
       "class": "soulbinder",
       "partyMode": "together",
       "name": {"ru": "Последний вздох", "en": "Last Breath"},
-      "blurb": "Духи не бьют вовсе. Когда сфера полна и приходит новая душа, самая старая уходит с последним вздохом — бьёт текущего врага на 4% HP того врага, от которого пришла, и оставляет на нём холод на 5 с: враг получает на 15% больше. Урон приходит только из убийств. В паузе сфера ждёт. Скилл Пути «Последний вздох» выпускает старшую душу сразу",
+      "blurb": {"ru": "Духи не бьют вовсе. Когда сфера полна и приходит новая душа, самая старая уходит с последним вздохом — бьёт текущего врага на 4% HP того врага, от которого пришла, и оставляет на нём холод на 5 с: враг получает на 15% больше. Урон приходит только из убийств. В паузе сфера ждёт. Скилл Пути «Последний вздох» выпускает старшую душу сразу", "en": "The spirits do not strike at all. When the orb is full and a new soul comes, the oldest leaves with a last breath — it strikes the current enemy for 4% of the HP of the enemy it came from and leaves a chill on it for 5 s: the enemy takes 15% more. Damage comes only from kills. In a pause the orb waits. The path skill “Last Breath” releases the oldest soul at once"},
       "trait": {
         "partyText": {"ru": "Холод вздоха висит на враге; после вздоха 4 с отряд крепче критует", "en": "The cold of a breath hangs on the enemy; for 4 s after a breath the party crits harder"},
         "levels": [
@@ -857,7 +857,7 @@
       "class": "soulbinder",
       "partyMode": "support",
       "name": {"ru": "Одолжить душу", "en": "Lend a Soul"},
-      "blurb": "Каждые 50 ударов Душеплёт вселяет духа в союзника на 10 с (в соло — в себя): дух бьёт вместе с каждым ударом на 12% силы. Убийство за это время возвращает ей душу — 2 Эктоплазмы. В паузе духи не вселяются. Скилл Пути «Отдать душу» вселяет духа сразу",
+      "blurb": {"ru": "Каждые 50 ударов Душеплёт вселяет духа в союзника на 10 с (в соло — в себя): дух бьёт вместе с каждым ударом на 12% силы. Убийство за это время возвращает ей душу — 2 Эктоплазмы. В паузе духи не вселяются. Скилл Пути «Отдать душу» вселяет духа сразу", "en": "Every 50 hits the Soulbinder puts a spirit into an ally for 10 s (in solo into herself): the spirit strikes with every hit at 12% power. A kill in that time returns her a soul — 2 Ectoplasm. In a pause no spirits are lent. The path skill “Give a Soul” lends a spirit at once"},
       "trait": {
         "partyText": {"ru": "Каждая одолженная душа 10 с усиливает удары отряда", "en": "Each lent soul empowers the party's hits for 10 s"},
         "levels": [
@@ -881,7 +881,7 @@
       "class": "ghostcaptain",
       "partyMode": "together",
       "name": {"ru": "Бортовой залп", "en": "Broadside"},
-      "blurb": "У корабля 8 пушек. Каждые 10 ударов заряжают одну. Когда заряжены все 8 — залп разом: каждая пушка бьёт как 3 удара, а если все восемь зарядились на одном враге — вдвое сильнее. Залп оставляет на враге пробоину на 3 с: таймер босса стоит, враг получает на 15% больше. В паузе пушки ждут заряженными. Скилл Пути «Огонь всем бортом» заряжает все пушки и даёт залп сразу",
+      "blurb": {"ru": "У корабля 8 пушек. Каждые 10 ударов заряжают одну. Когда заряжены все 8 — залп разом: каждая пушка бьёт как 3 удара, а если все восемь зарядились на одном враге — вдвое сильнее. Залп оставляет на враге пробоину на 3 с: таймер босса стоит, враг получает на 15% больше. В паузе пушки ждут заряженными. Скилл Пути «Огонь всем бортом» заряжает все пушки и даёт залп сразу", "en": "The ship has 8 cannons. Every 10 hits load one. When all 8 are loaded — a broadside at once: each cannon strikes like 3 hits, twice as hard if all eight were loaded on the same enemy. The broadside leaves a breach on the enemy for 3 s: the boss timer stops and the enemy takes 15% more. In a pause the cannons wait loaded. The path skill “Full Broadside” loads every cannon and fires at once"},
       "trait": {
         "partyText": {"ru": "Пробоина висит на враге; после залпа 5 с отряд бьёт сильнее", "en": "The breach hangs on the enemy; for 5 s after a volley the party hits harder"},
         "levels": [
@@ -905,7 +905,7 @@
       "class": "ghostcaptain",
       "partyMode": "solo",
       "name": {"ru": "Призрачная команда", "en": "Ghost Crew"},
-      "blurb": "Каждый побеждённый враг вступает в команду матросом (страж — двое, босс — трое), все матросы бьют раз в секунду. Потолка нет, но через 2 минуты после первого матроса наступает рассвет, и вся команда уходит; старший матрос остаётся боцманом и до следующего рассвета стреляет при каждом её скилле. В паузе команда бьёт сама. Скилл Пути «Свистать всех наверх» зовёт трёх матросов и бьёт всей командой",
+      "blurb": {"ru": "Каждый побеждённый враг вступает в команду матросом (страж — двое, босс — трое), все матросы бьют раз в секунду. Потолка нет, но через 2 минуты после первого матроса наступает рассвет, и вся команда уходит; старший матрос остаётся боцманом и до следующего рассвета стреляет при каждом её скилле. В паузе команда бьёт сама. Скилл Пути «Свистать всех наверх» зовёт трёх матросов и бьёт всей командой", "en": "Every defeated enemy joins the crew as a sailor (a guardian as two, a boss as three), and all sailors strike once a second. There is no cap, but 2 minutes after the first sailor dawn comes and the whole crew leaves; the eldest stays on as boatswain and fires with each of her skills until the next dawn. In a pause the crew strikes on its own. The path skill “All Hands on Deck” calls three sailors and strikes with the whole crew"},
       "trait": {
         "partyText": {"ru": "За каждые 5 матросов команды отряд бьёт сильнее", "en": "Every 5 sailors of the crew make the party hit harder"},
         "levels": [
@@ -929,7 +929,7 @@
       "class": "ghostcaptain",
       "partyMode": "support",
       "name": {"ru": "Попугай-призрак", "en": "Ghost Parrot"},
-      "blurb": "На плече попугай: каждый третий её скилл он повторяет на 50% силы. Пока попугай на плече, команды нет — некому командовать. В паузе попугай молчит. Скилл Пути «Повтори!» заставляет попугая сразу повторить её последний скилл",
+      "blurb": {"ru": "На плече попугай: каждый третий её скилл он повторяет на 50% силы. Пока попугай на плече, команды нет — некому командовать. В паузе попугай молчит. Скилл Пути «Повтори!» заставляет попугая сразу повторить её последний скилл", "en": "A parrot sits on her shoulder: it repeats every third skill of hers at 50% power. While the parrot is on her shoulder there is no crew — no one to command. In a pause the parrot is quiet. The path skill “Repeat!” makes the parrot repeat her last skill at once"},
       "trait": {
         "partyText": {"ru": "Каждый повтор попугая 6 с ускоряет откаты и удешевляет скиллы отряда, до 3 стаков", "en": "Each parrot repeat speeds up the party's cooldowns and cheapens its skills for 6 s, up to 3 stacks"},
         "levels": [
@@ -953,7 +953,7 @@
       "class": "golemancer",
       "partyMode": "solo",
       "name": {"ru": "Печать", "en": "Seal"},
-      "blurb": "100 ударов дописывают печать, из неё встаёт большой голем на 20 с и бьёт раз в секунду с силой многих ударов. Пока голем стоит, следующая печать не пишется. В паузе голем стоит и бьёт, но новая печать не пишется. Скилл Пути «Великая печать» дописывает печать сразу",
+      "blurb": {"ru": "100 ударов дописывают печать, из неё встаёт большой голем на 20 с и бьёт раз в секунду с силой многих ударов. Пока голем стоит, следующая печать не пишется. В паузе голем стоит и бьёт, но новая печать не пишется. Скилл Пути «Великая печать» дописывает печать сразу", "en": "100 hits finish a seal, and a great golem rises from it for 20 s, striking once a second with the power of many hits. While the golem stands, the next seal is not written. In a pause the golem stands and strikes, but no new seal is written. The path skill “Great Seal” finishes the seal at once"},
       "trait": {
         "partyText": {"ru": "Пока голем стоит, отряд бьёт сильнее, а спутники отряда крепче", "en": "While the golem stands, the party hits harder and its companions are stronger"},
         "levels": [
@@ -977,7 +977,7 @@
       "class": "golemancer",
       "partyMode": "together",
       "name": {"ru": "Вечная печать", "en": "Eternal Seal"},
-      "blurb": "Один голем навсегда, но вчетверо слабее большого: он бьёт раз в секунду. Каждые 100 ударов печать не призывает, а добавляет на голема руну: +5% силы, до 40 рун. Руны остаются до перерождения. На каждом новом враге голем ставит клеймо из стольких слоёв, сколько рун (до 10); каждые 40 ударов слой снимается и бьёт силой голема ×3. В паузе голем бьёт сам. Скилл Пути «Вписать руну» добавляет руну сразу",
+      "blurb": {"ru": "Один голем навсегда, но вчетверо слабее большого: он бьёт раз в секунду. Каждые 100 ударов печать не призывает, а добавляет на голема руну: +5% силы, до 40 рун. Руны остаются до перерождения. На каждом новом враге голем ставит клеймо из стольких слоёв, сколько рун (до 10); каждые 40 ударов слой снимается и бьёт силой голема ×3. В паузе голем бьёт сам. Скилл Пути «Вписать руну» добавляет руну сразу", "en": "One golem for good, but four times weaker than the great one: it strikes once a second. Every 100 hits the seal does not summon but adds a rune to the golem: +5% power, up to 40 runes. The runes stay until prestige. On every new enemy the golem sets a brand with as many layers as there are runes (up to 10); every 40 hits a layer comes off and strikes with the golem’s power ×3. In a pause the golem strikes on its own. The path skill “Inscribe a Rune” adds a rune at once"},
       "trait": {
         "partyText": {"ru": "Клеймо висит на враге; за каждые 4 руны голема отряд бьёт сильнее", "en": "The brand hangs on the enemy; every 4 golem runes make the party hit harder"},
         "levels": [
@@ -1001,7 +1001,7 @@
       "class": "golemancer",
       "partyMode": "support",
       "name": {"ru": "Малые печати", "en": "Small Seals"},
-      "blurb": "Вместо большого голема каждые 20 ударов — маленький големчик на 15 с, до 4 сразу; каждый бьёт раз в секунду. В паузе големчики бьют, новые не появляются. Скилл Пути «Россыпь печатей» лепит трёх големчиков",
+      "blurb": {"ru": "Вместо большого голема каждые 20 ударов — маленький големчик на 15 с, до 4 сразу; каждый бьёт раз в секунду. В паузе големчики бьют, новые не появляются. Скилл Пути «Россыпь печатей» лепит трёх големчиков", "en": "Instead of a great golem, every 20 hits a little golem appears for 15 s, up to 4 at once; each strikes once a second. In a pause the little golems strike, but no new ones appear. The path skill “Scatter of Seals” moulds three little golems"},
       "trait": {
         "partyText": {"ru": "За каждого големчика спутники и слуги отряда быстрее и сильнее", "en": "Each golemling makes the party's companions and minions faster and stronger"},
         "levels": [
@@ -1025,7 +1025,7 @@
       "class": "clockwright",
       "partyMode": "together",
       "name": {"ru": "Завод пружины", "en": "Wound Spring"},
-      "blurb": "Завод копится от ударов и сам медленно кончается. Пока Завод больше половины, таймер босса идёт на 30% медленнее, ниже половины — на 10%. На нуле часы встают, и таймер идёт на 10% быстрее. В паузе часы стоят: Завод не тратится. Скилл Пути «Завести пружину» даёт 50 Завода сразу",
+      "blurb": {"ru": "Завод копится от ударов и сам медленно кончается. Пока Завод больше половины, таймер босса идёт на 30% медленнее, ниже половины — на 10%. На нуле часы встают, и таймер идёт на 10% быстрее. В паузе часы стоят: Завод не тратится. Скилл Пути «Завести пружину» даёт 50 Завода сразу", "en": "The Spring winds up from hits and slowly runs down by itself. While the Spring is above half, the boss timer runs 30% slower, below half — 10%. At zero the clock stops and the timer runs 10% faster. In a pause the clock stands still: the Spring is not spent. The path skill “Wind the Spring” gives 50 Spring at once"},
       "trait": {
         "partyText": {"ru": "Пока Завод держит таймер, таймер босса медленнее для всего отряда", "en": "While the Spring holds the timer, the boss timer is slower for the whole party"},
         "levels": [
@@ -1049,7 +1049,7 @@
       "class": "clockwright",
       "partyMode": "together",
       "name": {"ru": "Петля", "en": "Loop"},
-      "blurb": "Раз в 40 с часы перематываются: весь урон отряда за последние 5 с повторяется на 50% силы. Удары самой Часовщицы в петлю не попадают. В соло петля повторяет её собственный урон вполовину слабее. В паузе петля копится. Скилл Пути «Перемотка» перематывает сразу",
+      "blurb": {"ru": "Раз в 40 с часы перематываются: весь урон отряда за последние 5 с повторяется на 50% силы. Удары самой Часовщицы в петлю не попадают. В соло петля повторяет её собственный урон вполовину слабее. В паузе петля копится. Скилл Пути «Перемотка» перематывает сразу", "en": "Every 40 s the clock rewinds: all party damage of the last 5 s repeats at 50% power. The Clockwright’s own hits do not enter the loop. In solo the loop repeats her own damage at half strength. In a pause the loop builds. The path skill “Rewind” rewinds at once"},
       "trait": {
         "partyText": {"ru": "После перемотки 5 с отряд бьёт сильнее", "en": "For 5 s after a rewind the party hits harder"},
         "levels": [
@@ -1073,7 +1073,7 @@
       "class": "clockwright",
       "partyMode": "support",
       "name": {"ru": "Шестерни", "en": "Gears"},
-      "blurb": "Каждые 60 ударов часы тикают: у неё и у всего отряда перезарядки скиллов −2 с. Свои скиллы Часовщицы перезаряжаются вдвое дольше. Если два её скилла пришлись на одну секунду, шестерни сцепляются, и тик наступает сразу. В паузе шестерни стоят. Скилл Пути «Смазать шестерни» тикает сразу",
+      "blurb": {"ru": "Каждые 60 ударов часы тикают: у неё и у всего отряда перезарядки скиллов −2 с. Свои скиллы Часовщицы перезаряжаются вдвое дольше. Если два её скилла пришлись на одну секунду, шестерни сцепляются, и тик наступает сразу. В паузе шестерни стоят. Скилл Пути «Смазать шестерни» тикает сразу", "en": "Every 60 hits the clock ticks: for her and the whole party skill cooldowns −2 s. The Clockwright’s own skills take twice as long to recharge. If two of her skills land in the same second, the gears mesh and the tick comes at once. In a pause the gears stand still. The path skill “Oil the Gears” ticks at once"},
       "trait": {
         "partyText": {"ru": "Каждый тик шестерён на 3 с ускоряет откаты отряда, до 3 стаков", "en": "Each gear tick speeds up the party's cooldowns for 3 s, up to 3 stacks"},
         "levels": [
@@ -1097,7 +1097,7 @@
       "class": "sandwalker",
       "partyMode": "together",
       "name": {"ru": "Переворот", "en": "Turn of the Glass"},
-      "blurb": "У часов две стороны. «Верх»: весь урон Sandwalker +50%, таймер босса идёт. «Низ»: урон −50%, но таймер босса стоит. Каждый удар пересыпает песчинку, через 200 ударов часы переворачиваются сами. В паузе песок стоит. Скилл Пути «Перевернуть часы» сыплет 50 песчинок сразу",
+      "blurb": {"ru": "У часов две стороны. «Верх»: весь урон Sandwalker +50%, таймер босса идёт. «Низ»: урон −50%, но таймер босса стоит. Каждый удар пересыпает песчинку, через 200 ударов часы переворачиваются сами. В паузе песок стоит. Скилл Пути «Перевернуть часы» сыплет 50 песчинок сразу", "en": "The hourglass has two sides. “Top”: all Sandwalker damage +50%, the boss timer runs. “Bottom”: damage −50%, but the boss timer stops. Every hit pours a grain, and after 200 hits the glass turns over by itself. In a pause the sand stands still. The path skill “Turn the Glass” pours 50 grains at once"},
       "trait": {
         "partyText": {"ru": "Пока часы на «низе», таймер босса стоит для всего отряда; на 5 уровне каждый переворот ускоряет ресурс отряда", "en": "While the hourglass is on its bottom, the boss timer stops for the whole party; at level 5 every flip speeds up the party's resource"},
         "levels": [
@@ -1121,7 +1121,7 @@
       "class": "sandwalker",
       "partyMode": "support",
       "name": {"ru": "Караван", "en": "Caravan"},
-      "blurb": "Шаг — дорога каравана: каждые 3000 px шага караван встаёт на стоянку. Стоянка бьёт врага ×10, даёт 10 Песка ему и союзникам и сокращает самый долгий откат на 1 с. Без шага караван стоит. Скилл Пути «Привал» ставит стоянку сразу",
+      "blurb": {"ru": "Шаг — дорога каравана: каждые 3000 px шага караван встаёт на стоянку. Стоянка бьёт врага ×10, даёт 10 Песка ему и союзникам и сокращает самый долгий откат на 1 с. Без шага караван стоит. Скилл Пути «Привал» ставит стоянку сразу", "en": "Steps are the caravan’s road: every 3000 px of steps the caravan makes camp. The camp strikes the enemy ×10, gives 10 Sand to him and his allies and cuts the longest cooldown by 1 s. With no steps the caravan stands. The path skill “Halt” makes camp at once"},
       "trait": {
         "partyText": {"ru": "Каждая стоянка: союзникам 10 ресурса, а 5 с откаты отряда быстрее и ресурс копится быстрее; на 5 уровне стоянка ещё и даёт отряду золото", "en": "Every camp gives allies 10 resource, and for 5 s the party's cooldowns are faster and resource builds faster; at level 5 a camp also gives the party gold"},
         "levels": [
@@ -1145,7 +1145,7 @@
       "class": "sandwalker",
       "partyMode": "together",
       "name": {"ru": "Мираж", "en": "Mirage"},
-      "blurb": "Шаг раскаляет воздух: каждые 2000 px шага встаёт мираж — двойник кого-то из отряда, до 5, живёт 20 с. Каждый мираж бьёт раз в секунду ×1,6, а в бою с боссом даёт +2 с к таймеру. Сам Sandwalker бьёт на 40% слабее. Скилл Пути «Мираж-двойник» зовёт мираж сразу",
+      "blurb": {"ru": "Шаг раскаляет воздух: каждые 2000 px шага встаёт мираж — двойник кого-то из отряда, до 5, живёт 20 с. Каждый мираж бьёт раз в секунду ×1,6, а в бою с боссом даёт +2 с к таймеру. Сам Sandwalker бьёт на 40% слабее. Скилл Пути «Мираж-двойник» зовёт мираж сразу", "en": "Steps heat the air: every 2000 px of steps a mirage rises — a double of someone in the party, up to 5, lasting 20 s. Each mirage strikes once a second ×1.6 and in a boss fight adds +2 s to the timer. The Sandwalker himself hits 40% weaker. The path skill “Mirage Double” calls a mirage at once"},
       "trait": {
         "partyText": {"ru": "Босс бьёт по миражам: каждый мираж замедляет таймер босса для отряда и добавляет отряду урон; на 5 уровне миражи усиливают спутников отряда", "en": "The boss strikes the mirages: each mirage slows the boss timer for the party and adds party damage; at level 5 the mirages strengthen the party's companions"},
         "levels": [
@@ -1169,7 +1169,7 @@
       "class": "dowser",
       "partyMode": "together",
       "name": {"ru": "Жила", "en": "Vein"},
-      "blurb": "В каждом обычном враге скрытая золотая жила — случайный удар из первых 50. Лоза светится тем ярче, чем ближе жила. Попал — враг отдаст в 2,5 раза больше золота. В паузе лоза дремлет. Скилл Пути «Вскрыть жилу» вскрывает её сразу",
+      "blurb": {"ru": "В каждом обычном враге скрытая золотая жила — случайный удар из первых 50. Лоза светится тем ярче, чем ближе жила. Попал — враг отдаст в 2,5 раза больше золота. В паузе лоза дремлет. Скилл Пути «Вскрыть жилу» вскрывает её сразу", "en": "Every ordinary enemy hides a gold vein — a random hit among the first 50. The rod glows brighter the closer the vein is. Hit it — and the enemy gives 2.5 times the gold. In a pause the rod dozes. The path skill “Open the Vein” opens it at once"},
       "trait": {
         "partyText": {"ru": "Найденная жила 10 с даёт союзникам больше золота", "en": "A struck vein gives allies more gold for 10 s"},
         "levels": [
@@ -1193,7 +1193,7 @@
       "class": "dowser",
       "partyMode": "together",
       "name": {"ru": "Удача", "en": "Luck"},
-      "blurb": "Каждый враг без находки повышает шанс находки на 0,2%; находка — предмет, после неё шанс сбрасывается. Выпадает реже, но наверняка. В паузе удача не растёт. Скилл Пути «Счастливая монета» добавляет 10% удачи",
+      "blurb": {"ru": "Каждый враг без находки повышает шанс находки на 0,2%; находка — предмет, после неё шанс сбрасывается. Выпадает реже, но наверняка. В паузе удача не растёт. Скилл Пути «Счастливая монета» добавляет 10% удачи", "en": "Every enemy without a find raises the chance of a find by 0.2%; a find is an item, after which the chance resets. It drops less often, but surely. In a pause luck does not grow. The path skill “Lucky Coin” adds 10% luck"},
       "trait": {
         "partyText": {"ru": "Удача приносит отряду золото; после находки 30 с отряду больше гемов и скрижалей", "en": "Luck brings the party gold; for 30 s after a find the party gets more gems and slates"},
         "levels": [
@@ -1217,7 +1217,7 @@
       "class": "dowser",
       "partyMode": "support",
       "name": {"ru": "Артель", "en": "Prospectors' Crew"},
-      "blurb": "Жёсткий обмен: её удары на 40% слабее. Взамен каждое убийство даёт самородок; 10 самородков — сундук золота и 10% шанс предмета. В паузе самородки не копятся. Скилл Пути «Общий котёл» даёт 5 самородков сразу",
+      "blurb": {"ru": "Жёсткий обмен: её удары на 40% слабее. Взамен каждое убийство даёт самородок; 10 самородков — сундук золота и 10% шанс предмета. В паузе самородки не копятся. Скилл Пути «Общий котёл» даёт 5 самородков сразу", "en": "A hard trade: her hits are 40% weaker. In return every kill gives a nugget; 10 nuggets make a chest of gold and a 10% chance of an item. In a pause nuggets do not build. The path skill “Common Pot” gives 5 nuggets at once"},
       "trait": {
         "partyText": {"ru": "Каждый сундук артели 10 с даёт отряду больше золота", "en": "Each artel chest gives the party more gold for 10 s"},
         "levels": [
@@ -1241,7 +1241,7 @@
       "class": "dreamcatcher",
       "partyMode": "together",
       "name": {"ru": "Сети снов", "en": "Dream Nets"},
-      "blurb": "Шаг плетёт сети поперёк очереди: сеть на каждые 2000 px шага, до 3. Враг, вышедший из очереди в сеть, 3 с беспомощен: урон по нему +50%, а если он умер за это время — шанс 20% на трофей (гем). В паузе сети висят, новые не плетутся. Скилл Пути «Сплести сеть» плетёт 2 сети сразу",
+      "blurb": {"ru": "Шаг плетёт сети поперёк очереди: сеть на каждые 2000 px шага, до 3. Враг, вышедший из очереди в сеть, 3 с беспомощен: урон по нему +50%, а если он умер за это время — шанс 20% на трофей (гем). В паузе сети висят, новые не плетутся. Скилл Пути «Сплести сеть» плетёт 2 сети сразу", "en": "Steps weave nets across the queue: a net for every 2000 px of steps, up to 3. An enemy that steps out of the queue into a net is helpless for 3 s: damage to it +50%, and if it dies in that time — a 20% chance of a trophy (a gem). In a pause the nets hang and no new ones are woven. The path skill “Weave a Net” weaves 2 nets at once"},
       "trait": {
         "partyText": {"ru": "Сеть висит на пойманном враге; пока он в сети, отряд чаще критует", "en": "The net hangs on the caught enemy; while it is netted, the party crits more often"},
         "levels": [
@@ -1265,7 +1265,7 @@
       "class": "dreamcatcher",
       "partyMode": "together",
       "name": {"ru": "Коллекция снов", "en": "Dream Collection"},
-      "blurb": "Каждый убитый враг ложится в альбом снов: урон по этому виду врага +1% за экземпляр, до 75%. Полная страница биома (по 10 экземпляров каждого вида) — вещий сон: следующий босс этого биома 10 с получает +25% урона. Альбом живёт до перерождения. Скилл Пути «Альбом снов» добавляет 3 экземпляра текущего врага",
+      "blurb": {"ru": "Каждый убитый враг ложится в альбом снов: урон по этому виду врага +1% за экземпляр, до 75%. Полная страница биома (по 10 экземпляров каждого вида) — вещий сон: следующий босс этого биома 10 с получает +25% урона. Альбом живёт до перерождения. Скилл Пути «Альбом снов» добавляет 3 экземпляра текущего врага", "en": "Every slain enemy goes into the dream album: damage to that kind of enemy +1% per specimen, up to 75%. A full biome page (10 specimens of each kind) is a prophetic dream: the next boss of that biome takes +25% damage for 10 s. The album lasts until prestige. The path skill “Dream Album” adds 3 specimens of the current enemy"},
       "trait": {
         "partyText": {"ru": "Альбом снов: отряд бьёт сильнее по видам врагов из альбома", "en": "The dream album: the party hits harder against kinds from the album"},
         "levels": [
@@ -1289,7 +1289,7 @@
       "class": "dreamcatcher",
       "partyMode": "together",
       "name": {"ru": "Приманка-сон", "en": "Dream Bait"},
-      "blurb": "Каждый удар кладёт крошку Приманки, на 100 из очереди выходит дух-сон: втрое крепче обычного врага, но всегда роняет гем, осколки и сундук золота. Сети по нему не работают. В паузе Приманка лежит. Скилл Пути «Бросить приманку» кладёт 50 сразу",
+      "blurb": {"ru": "Каждый удар кладёт крошку Приманки, на 100 из очереди выходит дух-сон: втрое крепче обычного врага, но всегда роняет гем, осколки и сундук золота. Сети по нему не работают. В паузе Приманка лежит. Скилл Пути «Бросить приманку» кладёт 50 сразу", "en": "Every hit lays a crumb of Bait; at 100 a dream spirit steps out of the queue: three times as tough as an ordinary enemy, but it always drops a gem, shards and a chest of gold. Nets do not work on it. In a pause the Bait lies still. The path skill “Throw the Bait” lays 50 at once"},
       "trait": {
         "partyText": {"ru": "Пойманный дух-сон 15 с даёт союзникам больше золота и гемов", "en": "A caught dream spirit gives allies more gold and gems for 15 s"},
         "levels": [

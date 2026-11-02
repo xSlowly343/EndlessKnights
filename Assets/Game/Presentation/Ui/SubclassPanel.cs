@@ -278,7 +278,7 @@ namespace Game.Presentation.Ui
                     continue;
                 var path = _offered[i];
                 row.Name.text = SubclassView.Name(path);
-                row.Blurb.text = path.Blurb;
+                row.Blurb.text = SubclassView.Blurb(path);
                 row.Skill.text = SubclassView.PathSkill(_loop.Data.Gems, path) ?? string.Empty;
                 row.Button.Show(unlocked);
                 UiElements.TopEdge(row.Back.rectTransform, ChoiceHeightPx);

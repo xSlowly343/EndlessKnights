@@ -32,7 +32,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void EveryPathHasABlurbAndAPathSkill()
         {
-            Assert.That(Catalog.Subclasses.Where(subclass => subclass.Blurb.Length == 0).Select(subclass => subclass.Id), Is.Empty);
+            Assert.That(Catalog.Subclasses.Where(subclass => subclass.BlurbRu.Length == 0 || subclass.BlurbEn.Length == 0).Select(subclass => subclass.Id), Is.Empty);
             Assert.That(Catalog.Subclasses.Where(subclass => SubclassView.PathSkill(TestWorld.Data.Gems, subclass) == null).Select(subclass => subclass.Id), Is.Empty);
         }
 
