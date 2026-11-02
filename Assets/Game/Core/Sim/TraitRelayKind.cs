@@ -5,6 +5,10 @@ namespace Game.Core.Sim
         None,
         Firefly,
         Spark,
-        Beacon
+        Beacon,
+        NameCall,
+        Syllable,
+        Hush,
+        HushHit
     }
 }

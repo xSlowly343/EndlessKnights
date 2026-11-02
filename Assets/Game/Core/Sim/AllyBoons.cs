@@ -13,6 +13,17 @@ namespace Game.Core.Sim
         public long Sparks { get; set; }
         public int BeaconCharges { get; set; }
         public double BeaconPower { get; set; }
+        public int Hushes { get; set; }
+        public double HushPower { get; set; }
+        public int HushOwner { get; set; } = -1;
+        public int HushesOwed { get; set; }
+        public long HushHits { get; set; }
+        public int NameOwner { get; set; } = -1;
+        public int NameEvery { get; set; }
+        public int NameTicks { get; set; }
+        public int NameHits { get; set; }
+        public bool SyllableGiven { get; set; }
+        public bool SyllableOwed { get; set; }
 
         public void Land(int count, int ticks, double power, int every, double burst, int owner, int max)
         {
@@ -22,6 +33,20 @@ namespace Game.Core.Sim
             SparkEvery = every;
             BurstPower = burst;
             FireflyOwner = owner;
+        }
+
+        public void Hush(int count, double power, int owner, int max)
+        {
+            Hushes = System.Math.Min(System.Math.Max(1, max), Hushes + count);
+            HushPower = power;
+            HushOwner = owner;
+        }
+
+        public void CallName(int owner, int every, int ticks)
+        {
+            NameOwner = owner;
+            NameEvery = System.Math.Max(1, every);
+            NameTicks = System.Math.Max(NameTicks, ticks);
         }
 
         public void Flash(int charges, double power)

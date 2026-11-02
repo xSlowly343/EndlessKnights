@@ -334,6 +334,7 @@ namespace Game.Core.Sim
             _combat.Minstrel.OnSkillCast(slot.Skill);
             _combat.Dreamcatcher.OnSkillCast(slot.Skill);
             _combat.Lanternbearer.OnSkillCast(slot.Skill);
+            _combat.Whisperer.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)
