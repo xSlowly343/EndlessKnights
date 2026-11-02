@@ -1268,6 +1268,14 @@ namespace Game.Core.Sim
             TryCast(SkillLoadout.IndexOf(_state.Skills, SkillSlotRole.Left));
         }
 
+        public double IdleStrikeCharge(int index)
+        {
+            if (index < 0 || index >= _state.Skills.Count || !(_state.Skills[index].Def.Effect is IdleStrikeEffect strike) || !_state.Skills[index].Ready)
+                return 0;
+            var idleSeconds = _state.IdleTicks * GameLoop.TickSeconds;
+            return idleSeconds < MinIdleSeconds(strike) ? 0 : ChargeMultiplier(strike, idleSeconds);
+        }
+
         private void ReleaseIdleStrike(SkillSlot slot, IdleStrikeEffect strike, double idleSeconds)
         {
             if (!slot.Ready || !Armed(slot) || idleSeconds < MinIdleSeconds(strike))
