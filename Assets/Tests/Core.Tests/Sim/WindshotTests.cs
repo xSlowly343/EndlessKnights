@@ -4,8 +4,10 @@ using Game.Core.Content;
 using Game.Core.Content.Tree;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Stats;
+using Game.Core.Tests.Party;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Sim
@@ -112,13 +114,13 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AShotAtFullTensionLeavesTheWindMarkForThePartyCrit()
         {
-            var (loop, input) = Hero(Flat(WindshotStats.ShotPower, 1));
+            var (loop, input) = Hero(Flat(WindshotStats.ShotPower, 1), CoopStatNames.Line("{ 'to': 'party', 'stat': 'critChance', 'kind': 'flat', 'value': 0.08, 'while': 'hunterMark' }"));
             Tension(loop, 1000);
             Hits(loop, input, 6);
 
             Assert.That(loop.State.HunterMarkTicks, Is.GreaterThan(0));
             loop.Tick();
-            Assert.That(loop.State.TraitPartyCritChance, Is.EqualTo(Rules.ShotPartyCrit).Within(1e-9));
+            Assert.That(loop.PartyBuffs.CoopOffered(TestWorld.Data.Party.Buffs.Coop.IndexOf(CombatStats.CritChance, ModifierKind.Flat)), Is.EqualTo(0.08).Within(1e-9));
 
             var (half, halfInput) = Hero(Flat(WindshotStats.ShotPower, 1));
             Tension(half, 50);
@@ -179,7 +181,8 @@ namespace Game.Core.Tests.Sim
         public void ACalmComesAfterFourStillSecondsAndEveryHitCritsWeaker()
         {
             Assert.That(Rules.CalmStillSeconds, Is.EqualTo(4));
-            var (loop, input) = Hero(Flat(WindshotStats.CalmPower, 1));
+            var (loop, input) = Hero(Flat(WindshotStats.CalmPower, 1), CoopStatNames.Line("{ 'to': 'party', 'stat': 'critMultiplier', 'kind': 'flat', 'value': 0.1, 'while': 'calm' }"));
+            var multiplier = TestWorld.Data.Party.Buffs.Coop.IndexOf(CombatStats.CritMultiplier, ModifierKind.Flat);
             Move(loop, input, 100);
             Wait(loop, 3.8);
             Assert.That(loop.Combat.Windshot.InCalm, Is.False);
@@ -191,10 +194,11 @@ namespace Game.Core.Tests.Sim
 
             var crit = loop.Combat.CritMultiplier(StatTags.Keyboard);
             Assert.That(calm / plain, Is.EqualTo(crit * (1 - Rules.CalmCritPenalty)).Within(0.05));
-            Assert.That(loop.State.TraitPartyCritMultiplier, Is.EqualTo(Rules.CalmPartyCritMultiplier).Within(1e-9));
+            Assert.That(loop.PartyBuffs.CoopOffered(multiplier), Is.EqualTo(0.1).Within(1e-9));
             Move(loop, input, 100);
             Assert.That(loop.Combat.Windshot.InCalm, Is.False);
-            Assert.That(loop.State.TraitPartyCritMultiplier, Is.Zero);
+            loop.Tick();
+            Assert.That(loop.PartyBuffs.CoopOffered(multiplier), Is.Zero, "the party buffs read the calm of the last tick");
         }
 
         [Test]
@@ -288,13 +292,13 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void GustsStoreUpToFiveAndSpeedUpThePartyCooldowns()
         {
-            var (loop, input) = Hero(Flat(WindshotStats.GustPower, 0.5));
+            var (loop, input) = Hero(Flat(WindshotStats.GustPower, 0.5), CoopStatNames.Line("{ 'to': 'party', 'stat': 'skillCooldown', 'kind': 'increased', 'value': 0.1, 'after': { 'signal': 'gust', 'seconds': 5 } }"));
             var cooldown = loop.Hero.Value(CombatStats.SkillCooldown, 1);
             Move(loop, input, 30000, 20);
 
             Assert.That(loop.State.Windshot.Gusts, Is.EqualTo(Rules.GustMax));
-            Assert.That(loop.State.TraitPartyCooldown, Is.EqualTo(Rules.GustPartyCooldown).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.SkillCooldown, 1), Is.EqualTo(cooldown - Rules.GustPartyCooldown).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.Gusts, loop.State), Is.EqualTo(Rules.GustMax));
+            Assert.That(loop.Hero.Value(CombatStats.SkillCooldown, 1), Is.EqualTo(cooldown - 0.1).Within(1e-9));
         }
 
         [Test]
@@ -378,7 +382,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => modifier.Stat.Name.StartsWith("party") || modifier.When == ModifierCondition.InParty || modifier.Stat.Name.EndsWith("PartyCrit") || modifier.Stat.Name.EndsWith("PartyResource"))), Is.GreaterThanOrEqualTo(5));
+                .Any(modifier => CoopLine.IsCoop(modifier.Stat))), Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

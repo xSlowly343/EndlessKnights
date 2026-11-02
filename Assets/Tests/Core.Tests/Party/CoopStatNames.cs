@@ -1,3 +1,4 @@
+using Game.Core.Content;
 using Game.Core.Party;
 using Game.Core.Stats;
 using Game.Core.Tests.Sim;
@@ -7,6 +8,8 @@ namespace Game.Core.Tests.Party
     public static class CoopStatNames
     {
         public const string UnknownPartyBuff = "unknown party buff";
+
+        public static Modifier Line(string json) => ModifierReader.Read(ContentNode.Root(json.Replace('\'', '"'), "test.json"));
 
         public static string MechanicOf(Modifier modifier)
         {

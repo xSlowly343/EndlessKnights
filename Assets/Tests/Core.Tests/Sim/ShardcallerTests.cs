@@ -4,6 +4,7 @@ using Game.Core.Content;
 using Game.Core.Content.Tree;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Stats;
 using NUnit.Framework;
@@ -98,11 +99,11 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Shardcaller.Crystals, Is.Zero);
             Hit(loop, input);
             Assert.That(loop.State.Shardcaller.Crystals, Is.EqualTo(1));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(Rules.ShardArmor).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.Crystals, loop.State), Is.EqualTo(1));
 
             Hits(loop, input, 8 * 12);
             Assert.That(loop.State.Shardcaller.Crystals, Is.EqualTo(Rules.ShardMax));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(Rules.ShardMax * Rules.ShardArmor).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.Crystals, loop.State), Is.EqualTo(Rules.ShardMax));
         }
 
         [Test]
@@ -205,7 +206,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(ticks, Is.EqualTo(Rules.GardenGrowSeconds * GameLoop.TicksPerSecond).Within(2));
             Assert.That(loop.State.Shardcaller.Size, Is.EqualTo(2));
             Assert.That(Damage(loop).Single() / Expected(loop, 0.5 * 2 * 2), Is.EqualTo(1).Within(0.05));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(2 * 2 * Rules.GardenArmor).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.GardenMass, loop.State), Is.EqualTo(2 * 2));
             Wait(loop, Rules.GardenGrowSeconds * 6);
             Assert.That(loop.State.Shardcaller.Size, Is.EqualTo(Rules.GardenSizeMax));
         }
@@ -250,7 +251,7 @@ namespace Game.Core.Tests.Sim
 
             var shelled = Hit(loop, input).Single();
             Assert.That(shelled / plain, Is.EqualTo(1 - Rules.ShellPenalty).Within(0.02));
-            Assert.That(loop.State.TraitPartyDamage, Is.Zero);
+            Assert.That(CoopSignals.Read(CoopSignal.ShellCracked, loop.State), Is.Zero);
             var guard = 0;
             while (!loop.State.Shardcaller.Cracked && guard++ < 100)
                 loop.Tick();
@@ -258,10 +259,10 @@ namespace Game.Core.Tests.Sim
             Hit(loop, input);
 
             Assert.That(loop.State.Shardcaller.Cracks, Is.EqualTo(1));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(Rules.ShellPartyDamage).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.ShellCracked, loop.State), Is.EqualTo(1));
             Wait(loop, Rules.ShellCrackSeconds);
             Assert.That(loop.State.Shardcaller.Cracked, Is.False);
-            Assert.That(loop.State.TraitPartyDamage, Is.Zero);
+            Assert.That(CoopSignals.Read(CoopSignal.ShellCracked, loop.State), Is.Zero);
         }
 
         [Test]
@@ -350,7 +351,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => modifier.Stat.Name.StartsWith("party") || modifier.When == ModifierCondition.InParty || modifier.Stat.Name.EndsWith("Armor") || modifier.Stat.Name.EndsWith("PartyDamage"))), Is.GreaterThanOrEqualTo(5));
+                .Any(modifier => CoopLine.IsCoop(modifier.Stat))), Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

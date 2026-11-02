@@ -4,8 +4,10 @@ using Game.Core.Content;
 using Game.Core.Content.Tree;
 using Game.Core.Input;
 using Game.Core.Math;
+using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Stats;
+using Game.Core.Tests.Party;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Sim
@@ -114,14 +116,15 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ThePartyHitsHarderWhileTheBreachIsOpen()
         {
-            var (loop, _) = Hero(Flat(DuelistStats.BreachLunge, 2));
+            var (loop, _) = Hero(Flat(DuelistStats.BreachLunge, 2), CoopStatNames.Line("{ 'to': 'party', 'stat': 'damage', 'kind': 'increased', 'value': 0.12, 'while': 'breachOpen' }"));
+            var damage = TestWorld.Data.Party.Buffs.Coop.IndexOf(CombatStats.Damage, ModifierKind.Increased);
             Cast(loop, "duelist_path_1");
             loop.Tick();
 
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(Rules.BreachPartyDamage).Within(1e-9));
-            Assert.That(loop.PartyBuffs.OwnValue(0), Is.GreaterThanOrEqualTo(Rules.BreachPartyDamage - 1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.BreachOpen, loop.State), Is.EqualTo(1));
+            Assert.That(loop.PartyBuffs.CoopOffered(damage), Is.EqualTo(0.12).Within(1e-9));
             Wait(loop, 1.5);
-            Assert.That(loop.State.TraitPartyDamage, Is.Zero);
+            Assert.That(loop.PartyBuffs.CoopOffered(damage), Is.Zero);
         }
 
         [Test]
@@ -158,14 +161,15 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ExposedWeaknessTradesTheLungeForPartyDamage()
         {
-            var (loop, input) = Hero(Flat(DuelistStats.BreachLunge, 2), Flat(DuelistStats.BreachExpose, 0.05));
+            var (loop, input) = Hero(Flat(DuelistStats.BreachLunge, 2), Flat(DuelistStats.BreachExpose, 0.05),
+                CoopStatNames.Line("{ 'to': 'enemy', 'stat': 'damageTaken', 'kind': 'flat', 'value': 0.05, 'after': { 'signal': 'lunge', 'seconds': 4, 'stacks': 8 } }"));
             Cast(loop, "duelist_path_1");
 
             Assert.That(loop.Combat.Duelist.StrikeMultiplier(), Is.EqualTo(1));
             Hits(loop, input, 3);
 
-            Assert.That(loop.State.Duelist.ExposeShare, Is.EqualTo(0.15).Within(1e-9));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(Rules.BreachPartyDamage + 0.15).Within(1e-9));
+            Assert.That(loop.State.Duelist.Lunges, Is.EqualTo(3));
+            Assert.That(loop.PartyBuffs.Giver.EnemyDamageTaken, Is.EqualTo(0.15).Within(1e-9), "each Lunge stacks the weakness on the enemy");
         }
 
         [Test]
@@ -301,26 +305,29 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void APublicDuelRaisesThePartyInsteadOfStriking()
         {
-            var (loop, input) = Hero(Flat(DuelistStats.TouchePower, 10), Flat(DuelistStats.TouchePublic, 0.3));
+            var (loop, input) = Hero(Flat(DuelistStats.TouchePower, 10), Flat(DuelistStats.TouchePublic, 1),
+                CoopStatNames.Line("{ 'to': 'party', 'stat': 'damage', 'kind': 'increased', 'value': 0.3, 'after': { 'signal': 'touche', 'seconds': 5 } }"));
             ReadyTouche(loop);
 
             var hit = Hit(loop, input);
+            loop.Tick();
 
             Assert.That(hit, Has.Count.EqualTo(1));
             Assert.That(loop.State.Duelist.Touches, Is.EqualTo(1));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(0.3).Within(1e-9));
+            Assert.That(loop.PartyBuffs.CoopOffered(TestWorld.Data.Party.Buffs.Coop.IndexOf(CombatStats.Damage, ModifierKind.Increased)), Is.EqualTo(0.3).Within(1e-9));
         }
 
         [Test]
-        public void ATouchéOnABossGivesThePartyGold()
+        public void ATouchéGivesThePartyGold()
         {
-            var (loop, input) = Hero(Flat(DuelistStats.TouchePower, 10));
+            var (loop, input) = Hero(Flat(DuelistStats.TouchePower, 10), CoopStatNames.Line("{ 'to': 'party', 'stat': 'gold', 'kind': 'increased', 'value': 0.15, 'after': { 'signal': 'touche', 'seconds': 15 } }"));
             Boss(loop);
             ReadyTouche(loop);
 
             Hit(loop, input);
+            loop.Tick();
 
-            Assert.That(loop.State.TraitPartyGold, Is.EqualTo(Rules.TouchePartyGold).Within(1e-9));
+            Assert.That(loop.PartyBuffs.CoopApplied(TestWorld.Data.Party.Buffs.Coop.IndexOf(CombatStats.Gold, ModifierKind.Increased)), Is.EqualTo(0.15).Within(1e-9));
         }
 
         [Test]
@@ -387,16 +394,14 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EveryThirtySecondsThePhantomSecondsTheParty()
+        public void ThePhantomNoLongerLeavesTheDuelistToSecondTheParty()
         {
-            var (loop, _) = Hero(Flat(DuelistStats.PhantomPower, 0.6));
+            var (loop, input) = Hero(Flat(DuelistStats.PhantomPower, 0.6));
 
-            Wait(loop, Rules.PhantomPartyEverySeconds);
+            Rush(loop, input, 35);
 
-            Assert.That(loop.State.Duelist.PhantomAwayTicks, Is.GreaterThan(0));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(Rules.PhantomPartyDamage).Within(1e-9));
-            Wait(loop, Rules.PhantomPartySeconds);
-            Assert.That(loop.State.TraitPartyDamage, Is.Zero);
+            Assert.That(loop.State.Duelist.PhantomFighting, Is.True, "the party gets its buff while she fights, not by a timer");
+            Assert.That(CoopSignals.Read(CoopSignal.PhantomFighting, loop.State), Is.EqualTo(1));
         }
 
         [Test]
@@ -420,7 +425,7 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
 
             Assert.That(DamageEvents(loop), Has.Count.EqualTo(1));
-            Assert.That(loop.State.TraitPartyCritChance, Is.EqualTo(Rules.PhantomFeintCrit).Within(1e-9));
+            Assert.That(CoopSignals.Read(CoopSignal.PhantomFighting, loop.State), Is.EqualTo(1), "the feint line holds while the phantom fights");
         }
 
         [Test]
@@ -472,7 +477,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => modifier.Stat.Name.StartsWith("party") || modifier.When == ModifierCondition.InParty || modifier.Stat.Name.EndsWith("PartyDamage") || modifier.Stat.Name.EndsWith("PartyGold"))), Is.GreaterThanOrEqualTo(5));
+                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat))), Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

@@ -117,20 +117,15 @@ namespace Game.Core.Sim
         {
             if (!On)
             {
-                _state.TraitPartyCritMultiplier = 0;
-                _state.TraitPartyCooldown = 0;
                 _state.StepTensionBlocked = false;
+                S.Calm = false;
                 return;
             }
             TickCalm(mousePx);
             TickGusts(mousePx);
             TickAutoShot();
             _state.StepTensionBlocked = InCalm && Positive(WindshotStats.CalmDrift) > 0;
-            _state.TraitPartyCritChance = LongShot && _state.HunterMarkTicks > 0 ? _rules.ShotPartyCrit + Positive(WindshotStats.ShotPartyCrit) : 0;
-            _state.TraitPartyCritMultiplier = InCalm ? _rules.CalmPartyCritMultiplier + Positive(WindshotStats.CalmPartyCrit) : 0;
-            _state.TraitPartyCooldown = Tailwind && S.GustPartyTicks > 0
-                ? (_rules.GustPartyCooldown + Positive(WindshotStats.GustPartyCooldown)) * (Flag(WindshotStats.GustPartyDouble) ? 2 : 1)
-                : 0;
+            S.Calm = InCalm;
         }
 
         private void ShotStep(bool paused)
@@ -228,14 +223,11 @@ namespace Game.Core.Sim
                 S.Gusts = 0;
                 S.GustHitsLeft = 0;
                 S.GustStormTicks = 0;
-                S.GustPartyTicks = 0;
                 S.GustPxCarry = 0;
                 return;
             }
             if (S.GustStormTicks > 0)
                 S.GustStormTicks--;
-            if (S.GustPartyTicks > 0)
-                S.GustPartyTicks--;
             S.GustPxCarry += mousePx;
             var need = GustPxNeeded;
             var gusts = 0;
@@ -279,7 +271,6 @@ namespace Game.Core.Sim
         private void OnGustStart()
         {
             S.GustsStarted++;
-            S.GustPartyTicks = Ticks(_rules.GustPartySeconds);
             _state.PendingResource += _rules.GustTension + Positive(WindshotStats.GustTension);
         }
 

@@ -16,7 +16,7 @@ namespace Game.Core.Sim
         public int GustHitsLeft { get; set; }
         public int GustStormTicks { get; set; }
         public int GustTimerTicks { get; set; }
-        public int GustPartyTicks { get; set; }
+        public bool Calm { get; set; }
         public long GustsStarted { get; set; }
         public long Spawns { get; private set; }
 

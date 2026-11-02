@@ -17,6 +17,20 @@ namespace Game.Core.Party
         RuneSeal,
         Blades,
         WhirlBlades,
-        WhirlFull
+        WhirlFull,
+        BreachOpen,
+        Lunge,
+        Touche,
+        ToucheMarks,
+        PhantomFighting,
+        HunterMark,
+        Shot,
+        Calm,
+        Gust,
+        Gusts,
+        Crystals,
+        GardenMass,
+        ShellCracked,
+        Crack
     }
 }

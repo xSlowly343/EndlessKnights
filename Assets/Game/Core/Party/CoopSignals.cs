@@ -22,7 +22,21 @@ namespace Game.Core.Party
             ["runeSeal"] = CoopSignal.RuneSeal,
             ["blades"] = CoopSignal.Blades,
             ["whirlBlades"] = CoopSignal.WhirlBlades,
-            ["whirlFull"] = CoopSignal.WhirlFull
+            ["whirlFull"] = CoopSignal.WhirlFull,
+            ["breachOpen"] = CoopSignal.BreachOpen,
+            ["lunge"] = CoopSignal.Lunge,
+            ["touche"] = CoopSignal.Touche,
+            ["toucheMarks"] = CoopSignal.ToucheMarks,
+            ["phantomFighting"] = CoopSignal.PhantomFighting,
+            ["hunterMark"] = CoopSignal.HunterMark,
+            ["shot"] = CoopSignal.Shot,
+            ["calm"] = CoopSignal.Calm,
+            ["gust"] = CoopSignal.Gust,
+            ["gusts"] = CoopSignal.Gusts,
+            ["crystals"] = CoopSignal.Crystals,
+            ["gardenMass"] = CoopSignal.GardenMass,
+            ["shellCracked"] = CoopSignal.ShellCracked,
+            ["crack"] = CoopSignal.Crack
         };
 
         public static bool TryParse(string name, out CoopSignal signal) => Names.TryGetValue(name, out signal);
@@ -36,6 +50,11 @@ namespace Game.Core.Party
             CoopSignal.KeyHit => true,
             CoopSignal.RuneWord => true,
             CoopSignal.BladeRain => true,
+            CoopSignal.Lunge => true,
+            CoopSignal.Touche => true,
+            CoopSignal.Shot => true,
+            CoopSignal.Gust => true,
+            CoopSignal.Crack => true,
             _ => false
         };
 
@@ -56,6 +75,20 @@ namespace Game.Core.Party
             CoopSignal.Blades => state.Runedancer.Blades,
             CoopSignal.WhirlBlades => state.Runedancer.WhirlBlades,
             CoopSignal.WhirlFull => state.Runedancer.WhirlFull ? 1 : 0,
+            CoopSignal.BreachOpen => state.Duelist.BreachOpen ? 1 : 0,
+            CoopSignal.Lunge => state.Duelist.Lunges,
+            CoopSignal.Touche => state.Duelist.Touches,
+            CoopSignal.ToucheMarks => state.Duelist.Marks,
+            CoopSignal.PhantomFighting => state.Duelist.PhantomFighting ? 1 : 0,
+            CoopSignal.HunterMark => state.HunterMarkTicks > 0 ? 1 : 0,
+            CoopSignal.Shot => state.Windshot.Shots,
+            CoopSignal.Calm => state.Windshot.Calm ? 1 : 0,
+            CoopSignal.Gust => state.Windshot.GustsStarted,
+            CoopSignal.Gusts => state.Windshot.Gusts,
+            CoopSignal.Crystals => state.Shardcaller.Crystals,
+            CoopSignal.GardenMass => state.Shardcaller.Crystals * state.Shardcaller.Size,
+            CoopSignal.ShellCracked => state.Shardcaller.Cracked ? 1 : 0,
+            CoopSignal.Crack => state.Shardcaller.Cracks,
             _ => 0
         };
     }
