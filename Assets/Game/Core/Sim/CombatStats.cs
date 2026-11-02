@@ -64,7 +64,6 @@ namespace Game.Core.Sim
         public static readonly StatId FlickCurseBonus = new StatId("flickCurseBonus");
         public static readonly StatId CurseDamage = new StatId("curseDamage");
         public static readonly StatId EnemyDebuffEffect = new StatId("enemyDebuffEffect");
-        public static readonly StatId SandFromFastKills = new StatId("sandFromFastKills");
         public static readonly StatId FastKillBank = new StatId("fastKillBank");
         public static readonly StatId DamagePerTenPoison = new StatId("damagePerTenPoison");
         public static readonly StatId FastKillBankMax = new StatId("fastKillBankMax");
@@ -86,9 +85,6 @@ namespace Game.Core.Sim
         public static readonly StatId LightningPoisonBurst = new StatId("lightningPoisonBurst");
         public static readonly StatId BurnStacksFromAllyLightning = new StatId("burnStacksFromAllyLightning");
         public static readonly StatId OmenPerPartyCrit = new StatId("omenPerPartyCrit");
-        public static readonly StatId PressureDecay = new StatId("pressureDecay");
-        public static readonly StatId OverheatSeconds = new StatId("overheatSeconds");
-        public static readonly StatId OverheatDisabled = new StatId("overheatDisabled");
         public static readonly StatId DamagePerResource = new StatId("damagePerResource");
         public static readonly StatId ResourceDecay = new StatId("resourceDecay");
         public static readonly StatId ResourcePerKey = new StatId("resourcePerKey");
@@ -140,7 +136,6 @@ namespace Game.Core.Sim
         public static readonly StatId KeyHitBurn = new StatId("keyHitBurn");
         public static readonly StatId DetonateAtMax = new StatId("detonateAtMax");
         public static readonly StatId DotQueueShare = new StatId("dotQueueShare");
-        public static readonly StatId OverheatBurst = new StatId("overheatBurst");
         public static readonly StatId OverloadAtMax = new StatId("overloadAtMax");
         public static readonly StatId SkeletonOnKill = new StatId("skeletonOnKill");
         public static readonly StatId BeastOnKill = new StatId("beastOnKill");
@@ -191,10 +186,6 @@ namespace Game.Core.Sim
         public static readonly StatId ResourcePerFastSkill = new StatId("resourcePerFastSkill");
         public static readonly StatId ResourcePerCircle = new StatId("resourcePerCircle");
         public static readonly StatId ResourcePerFlick = new StatId("resourcePerFlick");
-        public static readonly StatId RiseEvery = new StatId("riseEvery");
-        public static readonly StatId RiseEveryAtFullResource = new StatId("riseEveryAtFullResource");
-        public static readonly StatId ClockworkSlow = new StatId("clockworkSlow");
-        public static readonly StatId ClockworkAbove = new StatId("clockworkAbove");
         public static readonly StatId PartyDamage = new StatId("partyDamage");
         public static readonly StatId PartyGold = new StatId("partyGold");
         public static readonly StatId PartyCritChance = new StatId("partyCritChance");
@@ -216,14 +207,10 @@ namespace Game.Core.Sim
         public static readonly StatId CompanionPerMark = new StatId("companionPerMark");
         public static readonly StatId CompanionLimit = new StatId("companionLimit");
         public static readonly StatId CompanionOwnMark = new StatId("companionOwnMark");
-        public static readonly StatId EvilEyeEffect = new StatId("evilEyeEffect");
-        public static readonly StatId EvilEyePower = new StatId("evilEyePower");
         public static readonly StatId BondPower = new StatId("bondPower");
         public static readonly StatId ColdPower = new StatId("coldPower");
         public static readonly StatId BloodPower = new StatId("bloodPower");
         public static readonly StatId GolemPower = new StatId("golemPower");
-        public static readonly StatId EvilEyeBossOnly = new StatId("evilEyeBossOnly");
-        public static readonly StatId EvilEyeOnGuardians = new StatId("evilEyeOnGuardians");
         public static readonly StatId OverloadAt = new StatId("overloadAt");
         public static readonly StatId OverloadBoss = new StatId("overloadBoss");
         public static readonly StatId OverloadCrit = new StatId("overloadCrit");

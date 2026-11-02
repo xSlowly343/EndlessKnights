@@ -155,68 +155,8 @@ namespace Game.Core.Tests.Sim
             Assert.That(Dealt(loop, hp), Is.EqualTo(KeyDamage * 10 * Rules.PoisonHitsPerStack * 1.5 * 2).Within(1e-6));
         }
 
-        [Test]
-        public void MovingTheMouseFansTheFire()
-        {
-            var (still, _) = Hero(HeroClass.Dowser);
-            var (fanned, input) = Hero(HeroClass.Dowser);
-            still.State.BurnStacks = 10;
-            fanned.State.BurnStacks = 10;
-            var hp = still.State.EnemyHp;
 
-            Wait(still, 1);
-            for (var i = 0; i < GameLoop.TicksPerSecond; i++)
-            {
-                input.MoveMouse(1);
-                fanned.Tick();
-            }
 
-            var burn = KeyDamage * 10 * Rules.BurnHitsPerStack;
-            Assert.That(Dealt(still, hp), Is.EqualTo(burn).Within(1e-6));
-            Assert.That(Dealt(fanned, hp), Is.EqualTo(burn * Rules.FanningMultiplier).Within(0.01));
-        }
 
-        [Test]
-        public void PressureGrowsFromSkillsAndFallsByItself()
-        {
-            var (loop, _) = Hero(HeroClass.Dowser);
-            var index = Equip(loop, Bottle);
-
-            loop.Skills.TryCast(index);
-            Assert.That(loop.State.Resource, Is.EqualTo(Bottle.Skill!.ResourceCost));
-
-            Wait(loop, 1);
-            Assert.That(loop.State.Resource, Is.EqualTo(Bottle.Skill.ResourceCost - 5).Within(1e-9));
-        }
-
-        [Test]
-        public void FullPressureOverheatsAndBlocksSkills()
-        {
-            var (loop, _) = Hero(HeroClass.Dowser);
-            var index = Equip(loop, Bottle);
-            loop.State.Resource = 95;
-
-            Assert.That(loop.Skills.TryCast(index), Is.EqualTo(CastResult.Cast));
-            Assert.That(loop.Resource.Overheated, Is.True);
-
-            Wait(loop, Bottle.Skill!.CooldownSeconds);
-            Assert.That(loop.Skills.TryCast(index), Is.EqualTo(CastResult.NotEnoughResource));
-
-            Wait(loop, 5 - Bottle.Skill.CooldownSeconds);
-            Assert.That(loop.Resource.Overheated, Is.False);
-            Assert.That(loop.Skills.TryCast(index), Is.EqualTo(CastResult.Cast));
-        }
-
-        [Test]
-        public void OverheatDisabledLetsPressureStayFull()
-        {
-            var (loop, _) = Hero(HeroClass.Dowser, new Modifier(CombatStats.OverheatDisabled, ModifierKind.Flat, 1));
-            var index = Equip(loop, Bottle);
-            loop.State.Resource = 95;
-
-            loop.Skills.TryCast(index);
-
-            Assert.That(loop.Resource.Overheated, Is.False);
-        }
     }
 }

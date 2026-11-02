@@ -21,7 +21,7 @@
       "runedancer": { "perKey": 2, "decay": { "perSecond": 10, "afterKeylessSeconds": 10, "mouseHolds": true } },
       "minstrel": { "perKey": 1 },
       "whisperer": { "perKey": 0.5, "perSecond": 1 },
-      "clockwright": { "perKey": 0.5, "mousePxPerPoint": 1000, "perFastKillSecond": 5 },
+      "clockwright": { "perKey": 0.5 },
       "ghostcaptain": { "perKey": 0.3333 },
       "alchemist": { "perKey": 1 },
       "soulbinder": { "perKey": 0.1, "perKill": 3 },
@@ -31,7 +31,7 @@
       "dreamcatcher": { "perKey": 0.3, "mousePxPerPoint": 600 },
       "sandwalker": { "perKey": 0.5, "mousePxPerPoint": 500 },
       "shardcaller": { "perKey": 0.32, "overload": { "multiplier": 5 } },
-      "dowser": { "inverse": { "decayPerSecond": 5, "overheatSeconds": 5 } },
+      "dowser": { "perKey": 0.5 },
       "mothcaller": { "perKey": 0.2, "mousePxPerPoint": 250, "decay": { "perSecond": 2, "afterKeylessSeconds": 5, "mouseHolds": true } },
       "cartomancer": { "perKey": 0.5, "mousePxPerPoint": 500 },
       "herbwitch": { "perKey": 0.5 },
@@ -49,7 +49,6 @@
       "skills": { "prisonMultiplier": 1.5, "heartPartyDamage": 0.25 }
     },
     "whisperer": {
-      "evilEye": { "damageTaken": 0.05 },
       "knots": { "hits": 25, "hitsMin": 5, "allyHitShare": 1, "seventh": 2, "triple": 3, "slow": 0.05, "critMultiplier": 0.1, "gold": 0.1, "blast": 10, "whisper": 10, "effectSeconds": 2 },
       "name": { "hits": 150, "hitsMin": 20, "syllableHits": 25, "syllableHitsMin": 5, "syllable": 0.05, "callSeconds": 30, "blast": 20, "timeSeconds": 5, "effectSeconds": 2 },
       "vow": { "curse": 3, "whisper": 0.5, "hushHits": 6, "hushHitsMin": 2, "hushMax": 3, "extendSeconds": 1, "growPerHit": 0.01, "growMax": 0.5, "breakEverySeconds": 60, "breakSeconds": 10, "breakCurse": 0.5, "queueHits": 100, "queueMultiplier": 5 },
@@ -126,7 +125,6 @@
       "elixir": { "hits": 50, "hitsMin": 10, "seconds": 8, "philosopherSeconds": 5, "stoneSeconds": 8, "philosopherEvery": 3, "redEvery": 5, "goldBonus": 0.5, "selfPenalty": 0.25 }
     },
     "clockwright": {
-      "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 },
       "spring": { "low": 0.1, "penalty": 0.1, "drainPerSecond": 1, "windPerHit": 0.5, "allyWind": 0.1, "fullAbove": 0.95, "fullSlow": 0.15, "strike": 0.2, "relaySeconds": 3, "burstEverySeconds": 30, "burstPerWind": 0.2 },
       "loop": { "everySeconds": 40, "everySecondsMin": 10, "windowSeconds": 5, "windowMax": 7, "solo": 0.5, "twice": 0.5, "stopSeconds": 3 },
       "gears": { "hits": 60, "hitsMin": 10, "own": 2, "ownSoft": 1.5, "meshSeconds": 1.5, "meshCooldownSeconds": 5, "resource": 5, "resetEvery": 10, "callSeconds": 30, "idleSeconds": 10 }
@@ -151,10 +149,10 @@
   },
   "dots": {
     "poison": { "max": 50, "hitsPerStack": 0.2, "stirMax": 5, "stirPxPerTurn": 1000, "vapourKeyHits": 10 },
-    "burn": { "max": 30, "hitsPerStack": 0.3, "fanning": 1.5 },
+    "burn": { "max": 30, "hitsPerStack": 0.3 },
     "miasma": { "everySeconds": 5, "stackSeconds": 5 }
   },
-  "skeletons": { "max": 5, "mouseSpeed": 1.3, "rise": { "every": 5, "everyMin": 2, "max": 3, "seconds": 20, "hitsPerSecond": 1, "multiplier": 1 } },
+  "skeletons": { "max": 5, "mouseSpeed": 1.3 },
   "beasts": { "max": 1, "mouseSpeed": 1.5 },
   "cannons": { "max": 3, "resourcePerShot": 1, "igniteStacks": 1, "broadside": { "mousePx": 3000, "balls": 5 } },
   "curses": { "maxOnEnemy": 1, "flick": { "bonus": 0.1, "max": 0.5 } },

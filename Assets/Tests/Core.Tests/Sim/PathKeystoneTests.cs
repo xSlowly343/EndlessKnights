@@ -131,22 +131,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Resource, Is.EqualTo(5 + bySelf * 20).Within(1e-9));
         }
 
-        [Test]
-        public void KeysBuildPressureAndCanOverheat()
-        {
-            var (loop, input) = Hero(HeroClass.Dowser, new Modifier(CombatStats.ResourcePerKey, ModifierKind.Flat, 1));
-            var decay = TestWorld.Data.Combat.Resources.For("dowser").InverseDecayPerSecond * GameLoop.TickSeconds;
-
-            input.PressKeys(1);
-            loop.Tick();
-            Assert.That(loop.State.Resource, Is.EqualTo(1).Within(1e-9));
-
-            loop.State.Resource = 99.5;
-            input.PressKeys(1);
-            loop.Tick();
-            Assert.That(loop.Resource.Overheated, Is.True);
-            Assert.That(decay, Is.GreaterThan(0));
-        }
 
         [Test]
         public void PiercingKeyHitsWaitForTheNextEnemy()

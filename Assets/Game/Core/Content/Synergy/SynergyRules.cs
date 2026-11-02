@@ -19,8 +19,6 @@ namespace Game.Core.Content.Synergy
         private readonly int[] _roleMask;
 
         private readonly int[] _markTicks;
-        private int[] _weakMarks = System.Array.Empty<int>();
-        private double[] _weakShares = System.Array.Empty<double>();
 
         private SynergyRules(List<string> marks, Dictionary<string, int> markIndex, List<string> roles, int[] roleMask, StatId secondResponseStat,
             List<SynergyResponse> responses, List<SynergyReaction> reactions, List<SynergyConstellation> constellations, int[] markTicks, SynergyStateMarks stateMarks,
@@ -51,10 +49,6 @@ namespace Game.Core.Content.Synergy
         public double AllyPoisonStacks { get; }
 
         public int MarkTicks(int mark) => _markTicks[mark];
-
-        public int WeakMarksOf(int mark) => mark >= 0 && mark < _weakMarks.Length ? _weakMarks[mark] : 0;
-
-        public double WeakShareOf(int mark) => mark >= 0 && mark < _weakShares.Length ? _weakShares[mark] : 0;
 
         public int AuraMarkMask => _markIndex.TryGetValue(AuraMark, out var aura) ? 1 << aura : 0;
 
@@ -162,32 +156,7 @@ namespace Game.Core.Content.Synergy
                 constellations.Add(ReadConstellation(node, markIndex, roles));
             return new SynergyRules(marks, markIndex, roles, roleMask, new StatId(root.Field("secondResponseStat").AsString()), responses, reactions, constellations,
                 ReadMarkTicks(root, markIndex, marks.Count), ReadStateMarks(root, markIndex),
-                root.HasField("allyPoisonStacks") ? root.Field("allyPoisonStacks").AsNumber(0, 100000) : 0)
-            {
-                _weakMarks = ReadWeakMarks(root, markIndex, marks.Count, out var shares),
-                _weakShares = shares
-            };
-        }
-
-        private static int[] ReadWeakMarks(ContentNode root, Dictionary<string, int> markIndex, int count, out double[] shares)
-        {
-            var weak = new int[count];
-            shares = new double[count];
-            if (!root.HasField("weakMarks"))
-                return weak;
-            var node = root.Field("weakMarks");
-            foreach (var name in node.FieldNames())
-            {
-                if (!markIndex.TryGetValue(name, out var index))
-                    throw node.Field(name).Error($"unknown mark '{name}'");
-                var item = node.Field(name);
-                var strong = MarkOf(item.Field("as"), markIndex);
-                if (strong == index)
-                    throw item.Field("as").Error("a weak mark must stand for another mark");
-                weak[strong] |= 1 << index;
-                shares[strong] = item.Field("share").AsNumber(0, 1);
-            }
-            return weak;
+                root.HasField("allyPoisonStacks") ? root.Field("allyPoisonStacks").AsNumber(0, 100000) : 0);
         }
 
         private static int[] ReadMarkTicks(ContentNode root, Dictionary<string, int> markIndex, int count)
@@ -213,11 +182,11 @@ namespace Game.Core.Content.Synergy
             int Mask(string field) => node.HasField(field) ? 1 << MarkOf(node.Field(field), markIndex) : 0;
             foreach (var name in node.FieldNames())
             {
-                if (name != SynergyStateMarks.PoisonField && name != SynergyStateMarks.BurnField && name != SynergyStateMarks.MinionsField && name != SynergyStateMarks.StunField && name != SynergyStateMarks.HunterMarkField && name != SynergyStateMarks.BlindField && name != SynergyStateMarks.EvilEyeField
+                if (name != SynergyStateMarks.PoisonField && name != SynergyStateMarks.BurnField && name != SynergyStateMarks.MinionsField && name != SynergyStateMarks.StunField && name != SynergyStateMarks.HunterMarkField && name != SynergyStateMarks.BlindField
                     && name != SynergyStateMarks.ColdField && name != SynergyStateMarks.BloodField && name != SynergyStateMarks.BondField)
-                    throw node.Field(name).Error($"unknown state '{name}', expected {SynergyStateMarks.PoisonField}, {SynergyStateMarks.BurnField}, {SynergyStateMarks.MinionsField}, {SynergyStateMarks.StunField}, {SynergyStateMarks.HunterMarkField}, {SynergyStateMarks.BlindField}, {SynergyStateMarks.EvilEyeField}, {SynergyStateMarks.ColdField}, {SynergyStateMarks.BloodField} or {SynergyStateMarks.BondField}");
+                    throw node.Field(name).Error($"unknown state '{name}', expected {SynergyStateMarks.PoisonField}, {SynergyStateMarks.BurnField}, {SynergyStateMarks.MinionsField}, {SynergyStateMarks.StunField}, {SynergyStateMarks.HunterMarkField}, {SynergyStateMarks.BlindField}, {SynergyStateMarks.ColdField}, {SynergyStateMarks.BloodField} or {SynergyStateMarks.BondField}");
             }
-            return new SynergyStateMarks(Mask(SynergyStateMarks.PoisonField), Mask(SynergyStateMarks.BurnField), Mask(SynergyStateMarks.MinionsField), Mask(SynergyStateMarks.StunField), Mask(SynergyStateMarks.HunterMarkField), Mask(SynergyStateMarks.BlindField), Mask(SynergyStateMarks.EvilEyeField),
+            return new SynergyStateMarks(Mask(SynergyStateMarks.PoisonField), Mask(SynergyStateMarks.BurnField), Mask(SynergyStateMarks.MinionsField), Mask(SynergyStateMarks.StunField), Mask(SynergyStateMarks.HunterMarkField), Mask(SynergyStateMarks.BlindField),
                 Mask(SynergyStateMarks.ColdField), Mask(SynergyStateMarks.BloodField), Mask(SynergyStateMarks.BondField));
         }
 

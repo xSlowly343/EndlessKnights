@@ -23,7 +23,6 @@ namespace Game.Core.Party
         private int[] _reactionTicks;
         private int[] _reactionCooldown;
         private ulong _responses;
-        private ulong _weakResponses;
         private int _perMarkCount;
         private ulong _reactions;
         private ulong _constellations;
@@ -96,13 +95,12 @@ namespace Game.Core.Party
         public void Tick()
         {
             var players = CollectPlayers();
-            var responses = ActiveResponses(out var perMarkCount, out var weakResponses);
+            var responses = ActiveResponses(out var perMarkCount);
             var constellations = ActiveConstellations(AllFighting() ? players : 0, out var noCooldown);
             var reactions = TickReactions(players, noCooldown);
-            if (responses == _responses && weakResponses == _weakResponses && perMarkCount == _perMarkCount && reactions == _reactions && constellations == _constellations)
+            if (responses == _responses && perMarkCount == _perMarkCount && reactions == _reactions && constellations == _constellations)
                 return;
             _responses = responses;
-            _weakResponses = weakResponses;
             _perMarkCount = perMarkCount;
             _state.CompanionMarks = perMarkCount;
             _reactions = reactions;
@@ -186,8 +184,6 @@ namespace Game.Core.Party
                 marks |= sources.HunterMark;
             if (_state.EnemyAlive && _state.BlindTicks > 0)
                 marks |= sources.Blind;
-            if (_state.EvilEyeOnEnemy)
-                marks |= sources.EvilEye;
             if (_state.EnemyAlive && _state.Cold > 0)
                 marks |= sources.Cold;
             if (_state.EnemyAlive && _state.BloodStacks > 0)
@@ -208,10 +204,9 @@ namespace Game.Core.Party
             return false;
         }
 
-        private ulong ActiveResponses(out int perMarkCount, out ulong weak)
+        private ulong ActiveResponses(out int perMarkCount)
         {
             perMarkCount = 0;
-            weak = 0;
             var active = 0UL;
             var second = _hero.Value(_rules.SecondResponseStat, 0) >= 1;
             var responses = _rules.Responses;
@@ -229,11 +224,7 @@ namespace Game.Core.Party
                         perMarkCount = count;
                 }
                 else if ((AllyMarks & (1 << response.Mark)) == 0)
-                {
-                    if ((AllyMarks & _rules.WeakMarksOf(response.Mark)) == 0)
-                        continue;
-                    weak |= 1UL << i;
-                }
+                    continue;
                 active |= 1UL << i;
             }
             return active;
@@ -330,7 +321,7 @@ namespace Game.Core.Party
             for (var i = 0; i < _rules.Responses.Count && i < 64; i++)
             {
                 if (ResponseActive(i))
-                    Add(_rules.Responses[i].Modifiers, ResponseTimes(_rules.Responses[i]) * WeakShare(i));
+                    Add(_rules.Responses[i].Modifiers, ResponseTimes(_rules.Responses[i]));
             }
             for (var i = 0; i < _rules.Reactions.Count && i < 64; i++)
             {
@@ -351,8 +342,6 @@ namespace Game.Core.Party
             var marks = response.Mark == SynergyResponse.AnyMark ? AllyMarks : 1 << response.Mark;
             return times * Favour(marks);
         }
-
-        private double WeakShare(int index) => (_weakResponses & (1UL << index)) != 0 ? _rules.WeakShareOf(_rules.Responses[index].Mark) : 1;
 
         private double Favour(int marks) => (marks & _favouredMarks) != 0 ? 1 + _favouredBonus : 1;
 

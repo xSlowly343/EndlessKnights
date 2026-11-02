@@ -43,7 +43,6 @@ namespace Game.Core.Sim
             }
         }
 
-        public bool Overheated => _state.OverheatTicks > 0;
         public double GainedThisTick { get; private set; }
 
         public void Tick(in EffectiveInput input)
@@ -55,12 +54,6 @@ namespace Game.Core.Sim
             _state.MouseWindow.Record(input.MousePx);
             _state.ClicklessTicks = input.ButtonPresses > 0 ? 0 : _state.ClicklessTicks + 1;
             _state.Reading = Reading(resource, input);
-            if (resource.Inverse)
-            {
-                TickInverse(resource, input);
-                NoteFill();
-                return;
-            }
             var gained = input.Hits * PerKey(resource) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
             if (resource.MousePxPerPoint > 0 && !_state.StepTensionBlocked)
                 gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
@@ -107,18 +100,14 @@ namespace Game.Core.Sim
                 return;
             var before = _state.Resource;
             _state.Resource = System.Math.Min(Max, _state.Resource + amount);
-            if (!Current.Inverse)
-                GainedThisTick += System.Math.Max(0, _state.Resource - before);
+            GainedThisTick += System.Math.Max(0, _state.Resource - before);
         }
 
         public void GiftFromAlly(double amount)
         {
             if (!(amount > 0))
                 return;
-            if (Current.Inverse)
-                _state.Resource = System.Math.Max(0, _state.Resource - amount);
-            else
-                _state.PendingResource += amount;
+            _state.PendingResource += amount;
         }
 
         public double SpendAll()
@@ -135,39 +124,10 @@ namespace Game.Core.Sim
 
         public bool TrySpend(double amount)
         {
-            if (Current.Inverse)
-                return TryBuild(amount);
             if (amount < 0 || _state.Resource < amount)
                 return false;
             _state.Resource -= amount;
             return true;
-        }
-
-        private void TickInverse(ClassResource resource, in EffectiveInput input)
-        {
-            if (_state.OverheatTicks > 0)
-                _state.OverheatTicks--;
-            var decay = resource.InverseDecayPerSecond * System.Math.Max(0, _hero.Value(CombatStats.PressureDecay, 1)) * GameLoop.TickSeconds;
-            _state.Resource = System.Math.Max(0, System.Math.Min(Max, _state.Resource + _state.PendingResource) - decay);
-            _state.PendingResource = 0;
-            var fromKeys = input.Hits * System.Math.Max(0, _hero.Value(CombatStats.ResourcePerKey, 0)) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
-            if (fromKeys > 0 && !Overheated)
-                Build(fromKeys);
-        }
-
-        private bool TryBuild(double amount)
-        {
-            if (amount < 0 || Overheated)
-                return false;
-            Build(amount);
-            return true;
-        }
-
-        private void Build(double amount)
-        {
-            _state.Resource = System.Math.Min(Max, _state.Resource + amount);
-            if (_state.Resource >= Max && _hero.Value(CombatStats.OverheatDisabled, 0) <= 0)
-                _state.OverheatTicks = (int)System.Math.Round((Current.OverheatSeconds + _hero.Value(CombatStats.OverheatSeconds, 0)) * GameLoop.TicksPerSecond);
         }
 
         private bool Reading(ClassResource resource, in EffectiveInput input) =>

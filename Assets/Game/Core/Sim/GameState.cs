@@ -196,7 +196,6 @@ namespace Game.Core.Sim
         public double BurnStacks { get; set; }
         public double DotCarry { get; set; }
         public double StirTurns { get; set; }
-        public int OverheatTicks { get; set; }
         public int WeakenedSpawns { get; set; }
         public double WeakenShare { get; set; }
         public double ResourceFill { get; set; }
@@ -254,7 +253,6 @@ namespace Game.Core.Sim
         public int VulnerabilityTicks { get; set; }
         public int Combo { get; set; }
         public long ComboIdleTicks { get; set; }
-        public int KillsTowardRise { get; set; }
         public RunedancerState Runedancer { get; } = new RunedancerState();
         public DuelistState Duelist { get; } = new DuelistState();
         public WindshotState Windshot { get; } = new WindshotState();
@@ -290,13 +288,10 @@ namespace Game.Core.Sim
         public int HunterMarkTicks { get; set; }
         public bool MarkedEnemyDied { get; set; }
         public int BlindTicks { get; set; }
-        public bool EvilEyeOnEnemy { get; set; }
         public bool BondsUp { get; set; }
         public double Cold { get; set; }
         public double BloodStacks { get; set; }
         public int CompanionMarks { get; set; }
-        public double ClockworkSlow { get; set; }
-        public double ClockworkFloor { get; set; } = 1;
 
         public double KeyCarry { get; set; }
         public double MouseCarryPx { get; set; }

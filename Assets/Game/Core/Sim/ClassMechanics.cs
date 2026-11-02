@@ -56,16 +56,6 @@ namespace Game.Core.Sim
                 _state.HunterMarkTicks = _state.EnemyAlive ? _state.HunterMarkTicks - 1 : 0;
         }
 
-        public bool EvilEyeOn =>
-            _state.Is(HeroClass.Whisperer) && _state.EnemyAlive && _rules.EvilEye.DamageTaken > 0
-            && (_hero.Value(CombatStats.EvilEyeBossOnly, 0) < 1
-                || _state.EnemyType == EnemyType.Boss
-                || (_state.EnemyType == EnemyType.Guardian && _hero.Value(CombatStats.EvilEyeOnGuardians, 0) >= 1));
-
-        public double EvilEyeShare => EvilEyeOn
-            ? (_rules.EvilEye.DamageTaken + System.Math.Max(0, _hero.Value(CombatStats.EvilEyeEffect, 0))) * (1 + System.Math.Max(0, _hero.Value(CombatStats.EvilEyePower, 0)))
-            : 0;
-
         private double ColdHit()
         {
             if (_state.EnemyAlive)
@@ -94,16 +84,7 @@ namespace Game.Core.Sim
             TickHunterMark();
             if (_state.BlindTicks > 0)
                 _state.BlindTicks = _state.EnemyAlive ? _state.BlindTicks - 1 : 0;
-            Clockwork();
             FadeCold();
-        }
-
-        private void Clockwork()
-        {
-            var running = _state.Is(HeroClass.Clockwright) && _rules.ClockworkSlow > 0 && _hero.Value(ClockwrightStats.SpringPower, 0) <= 0
-                && _state.Resource > _rules.ClockworkAbove + _hero.Value(CombatStats.ClockworkAbove, 0);
-            _state.ClockworkSlow = running ? System.Math.Min(1, _rules.ClockworkSlow + System.Math.Max(0, _hero.Value(CombatStats.ClockworkSlow, 0))) : 0;
-            _state.ClockworkFloor = _rules.ClockworkFloor;
         }
     }
 }

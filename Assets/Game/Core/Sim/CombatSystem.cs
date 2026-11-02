@@ -183,7 +183,7 @@ namespace Game.Core.Sim
             if (_state.ActiveAuras > 0)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerAura, 0, tags)) * _state.ActiveAuras;
             if (!_state.SharedEnemy)
-                multiplier *= (1 + _class.EvilEyeShare) * (1 + _class.ColdShare);
+                multiplier *= 1 + _class.ColdShare;
             if (_state.CompanionMarks > 0)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.CompanionPerMark, 0, tags)) * _state.CompanionMarks;
             if (_state.BlindTicks > 0)
@@ -218,7 +218,6 @@ namespace Game.Core.Sim
         public void Tick(in EffectiveInput input)
         {
             LastTickDamage = BigNumber.Zero;
-            _state.EvilEyeOnEnemy = _class.EvilEyeOn;
             ArmSureCrits();
             if (_state.VulnerabilityTicks > 0 && --_state.VulnerabilityTicks == 0)
                 _state.VulnerabilityShare = 0;
