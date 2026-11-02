@@ -93,19 +93,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
         private static bool HasEffect(GameLoop loop, int id, out TraitEnemyEffect found)
         {
             for (var i = 0; i < loop.State.TraitEnemyEffects.Count; i++)
@@ -149,14 +136,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.TraitShareCritMultiplier, Is.EqualTo(Rules.KnotCritMultiplier * Rules.KnotSeventh).Within(1e-9));
             Assert.That(loop.State.TraitShareGold, Is.EqualTo(Rules.KnotGold * Rules.KnotSeventh).Within(1e-9));
             Assert.That(loop.State.TraitTimerSlow, Is.EqualTo(Rules.KnotSlow * Rules.KnotSeventh).Within(1e-9));
-        }
-
-        [Test]
-        public void AlliesHitsBringTheNextKnotCloser()
-        {
-            var (loop, _) = Hero(Flat(WhispererStats.KnotPower, 0.1));
-            loop.Combat.Whisperer.AddAllyHits(Rules.KnotHits);
-            Assert.That(loop.State.Whisperer.Knots, Is.EqualTo(1));
         }
 
         [Test]
@@ -235,40 +214,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyTheNameIsCalledAndEveryAllysSyllableSpeaksIt()
-        {
-            var (loop, input) = Hero(Flat(WhispererStats.NamePower, 0.4));
-            Party(loop, 3);
-            Spawn(loop, EnemyType.Boss);
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.NameCall, out var call), Is.True);
-            Assert.That(call.To, Is.EqualTo(TraitRelay.AllSlots));
-            Assert.That(call.Every, Is.EqualTo(Rules.SyllableHits));
-
-            loop.State.TraitRelays.Clear();
-            Hits(loop, input, Rules.SyllableHits);
-            loop.Combat.Whisperer.ReceiveSyllable(1);
-            Assert.That(loop.State.Whisperer.Named, Is.False);
-            loop.Combat.Whisperer.ReceiveSyllable(2);
-            Assert.That(loop.State.Whisperer.Named, Is.True);
-            Assert.That(loop.Combat.Whisperer.NameBonus, Is.EqualTo(0.4 + Rules.Syllable * 3).Within(1e-9));
-            loop.Tick();
-            Assert.That(HasEffect(loop, WhispererMechanics.NameEffect, out var effect), Is.True);
-            Assert.That(effect.Strength, Is.EqualTo(0.4 + Rules.Syllable * 3).Within(1e-9));
-        }
-
-        [Test]
-        public void AnAllyWritesItsSyllableAndSendsItBack()
-        {
-            var (loop, input) = Hero(HeroClass.Runedancer, EnemyType.Boss);
-            loop.State.Boons.CallName(2, 5, 100);
-            Hits(loop, input, 5);
-            Assert.That(loop.State.Boons.SyllableGiven, Is.True);
-            Assert.That(HasRelay(loop, TraitRelayKind.Syllable, out var syllable), Is.True);
-            Assert.That(syllable.To, Is.EqualTo(2));
-        }
-
-        [Test]
         public void MemoryTimeAndLoudNameAreRules()
         {
             var bossDef = TestWorld.Data.Enemies.All.First(enemy => enemy.Type == EnemyType.Boss);
@@ -314,42 +259,12 @@ namespace Game.Core.Tests.Sim
             var (loop, input) = Hero(Flat(WhispererStats.VowPower, 3));
             Hits(loop, input, Rules.HushHits);
             Assert.That(loop.State.Boons.Hushes, Is.EqualTo(1));
-            Assert.That(loop.State.Boons.HushOwner, Is.EqualTo(-1));
 
             var expected = Expected(loop, 3);
             var damage = Hit(loop, input);
             Assert.That(damage, Has.Count.EqualTo(1));
             Assert.That(damage[0] / expected, Is.EqualTo(1).Within(0.1));
             Assert.That(loop.State.Boons.Hushes, Is.Zero);
-        }
-
-        [Test]
-        public void InAPartyTheWhisperGoesToAnAllyAndItsHitsExtendTheCurse()
-        {
-            var (loop, input) = Hero(Flat(WhispererStats.VowPower, 3));
-            Party(loop, 2);
-            Cast(loop, "whisperer_queue_1");
-            Hits(loop, input, Rules.HushHits - 1);
-            loop.State.TraitRelays.Clear();
-            Hit(loop, input);
-            Assert.That(HasRelay(loop, TraitRelayKind.Hush, out var hush), Is.True);
-            Assert.That(hush.To, Is.EqualTo(LanternbearerMechanics.AnyAlly));
-            Assert.That(loop.State.Boons.Hushes, Is.Zero);
-
-            var ticks = loop.State.Whisperer.CurseTicks;
-            loop.Combat.Whisperer.ReceiveHushHits(2);
-            Assert.That(loop.State.Whisperer.CurseTicks - ticks, Is.EqualTo((int)(2 * Rules.HushExtendSeconds * GameLoop.TicksPerSecond)));
-        }
-
-        [Test]
-        public void AnAllyWithAWhisperHitsHarderAndReportsBack()
-        {
-            var (loop, input) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            loop.State.Boons.Hush(1, 4, 1, 3);
-            Assert.That(Hit(loop, input), Has.Count.EqualTo(2));
-            Assert.That(HasRelay(loop, TraitRelayKind.HushHit, out var back), Is.True);
-            Assert.That(back.To, Is.EqualTo(1));
-            Assert.That(back.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -438,9 +353,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat) || modifier.Stat.Name.EndsWith("Party")
-                    || modifier.Stat.Name == WhispererStats.KnotParty.Name || modifier.Stat.Name == WhispererStats.NameParty.Name
-                    || modifier.Stat.Name == WhispererStats.HushParty.Name)), Is.GreaterThanOrEqualTo(5));
+                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat) || modifier.Stat.Name.EndsWith("Party"))), Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

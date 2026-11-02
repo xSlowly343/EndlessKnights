@@ -19,6 +19,5 @@ namespace Game.Core.Sim
         public int LendHits { get; set; }
         public long Lends { get; set; }
         public long SoulsBack { get; set; }
-        public int SentSouls { get; set; } = -1;
     }
 }

@@ -82,19 +82,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
         private static void Kill(GameLoop loop)
         {
             loop.Combat.Herbwitch.OnKillRewarded();
@@ -152,34 +139,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyTheGardenHangsOnTheSharedEnemyAndThePetalGoesToAnAlly()
-        {
-            var (loop, _) = Hero(Flat(HerbwitchStats.BloomPower, 0.12));
-            Party(loop, 2);
-            loop.State.TraitRelays.Clear();
-            Cast(loop, "herbwitch_path_1");
-            Assert.That(HasRelay(loop, TraitRelayKind.Petal, out var petal), Is.True);
-            Assert.That(petal.To, Is.EqualTo(LanternbearerMechanics.AnyAlly));
-            Assert.That(petal.Every, Is.EqualTo(Rules.PetalHits));
-            loop.State.TraitEnemyEffects.Clear();
-            loop.Tick();
-            var found = false;
-            for (var i = 0; i < loop.State.TraitEnemyEffects.Count; i++)
-                found |= loop.State.TraitEnemyEffects[i].Id == HerbwitchMechanics.GardenEffect;
-            Assert.That(found, Is.True);
-        }
-
-        [Test]
-        public void AnAllysPetalSeedsStingTheirEnemy()
-        {
-            var (ally, input) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            HerbwitchMechanics.LandPetal(ally.State.Boons, 20, 0.12, 20, 0);
-            Hits(ally, input, 40);
-            Assert.That(ally.State.Boons.PetalSeeds, Is.EqualTo(2));
-            Assert.That(ally.State.Boons.PetalStings, Is.GreaterThan(0));
-        }
-
-        [Test]
         public void ThornyBushAndOneFlowerChangeTheGarden()
         {
             var (thorn, _) = Hero(Flat(HerbwitchStats.BloomPower, 0.12), Flat(HerbwitchStats.BloomThorn, 1));
@@ -222,28 +181,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartySporesSettleOnAlliesAndTheirHitsAddPoison()
-        {
-            var (loop, _) = Hero(Flat(HerbwitchStats.MyceliumPower, 0.02));
-            Party(loop, 2);
-            loop.State.Herbwitch.Venom = 10;
-            loop.State.TraitRelays.Clear();
-            Wait(loop, 0.2);
-            Assert.That(HasRelay(loop, TraitRelayKind.Spores, out var spores), Is.True);
-            Assert.That(spores.Every, Is.EqualTo(Rules.SporeHits));
-            loop.Combat.Herbwitch.ReceiveSpores(3);
-            Assert.That(loop.State.Herbwitch.Venom, Is.EqualTo(13).Within(1e-9));
-            var (ally, input) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            ally.State.Boons.SporeOwner = 0;
-            ally.State.Boons.SporeEvery = 5;
-            ally.State.Boons.SporeTicks = 10_000;
-            ally.State.TraitRelays.Clear();
-            Hits(ally, input, 5);
-            Assert.That(HasRelay(ally, TraitRelayKind.SporeHit, out var hit), Is.True);
-            Assert.That(hit.To, Is.EqualTo(0));
-        }
-
-        [Test]
         public void TheWebStingsTwiceAsOftenAndToxicSporesDoubleTheStacks()
         {
             var (web, _) = Hero(Flat(HerbwitchStats.MyceliumPower, 0.02), Flat(HerbwitchStats.MyceliumFast, 1));
@@ -283,31 +220,6 @@ namespace Game.Core.Tests.Sim
             later.State.Herbwitch.Brew = 30;
             Kill(later);
             Assert.That(later.State.Herbwitch.Brew, Is.EqualTo(9).Within(1e-9));
-        }
-
-        [Test]
-        public void InAPartyAlliesGulpThePoisonForResourceAndHerSap()
-        {
-            var (loop, _) = Hero(Flat(HerbwitchStats.SapPower, 0.12));
-            Party(loop, 2);
-            loop.State.Herbwitch.Brew = 40;
-            loop.State.TraitRelays.Clear();
-            Wait(loop, 0.2);
-            Assert.That(HasRelay(loop, TraitRelayKind.Gulp, out var gulp), Is.True);
-            Assert.That(gulp.Every, Is.EqualTo(Rules.GulpHits));
-            loop.Combat.Herbwitch.ReceiveGulp(1);
-            Assert.That(loop.State.Herbwitch.Brew, Is.EqualTo(20).Within(1e-9));
-            Assert.That(loop.State.Herbwitch.Gulps, Is.EqualTo(1));
-            var (ally, input) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            ally.State.Boons.GulpOwner = 0;
-            ally.State.Boons.GulpEvery = 10;
-            ally.State.Boons.GulpResource = 5;
-            ally.State.Boons.GulpTicks = 10_000;
-            ally.State.TraitRelays.Clear();
-            Hits(ally, input, 10);
-            Assert.That(ally.State.Boons.Gulps, Is.EqualTo(1));
-            Assert.That(HasRelay(ally, TraitRelayKind.GulpBack, out var back), Is.True);
-            Assert.That(back.To, Is.EqualTo(0));
         }
 
         [Test]

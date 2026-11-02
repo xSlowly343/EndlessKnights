@@ -11,7 +11,6 @@ namespace Game.Core.Sim
         public static readonly StatId SpreadSeconds = new StatId("spreadSeconds");
         public static readonly StatId SpreadSwords = new StatId("spreadSwords");
         public static readonly StatId SpreadHand = new StatId("spreadHand");
-        public static readonly StatId SpreadParty = new StatId("spreadParty");
 
         public static readonly StatId ForecastPower = new StatId("forecastPower");
         public static readonly StatId ForecastStreak = new StatId("forecastStreak");
@@ -21,7 +20,6 @@ namespace Game.Core.Sim
         public static readonly StatId ForecastRush = new StatId("forecastRush");
         public static readonly StatId ForecastSafe = new StatId("forecastSafe");
         public static readonly StatId ForecastDouble = new StatId("forecastDouble");
-        public static readonly StatId ForecastParty = new StatId("forecastParty");
 
         public static readonly StatId ReversedPower = new StatId("reversedPower");
         public static readonly StatId ReversedHits = new StatId("reversedHits");

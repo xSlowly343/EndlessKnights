@@ -16,13 +16,10 @@ namespace Game.Core.Sim
 
         public static readonly StatId NamePower = new StatId("namePower");
         public static readonly StatId NameHits = new StatId("nameHits");
-        public static readonly StatId SyllableHits = new StatId("syllableHits");
         public static readonly StatId NameBlast = new StatId("nameBlast");
         public static readonly StatId NameMemory = new StatId("nameMemory");
         public static readonly StatId NameProgress = new StatId("nameProgress");
         public static readonly StatId NameTime = new StatId("nameTime");
-        public static readonly StatId NameCurse = new StatId("nameCurse");
-        public static readonly StatId NameParty = new StatId("nameParty");
 
         public static readonly StatId VowPower = new StatId("vowPower");
         public static readonly StatId HushHits = new StatId("hushHits");

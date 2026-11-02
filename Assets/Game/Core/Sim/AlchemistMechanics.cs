@@ -66,13 +66,13 @@ namespace Game.Core.Sim
 
         public void AfterStrike(bool crit)
         {
-            StrikeBoons(crit);
+            StrikeBoons();
             if (!On)
                 return;
             if (Mix)
                 MixStrike(crit);
             if (Solvent)
-                Dissolve(Boons.AcidTicks > 0 && Boons.AcidOwner < 0 ? 1 + _rules.AcidSoloShare : 1);
+                Dissolve(Boons.AcidTicks > 0 ? 1 + _rules.AcidSoloShare : 1);
             if (Elixirs && ++S.ElixirHits >= ElixirHits)
             {
                 S.ElixirHits = 0;
@@ -114,25 +114,10 @@ namespace Game.Core.Sim
                 S.MixCrit = 0;
             if (S.MixGoldTicks > 0 && --S.MixGoldTicks == 0)
                 S.MixGold = 0;
-            if (Mix && InParty && S.CallTicks-- <= 0)
-                CallReagents();
             _state.TraitShareCritChance = S.MixCrit;
             _state.TraitShareGold = S.MixGold;
             ShareMix();
             ShareSolvent();
-            ShareFlask();
-        }
-
-        public void ReceiveReagent(int slot)
-        {
-            if (Mix && slot >= 0)
-                AddReagent(slot % AlchemistRules.Colors);
-        }
-
-        public void ReceiveAcidHits(int hits)
-        {
-            if (Solvent && hits > 0)
-                Dissolve(hits);
         }
 
         private void OnNewEnemy()
@@ -158,7 +143,7 @@ namespace Game.Core.Sim
             AddReagent(S.Reagent);
         }
 
-        private void AddReagent(int color)
+        public void AddReagent(int color)
         {
             if (S.InFlask < AlchemistState.FlaskSize)
                 S.Flask[S.InFlask++] = color;
@@ -270,8 +255,6 @@ namespace Game.Core.Sim
                 if (slot.CooldownTicks > 1)
                     slot.CooldownTicks = System.Math.Max(1, slot.CooldownTicks - cut);
             }
-            if (InParty)
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.GearTick, To = TraitRelay.AllSlots, Seconds = seconds });
         }
 
         private void Dissolve(double hits)
@@ -307,18 +290,7 @@ namespace Game.Core.Sim
         private void GiveAcid()
         {
             var seconds = System.Math.Max(1, _rules.AcidSeconds + _hero.Value(AlchemistStats.AcidSeconds, 0));
-            if (!InParty)
-            {
-                Boons.AcidOwner = -1;
-                Boons.AcidTicks = System.Math.Max(Boons.AcidTicks, Ticks(seconds * (Flag(AlchemistStats.AcidAll) ? 1.5 : 1)));
-                return;
-            }
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.Acid,
-                To = Flag(AlchemistStats.AcidAll) ? TraitRelay.AllSlots : LanternbearerMechanics.AnyAlly,
-                Seconds = seconds
-            });
+            Boons.AcidTicks = System.Math.Max(Boons.AcidTicks, Ticks(seconds * (Flag(AlchemistStats.AcidAll) ? 1.5 : 1)));
         }
 
         private void SendElixir()
@@ -330,37 +302,8 @@ namespace Game.Core.Sim
             var seconds = ElixirSeconds;
             var philosopher = Flag(AlchemistStats.ElixirStone) ? _rules.StoneSeconds : _rules.PhilosopherSeconds;
             var every = Flag(AlchemistStats.ElixirDouble) ? 2 : _rules.PhilosopherEvery;
-            if (!InParty)
-            {
-                var times = Flag(AlchemistStats.ElixirTwo) ? 2 : 1;
-                Boons.Drink(color, power, Ticks(seconds * times), _rules.RedEvery, _rules.GoldBonus, every, Ticks(philosopher));
-                return;
-            }
-            var relay = new TraitRelay
-            {
-                Kind = TraitRelayKind.Elixir,
-                To = Flag(AlchemistStats.ElixirAll) ? TraitRelay.AllSlots : LanternbearerMechanics.AnyAlly,
-                Count = (byte)(color | (System.Math.Min(63, (int)System.Math.Round(philosopher)) << 2)),
-                Every = (byte)_rules.RedEvery,
-                Max = (byte)every,
-                Value = power,
-                Seconds = seconds,
-                Extra = _rules.GoldBonus
-            };
-            _state.TraitRelays.Add(relay);
-            if (Flag(AlchemistStats.ElixirTwo) && !Flag(AlchemistStats.ElixirAll))
-                _state.TraitRelays.Add(relay);
-        }
-
-        public static void DrinkRelay(AllyBoons boons, in TraitRelay relay)
-        {
-            boons.Drink(relay.Count & 3, relay.Value, Ticks(relay.Seconds), relay.Every, relay.Extra, System.Math.Max(1, (int)relay.Max), Ticks(relay.Count >> 2));
-        }
-
-        private void CallReagents()
-        {
-            S.CallTicks = Ticks(_rules.ReagentCallSeconds / 3);
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Reagents, To = TraitRelay.AllSlots, Seconds = _rules.ReagentCallSeconds });
+            var times = Flag(AlchemistStats.ElixirTwo) ? 2 : 1;
+            Boons.Drink(color, power, Ticks(seconds * times), _rules.RedEvery, _rules.GoldBonus, every, Ticks(philosopher));
         }
 
         private void ShareMix()
@@ -380,31 +323,8 @@ namespace Game.Core.Sim
             _state.TraitEnemyEffects.Add(SolventEffect, share, _rules.SolventEffectSeconds);
         }
 
-        private void ShareFlask()
-        {
-            if (!InParty || !Mix)
-                return;
-            var flask = FlaskCode();
-            if (flask == S.SentFlask)
-                return;
-            S.SentFlask = flask;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Flask, To = TraitRelay.AllSlots, Count = (byte)flask });
-        }
-
-        private int FlaskCode()
-        {
-            var code = 0;
-            for (var i = 0; i < S.InFlask; i++)
-                code |= (S.Flask[i] + 1) << (2 * i);
-            return code;
-        }
-
         private void TickBoons()
         {
-            if (Boons.ReagentTicks > 0)
-                Boons.ReagentTicks--;
-            if (Boons.ReagentCooldownTicks > 0)
-                Boons.ReagentCooldownTicks--;
             if (Boons.AcidTicks > 0)
                 Boons.AcidTicks--;
             if (Boons.RedTicks > 0)
@@ -413,26 +333,10 @@ namespace Game.Core.Sim
                 Boons.BlueTicks--;
             if (Boons.GoldTicks > 0)
                 Boons.GoldTicks--;
-            if (Boons.ReagentOwed && Boons.ReagentOwner >= 0)
-            {
-                Boons.ReagentOwed = false;
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Reagent, To = (byte)Boons.ReagentOwner, Count = 1 });
-            }
-            if (Boons.AcidHitsOwed <= 0 || Boons.AcidOwner < 0)
-                return;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.AcidHit, To = (byte)Boons.AcidOwner, Count = (byte)System.Math.Min(byte.MaxValue, Boons.AcidHitsOwed) });
-            Boons.AcidHitsOwed = 0;
         }
 
-        private void StrikeBoons(bool crit)
+        private void StrikeBoons()
         {
-            if (crit && Boons.ReagentTicks > 0 && Boons.ReagentOwner >= 0 && Boons.ReagentCooldownTicks <= 0)
-            {
-                Boons.ReagentOwed = true;
-                Boons.ReagentCooldownTicks = Ticks(_rules.ReagentCooldownSeconds);
-            }
-            if (Boons.AcidTicks > 0 && Boons.AcidOwner >= 0)
-                Boons.AcidHitsOwed++;
             if (Boons.RedTicks <= 0 || ++Boons.RedStrikes < Boons.RedEvery)
                 return;
             Boons.RedStrikes = 0;

@@ -125,23 +125,6 @@ namespace Game.Core.Sim
             }
         }
 
-        public void ReceiveSpores(int count)
-        {
-            if (!Mycelium || count <= 0)
-                return;
-            S.SporesBack += count;
-            S.Venom = System.Math.Min(VenomMax, S.Venom + count * _rules.SporeStacks);
-        }
-
-        public void ReceiveGulp(int count)
-        {
-            if (!Sap || count <= 0)
-                return;
-            S.Gulps += count;
-            for (var i = 0; i < count && S.Brew > 0; i++)
-                Drink(_rules.GulpShare);
-        }
-
         private void OnNewEnemy()
         {
             S.Spawned = false;
@@ -216,25 +199,11 @@ namespace Game.Core.Sim
 
         private void DropPetal()
         {
-            if (!InParty)
-            {
-                LandPetal(Boons, _rules.PetalHits, BloomPower * (1 + Positive(HerbwitchStats.BloomParty)), _rules.PetalSeconds, -1);
-                return;
-            }
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.Petal,
-                To = LanternbearerMechanics.AnyAlly,
-                Every = (byte)_rules.PetalHits,
-                Max = (byte)_rules.PetalVines,
-                Value = BloomPower * (1 + Positive(HerbwitchStats.BloomParty)),
-                Seconds = _rules.PetalSeconds
-            });
+            LandPetal(Boons, _rules.PetalHits, BloomPower * (1 + Positive(HerbwitchStats.BloomParty)), _rules.PetalSeconds);
         }
 
-        public static void LandPetal(AllyBoons boons, int every, double power, double seconds, int owner, int maxSeeds = 3)
+        private static void LandPetal(AllyBoons boons, int every, double power, double seconds, int maxSeeds = 3)
         {
-            boons.PetalOwner = owner;
             boons.PetalEvery = System.Math.Max(1, every);
             boons.PetalPower = power;
             boons.PetalTicks = (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);
@@ -283,16 +252,6 @@ namespace Game.Core.Sim
                         Queue(power * _rules.VenomQueueShare);
                 }
             }
-            if (!InParty || S.Venom <= 0 || S.SporeRelayTicks-- > 0)
-                return;
-            S.SporeRelayTicks = Ticks(_rules.SporeRelaySeconds) - 1;
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.Spores,
-                To = TraitRelay.AllSlots,
-                Every = (byte)System.Math.Max(1, (int)System.Math.Round(_rules.SporeHits / (1 + Positive(HerbwitchStats.MyceliumParty)))),
-                Seconds = _rules.SporeRelaySeconds * 1.5
-            });
         }
 
         private void TickSap()
@@ -307,17 +266,6 @@ namespace Game.Core.Sim
                     TraitHit(SapPower * 10, StatTags.DoT);
                 }
             }
-            if (!InParty || S.Brew <= 0 || S.GulpRelayTicks-- > 0)
-                return;
-            S.GulpRelayTicks = Ticks(_rules.GulpRelaySeconds) - 1;
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.Gulp,
-                To = TraitRelay.AllSlots,
-                Every = (byte)_rules.GulpHits,
-                Value = _rules.GulpResource * (1 + Positive(HerbwitchStats.SapParty)),
-                Seconds = _rules.GulpRelaySeconds * 1.5
-            });
         }
 
         private void Drink(double share)
@@ -345,18 +293,6 @@ namespace Game.Core.Sim
                 Boons.PetalHits = 0;
                 Boons.PetalSeeds = System.Math.Min(Boons.PetalMax, Boons.PetalSeeds + 1);
             }
-            if (Boons.SporeTicks > 0 && Boons.SporeOwner >= 0 && ++Boons.SporeHits >= Boons.SporeEvery)
-            {
-                Boons.SporeHits = 0;
-                Boons.SporesOwed++;
-            }
-            if (Boons.GulpTicks > 0 && Boons.GulpOwner >= 0 && ++Boons.GulpHits >= Boons.GulpEvery)
-            {
-                Boons.GulpHits = 0;
-                Boons.GulpsOwed++;
-                Boons.Gulps++;
-                _state.PendingResource += Boons.GulpResource;
-            }
         }
 
         private void TickBoons()
@@ -375,20 +311,6 @@ namespace Game.Core.Sim
                         TraitHit(Boons.PetalSeeds * Boons.PetalPower);
                     }
                 }
-            }
-            if (Boons.SporeTicks > 0)
-                Boons.SporeTicks--;
-            if (Boons.GulpTicks > 0)
-                Boons.GulpTicks--;
-            if (Boons.SporesOwed > 0 && Boons.SporeOwner >= 0)
-            {
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.SporeHit, To = (byte)Boons.SporeOwner, Count = (byte)System.Math.Min(byte.MaxValue, Boons.SporesOwed) });
-                Boons.SporesOwed = 0;
-            }
-            if (Boons.GulpsOwed > 0 && Boons.GulpOwner >= 0)
-            {
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.GulpBack, To = (byte)Boons.GulpOwner, Count = (byte)System.Math.Min(byte.MaxValue, Boons.GulpsOwed) });
-                Boons.GulpsOwed = 0;
             }
         }
 

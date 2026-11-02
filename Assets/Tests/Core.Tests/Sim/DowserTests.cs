@@ -90,19 +90,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
         private static int Equip(GameLoop loop, string skill)
         {
             TestWorld.ArmFor(loop, TestWorld.Data.Gems[skill]);
@@ -143,14 +130,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void AlliesHitsBringTheSharedVeinCloser()
-        {
-            var (loop, _) = Hero(Flat(DowserStats.VeinPower, 19));
-            loop.Combat.Dowser.AddAllyHits(Rules.VeinRange);
-            Assert.That(loop.State.Dowser.Veins, Is.EqualTo(1));
-        }
-
-        [Test]
         public void BossesHaveNoVeinUnlessTheColossusVeinIsChosen()
         {
             var (boss, _) = Boss(Flat(DowserStats.VeinPower, 19));
@@ -159,23 +138,6 @@ namespace Game.Core.Tests.Sim
             var (colossus, _) = Boss(Flat(DowserStats.VeinPower, 19), Flat(DowserStats.VeinBoss, 1));
             Cast(colossus, "dowser_path_1");
             Assert.That(colossus.State.EnemyGoldBonus, Is.EqualTo(38).Within(1e-9));
-        }
-
-        [Test]
-        public void InAPartyTheVeinGoldGoesToEveryoneAndItsClosenessIsShown()
-        {
-            var (loop, _) = Hero(Flat(DowserStats.VeinPower, 19));
-            Party(loop, 2);
-            loop.Combat.Dowser.AddAllyHits(1);
-            Assert.That(HasRelay(loop, TraitRelayKind.VeinHint, out var hint), Is.True);
-            Assert.That(hint.To, Is.EqualTo(TraitRelay.AllSlots));
-            Cast(loop, "dowser_path_1");
-            Assert.That(HasRelay(loop, TraitRelayKind.Vein, out var vein), Is.True);
-            Assert.That(vein.Value, Is.EqualTo(19).Within(1e-9));
-
-            var (ally, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            ally.Combat.Dowser.ReceiveVein(19);
-            Assert.That(ally.State.EnemyGoldBonus, Is.EqualTo(19).Within(1e-9));
         }
 
         [Test]
@@ -212,35 +174,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyEveryKillGrowsTheLuckAndTheTopKillerRolls()
-        {
-            var (loop, _) = Hero(Flat(DowserStats.LuckPower, 0.003));
-            Party(loop, 2);
-            Kill(loop);
-            Kill(loop);
-            Assert.That(loop.State.Dowser.Luck, Is.EqualTo(0.006).Within(1e-9));
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Luck, out var luck), Is.True);
-            Assert.That(luck.Value, Is.EqualTo(0.006).Within(1e-9));
-            loop.State.Dowser.Luck = 1;
-            loop.Combat.Dowser.OnTopKill();
-            Assert.That(loop.State.Dowser.Finds, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void AnAllyWithTheLuckRuleRollsItsTopKillAndReportsTheFind()
-        {
-            var (loop, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            loop.State.Boons.LuckOwner = 2;
-            loop.State.Boons.LuckChance = 1;
-            loop.State.Boons.LuckTicks = 100;
-            loop.Combat.Dowser.OnTopKill();
-            Assert.That(HasRelay(loop, TraitRelayKind.LuckFound, out var found), Is.True);
-            Assert.That(found.To, Is.EqualTo(2));
-            Assert.That(loop.State.Boons.LuckChance, Is.Zero);
-        }
-
-        [Test]
         public void LuckForksAreRules()
         {
             var (keep, _) = Hero(Flat(DowserStats.LuckPower, 0.003), Flat(DowserStats.LuckKeep, 1));
@@ -269,27 +202,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Dowser.Chests, Is.EqualTo(1));
             Assert.That(loop.State.Dowser.Nuggets, Is.Zero);
             Assert.That(loop.State.Gold, Is.GreaterThan(gold));
-        }
-
-        [Test]
-        public void InAPartyTheCrewRuleGoesToAlliesAndTheirKillsOpenTheirChests()
-        {
-            var (loop, _) = Hero(Flat(DowserStats.ArtelPower, 0.5));
-            Party(loop, 2);
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Artel, out var call), Is.True);
-            Assert.That(call.Every, Is.EqualTo(Rules.ArtelNuggets));
-            Kill(loop);
-            Assert.That(loop.State.Dowser.Nuggets, Is.Zero);
-
-            var (ally, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            ally.State.Boons.ArtelOwner = 0;
-            ally.State.Boons.ArtelEvery = 3;
-            ally.State.Boons.ArtelChest = 0.5;
-            ally.State.Boons.ArtelTicks = 100;
-            for (var i = 0; i < 3; i++)
-                Kill(ally);
-            Assert.That(ally.State.Boons.ArtelChests, Is.EqualTo(1));
         }
 
         [Test]
@@ -353,8 +265,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat) || modifier.Stat.Name.EndsWith("Party")
-                    || modifier.Stat.Name == DowserStats.LuckParty.Name || modifier.Stat.Name == DowserStats.ArtelParty.Name)), Is.GreaterThanOrEqualTo(5));
+                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat) || modifier.Stat.Name.EndsWith("Party"))), Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

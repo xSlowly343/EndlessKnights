@@ -25,7 +25,6 @@ namespace Game.Core.Sim
         public void UseRules(CartomancerRules rules) => _rules = rules;
 
         private CartomancerState S => _state.Cartomancer;
-        private AllyBoons Boons => _state.Boons;
         private bool On => _state.Is(HeroClass.Cartomancer);
         private bool Flag(StatId stat) => _hero.Value(stat, 0) >= 1;
         private double Positive(StatId stat) => System.Math.Max(0, _hero.Value(stat, 0));
@@ -71,8 +70,6 @@ namespace Game.Core.Sim
         public double DamageTaken()
         {
             var multiplier = 1.0;
-            if (Boons.ForecastPenalty > 0)
-                multiplier *= 1 - Boons.ForecastPenalty;
             if (!On)
                 return multiplier;
             if (S.Penalty)
@@ -88,15 +85,8 @@ namespace Game.Core.Sim
             return multiplier;
         }
 
-        public void AddAllyHits(double hits)
-        {
-            if (Reversed && hits > 0 && S.LaidCount > 0)
-                AddRevealHits(hits);
-        }
-
         public void AfterStrike()
         {
-            BoonStrike();
             if (!On)
                 return;
             if (Spread && ++S.DrawHits >= DrawHits)
@@ -112,7 +102,7 @@ namespace Game.Core.Sim
                     Lay(1);
                 }
                 if (S.LaidCount > 0)
-                    AddRevealHits(InParty ? 1 : _rules.RevealSoloShare);
+                    AddRevealHits(_rules.RevealSoloShare);
             }
         }
 
@@ -136,7 +126,6 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            TickBoons();
             if (!On)
                 return;
             if (S.Spawned)
@@ -158,22 +147,6 @@ namespace Game.Core.Sim
             S.Wins++;
             S.Streak = System.Math.Min(_rules.StreakMax, S.Streak + 1);
         }
-
-        public void ReceiveCard(int suit)
-        {
-            if (!Spread || suit < 0 || suit >= CartomancerState.Suits)
-                return;
-            S.AllyCards++;
-            AddCard(suit);
-        }
-
-        public static int SuitOf(HeroClass heroClass) => heroClass switch
-        {
-            HeroClass.Runedancer or HeroClass.Duelist or HeroClass.Windshot or HeroClass.Shardcaller or HeroClass.Alchemist => CartomancerState.Swords,
-            HeroClass.Minstrel or HeroClass.Lanternbearer or HeroClass.Soulbinder or HeroClass.Ghostcaptain or HeroClass.Golemancer => CartomancerState.Cups,
-            HeroClass.Dowser or HeroClass.Dreamcatcher => CartomancerState.Coins,
-            _ => CartomancerState.Wands
-        };
 
         private void OnNewEnemy()
         {
@@ -199,7 +172,7 @@ namespace Game.Core.Sim
             }
         }
 
-        private void AddCard(int suit)
+        public void AddCard(int suit)
         {
             if (S.HandCount >= _rules.HandMax)
                 DiscardOne();
@@ -250,21 +223,6 @@ namespace Game.Core.Sim
                 if (ArcanaActive(CartomancerState.Wands))
                     CutCooldowns(_rules.WandsCut * SuitPower(CartomancerState.Wands));
             }
-            OfferDeal();
-        }
-
-        private void OfferDeal()
-        {
-            if (!InParty || S.DealOfferTicks-- > 0)
-                return;
-            S.DealOfferTicks = Ticks(_rules.DealOfferSeconds) - 1;
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.Deal,
-                To = TraitRelay.AllSlots,
-                Every = (byte)System.Math.Min(byte.MaxValue, System.Math.Max(1, (int)System.Math.Round(_rules.DealHits / (1 + Positive(CartomancerStats.SpreadParty))))),
-                Seconds = _rules.DealOfferSeconds * 2
-            });
         }
 
         private void CutCooldowns(double seconds)
@@ -320,10 +278,8 @@ namespace Game.Core.Sim
             S.ExactPaid = false;
             S.GoldAdded = Reward;
             _state.EnemyGoldBonus += S.GoldAdded;
-            if (!InParty)
-                return;
-            _state.TraitEnemyEffects.Add(ForecastEffect, 0, seconds);
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Forecast, To = TraitRelay.AllSlots, Value = S.GoldAdded * (1 + Positive(CartomancerStats.ForecastParty)), Seconds = seconds });
+            if (InParty)
+                _state.TraitEnemyEffects.Add(ForecastEffect, 0, seconds);
         }
 
         private void Lose()
@@ -335,8 +291,6 @@ namespace Game.Core.Sim
             if (Flag(CartomancerStats.ForecastSafe))
                 return;
             S.Penalty = true;
-            if (InParty)
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.ForecastLost, To = TraitRelay.AllSlots, Value = Penalty });
         }
 
         private void Lay(int count)
@@ -409,48 +363,6 @@ namespace Game.Core.Sim
                 return;
             S.EffectResendTicks = GameLoop.TicksPerSecond - 1;
             _state.TraitEnemyEffects.Add(ReversedEffect, SwordsShare * (1 + Positive(CartomancerStats.ReversedParty)), _rules.EffectSeconds, WandsSlow);
-        }
-
-        private void BoonStrike()
-        {
-            if (Boons.DealTicks <= 0 || Boons.DealOwner < 0)
-                return;
-            if (++Boons.DealHits < System.Math.Max(1, Boons.DealEvery))
-                return;
-            Boons.DealHits = 0;
-            Boons.CardsDealt++;
-            Boons.LastSuit = SuitOf(_state.Class);
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Card, To = (byte)Boons.DealOwner, Count = (byte)Boons.LastSuit });
-        }
-
-        private void TickBoons()
-        {
-            if (Boons.DealTicks > 0)
-                Boons.DealTicks--;
-            if (Boons.ForecastTicks <= 0)
-                return;
-            Boons.ForecastTicks--;
-            if (!Boons.ForecastApplied && _state.FightingBoss && _state.EnemyAlive)
-            {
-                Boons.ForecastApplied = true;
-                _state.EnemyGoldBonus += Boons.ForecastGold;
-            }
-        }
-
-        public static void LandForecast(AllyBoons boons, double gold, double seconds)
-        {
-            boons.ForecastGold = gold;
-            boons.ForecastTicks = (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);
-            boons.ForecastApplied = false;
-            boons.ForecastPenalty = 0;
-        }
-
-        public void LoseForecast(double penalty)
-        {
-            if (Boons.ForecastApplied && Boons.ForecastTicks > 0)
-                _state.EnemyGoldBonus = System.Math.Max(0, _state.EnemyGoldBonus - Boons.ForecastGold);
-            Boons.ForecastTicks = 0;
-            Boons.ForecastPenalty = penalty;
         }
 
         private void TraitHit(double multiplier, StatTags extra = StatTags.None)

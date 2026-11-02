@@ -25,12 +25,9 @@ namespace Game.Core.Sim
         public void UseRules(ClockwrightRules rules) => _rules = rules;
 
         private ClockwrightState S => _state.Clockwright;
-        private AllyBoons Boons => _state.Boons;
         private bool On => _state.Is(HeroClass.Clockwright);
         private bool Flag(StatId stat) => _hero.Value(stat, 0) >= 1;
         private double Positive(StatId stat) => System.Math.Max(0, _hero.Value(stat, 0));
-        private bool InParty => _state.SharedEnemy && _state.PartyMembers > 1;
-
         public bool Spring => On && SpringPower > 0;
         public bool Loop => On && LoopPower > 0;
         public bool Gears => On && GearPower > 0;
@@ -80,12 +77,6 @@ namespace Game.Core.Sim
 
         public double StrikeMultiplier() => Spring && Flag(ClockwrightStats.SpringStrike) && Wind >= 0.5 ? 1 + _rules.SpringStrike : 1;
 
-        public void AddAllyHits(double hits)
-        {
-            if (Spring && hits > 0)
-                _state.PendingResource += hits * _rules.SpringAllyWind * (Flag(ClockwrightStats.SpringAllies) ? 2 : 1);
-        }
-
         public void AfterStrike()
         {
             if (!On)
@@ -101,7 +92,6 @@ namespace Game.Core.Sim
 
         public void OnSkillCast(GemDef skill)
         {
-            ReportCog();
             if (!On || !(skill.Skill?.Effect is StrikeEffect strike))
                 return;
             if (Gears && !(skill.Skill.Effect is AuraEffect))
@@ -113,7 +103,7 @@ namespace Game.Core.Sim
             if (strike.HoldSeconds > 0)
                 S.HoldTicks = System.Math.Max(S.HoldTicks, Ticks(strike.HoldSeconds));
             if (strike.CutCooldowns > 0)
-                ShareCut(strike.CutCooldowns, false);
+                CutCooldowns(strike.CutCooldowns, false);
             if (strike.WindBurst > 0)
                 WindBurst(strike.WindBurst);
             if (strike.Rewind && Loop)
@@ -126,7 +116,6 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            TickBoons();
             if (!On)
                 return;
             if (Spring)
@@ -135,20 +124,9 @@ namespace Game.Core.Sim
                 Rewind();
             if (Gears)
                 TickIdleGears();
-            if (Gears && InParty && S.CallTicks-- <= 0)
-                CallGears();
             var slow = SpringSlow;
             _state.TraitTimerSlow = _state.SharedEnemy ? 0 : slow;
-            if (Spring)
-                _state.TraitPartyTimerSlow = slow > 0 ? slow + Positive(ClockwrightStats.SpringParty) : 0;
-        }
-
-        public void ReceiveCog(int slot)
-        {
-            if (!Gears || slot < 0 || slot >= ClockwrightState.Slots)
-                return;
-            S.CogTicks[slot] = _state.Tick;
-            TryMesh();
+            S.PartySlow = Spring && slow > 0 ? slow + Positive(ClockwrightStats.SpringParty) : 0;
         }
 
         public void CutCooldowns(double seconds, bool reset)
@@ -181,19 +159,6 @@ namespace Game.Core.Sim
                 if (Wind >= 0.5)
                     WindBurst(_rules.SpringBurstPerWind);
             }
-            ShareSpring();
-        }
-
-        private void ShareSpring()
-        {
-            if (!InParty)
-                return;
-            var wind = Wind;
-            if (S.SpringRelayTicks-- > 0 && System.Math.Abs(wind - S.SentWind) < 0.05)
-                return;
-            S.SpringRelayTicks = Ticks(_rules.SpringRelaySeconds / 3);
-            S.SentWind = wind;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Spring, To = TraitRelay.AllSlots, Value = wind, Seconds = _rules.SpringRelaySeconds, Extra = SpringSlow });
         }
 
         private void WindBurst(double perPoint)
@@ -211,19 +176,8 @@ namespace Game.Core.Sim
             S.LoopTicks = 0;
             S.Loops++;
             var window = LoopWindow;
-            if (!InParty)
-            {
-                var recent = _state.DamageWindow.Last(_state.TotalDamage, Ticks(window));
-                _combat.DirectHit(recent * (LoopShare * _rules.LoopSolo));
-            }
-            else
-            {
-                _state.TraitLoopSeconds = window;
-                _state.TraitLoopShare = LoopShare + Positive(ClockwrightStats.LoopParty);
-                if (Flag(ClockwrightStats.LoopOwn))
-                    _combat.DirectHit(_state.DamageWindow.Last(_state.TotalDamage, Ticks(window)) * (LoopShare * _rules.LoopSolo));
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Loop, To = TraitRelay.AllSlots, Value = _state.TraitLoopShare, Seconds = window });
-            }
+            var recent = _state.DamageWindow.Last(_state.TotalDamage, Ticks(window));
+            _combat.DirectHit(recent * (LoopShare * _rules.LoopSolo));
             if (!Flag(ClockwrightStats.LoopStop) || !_state.FightingBoss)
                 return;
             if (_state.SharedEnemy)
@@ -242,15 +196,6 @@ namespace Game.Core.Sim
                 _state.TraitPartyResourceGift = System.Math.Max(_state.TraitPartyResourceGift, _rules.GearResource);
             }
             CutCooldowns(cut, reset);
-            if (InParty)
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.GearTick, To = TraitRelay.AllSlots, Seconds = cut + Positive(ClockwrightStats.GearParty), Extra = reset ? 1 : 0 });
-        }
-
-        private void ShareCut(double seconds, bool reset)
-        {
-            CutCooldowns(seconds, reset);
-            if (InParty)
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.GearTick, To = TraitRelay.AllSlots, Seconds = seconds, Extra = reset ? 1 : 0 });
         }
 
         private void TickIdleGears()
@@ -264,12 +209,6 @@ namespace Game.Core.Sim
                 return;
             S.IdleTicks = 0;
             TickGears(GearPower);
-        }
-
-        private void CallGears()
-        {
-            S.CallTicks = Ticks(_rules.GearCallSeconds / 3);
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Gears, To = TraitRelay.AllSlots, Seconds = _rules.GearCallSeconds });
         }
 
         private void NoteOwnCast()
@@ -286,12 +225,7 @@ namespace Game.Core.Sim
             if (now - S.LastMeshTick < Ticks(_rules.GearMeshCooldownSeconds))
                 return;
             var casters = now - S.OwnCastTick <= window ? 1 : 0;
-            for (var i = 0; i < ClockwrightState.Slots; i++)
-            {
-                if (now - S.CogTicks[i] <= window)
-                    casters++;
-            }
-            if (!InParty && now - S.PreviousOwnCastTick <= window && casters > 0)
+            if (now - S.PreviousOwnCastTick <= window && casters > 0)
                 casters++;
             if (casters < 2)
                 return;
@@ -299,26 +233,7 @@ namespace Game.Core.Sim
             S.Meshes++;
             S.OwnCastTick = long.MinValue / 2;
             S.PreviousOwnCastTick = long.MinValue / 2;
-            for (var i = 0; i < ClockwrightState.Slots; i++)
-                S.CogTicks[i] = long.MinValue / 2;
             TickGears(GearPower * (Flag(ClockwrightStats.GearMesh) ? 2 : 1));
-        }
-
-        private void ReportCog()
-        {
-            if (Boons.GearTicks <= 0 || Boons.GearOwner < 0)
-                return;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Cog, To = (byte)Boons.GearOwner, Count = 1 });
-        }
-
-        private void TickBoons()
-        {
-            if (Boons.GearTicks > 0)
-                Boons.GearTicks--;
-            if (Boons.SpringTicks > 0)
-                Boons.SpringTicks--;
-            if (Boons.LoopTicks > 0)
-                Boons.LoopTicks--;
         }
 
         private void TraitHit(double multiplier)

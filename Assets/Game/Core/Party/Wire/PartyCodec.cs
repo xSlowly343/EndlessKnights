@@ -5,7 +5,7 @@ namespace Game.Core.Party.Wire
         public const int MaxPacketBytes = 256;
 
         public static PartyMessageKind KindOf(byte[] buffer, int length) =>
-            length > 0 && buffer[0] <= (byte)PartyMessageKind.TraitLight ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
+            length > 0 && buffer[0] <= (byte)PartyMessageKind.PartyLoadout ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
 
         public static int Encode(byte[] buffer, HelloMessage message)
         {
@@ -125,62 +125,6 @@ namespace Game.Core.Party.Wire
         {
             var reader = Open(buffer, length, PartyMessageKind.PartyLoadout);
             message = PartyLoadoutMessage.Read(ref reader);
-            return reader.Complete;
-        }
-
-        public static int Encode(byte[] buffer, SpiritCallMessage message)
-        {
-            var writer = Start(buffer, PartyMessageKind.SpiritCall);
-            message.Write(ref writer);
-            return writer.Length;
-        }
-
-        public static bool TryDecode(byte[] buffer, int length, out SpiritCallMessage message)
-        {
-            var reader = Open(buffer, length, PartyMessageKind.SpiritCall);
-            message = SpiritCallMessage.Read(ref reader);
-            return reader.Complete;
-        }
-
-        public static int Encode(byte[] buffer, NetPullMessage message)
-        {
-            var writer = Start(buffer, PartyMessageKind.NetPull);
-            message.Write(ref writer);
-            return writer.Length;
-        }
-
-        public static bool TryDecode(byte[] buffer, int length, out NetPullMessage message)
-        {
-            var reader = Open(buffer, length, PartyMessageKind.NetPull);
-            message = NetPullMessage.Read(ref reader);
-            return reader.Complete;
-        }
-
-        public static int Encode(byte[] buffer, TraitRelayMessage message)
-        {
-            var writer = Start(buffer, PartyMessageKind.TraitRelay);
-            message.Write(ref writer);
-            return writer.Length;
-        }
-
-        public static bool TryDecode(byte[] buffer, int length, out TraitRelayMessage message)
-        {
-            var reader = Open(buffer, length, PartyMessageKind.TraitRelay);
-            message = TraitRelayMessage.Read(ref reader);
-            return reader.Complete;
-        }
-
-        public static int Encode(byte[] buffer, TraitLightMessage message)
-        {
-            var writer = Start(buffer, PartyMessageKind.TraitLight);
-            message.Write(ref writer);
-            return writer.Length;
-        }
-
-        public static bool TryDecode(byte[] buffer, int length, out TraitLightMessage message)
-        {
-            var reader = Open(buffer, length, PartyMessageKind.TraitLight);
-            message = TraitLightMessage.Read(ref reader);
             return reader.Complete;
         }
 

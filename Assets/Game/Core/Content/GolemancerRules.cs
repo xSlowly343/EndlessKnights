@@ -7,9 +7,6 @@ namespace Game.Core.Content
         public int SealHits { get; private set; } = 100;
         public int SealHitsMin { get; private set; } = 20;
         public double GolemSeconds { get; private set; } = 20;
-        public double CornerBonus { get; private set; } = 0.25;
-        public int CornerHits { get; private set; } = 25;
-        public double CornerOfferSeconds { get; private set; } = 5;
         public double CrumbleMultiplier { get; private set; } = 5;
         public double CrystalPenalty { get; private set; } = 0.2;
         public double GuardStopSeconds { get; private set; } = 2;
@@ -48,9 +45,6 @@ namespace Game.Core.Content
                 SealHits = seal.Field("hits").AsInt(1, 100_000),
                 SealHitsMin = seal.Field("hitsMin").AsInt(1, 100_000),
                 GolemSeconds = seal.Field("golemSeconds").AsNumber(0.1, 3600),
-                CornerBonus = seal.Field("cornerBonus").AsNumber(0, 10),
-                CornerHits = seal.Field("cornerHits").AsInt(1, 10_000),
-                CornerOfferSeconds = seal.Field("cornerOfferSeconds").AsNumber(0.1, 600),
                 CrumbleMultiplier = seal.Field("crumbleMultiplier").AsNumber(0, 1000),
                 CrystalPenalty = seal.Field("crystalPenalty").AsNumber(0, 1),
                 GuardStopSeconds = seal.Field("guardStopSeconds").AsNumber(0, 600),

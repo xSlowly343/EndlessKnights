@@ -270,13 +270,8 @@ namespace Game.Core.Sim
         public CartomancerState Cartomancer { get; } = new CartomancerState();
         public HerbwitchState Herbwitch { get; } = new HerbwitchState();
         public GolemancerState Golemancer { get; } = new GolemancerState();
-        public bool PartyAllHitting { get; set; }
         public AllyBoons Boons { get; } = new AllyBoons();
-        public TraitRelays TraitRelays { get; } = new TraitRelays();
-        public double TraitLight { get; set; } = -1;
         public TraitEnemyEffects TraitEnemyEffects { get; } = new TraitEnemyEffects();
-        public int TraitSpiritCalls { get; set; }
-        public double TraitSpiritHp { get; set; }
         public bool EnemySpirit { get; set; }
         public double TraitPartyDamage { get; set; }
         public double TraitPartyCritChance { get; set; }
@@ -290,8 +285,6 @@ namespace Game.Core.Sim
         public double TraitShareCritMultiplier { get; set; }
         public double TraitShareGold { get; set; }
         public double TraitTimerSlow { get; set; }
-        public double TraitLoopSeconds { get; set; }
-        public double TraitLoopShare { get; set; }
         public bool StepTensionBlocked { get; set; }
         public int StunTicks { get; set; }
         public int HunterMarkTicks { get; set; }

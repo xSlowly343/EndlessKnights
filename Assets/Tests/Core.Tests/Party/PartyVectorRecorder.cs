@@ -45,15 +45,6 @@ namespace Game.Core.Tests.Party
             Record($"\"op\": \"effect\", \"id\": {id}, \"damageTaken\": {Number(damageTaken)}, \"seconds\": {Number(seconds)}, \"timerSlow\": {Number(timerSlow)}, \"owner\": {owner}",
                 () => _encounter.ApplyEnemyEffect(id, damageTaken, seconds, owner, timerSlow));
 
-        public bool Spirit(int count, double hp) =>
-            Record($"\"op\": \"spirit\", \"count\": {count}, \"hp\": {Number(hp)}", () => _encounter.CallSpirit(count, hp));
-
-        public bool Light(double light) =>
-            Record($"\"op\": \"light\", \"enemyId\": {_encounter.EnemyId}, \"light\": {Number(light)}", () => _encounter.SetLight(_encounter.EnemyId, light));
-
-        public bool Pull(int id, double seconds) =>
-            Record($"\"op\": \"pull\", \"id\": {id}, \"seconds\": {Number(seconds)}", () => _encounter.ExtendEnemyEffect(id, seconds));
-
         public bool EndEffect(int id, int owner) =>
             Record($"\"op\": \"endEffect\", \"id\": {id}, \"owner\": {owner}", () => _encounter.EndEnemyEffect(id, owner));
 
@@ -149,9 +140,6 @@ namespace Game.Core.Tests.Party
                 .Append(", \"enemiesOnStage\": ").Append(e.EnemiesOnStage)
                 .Append(", \"riftStagesCleared\": ").Append(e.RiftStagesCleared)
                 .Append(", \"shieldFloor\": ").Append(Number(e.ShieldFloor))
-                .Append(", \"enemySpirit\": ").Append(Bool(e.EnemySpirit))
-                .Append(", \"spiritCalls\": ").Append(e.SpiritCalls)
-                .Append(", \"enemyLight\": ").Append(Number(e.EnemyLight))
                 .Append(", \"history\": [").Append(e.History.Killed).Append(", ").Append(e.History.Bosses).Append(", ").Append(e.History.Rewards0).Append(", ")
                 .Append(e.History.Rewards1).Append(", ").Append(e.History.Rewards2).Append(", ").Append(e.History.Rewards3).Append("]")
                 .Append(", \"members\": [");
@@ -178,8 +166,7 @@ namespace Game.Core.Tests.Party
                     .Append(Number(partyEvent.Share2)).Append(", ").Append(Number(partyEvent.Share3)).Append("]")
                     .Append(", \"rewarded\": ").Append(partyEvent.Rewarded)
                     .Append(", \"loop\": ").Append(Number(partyEvent.Loop))
-                    .Append(", \"saved\": ").Append(Number(partyEvent.SavedSeconds))
-                    .Append(", \"spirit\": ").Append(Bool(partyEvent.Spirit)).Append(" }");
+                    .Append(", \"saved\": ").Append(Number(partyEvent.SavedSeconds)).Append(" }");
             }
             builder.Append("] }");
             e.Events.Clear();

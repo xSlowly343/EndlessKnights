@@ -6,7 +6,6 @@ namespace Game.Core.Content
 
         public int KnotHits { get; private set; } = 25;
         public int KnotHitsMin { get; private set; } = 5;
-        public double AllyHitShare { get; private set; } = 1;
         public double KnotSeventh { get; private set; } = 2;
         public double KnotTriple { get; private set; } = 3;
         public double KnotSlow { get; private set; } = 0.05;
@@ -17,10 +16,6 @@ namespace Game.Core.Content
         public double KnotEffectSeconds { get; private set; } = 2;
         public int NameHits { get; private set; } = 300;
         public int NameHitsMin { get; private set; } = 30;
-        public int SyllableHits { get; private set; } = 50;
-        public int SyllableHitsMin { get; private set; } = 5;
-        public double Syllable { get; private set; } = 0.05;
-        public double NameCallSeconds { get; private set; } = 30;
         public double NameBlast { get; private set; } = 20;
         public double NameTimeSeconds { get; private set; } = 5;
         public double NameEffectSeconds { get; private set; } = 2;
@@ -50,7 +45,6 @@ namespace Game.Core.Content
             {
                 KnotHits = knots.Field("hits").AsInt(1, 10_000),
                 KnotHitsMin = knots.Field("hitsMin").AsInt(1, 10_000),
-                AllyHitShare = knots.Field("allyHitShare").AsNumber(0, 10),
                 KnotSeventh = knots.Field("seventh").AsNumber(1, 100),
                 KnotTriple = knots.Field("triple").AsNumber(1, 100),
                 KnotSlow = knots.Field("slow").AsNumber(0, 1),
@@ -61,10 +55,6 @@ namespace Game.Core.Content
                 KnotEffectSeconds = knots.Field("effectSeconds").AsNumber(0.1, 60),
                 NameHits = name.Field("hits").AsInt(1, 100_000),
                 NameHitsMin = name.Field("hitsMin").AsInt(1, 100_000),
-                SyllableHits = name.Field("syllableHits").AsInt(1, 255),
-                SyllableHitsMin = name.Field("syllableHitsMin").AsInt(1, 255),
-                Syllable = name.Field("syllable").AsNumber(0, 10),
-                NameCallSeconds = name.Field("callSeconds").AsNumber(1, 3600),
                 NameBlast = name.Field("blast").AsNumber(0, 1000),
                 NameTimeSeconds = name.Field("timeSeconds").AsNumber(0, 600),
                 NameEffectSeconds = name.Field("effectSeconds").AsNumber(0.1, 60),

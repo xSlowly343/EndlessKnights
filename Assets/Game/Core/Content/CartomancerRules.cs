@@ -17,8 +17,6 @@ namespace Game.Core.Content
         public double SwordsBoost { get; private set; } = 2;
         public double OtherPenalty { get; private set; } = 0.5;
         public double HandBonus { get; private set; } = 0.03;
-        public int DealHits { get; private set; } = 30;
-        public double DealOfferSeconds { get; private set; } = 5;
         public double TermShare { get; private set; } = 0.6;
         public double TermMinSeconds { get; private set; } = 5;
         public double LongTerm { get; private set; } = 1.3;
@@ -67,8 +65,6 @@ namespace Game.Core.Content
                 SwordsBoost = spread.Field("swordsBoost").AsNumber(1, 100),
                 OtherPenalty = spread.Field("otherPenalty").AsNumber(0, 1),
                 HandBonus = spread.Field("handBonus").AsNumber(0, 10),
-                DealHits = spread.Field("dealHits").AsInt(1, 10_000),
-                DealOfferSeconds = spread.Field("dealOfferSeconds").AsNumber(0.1, 600),
                 TermShare = forecast.Field("termShare").AsNumber(0.01, 1),
                 TermMinSeconds = forecast.Field("termMinSeconds").AsNumber(0, 600),
                 LongTerm = forecast.Field("longTerm").AsNumber(1, 10),

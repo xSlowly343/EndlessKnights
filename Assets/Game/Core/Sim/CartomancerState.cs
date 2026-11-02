@@ -14,10 +14,8 @@ namespace Game.Core.Sim
         public int DrawHits { get; set; }
         public long Draws { get; set; }
         public long Arcana { get; set; }
-        public long AllyCards { get; set; }
         public bool CoinsApplied { get; set; }
         public int ArcanaSecondTicks { get; set; }
-        public int DealOfferTicks { get; set; }
         public int TermTicks { get; set; }
         public double GoldAdded { get; set; }
         public bool ExactPaid { get; set; }

@@ -11,9 +11,6 @@ namespace Game.Core.Sim
         public int SecondGolemTicks { get; set; }
         public double GolemPower { get; set; }
         public double GolemCarry { get; set; }
-        public int Corners { get; set; }
-        public long CornersReceived { get; set; }
-        public int CornerOfferTicks { get; set; }
         public int Runes { get; set; }
         public int RuneHits { get; set; }
         public double EternalCarry { get; set; }
@@ -24,7 +21,6 @@ namespace Game.Core.Sim
         public int MinorHits { get; set; }
         public int Minors { get; set; }
         public double MinorCarry { get; set; }
-        public long MinorsSent { get; set; }
         public bool Spawned { get; set; }
 
         public void OnSpawn() => Spawned = true;

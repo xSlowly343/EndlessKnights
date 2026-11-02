@@ -70,17 +70,13 @@ namespace Game.Core.Sim
 
         public int NameHits => System.Math.Max(_rules.NameHitsMin, (int)System.Math.Round(_rules.NameHits + _hero.Value(WhispererStats.NameHits, 0)));
 
-        public int SyllableHits => System.Math.Max(_rules.SyllableHitsMin, System.Math.Min(byte.MaxValue, (int)System.Math.Round(_rules.SyllableHits + _hero.Value(WhispererStats.SyllableHits, 0))));
-
-        public int Participants => InParty ? CountBits(S.Syllables) + (S.BossHits >= SyllableHits ? 1 : 0) : 0;
-
         public double NameBonus
         {
             get
             {
                 if (!Name || !_state.FightingBoss)
                     return 0;
-                var full = (NamePower + (_rules.Syllable + Positive(WhispererStats.NameParty)) * Participants) * CurseMultiplier;
+                var full = NamePower * CurseMultiplier;
                 if (S.Named)
                     return full;
                 return Flag(WhispererStats.NameProgress) ? full * 0.5 * System.Math.Min(1, S.BossHits / (double)NameHits) : 0;
@@ -100,12 +96,6 @@ namespace Game.Core.Sim
             if (!On || _state.SharedEnemy)
                 return 1;
             return (1 + KnotDamageTaken) * (1 + NameBonus) * (1 + CurseShare);
-        }
-
-        public void AddAllyHits(double hits)
-        {
-            if (Knots && hits > 0)
-                AddKnotProgress(hits * _rules.AllyHitShare);
         }
 
         public void AfterStrike()
@@ -147,7 +137,6 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            TickBoons();
             if (!On)
                 return;
             if (S.SpawnPending)
@@ -156,8 +145,6 @@ namespace Game.Core.Sim
                 S.Curse = 0;
             if (Vow)
                 TickVow();
-            if (Name && InParty && _state.FightingBoss && S.CallTicks-- <= 0)
-                CallName();
             _state.TraitShareCritMultiplier = KnotCritMultiplier;
             _state.TraitShareGold = KnotGold;
             _state.TraitTimerSlow = _state.SharedEnemy ? 0 : KnotTimerSlow;
@@ -166,15 +153,7 @@ namespace Game.Core.Sim
             ShareCurse();
         }
 
-        public void ReceiveSyllable(int slot)
-        {
-            if (!Name || !_state.FightingBoss || slot < 0 || slot >= 30)
-                return;
-            S.Syllables |= 1 << slot;
-            TryName();
-        }
-
-        public void ReceiveHushHits(int count)
+        private void ReceiveHushHits(int count)
         {
             if (!Vow || count <= 0)
                 return;
@@ -190,12 +169,10 @@ namespace Game.Core.Sim
                 S.Knots = 0;
             S.KnotHits = 0;
             S.BossHits = 0;
-            S.Syllables = 0;
             S.Named = false;
             S.Grow = 0;
             S.Curse = 0;
             S.CurseTicks = 0;
-            S.CallTicks = 0;
             _knotResendTicks = 0;
             _nameResendTicks = 0;
             _curseResendTicks = 0;
@@ -242,9 +219,7 @@ namespace Game.Core.Sim
         {
             if (S.Named)
                 return;
-            var others = System.Math.Max(0, _state.PartyMembers - 1);
-            var chorus = InParty && others > 0 && S.BossHits >= SyllableHits && CountBits(S.Syllables) >= others;
-            if (S.BossHits >= NameHits || chorus)
+            if (S.BossHits >= NameHits)
                 Speak();
         }
 
@@ -262,18 +237,6 @@ namespace Game.Core.Sim
                 _state.BossTicksLeft += Ticks(_rules.NameTimeSeconds);
             else
                 _state.TraitEnemyEffects.Add(NameTimeEffect, 0, _rules.NameTimeSeconds, 1);
-        }
-
-        private void CallName()
-        {
-            S.CallTicks = Ticks(_rules.NameCallSeconds / 3);
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.NameCall,
-                To = TraitRelay.AllSlots,
-                Every = (byte)SyllableHits,
-                Seconds = _rules.NameCallSeconds
-            });
         }
 
         private void SilentStrike()
@@ -306,19 +269,7 @@ namespace Game.Core.Sim
         {
             S.HushesSent += count;
             var power = HushPower * (1 + Positive(WhispererStats.HushParty));
-            if (!InParty)
-            {
-                Boons.Hush(count * (Flag(WhispererStats.HushAll) ? 2 : 1), power, -1, _rules.HushMax);
-                return;
-            }
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.Hush,
-                To = Flag(WhispererStats.HushAll) ? TraitRelay.AllSlots : LanternbearerMechanics.AnyAlly,
-                Count = (byte)System.Math.Min(byte.MaxValue, count),
-                Max = (byte)System.Math.Min(byte.MaxValue, _rules.HushMax),
-                Value = power
-            });
+            Boons.Hush(count * (Flag(WhispererStats.HushAll) ? 2 : 1), power, _rules.HushMax);
         }
 
         private void Curse(double share, double seconds)
@@ -355,44 +306,14 @@ namespace Game.Core.Sim
             _state.TraitEnemyEffects.Add(CurseEffect, CurseShare, _rules.CurseEffectSeconds);
         }
 
-        private void TickBoons()
-        {
-            if (S.AllySpawnPending)
-            {
-                S.AllySpawnPending = false;
-                Boons.NameHits = 0;
-                Boons.SyllableGiven = false;
-            }
-            if (Boons.NameTicks > 0)
-                Boons.NameTicks--;
-            if (Boons.SyllableOwed)
-            {
-                Boons.SyllableOwed = false;
-                if (Boons.NameOwner >= 0)
-                    _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Syllable, To = (byte)Boons.NameOwner, Count = 1 });
-            }
-            if (Boons.HushesOwed <= 0 || Boons.HushOwner < 0)
-                return;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.HushHit, To = (byte)Boons.HushOwner, Count = (byte)System.Math.Min(byte.MaxValue, Boons.HushesOwed) });
-            Boons.HushesOwed = 0;
-        }
-
         private void StrikeBoons()
         {
-            if (Boons.NameTicks > 0 && Boons.NameOwner >= 0 && _state.FightingBoss && !Boons.SyllableGiven && ++Boons.NameHits >= Boons.NameEvery)
-            {
-                Boons.SyllableGiven = true;
-                Boons.SyllableOwed = true;
-            }
             if (Boons.Hushes <= 0)
                 return;
             Boons.Hushes--;
             Boons.HushHits++;
             TraitHit(Boons.HushPower);
-            if (Boons.HushOwner < 0)
-                ReceiveHushHits(1);
-            else
-                Boons.HushesOwed++;
+            ReceiveHushHits(1);
         }
 
         private void TraitHit(double multiplier)
@@ -403,14 +324,6 @@ namespace Game.Core.Sim
             _combat.Supporting = null;
             _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Keyboard);
             _combat.Supporting = supporting;
-        }
-
-        private static int CountBits(int mask)
-        {
-            var count = 0;
-            for (var bits = mask; bits != 0; bits &= bits - 1)
-                count++;
-            return count;
         }
 
         private static int Ticks(double seconds) => (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);

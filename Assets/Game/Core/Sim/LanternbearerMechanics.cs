@@ -6,7 +6,6 @@ namespace Game.Core.Sim
 {
     public sealed class LanternbearerMechanics
     {
-        public const byte AnyAlly = 254;
         public static readonly int LightEffect = GemDef.NetIdOf("trait_lantern_light");
 
         private readonly GameState _state;
@@ -73,12 +72,6 @@ namespace Game.Core.Sim
 
         public bool Forbids(GemDef skill) => Beacon && Flag(LanternbearerStats.BeaconMute) && !(skill.Skill?.Effect is AuraEffect);
 
-        public void AddAllyHits(double hits)
-        {
-            if (Light && hits > 0)
-                AddLight(hits * LightPerHit);
-        }
-
         public void AfterStrike(bool crit)
         {
             StrikeBoons(crit);
@@ -130,11 +123,11 @@ namespace Game.Core.Sim
             if (S.GlowTicks > 0 && --S.GlowTicks == 0)
                 S.GlowPower = 0;
             _state.TraitPartyDamage = S.GlowPower + (S.StrikeTicks > 0 ? _rules.BeaconStrike : 0);
-            _state.TraitLight = Light ? S.Light : -1;
+            S.Fireflies = Boons.Fireflies;
             ShareLight();
         }
 
-        public void ReceiveSparks(int sparks)
+        private void ReceiveSparks(int sparks)
         {
             if (On && Fireflies && sparks > 0)
                 _state.PendingResource += sparks * SparkOil;
@@ -214,22 +207,7 @@ namespace Game.Core.Sim
             S.FirefliesSent += count;
             var every = Flag(LanternbearerStats.SparkEvery) ? _rules.SparkEvery : 0;
             var burst = Flag(LanternbearerStats.FireflyBurst) ? _rules.BurstMultiplier : 0;
-            if (!InParty)
-            {
-                Boons.Land(count, FireflyTicks, SparkPower, every, burst, -1, FireflyMax);
-                return;
-            }
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.Firefly,
-                To = AnyAlly,
-                Count = (byte)System.Math.Min(byte.MaxValue, count),
-                Every = (byte)System.Math.Min(byte.MaxValue, every),
-                Max = (byte)System.Math.Min(byte.MaxValue, FireflyMax),
-                Value = SparkPower,
-                Seconds = FireflyTicks * GameLoop.TickSeconds,
-                Extra = burst
-            });
+            Boons.Land(count, FireflyTicks, SparkPower, every, burst, FireflyMax);
         }
 
         private void Flash()
@@ -241,16 +219,6 @@ namespace Game.Core.Sim
             CutCooldowns(cut);
             if (Flag(LanternbearerStats.BeaconStrike))
                 S.StrikeTicks = Ticks(_rules.BeaconStrikeSeconds);
-            if (!InParty)
-                return;
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.Beacon,
-                To = TraitRelay.AllSlots,
-                Count = (byte)BeaconCharges,
-                Value = BeaconStrength,
-                Seconds = cut
-            });
         }
 
         public void CutCooldowns(double seconds)
@@ -299,10 +267,7 @@ namespace Game.Core.Sim
                 return;
             Boons.Sparks++;
             TraitHit(Boons.SparkPower);
-            if (Boons.FireflyOwner < 0)
-                ReceiveSparks(1);
-            else
-                Boons.SparksOwed++;
+            ReceiveSparks(1);
         }
 
         private void TraitHit(double multiplier)

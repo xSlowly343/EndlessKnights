@@ -117,16 +117,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void AlliesHitsLightTheEnemyToo()
-        {
-            var (loop, input) = Hero(Flat(LanternbearerStats.LightPower, 0.35));
-            loop.Combat.Lanternbearer.AddAllyHits(30);
-            Assert.That(loop.State.Lanternbearer.Light, Is.EqualTo(0.3).Within(1e-9));
-            loop.Tick();
-            Assert.That(loop.State.TraitLight, Is.EqualTo(0.3).Within(1e-9));
-        }
-
-        [Test]
         public void ColossusLightNoonOilAndCarryAreRules()
         {
             var (boss, _) = Hero(Flat(LanternbearerStats.LightPower, 0.35), Flat(LanternbearerStats.LightBoss, 1), Flat(LanternbearerStats.LightOil, 1));
@@ -161,14 +151,10 @@ namespace Game.Core.Tests.Sim
             var (loop, input) = Hero(HeroClass.Lanternbearer, true, Flat(LanternbearerStats.SparkPower, 2));
             Hits(loop, input, Rules.FireflyHits);
             Assert.That(loop.State.Boons.Fireflies, Is.EqualTo(1));
-            Assert.That(loop.State.Boons.FireflyOwner, Is.EqualTo(-1));
 
             var damage = Hit(loop, input);
             Assert.That(damage.Count, Is.EqualTo(2));
             Assert.That(loop.State.Boons.Sparks, Is.GreaterThanOrEqualTo(1));
-            var pending = loop.State.PendingResource;
-            loop.Combat.Lanternbearer.ReceiveSparks(2);
-            Assert.That(loop.State.PendingResource - pending, Is.EqualTo(2 * Rules.SparkOil).Within(1e-9));
         }
 
         [Test]
@@ -194,19 +180,6 @@ namespace Game.Core.Tests.Sim
             var before = loop.State.Boons.Sparks;
             Hits(loop, input, Rules.SparkEvery);
             Assert.That(loop.State.Boons.Sparks - before, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void InAPartyAFireflyFliesToAnAlly()
-        {
-            var (loop, input) = Hero(Flat(LanternbearerStats.SparkPower, 2));
-            loop.State.SharedEnemy = true;
-            loop.State.PartyMembers = 2;
-            Cast(loop, "lanternbearer_path_2");
-            Assert.That(loop.State.Boons.Fireflies, Is.Zero);
-            Assert.That(loop.State.TraitRelays.Count, Is.EqualTo(1));
-            Assert.That(loop.State.TraitRelays[0].Kind, Is.EqualTo(TraitRelayKind.Firefly));
-            Assert.That(loop.State.TraitRelays[0].Count, Is.EqualTo(3));
         }
 
         [Test]
@@ -243,20 +216,6 @@ namespace Game.Core.Tests.Sim
             var mute = Equip(silent, "lanternbearer_strong_1");
             silent.State.Resource = 1000;
             Assert.That(silent.Skills.TryCast(mute), Is.EqualTo(CastResult.TraitCastsIt));
-        }
-
-        [Test]
-        public void InAPartyTheFlashGoesToEveryAlly()
-        {
-            var (loop, _) = Hero(Flat(LanternbearerStats.BeaconPower, 0.5), Flat(LanternbearerStats.BeaconStrike, 1));
-            loop.State.SharedEnemy = true;
-            loop.State.PartyMembers = 3;
-            Cast(loop, "lanternbearer_path_3");
-            loop.Tick();
-            Assert.That(loop.State.TraitRelays.Count, Is.EqualTo(1));
-            Assert.That(loop.State.TraitRelays[0].Kind, Is.EqualTo(TraitRelayKind.Beacon));
-            Assert.That(loop.State.TraitRelays[0].To, Is.EqualTo(TraitRelay.AllSlots));
-            Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(Rules.BeaconStrike).Within(1e-9));
         }
 
         [Test]

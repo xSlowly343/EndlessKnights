@@ -8,11 +8,9 @@ namespace Game.Core.Content
         public double SpringPenalty { get; private set; } = 0.1;
         public double SpringDrainPerSecond { get; private set; } = 1;
         public double SpringWindPerHit { get; private set; } = 0.5;
-        public double SpringAllyWind { get; private set; } = 0.1;
         public double SpringFullAbove { get; private set; } = 0.95;
         public double SpringFullSlow { get; private set; } = 0.15;
         public double SpringStrike { get; private set; } = 0.2;
-        public double SpringRelaySeconds { get; private set; } = 3;
         public double SpringBurstEverySeconds { get; private set; } = 30;
         public double SpringBurstPerWind { get; private set; } = 0.2;
         public double LoopEverySeconds { get; private set; } = 40;
@@ -30,7 +28,6 @@ namespace Game.Core.Content
         public double GearMeshCooldownSeconds { get; private set; } = 5;
         public double GearResource { get; private set; } = 5;
         public int GearResetEvery { get; private set; } = 10;
-        public double GearCallSeconds { get; private set; } = 30;
         public double GearIdleSeconds { get; private set; } = 10;
 
         public static ClockwrightRules Read(ContentNode node)
@@ -44,11 +41,9 @@ namespace Game.Core.Content
                 SpringPenalty = spring.Field("penalty").AsNumber(0, 1),
                 SpringDrainPerSecond = spring.Field("drainPerSecond").AsNumber(0, 100),
                 SpringWindPerHit = spring.Field("windPerHit").AsNumber(0, 100),
-                SpringAllyWind = spring.Field("allyWind").AsNumber(0, 100),
                 SpringFullAbove = spring.Field("fullAbove").AsNumber(0, 1),
                 SpringFullSlow = spring.Field("fullSlow").AsNumber(0, 1),
                 SpringStrike = spring.Field("strike").AsNumber(0, 10),
-                SpringRelaySeconds = spring.Field("relaySeconds").AsNumber(0.5, 60),
                 SpringBurstEverySeconds = spring.Field("burstEverySeconds").AsNumber(1, 3600),
                 SpringBurstPerWind = spring.Field("burstPerWind").AsNumber(0, 100),
                 LoopEverySeconds = loop.Field("everySeconds").AsNumber(1, 3600),
@@ -66,7 +61,6 @@ namespace Game.Core.Content
                 GearMeshCooldownSeconds = gears.Field("meshCooldownSeconds").AsNumber(0, 600),
                 GearResource = gears.Field("resource").AsNumber(0, 100),
                 GearResetEvery = gears.Field("resetEvery").AsInt(1, 1000),
-                GearCallSeconds = gears.Field("callSeconds").AsNumber(1, 3600),
                 GearIdleSeconds = gears.Field("idleSeconds").AsNumber(1, 3600)
             };
         }

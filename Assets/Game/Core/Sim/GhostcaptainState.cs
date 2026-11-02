@@ -19,9 +19,6 @@ namespace Game.Core.Sim
         public int ParrotCasts { get; set; }
         public long Repeats { get; set; }
         public double LastSkillPower { get; set; }
-        public int PerchSlot { get; set; } = -1;
-        public int PerchTicks { get; set; }
-        public int OfferTicks { get; set; }
 
         public void OnSpawn()
         {

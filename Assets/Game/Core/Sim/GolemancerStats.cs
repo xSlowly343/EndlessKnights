@@ -12,7 +12,6 @@ namespace Game.Core.Sim
         public static readonly StatId SealGuard = new StatId("sealGuard");
         public static readonly StatId SealTwo = new StatId("sealTwo");
         public static readonly StatId SealTitan = new StatId("sealTitan");
-        public static readonly StatId SealParty = new StatId("sealParty");
 
         public static readonly StatId EternalPower = new StatId("eternalPower");
         public static readonly StatId EternalRuneHits = new StatId("eternalRuneHits");

@@ -59,13 +59,6 @@ namespace Game.Core.Party
         private int _auraBoundGem;
         private int _sentMarks = -1;
         private int _traitTimerTicks;
-        private uint _nettedEnemy;
-        private int _nextFireflySlot;
-        private float _sentLight = -1;
-        private uint _sentLightEnemy;
-        private int _lightTicks;
-        private long _lastCrits;
-        private long _lastPullTick = long.MinValue / 2;
         private double _traitTimerSent;
 
         public const int NoReaction = -1;
@@ -287,11 +280,6 @@ namespace Game.Core.Party
                 ShareTraitTimer();
                 ShareTraitResource();
                 ShareTraitEffects();
-                ShareTraitLoop();
-                ShareTraitRelays();
-                ShareLight();
-                ShareSpiritCalls();
-                WatchNet();
                 ShareReactions();
                 ShareMarks(Status == PartyLink.Linked);
             }
@@ -327,10 +315,6 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     if (InParty && resource.Slot != _ownSlot)
                         _loop.Resource.GiftFromAlly(System.Math.Min(resource.Amount, _rules.Buffs.AllyResourceMax));
-                    break;
-                case PartyMessageKind.TraitRelay when PartyCodec.TryDecode(_in, length, out TraitRelayMessage trait):
-                    if (InParty && trait.From != _ownSlot && trait.Reaches(_ownSlot))
-                        OnTraitRelay(trait);
                     break;
                 case PartyMessageKind.FocusRelay when PartyCodec.TryDecode(_in, length, out FocusRelayMessage relay):
                     if (InParty)
@@ -432,18 +416,6 @@ namespace Game.Core.Party
             _state = state;
             _stateArrivalTick = _tick;
             _sharesSinceState = 0;
-            if (InParty)
-            {
-                var allyHits = AllyHits(state);
-                _loop.Combat.Lanternbearer.AddAllyHits(allyHits);
-                _loop.Combat.Whisperer.AddAllyHits(allyHits);
-                _loop.Combat.Clockwright.AddAllyHits(allyHits);
-                _loop.Combat.Dowser.AddAllyHits(allyHits);
-                _loop.Combat.Soulbinder.AddAllyHits(allyHits);
-                _loop.Combat.Cartomancer.AddAllyHits(allyHits);
-                _loop.Combat.Golemancer.AddAllyHits(allyHits);
-            }
-            _loop.State.PartyAllHitting = InParty && AllAlliesHitting(state);
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 if (slot != _ownSlot && InParty)
@@ -485,17 +457,6 @@ namespace Game.Core.Party
             _rewardedUpTo = _localEnemyId;
             Settle(_localEnemyId);
             _loop.Stages.SkipLinkedKill();
-        }
-
-        private int AllyHits(in EncounterStateMessage state)
-        {
-            var hits = 0;
-            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
-            {
-                if (slot != _ownSlot)
-                    hits += state.Hits(slot);
-            }
-            return hits;
         }
 
         private void AbandonLocalEnemy()
@@ -550,10 +511,6 @@ namespace Game.Core.Party
             _contributionKills++;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 _contribution[slot] += killed.Contribution(slot);
-            RewardDream(killed);
-            if (TopContributor(killed))
-                _loop.Combat.Dowser.OnTopKill();
-            _loop.Combat.Mothcaller.OnPartyKill(TopSlot(killed), _ownSlot);
         }
 
         private void EndLocalEnemy(bool bossFailed) => EndLocalEnemy(bossFailed, LocallyPaid());
@@ -682,7 +639,6 @@ namespace Game.Core.Party
             _localStage = _loop.State.Stage;
             var weakened = _state.EnemyId == enemyId && _state.Weakened;
             _unit = _loop.Stages.SpawnLinked(boss, seed, barFull, killsOnStage, farming, bossTicksLeft, weakened, weakened ? _state.WeakenedGold : 0, _state.WaveStage);
-            _loop.State.EnemySpirit = _state.EnemyId == enemyId && _state.Spirit;
         }
 
         private void HitWithChain()
@@ -852,386 +808,6 @@ namespace Game.Core.Party
                 }));
             }
             effects.Clear();
-        }
-
-        private void ShareTraitLoop()
-        {
-            var seconds = _loop.State.TraitLoopSeconds;
-            if (!(seconds > 0))
-                return;
-            _loop.State.TraitLoopSeconds = 0;
-            SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
-            {
-                EffectId = ClockwrightMechanics.LoopEffect,
-                OnEnemy = true,
-                RepeatSeconds = seconds,
-                Strength = _loop.State.TraitLoopShare
-            }));
-        }
-
-        private void ShareSpiritCalls()
-        {
-            var calls = _loop.State.TraitSpiritCalls;
-            if (calls <= 0)
-                return;
-            _loop.State.TraitSpiritCalls = 0;
-            SendToHost(PartyCodec.Encode(_out, new SpiritCallMessage { Count = (byte)System.Math.Min(byte.MaxValue, calls), Hp = (float)_loop.State.TraitSpiritHp }));
-        }
-
-        public double EnemyLight => InParty && _state.EnemyId == _localEnemyId ? _state.Light : 0;
-
-        private void OnTraitRelay(in TraitRelayMessage relay)
-        {
-            var boons = _loop.State.Boons;
-            switch (relay.Kind)
-            {
-                case TraitRelayKind.Firefly:
-                    boons.Land(relay.Count, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond), relay.Value, relay.Every, relay.Extra, relay.From, System.Math.Max(1, (int)relay.Max));
-                    break;
-                case TraitRelayKind.Spark:
-                    _loop.Combat.Lanternbearer.ReceiveSparks(relay.Count);
-                    break;
-                case TraitRelayKind.Beacon:
-                    boons.Flash(relay.Count, relay.Value);
-                    _loop.Combat.Lanternbearer.CutCooldowns(relay.Seconds);
-                    break;
-                case TraitRelayKind.NameCall:
-                    boons.CallName(relay.From, relay.Every, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond));
-                    break;
-                case TraitRelayKind.Syllable:
-                    _loop.Combat.Whisperer.ReceiveSyllable(relay.From);
-                    break;
-                case TraitRelayKind.Hush:
-                    boons.Hush(relay.Count, relay.Value, relay.From, relay.Max);
-                    break;
-                case TraitRelayKind.HushHit:
-                    _loop.Combat.Whisperer.ReceiveHushHits(relay.Count);
-                    break;
-                case TraitRelayKind.Spring:
-                    boons.SpringWind = relay.Value;
-                    boons.SpringSlow = relay.Extra;
-                    boons.SpringTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.Loop:
-                    boons.LoopShare = relay.Value;
-                    boons.LoopTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    boons.LoopsSeen++;
-                    break;
-                case TraitRelayKind.Gears:
-                    boons.GearOwner = relay.From;
-                    boons.GearTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.Cog:
-                    _loop.Combat.Clockwright.ReceiveCog(relay.From);
-                    break;
-                case TraitRelayKind.Reagents:
-                    boons.ReagentOwner = relay.From;
-                    boons.ReagentTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.Reagent:
-                    _loop.Combat.Alchemist.ReceiveReagent(relay.From);
-                    break;
-                case TraitRelayKind.Flask:
-                    boons.Flask = relay.Count;
-                    break;
-                case TraitRelayKind.Acid:
-                    boons.AcidOwner = relay.From;
-                    boons.AcidTicks = System.Math.Max(boons.AcidTicks, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond));
-                    break;
-                case TraitRelayKind.AcidHit:
-                    _loop.Combat.Alchemist.ReceiveAcidHits(relay.Count);
-                    break;
-                case TraitRelayKind.Elixir:
-                    AlchemistMechanics.DrinkRelay(boons, relay.Into());
-                    break;
-                case TraitRelayKind.Vein:
-                    _loop.Combat.Dowser.ReceiveVein(relay.Value);
-                    break;
-                case TraitRelayKind.VeinHint:
-                    boons.VeinHint = relay.Value;
-                    boons.VeinHintTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.Luck:
-                    boons.LuckOwner = relay.From;
-                    boons.LuckChance = relay.Value;
-                    boons.LuckTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.LuckFound:
-                    _loop.Combat.Dowser.ReceiveLuckFound();
-                    break;
-                case TraitRelayKind.Artel:
-                    boons.ArtelOwner = relay.From;
-                    boons.ArtelEvery = relay.Every;
-                    boons.ArtelChest = relay.Value;
-                    boons.ArtelItemChance = relay.Extra;
-                    boons.ArtelTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.Souls:
-                    boons.SoulsShown = relay.Count;
-                    break;
-                case TraitRelayKind.Lend:
-                    boons.LendOwner = relay.From;
-                    boons.LendPower = relay.Value;
-                    boons.LendTicks = System.Math.Max(boons.LendTicks, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond));
-                    break;
-                case TraitRelayKind.SoulBack:
-                    _loop.Combat.Soulbinder.ReceiveSoulBack(relay.Count);
-                    break;
-                case TraitRelayKind.Mate:
-                    boons.MatePower = relay.Value;
-                    boons.MateTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.ParrotOffer:
-                    boons.ParrotOwner = relay.From;
-                    boons.ParrotOfferTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.ParrotCall:
-                    _loop.Combat.Ghostcaptain.ReceiveParrotCall(relay.From);
-                    break;
-                case TraitRelayKind.SwarmGift:
-                    boons.GiftMoths = relay.Count;
-                    boons.GiftPower = relay.Value;
-                    boons.GiftTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.Pollen:
-                    MothcallerMechanics.LandPollen(boons, relay.Value, relay.Seconds, relay.Extra, relay.Every, relay.Count, relay.From, relay.Max);
-                    break;
-                case TraitRelayKind.MothClock:
-                    boons.MothWakeSeconds = relay.Value;
-                    boons.MothClockTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.Deal:
-                    boons.DealOwner = relay.From;
-                    boons.DealEvery = relay.Every;
-                    boons.DealTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.Card:
-                    _loop.Combat.Cartomancer.ReceiveCard(relay.Count);
-                    break;
-                case TraitRelayKind.Forecast:
-                    CartomancerMechanics.LandForecast(boons, relay.Value, relay.Seconds);
-                    break;
-                case TraitRelayKind.ForecastLost:
-                    _loop.Combat.Cartomancer.LoseForecast(relay.Value);
-                    break;
-                case TraitRelayKind.Petal:
-                    HerbwitchMechanics.LandPetal(boons, relay.Every, relay.Value, relay.Seconds, relay.From, relay.Max);
-                    break;
-                case TraitRelayKind.Spores:
-                    boons.SporeOwner = relay.From;
-                    boons.SporeEvery = relay.Every;
-                    boons.SporeTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.SporeHit:
-                    _loop.Combat.Herbwitch.ReceiveSpores(relay.Count);
-                    break;
-                case TraitRelayKind.Gulp:
-                    boons.GulpOwner = relay.From;
-                    boons.GulpEvery = relay.Every;
-                    boons.GulpResource = relay.Value;
-                    boons.GulpTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-                    break;
-                case TraitRelayKind.GulpBack:
-                    _loop.Combat.Herbwitch.ReceiveGulp(relay.Count);
-                    break;
-                case TraitRelayKind.Corner:
-                    GolemancerMechanics.OfferCorner(boons, relay.From, relay.Every, relay.Count, relay.Seconds);
-                    break;
-                case TraitRelayKind.CornerDone:
-                    _loop.Combat.Golemancer.ReceiveCorner(relay.From);
-                    break;
-                case TraitRelayKind.Golemling:
-                    GolemancerMechanics.LandGolemling(boons, relay.Value, relay.Seconds);
-                    break;
-                case TraitRelayKind.ParrotPerch:
-                    boons.ParrotOwner = relay.From;
-                    boons.ParrotPower = relay.Value;
-                    boons.ParrotEvery = relay.Every;
-                    boons.ParrotTicks = relay.Value > 0 ? (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond) : 0;
-                    break;
-                case TraitRelayKind.GearTick:
-                    boons.GearCuts++;
-                    _loop.Combat.Clockwright.CutCooldowns(relay.Seconds, relay.Extra > 0);
-                    break;
-            }
-        }
-
-        private void ShareTraitRelays()
-        {
-            var relays = _loop.State.TraitRelays;
-            for (var i = 0; i < relays.Count; i++)
-            {
-                var relay = relays[i];
-                var to = relay.To == LanternbearerMechanics.AnyAlly ? NextAlly() : relay.To;
-                if (to == PartyEncounter.NoSlot)
-                {
-                    LandHere(relay);
-                    continue;
-                }
-                SendToHost(PartyCodec.Encode(_out, new TraitRelayMessage
-                {
-                    Kind = relay.Kind,
-                    To = (byte)to,
-                    Count = relay.Count,
-                    Every = relay.Every,
-                    Max = relay.Max,
-                    Value = (float)relay.Value,
-                    Seconds = (float)relay.Seconds,
-                    Extra = (float)relay.Extra
-                }));
-            }
-            relays.Clear();
-            var boons = _loop.State.Boons;
-            if (boons.SparksOwed <= 0 || boons.FireflyOwner < 0)
-                return;
-            SendToHost(PartyCodec.Encode(_out, new TraitRelayMessage { Kind = TraitRelayKind.Spark, To = (byte)boons.FireflyOwner, Count = (byte)System.Math.Min(byte.MaxValue, boons.SparksOwed) }));
-            boons.SparksOwed = 0;
-        }
-
-        private void LandHere(in TraitRelay relay)
-        {
-            if (relay.Kind == TraitRelayKind.Firefly)
-                _loop.State.Boons.Land(relay.Count, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond), relay.Value, relay.Every, relay.Extra, -1, System.Math.Max(1, (int)relay.Max));
-            else if (relay.Kind == TraitRelayKind.Hush)
-                _loop.State.Boons.Hush(relay.Count, relay.Value, -1, relay.Max);
-            else if (relay.Kind == TraitRelayKind.Lend)
-            {
-                _loop.State.Boons.LendOwner = -1;
-                _loop.State.Boons.LendPower = relay.Value;
-                _loop.State.Boons.LendTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-            }
-            else if (relay.Kind == TraitRelayKind.Golemling)
-                GolemancerMechanics.LandGolemling(_loop.State.Boons, relay.Value, relay.Seconds);
-            else if (relay.Kind == TraitRelayKind.Petal)
-                HerbwitchMechanics.LandPetal(_loop.State.Boons, relay.Every, relay.Value, relay.Seconds, -1, relay.Max);
-            else if (relay.Kind == TraitRelayKind.Mate)
-            {
-                _loop.State.Boons.MatePower = relay.Value;
-                _loop.State.Boons.MateTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-            }
-            else if (relay.Kind == TraitRelayKind.Elixir)
-                AlchemistMechanics.DrinkRelay(_loop.State.Boons, relay);
-            else if (relay.Kind == TraitRelayKind.Acid)
-            {
-                _loop.State.Boons.AcidOwner = -1;
-                _loop.State.Boons.AcidTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
-            }
-        }
-
-        private int NextAlly()
-        {
-            for (var step = 0; step < PartyRules.MaxSlots; step++)
-            {
-                var slot = (_nextFireflySlot + step) % PartyRules.MaxSlots;
-                if (slot == _ownSlot || Roster.Player(slot) == 0 || Roster.Presence(slot) == PartyPresence.Offline)
-                    continue;
-                _nextFireflySlot = slot + 1;
-                return slot;
-            }
-            return PartyEncounter.NoSlot;
-        }
-
-        private void ShareLight()
-        {
-            var light = (float)_loop.State.TraitLight;
-            if (light < 0)
-            {
-                _sentLight = -1;
-                return;
-            }
-            if (_lightTicks-- > 0 && System.Math.Abs(light - _sentLight) < 0.05f && _sentLightEnemy == _localEnemyId)
-                return;
-            _lightTicks = GameLoop.TicksPerSecond - 1;
-            _sentLight = light;
-            _sentLightEnemy = _localEnemyId;
-            SendToHost(PartyCodec.Encode(_out, new TraitLightMessage { EnemyId = _localEnemyId, Light = light }));
-        }
-
-        public bool EnemyNetted => NetShown();
-
-        private bool NetShown()
-        {
-            for (var i = 0; i < ShownEffect.MaxShown; i++)
-            {
-                if (EnemyEffect(i).Id == DreamcatcherMechanics.NetEffect)
-                    return true;
-            }
-            return false;
-        }
-
-        private void WatchNet()
-        {
-            var crits = _loop.State.Crits;
-            var critted = crits > _lastCrits;
-            _lastCrits = crits;
-            var netted = NetShown();
-            _loop.Combat.Dreamcatcher.EnemyCaughtByParty = netted;
-            if (!netted)
-                return;
-            _nettedEnemy = _localEnemyId;
-            var rules = _loop.Combat.Classes.Dreamcatcher;
-            if (!critted || _tick - _lastPullTick < (long)System.Math.Round(rules.NetPullCooldownSeconds * GameLoop.TicksPerSecond))
-                return;
-            _lastPullTick = _tick;
-            SendToHost(PartyCodec.Encode(_out, new NetPullMessage { EffectId = DreamcatcherMechanics.NetEffect, Seconds = (float)rules.NetPullSeconds }));
-        }
-
-        private static int TopSlot(in EnemyKilledMessage killed)
-        {
-            var top = -1;
-            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
-            {
-                if (killed.Contribution(slot) > 0 && (top < 0 || killed.Contribution(slot) > killed.Contribution(top)))
-                    top = slot;
-            }
-            return top;
-        }
-
-        private bool AllAlliesHitting(in EncounterStateMessage state)
-        {
-            var any = false;
-            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
-            {
-                if (slot == _ownSlot || Roster.Player(slot) == 0 || Roster.Presence(slot) != PartyPresence.Fighting)
-                    continue;
-                if (!(state.Recent(slot) > 0))
-                    return false;
-                any = true;
-            }
-            return any;
-        }
-
-        private bool TopContributor(in EnemyKilledMessage killed)
-        {
-            if (_ownSlot < 0 || !(killed.Contribution(_ownSlot) > 0))
-                return false;
-            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
-            {
-                if (slot != _ownSlot && killed.Contribution(slot) > killed.Contribution(_ownSlot))
-                    return false;
-            }
-            return true;
-        }
-
-        private void RewardDream(in EnemyKilledMessage killed)
-        {
-            if (_ownSlot < 0 || !(killed.Contribution(_ownSlot) > 0))
-                return;
-            var dream = _loop.Combat.Dreamcatcher;
-            if (killed.EnemyId == _nettedEnemy && _loop.State.Rng.Chance(dream.TrophyChance))
-                dream.GrantTrophy();
-            if (killed.Spirit)
-                dream.GrantSpiritLoot(EveryoneHunted(killed), _loop.State.Is(HeroClass.Dreamcatcher));
-        }
-
-        private bool EveryoneHunted(in EnemyKilledMessage killed)
-        {
-            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
-            {
-                if ((_state.WeightMask & (1 << slot)) != 0 && !(killed.Contribution(slot) > 0))
-                    return false;
-            }
-            return true;
         }
 
         private void ShareTraitResource()

@@ -90,19 +90,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
         private static int Equip(GameLoop loop, string skill)
         {
             TestWorld.ArmFor(loop, TestWorld.Data.Gems[skill]);
@@ -143,17 +130,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyTheNumberOfSpiritsIsShown()
-        {
-            var (loop, _) = Hero(Flat(SoulbinderStats.SoulPower, 0.5));
-            Party(loop, 2);
-            Kill(loop);
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Souls, out var souls), Is.True);
-            Assert.That(souls.Count, Is.EqualTo(1));
-        }
-
-        [Test]
         public void SphereForksAreRules()
         {
             var (push, _) = Hero(Flat(SoulbinderStats.SoulPower, 0.5), Flat(SoulbinderStats.SoulPush, 1));
@@ -189,24 +165,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyTheChillHangsAtTheHostAndAlliesHitsBringTheNextBreath()
-        {
-            var (loop, _) = Hero(Flat(SoulbinderStats.BreathPower, 0.05));
-            Party(loop, 2);
-            for (var i = 0; i < 6; i++)
-                Kill(loop);
-            Cast(loop, "soulbinder_path_2");
-            loop.State.TraitEnemyEffects.Clear();
-            loop.Tick();
-            Assert.That(loop.State.TraitEnemyEffects.Count, Is.EqualTo(1));
-            Assert.That(loop.State.TraitEnemyEffects[0].Id, Is.EqualTo(SoulbinderMechanics.ColdEffect));
-            Assert.That(loop.Combat.Soulbinder.DamageTaken(), Is.EqualTo(1));
-            var breaths = loop.State.Soulbinder.Breaths;
-            loop.Combat.Soulbinder.AddAllyHits(Rules.ColdHits);
-            Assert.That(loop.State.Soulbinder.Breaths, Is.EqualTo(breaths + 1));
-        }
-
-        [Test]
         public void BreathForksAreRules()
         {
             var (small, _) = Hero(Flat(SoulbinderStats.BreathPower, 0.05), Flat(SoulbinderStats.BreathSmall, 1));
@@ -236,39 +194,15 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyTheSpiritGoesToAnAllyAndItsKillReturnsASoul()
-        {
-            var (loop, _) = Hero(Flat(SoulbinderStats.LendPower, 0.25));
-            Party(loop, 2);
-            Cast(loop, "soulbinder_path_3");
-            Assert.That(HasRelay(loop, TraitRelayKind.Lend, out var lend), Is.True);
-            Assert.That(lend.To, Is.EqualTo(LanternbearerMechanics.AnyAlly));
-
-            var (ally, allyInput) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            ally.State.Boons.LendOwner = 1;
-            ally.State.Boons.LendPower = 0.25;
-            ally.State.Boons.LendTicks = 100;
-            Assert.That(Hit(ally, allyInput), Has.Count.EqualTo(2));
-            ally.Combat.Soulbinder.OnKillRewarded();
-            ally.Combat.Soulbinder.Tick();
-            Assert.That(HasRelay(ally, TraitRelayKind.SoulBack, out var back), Is.True);
-            Assert.That(back.To, Is.EqualTo(1));
-        }
-
-        [Test]
         public void LendForksAreRules()
         {
             var (two, _) = Hero(Flat(SoulbinderStats.LendPower, 0.25), Flat(SoulbinderStats.LendTwo, 1));
             Cast(two, "soulbinder_path_3");
             Assert.That(two.State.Boons.LendTicks, Is.EqualTo((int)(2 * Rules.LendSeconds * GameLoop.TicksPerSecond)));
             var (back, _) = Hero(Flat(SoulbinderStats.LendPower, 0.25), Flat(SoulbinderStats.LendBack, 1));
-            back.Combat.Soulbinder.ReceiveSoulBack(1);
+            back.State.Boons.LendTicks = 10;
+            back.Combat.Soulbinder.OnKillRewarded();
             Assert.That(back.State.Soulbinder.LendHits, Is.EqualTo(Rules.SoulBackHits));
-            var (all, _) = Hero(Flat(SoulbinderStats.LendPower, 0.25), Flat(SoulbinderStats.LendAll, 1));
-            Party(all, 3);
-            Cast(all, "soulbinder_path_3");
-            Assert.That(HasRelay(all, TraitRelayKind.Lend, out var everyone), Is.True);
-            Assert.That(everyone.To, Is.EqualTo(TraitRelay.AllSlots));
         }
 
         [Test]

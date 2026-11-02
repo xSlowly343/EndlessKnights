@@ -26,8 +26,6 @@ namespace Game.Core.Content
         public double MateMultiplier { get; private set; } = 10;
         public int ParrotEvery { get; private set; } = 3;
         public int ParrotEveryMin { get; private set; } = 2;
-        public double PerchSeconds { get; private set; } = 20;
-        public double CallSeconds { get; private set; } = 1;
         public double OfferSeconds { get; private set; } = 5;
         public double HeavyCooldownSeconds { get; private set; } = 10;
         public double ParrotPowder { get; private set; } = 5;
@@ -64,8 +62,6 @@ namespace Game.Core.Content
                 MateMultiplier = crew.Field("mateMultiplier").AsNumber(0, 10_000),
                 ParrotEvery = parrot.Field("every").AsInt(1, 100),
                 ParrotEveryMin = parrot.Field("everyMin").AsInt(1, 100),
-                PerchSeconds = parrot.Field("perchSeconds").AsNumber(0.1, 3600),
-                CallSeconds = parrot.Field("callSeconds").AsNumber(0, 600),
                 OfferSeconds = parrot.Field("offerSeconds").AsNumber(0.1, 600),
                 HeavyCooldownSeconds = parrot.Field("heavyCooldownSeconds").AsNumber(0, 3600),
                 ParrotPowder = parrot.Field("powder").AsNumber(0, 1000),
