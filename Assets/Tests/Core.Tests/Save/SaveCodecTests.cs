@@ -102,6 +102,36 @@ namespace Game.Core.Tests.Save
             Assert.That(SaveCodec.Encode(restored.State, Clock), Is.EqualTo(SaveCodec.Encode(original.State, Clock)));
         }
 
+        [TestCaseSource(nameof(AllClasses))]
+        public void ClassFeatureContinuesAfterLoading(HeroClass heroClass)
+        {
+            var input = new FakeInputSource();
+            var original = TestWorld.Loop(input, new GameState(5) { Class = heroClass, TutorialSkipped = true });
+            Play(original, input, 1500);
+            var restoredInput = new FakeInputSource();
+            var restored = TestWorld.Loop(restoredInput, RoundTrip(original.State).State);
+
+            Play(original, input, 600);
+            Play(restored, restoredInput, 600);
+
+            Assert.That(SaveCodec.Encode(restored.State, Clock), Is.EqualTo(SaveCodec.Encode(original.State, Clock)));
+        }
+
+        private static System.Array AllClasses() => System.Enum.GetValues(typeof(HeroClass));
+
+        [Test]
+        public void GolemRunesLastUntilPrestige()
+        {
+            var state = new GameState { Class = HeroClass.Golemancer };
+            state.Golemancer.Runes = 7;
+            state.Dreamcatcher.Album[2] = 4;
+
+            var loaded = RoundTrip(state).State;
+
+            Assert.That(loaded.Golemancer.Runes, Is.EqualTo(7));
+            Assert.That(loaded.Dreamcatcher.Album[2], Is.EqualTo(4));
+        }
+
         [Test]
         public void DropsSurviveSaving()
         {

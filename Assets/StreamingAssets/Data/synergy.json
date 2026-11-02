@@ -10,7 +10,7 @@
     "mothcaller": "buffer", "cartomancer": "debuffer", "herbwitch": "dot", "golemancer": "summon"
   },
   "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
-  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind" },
+  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "chilledEnemy": "cold", "brewOnEnemy": "blood", "pollenOnHero": "bond" },
   "secondResponseStat": "secondResponse",
   "allyPoisonStacks": 25,
   "responses": [

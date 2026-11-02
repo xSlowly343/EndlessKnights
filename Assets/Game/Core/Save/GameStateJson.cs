@@ -118,6 +118,7 @@ namespace Game.Core.Save
                 ("tutorial", Object(
                     ("skipped", JsonValue.Of(state.TutorialSkipped)),
                     ("done", JsonValue.Array(WriteTutorialDone(state))))),
+                ("traits", TraitStateJson.Write(state)),
                 ("carry", Object(
                     ("keys", JsonValue.Of(state.KeyCarry)),
                     ("mousePx", JsonValue.Of(state.MouseCarryPx)))));
@@ -275,6 +276,8 @@ namespace Game.Core.Save
                 state.Drops.Rng = new Rng(rng0 ^ rng1 ^ DropState.SeedSalt);
             if (node.HasField("boundGems"))
                 ReadBoundGems(node.Field("boundGems"), gems, state);
+            if (node.HasField("traits"))
+                TraitStateJson.Read(node.Field("traits"), state, enemies);
             return state;
         }
 
