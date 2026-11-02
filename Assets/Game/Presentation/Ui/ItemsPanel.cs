@@ -45,8 +45,6 @@ namespace Game.Presentation.Ui
         private TextMeshProUGUI _subtitle = null!;
         private TextMeshProUGUI _inHands = null!;
         private TextMeshProUGUI _innate = null!;
-        private TextMeshProUGUI _lightUp = null!;
-        private TextMeshProUGUI _goOut = null!;
         private UiButton _toRight = null!;
         private UiButton _toLeft = null!;
         private ItemFilter _filter = ItemFilter.All;
@@ -164,9 +162,6 @@ namespace Game.Presentation.Ui
             _subtitle.text = ItemTexts.Subtitle(weapon);
             _inHands.text = ItemTexts.InHands(state);
             _innate.text = ItemTexts.Innate(weapon);
-            var right = WeaponSwap.For(state, weapon, WeaponHand.Right, _loop!.Data.Weapons.SkillRules.UnlockLevels);
-            _lightUp.text = ItemTexts.LightUp(right);
-            _goOut.text = ItemTexts.GoOut(right);
         }
 
         private void BuildFilters()
@@ -224,8 +219,6 @@ namespace Game.Presentation.Ui
             UiElements.Anchor(_inHands.rectTransform, Vector2.one, new Vector2(-12f, -10f), new Vector2(130f, 32f));
             _inHands.textWrappingMode = TextWrappingModes.Normal;
             _innate = CardText("Innate", card, _theme.TextFont, 12f, new Color32(0xFF, 0xE2, 0xA0, 0xFF), new Vector2(12f, -58f), new Vector2(GridWidth() - 24f, 16f));
-            _lightUp = CardText("LightUp", card, _theme.TextFont, 11f, new Color32(0x6F, 0xE3, 0x9A, 0xFF), new Vector2(12f, -76f), new Vector2(GridWidth() - 24f, 15f));
-            _goOut = CardText("GoOut", card, _theme.TextFont, 11f, new Color32(0xFF, 0x8A, 0x80, 0xFF), new Vector2(12f, -91f), new Vector2(GridWidth() - 24f, 15f));
             var buttonWidth = (GridWidth() - 24f - GapPx) / 2f;
             _toRight = GoldButton(card, ItemTexts.EquipTo(WeaponHand.Right), new Vector2(12f, 10f), buttonWidth);
             _toLeft = GoldButton(card, ItemTexts.EquipTo(WeaponHand.Left), new Vector2(12f + buttonWidth + GapPx, 10f), buttonWidth);

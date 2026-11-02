@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Build
 
         private static GameLoop Fighting(FakeInputSource input)
         {
-            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Duelist }));
+            var loop = TestWorld.Loop(input, TestWorld.WithAllSkillsOpen(new GameState { Class = HeroClass.Duelist }));
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             return loop;
         }

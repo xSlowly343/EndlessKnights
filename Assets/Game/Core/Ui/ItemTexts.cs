@@ -37,12 +37,6 @@ namespace Game.Core.Ui
         public static string InHands(GameState state) =>
             Texts.Format("items.inHands", HandName(state.Weapons.Right), HandName(state.Weapons.Left));
 
-        public static string LightUp(WeaponSwap swap) =>
-            swap.LightUp.Count == 0 ? string.Empty : Texts.Format("items.lightUp", string.Join(", ", swap.LightUp));
-
-        public static string GoOut(WeaponSwap swap) =>
-            swap.GoOut.Count == 0 ? string.Empty : Texts.Format("items.goOut", swap.Replaced != null ? Name(swap.Replaced) : string.Empty, string.Join(", ", swap.GoOut));
-
         public static string EquipTo(WeaponHand hand) => Texts.Get(hand == WeaponHand.Right ? "items.toRight" : "items.toLeft");
 
         public static IReadOnlyList<WeaponItem> Bag(GameState state, ItemFilter filter) =>

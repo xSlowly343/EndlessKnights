@@ -279,7 +279,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(weapon.Rarity, Is.EqualTo(ItemRarity.Uncommon));
             Assert.That(weapon.Type.Id, Is.Not.EqualTo("rune_daggers"));
             Assert.That(weapon.Type.Color, Is.EqualTo("red"));
-            Assert.That(weapon.Skills, Is.Not.Empty);
             Assert.That(loop.State.Weapons.Bag, Does.Contain(weapon));
         }
 

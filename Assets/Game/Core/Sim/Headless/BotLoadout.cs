@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Game.Core.Build;
 using Game.Core.Content.Gems;
+using Game.Core.Math;
 
 namespace Game.Core.Sim.Headless
 {
@@ -9,44 +10,137 @@ namespace Game.Core.Sim.Headless
         private static readonly SkillSlotRole[] ActiveOrder = { SkillSlotRole.Auto, SkillSlotRole.Left, SkillSlotRole.Right };
 
         private readonly GameLoop _loop;
+        private readonly BranchTrial? _trial;
         private readonly List<GemDef> _candidates = new List<GemDef>();
+        private readonly List<GemDef> _classSkills = new List<GemDef>();
+        private readonly List<GemDef> _order = new List<GemDef>();
+        private readonly HashSet<GemDef> _seen = new HashSet<GemDef>();
         private readonly List<(GemDef Skill, SkillSlotRole Role)> _plan = new List<(GemDef, SkillSlotRole)>();
 
-        public BotLoadout(GameLoop loop)
+        public BotLoadout(GameLoop loop, BranchTrial? trial = null)
         {
             _loop = loop;
+            _trial = trial;
         }
 
         public void Arrange()
         {
+            UpdateOrder();
             CollectCandidates();
             Plan();
             if (!Matches())
                 Rebuild();
         }
 
+        private void UpdateOrder()
+        {
+            _loop.Book.OpenClassSkills(_classSkills);
+            if (_order.Count > 0 && !_loop.Book.OfHeroClass(_order[0]))
+            {
+                _order.Clear();
+                _seen.Clear();
+            }
+            if (_seen.Count == 0)
+            {
+                SeedFromBook();
+                return;
+            }
+            foreach (var skill in _classSkills)
+            {
+                if (!_seen.Add(skill))
+                    continue;
+                if (_trial == null)
+                    InsertByTier(_order, skill);
+                else
+                    TryByTrial(skill, _trial);
+            }
+        }
+
+        private void SeedFromBook()
+        {
+            foreach (var slot in _loop.State.Skills)
+            {
+                if (_classSkills.Contains(slot.Skill) && _seen.Add(slot.Skill))
+                    _order.Add(slot.Skill);
+            }
+            foreach (var skill in _classSkills)
+            {
+                if (_seen.Add(skill))
+                    InsertByTier(_order, skill);
+            }
+        }
+
+        private static void InsertByTier(List<GemDef> order, GemDef skill)
+        {
+            for (var i = 0; i < order.Count; i++)
+            {
+                if (SkillLoadout.IsAura(order[i]) == SkillLoadout.IsAura(skill) && order[i].Skill!.Tier < skill.Skill!.Tier)
+                {
+                    order.Insert(i, skill);
+                    return;
+                }
+            }
+            order.Add(skill);
+        }
+
+        private void TryByTrial(GemDef skill, BranchTrial trial)
+        {
+            var best = new List<GemDef>(_order) { skill };
+            var bestDamage = DamageWith(best, trial);
+            var aura = SkillLoadout.IsAura(skill);
+            var room = aura ? _loop.Book.AuraSlotCount : SkillLoadout.HandSlots + _loop.Book.AutoSlotCount;
+            for (var i = 0; i < _order.Count && room > 0; i++)
+            {
+                if (SkillLoadout.IsAura(_order[i]) != aura)
+                    continue;
+                room--;
+                var option = new List<GemDef>(_order);
+                option.Insert(i, skill);
+                var damage = DamageWith(option, trial);
+                if (damage > bestDamage)
+                {
+                    best = option;
+                    bestDamage = damage;
+                }
+            }
+            _order.Clear();
+            _order.AddRange(best);
+        }
+
+        private BigNumber DamageWith(List<GemDef> order, BranchTrial trial) =>
+            trial.DamageAfter(_loop.State, loop =>
+            {
+                var loadout = new BotLoadout(loop);
+                loadout._order.AddRange(order);
+                loadout._seen.UnionWith(order);
+                loop.Book.OpenClassSkills(loadout._classSkills);
+                loadout._seen.UnionWith(loadout._classSkills);
+                loadout.Arrange();
+                return true;
+            });
+
         private void CollectCandidates()
         {
             _candidates.Clear();
-            var state = _loop.State;
-            AddWeaponSkills(state.Weapons.Right);
-            AddWeaponSkills(state.Weapons.Left);
-            foreach (var gem in state.OwnedGems)
+            AddClassSkills(aura: false, onlyFirst: false);
+            AddClassSkills(aura: true, onlyFirst: true);
+            foreach (var gem in _loop.State.OwnedGems)
             {
                 if (gem.Kind == GemKind.Skill && Usable(gem) && _loop.Book.FreeCopies(gem) > 0)
                     Add(gem);
             }
+            AddClassSkills(aura: true, onlyFirst: false);
         }
 
-        private void AddWeaponSkills(Content.Weapons.WeaponItem? weapon)
+        private void AddClassSkills(bool aura, bool onlyFirst)
         {
-            if (weapon == null)
-                return;
-            var unlockLevels = _loop.Data.Weapons.SkillRules.UnlockLevels;
-            foreach (var id in weapon.Skills)
+            foreach (var skill in _order)
             {
-                if (_loop.Data.Gems.TryGet(id, out var skill) && Usable(skill) && _loop.State.Weapons.Opens(id, _loop.State.HeroLevel, unlockLevels))
-                    Add(skill);
+                if (SkillLoadout.IsAura(skill) != aura || !_loop.Book.SkillOpen(skill))
+                    continue;
+                Add(skill);
+                if (onlyFirst)
+                    return;
             }
         }
 
@@ -71,6 +165,7 @@ namespace Game.Core.Sim.Headless
                 [SkillSlotRole.Right] = 1
             };
             var spareAuras = new List<GemDef>();
+            var spareActives = new List<GemDef>();
             foreach (var skill in _candidates)
             {
                 if (SkillLoadout.IsAura(skill))
@@ -85,11 +180,22 @@ namespace Game.Core.Sim.Headless
                         spareAuras.Add(skill);
                     }
                 }
-                else if (FreeRole(activeRoom) is { } role)
+                else if (activeRoom[PreferredRole(skill)] > 0)
                 {
-                    _plan.Add((skill, role));
-                    activeRoom[role]--;
+                    _plan.Add((skill, PreferredRole(skill)));
+                    activeRoom[PreferredRole(skill)]--;
                 }
+                else
+                {
+                    spareActives.Add(skill);
+                }
+            }
+            foreach (var skill in spareActives)
+            {
+                if (FreeRole(activeRoom) is not { } role)
+                    break;
+                _plan.Add((skill, role));
+                activeRoom[role]--;
             }
             foreach (var aura in spareAuras)
             {
@@ -99,6 +205,13 @@ namespace Game.Core.Sim.Headless
                 activeRoom[role]--;
             }
         }
+
+        private static SkillSlotRole PreferredRole(GemDef skill) => skill.Skill?.Role switch
+        {
+            SkillRole.Fast => SkillSlotRole.Left,
+            SkillRole.Heavy => SkillSlotRole.Right,
+            _ => SkillSlotRole.Auto
+        };
 
         private static SkillSlotRole? FreeRole(Dictionary<SkillSlotRole, int> room)
         {
@@ -146,11 +259,7 @@ namespace Game.Core.Sim.Headless
             }
         }
 
-        private BookResult Place(GemDef skill)
-        {
-            var result = _loop.Book.PlaceFromWeapon(skill, _loop.Data.Weapons.SkillRules.UnlockLevels);
-            return result == BookResult.Done ? result : _loop.Book.Equip(skill);
-        }
+        private BookResult Place(GemDef skill) => _loop.Book.Equip(skill);
 
         private void MakeRoom(int row, SkillSlotRole role)
         {

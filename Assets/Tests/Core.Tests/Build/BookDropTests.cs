@@ -103,6 +103,21 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void BagOffersTheOpenClassSkillsThatAreNotInTheBookYet()
+        {
+            var loop = WithGems();
+            loop.Book.Equip(Gem("runedancer_hit_1"));
+            var bag = new List<GemDef>();
+
+            GemBag.Fill(loop.Book, loop.State, GemBagFilter.Skills, bag);
+
+            Assert.That(bag, Does.Contain(Gem("runedancer_queue_1")));
+            Assert.That(bag, Does.Not.Contain(Gem("runedancer_hit_1")), "already in the Book");
+            Assert.That(bag, Does.Not.Contain(Gem("runedancer_hit_2")), "a rare skill opens at a higher hero level");
+            Assert.That(bag, Does.Not.Contain(Gem("duelist_hit_1")), "another class");
+        }
+
+        [Test]
         public void BagShowsEachFreeGemOnceAndHonoursTheFilter()
         {
             var loop = WithGems("through_stride", "through_stride", "march", "rebound");
@@ -110,7 +125,7 @@ namespace Game.Core.Tests.Build
             var bag = new List<GemDef>();
 
             GemBag.Fill(loop.Book, loop.State, GemBagFilter.All, bag);
-            Assert.That(bag, Is.EqualTo(new[] { Gem("through_stride"), Gem("rebound") }));
+            Assert.That(bag.FindAll(gem => !SkillBook.IsClassSkill(gem)), Is.EqualTo(new[] { Gem("through_stride"), Gem("rebound") }));
 
             GemBag.Fill(loop.Book, loop.State, GemBagFilter.Supports, bag);
             Assert.That(bag, Is.EqualTo(new[] { Gem("rebound") }));

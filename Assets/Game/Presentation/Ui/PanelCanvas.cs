@@ -81,7 +81,6 @@ namespace Game.Presentation.Ui
         private ItemsPanel _itemsPanel = null!;
         private StatsPanel _statsPanel = null!;
         private MailPanel _mailPanel = null!;
-        private MasterPanel _masterPanel = null!;
         private PartyPanel _partyPanel = null!;
         private PartySearchPanel _partySearchPanel = null!;
         private SettingsPanel _settingsPanel = null!;
@@ -160,7 +159,6 @@ namespace Game.Presentation.Ui
         public ItemsPanel Items => _itemsPanel;
         public StatsPanel Stats => _statsPanel;
         public MailPanel Mail => _mailPanel;
-        public MasterPanel Master => _masterPanel;
         public PartyPanel Party => _partyPanel;
         public PartySearchPanel PartySearch => _partySearchPanel;
         public SettingsPanel Settings => _settingsPanel;
@@ -190,7 +188,6 @@ namespace Game.Presentation.Ui
             Subclass.Bind(loop);
             Book.Bind(loop);
             _itemsPanel.Bind(loop);
-            _masterPanel.Bind(loop);
         }
 
         public void Show(PanelNavigator navigator)
@@ -294,7 +291,7 @@ namespace Game.Presentation.Ui
                 return TryClickConsent(worldPoint);
             if (_showingCard)
                 return TryClickReport(worldPoint);
-            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _masterPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _partySearchPanel.TryClick(worldPoint) || _mailPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
+            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _partySearchPanel.TryClick(worldPoint) || _mailPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
                 return true;
             if (_preset.Contains(worldPoint))
             {
@@ -429,7 +426,6 @@ namespace Game.Presentation.Ui
             _heroPanel.Refresh(_loop);
             _statsPanel.Refresh(_loop);
             _itemsPanel.Refresh();
-            _masterPanel.Refresh();
             _partyPanel.Refresh(_loop);
             Book.Refresh();
             RefreshPreset();
@@ -593,8 +589,6 @@ namespace Game.Presentation.Ui
             Subclass.Show(_subclassShown, _shownFrame.WidthPx, _shownFrame.ContentPx);
             _bookShown = !navigator.ShowingMore && navigator.Active == PanelSection.Book && (navigator.SubTab == 0 || !_shownFrame.HasSubTabs);
             Book.Show(_bookShown, _shownFrame.ContentPx);
-            var masterShown = !navigator.ShowingMore && navigator.Active == PanelSection.Book && navigator.SubTab == 1 && _shownFrame.HasSubTabs;
-            _masterPanel.Show(masterShown);
             _slots.gameObject.SetActive(!navigator.ShowingMore && navigator.Active == PanelSection.Book && _shownFrame.HasSubTabs);
             var heroSubTab = _shownFrame.HasSubTabs ? navigator.SubTab : 0;
             var heroShown = !navigator.ShowingMore && navigator.Active == PanelSection.Hero && HeroPanel.Covers(heroSubTab);
@@ -612,7 +606,7 @@ namespace Game.Presentation.Ui
             _mailPanel.Show(mailShown, _shownFrame.ContentPx);
             var settingsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Settings;
             _settingsPanel.Show(settingsShown, _shownFrame.HasSubTabs ? navigator.SubTab : 0, _shownFrame.ContentPx);
-            var placeholder = !navigator.ShowingMore && !_subclassShown && !_bookShown && !masterShown && !heroShown && !itemsShown && !partyShown && !partySearchShown && !statsShown && !mailShown && !settingsShown;
+            var placeholder = !navigator.ShowingMore && !_subclassShown && !_bookShown && !heroShown && !itemsShown && !partyShown && !partySearchShown && !statsShown && !mailShown && !settingsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
                 _placeholder.text = PlaceholderText(navigator);
@@ -789,7 +783,6 @@ namespace Game.Presentation.Ui
             _itemsPanel = ItemsPanel.Create(content, _theme);
             _statsPanel = StatsPanel.Create(content, _theme);
             _mailPanel = MailPanel.Create(content, _theme);
-            _masterPanel = MasterPanel.Create(content, _theme);
             _partyPanel = PartyPanel.Create(content, _theme);
             _partyPanel.NoticeRequested += ShowNotice;
             _partySearchPanel = PartySearchPanel.Create(content, _theme);

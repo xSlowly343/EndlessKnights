@@ -31,10 +31,9 @@ namespace Game.Core.Tests.Sim
             return json;
         }
 
-        public static GameState WithAllWeaponPlacesOpen(GameState state)
+        public static GameState WithAllSkillsOpen(GameState state)
         {
-            var levels = Data.Weapons.SkillRules.UnlockLevels;
-            state.HeroLevel = levels[levels.Count - 1];
+            state.HeroLevel = Data.SkillBook.SkillUnlockLevel(SkillTier.Mythic);
             return state;
         }
 

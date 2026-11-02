@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Party
             public Member(LoopbackNetwork network, ulong id)
             {
                 Input = new FakeInputSource();
-                Loop = TestWorld.Loop(Input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Stage = 5, HighestStage = 5, RecordStage = 5 }));
+                Loop = TestWorld.Loop(Input, TestWorld.WithAllSkillsOpen(new GameState { Stage = 5, HighestStage = 5, RecordStage = 5 }));
                 Client = new PartyClient(Loop, network.Connect(id), HostId, TestWorld.Data.Party);
             }
 
@@ -380,22 +380,6 @@ namespace Game.Core.Tests.Party
             return false;
         }
 
-        private static void AddToWeapon(Member member, string gem)
-        {
-            member.Loop.State.HeroLevel = 100;
-            var weapons = member.Loop.State.Weapons;
-            var type = TestWorld.Data.Gems[gem].Skill!.Weapon;
-            var right = weapons.Right != null && weapons.Right.Type.Id == type;
-            var hand = right ? weapons.Right! : weapons.Left!;
-            if (hand.Skills.Contains(gem))
-                return;
-            var armed = new WeaponItem(hand.Base, hand.Rarity, new List<string>(hand.Skills) { gem });
-            if (right)
-                weapons.Right = armed;
-            else
-                weapons.Left = armed;
-        }
-
         [Test]
         public void AWeakerOwnAuraLeavesRoomForTheStrongerAlly()
         {
@@ -420,7 +404,7 @@ namespace Game.Core.Tests.Party
             rig.Run(5);
             var caster = rig.Members[0];
             var skill = caster.Equip("runedancer_hit_2");
-            AddToWeapon(caster, "runedancer_hit_2");
+            caster.Loop.State.HeroLevel = 100;
             caster.Loop.State.OwnedGems.Add(TestWorld.Data.Gems["cursed"]);
             Assert.That(caster.Loop.Book.SetSupport(skill, 0, TestWorld.Data.Gems["cursed"]), Is.EqualTo(Game.Core.Build.BookResult.Done));
 

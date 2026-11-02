@@ -12,10 +12,12 @@ namespace Game.Core.Content.Gems
         private readonly long[] _socketRecordStages;
         private readonly int[] _auraSlotLevels;
         private readonly Dictionary<string, IReadOnlyList<GemDef>> _startingGems;
+        private readonly int[] _skillUnlockLevels;
 
         private SkillBookRules(int baseSlots, long[] slotUnlockStages, int baseSockets, long[] socketRecordStages, int socketRebirths, int maxSockets,
-            Dictionary<string, IReadOnlyList<GemDef>> startingGems, int[] auraSlotLevels)
+            Dictionary<string, IReadOnlyList<GemDef>> startingGems, int[] auraSlotLevels, int[] skillUnlockLevels)
         {
+            _skillUnlockLevels = skillUnlockLevels;
             _auraSlotLevels = auraSlotLevels;
             BaseSlots = baseSlots;
             _slotUnlockStages = slotUnlockStages;
@@ -59,6 +61,8 @@ namespace Game.Core.Content.Gems
             }
             return slots;
         }
+
+        public int SkillUnlockLevel(SkillTier tier) => _skillUnlockLevels[(int)tier];
 
         public int AuraSlotLevel(int slot) => slot >= 0 && slot < _auraSlotLevels.Length ? _auraSlotLevels[slot] : 0;
 
@@ -111,7 +115,32 @@ namespace Game.Core.Content.Gems
                 sockets.Field("rebirths").AsInt(0, 20),
                 sockets.Field("max").AsInt(1, Sim.SkillSlot.SocketCapacity),
                 starting,
-                ReadAuraSlotLevels(root.Field("auraSlots").Field("unlockLevels")));
+                ReadAuraSlotLevels(root.Field("auraSlots").Field("unlockLevels")),
+                ReadSkillUnlockLevels(root.Field("skillUnlockLevels")));
+        }
+
+        private static int[] ReadSkillUnlockLevels(ContentNode node)
+        {
+            var tiers = GemCatalog.Tiers;
+            var levels = new int[tiers.Count];
+            var seen = new bool[tiers.Count];
+            foreach (var name in node.FieldNames())
+            {
+                if (!tiers.TryGetValue(name, out var tier))
+                    throw node.Field(name).Error($"unknown skill tier '{name}', expected common, rare, epic, legendary or mythic");
+                levels[(int)tier] = node.Field(name).AsInt(1, 1000);
+                seen[(int)tier] = true;
+            }
+            for (var i = 0; i < levels.Length; i++)
+            {
+                if (!seen[i])
+                    throw node.Error($"tier '{((SkillTier)i).ToString().ToLowerInvariant()}' has no unlock level");
+                if (i > 0 && levels[i] < levels[i - 1])
+                    throw node.Field(((SkillTier)i).ToString().ToLowerInvariant()).Error("a stronger tier must not open earlier");
+            }
+            if (levels[0] != 1)
+                throw node.Field("common").Error("common skills must open at level 1");
+            return levels;
         }
 
         private static int[] ReadAuraSlotLevels(ContentNode node)

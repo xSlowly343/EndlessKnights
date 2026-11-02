@@ -18,7 +18,7 @@ namespace Game.Core.Content.Gems
             ["support"] = SkillType.Support
         };
 
-        private static readonly Dictionary<string, SkillTier> Tiers = new Dictionary<string, SkillTier>(StringComparer.Ordinal)
+        internal static readonly Dictionary<string, SkillTier> Tiers = new Dictionary<string, SkillTier>(StringComparer.Ordinal)
         {
             ["common"] = SkillTier.Common,
             ["rare"] = SkillTier.Rare,

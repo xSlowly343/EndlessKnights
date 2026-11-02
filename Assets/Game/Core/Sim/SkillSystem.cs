@@ -183,8 +183,6 @@ namespace Game.Core.Sim
             var skill = slot.Def;
             if (skill.IsPassive)
                 return CastResult.Passive;
-            if (!Armed(slot))
-                return CastResult.NoWeapon;
             if (_combat.Runedancer.Forbids(slot.Skill) || _combat.Lanternbearer.Forbids(slot.Skill))
                 return CastResult.TraitCastsIt;
             var spare = !slot.Ready && slot.SpareCharges > 0;
@@ -249,7 +247,7 @@ namespace Game.Core.Sim
             var power = 1.0;
             foreach (var other in _state.Skills)
             {
-                if (other.Def.Effect is ComposureEffect composure && Armed(other))
+                if (other.Def.Effect is ComposureEffect composure)
                     power = System.Math.Max(power, composure.Multiplier);
             }
             return power;
@@ -361,7 +359,7 @@ namespace Game.Core.Sim
         private void Repeat(EchoEffect echo)
         {
             var target = _lastCast;
-            if (target == null || !_state.Skills.Contains(target) || !Armed(target))
+            if (target == null || !_state.Skills.Contains(target))
                 return;
             if (target.Def.Effect is StrikeEffect strike)
             {
@@ -414,12 +412,9 @@ namespace Game.Core.Sim
                 slot.Progress -= buckets[index];
                 buckets[index] = 0;
             }
-            if (Armed(slot))
-            {
-                var px = input.MousePx * SupportEffects.MouseDistance(slot);
-                buckets[index] += px;
-                slot.Progress += px;
-            }
+            var px = input.MousePx * SupportEffects.MouseDistance(slot);
+            buckets[index] += px;
+            slot.Progress += px;
             var stacks = System.Math.Min(MaxStacks(distance.Stacks), (int)System.Math.Floor(System.Math.Max(0, slot.Progress) / distance.PxPerStack));
             SetStacks(slot, distance.Stacks, stacks);
         }
@@ -681,7 +676,7 @@ namespace Game.Core.Sim
         {
             foreach (var slot in _state.Skills)
             {
-                if (slot.Def.IsPassive && slot.Def.Native.ResourceOnCrit > 0 && IsNative(slot) && Armed(slot))
+                if (slot.Def.IsPassive && slot.Def.Native.ResourceOnCrit > 0 && IsNative(slot))
                     _resource.Gain(slot.Def.Native.ResourceOnCrit);
             }
         }
@@ -772,11 +767,6 @@ namespace Game.Core.Sim
         {
             if (slot.HitsLeft <= 0)
                 return;
-            if (!Armed(slot))
-            {
-                slot.HitsLeft = 0;
-                return;
-            }
             if (!_state.EnemyAlive)
                 return;
             var killsBefore = _state.Kills;
@@ -810,7 +800,7 @@ namespace Game.Core.Sim
 
         private void TickFlow(SkillSlot slot, FlowEffect flow)
         {
-            if (!Armed(slot) || _state.KeylessTicks > Ticks(flow.MaxGapSeconds))
+            if (_state.KeylessTicks > Ticks(flow.MaxGapSeconds))
             {
                 slot.FlowStartTick = -1;
                 RemoveAura(slot);
@@ -862,9 +852,9 @@ namespace Game.Core.Sim
                 }
                 if (slot.Def.Effect is StacksEffect stacks && stacks.Passive)
                     TickKillStacks(slot, stacks, kills);
-                if (kills > 0 && slot.Def.IsPassive && slot.Def.Native.ResourceOnKill > 0 && IsNative(slot) && Armed(slot))
+                if (kills > 0 && slot.Def.IsPassive && slot.Def.Native.ResourceOnKill > 0 && IsNative(slot))
                     _resource.Gain(slot.Def.Native.ResourceOnKill * kills);
-                if (slot.Stacks > 0 && slot.Def.Effect is StrikeEffect { Stacks: { } } && (!Armed(slot) || --slot.StackTicks <= 0))
+                if (slot.Stacks > 0 && slot.Def.Effect is StrikeEffect { Stacks: { } } && --slot.StackTicks <= 0)
                     ClearStacks(slot);
                 if (weakenedKill && slot.CooldownTicks > 0 && slot.Def.Native.ResetWithinSeconds > 0 && IsNative(slot)
                     && _state.LastWeakenedKillSeconds <= slot.Def.Native.ResetWithinSeconds + 1e-9)
@@ -874,7 +864,7 @@ namespace Game.Core.Sim
                 }
                 if (slot.Active && _state.FightingBoss && slot.Def.Native.ResourcePerSavedSecond > 0 && IsNative(slot))
                     _resource.Gain(slot.Def.Native.ResourcePerSavedSecond * GameLoop.TickSeconds * System.Math.Max(0, 1 - _state.BossTimerRate));
-                if (poisonTicks > 0 && slot.Def.Native.ResourcePerPoisonTick > 0 && IsNative(slot) && Armed(slot))
+                if (poisonTicks > 0 && slot.Def.Native.ResourcePerPoisonTick > 0 && IsNative(slot))
                     _resource.Gain(slot.Def.Native.ResourcePerPoisonTick * poisonTicks);
                 if (slot.Def.Effect is FlowEffect flow)
                     TickFlow(slot, flow);
@@ -973,7 +963,7 @@ namespace Game.Core.Sim
 
         private void Repeat(SkillSlot slot, double power)
         {
-            if (!Armed(slot) || slot.Def.ArmOn != ArmOn.None || slot.Def.IsPassive)
+            if (slot.Def.ArmOn != ArmOn.None || slot.Def.IsPassive)
                 return;
             var castPower = slot.CastPower;
             var auraPower = slot.AuraPower;
@@ -1056,8 +1046,7 @@ namespace Game.Core.Sim
 
         private void TickStanding(SkillSlot slot)
         {
-            var armed = Armed(slot);
-            var native = armed && IsNative(slot);
+            var native = IsNative(slot);
             var trait = slot.Def.Native;
             slot.NativeApplied = Toggle(slot.NativeApplied, trait.Modifiers, native && slot.Def.IsPassive && !slot.Def.Reserves);
             var when = native && trait.When != null && (slot.Def.IsPassive || slot.Active) && Holds(trait.When);
@@ -1113,8 +1102,6 @@ namespace Game.Core.Sim
 
         private void SetPassive(SkillSlot slot, System.Collections.Generic.IReadOnlyList<Modifier> modifiers, double scale)
         {
-            if (!Armed(slot))
-                scale = 0;
             if (scale == slot.PassiveScale && (scale <= 0 || slot.AuraApplied))
                 return;
             RemoveAura(slot);
@@ -1134,7 +1121,7 @@ namespace Game.Core.Sim
                 _state.FocusLockTicks = Ticks(aura.FocusLockAfterSeconds);
             if (slot.Def.Effect is StacksEffect stacks && !stacks.Passive)
                 ClearStacks(slot);
-            if (IsNative(slot) && Armed(slot))
+            if (IsNative(slot))
                 _resource.Gain(slot.Def.Native.ResourceOnEnd);
             if (slot.Def.Effect is TrailEffect trail)
             {
@@ -1147,11 +1134,6 @@ namespace Game.Core.Sim
 
         private void TickKillStacks(SkillSlot slot, StacksEffect stacks, int kills)
         {
-            if (!Armed(slot))
-            {
-                ClearStacks(slot);
-                return;
-            }
             if (kills > 0)
             {
                 AddStacks(slot, stacks, kills);
@@ -1201,7 +1183,7 @@ namespace Game.Core.Sim
 
         private void KeepReserved(SkillSlot slot)
         {
-            if (!slot.Def.Reserves || !Armed(slot))
+            if (!slot.Def.Reserves)
                 return;
             if (IdleOff(slot))
             {
@@ -1278,7 +1260,7 @@ namespace Game.Core.Sim
 
         private void ReleaseIdleStrike(SkillSlot slot, IdleStrikeEffect strike, double idleSeconds)
         {
-            if (!slot.Ready || !Armed(slot) || idleSeconds < MinIdleSeconds(strike))
+            if (!slot.Ready || idleSeconds < MinIdleSeconds(strike))
                 return;
             slot.StartCooldown(Ticks(slot.Def.CooldownSeconds * CooldownMultiplier()));
             slot.LastCastTick = _state.Tick;
@@ -1293,7 +1275,7 @@ namespace Game.Core.Sim
             foreach (var slot in _state.Skills)
             {
                 RemoveAura(slot);
-                if (slot.Active && Armed(slot))
+                if (slot.Active)
                     ApplyAura(slot);
             }
         }
@@ -1307,37 +1289,6 @@ namespace Game.Core.Sim
                 RemoveAura(slot);
                 ApplyAura(slot);
             }
-        }
-
-        public bool Armed(int index) => index >= 0 && index < _state.Skills.Count && Armed(_state.Skills[index]);
-
-        public void RefreshArmed()
-        {
-            foreach (var slot in _state.Skills)
-            {
-                if (Armed(slot))
-                {
-                    KeepReserved(slot);
-                    continue;
-                }
-                ClearStacks(slot);
-                if (!slot.Active)
-                    continue;
-                slot.ActiveTicks = 0;
-                slot.HitsLeft = 0;
-                slot.Stored = BigNumber.Zero;
-                RemoveAura(slot);
-            }
-        }
-
-        private bool Armed(SkillSlot slot)
-        {
-            var weapon = slot.Def.Weapon;
-            if (weapon == null)
-                return true;
-            if (slot.Skill.Ascendancy != null)
-                return _state.Weapons.Holds(weapon);
-            return _state.Weapons.Opens(slot.Skill.Id, _state.HeroLevel, _weapons.SkillRules.UnlockLevels);
         }
 
         private bool IsNative(SkillSlot slot) =>

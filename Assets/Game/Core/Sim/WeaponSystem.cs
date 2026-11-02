@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content.Items;
 using Game.Core.Content.Weapons;
-using Game.Core.Math;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
@@ -9,17 +8,15 @@ namespace Game.Core.Sim
     public sealed class WeaponSystem
     {
         private readonly GameState _state;
-        private readonly SkillSystem _skills;
         private readonly StatSheet _hero;
         private readonly ModifierLayer _layer;
         private WeaponCatalog _catalog;
         private double _appliedScale = 1;
 
-        public WeaponSystem(WeaponCatalog catalog, GameState state, StatSheet hero, SkillSystem skills)
+        public WeaponSystem(WeaponCatalog catalog, GameState state, StatSheet hero)
         {
             _catalog = catalog;
             _state = state;
-            _skills = skills;
             _hero = hero;
             _layer = new ModifierLayer(hero);
             GiveStarter();
@@ -51,7 +48,7 @@ namespace Game.Core.Sim
 
         public WeaponItem Give(WeaponBase weaponBase) => Give(_catalog.Starter(weaponBase));
 
-        public WeaponItem Give(WeaponBase weaponBase, ItemRarity rarity, Rng rng) => Give(_catalog.Roll(weaponBase, rarity, rng));
+        public WeaponItem Give(WeaponBase weaponBase, ItemRarity rarity) => Give(_catalog.Roll(weaponBase, rarity));
 
         public WeaponItem Give(WeaponItem weapon)
         {
@@ -116,11 +113,7 @@ namespace Game.Core.Sim
         private WeaponItem? Rebind(WeaponItem? weapon) =>
             weapon != null && _catalog.TryGetBase(weapon.Id, out var found) ? weapon.Rebased(found) : null;
 
-        private void Changed()
-        {
-            Rebuild();
-            _skills.RefreshArmed();
-        }
+        private void Changed() => Rebuild();
 
         public void RefreshInnate()
         {

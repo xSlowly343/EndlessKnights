@@ -9,7 +9,7 @@ namespace Game.Core.Build
         NoSuchSlot,
         WrongPath,
         WaitsForMechanic,
-        NotOnWeapon,
+        WrongClass,
         AlreadyInBook,
         NoSuchSocket,
         AlreadyInBuild,

@@ -37,15 +37,10 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void DoubleTypedWeaponRollsSkillsOfBothTypes()
+        public void DoubleTypedWeaponCountsAsBothTypes()
         {
-            var unique = Def("corsair_daggers");
-            var weapon = Weapons.RollUnique(unique, new Rng(5));
-            var types = weapon.Skills.Select(id => TestWorld.Real.Gems[id].Skill!.Weapon).Distinct().ToList();
+            var weapon = Weapons.RollUnique(Def("corsair_daggers"));
 
-            Assert.That(weapon.Skills.Count, Is.LessThanOrEqualTo(Weapons.SkillRules.Places));
-            Assert.That(weapon.Skills.Distinct().Count(), Is.EqualTo(weapon.Skills.Count));
-            Assert.That(types, Is.EquivalentTo(new[] { "rune_daggers", "compass_pistol" }));
             Assert.That(weapon.Counts("rune_daggers") && weapon.Counts("compass_pistol"), Is.True);
             Assert.That(weapon.Counts("spectral_rapier"), Is.False);
         }
@@ -55,7 +50,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Real();
             var plainCount = loop.Weapons.Modifiers.Count;
-            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("corsair_daggers"), new Rng(2)));
+            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("corsair_daggers")));
             loop.Weapons.Equip(WeaponHand.Left, weapon);
 
             Assert.That(loop.State.Weapons.Holds("compass_pistol"), Is.True);
@@ -70,13 +65,12 @@ namespace Game.Core.Tests.Sim
         public void UniqueWeaponSurvivesSaveAndLoad()
         {
             var loop = Real();
-            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("twin_moon_rapier"), new Rng(3)));
+            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("twin_moon_rapier")));
             loop.Weapons.Equip(WeaponHand.Left, weapon);
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Real).State;
 
             Assert.That(loaded.Weapons.Left!.Unique!.Id, Is.EqualTo("twin_moon_rapier"));
-            Assert.That(loaded.Weapons.Left.Skills, Is.EqualTo(weapon.Skills));
             Assert.That(loaded.Weapons.Holds("pocket_watch"), Is.True);
         }
 
@@ -144,7 +138,7 @@ namespace Game.Core.Tests.Sim
             var hero = new StatSheet();
             if (withGuitar)
                 hero.Add(new Modifier(CombatStats.AuraReserveOnce, ModifierKind.Flat, 1));
-            var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Duelist }), hero: hero);
+            var loop = TestWorld.Loop(state: TestWorld.WithAllSkillsOpen(new GameState { Class = HeroClass.Duelist }), hero: hero);
             loop.State.Resource = 100;
             loop.Skills.Equip(TestWorld.Data.Gems["tailwind"]);
             return loop.State;

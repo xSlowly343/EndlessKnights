@@ -28,7 +28,7 @@ namespace Game.Core.Sim.Headless
         {
             _branchTrial = branchTrial;
             _path = path;
-            _loadout = new BotLoadout(loop);
+            _loadout = new BotLoadout(loop, branchTrial);
             _data = data;
             _loop = loop;
             _stuckSecondsBeforePrestige = stuckMinutesBeforePrestige * 60;

@@ -19,10 +19,9 @@ namespace Game.Core.Content.Weapons
         private readonly Dictionary<string, WeaponBase> _bases;
         private Dictionary<string, IReadOnlyList<GemDef>> _pools = new Dictionary<string, IReadOnlyList<GemDef>>(StringComparer.Ordinal);
 
-        private WeaponCatalog(List<WeaponType> types, List<WeaponBase> bases, double ownTypeWeight, double otherTypeWeight, IReadOnlyList<double> baseWeights, WeaponSkillRules skillRules, ReforgeTable reforge)
+        private WeaponCatalog(List<WeaponType> types, List<WeaponBase> bases, double ownTypeWeight, double otherTypeWeight, IReadOnlyList<double> baseWeights, ReforgeTable reforge)
         {
             Reforge = reforge;
-            SkillRules = skillRules;
             Types = types;
             Bases = bases;
             OwnTypeWeight = ownTypeWeight;
@@ -41,7 +40,6 @@ namespace Game.Core.Content.Weapons
         public double OwnTypeWeight { get; }
         public double OtherTypeWeight { get; }
         public IReadOnlyList<double> BaseWeights { get; }
-        public WeaponSkillRules SkillRules { get; }
         public ReforgeTable Reforge { get; }
 
         public IReadOnlyList<UniqueWeaponDef> Uniques { get; private set; } = Array.Empty<UniqueWeaponDef>();
@@ -79,88 +77,14 @@ namespace Game.Core.Content.Weapons
             return null;
         }
 
-        public WeaponItem RollUnique(UniqueWeaponDef unique, Rng rng)
-        {
-            var first = RollSkills(unique.Base.Type, unique.Rarity, rng);
-            if (unique.SecondType == null)
-                return new WeaponItem(unique.Base, unique.Rarity, first, unique);
-            var second = RollSkills(unique.SecondType, unique.Rarity, rng);
-            var skills = new List<string>();
-            for (var pair = 0; skills.Count < SkillRules.Places && (pair * 2 < first.Count || pair * 2 < second.Count); pair++)
-            {
-                Take(first, pair * 2, skills);
-                Take(first, pair * 2 + 1, skills);
-                Take(second, pair * 2, skills);
-                Take(second, pair * 2 + 1, skills);
-            }
-            return new WeaponItem(unique.Base, unique.Rarity, skills, unique);
-        }
-
-        private void Take(IReadOnlyList<string> from, int index, List<string> skills)
-        {
-            if (index < from.Count && skills.Count < SkillRules.Places)
-                skills.Add(from[index]);
-        }
+        public WeaponItem RollUnique(UniqueWeaponDef unique) => new WeaponItem(unique.Base, unique.Rarity, unique);
 
         public IReadOnlyList<GemDef> PoolOf(WeaponType type) =>
             _pools.TryGetValue(type.Id, out var pool) ? pool : Array.Empty<GemDef>();
 
-        public WeaponItem Starter(WeaponBase weaponBase) => new WeaponItem(weaponBase, ItemRarity.Simple, weaponBase.Type.StarterSkills);
+        public WeaponItem Starter(WeaponBase weaponBase) => new WeaponItem(weaponBase, ItemRarity.Simple);
 
-        public WeaponItem Roll(WeaponBase weaponBase, ItemRarity rarity, Rng rng) =>
-            new WeaponItem(weaponBase, rarity, RollSkills(weaponBase.Type, rarity, rng));
-
-        public IReadOnlyList<string> RollSkills(WeaponType type, ItemRarity rarity, Rng rng)
-        {
-            var tiers = RollTiers(rarity, rng);
-            var pool = PoolOf(type);
-            var chosen = new List<GemDef>();
-            var mythic = 0;
-            for (var place = 0; place < tiers.Length; place++)
-            {
-                var tier = tiers[place] == SkillTier.Mythic && mythic >= SkillRules.MaxMythic ? SkillTier.Legendary : tiers[place];
-                var skill = PickSkill(pool, tier, RoleOf(place), chosen, rng) ?? PickSkill(pool, tier, SkillRole.Other, chosen, rng);
-                if (skill == null)
-                    continue;
-                chosen.Add(skill);
-                if (skill.Skill!.Tier == SkillTier.Mythic)
-                    mythic++;
-            }
-            var ids = new string[chosen.Count];
-            for (var i = 0; i < ids.Length; i++)
-                ids[i] = chosen[i].Id;
-            return ids;
-        }
-
-        private SkillTier[] RollTiers(ItemRarity rarity, Rng rng)
-        {
-            var tiers = new SkillTier[SkillRules.Places];
-            for (var place = 0; place < tiers.Length; place++)
-                tiers[place] = SkillRules.RollTier(rarity, rng);
-            if (SkillRules.GuaranteesMythic(rarity) && Array.IndexOf(tiers, SkillTier.Mythic, FreePlaces) < 0)
-                tiers[rng.NextInt(FreePlaces, tiers.Length)] = SkillTier.Mythic;
-            return tiers;
-        }
-
-        private const int FreePlaces = 2;
-
-        private static SkillRole RoleOf(int place) =>
-            place == 0 ? SkillRole.Fast : place == 1 ? SkillRole.Heavy : SkillRole.Other;
-
-        private static GemDef? PickSkill(IReadOnlyList<GemDef> pool, SkillTier tier, SkillRole role, List<GemDef> chosen, Rng rng)
-        {
-            var candidates = new List<GemDef>();
-            for (var current = (int)tier; current >= 0 && candidates.Count == 0; current--)
-            {
-                foreach (var gem in pool)
-                {
-                    var skill = gem.Skill!;
-                    if ((int)skill.Tier == current && (role == SkillRole.Other || skill.Role == role) && !chosen.Contains(gem))
-                        candidates.Add(gem);
-                }
-            }
-            return candidates.Count == 0 ? null : candidates[rng.NextInt(0, candidates.Count)];
-        }
+        public WeaponItem Roll(WeaponBase weaponBase, ItemRarity rarity) => new WeaponItem(weaponBase, rarity);
 
         public bool TryGetType(string id, out WeaponType type) => _types.TryGetValue(id, out type!);
 
@@ -181,10 +105,7 @@ namespace Game.Core.Content.Weapons
             var from = weapon.Type;
             if (weapon.Unique != null || from == to)
                 return weapon;
-            var skills = new string[weapon.Skills.Count];
-            for (var i = 0; i < skills.Length; i++)
-                skills[i] = Reforge.SkillId(weapon.Skills[i], from, to);
-            return new WeaponItem(BaseAtStep(to, StepOf(weapon.Base)), weapon.Rarity, skills, null, weapon.Set);
+            return new WeaponItem(BaseAtStep(to, StepOf(weapon.Base)), weapon.Rarity, null, weapon.Set);
         }
 
         private int StepOf(WeaponBase weaponBase)
@@ -255,27 +176,10 @@ namespace Game.Core.Content.Weapons
                     pool.Add(gem);
             }
             Reforge.Bind(Types, classGems);
-            foreach (var type in Types)
-                RequireStarterSkills(type, pools[type.Id]);
             var bound = new Dictionary<string, IReadOnlyList<GemDef>>(StringComparer.Ordinal);
             foreach (var pair in pools)
                 bound[pair.Key] = pair.Value;
             _pools = bound;
-        }
-
-        private void RequireStarterSkills(WeaponType type, List<GemDef> pool)
-        {
-            var where = "types." + type.Id + ".starterSkills";
-            if (type.StarterSkills.Count > SkillRules.Places)
-                throw new ContentException(FileName, where, $"a weapon holds at most {SkillRules.Places} skills");
-            var seen = new HashSet<string>(StringComparer.Ordinal);
-            foreach (var id in type.StarterSkills)
-            {
-                if (!seen.Add(id))
-                    throw new ContentException(FileName, where, $"skill '{id}' is listed twice");
-                if (!pool.Exists(gem => gem.Id == id))
-                    throw new ContentException(FileName, where, $"skill '{id}' is not a class skill of '{type.Id}' in {GemCatalog.FileName}");
-            }
         }
 
         public static WeaponCatalog Load(string json)
@@ -324,7 +228,7 @@ namespace Game.Core.Content.Weapons
             foreach (var item in root.Field("baseWeights").Items())
                 baseWeights.Add(item.AsNumber(0, 1000));
             var catalog = new WeaponCatalog(types, bases, weights.Field("own").AsNumber(0, 1000), weights.Field("other").AsNumber(0, 1000), baseWeights,
-                WeaponSkillRules.Read(root.Field("skills")), ReforgeTable.Read(root.Field("reforge")));
+                ReforgeTable.Read(root.Field("reforge")));
             catalog.Uniques = ReadUniques(root.Field("uniques"), catalog, byId);
             return catalog;
         }
@@ -369,11 +273,8 @@ namespace Game.Core.Content.Weapons
             if (!Colors.Contains(color.AsString()))
                 throw color.Error($"unknown color '{color.AsString()}', expected red, green, blue or any");
             var name = node.Field("name");
-            var starterSkills = new List<string>();
-            foreach (var item in node.Field("starterSkills").Items())
-                starterSkills.Add(item.AsString());
             return new WeaponType(node.Field("id").AsString(), heroClass, color.AsString(), name.Field("ru").AsString(), name.Field("en").AsString(),
-                ModifierReader.ReadList(node.Field("innate")), starterSkills);
+                ModifierReader.ReadList(node.Field("innate")));
         }
 
         private static WeaponBase ReadBase(ContentNode node, Dictionary<string, WeaponType> types)

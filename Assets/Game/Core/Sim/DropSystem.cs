@@ -239,7 +239,7 @@ namespace Game.Core.Sim
             }
             else
             {
-                weapon = _weapons.Give(_weapons.Catalog.RollUnique(weapons[pick - gear.Count], rng));
+                weapon = _weapons.Give(_weapons.Catalog.RollUnique(weapons[pick - gear.Count]));
             }
             _state.Drops.ItemsFound++;
             _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(source, stage, weapon, item, false, 0)));
@@ -487,7 +487,7 @@ namespace Game.Core.Sim
             {
                 var unique = _weapons.Catalog.PickUnique(_rules.CeilingAt(drop.Stage), rng);
                 if (unique != null)
-                    return _weapons.Catalog.RollUnique(unique, rng);
+                    return _weapons.Catalog.RollUnique(unique);
             }
             var setChance = _rules.SetChanceFor(drop.Source);
             if (setChance > 0 && rng.NextDouble() < setChance)
@@ -526,7 +526,7 @@ namespace Game.Core.Sim
                     _bases.Add(weaponBase);
             }
             if (_bases.Count == 0)
-                return catalog.Roll(catalog.StarterFor(type.HeroClass), rarity, rng);
+                return catalog.Roll(catalog.StarterFor(type.HeroClass), rarity);
             _bases.Sort((a, b) => a.FromBiome.CompareTo(b.FromBiome));
             var total = 0.0;
             for (var i = 0; i < _bases.Count; i++)
@@ -536,9 +536,9 @@ namespace Game.Core.Sim
             {
                 roll -= BaseWeight(catalog, i);
                 if (roll < 0)
-                    return catalog.Roll(_bases[i], rarity, rng);
+                    return catalog.Roll(_bases[i], rarity);
             }
-            return catalog.Roll(_bases[_bases.Count - 1], rarity, rng);
+            return catalog.Roll(_bases[_bases.Count - 1], rarity);
         }
 
         private static double BaseWeight(WeaponCatalog catalog, int index)

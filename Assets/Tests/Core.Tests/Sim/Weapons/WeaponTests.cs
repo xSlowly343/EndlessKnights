@@ -1,3 +1,4 @@
+using Game.Core.Build;
 using Game.Core.Clock;
 using Game.Core.Content;
 using Game.Core.Content.Json;
@@ -36,7 +37,7 @@ namespace Game.Core.Tests.Sim.Weapons
         }
 
         [Test]
-        public void TakingTheWeaponOffDimsTheSkillAndBlocksTheCast()
+        public void TakingTheWeaponOffKeepsTheSkillCastable()
         {
             var loop = Hero(HeroClass.Runedancer);
             loop.Skills.Equip(TestWorld.Real.Gems["runedancer_hit_1"]);
@@ -44,47 +45,48 @@ namespace Game.Core.Tests.Sim.Weapons
 
             loop.Weapons.Unequip(WeaponHand.Right);
 
-            Assert.That(loop.Skills.Armed(0), Is.False);
-            Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.NoWeapon));
-            Assert.That(loop.State.Skills[0].Ready, Is.True);
-            Assert.That(loop.State.Resource, Is.EqualTo(100));
-            Assert.That(loop.Weapons.Bag[0].Id, Is.EqualTo("apprentice_daggers"));
-
-            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Bag[0]);
-            Assert.That(loop.Skills.Armed(0), Is.True);
+            Assert.That(loop.State.Weapons.Right, Is.Null);
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
         }
 
         [Test]
-        public void ActiveAuraGoesOutWithItsWeapon()
+        public void ActiveAuraStaysWhenTheWeaponGoesOff()
         {
             var loop = Hero(HeroClass.Minstrel);
-            loop.State.HeroLevel = TestWorld.Real.Weapons.SkillRules.UnlockLevels[^1];
             var before = loop.Hero.Value(CombatStats.ResourceGain, 1);
             loop.Skills.Equip(TestWorld.Real.Gems["minstrel_aura_1"]);
             loop.State.Resource = 100;
             loop.Tick();
-            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.GreaterThan(before));
+            var lit = loop.Hero.Value(CombatStats.ResourceGain, 1);
+            Assert.That(lit, Is.GreaterThan(before));
 
             loop.Weapons.Unequip(WeaponHand.Right);
+            loop.Tick();
 
-            Assert.That(loop.State.Skills[0].Active, Is.False);
-            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.EqualTo(before).Within(1e-9));
+            Assert.That(loop.State.Skills[0].Active, Is.True);
+            Assert.That(loop.Hero.Value(CombatStats.ResourceGain, 1), Is.GreaterThan(before));
         }
 
         [Test]
-        public void SecondHandOpensAnotherClassSkills()
+        public void AnotherClassWeaponDoesNotOpenItsSkills()
         {
             var loop = Hero(HeroClass.Runedancer);
-            loop.Skills.Equip(TestWorld.Real.Gems["minstrel_hit_1"]);
-            loop.State.Resource = 100;
-            Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.NoWeapon));
+            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(Base("butterfly_lute")));
 
-            var guitar = loop.Weapons.Give(Base("butterfly_lute"));
-            Assert.That(loop.Weapons.Equip(WeaponHand.Left, guitar), Is.True);
+            Assert.That(loop.Book.Equip(TestWorld.Real.Gems["minstrel_hit_1"]), Is.EqualTo(BookResult.WrongClass));
+        }
 
-            Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
-            Assert.That(loop.Weapons.In(WeaponHand.Right)!.Type.Id, Is.EqualTo("rune_daggers"));
+        [Test]
+        public void SavedWeaponsCarryNoSkills()
+        {
+            var loop = Hero(HeroClass.Runedancer);
+
+            var json = SaveCodec.Encode(loop.State, Clock);
+            var weapon = json.Substring(json.IndexOf("\"apprentice_daggers\"", System.StringComparison.Ordinal));
+            weapon = weapon.Substring(0, weapon.IndexOf('}'));
+
+            Assert.That(weapon, Does.Contain("\"rarity\""));
+            Assert.That(weapon, Does.Not.Contain("\"skills\""));
         }
 
         [Test]

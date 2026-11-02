@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Tree;
+using Game.Core.Content.Weapons;
 using Game.Core.Stats;
 using Game.Core.Sim;
 
@@ -12,10 +13,12 @@ namespace Game.Core.Build
         private readonly SkillSystem _skills;
         private readonly StatSheet _hero;
         private SkillBookRules _rules;
+        private WeaponCatalog _weapons;
 
-        public SkillBook(SkillBookRules rules, GameState state, SkillSystem skills, StatSheet hero)
+        public SkillBook(SkillBookRules rules, WeaponCatalog weapons, GameState state, SkillSystem skills, StatSheet hero)
         {
             _rules = rules;
+            _weapons = weapons;
             _state = state;
             _skills = skills;
             _hero = hero;
@@ -24,6 +27,32 @@ namespace Game.Core.Build
         public double ClassAttribute => _hero.Value(HeroAttributes.Stat, 0);
 
         public void UseRules(SkillBookRules rules) => _rules = rules;
+
+        public void UseWeapons(WeaponCatalog weapons) => _weapons = weapons;
+
+        public static bool IsClassSkill(GemDef gem) => gem.Kind == GemKind.Skill && gem.Skill?.Weapon != null && gem.Ascendancy == null;
+
+        public int UnlockLevel(GemDef skill) => IsClassSkill(skill) ? _rules.SkillUnlockLevel(skill.Skill!.Tier) : 1;
+
+        public bool OfHeroClass(GemDef skill) =>
+            _state.ClassChosen && _weapons.TryGetType(skill.Skill?.Weapon ?? string.Empty, out var type) && _state.Is(type.HeroClass);
+
+        public bool SkillOpen(GemDef skill) =>
+            IsClassSkill(skill) && !skill.Locked && OfHeroClass(skill) && _state.HeroLevel >= UnlockLevel(skill);
+
+        public void ClassSkills(List<GemDef> into)
+        {
+            into.Clear();
+            if (!_state.ClassChosen || !_weapons.HasType(_state.Class))
+                return;
+            into.AddRange(_weapons.PoolOf(_weapons.TypeOf(_state.Class)));
+        }
+
+        public void OpenClassSkills(List<GemDef> into)
+        {
+            ClassSkills(into);
+            into.RemoveAll(skill => !SkillOpen(skill));
+        }
 
         public int SlotCount => _rules.SlotsFor(_state.RecordStage, _state.EarlyBookSlot);
         public int MaxSlots => _rules.MaxSlots;
@@ -158,6 +187,8 @@ namespace Game.Core.Build
 
         public int FreeCopies(GemDef gem)
         {
+            if (IsClassSkill(gem))
+                return SkillOpen(gem) && RowOf(gem) < 0 ? 1 : 0;
             var owned = 0;
             foreach (var item in _state.OwnedGems)
             {
@@ -181,29 +212,16 @@ namespace Game.Core.Build
         {
             if (skill.Kind != GemKind.Skill)
                 return BookResult.WrongKind;
-            if (FreeCopies(skill) <= 0)
-                return BookResult.NotOwned;
             if (skill.Locked)
                 return BookResult.WaitsForMechanic;
+            if (IsClassSkill(skill) && !OfHeroClass(skill))
+                return BookResult.WrongClass;
+            if (IsClassSkill(skill) && _state.HeroLevel < UnlockLevel(skill))
+                return BookResult.LevelTooLow;
+            if (!IsClassSkill(skill) && FreeCopies(skill) <= 0)
+                return BookResult.NotOwned;
             if (skill.Ascendancy != null && skill.Ascendancy != _state.Ascendancy.Subclass)
                 return BookResult.WrongPath;
-            if (RowOf(skill) >= 0)
-                return BookResult.AlreadyInBook;
-            var role = FreeRoleFor(skill);
-            if (role == null)
-                return BookResult.NoFreeSlot;
-            _skills.Equip(skill, role: role);
-            return BookResult.Done;
-        }
-
-        public BookResult PlaceFromWeapon(GemDef skill, IReadOnlyList<int> unlockLevels)
-        {
-            if (skill.Kind != GemKind.Skill)
-                return BookResult.WrongKind;
-            if (skill.Locked)
-                return BookResult.WaitsForMechanic;
-            if (!_state.Weapons.Opens(skill.Id, _state.HeroLevel, unlockLevels))
-                return BookResult.NotOnWeapon;
             if (RowOf(skill) >= 0)
                 return BookResult.AlreadyInBook;
             var role = FreeRoleFor(skill);
@@ -227,9 +245,10 @@ namespace Game.Core.Build
         {
             if (_state.OwnedGems.Count > 0)
                 return false;
-            _state.OwnedGems.AddRange(_rules.StartingGems(_state.ClassName));
-            foreach (var gem in _state.OwnedGems)
+            foreach (var gem in _rules.StartingGems(_state.ClassName))
             {
+                if (!IsClassSkill(gem))
+                    _state.OwnedGems.Add(gem);
                 if (gem.Kind == GemKind.Skill)
                     Equip(gem);
             }
@@ -241,6 +260,12 @@ namespace Game.Core.Build
             var placed = 0;
             foreach (var gem in _rules.StartingGems(_state.ClassName))
             {
+                if (IsClassSkill(gem))
+                {
+                    if (RowOf(gem) < 0)
+                        placed += PlaceClassSkill(gem, placed);
+                    continue;
+                }
                 if (_state.OwnedGems.Contains(gem))
                     continue;
                 _state.OwnedGems.Add(gem);

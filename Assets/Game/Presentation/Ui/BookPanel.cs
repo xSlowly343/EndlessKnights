@@ -117,7 +117,7 @@ namespace Game.Presentation.Ui
                 if (i >= book.SlotCount)
                     _rows[i].ShowLocked(book.UnlockStageOf(i), _theme);
                 else if (i < state.Skills.Count)
-                    _rows[i].Show(state.Skills[i], _loop.Skills.Armed(i), i == _selectedRow, _theme);
+                    _rows[i].Show(state.Skills[i], i == _selectedRow, _theme);
                 else
                     _rows[i].ShowEmpty(_theme);
             }
@@ -463,7 +463,7 @@ namespace Game.Presentation.Ui
 
             public bool RemoveContains(Vector2 worldPoint) => !_locked && Remove.Back.gameObject.activeSelf && Remove.Contains(worldPoint);
 
-            public void Show(SkillSlot slot, bool armed, bool selected, UiTheme theme)
+            public void Show(SkillSlot slot, bool selected, UiTheme theme)
             {
                 Open(theme);
                 _border.color = selected ? theme.Gold : Color.clear;
@@ -472,8 +472,8 @@ namespace Game.Presentation.Ui
                 SkillGem = slot.Skill;
                 _gem.Show(slot.Skill, RowGemPx / 0.72f, theme);
                 _name.text = BookTexts.Name(slot.Skill);
-                _name.color = armed ? theme.Text : theme.TextDim;
-                _detail.text = armed ? BookTexts.RowKey(_index) : $"{BookTexts.RowKey(_index)} · <color=#{ColorUtility.ToHtmlStringRGB(theme.Alert)}>{BookTexts.Unarmed}</color>";
+                _name.color = theme.Text;
+                _detail.text = BookTexts.RowKey(_index);
             }
 
             public void ShowEmpty(UiTheme theme)

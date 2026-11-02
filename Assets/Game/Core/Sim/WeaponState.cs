@@ -23,8 +23,5 @@ namespace Game.Core.Sim
         public bool Holds(string typeId) =>
             (Right != null && Right.Counts(typeId)) || (Left != null && Left.Counts(typeId));
 
-        public bool Opens(string skillId, int heroLevel, IReadOnlyList<int> unlockLevels) =>
-            (Right != null && Right.Opens(skillId, heroLevel, unlockLevels)) ||
-            (Left != null && Left.Opens(skillId, heroLevel, unlockLevels));
     }
 }

@@ -127,7 +127,7 @@ namespace Game.Core.Tests.Sim
         public void RedGemEffectMakesRedSkillsStronger()
         {
             var helmet = Item("mail_coif");
-            var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Runedancer }));
+            var loop = TestWorld.Loop(state: TestWorld.WithAllSkillsOpen(new GameState { Class = HeroClass.Runedancer }));
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             var gem = TestWorld.Data.Gems["runedancer_hit_1"];

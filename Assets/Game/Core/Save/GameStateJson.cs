@@ -629,13 +629,9 @@ namespace Game.Core.Save
         {
             if (weapon == null)
                 return JsonValue.Null();
-            var skills = new JsonValue[weapon.Skills.Count];
-            for (var i = 0; i < skills.Length; i++)
-                skills[i] = JsonValue.Of(weapon.Skills[i]);
             return Object(
                 ("base", JsonValue.Of(weapon.Id)),
                 ("rarity", JsonValue.Of(ItemRarityNames.Of(weapon.Rarity))),
-                ("skills", JsonValue.Array(skills)),
                 ("unique", weapon.Unique == null ? JsonValue.Null() : JsonValue.Of(weapon.Unique.Id)),
                 ("set", weapon.Set == null ? JsonValue.Null() : JsonValue.Of(weapon.Set.Id)));
         }
@@ -662,12 +658,9 @@ namespace Game.Core.Save
             if (!catalog.TryGetBase(node.Field("base").AsString(), out var weaponBase))
                 return null;
             var rarity = ItemRarityNames.ByName.TryGetValue(node.Field("rarity").AsString(), out var found) ? found : ItemRarity.Simple;
-            var skills = new List<string>();
-            foreach (var item in node.Field("skills").Items())
-                skills.Add(item.AsString());
             var unique = node.HasField("unique") && !node.Field("unique").IsNull && catalog.TryGetUnique(node.Field("unique").AsString(), out var uniqueDef) && uniqueDef.Base == weaponBase ? uniqueDef : null;
             var set = items != null && node.HasField("set") && !node.Field("set").IsNull && items.TryGetSet(node.Field("set").AsString(), out var setDef) && setDef.Has(ItemSlot.Weapon) ? setDef : null;
-            return new WeaponItem(weaponBase, rarity, skills, unique, set);
+            return new WeaponItem(weaponBase, rarity, unique, set);
         }
 
         private static JsonValue WriteRift(RiftState rift) =>

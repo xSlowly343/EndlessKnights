@@ -47,8 +47,6 @@ namespace Game.Core.Sim
             var lowestGained = 0.0;
             for (var index = 0; index < _state.Skills.Count; index++)
             {
-                if (!_skills.Armed(index))
-                    continue;
                 var slot = _state.Skills[index];
                 var gained = amount * SupportEffects.ExperienceMultiplier(slot);
                 Note(slot.Skill, gained, ref lowest, ref lowestGained);

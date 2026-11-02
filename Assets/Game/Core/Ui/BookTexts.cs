@@ -11,7 +11,6 @@ namespace Game.Core.Ui
         public static string CompactHint => Texts.Get("book.compactHint");
         public static string EmptyRow => Texts.Get("book.emptyRow");
         public static string BagTitle => Texts.Get("book.bag");
-        public static string Unarmed => Texts.Get("book.unarmed");
         public static string Remove => Texts.Get("book.remove");
 
         public static string Removed(GemDef gem) => Texts.Format("book.removed", Name(gem));
@@ -34,7 +33,7 @@ namespace Game.Core.Ui
             BookResult.NoSuchSlot => Texts.Get("book.result.noSuchSlot"),
             BookResult.WrongPath => Texts.Get("book.result.wrongPath"),
             BookResult.WaitsForMechanic => Texts.Get("book.result.waitsForMechanic"),
-            BookResult.NotOnWeapon => Texts.Get("book.result.notOnWeapon"),
+            BookResult.WrongClass => Texts.Get("book.result.wrongClass"),
             BookResult.AlreadyInBook => Texts.Get("book.result.alreadyInBook"),
             BookResult.NoSuchSocket => Texts.Get("book.result.noSuchSocket"),
             BookResult.AlreadyInBuild => Texts.Get("book.result.alreadyInBuild"),

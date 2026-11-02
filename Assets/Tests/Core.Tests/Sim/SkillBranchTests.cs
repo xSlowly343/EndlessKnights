@@ -26,7 +26,7 @@ namespace Game.Core.Tests.Sim
         private static (GameLoop Loop, SkillSlot Slot) Hero(int skillLevel)
         {
             var input = new FakeInputSource();
-            var loop = new GameLoop(Data, input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Duelist, HeroLevel = 30 }), new Game.Core.Stats.StatSheet());
+            var loop = new GameLoop(Data, input, TestWorld.WithAllSkillsOpen(new GameState { Class = HeroClass.Duelist, HeroLevel = 30 }), new Game.Core.Stats.StatSheet());
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             loop.State.ProgressOf(Forked).Level = skillLevel;
             var index = loop.Skills.Equip(Forked, role: SkillSlotRole.Left);

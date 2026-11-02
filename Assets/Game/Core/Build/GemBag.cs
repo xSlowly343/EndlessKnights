@@ -6,9 +6,20 @@ namespace Game.Core.Build
 {
     public static class GemBag
     {
+        private static readonly List<GemDef> ClassSkills = new List<GemDef>();
+
         public static void Fill(SkillBook book, GameState state, GemBagFilter filter, List<GemDef> into)
         {
             into.Clear();
+            if (filter != GemBagFilter.Supports)
+            {
+                book.OpenClassSkills(ClassSkills);
+                foreach (var skill in ClassSkills)
+                {
+                    if (book.FreeCopies(skill) > 0)
+                        into.Add(skill);
+                }
+            }
             foreach (var gem in state.OwnedGems)
             {
                 if (!Matches(gem, filter) || into.Contains(gem) || book.FreeCopies(gem) <= 0)

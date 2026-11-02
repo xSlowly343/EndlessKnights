@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Hero(HeroClass.Runedancer);
             var set = Set("jarl_forge");
-            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Rare, new Rng(2)).InSet(set));
+            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Rare).InSet(set));
             var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
 
             loop.Weapons.Equip(WeaponHand.Left, weapon);
@@ -88,7 +88,7 @@ namespace Game.Core.Tests.Sim
         public void SetWeaponSurvivesSaveAndLoad()
         {
             var loop = Hero(HeroClass.Runedancer);
-            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Epic, new Rng(2)).InSet(Set("mountain_hammer")));
+            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Epic).InSet(Set("mountain_hammer")));
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;
 

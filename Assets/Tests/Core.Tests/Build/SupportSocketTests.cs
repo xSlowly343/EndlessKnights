@@ -24,7 +24,7 @@ namespace Game.Core.Tests.Build
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(new FakeInputSource(), TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Runedancer }), hero);
+            var loop = TestWorld.Loop(new FakeInputSource(), TestWorld.WithAllSkillsOpen(new GameState { Class = HeroClass.Runedancer }), hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             loop.State.OwnedGems.Clear();
@@ -39,7 +39,10 @@ namespace Game.Core.Tests.Build
             loop.State.OwnedGems.Add(gem);
             foreach (var id in owned)
                 loop.State.OwnedGems.Add(Gem(id));
-            Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.Done));
+            if (SkillBook.IsClassSkill(gem) && !loop.Book.OfHeroClass(gem))
+                loop.Skills.Equip(gem, role: loop.Book.FreeRoleFor(gem));
+            else
+                Assert.That(loop.Book.Equip(gem), Is.EqualTo(BookResult.Done));
             return loop.State.Skills.Count - 1;
         }
 
