@@ -258,6 +258,7 @@ namespace Game.Core.Sim
             if (_state.VulnerabilityTicks > 0 && --_state.VulnerabilityTicks == 0)
                 _state.VulnerabilityShare = 0;
             CountStreakTime();
+            ClearTraitParty();
             _runedancer.Tick();
             _duelist.Tick();
             _windshot.Tick(input.MousePx);
@@ -606,6 +607,19 @@ namespace Game.Core.Sim
                 return false;
             }
             return ++_hitsTowardCrit % every == 0;
+        }
+
+        private void ClearTraitParty()
+        {
+            _state.TraitPartyDamage = 0;
+            _state.TraitPartyCritChance = 0;
+            _state.TraitPartyCritMultiplier = 0;
+            _state.TraitPartyGold = 0;
+            _state.TraitPartyCooldown = 0;
+            _state.TraitShareDamage = 0;
+            _state.TraitShareCritChance = 0;
+            _state.TraitShareCritMultiplier = 0;
+            _state.TraitShareGold = 0;
         }
 
         private bool RollDoubleHit(StatTags tags)

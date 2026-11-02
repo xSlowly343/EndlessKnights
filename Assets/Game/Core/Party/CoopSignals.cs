@@ -46,7 +46,11 @@ namespace Game.Core.Party
             ["chorus"] = CoopSignal.Chorus,
             ["songShare"] = CoopSignal.SongShare,
             ["sleepShare"] = CoopSignal.SleepShare,
-            ["asleep"] = CoopSignal.Asleep
+            ["asleep"] = CoopSignal.Asleep,
+            ["shareDamage"] = CoopSignal.ShareDamage,
+            ["shareCritChance"] = CoopSignal.ShareCritChance,
+            ["shareCritMultiplier"] = CoopSignal.ShareCritMultiplier,
+            ["shareGold"] = CoopSignal.ShareGold
         };
 
         public static bool TryParse(string name, out CoopSignal signal) => Names.TryGetValue(name, out signal);
@@ -111,6 +115,10 @@ namespace Game.Core.Party
             CoopSignal.SongShare => state.Minstrel.PartySong,
             CoopSignal.SleepShare => state.Minstrel.PartySleep,
             CoopSignal.Asleep => state.Minstrel.Asleep ? 1 : 0,
+            CoopSignal.ShareDamage => state.TraitShareDamage,
+            CoopSignal.ShareCritChance => state.TraitShareCritChance,
+            CoopSignal.ShareCritMultiplier => state.TraitShareCritMultiplier,
+            CoopSignal.ShareGold => state.TraitShareGold,
             _ => 0
         };
     }

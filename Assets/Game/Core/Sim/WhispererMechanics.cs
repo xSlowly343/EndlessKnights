@@ -158,8 +158,8 @@ namespace Game.Core.Sim
                 TickVow();
             if (Name && InParty && _state.FightingBoss && S.CallTicks-- <= 0)
                 CallName();
-            _state.TraitPartyCritMultiplier = KnotCritMultiplier;
-            _state.TraitPartyGold = KnotGold;
+            _state.TraitShareCritMultiplier = KnotCritMultiplier;
+            _state.TraitShareGold = KnotGold;
             _state.TraitTimerSlow = _state.SharedEnemy ? 0 : KnotTimerSlow;
             ShareKnots();
             ShareName();

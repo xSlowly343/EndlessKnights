@@ -334,6 +334,39 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void EveryPathHasItsModeAndOneForkOf75ChangesIt()
+        {
+            var support = new[] { "alchemist_trait_3", "minstrel_trait_2", "lanternbearer_trait_2", "lanternbearer_trait_3", "whisperer_trait_3", "soulbinder_trait_3", "ghostcaptain_trait_3", "golemancer_trait_3", "clockwright_trait_3", "dowser_trait_3", "mothcaller_trait_2", "sandwalker_trait_2", "cartomancer_trait_3" };
+            var solo = new[] { "runedancer_trait_2", "runedancer_trait_3", "duelist_trait_2", "duelist_trait_3", "windshot_trait_1", "windshot_trait_3", "shardcaller_trait_1", "shardcaller_trait_2", "whisperer_trait_2", "mothcaller_trait_3", "soulbinder_trait_1", "ghostcaptain_trait_2", "golemancer_trait_1" };
+            var paths = TestWorld.Data.Ascendancy.Subclasses.Where(path => path.Trait != null).ToList();
+
+            Assert.That(paths, Has.Count.EqualTo(54));
+            Assert.That(paths.Count(path => path.PartyMode == PartyGiveMode.Support), Is.EqualTo(13));
+            Assert.That(paths.Count(path => path.PartyMode == PartyGiveMode.Solo), Is.EqualTo(13));
+            foreach (var path in paths)
+            {
+                var expected = support.Contains(path.Id) ? PartyGiveMode.Support : solo.Contains(path.Id) ? PartyGiveMode.Solo : PartyGiveMode.Together;
+                Assert.That(path.PartyMode, Is.EqualTo(expected), path.Id);
+                var changes = path.Trait!.Forks.SelectMany(fork => fork.Choices).Where(choice => choice.PartyMode != null).ToList();
+                Assert.That(changes, Has.Count.EqualTo(1), path.Id);
+                Assert.That(changes[0].PartyMode, Is.Not.EqualTo(path.PartyMode), path.Id);
+            }
+        }
+
+        [Test]
+        public void NoCharacterTreeKeepsTheOldPartyStats()
+        {
+            var old = new[] { "partyContribution", "partyDamage", "partyCritChance", "partyGold", "partyResource", "partyCritMultiplier", "partySkillCooldown", "partyGemDrop" };
+            foreach (var tree in TestWorld.Data.ClassTrees.Values)
+            {
+                var stats = tree.Nodes.SelectMany(node => new[] { node.Template.First, node.Template.Second, node.Template.Third }).SelectMany(line => line.Modifiers)
+                    .Concat(tree.Majors.SelectMany(slot => slot.Options).SelectMany(option => option.Modifiers)).ToList();
+                Assert.That(stats.Where(modifier => old.Contains(modifier.Stat.Name) || modifier.When == ModifierCondition.InParty), Is.Empty, tree.Id);
+                Assert.That(stats.Count(modifier => CoopLine.IsCoop(modifier.Stat)), Is.GreaterThanOrEqualTo(10), tree.Id);
+            }
+        }
+
+        [Test]
         public void TickingPartyBuffsDoesNotAllocate()
         {
             var probeBefore = System.GC.GetAllocatedBytesForCurrentThread();

@@ -41,6 +41,10 @@ namespace Game.Core.Party
         Chorus,
         SongShare,
         SleepShare,
-        Asleep
+        Asleep,
+        ShareDamage,
+        ShareCritChance,
+        ShareCritMultiplier,
+        ShareGold
     }
 }

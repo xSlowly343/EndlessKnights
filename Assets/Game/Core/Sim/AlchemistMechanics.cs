@@ -116,8 +116,8 @@ namespace Game.Core.Sim
                 S.MixGold = 0;
             if (Mix && InParty && S.CallTicks-- <= 0)
                 CallReagents();
-            _state.TraitPartyCritChance = S.MixCrit;
-            _state.TraitPartyGold = S.MixGold;
+            _state.TraitShareCritChance = S.MixCrit;
+            _state.TraitShareGold = S.MixGold;
             ShareMix();
             ShareSolvent();
             ShareFlask();

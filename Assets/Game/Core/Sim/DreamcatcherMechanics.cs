@@ -210,7 +210,7 @@ namespace Game.Core.Sim
             }
             if (Nets && S.Caught && _state.FightingBoss && Flag(DreamcatcherStats.NetTimer) && !_state.SharedEnemy)
                 _state.BossTimerStopTicks = System.Math.Max(_state.BossTimerStopTicks, 2);
-            _state.TraitPartyDamage = AlbumBonus(S.EnemyIndex) + (Album && S.EnemyIndex >= 0 && S.Album[S.EnemyIndex] > 0 ? Positive(DreamcatcherStats.AlbumParty) : 0);
+            _state.TraitShareDamage = AlbumBonus(S.EnemyIndex) + (Album && S.EnemyIndex >= 0 && S.Album[S.EnemyIndex] > 0 ? Positive(DreamcatcherStats.AlbumParty) : 0);
         }
 
         public void OnKillRewarded()
