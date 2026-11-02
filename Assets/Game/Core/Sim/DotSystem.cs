@@ -29,37 +29,8 @@ namespace Game.Core.Sim
         public double BurnMax => Rules.BurnMax * _state.SupportStackCap;
         public long PoisonTicks { get; private set; }
 
-        public int Stir => System.Math.Min(Rules.StirMax, (int)System.Math.Floor(_state.StirTurns + 1e-9));
-
-        public void Apply(AddStacksEffect effect, double multiplier = 1)
-        {
-            var stacks = effect.Stacks * multiplier;
-            if (stacks <= 0)
-                return;
-            stacks += System.Math.Max(0, _hero.Value(CombatStats.DotStacks, 0, StatTags.DoT));
-            if (effect.Kind == DotKind.Poison)
-            {
-                stacks += Stir;
-                _state.StirTurns = 0;
-            }
-            Add(effect.Kind, stacks);
-        }
 
         public void AddBurn(double stacks) => Add(DotKind.Burn, stacks);
-
-        public void Flow(AddStacksEffect effect) => Add(effect.Kind, effect.PerSecond * GameLoop.TickSeconds);
-
-        public void Detonate(DetonateEffect effect, double stackGrowth = 0)
-        {
-            if (!effect.KeepStacks)
-            {
-                Detonate(effect.Seconds);
-                return;
-            }
-            Hit(HitsPerSecond() * effect.Seconds);
-            if (stackGrowth > 0)
-                _state.PoisonStacks = System.Math.Min(PoisonMax, _state.PoisonStacks * (1 + stackGrowth));
-        }
 
         public long Bursts { get; private set; }
         public long MiasmaBursts { get; private set; }

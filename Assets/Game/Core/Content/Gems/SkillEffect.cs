@@ -52,10 +52,8 @@ namespace Game.Core.Content.Gems
         public double PauseMultiplier { get; set; }
         public double BossTimerStopSeconds { get; set; }
         public StacksEffect? Stacks { get; set; }
-        public double PerCurse { get; set; }
         public bool ConsumeMinion { get; set; }
         public double BurnStacks { get; set; }
-        public bool RefreshCurses { get; set; }
         public int Runes { get; set; }
         public bool Word { get; set; }
         public int Blades { get; set; }
@@ -165,36 +163,6 @@ namespace Game.Core.Content.Gems
         public int Golemlings { get; set; }
     }
 
-    public sealed class PotionOption
-    {
-        public PotionOption(IReadOnlyList<Modifier> modifiers, bool bossTimerStop, double strike, double bossScore, double normalScore)
-        {
-            Modifiers = modifiers;
-            BossTimerStop = bossTimerStop;
-            Strike = strike;
-            BossScore = bossScore;
-            NormalScore = normalScore;
-        }
-
-        public IReadOnlyList<Modifier> Modifiers { get; }
-        public bool BossTimerStop { get; }
-        public double Strike { get; }
-        public double BossScore { get; }
-        public double NormalScore { get; }
-
-        public double Score(bool boss) => boss ? BossScore : NormalScore;
-    }
-
-    public sealed class PotionEffect : SkillEffect
-    {
-        public PotionEffect(IReadOnlyList<PotionOption> options)
-        {
-            Options = options;
-        }
-
-        public IReadOnlyList<PotionOption> Options { get; }
-    }
-
     public sealed class AuraEffect : SkillEffect
     {
         public AuraEffect(IReadOnlyList<Modifier> modifiers, bool party = false, double reserve = 0, double focusLockAfterSeconds = 0,
@@ -221,59 +189,6 @@ namespace Game.Core.Content.Gems
         public double AllyResource { get; set; }
     }
 
-    public sealed class StoreHitsEffect : SkillEffect
-    {
-        public StoreHitsEffect(double releaseShare)
-        {
-            ReleaseShare = releaseShare;
-        }
-
-        public double ReleaseShare { get; }
-        public bool Queue { get; set; }
-    }
-
-    public sealed class WishEffect : SkillEffect
-    {
-        public WishEffect(double share)
-        {
-            Share = share;
-        }
-
-        public double Share { get; }
-    }
-
-    public sealed class RepeatRecentEffect : SkillEffect
-    {
-        public RepeatRecentEffect(double seconds)
-        {
-            Seconds = seconds;
-        }
-
-        public double Seconds { get; }
-    }
-
-    public sealed class BarrelEffect : SkillEffect
-    {
-        public BarrelEffect(double multiplier, double seconds)
-        {
-            Multiplier = multiplier;
-            Seconds = seconds;
-        }
-
-        public double Multiplier { get; }
-        public double Seconds { get; }
-    }
-
-    public sealed class InputKindsEffect : SkillEffect
-    {
-        public InputKindsEffect(double perKind)
-        {
-            PerKind = perKind;
-        }
-
-        public double PerKind { get; }
-    }
-
     public sealed class FlurryEffect : SkillEffect
     {
         public FlurryEffect(int hits, double seconds, double multiplier, int queueTargets)
@@ -290,46 +205,6 @@ namespace Game.Core.Content.Gems
         public double Multiplier { get; }
         public int QueueTargets { get; }
         public int HitsPerTick { get; }
-    }
-
-    public sealed class PauseStrikeEffect : SkillEffect
-    {
-        public PauseStrikeEffect(double pauseSeconds, double multiplier)
-        {
-            PauseSeconds = pauseSeconds;
-            Multiplier = multiplier;
-        }
-
-        public double PauseSeconds { get; }
-        public double Multiplier { get; }
-    }
-
-    public sealed class ComboStacksEffect : SkillEffect
-    {
-        public ComboStacksEffect(int hitsPerStack, Modifier perStack, double maxTotal)
-        {
-            HitsPerStack = hitsPerStack;
-            PerStack = perStack;
-            MaxTotal = maxTotal;
-            Modifiers = new[] { new Modifier(perStack.Stat, perStack.Kind, 1, perStack.Tags) };
-        }
-
-        public int HitsPerStack { get; }
-        public Modifier PerStack { get; }
-        public double MaxTotal { get; }
-        public IReadOnlyList<Modifier> Modifiers { get; }
-    }
-
-    public sealed class QueueHitsEffect : SkillEffect
-    {
-        public QueueHitsEffect(double share)
-        {
-            Share = share;
-        }
-
-        public double Share { get; }
-        public int Targets { get; set; }
-        public HitInput Input { get; set; }
     }
 
     public sealed class KeyRepeatEffect : SkillEffect
@@ -353,22 +228,6 @@ namespace Game.Core.Content.Gems
         Space,
         Backspace,
         Combo
-    }
-
-    public sealed class SpecialKeysEffect : SkillEffect
-    {
-        public SpecialKeysEffect(SpecialKey key, double bonus, int charges, bool passive)
-        {
-            Key = key;
-            Bonus = bonus;
-            Charges = charges;
-            Passive = passive;
-        }
-
-        public SpecialKey Key { get; }
-        public double Bonus { get; }
-        public int Charges { get; }
-        public bool Passive { get; }
     }
 
     public sealed class StreakStrikeEffect : SkillEffect
@@ -403,27 +262,6 @@ namespace Game.Core.Content.Gems
     {
         Kill,
         KeyHit
-    }
-
-    public sealed class StacksEffect : SkillEffect
-    {
-        public StacksEffect(StackTrigger trigger, Modifier perStack, double maxTotal, double stackSeconds)
-        {
-            Trigger = trigger;
-            PerStack = perStack;
-            MaxTotal = maxTotal;
-            StackSeconds = stackSeconds;
-        }
-
-        public StackTrigger Trigger { get; }
-        public Modifier PerStack { get; }
-        public double MaxTotal { get; }
-        public double StackSeconds { get; }
-        public bool Party { get; set; }
-        public bool Passive => Trigger == StackTrigger.Kill;
-
-        public Modifier For(int stacks) =>
-            new Modifier(PerStack.Stat, PerStack.Kind, System.Math.Min(MaxTotal, PerStack.Value * stacks), PerStack.Tags);
     }
 
     public enum ArmOn
@@ -566,95 +404,6 @@ namespace Game.Core.Content.Gems
         public double Shards { get; }
     }
 
-    public sealed class EnemyDebuffEffect : SkillEffect
-    {
-        public EnemyDebuffEffect(double damageTaken, double bossTimerSlow = 0)
-        {
-            DamageTaken = damageTaken;
-            BossTimerSlow = bossTimerSlow;
-        }
-
-        public double DamageTaken { get; }
-        public double BossTimerSlow { get; }
-        public double BossTimerSeconds { get; set; }
-        public bool BossTimerOncePerFight { get; set; }
-        public bool WhileAura { get; set; }
-        public IReadOnlyList<Modifier> Modifiers { get; set; } = System.Array.Empty<Modifier>();
-        public double StrikeMultiplier { get; set; }
-        public StatTags Tags { get; set; }
-    }
-
-    public sealed class HitStrikeEffect : SkillEffect
-    {
-        public HitStrikeEffect(HitInput input, int every, double multiplier, int queueTargets)
-        {
-            Input = input;
-            Every = every;
-            Multiplier = multiplier;
-            QueueTargets = queueTargets;
-        }
-
-        public HitInput Input { get; }
-        public int Every { get; }
-        public double Multiplier { get; }
-        public int QueueTargets { get; }
-    }
-
-    public sealed class ScaledEffect : SkillEffect
-    {
-        public ScaledEffect(ScaleSource source, double per, double from, int maxSteps, IReadOnlyList<Modifier> perStep, IReadOnlyList<Modifier> modifiers, string? family)
-        {
-            Source = source;
-            Per = per;
-            From = from;
-            MaxSteps = maxSteps;
-            PerStep = perStep;
-            Modifiers = modifiers;
-            Family = family;
-        }
-
-        public ScaleSource Source { get; }
-        public double Per { get; }
-        public double From { get; }
-        public int MaxSteps { get; }
-        public IReadOnlyList<Modifier> PerStep { get; }
-        public IReadOnlyList<Modifier> Modifiers { get; }
-        public string? Family { get; }
-    }
-
-    public sealed class PulseEffect : SkillEffect
-    {
-        public PulseEffect(double everySeconds, double multiplier, int queueTargets, double mouseEverySeconds = 0)
-        {
-            MouseEverySeconds = mouseEverySeconds;
-            EverySeconds = everySeconds;
-            Multiplier = multiplier;
-            QueueTargets = queueTargets;
-        }
-
-        public double EverySeconds { get; }
-        public double MouseEverySeconds { get; }
-        public double BossTimerSeconds { get; set; }
-        public double BossTimerSlow { get; set; }
-        public IReadOnlyList<Modifier> WhileActive { get; set; } = System.Array.Empty<Modifier>();
-        public StacksEffect? Stacks { get; set; }
-        public double Multiplier { get; }
-        public double PerAlly { get; set; }
-        public int QueueTargets { get; }
-    }
-
-    public sealed class ExtendFamilyEffect : SkillEffect
-    {
-        public ExtendFamilyEffect(string family, double seconds)
-        {
-            Family = family;
-            Seconds = seconds;
-        }
-
-        public string Family { get; }
-        public double Seconds { get; }
-    }
-
     public sealed class IdleStrikeEffect : SkillEffect
     {
         public IdleStrikeEffect(double chargePerSecond, double maxChargeSeconds, double minIdleSeconds)
@@ -669,20 +418,37 @@ namespace Game.Core.Content.Gems
         public double MinIdleSeconds { get; }
     }
 
-    public sealed class CurseFlowEffect : SkillEffect
-    {
-        public CurseFlowEffect(double hitsPerSecond)
-        {
-            HitsPerSecond = hitsPerSecond;
-        }
-
-        public double HitsPerSecond { get; }
-    }
-
     public enum MinionKind
     {
         Skeleton,
         Beast
+    }
+
+    public enum DotKind
+    {
+        Poison,
+        Burn
+    }
+
+    public sealed class StacksEffect : SkillEffect
+    {
+        public StacksEffect(StackTrigger trigger, Modifier perStack, double maxTotal, double stackSeconds)
+        {
+            Trigger = trigger;
+            PerStack = perStack;
+            MaxTotal = maxTotal;
+            StackSeconds = stackSeconds;
+        }
+
+        public StackTrigger Trigger { get; }
+        public Modifier PerStack { get; }
+        public double MaxTotal { get; }
+        public double StackSeconds { get; }
+        public bool Party { get; set; }
+        public bool Passive => Trigger == StackTrigger.Kill;
+
+        public Modifier For(int stacks) =>
+            new Modifier(PerStack.Stat, PerStack.Kind, System.Math.Min(MaxTotal, PerStack.Value * stacks), PerStack.Tags);
     }
 
     public sealed class SummonEffect : SkillEffect
@@ -699,56 +465,5 @@ namespace Game.Core.Content.Gems
         public double Seconds { get; }
         public double HitsPerSecond { get; }
         public double Multiplier { get; }
-        public IReadOnlyList<Modifier> WhileActive { get; set; } = System.Array.Empty<Modifier>();
-    }
-
-    public enum DotKind
-    {
-        Poison,
-        Burn
-    }
-
-    public sealed class AddStacksEffect : SkillEffect
-    {
-        public AddStacksEffect(DotKind kind, double stacks, double perSecond, double multiplier)
-        {
-            Kind = kind;
-            Stacks = stacks;
-            PerSecond = perSecond;
-            Multiplier = multiplier;
-        }
-
-        public DotKind Kind { get; }
-        public double Stacks { get; }
-        public double PerSecond { get; }
-        public double Multiplier { get; }
-        public IReadOnlyList<Modifier> WhileActive { get; set; } = System.Array.Empty<Modifier>();
-        public bool EndsOnKill { get; set; }
-        public double DelaySeconds { get; set; }
-    }
-
-    public sealed class DetonateEffect : SkillEffect
-    {
-        public DetonateEffect(double seconds)
-        {
-            Seconds = seconds;
-        }
-
-        public double Seconds { get; }
-        public bool KeepStacks { get; set; }
-    }
-
-    public sealed class WeakenNextEffect : SkillEffect
-    {
-        public WeakenNextEffect(int enemies, double hpShare)
-        {
-            Enemies = enemies;
-            HpShare = hpShare;
-        }
-
-        public int Enemies { get; }
-        public double HpShare { get; }
-        public double VulnerabilityShare { get; set; }
-        public double VulnerabilitySeconds { get; set; }
     }
 }

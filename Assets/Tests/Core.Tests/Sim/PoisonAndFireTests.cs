@@ -91,41 +91,18 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void PoisonStacksStopAtTheLimit()
-        {
-            var (loop, _) = Hero(HeroClass.Alchemist);
-            loop.State.PoisonStacks = Rules.PoisonMax - 1;
-
-            loop.Skills.Dots.Apply(new AddStacksEffect(DotKind.Poison, 3, 0, 0));
-
-            Assert.That(loop.State.PoisonStacks, Is.EqualTo(Rules.PoisonMax));
-        }
-
-        [Test]
         public void PoisonStacksStatRaisesTheLimit()
         {
-            var (loop, _) = Hero(HeroClass.Alchemist, new Modifier(CombatStats.PoisonStacks, ModifierKind.Flat, 2));
+            var (loop, input) = Hero(HeroClass.Alchemist, new Modifier(CombatStats.PoisonStacks, ModifierKind.Flat, 2));
             loop.State.PoisonStacks = Rules.PoisonMax;
 
-            loop.Skills.Dots.Apply(new AddStacksEffect(DotKind.Poison, 3, 0, 0));
-
-            Assert.That(loop.State.PoisonStacks, Is.EqualTo(Rules.PoisonMax + 2));
-        }
-
-        [Test]
-        public void StirringWithTheMouseAddsStacksToTheNextVial()
-        {
-            var (loop, input) = Hero(HeroClass.Alchemist);
-            for (var i = 0; i < Rules.StirMax + 3; i++)
+            for (var tick = 0; tick < 20; tick++)
             {
-                input.MoveMouse((float)Rules.StirPxPerTurn);
+                input.PressKeys(3);
                 loop.Tick();
             }
 
-            loop.Skills.Dots.Apply(new AddStacksEffect(DotKind.Poison, 3, 0, 0));
-
-            Assert.That(loop.State.PoisonStacks, Is.EqualTo(3 + Rules.StirMax));
-            Assert.That(loop.Skills.Dots.Stir, Is.EqualTo(0));
+            Assert.That(loop.State.PoisonStacks, Is.EqualTo(Rules.PoisonMax + 2));
         }
 
         [Test]

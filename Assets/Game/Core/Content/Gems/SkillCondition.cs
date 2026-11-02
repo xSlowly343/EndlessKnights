@@ -12,7 +12,6 @@ namespace Game.Core.Content.Gems
         public bool MouseMoving { get; set; }
         public bool Reading { get; set; }
         public double DotStacksAtLeast { get; set; }
-        public int CursesAtLeast { get; set; }
         public int MinionsAtLeast { get; set; }
         public int AurasAtLeast { get; set; }
     }

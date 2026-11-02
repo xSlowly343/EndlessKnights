@@ -10,12 +10,6 @@ namespace Game.Core.Tests.Sim
 {
     public class WhispererCurseTests
     {
-        private static CurseRules Rules => TestWorld.Data.Combat.Curses;
-
-        private static GemDef Curse(string id, double damageTaken = 0.2) =>
-            new GemDef(id, GemKind.Skill, GemColor.Blue, id, id, StatTags.Skill,
-                skill: new SkillDef(0, 1, 10, new EnemyDebuffEffect(damageTaken), new[] { "curse" }));
-
         private static (GameLoop Loop, FakeInputSource Input) Whisperer(params Modifier[] modifiers)
         {
             var input = new FakeInputSource();
@@ -36,23 +30,6 @@ namespace Game.Core.Tests.Sim
             for (var i = 0; i < count; i++)
                 loop.Tick();
             return loop.State.Resource;
-        }
-
-        private static double DamageMore(GameLoop loop) => loop.Hero.Value(CombatStats.Damage, 1);
-
-        private static int CastNew(GameLoop loop, GemDef gem)
-        {
-            var index = loop.Skills.Equip(gem);
-            Assert.That(loop.Skills.TryCast(index), Is.EqualTo(CastResult.Cast), gem.Id);
-            return index;
-        }
-
-        private static void KillEnemy(GameLoop loop, FakeInputSource input)
-        {
-            loop.State.EnemyHp = BigNumber.FromDouble(1e-9);
-            input.PressKeys(1);
-            loop.Tick();
-            loop.Tick();
         }
 
         [Test]
@@ -78,63 +55,5 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Resource, Is.EqualTo(0.1).Within(1e-9));
         }
 
-        [Test]
-        public void CurseEndsWhenItsEnemyDies()
-        {
-            var (loop, input) = Whisperer();
-            var slot = CastNew(loop, Curse("hex"));
-            Assert.That(DamageMore(loop), Is.EqualTo(1.2).Within(1e-9));
-
-            KillEnemy(loop, input);
-
-            Assert.That(loop.State.Skills[slot].Active, Is.False);
-            Assert.That(DamageMore(loop), Is.EqualTo(1).Within(1e-9));
-        }
-
-        [Test]
-        public void OnlyOneCurseHoldsAndTheNewOneReplacesTheOldest()
-        {
-            var (loop, _) = Whisperer();
-            var first = CastNew(loop, Curse("hex_a"));
-            var second = CastNew(loop, Curse("hex_b", 0.3));
-
-            Assert.That(loop.State.Skills[first].Active, Is.False);
-            Assert.That(loop.State.Skills[second].Active, Is.True);
-            Assert.That(loop.Skills.ActiveCurses, Is.EqualTo(Rules.MaxOnEnemy));
-            Assert.That(DamageMore(loop), Is.EqualTo(1.3).Within(1e-9));
-        }
-
-        [Test]
-        public void ExtraCurseSlotKeepsBothCurses()
-        {
-            var (loop, _) = Whisperer(new Modifier(CombatStats.CursesOnEnemy, ModifierKind.Flat, 1));
-            CastNew(loop, Curse("hex_a"));
-            CastNew(loop, Curse("hex_b"));
-
-            Assert.That(loop.Skills.ActiveCurses, Is.EqualTo(2));
-            Assert.That(DamageMore(loop), Is.EqualTo(1.2 * 1.2).Within(1e-9));
-        }
-
-        [Test]
-        public void CurseEffectAndEnemyDebuffEffectMakeTheCurseStronger()
-        {
-            var (loop, _) = Whisperer(
-                new Modifier(CombatStats.CurseEffect, ModifierKind.Increased, 0.5),
-                new Modifier(CombatStats.EnemyDebuffEffect, ModifierKind.Increased, 0.5));
-
-            CastNew(loop, Curse("hex"));
-
-            Assert.That(DamageMore(loop), Is.EqualTo(1 + 0.2 * 1.5 * 1.5).Within(1e-9));
-        }
-
-        [Test]
-        public void CurseSecondsStretchTheCurse()
-        {
-            var (loop, _) = Whisperer(new Modifier(CombatStats.CurseSeconds, ModifierKind.Increased, 0.5));
-
-            var slot = CastNew(loop, Curse("hex"));
-
-            Assert.That(loop.State.Skills[slot].ActiveTicks, Is.EqualTo(150));
-        }
     }
 }
