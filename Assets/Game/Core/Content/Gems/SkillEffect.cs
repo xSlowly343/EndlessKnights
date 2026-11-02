@@ -147,6 +147,11 @@ namespace Game.Core.Content.Gems
         public int Moths { get; set; }
         public double SwarmHit { get; set; }
         public bool Wake { get; set; }
+        public int Cards { get; set; }
+        public bool Arcana { get; set; }
+        public bool Reveal { get; set; }
+        public double HandHit { get; set; }
+        public bool Forecast { get; set; }
     }
 
     public sealed class PotionOption

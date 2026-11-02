@@ -35,6 +35,10 @@ namespace Game.Core.Sim
         ParrotPerch,
         SwarmGift,
         Pollen,
-        MothClock
+        MothClock,
+        Deal,
+        Card,
+        Forecast,
+        ForecastLost
     }
 }

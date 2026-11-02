@@ -479,7 +479,12 @@ namespace Game.Core.Content.Gems
                         ParrotRepeat = node.HasField("parrotRepeat") && node.Field("parrotRepeat").AsBool(),
                         Moths = node.HasField("moths") ? node.Field("moths").AsInt(0, 200) : 0,
                         SwarmHit = Number(node, "swarmHit", 1000),
-                        Wake = node.HasField("wake") && node.Field("wake").AsBool()
+                        Wake = node.HasField("wake") && node.Field("wake").AsBool(),
+                        Cards = node.HasField("cards") ? node.Field("cards").AsInt(0, 20) : 0,
+                        Arcana = node.HasField("arcana") && node.Field("arcana").AsBool(),
+                        Reveal = node.HasField("reveal") && node.Field("reveal").AsBool(),
+                        HandHit = Number(node, "handHit", 1000),
+                        Forecast = node.HasField("forecast") && node.Field("forecast").AsBool()
                     };
                 case "aura":
                     return new AuraEffect(

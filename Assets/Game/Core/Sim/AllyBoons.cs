@@ -100,6 +100,16 @@ namespace Game.Core.Sim
         public long PollenShakes { get; set; }
         public double MothWakeSeconds { get; set; }
         public int MothClockTicks { get; set; }
+        public int DealOwner { get; set; } = -1;
+        public int DealEvery { get; set; }
+        public int DealTicks { get; set; }
+        public int DealHits { get; set; }
+        public long CardsDealt { get; set; }
+        public int LastSuit { get; set; } = -1;
+        public double ForecastGold { get; set; }
+        public int ForecastTicks { get; set; }
+        public bool ForecastApplied { get; set; }
+        public double ForecastPenalty { get; set; }
 
         public double GoldMultiplier => GoldTicks > 0 ? 1 + ElixirGold : 1;
 

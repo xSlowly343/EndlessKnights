@@ -25,6 +25,7 @@ namespace Game.Core.Sim
         private readonly SoulbinderMechanics _soulbinder;
         private readonly GhostcaptainMechanics _ghostcaptain;
         private readonly MothcallerMechanics _mothcaller;
+        private readonly CartomancerMechanics _cartomancer;
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
@@ -55,6 +56,7 @@ namespace Game.Core.Sim
             _soulbinder = new SoulbinderMechanics(rules.Classes.Soulbinder, state, hero, this);
             _ghostcaptain = new GhostcaptainMechanics(rules.Classes.Ghostcaptain, state, hero, this);
             _mothcaller = new MothcallerMechanics(rules.Classes.Mothcaller, state, hero, this);
+            _cartomancer = new CartomancerMechanics(rules.Classes.Cartomancer, state, hero, this);
         }
 
         public ClassMechanics Class => _class;
@@ -73,6 +75,7 @@ namespace Game.Core.Sim
         public SoulbinderMechanics Soulbinder => _soulbinder;
         public GhostcaptainMechanics Ghostcaptain => _ghostcaptain;
         public MothcallerMechanics Mothcaller => _mothcaller;
+        public CartomancerMechanics Cartomancer => _cartomancer;
         public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
@@ -94,6 +97,7 @@ namespace Game.Core.Sim
             _soulbinder.UseRules(rules.Classes.Soulbinder);
             _ghostcaptain.UseRules(rules.Classes.Ghostcaptain);
             _mothcaller.UseRules(rules.Classes.Mothcaller);
+            _cartomancer.UseRules(rules.Classes.Cartomancer);
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
@@ -245,6 +249,7 @@ namespace Game.Core.Sim
             _soulbinder.Tick();
             _ghostcaptain.Tick();
             _mothcaller.Tick();
+            _cartomancer.Tick();
             var keyHits = TakeWhole(_state.KeyCarry + input.Hits, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -273,6 +278,7 @@ namespace Game.Core.Sim
                     _soulbinder.AfterStrike();
                     _ghostcaptain.AfterStrike();
                     _mothcaller.AfterStrike(crit);
+                    _cartomancer.AfterStrike();
                 }
                 KeyHitLightning();
                 ShadowClone();
@@ -331,7 +337,7 @@ namespace Game.Core.Sim
             else if (source == DamageSource.Mouse)
                 multiplier *= _state.SupportMouseBonus;
             LastHitCrit = false;
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken());
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken());
             if (damage.Sign <= 0)
                 return;
             _state.HitsOnEnemy++;
