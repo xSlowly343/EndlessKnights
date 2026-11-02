@@ -430,6 +430,8 @@ namespace Game.Core.Party
                 _loop.Combat.Lanternbearer.AddAllyHits(allyHits);
                 _loop.Combat.Whisperer.AddAllyHits(allyHits);
                 _loop.Combat.Clockwright.AddAllyHits(allyHits);
+                _loop.Combat.Dowser.AddAllyHits(allyHits);
+                _loop.Combat.Soulbinder.AddAllyHits(allyHits);
             }
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
@@ -538,6 +540,8 @@ namespace Game.Core.Party
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 _contribution[slot] += killed.Contribution(slot);
             RewardDream(killed);
+            if (TopContributor(killed))
+                _loop.Combat.Dowser.OnTopKill();
         }
 
         private void EndLocalEnemy(bool bossFailed) => EndLocalEnemy(bossFailed, LocallyPaid());
@@ -928,6 +932,39 @@ namespace Game.Core.Party
                 case TraitRelayKind.Elixir:
                     AlchemistMechanics.DrinkRelay(boons, relay.Into());
                     break;
+                case TraitRelayKind.Vein:
+                    _loop.Combat.Dowser.ReceiveVein(relay.Value);
+                    break;
+                case TraitRelayKind.VeinHint:
+                    boons.VeinHint = relay.Value;
+                    boons.VeinHintTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.Luck:
+                    boons.LuckOwner = relay.From;
+                    boons.LuckChance = relay.Value;
+                    boons.LuckTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.LuckFound:
+                    _loop.Combat.Dowser.ReceiveLuckFound();
+                    break;
+                case TraitRelayKind.Artel:
+                    boons.ArtelOwner = relay.From;
+                    boons.ArtelEvery = relay.Every;
+                    boons.ArtelChest = relay.Value;
+                    boons.ArtelItemChance = relay.Extra;
+                    boons.ArtelTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.Souls:
+                    boons.SoulsShown = relay.Count;
+                    break;
+                case TraitRelayKind.Lend:
+                    boons.LendOwner = relay.From;
+                    boons.LendPower = relay.Value;
+                    boons.LendTicks = System.Math.Max(boons.LendTicks, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond));
+                    break;
+                case TraitRelayKind.SoulBack:
+                    _loop.Combat.Soulbinder.ReceiveSoulBack(relay.Count);
+                    break;
                 case TraitRelayKind.GearTick:
                     boons.GearCuts++;
                     _loop.Combat.Clockwright.CutCooldowns(relay.Seconds, relay.Extra > 0);
@@ -973,6 +1010,12 @@ namespace Game.Core.Party
                 _loop.State.Boons.Land(relay.Count, (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond), relay.Value, relay.Every, relay.Extra, -1, System.Math.Max(1, (int)relay.Max));
             else if (relay.Kind == TraitRelayKind.Hush)
                 _loop.State.Boons.Hush(relay.Count, relay.Value, -1, relay.Max);
+            else if (relay.Kind == TraitRelayKind.Lend)
+            {
+                _loop.State.Boons.LendOwner = -1;
+                _loop.State.Boons.LendPower = relay.Value;
+                _loop.State.Boons.LendTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+            }
             else if (relay.Kind == TraitRelayKind.Elixir)
                 AlchemistMechanics.DrinkRelay(_loop.State.Boons, relay);
             else if (relay.Kind == TraitRelayKind.Acid)
@@ -1038,6 +1081,18 @@ namespace Game.Core.Party
                 return;
             _lastPullTick = _tick;
             SendToHost(PartyCodec.Encode(_out, new NetPullMessage { EffectId = DreamcatcherMechanics.NetEffect, Seconds = (float)rules.NetPullSeconds }));
+        }
+
+        private bool TopContributor(in EnemyKilledMessage killed)
+        {
+            if (_ownSlot < 0 || !(killed.Contribution(_ownSlot) > 0))
+                return false;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (slot != _ownSlot && killed.Contribution(slot) > killed.Contribution(_ownSlot))
+                    return false;
+            }
+            return true;
         }
 
         private void RewardDream(in EnemyKilledMessage killed)

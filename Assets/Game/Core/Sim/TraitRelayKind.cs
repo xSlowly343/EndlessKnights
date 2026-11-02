@@ -20,6 +20,14 @@ namespace Game.Core.Sim
         Flask,
         Acid,
         AcidHit,
-        Elixir
+        Elixir,
+        Vein,
+        VeinHint,
+        Luck,
+        LuckFound,
+        Artel,
+        Souls,
+        Lend,
+        SoulBack
     }
 }

@@ -129,6 +129,16 @@ namespace Game.Core.Content.Gems
         public bool Elixir { get; set; }
         public double Corrode { get; set; }
         public double CorrodeSeconds { get; set; }
+        public double VeinHits { get; set; }
+        public double Luck { get; set; }
+        public int Nuggets { get; set; }
+        public double GoldHit { get; set; }
+        public double VeinGold { get; set; }
+        public int Souls { get; set; }
+        public double SpiritsHit { get; set; }
+        public bool ReleaseAll { get; set; }
+        public bool Lend { get; set; }
+        public bool Breathe { get; set; }
     }
 
     public sealed class PotionOption

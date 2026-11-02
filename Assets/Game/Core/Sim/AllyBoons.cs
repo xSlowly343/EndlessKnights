@@ -50,6 +50,24 @@ namespace Game.Core.Sim
         public int RedStrikes { get; set; }
         public int ElixirStreak { get; set; }
         public long Elixirs { get; set; }
+        public double VeinHint { get; set; }
+        public int VeinHintTicks { get; set; }
+        public double LuckChance { get; set; }
+        public int LuckOwner { get; set; } = -1;
+        public int LuckTicks { get; set; }
+        public int ArtelOwner { get; set; } = -1;
+        public int ArtelTicks { get; set; }
+        public int ArtelEvery { get; set; }
+        public double ArtelChest { get; set; }
+        public double ArtelItemChance { get; set; }
+        public int Nuggets { get; set; }
+        public long ArtelChests { get; set; }
+        public int SoulsShown { get; set; }
+        public int LendOwner { get; set; } = -1;
+        public int LendTicks { get; set; }
+        public double LendPower { get; set; }
+        public int SoulsOwed { get; set; }
+        public long LentHits { get; set; }
 
         public double GoldMultiplier => GoldTicks > 0 ? 1 + ElixirGold : 1;
 

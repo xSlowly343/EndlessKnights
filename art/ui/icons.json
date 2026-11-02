@@ -63,8 +63,8 @@
     { "group": "weapons", "id": "voodoo_doll", "source": "lorc/voodoo-doll", "attribute": "blue" },
     { "group": "weapons", "id": "pocket_watch", "source": "delapouite/pendulum-swing", "attribute": "blue" },
     { "group": "weapons", "id": "alchemy_flasks", "source": "lorc/syringe", "attribute": "red" },
-    { "group": "weapons", "id": "still_burner", "source": "lorc/potion-ball", "attribute": "blue" },
-    { "group": "weapons", "id": "shovel", "source": "lorc/spade", "attribute": "blue" },
+    { "group": "weapons", "id": "divining_rod", "source": "lorc/potion-ball", "attribute": "blue" },
+    { "group": "weapons", "id": "spirit_orb", "source": "lorc/spade", "attribute": "blue" },
     { "group": "weapons", "id": "pistol", "source": "john-colburn/pistol-gun", "attribute": "green" },
 
     { "group": "glyphs", "id": "damage", "source": "lorc/broadsword", "attribute": "white" },

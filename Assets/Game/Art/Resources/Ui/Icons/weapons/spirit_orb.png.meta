@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -3766519690804746565
-    second: shovel_0
+    second: spirit_orb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shovel_0
+      name: spirit_orb_0
       rect:
         serializedVersion: 2
         x: 13

@@ -24,7 +24,7 @@
       "clockwright": { "perKey": 0.5, "mousePxPerPoint": 1000, "perFastKillSecond": 5 },
       "ghostcaptain": { "perKey": 0.3333 },
       "alchemist": { "perKey": 1 },
-      "soulbinder": { "perKey": 0.1, "perKill": 5 },
+      "soulbinder": { "perKey": 0.1, "perKill": 3 },
       "duelist": { "perKey": 0.5 },
       "windshot": { "perKey": 0, "mousePxPerPoint": 160, "perSecond": 1 },
       "lanternbearer": { "perKey": 0.3333 },
@@ -94,6 +94,16 @@
       "verse": { "lineHits": 10, "lineHitsMin": 3, "lines": 4, "seconds": 12, "secondsMin": 2, "max": 3, "chorusVerses": 3, "chorusMultiplier": 2, "chorusSeconds": 8, "endlessSeconds": 4, "gift": 10 },
       "song": { "hits": 40, "hitsMin": 5, "partyCooldown": 0.5, "partyCrit": 0.2, "soloMultiplier": 2, "allEverySeconds": 30, "allSeconds": 5, "allMultiplier": 2, "gift": 10 },
       "lullaby": { "noteHits": 20, "noteHitsMin": 4, "notes": 7, "notesMin": 2, "seconds": 4, "secondsMin": 1, "bossSeconds": 8 }
+    },
+    "soulbinder": {
+      "sphere": { "size": 6, "max": 12, "hitsPerSecond": 1, "guardianSoul": 2, "bossSoul": 3, "pushBlast": 5, "releaseEverySeconds": 30, "releaseMultiplier": 3, "queueShare": 0.7 },
+      "breath": { "coldSeconds": 5, "coldDamageTaken": 0.15, "coldHits": 25, "coldSoloShare": 0.5, "effectSeconds": 1, "twice": 0.5 },
+      "lend": { "hits": 50, "hitsMin": 10, "seconds": 10, "selfPenalty": 0.2, "soulBackResource": 2, "soulBackHits": 10, "allSeconds": 5 }
+    },
+    "dowser": {
+      "vein": { "range": 50, "nearRange": 25, "strike": 10, "critSeconds": 10, "gemChance": 0.25, "hintStep": 0.2, "hintSeconds": 5 },
+      "luck": { "max": 1, "boss": 3, "uniqueEvery": 5, "goldPerKill": 0.01, "goldMax": 0.3, "hourSeconds": 3600, "shards": 5, "relaySeconds": 30, "relayStep": 0.02 },
+      "artel": { "penalty": 0.4, "nuggets": 10, "nuggetsMin": 3, "itemChance": 0.1, "itemRich": 0.25, "shards": 10, "callSeconds": 30 }
     },
     "alchemist": {
       "mix": {

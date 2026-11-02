@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -8606945048881362478
-    second: still_burner_0
+    second: divining_rod_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: still_burner_0
+      name: divining_rod_0
       rect:
         serializedVersion: 2
         x: 6
