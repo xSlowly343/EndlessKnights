@@ -571,12 +571,12 @@ namespace Game.Core.Sim
             }
             if (native.SpendsAll)
             {
-                if (!_resource.Rules.Inverse && _state.Resource < cost)
+                if (_state.Resource < cost)
                     return false;
                 spent = _resource.SpendAll();
                 return true;
             }
-            if (cost > 0 && SupportEffects.DeferPerSecond(slot) > 0 && !_resource.Rules.Inverse)
+            if (cost > 0 && SupportEffects.DeferPerSecond(slot) > 0)
             {
                 if (_state.Resource < cost)
                     return false;

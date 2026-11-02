@@ -1169,12 +1169,12 @@
         ]
       },
       {
-        "id": "clockwright_clockwork",
+        "id": "clockwright_spring",
         "modifiers": [
           {
-            "stat": "clockworkSlow",
+            "stat": "springDrain",
             "kind": "flat",
-            "value": 0.02
+            "value": -0.03
           }
         ]
       }
@@ -1214,12 +1214,12 @@
         ]
       },
       {
-        "id": "dowser_overheat",
+        "id": "dowser_vein",
         "modifiers": [
           {
-            "stat": "overheatSeconds",
-            "kind": "flat",
-            "value": 0.5
+            "stat": "veinPower",
+            "kind": "increased",
+            "value": 0.05
           }
         ]
       }
@@ -1237,15 +1237,12 @@
         "whole": true
       },
       {
-        "id": "soulbinder_rise",
+        "id": "soulbinder_souls",
         "modifiers": [
           {
-            "stat": "riseEvery",
-            "kind": "flat",
-            "value": -1,
-            "tags": [
-              "Minion"
-            ]
+            "stat": "soulPower",
+            "kind": "increased",
+            "value": 0.05
           }
         ],
         "whole": true

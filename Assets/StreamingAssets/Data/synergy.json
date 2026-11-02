@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon", "blind", "cold", "bond", "blood", "evilEye"],
+  "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon", "blind", "cold", "bond", "blood"],
   "roles": {
     "runedancer": "dd", "duelist": "dd", "windshot": "dd", "shardcaller": "dd", "sandwalker": "dd",
     "minstrel": "buffer", "dreamcatcher": "buffer", "lanternbearer": "buffer",
@@ -10,8 +10,7 @@
     "mothcaller": "buffer", "cartomancer": "debuffer", "herbwitch": "dot", "golemancer": "summon"
   },
   "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
-  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "evilEyeOnEnemy": "evilEye", "coldOnEnemy": "cold", "bloodOnEnemy": "blood", "bondsUp": "bond" },
-  "weakMarks": { "evilEye": { "as": "curse", "share": 0.5 } },
+  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "coldOnEnemy": "cold", "bloodOnEnemy": "blood", "bondsUp": "bond" },
   "secondResponseStat": "secondResponse",
   "allyPoisonStacks": 25,
   "responses": [
@@ -37,8 +36,8 @@
     { "id": "clockwright_quickened_gears", "class": "clockwright", "mark": "stun", "second": true, "modifiers": [{ "stat": "sandPerAllySquall", "kind": "flat", "value": 5 }] },
     { "id": "alchemist_miasma", "class": "alchemist", "mark": "fire", "modifiers": [{ "stat": "miasmaBurstShare", "kind": "flat", "value": 0.2 }] },
     { "id": "alchemist_plague_rats", "class": "alchemist", "mark": "series", "second": true, "modifiers": [{ "stat": "allySummonPoison", "kind": "flat", "value": 1 }] },
-    { "id": "dowser_spark", "class": "dowser", "mark": "lightning", "modifiers": [{ "stat": "burnStacksFromAllyLightning", "kind": "flat", "value": 1 }, { "stat": "pressureDecay", "kind": "flat", "value": 3 }] },
-    { "id": "dowser_to_the_music", "class": "dowser", "mark": "aura", "second": true, "modifiers": [{ "stat": "pressureDecay", "kind": "more", "value": -0.5 }, { "stat": "overheatThreshold", "kind": "flat", "value": 20 }] },
+    { "id": "dowser_spark", "class": "dowser", "mark": "lightning", "modifiers": [{ "stat": "burnStacksFromAllyLightning", "kind": "flat", "value": 1 }] },
+    { "id": "dowser_to_the_music", "class": "dowser", "mark": "aura", "second": true, "modifiers": [{ "stat": "veinPower", "kind": "increased", "value": 0.1 }, { "stat": "luckPower", "kind": "increased", "value": 0.1 }] },
     { "id": "soulbinder_plague_corpses", "class": "soulbinder", "mark": "poison", "modifiers": [{ "stat": "soulsPerPoisonedKill", "kind": "flat", "value": 3 }] },
     { "id": "soulbinder_cursed_ground", "class": "soulbinder", "mark": "curse", "second": true, "modifiers": [{ "stat": "minionSpeed", "kind": "increased", "value": 0.4 }] },
     { "id": "ghostcaptain_powder_keg", "class": "ghostcaptain", "mark": "fire", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Minion"] }] },

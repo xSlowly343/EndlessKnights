@@ -123,22 +123,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(plain.State.PoisonStacks, Is.EqualTo(0).Within(0.2));
         }
 
-        [Test]
-        public void MeteorFallsInsteadOfOverheating()
-        {
-            var (loop, input) = Hero(HeroClass.Dowser,
-                new Modifier(CombatStats.OverheatDisabled, ModifierKind.Flat, 1),
-                new Modifier(CombatStats.OverheatBurst, ModifierKind.Flat, 12),
-                new Modifier(CombatStats.ResourcePerKey, ModifierKind.Flat, 200));
-
-            input.PressKeys(1);
-            loop.Tick();
-
-            Assert.That(loop.Overload.Bursts, Is.EqualTo(1));
-            Assert.That(loop.Resource.Overheated, Is.False);
-            Assert.That(loop.State.Resource, Is.EqualTo(0));
-            Assert.That(SkillDamage(loop), Is.GreaterThan(0));
-        }
 
         [Test]
         public void FullPowderDischargesOnlyWithTheKeystone()

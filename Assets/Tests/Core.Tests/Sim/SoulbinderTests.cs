@@ -171,18 +171,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(mini.State.Soulbinder.Souls, Is.EqualTo(2));
         }
 
-        [Test]
-        public void TheOldRiseOfSkeletonsStopsUnderTheOrb()
-        {
-            var (orb, _) = Hero(Flat(SoulbinderStats.SoulPower, 0.5));
-            var (plain, _) = Hero();
-            orb.State.Kills += 10;
-            plain.State.Kills += 10;
-            orb.Tick();
-            plain.Tick();
-            Assert.That(orb.Skills.Minions.StandingRisen(), Is.Zero);
-            Assert.That(plain.Skills.Minions.StandingRisen(), Is.GreaterThan(0));
-        }
 
         [Test]
         public void AFullOrbBreathesTheOldestSoulOutAndChillsTheEnemy()

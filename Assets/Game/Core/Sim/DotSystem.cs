@@ -56,7 +56,7 @@ namespace Game.Core.Sim
                 Detonate(effect.Seconds);
                 return;
             }
-            Hit(HitsPerSecond(1) * effect.Seconds);
+            Hit(HitsPerSecond() * effect.Seconds);
             if (stackGrowth > 0)
                 _state.PoisonStacks = System.Math.Min(PoisonMax, _state.PoisonStacks * (1 + stackGrowth));
         }
@@ -66,7 +66,7 @@ namespace Game.Core.Sim
 
         private void Detonate(double seconds)
         {
-            var hits = HitsPerSecond(1) * seconds;
+            var hits = HitsPerSecond() * seconds;
             _state.PoisonStacks = 0;
             _state.BurnStacks = 0;
             Hit(hits);
@@ -79,8 +79,7 @@ namespace Game.Core.Sim
             StacksFromKeys(input);
             BurstAtMax();
             Miasma();
-            var fanning = _state.Is(HeroClass.Dowser) && input.MousePx > 0 ? Rules.FanningMultiplier : 1;
-            _state.DotCarry += HitsPerSecond(fanning) * GameLoop.TickSeconds;
+            _state.DotCarry += HitsPerSecond() * GameLoop.TickSeconds;
             if (--_ticksToHit > 0)
                 return;
             _ticksToHit = GameLoop.TicksPerSecond;
@@ -125,7 +124,7 @@ namespace Game.Core.Sim
             var share = _hero.Value(CombatStats.MiasmaBurstShare, 0, StatTags.DoT);
             if (share <= 0 || _miasmaTicks > 0 || !_state.EnemyAlive || Rules.MiasmaEverySeconds <= 0)
                 return;
-            var hits = HitsPerSecond(1) * Rules.MiasmaStackSeconds * share;
+            var hits = HitsPerSecond() * Rules.MiasmaStackSeconds * share;
             if (hits <= 0)
                 return;
             _miasmaTicks = (int)System.Math.Round(Rules.MiasmaEverySeconds * GameLoop.TicksPerSecond);
@@ -133,9 +132,9 @@ namespace Game.Core.Sim
             Hit(hits);
         }
 
-        private double HitsPerSecond(double fanning) =>
+        private double HitsPerSecond() =>
             _state.PoisonStacks * Rules.PoisonHitsPerStack
-            + _state.BurnStacks * Rules.BurnHitsPerStack * fanning * System.Math.Max(0, _hero.Value(CombatStats.BurnDamage, 1, StatTags.DoT));
+            + _state.BurnStacks * Rules.BurnHitsPerStack * System.Math.Max(0, _hero.Value(CombatStats.BurnDamage, 1, StatTags.DoT));
 
         private void Add(DotKind kind, double stacks)
         {

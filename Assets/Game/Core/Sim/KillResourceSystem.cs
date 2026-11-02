@@ -24,7 +24,6 @@ namespace Game.Core.Sim
             var saved = System.Math.Max(0, _combat.Conditions.FastKillSeconds - lifeSeconds);
             if (saved <= 0)
                 return;
-            GainSand(saved);
             OnFastKill();
             if (type == EnemyType.Normal && !shared)
             {
@@ -55,14 +54,6 @@ namespace Game.Core.Sim
             var perKill = _resource.Rules.PerKill;
             if (perKill > 0)
                 _resource.Gain(perKill * _hero.Value(CombatStats.ResourceGain, 1));
-        }
-
-        private void GainSand(double saved)
-        {
-            var perSecond = _resource.Rules.PerFastKillSecond;
-            if (perSecond <= 0)
-                return;
-            _resource.Gain(saved * perSecond * System.Math.Max(0, _hero.Value(CombatStats.SandFromFastKills, 1)) * _hero.Value(CombatStats.ResourceGain, 1));
         }
 
         private void Bank(double saved)

@@ -8,14 +8,14 @@ namespace Game.Core.Stats
     {
         private static readonly HashSet<string> FlatPercent = new HashSet<string>
         {
-            "critChance", "critMultiplier", "clockworkSlow", "crushCleave", "crushMultiplier", "damagePerSector",
+            "critChance", "critMultiplier", "crushCleave", "crushMultiplier", "damagePerSector",
             "doomedCritChance", "doomedCritMultiplier", "dotSpread", "doubleStrike", "flareMultiplier", "flareSplash",
             "focusMax", "partyContribution", "partyCritChance", "partyCritMultiplier", "pierceShare", "volleySplash",
             "windupKeptAfterCrush", "gemDrop", "uncutGemChance", "frozenFirstHit", "overloadKeep", "keyHitQueueAll", "damagePerInputKind", "damagePerTenPoison", "cannonNextShare", "cannonShotDamage", "cannonShotDamageMax", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",
             "laterHitsPenalty", "minionExplode", "damagePerResource", "keyHitQueueShare", "damagePerCombo", "damagePerComboMax",
             "damageAtBalance", "rampPerSecond", "rampMax", "overloadQueueShare", "goldPerResource", "enemyHpCut", "damagePerAura",
             "echoShare", "doomShare", "doomMultiplier", "dotQueueShare", "skeletonOnKill", "beastOnKill", "minionQueueShare",
-            "goldJackpotChance", "wandererChance", "offlineDpsShare", "cooldownPerResource", "cooldownPerResourceMax", "markDamage", "markPower", "companionPerMark", "auraInPause", "evilEyeEffect", "evilEyePower", "bondPower", "coldPower", "bloodPower", "golemPower", "overloadBoss", "minionBoss", "mouseQueueShare", "focusIdleFloor",
+            "goldJackpotChance", "wandererChance", "offlineDpsShare", "cooldownPerResource", "cooldownPerResourceMax", "markDamage", "markPower", "companionPerMark", "auraInPause", "bondPower", "coldPower", "bloodPower", "golemPower", "overloadBoss", "minionBoss", "mouseQueueShare", "focusIdleFloor",
             "traitHitWeight", "runeRhyme", "runeSealPower", "runeWeave", "runeFirstRune", "runeCapital", "bladeKeep", "bladePartyCrit", "whirlSkillPerFive", "whirlPartyDamage",
             "breachExpose", "breachPartyDamage", "toucheExecute", "touchePublic", "toucheOffPenalty", "toucheMarkDamage", "toucheBossHalf", "touchePartyGold", "phantomPower", "phantomSelfPenalty", "phantomEcho", "phantomPartyDamage",
             "calmPenalty", "calmPartyCrit", "shotPartyCrit", "gustPartyCooldown", "partySkillCooldown",
