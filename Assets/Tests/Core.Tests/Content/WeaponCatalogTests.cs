@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void BaseOfUnknownTypeIsRejected()
         {
-            var json = TestData.ReadGameDataFile(WeaponCatalog.FileName).Replace("\"type\": \"pistol\"", "\"type\": \"musket\"");
+            var json = TestData.ReadGameDataFile(WeaponCatalog.FileName).Replace("\"type\": \"compass_pistol\"", "\"type\": \"musket\"");
 
             Assert.Throws<ContentException>(() => WeaponCatalog.Load(json));
         }

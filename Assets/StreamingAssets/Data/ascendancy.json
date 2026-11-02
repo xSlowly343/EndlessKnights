@@ -1293,238 +1293,70 @@
     {
       "id": "ghostcaptain_trait_1",
       "class": "ghostcaptain",
-      "name": {"ru": "Бортовой залп", "en": "Бортовой залп"},
-      "blurb": "У корабля 8 пушек. Каждые 10 ударов заряжают одну. Когда заряжены все 8 — залп разом: каждая пушка бьёт как 20 ударов, а если все восемь пришлись на одного врага — ×2",
+      "name": {"ru": "Бортовой залп", "en": "Broadside"},
+      "blurb": "У корабля 8 пушек. Каждые 10 ударов заряжают одну. Когда заряжены все 8 — залп разом: каждая пушка бьёт как 3 удара, а если все восемь зарядились на одном враге — вдвое сильнее. Залп оставляет на враге пробоину на 3 с: таймер босса стоит, враг получает на 15% больше. В паузе пушки ждут заряженными. Скилл Пути «Огонь всем бортом» заряжает все пушки и даёт залп сразу",
       "trait": {
-        "partyText": {"ru": "Залп оглушает: таймер босса стоит 2 с", "en": "Залп оглушает: таймер босса стоит 2 с"},
+        "partyText": {"ru": "Пробоина: пробоина висит на общем враге у хоста и видна всем; пока она есть, таймер босса стоит, а удары союзников по пробоине бьют сильнее", "en": "The breach: the breach hangs on the shared enemy at the host for everyone to see; while it lasts the boss timer stands still and allies' hits on the breach strike harder"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 3}]},
+          {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 0.4}]},
+          {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 0.4}]},
+          {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 0.4}]},
+          {"modifiers": [{"stat": "broadsidePowder", "kind": "flat", "value": 1}], "text": {"ru": "Пороховой погреб: каждый залп даёт 10 Пороха", "en": "Powder Magazine: every broadside gives 10 Powder"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "ghostcaptain_trait_1_f45a",
-                "name": {"ru": "10 пушек", "en": "10 пушек"},
-                "text": {"ru": "10 пушек", "en": "10 пушек"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "ghostcaptain_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "ghostcaptain_trait_1_f60a",
-                "name": {"ru": "половину пушек можно стрелять по очереди", "en": "половину пушек можно стрелять по очереди"},
-                "text": {"ru": "половину пушек можно стрелять по очереди", "en": "половину пушек можно стрелять по очереди"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "ghostcaptain_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "ghostcaptain_trait_1_f75a",
-                "name": {"ru": "после залпа первая пушка уже заряжена", "en": "после залпа первая пушка уже заряжена"},
-                "text": {"ru": "после залпа первая пушка уже заряжена", "en": "после залпа первая пушка уже заряжена"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "ghostcaptain_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "ghostcaptain_trait_1_f45a", "name": {"ru": "Десять пушек", "en": "Ten Cannons"}, "text": {"ru": "10 пушек, но каждая заряжается за 12 ударов", "en": "10 cannons, but each loads in 12 hits"}, "modifiers": [{"stat": "broadsideCannons", "kind": "flat", "value": 2}, {"stat": "broadsideHits", "kind": "flat", "value": 2}]}, {"id": "ghostcaptain_trait_1_f45b", "name": {"ru": "Быстрая зарядка", "en": "Quick Loading"}, "text": {"ru": "Пушка заряжается за 7 ударов, но бьёт на 25% слабее", "en": "A cannon loads in 7 hits, but strikes 25% weaker"}, "modifiers": [{"stat": "broadsideHits", "kind": "flat", "value": -3}, {"stat": "broadsidePower", "kind": "more", "value": -0.25}]}]},
+          {"level": 60, "options": [{"id": "ghostcaptain_trait_1_f60a", "name": {"ru": "Огонь по готовности", "en": "Fire at Will"}, "text": {"ru": "Половина заряженных пушек стреляет сразу, но удвоения за одного врага нет", "en": "Half the cannons fire as soon as they are loaded, but there is no doubling for one enemy"}, "modifiers": [{"stat": "broadsideHalf", "kind": "flat", "value": 1}]}, {"id": "ghostcaptain_trait_1_f60b", "name": {"ru": "Тяжёлые ядра", "en": "Heavy Shot"}, "text": {"ru": "Залп на 40% сильнее, но пушка заряжается на 3 удара дольше", "en": "A broadside is 40% stronger, but a cannon loads 3 hits longer"}, "modifiers": [{"stat": "broadsidePower", "kind": "more", "value": 0.4}, {"stat": "broadsideHits", "kind": "flat", "value": 3}]}]},
+          {"level": 75, "options": [{"id": "ghostcaptain_trait_1_f75a", "name": {"ru": "Заряжено заранее", "en": "Loaded in Advance"}, "text": {"ru": "После залпа две пушки уже заряжены, но залп на 15% слабее", "en": "After a broadside two cannons are already loaded, but the broadside is 15% weaker"}, "modifiers": [{"stat": "broadsideLoaded", "kind": "flat", "value": 1}, {"stat": "broadsidePower", "kind": "more", "value": -0.15}]}, {"id": "ghostcaptain_trait_1_f75b", "name": {"ru": "Залп по строю", "en": "Volley down the Line"}, "text": {"ru": "Залп бьёт и врагов очереди вполсилы, но пробоины больше нет", "en": "A broadside also hits the queued enemies at half strength, but there is no breach"}, "modifiers": [{"stat": "broadsideQueue", "kind": "flat", "value": 1}, {"stat": "broadsideNoBreach", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "ghostcaptain_trait_1_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Бортовой залп", "en": "Бортовой залп"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "ghostcaptain_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Бортовой залп", "en": "Broadside"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "ghostcaptain_trait_2",
       "class": "ghostcaptain",
-      "name": {"ru": "Призрачная команда", "en": "Призрачная команда"},
-      "blurb": "Каждый побеждённый враг вступает в команду матросом, матросы бьют сами. Потолка нет, но каждые 2 минуты наступает «рассвет» и вся команда уходит. Сила — в том, сколько успел набрать",
+      "name": {"ru": "Призрачная команда", "en": "Ghost Crew"},
+      "blurb": "Каждый побеждённый враг вступает в команду матросом (страж — двое, босс — трое), все матросы бьют раз в секунду. Потолка нет, но через 2 минуты после первого матроса наступает рассвет, и вся команда уходит; старший матрос остаётся боцманом и до следующего рассвета стреляет при каждом её скилле. В паузе команда бьёт сама. Скилл Пути «Свистать всех наверх» зовёт трёх матросов и бьёт всей командой",
       "trait": {
-        "partyText": {
-          "ru": "Матросы подбирают добычу: +1% золота отряда за каждого, до 30%",
-          "en": "Матросы подбирают добычу: +1% золота отряда за каждого, до 30%"
-        },
+        "partyText": {"ru": "Боцман: на рассвете старший матрос переходит к союзнику и до следующего рассвета стреляет при каждом его скилле; значок боцмана на полоске союзника", "en": "The boatswain: at dawn the senior sailor goes over to an ally and fires with every skill of theirs until the next dawn; a boatswain icon on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
+          {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
+          {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
+          {"modifiers": [{"stat": "crewFarewell", "kind": "flat", "value": 1}], "text": {"ru": "Прощальный залп: уходя на рассвете, команда бьёт разом ×5", "en": "Farewell Salute: leaving at dawn, the crew strikes at once ×5"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "ghostcaptain_trait_2_f45a",
-                "name": {"ru": "рассвет раз в 3 минуты", "en": "рассвет раз в 3 минуты"},
-                "text": {"ru": "рассвет раз в 3 минуты", "en": "рассвет раз в 3 минуты"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "ghostcaptain_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "ghostcaptain_trait_2_f60a",
-                "name": {"ru": "уходя, команда даёт прощальный залп", "en": "уходя, команда даёт прощальный залп"},
-                "text": {"ru": "уходя, команда даёт прощальный залп", "en": "уходя, команда даёт прощальный залп"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "ghostcaptain_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "ghostcaptain_trait_2_f75a",
-                "name": {"ru": "матрос из босса остаётся после рассвета боцманом", "en": "матрос из босса остаётся после рассвета боцманом"},
-                "text": {"ru": "матрос из босса остаётся после рассвета боцманом", "en": "матрос из босса остаётся после рассвета боцманом"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "ghostcaptain_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "ghostcaptain_trait_2_f45a", "name": {"ru": "Долгая ночь", "en": "Long Night"}, "text": {"ru": "Рассвет через 3 минуты, но матросы на 15% слабее", "en": "Dawn comes after 3 minutes, but sailors are 15% weaker"}, "modifiers": [{"stat": "crewDawn", "kind": "flat", "value": 60}, {"stat": "crewPower", "kind": "more", "value": -0.15}]}, {"id": "ghostcaptain_trait_2_f45b", "name": {"ru": "Вербовка", "en": "Press Gang"}, "text": {"ru": "Каждый враг даёт двух матросов, но рассвет через 90 с", "en": "Every enemy gives two sailors, but dawn comes after 90 s"}, "modifiers": [{"stat": "crewDouble", "kind": "flat", "value": 1}, {"stat": "crewDawn", "kind": "flat", "value": -30}]}]},
+          {"level": 60, "options": [{"id": "ghostcaptain_trait_2_f60a", "name": {"ru": "Матросы Колосса", "en": "Colossus Hands"}, "text": {"ru": "Матросы из боссов не уходят на рассвете, но все матросы на 10% слабее", "en": "Sailors from bosses stay through dawn, but all sailors are 10% weaker"}, "modifiers": [{"stat": "crewKeepBoss", "kind": "flat", "value": 1}, {"stat": "crewPower", "kind": "more", "value": -0.1}]}, {"id": "ghostcaptain_trait_2_f60b", "name": {"ru": "Абордаж", "en": "Boarding Party"}, "text": {"ru": "Матросы бьют и врагов очереди вполсилы, но на 20% слабее", "en": "Sailors also hit the queued enemies at half strength, but 20% weaker"}, "modifiers": [{"stat": "crewQueue", "kind": "flat", "value": 1}, {"stat": "crewPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 75, "options": [{"id": "ghostcaptain_trait_2_f75a", "name": {"ru": "Старая гвардия", "en": "Old Guard"}, "text": {"ru": "После рассвета четверть команды остаётся, но рассвет через 100 с", "en": "After dawn a quarter of the crew stays, but dawn comes after 100 s"}, "modifiers": [{"stat": "crewKeep", "kind": "flat", "value": 1}, {"stat": "crewDawn", "kind": "flat", "value": -20}]}, {"id": "ghostcaptain_trait_2_f75b", "name": {"ru": "Последний рейс", "en": "Last Voyage"}, "text": {"ru": "Матросы на 50% сильнее, но прощального залпа нет и рассвет через 90 с", "en": "Sailors are 50% stronger, but there is no farewell salute and dawn comes after 90 s"}, "modifiers": [{"stat": "crewPower", "kind": "more", "value": 0.5}, {"stat": "crewNoFarewell", "kind": "flat", "value": 1}, {"stat": "crewDawn", "kind": "flat", "value": -30}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "ghostcaptain_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Призрачная команда", "en": "Призрачная команда"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "ghostcaptain_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Призрачная команда", "en": "Ghost Crew"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "ghostcaptain_trait_3",
       "class": "ghostcaptain",
-      "name": {"ru": "Попугай-призрак", "en": "Попугай-призрак"},
-      "blurb": "На плече попугай, который повторяет: каждый третий скилл союзника или капитана попугай повторяет на 50% силы. Пока попугай на плече, команды нет — некому командовать",
+      "name": {"ru": "Попугай-призрак", "en": "Ghost Parrot"},
+      "blurb": "На плече попугай: каждый третий её скилл он повторяет на 50% силы. Пока попугай на плече, команды нет — некому командовать. В паузе попугай молчит. Скилл Пути «Повтори!» заставляет попугая сразу повторить её последний скилл",
       "trait": {
-        "partyText": {"ru": "Повторение чужих скиллов", "en": "Повторение чужих скиллов"},
+        "partyText": {"ru": "Попугай перелетает: он садится на плечо союзнику, который последним применил скилл, и повторяет каждый его третий скилл; попугай виден на полоске союзника", "en": "The parrot flies over: it perches on the ally who last used a skill and repeats every third skill of theirs; the parrot shows on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "parrotQueue", "kind": "flat", "value": 1}], "text": {"ru": "Звонкое эхо: повтор задевает и врагов очереди вполсилы", "en": "Ringing Echo: a repeat also hits the queued enemies at half strength"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "ghostcaptain_trait_3_f45a",
-                "name": {"ru": "75% силы", "en": "75% силы"},
-                "text": {"ru": "75% силы", "en": "75% силы"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "ghostcaptain_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "ghostcaptain_trait_3_f60a",
-                "name": {"ru": "повторяет каждый второй", "en": "повторяет каждый второй"},
-                "text": {"ru": "повторяет каждый второй", "en": "повторяет каждый второй"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "ghostcaptain_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "ghostcaptain_trait_3_f75a",
-                "name": {"ru": "повтор заряжает пушку", "en": "повтор заряжает пушку"},
-                "text": {"ru": "повтор заряжает пушку", "en": "повтор заряжает пушку"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "ghostcaptain_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "ghostcaptain_trait_3_f45a", "name": {"ru": "Громкий попугай", "en": "Loud Parrot"}, "text": {"ru": "Повтор на 25% сильнее, но каждый четвёртый скилл", "en": "A repeat is 25% stronger, but on every fourth skill"}, "modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.25}, {"stat": "parrotEvery", "kind": "flat", "value": 1}]}, {"id": "ghostcaptain_trait_3_f45b", "name": {"ru": "Болтун", "en": "Chatterbox"}, "text": {"ru": "Повторяет каждый второй скилл, но на 30% слабее", "en": "Repeats every second skill, but 30% weaker"}, "modifiers": [{"stat": "parrotEvery", "kind": "flat", "value": -1}, {"stat": "parrotPower", "kind": "more", "value": -0.3}]}]},
+          {"level": 60, "options": [{"id": "ghostcaptain_trait_3_f60a", "name": {"ru": "Передразнивание", "en": "Mockery"}, "text": {"ru": "Повтор всегда критует, но на 20% слабее", "en": "A repeat always crits, but is 20% weaker"}, "modifiers": [{"stat": "parrotCrit", "kind": "flat", "value": 1}, {"stat": "parrotPower", "kind": "more", "value": -0.2}]}, {"id": "ghostcaptain_trait_3_f60b", "name": {"ru": "Попугай-вор", "en": "Thieving Parrot"}, "text": {"ru": "Повтор даёт 5 Пороха, но на 15% слабее", "en": "A repeat gives 5 Powder, but is 15% weaker"}, "modifiers": [{"stat": "parrotPowder", "kind": "flat", "value": 1}, {"stat": "parrotPower", "kind": "more", "value": -0.15}]}]},
+          {"level": 75, "options": [{"id": "ghostcaptain_trait_3_f75a", "name": {"ru": "Два попугая", "en": "Two Parrots"}, "text": {"ru": "В отряде попугай сидит у двоих союзников; в соло повторяет дважды по 60% силы", "en": "In a party the parrot sits with two allies; solo it repeats twice at 60% strength"}, "modifiers": [{"stat": "parrotTwo", "kind": "flat", "value": 1}]}, {"id": "ghostcaptain_trait_3_f75b", "name": {"ru": "Попугай-капитан", "en": "Parrot Captain"}, "text": {"ru": "Повтор вдвое сильнее, но только у скиллов с перезарядкой от 10 с", "en": "A repeat is twice as strong, but only for skills with a cooldown of 10 s or more"}, "modifiers": [{"stat": "parrotPower", "kind": "more", "value": 1}, {"stat": "parrotHeavy", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "ghostcaptain_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Попугай-призрак", "en": "Попугай-призрак"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "ghostcaptain_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Попугай-призрак", "en": "Ghost Parrot"}, "modifiers": []}],
       "links": []
     },
     {

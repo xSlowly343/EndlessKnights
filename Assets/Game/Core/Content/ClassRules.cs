@@ -27,6 +27,7 @@ namespace Game.Core.Content
         public AlchemistRules Alchemist { get; private set; } = AlchemistRules.None;
         public DowserRules Dowser { get; private set; } = DowserRules.None;
         public SoulbinderRules Soulbinder { get; private set; } = SoulbinderRules.None;
+        public GhostcaptainRules Ghostcaptain { get; private set; } = GhostcaptainRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -50,7 +51,8 @@ namespace Game.Core.Content
                 Clockwright = ClockwrightRules.Read(node.Field("clockwright")),
                 Alchemist = AlchemistRules.Read(node.Field("alchemist")),
                 Dowser = DowserRules.Read(node.Field("dowser")),
-                Soulbinder = SoulbinderRules.Read(node.Field("soulbinder")) };
+                Soulbinder = SoulbinderRules.Read(node.Field("soulbinder")),
+                Ghostcaptain = GhostcaptainRules.Read(node.Field("ghostcaptain")) };
         }
     }
 }

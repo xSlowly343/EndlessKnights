@@ -48,6 +48,11 @@
       "shell": { "penalty": 0.2, "everySeconds": 5, "everyMinSeconds": 2, "crackSeconds": 1, "partyDamage": 0.3, "shatterEvery": 5, "shatterMultiplier": 2, "critHasteSeconds": 0.5 },
       "skills": { "prisonMultiplier": 1.5, "heartPartyDamage": 0.25 }
     },
+    "ghostcaptain": {
+      "broadside": { "cannons": 8, "cannonsMax": 12, "hits": 10, "hitsMin": 3, "sameEnemy": 2, "breachSeconds": 3, "breachDamageTaken": 0.15, "effectSeconds": 1, "queueShare": 0.5, "powder": 10, "loadedAfter": 2 },
+      "crew": { "hitsPerSecond": 1, "dawnSeconds": 120, "dawnSecondsMin": 30, "guardianSailors": 2, "bossSailors": 3, "farewell": 5, "keep": 0.25, "queueShare": 0.5, "mateMultiplier": 10 },
+      "parrot": { "every": 3, "everyMin": 2, "perchSeconds": 20, "callSeconds": 1, "offerSeconds": 5, "heavyCooldownSeconds": 10, "powder": 5, "twoShare": 0.6, "queueShare": 0.5, "strikeFallback": 3 }
+    },
     "whisperer": {
       "knots": { "hits": 25, "hitsMin": 5, "allyHitShare": 1, "seventh": 2, "triple": 3, "slow": 0.05, "critMultiplier": 0.1, "gold": 0.1, "blast": 10, "whisper": 10, "effectSeconds": 2 },
       "name": { "hits": 150, "hitsMin": 20, "syllableHits": 25, "syllableHitsMin": 5, "syllable": 0.05, "callSeconds": 30, "blast": 20, "timeSeconds": 5, "effectSeconds": 2 },

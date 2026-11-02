@@ -471,7 +471,12 @@ namespace Game.Core.Content.Gems
                         SpiritsHit = Number(node, "spiritsHit", 1000),
                         ReleaseAll = node.HasField("releaseAll") && node.Field("releaseAll").AsBool(),
                         Lend = node.HasField("lend") && node.Field("lend").AsBool(),
-                        Breathe = node.HasField("breathe") && node.Field("breathe").AsBool()
+                        Breathe = node.HasField("breathe") && node.Field("breathe").AsBool(),
+                        Cannons = node.HasField("cannons") ? node.Field("cannons").AsInt(0, 20) : 0,
+                        Volley = node.HasField("volley") && node.Field("volley").AsBool(),
+                        Sailors = node.HasField("sailors") ? node.Field("sailors").AsInt(0, 100) : 0,
+                        CrewHit = Number(node, "crewHit", 1000),
+                        ParrotRepeat = node.HasField("parrotRepeat") && node.Field("parrotRepeat").AsBool()
                     };
                 case "aura":
                     return new AuraEffect(

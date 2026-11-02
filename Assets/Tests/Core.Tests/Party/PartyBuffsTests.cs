@@ -347,6 +347,29 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AGhostcaptainsBoatswainAndParrotReachTheAllyAndTheAllysCallComesBack()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var captain = rig.Members[0];
+            var friend = rig.Members[1];
+            captain.Loop.State.Class = HeroClass.Ghostcaptain;
+            captain.Loop.Hero.Add(new Modifier(GhostcaptainStats.ParrotPower, ModifierKind.Flat, 0.5));
+            captain.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Mate, To = LanternbearerMechanics.AnyAlly, Value = 0.3, Seconds = 120 });
+            rig.Run(0.5);
+
+            Assert.That(friend.Loop.State.Boons.MatePower, Is.EqualTo(0.3).Within(1e-6));
+            Assert.That(friend.Loop.State.Boons.MateTicks, Is.GreaterThan(0));
+            Assert.That(friend.Loop.State.Boons.ParrotOwner, Is.EqualTo(captain.Client.OwnSlot));
+
+            friend.Loop.State.Boons.ParrotCallOwed = true;
+            rig.Run(0.5);
+            Assert.That(captain.Loop.State.Ghostcaptain.PerchSlot, Is.EqualTo(friend.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.ParrotPower, Is.EqualTo(0.5).Within(1e-6));
+            Assert.That(friend.Loop.State.Boons.ParrotTicks, Is.GreaterThan(0));
+        }
+
+        [Test]
         public void ASoulbindersSpiritReachesTheAllyAndTheAllysSoulComesBack()
         {
             var rig = new Rig(2);

@@ -6286,769 +6286,373 @@
     {
       "id": "ghostcaptain_hit_1",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "common",
       "role": "fast",
       "color": "green",
-      "name": {"ru": "Выстрел компаса", "en": "Выстрел компаса"},
+      "name": {"ru": "Выстрел компаса", "en": "Compass Shot"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 3,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "заряжает 2 пушки", "en": "заряжает 2 пушки"},
+      "effect": {"type": "strike", "multiplier": 3, "cannons": 2},
+      "text": {"ru": "выстрел ×3 и две пушки заряжены", "en": "a shot ×3 and two cannons loaded"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_hit_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_hit_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_hit_1_b15b", "name": {"ru": "Меткий компас", "en": "True Compass"}, "damage": 0.8, "effect": {"cannons": 3}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_hit_2",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "rare",
       "role": "fast",
       "color": "green",
-      "name": {"ru": "Приклад", "en": "Приклад"},
+      "name": {"ru": "Приклад", "en": "Pistol Butt"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 15},
+      "cost": {"resource": 5},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 4},
-      "text": {"ru": "удар рукоятью, +Порох", "en": "удар рукоятью, +Порох"},
+      "effect": {"type": "strike", "multiplier": 2.5},
+      "text": {"ru": "удар рукоятью ×2,5", "en": "a butt strike ×2.5"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_hit_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_hit_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_hit_2_b15b", "name": {"ru": "Тяжёлый приклад", "en": "Heavy Butt"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_hit_3",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "epic",
       "role": "fast",
       "color": "green",
-      "name": {"ru": "Цепное ядро", "en": "Цепное ядро"},
+      "name": {"ru": "Цепное ядро", "en": "Chain Shot"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
-      "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 6},
-      "text": {"ru": "сильный выстрел", "en": "сильный выстрел"},
+      "cooldownSeconds": 6,
+      "effect": {"type": "strike", "multiplier": 5, "crewHit": 1},
+      "text": {"ru": "ядро ×5, и команда бьёт вместе с ним", "en": "a shot ×5, and the crew strikes along"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_hit_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_hit_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_hit_3_b15b", "name": {"ru": "Двойная цепь", "en": "Double Chain"}, "damage": 0.8, "effect": {"crewHit": 1.5}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_queue_1",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "common",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Картечь", "en": "Картечь"},
+      "name": {"ru": "Картечь", "en": "Grapeshot"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
-      "text": {"ru": "вся очередь", "en": "вся очередь"},
+      "text": {"ru": "картечь ×2 по 3 врагам очереди", "en": "grapeshot ×2 at 3 queued enemies"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_queue_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_queue_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_queue_1_b15b", "name": {"ru": "Крупная картечь", "en": "Heavy Grapeshot"}, "damage": 0.8, "effect": {"multiplier": 2.6}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_queue_2",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "rare",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Рикошет", "en": "Рикошет"},
+      "name": {"ru": "Рикошет", "en": "Ricochet"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "ядро отскакивает на 3 врагов", "en": "ядро отскакивает на 3 врагов"},
+      "text": {"ru": "ядро ×2,5 отскакивает на 3 врагов", "en": "a shot ×2.5 bounces to 3 enemies"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_queue_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_queue_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_queue_2_b15b", "name": {"ru": "Долгий рикошет", "en": "Long Ricochet"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_queue_3",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "legendary",
       "role": "fast",
       "color": "green",
-      "name": {"ru": "Забросить сеть", "en": "Забросить сеть"},
+      "name": {"ru": "Забросить сеть", "en": "Cast the Net"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
-      "text": {"ru": "матросы тащат слабого врага вперёд", "en": "матросы тащат слабого врага вперёд"},
+      "cooldownSeconds": 8,
+      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "sailors": 1},
+      "text": {"ru": "сеть ×3 по 3 врагам и матрос в команду", "en": "a net ×3 at 3 enemies and a sailor for the crew"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_queue_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_queue_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_queue_3_b15b", "name": {"ru": "Большая сеть", "en": "Big Net"}, "damage": 0.8, "effect": {"sailors": 2}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_auto_1",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "common",
       "color": "green",
-      "name": {"ru": "Вахтенный", "en": "Вахтенный"},
+      "name": {"ru": "Вахтенный", "en": "Watchman"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "раз в 5 с бросает якорь", "en": "раз в 5 с бросает якорь"},
+      "cooldownSeconds": 5,
+      "effect": {"type": "strike", "multiplier": 4},
+      "text": {"ru": "раз в 5 с якорь ×4", "en": "every 5 s an anchor ×4"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_auto_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_auto_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_auto_1_b15b", "name": {"ru": "Тяжёлый якорь", "en": "Heavy Anchor"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_auto_2",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "rare",
       "color": "green",
-      "name": {"ru": "Кок", "en": "Кок"},
+      "name": {"ru": "Кок", "en": "Ship's Cook"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 5},
-      "text": {"ru": "раз в 20 с +Порох отряду", "en": "раз в 20 с +Порох отряду"},
+      "cooldownSeconds": 8,
+      "effect": {"type": "strike", "multiplier": 3, "crewHit": 1},
+      "text": {"ru": "раз в 8 с кок ×3, и команда бьёт", "en": "every 8 s the cook ×3, and the crew strikes"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_auto_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_auto_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_auto_2_b15b", "name": {"ru": "Сытная похлёбка", "en": "Hearty Stew"}, "damage": 0.8, "effect": {"crewHit": 1.5}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_auto_3",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "mythic",
       "color": "green",
-      "name": {"ru": "Канонир", "en": "Канонир"},
+      "name": {"ru": "Канонир", "en": "Gunner"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 8},
-      "text": {"ru": "сам заряжает пушку раз в 8 с", "en": "сам заряжает пушку раз в 8 с"},
+      "cooldownSeconds": 8,
+      "effect": {"type": "strike", "multiplier": 4, "cannons": 1},
+      "text": {"ru": "раз в 8 с выстрел ×4 и пушка заряжена", "en": "every 8 s a shot ×4 and a cannon loaded"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_auto_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_auto_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_auto_3_b15b", "name": {"ru": "Старый канонир", "en": "Old Gunner"}, "damage": 0.8, "effect": {"cannons": 2}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_strong_1",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "epic",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Таран", "en": "Таран"},
+      "name": {"ru": "Таран", "en": "Ram"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 12},
-      "text": {"ru": "корабль таранит босса ×25", "en": "корабль таранит босса ×25"},
+      "cooldownSeconds": 25,
+      "effect": {"type": "strike", "multiplier": 8, "cannons": 2},
+      "text": {"ru": "таран ×8 и две пушки заряжены", "en": "a ram ×8 and two cannons loaded"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_strong_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_strong_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_strong_1_b15b", "name": {"ru": "Окованный нос", "en": "Iron Prow"}, "damage": 0.8, "effect": {"multiplier": 10}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_strong_2",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "legendary",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Кракен", "en": "Кракен"},
+      "name": {"ru": "Кракен", "en": "Kraken"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 50},
       "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 18},
-      "text": {"ru": "щупальца держат очередь 6 с", "en": "щупальца держат очередь 6 с"},
+      "effect": {"type": "strike", "multiplier": 6, "queueTargets": 3, "crewHit": 2},
+      "text": {"ru": "щупальца ×6 по врагу и 3 врагам очереди, команда бьёт ×2", "en": "tentacles ×6 at the enemy and 3 queued enemies, the crew strikes ×2"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_strong_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_strong_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_strong_2_b15b", "name": {"ru": "Голодный кракен", "en": "Hungry Kraken"}, "damage": 0.8, "effect": {"crewHit": 3}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_strong_3",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "mythic",
       "role": "heavy",
       "color": "green",
-      "name": {"ru": "Клад на дне", "en": "Клад на дне"},
+      "name": {"ru": "Клад на дне", "en": "Sunken Treasure"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 25},
-      "text": {"ru": "убийство за 10 с даёт сундук", "en": "убийство за 10 с даёт сундук"},
+      "effect": {"type": "strike", "multiplier": 12, "sailors": 3},
+      "text": {"ru": "клад ×12 и три матроса в команду", "en": "a treasure ×12 and three sailors for the crew"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "ghostcaptain_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "ghostcaptain_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "ghostcaptain_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "ghostcaptain_strong_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "ghostcaptain_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "ghostcaptain_strong_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_strong_3_b15b", "name": {"ru": "Сундук с золотом", "en": "Gold Chest"}, "damage": 0.8, "effect": {"multiplier": 15}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "ghostcaptain_path_1",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "ascendancy": "ghostcaptain_trait_1",
       "color": "green",
-      "name": {"ru": "Огонь всем бортом", "en": "Огонь всем бортом"},
+      "name": {"ru": "Огонь всем бортом", "en": "All Guns Fire"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
+      "cost": {"resource": 30},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "effect": {"type": "strike", "multiplier": 3, "volley": true},
+      "text": {"ru": "удар ×3: все пушки заряжены и дают залп", "en": "a blow ×3: every cannon is loaded and fires a broadside"}
     },
     {
       "id": "ghostcaptain_path_2",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "ascendancy": "ghostcaptain_trait_2",
       "color": "green",
-      "name": {"ru": "Свистать всех наверх", "en": "Свистать всех наверх"},
+      "name": {"ru": "Свистать всех наверх", "en": "All Hands on Deck"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "sailors": 3, "crewHit": 1},
+      "text": {"ru": "удар ×3, три матроса и удар всей командой", "en": "a blow ×3, three sailors and a strike of the whole crew"}
     },
     {
       "id": "ghostcaptain_path_3",
       "kind": "active",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "ascendancy": "ghostcaptain_trait_3",
       "color": "green",
-      "name": {"ru": "Повтори!", "en": "Повтори!"},
+      "name": {"ru": "Повтори!", "en": "Say It Again!"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 12,
+      "effect": {"type": "strike", "multiplier": 3, "parrotRepeat": true},
+      "text": {"ru": "удар ×3, и попугай сразу повторяет её последний скилл", "en": "a blow ×3, and the parrot repeats her last skill at once"}
     },
     {
       "id": "ghostcaptain_aura_1",
       "kind": "aura",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "common",
       "color": "green",
-      "name": {"ru": "Под чёрным флагом", "en": "Под чёрным флагом"},
+      "name": {"ru": "Под чёрным флагом", "en": "Under the Black Flag"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.2}], "reserve": 15, "party": true},
-      "text": {"ru": "урон по боссам и мини-боссам", "en": "урон по боссам и мини-боссам"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "broadsidePower", "kind": "flat", "value": 0.05}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +12% урона по боссам; её залп чуть сильнее", "en": "party: +12% damage against bosses; her broadside is a little stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_1_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.24}]}
-            },
-            {"id": "ghostcaptain_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_1_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.22}]}
-            },
-            {"id": "ghostcaptain_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_1_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.26}]}
-            },
-            {"id": "ghostcaptain_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.144}, {"stat": "broadsidePower", "kind": "flat", "value": 0.06}]}}, {"id": "ghostcaptain_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.132}, {"stat": "broadsidePower", "kind": "flat", "value": 0.055}]}}, {"id": "ghostcaptain_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.156}, {"stat": "broadsidePower", "kind": "flat", "value": 0.065}]}}, {"id": "ghostcaptain_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "ghostcaptain_aura_2",
       "kind": "aura",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "common",
       "color": "green",
-      "name": {"ru": "Абордаж", "en": "Абордаж"},
+      "name": {"ru": "Абордаж", "en": "Boarding"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "reserve": 15},
-      "text": {"ru": "лишний урон по убитому переходит на следующего", "en": "лишний урон по убитому переходит на следующего"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "crewPower", "kind": "flat", "value": 0.0005}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +10% урона; её матросы чуть сильнее", "en": "party: +10% damage; her sailors are a little stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_2_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "ghostcaptain_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_2_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "ghostcaptain_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_2_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "ghostcaptain_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "crewPower", "kind": "flat", "value": 0.0006}]}}, {"id": "ghostcaptain_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "crewPower", "kind": "flat", "value": 0.00055}]}}, {"id": "ghostcaptain_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "crewPower", "kind": "flat", "value": 0.00065}]}}, {"id": "ghostcaptain_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "ghostcaptain_aura_3",
       "kind": "aura",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "rare",
       "color": "green",
-      "name": {"ru": "Ром", "en": "Ром"},
+      "name": {"ru": "Ром", "en": "Rum"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}], "reserve": 20},
-      "text": {"ru": "+скорость ударов, пока полоса HP ниже половины", "en": "+скорость ударов, пока полоса HP ниже половины"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}, {"stat": "parrotPower", "kind": "flat", "value": 0.01}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +10% шанса крита; её попугай чуть громче", "en": "party: +10% crit chance; her parrot is a little louder"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_3_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "ghostcaptain_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_3_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "ghostcaptain_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_3_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "ghostcaptain_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}, {"stat": "parrotPower", "kind": "flat", "value": 0.012}]}}, {"id": "ghostcaptain_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}, {"stat": "parrotPower", "kind": "flat", "value": 0.011}]}}, {"id": "ghostcaptain_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}, {"stat": "parrotPower", "kind": "flat", "value": 0.013}]}}, {"id": "ghostcaptain_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "ghostcaptain_aura_4",
       "kind": "aura",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "rare",
       "color": "green",
-      "name": {"ru": "Пиастры", "en": "Пиастры"},
+      "name": {"ru": "Пиастры", "en": "Pieces of Eight"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "reserve": 20},
-      "text": {"ru": "+шанс сундука с этапа", "en": "+шанс сундука с этапа"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}, {"stat": "broadsidePower", "kind": "flat", "value": 0.05}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +12% золота; её залп чуть сильнее", "en": "party: +12% gold; her broadside is a little stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_4_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "ghostcaptain_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_4_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "ghostcaptain_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_4_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "ghostcaptain_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.144}, {"stat": "broadsidePower", "kind": "flat", "value": 0.06}]}}, {"id": "ghostcaptain_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.132}, {"stat": "broadsidePower", "kind": "flat", "value": 0.055}]}}, {"id": "ghostcaptain_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.156}, {"stat": "broadsidePower", "kind": "flat", "value": 0.065}]}}, {"id": "ghostcaptain_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "ghostcaptain_aura_5",
       "kind": "aura",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "epic",
       "color": "green",
-      "name": {"ru": "Туман", "en": "Туман"},
+      "name": {"ru": "Туман", "en": "Fog"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "босс бьёт полосу на 10% реже", "en": "босс бьёт полосу на 10% реже"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +12% урона по слабеющему боссу; её рассвет на 2 с позже", "en": "party: +12% damage against a weakening boss; her dawn comes 2 s later"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_5_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "ghostcaptain_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_5_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "ghostcaptain_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_5_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "ghostcaptain_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2.4}]}}, {"id": "ghostcaptain_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2.2}]}}, {"id": "ghostcaptain_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2.6}]}}, {"id": "ghostcaptain_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
       "id": "ghostcaptain_aura_6",
       "kind": "aura",
-      "weapon": "pistol",
+      "weapon": "compass_pistol",
       "tier": "legendary",
       "color": "green",
-      "name": {"ru": "Вахта", "en": "Вахта"},
+      "name": {"ru": "Вахта", "en": "Night Watch"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {
-        "ru": "в паузе игрок копит +1% урона в секунду до 30%, тратится на следующий удар",
-        "en": "в паузе игрок копит +1% урона в секунду до 30%, тратится на следующий удар"
-      },
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "parrotPower", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +8% урона; её попугай чуть громче", "en": "party: +8% damage; her parrot is a little louder"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_6_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "ghostcaptain_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_6_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "ghostcaptain_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "ghostcaptain_aura_6_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "ghostcaptain_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "ghostcaptain_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "parrotPower", "kind": "flat", "value": 0.012}]}}, {"id": "ghostcaptain_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "parrotPower", "kind": "flat", "value": 0.011}]}}, {"id": "ghostcaptain_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "parrotPower", "kind": "flat", "value": 0.013}]}}, {"id": "ghostcaptain_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

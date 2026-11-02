@@ -32,7 +32,7 @@ namespace Game.Core.Tests.Build
         [TestCase(HeroClass.Alchemist, "alchemist_r1c1")]
         [TestCase(HeroClass.Dowser, "dowser_r1c1")]
         [TestCase(HeroClass.Soulbinder, "soulbinder_r1c1")]
-        [TestCase(HeroClass.Ghostcaptain, "ghostcaptain_r1c9")]
+        [TestCase(HeroClass.Ghostcaptain, "ghostcaptain_r1c1")]
         [TestCase(HeroClass.Mothcaller, "mothcaller_r1c9")]
         [TestCase(HeroClass.Cartomancer, "cartomancer_r1c9")]
         [TestCase(HeroClass.Herbwitch, "herbwitch_r1c9")]

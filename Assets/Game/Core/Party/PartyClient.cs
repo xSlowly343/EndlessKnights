@@ -965,6 +965,23 @@ namespace Game.Core.Party
                 case TraitRelayKind.SoulBack:
                     _loop.Combat.Soulbinder.ReceiveSoulBack(relay.Count);
                     break;
+                case TraitRelayKind.Mate:
+                    boons.MatePower = relay.Value;
+                    boons.MateTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.ParrotOffer:
+                    boons.ParrotOwner = relay.From;
+                    boons.ParrotOfferTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.ParrotCall:
+                    _loop.Combat.Ghostcaptain.ReceiveParrotCall(relay.From);
+                    break;
+                case TraitRelayKind.ParrotPerch:
+                    boons.ParrotOwner = relay.From;
+                    boons.ParrotPower = relay.Value;
+                    boons.ParrotEvery = relay.Every;
+                    boons.ParrotTicks = relay.Value > 0 ? (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond) : 0;
+                    break;
                 case TraitRelayKind.GearTick:
                     boons.GearCuts++;
                     _loop.Combat.Clockwright.CutCooldowns(relay.Seconds, relay.Extra > 0);
@@ -1015,6 +1032,11 @@ namespace Game.Core.Party
                 _loop.State.Boons.LendOwner = -1;
                 _loop.State.Boons.LendPower = relay.Value;
                 _loop.State.Boons.LendTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+            }
+            else if (relay.Kind == TraitRelayKind.Mate)
+            {
+                _loop.State.Boons.MatePower = relay.Value;
+                _loop.State.Boons.MateTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
             }
             else if (relay.Kind == TraitRelayKind.Elixir)
                 AlchemistMechanics.DrinkRelay(_loop.State.Boons, relay);

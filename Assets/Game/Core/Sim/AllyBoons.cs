@@ -68,6 +68,18 @@ namespace Game.Core.Sim
         public double LendPower { get; set; }
         public int SoulsOwed { get; set; }
         public long LentHits { get; set; }
+        public int MateTicks { get; set; }
+        public double MatePower { get; set; }
+        public long MateShots { get; set; }
+        public int ParrotOwner { get; set; } = -1;
+        public int ParrotOfferTicks { get; set; }
+        public int ParrotTicks { get; set; }
+        public double ParrotPower { get; set; }
+        public int ParrotEvery { get; set; }
+        public int ParrotCasts { get; set; }
+        public long ParrotRepeats { get; set; }
+        public bool ParrotCallOwed { get; set; }
+        public int ParrotCallTicks { get; set; }
 
         public double GoldMultiplier => GoldTicks > 0 ? 1 + ElixirGold : 1;
 
