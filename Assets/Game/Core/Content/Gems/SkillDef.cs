@@ -30,9 +30,8 @@ namespace Game.Core.Content.Gems
         public string? Weapon { get; }
         public NativeTrait Native { get; }
         public bool IsPassive =>
-            Effect is IdleStrikeEffect || Effect is HitStrikeEffect || Effect is ScaledEffect || Effect is FlowEffect || Effect is ComboStacksEffect || Effect is DistanceStacksEffect || Effect is BossHuntEffect || Effect is PassiveEffect || Effect is BreakBonusEffect || Effect is ComposureEffect || Reserves
-            || (Effect is StacksEffect stacks && stacks.Passive)
-            || (Effect is SpecialKeysEffect keys && keys.Passive);
+            Effect is IdleStrikeEffect || Effect is FlowEffect || Effect is DistanceStacksEffect || Effect is BossHuntEffect || Effect is PassiveEffect || Effect is BreakBonusEffect || Effect is ComposureEffect || Reserves
+            || (Effect is StacksEffect stacks && stacks.Passive);
         public bool Reserves => Effect is AuraEffect aura && aura.Reserves;
 
         public SkillTier Tier { get; }

@@ -38,7 +38,6 @@ namespace Game.Core.Sim
             Companion();
             ClickStrikes(input);
             HolyFire();
-            CurseStrikes();
             Echo(dealt);
             RaiseFromKills();
         }
@@ -139,16 +138,6 @@ namespace Game.Core.Sim
             var gained = _resource.GainedThisTick;
             if (perPoint > 0 && gained > 0)
                 _combat.SkillHit(_combat.BaseKeyDamage, perPoint * gained, StatTags.Skill);
-        }
-
-        private void CurseStrikes()
-        {
-            var perSecond = _hero.Value(CombatStats.CurseHitsPerSecond, 0, StatTags.DoT);
-            if (perSecond <= 0 || _state.Tick % GameLoop.TicksPerSecond != 0)
-                return;
-            var curses = _skills.ActiveCurses;
-            if (curses > 0)
-                _combat.SkillHit(_combat.BaseKeyDamage, curses * perSecond * System.Math.Max(0, _hero.Value(CombatStats.CurseDamage, 1)), StatTags.Skill | StatTags.DoT);
         }
 
         private void Echo(BigNumber dealt)

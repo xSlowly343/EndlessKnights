@@ -187,7 +187,6 @@ namespace Game.Core.Sim
         public int KillStreak { get; set; }
         public long TicksSinceKill { get; set; }
         public int AfterIdleTicks { get; set; }
-        public int CurseFlicks { get; set; }
         public long EnemySpawnTick { get; private set; }
         public double BankedSeconds { get; set; }
         public MinionState[] Minions { get; } = new MinionState[MinionSystem.Capacity];

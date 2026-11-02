@@ -28,7 +28,6 @@ namespace Game.Core.Sim
         public long LastCastTick { get; set; } = -1;
         public int HitCount { get; set; }
         public int InputKinds { get; set; }
-        public int PotionChoice { get; set; } = -1;
         public long LastKeyTick { get; set; } = -1;
         public long FlowStartTick { get; set; } = -1;
         public int HitsLeft { get; set; }
@@ -62,7 +61,6 @@ namespace Game.Core.Sim
         public int InkHits { get; set; }
         public int FinishHits { get; set; } = -1;
         public double CirclesSinceCast { get; set; }
-        public double CooldownCircles { get; set; }
         public double WindPx { get; set; }
         public int WindTicks { get; set; }
         public int FlickTargets { get; set; }
@@ -70,7 +68,6 @@ namespace Game.Core.Sim
         public int EchoKeys { get; set; }
         public double PassiveScale { get; set; }
         public double AuraPower { get; set; } = 1;
-        public double CursePower { get; set; } = 1;
         public void StartCooldown(int ticks)
         {
             CooldownTicks = ticks;

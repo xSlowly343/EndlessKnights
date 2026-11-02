@@ -41,46 +41,12 @@ namespace Game.Core.Content.Gems
             ["combo"] = HitInput.Combo
         };
 
-        private static readonly Dictionary<string, ScaleSource> ScaleSources = new Dictionary<string, ScaleSource>(StringComparer.Ordinal)
-        {
-            ["resource"] = ScaleSource.Resource,
-            ["combo"] = ScaleSource.Combo,
-            ["bossFails"] = ScaleSource.BossFails,
-            ["enemySeconds"] = ScaleSource.EnemySeconds,
-            ["activeFamily"] = ScaleSource.ActiveFamily
-        };
-
         private static readonly Dictionary<string, GemColor> Colors = new Dictionary<string, GemColor>(StringComparer.Ordinal)
         {
             ["red"] = GemColor.Red,
             ["green"] = GemColor.Green,
             ["blue"] = GemColor.Blue,
             ["white"] = GemColor.White
-        };
-
-        private static readonly Dictionary<string, SpecialKey> SpecialKeys = new Dictionary<string, SpecialKey>(StringComparer.Ordinal)
-        {
-            ["space"] = SpecialKey.Space,
-            ["backspace"] = SpecialKey.Backspace,
-            ["combo"] = SpecialKey.Combo
-        };
-
-        private static readonly Dictionary<string, StackTrigger> StackTriggers = new Dictionary<string, StackTrigger>(StringComparer.Ordinal)
-        {
-            ["kill"] = StackTrigger.Kill,
-            ["keyHit"] = StackTrigger.KeyHit
-        };
-
-        private static readonly Dictionary<string, MinionKind> MinionKinds = new Dictionary<string, MinionKind>(StringComparer.Ordinal)
-        {
-            ["skeleton"] = MinionKind.Skeleton,
-            ["beast"] = MinionKind.Beast
-        };
-
-        private static readonly Dictionary<string, DotKind> DotKinds = new Dictionary<string, DotKind>(StringComparer.Ordinal)
-        {
-            ["poison"] = DotKind.Poison,
-            ["burn"] = DotKind.Burn
         };
 
         private static readonly Dictionary<string, ArmOn> ArmOns = new Dictionary<string, ArmOn>(StringComparer.Ordinal)
@@ -332,9 +298,7 @@ namespace Game.Core.Content.Gems
             var effect = locked ? new PassiveEffect(Array.Empty<Modifier>(), false) : ReadEffect(node.Field("effect"), duration);
             if (effect is AuraEffect aura && !aura.Reserves && duration <= 0)
                 throw node.Error("an aura needs durationSeconds or reserve");
-            if ((effect is StoreHitsEffect || effect is PulseEffect || effect is PauseStrikeEffect || effect is QueueHitsEffect || effect is KeyRepeatEffect || effect is StreakStrikeEffect || effect is InputHitsEffect || effect is TrailEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
-                throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
-            if ((effect is EnemyDebuffEffect || effect is CurseFlowEffect || (effect is AddStacksEffect flowing && flowing.PerSecond > 0)) && duration <= 0)
+            if ((effect is KeyRepeatEffect || effect is StreakStrikeEffect || effect is InputHitsEffect || effect is TrailEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
             var marks = new List<string>();
             if (node.HasField("marks"))
@@ -384,10 +348,8 @@ namespace Game.Core.Content.Gems
                         PauseMultiplier = Number(node, "pauseMultiplier", 1e6),
                         BossTimerStopSeconds = Number(node, "bossTimerStopSeconds", 600),
                         Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null,
-                        PerCurse = Number(node, "perCurse", 1e6),
                         ConsumeMinion = node.HasField("consumeMinion") && node.Field("consumeMinion").AsBool(),
                         BurnStacks = Number(node, "burnStacks", 1000),
-                        RefreshCurses = node.HasField("refreshCurses") && node.Field("refreshCurses").AsBool(),
                         Runes = node.HasField("runes") ? node.Field("runes").AsInt(0, 100) : 0,
                         Word = node.HasField("word") && node.Field("word").AsBool(),
                         Blades = node.HasField("blades") ? node.Field("blades").AsInt(0, 100) : 0,
@@ -517,15 +479,6 @@ namespace Game.Core.Content.Gems
                         Input = node.HasField("input") ? Pick(node.Field("input"), Inputs, "keys, mouse or any") : HitInput.Keys,
                         BurnStacks = Number(node, "burnStacks", 1000)
                     };
-                case "specialKeys":
-                {
-                    var charges = node.HasField("charges") ? node.Field("charges").AsInt(1, 10000) : 0;
-                    return new SpecialKeysEffect(
-                        Pick(node.Field("key"), SpecialKeys, "space, backspace or combo"),
-                        node.Field("bonus").AsNumber(0, 1000),
-                        charges,
-                        charges == 0 && durationSeconds <= 0);
-                }
                 case "streakStrike":
                     return new StreakStrikeEffect(
                         node.Field("hits").AsInt(1, 10000),
@@ -536,46 +489,12 @@ namespace Game.Core.Content.Gems
                         node.Field("afterSeconds").AsNumber(0.1, 86400),
                         node.Field("maxGapSeconds").AsNumber(0.1, 3600),
                         ModifierReader.ReadList(node.Field("modifiers")));
-                case "potion":
-                    return ReadPotion(node.Field("options"));
-                case "wish":
-                    return new WishEffect(node.Field("share").AsNumber(0, 100));
-                case "repeatRecent":
-                    return new RepeatRecentEffect(node.Field("seconds").AsNumber(0.1, Sim.DamageWindow.Seconds));
-                case "barrel":
-                    return new BarrelEffect(node.Field("multiplier").AsNumber(0, 1e6), node.Field("seconds").AsNumber(0.1, 600));
-                case "inputKinds":
-                    return new InputKindsEffect(node.Field("perKind").AsNumber(0, 1e6));
-                case "storeHits":
-                    return new StoreHitsEffect(node.Field("releaseShare").AsNumber(0, 100)) { Queue = node.HasField("queue") && node.Field("queue").AsBool() };
                 case "flurry":
                     return new FlurryEffect(
                         node.Field("hits").AsInt(1, 10000),
                         node.Field("seconds").AsNumber(0.1, 3600),
                         node.Field("multiplier").AsNumber(0, 1e6),
                         node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0);
-                case "pauseStrike":
-                    return new PauseStrikeEffect(node.Field("pauseSeconds").AsNumber(0.1, 3600), node.Field("multiplier").AsNumber(0, 1e6));
-                case "comboStacks":
-                    return new ComboStacksEffect(
-                        node.Field("hitsPerStack").AsInt(1, 100000),
-                        ModifierReader.Read(node.Field("perStack")),
-                        node.Field("max").AsNumber(0, 1e6));
-                case "queueHits":
-                    return new QueueHitsEffect(node.Field("share").AsNumber(0, 100))
-                    {
-                        Targets = node.HasField("targets") ? node.Field("targets").AsInt(1, Sim.GameState.QueueDepth) : 0,
-                        Input = node.HasField("input") ? Pick(node.Field("input"), Inputs, "keys, mouse or any") : HitInput.Keys
-                    };
-                case "stacks":
-                    return new StacksEffect(
-                        Pick(node.Field("on"), StackTriggers, "kill or keyHit"),
-                        ModifierReader.Read(node.Field("perStack")),
-                        node.Field("max").AsNumber(0, 1e6),
-                        node.HasField("stackSeconds") ? node.Field("stackSeconds").AsNumber(0.1, 3600) : 0)
-                    {
-                        Party = node.HasField("party") && node.Field("party").AsBool()
-                    };
                 case "inputHits":
                     return new InputHitsEffect(
                         Number(node, "pxPerHit", 1e6),
@@ -622,76 +541,6 @@ namespace Game.Core.Content.Gems
                         node.Field("multiplier").AsNumber(1, 1000),
                         Number(node, "shardChance", 1),
                         Number(node, "shards", 1e6));
-                case "enemyDebuff":
-                    return new EnemyDebuffEffect(node.Field("damageTaken").AsNumber(0, 10), Number(node, "bossTimerSlow", 0.9))
-                    {
-                        StrikeMultiplier = Number(node, "strikeMultiplier", 1e6),
-                        BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
-                        BossTimerOncePerFight = node.HasField("bossTimerOncePerFight") && node.Field("bossTimerOncePerFight").AsBool(),
-                        WhileAura = node.HasField("whileAura") && node.Field("whileAura").AsBool(),
-                        Modifiers = node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>(),
-                        Tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None
-                    };
-                case "hitStrike":
-                    return new HitStrikeEffect(
-                        Pick(node.Field("input"), Inputs, "keys, mouse, any or combo"),
-                        node.Field("every").AsInt(1, 100000),
-                        node.Field("multiplier").AsNumber(0, 1e6),
-                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0);
-                case "scaled":
-                    return new ScaledEffect(
-                        Pick(node.Field("by"), ScaleSources, "resource, combo, bossFails, enemySeconds or activeFamily"),
-                        node.Field("per").AsNumber(0.001, 1e9),
-                        Number(node, "from", 1e9),
-                        node.Field("maxSteps").AsInt(1, 100000),
-                        ModifierReader.ReadList(node.Field("perStep")),
-                        node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>(),
-                        node.HasField("family") ? node.Field("family").AsString() : null);
-                case "pulse":
-                    return new PulseEffect(
-                        node.Field("everySeconds").AsNumber(0.1, 3600),
-                        node.Field("multiplier").AsNumber(0, 1e6),
-                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
-                        node.HasField("mouseEverySeconds") ? node.Field("mouseEverySeconds").AsNumber(0.1, 3600) : 0)
-                    {
-                        BossTimerSeconds = Number(node, "bossTimerSeconds", 60),
-                        BossTimerSlow = Number(node, "bossTimerSlow", 0.9),
-                        WhileActive = TimerSlowModifiers(Number(node, "bossTimerSlow", 0.9)),
-                        Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null,
-                        PerAlly = Number(node, "perAlly", 1000)
-                    };
-                case "extendFamily":
-                    return new ExtendFamilyEffect(node.Field("family").AsString(), node.Field("seconds").AsNumber(0.1, 3600));
-                case "curseFlow":
-                    return new CurseFlowEffect(node.Field("hitsPerSecond").AsNumber(0, 100));
-                case "summon":
-                    return new SummonEffect(
-                        Pick(node.Field("minion"), MinionKinds, "skeleton or beast"),
-                        node.Field("seconds").AsNumber(0.1, 3600),
-                        node.Field("hitsPerSecond").AsNumber(0.01, 100),
-                        node.Field("multiplier").AsNumber(0, 1e6))
-                    {
-                        WhileActive = node.HasField("whileActive") ? ModifierReader.ReadList(node.Field("whileActive")) : Array.Empty<Modifier>()
-                    };
-                case "addStacks":
-                    return new AddStacksEffect(
-                        Pick(node.Field("dot"), DotKinds, "poison or burn"),
-                        Number(node, "stacks", 1e6),
-                        Number(node, "perSecond", 1e6),
-                        Number(node, "multiplier", 1e6))
-                    {
-                        WhileActive = node.HasField("whileActive") ? ModifierReader.ReadList(node.Field("whileActive")) : Array.Empty<Modifier>(),
-                        EndsOnKill = node.HasField("endsOnKill") && node.Field("endsOnKill").AsBool(),
-                        DelaySeconds = Number(node, "delaySeconds", 600)
-                    };
-                case "detonate":
-                    return new DetonateEffect(node.Field("seconds").AsNumber(0.1, 3600)) { KeepStacks = node.HasField("keepStacks") && node.Field("keepStacks").AsBool() };
-                case "weakenNext":
-                    return new WeakenNextEffect(node.Field("enemies").AsInt(1, 1000), node.Field("hpShare").AsNumber(0, 0.99))
-                    {
-                        VulnerabilityShare = node.HasField("vulnerability") ? node.Field("vulnerability").Field("share").AsNumber(0, 10) : 0,
-                        VulnerabilitySeconds = node.HasField("vulnerability") ? node.Field("vulnerability").Field("seconds").AsNumber(0.1, 3600) : 0
-                    };
                 case "idleStrike":
                     return new IdleStrikeEffect(
                         node.Field("chargePerSecond").AsNumber(0, 1000),
@@ -711,24 +560,6 @@ namespace Game.Core.Content.Gems
             {
                 Party = node.HasField("party") && node.Field("party").AsBool()
             };
-
-        private static PotionEffect ReadPotion(ContentNode node)
-        {
-            var options = new List<PotionOption>();
-            foreach (var item in node.Items())
-            {
-                var score = item.Field("score");
-                options.Add(new PotionOption(
-                    item.HasField("modifiers") ? ModifierReader.ReadList(item.Field("modifiers")) : Array.Empty<Modifier>(),
-                    item.HasField("bossTimerStop") && item.Field("bossTimerStop").AsBool(),
-                    Number(item, "strike", 1e6),
-                    score.Field("boss").AsNumber(0, 1000),
-                    score.Field("normal").AsNumber(0, 1000)));
-            }
-            if (options.Count == 0)
-                throw node.Error("a potion needs at least one option");
-            return new PotionEffect(options);
-        }
 
         private static NativeTrait ReadNative(ContentNode node) =>
             new NativeTrait
@@ -808,7 +639,6 @@ namespace Game.Core.Content.Gems
                 MouseMoving = node.HasField("mouseMoving") && node.Field("mouseMoving").AsBool(),
                 Reading = node.HasField("reading") && node.Field("reading").AsBool(),
                 DotStacksAtLeast = Number(node, "dotStacksAtLeast", 1e6),
-                CursesAtLeast = Count(node, "cursesAtLeast"),
                 MinionsAtLeast = Count(node, "minionsAtLeast"),
                 AurasAtLeast = Count(node, "aurasAtLeast")
             };
@@ -818,9 +648,6 @@ namespace Game.Core.Content.Gems
 
         private static double Number(ContentNode node, string field, double max) =>
             node.HasField(field) ? node.Field(field).AsNumber(0, max) : 0;
-
-        private static IReadOnlyList<Modifier> TimerSlowModifiers(double slow) =>
-            slow > 0 ? new[] { new Modifier(Sim.CombatStats.BossTimerSpeed, ModifierKind.More, -slow) } : Array.Empty<Modifier>();
 
         private static T Pick<T>(ContentNode node, Dictionary<string, T> names, string expected)
         {

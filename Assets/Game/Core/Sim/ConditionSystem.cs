@@ -39,12 +39,9 @@ namespace Game.Core.Sim
         {
             var conditions = Current();
             var auraStrength = _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
-            var curseStrength = _hero.Value(CombatStats.CurseEffect, 1);
             _hero.SetConditions(conditions);
             if (_hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura) != auraStrength)
                 _skills.RefreshAuraStrength();
-            if (_hero.Value(CombatStats.CurseEffect, 1) != curseStrength)
-                _skills.RefreshCurseStrength();
             GrantOnRisingAllyMarks(conditions);
         }
 

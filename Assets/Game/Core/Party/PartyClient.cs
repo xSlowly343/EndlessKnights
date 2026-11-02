@@ -718,46 +718,7 @@ namespace Game.Core.Party
             {
                 var gameEvent = events[i];
                 var effect = gameEvent.Gem?.Skill?.Effect;
-                if (gameEvent.Kind == GameEventKind.SkillCast && effect is EnemyDebuffEffect debuff)
-                {
-                    SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
-                    {
-                        EffectId = gameEvent.Gem!.NetId,
-                        OnEnemy = true,
-                        Strength = _loop.Skills.DebuffStrength(gameEvent.Gem!),
-                        Seconds = gameEvent.Gem.Skill!.DurationSeconds,
-                        TimerSlow = debuff.BossTimerSlow
-                    }));
-                    if (debuff.WhileAura)
-                        _auraBoundGem = gameEvent.Gem.NetId;
-                }
-                else if (gameEvent.Kind == GameEventKind.SkillCast && effect is WeakenNextEffect weaken)
-                    SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
-                    {
-                        EffectId = gameEvent.Gem!.NetId,
-                        OnEnemy = true,
-                        WeakenEnemies = (byte)System.Math.Min(byte.MaxValue, weaken.Enemies),
-                        WeakenShare = WeakenShare(gameEvent.Gem, weaken),
-                        WeakenGold = WeakenGold(gameEvent.Gem),
-                        Strength = weaken.VulnerabilityShare,
-                        Seconds = weaken.VulnerabilitySeconds
-                    }));
-                else if (gameEvent.Kind == GameEventKind.SkillCast && effect is PulseEffect { BossTimerSlow: > 0 } pulse)
-                    SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
-                    {
-                        EffectId = gameEvent.Gem!.NetId,
-                        OnEnemy = true,
-                        Seconds = gameEvent.Gem.Skill!.DurationSeconds,
-                        TimerSlow = pulse.BossTimerSlow
-                    }));
-                else if (gameEvent.Kind == GameEventKind.SkillCast && effect is RepeatRecentEffect)
-                    SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
-                    {
-                        EffectId = gameEvent.Gem!.NetId,
-                        OnEnemy = true,
-                        RepeatSeconds = _loop.Skills.LastRepeatSeconds
-                    }));
-                else if (gameEvent.Kind == GameEventKind.AuraChanged && effect is AuraEffect aura && aura.Party)
+                if (gameEvent.Kind == GameEventKind.AuraChanged && effect is AuraEffect aura && aura.Party)
                     _offerNow = true;
                 if (gameEvent.Kind == GameEventKind.SkillCast && effect is AuraEffect { AllyResource: > 0 } gift)
                     SendToHost(PartyCodec.Encode(_out, new PartyResourceMessage { Amount = (float)gift.AllyResource }));
@@ -885,18 +846,6 @@ namespace Game.Core.Party
                 }
                 return;
             }
-        }
-
-        private double WeakenShare(GemDef gem, WeakenNextEffect weaken)
-        {
-            var share = weaken.HpShare;
-            var skills = _loop.State.Skills;
-            for (var i = 0; i < skills.Count; i++)
-            {
-                if (ReferenceEquals(skills[i].Skill, gem) && _loop.Skills.IsNative(i))
-                    share = System.Math.Max(share, gem.Skill!.Native.WeakenShare);
-            }
-            return share;
         }
 
         private double WeakenGold(GemDef gem)
