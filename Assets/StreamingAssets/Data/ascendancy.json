@@ -912,241 +912,70 @@
     {
       "id": "golemancer_trait_1",
       "class": "golemancer",
-      "name": {"ru": "Печать", "en": "Печать"},
-      "blurb": "100 ударов дописывают печать, из неё встаёт большой голем на 20 с: бьёт как 30 ударов в секунду. Пока голем стоит, следующая печать не пишется",
+      "name": {"ru": "Печать", "en": "Seal"},
+      "blurb": "100 ударов дописывают печать, из неё встаёт большой голем на 20 с и бьёт раз в секунду с силой многих ударов. Пока голем стоит, следующая печать не пишется. В паузе голем стоит и бьёт, но новая печать не пишется. Скилл Пути «Великая печать» дописывает печать сразу",
       "trait": {
-        "partyText": {
-          "ru": "Голем прикрывает: пока он стоит, полоса HP отряда не теряется",
-          "en": "Голем прикрывает: пока он стоит, полоса HP отряда не теряется"
-        },
+        "partyText": {"ru": "Углы печати: каждый союзник дописывает свой угол печати своими ударами (25 ударов), и голем встаёт на 25% сильнее за каждый угол союзника; дописанный угол виден у союзника", "en": "The corners of the seal: every ally writes their own corner of the seal with their hits (25 hits), and the golem rises 25% stronger for every ally's corner; a finished corner shows on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 3}]},
+          {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 0.4}]},
+          {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 0.4}]},
+          {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 0.4}]},
+          {"modifiers": [{"stat": "sealCrumble", "kind": "flat", "value": 1}], "text": {"ru": "Обвал: уходя, голем рассыпается и бьёт врагов очереди ×5", "en": "Rockfall: as it leaves, the golem crumbles and strikes the queued enemies ×5"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "golemancer_trait_1_f45a",
-                "name": {"ru": "голем на 25 с", "en": "голем на 25 с"},
-                "text": {"ru": "голем на 25 с", "en": "голем на 25 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "golemancer_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "golemancer_trait_1_f60a",
-                "name": {
-                  "ru": "стихия голема (камень, кристалл, туман) меняется по кругу",
-                  "en": "стихия голема (камень, кристалл, туман) меняется по кругу"
-                },
-                "text": {
-                  "ru": "стихия голема (камень, кристалл, туман) меняется по кругу",
-                  "en": "стихия голема (камень, кристалл, туман) меняется по кругу"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "golemancer_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "golemancer_trait_1_f75a",
-                "name": {"ru": "голем рассыпается с ударом по очереди", "en": "голем рассыпается с ударом по очереди"},
-                "text": {"ru": "голем рассыпается с ударом по очереди", "en": "голем рассыпается с ударом по очереди"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "golemancer_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "golemancer_trait_1_f45a", "name": {"ru": "Долгий голем", "en": "Long Golem"}, "text": {"ru": "Голем стоит 25 с, но печать в 120 ударов", "en": "The golem stands 25 s, but the seal takes 120 hits"}, "modifiers": [{"stat": "sealSeconds", "kind": "flat", "value": 5}, {"stat": "sealHits", "kind": "flat", "value": 20}]}, {"id": "golemancer_trait_1_f45b", "name": {"ru": "Быстрая печать", "en": "Quick Seal"}, "text": {"ru": "Печать в 70 ударов, но голем на 25% слабее", "en": "The seal takes 70 hits, but the golem is 25% weaker"}, "modifiers": [{"stat": "sealHits", "kind": "flat", "value": -30}, {"stat": "sealPower", "kind": "more", "value": -0.25}]}]},
+          {"level": 60, "options": [{"id": "golemancer_trait_1_f60a", "name": {"ru": "Кристальный голем", "en": "Crystal Golem"}, "text": {"ru": "Голем всегда критует, но бьёт на 20% слабее", "en": "The golem always crits, but strikes 20% weaker"}, "modifiers": [{"stat": "sealCrystal", "kind": "flat", "value": 1}]}, {"id": "golemancer_trait_1_f60b", "name": {"ru": "Голем-страж", "en": "Guardian Golem"}, "text": {"ru": "Вставший голем держит таймер босса 2 с, но на 15% слабее", "en": "A rising golem holds the boss timer for 2 s, but is 15% weaker"}, "modifiers": [{"stat": "sealGuard", "kind": "flat", "value": 1}, {"stat": "sealPower", "kind": "more", "value": -0.15}]}]},
+          {"level": 75, "options": [{"id": "golemancer_trait_1_f75a", "name": {"ru": "Двойная печать", "en": "Double Seal"}, "text": {"ru": "Из печати встают два голема, каждый на 40% слабее", "en": "Two golems rise from a seal, each 40% weaker"}, "modifiers": [{"stat": "sealTwo", "kind": "flat", "value": 1}]}, {"id": "golemancer_trait_1_f75b", "name": {"ru": "Титан", "en": "Titan"}, "text": {"ru": "Голем вдвое сильнее, но стоит 10 с", "en": "The golem is twice as strong, but stands 10 s"}, "modifiers": [{"stat": "sealTitan", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [{"id": "golemancer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Печать", "en": "Печать"}, "modifiers": []}],
+      "nodes": [{"id": "golemancer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Печать", "en": "Seal"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "golemancer_trait_2",
       "class": "golemancer",
-      "name": {"ru": "Вечная печать", "en": "Вечная печать"},
-      "blurb": "Один голем навсегда, но вчетверо слабее. Каждая дописанная печать не призывает, а добавляет на голема руну (+5% силы, до 40 рун). Руны остаются до перерождения",
+      "name": {"ru": "Вечная печать", "en": "Eternal Seal"},
+      "blurb": "Один голем навсегда, но вчетверо слабее большого: он бьёт раз в секунду. Каждые 100 ударов печать не призывает, а добавляет на голема руну: +5% силы, до 40 рун. Руны остаются до перерождения. На каждом новом враге голем ставит клеймо из стольких слоёв, сколько рун (до 10); каждые 40 ударов слой снимается и бьёт силой голема ×3. В паузе голем бьёт сам. Скилл Пути «Вписать руну» добавляет руну сразу",
       "trait": {
-        "partyText": {
-          "ru": "Союзник, пришедший в бой позже, первую минуту не теряет полосу HP",
-          "en": "Союзник, пришедший в бой позже, первую минуту не теряет полосу HP"
-        },
+        "partyText": {"ru": "Клеймо на враге: клеймо висит на общем враге у хоста и видно всем; каждые 20 ударов союзников по врагу снимают слой, и он бьёт силой голема ×3", "en": "A brand on the enemy: the brand hangs on the shared enemy at the host for everyone to see; every 20 allied hits on the enemy strip a layer, and it strikes with the golem's strength ×3"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.6}]},
+          {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.08}]},
+          {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.08}]},
+          {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.08}]},
+          {"modifiers": [{"stat": "eternalQueue", "kind": "flat", "value": 1}], "text": {"ru": "Каменный шаг: голем бьёт и первого врага очереди вполсилы", "en": "Stone Step: the golem also strikes the queued enemies at half strength"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "golemancer_trait_2_f45a",
-                "name": {"ru": "до 60 рун", "en": "до 60 рун"},
-                "text": {"ru": "до 60 рун", "en": "до 60 рун"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "golemancer_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "golemancer_trait_2_f60a",
-                "name": {"ru": "каждая 10-я руна — новая атака голема", "en": "каждая 10-я руна — новая атака голема"},
-                "text": {"ru": "каждая 10-я руна — новая атака голема", "en": "каждая 10-я руна — новая атака голема"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "golemancer_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "golemancer_trait_2_f75a",
-                "name": {"ru": "после перерождения остаётся четверть рун", "en": "после перерождения остаётся четверть рун"},
-                "text": {"ru": "после перерождения остаётся четверть рун", "en": "после перерождения остаётся четверть рун"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "golemancer_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "golemancer_trait_2_f45a", "name": {"ru": "Шестьдесят рун", "en": "Sixty Runes"}, "text": {"ru": "До 60 рун, но руна каждые 120 ударов", "en": "Up to 60 runes, but a rune every 120 hits"}, "modifiers": [{"stat": "eternalRunes", "kind": "flat", "value": 20}, {"stat": "eternalRuneHits", "kind": "flat", "value": 20}]}, {"id": "golemancer_trait_2_f45b", "name": {"ru": "Быстрые руны", "en": "Quick Runes"}, "text": {"ru": "Руна каждые 70 ударов, но даёт +3%", "en": "A rune every 70 hits, but it gives +3%"}, "modifiers": [{"stat": "eternalRuneHits", "kind": "flat", "value": -30}, {"stat": "eternalRuneBonus", "kind": "flat", "value": -0.02}]}]},
+          {"level": 60, "options": [{"id": "golemancer_trait_2_f60a", "name": {"ru": "Тяжёлый кулак", "en": "Heavy Fist"}, "text": {"ru": "Голем бьёт раз в 2 с, но ×2,5", "en": "The golem strikes every 2 s, but ×2.5"}, "modifiers": [{"stat": "eternalHeavy", "kind": "flat", "value": 1}]}, {"id": "golemancer_trait_2_f60b", "name": {"ru": "Глубокое клеймо", "en": "Deep Brand"}, "text": {"ru": "Клеймо до 15 слоёв, но голем на 15% слабее", "en": "The brand has up to 15 layers, but the golem is 15% weaker"}, "modifiers": [{"stat": "eternalBrand", "kind": "flat", "value": 5}, {"stat": "eternalPower", "kind": "more", "value": -0.15}]}]},
+          {"level": 75, "options": [{"id": "golemancer_trait_2_f75a", "name": {"ru": "Руна силы", "en": "Rune of Power"}, "text": {"ru": "Руна даёт +8%, но рун до 25", "en": "A rune gives +8%, but up to 25 runes"}, "modifiers": [{"stat": "eternalRuneBonus", "kind": "flat", "value": 0.03}, {"stat": "eternalRunes", "kind": "flat", "value": -15}]}, {"id": "golemancer_trait_2_f75b", "name": {"ru": "Каменный страж", "en": "Stone Guardian"}, "text": {"ru": "На боссе голем вдвое сильнее, на обычных врагах на 30% слабее", "en": "On a boss the golem is twice as strong, on ordinary enemies 30% weaker"}, "modifiers": [{"stat": "eternalBoss", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "golemancer_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Вечная печать", "en": "Вечная печать"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "golemancer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Вечная печать", "en": "Eternal Seal"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "golemancer_trait_3",
       "class": "golemancer",
-      "name": {"ru": "Малые печати", "en": "Малые печати"},
-      "blurb": "Вместо большого голема каждые 20 ударов — маленький големчик на 15 с. Свои удары големчики засчитывают в счётчики особенностей союзников",
+      "name": {"ru": "Малые печати", "en": "Small Seals"},
+      "blurb": "Вместо большого голема каждые 20 ударов — маленький големчик на 15 с, до 4 сразу; каждый бьёт раз в секунду. В паузе големчики бьют, новые не появляются. Скилл Пути «Россыпь печатей» лепит трёх големчиков",
       "trait": {
-        "partyText": {
-          "ru": "Големчики разгоняют чужие особенности (узлы, семена, пушки…)",
-          "en": "Големчики разгоняют чужие особенности (узлы, семена, пушки…)"
-        },
+        "partyText": {"ru": "Големчики разгоняют чужие особенности: в отряде големчик уходит к союзнику, бьёт его врага, и каждый его удар засчитывается в счётчики особенностей союзника (узлы, семена, пушки…); големчики видны на полоске союзника", "en": "Golemlings speed up others' traits: in a party a golemling goes to an ally, strikes their enemy, and every strike counts toward the ally's trait counters (knots, seeds, cannons…); the golemlings show on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.35}]},
+          {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "minorQueue", "kind": "flat", "value": 1}], "text": {"ru": "Шустрые ноги: големчики бьют и врагов очереди вполсилы", "en": "Nimble Feet: golemlings also strike the queued enemies at half strength"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "golemancer_trait_3_f45a",
-                "name": {"ru": "до 6 големчиков", "en": "до 6 големчиков"},
-                "text": {"ru": "до 6 големчиков", "en": "до 6 големчиков"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "golemancer_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "golemancer_trait_3_f60a",
-                "name": {"ru": "големчик идёт к союзнику с самым медленным счётчиком", "en": "големчик идёт к союзнику с самым медленным счётчиком"},
-                "text": {"ru": "големчик идёт к союзнику с самым медленным счётчиком", "en": "големчик идёт к союзнику с самым медленным счётчиком"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "golemancer_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "golemancer_trait_3_f75a",
-                "name": {"ru": "в соло големчики вдвое сильнее", "en": "в соло големчики вдвое сильнее"},
-                "text": {"ru": "в соло големчики вдвое сильнее", "en": "в соло големчики вдвое сильнее"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "golemancer_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "golemancer_trait_3_f45a", "name": {"ru": "Шесть големчиков", "en": "Six Golemlings"}, "text": {"ru": "До 6 големчиков, но каждый на 20% слабее", "en": "Up to 6 golemlings, but each is 20% weaker"}, "modifiers": [{"stat": "minorMax", "kind": "flat", "value": 2}, {"stat": "minorPower", "kind": "more", "value": -0.2}]}, {"id": "golemancer_trait_3_f45b", "name": {"ru": "Быстрые печати", "en": "Quick Seals"}, "text": {"ru": "Големчик каждые 15 ударов, но живёт 10 с", "en": "A golemling every 15 hits, but it lives 10 s"}, "modifiers": [{"stat": "minorHits", "kind": "flat", "value": -5}, {"stat": "minorSeconds", "kind": "flat", "value": -5}]}]},
+          {"level": 60, "options": [{"id": "golemancer_trait_3_f60a", "name": {"ru": "Крепкая глина", "en": "Firm Clay"}, "text": {"ru": "Големчик живёт 25 с, но лепится каждые 30 ударов", "en": "A golemling lives 25 s, but is shaped every 30 hits"}, "modifiers": [{"stat": "minorSeconds", "kind": "flat", "value": 10}, {"stat": "minorHits", "kind": "flat", "value": 10}]}, {"id": "golemancer_trait_3_f60b", "name": {"ru": "Первый удар", "en": "First Blow"}, "text": {"ru": "Рождаясь, големчик бьёт ×3, но на 20% слабее", "en": "On birth a golemling strikes ×3, but is 20% weaker"}, "modifiers": [{"stat": "minorBirth", "kind": "flat", "value": 1}, {"stat": "minorPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 75, "options": [{"id": "golemancer_trait_3_f75a", "name": {"ru": "Мастерская", "en": "Workshop"}, "text": {"ru": "В соло големчики вдвое сильнее, в отряде на 30% слабее", "en": "Solo the golemlings are twice as strong, in a party 30% weaker"}, "modifiers": [{"stat": "minorSolo", "kind": "flat", "value": 1}, {"stat": "minorParty", "kind": "flat", "value": -0.3}]}, {"id": "golemancer_trait_3_f75b", "name": {"ru": "Рой големчиков", "en": "Golemling Swarm"}, "text": {"ru": "До 8 големчиков, но каждый на 40% слабее", "en": "Up to 8 golemlings, but each is 40% weaker"}, "modifiers": [{"stat": "minorMax", "kind": "flat", "value": 4}, {"stat": "minorPower", "kind": "more", "value": -0.4}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "golemancer_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Малые печати", "en": "Малые печати"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "golemancer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Малые печати", "en": "Small Seals"}, "modifiers": []}],
       "links": []
     },
     {

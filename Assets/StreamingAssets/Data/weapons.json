@@ -39,7 +39,7 @@
     {"id": "moon_fan", "class": "mothcaller", "color": "green", "name": {"ru": "Лунный веер", "en": "Moon Fan"}, "starterSkills": ["mothcaller_hit_1", "mothcaller_strong_1", "mothcaller_queue_1", "mothcaller_auto_1", "mothcaller_aura_1", "mothcaller_hit_2", "mothcaller_queue_2"], "innate": [{"stat": "dotDamage", "kind": "increased", "value": 0.1}]},
     {"id": "tarot_deck", "class": "cartomancer", "color": "blue", "name": {"ru": "Колода карт", "en": "Tarot Deck"}, "starterSkills": ["cartomancer_hit_1", "cartomancer_strong_1", "cartomancer_queue_1", "cartomancer_auto_1", "cartomancer_aura_1", "cartomancer_hit_2", "cartomancer_queue_2"], "innate": [{"stat": "critChance", "kind": "increased", "value": 0.1}]},
     {"id": "blooming_staff", "class": "herbwitch", "color": "green", "name": {"ru": "Цветущий посох", "en": "Blooming Staff"}, "starterSkills": ["herbwitch_hit_1", "herbwitch_strong_1", "herbwitch_queue_1", "herbwitch_auto_1", "herbwitch_aura_1", "herbwitch_hit_2", "herbwitch_queue_2"], "innate": [{"stat": "dotDamage", "kind": "increased", "value": 0.1}]},
-    {"id": "potter_mallet", "class": "golemancer", "color": "red", "name": {"ru": "Гончарный молот", "en": "Potter's Mallet"}, "starterSkills": ["golemancer_hit_1", "golemancer_strong_1", "golemancer_queue_1", "golemancer_auto_1", "golemancer_aura_1", "golemancer_hit_2", "golemancer_queue_2"], "innate": [{"stat": "golemPower", "kind": "flat", "value": 0.1}]}
+    {"id": "seal_ring", "class": "golemancer", "color": "red", "name": {"ru": "Печать-перстень", "en": "Seal Ring"}, "starterSkills": ["golemancer_hit_1", "golemancer_strong_1", "golemancer_queue_1", "golemancer_auto_1", "golemancer_aura_1", "golemancer_hit_2", "golemancer_queue_2"], "innate": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.1}]}
   ],
   "bases": [
     {"id": "apprentice_daggers", "type": "rune_daggers", "fromBiome": 1, "name": {"ru": "Кинжалы ученицы", "en": "Apprentice's Daggers"}},
@@ -93,9 +93,9 @@
     {"id": "bramble_switch", "type": "blooming_staff", "fromBiome": 1, "name": {"ru": "Ивовый посох", "en": "Willow Staff"}},
     {"id": "rose_whip", "type": "blooming_staff", "fromBiome": 3, "name": {"ru": "Посох в розах", "en": "Rose Staff"}},
     {"id": "edge_briar", "type": "blooming_staff", "fromBiome": 5, "name": {"ru": "Посох вечной весны", "en": "Staff of Endless Spring"}, "innate": [{"stat": "damage", "kind": "increased", "value": 0.08, "tags": ["Skill"]}]},
-    {"id": "wooden_mallet", "type": "potter_mallet", "fromBiome": 1, "name": {"ru": "Деревянная колотушка", "en": "Wooden Mallet"}},
-    {"id": "potters_mallet", "type": "potter_mallet", "fromBiome": 3, "name": {"ru": "Молот гончара", "en": "Potter's Mallet"}},
-    {"id": "kiln_mallet", "type": "potter_mallet", "fromBiome": 5, "name": {"ru": "Молот обжиговой печи", "en": "Kiln Mallet"}, "innate": [{"stat": "minionCount", "kind": "flat", "value": 1}]}
+    {"id": "wooden_mallet", "type": "seal_ring", "fromBiome": 1, "name": {"ru": "Медный перстень", "en": "Copper Ring"}},
+    {"id": "potters_mallet", "type": "seal_ring", "fromBiome": 3, "name": {"ru": "Перстень мастера печатей", "en": "Sealmaster's Ring"}},
+    {"id": "kiln_mallet", "type": "seal_ring", "fromBiome": 5, "name": {"ru": "Перстень великой печати", "en": "Ring of the Great Seal"}, "innate": [{"stat": "damage", "kind": "increased", "value": 0.08, "tags": ["Skill"]}]}
   ],
   "uniques": [
     {"id": "corsair_daggers", "name": {"ru": "Кинжалы корсара", "en": "Corsair's Daggers"}, "base": "twin_daggers", "alsoType": "compass_pistol", "rarity": "legendary", "lines": [{"stat": "damage", "kind": "increased", "value": 0.25, "tags": ["Keyboard"]}, {"stat": "critMultiplier", "kind": "increased", "value": 0.15}], "rule": {"ru": "считается рунными кинжалами и пистолем-компасом сразу", "en": "counts as rune daggers and a compass pistol at once"}},

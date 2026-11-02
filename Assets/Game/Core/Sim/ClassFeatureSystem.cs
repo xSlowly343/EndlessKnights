@@ -60,7 +60,7 @@ namespace Game.Core.Sim
 
         private void RaiseGolem()
         {
-            if (!_state.Is(HeroClass.Golemancer) || Rules.Golem.Summon.Multiplier <= 0 || !_resource.IsFull || _resource.Max <= 0)
+            if (!_state.Is(HeroClass.Golemancer) || _combat.Golemancer.Traited || Rules.Golem.Summon.Multiplier <= 0 || !_resource.IsFull || _resource.Max <= 0)
                 return;
             if (_skills.Minions.Standing(MinionKind.Golem) > 0)
                 return;

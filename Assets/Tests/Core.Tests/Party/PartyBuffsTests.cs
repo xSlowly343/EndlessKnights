@@ -347,6 +347,26 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AGolemancersCornerAndGolemlingReachTheAllyAndTheCornerComesBack()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var golemancer = rig.Members[0];
+            var friend = rig.Members[1];
+            golemancer.Loop.State.Class = HeroClass.Golemancer;
+            golemancer.Loop.Hero.Add(new Modifier(GolemancerStats.SealPower, ModifierKind.Flat, 3));
+            golemancer.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Golemling, To = LanternbearerMechanics.AnyAlly, Value = 0.35, Seconds = 15 });
+            rig.Run(0.5);
+
+            Assert.That(friend.Loop.State.Boons.CornerOwner, Is.EqualTo(golemancer.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.Golemlings, Is.EqualTo(1));
+
+            friend.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.CornerDone, To = (byte)golemancer.Client.OwnSlot });
+            rig.Run(0.3);
+            Assert.That(golemancer.Loop.State.Golemancer.CornersReceived, Is.EqualTo(1));
+        }
+
+        [Test]
         public void AHerbwitchsPetalSporesAndGulpReachTheAllyAndComeBack()
         {
             var rig = new Rig(2);

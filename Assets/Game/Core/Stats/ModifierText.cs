@@ -32,7 +32,8 @@ namespace Game.Core.Stats
             "parrotPower", "parrotParty", "broadsideParty", "crewParty",
             "swarmParty", "pollenParty", "mothParty",
             "spreadPower", "spreadParty", "forecastPower", "forecastParty", "reversedPower", "reversedParty",
-            "bloomParty", "myceliumParty", "sapParty"
+            "bloomParty", "myceliumParty", "sapParty",
+            "sealParty", "eternalParty", "eternalRuneBonus", "minorParty"
         };
 
         private static readonly StatTags[] LabelledTags =

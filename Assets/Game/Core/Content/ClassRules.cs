@@ -31,6 +31,7 @@ namespace Game.Core.Content
         public MothcallerRules Mothcaller { get; private set; } = MothcallerRules.None;
         public CartomancerRules Cartomancer { get; private set; } = CartomancerRules.None;
         public HerbwitchRules Herbwitch { get; private set; } = HerbwitchRules.None;
+        public GolemancerRules Golemancer { get; private set; } = GolemancerRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -58,7 +59,8 @@ namespace Game.Core.Content
                 Ghostcaptain = GhostcaptainRules.Read(node.Field("ghostcaptain")),
                 Mothcaller = MothcallerRules.Read(node.Field("mothcaller")),
                 Cartomancer = CartomancerRules.Read(node.Field("cartomancer")),
-                Herbwitch = HerbwitchRules.Read(node.Field("herbwitch")) };
+                Herbwitch = HerbwitchRules.Read(node.Field("herbwitch")),
+                Golemancer = GolemancerRules.Read(node.Field("golemancer")) };
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Game.Core.Sim
         private readonly MothcallerMechanics _mothcaller;
         private readonly CartomancerMechanics _cartomancer;
         private readonly HerbwitchMechanics _herbwitch;
+        private readonly GolemancerMechanics _golemancer;
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
@@ -59,6 +60,7 @@ namespace Game.Core.Sim
             _mothcaller = new MothcallerMechanics(rules.Classes.Mothcaller, state, hero, this);
             _cartomancer = new CartomancerMechanics(rules.Classes.Cartomancer, state, hero, this);
             _herbwitch = new HerbwitchMechanics(rules.Classes.Herbwitch, state, hero, this);
+            _golemancer = new GolemancerMechanics(rules.Classes.Golemancer, state, hero, this);
         }
 
         public ClassMechanics Class => _class;
@@ -79,6 +81,7 @@ namespace Game.Core.Sim
         public MothcallerMechanics Mothcaller => _mothcaller;
         public CartomancerMechanics Cartomancer => _cartomancer;
         public HerbwitchMechanics Herbwitch => _herbwitch;
+        public GolemancerMechanics Golemancer => _golemancer;
         public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
@@ -102,6 +105,7 @@ namespace Game.Core.Sim
             _mothcaller.UseRules(rules.Classes.Mothcaller);
             _cartomancer.UseRules(rules.Classes.Cartomancer);
             _herbwitch.UseRules(rules.Classes.Herbwitch);
+            _golemancer.UseRules(rules.Classes.Golemancer);
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
@@ -217,6 +221,28 @@ namespace Game.Core.Sim
             return larger <= 1e-9 ? 0 : System.Math.Min(keys, mouse) / larger;
         }
 
+        public void ExtraStrike()
+        {
+            _runedancer.AfterStrike(false);
+            _duelist.AfterStrike(false);
+            _windshot.AfterStrike(false);
+            _shardcaller.AfterStrike(false);
+            _sandwalker.AfterStrike();
+            _minstrel.AfterStrike();
+            _dreamcatcher.AfterStrike();
+            _lanternbearer.AfterStrike(false);
+            _whisperer.AfterStrike();
+            _clockwright.AfterStrike();
+            _alchemist.AfterStrike(false);
+            _dowser.AfterStrike();
+            _soulbinder.AfterStrike();
+            _ghostcaptain.AfterStrike();
+            _mothcaller.AfterStrike(false);
+            _cartomancer.AfterStrike();
+            _herbwitch.AfterStrike();
+            _golemancer.AfterStrike();
+        }
+
         public void DirectHit(BigNumber damage)
         {
             if (!_state.EnemyAlive || damage.Sign <= 0)
@@ -255,6 +281,7 @@ namespace Game.Core.Sim
             _mothcaller.Tick();
             _cartomancer.Tick();
             _herbwitch.Tick();
+            _golemancer.Tick();
             var keyHits = TakeWhole(_state.KeyCarry + input.Hits, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -285,6 +312,7 @@ namespace Game.Core.Sim
                     _mothcaller.AfterStrike(crit);
                     _cartomancer.AfterStrike();
                     _herbwitch.AfterStrike();
+                    _golemancer.AfterStrike();
                 }
                 KeyHitLightning();
                 ShadowClone();
