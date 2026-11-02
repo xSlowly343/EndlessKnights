@@ -20,9 +20,7 @@ namespace Game.Core.Sim
         public static readonly StatId CaravanIdle = new StatId("caravanIdle");
         public static readonly StatId CaravanHitPx = new StatId("caravanHitPx");
         public static readonly StatId CaravanOasis = new StatId("caravanOasis");
-        public static readonly StatId CaravanGold = new StatId("caravanGold");
         public static readonly StatId CaravanAll = new StatId("caravanAll");
-        public static readonly StatId CaravanPartyCooldown = new StatId("caravanPartyCooldown");
 
         public static readonly StatId MiragePower = new StatId("miragePower");
         public static readonly StatId MiragePx = new StatId("miragePx");

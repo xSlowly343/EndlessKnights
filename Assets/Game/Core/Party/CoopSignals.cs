@@ -36,7 +36,17 @@ namespace Game.Core.Party
             ["crystals"] = CoopSignal.Crystals,
             ["gardenMass"] = CoopSignal.GardenMass,
             ["shellCracked"] = CoopSignal.ShellCracked,
-            ["crack"] = CoopSignal.Crack
+            ["crack"] = CoopSignal.Crack,
+            ["sandBottom"] = CoopSignal.SandBottom,
+            ["flip"] = CoopSignal.Flip,
+            ["camp"] = CoopSignal.Camp,
+            ["mirages"] = CoopSignal.Mirages,
+            ["verseShare"] = CoopSignal.VerseShare,
+            ["verses"] = CoopSignal.Verses,
+            ["chorus"] = CoopSignal.Chorus,
+            ["songShare"] = CoopSignal.SongShare,
+            ["sleepShare"] = CoopSignal.SleepShare,
+            ["asleep"] = CoopSignal.Asleep
         };
 
         public static bool TryParse(string name, out CoopSignal signal) => Names.TryGetValue(name, out signal);
@@ -55,6 +65,8 @@ namespace Game.Core.Party
             CoopSignal.Shot => true,
             CoopSignal.Gust => true,
             CoopSignal.Crack => true,
+            CoopSignal.Flip => true,
+            CoopSignal.Camp => true,
             _ => false
         };
 
@@ -89,6 +101,16 @@ namespace Game.Core.Party
             CoopSignal.GardenMass => state.Shardcaller.Crystals * state.Shardcaller.Size,
             CoopSignal.ShellCracked => state.Shardcaller.Cracked ? 1 : 0,
             CoopSignal.Crack => state.Shardcaller.Cracks,
+            CoopSignal.SandBottom => state.Sandwalker.Bottom ? 1 : 0,
+            CoopSignal.Flip => state.Sandwalker.Flips,
+            CoopSignal.Camp => state.Sandwalker.Camps,
+            CoopSignal.Mirages => state.Sandwalker.Mirages,
+            CoopSignal.VerseShare => state.Minstrel.PartyVerse,
+            CoopSignal.Verses => state.Minstrel.Verses,
+            CoopSignal.Chorus => state.Minstrel.Chorus ? 1 : 0,
+            CoopSignal.SongShare => state.Minstrel.PartySong,
+            CoopSignal.SleepShare => state.Minstrel.PartySleep,
+            CoopSignal.Asleep => state.Minstrel.Asleep ? 1 : 0,
             _ => 0
         };
     }

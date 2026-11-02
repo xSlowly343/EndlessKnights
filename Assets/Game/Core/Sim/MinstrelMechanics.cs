@@ -87,7 +87,7 @@ namespace Game.Core.Sim
             {
                 if (!Song)
                     return 0;
-                var power = SongPower * (1 - System.Math.Min(1, Positive(MinstrelStats.SongPartyPenalty))) + Positive(MinstrelStats.SongParty);
+                var power = SongPower * (1 - System.Math.Min(1, Positive(MinstrelStats.SongPartyPenalty)));
                 return AllSongs ? power * _rules.SongAllMultiplier : power;
             }
         }
@@ -188,21 +188,11 @@ namespace Game.Core.Sim
                 S.HymnPower = 0;
             if (S.SoloTicks > 0)
                 S.SoloTicks--;
-            _state.TraitPartyDamage = PartyDamage();
-            _state.TraitPartyCooldown = PartySong * _rules.SongPartyCooldown;
-            _state.TraitPartyCritChance = PartySong * _rules.SongPartyCrit;
-        }
-
-        public double PartyDamage()
-        {
-            var damage = HymnBonus;
-            if (Verse)
-                damage += VerseBonus + S.Verses * Positive(MinstrelStats.VerseParty);
-            if (Song)
-                damage += PartySong;
-            if (Lullaby && S.Asleep)
-                damage += SleepPower - 1 + Positive(MinstrelStats.SleepParty);
-            return damage;
+            _state.TraitPartyDamage = HymnBonus;
+            S.PartyVerse = VerseBonus;
+            S.PartySong = PartySong;
+            S.PartySleep = Lullaby && S.Asleep ? System.Math.Max(0, SleepPower - 1) : 0;
+            S.Chorus = InChorus;
         }
 
         private void OnNewEnemy()

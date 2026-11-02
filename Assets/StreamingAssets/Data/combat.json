@@ -67,9 +67,9 @@
     "sandwalker": {
       "blind": { "seconds": 3, "damageTaken": 0.3 },
       "common": { "pourPx": 30, "stepRecentSeconds": 1, "stepHitMax": 10, "partyTimeSlow": 0.5 },
-      "flip": { "every": 200, "everyMin": 40, "penalty": 0.5, "stepPx": 200, "partySlow": 1 },
-      "caravan": { "campPx": 3000, "campPxMin": 500, "sand": 10, "cutSeconds": 1, "idlePx": 100, "partyCooldown": 0.1, "partySeconds": 5, "oasisEvery": 5, "oasisMultiplier": 3, "oasisSandMultiplier": 2.5, "partyGold": 0.25, "goldSeconds": 10 },
-      "mirage": { "px": 2000, "pxMin": 500, "max": 5, "seconds": 20, "secondsMin": 2, "strikeSeconds": 1, "timeSeconds": 2, "selfPenalty": 0.4, "partySlow": 0.06, "blindSeconds": 1 }
+      "flip": { "every": 200, "everyMin": 40, "penalty": 0.5, "stepPx": 200 },
+      "caravan": { "campPx": 3000, "campPxMin": 500, "sand": 10, "cutSeconds": 1, "idlePx": 100, "oasisEvery": 5, "oasisMultiplier": 3, "oasisSandMultiplier": 2.5 },
+      "mirage": { "px": 2000, "pxMin": 500, "max": 5, "seconds": 20, "secondsMin": 2, "strikeSeconds": 1, "timeSeconds": 2, "selfPenalty": 0.4, "blindSeconds": 1 }
     },
     "windshot": {
       "mark": { "seconds": 8, "keyDamage": 0.1 },
@@ -96,7 +96,7 @@
     "minstrel": {
       "common": { "soloMultiplier": 2 },
       "verse": { "lineHits": 10, "lineHitsMin": 3, "lines": 4, "seconds": 12, "secondsMin": 2, "max": 3, "chorusVerses": 3, "chorusMultiplier": 2, "chorusSeconds": 8, "endlessSeconds": 4, "gift": 10 },
-      "song": { "hits": 40, "hitsMin": 5, "partyCooldown": 0.5, "partyCrit": 0.2, "soloMultiplier": 2, "allEverySeconds": 30, "allSeconds": 5, "allMultiplier": 2, "gift": 10 },
+      "song": { "hits": 40, "hitsMin": 5, "soloMultiplier": 2, "allEverySeconds": 30, "allSeconds": 5, "allMultiplier": 2, "gift": 10 },
       "lullaby": { "noteHits": 20, "noteHitsMin": 4, "notes": 7, "notesMin": 2, "seconds": 4, "secondsMin": 1, "bossSeconds": 8 }
     },
     "soulbinder": {

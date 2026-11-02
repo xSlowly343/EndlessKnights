@@ -27,6 +27,10 @@ namespace Game.Core.Sim
         public BigNumber Dream { get; set; } = BigNumber.Zero;
         public int HymnTicks { get; set; }
         public double HymnPower { get; set; }
+        public double PartyVerse { get; set; }
+        public double PartySong { get; set; }
+        public double PartySleep { get; set; }
+        public bool Chorus { get; set; }
         public int SoloTicks { get; set; }
         public bool SpawnPending { get; set; }
 

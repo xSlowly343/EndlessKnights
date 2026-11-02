@@ -31,6 +31,16 @@ namespace Game.Core.Party
         Crystals,
         GardenMass,
         ShellCracked,
-        Crack
+        Crack,
+        SandBottom,
+        Flip,
+        Camp,
+        Mirages,
+        VerseShare,
+        Verses,
+        Chorus,
+        SongShare,
+        SleepShare,
+        Asleep
     }
 }

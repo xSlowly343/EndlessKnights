@@ -58,7 +58,7 @@ namespace Game.Core.Content
                 if (CoopSignals.IsEvent(perSignal))
                     throw per.Field("signal").Error("'per' counts a gauge, events go to 'after'");
                 perStep = per.Field("step").AsNumber(1e-6, 1e9);
-                perCap = per.Field("cap").AsInt(1, 1000);
+                perCap = per.Field("cap").AsInt(1, 100000);
             }
             var afterSignal = CoopSignal.None;
             var afterSeconds = 0.0;
