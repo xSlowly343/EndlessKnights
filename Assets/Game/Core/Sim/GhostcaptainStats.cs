@@ -31,6 +31,5 @@ namespace Game.Core.Sim
         public static readonly StatId ParrotTwo = new StatId("parrotTwo");
         public static readonly StatId ParrotHeavy = new StatId("parrotHeavy");
         public static readonly StatId ParrotQueue = new StatId("parrotQueue");
-        public static readonly StatId ParrotParty = new StatId("parrotParty");
     }
 }

@@ -63,7 +63,6 @@ namespace Game.Core.Party
         public PartyRelayRules Relay { get; }
         public PartyHelpRules Help { get; }
         public PartyGiftRules Gifts { get; }
-        public PartyTraitRules Traits { get; private set; } = PartyTraitRules.Default;
         public int MaxWeakenedSpawns { get; }
         public double MaxWeakenShare { get; }
         public double MaxWeakenGold { get; }
@@ -117,7 +116,7 @@ namespace Game.Core.Party
                 PartyGiftRules.Read(root.Field("gifts")),
                 root.Field("weaken").Field("maxEnemies").AsInt(1, 100),
                 root.Field("weaken").Field("maxShare").AsNumber(0, 0.99),
-                root.Field("weaken").Field("maxGold").AsNumber(0, 10)) { Traits = root.HasField("traits") ? PartyTraitRules.Read(root.Field("traits")) : PartyTraitRules.Default };
+                root.Field("weaken").Field("maxGold").AsNumber(0, 10));
         }
     }
 }

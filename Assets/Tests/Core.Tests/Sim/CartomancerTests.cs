@@ -82,19 +82,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
         private static void Kill(GameLoop loop) => loop.Combat.Cartomancer.OnKillRewarded();
 
         private static int Equip(GameLoop loop, string skill)
@@ -116,11 +103,11 @@ namespace Game.Core.Tests.Sim
         public void ThreeCardsOfOneSuitOpenAMajorArcanum()
         {
             var (loop, _) = Hero(Flat(CartomancerStats.SpreadPower, 0.3));
-            loop.Combat.Cartomancer.ReceiveCard(CartomancerState.Swords);
-            loop.Combat.Cartomancer.ReceiveCard(CartomancerState.Swords);
+            loop.Combat.Cartomancer.AddCard(CartomancerState.Swords);
+            loop.Combat.Cartomancer.AddCard(CartomancerState.Swords);
             Assert.That(loop.Combat.Cartomancer.ArcanaActive(CartomancerState.Swords), Is.False);
             var before = loop.Combat.Cartomancer.DamageTaken();
-            loop.Combat.Cartomancer.ReceiveCard(CartomancerState.Swords);
+            loop.Combat.Cartomancer.AddCard(CartomancerState.Swords);
             Assert.That(loop.Combat.Cartomancer.ArcanaActive(CartomancerState.Swords), Is.True);
             Assert.That(loop.State.Cartomancer.Hand[CartomancerState.Swords], Is.Zero);
             Assert.That(loop.Combat.Cartomancer.DamageTaken() / before, Is.EqualTo(1.3).Within(1e-9));
@@ -134,8 +121,8 @@ namespace Game.Core.Tests.Sim
             var (loop, _) = Hero(Flat(CartomancerStats.SpreadPower, 0.3));
             for (var i = 0; i < 3; i++)
             {
-                loop.Combat.Cartomancer.ReceiveCard(CartomancerState.Cups);
-                loop.Combat.Cartomancer.ReceiveCard(CartomancerState.Coins);
+                loop.Combat.Cartomancer.AddCard(CartomancerState.Cups);
+                loop.Combat.Cartomancer.AddCard(CartomancerState.Coins);
             }
             var resource = loop.State.Resource;
             Wait(loop, 1.1);
@@ -150,7 +137,7 @@ namespace Game.Core.Tests.Sim
             var slot = Equip(loop, "cartomancer_hit_1");
             loop.State.Skills[slot].CooldownTicks = 100;
             for (var i = 0; i < 3; i++)
-                loop.Combat.Cartomancer.ReceiveCard(CartomancerState.Wands);
+                loop.Combat.Cartomancer.AddCard(CartomancerState.Wands);
             Wait(loop, 1);
             Assert.That(loop.State.Skills[slot].CooldownTicks, Is.LessThan(90 - 2));
         }
@@ -159,46 +146,14 @@ namespace Game.Core.Tests.Sim
         public void AMarkedDeckOpensAnArcanumFromTwoCardsAndPalmReadingHasNone()
         {
             var (pair, _) = Hero(Flat(CartomancerStats.SpreadPower, 0.3), Flat(CartomancerStats.SpreadPair, 1));
-            pair.Combat.Cartomancer.ReceiveCard(CartomancerState.Coins);
-            pair.Combat.Cartomancer.ReceiveCard(CartomancerState.Coins);
+            pair.Combat.Cartomancer.AddCard(CartomancerState.Coins);
+            pair.Combat.Cartomancer.AddCard(CartomancerState.Coins);
             Assert.That(pair.Combat.Cartomancer.ArcanaActive(CartomancerState.Coins), Is.True);
             var (palm, _) = Hero(Flat(CartomancerStats.SpreadPower, 0.5), Flat(CartomancerStats.SpreadHand, 1));
             for (var i = 0; i < 4; i++)
-                palm.Combat.Cartomancer.ReceiveCard(CartomancerState.Swords);
+                palm.Combat.Cartomancer.AddCard(CartomancerState.Swords);
             Assert.That(palm.Combat.Cartomancer.ArcanaActive(CartomancerState.Swords), Is.False);
             Assert.That(palm.Combat.Cartomancer.DamageTaken(), Is.EqualTo(1 + 4 * Rules.HandBonus).Within(1e-9));
-        }
-
-        [Test]
-        public void InAPartyAlliesAreOfferedADealAndDealCardsOfTheirRole()
-        {
-            var (loop, _) = Hero(Flat(CartomancerStats.SpreadPower, 0.3));
-            Party(loop, 2);
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Deal, out var deal), Is.True);
-            Assert.That(deal.To, Is.EqualTo(TraitRelay.AllSlots));
-            Assert.That(deal.Every, Is.EqualTo(Rules.DealHits));
-            var (ally, input) = Hero(HeroClass.Dowser, EnemyType.Normal);
-            ally.State.Boons.DealOwner = 0;
-            ally.State.Boons.DealEvery = 30;
-            ally.State.Boons.DealTicks = 10_000;
-            ally.State.TraitRelays.Clear();
-            Hits(ally, input, 30);
-            Assert.That(HasRelay(ally, TraitRelayKind.Card, out var card), Is.True);
-            Assert.That(card.To, Is.EqualTo(0));
-            Assert.That(card.Count, Is.EqualTo(CartomancerState.Coins));
-            Assert.That(ally.State.Boons.CardsDealt, Is.EqualTo(1));
-            loop.Combat.Cartomancer.ReceiveCard(card.Count);
-            Assert.That(loop.State.Cartomancer.AllyCards, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void EveryRoleDealsItsOwnSuit()
-        {
-            Assert.That(CartomancerMechanics.SuitOf(HeroClass.Runedancer), Is.EqualTo(CartomancerState.Swords));
-            Assert.That(CartomancerMechanics.SuitOf(HeroClass.Minstrel), Is.EqualTo(CartomancerState.Cups));
-            Assert.That(CartomancerMechanics.SuitOf(HeroClass.Dreamcatcher), Is.EqualTo(CartomancerState.Coins));
-            Assert.That(CartomancerMechanics.SuitOf(HeroClass.Clockwright), Is.EqualTo(CartomancerState.Wands));
         }
 
         [Test]
@@ -247,25 +202,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyTheTermIsSharedAndAllyRewardsAndPenaltiesFollow()
-        {
-            var (loop, _) = Boss(Flat(CartomancerStats.ForecastPower, 1));
-            Party(loop, 2);
-            loop.State.TraitRelays.Clear();
-            loop.State.Cartomancer.BossSeen = false;
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Forecast, out var forecast), Is.True);
-            Assert.That(forecast.Value, Is.EqualTo(1).Within(1e-9));
-            var (ally, _) = Hero(HeroClass.Runedancer, EnemyType.Boss);
-            CartomancerMechanics.LandForecast(ally.State.Boons, 1, 20);
-            ally.Tick();
-            Assert.That(ally.State.EnemyGoldBonus, Is.EqualTo(1).Within(1e-9));
-            ally.Combat.Cartomancer.LoseForecast(0.2);
-            Assert.That(ally.State.EnemyGoldBonus, Is.EqualTo(0).Within(1e-9));
-            Assert.That(ally.Combat.Cartomancer.DamageTaken(), Is.EqualTo(0.8).Within(1e-9));
-        }
-
-        [Test]
         public void ReversedCardsAreLaidOnTheEnemyAndSwordsExposeIt()
         {
             var (loop, input) = Hero(Flat(CartomancerStats.ReversedPower, 0.04));
@@ -301,31 +237,6 @@ namespace Game.Core.Tests.Sim
             Hits(loop, input, 1);
             Assert.That(loop.State.Cartomancer.Reveals, Is.EqualTo(1));
             Assert.That(loop.Combat.Cartomancer.SwordsShare, Is.EqualTo(0.16).Within(1e-9));
-        }
-
-        [Test]
-        public void InAPartyAlliesRevealCardsAndTheCursesHangOnTheSharedEnemy()
-        {
-            var (loop, _) = Boss(Flat(CartomancerStats.ReversedPower, 0.04));
-            Party(loop, 2);
-            loop.State.Cartomancer.Laid[CartomancerState.Wands] = 2;
-            loop.State.Cartomancer.Laid[CartomancerState.Swords] = 1;
-            loop.Combat.Cartomancer.AddAllyHits(Rules.RevealHits);
-            Assert.That(loop.State.Cartomancer.RevealSuit, Is.EqualTo(CartomancerState.Wands));
-            loop.State.TraitEnemyEffects.Clear();
-            loop.Tick();
-            var effects = loop.State.TraitEnemyEffects;
-            var found = false;
-            for (var i = 0; i < effects.Count; i++)
-            {
-                if (effects[i].Id != CartomancerMechanics.ReversedEffect)
-                    continue;
-                found = true;
-                Assert.That(effects[i].Strength, Is.EqualTo(0.04).Within(1e-9));
-                Assert.That(effects[i].TimerSlow, Is.EqualTo(2 * 0.04 * Rules.WandsSlow * Rules.RevealMultiplier).Within(1e-9));
-            }
-            Assert.That(found, Is.True);
-            Assert.That(loop.Combat.Cartomancer.DamageTaken(), Is.EqualTo(1));
         }
 
         [Test]

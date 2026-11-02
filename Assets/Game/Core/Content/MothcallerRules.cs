@@ -13,7 +13,6 @@ namespace Game.Core.Content
         public double GoldenMultiplier { get; private set; } = 3;
         public double SwarmBoss { get; private set; } = 2;
         public double SwarmQueueShare { get; private set; } = 0.5;
-        public double GiftSeconds { get; private set; } = 10;
         public double PollenBurnSeconds { get; private set; } = 4;
         public double PollenFastSeconds { get; private set; } = 2;
         public double PollenMax { get; private set; } = 200;
@@ -28,7 +27,6 @@ namespace Game.Core.Content
         public double MothNormalPenalty { get; private set; } = 0.3;
         public double MothStrike { get; private set; } = 0.5;
         public double MothTimeSeconds { get; private set; } = 1;
-        public double ClockRelaySeconds { get; private set; } = 2;
 
         public static MothcallerRules Read(ContentNode node)
         {
@@ -46,7 +44,6 @@ namespace Game.Core.Content
                 GoldenMultiplier = swarm.Field("goldenMultiplier").AsNumber(1, 100),
                 SwarmBoss = swarm.Field("boss").AsNumber(1, 100),
                 SwarmQueueShare = swarm.Field("queueShare").AsNumber(0, 10),
-                GiftSeconds = swarm.Field("giftSeconds").AsNumber(0.1, 600),
                 PollenBurnSeconds = pollen.Field("burnSeconds").AsNumber(0.1, 60),
                 PollenFastSeconds = pollen.Field("fastSeconds").AsNumber(0.1, 60),
                 PollenMax = pollen.Field("max").AsNumber(0, 1e6),
@@ -60,8 +57,7 @@ namespace Game.Core.Content
                 MothQueueShare = moth.Field("queueShare").AsNumber(0, 10),
                 MothNormalPenalty = moth.Field("normalPenalty").AsNumber(0, 1),
                 MothStrike = moth.Field("strike").AsNumber(0, 10),
-                MothTimeSeconds = moth.Field("timeSeconds").AsNumber(0, 60),
-                ClockRelaySeconds = moth.Field("clockRelaySeconds").AsNumber(0.1, 60)
+                MothTimeSeconds = moth.Field("timeSeconds").AsNumber(0, 60)
             };
         }
     }

@@ -25,16 +25,16 @@ namespace Game.Core.Stats
             "versePower", "songPower", "songSelfPenalty", "songPartyPenalty",
             "netPower", "netTrophy", "netParty", "albumPower", "albumMax", "prophecyPower", "albumParty",
             "lightPower", "lightPerHit", "lightShadow", "lightCarry", "lightParty", "beaconPower", "beaconParty",
-            "knotPower", "knotParty", "namePower", "nameParty", "hushParty",
-            "springPower", "springDrain", "springParty", "loopPower", "loopParty",
+            "knotPower", "knotParty", "namePower", "hushParty",
+            "springPower", "springDrain", "springParty", "loopPower",
             "solventPower", "solventParty", "mixParty", "elixirParty",
-            "luckPower", "luckParty", "artelPower", "artelParty", "artelPenalty",
+            "luckPower", "luckParty", "artelPower", "artelPenalty",
             "breathPower", "breathParty", "soulParty", "lendParty",
-            "parrotPower", "parrotParty", "broadsideParty", "crewParty",
-            "swarmParty", "pollenParty", "mothParty",
-            "spreadPower", "spreadParty", "forecastPower", "forecastParty", "reversedPower", "reversedParty",
-            "bloomParty", "myceliumParty", "sapParty",
-            "sealParty", "eternalParty", "eternalRuneBonus", "minorParty"
+            "parrotPower", "broadsideParty", "crewParty",
+            "mothParty",
+            "spreadPower", "forecastPower", "reversedPower", "reversedParty",
+            "bloomParty",
+            "eternalParty", "eternalRuneBonus", "minorParty"
         };
 
         private static readonly StatTags[] LabelledTags =

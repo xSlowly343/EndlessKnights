@@ -89,29 +89,9 @@ namespace Game.Core.Sim
 
         public void OnKillRewarded()
         {
-            if (!Swarm || InParty)
+            if (!Swarm)
                 return;
             S.Moths = (int)System.Math.Round(S.Moths * Carry);
-        }
-
-        public void OnPartyKill(int topSlot, int ownSlot)
-        {
-            if (!Swarm || !InParty)
-                return;
-            var kept = (int)System.Math.Round(S.Moths * Carry);
-            var scattered = S.Moths - kept;
-            S.Moths = kept;
-            if (topSlot < 0 || topSlot == ownSlot || scattered <= 0)
-                return;
-            S.MothsGiven += scattered;
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.SwarmGift,
-                To = (byte)topSlot,
-                Count = (byte)System.Math.Min(byte.MaxValue, scattered),
-                Value = SwarmPower * (1 + Positive(MothcallerStats.SwarmParty)),
-                Seconds = _rules.GiftSeconds
-            });
         }
 
         private double Carry => Flag(MothcallerStats.SwarmNoCarry) ? 0 : Flag(MothcallerStats.SwarmKeep) ? _rules.SwarmKeep : _rules.SwarmCarry;
@@ -153,35 +133,16 @@ namespace Game.Core.Sim
             var every = Flag(MothcallerStats.PollenHeavy) ? 2 : 1;
             var queue = Flag(MothcallerStats.PollenQueue) ? 1 : 0;
             var light = Flag(MothcallerStats.PollenLight) ? _rules.PollenLight : 0;
-            if (!InParty)
-            {
-                LandPollen(Boons, rate * (every == 2 ? 2 : 1), _rules.PollenRelaySeconds, burn, every, queue, -1, light);
-                return;
-            }
-            var relay = new TraitRelay
-            {
-                Kind = TraitRelayKind.Pollen,
-                To = Flag(MothcallerStats.PollenTwo) ? LanternbearerMechanics.AnyAlly : TraitRelay.AllSlots,
-                Value = rate * (1 + Positive(MothcallerStats.PollenParty)) * (every == 2 ? 2 : 1),
-                Seconds = _rules.PollenRelaySeconds,
-                Extra = burn,
-                Every = (byte)every,
-                Count = (byte)queue,
-                Max = (byte)System.Math.Min(byte.MaxValue, light)
-            };
-            _state.TraitRelays.Add(relay);
-            if (Flag(MothcallerStats.PollenTwo))
-                _state.TraitRelays.Add(relay);
+            LandPollen(Boons, rate * (every == 2 ? 2 : 1), _rules.PollenRelaySeconds, burn, every, queue, light);
         }
 
-        public static void LandPollen(AllyBoons boons, double rate, double seconds, double burnSeconds, int every, int queue, int owner, double light = 0)
+        public static void LandPollen(AllyBoons boons, double rate, double seconds, double burnSeconds, int every, int queue, double light)
         {
             boons.PollenRate = rate;
             boons.PollenTicks = (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);
             boons.PollenBurnSeconds = burnSeconds;
             boons.PollenEvery = System.Math.Max(1, every);
             boons.PollenQueue = queue > 0;
-            boons.PollenOwner = owner;
             boons.PollenLight = light;
         }
 
@@ -201,16 +162,9 @@ namespace Game.Core.Sim
             else if (S.MothTicks > 0)
             {
                 S.MothTicks--;
-                if (InParty && _state.PartyAllHitting && OwnHitting && S.MothTicks > 0)
-                {
-                    S.MothTicks--;
-                    if (S.MothTicks % GameLoop.TicksPerSecond == 0)
-                        S.StreakSeconds++;
-                }
                 if (S.MothTicks <= 0)
                     Wake();
             }
-            ShareClock();
         }
 
         private bool OwnHitting => _state.KeylessTicks < GameLoop.TicksPerSecond;
@@ -230,7 +184,7 @@ namespace Game.Core.Sim
                         Queue(power * _rules.MothQueueShare);
                 }
             }
-            if (Flag(MothcallerStats.MothNight) && OwnHitting && (!InParty || _state.PartyAllHitting))
+            if (Flag(MothcallerStats.MothNight) && OwnHitting)
                 return;
             if (--S.AwakeTicks <= 0)
                 S.MothTicks = Ticks(MothEverySeconds);
@@ -248,14 +202,6 @@ namespace Game.Core.Sim
                 _state.TraitEnemyEffects.Add(TimeEffect, 0, _rules.MothTimeSeconds, 1);
             else
                 _state.BossTicksLeft += Ticks(_rules.MothTimeSeconds);
-        }
-
-        private void ShareClock()
-        {
-            if (!InParty || S.ClockRelayTicks-- > 0)
-                return;
-            S.ClockRelayTicks = Ticks(_rules.ClockRelaySeconds) - 1;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.MothClock, To = TraitRelay.AllSlots, Value = SecondsToWake, Seconds = _rules.ClockRelaySeconds * 1.5 });
         }
 
         private void BoonStrike(bool crit)
@@ -294,19 +240,6 @@ namespace Game.Core.Sim
                         Queue(power);
                 }
             }
-            if (Boons.MothClockTicks > 0)
-                Boons.MothClockTicks--;
-            if (Boons.GiftTicks <= 0)
-                return;
-            Boons.GiftTicks--;
-            if (Boons.GiftMoths <= 0 || !_state.EnemyAlive)
-                return;
-            Boons.GiftCarry += GameLoop.TickSeconds;
-            if (Boons.GiftCarry < 1 - 1e-9)
-                return;
-            Boons.GiftCarry -= 1;
-            Boons.GiftHits++;
-            TraitHit(Boons.GiftMoths * Boons.GiftPower);
         }
 
         private void Queue(double multiplier) =>

@@ -69,12 +69,7 @@ const rules = {
   waveMaxEnemies: stages.waves.maxEnemiesPerWave,
   bossRetryAfterKills: stages.boss.retryAfterKills,
   bossTimerSeconds: stages.boss.timerSeconds,
-  bossHpMultiplier: stages.boss.hpMultiplier,
-  pullMaxSeconds: party.traits.pullMaxSeconds,
-  pullStepSeconds: party.traits.pullStepSeconds,
-  pullCooldownSeconds: party.traits.pullCooldownSeconds,
-  spiritCallsMax: party.traits.spiritCallsMax,
-  spiritHpMax: party.traits.spiritHpMax
+  bossHpMultiplier: stages.boss.hpMultiplier
 };
 
 function statSum(modifiers, stat, kind) {

@@ -22,7 +22,6 @@ namespace Game.Core.Content
         public int LendHits { get; private set; } = 50;
         public int LendHitsMin { get; private set; } = 10;
         public double LendSeconds { get; private set; } = 10;
-        public double LendSelfPenalty { get; private set; } = 0.2;
         public double SoulBackResource { get; private set; } = 5;
         public int SoulBackHits { get; private set; } = 10;
         public double LendAllSeconds { get; private set; } = 5;
@@ -52,7 +51,6 @@ namespace Game.Core.Content
                 LendHits = lend.Field("hits").AsInt(1, 10_000),
                 LendHitsMin = lend.Field("hitsMin").AsInt(1, 10_000),
                 LendSeconds = lend.Field("seconds").AsNumber(0.1, 600),
-                LendSelfPenalty = lend.Field("selfPenalty").AsNumber(0, 1),
                 SoulBackResource = lend.Field("soulBackResource").AsNumber(0, 1000),
                 SoulBackHits = lend.Field("soulBackHits").AsInt(0, 10_000),
                 LendAllSeconds = lend.Field("allSeconds").AsNumber(0.1, 600)

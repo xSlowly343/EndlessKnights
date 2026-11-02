@@ -25,8 +25,6 @@ namespace Game.Core.Content
         public int LuckyEvery { get; private set; } = 5;
         public double PhilosopherBoost { get; private set; } = 3;
         public double FlaskBoost { get; private set; } = 1.5;
-        public double ReagentCallSeconds { get; private set; } = 30;
-        public double ReagentCooldownSeconds { get; private set; } = 1;
         public double MixEffectSeconds { get; private set; } = 2;
         public int Layers { get; private set; } = 5;
         public int LayerHits { get; private set; } = 30;
@@ -66,8 +64,6 @@ namespace Game.Core.Content
                 LuckyEvery = mix.Field("luckyEvery").AsInt(1, 1000),
                 PhilosopherBoost = mix.Field("philosopherBoost").AsNumber(1, 100),
                 FlaskBoost = mix.Field("flaskBoost").AsNumber(1, 100),
-                ReagentCallSeconds = mix.Field("callSeconds").AsNumber(1, 3600),
-                ReagentCooldownSeconds = mix.Field("reagentCooldownSeconds").AsNumber(0, 60),
                 MixEffectSeconds = mix.Field("effectSeconds").AsNumber(0.1, 60),
                 Layers = solvent.Field("layers").AsInt(1, 20),
                 LayerHits = solvent.Field("layerHits").AsInt(1, 10_000),

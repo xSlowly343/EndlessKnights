@@ -51,11 +51,11 @@
     "ghostcaptain": {
       "broadside": { "cannons": 8, "cannonsMax": 12, "hits": 10, "hitsMin": 3, "sameEnemy": 2, "breachSeconds": 3, "breachDamageTaken": 0.15, "effectSeconds": 1, "queueShare": 0.5, "powder": 10, "loadedAfter": 2 },
       "crew": { "hitsPerSecond": 1, "dawnSeconds": 120, "dawnSecondsMin": 30, "guardianSailors": 2, "bossSailors": 3, "farewell": 5, "keep": 0.25, "queueShare": 0.5, "mateMultiplier": 10 },
-      "parrot": { "every": 3, "everyMin": 2, "perchSeconds": 20, "callSeconds": 1, "offerSeconds": 5, "heavyCooldownSeconds": 10, "powder": 5, "twoShare": 0.6, "queueShare": 0.5, "strikeFallback": 3 }
+      "parrot": { "every": 3, "everyMin": 2, "offerSeconds": 5, "heavyCooldownSeconds": 10, "powder": 5, "twoShare": 0.6, "queueShare": 0.5, "strikeFallback": 3 }
     },
     "whisperer": {
-      "knots": { "hits": 25, "hitsMin": 5, "allyHitShare": 1, "seventh": 2, "triple": 3, "slow": 0.05, "critMultiplier": 0.1, "gold": 0.1, "blast": 10, "whisper": 10, "effectSeconds": 2 },
-      "name": { "hits": 150, "hitsMin": 20, "syllableHits": 25, "syllableHitsMin": 5, "syllable": 0.05, "callSeconds": 30, "blast": 20, "timeSeconds": 5, "effectSeconds": 2 },
+      "knots": { "hits": 25, "hitsMin": 5, "seventh": 2, "triple": 3, "slow": 0.05, "critMultiplier": 0.1, "gold": 0.1, "blast": 10, "whisper": 10, "effectSeconds": 2 },
+      "name": { "hits": 150, "hitsMin": 20, "blast": 20, "timeSeconds": 5, "effectSeconds": 2 },
       "vow": { "curse": 3, "whisper": 0.5, "hushHits": 6, "hushHitsMin": 2, "hushMax": 3, "extendSeconds": 1, "growPerHit": 0.01, "growMax": 0.5, "breakEverySeconds": 60, "breakSeconds": 10, "breakCurse": 0.5, "queueHits": 100, "queueMultiplier": 5 },
       "curse": { "seconds": 8, "effectSeconds": 2 }
     },
@@ -89,9 +89,9 @@
     },
     "dreamcatcher": {
       "common": { "dozeMultiplier": 1.5, "lucidPower": 0.3 },
-      "net": { "px": 2000, "pxMin": 300, "max": 3, "seconds": 3, "secondsMin": 0.5, "trophy": 0.2, "pullSeconds": 0.5, "pullCooldownSeconds": 1, "maxSeconds": 10 },
+      "net": { "px": 2000, "pxMin": 300, "max": 3, "seconds": 3, "secondsMin": 0.5, "trophy": 0.2 },
       "album": { "max": 0.5, "pageMin": 10, "pageMinFloor": 1, "prophecyPower": 0.25, "prophecySeconds": 10, "allShare": 0.5 },
-      "bait": { "hits": 100, "hitsMin": 10, "perCast": 5, "spiritHp": 3, "spiritHpMax": 20, "gems": 1, "shards": 2, "chest": 1, "rich": 2, "twinChance": 0.25, "hornPower": 0.3, "hornSeconds": 15, "gift": 30 }
+      "bait": { "hits": 100, "hitsMin": 10, "perCast": 5, "spiritHp": 3, "spiritHpMax": 20, "gems": 1, "shards": 2, "chest": 1, "twinChance": 0.25, "hornPower": 0.3, "hornSeconds": 15, "gift": 30 }
     },
     "minstrel": {
       "common": { "soloMultiplier": 2 },
@@ -102,17 +102,17 @@
     "soulbinder": {
       "sphere": { "size": 6, "max": 12, "hitsPerSecond": 1, "guardianSoul": 2, "bossSoul": 3, "pushBlast": 5, "releaseEverySeconds": 30, "releaseMultiplier": 3, "queueShare": 0.7 },
       "breath": { "coldSeconds": 5, "coldDamageTaken": 0.15, "coldHits": 25, "coldSoloShare": 0.5, "effectSeconds": 1, "twice": 0.5 },
-      "lend": { "hits": 50, "hitsMin": 10, "seconds": 10, "selfPenalty": 0.2, "soulBackResource": 2, "soulBackHits": 10, "allSeconds": 5 }
+      "lend": { "hits": 50, "hitsMin": 10, "seconds": 10, "soulBackResource": 2, "soulBackHits": 10, "allSeconds": 5 }
     },
     "dowser": {
-      "vein": { "range": 50, "nearRange": 25, "strike": 10, "critSeconds": 10, "gemChance": 0.25, "hintStep": 0.2, "hintSeconds": 5 },
-      "luck": { "max": 1, "boss": 3, "uniqueEvery": 5, "goldPerKill": 0.01, "goldMax": 0.3, "hourSeconds": 3600, "shards": 5, "relaySeconds": 30, "relayStep": 0.02 },
-      "artel": { "penalty": 0.4, "nuggets": 10, "nuggetsMin": 3, "itemChance": 0.1, "itemRich": 0.25, "shards": 10, "callSeconds": 30 }
+      "vein": { "range": 50, "nearRange": 25, "strike": 10, "critSeconds": 10, "gemChance": 0.25 },
+      "luck": { "max": 1, "boss": 3, "uniqueEvery": 5, "goldPerKill": 0.01, "goldMax": 0.3, "hourSeconds": 3600, "shards": 5 },
+      "artel": { "penalty": 0.4, "nuggets": 10, "nuggetsMin": 3, "itemChance": 0.1, "itemRich": 0.25, "shards": 10 }
     },
     "alchemist": {
       "mix": {
         "reagentHits": 8, "reagentHitsMin": 2, "pureBoost": 2, "chainBlast": 2, "queueBlast": 5, "luckyEvery": 5, "philosopherBoost": 3, "flaskBoost": 1.5,
-        "callSeconds": 30, "reagentCooldownSeconds": 1, "effectSeconds": 2,
+        "effectSeconds": 2,
         "recipes": {
           "rrr": [{ "kind": "blast", "value": 10 }],
           "bbb": [{ "kind": "corrode", "value": 0.3, "seconds": 8 }],
@@ -130,27 +130,27 @@
       "elixir": { "hits": 50, "hitsMin": 10, "seconds": 8, "philosopherSeconds": 5, "stoneSeconds": 8, "philosopherEvery": 3, "redEvery": 5, "goldBonus": 0.5, "selfPenalty": 0.25 }
     },
     "clockwright": {
-      "spring": { "low": 0.1, "penalty": 0.1, "drainPerSecond": 1, "windPerHit": 0.5, "allyWind": 0.1, "fullAbove": 0.95, "fullSlow": 0.15, "strike": 0.2, "relaySeconds": 3, "burstEverySeconds": 30, "burstPerWind": 0.2 },
+      "spring": { "low": 0.1, "penalty": 0.1, "drainPerSecond": 1, "windPerHit": 0.5, "fullAbove": 0.95, "fullSlow": 0.15, "strike": 0.2, "burstEverySeconds": 30, "burstPerWind": 0.2 },
       "loop": { "everySeconds": 40, "everySecondsMin": 10, "windowSeconds": 5, "windowMax": 7, "solo": 0.5, "twice": 0.5, "stopSeconds": 3 },
-      "gears": { "hits": 60, "hitsMin": 10, "own": 2, "ownSoft": 1.5, "meshSeconds": 1.5, "meshCooldownSeconds": 5, "resource": 5, "resetEvery": 10, "callSeconds": 30, "idleSeconds": 10 }
+      "gears": { "hits": 60, "hitsMin": 10, "own": 2, "ownSoft": 1.5, "meshSeconds": 1.5, "meshCooldownSeconds": 5, "resource": 5, "resetEvery": 10, "idleSeconds": 10 }
     },
     "mothcaller": {
-      "swarm": { "max": 50, "cap": 100, "hitsPerSecond": 1, "carry": 0.5, "keep": 0.75, "goldenEvery": 10, "goldenMultiplier": 3, "boss": 2, "queueShare": 0.5, "giftSeconds": 10 },
+      "swarm": { "max": 50, "cap": 100, "hitsPerSecond": 1, "carry": 0.5, "keep": 0.75, "goldenEvery": 10, "goldenMultiplier": 3, "boss": 2, "queueShare": 0.5 },
       "pollen": { "burnSeconds": 4, "fastSeconds": 2, "max": 200, "relaySeconds": 2, "light": 5, "twoShare": 1.4 },
-      "moth": { "everySeconds": 30, "everySecondsMin": 5, "awakeSeconds": 8, "awakeSecondsMin": 2, "queueShare": 0.5, "normalPenalty": 0.3, "strike": 0.5, "timeSeconds": 1, "clockRelaySeconds": 2 }
+      "moth": { "everySeconds": 30, "everySecondsMin": 5, "awakeSeconds": 8, "awakeSecondsMin": 2, "queueShare": 0.5, "normalPenalty": 0.3, "strike": 0.5, "timeSeconds": 1 }
     },
     "cartomancer": {
-      "spread": { "hits": 10, "hitsMin": 4, "handMax": 7, "arcanaCards": 3, "seconds": 15, "shortSeconds": 8, "longSeconds": 5, "cupsResource": 4, "coinsGold": 2, "wandsCut": 1, "swordsBoost": 2, "otherPenalty": 0.5, "handBonus": 0.03, "dealHits": 30, "dealOfferSeconds": 5 },
+      "spread": { "hits": 10, "hitsMin": 4, "handMax": 7, "arcanaCards": 3, "seconds": 15, "shortSeconds": 8, "longSeconds": 5, "cupsResource": 4, "coinsGold": 2, "wandsCut": 1, "swordsBoost": 2, "otherPenalty": 0.5, "handBonus": 0.03 },
       "forecast": { "termShare": 0.6, "termMinSeconds": 5, "longTerm": 1.3, "shortTerm": 0.7, "penalty": 0.2, "exactPenalty": 0.1, "exactSeconds": 3, "exactGold": 1, "rushSeconds": 5, "rush": 0.3, "streakStep": 0.25, "streakMax": 4 },
       "reversed": { "hits": 10, "hitsMin": 3, "max": 7, "cap": 12, "cupsHit": 5, "coinsPerCard": 1.25, "wandsSlow": 0.75, "wandsSlowMax": 0.5, "revealHits": 20, "revealSoloShare": 0.5, "revealSeconds": 5, "revealMultiplier": 2, "revealStrong": 3, "keepShare": 0.5, "effectSeconds": 1 }
     },
     "herbwitch": {
-      "bloom": { "hits": 15, "hitsMin": 4, "vines": 3, "vinesCap": 8, "growSeconds": 5, "growSecondsMin": 1, "stageMultiplier": 2, "thornMultiplier": 3, "singleMultiplier": 4, "queueShare": 0.5, "petalHits": 20, "petalSeconds": 20, "petalVines": 3, "effectSeconds": 1 },
-      "mycelium": { "max": 50, "carry": 0.5, "deepCarry": 0.75, "queueShare": 0.25, "fastMultiplier": 2, "sporeHits": 5, "sporeStacks": 1, "relaySeconds": 2 },
-      "sap": { "perHit": 2, "max": 200, "drinkHits": 20, "drinkHitsMin": 5, "sapPerStack": 0.2, "gulpHits": 10, "gulpResource": 5, "gulpShare": 0.5, "relaySeconds": 2, "leaveShare": 0.3, "partyPoisonSeconds": 10 }
+      "bloom": { "hits": 15, "hitsMin": 4, "vines": 3, "vinesCap": 8, "growSeconds": 5, "growSecondsMin": 1, "stageMultiplier": 2, "thornMultiplier": 3, "singleMultiplier": 4, "queueShare": 0.5, "petalHits": 20, "petalSeconds": 20, "effectSeconds": 1 },
+      "mycelium": { "max": 50, "carry": 0.5, "deepCarry": 0.75, "queueShare": 0.25, "fastMultiplier": 2 },
+      "sap": { "perHit": 2, "max": 200, "drinkHits": 20, "drinkHitsMin": 5, "sapPerStack": 0.2, "leaveShare": 0.3, "partyPoisonSeconds": 10 }
     },
     "golemancer": {
-      "seal": { "hits": 100, "hitsMin": 20, "golemSeconds": 20, "cornerBonus": 0.25, "cornerHits": 25, "cornerOfferSeconds": 5, "crumbleMultiplier": 5, "crystalPenalty": 0.2, "guardStopSeconds": 2, "twoShare": 0.6, "titanSeconds": 10 },
+      "seal": { "hits": 100, "hitsMin": 20, "golemSeconds": 20, "crumbleMultiplier": 5, "crystalPenalty": 0.2, "guardStopSeconds": 2, "twoShare": 0.6, "titanSeconds": 10 },
       "eternal": { "runeHits": 100, "runeHitsMin": 20, "runeBonus": 0.05, "runesMax": 40, "runesCap": 80, "heavyEverySeconds": 2, "heavyMultiplier": 2.5, "brandMax": 10, "brandHits": 20, "brandSoloShare": 0.5, "brandMultiplier": 3, "effectSeconds": 1, "queueShare": 0.5, "bossMultiplier": 2, "normalPenalty": 0.3 },
       "minor": { "hits": 20, "hitsMin": 5, "seconds": 15, "max": 4, "cap": 12, "queueShare": 0.5, "birth": 3 }
     }

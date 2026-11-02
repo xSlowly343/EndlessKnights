@@ -22,7 +22,6 @@ namespace Game.Core.Sim
         public static readonly StatId MyceliumNoCarry = new StatId("myceliumNoCarry");
         public static readonly StatId MyceliumMax = new StatId("myceliumMax");
         public static readonly StatId MyceliumFast = new StatId("myceliumFast");
-        public static readonly StatId MyceliumParty = new StatId("myceliumParty");
 
         public static readonly StatId SapPower = new StatId("sapPower");
         public static readonly StatId SapHits = new StatId("sapHits");
@@ -30,6 +29,5 @@ namespace Game.Core.Sim
         public static readonly StatId SapLeave = new StatId("sapLeave");
         public static readonly StatId SapPoison = new StatId("sapPoison");
         public static readonly StatId SapGreedy = new StatId("sapGreedy");
-        public static readonly StatId SapParty = new StatId("sapParty");
     }
 }

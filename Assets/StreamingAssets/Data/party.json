@@ -88,6 +88,5 @@
       { "from": "partyGemDrop", "to": "gemDrop", "kind": "increased" },
       { "from": "partySkillCooldown", "to": "skillCooldown", "kind": "increased", "negate": true }
     ]
-  },
-  "traits": { "pullMaxSeconds": 10, "pullStepSeconds": 1, "pullCooldownSeconds": 1, "spiritCallsMax": 4, "spiritHpMax": 20 }
+  }
 }

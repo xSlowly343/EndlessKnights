@@ -16,7 +16,6 @@ namespace Game.Core.Sim
         public int MixCritTicks { get; set; }
         public double MixGold { get; set; }
         public int MixGoldTicks { get; set; }
-        public int CallTicks { get; set; }
         public int LayersLeft { get; set; } = -1;
         public double LayerProgress { get; set; }
         public int CarryLayers { get; set; }
@@ -26,7 +25,6 @@ namespace Game.Core.Sim
         public long ElixirsSent { get; set; }
         public int MixResendTicks { get; set; }
         public int SolventResendTicks { get; set; }
-        public int SentFlask { get; set; } = -1;
         public bool SpawnPending { get; set; }
 
         public void OnSpawn() => SpawnPending = true;

@@ -24,7 +24,6 @@ namespace Game.Core.Sim
         public void UseRules(GhostcaptainRules rules) => _rules = rules;
 
         private GhostcaptainState S => _state.Ghostcaptain;
-        private AllyBoons Boons => _state.Boons;
         private bool On => _state.Is(HeroClass.Ghostcaptain);
         private bool Flag(StatId stat) => _hero.Value(stat, 0) >= 1;
         private double Positive(StatId stat) => System.Math.Max(0, _hero.Value(stat, 0));
@@ -69,7 +68,6 @@ namespace Game.Core.Sim
         {
             var strike = skill.Skill?.Effect as StrikeEffect;
             var power = castPower * StrikeMultiplier(skill);
-            BoonCast(power);
             if (!On)
                 return;
             if (strike != null)
@@ -83,7 +81,6 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            TickBoons();
             if (!On)
                 return;
             if (S.BreachTicks > 0)
@@ -93,8 +90,6 @@ namespace Game.Core.Sim
                 TickCrew();
             if (S.MateTicks > 0)
                 S.MateTicks--;
-            if (Parrot)
-                TickParrot();
         }
 
         public void OnKillRewarded()
@@ -105,29 +100,6 @@ namespace Game.Core.Sim
             if (Flag(GhostcaptainStats.CrewDouble))
                 count *= 2;
             Recruit(count, _state.EnemyType == EnemyType.Boss);
-        }
-
-        public void ReceiveParrotCall(int slot)
-        {
-            if (!Parrot || slot < 0)
-                return;
-            if (S.PerchSlot == slot)
-            {
-                S.PerchTicks = Ticks(_rules.PerchSeconds);
-                return;
-            }
-            if (S.PerchSlot >= 0 && !Flag(GhostcaptainStats.ParrotTwo))
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.ParrotPerch, To = (byte)S.PerchSlot, Value = 0 });
-            S.PerchSlot = slot;
-            S.PerchTicks = Ticks(_rules.PerchSeconds);
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.ParrotPerch,
-                To = (byte)slot,
-                Every = (byte)ParrotEvery,
-                Value = ParrotPower * (1 + Positive(GhostcaptainStats.ParrotParty)),
-                Seconds = _rules.PerchSeconds
-            });
         }
 
         private void Load(int cannons)
@@ -216,29 +188,12 @@ namespace Game.Core.Sim
 
         private void SendMate()
         {
-            if (!InParty)
-            {
-                S.MatePower = MatePower;
-                S.MateTicks = Ticks(DawnSeconds);
-                return;
-            }
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Mate, To = LanternbearerMechanics.AnyAlly, Value = MatePower, Seconds = DawnSeconds });
-        }
-
-        private void TickParrot()
-        {
-            if (S.PerchTicks > 0 && --S.PerchTicks == 0)
-                S.PerchSlot = -1;
-            if (!InParty || S.OfferTicks-- > 0)
-                return;
-            S.OfferTicks = Ticks(_rules.OfferSeconds) - 1;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.ParrotOffer, To = TraitRelay.AllSlots, Seconds = _rules.OfferSeconds * 2 });
+            S.MatePower = MatePower;
+            S.MateTicks = Ticks(DawnSeconds);
         }
 
         private void OwnCast(GemDef skill, double power)
         {
-            if (S.PerchSlot >= 0 && !Flag(GhostcaptainStats.ParrotTwo))
-                return;
             if (Flag(GhostcaptainStats.ParrotHeavy) && (skill.Skill?.CooldownSeconds ?? 0) < _rules.HeavyCooldownSeconds)
                 return;
             if (++S.ParrotCasts < ParrotEvery)
@@ -251,7 +206,7 @@ namespace Game.Core.Sim
         {
             S.Repeats++;
             var share = ParrotPower;
-            var twice = Flag(GhostcaptainStats.ParrotTwo) && !InParty;
+            var twice = Flag(GhostcaptainStats.ParrotTwo);
             if (twice)
                 share *= _rules.ParrotTwoShare;
             for (var i = 0; i < (twice ? 2 : 1); i++)
@@ -290,48 +245,6 @@ namespace Game.Core.Sim
                 S.MateShots++;
                 TraitHit(S.MatePower);
             }
-        }
-
-        private void BoonCast(double power)
-        {
-            if (Boons.MateTicks > 0 && Boons.MatePower > 0)
-            {
-                Boons.MateShots++;
-                TraitHit(Boons.MatePower);
-            }
-            if (Boons.ParrotTicks > 0 && Boons.ParrotPower > 0)
-            {
-                if (++Boons.ParrotCasts >= System.Math.Max(1, Boons.ParrotEvery))
-                {
-                    Boons.ParrotCasts = 0;
-                    Boons.ParrotRepeats++;
-                    TraitHit(power * Boons.ParrotPower);
-                }
-                Boons.ParrotTicks = System.Math.Max(Boons.ParrotTicks, Ticks(_rules.PerchSeconds) / 2);
-                Boons.ParrotCallOwed = true;
-            }
-            else if (Boons.ParrotOfferTicks > 0 && Boons.ParrotOwner >= 0)
-                Boons.ParrotCallOwed = true;
-        }
-
-        private void TickBoons()
-        {
-            if (Boons.MateTicks > 0)
-                Boons.MateTicks--;
-            if (Boons.ParrotTicks > 0)
-                Boons.ParrotTicks--;
-            if (Boons.ParrotOfferTicks > 0)
-                Boons.ParrotOfferTicks--;
-            if (Boons.ParrotCallTicks > 0)
-            {
-                Boons.ParrotCallTicks--;
-                return;
-            }
-            if (!Boons.ParrotCallOwed || Boons.ParrotOwner < 0)
-                return;
-            Boons.ParrotCallOwed = false;
-            Boons.ParrotCallTicks = Ticks(_rules.CallSeconds);
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.ParrotCall, To = (byte)Boons.ParrotOwner });
         }
 
         private double StrikeMultiplier(GemDef skill) =>

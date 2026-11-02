@@ -163,7 +163,7 @@ namespace Game.Core.Sim
                 AddBait(_rules.BaitPerCast);
             if (strike.Dream > 0)
                 _state.PendingResource += strike.Dream;
-            if (strike.CaughtHit > 0 && (Dozing || EnemyCaughtByParty))
+            if (strike.CaughtHit > 0 && (Dozing || S.Caught))
                 TraitHit(strike.CaughtHit);
             if (strike.Nets > 0)
                 AddNets(strike.Nets);
@@ -176,8 +176,6 @@ namespace Game.Core.Sim
             if (strike.LucidSeconds > 0)
                 S.LucidTicks = System.Math.Max(S.LucidTicks, Ticks(strike.LucidSeconds));
         }
-
-        public bool EnemyCaughtByParty { get; set; }
 
         public void Tick(double mousePx)
         {
@@ -219,32 +217,32 @@ namespace Game.Core.Sim
                 return;
             if (Album && S.EnemyIndex >= 0)
                 CountKill();
-            if (Nets && S.Caught && !_state.SharedEnemy)
+            if (Nets && S.Caught)
             {
                 if (_state.Rng.Chance(TrophyChance))
                     GrantTrophy();
                 if (Flag(DreamcatcherStats.NetReturn))
                     AddNets(1);
             }
-            if (!S.SpiritAlive || _state.SharedEnemy)
+            if (!S.SpiritAlive)
                 return;
             S.SpiritAlive = false;
-            GrantSpiritLoot(false, true);
+            GrantSpiritLoot();
         }
 
-        public void GrantTrophy()
+        private void GrantTrophy()
         {
             S.Trophies++;
             _drops?.GiveTrophy();
         }
 
-        public void GrantSpiritLoot(bool rich, bool own)
+        private void GrantSpiritLoot()
         {
             S.SpiritKills++;
-            var scale = (rich ? _rules.SpiritRich : 1) * (own && Bait ? SpiritLoot : 1);
+            var scale = Bait ? SpiritLoot : 1;
             _drops?.GiveSpiritLoot((int)System.Math.Round(_rules.SpiritGems * scale), (long)System.Math.Round(_rules.SpiritShards * scale));
             _loot?.Chest(_state.Stage, _rules.SpiritChest * scale);
-            if (!own || !Bait || !Flag(DreamcatcherStats.SpiritGift))
+            if (!Bait || !Flag(DreamcatcherStats.SpiritGift))
                 return;
             _state.PendingResource += _rules.SpiritGift;
             _state.TraitPartyResourceGift = System.Math.Max(_state.TraitPartyResourceGift, _rules.SpiritGift);
@@ -268,7 +266,6 @@ namespace Game.Core.Sim
             S.CaughtTicks = 0;
             S.HornTicks = 0;
             S.DozeTicks = 0;
-            EnemyCaughtByParty = false;
             var enemy = _state.Enemy;
             S.EnemyIndex = enemy == null ? -1 : SpeciesIndex(enemy.Id);
             S.EnemyBiome = enemy == null ? -1 : BiomeIndex(enemy.Biome);
@@ -366,13 +363,13 @@ namespace Game.Core.Sim
 
         private void CallSpirit(int count)
         {
-            if (_state.SharedEnemy)
+            if (!_state.SharedEnemy)
             {
-                _state.TraitSpiritCalls += count;
-                _state.TraitSpiritHp = SpiritHp;
+                S.SpiritsPending += count;
                 return;
             }
-            S.SpiritsPending += count;
+            for (var i = 0; i < count; i++)
+                GrantSpiritLoot();
         }
 
         private void TraitHit(double multiplier)

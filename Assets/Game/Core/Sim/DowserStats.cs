@@ -29,6 +29,5 @@ namespace Game.Core.Sim
         public static readonly StatId ArtelGem = new StatId("artelGem");
         public static readonly StatId ArtelItem = new StatId("artelItem");
         public static readonly StatId ArtelShards = new StatId("artelShards");
-        public static readonly StatId ArtelParty = new StatId("artelParty");
     }
 }

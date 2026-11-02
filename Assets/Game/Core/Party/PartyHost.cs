@@ -26,7 +26,6 @@ namespace Game.Core.Party
         private readonly int[] _flags = new int[PartyRules.MaxSlots];
         private readonly long[] _lastReactionTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
-        private readonly long[] _lastPullTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRelayTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastResourceTick = new long[PartyRules.MaxSlots];
         private readonly uint[] _reactions = new uint[PartyRules.MaxSlots];
@@ -171,19 +170,6 @@ namespace Game.Core.Party
                     _reactions[slot] = synergy.Reactions;
                     _enemyReactions |= synergy.Reactions;
                     break;
-                case PartyMessageKind.TraitRelay when PartyCodec.TryDecode(_in, length, out TraitRelayMessage relay):
-                    relay.From = (byte)slot;
-                    BroadcastExcept(slot, PartyCodec.Encode(_out, relay));
-                    break;
-                case PartyMessageKind.TraitLight when PartyCodec.TryDecode(_in, length, out TraitLightMessage light):
-                    _encounter.SetLight(light.EnemyId, light.Light);
-                    break;
-                case PartyMessageKind.SpiritCall when PartyCodec.TryDecode(_in, length, out SpiritCallMessage call):
-                    _encounter.CallSpirit(call.Count, call.Hp);
-                    break;
-                case PartyMessageKind.NetPull when PartyCodec.TryDecode(_in, length, out NetPullMessage pull):
-                    Pull(slot, pull);
-                    break;
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     ShareResource(slot, resource.Amount);
                     break;
@@ -220,7 +206,6 @@ namespace Game.Core.Party
             _flags[slot] = 0;
             _lastReactionTick[slot] = PartyEncounter.Never;
             _lastRepeatTick[slot] = PartyEncounter.Never;
-            _lastPullTick[slot] = PartyEncounter.Never;
             _lastRelayTick[slot] = PartyEncounter.Never;
             _lastResourceTick[slot] = PartyEncounter.Never;
             _reactions[slot] = 0;
@@ -256,14 +241,6 @@ namespace Game.Core.Party
             RepeatedShares += applied;
             _recentShares[slot] += applied;
             _totalShares[slot] += applied;
-        }
-
-        private void Pull(int slot, in NetPullMessage pull)
-        {
-            if (_encounter.Tick - _lastPullTick[slot] < Ticks(_rules.Traits.PullCooldownSeconds))
-                return;
-            if (_encounter.ExtendEnemyEffect(pull.EffectId, pull.Seconds))
-                _lastPullTick[slot] = _encounter.Tick;
         }
 
         private void ShareResource(int slot, double amount)

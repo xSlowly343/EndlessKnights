@@ -30,12 +30,9 @@ namespace Game.Core.Sim
         }
 
         private DowserState S => _state.Dowser;
-        private AllyBoons Boons => _state.Boons;
         private bool On => _state.Is(HeroClass.Dowser);
         private bool Flag(StatId stat) => _hero.Value(stat, 0) >= 1;
         private double Positive(StatId stat) => System.Math.Max(0, _hero.Value(stat, 0));
-        private bool InParty => _state.SharedEnemy && _state.PartyMembers > 1;
-
         public bool Vein => On && VeinPower > 0;
         public bool Luck => On && LuckPower > 0;
         public bool Artel => On && ArtelPower > 0;
@@ -68,12 +65,6 @@ namespace Game.Core.Sim
 
         public bool ForcesCrit => Vein && S.CritTicks > 0;
 
-        public void AddAllyHits(double hits)
-        {
-            if (VeinHere && hits > 0)
-                AddHits(hits);
-        }
-
         public void AfterStrike()
         {
             if (!On)
@@ -91,7 +82,7 @@ namespace Game.Core.Sim
             if (strike.Luck > 0 && Luck)
                 AddLuck(strike.Luck);
             if (strike.Nuggets > 0 && Artel)
-                AddNuggets(strike.Nuggets, ArtelNuggets, ArtelChest, ArtelItemChance, -1);
+                AddNuggets(strike.Nuggets, ArtelNuggets, ArtelChest, ArtelItemChance);
             if (strike.GoldHit > 0)
                 TraitHit(strike.GoldHit * System.Math.Min(10, System.Math.Log10(System.Math.Max(10, _state.Gold.ToDouble())) / 10));
             if (strike.VeinGold > 0 && _state.EnemyAlive)
@@ -100,7 +91,6 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            TickBoons();
             if (!On)
                 return;
             if (S.SpawnPending)
@@ -113,55 +103,21 @@ namespace Game.Core.Sim
                 _drops?.GiveLimitUnique(_state.Stage);
             }
             if (Luck)
-            {
                 _state.TraitShareGold = Flag(DowserStats.LuckGold) ? S.LuckGold : 0;
-                ShareLuck();
-            }
-            if (Artel && InParty && S.CallTicks-- <= 0)
-                CallArtel();
         }
 
         public void OnKillRewarded()
         {
-            if (Boons.ArtelTicks > 0 && Boons.ArtelOwner >= 0)
-                AddNuggets(1, Boons.ArtelEvery, Boons.ArtelChest, Boons.ArtelItemChance, Boons.ArtelOwner);
             if (!On)
                 return;
-            if (Artel && !InParty)
-                AddNuggets(_state.FightingBoss && Flag(DowserStats.ArtelBoss) ? 2 : 1, ArtelNuggets, ArtelChest, ArtelItemChance, -1);
+            if (Artel)
+                AddNuggets(_state.FightingBoss && Flag(DowserStats.ArtelBoss) ? 2 : 1, ArtelNuggets, ArtelChest, ArtelItemChance);
             if (!Luck)
                 return;
-            if (!InParty && _state.Rng.Chance(LuckChance))
+            if (_state.Rng.Chance(LuckChance))
                 Find();
             else
                 AddLuck(LuckPower * (1 + Positive(DowserStats.LuckParty)));
-        }
-
-        public void OnTopKill()
-        {
-            if (On && Luck)
-            {
-                if (_state.Rng.Chance(LuckChance))
-                    Find();
-                return;
-            }
-            if (Boons.LuckTicks <= 0 || Boons.LuckOwner < 0 || !_state.Rng.Chance(Boons.LuckChance))
-                return;
-            _drops?.GiveFind(_state.Stage);
-            Boons.LuckChance = 0;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.LuckFound, To = (byte)Boons.LuckOwner, Count = 1 });
-        }
-
-        public void ReceiveVein(double gold)
-        {
-            if (_state.EnemyAlive && gold > 0)
-                _state.EnemyGoldBonus += gold;
-        }
-
-        public void ReceiveLuckFound()
-        {
-            if (Luck)
-                ResetLuck();
         }
 
         private void OnNewEnemy()
@@ -169,7 +125,6 @@ namespace Game.Core.Sim
             S.SpawnPending = false;
             S.Hits = 0;
             S.VeinsStruck = 0;
-            S.SentHint = -1;
             S.VeinAt = _state.Rng.NextInt(1, VeinRange + 1);
             S.SecondVeinAt = Flag(DowserStats.VeinTwice) ? _state.Rng.NextInt(S.VeinAt, VeinRange + 1) : 0;
         }
@@ -181,7 +136,6 @@ namespace Game.Core.Sim
             S.Hits += hits;
             while (S.VeinsStruck < Veins && S.Hits >= NextVein)
                 StrikeVein();
-            ShareHint();
         }
 
         private void StrikeVein()
@@ -199,19 +153,6 @@ namespace Game.Core.Sim
             }
             var party = Flag(DowserStats.VeinParty);
             _state.EnemyGoldBonus += VeinGold * (party ? 0.5 : 1);
-            if (InParty)
-                _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Vein, To = TraitRelay.AllSlots, Value = VeinGold * (party ? 1.5 : 1) });
-        }
-
-        private void ShareHint()
-        {
-            if (!InParty)
-                return;
-            var hint = VeinCloseness;
-            if (System.Math.Abs(hint - S.SentHint) < _rules.VeinHintStep && hint > 0)
-                return;
-            S.SentHint = hint;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.VeinHint, To = TraitRelay.AllSlots, Value = hint, Seconds = _rules.VeinHintSeconds });
         }
 
         private void AddLuck(double amount)
@@ -237,77 +178,32 @@ namespace Game.Core.Sim
         {
             S.Luck = Flag(DowserStats.LuckKeep) ? S.Luck * 0.5 : 0;
             S.LuckGold = 0;
-            S.SentLuck = -1;
         }
 
-        private void ShareLuck()
+        private void AddNuggets(int count, int every, double chest, double itemChance)
         {
-            if (!InParty)
-                return;
-            var chance = LuckChance;
-            if (S.LuckRelayTicks-- > 0 && System.Math.Abs(chance - S.SentLuck) < _rules.LuckRelayStep)
-                return;
-            S.LuckRelayTicks = Ticks(_rules.LuckRelaySeconds / 3);
-            S.SentLuck = chance;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Luck, To = TraitRelay.AllSlots, Value = chance, Seconds = _rules.LuckRelaySeconds });
-        }
-
-        private void CallArtel()
-        {
-            S.CallTicks = Ticks(_rules.ArtelCallSeconds / 3);
-            _state.TraitRelays.Add(new TraitRelay
-            {
-                Kind = TraitRelayKind.Artel,
-                To = TraitRelay.AllSlots,
-                Every = (byte)System.Math.Min(byte.MaxValue, ArtelNuggets),
-                Value = ArtelChest * (1 + Positive(DowserStats.ArtelParty)),
-                Extra = ArtelItemChance,
-                Seconds = _rules.ArtelCallSeconds
-            });
-        }
-
-        private void AddNuggets(int count, int every, double chest, double itemChance, int owner)
-        {
-            var nuggets = owner < 0 ? S.Nuggets + count : Boons.Nuggets + count;
+            var nuggets = S.Nuggets + count;
             var chests = 0;
             while (nuggets >= System.Math.Max(1, every))
             {
                 nuggets -= System.Math.Max(1, every);
                 chests++;
             }
-            if (owner < 0)
-                S.Nuggets = nuggets;
-            else
-                Boons.Nuggets = nuggets;
+            S.Nuggets = nuggets;
             for (var i = 0; i < chests; i++)
-                OpenChest(chest, itemChance, owner < 0);
+                OpenChest(chest, itemChance);
         }
 
-        private void OpenChest(double chest, double itemChance, bool own)
+        private void OpenChest(double chest, double itemChance)
         {
-            if (own)
-                S.Chests++;
-            else
-                Boons.ArtelChests++;
+            S.Chests++;
             _loot?.Chest(_state.Stage, chest);
             if (_state.Rng.Chance(itemChance))
                 _drops?.GiveFind(_state.Stage);
-            if (!own)
-                return;
             if (Flag(DowserStats.ArtelGem))
                 _drops?.GiveTrophy();
             if (Flag(DowserStats.ArtelShards))
                 _drops?.GiveShards(_rules.ArtelShards);
-        }
-
-        private void TickBoons()
-        {
-            if (Boons.VeinHintTicks > 0)
-                Boons.VeinHintTicks--;
-            if (Boons.LuckTicks > 0)
-                Boons.LuckTicks--;
-            if (Boons.ArtelTicks > 0)
-                Boons.ArtelTicks--;
         }
 
         private void TraitHit(double multiplier)

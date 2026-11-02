@@ -90,19 +90,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
         private static int Equip(GameLoop loop, string skill)
         {
             TestWorld.ArmFor(loop, TestWorld.Data.Gems[skill]);
@@ -141,60 +128,13 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void AlliesCritsPutTheirColourIntoTheFlask()
-        {
-            var (loop, _) = Hero(Flat(AlchemistStats.MixPower, 1));
-            loop.Combat.Alchemist.ReceiveReagent(0);
-            loop.Combat.Alchemist.ReceiveReagent(3);
-            Assert.That(loop.State.Alchemist.InFlask, Is.EqualTo(2));
-            loop.Combat.Alchemist.ReceiveReagent(1);
-            Assert.That(loop.State.Alchemist.LastRecipe, Is.EqualTo(AlchemistRules.RecipeOf(2, 1, 0)));
-        }
-
-        [Test]
         public void TheFlaskSkillThrowsAtOnceAndStronger()
         {
             var (loop, _) = Hero(Flat(AlchemistStats.MixPower, 1));
-            loop.Combat.Alchemist.ReceiveReagent(0);
+            loop.Combat.Alchemist.AddReagent(0);
             Cast(loop, "alchemist_path_1");
             Assert.That(loop.State.Alchemist.Mixes, Is.EqualTo(1));
             Assert.That(loop.State.Alchemist.InFlask, Is.Zero);
-        }
-
-        [Test]
-        public void InAPartyReagentsAreCalledAndTheFlaskAndMixAreShared()
-        {
-            var (loop, _) = Hero(Flat(AlchemistStats.MixPower, 1));
-            Party(loop, 2);
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Reagents, out var call), Is.True);
-            Assert.That(call.To, Is.EqualTo(TraitRelay.AllSlots));
-            loop.State.TraitRelays.Clear();
-            loop.Combat.Alchemist.ReceiveReagent(1);
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Flask, out var flask), Is.True);
-            Assert.That(flask.Count, Is.EqualTo(2));
-            loop.Combat.Alchemist.ReceiveReagent(1);
-            loop.Combat.Alchemist.ReceiveReagent(1);
-            loop.State.TraitEnemyEffects.Clear();
-            loop.Tick();
-            Assert.That(loop.Combat.Alchemist.DamageTaken(), Is.EqualTo(1));
-            Assert.That(loop.State.TraitEnemyEffects.Count, Is.EqualTo(1));
-            Assert.That(loop.State.TraitEnemyEffects[0].Id, Is.EqualTo(AlchemistMechanics.MixEffect));
-        }
-
-        [Test]
-        public void AnAllysCritSendsAReagentBack()
-        {
-            var (loop, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            loop.State.Boons.ReagentOwner = 2;
-            loop.State.Boons.ReagentTicks = 100;
-            loop.Combat.Alchemist.AfterStrike(true);
-            loop.Combat.Alchemist.AfterStrike(true);
-            loop.Combat.Alchemist.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Reagent, out var reagent), Is.True);
-            Assert.That(reagent.To, Is.EqualTo(2));
-            Assert.That(loop.State.TraitRelays.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -202,25 +142,25 @@ namespace Game.Core.Tests.Sim
         {
             var (pure, _) = Hero(Flat(AlchemistStats.MixPower, 1), Flat(AlchemistStats.MixPure, 1));
             for (var i = 0; i < 3; i++)
-                pure.Combat.Alchemist.ReceiveReagent(1);
+                pure.Combat.Alchemist.AddReagent(1);
             Assert.That(pure.Combat.Alchemist.MixShare, Is.EqualTo(0.3 * Rules.PureBoost).Within(1e-9));
 
             var (stone, _) = Hero(Flat(AlchemistStats.MixPower, 1), Flat(AlchemistStats.MixStone, 1));
-            stone.Combat.Alchemist.ReceiveReagent(0);
-            stone.Combat.Alchemist.ReceiveReagent(1);
-            stone.Combat.Alchemist.ReceiveReagent(2);
+            stone.Combat.Alchemist.AddReagent(0);
+            stone.Combat.Alchemist.AddReagent(1);
+            stone.Combat.Alchemist.AddReagent(2);
             Assert.That(stone.Combat.Alchemist.MixShare, Is.EqualTo(0.15 * Rules.PhilosopherBoost).Within(1e-9));
 
             var (chain, _) = Hero(Flat(AlchemistStats.MixPower, 1), Flat(AlchemistStats.MixChain, 1));
             chain.Events.Clear();
             for (var i = 0; i < 3; i++)
-                chain.Combat.Alchemist.ReceiveReagent(1);
+                chain.Combat.Alchemist.AddReagent(1);
             Assert.That(Damage(chain), Has.Count.EqualTo(1));
 
             var (lucky, _) = Hero(Flat(AlchemistStats.MixPower, 1), Flat(AlchemistStats.MixLucky, 1));
             lucky.Events.Clear();
             for (var i = 0; i < 3 * Rules.LuckyEvery; i++)
-                lucky.Combat.Alchemist.ReceiveReagent(0);
+                lucky.Combat.Alchemist.AddReagent(0);
             Assert.That(Damage(lucky), Has.Count.EqualTo(Rules.LuckyEvery + 1));
         }
 
@@ -247,33 +187,6 @@ namespace Game.Core.Tests.Sim
             Spawn(loop, EnemyType.Normal);
             loop.Tick();
             Assert.That(loop.Combat.Alchemist.LayersOff, Is.Zero);
-        }
-
-        [Test]
-        public void InAPartyALayerGivesAnAllyAcidAndItsHitsDissolve()
-        {
-            var (loop, _) = Hero(Flat(AlchemistStats.SolventPower, 0.06));
-            Party(loop, 2);
-            Cast(loop, "alchemist_path_2");
-            Assert.That(HasRelay(loop, TraitRelayKind.Acid, out var acid), Is.True);
-            Assert.That(acid.To, Is.EqualTo(LanternbearerMechanics.AnyAlly));
-            loop.State.TraitEnemyEffects.Clear();
-            loop.Tick();
-            Assert.That(loop.State.TraitEnemyEffects[0].Id, Is.EqualTo(AlchemistMechanics.SolventEffect));
-            Assert.That(loop.State.TraitEnemyEffects[0].Strength, Is.EqualTo(0.06).Within(1e-9));
-            loop.Combat.Alchemist.ReceiveAcidHits(30);
-            Assert.That(loop.Combat.Alchemist.LayersOff, Is.EqualTo(2));
-        }
-
-        [Test]
-        public void AnAllyWithAcidReportsItsHits()
-        {
-            var (loop, input) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            loop.State.Boons.AcidOwner = 1;
-            loop.State.Boons.AcidTicks = 100;
-            Hit(loop, input);
-            Assert.That(HasRelay(loop, TraitRelayKind.AcidHit, out var back), Is.True);
-            Assert.That(back.To, Is.EqualTo(1));
         }
 
         [Test]
@@ -323,22 +236,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Boons.RedTicks, Is.GreaterThan(0));
             Assert.That(loop.State.Boons.BlueTicks, Is.GreaterThan(0));
             Assert.That(loop.State.Boons.GoldMultiplier, Is.EqualTo(1 + Rules.GoldBonus));
-        }
-
-        [Test]
-        public void InAPartyTheElixirGoesToAnAlly()
-        {
-            var (loop, _) = Hero(Flat(AlchemistStats.ElixirPower, 3));
-            Party(loop, 2);
-            Cast(loop, "alchemist_path_3");
-            Assert.That(HasRelay(loop, TraitRelayKind.Elixir, out var elixir), Is.True);
-            Assert.That(elixir.To, Is.EqualTo(LanternbearerMechanics.AnyAlly));
-            Assert.That(loop.State.Boons.RedTicks, Is.Zero);
-
-            var ally = new AllyBoons();
-            AlchemistMechanics.DrinkRelay(ally, elixir);
-            Assert.That(ally.RedTicks, Is.EqualTo((int)(Rules.ElixirSeconds * GameLoop.TicksPerSecond)));
-            Assert.That(ally.ElixirPower, Is.EqualTo(3).Within(1e-9));
         }
 
         [Test]

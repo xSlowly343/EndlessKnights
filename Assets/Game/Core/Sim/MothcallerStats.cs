@@ -13,7 +13,6 @@ namespace Game.Core.Sim
         public static readonly StatId SwarmBoss = new StatId("swarmBoss");
         public static readonly StatId SwarmQueue = new StatId("swarmQueue");
         public static readonly StatId SwarmDecay = new StatId("swarmDecay");
-        public static readonly StatId SwarmParty = new StatId("swarmParty");
 
         public static readonly StatId PollenPower = new StatId("pollenPower");
         public static readonly StatId PollenQueue = new StatId("pollenQueue");
@@ -21,7 +20,6 @@ namespace Game.Core.Sim
         public static readonly StatId PollenFast = new StatId("pollenFast");
         public static readonly StatId PollenLight = new StatId("pollenLight");
         public static readonly StatId PollenTwo = new StatId("pollenTwo");
-        public static readonly StatId PollenParty = new StatId("pollenParty");
 
         public static readonly StatId MothPower = new StatId("mothPower");
         public static readonly StatId MothSeconds = new StatId("mothSeconds");

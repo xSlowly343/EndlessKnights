@@ -90,19 +90,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
         private static int Equip(GameLoop loop, string skill)
         {
             TestWorld.ArmFor(loop, TestWorld.Data.Gems[skill]);
@@ -150,15 +137,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void AlliesHitsWindHerSpring()
-        {
-            var (loop, _) = Hero(Flat(ClockwrightStats.SpringPower, 0.3));
-            var pending = loop.State.PendingResource;
-            loop.Combat.Clockwright.AddAllyHits(100);
-            Assert.That(loop.State.PendingResource - pending, Is.EqualTo(100 * Rules.SpringAllyWind).Within(1e-9));
-        }
-
-        [Test]
         public void SpringForksAreRules()
         {
             var (tight, _) = Boss(Flat(ClockwrightStats.SpringPower, 0.3), Flat(ClockwrightStats.SpringTight, 1));
@@ -175,20 +153,6 @@ namespace Game.Core.Tests.Sim
             Hits(fast, fastInput, 10);
             Hits(plain, plainInput, 10);
             Assert.That(fast.State.Resource, Is.GreaterThan(plain.State.Resource));
-        }
-
-        [Test]
-        public void InAPartyTheSlowTimerGoesToEveryoneAndTheWindIsShown()
-        {
-            var (loop, _) = Boss(Flat(ClockwrightStats.SpringPower, 0.3));
-            Party(loop, 2);
-            loop.State.TraitRelays.Clear();
-            Slow(loop, 80);
-            Assert.That(loop.State.TraitPartyTimerSlow, Is.EqualTo(0.3).Within(1e-9));
-            Assert.That(loop.State.TraitTimerSlow, Is.Zero);
-            Assert.That(HasRelay(loop, TraitRelayKind.Spring, out var spring), Is.True);
-            Assert.That(spring.Value, Is.EqualTo(0.8).Within(1e-9));
-            Assert.That(spring.To, Is.EqualTo(TraitRelay.AllSlots));
         }
 
         [Test]
@@ -209,18 +173,6 @@ namespace Game.Core.Tests.Sim
             var (loop, _) = Hero(Flat(ClockwrightStats.LoopPower, 0.5));
             Wait(loop, Rules.LoopEverySeconds);
             Assert.That(loop.State.Clockwright.Loops, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void InAPartyTheLoopIsRecordedAtTheHost()
-        {
-            var (loop, _) = Hero(Flat(ClockwrightStats.LoopPower, 0.5));
-            Party(loop, 2);
-            Cast(loop, "clockwright_path_2");
-            Assert.That(loop.State.TraitLoopSeconds, Is.EqualTo(Rules.LoopWindowSeconds).Within(1e-9));
-            Assert.That(loop.State.TraitLoopShare, Is.EqualTo(0.5).Within(1e-9));
-            Assert.That(HasRelay(loop, TraitRelayKind.Loop, out var shown), Is.True);
-            Assert.That(shown.To, Is.EqualTo(TraitRelay.AllSlots));
         }
 
         [Test]
@@ -283,37 +235,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Skills.TryCast(second), Is.EqualTo(CastResult.Cast));
             Assert.That(loop.State.Clockwright.Meshes, Is.EqualTo(1));
             Assert.That(loop.State.Clockwright.GearTicks, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void InAPartyTheGearsAreCalledAndAnAllysCogMeshesWithHerCast()
-        {
-            var (loop, _) = Hero(Flat(ClockwrightStats.GearPower, 2));
-            Party(loop, 2);
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Gears, out var call), Is.True);
-            Assert.That(call.To, Is.EqualTo(TraitRelay.AllSlots));
-
-            loop.State.TraitRelays.Clear();
-            var slot = Equip(loop, "clockwright_hit_1");
-            loop.State.Resource = 100;
-            loop.Skills.TryCast(slot);
-            Assert.That(loop.State.Clockwright.Meshes, Is.Zero);
-            loop.Combat.Clockwright.ReceiveCog(1);
-            Assert.That(loop.State.Clockwright.Meshes, Is.EqualTo(1));
-            Assert.That(HasRelay(loop, TraitRelayKind.GearTick, out var tick), Is.True);
-            Assert.That(tick.Seconds, Is.EqualTo(2).Within(1e-9));
-        }
-
-        [Test]
-        public void AnAllyReportsItsCastsBack()
-        {
-            var (loop, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            loop.State.Boons.GearOwner = 2;
-            loop.State.Boons.GearTicks = 100;
-            loop.Combat.Clockwright.OnSkillCast(TestWorld.Data.Gems["runedancer_hit_1"]);
-            Assert.That(HasRelay(loop, TraitRelayKind.Cog, out var cog), Is.True);
-            Assert.That(cog.To, Is.EqualTo(2));
         }
 
         [Test]
@@ -410,9 +331,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(count[TreeNodeKind.Legendary], Is.EqualTo(6));
             Assert.That(count[TreeNodeKind.Core], Is.EqualTo(4));
             Assert.That(tree.Nodes.Count(node => node.Template.First.Modifiers.Concat(node.Template.Second.Modifiers).Concat(node.Template.Third.Modifiers)
-                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat) || modifier.Stat.Name.EndsWith("Party")
-                    || modifier.Stat.Name == ClockwrightStats.SpringParty.Name || modifier.Stat.Name == ClockwrightStats.LoopParty.Name
-                    || modifier.Stat.Name == ClockwrightStats.GearParty.Name)), Is.GreaterThanOrEqualTo(5));
+                .Any(modifier => Game.Core.Party.CoopLine.IsCoop(modifier.Stat) || modifier.Stat.Name.EndsWith("Party"))), Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

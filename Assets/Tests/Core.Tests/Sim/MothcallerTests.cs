@@ -82,19 +82,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
         private static void Kill(GameLoop loop) => loop.Combat.Mothcaller.OnKillRewarded();
 
         [Test]
@@ -150,37 +137,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyTheScatteredHalfGoesToTheAllyWhoFinishedTheEnemy()
-        {
-            var (loop, _) = Hero(Flat(MothcallerStats.SwarmPower, 0.02));
-            Party(loop, 3);
-            loop.State.Mothcaller.Moths = 40;
-            Kill(loop);
-            Assert.That(loop.State.Mothcaller.Moths, Is.EqualTo(40));
-            loop.Combat.Mothcaller.OnPartyKill(2, 0);
-            Assert.That(loop.State.Mothcaller.Moths, Is.EqualTo(20));
-            Assert.That(HasRelay(loop, TraitRelayKind.SwarmGift, out var gift), Is.True);
-            Assert.That(gift.To, Is.EqualTo(2));
-            Assert.That(gift.Count, Is.EqualTo(20));
-            loop.State.TraitRelays.Clear();
-            loop.Combat.Mothcaller.OnPartyKill(0, 0);
-            Assert.That(HasRelay(loop, TraitRelayKind.SwarmGift, out _), Is.False);
-        }
-
-        [Test]
-        public void AnAllysGiftedMothsDrinkTheirEnemyEverySecond()
-        {
-            var (ally, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            ally.State.Boons.GiftMoths = 20;
-            ally.State.Boons.GiftPower = 0.02;
-            ally.State.Boons.GiftTicks = 100;
-            ally.Events.Clear();
-            Wait(ally, 1);
-            Assert.That(Damage(ally), Has.Count.EqualTo(1));
-            Assert.That(ally.State.Boons.GiftHits, Is.EqualTo(1));
-        }
-
-        [Test]
         public void TheGreedySwarmDrinksBossesTwiceAndTheHungrySwarmDwindles()
         {
             var (boss, _) = Boss(Flat(MothcallerStats.SwarmPower, 0.02), Flat(MothcallerStats.SwarmBoss, 1));
@@ -225,25 +181,10 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyPollenSettlesOnEveryAlly()
-        {
-            var (loop, _) = Hero(Flat(MothcallerStats.PollenPower, 0.02));
-            Party(loop, 2);
-            loop.State.Mothcaller.Moths = 50;
-            loop.State.TraitRelays.Clear();
-            Wait(loop, 1);
-            Assert.That(HasRelay(loop, TraitRelayKind.Pollen, out var pollen), Is.True);
-            Assert.That(pollen.To, Is.EqualTo(TraitRelay.AllSlots));
-            Assert.That(pollen.Value, Is.EqualTo(1).Within(1e-9));
-            Assert.That(pollen.Extra, Is.EqualTo(Rules.PollenBurnSeconds));
-            Assert.That(loop.State.Boons.Pollen, Is.Zero);
-        }
-
-        [Test]
         public void HeavyPollenWaitsForEverySecondCritAndMoonPollenGivesResource()
         {
             var (ally, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            MothcallerMechanics.LandPollen(ally.State.Boons, 2, 10, 4, 2, 0, 0, 5);
+            MothcallerMechanics.LandPollen(ally.State.Boons, 2, 10, 4, 2, 0, 5);
             Wait(ally, 2);
             ally.Combat.Mothcaller.AfterStrike(true);
             Assert.That(ally.State.Boons.Pollen, Is.GreaterThan(0));
@@ -273,25 +214,6 @@ namespace Game.Core.Tests.Sim
             var (loop, input) = Hero(Flat(MothcallerStats.MothPower, 4));
             Hits(loop, input, 10);
             Assert.That(loop.State.Mothcaller.Moths, Is.Zero);
-        }
-
-        [Test]
-        public void AJointStreakOfTheWholePartyBringsTheWakingCloser()
-        {
-            var (solo, soloInput) = Hero(Flat(MothcallerStats.MothPower, 4));
-            var (party, partyInput) = Hero(Flat(MothcallerStats.MothPower, 4));
-            Party(party, 2);
-            for (var i = 0; i < 50; i++)
-            {
-                party.State.PartyAllHitting = true;
-                soloInput.PressKeys(1);
-                partyInput.PressKeys(1);
-                solo.Tick();
-                party.Tick();
-            }
-            Assert.That(party.Combat.Mothcaller.SecondsToWake, Is.LessThan(solo.Combat.Mothcaller.SecondsToWake - 4));
-            Assert.That(HasRelay(party, TraitRelayKind.MothClock, out var clock), Is.True);
-            Assert.That(clock.To, Is.EqualTo(TraitRelay.AllSlots));
         }
 
         [Test]

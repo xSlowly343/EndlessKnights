@@ -78,18 +78,12 @@ namespace Game.Core.Sim
             return 1 + ColdShare;
         }
 
-        public void AddAllyHits(double hits)
-        {
-            if (Breath && S.ColdTicks > 0 && hits > 0)
-                AddColdHits(hits);
-        }
-
         public void AfterStrike()
         {
             StrikeBoons();
             if (!On)
                 return;
-            if (Breath && S.ColdTicks > 0 && !InParty)
+            if (Breath && S.ColdTicks > 0)
                 AddColdHits(_rules.ColdSoloShare);
             if (Lend && ++S.LendHits >= LendHits)
             {
@@ -127,16 +121,13 @@ namespace Game.Core.Sim
             if (S.ColdTicks > 0)
                 S.ColdTicks--;
             ShareCold();
-            ShareSouls();
         }
 
         public void OnKillRewarded()
         {
-            if (Boons.LendTicks > 0 && Boons.LendOwner >= 0)
-                Boons.SoulsOwed++;
             if (!On)
                 return;
-            if (Lend && Boons.LendTicks > 0 && Boons.LendOwner < 0)
+            if (Lend && Boons.LendTicks > 0)
                 ReceiveSoulBack(1);
             if (!Sphere && !Breath)
                 return;
@@ -146,7 +137,7 @@ namespace Game.Core.Sim
                 TakeSoul(strength, _state.EnemyMaxHp);
         }
 
-        public void ReceiveSoulBack(int count)
+        private void ReceiveSoulBack(int count)
         {
             if (!Lend || count <= 0)
                 return;
@@ -256,23 +247,8 @@ namespace Game.Core.Sim
             S.Lends++;
             var power = LendPower * (1 + Positive(SoulbinderStats.LendParty)) * (Flag(SoulbinderStats.LendAll) ? 0.6 : 1);
             var seconds = Flag(SoulbinderStats.LendAll) ? _rules.LendAllSeconds : LendSeconds;
-            if (!InParty)
-            {
-                Boons.LendOwner = -1;
-                Boons.LendPower = power;
-                Boons.LendTicks = System.Math.Max(Boons.LendTicks, Ticks(seconds * (Flag(SoulbinderStats.LendTwo) ? 2 : 1)));
-                return;
-            }
-            var relay = new TraitRelay
-            {
-                Kind = TraitRelayKind.Lend,
-                To = Flag(SoulbinderStats.LendAll) ? TraitRelay.AllSlots : LanternbearerMechanics.AnyAlly,
-                Value = power,
-                Seconds = seconds
-            };
-            _state.TraitRelays.Add(relay);
-            if (Flag(SoulbinderStats.LendTwo) && !Flag(SoulbinderStats.LendAll))
-                _state.TraitRelays.Add(relay);
+            Boons.LendPower = power;
+            Boons.LendTicks = System.Math.Max(Boons.LendTicks, Ticks(seconds * (Flag(SoulbinderStats.LendTwo) ? 2 : 1)));
         }
 
         private void ShareCold()
@@ -284,22 +260,10 @@ namespace Game.Core.Sim
             _state.TraitEnemyEffects.Add(ColdEffect, share, _rules.ColdEffectSeconds);
         }
 
-        private void ShareSouls()
-        {
-            if (!InParty || !(Sphere || Breath) || S.Souls == S.SentSouls)
-                return;
-            S.SentSouls = S.Souls;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Souls, To = TraitRelay.AllSlots, Count = (byte)S.Souls });
-        }
-
         private void TickBoons()
         {
             if (Boons.LendTicks > 0)
                 Boons.LendTicks--;
-            if (Boons.SoulsOwed <= 0 || Boons.LendOwner < 0)
-                return;
-            _state.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.SoulBack, To = (byte)Boons.LendOwner, Count = (byte)System.Math.Min(byte.MaxValue, Boons.SoulsOwed) });
-            Boons.SoulsOwed = 0;
         }
 
         private void StrikeBoons()

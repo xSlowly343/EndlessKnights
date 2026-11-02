@@ -15,13 +15,9 @@ namespace Game.Core.Sim
         public double Venom { get; set; }
         public double VenomCarryOver { get; set; }
         public double VenomTickCarry { get; set; }
-        public int SporeRelayTicks { get; set; }
-        public long SporesBack { get; set; }
         public double Brew { get; set; }
         public int DrinkHits { get; set; }
         public long Drinks { get; set; }
-        public long Gulps { get; set; }
-        public int GulpRelayTicks { get; set; }
         public int PartyPoisonTicks { get; set; }
         public double PoisonCarry { get; set; }
         public bool Spawned { get; set; }

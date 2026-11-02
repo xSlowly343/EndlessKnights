@@ -83,19 +83,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
 
         [Test]
         public void AHundredHitsWriteASealAndAGolemStrikesEverySecondForTwentySeconds()
@@ -121,42 +108,6 @@ namespace Game.Core.Tests.Sim
             Cast(loop, "golemancer_path_1");
             Hits(loop, input, 50);
             Assert.That(loop.State.Golemancer.SealHits, Is.Zero);
-        }
-
-        [Test]
-        public void InAPartyAlliesWriteCornersAndEachCornerStrengthensTheGolem()
-        {
-            var (loop, _) = Hero(Flat(GolemancerStats.SealPower, 3));
-            Party(loop, 3);
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.Corner, out var corner), Is.True);
-            Assert.That(corner.To, Is.EqualTo(TraitRelay.AllSlots));
-            Assert.That(corner.Every, Is.EqualTo(Rules.CornerHits));
-            loop.Combat.Golemancer.ReceiveCorner(1);
-            loop.Combat.Golemancer.ReceiveCorner(2);
-            loop.Combat.Golemancer.ReceiveCorner(2);
-            Cast(loop, "golemancer_path_1");
-            Assert.That(loop.State.Golemancer.GolemPower, Is.EqualTo(3 * (1 + 2 * Rules.CornerBonus)).Within(1e-9));
-            Assert.That(loop.State.Golemancer.Corners, Is.Zero);
-        }
-
-        [Test]
-        public void AnAllyWritesOneCornerPerSeal()
-        {
-            var (ally, input) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            GolemancerMechanics.OfferCorner(ally.State.Boons, 0, 25, 1, 10);
-            ally.State.TraitRelays.Clear();
-            Hits(ally, input, 50);
-            var corners = 0;
-            for (var i = 0; i < ally.State.TraitRelays.Count; i++)
-            {
-                if (ally.State.TraitRelays[i].Kind == TraitRelayKind.CornerDone)
-                    corners++;
-            }
-            Assert.That(corners, Is.EqualTo(1));
-            GolemancerMechanics.OfferCorner(ally.State.Boons, 0, 25, 2, 10);
-            Hits(ally, input, 25);
-            Assert.That(ally.State.Boons.CornersWritten, Is.EqualTo(2));
         }
 
         [Test]
@@ -212,24 +163,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyTheBrandHangsOnTheSharedEnemyAndAlliesStripIt()
-        {
-            var (loop, _) = Hero(Flat(GolemancerStats.EternalPower, 0.75));
-            Party(loop, 2);
-            loop.State.Golemancer.Runes = 12;
-            Spawn(loop, EnemyType.Normal);
-            loop.State.TraitEnemyEffects.Clear();
-            loop.Tick();
-            Assert.That(loop.State.Golemancer.Brand, Is.EqualTo(Rules.BrandMax));
-            var found = false;
-            for (var i = 0; i < loop.State.TraitEnemyEffects.Count; i++)
-                found |= loop.State.TraitEnemyEffects[i].Id == GolemancerMechanics.BrandEffect;
-            Assert.That(found, Is.True);
-            loop.Combat.Golemancer.AddAllyHits(Rules.BrandHits * 2);
-            Assert.That(loop.State.Golemancer.Brand, Is.EqualTo(Rules.BrandMax - 2));
-        }
-
-        [Test]
         public void TheHeavyFistAndTheStoneGuardian()
         {
             var (heavy, _) = Hero(Flat(GolemancerStats.EternalPower, 0.75), Flat(GolemancerStats.EternalHeavy, 1));
@@ -254,29 +187,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(Damage(loop), Has.Count.EqualTo(1));
             Wait(loop, Rules.MinorSeconds);
             Assert.That(loop.State.Golemancer.Minors, Is.Zero);
-        }
-
-        [Test]
-        public void InAPartyGolemlingsGoToAllies()
-        {
-            var (loop, _) = Hero(Flat(GolemancerStats.MinorPower, 0.35));
-            Party(loop, 2);
-            loop.State.TraitRelays.Clear();
-            Cast(loop, "golemancer_path_3");
-            Assert.That(HasRelay(loop, TraitRelayKind.Golemling, out var golemling), Is.True);
-            Assert.That(golemling.To, Is.EqualTo(LanternbearerMechanics.AnyAlly));
-            Assert.That(loop.State.Golemancer.Minors, Is.Zero);
-            Assert.That(loop.State.Golemancer.MinorsSent, Is.EqualTo(3));
-        }
-
-        [Test]
-        public void AnAllysGolemlingStrikesAndCountsTowardTheirTraitCounters()
-        {
-            var (ally, _) = Hero(HeroClass.Soulbinder, EnemyType.Normal, Flat(SoulbinderStats.LendPower, 0.2));
-            GolemancerMechanics.LandGolemling(ally.State.Boons, 0.35, 15);
-            Wait(ally, 3.05);
-            Assert.That(ally.State.Boons.GolemlingHits, Is.EqualTo(3));
-            Assert.That(ally.State.Soulbinder.LendHits, Is.EqualTo(3));
         }
 
         [Test]

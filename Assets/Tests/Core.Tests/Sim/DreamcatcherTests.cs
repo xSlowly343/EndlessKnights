@@ -295,7 +295,8 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Dreamcatcher.Bait, Is.EqualTo(Rules.BaitPerCast));
 
             var pending = loop.State.PendingResource;
-            loop.Combat.Dreamcatcher.GrantSpiritLoot(false, true);
+            loop.State.Dreamcatcher.SpiritAlive = true;
+            loop.Combat.Dreamcatcher.OnKillRewarded();
             Assert.That(loop.State.PendingResource - pending, Is.EqualTo(Rules.SpiritGift).Within(1e-9));
             Assert.That(loop.State.TraitPartyResourceGift, Is.EqualTo(Rules.SpiritGift).Within(1e-9));
         }
@@ -316,27 +317,6 @@ namespace Game.Core.Tests.Sim
             Wait(loop, 6);
             Cast(loop, "dreamcatcher_strong_3");
             Assert.That(loop.Combat.Dreamcatcher.DamageTaken(), Is.EqualTo(1 + Rules.LucidPower).Within(1e-9));
-        }
-
-        [Test]
-        public void InAPartyTheNetAndTheSpiritGoToTheHost()
-        {
-            var (loop, input) = Hero(Flat(DreamcatcherStats.NetPower, 0.5), Flat(DreamcatcherStats.SpiritLoot, 1));
-            loop.State.SharedEnemy = true;
-            Cast(loop, "dreamcatcher_path_1");
-            Spawn(loop, EnemyType.Normal, Kind(0));
-            loop.State.SharedEnemy = true;
-            loop.Tick();
-
-            Assert.That(loop.State.TraitEnemyEffects.Count, Is.EqualTo(1));
-            Assert.That(loop.State.TraitEnemyEffects[0].Id, Is.EqualTo(DreamcatcherMechanics.NetEffect));
-            Assert.That(loop.State.TraitEnemyEffects[0].Strength, Is.EqualTo(0.5).Within(1e-9));
-            Assert.That(loop.Combat.Dreamcatcher.DamageTaken(), Is.EqualTo(1).Within(1e-9));
-
-            Cast(loop, "dreamcatcher_path_3");
-            Cast(loop, "dreamcatcher_path_3");
-            Assert.That(loop.State.TraitSpiritCalls, Is.EqualTo(1));
-            Assert.That(loop.State.Dreamcatcher.SpiritsPending, Is.Zero);
         }
 
         [Test]

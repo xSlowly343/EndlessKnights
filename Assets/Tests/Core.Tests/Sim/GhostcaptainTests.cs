@@ -82,19 +82,6 @@ namespace Game.Core.Tests.Sim
             return Damage(loop);
         }
 
-        private static bool HasRelay(GameLoop loop, TraitRelayKind kind, out TraitRelay found)
-        {
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind != kind)
-                    continue;
-                found = loop.State.TraitRelays[i];
-                return true;
-            }
-            found = default;
-            return false;
-        }
-
         private static void Kill(GameLoop loop) => loop.Combat.Ghostcaptain.OnKillRewarded();
 
         [Test]
@@ -236,30 +223,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InAPartyTheBoatswainGoesToAnAlly()
-        {
-            var (loop, _) = Hero(Flat(GhostcaptainStats.CrewPower, 0.03));
-            Party(loop, 2);
-            Kill(loop);
-            loop.State.TraitRelays.Clear();
-            Wait(loop, Rules.DawnSeconds);
-            Assert.That(HasRelay(loop, TraitRelayKind.Mate, out var mate), Is.True);
-            Assert.That(mate.To, Is.EqualTo(LanternbearerMechanics.AnyAlly));
-            Assert.That(mate.Value, Is.EqualTo(0.03 * Rules.MateMultiplier).Within(1e-9));
-            Assert.That(loop.State.Ghostcaptain.MateTicks, Is.Zero);
-        }
-
-        [Test]
-        public void AnAllysBoatswainFiresWithEverySkillOfTheAlly()
-        {
-            var (ally, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            ally.State.Boons.MatePower = 0.3;
-            ally.State.Boons.MateTicks = 100;
-            Assert.That(Cast(ally, "runedancer_hit_1"), Has.Count.EqualTo(1));
-            Assert.That(ally.State.Boons.MateShots, Is.EqualTo(1));
-        }
-
-        [Test]
         public void TheFarewellSaluteAndTheOldGuardKeepPartOfTheCrew()
         {
             var (loop, _) = Hero(Flat(GhostcaptainStats.CrewPower, 0.03), Flat(GhostcaptainStats.CrewFarewell, 1), Flat(GhostcaptainStats.CrewKeep, 1));
@@ -297,52 +260,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Ghostcaptain.LastSkillPower, Is.EqualTo(5).Within(1e-9));
             Cast(loop, "ghostcaptain_path_3");
             Assert.That(loop.State.Ghostcaptain.Repeats, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void InAPartyTheParrotIsOfferedAndFliesToTheAllyWhoCalls()
-        {
-            var (loop, _) = Hero(Flat(GhostcaptainStats.ParrotPower, 0.5));
-            Party(loop, 3);
-            loop.Tick();
-            Assert.That(HasRelay(loop, TraitRelayKind.ParrotOffer, out var offer), Is.True);
-            Assert.That(offer.To, Is.EqualTo(TraitRelay.AllSlots));
-            loop.State.TraitRelays.Clear();
-            loop.Combat.Ghostcaptain.ReceiveParrotCall(2);
-            Assert.That(HasRelay(loop, TraitRelayKind.ParrotPerch, out var perch), Is.True);
-            Assert.That(perch.To, Is.EqualTo(2));
-            Assert.That(perch.Value, Is.EqualTo(0.5).Within(1e-9));
-            loop.State.TraitRelays.Clear();
-            loop.Combat.Ghostcaptain.ReceiveParrotCall(1);
-            var perches = 0;
-            for (var i = 0; i < loop.State.TraitRelays.Count; i++)
-            {
-                if (loop.State.TraitRelays[i].Kind == TraitRelayKind.ParrotPerch)
-                    perches++;
-            }
-            Assert.That(perches, Is.EqualTo(2));
-            Assert.That(loop.State.Ghostcaptain.PerchSlot, Is.EqualTo(1));
-            Assert.That(Cast(loop, "ghostcaptain_hit_2"), Is.Empty);
-        }
-
-        [Test]
-        public void AnAllyCallsTheParrotWithASkillAndThePerchedParrotRepeatsTheirThirdSkill()
-        {
-            var (ally, _) = Hero(HeroClass.Runedancer, EnemyType.Normal);
-            ally.State.Boons.ParrotOwner = 0;
-            ally.State.Boons.ParrotOfferTicks = 100;
-            Cast(ally, "runedancer_hit_1");
-            ally.State.TraitRelays.Clear();
-            ally.Tick();
-            Assert.That(HasRelay(ally, TraitRelayKind.ParrotCall, out var call), Is.True);
-            Assert.That(call.To, Is.EqualTo(0));
-            ally.State.Boons.ParrotPower = 0.5;
-            ally.State.Boons.ParrotEvery = 3;
-            ally.State.Boons.ParrotTicks = 100;
-            Cast(ally, "runedancer_hit_1");
-            Cast(ally, "runedancer_hit_1");
-            Assert.That(Cast(ally, "runedancer_hit_1"), Has.Count.EqualTo(1));
-            Assert.That(ally.State.Boons.ParrotRepeats, Is.EqualTo(1));
         }
 
         [Test]

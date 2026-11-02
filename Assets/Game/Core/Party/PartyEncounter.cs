@@ -70,10 +70,6 @@ namespace Game.Core.Party
         public double WeakenVulnerabilitySeconds { get; private set; }
         public bool EnemyWeakened { get; private set; }
         public double EnemyWeakenGold { get; private set; }
-        public bool EnemySpirit { get; private set; }
-        public double EnemyLight { get; private set; }
-        public int SpiritCalls { get; private set; }
-        public double SpiritHp { get; private set; } = 1;
         public bool Switching => PendingWorld != NoWorld;
         public bool Started => EnemyId != 0;
         public PartyEventQueue Events { get; } = new PartyEventQueue();
@@ -634,7 +630,7 @@ namespace Game.Core.Party
             _enemyRewarded = rewarded;
             Events.Add(new PartyEvent(PartyEventKind.EnemyKilled, Tick, EnemyId, EnemyKind,
                 ShareOf(0, total), ShareOf(1, total), ShareOf(2, total), ShareOf(3, total), rewarded,
-                damage > 0 ? LoopShare / damage : 0, SavedBossTicks / GameLoop.TicksPerSecond, EnemySpirit));
+                damage > 0 ? LoopShare / damage : 0, SavedBossTicks / GameLoop.TicksPerSecond));
             _previousEnemyId = EnemyId;
             _previousKind = EnemyKind;
             _previousKilledTick = Tick;
@@ -722,8 +718,6 @@ namespace Game.Core.Party
                 ShieldFloor = BarFull;
                 BarFull *= 1 + BossShield;
             }
-            TakeSpirit(kind);
-            EnemyLight = 0;
             BarLeft = BarFull * (1 - TakeWeaken());
             Events.Add(new PartyEvent(PartyEventKind.EnemySpawned, Tick, EnemyId, kind));
             if (EnemyWeakened && WeakenVulnerability > 0)
@@ -734,52 +728,6 @@ namespace Game.Core.Party
                 return;
             BossTicksLeft = Ticks(_stages.BossTimerSeconds);
             Events.Add(new PartyEvent(PartyEventKind.BossStarted, Tick, EnemyId, kind));
-        }
-
-        public bool CallSpirit(int count, double hp)
-        {
-            var traits = _rules.Traits;
-            if (count <= 0 || !(hp >= 1) || !Started)
-                return false;
-            SpiritCalls = System.Math.Min(traits.SpiritCallsMax, SpiritCalls + count);
-            SpiritHp = System.Math.Min(traits.SpiritHpMax, hp);
-            return SpiritCalls > 0;
-        }
-
-        public bool SetLight(uint enemyId, double light)
-        {
-            if (!Started || enemyId != EnemyId || !(light >= 0))
-                return false;
-            EnemyLight = System.Math.Min(1, light);
-            return true;
-        }
-
-        public bool ExtendEnemyEffect(int effectId, double seconds)
-        {
-            var traits = _rules.Traits;
-            if (!(seconds > 0))
-                return false;
-            var step = Ticks(System.Math.Min(traits.PullStepSeconds, seconds));
-            var cap = Ticks(traits.PullMaxSeconds);
-            for (var i = 0; i < _effects.Length; i++)
-            {
-                if (!_effects[i].Active || _effects[i].Id != effectId)
-                    continue;
-                if (_effects[i].TicksLeft >= cap)
-                    return false;
-                _effects[i].TicksLeft = System.Math.Min(cap, _effects[i].TicksLeft + step);
-                return true;
-            }
-            return false;
-        }
-
-        private void TakeSpirit(PartyEnemyKind kind)
-        {
-            EnemySpirit = kind == PartyEnemyKind.Normal && World == PartyWorld.Home && SpiritCalls > 0;
-            if (!EnemySpirit)
-                return;
-            SpiritCalls--;
-            BarFull *= SpiritHp;
         }
 
         private double TakeWeaken()

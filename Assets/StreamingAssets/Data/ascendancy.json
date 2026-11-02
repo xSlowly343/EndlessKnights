@@ -307,9 +307,9 @@
       "name": {"ru": "Смесь", "en": "Mixture"},
       "blurb": "Удары по кругу меняют реактив: алый, лазурный, золотой. Каждые 8 ударов и каждый крит текущий реактив падает в колбу; три реактива — смесь, у каждой из 10 своё действие (взрыв, разъедание, пена, кристаллизация, золотая смесь и др.). В паузе колба ждёт. Скилл Пути «Колба» бросает колбу сразу, добирая реактивы, и смесь на 50% сильнее",
       "trait": {
-        "partyText": {"ru": "Реактивы от союзников: крит союзника кладёт в её колбу реактив его цвета, так смеси в отряде чаще и разнообразнее; реактивы в колбе видны всем", "en": "Reagents from allies: an ally's crit puts a reagent of their colour into her flask, so mixes come more often and vary more in a party; everyone sees the reagents in the flask"},
+        "partyText": {"ru": "Смесь в колбе: отряд чаще критует и получает больше золота; после каждой смеси 6 с реакции отряда сильнее", "en": "The mix in the flask: the party crits more often and gets more gold; for 6 s after each mix the party's reactions are stronger"},
         "levels": [
-          {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.8}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.8}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "reactionEffect", "kind": "increased", "value": 0.1, "after": {"signal": "mix", "seconds": 6, "stacks": 1}}]},
           {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
           {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
           {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
@@ -331,9 +331,9 @@
       "name": {"ru": "Растворитель", "en": "Solvent"},
       "blurb": "У врага 5 слоёв панциря, каждый растворяется после серии из 30 ударов; каждый снятый слой — враг получает на 7% больше урона. Снятый слой даёт кислоту на клинок: 10 с её удары растворяют вдвое быстрее. В паузе растворитель стоит. Скилл Пути «Плеснуть» снимает слой сразу",
       "trait": {
-        "partyText": {"ru": "Кислота на клинке: слои общие на враге у хоста и видны всем; когда слой снят, союзник по кругу получает кислоту на 10 с — его удары тоже растворяют следующий слой", "en": "Acid on the blade: the layers are shared on the enemy at the host and seen by all; when a layer is off, an ally in turn gets acid for 10 s — their hits dissolve the next layer too"},
+        "partyText": {"ru": "Каждый растворённый слой на 10 с усиливает урон отряда со временем, до 5 стаков", "en": "Each dissolved layer empowers the party's damage over time for 10 s, up to 5 stacks"},
         "levels": [
-          {"modifiers": [{"stat": "solventPower", "kind": "flat", "value": 0.07}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "solventPower", "kind": "flat", "value": 0.07}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.06, "after": {"signal": "layer", "seconds": 10, "stacks": 5}}]},
           {"modifiers": [{"stat": "solventPower", "kind": "flat", "value": 0.014}]},
           {"modifiers": [{"stat": "solventPower", "kind": "flat", "value": 0.014}]},
           {"modifiers": [{"stat": "solventPower", "kind": "flat", "value": 0.014}]},
@@ -355,9 +355,9 @@
       "name": {"ru": "Эликсиры для друзей", "en": "Elixirs for Friends"},
       "blurb": "Каждые 50 ударов — эликсир союзнику по кругу (в соло — себе) на 8 с, цвета по очереди: алый — каждый 5-й удар взрывается ×3, лазурный — скиллы не тратят ресурс, золотой — убийства дают на 50% больше золота. Каждый третий эликсир у одного героя — философский: все три свойства на 5 с. Сама бьёт на 25% слабее. В паузе эликсиры не варятся. Скилл Пути «Угощение» даёт эликсир сразу",
       "trait": {
-        "partyText": {"ru": "Эликсир со свойством: союзник получает не голый бонус, а свойство по цвету — взрывы ударов, скиллы без ресурса или больше золота; значок цвета на его полоске", "en": "An elixir with a property: an ally gets not a bare bonus but a property by colour — exploding hits, skills without resource or more gold; a colour icon on their bar"},
+        "partyText": {"ru": "Каждый эликсир на 8 с: отряд бьёт сильнее, скиллы дешевле и золота больше", "en": "Each elixir for 8 s: the party hits harder, skills cost less and gold is higher"},
         "levels": [
-          {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 3}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 3}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.06, "after": {"signal": "elixir", "seconds": 8, "stacks": 1}}, {"to": "party", "stat": "skillCost", "kind": "increased", "value": 0.1, "after": {"signal": "elixir", "seconds": 8, "stacks": 1}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.06, "after": {"signal": "elixir", "seconds": 8, "stacks": 1}}]},
           {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 0.5}]},
           {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 0.5}]},
           {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 0.5}]},
@@ -451,9 +451,9 @@
       "name": {"ru": "Тени и свет", "en": "Light and Shadow"},
       "blurb": "Каждый удар освещает врага на 1%. Полностью освещённый враг получает +35% урона от всех. Каждые 10 с тень возвращается и гасит 25% света. В паузе фонарь тлеет: новый свет не копится, а тень гасит старый. Скилл Пути «Яркий луч» освещает врага на 25%",
       "trait": {
-        "partyText": {"ru": "Свет общий: удары союзников тоже освещают врага, шкалу света видят все, а полностью освещённый враг получает +35% урона от всего отряда", "en": "The light is shared: allies' hits light the enemy too, everyone sees the light gauge, and a fully lit enemy takes 35% more damage from the whole party"},
+        "partyText": {"ru": "Полностью освещённый враг получает больше урона от всех; пока он освещён, отряд ещё и чаще критует", "en": "A fully lit enemy takes more damage from everyone; while it is lit, the party also crits more often"},
         "levels": [
-          {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.35}]},
+          {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.35}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.03, "while": "litFull"}]},
           {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.05}]},
@@ -475,9 +475,9 @@
       "name": {"ru": "Светлячки", "en": "Fireflies"},
       "blurb": "Каждые 20 ударов из фонаря вылетает светлячок и садится на союзника на 20 с, до 10. Пока на союзнике светлячок, каждый его крит зажигает искру — удар ×2, а Lanternbearer получает 1 Масло. В соло светлячки кружат над ней самой. В паузе светлячки догорают. Скилл Пути «Рой светлячков» выпускает 3 сразу",
       "trait": {
-        "partyText": {"ru": "Светлячок даёт союзнику новое правило: каждый его крит зажигает искру ×2, а фонарщица получает 1 Масло", "en": "A firefly gives an ally a new rule: every crit of theirs lights a spark ×2, and the lanternbearer gets 1 Oil"},
+        "partyText": {"ru": "Светлячки кружат над отрядом: за каждого светлячка отряд крепче и чаще критует", "en": "Fireflies circle over the party: each firefly makes the party crit harder and more often"},
         "levels": [
-          {"modifiers": [{"stat": "sparkPower", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "sparkPower", "kind": "flat", "value": 2}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.02, "per": {"signal": "fireflies", "step": 1, "cap": 15}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.003, "per": {"signal": "fireflies", "step": 1, "cap": 15}}]},
           {"modifiers": [{"stat": "sparkPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "sparkPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "sparkPower", "kind": "flat", "value": 0.25}]},
@@ -499,9 +499,9 @@
       "name": {"ru": "Маяк", "en": "Beacon"},
       "blurb": "Раз в 60 с фонарь вспыхивает: у неё и у каждого союзника следующий скилл бесплатный, без перезарядки и на 50% сильнее. В паузе Маяк копит вспышку. Скилл Пути «Вспышка маяка» вспыхивает сразу",
       "trait": {
-        "partyText": {"ru": "Вспышка дарит каждому союзнику правило: его следующий скилл бесплатный, без перезарядки и на 50% сильнее", "en": "The flash gives every ally a rule: their next skill is free, has no cooldown and is 50% stronger"},
+        "partyText": {"ru": "После вспышки маяка 6 с скиллы отряда дешевле и откаты быстрее", "en": "For 6 s after a beacon flash the party's skills cost less and cooldowns are faster"},
         "levels": [
-          {"modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "skillCost", "kind": "increased", "value": 0.5, "after": {"signal": "flash", "seconds": 6, "stacks": 1}}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.15, "after": {"signal": "flash", "seconds": 6, "stacks": 1}}]},
           {"modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.1}]},
@@ -523,9 +523,9 @@
       "name": {"ru": "Семь узлов", "en": "Seven Knots"},
       "blurb": "Каждые 25 ударов кукла завязывает на враге узел-проклятие. Узлы идут строго по порядку: слабость (+8% урона по врагу), медлительность (таймер босса на 5% медленнее), уязвимость (ещё +8%), хрупкость (+10% к урону критов), порча (ещё +8%), жадность (+10% золота); седьмой узел удваивает действие первых шести. В паузе узлы не спадают. Скилл Пути «Затянуть узел» завязывает два узла сразу",
       "trait": {
-        "partyText": {"ru": "Узлы общие: удары союзников тоже приближают следующий узел, узлы висят на враге у хоста и видны всем, а их действие — на весь отряд", "en": "The knots are shared: allies' hits bring the next knot closer, the knots hang on the enemy at the host for everyone to see, and they work for the whole party"},
+        "partyText": {"ru": "Узлы висят на враге и видны всем; за каждый узел отряд чаще критует", "en": "The knots hang on the enemy for everyone to see; each knot makes the party crit more often"},
         "levels": [
-          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.045}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.045}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.003, "per": {"signal": "knots", "step": 1, "cap": 7}}]},
           {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.012}]},
           {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.012}]},
           {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.012}]},
@@ -547,16 +547,16 @@
       "name": {"ru": "Имя Колосса", "en": "Name of the Colossus"},
       "blurb": "150 её ударов по боссу или стражу — и Шептунья узнаёт его имя: +70% урона по нему до конца боя. На обычных врагах особенность молчит. В паузе узнанное имя не забывается. Скилл Пути «Назвать по имени» добавляет сразу 50 ударов к имени",
       "trait": {
-        "partyText": {"ru": "Слоги от каждого: каждый союзник получает правило — его 25 ударов по боссу дописывают слог; когда слог дал каждый, имя звучит сразу, и бонус всем растёт на 5% за каждого участника", "en": "A syllable from everyone: every ally gets a rule — their 25 hits on the boss write a syllable; once everyone gave one, the name sounds at once, and everyone's bonus grows by 5% per participant"},
+        "partyText": {"ru": "Пока имя Колосса названо, отряд бьёт босса сильнее", "en": "While the Colossus's name is spoken, the party hits the boss harder"},
         "levels": [
-          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.7}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.7}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "damageVsBoss", "kind": "increased", "value": 0.15, "while": "named"}]},
           {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "nameBlast", "kind": "flat", "value": 1}], "text": {"ru": "Громкое имя: когда имя звучит, босс получает удар ×20", "en": "Loud Name: when the name sounds, the boss takes a blow ×20"}}
         ],
         "forks": [
-          {"level": 45, "options": [{"id": "whisperer_trait_2_f45a", "name": {"ru": "Короткое имя", "en": "Short Name"}, "text": {"ru": "Имя за 100 ударов, но бонус на 20% меньше", "en": "The name takes 100 hits, but the bonus is 20% lower"}, "modifiers": [{"stat": "nameHits", "kind": "flat", "value": -50}, {"stat": "namePower", "kind": "more", "value": -0.2}]}, {"id": "whisperer_trait_2_f45b", "name": {"ru": "Звонкие слоги", "en": "Ringing Syllables"}, "text": {"ru": "Слог за 15 ударов союзника, но своё имя за 200", "en": "A syllable takes 15 ally hits, but her own name takes 200"}, "modifiers": [{"stat": "syllableHits", "kind": "flat", "value": -10}, {"stat": "nameHits", "kind": "flat", "value": 50}]}]},
+          {"level": 45, "options": [{"id": "whisperer_trait_2_f45a", "name": {"ru": "Короткое имя", "en": "Short Name"}, "text": {"ru": "Имя за 100 ударов, но бонус на 20% меньше", "en": "The name takes 100 hits, but the bonus is 20% lower"}, "modifiers": [{"stat": "nameHits", "kind": "flat", "value": -50}, {"stat": "namePower", "kind": "more", "value": -0.2}]}, {"id": "whisperer_trait_2_f45b", "name": {"ru": "Звонкие слоги", "en": "Ringing Syllables"}, "text": {"ru": "Своё имя за 200 ударов, зато пока имя названо, отряд бьёт босса ещё на 10% сильнее", "en": "Her name takes 200 hits, but while it is spoken the party hits the boss another 10% harder"}, "modifiers": [{"stat": "nameHits", "kind": "flat", "value": 50}, {"to": "party", "stat": "damageVsBoss", "kind": "increased", "value": 0.1, "while": "named"}]}]},
           {"level": 60, "options": [{"id": "whisperer_trait_2_f60a", "name": {"ru": "Память имён", "en": "Memory of Names"}, "text": {"ru": "Узнанное имя запоминается на этот вид босса: в следующем бою с ним имя звучит сразу, но бонус на 25% меньше", "en": "A learned name is remembered for this kind of boss: in the next fight with it the name sounds at once, but the bonus is 25% lower"}, "modifiers": [{"stat": "nameMemory", "kind": "flat", "value": 1}, {"stat": "namePower", "kind": "more", "value": -0.25}]}, {"id": "whisperer_trait_2_f60b", "name": {"ru": "Имя по буквам", "en": "Name Letter by Letter"}, "text": {"ru": "Пока имя не узнано, бонус растёт с каждым ударом до половины, но имя за 200 ударов", "en": "Until the name is learned, the bonus grows with every hit up to half, but the name takes 200 hits"}, "modifiers": [{"stat": "nameProgress", "kind": "flat", "value": 1}, {"stat": "nameHits", "kind": "flat", "value": 50}]}]},
           {"level": 75, "options": [{"id": "whisperer_trait_2_f75a", "name": {"ru": "Имя отнимает время", "en": "The Name Takes Time"}, "text": {"ru": "Названный босс отдаёт отряду 5 с таймера, но бонус на 15% меньше; бафф отряду: себе и союзникам поровну", "en": "A named boss gives the party 5 s of timer, but the bonus is 15% lower; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "nameTime", "kind": "flat", "value": 1}, {"stat": "namePower", "kind": "more", "value": -0.15}], "partyMode": "together"}, {"id": "whisperer_trait_2_f75b", "name": {"ru": "Проклятое имя", "en": "Cursed Name"}, "text": {"ru": "Бонус имени на 30% больше, но имя за 175 ударов", "en": "The name bonus is 30% bigger, but the name takes 175 hits"}, "modifiers": [{"stat": "namePower", "kind": "more", "value": 0.3}, {"stat": "nameHits", "kind": "flat", "value": 25}]}]}
         ]
@@ -571,9 +571,9 @@
       "name": {"ru": "Обет молчания", "en": "Vow of Silence"},
       "blurb": "Её удары не наносят урона совсем. Взамен все её проклятия втрое сильнее, а Шёпот копится вдвое быстрее. Каждые 6 немых ударов — немой шёпот: следующий удар проклят и бьёт ×(12 × (1 + сила проклятий)), а проклятие держится на 1 с дольше. В соло шёпот достаётся ей самой. В паузе проклятия не спадают. Скилл Пути «Немой укор» даёт 3 шёпота сразу",
       "trait": {
-        "partyText": {"ru": "Немой шёпот: каждые 6 её немых ударов следующий удар союзника по кругу становится проклятым — бьёт сильнее от силы её проклятий и продлевает проклятия на враге на 1 с", "en": "Silent whisper: every 6 of her silent hits the next hit of an ally in turn becomes cursed — it hits harder with her curse strength and extends the curses on the enemy by 1 s"},
+        "partyText": {"ru": "Каждый немой шёпот на 4 с усиливает урон отряда со временем и удары, до 5 стаков", "en": "Each silent whisper empowers the party's damage over time and hits for 4 s, up to 5 stacks"},
         "levels": [
-          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 12}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 12}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.05, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.02, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}]},
           {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 1.5}]},
           {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 1.5}]},
           {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 1.5}]},
@@ -595,9 +595,9 @@
       "name": {"ru": "Расклад", "en": "Spread"},
       "blurb": "Каждые 10 ударов в руку тянется карта одной из четырёх мастей: Кубки, Мечи, Монеты, Жезлы. Три карты одной масти — Старший аркан на 15 с: Мечи — её урон сильнее, Кубки — ресурс каждую секунду, Монеты — больше золота с врагов, Жезлы — перезарядка скиллов быстрее. В руке до 7 карт. В паузе колода тасуется, рука не теряется. Скилл Пути «Разложить карты» тянет три карты сразу",
       "trait": {
-        "partyText": {"ru": "Союзник сдаёт карту: каждые 30 ударов союзника в руку Гадалки приходит карта масти его роли (Бойцы и Сокрушители — Мечи, Вдохновители и Призыватели — Кубки, Искатели — Монеты, остальные — Жезлы); сданные карты видны у союзника", "en": "An ally deals a card: every 30 hits of an ally put a card of their role's suit into the Cartomancer's hand (Strikers and Breakers — Swords, Heralds and Summoners — Cups, Seekers — Coins, the rest — Wands); dealt cards show on the ally's bar"},
+        "partyText": {"ru": "За каждую карту в руке отряд чаще критует и получает больше золота", "en": "Each card in hand makes the party crit more often and get more gold"},
         "levels": [
-          {"modifiers": [{"stat": "spreadPower", "kind": "flat", "value": 0.15}]},
+          {"modifiers": [{"stat": "spreadPower", "kind": "flat", "value": 0.15}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.003, "per": {"signal": "hand", "step": 1, "cap": 10}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.01, "per": {"signal": "hand", "step": 1, "cap": 10}}]},
           {"modifiers": [{"stat": "spreadPower", "kind": "flat", "value": 0.02}]},
           {"modifiers": [{"stat": "spreadPower", "kind": "flat", "value": 0.02}]},
           {"modifiers": [{"stat": "spreadPower", "kind": "flat", "value": 0.02}]},
@@ -619,9 +619,9 @@
       "name": {"ru": "Предсказание", "en": "Prophecy"},
       "blurb": "Перед боссом Гадалка называет срок: «умрёт за N секунд» (60% таймера). Успели — награда за босса вдвое больше, не успели — её урон на 20% меньше до следующего босса. В паузе срок идёт, как и таймер. Скилл Пути «Срок вышел» называет новый срок на текущем боссе",
       "trait": {
-        "partyText": {"ru": "Срок общий у хоста: срок висит на общем боссе, отсчёт виден всем; выигрыш — награда больше у всего отряда, проигрыш — урон меньше у всего отряда", "en": "A shared term at the host: the term hangs on the shared boss and everyone sees the countdown; a win raises the reward of the whole party, a loss lowers the damage of the whole party"},
+        "partyText": {"ru": "Выигранный срок 20 с даёт отряду больше золота и гемов", "en": "A won term gives the party more gold and gems for 20 s"},
         "levels": [
-          {"modifiers": [{"stat": "forecastPower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "forecastPower", "kind": "flat", "value": 1.5}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.25, "after": {"signal": "forecastWin", "seconds": 20, "stacks": 1}}, {"to": "party", "stat": "gemDrop", "kind": "increased", "value": 0.1, "after": {"signal": "forecastWin", "seconds": 20, "stacks": 1}}]},
           {"modifiers": [{"stat": "forecastPower", "kind": "flat", "value": 0.2}]},
           {"modifiers": [{"stat": "forecastPower", "kind": "flat", "value": 0.2}]},
           {"modifiers": [{"stat": "forecastPower", "kind": "flat", "value": 0.2}]},
@@ -643,9 +643,9 @@
       "name": {"ru": "Перевёрнутая карта", "en": "Reversed Card"},
       "blurb": "Карты ложатся рубашкой вверх: вместо пользы каждые 10 ударов карта ложится на врага и проклинает его по масти: Мечи — враг получает больше урона, Кубки — рана жжёт врага, Монеты — с врага падает больше золота, Жезлы — таймер босса медленнее. На враге до 7 карт, со сменой врага они спадают. Каждые 40 ударов одна карта вскрывается: её проклятие на 5 с вдвое сильнее. Скилл Пути «Перевернуть колоду» кладёт три карты и вскрывает старшую масть",
       "trait": {
-        "partyText": {"ru": "Союзник вскрывает карту: проклятия карт висят на общем враге у хоста, масти видны всем; каждые 20 ударов союзников по врагу вскрывают карту, и её проклятие 5 с действует вдвое", "en": "An ally reveals a card: the curses of the cards hang on the shared enemy at the host and everyone sees the suits; every 20 allied hits on the enemy reveal a card, and its curse works twice as hard for 5 s"},
+        "partyText": {"ru": "Карты лежат на враге и видны всем; за каждую карту отряд крепче критует", "en": "The cards lie on the enemy for everyone to see; each card makes the party crit harder"},
         "levels": [
-          {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.04}]},
+          {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.04}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.02, "per": {"signal": "laid", "step": 1, "cap": 10}}]},
           {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.006}]},
           {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.006}]},
           {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.006}]},
@@ -667,9 +667,9 @@
       "name": {"ru": "Цветение", "en": "Blossoming"},
       "blurb": "Каждые 15 ударов во врага садится семя. Семя прорастает колючей лозой, которая жалит раз в секунду и растёт: росток → куст → цветок, каждые 5 с стадия, на каждой стадии урон вдвое больше. Лоз до 3. Новый враг — лозы начинают сначала. Каждый раскрытый цветок роняет лепесток. В паузе растения продолжают расти и жалить. Скилл Пути «Ускорить рост» доводит все лозы до цветка",
       "trait": {
-        "partyText": {"ru": "Лепесток садовнику: сад висит на общем враге у хоста и виден всем; раскрытый цветок роняет лепесток союзнику, и 20 с каждый его 20-й удар сажает на врага его собственное семя", "en": "A petal for a gardener: the garden hangs on the shared enemy at the host for everyone to see; an opened flower drops a petal to an ally, and for 20 s every 20th hit of theirs plants their own seed on the enemy"},
+        "partyText": {"ru": "Сад висит на враге; за каждую лозу урон отряда со временем сильнее", "en": "The garden hangs on the enemy; each vine empowers the party's damage over time"},
         "levels": [
-          {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.25}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.02, "per": {"signal": "vines", "step": 1, "cap": 8}}]},
           {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.03}]},
@@ -691,9 +691,9 @@
       "name": {"ru": "Грибница", "en": "Mycelium"},
       "blurb": "Каждый удар добавляет врагу стак яда грибницы, до 50; каждый стак жалит раз в секунду. Яд не пропадает со смертью врага: половина перетекает на следующего. В паузе яд продолжает жалить. Скилл Пути «Споровый выброс» добавляет 15 стаков",
       "trait": {
-        "partyText": {"ru": "Споры заражают: пока враг отравлен, на союзниках оседают споры, и каждый 5-й удар союзника добавляет стак яда Травницы; счётчик спор виден у союзника", "en": "Spores infect: while the enemy is poisoned, spores settle on the allies, and every 5th hit of an ally adds a stack of the Herbwitch's poison; a spore counter shows on the ally's bar"},
+        "partyText": {"ru": "За каждые 5 стаков яда грибницы урон отряда со временем сильнее", "en": "Every 5 stacks of mycelium poison empower the party's damage over time"},
         "levels": [
-          {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.025}]},
+          {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.025}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.02, "per": {"signal": "venom", "step": 5, "cap": 10}}]},
           {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.004}]},
           {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.004}]},
           {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.004}]},
@@ -702,7 +702,7 @@
         "forks": [
           {"level": 45, "options": [{"id": "herbwitch_trait_2_f45a", "name": {"ru": "Глубокая грибница", "en": "Deep Mycelium"}, "text": {"ru": "Перетекает 75% яда, но стак на 15% слабее", "en": "75% of the poison flows on, but a stack is 15% weaker"}, "modifiers": [{"stat": "myceliumDeep", "kind": "flat", "value": 1}, {"stat": "myceliumPower", "kind": "more", "value": -0.15}]}, {"id": "herbwitch_trait_2_f45b", "name": {"ru": "Ядовитые споры", "en": "Toxic Spores"}, "text": {"ru": "Удар даёт два стака, но яд не перетекает", "en": "A hit gives two stacks, but the poison does not flow on"}, "modifiers": [{"stat": "myceliumDouble", "kind": "flat", "value": 1}, {"stat": "myceliumNoCarry", "kind": "flat", "value": 1}]}]},
           {"level": 60, "options": [{"id": "herbwitch_trait_2_f60a", "name": {"ru": "Плотный яд", "en": "Dense Poison"}, "text": {"ru": "До 75 стаков, но стак на 20% слабее", "en": "Up to 75 stacks, but a stack is 20% weaker"}, "modifiers": [{"stat": "myceliumMax", "kind": "flat", "value": 25}, {"stat": "myceliumPower", "kind": "more", "value": -0.2}]}, {"id": "herbwitch_trait_2_f60b", "name": {"ru": "Едкий яд", "en": "Acrid Poison"}, "text": {"ru": "Стак на 40% сильнее, но стаков до 30", "en": "A stack is 40% stronger, but up to 30 stacks"}, "modifiers": [{"stat": "myceliumPower", "kind": "more", "value": 0.4}, {"stat": "myceliumMax", "kind": "flat", "value": -20}]}]},
-          {"level": 75, "options": [{"id": "herbwitch_trait_2_f75a", "name": {"ru": "Сеть грибницы", "en": "Mycelium Web"}, "text": {"ru": "Яд жалит вдвое чаще, но стак на 45% слабее", "en": "The poison stings twice as often, but a stack is 45% weaker"}, "modifiers": [{"stat": "myceliumFast", "kind": "flat", "value": 1}, {"stat": "myceliumPower", "kind": "more", "value": -0.45}]}, {"id": "herbwitch_trait_2_f75b", "name": {"ru": "Споры для всех", "en": "Spores for All"}, "text": {"ru": "Союзники добавляют яд вдвое чаще, но стак на 15% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Allies add poison twice as often, but a stack is 15% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "myceliumParty", "kind": "flat", "value": 1}, {"stat": "myceliumPower", "kind": "more", "value": -0.15}], "partyMode": "support"}]}
+          {"level": 75, "options": [{"id": "herbwitch_trait_2_f75a", "name": {"ru": "Сеть грибницы", "en": "Mycelium Web"}, "text": {"ru": "Яд жалит вдвое чаще, но стак на 45% слабее", "en": "The poison stings twice as often, but a stack is 45% weaker"}, "modifiers": [{"stat": "myceliumFast", "kind": "flat", "value": 1}, {"stat": "myceliumPower", "kind": "more", "value": -0.45}]}, {"id": "herbwitch_trait_2_f75b", "name": {"ru": "Споры для всех", "en": "Spores for All"}, "text": {"ru": "Стак яда на 15% слабее, зато за каждые 5 стаков отряд ещё сильнее жжёт ядом; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "A poison stack is 15% weaker, but every 5 stacks make the party's poison stronger still; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "myceliumPower", "kind": "more", "value": -0.15}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.01, "per": {"signal": "venom", "step": 5, "cap": 10}}], "partyMode": "support"}]}
         ]
       },
       "nodes": [{"id": "herbwitch_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Грибница", "en": "Mycelium"}, "modifiers": []}],
@@ -715,9 +715,9 @@
       "name": {"ru": "Сок жизни", "en": "Lifesap"},
       "blurb": "Яд не тикает, пока его не выпили, и копится вдвое быстрее: каждый удар даёт 2 стака. Каждый 20-й удар выпивает весь яд: он бьёт врага разом и превращается в Сок. Новый враг — невыпитый яд пропадает. В паузе Сок медленно капает сам. Скилл Пути «Глоток сока» выпивает яд сразу",
       "trait": {
-        "partyText": {"ru": "Глоток союзника: пока на враге есть яд, каждый 10-й удар союзника тоже пьёт его — союзник получает ресурс своего класса, а Травница выпивает половину яда в Сок; значок глотка виден у союзника", "en": "An ally's gulp: while the enemy is poisoned, every 10th hit of an ally drinks too — the ally gets resource of their class, and the Herbwitch drinks half the poison into Sap; a gulp icon shows on the ally's bar"},
+        "partyText": {"ru": "Каждый глоток 5 с ускоряет накопление ресурса отряда", "en": "Each gulp speeds up the party's resource for 5 s"},
         "levels": [
-          {"modifiers": [{"stat": "sapPower", "kind": "flat", "value": 0.12}]},
+          {"modifiers": [{"stat": "sapPower", "kind": "flat", "value": 0.12}, {"to": "party", "stat": "resourceGain", "kind": "increased", "value": 0.2, "after": {"signal": "drink", "seconds": 5, "stacks": 1}}]},
           {"modifiers": [{"stat": "sapPower", "kind": "flat", "value": 0.015}]},
           {"modifiers": [{"stat": "sapPower", "kind": "flat", "value": 0.015}]},
           {"modifiers": [{"stat": "sapPower", "kind": "flat", "value": 0.015}]},
@@ -726,7 +726,7 @@
         "forks": [
           {"level": 45, "options": [{"id": "herbwitch_trait_3_f45a", "name": {"ru": "Частые глотки", "en": "Frequent Sips"}, "text": {"ru": "Глоток каждые 14 ударов, но на 25% слабее", "en": "A drink every 14 hits, but 25% weaker"}, "modifiers": [{"stat": "sapHits", "kind": "flat", "value": -6}, {"stat": "sapPower", "kind": "more", "value": -0.25}]}, {"id": "herbwitch_trait_3_f45b", "name": {"ru": "Крепкий настой", "en": "Strong Brew"}, "text": {"ru": "Глоток на 40% сильнее, но каждые 28 ударов", "en": "A drink is 40% stronger, but every 28 hits"}, "modifiers": [{"stat": "sapPower", "kind": "more", "value": 0.4}, {"stat": "sapHits", "kind": "flat", "value": 8}]}]},
           {"level": 60, "options": [{"id": "herbwitch_trait_3_f60a", "name": {"ru": "Глоток на потом", "en": "A Sip for Later"}, "text": {"ru": "Глоток оставляет 30% яда, и со сменой врага остаётся 30%, но глоток на 15% слабее", "en": "A drink leaves 30% of the poison, and 30% stays when the enemy changes, but a drink is 15% weaker"}, "modifiers": [{"stat": "sapLeave", "kind": "flat", "value": 1}, {"stat": "sapPower", "kind": "more", "value": -0.15}]}, {"id": "herbwitch_trait_3_f60b", "name": {"ru": "Жадный глоток", "en": "Greedy Gulp"}, "text": {"ru": "Глоток бьёт вдвое, но каждые 30 ударов", "en": "A drink strikes twice as hard, but every 30 hits"}, "modifiers": [{"stat": "sapGreedy", "kind": "flat", "value": 1}, {"stat": "sapHits", "kind": "flat", "value": 10}]}]},
-          {"level": 75, "options": [{"id": "herbwitch_trait_3_f75a", "name": {"ru": "Ядовитое дыхание", "en": "Poison Breath"}, "text": {"ru": "После глотка 10 с яд жжёт врага сам, но глоток на 20% слабее", "en": "After a drink the poison burns the enemy on its own for 10 s, but a drink is 20% weaker"}, "modifiers": [{"stat": "sapPoison", "kind": "flat", "value": 1}, {"stat": "sapPower", "kind": "more", "value": -0.2}]}, {"id": "herbwitch_trait_3_f75b", "name": {"ru": "Общая чаша", "en": "Shared Cup"}, "text": {"ru": "Союзники получают за глоток вдвое больше ресурса, но её глоток на 15% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Allies get twice the resource per gulp, but her drink is 15% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "sapParty", "kind": "flat", "value": 1}, {"stat": "sapPower", "kind": "more", "value": -0.15}], "partyMode": "support"}]}
+          {"level": 75, "options": [{"id": "herbwitch_trait_3_f75a", "name": {"ru": "Ядовитое дыхание", "en": "Poison Breath"}, "text": {"ru": "После глотка 10 с яд жжёт врага сам, но глоток на 20% слабее", "en": "After a drink the poison burns the enemy on its own for 10 s, but a drink is 20% weaker"}, "modifiers": [{"stat": "sapPoison", "kind": "flat", "value": 1}, {"stat": "sapPower", "kind": "more", "value": -0.2}]}, {"id": "herbwitch_trait_3_f75b", "name": {"ru": "Общая чаша", "en": "Shared Cup"}, "text": {"ru": "Её глоток на 15% слабее, зато каждый глоток ещё сильнее ускоряет ресурс отряда; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Her gulp is 15% weaker, but every gulp speeds up the party's resource even more; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "sapPower", "kind": "more", "value": -0.15}, {"to": "party", "stat": "resourceGain", "kind": "increased", "value": 0.2, "after": {"signal": "drink", "seconds": 5, "stacks": 1}}], "partyMode": "support"}]}
         ]
       },
       "nodes": [{"id": "herbwitch_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сок жизни", "en": "Lifesap"}, "modifiers": []}],
@@ -739,9 +739,9 @@
       "name": {"ru": "Рой", "en": "Swarm"},
       "blurb": "Каждый удар выпускает мотылька, до 50. Мотыльки пьют свет врага: весь рой бьёт раз в секунду, сила растёт с каждым мотыльком. Враг умирает — половина роя перелетает на следующего, половина рассеивается. В паузе мотыльки продолжают пить врага, новые не вылетают. Скилл Пути «Выпустить рой» выпускает 20 мотыльков и бьёт всем роем",
       "trait": {
-        "partyText": {"ru": "Остаток роя союзнику: половина роя, которая рассеивается, садится к союзнику, добившему врага, и 10 с пьёт его следующего врага; мотыльки видны на его полоске", "en": "The rest of the swarm for an ally: the half that would scatter settles with the ally who finished the enemy and drinks their next enemy for 10 s; the moths show on their bar"},
+        "partyText": {"ru": "За каждые 5 мотыльков роя отряд бьёт сильнее", "en": "Every 5 moths of the swarm make the party hit harder"},
         "levels": [
-          {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.025}]},
+          {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.025}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "per": {"signal": "moths", "step": 5, "cap": 10}}]},
           {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.003}]},
           {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.003}]},
           {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.003}]},
@@ -763,9 +763,9 @@
       "name": {"ru": "Пыльца", "en": "Pollen"},
       "blurb": "Мотыльки (до 50, по одному за удар) не бьют, а осыпают пыльцой: каждую секунду на героя оседает пыльца по числу мотыльков. Крит стряхивает всю пыльцу во врага — урон со временем за 4 с. Сама Мотылица от своего роя урона не получает. В паузе пыльца лежит и ждёт крита. Скилл Пути «Облако пыльцы» выпускает 20 мотыльков",
       "trait": {
-        "partyText": {"ru": "Пыльца на союзнике: пыльца копится на каждом союзнике счётчиком, его крит стряхивает её во врага уроном со временем от его урона", "en": "Pollen on an ally: pollen builds up on every ally as a counter, and their crit shakes it into the enemy as damage over time from their damage"},
+        "partyText": {"ru": "За каждые 5 мотыльков отряд чаще критует и сильнее жжёт", "en": "Every 5 moths make the party crit more often and burn harder"},
         "levels": [
-          {"modifiers": [{"stat": "pollenPower", "kind": "flat", "value": 0.025}]},
+          {"modifiers": [{"stat": "pollenPower", "kind": "flat", "value": 0.025}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.003, "per": {"signal": "moths", "step": 5, "cap": 10}}, {"to": "party", "stat": "burnDamage", "kind": "increased", "value": 0.02, "per": {"signal": "moths", "step": 5, "cap": 10}}]},
           {"modifiers": [{"stat": "pollenPower", "kind": "flat", "value": 0.003}]},
           {"modifiers": [{"stat": "pollenPower", "kind": "flat", "value": 0.003}]},
           {"modifiers": [{"stat": "pollenPower", "kind": "flat", "value": 0.003}]},
@@ -787,9 +787,9 @@
       "name": {"ru": "Ночная бабочка", "en": "Night Moth"},
       "blurb": "Жёсткий обмен: вместо роя мотыльки сливаются в одну огромную бабочку. Она не копится от ударов, а оживает раз в 30 с на 8 с и каждую секунду бьёт как весь рой. В паузе бабочка просыпается так же. Скилл Пути «Пробуждение бабочки» будит её сразу",
       "trait": {
-        "partyText": {"ru": "Будит общая серия: каждая секунда, когда весь отряд бьёт без пауз, приближает пробуждение бабочки ещё на секунду; отсчёт до пробуждения виден у союзника", "en": "A shared streak wakes it: every second the whole party hits without pauses brings the moth's waking another second closer; the countdown shows on the ally's bar"},
+        "partyText": {"ru": "Пока бабочка летает, отряд бьёт сильнее", "en": "While the moth flies, the party hits harder"},
         "levels": [
-          {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 5}]},
+          {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "while": "mothAwake"}]},
           {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
           {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
           {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
@@ -811,9 +811,9 @@
       "name": {"ru": "Сфера душ", "en": "Orb of Souls"},
       "blurb": "Каждое убийство кладёт душу в сферу, до 6. Каждая душа — отдельный дух, он бьёт сам раз в секунду; душа стража вдвое сильнее, душа босса — втрое. В паузе духи бьют сами, но сфера не наполняется. Скилл Пути «Призвать души» кладёт две души сразу",
       "trait": {
-        "partyText": {"ru": "Души от всех: убийства союзников тоже кладут души в её сферу, духи бьют общего врага отряда, а число духов видно у союзника", "en": "Souls from everyone: allies' kills put souls into her orb too, the spirits strike the party's shared enemy, and the number of spirits shows on the ally's bar"},
+        "partyText": {"ru": "За каждую душу в сфере спутники и слуги отряда сильнее и быстрее", "en": "Each soul in the sphere makes the party's companions and minions stronger and faster"},
         "levels": [
-          {"modifiers": [{"stat": "soulPower", "kind": "flat", "value": 0.18}]},
+          {"modifiers": [{"stat": "soulPower", "kind": "flat", "value": 0.18}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.03, "per": {"signal": "souls", "step": 1, "cap": 12}}, {"to": "party", "stat": "minionSpeed", "kind": "increased", "value": 0.02, "per": {"signal": "souls", "step": 1, "cap": 12}}]},
           {"modifiers": [{"stat": "soulPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "soulPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "soulPower", "kind": "flat", "value": 0.03}]},
@@ -835,9 +835,9 @@
       "name": {"ru": "Последний вздох", "en": "Last Breath"},
       "blurb": "Духи не бьют вовсе. Когда сфера полна и приходит новая душа, самая старая уходит с последним вздохом — бьёт текущего врага на 4% HP того врага, от которого пришла, и оставляет на нём холод на 5 с: враг получает на 15% больше. Урон приходит только из убийств. В паузе сфера ждёт. Скилл Пути «Последний вздох» выпускает старшую душу сразу",
       "trait": {
-        "partyText": {"ru": "Холод вздоха: холод висит на общем враге у хоста и виден всем; удары союзников по замёрзшему врагу приближают следующий вздох", "en": "The chill of a breath: the chill hangs on the shared enemy at the host for everyone to see; allies' hits on the frozen enemy bring the next breath closer"},
+        "partyText": {"ru": "Холод вздоха висит на враге; после вздоха 4 с отряд крепче критует", "en": "The cold of a breath hangs on the enemy; for 4 s after a breath the party crits harder"},
         "levels": [
-          {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.04}]},
+          {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.04}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.1, "after": {"signal": "breath", "seconds": 4, "stacks": 1}}]},
           {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.007}]},
           {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.007}]},
           {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.007}]},
@@ -859,9 +859,9 @@
       "name": {"ru": "Одолжить душу", "en": "Lend a Soul"},
       "blurb": "Каждые 50 ударов Душеплёт вселяет духа в союзника на 10 с (в соло — в себя): дух бьёт вместе с каждым ударом на 12% силы. Убийство за это время возвращает ей душу — 2 Эктоплазмы. В паузе духи не вселяются. Скилл Пути «Отдать душу» вселяет духа сразу",
       "trait": {
-        "partyText": {"ru": "Дух в теле: вселённый дух бьёт вместе с каждым ударом союзника, а убийство союзника за это время возвращает Душеплёту душу; значок духа на его полоске", "en": "A spirit in the body: the lent spirit strikes along with every ally hit, and an ally's kill meanwhile returns a soul to the soulbinder; a spirit icon on their bar"},
+        "partyText": {"ru": "Каждая одолженная душа 10 с усиливает удары отряда", "en": "Each lent soul empowers the party's hits for 10 s"},
         "levels": [
-          {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.12}]},
+          {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.12}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.08, "after": {"signal": "lend", "seconds": 10, "stacks": 1}}]},
           {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.02}]},
           {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.02}]},
           {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.02}]},
@@ -883,9 +883,9 @@
       "name": {"ru": "Бортовой залп", "en": "Broadside"},
       "blurb": "У корабля 8 пушек. Каждые 10 ударов заряжают одну. Когда заряжены все 8 — залп разом: каждая пушка бьёт как 3 удара, а если все восемь зарядились на одном враге — вдвое сильнее. Залп оставляет на враге пробоину на 3 с: таймер босса стоит, враг получает на 15% больше. В паузе пушки ждут заряженными. Скилл Пути «Огонь всем бортом» заряжает все пушки и даёт залп сразу",
       "trait": {
-        "partyText": {"ru": "Пробоина: пробоина висит на общем враге у хоста и видна всем; пока она есть, таймер босса стоит, а удары союзников по пробоине бьют сильнее", "en": "The breach: the breach hangs on the shared enemy at the host for everyone to see; while it lasts the boss timer stands still and allies' hits on the breach strike harder"},
+        "partyText": {"ru": "Пробоина висит на враге; после залпа 5 с отряд бьёт сильнее", "en": "The breach hangs on the enemy; for 5 s after a volley the party hits harder"},
         "levels": [
-          {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 3}]},
+          {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 3}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "after": {"signal": "volley", "seconds": 5, "stacks": 1}}]},
           {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 0.4}]},
@@ -907,9 +907,9 @@
       "name": {"ru": "Призрачная команда", "en": "Ghost Crew"},
       "blurb": "Каждый побеждённый враг вступает в команду матросом (страж — двое, босс — трое), все матросы бьют раз в секунду. Потолка нет, но через 2 минуты после первого матроса наступает рассвет, и вся команда уходит; старший матрос остаётся боцманом и до следующего рассвета стреляет при каждом её скилле. В паузе команда бьёт сама. Скилл Пути «Свистать всех наверх» зовёт трёх матросов и бьёт всей командой",
       "trait": {
-        "partyText": {"ru": "Боцман: на рассвете старший матрос переходит к союзнику и до следующего рассвета стреляет при каждом его скилле; значок боцмана на полоске союзника", "en": "The boatswain: at dawn the senior sailor goes over to an ally and fires with every skill of theirs until the next dawn; a boatswain icon on the ally's bar"},
+        "partyText": {"ru": "За каждые 5 матросов команды отряд бьёт сильнее", "en": "Every 5 sailors of the crew make the party hit harder"},
         "levels": [
-          {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.03}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "per": {"signal": "sailors", "step": 5, "cap": 20}}]},
           {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
           {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
           {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
@@ -931,9 +931,9 @@
       "name": {"ru": "Попугай-призрак", "en": "Ghost Parrot"},
       "blurb": "На плече попугай: каждый третий её скилл он повторяет на 50% силы. Пока попугай на плече, команды нет — некому командовать. В паузе попугай молчит. Скилл Пути «Повтори!» заставляет попугая сразу повторить её последний скилл",
       "trait": {
-        "partyText": {"ru": "Попугай перелетает: он садится на плечо союзнику, который последним применил скилл, и повторяет каждый его третий скилл; попугай виден на полоске союзника", "en": "The parrot flies over: it perches on the ally who last used a skill and repeats every third skill of theirs; the parrot shows on the ally's bar"},
+        "partyText": {"ru": "Каждый повтор попугая 6 с ускоряет откаты и удешевляет скиллы отряда, до 3 стаков", "en": "Each parrot repeat speeds up the party's cooldowns and cheapens its skills for 6 s, up to 3 stacks"},
         "levels": [
-          {"modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.05, "after": {"signal": "parrot", "seconds": 6, "stacks": 3}}, {"to": "party", "stat": "skillCost", "kind": "increased", "value": 0.05, "after": {"signal": "parrot", "seconds": 6, "stacks": 3}}]},
           {"modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "parrotPower", "kind": "flat", "value": 0.05}]},
@@ -955,9 +955,9 @@
       "name": {"ru": "Печать", "en": "Seal"},
       "blurb": "100 ударов дописывают печать, из неё встаёт большой голем на 20 с и бьёт раз в секунду с силой многих ударов. Пока голем стоит, следующая печать не пишется. В паузе голем стоит и бьёт, но новая печать не пишется. Скилл Пути «Великая печать» дописывает печать сразу",
       "trait": {
-        "partyText": {"ru": "Углы печати: каждый союзник дописывает свой угол печати своими ударами (25 ударов), и голем встаёт на 25% сильнее за каждый угол союзника; дописанный угол виден у союзника", "en": "The corners of the seal: every ally writes their own corner of the seal with their hits (25 hits), and the golem rises 25% stronger for every ally's corner; a finished corner shows on the ally's bar"},
+        "partyText": {"ru": "Пока голем стоит, отряд бьёт сильнее, а спутники отряда крепче", "en": "While the golem stands, the party hits harder and its companions are stronger"},
         "levels": [
-          {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 3}]},
+          {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 3}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "while": "golem"}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.1, "while": "golem"}]},
           {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 0.4}]},
@@ -979,9 +979,9 @@
       "name": {"ru": "Вечная печать", "en": "Eternal Seal"},
       "blurb": "Один голем навсегда, но вчетверо слабее большого: он бьёт раз в секунду. Каждые 100 ударов печать не призывает, а добавляет на голема руну: +5% силы, до 40 рун. Руны остаются до перерождения. На каждом новом враге голем ставит клеймо из стольких слоёв, сколько рун (до 10); каждые 40 ударов слой снимается и бьёт силой голема ×3. В паузе голем бьёт сам. Скилл Пути «Вписать руну» добавляет руну сразу",
       "trait": {
-        "partyText": {"ru": "Клеймо на враге: клеймо висит на общем враге у хоста и видно всем; каждые 20 ударов союзников по врагу снимают слой, и он бьёт силой голема ×3", "en": "A brand on the enemy: the brand hangs on the shared enemy at the host for everyone to see; every 20 allied hits on the enemy strip a layer, and it strikes with the golem's strength ×3"},
+        "partyText": {"ru": "Клеймо висит на враге; за каждые 4 руны голема отряд бьёт сильнее", "en": "The brand hangs on the enemy; every 4 golem runes make the party hit harder"},
         "levels": [
-          {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.6}]},
+          {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.6}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "per": {"signal": "runes", "step": 4, "cap": 10}}]},
           {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.08}]},
           {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.08}]},
           {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.08}]},
@@ -1003,9 +1003,9 @@
       "name": {"ru": "Малые печати", "en": "Small Seals"},
       "blurb": "Вместо большого голема каждые 20 ударов — маленький големчик на 15 с, до 4 сразу; каждый бьёт раз в секунду. В паузе големчики бьют, новые не появляются. Скилл Пути «Россыпь печатей» лепит трёх големчиков",
       "trait": {
-        "partyText": {"ru": "Големчики разгоняют чужие особенности: в отряде големчик уходит к союзнику, бьёт его врага, и каждый его удар засчитывается в счётчики особенностей союзника (узлы, семена, пушки…); големчики видны на полоске союзника", "en": "Golemlings speed up others' traits: in a party a golemling goes to an ally, strikes their enemy, and every strike counts toward the ally's trait counters (knots, seeds, cannons…); the golemlings show on the ally's bar"},
+        "partyText": {"ru": "За каждого големчика спутники и слуги отряда быстрее и сильнее", "en": "Each golemling makes the party's companions and minions faster and stronger"},
         "levels": [
-          {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.35}]},
+          {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.35}, {"to": "party", "stat": "minionSpeed", "kind": "increased", "value": 0.05, "per": {"signal": "minors", "step": 1, "cap": 4}}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.05, "per": {"signal": "minors", "step": 1, "cap": 4}}]},
           {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.05}]},
@@ -1027,9 +1027,9 @@
       "name": {"ru": "Завод пружины", "en": "Wound Spring"},
       "blurb": "Завод копится от ударов и сам медленно кончается. Пока Завод больше половины, таймер босса идёт на 30% медленнее, ниже половины — на 10%. На нуле часы встают, и таймер идёт на 10% быстрее. В паузе часы стоят: Завод не тратится. Скилл Пути «Завести пружину» даёт 50 Завода сразу",
       "trait": {
-        "partyText": {"ru": "Заводят все: удары союзников тоже подкручивают её пружину, медленный таймер действует на весь отряд, а Завод виден на полоске союзника", "en": "Everyone winds: allies' hits wind her spring too, the slow timer works for the whole party, and the Wind shows on the ally's bar"},
+        "partyText": {"ru": "Пока Завод держит таймер, таймер босса медленнее для всего отряда", "en": "While the Spring holds the timer, the boss timer is slower for the whole party"},
         "levels": [
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.3}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.3}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.001, "when": "inParty", "per": {"signal": "springSlow", "step": 0.001, "cap": 1000}}]},
           {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.03}]},
@@ -1051,9 +1051,9 @@
       "name": {"ru": "Петля", "en": "Loop"},
       "blurb": "Раз в 40 с часы перематываются: весь урон отряда за последние 5 с повторяется на 50% силы. Удары самой Часовщицы в петлю не попадают. В соло петля повторяет её собственный урон вполовину слабее. В паузе петля копится. Скилл Пути «Перемотка» перематывает сразу",
       "trait": {
-        "partyText": {"ru": "Запись у хоста: хост пишет урон союзников по общему врагу за 5 с и по сигналу перемотки повторяет его на 50%; перемотку и долю видят все", "en": "Recording at the host: the host records the allies' damage to the shared enemy for 5 s and repeats it at 50% on the rewind signal; everyone sees the rewind and its share"},
+        "partyText": {"ru": "После перемотки 5 с отряд бьёт сильнее", "en": "For 5 s after a rewind the party hits harder"},
         "levels": [
-          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "after": {"signal": "loop", "seconds": 5, "stacks": 1}}]},
           {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.05}]},
@@ -1061,7 +1061,7 @@
         ],
         "forks": [
           {"level": 45, "options": [{"id": "clockwright_trait_2_f45a", "name": {"ru": "Частая петля", "en": "Frequent Loop"}, "text": {"ru": "Петля раз в 30 с, но на 20% слабее", "en": "A loop every 30 s, but 20% weaker"}, "modifiers": [{"stat": "loopSeconds", "kind": "flat", "value": -10}, {"stat": "loopPower", "kind": "more", "value": -0.2}]}, {"id": "clockwright_trait_2_f45b", "name": {"ru": "Широкое окно", "en": "Wide Window"}, "text": {"ru": "Петля берёт 7 с, но приходит раз в 55 с", "en": "A loop takes 7 s, but comes every 55 s"}, "modifiers": [{"stat": "loopWindow", "kind": "flat", "value": 2}, {"stat": "loopSeconds", "kind": "flat", "value": 15}]}]},
-          {"level": 60, "options": [{"id": "clockwright_trait_2_f60a", "name": {"ru": "Петля на Колосса", "en": "Loop on the Colossus"}, "text": {"ru": "На боссе петля вдвое чаще, но вне боссов её нет", "en": "On a boss the loop comes twice as often, but there is none outside bosses"}, "modifiers": [{"stat": "loopBoss", "kind": "flat", "value": 1}]}, {"id": "clockwright_trait_2_f60b", "name": {"ru": "Своя петля", "en": "Own Loop"}, "text": {"ru": "Её удары тоже попадают в петлю, но петля на 15% слабее", "en": "Her hits get into the loop too, but the loop is 15% weaker"}, "modifiers": [{"stat": "loopOwn", "kind": "flat", "value": 1}, {"stat": "loopPower", "kind": "more", "value": -0.15}]}]},
+          {"level": 60, "options": [{"id": "clockwright_trait_2_f60a", "name": {"ru": "Петля на Колосса", "en": "Loop on the Colossus"}, "text": {"ru": "На боссе петля вдвое чаще, но вне боссов её нет", "en": "On a boss the loop comes twice as often, but there is none outside bosses"}, "modifiers": [{"stat": "loopBoss", "kind": "flat", "value": 1}]}, {"id": "clockwright_trait_2_f60b", "name": {"ru": "Своя петля", "en": "Own Loop"}, "text": {"ru": "Петля на 15% слабее, зато после перемотки отряд 5 с бьёт ещё на 10% сильнее", "en": "The loop is 15% weaker, but for 5 s after a rewind the party hits another 10% harder"}, "modifiers": [{"stat": "loopPower", "kind": "more", "value": -0.15}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "after": {"signal": "loop", "seconds": 5, "stacks": 1}}]}]},
           {"level": 75, "options": [{"id": "clockwright_trait_2_f75a", "name": {"ru": "Петля-ловушка", "en": "Trap Loop"}, "text": {"ru": "Перемотка ещё и останавливает таймер босса на 3 с, но петля на 20% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "A rewind also stops the boss timer for 3 s, but the loop is 20% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "loopStop", "kind": "flat", "value": 1}, {"stat": "loopPower", "kind": "more", "value": -0.2}], "partyMode": "support"}, {"id": "clockwright_trait_2_f75b", "name": {"ru": "Глубокая перемотка", "en": "Deep Rewind"}, "text": {"ru": "Петля на 50% сильнее, но приходит раз в 60 с", "en": "The loop is 50% stronger, but comes every 60 s"}, "modifiers": [{"stat": "loopPower", "kind": "more", "value": 0.5}, {"stat": "loopSeconds", "kind": "flat", "value": 20}]}]}
         ]
       },
@@ -1075,9 +1075,9 @@
       "name": {"ru": "Шестерни", "en": "Gears"},
       "blurb": "Каждые 60 ударов часы тикают: у неё и у всего отряда перезарядки скиллов −2 с. Свои скиллы Часовщицы перезаряжаются вдвое дольше. Если два её скилла пришлись на одну секунду, шестерни сцепляются, и тик наступает сразу. В паузе шестерни стоят. Скилл Пути «Смазать шестерни» тикает сразу",
       "trait": {
-        "partyText": {"ru": "Сцепление: если двое и больше из отряда применили скиллы в одну секунду, шестерни сцепляются — тик наступает сразу и снимает откаты всем", "en": "Meshing: if two or more party members cast skills in the same second, the gears mesh — the tick comes at once and cuts everyone's cooldowns"},
+        "partyText": {"ru": "Каждый тик шестерён на 3 с ускоряет откаты отряда, до 3 стаков", "en": "Each gear tick speeds up the party's cooldowns for 3 s, up to 3 stacks"},
         "levels": [
-          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 2}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.04, "after": {"signal": "gearTick", "seconds": 3, "stacks": 3}}]},
           {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.25}]},
@@ -1171,9 +1171,9 @@
       "name": {"ru": "Жила", "en": "Vein"},
       "blurb": "В каждом обычном враге скрытая золотая жила — случайный удар из первых 50. Лоза светится тем ярче, чем ближе жила. Попал — враг отдаст в 2,5 раза больше золота. В паузе лоза дремлет. Скилл Пути «Вскрыть жилу» вскрывает её сразу",
       "trait": {
-        "partyText": {"ru": "Одна жила на всех: жила одна на общего врага, близость жилы видят все, удары союзников тоже приближают её, и в 2,5 раза больше золота получает весь отряд", "en": "One vein for all: one vein on the shared enemy, everyone sees how close it is, allies' hits bring it closer too, and the whole party gets 2.5 times the gold"},
+        "partyText": {"ru": "Найденная жила 10 с даёт союзникам больше золота", "en": "A struck vein gives allies more gold for 10 s"},
         "levels": [
-          {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 1.5}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 1.5}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "allies", "stat": "gold", "kind": "increased", "value": 0.25, "after": {"signal": "vein", "seconds": 10, "stacks": 1}}]},
           {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 0.25}]},
@@ -1195,9 +1195,9 @@
       "name": {"ru": "Удача", "en": "Luck"},
       "blurb": "Каждый враг без находки повышает шанс находки на 0,2%; находка — предмет, после неё шанс сбрасывается. Выпадает реже, но наверняка. В паузе удача не растёт. Скилл Пути «Счастливая монета» добавляет 10% удачи",
       "trait": {
-        "partyText": {"ru": "Удача от всех: счётчик растёт от убийств всего отряда, находка падает тому, кто убил, а шанс виден всем", "en": "Luck from everyone: the counter grows from every party kill, the find drops to whoever killed, and everyone sees the chance"},
+        "partyText": {"ru": "Удача приносит отряду золото; после находки 30 с отряду больше гемов и скрижалей", "en": "Luck brings the party gold; for 30 s after a find the party gets more gems and slates"},
         "levels": [
-          {"modifiers": [{"stat": "luckPower", "kind": "flat", "value": 0.002}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "luckPower", "kind": "flat", "value": 0.002}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gemDrop", "kind": "increased", "value": 0.2, "after": {"signal": "find", "seconds": 30, "stacks": 1}}, {"to": "party", "stat": "slateChance", "kind": "increased", "value": 0.1, "after": {"signal": "find", "seconds": 30, "stacks": 1}}]},
           {"modifiers": [{"stat": "luckPower", "kind": "flat", "value": 0.0003}]},
           {"modifiers": [{"stat": "luckPower", "kind": "flat", "value": 0.0003}]},
           {"modifiers": [{"stat": "luckPower", "kind": "flat", "value": 0.0003}]},
@@ -1219,9 +1219,9 @@
       "name": {"ru": "Артель", "en": "Prospectors' Crew"},
       "blurb": "Жёсткий обмен: её удары на 40% слабее. Взамен каждое убийство даёт самородок; 10 самородков — сундук золота и 10% шанс предмета. В паузе самородки не копятся. Скилл Пути «Общий котёл» даёт 5 самородков сразу",
       "trait": {
-        "partyText": {"ru": "Доля артели: каждое убийство союзника даёт ему самородок, 10 самородков — сундук золота и шанс предмета; самородки видны на его полоске. В соло самородки копит она сама", "en": "A share of the crew: every ally kill gives them a nugget, 10 nuggets — a gold chest and an item chance; the nuggets show on their bar. Solo she collects them herself"},
+        "partyText": {"ru": "Каждый сундук артели 10 с даёт отряду больше золота", "en": "Each artel chest gives the party more gold for 10 s"},
         "levels": [
-          {"modifiers": [{"stat": "artelPower", "kind": "flat", "value": 0.25}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "artelPower", "kind": "flat", "value": 0.25}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.2, "after": {"signal": "chest", "seconds": 10, "stacks": 1}}]},
           {"modifiers": [{"stat": "artelPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "artelPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "artelPower", "kind": "flat", "value": 0.05}]},
@@ -1243,9 +1243,9 @@
       "name": {"ru": "Сети снов", "en": "Dream Nets"},
       "blurb": "Шаг плетёт сети поперёк очереди: сеть на каждые 2000 px шага, до 3. Враг, вышедший из очереди в сеть, 3 с беспомощен: урон по нему +50%, а если он умер за это время — шанс 20% на трофей (гем). В паузе сети висят, новые не плетутся. Скилл Пути «Сплести сеть» плетёт 2 сети сразу",
       "trait": {
-        "partyText": {"ru": "Сеть общая и видна всем: по пойманному врагу весь отряд бьёт на 50% сильнее, каждый, кто бил пойманного, получает шанс на трофей, а крит союзника по пойманному держит сеть ещё 0,5 с", "en": "The net is shared and everyone sees it: the whole party hits a caught enemy 50% harder, everyone who struck it gets a trophy chance, and an ally's crit on it holds the net 0.5 s longer"},
+        "partyText": {"ru": "Сеть висит на пойманном враге; пока он в сети, отряд чаще критует", "en": "The net hangs on the caught enemy; while it is netted, the party crits more often"},
         "levels": [
-          {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.05, "while": "caught"}]},
           {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
@@ -1267,7 +1267,7 @@
       "name": {"ru": "Коллекция снов", "en": "Dream Collection"},
       "blurb": "Каждый убитый враг ложится в альбом снов: урон по этому виду врага +1% за экземпляр, до 50%. Полная страница биома (по 10 экземпляров каждого вида) — вещий сон: следующий босс этого биома 10 с получает +25% урона. Альбом живёт до перерождения. Скилл Пути «Альбом снов» добавляет 3 экземпляра текущего врага",
       "trait": {
-        "partyText": {"ru": "Альбом общий: враги, которых бьют союзники, тоже ложатся в её альбом, бонус по виду получает весь отряд, а вещий сон висит на боссе для всех", "en": "The album is shared: enemies the allies fight go into her album too, the whole party gets the bonus against a kind, and the prophetic dream hangs on the boss for everyone"},
+        "partyText": {"ru": "Альбом снов: отряд бьёт сильнее по видам врагов из альбома", "en": "The dream album: the party hits harder against kinds from the album"},
         "levels": [
           {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.01}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}]},
           {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.002}]},
@@ -1291,9 +1291,9 @@
       "name": {"ru": "Приманка-сон", "en": "Dream Bait"},
       "blurb": "Каждый удар кладёт крошку Приманки, на 100 из очереди выходит дух-сон: втрое крепче обычного врага, но всегда роняет гем, осколки и сундук золота. Сети по нему не работают. В паузе Приманка лежит. Скилл Пути «Бросить приманку» кладёт 50 сразу",
       "trait": {
-        "partyText": {"ru": "Дух выходит на весь отряд: добыча падает каждому, кто его бил, а если по нему ударили все — вдвое больше", "en": "The spirit comes out for the whole party: loot drops for everyone who struck it, and twice as much if everyone did"},
+        "partyText": {"ru": "Пойманный дух-сон 15 с даёт союзникам больше золота и гемов", "en": "A caught dream spirit gives allies more gold and gems for 15 s"},
         "levels": [
-          {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 1}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 1}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}, {"to": "allies", "stat": "gold", "kind": "increased", "value": 0.3, "after": {"signal": "spirit", "seconds": 15, "stacks": 1}}, {"to": "allies", "stat": "gemDrop", "kind": "increased", "value": 0.2, "after": {"signal": "spirit", "seconds": 15, "stacks": 1}}]},
           {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 0.15}]},
           {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 0.15}]},
           {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 0.15}]},

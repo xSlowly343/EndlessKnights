@@ -12,9 +12,6 @@ namespace Game.Core.Content
         public double NetSeconds { get; private set; } = 3;
         public double NetSecondsMin { get; private set; } = 0.5;
         public double NetTrophy { get; private set; } = 0.2;
-        public double NetPullSeconds { get; private set; } = 0.5;
-        public double NetPullCooldownSeconds { get; private set; } = 1;
-        public double NetMaxSeconds { get; private set; } = 10;
         public double AlbumMax { get; private set; } = 0.5;
         public int PageMin { get; private set; } = 10;
         public int PageMinFloor { get; private set; } = 1;
@@ -29,7 +26,6 @@ namespace Game.Core.Content
         public int SpiritGems { get; private set; } = 1;
         public long SpiritShards { get; private set; } = 2;
         public double SpiritChest { get; private set; } = 1;
-        public double SpiritRich { get; private set; } = 2;
         public double TwinChance { get; private set; } = 0.25;
         public double HornPower { get; private set; } = 0.3;
         public double HornSeconds { get; private set; } = 15;
@@ -51,9 +47,6 @@ namespace Game.Core.Content
                 NetSeconds = net.Field("seconds").AsNumber(0.1, 600),
                 NetSecondsMin = net.Field("secondsMin").AsNumber(0.1, 600),
                 NetTrophy = net.Field("trophy").AsNumber(0, 1),
-                NetPullSeconds = net.Field("pullSeconds").AsNumber(0, 60),
-                NetPullCooldownSeconds = net.Field("pullCooldownSeconds").AsNumber(0, 60),
-                NetMaxSeconds = net.Field("maxSeconds").AsNumber(0.1, 600),
                 AlbumMax = album.Field("max").AsNumber(0, 10),
                 PageMin = album.Field("pageMin").AsInt(1, 10_000),
                 PageMinFloor = album.Field("pageMinFloor").AsInt(1, 10_000),
@@ -68,7 +61,6 @@ namespace Game.Core.Content
                 SpiritGems = bait.Field("gems").AsInt(0, 100),
                 SpiritShards = bait.Field("shards").AsInt(0, 100_000),
                 SpiritChest = bait.Field("chest").AsNumber(0, 100),
-                SpiritRich = bait.Field("rich").AsNumber(1, 100),
                 TwinChance = bait.Field("twinChance").AsNumber(0, 1),
                 HornPower = bait.Field("hornPower").AsNumber(0, 10),
                 HornSeconds = bait.Field("hornSeconds").AsNumber(0, 600),

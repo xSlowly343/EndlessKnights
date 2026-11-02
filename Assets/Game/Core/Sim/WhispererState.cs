@@ -11,10 +11,8 @@ namespace Game.Core.Sim
         public long KnotsTied { get; set; }
         public int BossHits { get; set; }
         public bool Named { get; set; }
-        public int Syllables { get; set; }
         public EnemyDef? RememberedBoss { get; set; }
         public long Names { get; set; }
-        public int CallTicks { get; set; }
         public int SilentHits { get; set; }
         public int QueueHits { get; set; }
         public double Grow { get; set; }
@@ -25,12 +23,10 @@ namespace Game.Core.Sim
         public double Curse { get; set; }
         public int CurseTicks { get; set; }
         public bool SpawnPending { get; set; }
-        public bool AllySpawnPending { get; set; }
 
         public void OnSpawn()
         {
             SpawnPending = true;
-            AllySpawnPending = true;
         }
     }
 }
