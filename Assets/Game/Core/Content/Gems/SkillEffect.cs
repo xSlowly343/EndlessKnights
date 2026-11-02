@@ -144,6 +144,9 @@ namespace Game.Core.Content.Gems
         public int Sailors { get; set; }
         public double CrewHit { get; set; }
         public bool ParrotRepeat { get; set; }
+        public int Moths { get; set; }
+        public double SwarmHit { get; set; }
+        public bool Wake { get; set; }
     }
 
     public sealed class PotionOption

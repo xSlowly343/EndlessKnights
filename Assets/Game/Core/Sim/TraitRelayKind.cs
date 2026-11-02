@@ -32,6 +32,9 @@ namespace Game.Core.Sim
         Mate,
         ParrotOffer,
         ParrotCall,
-        ParrotPerch
+        ParrotPerch,
+        SwarmGift,
+        Pollen,
+        MothClock
     }
 }

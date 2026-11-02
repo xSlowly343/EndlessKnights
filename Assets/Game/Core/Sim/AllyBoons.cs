@@ -80,6 +80,26 @@ namespace Game.Core.Sim
         public long ParrotRepeats { get; set; }
         public bool ParrotCallOwed { get; set; }
         public int ParrotCallTicks { get; set; }
+        public int GiftMoths { get; set; }
+        public double GiftPower { get; set; }
+        public int GiftTicks { get; set; }
+        public double GiftCarry { get; set; }
+        public long GiftHits { get; set; }
+        public double Pollen { get; set; }
+        public double PollenRate { get; set; }
+        public int PollenTicks { get; set; }
+        public double PollenBurnSeconds { get; set; }
+        public int PollenEvery { get; set; } = 1;
+        public bool PollenQueue { get; set; }
+        public int PollenOwner { get; set; } = -1;
+        public double PollenLight { get; set; }
+        public int PollenCrits { get; set; }
+        public double PollenBurn { get; set; }
+        public int PollenBurnTicks { get; set; }
+        public double PollenBurnCarry { get; set; }
+        public long PollenShakes { get; set; }
+        public double MothWakeSeconds { get; set; }
+        public int MothClockTicks { get; set; }
 
         public double GoldMultiplier => GoldTicks > 0 ? 1 + ElixirGold : 1;
 

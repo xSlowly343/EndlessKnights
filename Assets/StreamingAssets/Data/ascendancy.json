@@ -1002,223 +1002,70 @@
     {
       "id": "mothcaller_trait_1",
       "class": "mothcaller",
-      "name": {"ru": "Рой", "en": "Рой"},
-      "blurb": "Каждый удар выпускает мотылька, до 50. Мотыльки пьют свет врага: урон за секунду за каждого. Враг умирает — половина роя перелетает на следующего, половина рассеивается",
+      "name": {"ru": "Рой", "en": "Swarm"},
+      "blurb": "Каждый удар выпускает мотылька, до 50. Мотыльки пьют свет врага: весь рой бьёт раз в секунду, сила растёт с каждым мотыльком. Враг умирает — половина роя перелетает на следующего, половина рассеивается. В паузе мотыльки продолжают пить врага, новые не вылетают. Скилл Пути «Выпустить рой» выпускает 20 мотыльков и бьёт всем роем",
       "trait": {
-        "partyText": {"ru": "Рой отвлекает врага: регенерация боссов −20%", "en": "Рой отвлекает врага: регенерация боссов −20%"},
+        "partyText": {"ru": "Остаток роя союзнику: половина роя, которая рассеивается, садится к союзнику, добившему врага, и 10 с пьёт его следующего врага; мотыльки видны на его полоске", "en": "The rest of the swarm for an ally: the half that would scatter settles with the ally who finished the enemy and drinks their next enemy for 10 s; the moths show on their bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.025}]},
+          {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.003}]},
+          {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.003}]},
+          {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.003}]},
+          {"modifiers": [{"stat": "swarmGolden", "kind": "flat", "value": 1}], "text": {"ru": "Золотой мотылёк: каждый 10-й мотылёк золотой и бьёт втрое", "en": "Golden Moth: every 10th moth is golden and strikes three times as hard"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "mothcaller_trait_1_f45a",
-                "name": {"ru": "перелетает 75% роя", "en": "перелетает 75% роя"},
-                "text": {"ru": "перелетает 75% роя", "en": "перелетает 75% роя"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "mothcaller_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "mothcaller_trait_1_f60a",
-                "name": {"ru": "потолок 80", "en": "потолок 80"},
-                "text": {"ru": "потолок 80", "en": "потолок 80"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "mothcaller_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "mothcaller_trait_1_f75a",
-                "name": {"ru": "каждый 10-й мотылёк — золотой, он втрое сильнее", "en": "каждый 10-й мотылёк — золотой, он втрое сильнее"},
-                "text": {"ru": "каждый 10-й мотылёк — золотой, он втрое сильнее", "en": "каждый 10-й мотылёк — золотой, он втрое сильнее"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "mothcaller_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "mothcaller_trait_1_f45a", "name": {"ru": "Верный рой", "en": "Loyal Swarm"}, "text": {"ru": "75% роя перелетает на следующего врага, но в рое до 40 мотыльков", "en": "75% of the swarm moves to the next enemy, but the swarm holds up to 40 moths"}, "modifiers": [{"stat": "swarmKeep", "kind": "flat", "value": 1}, {"stat": "swarmMax", "kind": "flat", "value": -10}]}, {"id": "mothcaller_trait_1_f45b", "name": {"ru": "Быстрые крылья", "en": "Quick Wings"}, "text": {"ru": "Удар выпускает двух мотыльков, но со смертью врага рассеивается весь рой", "en": "A hit releases two moths, but the whole swarm scatters when the enemy dies"}, "modifiers": [{"stat": "swarmDouble", "kind": "flat", "value": 1}, {"stat": "swarmNoCarry", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "mothcaller_trait_1_f60a", "name": {"ru": "Туча", "en": "Cloud"}, "text": {"ru": "До 80 мотыльков, но каждый на 25% слабее", "en": "Up to 80 moths, but each is 25% weaker"}, "modifiers": [{"stat": "swarmMax", "kind": "flat", "value": 30}, {"stat": "swarmPower", "kind": "more", "value": -0.25}]}, {"id": "mothcaller_trait_1_f60b", "name": {"ru": "Жадные мотыльки", "en": "Greedy Moths"}, "text": {"ru": "На боссе рой пьёт вдвое, но мотыльки на 20% слабее", "en": "On a boss the swarm drinks twice as hard, but moths are 20% weaker"}, "modifiers": [{"stat": "swarmBoss", "kind": "flat", "value": 1}, {"stat": "swarmPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 75, "options": [{"id": "mothcaller_trait_1_f75a", "name": {"ru": "Лунное облако", "en": "Moon Cloud"}, "text": {"ru": "Рой задевает и врагов очереди вполсилы, но на 20% слабее", "en": "The swarm also hits the queued enemies at half strength, but 20% weaker"}, "modifiers": [{"stat": "swarmQueue", "kind": "flat", "value": 1}, {"stat": "swarmPower", "kind": "more", "value": -0.2}]}, {"id": "mothcaller_trait_1_f75b", "name": {"ru": "Голодный рой", "en": "Hungry Swarm"}, "text": {"ru": "Мотыльки на 50% сильнее, но рой теряет мотылька каждую секунду", "en": "Moths are 50% stronger, but the swarm loses a moth every second"}, "modifiers": [{"stat": "swarmPower", "kind": "more", "value": 0.5}, {"stat": "swarmDecay", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [{"id": "mothcaller_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Рой", "en": "Рой"}, "modifiers": []}],
+      "nodes": [{"id": "mothcaller_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Рой", "en": "Swarm"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "mothcaller_trait_2",
       "class": "mothcaller",
-      "name": {"ru": "Пыльца", "en": "Пыльца"},
-      "blurb": "Мотыльки осыпают пыльцой союзников: +1% урона отряда за каждые 2 мотылька. Сама Мотылица от своего роя урона не получает",
+      "name": {"ru": "Пыльца", "en": "Pollen"},
+      "blurb": "Мотыльки (до 50, по одному за удар) не бьют, а осыпают пыльцой: каждую секунду на героя оседает пыльца по числу мотыльков. Крит стряхивает всю пыльцу во врага — урон со временем за 4 с. Сама Мотылица от своего роя урона не получает. В паузе пыльца лежит и ждёт крита. Скилл Пути «Облако пыльцы» выпускает 20 мотыльков",
       "trait": {
-        "partyText": {"ru": "Это вклад целиком: Мотылица — «батарейка» отряда", "en": "Это вклад целиком: Мотылица — «батарейка» отряда"},
+        "partyText": {"ru": "Пыльца на союзнике: пыльца копится на каждом союзнике счётчиком, его крит стряхивает её во врага уроном со временем от его урона", "en": "Pollen on an ally: pollen builds up on every ally as a counter, and their crit shakes it into the enemy as damage over time from their damage"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "pollenPower", "kind": "flat", "value": 0.025}]},
+          {"modifiers": [{"stat": "pollenPower", "kind": "flat", "value": 0.003}]},
+          {"modifiers": [{"stat": "pollenPower", "kind": "flat", "value": 0.003}]},
+          {"modifiers": [{"stat": "pollenPower", "kind": "flat", "value": 0.003}]},
+          {"modifiers": [{"stat": "pollenQueue", "kind": "flat", "value": 1}], "text": {"ru": "Пыльный след: стряхнутая пыльца задевает и врагов очереди", "en": "Dusty Trail: shaken pollen also hits the queued enemies"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "mothcaller_trait_2_f45a",
-                "name": {"ru": "пыльца также +0,5% шанса крита за 5 мотыльков", "en": "пыльца также +0,5% шанса крита за 5 мотыльков"},
-                "text": {"ru": "пыльца также +0,5% шанса крита за 5 мотыльков", "en": "пыльца также +0,5% шанса крита за 5 мотыльков"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "mothcaller_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "mothcaller_trait_2_f60a",
-                "name": {"ru": "пыльца держится 5 с после роспуска роя", "en": "пыльца держится 5 с после роспуска роя"},
-                "text": {"ru": "пыльца держится 5 с после роспуска роя", "en": "пыльца держится 5 с после роспуска роя"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "mothcaller_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "mothcaller_trait_2_f75a",
-                "name": {
-                  "ru": "союзник, ударивший 100 раз подряд, получает своего мотылька",
-                  "en": "союзник, ударивший 100 раз подряд, получает своего мотылька"
-                },
-                "text": {
-                  "ru": "союзник, ударивший 100 раз подряд, получает своего мотылька",
-                  "en": "союзник, ударивший 100 раз подряд, получает своего мотылька"
-                },
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "mothcaller_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "mothcaller_trait_2_f45a", "name": {"ru": "Густая пыльца", "en": "Thick Pollen"}, "text": {"ru": "Пыльца копится на 30% быстрее, но мотыльков до 35", "en": "Pollen builds up 30% faster, but there are up to 35 moths"}, "modifiers": [{"stat": "pollenPower", "kind": "more", "value": 0.3}, {"stat": "swarmMax", "kind": "flat", "value": -15}]}, {"id": "mothcaller_trait_2_f45b", "name": {"ru": "Тяжёлая пыльца", "en": "Heavy Pollen"}, "text": {"ru": "Пыльца вдвое сильнее, но стряхивается только каждым вторым критом", "en": "Pollen is twice as strong, but only every second crit shakes it off"}, "modifiers": [{"stat": "pollenHeavy", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "mothcaller_trait_2_f60a", "name": {"ru": "Сухая пыльца", "en": "Dry Pollen"}, "text": {"ru": "Пыльца сгорает за 2 с, но на 15% слабее", "en": "Pollen burns out in 2 s, but is 15% weaker"}, "modifiers": [{"stat": "pollenFast", "kind": "flat", "value": 1}, {"stat": "pollenPower", "kind": "more", "value": -0.15}]}, {"id": "mothcaller_trait_2_f60b", "name": {"ru": "Лунная пыльца", "en": "Moon Pollen"}, "text": {"ru": "Стряхнувший пыльцу получает 5 ресурса, но пыльца на 10% слабее", "en": "Whoever shakes the pollen off gets 5 resource, but pollen is 10% weaker"}, "modifiers": [{"stat": "pollenLight", "kind": "flat", "value": 1}, {"stat": "pollenPower", "kind": "more", "value": -0.1}]}]},
+          {"level": 75, "options": [{"id": "mothcaller_trait_2_f75a", "name": {"ru": "Облако на двоих", "en": "Cloud for Two"}, "text": {"ru": "В отряде пыльца оседает на двоих союзниках по очереди вдвое гуще, в соло — на 40% гуще; но мотыльков до 40", "en": "In a party pollen settles on two allies in turn twice as thick, solo 40% thicker; but there are up to 40 moths"}, "modifiers": [{"stat": "pollenTwo", "kind": "flat", "value": 1}, {"stat": "swarmMax", "kind": "flat", "value": -10}]}, {"id": "mothcaller_trait_2_f75b", "name": {"ru": "Ядовитое облако", "en": "Poison Cloud"}, "text": {"ru": "Пыльца на 40% сильнее, но мотыльков до 30", "en": "Pollen is 40% stronger, but there are up to 30 moths"}, "modifiers": [{"stat": "pollenPower", "kind": "more", "value": 0.4}, {"stat": "swarmMax", "kind": "flat", "value": -20}]}]}
         ]
       },
-      "nodes": [{"id": "mothcaller_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Пыльца", "en": "Пыльца"}, "modifiers": []}],
+      "nodes": [{"id": "mothcaller_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Пыльца", "en": "Pollen"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "mothcaller_trait_3",
       "class": "mothcaller",
-      "name": {"ru": "Ночная бабочка", "en": "Ночная бабочка"},
-      "blurb": "Жёсткий обмен: вместо роя мотыльки сливаются в одну огромную бабочку. Она не копится от ударов, а оживает раз в 30 с на 8 с, и бьёт как весь рой разом ×3",
+      "name": {"ru": "Ночная бабочка", "en": "Night Moth"},
+      "blurb": "Жёсткий обмен: вместо роя мотыльки сливаются в одну огромную бабочку. Она не копится от ударов, а оживает раз в 30 с на 8 с и каждую секунду бьёт как весь рой. В паузе бабочка просыпается так же. Скилл Пути «Пробуждение бабочки» будит её сразу",
       "trait": {
-        "partyText": {"ru": "На время бабочки по врагу +25% урона от всех", "en": "На время бабочки по врагу +25% урона от всех"},
+        "partyText": {"ru": "Будит общая серия: каждая секунда, когда весь отряд бьёт без пауз, приближает пробуждение бабочки ещё на секунду; отсчёт до пробуждения виден у союзника", "en": "A shared streak wakes it: every second the whole party hits without pauses brings the moth's waking another second closer; the countdown shows on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 5}]},
+          {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
+          {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
+          {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
+          {"modifiers": [{"stat": "mothTime", "kind": "flat", "value": 1}], "text": {"ru": "Бабочка уносит секунду: каждое пробуждение на боссе добавляет 1 с к таймеру", "en": "The Moth Takes a Second: every waking on a boss adds 1 s to the timer"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "mothcaller_trait_3_f45a",
-                "name": {"ru": "бабочка живёт 10 с", "en": "бабочка живёт 10 с"},
-                "text": {"ru": "бабочка живёт 10 с", "en": "бабочка живёт 10 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "mothcaller_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "mothcaller_trait_3_f60a",
-                "name": {"ru": "раз в 25 с", "en": "раз в 25 с"},
-                "text": {"ru": "раз в 25 с", "en": "раз в 25 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "mothcaller_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "mothcaller_trait_3_f75a",
-                "name": {"ru": "бабочка уносит с собой 1 с таймера босса", "en": "бабочка уносит с собой 1 с таймера босса"},
-                "text": {"ru": "бабочка уносит с собой 1 с таймера босса", "en": "бабочка уносит с собой 1 с таймера босса"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "mothcaller_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "mothcaller_trait_3_f45a", "name": {"ru": "Долгий полёт", "en": "Long Flight"}, "text": {"ru": "Бабочка летает 10 с, но бьёт на 15% слабее", "en": "The moth flies 10 s, but strikes 15% weaker"}, "modifiers": [{"stat": "mothSeconds", "kind": "flat", "value": 2}, {"stat": "mothPower", "kind": "more", "value": -0.15}]}, {"id": "mothcaller_trait_3_f45b", "name": {"ru": "Чуткий сон", "en": "Light Sleep"}, "text": {"ru": "Просыпается раз в 25 с, но летает 6 с", "en": "Wakes every 25 s, but flies 6 s"}, "modifiers": [{"stat": "mothEvery", "kind": "flat", "value": -5}, {"stat": "mothSeconds", "kind": "flat", "value": -2}]}]},
+          {"level": 60, "options": [{"id": "mothcaller_trait_3_f60a", "name": {"ru": "Крылья бури", "en": "Storm Wings"}, "text": {"ru": "Бабочка бьёт и врагов очереди вполсилы, но на 20% слабее", "en": "The moth also hits the queued enemies at half strength, but 20% weaker"}, "modifiers": [{"stat": "mothQueue", "kind": "flat", "value": 1}, {"stat": "mothPower", "kind": "more", "value": -0.2}]}, {"id": "mothcaller_trait_3_f60b", "name": {"ru": "Сон до босса", "en": "Sleep until the Boss"}, "text": {"ru": "Бабочка просыпается сразу при появлении босса, но по обычным врагам на 30% слабее", "en": "The moth wakes as soon as a boss appears, but is 30% weaker against ordinary enemies"}, "modifiers": [{"stat": "mothBoss", "kind": "flat", "value": 1}]}]},
+          {"level": 75, "options": [{"id": "mothcaller_trait_3_f75a", "name": {"ru": "Пыльца крыльев", "en": "Wing Dust"}, "text": {"ru": "Пока бабочка летает, удары Мотылицы на 50% сильнее, но бабочка на 20% слабее", "en": "While the moth flies, the Mothcaller's hits are 50% stronger, but the moth is 20% weaker"}, "modifiers": [{"stat": "mothStrike", "kind": "flat", "value": 1}, {"stat": "mothPower", "kind": "more", "value": -0.2}]}, {"id": "mothcaller_trait_3_f75b", "name": {"ru": "Вечная ночь", "en": "Endless Night"}, "text": {"ru": "Бабочка не засыпает, пока отряд бьёт без пауз, но бьёт вдвое слабее", "en": "The moth does not fall asleep while the party hits without pauses, but strikes half as hard"}, "modifiers": [{"stat": "mothNight", "kind": "flat", "value": 1}, {"stat": "mothPower", "kind": "more", "value": -0.5}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "mothcaller_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Ночная бабочка", "en": "Ночная бабочка"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "mothcaller_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Ночная бабочка", "en": "Night Moth"}, "modifiers": []}],
       "links": []
     },
     {

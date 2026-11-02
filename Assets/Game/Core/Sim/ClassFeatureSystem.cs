@@ -47,7 +47,7 @@ namespace Game.Core.Sim
 
         private void Bonds()
         {
-            _state.BondsUp = _state.Is(HeroClass.Mothcaller) && Rules.Bonds.AuraDuration > 0 && _state.Resource > Rules.Bonds.ResourceAbove;
+            _state.BondsUp = _state.Is(HeroClass.Mothcaller) && !_combat.Mothcaller.Traited && Rules.Bonds.AuraDuration > 0 && _state.Resource > Rules.Bonds.ResourceAbove;
             var share = BondShare;
             if (share == _bondShare)
                 return;

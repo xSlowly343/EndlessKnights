@@ -433,6 +433,7 @@ namespace Game.Core.Party
                 _loop.Combat.Dowser.AddAllyHits(allyHits);
                 _loop.Combat.Soulbinder.AddAllyHits(allyHits);
             }
+            _loop.State.PartyAllHitting = InParty && AllAlliesHitting(state);
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 if (slot != _ownSlot && InParty)
@@ -542,6 +543,7 @@ namespace Game.Core.Party
             RewardDream(killed);
             if (TopContributor(killed))
                 _loop.Combat.Dowser.OnTopKill();
+            _loop.Combat.Mothcaller.OnPartyKill(TopSlot(killed), _ownSlot);
         }
 
         private void EndLocalEnemy(bool bossFailed) => EndLocalEnemy(bossFailed, LocallyPaid());
@@ -976,6 +978,18 @@ namespace Game.Core.Party
                 case TraitRelayKind.ParrotCall:
                     _loop.Combat.Ghostcaptain.ReceiveParrotCall(relay.From);
                     break;
+                case TraitRelayKind.SwarmGift:
+                    boons.GiftMoths = relay.Count;
+                    boons.GiftPower = relay.Value;
+                    boons.GiftTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.Pollen:
+                    MothcallerMechanics.LandPollen(boons, relay.Value, relay.Seconds, relay.Extra, relay.Every, relay.Count, relay.From, relay.Max);
+                    break;
+                case TraitRelayKind.MothClock:
+                    boons.MothWakeSeconds = relay.Value;
+                    boons.MothClockTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
                 case TraitRelayKind.ParrotPerch:
                     boons.ParrotOwner = relay.From;
                     boons.ParrotPower = relay.Value;
@@ -1103,6 +1117,31 @@ namespace Game.Core.Party
                 return;
             _lastPullTick = _tick;
             SendToHost(PartyCodec.Encode(_out, new NetPullMessage { EffectId = DreamcatcherMechanics.NetEffect, Seconds = (float)rules.NetPullSeconds }));
+        }
+
+        private static int TopSlot(in EnemyKilledMessage killed)
+        {
+            var top = -1;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (killed.Contribution(slot) > 0 && (top < 0 || killed.Contribution(slot) > killed.Contribution(top)))
+                    top = slot;
+            }
+            return top;
+        }
+
+        private bool AllAlliesHitting(in EncounterStateMessage state)
+        {
+            var any = false;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (slot == _ownSlot || Roster.Player(slot) == 0 || Roster.Presence(slot) != PartyPresence.Fighting)
+                    continue;
+                if (!(state.Recent(slot) > 0))
+                    return false;
+                any = true;
+            }
+            return any;
         }
 
         private bool TopContributor(in EnemyKilledMessage killed)
