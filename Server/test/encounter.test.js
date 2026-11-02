@@ -21,7 +21,7 @@ function run(encounter, step) {
     case "damage": return encounter.applyDamage(step.slot, step.enemyId, step.share);
     case "effect": return encounter.applyEnemyEffect(step.id, step.damageTaken, step.seconds, step.owner, step.timerSlow);
     case "endEffect": return encounter.endEnemyEffect(step.id, step.owner);
-    case "repeat": return encounter.repeatRecent(step.slot, step.seconds);
+    case "repeat": return encounter.repeatRecent(step.slot, step.seconds, step.loopShare || 0);
     case "requestBoss": return encounter.requestBossFight();
     case "relayTarget": return encounter.relayTarget(step.slot);
     case "stage": return encounter.setStage(step.slot, step.stage);

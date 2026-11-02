@@ -448,7 +448,14 @@ namespace Game.Core.Content.Gems
                         Knots = node.HasField("knots") ? node.Field("knots").AsInt(0, 7) : 0,
                         Seventh = node.HasField("seventh") && node.Field("seventh").AsBool(),
                         NameHits = node.HasField("nameHits") ? node.Field("nameHits").AsInt(0, 100_000) : 0,
-                        Hush = node.HasField("hush") ? node.Field("hush").AsInt(0, 100) : 0
+                        Hush = node.HasField("hush") ? node.Field("hush").AsInt(0, 100) : 0,
+                        Wind = Number(node, "wind", 1000),
+                        WindHit = Number(node, "windHit", 1000),
+                        HoldSeconds = Number(node, "holdSeconds", 600),
+                        CutCooldowns = Number(node, "cutCooldowns", 600),
+                        WindBurst = Number(node, "windBurst", 100),
+                        Rewind = node.HasField("rewind") && node.Field("rewind").AsBool(),
+                        GearTick = node.HasField("gearTick") && node.Field("gearTick").AsBool()
                     };
                 case "aura":
                     return new AuraEffect(

@@ -459,7 +459,7 @@ class PartyHost {
         if (this.encounter.tick - this.lastRepeatTick[slot] < Math.max(1, partyTicks(this.config.repeatCooldownSeconds)))
             return;
         this.lastRepeatTick[slot] = this.encounter.tick;
-        const applied = this.encounter.repeatRecent(slot, Math.min(this.config.repeatMaxSeconds, effect.repeatSeconds));
+        const applied = this.encounter.repeatRecent(slot, Math.min(this.config.repeatMaxSeconds, effect.repeatSeconds), effect.strength);
         this.acceptedShares += applied;
         this.repeatedShares += applied;
         this.recentShares[slot] += applied;

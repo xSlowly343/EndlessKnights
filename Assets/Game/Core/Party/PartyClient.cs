@@ -287,6 +287,7 @@ namespace Game.Core.Party
                 ShareTraitTimer();
                 ShareTraitResource();
                 ShareTraitEffects();
+                ShareTraitLoop();
                 ShareTraitRelays();
                 ShareLight();
                 ShareSpiritCalls();
@@ -428,6 +429,7 @@ namespace Game.Core.Party
                 var allyHits = AllyHits(state);
                 _loop.Combat.Lanternbearer.AddAllyHits(allyHits);
                 _loop.Combat.Whisperer.AddAllyHits(allyHits);
+                _loop.Combat.Clockwright.AddAllyHits(allyHits);
             }
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
@@ -836,6 +838,21 @@ namespace Game.Core.Party
             effects.Clear();
         }
 
+        private void ShareTraitLoop()
+        {
+            var seconds = _loop.State.TraitLoopSeconds;
+            if (!(seconds > 0))
+                return;
+            _loop.State.TraitLoopSeconds = 0;
+            SendToHost(PartyCodec.Encode(_out, new CastEffectMessage
+            {
+                EffectId = ClockwrightMechanics.LoopEffect,
+                OnEnemy = true,
+                RepeatSeconds = seconds,
+                Strength = _loop.State.TraitLoopShare
+            }));
+        }
+
         private void ShareSpiritCalls()
         {
             var calls = _loop.State.TraitSpiritCalls;
@@ -873,6 +890,27 @@ namespace Game.Core.Party
                     break;
                 case TraitRelayKind.HushHit:
                     _loop.Combat.Whisperer.ReceiveHushHits(relay.Count);
+                    break;
+                case TraitRelayKind.Spring:
+                    boons.SpringWind = relay.Value;
+                    boons.SpringSlow = relay.Extra;
+                    boons.SpringTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.Loop:
+                    boons.LoopShare = relay.Value;
+                    boons.LoopTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    boons.LoopsSeen++;
+                    break;
+                case TraitRelayKind.Gears:
+                    boons.GearOwner = relay.From;
+                    boons.GearTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.Cog:
+                    _loop.Combat.Clockwright.ReceiveCog(relay.From);
+                    break;
+                case TraitRelayKind.GearTick:
+                    boons.GearCuts++;
+                    _loop.Combat.Clockwright.CutCooldowns(relay.Seconds, relay.Extra > 0);
                     break;
             }
         }

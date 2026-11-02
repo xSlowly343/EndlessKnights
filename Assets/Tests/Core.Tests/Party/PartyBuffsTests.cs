@@ -347,6 +347,31 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AClockwrightsLoopRepeatsAllyDamageAtTheHostAndHerSpringAndGearsReachTheAlly()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var clock = rig.Members[0];
+            var friend = rig.Members[1];
+            var repeated = rig.Host.RepeatedShares;
+            clock.Loop.State.TraitLoopSeconds = 5;
+            clock.Loop.State.TraitLoopShare = 0.5;
+            clock.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Spring, To = TraitRelay.AllSlots, Value = 0.8, Seconds = 3, Extra = 0.3 });
+            clock.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Gears, To = TraitRelay.AllSlots, Seconds = 30 });
+            rig.Run(0.5);
+
+            Assert.That(rig.Host.RepeatedShares, Is.GreaterThan(repeated));
+            Assert.That(clock.Loop.State.TraitLoopSeconds, Is.Zero);
+            Assert.That(friend.Loop.State.Boons.SpringWind, Is.EqualTo(0.8).Within(1e-6));
+            Assert.That(friend.Loop.State.Boons.GearOwner, Is.EqualTo(clock.Client.OwnSlot));
+
+            var cuts = friend.Loop.State.Boons.GearCuts;
+            clock.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.GearTick, To = TraitRelay.AllSlots, Seconds = 2 });
+            rig.Run(0.3);
+            Assert.That(friend.Loop.State.Boons.GearCuts, Is.EqualTo(cuts + 1));
+        }
+
+        [Test]
         public void AWhisperersKnotsReachTheHostAndHerWhisperAndNameCallReachTheAlly()
         {
             var rig = new Rig(2);

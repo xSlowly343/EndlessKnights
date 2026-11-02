@@ -21,7 +21,7 @@
       "runedancer": { "perKey": 2, "decay": { "perSecond": 10, "afterKeylessSeconds": 10, "mouseHolds": true } },
       "minstrel": { "perKey": 1 },
       "whisperer": { "perKey": 0.5, "perSecond": 1 },
-      "clockwright": { "perKey": 0.1, "mousePxPerPoint": 1000, "perFastKillSecond": 5 },
+      "clockwright": { "perKey": 0.5, "mousePxPerPoint": 1000, "perFastKillSecond": 5 },
       "ghostcaptain": { "perKey": 0.3333 },
       "alchemist": { "perKey": 1 },
       "soulbinder": { "perKey": 0.1, "perKill": 5 },
@@ -95,7 +95,12 @@
       "song": { "hits": 40, "hitsMin": 5, "partyCooldown": 0.5, "partyCrit": 0.2, "soloMultiplier": 2, "allEverySeconds": 30, "allSeconds": 5, "allMultiplier": 2, "gift": 10 },
       "lullaby": { "noteHits": 20, "noteHitsMin": 4, "notes": 7, "notesMin": 2, "seconds": 4, "secondsMin": 1, "bossSeconds": 8 }
     },
-    "clockwright": { "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 } },
+    "clockwright": {
+      "clockwork": { "resourceAbove": 50, "slow": 0.1, "floor": 0.25 },
+      "spring": { "low": 0.1, "penalty": 0.1, "drainPerSecond": 1, "windPerHit": 0.5, "allyWind": 0.1, "fullAbove": 0.95, "fullSlow": 0.15, "strike": 0.2, "relaySeconds": 3, "burstEverySeconds": 30, "burstPerWind": 0.2 },
+      "loop": { "everySeconds": 40, "everySecondsMin": 10, "windowSeconds": 5, "windowMax": 7, "solo": 0.5, "twice": 0.5, "stopSeconds": 3 },
+      "gears": { "hits": 60, "hitsMin": 10, "own": 2, "ownSoft": 1.5, "meshSeconds": 1.5, "meshCooldownSeconds": 5, "resource": 5, "resetEvery": 10, "callSeconds": 30, "idleSeconds": 10 }
+    },
     "mothcaller": { "bonds": { "resourceAbove": 30, "auraDuration": 0.5 } },
     "cartomancer": { "cold": { "perKeyHit": 1, "max": 100, "fadePerSecond": 0.05, "damageTaken": 0.2 } },
     "herbwitch": { "blood": { "perThousandPx": 3, "max": 30, "hitsPerStack": 0.2 } },

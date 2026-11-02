@@ -100,7 +100,7 @@ namespace Game.Core.Sim
 
         private void Clockwork()
         {
-            var running = _state.Is(HeroClass.Clockwright) && _rules.ClockworkSlow > 0
+            var running = _state.Is(HeroClass.Clockwright) && _rules.ClockworkSlow > 0 && _hero.Value(ClockwrightStats.SpringPower, 0) <= 0
                 && _state.Resource > _rules.ClockworkAbove + _hero.Value(CombatStats.ClockworkAbove, 0);
             _state.ClockworkSlow = running ? System.Math.Min(1, _rules.ClockworkSlow + System.Math.Max(0, _hero.Value(CombatStats.ClockworkSlow, 0))) : 0;
             _state.ClockworkFloor = _rules.ClockworkFloor;

@@ -61,7 +61,7 @@
     { "group": "weapons", "id": "dream_hoop", "source": "lorc/crystal-ball", "attribute": "green" },
     { "group": "weapons", "id": "lantern_staff", "source": "lorc/flying-flag", "attribute": "red" },
     { "group": "weapons", "id": "voodoo_doll", "source": "lorc/voodoo-doll", "attribute": "blue" },
-    { "group": "weapons", "id": "pendulum", "source": "delapouite/pendulum-swing", "attribute": "blue" },
+    { "group": "weapons", "id": "pocket_watch", "source": "delapouite/pendulum-swing", "attribute": "blue" },
     { "group": "weapons", "id": "syringe_cane", "source": "lorc/syringe", "attribute": "red" },
     { "group": "weapons", "id": "still_burner", "source": "lorc/potion-ball", "attribute": "blue" },
     { "group": "weapons", "id": "shovel", "source": "lorc/spade", "attribute": "blue" },

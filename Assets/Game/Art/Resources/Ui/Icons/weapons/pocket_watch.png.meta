@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 216919433217661169
-    second: pendulum_0
+    second: pocket_watch_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pendulum_0
+      name: pocket_watch_0
       rect:
         serializedVersion: 2
         x: 6

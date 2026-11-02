@@ -311,6 +311,7 @@ namespace Game.Core.Tests.Sim
                 .Concat(typeof(DreamcatcherStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Concat(typeof(LanternbearerStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Concat(typeof(WhispererStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+                .Concat(typeof(ClockwrightStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Where(field => field.FieldType == typeof(StatId))
                 .Select(field => ((StatId)field.GetValue(null)!).Name)
                 .ToHashSet();

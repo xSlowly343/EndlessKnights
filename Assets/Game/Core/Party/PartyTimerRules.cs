@@ -4,8 +4,9 @@ namespace Game.Core.Party
 {
     public sealed class PartyTimerRules
     {
-        private PartyTimerRules(double minBossRate, double repeatMaxSeconds, double repeatCooldownSeconds, double sharedRate, int sharedFighters)
+        private PartyTimerRules(double minBossRate, double repeatMaxSeconds, double repeatCooldownSeconds, double sharedRate, int sharedFighters, double loopShareMax)
         {
+            LoopShareMax = loopShareMax;
             MinBossRate = minBossRate;
             SharedRate = sharedRate;
             SharedFighters = sharedFighters;
@@ -18,12 +19,14 @@ namespace Game.Core.Party
         public double RepeatCooldownSeconds { get; }
         public double SharedRate { get; }
         public int SharedFighters { get; }
+        public double LoopShareMax { get; }
 
         public static PartyTimerRules Read(ContentNode node) => new PartyTimerRules(
             node.Field("minBossRate").AsNumber(0, 1),
             node.Field("repeatMaxSeconds").AsNumber(0.1, PartyEncounter.MaxRepeatSeconds),
             node.Field("repeatCooldownSeconds").AsNumber(1, 600),
             node.Field("sharedRate").AsNumber(0, 1),
-            node.Field("sharedFighters").AsInt(2, PartyRules.MaxSlots));
+            node.Field("sharedFighters").AsInt(2, PartyRules.MaxSlots),
+            node.HasField("loopShareMax") ? node.Field("loopShareMax").AsNumber(0, 10) : 2);
     }
 }

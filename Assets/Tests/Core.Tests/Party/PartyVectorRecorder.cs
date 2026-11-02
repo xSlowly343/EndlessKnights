@@ -57,8 +57,8 @@ namespace Game.Core.Tests.Party
         public bool EndEffect(int id, int owner) =>
             Record($"\"op\": \"endEffect\", \"id\": {id}, \"owner\": {owner}", () => _encounter.EndEnemyEffect(id, owner));
 
-        public double Repeat(int slot, double seconds) =>
-            Record($"\"op\": \"repeat\", \"slot\": {slot}, \"seconds\": {Number(seconds)}", () => _encounter.RepeatRecent(slot, seconds));
+        public double Repeat(int slot, double seconds, double loopShare = 0) =>
+            Record($"\"op\": \"repeat\", \"slot\": {slot}, \"seconds\": {Number(seconds)}, \"loopShare\": {Number(loopShare)}", () => _encounter.RepeatRecent(slot, seconds, loopShare));
 
         public bool ProposeWorld(PartyWorld world, long riftId) =>
             Record($"\"op\": \"proposeWorld\", \"world\": {(int)world}, \"riftId\": {riftId}", () => _encounter.ProposeWorld(world, riftId));
