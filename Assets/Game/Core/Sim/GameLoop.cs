@@ -52,7 +52,6 @@ namespace Game.Core.Sim
         private readonly WeaponSystem _weapons;
         private readonly DropSystem _drops;
         private readonly OverloadSystem _overload;
-        private readonly ClassFeatureSystem _features;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
         private readonly GearSystem _gear;
@@ -124,7 +123,6 @@ namespace Game.Core.Sim
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades, hero);
             _book = new SkillBook(data.SkillBook, state, _skills, hero);
-            _features = new ClassFeatureSystem(state, hero, _combat, _resource, _skills);
             _paths = new PathSystem(state, hero, _combat, _resource, _skills);
             _skills.Levels = data.Gems.Levels;
             _gemExperience = new GemExperienceSystem(data.Gems.Levels, state, hero, _skills, Events);
@@ -183,7 +181,6 @@ namespace Game.Core.Sim
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public OverloadSystem Overload => _overload;
-        public ClassFeatureSystem Features => _features;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
         public GameData Data => _data;
@@ -786,7 +783,6 @@ namespace Game.Core.Sim
             CountIdle();
             _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
-            _features.Tick();
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
             CastRequested();
@@ -805,7 +801,6 @@ namespace Game.Core.Sim
             _combat.Tick(input);
             _skills.Minions.Tick(input);
             _skills.Dots.Tick(input);
-            _features.Bleed(input);
             _overload.Tick();
             _paths.Tick(input);
             _spirits.Tick(input);

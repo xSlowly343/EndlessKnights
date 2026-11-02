@@ -163,7 +163,7 @@ namespace Game.Core.Tests.Party
             var loop = Hero(HeroClass.Ghostcaptain);
             loop.State.PoisonStacks = 3;
             loop.State.BurnStacks = 2;
-            loop.State.Minions[1] = new MinionState { Kind = MinionKind.Cannon, TicksLeft = 1000 };
+            loop.State.Minions[1] = new MinionState { Kind = MinionKind.Skeleton, TicksLeft = 1000 };
 
             loop.Synergy.Tick();
 

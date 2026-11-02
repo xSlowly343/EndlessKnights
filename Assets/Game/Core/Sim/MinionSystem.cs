@@ -11,31 +11,23 @@ namespace Game.Core.Sim
         private readonly GameState _state;
         private readonly StatSheet _hero;
         private readonly CombatSystem _combat;
-        private readonly ResourceSystem _resource;
         private readonly DotSystem _dots;
 
-        public MinionSystem(GameState state, StatSheet hero, CombatSystem combat, ResourceSystem resource, DotSystem dots)
+        public MinionSystem(GameState state, StatSheet hero, CombatSystem combat, DotSystem dots)
         {
             _state = state;
             _hero = hero;
             _combat = combat;
-            _resource = resource;
             _dots = dots;
         }
 
-        public long CannonShots { get; private set; }
         public long SkeletonHits { get; private set; }
         public long BeastHits { get; private set; }
-        public long GolemHits { get; private set; }
 
         public int Limit(MinionKind kind)
         {
-            if (kind == MinionKind.Golem)
-                return 1;
-            var limit = kind == MinionKind.Cannon
-                ? _combat.Cannons.Max + _hero.Value(CombatStats.CannonCount, 0)
-                : Rules(kind).Max + _hero.Value(CombatStats.MinionCount, 0, StatTags.Minion)
-                    + (kind == MinionKind.Beast ? _hero.Value(CombatStats.BeastCount, 0, StatTags.Minion) : 0);
+            var limit = Rules(kind).Max + _hero.Value(CombatStats.MinionCount, 0, StatTags.Minion)
+                + (kind == MinionKind.Beast ? _hero.Value(CombatStats.BeastCount, 0, StatTags.Minion) : 0);
             return System.Math.Min(Capacity, (int)System.Math.Max(0, System.Math.Round(limit)));
         }
 
@@ -86,7 +78,7 @@ namespace Game.Core.Sim
 
         private void Explode(in MinionState minion)
         {
-            if (minion.Kind == MinionKind.Cannon || minion.Hits <= 0)
+            if (minion.Hits <= 0)
                 return;
             var share = _hero.Value(CombatStats.MinionExplode, 0, StatTags.Minion);
             if (share > 0)
@@ -101,14 +93,13 @@ namespace Game.Core.Sim
 
         public void Tick(in EffectiveInput input)
         {
-            Broadside(input);
             var speed = System.Math.Max(0, _hero.Value(CombatStats.MinionSpeed, 1, StatTags.Minion));
             var minions = _state.Minions;
             for (var i = 0; i < minions.Length; i++)
             {
                 if (!minions[i].Standing)
                     continue;
-                var kindSpeed = minions[i].Kind != MinionKind.Cannon && minions[i].Kind != MinionKind.Golem && input.MousePx > 0 ? speed * Rules(minions[i].Kind).MouseSpeed : speed;
+                var kindSpeed = input.MousePx > 0 ? speed * Rules(minions[i].Kind).MouseSpeed : speed;
                 if (input.MousePx > 0 && minions[i].MouseBonus > 0)
                     kindSpeed *= minions[i].MouseBonus;
                 minions[i].HitCarry += minions[i].HitsPerSecond * kindSpeed * GameLoop.TickSeconds;
@@ -128,8 +119,6 @@ namespace Game.Core.Sim
         {
             if (_state.FightingBoss)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.MinionBoss, 0, StatTags.Minion));
-            if (kind == MinionKind.Golem)
-                multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.GolemPower, 0, StatTags.Minion));
             _combat.SkillHit(_combat.BaseKeyDamage, multiplier, tags);
             var share = _hero.Value(CombatStats.MinionQueueShare, 0, StatTags.Minion);
             if (share > 0)
@@ -139,33 +128,6 @@ namespace Game.Core.Sim
                 SkeletonHits++;
             if (kind == MinionKind.Beast)
                 BeastHits++;
-            if (kind == MinionKind.Golem)
-                GolemStun();
-            if (kind != MinionKind.Cannon)
-                return;
-            CannonShots++;
-            _state.CannonShotsOnEnemy++;
-            FireShot();
-            CannonExtras(multiplier, tags);
-            _resource.Gain(_combat.Cannons.ResourcePerShot * _hero.Value(CombatStats.ResourceGain, 1));
-        }
-
-        private void GolemStun()
-        {
-            GolemHits++;
-            if (!_state.EnemyAlive)
-                return;
-            var seconds = _combat.Classes.Golem.StunSeconds + _hero.Value(CombatStats.StunSeconds, 0);
-            _state.StunTicks = System.Math.Max(_state.StunTicks, (int)System.Math.Round(seconds * GameLoop.TicksPerSecond));
-        }
-
-        private void FireShot()
-        {
-            if (!_state.Is(HeroClass.Ghostcaptain) || !_state.EnemyAlive)
-                return;
-            var stacks = _combat.Cannons.IgniteStacks + _hero.Value(CombatStats.CannonIgnite, 0, StatTags.Minion);
-            if (stacks > 0)
-                _dots.AddBurn(stacks);
         }
 
         private void Ignite()
@@ -175,49 +137,9 @@ namespace Game.Core.Sim
                 _dots.AddBurn(stacks);
         }
 
-        private void CannonExtras(double multiplier, StatTags tags)
-        {
-            var next = _hero.Value(CombatStats.CannonNextShare, 0, StatTags.Minion);
-            if (next > 0)
-                _state.QueueDamage[0] += _combat.SkillDamage(_combat.BaseKeyDamage, multiplier * next, tags);
-            if (_state.Barrels > 0)
-            {
-                _state.Barrels--;
-                _combat.SkillHit(_combat.BaseKeyDamage, _state.BarrelMultiplier, StatTags.Skill);
-            }
-            var every = (long)System.Math.Round(_hero.Value(CombatStats.CannonBarrelEvery, 0, StatTags.Minion));
-            if (every >= 1 && CannonShots % every == 0)
-                _combat.SkillHit(_combat.BaseKeyDamage, _hero.Value(CombatStats.CannonBarrelMultiplier, 0, StatTags.Minion), StatTags.Skill);
-        }
-
         private SummonEffect Fresh(MinionKind kind) => kind == MinionKind.Beast ? _combat.Paths.BeastOnKill : _combat.Paths.SkeletonOnKill;
 
         private MinionRules Rules(MinionKind kind) => kind == MinionKind.Beast ? _combat.Beasts : _combat.Skeletons;
-
-        private void Broadside(in EffectiveInput input)
-        {
-            if (!_state.Is(HeroClass.Ghostcaptain) || _combat.Ghostcaptain.Traited)
-                return;
-            var rules = _combat.Cannons;
-            _state.BroadsidePx += input.MousePx;
-            var every = System.Math.Max(rules.BroadsidePx * 0.25, rules.BroadsidePx + System.Math.Min(0, _hero.Value(CombatStats.VolleyPx, 0, StatTags.Mouse)));
-            while (_state.BroadsidePx >= every)
-            {
-                _state.BroadsidePx -= every;
-                _combat.SkillHit(_combat.BaseKeyDamage, rules.BroadsideBalls, StatTags.Skill | StatTags.Minion);
-                VolleyPierce(rules.BroadsideBalls);
-            }
-        }
-
-        private void VolleyPierce(double balls)
-        {
-            var targets = System.Math.Min(_state.QueueDamage.Length, (int)System.Math.Round(System.Math.Max(0, _hero.Value(CombatStats.VolleyPierce, 0))));
-            if (targets <= 0)
-                return;
-            var damage = _combat.SkillDamage(_combat.BaseKeyDamage, balls, StatTags.Skill | StatTags.Minion);
-            for (var i = 0; i < targets; i++)
-                _state.QueueDamage[i] += damage;
-        }
 
         private int FreeIndex()
         {

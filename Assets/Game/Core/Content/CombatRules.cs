@@ -5,14 +5,13 @@ namespace Game.Core.Content
         public const string FileName = "combat.json";
         public const int SupportedVersion = 2;
 
-        private CombatRules(double keyDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, ResourceRules resources, double critChance, double critMultiplier, ClassRules classes, OfflineRules offline, HeroRules hero, StrikeUpgradeRules strikeUpgrade, ConditionRules conditions, CurseRules curses, CannonRules cannons, DotRules dots, MinionRules skeletons, MinionRules beasts, PathRules paths, EncounterRules encounters)
+        private CombatRules(double keyDamage, double mouseDamage, double mousePxPerHit, FocusRules focus, ResourceRules resources, double critChance, double critMultiplier, ClassRules classes, OfflineRules offline, HeroRules hero, StrikeUpgradeRules strikeUpgrade, ConditionRules conditions, CurseRules curses, DotRules dots, MinionRules skeletons, MinionRules beasts, PathRules paths, EncounterRules encounters)
         {
             Paths = paths;
             Encounters = encounters;
             Skeletons = skeletons;
             Beasts = beasts;
             Dots = dots;
-            Cannons = cannons;
             KeyDamage = keyDamage;
             MouseDamage = mouseDamage;
             MousePxPerHit = mousePxPerHit;
@@ -42,7 +41,6 @@ namespace Game.Core.Content
         public StrikeUpgradeRules StrikeUpgrade { get; }
         public ConditionRules Conditions { get; }
         public CurseRules Curses { get; }
-        public CannonRules Cannons { get; }
         public DotRules Dots { get; }
         public MinionRules Skeletons { get; }
         public MinionRules Beasts { get; }
@@ -73,7 +71,6 @@ namespace Game.Core.Content
                 StrikeUpgradeRules.Read(root.Field("strikeUpgrade")),
                 ConditionRules.Read(root.Field("conditions")),
                 CurseRules.Read(root.Field("curses")),
-                CannonRules.Read(root.Field("cannons")),
                 DotRules.Read(root.Field("dots")),
                 MinionRules.Read(root.Field("skeletons")),
                 MinionRules.Read(root.Field("beasts")),

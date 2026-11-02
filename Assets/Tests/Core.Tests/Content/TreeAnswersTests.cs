@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Content
         {
             var avoid = TestWorld.Data.TreeTemplates.MajorTalentsAvoid;
 
-            Assert.That(avoid.Intersect(new[] { "resourcePerSecond", "minionCount", "cannonCount" }), Is.Empty);
+            Assert.That(avoid.Intersect(new[] { "resourcePerSecond", "minionCount" }), Is.Empty);
         }
     }
 }

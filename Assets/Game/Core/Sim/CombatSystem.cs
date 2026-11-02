@@ -115,7 +115,6 @@ namespace Game.Core.Sim
         public double BaseKeyDamage => _rules.KeyDamage;
         public CurseRules Curses => _rules.Curses;
         public ConditionRules Conditions => _rules.Conditions;
-        public CannonRules Cannons => _rules.Cannons;
         public DotRules Dots => _rules.Dots;
         public MinionRules Skeletons => _rules.Skeletons;
         public MinionRules Beasts => _rules.Beasts;
@@ -176,9 +175,6 @@ namespace Game.Core.Sim
             var longStreak = System.Math.Max(0, _hero.Value(CombatStats.DamageLongStreak, 1, tags));
             if (_state.InputStreakTicks * GameLoop.TickSeconds >= conditions.LongStreakSeconds)
                 multiplier *= longStreak;
-            var perShot = _hero.Value(CombatStats.CannonShotDamage, 0, tags);
-            if (perShot > 0 && _state.CannonShotsOnEnemy > 0)
-                multiplier *= 1 + System.Math.Min(System.Math.Max(0, _hero.Value(CombatStats.CannonShotDamageMax, 0, tags)), perShot * _state.CannonShotsOnEnemy);
             var perTenPoison = _hero.Value(CombatStats.DamagePerTenPoison, 0, tags);
             if (perTenPoison > 0)
                 multiplier *= 1 + perTenPoison * System.Math.Floor(_state.PoisonStacks / 10 + 1e-9);
@@ -202,8 +198,6 @@ namespace Game.Core.Sim
                 multiplier *= 1 + balance * Balance();
             if (_state.ActiveAuras > 0)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.DamagePerAura, 0, tags)) * _state.ActiveAuras;
-            if (!_state.SharedEnemy)
-                multiplier *= 1 + _class.ColdShare;
             if (_state.CompanionMarks > 0)
                 multiplier *= 1 + System.Math.Max(0, _hero.Value(CombatStats.CompanionPerMark, 0, tags)) * _state.CompanionMarks;
             if (_state.BlindTicks > 0)

@@ -18,14 +18,9 @@ namespace Game.Core.Sim
 
         public void UseRules(ClassRules rules) => _rules = rules;
 
-        private bool Traited =>
-            _hero.Value(CartomancerStats.SpreadPower, 0) > 0 || _hero.Value(CartomancerStats.ForecastPower, 0) > 0 || _hero.Value(CartomancerStats.ReversedPower, 0) > 0;
-
         public double OnKeyHit(out HitFlags flags)
         {
             flags = HitFlags.None;
-            if (_state.Is(HeroClass.Cartomancer) && !Traited)
-                return ColdHit();
             return 1;
         }
 
@@ -59,27 +54,6 @@ namespace Game.Core.Sim
                 _state.HunterMarkTicks = _state.EnemyAlive ? _state.HunterMarkTicks - 1 : 0;
         }
 
-        private double ColdHit()
-        {
-            if (_state.EnemyAlive)
-                _state.Cold = System.Math.Min(_rules.Cold.Max, _state.Cold + _rules.Cold.PerKeyHit);
-            return 1;
-        }
-
-        public double ColdShare => _state.Is(HeroClass.Cartomancer) && _state.EnemyAlive && _state.Cold > 0
-            ? _rules.Cold.DamageTaken * System.Math.Min(1, _state.Cold / _rules.Cold.Max)
-                * (1 + System.Math.Max(0, _hero.Value(CombatStats.ColdPower, 0))) * System.Math.Max(0, _hero.Value(CombatStats.EnemyDebuffEffect, 1))
-            : 0;
-
-        private void FadeCold()
-        {
-            if (_state.Cold <= 0)
-                return;
-            _state.Cold *= 1 - _rules.Cold.FadePerSecond * GameLoop.TickSeconds;
-            if (_state.Cold < 1e-6 || !_state.EnemyAlive)
-                _state.Cold = 0;
-        }
-
         public void EndTick(int keyHits, double mousePx)
         {
             if (_state.StunTicks > 0)
@@ -87,7 +61,6 @@ namespace Game.Core.Sim
             TickHunterMark();
             if (_state.BlindTicks > 0)
                 _state.BlindTicks = _state.EnemyAlive ? _state.BlindTicks - 1 : 0;
-            FadeCold();
         }
     }
 }

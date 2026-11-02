@@ -68,7 +68,6 @@ namespace Game.Core.Sim
         public static readonly StatId DamagePerTenPoison = new StatId("damagePerTenPoison");
         public static readonly StatId FastKillBankMax = new StatId("fastKillBankMax");
         public static readonly StatId BossTimerBank = new StatId("bossTimerBank");
-        public static readonly StatId CannonCount = new StatId("cannonCount");
         public static readonly StatId MinionSeconds = new StatId("minionSeconds");
         public static readonly StatId MinionSpeed = new StatId("minionSpeed");
         public static readonly StatId MinionCount = new StatId("minionCount");
@@ -151,11 +150,6 @@ namespace Game.Core.Sim
         public static readonly StatId GuardianHp = new StatId("guardianHp");
         public static readonly StatId ChestEvery = new StatId("chestEvery");
         public static readonly StatId ChestGold = new StatId("chestGold");
-        public static readonly StatId CannonNextShare = new StatId("cannonNextShare");
-        public static readonly StatId CannonShotDamage = new StatId("cannonShotDamage");
-        public static readonly StatId CannonShotDamageMax = new StatId("cannonShotDamageMax");
-        public static readonly StatId CannonBarrelEvery = new StatId("cannonBarrelEvery");
-        public static readonly StatId CannonBarrelMultiplier = new StatId("cannonBarrelMultiplier");
         public static readonly StatId MinionQueueShare = new StatId("minionQueueShare");
         public static readonly StatId RedGemEffect = new StatId("redGemEffect");
         public static readonly StatId GreenGemEffect = new StatId("greenGemEffect");
@@ -207,17 +201,10 @@ namespace Game.Core.Sim
         public static readonly StatId CompanionPerMark = new StatId("companionPerMark");
         public static readonly StatId CompanionLimit = new StatId("companionLimit");
         public static readonly StatId CompanionOwnMark = new StatId("companionOwnMark");
-        public static readonly StatId BondPower = new StatId("bondPower");
-        public static readonly StatId ColdPower = new StatId("coldPower");
-        public static readonly StatId BloodPower = new StatId("bloodPower");
-        public static readonly StatId GolemPower = new StatId("golemPower");
         public static readonly StatId OverloadAt = new StatId("overloadAt");
         public static readonly StatId OverloadBoss = new StatId("overloadBoss");
         public static readonly StatId OverloadCrit = new StatId("overloadCrit");
-        public static readonly StatId CannonIgnite = new StatId("cannonIgnite");
         public static readonly StatId MinionBoss = new StatId("minionBoss");
-        public static readonly StatId VolleyPx = new StatId("volleyPx");
-        public static readonly StatId VolleyPierce = new StatId("volleyPierce");
         public static readonly StatId SlateEffect = new StatId("slateEffect");
         public static readonly StatId SlateChance = new StatId("slateChance");
         public static readonly StatId SlateRarity = new StatId("slateRarity");
