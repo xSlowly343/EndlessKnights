@@ -77,7 +77,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loaded.Weapons.Left!.Unique!.Id, Is.EqualTo("twin_moon_rapier"));
             Assert.That(loaded.Weapons.Left.Skills, Is.EqualTo(weapon.Skills));
-            Assert.That(loaded.Weapons.Holds("pendulum"), Is.True);
+            Assert.That(loaded.Weapons.Holds("pocket_watch"), Is.True);
         }
 
         [Test]

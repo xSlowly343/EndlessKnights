@@ -49,7 +49,8 @@ namespace Game.Core.Tests.Party
                 RiftEnemies(),
                 SharedTimer(),
                 DreamTraits(),
-                LanternTraits()
+                LanternTraits(),
+                ClockLoop()
             };
             var rules = TestWorld.Data.Party;
             var stages = TestWorld.Data.Stages;
@@ -66,6 +67,7 @@ namespace Game.Core.Tests.Party
                    $"    \"minBossTimerRate\": {N(rules.Timer.MinBossRate)},\n" +
                    $"    \"sharedBossTimerRate\": {N(rules.Timer.SharedRate)},\n" +
                    $"    \"sharedTimerFighters\": {rules.Timer.SharedFighters},\n" +
+                   $"    \"loopShareMax\": {N(rules.Timer.LoopShareMax)},\n" +
                    $"    \"worldSwitchSeconds\": {N(rules.WorldSwitchSeconds)},\n" +
                    $"    \"minShare\": {N(rules.Contribution.MinShare)},\n" +
                    $"    \"activeInputSeconds\": {N(rules.Contribution.ActiveInputSeconds)},\n" +
@@ -124,6 +126,25 @@ namespace Game.Core.Tests.Party
             r.Hit(0, 10);
             r.Light(0.4);
             r.Hit(1, 10);
+            return r.ToJson();
+        }
+
+        private static string ClockLoop()
+        {
+            var r = Recorder("the clock loop repeats the allies' recent damage without the clockwright's own", 2323);
+            r.Join(1);
+            r.Join(2);
+            r.Hit(0, 0.5);
+            r.Hit(1, 1);
+            r.Advance(3);
+            r.Hit(2, 0.75);
+            r.Repeat(0, 5, 0.5);
+            r.Hit(0, 1);
+            r.Repeat(0, 5, 3);
+            r.Repeat(1, 5, -1);
+            r.Repeat(2, 2, 1);
+            r.Advance(80);
+            r.Repeat(1, 5, 0.5);
             return r.ToJson();
         }
 

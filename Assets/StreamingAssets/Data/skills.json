@@ -8605,766 +8605,373 @@
     {
       "id": "clockwright_hit_1",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "common",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Стрелка", "en": "Стрелка"},
+      "name": {"ru": "Стрелка", "en": "Clock Hand"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 3,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "сильнее от Завода", "en": "сильнее от Завода"},
+      "effect": {"type": "strike", "multiplier": 3, "windHit": 3},
+      "text": {"ru": "стрелка ×3 и ещё до ×3 от Завода", "en": "a hand ×3 and up to another ×3 from the Wind"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_hit_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_hit_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_hit_1_b15b", "name": {"ru": "Минутная стрелка", "en": "Minute Hand"}, "damage": 0.8, "effect": {"windHit": 4.5}}]},
+        {"level": 25, "options": [{"id": "clockwright_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_hit_2",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "rare",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Тик", "en": "Тик"},
+      "name": {"ru": "Тик", "en": "Tick"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 15},
+      "cost": {"resource": 5},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 4},
-      "text": {"ru": "быстрый, +Завод", "en": "быстрый, +Завод"},
+      "effect": {"type": "strike", "multiplier": 2.5, "wind": 8},
+      "text": {"ru": "тик ×2,5 и +8 Завода", "en": "a tick ×2.5 and +8 Wind"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_hit_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_hit_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_hit_2_b15b", "name": {"ru": "Громкий тик", "en": "Loud Tick"}, "damage": 0.8, "effect": {"wind": 12}}]},
+        {"level": 25, "options": [{"id": "clockwright_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_hit_3",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "epic",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Полдень на циферблате", "en": "Полдень на циферблате"},
+      "name": {"ru": "Полдень на циферблате", "en": "Noon on the Dial"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 5,
       "effect": {"type": "strike", "multiplier": 6},
-      "text": {"ru": "крит каждый 12-й удар", "en": "крит каждый 12-й удар"},
+      "text": {"ru": "полдень ×6", "en": "noon ×6"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_hit_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_hit_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_hit_3_b15b", "name": {"ru": "Двенадцать ударов", "en": "Twelve Strokes"}, "damage": 0.8, "effect": {"multiplier": 8}}]},
+        {"level": 25, "options": [{"id": "clockwright_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_queue_1",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "common",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Бой часов", "en": "Бой часов"},
+      "name": {"ru": "Бой часов", "en": "Striking Clock"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
-      "text": {"ru": "12 стрелок", "en": "12 стрелок"},
+      "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3, "wind": 5},
+      "text": {"ru": "бой ×2 по 3 врагам очереди и +5 Завода", "en": "a strike ×2 at 3 queued enemies and +5 Wind"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_queue_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_queue_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_queue_1_b15b", "name": {"ru": "Полный бой", "en": "Full Strike"}, "damage": 0.8, "effect": {"wind": 8}}]},
+        {"level": 25, "options": [{"id": "clockwright_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_queue_2",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "rare",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Остановка", "en": "Остановка"},
+      "name": {"ru": "Остановка", "en": "Stop"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "очередь замирает на 3 с", "en": "очередь замирает на 3 с"},
+      "cooldownSeconds": 8,
+      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "bossTimerStopSeconds": 2},
+      "text": {"ru": "остановка ×2,5 по 3 врагам, таймер босса стоит 2 с", "en": "a stop ×2.5 at 3 enemies, the boss timer stops for 2 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_queue_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_queue_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_queue_2_b15b", "name": {"ru": "Долгая остановка", "en": "Long Stop"}, "damage": 0.8, "effect": {"bossTimerStopSeconds": 3}}]},
+        {"level": 25, "options": [{"id": "clockwright_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_queue_3",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "legendary",
       "role": "fast",
       "color": "blue",
-      "name": {"ru": "Шестерёнки", "en": "Шестерёнки"},
+      "name": {"ru": "Шестерёнки", "en": "Little Cogs"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
-      "text": {"ru": "винтики по очереди", "en": "винтики по очереди"},
+      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "cutCooldowns": 1},
+      "text": {"ru": "винтики ×3 по 3 врагам, откаты отряда −1 с", "en": "cogs ×3 at 3 enemies, the party's cooldowns −1 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_queue_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_queue_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_queue_3_b15b", "name": {"ru": "Смазанные винтики", "en": "Oiled Cogs"}, "damage": 0.8, "effect": {"cutCooldowns": 1.5}}]},
+        {"level": 25, "options": [{"id": "clockwright_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_auto_1",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "common",
       "color": "blue",
-      "name": {"ru": "Маятник", "en": "Маятник"},
+      "name": {"ru": "Маятник", "en": "Pendulum"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "раз в 2 с", "en": "раз в 2 с"},
+      "cooldownSeconds": 2,
+      "effect": {"type": "strike", "multiplier": 2},
+      "text": {"ru": "раз в 2 с маятник ×2", "en": "every 2 s a pendulum ×2"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_auto_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_auto_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_auto_1_b15b", "name": {"ru": "Тяжёлый маятник", "en": "Heavy Pendulum"}, "damage": 0.8, "effect": {"multiplier": 2.6}}]},
+        {"level": 25, "options": [{"id": "clockwright_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_auto_2",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "rare",
       "color": "blue",
-      "name": {"ru": "Кукушка", "en": "Кукушка"},
+      "name": {"ru": "Кукушка", "en": "Cuckoo"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 5},
-      "text": {"ru": "раз в 60 с всему отряду − 3 с перезарядок", "en": "раз в 60 с всему отряду − 3 с перезарядок"},
+      "cooldownSeconds": 60,
+      "effect": {"type": "strike", "multiplier": 5, "cutCooldowns": 3},
+      "text": {"ru": "раз в 60 с кукушка ×5, откаты всего отряда −3 с", "en": "every 60 s a cuckoo ×5, the whole party's cooldowns −3 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_auto_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_auto_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_auto_2_b15b", "name": {"ru": "Громкая кукушка", "en": "Loud Cuckoo"}, "damage": 0.8, "effect": {"cutCooldowns": 4}}]},
+        {"level": 25, "options": [{"id": "clockwright_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_auto_3",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "mythic",
       "color": "blue",
-      "name": {"ru": "Вечный двигатель", "en": "Вечный двигатель"},
+      "name": {"ru": "Вечный двигатель", "en": "Perpetual Motion"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 8},
-      "text": {"ru": "Завод не тратится 10 с", "en": "Завод не тратится 10 с"},
+      "cooldownSeconds": 30,
+      "effect": {"type": "strike", "multiplier": 5, "holdSeconds": 10},
+      "text": {"ru": "раз в 30 с двигатель ×5, Завод не тратится 10 с", "en": "every 30 s an engine ×5, the Wind does not run down for 10 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_auto_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_auto_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_auto_3_b15b", "name": {"ru": "Долгий двигатель", "en": "Long Motion"}, "damage": 0.8, "effect": {"holdSeconds": 15}}]},
+        {"level": 25, "options": [{"id": "clockwright_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_strong_1",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "epic",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Застывший миг", "en": "Застывший миг"},
+      "name": {"ru": "Застывший миг", "en": "Frozen Moment"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 40},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 12},
-      "text": {"ru": "таймер босса стоит 5 с", "en": "таймер босса стоит 5 с"},
+      "effect": {"type": "strike", "multiplier": 6, "bossTimerStopSeconds": 5},
+      "text": {"ru": "миг ×6: таймер босса стоит 5 с", "en": "a moment ×6: the boss timer stops for 5 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_strong_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_strong_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_strong_1_b15b", "name": {"ru": "Долгий миг", "en": "Long Moment"}, "damage": 0.8, "effect": {"bossTimerStopSeconds": 7}}]},
+        {"level": 25, "options": [{"id": "clockwright_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_strong_2",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "legendary",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Ускорение", "en": "Ускорение"},
+      "name": {"ru": "Ускорение", "en": "Acceleration"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 50},
+      "cost": {"resource": 30},
       "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 18},
-      "text": {"ru": "союзнику вдвое быстрее 4 с", "en": "союзнику вдвое быстрее 4 с"},
+      "effect": {"type": "strike", "multiplier": 8, "cutCooldowns": 4},
+      "text": {"ru": "ускорение ×8, откаты всего отряда −4 с", "en": "acceleration ×8, the whole party's cooldowns −4 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_strong_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_strong_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_strong_2_b15b", "name": {"ru": "Сильное ускорение", "en": "Strong Acceleration"}, "damage": 0.8, "effect": {"cutCooldowns": 6}}]},
+        {"level": 25, "options": [{"id": "clockwright_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_strong_3",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "mythic",
       "role": "heavy",
       "color": "blue",
-      "name": {"ru": "Полночь", "en": "Полночь"},
+      "name": {"ru": "Полночь", "en": "Midnight"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 60},
+      "cost": {"resource": 20},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 25},
-      "text": {"ru": "накопленный Завод в удар", "en": "накопленный Завод в удар"},
+      "effect": {"type": "strike", "multiplier": 6, "windBurst": 0.25},
+      "text": {"ru": "полночь ×6 и ещё ×0,25 за каждую единицу Завода; Завод падает вдвое", "en": "midnight ×6 and another ×0.25 per point of Wind; the Wind halves"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "clockwright_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "clockwright_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "clockwright_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "clockwright_strong_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "clockwright_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "clockwright_strong_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "clockwright_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "clockwright_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "clockwright_strong_3_b15b", "name": {"ru": "Глубокая полночь", "en": "Deep Midnight"}, "damage": 0.8, "effect": {"windBurst": 0.35}}]},
+        {"level": 25, "options": [{"id": "clockwright_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "clockwright_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "clockwright_path_1",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "ascendancy": "clockwright_trait_1",
       "color": "blue",
-      "name": {"ru": "Завести пружину", "en": "Завести пружину"},
+      "name": {"ru": "Завести пружину", "en": "Wind the Spring"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "wind": 50},
+      "text": {"ru": "удар ×3 и +50 Завода", "en": "a blow ×3 and +50 Wind"}
     },
     {
       "id": "clockwright_path_2",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "ascendancy": "clockwright_trait_2",
       "color": "blue",
-      "name": {"ru": "Перемотка", "en": "Перемотка"},
+      "name": {"ru": "Перемотка", "en": "Rewind"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 30,
+      "effect": {"type": "strike", "multiplier": 3, "rewind": true},
+      "text": {"ru": "удар ×3 и петля сразу", "en": "a blow ×3 and a loop at once"}
     },
     {
       "id": "clockwright_path_3",
       "kind": "active",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "ascendancy": "clockwright_trait_3",
       "color": "blue",
-      "name": {"ru": "Смазать шестерни", "en": "Смазать шестерни"},
+      "name": {"ru": "Смазать шестерни", "en": "Oil the Gears"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "gearTick": true},
+      "text": {"ru": "удар ×3 и тик часов сразу", "en": "a blow ×3 and a clock tick at once"}
     },
     {
       "id": "clockwright_aura_1",
       "kind": "aura",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "common",
       "color": "blue",
-      "name": {"ru": "Точное время", "en": "Точное время"},
+      "name": {"ru": "Точное время", "en": "Exact Time"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.1}], "reserve": 15, "party": true},
-      "text": {"ru": "скорость перезарядки", "en": "скорость перезарядки"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.1}, {"stat": "springPower", "kind": "flat", "value": 0.01}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: откаты скиллов на 10% быстрее; её пружина на 1% сильнее", "en": "party: skill cooldowns 10% faster; her spring is 1% stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "clockwright_aura_1_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.12}]}
-            },
-            {"id": "clockwright_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "clockwright_aura_1_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.11}]}
-            },
-            {"id": "clockwright_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "clockwright_aura_1_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.13}]}
-            },
-            {"id": "clockwright_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.12}, {"stat": "springPower", "kind": "flat", "value": 0.012}]}}, {"id": "clockwright_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "clockwright_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.11}, {"stat": "springPower", "kind": "flat", "value": 0.011}]}}, {"id": "clockwright_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "clockwright_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.13}, {"stat": "springPower", "kind": "flat", "value": 0.013}]}}, {"id": "clockwright_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "clockwright_aura_2",
       "kind": "aura",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "common",
       "color": "blue",
-      "name": {"ru": "Тик-так", "en": "Тик-так"},
+      "name": {"ru": "Тик-так", "en": "Tick-Tock"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "reserve": 15},
-      "text": {"ru": "каждые 10 с следующий скилл отряда ×1,5", "en": "каждые 10 с следующий скилл отряда ×1,5"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.05}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +10% урона скиллов; её тик снимает на 0,05 с больше", "en": "party: +10% skill damage; her tick cuts 0.05 s more"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "clockwright_aura_2_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "clockwright_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "clockwright_aura_2_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "clockwright_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "clockwright_aura_2_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "clockwright_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.06}]}}, {"id": "clockwright_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "clockwright_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.055}]}}, {"id": "clockwright_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "clockwright_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.065}]}}, {"id": "clockwright_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "clockwright_aura_3",
       "kind": "aura",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "rare",
       "color": "blue",
-      "name": {"ru": "Пружина", "en": "Пружина"},
+      "name": {"ru": "Пружина", "en": "Mainspring"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}], "reserve": 20},
-      "text": {"ru": "ресурс отряда не падает ниже 10%", "en": "ресурс отряда не падает ниже 10%"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}, {"stat": "springDrain", "kind": "flat", "value": -0.05}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +10% прироста ресурса; её Завод кончается на 5% медленнее", "en": "party: +10% resource gain; her Wind runs down 5% slower"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "clockwright_aura_3_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "clockwright_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "clockwright_aura_3_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "clockwright_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "clockwright_aura_3_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "clockwright_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}, {"stat": "springDrain", "kind": "flat", "value": -0.06}]}}, {"id": "clockwright_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "clockwright_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}, {"stat": "springDrain", "kind": "flat", "value": -0.055}]}}, {"id": "clockwright_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "clockwright_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}, {"stat": "springDrain", "kind": "flat", "value": -0.065}]}}, {"id": "clockwright_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "clockwright_aura_4",
       "kind": "aura",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "rare",
       "color": "blue",
-      "name": {"ru": "Стрелка назад", "en": "Стрелка назад"},
+      "name": {"ru": "Стрелка назад", "en": "Hand Back"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "reserve": 20},
-      "text": {"ru": "раз за бой отменяет последнюю потерю HP полосы", "en": "раз за бой отменяет последнюю потерю HP полосы"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "loopPower", "kind": "flat", "value": 0.02}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +12% урона по боссу; её петля на 2% сильнее", "en": "party: +12% damage against bosses; her loop is 2% stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "clockwright_aura_4_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "clockwright_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "clockwright_aura_4_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "clockwright_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "clockwright_aura_4_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "clockwright_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.144}, {"stat": "loopPower", "kind": "flat", "value": 0.024}]}}, {"id": "clockwright_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "clockwright_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.132}, {"stat": "loopPower", "kind": "flat", "value": 0.022}]}}, {"id": "clockwright_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "clockwright_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.156}, {"stat": "loopPower", "kind": "flat", "value": 0.026}]}}, {"id": "clockwright_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "clockwright_aura_5",
       "kind": "aura",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "epic",
       "color": "blue",
-      "name": {"ru": "Секундомер", "en": "Секундомер"},
+      "name": {"ru": "Секундомер", "en": "Stopwatch"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "урон по боссу растёт с каждой секундой боя", "en": "урон по боссу растёт с каждой секундой боя"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +12% урона в конце таймера босса и +1 с к таймеру", "en": "party: +12% damage at the end of the boss timer and +1 s to the timer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "clockwright_aura_5_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "clockwright_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "clockwright_aura_5_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "clockwright_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "clockwright_aura_5_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "clockwright_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1.2}]}}, {"id": "clockwright_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "clockwright_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1.1}]}}, {"id": "clockwright_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "clockwright_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1.3}]}}, {"id": "clockwright_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
       "id": "clockwright_aura_6",
       "kind": "aura",
-      "weapon": "pendulum",
+      "weapon": "pocket_watch",
       "tier": "legendary",
       "color": "blue",
-      "name": {"ru": "Механизм", "en": "Механизм"},
+      "name": {"ru": "Механизм", "en": "Mechanism"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "авто-скиллы отряда срабатывают чаще", "en": "авто-скиллы отряда срабатывают чаще"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "gearHits", "kind": "flat", "value": -1}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +8% урона; её тик на 1 удар раньше", "en": "party: +8% damage; her tick comes 1 hit sooner"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "clockwright_aura_6_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "clockwright_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "clockwright_aura_6_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "clockwright_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "clockwright_aura_6_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "clockwright_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "clockwright_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "gearHits", "kind": "flat", "value": -1.2}]}}, {"id": "clockwright_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "clockwright_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "gearHits", "kind": "flat", "value": -1.1}]}}, {"id": "clockwright_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "clockwright_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "gearHits", "kind": "flat", "value": -1.3}]}}, {"id": "clockwright_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

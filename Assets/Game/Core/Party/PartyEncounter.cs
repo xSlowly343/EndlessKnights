@@ -16,6 +16,7 @@ namespace Game.Core.Party
         private readonly PartyMember[] _members = new PartyMember[PartyRules.MaxSlots];
         private readonly EnemyEffect[] _effects = new EnemyEffect[MaxEffects];
         private readonly double[] _recent = new double[RecentTicks];
+        private readonly double[] _recentBySlot = new double[RecentTicks * PartyRules.MaxSlots];
         private readonly long[] _sortedStages = new long[PartyRules.MaxSlots];
         private readonly ulong _seed;
         private PartyRules _rules;
@@ -400,17 +401,23 @@ namespace Game.Core.Party
             if (!(applied > 0))
                 return 0;
             _recent[Tick % RecentTicks] += applied * KindScale;
+            _recentBySlot[slot * RecentTicks + Tick % RecentTicks] += applied * KindScale;
             return Take(slot, applied);
         }
 
-        public double RepeatRecent(int slot, double seconds)
+        public double RepeatRecent(int slot, double seconds, double loopShare = 0)
         {
-            if (!IsMember(slot) || !Started || !(seconds > 0))
+            if (!IsMember(slot) || !Started || !(seconds > 0) || !(loopShare >= 0))
                 return 0;
             var ticks = System.Math.Min(RecentTicks - 1, Ticks(seconds));
             var sum = 0.0;
             for (var i = 0; i < ticks && Tick - i >= 0; i++)
-                sum += _recent[(Tick - i) % RecentTicks];
+            {
+                var index = (Tick - i) % RecentTicks;
+                sum += _recent[index] - (loopShare > 0 ? _recentBySlot[slot * RecentTicks + index] : 0);
+            }
+            if (loopShare > 0)
+                sum *= System.Math.Min(loopShare, _rules.Timer.LoopShareMax);
             var applied = System.Math.Min(BarLeft, sum / KindScale);
             if (!(applied > 0))
                 return 0;
@@ -530,6 +537,7 @@ namespace Game.Core.Party
             EnemyWeakenGold = 0;
             System.Array.Clear(_effects, 0, _effects.Length);
             System.Array.Clear(_recent, 0, _recent.Length);
+            System.Array.Clear(_recentBySlot, 0, _recentBySlot.Length);
             Events.Add(new PartyEvent(PartyEventKind.WorldChanged, Tick, EnemyId, EnemyKind));
             if (Started)
                 Spawn(PartyEnemyKind.Normal);
@@ -546,6 +554,8 @@ namespace Game.Core.Party
         {
             Tick++;
             _recent[Tick % RecentTicks] = 0;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                _recentBySlot[slot * RecentTicks + Tick % RecentTicks] = 0;
             TickEffects();
             ReleaseGuests(false);
             DropLostFighters();

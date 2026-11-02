@@ -264,6 +264,7 @@ namespace Game.Core.Sim
         public DreamcatcherState Dreamcatcher { get; } = new DreamcatcherState();
         public LanternbearerState Lanternbearer { get; } = new LanternbearerState();
         public WhispererState Whisperer { get; } = new WhispererState();
+        public ClockwrightState Clockwright { get; } = new ClockwrightState();
         public AllyBoons Boons { get; } = new AllyBoons();
         public TraitRelays TraitRelays { get; } = new TraitRelays();
         public double TraitLight { get; set; } = -1;
@@ -279,6 +280,8 @@ namespace Game.Core.Sim
         public double TraitPartyTimerSlow { get; set; }
         public double TraitPartyResourceGift { get; set; }
         public double TraitTimerSlow { get; set; }
+        public double TraitLoopSeconds { get; set; }
+        public double TraitLoopShare { get; set; }
         public bool StepTensionBlocked { get; set; }
         public int StunTicks { get; set; }
         public int HunterMarkTicks { get; set; }

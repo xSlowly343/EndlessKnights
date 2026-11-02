@@ -120,6 +120,7 @@ class PartyEncounter {
     private enemyRewarded = 0;
     private weakenVulnerabilityOwner = PartyNoSlot;
     private readonly recent: number[] = [];
+    private readonly recentBySlot: number[] = [];
     private bossTimerCarry = 0;
     private previousEnemyId = 0;
     private previousKind = PartyEnemyKind.Normal;
@@ -132,6 +133,8 @@ class PartyEncounter {
             this.effects.push({ id: 0, damageTaken: 0, timerSlow: 0, ticksLeft: 0, owner: PartyNoSlot });
         for (let i = 0; i < PartyRecentTicks; i++)
             this.recent.push(0);
+        for (let i = 0; i < PartyRecentTicks * PartyMaxSlots; i++)
+            this.recentBySlot.push(0);
     }
 
     get started(): boolean { return this.enemyId !== 0; }
@@ -425,16 +428,21 @@ class PartyEncounter {
         if (!(applied > 0))
             return 0;
         this.recent[this.tick % PartyRecentTicks] += applied * this.kindScale();
+        this.recentBySlot[slot * PartyRecentTicks + this.tick % PartyRecentTicks] += applied * this.kindScale();
         return this.take(slot, applied);
     }
 
-    repeatRecent(slot: number, seconds: number): number {
-        if (!this.isMember(slot) || !this.started || !(seconds > 0))
+    repeatRecent(slot: number, seconds: number, loopShare = 0): number {
+        if (!this.isMember(slot) || !this.started || !(seconds > 0) || !(loopShare >= 0))
             return 0;
         const ticks = Math.min(PartyRecentTicks - 1, partyTicks(seconds));
         let sum = 0;
-        for (let i = 0; i < ticks && this.tick - i >= 0; i++)
-            sum += this.recent[(this.tick - i) % PartyRecentTicks];
+        for (let i = 0; i < ticks && this.tick - i >= 0; i++) {
+            const index = (this.tick - i) % PartyRecentTicks;
+            sum += this.recent[index] - (loopShare > 0 ? this.recentBySlot[slot * PartyRecentTicks + index] : 0);
+        }
+        if (loopShare > 0)
+            sum *= Math.min(loopShare, this.rules.loopShareMax);
         const applied = Math.min(this.barLeft, sum / this.kindScale());
         if (!(applied > 0))
             return 0;
@@ -523,6 +531,8 @@ class PartyEncounter {
             this.effects[i] = { id: 0, damageTaken: 0, timerSlow: 0, ticksLeft: 0, owner: 0 };
         for (let i = 0; i < this.recent.length; i++)
             this.recent[i] = 0;
+        for (let i = 0; i < this.recentBySlot.length; i++)
+            this.recentBySlot[i] = 0;
         this.addEvent(PartyEventKind.WorldChanged);
         if (this.started)
             this.spawn(PartyEnemyKind.Normal);
@@ -531,6 +541,8 @@ class PartyEncounter {
     advance(): void {
         this.tick++;
         this.recent[this.tick % PartyRecentTicks] = 0;
+        for (let slot = 0; slot < PartyMaxSlots; slot++)
+            this.recentBySlot[slot * PartyRecentTicks + this.tick % PartyRecentTicks] = 0;
         this.tickEffects();
         this.releaseGuests(false);
         this.dropLostFighters();

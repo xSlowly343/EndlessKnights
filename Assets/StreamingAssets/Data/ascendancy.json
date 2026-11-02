@@ -2094,217 +2094,70 @@
     {
       "id": "clockwright_trait_1",
       "class": "clockwright",
-      "name": {"ru": "Завод пружины", "en": "Завод пружины"},
-      "blurb": "Пока Завод больше половины, таймер босса идёт на 30% медленнее. Ниже половины — на 10%. На нуле часы встают, и таймер идёт на 10% быстрее",
+      "name": {"ru": "Завод пружины", "en": "Wound Spring"},
+      "blurb": "Завод копится от ударов и сам медленно кончается. Пока Завод больше половины, таймер босса идёт на 30% медленнее, ниже половины — на 10%. На нуле часы встают, и таймер идёт на 10% быстрее. В паузе часы стоят: Завод не тратится. Скилл Пути «Завести пружину» даёт 50 Завода сразу",
       "trait": {
-        "partyText": {"ru": "Медленный таймер — для всего отряда", "en": "Медленный таймер — для всего отряда"},
+        "partyText": {"ru": "Заводят все: удары союзников тоже подкручивают её пружину, медленный таймер действует на весь отряд, а Завод виден на полоске союзника", "en": "Everyone winds: allies' hits wind her spring too, the slow timer works for the whole party, and the Wind shows on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.3}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "springStrike", "kind": "flat", "value": 1}], "text": {"ru": "Ход часов: пока Завод больше половины, её удары на 20% сильнее", "en": "Running Clock: while the Wind is above half, her hits are 20% stronger"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "clockwright_trait_1_f45a",
-                "name": {"ru": "Завод кончается вдвое медленнее", "en": "Завод кончается вдвое медленнее"},
-                "text": {"ru": "Завод кончается вдвое медленнее", "en": "Завод кончается вдвое медленнее"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "clockwright_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "clockwright_trait_1_f60a",
-                "name": {"ru": "на полном Заводе таймер на 45% медленнее", "en": "на полном Заводе таймер на 45% медленнее"},
-                "text": {"ru": "на полном Заводе таймер на 45% медленнее", "en": "на полном Заводе таймер на 45% медленнее"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "clockwright_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "clockwright_trait_1_f75a",
-                "name": {"ru": "часы больше не встают", "en": "часы больше не встают"},
-                "text": {"ru": "часы больше не встают", "en": "часы больше не встают"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "clockwright_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "clockwright_trait_1_f45a", "name": {"ru": "Тугая пружина", "en": "Tight Spring"}, "text": {"ru": "Завод кончается вдвое медленнее, но ниже половины таймер больше не замедляется", "en": "The Wind runs down half as fast, but below half the timer is no longer slowed"}, "modifiers": [{"stat": "springDrain", "kind": "flat", "value": -0.5}, {"stat": "springTight", "kind": "flat", "value": 1}]}, {"id": "clockwright_trait_1_f45b", "name": {"ru": "Быстрый завод", "en": "Quick Winding"}, "text": {"ru": "Удар даёт вдвое больше Завода, но Завод кончается вдвое быстрее", "en": "A hit gives twice the Wind, but the Wind runs down twice as fast"}, "modifiers": [{"stat": "springFast", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "clockwright_trait_1_f60a", "name": {"ru": "Полный ход", "en": "Full Speed"}, "text": {"ru": "На полном Заводе таймер на 45% медленнее, но выше половины пружина на 15% слабее", "en": "At full Wind the timer is 45% slower, but above half the spring is 15% weaker"}, "modifiers": [{"stat": "springFull", "kind": "flat", "value": 1}, {"stat": "springPower", "kind": "more", "value": -0.15}]}, {"id": "clockwright_trait_1_f60b", "name": {"ru": "Общая пружина", "en": "Shared Spring"}, "text": {"ru": "Союзники заводят вдвое сильнее, но Завод кончается на 50% быстрее", "en": "Allies wind twice as hard, but the Wind runs down 50% faster"}, "modifiers": [{"stat": "springAllies", "kind": "flat", "value": 1}]}]},
+          {"level": 75, "options": [{"id": "clockwright_trait_1_f75a", "name": {"ru": "Вечные часы", "en": "Eternal Clock"}, "text": {"ru": "Часы больше не встают на нуле, но пружина на 15% слабее", "en": "The clock no longer stops at zero, but the spring is 15% weaker"}, "modifiers": [{"stat": "springForever", "kind": "flat", "value": 1}, {"stat": "springPower", "kind": "more", "value": -0.15}]}, {"id": "clockwright_trait_1_f75b", "name": {"ru": "Пружина в удар", "en": "Spring into a Blow"}, "text": {"ru": "Раз в 30 с при Заводе выше половины половина Завода уходит в удар ×0,2 за каждую единицу", "en": "Every 30 s with the Wind above half, half of the Wind goes into a blow ×0.2 per point"}, "modifiers": [{"stat": "springBurst", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "clockwright_trait_1_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Завод пружины", "en": "Завод пружины"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "clockwright_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Завод пружины", "en": "Wound Spring"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "clockwright_trait_2",
       "class": "clockwright",
-      "name": {"ru": "Петля", "en": "Петля"},
-      "blurb": "Раз в 40 с часы перематываются: весь урон отряда за последние 5 с повторяется на 50% силы. Удары самой Часовщицы в петлю не попадают",
+      "name": {"ru": "Петля", "en": "Loop"},
+      "blurb": "Раз в 40 с часы перематываются: весь урон отряда за последние 5 с повторяется на 50% силы. Удары самой Часовщицы в петлю не попадают. В соло петля повторяет её собственный урон вполовину слабее. В паузе петля копится. Скилл Пути «Перемотка» перематывает сразу",
       "trait": {
-        "partyText": {"ru": "Чем сильнее отряд, тем сильнее петля", "en": "Чем сильнее отряд, тем сильнее петля"},
+        "partyText": {"ru": "Запись у хоста: хост пишет урон союзников по общему врагу за 5 с и по сигналу перемотки повторяет его на 50%; перемотку и долю видят все", "en": "Recording at the host: the host records the allies' damage to the shared enemy for 5 s and repeats it at 50% on the rewind signal; everyone sees the rewind and its share"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "loopTwice", "kind": "flat", "value": 1}], "text": {"ru": "Двойная перемотка: петля проигрывается ещё раз на половину силы", "en": "Double Rewind: the loop plays once more at half strength"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "clockwright_trait_2_f45a",
-                "name": {"ru": "петля раз в 30 с", "en": "петля раз в 30 с"},
-                "text": {"ru": "петля раз в 30 с", "en": "петля раз в 30 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "clockwright_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "clockwright_trait_2_f60a",
-                "name": {"ru": "окно 8 с", "en": "окно 8 с"},
-                "text": {"ru": "окно 8 с", "en": "окно 8 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "clockwright_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "clockwright_trait_2_f75a",
-                "name": {"ru": "в соло в петлю попадает её урон на 25%", "en": "в соло в петлю попадает её урон на 25%"},
-                "text": {"ru": "в соло в петлю попадает её урон на 25%", "en": "в соло в петлю попадает её урон на 25%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "clockwright_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "clockwright_trait_2_f45a", "name": {"ru": "Частая петля", "en": "Frequent Loop"}, "text": {"ru": "Петля раз в 30 с, но на 20% слабее", "en": "A loop every 30 s, but 20% weaker"}, "modifiers": [{"stat": "loopSeconds", "kind": "flat", "value": -10}, {"stat": "loopPower", "kind": "more", "value": -0.2}]}, {"id": "clockwright_trait_2_f45b", "name": {"ru": "Широкое окно", "en": "Wide Window"}, "text": {"ru": "Петля берёт 7 с, но приходит раз в 55 с", "en": "A loop takes 7 s, but comes every 55 s"}, "modifiers": [{"stat": "loopWindow", "kind": "flat", "value": 2}, {"stat": "loopSeconds", "kind": "flat", "value": 15}]}]},
+          {"level": 60, "options": [{"id": "clockwright_trait_2_f60a", "name": {"ru": "Петля на Колосса", "en": "Loop on the Colossus"}, "text": {"ru": "На боссе петля вдвое чаще, но вне боссов её нет", "en": "On a boss the loop comes twice as often, but there is none outside bosses"}, "modifiers": [{"stat": "loopBoss", "kind": "flat", "value": 1}]}, {"id": "clockwright_trait_2_f60b", "name": {"ru": "Своя петля", "en": "Own Loop"}, "text": {"ru": "Её удары тоже попадают в петлю, но петля на 15% слабее", "en": "Her hits get into the loop too, but the loop is 15% weaker"}, "modifiers": [{"stat": "loopOwn", "kind": "flat", "value": 1}, {"stat": "loopPower", "kind": "more", "value": -0.15}]}]},
+          {"level": 75, "options": [{"id": "clockwright_trait_2_f75a", "name": {"ru": "Петля-ловушка", "en": "Trap Loop"}, "text": {"ru": "Перемотка ещё и останавливает таймер босса на 3 с, но петля на 20% слабее", "en": "A rewind also stops the boss timer for 3 s, but the loop is 20% weaker"}, "modifiers": [{"stat": "loopStop", "kind": "flat", "value": 1}, {"stat": "loopPower", "kind": "more", "value": -0.2}]}, {"id": "clockwright_trait_2_f75b", "name": {"ru": "Глубокая перемотка", "en": "Deep Rewind"}, "text": {"ru": "Петля на 50% сильнее, но приходит раз в 60 с", "en": "The loop is 50% stronger, but comes every 60 s"}, "modifiers": [{"stat": "loopPower", "kind": "more", "value": 0.5}, {"stat": "loopSeconds", "kind": "flat", "value": 20}]}]}
         ]
       },
-      "nodes": [{"id": "clockwright_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Петля", "en": "Петля"}, "modifiers": []}],
+      "nodes": [{"id": "clockwright_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Петля", "en": "Loop"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "clockwright_trait_3",
       "class": "clockwright",
-      "name": {"ru": "Шестерни", "en": "Шестерни"},
-      "blurb": "Каждые 60 ударов часы тикают: у всего отряда перезарядки скиллов − 2 с. Свои скиллы Часовщицы перезаряжаются вдвое дольше",
+      "name": {"ru": "Шестерни", "en": "Gears"},
+      "blurb": "Каждые 60 ударов часы тикают: у неё и у всего отряда перезарядки скиллов −2 с. Свои скиллы Часовщицы перезаряжаются вдвое дольше. Если два её скилла пришлись на одну секунду, шестерни сцепляются, и тик наступает сразу. В паузе шестерни стоят. Скилл Пути «Смазать шестерни» тикает сразу",
       "trait": {
-        "partyText": {"ru": "Скиллы отряда чаще", "en": "Скиллы отряда чаще"},
+        "partyText": {"ru": "Сцепление: если двое и больше из отряда применили скиллы в одну секунду, шестерни сцепляются — тик наступает сразу и снимает откаты всем", "en": "Meshing: if two or more party members cast skills in the same second, the gears mesh — the tick comes at once and cuts everyone's cooldowns"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "gearResource", "kind": "flat", "value": 1}], "text": {"ru": "Смазка: каждый тик даёт ей и союзникам 5 ресурса", "en": "Oiling: every tick gives her and the allies 5 resource"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "clockwright_trait_3_f45a",
-                "name": {"ru": "каждые 45 ударов", "en": "каждые 45 ударов"},
-                "text": {"ru": "каждые 45 ударов", "en": "каждые 45 ударов"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "clockwright_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "clockwright_trait_3_f60a",
-                "name": {"ru": "тик даёт ещё 5% ресурса", "en": "тик даёт ещё 5% ресурса"},
-                "text": {"ru": "тик даёт ещё 5% ресурса", "en": "тик даёт ещё 5% ресурса"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "clockwright_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "clockwright_trait_3_f75a",
-                "name": {"ru": "каждый 10-й тик сбрасывает одну перезарядку целиком", "en": "каждый 10-й тик сбрасывает одну перезарядку целиком"},
-                "text": {"ru": "каждый 10-й тик сбрасывает одну перезарядку целиком", "en": "каждый 10-й тик сбрасывает одну перезарядку целиком"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "clockwright_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "clockwright_trait_3_f45a", "name": {"ru": "Мелкие зубцы", "en": "Fine Teeth"}, "text": {"ru": "Тик каждые 45 ударов, но снимает на 25% меньше", "en": "A tick every 45 hits, but it cuts 25% less"}, "modifiers": [{"stat": "gearHits", "kind": "flat", "value": -15}, {"stat": "gearPower", "kind": "more", "value": -0.25}]}, {"id": "clockwright_trait_3_f45b", "name": {"ru": "Свои часы", "en": "Own Clock"}, "text": {"ru": "Свои скиллы перезаряжаются только в полтора раза дольше, но тик раз в 80 ударов", "en": "Her own skills recharge only one and a half times longer, but a tick comes every 80 hits"}, "modifiers": [{"stat": "gearOwn", "kind": "flat", "value": 1}, {"stat": "gearHits", "kind": "flat", "value": 20}]}]},
+          {"level": 60, "options": [{"id": "clockwright_trait_3_f60a", "name": {"ru": "Сброс", "en": "Reset"}, "text": {"ru": "Каждый 10-й тик сбрасывает самую долгую перезарядку целиком, но тик раз в 70 ударов", "en": "Every 10th tick resets the longest cooldown entirely, but a tick comes every 70 hits"}, "modifiers": [{"stat": "gearReset", "kind": "flat", "value": 1}, {"stat": "gearHits", "kind": "flat", "value": 10}]}, {"id": "clockwright_trait_3_f60b", "name": {"ru": "Крепкое сцепление", "en": "Firm Mesh"}, "text": {"ru": "Сцепление снимает вдвое больше, но тик от ударов раз в 90", "en": "A mesh cuts twice as much, but a tick from hits comes every 90"}, "modifiers": [{"stat": "gearMesh", "kind": "flat", "value": 1}, {"stat": "gearHits", "kind": "flat", "value": 30}]}]},
+          {"level": 75, "options": [{"id": "clockwright_trait_3_f75a", "name": {"ru": "Без пауз", "en": "No Pauses"}, "text": {"ru": "В паузе часы тикают сами раз в 10 с, но тик снимает на 25% меньше", "en": "In a pause the clock ticks by itself every 10 s, but a tick cuts 25% less"}, "modifiers": [{"stat": "gearIdle", "kind": "flat", "value": 1}, {"stat": "gearPower", "kind": "more", "value": -0.25}]}, {"id": "clockwright_trait_3_f75b", "name": {"ru": "Большая шестерня", "en": "Big Gear"}, "text": {"ru": "Тик снимает вдвое больше, но приходит раз в 120 ударов", "en": "A tick cuts twice as much, but comes every 120 hits"}, "modifiers": [{"stat": "gearPower", "kind": "more", "value": 1}, {"stat": "gearHits", "kind": "flat", "value": 60}]}]}
         ]
       },
-      "nodes": [{"id": "clockwright_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Шестерни", "en": "Шестерни"}, "modifiers": []}],
+      "nodes": [{"id": "clockwright_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Шестерни", "en": "Gears"}, "modifiers": []}],
       "links": []
     },
     {

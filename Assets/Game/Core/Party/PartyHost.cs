@@ -251,7 +251,7 @@ namespace Game.Core.Party
             if (_encounter.Tick - _lastRepeatTick[slot] < Ticks(timer.RepeatCooldownSeconds))
                 return;
             _lastRepeatTick[slot] = _encounter.Tick;
-            var applied = _encounter.RepeatRecent(slot, System.Math.Min(timer.RepeatMaxSeconds, effect.RepeatSeconds));
+            var applied = _encounter.RepeatRecent(slot, System.Math.Min(timer.RepeatMaxSeconds, effect.RepeatSeconds), effect.Strength);
             AcceptedShares += applied;
             RepeatedShares += applied;
             _recentShares[slot] += applied;

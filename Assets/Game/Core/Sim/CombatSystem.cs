@@ -19,6 +19,7 @@ namespace Game.Core.Sim
         private readonly DreamcatcherMechanics _dreamcatcher;
         private readonly LanternbearerMechanics _lanternbearer;
         private readonly WhispererMechanics _whisperer;
+        private readonly ClockwrightMechanics _clockwright;
         private CombatRules _rules;
         private IKillHandler? _kills;
         private IKeyHitListener? _keyHits;
@@ -43,6 +44,7 @@ namespace Game.Core.Sim
             _dreamcatcher = new DreamcatcherMechanics(rules.Classes.Dreamcatcher, state, hero, this);
             _lanternbearer = new LanternbearerMechanics(rules.Classes.Lanternbearer, state, hero, this);
             _whisperer = new WhispererMechanics(rules.Classes.Whisperer, state, hero, this);
+            _clockwright = new ClockwrightMechanics(rules.Classes.Clockwright, state, hero, this);
         }
 
         public ClassMechanics Class => _class;
@@ -55,6 +57,7 @@ namespace Game.Core.Sim
         public DreamcatcherMechanics Dreamcatcher => _dreamcatcher;
         public LanternbearerMechanics Lanternbearer => _lanternbearer;
         public WhispererMechanics Whisperer => _whisperer;
+        public ClockwrightMechanics Clockwright => _clockwright;
         public BigNumber LastTickDamage { get; private set; }
 
         public void UseRules(CombatRules rules)
@@ -70,6 +73,7 @@ namespace Game.Core.Sim
             _dreamcatcher.UseRules(rules.Classes.Dreamcatcher);
             _lanternbearer.UseRules(rules.Classes.Lanternbearer);
             _whisperer.UseRules(rules.Classes.Whisperer);
+            _clockwright.UseRules(rules.Classes.Clockwright);
         }
 
         public void OnKill(IKillHandler kills) => _kills = kills;
@@ -216,6 +220,7 @@ namespace Game.Core.Sim
             _dreamcatcher.Tick(input.MousePx);
             _lanternbearer.Tick();
             _whisperer.Tick();
+            _clockwright.Tick();
             var keyHits = TakeWhole(_state.KeyCarry + input.Hits, out var keyCarry);
             _state.KeyCarry = keyCarry;
             var mouseHits = TakeWhole((_state.MouseCarryPx + input.MousePx) / _rules.MousePxPerHit, out var mouseCarry);
@@ -223,7 +228,7 @@ namespace Game.Core.Sim
 
             for (var i = 0; i < keyHits; i++)
             {
-                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier() * _minstrel.StrikeMultiplier() * _whisperer.StrikeMultiplier();
+                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier() * _minstrel.StrikeMultiplier() * _whisperer.StrikeMultiplier() * _clockwright.StrikeMultiplier();
                 var alive = _state.EnemyAlive;
                 Hit(DamageSource.Keyboard, _rules.KeyDamage, StatTags.Keyboard, flags, _state.FocusMultiplier * multiplier);
                 if (alive)
@@ -238,6 +243,7 @@ namespace Game.Core.Sim
                     _dreamcatcher.AfterStrike();
                     _lanternbearer.AfterStrike(crit);
                     _whisperer.AfterStrike();
+                    _clockwright.AfterStrike();
                 }
                 KeyHitLightning();
                 ShadowClone();

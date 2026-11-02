@@ -38,6 +38,7 @@ const rules = {
   minBossTimerRate: party.timer.minBossRate,
   sharedBossTimerRate: party.timer.sharedRate,
   sharedTimerFighters: party.timer.sharedFighters,
+  loopShareMax: party.timer.loopShareMax,
   worldSwitchSeconds: party.worldSwitchSeconds,
   repeatMaxSeconds: party.timer.repeatMaxSeconds,
   repeatCooldownSeconds: party.timer.repeatCooldownSeconds,

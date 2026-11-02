@@ -9,6 +9,11 @@ namespace Game.Core.Sim
         NameCall,
         Syllable,
         Hush,
-        HushHit
+        HushHit,
+        Spring,
+        Loop,
+        Gears,
+        Cog,
+        GearTick
     }
 }

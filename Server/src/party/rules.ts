@@ -11,6 +11,7 @@ interface PartyEncounterRules {
     minBossTimerRate: number;
     sharedBossTimerRate: number;
     sharedTimerFighters: number;
+    loopShareMax: number;
     worldSwitchSeconds: number;
     waveCount: number;
     waveFirstEnemies: number;

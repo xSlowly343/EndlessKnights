@@ -24,6 +24,15 @@ namespace Game.Core.Sim
         public int NameHits { get; set; }
         public bool SyllableGiven { get; set; }
         public bool SyllableOwed { get; set; }
+        public double SpringWind { get; set; }
+        public double SpringSlow { get; set; }
+        public int SpringTicks { get; set; }
+        public double LoopShare { get; set; }
+        public int LoopTicks { get; set; }
+        public long LoopsSeen { get; set; }
+        public int GearOwner { get; set; } = -1;
+        public int GearTicks { get; set; }
+        public long GearCuts { get; set; }
 
         public void Land(int count, int ticks, double power, int every, double burst, int owner, int max)
         {

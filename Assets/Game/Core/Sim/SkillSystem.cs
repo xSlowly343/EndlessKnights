@@ -335,6 +335,7 @@ namespace Game.Core.Sim
             _combat.Dreamcatcher.OnSkillCast(slot.Skill);
             _combat.Lanternbearer.OnSkillCast(slot.Skill);
             _combat.Whisperer.OnSkillCast(slot.Skill);
+            _combat.Clockwright.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)
@@ -1763,7 +1764,7 @@ namespace Game.Core.Sim
         private bool IsNative(SkillSlot slot) =>
             slot.Def.Weapon != null && _weapons.TryGetType(slot.Def.Weapon, out var weapon) && _state.Is(weapon.HeroClass);
 
-        private double CooldownMultiplier() => System.Math.Max(0.1, _hero.Value(CombatStats.SkillCooldown, 1) - ResourceCooldownCut());
+        private double CooldownMultiplier() => System.Math.Max(0.1, _hero.Value(CombatStats.SkillCooldown, 1) - ResourceCooldownCut()) * _combat.Clockwright.OwnCooldownMultiplier;
 
         private double ResourceCooldownCut()
         {

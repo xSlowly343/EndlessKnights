@@ -119,7 +119,7 @@ namespace Game.Core.Tests.Sim
         public void StretchSecondIsTheClockmakersStartingSkill()
         {
             Assert.That(TestWorld.Real.SkillBook.StartingGems("clockwright"), Has.Some.Property("Id").EqualTo("clockwright_hit_1"));
-            Assert.That(StretchSecond.Skill!.Weapon, Is.EqualTo("pendulum"));
+            Assert.That(StretchSecond.Skill!.Weapon, Is.EqualTo("pocket_watch"));
         }
 
         [Test]

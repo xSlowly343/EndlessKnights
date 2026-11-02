@@ -116,6 +116,13 @@ namespace Game.Core.Content.Gems
         public bool Seventh { get; set; }
         public int NameHits { get; set; }
         public int Hush { get; set; }
+        public double Wind { get; set; }
+        public double WindHit { get; set; }
+        public double HoldSeconds { get; set; }
+        public double CutCooldowns { get; set; }
+        public double WindBurst { get; set; }
+        public bool Rewind { get; set; }
+        public bool GearTick { get; set; }
     }
 
     public sealed class PotionOption
