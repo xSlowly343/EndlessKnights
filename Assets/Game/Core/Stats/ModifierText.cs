@@ -28,7 +28,8 @@ namespace Game.Core.Stats
             "springPower", "springDrain", "springParty", "loopPower", "loopParty",
             "solventPower", "solventParty", "mixParty", "elixirParty",
             "luckPower", "luckParty", "artelPower", "artelParty", "artelPenalty",
-            "breathPower", "breathParty", "soulParty", "lendParty"
+            "breathPower", "breathParty", "soulParty", "lendParty",
+            "parrotPower", "parrotParty", "broadsideParty", "crewParty"
         };
 
         private static readonly StatTags[] LabelledTags =

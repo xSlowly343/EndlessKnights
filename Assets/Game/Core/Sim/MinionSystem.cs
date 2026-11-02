@@ -196,7 +196,7 @@ namespace Game.Core.Sim
 
         private void Broadside(in EffectiveInput input)
         {
-            if (!_state.Is(HeroClass.Ghostcaptain))
+            if (!_state.Is(HeroClass.Ghostcaptain) || _combat.Ghostcaptain.Traited)
                 return;
             var rules = _combat.Cannons;
             _state.BroadsidePx += input.MousePx;

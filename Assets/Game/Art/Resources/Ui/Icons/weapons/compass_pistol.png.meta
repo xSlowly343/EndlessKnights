@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -4854829337826818713
-    second: pistol_0
+    second: compass_pistol_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pistol_0
+      name: compass_pistol_0
       rect:
         serializedVersion: 2
         x: 6

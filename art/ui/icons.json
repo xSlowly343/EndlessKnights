@@ -65,7 +65,7 @@
     { "group": "weapons", "id": "alchemy_flasks", "source": "lorc/syringe", "attribute": "red" },
     { "group": "weapons", "id": "divining_rod", "source": "lorc/potion-ball", "attribute": "blue" },
     { "group": "weapons", "id": "spirit_orb", "source": "lorc/spade", "attribute": "blue" },
-    { "group": "weapons", "id": "pistol", "source": "john-colburn/pistol-gun", "attribute": "green" },
+    { "group": "weapons", "id": "compass_pistol", "source": "john-colburn/pistol-gun", "attribute": "green" },
 
     { "group": "glyphs", "id": "damage", "source": "lorc/broadsword", "attribute": "white" },
     { "group": "glyphs", "id": "speed", "source": "lorc/lightning-arc", "attribute": "white" },

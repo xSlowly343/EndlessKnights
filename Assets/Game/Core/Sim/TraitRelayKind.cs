@@ -28,6 +28,10 @@ namespace Game.Core.Sim
         Artel,
         Souls,
         Lend,
-        SoulBack
+        SoulBack,
+        Mate,
+        ParrotOffer,
+        ParrotCall,
+        ParrotPerch
     }
 }

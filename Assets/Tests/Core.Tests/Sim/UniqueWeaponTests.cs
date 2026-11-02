@@ -32,7 +32,7 @@ namespace Game.Core.Tests.Sim
         {
             Assert.That(Weapons.Uniques.Count, Is.EqualTo(8));
             Assert.That(Weapons.Uniques.Count(u => u.SecondType != null), Is.EqualTo(5));
-            Assert.That(Def("corsair_daggers").SecondType!.Id, Is.EqualTo("pistol"));
+            Assert.That(Def("corsair_daggers").SecondType!.Id, Is.EqualTo("compass_pistol"));
             Assert.That(Def("skull_shovel").SecondType, Is.Null);
         }
 
@@ -45,8 +45,8 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(weapon.Skills.Count, Is.LessThanOrEqualTo(Weapons.SkillRules.Places));
             Assert.That(weapon.Skills.Distinct().Count(), Is.EqualTo(weapon.Skills.Count));
-            Assert.That(types, Is.EquivalentTo(new[] { "rune_daggers", "pistol" }));
-            Assert.That(weapon.Counts("rune_daggers") && weapon.Counts("pistol"), Is.True);
+            Assert.That(types, Is.EquivalentTo(new[] { "rune_daggers", "compass_pistol" }));
+            Assert.That(weapon.Counts("rune_daggers") && weapon.Counts("compass_pistol"), Is.True);
             Assert.That(weapon.Counts("spectral_rapier"), Is.False);
         }
 
@@ -58,9 +58,9 @@ namespace Game.Core.Tests.Sim
             var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("corsair_daggers"), new Rng(2)));
             loop.Weapons.Equip(WeaponHand.Left, weapon);
 
-            Assert.That(loop.State.Weapons.Holds("pistol"), Is.True);
+            Assert.That(loop.State.Weapons.Holds("compass_pistol"), Is.True);
             Assert.That(loop.State.Weapons.Holds("rune_daggers"), Is.True);
-            Assert.That(Weapons.TryGetType("pistol", out var pistol), Is.True);
+            Assert.That(Weapons.TryGetType("compass_pistol", out var pistol), Is.True);
             foreach (var innate in pistol.Innate)
                 Assert.That(loop.Weapons.Modifiers, Does.Contain(innate));
             Assert.That(loop.Weapons.Modifiers.Count, Is.GreaterThan(plainCount));

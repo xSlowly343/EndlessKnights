@@ -266,6 +266,7 @@ namespace Game.Core.Sim
         public AlchemistState Alchemist { get; } = new AlchemistState();
         public DowserState Dowser { get; } = new DowserState();
         public SoulbinderState Soulbinder { get; } = new SoulbinderState();
+        public GhostcaptainState Ghostcaptain { get; } = new GhostcaptainState();
         public AllyBoons Boons { get; } = new AllyBoons();
         public TraitRelays TraitRelays { get; } = new TraitRelays();
         public double TraitLight { get; set; } = -1;
@@ -342,6 +343,7 @@ namespace Game.Core.Sim
             Whisperer.OnSpawn();
             Alchemist.OnSpawn();
             Dowser.OnSpawn();
+            Ghostcaptain.OnSpawn();
         }
     }
 }

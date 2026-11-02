@@ -139,6 +139,11 @@ namespace Game.Core.Content.Gems
         public bool ReleaseAll { get; set; }
         public bool Lend { get; set; }
         public bool Breathe { get; set; }
+        public int Cannons { get; set; }
+        public bool Volley { get; set; }
+        public int Sailors { get; set; }
+        public double CrewHit { get; set; }
+        public bool ParrotRepeat { get; set; }
     }
 
     public sealed class PotionOption

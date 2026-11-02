@@ -47,7 +47,7 @@ namespace Game.Core.Tests.Sim
         public void CannonByNameIsTheCaptainsStartingSkill()
         {
             Assert.That(TestWorld.Real.SkillBook.StartingGems("ghostcaptain"), Has.Some.Property("Id").EqualTo("ghostcaptain_hit_1"));
-            Assert.That(CannonByName.Skill!.Weapon, Is.EqualTo("pistol"));
+            Assert.That(CannonByName.Skill!.Weapon, Is.EqualTo("compass_pistol"));
         }
 
         private static double DamageFromMouse(HeroClass heroClass, double px)
