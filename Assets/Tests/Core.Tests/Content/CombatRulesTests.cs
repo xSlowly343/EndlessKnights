@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Content
         {
             var rules = CombatRules.Load(RealFile());
 
-            Assert.That(rules.KeyDamage, Is.EqualTo(10));
+            Assert.That(rules.StrikeDamage, Is.EqualTo(10));
             Assert.That(rules.MouseDamage, Is.EqualTo(3.4));
             Assert.That(rules.MousePxPerHit, Is.EqualTo(1000));
             Assert.That(rules.Focus.Min, Is.EqualTo(1));
@@ -59,7 +59,7 @@ namespace Game.Core.Tests.Content
         }
 
         [TestCase("\"version\": 2", "\"version\": 3", "version: version 3 is not supported, expected 2")]
-        [TestCase("\"damage\": 10", "\"damage\": -1", "hits.keyboard.damage: -1 is outside the allowed range")]
+        [TestCase("\"damage\": 10", "\"damage\": -1", "hits.strike.damage: -1 is outside the allowed range")]
         [TestCase("\"pxPerHit\": 1000", "\"pxPerHit\": 0", "hits.mouse.pxPerHit: 0 is outside the allowed range")]
         [TestCase("\"max\": 3", "\"max\": 0.5", "focus.max: must not be lower than min (1)")]
         [TestCase("\"chance\": 0.05", "\"chance\": 1.5", "crit.chance: 1.5 is outside the allowed range")]

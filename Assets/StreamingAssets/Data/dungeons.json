@@ -24,7 +24,7 @@
   ],
   "modifiers": [
     {"id": "thick_hide", "name": {"ru": "Толстокожие", "en": "Thick Hide"}, "enemyHp": 1.4, "reward": 0.2},
-    {"id": "mouse_storm", "name": {"ru": "Буря мыши", "en": "Mouse Storm"}, "hero": [{"stat": "damage", "kind": "more", "value": 1, "tags": ["Mouse"]}, {"stat": "damage", "kind": "more", "value": -0.3, "tags": ["Keyboard"]}], "reward": 0.1},
+    {"id": "mouse_storm", "name": {"ru": "Буря мыши", "en": "Mouse Storm"}, "hero": [{"stat": "damage", "kind": "more", "value": 1, "tags": ["Mouse"]}, {"stat": "damage", "kind": "more", "value": -0.3, "tags": ["Strike"]}], "reward": 0.1},
     {"id": "no_focus", "name": {"ru": "Без Фокуса", "en": "No Focus"}, "hero": [{"stat": "focusGain", "kind": "more", "value": -1}], "reward": 0.25},
     {"id": "hurry", "name": {"ru": "Спешка", "en": "Hurry"}, "bossTimer": 0.7, "reward": 0.2},
     {"id": "tough_boss", "name": {"ru": "Крепкий хозяин", "en": "Tough Master"}, "bossHp": 2, "reward": 0.25},

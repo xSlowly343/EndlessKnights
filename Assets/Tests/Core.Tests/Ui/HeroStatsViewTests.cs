@@ -48,7 +48,7 @@ namespace Game.Core.Tests.Ui
             var modifiers = new[]
             {
                 new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.3),
-                new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.2, StatTags.Keyboard),
+                new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.2, StatTags.Strike),
                 new Modifier(CombatStats.Damage, ModifierKind.More, 0.5),
                 new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.4, StatTags.Mouse),
                 new Modifier(CombatStats.Gold, ModifierKind.Increased, 1),

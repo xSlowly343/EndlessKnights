@@ -8,7 +8,7 @@ namespace Game.Core.Tests.Sim
     public class PartyNodeScoreTests
     {
         private static double Score(bool inParty, Modifier modifier) =>
-            new NodeScore(StatTags.Keyboard, Game.Core.Content.Tree.ClassAttributeDef.None, inParty).Of(new[] { modifier });
+            new NodeScore(StatTags.Strike, Game.Core.Content.Tree.ClassAttributeDef.None, inParty).Of(new[] { modifier });
 
         [Test]
         public void AllyMarkLinesCountOnlyInAParty()

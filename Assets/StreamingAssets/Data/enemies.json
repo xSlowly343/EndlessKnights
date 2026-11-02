@@ -16,7 +16,7 @@
       "goldMultiplier": 2.0,
       "sprite": "guardian_ancient_ent",
       "modifiers": [
-        { "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Keyboard"] }
+        { "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Strike"] }
       ]
     }
   ]

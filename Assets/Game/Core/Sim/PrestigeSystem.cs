@@ -79,6 +79,8 @@ namespace Game.Core.Sim
             _state.Gold = BigNumber.Zero;
             _state.RunGoldEarned = BigNumber.Zero;
             _state.ClearQueue();
+            _state.Golemancer.Runes = 0;
+            _state.Golemancer.Brand = 0;
             _upgrades.Reset();
             _state.SpawnEnemy(null, Content.EnemyType.Normal, BigNumber.Zero);
             _stages.EnsureEnemy();

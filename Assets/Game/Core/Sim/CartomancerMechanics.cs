@@ -371,7 +371,7 @@ namespace Game.Core.Sim
                 return;
             var supporting = _combat.Supporting;
             _combat.Supporting = null;
-            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Keyboard | extra);
+            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Strike | extra);
             _combat.Supporting = supporting;
         }
 

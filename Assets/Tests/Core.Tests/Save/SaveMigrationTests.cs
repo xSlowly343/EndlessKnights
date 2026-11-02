@@ -90,6 +90,18 @@ namespace Game.Core.Tests.Save
         }
 
         [Test]
+        public void OldKeyHitsAreReadAsStrikeHits()
+        {
+            var text = TestData.ReadSaveFixture("save_v9.json").Replace("\"keyHits\": 0,", "\"keyHits\": 37,");
+            var payload = JsonParser.Parse(text, "save").Fields["payload"];
+
+            var migrated = SaveMigrations.Default.Steps[14].Upgrade(payload);
+
+            Assert.That(migrated.Fields["state"].Fields["hero"].Fields["strikeHits"].Number, Is.EqualTo(37));
+            Assert.That(migrated.Fields["state"].Fields["hero"].Fields.ContainsKey("keyHits"), Is.False);
+        }
+
+        [Test]
         public void BardSaveOpensAsMetalheadWithEnergyAsDrive()
         {
             var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v9.json"), TestWorld.Data);

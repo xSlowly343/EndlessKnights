@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Sim
         }
 
         private static double Expected(GameLoop loop, double multiplier) =>
-            loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, multiplier * loop.State.FocusMultiplier, StatTags.Keyboard).ToDouble();
+            loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, multiplier * loop.State.FocusMultiplier, StatTags.Strike).ToDouble();
 
         private static List<double> Cast(GameLoop loop, string skill)
         {
@@ -104,7 +104,7 @@ namespace Game.Core.Tests.Sim
             Hit(loop, input);
 
             Assert.That(loop.State.Minstrel.Verses, Is.EqualTo(1));
-            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Keyboard), Is.EqualTo(1.1).Within(1e-9));
+            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Strike), Is.EqualTo(1.1).Within(1e-9));
             Assert.That(loop.State.Minstrel.PartyVerse, Is.EqualTo(0.1).Within(1e-9));
         }
 
@@ -215,7 +215,7 @@ namespace Game.Core.Tests.Sim
             Cast(loop, "minstrel_path_2");
             Assert.That(loop.State.Minstrel.Melody, Is.EqualTo(MinstrelMechanics.Hymn));
             Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Skill), Is.EqualTo(1.15).Within(1e-9));
-            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Keyboard), Is.EqualTo(1).Within(1e-9));
+            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Strike), Is.EqualTo(1).Within(1e-9));
         }
 
         [Test]
@@ -329,7 +329,7 @@ namespace Game.Core.Tests.Sim
             var damage = Hit(loop, input);
             Assert.That(damage, Has.Count.EqualTo(1));
             Assert.That(loop.State.Minstrel.Dream.Sign, Is.Zero);
-            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Keyboard), Is.EqualTo(1.4).Within(1e-9));
+            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Strike), Is.EqualTo(1.4).Within(1e-9));
         }
 
         [Test]
@@ -357,7 +357,7 @@ namespace Game.Core.Tests.Sim
             Cast(loop, "minstrel_strong_2");
             loop.Tick();
             Assert.That(loop.State.TraitPartyDamage, Is.EqualTo(0.3).Within(1e-9));
-            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Keyboard), Is.EqualTo(1.3).Within(1e-9));
+            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Strike), Is.EqualTo(1.3).Within(1e-9));
             Assert.That(loop.Combat.Minstrel.Climax, Is.True);
 
             var expected = Expected(loop, 3 * 1.3);
@@ -385,7 +385,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Minstrel.Verses, Is.Zero);
             Assert.That(loop.State.Minstrel.MelodyChanges, Is.Zero);
             Assert.That(loop.State.Minstrel.Sleeps, Is.Zero);
-            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Keyboard), Is.EqualTo(1));
+            Assert.That(loop.Combat.Minstrel.DamageTaken(DamageSource.Strike), Is.EqualTo(1));
             Assert.That(loop.Combat.Minstrel.StrikeMultiplier(), Is.EqualTo(1));
         }
 

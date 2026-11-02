@@ -84,7 +84,7 @@ namespace Game.Core.Tests.Sim
         }
 
         private static double Expected(GameLoop loop, double multiplier) =>
-            loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, multiplier * loop.State.FocusMultiplier, StatTags.Keyboard).ToDouble();
+            loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, multiplier * loop.State.FocusMultiplier, StatTags.Strike).ToDouble();
 
         private static List<double> Cast(GameLoop loop, string skill)
         {
@@ -189,12 +189,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheNameComesAfterAHundredAndFiftyBossHits()
+        public void TheNameComesAfterAHundredBossHits()
         {
-            Assert.That(Rules.NameHits, Is.EqualTo(150));
+            Assert.That(Rules.NameHits, Is.EqualTo(100));
             var (loop, input) = Boss(Flat(WhispererStats.NamePower, 0.4));
             Cast(loop, "whisperer_path_2");
-            Hits(loop, input, 99);
+            Hits(loop, input, 49);
             Assert.That(loop.State.Whisperer.Named, Is.False);
             Assert.That(loop.Combat.Whisperer.DamageTaken(), Is.EqualTo(1));
 
@@ -222,7 +222,6 @@ namespace Game.Core.Tests.Sim
             memory.Tick();
             Cast(memory, "whisperer_path_2");
             Cast(memory, "whisperer_path_2");
-            Cast(memory, "whisperer_path_2");
             Assert.That(memory.State.Whisperer.Named, Is.True);
             Spawn(memory, EnemyType.Boss, bossDef);
             memory.Tick();
@@ -232,11 +231,9 @@ namespace Game.Core.Tests.Sim
             var left = time.State.BossTicksLeft;
             Cast(time, "whisperer_path_2");
             Cast(time, "whisperer_path_2");
-            Cast(time, "whisperer_path_2");
             Assert.That(time.State.BossTicksLeft - left, Is.EqualTo((int)(Rules.NameTimeSeconds * GameLoop.TicksPerSecond)));
 
             var (loud, _) = Boss(Flat(WhispererStats.NamePower, 0.4), Flat(WhispererStats.NameBlast, 1));
-            Cast(loud, "whisperer_path_2");
             Cast(loud, "whisperer_path_2");
             Assert.That(Cast(loud, "whisperer_path_2"), Has.Count.EqualTo(1));
         }

@@ -76,12 +76,12 @@ namespace Game.Core.Tests.Sim
             var loop = Hero(HeroClass.Runedancer);
             var set = Set("jarl_forge");
             var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Rare, new Rng(2)).InSet(set));
-            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
 
             loop.Weapons.Equip(WeaponHand.Left, weapon);
 
             Assert.That(loop.Weapons.Modifiers, Does.Contain(set.PieceLines(ItemSlot.Weapon)[0]));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.GreaterThan(before));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.GreaterThan(before));
         }
 
         [Test]

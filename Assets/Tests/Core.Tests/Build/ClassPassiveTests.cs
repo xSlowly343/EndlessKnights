@@ -41,12 +41,12 @@ namespace Game.Core.Tests.Build
         {
             var loop = Real(new GameState { Class = heroClass, HeroLevel = 10 });
             loop.Levels.SyncTreePoints();
-            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
 
             Assert.That(loop.State.ClassTreeActive, Is.True);
             Assert.That(loop.State.TreePointsSpent, Is.Zero);
             Assert.That(loop.RaiseNode(node), Is.EqualTo(RankResult.Done));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(before + 4).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(before + 4).Within(1e-9));
         }
 
         [Test]

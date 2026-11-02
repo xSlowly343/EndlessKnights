@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Content
 
             Assert.That(gem.Color, Is.EqualTo(GemColor.Red));
             Assert.That(gem.NameRu, Is.EqualTo("Сквозной Ход"));
-            Assert.That(gem.Tags, Is.EqualTo(StatTags.Keyboard | StatTags.Skill));
+            Assert.That(gem.Tags, Is.EqualTo(StatTags.Strike | StatTags.Skill));
             Assert.That(gem.Skill.ResourceCost, Is.EqualTo(40));
             Assert.That(gem.Skill.CooldownSeconds, Is.EqualTo(20));
             Assert.That(effect.Hits, Is.EqualTo(60));

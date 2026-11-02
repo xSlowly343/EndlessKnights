@@ -12,7 +12,7 @@ namespace Game.Core.Content
             Skeletons = skeletons;
             Beasts = beasts;
             Dots = dots;
-            KeyDamage = keyDamage;
+            StrikeDamage = keyDamage;
             MouseDamage = mouseDamage;
             MousePxPerHit = mousePxPerHit;
             Focus = focus;
@@ -27,7 +27,7 @@ namespace Game.Core.Content
             Curses = curses;
         }
 
-        public double KeyDamage { get; }
+        public double StrikeDamage { get; }
         public double MouseDamage { get; }
         public double MousePxPerHit { get; }
         public FocusRules Focus { get; }
@@ -58,7 +58,7 @@ namespace Game.Core.Content
             var mouse = hits.Field("mouse");
             var crit = root.Field("crit");
             return new CombatRules(
-                hits.Field("keyboard").Field("damage").AsNumber(0, 1e6),
+                hits.Field("strike").Field("damage").AsNumber(0, 1e6),
                 mouse.Field("damage").AsNumber(0, 1e6),
                 mouse.Field("pxPerHit").AsNumber(1, 1e6),
                 FocusRules.Read(root.Field("focus")),

@@ -14,7 +14,7 @@ namespace Game.Core.Tests.Sim
         private static ClassResource Souls => TestWorld.Data.Combat.Resources.For("soulbinder");
         private static GemDef Colleague => TestWorld.Real.Gems["soulbinder_hit_2"];
         private static SummonEffect Skeleton => (SummonEffect)Colleague.Skill!.Effect;
-        private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
+        private static double StrikeDamage => TestWorld.Data.Combat.StrikeDamage;
 
         private static (GameLoop Loop, FakeInputSource Input) Soulbinder(params Modifier[] modifiers)
         {

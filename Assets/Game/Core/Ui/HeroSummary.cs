@@ -40,9 +40,9 @@ namespace Game.Core.Ui
         public static IReadOnlyList<HeroStatTile> Tiles(GameLoop loop, NumberFormatSettings format)
         {
             var state = loop.State;
-            var keyHit = loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, 1, StatTags.Keyboard);
-            var crit = loop.Combat.CritChance(StatTags.Keyboard);
-            var critMultiplier = loop.Combat.CritMultiplier(StatTags.Keyboard);
+            var keyHit = loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, 1, StatTags.Strike);
+            var crit = loop.Combat.CritChance(StatTags.Strike);
+            var critMultiplier = loop.Combat.CritMultiplier(StatTags.Strike);
             var goldBonus = loop.Hero.Value(CombatStats.Gold, 1) - 1;
             return new[]
             {

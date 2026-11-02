@@ -3,7 +3,7 @@ namespace Game.Core.Sim
     public enum DamageSource
     {
         None,
-        Keyboard,
+        Strike,
         Mouse,
         Skill,
         Click

@@ -243,7 +243,7 @@ namespace Game.Core.Sim
         public HashSet<string> TutorialDone { get; } = new HashSet<string>(32, System.StringComparer.Ordinal);
         public bool TutorialSkipped { get; set; }
 
-        public long KeyHits { get; set; }
+        public long StrikeHits { get; set; }
         public long KeyStreak { get; set; }
         public double SupportKeyBonus { get; set; } = 1;
         public double SupportMouseBonus { get; set; } = 1;

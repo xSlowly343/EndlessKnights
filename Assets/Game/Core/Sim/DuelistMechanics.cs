@@ -191,7 +191,7 @@ namespace Game.Core.Sim
             S.Lunges++;
             S.LungesInBreach++;
             if (!Flag(DuelistStats.BreachDouble) && !Flag(DuelistStats.BreachAlways))
-                _state.PendingResource += (_rules.BreachHonor + _hero.Value(DuelistStats.BreachHonor, 0)) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
+                _state.PendingResource += (_rules.BreachHonor + _hero.Value(DuelistStats.BreachHonor, 0)) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Strike);
             Press();
         }
 
@@ -323,7 +323,7 @@ namespace Game.Core.Sim
                 return;
             var supporting = _combat.Supporting;
             _combat.Supporting = null;
-            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Keyboard);
+            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Strike);
             _combat.Supporting = supporting;
         }
 

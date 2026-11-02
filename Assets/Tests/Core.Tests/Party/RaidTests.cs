@@ -88,7 +88,7 @@ namespace Game.Core.Tests.Party
 
             tally.Tick(0);
             loop.State.IdleTicks = (long)(Rules.IdleSeconds * GameLoop.TicksPerSecond);
-            events.Add(GameEvent.Damage(1, hp * 0.25, DamageSource.Keyboard, HitFlags.None));
+            events.Add(GameEvent.Damage(1, hp * 0.25, DamageSource.Strike, HitFlags.None));
             tally.Tick(1);
 
             Assert.That(tally.Share(RaidInput.Skill), Is.EqualTo(0.5).Within(1e-12));

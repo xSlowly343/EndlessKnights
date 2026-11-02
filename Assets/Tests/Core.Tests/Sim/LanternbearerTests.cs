@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Sim
         }
 
         private static double Expected(GameLoop loop, double multiplier) =>
-            loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, multiplier * loop.State.FocusMultiplier, StatTags.Keyboard).ToDouble();
+            loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, multiplier * loop.State.FocusMultiplier, StatTags.Strike).ToDouble();
 
         private static List<double> Cast(GameLoop loop, string skill)
         {
@@ -183,9 +183,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheBeaconFlashesEveryMinuteAndMakesTheNextSkillFreeAndStronger()
+        public void TheBeaconFlashesEveryFortySecondsAndMakesTheNextSkillFreeAndStronger()
         {
-            Assert.That(Rules.BeaconSeconds, Is.EqualTo(60));
+            Assert.That(Rules.BeaconSeconds, Is.EqualTo(40));
             var (loop, input) = Hero(Flat(LanternbearerStats.BeaconPower, 0.5));
             Wait(loop, Rules.BeaconSeconds);
             Assert.That(loop.State.Lanternbearer.Flashes, Is.EqualTo(1));

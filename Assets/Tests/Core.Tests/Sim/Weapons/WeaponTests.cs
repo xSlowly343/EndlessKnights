@@ -102,16 +102,16 @@ namespace Game.Core.Tests.Sim.Weapons
         public void InnatePropertiesOfTwoWeaponsAddUp()
         {
             var loop = Hero(HeroClass.Runedancer);
-            var keyDamage = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var keyDamage = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
             loop.Weapons.Unequip(WeaponHand.Right);
-            var bare = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var bare = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
             var axe = loop.Weapons.Bag[0];
             loop.Weapons.Equip(WeaponHand.Right, axe);
             var second = loop.Weapons.Give(Base("twin_daggers"));
             loop.Weapons.Equip(WeaponHand.Left, second);
 
             Assert.That(keyDamage - bare, Is.EqualTo(10).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard) - bare, Is.EqualTo(20).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike) - bare, Is.EqualTo(20).Within(1e-9));
         }
 
         [Test]

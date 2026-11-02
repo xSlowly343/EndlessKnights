@@ -244,10 +244,10 @@ namespace Game.Core.Tests.Sim
         public void WardenBannerHitsGuardiansHarder()
         {
             var loop = With(("warden_banner", 5));
-            var normal = loop.Combat.ConditionMultiplier(StatTags.Keyboard);
+            var normal = loop.Combat.ConditionMultiplier(StatTags.Strike);
             loop.State.SpawnEnemy(null, EnemyType.Guardian, BigNumber.FromDouble(1e9));
 
-            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard) / normal, Is.EqualTo(1.5).Within(1e-9));
+            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Strike) / normal, Is.EqualTo(1.5).Within(1e-9));
         }
 
         [Test]

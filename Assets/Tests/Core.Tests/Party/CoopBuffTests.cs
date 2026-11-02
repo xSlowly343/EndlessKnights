@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Party
         [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""per"": { ""signal"": ""crit"", ""step"": 1, ""cap"": 3 } }", "events go to 'after'")]
         [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""after"": { ""signal"": ""combo"", ""seconds"": 3 } }", "gauges go to 'per'")]
         [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""after"": { ""signal"": ""dance"", ""seconds"": 3 } }", "unknown party buff signal")]
-        [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""tags"": [""Keyboard""] }", "no tags or skill")]
+        [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""tags"": [""Strike""] }", "no tags or skill")]
         [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""while"": ""crit"" }", "'while' holds on a gauge")]
         public void AWrongLineIsRefusedOnLoad(string json, string problem)
         {
@@ -85,6 +85,23 @@ namespace Game.Core.Tests.Party
             Assert.That(buffs.CoopApplied(damage), Is.EqualTo(0.1).Within(1e-9));
             Assert.That(buffs.CoopOffered(damage), Is.EqualTo(0.1).Within(1e-9));
             Assert.That(hero.Value(CombatStats.Damage, 1) - before, Is.EqualTo(0.1).Within(1e-9));
+        }
+
+        [Test]
+        public void GearAndArtifactPartyLinesAreOfferedToAllies()
+        {
+            Assert.That(TestWorld.Data.Items.TryGetAffix("ring_party_gold", out var affix), Is.True);
+            Assert.That(CoopLine.TryGet(affix.Stats[0].Stat, out var line), Is.True);
+            Assert.That((line.To, line.Target), Is.EqualTo((CoopTarget.Party, CombatStats.Gold)));
+            var (buffs, _, hero) = Giver();
+            hero.Add(new Modifier(affix.Stats[0].Stat, ModifierKind.Flat, 0.1));
+            Assert.That(TestWorld.Data.Artifacts.TryGet("brotherhood_banner", out var banner), Is.True);
+            hero.AddRange(banner.PerLevel);
+
+            buffs.Tick();
+
+            Assert.That(buffs.CoopOffered(IndexOf("gold", ModifierKind.Increased)), Is.EqualTo(0.1).Within(1e-9));
+            Assert.That(buffs.CoopOffered(IndexOf("damage", ModifierKind.Increased)), Is.EqualTo(0.04).Within(1e-9));
         }
 
         [Test]

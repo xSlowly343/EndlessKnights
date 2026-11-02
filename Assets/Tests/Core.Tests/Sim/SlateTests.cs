@@ -4,6 +4,7 @@ using Game.Core.Clock;
 using Game.Core.Content;
 using Game.Core.Content.Slates;
 using Game.Core.Input;
+using Game.Core.Party;
 using Game.Core.Save;
 using Game.Core.Sim;
 using Game.Core.Stats;
@@ -111,11 +112,11 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Hero();
             var slate = Give(loop, "pebble", "keys");
-            var before = loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard);
+            var before = loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike);
 
             Assert.That(loop.Slates.Place(slate, 1, 1, 0), Is.EqualTo(SlateResult.Done));
             Assert.That(loop.Slates.Bag, Is.Empty);
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.GreaterThan(before));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.GreaterThan(before));
             Assert.That(Sum(loop, "damage"), Is.EqualTo(0.06).Within(1e-9));
 
             Assert.That(loop.Slates.Remove(slate), Is.EqualTo(SlateResult.Done));
@@ -181,7 +182,7 @@ namespace Game.Core.Tests.Sim
             loop.Slates.Place(Give(loop, "pebble", "keys"), 3, 0, 0);
 
             Assert.That(loop.Slates.HasPattern(keys), Is.True);
-            Assert.That(loop.Slates.Modifiers.Any(modifier => modifier.Kind == ModifierKind.More && modifier.Tags == StatTags.Keyboard), Is.True);
+            Assert.That(loop.Slates.Modifiers.Any(modifier => modifier.Kind == ModifierKind.More && modifier.Tags == StatTags.Strike), Is.True);
         }
 
         [Test]
@@ -326,7 +327,7 @@ namespace Game.Core.Tests.Sim
             var lines = Rules.Themes.SelectMany(theme => theme.Lines.Append(theme.Pattern).Append(theme.Rule))
                 .Concat(HeroClassNames.ByName.Values.SelectMany(heroClass => Rules.ClassLines(heroClass)));
 
-            Assert.That(lines.SelectMany(line => line.Modifiers).Select(modifier => modifier.Stat.BaseName).Where(stat => !known.Contains(stat)).Distinct(), Is.Empty);
+            Assert.That(lines.SelectMany(line => line.Modifiers).Select(modifier => CoopLine.TryGet(modifier.Stat, out var coop) ? coop.Target.BaseName : modifier.Stat.BaseName).Where(stat => !known.Contains(stat)).Distinct(), Is.Empty);
         }
 
         [Test]

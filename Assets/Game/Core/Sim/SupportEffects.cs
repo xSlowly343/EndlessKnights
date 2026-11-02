@@ -29,7 +29,7 @@ namespace Game.Core.Sim
                 if (support.QuietSeconds > 0 && state.IdleTicksBeforeInput * GameLoop.TickSeconds >= support.QuietSeconds)
                     power *= support.QuietPower;
                 if (support.HungerHitsPerStep > 0)
-                    power *= 1 + System.Math.Min(support.HungerMax, support.HungerStep * System.Math.Floor((state.KeyHits - slot.KeyHitsAtCast) / support.HungerHitsPerStep));
+                    power *= 1 + System.Math.Min(support.HungerMax, support.HungerStep * System.Math.Floor((state.StrikeHits - slot.KeyHitsAtCast) / support.HungerHitsPerStep));
                 if (support.FocusStep > 0)
                     power *= 1 + System.Math.Min(support.FocusBonusMax, support.FocusBonus * System.Math.Max(0, state.FocusMultiplier - 1) / support.FocusStep);
                 if (support.RhythmLongSeries > 0 && state.KeyStreak > support.RhythmLongSeries)
@@ -39,7 +39,7 @@ namespace Game.Core.Sim
                 if (state.PartyMembers > 1)
                     power *= support.PartyPower;
             }
-            slot.KeyHitsAtCast = state.KeyHits;
+            slot.KeyHitsAtCast = state.StrikeHits;
             slot.CirclesSinceCast = 0;
             return power;
         }

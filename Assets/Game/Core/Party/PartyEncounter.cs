@@ -363,9 +363,11 @@ namespace Game.Core.Party
 
         public EnemyHistory History => _history;
 
+        public const double MaxTimerPenalty = 0.5;
+
         public bool ApplyEnemyEffect(int effectId, double damageTaken, double seconds, int owner = NoSlot, double timerSlow = 0)
         {
-            if (!(damageTaken >= 0) || !(timerSlow >= 0) || !(damageTaken > 0 || timerSlow > 0) || !(seconds > 0) || !Started)
+            if (!(damageTaken >= 0) || !(timerSlow >= -MaxTimerPenalty) || !(damageTaken > 0 || timerSlow != 0) || !(seconds > 0) || !Started)
                 return false;
             timerSlow = System.Math.Min(1, timerSlow);
             var ticks = Ticks(seconds);
@@ -565,7 +567,7 @@ namespace Game.Core.Party
             if (!FightingBoss || !Started)
                 return;
             var rate = BossTimerRate;
-            SavedBossTicks += 1 - rate;
+            SavedBossTicks += System.Math.Max(0, 1 - rate);
             _bossTimerCarry += rate;
             while (_bossTimerCarry >= 1 && BossTicksLeft > 0)
             {

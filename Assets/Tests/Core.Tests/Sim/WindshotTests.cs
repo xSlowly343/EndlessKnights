@@ -37,7 +37,7 @@ namespace Game.Core.Tests.Sim
             return (loop, input);
         }
 
-        private static List<double> KeyDamage(GameLoop loop)
+        private static List<double> StrikeDamage(GameLoop loop)
         {
             var damage = new List<double>();
             for (var i = 0; i < loop.Events.Count; i++)
@@ -55,7 +55,7 @@ namespace Game.Core.Tests.Sim
             if (mousePx > 0)
                 input.MoveMouse((float)mousePx);
             loop.Tick();
-            var damage = KeyDamage(loop);
+            var damage = StrikeDamage(loop);
             loop.Tick();
             return damage;
         }
@@ -192,7 +192,7 @@ namespace Game.Core.Tests.Sim
 
             var calm = Hit(loop, input).Single();
 
-            var crit = loop.Combat.CritMultiplier(StatTags.Keyboard);
+            var crit = loop.Combat.CritMultiplier(StatTags.Strike);
             Assert.That(calm / plain, Is.EqualTo(crit * (1 - Rules.CalmCritPenalty)).Within(0.05));
             Assert.That(loop.PartyBuffs.CoopOffered(multiplier), Is.EqualTo(0.1).Within(1e-9));
             Move(loop, input, 100);

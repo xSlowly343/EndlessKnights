@@ -42,7 +42,7 @@ namespace Game.Core.Save
                     ("idleTicks", JsonValue.Of(state.IdleTicks)),
                     ("macroRhythmTicks", JsonValue.Of(state.MacroRhythmTicks)),
                     ("combo", JsonValue.Of(state.Combo)),
-                    ("keyHits", JsonValue.Of(state.KeyHits)),
+                    ("strikeHits", JsonValue.Of(state.StrikeHits)),
                     ("comboIdleTicks", JsonValue.Of(state.ComboIdleTicks)))),
                 ("stage", Object(
                     ("current", JsonValue.Of(state.Stage)),
@@ -118,6 +118,7 @@ namespace Game.Core.Save
                 ("tutorial", Object(
                     ("skipped", JsonValue.Of(state.TutorialSkipped)),
                     ("done", JsonValue.Array(WriteTutorialDone(state))))),
+                ("traits", TraitStateJson.Write(state)),
                 ("carry", Object(
                     ("keys", JsonValue.Of(state.KeyCarry)),
                     ("mousePx", JsonValue.Of(state.MouseCarryPx)))));
@@ -155,7 +156,7 @@ namespace Game.Core.Save
                 StrikeLevel = hero.Field("strikeLevel").AsInt(0),
                 HeroXp = hero.Field("xp").AsNumber(0, 1e300),
                 Combo = hero.Field("combo").AsInt(0),
-                KeyHits = hero.Field("keyHits").AsLong(0),
+                StrikeHits = hero.Field("strikeHits").AsLong(0),
                 ComboIdleTicks = hero.Field("comboIdleTicks").AsLong(0),
                 Stage = stage.Field("current").AsLong(1),
                 HighestStage = stage.Field("highest").AsLong(1),
@@ -275,6 +276,8 @@ namespace Game.Core.Save
                 state.Drops.Rng = new Rng(rng0 ^ rng1 ^ DropState.SeedSalt);
             if (node.HasField("boundGems"))
                 ReadBoundGems(node.Field("boundGems"), gems, state);
+            if (node.HasField("traits"))
+                TraitStateJson.Read(node.Field("traits"), state, enemies);
             return state;
         }
 

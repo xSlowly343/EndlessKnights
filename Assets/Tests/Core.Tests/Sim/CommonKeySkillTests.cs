@@ -26,7 +26,7 @@ namespace Game.Core.Tests.Sim
             for (var i = 0; i < hero.Loop.Events.Count; i++)
             {
                 var hit = hero.Loop.Events[i];
-                if (hit.Kind == GameEventKind.Damage && hit.Source == DamageSource.Keyboard && ++keyHits % 5 == 0)
+                if (hit.Kind == GameEventKind.Damage && hit.Source == DamageSource.Strike && ++keyHits % 5 == 0)
                     everyFifth += hit.Amount.ToDouble();
             }
             Assert.That(keyHits, Is.EqualTo(12));
@@ -96,13 +96,13 @@ namespace Game.Core.Tests.Sim
 
             for (var i = 0; i < 599; i++)
                 hero.Ticks(1, keysPerTick: i % 10 == 0 ? 1 : 0);
-            Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100).Within(1e-9));
+            Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(100).Within(1e-9));
 
             hero.Ticks(5, keysPerTick: 1);
-            Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(120).Within(1e-9));
+            Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(120).Within(1e-9));
 
             hero.Ticks(25);
-            Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100).Within(1e-9));
+            Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(100).Within(1e-9));
         }
     }
 }

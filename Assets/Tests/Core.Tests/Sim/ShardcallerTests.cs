@@ -79,7 +79,7 @@ namespace Game.Core.Tests.Sim
         }
 
         private static double Expected(GameLoop loop, double multiplier) =>
-            loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, multiplier * loop.State.FocusMultiplier, StatTags.Keyboard).ToDouble();
+            loop.Combat.SkillDamage(loop.Combat.BaseKeyDamage, multiplier * loop.State.FocusMultiplier, StatTags.Strike).ToDouble();
 
         private static List<double> Cast(GameLoop loop, string skill)
         {

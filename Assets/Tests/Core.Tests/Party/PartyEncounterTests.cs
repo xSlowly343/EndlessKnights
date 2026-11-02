@@ -64,6 +64,21 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void ATimerPenaltySpeedsTheBossTimerWithinItsLimit()
+        {
+            var encounter = AtBoss();
+            var start = encounter.BossTicksLeft;
+
+            Assert.That(encounter.ApplyEnemyEffect(1, 0, 3, 0, -PartyEncounter.MaxTimerPenalty - 0.1), Is.False);
+            Assert.That(encounter.ApplyEnemyEffect(1, 0, 3, 0, -0.5), Is.True);
+            for (var i = 0; i < 20; i++)
+                encounter.Advance();
+
+            Assert.That(start - encounter.BossTicksLeft, Is.EqualTo(30));
+            Assert.That(encounter.SavedBossTicks, Is.Zero);
+        }
+
+        [Test]
         public void TheBossKillReportsTheLoopAndTheSavedSeconds()
         {
             var encounter = AtBoss();

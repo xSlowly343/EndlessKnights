@@ -73,7 +73,8 @@
         { "stat": "gemDrop", "kind": "increased", "cap": 1 },
         { "stat": "gemExperience", "kind": "increased", "cap": 1 },
         { "stat": "slateChance", "kind": "increased", "cap": 1 },
-        { "stat": "dustGain", "kind": "increased", "cap": 1 }
+        { "stat": "dustGain", "kind": "increased", "cap": 1 },
+        { "stat": "critChance", "kind": "increased", "cap": 1 }
       ]
     },
     "selfShare": 1.0,

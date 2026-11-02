@@ -55,6 +55,19 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void PrestigeClearsTheEternalGolemRunes()
+        {
+            var loop = AtStage(45, 80000);
+            loop.State.Golemancer.Runes = 9;
+            loop.State.Golemancer.Brand = 3;
+
+            Assert.That(loop.Prestige.TryPrestige(), Is.True);
+
+            Assert.That(loop.State.Golemancer.Runes, Is.Zero);
+            Assert.That(loop.State.Golemancer.Brand, Is.Zero);
+        }
+
+        [Test]
         public void PrestigeResetsStageAndGoldButKeepsTheBuild()
         {
             var loop = AtStage(45, 80000);

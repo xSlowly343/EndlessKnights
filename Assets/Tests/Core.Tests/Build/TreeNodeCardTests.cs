@@ -30,7 +30,7 @@ namespace Game.Core.Tests.Build
         {
             var hero = new StatSheet();
             var damage = new StatId("damage");
-            var node = new Modifier(damage, ModifierKind.More, 0.25, StatTags.Keyboard);
+            var node = new Modifier(damage, ModifierKind.More, 0.25, StatTags.Strike);
             hero.Add(node);
 
             var taken = TreeNodeCard.DeltasOf(new[] { node }, true, hero).Single();

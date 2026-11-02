@@ -92,7 +92,7 @@ namespace Game.Core.Sim
             {
                 EquipTick = _state.Tick,
                 ReadyTick = _state.Tick,
-                KeyHitsAtCast = _state.KeyHits,
+                KeyHitsAtCast = _state.StrikeHits,
                 Role = role ?? SkillLoadout.FreeRole(_state.Skills, skill) ?? SkillSlotRole.Auto
             };
             _state.ProgressOf(skill);
@@ -1221,7 +1221,7 @@ namespace Game.Core.Sim
         }
 
         private static bool SameInput(StatTags tags, in EffectiveInput input) =>
-            ((tags & StatTags.Keyboard) != 0 && input.Hits > 0)
+            ((tags & StatTags.Strike) != 0 && input.Hits > 0)
             || ((tags & StatTags.Mouse) != 0 && input.MousePx > 0)
             || ((tags & StatTags.Click) != 0 && input.ButtonPresses > 0);
 
@@ -1634,6 +1634,8 @@ namespace Game.Core.Sim
             slot.StackTicks = 0;
         }
 
+        private const double RescaleTolerance = 1e-9;
+
         private void KeepReserved(SkillSlot slot)
         {
             if (!slot.Def.Reserves || !Armed(slot))
@@ -1646,9 +1648,25 @@ namespace Game.Core.Sim
             }
             slot.ActiveTicks = Ticks(ReserveRefreshSeconds);
             slot.ActiveTotalTicks = slot.ActiveTicks;
+            var power = ReservedPower(slot);
             if (!slot.AuraApplied)
-                slot.AuraPower = SupportEffects.Power(slot, _state) * SupportEffects.AuraPower(slot) * OwnPower(slot) * slot.BranchDamage;
+                slot.AuraPower = power;
+            else if (System.Math.Abs(power - slot.AuraPower) > RescaleTolerance * System.Math.Max(1e-12, slot.AuraPower))
+                RescaleAura(slot, power);
             ApplyAura(slot);
+        }
+
+        private double ReservedPower(SkillSlot slot) =>
+            SupportEffects.Power(slot, _state) * SupportEffects.AuraPower(slot) * OwnPower(slot) * slot.BranchDamage;
+
+        private void RescaleAura(SkillSlot slot, double power)
+        {
+            for (var i = 0; i < slot.AuraModifiers.Count; i++)
+                _hero.Remove(slot.AuraModifiers[i]);
+            slot.AuraModifiers.Clear();
+            slot.AuraPower = power;
+            FillAuraModifiers(slot, slot.Def.Effect as AuraEffect);
+            _hero.AddRange(slot.AuraModifiers);
         }
 
         private bool IdleOff(SkillSlot slot) =>
@@ -1677,7 +1695,7 @@ namespace Game.Core.Sim
 
         private void CastFromKeys(double keys)
         {
-            var every = (long)System.Math.Round(_hero.Value(CombatStats.KeyCastLeftEvery, 0, StatTags.Keyboard));
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.KeyCastLeftEvery, 0, StatTags.Strike));
             if (every < 1 || keys <= 0)
                 return;
             _state.AutoCastKeys += keys;
@@ -1798,6 +1816,20 @@ namespace Game.Core.Sim
                 return;
             }
             var aura = slot.Def.Effect as AuraEffect;
+            if (!FillAuraModifiers(slot, aura))
+                return;
+            _hero.AddRange(slot.AuraModifiers);
+            slot.AuraApplied = true;
+            Reserve(slot, aura);
+            if (aura == null)
+                return;
+            _events.Add(GameEvent.ForSkill(GameEventKind.AuraChanged, _state.Tick, slot.Skill));
+            if (BoostsAuras(aura))
+                RefreshOtherAuras(slot);
+        }
+
+        private bool FillAuraModifiers(SkillSlot slot, AuraEffect? aura)
+        {
             var native = IsNative(slot) ? slot.Def.Native.Modifiers : Array.Empty<Modifier>();
             var potion = slot.Def.Effect is PotionEffect brew && slot.PotionChoice >= 0 && slot.Active
                 ? brew.Options[slot.PotionChoice].Modifiers
@@ -1805,7 +1837,7 @@ namespace Game.Core.Sim
                 : slot.Def.Effect is SummonEffect called && slot.Active ? called.WhileActive
                 : slot.Def.Effect is PulseEffect pulsing && slot.Active ? pulsing.WhileActive : Array.Empty<Modifier>();
             if (aura == null && native.Count == 0 && potion.Count == 0)
-                return;
+                return false;
             var strength = aura == null ? 1 : _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
             var when = slot.WhenAtCast && IsNative(slot) && slot.Def.Native.WhenMultiplier > 0 ? slot.Def.Native.WhenMultiplier : 1;
             for (var i = 0; aura != null && i < aura.Modifiers.Count; i++)
@@ -1818,14 +1850,7 @@ namespace Game.Core.Sim
             for (var i = 0; i < native.Count; i++)
                 slot.AuraModifiers.Add(native[i]);
             slot.AuraStrength = strength;
-            _hero.AddRange(slot.AuraModifiers);
-            slot.AuraApplied = true;
-            Reserve(slot, aura);
-            if (aura == null)
-                return;
-            _events.Add(GameEvent.ForSkill(GameEventKind.AuraChanged, _state.Tick, slot.Skill));
-            if (BoostsAuras(aura))
-                RefreshOtherAuras(slot);
+            return true;
         }
 
         private void Reserve(SkillSlot slot, AuraEffect? aura)

@@ -44,6 +44,8 @@ namespace Game.Core.Build
 
         public static string Name(SubclassDef subclass) => Texts.Pick(subclass.NameRu, subclass.NameEn);
 
+        public static string Blurb(SubclassDef subclass) => Texts.Pick(subclass.BlurbRu, subclass.BlurbEn);
+
         public static string Points(AscendancyState state, AscendancyCatalog catalog, SubclassDef subclass) =>
             Texts.Format("subclass.points", state.PointsLeft(catalog), state.Allocated.Count, Takeable(subclass));
 

@@ -7,11 +7,11 @@ namespace Game.Core.Content
         public HunterMarkRules(double seconds, double keyDamage)
         {
             Seconds = seconds;
-            KeyDamage = keyDamage;
+            StrikeDamage = keyDamage;
         }
 
         public double Seconds { get; }
-        public double KeyDamage { get; }
+        public double StrikeDamage { get; }
 
         public static HunterMarkRules Read(ContentNode node) => new HunterMarkRules(
             node.Field("seconds").AsNumber(0, 3600),

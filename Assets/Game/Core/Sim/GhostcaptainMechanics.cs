@@ -118,7 +118,7 @@ namespace Game.Core.Sim
             var power = cannons * BroadsidePower * (sameEnemy ? _rules.SameEnemy : 1);
             TraitHit(power);
             if (Flag(GhostcaptainStats.BroadsideQueue))
-                _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, power * _rules.VolleyQueueShare * _state.FocusMultiplier, StatTags.Keyboard));
+                _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, power * _rules.VolleyQueueShare * _state.FocusMultiplier, StatTags.Strike));
             if (Flag(GhostcaptainStats.BroadsidePowder))
                 _state.PendingResource += _rules.VolleyPowder;
             S.Loaded = Flag(GhostcaptainStats.BroadsideLoaded) ? System.Math.Min(_rules.LoadedAfter, Cannons - 1) : 0;
@@ -167,7 +167,7 @@ namespace Game.Core.Sim
         {
             TraitHit(multiplier);
             if (Flag(GhostcaptainStats.CrewQueue))
-                _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * _rules.CrewQueueShare * _state.FocusMultiplier, StatTags.Keyboard));
+                _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * _rules.CrewQueueShare * _state.FocusMultiplier, StatTags.Strike));
         }
 
         private void Dawn()
@@ -222,7 +222,7 @@ namespace Game.Core.Sim
             else
                 TraitHit(multiplier);
             if (Flag(GhostcaptainStats.ParrotQueue))
-                _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * _rules.ParrotQueueShare * _state.FocusMultiplier, StatTags.Keyboard));
+                _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * _rules.ParrotQueueShare * _state.FocusMultiplier, StatTags.Strike));
         }
 
         private void CastEffects(StrikeEffect strike)
@@ -256,7 +256,7 @@ namespace Game.Core.Sim
                 return;
             var supporting = _combat.Supporting;
             _combat.Supporting = null;
-            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Keyboard, extraCrit);
+            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Strike, extraCrit);
             _combat.Supporting = supporting;
         }
 

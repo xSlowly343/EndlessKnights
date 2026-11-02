@@ -132,7 +132,7 @@ namespace Game.Core.Party
 
         private static RaidInput InputOf(DamageSource source) => source switch
         {
-            DamageSource.Keyboard => RaidInput.Keys,
+            DamageSource.Strike => RaidInput.Keys,
             DamageSource.Mouse => RaidInput.Mouse,
             DamageSource.Click => RaidInput.Mouse,
             _ => RaidInput.Skill

@@ -56,7 +56,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = HitMany(new StatSheet(), 42, input => input.PressKeys(1));
 
-            var (hits, crits, _) = Count(loop, DamageSource.Keyboard);
+            var (hits, crits, _) = Count(loop, DamageSource.Strike);
 
             var expected = TestWorld.Data.Combat.CritChance;
             var sigma = System.Math.Sqrt(expected * (1 - expected) / Hits);
@@ -79,7 +79,7 @@ namespace Game.Core.Tests.Sim
 
             var hit = loop.Events[0];
             Assert.That(hit.IsCrit, Is.True);
-            var expected = TestWorld.Data.Combat.KeyDamage * loop.State.FocusMultiplier * TestWorld.Data.Combat.CritMultiplier;
+            var expected = TestWorld.Data.Combat.StrikeDamage * loop.State.FocusMultiplier * TestWorld.Data.Combat.CritMultiplier;
             Assert.That(hit.Amount.ToDouble(), Is.EqualTo(expected).Within(1e-9));
         }
 
@@ -91,9 +91,9 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(hero: hero);
 
             Assert.That(TestWorld.Data.Combat.OvercritRate, Is.EqualTo(1));
-            Assert.That(loop.Combat.CritChance(StatTags.Keyboard), Is.EqualTo(1));
-            Assert.That(loop.Combat.Overcrit(StatTags.Keyboard), Is.EqualTo(0.5).Within(1e-9));
-            Assert.That(loop.Combat.CritMultiplier(StatTags.Keyboard), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier * 1.5).Within(1e-9));
+            Assert.That(loop.Combat.CritChance(StatTags.Strike), Is.EqualTo(1));
+            Assert.That(loop.Combat.Overcrit(StatTags.Strike), Is.EqualTo(0.5).Within(1e-9));
+            Assert.That(loop.Combat.CritMultiplier(StatTags.Strike), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier * 1.5).Within(1e-9));
         }
 
         [Test]
@@ -108,14 +108,14 @@ namespace Game.Core.Tests.Sim
                 input.MoveMouse((float)TestWorld.Data.Combat.MousePxPerHit);
             });
 
-            var keys = Count(loop, DamageSource.Keyboard);
+            var keys = Count(loop, DamageSource.Strike);
             var mouse = Count(loop, DamageSource.Mouse);
             var baseChance = TestWorld.Data.Combat.CritChance;
 
             Assert.That((double)keys.Crits / keys.Hits, Is.EqualTo(baseChance).Within(0.01));
             Assert.That((double)mouse.Crits / mouse.Hits, Is.EqualTo(baseChance + 0.20).Within(0.02));
             Assert.That(loop.Combat.CritMultiplier(StatTags.Mouse), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier + 0.5).Within(1e-9));
-            Assert.That(loop.Combat.CritMultiplier(StatTags.Keyboard), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier).Within(1e-9));
+            Assert.That(loop.Combat.CritMultiplier(StatTags.Strike), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier).Within(1e-9));
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.Flat, 5));
             var loop = TestWorld.Loop(hero: hero);
 
-            Assert.That(loop.Combat.CritChance(StatTags.Keyboard), Is.EqualTo(1));
+            Assert.That(loop.Combat.CritChance(StatTags.Strike), Is.EqualTo(1));
         }
 
         [Test]

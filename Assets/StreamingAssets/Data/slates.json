@@ -201,7 +201,7 @@
               "kind": "increased",
               "value": 0.06,
               "tags": [
-                "Keyboard"
+                "Strike"
               ]
             }
           ]
@@ -214,7 +214,7 @@
               "kind": "increased",
               "value": 0.05,
               "tags": [
-                "Keyboard"
+                "Strike"
               ]
             }
           ]
@@ -237,7 +237,7 @@
               "kind": "flat",
               "value": 0.08,
               "tags": [
-                "Keyboard"
+                "Strike"
               ]
             }
           ]
@@ -251,7 +251,7 @@
             "kind": "more",
             "value": 0.05,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]
@@ -264,7 +264,7 @@
             "kind": "more",
             "value": 0.08,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]
@@ -442,7 +442,7 @@
               "kind": "increased",
               "value": 0.05,
               "tags": [
-                "Keyboard"
+                "Strike"
               ]
             }
           ]
@@ -662,7 +662,7 @@
           "id": "party_damage",
           "modifiers": [
             {
-              "stat": "partyDamage",
+              "to": "party", "stat": "damage",
               "kind": "increased",
               "value": 0.04
             }
@@ -672,7 +672,7 @@
           "id": "party_resource",
           "modifiers": [
             {
-              "stat": "partyResource",
+              "to": "party", "stat": "resourceGain",
               "kind": "increased",
               "value": 0.04
             }
@@ -682,7 +682,7 @@
           "id": "party_gold",
           "modifiers": [
             {
-              "stat": "partyGold",
+              "to": "party", "stat": "gold",
               "kind": "increased",
               "value": 0.05
             }
@@ -693,7 +693,7 @@
         "id": "party_pattern",
         "modifiers": [
           {
-            "stat": "partyDamage",
+            "to": "party", "stat": "damage",
             "kind": "increased",
             "value": 0.08
           }
@@ -703,7 +703,7 @@
         "id": "party_rule",
         "modifiers": [
           {
-            "stat": "partyCritChance",
+            "to": "party", "stat": "critChance",
             "kind": "increased",
             "value": 0.05
           }
@@ -953,7 +953,7 @@
             "kind": "flat",
             "value": -1,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ],
@@ -967,7 +967,7 @@
             "kind": "increased",
             "value": 0.1,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]
@@ -982,7 +982,7 @@
             "kind": "flat",
             "value": -0.5,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]
@@ -995,7 +995,7 @@
             "kind": "increased",
             "value": 0.1,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]
@@ -1072,8 +1072,8 @@
         "id": "minstrel_song",
         "modifiers": [
           {
-            "stat": "partyDamage",
-            "kind": "flat",
+            "to": "party", "stat": "damage",
+            "kind": "increased",
             "value": 0.03
           }
         ],

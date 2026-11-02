@@ -1,4 +1,5 @@
 using Game.Core.Content.Items;
+using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Stats;
 using NUnit.Framework;
@@ -22,7 +23,8 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Wearing("warband_helm");
 
-            Assert.That(loop.Hero.TotalsOf(new StatId("partyDamage")).IncreasedMultiplier, Is.EqualTo(1.2).Within(1e-9));
+            var partyDamage = CoopLine.Register(CoopTarget.Party, CombatStats.Damage, ModifierKind.Increased).Source;
+            Assert.That(loop.Hero.Value(partyDamage, 0), Is.EqualTo(0.2).Within(1e-9));
         }
 
         [Test]

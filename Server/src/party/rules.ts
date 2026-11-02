@@ -34,6 +34,7 @@ interface PartyEncounterRules {
 const PartyTicksPerSecond = 10;
 const PartyMaxSlots = 4;
 const PartyNoSlot = -1;
+const PartyMaxTimerPenalty = 0.5;
 const PartyNever = -9007199254740992;
 const PartyMaxRepeatSeconds = 10;
 const PartyRecentTicks = PartyMaxRepeatSeconds * PartyTicksPerSecond + 1;

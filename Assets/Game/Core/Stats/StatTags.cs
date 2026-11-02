@@ -6,7 +6,7 @@ namespace Game.Core.Stats
     public enum StatTags : uint
     {
         None = 0,
-        Keyboard = 1 << 0,
+        Strike = 1 << 0,
         Mouse = 1 << 1,
         Click = 1 << 2,
         Idle = 1 << 3,

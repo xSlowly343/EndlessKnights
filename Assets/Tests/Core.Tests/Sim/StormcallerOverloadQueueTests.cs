@@ -10,7 +10,7 @@ namespace Game.Core.Tests.Sim
     public class StormcallerOverloadQueueTests
     {
         private static ClassResource Static => TestWorld.Data.Combat.Resources.For("shardcaller");
-        private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
+        private static double StrikeDamage => TestWorld.Data.Combat.StrikeDamage;
         private static double Max => TestWorld.Data.Combat.Resources.Max;
 
         private static GameLoop Shardcaller(EnemyType enemy, params Modifier[] modifiers)
@@ -38,7 +38,7 @@ namespace Game.Core.Tests.Sim
 
             loop.Tick();
 
-            var strike = KeyDamage * Static.OverloadMultiplier;
+            var strike = StrikeDamage * Static.OverloadMultiplier;
             Assert.That(loop.Overload.Discharges, Is.EqualTo(1));
             Assert.That(loop.State.QueueDamage[0].ToDouble(), Is.EqualTo(strike).Within(1e-6));
             Assert.That(loop.State.QueueDamage[1].ToDouble(), Is.EqualTo(strike).Within(1e-6));
@@ -64,7 +64,7 @@ namespace Game.Core.Tests.Sim
             boss.State.Resource = Max;
             var hp = boss.State.EnemyHp;
             boss.Tick();
-            Assert.That((hp - boss.State.EnemyHp).ToDouble() / (KeyDamage * Static.OverloadMultiplier), Is.EqualTo(1.2).Within(0.05));
+            Assert.That((hp - boss.State.EnemyHp).ToDouble() / (StrikeDamage * Static.OverloadMultiplier), Is.EqualTo(1.2).Within(0.05));
 
             var crit = Shardcaller(EnemyType.Normal, new Modifier(CombatStats.OverloadCrit, ModifierKind.Flat, 1));
             crit.State.Resource = Max;

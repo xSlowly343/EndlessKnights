@@ -39,7 +39,7 @@ namespace Game.Core.Stats
 
         private static readonly StatTags[] LabelledTags =
         {
-            StatTags.Keyboard, StatTags.Mouse, StatTags.Click, StatTags.Idle, StatTags.Skill, StatTags.Aura, StatTags.DoT, StatTags.Crit, StatTags.Minion
+            StatTags.Strike, StatTags.Mouse, StatTags.Click, StatTags.Idle, StatTags.Skill, StatTags.Aura, StatTags.DoT, StatTags.Crit, StatTags.Minion
         };
 
         public static string Label(StatId stat)

@@ -184,6 +184,12 @@ namespace Game.Core.Party
                 marks |= sources.HunterMark;
             if (_state.EnemyAlive && _state.BlindTicks > 0)
                 marks |= sources.Blind;
+            if (_state.EnemyAlive && _state.Soulbinder.ColdTicks > 0)
+                marks |= sources.Cold;
+            if (_state.EnemyAlive && _state.Herbwitch.Brew > 0)
+                marks |= sources.Blood;
+            if (_state.Boons.PollenTicks > 0 && _state.Boons.Pollen > 0)
+                marks |= sources.Bond;
             return marks;
         }
 

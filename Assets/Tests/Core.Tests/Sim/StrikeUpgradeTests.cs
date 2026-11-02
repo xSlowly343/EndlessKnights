@@ -37,14 +37,14 @@ namespace Game.Core.Tests.Sim
         public void BuyingSpendsGoldAndMakesTheHeroStronger()
         {
             var loop = WithGold(1000);
-            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
             var cost = loop.Upgrades.CostFor(5);
 
             Assert.That(loop.Upgrades.TryBuy(5), Is.True);
 
             Assert.That(loop.Upgrades.Level, Is.EqualTo(5));
             Assert.That(loop.State.Gold.ToDouble(), Is.EqualTo(1000 - cost.ToDouble()).Within(1e-6));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(before * Rules.DamageMultiplier(5)).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(before * Rules.DamageMultiplier(5)).Within(1e-9));
         }
 
         [Test]
@@ -88,13 +88,13 @@ namespace Game.Core.Tests.Sim
         {
             var state = new GameState { Gold = BigNumber.FromDouble(1e6), HighestStage = TestWorld.Data.Prestige.MinStage, Stage = TestWorld.Data.Prestige.MinStage, RunGoldEarned = BigNumber.FromDouble(1e9) };
             var loop = TestWorld.Loop(state: state);
-            var plain = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var plain = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
             loop.Upgrades.BuyMax();
 
             Assert.That(loop.Prestige.TryPrestige(), Is.True);
 
             Assert.That(loop.Upgrades.Level, Is.EqualTo(0));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(plain).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(plain).Within(1e-9));
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace Game.Core.Tests.Sim
             var again = TestWorld.Loop(state: loaded);
 
             Assert.That(loaded.StrikeLevel, Is.EqualTo(loop.Upgrades.Level));
-            Assert.That(again.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard)).Within(1e-9));
+            Assert.That(again.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike)).Within(1e-9));
         }
 
         [Test]

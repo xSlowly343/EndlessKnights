@@ -175,6 +175,25 @@ namespace Game.Core.Tests.Party
             Assert.That(loop.Synergy.OwnMarks, Is.Zero);
         }
 
+        [Test]
+        public void ChillBrewAndPollenGiveColdBloodAndBond()
+        {
+            var loop = Hero(HeroClass.Soulbinder);
+            loop.State.Soulbinder.ColdTicks = 10;
+            loop.State.Herbwitch.Brew = 5;
+            loop.State.Boons.Pollen = 1;
+            loop.State.Boons.PollenTicks = 10;
+
+            loop.Synergy.Tick();
+
+            Assert.That(loop.Synergy.OwnMarks, Is.EqualTo(Mark("cold") | Mark("blood") | Mark("bond")));
+            loop.State.Soulbinder.ColdTicks = 0;
+            loop.State.Herbwitch.Brew = 0;
+            loop.State.Boons.PollenTicks = 0;
+            loop.Synergy.Tick();
+            Assert.That(loop.Synergy.OwnMarks, Is.Zero);
+        }
+
         [TestCase(@"""stun"": 2,", @"""frost"": 2,", "unknown mark 'frost'")]
         [TestCase(@"""minionsOut"": ""summon""", @"""cannonsOut"": ""summon""", "unknown state 'cannonsOut'")]
         public void BrokenMarkSourcesAreReported(string from, string to, string message)

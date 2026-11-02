@@ -170,7 +170,7 @@ namespace Game.Core.Tests.Sim
             for (var tick = 0; tick < 3000; tick++)
                 loop.Tick();
 
-            var expected = 5 * TestWorld.Data.Combat.KeyDamage * TestWorld.Data.Combat.Focus.Max;
+            var expected = 5 * TestWorld.Data.Combat.StrikeDamage * TestWorld.Data.Combat.Focus.Max;
             Assert.That(active, Is.EqualTo(expected).Within(expected * 0.15));
             Assert.That(loop.State.RecentDps.ToDouble(), Is.EqualTo(active).Within(active * 0.02));
         }

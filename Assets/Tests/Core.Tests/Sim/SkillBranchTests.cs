@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
 {
     public class SkillBranchTests
     {
-        private const string Skill = "{ \"id\": \"forked_strike\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"tags\": [\"Keyboard\", \"Skill\"], " +
+        private const string Skill = "{ \"id\": \"forked_strike\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"tags\": [\"Strike\", \"Skill\"], " +
             "\"cost\": { \"resource\": 10 }, \"cooldownSeconds\": 4, \"effect\": { \"type\": \"strike\", \"multiplier\": 4 }, \"branches\": [" +
             "{ \"level\": 5, \"options\": [{ \"id\": \"heavy\", \"name\": { \"ru\": \"a\", \"en\": \"a\" }, \"damage\": 2 }, { \"id\": \"quick\", \"name\": { \"ru\": \"b\", \"en\": \"b\" }, \"cooldown\": 0.5 }] }, " +
             "{ \"level\": 15, \"options\": [{ \"id\": \"deep\", \"name\": { \"ru\": \"c\", \"en\": \"c\" }, \"effect\": { \"multiplier\": 8 } }, { \"id\": \"cheap\", \"name\": { \"ru\": \"d\", \"en\": \"d\" }, \"cost\": 0.5 }] }, " +

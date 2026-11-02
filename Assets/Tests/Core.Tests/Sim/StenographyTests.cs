@@ -36,7 +36,7 @@ namespace Game.Core.Tests.Sim
             }
             for (var i = 0; i < loop.Events.Count; i++)
             {
-                if (loop.Events[i].Kind == GameEventKind.Damage && loop.Events[i].Source == DamageSource.Keyboard)
+                if (loop.Events[i].Kind == GameEventKind.Damage && loop.Events[i].Source == DamageSource.Strike)
                     dealt += loop.Events[i].Amount.ToDouble();
             }
             loop.Events.Clear();

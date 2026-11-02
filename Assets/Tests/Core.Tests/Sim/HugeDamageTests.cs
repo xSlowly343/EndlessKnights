@@ -40,7 +40,7 @@ namespace Game.Core.Tests.Sim
             loop.State.StrikeLevel = level;
             loop.Upgrades.Rebuild();
 
-            var damage = loop.Hero.Compute(CombatStats.Damage, BigNumber.FromDouble(1), StatTags.Keyboard);
+            var damage = loop.Hero.Compute(CombatStats.Damage, BigNumber.FromDouble(1), StatTags.Strike);
 
             Assert.That(Rules.DamageMultiplierLog10(level), Is.GreaterThan(400));
             Assert.That(loop.Upgrades.Modifiers.Count, Is.GreaterThan(1));

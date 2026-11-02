@@ -65,13 +65,13 @@ namespace Game.Core.Tests.Sim
             var (loop, _) = Hero(HeroClass.Sandwalker,
                 new Modifier(CombatStats.BlindSeconds, ModifierKind.Flat, 2),
                 new Modifier(CombatStats.DamageVsBlinded, ModifierKind.Increased, 0.1));
-            var plain = loop.Combat.ConditionMultiplier(StatTags.Keyboard);
+            var plain = loop.Combat.ConditionMultiplier(StatTags.Strike);
 
             loop.Combat.Sandwalker.Blind(Rules.Seconds);
 
             Assert.That(loop.State.BlindTicks, Is.EqualTo((int)((Rules.Seconds + 2) * GameLoop.TicksPerSecond)).Within(1));
             Assert.That(loop.Combat.Sandwalker.DamageTaken(), Is.EqualTo(1 + Rules.DamageTaken).Within(1e-9));
-            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard) / plain, Is.EqualTo(1.1).Within(1e-9));
+            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Strike) / plain, Is.EqualTo(1.1).Within(1e-9));
         }
 
         [Test]

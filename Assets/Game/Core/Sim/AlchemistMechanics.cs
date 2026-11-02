@@ -188,7 +188,7 @@ namespace Game.Core.Sim
                 if (Flag(AlchemistStats.MixChain))
                     TraitHit(_rules.ChainBlast * power);
                 if (Flag(AlchemistStats.MixQueue))
-                    _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, _rules.QueueBlast * power * _state.FocusMultiplier, StatTags.Keyboard));
+                    _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, _rules.QueueBlast * power * _state.FocusMultiplier, StatTags.Strike));
             }
         }
 
@@ -349,7 +349,7 @@ namespace Game.Core.Sim
                 return;
             var supporting = _combat.Supporting;
             _combat.Supporting = null;
-            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Keyboard);
+            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Strike);
             _combat.Supporting = supporting;
         }
 

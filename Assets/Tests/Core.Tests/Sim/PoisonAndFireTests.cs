@@ -11,7 +11,7 @@ namespace Game.Core.Tests.Sim
     public class PoisonAndFireTests
     {
         private static DotRules Rules => TestWorld.Data.Combat.Dots;
-        private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
+        private static double StrikeDamage => TestWorld.Data.Combat.StrikeDamage;
         private static GemDef Vial => TestWorld.Real.Gems["alchemist_hit_1"];
         private static GemDef Bottle => TestWorld.Real.Gems["dowser_hit_1"];
 
@@ -59,8 +59,8 @@ namespace Game.Core.Tests.Sim
             }
 
             Assert.That(Rules.VapourKeyHits, Is.EqualTo(10));
-            Assert.That(venomist.State.KeyHits, Is.GreaterThan(10));
-            Assert.That(venomist.State.PoisonStacks, Is.EqualTo(venomist.State.KeyHits / Rules.VapourKeyHits).Within(0.1), "a stack of poisonous vapours per ten counted key hits");
+            Assert.That(venomist.State.StrikeHits, Is.GreaterThan(10));
+            Assert.That(venomist.State.PoisonStacks, Is.EqualTo(venomist.State.StrikeHits / Rules.VapourKeyHits).Within(0.1), "a stack of poisonous vapours per ten counted key hits");
             Assert.That(huscarl.State.PoisonStacks, Is.Zero, "only the Venomist breathes vapours");
         }
 
@@ -87,7 +87,7 @@ namespace Game.Core.Tests.Sim
 
             Wait(loop, 3);
 
-            Assert.That(Dealt(loop, hp), Is.EqualTo(KeyDamage * 10 * Rules.PoisonHitsPerStack * 3).Within(1e-6));
+            Assert.That(Dealt(loop, hp), Is.EqualTo(StrikeDamage * 10 * Rules.PoisonHitsPerStack * 3).Within(1e-6));
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace Game.Core.Tests.Sim
 
             Wait(loop, 1);
 
-            Assert.That(Dealt(loop, hp), Is.EqualTo(KeyDamage * 10 * Rules.PoisonHitsPerStack * 1.5 * 2).Within(1e-6));
+            Assert.That(Dealt(loop, hp), Is.EqualTo(StrikeDamage * 10 * Rules.PoisonHitsPerStack * 1.5 * 2).Within(1e-6));
         }
 
 

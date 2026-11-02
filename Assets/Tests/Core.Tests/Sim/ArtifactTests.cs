@@ -99,14 +99,14 @@ namespace Game.Core.Tests.Sim
             var loop = WithEcho(1e9);
             loop.State.Artifacts["typewriter"] = 1;
             loop.Artifacts.Rebuild();
-            var levelOne = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var levelOne = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
             var costOne = loop.Artifacts.LevelCost("typewriter");
 
             Assert.That(loop.Artifacts.TryLevelUp("typewriter"), Is.True);
             Assert.That(loop.State.Artifacts["typewriter"], Is.EqualTo(2));
             Assert.That(loop.Artifacts.LevelCost("typewriter"), Is.GreaterThan(costOne));
             Assert.That(levelOne, Is.EqualTo(100 * (1 + 0.10 + Catalog.AllDamagePerLevel)).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(100 * (1 + 0.20 + 2 * Catalog.AllDamagePerLevel)).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(100 * (1 + 0.20 + 2 * Catalog.AllDamagePerLevel)).Within(1e-9));
             Assert.That(loop.Artifacts.TryLevelUp("wind_compass"), Is.False);
         }
 
