@@ -769,10 +769,10 @@ namespace Game.Core.Party
 
         private void ShareTraitTimer()
         {
-            var slow = _loop.State.TraitPartyTimerSlow > 0 ? System.Math.Min(1, _loop.State.TraitPartyTimerSlow) : 0;
-            if (slow < _traitTimerSent)
+            var slow = System.Math.Max(-PartyEncounter.MaxTimerPenalty, System.Math.Min(1, _loop.State.TraitPartyTimerSlow));
+            if (_traitTimerSent != 0 && (System.Math.Sign(slow) != System.Math.Sign(_traitTimerSent) || System.Math.Abs(slow) < System.Math.Abs(_traitTimerSent)))
                 EndTraitTimer();
-            if (!(slow > 0) || _traitTimerTicks-- > 0)
+            if (slow == 0 || _traitTimerTicks-- > 0)
                 return;
             _traitTimerTicks = TraitTimerResendTicks - 1;
             _traitTimerSent = slow;
@@ -789,6 +789,7 @@ namespace Game.Core.Party
         {
             SendToHost(PartyCodec.Encode(_out, new CastEffectMessage { EffectId = TraitTimerEffect, OnEnemy = true, End = true }));
             _traitTimerSent = 0;
+            _traitTimerTicks = 0;
             _traitTimerTicks = 0;
         }
 

@@ -353,7 +353,7 @@ class PartyEncounter {
     }
 
     applyEnemyEffect(effectId: number, damageTaken: number, seconds: number, owner: number = PartyNoSlot, timerSlow: number = 0): boolean {
-        if (!(damageTaken >= 0) || !(timerSlow >= 0) || !(damageTaken > 0 || timerSlow > 0) || !(seconds > 0) || !this.started)
+        if (!(damageTaken >= 0) || !(timerSlow >= -PartyMaxTimerPenalty) || !(damageTaken > 0 || timerSlow !== 0) || !(seconds > 0) || !this.started)
             return false;
         timerSlow = Math.min(1, timerSlow);
         const ticks = partyTicks(seconds);
@@ -511,7 +511,7 @@ class PartyEncounter {
         if (!this.fightingBoss || !this.started)
             return;
         const rate = this.bossTimerRate();
-        this.savedBossTicks += 1 - rate;
+        this.savedBossTicks += Math.max(0, 1 - rate);
         this.bossTimerCarry += rate;
         while (this.bossTimerCarry >= 1 && this.bossTicksLeft > 0) {
             this.bossTimerCarry -= 1;

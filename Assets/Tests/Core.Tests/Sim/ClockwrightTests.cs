@@ -115,6 +115,18 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void AnEmptySpringSendsThePenaltyToTheSharedBoss()
+        {
+            var (loop, _) = Boss(Flat(ClockwrightStats.SpringPower, 0.3));
+            loop.State.SharedEnemy = true;
+
+            Assert.That(Slow(loop, 0), Is.Zero);
+            Assert.That(loop.State.TraitPartyTimerSlow, Is.EqualTo(-Rules.SpringPenalty).Within(1e-9));
+            Slow(loop, 80);
+            Assert.That(loop.State.TraitPartyTimerSlow, Is.Zero);
+        }
+
+        [Test]
         public void TheSlowSpringMakesTheBossTimerRunSlower()
         {
             var (loop, _) = Boss(Flat(ClockwrightStats.SpringPower, 0.3), Flat(ClockwrightStats.SpringDrain, -1));

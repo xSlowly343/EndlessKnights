@@ -509,7 +509,7 @@ namespace Game.Core.Tests.Party
             }
             r.Effect(77, 0.1, 3, 0.3);
             r.Effect(78, 0, 2, 0.5);
-            r.Effect(79, 0, 2, -0.5);
+            r.Effect(79, 0, 2, -0.6);
             r.Effect(80, 0, 2, 0);
             r.Effect(81, 0, 5, 0.9);
             r.Hit(0, 0.2);
@@ -518,6 +518,8 @@ namespace Game.Core.Tests.Party
             r.Advance(25);
             r.Hit(0, 0.4);
             r.Advance(30);
+            r.Effect(82, 0, 3, -0.2);
+            r.Advance(5);
             r.Repeat(0, 3);
             r.Repeat(1, 20);
             r.Hit(0, 50);

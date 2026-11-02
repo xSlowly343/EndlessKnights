@@ -126,6 +126,7 @@ namespace Game.Core.Sim
                 TickIdleGears();
             var slow = SpringSlow;
             _state.TraitTimerSlow = _state.SharedEnemy ? 0 : slow;
+            _state.TraitPartyTimerSlow = _state.SharedEnemy && slow < 0 ? slow : 0;
             S.PartySlow = Spring && slow > 0 ? slow + Positive(ClockwrightStats.SpringParty) : 0;
         }
 
