@@ -1005,6 +1005,26 @@ namespace Game.Core.Party
                 case TraitRelayKind.ForecastLost:
                     _loop.Combat.Cartomancer.LoseForecast(relay.Value);
                     break;
+                case TraitRelayKind.Petal:
+                    HerbwitchMechanics.LandPetal(boons, relay.Every, relay.Value, relay.Seconds, relay.From, relay.Max);
+                    break;
+                case TraitRelayKind.Spores:
+                    boons.SporeOwner = relay.From;
+                    boons.SporeEvery = relay.Every;
+                    boons.SporeTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.SporeHit:
+                    _loop.Combat.Herbwitch.ReceiveSpores(relay.Count);
+                    break;
+                case TraitRelayKind.Gulp:
+                    boons.GulpOwner = relay.From;
+                    boons.GulpEvery = relay.Every;
+                    boons.GulpResource = relay.Value;
+                    boons.GulpTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.GulpBack:
+                    _loop.Combat.Herbwitch.ReceiveGulp(relay.Count);
+                    break;
                 case TraitRelayKind.ParrotPerch:
                     boons.ParrotOwner = relay.From;
                     boons.ParrotPower = relay.Value;
@@ -1062,6 +1082,8 @@ namespace Game.Core.Party
                 _loop.State.Boons.LendPower = relay.Value;
                 _loop.State.Boons.LendTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
             }
+            else if (relay.Kind == TraitRelayKind.Petal)
+                HerbwitchMechanics.LandPetal(_loop.State.Boons, relay.Every, relay.Value, relay.Seconds, -1, relay.Max);
             else if (relay.Kind == TraitRelayKind.Mate)
             {
                 _loop.State.Boons.MatePower = relay.Value;

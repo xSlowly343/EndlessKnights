@@ -347,6 +347,30 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AHerbwitchsPetalSporesAndGulpReachTheAllyAndComeBack()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var herbwitch = rig.Members[0];
+            var friend = rig.Members[1];
+            herbwitch.Loop.State.Class = HeroClass.Herbwitch;
+            herbwitch.Loop.Hero.Add(new Modifier(HerbwitchStats.MyceliumPower, ModifierKind.Flat, 0.02));
+            herbwitch.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Petal, To = LanternbearerMechanics.AnyAlly, Every = 20, Max = 3, Value = 0.12, Seconds = 20 });
+            herbwitch.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Gulp, To = TraitRelay.AllSlots, Every = 10, Value = 5, Seconds = 3 });
+            herbwitch.Loop.State.Herbwitch.Venom = 10;
+            rig.Run(0.5);
+
+            Assert.That(friend.Loop.State.Boons.PetalOwner, Is.EqualTo(herbwitch.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.GulpOwner, Is.EqualTo(herbwitch.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.SporeOwner, Is.EqualTo(herbwitch.Client.OwnSlot));
+
+            var spores = herbwitch.Loop.State.Herbwitch.SporesBack;
+            friend.Loop.State.Boons.SporesOwed = 2;
+            rig.Run(0.3);
+            Assert.That(herbwitch.Loop.State.Herbwitch.SporesBack, Is.EqualTo(spores + 2));
+        }
+
+        [Test]
         public void ACartomancersDealAndTermReachTheAllyAndTheAllysCardComesBack()
         {
             var rig = new Rig(2);

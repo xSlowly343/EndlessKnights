@@ -110,6 +110,27 @@ namespace Game.Core.Sim
         public int ForecastTicks { get; set; }
         public bool ForecastApplied { get; set; }
         public double ForecastPenalty { get; set; }
+        public int PetalOwner { get; set; } = -1;
+        public int PetalEvery { get; set; }
+        public double PetalPower { get; set; }
+        public int PetalTicks { get; set; }
+        public int PetalMax { get; set; } = 3;
+        public int PetalHits { get; set; }
+        public int PetalSeeds { get; set; }
+        public double PetalCarry { get; set; }
+        public long PetalStings { get; set; }
+        public int SporeOwner { get; set; } = -1;
+        public int SporeEvery { get; set; }
+        public int SporeTicks { get; set; }
+        public int SporeHits { get; set; }
+        public int SporesOwed { get; set; }
+        public int GulpOwner { get; set; } = -1;
+        public int GulpEvery { get; set; }
+        public int GulpTicks { get; set; }
+        public int GulpHits { get; set; }
+        public int GulpsOwed { get; set; }
+        public long Gulps { get; set; }
+        public double GulpResource { get; set; }
 
         public double GoldMultiplier => GoldTicks > 0 ? 1 + ElixirGold : 1;
 

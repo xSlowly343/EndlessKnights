@@ -35,7 +35,7 @@ namespace Game.Core.Tests.Build
         [TestCase(HeroClass.Ghostcaptain, "ghostcaptain_r1c1")]
         [TestCase(HeroClass.Mothcaller, "mothcaller_r1c1")]
         [TestCase(HeroClass.Cartomancer, "cartomancer_r1c1")]
-        [TestCase(HeroClass.Herbwitch, "herbwitch_r1c9")]
+        [TestCase(HeroClass.Herbwitch, "herbwitch_r1c1")]
         [TestCase(HeroClass.Golemancer, "golemancer_r1c9")]
         public void AClassOnTheNewTreeHasNoStartPassiveAndGrowsFromItsNodes(HeroClass heroClass, string node)
         {

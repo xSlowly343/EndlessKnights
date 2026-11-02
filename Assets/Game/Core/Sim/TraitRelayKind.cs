@@ -39,6 +39,11 @@ namespace Game.Core.Sim
         Deal,
         Card,
         Forecast,
-        ForecastLost
+        ForecastLost,
+        Petal,
+        Spores,
+        SporeHit,
+        Gulp,
+        GulpBack
     }
 }

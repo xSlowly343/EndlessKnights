@@ -152,6 +152,11 @@ namespace Game.Core.Content.Gems
         public bool Reveal { get; set; }
         public double HandHit { get; set; }
         public bool Forecast { get; set; }
+        public int Seeds { get; set; }
+        public bool Bloom { get; set; }
+        public double Venom { get; set; }
+        public double VenomBurst { get; set; }
+        public bool Drink { get; set; }
     }
 
     public sealed class PotionOption

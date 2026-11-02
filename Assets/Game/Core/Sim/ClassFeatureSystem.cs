@@ -71,7 +71,7 @@ namespace Game.Core.Sim
 
         public void Bleed(in EffectiveInput input)
         {
-            if (!_state.Is(HeroClass.Herbwitch))
+            if (!_state.Is(HeroClass.Herbwitch) || _combat.Herbwitch.Traited)
                 return;
             var rules = Rules.Blood;
             if (input.MousePx > 0 && _state.EnemyAlive)

@@ -636,211 +636,70 @@
     {
       "id": "herbwitch_trait_1",
       "class": "herbwitch",
-      "name": {"ru": "Цветение", "en": "Цветение"},
-      "blurb": "Каждые 15 ударов в врага садится семя. Семя прорастает колючей лозой, которая жалит раз в секунду и растёт: росток → куст → цветок, на каждой стадии урон вдвое больше. Новый враг — лозы начинают сначала",
+      "name": {"ru": "Цветение", "en": "Blossoming"},
+      "blurb": "Каждые 15 ударов во врага садится семя. Семя прорастает колючей лозой, которая жалит раз в секунду и растёт: росток → куст → цветок, каждые 5 с стадия, на каждой стадии урон вдвое больше. Лоз до 3. Новый враг — лозы начинают сначала. Каждый раскрытый цветок роняет лепесток. В паузе растения продолжают расти и жалить. Скилл Пути «Ускорить рост» доводит все лозы до цветка",
       "trait": {
-        "partyText": {
-          "ru": "Цветок раз в 10 с роняет лепесток союзнику: +3% урона на 30 с",
-          "en": "Цветок раз в 10 с роняет лепесток союзнику: +3% урона на 30 с"
-        },
+        "partyText": {"ru": "Лепесток садовнику: сад висит на общем враге у хоста и виден всем; раскрытый цветок роняет лепесток союзнику, и 20 с каждый его 20-й удар сажает на врага его собственное семя", "en": "A petal for a gardener: the garden hangs on the shared enemy at the host for everyone to see; an opened flower drops a petal to an ally, and for 20 s every 20th hit of theirs plants their own seed on the enemy"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "bloomStart", "kind": "flat", "value": 1}], "text": {"ru": "Сильный корень: лоза сразу стартует кустом", "en": "Strong Root: a vine starts as a bush"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "herbwitch_trait_1_f45a",
-                "name": {"ru": "лоза сразу стартует кустом", "en": "лоза сразу стартует кустом"},
-                "text": {"ru": "лоза сразу стартует кустом", "en": "лоза сразу стартует кустом"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "herbwitch_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "herbwitch_trait_1_f60a",
-                "name": {"ru": "до 5 лоз вместо 3", "en": "до 5 лоз вместо 3"},
-                "text": {"ru": "до 5 лоз вместо 3", "en": "до 5 лоз вместо 3"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "herbwitch_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "herbwitch_trait_1_f75a",
-                "name": {"ru": "цветок при смерти врага пересаживается на следующего", "en": "цветок при смерти врага пересаживается на следующего"},
-                "text": {"ru": "цветок при смерти врага пересаживается на следующего", "en": "цветок при смерти врага пересаживается на следующего"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "herbwitch_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "herbwitch_trait_1_f45a", "name": {"ru": "Пять лоз", "en": "Five Vines"}, "text": {"ru": "До 5 лоз, но семя каждые 20 ударов", "en": "Up to 5 vines, but a seed every 20 hits"}, "modifiers": [{"stat": "bloomVines", "kind": "flat", "value": 2}, {"stat": "bloomHits", "kind": "flat", "value": 5}]}, {"id": "herbwitch_trait_1_f45b", "name": {"ru": "Быстрый рост", "en": "Quick Growth"}, "text": {"ru": "Стадия за 3 с, но лозы на 20% слабее", "en": "A stage takes 3 s, but vines are 20% weaker"}, "modifiers": [{"stat": "bloomGrow", "kind": "flat", "value": -2}, {"stat": "bloomPower", "kind": "more", "value": -0.2}]}]},
+          {"level": 60, "options": [{"id": "herbwitch_trait_1_f60a", "name": {"ru": "Пересадка", "en": "Replanting"}, "text": {"ru": "Цветок при смерти врага пересаживается на следующего, но лозы на 15% слабее", "en": "A flower moves to the next enemy when one dies, but vines are 15% weaker"}, "modifiers": [{"stat": "bloomReplant", "kind": "flat", "value": 1}, {"stat": "bloomPower", "kind": "more", "value": -0.15}]}, {"id": "herbwitch_trait_1_f60b", "name": {"ru": "Колючий куст", "en": "Thorny Bush"}, "text": {"ru": "Куст жалит втрое, но цветка больше нет", "en": "A bush stings three times as hard, but there is no flower"}, "modifiers": [{"stat": "bloomThorn", "kind": "flat", "value": 1}]}]},
+          {"level": 75, "options": [{"id": "herbwitch_trait_1_f75a", "name": {"ru": "Дикий сад", "en": "Wild Garden"}, "text": {"ru": "Лозы жалят и врагов очереди вполсилы, но на 20% слабее", "en": "Vines also sting the queued enemies at half strength, but 20% weaker"}, "modifiers": [{"stat": "bloomQueue", "kind": "flat", "value": 1}, {"stat": "bloomPower", "kind": "more", "value": -0.2}]}, {"id": "herbwitch_trait_1_f75b", "name": {"ru": "Один цветок", "en": "One Flower"}, "text": {"ru": "Только одна лоза, но вчетверо сильнее", "en": "Only one vine, but four times as strong"}, "modifiers": [{"stat": "bloomSingle", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [{"id": "herbwitch_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Цветение", "en": "Цветение"}, "modifiers": []}],
+      "nodes": [{"id": "herbwitch_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Цветение", "en": "Blossoming"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "herbwitch_trait_2",
       "class": "herbwitch",
-      "name": {"ru": "Грибница", "en": "Грибница"},
-      "blurb": "Яд не пропадает со смертью врага: половина перетекает на следующего в очереди. Споры с отравленного врага дают союзникам +1% урона за каждые 5 стаков",
+      "name": {"ru": "Грибница", "en": "Mycelium"},
+      "blurb": "Каждый удар добавляет врагу стак яда грибницы, до 50; каждый стак жалит раз в секунду. Яд не пропадает со смертью врага: половина перетекает на следующего. В паузе яд продолжает жалить. Скилл Пути «Споровый выброс» добавляет 15 стаков",
       "trait": {
-        "partyText": {"ru": "Споры — это и есть вклад: чем гуще яд, тем сильнее отряд", "en": "Споры — это и есть вклад: чем гуще яд, тем сильнее отряд"},
+        "partyText": {"ru": "Споры заражают: пока враг отравлен, на союзниках оседают споры, и каждый 5-й удар союзника добавляет стак яда Травницы; счётчик спор виден у союзника", "en": "Spores infect: while the enemy is poisoned, spores settle on the allies, and every 5th hit of an ally adds a stack of the Herbwitch's poison; a spore counter shows on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.025}]},
+          {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.004}]},
+          {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.004}]},
+          {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.004}]},
+          {"modifiers": [{"stat": "myceliumQueue", "kind": "flat", "value": 1}], "text": {"ru": "Споры по очереди: яд жжёт и врагов очереди на 25%", "en": "Spores down the queue: the poison also burns the queued enemies at 25%"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "herbwitch_trait_2_f45a",
-                "name": {"ru": "перетекает 75%", "en": "перетекает 75%"},
-                "text": {"ru": "перетекает 75%", "en": "перетекает 75%"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "herbwitch_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "herbwitch_trait_2_f60a",
-                "name": {"ru": "споры дают ещё и +1% к скорости ударов", "en": "споры дают ещё и +1% к скорости ударов"},
-                "text": {"ru": "споры дают ещё и +1% к скорости ударов", "en": "споры дают ещё и +1% к скорости ударов"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "herbwitch_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "herbwitch_trait_2_f75a",
-                "name": {"ru": "грибница цепляет двух врагов очереди сразу", "en": "грибница цепляет двух врагов очереди сразу"},
-                "text": {"ru": "грибница цепляет двух врагов очереди сразу", "en": "грибница цепляет двух врагов очереди сразу"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "herbwitch_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "herbwitch_trait_2_f45a", "name": {"ru": "Глубокая грибница", "en": "Deep Mycelium"}, "text": {"ru": "Перетекает 75% яда, но стак на 15% слабее", "en": "75% of the poison flows on, but a stack is 15% weaker"}, "modifiers": [{"stat": "myceliumDeep", "kind": "flat", "value": 1}, {"stat": "myceliumPower", "kind": "more", "value": -0.15}]}, {"id": "herbwitch_trait_2_f45b", "name": {"ru": "Ядовитые споры", "en": "Toxic Spores"}, "text": {"ru": "Удар даёт два стака, но яд не перетекает", "en": "A hit gives two stacks, but the poison does not flow on"}, "modifiers": [{"stat": "myceliumDouble", "kind": "flat", "value": 1}, {"stat": "myceliumNoCarry", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "herbwitch_trait_2_f60a", "name": {"ru": "Плотный яд", "en": "Dense Poison"}, "text": {"ru": "До 75 стаков, но стак на 20% слабее", "en": "Up to 75 stacks, but a stack is 20% weaker"}, "modifiers": [{"stat": "myceliumMax", "kind": "flat", "value": 25}, {"stat": "myceliumPower", "kind": "more", "value": -0.2}]}, {"id": "herbwitch_trait_2_f60b", "name": {"ru": "Едкий яд", "en": "Acrid Poison"}, "text": {"ru": "Стак на 40% сильнее, но стаков до 30", "en": "A stack is 40% stronger, but up to 30 stacks"}, "modifiers": [{"stat": "myceliumPower", "kind": "more", "value": 0.4}, {"stat": "myceliumMax", "kind": "flat", "value": -20}]}]},
+          {"level": 75, "options": [{"id": "herbwitch_trait_2_f75a", "name": {"ru": "Сеть грибницы", "en": "Mycelium Web"}, "text": {"ru": "Яд жалит вдвое чаще, но стак на 45% слабее", "en": "The poison stings twice as often, but a stack is 45% weaker"}, "modifiers": [{"stat": "myceliumFast", "kind": "flat", "value": 1}, {"stat": "myceliumPower", "kind": "more", "value": -0.45}]}, {"id": "herbwitch_trait_2_f75b", "name": {"ru": "Споры для всех", "en": "Spores for All"}, "text": {"ru": "Союзники добавляют яд вдвое чаще, но стак на 15% слабее", "en": "Allies add poison twice as often, but a stack is 15% weaker"}, "modifiers": [{"stat": "myceliumParty", "kind": "flat", "value": 1}, {"stat": "myceliumPower", "kind": "more", "value": -0.15}]}]}
         ]
       },
-      "nodes": [{"id": "herbwitch_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Грибница", "en": "Грибница"}, "modifiers": []}],
+      "nodes": [{"id": "herbwitch_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Грибница", "en": "Mycelium"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "herbwitch_trait_3",
       "class": "herbwitch",
-      "name": {"ru": "Сок жизни", "en": "Сок жизни"},
-      "blurb": "Удар по врагу с ядом может выпить его: снимает весь яд и превращает его в Сок для всего отряда (союзникам — заряд скилла). Яд не тикает, пока его не выпили — копится в 2 раза быстрее",
+      "name": {"ru": "Сок жизни", "en": "Lifesap"},
+      "blurb": "Яд не тикает, пока его не выпили, и копится вдвое быстрее: каждый удар даёт 2 стака. Каждый 20-й удар выпивает весь яд: он бьёт врага разом и превращается в Сок. Новый враг — невыпитый яд пропадает. В паузе Сок медленно капает сам. Скилл Пути «Глоток сока» выпивает яд сразу",
       "trait": {
-        "partyText": {"ru": "Союзники получают ресурс своих классов", "en": "Союзники получают ресурс своих классов"},
+        "partyText": {"ru": "Глоток союзника: пока на враге есть яд, каждый 10-й удар союзника тоже пьёт его — союзник получает ресурс своего класса, а Травница выпивает половину яда в Сок; значок глотка виден у союзника", "en": "An ally's gulp: while the enemy is poisoned, every 10th hit of an ally drinks too — the ally gets resource of their class, and the Herbwitch drinks half the poison into Sap; a gulp icon shows on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "sapPower", "kind": "flat", "value": 0.12}]},
+          {"modifiers": [{"stat": "sapPower", "kind": "flat", "value": 0.015}]},
+          {"modifiers": [{"stat": "sapPower", "kind": "flat", "value": 0.015}]},
+          {"modifiers": [{"stat": "sapPower", "kind": "flat", "value": 0.015}]},
+          {"modifiers": [{"stat": "sapHeal", "kind": "flat", "value": 1}], "text": {"ru": "Целебный сок: глоток даёт вдвое больше Сока", "en": "Healing Sap: a drink gives twice as much Sap"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "herbwitch_trait_3_f45a",
-                "name": {"ru": "выпитый яд лечит полосу HP", "en": "выпитый яд лечит полосу HP"},
-                "text": {"ru": "выпитый яд лечит полосу HP", "en": "выпитый яд лечит полосу HP"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "herbwitch_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "herbwitch_trait_3_f60a",
-                "name": {"ru": "глоток оставляет 30% яда на враге", "en": "глоток оставляет 30% яда на враге"},
-                "text": {"ru": "глоток оставляет 30% яда на враге", "en": "глоток оставляет 30% яда на враге"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "herbwitch_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "herbwitch_trait_3_f75a",
-                "name": {"ru": "после глотка 10 с весь отряд бьёт ядом", "en": "после глотка 10 с весь отряд бьёт ядом"},
-                "text": {"ru": "после глотка 10 с весь отряд бьёт ядом", "en": "после глотка 10 с весь отряд бьёт ядом"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "herbwitch_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "herbwitch_trait_3_f45a", "name": {"ru": "Частые глотки", "en": "Frequent Sips"}, "text": {"ru": "Глоток каждые 14 ударов, но на 25% слабее", "en": "A drink every 14 hits, but 25% weaker"}, "modifiers": [{"stat": "sapHits", "kind": "flat", "value": -6}, {"stat": "sapPower", "kind": "more", "value": -0.25}]}, {"id": "herbwitch_trait_3_f45b", "name": {"ru": "Крепкий настой", "en": "Strong Brew"}, "text": {"ru": "Глоток на 40% сильнее, но каждые 28 ударов", "en": "A drink is 40% stronger, but every 28 hits"}, "modifiers": [{"stat": "sapPower", "kind": "more", "value": 0.4}, {"stat": "sapHits", "kind": "flat", "value": 8}]}]},
+          {"level": 60, "options": [{"id": "herbwitch_trait_3_f60a", "name": {"ru": "Глоток на потом", "en": "A Sip for Later"}, "text": {"ru": "Глоток оставляет 30% яда, и со сменой врага остаётся 30%, но глоток на 15% слабее", "en": "A drink leaves 30% of the poison, and 30% stays when the enemy changes, but a drink is 15% weaker"}, "modifiers": [{"stat": "sapLeave", "kind": "flat", "value": 1}, {"stat": "sapPower", "kind": "more", "value": -0.15}]}, {"id": "herbwitch_trait_3_f60b", "name": {"ru": "Жадный глоток", "en": "Greedy Gulp"}, "text": {"ru": "Глоток бьёт вдвое, но каждые 30 ударов", "en": "A drink strikes twice as hard, but every 30 hits"}, "modifiers": [{"stat": "sapGreedy", "kind": "flat", "value": 1}, {"stat": "sapHits", "kind": "flat", "value": 10}]}]},
+          {"level": 75, "options": [{"id": "herbwitch_trait_3_f75a", "name": {"ru": "Ядовитое дыхание", "en": "Poison Breath"}, "text": {"ru": "После глотка 10 с яд жжёт врага сам, но глоток на 20% слабее", "en": "After a drink the poison burns the enemy on its own for 10 s, but a drink is 20% weaker"}, "modifiers": [{"stat": "sapPoison", "kind": "flat", "value": 1}, {"stat": "sapPower", "kind": "more", "value": -0.2}]}, {"id": "herbwitch_trait_3_f75b", "name": {"ru": "Общая чаша", "en": "Shared Cup"}, "text": {"ru": "Союзники получают за глоток вдвое больше ресурса, но её глоток на 15% слабее", "en": "Allies get twice the resource per gulp, but her drink is 15% weaker"}, "modifiers": [{"stat": "sapParty", "kind": "flat", "value": 1}, {"stat": "sapPower", "kind": "more", "value": -0.15}]}]}
         ]
       },
-      "nodes": [{"id": "herbwitch_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сок жизни", "en": "Сок жизни"}, "modifiers": []}],
+      "nodes": [{"id": "herbwitch_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сок жизни", "en": "Lifesap"}, "modifiers": []}],
       "links": []
     },
     {

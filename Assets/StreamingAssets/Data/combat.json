@@ -146,7 +146,12 @@
       "forecast": { "termShare": 0.6, "termMinSeconds": 5, "longTerm": 1.3, "shortTerm": 0.7, "penalty": 0.2, "exactPenalty": 0.1, "exactSeconds": 3, "exactGold": 1, "rushSeconds": 5, "rush": 0.3, "streakStep": 0.25, "streakMax": 4 },
       "reversed": { "hits": 10, "hitsMin": 3, "max": 7, "cap": 12, "cupsHit": 5, "coinsPerCard": 1.25, "wandsSlow": 0.75, "wandsSlowMax": 0.5, "revealHits": 20, "revealSoloShare": 0.5, "revealSeconds": 5, "revealMultiplier": 2, "revealStrong": 3, "keepShare": 0.5, "effectSeconds": 1 }
     },
-    "herbwitch": { "blood": { "perThousandPx": 3, "max": 30, "hitsPerStack": 0.2 } },
+    "herbwitch": {
+      "blood": { "perThousandPx": 3, "max": 30, "hitsPerStack": 0.2 },
+      "bloom": { "hits": 15, "hitsMin": 4, "vines": 3, "vinesCap": 8, "growSeconds": 5, "growSecondsMin": 1, "stageMultiplier": 2, "thornMultiplier": 3, "singleMultiplier": 4, "queueShare": 0.5, "petalHits": 20, "petalSeconds": 20, "petalVines": 3, "effectSeconds": 1 },
+      "mycelium": { "max": 50, "carry": 0.5, "deepCarry": 0.75, "queueShare": 0.25, "fastMultiplier": 2, "sporeHits": 5, "sporeStacks": 1, "relaySeconds": 2 },
+      "sap": { "perHit": 2, "max": 200, "drinkHits": 20, "drinkHitsMin": 5, "sapPerStack": 0.2, "gulpHits": 10, "gulpResource": 5, "gulpShare": 0.5, "relaySeconds": 2, "leaveShare": 0.3, "partyPoisonSeconds": 10 }
+    },
     "golemancer": { "golem": { "seconds": 20, "hitsPerSecond": 0.5, "multiplier": 12, "stunSeconds": 1 } }
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },
