@@ -93,13 +93,13 @@ namespace Game.Core.Tests.Stats
         public void TaggedModifierNeedsAllItsTags()
         {
             var sheet = new StatSheet();
-            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 1.0, StatTags.Keyboard));
-            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 1.0, StatTags.Keyboard | StatTags.Crit));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 1.0, StatTags.Strike));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 1.0, StatTags.Strike | StatTags.Crit));
 
             Assert.That(Value(sheet, Damage, 10), Is.EqualTo(10).Within(Tolerance));
             Assert.That(Value(sheet, Damage, 10, StatTags.Mouse), Is.EqualTo(10).Within(Tolerance));
-            Assert.That(Value(sheet, Damage, 10, StatTags.Keyboard), Is.EqualTo(20).Within(Tolerance));
-            Assert.That(Value(sheet, Damage, 10, StatTags.Keyboard | StatTags.Crit | StatTags.Skill), Is.EqualTo(30).Within(Tolerance));
+            Assert.That(Value(sheet, Damage, 10, StatTags.Strike), Is.EqualTo(20).Within(Tolerance));
+            Assert.That(Value(sheet, Damage, 10, StatTags.Strike | StatTags.Crit | StatTags.Skill), Is.EqualTo(30).Within(Tolerance));
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace Game.Core.Tests.Stats
             sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.5));
 
             for (var i = 0; i < 100; i++)
-                Value(sheet, Damage, 10, StatTags.Keyboard);
+                Value(sheet, Damage, 10, StatTags.Strike);
 
             Assert.That(sheet.RecalculationCount, Is.EqualTo(1));
         }
@@ -160,7 +160,7 @@ namespace Game.Core.Tests.Stats
             sheet.Add(new Modifier(Damage, ModifierKind.Increased, 1.0, StatTags.Mouse));
 
             Assert.That(Value(sheet, Damage, 10, StatTags.Mouse), Is.EqualTo(20).Within(Tolerance));
-            Assert.That(Value(sheet, Damage, 10, StatTags.Keyboard), Is.EqualTo(10).Within(Tolerance));
+            Assert.That(Value(sheet, Damage, 10, StatTags.Strike), Is.EqualTo(10).Within(Tolerance));
             Assert.That(sheet.RecalculationCount, Is.EqualTo(2));
         }
 

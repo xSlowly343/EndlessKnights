@@ -54,7 +54,7 @@ namespace Game.Core.Sim
             _state.MouseWindow.Record(input.MousePx);
             _state.ClicklessTicks = input.ButtonPresses > 0 ? 0 : _state.ClicklessTicks + 1;
             _state.Reading = Reading(resource, input);
-            var gained = input.Hits * PerKey(resource) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Keyboard);
+            var gained = input.Hits * PerKey(resource) * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Strike);
             if (resource.MousePxPerPoint > 0 && !_state.StepTensionBlocked)
                 gained += input.MousePx / resource.MousePxPerPoint * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse);
             gained += (resource.PerSecond + System.Math.Max(0, _hero.Value(CombatStats.ResourcePerSecond, 0))) * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1);

@@ -48,14 +48,14 @@ namespace Game.Core.Tests.Sim
         public void RaisingABranchCostsEchoAndAddsDamageOfItsInput()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, Echo = BigNumber.FromDouble(100) });
-            var before = loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard);
+            var before = loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike);
 
             Assert.That(loop.RaiseResonance("keys"), Is.EqualTo(ResonanceResult.Raised));
             Assert.That(loop.RaiseResonance("keys"), Is.EqualTo(ResonanceResult.Raised));
 
             Assert.That(loop.Resonance.Level("keys"), Is.EqualTo(2));
             Assert.That(loop.State.Echo.ToDouble(), Is.EqualTo(100 - 10 - 13).Within(1e-6));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard) - before, Is.EqualTo(0.06).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike) - before, Is.EqualTo(0.06).Within(1e-9));
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Game.Core.Tests.Sim
                 loop.Tick();
             }
 
-            var hits = Damage(loop, DamageSource.Keyboard);
+            var hits = Damage(loop, DamageSource.Strike);
             Assert.That(hits.Count, Is.EqualTo(100));
             Assert.That(hits[99] / hits[98], Is.EqualTo(5).Within(0.05));
             Assert.That(Enumerable.Range(1, hits.Count - 1).Count(i => hits[i] > hits[i - 1] * 3), Is.EqualTo(1));
@@ -91,7 +91,7 @@ namespace Game.Core.Tests.Sim
         {
             var (loop, _) = Hero("keys", 10);
 
-            Assert.That(loop.Hero.Value(CombatStats.KeyBurstMultiplier, 0, StatTags.Keyboard), Is.EqualTo(10));
+            Assert.That(loop.Hero.Value(CombatStats.KeyBurstMultiplier, 0, StatTags.Strike), Is.EqualTo(10));
         }
 
         [Test]

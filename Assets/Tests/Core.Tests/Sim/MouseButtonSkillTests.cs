@@ -64,7 +64,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(right.State.Skills[SkillSystem.LeftButtonSlot].Ready, Is.True);
             Assert.That(right.State.Skills[SkillSystem.RightButtonSlot].Ready, Is.False);
             Assert.That(middle.State.Skills[SkillSystem.RightButtonSlot].Ready, Is.True);
-            Assert.That(middle.State.KeyHits, Is.EqualTo(1));
+            Assert.That(middle.State.StrikeHits, Is.EqualTo(1));
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace Game.Core.Tests.Sim
             input.ClickLeft();
             loop.Tick();
 
-            Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.KeyDamage * 3).Within(1e-9));
+            Assert.That(SkillDamage(loop), Is.EqualTo(TestWorld.Data.Combat.StrikeDamage * 3).Within(1e-9));
         }
     }
 }

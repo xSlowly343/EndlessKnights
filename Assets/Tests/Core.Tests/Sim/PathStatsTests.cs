@@ -37,7 +37,7 @@ namespace Game.Core.Tests.Sim
             var total = 0.0;
             for (var i = 0; i < loop.Events.Count; i++)
             {
-                if (loop.Events[i].Kind == GameEventKind.Damage && loop.Events[i].Source == DamageSource.Keyboard)
+                if (loop.Events[i].Kind == GameEventKind.Damage && loop.Events[i].Source == DamageSource.Strike)
                     total += loop.Events[i].Amount.ToDouble();
             }
             return total;

@@ -144,7 +144,7 @@ namespace Game.Core.Tests.Build
             var loop = Hero();
             var slot = Equip(loop, "runedancer_hit_1");
             var dots = WithSupport("\"DoT\"", 1, 1)["plain_help"];
-            var keys = WithSupport("\"Keyboard\", \"Skill\"", 1, 1)["plain_help"];
+            var keys = WithSupport("\"Strike\", \"Skill\"", 1, 1)["plain_help"];
 
             Assert.That(loop.Book.SetSupport(slot, 0, dots), Is.EqualTo(BookResult.DoesNotFit));
             Assert.That(loop.Book.SetSupport(slot, 0, keys), Is.EqualTo(BookResult.Done));
@@ -321,7 +321,7 @@ namespace Game.Core.Tests.Build
             [Test]
         public void ApprenticeTradesPowerForExperience()
         {
-            var loop = Hero(new Modifier(CombatStats.Damage, ModifierKind.More, 1e60, StatTags.Keyboard));
+            var loop = Hero(new Modifier(CombatStats.Damage, ModifierKind.More, 1e60, StatTags.Strike));
             var slot = Equip(loop, "runedancer_hit_1", "apprentice");
             loop.Book.SetSupport(slot, 0, Gem("apprentice"));
             loop.State.Resource = 100;
@@ -399,8 +399,8 @@ namespace Game.Core.Tests.Build
             var support = Gem("blade_hunger").Support!;
             var tenSteps = (long)(support.HungerHitsPerStep * 10);
 
-            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.KeyHits += tenSteps), Is.EqualTo(1 + 10 * support.HungerStep).Within(1e-9));
-            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.KeyHits += 1_000_000), Is.EqualTo(1 + support.HungerMax).Within(1e-9));
+            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.StrikeHits += tenSteps), Is.EqualTo(1 + 10 * support.HungerStep).Within(1e-9));
+            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.StrikeHits += 1_000_000), Is.EqualTo(1 + support.HungerMax).Within(1e-9));
         }
 
         [Test]
@@ -409,7 +409,7 @@ namespace Game.Core.Tests.Build
             var loop = Hero();
             var slot = Equip(loop, "runedancer_hit_1", "blade_hunger");
             loop.Book.SetSupport(slot, 0, Gem("blade_hunger"));
-            loop.State.KeyHits += 1000;
+            loop.State.StrikeHits += 1000;
             loop.State.Resource = 100;
             loop.Skills.TryCast(slot);
             loop.State.Skills[slot].CooldownTicks = 0;
@@ -730,9 +730,9 @@ namespace Game.Core.Tests.Build
             CastDamage(loop, slot);
 
             Assert.That(loop.State.VulnerabilityTicks, Is.EqualTo((int)(support.VulnerabilitySeconds * GameLoop.TicksPerSecond)));
-            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1 + support.VulnerabilityShare).Within(1e-9));
+            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Strike), Is.EqualTo(1 + support.VulnerabilityShare).Within(1e-9));
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(100));
-            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1).Within(1e-9));
+            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Strike), Is.EqualTo(1).Within(1e-9));
         }
 
         [Test]

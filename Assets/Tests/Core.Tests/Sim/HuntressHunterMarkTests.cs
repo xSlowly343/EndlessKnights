@@ -77,7 +77,7 @@ namespace Game.Core.Tests.Sim
             loop.State.HunterMarkTicks = 0;
             var plain = Key(loop, input);
 
-            Assert.That(marked / plain, Is.EqualTo(1 + Rules.KeyDamage).Within(0.05));
+            Assert.That(marked / plain, Is.EqualTo(1 + Rules.StrikeDamage).Within(0.05));
             Assert.That(loop.Combat.MarkedMultiplier(StatTags.Mouse), Is.EqualTo(1));
         }
 
@@ -105,7 +105,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(MarkAt(loop, input, ShotEvery), Is.EqualTo(ShotEvery));
             Assert.That(loop.State.HunterMarkTicks, Is.EqualTo((int)((Rules.Seconds + 3) * GameLoop.TicksPerSecond) - 1).Within(1));
-            Assert.That(loop.Combat.MarkedMultiplier(StatTags.Keyboard), Is.EqualTo(1 + Rules.KeyDamage + 0.1).Within(1e-9));
+            Assert.That(loop.Combat.MarkedMultiplier(StatTags.Strike), Is.EqualTo(1 + Rules.StrikeDamage + 0.1).Within(1e-9));
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace Game.Core.Tests.Sim
 
             var (boss, bossInput) = Hero(HeroClass.Windshot, EnemyType.Boss, bossOnly);
             Assert.That(MarkAt(boss, bossInput, ShotEvery), Is.EqualTo(ShotEvery));
-            Assert.That(boss.Combat.MarkedMultiplier(StatTags.Keyboard), Is.EqualTo(1 + Rules.KeyDamage * 2).Within(1e-9));
+            Assert.That(boss.Combat.MarkedMultiplier(StatTags.Strike), Is.EqualTo(1 + Rules.StrikeDamage * 2).Within(1e-9));
 
             var (onGuardian, onGuardianInput) = Hero(HeroClass.Windshot, EnemyType.Guardian,
                 new Modifier(CombatStats.MarkBossOnly, ModifierKind.Flat, 1), new Modifier(CombatStats.MarkOnGuardians, ModifierKind.Flat, 1));

@@ -22,7 +22,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
-            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e60, StatTags.Keyboard));
+            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e60, StatTags.Strike));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
             var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Runedancer }), hero);

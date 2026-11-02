@@ -13,7 +13,7 @@ namespace Game.Core.Tests.Sim
         private const double Arrow = 5;
         private static ClassResource Quiver => TestWorld.Data.Combat.Resources.For("windshot");
         private static GemDef RoadArrow => TestWorld.Real.Gems["windshot_hit_1"];
-        private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
+        private static double StrikeDamage => TestWorld.Data.Combat.StrikeDamage;
 
         private static (GameLoop Loop, FakeInputSource Input) Windshot(params Modifier[] modifiers)
         {

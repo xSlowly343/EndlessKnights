@@ -48,7 +48,7 @@ namespace Game.Core.Ui
             var more = 1.0;
             foreach (var modifier in modifiers)
             {
-                if (!modifier.AppliesTo(CombatStats.Damage, StatTags.Keyboard))
+                if (!modifier.AppliesTo(CombatStats.Damage, StatTags.Strike))
                     continue;
                 if (modifier.Kind == ModifierKind.Increased)
                     increased += modifier.Value;
@@ -61,12 +61,12 @@ namespace Game.Core.Ui
         private static void AddDamage(List<HeroStatLine> lines, GameLoop loop, NumberFormatSettings format)
         {
             var combat = loop.Combat;
-            var hit = combat.SkillDamage(combat.BaseKeyDamage, 1, StatTags.Keyboard);
-            var crit = combat.CritChance(StatTags.Keyboard);
-            var critMultiplier = combat.CritMultiplier(StatTags.Keyboard);
-            var damage = loop.Hero.TotalsOf(CombatStats.Damage, StatTags.Keyboard);
-            var every = (long)System.Math.Round(loop.Hero.Value(CombatStats.KeyStrikeEvery, 0, StatTags.Keyboard));
-            var heavy = System.Math.Max(1, loop.Hero.Value(CombatStats.KeyStrikeMultiplier, 0, StatTags.Keyboard));
+            var hit = combat.SkillDamage(combat.BaseKeyDamage, 1, StatTags.Strike);
+            var crit = combat.CritChance(StatTags.Strike);
+            var critMultiplier = combat.CritMultiplier(StatTags.Strike);
+            var damage = loop.Hero.TotalsOf(CombatStats.Damage, StatTags.Strike);
+            var every = (long)System.Math.Round(loop.Hero.Value(CombatStats.KeyStrikeEvery, 0, StatTags.Strike));
+            var heavy = System.Math.Max(1, loop.Hero.Value(CombatStats.KeyStrikeMultiplier, 0, StatTags.Strike));
             var boss = loop.Hero.TotalsOf(CombatStats.DamageVsBoss);
             lines.Add(Header(0, "hero.stats.damage"));
             lines.Add(Line(0, "hero.stats.keyHit", NumberFormatter.Format(hit, format)));

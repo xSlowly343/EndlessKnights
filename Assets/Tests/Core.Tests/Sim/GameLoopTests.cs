@@ -88,7 +88,7 @@ namespace Game.Core.Tests.Sim
             var queue = new EventQueue(capacity: 2);
 
             for (var i = 0; i < 5; i++)
-                queue.Add(GameEvent.Damage(i, BigNumber.FromDouble(10), DamageSource.Keyboard, HitFlags.None));
+                queue.Add(GameEvent.Damage(i, BigNumber.FromDouble(10), DamageSource.Strike, HitFlags.None));
 
             Assert.That(queue.Count, Is.EqualTo(5));
             Assert.That(queue[4].Tick, Is.EqualTo(4));

@@ -79,7 +79,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.Gear.In(GearSlot.RingLeft), Is.SameAs(first));
             Assert.That(loop.Gear.In(GearSlot.RingRight), Is.SameAs(second));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.GreaterThanOrEqualTo(1.08 - 1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.GreaterThanOrEqualTo(1.08 - 1e-9));
         }
 
         [Test]

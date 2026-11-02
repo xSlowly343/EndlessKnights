@@ -127,14 +127,14 @@ namespace Game.Core.Tests.Sim
             var piece = Items.RollSetPiece(Set("jarl_forge"), ItemSlot.Chest, null, ItemRarity.Rare, 1, new Rng(1));
             Assert.That(piece.Base!.Color, Is.EqualTo("red"));
             loop.State.Drops.Gear.Add(piece);
-            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
 
             loop.Gear.Equip(piece);
 
             var expected = new List<Modifier>();
             piece.AddModifiers(expected);
             Assert.That(expected, Does.Contain(Set("jarl_forge").PieceLines(ItemSlot.Chest)[0]));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.GreaterThan(before));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.GreaterThan(before));
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Runedancer();
             var set = Set("jarl_forge");
-            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
             var rng = new Rng(3);
 
             var armour = set.Slots.Where(slot => slot != ItemSlot.Weapon).ToList();
@@ -150,12 +150,12 @@ namespace Game.Core.Tests.Sim
                 Assert.That(loop.Gear.NoteFound(Items.RollSetPiece(set, slot, null, ItemRarity.Rare, 1, rng)), Is.True);
             Assert.That(loop.Gear.Collected(set), Is.False);
             Assert.That(loop.Gear.CollectedPieces(set), Is.EqualTo(4));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(before).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(before).Within(1e-9));
 
             Assert.That(loop.Gear.NoteFound(set, ItemSlot.Weapon), Is.True);
 
             Assert.That(loop.Gear.Collected(set), Is.True);
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(before * 1.08).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(before * 1.08).Within(1e-9));
             Assert.That(loop.Gear.NoteFound(Items.RollSetPiece(set, armour[0], null, ItemRarity.Rare, 1, rng)), Is.False);
         }
 

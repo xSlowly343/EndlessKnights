@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
     {
         private static ClassResource Static => TestWorld.Data.Combat.Resources.For("shardcaller");
         private static GemDef Spark => TestWorld.Real.Gems["shardcaller_hit_1"];
-        private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
+        private static double StrikeDamage => TestWorld.Data.Combat.StrikeDamage;
 
         private static (GameLoop Loop, FakeInputSource Input) Shardcaller(params Modifier[] modifiers)
         {
@@ -58,7 +58,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.Overload.Discharges, Is.EqualTo(1));
             Assert.That(loop.State.Resource, Is.EqualTo(0).Within(1e-9));
-            Assert.That((hp - loop.State.EnemyHp).ToDouble(), Is.EqualTo(KeyDamage * Static.OverloadMultiplier).Within(1e-6));
+            Assert.That((hp - loop.State.EnemyHp).ToDouble(), Is.EqualTo(StrikeDamage * Static.OverloadMultiplier).Within(1e-6));
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace Game.Core.Tests.Sim
             stronger.Tick();
             off.Tick();
 
-            Assert.That((hp - stronger.State.EnemyHp).ToDouble(), Is.EqualTo(KeyDamage * (Static.OverloadMultiplier + 3)).Within(1e-6));
+            Assert.That((hp - stronger.State.EnemyHp).ToDouble(), Is.EqualTo(StrikeDamage * (Static.OverloadMultiplier + 3)).Within(1e-6));
             Assert.That(off.Overload.Discharges, Is.EqualTo(0));
             Assert.That(off.State.Resource, Is.EqualTo(TestWorld.Data.Combat.Resources.Max).Within(1e-9));
         }

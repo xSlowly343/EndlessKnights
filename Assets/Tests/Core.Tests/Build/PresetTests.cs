@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Build
             return loop;
         }
 
-        private static double KeyboardDamage(GameLoop loop) => loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+        private static double KeyboardDamage(GameLoop loop) => loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
 
         [Test]
         public void SecondPresetStartsEmptyWithTheSamePoints()

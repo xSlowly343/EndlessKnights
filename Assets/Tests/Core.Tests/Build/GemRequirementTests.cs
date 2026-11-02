@@ -13,7 +13,7 @@ namespace Game.Core.Tests.Build
         [Test]
         public void SkillsJsonRejectsAttributeRequirements()
         {
-            var json = TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"tags\": [\"Keyboard\", \"Skill\"],", "\"tags\": [\"Keyboard\", \"Skill\"],\n      \"requires\": { \"strength\": 10 },");
+            var json = TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"tags\": [\"Strike\", \"Skill\"],", "\"tags\": [\"Strike\", \"Skill\"],\n      \"requires\": { \"strength\": 10 },");
 
             Assert.Throws<ContentException>(() => GemCatalog.Load(json));
         }

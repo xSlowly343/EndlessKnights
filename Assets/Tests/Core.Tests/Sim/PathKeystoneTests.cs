@@ -9,7 +9,7 @@ namespace Game.Core.Tests.Sim
 {
     public class PathKeystoneTests
     {
-        private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
+        private static double StrikeDamage => TestWorld.Data.Combat.StrikeDamage;
 
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass, params Modifier[] modifiers)
         {
@@ -54,7 +54,7 @@ namespace Game.Core.Tests.Sim
             loop.Events.Clear();
             input.PressKeys(1);
             loop.Tick();
-            return Damage(loop, DamageSource.Keyboard);
+            return Damage(loop, DamageSource.Strike);
         }
 
         private static void Type(GameLoop loop, FakeInputSource input, int keys)
@@ -76,7 +76,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FullResourceMakesKeyHitsStronger()
         {
-            var perResource = new Modifier(CombatStats.DamagePerResource, ModifierKind.Flat, 0.8, StatTags.Keyboard);
+            var perResource = new Modifier(CombatStats.DamagePerResource, ModifierKind.Flat, 0.8, StatTags.Strike);
             var (plain, plainInput) = Hero(HeroClass.Runedancer);
             var (empty, emptyInput) = Hero(HeroClass.Runedancer, perResource);
             var (full, fullInput) = Hero(HeroClass.Runedancer, perResource);
@@ -155,7 +155,7 @@ namespace Game.Core.Tests.Sim
 
             input.PressKeys(1);
             loop.Tick();
-            var expected = loop.Combat.SkillDamage(KeyDamage, loop.State.FocusMultiplier * 3, StatTags.Keyboard).ToDouble();
+            var expected = loop.Combat.SkillDamage(StrikeDamage, loop.State.FocusMultiplier * 3, StatTags.Strike).ToDouble();
             for (var i = 0; i < GameState.QueueDepth; i++)
                 Assert.That(loop.State.QueueDamage[i].ToDouble(), Is.EqualTo(expected).Within(expected * 0.05), $"slot {i}");
         }
@@ -169,16 +169,16 @@ namespace Game.Core.Tests.Sim
 
             Type(loop, input, 10);
 
-            Assert.That(Hits(loop, DamageSource.Keyboard), Is.EqualTo(10));
+            Assert.That(Hits(loop, DamageSource.Strike), Is.EqualTo(10));
             Assert.That(Hits(loop, DamageSource.Skill), Is.EqualTo(2));
-            Assert.That(Damage(loop, DamageSource.Skill), Is.EqualTo(Damage(loop, DamageSource.Keyboard) / 5).Within(Damage(loop, DamageSource.Keyboard) * 0.01));
+            Assert.That(Damage(loop, DamageSource.Skill), Is.EqualTo(Damage(loop, DamageSource.Strike) / 5).Within(Damage(loop, DamageSource.Strike) * 0.01));
         }
 
         [Test]
         public void LongSeriesAddsDamageUpToTheCap()
         {
-            var perCombo = new Modifier(CombatStats.DamagePerCombo, ModifierKind.Flat, 0.005, StatTags.Keyboard);
-            var cap = new Modifier(CombatStats.DamagePerComboMax, ModifierKind.Flat, 1, StatTags.Keyboard);
+            var perCombo = new Modifier(CombatStats.DamagePerCombo, ModifierKind.Flat, 0.005, StatTags.Strike);
+            var cap = new Modifier(CombatStats.DamagePerComboMax, ModifierKind.Flat, 1, StatTags.Strike);
             var (plain, plainInput) = Hero(HeroClass.Runedancer);
             var (mid, midInput) = Hero(HeroClass.Runedancer, perCombo, cap);
             var (long_, longInput) = Hero(HeroClass.Runedancer, perCombo, cap);
@@ -244,8 +244,8 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(even.Combat.Balance(), Is.GreaterThan(0.95));
             Assert.That(keys.Combat.Balance(), Is.EqualTo(0));
-            Assert.That(even.Combat.ConditionMultiplier(StatTags.Keyboard), Is.GreaterThan(1.57));
-            Assert.That(keys.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1).Within(1e-9));
+            Assert.That(even.Combat.ConditionMultiplier(StatTags.Strike), Is.GreaterThan(1.57));
+            Assert.That(keys.Combat.ConditionMultiplier(StatTags.Strike), Is.EqualTo(1).Within(1e-9));
         }
 
         [Test]
@@ -255,11 +255,11 @@ namespace Game.Core.Tests.Sim
                 new Modifier(CombatStats.RampPerSecond, ModifierKind.Flat, 0.05),
                 new Modifier(CombatStats.RampMax, ModifierKind.Flat, 1));
 
-            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1).Within(1e-9));
+            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Strike), Is.EqualTo(1).Within(1e-9));
             Wait(loop, 10);
-            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(1.5).Within(1e-9));
+            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Strike), Is.EqualTo(1.5).Within(1e-9));
             Wait(loop, 30);
-            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Keyboard), Is.EqualTo(2).Within(1e-9));
+            Assert.That(loop.Combat.ConditionMultiplier(StatTags.Strike), Is.EqualTo(2).Within(1e-9));
         }
 
         [Test]

@@ -205,7 +205,7 @@ namespace Game.Core.Tests.Save
             var loop = TestWorld.Loop(state: RoundTrip(state).State, hero: hero);
 
             Assert.That(loop.State.EnemyType, Is.EqualTo(EnemyType.Guardian));
-            Assert.That(hero.Compute(CombatStats.Damage, 10, StatTags.Keyboard).ToDouble(), Is.EqualTo(5).Within(1e-9));
+            Assert.That(hero.Compute(CombatStats.Damage, 10, StatTags.Strike).ToDouble(), Is.EqualTo(5).Within(1e-9));
         }
 
         [Test]

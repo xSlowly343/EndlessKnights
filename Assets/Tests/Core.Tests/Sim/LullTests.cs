@@ -50,7 +50,7 @@ namespace Game.Core.Tests.Sim
             input.PressKeys(1);
             loop.Tick();
 
-            var expected = TestWorld.Data.Combat.KeyDamage * Effect.ChargePerSecond * 45;
+            var expected = TestWorld.Data.Combat.StrikeDamage * Effect.ChargePerSecond * 45;
             Assert.That(SkillDamage(loop), Is.EqualTo(expected).Within(expected * 0.01));
             Assert.That(loop.Events.CountOf(GameEventKind.SkillCast), Is.EqualTo(1));
             Assert.That(loop.State.Skills[0].Ready, Is.False);
@@ -65,7 +65,7 @@ namespace Game.Core.Tests.Sim
             input.ClickLeft();
             loop.Tick();
 
-            var expected = TestWorld.Data.Combat.KeyDamage * Effect.ChargePerSecond * Effect.MaxChargeSeconds;
+            var expected = TestWorld.Data.Combat.StrikeDamage * Effect.ChargePerSecond * Effect.MaxChargeSeconds;
             Assert.That(SkillDamage(loop), Is.EqualTo(expected).Within(1e-6));
         }
 
@@ -119,7 +119,7 @@ namespace Game.Core.Tests.Sim
             input.PressKeys(1);
             loop.Tick();
 
-            var expected = 2 * TestWorld.Data.Combat.KeyDamage * Effect.ChargePerSecond * 40;
+            var expected = 2 * TestWorld.Data.Combat.StrikeDamage * Effect.ChargePerSecond * 40;
             Assert.That(SkillDamage(loop), Is.EqualTo(expected).Within(expected * 0.01));
         }
     }

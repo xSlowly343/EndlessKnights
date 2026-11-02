@@ -58,12 +58,12 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ScalingAModifierKeepsItsCondition()
         {
-            var modifier = new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.Keyboard, ModifierPool.General, ModifierCondition.Blind);
+            var modifier = new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.Strike, ModifierPool.General, ModifierCondition.Blind);
 
             Assert.That(modifier.WithValue(0.3).When, Is.EqualTo(ModifierCondition.Blind));
             Assert.That(modifier.InPool(ModifierPool.Tree).When, Is.EqualTo(ModifierCondition.Blind));
             Assert.That(modifier.WithValue(0.1), Is.EqualTo(modifier));
-            Assert.That(modifier, Is.Not.EqualTo(new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.Keyboard)));
+            Assert.That(modifier, Is.Not.EqualTo(new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.Strike)));
         }
 
         [Test]

@@ -151,7 +151,7 @@ namespace Game.Core.Party
             CoopSignal.Kill => state.Kills,
             CoopSignal.BossKill => state.BossKills,
             CoopSignal.SkillCast => state.SkillCasts,
-            CoopSignal.KeyHit => state.KeyHits,
+            CoopSignal.KeyHit => state.StrikeHits,
             CoopSignal.RuneWord => state.Runedancer.Words,
             CoopSignal.BladeRain => state.Runedancer.Rains,
             CoopSignal.RuneSeal => state.Runedancer.SealTicks > 0 ? 1 : 0,

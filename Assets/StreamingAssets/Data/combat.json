@@ -1,7 +1,7 @@
 {
   "version": 2,
   "hits": {
-    "keyboard": { "damage": 10 },
+    "strike": { "damage": 10 },
     "mouse": { "damage": 3.4, "pxPerHit": 1000 }
   },
   "focus": {

@@ -46,7 +46,7 @@ namespace Game.Core.Tests.Build
         {
             var (plain, _) = Hero(HeroClass.Minstrel);
             var (keystone, _) = Hero(HeroClass.Minstrel, OneSong);
-            var silent = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard);
+            var silent = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
             foreach (var loop in new[] { plain, keystone })
             {
                 loop.Skills.Equip(TestWorld.Data.Gems["march"]);
@@ -54,9 +54,9 @@ namespace Game.Core.Tests.Build
                 loop.Skills.TryCast(0);
             }
 
-            var march = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard) - silent;
+            var march = plain.Hero.Value(CombatStats.Damage, 100, StatTags.Strike) - silent;
             Assert.That(march, Is.GreaterThan(0));
-            Assert.That(keystone.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(silent + march * 2).Within(1e-6));
+            Assert.That(keystone.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(silent + march * 2).Within(1e-6));
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace Game.Core.Tests.Build
                     heavy++;
             }
             Assert.That(heavy, Is.EqualTo(1));
-            Assert.That(typist.State.KeyHits, Is.EqualTo(10));
+            Assert.That(typist.State.StrikeHits, Is.EqualTo(10));
         }
 
         [Test]
@@ -153,13 +153,13 @@ namespace Game.Core.Tests.Build
             plainInput.PressKeys(1);
             plain.Tick();
 
-            Assert.That(Damage(enter, DamageSource.Keyboard), Is.EqualTo(Damage(plain, DamageSource.Keyboard)).Within(1e-9));
+            Assert.That(Damage(enter, DamageSource.Strike), Is.EqualTo(Damage(plain, DamageSource.Strike)).Within(1e-9));
         }
 
         [Test]
         public void ResourceGainGivesMoreResourceFromKeys()
         {
-            var (energy, energyInput) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.ResourceGain, ModifierKind.Increased, 0.15, StatTags.Keyboard));
+            var (energy, energyInput) = Hero(HeroClass.Minstrel, new Modifier(CombatStats.ResourceGain, ModifierKind.Increased, 0.15, StatTags.Strike));
 
             energyInput.PressKeys(1);
             energy.Tick();

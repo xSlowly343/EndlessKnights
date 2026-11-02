@@ -128,7 +128,7 @@ namespace Game.Core.Tests.Sim
         {
             var input = new FakeInputSource();
             var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.ResourceGain, ModifierKind.Increased, 0.5, StatTags.Keyboard));
+            hero.Add(new Modifier(CombatStats.ResourceGain, ModifierKind.Increased, 0.5, StatTags.Strike));
             var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Runedancer }, hero);
 
             Type(loop, input, 10);

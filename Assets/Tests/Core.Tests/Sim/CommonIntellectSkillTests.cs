@@ -48,11 +48,11 @@ namespace Game.Core.Tests.Sim
         public void WeakSpotDoublesCritDamage()
         {
             var hero = Hero("weak_spot");
-            var before = hero.Loop.Combat.CritMultiplier(StatTags.Keyboard);
+            var before = hero.Loop.Combat.CritMultiplier(StatTags.Strike);
 
             hero.Cast(0);
 
-            Assert.That(hero.Loop.Combat.CritMultiplier(StatTags.Keyboard), Is.EqualTo(before * 2).Within(1e-9));
+            Assert.That(hero.Loop.Combat.CritMultiplier(StatTags.Strike), Is.EqualTo(before * 2).Within(1e-9));
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace Game.Core.Tests.Sim
             hero.Cast(0);
 
             Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 1, StatTags.Skill), Is.EqualTo(1.2).Within(1e-9));
-            Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.EqualTo(1));
+            Assert.That(hero.Loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.EqualTo(1));
         }
 
         [Test]

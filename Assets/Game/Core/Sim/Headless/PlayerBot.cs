@@ -60,7 +60,7 @@ namespace Game.Core.Sim.Headless
         }
 
         private static StatTags PlayedTags(HeroClass heroClass) =>
-            heroClass == HeroClass.Minstrel ? StatTags.Keyboard | StatTags.Aura : StatTags.Keyboard;
+            heroClass == HeroClass.Minstrel ? StatTags.Strike | StatTags.Aura : StatTags.Strike;
 
         public void EquipStartingSkills()
         {

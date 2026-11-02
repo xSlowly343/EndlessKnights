@@ -201,7 +201,7 @@
               "kind": "increased",
               "value": 0.06,
               "tags": [
-                "Keyboard"
+                "Strike"
               ]
             }
           ]
@@ -214,7 +214,7 @@
               "kind": "increased",
               "value": 0.05,
               "tags": [
-                "Keyboard"
+                "Strike"
               ]
             }
           ]
@@ -237,7 +237,7 @@
               "kind": "flat",
               "value": 0.08,
               "tags": [
-                "Keyboard"
+                "Strike"
               ]
             }
           ]
@@ -251,7 +251,7 @@
             "kind": "more",
             "value": 0.05,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]
@@ -264,7 +264,7 @@
             "kind": "more",
             "value": 0.08,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]
@@ -442,7 +442,7 @@
               "kind": "increased",
               "value": 0.05,
               "tags": [
-                "Keyboard"
+                "Strike"
               ]
             }
           ]
@@ -953,7 +953,7 @@
             "kind": "flat",
             "value": -1,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ],
@@ -967,7 +967,7 @@
             "kind": "increased",
             "value": 0.1,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]
@@ -982,7 +982,7 @@
             "kind": "flat",
             "value": -0.5,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]
@@ -995,7 +995,7 @@
             "kind": "increased",
             "value": 0.1,
             "tags": [
-              "Keyboard"
+              "Strike"
             ]
           }
         ]

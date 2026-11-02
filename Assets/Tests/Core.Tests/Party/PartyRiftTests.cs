@@ -26,7 +26,7 @@ namespace Game.Core.Tests.Party
                 Input = new FakeInputSource();
                 var hero = new StatSheet();
                 var hp = TestWorld.Data.Stages.EnemyHp(stage).ToDouble();
-                hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, hp / (10 * TestWorld.Data.Combat.KeyDamage) - 1));
+                hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, hp / (10 * TestWorld.Data.Combat.StrikeDamage) - 1));
                 Loop = TestWorld.Loop(Input, new GameState { Stage = stage, HighestStage = stage, RecordStage = stage }, hero);
                 Client = new PartyClient(Loop, network.Connect(id), HostId, TestWorld.Data.Party);
                 Client.Join();

@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Sim
         public GameLoop Loop { get; }
         public FakeInputSource Input { get; }
         public GameState State => Loop.State;
-        public double KeyDamage => TestWorld.Data.Combat.KeyDamage;
+        public double StrikeDamage => TestWorld.Data.Combat.StrikeDamage;
 
         public static SkillTestHero Of(HeroClass heroClass, params string[] skills)
         {
@@ -107,7 +107,7 @@ namespace Game.Core.Tests.Sim
         }
 
         public double SkillDamage(string gem, double multiplier) =>
-            Loop.Combat.SkillDamage(KeyDamage, multiplier, TestWorld.Data.Gems[gem].Tags).ToDouble();
+            Loop.Combat.SkillDamage(StrikeDamage, multiplier, TestWorld.Data.Gems[gem].Tags).ToDouble();
 
         public double Queued(int position) => State.QueueDamage[position].ToDouble();
     }

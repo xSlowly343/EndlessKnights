@@ -138,7 +138,7 @@ namespace Game.Core.Tests.Sim
 
             var strike = Enumerable.Range(0, hero.Loop.Events.Count).Select(i => hero.Loop.Events[i])
                 .Where(e => e.Kind == GameEventKind.Damage && e.Source == DamageSource.Skill).Sum(e => e.Amount.ToDouble());
-            Assert.That(strike, Is.EqualTo(hero.Loop.Combat.SkillDamage(hero.KeyDamage, 5, StatTags.Skill).ToDouble()).Within(1e-6));
+            Assert.That(strike, Is.EqualTo(hero.Loop.Combat.SkillDamage(hero.StrikeDamage, 5, StatTags.Skill).ToDouble()).Within(1e-6));
         }
 
         [Test]

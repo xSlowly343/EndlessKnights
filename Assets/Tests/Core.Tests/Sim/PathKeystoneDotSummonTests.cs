@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Sim
             return (loop, input);
         }
 
-        private static readonly Modifier Overwhelming = new Modifier(CombatStats.Damage, ModifierKind.More, 1e60, StatTags.Keyboard);
+        private static readonly Modifier Overwhelming = new Modifier(CombatStats.Damage, ModifierKind.More, 1e60, StatTags.Strike);
 
         private static double SkillDamage(GameLoop loop)
         {

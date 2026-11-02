@@ -68,7 +68,7 @@ namespace Game.Core.Tests.Sim
             var loop = AfterPrestige();
             Assert.That(loop.StartTrial("only_mouse"), Is.EqualTo(TrialResult.Started));
 
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.Zero);
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.Zero);
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Mouse), Is.GreaterThan(0));
         }
 
@@ -89,7 +89,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Chronicle.Active, Is.Null);
             Assert.That(loop.Chronicle.IsCompleted("only_mouse"), Is.True);
             Assert.That(Enumerable.Range(0, loop.Events.Count).Count(i => loop.Events[i].Kind == GameEventKind.TrialCompleted), Is.EqualTo(1));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.GreaterThan(0));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.GreaterThan(0));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Mouse) / mouseBefore, Is.EqualTo(1.1).Within(1e-9));
             Assert.That(loop.State.TreePointsEarned - pointsBefore, Is.EqualTo(2));
         }
@@ -137,7 +137,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.Chronicle.Active, Is.Null);
             Assert.That(loop.Chronicle.CompletedCount, Is.Zero);
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.GreaterThan(0));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.GreaterThan(0));
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loaded.Chronicle.Active, Is.EqualTo("only_mouse"));
             Assert.That(loaded.Chronicle.Completed, Is.EquivalentTo(new[] { "only_keys" }));
-            Assert.That(again.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.Zero);
+            Assert.That(again.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.Zero);
         }
     }
 }

@@ -82,7 +82,7 @@ namespace Game.Core.Sim
             if (Blades)
                 BladeStrike(weight, crit);
             if (Whirl && Flag(RunedancerStats.WhirlPalm) && S.WhirlBlades > 0)
-                TraitHit(WhirlPower * S.WhirlBlades, StatTags.Keyboard);
+                TraitHit(WhirlPower * S.WhirlBlades, StatTags.Strike);
         }
 
         public void OnSkillCast(GemDef skill)
@@ -161,10 +161,10 @@ namespace Game.Core.Sim
             var weave = System.Math.Max(0, _hero.Value(RunedancerStats.RuneWeave, 0));
             if (weave <= 0)
             {
-                TraitHit(power, StatTags.Keyboard);
+                TraitHit(power, StatTags.Strike);
                 var rhyme = System.Math.Min(1, System.Math.Max(0, _hero.Value(RunedancerStats.RuneRhyme, 0)));
                 if (rhyme > 0)
-                    _state.QueueDamage[0] += _combat.SkillDamage(_combat.BaseKeyDamage, power * rhyme * _state.FocusMultiplier, StatTags.Keyboard);
+                    _state.QueueDamage[0] += _combat.SkillDamage(_combat.BaseKeyDamage, power * rhyme * _state.FocusMultiplier, StatTags.Strike);
             }
             var seconds = weave > 0 ? _rules.WeaveSeconds : _rules.SealSeconds + _hero.Value(RunedancerStats.RuneSealSeconds, 0);
             if (seconds > 0)
@@ -212,7 +212,7 @@ namespace Game.Core.Sim
             if (crit && S.Blades > 0 && Flag(RunedancerStats.BladeShard))
             {
                 S.Blades--;
-                TraitHit(BladePower * _rules.BladeShardMultiplier, StatTags.Keyboard);
+                TraitHit(BladePower * _rules.BladeShardMultiplier, StatTags.Strike);
             }
         }
 
@@ -229,7 +229,7 @@ namespace Game.Core.Sim
             var blades = S.Blades;
             S.Blades = 0;
             if (blades > 0)
-                TraitHit(BladePower * blades, StatTags.Keyboard);
+                TraitHit(BladePower * blades, StatTags.Strike);
         }
 
         private void FallBlades()
@@ -243,7 +243,7 @@ namespace Game.Core.Sim
                 return;
             S.BladeFallTicks = 0;
             S.Blades--;
-            TraitHit(BladePower, StatTags.Keyboard);
+            TraitHit(BladePower, StatTags.Strike);
         }
 
         private void SpinWhirl()
@@ -286,7 +286,7 @@ namespace Game.Core.Sim
                 return;
             S.WhirlCarry -= strikes;
             var eye = Flag(RunedancerStats.WhirlEye) && S.WhirlBlades >= cap ? _rules.WhirlEyeMultiplier : 1;
-            TraitHit(WhirlPower * S.WhirlBlades * strikes * eye, StatTags.Keyboard);
+            TraitHit(WhirlPower * S.WhirlBlades * strikes * eye, StatTags.Strike);
         }
 
         private int WhirlTarget()
@@ -310,7 +310,7 @@ namespace Game.Core.Sim
             S.ShadowCarry += _rules.ShadowHitsPerSecond * GameLoop.TickSeconds;
             for (; S.ShadowCarry >= 1 - 1e-9; S.ShadowCarry -= 1)
             {
-                TraitHit(1, StatTags.Keyboard);
+                TraitHit(1, StatTags.Strike);
                 AfterStrike(_combat.LastHitCrit);
             }
         }

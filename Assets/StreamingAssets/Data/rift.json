@@ -45,6 +45,6 @@
     { "id": "colossus_shield", "unlessMarks": ["lightning", "hunterMark"], "favours": ["lightning", "hunterMark"], "modifiers": [{ "stat": "bossShield", "kind": "flat", "value": 0.5 }] },
     { "id": "horde", "favours": ["summon"], "modifiers": [{ "stat": "stageEnemies", "kind": "increased", "value": 0.5 }] },
     { "id": "silence", "favours": ["stun"], "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": -0.5, "tags": ["Aura"] }] },
-    { "id": "eclipse", "favours": ["series"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Keyboard"] }, { "stat": "mouseDistance", "kind": "more", "value": 1 }] }
+    { "id": "eclipse", "favours": ["series"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Strike"] }, { "stat": "mouseDistance", "kind": "more", "value": 1 }] }
   ]
 }

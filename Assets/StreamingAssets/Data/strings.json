@@ -760,7 +760,7 @@
     "stat.staticPerHit": { "ru": "Гроза за удар", "en": "Thunder per hit" },
     "stat.summonsIgnite": { "ru": "слуги поджигают", "en": "summons ignite" },
     "stat.vortexBurnPaused": { "ru": "Дыхание клинка не сгорает", "en": "Blade Breath does not burn out" },
-    "tag.Keyboard": { "ru": "от клавиш", "en": "from keys" },
+    "tag.Strike": { "ru": "от клавиш", "en": "from keys" },
     "tag.Mouse": { "ru": "от мыши", "en": "from the mouse" },
     "tag.Click": { "ru": "от кликов", "en": "from clicks" },
     "tag.Idle": { "ru": "в Затишье", "en": "in Lull" },

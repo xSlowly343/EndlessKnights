@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
 {
     public class PathKeystoneSupportTests
     {
-        private static double KeyDamage => TestWorld.Data.Combat.KeyDamage;
+        private static double StrikeDamage => TestWorld.Data.Combat.StrikeDamage;
         private static GemDef Gem(string id) => TestWorld.Real.Gems[id];
 
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass, params Modifier[] modifiers)
@@ -107,7 +107,7 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
 
             Assert.That(loop.Resource.GainedThisTick, Is.EqualTo(2).Within(1e-9));
-            var expected = loop.Combat.SkillDamage(KeyDamage, 1.0, StatTags.Skill).ToDouble();
+            var expected = loop.Combat.SkillDamage(StrikeDamage, 1.0, StatTags.Skill).ToDouble();
             Assert.That(Damage(loop, DamageSource.Skill), Is.EqualTo(expected).Within(expected * 1e-6));
         }
 
@@ -154,7 +154,7 @@ namespace Game.Core.Tests.Sim
                     input.PressKeys(1);
                 loop.Events.Clear();
                 loop.Tick();
-                dealt += Damage(loop, DamageSource.Keyboard);
+                dealt += Damage(loop, DamageSource.Strike);
             }
 
             Assert.That(loop.Paths.Echoes, Is.EqualTo(1));
@@ -174,9 +174,9 @@ namespace Game.Core.Tests.Sim
             input.PressKeys(1);
             plain.Tick();
             loop.Tick();
-            var full = Damage(plain, DamageSource.Keyboard);
+            var full = Damage(plain, DamageSource.Strike);
 
-            Assert.That(Damage(loop, DamageSource.Keyboard), Is.EqualTo(full * 0.4).Within(full * 1e-6));
+            Assert.That(Damage(loop, DamageSource.Strike), Is.EqualTo(full * 0.4).Within(full * 1e-6));
             Assert.That(loop.State.Doom.ToDouble(), Is.EqualTo(full * 0.6).Within(full * 1e-6));
 
             loop.Events.Clear();
@@ -206,11 +206,11 @@ namespace Game.Core.Tests.Sim
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.DoomedCritChance, ModifierKind.Increased, 0.4));
             var loop = TestWorld.Loop(input, new GameState { Class = HeroClass.Clockwright }, hero);
-            var before = loop.Combat.CritChance(StatTags.Keyboard);
+            var before = loop.Combat.CritChance(StatTags.Strike);
 
             loop.State.Doom = BigNumber.FromDouble(1);
 
-            Assert.That(loop.Combat.CritChance(StatTags.Keyboard), Is.EqualTo(before * 1.4).Within(1e-9));
+            Assert.That(loop.Combat.CritChance(StatTags.Strike), Is.EqualTo(before * 1.4).Within(1e-9));
         }
 
         [Test]

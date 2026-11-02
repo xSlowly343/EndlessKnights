@@ -112,11 +112,11 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Hero();
             var slate = Give(loop, "pebble", "keys");
-            var before = loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard);
+            var before = loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike);
 
             Assert.That(loop.Slates.Place(slate, 1, 1, 0), Is.EqualTo(SlateResult.Done));
             Assert.That(loop.Slates.Bag, Is.Empty);
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Keyboard), Is.GreaterThan(before));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.GreaterThan(before));
             Assert.That(Sum(loop, "damage"), Is.EqualTo(0.06).Within(1e-9));
 
             Assert.That(loop.Slates.Remove(slate), Is.EqualTo(SlateResult.Done));
@@ -182,7 +182,7 @@ namespace Game.Core.Tests.Sim
             loop.Slates.Place(Give(loop, "pebble", "keys"), 3, 0, 0);
 
             Assert.That(loop.Slates.HasPattern(keys), Is.True);
-            Assert.That(loop.Slates.Modifiers.Any(modifier => modifier.Kind == ModifierKind.More && modifier.Tags == StatTags.Keyboard), Is.True);
+            Assert.That(loop.Slates.Modifiers.Any(modifier => modifier.Kind == ModifierKind.More && modifier.Tags == StatTags.Strike), Is.True);
         }
 
         [Test]

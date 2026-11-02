@@ -315,7 +315,7 @@ namespace Game.Core.Sim
         }
 
         private void Queue(double multiplier) =>
-            _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Keyboard));
+            _state.AddToQueue(_combat.SkillDamage(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Strike));
 
         private void TraitHit(double multiplier, StatTags extra = StatTags.None)
         {
@@ -323,7 +323,7 @@ namespace Game.Core.Sim
                 return;
             var supporting = _combat.Supporting;
             _combat.Supporting = null;
-            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Keyboard | extra);
+            _combat.SkillHit(_combat.BaseKeyDamage, multiplier * _state.FocusMultiplier, StatTags.Strike | extra);
             _combat.Supporting = supporting;
         }
 

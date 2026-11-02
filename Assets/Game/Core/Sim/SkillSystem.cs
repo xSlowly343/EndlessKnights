@@ -92,7 +92,7 @@ namespace Game.Core.Sim
             {
                 EquipTick = _state.Tick,
                 ReadyTick = _state.Tick,
-                KeyHitsAtCast = _state.KeyHits,
+                KeyHitsAtCast = _state.StrikeHits,
                 Role = role ?? SkillLoadout.FreeRole(_state.Skills, skill) ?? SkillSlotRole.Auto
             };
             _state.ProgressOf(skill);
@@ -1221,7 +1221,7 @@ namespace Game.Core.Sim
         }
 
         private static bool SameInput(StatTags tags, in EffectiveInput input) =>
-            ((tags & StatTags.Keyboard) != 0 && input.Hits > 0)
+            ((tags & StatTags.Strike) != 0 && input.Hits > 0)
             || ((tags & StatTags.Mouse) != 0 && input.MousePx > 0)
             || ((tags & StatTags.Click) != 0 && input.ButtonPresses > 0);
 
@@ -1695,7 +1695,7 @@ namespace Game.Core.Sim
 
         private void CastFromKeys(double keys)
         {
-            var every = (long)System.Math.Round(_hero.Value(CombatStats.KeyCastLeftEvery, 0, StatTags.Keyboard));
+            var every = (long)System.Math.Round(_hero.Value(CombatStats.KeyCastLeftEvery, 0, StatTags.Strike));
             if (every < 1 || keys <= 0)
                 return;
             _state.AutoCastKeys += keys;

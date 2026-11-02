@@ -92,19 +92,19 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var hero = Overpowered();
             var loop = TestWorld.Loop(input, new GameState { Stage = TestWorld.Data.Stages.BiomeLength }, hero);
-            var normalDamage = hero.Compute(CombatStats.Damage, 10, StatTags.Keyboard).ToDouble();
+            var normalDamage = hero.Compute(CombatStats.Damage, 10, StatTags.Strike).ToDouble();
 
             TypeFor(loop, input, TestWorld.Data.Stages.EnemiesOnStage(TestWorld.Data.Stages.BiomeLength));
 
             Assert.That(loop.State.EnemyType, Is.EqualTo(EnemyType.Guardian));
             Assert.That(loop.State.Enemy!.Id, Is.EqualTo("ancient_ent"));
-            Assert.That(hero.Compute(CombatStats.Damage, 10, StatTags.Keyboard).ToDouble(), Is.EqualTo(normalDamage * 0.5).Within(normalDamage * 1e-9));
+            Assert.That(hero.Compute(CombatStats.Damage, 10, StatTags.Strike).ToDouble(), Is.EqualTo(normalDamage * 0.5).Within(normalDamage * 1e-9));
             Assert.That(hero.Compute(CombatStats.Damage, 10, StatTags.Click).ToDouble(), Is.EqualTo(normalDamage).Within(normalDamage * 1e-9));
 
             TypeFor(loop, input, 1);
 
             Assert.That(loop.State.EnemyType, Is.EqualTo(EnemyType.Normal));
-            Assert.That(hero.Compute(CombatStats.Damage, 10, StatTags.Keyboard).ToDouble(), Is.EqualTo(normalDamage).Within(normalDamage * 1e-9));
+            Assert.That(hero.Compute(CombatStats.Damage, 10, StatTags.Strike).ToDouble(), Is.EqualTo(normalDamage).Within(normalDamage * 1e-9));
         }
 
         [Test]

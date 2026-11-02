@@ -5,7 +5,7 @@
   "allDamagePerLevel": 0.02,
   "jackpotMultiplier": 10,
   "artifacts": [
-    {"id": "typewriter", "name": {"ru": "Печатная машинка", "en": "Typewriter"}, "group": 1, "type": "damage", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Keyboard"]}]},
+    {"id": "typewriter", "name": {"ru": "Печатная машинка", "en": "Typewriter"}, "group": 1, "type": "damage", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Strike"]}]},
     {"id": "wind_compass", "name": {"ru": "Компас ветра", "en": "Wind Compass"}, "group": 1, "type": "damage", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"]}]},
     {"id": "archer_lens", "name": {"ru": "Линза Стрелка", "en": "Archer's Lens"}, "group": 1, "type": "damage", "perLevel": [{"stat": "critMultiplier", "kind": "increased", "value": 0.05}]},
     {"id": "titan_skull", "name": {"ru": "Череп титана", "en": "Titan Skull"}, "group": 1, "type": "damage", "perLevel": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.08}]},
@@ -35,7 +35,7 @@
     {"id": "copper_coil", "name": {"ru": "Медный змеевик", "en": "Copper Coil"}, "group": 1, "type": "class", "class": "dowser", "perLevel": [{"stat": "veinPower", "kind": "increased", "value": 0.03}]},
     {"id": "grave_lantern", "name": {"ru": "Фонарь могильщика", "en": "Soulbinder's Lantern"}, "group": 1, "type": "class", "class": "soulbinder", "perLevel": [{"stat": "resourceGain", "kind": "increased", "value": 0.04}]},
     {"id": "powder_keg", "name": {"ru": "Пороховая бочка", "en": "Powder Keg"}, "group": 1, "type": "class", "class": "ghostcaptain", "perLevel": [{"stat": "resourceGain", "kind": "increased", "value": 0.04}]},
-    {"id": "scribe_quill", "name": {"ru": "Перо писца", "en": "Scribe's Quill"}, "group": 2, "type": "damage", "perLevel": [{"stat": "keyStrikeMultiplier", "kind": "flat", "value": 0.2, "tags": ["Keyboard"]}]},
+    {"id": "scribe_quill", "name": {"ru": "Перо писца", "en": "Scribe's Quill"}, "group": 2, "type": "damage", "perLevel": [{"stat": "keyStrikeMultiplier", "kind": "flat", "value": 0.2, "tags": ["Strike"]}]},
     {"id": "patience_stone", "name": {"ru": "Камень терпения", "en": "Patience Stone"}, "group": 2, "type": "damage", "perLevel": [{"stat": "damageAfterIdle", "kind": "increased", "value": 0.1}]},
     {"id": "luck_axe", "name": {"ru": "Секира удачи", "en": "Axe of Luck"}, "group": 2, "type": "damage", "perLevel": [{"stat": "critChance", "kind": "flat", "value": 0.005}]},
     {"id": "warden_banner", "name": {"ru": "Знамя стражника", "en": "Warden's Banner"}, "group": 2, "type": "damage", "perLevel": [{"stat": "damageVsGuardian", "kind": "increased", "value": 0.1}]},

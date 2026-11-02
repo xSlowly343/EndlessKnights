@@ -119,7 +119,7 @@ namespace Game.Core.Tests.Sim
         {
             var (loop, input) = Hero(HeroClass.Duelist, false,
                 new Modifier(CombatStats.CritChance, ModifierKind.Flat, 10),
-                new Modifier(CombatStats.ResourcePerCrit, ModifierKind.Flat, 2, StatTags.Keyboard));
+                new Modifier(CombatStats.ResourcePerCrit, ModifierKind.Flat, 2, StatTags.Strike));
 
             input.PressKeys(1);
             loop.Tick();

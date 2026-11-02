@@ -43,7 +43,7 @@ namespace Game.Core.Tests.Build
             Raise(loop, "r1c0", 5);
             Assert.That(loop.RaiseNode("runedancer_r2c0"), Is.EqualTo(RankResult.Done));
             Assert.That(loop.State.TreePointsSpent, Is.EqualTo(6));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Keyboard), Is.EqualTo(106).Within(1e-9), "the fifth level of the first node gives hits 6%, the second row starts with crits");
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.EqualTo(106).Within(1e-9), "the fifth level of the first node gives hits 6%, the second row starts with crits");
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loaded.ClassTree.Plan.Count, Is.EqualTo(20));
             Assert.That(again.State.TreePointsSpent, Is.EqualTo(20));
             Assert.That(again.State.TreePointsEarned, Is.EqualTo(loop.State.TreePointsEarned));
-            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(15));
+            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(16));
         }
 
         private static StatId TreeStat(string name) => new StatId(name);

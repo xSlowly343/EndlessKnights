@@ -378,7 +378,7 @@ namespace Game.Core.Tests.Sim
             }
 
             Assert.That(loop.State.Duelist.PhantomFighting, Is.False);
-            Assert.That(DamageEvents(loop).All(e => e.Source == DamageSource.Keyboard), Is.True);
+            Assert.That(DamageEvents(loop).All(e => e.Source == DamageSource.Strike), Is.True);
         }
 
         [Test]

@@ -9,7 +9,7 @@ namespace Game.Core.Tests.Content
 {
     public class SkillDataTests
     {
-        private const string Strike = "{ \"id\": \"x\", \"kind\": \"active\", \"weapon\": \"rune_daggers\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"tags\": [\"Keyboard\", \"Skill\"], \"cost\": { \"resource\": 10 }, \"cooldownSeconds\": 4, \"effect\": { \"type\": \"strike\", \"multiplier\": 4 }";
+        private const string Strike = "{ \"id\": \"x\", \"kind\": \"active\", \"weapon\": \"rune_daggers\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"tags\": [\"Strike\", \"Skill\"], \"cost\": { \"resource\": 10 }, \"cooldownSeconds\": 4, \"effect\": { \"type\": \"strike\", \"multiplier\": 4 }";
 
         private static string RealFile() => TestData.ReadGameDataFile(GemCatalog.FileName);
 
