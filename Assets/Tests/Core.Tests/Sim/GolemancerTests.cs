@@ -297,12 +297,8 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheOldGolemOnFullClayStopsUnderTheNewTraitsAndTheRingIsTheWeapon()
+        public void TheSealRingIsTheWeapon()
         {
-            var (loop, _) = Hero(Flat(GolemancerStats.MinorPower, 0.35));
-            loop.State.Resource = loop.Resource.Max;
-            loop.Tick();
-            Assert.That(loop.Skills.Minions.Standing(MinionKind.Golem), Is.Zero);
             Assert.That(TestWorld.Real.Gems["golemancer_hit_1"].Skill!.Weapon, Is.EqualTo("seal_ring"));
         }
     }

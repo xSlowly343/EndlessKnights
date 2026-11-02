@@ -32,10 +32,10 @@
       "sandwalker": { "perKey": 0.5, "mousePxPerPoint": 500 },
       "shardcaller": { "perKey": 0.32, "overload": { "multiplier": 5 } },
       "dowser": { "perKey": 0.5 },
-      "mothcaller": { "perKey": 0.2, "mousePxPerPoint": 250, "decay": { "perSecond": 2, "afterKeylessSeconds": 5, "mouseHolds": true } },
-      "cartomancer": { "perKey": 0.5, "mousePxPerPoint": 500 },
+      "mothcaller": { "perKey": 0.4, "decay": { "perSecond": 2, "afterKeylessSeconds": 5 } },
+      "cartomancer": { "perKey": 0.5 },
       "herbwitch": { "perKey": 0.5 },
-      "golemancer": { "perKey": 1, "mousePxPerPoint": 200 }
+      "golemancer": { "perKey": 1 }
     }
   },
   "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
@@ -135,25 +135,21 @@
       "gears": { "hits": 60, "hitsMin": 10, "own": 2, "ownSoft": 1.5, "meshSeconds": 1.5, "meshCooldownSeconds": 5, "resource": 5, "resetEvery": 10, "callSeconds": 30, "idleSeconds": 10 }
     },
     "mothcaller": {
-      "bonds": { "resourceAbove": 30, "auraDuration": 0.5 },
       "swarm": { "max": 50, "cap": 100, "hitsPerSecond": 1, "carry": 0.5, "keep": 0.75, "goldenEvery": 10, "goldenMultiplier": 3, "boss": 2, "queueShare": 0.5, "giftSeconds": 10 },
       "pollen": { "burnSeconds": 4, "fastSeconds": 2, "max": 200, "relaySeconds": 2, "light": 5, "twoShare": 1.4 },
       "moth": { "everySeconds": 30, "everySecondsMin": 5, "awakeSeconds": 8, "awakeSecondsMin": 2, "queueShare": 0.5, "normalPenalty": 0.3, "strike": 0.5, "timeSeconds": 1, "clockRelaySeconds": 2 }
     },
     "cartomancer": {
-      "cold": { "perKeyHit": 1, "max": 100, "fadePerSecond": 0.05, "damageTaken": 0.2 },
       "spread": { "hits": 10, "hitsMin": 4, "handMax": 7, "arcanaCards": 3, "seconds": 15, "shortSeconds": 8, "longSeconds": 5, "cupsResource": 4, "coinsGold": 2, "wandsCut": 1, "swordsBoost": 2, "otherPenalty": 0.5, "handBonus": 0.03, "dealHits": 30, "dealOfferSeconds": 5 },
       "forecast": { "termShare": 0.6, "termMinSeconds": 5, "longTerm": 1.3, "shortTerm": 0.7, "penalty": 0.2, "exactPenalty": 0.1, "exactSeconds": 3, "exactGold": 1, "rushSeconds": 5, "rush": 0.3, "streakStep": 0.25, "streakMax": 4 },
       "reversed": { "hits": 10, "hitsMin": 3, "max": 7, "cap": 12, "cupsHit": 5, "coinsPerCard": 1.25, "wandsSlow": 0.75, "wandsSlowMax": 0.5, "revealHits": 20, "revealSoloShare": 0.5, "revealSeconds": 5, "revealMultiplier": 2, "revealStrong": 3, "keepShare": 0.5, "effectSeconds": 1 }
     },
     "herbwitch": {
-      "blood": { "perThousandPx": 3, "max": 30, "hitsPerStack": 0.2 },
       "bloom": { "hits": 15, "hitsMin": 4, "vines": 3, "vinesCap": 8, "growSeconds": 5, "growSecondsMin": 1, "stageMultiplier": 2, "thornMultiplier": 3, "singleMultiplier": 4, "queueShare": 0.5, "petalHits": 20, "petalSeconds": 20, "petalVines": 3, "effectSeconds": 1 },
       "mycelium": { "max": 50, "carry": 0.5, "deepCarry": 0.75, "queueShare": 0.25, "fastMultiplier": 2, "sporeHits": 5, "sporeStacks": 1, "relaySeconds": 2 },
       "sap": { "perHit": 2, "max": 200, "drinkHits": 20, "drinkHitsMin": 5, "sapPerStack": 0.2, "gulpHits": 10, "gulpResource": 5, "gulpShare": 0.5, "relaySeconds": 2, "leaveShare": 0.3, "partyPoisonSeconds": 10 }
     },
     "golemancer": {
-      "golem": { "seconds": 20, "hitsPerSecond": 0.5, "multiplier": 12, "stunSeconds": 1 },
       "seal": { "hits": 100, "hitsMin": 20, "golemSeconds": 20, "cornerBonus": 0.25, "cornerHits": 25, "cornerOfferSeconds": 5, "crumbleMultiplier": 5, "crystalPenalty": 0.2, "guardStopSeconds": 2, "twoShare": 0.6, "titanSeconds": 10 },
       "eternal": { "runeHits": 100, "runeHitsMin": 20, "runeBonus": 0.05, "runesMax": 40, "runesCap": 80, "heavyEverySeconds": 2, "heavyMultiplier": 2.5, "brandMax": 10, "brandHits": 20, "brandSoloShare": 0.5, "brandMultiplier": 3, "effectSeconds": 1, "queueShare": 0.5, "bossMultiplier": 2, "normalPenalty": 0.3 },
       "minor": { "hits": 20, "hitsMin": 5, "seconds": 15, "max": 4, "cap": 12, "queueShare": 0.5, "birth": 3 }
@@ -179,7 +175,6 @@
   },
   "skeletons": { "max": 5, "mouseSpeed": 1.3 },
   "beasts": { "max": 1, "mouseSpeed": 1.5 },
-  "cannons": { "max": 3, "resourcePerShot": 1, "igniteStacks": 1, "broadside": { "mousePx": 3000, "balls": 5 } },
   "curses": { "maxOnEnemy": 1, "flick": { "bonus": 0.1, "max": 0.5 } },
   "conditions": {
     "bossTimerEndSeconds": 10,

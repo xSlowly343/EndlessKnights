@@ -323,12 +323,8 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheOldBondsStopUnderTheNewTraits()
+        public void TheMoonFanIsTheWeapon()
         {
-            var (loop, _) = Hero(Flat(MothcallerStats.SwarmPower, 0.02));
-            loop.State.Resource = 90;
-            loop.Tick();
-            Assert.That(loop.State.BondsUp, Is.False);
             Assert.That(TestWorld.Real.Gems["mothcaller_hit_1"].Skill!.Weapon, Is.EqualTo("moon_fan"));
         }
     }

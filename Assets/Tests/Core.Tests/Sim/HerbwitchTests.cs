@@ -335,15 +335,8 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheOldBloodStopsUnderTheNewTraitsAndTheStaffIsTheWeapon()
+        public void TheBloomingStaffIsTheWeapon()
         {
-            var (loop, input) = Hero(Flat(HerbwitchStats.BloomPower, 0.12));
-            for (var i = 0; i < 10; i++)
-            {
-                input.MoveMouse(500);
-                loop.Tick();
-            }
-            Assert.That(loop.State.BloodStacks, Is.Zero);
             Assert.That(TestWorld.Real.Gems["herbwitch_hit_1"].Skill!.Weapon, Is.EqualTo("blooming_staff"));
         }
     }

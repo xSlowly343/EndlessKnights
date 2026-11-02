@@ -1250,34 +1250,34 @@
     ],
     "ghostcaptain": [
       {
-        "id": "ghostcaptain_shot",
+        "id": "ghostcaptain_broadside",
         "modifiers": [
           {
-            "stat": "cannonShotDamage",
-            "kind": "flat",
-            "value": 0.01
+            "stat": "broadsidePower",
+            "kind": "increased",
+            "value": 0.05
           }
         ]
       },
       {
-        "id": "ghostcaptain_next",
+        "id": "ghostcaptain_crew",
         "modifiers": [
           {
-            "stat": "cannonNextShare",
-            "kind": "flat",
-            "value": 0.04
+            "stat": "crewPower",
+            "kind": "increased",
+            "value": 0.05
           }
         ]
       }
     ],
     "mothcaller": [
       {
-        "id": "mothcaller_bonds",
+        "id": "mothcaller_swarm",
         "modifiers": [
           {
-            "stat": "bondPower",
-            "kind": "flat",
-            "value": 0.04
+            "stat": "swarmPower",
+            "kind": "increased",
+            "value": 0.05
           }
         ]
       },
@@ -1294,12 +1294,12 @@
     ],
     "cartomancer": [
       {
-        "id": "cartomancer_cold",
+        "id": "cartomancer_reversed",
         "modifiers": [
           {
-            "stat": "coldPower",
-            "kind": "flat",
-            "value": 0.04
+            "stat": "reversedPower",
+            "kind": "increased",
+            "value": 0.05
           }
         ]
       },
@@ -1316,12 +1316,12 @@
     ],
     "herbwitch": [
       {
-        "id": "herbwitch_blood",
+        "id": "herbwitch_mycelium",
         "modifiers": [
           {
-            "stat": "bloodPower",
-            "kind": "flat",
-            "value": 0.04
+            "stat": "myceliumPower",
+            "kind": "increased",
+            "value": 0.05
           }
         ]
       },
@@ -1338,12 +1338,12 @@
     ],
     "golemancer": [
       {
-        "id": "golemancer_golem",
+        "id": "golemancer_seal",
         "modifiers": [
           {
-            "stat": "golemPower",
-            "kind": "flat",
-            "value": 0.04
+            "stat": "sealPower",
+            "kind": "increased",
+            "value": 0.05
           }
         ]
       },

@@ -346,7 +346,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheOldMouseBroadsideStopsUnderTheNewTraits()
+        public void OnlyTheCaptainHasTraitsFromHerStats()
         {
             var (loop, _) = Hero(Flat(GhostcaptainStats.CrewPower, 0.03));
             Assert.That(loop.Combat.Ghostcaptain.Traited, Is.True);

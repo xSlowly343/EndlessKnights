@@ -10,7 +10,7 @@
     "mothcaller": "buffer", "cartomancer": "debuffer", "herbwitch": "dot", "golemancer": "summon"
   },
   "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
-  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "coldOnEnemy": "cold", "bloodOnEnemy": "blood", "bondsUp": "bond" },
+  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind" },
   "secondResponseStat": "secondResponse",
   "allyPoisonStacks": 25,
   "responses": [
@@ -41,14 +41,14 @@
     { "id": "soulbinder_plague_corpses", "class": "soulbinder", "mark": "poison", "modifiers": [{ "stat": "soulsPerPoisonedKill", "kind": "flat", "value": 3 }] },
     { "id": "soulbinder_cursed_ground", "class": "soulbinder", "mark": "curse", "second": true, "modifiers": [{ "stat": "minionSpeed", "kind": "increased", "value": 0.4 }] },
     { "id": "ghostcaptain_powder_keg", "class": "ghostcaptain", "mark": "fire", "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Minion"] }] },
-    { "id": "ghostcaptain_thunder_shot", "class": "ghostcaptain", "mark": "stun", "second": true, "modifiers": [{ "stat": "cannonChargedShot", "kind": "flat", "value": 3 }] },
-    { "id": "mothcaller_shared_thread", "class": "mothcaller", "mark": "aura", "modifiers": [{ "stat": "bondPower", "kind": "flat", "value": 0.2 }] },
+    { "id": "ghostcaptain_thunder_shot", "class": "ghostcaptain", "mark": "stun", "second": true, "modifiers": [{ "stat": "broadsidePower", "kind": "increased", "value": 0.1 }] },
+    { "id": "mothcaller_shared_thread", "class": "mothcaller", "mark": "aura", "modifiers": [{ "stat": "swarmPower", "kind": "increased", "value": 0.1 }] },
     { "id": "mothcaller_blind_knot", "class": "mothcaller", "mark": "blind", "second": true, "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.25 }] },
-    { "id": "cartomancer_thaw", "class": "cartomancer", "mark": "fire", "modifiers": [{ "stat": "coldPower", "kind": "flat", "value": 0.2 }] },
+    { "id": "cartomancer_thaw", "class": "cartomancer", "mark": "fire", "modifiers": [{ "stat": "reversedPower", "kind": "increased", "value": 0.1 }] },
     { "id": "cartomancer_frozen_spark", "class": "cartomancer", "mark": "lightning", "second": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2 }] },
-    { "id": "herbwitch_open_wounds", "class": "herbwitch", "mark": "series", "modifiers": [{ "stat": "bloodPower", "kind": "flat", "value": 0.2 }] },
+    { "id": "herbwitch_open_wounds", "class": "herbwitch", "mark": "series", "modifiers": [{ "stat": "myceliumPower", "kind": "increased", "value": 0.1 }] },
     { "id": "herbwitch_rooted_bond", "class": "herbwitch", "mark": "bond", "second": true, "modifiers": [{ "stat": "dotDamage", "kind": "increased", "value": 0.25 }] },
-    { "id": "golemancer_fired_clay", "class": "golemancer", "mark": "bond", "modifiers": [{ "stat": "golemPower", "kind": "flat", "value": 0.2 }] },
+    { "id": "golemancer_fired_clay", "class": "golemancer", "mark": "bond", "modifiers": [{ "stat": "sealPower", "kind": "increased", "value": 0.1 }] },
     { "id": "golemancer_marked_quarry", "class": "golemancer", "mark": "hunterMark", "second": true, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Minion"] }] }
   ],
   "reactions": [

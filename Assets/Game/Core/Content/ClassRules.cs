@@ -10,10 +10,6 @@ namespace Game.Core.Content
         public double KeyStreakGapSeconds { get; }
         public HunterMarkRules HunterMark { get; private set; } = HunterMarkRules.None;
         public int OverloadQueueTargets { get; private set; }
-        public BondRules Bonds { get; private set; } = BondRules.None;
-        public ColdRules Cold { get; private set; } = ColdRules.None;
-        public BloodRules Blood { get; private set; } = BloodRules.None;
-        public GolemRules Golem { get; private set; } = GolemRules.None;
         public RunedancerRules Runedancer { get; private set; } = RunedancerRules.None;
         public DuelistRules Duelist { get; private set; } = DuelistRules.None;
         public WindshotRules Windshot { get; private set; } = WindshotRules.None;
@@ -39,10 +35,6 @@ namespace Game.Core.Content
             return new ClassRules(
                 node.Field("keyStreak").Field("gapSeconds").AsNumber(0.1, 60)) { HunterMark = HunterMarkRules.Read(node.Field("windshot").Field("mark")),
                 OverloadQueueTargets = node.Field("shardcaller").Field("overload").Field("queueTargets").AsInt(0, 100),
-                Bonds = BondRules.Read(node.Field("mothcaller").Field("bonds")),
-                Cold = ColdRules.Read(node.Field("cartomancer").Field("cold")),
-                Blood = BloodRules.Read(node.Field("herbwitch").Field("blood")),
-                Golem = GolemRules.Read(node.Field("golemancer").Field("golem")),
                 Runedancer = RunedancerRules.Read(node.Field("runedancer")),
                 Duelist = DuelistRules.Read(node.Field("duelist")),
                 Windshot = WindshotRules.Read(node.Field("windshot")),

@@ -351,11 +351,8 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheOldColdStopsUnderTheNewTraitsAndTheDeckIsTheWeapon()
+        public void TheTarotDeckIsTheWeapon()
         {
-            var (loop, input) = Hero(Flat(CartomancerStats.ReversedPower, 0.04));
-            Hits(loop, input, 5);
-            Assert.That(loop.State.Cold, Is.Zero);
             Assert.That(TestWorld.Real.Gems["cartomancer_hit_1"].Skill!.Weapon, Is.EqualTo("tarot_deck"));
         }
     }

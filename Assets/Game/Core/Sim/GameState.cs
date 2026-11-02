@@ -176,7 +176,6 @@ namespace Game.Core.Sim
         public double NextKillShards { get; set; }
         public int HitsOnEnemy { get; set; }
         public int BossTimerStopTicks { get; set; }
-        public int CannonShotsOnEnemy { get; set; }
         public bool WandererBoss { get; set; }
         public int GoldenTicks { get; set; }
         public BigNumber GoldenNormalHp { get; set; }
@@ -191,7 +190,6 @@ namespace Game.Core.Sim
         public long EnemySpawnTick { get; private set; }
         public double BankedSeconds { get; set; }
         public MinionState[] Minions { get; } = new MinionState[MinionSystem.Capacity];
-        public double BroadsidePx { get; set; }
         public double PoisonStacks { get; set; }
         public double BurnStacks { get; set; }
         public double DotCarry { get; set; }
@@ -294,9 +292,6 @@ namespace Game.Core.Sim
         public int HunterMarkTicks { get; set; }
         public bool MarkedEnemyDied { get; set; }
         public int BlindTicks { get; set; }
-        public bool BondsUp { get; set; }
-        public double Cold { get; set; }
-        public double BloodStacks { get; set; }
         public int CompanionMarks { get; set; }
 
         public double KeyCarry { get; set; }
@@ -321,7 +316,6 @@ namespace Game.Core.Sim
             BlindTicks = 0;
             BossTimerStopTicks = 0;
             EnemySpirit = false;
-            CannonShotsOnEnemy = 0;
             WandererBoss = false;
             GoldenTicks = 0;
             GoldenDamage = BigNumber.Zero;
@@ -330,8 +324,6 @@ namespace Game.Core.Sim
             PoisonStacks = 0;
             BurnStacks = 0;
             DotCarry = 0;
-            Cold = 0;
-            BloodStacks = 0;
             Doom = BigNumber.Zero;
             DoomTicks = 0;
             VulnerabilityShare = 0;
