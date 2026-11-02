@@ -33,6 +33,27 @@ namespace Game.Core.Sim
         public int GearOwner { get; set; } = -1;
         public int GearTicks { get; set; }
         public long GearCuts { get; set; }
+        public int ReagentOwner { get; set; } = -1;
+        public int ReagentTicks { get; set; }
+        public int ReagentCooldownTicks { get; set; }
+        public bool ReagentOwed { get; set; }
+        public int Flask { get; set; }
+        public int AcidOwner { get; set; } = -1;
+        public int AcidTicks { get; set; }
+        public int AcidHitsOwed { get; set; }
+        public int RedTicks { get; set; }
+        public int BlueTicks { get; set; }
+        public int GoldTicks { get; set; }
+        public double ElixirPower { get; set; }
+        public double ElixirGold { get; set; }
+        public int RedEvery { get; set; } = 5;
+        public int RedStrikes { get; set; }
+        public int ElixirStreak { get; set; }
+        public long Elixirs { get; set; }
+
+        public double GoldMultiplier => GoldTicks > 0 ? 1 + ElixirGold : 1;
+
+        public bool FreeSkills => BlueTicks > 0;
 
         public void Land(int count, int ticks, double power, int every, double burst, int owner, int max)
         {
@@ -56,6 +77,27 @@ namespace Game.Core.Sim
             NameOwner = owner;
             NameEvery = System.Math.Max(1, every);
             NameTicks = System.Math.Max(NameTicks, ticks);
+        }
+
+        public void Drink(int color, double power, int ticks, int redEvery, double gold, int philosopherEvery, int philosopherTicks)
+        {
+            Elixirs++;
+            ElixirPower = power;
+            RedEvery = System.Math.Max(1, redEvery);
+            ElixirGold = gold;
+            if (++ElixirStreak % System.Math.Max(1, philosopherEvery) == 0)
+            {
+                RedTicks = System.Math.Max(RedTicks, philosopherTicks);
+                BlueTicks = System.Math.Max(BlueTicks, philosopherTicks);
+                GoldTicks = System.Math.Max(GoldTicks, philosopherTicks);
+                return;
+            }
+            if (color == 0)
+                RedTicks = System.Math.Max(RedTicks, ticks);
+            else if (color == 1)
+                BlueTicks = System.Math.Max(BlueTicks, ticks);
+            else
+                GoldTicks = System.Math.Max(GoldTicks, ticks);
         }
 
         public void Flash(int charges, double power)

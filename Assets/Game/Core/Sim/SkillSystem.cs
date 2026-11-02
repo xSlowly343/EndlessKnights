@@ -204,7 +204,8 @@ namespace Game.Core.Sim
             slot.WhenAtCast = WhenHolds(native);
             var beacon = _state.Boons.BeaconCharges > 0 && !(skill.Effect is AuraEffect);
             var spent = 0.0;
-            if (!beacon && !Pay(slot, native, slot.WhenAtCast, out spent))
+            var elixir = !beacon && _state.Boons.FreeSkills && !(skill.Effect is AuraEffect);
+            if (!beacon && !elixir && !Pay(slot, native, slot.WhenAtCast, out spent))
                 return CastResult.NotEnoughResource;
 
             var supportPower = SupportEffects.Power(slot, _state);
@@ -336,6 +337,7 @@ namespace Game.Core.Sim
             _combat.Lanternbearer.OnSkillCast(slot.Skill);
             _combat.Whisperer.OnSkillCast(slot.Skill);
             _combat.Clockwright.OnSkillCast(slot.Skill);
+            _combat.Alchemist.OnSkillCast(slot.Skill);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (skill.Effect is SummonEffect summon)

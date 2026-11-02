@@ -123,6 +123,12 @@ namespace Game.Core.Content.Gems
         public double WindBurst { get; set; }
         public bool Rewind { get; set; }
         public bool GearTick { get; set; }
+        public int Reagents { get; set; }
+        public bool Flask { get; set; }
+        public int Layers { get; set; }
+        public bool Elixir { get; set; }
+        public double Corrode { get; set; }
+        public double CorrodeSeconds { get; set; }
     }
 
     public sealed class PotionOption

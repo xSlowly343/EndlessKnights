@@ -265,6 +265,7 @@ namespace Game.Core.Sim
         public LanternbearerState Lanternbearer { get; } = new LanternbearerState();
         public WhispererState Whisperer { get; } = new WhispererState();
         public ClockwrightState Clockwright { get; } = new ClockwrightState();
+        public AlchemistState Alchemist { get; } = new AlchemistState();
         public AllyBoons Boons { get; } = new AllyBoons();
         public TraitRelays TraitRelays { get; } = new TraitRelays();
         public double TraitLight { get; set; } = -1;
@@ -342,6 +343,7 @@ namespace Game.Core.Sim
             Dreamcatcher.OnSpawn();
             Lanternbearer.OnSpawn();
             Whisperer.OnSpawn();
+            Alchemist.OnSpawn();
         }
     }
 }

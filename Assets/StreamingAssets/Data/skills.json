@@ -2128,766 +2128,373 @@
     {
       "id": "alchemist_hit_1",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "common",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Брызги", "en": "Брызги"},
+      "name": {"ru": "Брызги", "en": "Splash"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 3,
       "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "быстрый", "en": "быстрый"},
+      "text": {"ru": "брызги ×3", "en": "a splash ×3"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_hit_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_hit_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_hit_1_b15b", "name": {"ru": "Широкие брызги", "en": "Wide Splash"}, "damage": 0.8, "effect": {"multiplier": 4}}]},
+        {"level": 25, "options": [{"id": "alchemist_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_hit_2",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "rare",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Капля кислоты", "en": "Капля кислоты"},
+      "name": {"ru": "Капля кислоты", "en": "Drop of Acid"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 15},
+      "cost": {"resource": 10},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 4},
-      "text": {"ru": "снимает сопротивление", "en": "снимает сопротивление"},
+      "effect": {"type": "strike", "multiplier": 3, "corrode": 0.08},
+      "text": {"ru": "капля ×3, враг получает на 8% больше 8 с", "en": "a drop ×3, the enemy takes 8% more for 8 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_hit_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_hit_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_hit_2_b15b", "name": {"ru": "Едкая капля", "en": "Caustic Drop"}, "damage": 0.8, "effect": {"corrode": 0.12}}]},
+        {"level": 25, "options": [{"id": "alchemist_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_hit_3",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "epic",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Искристый порошок", "en": "Искристый порошок"},
+      "name": {"ru": "Искристый порошок", "en": "Sparkling Powder"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 20},
+      "cost": {"resource": 10},
       "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 6},
-      "text": {"ru": "+реактив", "en": "+реактив"},
+      "effect": {"type": "strike", "multiplier": 4, "reagents": 1},
+      "text": {"ru": "порошок ×4 и реактив в колбу", "en": "powder ×4 and a reagent into the flask"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_hit_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_hit_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_hit_3_b15b", "name": {"ru": "Двойной порошок", "en": "Double Powder"}, "damage": 0.8, "effect": {"reagents": 2}}]},
+        {"level": 25, "options": [{"id": "alchemist_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_queue_1",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "common",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Дымовая смесь", "en": "Дымовая смесь"},
+      "name": {"ru": "Дымовая смесь", "en": "Smoke Mix"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
-      "text": {"ru": "по очереди", "en": "по очереди"},
+      "text": {"ru": "дым ×2 по 3 врагам очереди", "en": "smoke ×2 at 3 queued enemies"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_queue_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_queue_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_queue_1_b15b", "name": {"ru": "Густой дым", "en": "Thick Smoke"}, "damage": 0.8, "effect": {"multiplier": 2.6}}]},
+        {"level": 25, "options": [{"id": "alchemist_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_queue_2",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "rare",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Цепная реакция", "en": "Цепная реакция"},
+      "name": {"ru": "Цепная реакция", "en": "Chain Reaction"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "взрыв прыгает", "en": "взрыв прыгает"},
+      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
+      "text": {"ru": "реакция ×3 по 3 врагам", "en": "a reaction ×3 at 3 enemies"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_queue_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_queue_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_queue_2_b15b", "name": {"ru": "Долгая цепь", "en": "Long Chain"}, "damage": 0.8, "effect": {"multiplier": 3.8}}]},
+        {"level": 25, "options": [{"id": "alchemist_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_queue_3",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "legendary",
       "role": "fast",
       "color": "red",
-      "name": {"ru": "Туман", "en": "Туман"},
+      "name": {"ru": "Туман", "en": "Fog"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 20},
       "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3},
-      "text": {"ru": "вся очередь, −сопротивления", "en": "вся очередь, −сопротивления"},
+      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "corrode": 0.1},
+      "text": {"ru": "туман ×2,5 по 3 врагам, враг получает на 10% больше 8 с", "en": "fog ×2.5 at 3 enemies, the enemy takes 10% more for 8 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_queue_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_queue_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_queue_3_b15b", "name": {"ru": "Едкий туман", "en": "Caustic Fog"}, "damage": 0.8, "effect": {"corrode": 0.15}}]},
+        {"level": 25, "options": [{"id": "alchemist_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_auto_1",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Перегонка", "en": "Перегонка"},
+      "name": {"ru": "Перегонка", "en": "Distillation"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "добавляет реактив", "en": "добавляет реактив"},
+      "cooldownSeconds": 5,
+      "effect": {"type": "strike", "multiplier": 2.5, "reagents": 1},
+      "text": {"ru": "раз в 5 с перегонка ×2,5 и реактив в колбу", "en": "every 5 s a distillation ×2.5 and a reagent into the flask"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_auto_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_auto_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_auto_1_b15b", "name": {"ru": "Быстрая перегонка", "en": "Quick Distillation"}, "damage": 0.8, "effect": {"reagents": 2}}]},
+        {"level": 25, "options": [{"id": "alchemist_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_auto_2",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Кипящий котелок", "en": "Кипящий котелок"},
+      "name": {"ru": "Кипящий котелок", "en": "Boiling Pot"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 5},
-      "text": {"ru": "раз в 5 с плевок", "en": "раз в 5 с плевок"},
+      "cooldownSeconds": 5,
+      "effect": {"type": "strike", "multiplier": 4},
+      "text": {"ru": "раз в 5 с плевок котелка ×4", "en": "every 5 s the pot spits ×4"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_auto_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_auto_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_auto_2_b15b", "name": {"ru": "Большой котелок", "en": "Big Pot"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
+        {"level": 25, "options": [{"id": "alchemist_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_auto_3",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "mythic",
       "color": "red",
-      "name": {"ru": "Самовзрыв", "en": "Самовзрыв"},
+      "name": {"ru": "Самовзрыв", "en": "Self-Blast"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 10},
-      "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 8},
-      "text": {"ru": "колба лопается сама на 10 реактивах", "en": "колба лопается сама на 10 реактивах"},
+      "cooldownSeconds": 12,
+      "effect": {"type": "strike", "multiplier": 6, "flask": true},
+      "text": {"ru": "раз в 12 с колба лопается сама: ×6 и смесь из того, что в ней", "en": "every 12 s a flask bursts by itself: ×6 and a mix of what is inside"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_auto_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_auto_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_auto_3_b15b", "name": {"ru": "Громкий взрыв", "en": "Loud Blast"}, "damage": 0.8, "effect": {"multiplier": 8}}]},
+        {"level": 25, "options": [{"id": "alchemist_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_strong_1",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "epic",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Великое делание", "en": "Великое делание"},
+      "name": {"ru": "Великое делание", "en": "Great Work"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 12},
-      "text": {"ru": "3 смеси подряд", "en": "3 смеси подряд"},
+      "cooldownSeconds": 25,
+      "effect": {"type": "strike", "multiplier": 6, "reagents": 3},
+      "text": {"ru": "делание ×6 и три реактива в колбу", "en": "the work ×6 and three reagents into the flask"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_strong_1_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_strong_1_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_strong_1_b15b", "name": {"ru": "Великое делание II", "en": "Great Work II"}, "damage": 0.8, "effect": {"multiplier": 8}}]},
+        {"level": 25, "options": [{"id": "alchemist_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_strong_2",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "legendary",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Универсальный растворитель", "en": "Универсальный растворитель"},
+      "name": {"ru": "Универсальный растворитель", "en": "Universal Solvent"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 50},
+      "cost": {"resource": 30},
       "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 18},
-      "text": {"ru": "снять 2 слоя", "en": "снять 2 слоя"},
+      "effect": {"type": "strike", "multiplier": 8, "layers": 2, "corrode": 0.2},
+      "text": {"ru": "растворитель ×8: два слоя панциря долой, враг получает на 20% больше 8 с", "en": "solvent ×8: two shell layers off, the enemy takes 20% more for 8 s"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_strong_2_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_strong_2_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_strong_2_b15b", "name": {"ru": "Крепкий растворитель", "en": "Strong Solvent"}, "damage": 0.8, "effect": {"corrode": 0.3}}]},
+        {"level": 25, "options": [{"id": "alchemist_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_strong_3",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "mythic",
       "role": "heavy",
       "color": "red",
-      "name": {"ru": "Огненная склянка", "en": "Огненная склянка"},
+      "name": {"ru": "Огненная склянка", "en": "Fire Phial"},
       "tags": ["Keyboard", "Skill"],
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 25},
-      "text": {"ru": "×15 и горение", "en": "×15 и горение"},
+      "effect": {"type": "strike", "multiplier": 15},
+      "text": {"ru": "склянка ×15", "en": "a phial ×15"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {"id": "alchemist_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3},
-            {"id": "alchemist_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {"id": "alchemist_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5},
-            {"id": "alchemist_strong_3_b15b", "name": {"ru": "Ровнее", "en": "Steadier"}, "damage": 1.2, "cooldown": 0.9}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {"id": "alchemist_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25},
-            {"id": "alchemist_strong_3_b25b", "name": {"ru": "Точнее", "en": "Sharper"}, "damage": 1.25}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "alchemist_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 15, "options": [{"id": "alchemist_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "alchemist_strong_3_b15b", "name": {"ru": "Большая склянка", "en": "Big Phial"}, "damage": 0.8, "effect": {"multiplier": 20}}]},
+        {"level": 25, "options": [{"id": "alchemist_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "alchemist_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
       "id": "alchemist_path_1",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "ascendancy": "alchemist_trait_1",
       "color": "red",
-      "name": {"ru": "Колба", "en": "Колба"},
+      "name": {"ru": "Колба", "en": "Flask"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 12,
+      "effect": {"type": "strike", "multiplier": 3, "flask": true},
+      "text": {"ru": "удар ×3 и бросок колбы: смесь на 50% сильнее", "en": "a blow ×3 and a flask throw: the mix is 50% stronger"}
     },
     {
       "id": "alchemist_path_2",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "ascendancy": "alchemist_trait_2",
       "color": "red",
-      "name": {"ru": "Плеснуть", "en": "Плеснуть"},
+      "name": {"ru": "Плеснуть", "en": "Splash Over"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 12,
+      "effect": {"type": "strike", "multiplier": 3, "layers": 1},
+      "text": {"ru": "удар ×3 и слой панциря долой", "en": "a blow ×3 and a shell layer off"}
     },
     {
       "id": "alchemist_path_3",
       "kind": "active",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "ascendancy": "alchemist_trait_3",
       "color": "red",
-      "name": {"ru": "Угощение", "en": "Угощение"},
+      "name": {"ru": "Угощение", "en": "Treat"},
       "tags": ["Keyboard", "Skill"],
-      "cost": {"resource": 40},
-      "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 10}
+      "cost": {"resource": 30},
+      "cooldownSeconds": 15,
+      "effect": {"type": "strike", "multiplier": 3, "elixir": true},
+      "text": {"ru": "удар ×3 и эликсир сразу", "en": "a blow ×3 and an elixir at once"}
     },
     {
       "id": "alchemist_aura_1",
       "kind": "aura",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Запах лаборатории", "en": "Запах лаборатории"},
+      "name": {"ru": "Запах лаборатории", "en": "Smell of the Lab"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}], "reserve": 15, "party": true},
-      "text": {"ru": "−сопротивления стихиям", "en": "−сопротивления стихиям"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "solventPower", "kind": "flat", "value": 0.002}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +12% урона; её растворитель чуть сильнее", "en": "party: +12% damage; her solvent is a little stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "alchemist_aura_1_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144}]}
-            },
-            {"id": "alchemist_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "alchemist_aura_1_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132}]}
-            },
-            {"id": "alchemist_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "alchemist_aura_1_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156}]}
-            },
-            {"id": "alchemist_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144}, {"stat": "solventPower", "kind": "flat", "value": 0.0024}]}}, {"id": "alchemist_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "alchemist_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132}, {"stat": "solventPower", "kind": "flat", "value": 0.0022}]}}, {"id": "alchemist_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "alchemist_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156}, {"stat": "solventPower", "kind": "flat", "value": 0.0026}]}}, {"id": "alchemist_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "alchemist_aura_2",
       "kind": "aura",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "common",
       "color": "red",
-      "name": {"ru": "Пузырьки", "en": "Пузырьки"},
+      "name": {"ru": "Пузырьки", "en": "Bubbles"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}], "reserve": 15},
-      "text": {"ru": "+30% к лечению полосы HP", "en": "+30% к лечению полосы HP"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}, {"stat": "mixPower", "kind": "flat", "value": 0.03}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +10% прироста ресурса; её смеси на 3% сильнее", "en": "party: +10% resource gain; her mixes are 3% stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "alchemist_aura_2_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "alchemist_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "alchemist_aura_2_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "alchemist_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "alchemist_aura_2_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "alchemist_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}, {"stat": "mixPower", "kind": "flat", "value": 0.036}]}}, {"id": "alchemist_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "alchemist_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}, {"stat": "mixPower", "kind": "flat", "value": 0.033}]}}, {"id": "alchemist_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "alchemist_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}, {"stat": "mixPower", "kind": "flat", "value": 0.039}]}}, {"id": "alchemist_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
       "id": "alchemist_aura_3",
       "kind": "aura",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Едкий пар", "en": "Едкий пар"},
+      "name": {"ru": "Едкий пар", "en": "Caustic Steam"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}], "reserve": 20},
-      "text": {"ru": "+стихийный урон отряда", "en": "+стихийный урон отряда"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +10% урона скиллов; её слой растворяется на 1 удар раньше", "en": "party: +10% skill damage; her layer dissolves 1 hit sooner"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "alchemist_aura_3_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "alchemist_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "alchemist_aura_3_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "alchemist_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "alchemist_aura_3_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "alchemist_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1.2}]}}, {"id": "alchemist_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "alchemist_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1.1}]}}, {"id": "alchemist_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "alchemist_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1.3}]}}, {"id": "alchemist_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "alchemist_aura_4",
       "kind": "aura",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "rare",
       "color": "red",
-      "name": {"ru": "Склянка про запас", "en": "Склянка про запас"},
+      "name": {"ru": "Склянка про запас", "en": "Spare Phial"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}], "reserve": 20},
-      "text": {"ru": "5% скиллов отряда не тратят ресурс", "en": "5% скиллов отряда не тратят ресурс"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.06}, {"stat": "elixirSeconds", "kind": "flat", "value": 0.5}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: откаты на 6% быстрее; её эликсир на 0,5 с дольше", "en": "party: cooldowns 6% faster; her elixir lasts 0.5 s longer"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "alchemist_aura_4_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.18}]}
-            },
-            {"id": "alchemist_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 16}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "alchemist_aura_4_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.165}]}
-            },
-            {"id": "alchemist_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 18}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "alchemist_aura_4_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.195}]}
-            },
-            {"id": "alchemist_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 14}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.072}, {"stat": "elixirSeconds", "kind": "flat", "value": 0.6}]}}, {"id": "alchemist_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "alchemist_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.066}, {"stat": "elixirSeconds", "kind": "flat", "value": 0.55}]}}, {"id": "alchemist_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "alchemist_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "skillCooldown", "kind": "increased", "value": -0.078}, {"stat": "elixirSeconds", "kind": "flat", "value": 0.65}]}}, {"id": "alchemist_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
       "id": "alchemist_aura_5",
       "kind": "aura",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "epic",
       "color": "red",
-      "name": {"ru": "Перегонка", "en": "Перегонка"},
+      "name": {"ru": "Тонкая перегонка", "en": "Refining"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "+опыт гемов отряда", "en": "+опыт гемов отряда"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "reagentHits", "kind": "flat", "value": -0.5}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +12% урона по боссу; её реактив чуть раньше", "en": "party: +12% damage against bosses; her reagent comes a little sooner"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "alchemist_aura_5_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "alchemist_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "alchemist_aura_5_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "alchemist_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "alchemist_aura_5_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "alchemist_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.144}, {"stat": "reagentHits", "kind": "flat", "value": -0.6}]}}, {"id": "alchemist_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "alchemist_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.132}, {"stat": "reagentHits", "kind": "flat", "value": -0.55}]}}, {"id": "alchemist_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "alchemist_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.156}, {"stat": "reagentHits", "kind": "flat", "value": -0.65}]}}, {"id": "alchemist_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
       "id": "alchemist_aura_6",
       "kind": "aura",
-      "weapon": "syringe_cane",
+      "weapon": "alchemy_flasks",
       "tier": "legendary",
       "color": "red",
-      "name": {"ru": "Растворимость", "en": "Растворимость"},
+      "name": {"ru": "Растворимость", "en": "Solubility"},
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gold", "kind": "increased", "value": 0.1}], "reserve": 25},
-      "text": {"ru": "щиты и барьеры врагов −30%", "en": "щиты и барьеры врагов −30%"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "elixirPower", "kind": "flat", "value": 0.2}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +8% урона; её эликсир на 0,2 сильнее", "en": "party: +8% damage; her elixir is 0.2 stronger"},
       "branches": [
-        {
-          "level": 5,
-          "options": [
-            {
-              "id": "alchemist_aura_6_b5a",
-              "name": {"ru": "Ярче", "en": "Brighter"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.12}]}
-            },
-            {"id": "alchemist_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}
-          ]
-        },
-        {
-          "level": 15,
-          "options": [
-            {
-              "id": "alchemist_aura_6_b15a",
-              "name": {"ru": "Шире", "en": "Wider"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.11}]}
-            },
-            {"id": "alchemist_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 22}}
-          ]
-        },
-        {
-          "level": 25,
-          "options": [
-            {
-              "id": "alchemist_aura_6_b25a",
-              "name": {"ru": "Сильнее", "en": "Stronger"},
-              "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.13}]}
-            },
-            {"id": "alchemist_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 18}}
-          ]
-        }
+        {"level": 5, "options": [{"id": "alchemist_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "elixirPower", "kind": "flat", "value": 0.24}]}}, {"id": "alchemist_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "alchemist_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "elixirPower", "kind": "flat", "value": 0.22}]}}, {"id": "alchemist_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "alchemist_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "elixirPower", "kind": "flat", "value": 0.26}]}}, {"id": "alchemist_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

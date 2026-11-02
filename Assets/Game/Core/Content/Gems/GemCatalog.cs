@@ -455,7 +455,13 @@ namespace Game.Core.Content.Gems
                         CutCooldowns = Number(node, "cutCooldowns", 600),
                         WindBurst = Number(node, "windBurst", 100),
                         Rewind = node.HasField("rewind") && node.Field("rewind").AsBool(),
-                        GearTick = node.HasField("gearTick") && node.Field("gearTick").AsBool()
+                        GearTick = node.HasField("gearTick") && node.Field("gearTick").AsBool(),
+                        Reagents = node.HasField("reagents") ? node.Field("reagents").AsInt(0, 10) : 0,
+                        Flask = node.HasField("flask") && node.Field("flask").AsBool(),
+                        Layers = node.HasField("layers") ? node.Field("layers").AsInt(0, 20) : 0,
+                        Elixir = node.HasField("elixir") && node.Field("elixir").AsBool(),
+                        Corrode = Number(node, "corrode", 10),
+                        CorrodeSeconds = Number(node, "corrodeSeconds", 600)
                     };
                 case "aura":
                     return new AuraEffect(

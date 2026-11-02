@@ -14,6 +14,12 @@ namespace Game.Core.Sim
         Loop,
         Gears,
         Cog,
-        GearTick
+        GearTick,
+        Reagents,
+        Reagent,
+        Flask,
+        Acid,
+        AcidHit,
+        Elixir
     }
 }

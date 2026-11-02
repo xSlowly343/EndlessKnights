@@ -25,7 +25,7 @@ namespace Game.Core.Sim
         {
             var baseGold = type == EnemyType.Normal ? _stages.EnemyGold(stage) : _stages.BossGold(stage) * System.Math.Max(0, _hero.Value(CombatStats.BossGold, 1, StatTags.Gold));
             var fill = 1 + System.Math.Max(0, _hero.Value(CombatStats.GoldPerResource, 0, StatTags.Gold)) * _state.ResourceFill;
-            return _hero.Compute(CombatStats.Gold, baseGold * (enemy?.GoldMultiplier ?? 1.0), StatTags.Gold) * fill;
+            return _hero.Compute(CombatStats.Gold, baseGold * (enemy?.GoldMultiplier ?? 1.0), StatTags.Gold) * (fill * _state.Boons.GoldMultiplier);
         }
 
         public void Golden(long stage, double share)

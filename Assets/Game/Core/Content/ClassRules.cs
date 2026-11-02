@@ -32,6 +32,7 @@ namespace Game.Core.Content
         public LanternbearerRules Lanternbearer { get; private set; } = LanternbearerRules.None;
         public WhispererRules Whisperer { get; private set; } = WhispererRules.None;
         public ClockwrightRules Clockwright { get; private set; } = ClockwrightRules.None;
+        public AlchemistRules Alchemist { get; private set; } = AlchemistRules.None;
 
         public static ClassRules Read(ContentNode node)
         {
@@ -57,7 +58,8 @@ namespace Game.Core.Content
                 Dreamcatcher = DreamcatcherRules.Read(node.Field("dreamcatcher")),
                 Lanternbearer = LanternbearerRules.Read(node.Field("lanternbearer")),
                 Whisperer = WhispererRules.Read(node.Field("whisperer")),
-                Clockwright = ClockwrightRules.Read(node.Field("clockwright")) };
+                Clockwright = ClockwrightRules.Read(node.Field("clockwright")),
+                Alchemist = AlchemistRules.Read(node.Field("alchemist")) };
         }
     }
 }
