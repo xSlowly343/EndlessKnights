@@ -432,6 +432,7 @@ namespace Game.Core.Party
                 _loop.Combat.Clockwright.AddAllyHits(allyHits);
                 _loop.Combat.Dowser.AddAllyHits(allyHits);
                 _loop.Combat.Soulbinder.AddAllyHits(allyHits);
+                _loop.Combat.Cartomancer.AddAllyHits(allyHits);
             }
             _loop.State.PartyAllHitting = InParty && AllAlliesHitting(state);
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
@@ -989,6 +990,20 @@ namespace Game.Core.Party
                 case TraitRelayKind.MothClock:
                     boons.MothWakeSeconds = relay.Value;
                     boons.MothClockTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.Deal:
+                    boons.DealOwner = relay.From;
+                    boons.DealEvery = relay.Every;
+                    boons.DealTicks = (int)System.Math.Round(relay.Seconds * GameLoop.TicksPerSecond);
+                    break;
+                case TraitRelayKind.Card:
+                    _loop.Combat.Cartomancer.ReceiveCard(relay.Count);
+                    break;
+                case TraitRelayKind.Forecast:
+                    CartomancerMechanics.LandForecast(boons, relay.Value, relay.Seconds);
+                    break;
+                case TraitRelayKind.ForecastLost:
+                    _loop.Combat.Cartomancer.LoseForecast(relay.Value);
                     break;
                 case TraitRelayKind.ParrotPerch:
                     boons.ParrotOwner = relay.From;

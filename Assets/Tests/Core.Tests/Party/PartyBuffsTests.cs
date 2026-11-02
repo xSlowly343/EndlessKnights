@@ -347,6 +347,27 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void ACartomancersDealAndTermReachTheAllyAndTheAllysCardComesBack()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var cartomancer = rig.Members[0];
+            var friend = rig.Members[1];
+            cartomancer.Loop.State.Class = HeroClass.Cartomancer;
+            cartomancer.Loop.Hero.Add(new Modifier(CartomancerStats.SpreadPower, ModifierKind.Flat, 0.3));
+            cartomancer.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Forecast, To = TraitRelay.AllSlots, Value = 1, Seconds = 20 });
+            rig.Run(0.5);
+
+            Assert.That(friend.Loop.State.Boons.DealOwner, Is.EqualTo(cartomancer.Client.OwnSlot));
+            Assert.That(friend.Loop.State.Boons.ForecastGold, Is.EqualTo(1).Within(1e-6));
+
+            var before = cartomancer.Loop.State.Cartomancer.AllyCards;
+            friend.Loop.State.TraitRelays.Add(new TraitRelay { Kind = TraitRelayKind.Card, To = (byte)cartomancer.Client.OwnSlot, Count = CartomancerState.Swords });
+            rig.Run(0.3);
+            Assert.That(cartomancer.Loop.State.Cartomancer.AllyCards, Is.EqualTo(before + 1));
+        }
+
+        [Test]
         public void AMothcallersSwarmPollenAndClockReachTheAlly()
         {
             var rig = new Rig(2);

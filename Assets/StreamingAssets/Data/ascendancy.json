@@ -567,226 +567,70 @@
     {
       "id": "cartomancer_trait_1",
       "class": "cartomancer",
-      "name": {"ru": "Расклад", "en": "Расклад"},
-      "blurb": "У каждой карты масть: Кубки (лечение полосы), Мечи (урон), Монеты (золото), Жезлы (перезарядка). Три карты одной масти подряд — выпадает Старший аркан: сильный эффект своей масти на 15 с",
+      "name": {"ru": "Расклад", "en": "Spread"},
+      "blurb": "Каждые 10 ударов в руку тянется карта одной из четырёх мастей: Кубки, Мечи, Монеты, Жезлы. Три карты одной масти — Старший аркан на 15 с: Мечи — её урон сильнее, Кубки — ресурс каждую секунду, Монеты — больше золота с врагов, Жезлы — перезарядка скиллов быстрее. В руке до 7 карт. В паузе колода тасуется, рука не теряется. Скилл Пути «Разложить карты» тянет три карты сразу",
       "trait": {
-        "partyText": {"ru": "Арканы действуют на весь отряд", "en": "Арканы действуют на весь отряд"},
+        "partyText": {"ru": "Союзник сдаёт карту: каждые 30 ударов союзника в руку Гадалки приходит карта масти его роли (Бойцы и Сокрушители — Мечи, Вдохновители и Призыватели — Кубки, Искатели — Монеты, остальные — Жезлы); сданные карты видны у союзника", "en": "An ally deals a card: every 30 hits of an ally put a card of their role's suit into the Cartomancer's hand (Strikers and Breakers — Swords, Heralds and Summoners — Cups, Seekers — Coins, the rest — Wands); dealt cards show on the ally's bar"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "spreadPower", "kind": "flat", "value": 0.15}]},
+          {"modifiers": [{"stat": "spreadPower", "kind": "flat", "value": 0.02}]},
+          {"modifiers": [{"stat": "spreadPower", "kind": "flat", "value": 0.02}]},
+          {"modifiers": [{"stat": "spreadPower", "kind": "flat", "value": 0.02}]},
+          {"modifiers": [{"stat": "spreadLong", "kind": "flat", "value": 1}], "text": {"ru": "Долгий аркан: аркан держится на 5 с дольше", "en": "Long Arcanum: an arcanum lasts 5 s longer"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "cartomancer_trait_1_f45a",
-                "name": {"ru": "рука до 9 карт", "en": "рука до 9 карт"},
-                "text": {"ru": "рука до 9 карт", "en": "рука до 9 карт"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "cartomancer_trait_1_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "cartomancer_trait_1_f60a",
-                "name": {"ru": "две одинаковые и джокер тоже дают аркан", "en": "две одинаковые и джокер тоже дают аркан"},
-                "text": {"ru": "две одинаковые и джокер тоже дают аркан", "en": "две одинаковые и джокер тоже дают аркан"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "cartomancer_trait_1_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "cartomancer_trait_1_f75a",
-                "name": {"ru": "аркан держится 25 с", "en": "аркан держится 25 с"},
-                "text": {"ru": "аркан держится 25 с", "en": "аркан держится 25 с"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "cartomancer_trait_1_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "cartomancer_trait_1_f45a", "name": {"ru": "Быстрая колода", "en": "Quick Deck"}, "text": {"ru": "Карта каждые 8 ударов, но аркан на 20% слабее", "en": "A card every 8 hits, but an arcanum is 20% weaker"}, "modifiers": [{"stat": "spreadHits", "kind": "flat", "value": -2}, {"stat": "spreadPower", "kind": "more", "value": -0.2}]}, {"id": "cartomancer_trait_1_f45b", "name": {"ru": "Крапленая колода", "en": "Marked Deck"}, "text": {"ru": "Аркан из двух карт одной масти, но держится 8 с", "en": "An arcanum from two cards of one suit, but it lasts 8 s"}, "modifiers": [{"stat": "spreadPair", "kind": "flat", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "cartomancer_trait_1_f60a", "name": {"ru": "Терпеливый расклад", "en": "Patient Spread"}, "text": {"ru": "Аркан держится на 10 с дольше, но карта каждые 13 ударов", "en": "An arcanum lasts 10 s longer, but a card comes every 13 hits"}, "modifiers": [{"stat": "spreadSeconds", "kind": "flat", "value": 10}, {"stat": "spreadHits", "kind": "flat", "value": 3}]}, {"id": "cartomancer_trait_1_f60b", "name": {"ru": "Старшие Мечи", "en": "Major Swords"}, "text": {"ru": "Аркан Мечей вдвое сильнее, остальные вдвое слабее", "en": "The Swords arcanum is twice as strong, the others half as strong"}, "modifiers": [{"stat": "spreadSwords", "kind": "flat", "value": 1}]}]},
+          {"level": 75, "options": [{"id": "cartomancer_trait_1_f75a", "name": {"ru": "Козырь", "en": "Trump"}, "text": {"ru": "Аркан на 40% сильнее, но карта каждые 13 ударов", "en": "An arcanum is 40% stronger, but a card comes every 13 hits"}, "modifiers": [{"stat": "spreadPower", "kind": "more", "value": 0.4}, {"stat": "spreadHits", "kind": "flat", "value": 3}]}, {"id": "cartomancer_trait_1_f75b", "name": {"ru": "Гадание по руке", "en": "Palm Reading"}, "text": {"ru": "Каждая карта в руке даёт +3% урона, но арканов больше нет", "en": "Every card in hand gives +3% damage, but there are no more arcana"}, "modifiers": [{"stat": "spreadHand", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [{"id": "cartomancer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Расклад", "en": "Расклад"}, "modifiers": []}],
+      "nodes": [{"id": "cartomancer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Расклад", "en": "Spread"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "cartomancer_trait_2",
       "class": "cartomancer",
-      "name": {"ru": "Предсказание", "en": "Предсказание"},
-      "blurb": "Перед боссом Гадалка называет срок: «умрёт за N секунд». Успели — награда за босса двойная, не успели — урон отряда −20% до следующего босса",
+      "name": {"ru": "Предсказание", "en": "Prophecy"},
+      "blurb": "Перед боссом Гадалка называет срок: «умрёт за N секунд» (60% таймера). Успели — награда за босса вдвое больше, не успели — её урон на 20% меньше до следующего босса. В паузе срок идёт, как и таймер. Скилл Пути «Срок вышел» называет новый срок на текущем боссе",
       "trait": {
-        "partyText": {"ru": "Ставка общая: выигрыш и проигрыш на всех", "en": "Ставка общая: выигрыш и проигрыш на всех"},
+        "partyText": {"ru": "Срок общий у хоста: срок висит на общем боссе, отсчёт виден всем; выигрыш — награда больше у всего отряда, проигрыш — урон меньше у всего отряда", "en": "A shared term at the host: the term hangs on the shared boss and everyone sees the countdown; a win raises the reward of the whole party, a loss lowers the damage of the whole party"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "forecastPower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "forecastPower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "forecastPower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "forecastPower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "forecastStreak", "kind": "flat", "value": 1}], "text": {"ru": "Полоса удачи: каждый успешный срок подряд даёт следующему +25% награды, до +100%", "en": "Lucky Streak: every successful term in a row adds +25% to the next reward, up to +100%"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "cartomancer_trait_2_f45a",
-                "name": {"ru": "срок можно выбрать из трёх", "en": "срок можно выбрать из трёх"},
-                "text": {"ru": "срок можно выбрать из трёх", "en": "срок можно выбрать из трёх"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "cartomancer_trait_2_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "cartomancer_trait_2_f60a",
-                "name": {"ru": "за точное попадание (±2 с) награда тройная", "en": "за точное попадание (±2 с) награда тройная"},
-                "text": {"ru": "за точное попадание (±2 с) награда тройная", "en": "за точное попадание (±2 с) награда тройная"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "cartomancer_trait_2_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "cartomancer_trait_2_f75a",
-                "name": {"ru": "проигрыш больше не штрафует", "en": "проигрыш больше не штрафует"},
-                "text": {"ru": "проигрыш больше не штрафует", "en": "проигрыш больше не штрафует"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "cartomancer_trait_2_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "cartomancer_trait_2_f45a", "name": {"ru": "Осторожный прогноз", "en": "Cautious Forecast"}, "text": {"ru": "Срок на 30% длиннее, но награда на 40% меньше", "en": "The term is 30% longer, but the reward is 40% smaller"}, "modifiers": [{"stat": "forecastLong", "kind": "flat", "value": 1}, {"stat": "forecastPower", "kind": "more", "value": -0.4}]}, {"id": "cartomancer_trait_2_f45b", "name": {"ru": "Смелый прогноз", "en": "Bold Forecast"}, "text": {"ru": "Срок на 30% короче, но награда вдвое больше", "en": "The term is 30% shorter, but the reward is twice as large"}, "modifiers": [{"stat": "forecastShort", "kind": "flat", "value": 1}, {"stat": "forecastPower", "kind": "more", "value": 1}]}]},
+          {"level": 60, "options": [{"id": "cartomancer_trait_2_f60a", "name": {"ru": "Точное попадание", "en": "Exact Hit"}, "text": {"ru": "Если до срока осталось 3 с, награда растёт ещё, но проигрыш стоит 30% урона", "en": "With 3 s left in the term the reward grows further, but a loss costs 30% damage"}, "modifiers": [{"stat": "forecastExact", "kind": "flat", "value": 1}]}, {"id": "cartomancer_trait_2_f60b", "name": {"ru": "Предсказанный удар", "en": "Foretold Blow"}, "text": {"ru": "В последние 5 с срока её удары на 30% сильнее, но награда на 25% меньше", "en": "In the last 5 s of the term her hits are 30% stronger, but the reward is 25% smaller"}, "modifiers": [{"stat": "forecastRush", "kind": "flat", "value": 1}, {"stat": "forecastPower", "kind": "more", "value": -0.25}]}]},
+          {"level": 75, "options": [{"id": "cartomancer_trait_2_f75a", "name": {"ru": "Без проигрыша", "en": "No Loss"}, "text": {"ru": "Проигрыш больше не штрафует, но награда на 40% меньше", "en": "A loss no longer penalises, but the reward is 40% smaller"}, "modifiers": [{"stat": "forecastSafe", "kind": "flat", "value": 1}, {"stat": "forecastPower", "kind": "more", "value": -0.4}]}, {"id": "cartomancer_trait_2_f75b", "name": {"ru": "Двойная ставка", "en": "Double Stake"}, "text": {"ru": "Выигрыш вдвое больше, но и проигрыш вдвое тяжелее", "en": "A win is twice as large, but a loss is twice as heavy"}, "modifiers": [{"stat": "forecastDouble", "kind": "flat", "value": 1}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "cartomancer_trait_2_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Предсказание", "en": "Предсказание"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "cartomancer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Предсказание", "en": "Prophecy"}, "modifiers": []}],
       "links": []
     },
     {
       "id": "cartomancer_trait_3",
       "class": "cartomancer",
-      "name": {"ru": "Перевёрнутая карта", "en": "Перевёрнутая карта"},
-      "blurb": "Карты в руке ложатся рубашкой вверх: вместо пользы для своих каждая масть проклинает врага (Мечи — уязвимость, Кубки — враг не лечится, Монеты — с врага падает больше, Жезлы — враг медленнее)",
+      "name": {"ru": "Перевёрнутая карта", "en": "Reversed Card"},
+      "blurb": "Карты ложатся рубашкой вверх: вместо пользы каждые 10 ударов карта ложится на врага и проклинает его по масти: Мечи — враг получает больше урона, Кубки — рана жжёт врага, Монеты — с врага падает больше золота, Жезлы — таймер босса медленнее. На враге до 7 карт, со сменой врага они спадают. Каждые 40 ударов одна карта вскрывается: её проклятие на 5 с вдвое сильнее. Скилл Пути «Перевернуть колоду» кладёт три карты и вскрывает старшую масть",
       "trait": {
-        "partyText": {"ru": "Отряд бьёт по проклятому врагу сильнее", "en": "Отряд бьёт по проклятому врагу сильнее"},
+        "partyText": {"ru": "Союзник вскрывает карту: проклятия карт висят на общем враге у хоста, масти видны всем; каждые 20 ударов союзников по врагу вскрывают карту, и её проклятие 5 с действует вдвое", "en": "An ally reveals a card: the curses of the cards hang on the shared enemy at the host and everyone sees the suits; every 20 allied hits on the enemy reveal a card, and its curse works twice as hard for 5 s"},
         "levels": [
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]},
-          {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.03}]}
+          {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.04}]},
+          {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.006}]},
+          {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.006}]},
+          {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.006}]},
+          {"modifiers": [{"stat": "reversedKeep", "kind": "flat", "value": 1}], "text": {"ru": "Карта на память: со сменой врага половина карт переходит на следующего", "en": "A Card to Remember: when the enemy changes, half the cards move to the next one"}}
         ],
-        "party": [{"stat": "partyDamage", "kind": "flat", "value": 0.05}],
         "forks": [
-          {
-            "level": 45,
-            "options": [
-              {
-                "id": "cartomancer_trait_3_f45a",
-                "name": {"ru": "перевёрнутый аркан проклинает всю очередь", "en": "перевёрнутый аркан проклинает всю очередь"},
-                "text": {"ru": "перевёрнутый аркан проклинает всю очередь", "en": "перевёрнутый аркан проклинает всю очередь"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "cartomancer_trait_3_f45b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 60,
-            "options": [
-              {
-                "id": "cartomancer_trait_3_f60a",
-                "name": {"ru": "каждая пятая карта ложится и так и так", "en": "каждая пятая карта ложится и так и так"},
-                "text": {"ru": "каждая пятая карта ложится и так и так", "en": "каждая пятая карта ложится и так и так"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "cartomancer_trait_3_f60b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          },
-          {
-            "level": 75,
-            "options": [
-              {
-                "id": "cartomancer_trait_3_f75a",
-                "name": {"ru": "проклятия от карт не спадают при смене врага", "en": "проклятия от карт не спадают при смене врага"},
-                "text": {"ru": "проклятия от карт не спадают при смене врага", "en": "проклятия от карт не спадают при смене врага"},
-                "modifiers": [{"stat": "damage", "kind": "more", "value": 0.05}]
-              },
-              {
-                "id": "cartomancer_trait_3_f75b",
-                "name": {"ru": "Закалка", "en": "Tempering"},
-                "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}]
-              }
-            ]
-          }
+          {"level": 45, "options": [{"id": "cartomancer_trait_3_f45a", "name": {"ru": "Проклятая колода", "en": "Cursed Deck"}, "text": {"ru": "Карта ложится каждые 7 ударов, но на враге до 5 карт", "en": "A card is laid every 7 hits, but up to 5 cards on the enemy"}, "modifiers": [{"stat": "reversedHits", "kind": "flat", "value": -3}, {"stat": "reversedMax", "kind": "flat", "value": -2}]}, {"id": "cartomancer_trait_3_f45b", "name": {"ru": "Тяжёлые карты", "en": "Heavy Cards"}, "text": {"ru": "Каждая карта вдвое сильнее, но ложится каждые 16 ударов", "en": "Every card is twice as strong, but is laid every 16 hits"}, "modifiers": [{"stat": "reversedPower", "kind": "more", "value": 1}, {"stat": "reversedHits", "kind": "flat", "value": 6}]}]},
+          {"level": 60, "options": [{"id": "cartomancer_trait_3_f60a", "name": {"ru": "Двойная масть", "en": "Double Suit"}, "text": {"ru": "Каждая пятая карта ложится дважды, но карты на 10% слабее", "en": "Every fifth card is laid twice, but cards are 10% weaker"}, "modifiers": [{"stat": "reversedFifth", "kind": "flat", "value": 1}, {"stat": "reversedPower", "kind": "more", "value": -0.1}]}, {"id": "cartomancer_trait_3_f60b", "name": {"ru": "Вскрытие", "en": "Reveal"}, "text": {"ru": "Вскрытая карта действует втрое, но вскрывается на 10 ударов реже", "en": "A revealed card works three times as hard, but is revealed 10 hits later"}, "modifiers": [{"stat": "reversedStrong", "kind": "flat", "value": 1}, {"stat": "reversedRevealHits", "kind": "flat", "value": 10}]}]},
+          {"level": 75, "options": [{"id": "cartomancer_trait_3_f75a", "name": {"ru": "Тёмный расклад", "en": "Dark Spread"}, "text": {"ru": "На враге до 10 карт, но каждая на 20% слабее", "en": "Up to 10 cards on the enemy, but each is 20% weaker"}, "modifiers": [{"stat": "reversedMax", "kind": "flat", "value": 3}, {"stat": "reversedPower", "kind": "more", "value": -0.2}]}, {"id": "cartomancer_trait_3_f75b", "name": {"ru": "Все карты на стол", "en": "All Cards on the Table"}, "text": {"ru": "Карты вдвое сильнее, но ложатся вдвое реже", "en": "Cards are twice as strong, but are laid half as often"}, "modifiers": [{"stat": "reversedPower", "kind": "more", "value": 1}, {"stat": "reversedHits", "kind": "flat", "value": 10}]}]}
         ]
       },
-      "nodes": [
-        {
-          "id": "cartomancer_trait_3_start",
-          "type": "start",
-          "x": 0,
-          "y": 0,
-          "name": {"ru": "Перевёрнутая карта", "en": "Перевёрнутая карта"},
-          "modifiers": []
-        }
-      ],
+      "nodes": [{"id": "cartomancer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Перевёрнутая карта", "en": "Reversed Card"}, "modifiers": []}],
       "links": []
     },
     {

@@ -268,6 +268,7 @@ namespace Game.Core.Sim
         public SoulbinderState Soulbinder { get; } = new SoulbinderState();
         public GhostcaptainState Ghostcaptain { get; } = new GhostcaptainState();
         public MothcallerState Mothcaller { get; } = new MothcallerState();
+        public CartomancerState Cartomancer { get; } = new CartomancerState();
         public bool PartyAllHitting { get; set; }
         public AllyBoons Boons { get; } = new AllyBoons();
         public TraitRelays TraitRelays { get; } = new TraitRelays();
@@ -347,6 +348,7 @@ namespace Game.Core.Sim
             Dowser.OnSpawn();
             Ghostcaptain.OnSpawn();
             Mothcaller.OnSpawn();
+            Cartomancer.OnSpawn();
         }
     }
 }

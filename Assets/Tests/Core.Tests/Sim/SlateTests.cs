@@ -317,6 +317,7 @@ namespace Game.Core.Tests.Sim
                 .Concat(typeof(SoulbinderStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Concat(typeof(GhostcaptainStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Concat(typeof(MothcallerStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+                .Concat(typeof(CartomancerStats).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
                 .Where(field => field.FieldType == typeof(StatId))
                 .Select(field => ((StatId)field.GetValue(null)!).Name)
                 .ToHashSet();

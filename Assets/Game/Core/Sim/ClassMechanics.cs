@@ -18,10 +18,13 @@ namespace Game.Core.Sim
 
         public void UseRules(ClassRules rules) => _rules = rules;
 
+        private bool Traited =>
+            _hero.Value(CartomancerStats.SpreadPower, 0) > 0 || _hero.Value(CartomancerStats.ForecastPower, 0) > 0 || _hero.Value(CartomancerStats.ReversedPower, 0) > 0;
+
         public double OnKeyHit(out HitFlags flags)
         {
             flags = HitFlags.None;
-            if (_state.Is(HeroClass.Cartomancer))
+            if (_state.Is(HeroClass.Cartomancer) && !Traited)
                 return ColdHit();
             return 1;
         }
