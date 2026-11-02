@@ -183,9 +183,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheBeaconFlashesEveryMinuteAndMakesTheNextSkillFreeAndStronger()
+        public void TheBeaconFlashesEveryFortySecondsAndMakesTheNextSkillFreeAndStronger()
         {
-            Assert.That(Rules.BeaconSeconds, Is.EqualTo(60));
+            Assert.That(Rules.BeaconSeconds, Is.EqualTo(40));
             var (loop, input) = Hero(Flat(LanternbearerStats.BeaconPower, 0.5));
             Wait(loop, Rules.BeaconSeconds);
             Assert.That(loop.State.Lanternbearer.Flashes, Is.EqualTo(1));

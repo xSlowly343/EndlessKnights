@@ -425,11 +425,11 @@
       "class": "minstrel",
       "partyMode": "together",
       "name": {"ru": "Колыбельная", "en": "Lullaby"},
-      "blurb": "Каждый 20-й удар — нота, на 7 нотах враг засыпает на 4 с. Урон по спящему не наносится, а копится во сне ×1,4. Кошмар будит врага, и всё накопленное падает разом. В паузе сон идёт сам, а ноты ждут. Скилл Пути «Тихая нота» добавляет 3 ноты",
+      "blurb": "Каждый 20-й удар — нота, на 7 нотах враг засыпает на 4 с. Урон по спящему не наносится, а копится во сне ×1,8. Кошмар будит врага, и всё накопленное падает разом. В паузе сон идёт сам, а ноты ждут. Скилл Пути «Тихая нота» добавляет 3 ноты",
       "trait": {
         "partyText": {"ru": "Пока враг спит, он получает больше урона от всего отряда; на 5 уровне отряд ещё и крепче критует по спящему", "en": "While the enemy sleeps, it takes more damage from the whole party; at level 5 the party also crits harder against the sleeper"},
         "levels": [
-          {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 1.4}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.001, "per": {"signal": "sleepShare", "step": 0.001, "cap": 5000}}]},
+          {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 1.8}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.001, "per": {"signal": "sleepShare", "step": 0.001, "cap": 5000}}]},
           {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 0.1}]},
@@ -497,7 +497,7 @@
       "class": "lanternbearer",
       "partyMode": "support",
       "name": {"ru": "Маяк", "en": "Beacon"},
-      "blurb": "Раз в 60 с фонарь вспыхивает: у неё и у каждого союзника следующий скилл бесплатный, без перезарядки и на 50% сильнее. В паузе Маяк копит вспышку. Скилл Пути «Вспышка маяка» вспыхивает сразу",
+      "blurb": "Раз в 40 с фонарь вспыхивает: у неё и у каждого союзника следующий скилл бесплатный, без перезарядки и на 50% сильнее. В паузе Маяк копит вспышку. Скилл Пути «Вспышка маяка» вспыхивает сразу",
       "trait": {
         "partyText": {"ru": "После вспышки маяка 6 с скиллы отряда дешевле и откаты быстрее", "en": "For 6 s after a beacon flash the party's skills cost less and cooldowns are faster"},
         "levels": [
@@ -508,7 +508,7 @@
           {"modifiers": [{"stat": "beaconStrike", "kind": "flat", "value": 1}], "text": {"ru": "Вспышка ударов: после вспышки отряд 5 с бьёт на 20% сильнее", "en": "Strike Flash: after a flash the party hits 20% harder for 5 s"}}
         ],
         "forks": [
-          {"level": 45, "options": [{"id": "lanternbearer_trait_3_f45a", "name": {"ru": "Частый маяк", "en": "Frequent Beacon"}, "text": {"ru": "Вспышка раз в 45 с, но скилл на 30% слабее", "en": "A flash every 45 s, but the skill is 30% weaker"}, "modifiers": [{"stat": "beaconSeconds", "kind": "flat", "value": -15}, {"stat": "beaconPower", "kind": "more", "value": -0.3}]}, {"id": "lanternbearer_trait_3_f45b", "name": {"ru": "Яркий маяк", "en": "Bright Beacon"}, "text": {"ru": "Скилл после вспышки на 50% сильнее, но вспышка раз в 90 с", "en": "The skill after a flash is 50% stronger, but a flash comes every 90 s"}, "modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.5}, {"stat": "beaconSeconds", "kind": "flat", "value": 30}]}]},
+          {"level": 45, "options": [{"id": "lanternbearer_trait_3_f45a", "name": {"ru": "Частый маяк", "en": "Frequent Beacon"}, "text": {"ru": "Вспышка раз в 25 с, но скилл на 30% слабее", "en": "A flash every 25 s, but the skill is 30% weaker"}, "modifiers": [{"stat": "beaconSeconds", "kind": "flat", "value": -15}, {"stat": "beaconPower", "kind": "more", "value": -0.3}]}, {"id": "lanternbearer_trait_3_f45b", "name": {"ru": "Яркий маяк", "en": "Bright Beacon"}, "text": {"ru": "Скилл после вспышки на 50% сильнее, но вспышка раз в 70 с", "en": "The skill after a flash is 50% stronger, but a flash comes every 70 s"}, "modifiers": [{"stat": "beaconPower", "kind": "flat", "value": 0.5}, {"stat": "beaconSeconds", "kind": "flat", "value": 30}]}]},
           {"level": 60, "options": [{"id": "lanternbearer_trait_3_f60a", "name": {"ru": "Два скилла", "en": "Two Skills"}, "text": {"ru": "Вспышка освобождает два скилла, но раз в 90 с", "en": "A flash frees two skills, but comes every 90 s"}, "modifiers": [{"stat": "beaconCharges", "kind": "flat", "value": 1}, {"stat": "beaconSeconds", "kind": "flat", "value": 30}]}, {"id": "lanternbearer_trait_3_f60b", "name": {"ru": "Сигнальный огонь", "en": "Signal Fire"}, "text": {"ru": "Вспышка ещё сокращает все откаты на 2 с, но скилл на 30% слабее", "en": "A flash also cuts every cooldown by 2 s, but the skill is 30% weaker"}, "modifiers": [{"stat": "beaconCut", "kind": "flat", "value": 2}, {"stat": "beaconPower", "kind": "more", "value": -0.3}]}]},
           {"level": 75, "options": [{"id": "lanternbearer_trait_3_f75a", "name": {"ru": "Немой фонарь", "en": "Silent Lantern"}, "text": {"ru": "Сама она скиллы не применяет, но вспышка раз в 30 с", "en": "She casts no skills herself, but a flash comes every 30 s"}, "modifiers": [{"stat": "beaconMute", "kind": "flat", "value": 1}, {"stat": "beaconSeconds", "kind": "flat", "value": -30}]}, {"id": "lanternbearer_trait_3_f75b", "name": {"ru": "Свет в тумане", "en": "Light in the Fog"}, "text": {"ru": "Вспышка ещё и на появлении босса, но раз в 90 с; бафф отряду: себе и союзникам поровну", "en": "A flash also comes when a boss appears, but every 90 s; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "beaconBoss", "kind": "flat", "value": 1}, {"stat": "beaconSeconds", "kind": "flat", "value": 30}], "partyMode": "together"}]}
         ]
@@ -545,7 +545,7 @@
       "class": "whisperer",
       "partyMode": "solo",
       "name": {"ru": "Имя Колосса", "en": "Name of the Colossus"},
-      "blurb": "150 её ударов по боссу или стражу — и Шептунья узнаёт его имя: +70% урона по нему до конца боя. На обычных врагах особенность молчит. В паузе узнанное имя не забывается. Скилл Пути «Назвать по имени» добавляет сразу 50 ударов к имени",
+      "blurb": "100 её ударов по боссу или стражу — и Шептунья узнаёт его имя: +70% урона по нему до конца боя. На обычных врагах особенность молчит. В паузе узнанное имя не забывается. Скилл Пути «Назвать по имени» добавляет сразу 50 ударов к имени",
       "trait": {
         "partyText": {"ru": "Пока имя Колосса названо, отряд бьёт босса сильнее", "en": "While the Colossus's name is spoken, the party hits the boss harder"},
         "levels": [
@@ -556,7 +556,7 @@
           {"modifiers": [{"stat": "nameBlast", "kind": "flat", "value": 1}], "text": {"ru": "Громкое имя: когда имя звучит, босс получает удар ×20", "en": "Loud Name: when the name sounds, the boss takes a blow ×20"}}
         ],
         "forks": [
-          {"level": 45, "options": [{"id": "whisperer_trait_2_f45a", "name": {"ru": "Короткое имя", "en": "Short Name"}, "text": {"ru": "Имя за 100 ударов, но бонус на 20% меньше", "en": "The name takes 100 hits, but the bonus is 20% lower"}, "modifiers": [{"stat": "nameHits", "kind": "flat", "value": -50}, {"stat": "namePower", "kind": "more", "value": -0.2}]}, {"id": "whisperer_trait_2_f45b", "name": {"ru": "Звонкие слоги", "en": "Ringing Syllables"}, "text": {"ru": "Своё имя за 200 ударов, зато пока имя названо, отряд бьёт босса ещё на 10% сильнее", "en": "Her name takes 200 hits, but while it is spoken the party hits the boss another 10% harder"}, "modifiers": [{"stat": "nameHits", "kind": "flat", "value": 50}, {"to": "party", "stat": "damageVsBoss", "kind": "increased", "value": 0.1, "while": "named"}]}]},
+          {"level": 45, "options": [{"id": "whisperer_trait_2_f45a", "name": {"ru": "Короткое имя", "en": "Short Name"}, "text": {"ru": "Имя за 50 ударов, но бонус на 20% меньше", "en": "The name takes 50 hits, but the bonus is 20% lower"}, "modifiers": [{"stat": "nameHits", "kind": "flat", "value": -50}, {"stat": "namePower", "kind": "more", "value": -0.2}]}, {"id": "whisperer_trait_2_f45b", "name": {"ru": "Звонкие слоги", "en": "Ringing Syllables"}, "text": {"ru": "Своё имя за 150 ударов, зато пока имя названо, отряд бьёт босса ещё на 10% сильнее", "en": "Her name takes 150 hits, but while it is spoken the party hits the boss another 10% harder"}, "modifiers": [{"stat": "nameHits", "kind": "flat", "value": 50}, {"to": "party", "stat": "damageVsBoss", "kind": "increased", "value": 0.1, "while": "named"}]}]},
           {"level": 60, "options": [{"id": "whisperer_trait_2_f60a", "name": {"ru": "Память имён", "en": "Memory of Names"}, "text": {"ru": "Узнанное имя запоминается на этот вид босса: в следующем бою с ним имя звучит сразу, но бонус на 25% меньше", "en": "A learned name is remembered for this kind of boss: in the next fight with it the name sounds at once, but the bonus is 25% lower"}, "modifiers": [{"stat": "nameMemory", "kind": "flat", "value": 1}, {"stat": "namePower", "kind": "more", "value": -0.25}]}, {"id": "whisperer_trait_2_f60b", "name": {"ru": "Имя по буквам", "en": "Name Letter by Letter"}, "text": {"ru": "Пока имя не узнано, бонус растёт с каждым ударом до половины, но имя за 200 ударов", "en": "Until the name is learned, the bonus grows with every hit up to half, but the name takes 200 hits"}, "modifiers": [{"stat": "nameProgress", "kind": "flat", "value": 1}, {"stat": "nameHits", "kind": "flat", "value": 50}]}]},
           {"level": 75, "options": [{"id": "whisperer_trait_2_f75a", "name": {"ru": "Имя отнимает время", "en": "The Name Takes Time"}, "text": {"ru": "Названный босс отдаёт отряду 5 с таймера, но бонус на 15% меньше; бафф отряду: себе и союзникам поровну", "en": "A named boss gives the party 5 s of timer, but the bonus is 15% lower; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "nameTime", "kind": "flat", "value": 1}, {"stat": "namePower", "kind": "more", "value": -0.15}], "partyMode": "together"}, {"id": "whisperer_trait_2_f75b", "name": {"ru": "Проклятое имя", "en": "Cursed Name"}, "text": {"ru": "Бонус имени на 30% больше, но имя за 175 ударов", "en": "The name bonus is 30% bigger, but the name takes 175 hits"}, "modifiers": [{"stat": "namePower", "kind": "more", "value": 0.3}, {"stat": "nameHits", "kind": "flat", "value": 25}]}]}
         ]
@@ -669,7 +669,7 @@
       "trait": {
         "partyText": {"ru": "Сад висит на враге; за каждую лозу урон отряда со временем сильнее", "en": "The garden hangs on the enemy; each vine empowers the party's damage over time"},
         "levels": [
-          {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.25}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.02, "per": {"signal": "vines", "step": 1, "cap": 8}}]},
+          {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.4}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.02, "per": {"signal": "vines", "step": 1, "cap": 8}}]},
           {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "bloomPower", "kind": "flat", "value": 0.03}]},
@@ -1265,7 +1265,7 @@
       "class": "dreamcatcher",
       "partyMode": "together",
       "name": {"ru": "Коллекция снов", "en": "Dream Collection"},
-      "blurb": "Каждый убитый враг ложится в альбом снов: урон по этому виду врага +1% за экземпляр, до 50%. Полная страница биома (по 10 экземпляров каждого вида) — вещий сон: следующий босс этого биома 10 с получает +25% урона. Альбом живёт до перерождения. Скилл Пути «Альбом снов» добавляет 3 экземпляра текущего врага",
+      "blurb": "Каждый убитый враг ложится в альбом снов: урон по этому виду врага +1% за экземпляр, до 75%. Полная страница биома (по 10 экземпляров каждого вида) — вещий сон: следующий босс этого биома 10 с получает +25% урона. Альбом живёт до перерождения. Скилл Пути «Альбом снов» добавляет 3 экземпляра текущего врага",
       "trait": {
         "partyText": {"ru": "Альбом снов: отряд бьёт сильнее по видам врагов из альбома", "en": "The dream album: the party hits harder against kinds from the album"},
         "levels": [
