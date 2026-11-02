@@ -361,14 +361,21 @@ namespace Game.Core.Content.Items
                 throw node.Field("part").Error("expected prefix or suffix");
             var stats = new List<AffixStat>();
             foreach (var stat in node.Field("stats").Items())
-                stats.Add(new AffixStat(new StatId(stat.Field("stat").AsString()), ModifierReader.ReadKind(stat.Field("kind")),
-                    stat.HasField("tags") ? ModifierReader.ReadTags(stat.Field("tags")) : StatTags.None));
+                stats.Add(ReadAffixStat(stat));
             var tiers = node.Field("tiers").Items();
             if (tiers.Count != 2)
                 throw node.Field("tiers").Error("expected the first and the last tier values");
             return new AffixDef(node.Field("id").AsString(), slots, part == "prefix", stats,
                 tiers[0].AsNumber(-1e6, 1e6), tiers[1].AsNumber(-1e6, 1e6),
                 node.HasField("group") ? node.Field("group").AsString() : null);
+        }
+
+        private static AffixStat ReadAffixStat(ContentNode stat)
+        {
+            if (stat.HasField("to"))
+                return new AffixStat(ModifierReader.ReadCoopLine(stat).Source, ModifierKind.Flat, StatTags.None);
+            return new AffixStat(new StatId(stat.Field("stat").AsString()), ModifierReader.ReadKind(stat.Field("kind")),
+                stat.HasField("tags") ? ModifierReader.ReadTags(stat.Field("tags")) : StatTags.None);
         }
     }
 }

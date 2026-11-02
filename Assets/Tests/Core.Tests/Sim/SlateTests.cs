@@ -4,6 +4,7 @@ using Game.Core.Clock;
 using Game.Core.Content;
 using Game.Core.Content.Slates;
 using Game.Core.Input;
+using Game.Core.Party;
 using Game.Core.Save;
 using Game.Core.Sim;
 using Game.Core.Stats;
@@ -326,7 +327,7 @@ namespace Game.Core.Tests.Sim
             var lines = Rules.Themes.SelectMany(theme => theme.Lines.Append(theme.Pattern).Append(theme.Rule))
                 .Concat(HeroClassNames.ByName.Values.SelectMany(heroClass => Rules.ClassLines(heroClass)));
 
-            Assert.That(lines.SelectMany(line => line.Modifiers).Select(modifier => modifier.Stat.BaseName).Where(stat => !known.Contains(stat)).Distinct(), Is.Empty);
+            Assert.That(lines.SelectMany(line => line.Modifiers).Select(modifier => CoopLine.TryGet(modifier.Stat, out var coop) ? coop.Target.BaseName : modifier.Stat.BaseName).Where(stat => !known.Contains(stat)).Distinct(), Is.Empty);
         }
 
         [Test]

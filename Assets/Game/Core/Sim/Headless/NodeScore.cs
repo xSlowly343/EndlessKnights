@@ -40,11 +40,7 @@ namespace Game.Core.Sim.Headless
             [CombatStats.ResourcePerCrit.Name] = 0.02,
             [CombatStats.ResourcePerFastSkill.Name] = 0.02,
             [CombatStats.ResourcePerCircle.Name] = 0.02,
-            [CombatStats.ResourcePerFlick.Name] = 0.02,
-            [CombatStats.PartyDamage.Name] = 1,
-            [CombatStats.PartyCritChance.Name] = 0.3,
-            [CombatStats.PartyGold.Name] = 0.15,
-            [CombatStats.PartyResource.Name] = 0.1
+            [CombatStats.ResourcePerFlick.Name] = 0.02
         };
 
         private readonly HashSet<string> _traitStats = new HashSet<string>(System.StringComparer.Ordinal);

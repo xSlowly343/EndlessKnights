@@ -662,7 +662,7 @@
           "id": "party_damage",
           "modifiers": [
             {
-              "stat": "partyDamage",
+              "to": "party", "stat": "damage",
               "kind": "increased",
               "value": 0.04
             }
@@ -672,7 +672,7 @@
           "id": "party_resource",
           "modifiers": [
             {
-              "stat": "partyResource",
+              "to": "party", "stat": "resourceGain",
               "kind": "increased",
               "value": 0.04
             }
@@ -682,7 +682,7 @@
           "id": "party_gold",
           "modifiers": [
             {
-              "stat": "partyGold",
+              "to": "party", "stat": "gold",
               "kind": "increased",
               "value": 0.05
             }
@@ -693,7 +693,7 @@
         "id": "party_pattern",
         "modifiers": [
           {
-            "stat": "partyDamage",
+            "to": "party", "stat": "damage",
             "kind": "increased",
             "value": 0.08
           }
@@ -703,7 +703,7 @@
         "id": "party_rule",
         "modifiers": [
           {
-            "stat": "partyCritChance",
+            "to": "party", "stat": "critChance",
             "kind": "increased",
             "value": 0.05
           }
@@ -1072,8 +1072,8 @@
         "id": "minstrel_song",
         "modifiers": [
           {
-            "stat": "partyDamage",
-            "kind": "flat",
+            "to": "party", "stat": "damage",
+            "kind": "increased",
             "value": 0.03
           }
         ],

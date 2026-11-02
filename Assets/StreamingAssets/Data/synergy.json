@@ -27,7 +27,7 @@
     { "id": "minstrel_encore", "class": "minstrel", "mark": "series", "modifiers": [{ "stat": "auraDuration", "kind": "increased", "value": 0.4, "tags": ["Aura"] }] },
     { "id": "minstrel_breakdown", "class": "minstrel", "mark": "fire", "second": true, "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1, "tags": ["Aura"] }] },
     { "id": "dreamcatcher_sign_of_fate", "class": "dreamcatcher", "mark": "hunterMark", "modifiers": [{ "stat": "omenPerPartyCrit", "kind": "flat", "value": 1 }] },
-    { "id": "dreamcatcher_vision_of_doom", "class": "dreamcatcher", "mark": "curse", "second": true, "modifiers": [{ "stat": "partyCritChance", "kind": "flat", "value": 0.1 }] },
+    { "id": "dreamcatcher_vision_of_doom", "class": "dreamcatcher", "mark": "curse", "second": true, "modifiers": [{ "to": "party", "stat": "critChance", "kind": "increased", "value": 0.1 }] },
     { "id": "lanternbearer_under_the_banner", "class": "lanternbearer", "mark": "stun", "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": 1, "tags": ["Aura"] }] },
     { "id": "lanternbearer_legion_banner", "class": "lanternbearer", "mark": "summon", "second": true, "modifiers": [{ "stat": "aurasOnAllySummons", "kind": "flat", "value": 1 }] },
     { "id": "whisperer_bone_dolls", "class": "whisperer", "mark": "summon", "modifiers": [{ "stat": "curseEffect", "kind": "increased", "value": 0.5 }] },

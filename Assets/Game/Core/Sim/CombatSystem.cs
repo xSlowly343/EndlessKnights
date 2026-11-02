@@ -141,8 +141,6 @@ namespace Game.Core.Sim
             var streakPause = conditions.LongStreakPauseSeconds + System.Math.Max(0, _hero.Value(CombatStats.LongStreakPauseSeconds, 0));
             var paused = !hasInput && (idleTicksBefore + 1) * GameLoop.TickSeconds >= streakPause;
             _state.InputStreakTicks = paused ? 0 : _state.InputStreakTicks + 1;
-            if (paused)
-                _state.Combo = 0;
             if (hasInput && idleTicksBefore * GameLoop.TickSeconds >= conditions.AfterIdlePauseSeconds)
             {
                 _state.AfterIdleTicks = (int)System.Math.Round(conditions.AfterIdleSeconds * GameLoop.TicksPerSecond);
@@ -429,7 +427,6 @@ namespace Game.Core.Sim
         }
 
         public const double MaxDoomShare = 0.95;
-        private const int MaxCombo = 1_000_000;
 
         private BigNumber WithholdDoom(BigNumber damage)
         {
@@ -542,8 +539,6 @@ namespace Game.Core.Sim
         private double HeavyStrike(ref HitFlags flags)
         {
             _state.KeyHits++;
-            if (_state.Combo < MaxCombo)
-                _state.Combo++;
             var every = (long)System.Math.Round(_hero.Value(CombatStats.KeyStrikeEvery, 0, StatTags.Keyboard));
             if (every < 1 || _state.KeyHits % every != 0)
                 return 1;

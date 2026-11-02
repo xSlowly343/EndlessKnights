@@ -37,6 +37,13 @@ namespace Game.Core.Content
 
         private static Modifier ReadCoop(ContentNode node)
         {
+            var line = ReadCoopLine(node);
+            var when = node.HasField("when") ? ReadCondition(node.Field("when")) : ModifierCondition.Always;
+            return new Modifier(line.Source, ModifierKind.Flat, node.Field("value").AsNumber(-1e6, 1e6), StatTags.None, ModifierPool.General, when);
+        }
+
+        public static CoopLine ReadCoopLine(ContentNode node)
+        {
             if (node.HasField("tags") || node.HasField("skill"))
                 throw node.Error("a party buff line takes no tags or skill");
             var toNode = node.Field("to");
@@ -87,9 +94,7 @@ namespace Game.Core.Content
                 if (CoopSignals.IsEvent(whileSignal))
                     throw node.Field("while").Error("'while' holds on a gauge, events go to 'after'");
             }
-            var when = node.HasField("when") ? ReadCondition(node.Field("when")) : ModifierCondition.Always;
-            var line = CoopLine.Register(to, target, kind, perSignal, perStep, perCap, afterSignal, afterSeconds, afterStacks, shareStat, shareKind, whileSignal);
-            return new Modifier(line.Source, ModifierKind.Flat, node.Field("value").AsNumber(-1e6, 1e6), StatTags.None, ModifierPool.General, when);
+            return CoopLine.Register(to, target, kind, perSignal, perStep, perCap, afterSignal, afterSeconds, afterStacks, shareStat, shareKind, whileSignal);
         }
 
         private static CoopSignal ReadSignal(ContentNode node)

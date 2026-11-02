@@ -121,43 +121,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void StrikesInAStreakGrowTheSeriesAndAPauseEndsIt()
-        {
-            var pause = TestWorld.Data.Combat.Conditions.LongStreakPauseSeconds + 0.5;
-            var input = new FakeInputSource();
-            var hero = Hero(input, EnemyType.Normal, Flat(CombatStats.DamagePerCombo, 0.01), Flat(CombatStats.DamagePerComboMax, 0.05));
-
-            input.PressKeys(8);
-            hero.Tick();
-
-            Assert.That(hero.State.Combo, Is.EqualTo(8));
-            Ticks(hero, pause);
-            Assert.That(hero.State.Combo, Is.Zero);
-        }
-
-        [Test]
-        public void TheSeriesRaisesStrikeDamageUpToItsCap()
-        {
-            var input = new FakeInputSource();
-            var hero = Hero(input, EnemyType.Normal, Flat(CombatStats.DamagePerCombo, 0.01), Flat(CombatStats.DamagePerComboMax, 0.05));
-            var plainInput = new FakeInputSource();
-            var plain = Hero(plainInput, EnemyType.Normal);
-            hero.State.Combo = 100;
-            hero.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(1e12));
-            plain.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(1e12));
-            var heroHp = hero.State.EnemyHp;
-            var plainHp = plain.State.EnemyHp;
-
-            input.PressKeys(1);
-            plainInput.PressKeys(1);
-            hero.Tick();
-            plain.Tick();
-
-            var ratio = (heroHp - hero.State.EnemyHp).ToDouble() / (plainHp - plain.State.EnemyHp).ToDouble();
-            Assert.That(ratio, Is.EqualTo(1.05).Within(1e-4));
-        }
-
-        [Test]
         public void AShortPauseKeepsTheLongStreakWithTheStat()
         {
             var pause = TestWorld.Data.Combat.Conditions.LongStreakPauseSeconds + 0.5;

@@ -88,6 +88,23 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void GearAndArtifactPartyLinesAreOfferedToAllies()
+        {
+            Assert.That(TestWorld.Data.Items.TryGetAffix("ring_party_gold", out var affix), Is.True);
+            Assert.That(CoopLine.TryGet(affix.Stats[0].Stat, out var line), Is.True);
+            Assert.That((line.To, line.Target), Is.EqualTo((CoopTarget.Party, CombatStats.Gold)));
+            var (buffs, _, hero) = Giver();
+            hero.Add(new Modifier(affix.Stats[0].Stat, ModifierKind.Flat, 0.1));
+            Assert.That(TestWorld.Data.Artifacts.TryGet("brotherhood_banner", out var banner), Is.True);
+            hero.AddRange(banner.PerLevel);
+
+            buffs.Tick();
+
+            Assert.That(buffs.CoopOffered(IndexOf("gold", ModifierKind.Increased)), Is.EqualTo(0.1).Within(1e-9));
+            Assert.That(buffs.CoopOffered(IndexOf("damage", ModifierKind.Increased)), Is.EqualTo(0.04).Within(1e-9));
+        }
+
+        [Test]
         public void AnAlliesLineIsSilentForTheHeroAndASelfLineIsNotOffered()
         {
             var (buffs, _, hero) = Giver();
