@@ -33,19 +33,21 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
-        public void StarterWeaponIsShownInTheRightHand()
+        public void StarterWeaponIsShownInTheWeaponSlot()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
             var starter = loop.Weapons.Give(loop.Data.Weapons.StarterFor(HeroClass.Runedancer));
-            loop.Weapons.Equip(WeaponHand.Right, starter);
+            loop.Weapons.Equip(starter);
 
-            var right = HeroSummary.Hand(loop, WeaponHand.Right);
-            var left = HeroSummary.Hand(loop, WeaponHand.Left);
+            var hand = HeroSummary.Hand(loop);
 
-            Assert.That(right.Name, Is.EqualTo(starter.NameRu));
-            Assert.That(right.Color, Is.EqualTo(starter.Type.Color));
-            Assert.That(left.IsEmpty, Is.True);
-            Assert.That(left.Name, Is.EqualTo("пусто"));
+            Assert.That(hand.Name, Is.EqualTo(starter.NameRu));
+            Assert.That(hand.Color, Is.EqualTo(starter.Type.Color));
+            Assert.That(hand.IsEmpty, Is.False);
+
+            loop.Weapons.Unequip();
+
+            Assert.That(HeroSummary.Hand(loop).Name, Is.EqualTo("пусто"));
         }
 
         [Test]

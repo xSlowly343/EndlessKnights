@@ -7,42 +7,53 @@ namespace Game.Core.Content.Weapons
 {
     public sealed class WeaponItem
     {
-        public WeaponItem(WeaponBase weaponBase, ItemRarity rarity, IReadOnlyList<string> skills, UniqueWeaponDef? unique = null, SetDef? set = null)
+        public WeaponItem(WeaponBase weaponBase, ItemRarity rarity, int itemLevel = 1, IReadOnlyList<GearAffix>? affixes = null, UniqueWeaponDef? unique = null, SetDef? set = null)
         {
             Set = set;
             Base = weaponBase;
             Rarity = rarity;
-            Skills = skills;
+            ItemLevel = itemLevel;
+            Affixes = affixes ?? Array.Empty<GearAffix>();
             Unique = unique;
         }
 
         public WeaponBase Base { get; }
         public UniqueWeaponDef? Unique { get; }
         public SetDef? Set { get; }
-        public WeaponType? SecondType => Unique?.SecondType;
         public ItemRarity Rarity { get; }
-        public IReadOnlyList<string> Skills { get; }
+        public int ItemLevel { get; }
+        public IReadOnlyList<GearAffix> Affixes { get; }
         public string Id => Base.Id;
         public WeaponType Type => Base.Type;
         public string NameRu => Base.NameRu;
         public string NameEn => Base.NameEn;
         public IReadOnlyList<Modifier> Innate => Base.Innate;
+        public IReadOnlyList<string> OpensSkills => Unique?.OpensSkills ?? Array.Empty<string>();
 
-        public WeaponItem Rebased(WeaponBase weaponBase) => new WeaponItem(weaponBase, Rarity, Skills, Unique, Set);
+        public WeaponItem Rebased(WeaponBase weaponBase) => new WeaponItem(weaponBase, Rarity, ItemLevel, Affixes, Unique, Set);
 
-        public WeaponItem InSet(SetDef set) => new WeaponItem(Base, Rarity, Skills, Unique, set);
+        public WeaponItem InSet(SetDef set) => new WeaponItem(Base, Rarity, ItemLevel, Affixes, Unique, set);
 
-        public bool Counts(string typeId) =>
-            string.Equals(Type.Id, typeId, StringComparison.Ordinal) || (SecondType != null && string.Equals(SecondType.Id, typeId, StringComparison.Ordinal));
-
-        public bool Opens(string skillId, int heroLevel, IReadOnlyList<int> unlockLevels)
+        public bool Opens(string skillId)
         {
-            for (var place = 0; place < Skills.Count; place++)
+            var opens = OpensSkills;
+            for (var i = 0; i < opens.Count; i++)
             {
-                if (string.Equals(Skills[place], skillId, StringComparison.Ordinal))
-                    return place >= unlockLevels.Count || heroLevel >= unlockLevels[place];
+                if (string.Equals(opens[i], skillId, StringComparison.Ordinal))
+                    return true;
             }
             return false;
+        }
+
+        public Gems.GemDef? BuiltInSupport(Sim.SkillSlotRole role)
+        {
+            for (var i = 0; i < Affixes.Count; i++)
+            {
+                var affix = Affixes[i];
+                if (affix.Support != null && affix.Def.BuiltInRole == role)
+                    return affix.Support;
+            }
+            return null;
         }
     }
 }

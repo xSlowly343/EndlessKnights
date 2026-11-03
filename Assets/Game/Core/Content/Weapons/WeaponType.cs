@@ -6,9 +6,8 @@ namespace Game.Core.Content.Weapons
 {
     public sealed class WeaponType
     {
-        public WeaponType(string id, HeroClass heroClass, string color, string nameRu, string nameEn, IReadOnlyList<Modifier> innate, IReadOnlyList<string> starterSkills)
+        public WeaponType(string id, HeroClass heroClass, string color, string nameRu, string nameEn, IReadOnlyList<Modifier> innate)
         {
-            StarterSkills = starterSkills;
             Id = id;
             HeroClass = heroClass;
             Color = color;
@@ -23,6 +22,5 @@ namespace Game.Core.Content.Weapons
         public string NameRu { get; }
         public string NameEn { get; }
         public IReadOnlyList<Modifier> Innate { get; }
-        public IReadOnlyList<string> StarterSkills { get; }
     }
 }

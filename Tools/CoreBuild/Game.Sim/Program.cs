@@ -143,10 +143,20 @@ namespace Game.Sim
             {
                 if (gem.Kind != Game.Core.Content.Gems.GemKind.Support || gem.Support == null)
                     continue;
+                if (!System.Array.Exists(hosts, host => gem.CanSupport(data.Gems[host.Host])))
+                {
+                    output.WriteLine(gem.Id + "," + gem.Color.ToString().ToLowerInvariant() + ",,,,,,,,,,no host");
+                    continue;
+                }
                 var cells = new List<string>();
                 var best = 0.0;
                 foreach (var host in hosts)
                 {
+                    if (!gem.CanSupport(data.Gems[host.Host]))
+                    {
+                        cells.AddRange(new[] { "", "", "", "" });
+                        continue;
+                    }
                     var sum = 0.0;
                     foreach (var (_, profile) in SupportProfiles)
                     {
@@ -173,12 +183,10 @@ namespace Game.Sim
 
         private static string Verdict(Game.Core.Content.Gems.SupportDef support, double best)
         {
-            if (support.ExperienceMultiplier != 1 || support.KillRewardMultiplier != 1)
-                return "utility";
-            if (support.VulnerabilityShare > 0 || support.PartyPower != 1)
+            if (support.PartyLines.Count > 0 || support.VulnerabilityShare > 0)
                 return "party";
-            if (support.QuietSeconds > 0 || support.CirclesForPower > 0)
-                return "conditional";
+            if (support.Lines.Count > 0)
+                return "lines";
             return best >= SupportLow && best <= SupportHigh ? "ok" : "review";
         }
 

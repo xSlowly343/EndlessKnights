@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Build
         private static GameLoop Real(GameState state, StatSheet? hero = null)
         {
             var loop = new GameLoop(TestWorld.Real, new FakeInputSource(), state, hero ?? new StatSheet());
-            loop.Weapons.Unequip(WeaponHand.Right);
+            loop.Weapons.Unequip();
             return loop;
         }
 

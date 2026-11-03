@@ -25,23 +25,52 @@ namespace Game.Core.Sim
                 var support = slot.Supports[i]?.Support;
                 if (support == null)
                     continue;
-                power *= support.Power * slot.Supports[i]!.DamageMultiplier;
-                if (support.QuietSeconds > 0 && state.IdleTicksBeforeInput * GameLoop.TickSeconds >= support.QuietSeconds)
-                    power *= support.QuietPower;
-                if (support.HungerHitsPerStep > 0)
-                    power *= 1 + System.Math.Min(support.HungerMax, support.HungerStep * System.Math.Floor((state.StrikeHits - slot.KeyHitsAtCast) / support.HungerHitsPerStep));
-                if (support.FocusStep > 0)
-                    power *= 1 + System.Math.Min(support.FocusBonusMax, support.FocusBonus * System.Math.Max(0, state.FocusMultiplier - 1) / support.FocusStep);
+                power *= support.Power * slot.Supports[i]!.DamageMultiplier * Product(support, SupportLineEffect.Power, Signals(slot, state));
                 if (support.RhythmLongSeries > 0 && state.KeyStreak > support.RhythmLongSeries)
                     power *= support.RhythmPower;
-                if (support.CirclesForPower > 0 && slot.CirclesSinceCast >= support.CirclesForPower)
-                    power *= support.CirclePower;
-                if (state.PartyMembers > 1)
-                    power *= support.PartyPower;
             }
             slot.KeyHitsAtCast = state.StrikeHits;
-            slot.CirclesSinceCast = 0;
             return power;
+        }
+
+        private static SupportSignals Signals(SkillSlot slot, GameState state) =>
+            new SupportSignals(state.FightingBoss ? 1 : 0, state.PartyMembers, state.IdleTicksBeforeInput * GameLoop.TickSeconds,
+                state.StrikeHits - slot.KeyHitsAtCast, System.Math.Max(0, state.FocusMultiplier - 1));
+
+        private static double Product(SupportDef support, SupportLineEffect effect, in SupportSignals signals)
+        {
+            var product = 1.0;
+            var lines = support.Lines;
+            for (var i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].Effect == effect)
+                    product *= 1 + lines[i].Amount(signals);
+            }
+            return product;
+        }
+
+        private static double Sum(SupportDef support, SupportLineEffect effect, in SupportSignals signals)
+        {
+            var sum = 0.0;
+            var lines = support.Lines;
+            for (var i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].Effect == effect)
+                    sum += lines[i].Amount(signals);
+            }
+            return sum;
+        }
+
+        private static double Product(SkillSlot slot, GameState state, SupportLineEffect effect)
+        {
+            var product = 1.0;
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var support = slot.Supports[i]?.Support;
+                if (support != null && support.Lines.Count > 0)
+                    product *= Product(support, effect, Signals(slot, state));
+            }
+            return product;
         }
 
         public static double AuraPower(SkillSlot slot)
@@ -96,17 +125,6 @@ namespace Game.Core.Sim
             }
         }
 
-        public static SupportDef? Sweeping(SkillSlot slot)
-        {
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support != null && support.FlickTargetsMax > 0)
-                    return support;
-            }
-            return null;
-        }
-
         public static double Redirect(SkillSlot slot)
         {
             var multiplier = 0.0;
@@ -117,17 +135,6 @@ namespace Game.Core.Sim
                     multiplier = System.Math.Max(multiplier, support.RedirectMultiplier);
             }
             return multiplier;
-        }
-
-        public static SupportDef? Whirlpool(SkillSlot slot)
-        {
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support != null && support.CirclesForPower > 0)
-                    return support;
-            }
-            return null;
         }
 
         public static SupportDef? Tailwind(SkillSlot slot)
@@ -147,23 +154,13 @@ namespace Game.Core.Sim
             for (var i = 0; i < slot.Supports.Length; i++)
             {
                 var support = slot.Supports[i]?.Support;
-                if (support != null && support.CritFocusStep > 0)
-                    chance += support.CritPerFocusStep * System.Math.Max(0, state.FocusMultiplier - 1) / support.CritFocusStep;
+                if (support != null && support.Lines.Count > 0)
+                    chance += Sum(support, SupportLineEffect.CritChance, Signals(slot, state));
             }
             return chance;
         }
 
-        public static double CritMultiplier(SkillSlot slot)
-        {
-            var multiplier = 1.0;
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support != null)
-                    multiplier *= support.CritMultiplier;
-            }
-            return multiplier;
-        }
+        public static double CritMultiplier(SkillSlot slot, GameState state) => Product(slot, state, SupportLineEffect.CritMultiplier);
 
         public static double CostMultiplier(SkillSlot slot)
         {
@@ -235,17 +232,7 @@ namespace Game.Core.Sim
             return max;
         }
 
-        public static double ExperienceMultiplier(SkillSlot slot)
-        {
-            var multiplier = 1.0;
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support != null)
-                    multiplier *= support.ExperienceMultiplier;
-            }
-            return multiplier;
-        }
+        public static double ExperienceMultiplier(SkillSlot slot, GameState state) => Product(slot, state, SupportLineEffect.Experience);
 
         public static double HitMultiplier(SkillSlot slot, GameState state)
         {
@@ -258,7 +245,6 @@ namespace Game.Core.Sim
                     continue;
                 if (support.LowHpBelow > 0 && state.EnemyHp < state.EnemyMaxHp * support.LowHpBelow)
                     multiplier *= support.LowHpMultiplier;
-                multiplier *= state.FightingBoss ? support.BossMultiplier : support.NormalMultiplier;
                 if (marked)
                     multiplier *= support.MarkedMultiplier;
             }
@@ -287,8 +273,6 @@ namespace Game.Core.Sim
                     state.VulnerabilityShare = System.Math.Max(state.VulnerabilityShare, support.VulnerabilityShare);
                     state.VulnerabilityTicks = System.Math.Max(state.VulnerabilityTicks, (int)System.Math.Round(support.VulnerabilitySeconds * GameLoop.TicksPerSecond));
                 }
-                for (var target = 0; target < slot.FlickTargets && target < state.QueueDamage.Length; target++)
-                    state.QueueDamage[target] += damage * (support.FlickTargetShare * support.QueueDamageMultiplier);
             }
         }
 
@@ -342,22 +326,12 @@ namespace Game.Core.Sim
                 slot.CooldownTicks = System.Math.Max(0, slot.CooldownTicks - (int)System.Math.Round(seconds * GameLoop.TicksPerSecond));
             if (resource > 0)
                 state.PendingResource += resource;
-            var reward = KillReward(slot);
+            var reward = KillReward(slot, state);
             if (reward > 1)
                 state.NextKillReward = System.Math.Max(state.NextKillReward, reward);
         }
 
-        public static double KillReward(SkillSlot slot)
-        {
-            var reward = 1.0;
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support != null)
-                    reward *= support.KillRewardMultiplier;
-            }
-            return reward;
-        }
+        public static double KillReward(SkillSlot slot, GameState state) => Product(slot, state, SupportLineEffect.KillReward);
 
         public static double Affliction(SkillSlot slot)
         {

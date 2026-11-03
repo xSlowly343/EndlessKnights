@@ -79,16 +79,31 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void BotPlaysTheSkillsOfItsWeaponAndKeepsAurasInAuraSlots()
+        public void BotPlaysTheSkillsOfItsClassAndKeepsAurasInAuraSlots()
         {
             var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(6, 1), HeroClass.Minstrel);
 
             simulation.Run(2, 2);
             var state = simulation.LastState!;
 
-            Assert.That(state.Skills.Count(slot => slot.Def.Weapon != null), Is.GreaterThanOrEqualTo(5));
+            Assert.That(state.Skills.Count(slot => slot.Def.Weapon == "enchanted_lute"), Is.GreaterThanOrEqualTo(4));
             Assert.That(state.Skills.Count(slot => slot.Role == SkillSlotRole.Aura), Is.GreaterThan(0));
             Assert.That(state.Skills.Where(slot => slot.Role == SkillSlotRole.Aura).All(slot => SkillLoadout.IsAura(slot.Skill)), Is.True);
+        }
+
+        [Test]
+        public void WithoutATrialTheBotPutsFastOnTheLeftHeavyOnTheRightAndTheRestOnAuto()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, HeroLevel = 30, RecordStage = 200 });
+            loop.Book.GrantStartingGems();
+
+            new BotLoadout(loop).Arrange();
+
+            var skills = loop.State.Skills;
+            Assert.That(skills.Single(slot => slot.Role == SkillSlotRole.Left).Def.Role, Is.EqualTo(SkillRole.Fast));
+            Assert.That(skills.Single(slot => slot.Role == SkillSlotRole.Right).Def.Role, Is.EqualTo(SkillRole.Heavy));
+            Assert.That(skills.Where(slot => slot.Role == SkillSlotRole.Auto).Select(slot => slot.Def.Role), Has.Some.EqualTo(SkillRole.Other));
+            Assert.That(skills.Select(slot => slot.Skill.Id), Does.Contain("runedancer_strong_1"), "an epic skill opened at level 30 goes in without a trial");
         }
 
         [Test]

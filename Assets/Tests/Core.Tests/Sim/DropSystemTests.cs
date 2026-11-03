@@ -270,24 +270,24 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void StageTwentyGivesAnUncommonWeaponOfAnotherClassInTheOwnColor()
+        public void StageTwentyGivesAnUncommonWeaponOfTheOwnClassWithTwoAffixes()
         {
             var loop = Runedancer();
 
             var weapon = Defeat(loop, 20, 20).Single(item => item.Source == DropSource.Guarantee).Weapon!;
 
             Assert.That(weapon.Rarity, Is.EqualTo(ItemRarity.Uncommon));
-            Assert.That(weapon.Type.Id, Is.Not.EqualTo("rune_daggers"));
-            Assert.That(weapon.Type.Color, Is.EqualTo("red"));
-            Assert.That(weapon.Skills, Is.Not.Empty);
+            Assert.That(weapon.Type.Id, Is.EqualTo("rune_daggers"));
+            Assert.That(weapon.Affixes.Count, Is.EqualTo(2));
+            Assert.That(weapon.ItemLevel, Is.EqualTo(1));
             Assert.That(loop.State.Weapons.Bag, Does.Contain(weapon));
         }
 
         [Test]
-        public void FirstGuardianGivesARareWeaponOfTheOwnTypeForTheEmptyHand()
+        public void FirstGuardianGivesARareWeaponOfTheOwnTypeForAnEmptyHand()
         {
             var loop = Runedancer();
-            Assert.That(loop.State.Weapons.Left, Is.Null);
+            loop.Weapons.Unequip();
 
             var item = Defeat(loop, BiomeLength, BiomeLength, EnemyType.Guardian).Single(drop => drop.Source == DropSource.Guarantee);
 
@@ -296,10 +296,10 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void FirstGuardianGivesRareGearWhenBothHandsHoldWeapons()
+        public void FirstGuardianGivesRareGearWhenTheHandHoldsAWeapon()
         {
             var loop = Runedancer();
-            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Duelist)));
+            Assert.That(loop.State.Weapons.Held, Is.Not.Null);
 
             var item = Defeat(loop, BiomeLength, BiomeLength, EnemyType.Guardian).Single(drop => drop.Source == DropSource.Guarantee);
 
@@ -308,7 +308,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void WeaponTypesFavourTheOwnClass()
+        public void EveryWeaponIsOfTheOwnClass()
         {
             var loop = Runedancer(seed: 21);
             var own = 0;
@@ -326,9 +326,8 @@ namespace Game.Core.Tests.Sim
                 }
             }
 
-            var types = TestWorld.Data.Weapons.Types.Count;
             Assert.That(weapons / 4000.0, Is.EqualTo(0.2).Within(0.03));
-            Assert.That(own / (double)weapons, Is.EqualTo(3.0 / (types + 2)).Within(0.04));
+            Assert.That(own, Is.EqualTo(weapons));
         }
 
         [Test]
@@ -432,7 +431,6 @@ namespace Game.Core.Tests.Sim
         public void AutoSalvageKeepsAWeaponBetterThanAHeldOne()
         {
             var loop = Runedancer(seed: 37);
-            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Duelist)));
             loop.State.Drops.SalvageUpTo = ItemRarity.Fine;
             var fineWeapons = 0;
 

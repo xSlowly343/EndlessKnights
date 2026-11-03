@@ -22,7 +22,7 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = heroClass }), hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllSkillsOpen(new GameState { Class = heroClass }), hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
@@ -33,7 +33,6 @@ namespace Game.Core.Tests.Sim
 
         private static int Equip(GameLoop loop, GemDef gem)
         {
-            TestWorld.ArmFor(loop, gem);
             return loop.Skills.Equip(gem);
         }
 

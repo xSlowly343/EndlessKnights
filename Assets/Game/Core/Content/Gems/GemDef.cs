@@ -11,7 +11,7 @@ namespace Game.Core.Content.Gems
         public GemDef(string id, GemKind kind, GemColor color, string nameRu, string nameEn, StatTags tags,
             SkillDef? skill = null, string? supportEffect = null,
             string? ascendancy = null, bool locked = false, SupportDef? support = null, SkillType? type = null,
-            IReadOnlyList<SkillBranchTier>? branches = null, StatTags supports = StatTags.None, double damageMultiplier = 1, double manaMultiplier = 1,
+            IReadOnlyList<SkillBranchTier>? branches = null, SkillMechanic fits = SkillMechanic.None, double damageMultiplier = 1, double manaMultiplier = 1,
             IReadOnlyList<SkillDef>? variants = null, IReadOnlyList<double>? branchDamage = null, int unlockLevel = 1)
         {
             UnlockLevel = unlockLevel;
@@ -19,7 +19,8 @@ namespace Game.Core.Content.Gems
             _branchDamage = branchDamage;
             Type = type ?? TypeOf(kind, skill);
             Branches = branches ?? System.Array.Empty<SkillBranchTier>();
-            Supports = supports;
+            Fits = fits;
+            Mechanics = SkillMechanics.Of(skill, tags);
             DamageMultiplier = damageMultiplier;
             ManaMultiplier = manaMultiplier;
             Support = support;
@@ -71,7 +72,8 @@ namespace Game.Core.Content.Gems
         public bool Locked { get; }
         public SkillType Type { get; }
         public IReadOnlyList<SkillBranchTier> Branches { get; }
-        public StatTags Supports { get; }
+        public SkillMechanic Fits { get; }
+        public SkillMechanic Mechanics { get; }
         public double DamageMultiplier { get; }
         public double ManaMultiplier { get; }
         public int UnlockLevel { get; }
@@ -80,6 +82,6 @@ namespace Game.Core.Content.Gems
 
         public double BranchDamageOf(int combo) => _branchDamage == null ? 1 : _branchDamage[combo];
 
-        public bool CanSupport(GemDef skill) => Type == SkillType.Support && (skill.Type == SkillType.Active || skill.Type == SkillType.Aura) && (skill.Tags & Supports) == Supports;
+        public bool CanSupport(GemDef skill) => Type == SkillType.Support && (skill.Type == SkillType.Active || skill.Type == SkillType.Aura) && (skill.Mechanics & Fits) != 0;
     }
 }

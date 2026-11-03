@@ -98,7 +98,7 @@ namespace Game.Core.Tests.Ui
             window.Refresh();
 
             Assert.That(window.Supports.All(s => s.Gem.CanSupport(Gem("duelist_strong_1"))), Is.True);
-            Assert.That(window.Supports.Single(s => s.Gem == Gem("rebound")).Offer, Is.EqualTo(BookResult.AlreadyInBuild));
+            Assert.That(window.Supports.Single(s => s.Gem == Gem("rebound")).Offer, Is.EqualTo(BookResult.Done), "one support may sit on two skills");
             Assert.That(window.Supports.Single(s => s.Gem == Gem("executioner")).Offer, Is.EqualTo(BookResult.LevelTooLow));
             Assert.That(window.Supports.Single(s => s.Gem == Gem("chain")).Available, Is.True);
             Assert.That(window.MaxSockets, Is.EqualTo(5));

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Game.Core.Content.Gems;
 using Game.Core.Math;
 using Game.Core.Stats;
 
@@ -160,26 +161,27 @@ namespace Game.Core.Content.Items
             var chosen = new List<GearAffix>();
             var suffixes = (rule.Affixes + 1) / 2;
             var prefixes = rule.Affixes - suffixes;
-            Pick(slot, true, prefixes, rule, itemLevel, rng, chosen);
-            Pick(slot, false, suffixes, rule, itemLevel, rng, chosen);
+            Pick(slot, rarity, true, prefixes, rule, itemLevel, rng, chosen);
+            Pick(slot, rarity, false, suffixes, rule, itemLevel, rng, chosen);
             return chosen;
         }
 
-        private void Pick(ItemSlot slot, bool prefix, int count, RarityRule rule, int itemLevel, Rng rng, List<GearAffix> chosen)
+        private void Pick(ItemSlot slot, ItemRarity rarity, bool prefix, int count, RarityRule rule, int itemLevel, Rng rng, List<GearAffix> chosen)
         {
             for (var n = 0; n < count; n++)
             {
                 var pool = new List<AffixDef>();
                 foreach (var affix in Affixes)
                 {
-                    if (affix.Prefix == prefix && affix.FitsSlot(slot) && Free(affix, chosen))
+                    if (affix.Prefix == prefix && affix.FitsSlot(slot) && rarity >= affix.FromRarity && Free(affix, chosen))
                         pool.Add(affix);
                 }
                 if (pool.Count == 0)
                     return;
                 var def = pool[rng.NextInt(0, pool.Count)];
                 var tier = RollTier(rule, itemLevel, rng);
-                chosen.Add(new GearAffix(def, tier, def.ValueAt(tier, Tiers)));
+                var support = def.Supports.Count == 0 ? null : def.Supports[rng.NextInt(0, def.Supports.Count)];
+                chosen.Add(new GearAffix(def, tier, def.ValueAt(tier, Tiers), support));
             }
         }
 
@@ -352,22 +354,71 @@ namespace Game.Core.Content.Items
             var slots = new List<ItemSlot>();
             foreach (var slotNode in node.Field("slots").Items())
             {
-                if (!ItemSlotNames.ByName.TryGetValue(slotNode.AsString(), out var slot) || slot == ItemSlot.Weapon)
+                if (!ItemSlotNames.ByName.TryGetValue(slotNode.AsString(), out var slot))
                     throw slotNode.Error($"unknown gear slot '{slotNode.AsString()}'");
                 slots.Add(slot);
             }
+            if (slots.Contains(ItemSlot.Weapon) && slots.Count > 1)
+                throw node.Field("slots").Error("a weapon affix belongs to the weapon slot only");
             var part = node.Field("part").AsString();
             if (part != "prefix" && part != "suffix")
                 throw node.Field("part").Error("expected prefix or suffix");
             var stats = new List<AffixStat>();
-            foreach (var stat in node.Field("stats").Items())
-                stats.Add(ReadAffixStat(stat));
+            if (node.HasField("stats"))
+            {
+                foreach (var stat in node.Field("stats").Items())
+                    stats.Add(ReadAffixStat(stat));
+            }
             var tiers = node.Field("tiers").Items();
             if (tiers.Count != 2)
                 throw node.Field("tiers").Error("expected the first and the last tier values");
+            var fromRarity = ItemRarity.Simple;
+            if (node.HasField("fromRarity") && !ItemRarityNames.ByName.TryGetValue(node.Field("fromRarity").AsString(), out fromRarity))
+                throw node.Field("fromRarity").Error($"unknown rarity '{node.Field("fromRarity").AsString()}'");
+            var (role, supports) = ReadBuiltIn(node, slots);
+            if (stats.Count == 0 && role == null)
+                throw node.Error("an affix needs stats or a built-in support");
             return new AffixDef(node.Field("id").AsString(), slots, part == "prefix", stats,
                 tiers[0].AsNumber(-1e6, 1e6), tiers[1].AsNumber(-1e6, 1e6),
-                node.HasField("group") ? node.Field("group").AsString() : null);
+                node.HasField("group") ? node.Field("group").AsString() : null, fromRarity, role, supports);
+        }
+
+        private static (Sim.SkillSlotRole? Role, List<string>? Supports) ReadBuiltIn(ContentNode node, List<ItemSlot> slots)
+        {
+            if (!node.HasField("builtIn"))
+                return (null, null);
+            var builtIn = node.Field("builtIn");
+            if (!slots.Contains(ItemSlot.Weapon))
+                throw builtIn.Error("only a weapon has a built-in support");
+            var role = builtIn.Field("slot").AsString() switch
+            {
+                "left" => Sim.SkillSlotRole.Left,
+                "right" => Sim.SkillSlotRole.Right,
+                _ => throw builtIn.Field("slot").Error("expected left or right")
+            };
+            var supports = new List<string>();
+            foreach (var item in builtIn.Field("supports").Items())
+                supports.Add(item.AsString());
+            if (supports.Count == 0)
+                throw builtIn.Field("supports").Error("list at least one support");
+            return (role, supports);
+        }
+
+        public void BindGems(GemCatalog gems)
+        {
+            foreach (var affix in Affixes)
+            {
+                if (affix.SupportIds.Count == 0)
+                    continue;
+                var supports = new List<GemDef>();
+                foreach (var id in affix.SupportIds)
+                {
+                    if (!gems.TryGet(id, out var gem) || gem.Kind != GemKind.Support || gem.Support == null)
+                        throw new ContentException(FileName, "affixes." + affix.Id, $"'{id}' is not a working support in {GemCatalog.FileName}");
+                    supports.Add(gem);
+                }
+                affix.BindSupports(supports);
+            }
         }
 
         private static AffixStat ReadAffixStat(ContentNode stat)

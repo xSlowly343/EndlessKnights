@@ -187,7 +187,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void RingOfTwoHandsStrengthensWeaponInnates()
+        public void RingOfTheSteadyHandDoublesTheWeaponInnate()
         {
             var plain = Real();
             var ringed = Real();
@@ -199,7 +199,7 @@ namespace Game.Core.Tests.Sim
             var ringedValues = ringed.Weapons.Modifiers.Select(m => m.Value).ToList();
             Assert.That(plainValues, Is.Not.Empty);
             for (var i = 0; i < plainValues.Count; i++)
-                Assert.That(ringedValues[i], Is.EqualTo(plainValues[i] * 1.5).Within(1e-9));
+                Assert.That(ringedValues[i], Is.EqualTo(plainValues[i] * 2).Within(1e-9));
 
             ringed.Gear.Unequip(GearSlot.RingLeft);
             Assert.That(ringed.Weapons.Modifiers.Select(m => m.Value), Is.EqualTo(plainValues));

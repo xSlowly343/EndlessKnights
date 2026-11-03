@@ -299,7 +299,7 @@ namespace Game.Core.Tests.Party
         private static (GameLoop Loop, FakeInputSource Input, PartyClient Client) Member(LoopbackNetwork network, ulong id, HeroClass heroClass)
         {
             var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Stage = 5, HighestStage = 5, RecordStage = 5, Class = heroClass }));
+            var loop = TestWorld.Loop(input, TestWorld.WithAllSkillsOpen(new GameState { Stage = 5, HighestStage = 5, RecordStage = 5, Class = heroClass }));
             var client = new PartyClient(loop, network.Connect(id), HostId, TestWorld.Data.Party);
             client.Join();
             return (loop, input, client);

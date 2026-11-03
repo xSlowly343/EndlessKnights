@@ -5,16 +5,18 @@ namespace Game.Core.Content.Items
 {
     public sealed class GearAffix
     {
-        public GearAffix(AffixDef def, int tier, double value)
+        public GearAffix(AffixDef def, int tier, double value, Gems.GemDef? support = null)
         {
             Def = def;
             Tier = tier;
             Value = value;
+            Support = support;
         }
 
         public AffixDef Def { get; }
         public int Tier { get; }
         public double Value { get; }
+        public Gems.GemDef? Support { get; }
 
         public void AddModifiers(List<Modifier> modifiers)
         {

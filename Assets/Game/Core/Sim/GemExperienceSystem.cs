@@ -47,10 +47,8 @@ namespace Game.Core.Sim
             var lowestGained = 0.0;
             for (var index = 0; index < _state.Skills.Count; index++)
             {
-                if (!_skills.Armed(index))
-                    continue;
                 var slot = _state.Skills[index];
-                var gained = amount * SupportEffects.ExperienceMultiplier(slot);
+                var gained = amount * SupportEffects.ExperienceMultiplier(slot, _state);
                 Note(slot.Skill, gained, ref lowest, ref lowestGained);
                 for (var i = 0; i < slot.Supports.Length; i++)
                 {
@@ -82,7 +80,7 @@ namespace Game.Core.Sim
             {
                 var slot = _state.Skills[index];
                 if (slot.CastOn(_state.Tick))
-                    Grant(slot.Skill, amount * SupportEffects.ExperienceMultiplier(slot));
+                    Grant(slot.Skill, amount * SupportEffects.ExperienceMultiplier(slot, _state));
             }
         }
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Game.Core.Build;
 using System.Linq;
 using Game.Core.Clock;
 using Game.Core.Content;
@@ -28,56 +30,72 @@ namespace Game.Core.Tests.Sim
             new GameLoop(TestWorld.Real, new FakeInputSource(), new GameState(6) { Class = heroClass }, new StatSheet());
 
         [Test]
-        public void EightUniqueWeaponsFiveOfThemDoubleTyped()
+        public void EightUniqueWeaponsFiveOfThemOpenSkillsOfAnotherClass()
         {
             Assert.That(Weapons.Uniques.Count, Is.EqualTo(8));
-            Assert.That(Weapons.Uniques.Count(u => u.SecondType != null), Is.EqualTo(5));
-            Assert.That(Def("corsair_daggers").SecondType!.Id, Is.EqualTo("compass_pistol"));
-            Assert.That(Def("skull_shovel").SecondType, Is.Null);
+            Assert.That(Weapons.Uniques.Count(u => u.OpensSkills.Count > 0), Is.EqualTo(5));
+            Assert.That(Def("corsair_daggers").OpensSkills, Is.EqualTo(new[] { "ghostcaptain_hit_1", "ghostcaptain_auto_1" }));
+            Assert.That(Def("skull_shovel").OpensSkills, Is.Empty);
         }
 
         [Test]
-        public void DoubleTypedWeaponRollsSkillsOfBothTypes()
-        {
-            var unique = Def("corsair_daggers");
-            var weapon = Weapons.RollUnique(unique, new Rng(5));
-            var types = weapon.Skills.Select(id => TestWorld.Real.Gems[id].Skill!.Weapon).Distinct().ToList();
-
-            Assert.That(weapon.Skills.Count, Is.LessThanOrEqualTo(Weapons.SkillRules.Places));
-            Assert.That(weapon.Skills.Distinct().Count(), Is.EqualTo(weapon.Skills.Count));
-            Assert.That(types, Is.EquivalentTo(new[] { "rune_daggers", "compass_pistol" }));
-            Assert.That(weapon.Counts("rune_daggers") && weapon.Counts("compass_pistol"), Is.True);
-            Assert.That(weapon.Counts("spectral_rapier"), Is.False);
-        }
-
-        [Test]
-        public void HoldingADoubleTypedWeaponCountsAsHoldingBothTypesAndAddsBothInnates()
+        public void HoldingTheUniqueOpensItsForeignSkillsWithoutTheNativeTrait()
         {
             var loop = Real();
-            var plainCount = loop.Weapons.Modifiers.Count;
-            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("corsair_daggers"), new Rng(2)));
-            loop.Weapons.Equip(WeaponHand.Left, weapon);
+            loop.Book.Unequip(0);
+            var corsair = loop.Weapons.Give(Weapons.RollUnique(Def("corsair_daggers")));
+            var shot = TestWorld.Real.Gems["ghostcaptain_hit_1"];
 
-            Assert.That(loop.State.Weapons.Holds("compass_pistol"), Is.True);
-            Assert.That(loop.State.Weapons.Holds("rune_daggers"), Is.True);
-            Assert.That(Weapons.TryGetType("compass_pistol", out var pistol), Is.True);
-            foreach (var innate in pistol.Innate)
-                Assert.That(loop.Weapons.Modifiers, Does.Contain(innate));
-            Assert.That(loop.Weapons.Modifiers.Count, Is.GreaterThan(plainCount));
+            Assert.That(loop.Book.Equip(shot), Is.EqualTo(BookResult.WrongClass));
+            Assert.That(loop.Weapons.Equip(corsair), Is.True);
+            var open = new List<GemDef>();
+            loop.Book.OpenClassSkills(open);
+            Assert.That(open, Does.Contain(shot));
+            Assert.That(open, Does.Not.Contain(TestWorld.Real.Gems["ghostcaptain_queue_1"]));
+            Assert.That(loop.Book.Equip(shot), Is.EqualTo(BookResult.Done));
+            var row = loop.Book.RowOf(shot);
+            Assert.That(loop.Skills.IsNative(row), Is.False);
+            loop.State.Resource = 100;
+            Assert.That(loop.Skills.TryCast(row), Is.EqualTo(CastResult.Cast));
+        }
+
+        [Test]
+        public void TakingTheUniqueOffTakesItsForeignSkillsOutOfTheBook()
+        {
+            var loop = Real();
+            loop.Book.Equip(TestWorld.Real.Gems["runedancer_hit_1"]);
+            loop.Weapons.Equip(loop.Weapons.Give(Weapons.RollUnique(Def("corsair_daggers"))));
+            var shot = TestWorld.Real.Gems["ghostcaptain_hit_1"];
+            Assert.That(loop.Book.Equip(shot), Is.EqualTo(BookResult.Done));
+
+            loop.Weapons.Equip(loop.Weapons.Bag.First(weapon => weapon.Unique == null));
+
+            Assert.That(loop.Book.RowOf(shot), Is.EqualTo(SkillLoadout.NoSlot));
+            Assert.That(loop.State.Skills, Is.Not.Empty, "own skills stay");
+        }
+
+        [Test]
+        public void AUniqueCannotOpenSkillsOfItsOwnClassOrMoreThanTwo()
+        {
+            var json = TestData.ReadGameDataFile(WeaponCatalog.FileName);
+            var own = WeaponCatalog.Load(json.Replace("\"opensSkills\": [\"clockwright_hit_1\"]", "\"opensSkills\": [\"duelist_hit_1\"]"));
+            var many = WeaponCatalog.Load(json.Replace("\"opensSkills\": [\"clockwright_hit_1\"]", "\"opensSkills\": [\"clockwright_hit_1\", \"clockwright_hit_2\", \"clockwright_auto_1\"]"));
+
+            Assert.That(Assert.Throws<ContentException>(() => own.BindGems(TestWorld.Real.Gems))!.Message, Does.Contain("own class"));
+            Assert.That(Assert.Throws<ContentException>(() => many.BindGems(TestWorld.Real.Gems))!.Message, Does.Contain("at most 2"));
         }
 
         [Test]
         public void UniqueWeaponSurvivesSaveAndLoad()
         {
-            var loop = Real();
-            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("twin_moon_rapier"), new Rng(3)));
-            loop.Weapons.Equip(WeaponHand.Left, weapon);
+            var loop = Real(HeroClass.Duelist);
+            var weapon = loop.Weapons.Give(Weapons.RollUnique(Def("twin_moon_rapier")));
+            loop.Weapons.Equip(weapon);
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Real).State;
 
-            Assert.That(loaded.Weapons.Left!.Unique!.Id, Is.EqualTo("twin_moon_rapier"));
-            Assert.That(loaded.Weapons.Left.Skills, Is.EqualTo(weapon.Skills));
-            Assert.That(loaded.Weapons.Holds("pocket_watch"), Is.True);
+            Assert.That(loaded.Weapons.Held!.Unique!.Id, Is.EqualTo("twin_moon_rapier"));
+            Assert.That(loaded.Weapons.Opens("clockwright_hit_1"), Is.True);
         }
 
         [Test]
@@ -144,7 +162,7 @@ namespace Game.Core.Tests.Sim
             var hero = new StatSheet();
             if (withGuitar)
                 hero.Add(new Modifier(CombatStats.AuraReserveOnce, ModifierKind.Flat, 1));
-            var loop = TestWorld.Loop(state: TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Duelist }), hero: hero);
+            var loop = TestWorld.Loop(state: TestWorld.WithAllSkillsOpen(new GameState { Class = HeroClass.Duelist }), hero: hero);
             loop.State.Resource = 100;
             loop.Skills.Equip(TestWorld.Data.Gems["tailwind"]);
             return loop.State;

@@ -19,7 +19,7 @@ namespace Game.Core.Tests.Build
         private static GameLoop Huscarl(int level = 40)
         {
             var loop = new GameLoop(TestWorld.Real, new FakeInputSource(), new GameState { Class = HeroClass.Runedancer, HeroLevel = level }, new StatSheet());
-            loop.Weapons.Unequip(WeaponHand.Right);
+            loop.Weapons.Unequip();
             loop.Levels.SyncTreePoints();
             loop.RebuildTree();
             return loop;

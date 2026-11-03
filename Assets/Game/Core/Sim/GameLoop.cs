@@ -83,7 +83,7 @@ namespace Game.Core.Sim
             _overload = new OverloadSystem(state, hero, _resource, _combat);
             _skills = new SkillSystem(state, Events, _resource, _combat, hero, data.Weapons);
             _combat.OnKeyHit(_skills);
-            _weapons = new WeaponSystem(data.Weapons, state, hero, _skills);
+            _weapons = new WeaponSystem(data.Weapons, state, hero);
             _gear = new GearSystem(data.Items, state, hero);
             _classAttribute = new ClassAttributeSystem(hero);
             _gear.Rebuilt = () =>
@@ -122,7 +122,8 @@ namespace Game.Core.Sim
             _stage.Encounters = data.Combat.Encounters;
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades, hero);
-            _book = new SkillBook(data.SkillBook, state, _skills, hero);
+            _book = new SkillBook(data.SkillBook, data.Weapons, state, _skills, hero);
+            _weapons.HeldChanged = _book.KeepOpen;
             _paths = new PathSystem(state, hero, _combat, _resource, _skills);
             _skills.Levels = data.Gems.Levels;
             _gemExperience = new GemExperienceSystem(data.Gems.Levels, state, hero, _skills, Events);
@@ -268,7 +269,6 @@ namespace Game.Core.Sim
             RebuildTree();
             SyncPathSkill();
             PutOnSkills(equipped, reforge);
-            _skills.RefreshArmed();
             return ClassChangeResult.Changed;
         }
 
@@ -720,6 +720,7 @@ namespace Game.Core.Sim
             _dungeons.UseData(data);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
+            _book.UseWeapons(data.Weapons);
             _prestige.UseRules(data.Prestige);
             _upgrades.UseRules(data.Combat.StrikeUpgrade);
             _artifacts.UseCatalog(data.Artifacts, data.Rift);
@@ -784,6 +785,8 @@ namespace Game.Core.Sim
             CountIdle();
             _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
+            _weapons.ApplyBuiltInSupports(State.Skills);
+            _book.TrimSockets();
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
             CastRequested();

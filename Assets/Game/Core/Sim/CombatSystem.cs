@@ -373,7 +373,7 @@ namespace Game.Core.Sim
 
             if (ForcedCrit() || _windshot.ForcesCrit(tags) || _dowser.ForcesCrit || RollCrit(tags, supporting))
             {
-                damage *= System.Math.Max(1, CritMultiplier(tags) * _windshot.CritScale(tags)) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting)) * CritBurst();
+                damage *= System.Math.Max(1, CritMultiplier(tags) * _windshot.CritScale(tags)) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting, _state)) * CritBurst();
                 flags |= HitFlags.Crit;
                 LastHitCrit = true;
                 _state.Crits++;

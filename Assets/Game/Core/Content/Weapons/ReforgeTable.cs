@@ -73,9 +73,6 @@ namespace Game.Core.Content.Weapons
             return _maps.TryGetValue(MapKey(from, to), out var map) && map.TryGetValue(gem.Id, out var found) ? found : null;
         }
 
-        public string SkillId(string skillId, WeaponType from, WeaponType to) =>
-            _maps.TryGetValue(MapKey(from, to), out var map) && map.TryGetValue(skillId, out var found) ? found.Id : skillId;
-
         private static string MapKey(WeaponType from, WeaponType to) => from.Id + ">" + to.Id;
 
         private Dictionary<GemDef, GemDef> Match(List<GemDef> left, List<GemDef> right)

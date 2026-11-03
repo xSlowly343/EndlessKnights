@@ -18,7 +18,7 @@ namespace Game.Core.Content.Gems
             ["support"] = SkillType.Support
         };
 
-        private static readonly Dictionary<string, SkillTier> Tiers = new Dictionary<string, SkillTier>(StringComparer.Ordinal)
+        internal static readonly Dictionary<string, SkillTier> Tiers = new Dictionary<string, SkillTier>(StringComparer.Ordinal)
         {
             ["common"] = SkillTier.Common,
             ["rare"] = SkillTier.Rare,
@@ -141,6 +141,10 @@ namespace Game.Core.Content.Gems
             var color = Pick(node.Field("color"), Colors, "red, green, blue or white");
             var name = node.Field("name");
             var tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None;
+            if ((tags & StatTags.ClassSkill) != 0)
+                throw node.Field("tags").Error("ClassSkill is given to every skill with a weapon, do not list it");
+            if (type != SkillType.Support && node.HasField("weapon"))
+                tags |= StatTags.ClassSkill;
             var nameRu = name.Field("ru").AsString();
             var nameEn = name.Field("en").AsString();
             if (node.HasField("requires"))
@@ -156,7 +160,7 @@ namespace Game.Core.Content.Gems
                     return ReadSkillGem(node, id, type, color, nameRu, nameEn, tags);
                 default:
                     return new GemDef(id, GemKind.Support, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(),
-                        support: SupportDef.Read(node.Field("effect")), supports: ReadSupported(node.Field("supports")),
+                        support: SupportDef.Read(node.Field("effect")), fits: SkillMechanics.Read(node.Field("fits")),
                         damageMultiplier: node.Field("damageMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
                         manaMultiplier: node.Field("manaMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
                         unlockLevel: node.Field("level").AsInt(1, 1000));
@@ -165,19 +169,11 @@ namespace Game.Core.Content.Gems
 
         private static void RejectSupportFields(ContentNode node)
         {
-            foreach (var field in new[] { "supports", "damageMult", "manaMult", "level" })
+            foreach (var field in new[] { "fits", "damageMult", "manaMult", "level" })
             {
                 if (node.HasField(field))
                     throw node.Field(field).Error("only a support has this field");
             }
-        }
-
-        private static StatTags ReadSupported(ContentNode node)
-        {
-            var tags = ModifierReader.ReadTags(node);
-            if (tags == StatTags.None)
-                throw node.Error("a support needs at least one skill tag it supports");
-            return tags;
         }
 
         private static IReadOnlyList<SkillBranchTier> ReadBranches(ContentNode skill, double durationSeconds, List<ContentNode?> overrides)

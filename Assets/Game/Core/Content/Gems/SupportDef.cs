@@ -5,13 +5,7 @@ namespace Game.Core.Content.Gems
         Rebound,
         Chain,
         Executioner,
-        Apprentice,
-        BossHunter,
         DeathMark,
-        QuietHour,
-        BladeHunger,
-        Acceleration,
-        CritFocus,
         WideReach,
         DeferredPayment,
         DoubleCharge,
@@ -21,17 +15,13 @@ namespace Game.Core.Content.Gems
         SeriesRhythm,
         SeriesFinish,
         LongSwing,
-        Whirlpool,
         Tailwind,
         MinionTrail,
-        Sweeping,
         TargetHunter,
         Cursed,
         LingeringBlight,
-        Pawnbroker,
         KeyEcho,
-        Legacy,
-        Resonance
+        Lines
     }
 
     public sealed class SupportDef
@@ -49,22 +39,8 @@ namespace Game.Core.Content.Gems
         public double LowHpBelow { get; private set; }
         public double LowHpMultiplier { get; private set; } = 1;
         public double Power { get; private set; } = 1;
-        public double ExperienceMultiplier { get; private set; } = 1;
-        public double BossMultiplier { get; private set; } = 1;
-        public double NormalMultiplier { get; private set; } = 1;
         public double KillResource { get; private set; }
         public double MarkedMultiplier { get; private set; } = 1;
-        public double QuietSeconds { get; private set; }
-        public double QuietPower { get; private set; } = 1;
-        public double HungerHitsPerStep { get; private set; }
-        public double HungerStep { get; private set; }
-        public double HungerMax { get; private set; }
-        public double FocusStep { get; private set; }
-        public double FocusBonus { get; private set; }
-        public double FocusBonusMax { get; private set; }
-        public double CritPerFocusStep { get; private set; }
-        public double CritFocusStep { get; private set; }
-        public double CritMultiplier { get; private set; } = 1;
         public double CostMultiplier { get; private set; } = 1;
         public double DeferPerSecond { get; private set; }
         public int ExtraCharges { get; private set; }
@@ -84,28 +60,40 @@ namespace Game.Core.Content.Gems
         public double MouseDistanceMultiplier { get; private set; } = 1;
         public double ActiveMouseDamage { get; private set; } = 1;
         public double ActiveKeyDamage { get; private set; } = 1;
-        public double CircleCooldownSeconds { get; private set; }
-        public int CirclesForPower { get; private set; }
-        public double CirclePower { get; private set; } = 1;
         public double WindPxPerSecond { get; private set; }
         public double WindMax { get; private set; }
         public double AuraPowerMultiplier { get; private set; } = 1;
         public double MinionMouseSpeed { get; private set; } = 1;
         public double MinionLife { get; private set; } = 1;
-        public int FlickTargetsMax { get; private set; }
-        public double FlickTargetShare { get; private set; }
-        public double QueueDamageMultiplier { get; private set; } = 1;
         public double RedirectMultiplier { get; private set; }
         public double VulnerabilityShare { get; private set; }
         public double VulnerabilitySeconds { get; private set; }
-        public double AllyPower { get; private set; }
-        public double AfterSeconds { get; private set; }
         public double AfflictionMultiplier { get; private set; } = 1;
         public double StackCapMultiplier { get; private set; } = 1;
-        public double KillRewardMultiplier { get; private set; } = 1;
         public int EchoEveryKeys { get; private set; }
         public double EchoPower { get; private set; }
-        public double PartyPower { get; private set; } = 1;
+
+        public System.Collections.Generic.IReadOnlyList<SupportLine> Lines { get; private set; } = System.Array.Empty<SupportLine>();
+        public System.Collections.Generic.IReadOnlyList<Stats.Modifier> PartyLines { get; private set; } = System.Array.Empty<Stats.Modifier>();
+
+        private static SupportDef ReadLines(ContentNode effect)
+        {
+            var lines = new System.Collections.Generic.List<SupportLine>();
+            if (effect.HasField("lines"))
+            {
+                foreach (var item in effect.Field("lines").Items())
+                    lines.Add(SupportLine.Read(item));
+            }
+            var party = effect.HasField("party") ? ModifierReader.ReadList(effect.Field("party")) : System.Array.Empty<Stats.Modifier>();
+            foreach (var modifier in party)
+            {
+                if (!Party.CoopLine.IsCoop(modifier.Stat))
+                    throw effect.Field("party").Error("a party line needs 'to' (self, party, allies or enemy)");
+            }
+            if (lines.Count == 0 && party.Count == 0)
+                throw effect.Error("a lines support needs 'lines' or 'party'");
+            return new SupportDef(SupportKind.Lines) { Lines = lines, PartyLines = party };
+        }
 
         public static SupportDef? Read(ContentNode effect)
         {
@@ -126,50 +114,11 @@ namespace Game.Core.Content.Gems
                         LowHpBelow = effect.Field("below").AsNumber(0, 1),
                         LowHpMultiplier = effect.Field("multiplier").AsNumber(1, 1000)
                     };
-                case "apprentice":
-                    return new SupportDef(SupportKind.Apprentice)
-                    {
-                        Power = effect.Field("power").AsNumber(0, 10),
-                        ExperienceMultiplier = effect.Field("experienceMultiplier").AsNumber(0, 100)
-                    };
-                case "bossHunter":
-                    return new SupportDef(SupportKind.BossHunter)
-                    {
-                        BossMultiplier = effect.Field("boss").AsNumber(0, 100),
-                        NormalMultiplier = effect.Field("normal").AsNumber(0, 100)
-                    };
                 case "deathMark":
                     return new SupportDef(SupportKind.DeathMark)
                     {
                         KillResource = effect.Field("killResource").AsNumber(0, 1000),
                         MarkedMultiplier = effect.Field("markedMultiplier").AsNumber(0, 100)
-                    };
-                case "quietHour":
-                    return new SupportDef(SupportKind.QuietHour)
-                    {
-                        QuietSeconds = effect.Field("idleSeconds").AsNumber(0, 86400),
-                        QuietPower = effect.Field("power").AsNumber(1, 100)
-                    };
-                case "bladeHunger":
-                    return new SupportDef(SupportKind.BladeHunger)
-                    {
-                        HungerHitsPerStep = effect.Field("hitsPerStep").AsNumber(1, 100000),
-                        HungerStep = effect.Field("step").AsNumber(0, 10),
-                        HungerMax = effect.Field("max").AsNumber(0, 100)
-                    };
-                case "acceleration":
-                    return new SupportDef(SupportKind.Acceleration)
-                    {
-                        FocusStep = effect.Field("focusStep").AsNumber(0.01, 100),
-                        FocusBonus = effect.Field("bonus").AsNumber(0, 10),
-                        FocusBonusMax = effect.Field("max").AsNumber(0, 100)
-                    };
-                case "critFocus":
-                    return new SupportDef(SupportKind.CritFocus)
-                    {
-                        CritPerFocusStep = effect.Field("critPerStep").AsNumber(0, 1),
-                        CritFocusStep = effect.Field("focusStep").AsNumber(0.01, 100),
-                        CritMultiplier = effect.Field("critMultiplier").AsNumber(1, 100)
                     };
                 case "wideReach":
                     return new SupportDef(SupportKind.WideReach)
@@ -228,13 +177,6 @@ namespace Game.Core.Content.Gems
                         MouseDistanceMultiplier = effect.Field("distanceMultiplier").AsNumber(0, 100),
                         ActiveMouseDamage = effect.Field("mouseDamage").AsNumber(0, 100)
                     };
-                case "whirlpool":
-                    return new SupportDef(SupportKind.Whirlpool)
-                    {
-                        CircleCooldownSeconds = effect.Field("cooldownSecondsPerCircle").AsNumber(0, 600),
-                        CirclesForPower = effect.Field("circlesForPower").AsInt(1, 1000),
-                        CirclePower = effect.Field("power").AsNumber(1, 100)
-                    };
                 case "tailwind":
                     return new SupportDef(SupportKind.Tailwind)
                     {
@@ -247,13 +189,6 @@ namespace Game.Core.Content.Gems
                     {
                         MinionMouseSpeed = effect.Field("mouseSpeed").AsNumber(0, 100),
                         MinionLife = effect.Field("life").AsNumber(0, 100)
-                    };
-                case "sweeping":
-                    return new SupportDef(SupportKind.Sweeping)
-                    {
-                        FlickTargetsMax = effect.Field("maxTargets").AsInt(1, Sim.GameState.QueueDepth),
-                        FlickTargetShare = effect.Field("share").AsNumber(0, 10),
-                        QueueDamageMultiplier = effect.Field("queueDamage").AsNumber(0, 100)
                     };
                 case "targetHunter":
                     return new SupportDef(SupportKind.TargetHunter) { RedirectMultiplier = effect.Field("multiplier").AsNumber(0, 100) };
@@ -269,12 +204,6 @@ namespace Game.Core.Content.Gems
                         AfflictionMultiplier = effect.Field("afflictionMultiplier").AsNumber(0, 100),
                         StackCapMultiplier = effect.Field("stackCapMultiplier").AsNumber(0, 100)
                     };
-                case "pawnbroker":
-                    return new SupportDef(SupportKind.Pawnbroker)
-                    {
-                        Power = effect.Field("power").AsNumber(0, 10),
-                        KillRewardMultiplier = effect.Field("killReward").AsNumber(1, 100)
-                    };
                 case "keyEcho":
                     return new SupportDef(SupportKind.KeyEcho)
                     {
@@ -282,14 +211,8 @@ namespace Game.Core.Content.Gems
                         EchoPower = effect.Field("power").AsNumber(0, 10),
                         ActiveKeyDamage = effect.Field("keyDamage").AsNumber(0, 100)
                     };
-                case "legacy":
-                    return new SupportDef(SupportKind.Legacy) { PartyPower = effect.Field("partyPower").AsNumber(0, 10) };
-                case "resonance":
-                    return new SupportDef(SupportKind.Resonance)
-                    {
-                        AllyPower = effect.Field("allyPower").AsNumber(0, 10),
-                        AfterSeconds = effect.Field("afterSeconds").AsNumber(0, 600)
-                    };
+                case "lines":
+                    return ReadLines(effect);
                 default:
                     return null;
             }

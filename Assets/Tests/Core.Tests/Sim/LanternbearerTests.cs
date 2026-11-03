@@ -25,7 +25,7 @@ namespace Game.Core.Tests.Sim
             hero.Add(crits ? new Modifier(CombatStats.CritChance, ModifierKind.Flat, 5) : new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = heroClass }), hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllSkillsOpen(new GameState { Class = heroClass }), hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
             Spawn(loop, EnemyType.Normal);
@@ -85,7 +85,6 @@ namespace Game.Core.Tests.Sim
 
         private static int Equip(GameLoop loop, string skill)
         {
-            TestWorld.ArmFor(loop, TestWorld.Data.Gems[skill]);
             loop.Skills.Equip(TestWorld.Data.Gems[skill], role: SkillTestHero.ManualRole(loop.State.Skills.Count));
             return loop.State.Skills.Count - 1;
         }

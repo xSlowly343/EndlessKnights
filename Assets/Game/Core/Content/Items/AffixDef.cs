@@ -19,8 +19,12 @@ namespace Game.Core.Content.Items
 
     public sealed class AffixDef
     {
-        public AffixDef(string id, IReadOnlyList<ItemSlot> slots, bool prefix, IReadOnlyList<AffixStat> stats, double tierOne, double tierLast, string? group)
+        public AffixDef(string id, IReadOnlyList<ItemSlot> slots, bool prefix, IReadOnlyList<AffixStat> stats, double tierOne, double tierLast, string? group,
+            ItemRarity fromRarity = ItemRarity.Simple, Sim.SkillSlotRole? builtInRole = null, IReadOnlyList<string>? supportIds = null)
         {
+            FromRarity = fromRarity;
+            BuiltInRole = builtInRole;
+            SupportIds = supportIds ?? System.Array.Empty<string>();
             Id = id;
             Slots = slots;
             Prefix = prefix;
@@ -37,6 +41,12 @@ namespace Game.Core.Content.Items
         public double TierOne { get; }
         public double TierLast { get; }
         public string? Group { get; }
+        public ItemRarity FromRarity { get; }
+        public Sim.SkillSlotRole? BuiltInRole { get; }
+        public IReadOnlyList<string> SupportIds { get; }
+        public IReadOnlyList<Gems.GemDef> Supports { get; private set; } = System.Array.Empty<Gems.GemDef>();
+
+        public void BindSupports(IReadOnlyList<Gems.GemDef> supports) => Supports = supports;
 
         public bool FitsSlot(ItemSlot slot)
         {

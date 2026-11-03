@@ -45,7 +45,7 @@ namespace Game.Presentation.Ui
         private readonly List<TextMeshProUGUI[]>[] _statRows = { new List<TextMeshProUGUI[]>(), new List<TextMeshProUGUI[]>() };
         private readonly List<TextMeshProUGUI> _tileLabels = new List<TextMeshProUGUI>();
         private readonly List<TextMeshProUGUI> _tileValues = new List<TextMeshProUGUI>();
-        private readonly HandCard[] _hands = new HandCard[2];
+        private HandCard _hand = null!;
         private TextMeshProUGUI _attributes = null!;
         private TextMeshProUGUI _initial = null!;
         private TextMeshProUGUI _title = null!;
@@ -117,8 +117,7 @@ namespace Game.Presentation.Ui
             _initial.text = name.Length > 0 ? name.Substring(0, 1) : string.Empty;
             _title.text = HeroSummary.Title(state);
             _progress.text = HeroSummary.Progress(state);
-            _hands[0].Show(HeroSummary.Hand(loop, WeaponHand.Right), _theme);
-            _hands[1].Show(HeroSummary.Hand(loop, WeaponHand.Left), _theme);
+            _hand.Show(HeroSummary.Hand(loop), _theme);
             var tiles = HeroSummary.Tiles(loop, NumberDisplay.Settings);
             for (var i = 0; i < _tileValues.Count && i < tiles.Count; i++)
             {
@@ -197,9 +196,7 @@ namespace Game.Presentation.Ui
                 SquareSlot(doll, HeroSummary.ArmorSlots[i], new Vector2(0f, -i * (SlotPx + GapPx)));
             var centerX = SlotPx + GapPx + 2f;
             BuildPortrait(doll, centerX);
-            var handWidth = (CenterWidthPx - GapPx) / 2f;
-            for (var i = 0; i < _hands.Length; i++)
-                _hands[i] = HandCard.Create(doll, new Vector2(centerX + i * (handWidth + GapPx), -(DollHeightPx - HandHeightPx)), new Vector2(handWidth, HandHeightPx), _theme);
+            _hand = HandCard.Create(doll, new Vector2(centerX, -(DollHeightPx - HandHeightPx)), new Vector2(CenterWidthPx, HandHeightPx), _theme);
             var jewelryX = centerX + CenterWidthPx + GapPx + 2f;
             var title = UiElements.Label("JewelryTitle", doll, _theme.TextFont, 10f, _theme.TextDim, TextAlignmentOptions.Center);
             UiElements.Anchor(title.rectTransform, topLeft, new Vector2(jewelryX, 0f), new Vector2(JewelryWidthPx, JewelryTitlePx));

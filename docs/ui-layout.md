@@ -143,10 +143,11 @@
 - Снять: `loop.Book.Unequip(place.Row)`.
 
 ### 14г.7в — окно скилла: ветки и поддержки
+- Раскладка сокетов по образцу TLI (5 по кругу, 1-й сверху, «+» и замок, итог связки снизу) — `tli-items-skills.md` §3.4 (решение Сергея 03.11.2026).
 - `var window = new SkillWindowModel(loop)` один на панель; `window.Show(row)` при открытии, `window.Refresh()` раз в 0,25 с.
 - Шапка: `BookTexts.Name(window.Skill)`, уровень `window.Level` из `window.MaxLevel`, опыт `window.Experience` / `window.ExperienceToNext` (0 на максимуме), `window.IsAura`.
 - Ветки: `window.TierCount` ярусов (3), у яруса `window.Tier(i)`: `Def.Level` (порог 5/15/25, подпись `BranchTexts.Opens`), `Open`, `Chosen` (−1, если не выбрана), `ChangeCost` (`BranchTexts.Cost(cost, формат чисел)` — «бесплатно» или «смена: N золота»). Две карточки — `Def.Options[0..1]`: имя `BranchTexts.Name`, строка цифр `BranchTexts.Summary` («урон ×1.3 · откат ×0.75», «меняет эффект»). Клик — `window.Choose(tier, option)`, ответ — `BranchTexts.Result` (не дорос, скилл действует, нет золота).
-- Поддержки: `window.Supports` — только подходящие этому скиллу. `Socket >= 0` — уже стоит в этом скилле; `Offer == AlreadyInBuild` — серая, стоит в другом скилле; `Offer == LevelTooLow` — серая с уровнем открытия `Gem.UnlockLevel`; `Available` — можно ставить. Сокеты: открыто `window.Sockets` из `window.MaxSockets` (5), остальные — замок. Поставить или снять: `window.SetSupport(socket, gem или null)`, ответ — `BookTexts.Result`.
+- Поддержки: `window.Supports` — только подходящие этому скиллу. `Socket >= 0` — уже стоит в этом скилле; (с 14д.29 правила «одна на билд» нет: одна поддержка может стоять на нескольких скиллах, `AlreadyOnSkill` — только если она уже в этом скилле); `Offer == LevelTooLow` — серая с уровнем открытия `Gem.UnlockLevel`; `Available` — можно ставить. Сокеты: открыто `window.Sockets` из `window.MaxSockets` (5), остальные — замок. Поставить или снять: `window.SetSupport(socket, gem или null)`, ответ — `BookTexts.Result`.
 
 ### 14г.7г — окно деревьев: вкладки слева
 - `TreeTabs.Fill(loop, tabs)` в `List<TreeTab>`: дерево класса, по одной вкладке на слот общего дерева (сейчас 2), Путь.

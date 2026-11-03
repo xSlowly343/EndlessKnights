@@ -22,7 +22,7 @@ namespace Game.Core.Sim
         private readonly GearSystem _gear;
         private readonly double[] _rarityWeights = new double[DropRules.RarityCount];
         private readonly List<GemDef>[] _gemPools = { new List<GemDef>(), new List<GemDef>() };
-        private readonly List<WeaponType> _types = new List<WeaponType>();
+        private readonly List<UniqueWeaponDef> _uniqueWeapons = new List<UniqueWeaponDef>();
         private readonly List<WeaponBase> _bases = new List<WeaponBase>();
         private readonly PendingDrop[] _pending = new PendingDrop[PendingCapacity];
         private int _pendingCount;
@@ -130,19 +130,11 @@ namespace Game.Core.Sim
 
         private WeaponItem? CraftSetWeapon(SetDef set, string? chosenType)
         {
-            var rng = _state.Drops.Rng;
-            WeaponType type;
-            if (chosenType != null)
-            {
-                if (!set.AllowsType(chosenType) || !_weapons.Catalog.TryGetType(chosenType, out type))
-                    return null;
-            }
-            else
-            {
-                type = SetWeaponType(set, OwnType, rng);
-            }
+            var type = OwnType;
+            if (!set.AllowsType(type.Id) || (chosenType != null && chosenType != type.Id))
+                return null;
             var stage = System.Math.Max(1, _state.RecordStage);
-            return RollWeapon(type, set.Rarity, stage, rng).InSet(set);
+            return RollWeapon(type, set.Rarity, stage, _state.Drops.Rng).InSet(set);
         }
 
         public DungeonRules? Dungeons { get; set; }
@@ -224,7 +216,13 @@ namespace Game.Core.Sim
         private void GiveUnique(long stage, DropSource source)
         {
             var gear = _items.Uniques;
-            var weapons = _weapons.Catalog.Uniques;
+            var weapons = _uniqueWeapons;
+            weapons.Clear();
+            foreach (var unique in _weapons.Catalog.Uniques)
+            {
+                if (unique.Base.Type == OwnType)
+                    weapons.Add(unique);
+            }
             var total = gear.Count + weapons.Count;
             if (total == 0)
                 return;
@@ -239,7 +237,7 @@ namespace Game.Core.Sim
             }
             else
             {
-                weapon = _weapons.Give(_weapons.Catalog.RollUnique(weapons[pick - gear.Count], rng));
+                weapon = _weapons.Give(_weapons.Catalog.RollUnique(weapons[pick - gear.Count], BiomeNumber(stage)));
             }
             _state.Drops.ItemsFound++;
             _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(source, stage, weapon, item, false, 0)));
@@ -450,20 +448,10 @@ namespace Game.Core.Sim
 
         private WeaponType PickType(Rng rng)
         {
-            var catalog = _weapons.Catalog;
-            var types = catalog.Types;
-            WeaponType? own = _state.ClassChosen ? OwnType : null;
-            var total = 0.0;
-            for (var i = 0; i < types.Count; i++)
-                total += types[i] == own ? catalog.OwnTypeWeight : catalog.OtherTypeWeight;
-            var roll = rng.NextDouble() * total;
-            for (var i = 0; i < types.Count; i++)
-            {
-                roll -= types[i] == own ? catalog.OwnTypeWeight : catalog.OtherTypeWeight;
-                if (roll < 0)
-                    return types[i];
-            }
-            return own ?? types[types.Count - 1];
+            if (_state.ClassChosen)
+                return OwnType;
+            var types = _weapons.Catalog.Types;
+            return types[rng.NextInt(0, types.Count)];
         }
 
         private WeaponType OwnType
@@ -485,34 +473,18 @@ namespace Game.Core.Sim
             var chance = _rules.UniqueChanceFor(drop.Source);
             if (chance > 0 && rng.NextDouble() < chance)
             {
-                var unique = _weapons.Catalog.PickUnique(_rules.CeilingAt(drop.Stage), rng);
+                var unique = _weapons.Catalog.PickUnique(_rules.CeilingAt(drop.Stage), drop.Type!, rng);
                 if (unique != null)
-                    return _weapons.Catalog.RollUnique(unique, rng);
+                    return _weapons.Catalog.RollUnique(unique, BiomeNumber(drop.Stage));
             }
             var setChance = _rules.SetChanceFor(drop.Source);
             if (setChance > 0 && rng.NextDouble() < setChance)
             {
                 var set = _items.PickSet(ItemSlot.Weapon, rarity, rng);
-                if (set != null)
-                    return RollWeapon(SetWeaponType(set, drop.Type!, rng), rarity, drop.Stage, rng).InSet(set);
+                if (set != null && set.AllowsType(drop.Type!.Id))
+                    return RollWeapon(drop.Type!, rarity, drop.Stage, rng).InSet(set);
             }
             return RollWeapon(drop.Type!, rarity, drop.Stage, rng);
-        }
-
-        private WeaponType SetWeaponType(SetDef set, WeaponType rolled, Rng rng)
-        {
-            if (set.AllowsType(OwnType.Id))
-                return OwnType;
-            if (set.AllowsType(rolled.Id))
-                return rolled;
-            var types = _weapons.Catalog.Types;
-            _types.Clear();
-            for (var i = 0; i < types.Count; i++)
-            {
-                if (set.AllowsType(types[i].Id))
-                    _types.Add(types[i]);
-            }
-            return _types.Count == 0 ? rolled : _types[rng.NextInt(0, _types.Count)];
         }
 
         private WeaponItem RollWeapon(WeaponType type, ItemRarity rarity, long stage, Rng rng)
@@ -526,7 +498,7 @@ namespace Game.Core.Sim
                     _bases.Add(weaponBase);
             }
             if (_bases.Count == 0)
-                return catalog.Roll(catalog.StarterFor(type.HeroClass), rarity, rng);
+                return Rolled(catalog.StarterFor(type.HeroClass), rarity, biome, rng);
             _bases.Sort((a, b) => a.FromBiome.CompareTo(b.FromBiome));
             var total = 0.0;
             for (var i = 0; i < _bases.Count; i++)
@@ -536,10 +508,13 @@ namespace Game.Core.Sim
             {
                 roll -= BaseWeight(catalog, i);
                 if (roll < 0)
-                    return catalog.Roll(_bases[i], rarity, rng);
+                    return Rolled(_bases[i], rarity, biome, rng);
             }
-            return catalog.Roll(_bases[_bases.Count - 1], rarity, rng);
+            return Rolled(_bases[_bases.Count - 1], rarity, biome, rng);
         }
+
+        private WeaponItem Rolled(WeaponBase weaponBase, ItemRarity rarity, int itemLevel, Rng rng) =>
+            _weapons.Catalog.Roll(weaponBase, rarity, itemLevel, _items.RollAffixes(ItemSlot.Weapon, rarity, itemLevel, rng));
 
         private static double BaseWeight(WeaponCatalog catalog, int index)
         {
@@ -563,7 +538,6 @@ namespace Game.Core.Sim
             var type = guarantee.Color switch
             {
                 GuaranteeColor.Own => OwnType,
-                GuaranteeColor.OwnColorOtherClass => OtherClassOfOwnColor(rng),
                 _ => guarantee.ToEmptySlot ? OwnType : PickType(rng)
             };
             return PendingDrop.Weapon(DropSource.Guarantee, stage, rarity, type);
@@ -572,7 +546,7 @@ namespace Game.Core.Sim
         private ItemSlot EmptySlot(Rng rng)
         {
             var weapons = _state.Weapons;
-            if (weapons.Right == null || weapons.Left == null)
+            if (weapons.Held == null)
                 return ItemSlot.Weapon;
             var worn = _state.Gear.Worn;
             var weakest = -1;
@@ -595,27 +569,6 @@ namespace Game.Core.Sim
             GearSlot.Amulet => ItemSlot.Amulet,
             _ => ItemSlot.Ring
         };
-
-        private WeaponType OtherClassOfOwnColor(Rng rng)
-        {
-            var own = OwnType;
-            var types = _weapons.Catalog.Types;
-            _types.Clear();
-            for (var i = 0; i < types.Count; i++)
-            {
-                if (types[i] != own && types[i].Color == own.Color)
-                    _types.Add(types[i]);
-            }
-            if (_types.Count == 0)
-            {
-                for (var i = 0; i < types.Count; i++)
-                {
-                    if (types[i] != own)
-                        _types.Add(types[i]);
-                }
-            }
-            return _types.Count == 0 ? own : _types[rng.NextInt(0, _types.Count)];
-        }
 
         private void Deliver(PendingDrop drop)
         {
@@ -682,7 +635,7 @@ namespace Game.Core.Sim
         private bool BetterThanHeld(ItemRarity rarity)
         {
             var weapons = _state.Weapons;
-            return weapons.Right == null || weapons.Left == null || rarity > weapons.Right.Rarity || rarity > weapons.Left.Rarity;
+            return weapons.Held == null || rarity > weapons.Held.Rarity;
         }
 
         private GemDef PickGem(List<GemDef> pool) => pool[_state.Drops.Rng.NextInt(0, pool.Count)];

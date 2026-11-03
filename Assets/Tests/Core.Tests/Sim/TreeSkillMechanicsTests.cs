@@ -21,7 +21,7 @@ namespace Game.Core.Tests.Sim
                 hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.More, -1));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, new GameState { Class = heroClass }, hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllSkillsOpen(new GameState { Class = heroClass }), hero);
             loop.Book.GrantStartingGems();
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Create(1, 50));
             loop.State.HitsOnEnemy = TestWorld.Data.Combat.Conditions.FirstHits;
@@ -66,7 +66,7 @@ namespace Game.Core.Tests.Sim
             var (strong, _) = Hero(HeroClass.Runedancer, power);
 
             Assert.That(CastDamage(strong, "runedancer_hit_1") / CastDamage(plain, "runedancer_hit_1"), Is.EqualTo(1.5).Within(1e-9));
-            Assert.That(CastDamage(strong, "runedancer_strong_1") / CastDamage(plain, "runedancer_strong_1"), Is.EqualTo(1).Within(1e-9));
+            Assert.That(CastDamage(strong, "runedancer_queue_1") / CastDamage(plain, "runedancer_queue_1"), Is.EqualTo(1).Within(1e-9));
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Game.Core.Tests.Sim
             var (plain, _) = Hero(HeroClass.Runedancer);
             var (strong, _) = Hero(HeroClass.Runedancer, ForSkill(CombatStats.SkillPower, gem.Id, ModifierKind.Increased, 0.5));
 
-            plain.State.HeroLevel = TestWorld.Data.Weapons.SkillRules.UnlockLevels[^1];
+            plain.State.HeroLevel = TestWorld.Data.SkillBook.SkillUnlockLevel(Game.Core.Content.Gems.SkillTier.Mythic);
             strong.State.HeroLevel = plain.State.HeroLevel;
             SlotOf(plain, gem.Id);
             SlotOf(strong, gem.Id);
@@ -108,8 +108,8 @@ namespace Game.Core.Tests.Sim
             var (plain, _) = Hero(HeroClass.Runedancer);
             var (loop, _) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ResourcePerFastSkill, ModifierKind.Flat, 5));
 
-            CastDamage(plain, "runedancer_strong_1");
-            CastDamage(loop, "runedancer_strong_1");
+            CastDamage(plain, "runedancer_queue_1");
+            CastDamage(loop, "runedancer_queue_1");
 
             Assert.That(loop.State.Resource, Is.EqualTo(plain.State.Resource).Within(1e-9));
         }

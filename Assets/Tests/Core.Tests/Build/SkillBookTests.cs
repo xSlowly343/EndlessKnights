@@ -1,5 +1,6 @@
 using Game.Core.Build;
 using Game.Core.Clock;
+using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Save;
 using Game.Core.Sim;
@@ -19,6 +20,74 @@ namespace Game.Core.Tests.Build
             foreach (var id in ids)
                 loop.State.OwnedGems.Add(Gem(id));
             return loop;
+        }
+
+        private static readonly string BookJson = TestData.ReadGameDataFile(SkillBookRules.FileName);
+
+        private static string WithUnlockLevels(string levels) =>
+            BookJson.Replace("\"skillUnlockLevels\": { \"common\": 1, \"rare\": 15, \"epic\": 30, \"legendary\": 50, \"mythic\": 75 }", "\"skillUnlockLevels\": " + levels);
+
+        [Test]
+        public void SkillRanksOpenAtOneFifteenThirtyFiftySeventyFive()
+        {
+            var rules = TestWorld.Data.SkillBook;
+
+            Assert.That(rules.SkillUnlockLevel(SkillTier.Common), Is.EqualTo(1));
+            Assert.That(rules.SkillUnlockLevel(SkillTier.Rare), Is.EqualTo(15));
+            Assert.That(rules.SkillUnlockLevel(SkillTier.Epic), Is.EqualTo(30));
+            Assert.That(rules.SkillUnlockLevel(SkillTier.Legendary), Is.EqualTo(50));
+            Assert.That(rules.SkillUnlockLevel(SkillTier.Mythic), Is.EqualTo(75));
+        }
+
+        [TestCase("runedancer_hit_2", 15)]
+        [TestCase("runedancer_strong_1", 30)]
+        [TestCase("runedancer_strong_2", 50)]
+        [TestCase("runedancer_strong_3", 75)]
+        public void ClassSkillOpensAtTheHeroLevelOfItsRank(string id, int level)
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, HeroLevel = level - 1 });
+
+            Assert.That(loop.Book.SkillOpen(Gem(id)), Is.False);
+            Assert.That(loop.Book.Equip(Gem(id)), Is.EqualTo(BookResult.LevelTooLow));
+
+            loop.State.HeroLevel = level;
+
+            Assert.That(loop.Book.SkillOpen(Gem(id)), Is.True);
+            Assert.That(loop.Book.Equip(Gem(id)), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.State.OwnedGems, Does.Not.Contain(Gem(id)), "an open class skill needs no gem copy");
+        }
+
+        [Test]
+        public void SkillsOfAnotherClassAndPathSkillsStayClosed()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, HeroLevel = 100 });
+
+            Assert.That(loop.Book.Equip(Gem("duelist_hit_1")), Is.EqualTo(BookResult.WrongClass));
+            Assert.That(loop.Book.SkillOpen(Gem("runedancer_path_1")), Is.False);
+        }
+
+        [Test]
+        public void OpenClassSkillsGrowWithTheHeroLevel()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, HeroLevel = 1 });
+            var open = new System.Collections.Generic.List<GemDef>();
+
+            loop.Book.OpenClassSkills(open);
+            var atStart = open.Count;
+            loop.State.HeroLevel = 75;
+            loop.Book.OpenClassSkills(open);
+
+            Assert.That(atStart, Is.EqualTo(5));
+            Assert.That(open.Count, Is.EqualTo(SkillRoster.ActivePerClass + SkillRoster.AurasPerClass));
+        }
+
+        [Test]
+        public void UnlockLevelsMustCoverEveryRankAndNotGoDown()
+        {
+            Assert.That(Assert.Throws<ContentException>(() => SkillBookRules.Load(WithUnlockLevels("{ \"common\": 1, \"rare\": 15, \"epic\": 30, \"legendary\": 50 }"), TestWorld.Data.Gems))!.Message, Does.Contain("mythic"));
+            Assert.That(Assert.Throws<ContentException>(() => SkillBookRules.Load(WithUnlockLevels("{ \"common\": 1, \"rare\": 40, \"epic\": 30, \"legendary\": 50, \"mythic\": 75 }"), TestWorld.Data.Gems))!.Message, Does.Contain("must not open earlier"));
+            Assert.That(Assert.Throws<ContentException>(() => SkillBookRules.Load(WithUnlockLevels("{ \"common\": 2, \"rare\": 15, \"epic\": 30, \"legendary\": 50, \"mythic\": 75 }"), TestWorld.Data.Gems))!.Message, Does.Contain("level 1"));
+            Assert.That(Assert.Throws<ContentException>(() => SkillBookRules.Load(WithUnlockLevels("{ \"common\": 1, \"rare\": 15, \"epic\": 30, \"legendary\": 50, \"mythic\": 75, \"ancient\": 90 }"), TestWorld.Data.Gems))!.Message, Does.Contain("ancient"));
         }
 
         [Test]
@@ -108,29 +177,29 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void RunedancerStartsWithAHitOnLeftAStrongSkillOnRightAndLull()
+        public void RunedancerStartsWithAHitOnLeftAQueueSkillOnRightAndLull()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
 
             Assert.That(loop.Book.GrantStartingGems(), Is.True);
 
-            Assert.That(loop.State.OwnedGems.Count, Is.EqualTo(3));
+            Assert.That(loop.State.OwnedGems, Is.EqualTo(new[] { Gem("lull") }), "class skills are not owned, they open with the hero level");
             Assert.That(loop.State.Skills.Count, Is.EqualTo(3));
             Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("runedancer_hit_1")));
-            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("runedancer_strong_1")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("runedancer_queue_1")));
             Assert.That(loop.State.Skills[2].Skill, Is.SameAs(Gem("lull")));
             Assert.That(loop.Book.GrantStartingGems(), Is.False);
         }
 
         [Test]
-        public void MinstrelStartsWithItsOwnHitAndStrongSkill()
+        public void MinstrelStartsWithItsOwnHitAndQueueSkill()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Minstrel });
 
             loop.Book.GrantStartingGems();
 
             Assert.That(loop.State.Skills[SkillSystem.LeftButtonSlot].Skill, Is.SameAs(Gem("minstrel_hit_1")));
-            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("minstrel_strong_1")));
+            Assert.That(loop.State.Skills[SkillSystem.RightButtonSlot].Skill, Is.SameAs(Gem("minstrel_queue_1")));
         }
 
         [Test]
@@ -154,8 +223,8 @@ namespace Game.Core.Tests.Build
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;
 
-            Assert.That(loaded.OwnedGems.Count, Is.EqualTo(3));
-            Assert.That(loaded.Skills[1].Skill, Is.SameAs(Gem("runedancer_strong_1")));
+            Assert.That(loaded.OwnedGems.Count, Is.EqualTo(1));
+            Assert.That(loaded.Skills[1].Skill, Is.SameAs(Gem("runedancer_queue_1")));
         }
 
         [Test]

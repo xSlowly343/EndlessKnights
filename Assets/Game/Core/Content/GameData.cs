@@ -109,6 +109,7 @@ namespace Game.Core.Content
             SkillRoster.Require(gems, weapons.Types);
             ascendancy.RequirePathSkills(gems, weapons);
             var items = ItemCatalog.Load(readFile(ItemCatalog.FileName));
+            items.BindGems(gems);
             var drops = DropRules.Load(readFile(DropRules.FileName));
             var panel = PanelUnlocks.Load(readFile(PanelUnlocks.FileName));
             var changeLog = ChangeLog.Load(readFile(ChangeLog.FileName));

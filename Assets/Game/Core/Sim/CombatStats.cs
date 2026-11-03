@@ -170,6 +170,12 @@ namespace Game.Core.Sim
         public static readonly StatId WeaponInnateEffect = new StatId("weaponInnateEffect");
         public static readonly StatId LowestGemExperience = new StatId("lowestGemExperience");
         public static readonly StatId GemLevelBonus = new StatId("gemLevelBonus");
+        public static readonly StatId FastSkillLevel = new StatId("fastSkillLevel");
+        public static readonly StatId HeavySkillLevel = new StatId("heavySkillLevel");
+        public static readonly StatId AuraSkillLevel = new StatId("auraSkillLevel");
+        public static readonly StatId SocketsLeft = new StatId("socketsLeft");
+        public static readonly StatId SocketsRight = new StatId("socketsRight");
+        public static readonly StatId SocketsAuto = new StatId("socketsAuto");
         public static readonly StatId CooldownPerResource = new StatId("cooldownPerResource");
         public static readonly StatId CooldownPerResourceMax = new StatId("cooldownPerResourceMax");
         public static readonly StatId AuraReserveOnce = new StatId("auraReserveOnce");

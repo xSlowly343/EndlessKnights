@@ -169,7 +169,6 @@ namespace Game.Core.Tests.Party
         {
             var loop = Hero(heroClass);
             var gem = FirstLightningGem();
-            TestWorld.ArmFor(loop, gem);
             loop.Skills.Equip(gem);
             loop.Tick();
             loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e30);

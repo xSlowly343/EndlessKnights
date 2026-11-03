@@ -54,20 +54,18 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ForeignHeroGetsAFittingTypeAndCollectedSetsLetThePlayerChoose()
+        public void ASetWithoutTheHeroTypeCraftsNoWeapon()
         {
             var windshot = Hero(HeroClass.Windshot);
             windshot.State.Drops.Ingots = 1000;
             foreach (var slot in Set("jarl_forge").Slots)
                 windshot.State.SetCollection.Add(SetDef.PieceKey("jarl_forge", slot));
+            Assert.That(Set("jarl_forge").AllowsType("wind_bow"), Is.False);
 
             Assert.That(windshot.CraftSetPiece("jarl_forge", ItemSlot.Weapon, "wind_bow"), Is.EqualTo(CraftResult.WrongSlot));
+            Assert.That(windshot.CraftSetPiece("jarl_forge", ItemSlot.Weapon, "spectral_rapier"), Is.EqualTo(CraftResult.WrongSlot));
+            Assert.That(windshot.CraftSetPiece("jarl_forge", ItemSlot.Weapon), Is.EqualTo(CraftResult.WrongSlot));
             Assert.That(windshot.State.Drops.Ingots, Is.EqualTo(1000));
-            Assert.That(windshot.CraftSetPiece("jarl_forge", ItemSlot.Weapon, "spectral_rapier"), Is.EqualTo(CraftResult.Crafted));
-            Assert.That(windshot.State.Weapons.Bag.Last().Type.Id, Is.EqualTo("spectral_rapier"));
-
-            Assert.That(windshot.CraftSetPiece("jarl_forge", ItemSlot.Weapon), Is.EqualTo(CraftResult.Crafted));
-            Assert.That(Set("jarl_forge").AllowsType(windshot.State.Weapons.Bag.Last().Type.Id), Is.True);
         }
 
         [Test]
@@ -75,10 +73,10 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Hero(HeroClass.Runedancer);
             var set = Set("jarl_forge");
-            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Rare, new Rng(2)).InSet(set));
+            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Rare).InSet(set));
             var before = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
 
-            loop.Weapons.Equip(WeaponHand.Left, weapon);
+            loop.Weapons.Equip(weapon);
 
             Assert.That(loop.Weapons.Modifiers, Does.Contain(set.PieceLines(ItemSlot.Weapon)[0]));
             Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike), Is.GreaterThan(before));
@@ -88,7 +86,7 @@ namespace Game.Core.Tests.Sim
         public void SetWeaponSurvivesSaveAndLoad()
         {
             var loop = Hero(HeroClass.Runedancer);
-            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Epic, new Rng(2)).InSet(Set("mountain_hammer")));
+            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Epic).InSet(Set("mountain_hammer")));
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, ClockStamp.First(new ClockReading(1, 1, 1))), TestWorld.Data).State;
 

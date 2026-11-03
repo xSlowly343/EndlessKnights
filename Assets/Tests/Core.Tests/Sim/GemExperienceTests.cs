@@ -25,14 +25,12 @@ namespace Game.Core.Tests.Sim
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e60, StatTags.Strike));
             foreach (var modifier in modifiers)
                 hero.Add(modifier);
-            var loop = TestWorld.Loop(input, TestWorld.WithAllWeaponPlacesOpen(new GameState { Class = HeroClass.Runedancer }), hero);
+            var loop = TestWorld.Loop(input, TestWorld.WithAllSkillsOpen(new GameState { Class = HeroClass.Runedancer }), hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
-            while (loop.State.Weapons.Left != null || loop.State.Weapons.Right != null)
-                loop.Weapons.Unequip(loop.State.Weapons.Left != null ? WeaponHand.Left : WeaponHand.Right);
+            if (!armed)
+                loop.Weapons.Unequip();
             var skill = Gem("runedancer_hit_1");
-            if (armed)
-                TestWorld.ArmFor(loop, skill);
             loop.State.OwnedGems.AddRange(new[] { skill, Gem("rebound") });
             loop.Skills.Equip(skill);
             loop.Book.SetSupport(0, 0, Gem("rebound"));
@@ -60,14 +58,13 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SkillWithoutItsWeaponLearnsNothing()
+        public void SkillLearnsWithoutAnyWeaponInHand()
         {
             var (loop, input) = Hero(armed: false);
-            Assert.That(loop.Skills.Armed(0), Is.False);
 
             Kill(loop, input);
 
-            Assert.That(loop.State.GemProgress["runedancer_hit_1"].Experience, Is.EqualTo(0));
+            Assert.That(loop.State.GemProgress["runedancer_hit_1"].Experience, Is.EqualTo(Levels.ExperiencePerKill).Within(1e-9));
         }
 
         [Test]
