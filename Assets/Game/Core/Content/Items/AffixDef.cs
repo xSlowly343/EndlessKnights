@@ -11,9 +11,12 @@ namespace Game.Core.Content.Items
         public readonly bool OwnTiers;
         public readonly double TierOne;
         public readonly double TierLast;
+        public readonly ModifierCondition When;
 
-        public AffixStat(StatId stat, ModifierKind kind, StatTags tags, bool ownTiers = false, double tierOne = 0, double tierLast = 0)
+        public AffixStat(StatId stat, ModifierKind kind, StatTags tags, bool ownTiers = false, double tierOne = 0, double tierLast = 0,
+            ModifierCondition when = ModifierCondition.Always)
         {
+            When = when;
             Stat = stat;
             Kind = kind;
             Tags = tags;

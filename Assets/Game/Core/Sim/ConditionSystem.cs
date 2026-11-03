@@ -80,8 +80,9 @@ namespace Game.Core.Sim
                 conditions |= ModifierConditions.Bit(ModifierCondition.AfterFlick);
             if (_state.MouseIdleTicks < Ticks(rules.MouseMovingSeconds))
                 conditions |= ModifierConditions.Bit(ModifierCondition.MouseMoving);
-            if (_state.InputStreakTicks * GameLoop.TickSeconds >= rules.LongStreakSeconds)
-                conditions |= ModifierConditions.Bit(ModifierCondition.LongStreak);
+            conditions |= ModifierConditions.Bit(_state.InputStreakTicks * GameLoop.TickSeconds >= rules.LongStreakSeconds
+                ? ModifierCondition.LongStreak
+                : ModifierCondition.ShortStreak);
             return conditions;
         }
 

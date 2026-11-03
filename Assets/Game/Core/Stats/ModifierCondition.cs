@@ -49,6 +49,7 @@ namespace Game.Core.Stats
         AfterCircle,
         AfterFlick,
         MouseMoving,
-        LongStreak
+        LongStreak,
+        ShortStreak
     }
 }

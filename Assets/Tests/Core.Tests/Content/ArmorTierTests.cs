@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void EveryUltimateAffixGivesTwoLinesThatGrowWithTheTier()
+        public void EveryUltimateAffixGivesTwoLinesAndARuleKeepsItsPriceFixed()
         {
             var ultimate = Catalog.Affixes.Where(affix => affix.FromRarity == ItemRarity.Ancient).ToList();
             Assert.That(ultimate, Is.Not.Empty);
@@ -85,8 +85,17 @@ namespace Game.Core.Tests.Content
                 new GearAffix(def, 1, def.ValueAt(1, Catalog.Tiers)).AddModifiers(low);
                 new GearAffix(def, Catalog.Tiers, def.ValueAt(Catalog.Tiers, Catalog.Tiers)).AddModifiers(high);
                 Assert.That(low.Count, Is.EqualTo(def.Stats.Count), def.Id);
-                Assert.That(System.Math.Abs(high[1].Value), Is.GreaterThan(System.Math.Abs(low[1].Value)), def.Id);
                 Assert.That(high[1].Value, Is.EqualTo(def.Stats[1].TierLast).Within(1e-9), def.Id);
+                if (def.Group == "ultimate_rule")
+                {
+                    Assert.That(high[1].Value, Is.EqualTo(low[1].Value).Within(1e-9), def.Id + ": the price of a rule stays fixed");
+                    if (def.TierOne != def.TierLast)
+                        Assert.That(System.Math.Abs(high[0].Value), Is.GreaterThan(System.Math.Abs(low[0].Value)), def.Id);
+                }
+                else
+                {
+                    Assert.That(System.Math.Abs(high[1].Value), Is.GreaterThan(System.Math.Abs(low[1].Value)), def.Id);
+                }
             }
         }
 
@@ -94,11 +103,11 @@ namespace Game.Core.Tests.Content
         public void AnUltimateAffixWithOneLineOrAnOddRarityIsRejected()
         {
             var json = TestData.ReadGameDataFile(ItemCatalog.FileName);
-            var single = json.Replace(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.05, 0.15]}", "");
+            var single = json.Replace(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.08, 0.24]}", "");
             var epic = json.Replace("\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.3], \"fromRarity\": \"rare\"",
                 "\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.3], \"fromRarity\": \"epic\"");
 
-            Assert.That(json, Does.Contain(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.05, 0.15]}"));
+            Assert.That(json, Does.Contain(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.08, 0.24]}"));
             Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(single))!.Message, Does.Contain("two lines"));
             Assert.That(epic, Is.Not.EqualTo(json));
             Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(epic))!.Message, Does.Contain("ancient"));

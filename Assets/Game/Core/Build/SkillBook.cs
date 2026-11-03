@@ -77,7 +77,9 @@ namespace Game.Core.Build
         public int SlotCount => _rules.SlotsFor(_state.RecordStage, _state.EarlyBookSlot);
         public int MaxSlots => _rules.MaxSlots;
         public int AutoSlotCount => System.Math.Max(0, SlotCount - SkillLoadout.HandSlots);
-        public int AuraSlotCount => _rules.AuraSlotsFor(_state.HeroLevel);
+        public int AuraSlotCount => System.Math.Min(SkillLoadout.AuraSlots, _rules.AuraSlotsFor(_state.HeroLevel) + ExtraAuraSlots);
+
+        private int ExtraAuraSlots => (int)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.ExtraAuraSlots, 0)) + 1e-9);
 
         public int AuraSlotLevel(int slot) => _rules.AuraSlotLevel(slot);
 

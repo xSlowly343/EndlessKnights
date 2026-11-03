@@ -23,7 +23,7 @@ namespace Game.Core.Content.Items
             for (var i = 0; i < Def.Stats.Count; i++)
             {
                 var stat = Def.Stats[i];
-                modifiers.Add(new Modifier(stat.Stat, stat.Kind, Def.StatValue(i, Tier, Value), stat.Tags));
+                modifiers.Add(new Modifier(stat.Stat, stat.Kind, Def.StatValue(i, Tier, Value), stat.Tags, ModifierPool.General, stat.When));
             }
         }
     }

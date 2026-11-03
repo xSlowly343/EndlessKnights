@@ -146,8 +146,8 @@ namespace Game.Core.Content.Gems
         private static int[] ReadAuraSlotLevels(ContentNode node)
         {
             var items = node.Items();
-            if (items.Count != Sim.SkillLoadout.AuraSlots)
-                throw node.Error($"expected {Sim.SkillLoadout.AuraSlots} aura slot levels, got {items.Count}");
+            if (items.Count != Sim.SkillLoadout.LeveledAuraSlots)
+                throw node.Error($"expected {Sim.SkillLoadout.LeveledAuraSlots} aura slot levels, got {items.Count}");
             var levels = new int[items.Count];
             for (var i = 0; i < items.Count; i++)
             {

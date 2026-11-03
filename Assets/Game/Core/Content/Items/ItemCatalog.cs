@@ -486,7 +486,8 @@ namespace Game.Core.Content.Items
             if (stat.HasField("to"))
                 return new AffixStat(ModifierReader.ReadCoopLine(stat).Source, ModifierKind.Flat, StatTags.None, own, first, last);
             return new AffixStat(new StatId(stat.Field("stat").AsString()), ModifierReader.ReadKind(stat.Field("kind")),
-                stat.HasField("tags") ? ModifierReader.ReadTags(stat.Field("tags")) : StatTags.None, own, first, last);
+                stat.HasField("tags") ? ModifierReader.ReadTags(stat.Field("tags")) : StatTags.None, own, first, last,
+                stat.HasField("when") ? ModifierReader.ReadCondition(stat.Field("when")) : ModifierCondition.Always);
         }
     }
 }
