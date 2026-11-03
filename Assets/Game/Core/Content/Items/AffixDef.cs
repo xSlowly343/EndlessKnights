@@ -73,8 +73,47 @@ namespace Game.Core.Content.Items
 
         public double ValueAt(int tier, int tiers) => Between(TierOne, TierLast, tier, tiers);
 
-        public double StatValue(int index, int tier, double rolled) =>
-            Stats[index].OwnTiers ? Between(Stats[index].TierOne, Stats[index].TierLast, tier, TierCount) : rolled;
+        public double Lowest(int tier) => Range(TierOne, TierLast, tier).Low;
+
+        public double Highest(int tier) => Range(TierOne, TierLast, tier).High;
+
+        public double RollValue(int tier, double fraction) => At(TierOne, TierLast, tier, fraction);
+
+        public double StatValue(int index, int tier, double rolled, double roll = 0) =>
+            Stats[index].OwnTiers ? At(Stats[index].TierOne, Stats[index].TierLast, tier, roll) : rolled;
+
+        private double At(double first, double last, int tier, double fraction)
+        {
+            var (low, high) = Range(first, last, tier);
+            var unit = Unit(first, last);
+            return Snap(low + (high - low) * fraction, unit);
+        }
+
+        private (double Low, double High) Range(double first, double last, int tier)
+        {
+            var low = Between(first, last, tier, TierCount);
+            if (TierCount <= 1)
+                return (low, low);
+            var step = (last - first) / (TierCount - 1);
+            var unit = Unit(first, last);
+            low = Snap(low, unit);
+            var high = Snap(Between(first, last, tier, TierCount) + step, unit) - System.Math.Sign(step) * unit;
+            return System.Math.Abs(high - low) < unit / 2 || System.Math.Sign(high - low) != System.Math.Sign(step) ? (low, low) : (low, high);
+        }
+
+        private double Unit(double first, double last)
+        {
+            if (IsWhole(first) && IsWhole(last) && System.Math.Abs(last) >= 1)
+                return 1;
+            var step = TierCount <= 1 ? 0 : System.Math.Abs(last - first) / (TierCount - 1);
+            return step >= WholePercent * 2 - 1e-9 ? WholePercent : WholePercent / 10;
+        }
+
+        private const double WholePercent = 0.01;
+
+        private static bool IsWhole(double value) => System.Math.Abs(value - System.Math.Round(value)) < 1e-9;
+
+        private static double Snap(double value, double unit) => System.Math.Round(System.Math.Round(value / unit) * unit, 6);
 
         private static double Between(double first, double last, int tier, int tiers) =>
             tiers <= 1 ? last : first + (last - first) * (tier - 1) / (tiers - 1);

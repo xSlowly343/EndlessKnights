@@ -5,8 +5,9 @@ namespace Game.Core.Content.Items
 {
     public sealed class GearAffix
     {
-        public GearAffix(AffixDef def, int tier, double value, Gems.GemDef? support = null)
+        public GearAffix(AffixDef def, int tier, double value, Gems.GemDef? support = null, double roll = 0)
         {
+            Roll = roll;
             Def = def;
             Tier = tier;
             Value = value;
@@ -16,6 +17,7 @@ namespace Game.Core.Content.Items
         public AffixDef Def { get; }
         public int Tier { get; }
         public double Value { get; }
+        public double Roll { get; }
         public Gems.GemDef? Support { get; }
 
         public void AddModifiers(List<Modifier> modifiers)
@@ -23,7 +25,7 @@ namespace Game.Core.Content.Items
             for (var i = 0; i < Def.Stats.Count; i++)
             {
                 var stat = Def.Stats[i];
-                modifiers.Add(new Modifier(stat.Stat, stat.Kind, Def.StatValue(i, Tier, Value), stat.Tags, ModifierPool.General, stat.When));
+                modifiers.Add(new Modifier(stat.Stat, stat.Kind, Def.StatValue(i, Tier, Value, Roll), stat.Tags, ModifierPool.General, stat.When));
             }
         }
     }
