@@ -94,7 +94,6 @@ namespace Game.Core.Ui
                     continue;
                 var socket = System.Array.IndexOf(slot.Supports, support);
                 var offer = socket >= 0 ? BookResult.Done
-                    : book.InBuild(support) ? BookResult.AlreadyInBuild
                     : !book.SupportOpen(support) ? BookResult.LevelTooLow
                     : BookResult.Done;
                 _supports.Add(new SkillWindowSupport { Gem = support, Offer = offer, Socket = socket });

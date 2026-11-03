@@ -31,8 +31,10 @@ namespace Game.Core.Tests.Content
             Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(28));
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Aura && !gem.Locked).Select(gem => gem.Skill!.Effect), Is.All.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Active).Select(gem => gem.Skill!.Effect), Is.All.Not.InstanceOf<AuraEffect>());
-            Assert.That(gems.All.Where(gem => gem.Type == SkillType.Support).Select(gem => gem.Supports), Is.All.EqualTo(StatTags.Skill));
-            Assert.That(gems.All.Where(gem => gem.Type == SkillType.Support).Select(gem => gem.DamageMultiplier), Is.All.EqualTo(1));
+            var supports = gems.All.Where(gem => gem.Type == SkillType.Support).ToList();
+            Assert.That(supports.Select(gem => gem.Fits), Is.All.Not.EqualTo(SkillMechanic.None));
+            Assert.That(supports.Select(gem => gem.ManaMultiplier), Is.All.InRange(1.1, 1.4));
+            Assert.That(supports.Any(gem => gem.DamageMultiplier != 1), Is.True, "not every support keeps the plain damage");
         }
 
         [Test]
@@ -131,18 +133,18 @@ namespace Game.Core.Tests.Content
         [Test]
         public void ASupportNamesWhatItSupportsAndItsMultipliers()
         {
-            var support = WithExtra("{ \"id\": \"x\", \"kind\": \"support\", \"supports\": [\"DoT\"], \"damageMult\": 1.2, \"manaMult\": 1.3, \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"chain\", \"share\": 0.3 } }");
+            var support = WithExtra("{ \"id\": \"x\", \"kind\": \"support\", \"fits\": [\"dot\"], \"damageMult\": 1.2, \"manaMult\": 1.3, \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"chain\", \"share\": 0.3 } }");
 
             var gem = support["x"];
-            Assert.That(gem.Supports, Is.EqualTo(StatTags.DoT));
+            Assert.That(gem.Fits, Is.EqualTo(SkillMechanic.Dot));
             Assert.That(gem.DamageMultiplier, Is.EqualTo(1.2));
             Assert.That(gem.ManaMultiplier, Is.EqualTo(1.3));
             Assert.That(gem.CanSupport(support["runedancer_hit_1"]), Is.False);
             Assert.That(gem.CanSupport(support["chain"]), Is.False);
         }
 
-        [TestCase("\"supports\": [\"Skill\"], \"damageMult\": 1", "manaMult")]
-        [TestCase("\"supports\": [], \"damageMult\": 1, \"manaMult\": 1", "at least one skill tag")]
+        [TestCase("\"fits\": [\"strike\"], \"damageMult\": 1", "manaMult")]
+        [TestCase("\"fits\": [], \"damageMult\": 1, \"manaMult\": 1", "at least one skill mechanic")]
         public void ASupportWithoutItsFieldsIsRejected(string fields, string message)
         {
             var error = Assert.Throws<ContentException>(() => WithExtra("{ \"id\": \"x\", \"kind\": \"support\", " + fields + ", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"chain\", \"share\": 0.3 } }"))!;

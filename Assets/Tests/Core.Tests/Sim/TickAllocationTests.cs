@@ -159,6 +159,52 @@ namespace Game.Core.Tests.Sim
             Assert.That(allocated, Is.EqualTo(0));
         }
 
+        private static (GameLoop Loop, FakeInputSource Input) SupportedHero()
+        {
+            var (loop, input) = ClassSkillHero(HeroClass.Runedancer);
+            var gems = TestWorld.Data.Gems;
+            var items = TestWorld.Data.Items;
+            items.TryGetAffix("weapon_built_in_left", out var builtIn);
+            items.TryGetAffix("weapon_fast_level", out var level);
+            items.TryGetAffix("weapon_socket_auto", out var socket);
+            var affixes = new[] { new Game.Core.Content.Items.GearAffix(builtIn, 1, 1, gems["chain"]), new Game.Core.Content.Items.GearAffix(level, 6, 3), new Game.Core.Content.Items.GearAffix(socket, 1, 1) };
+            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Roll(TestWorld.Data.Weapons.StarterFor(HeroClass.Runedancer), Game.Core.Content.Items.ItemRarity.Legendary, 6, affixes));
+            loop.Weapons.Equip(weapon);
+            foreach (var slot in loop.State.Skills)
+            {
+                if (SkillLoadout.IsAura(slot.Skill))
+                {
+                    slot.Supports[0] = gems["resonance"];
+                    slot.Supports[1] = gems["legacy"];
+                }
+                else
+                {
+                    slot.Supports[0] = gems["boss_hunter"];
+                    slot.Supports[1] = gems["blade_hunger"];
+                    slot.Supports[2] = gems["crit_focus"];
+                }
+            }
+            loop.State.RecordStage = 300;
+            return (loop, input);
+        }
+
+        [Test]
+        public void SupportLinesAndWeaponAffixesDoNotAllocate()
+        {
+            RequireAllocationCounter();
+            var (warmUp, warmUpInput) = SupportedHero();
+            FightCastingEverything(warmUp, warmUpInput, 3000);
+            var (loop, input) = SupportedHero();
+            FightCastingEverything(loop, input, 1200);
+
+            var before = GC.GetAllocatedBytesForCurrentThread();
+            FightCastingEverything(loop, input, 3000);
+            var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
+
+            Assert.That(loop.Skills.SupportPartyLines, Is.Not.Empty);
+            Assert.That(allocated, Is.EqualTo(0));
+        }
+
         [TestCase(HeroClass.Duelist)]
         [TestCase(HeroClass.Minstrel)]
         public void CombatTicksDoNotAllocate(HeroClass heroClass)

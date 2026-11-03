@@ -12,7 +12,7 @@ namespace Game.Core.Build
         WrongClass,
         AlreadyInBook,
         NoSuchSocket,
-        AlreadyInBuild,
+        AlreadyOnSkill,
         WrongSlot,
         DoesNotFit,
         LevelTooLow

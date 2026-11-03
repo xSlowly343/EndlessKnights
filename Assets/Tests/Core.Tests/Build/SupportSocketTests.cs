@@ -1,3 +1,4 @@
+using System.Linq;
 using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Clock;
@@ -84,15 +85,17 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void EverySupportOnlyOncePerBuild()
+        public void OneSupportFitsTwoSkillsButOnlyOnceOnEach()
         {
             var loop = Hero();
-            var first = Equip(loop, "runedancer_hit_1", "rebound", "rebound");
-            var second = Equip(loop, "march");
+            loop.State.RecordStage = 300;
+            var first = Equip(loop, "runedancer_hit_1", "chain");
+            var second = Equip(loop, "runedancer_queue_1");
 
-            Assert.That(loop.Book.SetSupport(first, 0, Gem("rebound")), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.Book.SetSupport(second, 0, Gem("rebound")), Is.EqualTo(BookResult.AlreadyInBuild));
-            Assert.That(loop.Book.SetSupport(first, 0, Gem("rebound")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.SetSupport(first, 0, Gem("chain")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.SetSupport(second, 0, Gem("chain")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.SetSupport(first, 1, Gem("chain")), Is.EqualTo(BookResult.AlreadyOnSkill));
+            Assert.That(loop.Book.SetSupport(first, 0, Gem("chain")), Is.EqualTo(BookResult.Done));
         }
 
         [Test]
@@ -137,16 +140,16 @@ namespace Game.Core.Tests.Build
 
         private static GemCatalog WithSupport(string supports, double damage, double mana) =>
             GemCatalog.Load(TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"gems\": [",
-                "\"gems\": [\n    { \"id\": \"plain_help\", \"kind\": \"support\", \"supports\": [" + supports + "], \"damageMult\": " + damage.ToString(System.Globalization.CultureInfo.InvariantCulture) +
-                ", \"manaMult\": " + mana.ToString(System.Globalization.CultureInfo.InvariantCulture) + ", \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"apprentice\", \"power\": 1, \"experienceMultiplier\": 1 } },"));
+                "\"gems\": [\n    { \"id\": \"plain_help\", \"kind\": \"support\", \"fits\": [" + supports + "], \"damageMult\": " + damage.ToString(System.Globalization.CultureInfo.InvariantCulture) +
+                ", \"manaMult\": " + mana.ToString(System.Globalization.CultureInfo.InvariantCulture) + ", \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"effect\": { \"type\": \"lines\", \"lines\": [{ \"effect\": \"experience\", \"value\": 0 }] } },"));
 
         [Test]
         public void ASupportFitsOnlyTheSkillTypesItNames()
         {
             var loop = Hero();
             var slot = Equip(loop, "runedancer_hit_1");
-            var dots = WithSupport("\"DoT\"", 1, 1)["plain_help"];
-            var keys = WithSupport("\"Strike\", \"Skill\"", 1, 1)["plain_help"];
+            var dots = WithSupport("\"dot\"", 1, 1)["plain_help"];
+            var keys = WithSupport("\"strike\"", 1, 1)["plain_help"];
 
             Assert.That(loop.Book.SetSupport(slot, 0, dots), Is.EqualTo(BookResult.DoesNotFit));
             Assert.That(loop.Book.SetSupport(slot, 0, keys), Is.EqualTo(BookResult.Done));
@@ -160,7 +163,7 @@ namespace Game.Core.Tests.Build
             var slot = Equip(loop, "runedancer_hit_1");
             var catalog = new System.Collections.Generic.List<GemDef>(TestWorld.Data.Gems.All)
             {
-                WithSupport("\"DoT\"", 1, 1)["plain_help"],
+                WithSupport("\"dot\"", 1, 1)["plain_help"],
             };
             var offered = new System.Collections.Generic.List<GemDef>();
 
@@ -181,7 +184,7 @@ namespace Game.Core.Tests.Build
             var helped = Hero();
             var plainSlot = Equip(plain, "runedancer_hit_1");
             var slot = Equip(helped, "runedancer_hit_1");
-            Assert.That(helped.Book.SetSupport(slot, 0, WithSupport("\"Skill\"", 1.5, 2)["plain_help"]), Is.EqualTo(BookResult.Done));
+            Assert.That(helped.Book.SetSupport(slot, 0, WithSupport("\"strike\"", 1.5, 2)["plain_help"]), Is.EqualTo(BookResult.Done));
 
             Assert.That(CastDamage(helped, slot) / CastDamage(plain, plainSlot), Is.EqualTo(1.5).Within(1e-6));
             plain.State.Resource = 100;
@@ -206,7 +209,7 @@ namespace Game.Core.Tests.Build
         public void SupportWithoutItsMechanicWaits()
         {
             var catalog = GemCatalog.Load(TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"gems\": [",
-                "\"gems\": [\n    { \"id\": \"echo_keys\", \"kind\": \"support\", \"supports\": [\"Skill\"], \"damageMult\": 1, \"manaMult\": 1, \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"Эхо\", \"en\": \"Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\" } },"));
+                "\"gems\": [\n    { \"id\": \"echo_keys\", \"kind\": \"support\", \"fits\": [\"strike\"], \"damageMult\": 1, \"manaMult\": 1, \"level\": 1, \"color\": \"white\", \"name\": { \"ru\": \"Эхо\", \"en\": \"Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\" } },"));
             var loop = Hero();
             var slot = Equip(loop, "runedancer_hit_1");
             loop.State.OwnedGems.Add(catalog["echo_keys"]);
@@ -349,11 +352,12 @@ namespace Game.Core.Tests.Build
             hunter.Book.SetSupport(slot, 0, Gem("boss_hunter"));
             var support = Gem("boss_hunter").Support!;
 
-            Assert.That(CastDamage(hunter, slot) / CastDamage(plain, plainSlot), Is.EqualTo(support.NormalMultiplier).Within(1e-6));
+            Assert.That(support.Kind, Is.EqualTo(SupportKind.Lines));
+            Assert.That(CastDamage(hunter, slot) / CastDamage(plain, plainSlot), Is.EqualTo(0.95).Within(1e-6));
 
             foreach (var loop in new[] { plain, hunter })
                 loop.State.SpawnEnemy(null, EnemyType.Boss, BigNumber.Create(1, 50));
-            Assert.That(CastDamage(hunter, slot) / CastDamage(plain, plainSlot), Is.EqualTo(support.BossMultiplier).Within(1e-6));
+            Assert.That(CastDamage(hunter, slot) / CastDamage(plain, plainSlot), Is.EqualTo(1.6).Within(1e-6));
         }
 
         [Test]
@@ -388,21 +392,17 @@ namespace Game.Core.Tests.Build
         [Test]
         public void QuietTimeDoublesTheCastAfterALongPause()
         {
-            var support = Gem("quiet_time").Support!;
-            var pause = (long)(support.QuietSeconds * GameLoop.TicksPerSecond);
+            var pause = (long)(30 * GameLoop.TicksPerSecond);
 
-            Assert.That(CastPowerWith("quiet_time", loop => loop.State.IdleTicksBeforeInput = pause), Is.EqualTo(support.QuietPower).Within(1e-9));
+            Assert.That(CastPowerWith("quiet_time", loop => loop.State.IdleTicksBeforeInput = pause), Is.EqualTo(2).Within(1e-9));
             Assert.That(CastPowerWith("quiet_time", loop => loop.State.IdleTicksBeforeInput = pause - 1), Is.EqualTo(1).Within(1e-9));
         }
 
         [Test]
         public void BladeHungerGrowsWithKeyHitsSinceTheLastCastUpToItsCap()
         {
-            var support = Gem("blade_hunger").Support!;
-            var tenSteps = (long)(support.HungerHitsPerStep * 10);
-
-            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.StrikeHits += tenSteps), Is.EqualTo(1 + 10 * support.HungerStep).Within(1e-9));
-            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.StrikeHits += 1_000_000), Is.EqualTo(1 + support.HungerMax).Within(1e-9));
+            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.StrikeHits += 40), Is.EqualTo(1.1).Within(1e-9));
+            Assert.That(CastPowerWith("blade_hunger", loop => loop.State.StrikeHits += 1_000_000), Is.EqualTo(1.4).Within(1e-9));
         }
 
         [Test]
@@ -425,10 +425,8 @@ namespace Game.Core.Tests.Build
         [Test]
         public void AccelerationGrowsWithFocusUpToItsCap()
         {
-            var support = Gem("acceleration").Support!;
-
-            Assert.That(CastPowerWith("acceleration", loop => loop.State.FocusMultiplier = 2), Is.EqualTo(1 + support.FocusBonus / support.FocusStep).Within(1e-9));
-            Assert.That(CastPowerWith("acceleration", loop => loop.State.FocusMultiplier = 100), Is.EqualTo(1 + support.FocusBonusMax).Within(1e-9));
+            Assert.That(CastPowerWith("acceleration", loop => loop.State.FocusMultiplier = 2), Is.EqualTo(1.16).Within(1e-9));
+            Assert.That(CastPowerWith("acceleration", loop => loop.State.FocusMultiplier = 100), Is.EqualTo(1.56).Within(1e-9));
         }
 
         [Test]
@@ -439,15 +437,14 @@ namespace Game.Core.Tests.Build
             var plainSlot = Equip(plain, "runedancer_hit_1");
             var slot = Equip(focused, "runedancer_hit_1", "crit_focus");
             focused.Book.SetSupport(slot, 0, Gem("crit_focus"));
-            var support = Gem("crit_focus").Support!;
             focused.State.FocusMultiplier = 2;
-            Assert.That(SupportEffects.CritChance(focused.State.Skills[slot], focused.State), Is.EqualTo(support.CritPerFocusStep / support.CritFocusStep).Within(1e-9));
+            Assert.That(SupportEffects.CritChance(focused.State.Skills[slot], focused.State), Is.EqualTo(0.06).Within(1e-9));
 
             plain.State.FocusMultiplier = 1000;
             focused.State.FocusMultiplier = 1000;
             var ratio = CastDamage(focused, slot) / CastDamage(plain, plainSlot);
 
-            Assert.That(ratio, Is.EqualTo(focused.Combat.CritMultiplier(StatTags.Skill) * support.CritMultiplier).Within(1e-6));
+            Assert.That(ratio, Is.EqualTo(focused.Combat.CritMultiplier(StatTags.Skill) * 1.2).Within(1e-6));
         }
 
         [Test]
@@ -471,7 +468,7 @@ namespace Game.Core.Tests.Build
             var slot = Equip(loop, "runedancer_hit_1", "deferred_payment");
             loop.Book.SetSupport(slot, 0, Gem("deferred_payment"));
             var support = Gem("deferred_payment").Support!;
-            var cost = gem.Skill!.ResourceCost * support.CostMultiplier;
+            var cost = gem.Skill!.ResourceCost * support.CostMultiplier * Gem("deferred_payment").ManaMultiplier;
             loop.State.Resource = 100;
 
             Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
@@ -544,7 +541,7 @@ namespace Game.Core.Tests.Build
             var slot = Supported(twins, "runedancer_hit_1", "twins");
             var support = Gem("twins").Support!;
             var first = CastDamage(twins, slot);
-            Assert.That(first, Is.EqualTo(CastDamage(plain, plainSlot)).Within(first * 1e-9));
+            Assert.That(first, Is.EqualTo(CastDamage(plain, plainSlot) * Gem("twins").DamageMultiplier).Within(first * 1e-9));
 
             twins.Events.Clear();
             for (var i = 0; i < (int)(support.TwinSeconds * GameLoop.TicksPerSecond); i++)
@@ -770,7 +767,6 @@ namespace Game.Core.Tests.Build
         [Test]
         public void PawnbrokerTradesPowerForRicherKills()
         {
-            var support = Gem("pawnbroker").Support!;
             var loop = Hero();
             var slot = Supported(loop, "runedancer_hit_1", "pawnbroker");
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(1));
@@ -779,8 +775,8 @@ namespace Game.Core.Tests.Build
 
             CastDamage(loop, slot);
 
-            Assert.That(loop.State.Skills[slot].CastPower, Is.EqualTo(support.Power).Within(1e-9));
-            Assert.That((loop.State.Gold - before).ToDouble(), Is.EqualTo((gold * support.KillRewardMultiplier).ToDouble()).Within(1e-6));
+            Assert.That(loop.State.Skills[slot].CastPower, Is.EqualTo(0.7).Within(1e-9));
+            Assert.That((loop.State.Gold - before).ToDouble(), Is.EqualTo((gold * 1.4).ToDouble()).Within(1e-6));
         }
 
         [Test]
@@ -816,17 +812,82 @@ namespace Game.Core.Tests.Build
         [Test]
         public void LegacyIsStrongerOnlyInAParty()
         {
-            var support = Gem("legacy").Support!;
-
             Assert.That(CastPowerWith("legacy", l => l.State.PartyMembers = 1), Is.EqualTo(1).Within(1e-9));
-            Assert.That(CastPowerWith("legacy", l => l.State.PartyMembers = 3), Is.EqualTo(support.PartyPower).Within(1e-9));
+            Assert.That(CastPowerWith("legacy", l => l.State.PartyMembers = 3), Is.EqualTo(1.1).Within(1e-9));
+        }
+
+        [Test]
+        public void ASupportMakesTheSkillCostMoreByItsManaMultiplier()
+        {
+            var plain = Hero();
+            var chained = Hero();
+            var plainSlot = Equip(plain, "runedancer_hit_1");
+            var slot = Supported(chained, "runedancer_hit_1", "chain");
+            plain.State.Resource = 100;
+            chained.State.Resource = 100;
+
+            plain.Skills.TryCast(plainSlot);
+            chained.Skills.TryCast(slot);
+
+            Assert.That(Gem("chain").ManaMultiplier, Is.GreaterThan(1));
+            Assert.That(100 - chained.State.Resource, Is.EqualTo((100 - plain.State.Resource) * Gem("chain").ManaMultiplier).Within(1e-9));
+        }
+
+        [Test]
+        public void AnAuraIsOfferedAuraSupportsAndAStrikeIsOfferedStrikeSupports()
+        {
+            var loop = Hero();
+            loop.State.HeroLevel = 100;
+            var strike = Equip(loop, "runedancer_hit_1");
+            var aura = Equip(loop, "march");
+            var offered = new System.Collections.Generic.List<GemDef>();
+
+            loop.Book.SupportsFor(aura, TestWorld.Data.Gems.All, offered);
+            Assert.That(offered.Select(gem => gem.Id), Does.Contain("resonance").And.Not.Contain("chain"));
+
+            loop.Book.SupportsFor(strike, TestWorld.Data.Gems.All, offered);
+            Assert.That(offered.Select(gem => gem.Id), Does.Contain("chain").And.Not.Contain("resonance").And.Not.Contain("minion_trail"));
+        }
+
+        [Test]
+        public void ResonanceAndLegacyHangTheirPartyLinesWhileSocketedOncePerKind()
+        {
+            var loop = Hero();
+            var first = Equip(loop, "march", "resonance");
+            var second = Equip(loop, "runedancer_aura_1");
+            loop.Book.SetSupport(first, 0, Gem("resonance"));
+            loop.Book.SetSupport(second, 0, Gem("resonance"));
+
+            loop.Tick();
+
+            Assert.That(loop.Skills.SupportPartyLines, Is.EqualTo(Gem("resonance").Support!.PartyLines));
+            Assert.That(Game.Core.Party.CoopLine.TryGet(loop.Skills.SupportPartyLines[0].Stat, out var line), Is.True);
+            Assert.That(line.To, Is.EqualTo(Game.Core.Party.CoopTarget.Allies));
+
+            loop.Book.SetSupport(first, 0, null);
+            loop.Book.SetSupport(second, 0, null);
+            loop.Tick();
+
+            Assert.That(loop.Skills.SupportPartyLines, Is.Empty);
+        }
+
+        [Test]
+        public void ASupportLineTakesWhenOrUnlessButNotBoth()
+        {
+            var json = TestData.ReadGameDataFile(GemCatalog.FileName).Replace(
+                "{\"effect\": \"power\", \"value\": 0.6, \"when\": {\"signal\": \"boss\"}}",
+                "{\"effect\": \"power\", \"value\": 0.6, \"when\": {\"signal\": \"boss\"}, \"unless\": {\"signal\": \"boss\"}}");
+            var unknown = TestData.ReadGameDataFile(GemCatalog.FileName).Replace("\"signal\": \"boss\"}}", "\"signal\": \"moon\"}}");
+
+            Assert.That(Assert.Throws<ContentException>(() => GemCatalog.Load(json))!.Message, Does.Contain("not both"));
+            Assert.That(Assert.Throws<ContentException>(() => GemCatalog.Load(unknown))!.Message, Does.Contain("moon"));
         }
 
         [Test]
         public void ResonanceGoesIntoASocketNowThatThePartyHasBuffs()
         {
             var loop = Hero();
-            var slot = Equip(loop, "runedancer_hit_1", "resonance");
+            var slot = Equip(loop, "march", "resonance");
 
             Assert.That(loop.Book.SetSupport(slot, 0, Gem("resonance")), Is.EqualTo(BookResult.Done));
         }

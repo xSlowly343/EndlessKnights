@@ -160,7 +160,7 @@ namespace Game.Core.Content.Gems
                     return ReadSkillGem(node, id, type, color, nameRu, nameEn, tags);
                 default:
                     return new GemDef(id, GemKind.Support, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(),
-                        support: SupportDef.Read(node.Field("effect")), supports: ReadSupported(node.Field("supports")),
+                        support: SupportDef.Read(node.Field("effect")), fits: SkillMechanics.Read(node.Field("fits")),
                         damageMultiplier: node.Field("damageMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
                         manaMultiplier: node.Field("manaMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
                         unlockLevel: node.Field("level").AsInt(1, 1000));
@@ -169,19 +169,11 @@ namespace Game.Core.Content.Gems
 
         private static void RejectSupportFields(ContentNode node)
         {
-            foreach (var field in new[] { "supports", "damageMult", "manaMult", "level" })
+            foreach (var field in new[] { "fits", "damageMult", "manaMult", "level" })
             {
                 if (node.HasField(field))
                     throw node.Field(field).Error("only a support has this field");
             }
-        }
-
-        private static StatTags ReadSupported(ContentNode node)
-        {
-            var tags = ModifierReader.ReadTags(node);
-            if (tags == StatTags.None)
-                throw node.Error("a support needs at least one skill tag it supports");
-            return tags;
         }
 
         private static IReadOnlyList<SkillBranchTier> ReadBranches(ContentNode skill, double durationSeconds, List<ContentNode?> overrides)

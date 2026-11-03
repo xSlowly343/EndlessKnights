@@ -40,9 +40,6 @@ namespace Game.Core.Party
         private readonly double[] _contribution = new double[PartyRules.MaxSlots];
         private readonly int[] _reaction = { NoReaction, NoReaction, NoReaction, NoReaction };
         private readonly long[] _reactionTick = new long[PartyRules.MaxSlots];
-        private readonly int[] _glowGem = new int[PartyBuffRules.MaxAuras];
-        private readonly float[] _glowStrength = new float[PartyBuffRules.MaxAuras];
-        private readonly long[] _glowUntil = new long[PartyBuffRules.MaxAuras];
         private readonly int[] _reactionSerial = new int[PartyRules.MaxSlots];
         private readonly double[] _allyShares = new double[PartyRules.MaxSlots];
         private long _lastSentReactionTick = PartyEncounter.Never;
@@ -936,20 +933,14 @@ namespace Game.Core.Party
                 var slot = skills[i];
                 if (!slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura) || !aura.Party)
                     continue;
-                offer.SetAura(count++, Resonate(slot, slot.AuraStrength, slot.ActiveTicks));
+                offer.SetAura(count++, Offered(slot, slot.AuraStrength, slot.ActiveTicks));
             }
             for (var i = 0; i < skills.Count && count < PartyBuffRules.MaxAuras; i++)
             {
                 if (!_loop.Skills.SharesStacks(i, out var stacks))
                     continue;
                 var slot = skills[i];
-                offer.SetAura(count++, Resonate(slot, System.Math.Min(stacks.MaxTotal, stacks.PerStack.Value * slot.Stacks), slot.StackTicks > 0 ? slot.StackTicks : slot.ActiveTicks));
-            }
-            for (var i = 0; i < _glowGem.Length && count < PartyBuffRules.MaxAuras; i++)
-            {
-                if (_glowGem[i] == 0 || _glowUntil[i] <= _tick || Offered(offer, count, _glowGem[i]))
-                    continue;
-                offer.SetAura(count++, new OfferedAura { GemNetId = _glowGem[i], Strength = _glowStrength[i], TicksLeft = (int)(_glowUntil[i] - _tick) });
+                offer.SetAura(count++, Offered(slot, System.Math.Min(stacks.MaxTotal, stacks.PerStack.Value * slot.Stacks), slot.StackTicks > 0 ? slot.StackTicks : slot.ActiveTicks));
             }
             SendToHost(PartyCodec.Encode(_out, offer));
         }
@@ -993,56 +984,8 @@ namespace Game.Core.Party
             return loadout;
         }
 
-        private OfferedAura Resonate(SkillSlot slot, double strength, int ticks)
-        {
-            var offered = new OfferedAura { GemNetId = slot.Skill.NetId, Strength = (float)strength, TicksLeft = ticks };
-            var resonance = ResonanceOf(slot);
-            if (resonance == null)
-                return offered;
-            offered.Strength = (float)(strength * resonance.AllyPower);
-            offered.TicksLeft = ticks + Ticks(resonance.AfterSeconds);
-            Glow(offered);
-            return offered;
-        }
-
-        private static SupportDef? ResonanceOf(SkillSlot slot)
-        {
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support != null && support.Kind == SupportKind.Resonance)
-                    return support;
-            }
-            return null;
-        }
-
-        private void Glow(in OfferedAura offered)
-        {
-            var free = 0;
-            for (var i = 0; i < _glowGem.Length; i++)
-            {
-                if (_glowGem[i] == offered.GemNetId)
-                {
-                    free = i;
-                    break;
-                }
-                if (_glowUntil[i] < _glowUntil[free])
-                    free = i;
-            }
-            _glowGem[free] = offered.GemNetId;
-            _glowStrength[free] = offered.Strength;
-            _glowUntil[free] = _tick + offered.TicksLeft;
-        }
-
-        private static bool Offered(in PartyOfferMessage offer, int count, int gemNetId)
-        {
-            for (var i = 0; i < count; i++)
-            {
-                if (offer.Aura(i).GemNetId == gemNetId)
-                    return true;
-            }
-            return false;
-        }
+        private static OfferedAura Offered(SkillSlot slot, double strength, int ticks) =>
+            new OfferedAura { GemNetId = slot.Skill.NetId, Strength = (float)strength, TicksLeft = ticks };
 
         private void SendToHost(int length) => _transport.Send(_hostId, _out, length);
 

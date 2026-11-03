@@ -36,9 +36,10 @@ namespace Game.Core.Content.Weapons
 
         public bool Opens(string skillId)
         {
-            foreach (var id in OpensSkills)
+            var opens = OpensSkills;
+            for (var i = 0; i < opens.Count; i++)
             {
-                if (string.Equals(id, skillId, StringComparison.Ordinal))
+                if (string.Equals(opens[i], skillId, StringComparison.Ordinal))
                     return true;
             }
             return false;
@@ -46,8 +47,9 @@ namespace Game.Core.Content.Weapons
 
         public Gems.GemDef? BuiltInSupport(Sim.SkillSlotRole role)
         {
-            foreach (var affix in Affixes)
+            for (var i = 0; i < Affixes.Count; i++)
             {
+                var affix = Affixes[i];
                 if (affix.Support != null && affix.Def.BuiltInRole == role)
                     return affix.Support;
             }

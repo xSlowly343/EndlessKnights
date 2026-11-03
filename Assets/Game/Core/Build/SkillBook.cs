@@ -191,15 +191,12 @@ namespace Game.Core.Build
             }
         }
 
-        public bool InBuild(GemDef support)
+        public static bool OnSkill(SkillSlot slot, GemDef support)
         {
-            foreach (var slot in _state.Skills)
+            for (var i = 0; i < SkillSlot.BuiltInSocket; i++)
             {
-                for (var i = 0; i < SkillSlot.BuiltInSocket; i++)
-                {
-                    if (ReferenceEquals(slot.Supports[i], support))
-                        return true;
-                }
+                if (ReferenceEquals(slot.Supports[i], support))
+                    return true;
             }
             return false;
         }
@@ -224,8 +221,8 @@ namespace Game.Core.Build
                 return BookResult.Done;
             if (!support.CanSupport(slot.Skill))
                 return BookResult.DoesNotFit;
-            if (InBuild(support))
-                return BookResult.AlreadyInBuild;
+            if (OnSkill(slot, support))
+                return BookResult.AlreadyOnSkill;
             if (!SupportOpen(support))
                 return BookResult.LevelTooLow;
             slot.Supports[socket] = support;

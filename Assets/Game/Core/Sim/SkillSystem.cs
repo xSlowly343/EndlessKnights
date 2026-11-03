@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
 using Game.Core.Content.Weapons;
@@ -26,6 +27,9 @@ namespace Game.Core.Sim
         private long _lastKeyHitTick = long.MinValue / 2;
         private long _keyGapTicks;
         private BigNumber _lastKeyHitDamage;
+        private readonly ModifierLayer _supportParty;
+        private readonly SupportDef?[] _partySupports = new SupportDef?[SkillLoadout.MaxSlots * SkillSlot.SocketCapacity];
+        private readonly System.Collections.Generic.List<Modifier> _partyLines = new System.Collections.Generic.List<Modifier>();
 
         public SkillSystem(GameState state, EventQueue events, ResourceSystem resource, CombatSystem combat, StatSheet hero, WeaponCatalog weapons)
         {
@@ -37,12 +41,51 @@ namespace Game.Core.Sim
             _weapons = weapons;
             Dots = new DotSystem(state, hero, combat);
             Minions = new MinionSystem(state, hero, combat, Dots);
+            _supportParty = new ModifierLayer(hero);
             _seenKills = state.Kills;
             foreach (var slot in _state.Skills)
             {
                 if (slot.Active)
                     ApplyAura(slot);
             }
+        }
+
+        public IReadOnlyList<Modifier> SupportPartyLines => _supportParty.Applied;
+
+        private void RefreshSupportPartyLines()
+        {
+            var count = 0;
+            var changed = false;
+            foreach (var slot in _state.Skills)
+            {
+                for (var i = 0; i < slot.Supports.Length; i++)
+                {
+                    var support = slot.Supports[i]?.Support;
+                    if (support == null || support.PartyLines.Count == 0 || Seen(support, count))
+                        continue;
+                    changed |= count >= _partySupports.Length || !ReferenceEquals(_partySupports[count], support);
+                    if (count < _partySupports.Length)
+                        _partySupports[count++] = support;
+                }
+            }
+            changed |= count < _partySupports.Length && _partySupports[count] != null;
+            if (!changed)
+                return;
+            System.Array.Clear(_partySupports, count, _partySupports.Length - count);
+            _partyLines.Clear();
+            for (var i = 0; i < count; i++)
+                _partyLines.AddRange(_partySupports[i]!.PartyLines);
+            _supportParty.Set(_partyLines);
+        }
+
+        private bool Seen(SupportDef support, int count)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                if (ReferenceEquals(_partySupports[i], support))
+                    return true;
+            }
+            return false;
         }
 
         public bool SharedEnemy { get; private set; }
@@ -291,7 +334,6 @@ namespace Game.Core.Sim
             slot.LingerTicks = 0;
             slot.WindPx = 0;
             slot.WindTicks = 0;
-            slot.FlickTargets = 0;
             if (skill.Effect is ChainHitsEffect chain)
                 slot.HitsLeft = chain.Hits;
             if (skill.Effect is InputHitsEffect hits && hits.MaxHits > 0)
@@ -836,6 +878,7 @@ namespace Game.Core.Sim
 
         public void Tick(in EffectiveInput input, long idleTicksBefore)
         {
+            RefreshSupportPartyLines();
             var kills = (int)System.Math.Min(int.MaxValue, System.Math.Max(0, _state.Kills - _seenKills));
             _seenKills = _state.Kills;
             var poisonTicks = Dots.PoisonTicks - _seenPoisonTicks;

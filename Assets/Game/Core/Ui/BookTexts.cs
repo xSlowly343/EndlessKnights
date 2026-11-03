@@ -36,7 +36,7 @@ namespace Game.Core.Ui
             BookResult.WrongClass => Texts.Get("book.result.wrongClass"),
             BookResult.AlreadyInBook => Texts.Get("book.result.alreadyInBook"),
             BookResult.NoSuchSocket => Texts.Get("book.result.noSuchSocket"),
-            BookResult.AlreadyInBuild => Texts.Get("book.result.alreadyInBuild"),
+            BookResult.AlreadyOnSkill => Texts.Get("book.result.alreadyOnSkill"),
             BookResult.WrongSlot => Texts.Get("book.result.wrongSlot"),
             BookResult.DoesNotFit => Texts.Get("book.result.doesNotFit"),
             BookResult.LevelTooLow => Texts.Get("book.result.levelTooLow"),

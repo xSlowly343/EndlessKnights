@@ -20,8 +20,8 @@ namespace Game.Core.Tests.Content
 
             Assert.That(gems.All.Count(gem => gem.Skill?.Weapon == null && gem.Kind != GemKind.Support), Is.EqualTo(29));
             Assert.That(gems.All.Where(gem => gem.Kind == GemKind.Support).Select(gem => gem.Support), Is.All.Not.Null);
-            Assert.That(gems["resonance"].Support!.AllyPower, Is.EqualTo(1.2));
-            Assert.That(gems["resonance"].Support!.AfterSeconds, Is.EqualTo(5));
+            Assert.That(gems["resonance"].Support!.Kind, Is.EqualTo(SupportKind.Lines));
+            Assert.That(gems["resonance"].Support!.PartyLines.Count, Is.EqualTo(1));
             Assert.That(gems.All.Count(gem => gem.Kind == GemKind.Support), Is.EqualTo(28));
             foreach (var id in new[] { "runedancer_hit_1", "runedancer_strong_1", "minstrel_aura_1", "minstrel_aura_2" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
@@ -88,7 +88,7 @@ namespace Game.Core.Tests.Content
         public void SupportGemsAlreadyFitTheFormat()
         {
             var gems = GemCatalog.Load(WithExtraGem(
-                "{ \"id\": \"echo_keys\", \"kind\": \"support\", \"supports\": [\"Skill\"], \"damageMult\": 1, \"manaMult\": 1, \"level\": 1, \"color\": \"red\", \"name\": { \"ru\": \"Эхо клавиш\", \"en\": \"Key Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\", \"keys\": 50 } }"));
+                "{ \"id\": \"echo_keys\", \"kind\": \"support\", \"fits\": [\"strike\"], \"damageMult\": 1, \"manaMult\": 1, \"level\": 1, \"color\": \"red\", \"name\": { \"ru\": \"Эхо клавиш\", \"en\": \"Key Echo\" }, \"effect\": { \"type\": \"repeatEveryKeys\", \"keys\": 50 } }"));
 
             Assert.That(gems["echo_keys"].Kind, Is.EqualTo(GemKind.Support));
             Assert.That(gems["echo_keys"].SupportEffect, Is.EqualTo("repeatEveryKeys"));

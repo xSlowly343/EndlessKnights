@@ -172,7 +172,6 @@ namespace Game.Core.Tests.Sim.Weapons
 
             Assert.That(loop.State.Skills[left].Supports[SkillSlot.BuiltInSocket], Is.SameAs(Gem("chain")));
             Assert.That(loop.State.Skills[right].Supports[SkillSlot.BuiltInSocket], Is.Null);
-            Assert.That(loop.Book.InBuild(Gem("chain")), Is.False);
             Assert.That(loop.Book.FreeCopies(Gem("chain")), Is.EqualTo(0));
 
             loop.Weapons.Unequip();

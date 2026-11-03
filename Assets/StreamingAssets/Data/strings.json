@@ -1208,7 +1208,7 @@
     "book.result.wrongClass": { "ru": "Это скилл другого класса", "en": "This skill belongs to another class" },
     "book.result.alreadyInBook": { "ru": "Скилл уже в Книге", "en": "The skill is already in the Book" },
     "book.result.noSuchSocket": { "ru": "Этот сокет ещё закрыт", "en": "This socket is still closed" },
-    "book.result.alreadyInBuild": { "ru": "Эта поддержка уже стоит в билде", "en": "This support is already in the build" },
+    "book.result.alreadyOnSkill": { "ru": "Эта поддержка уже стоит на этом скилле", "en": "This support is already on this skill" },
     "book.result.wrongSlot": { "ru": "В слот ауры встаёт только аура", "en": "Only an aura fits an aura slot" },
     "book.result.doesNotFit": { "ru": "Эта поддержка не подходит к этому скиллу", "en": "This support does not fit this skill" },
     "book.result.levelTooLow": { "ru": "Поддержка откроется на более высоком уровне героя", "en": "This support opens at a higher hero level" },
