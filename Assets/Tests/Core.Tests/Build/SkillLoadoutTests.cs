@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Build
                 SkillSlotRole.Left, SkillSlotRole.Right, SkillSlotRole.Auto
             }));
             Assert.That(loop.Book.Equip(Gem(auras[7])), Is.EqualTo(BookResult.NoFreeSlot));
-            Assert.That(loop.State.Skills.Count, Is.EqualTo(SkillLoadout.HandSlots + 1 + SkillLoadout.AuraSlots));
+            Assert.That(loop.State.Skills.Count, Is.EqualTo(SkillLoadout.HandSlots + 1 + SkillLoadout.LeveledAuraSlots), "the fifth aura slot comes only from an item");
         }
 
         [Test]

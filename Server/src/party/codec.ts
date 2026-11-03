@@ -210,7 +210,7 @@ function partyBitCount(mask: number): number {
     return count;
 }
 
-const PartySkillSlots = 8;
+const PartySkillSlots = 9;
 const PartyLoadoutBytes = 2 + PartySkillSlots * 6;
 
 function partyRelayLoadout(data: ArrayBuffer, slot: number): ArrayBuffer | null {

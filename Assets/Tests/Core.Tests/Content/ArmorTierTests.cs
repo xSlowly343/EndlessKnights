@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void EveryUltimateAffixGivesTwoLinesThatGrowWithTheTier()
+        public void EveryUltimateAffixGivesTwoLinesAndARuleKeepsItsPriceFixed()
         {
             var ultimate = Catalog.Affixes.Where(affix => affix.FromRarity == ItemRarity.Ancient).ToList();
             Assert.That(ultimate, Is.Not.Empty);
@@ -85,8 +85,17 @@ namespace Game.Core.Tests.Content
                 new GearAffix(def, 1, def.ValueAt(1, Catalog.Tiers)).AddModifiers(low);
                 new GearAffix(def, Catalog.Tiers, def.ValueAt(Catalog.Tiers, Catalog.Tiers)).AddModifiers(high);
                 Assert.That(low.Count, Is.EqualTo(def.Stats.Count), def.Id);
-                Assert.That(System.Math.Abs(high[1].Value), Is.GreaterThan(System.Math.Abs(low[1].Value)), def.Id);
                 Assert.That(high[1].Value, Is.EqualTo(def.Stats[1].TierLast).Within(1e-9), def.Id);
+                if (def.Group == "ultimate_rule")
+                {
+                    Assert.That(high[1].Value, Is.EqualTo(low[1].Value).Within(1e-9), def.Id + ": the price of a rule stays fixed");
+                    if (def.TierOne != def.TierLast)
+                        Assert.That(System.Math.Abs(high[0].Value), Is.GreaterThan(System.Math.Abs(low[0].Value)), def.Id);
+                }
+                else
+                {
+                    Assert.That(System.Math.Abs(high[1].Value), Is.GreaterThan(System.Math.Abs(low[1].Value)), def.Id);
+                }
             }
         }
 

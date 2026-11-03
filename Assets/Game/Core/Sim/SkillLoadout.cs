@@ -7,7 +7,8 @@ namespace Game.Core.Sim
     {
         public const int HandSlots = 2;
         public const int AutoSlots = 2;
-        public const int AuraSlots = 4;
+        public const int LeveledAuraSlots = 4;
+        public const int AuraSlots = LeveledAuraSlots + 1;
         public const int MaxSlots = HandSlots + AutoSlots + AuraSlots;
         public const int NoSlot = -1;
 

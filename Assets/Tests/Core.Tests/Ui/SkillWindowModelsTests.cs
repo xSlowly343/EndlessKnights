@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
-        public void TheBarHasEightPlacesInTheOrderOfTheStrip()
+        public void TheBarHasNinePlacesInTheOrderOfTheStrip()
         {
             var loop = Duelist(12);
             loop.Skills.Equip(Gem("duelist_hit_1"), role: SkillSlotRole.Right);
@@ -36,13 +36,14 @@ namespace Game.Core.Tests.Ui
 
             SkillBarLayout.Fill(loop.State.Skills, loop.Book, places);
 
-            Assert.That(places.Select(p => p.Role), Is.EqualTo(new[] { SkillSlotRole.Left, SkillSlotRole.Right, SkillSlotRole.Auto, SkillSlotRole.Auto, SkillSlotRole.Aura, SkillSlotRole.Aura, SkillSlotRole.Aura, SkillSlotRole.Aura }));
+            Assert.That(places.Select(p => p.Role), Is.EqualTo(new[] { SkillSlotRole.Left, SkillSlotRole.Right, SkillSlotRole.Auto, SkillSlotRole.Auto, SkillSlotRole.Aura, SkillSlotRole.Aura, SkillSlotRole.Aura, SkillSlotRole.Aura, SkillSlotRole.Aura }));
             Assert.That(places[0].Empty, Is.True);
             Assert.That(loop.State.Skills[places[1].Row].Skill, Is.SameAs(Gem("duelist_hit_1")));
             Assert.That(loop.State.Skills[places[4].Row].Skill, Is.SameAs(Gem("duelist_aura_2")));
             Assert.That(places[2].Open, Is.True);
             Assert.That(SkillBarTexts.Locked(places[3]), Is.EqualTo("этап 100"));
             Assert.That(SkillBarTexts.Locked(places[5]), Is.EqualTo("ур. 25"));
+            Assert.That(SkillBarTexts.Locked(places[8]), Is.EqualTo("от вещи"));
             Assert.That(SkillBarTexts.Key(places[0].Role) + SkillBarTexts.Key(places[1].Role), Is.EqualTo("ЛП"));
             Assert.That(places[4].CastsByItself, Is.True);
         }

@@ -17,7 +17,8 @@ namespace Game.Core.Ui
         public static string Locked(in SkillBarPlace place) =>
             place.Open ? string.Empty
             : place.UnlockLevel > 0 ? Texts.Format("skillbar.lockedLevel", place.UnlockLevel)
-            : Texts.Format("skillbar.lockedStage", place.UnlockStage);
+            : place.UnlockStage > 0 ? Texts.Format("skillbar.lockedStage", place.UnlockStage)
+            : Texts.Get("skillbar.lockedByItem");
 
         public static string Role(SkillSlotRole role) => role switch
         {
