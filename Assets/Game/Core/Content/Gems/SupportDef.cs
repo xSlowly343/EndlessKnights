@@ -18,7 +18,17 @@ namespace Game.Core.Content.Gems
         Cursed,
         LingeringBlight,
         KeyEcho,
+        Carrier,
         Lines
+    }
+
+    public enum CarrierTrigger
+    {
+        Boss,
+        FullResource,
+        Keys,
+        Mouse,
+        LowHp
     }
 
     public sealed class SupportDef
@@ -63,6 +73,38 @@ namespace Game.Core.Content.Gems
         public double StackCapMultiplier { get; private set; } = 1;
         public int EchoEveryKeys { get; private set; }
         public double EchoPower { get; private set; }
+        public CarrierTrigger CarrierOn { get; private set; }
+        public double CarrierEvery { get; private set; }
+        public double CarrierSeconds { get; private set; }
+        public double CarrierBelow { get; private set; }
+        public double CarrierPower { get; private set; }
+        public bool IsCarrier => Kind == SupportKind.Carrier;
+
+        private static readonly System.Collections.Generic.Dictionary<string, CarrierTrigger> Triggers =
+            new System.Collections.Generic.Dictionary<string, CarrierTrigger>(System.StringComparer.Ordinal)
+            {
+                ["boss"] = CarrierTrigger.Boss,
+                ["fullResource"] = CarrierTrigger.FullResource,
+                ["keys"] = CarrierTrigger.Keys,
+                ["mouse"] = CarrierTrigger.Mouse,
+                ["lowHp"] = CarrierTrigger.LowHp
+            };
+
+        private static SupportDef ReadCarrier(ContentNode effect)
+        {
+            var on = effect.Field("on");
+            if (!Triggers.TryGetValue(on.AsString(), out var trigger))
+                throw on.Error($"unknown carrier trigger '{on.AsString()}', expected one of {string.Join(", ", Triggers.Keys)}");
+            var needsEvery = trigger == CarrierTrigger.Keys || trigger == CarrierTrigger.Mouse;
+            return new SupportDef(SupportKind.Carrier)
+            {
+                CarrierOn = trigger,
+                CarrierEvery = needsEvery ? effect.Field("every").AsNumber(1, 1e9) : 0,
+                CarrierSeconds = effect.HasField("everySeconds") ? effect.Field("everySeconds").AsNumber(0, 600) : 0,
+                CarrierBelow = trigger == CarrierTrigger.LowHp ? effect.Field("below").AsNumber(0.01, 1) : 0,
+                CarrierPower = effect.Field("castPower").AsNumber(0.01, 10)
+            };
+        }
 
         public System.Collections.Generic.IReadOnlyList<SupportLine> Lines { get; private set; } = System.Array.Empty<SupportLine>();
         public System.Collections.Generic.IReadOnlyList<Stats.Modifier> PartyLines { get; private set; } = System.Array.Empty<Stats.Modifier>();
@@ -87,6 +129,14 @@ namespace Game.Core.Content.Gems
         }
 
         public static SupportDef? Read(ContentNode effect)
+        {
+            var support = ReadKind(effect);
+            if (support != null && effect.HasField("damage"))
+                support.Power *= 1 + effect.Field("damage").AsNumber(0, 10);
+            return support;
+        }
+
+        private static SupportDef? ReadKind(ContentNode effect)
         {
             switch (effect.Field("type").AsString())
             {
@@ -184,6 +234,8 @@ namespace Game.Core.Content.Gems
                         EchoPower = effect.Field("power").AsNumber(0, 10),
                         ActiveKeyDamage = effect.Field("keyDamage").AsNumber(0, 100)
                     };
+                case "carrier":
+                    return ReadCarrier(effect);
                 case "lines":
                     return ReadLines(effect);
                 default:

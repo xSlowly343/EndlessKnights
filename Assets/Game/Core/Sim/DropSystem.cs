@@ -61,7 +61,7 @@ namespace Game.Core.Sim
         }
 
         private static bool Drops(GemDef gem) =>
-            !gem.Locked && gem.Ascendancy == null && (gem.Kind != GemKind.Skill || gem.Skill?.Weapon == null);
+            gem.Kind == GemKind.Skill && !gem.Locked && gem.Ascendancy == null && gem.Skill?.Weapon == null;
 
         public static bool Cuttable(GemDef gem) => Drops(gem);
 
@@ -286,12 +286,12 @@ namespace Game.Core.Sim
         public void OnKill(EnemyType type)
         {
             var bonus = System.Math.Max(0, _hero.Value(CombatStats.GemDrop, 1));
-            RollGem(GemKind.Skill, type, bonus);
-            RollGem(GemKind.Support, type, bonus);
+            RollGem(type, bonus);
         }
 
-        private void RollGem(GemKind kind, EnemyType type, double bonus)
+        private void RollGem(EnemyType type, double bonus)
         {
+            var kind = GemKind.Skill;
             var chance = _rules.GemChance(kind).For(type) * bonus;
             if (chance <= 0 || _gemPools[(int)kind].Count == 0 || !_state.Drops.Rng.Chance(chance))
                 return;

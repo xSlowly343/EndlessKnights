@@ -202,8 +202,7 @@ namespace Game.Core.Content.Items
         private static Dictionary<GemKind, GemDropChance> ReadGems(ContentNode node) =>
             new Dictionary<GemKind, GemDropChance>
             {
-                [GemKind.Skill] = GemDropChance.Read(node.Field("skill")),
-                [GemKind.Support] = GemDropChance.Read(node.Field("support"))
+                [GemKind.Skill] = GemDropChance.Read(node.Field("skill"))
             };
     }
 }

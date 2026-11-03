@@ -209,7 +209,7 @@ namespace Game.Core.Tests.Sim
         public void CuttingTurnsAnUncutGemIntoTheChosenOne()
         {
             var loop = Runedancer();
-            var chosen = AllGems.First(gem => gem.Kind == GemKind.Support && DropSystem.Cuttable(gem));
+            var chosen = AllGems.First(DropSystem.Cuttable);
             loop.State.Drops.UncutGems = 1;
             loop.Events.Clear();
 
@@ -221,14 +221,15 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void PathAndWeaponGemsCannotBeCut()
+        public void PathWeaponAndSupportGemsCannotBeCut()
         {
             var loop = Runedancer();
             loop.State.Drops.UncutGems = 3;
             var closed = new[]
             {
                 AllGems.First(gem => gem.Ascendancy != null),
-                AllGems.First(gem => gem.Kind == GemKind.Skill && gem.Skill?.Weapon != null)
+                AllGems.First(gem => gem.Kind == GemKind.Skill && gem.Skill?.Weapon != null),
+                AllGems.First(gem => gem.Kind == GemKind.Support)
             };
 
             foreach (var gem in closed)
@@ -240,14 +241,14 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void EveryCommonSkillAndSupportCanBeCut()
+        public void EveryCommonSkillCanBeCutAndSupportsNeverDrop()
         {
             var loop = Runedancer();
             var cuttable = AllGems.Where(DropSystem.Cuttable).ToList();
 
-            foreach (var kind in new[] { GemKind.Skill, GemKind.Support })
-                Assert.That(loop.Drops.PoolOf(kind), Is.EquivalentTo(cuttable.Where(gem => gem.Kind == kind)), kind.ToString());
-            Assert.That(cuttable.Any(gem => gem.Kind == GemKind.Support), Is.True);
+            Assert.That(loop.Drops.PoolOf(GemKind.Skill), Is.EquivalentTo(cuttable));
+            Assert.That(loop.Drops.PoolOf(GemKind.Support), Is.Empty);
+            Assert.That(cuttable.Any(gem => gem.Kind == GemKind.Support), Is.False);
         }
 
         [Test]

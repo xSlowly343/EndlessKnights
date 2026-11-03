@@ -40,6 +40,7 @@ namespace Game.Core.Ui
             BookResult.WrongSlot => Texts.Get("book.result.wrongSlot"),
             BookResult.DoesNotFit => Texts.Get("book.result.doesNotFit"),
             BookResult.LevelTooLow => Texts.Get("book.result.levelTooLow"),
+            BookResult.WrongSocket => Texts.Get("book.result.wrongSocket"),
             _ => string.Empty
         };
 

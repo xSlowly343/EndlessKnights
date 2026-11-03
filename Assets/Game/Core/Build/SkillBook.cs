@@ -167,7 +167,8 @@ namespace Game.Core.Build
             return true;
         }
 
-        public bool SupportOpen(GemDef support) => support.Type == SkillType.Support && _state.HeroLevel >= support.UnlockLevel;
+        public bool SupportOpen(GemDef support) =>
+            support.Type == SkillType.Support && _state.HeroLevel >= support.UnlockLevel && (support.ForPath == null || support.ForPath == _state.Ascendancy.Subclass);
 
         public void OpenSupports(IReadOnlyList<GemDef> catalog, List<GemDef> into)
         {
@@ -223,6 +224,8 @@ namespace Game.Core.Build
                 return BookResult.Done;
             if (!support.CanSupport(slot.Skill))
                 return BookResult.DoesNotFit;
+            if (support.Socket > 0 && socket != support.Socket - 1)
+                return BookResult.WrongSocket;
             if (OnSkill(slot, support))
                 return BookResult.AlreadyOnSkill;
             if (!SupportOpen(support))

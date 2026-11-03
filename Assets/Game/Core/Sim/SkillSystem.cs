@@ -24,6 +24,7 @@ namespace Game.Core.Sim
         private long _seenPoisonTicks;
         private long _seenWeakenedKills;
         private SkillSlot? _lastCast;
+        private double _carrierPower = 1;
         private long _lastKeyHitTick = long.MinValue / 2;
         private long _keyGapTicks;
         private BigNumber _lastKeyHitDamage;
@@ -296,6 +297,8 @@ namespace Game.Core.Sim
             slot.AuraPower = supportPower * SupportEffects.AuraPower(slot) * ownPower * slot.BranchDamage;
             if (beacon)
                 slot.CastPower *= 1 + _state.Boons.BeaconPower;
+            slot.CastPower *= _carrierPower;
+            slot.AuraPower *= _carrierPower;
             if (skill.Role == SkillRole.Fast)
                 _resource.Gain(_hero.Value(CombatStats.ResourcePerFastSkill, 0));
             if (!(skill.Effect is EchoEffect))
@@ -717,10 +720,57 @@ namespace Game.Core.Sim
                 if (slot.Active && !slot.Def.Reserves)
                     OnActiveKeyHit(slot, damage);
                 SupportEffects.OnKeyHit(slot, _state);
+                CountCarrier(slot, CarrierTrigger.Keys, 1);
                 CountFinish(slot);
                 CountKeyEcho(slot);
             }
             _combat.Supporting = outer;
+        }
+
+        private static SupportDef? CarrierOf(SkillSlot slot)
+        {
+            if (slot.Role != SkillSlotRole.Left && slot.Role != SkillSlotRole.Right)
+                return null;
+            var support = slot.Supports[0]?.Support;
+            return support != null && support.IsCarrier ? support : null;
+        }
+
+        private static void CountCarrier(SkillSlot slot, CarrierTrigger trigger, double amount)
+        {
+            if (amount <= 0)
+                return;
+            var carrier = CarrierOf(slot);
+            if (carrier != null && carrier.CarrierOn == trigger)
+                slot.CarrierCount = System.Math.Min(carrier.CarrierEvery, slot.CarrierCount + amount);
+        }
+
+        private bool CarrierHolds(SkillSlot slot, SupportDef carrier)
+        {
+            if (_state.Tick - slot.CarrierTick < Ticks(carrier.CarrierSeconds))
+                return false;
+            return carrier.CarrierOn switch
+            {
+                CarrierTrigger.Boss => _state.FightingBoss,
+                CarrierTrigger.FullResource => _resource.IsFull,
+                CarrierTrigger.Keys or CarrierTrigger.Mouse => slot.CarrierCount >= carrier.CarrierEvery,
+                CarrierTrigger.LowHp => EnemyShareBelow(carrier.CarrierBelow),
+                _ => false
+            };
+        }
+
+        private void TickCarrier(int index, SkillSlot slot)
+        {
+            var carrier = CarrierOf(slot);
+            if (carrier == null || !slot.Ready || !CarrierHolds(slot, carrier))
+                return;
+            _carrierPower = carrier.CarrierPower * slot.SupportScale[0];
+            var result = TryCast(index);
+            _carrierPower = 1;
+            _combat.Supporting = slot;
+            if (result != CastResult.Cast)
+                return;
+            slot.CarrierTick = _state.Tick;
+            slot.CarrierCount = 0;
         }
 
         private void CountKeyEcho(SkillSlot slot)
@@ -938,6 +988,8 @@ namespace Game.Core.Sim
                 RefillCharge(slot);
                 TickTwin(slot);
                 TickTailwind(slot, input);
+                CountCarrier(slot, CarrierTrigger.Mouse, input.MousePx);
+                TickCarrier(index, slot);
                 if (slot.ActiveTicks > 0 && !HeldByResource(slot))
                 {
                     slot.ActiveTicks--;
