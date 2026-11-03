@@ -136,7 +136,7 @@ namespace Game.Core.Content.Items
         private double At(double first, double last, IReadOnlyList<TierRange>? ranges, int tier, double fraction)
         {
             var range = RangeOf(first, last, ranges, tier);
-            return Snap(range.Low + (range.High - range.Low) * fraction, Unit(first, last));
+            return Snap(range.Low + (range.High - range.Low) * fraction, ranges != null ? TableUnit(ranges) : Unit(first, last));
         }
 
         private TierRange Range(double first, double last, int tier)
@@ -151,6 +151,23 @@ namespace Game.Core.Content.Items
             return System.Math.Abs(high - low) < unit / 2 || System.Math.Sign(high - low) != System.Math.Sign(step) ? new TierRange(low, low) : new TierRange(low, high);
         }
 
+        private static double TableUnit(IReadOnlyList<TierRange> ranges)
+        {
+            var unit = 1.0;
+            foreach (var range in ranges)
+                unit = System.Math.Min(unit, System.Math.Min(UnitOf(range.Low), UnitOf(range.High)));
+            return unit;
+        }
+
+        private static double UnitOf(double value)
+        {
+            if (IsWhole(value))
+                return 1;
+            return IsWhole(value / WholePercent) ? WholePercent : WholePercent / 10;
+        }
+
+        public string TierName(int tier) => "T" + System.Math.Max(0, TierCount - tier);
+
         private double Unit(double first, double last)
         {
             if (IsWhole(first) && IsWhole(last) && System.Math.Abs(last) >= 1)
@@ -161,7 +178,7 @@ namespace Game.Core.Content.Items
 
         private const double WholePercent = 0.01;
 
-        private static bool IsWhole(double value) => System.Math.Abs(value - System.Math.Round(value)) < 1e-9;
+        private static bool IsWhole(double value) => System.Math.Abs(value - System.Math.Round(value)) < 1e-6;
 
         private static double Snap(double value, double unit) => System.Math.Round(System.Math.Round(value / unit) * unit, 6);
 

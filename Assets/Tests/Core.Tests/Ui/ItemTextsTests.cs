@@ -51,20 +51,21 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void AnAffixShowsItsTierRangeNextToTheNumber()
         {
-            var text = ItemTexts.Affixes(new[] { Affix("armor_damage", 6, 0.6) });
+            var text = ItemTexts.Affixes(new[] { Affix("armor_damage", 4, 0.6) });
 
-            Assert.That(text, Is.EqualTo("+21% урон (18–23)"));
+            Assert.That(text, Is.EqualTo("T0 +26% урон (19–31)"));
+            Assert.That(ItemTexts.Affixes(new[] { Affix("armor_damage", 1, 0) }), Is.EqualTo("T3 +3% урон (3–6)"));
         }
 
         [Test]
         public void ALockedAffixIsMarkedAndAnOfferShowsTheOldNumber()
         {
-            var before = new[] { Affix("armor_damage", 6, 0), Affix("armor_crit_power", 6, 0) };
-            var after = new[] { before[0], Affix("armor_crit_power", 6, 1) };
+            var before = new[] { Affix("armor_damage", 4, 0), Affix("armor_crit_power", 4, 0) };
+            var after = new[] { before[0], Affix("armor_crit_power", 4, 1) };
             var offer = new RerollOffer(null, null, before, after, 0, 360);
 
-            Assert.That(ItemTexts.Affixes(before, 0), Does.StartWith("[закреплено] +18% урон"));
-            Assert.That(ItemTexts.Offer(offer), Does.EndWith("(было 30)"));
+            Assert.That(ItemTexts.Affixes(before, 0), Does.StartWith("[закреплено] T0 +19% урон"));
+            Assert.That(ItemTexts.Offer(offer), Does.EndWith("(было 36)"));
             Assert.That(ItemTexts.Offer(offer), Does.StartWith("[закреплено]"));
         }
 

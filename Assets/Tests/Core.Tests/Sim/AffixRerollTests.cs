@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Sim
         private static GearItem Helmet(ItemRarity rarity = ItemRarity.Legendary)
         {
             Assert.That(Items.TryGetBase("mail_coif", out var gearBase), Is.True);
-            return new GearItem(gearBase, rarity, 6, new[] { Affix("armor_damage", 6), Affix("armor_crit_chance", 4), Affix("helmet_resource_max", 2) });
+            return new GearItem(gearBase, rarity, 6, new[] { Affix("armor_damage", 4), Affix("armor_crit_chance", 3), Affix("helmet_resource_max", 2) });
         }
 
         private static GameLoop Loop(double dust, params GearItem[] bag)
@@ -119,7 +119,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TakingTheNewNumbersOnAWornItemChangesTheHero()
         {
-            var helmet = new GearItem(Helmet().Base!, ItemRarity.Legendary, 6, new[] { Affix("armor_damage", 6, roll: 0) });
+            var helmet = new GearItem(Helmet().Base!, ItemRarity.Legendary, 6, new[] { Affix("armor_damage", 4, roll: 0) });
             var loop = Loop(0, helmet);
             Assert.That(loop.Gear.Equip(helmet), Is.True);
             var before = loop.Hero.Value(CombatStats.Damage, 100);
@@ -129,7 +129,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Reroll.TakeNew(), Is.True);
 
             Assert.That(loop.Gear.In(GearSlot.Helmet)!.Affixes[0].Value, Is.EqualTo(damage));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100) / before, Is.EqualTo((1 + damage) / 1.18).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100) / before, Is.EqualTo((1 + damage) / 1.19).Within(1e-9));
         }
 
         [Test]
@@ -168,7 +168,7 @@ namespace Game.Core.Tests.Sim
         public void AHeldWeaponRerollsAndTheNewNumbersCountAtOnce()
         {
             var loop = new GameLoop(Data, new FakeInputSource(), TestWorld.WithAllSkillsOpen(new GameState(3) { Class = HeroClass.Runedancer, RecordStage = 300 }), new StatSheet());
-            var weapon = loop.Weapons.Give(Data.Weapons.Roll(Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Legendary, 6, new[] { Affix("weapon_strike_damage", 6) }));
+            var weapon = loop.Weapons.Give(Data.Weapons.Roll(Data.Weapons.StarterFor(HeroClass.Runedancer), ItemRarity.Legendary, 6, new[] { Affix("weapon_strike_damage", 4) }));
             Assert.That(loop.Weapons.Equip(weapon), Is.True);
             WeaponItem? fresh = null;
             for (var i = 0; i < 50 && fresh == null; i++)

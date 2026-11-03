@@ -65,7 +65,7 @@ namespace Game.Core.Ui
 
         private static string Affix(GearAffix affix) => affix.Support != null
             ? Texts.Format("items.builtIn", Texts.Get(affix.Def.BuiltInRole == SkillSlotRole.Left ? "items.builtIn.left" : "items.builtIn.right"), Texts.Pick(affix.Support.NameRu, affix.Support.NameEn))
-            : string.Join(" · ", AffixLines(affix));
+            : Texts.Format("items.tier", affix.Def.TierName(affix.Tier), string.Join(" · ", AffixLines(affix)));
 
         private static IEnumerable<string> AffixLines(GearAffix affix)
         {
@@ -87,9 +87,9 @@ namespace Game.Core.Ui
             var fresh = new List<Modifier>();
             before.AddModifiers(old);
             after.AddModifiers(fresh);
-            return string.Join(" · ", fresh.Select((line, index) => System.Math.Abs(line.Value - old[index].Value) < 1e-12
+            return Texts.Format("items.tier", after.Def.TierName(after.Tier), string.Join(" · ", fresh.Select((line, index) => System.Math.Abs(line.Value - old[index].Value) < 1e-12
                 ? ModifierText.Describe(line)
-                : Texts.Format("items.reroll.change", ModifierText.Describe(line), ModifierText.Bare(old[index], old[index].Value))));
+                : Texts.Format("items.reroll.change", ModifierText.Describe(line), ModifierText.Bare(old[index], old[index].Value)))));
         }
 
         public static IReadOnlyList<WeaponItem> Bag(GameState state, ItemFilter filter) =>

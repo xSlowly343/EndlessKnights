@@ -250,6 +250,24 @@ namespace Game.Core.Tests.Save
         }
 
         [Test]
+        public void SixteenthVersionAffixesMoveFromSixTiersToFour()
+        {
+            var step = SaveMigrations.Default.Steps.Single(migration => migration.FromVersion == 16);
+            var payload = JsonParser.Parse(@"{""state"": {""gear"": {""worn"": [{""slot"": ""helmet"", ""affixes"": [
+                {""id"": ""armor_damage"", ""tier"": 6, ""value"": 0.19},
+                {""id"": ""armor_crit_chance"", ""tier"": 3, ""value"": 0.012},
+                {""id"": ""armor_attribute"", ""tier"": 1, ""value"": 2}]}]},
+                ""weapons"": {""held"": {""base"": ""rag_doll"", ""affixes"": [{""id"": ""weapon_strike_damage"", ""tier"": 5, ""value"": 0.25}]}, ""bag"": []}}}", "save");
+
+            var state = step.Upgrade(payload).Fields["state"];
+
+            var helmet = state.Fields["gear"].Fields["worn"].Items[0].Fields["affixes"].Items;
+            Assert.That(helmet.Select(affix => affix.Fields["tier"].Number), Is.EqualTo(new[] { 4.0, 2.0, 1.0 }));
+            Assert.That(helmet[0].Fields["value"].Number, Is.EqualTo(0.19), "the stored number stays until a reroll");
+            Assert.That(state.Fields["weapons"].Fields["held"].Fields["affixes"].Items[0].Fields["tier"].Number, Is.EqualTo(3));
+        }
+
+        [Test]
         public void CurrentSaveSkipsMigrations()
         {
             var calls = 0;

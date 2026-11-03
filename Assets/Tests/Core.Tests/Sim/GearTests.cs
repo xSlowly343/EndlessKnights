@@ -35,13 +35,13 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void WornItemAddsItsImplicitAndAffixesToTheHero()
         {
-            var helmet = Item("mail_coif", ("armor_damage", 6));
+            var helmet = Item("mail_coif", ("armor_damage", 4));
             var loop = Loop(helmet);
             var before = loop.Hero.Value(CombatStats.Damage, 100);
 
             Assert.That(loop.Gear.Equip(helmet), Is.True);
 
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100) / before, Is.EqualTo(1.18).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100) / before, Is.EqualTo(1.19).Within(1e-9));
             Assert.That(loop.Hero.Value(CombatStats.RedGemEffect, 1), Is.EqualTo(1.04).Within(1e-9));
             Assert.That(loop.Gear.In(GearSlot.Helmet), Is.SameAs(helmet));
             Assert.That(loop.State.Drops.Gear, Has.No.Member(helmet));
@@ -107,7 +107,7 @@ namespace Game.Core.Tests.Sim
         public void WornAndBaggedItemsSurviveSaveAndLoad()
         {
             var helmet = Item("mail_coif", ("armor_damage", 4), ("armor_attribute", 2));
-            var ring = Item("gold_ring", ("jewel_gold", 6));
+            var ring = Item("gold_ring", ("jewel_gold", 4));
             var loop = Loop(helmet, ring);
             loop.Gear.Equip(helmet);
 

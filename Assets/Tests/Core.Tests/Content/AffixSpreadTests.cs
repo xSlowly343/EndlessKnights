@@ -25,10 +25,10 @@ namespace Game.Core.Tests.Content
             var damage = Affix("armor_damage");
 
             Assert.That(damage.Lowest(1), Is.EqualTo(0.03).Within(1e-9));
-            Assert.That(damage.Highest(1), Is.EqualTo(0.04).Within(1e-9));
-            Assert.That(damage.Lowest(6), Is.EqualTo(0.18).Within(1e-9));
-            Assert.That(damage.Highest(6), Is.EqualTo(0.23).Within(1e-9));
-            Assert.That(damage.RollValue(6, 0.6), Is.EqualTo(0.21).Within(1e-9));
+            Assert.That(damage.Highest(1), Is.EqualTo(0.06).Within(1e-9));
+            Assert.That(damage.Lowest(4), Is.EqualTo(0.19).Within(1e-9));
+            Assert.That(damage.Highest(4), Is.EqualTo(0.31).Within(1e-9));
+            Assert.That(damage.RollValue(4, 0.5), Is.EqualTo(0.25).Within(1e-9));
         }
 
         [Test]
@@ -45,9 +45,9 @@ namespace Game.Core.Tests.Content
         public void ABrokenRangeTableIsRejected()
         {
             var json = TestData.ReadGameDataFile(ItemCatalog.FileName);
-            var table = "\"ranges\": [[0.03, 0.04], [0.05, 0.06], [0.07, 0.09], [0.1, 0.13], [0.14, 0.17], [0.18, 0.23]]";
-            var overlap = json.Replace(table, "\"ranges\": [[0.03, 0.05], [0.05, 0.06], [0.07, 0.09], [0.1, 0.13], [0.14, 0.17], [0.18, 0.23]]");
-            var tooShort = json.Replace(table, "\"ranges\": [[0.03, 0.04], [0.05, 0.06]]");
+            var table = "\"ranges\": [[0.03, 0.06], [0.07, 0.11], [0.12, 0.18], [0.19, 0.31]]";
+            var overlap = json.Replace(table, "\"ranges\": [[0.03, 0.07], [0.07, 0.11], [0.12, 0.18], [0.19, 0.31]]");
+            var tooShort = json.Replace(table, "\"ranges\": [[0.03, 0.06], [0.07, 0.11]]");
 
             Assert.That(json, Does.Contain(table));
             Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(overlap))!.Message, Does.Contain("overlaps"));
@@ -60,8 +60,8 @@ namespace Game.Core.Tests.Content
             var crit = Affix("armor_crit_chance");
 
             Assert.That(crit.Lowest(1), Is.EqualTo(0.005).Within(1e-9));
-            Assert.That(crit.Highest(1), Is.EqualTo(0.007).Within(1e-9));
-            Assert.That(Affix("jewel_damage").Highest(1), Is.EqualTo(0.03).Within(1e-9), "a step of 2% still rolls whole percents");
+            Assert.That(crit.Highest(1), Is.EqualTo(0.011).Within(1e-9));
+            Assert.That(Affix("jewel_damage").Highest(1), Is.EqualTo(0.04).Within(1e-9), "whole percents stay whole");
         }
 
         [Test]
@@ -97,14 +97,14 @@ namespace Game.Core.Tests.Content
             var values = new HashSet<double>();
             for (var i = 0; i < 3000; i++)
             {
-                foreach (var affix in Items.RollAffixes(ItemSlot.Helmet, ItemRarity.Mythic, Items.Tiers, rng))
+                foreach (var affix in Items.RollAffixes(ItemSlot.Helmet, ItemRarity.Mythic, 6, rng))
                 {
                     if (affix.Def.Id == "armor_damage" && affix.Tier == Items.Tiers)
                         values.Add(System.Math.Round(affix.Value, 6));
                 }
             }
 
-            Assert.That(values, Is.EquivalentTo(new[] { 0.18, 0.19, 0.2, 0.21, 0.22, 0.23 }));
+            Assert.That(values, Is.EquivalentTo(Enumerable.Range(19, 13).Select(percent => percent / 100.0)));
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace Game.Core.Tests.Content
 
             Assert.That(low[0].Value, Is.EqualTo(high[0].Value), "the level is whole and does not spread");
             Assert.That(high[1].Value, Is.GreaterThan(low[1].Value));
-            Assert.That(low[1].Value, Is.EqualTo(0.24).Within(1e-9), "an old save without a roll keeps the old number");
+            Assert.That(low[1].Value, Is.EqualTo(0.26).Within(1e-9), "a roll of 0 is the bottom of the tier");
         }
     }
 }

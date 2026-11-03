@@ -234,9 +234,22 @@ namespace Game.Core.Content.Items
             return true;
         }
 
+        public IReadOnlyList<int> TierLevels { get; private set; } = Array.Empty<int>();
+
+        public int OpenTiers(int itemLevel)
+        {
+            var open = 0;
+            foreach (var level in TierLevels)
+            {
+                if (itemLevel >= level)
+                    open++;
+            }
+            return System.Math.Max(1, System.Math.Min(Tiers, open));
+        }
+
         public int RollTier(RarityRule rule, int itemLevel, Rng rng)
         {
-            var open = System.Math.Max(1, System.Math.Min(Tiers, itemLevel));
+            var open = OpenTiers(itemLevel);
             if (rule.TopTiers > 0)
                 return System.Math.Max(1, open - rng.NextInt(0, System.Math.Min(rule.TopTiers, open)));
             if (open == 1)
@@ -294,6 +307,7 @@ namespace Game.Core.Content.Items
             }
             var catalog = new ItemCatalog(bases, affixes, sets, rarities, tiers,
                 weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
+            catalog.TierLevels = ReadTierLevels(root.Field("tierLevels"), tiers);
             ReadCraft(root.Field("craft"), catalog);
             if (root.HasField("implicitPools"))
                 ReadImplicits(root.Field("implicitPools"), catalog);
@@ -475,6 +489,21 @@ namespace Game.Core.Content.Items
 
         public const ItemRarity AdvancedFrom = ItemRarity.Rare;
         public const ItemRarity UltimateFrom = ItemRarity.Ancient;
+
+        private static int[] ReadTierLevels(ContentNode node, int tiers)
+        {
+            var items = node.Items();
+            if (items.Count != tiers)
+                throw node.Error($"expected the item level of each of the {tiers} tiers");
+            var levels = new int[tiers];
+            for (var i = 0; i < tiers; i++)
+            {
+                levels[i] = items[i].AsInt(1, 1000);
+                if (i == 0 ? levels[i] != 1 : levels[i] <= levels[i - 1])
+                    throw items[i].Error("the first tier opens at item level 1 and each next tier later");
+            }
+            return levels;
+        }
 
         private static List<TierRange>? ReadRanges(ContentNode node)
         {

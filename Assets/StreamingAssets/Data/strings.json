@@ -1133,6 +1133,7 @@
     "items.builtIn": { "ru": "скилл {0} с поддержкой «{1}»", "en": "{0} skill supported by {1}" },
     "items.builtIn.left": { "ru": "ЛКМ", "en": "LMB" },
     "items.builtIn.right": { "ru": "ПКМ", "en": "RMB" },
+    "items.tier": { "ru": "{0} {1}", "en": "{0} {1}" },
     "items.range": { "ru": "{0} ({1}–{2})", "en": "{0} ({1}–{2})" },
     "items.reroll": { "ru": "Перероллить · {0} Пыли", "en": "Reroll · {0} Dust" },
     "items.reroll.noDust": { "ru": "Нужно {0} Пыли, есть {1}", "en": "Needs {0} Dust, you have {1}" },

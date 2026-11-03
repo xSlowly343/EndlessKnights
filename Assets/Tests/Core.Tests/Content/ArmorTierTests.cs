@@ -103,11 +103,11 @@ namespace Game.Core.Tests.Content
         public void AnUltimateAffixWithOneLineOrAnOddRarityIsRejected()
         {
             var json = TestData.ReadGameDataFile(ItemCatalog.FileName);
-            var single = json.Replace(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.08, 0.24], \"ranges\": [[0.08, 0.09], [0.1, 0.11], [0.12, 0.14], [0.15, 0.18], [0.19, 0.23], [0.24, 0.32]]}", "");
-            var epic = json.Replace("\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.3], \"ranges\": [[0.05, 0.07], [0.08, 0.11], [0.12, 0.15], [0.16, 0.21], [0.22, 0.29], [0.3, 0.4]], \"fromRarity\": \"rare\"",
-                "\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.3], \"ranges\": [[0.05, 0.07], [0.08, 0.11], [0.12, 0.15], [0.16, 0.21], [0.22, 0.29], [0.3, 0.4]], \"fromRarity\": \"epic\"");
+            var single = json.Replace(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.08, 0.26], \"ranges\": [[0.08, 0.12], [0.13, 0.17], [0.18, 0.25], [0.26, 0.38]]}", "");
+            var epic = json.Replace("\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.35], \"ranges\": [[0.05, 0.11], [0.12, 0.22], [0.23, 0.34], [0.35, 0.53]], \"fromRarity\": \"rare\"",
+                "\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.35], \"ranges\": [[0.05, 0.11], [0.12, 0.22], [0.23, 0.34], [0.35, 0.53]], \"fromRarity\": \"epic\"");
 
-            Assert.That(json, Does.Contain(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.08, 0.24], \"ranges\": [[0.08, 0.09], [0.1, 0.11], [0.12, 0.14], [0.15, 0.18], [0.19, 0.23], [0.24, 0.32]]}"));
+            Assert.That(json, Does.Contain(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.08, 0.26], \"ranges\": [[0.08, 0.12], [0.13, 0.17], [0.18, 0.25], [0.26, 0.38]]}"));
             Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(single))!.Message, Does.Contain("two lines"));
             Assert.That(epic, Is.Not.EqualTo(json));
             Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(epic))!.Message, Does.Contain("ancient"));

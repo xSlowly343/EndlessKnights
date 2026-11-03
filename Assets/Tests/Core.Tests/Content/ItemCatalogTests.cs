@@ -75,8 +75,17 @@ namespace Game.Core.Tests.Content
             for (var i = 0; i < 200; i++)
             {
                 var item = Catalog.Roll(ItemSlot.Chest, "red", ItemRarity.Ancient, 6, rng);
-                Assert.That(item.Affixes.All(a => a.Tier >= 5), Is.True);
+                Assert.That(item.Affixes.All(a => a.Tier >= Catalog.Tiers - 1), Is.True);
             }
+        }
+
+        [Test]
+        public void FourTiersOpenByItemLevelAndAreNamedFromT3ToT0()
+        {
+            Assert.That(Catalog.Tiers, Is.EqualTo(4));
+            Assert.That(Enumerable.Range(1, 6).Select(Catalog.OpenTiers), Is.EqualTo(new[] { 1, 2, 2, 3, 4, 4 }));
+            Assert.That(Catalog.TryGetAffix("armor_damage", out var affix), Is.True);
+            Assert.That(Enumerable.Range(1, 4).Select(affix.TierName), Is.EqualTo(new[] { "T3", "T2", "T1", "T0" }));
         }
 
         [Test]
@@ -89,8 +98,8 @@ namespace Game.Core.Tests.Content
                 foreach (var affix in Catalog.Roll(ItemSlot.Gloves, "blue", ItemRarity.Mythic, 6, rng).Affixes)
                     counts[affix.Tier]++;
             }
-            Assert.That(counts[6], Is.GreaterThan(counts[5]));
-            Assert.That(counts[5], Is.GreaterThan(counts[1]));
+            Assert.That(counts[4], Is.GreaterThan(counts[3]));
+            Assert.That(counts[3], Is.GreaterThan(counts[1]));
         }
 
         [Test]
@@ -99,8 +108,8 @@ namespace Game.Core.Tests.Content
             Assert.That(Catalog.TryGetAffix("armor_damage", out var affix), Is.True);
 
             Assert.That(affix.ValueAt(1, Catalog.Tiers), Is.EqualTo(0.03).Within(1e-12));
-            Assert.That(affix.ValueAt(6, Catalog.Tiers), Is.EqualTo(0.18).Within(1e-12));
-            Assert.That(affix.ValueAt(3, Catalog.Tiers), Is.EqualTo(0.07).Within(1e-12));
+            Assert.That(affix.ValueAt(4, Catalog.Tiers), Is.EqualTo(0.19).Within(1e-12));
+            Assert.That(affix.ValueAt(3, Catalog.Tiers), Is.EqualTo(0.12).Within(1e-12));
         }
 
         [Test]
