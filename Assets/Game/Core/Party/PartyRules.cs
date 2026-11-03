@@ -10,7 +10,7 @@ namespace Game.Core.Party
 
         private PartyRules(int maxMembers, double hpPerExtraPlayer, double restAfterSeconds, double disconnectGraceSeconds, double rejoinWindowSeconds,
             double lateDamageSeconds, double damageBatchSeconds, double stateBroadcastSeconds, double presenceSeconds, double silenceSeconds, double maxEnemyDamageTaken, PartyBuffRules buffs, int maxMessagesPerSecond,
-            PartyContributionRules contribution, PartyCapRules caps, PartySearchRules search, PartyReactionRules reactions, PartyTimerRules timer, double worldSwitchSeconds, PartyGhostRules ghost, PartyRelayRules relay, PartyHelpRules help, PartyGiftRules gifts, int maxWeakenedSpawns, double maxWeakenShare, double maxWeakenGold)
+            PartyContributionRules contribution, PartyCapRules caps, PartySearchRules search, PartyReactionRules reactions, PartyTimerRules timer, double worldSwitchSeconds, PartyGhostRules ghost, PartyRelayRules relay, PartyHelpRules help, int maxWeakenedSpawns, double maxWeakenShare, double maxWeakenGold)
         {
             MaxMembers = maxMembers;
             HpPerExtraPlayer = hpPerExtraPlayer;
@@ -34,7 +34,6 @@ namespace Game.Core.Party
             Ghost = ghost;
             Relay = relay;
             Help = help;
-            Gifts = gifts;
             MaxWeakenedSpawns = maxWeakenedSpawns;
             MaxWeakenShare = maxWeakenShare;
             MaxWeakenGold = maxWeakenGold;
@@ -62,7 +61,6 @@ namespace Game.Core.Party
         public PartyGhostRules Ghost { get; }
         public PartyRelayRules Relay { get; }
         public PartyHelpRules Help { get; }
-        public PartyGiftRules Gifts { get; }
         public int MaxWeakenedSpawns { get; }
         public double MaxWeakenShare { get; }
         public double MaxWeakenGold { get; }
@@ -113,7 +111,6 @@ namespace Game.Core.Party
                 PartyGhostRules.Read(root.Field("ghost")),
                 PartyRelayRules.Read(root.Field("relay")),
                 PartyHelpRules.Read(root.Field("help")),
-                PartyGiftRules.Read(root.Field("gifts")),
                 root.Field("weaken").Field("maxEnemies").AsInt(1, 100),
                 root.Field("weaken").Field("maxShare").AsNumber(0, 0.99),
                 root.Field("weaken").Field("maxGold").AsNumber(0, 10));

@@ -99,14 +99,7 @@
       "y": 3000,
       "w": 480,
       "h": 786,
-      "title": "Книга › Скиллы: гнёзда поддержек, цвета, неогранённые гемы"
-    },
-    "Cut.dc.html": {
-      "x": 1680,
-      "y": 3000,
-      "w": 480,
-      "h": 786,
-      "title": "Огранка гема"
+      "title": "Книга › Скиллы: гнёзда поддержек, цвета"
     },
     "Sets.dc.html": {
       "x": 2240,
@@ -347,7 +340,6 @@
     "Subclass.dc.html",
     "Master.dc.html",
     "BookSockets.dc.html",
-    "Cut.dc.html",
     "Sets.dc.html",
     "EchoAtlas.dc.html",
     "EchoResonance.dc.html",
