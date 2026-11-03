@@ -234,9 +234,22 @@ namespace Game.Core.Content.Items
             return true;
         }
 
+        public IReadOnlyList<int> TierLevels { get; private set; } = Array.Empty<int>();
+
+        public int OpenTiers(int itemLevel)
+        {
+            var open = 0;
+            foreach (var level in TierLevels)
+            {
+                if (itemLevel >= level)
+                    open++;
+            }
+            return System.Math.Max(1, System.Math.Min(Tiers, open));
+        }
+
         public int RollTier(RarityRule rule, int itemLevel, Rng rng)
         {
-            var open = System.Math.Max(1, System.Math.Min(Tiers, itemLevel));
+            var open = OpenTiers(itemLevel);
             if (rule.TopTiers > 0)
                 return System.Math.Max(1, open - rng.NextInt(0, System.Math.Min(rule.TopTiers, open)));
             if (open == 1)
@@ -286,9 +299,15 @@ namespace Game.Core.Content.Items
                 sets.Add(set);
             }
             foreach (var affix in affixes)
+            {
                 affix.UseTierCount(tiers);
+                var problem = affix.RangeProblem(tiers);
+                if (problem != null)
+                    throw new ContentException(FileName, "affixes." + affix.Id + ".ranges", problem);
+            }
             var catalog = new ItemCatalog(bases, affixes, sets, rarities, tiers,
                 weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
+            catalog.TierLevels = ReadTierLevels(root.Field("tierLevels"), tiers);
             ReadCraft(root.Field("craft"), catalog);
             if (root.HasField("implicitPools"))
                 ReadImplicits(root.Field("implicitPools"), catalog);
@@ -427,7 +446,7 @@ namespace Game.Core.Content.Items
                 throw node.Field("stats").Error("an ultimate affix has two lines at once");
             return new AffixDef(node.Field("id").AsString(), slots, part == "prefix", stats,
                 tiers[0].AsNumber(-1e6, 1e6), tiers[1].AsNumber(-1e6, 1e6),
-                node.HasField("group") ? node.Field("group").AsString() : null, fromRarity, role, supports);
+                node.HasField("group") ? node.Field("group").AsString() : null, fromRarity, role, supports, ReadRanges(node));
         }
 
         private static (Sim.SkillSlotRole? Role, List<string>? Supports) ReadBuiltIn(ContentNode node, List<ItemSlot> slots)
@@ -471,6 +490,36 @@ namespace Game.Core.Content.Items
         public const ItemRarity AdvancedFrom = ItemRarity.Rare;
         public const ItemRarity UltimateFrom = ItemRarity.Ancient;
 
+        private static int[] ReadTierLevels(ContentNode node, int tiers)
+        {
+            var items = node.Items();
+            if (items.Count != tiers)
+                throw node.Error($"expected the item level of each of the {tiers} tiers");
+            var levels = new int[tiers];
+            for (var i = 0; i < tiers; i++)
+            {
+                levels[i] = items[i].AsInt(1, 1000);
+                if (i == 0 ? levels[i] != 1 : levels[i] <= levels[i - 1])
+                    throw items[i].Error("the first tier opens at item level 1 and each next tier later");
+            }
+            return levels;
+        }
+
+        private static List<TierRange>? ReadRanges(ContentNode node)
+        {
+            if (!node.HasField("ranges"))
+                return null;
+            var ranges = new List<TierRange>();
+            foreach (var item in node.Field("ranges").Items())
+            {
+                var pair = item.Items();
+                if (pair.Count != 2)
+                    throw item.Error("expected the low and the high value of a tier");
+                ranges.Add(new TierRange(pair[0].AsNumber(-1e6, 1e6), pair[1].AsNumber(-1e6, 1e6)));
+            }
+            return ranges;
+        }
+
         private static AffixStat ReadAffixStat(ContentNode stat)
         {
             var own = stat.HasField("tiers");
@@ -484,11 +533,14 @@ namespace Game.Core.Content.Items
                 first = tiers[0].AsNumber(-1e6, 1e6);
                 last = tiers[1].AsNumber(-1e6, 1e6);
             }
+            var ranges = ReadRanges(stat);
+            if (ranges != null && !own)
+                throw stat.Field("ranges").Error("a line with its own ranges needs its own tiers");
             if (stat.HasField("to"))
-                return new AffixStat(ModifierReader.ReadCoopLine(stat).Source, ModifierKind.Flat, StatTags.None, own, first, last);
+                return new AffixStat(ModifierReader.ReadCoopLine(stat).Source, ModifierKind.Flat, StatTags.None, own, first, last, ranges: ranges);
             return new AffixStat(new StatId(stat.Field("stat").AsString()), ModifierReader.ReadKind(stat.Field("kind")),
                 stat.HasField("tags") ? ModifierReader.ReadTags(stat.Field("tags")) : StatTags.None, own, first, last,
-                stat.HasField("when") ? ModifierReader.ReadCondition(stat.Field("when")) : ModifierCondition.Always);
+                stat.HasField("when") ? ModifierReader.ReadCondition(stat.Field("when")) : ModifierCondition.Always, ranges);
         }
     }
 }

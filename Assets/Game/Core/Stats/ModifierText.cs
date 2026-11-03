@@ -107,6 +107,12 @@ namespace Game.Core.Stats
             return Number(value, signed);
         }
 
+        public static string Bare(Modifier modifier, double value)
+        {
+            var percent = modifier.Kind != ModifierKind.Flat || FlatPercent.Contains(modifier.Stat.BaseName);
+            return Number(System.Math.Abs(percent ? value * 100 : value), false);
+        }
+
         public static string Percent(double share) => Texts.Format("unit.percent", Signed(share * 100));
 
         public static string Times(double multiplier) => "×" + System.Math.Round(multiplier, 2).ToString("0.00", CultureInfo.InvariantCulture);

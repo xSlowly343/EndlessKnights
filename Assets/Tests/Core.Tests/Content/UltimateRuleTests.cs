@@ -13,9 +13,10 @@ namespace Game.Core.Tests.Content
     {
         private static ItemCatalog Catalog => TestWorld.Data.Items;
 
-        private static System.Collections.Generic.List<Modifier> LinesOf(string id, int tier = 6)
+        private static System.Collections.Generic.List<Modifier> LinesOf(string id, int tier = 0)
         {
             Assert.That(Catalog.TryGetAffix(id, out var def), Is.True, id);
+            tier = tier == 0 ? Catalog.Tiers : tier;
             var lines = new System.Collections.Generic.List<Modifier>();
             new GearAffix(def, tier, def.ValueAt(tier, Catalog.Tiers)).AddModifiers(lines);
             return lines;

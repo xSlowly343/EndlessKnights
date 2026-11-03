@@ -71,6 +71,25 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public bool Owns(WeaponItem weapon) => _state.Weapons.Held == weapon || _state.Weapons.Bag.Contains(weapon);
+
+        public bool Replace(WeaponItem old, WeaponItem fresh)
+        {
+            var weapons = _state.Weapons;
+            var bag = weapons.Bag.IndexOf(old);
+            if (bag >= 0)
+            {
+                weapons.Bag[bag] = fresh;
+                return true;
+            }
+            if (weapons.Held != old)
+                return false;
+            weapons.Held = fresh;
+            Rebuild();
+            HeldChanged?.Invoke();
+            return true;
+        }
+
         public bool Unequip()
         {
             var weapons = _state.Weapons;

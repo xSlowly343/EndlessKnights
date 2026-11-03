@@ -32,6 +32,8 @@ namespace Game.Core.Content.Weapons
 
         public WeaponItem Rebased(WeaponBase weaponBase) => new WeaponItem(weaponBase, Rarity, ItemLevel, Affixes, Unique, Set);
 
+        public WeaponItem WithAffixes(IReadOnlyList<GearAffix> affixes) => new WeaponItem(Base, Rarity, ItemLevel, affixes, Unique, Set);
+
         public WeaponItem InSet(SetDef set) => new WeaponItem(Base, Rarity, ItemLevel, Affixes, Unique, set);
 
         public bool Opens(string skillId)

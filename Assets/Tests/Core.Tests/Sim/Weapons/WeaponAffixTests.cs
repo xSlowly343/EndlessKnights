@@ -25,7 +25,7 @@ namespace Game.Core.Tests.Sim.Weapons
         private static GameLoop Hero() =>
             new GameLoop(Data, new FakeInputSource(), TestWorld.WithAllSkillsOpen(new GameState(3) { Class = HeroClass.Runedancer, RecordStage = 300 }), new StatSheet());
 
-        private static GearAffix Affix(string id, int tier = 6, string? support = null)
+        private static GearAffix Affix(string id, int tier = 4, string? support = null)
         {
             Assert.That(Items.TryGetAffix(id, out var def), Is.True, id);
             return new GearAffix(def, tier, def.ValueAt(tier, Items.Tiers), support == null ? null : Gem(support));

@@ -6,7 +6,7 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(16,
+        public static readonly SaveMigrations Default = new SaveMigrations(17,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
             new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
@@ -21,7 +21,11 @@ namespace Game.Core.Save
             new SaveMigration(12, "two slots for common trees", payload => JsonEdit.Update(payload, "state", StateToVersion13)),
             new SaveMigration(13, "the old passive tree and its jewels are gone", payload => JsonEdit.Update(payload, "state", StateToVersion14)),
             new SaveMigration(14, "one class attribute instead of three", payload => JsonEdit.Update(payload, "state", WithClassAttributeAffixes)),
-            new SaveMigration(15, "key hits are strike hits", payload => JsonEdit.Update(payload, "state", StateToVersion16)));
+            new SaveMigration(15, "key hits are strike hits", payload => JsonEdit.Update(payload, "state", StateToVersion16)),
+            new SaveMigration(16, "four affix tiers instead of six", payload => JsonEdit.Update(payload, "state", WithFourAffixTiers)));
+
+        private const int OldAffixTiers = 6;
+        private const int NewAffixTiers = 4;
 
         private static readonly IReadOnlyDictionary<string, string> RenamedClasses = new Dictionary<string, string>(StringComparer.Ordinal)
         {
@@ -212,6 +216,43 @@ namespace Game.Core.Save
 
         private static JsonValue StateToVersion16(JsonValue state) =>
             JsonEdit.Update(state, "hero", hero => JsonEdit.Rename(hero, "keyHits", "strikeHits"));
+
+        private static JsonValue WithFourAffixTiers(JsonValue value) => MapAffixes(value, FourTiersOf);
+
+        private static JsonValue FourTiersOf(JsonValue affixes)
+        {
+            if (affixes.Kind != JsonKind.Array)
+                return affixes;
+            var items = new List<JsonValue>(affixes.Items.Count);
+            foreach (var affix in affixes.Items)
+            {
+                if (affix.Kind != JsonKind.Object || !affix.Fields.TryGetValue("tier", out var tier) || tier.Kind != JsonKind.Number)
+                {
+                    items.Add(affix);
+                    continue;
+                }
+                var mapped = (int)System.Math.Round(tier.Number * NewAffixTiers / OldAffixTiers, System.MidpointRounding.AwayFromZero);
+                items.Add(JsonEdit.Set(affix, "tier", JsonValue.Of(System.Math.Max(1, System.Math.Min(NewAffixTiers, mapped)))));
+            }
+            return JsonValue.Array(items);
+        }
+
+        private static JsonValue MapAffixes(JsonValue value, Func<JsonValue, JsonValue> map)
+        {
+            if (value.Kind == JsonKind.Array)
+            {
+                var items = new List<JsonValue>(value.Items.Count);
+                foreach (var item in value.Items)
+                    items.Add(MapAffixes(item, map));
+                return JsonValue.Array(items);
+            }
+            if (value.Kind != JsonKind.Object)
+                return value;
+            var fields = new Dictionary<string, JsonValue>(StringComparer.Ordinal);
+            foreach (var pair in value.Fields)
+                fields[pair.Key] = pair.Key == "affixes" ? map(pair.Value) : MapAffixes(pair.Value, map);
+            return JsonValue.Object(fields);
+        }
 
         private static JsonValue WithClassAttributeAffixes(JsonValue value)
         {

@@ -55,6 +55,7 @@ namespace Game.Core.Sim
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
         private readonly GearSystem _gear;
+        private readonly RerollSystem _reroll;
         private readonly ClassAttributeSystem _classAttribute;
         private readonly GateSystem _gates;
         private readonly Unlocks _unlocks;
@@ -94,6 +95,7 @@ namespace Game.Core.Sim
             _weapons.RefreshInnate();
             _drops = new DropSystem(data.Drops, data.Stages, data.Items, _weapons, _gear, state, hero, Events);
             _stage.Drops = _drops;
+            _reroll = new RerollSystem(data.Drops, state, _gear, _weapons);
             _combat.Dreamcatcher.UseLoot(_drops, _loot);
             _combat.Dreamcatcher.UseEnemies(data.Enemies);
             _combat.Dowser.UseLoot(_drops, _loot);
@@ -176,6 +178,7 @@ namespace Game.Core.Sim
         public RiftSystem Rift => _rift;
         public WeaponSystem Weapons => _weapons;
         public GearSystem Gear => _gear;
+        public RerollSystem Reroll => _reroll;
         public GateSystem Gates => _gates;
         public Unlocks Unlocks => _unlocks;
         public DungeonSystem Dungeons => _dungeons;
@@ -708,6 +711,7 @@ namespace Game.Core.Sim
             _gemExperience.UseLevels(data.Gems.Levels);
             _weapons.UseCatalog(data.Weapons);
             _drops.UseData(data.Drops, data.Stages, data.Items);
+            _reroll.UseRules(data.Drops);
             _gear.UseCatalog(data.Items);
             _gates.UseStages(data.Stages);
             _unlocks.Rules = data.Unlocks;
