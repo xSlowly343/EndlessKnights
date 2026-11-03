@@ -20,8 +20,11 @@ namespace Game.Core.Content.Items
 
         public void AddModifiers(List<Modifier> modifiers)
         {
-            foreach (var stat in Def.Stats)
-                modifiers.Add(new Modifier(stat.Stat, stat.Kind, Value, stat.Tags));
+            for (var i = 0; i < Def.Stats.Count; i++)
+            {
+                var stat = Def.Stats[i];
+                modifiers.Add(new Modifier(stat.Stat, stat.Kind, Def.StatValue(i, Tier, Value), stat.Tags));
+            }
         }
     }
 }
