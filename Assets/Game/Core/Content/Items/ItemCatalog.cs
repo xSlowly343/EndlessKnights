@@ -105,7 +105,8 @@ namespace Game.Core.Content.Items
         public GearItem RollSetPiece(SetDef set, ItemSlot slot, string? color, ItemRarity rarity, int itemLevel, Rng rng)
         {
             var gearBase = PickBase(slot, set.Color ?? color, itemLevel, rng);
-            return new GearItem(gearBase, rarity, itemLevel, RollAffixes(slot, rarity, itemLevel, rng), set);
+            var affixes = RollAffixes(slot, rarity, itemLevel, rng);
+            return new GearItem(gearBase, rarity, itemLevel, affixes, set, PickImplicit(slot, rng));
         }
         public int Tiers { get; }
         public double TopWeight { get; }
@@ -121,7 +122,44 @@ namespace Game.Core.Content.Items
         public GearItem Roll(ItemSlot slot, string? color, ItemRarity rarity, int itemLevel, Rng rng)
         {
             var gearBase = PickBase(slot, color, itemLevel, rng);
-            return new GearItem(gearBase, rarity, itemLevel, RollAffixes(slot, rarity, itemLevel, rng));
+            var affixes = RollAffixes(slot, rarity, itemLevel, rng);
+            return new GearItem(gearBase, rarity, itemLevel, affixes, null, PickImplicit(slot, rng));
+        }
+
+        private readonly Dictionary<ItemSlot, List<GearImplicit>> _implicits = new Dictionary<ItemSlot, List<GearImplicit>>();
+        private readonly Dictionary<string, GearImplicit> _implicitIds = new Dictionary<string, GearImplicit>(StringComparer.Ordinal);
+
+        public IReadOnlyList<GearImplicit> ImplicitsOf(ItemSlot slot) =>
+            _implicits.TryGetValue(slot, out var pool) ? pool : (IReadOnlyList<GearImplicit>)Array.Empty<GearImplicit>();
+
+        public bool TryGetImplicit(string id, out GearImplicit rolled) => _implicitIds.TryGetValue(id, out rolled!);
+
+        public GearImplicit? PickImplicit(ItemSlot slot, Rng rng)
+        {
+            var pool = ImplicitsOf(slot);
+            return pool.Count == 0 ? null : pool[rng.NextInt(0, pool.Count)];
+        }
+
+        private static void ReadImplicits(ContentNode node, ItemCatalog catalog)
+        {
+            foreach (var slotName in node.FieldNames())
+            {
+                var slotNode = node.Field(slotName);
+                if (!ItemSlotNames.ByName.TryGetValue(slotName, out var slot) || slot == ItemSlot.Weapon)
+                    throw slotNode.Error($"unknown gear slot '{slotName}'");
+                var pool = new List<GearImplicit>();
+                foreach (var item in slotNode.Items())
+                {
+                    var rolled = new GearImplicit(item.Field("id").AsString(), slot, ModifierReader.ReadList(item.Field("lines")));
+                    if (rolled.Lines.Count == 0)
+                        throw item.Field("lines").Error("an implicit needs at least one line");
+                    if (catalog._implicitIds.ContainsKey(rolled.Id))
+                        throw item.Field("id").Error($"implicit id '{rolled.Id}' is used twice");
+                    catalog._implicitIds[rolled.Id] = rolled;
+                    pool.Add(rolled);
+                }
+                catalog._implicits[slot] = pool;
+            }
         }
 
         public GearBase PickBase(ItemSlot slot, string? color, int itemLevel, Rng rng) =>
@@ -249,6 +287,8 @@ namespace Game.Core.Content.Items
             var catalog = new ItemCatalog(bases, affixes, sets, rarities, tiers,
                 weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
             ReadCraft(root.Field("craft"), catalog);
+            if (root.HasField("implicitPools"))
+                ReadImplicits(root.Field("implicitPools"), catalog);
             catalog.Uniques = ReadUniques(root.Field("uniques"), catalog);
             return catalog;
         }

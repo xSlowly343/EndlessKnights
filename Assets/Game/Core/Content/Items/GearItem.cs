@@ -15,8 +15,9 @@ namespace Game.Core.Content.Items
             Affixes = Array.Empty<GearAffix>();
         }
 
-        public GearItem(GearBase gearBase, ItemRarity rarity, int itemLevel, IReadOnlyList<GearAffix> affixes, SetDef? set = null)
+        public GearItem(GearBase gearBase, ItemRarity rarity, int itemLevel, IReadOnlyList<GearAffix> affixes, SetDef? set = null, GearImplicit? rolledImplicit = null)
         {
+            RolledImplicit = rolledImplicit;
             Set = set;
             Base = gearBase;
             Slot = gearBase.Slot;
@@ -45,6 +46,7 @@ namespace Game.Core.Content.Items
         public string? Color { get; }
         public IReadOnlyList<GearAffix> Affixes { get; }
         public SetDef? Set { get; }
+        public GearImplicit? RolledImplicit { get; }
         public bool Wearable => Base != null;
 
         public void AddModifiers(List<Modifier> modifiers)
@@ -52,6 +54,8 @@ namespace Game.Core.Content.Items
             if (Base == null)
                 return;
             modifiers.AddRange(Base.Implicit);
+            if (RolledImplicit != null)
+                modifiers.AddRange(RolledImplicit.Lines);
             foreach (var affix in Affixes)
                 affix.AddModifiers(modifiers);
             if (Set != null)

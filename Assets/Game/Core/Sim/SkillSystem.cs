@@ -93,7 +93,26 @@ namespace Game.Core.Sim
 
         public double LevelPower(GemDef gem) => (Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem), LevelBonus(gem))) * ColorPower(gem);
 
-        public int LevelBonus(GemDef gem) => Whole(CombatStats.GemLevelBonus) + RoleLevelBonus(gem);
+        public int LevelBonus(GemDef gem) => Whole(CombatStats.GemLevelBonus) + RoleLevelBonus(gem) + SlotLevelBonus(gem) + ClassLevelBonus(gem);
+
+        private int ClassLevelBonus(GemDef gem) => (gem.Tags & StatTags.ClassSkill) != 0 ? Whole(CombatStats.ClassSkillLevel) : 0;
+
+        private int SlotLevelBonus(GemDef gem)
+        {
+            for (var i = 0; i < _state.Skills.Count; i++)
+            {
+                var slot = _state.Skills[i];
+                if (!ReferenceEquals(slot.Skill, gem))
+                    continue;
+                return slot.Role switch
+                {
+                    SkillSlotRole.Left or SkillSlotRole.Right => Whole(CombatStats.ButtonSkillLevel),
+                    SkillSlotRole.Auto => Whole(CombatStats.AutoSkillLevel),
+                    _ => 0
+                };
+            }
+            return 0;
+        }
 
         private int RoleLevelBonus(GemDef gem)
         {

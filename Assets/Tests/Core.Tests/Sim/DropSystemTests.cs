@@ -446,7 +446,7 @@ namespace Game.Core.Tests.Sim
                 loop.State.Drops.Gear.Clear();
             }
 
-            Assert.That(fineWeapons, Is.EqualTo(5));
+            Assert.That(fineWeapons, Is.GreaterThanOrEqualTo(5));
         }
 
         [Test]

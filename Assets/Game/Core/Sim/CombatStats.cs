@@ -173,6 +173,9 @@ namespace Game.Core.Sim
         public static readonly StatId FastSkillLevel = new StatId("fastSkillLevel");
         public static readonly StatId HeavySkillLevel = new StatId("heavySkillLevel");
         public static readonly StatId AuraSkillLevel = new StatId("auraSkillLevel");
+        public static readonly StatId ButtonSkillLevel = new StatId("buttonSkillLevel");
+        public static readonly StatId AutoSkillLevel = new StatId("autoSkillLevel");
+        public static readonly StatId ClassSkillLevel = new StatId("classSkillLevel");
         public static readonly StatId SocketsLeft = new StatId("socketsLeft");
         public static readonly StatId SocketsRight = new StatId("socketsRight");
         public static readonly StatId SocketsAuto = new StatId("socketsAuto");

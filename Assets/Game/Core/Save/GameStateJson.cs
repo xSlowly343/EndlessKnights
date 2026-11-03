@@ -453,6 +453,7 @@ namespace Game.Core.Save
                 ("base", item.Base == null ? JsonValue.Null() : JsonValue.Of(item.Base.Id)),
                 ("set", item.Set == null ? JsonValue.Null() : JsonValue.Of(item.Set.Id)),
                 ("unique", item.Unique == null ? JsonValue.Null() : JsonValue.Of(item.Unique.Id)),
+                ("implicit", item.RolledImplicit == null ? JsonValue.Null() : JsonValue.Of(item.RolledImplicit.Id)),
                 ("affixes", JsonValue.Array(affixes)));
         }
 
@@ -523,7 +524,7 @@ namespace Game.Core.Save
             if (items != null && node.HasField("unique") && !node.Field("unique").IsNull && items.TryGetUnique(node.Field("unique").AsString(), out var unique) && unique.Slot == slot)
                 return new GearItem(unique, itemLevel);
             if (items != null && node.HasField("base") && !node.Field("base").IsNull && items.TryGetBase(node.Field("base").AsString(), out var gearBase) && gearBase.Slot == slot)
-                return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot));
+                return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot), ReadImplicit(node, items, slot));
             return new GearItem(slot, rarity, itemLevel, color.IsNull ? null : color.AsString());
         }
 
@@ -610,6 +611,9 @@ namespace Game.Core.Save
             }
             return written;
         }
+
+        private static GearImplicit? ReadImplicit(ContentNode node, ItemCatalog items, ItemSlot slot) =>
+            node.HasField("implicit") && !node.Field("implicit").IsNull && items.TryGetImplicit(node.Field("implicit").AsString(), out var rolled) && rolled.Slot == slot ? rolled : null;
 
         private static IReadOnlyList<GearAffix> ReadAffixes(ContentNode node, ItemCatalog items)
         {
