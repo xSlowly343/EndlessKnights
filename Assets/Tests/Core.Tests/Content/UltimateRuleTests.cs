@@ -49,7 +49,7 @@ namespace Game.Core.Tests.Content
             sheet.SetConditions(ModifierConditions.Bit(ModifierCondition.LongStreak));
             var inside = sheet.Value(CombatStats.Damage, 100);
 
-            Assert.That(outside, Is.EqualTo(90).Within(1e-9));
+            Assert.That(outside, Is.EqualTo(95).Within(1e-9));
             Assert.That(inside, Is.EqualTo(100).Within(1e-9));
         }
 
@@ -75,7 +75,7 @@ namespace Game.Core.Tests.Content
 
             Assert.That(loop.Book.AuraSlotCount, Is.EqualTo(SkillLoadout.AuraSlots));
             Assert.That(loop.Book.Capacity(SkillSlotRole.Aura), Is.EqualTo(5));
-            Assert.That(hero.Value(CombatStats.AuraEffect, 1), Is.EqualTo(0.85).Within(1e-9));
+            Assert.That(hero.Value(CombatStats.AuraEffect, 1), Is.EqualTo(0.92).Within(1e-9));
         }
 
         [Test]

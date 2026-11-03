@@ -103,11 +103,11 @@ namespace Game.Core.Tests.Content
         public void AnUltimateAffixWithOneLineOrAnOddRarityIsRejected()
         {
             var json = TestData.ReadGameDataFile(ItemCatalog.FileName);
-            var single = json.Replace(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.05, 0.15]}", "");
+            var single = json.Replace(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.08, 0.24]}", "");
             var epic = json.Replace("\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.3], \"fromRarity\": \"rare\"",
                 "\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.3], \"fromRarity\": \"epic\"");
 
-            Assert.That(json, Does.Contain(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.05, 0.15]}"));
+            Assert.That(json, Does.Contain(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.08, 0.24]}"));
             Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(single))!.Message, Does.Contain("two lines"));
             Assert.That(epic, Is.Not.EqualTo(json));
             Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(epic))!.Message, Does.Contain("ancient"));
