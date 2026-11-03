@@ -22,7 +22,7 @@ namespace Game.Core.Tests.Content
             Assert.That(gems.All.Where(gem => gem.Kind == GemKind.Support).Select(gem => gem.Support), Is.All.Not.Null);
             Assert.That(gems["resonance"].Support!.Kind, Is.EqualTo(SupportKind.Lines));
             Assert.That(gems["resonance"].Support!.PartyLines.Count, Is.EqualTo(1));
-            Assert.That(gems.All.Count(gem => gem.Kind == GemKind.Support), Is.EqualTo(25));
+            Assert.That(gems.All.Count(gem => gem.Kind == GemKind.Support), Is.EqualTo(84));
             foreach (var id in new[] { "runedancer_hit_1", "runedancer_strong_1", "minstrel_aura_1", "minstrel_aura_2" })
                 Assert.That(gems[id].Kind, Is.EqualTo(GemKind.Skill), id);
             Assert.That(gems["through_stride"].Kind, Is.EqualTo(GemKind.Skill));

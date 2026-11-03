@@ -15,6 +15,7 @@ namespace Game.Core.Build
         AlreadyOnSkill,
         WrongSlot,
         DoesNotFit,
-        LevelTooLow
+        LevelTooLow,
+        WrongSocket
     }
 }

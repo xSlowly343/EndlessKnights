@@ -1216,6 +1216,7 @@
     "book.result.wrongSlot": { "ru": "В слот ауры встаёт только аура", "en": "Only an aura fits an aura slot" },
     "book.result.doesNotFit": { "ru": "Эта поддержка не подходит к этому скиллу", "en": "This support does not fit this skill" },
     "book.result.levelTooLow": { "ru": "Поддержка откроется на более высоком уровне героя", "en": "This support opens at a higher hero level" },
+    "book.result.wrongSocket": { "ru": "Носитель встаёт только в 1-й сокет, великая поддержка — только в 3-й", "en": "A carrier goes only into the 1st socket, a great support only into the 3rd" },
     "spirit.result.unknownSpirit": { "ru": "Такого духа нет", "en": "No such spirit" },
     "spirit.result.maxLevel": { "ru": "Дух на максимуме", "en": "The spirit is at its maximum" },
     "spirit.result.notEnoughEcho": { "ru": "Не хватает Эха", "en": "Not enough Echo" },

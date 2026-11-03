@@ -73,6 +73,8 @@ namespace Game.Core.Sim
         public int WindTicks { get; set; }
         public double StackPower { get; set; } = 1;
         public int EchoKeys { get; set; }
+        public double CarrierCount { get; set; }
+        public long CarrierTick { get; set; } = long.MinValue / 2;
         public double PassiveScale { get; set; }
         public double AuraPower { get; set; } = 1;
         public void StartCooldown(int ticks)

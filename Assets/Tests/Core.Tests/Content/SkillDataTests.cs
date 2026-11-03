@@ -28,13 +28,13 @@ namespace Game.Core.Tests.Content
             var gems = GemCatalog.Load(RealFile());
 
             Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(118));
-            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(25));
+            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(84));
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Aura && !gem.Locked).Select(gem => gem.Skill!.Effect), Is.All.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Active).Select(gem => gem.Skill!.Effect), Is.All.Not.InstanceOf<AuraEffect>());
             var supports = gems.All.Where(gem => gem.Type == SkillType.Support).ToList();
-            Assert.That(supports.Select(gem => gem.Fits), Is.All.Not.EqualTo(SkillMechanic.None));
+            Assert.That(supports.Where(gem => gem.ForSkill == null).Select(gem => gem.Fits), Is.All.Not.EqualTo(SkillMechanic.None));
             Assert.That(supports.Select(gem => gem.ManaMultiplier), Is.All.InRange(1.0, 1.1));
-            Assert.That(supports.Where(gem => gem.ManaMultiplier > 1).Select(gem => gem.Id), Is.EquivalentTo(new[] { "chain", "twins", "double_charge", "wide_reach" }));
+            Assert.That(supports.Where(gem => gem.ManaMultiplier > 1).Select(gem => gem.Id), Is.EquivalentTo(new[] { "chain", "twins", "double_charge", "wide_reach", "carrier_boss", "carrier_full", "carrier_keys", "carrier_mouse", "carrier_low" }));
             Assert.That(supports.Select(gem => gem.Id), Has.None.AnyOf("lingering", "long_swing", "minion_trail"));
             Assert.That(supports.Any(gem => gem.DamageMultiplier != 1), Is.True, "not every support keeps the plain damage");
         }

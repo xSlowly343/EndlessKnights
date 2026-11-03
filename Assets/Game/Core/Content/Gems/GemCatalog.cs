@@ -118,6 +118,7 @@ namespace Game.Core.Content.Gems
                 if (ids.Contains(former.Key))
                     throw root.Field("gems").Error($"former id '{former.Key}' of '{former.Value}' is still a gem id");
             }
+            BindToSkills(gems, root.Field("gems"));
             return new GemCatalog(gems, GemLevels.Read(root.Field("levels")), formerIds);
         }
 
@@ -160,16 +161,34 @@ namespace Game.Core.Content.Gems
                     return ReadSkillGem(node, id, type, color, nameRu, nameEn, tags);
                 default:
                     return new GemDef(id, GemKind.Support, color, nameRu, nameEn, tags, supportEffect: node.Field("effect").Field("type").AsString(),
-                        support: SupportDef.Read(node.Field("effect")), fits: SkillMechanics.Read(node.Field("fits")),
+                        support: SupportDef.Read(node.Field("effect")), fits: node.HasField("forSkill") ? SkillMechanic.None : SkillMechanics.Read(node.Field("fits")),
                         damageMultiplier: node.Field("damageMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
                         manaMultiplier: node.Field("manaMult").AsNumber(MinBranchMultiplier, MaxBranchMultiplier),
-                        unlockLevel: node.Field("level").AsInt(1, 1000));
+                        unlockLevel: node.Field("level").AsInt(1, 1000),
+                        socket: node.HasField("socket") ? node.Field("socket").AsInt(1, Sim.SkillSlot.BuiltInSocket) : 0,
+                        forSkill: node.HasField("forSkill") ? node.Field("forSkill").AsString() : null);
+            }
+        }
+
+        private static void BindToSkills(List<GemDef> gems, ContentNode node)
+        {
+            var bySkill = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var support in gems)
+            {
+                if (support.ForSkill == null)
+                    continue;
+                var skill = gems.Find(gem => gem.Id == support.ForSkill);
+                if (skill == null || skill.Kind != GemKind.Skill || skill.Ascendancy == null)
+                    throw node.Error($"support '{support.Id}' is for '{support.ForSkill}', which is not a skill of a path");
+                if (!bySkill.Add(support.ForSkill))
+                    throw node.Error($"skill '{support.ForSkill}' already has a great support");
+                support.ForPath = skill.Ascendancy;
             }
         }
 
         private static void RejectSupportFields(ContentNode node)
         {
-            foreach (var field in new[] { "fits", "damageMult", "manaMult", "level" })
+            foreach (var field in new[] { "fits", "damageMult", "manaMult", "level", "socket", "forSkill" })
             {
                 if (node.HasField(field))
                     throw node.Field(field).Error("only a support has this field");
