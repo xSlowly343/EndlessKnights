@@ -10,13 +10,10 @@ namespace Game.Core.Content.Gems
         DeferredPayment,
         DoubleCharge,
         Twins,
-        Lingering,
         InkPoison,
         SeriesRhythm,
         SeriesFinish,
-        LongSwing,
         Tailwind,
-        MinionTrail,
         TargetHunter,
         Cursed,
         LingeringBlight,
@@ -46,8 +43,6 @@ namespace Game.Core.Content.Gems
         public int ExtraCharges { get; private set; }
         public double TwinSeconds { get; private set; }
         public double TwinPower { get; private set; }
-        public double DurationMultiplier { get; private set; } = 1;
-        public double LingerMax { get; private set; }
         public double PoisonPerHit { get; private set; }
         public int PoisonHitsMax { get; private set; }
         public int RhythmEvery { get; private set; }
@@ -57,14 +52,10 @@ namespace Game.Core.Content.Gems
         public int FinishAfterHits { get; private set; }
         public double FinishMultiplier { get; private set; }
         public double FinishResource { get; private set; }
-        public double MouseDistanceMultiplier { get; private set; } = 1;
-        public double ActiveMouseDamage { get; private set; } = 1;
         public double ActiveKeyDamage { get; private set; } = 1;
         public double WindPxPerSecond { get; private set; }
         public double WindMax { get; private set; }
         public double AuraPowerMultiplier { get; private set; } = 1;
-        public double MinionMouseSpeed { get; private set; } = 1;
-        public double MinionLife { get; private set; } = 1;
         public double RedirectMultiplier { get; private set; }
         public double VulnerabilityShare { get; private set; }
         public double VulnerabilitySeconds { get; private set; }
@@ -144,12 +135,6 @@ namespace Game.Core.Content.Gems
                         TwinSeconds = effect.Field("afterSeconds").AsNumber(0.1, 600),
                         TwinPower = effect.Field("power").AsNumber(0, 10)
                     };
-                case "lingering":
-                    return new SupportDef(SupportKind.Lingering)
-                    {
-                        DurationMultiplier = effect.Field("durationMultiplier").AsNumber(0, 10),
-                        LingerMax = effect.Field("lingerMax").AsNumber(0, 10)
-                    };
                 case "inkPoison":
                     return new SupportDef(SupportKind.InkPoison)
                     {
@@ -171,24 +156,12 @@ namespace Game.Core.Content.Gems
                         FinishMultiplier = effect.Field("multiplier").AsNumber(0, 1000),
                         FinishResource = effect.Field("resource").AsNumber(0, 1000)
                     };
-                case "longSwing":
-                    return new SupportDef(SupportKind.LongSwing)
-                    {
-                        MouseDistanceMultiplier = effect.Field("distanceMultiplier").AsNumber(0, 100),
-                        ActiveMouseDamage = effect.Field("mouseDamage").AsNumber(0, 100)
-                    };
                 case "tailwind":
                     return new SupportDef(SupportKind.Tailwind)
                     {
                         WindPxPerSecond = effect.Field("pxPerSecond").AsNumber(1, 1e7),
                         WindMax = effect.Field("max").AsNumber(0, 10),
                         AuraPowerMultiplier = effect.Field("auraPower").AsNumber(0, 100)
-                    };
-                case "minionTrail":
-                    return new SupportDef(SupportKind.MinionTrail)
-                    {
-                        MinionMouseSpeed = effect.Field("mouseSpeed").AsNumber(0, 100),
-                        MinionLife = effect.Field("life").AsNumber(0, 100)
                     };
                 case "targetHunter":
                     return new SupportDef(SupportKind.TargetHunter) { RedirectMultiplier = effect.Field("multiplier").AsNumber(0, 100) };

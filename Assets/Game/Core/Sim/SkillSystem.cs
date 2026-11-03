@@ -346,11 +346,10 @@ namespace Game.Core.Sim
         private void Release(SkillSlot slot, NativeTrait native, double spent, bool wasFull, bool announce)
         {
             var skill = slot.Def;
-            slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast) * SupportEffects.DurationMultiplier(slot))
+            slot.ActiveTicks = Ticks(skill.DurationSeconds * DurationMultiplier(skill, native, wasFull, slot.WhenAtCast))
                 + Ticks(System.Math.Max(0, spent - Cost(slot)) * native.ExtraSecondsPerPoint)
                 + (skill.DurationSeconds > 0 ? Ticks(System.Math.Max(0, _hero.Value(slot.Skill.DurationStat, 0))) : 0);
             slot.ActiveTotalTicks = slot.ActiveTicks;
-            slot.LingerTicks = 0;
             slot.WindPx = 0;
             slot.WindTicks = 0;
             if (skill.Effect is ChainHitsEffect chain)
@@ -462,7 +461,7 @@ namespace Game.Core.Sim
             var hitCount = 0;
             if (hits.PxPerHit > 0)
             {
-                slot.Progress += input.MousePx * SupportEffects.MouseDistance(slot);
+                slot.Progress += input.MousePx;
                 var steps = (int)System.Math.Floor(slot.Progress / hits.PxPerHit);
                 slot.Progress -= steps * hits.PxPerHit;
                 multiplier += hits.PxShare * steps;
@@ -487,7 +486,7 @@ namespace Game.Core.Sim
                 slot.Progress -= buckets[index];
                 buckets[index] = 0;
             }
-            var px = input.MousePx * SupportEffects.MouseDistance(slot);
+            var px = input.MousePx;
             buckets[index] += px;
             slot.Progress += px;
             var stacks = System.Math.Min(MaxStacks(distance.Stacks), (int)System.Math.Floor(System.Math.Max(0, slot.Progress) / distance.PxPerStack));
@@ -920,7 +919,7 @@ namespace Game.Core.Sim
                 RefillCharge(slot);
                 TickTwin(slot);
                 TickTailwind(slot, input);
-                if (slot.ActiveTicks > 0 && !Lingers(slot, input) && !HeldByResource(slot))
+                if (slot.ActiveTicks > 0 && !HeldByResource(slot))
                 {
                     slot.ActiveTicks--;
                     if (slot.ActiveTicks == 0)
@@ -960,7 +959,7 @@ namespace Game.Core.Sim
                 if (slot.Active && slot.Def.Effect is AuraEffect keyless && keyless.KeylessStrikeSeconds > 0)
                     TickKeylessStrike(slot, keyless);
                 if (slot.Active && slot.Def.Effect is TrailEffect)
-                    slot.Progress += input.MousePx * SupportEffects.MouseDistance(slot);
+                    slot.Progress += input.MousePx;
                 if (input.HasInput && slot.Def.Effect is IdleStrikeEffect strike)
                     ReleaseIdleStrike(slot, strike, idleTicksBefore * GameLoop.TickSeconds);
             }
@@ -972,14 +971,12 @@ namespace Game.Core.Sim
         private void ActiveInputBonuses()
         {
             var keys = 1.0;
-            var mouse = 1.0;
             for (var i = 0; i < _state.Skills.Count; i++)
             {
                 if (_state.Skills[i].Active)
-                    SupportEffects.ActiveInputDamage(_state.Skills[i], ref keys, ref mouse);
+                    keys *= SupportEffects.ActiveKeyDamage(_state.Skills[i]);
             }
             _state.SupportKeyBonus = keys;
-            _state.SupportMouseBonus = mouse;
             var cap = 1.0;
             for (var i = 0; i < _state.Skills.Count; i++)
                 cap *= SupportEffects.StackCap(_state.Skills[i]);
@@ -1057,19 +1054,6 @@ namespace Game.Core.Sim
             slot.AuraPower = auraPower;
         }
 
-        private bool Lingers(SkillSlot slot, in EffectiveInput input)
-        {
-            var max = SupportEffects.LingerMax(slot);
-            if (max <= 0 || slot.LingerTicks >= slot.ActiveTotalTicks * max || !SameInput(slot.Skill.Tags, input))
-                return false;
-            slot.LingerTicks++;
-            return true;
-        }
-
-        private static bool SameInput(StatTags tags, in EffectiveInput input) =>
-            ((tags & StatTags.Strike) != 0 && input.Hits > 0)
-            || ((tags & StatTags.Mouse) != 0 && input.MousePx > 0)
-            || ((tags & StatTags.Click) != 0 && input.ButtonPresses > 0);
 
         private void PayDeferred(SkillSlot slot)
         {

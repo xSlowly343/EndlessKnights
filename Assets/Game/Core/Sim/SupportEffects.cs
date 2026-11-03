@@ -85,45 +85,19 @@ namespace Game.Core.Sim
             return power;
         }
 
-        public static double MouseDistance(SkillSlot slot)
+
+        public static double ActiveKeyDamage(SkillSlot slot)
         {
-            var multiplier = 1.0;
+            var keys = 1.0;
             for (var i = 0; i < slot.Supports.Length; i++)
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null)
-                    multiplier *= support.MouseDistanceMultiplier;
+                    keys *= support.ActiveKeyDamage;
             }
-            return multiplier;
+            return keys;
         }
 
-        public static void ActiveInputDamage(SkillSlot slot, ref double keys, ref double mouse)
-        {
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support == null)
-                    continue;
-                keys *= support.ActiveKeyDamage;
-                mouse *= support.ActiveMouseDamage;
-            }
-        }
-
-        public static void MinionBonuses(SkillSlot? slot, out double mouseSpeed, out double life)
-        {
-            mouseSpeed = 1;
-            life = 1;
-            if (slot == null)
-                return;
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support == null)
-                    continue;
-                mouseSpeed *= support.MinionMouseSpeed;
-                life *= support.MinionLife;
-            }
-        }
 
         public static double Redirect(SkillSlot slot)
         {
@@ -208,29 +182,7 @@ namespace Game.Core.Sim
             return null;
         }
 
-        public static double DurationMultiplier(SkillSlot slot)
-        {
-            var multiplier = 1.0;
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support != null)
-                    multiplier *= support.DurationMultiplier;
-            }
-            return multiplier;
-        }
 
-        public static double LingerMax(SkillSlot slot)
-        {
-            var max = 0.0;
-            for (var i = 0; i < slot.Supports.Length; i++)
-            {
-                var support = slot.Supports[i]?.Support;
-                if (support != null)
-                    max = System.Math.Max(max, support.LingerMax);
-            }
-            return max;
-        }
 
         public static double ExperienceMultiplier(SkillSlot slot, GameState state) => Product(slot, state, SupportLineEffect.Experience);
 

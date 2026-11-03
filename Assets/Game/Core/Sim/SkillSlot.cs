@@ -58,7 +58,6 @@ namespace Game.Core.Sim
         public int ChargeTicks { get; set; }
         public int TwinTicks { get; set; }
         public double TwinPower { get; set; }
-        public int LingerTicks { get; set; }
         public int InkHits { get; set; }
         public int FinishHits { get; set; } = -1;
         public double WindPx { get; set; }
