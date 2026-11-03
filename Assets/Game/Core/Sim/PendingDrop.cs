@@ -1,4 +1,3 @@
-using Game.Core.Content.Gems;
 using Game.Core.Content.Items;
 using Game.Core.Content.Weapons;
 
@@ -6,7 +5,7 @@ namespace Game.Core.Sim
 {
     public readonly struct PendingDrop
     {
-        private PendingDrop(DropSource source, long stage, ItemSlot slot, ItemRarity rarity, WeaponType? type, string? color, GemDef? gem, bool key = false)
+        private PendingDrop(DropSource source, long stage, ItemSlot slot, ItemRarity rarity, WeaponType? type, string? color, bool key = false)
         {
             IsKey = key;
             Source = source;
@@ -15,7 +14,6 @@ namespace Game.Core.Sim
             Rarity = rarity;
             Type = type;
             Color = color;
-            Gem = gem;
         }
 
         public DropSource Source { get; }
@@ -24,19 +22,15 @@ namespace Game.Core.Sim
         public ItemRarity Rarity { get; }
         public WeaponType? Type { get; }
         public string? Color { get; }
-        public GemDef? Gem { get; }
         public bool IsKey { get; }
 
         public static PendingDrop Weapon(DropSource source, long stage, ItemRarity rarity, WeaponType type) =>
-            new PendingDrop(source, stage, ItemSlot.Weapon, rarity, type, null, null);
+            new PendingDrop(source, stage, ItemSlot.Weapon, rarity, type, null);
 
         public static PendingDrop Gear(DropSource source, long stage, ItemSlot slot, ItemRarity rarity, string? color) =>
-            new PendingDrop(source, stage, slot, rarity, null, color, null);
+            new PendingDrop(source, stage, slot, rarity, null, color);
 
         public static PendingDrop Key(long stage) =>
-            new PendingDrop(DropSource.Record, stage, ItemSlot.Weapon, ItemRarity.Simple, null, null, null, key: true);
-
-        public static PendingDrop OfGem(GemDef gem) =>
-            new PendingDrop(DropSource.Record, 0, ItemSlot.Weapon, ItemRarity.Simple, null, null, gem);
+            new PendingDrop(DropSource.Record, stage, ItemSlot.Weapon, ItemRarity.Simple, null, null, key: true);
     }
 }

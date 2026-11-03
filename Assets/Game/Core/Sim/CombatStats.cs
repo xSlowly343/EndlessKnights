@@ -25,12 +25,11 @@ namespace Game.Core.Sim
         public static readonly StatId BossTimerSpeed = new StatId("bossTimerSpeed");
         public static readonly StatId OfflineCapHours = new StatId("offlineCapHours");
         public static readonly StatId GemExperience = new StatId("gemExperience");
-        public static readonly StatId GemDrop = new StatId("gemDrop");
         public static readonly StatId PartyContribution = new StatId("partyContribution");
         public static readonly StatId EnemyRegen = new StatId("enemyRegen");
         public static readonly StatId BossShield = new StatId("bossShield");
         public static readonly StatId StageEnemies = new StatId("stageEnemies");
-        public static readonly StatId UncutGemChance = new StatId("uncutGemChance");
+        public static readonly StatId SupportExperience = new StatId("supportExperience");
         public static readonly StatId ShardDrop = new StatId("shardDrop");
         public static readonly StatId ItemFind = new StatId("itemRarity");
         public static readonly StatId ItemQuantity = new StatId("itemQuantity");
@@ -198,7 +197,7 @@ namespace Game.Core.Sim
         public static readonly StatId PartyCritMultiplier = new StatId("partyCritMultiplier");
         public static readonly StatId PartyResource = new StatId("partyResource");
         public static readonly StatId PartySkillCooldown = new StatId("partySkillCooldown");
-        public static readonly StatId PartyGemDrop = new StatId("partyGemDrop");
+        public static readonly StatId PartyGemExperience = new StatId("partyGemExperience");
         public static readonly StatId StunSeconds = new StatId("stunSeconds");
         public static readonly StatId DamageVsStunned = new StatId("damageVsStunned");
         public static readonly StatId MarkSeconds = new StatId("markSeconds");

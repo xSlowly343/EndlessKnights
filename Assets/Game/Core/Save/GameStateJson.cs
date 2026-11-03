@@ -103,7 +103,6 @@ namespace Game.Core.Save
                 ("skills", JsonValue.Array(WriteSkills(state))),
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
                 ("gemProgress", WriteGemProgress(state)),
-                ("boundGems", WriteBoundGems(state)),
                 ("treePointsEarned", JsonValue.Of(state.TreePointsEarned)),
                 ("classTree", WriteClassTree(state.ClassTree)),
                 ("commonTrees", WriteCommonTrees(state.CommonTrees)),
@@ -274,8 +273,6 @@ namespace Game.Core.Save
                 ReadGemProgress(node.Field("gemProgress"), gems, state);
             else
                 state.Drops.Rng = new Rng(rng0 ^ rng1 ^ DropState.SeedSalt);
-            if (node.HasField("boundGems"))
-                ReadBoundGems(node.Field("boundGems"), gems, state);
             if (node.HasField("traits"))
                 TraitStateJson.Read(node.Field("traits"), state, enemies);
             return state;
@@ -434,8 +431,6 @@ namespace Game.Core.Save
                 ("shardCarry", JsonValue.Of(drops.ShardCarry)),
                 ("shardsFound", JsonValue.Of(drops.ShardsFound)),
                 ("dailyShards", JsonValue.Of(drops.DailyShards)),
-                ("uncutGems", JsonValue.Of(drops.UncutGems)),
-                ("uncutFound", JsonValue.Of(drops.UncutFound)),
                 ("salvageUpTo", drops.SalvageUpTo == null ? JsonValue.Null() : JsonValue.Of(ItemRarityNames.Of(drops.SalvageUpTo.Value))),
                 ("itemsFound", JsonValue.Of(drops.ItemsFound)),
                 ("salvagedItems", JsonValue.Of(drops.SalvagedItems)),
@@ -499,8 +494,6 @@ namespace Game.Core.Save
                 drops.ShardCarry = node.Field("shardCarry").AsNumber(0, 1);
                 drops.ShardsFound = node.Field("shardsFound").AsLong(0);
                 drops.DailyShards = node.Field("dailyShards").AsInt(0);
-                drops.UncutGems = node.Field("uncutGems").AsInt(0);
-                drops.UncutFound = node.Field("uncutFound").AsLong(0);
             }
             var salvage = node.Field("salvageUpTo");
             drops.SalvageUpTo = !salvage.IsNull && ItemRarityNames.ByName.TryGetValue(salvage.AsString(), out var limit) ? limit : (ItemRarity?)null;
@@ -951,26 +944,6 @@ namespace Game.Core.Save
                 map.Add(pair.Key, Object(("level", JsonValue.Of(pair.Value.Level)), ("experience", JsonValue.Of(pair.Value.Experience)),
                     ("rebirths", JsonValue.Of(pair.Value.Rebirths)), ("branches", WriteBranches(pair.Value.Branches))));
             return JsonValue.Object(map);
-        }
-
-        private static JsonValue WriteBoundGems(GameState state)
-        {
-            var map = new Dictionary<string, JsonValue>(state.BoundGems.Count);
-            foreach (var pair in state.BoundGems)
-            {
-                if (pair.Value > 0)
-                    map.Add(pair.Key, JsonValue.Of(pair.Value));
-            }
-            return JsonValue.Object(map);
-        }
-
-        private static void ReadBoundGems(ContentNode node, GemCatalog gems, GameState state)
-        {
-            foreach (var id in node.FieldNames())
-            {
-                if (gems.TryGet(id, out _))
-                    state.BoundGems[id] = node.Field(id).AsInt(0, 100000);
-            }
         }
 
         private static void ReadGemProgress(ContentNode node, GemCatalog gems, GameState state)

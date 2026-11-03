@@ -98,7 +98,7 @@ namespace Game.Core.Tests.Sim
         {
             var json = TestData.ReadGameDataFile(DropRules.FileName).Replace("\"sets\": { \"chance\": 0.02, \"boss\": 0.04, \"guardian\": 0.08 }", "\"sets\": { \"chance\": 0.02, \"boss\": 0.04, \"guardian\": 1 }");
             var loop = Hero(HeroClass.Runedancer);
-            loop.Drops.UseData(DropRules.Load(json), TestWorld.Data.Stages, TestWorld.Data.Gems, TestWorld.Data.Items);
+            loop.Drops.UseData(DropRules.Load(json), TestWorld.Data.Stages, TestWorld.Data.Items);
             var found = 0;
             for (var i = 0; i < 40; i++)
             {

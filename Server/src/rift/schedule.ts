@@ -21,16 +21,12 @@ interface RiftRules {
 interface RiftMilestoneStep {
     from: number;
     shards: number;
-    uncutGems: number;
     friendship: number;
-    rareGem: boolean;
 }
 
 interface RiftMilestoneRules {
     every: number;
     steps: RiftMilestoneStep[];
-    rareGems: string[];
-    rareGemsPerRift: number;
 }
 
 interface RiftEnemyModifier {
@@ -43,7 +39,6 @@ interface RiftEnemyModifier {
 interface RiftBoardPlace {
     upTo: number;
     shards: number;
-    uncutGems: number;
     ingots: number;
     friendship: number;
 }
@@ -118,10 +113,6 @@ function riftModifiersFor(rules: RiftRules, windowId: number): string[] {
     return riftPick(rules.modifiers, rules.modifiersPerWindow, windowId);
 }
 
-function riftMilestoneGems(rules: RiftRules, riftId: number): string[] {
-    return riftPick(rules.milestones.rareGems, rules.milestones.rareGemsPerRift, riftId);
-}
-
 function riftMilestoneStep(rules: RiftRules, stage: number): RiftMilestoneStep | null {
     const milestones = rules.milestones;
     if (!(stage > 0) || stage % milestones.every !== 0)
@@ -131,11 +122,6 @@ function riftMilestoneStep(rules: RiftRules, stage: number): RiftMilestoneStep |
         if (step.from <= stage)
             found = step;
     return found;
-}
-
-function riftMilestoneGem(rules: RiftRules, riftId: number, stage: number): string {
-    const gems = riftMilestoneGems(rules, riftId);
-    return gems.length === 0 ? "" : gems[Math.floor(stage / rules.milestones.every) % gems.length];
 }
 
 function riftWindowReply(rules: RiftRules, nowUnixMs: number): string {

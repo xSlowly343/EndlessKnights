@@ -15,7 +15,6 @@ const raid = JSON.parse(fs.readFileSync(path.join(data, "raid.json"), "utf8"));
 const clan = JSON.parse(fs.readFileSync(path.join(data, "clan.json"), "utf8"));
 const clanChronicle = JSON.parse(fs.readFileSync(path.join(data, "clan_chronicle.json"), "utf8"));
 const ascendancy = JSON.parse(fs.readFileSync(path.join(data, "ascendancy.json"), "utf8"));
-const gems = JSON.parse(fs.readFileSync(path.join(data, "skills.json"), "utf8"));
 const synergy = JSON.parse(fs.readFileSync(path.join(data, "synergy.json"), "utf8"));
 const chronicle = JSON.parse(fs.readFileSync(path.join(data, "party_chronicle.json"), "utf8"));
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
@@ -108,11 +107,9 @@ const riftRules = {
   boardShown: rift.board.shown,
   milestones: {
     every: rift.milestones.every,
-    steps: rift.milestones.steps.map((step) => ({ from: step.from, shards: step.shards || 0, uncutGems: step.uncutGems || 0, friendship: step.friendship || 0, rareGem: !!step.rareGem })),
-    rareGems: rift.milestones.rareGems,
-    rareGemsPerRift: rift.milestones.rareGemsPerRift
+    steps: rift.milestones.steps.map((step) => ({ from: step.from, shards: step.shards || 0, friendship: step.friendship || 0 }))
   },
-  boardPlaces: rift.board.places.map((place) => ({ upTo: place.upTo || 0, shards: place.shards, uncutGems: place.uncutGems, ingots: place.ingots, friendship: place.friendship || 0 }))
+  boardPlaces: rift.board.places.map((place) => ({ upTo: place.upTo || 0, shards: place.shards, ingots: place.ingots, friendship: place.friendship || 0 }))
 };
 
 const directoryRules = {
@@ -175,13 +172,6 @@ const clanChronicleRules = {
 
 if (coopCurrency.version !== 1)
   throw new Error("coop_currency.json: version " + coopCurrency.version + " is not supported");
-const giftRules = {
-  dailyLimit: party.gifts.dailyLimit,
-  perFriendDaily: party.gifts.perFriendDaily,
-  receiveDailyLimit: party.gifts.receiveDailyLimit,
-  cost: party.gifts.friendshipCost,
-  giftable: gems.gems.filter((gem) => !gem.ascendancy).map((gem) => gem.id)
-};
 
 const helpRules = {
   seconds: party.help.seconds,
@@ -250,7 +240,7 @@ const clanTreeRules = {
 
 if (mentor.version !== 1)
   throw new Error("mentor.json: version " + mentor.version + " is not supported");
-const mentorSide = (side) => ({ friendship: side.friendship || 0, uncutGems: side.uncutGems || 0, perk: side.perk || "", coopPoints: side.coopPoints || 0 });
+const mentorSide = (side) => ({ friendship: side.friendship || 0, shards: side.shards || 0, perk: side.perk || "", coopPoints: side.coopPoints || 0 });
 const mentorRules = {
   studentDays: mentor.studentDays,
   mentorMinDays: mentor.mentorMinDays,
@@ -279,4 +269,4 @@ const coopHelpRules = {
 const ghostRules = Object.assign({}, party.ghost, { classes: Object.keys(party.search.classRoles).length });
 
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar GiftServerRules = " + JSON.stringify(giftRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\n" + code);

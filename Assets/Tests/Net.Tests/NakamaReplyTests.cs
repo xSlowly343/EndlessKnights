@@ -38,9 +38,9 @@ namespace Game.Net.Tests
         {
             var board = RiftBoardView.From(NakamaJson.Parse("{\"riftId\":1793102400,\"endUnixMs\":1793188800000,\"settled\":false,\"parties\":14,"
                 + "\"top\":[{\"place\":1,\"title\":\"night_shift\",\"depth\":40,\"members\":4,\"yours\":false},{\"place\":2,\"title\":\"loud_keys\",\"depth\":31,\"members\":2,\"yours\":true}],"
-                + "\"own\":{\"place\":2,\"depth\":31,\"reward\":{\"upTo\":3,\"shards\":200,\"uncutGems\":2,\"ingots\":4}}}"))!;
+                + "\"own\":{\"place\":2,\"depth\":31,\"reward\":{\"upTo\":3,\"shards\":200,\"ingots\":4}}}"))!;
             var letter = MailDirectory.Letter(NakamaJson.Parse("{\"id\":\"rift-1793102400\",\"kind\":\"rift\",\"at\":1793189100000,\"place\":2,\"of\":14,\"depth\":31,\"title\":\"loud_keys\","
-                + "\"reward\":{\"shards\":200,\"uncutGems\":2,\"ingots\":4,\"friendship\":20},\"claimed\":false,\"claimedAt\":0}"));
+                + "\"reward\":{\"shards\":200,\"ingots\":4,\"friendship\":20},\"claimed\":false,\"claimedAt\":0}"));
 
             Assert.That(board.Parties, Is.EqualTo(14));
             Assert.That(board.Top[1].Yours, Is.True);
@@ -51,26 +51,9 @@ namespace Game.Net.Tests
             Assert.That(letter.Kind, Is.EqualTo("rift"));
             Assert.That(letter.Place, Is.EqualTo(2));
             Assert.That(letter.Reward.Ingots, Is.EqualTo(4));
-            Assert.That(letter.Reward.UncutGems, Is.EqualTo(2));
+            Assert.That(letter.Reward.Shards, Is.EqualTo(200));
             Assert.That(letter.Reward.Friendship, Is.EqualTo(20));
             Assert.That(letter.Claimed, Is.False);
-        }
-
-        [Test]
-        public void AGiftLetterAndTheGiftRepliesAreRead()
-        {
-            var letter = MailDirectory.Letter(NakamaJson.Parse("{\"id\":\"gift-1\",\"kind\":\"gift\",\"at\":1793189100000,\"place\":0,\"of\":0,\"depth\":0,\"title\":\"Ann\","
-                + "\"reward\":{\"shards\":0,\"uncutGems\":0,\"ingots\":0},\"claimed\":false,\"claimedAt\":0,\"gem\":\"runedancer_hit_2\"}"));
-            var sent = GiftDirectory.Sent(NakamaJson.Parse("{\"gemId\":\"runedancer_hit_2\",\"mentor\":true,\"left\":2}"));
-            var status = GiftDirectory.Status(NakamaJson.Parse("{\"left\":1,\"dailyLimit\":3,\"perFriendDaily\":1,\"cost\":5}"));
-
-            Assert.That(letter.Kind, Is.EqualTo(Game.Core.Mail.MailLetter.GiftKind));
-            Assert.That(letter.Gem, Is.EqualTo("runedancer_hit_2"));
-            Assert.That(letter.Title, Is.EqualTo("Ann"));
-            Assert.That(sent.Mentor, Is.True);
-            Assert.That(sent.Left, Is.EqualTo(2));
-            Assert.That(status.Cost, Is.EqualTo(5));
-            Assert.That(status.DailyLimit, Is.EqualTo(3));
         }
 
         [Test]

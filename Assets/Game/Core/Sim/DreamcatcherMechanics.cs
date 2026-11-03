@@ -240,7 +240,7 @@ namespace Game.Core.Sim
         {
             S.SpiritKills++;
             var scale = Bait ? SpiritLoot : 1;
-            _drops?.GiveSpiritLoot((int)System.Math.Round(_rules.SpiritGems * scale), (long)System.Math.Round(_rules.SpiritShards * scale));
+            _drops?.GiveSpiritLoot((int)System.Math.Round(_rules.SpiritTrophies * scale), (long)System.Math.Round(_rules.SpiritShards * scale));
             _loot?.Chest(_state.Stage, _rules.SpiritChest * scale);
             if (!Bait || !Flag(DreamcatcherStats.SpiritGift))
                 return;

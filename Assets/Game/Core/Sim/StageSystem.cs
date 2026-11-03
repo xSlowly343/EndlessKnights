@@ -218,7 +218,6 @@ namespace Game.Core.Sim
             _state.NextKillReward = 1;
             _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy, multiplier * (1 + _state.EnemyGoldBonus));
             _levels.OnKill(_state.EnemyType, multiplier);
-            Drops?.OnKill(_state.EnemyType);
             RewardListener?.OnKillRewarded();
             if (multiplier > 1 && _state.NextKillShardChance > 0 && _state.Rng.NextDouble() < _state.NextKillShardChance)
                 _state.Rift.Shards += BigNumber.FromDouble(_state.NextKillShards);

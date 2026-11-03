@@ -13,11 +13,7 @@
     { "stage": 20, "slot": "weapon", "rarity": "uncommon", "color": "own" },
     { "stage": 50, "slot": "empty", "rarity": "rare" }
   ],
-  "gems": {
-    "skill": { "normal": 300, "boss": 10 }
-  },
   "shards": { "boss": 1, "specialBoss": 5, "guardian": 3, "dailyLimit": 20 },
-  "uncut": { "share": 0.05, "shardCost": 30 },
   "sets": { "chance": 0.02, "boss": 0.04, "guardian": 0.08 },
   "uniques": { "guardian": 0.03 },
   "bag": { "size": 60 },

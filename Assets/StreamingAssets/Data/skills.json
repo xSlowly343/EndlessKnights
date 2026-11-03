@@ -5,11 +5,13 @@
     "effectPerLevel": 0.02,
     "experience": {"curve": "exp", "base": 100, "rate": 1.3},
     "experiencePerKill": 4,
-    "experiencePerCast": 4
+    "experiencePerCast": 4,
+    "experiencePerTrophy": 200
   },
   "gems": [
     {
       "id": "through_stride",
+      "level": 1,
       "formerIds": ["stenography"],
       "kind": "active",
       "color": "red",
@@ -21,6 +23,7 @@
     },
     {
       "id": "key_drum",
+      "level": 8,
       "kind": "active",
       "color": "red",
       "name": {"ru": "Дробь клавиш", "en": "Key Drumroll"},
@@ -32,6 +35,7 @@
     },
     {
       "id": "overheat",
+      "level": 45,
       "kind": "aura",
       "color": "red",
       "name": {"ru": "Перегрев", "en": "Overheat"},
@@ -43,6 +47,7 @@
     },
     {
       "id": "no_breather",
+      "level": 23,
       "formerIds": ["caps_rage"],
       "kind": "active",
       "color": "red",
@@ -55,6 +60,7 @@
     },
     {
       "id": "quick_stride",
+      "level": 14,
       "formerIds": ["typist"],
       "kind": "aura",
       "color": "red",
@@ -67,6 +73,7 @@
     },
     {
       "id": "steady_pace",
+      "level": 11,
       "formerIds": ["touch_typing"],
       "kind": "active",
       "color": "red",
@@ -83,6 +90,7 @@
     },
     {
       "id": "hurricane",
+      "level": 20,
       "kind": "active",
       "color": "green",
       "name": {"ru": "Ураган", "en": "Hurricane"},
@@ -94,6 +102,7 @@
     },
     {
       "id": "long_road",
+      "level": 14,
       "kind": "active",
       "color": "green",
       "name": {"ru": "Дальний путь", "en": "Long Road"},
@@ -110,6 +119,7 @@
     },
     {
       "id": "comet_trail",
+      "level": 29,
       "kind": "active",
       "color": "green",
       "name": {"ru": "След кометы", "en": "Comet Trail"},
@@ -121,6 +131,7 @@
     },
     {
       "id": "tailwind",
+      "level": 26,
       "kind": "aura",
       "color": "green",
       "name": {"ru": "Ветер в спину", "en": "Wind at Your Back"},
@@ -131,6 +142,7 @@
     },
     {
       "id": "mark",
+      "level": 8,
       "kind": "aura",
       "color": "blue",
       "name": {"ru": "Метка", "en": "Mark"},
@@ -142,6 +154,7 @@
     },
     {
       "id": "weak_spot",
+      "level": 17,
       "kind": "aura",
       "color": "blue",
       "name": {"ru": "Слабое место", "en": "Weak Spot"},
@@ -153,6 +166,7 @@
     },
     {
       "id": "execute",
+      "level": 11,
       "kind": "active",
       "color": "blue",
       "name": {"ru": "Казнь", "en": "Execute"},
@@ -163,6 +177,7 @@
     },
     {
       "id": "exposure",
+      "level": 23,
       "kind": "aura",
       "color": "blue",
       "name": {"ru": "Разоблачение", "en": "Exposure"},
@@ -175,6 +190,7 @@
     },
     {
       "id": "boss_hunt",
+      "level": 26,
       "kind": "active",
       "color": "blue",
       "name": {"ru": "Охота на босса", "en": "Boss Hunt"},
@@ -185,6 +201,7 @@
     },
     {
       "id": "ricochet",
+      "level": 5,
       "kind": "active",
       "color": "blue",
       "name": {"ru": "Рикошет", "en": "Ricochet"},
@@ -195,6 +212,7 @@
     },
     {
       "id": "lucky_coin",
+      "level": 5,
       "kind": "active",
       "color": "blue",
       "name": {"ru": "Счастливая монета", "en": "Lucky Coin"},
@@ -205,6 +223,7 @@
     },
     {
       "id": "composure",
+      "level": 32,
       "kind": "active",
       "color": "blue",
       "name": {"ru": "Выдержка", "en": "Composure"},
@@ -215,6 +234,7 @@
     },
     {
       "id": "freeze_frame",
+      "level": 50,
       "kind": "aura",
       "color": "blue",
       "name": {"ru": "Стоп-кадр", "en": "Freeze Frame"},
@@ -226,6 +246,7 @@
     },
     {
       "id": "march",
+      "level": 29,
       "kind": "aura",
       "color": "blue",
       "name": {"ru": "Марш", "en": "March"},
@@ -237,6 +258,7 @@
     },
     {
       "id": "lull",
+      "level": 1,
       "kind": "active",
       "color": "white",
       "name": {"ru": "Затишье", "en": "Lull"},
@@ -247,6 +269,7 @@
     },
     {
       "id": "golden_fever",
+      "level": 36,
       "kind": "aura",
       "color": "white",
       "name": {"ru": "Золотая лихорадка", "en": "Golden Fever"},
@@ -258,6 +281,7 @@
     },
     {
       "id": "second_wind",
+      "level": 17,
       "kind": "active",
       "color": "white",
       "name": {"ru": "Второе дыхание", "en": "Second Wind"},
@@ -268,6 +292,7 @@
     },
     {
       "id": "echo",
+      "level": 20,
       "kind": "active",
       "color": "white",
       "name": {"ru": "Эхо", "en": "Echo"},
@@ -278,6 +303,7 @@
     },
     {
       "id": "caravan_halt",
+      "level": 32,
       "formerIds": ["coffee_break"],
       "kind": "active",
       "color": "white",
@@ -289,6 +315,7 @@
     },
     {
       "id": "blade_on_watch",
+      "level": 36,
       "formerIds": ["call"],
       "kind": "aura",
       "color": "white",
@@ -300,6 +327,7 @@
     },
     {
       "id": "shoulder_to_shoulder",
+      "level": 40,
       "kind": "active",
       "color": "white",
       "name": {"ru": "Плечом к плечу", "en": "Shoulder to Shoulder"},
@@ -310,6 +338,7 @@
     },
     {
       "id": "prokhors_ledger",
+      "level": 40,
       "formerIds": ["heros_diary"],
       "kind": "active",
       "color": "white",
@@ -321,6 +350,7 @@
     },
     {
       "id": "rift_crystal",
+      "level": 55,
       "kind": "active",
       "color": "white",
       "name": {"ru": "Кристалл Разлома", "en": "Rift Crystal"},
@@ -8041,12 +8071,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.15}, {"stat": "spiritLoot", "kind": "flat", "value": 0.02}], "reserve": 25, "party": true},
-      "text": {"ru": "отряд: +15% выпадения гемов; добыча её духа на 2% больше", "en": "party: +15% gem drops; her spirit drops 2% more loot"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "gemExperience", "kind": "increased", "value": 0.15}, {"stat": "spiritLoot", "kind": "flat", "value": 0.02}], "reserve": 25, "party": true},
+      "text": {"ru": "отряд: +15% опыта гемов; добыча её духа на 2% больше", "en": "party: +15% gem experience; her spirit drops 2% more loot"},
       "branches": [
-        {"level": 5, "options": [{"id": "dreamcatcher_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.18}, {"stat": "spiritLoot", "kind": "flat", "value": 0.024}]}}, {"id": "dreamcatcher_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "dreamcatcher_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.165}, {"stat": "spiritLoot", "kind": "flat", "value": 0.022}]}}, {"id": "dreamcatcher_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "dreamcatcher_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "gemDrop", "kind": "increased", "value": 0.195}, {"stat": "spiritLoot", "kind": "flat", "value": 0.026}]}}, {"id": "dreamcatcher_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "gemExperience", "kind": "increased", "value": 0.18}, {"stat": "spiritLoot", "kind": "flat", "value": 0.024}]}}, {"id": "dreamcatcher_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "gemExperience", "kind": "increased", "value": 0.165}, {"stat": "spiritLoot", "kind": "flat", "value": 0.022}]}}, {"id": "dreamcatcher_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "gemExperience", "kind": "increased", "value": 0.195}, {"stat": "spiritLoot", "kind": "flat", "value": 0.026}]}}, {"id": "dreamcatcher_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

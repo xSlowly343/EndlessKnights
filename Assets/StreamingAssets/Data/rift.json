@@ -10,22 +10,20 @@
     "updateMinutes": 5,
     "shown": 20,
     "places": [
-      { "upTo": 1, "shards": 300, "uncutGems": 3, "ingots": 6, "friendship": 30 },
-      { "upTo": 3, "shards": 200, "uncutGems": 2, "ingots": 4, "friendship": 20 },
-      { "upTo": 10, "shards": 120, "uncutGems": 1, "ingots": 2, "friendship": 15 },
-      { "upTo": 50, "shards": 60, "uncutGems": 1, "ingots": 1, "friendship": 10 },
-      { "shards": 30, "uncutGems": 0, "ingots": 1, "friendship": 5 }
+      { "upTo": 1, "shards": 390, "ingots": 6, "friendship": 30 },
+      { "upTo": 3, "shards": 260, "ingots": 4, "friendship": 20 },
+      { "upTo": 10, "shards": 150, "ingots": 2, "friendship": 15 },
+      { "upTo": 50, "shards": 90, "ingots": 1, "friendship": 10 },
+      { "shards": 30, "ingots": 1, "friendship": 5 }
     ]
   },
   "milestones": {
     "every": 25,
     "steps": [
-      { "from": 25, "friendship": 5, "uncutGems": 1 },
-      { "from": 100, "friendship": 10, "uncutGems": 2, "rareGem": true },
-      { "from": 200, "friendship": 15, "uncutGems": 3, "rareGem": true }
-    ],
-    "rareGemsPerRift": 3,
-    "rareGems": ["rebound", "chain", "executioner", "apprentice", "boss_hunter", "death_mark", "quiet_time", "blade_hunger", "acceleration", "crit_focus", "wide_reach", "deferred_payment", "double_charge", "twins", "ink_poison", "series_rhythm", "series_finish", "tailwind_support", "target_hunter", "cursed", "lingering_blight", "pawnbroker", "key_echo", "legacy", "resonance"]
+      { "from": 25, "friendship": 5, "shards": 30 },
+      { "from": 100, "friendship": 10, "shards": 60 },
+      { "from": 200, "friendship": 15, "shards": 90 }
+    ]
   },
   "world": {
     "hpMultiplier": 10,

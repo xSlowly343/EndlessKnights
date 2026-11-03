@@ -92,7 +92,7 @@ namespace Game.Core.Tests.Sim
         {
             var stages = TestWorld.Data.Stages;
             var loop = TestWorld.Loop(state: new GameState(11) { Class = HeroClass.Runedancer });
-            loop.Drops.UseData(AlwaysUnique(), stages, TestWorld.Data.Gems, Items);
+            loop.Drops.UseData(AlwaysUnique(), stages, Items);
             loop.State.Drops.SalvageUpTo = ItemRarity.Legendary;
 
             var early = DropsFrom(loop, stages.BiomeLength);

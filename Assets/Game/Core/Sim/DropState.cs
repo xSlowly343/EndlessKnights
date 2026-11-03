@@ -22,8 +22,6 @@ namespace Game.Core.Sim
         public double ShardCarry { get; set; }
         public long ShardsFound { get; set; }
         public int DailyShards { get; set; }
-        public int UncutGems { get; set; }
-        public long UncutFound { get; set; }
         public ItemRarity? SalvageUpTo { get; set; }
         public long ItemsFound { get; set; }
         public long SalvagedItems { get; set; }

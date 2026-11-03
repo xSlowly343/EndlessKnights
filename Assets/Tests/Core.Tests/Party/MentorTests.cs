@@ -158,10 +158,10 @@ namespace Game.Core.Tests.Party
             Assert.That(MentorText.Step(Rules.Steps[2], false, false), Is.EqualTo("10 ч · рамка «Выпускник»"));
             Assert.That(MentorText.Marks(4, 10), Is.EqualTo("Метки на дереве 4/10"));
             Assert.That(MentorText.Bonus(Rules.GoldBonus), Is.EqualTo("+50%"));
-            var letter = new Game.Core.Mail.MailLetter("mentor-1", Game.Core.Mail.MailLetter.MentorKind, now, 0, 0, 1, "", new Game.Core.Content.Rift.RiftReward(0, 3, 0), false);
+            var letter = new Game.Core.Mail.MailLetter("mentor-1", Game.Core.Mail.MailLetter.MentorKind, now, 0, 0, 1, "", new Game.Core.Content.Rift.RiftReward(90, 0), false);
             Assert.That(MailText.Title(letter), Is.EqualTo("Подарок наставника"));
             Assert.That(MailText.Body(letter), Is.EqualTo("1 ч в бою вместе с наставником"));
-            Assert.That(MailText.Reward(letter), Does.Contain("3"));
+            Assert.That(MailText.Reward(letter), Is.EqualTo("Осколки +90"));
         }
     }
 }

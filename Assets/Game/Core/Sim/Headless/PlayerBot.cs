@@ -48,7 +48,6 @@ namespace Game.Core.Sim.Headless
             SpendSubclassPoints();
             PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
-            CutUncutGems();
             PlaceSlates();
             _loop.Upgrades.BuyMax();
         }
@@ -86,20 +85,6 @@ namespace Game.Core.Sim.Headless
 
         private int BestBranch(Content.Gems.GemDef skill, int tier) =>
             _branchTrial?.Best(_loop.State, skill, tier) ?? BranchScore.Best(skill.Branches[tier]);
-
-        private void CutUncutGems()
-        {
-            while (_loop.BuyUncutGem())
-            {
-            }
-            foreach (var gem in _loop.Drops.PoolOf(Content.Gems.GemKind.Skill))
-            {
-                if (_loop.Drops.UncutGems == 0)
-                    return;
-                if (!_loop.State.OwnedGems.Contains(gem))
-                    _loop.CutGem(gem);
-            }
-        }
 
         private void PlaceSlates()
         {

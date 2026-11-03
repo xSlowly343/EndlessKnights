@@ -6,7 +6,6 @@ namespace Game.Core.Content
     public enum Feature
     {
         Artifacts,
-        Cutting,
         Resonance,
         Spirits,
         Atlas,
@@ -36,7 +35,6 @@ namespace Game.Core.Content
         public static readonly IReadOnlyDictionary<string, Feature> FeatureNames = new Dictionary<string, Feature>(StringComparer.Ordinal)
         {
             ["artifacts"] = Feature.Artifacts,
-            ["cutting"] = Feature.Cutting,
             ["resonance"] = Feature.Resonance,
             ["spirits"] = Feature.Spirits,
             ["atlas"] = Feature.Atlas,

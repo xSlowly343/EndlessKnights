@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Core.Clock;
 using Game.Core.Content;
-using Game.Core.Content.Gems;
 using Game.Core.Content.Items;
 using Game.Core.Math;
 using Game.Core.Save;
@@ -15,7 +14,6 @@ namespace Game.Core.Tests.Sim
     public class ShardTests
     {
         private static ShardRules Rules => TestWorld.Data.Drops.Shards;
-        private static IEnumerable<GemDef> AllGems => TestWorld.Data.Gems.All;
 
         private static GameLoop Runedancer(StatSheet? hero = null, ulong seed = 7) =>
             TestWorld.Loop(state: new GameState(seed) { Class = HeroClass.Runedancer }, hero: hero);
@@ -161,98 +159,24 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void AboutFivePercentOfDroppedGemsAreUncut()
+        public void KillsNeverDropGems()
         {
-            var loop = Runedancer(seed: 47);
-            const int bosses = 40000;
+            var input = new Game.Core.Input.FakeInputSource();
+            var loop = TestWorld.Loop(input, new GameState(47) { Class = HeroClass.Runedancer });
+            var owned = loop.State.OwnedGems.ToList();
 
-            for (var i = 0; i < bosses; i++)
-                loop.Drops.OnKill(EnemyType.Boss);
-            loop.Drops.Flush();
-
-            var uncut = loop.Drops.UncutGems;
-            var share = uncut / (double)(uncut + Count(loop, GameEventKind.GemDropped));
-            Assert.That(share, Is.EqualTo(Rules.UncutShare).Within(0.01));
-            Assert.That(Count(loop, GameEventKind.UncutGemDropped), Is.EqualTo(uncut));
-            Assert.That(loop.State.Drops.UncutFound, Is.EqualTo(uncut));
-        }
-
-        [Test]
-        public void UncutGemChanceStatAddsToTheShare()
-        {
-            var loop = Runedancer(With(CombatStats.UncutGemChance, ModifierKind.Flat, 0.15), seed: 47);
-            const int bosses = 40000;
-
-            for (var i = 0; i < bosses; i++)
-                loop.Drops.OnKill(EnemyType.Boss);
-            loop.Drops.Flush();
-
-            var uncut = loop.Drops.UncutGems;
-            var share = uncut / (double)(uncut + Count(loop, GameEventKind.GemDropped));
-            Assert.That(share, Is.EqualTo(Rules.UncutShare + 0.15).Within(0.015));
-        }
-
-        [Test]
-        public void ShardsBuyAnUncutGem()
-        {
-            var loop = Runedancer();
-            loop.State.Drops.Shards = Rules.UncutCost + 1;
-
-            Assert.That(loop.BuyUncutGem(), Is.True);
-            Assert.That(loop.Drops.Shards, Is.EqualTo(1));
-            Assert.That(loop.Drops.UncutGems, Is.EqualTo(1));
-            Assert.That(loop.BuyUncutGem(), Is.False);
-            Assert.That(loop.Drops.UncutGems, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void CuttingTurnsAnUncutGemIntoTheChosenOne()
-        {
-            var loop = Runedancer();
-            var chosen = AllGems.First(DropSystem.Cuttable);
-            loop.State.Drops.UncutGems = 1;
-            loop.Events.Clear();
-
-            Assert.That(loop.CutGem(chosen), Is.EqualTo(CutResult.Cut));
-            Assert.That(loop.State.OwnedGems, Does.Contain(chosen));
-            Assert.That(loop.Drops.UncutGems, Is.Zero);
-            Assert.That(Count(loop, GameEventKind.GemDropped), Is.EqualTo(1));
-            Assert.That(loop.CutGem(chosen), Is.EqualTo(CutResult.NoUncut));
-        }
-
-        [Test]
-        public void PathWeaponAndSupportGemsCannotBeCut()
-        {
-            var loop = Runedancer();
-            loop.State.Drops.UncutGems = 3;
-            var closed = new[]
+            for (var i = 0; i < 3000; i++)
             {
-                AllGems.First(gem => gem.Ascendancy != null),
-                AllGems.First(gem => gem.Kind == GemKind.Skill && gem.Skill?.Weapon != null),
-                AllGems.First(gem => gem.Kind == GemKind.Support)
-            };
-
-            foreach (var gem in closed)
-            {
-                Assert.That(DropSystem.Cuttable(gem), Is.False, gem.Id);
-                Assert.That(loop.CutGem(gem), Is.EqualTo(CutResult.NotCuttable), gem.Id);
+                input.PressKeys(5);
+                loop.Tick();
             }
-            Assert.That(loop.Drops.UncutGems, Is.EqualTo(3));
+
+            Assert.That(loop.State.Kills, Is.GreaterThan(50));
+            Assert.That(loop.State.OwnedGems, Is.EqualTo(owned));
         }
 
         [Test]
-        public void EveryCommonSkillCanBeCutAndSupportsNeverDrop()
-        {
-            var loop = Runedancer();
-            var cuttable = AllGems.Where(DropSystem.Cuttable).ToList();
-
-            Assert.That(loop.Drops.PoolOf(GemKind.Skill), Is.EquivalentTo(cuttable));
-            Assert.That(loop.Drops.PoolOf(GemKind.Support), Is.Empty);
-            Assert.That(cuttable.Any(gem => gem.Kind == GemKind.Support), Is.False);
-        }
-
-        [Test]
-        public void ShardsAndUncutGemsSurviveSavingAndPrestige()
+        public void ShardsSurviveSavingAndPrestige()
         {
             var loop = Runedancer();
             var drops = loop.State.Drops;
@@ -260,8 +184,6 @@ namespace Game.Core.Tests.Sim
             drops.ShardCarry = 0.5;
             drops.ShardsFound = 50;
             drops.DailyShards = 3;
-            drops.UncutGems = 2;
-            drops.UncutFound = 4;
             var clock = ClockStamp.First(new ClockReading(1_760_000_000_000, 3_600_000, 12));
 
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, clock), TestWorld.Data).State.Drops;
@@ -270,13 +192,10 @@ namespace Game.Core.Tests.Sim
             Assert.That(loaded.ShardCarry, Is.EqualTo(0.5));
             Assert.That(loaded.ShardsFound, Is.EqualTo(50));
             Assert.That(loaded.DailyShards, Is.EqualTo(3));
-            Assert.That(loaded.UncutGems, Is.EqualTo(2));
-            Assert.That(loaded.UncutFound, Is.EqualTo(4));
 
             loop.State.HighestStage = 500;
             Assert.That(loop.Prestige.TryPrestige(), Is.True);
             Assert.That(drops.Shards, Is.EqualTo(42));
-            Assert.That(drops.UncutGems, Is.EqualTo(2));
         }
     }
 }

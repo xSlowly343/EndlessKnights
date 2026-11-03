@@ -13,6 +13,7 @@ namespace Game.Core.Sim.Headless
         private readonly BranchTrial? _trial;
         private readonly List<GemDef> _candidates = new List<GemDef>();
         private readonly List<GemDef> _classSkills = new List<GemDef>();
+        private readonly List<GemDef> _common = new List<GemDef>();
         private readonly List<GemDef> _order = new List<GemDef>();
         private readonly HashSet<GemDef> _seen = new HashSet<GemDef>();
         private readonly List<(GemDef Skill, SkillSlotRole Role)> _plan = new List<(GemDef, SkillSlotRole)>();
@@ -130,6 +131,12 @@ namespace Game.Core.Sim.Headless
                     Add(gem);
             }
             AddClassSkills(aura: true, onlyFirst: false);
+            _loop.Book.OpenCommonSkills(_loop.Data.Gems.All, _common);
+            foreach (var gem in _common)
+            {
+                if (Usable(gem) && _loop.Book.FreeCopies(gem) > 0)
+                    Add(gem);
+            }
         }
 
         private void AddClassSkills(bool aura, bool onlyFirst)

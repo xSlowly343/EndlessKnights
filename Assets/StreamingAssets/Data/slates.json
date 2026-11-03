@@ -604,7 +604,7 @@
           "id": "loot_gems",
           "modifiers": [
             {
-              "stat": "gemDrop",
+              "stat": "gemExperience",
               "kind": "increased",
               "value": 0.05
             }

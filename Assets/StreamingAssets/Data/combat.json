@@ -91,7 +91,7 @@
       "common": { "dozeMultiplier": 1.5, "lucidPower": 0.3 },
       "net": { "px": 2000, "pxMin": 300, "max": 3, "seconds": 3, "secondsMin": 0.5, "trophy": 0.2 },
       "album": { "max": 0.75, "pageMin": 10, "pageMinFloor": 1, "prophecyPower": 0.25, "prophecySeconds": 10, "allShare": 0.5 },
-      "bait": { "hits": 100, "hitsMin": 10, "perCast": 5, "spiritHp": 3, "spiritHpMax": 20, "gems": 1, "shards": 2, "chest": 1, "twinChance": 0.25, "hornPower": 0.3, "hornSeconds": 15, "gift": 30 }
+      "bait": { "hits": 100, "hitsMin": 10, "perCast": 5, "spiritHp": 3, "spiritHpMax": 20, "trophies": 1, "shards": 2, "chest": 1, "twinChance": 0.25, "hornPower": 0.3, "hornSeconds": 15, "gift": 30 }
     },
     "minstrel": {
       "common": { "soloMultiplier": 2 },

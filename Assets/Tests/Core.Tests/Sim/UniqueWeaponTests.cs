@@ -103,7 +103,7 @@ namespace Game.Core.Tests.Sim
         {
             var json = TestData.ReadGameDataFile(DropRules.FileName).Replace("\"uniques\": { \"guardian\": 0.03 }", "\"uniques\": { \"guardian\": 1 }");
             var loop = Real();
-            loop.Drops.UseData(DropRules.Load(json), TestWorld.Real.Stages, TestWorld.Real.Gems, TestWorld.Real.Items);
+            loop.Drops.UseData(DropRules.Load(json), TestWorld.Real.Stages, TestWorld.Real.Items);
             loop.State.Drops.SalvageUpTo = ItemRarity.Legendary;
             var stage = 50000L;
 

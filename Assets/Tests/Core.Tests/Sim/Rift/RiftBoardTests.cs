@@ -43,9 +43,9 @@ namespace Game.Core.Tests.Sim.Rift
             Assert.That(rules.Board.RewardFor(1).Ingots, Is.EqualTo(6));
         }
 
-        [TestCase(@"{ ""shards"": 30, ""uncutGems"": 0, ""ingots"": 1,", @"{ ""upTo"": 99, ""shards"": 30, ""uncutGems"": 0, ""ingots"": 1,", "no upTo")]
-        [TestCase(@"{ ""upTo"": 3, ""shards"": 200", @"{ ""upTo"": 1, ""shards"": 200", "places must grow")]
-        [TestCase(@"{ ""upTo"": 3, ""shards"": 200", @"{ ""shards"": 200", "needs upTo")]
+        [TestCase(@"{ ""shards"": 30, ""ingots"": 1,", @"{ ""upTo"": 99, ""shards"": 30, ""ingots"": 1,", "no upTo")]
+        [TestCase(@"{ ""upTo"": 3, ""shards"": 260", @"{ ""upTo"": 1, ""shards"": 260", "places must grow")]
+        [TestCase(@"{ ""upTo"": 3, ""shards"": 260", @"{ ""shards"": 260", "needs upTo")]
         public void BadPlaceTiersAreRejected(string from, string to, string message)
         {
             var json = TestData.ReadGameDataFile(RiftRules.FileName);
@@ -62,12 +62,11 @@ namespace Game.Core.Tests.Sim.Rift
             var state = new GameState();
             state.Drops.Shards = 5;
 
-            RiftRewards.Apply(state, new RiftReward(200, 2, 4, 20));
+            RiftRewards.Apply(state, new RiftReward(200, 4, 20));
 
             Assert.That(state.Drops.Shards, Is.EqualTo(205));
-            Assert.That(state.Drops.UncutGems, Is.EqualTo(2));
             Assert.That(state.Drops.Ingots, Is.EqualTo(4));
-            Assert.That(new RiftReward(0, 0, 0, 20).IsEmpty, Is.False, "friendship alone is a reward: the server already put it in the coop wallet");
+            Assert.That(new RiftReward(0, 0, 20).IsEmpty, Is.False, "friendship alone is a reward: the server already put it in the coop wallet");
         }
 
         [Test]

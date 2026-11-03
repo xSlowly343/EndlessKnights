@@ -38,17 +38,6 @@ namespace Game.Core.Tests.Sim
             return items;
         }
 
-        private static List<GemDef> Gems(GameLoop loop)
-        {
-            var gems = new List<GemDef>();
-            for (var i = 0; i < loop.Events.Count; i++)
-            {
-                if (loop.Events[i].Kind == GameEventKind.GemDropped)
-                    gems.Add(loop.Events[i].Gem!);
-            }
-            return gems;
-        }
-
         private static StatSheet With(StatId stat, ModifierKind kind, double value)
         {
             var hero = new StatSheet();
@@ -488,50 +477,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(items.Select(item => item.Source), Has.All.EqualTo(DropSource.Offline));
             Assert.That(items.Select(item => item.Stage), Has.All.GreaterThanOrEqualTo(800));
             Assert.That(loop.State.Drops.DailyItems, Is.EqualTo(items.Count));
-        }
-
-        [Test]
-        public void SkillGemsComeFromTheCommonPoolAndFollowTheChance()
-        {
-            var loop = Runedancer(seed: 43);
-            const int kills = 60000;
-
-            for (var i = 0; i < kills; i++)
-                loop.Drops.OnKill(EnemyType.Normal);
-            loop.Drops.Flush();
-
-            var gems = Gems(loop);
-            var skills = gems.Where(gem => gem.Kind == GemKind.Skill).ToList();
-            Assert.That(skills.Select(gem => gem.Skill!.Weapon), Has.All.Null);
-            Assert.That(skills.Select(gem => gem.Ascendancy), Has.All.Null);
-            Assert.That(skills.Select(gem => gem.Locked), Has.All.False);
-            Assert.That(skills.Count, Is.EqualTo(kills / 300.0).Within(kills / 300.0 * 0.25));
-        }
-
-        [Test]
-        public void BossesDropSkillGemsMoreOften()
-        {
-            var loop = Runedancer(seed: 47);
-            const int bosses = 4000;
-
-            for (var i = 0; i < bosses; i++)
-                loop.Drops.OnKill(EnemyType.Boss);
-            loop.Drops.Flush();
-
-            Assert.That(Gems(loop).Count, Is.EqualTo(bosses / 10.0).Within(bosses / 10.0 * 0.2));
-        }
-
-        [Test]
-        public void GemDropStatRaisesTheGemChance()
-        {
-            var loop = Runedancer(With(CombatStats.GemDrop, ModifierKind.Increased, 1), seed: 47);
-            const int bosses = 4000;
-
-            for (var i = 0; i < bosses; i++)
-                loop.Drops.OnKill(EnemyType.Boss);
-            loop.Drops.Flush();
-
-            Assert.That(Gems(loop).Count, Is.EqualTo(bosses / 5.0).Within(bosses / 5.0 * 0.2));
         }
 
         [Test]

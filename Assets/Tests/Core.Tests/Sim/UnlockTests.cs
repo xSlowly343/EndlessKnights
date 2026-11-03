@@ -24,7 +24,6 @@ namespace Game.Core.Tests.Sim
             var rules = TestWorld.Real.Unlocks;
 
             Assert.That(rules.For(Feature.Artifacts).Prestiges, Is.EqualTo(1));
-            Assert.That(rules.For(Feature.Cutting).Stage, Is.LessThan(rules.For(Feature.Resonance).Stage));
             Assert.That(rules.For(Feature.Resonance).Stage, Is.LessThan(rules.For(Feature.Spirits).Stage));
             Assert.That(rules.For(Feature.Spirits).Stage, Is.LessThan(rules.For(Feature.Atlas).Stage));
             Assert.That(rules.For(Feature.Atlas).Stage, Is.LessThan(rules.For(Feature.Chronicle).Stage));
@@ -64,14 +63,10 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CuttingAndSetCraftWaitForTheirStage()
+        public void SetCraftWaitsForItsStage()
         {
             var early = Real(50);
-            early.State.Drops.UncutGems = 1;
-            var gem = TestWorld.Real.Gems.All[0];
 
-            Assert.That(early.CutGem(gem), Is.EqualTo(CutResult.Locked));
-            Assert.That(early.State.Drops.UncutGems, Is.EqualTo(1));
             Assert.That(early.CraftSetPiece("jarl_forge"), Is.EqualTo(CraftResult.Locked));
         }
     }

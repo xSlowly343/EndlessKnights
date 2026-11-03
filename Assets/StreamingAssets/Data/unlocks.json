@@ -2,7 +2,6 @@
   "version": 1,
   "features": {
     "artifacts": { "prestiges": 1 },
-    "cutting": { "stage": 100 },
     "resonance": { "stage": 300 },
     "spirits": { "stage": 1000 },
     "atlas": { "stage": 2500 },

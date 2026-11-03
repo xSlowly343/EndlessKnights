@@ -46,7 +46,7 @@
     {"id": "anchor", "name": {"ru": "Якорь", "en": "Anchor"}, "group": 2, "type": "tempo", "perLevel": [{"stat": "focusResetSeconds", "kind": "flat", "value": 0.2}]},
     {"id": "invader_horn", "name": {"ru": "Рог захватчика", "en": "Invader's Horn"}, "group": 2, "type": "meta", "perLevel": [{"stat": "redGemEffect", "kind": "increased", "value": 0.03}, {"stat": "greenGemEffect", "kind": "increased", "value": 0.03}, {"stat": "blueGemEffect", "kind": "increased", "value": 0.03}]},
     {"id": "tree_root", "name": {"ru": "Корень древа", "en": "Tree Root"}, "group": 2, "type": "meta", "perLevel": []},
-    {"id": "cutter_chisel", "name": {"ru": "Резец огранщика", "en": "Cutter's Chisel"}, "group": 2, "type": "late", "perLevel": [{"stat": "uncutGemChance", "kind": "increased", "value": 0.03}]},
+    {"id": "cutter_chisel", "name": {"ru": "Резец огранщика", "en": "Cutter's Chisel"}, "group": 2, "type": "late", "perLevel": [{"stat": "supportExperience", "kind": "increased", "value": 0.03}]},
     {"id": "clan_horn", "name": {"ru": "Клановый горн", "en": "Clan Horn"}, "group": 2, "type": "late", "perLevel": []},
     {"id": "armorer_brand", "name": {"ru": "Клеймо оружейника", "en": "Armorer's Brand"}, "group": 2, "type": "late", "perLevel": []},
     {"id": "watering_can", "name": {"ru": "Лейка", "en": "Watering Can"}, "group": 2, "type": "late", "perLevel": []},

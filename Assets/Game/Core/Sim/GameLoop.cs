@@ -92,7 +92,7 @@ namespace Game.Core.Sim
                 RefreshClassAttribute();
             };
             _weapons.RefreshInnate();
-            _drops = new DropSystem(data.Drops, data.Stages, data.Gems, data.Items, _weapons, _gear, state, hero, Events);
+            _drops = new DropSystem(data.Drops, data.Stages, data.Items, _weapons, _gear, state, hero, Events);
             _stage.Drops = _drops;
             _combat.Dreamcatcher.UseLoot(_drops, _loot);
             _combat.Dreamcatcher.UseEnemies(data.Enemies);
@@ -503,8 +503,6 @@ namespace Game.Core.Sim
 
         public bool RebirthGem(GemDef gem) => _book.Rebirth(gem, _data.Gems.Levels.Max);
 
-        public bool BuyUncutGem() => _drops.BuyUncut();
-
         public CraftResult CraftSetPiece(string setId, Content.Items.ItemSlot? slot = null, string? weaponType = null) => _drops.CraftSetPiece(setId, slot, weaponType);
 
         public TrialResult StartTrial(string trialId) => _chronicle.Start(trialId);
@@ -516,8 +514,6 @@ namespace Game.Core.Sim
         public ResonanceResult RaiseResonance(string branchId) => _resonance.Raise(branchId);
 
         public SpiritResult RaiseSpirit(string spiritId) => _spirits.Raise(spiritId);
-
-        public CutResult CutGem(GemDef gem) => _drops.Cut(gem);
 
         public bool CompleteActivity(string activityId)
         {
@@ -711,7 +707,7 @@ namespace Game.Core.Sim
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);
             _weapons.UseCatalog(data.Weapons);
-            _drops.UseData(data.Drops, data.Stages, data.Gems, data.Items);
+            _drops.UseData(data.Drops, data.Stages, data.Items);
             _gear.UseCatalog(data.Items);
             _gates.UseStages(data.Stages);
             _unlocks.Rules = data.Unlocks;
