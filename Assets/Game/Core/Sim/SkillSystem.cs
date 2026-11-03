@@ -78,6 +78,22 @@ namespace Game.Core.Sim
             _supportParty.Set(_partyLines);
         }
 
+        private void RefreshSupportScales()
+        {
+            foreach (var slot in _state.Skills)
+                RefreshSupportScales(slot);
+        }
+
+        private void RefreshSupportScales(SkillSlot slot)
+        {
+            var bonus = Whole(CombatStats.SupportLevel);
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                var gem = slot.Supports[i];
+                slot.SupportScale[i] = gem == null || Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem), bonus);
+            }
+        }
+
         private bool Seen(SupportDef support, int count)
         {
             for (var i = 0; i < count; i++)
@@ -259,6 +275,7 @@ namespace Game.Core.Sim
             var skill = slot.Def;
             if (skill.IsPassive)
                 return CastResult.Passive;
+            RefreshSupportScales(slot);
             if (_combat.Runedancer.Forbids(slot.Skill) || _combat.Lanternbearer.Forbids(slot.Skill))
                 return CastResult.TraitCastsIt;
             var spare = !slot.Ready && slot.SpareCharges > 0;
@@ -714,7 +731,7 @@ namespace Game.Core.Sim
             if (++slot.EchoKeys < echo.EchoEveryKeys)
                 return;
             slot.EchoKeys = 0;
-            Repeat(slot, echo.EchoPower);
+            Repeat(slot, echo.EchoPower * SupportEffects.ScaleOf(slot, echo));
         }
 
         private void CountFinish(SkillSlot slot)
@@ -730,8 +747,9 @@ namespace Game.Core.Sim
             if (++slot.FinishHits < finish.FinishAfterHits)
                 return;
             slot.FinishHits = -1;
-            SkillHit(slot, finish.FinishMultiplier);
-            _resource.Gain(finish.FinishResource);
+            var finishScale = SupportEffects.ScaleOf(slot, finish);
+            SkillHit(slot, finish.FinishMultiplier * finishScale);
+            _resource.Gain(finish.FinishResource * finishScale);
         }
 
         public void OnMouseHit(BigNumber damage)
@@ -897,6 +915,7 @@ namespace Game.Core.Sim
         public void Tick(in EffectiveInput input, long idleTicksBefore)
         {
             RefreshSupportPartyLines();
+            RefreshSupportScales();
             var kills = (int)System.Math.Min(int.MaxValue, System.Math.Max(0, _state.Kills - _seenKills));
             _seenKills = _state.Kills;
             var poisonTicks = Dots.PoisonTicks - _seenPoisonTicks;
@@ -1024,7 +1043,7 @@ namespace Game.Core.Sim
             if (twins == null || slot.Def.Effect is EchoEffect)
                 return;
             slot.TwinTicks = System.Math.Max(1, Ticks(twins.TwinSeconds));
-            slot.TwinPower = twins.TwinPower;
+            slot.TwinPower = twins.TwinPower * SupportEffects.ScaleOf(slot, twins);
         }
 
         private void TickTwin(SkillSlot slot)
