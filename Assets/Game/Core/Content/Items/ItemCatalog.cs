@@ -219,7 +219,8 @@ namespace Game.Core.Content.Items
                 var def = pool[rng.NextInt(0, pool.Count)];
                 var tier = RollTier(rule, itemLevel, rng);
                 var support = def.Supports.Count == 0 ? null : def.Supports[rng.NextInt(0, def.Supports.Count)];
-                chosen.Add(new GearAffix(def, tier, def.ValueAt(tier, Tiers), support));
+                var roll = rng.NextDouble();
+                chosen.Add(new GearAffix(def, tier, def.RollValue(tier, roll), support, roll));
             }
         }
 

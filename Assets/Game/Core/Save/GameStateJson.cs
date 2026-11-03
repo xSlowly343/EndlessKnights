@@ -599,8 +599,9 @@ namespace Game.Core.Save
             {
                 var affix = affixes[i];
                 written[i] = affix.Support == null
-                    ? Object(("id", JsonValue.Of(affix.Def.Id)), ("tier", JsonValue.Of(affix.Tier)), ("value", JsonValue.Of(affix.Value)))
-                    : Object(("id", JsonValue.Of(affix.Def.Id)), ("tier", JsonValue.Of(affix.Tier)), ("value", JsonValue.Of(affix.Value)), ("support", JsonValue.Of(affix.Support.Id)));
+                    ? Object(("id", JsonValue.Of(affix.Def.Id)), ("tier", JsonValue.Of(affix.Tier)), ("value", JsonValue.Of(affix.Value)), ("roll", JsonValue.Of(affix.Roll)))
+                    : Object(("id", JsonValue.Of(affix.Def.Id)), ("tier", JsonValue.Of(affix.Tier)), ("value", JsonValue.Of(affix.Value)), ("roll", JsonValue.Of(affix.Roll)),
+                        ("support", JsonValue.Of(affix.Support.Id)));
             }
             return written;
         }
@@ -620,7 +621,8 @@ namespace Game.Core.Save
                 var support = SupportOf(item, def);
                 if (def.Supports.Count > 0 && support == null)
                     continue;
-                affixes.Add(new GearAffix(def, item.Field("tier").AsInt(1, items.Tiers), item.Field("value").AsNumber(-1e6, 1e6), support));
+                affixes.Add(new GearAffix(def, item.Field("tier").AsInt(1, items.Tiers), item.Field("value").AsNumber(-1e6, 1e6), support,
+                    item.HasField("roll") ? item.Field("roll").AsNumber(0, 1) : 0));
             }
             return affixes;
         }
