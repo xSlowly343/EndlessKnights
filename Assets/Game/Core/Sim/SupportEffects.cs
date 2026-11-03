@@ -5,6 +5,22 @@ namespace Game.Core.Sim
 {
     public static class SupportEffects
     {
+        public static double Grow(double bonus, double scale) => bonus > 0 ? bonus * scale : bonus;
+
+        public static double GrowMultiplier(double multiplier, double scale) => 1 + Grow(multiplier - 1, scale);
+
+        public static double ShrinkMultiplier(double multiplier, double scale) => multiplier < 1 ? 1 - (1 - multiplier) * scale : multiplier;
+
+        public static double ScaleOf(SkillSlot slot, SupportDef support)
+        {
+            for (var i = 0; i < slot.Supports.Length; i++)
+            {
+                if (ReferenceEquals(slot.Supports[i]?.Support, support))
+                    return slot.SupportScale[i];
+            }
+            return 1;
+        }
+
         public static double CooldownMultiplier(SkillSlot slot)
         {
             var multiplier = 1.0;
@@ -12,7 +28,7 @@ namespace Game.Core.Sim
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null)
-                    multiplier *= support.CooldownMultiplier;
+                    multiplier *= ShrinkMultiplier(support.CooldownMultiplier, slot.SupportScale[i]);
             }
             return multiplier;
         }
@@ -25,9 +41,10 @@ namespace Game.Core.Sim
                 var support = slot.Supports[i]?.Support;
                 if (support == null)
                     continue;
-                power *= support.Power * slot.Supports[i]!.DamageMultiplier * Product(support, SupportLineEffect.Power, Signals(slot, state));
+                var scale = slot.SupportScale[i];
+                power *= GrowMultiplier(support.Power, scale) * slot.Supports[i]!.DamageMultiplier * Product(support, SupportLineEffect.Power, Signals(slot, state), scale);
                 if (support.RhythmLongSeries > 0 && state.KeyStreak > support.RhythmLongSeries)
-                    power *= support.RhythmPower;
+                    power *= GrowMultiplier(support.RhythmPower, scale);
             }
             slot.KeyHitsAtCast = state.StrikeHits;
             return power;
@@ -37,26 +54,26 @@ namespace Game.Core.Sim
             new SupportSignals(state.FightingBoss ? 1 : 0, state.PartyMembers, state.IdleTicksBeforeInput * GameLoop.TickSeconds,
                 state.StrikeHits - slot.KeyHitsAtCast, System.Math.Max(0, state.FocusMultiplier - 1));
 
-        private static double Product(SupportDef support, SupportLineEffect effect, in SupportSignals signals)
+        private static double Product(SupportDef support, SupportLineEffect effect, in SupportSignals signals, double scale)
         {
             var product = 1.0;
             var lines = support.Lines;
             for (var i = 0; i < lines.Count; i++)
             {
                 if (lines[i].Effect == effect)
-                    product *= 1 + lines[i].Amount(signals);
+                    product *= 1 + Grow(lines[i].Amount(signals), scale);
             }
             return product;
         }
 
-        private static double Sum(SupportDef support, SupportLineEffect effect, in SupportSignals signals)
+        private static double Sum(SupportDef support, SupportLineEffect effect, in SupportSignals signals, double scale)
         {
             var sum = 0.0;
             var lines = support.Lines;
             for (var i = 0; i < lines.Count; i++)
             {
                 if (lines[i].Effect == effect)
-                    sum += lines[i].Amount(signals);
+                    sum += Grow(lines[i].Amount(signals), scale);
             }
             return sum;
         }
@@ -68,7 +85,7 @@ namespace Game.Core.Sim
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null && support.Lines.Count > 0)
-                    product *= Product(support, effect, Signals(slot, state));
+                    product *= Product(support, effect, Signals(slot, state), slot.SupportScale[i]);
             }
             return product;
         }
@@ -80,7 +97,7 @@ namespace Game.Core.Sim
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null)
-                    power *= support.AuraPowerMultiplier;
+                    power *= GrowMultiplier(support.AuraPowerMultiplier, slot.SupportScale[i]);
             }
             return power;
         }
@@ -93,7 +110,7 @@ namespace Game.Core.Sim
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null)
-                    keys *= support.ActiveKeyDamage;
+                    keys *= GrowMultiplier(support.ActiveKeyDamage, slot.SupportScale[i]);
             }
             return keys;
         }
@@ -129,7 +146,7 @@ namespace Game.Core.Sim
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null && support.Lines.Count > 0)
-                    chance += Sum(support, SupportLineEffect.CritChance, Signals(slot, state));
+                    chance += Sum(support, SupportLineEffect.CritChance, Signals(slot, state), slot.SupportScale[i]);
             }
             return chance;
         }
@@ -196,9 +213,9 @@ namespace Game.Core.Sim
                 if (support == null)
                     continue;
                 if (support.LowHpBelow > 0 && state.EnemyHp < state.EnemyMaxHp * support.LowHpBelow)
-                    multiplier *= support.LowHpMultiplier;
+                    multiplier *= GrowMultiplier(support.LowHpMultiplier, slot.SupportScale[i]);
                 if (marked)
-                    multiplier *= support.MarkedMultiplier;
+                    multiplier *= GrowMultiplier(support.MarkedMultiplier, slot.SupportScale[i]);
             }
             return multiplier;
         }
@@ -213,16 +230,17 @@ namespace Game.Core.Sim
                 var support = slot.Supports[i]?.Support;
                 if (support == null)
                     continue;
+                var scale = slot.SupportScale[i];
                 if (support.QueueShare > 0)
-                    state.QueueDamage[support.QueueSlot] += damage * support.QueueShare;
+                    state.QueueDamage[support.QueueSlot] += damage * (support.QueueShare * scale);
                 if (support.PoisonPerHit > 0 && slot.InkHits < support.PoisonHitsMax)
                 {
                     slot.InkHits++;
-                    state.PoisonStacks = System.Math.Min(poisonMax, state.PoisonStacks + support.PoisonPerHit);
+                    state.PoisonStacks = System.Math.Min(poisonMax, state.PoisonStacks + support.PoisonPerHit * scale);
                 }
                 if (support.VulnerabilityShare > 0)
                 {
-                    state.VulnerabilityShare = System.Math.Max(state.VulnerabilityShare, support.VulnerabilityShare);
+                    state.VulnerabilityShare = System.Math.Max(state.VulnerabilityShare, support.VulnerabilityShare * scale);
                     state.VulnerabilityTicks = System.Math.Max(state.VulnerabilityTicks, (int)System.Math.Round(support.VulnerabilitySeconds * GameLoop.TicksPerSecond));
                 }
             }
@@ -271,8 +289,8 @@ namespace Game.Core.Sim
                 var support = slot.Supports[i]?.Support;
                 if (support == null)
                     continue;
-                seconds += support.KillCooldownSeconds;
-                resource += support.KillResource;
+                seconds += support.KillCooldownSeconds * slot.SupportScale[i];
+                resource += support.KillResource * slot.SupportScale[i];
             }
             if (seconds > 0)
                 slot.CooldownTicks = System.Math.Max(0, slot.CooldownTicks - (int)System.Math.Round(seconds * GameLoop.TicksPerSecond));
@@ -292,7 +310,7 @@ namespace Game.Core.Sim
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null)
-                    multiplier *= support.AfflictionMultiplier;
+                    multiplier *= GrowMultiplier(support.AfflictionMultiplier, slot.SupportScale[i]);
             }
             return multiplier;
         }
@@ -304,7 +322,7 @@ namespace Game.Core.Sim
             {
                 var support = slot.Supports[i]?.Support;
                 if (support != null)
-                    multiplier *= support.StackCapMultiplier;
+                    multiplier *= GrowMultiplier(support.StackCapMultiplier, slot.SupportScale[i]);
             }
             return multiplier;
         }

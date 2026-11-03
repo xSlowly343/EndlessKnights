@@ -18,9 +18,18 @@ namespace Game.Core.Sim
                 Buckets = new double[distance.WindowSeconds];
         }
 
+        private static double[] NewScales()
+        {
+            var scales = new double[SocketCapacity];
+            for (var i = 0; i < scales.Length; i++)
+                scales[i] = 1;
+            return scales;
+        }
+
         public GemDef Skill { get; set; }
         public SkillSlotRole Role { get; set; }
         public GemDef?[] Supports { get; } = new GemDef?[SocketCapacity];
+        public double[] SupportScale { get; } = NewScales();
         public int CooldownTicks { get; set; }
         public int CooldownTotalTicks { get; set; }
         public int ActiveTicks { get; set; }

@@ -1267,6 +1267,7 @@
     "skillbar.lockedStage": { "ru": "этап {0}", "en": "stage {0}" },
     "skillbar.lockedLevel": { "ru": "ур. {0}", "en": "lv. {0}" },
     "skillbar.lockedByItem": { "ru": "от вещи", "en": "from an item" },
+    "stat.supportLevel": { "ru": "к уровню поддержек", "en": "to the level of supports" },
     "stat.extraAuraSlots": { "ru": "слот ауры", "en": "aura slot" },
     "branch.opens": { "ru": "с {0}-го уровня скилла", "en": "from skill level {0}" },
     "branch.free": { "ru": "бесплатно", "en": "free" },
