@@ -38,8 +38,30 @@ namespace Game.Core.Ui
 
         public static string Equip => Texts.Get("items.equip");
 
-        public static string Affixes(WeaponItem weapon) =>
-            string.Join(" · ", weapon.Affixes.Select(Affix));
+        public static string Affixes(WeaponItem weapon, int? locked = null) => Affixes(weapon.Affixes, locked);
+
+        public static string Affixes(IReadOnlyList<GearAffix> affixes, int? locked = null) =>
+            string.Join(" · ", affixes.Select((affix, index) => index == locked ? Texts.Format("items.reroll.lockedLine", Affix(affix)) : Affix(affix)));
+
+        public static string Offer(RerollOffer offer) =>
+            string.Join(" · ", offer.After.Select((affix, index) => index == offer.Locked ? Texts.Format("items.reroll.lockedLine", Affix(affix)) : Change(offer.Before[index], affix)));
+
+        public static string Reroll(RerollResult check, double cost, double dust) => check switch
+        {
+            RerollResult.Unique => Texts.Get("items.reroll.unique"),
+            RerollResult.NothingToRoll => Texts.Get("items.reroll.nothing"),
+            RerollResult.NotEnoughDust => Texts.Format("items.reroll.noDust", Whole(cost), Whole(dust)),
+            _ => Texts.Format("items.reroll", Whole(cost))
+        };
+
+        public static string Lock(int? locked) =>
+            locked == null ? Texts.Get("items.reroll.lockNone") : Texts.Format("items.reroll.lock", locked.Value + 1);
+
+        public static string KeepOld => Texts.Get("items.reroll.keep");
+
+        public static string TakeNew => Texts.Get("items.reroll.take");
+
+        private static string Whole(double value) => System.Math.Floor(value + 1e-9).ToString("0", System.Globalization.CultureInfo.InvariantCulture);
 
         private static string Affix(GearAffix affix) => affix.Support != null
             ? Texts.Format("items.builtIn", Texts.Get(affix.Def.BuiltInRole == SkillSlotRole.Left ? "items.builtIn.left" : "items.builtIn.right"), Texts.Pick(affix.Support.NameRu, affix.Support.NameEn))
@@ -49,7 +71,25 @@ namespace Game.Core.Ui
         {
             var lines = new List<Modifier>();
             affix.AddModifiers(lines);
-            return lines.Select(ModifierText.Describe);
+            return lines.Select((line, index) => WithRange(line, affix.Def.StatRange(index, affix.Tier)));
+        }
+
+        private static string WithRange(Modifier line, TierRange range) =>
+            range.Spreads
+                ? Texts.Format("items.range", ModifierText.Describe(line), ModifierText.Bare(line, range.Low), ModifierText.Bare(line, range.High))
+                : ModifierText.Describe(line);
+
+        private static string Change(GearAffix before, GearAffix after)
+        {
+            if (after.Support != null)
+                return Affix(after);
+            var old = new List<Modifier>();
+            var fresh = new List<Modifier>();
+            before.AddModifiers(old);
+            after.AddModifiers(fresh);
+            return string.Join(" · ", fresh.Select((line, index) => System.Math.Abs(line.Value - old[index].Value) < 1e-12
+                ? ModifierText.Describe(line)
+                : Texts.Format("items.reroll.change", ModifierText.Describe(line), ModifierText.Bare(old[index], old[index].Value))));
         }
 
         public static IReadOnlyList<WeaponItem> Bag(GameState state, ItemFilter filter) =>

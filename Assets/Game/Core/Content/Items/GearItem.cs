@@ -49,6 +49,9 @@ namespace Game.Core.Content.Items
         public GearImplicit? RolledImplicit { get; }
         public bool Wearable => Base != null;
 
+        public GearItem WithAffixes(IReadOnlyList<GearAffix> affixes) =>
+            Base == null || Unique != null ? this : new GearItem(Base, Rarity, ItemLevel, affixes, Set, RolledImplicit);
+
         public void AddModifiers(List<Modifier> modifiers)
         {
             if (Base == null)

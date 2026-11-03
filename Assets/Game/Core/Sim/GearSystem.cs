@@ -86,6 +86,24 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public bool Owns(GearItem item) => _state.Drops.Gear.Contains(item) || System.Array.IndexOf(_state.Gear.Worn, item) >= 0;
+
+        public bool Replace(GearItem old, GearItem fresh)
+        {
+            var bag = _state.Drops.Gear.IndexOf(old);
+            if (bag >= 0)
+            {
+                _state.Drops.Gear[bag] = fresh;
+                return true;
+            }
+            var worn = System.Array.IndexOf(_state.Gear.Worn, old);
+            if (worn < 0)
+                return false;
+            _state.Gear.Worn[worn] = fresh;
+            Rebuild();
+            return true;
+        }
+
         public GearSlot FreeSlotFor(GearItem item)
         {
             if (item.Slot == ItemSlot.Ring && _state.Gear.In(GearSlot.RingLeft) != null && _state.Gear.In(GearSlot.RingRight) == null)

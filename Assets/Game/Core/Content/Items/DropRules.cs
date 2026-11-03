@@ -55,6 +55,7 @@ namespace Game.Core.Content.Items
         public double SetBossChance { get; }
         public double SetGuardianChance { get; }
         public ShardRules Shards { get; }
+        public RerollRules Reroll { get; private set; } = new RerollRules(0, 1, 1);
 
         public double UniqueGuardianChance { get; private set; }
         public double UniqueChanceFor(DropSource source) => source == DropSource.Guardian ? UniqueGuardianChance : 0;
@@ -72,6 +73,8 @@ namespace Game.Core.Content.Items
         public double RarityWeight(ItemRarity rarity) => _rarityWeights[(int)rarity];
 
         public double DustFor(ItemRarity rarity) => _dust[System.Math.Min((int)rarity, _dust.Length - 1)];
+
+        public double RerollCost(ItemRarity rarity, bool locked) => Reroll.Cost(DustFor(rarity), locked);
 
         public (long Stage, ItemRarity Rarity)[] CeilingSteps { get; private set; } = System.Array.Empty<(long, ItemRarity)>();
 
@@ -117,7 +120,8 @@ namespace Game.Core.Content.Items
                 ShardRules.Read(root.Field("shards")))
             {
                 CeilingSteps = ReadCeilingSteps(ceiling.Field("steps")).ToArray(),
-                UniqueGuardianChance = root.Field("uniques").Field("guardian").AsNumber(0, 1)
+                UniqueGuardianChance = root.Field("uniques").Field("guardian").AsNumber(0, 1),
+                Reroll = RerollRules.Read(root.Field("reroll"))
             };
         }
 

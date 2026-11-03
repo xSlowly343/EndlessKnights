@@ -13,9 +13,12 @@ namespace Game.Core.Content.Items
         public readonly double TierLast;
         public readonly ModifierCondition When;
 
+        public readonly IReadOnlyList<TierRange>? Ranges;
+
         public AffixStat(StatId stat, ModifierKind kind, StatTags tags, bool ownTiers = false, double tierOne = 0, double tierLast = 0,
-            ModifierCondition when = ModifierCondition.Always)
+            ModifierCondition when = ModifierCondition.Always, IReadOnlyList<TierRange>? ranges = null)
         {
+            Ranges = ranges;
             When = when;
             Stat = stat;
             Kind = kind;
@@ -29,8 +32,10 @@ namespace Game.Core.Content.Items
     public sealed class AffixDef
     {
         public AffixDef(string id, IReadOnlyList<ItemSlot> slots, bool prefix, IReadOnlyList<AffixStat> stats, double tierOne, double tierLast, string? group,
-            ItemRarity fromRarity = ItemRarity.Simple, Sim.SkillSlotRole? builtInRole = null, IReadOnlyList<string>? supportIds = null)
+            ItemRarity fromRarity = ItemRarity.Simple, Sim.SkillSlotRole? builtInRole = null, IReadOnlyList<string>? supportIds = null,
+            IReadOnlyList<TierRange>? ranges = null)
         {
+            Ranges = ranges;
             FromRarity = fromRarity;
             BuiltInRole = builtInRole;
             SupportIds = supportIds ?? System.Array.Empty<string>();
@@ -50,6 +55,7 @@ namespace Game.Core.Content.Items
         public double TierOne { get; }
         public double TierLast { get; }
         public string? Group { get; }
+        public IReadOnlyList<TierRange>? Ranges { get; }
         public ItemRarity FromRarity { get; }
         public Sim.SkillSlotRole? BuiltInRole { get; }
         public IReadOnlyList<string> SupportIds { get; }
@@ -71,34 +77,78 @@ namespace Game.Core.Content.Items
 
         public void UseTierCount(int tiers) => TierCount = tiers;
 
-        public double ValueAt(int tier, int tiers) => Between(TierOne, TierLast, tier, tiers);
+        public double ValueAt(int tier, int tiers) => Ranges != null && tiers == Ranges.Count ? Ranges[tier - 1].Low : Between(TierOne, TierLast, tier, tiers);
 
-        public double Lowest(int tier) => Range(TierOne, TierLast, tier).Low;
+        public double Lowest(int tier) => MainRange(tier).Low;
 
-        public double Highest(int tier) => Range(TierOne, TierLast, tier).High;
+        public double Highest(int tier) => MainRange(tier).High;
 
-        public double RollValue(int tier, double fraction) => At(TierOne, TierLast, tier, fraction);
+        public TierRange MainRange(int tier) => RangeOf(TierOne, TierLast, Ranges, tier);
 
-        public double StatValue(int index, int tier, double rolled, double roll = 0) =>
-            Stats[index].OwnTiers ? At(Stats[index].TierOne, Stats[index].TierLast, tier, roll) : rolled;
+        public TierRange StatRange(int index, int tier) =>
+            Stats[index].OwnTiers ? RangeOf(Stats[index].TierOne, Stats[index].TierLast, Stats[index].Ranges, tier) : MainRange(tier);
 
-        private double At(double first, double last, int tier, double fraction)
+        public bool Spreads(int tier)
         {
-            var (low, high) = Range(first, last, tier);
-            var unit = Unit(first, last);
-            return Snap(low + (high - low) * fraction, unit);
+            if (MainRange(tier).Spreads)
+                return true;
+            for (var i = 0; i < Stats.Count; i++)
+            {
+                if (Stats[i].OwnTiers && StatRange(i, tier).Spreads)
+                    return true;
+            }
+            return false;
         }
 
-        private (double Low, double High) Range(double first, double last, int tier)
+        public double RollValue(int tier, double fraction) => At(TierOne, TierLast, Ranges, tier, fraction);
+
+        public double StatValue(int index, int tier, double rolled, double roll = 0) =>
+            Stats[index].OwnTiers ? At(Stats[index].TierOne, Stats[index].TierLast, Stats[index].Ranges, tier, roll) : rolled;
+
+        public string? RangeProblem(int tiers)
+        {
+            var problem = TableProblem(Ranges, tiers);
+            for (var i = 0; problem == null && i < Stats.Count; i++)
+                problem = TableProblem(Stats[i].Ranges, tiers);
+            return problem;
+        }
+
+        private static string? TableProblem(IReadOnlyList<TierRange>? ranges, int tiers)
+        {
+            if (ranges == null)
+                return null;
+            if (ranges.Count != tiers)
+                return $"expected {tiers} tier ranges, got {ranges.Count}";
+            var growing = ranges[ranges.Count - 1].Low >= ranges[0].Low;
+            for (var i = 0; i < ranges.Count; i++)
+            {
+                if (growing ? ranges[i].High < ranges[i].Low : ranges[i].High > ranges[i].Low)
+                    return $"tier {i + 1} range runs backwards";
+                if (i > 0 && (growing ? ranges[i].Low <= ranges[i - 1].High : ranges[i].Low >= ranges[i - 1].High))
+                    return $"tier {i + 1} overlaps tier {i}";
+            }
+            return null;
+        }
+
+        private TierRange RangeOf(double first, double last, IReadOnlyList<TierRange>? ranges, int tier) =>
+            ranges != null && tier >= 1 && tier <= ranges.Count ? ranges[tier - 1] : Range(first, last, tier);
+
+        private double At(double first, double last, IReadOnlyList<TierRange>? ranges, int tier, double fraction)
+        {
+            var range = RangeOf(first, last, ranges, tier);
+            return Snap(range.Low + (range.High - range.Low) * fraction, Unit(first, last));
+        }
+
+        private TierRange Range(double first, double last, int tier)
         {
             var low = Between(first, last, tier, TierCount);
             if (TierCount <= 1)
-                return (low, low);
+                return new TierRange(low, low);
             var step = (last - first) / (TierCount - 1);
             var unit = Unit(first, last);
             low = Snap(low, unit);
             var high = Snap(Between(first, last, tier, TierCount) + step, unit) - System.Math.Sign(step) * unit;
-            return System.Math.Abs(high - low) < unit / 2 || System.Math.Sign(high - low) != System.Math.Sign(step) ? (low, low) : (low, high);
+            return System.Math.Abs(high - low) < unit / 2 || System.Math.Sign(high - low) != System.Math.Sign(step) ? new TierRange(low, low) : new TierRange(low, high);
         }
 
         private double Unit(double first, double last)

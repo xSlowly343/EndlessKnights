@@ -28,6 +28,7 @@ namespace Game.Presentation.Ui
         private const float CardRadiusPx = 12f;
         private const float IconPx = 40f;
         private const float ButtonHeightPx = 32f;
+        private const float ButtonGapPx = 6f;
 
         private static readonly Color CellFill = new Color32(0x22, 0x30, 0x4A, 0xFF);
 
@@ -47,8 +48,13 @@ namespace Game.Presentation.Ui
         private TextMeshProUGUI _innate = null!;
         private TextMeshProUGUI _affixes = null!;
         private UiButton _equip = null!;
+        private UiButton _reroll = null!;
+        private UiButton _lock = null!;
+        private UiButton _keep = null!;
+        private UiButton _take = null!;
         private ItemFilter _filter = ItemFilter.All;
         private WeaponItem? _selected;
+        private int? _locked;
         private GameLoop? _loop;
 
         private ItemsPanel(RectTransform content, UiTheme theme)
@@ -67,6 +73,7 @@ namespace Game.Presentation.Ui
 
         public bool IsShown => _root.gameObject.activeSelf;
         public WeaponItem? Selected => _selected;
+        public int? Locked => _locked;
 
         public void Bind(GameLoop loop) => _loop = loop;
 
@@ -84,8 +91,11 @@ namespace Game.Presentation.Ui
             ShowFilters();
             _shown.Clear();
             _shown.AddRange(ItemTexts.Bag(_loop.State, _filter));
+            var offered = _loop.Reroll.Offer?.Weapon;
+            if (offered != null && _shown.Contains(offered))
+                _selected = offered;
             if (_selected != null && !_shown.Contains(_selected))
-                _selected = null;
+                Choose(null);
             for (var i = 0; i < _cells.Count; i++)
                 _cells[i].Show(i < _shown.Count ? _shown[i] : null, _shown.Count > i && _shown[i] == _selected, _theme);
             _empty.gameObject.SetActive(_shown.Count == 0);
@@ -105,13 +115,15 @@ namespace Game.Presentation.Ui
                 Refresh();
                 return true;
             }
-            if (_selected != null && TryEquip(worldPoint))
+            if (_selected != null && TryCard(worldPoint))
                 return true;
+            if (_loop.Reroll.Offer != null)
+                return false;
             for (var i = 0; i < _cells.Count; i++)
             {
                 if (!_cells[i].Contains(worldPoint))
                     continue;
-                _selected = i < _shown.Count && _shown[i] != _selected ? _shown[i] : null;
+                Choose(i < _shown.Count && _shown[i] != _selected ? _shown[i] : null);
                 Refresh();
                 return true;
             }
@@ -120,19 +132,66 @@ namespace Game.Presentation.Ui
 
         public void Select(WeaponItem? weapon)
         {
-            _selected = weapon;
+            Choose(weapon);
             Refresh();
         }
 
-        private bool TryEquip(Vector2 worldPoint)
+        private void Choose(WeaponItem? weapon)
         {
-            if (!_equip.Contains(worldPoint))
+            if (weapon != _selected)
+                _locked = null;
+            _selected = weapon;
+        }
+
+        private bool TryCard(Vector2 worldPoint)
+        {
+            var loop = _loop!;
+            if (Choosing(loop))
+                return TryChoice(loop, worldPoint);
+            if (Hit(_equip, worldPoint))
+            {
+                loop.Weapons.Equip(_selected!);
+                Choose(null);
+            }
+            else if (Hit(_reroll, worldPoint))
+                loop.Reroll.Reroll(_selected!, _locked);
+            else if (Hit(_lock, worldPoint))
+                _locked = NextLock(_locked, _selected!.Affixes.Count);
+            else
                 return UiElements.Contains(_card, worldPoint);
-            _loop!.Weapons.Equip(_selected!);
-            _selected = null;
             Refresh();
             return true;
         }
+
+        private bool TryChoice(GameLoop loop, Vector2 worldPoint)
+        {
+            if (Hit(_keep, worldPoint))
+                loop.Reroll.KeepOld();
+            else if (Hit(_take, worldPoint))
+                TakeNew(loop);
+            else
+                return UiElements.Contains(_card, worldPoint);
+            Refresh();
+            return true;
+        }
+
+        private void TakeNew(GameLoop loop)
+        {
+            var bag = loop.State.Weapons.Bag;
+            var index = _selected == null ? -1 : bag.IndexOf(_selected);
+            loop.Reroll.TakeNew();
+            _selected = index >= 0 && index < bag.Count ? bag[index] : null;
+        }
+
+        private static int? NextLock(int? locked, int count)
+        {
+            var next = (locked ?? -1) + 1;
+            return next < count ? next : (int?)null;
+        }
+
+        private bool Choosing(GameLoop loop) => loop.Reroll.Offer != null && loop.Reroll.Offer.Weapon == _selected;
+
+        private static bool Hit(UiButton button, Vector2 worldPoint) => button.Back.gameObject.activeInHierarchy && button.Contains(worldPoint);
 
         private void ShowFilters()
         {
@@ -161,7 +220,19 @@ namespace Game.Presentation.Ui
             _subtitle.text = ItemTexts.Subtitle(weapon);
             _inHands.text = ItemTexts.InHands(state);
             _innate.text = ItemTexts.Innate(weapon);
-            _affixes.text = ItemTexts.Affixes(weapon);
+            var loop = _loop!;
+            var choosing = Choosing(loop);
+            _affixes.text = choosing ? ItemTexts.Offer(loop.Reroll.Offer!) : ItemTexts.Affixes(weapon, _locked);
+            _equip.Show(!choosing);
+            _reroll.Show(!choosing);
+            _lock.Show(!choosing && weapon.Affixes.Count > 0);
+            _keep.Show(choosing);
+            _take.Show(choosing);
+            if (choosing)
+                return;
+            var check = loop.Reroll.Check(weapon, _locked);
+            _reroll.Text = ItemTexts.Reroll(check, loop.Reroll.Cost(weapon.Rarity, _locked != null), state.Drops.Dust);
+            _lock.Text = ItemTexts.Lock(_locked);
         }
 
         private void BuildFilters()
@@ -221,7 +292,16 @@ namespace Game.Presentation.Ui
             _innate = CardText("Innate", card, _theme.TextFont, 12f, new Color32(0xFF, 0xE2, 0xA0, 0xFF), new Vector2(12f, -58f), new Vector2(GridWidth() - 24f, 16f));
             _affixes = CardText("Affixes", card, _theme.TextFont, 11f, _theme.Text, new Vector2(12f, -76f), new Vector2(GridWidth() - 24f, 30f));
             _affixes.textWrappingMode = TextWrappingModes.Normal;
-            _equip = GoldButton(card, ItemTexts.Equip, new Vector2(12f, 10f), GridWidth() - 24f);
+            var row = GridWidth() - 24f;
+            var third = (row - 2f * ButtonGapPx) / 3f;
+            var half = (row - ButtonGapPx) / 2f;
+            _equip = GoldButton(card, ItemTexts.Equip, new Vector2(12f, 10f), third);
+            _reroll = GoldButton(card, ItemTexts.Reroll(RerollResult.Offered, 0, 0), new Vector2(12f + third + ButtonGapPx, 10f), third);
+            _lock = GoldButton(card, ItemTexts.Lock(null), new Vector2(12f + 2f * (third + ButtonGapPx), 10f), third);
+            _keep = GoldButton(card, ItemTexts.KeepOld, new Vector2(12f, 10f), half);
+            _take = GoldButton(card, ItemTexts.TakeNew, new Vector2(12f + half + ButtonGapPx, 10f), half);
+            _keep.Show(false);
+            _take.Show(false);
             card.gameObject.SetActive(false);
             return card;
         }
@@ -240,7 +320,8 @@ namespace Game.Presentation.Ui
             UiElements.Anchor(shade.rectTransform, Vector2.zero, position, new Vector2(width, ButtonHeightPx));
             var face = UiElements.Fill("Face", shade.rectTransform, _theme.Gold, CellRadiusPx);
             UiElements.Stretch(face.rectTransform).offsetMin = new Vector2(0f, 3f);
-            var label = UiElements.Label("Text", shade.rectTransform, _theme.BoldFont, 12f, new Color32(0x2A, 0x1C, 0x00, 0xFF), TextAlignmentOptions.Center);
+            var label = UiElements.Label("Text", shade.rectTransform, _theme.BoldFont, 11f, new Color32(0x2A, 0x1C, 0x00, 0xFF), TextAlignmentOptions.Center);
+            label.textWrappingMode = TextWrappingModes.Normal;
             UiElements.Stretch(label.rectTransform).offsetMin = new Vector2(0f, 3f);
             label.text = text;
             return new UiButton(shade, label);

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Game.Core.Content;
 using Game.Core.Content.Items;
 using Game.Core.Math;
 using Game.Core.Stats;
@@ -24,10 +25,33 @@ namespace Game.Core.Tests.Content
             var damage = Affix("armor_damage");
 
             Assert.That(damage.Lowest(1), Is.EqualTo(0.03).Within(1e-9));
-            Assert.That(damage.Highest(1), Is.EqualTo(0.05).Within(1e-9));
+            Assert.That(damage.Highest(1), Is.EqualTo(0.04).Within(1e-9));
             Assert.That(damage.Lowest(6), Is.EqualTo(0.18).Within(1e-9));
-            Assert.That(damage.Highest(6), Is.EqualTo(0.20).Within(1e-9));
-            Assert.That(damage.RollValue(6, 0.5), Is.EqualTo(0.19).Within(1e-9));
+            Assert.That(damage.Highest(6), Is.EqualTo(0.23).Within(1e-9));
+            Assert.That(damage.RollValue(6, 0.6), Is.EqualTo(0.21).Within(1e-9));
+        }
+
+        [Test]
+        public void RangesGrowUnevenlyTowardsTheBestTier()
+        {
+            var damage = Affix("armor_damage");
+            var widths = Enumerable.Range(1, Items.Tiers).Select(tier => System.Math.Round(damage.Highest(tier) - damage.Lowest(tier), 6)).ToList();
+
+            Assert.That(widths.Distinct().Count(), Is.GreaterThan(1), "tiers are not all the same width");
+            Assert.That(widths[Items.Tiers - 1], Is.GreaterThan(widths[0]), "the best tier is the widest");
+        }
+
+        [Test]
+        public void ABrokenRangeTableIsRejected()
+        {
+            var json = TestData.ReadGameDataFile(ItemCatalog.FileName);
+            var table = "\"ranges\": [[0.03, 0.04], [0.05, 0.06], [0.07, 0.09], [0.1, 0.13], [0.14, 0.17], [0.18, 0.23]]";
+            var overlap = json.Replace(table, "\"ranges\": [[0.03, 0.05], [0.05, 0.06], [0.07, 0.09], [0.1, 0.13], [0.14, 0.17], [0.18, 0.23]]");
+            var tooShort = json.Replace(table, "\"ranges\": [[0.03, 0.04], [0.05, 0.06]]");
+
+            Assert.That(json, Does.Contain(table));
+            Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(overlap))!.Message, Does.Contain("overlaps"));
+            Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(tooShort))!.Message, Does.Contain("tier ranges"));
         }
 
         [Test]
@@ -36,7 +60,7 @@ namespace Game.Core.Tests.Content
             var crit = Affix("armor_crit_chance");
 
             Assert.That(crit.Lowest(1), Is.EqualTo(0.005).Within(1e-9));
-            Assert.That(crit.Highest(1), Is.EqualTo(0.009).Within(1e-9));
+            Assert.That(crit.Highest(1), Is.EqualTo(0.007).Within(1e-9));
             Assert.That(Affix("jewel_damage").Highest(1), Is.EqualTo(0.03).Within(1e-9), "a step of 2% still rolls whole percents");
         }
 
@@ -80,7 +104,7 @@ namespace Game.Core.Tests.Content
                 }
             }
 
-            Assert.That(values, Is.EquivalentTo(new[] { 0.18, 0.19, 0.2 }));
+            Assert.That(values, Is.EquivalentTo(new[] { 0.18, 0.19, 0.2, 0.21, 0.22, 0.23 }));
         }
 
         [Test]

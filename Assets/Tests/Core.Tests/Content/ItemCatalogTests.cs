@@ -94,13 +94,13 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void ValuesGoEvenlyFromTheFirstToTheLastTier()
+        public void TierValuesStartAtTheFirstAndTheLastTierAndGrowUnevenlyBetween()
         {
             Assert.That(Catalog.TryGetAffix("armor_damage", out var affix), Is.True);
 
             Assert.That(affix.ValueAt(1, Catalog.Tiers), Is.EqualTo(0.03).Within(1e-12));
             Assert.That(affix.ValueAt(6, Catalog.Tiers), Is.EqualTo(0.18).Within(1e-12));
-            Assert.That(affix.ValueAt(3, Catalog.Tiers), Is.EqualTo(0.09).Within(1e-12));
+            Assert.That(affix.ValueAt(3, Catalog.Tiers), Is.EqualTo(0.07).Within(1e-12));
         }
 
         [Test]
