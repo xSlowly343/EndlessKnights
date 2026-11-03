@@ -25,7 +25,7 @@
       { "from": 200, "friendship": 15, "uncutGems": 3, "rareGem": true }
     ],
     "rareGemsPerRift": 3,
-    "rareGems": ["rebound", "chain", "executioner", "apprentice", "boss_hunter", "death_mark", "quiet_time", "blade_hunger", "acceleration", "crit_focus", "wide_reach", "deferred_payment", "double_charge", "twins", "lingering", "ink_poison", "series_rhythm", "series_finish", "long_swing", "tailwind_support", "minion_trail", "target_hunter", "cursed", "lingering_blight", "pawnbroker", "key_echo", "legacy", "resonance"]
+    "rareGems": ["rebound", "chain", "executioner", "apprentice", "boss_hunter", "death_mark", "quiet_time", "blade_hunger", "acceleration", "crit_focus", "wide_reach", "deferred_payment", "double_charge", "twins", "ink_poison", "series_rhythm", "series_finish", "tailwind_support", "target_hunter", "cursed", "lingering_blight", "pawnbroker", "key_echo", "legacy", "resonance"]
   },
   "world": {
     "hpMultiplier": 10,

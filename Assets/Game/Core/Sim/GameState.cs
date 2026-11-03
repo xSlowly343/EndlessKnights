@@ -245,7 +245,6 @@ namespace Game.Core.Sim
         public long StrikeHits { get; set; }
         public long KeyStreak { get; set; }
         public double SupportKeyBonus { get; set; } = 1;
-        public double SupportMouseBonus { get; set; } = 1;
         public double SupportStackCap { get; set; } = 1;
         public double VulnerabilityShare { get; set; }
         public int VulnerabilityTicks { get; set; }

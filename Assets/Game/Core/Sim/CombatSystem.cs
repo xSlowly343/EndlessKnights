@@ -363,8 +363,6 @@ namespace Game.Core.Sim
                 multiplier *= SupportEffects.HitMultiplier(supporting, _state);
             if (source == DamageSource.Strike)
                 multiplier *= _state.SupportKeyBonus;
-            else if (source == DamageSource.Mouse)
-                multiplier *= _state.SupportMouseBonus;
             LastHitCrit = false;
             var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken());
             if (damage.Sign <= 0)

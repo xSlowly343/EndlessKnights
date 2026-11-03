@@ -135,7 +135,7 @@ namespace Game.Core.Tests.Build
 
             loop.State.HeroLevel = 100;
             loop.Book.OpenSupports(TestWorld.Data.Gems.All, open);
-            Assert.That(open.Count, Is.EqualTo(28));
+            Assert.That(open.Count, Is.EqualTo(25));
         }
 
         private static GemCatalog WithSupport(string supports, double damage, double mana) =>
@@ -557,28 +557,6 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void LingeringLastsLongerAndHoldsWhileTyping()
-        {
-            var plain = Hero();
-            var lingering = Hero();
-            var plainSlot = Equip(plain, "key_drum");
-            var slot = Supported(lingering, "key_drum", "lingering");
-            var support = Gem("lingering").Support!;
-            plain.State.Resource = 100;
-            lingering.State.Resource = 100;
-            plain.Skills.TryCast(plainSlot);
-            lingering.Skills.TryCast(slot);
-            var total = lingering.State.Skills[slot].ActiveTotalTicks;
-            Assert.That(total, Is.EqualTo((int)System.Math.Round(plain.State.Skills[plainSlot].ActiveTotalTicks * support.DurationMultiplier)));
-
-            var input = new FakeInputSource();
-            var typing = TestWorld.Loop(input, lingering.State, lingering.Hero);
-            Wait(typing, 20, input);
-
-            Assert.That(typing.State.Skills[slot].ActiveTicks, Is.EqualTo(total));
-        }
-
-        [Test]
         public void InkPoisonPoisonsTheEnemyOnTheFirstSkillHits()
         {
             var loop = Hero();
@@ -646,22 +624,6 @@ namespace Game.Core.Tests.Build
             }
             Assert.That(skillHits, Is.EqualTo(1));
             Assert.That(typing.State.Resource, Is.GreaterThanOrEqualTo(support.FinishResource));
-        }
-
-        [Test]
-        public void LongSwingStretchesMouseDistanceAndBoostsMouseHitsWhileActive()
-        {
-            var support = Gem("long_swing").Support!;
-            var loop = Hero();
-            var slot = Supported(loop, "hurricane", "long_swing");
-            Assert.That(SupportEffects.MouseDistance(loop.State.Skills[slot]), Is.EqualTo(support.MouseDistanceMultiplier).Within(1e-9));
-
-            loop.State.Resource = 100;
-            loop.Skills.TryCast(slot);
-            loop.Tick();
-
-            Assert.That(loop.State.SupportMouseBonus, Is.EqualTo(support.ActiveMouseDamage).Within(1e-9));
-            Assert.That(loop.State.SupportKeyBonus, Is.EqualTo(1).Within(1e-9));
         }
 
         [Test]

@@ -48,16 +48,14 @@ namespace Game.Core.Sim
             var index = Standing(summon.Kind) < Limit(summon.Kind) ? FreeIndex() : OldestIndex(summon.Kind);
             if (index < 0)
                 return;
-            SupportEffects.MinionBonuses(_combat.Supporting, out var mouseBonus, out var life);
-            var seconds = summon.Seconds * System.Math.Max(0, _hero.Value(CombatStats.MinionSeconds, 1, StatTags.Minion)) * life;
+            var seconds = summon.Seconds * System.Math.Max(0, _hero.Value(CombatStats.MinionSeconds, 1, StatTags.Minion));
             _state.Minions[index] = new MinionState
             {
                 Kind = summon.Kind,
                 TicksLeft = (int)System.Math.Round(seconds * GameLoop.TicksPerSecond),
                 HitsPerSecond = summon.HitsPerSecond,
                 Multiplier = summon.Multiplier,
-                Tags = tags | StatTags.Minion,
-                MouseBonus = mouseBonus
+                Tags = tags | StatTags.Minion
             };
         }
 
@@ -100,8 +98,6 @@ namespace Game.Core.Sim
                 if (!minions[i].Standing)
                     continue;
                 var kindSpeed = input.MousePx > 0 ? speed * Rules(minions[i].Kind).MouseSpeed : speed;
-                if (input.MousePx > 0 && minions[i].MouseBonus > 0)
-                    kindSpeed *= minions[i].MouseBonus;
                 minions[i].HitCarry += minions[i].HitsPerSecond * kindSpeed * GameLoop.TickSeconds;
                 while (minions[i].HitCarry >= 1 - 1e-9)
                 {
