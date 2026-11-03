@@ -70,7 +70,7 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void ArmorOfAnotherClassIsRejected()
+        public void TheRuleOfAnotherClassColorIsGone()
         {
             var json = Json.Replace("\"slot\": \"helmet\", \"rarity\": \"fine\", \"color\": \"own\"", "\"slot\": \"helmet\", \"rarity\": \"fine\", \"color\": \"ownColorOtherClass\"");
 

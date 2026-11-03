@@ -37,8 +37,10 @@ namespace Game.Core.Build
         public bool OfHeroClass(GemDef skill) =>
             _state.ClassChosen && _weapons.TryGetType(skill.Skill?.Weapon ?? string.Empty, out var type) && _state.Is(type.HeroClass);
 
+        public bool OpenedByWeapon(GemDef skill) => _state.Weapons.Opens(skill.Id);
+
         public bool SkillOpen(GemDef skill) =>
-            IsClassSkill(skill) && !skill.Locked && OfHeroClass(skill) && _state.HeroLevel >= UnlockLevel(skill);
+            IsClassSkill(skill) && !skill.Locked && (OfHeroClass(skill) || OpenedByWeapon(skill)) && _state.HeroLevel >= UnlockLevel(skill);
 
         public void ClassSkills(List<GemDef> into)
         {
@@ -46,6 +48,24 @@ namespace Game.Core.Build
             if (!_state.ClassChosen || !_weapons.HasType(_state.Class))
                 return;
             into.AddRange(_weapons.PoolOf(_weapons.TypeOf(_state.Class)));
+            var held = _state.Weapons.Held;
+            if (held == null)
+                return;
+            foreach (var id in held.OpensSkills)
+            {
+                if (_weapons.TryGetPoolSkill(id, out var skill) && !into.Contains(skill))
+                    into.Add(skill);
+            }
+        }
+
+        public void KeepOpen()
+        {
+            for (var index = _state.Skills.Count - 1; index >= 0; index--)
+            {
+                var skill = _state.Skills[index].Skill;
+                if (IsClassSkill(skill) && !OfHeroClass(skill) && !OpenedByWeapon(skill))
+                    _skills.Unequip(index);
+            }
         }
 
         public void OpenClassSkills(List<GemDef> into)
@@ -97,8 +117,36 @@ namespace Game.Core.Build
 
         public int MaxSockets => _rules.MaxSockets;
 
-        public int SocketsAt(int index) =>
-            index < 0 || index >= _state.Skills.Count ? 0 : _rules.SocketsFor(_state.RecordStage, RebirthsOf(_state.Skills[index].Skill));
+        public int SocketsAt(int index)
+        {
+            if (index < 0 || index >= _state.Skills.Count)
+                return 0;
+            var slot = _state.Skills[index];
+            var sockets = _rules.SocketsFor(_state.RecordStage, RebirthsOf(slot.Skill)) + ExtraSockets(slot.Role);
+            return System.Math.Min(SkillSlot.BuiltInSocket, sockets);
+        }
+
+        private int ExtraSockets(SkillSlotRole role)
+        {
+            var stat = role switch
+            {
+                SkillSlotRole.Left => CombatStats.SocketsLeft,
+                SkillSlotRole.Right => CombatStats.SocketsRight,
+                SkillSlotRole.Auto => CombatStats.SocketsAuto,
+                _ => (StatId?)null
+            };
+            return stat == null ? 0 : (int)System.Math.Floor(System.Math.Max(0, _hero.Value(stat.Value, 0)) + 1e-9);
+        }
+
+        public void TrimSockets()
+        {
+            for (var index = 0; index < _state.Skills.Count; index++)
+            {
+                var supports = _state.Skills[index].Supports;
+                for (var socket = SocketsAt(index); socket < SkillSlot.BuiltInSocket; socket++)
+                    supports[socket] = null;
+            }
+        }
 
         public int RebirthsOf(GemDef gem) => _state.GemProgress.TryGetValue(gem.Id, out var progress) ? progress.Rebirths : 0;
 
@@ -147,7 +195,7 @@ namespace Game.Core.Build
         {
             foreach (var slot in _state.Skills)
             {
-                for (var i = 0; i < slot.Supports.Length; i++)
+                for (var i = 0; i < SkillSlot.BuiltInSocket; i++)
                 {
                     if (ReferenceEquals(slot.Supports[i], support))
                         return true;
@@ -199,7 +247,7 @@ namespace Game.Core.Build
             {
                 if (ReferenceEquals(slot.Skill, gem))
                     owned--;
-                for (var i = 0; i < slot.Supports.Length; i++)
+                for (var i = 0; i < SkillSlot.BuiltInSocket; i++)
                 {
                     if (ReferenceEquals(slot.Supports[i], gem))
                         owned--;
@@ -214,7 +262,7 @@ namespace Game.Core.Build
                 return BookResult.WrongKind;
             if (skill.Locked)
                 return BookResult.WaitsForMechanic;
-            if (IsClassSkill(skill) && !OfHeroClass(skill))
+            if (IsClassSkill(skill) && !OfHeroClass(skill) && !OpenedByWeapon(skill))
                 return BookResult.WrongClass;
             if (IsClassSkill(skill) && _state.HeroLevel < UnlockLevel(skill))
                 return BookResult.LevelTooLow;

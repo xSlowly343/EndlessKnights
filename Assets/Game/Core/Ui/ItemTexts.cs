@@ -34,10 +34,23 @@ namespace Game.Core.Ui
         public static string Innate(WeaponItem weapon) =>
             string.Join(" · ", weapon.Type.Innate.Concat(weapon.Innate).Select(ModifierText.Describe));
 
-        public static string InHands(GameState state) =>
-            Texts.Format("items.inHands", HandName(state.Weapons.Right), HandName(state.Weapons.Left));
+        public static string InHands(GameState state) => Texts.Format("items.inHand", HandName(state.Weapons.Held));
 
-        public static string EquipTo(WeaponHand hand) => Texts.Get(hand == WeaponHand.Right ? "items.toRight" : "items.toLeft");
+        public static string Equip => Texts.Get("items.equip");
+
+        public static string Affixes(WeaponItem weapon) =>
+            string.Join(" · ", weapon.Affixes.Select(Affix));
+
+        private static string Affix(GearAffix affix) => affix.Support != null
+            ? Texts.Format("items.builtIn", Texts.Get(affix.Def.BuiltInRole == SkillSlotRole.Left ? "items.builtIn.left" : "items.builtIn.right"), Texts.Pick(affix.Support.NameRu, affix.Support.NameEn))
+            : string.Join(" · ", AffixLines(affix));
+
+        private static IEnumerable<string> AffixLines(GearAffix affix)
+        {
+            var lines = new List<Modifier>();
+            affix.AddModifiers(lines);
+            return lines.Select(ModifierText.Describe);
+        }
 
         public static IReadOnlyList<WeaponItem> Bag(GameState state, ItemFilter filter) =>
             filter == ItemFilter.All || filter == ItemFilter.Weapons ? state.Weapons.Bag : System.Array.Empty<WeaponItem>();

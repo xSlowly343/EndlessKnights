@@ -15,6 +15,7 @@ namespace Game.Core.Stats
         DoT = 1 << 6,
         Crit = 1 << 7,
         Gold = 1 << 8,
-        Minion = 1 << 9
+        Minion = 1 << 9,
+        ClassSkill = 1 << 10
     }
 }

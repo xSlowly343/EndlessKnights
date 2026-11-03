@@ -32,7 +32,6 @@ namespace Game.Core.Tests.Sim
 
         private static int Equip(GameLoop loop, GemDef gem)
         {
-            TestWorld.ArmFor(loop, gem);
             return loop.Skills.Equip(gem);
         }
 

@@ -42,10 +42,10 @@ namespace Game.Editor
             loop.State.Stage = 37;
             loop.State.RecordStage = 120;
             var starter = loop.Weapons.Give(data.Weapons.StarterFor(HeroClass.Runedancer));
-            loop.Weapons.Equip(WeaponHand.Right, starter);
+            loop.Weapons.Equip(starter);
             loop.Book.GrantStartingGems();
             var rarity = ItemRarity.Fine;
-            foreach (var weapon in data.Weapons.Bases.Where(weapon => weapon.Type != starter.Type).Take(9))
+            foreach (var weapon in data.Weapons.Bases.Where(weapon => weapon.Type == starter.Type))
                 loop.Weapons.Give(weapon, rarity++);
             loop.State.OwnedGems.AddRange(data.Gems.All.Where(gem => gem.Skill?.Weapon == null).Take(12));
 

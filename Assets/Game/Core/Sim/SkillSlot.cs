@@ -8,6 +8,7 @@ namespace Game.Core.Sim
     public sealed class SkillSlot
     {
         public const int SocketCapacity = 8;
+        public const int BuiltInSocket = SocketCapacity - 1;
         public const int AuraModifierCapacity = 8;
 
         public SkillSlot(GemDef skill)

@@ -16,8 +16,7 @@ namespace Game.Core.Content.Items
         private static readonly Dictionary<string, GuaranteeColor> ColorRules = new Dictionary<string, GuaranteeColor>(StringComparer.Ordinal)
         {
             ["any"] = GuaranteeColor.Any,
-            ["own"] = GuaranteeColor.Own,
-            ["ownColorOtherClass"] = GuaranteeColor.OwnColorOtherClass
+            ["own"] = GuaranteeColor.Own
         };
 
         private readonly double[] _rarityWeights;
@@ -195,8 +194,6 @@ namespace Game.Core.Content.Items
                 var colorName = item.HasField("color") ? item.Field("color").AsString() : "any";
                 if (!ColorRules.TryGetValue(colorName, out var color))
                     throw item.Field("color").Error($"unknown color rule '{colorName}', expected one of {string.Join(", ", ColorRules.Keys)}");
-                if (color == GuaranteeColor.OwnColorOtherClass && slot != ItemSlot.Weapon)
-                    throw item.Field("color").Error("only a weapon can belong to another class");
                 guarantees[stage] = new DropGuarantee(stage, slot, DropTable.Rarity(item, "rarity", ItemRarity.Simple), color);
             }
             return guarantees;

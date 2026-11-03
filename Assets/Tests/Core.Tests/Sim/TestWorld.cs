@@ -37,20 +37,6 @@ namespace Game.Core.Tests.Sim
             return state;
         }
 
-        public static void ArmFor(GameLoop loop, GemDef gem)
-        {
-            var type = gem.Skill?.Weapon;
-            if (type == null || loop.State.Weapons.Holds(type))
-                return;
-            foreach (var weapon in loop.Data.Weapons.Bases)
-            {
-                if (weapon.Type.Id != type)
-                    continue;
-                loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(weapon));
-                return;
-            }
-        }
-
         public static void RaiseClassTree(GameLoop loop, int points)
         {
             var tree = loop.ClassTreeDef!;

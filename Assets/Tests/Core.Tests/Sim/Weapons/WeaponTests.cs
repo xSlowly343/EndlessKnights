@@ -1,3 +1,4 @@
+using System.Linq;
 using Game.Core.Build;
 using Game.Core.Clock;
 using Game.Core.Content;
@@ -31,8 +32,7 @@ namespace Game.Core.Tests.Sim.Weapons
         {
             var loop = Hero(HeroClass.Minstrel);
 
-            Assert.That(loop.Weapons.In(WeaponHand.Right)!.Id, Is.EqualTo("shepherd_lute"));
-            Assert.That(loop.Weapons.In(WeaponHand.Left), Is.Null);
+            Assert.That(loop.Weapons.Held!.Id, Is.EqualTo("shepherd_lute"));
             Assert.That(loop.Weapons.Bag, Is.Empty);
         }
 
@@ -43,9 +43,9 @@ namespace Game.Core.Tests.Sim.Weapons
             loop.Skills.Equip(TestWorld.Real.Gems["runedancer_hit_1"]);
             loop.State.Resource = 100;
 
-            loop.Weapons.Unequip(WeaponHand.Right);
+            loop.Weapons.Unequip();
 
-            Assert.That(loop.State.Weapons.Right, Is.Null);
+            Assert.That(loop.State.Weapons.Held, Is.Null);
             Assert.That(loop.Skills.TryCast(0), Is.EqualTo(CastResult.Cast));
         }
 
@@ -60,7 +60,7 @@ namespace Game.Core.Tests.Sim.Weapons
             var lit = loop.Hero.Value(CombatStats.ResourceGain, 1);
             Assert.That(lit, Is.GreaterThan(before));
 
-            loop.Weapons.Unequip(WeaponHand.Right);
+            loop.Weapons.Unequip();
             loop.Tick();
 
             Assert.That(loop.State.Skills[0].Active, Is.True);
@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void AnotherClassWeaponDoesNotOpenItsSkills()
         {
             var loop = Hero(HeroClass.Runedancer);
-            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(Base("butterfly_lute")));
+            loop.Weapons.Equip(loop.Weapons.Give(Base("butterfly_lute")));
 
             Assert.That(loop.Book.Equip(TestWorld.Real.Gems["minstrel_hit_1"]), Is.EqualTo(BookResult.WrongClass));
         }
@@ -93,7 +93,7 @@ namespace Game.Core.Tests.Sim.Weapons
         public void CommonSkillsNeedNoWeapon()
         {
             var loop = Hero(HeroClass.Runedancer);
-            loop.Weapons.Unequip(WeaponHand.Right);
+            loop.Weapons.Unequip();
             loop.Skills.Equip(TestWorld.Real.Gems["through_stride"]);
             loop.State.Resource = 100;
 
@@ -101,19 +101,31 @@ namespace Game.Core.Tests.Sim.Weapons
         }
 
         [Test]
-        public void InnatePropertiesOfTwoWeaponsAddUp()
+        public void OnlyTheHeldWeaponGivesItsInnateAndTheOldOneGoesToTheBag()
         {
             var loop = Hero(HeroClass.Runedancer);
             var keyDamage = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
-            loop.Weapons.Unequip(WeaponHand.Right);
+            loop.Weapons.Unequip();
             var bare = loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike);
-            var axe = loop.Weapons.Bag[0];
-            loop.Weapons.Equip(WeaponHand.Right, axe);
+            loop.Weapons.Equip(loop.Weapons.Bag[0]);
             var second = loop.Weapons.Give(Base("twin_daggers"));
-            loop.Weapons.Equip(WeaponHand.Left, second);
+            loop.Weapons.Equip(second);
 
             Assert.That(keyDamage - bare, Is.EqualTo(10).Within(1e-9));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike) - bare, Is.EqualTo(20).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 100, StatTags.Strike) - bare, Is.EqualTo(10).Within(1e-9));
+            Assert.That(loop.Weapons.Held, Is.SameAs(second));
+            Assert.That(loop.Weapons.Bag[0].Id, Is.EqualTo("apprentice_daggers"));
+        }
+
+        [Test]
+        public void AWeaponOfAnotherClassCannotBeTaken()
+        {
+            var loop = Hero(HeroClass.Runedancer);
+            var lute = loop.Weapons.Give(Base("butterfly_lute"));
+
+            Assert.That(loop.Weapons.Equip(lute), Is.False);
+            Assert.That(loop.Weapons.Held!.Id, Is.EqualTo("apprentice_daggers"));
+            Assert.That(loop.Weapons.Bag, Does.Contain(lute));
         }
 
         [Test]
@@ -124,7 +136,7 @@ namespace Game.Core.Tests.Sim.Weapons
             Assert.That(loop.Hero.Value(word, 0), Is.EqualTo(0));
             var quills = loop.Weapons.Give(Base("colossus_quills"));
 
-            loop.Weapons.Equip(WeaponHand.Right, quills);
+            loop.Weapons.Equip(quills);
 
             Assert.That(loop.Hero.Value(word, 0), Is.EqualTo(1).Within(1e-9));
             Assert.That(loop.Weapons.Bag[0].Id, Is.EqualTo("apprentice_daggers"));
@@ -135,26 +147,26 @@ namespace Game.Core.Tests.Sim.Weapons
         {
             var loop = Hero(HeroClass.Runedancer);
 
-            Assert.That(loop.Weapons.Equip(WeaponHand.Left, Catalog.Starter(Base("twin_daggers"))), Is.False);
-            Assert.That(loop.Weapons.Unequip(WeaponHand.Left), Is.False);
+            Assert.That(loop.Weapons.Equip(Catalog.Starter(Base("twin_daggers"))), Is.False);
+            Assert.That(loop.Weapons.Unequip(), Is.True);
+            Assert.That(loop.Weapons.Unequip(), Is.False);
         }
 
         [Test]
-        public void SaveKeepsHandsAndBag()
+        public void SaveKeepsTheHeldWeaponAndTheBag()
         {
             var loop = Hero(HeroClass.Runedancer);
-            var guitar = loop.Weapons.Give(Base("butterfly_lute"));
+            var twin = loop.Weapons.Give(Base("twin_daggers"));
             loop.Weapons.Give(Base("colossus_quills"));
-            loop.Weapons.Equip(WeaponHand.Left, guitar);
+            loop.Weapons.Equip(twin);
 
             var text = SaveCodec.Encode(loop.State, Clock);
             var restored = SaveCodec.Decode(text, TestWorld.Real).State;
             var reloaded = new GameLoop(TestWorld.Real, new FakeInputSource(), restored, new StatSheet());
 
             Assert.That(SaveCodec.Encode(restored, Clock), Is.EqualTo(text));
-            Assert.That(reloaded.Weapons.In(WeaponHand.Right)!.Id, Is.EqualTo("apprentice_daggers"));
-            Assert.That(reloaded.Weapons.In(WeaponHand.Left)!.Id, Is.EqualTo("butterfly_lute"));
-            Assert.That(reloaded.Weapons.Bag[0].Id, Is.EqualTo("colossus_quills"));
+            Assert.That(reloaded.Weapons.Held!.Id, Is.EqualTo("twin_daggers"));
+            Assert.That(reloaded.Weapons.Bag.Select(weapon => weapon.Id), Is.EquivalentTo(new[] { "colossus_quills", "apprentice_daggers" }));
         }
 
         [Test]
@@ -167,11 +179,11 @@ namespace Game.Core.Tests.Sim.Weapons
 
             Assert.That(state.Weapons.StarterGiven, Is.False);
             var reloaded = new GameLoop(TestWorld.Real, new FakeInputSource(), state, new StatSheet());
-            Assert.That(reloaded.Weapons.In(WeaponHand.Right)!.Id, Is.EqualTo("rag_doll"));
+            Assert.That(reloaded.Weapons.Held!.Id, Is.EqualTo("rag_doll"));
 
-            reloaded.Weapons.Unequip(WeaponHand.Right);
+            reloaded.Weapons.Unequip();
             var again = new GameLoop(TestWorld.Real, new FakeInputSource(), reloaded.State, new StatSheet());
-            Assert.That(again.Weapons.In(WeaponHand.Right), Is.Null);
+            Assert.That(again.Weapons.Held, Is.Null);
         }
     }
 }

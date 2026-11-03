@@ -48,9 +48,23 @@ namespace Game.Core.Sim
         public bool SharedEnemy { get; private set; }
         public GemLevels? Levels { get; set; }
 
-        public double LevelPower(GemDef gem) => (Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem), LevelBonus)) * ColorPower(gem);
+        public double LevelPower(GemDef gem) => (Levels == null ? 1 : Levels.EffectMultiplier(_state.LevelOf(gem), LevelBonus(gem))) * ColorPower(gem);
 
-        private int LevelBonus => (int)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.GemLevelBonus, 0)) + 1e-9);
+        public int LevelBonus(GemDef gem) => Whole(CombatStats.GemLevelBonus) + RoleLevelBonus(gem);
+
+        private int RoleLevelBonus(GemDef gem)
+        {
+            if (gem.Type == SkillType.Aura)
+                return Whole(CombatStats.AuraSkillLevel);
+            return gem.Skill?.Role switch
+            {
+                SkillRole.Fast => Whole(CombatStats.FastSkillLevel),
+                SkillRole.Heavy => Whole(CombatStats.HeavySkillLevel),
+                _ => 0
+            };
+        }
+
+        private int Whole(StatId stat) => (int)System.Math.Floor(System.Math.Max(0, _hero.Value(stat, 0)) + 1e-9);
 
         public double ColorPower(GemDef gem) => gem.Color switch
         {
@@ -207,7 +221,7 @@ namespace Game.Core.Sim
                 _resource.Gain(_hero.Value(CombatStats.ResourcePerFastSkill, 0));
             if (!(skill.Effect is EchoEffect))
                 _lastCast = slot;
-            var cooldown = skill.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot);
+            var cooldown = skill.CooldownSeconds * CooldownMultiplier(slot.Skill.Tags) * SupportEffects.CooldownMultiplier(slot);
             if (beacon)
                 TakeBeacon();
             else if (spare)
@@ -940,7 +954,7 @@ namespace Game.Core.Sim
             if (!slot.Ready)
                 return;
             if (slot.ChargeTicks <= 0)
-                slot.ChargeTicks = System.Math.Max(1, Ticks(slot.Def.CooldownSeconds * CooldownMultiplier() * SupportEffects.CooldownMultiplier(slot)));
+                slot.ChargeTicks = System.Math.Max(1, Ticks(slot.Def.CooldownSeconds * CooldownMultiplier(slot.Skill.Tags) * SupportEffects.CooldownMultiplier(slot)));
             if (--slot.ChargeTicks == 0)
                 slot.SpareCharges++;
         }
@@ -1262,7 +1276,7 @@ namespace Game.Core.Sim
         {
             if (!slot.Ready || idleSeconds < MinIdleSeconds(strike))
                 return;
-            slot.StartCooldown(Ticks(slot.Def.CooldownSeconds * CooldownMultiplier()));
+            slot.StartCooldown(Ticks(slot.Def.CooldownSeconds * CooldownMultiplier(slot.Skill.Tags)));
             slot.LastCastTick = _state.Tick;
             _events.Add(GameEvent.ForSkill(GameEventKind.SkillCast, _state.Tick, slot.Skill));
             _combat.SkillHit(_combat.BaseKeyDamage, ChargeMultiplier(strike, idleSeconds), slot.Skill.Tags);
@@ -1294,7 +1308,7 @@ namespace Game.Core.Sim
         private bool IsNative(SkillSlot slot) =>
             slot.Def.Weapon != null && _weapons.TryGetType(slot.Def.Weapon, out var weapon) && _state.Is(weapon.HeroClass);
 
-        private double CooldownMultiplier() => System.Math.Max(0.1, _hero.Value(CombatStats.SkillCooldown, 1) - ResourceCooldownCut()) * _combat.Clockwright.OwnCooldownMultiplier;
+        private double CooldownMultiplier(StatTags tags) => System.Math.Max(0.1, _hero.Value(CombatStats.SkillCooldown, 1, tags) - ResourceCooldownCut()) * _combat.Clockwright.OwnCooldownMultiplier;
 
         private double ResourceCooldownCut()
         {

@@ -28,11 +28,9 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(input, TestWorld.WithAllSkillsOpen(new GameState { Class = HeroClass.Runedancer }), hero);
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
-            while (loop.State.Weapons.Left != null || loop.State.Weapons.Right != null)
-                loop.Weapons.Unequip(loop.State.Weapons.Left != null ? WeaponHand.Left : WeaponHand.Right);
+            if (!armed)
+                loop.Weapons.Unequip();
             var skill = Gem("runedancer_hit_1");
-            if (armed)
-                TestWorld.ArmFor(loop, skill);
             loop.State.OwnedGems.AddRange(new[] { skill, Gem("rebound") });
             loop.Skills.Equip(skill);
             loop.Book.SetSupport(0, 0, Gem("rebound"));

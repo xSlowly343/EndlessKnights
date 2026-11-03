@@ -113,7 +113,7 @@ namespace Game.Core.Content.Gems
                 sockets.Field("base").AsInt(0, 20),
                 ReadStages(sockets.Field("recordStages")),
                 sockets.Field("rebirths").AsInt(0, 20),
-                sockets.Field("max").AsInt(1, Sim.SkillSlot.SocketCapacity),
+                sockets.Field("max").AsInt(1, Sim.SkillSlot.BuiltInSocket - 1),
                 starting,
                 ReadAuraSlotLevels(root.Field("auraSlots").Field("unlockLevels")),
                 ReadSkillUnlockLevels(root.Field("skillUnlockLevels")));

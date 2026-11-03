@@ -444,9 +444,7 @@ namespace Game.Core.Save
 
         private static JsonValue WriteGear(GearItem item)
         {
-            var affixes = new JsonValue[item.Affixes.Count];
-            for (var i = 0; i < affixes.Length; i++)
-                affixes[i] = Object(("id", JsonValue.Of(item.Affixes[i].Def.Id)), ("tier", JsonValue.Of(item.Affixes[i].Tier)), ("value", JsonValue.Of(item.Affixes[i].Value)));
+            var affixes = WriteAffixes(item.Affixes);
             return Object(
                 ("slot", JsonValue.Of(ItemSlotNames.Of(item.Slot))),
                 ("rarity", JsonValue.Of(ItemRarityNames.Of(item.Rarity))),
@@ -600,6 +598,19 @@ namespace Game.Core.Save
             return items;
         }
 
+        private static JsonValue[] WriteAffixes(IReadOnlyList<GearAffix> affixes)
+        {
+            var written = new JsonValue[affixes.Count];
+            for (var i = 0; i < written.Length; i++)
+            {
+                var affix = affixes[i];
+                written[i] = affix.Support == null
+                    ? Object(("id", JsonValue.Of(affix.Def.Id)), ("tier", JsonValue.Of(affix.Tier)), ("value", JsonValue.Of(affix.Value)))
+                    : Object(("id", JsonValue.Of(affix.Def.Id)), ("tier", JsonValue.Of(affix.Tier)), ("value", JsonValue.Of(affix.Value)), ("support", JsonValue.Of(affix.Support.Id)));
+            }
+            return written;
+        }
+
         private static IReadOnlyList<GearAffix> ReadAffixes(ContentNode node, ItemCatalog items)
         {
             var affixes = new List<GearAffix>();
@@ -607,10 +618,27 @@ namespace Game.Core.Save
                 return affixes;
             foreach (var item in node.Field("affixes").Items())
             {
-                if (items.TryGetAffix(item.Field("id").AsString(), out var def))
-                    affixes.Add(new GearAffix(def, item.Field("tier").AsInt(1, items.Tiers), item.Field("value").AsNumber(-1e6, 1e6)));
+                if (!items.TryGetAffix(item.Field("id").AsString(), out var def))
+                    continue;
+                var support = SupportOf(item, def);
+                if (def.Supports.Count > 0 && support == null)
+                    continue;
+                affixes.Add(new GearAffix(def, item.Field("tier").AsInt(1, items.Tiers), item.Field("value").AsNumber(-1e6, 1e6), support));
             }
             return affixes;
+        }
+
+        private static GemDef? SupportOf(ContentNode item, AffixDef def)
+        {
+            if (!item.HasField("support"))
+                return null;
+            var id = item.Field("support").AsString();
+            foreach (var support in def.Supports)
+            {
+                if (support.Id == id)
+                    return support;
+            }
+            return null;
         }
 
         private static JsonValue WriteWeapons(WeaponState weapons)
@@ -620,8 +648,7 @@ namespace Game.Core.Save
                 bag[i] = WriteWeapon(weapons.Bag[i]);
             return Object(
                 ("starterGiven", JsonValue.Of(weapons.StarterGiven)),
-                ("right", WriteWeapon(weapons.Right)),
-                ("left", WriteWeapon(weapons.Left)),
+                ("held", WriteWeapon(weapons.Held)),
                 ("bag", JsonValue.Array(bag)));
         }
 
@@ -632,6 +659,8 @@ namespace Game.Core.Save
             return Object(
                 ("base", JsonValue.Of(weapon.Id)),
                 ("rarity", JsonValue.Of(ItemRarityNames.Of(weapon.Rarity))),
+                ("itemLevel", JsonValue.Of(weapon.ItemLevel)),
+                ("affixes", JsonValue.Array(WriteAffixes(weapon.Affixes))),
                 ("unique", weapon.Unique == null ? JsonValue.Null() : JsonValue.Of(weapon.Unique.Id)),
                 ("set", weapon.Set == null ? JsonValue.Null() : JsonValue.Of(weapon.Set.Id)));
         }
@@ -639,8 +668,7 @@ namespace Game.Core.Save
         private static void ReadWeapons(ContentNode node, WeaponCatalog catalog, ItemCatalog? items, WeaponState weapons)
         {
             weapons.StarterGiven = node.Field("starterGiven").AsBool();
-            weapons.Right = ReadWeapon(node.Field("right"), catalog, items);
-            weapons.Left = ReadWeapon(node.Field("left"), catalog, items);
+            weapons.Held = node.HasField("held") ? ReadWeapon(node.Field("held"), catalog, items) : null;
             foreach (var item in node.Field("bag").Items())
             {
                 var weapon = ReadWeapon(item, catalog, items);
@@ -660,7 +688,9 @@ namespace Game.Core.Save
             var rarity = ItemRarityNames.ByName.TryGetValue(node.Field("rarity").AsString(), out var found) ? found : ItemRarity.Simple;
             var unique = node.HasField("unique") && !node.Field("unique").IsNull && catalog.TryGetUnique(node.Field("unique").AsString(), out var uniqueDef) && uniqueDef.Base == weaponBase ? uniqueDef : null;
             var set = items != null && node.HasField("set") && !node.Field("set").IsNull && items.TryGetSet(node.Field("set").AsString(), out var setDef) && setDef.Has(ItemSlot.Weapon) ? setDef : null;
-            return new WeaponItem(weaponBase, rarity, unique, set);
+            var itemLevel = node.HasField("itemLevel") ? node.Field("itemLevel").AsInt(1, 1000) : 1;
+            var affixes = items != null ? ReadAffixes(node, items) : null;
+            return new WeaponItem(weaponBase, rarity, itemLevel, affixes, unique, set);
         }
 
         private static JsonValue WriteRift(RiftState rift) =>
@@ -976,7 +1006,7 @@ namespace Game.Core.Save
 
         private static JsonValue[] WriteSupports(GemDef?[] supports)
         {
-            var used = supports.Length;
+            var used = System.Math.Min(supports.Length, SkillSlot.BuiltInSocket);
             while (used > 0 && supports[used - 1] == null)
                 used--;
             var items = new JsonValue[used];

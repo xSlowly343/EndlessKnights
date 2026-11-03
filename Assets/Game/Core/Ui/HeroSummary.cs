@@ -28,13 +28,13 @@ namespace Game.Core.Ui
         public static string Attributes(GameLoop loop) =>
             string.Format(CultureInfo.InvariantCulture, Texts.Get("hero.attributes"), TreeNodeText.AttributeName(loop.ClassAttributeDef), Whole(loop.ClassAttribute));
 
-        public static HeroHand Hand(GameLoop loop, WeaponHand hand)
+        public static HeroHand Hand(GameLoop loop)
         {
-            var label = Texts.Get(hand == WeaponHand.Right ? "hero.hand.right" : "hero.hand.left");
-            var weapon = loop.Weapons.In(hand);
+            var label = Texts.Get("hero.hand");
+            var weapon = loop.Weapons.Held;
             return weapon == null
                 ? new HeroHand(label, Texts.Get("hero.empty"), string.Empty, null)
-                : new HeroHand(label, Texts.Pick(weapon.NameRu, weapon.NameEn), Texts.Get("rarity.simple"), weapon.Type.Color);
+                : new HeroHand(label, Texts.Pick(weapon.NameRu, weapon.NameEn), ItemTexts.Rarity(ItemTexts.RarityOf(weapon)), weapon.Type.Color);
         }
 
         public static IReadOnlyList<HeroStatTile> Tiles(GameLoop loop, NumberFormatSettings format)

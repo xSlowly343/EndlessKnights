@@ -24,17 +24,17 @@ namespace Game.Core.Sim
         }
 
         public IReadOnlyList<Modifier> Modifiers => _layer.Applied;
+        public System.Action? HeldChanged { get; set; }
 
         public WeaponCatalog Catalog => _catalog;
-        public WeaponItem? In(WeaponHand hand) => _state.Weapons.In(hand);
+        public WeaponItem? Held => _state.Weapons.Held;
         public IReadOnlyList<WeaponItem> Bag => _state.Weapons.Bag;
 
         public void UseCatalog(WeaponCatalog catalog)
         {
             _catalog = catalog;
             var weapons = _state.Weapons;
-            weapons.Right = Rebind(weapons.Right);
-            weapons.Left = Rebind(weapons.Left);
+            weapons.Held = Rebind(weapons.Held);
             for (var i = weapons.Bag.Count - 1; i >= 0; i--)
             {
                 var weapon = Rebind(weapons.Bag[i]);
@@ -43,7 +43,7 @@ namespace Game.Core.Sim
                 else
                     weapons.Bag[i] = weapon;
             }
-            Changed();
+            Rebuild();
         }
 
         public WeaponItem Give(WeaponBase weaponBase) => Give(_catalog.Starter(weaponBase));
@@ -56,39 +56,45 @@ namespace Game.Core.Sim
             return weapon;
         }
 
-        public bool Equip(WeaponHand hand, WeaponItem weapon)
+        public bool Fits(WeaponItem weapon) => !_state.ClassChosen || _state.Is(weapon.Type.HeroClass);
+
+        public bool Equip(WeaponItem weapon)
         {
             var weapons = _state.Weapons;
-            if (!weapons.Bag.Remove(weapon))
+            if (!Fits(weapon) || !weapons.Bag.Remove(weapon))
                 return false;
-            var previous = weapons.In(hand);
-            if (previous != null)
-                weapons.Bag.Add(previous);
-            weapons.Set(hand, weapon);
-            Changed();
+            if (weapons.Held != null)
+                weapons.Bag.Add(weapons.Held);
+            weapons.Held = weapon;
+            Rebuild();
+            HeldChanged?.Invoke();
             return true;
         }
 
-        public bool Unequip(WeaponHand hand)
+        public bool Unequip()
         {
             var weapons = _state.Weapons;
-            var weapon = weapons.In(hand);
-            if (weapon == null)
+            if (weapons.Held == null)
                 return false;
-            weapons.Set(hand, null);
-            weapons.Bag.Add(weapon);
-            Changed();
+            weapons.Bag.Add(weapons.Held);
+            weapons.Held = null;
+            Rebuild();
+            HeldChanged?.Invoke();
             return true;
         }
 
         public void Reforge(WeaponType from, WeaponType to)
         {
             var weapons = _state.Weapons;
-            weapons.Right = Reforged(weapons.Right, from, to);
-            weapons.Left = Reforged(weapons.Left, from, to);
             for (var i = 0; i < weapons.Bag.Count; i++)
                 weapons.Bag[i] = Reforged(weapons.Bag[i], from, to)!;
-            Changed();
+            weapons.Held = Reforged(weapons.Held, from, to);
+            if (weapons.Held != null && weapons.Held.Type != to)
+            {
+                weapons.Bag.Add(weapons.Held);
+                weapons.Held = null;
+            }
+            Rebuild();
         }
 
         private WeaponItem? Reforged(WeaponItem? weapon, WeaponType from, WeaponType to) =>
@@ -97,7 +103,21 @@ namespace Game.Core.Sim
         public void GiveClassStarter()
         {
             GiveStarter();
+            ReforgeBagToClass();
             Rebuild();
+        }
+
+        private void ReforgeBagToClass()
+        {
+            if (!_state.ClassChosen || !_catalog.HasType(_state.Class))
+                return;
+            var own = _catalog.TypeOf(_state.Class);
+            var bag = _state.Weapons.Bag;
+            for (var i = 0; i < bag.Count; i++)
+            {
+                if (bag[i].Type != own)
+                    bag[i] = _catalog.Reforged(bag[i], own);
+            }
         }
 
         private void GiveStarter()
@@ -106,19 +126,28 @@ namespace Game.Core.Sim
             if (weapons.StarterGiven || !_state.ClassChosen || !_catalog.HasType(_state.Class))
                 return;
             weapons.StarterGiven = true;
-            if (weapons.Right == null && weapons.Left == null)
-                weapons.Right = _catalog.Starter(_catalog.StarterFor(_state.Class));
+            if (weapons.Held == null)
+                weapons.Held = _catalog.Starter(_catalog.StarterFor(_state.Class));
         }
 
         private WeaponItem? Rebind(WeaponItem? weapon) =>
             weapon != null && _catalog.TryGetBase(weapon.Id, out var found) ? weapon.Rebased(found) : null;
 
-        private void Changed() => Rebuild();
-
         public void RefreshInnate()
         {
             if (System.Math.Abs(InnateScale - _appliedScale) > 1e-12)
                 Rebuild();
+        }
+
+        public void ApplyBuiltInSupports(List<SkillSlot> skills)
+        {
+            var held = _state.Weapons.Held;
+            for (var i = 0; i < skills.Count; i++)
+            {
+                var slot = skills[i];
+                var support = held?.BuiltInSupport(slot.Role);
+                slot.Supports[SkillSlot.BuiltInSocket] = support != null && support.CanSupport(slot.Skill) ? support : null;
+            }
         }
 
         private double InnateScale => System.Math.Max(0, _hero.Value(CombatStats.WeaponInnateEffect, 1));
@@ -127,23 +156,19 @@ namespace Game.Core.Sim
         {
             var modifiers = new List<Modifier>();
             _appliedScale = InnateScale;
-            Add(modifiers, _state.Weapons.Right, _appliedScale);
-            Add(modifiers, _state.Weapons.Left, _appliedScale);
+            var weapon = _state.Weapons.Held;
+            if (weapon != null)
+            {
+                AddScaled(modifiers, weapon.Type.Innate, _appliedScale);
+                AddScaled(modifiers, weapon.Innate, _appliedScale);
+                foreach (var affix in weapon.Affixes)
+                    affix.AddModifiers(modifiers);
+                if (weapon.Unique != null)
+                    modifiers.AddRange(weapon.Unique.Lines);
+                if (weapon.Set != null)
+                    modifiers.AddRange(weapon.Set.PieceLines(ItemSlot.Weapon));
+            }
             _layer.Set(modifiers);
-        }
-
-        private static void Add(List<Modifier> modifiers, WeaponItem? weapon, double scale)
-        {
-            if (weapon == null)
-                return;
-            AddScaled(modifiers, weapon.Type.Innate, scale);
-            AddScaled(modifiers, weapon.Innate, scale);
-            if (weapon.SecondType != null)
-                AddScaled(modifiers, weapon.SecondType.Innate, scale);
-            if (weapon.Unique != null)
-                modifiers.AddRange(weapon.Unique.Lines);
-            if (weapon.Set != null)
-                modifiers.AddRange(weapon.Set.PieceLines(ItemSlot.Weapon));
         }
 
         private static void AddScaled(List<Modifier> modifiers, IReadOnlyList<Modifier> innate, double scale)

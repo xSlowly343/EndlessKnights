@@ -45,8 +45,8 @@ namespace Game.Presentation.Ui
         private TextMeshProUGUI _subtitle = null!;
         private TextMeshProUGUI _inHands = null!;
         private TextMeshProUGUI _innate = null!;
-        private UiButton _toRight = null!;
-        private UiButton _toLeft = null!;
+        private TextMeshProUGUI _affixes = null!;
+        private UiButton _equip = null!;
         private ItemFilter _filter = ItemFilter.All;
         private WeaponItem? _selected;
         private GameLoop? _loop;
@@ -126,10 +126,9 @@ namespace Game.Presentation.Ui
 
         private bool TryEquip(Vector2 worldPoint)
         {
-            var hand = _toRight.Contains(worldPoint) ? WeaponHand.Right : _toLeft.Contains(worldPoint) ? WeaponHand.Left : (WeaponHand?)null;
-            if (hand == null)
+            if (!_equip.Contains(worldPoint))
                 return UiElements.Contains(_card, worldPoint);
-            _loop!.Weapons.Equip(hand.Value, _selected!);
+            _loop!.Weapons.Equip(_selected!);
             _selected = null;
             Refresh();
             return true;
@@ -162,6 +161,7 @@ namespace Game.Presentation.Ui
             _subtitle.text = ItemTexts.Subtitle(weapon);
             _inHands.text = ItemTexts.InHands(state);
             _innate.text = ItemTexts.Innate(weapon);
+            _affixes.text = ItemTexts.Affixes(weapon);
         }
 
         private void BuildFilters()
@@ -219,9 +219,9 @@ namespace Game.Presentation.Ui
             UiElements.Anchor(_inHands.rectTransform, Vector2.one, new Vector2(-12f, -10f), new Vector2(130f, 32f));
             _inHands.textWrappingMode = TextWrappingModes.Normal;
             _innate = CardText("Innate", card, _theme.TextFont, 12f, new Color32(0xFF, 0xE2, 0xA0, 0xFF), new Vector2(12f, -58f), new Vector2(GridWidth() - 24f, 16f));
-            var buttonWidth = (GridWidth() - 24f - GapPx) / 2f;
-            _toRight = GoldButton(card, ItemTexts.EquipTo(WeaponHand.Right), new Vector2(12f, 10f), buttonWidth);
-            _toLeft = GoldButton(card, ItemTexts.EquipTo(WeaponHand.Left), new Vector2(12f + buttonWidth + GapPx, 10f), buttonWidth);
+            _affixes = CardText("Affixes", card, _theme.TextFont, 11f, _theme.Text, new Vector2(12f, -76f), new Vector2(GridWidth() - 24f, 30f));
+            _affixes.textWrappingMode = TextWrappingModes.Normal;
+            _equip = GoldButton(card, ItemTexts.Equip, new Vector2(12f, 10f), GridWidth() - 24f);
             card.gameObject.SetActive(false);
             return card;
         }

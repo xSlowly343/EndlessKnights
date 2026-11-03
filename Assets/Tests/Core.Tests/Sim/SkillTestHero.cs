@@ -37,15 +37,6 @@ namespace Game.Core.Tests.Sim
 
         public static SkillSlotRole ManualRole(int position) => position == 1 ? SkillSlotRole.Right : SkillSlotRole.Left;
 
-        public static SkillTestHero Borrowing(HeroClass heroClass, HeroClass weaponOwner, params string[] skills)
-        {
-            var test = Of(heroClass, skills);
-            var weapon = test.Loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(weaponOwner));
-            test.Loop.Weapons.Equip(WeaponHand.Left, weapon);
-            test.Loop.Events.Clear();
-            return test;
-        }
-
         public void Branch(string skill, string branch)
         {
             var gem = TestWorld.Data.Gems[skill];

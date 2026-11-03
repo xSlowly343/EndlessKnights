@@ -62,7 +62,6 @@ namespace Game.Core.Tests.Build
         {
             var loop = Duelist();
             loop.ChooseSubclass("duelist_trait_2");
-            TestWorld.ArmFor(loop, Gems["duelist_path_2"]);
             Assert.That(loop.Book.Equip(Gems["duelist_path_2"]), Is.EqualTo(BookResult.Done));
 
             Assert.That(loop.ChangeSubclassPaid("duelist_trait_1"), Is.EqualTo(SubclassResult.Chosen));
@@ -78,7 +77,6 @@ namespace Game.Core.Tests.Build
             var loop = Duelist();
             loop.ChooseSubclass("duelist_trait_2");
             loop.State.OwnedGems.Add(Gems["duelist_path_1"]);
-            TestWorld.ArmFor(loop, Gems["duelist_path_1"]);
 
             Assert.That(loop.Book.Equip(Gems["duelist_path_1"]), Is.EqualTo(BookResult.WrongPath));
         }

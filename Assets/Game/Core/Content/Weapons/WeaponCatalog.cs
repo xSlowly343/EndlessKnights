@@ -19,13 +19,11 @@ namespace Game.Core.Content.Weapons
         private readonly Dictionary<string, WeaponBase> _bases;
         private Dictionary<string, IReadOnlyList<GemDef>> _pools = new Dictionary<string, IReadOnlyList<GemDef>>(StringComparer.Ordinal);
 
-        private WeaponCatalog(List<WeaponType> types, List<WeaponBase> bases, double ownTypeWeight, double otherTypeWeight, IReadOnlyList<double> baseWeights, ReforgeTable reforge)
+        private WeaponCatalog(List<WeaponType> types, List<WeaponBase> bases, IReadOnlyList<double> baseWeights, ReforgeTable reforge)
         {
             Reforge = reforge;
             Types = types;
             Bases = bases;
-            OwnTypeWeight = ownTypeWeight;
-            OtherTypeWeight = otherTypeWeight;
             BaseWeights = baseWeights;
             _types = new Dictionary<string, WeaponType>(StringComparer.Ordinal);
             foreach (var type in types)
@@ -37,8 +35,6 @@ namespace Game.Core.Content.Weapons
 
         public IReadOnlyList<WeaponType> Types { get; }
         public IReadOnlyList<WeaponBase> Bases { get; }
-        public double OwnTypeWeight { get; }
-        public double OtherTypeWeight { get; }
         public IReadOnlyList<double> BaseWeights { get; }
         public ReforgeTable Reforge { get; }
 
@@ -58,12 +54,12 @@ namespace Game.Core.Content.Weapons
             return false;
         }
 
-        public UniqueWeaponDef? PickUnique(ItemRarity ceiling, Rng rng)
+        public UniqueWeaponDef? PickUnique(ItemRarity ceiling, WeaponType type, Rng rng)
         {
             var count = 0;
             foreach (var unique in Uniques)
             {
-                if (unique.Rarity <= ceiling)
+                if (Fits(unique, ceiling, type))
                     count++;
             }
             if (count == 0)
@@ -71,20 +67,40 @@ namespace Game.Core.Content.Weapons
             var pick = rng.NextInt(0, count);
             foreach (var unique in Uniques)
             {
-                if (unique.Rarity <= ceiling && pick-- == 0)
+                if (Fits(unique, ceiling, type) && pick-- == 0)
                     return unique;
             }
             return null;
         }
 
-        public WeaponItem RollUnique(UniqueWeaponDef unique) => new WeaponItem(unique.Base, unique.Rarity, unique);
+        private static bool Fits(UniqueWeaponDef unique, ItemRarity ceiling, WeaponType type) => unique.Rarity <= ceiling && unique.Base.Type == type;
+
+        public WeaponItem RollUnique(UniqueWeaponDef unique, int itemLevel = 1) => new WeaponItem(unique.Base, unique.Rarity, itemLevel, null, unique);
+
+        public bool TryGetPoolSkill(string id, out GemDef skill)
+        {
+            foreach (var pool in _pools.Values)
+            {
+                foreach (var gem in pool)
+                {
+                    if (gem.Id == id)
+                    {
+                        skill = gem;
+                        return true;
+                    }
+                }
+            }
+            skill = null!;
+            return false;
+        }
 
         public IReadOnlyList<GemDef> PoolOf(WeaponType type) =>
             _pools.TryGetValue(type.Id, out var pool) ? pool : Array.Empty<GemDef>();
 
         public WeaponItem Starter(WeaponBase weaponBase) => new WeaponItem(weaponBase, ItemRarity.Simple);
 
-        public WeaponItem Roll(WeaponBase weaponBase, ItemRarity rarity) => new WeaponItem(weaponBase, rarity);
+        public WeaponItem Roll(WeaponBase weaponBase, ItemRarity rarity, int itemLevel = 1, IReadOnlyList<GearAffix>? affixes = null) =>
+            new WeaponItem(weaponBase, rarity, itemLevel, affixes);
 
         public bool TryGetType(string id, out WeaponType type) => _types.TryGetValue(id, out type!);
 
@@ -105,7 +121,7 @@ namespace Game.Core.Content.Weapons
             var from = weapon.Type;
             if (weapon.Unique != null || from == to)
                 return weapon;
-            return new WeaponItem(BaseAtStep(to, StepOf(weapon.Base)), weapon.Rarity, null, weapon.Set);
+            return new WeaponItem(BaseAtStep(to, StepOf(weapon.Base)), weapon.Rarity, weapon.ItemLevel, weapon.Affixes, null, weapon.Set);
         }
 
         private int StepOf(WeaponBase weaponBase)
@@ -176,10 +192,30 @@ namespace Game.Core.Content.Weapons
                     pool.Add(gem);
             }
             Reforge.Bind(Types, classGems);
+            RequireOpenedSkills(gems);
             var bound = new Dictionary<string, IReadOnlyList<GemDef>>(StringComparer.Ordinal);
             foreach (var pair in pools)
                 bound[pair.Key] = pair.Value;
             _pools = bound;
+        }
+
+        public const int MaxOpenedSkills = 2;
+
+        private void RequireOpenedSkills(GemCatalog gems)
+        {
+            foreach (var unique in Uniques)
+            {
+                var where = "uniques." + unique.Id + ".opensSkills";
+                if (unique.OpensSkills.Count > MaxOpenedSkills)
+                    throw new ContentException(FileName, where, $"a unique weapon opens at most {MaxOpenedSkills} skills of another class");
+                foreach (var id in unique.OpensSkills)
+                {
+                    if (!gems.TryGet(id, out var gem) || gem.Skill?.Weapon == null || gem.Ascendancy != null)
+                        throw new ContentException(FileName, where, $"'{id}' is not a class skill in {GemCatalog.FileName}");
+                    if (gem.Skill.Weapon == unique.Base.Type.Id)
+                        throw new ContentException(FileName, where, $"'{id}' is a skill of the weapon's own class");
+                }
+            }
         }
 
         public static WeaponCatalog Load(string json)
@@ -223,17 +259,16 @@ namespace Game.Core.Content.Weapons
                     throw root.Field("bases").Error($"weapon type '{type.Id}' has no base");
             }
 
-            var weights = root.Field("typeWeights");
             var baseWeights = new List<double>();
             foreach (var item in root.Field("baseWeights").Items())
                 baseWeights.Add(item.AsNumber(0, 1000));
-            var catalog = new WeaponCatalog(types, bases, weights.Field("own").AsNumber(0, 1000), weights.Field("other").AsNumber(0, 1000), baseWeights,
+            var catalog = new WeaponCatalog(types, bases, baseWeights,
                 ReforgeTable.Read(root.Field("reforge")));
-            catalog.Uniques = ReadUniques(root.Field("uniques"), catalog, byId);
+            catalog.Uniques = ReadUniques(root.Field("uniques"), catalog);
             return catalog;
         }
 
-        private static List<UniqueWeaponDef> ReadUniques(ContentNode node, WeaponCatalog catalog, Dictionary<string, WeaponType> types)
+        private static List<UniqueWeaponDef> ReadUniques(ContentNode node, WeaponCatalog catalog)
         {
             var uniques = new List<UniqueWeaponDef>();
             var ids = new HashSet<string>(StringComparer.Ordinal);
@@ -245,20 +280,18 @@ namespace Game.Core.Content.Weapons
                 var baseNode = item.Field("base");
                 if (!catalog.TryGetBase(baseNode.AsString(), out var weaponBase))
                     throw baseNode.Error($"unknown weapon base '{baseNode.AsString()}'");
-                WeaponType? second = null;
-                if (item.HasField("alsoType"))
+                var opens = new List<string>();
+                if (item.HasField("opensSkills"))
                 {
-                    var typeNode = item.Field("alsoType");
-                    if (!types.TryGetValue(typeNode.AsString(), out var found) || found == weaponBase.Type)
-                        throw typeNode.Error($"'{typeNode.AsString()}' is not a second weapon type");
-                    second = found;
+                    foreach (var skill in item.Field("opensSkills").Items())
+                        opens.Add(skill.AsString());
                 }
                 var rarityNode = item.Field("rarity");
                 if (!ItemRarityNames.ByName.TryGetValue(rarityNode.AsString(), out var rarity))
                     throw rarityNode.Error($"unknown rarity '{rarityNode.AsString()}'");
                 var name = item.Field("name");
                 var rule = item.Field("rule");
-                uniques.Add(new UniqueWeaponDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), weaponBase, second, rarity,
+                uniques.Add(new UniqueWeaponDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), weaponBase, opens, rarity,
                     ModifierReader.ReadList(item.Field("lines")), rule.Field("ru").AsString(), rule.Field("en").AsString()));
             }
             return uniques;

@@ -35,7 +35,6 @@ namespace Game.Core.Tests.Party
 
             public int Equip(string gem)
             {
-                TestWorld.ArmFor(Loop, TestWorld.Data.Gems[gem]);
                 Loop.Skills.Equip(TestWorld.Data.Gems[gem], role: SkillTestHero.ManualRole(Loop.State.Skills.Count));
                 return Loop.State.Skills.Count - 1;
             }

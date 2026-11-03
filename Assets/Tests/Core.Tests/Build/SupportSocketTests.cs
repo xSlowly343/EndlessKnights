@@ -35,7 +35,6 @@ namespace Game.Core.Tests.Build
         private static int Equip(GameLoop loop, string skill, params string[] owned)
         {
             var gem = Gem(skill);
-            TestWorld.ArmFor(loop, gem);
             loop.State.OwnedGems.Add(gem);
             foreach (var id in owned)
                 loop.State.OwnedGems.Add(Gem(id));

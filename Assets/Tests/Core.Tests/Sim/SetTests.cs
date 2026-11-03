@@ -203,7 +203,7 @@ namespace Game.Core.Tests.Sim
         public void StageFiftyGuaranteeFillsAnEmptyGearSlot()
         {
             var loop = Runedancer();
-            loop.Weapons.Equip(WeaponHand.Left, loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Duelist)));
+            loop.Weapons.Equip(loop.Weapons.Give(TestWorld.Data.Weapons.StarterFor(HeroClass.Duelist)));
             var rng = new Rng(9);
             foreach (var slot in new[] { GearSlot.Helmet, GearSlot.Chest, GearSlot.Gloves })
             {

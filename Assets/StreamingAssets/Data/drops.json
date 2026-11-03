@@ -10,7 +10,7 @@
   "guarantees": [
     { "stage": 3, "slot": "helmet", "rarity": "fine", "color": "own" },
     { "stage": 10, "slot": "ring", "rarity": "uncommon", "color": "own" },
-    { "stage": 20, "slot": "weapon", "rarity": "uncommon", "color": "ownColorOtherClass" },
+    { "stage": 20, "slot": "weapon", "rarity": "uncommon", "color": "own" },
     { "stage": 50, "slot": "empty", "rarity": "rare" }
   ],
   "gems": {

@@ -96,7 +96,6 @@ namespace Game.Core.Tests.Sim
 
         private static int Equip(GameLoop loop, string skill)
         {
-            TestWorld.ArmFor(loop, TestWorld.Data.Gems[skill]);
             loop.Skills.Equip(TestWorld.Data.Gems[skill], role: SkillTestHero.ManualRole(loop.State.Skills.Count));
             return loop.State.Skills.Count - 1;
         }

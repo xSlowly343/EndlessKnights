@@ -4,6 +4,5 @@ namespace Game.Core.Content.Items
     {
         Any,
         Own,
-        OwnColorOtherClass,
     }
 }

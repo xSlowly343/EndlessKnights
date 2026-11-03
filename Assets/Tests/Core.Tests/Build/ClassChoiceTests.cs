@@ -29,8 +29,7 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.State.ClassName, Is.EqualTo(HeroClassNames.Novice));
             Assert.That(Game.Core.Ui.HeroSummary.Title(loop.State), Does.StartWith("Novice · "));
-            Assert.That(loop.State.Weapons.Right, Is.Null);
-            Assert.That(loop.State.Weapons.Left, Is.Null);
+            Assert.That(loop.State.Weapons.Held, Is.Null);
             Assert.That(loop.State.Skills.Select(slot => slot.Skill.Id), Is.EquivalentTo(new[] { "through_stride", "lull" }));
             Assert.That(loop.State.Skills.All(slot => slot.Def.Weapon == null), Is.True);
             Assert.That(loop.ClassChoiceReady, Is.False, "the choice opens on the second level");
@@ -69,7 +68,7 @@ namespace Game.Core.Tests.Build
             Assert.That(state.Class, Is.EqualTo(HeroClass.Duelist));
             Assert.That(state.ClassName, Is.EqualTo("duelist"));
             Assert.That(state.TreePointsLeft, Is.GreaterThan(0), "points earned as a novice are kept");
-            Assert.That(state.Weapons.Right?.Type.Id ?? state.Weapons.Left?.Type.Id, Is.EqualTo("spectral_rapier"));
+            Assert.That(state.Weapons.Held?.Type.Id, Is.EqualTo("spectral_rapier"));
             Assert.That(state.Skills[0].Def.Weapon, Is.EqualTo("spectral_rapier"));
             Assert.That(state.Skills[1].Def.Weapon, Is.EqualTo("spectral_rapier"));
             Assert.That(state.OwnedGems.Select(gem => gem.Id), Does.Contain("through_stride").And.Contain("lull"), "general skills stay with the hero");

@@ -141,6 +141,10 @@ namespace Game.Core.Content.Gems
             var color = Pick(node.Field("color"), Colors, "red, green, blue or white");
             var name = node.Field("name");
             var tags = node.HasField("tags") ? ModifierReader.ReadTags(node.Field("tags")) : StatTags.None;
+            if ((tags & StatTags.ClassSkill) != 0)
+                throw node.Field("tags").Error("ClassSkill is given to every skill with a weapon, do not list it");
+            if (type != SkillType.Support && node.HasField("weapon"))
+                tags |= StatTags.ClassSkill;
             var nameRu = name.Field("ru").AsString();
             var nameEn = name.Field("en").AsString();
             if (node.HasField("requires"))

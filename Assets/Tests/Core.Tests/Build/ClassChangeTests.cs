@@ -42,7 +42,7 @@ namespace Game.Core.Tests.Build
         private static string Snapshot(GameLoop loop)
         {
             var state = loop.State;
-            var weapons = new[] { state.Weapons.Right, state.Weapons.Left }.Concat(state.Weapons.Bag)
+            var weapons = new[] { state.Weapons.Held }.Concat(state.Weapons.Bag)
                 .Select(weapon => weapon == null ? "-" : $"{weapon.Id}/{weapon.Rarity}/{weapon.Unique?.Id}");
             var gems = state.OwnedGems.Select(gem => gem.Id).OrderBy(id => id);
             var levels = state.GemProgress.Where(pair => pair.Value.Level > 1).OrderBy(pair => pair.Key).Select(pair => $"{pair.Key}={pair.Value.Level}");
@@ -150,7 +150,7 @@ namespace Game.Core.Tests.Build
             var katana = Weapons.TypeOf(HeroClass.Duelist);
             var jarl = Weapons.Bases.Last(weaponBase => weaponBase.Type == axe);
             var rolled = loop.Weapons.Give(Weapons.Roll(jarl, ItemRarity.Mythic));
-            loop.Weapons.Equip(WeaponHand.Left, rolled);
+            loop.Weapons.Equip(rolled);
             var bow = loop.Weapons.Give(Weapons.Roll(Weapons.StarterFor(HeroClass.Windshot), ItemRarity.Rare));
             var corsair = loop.Weapons.Give(Weapons.RollUnique(Weapons.Uniques.First(unique => unique.Id == "corsair_daggers")));
             var fast = state.Skills[0].Skill;
@@ -161,12 +161,11 @@ namespace Game.Core.Tests.Build
 
             Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
 
-            Assert.That(state.Weapons.Right!.Type, Is.SameAs(katana));
-            Assert.That(state.Weapons.Right.Base.FromBiome, Is.EqualTo(1));
-            var left = state.Weapons.Left!;
-            Assert.That(left.Type, Is.SameAs(katana));
-            Assert.That(left.Base, Is.SameAs(Weapons.Bases.Last(weaponBase => weaponBase.Type == katana)), "the same step by biome");
-            Assert.That(left.Rarity, Is.EqualTo(ItemRarity.Mythic));
+            var held = state.Weapons.Held!;
+            Assert.That(held.Type, Is.SameAs(katana));
+            Assert.That(held.Base, Is.SameAs(Weapons.Bases.Last(weaponBase => weaponBase.Type == katana)), "the same step by biome");
+            Assert.That(held.Rarity, Is.EqualTo(ItemRarity.Mythic));
+            Assert.That(state.Weapons.Bag.Any(weapon => weapon.Type == katana && weapon.Base.FromBiome == 1), Is.True, "the starter in the bag is reforged too");
             Assert.That(state.Weapons.Bag, Does.Contain(bow), "a weapon of a third class stays as it is");
             Assert.That(state.Weapons.Bag, Does.Contain(corsair), "a unique weapon stays as it is");
 
