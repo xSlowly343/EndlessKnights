@@ -65,7 +65,7 @@ namespace Game.Core.Tests.Sim.Weapons
             {
                 foreach (var affix in Items.RollAffixes(ItemSlot.Weapon, ItemRarity.Uncommon, 6, rng))
                     Assert.That(affix.Def.FromRarity, Is.LessThanOrEqualTo(ItemRarity.Uncommon), affix.Def.Id);
-                var epic = Items.RollAffixes(ItemSlot.Weapon, ItemRarity.Epic, 6, rng);
+                var epic = Items.RollAffixes(ItemSlot.Weapon, ItemRarity.Ancient, 6, rng);
                 Assert.That(epic.Count(affix => affix.Def.Group == "weapon_role_level"), Is.LessThanOrEqualTo(1));
                 Assert.That(epic.Where(affix => affix.Def.BuiltInRole != null).All(affix => affix.Support != null), Is.True);
             }

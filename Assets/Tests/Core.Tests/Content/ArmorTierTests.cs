@@ -19,7 +19,8 @@ namespace Game.Core.Tests.Content
 
         [TestCase(ItemRarity.Uncommon, ItemRarity.Simple)]
         [TestCase(ItemRarity.Rare, ItemRarity.Rare)]
-        [TestCase(ItemRarity.Epic, ItemRarity.Epic)]
+        [TestCase(ItemRarity.Mythic, ItemRarity.Rare)]
+        [TestCase(ItemRarity.Ancient, ItemRarity.Ancient)]
         public void AnAffixWaitsForTheRarityOfItsTier(ItemRarity rarity, ItemRarity highestTier)
         {
             var rng = new Rng(5);
@@ -41,22 +42,66 @@ namespace Game.Core.Tests.Content
                 var pool = Catalog.Affixes.Where(affix => affix.FitsSlot(slot)).ToList();
                 Assert.That(pool.Any(affix => affix.FromRarity == ItemRarity.Simple), Is.True, slot.ToString());
                 Assert.That(pool.Any(affix => affix.FromRarity == ItemRarity.Rare), Is.True, slot.ToString());
-                Assert.That(pool.Any(affix => affix.FromRarity == ItemRarity.Epic), Is.True, slot.ToString());
+                Assert.That(pool.Any(affix => affix.FromRarity == ItemRarity.Ancient), Is.True, slot.ToString());
             }
         }
 
-        [TestCase(ItemSlot.Helmet, "auraSkillLevel", ItemRarity.Epic)]
-        [TestCase(ItemSlot.Gloves, "buttonSkillLevel", ItemRarity.Epic)]
-        [TestCase(ItemSlot.Boots, "autoSkillLevel", ItemRarity.Epic)]
-        [TestCase(ItemSlot.Amulet, "classSkillLevel", ItemRarity.Legendary)]
+        [TestCase(ItemSlot.Helmet, "auraSkillLevel", ItemRarity.Ancient)]
+        [TestCase(ItemSlot.Gloves, "buttonSkillLevel", ItemRarity.Ancient)]
+        [TestCase(ItemSlot.Boots, "autoSkillLevel", ItemRarity.Ancient)]
+        [TestCase(ItemSlot.Amulet, "classSkillLevel", ItemRarity.Ancient)]
         public void EachSlotHasItsOwnSkillLevelAffix(ItemSlot slot, string stat, ItemRarity from)
         {
             var levels = Catalog.Affixes.Where(affix => affix.FitsSlot(slot) && affix.Group == "slot_level").ToList();
 
             Assert.That(levels.Count, Is.EqualTo(1));
-            Assert.That(levels[0].Stats.Single().Stat.Name, Is.EqualTo(stat));
+            Assert.That(levels[0].Stats.Count, Is.EqualTo(2), "an ultimate affix has two lines");
+            Assert.That(levels[0].Stats[0].Stat.Name, Is.EqualTo(stat));
             Assert.That(levels[0].FromRarity, Is.EqualTo(from));
             Assert.That(levels[0].Slots, Is.EqualTo(new[] { slot }));
+        }
+
+        [Test]
+        public void TiersOpenWithAnyRarityWithTheFourthOrWithTheEighth()
+        {
+            foreach (var affix in Catalog.Affixes)
+                Assert.That(affix.FromRarity, Is.AnyOf(ItemRarity.Simple, ItemRarity.Rare, ItemRarity.Ancient), affix.Id);
+            Assert.That((int)ItemRarity.Rare, Is.EqualTo(3), "the fourth rarity");
+            Assert.That((int)ItemRarity.Ancient, Is.EqualTo(7), "the eighth rarity");
+        }
+
+        [Test]
+        public void EveryUltimateAffixGivesTwoLinesThatGrowWithTheTier()
+        {
+            var ultimate = Catalog.Affixes.Where(affix => affix.FromRarity == ItemRarity.Ancient).ToList();
+            Assert.That(ultimate, Is.Not.Empty);
+            Assert.That(ultimate.Where(affix => affix.BuiltInRole != null).All(affix => affix.Stats.Count == 1 && affix.Stats[0].OwnTiers), Is.True, "a built-in support plus one line");
+            foreach (var def in ultimate.Where(affix => affix.BuiltInRole == null))
+            {
+                Assert.That(def.Stats.Count, Is.GreaterThanOrEqualTo(2), def.Id);
+                Assert.That(def.Stats[1].OwnTiers, Is.True, def.Id);
+                var low = new System.Collections.Generic.List<Modifier>();
+                var high = new System.Collections.Generic.List<Modifier>();
+                new GearAffix(def, 1, def.ValueAt(1, Catalog.Tiers)).AddModifiers(low);
+                new GearAffix(def, Catalog.Tiers, def.ValueAt(Catalog.Tiers, Catalog.Tiers)).AddModifiers(high);
+                Assert.That(low.Count, Is.EqualTo(def.Stats.Count), def.Id);
+                Assert.That(System.Math.Abs(high[1].Value), Is.GreaterThan(System.Math.Abs(low[1].Value)), def.Id);
+                Assert.That(high[1].Value, Is.EqualTo(def.Stats[1].TierLast).Within(1e-9), def.Id);
+            }
+        }
+
+        [Test]
+        public void AnUltimateAffixWithOneLineOrAnOddRarityIsRejected()
+        {
+            var json = TestData.ReadGameDataFile(ItemCatalog.FileName);
+            var single = json.Replace(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.05, 0.15]}", "");
+            var epic = json.Replace("\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.3], \"fromRarity\": \"rare\"",
+                "\"id\": \"armor_dot_damage\", \"slots\": [\"helmet\", \"chest\", \"gloves\", \"boots\"], \"part\": \"prefix\", \"stats\": [{\"stat\": \"dotDamage\", \"kind\": \"increased\"}], \"tiers\": [0.05, 0.3], \"fromRarity\": \"epic\"");
+
+            Assert.That(json, Does.Contain(", {\"stat\": \"auraEffect\", \"kind\": \"increased\", \"tiers\": [0.05, 0.15]}"));
+            Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(single))!.Message, Does.Contain("two lines"));
+            Assert.That(epic, Is.Not.EqualTo(json));
+            Assert.That(Assert.Throws<ContentException>(() => ItemCatalog.Load(epic))!.Message, Does.Contain("ancient"));
         }
 
         [Test]

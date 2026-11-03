@@ -8,12 +8,18 @@ namespace Game.Core.Content.Items
         public readonly StatId Stat;
         public readonly ModifierKind Kind;
         public readonly StatTags Tags;
+        public readonly bool OwnTiers;
+        public readonly double TierOne;
+        public readonly double TierLast;
 
-        public AffixStat(StatId stat, ModifierKind kind, StatTags tags)
+        public AffixStat(StatId stat, ModifierKind kind, StatTags tags, bool ownTiers = false, double tierOne = 0, double tierLast = 0)
         {
             Stat = stat;
             Kind = kind;
             Tags = tags;
+            OwnTiers = ownTiers;
+            TierOne = tierOne;
+            TierLast = tierLast;
         }
     }
 
@@ -58,7 +64,16 @@ namespace Game.Core.Content.Items
             return false;
         }
 
-        public double ValueAt(int tier, int tiers) =>
-            tiers <= 1 ? TierLast : TierOne + (TierLast - TierOne) * (tier - 1) / (tiers - 1);
+        public int TierCount { get; private set; } = 1;
+
+        public void UseTierCount(int tiers) => TierCount = tiers;
+
+        public double ValueAt(int tier, int tiers) => Between(TierOne, TierLast, tier, tiers);
+
+        public double StatValue(int index, int tier, double rolled) =>
+            Stats[index].OwnTiers ? Between(Stats[index].TierOne, Stats[index].TierLast, tier, TierCount) : rolled;
+
+        private static double Between(double first, double last, int tier, int tiers) =>
+            tiers <= 1 ? last : first + (last - first) * (tier - 1) / (tiers - 1);
     }
 }

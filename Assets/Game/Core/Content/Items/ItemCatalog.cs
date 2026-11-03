@@ -284,6 +284,8 @@ namespace Game.Core.Content.Items
                     throw item.Field("id").Error($"set id '{set.Id}' is used twice");
                 sets.Add(set);
             }
+            foreach (var affix in affixes)
+                affix.UseTierCount(tiers);
             var catalog = new ItemCatalog(bases, affixes, sets, rarities, tiers,
                 weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
             ReadCraft(root.Field("craft"), catalog);
@@ -418,6 +420,10 @@ namespace Game.Core.Content.Items
             var (role, supports) = ReadBuiltIn(node, slots);
             if (stats.Count == 0 && role == null)
                 throw node.Error("an affix needs stats or a built-in support");
+            if (fromRarity != ItemRarity.Simple && fromRarity != AdvancedFrom && fromRarity != UltimateFrom)
+                throw node.Field("fromRarity").Error("an affix opens with any rarity, with rare (advanced) or with ancient (ultimate)");
+            if (fromRarity >= UltimateFrom && stats.Count + (role == null ? 0 : 1) < 2)
+                throw node.Field("stats").Error("an ultimate affix has two lines at once");
             return new AffixDef(node.Field("id").AsString(), slots, part == "prefix", stats,
                 tiers[0].AsNumber(-1e6, 1e6), tiers[1].AsNumber(-1e6, 1e6),
                 node.HasField("group") ? node.Field("group").AsString() : null, fromRarity, role, supports);
@@ -461,12 +467,26 @@ namespace Game.Core.Content.Items
             }
         }
 
+        public const ItemRarity AdvancedFrom = ItemRarity.Rare;
+        public const ItemRarity UltimateFrom = ItemRarity.Ancient;
+
         private static AffixStat ReadAffixStat(ContentNode stat)
         {
+            var own = stat.HasField("tiers");
+            var first = 0.0;
+            var last = 0.0;
+            if (own)
+            {
+                var tiers = stat.Field("tiers").Items();
+                if (tiers.Count != 2)
+                    throw stat.Field("tiers").Error("expected the first and the last tier values");
+                first = tiers[0].AsNumber(-1e6, 1e6);
+                last = tiers[1].AsNumber(-1e6, 1e6);
+            }
             if (stat.HasField("to"))
-                return new AffixStat(ModifierReader.ReadCoopLine(stat).Source, ModifierKind.Flat, StatTags.None);
+                return new AffixStat(ModifierReader.ReadCoopLine(stat).Source, ModifierKind.Flat, StatTags.None, own, first, last);
             return new AffixStat(new StatId(stat.Field("stat").AsString()), ModifierReader.ReadKind(stat.Field("kind")),
-                stat.HasField("tags") ? ModifierReader.ReadTags(stat.Field("tags")) : StatTags.None);
+                stat.HasField("tags") ? ModifierReader.ReadTags(stat.Field("tags")) : StatTags.None, own, first, last);
         }
     }
 }
