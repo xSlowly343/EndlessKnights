@@ -60,7 +60,7 @@ test("an hour together pairs them and pays both; later hours pay on", () => {
   assert.strictEqual(student.level, 1);
   assert.strictEqual(server.walletRead(nk, "vet").value.balances.friendship, rules.rewards[0].mentor.friendship);
   const letters = call("kid", "mailListRpc").letters;
-  assert.deepStrictEqual(plain(letters.map((l) => [l.kind, l.reward.uncutGems])), [["mentor", rules.rewards[0].student.uncutGems]]);
+  assert.deepStrictEqual(plain(letters.map((l) => [l.kind, l.reward.shards])), [["mentor", rules.rewards[0].student.shards]]);
   together(nk, "kid", "vet", 20 * hour);
   assert.strictEqual(call("kid", "mentorStatusRpc").level, rules.rewards.length);
   const mentor = call("vet", "mentorStatusRpc");

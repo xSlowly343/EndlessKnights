@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Game.Core.Content.Gems;
 
 namespace Game.Core.Content.Items
 {
@@ -23,10 +22,9 @@ namespace Game.Core.Content.Items
         private readonly double[] _slotWeights;
         private readonly double[] _dust;
         private readonly Dictionary<long, DropGuarantee> _guarantees;
-        private readonly Dictionary<GemKind, GemDropChance> _gems;
 
         private DropRules(double[] rarityWeights, ItemRarity firstCeiling, double[] slotWeights, DropTable record, int specialBossEvery,
-            DropTable specialBoss, DropTable guardian, DailyDropRules daily, Dictionary<long, DropGuarantee> guarantees, Dictionary<GemKind, GemDropChance> gems,
+            DropTable specialBoss, DropTable guardian, DailyDropRules daily, Dictionary<long, DropGuarantee> guarantees,
             int bagSize, double[] dust, double setChance, double setBossChance, double setGuardianChance, ShardRules shards)
         {
             Shards = shards;
@@ -42,7 +40,6 @@ namespace Game.Core.Content.Items
             Guardian = guardian;
             Daily = daily;
             _guarantees = guarantees;
-            _gems = gems;
             BagSize = bagSize;
             _dust = dust;
         }
@@ -93,8 +90,6 @@ namespace Game.Core.Content.Items
 
         public DropGuarantee? GuaranteeAt(long stage) => _guarantees.TryGetValue(stage, out var guarantee) ? guarantee : null;
 
-        public GemDropChance GemChance(GemKind kind) => _gems.TryGetValue(kind, out var chance) ? chance : default;
-
         public static DropRules Load(string json)
         {
             var root = ContentNode.Root(json, FileName);
@@ -114,13 +109,12 @@ namespace Game.Core.Content.Items
                 DropTable.Read(root.Field("guardian"), MaxItemsPerSource),
                 DailyDropRules.Read(root.Field("daily")),
                 ReadGuarantees(root.Field("guarantees")),
-                ReadGems(root.Field("gems")),
                 root.Field("bag").Field("size").AsInt(1, 10000),
                 ReadRarities(root.Field("dust"), 0, 1e12, requirePositive: false),
                 root.Field("sets").Field("chance").AsNumber(0, 1),
                 root.Field("sets").Field("boss").AsNumber(0, 1),
                 root.Field("sets").Field("guardian").AsNumber(0, 1),
-                ShardRules.Read(root.Field("shards"), root.Field("uncut")))
+                ShardRules.Read(root.Field("shards")))
             {
                 CeilingSteps = ReadCeilingSteps(ceiling.Field("steps")).ToArray(),
                 UniqueGuardianChance = root.Field("uniques").Field("guardian").AsNumber(0, 1)
@@ -198,11 +192,5 @@ namespace Game.Core.Content.Items
             }
             return guarantees;
         }
-
-        private static Dictionary<GemKind, GemDropChance> ReadGems(ContentNode node) =>
-            new Dictionary<GemKind, GemDropChance>
-            {
-                [GemKind.Skill] = GemDropChance.Read(node.Field("skill"))
-            };
     }
 }

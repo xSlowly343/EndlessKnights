@@ -1,5 +1,4 @@
 using Game.Core.Content;
-using Game.Core.Content.Gems;
 using Game.Core.Content.Items;
 using NUnit.Framework;
 
@@ -25,8 +24,6 @@ namespace Game.Core.Tests.Content
             Assert.That(rules.GuaranteeAt(3)!.Slot, Is.EqualTo(ItemSlot.Helmet));
             Assert.That(rules.GuaranteeAt(50)!.ToEmptySlot, Is.True);
             Assert.That(rules.GuaranteeAt(4), Is.Null);
-            Assert.That(rules.GemChance(GemKind.Skill).Normal, Is.EqualTo(1 / 300.0));
-            Assert.That(rules.GemChance(GemKind.Skill).Boss, Is.EqualTo(0.1));
         }
 
         [Test]
@@ -75,12 +72,6 @@ namespace Game.Core.Tests.Content
             var json = Json.Replace("\"slot\": \"helmet\", \"rarity\": \"fine\", \"color\": \"own\"", "\"slot\": \"helmet\", \"rarity\": \"fine\", \"color\": \"ownColorOtherClass\"");
 
             Assert.Throws<ContentException>(() => DropRules.Load(json));
-        }
-
-        [Test]
-        public void GemChanceBelowOneInOneIsRejected()
-        {
-            Assert.Throws<ContentException>(() => DropRules.Load(Json.Replace("\"normal\": 300", "\"normal\": 0.5")));
         }
     }
 }

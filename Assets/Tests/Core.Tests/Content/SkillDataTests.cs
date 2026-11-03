@@ -42,7 +42,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void AnAuraEffectNeedsTheAuraKind()
         {
-            var json = "{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"durationSeconds\": 5, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }";
+            var json = "{ \"id\": \"x\", \"level\": 1, \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"durationSeconds\": 5, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }";
 
             var error = Assert.Throws<ContentException>(() => WithExtra(json))!;
 

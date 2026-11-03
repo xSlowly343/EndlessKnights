@@ -98,7 +98,7 @@ function riftRewardFor(place: number): RiftBoardPlace {
     for (const tier of RiftServerRules.boardPlaces)
         if (tier.upTo === 0 || place <= tier.upTo)
             return tier;
-    return { upTo: 0, shards: 0, uncutGems: 0, ingots: 0, friendship: 0 };
+    return { upTo: 0, shards: 0, ingots: 0, friendship: 0 };
 }
 
 function riftGrantFriendship(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: string, amount: number, nowUnixMs: number): void {
@@ -127,7 +127,7 @@ function riftSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, riftId: numb
         for (const userId of entry.members) {
             const sent = mailSend(nk, userId, {
                 id: "rift-" + riftId, kind: "rift", at: nowUnixMs, place: i + 1, of: ranking.length, depth: entry.cleared + 1, title: entry.title,
-                reward: { shards: tier.shards, uncutGems: tier.uncutGems, ingots: tier.ingots, friendship: tier.friendship }, claimed: false, claimedAt: 0
+                reward: { shards: tier.shards, ingots: tier.ingots, friendship: tier.friendship }, claimed: false, claimedAt: 0
             });
             if (sent)
                 riftGrantFriendship(nk, logger, userId, tier.friendship, nowUnixMs);
@@ -194,14 +194,11 @@ function riftMilestones(nk: nkruntime.Nakama, logger: nkruntime.Logger, riftId: 
         const step = riftMilestoneStep(rules, stage);
         if (!step)
             continue;
-        const gem = step.rareGem ? riftMilestoneGem(rules, riftId, stage) : "";
         for (const userId of members) {
             const letter: MailLetter = {
                 id: "riftdepth-" + riftId + "-" + stage, kind: "rift_depth", at: nowUnixMs, place: 0, of: 0, depth: stage, title: title,
-                reward: { shards: step.shards, uncutGems: step.uncutGems, ingots: 0, friendship: step.friendship }, claimed: false, claimedAt: 0
+                reward: { shards: step.shards, ingots: 0, friendship: step.friendship }, claimed: false, claimedAt: 0
             };
-            if (gem)
-                letter.gem = gem;
             if (!mailSend(nk, userId, letter))
                 continue;
             sent++;

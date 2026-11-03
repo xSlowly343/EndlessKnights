@@ -1,6 +1,6 @@
 interface MentorRewardSide {
     friendship: number;
-    uncutGems: number;
+    shards: number;
     perk: string;
     coopPoints: number;
 }
@@ -158,10 +158,10 @@ function mentorReward(nk: nkruntime.Nakama, logger: nkruntime.Logger, mentorId: 
     mentorGive(nk, studentId, reward.student, false, nowUnixMs);
     if (reward.mentor.perk === "mentor_cloak")
         mentorChange(nk, mentorId, (profile) => { profile.graduates++; });
-    if (reward.student.uncutGems > 0)
+    if (reward.student.shards > 0)
         mailSend(nk, studentId, {
             id: "mentor-" + reward.hours, kind: "mentor", at: nowUnixMs, place: 0, of: 0, depth: reward.hours, title: "",
-            reward: { shards: 0, uncutGems: reward.student.uncutGems, ingots: 0 }, claimed: false, claimedAt: 0
+            reward: { shards: reward.student.shards, ingots: 0 }, claimed: false, claimedAt: 0
         });
     logger.info("mentor %s and student %s reached %d hours together", mentorId, studentId, reward.hours);
 }

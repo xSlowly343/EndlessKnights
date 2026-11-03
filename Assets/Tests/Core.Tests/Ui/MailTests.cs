@@ -18,27 +18,25 @@ namespace Game.Core.Tests.Ui
         }
 
         private static MailLetter Rift(string id, bool claimed = false) =>
-            new MailLetter(id, MailLetter.RiftKind, 1000, 2, 14, 31, "night_shift", new RiftReward(200, 2, 4, 20), claimed);
+            new MailLetter(id, MailLetter.RiftKind, 1000, 2, 14, 31, "night_shift", new RiftReward(200, 4, 20), claimed);
 
         [Test]
-        public void ARiftMilestoneGivesItsRewardAndTheRareGemOfTheRift()
+        public void ARiftMilestoneGivesShardsAndNoGems()
         {
             var milestones = TestWorld.Data.Rift.Milestones;
             var step = milestones.StepAt(100)!;
-            var gem = milestones.GemAt(1792497600, 100);
-            var letter = new MailLetter("riftdepth-1792497600-100", MailLetter.RiftDepthKind, 1000, 0, 0, 100, "night_shift", step.Reward, false, gem);
+            var letter = new MailLetter("riftdepth-1792497600-100", MailLetter.RiftDepthKind, 1000, 0, 0, 100, "night_shift", step.Reward, false);
             var state = new GameState();
             var box = new MailBox();
             box.Replace(new[] { letter });
 
-            Assert.That(step.RareGem, Is.True);
-            Assert.That(milestones.GemsFor(1792497600), Does.Contain(gem));
-            Assert.That(box.Take(letter, state, TestWorld.Data.Gems), Is.True);
-            Assert.That(state.OwnedGems.Exists(owned => owned.Id == gem), Is.True);
-            Assert.That(state.Drops.UncutGems, Is.EqualTo(step.Reward.UncutGems));
+            Assert.That(step.Reward.Shards, Is.EqualTo(60));
+            Assert.That(box.Take(letter, state), Is.True);
+            Assert.That(state.OwnedGems, Is.Empty);
+            Assert.That(state.Drops.Shards, Is.EqualTo(step.Reward.Shards));
             Assert.That(MailText.Title(letter), Is.EqualTo("Рубеж Разлома"));
             Assert.That(MailText.Body(letter), Does.Contain("100 этапов"));
-            Assert.That(MailText.Reward(letter, TestWorld.Data.Gems), Does.StartWith("гем «"));
+            Assert.That(MailText.Reward(letter), Does.StartWith("Осколки +60"));
         }
 
         [Test]
@@ -47,11 +45,10 @@ namespace Game.Core.Tests.Ui
             var milestones = TestWorld.Data.Rift.Milestones;
 
             Assert.That(milestones.StepAt(24), Is.Null);
-            Assert.That(milestones.StepAt(25)!.RareGem, Is.False);
+            Assert.That(milestones.StepAt(25)!.Reward.Shards, Is.EqualTo(30));
             Assert.That(milestones.StepAt(75)!.From, Is.EqualTo(25));
             Assert.That(milestones.StepAt(250)!.Reward.Friendship, Is.GreaterThan(milestones.StepAt(25)!.Reward.Friendship));
-            Assert.That(milestones.GemsFor(1792497600).Count, Is.EqualTo(milestones.RareGemsPerRift));
-            Assert.That(milestones.GemsFor(1792497600), Is.EqualTo(milestones.GemsFor(1792497600)), "the pool of a rift is the same every time");
+            Assert.That(milestones.StepAt(250)!.Reward.Shards, Is.GreaterThan(milestones.StepAt(25)!.Reward.Shards));
         }
 
         [Test]
@@ -80,7 +77,6 @@ namespace Game.Core.Tests.Ui
             Assert.That(box.Take(Rift("rift-0"), state), Is.False, "a claimed letter pays nothing");
 
             Assert.That(state.Drops.Shards, Is.EqualTo(200));
-            Assert.That(state.Drops.UncutGems, Is.EqualTo(2));
             Assert.That(state.Drops.Ingots, Is.EqualTo(4));
             Assert.That(box.Take(Rift("rift-9"), state), Is.True, "the server already gave out a letter the box has not loaded yet");
             Assert.That(state.Drops.Shards, Is.EqualTo(400));
@@ -95,7 +91,7 @@ namespace Game.Core.Tests.Ui
 
             Assert.That(rows[0].Title, Is.EqualTo("Итоги Разлома"));
             Assert.That(rows[0].Body, Does.StartWith("2 место из 14, этап 31 · отряд «"));
-            Assert.That(rows[0].Reward, Is.EqualTo("Осколки +200 · неогранённые гемы +2 · Слитки +4 · Знаки дружбы +20"));
+            Assert.That(rows[0].Reward, Is.EqualTo("Осколки +200 · Слитки +4 · Знаки дружбы +20"));
             Assert.That(rows[0].Button, Is.EqualTo("Забрать"));
             Assert.That(rows[1].Button, Is.EqualTo("Получено"));
             Assert.That(MailText.Arrived(Rift("rift-1")), Is.EqualTo("Новое письмо: Итоги Разлома"));

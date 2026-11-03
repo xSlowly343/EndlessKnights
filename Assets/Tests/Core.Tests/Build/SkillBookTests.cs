@@ -1,3 +1,4 @@
+using System.Linq;
 using Game.Core.Build;
 using Game.Core.Clock;
 using Game.Core.Content;
@@ -18,7 +19,10 @@ namespace Game.Core.Tests.Build
         {
             var loop = TestWorld.Loop();
             foreach (var id in ids)
+            {
                 loop.State.OwnedGems.Add(Gem(id));
+                loop.State.HeroLevel = System.Math.Max(loop.State.HeroLevel, Gem(id).UnlockLevel);
+            }
             return loop;
         }
 
@@ -125,13 +129,29 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void OnlyOwnedSkillsGoIn()
+        public void ACommonSkillOpensAtItsHeroLevelAndGoesInOnce()
         {
-            var loop = WithGems("through_stride");
+            var loop = TestWorld.Loop();
 
-            Assert.That(loop.Book.Equip(Gem("march")), Is.EqualTo(BookResult.NotOwned));
+            Assert.That(loop.Book.Equip(Gem("march")), Is.EqualTo(BookResult.LevelTooLow));
             Assert.That(loop.Book.Equip(Gem("through_stride")), Is.EqualTo(BookResult.Done));
-            Assert.That(loop.Book.Equip(Gem("through_stride")), Is.EqualTo(BookResult.NotOwned));
+            Assert.That(loop.Book.Equip(Gem("through_stride")), Is.EqualTo(BookResult.AlreadyInBook));
+            Assert.That(loop.Book.FreeCopies(Gem("march")), Is.Zero);
+
+            loop.State.HeroLevel = Gem("march").UnlockLevel;
+
+            Assert.That(loop.Book.FreeCopies(Gem("march")), Is.EqualTo(1));
+            Assert.That(loop.Book.Equip(Gem("march")), Is.EqualTo(BookResult.Done));
+        }
+
+        [Test]
+        public void EveryCommonSkillHasAnOpeningLevel()
+        {
+            var common = TestWorld.Data.Gems.All.Where(SkillBook.IsCommonSkill).ToList();
+
+            Assert.That(common.Count, Is.EqualTo(29));
+            Assert.That(common.Where(gem => gem.UnlockLevel == 1).Select(gem => gem.Id), Is.EquivalentTo(new[] { "through_stride", "lull" }));
+            Assert.That(common.Max(gem => gem.UnlockLevel), Is.LessThanOrEqualTo(60));
         }
 
         [Test]

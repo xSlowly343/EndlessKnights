@@ -18,7 +18,7 @@ namespace Game.Core.Tests.Build
             var loop = TestWorld.Loop();
             while (loop.State.Skills.Count > 0)
                 loop.Skills.Unequip(0);
-            loop.State.OwnedGems.Add(Gem("march"));
+            loop.State.HeroLevel = Gem("march").UnlockLevel;
             Assert.That(loop.Book.Equip(Gem("march")), Is.EqualTo(BookResult.Done));
             return loop;
         }

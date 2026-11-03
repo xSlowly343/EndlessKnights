@@ -25,7 +25,6 @@ namespace Game.Core.Build
             var owned = state.OwnedGems;
             for (var i = 0; i < owned.Count; i++)
                 owned[i] = Of(owned[i]);
-            MoveBound(state.BoundGems, gems);
             MoveProgress(state.GemProgress, gems);
         }
 
@@ -43,18 +42,6 @@ namespace Game.Core.Build
                 reforged.Supports.Add(preset.SupportsAt(i));
             }
             return reforged;
-        }
-
-        private void MoveBound(Dictionary<string, int> bound, GemCatalog gems)
-        {
-            foreach (var id in new List<string>(bound.Keys))
-            {
-                if (!gems.TryGet(id, out var gem) || ReferenceEquals(Of(gem), gem))
-                    continue;
-                var count = bound[id];
-                bound.Remove(id);
-                bound[Of(gem).Id] = (bound.TryGetValue(Of(gem).Id, out var already) ? already : 0) + count;
-            }
         }
 
         private void MoveProgress(Dictionary<string, GemProgress> progress, GemCatalog gems)

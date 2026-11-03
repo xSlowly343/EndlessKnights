@@ -1,6 +1,5 @@
 interface MailReward {
     shards: number;
-    uncutGems: number;
     ingots: number;
     friendship?: number;
 }
@@ -16,7 +15,6 @@ interface MailLetter {
     reward: MailReward;
     claimed: boolean;
     claimedAt: number;
-    gem?: string;
 }
 
 const MailCollection = "mail";

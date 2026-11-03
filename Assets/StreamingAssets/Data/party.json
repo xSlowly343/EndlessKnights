@@ -70,7 +70,6 @@
         { "stat": "bossTimerSeconds", "kind": "flat", "cap": 30 },
         { "stat": "bossTimerSlow", "kind": "flat", "cap": 1 },
         { "stat": "gold", "kind": "increased", "cap": 1 },
-        { "stat": "gemDrop", "kind": "increased", "cap": 1 },
         { "stat": "gemExperience", "kind": "increased", "cap": 1 },
         { "stat": "slateChance", "kind": "increased", "cap": 1 },
         { "stat": "dustGain", "kind": "increased", "cap": 1 },
@@ -86,7 +85,7 @@
       { "from": "partyCritChance", "to": "critChance", "kind": "increased" },
       { "from": "partyCritMultiplier", "to": "critMultiplier", "kind": "flat" },
       { "from": "partyResource", "to": "resourceGain", "kind": "increased" },
-      { "from": "partyGemDrop", "to": "gemDrop", "kind": "increased" },
+      { "from": "partyGemExperience", "to": "gemExperience", "kind": "increased" },
       { "from": "partySkillCooldown", "to": "skillCooldown", "kind": "increased", "negate": true }
     ]
   }

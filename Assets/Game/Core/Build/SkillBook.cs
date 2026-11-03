@@ -32,7 +32,21 @@ namespace Game.Core.Build
 
         public static bool IsClassSkill(GemDef gem) => gem.Kind == GemKind.Skill && gem.Skill?.Weapon != null && gem.Ascendancy == null;
 
-        public int UnlockLevel(GemDef skill) => IsClassSkill(skill) ? _rules.SkillUnlockLevel(skill.Skill!.Tier) : 1;
+        public static bool IsCommonSkill(GemDef gem) => gem.Kind == GemKind.Skill && gem.Skill?.Weapon == null && gem.Ascendancy == null;
+
+        public int UnlockLevel(GemDef skill) => IsClassSkill(skill) ? _rules.SkillUnlockLevel(skill.Skill!.Tier) : skill.UnlockLevel;
+
+        public bool CommonSkillOpen(GemDef skill) => IsCommonSkill(skill) && !skill.Locked && _state.HeroLevel >= skill.UnlockLevel;
+
+        public void OpenCommonSkills(IReadOnlyList<GemDef> catalog, List<GemDef> into)
+        {
+            into.Clear();
+            for (var i = 0; i < catalog.Count; i++)
+            {
+                if (CommonSkillOpen(catalog[i]))
+                    into.Add(catalog[i]);
+            }
+        }
 
         public bool OfHeroClass(GemDef skill) =>
             _state.ClassChosen && _weapons.TryGetType(skill.Skill?.Weapon ?? string.Empty, out var type) && _state.Is(type.HeroClass);
@@ -239,6 +253,8 @@ namespace Game.Core.Build
         {
             if (IsClassSkill(gem))
                 return SkillOpen(gem) && RowOf(gem) < 0 ? 1 : 0;
+            if (IsCommonSkill(gem))
+                return CommonSkillOpen(gem) && RowOf(gem) < 0 ? 1 : 0;
             var owned = 0;
             foreach (var item in _state.OwnedGems)
             {
@@ -266,9 +282,9 @@ namespace Game.Core.Build
                 return BookResult.WaitsForMechanic;
             if (IsClassSkill(skill) && !OfHeroClass(skill) && !OpenedByWeapon(skill))
                 return BookResult.WrongClass;
-            if (IsClassSkill(skill) && _state.HeroLevel < UnlockLevel(skill))
+            if ((IsClassSkill(skill) || IsCommonSkill(skill)) && _state.HeroLevel < UnlockLevel(skill))
                 return BookResult.LevelTooLow;
-            if (!IsClassSkill(skill) && FreeCopies(skill) <= 0)
+            if (!IsClassSkill(skill) && !IsCommonSkill(skill) && FreeCopies(skill) <= 0)
                 return BookResult.NotOwned;
             if (skill.Ascendancy != null && skill.Ascendancy != _state.Ascendancy.Subclass)
                 return BookResult.WrongPath;

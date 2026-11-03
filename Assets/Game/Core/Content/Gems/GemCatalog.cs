@@ -188,7 +188,7 @@ namespace Game.Core.Content.Gems
 
         private static void RejectSupportFields(ContentNode node)
         {
-            foreach (var field in new[] { "fits", "damageMult", "manaMult", "level", "socket", "forSkill" })
+            foreach (var field in new[] { "fits", "damageMult", "manaMult", "socket", "forSkill" })
             {
                 if (node.HasField(field))
                     throw node.Field(field).Error("only a support has this field");
@@ -259,16 +259,19 @@ namespace Game.Core.Content.Gems
                 throw node.Field("locked").Error("only a class skill can wait for its mechanic");
             if (locked == node.HasField("effect"))
                 throw node.Error(locked ? "a locked skill has no effect yet" : "a skill needs an effect");
+            if (node.HasField("weapon") == node.HasField("level"))
+                throw node.Error(node.HasField("weapon") ? "a class skill opens by its tier, it has no level" : "a common skill needs the hero level it opens at");
+            var level = node.HasField("level") ? node.Field("level").AsInt(1, 1000) : 1;
             var skill = ReadSkill(node, locked);
             if (!locked && (skill.Effect is AuraEffect) != (type == SkillType.Aura))
                 throw node.Field("kind").Error(type == SkillType.Aura ? "an aura needs an aura effect" : "a skill with an aura effect has kind aura");
             var overrides = new List<ContentNode?>();
             var branches = ReadBranches(node, skill.DurationSeconds, overrides);
             if (branches.Count == 0)
-                return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, ascendancy: ascendancy, locked: locked, type: type);
+                return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, ascendancy: ascendancy, locked: locked, type: type, unlockLevel: level);
             var (variants, damage) = BuildVariants(node, skill, branches, overrides);
             return new GemDef(id, GemKind.Skill, color, nameRu, nameEn, tags, skill: skill, ascendancy: ascendancy, locked: locked,
-                type: type, branches: branches, variants: variants, branchDamage: damage);
+                type: type, branches: branches, variants: variants, branchDamage: damage, unlockLevel: level);
         }
 
         private static (SkillDef[] Variants, double[] Damage) BuildVariants(ContentNode node, SkillDef skill, IReadOnlyList<SkillBranchTier> tiers, List<ContentNode?> overrides)

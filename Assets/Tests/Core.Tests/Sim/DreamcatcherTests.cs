@@ -53,6 +53,16 @@ namespace Game.Core.Tests.Sim
             return damage;
         }
 
+        private static double Lifetime(GameLoop loop, Game.Core.Content.Gems.GemDef gem)
+        {
+            var levels = TestWorld.Data.Gems.Levels;
+            var progress = loop.State.ProgressOf(gem);
+            var total = progress.Experience;
+            for (var level = 1; level < progress.Level; level++)
+                total += levels.ToNext(level);
+            return total;
+        }
+
         private static void Hit(GameLoop loop, FakeInputSource input)
         {
             input.PressKeys(1);
@@ -137,13 +147,15 @@ namespace Game.Core.Tests.Sim
         {
             var (loop, input) = Hero(Flat(DreamcatcherStats.NetPower, 0.5), Flat(DreamcatcherStats.NetTrophy, 1), Flat(DreamcatcherStats.NetReturn, 1));
             Cast(loop, "dreamcatcher_path_1");
-            var gems = loop.State.OwnedGems.Count;
+            var skill = TestWorld.Data.Gems["through_stride"];
+            loop.Skills.Equip(skill, role: SkillSlotRole.Auto);
+            var experience = Lifetime(loop, skill);
 
             Kill(loop, input, Kind(0));
             loop.Drops.Flush();
 
             Assert.That(loop.State.Dreamcatcher.Trophies, Is.EqualTo(1));
-            Assert.That(loop.State.OwnedGems.Count, Is.GreaterThan(gems));
+            Assert.That(Lifetime(loop, skill) - experience, Is.GreaterThanOrEqualTo(TestWorld.Data.Gems.Levels.ExperiencePerTrophy));
             Assert.That(loop.State.Dreamcatcher.Catches, Is.GreaterThanOrEqualTo(1));
             Assert.That(loop.State.Dreamcatcher.Nets, Is.GreaterThanOrEqualTo(1));
         }
@@ -264,13 +276,15 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.EnemySpirit, Is.True);
             Assert.That(loop.State.EnemyMaxHp.ToDouble(), Is.EqualTo(100 * Rules.SpiritHp).Within(1e-6));
 
-            var gems = loop.State.OwnedGems.Count;
+            var skill = TestWorld.Data.Gems["through_stride"];
+            loop.Skills.Equip(skill, role: SkillSlotRole.Auto);
+            var experience = Lifetime(loop, skill);
             var shards = loop.State.Drops.Shards;
             loop.State.ScaleEnemyHp(1e-12);
             Hit(loop, input);
             loop.Drops.Flush();
             Assert.That(loop.State.Dreamcatcher.SpiritKills, Is.EqualTo(1));
-            Assert.That(loop.State.OwnedGems.Count - gems, Is.EqualTo(Rules.SpiritGems));
+            Assert.That(Lifetime(loop, skill) - experience, Is.GreaterThanOrEqualTo(Rules.SpiritTrophies * TestWorld.Data.Gems.Levels.ExperiencePerTrophy));
             Assert.That(loop.State.Drops.Shards - shards, Is.EqualTo(Rules.SpiritShards));
         }
 

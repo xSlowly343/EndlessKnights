@@ -92,11 +92,11 @@ namespace Game.Core.Tests.Build
         [Test]
         public void TheFirstAuraSlotIsOpenFromTheStart()
         {
-            var loop = WithGemsAt(1, "march", "golden_fever");
+            var loop = WithGemsAt(24, "mark", "weak_spot");
 
-            Assert.That(loop.Book.Equip(Gem("march")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.Equip(Gem("mark")), Is.EqualTo(BookResult.Done));
             Assert.That(loop.State.Skills[0].Role, Is.EqualTo(SkillSlotRole.Aura));
-            Assert.That(loop.Book.Equip(Gem("golden_fever")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.Book.Equip(Gem("weak_spot")), Is.EqualTo(BookResult.Done));
             Assert.That(loop.State.Skills[1].Role, Is.EqualTo(SkillSlotRole.Left));
         }
 

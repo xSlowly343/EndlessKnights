@@ -36,11 +36,12 @@ namespace Game.Core.Sim
         public void Tick()
         {
             GrantCasts();
+            GrantTrophies();
             var kills = _state.Kills - _seenKills;
             _seenKills = _state.Kills;
             if (kills <= 0)
                 return;
-            var amount = kills * _levels.ExperiencePerKill * System.Math.Max(0, _hero.Value(CombatStats.GemExperience, 1));
+            var amount = kills * _levels.ExperiencePerKill * GemMultiplier;
             if (amount <= 0)
                 return;
             GemDef? lowest = null;
@@ -53,7 +54,7 @@ namespace Game.Core.Sim
                 for (var i = 0; i < slot.Supports.Length; i++)
                 {
                     if (slot.Supports[i] != null)
-                        Note(slot.Supports[i]!, gained, ref lowest, ref lowestGained);
+                        Note(slot.Supports[i]!, gained * SupportMultiplier, ref lowest, ref lowestGained);
                 }
             }
             var bonus = _hero.Value(CombatStats.LowestGemExperience, 0);
@@ -71,11 +72,35 @@ namespace Game.Core.Sim
             Grant(gem, gained);
         }
 
+        private double GemMultiplier => System.Math.Max(0, _hero.Value(CombatStats.GemExperience, 1));
+
+        private double SupportMultiplier => System.Math.Max(0, _hero.Value(CombatStats.SupportExperience, 1));
+
+        private void GrantTrophies()
+        {
+            var trophies = _state.PendingTrophies;
+            if (trophies <= 0)
+                return;
+            _state.PendingTrophies = 0;
+            var amount = trophies * _levels.ExperiencePerTrophy * GemMultiplier;
+            for (var index = 0; index < _state.Skills.Count; index++)
+            {
+                var slot = _state.Skills[index];
+                var gained = amount * SupportEffects.ExperienceMultiplier(slot, _state);
+                Grant(slot.Skill, gained);
+                for (var i = 0; i < slot.Supports.Length; i++)
+                {
+                    if (slot.Supports[i] != null)
+                        Grant(slot.Supports[i]!, gained * SupportMultiplier);
+                }
+            }
+        }
+
         private void GrantCasts()
         {
             if (_levels.ExperiencePerCast <= 0)
                 return;
-            var amount = _levels.ExperiencePerCast * System.Math.Max(0, _hero.Value(CombatStats.GemExperience, 1));
+            var amount = _levels.ExperiencePerCast * GemMultiplier;
             for (var index = 0; index < _state.Skills.Count; index++)
             {
                 var slot = _state.Skills[index];

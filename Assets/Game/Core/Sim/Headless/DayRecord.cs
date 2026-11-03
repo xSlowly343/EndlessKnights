@@ -5,7 +5,7 @@ namespace Game.Core.Sim.Headless
 {
     public readonly struct DayRecord
     {
-        public const string CsvHeader = "day,stage,highest_stage,record_stage,hero_level,tree_points_spent,common_trees,subclass,subclass_points,prestiges,artifacts,artifact_levels,echo_earned,gold_earned_today,items_today,daily_items_today,gems_owned,shards,shards_found,uncut_found";
+        public const string CsvHeader = "day,stage,highest_stage,record_stage,hero_level,tree_points_spent,common_trees,subclass,subclass_points,prestiges,artifacts,artifact_levels,echo_earned,gold_earned_today,items_today,daily_items_today,gems_owned,shards,shards_found";
 
         public readonly int Day;
         public readonly long Stage;
@@ -26,11 +26,10 @@ namespace Game.Core.Sim.Headless
         public readonly int GemsOwned;
         public readonly long Shards;
         public readonly long ShardsFound;
-        public readonly long UncutFound;
 
         public DayRecord(int day, long stage, long highestStage, long recordStage, int heroLevel, int treePointsSpent, string commonTrees, string subclass, int subclassPoints,
             int prestiges, int artifacts, int artifactLevels, BigNumber echoEarned, BigNumber goldToday,
-            long itemsToday, int dailyItemsToday, int gemsOwned, long shards, long shardsFound, long uncutFound)
+            long itemsToday, int dailyItemsToday, int gemsOwned, long shards, long shardsFound)
         {
             Day = day;
             Stage = stage;
@@ -51,7 +50,6 @@ namespace Game.Core.Sim.Headless
             GemsOwned = gemsOwned;
             Shards = shards;
             ShardsFound = shardsFound;
-            UncutFound = uncutFound;
         }
 
         public string ToCsv() => string.Join(",",
@@ -73,7 +71,6 @@ namespace Game.Core.Sim.Headless
             DailyItemsToday.ToString(CultureInfo.InvariantCulture),
             GemsOwned.ToString(CultureInfo.InvariantCulture),
             Shards.ToString(CultureInfo.InvariantCulture),
-            ShardsFound.ToString(CultureInfo.InvariantCulture),
-            UncutFound.ToString(CultureInfo.InvariantCulture));
+            ShardsFound.ToString(CultureInfo.InvariantCulture));
     }
 }

@@ -9,7 +9,7 @@
     {"id": "crystal_wand", "class": "shardcaller", "color": "green", "name": {"ru": "Кристальный жезл", "en": "Crystal Wand"}, "innate": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.15}]},
     {"id": "hourglass_sickle", "class": "sandwalker", "color": "any", "name": {"ru": "Серп песочных часов", "en": "Hourglass Sickle"}, "innate": [{"stat": "resourceGain", "kind": "increased", "value": 0.05}]},
     {"id": "enchanted_lute", "class": "minstrel", "color": "red", "name": {"ru": "Заколдованная лютня", "en": "Enchanted Lute"}, "innate": [{"stat": "auraDuration", "kind": "increased", "value": 0.2}]},
-    {"id": "dream_hoop", "class": "dreamcatcher", "color": "green", "name": {"ru": "Обруч-ловец", "en": "Dream Hoop"}, "innate": [{"stat": "gemDrop", "kind": "increased", "value": 0.1}]},
+    {"id": "dream_hoop", "class": "dreamcatcher", "color": "green", "name": {"ru": "Обруч-ловец", "en": "Dream Hoop"}, "innate": [{"stat": "gemExperience", "kind": "increased", "value": 0.1}]},
     {"id": "lantern_staff", "class": "lanternbearer", "color": "red", "name": {"ru": "Посох-фонарь", "en": "Lantern Staff"}, "innate": [{"stat": "auraReserve", "kind": "flat", "value": -5}]},
     {"id": "whisperer_doll", "class": "whisperer", "color": "blue", "name": {"ru": "Кукла на нитях", "en": "String Doll"}, "innate": [{"stat": "curseSeconds", "kind": "flat", "value": 2}]},
     {"id": "pocket_watch", "class": "clockwright", "color": "blue", "name": {"ru": "Карманные часы", "en": "Pocket Watch"}, "innate": [{"stat": "skillCooldown", "kind": "increased", "value": -0.08}]},

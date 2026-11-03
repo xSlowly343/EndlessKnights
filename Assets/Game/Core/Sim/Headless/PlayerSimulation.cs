@@ -104,7 +104,7 @@ namespace Game.Core.Sim.Headless
             var ascendancy = state.Ascendancy;
             return new DayRecord(day, state.Stage, state.HighestStage, state.RecordStage, state.HeroLevel, state.TreePointsSpent, CommonTrees(state),
                 ascendancy.Subclass ?? "-", ascendancy.Allocated.Count, state.Prestiges, state.Artifacts.Count, levels, state.EchoEarned, goldToday,
-                itemsToday, state.Drops.DailyItems, state.OwnedGems.Count, state.Drops.Shards, state.Drops.ShardsFound, state.Drops.UncutFound);
+                itemsToday, state.Drops.DailyItems, state.OwnedGems.Count, state.Drops.Shards, state.Drops.ShardsFound);
         }
     }
 }

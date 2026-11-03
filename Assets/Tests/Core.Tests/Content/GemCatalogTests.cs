@@ -110,13 +110,13 @@ namespace Game.Core.Tests.Content
         private static (double Cost, double Cooldown, double Duration) Numbers(SkillDef skill) =>
             (skill.ResourceCost, skill.CooldownSeconds, skill.DurationSeconds);
 
-        [TestCase("{ \"id\": \"lull\", \"kind\": \"active\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"strike\", \"multiplier\": 1 } }", "gems[21].id: gem id 'lull' is used twice")]
+        [TestCase("{ \"id\": \"lull\", \"level\": 1, \"kind\": \"active\", \"color\": \"white\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"strike\", \"multiplier\": 1 } }", "gems[21].id: gem id 'lull' is used twice")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"spell\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'spell'")]
-        [TestCase("{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"pink\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].color: unknown value 'pink'")]
-        [TestCase("{ \"id\": \"x\", \"kind\": \"aura\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds or reserve")]
-        [TestCase("{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"keyRepeat\", \"every\": 3, \"multiplier\": 2 } }", "gems[0]: a keyRepeat skill needs durationSeconds")]
-        [TestCase("{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"strike\", \"multiplier\": 1 }, \"native\": { \"holdDecaySeconds\": 1 } }", "gems[0].native: a native trait needs a weapon")]
-        [TestCase("{ \"id\": \"x\", \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"fireball\" } }", "gems[0].effect.type: unknown skill effect 'fireball'")]
+        [TestCase("{ \"id\": \"x\", \"level\": 1, \"kind\": \"active\", \"color\": \"pink\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].color: unknown value 'pink'")]
+        [TestCase("{ \"id\": \"x\", \"level\": 1, \"kind\": \"aura\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"aura\", \"modifiers\": [] } }", "gems[0]: an aura needs durationSeconds or reserve")]
+        [TestCase("{ \"id\": \"x\", \"level\": 1, \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"keyRepeat\", \"every\": 3, \"multiplier\": 2 } }", "gems[0]: a keyRepeat skill needs durationSeconds")]
+        [TestCase("{ \"id\": \"x\", \"level\": 1, \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"strike\", \"multiplier\": 1 }, \"native\": { \"holdDecaySeconds\": 1 } }", "gems[0].native: a native trait needs a weapon")]
+        [TestCase("{ \"id\": \"x\", \"level\": 1, \"kind\": \"active\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" }, \"cost\": {}, \"cooldownSeconds\": 1, \"effect\": { \"type\": \"fireball\" } }", "gems[0].effect.type: unknown skill effect 'fireball'")]
         [TestCase("{ \"id\": \"x\", \"kind\": \"trigger\", \"color\": \"red\", \"name\": { \"ru\": \"x\", \"en\": \"x\" } }", "gems[0].kind: unknown value 'trigger'")]
         public void BrokenGemsAreReportedByPath(string gem, string message)
         {

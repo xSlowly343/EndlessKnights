@@ -127,7 +127,7 @@ namespace Game.Presentation.Ui
                 _filters[i].Back.color = active ? ActivePill : Color.clear;
                 _filterIcons[i].color = active ? _theme.Text : _theme.TextDim;
             }
-            GemBag.Fill(book, state, _filter, _bagGems);
+            GemBag.Fill(book, state, _loop.Data.Gems.All, _filter, _bagGems);
             for (var i = 0; i < _bag.Count; i++)
                 _bag[i].Show(i < _bagGems.Count ? _bagGems[i] : null, _theme);
             Arrange();

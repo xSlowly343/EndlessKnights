@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Game.Core.Content.Gems;
 using Game.Core.Mail;
 using Game.Core.Text;
 
@@ -32,7 +31,6 @@ namespace Game.Core.Ui
         {
             MailLetter.RiftKind => "mail.rift.title",
             MailLetter.MentorKind => "mail.mentor.title",
-            MailLetter.GiftKind => "mail.gift.title",
             MailLetter.RiftDepthKind => "mail.riftDepth.title",
             _ => "mail.title"
         });
@@ -41,20 +39,15 @@ namespace Game.Core.Ui
         {
             MailLetter.RiftKind => Texts.Format("mail.rift.body", letter.Place, letter.Of, letter.Depth, PartyCardText.Title(letter.Title)),
             MailLetter.MentorKind => Texts.Format("mail.mentor.body", letter.Depth),
-            MailLetter.GiftKind => Texts.Format("mail.gift.body", letter.Title),
             MailLetter.RiftDepthKind => Texts.Format("mail.riftDepth.body", letter.Depth, PartyCardText.Title(letter.Title)),
             _ => string.Empty
         };
 
-        public static string Reward(MailLetter letter, GemCatalog? gems = null)
+        public static string Reward(MailLetter letter)
         {
             var parts = new List<string>();
-            if ((letter.Kind == MailLetter.GiftKind || letter.Kind == MailLetter.RiftDepthKind) && letter.Gem.Length > 0)
-                parts.Add(Texts.Format("mail.gift.gem", gems != null && gems.TryGet(letter.Gem, out var gem) ? BookTexts.Name(gem) : letter.Gem));
             if (letter.Reward.Shards > 0)
                 parts.Add(Texts.Format("rift.reward.shards", letter.Reward.Shards));
-            if (letter.Reward.UncutGems > 0)
-                parts.Add(Texts.Format("rift.reward.uncut", letter.Reward.UncutGems));
             if (letter.Reward.Ingots > 0)
                 parts.Add(Texts.Format("rift.reward.ingots", letter.Reward.Ingots));
             if (letter.Reward.Friendship > 0)
@@ -64,13 +57,13 @@ namespace Game.Core.Ui
 
         public static string Arrived(MailLetter letter) => Texts.Format("mail.arrived", Title(letter));
 
-        public static string Taken(MailLetter letter, GemCatalog? gems = null) => Texts.Format("mail.taken", Reward(letter, gems));
+        public static string Taken(MailLetter letter) => Texts.Format("mail.taken", Reward(letter));
 
-        public static IReadOnlyList<MailRow> Rows(IReadOnlyList<MailLetter> letters, GemCatalog? gems = null)
+        public static IReadOnlyList<MailRow> Rows(IReadOnlyList<MailLetter> letters)
         {
             var rows = new List<MailRow>(letters.Count);
             foreach (var letter in letters)
-                rows.Add(new MailRow(letter.Id, Title(letter), Body(letter), Reward(letter, gems), letter.Claimed));
+                rows.Add(new MailRow(letter.Id, Title(letter), Body(letter), Reward(letter), letter.Claimed));
             return rows;
         }
     }

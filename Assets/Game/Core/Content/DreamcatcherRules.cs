@@ -23,7 +23,7 @@ namespace Game.Core.Content
         public int BaitPerCast { get; private set; } = 5;
         public double SpiritHp { get; private set; } = 3;
         public double SpiritHpMax { get; private set; } = 20;
-        public int SpiritGems { get; private set; } = 1;
+        public int SpiritTrophies { get; private set; } = 1;
         public long SpiritShards { get; private set; } = 2;
         public double SpiritChest { get; private set; } = 1;
         public double TwinChance { get; private set; } = 0.25;
@@ -58,7 +58,7 @@ namespace Game.Core.Content
                 BaitPerCast = bait.Field("perCast").AsInt(0, 10_000),
                 SpiritHp = bait.Field("spiritHp").AsNumber(1, 100),
                 SpiritHpMax = bait.Field("spiritHpMax").AsNumber(1, 100),
-                SpiritGems = bait.Field("gems").AsInt(0, 100),
+                SpiritTrophies = bait.Field("trophies").AsInt(0, 100),
                 SpiritShards = bait.Field("shards").AsInt(0, 100_000),
                 SpiritChest = bait.Field("chest").AsNumber(0, 100),
                 TwinChance = bait.Field("twinChance").AsNumber(0, 1),

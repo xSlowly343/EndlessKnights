@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Game.Core.Content;
-using Game.Core.Content.Gems;
 using Game.Core.Content.Items;
 using Game.Core.Content.Weapons;
 using Game.Core.Math;
@@ -21,7 +20,6 @@ namespace Game.Core.Sim
         private readonly WeaponSystem _weapons;
         private readonly GearSystem _gear;
         private readonly double[] _rarityWeights = new double[DropRules.RarityCount];
-        private readonly List<GemDef>[] _gemPools = { new List<GemDef>(), new List<GemDef>() };
         private readonly List<UniqueWeaponDef> _uniqueWeapons = new List<UniqueWeaponDef>();
         private readonly List<WeaponBase> _bases = new List<WeaponBase>();
         private readonly PendingDrop[] _pending = new PendingDrop[PendingCapacity];
@@ -30,14 +28,14 @@ namespace Game.Core.Sim
         private ItemCatalog _items = null!;
         private StageTable _stages = null!;
 
-        public DropSystem(DropRules rules, StageTable stages, GemCatalog gems, ItemCatalog items, WeaponSystem weapons, GearSystem gear, GameState state, StatSheet hero, EventQueue events)
+        public DropSystem(DropRules rules, StageTable stages, ItemCatalog items, WeaponSystem weapons, GearSystem gear, GameState state, StatSheet hero, EventQueue events)
         {
             _state = state;
             _hero = hero;
             _events = events;
             _weapons = weapons;
             _gear = gear;
-            UseData(rules, stages, gems, items);
+            UseData(rules, stages, items);
         }
 
         public DropRules Rules => _rules;
@@ -46,31 +44,15 @@ namespace Game.Core.Sim
         public int BagCount => _state.Weapons.Bag.Count + _state.Drops.Gear.Count;
         public bool BagFull => BagCount >= _rules.BagSize;
 
-        public void UseData(DropRules rules, StageTable stages, GemCatalog gems, ItemCatalog items)
+        public void UseData(DropRules rules, StageTable stages, ItemCatalog items)
         {
             _rules = rules;
             _items = items;
             _stages = stages;
-            foreach (var pool in _gemPools)
-                pool.Clear();
-            foreach (var gem in gems.All)
-            {
-                if (Drops(gem))
-                    _gemPools[(int)gem.Kind].Add(gem);
-            }
         }
 
-        private static bool Drops(GemDef gem) =>
-            gem.Kind == GemKind.Skill && !gem.Locked && gem.Ascendancy == null && gem.Skill?.Weapon == null;
-
-        public static bool Cuttable(GemDef gem) => Drops(gem);
-
-        public IReadOnlyList<GemDef> PoolOf(GemKind kind) => _gemPools[(int)kind];
-
         public long Shards => _state.Drops.Shards;
-        public int UncutGems => _state.Drops.UncutGems;
         public int DailyShardsLeft => System.Math.Max(0, _rules.Shards.DailyLimit - _state.Drops.DailyShards);
-        public double UncutChance => System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.UncutGemChance, _rules.Shards.UncutShare)));
 
         public double CraftCost(SetDef set) => _items.CraftCost(set, _gear.CollectedPieces(set), _gear.Collected(set));
 
@@ -198,18 +180,11 @@ namespace Game.Core.Sim
 
         public void GiveShards(long shards) => AddShards(shards);
 
-        public void GiveTrophy()
-        {
-            var pool = _gemPools[(int)GemKind.Skill];
-            if (pool.Count == 0)
-                return;
-            Push(PendingDrop.OfGem(PickGem(pool)));
-        }
+        public void GiveTrophy() => _state.PendingTrophies++;
 
-        public void GiveSpiritLoot(int gems, long shards)
+        public void GiveSpiritLoot(int trophies, long shards)
         {
-            for (var i = 0; i < gems; i++)
-                GiveTrophy();
+            _state.PendingTrophies += System.Math.Max(0, trophies);
             AddShards(shards);
         }
 
@@ -243,33 +218,7 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(source, stage, weapon, item, false, 0)));
         }
 
-        public bool BuyUncut()
-        {
-            if (Unlocks?.IsOpen(Feature.Cutting) == false)
-                return false;
-            var drops = _state.Drops;
-            var cost = _rules.Shards.UncutCost;
-            if (drops.Shards < cost)
-                return false;
-            drops.Shards -= cost;
-            drops.UncutGems++;
-            return true;
-        }
-
         public Unlocks? Unlocks { get; set; }
-
-        public CutResult Cut(GemDef gem)
-        {
-            if (Unlocks?.IsOpen(Feature.Cutting) == false)
-                return CutResult.Locked;
-            if (_state.Drops.UncutGems <= 0)
-                return CutResult.NoUncut;
-            if (!Cuttable(gem))
-                return CutResult.NotCuttable;
-            _state.Drops.UncutGems--;
-            GiveGem(gem);
-            return CutResult.Cut;
-        }
 
         public void SetDay(long day)
         {
@@ -282,26 +231,6 @@ namespace Game.Core.Sim
         }
 
         public int BiomeNumber(long stage) => (int)System.Math.Min(int.MaxValue, (stage - 1) / _stages.BiomeLength + 1);
-
-        public void OnKill(EnemyType type)
-        {
-            var bonus = System.Math.Max(0, _hero.Value(CombatStats.GemDrop, 1));
-            RollGem(type, bonus);
-        }
-
-        private void RollGem(EnemyType type, double bonus)
-        {
-            var kind = GemKind.Skill;
-            var chance = _rules.GemChance(kind).For(type) * bonus;
-            if (chance <= 0 || _gemPools[(int)kind].Count == 0 || !_state.Drops.Rng.Chance(chance))
-                return;
-            if (_state.Drops.Rng.Chance(UncutChance))
-            {
-                GiveUncut();
-                return;
-            }
-            Push(PendingDrop.OfGem(PickGem(_gemPools[(int)kind])));
-        }
 
         public void OnBossDefeated(long stage, EnemyType type, long recordBefore, bool raisesRecord)
         {
@@ -342,9 +271,7 @@ namespace Game.Core.Sim
             {
                 var drop = _pending[i];
                 _pending[i] = default;
-                if (drop.Gem != null)
-                    GiveGem(drop.Gem);
-                else if (drop.IsKey)
+                if (drop.IsKey)
                     DeliverKey(drop);
                 else
                     Deliver(drop);
@@ -638,8 +565,6 @@ namespace Game.Core.Sim
             return weapons.Held == null || rarity > weapons.Held.Rarity;
         }
 
-        private GemDef PickGem(List<GemDef> pool) => pool[_state.Drops.Rng.NextInt(0, pool.Count)];
-
         private void GiveShards(long stage, EnemyType type, long recordBefore)
         {
             var amount = ShardsFor(stage, type);
@@ -673,19 +598,6 @@ namespace Game.Core.Sim
             _state.Drops.Shards += amount;
             _state.Drops.ShardsFound += amount;
             _events.Add(GameEvent.WithAmount(GameEventKind.ShardsGained, _state.Tick, BigNumber.FromDouble(amount), _state.Stage));
-        }
-
-        private void GiveUncut()
-        {
-            _state.Drops.UncutGems++;
-            _state.Drops.UncutFound++;
-            _events.Add(GameEvent.ForStage(GameEventKind.UncutGemDropped, _state.Tick, _state.Stage));
-        }
-
-        private void GiveGem(GemDef gem)
-        {
-            _state.OwnedGems.Add(gem);
-            _events.Add(GameEvent.ForSkill(GameEventKind.GemDropped, _state.Tick, gem));
         }
     }
 }
