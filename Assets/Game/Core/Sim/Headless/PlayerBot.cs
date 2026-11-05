@@ -45,7 +45,7 @@ namespace Game.Core.Sim.Headless
             ChooseSkillBranches();
             _score.UseTrait(ChosenTrait());
             SpendTreePoints();
-            ChooseSubclassAndForks();
+            ChoosePathAndForks();
             PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
             PlaceSlates();
@@ -248,7 +248,7 @@ namespace Game.Core.Sim.Headless
             }
         }
 
-        private void ChooseSubclassAndForks()
+        public void ChoosePathAndForks()
         {
             var catalog = _data.Ascendancy;
             var ascendancy = _loop.State.Ascendancy;

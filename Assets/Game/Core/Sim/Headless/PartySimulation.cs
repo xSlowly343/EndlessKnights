@@ -80,7 +80,11 @@ namespace Game.Core.Sim.Headless
                 var bot = new PlayerBot(_data, loops[i], double.PositiveInfinity, inParty: true);
                 bot.EquipStartingSkills();
                 if (HeroLevel > 0)
+                {
                     bot.SpendTreePoints();
+                    OpenPath(loops[i]);
+                    bot.ChoosePathAndForks();
+                }
                 uptime[i] = new SynergyUptime(synergy);
             }
 
@@ -119,6 +123,13 @@ namespace Game.Core.Sim.Headless
                 });
             }
             return new PartySimulationResult(seconds, host.Kills, members) { Samples = samples };
+        }
+
+        private void OpenPath(GameLoop loop)
+        {
+            var activities = _data.Ascendancy.Activities;
+            for (var i = 0; i < activities.Count && i < Content.Tree.TraitDef.MaxLevel; i++)
+                loop.CompleteActivity(activities[i].Id);
         }
 
         private static PartySample Sample(double seconds, PartyHost host, PartyClient[] clients)
