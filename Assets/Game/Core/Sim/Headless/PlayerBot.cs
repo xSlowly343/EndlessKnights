@@ -17,11 +17,15 @@ namespace Game.Core.Sim.Headless
         private readonly double _stuckSecondsBeforePrestige;
         private const int BossFailsBeforePrestige = 1;
         private const double SlowStageSeconds = 60;
+        private const double CreepWindowSeconds = 1800;
+        private const double CreepShare = 0.01;
         private readonly HeroClass _heroClass;
         private readonly BranchTrial? _branchTrial;
         private readonly string? _path;
         private readonly BotGear? _gear;
         private double _stuckSeconds;
+        private double _creepSeconds;
+        private long _creepFromStage;
         private double _stageSeconds;
         private long _stage;
 
@@ -384,7 +388,7 @@ namespace Game.Core.Sim.Headless
             }
             var bossFailed = state.BossFailsInARow >= BossFailsBeforePrestige;
             var slowStage = _stageSeconds > SlowStageSeconds;
-            if (!bossFailed && !slowStage && _stuckSeconds < _stuckSecondsBeforePrestige)
+            if (!bossFailed && !slowStage && _stuckSeconds < _stuckSecondsBeforePrestige && !Creeping(seconds))
                 return;
             if (!_loop.Prestige.Available || _loop.Prestige.EchoGain.Sign <= 0)
                 return;
@@ -392,7 +396,21 @@ namespace Game.Core.Sim.Headless
             {
                 _stuckSeconds = 0;
                 _stageSeconds = 0;
+                _creepSeconds = 0;
+                _creepFromStage = _loop.State.Stage;
             }
+        }
+
+        private bool Creeping(double seconds)
+        {
+            _creepSeconds += seconds;
+            if (_creepSeconds < CreepWindowSeconds)
+                return false;
+            var stage = _loop.State.Stage;
+            var creeping = stage - _creepFromStage < stage * CreepShare;
+            _creepSeconds = 0;
+            _creepFromStage = stage;
+            return creeping;
         }
 
         private void SpendEcho()
