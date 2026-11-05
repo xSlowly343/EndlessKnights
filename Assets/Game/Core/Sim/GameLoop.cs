@@ -54,6 +54,7 @@ namespace Game.Core.Sim
         private readonly AchievementSystem _achievements;
         private readonly BestiarySystem _bestiary;
         private readonly CosmeticSystem _cosmetics;
+        private readonly SeasonPassSystem _seasonPass;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -101,6 +102,7 @@ namespace Game.Core.Sim
             _achievements = new AchievementSystem(data.Achievements, state, Events);
             _bestiary = new BestiarySystem(data.Bestiary, state, Events);
             _cosmetics = new CosmeticSystem(data.Cosmetics, state);
+            _seasonPass = new SeasonPassSystem(data.SeasonPass, state);
             _stage.Drops = _drops;
             _reroll = new RerollSystem(data.Drops, state, _gear, _weapons);
             _combat.Dreamcatcher.UseLoot(_drops, _loot);
@@ -198,6 +200,7 @@ namespace Game.Core.Sim
         public AchievementSystem Achievements => _achievements;
         public BestiarySystem Bestiary => _bestiary;
         public CosmeticSystem Cosmetics => _cosmetics;
+        public SeasonPassSystem SeasonPass => _seasonPass;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -770,6 +773,7 @@ namespace Game.Core.Sim
             _achievements.UseCatalog(data.Achievements);
             _bestiary.UseCatalog(data.Bestiary);
             _cosmetics.UseCatalog(data.Cosmetics);
+            _seasonPass.UseRules(data.SeasonPass);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);
@@ -874,6 +878,7 @@ namespace Game.Core.Sim
             _gemExperience.Tick();
             _raid.Tick(firstEvent);
             _quests.Tick(firstEvent);
+            _seasonPass.Tick();
             _bestiary.Tick(firstEvent);
             _achievements.Tick();
             _dps.Tick(_combat.LastTickDamage);

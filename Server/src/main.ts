@@ -76,6 +76,10 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("clan_cosmetics", clanCosmeticsRpc);
     initializer.registerRpc("clan_cosmetic_buy", clanCosmeticBuyRpc);
     initializer.registerRpc("clan_cosmetic_set", clanCosmeticSetRpc);
+    initializer.registerRpc("season_pass_mine", seasonPassMineRpc);
+    initializer.registerRpc("season_pass_add", seasonPassAddRpc);
+    initializer.registerRpc("season_pass_premium", seasonPassPremiumRpc);
+    initializer.registerRpc("crystal_change", crystalChangeRpc);
     initializer.registerBeforeCreateGroup(partyBeforeCreateGroup);
     initializer.registerBeforeUpdateGroup(partyBeforeGroupChange);
     initializer.registerBeforeDeleteGroup(partyBeforeGroupChange);

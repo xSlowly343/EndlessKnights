@@ -21,18 +21,20 @@ namespace Game.Core.Content
 
     public readonly struct QuestReward
     {
-        public QuestReward(long shards, double dust, long ingots, long friendship = 0)
+        public QuestReward(long shards, double dust, long ingots, long friendship = 0, long passPoints = 0)
         {
             Shards = shards;
             Dust = dust;
             Ingots = ingots;
             Friendship = friendship;
+            PassPoints = passPoints;
         }
 
         public long Shards { get; }
         public double Dust { get; }
         public long Ingots { get; }
         public long Friendship { get; }
+        public long PassPoints { get; }
     }
 
     public sealed class QuestKindRule
@@ -194,6 +196,7 @@ namespace Game.Core.Content
             node.HasField("shards") ? node.Field("shards").AsLong(0) : 0,
             node.HasField("dust") ? node.Field("dust").AsNumber(0, 1e9) : 0,
             node.HasField("ingots") ? node.Field("ingots").AsLong(0) : 0,
-            node.HasField("friendship") ? node.Field("friendship").AsLong(0) : 0);
+            node.HasField("friendship") ? node.Field("friendship").AsLong(0) : 0,
+            node.HasField("pass") ? node.Field("pass").AsLong(0) : 0);
     }
 }
