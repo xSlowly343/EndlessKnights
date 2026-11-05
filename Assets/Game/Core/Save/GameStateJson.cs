@@ -79,6 +79,7 @@ namespace Game.Core.Save
                 ("bestiary", WriteBestiary(state.Bestiary)),
                 ("cosmetics", WriteCosmetics(state.Cosmetics)),
                 ("seasonPass", WriteSeasonPass(state.SeasonPass)),
+                ("awakening", WriteAwakening(state.Awakening)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -250,6 +251,8 @@ namespace Game.Core.Save
                 ReadBestiary(node.Field("bestiary"), state.Bestiary);
             if (node.HasField("cosmetics"))
                 ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
+            if (node.HasField("awakening"))
+                ReadAwakening(node.Field("awakening"), state.Awakening);
             if (node.HasField("seasonPass"))
                 ReadSeasonPass(node.Field("seasonPass"), state.SeasonPass);
             if (node.HasField("slates") && slates != null)
@@ -482,6 +485,24 @@ namespace Game.Core.Save
                 cosmetics.Owned.Add(item.AsString());
             foreach (var item in node.Field("equipped").Items())
                 cosmetics.Equipped[item.Field("key").AsString()] = item.Field("id").AsString();
+        }
+
+        private static JsonValue WriteAwakening(AwakeningState awakening)
+        {
+            var ids = new List<string>(awakening.Progress.Keys);
+            ids.Sort(System.StringComparer.Ordinal);
+            var progress = new JsonValue[ids.Count];
+            for (var i = 0; i < progress.Length; i++)
+                progress[i] = Object(("id", JsonValue.Of(ids[i])), ("progress", JsonValue.Of(awakening.Progress[ids[i]])));
+            return Object(("enchanted", WriteIdList(awakening.Enchanted)), ("progress", JsonValue.Array(progress)));
+        }
+
+        private static void ReadAwakening(ContentNode node, AwakeningState awakening)
+        {
+            foreach (var item in node.Field("enchanted").Items())
+                awakening.Enchanted.Add(item.AsString());
+            foreach (var item in node.Field("progress").Items())
+                awakening.Progress[item.Field("id").AsString()] = item.Field("progress").AsNumber(0, double.MaxValue);
         }
 
         private static JsonValue WriteSeasonPass(SeasonPassState pass) => Object(

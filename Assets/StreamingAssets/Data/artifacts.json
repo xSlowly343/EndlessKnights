@@ -4,6 +4,7 @@
   "levelCost": { "curve": "exp", "base": 5, "rate": 1.25 },
   "allDamagePerLevel": 0.02,
   "jackpotMultiplier": 10,
+  "awakening": { "slots": 3, "effectPerLevel": 0.1, "maxLevel": 20, "growth": 1.25, "first": { "keys": 20000, "clicks": 3000, "mouseMeters": 300, "kills": 3000, "bosses": 40 } },
   "artifacts": [
     {"id": "typewriter", "name": {"ru": "Печатная машинка", "en": "Typewriter"}, "group": 1, "type": "damage", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Strike"]}]},
     {"id": "wind_compass", "name": {"ru": "Компас ветра", "en": "Wind Compass"}, "group": 1, "type": "damage", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"]}]},
