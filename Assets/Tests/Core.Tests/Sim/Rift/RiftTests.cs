@@ -200,7 +200,7 @@ namespace Game.Core.Tests.Sim.Rift
         }
 
         [Test]
-        public void ModifierIsLiftedByItsMarkAndThatMarkIsFavoured()
+        public void ModifierIsLiftedByItsMark()
         {
             var (loop, index) = LoopInWindowWith("stone_skin");
             var damageInside = loop.Hero.Value(CombatStats.Damage, 1);
@@ -211,10 +211,6 @@ namespace Game.Core.Tests.Sim.Rift
 
             Assert.That(loop.Rift.ModifierActive(index), Is.False);
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.GreaterThan(damageInside));
-            Assert.That(loop.Synergy.FavouredMarks & TestWorld.Data.Synergy.MaskOf(new[] { "curse" }), Is.Not.EqualTo(0));
-
-            loop.Rift.Leave();
-            Assert.That(loop.Synergy.FavouredMarks, Is.EqualTo(0));
         }
 
         [Test]
@@ -250,22 +246,6 @@ namespace Game.Core.Tests.Sim.Rift
             loop.Stages.EnsureEnemy();
             Assert.That(loop.State.FightingBoss, Is.True);
             Assert.That(loop.Stages.ShieldShare, Is.EqualTo(1 / 1.5).Within(1e-6), "the top third of the boss is shield");
-        }
-
-        [Test]
-        public void FavouredMarkBoostsTheResponse()
-        {
-            var loop = TestWorld.Loop();
-            loop.State.Class = HeroClass.Runedancer;
-            var curse = TestWorld.Data.Synergy.MaskOf(new[] { "curse" });
-            loop.Synergy.SetAlly(2, true, HeroClass.Whisperer, curse);
-            loop.Tick();
-            var rage = new StatId("resourceGain");
-            var plain = loop.Hero.Value(rage, 1) - 1;
-
-            loop.Synergy.SetFavoured(curse, Rules.MarkBonus);
-
-            Assert.That(loop.Hero.Value(rage, 1) - 1, Is.EqualTo(plain * (1 + Rules.MarkBonus)).Within(1e-9));
         }
 
         [Test]

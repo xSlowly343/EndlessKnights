@@ -75,37 +75,6 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CompanionLinesAddDamagePerMarkRaiseTheLimitAndCountOwnBlind()
-        {
-            var (loop, _) = Hero(HeroClass.Sandwalker,
-                new Modifier(CombatStats.CompanionPerMark, ModifierKind.Flat, 0.01),
-                new Modifier(CombatStats.CompanionLimit, ModifierKind.Flat, 1),
-                new Modifier(CombatStats.CompanionOwnMark, ModifierKind.Flat, 1));
-            loop.Synergy.SetAlly(0, true, HeroClass.Whisperer, Mark("curse") | Mark("time") | Mark("aura"));
-            loop.Synergy.SetAlly(1, true, HeroClass.Alchemist, Mark("poison") | Mark("fire"));
-            loop.Tick();
-            Assert.That(loop.Synergy.PerMarkCount, Is.EqualTo(5));
-
-            Dune(loop);
-            loop.Tick();
-
-            Assert.That(loop.Synergy.PerMarkCount, Is.EqualTo(6));
-            Assert.That(loop.State.CompanionMarks, Is.EqualTo(6));
-        }
-
-        [Test]
-        public void WithoutTheTreeTheCompanionStopsAtFiveMarksAndIgnoresOwnBlind()
-        {
-            var (loop, _) = Hero(HeroClass.Sandwalker);
-            loop.Synergy.SetAlly(0, true, HeroClass.Whisperer, Mark("curse") | Mark("time") | Mark("aura"));
-            loop.Synergy.SetAlly(1, true, HeroClass.Alchemist, Mark("poison") | Mark("fire") | Mark("summon"));
-            Dune(loop);
-            loop.Tick();
-
-            Assert.That(loop.Synergy.PerMarkCount, Is.EqualTo(5));
-        }
-
-        [Test]
         public void OtherClassesThrowNoSand()
         {
             var (loop, input) = Hero(HeroClass.Runedancer);

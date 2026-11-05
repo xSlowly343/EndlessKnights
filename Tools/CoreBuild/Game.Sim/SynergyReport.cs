@@ -33,7 +33,7 @@ namespace Game.Sim
             var seconds = options.SynergyHours * 3600;
             using var file = options.OutFile == null ? null : new StreamWriter(options.OutFile);
             var output = file ?? Console.Out;
-            output.WriteLine("scenario,classes,uplift,damage_on,damage_off,stage_on,stage_off,reactions,constellations,responses");
+            output.WriteLine("scenario,classes,uplift,damage_on,damage_off,stage_on,stage_off,constellations");
 
             var parties = new List<(string Name, HeroClass[] Classes)>(Combos);
             var random = new Random((int)options.Seed);
@@ -51,9 +51,9 @@ namespace Game.Sim
                 var without = Party(data, profile, classes, options, kits, off).Run(seconds);
                 var uplift = Ratio(Damage(on), Damage(without)) - 1;
                 (name.StartsWith("random_", StringComparison.Ordinal) || name.StartsWith("roster_", StringComparison.Ordinal) ? randomUplift : comboUplift).Add(uplift);
-                output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
+                output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6},{7}",
                     name, Names(classes), Percent(uplift), StageRecord.Number(Damage(on)), StageRecord.Number(Damage(without)), Stage(on), Stage(without),
-                    Reactions(on), Constellations(on), Responses(on)));
+                    Constellations(on)));
             }
             output.WriteLine(string.Format(CultureInfo.InvariantCulture, "summary,combos {0},random {1},difference {2}",
                 Percent(Average(comboUplift)), Percent(Average(randomUplift)), Percent(Average(comboUplift) - Average(randomUplift))));
@@ -63,11 +63,11 @@ namespace Game.Sim
 
             if (options.SynergyDrops)
             {
-                output.WriteLine("drop,reaction,combo_uplift_without");
+                output.WriteLine("drop,constellation,combo_uplift_without");
                 var rules = data.Synergy;
-                foreach (var reaction in rules.Reactions)
+                foreach (var constellation in rules.Constellations)
                 {
-                    var without = SynergyRules.Load(Strip(synergyJson, reaction.Id));
+                    var without = SynergyRules.Load(Strip(synergyJson, constellation.Id));
                     var combo = new List<double>();
                     foreach (var (_, classes) in Combos)
                     {
@@ -75,7 +75,7 @@ namespace Game.Sim
                         var none = Party(data, profile, classes, options, kits, off).Run(seconds);
                         combo.Add(Ratio(Damage(on), Damage(none)) - 1);
                     }
-                    output.WriteLine(string.Format(CultureInfo.InvariantCulture, "drop,{0},{1}", reaction.Id, Percent(Average(combo))));
+                    output.WriteLine(string.Format(CultureInfo.InvariantCulture, "drop,{0},{1}", constellation.Id, Percent(Average(combo))));
                 }
             }
             watch.Stop();
@@ -87,21 +87,14 @@ namespace Game.Sim
             IReadOnlyDictionary<HeroClass, IReadOnlyList<GemDef>> kits, SynergyRules? synergy) =>
             new PartySimulation(data, profile, classes, options.Seed, options.Loss, options.DamageMultiplier) { Kits = kits, Synergy = synergy, HeroLevel = options.HeroLevel };
 
-        private static string Strip(string json, string? reaction)
+        private static string Strip(string json, string? constellation)
         {
             var root = JsonNode.Parse(json)!.AsObject();
-            if (reaction == null)
+            var constellations = root["constellations"]!.AsArray();
+            for (var i = constellations.Count - 1; i >= 0; i--)
             {
-                root["responses"] = new JsonArray();
-                root["reactions"] = new JsonArray();
-                root["constellations"] = new JsonArray();
-                return root.ToJsonString();
-            }
-            var reactions = root["reactions"]!.AsArray();
-            for (var i = reactions.Count - 1; i >= 0; i--)
-            {
-                if ((string?)reactions[i]!["id"] == reaction)
-                    reactions.RemoveAt(i);
+                if (constellation == null || (string?)constellations[i]!["id"] == constellation)
+                    constellations.RemoveAt(i);
             }
             return root.ToJsonString();
         }
@@ -173,21 +166,6 @@ namespace Game.Sim
             return string.Join("+", names);
         }
 
-        private static string Reactions(PartySimulationResult result)
-        {
-            var uptime = result.Members[0].Synergy!;
-            var parts = new List<string>();
-            for (var i = 0; i < uptime.Rules.Reactions.Count; i++)
-            {
-                var best = 0.0;
-                foreach (var member in result.Members)
-                    best = System.Math.Max(best, member.Synergy!.Reaction(i));
-                if (best > 0)
-                    parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1:0%}", uptime.Rules.Reactions[i].Id, best));
-            }
-            return parts.Count == 0 ? "-" : string.Join(" ", parts);
-        }
-
         private static string Constellations(PartySimulationResult result)
         {
             var uptime = result.Members[0].Synergy!;
@@ -196,21 +174,6 @@ namespace Game.Sim
             {
                 if (uptime.Constellation(i) > 0)
                     parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1:0%}", uptime.Rules.Constellations[i].Id, uptime.Constellation(i)));
-            }
-            return parts.Count == 0 ? "-" : string.Join(" ", parts);
-        }
-
-        private static string Responses(PartySimulationResult result)
-        {
-            var parts = new List<string>();
-            foreach (var member in result.Members)
-            {
-                var uptime = member.Synergy!;
-                for (var i = 0; i < uptime.Rules.Responses.Count; i++)
-                {
-                    if (uptime.Response(i) > 0)
-                        parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1:0%}", uptime.Rules.Responses[i].Id, uptime.Response(i)));
-                }
             }
             return parts.Count == 0 ? "-" : string.Join(" ", parts);
         }
@@ -250,21 +213,7 @@ namespace Game.Sim
                 if (!members.Exists(member => member.Synergy!.OwnMark(mark) > 0))
                     marks.Add(rules.Marks[mark]);
             }
-            var responses = new List<string>();
-            for (var i = 0; i < rules.Responses.Count; i++)
-            {
-                if (!members.Exists(member => member.Synergy!.Response(i) > 0))
-                    responses.Add(rules.Responses[i].Id);
-            }
-            var reactions = new List<string>();
-            for (var i = 0; i < rules.Reactions.Count; i++)
-            {
-                if (!members.Exists(member => member.Synergy!.Reaction(i) > 0))
-                    reactions.Add(rules.Reactions[i].Id);
-            }
             output.WriteLine("unseen,marks,{0}", marks.Count == 0 ? "-" : string.Join(" ", marks));
-            output.WriteLine("unseen,responses,{0}", responses.Count == 0 ? "-" : string.Join(" ", responses));
-            output.WriteLine("unseen,reactions,{0}", reactions.Count == 0 ? "-" : string.Join(" ", reactions));
         }
 
         private static string Percent(double share) => (share * 100).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + "%";

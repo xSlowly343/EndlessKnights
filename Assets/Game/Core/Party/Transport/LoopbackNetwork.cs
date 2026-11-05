@@ -5,6 +5,8 @@ namespace Game.Core.Party.Transport
 {
     public sealed class LoopbackNetwork
     {
+        private const double OrderGapMs = 0.001;
+
         private readonly Rng _rng;
         private readonly LoopbackPacket[] _packets;
         private readonly byte[][] _payloads;
@@ -70,11 +72,22 @@ namespace Game.Core.Party.Transport
             _packets[slot] = new LoopbackPacket
             {
                 InFlight = true,
-                DeliverAtMs = NowMs + MinLatencyMs + _rng.NextDouble() * (MaxLatencyMs - MinLatencyMs),
+                DeliverAtMs = System.Math.Max(NowMs + MinLatencyMs + _rng.NextDouble() * (MaxLatencyMs - MinLatencyMs), LastDeliveryMs(from, to)),
                 From = from,
                 To = to,
                 Length = length
             };
+        }
+
+        private double LastDeliveryMs(ulong from, ulong to)
+        {
+            var last = 0.0;
+            for (var i = 0; i < _packets.Length; i++)
+            {
+                if (_packets[i].InFlight && _packets[i].From == from && _packets[i].To == to)
+                    last = System.Math.Max(last, _packets[i].DeliverAtMs + OrderGapMs);
+            }
+            return last;
         }
 
         internal bool TryReceive(ulong to, byte[] buffer, out int length, out ulong from)

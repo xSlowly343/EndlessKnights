@@ -12,8 +12,6 @@ namespace Game.Core.Tests.Party
 {
     public class SynergyTests
     {
-        private static readonly StatId RageGain = new StatId("resourceGain");
-
         private static SynergyRules Rules => TestWorld.Data.Synergy;
 
         private static int Mark(string mark) => Rules.MaskOf(new[] { mark });
@@ -23,82 +21,6 @@ namespace Game.Core.Tests.Party
             var loop = TestWorld.Loop();
             loop.State.Class = heroClass;
             return loop;
-        }
-
-        [Test]
-        public void AllyCurseWakesTheVikingResponse()
-        {
-            var loop = Hero(HeroClass.Runedancer);
-            loop.Synergy.SetAlly(2, true, HeroClass.Whisperer, Mark("curse"));
-
-            loop.Tick();
-
-            Assert.That(loop.Hero.Value(RageGain, 1), Is.EqualTo(1.25).Within(1e-9));
-            loop.Synergy.SetAlly(2, true, HeroClass.Whisperer, 0);
-            loop.Tick();
-            Assert.That(loop.Hero.Value(RageGain, 1), Is.EqualTo(1).Within(1e-9));
-        }
-
-        [Test]
-        public void SecondResponseNeedsTheNotable()
-        {
-            var loop = Hero(HeroClass.Runedancer);
-            var threshold = new StatId("crushRageThreshold");
-            loop.Synergy.SetAlly(0, true, HeroClass.Minstrel, Mark("aura"));
-
-            loop.Tick();
-            Assert.That(loop.Hero.Value(threshold, 0), Is.EqualTo(0));
-
-            loop.Hero.Add(new Modifier(Rules.SecondResponseStat, ModifierKind.Flat, 1));
-            loop.Tick();
-            Assert.That(loop.Hero.Value(threshold, 0), Is.EqualTo(-0.1).Within(1e-9));
-        }
-
-        [Test]
-        public void SandwalkerGainsPerDistinctAllyMark()
-        {
-            var loop = Hero(HeroClass.Sandwalker);
-            var before = loop.Hero.Value(CombatStats.Damage, 1);
-            loop.Synergy.SetAlly(0, true, HeroClass.Whisperer, Mark("curse") | Mark("time"));
-            loop.Synergy.SetAlly(1, true, HeroClass.Alchemist, Mark("poison") | Mark("curse"));
-
-            loop.Tick();
-
-            Assert.That(loop.Synergy.PerMarkCount, Is.EqualTo(3));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / before, Is.EqualTo(1.09).Within(1e-9));
-        }
-
-        [Test]
-        public void FireAndPoisonFromTwoPlayersMakeMiasmaWithCooldown()
-        {
-            var loop = Hero(HeroClass.Duelist);
-            var miasma = IndexOfReaction("miasma_burst");
-            loop.Synergy.SetAlly(0, true, HeroClass.Alchemist, Mark("poison"));
-            loop.Synergy.SetAlly(1, true, HeroClass.Dowser, Mark("fire"));
-
-            loop.Tick();
-            Assert.That(loop.Synergy.ReactionActive(miasma), Is.True);
-            Assert.That(loop.Synergy.ReactionMask, Is.EqualTo(1u << miasma), "the mask goes to the host for the chain reaction");
-            Assert.That(loop.Hero.Value(new StatId("miasmaBurstShare"), 0), Is.EqualTo(0.3).Within(1e-9));
-
-            for (var tick = 0; tick < 20; tick++)
-                loop.Tick();
-            Assert.That(loop.Synergy.ReactionActive(miasma), Is.False);
-            Assert.That(loop.Synergy.ReactionCooldownSeconds(miasma), Is.GreaterThan(7));
-            for (var tick = 0; tick < 80; tick++)
-                loop.Tick();
-            Assert.That(loop.Synergy.ReactionActive(miasma), Is.True);
-        }
-
-        [Test]
-        public void OnePlayerWithBothMarksIsNoReaction()
-        {
-            var loop = Hero(HeroClass.Duelist);
-            loop.Synergy.SetAlly(0, true, HeroClass.Ghostcaptain, Mark("poison") | Mark("fire"));
-
-            loop.Tick();
-
-            Assert.That(loop.Synergy.ReactionActive(IndexOfReaction("miasma_burst")), Is.False);
         }
 
         [Test]
@@ -189,22 +111,6 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void ElementsRemoveTheReactionCooldown()
-        {
-            var loop = Hero(HeroClass.Shardcaller);
-            var overload = IndexOfReaction("overload");
-            loop.Synergy.SetAlly(0, true, HeroClass.Alchemist, Mark("poison"));
-            loop.Synergy.SetAlly(1, true, HeroClass.Dowser, Mark("fire") | Mark("lightning"));
-            loop.Synergy.SetAlly(2, true, HeroClass.Shardcaller, Mark("lightning"));
-
-            for (var tick = 0; tick < 35; tick++)
-                loop.Tick();
-
-            Assert.That(loop.Synergy.ConstellationActive(IndexOfConstellation("elements")), Is.True);
-            Assert.That(loop.Synergy.ReactionActive(overload), Is.True);
-        }
-
-        [Test]
         public void PoisonFireAndMinionsAreMarksWhileTheyAreThere()
         {
             var loop = Hero(HeroClass.Ghostcaptain);
@@ -280,9 +186,9 @@ namespace Game.Core.Tests.Party
             Assert.That(System.GC.GetAllocatedBytesForCurrentThread() - before, Is.EqualTo(0));
         }
 
-        [TestCase(@"""mark"": ""curse"", ""modifiers"": [{ ""stat"": ""resourceGain""", @"""mark"": ""moonlight"", ""modifiers"": [{ ""stat"": ""resourceGain""", "unknown mark 'moonlight'")]
+        [TestCase(@"""curse"": 5 }", @"""moonlight"": 5 }", "unknown mark 'moonlight'")]
         [TestCase(@"""runedancer"": ""striker"", ", "", "class 'runedancer' has no role")]
-        [TestCase(@"""marks"": [""fire"", ""poison""]", @"""marks"": [""fire"", ""fire""]", "two different marks")]
+        [TestCase(@"""roles"": [[""summoner""], [""summoner""]]", @"""roles"": [[""summoner""]]", "at least two members")]
         public void BrokenSynergyIsReported(string from, string to, string message)
         {
             var json = TestData.ReadGameDataFile(SynergyRules.FileName).Replace(from, to);
@@ -300,14 +206,6 @@ namespace Game.Core.Tests.Party
             var error = Assert.Throws<ContentException>(() => Rules.RequireGemMarks(gems))!;
 
             Assert.That(error.Message, Does.Contain("unknown mark 'frost'"));
-        }
-
-        private static int IndexOfReaction(string id)
-        {
-            for (var i = 0; i < Rules.Reactions.Count; i++)
-                if (Rules.Reactions[i].Id == id)
-                    return i;
-            throw new System.ArgumentException(id);
         }
 
         private static int IndexOfConstellation(string id)

@@ -96,7 +96,7 @@ namespace Game.Core.Tests.Party
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, relayed))).Append("\" },\n");
             builder.Append("    \"reactionRelay\": { \"slot\": 1, \"reaction\": 4, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 0, Reaction = 4 })))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 1, Reaction = 4 }))).Append("\" },\n");
-            builder.Append("    \"synergy\": { \"reactions\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new SynergyMessage { Reactions = 5 }))).Append("\" },\n");
+            builder.Append("    \"synergy\": { \"constellations\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new SynergyMessage { Constellations = 5 }))).Append("\" },\n");
             var loadout = new PartyLoadoutMessage();
             loadout.Set(0, new LoadoutSkill { GemNetId = 4242, Level = 7, Combo = 13 });
             loadout.Set(PartyLoadoutMessage.PositionOf(Game.Core.Sim.SkillSlotRole.Auto, 1), new LoadoutSkill { GemNetId = 99, Level = 25, Combo = 26 });

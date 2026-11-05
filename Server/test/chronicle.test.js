@@ -219,7 +219,7 @@ test("three different synergies on one enemy make a chain reaction", () => {
   kill();
   assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 3, "three different synergies while one enemy lived");
   host.receive("user-a", synergy(0xffffffff));
-  assert.strictEqual(party.partyBitCount(party.partyDecodeSynergy(synergy(0xffffffff), party.PartyServerRules.synergyReactions)), party.PartyServerRules.synergyReactions, "unknown reactions are dropped");
+  assert.strictEqual(party.partyBitCount(party.partyDecodeSynergy(synergy(0xffffffff), party.PartyServerRules.synergyConstellations)), party.PartyServerRules.synergyConstellations, "unknown reactions are dropped");
 
   const delta = host.takeChronicle();
   assert.strictEqual(delta.synergiesOnOneEnemy, 3);

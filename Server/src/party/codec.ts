@@ -188,12 +188,12 @@ function partyRelayResource(data: ArrayBuffer, slot: number, max: number): Array
     return w.bytes();
 }
 
-function partyDecodeSynergy(data: ArrayBuffer, reactions: number): number | null {
+function partyDecodeSynergy(data: ArrayBuffer, constellations: number): number | null {
     const r = partyOpen(data, PartyMessageKind.Synergy);
     const mask = r.uint();
     if (!r.complete)
         return null;
-    const known = Math.pow(2, Math.min(32, reactions)) - 1;
+    const known = Math.pow(2, Math.min(32, constellations)) - 1;
     return mask % (known + 1);
 }
 

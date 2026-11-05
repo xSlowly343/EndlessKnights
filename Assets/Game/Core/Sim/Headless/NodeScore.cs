@@ -16,7 +16,6 @@ namespace Game.Core.Sim.Headless
         private const double TraitPowerWeight = 0.5;
         private const double CoopDefaultWeight = 0.3;
         private const double CoopShareWeight = 0.3;
-        private const string ReactionPrefix = "reaction";
         private const string TraitPowerSuffix = "Power";
 
         private static readonly Dictionary<string, double> Weights = new Dictionary<string, double>(System.StringComparer.Ordinal)
@@ -144,6 +143,6 @@ namespace Game.Core.Sim.Headless
             stat.BaseName.EndsWith(TraitPowerSuffix, System.StringComparison.Ordinal) && _traitStats.Contains(stat.BaseName);
 
         private static bool IsPartyUnlock(StatId stat) =>
-            stat.BaseName.StartsWith(ReactionPrefix, System.StringComparison.Ordinal) || stat.Equals(CombatStats.SecondResponse);
+            stat.Equals(CombatStats.ConstellationEffect);
     }
 }
