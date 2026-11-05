@@ -194,6 +194,7 @@ namespace Game.Core.Tests.Content
 
         [TestCase("runedancer")]
         [TestCase("duelist")]
+        [TestCase("windshot")]
         public void ARewrittenCharacterHasANumberAndARuleInEveryTier(string character)
         {
             var gems = GemCatalog.Load(RealFile());
