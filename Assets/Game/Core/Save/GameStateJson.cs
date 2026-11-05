@@ -76,6 +76,7 @@ namespace Game.Core.Save
                 ("drops", WriteDrops(state.Drops)),
                 ("quests", WriteQuests(state.Quests)),
                 ("achievements", WriteAchievements(state.Achievements)),
+                ("bestiary", WriteBestiary(state.Bestiary)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -243,6 +244,8 @@ namespace Game.Core.Save
                 ReadQuests(node.Field("quests"), state.Quests);
             if (node.HasField("achievements"))
                 ReadAchievements(node.Field("achievements"), state.Achievements);
+            if (node.HasField("bestiary"))
+                ReadBestiary(node.Field("bestiary"), state.Bestiary);
             if (node.HasField("slates") && slates != null)
                 ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
@@ -453,6 +456,26 @@ namespace Game.Core.Save
                     lines.Add(line);
             }
             return new SlateItem(shape, theme, rarity, lines, node.Field("tempered").AsBool());
+        }
+
+        private static JsonValue WriteBestiary(BestiaryState bestiary)
+        {
+            var enemies = new List<string>(bestiary.Kills.Keys);
+            enemies.Sort(System.StringComparer.Ordinal);
+            var kills = new JsonValue[enemies.Count];
+            for (var i = 0; i < kills.Length; i++)
+                kills[i] = Object(("enemy", JsonValue.Of(enemies[i])), ("kills", JsonValue.Of(bestiary.Kills[enemies[i]])));
+            var opened = new List<string>(bestiary.Opened);
+            opened.Sort(System.StringComparer.Ordinal);
+            return Object(("kills", JsonValue.Array(kills)), ("opened", WriteIdList(opened)));
+        }
+
+        private static void ReadBestiary(ContentNode node, BestiaryState bestiary)
+        {
+            foreach (var item in node.Field("kills").Items())
+                bestiary.Kills[item.Field("enemy").AsString()] = item.Field("kills").AsLong(0);
+            foreach (var item in node.Field("opened").Items())
+                bestiary.Opened.Add(item.AsString());
         }
 
         private static JsonValue WriteAchievements(AchievementState achievements)

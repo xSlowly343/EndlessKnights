@@ -24,6 +24,7 @@ namespace Game.Core.Sim
         DungeonCompleted,
         DungeonFailed,
         SlateDropped,
-        AchievementUnlocked
+        AchievementUnlocked,
+        BestiaryEntryOpened
     }
 }
