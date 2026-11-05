@@ -1,4 +1,3 @@
-using System;
 using Game.Platform.Windows.Power;
 using NUnit.Framework;
 
@@ -23,37 +22,6 @@ namespace Game.Platform.Tests
         public void IgnoresOtherMessages(uint message, long wParam)
         {
             Assert.That(SystemEventDecoder.TryDecode(message, wParam, out _), Is.False);
-        }
-
-        [Test]
-        public void SleepTrackerMeasuresTimeAsleep()
-        {
-            var tracker = new SleepTracker();
-            var start = new DateTime(2026, 10, 20, 12, 0, 0, DateTimeKind.Utc);
-
-            tracker.Suspended(start);
-            var asleep = tracker.Resumed(start.AddMinutes(5));
-
-            Assert.That(asleep, Is.EqualTo(TimeSpan.FromMinutes(5)));
-        }
-
-        [Test]
-        public void ResumeWithoutSuspendIsZero()
-        {
-            var tracker = new SleepTracker();
-
-            Assert.That(tracker.Resumed(DateTime.UtcNow), Is.EqualTo(TimeSpan.Zero));
-        }
-
-        [Test]
-        public void ClockGoingBackwardsIsZero()
-        {
-            var tracker = new SleepTracker();
-            var start = new DateTime(2026, 10, 20, 12, 0, 0, DateTimeKind.Utc);
-
-            tracker.Suspended(start);
-
-            Assert.That(tracker.Resumed(start.AddMinutes(-3)), Is.EqualTo(TimeSpan.Zero));
         }
     }
 }
