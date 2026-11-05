@@ -100,6 +100,7 @@ namespace Game.Core.Content.Tree
 
         public void RequirePathSkills(Gems.GemCatalog gems, Weapons.WeaponCatalog weapons)
         {
+            var skills = new Dictionary<string, int>(StringComparer.Ordinal);
             foreach (var gem in gems.All)
             {
                 if (gem.Ascendancy == null)
@@ -109,6 +110,13 @@ namespace Game.Core.Content.Tree
                     throw new ContentException(Gems.GemCatalog.FileName, where, $"unknown path '{gem.Ascendancy}', expected a subclass id from {FileName}");
                 if (!weapons.TryGetType(gem.Skill!.Weapon!, out var weapon) || Sim.HeroClassNames.Of(weapon.HeroClass) != path.HeroClass)
                     throw new ContentException(Gems.GemCatalog.FileName, where, $"path '{path.Id}' belongs to '{path.HeroClass}', the skill needs the weapon of that class");
+                skills[path.Id] = skills.TryGetValue(path.Id, out var count) ? count + 1 : 1;
+            }
+            foreach (var path in Subclasses)
+            {
+                var count = skills.TryGetValue(path.Id, out var found) ? found : 0;
+                if (count != 1)
+                    throw new ContentException(FileName, path.Id, $"a path has exactly one path skill, got {count}");
             }
         }
 

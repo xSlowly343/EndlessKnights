@@ -183,6 +183,39 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
+        public void EveryClassSkillHasThreeBranchTiersOfTwoOptions()
+        {
+            var gems = GemCatalog.Load(RealFile());
+            var weapons = TestWorld.Real.Weapons.Types.Select(type => type.Id).ToList();
+
+            Assert.That(SkillRoster.Problems(gems, weapons), Is.Empty);
+            Assert.That(weapons, Has.Count.EqualTo(18));
+        }
+
+        [Test]
+        public void AClassSkillWithoutBranchesIsNamed()
+        {
+            var gems = GemCatalog.Load(RealFile());
+            var json = RealFile().Replace("\r\n", "\n");
+            var start = json.IndexOf("\"id\": \"runedancer_hit_1\"", System.StringComparison.Ordinal);
+            var branches = json.IndexOf(",\n      \"branches\": [", start, System.StringComparison.Ordinal);
+            var end = json.IndexOf("\n      ]", branches, System.StringComparison.Ordinal) + "\n      ]".Length;
+            Assert.That(branches, Is.GreaterThan(start));
+
+            var problems = SkillRoster.Problems(GemCatalog.Load(json.Substring(0, branches) + json.Substring(end)), new[] { "rune_daggers" });
+
+            Assert.That(problems, Has.Member("runedancer_hit_1: 0 branch tiers, expected 3"));
+            Assert.That(SkillRoster.Problems(gems, new[] { "rune_daggers" }), Is.Empty);
+        }
+
+        [Test]
+        public void EveryPathHasExactlyOneSkill()
+        {
+            Assert.DoesNotThrow(() => TestWorld.Real.Ascendancy.RequirePathSkills(TestWorld.Real.Gems, TestWorld.Real.Weapons));
+            Assert.That(TestWorld.Real.Ascendancy.Subclasses.Count(path => TestWorld.Real.Gems.All.Count(gem => gem.Ascendancy == path.Id) == 1), Is.EqualTo(54));
+        }
+
+        [Test]
         public void TheGameDoesNotLoadAClassWithoutTwelveSkills()
         {
             var error = Assert.Throws<ContentException>(() => GameData.Load(name =>
