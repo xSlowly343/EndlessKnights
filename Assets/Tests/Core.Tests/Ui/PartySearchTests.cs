@@ -51,11 +51,11 @@ namespace Game.Core.Tests.Ui
         [Test]
         public void TheCardOfAnOpenPartyReadsInOneLine()
         {
-            var row = PartySearchRow.From("p1", "night_shift", "ru", "debuffer", 2, 4, true, "evening", true);
+            var row = PartySearchRow.From("p1", "night_shift", "ru", "hexer", 2, 4, true, "evening", true);
 
             Assert.That(row.PartyId, Is.EqualTo("p1"));
             Assert.That(row.Title, Is.EqualTo("Ночная смена"));
-            Assert.That(row.Details, Is.EqualTo("Русский · Обычно в сети вечером · Ищут: дебаффер"));
+            Assert.That(row.Details, Is.EqualTo("Русский · Обычно в сети вечером · Ищут: заклинатель"));
             Assert.That(row.Seats, Is.EqualTo("2/4"));
             Assert.That(row.Tags, Is.EqualTo("в бою сейчас · нужна ваша роль"));
         }

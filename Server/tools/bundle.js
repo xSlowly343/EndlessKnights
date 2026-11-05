@@ -142,8 +142,13 @@ const chronicleRules = {
   feats: chronicle.feats.map((feat) => ({
     id: feat.id, kind: feat.kind, levels: feat.levels, banner: feat.banner || [], title: feat.title || null, tracked: feat.tracked !== false
   })),
-  classRoles: Object.values(party.search.classRoles)
+  classRoles: Object.values(party.search.classRoles),
+  orchestra: chronicle.orchestra
 };
+for (const group of chronicle.orchestra)
+  for (const role of group)
+    if (party.search.roles.indexOf(role) < 0)
+      throw new Error("party_chronicle.json: orchestra role '" + role + "' is not in party.json search.roles");
 
 if (clan.version !== 1)
   throw new Error("clan.json: version " + clan.version + " is not supported");

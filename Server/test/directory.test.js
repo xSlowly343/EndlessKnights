@@ -51,7 +51,7 @@ test("the leader updates the card, promotes and kicks; others cannot", () => {
   call("cid", "partyJoinRpc", { code: view.code });
   fails("bob", "partyUpdateRpc", { access: "open" }, "only the leader can do that");
   fails("ann", "partyUpdateRpc", { wanted: "healer" }, "bad request");
-  assert.strictEqual(call("ann", "partyUpdateRpc", { access: "open", wanted: "buffer", title: "lunch_raid" }).wanted, "buffer");
+  assert.strictEqual(call("ann", "partyUpdateRpc", { access: "open", wanted: "herald", title: "lunch_raid" }).wanted, "herald");
   assert.strictEqual(nk.groupsGetId([view.id])[0].open, true);
   assert.strictEqual(call("ann", "partyPromoteRpc", { userId: "bob" }).leader, "bob");
   fails("ann", "partyKickRpc", { userId: "cid" }, "only the leader can do that");
@@ -90,17 +90,17 @@ test("only open parties with a free slot are listed, those fighting now and want
   const { nk, call } = world("ann", "bob", "cid", "dan", "eve", "fay", "gus");
   const closed = call("ann", "partyCreateRpc", { language: "ru" });
   const plain = call("bob", "partyCreateRpc", { access: "open", language: "ru", wanted: "any" });
-  const wantsBuffer = call("cid", "partyCreateRpc", { access: "open", language: "ru", wanted: "buffer" });
+  const wantsBuffer = call("cid", "partyCreateRpc", { access: "open", language: "ru", wanted: "herald" });
   const fighting = call("dan", "partyCreateRpc", { access: "open", language: "ru" });
   const english = call("eve", "partyCreateRpc", { access: "open", language: "en" });
   nk.matches.get(call("dan", "partyConnectRpc").matchId).size = 1;
-  const listed = call("gus", "partyListRpc", { language: "ru", role: "buffer" }).parties;
+  const listed = call("gus", "partyListRpc", { language: "ru", role: "herald" }).parties;
   assert.deepStrictEqual(listed.map((card) => card.id), [fighting.id, wantsBuffer.id, plain.id]);
   assert.strictEqual(listed[0].activeNow, true);
   assert.strictEqual(listed[1].wantsYou, true);
   assert.ok(listed.every((card) => card.id !== closed.id && card.id !== english.id));
   assert.strictEqual("code" in listed[0], false, "codes are not shown in the search");
-  assert.deepStrictEqual(call("gus", "partyListRpc", { wanted: "buffer" }).parties.map((card) => card.id), [wantsBuffer.id]);
+  assert.deepStrictEqual(call("gus", "partyListRpc", { wanted: "herald" }).parties.map((card) => card.id), [wantsBuffer.id]);
 });
 
 test("an open party is joined by id from the search, a closed one is not", () => {
@@ -125,12 +125,12 @@ test("blocked players do not meet through the search, in either direction", () =
 
 test("quick match joins the best open party or opens a new one for the next seekers", () => {
   const { call } = world("ann", "bob", "cid", "dan");
-  const first = call("ann", "partyQuickRpc", { language: "en", role: "damage" });
+  const first = call("ann", "partyQuickRpc", { language: "en", role: "striker" });
   assert.strictEqual(first.access, "open");
   assert.strictEqual(first.language, "en");
-  const second = call("bob", "partyQuickRpc", { language: "en", role: "buffer" });
+  const second = call("bob", "partyQuickRpc", { language: "en", role: "herald" });
   assert.strictEqual(second.id, first.id);
-  const russian = call("cid", "partyQuickRpc", { language: "ru", role: "buffer" });
+  const russian = call("cid", "partyQuickRpc", { language: "ru", role: "herald" });
   assert.notStrictEqual(russian.id, first.id);
   assert.strictEqual(call("bob", "partyQuickRpc", { language: "ru" }).id, first.id, "a player in a party stays there");
 });

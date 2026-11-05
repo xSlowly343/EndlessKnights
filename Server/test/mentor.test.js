@@ -41,7 +41,7 @@ test("party search shows mentors to students and quick match brings a student to
   assert.deepStrictEqual(plain(wanted.map((p) => p.id)), [mentorParty.id]);
   assert.strictEqual(wanted[0].hasMentor, true);
   assert.strictEqual(call("vet", "partyListRpc", { language: "ru", mentor: "offer" }).parties.length, 0);
-  const joined = call("kid", "partyQuickRpc", { language: "ru", role: "damage" });
+  const joined = call("kid", "partyQuickRpc", { language: "ru", role: "striker" });
   assert.strictEqual(joined.id, mentorParty.id);
   const flags = Object.fromEntries(joined.members.map((m) => [m.userId, [m.student, m.mentor]]));
   assert.deepStrictEqual(plain(flags), { host: [false, false], vet: [false, true], kid: [true, false] });

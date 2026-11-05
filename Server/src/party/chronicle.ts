@@ -13,6 +13,7 @@ interface ChronicleRules {
     night: { utcOffsetMinutes: number; fromHour: number; toHour: number };
     feats: ChronicleFeatRule[];
     classRoles: string[];
+    orchestra: string[][];
 }
 
 interface ChronicleStats {
@@ -279,9 +280,8 @@ function chronicleAtNight(unixMs: number, rules: ChronicleRules): boolean {
     return unixMs > 0 && hour >= rules.night.fromHour && hour < rules.night.toHour;
 }
 
-function chronicleFullOrchestra(roles: string[]): boolean {
-    const has = (role: string) => roles.indexOf(role) >= 0;
-    return has("damage") && has("buffer") && has("debuffer") && (has("dot") || has("summoner"));
+function chronicleFullOrchestra(roles: string[], orchestra: string[][]): boolean {
+    return orchestra.every((group) => group.some((role) => roles.indexOf(role) >= 0));
 }
 
 function partyChronicleRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
