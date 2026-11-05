@@ -3274,9 +3274,9 @@
       "effect": {"type": "strike", "multiplier": 3, "lines": 1},
       "text": {"ru": "аккорд ×3 и строка песни", "en": "a chord ×3 and a line of the song"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_1_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "minstrel_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_1_b15b", "name": {"ru": "Полный аккорд", "en": "Full Chord"}, "damage": 0.8, "effect": {"lines": 2}}]},
-        {"level": 25, "options": [{"id": "minstrel_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_hit_1_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "minstrel_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3293,9 +3293,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "lines": 2},
       "text": {"ru": "щипок ×2,5 и 2 строки песни", "en": "a pluck ×2.5 and 2 lines of the song"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "minstrel_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_2_b15b", "name": {"ru": "Двойной щипок", "en": "Double Pluck"}, "damage": 0.8, "effect": {"lines": 3}}]},
-        {"level": 25, "options": [{"id": "minstrel_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_hit_2_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "minstrel_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3312,9 +3312,9 @@
       "effect": {"type": "strike", "multiplier": 4, "climaxHit": 3},
       "text": {"ru": "нота ×4 и ещё ×3 в кульминации: припев, гимн, песня для всех или сон врага", "en": "a note ×4 and another ×3 at the climax: a chorus, a hymn, the song for everyone or a sleeping enemy"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "minstrel_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_3_b15b", "name": {"ru": "Звенящая нота", "en": "Ringing Note"}, "damage": 0.8, "effect": {"climaxHit": 4.5}}]},
-        {"level": 25, "options": [{"id": "minstrel_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_hit_3_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "minstrel_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3331,9 +3331,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3, "notes": 2},
       "text": {"ru": "трель ×2 по 3 врагам очереди и 2 ноты колыбельной", "en": "a trill ×2 at 3 queued enemies and 2 lullaby notes"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_1_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.0}}]},
         {"level": 15, "options": [{"id": "minstrel_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_1_b15b", "name": {"ru": "Долгая трель", "en": "Long Trill"}, "damage": 0.8, "effect": {"notes": 3}}]},
-        {"level": 25, "options": [{"id": "minstrel_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_queue_1_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 4}}, {"id": "minstrel_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3350,9 +3350,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "lines": 1},
       "text": {"ru": "волна ×2,5 по 3 врагам очереди и строка песни", "en": "a wave ×2.5 at 3 queued enemies and a line of the song"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "minstrel_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_2_b15b", "name": {"ru": "Широкая волна", "en": "Wide Wave"}, "damage": 0.8, "effect": {"lines": 2}}]},
-        {"level": 25, "options": [{"id": "minstrel_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_queue_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "minstrel_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3369,9 +3369,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "lines": 1, "notes": 1},
       "text": {"ru": "канон ×3 по 3 врагам, строка песни и нота колыбельной", "en": "a canon ×3 at 3 enemies, a line of the song and a lullaby note"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "minstrel_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_3_b15b", "name": {"ru": "Канон в три голоса", "en": "Three-Voice Canon"}, "damage": 0.8, "effect": {"lines": 2, "notes": 2}}]},
-        {"level": 25, "options": [{"id": "minstrel_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_queue_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "minstrel_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3387,9 +3387,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "lines": 1},
       "text": {"ru": "раз в 3 с припляс ×2,5 и строка песни", "en": "every 3 s a jig ×2.5 and a line of the song"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "minstrel_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_1_b15b", "name": {"ru": "Лихой припляс", "en": "Lively Jig"}, "damage": 0.8, "effect": {"lines": 2}}]},
-        {"level": 25, "options": [{"id": "minstrel_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_auto_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "minstrel_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3405,9 +3405,9 @@
       "effect": {"type": "strike", "multiplier": 3, "notes": 1},
       "text": {"ru": "раз в 4 с струна ×3 и нота колыбельной", "en": "every 4 s a string ×3 and a lullaby note"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}]},
         {"level": 15, "options": [{"id": "minstrel_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_2_b15b", "name": {"ru": "Долгое эхо", "en": "Long Echo"}, "damage": 0.8, "effect": {"notes": 2}}]},
-        {"level": 25, "options": [{"id": "minstrel_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_auto_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}, {"id": "minstrel_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3423,9 +3423,9 @@
       "effect": {"type": "strike", "multiplier": 4, "hymnSeconds": 8, "hymnPower": 0.1},
       "text": {"ru": "раз в 8 с бубенцы ×4: ей и отряду +10% урона на 8 с", "en": "every 8 s bells ×4: she and the party deal 10% more damage for 8 s"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "minstrel_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_3_b15b", "name": {"ru": "Звонкие бубенцы", "en": "Bright Bells"}, "damage": 0.8, "effect": {"hymnPower": 0.15}}]},
-        {"level": 25, "options": [{"id": "minstrel_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_auto_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "minstrel_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3442,9 +3442,9 @@
       "effect": {"type": "strike", "multiplier": 6, "finale": 4},
       "text": {"ru": "финал ×6 и ещё ×4 за каждый куплет; куплеты кончаются", "en": "a finale ×6 and another ×4 per verse; the verses end"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_1_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "minstrel_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_1_b15b", "name": {"ru": "Громкий финал", "en": "Grand Finale"}, "damage": 0.8, "effect": {"finale": 6}}]},
-        {"level": 25, "options": [{"id": "minstrel_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_strong_1_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "minstrel_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3461,9 +3461,9 @@
       "effect": {"type": "strike", "multiplier": 5, "hymnSeconds": 8, "hymnPower": 0.3},
       "text": {"ru": "гимн ×5: ей и отряду +30% урона на 8 с", "en": "an anthem ×5: she and the party deal 30% more damage for 8 s"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "minstrel_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_2_b15b", "name": {"ru": "Долгий гимн", "en": "Long Anthem"}, "damage": 0.8, "effect": {"hymnSeconds": 12}}]},
-        {"level": 25, "options": [{"id": "minstrel_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_strong_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "minstrel_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3480,9 +3480,9 @@
       "effect": {"type": "strike", "multiplier": 8, "soloSeconds": 10},
       "text": {"ru": "соло ×8: 10 с её удары ×2", "en": "a solo ×8: for 10 s her hits deal ×2"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "minstrel_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 12.0}}]},
         {"level": 15, "options": [{"id": "minstrel_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_3_b15b", "name": {"ru": "Долгое соло", "en": "Long Solo"}, "damage": 0.8, "effect": {"soloSeconds": 15}}]},
-        {"level": 25, "options": [{"id": "minstrel_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "minstrel_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "minstrel_strong_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 16}}, {"id": "minstrel_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
