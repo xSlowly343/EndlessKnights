@@ -2,13 +2,16 @@
   "version": 1,
   "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon", "blind", "cold", "bond", "blood"],
   "roles": {
-    "runedancer": "dd", "duelist": "dd", "windshot": "dd", "shardcaller": "dd", "sandwalker": "dd",
-    "minstrel": "buffer", "dreamcatcher": "buffer", "lanternbearer": "buffer",
-    "whisperer": "debuffer", "clockwright": "debuffer",
-    "alchemist": "dot", "dowser": "dot",
-    "soulbinder": "summon", "ghostcaptain": "summon",
-    "mothcaller": "buffer", "cartomancer": "debuffer", "herbwitch": "dot", "golemancer": "summon"
+    "runedancer": "striker", "duelist": "striker", "windshot": "striker",
+    "shardcaller": "breaker", "alchemist": "breaker",
+    "minstrel": "herald", "lanternbearer": "herald",
+    "whisperer": "hexer", "cartomancer": "hexer",
+    "mothcaller": "blighter", "herbwitch": "blighter",
+    "soulbinder": "summoner", "ghostcaptain": "summoner", "golemancer": "summoner",
+    "clockwright": "timekeeper", "sandwalker": "timekeeper",
+    "dowser": "seeker", "dreamcatcher": "seeker"
   },
+
   "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
   "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "chilledEnemy": "cold", "brewOnEnemy": "blood", "pollenOnHero": "bond" },
   "secondResponseStat": "secondResponse",
@@ -74,12 +77,18 @@
     { "id": "sand_in_the_hourglass", "marks": ["blind", "time"], "unlock": "reactionSandInTheHourglass", "seconds": 5, "cooldownSeconds": 10, "modifiers": [{ "stat": "bossTimerSlow", "kind": "flat", "value": 0.25 }] }
   ],
   "constellations": [
-    { "id": "full_orchestra", "roles": [["dd"], ["buffer"], ["debuffer"], ["dot", "summon"]], "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.08 }, { "stat": "gold", "kind": "increased", "value": 0.15 }] },
-    { "id": "army", "roles": [["summon"], ["summon"]], "modifiers": [{ "stat": "minionSeconds", "kind": "more", "value": 1 }] },
-    { "id": "army_banner", "classes": ["lanternbearer"], "roles": [["summon"]], "modifiers": [{ "stat": "minionSeconds", "kind": "more", "value": 1 }] },
-    { "id": "choir", "roles": [["buffer"], ["buffer"]], "modifiers": [{ "stat": "partyAurasStack", "kind": "flat", "value": 1 }] },
-    { "id": "executioners", "roles": [["debuffer"], ["debuffer"]], "modifiers": [{ "stat": "enemyDebuffEffect", "kind": "increased", "value": 0.3 }] },
+    { "id": "full_orchestra", "roles": [["striker", "breaker"], ["herald", "timekeeper"], ["hexer"], ["blighter", "summoner"]], "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.1 }, { "stat": "gold", "kind": "increased", "value": 0.15 }] },
+    { "id": "blade_and_banner", "roles": [["striker"], ["herald"]], "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.06 }, { "stat": "auraEffect", "kind": "increased", "value": 0.1 }] },
+    { "id": "crack_and_hex", "roles": [["breaker"], ["hexer"]], "modifiers": [{ "stat": "damageVsBoss", "kind": "increased", "value": 0.1 }] },
+    { "id": "hex_and_rot", "roles": [["hexer"], ["blighter"]], "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.04 }, { "stat": "dotDamage", "kind": "increased", "value": 0.15 }] },
+    { "id": "won_second", "roles": [["timekeeper"], ["striker", "breaker"]], "modifiers": [{ "stat": "damageVsBoss", "kind": "increased", "value": 0.06 }, { "stat": "bossTimerSeconds", "kind": "flat", "value": 3 }] },
+    { "id": "slow_rot", "roles": [["timekeeper"], ["blighter"]], "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.04 }, { "stat": "dotDamage", "kind": "increased", "value": 0.15 }] },
+    { "id": "host_under_banner", "roles": [["summoner"], ["herald"]], "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.04 }, { "stat": "minionSeconds", "kind": "increased", "value": 0.5 }] },
+    { "id": "quarry", "roles": [["seeker"], ["striker", "breaker", "summoner"]], "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.04 }, { "stat": "gold", "kind": "increased", "value": 0.2 }, { "stat": "gemExperience", "kind": "increased", "value": 0.1 }] },
+    { "id": "army", "roles": [["summoner"], ["summoner"]], "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.04 }, { "stat": "minionSeconds", "kind": "more", "value": 1 }] },
+    { "id": "choir", "roles": [["herald"], ["herald"]], "modifiers": [{ "stat": "auraEffect", "kind": "increased", "value": 0.15 }] },
+    { "id": "executioners", "roles": [["hexer"], ["hexer"]], "modifiers": [{ "stat": "damageVsBoss", "kind": "increased", "value": 0.05 }, { "stat": "enemyDebuffEffect", "kind": "increased", "value": 0.3 }] },
     { "id": "elements", "marks": ["fire", "poison", "lightning"], "noReactionCooldown": true, "modifiers": [] },
-    { "id": "steel_wall", "roles": [["dd"], ["dd"], ["dd"]], "modifiers": [{ "stat": "focusResetSeconds", "kind": "flat", "value": 10 }] }
+    { "id": "steel_wall", "roles": [["striker"], ["striker"], ["striker"]], "modifiers": [{ "stat": "focusResetSeconds", "kind": "flat", "value": 10 }] }
   ]
 }

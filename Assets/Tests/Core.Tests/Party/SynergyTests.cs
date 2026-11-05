@@ -119,6 +119,53 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void SynergyRolesAreThePartyRoles()
+        {
+            foreach (HeroClass heroClass in System.Enum.GetValues(typeof(HeroClass)))
+                Assert.That(Rules.RoleOf(heroClass), Is.EqualTo(TestWorld.Data.Party.Search.RoleOf(heroClass)), HeroClassNames.Of(heroClass));
+        }
+
+        [Test]
+        public void StrikerAndHeraldShareBladeAndBanner()
+        {
+            var loop = Hero(HeroClass.Duelist);
+            var before = loop.Hero.Value(CombatStats.Damage, 1);
+            loop.Synergy.SetAlly(0, true, HeroClass.Lanternbearer, 0);
+
+            loop.Tick();
+
+            Assert.That(loop.Synergy.ConstellationActive(IndexOfConstellation("blade_and_banner")), Is.True);
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(before * 1.06).Within(1e-9));
+        }
+
+        [Test]
+        public void EveryRolePairsWithAnotherRole()
+        {
+            foreach (var role in Rules.Roles)
+            {
+                var paired = false;
+                foreach (var constellation in Rules.Constellations)
+                {
+                    if (constellation.RoleGroups.Count != 2)
+                        continue;
+                    var mask = 1 << IndexOf(Rules.Roles, role);
+                    var first = (constellation.RoleGroups[0] & mask) != 0;
+                    var second = (constellation.RoleGroups[1] & mask) != 0;
+                    paired |= (first && constellation.RoleGroups[1] != mask) || (second && constellation.RoleGroups[0] != mask);
+                }
+                Assert.That(paired, Is.True, role);
+            }
+        }
+
+        private static int IndexOf(System.Collections.Generic.IReadOnlyList<string> list, string item)
+        {
+            for (var i = 0; i < list.Count; i++)
+                if (list[i] == item)
+                    return i;
+            return -1;
+        }
+
+        [Test]
         public void AConstellationHoldsOnlyWhileEveryMemberFights()
         {
             var loop = Hero(HeroClass.Runedancer);
@@ -234,7 +281,7 @@ namespace Game.Core.Tests.Party
         }
 
         [TestCase(@"""mark"": ""curse"", ""modifiers"": [{ ""stat"": ""resourceGain""", @"""mark"": ""moonlight"", ""modifiers"": [{ ""stat"": ""resourceGain""", "unknown mark 'moonlight'")]
-        [TestCase(@"""runedancer"": ""dd"", ", "", "class 'runedancer' has no role")]
+        [TestCase(@"""runedancer"": ""striker"", ", "", "class 'runedancer' has no role")]
         [TestCase(@"""marks"": [""fire"", ""poison""]", @"""marks"": [""fire"", ""fire""]", "two different marks")]
         public void BrokenSynergyIsReported(string from, string to, string message)
         {
