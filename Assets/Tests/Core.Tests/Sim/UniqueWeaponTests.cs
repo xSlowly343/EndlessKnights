@@ -30,9 +30,9 @@ namespace Game.Core.Tests.Sim
             new GameLoop(TestWorld.Real, new FakeInputSource(), new GameState(6) { Class = heroClass }, new StatSheet());
 
         [Test]
-        public void EightUniqueWeaponsFiveOfThemOpenSkillsOfAnotherClass()
+        public void EighteenUniqueWeaponsFiveOfThemOpenSkillsOfAnotherClass()
         {
-            Assert.That(Weapons.Uniques.Count, Is.EqualTo(8));
+            Assert.That(Weapons.Uniques.Count, Is.EqualTo(18));
             Assert.That(Weapons.Uniques.Count(u => u.OpensSkills.Count > 0), Is.EqualTo(5));
             Assert.That(Def("corsair_daggers").OpensSkills, Is.EqualTo(new[] { "ghostcaptain_hit_1", "ghostcaptain_auto_1" }));
             Assert.That(Def("skull_shovel").OpensSkills, Is.Empty);
@@ -83,6 +83,23 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(Assert.Throws<ContentException>(() => own.BindGems(TestWorld.Real.Gems))!.Message, Does.Contain("own class"));
             Assert.That(Assert.Throws<ContentException>(() => many.BindGems(TestWorld.Real.Gems))!.Message, Does.Contain("at most 2"));
+        }
+
+        [Test]
+        public void EveryWeaponTypeHasAUniqueAndItsLinesReachTheHero()
+        {
+            foreach (HeroClass heroClass in System.Enum.GetValues(typeof(HeroClass)))
+            {
+                var type = Weapons.TypeOf(heroClass);
+                var unique = Weapons.Uniques.FirstOrDefault(u => u.Base.Type == type);
+                Assert.That(unique, Is.Not.Null, heroClass + " has no unique weapon");
+                var loop = Real(heroClass);
+                var line = unique!.Lines[0];
+                var before = loop.Hero.Value(line.Stat, 1, line.Tags);
+                Assert.That(loop.Weapons.Equip(loop.Weapons.Give(Weapons.RollUnique(unique))), Is.True, unique.Id);
+                loop.Tick();
+                Assert.That(loop.Hero.Value(line.Stat, 1, line.Tags), Is.Not.EqualTo(before).Within(1e-12), unique.Id);
+            }
         }
 
         [Test]
