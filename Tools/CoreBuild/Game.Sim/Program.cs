@@ -228,15 +228,16 @@ namespace Game.Sim
                 : new[] { ("custom", new List<HeroClass>(options.Party!).ToArray()) };
             using var file = options.OutFile == null ? null : new StreamWriter(options.OutFile);
             var output = file ?? Console.Out;
-            output.WriteLine("scenario,class,path,final_stage,highest_stage,kills,boss_fails,party_kill_share,gold_earned,party_seconds_per_kill,missed_kills,damage");
+            output.WriteLine("scenario,class,path,final_stage,highest_stage,kills,boss_fails,party_kill_share,gold_earned,party_seconds_per_kill,missed_kills,damage,boss_fights,boss_timeouts,boss_seconds_left");
             foreach (var (name, classes) in parties)
             {
-                var result = new PartySimulation(data, profile, classes, options.Seed, options.Loss, options.DamageMultiplier) { HeroLevel = options.HeroLevel, Path = options.Path }.Run(options.Hours * 3600);
+                var result = new PartySimulation(data, profile, classes, options.Seed, options.Loss, options.DamageMultiplier) { HeroLevel = options.HeroLevel, Path = options.Path, StartStage = options.StartStage }.Run(options.Hours * 3600);
                 foreach (var member in result.Members)
                 {
-                    output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6},{7:0.###},{8},{9:0.###},{10},{11}",
+                    output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6},{7:0.###},{8},{9:0.###},{10},{11},{12},{13},{14:0.#}",
                         name, HeroClassNames.Of(member.HeroClass), member.Path ?? "-", member.FinalStage, member.HighestStage, member.Kills, member.BossFails,
-                        member.ShareOfKills, StageRecord.Number(member.GoldEarned), result.SecondsPerKill, member.MissedKills, StageRecord.Number(member.Damage)));
+                        member.ShareOfKills, StageRecord.Number(member.GoldEarned), result.SecondsPerKill, member.MissedKills, StageRecord.Number(member.Damage),
+                        result.BossFights, result.BossTimeouts, result.AverageBossSecondsLeft));
                 }
             }
             watch.Stop();

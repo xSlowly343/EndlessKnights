@@ -16,5 +16,9 @@ namespace Game.Core.Sim.Headless
         public IReadOnlyList<PartyMemberResult> Members { get; }
         public IReadOnlyList<PartySample> Samples { get; set; } = System.Array.Empty<PartySample>();
         public double SecondsPerKill => HostKills > 0 ? Seconds / HostKills : Seconds;
+        public int BossFights { get; set; }
+        public int BossTimeouts { get; set; }
+        public double BossSecondsLeft { get; set; }
+        public double AverageBossSecondsLeft => BossFights > 0 ? BossSecondsLeft / BossFights : 0;
     }
 }

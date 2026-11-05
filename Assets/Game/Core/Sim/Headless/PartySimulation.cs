@@ -40,6 +40,7 @@ namespace Game.Core.Sim.Headless
         public double IdleAfterSeconds { get; set; }
         public double SampleSeconds { get; set; }
         public int HeroLevel { get; set; }
+        public long StartStage { get; set; }
         public string? Path { get; set; }
         public bool LossAfterJoin { get; set; }
 
@@ -65,6 +66,11 @@ namespace Game.Core.Sim.Headless
                 var state = new GameState(memberSeed) { Class = _classes[i] };
                 if (HeroLevel > 0)
                     state.HeroLevel = HeroLevel;
+                if (StartStage > 1)
+                {
+                    state.Stage = StartStage;
+                    state.HighestStage = StartStage;
+                }
                 if (Kits != null && Kits.TryGetValue(_classes[i], out var kit))
                     state.OwnedGems.AddRange(kit);
                 IInputSource input = new BotInput(_profile, memberSeed ^ 0x5EEDUL);
@@ -91,6 +97,7 @@ namespace Game.Core.Sim.Headless
                 uptime[i] = new SynergyUptime(synergy);
             }
 
+            var bosses = new BossWatch();
             var totalTicks = (long)System.Math.Round(seconds * GameLoop.TicksPerSecond);
             for (var tick = 0L; tick < totalTicks; tick++)
             {
@@ -109,6 +116,7 @@ namespace Game.Core.Sim.Headless
                     loops[i].Events.Clear();
                 }
                 host.Tick();
+                bosses.Watch(host.Encounter);
                 if (SampleSeconds > 0 && (tick + 1) % (long)System.Math.Round(SampleSeconds * GameLoop.TicksPerSecond) == 0)
                     samples.Add(Sample((tick + 1) * GameLoop.TickSeconds, host, clients));
             }
@@ -126,7 +134,40 @@ namespace Game.Core.Sim.Headless
                     Synergy = uptime[i]
                 });
             }
-            return new PartySimulationResult(seconds, host.Kills, members) { Samples = samples };
+            return new PartySimulationResult(seconds, host.Kills, members)
+            {
+                Samples = samples,
+                BossFights = bosses.Fights,
+                BossTimeouts = bosses.Timeouts,
+                BossSecondsLeft = bosses.SecondsLeft
+            };
+        }
+
+        private sealed class BossWatch
+        {
+            private uint _bossId;
+            private int _ticksLeft;
+
+            public int Fights { get; private set; }
+            public int Timeouts { get; private set; }
+            public double SecondsLeft { get; private set; }
+
+            public void Watch(PartyEncounter encounter)
+            {
+                if (_bossId != 0 && encounter.EnemyId != _bossId)
+                {
+                    Fights++;
+                    if (_ticksLeft <= 1)
+                        Timeouts++;
+                    else
+                        SecondsLeft += _ticksLeft * GameLoop.TickSeconds;
+                    _bossId = 0;
+                }
+                if (!encounter.FightingBoss)
+                    return;
+                _bossId = encounter.EnemyId;
+                _ticksLeft = encounter.BossTicksLeft;
+            }
         }
 
         private void OpenPath(GameLoop loop)
