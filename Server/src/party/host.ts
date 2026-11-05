@@ -327,7 +327,7 @@ class PartyHost {
         this.chronicle.bossesTogether++;
         if (guardian)
             this.chronicle.guardiansTogether = (this.chronicle.guardiansTogether || 0) + 1;
-        if (chronicleFullOrchestra(roles))
+        if (chronicleFullOrchestra(roles, ChronicleServerRules.orchestra))
             this.chronicle.fullOrchestra++;
         if (chronicleAtNight(this.clockUnixMs, ChronicleServerRules))
             this.chronicle.nightBosses++;

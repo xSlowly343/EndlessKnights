@@ -77,6 +77,9 @@ namespace Game.Core.Tests.Party
                 .Append(Hex(PartyCodec.Encode(_buffer, new CastEffectMessage { EffectId = 33, OnEnemy = true, End = true }))).Append("\" },\n");
             builder.Append("    \"bossRequest\": { \"hex\": \"").Append(Hex(PartyCodec.EncodeBossRequest(_buffer))).Append("\" },\n");
             builder.Append("    \"marks\": { \"marks\": 384, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new MarksMessage { Marks = 384 }))).Append("\" },\n");
+            var synergy = TestWorld.Data.Synergy;
+            var newMarks = (uint)(synergy.MarkMask("cold") | synergy.MarkMask("bond") | synergy.MarkMask("blood"));
+            builder.Append("    \"newMarks\": { \"marks\": ").Append(newMarks.ToString(CultureInfo.InvariantCulture)).Append(", \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new MarksMessage { Marks = newMarks }))).Append("\" },\n");
             builder.Append("    \"worldRequest\": { \"world\": 1, \"cancel\": false, \"riftId\": 1761652800, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new WorldRequestMessage { World = PartyWorld.Rift, RiftId = 1761652800 }))).Append("\" },\n");
             builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"contribution\": 0.125, \"hex\": \"")

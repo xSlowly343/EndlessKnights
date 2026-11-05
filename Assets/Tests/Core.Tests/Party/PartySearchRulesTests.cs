@@ -28,7 +28,10 @@ namespace Game.Core.Tests.Party
                 Assert.That(role, Is.Not.EqualTo(PartySearchRules.AnyRole), pair.Key);
                 Assert.That(Search.Roles, Does.Contain(role), pair.Key);
             }
-            Assert.That(Search.RoleOf(HeroClass.Whisperer), Is.EqualTo("debuffer"));
+            Assert.That(Search.RoleOf(HeroClass.Whisperer), Is.EqualTo("hexer"));
+            Assert.That(Search.RoleOf(HeroClass.Alchemist), Is.EqualTo("breaker"));
+            Assert.That(Search.RoleOf(HeroClass.Mothcaller), Is.EqualTo("blighter"));
+            Assert.That(Search.Roles, Is.EqualTo(new[] { "any", "striker", "breaker", "herald", "hexer", "blighter", "summoner", "timekeeper", "seeker" }));
         }
 
         [TestCase("ru")]
@@ -59,7 +62,7 @@ namespace Game.Core.Tests.Party
         public void CardTextsAreFormatted()
         {
             Assert.That(PartyCardText.Code("K7MQ2X"), Is.EqualTo("Код отряда: K7M-Q2X"));
-            Assert.That(PartyCardText.Wanted("buffer"), Is.EqualTo("Ищут: баффер"));
+            Assert.That(PartyCardText.Wanted("herald"), Is.EqualTo("Ищут: вдохновитель"));
             Assert.That(PartyCardText.UsuallyOnline("evening"), Is.EqualTo("Обычно в сети вечером"));
             Assert.That(PartyCardText.Title("night_shift"), Is.EqualTo("Ночная смена"));
             Assert.That(PartyCardText.Language("en"), Is.EqualTo("English"));

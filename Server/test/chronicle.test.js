@@ -6,7 +6,7 @@ const { FakeNakama, logger } = require("./fake-nakama");
 const party = loadModule();
 const rules = party.ChronicleServerRules;
 const plain = (o) => JSON.parse(JSON.stringify(o));
-const runedancer = 0, minstrel = 5, whisperer = 8, plagueDoctor = 10;
+const runedancer = 0, minstrel = 5, dreamcatcher = 6, whisperer = 8, clockwright = 9, plagueDoctor = 10, dowser = 11, golemancer = 17;
 
 function stats(bosses, hours, orchestra, night) {
   return { bossesTogether: bosses, ticksTogether: Math.round(hours * 36000), fullOrchestra: orchestra, nightBosses: night || 0 };
@@ -67,7 +67,7 @@ test("the host counts bosses killed together and a full orchestra", () => {
   host.encounter.setHeroClass(0, runedancer);
   host.encounter.setHeroClass(1, minstrel);
   host.encounter.setHeroClass(2, whisperer);
-  host.encounter.setHeroClass(3, plagueDoctor);
+  host.encounter.setHeroClass(3, golemancer);
   killBoss(host, [0]);
   assert.strictEqual(host.chronicle.bossesTogether, 0, "a boss one player killed alone is not together");
   killBoss(host, [0, 1]);
@@ -80,6 +80,17 @@ test("the host counts bosses killed together and a full orchestra", () => {
   const taken = host.takeChronicle();
   assert.strictEqual(taken.bossesTogether, 2);
   assert.strictEqual(host.chronicle.bossesTogether, 0);
+});
+
+test("the full orchestra needs one role from each group of the chronicle rules", () => {
+  const full = (classes) => party.chronicleFullOrchestra(classes.map(party.chronicleRoleOf), rules.orchestra);
+  assert.deepStrictEqual(plain(rules.orchestra), [["striker", "breaker"], ["herald", "timekeeper"], ["hexer"], ["blighter", "summoner"]]);
+  assert.strictEqual(full([runedancer, minstrel, whisperer, golemancer]), true, "striker, herald, hexer, summoner");
+  assert.strictEqual(full([plagueDoctor, clockwright, whisperer, golemancer]), true, "a breaker and a timekeeper stand for the striker and the herald");
+  assert.strictEqual(full([runedancer, minstrel, clockwright, golemancer]), false, "no hexer");
+  assert.strictEqual(full([dowser, minstrel, whisperer, golemancer]), false, "a seeker does not stand for the striker");
+  assert.strictEqual(party.chronicleRoleOf(dreamcatcher), "seeker");
+  assert.strictEqual(party.chronicleRoleOf(plagueDoctor), "breaker", "the Alchemist breaks the boss guard (roster 01.11.2026)");
 });
 
 test("the party chronicle keeps feats, records and copies for every member", () => {

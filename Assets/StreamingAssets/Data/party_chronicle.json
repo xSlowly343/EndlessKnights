@@ -3,6 +3,7 @@
   "flushSeconds": 60,
   "maxRecords": 50,
   "night": { "utcOffsetMinutes": 180, "fromHour": 0, "toHour": 6 },
+  "orchestra": [["striker", "breaker"], ["herald", "timekeeper"], ["hexer"], ["blighter", "summoner"]],
   "feats": [
     { "id": "first_steps", "kind": "bossesTogether", "levels": [10], "banner": [1] },
     { "id": "old_guard", "kind": "bossesTogether", "levels": [100, 1000, 10000], "banner": [2, 3, 4] },

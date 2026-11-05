@@ -259,14 +259,14 @@ async function main() {
   assert.ok(membership.seen > 0);
   console.log("ok    storage party/current = party " + membership.partyId + ", slot " + membership.slot);
 
-  const opened = await rpc(base, session.token, "party_update", { access: "open", wanted: "buffer" });
+  const opened = await rpc(base, session.token, "party_update", { access: "open", wanted: "herald" });
   assert.strictEqual(opened.access, "open");
-  const listed = (await rpc(base, stranger.token, "party_list", { language: "ru", role: "buffer" })).parties;
+  const listed = (await rpc(base, stranger.token, "party_list", { language: "ru", role: "herald" })).parties;
   const card = listed.find((entry) => entry.id === created.id);
   assert.ok(card, "the open party is listed");
   assert.strictEqual(card.wantsYou, true);
   assert.strictEqual(card.code, undefined);
-  const quick = await rpc(base, stranger.token, "party_quick", { language: "ru", role: "buffer" });
+  const quick = await rpc(base, stranger.token, "party_quick", { language: "ru", role: "herald" });
   assert.strictEqual(quick.id, created.id);
   assert.strictEqual(quick.members.length, 3);
   console.log("ok    the open party is found in the search and by quick match (" + listed.length + " listed)");
