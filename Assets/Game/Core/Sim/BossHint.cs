@@ -26,11 +26,11 @@ namespace Game.Core.Sim
 
         public bool Has(BossHintOptions option) => (Options & option) == option;
 
-        public static BossHint? For(GameState state, BossHintRules rules, PrestigeSystem prestige, StrikeUpgradeSystem upgrades)
+        public static BossHint? For(GameState state, BossHintRules rules, PrestigeSystem prestige, StrikeUpgradeSystem upgrades, BossHintOptions unused = BossHintOptions.None)
         {
             if (state.BossFailsInARow < rules.AfterFails)
                 return null;
-            var options = AlwaysOpen;
+            var options = AlwaysOpen | unused;
             var echo = prestige.Available ? prestige.EchoGain : BigNumber.Zero;
             if (echo.Sign > 0)
                 options |= BossHintOptions.Prestige;
@@ -51,6 +51,14 @@ namespace Game.Core.Sim
                 lines.Add(Texts.Format("bossHint.prestige", NumberFormatter.Format(EchoGain, format)));
             if (Has(BossHintOptions.StrikeUpgrade))
                 lines.Add(Texts.Get("bossHint.upgrade"));
+            if (Has(BossHintOptions.TreePoints))
+                lines.Add(Texts.Get("bossHint.treePoints"));
+            if (Has(BossHintOptions.PathChoice))
+                lines.Add(Texts.Get("bossHint.path"));
+            if (Has(BossHintOptions.EmptyGearSlot))
+                lines.Add(Texts.Get("bossHint.gear"));
+            if (Has(BossHintOptions.EmptySocket))
+                lines.Add(Texts.Get("bossHint.socket"));
             lines.Add(Texts.Get("bossHint.build"));
             lines.Add(Texts.Get("bossHint.friend"));
             lines.Add(Texts.Get("bossHint.farm"));

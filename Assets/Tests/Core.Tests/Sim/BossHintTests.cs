@@ -68,6 +68,36 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheHintNamesUnspentTreePointsAndAnOpenPath()
+        {
+            var loop = LoopAtBoss();
+            for (var i = 0; i < AfterFails; i++)
+                FailBoss(loop, 0.4);
+            loop.State.TreePointsEarned += 3;
+            loop.CompleteActivity("garden");
+
+            var hint = loop.BossHint!;
+
+            Assert.That(hint.Has(BossHintOptions.TreePoints), Is.True);
+            Assert.That(hint.Has(BossHintOptions.PathChoice), Is.True, "a Path waits to be chosen");
+            Assert.That(hint.Lines(NumberFormatSettings.Default), Does.Contain("• Потратить очки дерева").And.Contain("• Выбрать Путь или развилку особенности"));
+        }
+
+        [Test]
+        public void TheHintNamesAnItemForAnEmptySlot()
+        {
+            var loop = LoopAtBoss();
+            for (var i = 0; i < AfterFails; i++)
+                FailBoss(loop, 0.4);
+            Assert.That(loop.BossHint!.Has(BossHintOptions.EmptyGearSlot), Is.False);
+
+            var item = TestWorld.Data.Items.Roll(Game.Core.Content.Items.ItemSlot.Helmet, null, Game.Core.Content.Items.ItemRarity.Rare, 1, new Rng(7));
+            loop.State.Drops.Gear.Add(item);
+
+            Assert.That(loop.BossHint!.Has(BossHintOptions.EmptyGearSlot), Is.True);
+        }
+
+        [Test]
         public void ChangeBuildFriendAndFarmAreAlwaysOffered()
         {
             var loop = LoopAtBoss();
