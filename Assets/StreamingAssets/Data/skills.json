@@ -6250,9 +6250,9 @@
       "effect": {"type": "strike", "multiplier": 3, "sealHits": 10},
       "text": {"ru": "росчерк ×3 и +10 ударов к печати", "en": "a flourish ×3 and +10 hits to the seal"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_hit_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "golemancer_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_hit_1_b15b", "name": {"ru": "Широкий росчерк", "en": "Wide Flourish"}, "damage": 0.8, "effect": {"sealHits": 15}}]},
-        {"level": 25, "options": [{"id": "golemancer_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_hit_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "golemancer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6269,9 +6269,9 @@
       "effect": {"type": "strike", "multiplier": 2.5},
       "text": {"ru": "клякса ×2,5", "en": "a blot ×2.5"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_hit_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.75}}]},
         {"level": 15, "options": [{"id": "golemancer_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_hit_2_b15b", "name": {"ru": "Большая клякса", "en": "Big Blot"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "golemancer_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_hit_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}, {"id": "golemancer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6288,9 +6288,9 @@
       "effect": {"type": "strike", "multiplier": 3, "golemHit": 1},
       "text": {"ru": "печать ×3, и голем бьёт вместе с ней", "en": "a seal ×3, and the golem strikes along"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_hit_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "golemancer_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_hit_3_b15b", "name": {"ru": "Тяжёлая печать", "en": "Heavy Seal"}, "damage": 0.8, "effect": {"golemHit": 1.5}}]},
-        {"level": 25, "options": [{"id": "golemancer_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_hit_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "golemancer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6307,9 +6307,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
       "text": {"ru": "голем топает ×2 по 3 врагам очереди", "en": "the golem stomps ×2 at 3 queued enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_queue_1_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "golemancer_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_queue_1_b15b", "name": {"ru": "Тяжёлый шаг", "en": "Heavy Step"}, "damage": 0.8, "effect": {"multiplier": 2.6}}]},
-        {"level": 25, "options": [{"id": "golemancer_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_queue_1_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "golemancer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6326,9 +6326,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
       "text": {"ru": "шипы ×2,5 по 3 врагам", "en": "spikes ×2.5 at 3 enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_queue_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "golemancer_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_queue_2_b15b", "name": {"ru": "Острые шипы", "en": "Sharp Spikes"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "golemancer_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_queue_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "golemancer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6345,9 +6345,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "sealHits": 10},
       "text": {"ru": "туман ×3 по 3 врагам и +10 ударов к печати", "en": "fog ×3 at 3 enemies and +10 hits to the seal"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_queue_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}]},
         {"level": 15, "options": [{"id": "golemancer_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_queue_3_b15b", "name": {"ru": "Густой туман", "en": "Thick Fog"}, "damage": 0.8, "effect": {"sealHits": 15}}]},
-        {"level": 25, "options": [{"id": "golemancer_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_queue_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}, {"id": "golemancer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6363,9 +6363,9 @@
       "effect": {"type": "strike", "multiplier": 4},
       "text": {"ru": "раз в 4 с кулак ×4", "en": "every 4 s a fist ×4"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_auto_1_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "golemancer_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_auto_1_b15b", "name": {"ru": "Гранитный кулак", "en": "Granite Fist"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
-        {"level": 25, "options": [{"id": "golemancer_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_auto_1_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "golemancer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6381,9 +6381,9 @@
       "effect": {"type": "strike", "multiplier": 3, "golemSeconds": 5},
       "text": {"ru": "раз в 10 с подмастерье ×3 и голем стоит на 5 с дольше", "en": "every 10 s an apprentice ×3 and the golem stands 5 s longer"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_auto_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "golemancer_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_auto_2_b15b", "name": {"ru": "Усердный подмастерье", "en": "Diligent Apprentice"}, "damage": 0.8, "effect": {"multiplier": 4}}]},
-        {"level": 25, "options": [{"id": "golemancer_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_auto_2_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "golemancer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6399,9 +6399,9 @@
       "effect": {"type": "strike", "multiplier": 4, "sealHits": 10},
       "text": {"ru": "раз в 10 с перо ×4 и +10 ударов к печати", "en": "every 10 s a quill ×4 and +10 hits to the seal"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_auto_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "golemancer_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_auto_3_b15b", "name": {"ru": "Быстрое перо", "en": "Quick Quill"}, "damage": 0.8, "effect": {"sealHits": 15}}]},
-        {"level": 25, "options": [{"id": "golemancer_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_auto_3_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "golemancer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6418,9 +6418,9 @@
       "effect": {"type": "strike", "multiplier": 6, "golemHit": 3},
       "text": {"ru": "титан ×6: голем бьёт ×3", "en": "a titan ×6: the golem strikes ×3"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_strong_1_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 9.0}}]},
         {"level": 15, "options": [{"id": "golemancer_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_strong_1_b15b", "name": {"ru": "Великий титан", "en": "Great Titan"}, "damage": 0.8, "effect": {"golemHit": 4}}]},
-        {"level": 25, "options": [{"id": "golemancer_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_strong_1_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 12}}, {"id": "golemancer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6437,9 +6437,9 @@
       "effect": {"type": "strike", "multiplier": 8, "queueTargets": 3, "golemHit": 2},
       "text": {"ru": "лавина ×8 по врагу и 3 врагам очереди, голем бьёт ×2", "en": "an avalanche ×8 at the enemy and 3 queued enemies, the golem strikes ×2"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_strong_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "golemancer_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_strong_2_b15b", "name": {"ru": "Камнепад", "en": "Rockslide"}, "damage": 0.8, "effect": {"multiplier": 10}}]},
-        {"level": 25, "options": [{"id": "golemancer_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_strong_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "golemancer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6456,9 +6456,9 @@
       "effect": {"type": "strike", "multiplier": 12, "seal": true, "golemlings": 2},
       "text": {"ru": "печать ×12, печать дописана и два големчика", "en": "a seal ×12, the seal is finished and two golemlings"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "golemancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "golemancer_strong_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "golemancer_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "golemancer_strong_3_b15b", "name": {"ru": "Тройная печать", "en": "Triple Seal"}, "damage": 0.8, "effect": {"multiplier": 15}}]},
-        {"level": 25, "options": [{"id": "golemancer_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "golemancer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "golemancer_strong_3_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "golemancer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
