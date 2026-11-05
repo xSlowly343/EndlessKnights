@@ -11,24 +11,6 @@ namespace Game.Core.Tests.Build
     {
         private static AscendancyCatalog Catalog => TestWorld.Data.Ascendancy;
 
-        private static GameLoop Berserker(params string[] activities)
-        {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
-            foreach (var activity in activities)
-                loop.CompleteActivity(activity);
-            Assert.That(loop.ChooseSubclass("berserker"), Is.EqualTo(SubclassResult.Chosen));
-            return loop;
-        }
-
-        private static SubclassDef Path
-        {
-            get
-            {
-                Catalog.TryGet("berserker", out var subclass);
-                return subclass;
-            }
-        }
-
         [Test]
         public void EveryPathHasABlurbAndAPathSkill()
         {
@@ -42,10 +24,15 @@ namespace Game.Core.Tests.Build
             Assert.That(SubclassView.Locked(Catalog), Does.Contain("первый страж биома"));
         }
 
-        private static TreeNodeDef Node(string id)
+        [Test]
+        public void LevelTextShowsTheTraitLevelOutOfFive()
         {
-            Path.TryGet(id, out var node);
-            return node;
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
+            loop.CompleteActivity("garden");
+            loop.CompleteActivity("fishing");
+            loop.ChooseSubclass("runedancer_trait_1");
+
+            Assert.That(SubclassView.Level(loop.State.Ascendancy, Catalog), Does.Contain("2").And.Contain("5"));
         }
     }
 }

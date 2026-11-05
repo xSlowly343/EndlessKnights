@@ -80,36 +80,32 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void NotablesWaitingForTheirMechanicCanBeLocked()
+        public void ChoicesWaitForThePathAndForEachOpenFork()
         {
-            var catalog = AscendancyCatalog.Load(Valid.Replace("\"id\": \"s_notable\", \"type\": \"notable\"", "\"id\": \"s_notable\", \"type\": \"notable\", \"locked\": true"));
-            var state = new AscendancyState();
-            state.Complete("a");
-            state.Choose(catalog, "duelist", "s");
+            var loop = TypistLoop();
+            Assert.That(loop.State.Ascendancy.ChoicesWaiting(Catalog, 1), Is.Zero, "nothing before the first Path point");
 
-            Assert.That(state.Allocate(catalog, "s_small"), Is.EqualTo(AllocationResult.Allocated));
-            Assert.That(state.Allocate(catalog, "s_notable"), Is.EqualTo(AllocationResult.Locked));
+            loop.CompleteActivity("garden");
+            Assert.That(loop.State.Ascendancy.ChoicesWaiting(Catalog, 1), Is.EqualTo(1), "the Path itself");
+
+            loop.ChooseSubclass("duelist_trait_1");
+            Assert.That(loop.State.Ascendancy.ChoicesWaiting(Catalog, 44), Is.Zero);
+            Assert.That(loop.State.Ascendancy.ChoicesWaiting(Catalog, 75), Is.EqualTo(3));
+
+            loop.State.HeroLevel = 75;
+            var fork = Catalog.SubclassesOf("duelist")[0].Trait!.Forks[0];
+            Assert.That(loop.PickTraitFork(fork.Choices[1].Id), Is.EqualTo(TraitForkResult.Picked));
+            Assert.That(loop.State.Ascendancy.ChoicesWaiting(Catalog, 75), Is.EqualTo(2));
         }
 
         [Test]
-        public void TwoKeystonesOnOnePathAreRefused()
-        {
-            var json = Valid.Replace("\"id\": \"s_small\", \"type\": \"small\"", "\"id\": \"s_small\", \"type\": \"keystone\"")
-                .Replace("\"id\": \"s_notable\", \"type\": \"notable\"", "\"id\": \"s_notable\", \"type\": \"keystone\"");
-
-            var error = Assert.Throws<ContentException>(() => AscendancyCatalog.Load(json))!;
-
-            Assert.That(error.Message, Does.Contain("more than one keystone"));
-        }
-
-        [Test]
-        public void FreeChangeOnceADayResetsTheSubclassNodes()
+        public void FreeChangeOnceADayResetsTheForks()
         {
             var loop = UnlockedTypist("garden", "fishing");
             loop.ChooseSubclass("duelist_trait_1");
             Assert.That(loop.ChangeSubclassFree("duelist_trait_2", Day), Is.EqualTo(SubclassResult.Chosen));
             Assert.That(loop.State.Ascendancy.Subclass, Is.EqualTo("duelist_trait_2"));
-            Assert.That(loop.State.Ascendancy.Allocated, Is.Empty);
+            Assert.That(loop.State.Ascendancy.ForkPicks, Is.Empty);
             Assert.That(loop.ChangeSubclassFree("duelist_trait_1", Day + Day / 2), Is.EqualTo(SubclassResult.NotYet));
             Assert.That(loop.ChangeSubclassFree("duelist_trait_1", 2 * Day), Is.EqualTo(SubclassResult.Chosen));
         }
@@ -146,7 +142,6 @@ namespace Game.Core.Tests.Build
             var loaded = SaveCodec.Decode(SaveCodec.Encode(loop.State, clock), TestWorld.Data).State;
 
             Assert.That(loaded.Ascendancy.Subclass, Is.EqualTo("duelist_trait_1"));
-            Assert.That(loaded.Ascendancy.Allocated, Is.Empty);
             Assert.That(loaded.Ascendancy.CompletedActivities, Is.EquivalentTo(new[] { "garden", "fishing" }));
             Assert.That(loaded.Ascendancy.LastFreeChangeUnixMs, Is.EqualTo(Day));
         }
@@ -157,7 +152,6 @@ namespace Game.Core.Tests.Build
             var save = SaveCodec.Decode(TestData.ReadSaveFixture("save_v6.json"), TestWorld.Data);
 
             Assert.That(save.State.Ascendancy.Subclass, Is.Null);
-            Assert.That(save.State.Ascendancy.Allocated, Is.Empty);
         }
 
         private const string Valid = @"{
@@ -165,13 +159,7 @@ namespace Game.Core.Tests.Build
   ""activities"": [{ ""id"": ""a"", ""name"": { ""ru"": ""А"", ""en"": ""A"" } }],
   ""change"": { ""freeEveryHours"": 24, ""crystalCost"": 100, ""freeClassChanges"": 1 },
   ""subclasses"": [
-    { ""id"": ""s"", ""class"": ""duelist"", ""name"": { ""ru"": ""С"", ""en"": ""S"" },
-      ""nodes"": [
-        { ""id"": ""s_start"", ""type"": ""start"", ""x"": 0, ""y"": 0, ""name"": { ""ru"": ""С"", ""en"": ""S"" } },
-        { ""id"": ""s_small"", ""type"": ""small"", ""x"": 0, ""y"": 1, ""name"": { ""ru"": ""М"", ""en"": ""M"" } },
-        { ""id"": ""s_notable"", ""type"": ""notable"", ""x"": 0, ""y"": 2, ""name"": { ""ru"": ""Н"", ""en"": ""N"" } }
-      ],
-      ""links"": [[""s_start"", ""s_small""], [""s_small"", ""s_notable""]] }
+    { ""id"": ""s"", ""class"": ""duelist"", ""name"": { ""ru"": ""С"", ""en"": ""S"" } }
   ]
 }";
 
@@ -180,14 +168,11 @@ namespace Game.Core.Tests.Build
         {
             var catalog = AscendancyCatalog.Load(Valid);
 
-            Assert.That(catalog.Subclasses.Single().Nodes.Count, Is.EqualTo(3));
+            Assert.That(catalog.Subclasses.Single().Id, Is.EqualTo("s"));
         }
 
-        [TestCase("\"type\": \"small\"", "\"type\": \"mastery\"", "unknown subclass node type 'mastery'")]
-        [TestCase("\"type\": \"small\"", "\"type\": \"start\"", "subclass 's' has two start nodes")]
-        [TestCase("[\"s_small\", \"s_notable\"]", "[\"s_small\", \"s_small\"]", "node 's_small' is linked to itself")]
-        [TestCase(", [\"s_small\", \"s_notable\"]", "", "node 's_notable' cannot be reached from the start 's_start'")]
-        [TestCase("\"id\": \"s_notable\"", "\"id\": \"s_small\"", "node id 's_small' is used twice")]
+        [TestCase("\"name\": { \"ru\": \"С\", \"en\": \"S\" } }", "\"name\": { \"ru\": \"С\", \"en\": \"S\" }, \"nodes\": [] }", "subclass 's' has 'nodes'")]
+        [TestCase("\"name\": { \"ru\": \"С\", \"en\": \"S\" } }", "\"name\": { \"ru\": \"С\", \"en\": \"S\" }, \"links\": [] }", "subclass 's' has 'links'")]
         [TestCase("\"activities\": [{ \"id\": \"a\", \"name\": { \"ru\": \"А\", \"en\": \"A\" } }]", "\"activities\": []", "at least one activity is required")]
         public void BrokenFilesAreReported(string original, string broken, string message)
         {
@@ -196,6 +181,14 @@ namespace Game.Core.Tests.Build
             var error = Assert.Throws<ContentException>(() => AscendancyCatalog.Load(json))!;
 
             Assert.That(error.Message, Does.Contain(message));
+        }
+
+        [Test]
+        public void TheShippedPathsHaveNoNodeTree()
+        {
+            var json = TestData.ReadGameDataFile(AscendancyCatalog.FileName);
+
+            Assert.That(json, Does.Not.Contain("\"nodes\"").And.Not.Contain("\"links\""));
         }
 
         [Test]

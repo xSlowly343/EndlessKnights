@@ -9,13 +9,11 @@ namespace Game.Core.Build
     {
         private const int ActivityCapacity = 32;
 
-        private readonly HashSet<string> _allocated = new HashSet<string>(StringComparer.Ordinal);
         private readonly HashSet<string> _activities = new HashSet<string>(ActivityCapacity, StringComparer.Ordinal);
         private readonly HashSet<string> _forkPicks = new HashSet<string>(StringComparer.Ordinal);
 
         public string? Subclass { get; private set; }
         public long LastFreeChangeUnixMs { get; set; }
-        public IReadOnlyCollection<string> Allocated => _allocated;
         public IReadOnlyCollection<string> CompletedActivities => _activities;
         public IReadOnlyCollection<string> ForkPicks => _forkPicks;
 
@@ -26,6 +24,16 @@ namespace Game.Core.Build
             Trait(catalog) == null ? 0 : System.Math.Min(TraitDef.MaxLevel, PointsEarned(catalog));
 
         public bool Picked(string optionId) => _forkPicks.Contains(optionId);
+
+        private bool PickedAny(TraitFork fork)
+        {
+            foreach (var choice in fork.Choices)
+            {
+                if (_forkPicks.Contains(choice.Id))
+                    return true;
+            }
+            return false;
+        }
 
         public Game.Core.Party.PartyGiveMode PartyMode(AscendancyCatalog catalog)
         {
@@ -74,9 +82,23 @@ namespace Game.Core.Build
             return points;
         }
 
-        public int PointsLeft(AscendancyCatalog catalog) => PointsEarned(catalog) - _allocated.Count;
-
         public bool Unlocked(AscendancyCatalog catalog) => PointsEarned(catalog) > 0;
+
+        public int ChoicesWaiting(AscendancyCatalog catalog, int heroLevel)
+        {
+            if (!Unlocked(catalog))
+                return 0;
+            var trait = Trait(catalog);
+            if (Subclass == null || trait == null)
+                return Subclass == null ? 1 : 0;
+            var waiting = 0;
+            foreach (var fork in trait.Forks)
+            {
+                if (heroLevel >= fork.HeroLevel && !PickedAny(fork))
+                    waiting++;
+            }
+            return waiting;
+        }
 
         public bool Complete(string activityId) => _activities.Add(activityId);
 
@@ -112,74 +134,7 @@ namespace Game.Core.Build
         public void Reset()
         {
             Subclass = null;
-            _allocated.Clear();
             _forkPicks.Clear();
-        }
-
-        public AllocationResult Allocate(AscendancyCatalog catalog, string nodeId)
-        {
-            var check = Check(catalog, nodeId);
-            if (check == AllocationResult.Allocated)
-                _allocated.Add(nodeId);
-            return check;
-        }
-
-        public bool IsAllocated(string nodeId) => _allocated.Contains(nodeId);
-
-        public bool CanRemove(AscendancyCatalog catalog, string nodeId)
-        {
-            if (!_allocated.Contains(nodeId) || Subclass == null || !catalog.TryGet(Subclass, out var subclass))
-                return false;
-            var reached = new HashSet<string>(StringComparer.Ordinal);
-            var pending = new Stack<TreeNodeDef>();
-            pending.Push(subclass.Start);
-            while (pending.Count > 0)
-            {
-                foreach (var neighbour in pending.Pop().Neighbours)
-                {
-                    if (neighbour.Id != nodeId && _allocated.Contains(neighbour.Id) && reached.Add(neighbour.Id))
-                        pending.Push(neighbour);
-                }
-            }
-            return reached.Count == _allocated.Count - 1;
-        }
-
-        public bool Remove(AscendancyCatalog catalog, string nodeId)
-        {
-            if (!CanRemove(catalog, nodeId))
-                return false;
-            _allocated.Remove(nodeId);
-            return true;
-        }
-
-        public AllocationResult Check(AscendancyCatalog catalog, string nodeId)
-        {
-            if (Subclass == null || !catalog.TryGet(Subclass, out var subclass))
-                return AllocationResult.Locked;
-            if (!subclass.TryGet(nodeId, out var node))
-                return AllocationResult.UnknownNode;
-            if (_allocated.Contains(nodeId) || node.Type == TreeNodeType.Start)
-                return AllocationResult.AlreadyAllocated;
-            if (node.Locked)
-                return AllocationResult.Locked;
-            if (PointsLeft(catalog) <= 0)
-                return AllocationResult.NoPoints;
-            if (!TouchesAllocated(subclass, node))
-                return AllocationResult.NotConnected;
-            return AllocationResult.Allocated;
-        }
-
-        public IReadOnlyList<TreeNodeDef> Allocatable(AscendancyCatalog catalog)
-        {
-            var allocatable = new List<TreeNodeDef>();
-            if (Subclass == null || !catalog.TryGet(Subclass, out var subclass))
-                return allocatable;
-            foreach (var node in subclass.Nodes)
-            {
-                if (!_allocated.Contains(node.Id) && !node.Locked && node.Type != TreeNodeType.Start && TouchesAllocated(subclass, node))
-                    allocatable.Add(node);
-            }
-            return allocatable;
         }
 
         public IReadOnlyList<Modifier> Modifiers(AscendancyCatalog catalog)
@@ -187,23 +142,14 @@ namespace Game.Core.Build
             var modifiers = new List<Modifier>();
             if (Subclass == null || !catalog.TryGet(Subclass, out var subclass))
                 return modifiers;
-            modifiers.AddRange(subclass.Start.Modifiers);
             if (subclass.Trait is { } trait)
                 AddTrait(trait, TraitLevel(catalog), modifiers);
-            foreach (var id in _allocated)
-            {
-                if (subclass.TryGet(id, out var node))
-                    modifiers.AddRange(node.Modifiers);
-            }
             return modifiers;
         }
 
-        public void Restore(string? subclass, IEnumerable<string> allocated, IEnumerable<string> activities, IEnumerable<string>? forkPicks = null)
+        public void Restore(string? subclass, IEnumerable<string> activities, IEnumerable<string>? forkPicks = null)
         {
             Subclass = subclass;
-            _allocated.Clear();
-            foreach (var id in allocated)
-                _allocated.Add(id);
             _forkPicks.Clear();
             if (forkPicks != null)
             {
@@ -221,7 +167,6 @@ namespace Game.Core.Build
             if (check != SubclassResult.Chosen)
                 return check;
             Subclass = subclassId;
-            _allocated.Clear();
             _forkPicks.Clear();
             return SubclassResult.Chosen;
         }
@@ -250,16 +195,6 @@ namespace Game.Core.Build
             if (!string.Equals(subclass.HeroClass, heroClass, StringComparison.Ordinal))
                 return SubclassResult.WrongClass;
             return SubclassResult.Chosen;
-        }
-
-        private bool TouchesAllocated(SubclassDef subclass, TreeNodeDef node)
-        {
-            foreach (var neighbour in node.Neighbours)
-            {
-                if (ReferenceEquals(neighbour, subclass.Start) || _allocated.Contains(neighbour.Id))
-                    return true;
-            }
-            return false;
         }
     }
 }

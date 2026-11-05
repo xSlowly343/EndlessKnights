@@ -32,9 +32,7 @@
           {"level": 60, "options": [{"id": "runedancer_trait_1_f60a", "name": {"ru": "Рифма", "en": "Rhyme"}, "text": {"ru": "Слово целиком повторяется на следующем враге очереди, но печать держится 2 с, а не 4", "en": "A Word repeats in full on the next enemy in the queue, but the seal lasts 2 s instead of 4"}, "modifiers": [{"stat": "runeRhyme", "kind": "flat", "value": 1}, {"stat": "runeSealSeconds", "kind": "flat", "value": -2}]}, {"id": "runedancer_trait_1_f60b", "name": {"ru": "Вязь", "en": "Weave"}, "text": {"ru": "Слово не бьёт, а оплетает врага вязью: печать держится 6 с, и враг получает ещё +25% урона", "en": "A Word does not strike but weaves the enemy: the seal lasts 6 s and the enemy takes another 25% damage"}, "modifiers": [{"stat": "runeWeave", "kind": "flat", "value": 0.4}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.25, "while": "runeSeal"}]}]},
           {"level": 75, "options": [{"id": "runedancer_trait_1_f75a", "name": {"ru": "Имя руны", "en": "True Name"}, "text": {"ru": "Удар, который кладёт первую руну Слова, ×3, но Слову нужна ещё одна руна", "en": "The hit that lays the first rune of a Word deals ×3, but a Word needs one more rune"}, "modifiers": [{"stat": "runeFirstRune", "kind": "flat", "value": 2}, {"stat": "runeWordLength", "kind": "flat", "value": 1}]}, {"id": "runedancer_trait_1_f75b", "name": {"ru": "Немое письмо", "en": "Silent Script"}, "text": {"ru": "Удары сами не ранят, зато Слово ×4 и сразу перезаряжает скилл ПКМ; всё, что она даёт отряду, получают только союзники, зато в 1,5 раза больше", "en": "Hits deal no damage, but a Word is ×4 and refreshes the right-click skill at once; all she gives the party goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "runeSilent", "kind": "flat", "value": 1}, {"stat": "runeWord", "kind": "more", "value": 3}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "runedancer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Танец рун", "en": "Rune Dance"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "runedancer_trait_2",
@@ -56,9 +54,7 @@
           {"level": 60, "options": [{"id": "runedancer_trait_2_f60a", "name": {"ru": "Остриём вниз", "en": "Point Down"}, "text": {"ru": "Кинжалы сами падают по одному раз в секунду, но каждый ×0,75", "en": "Daggers fall on their own, one per second, but each deals ×0.75"}, "modifiers": [{"stat": "bladeFall", "kind": "flat", "value": 1}, {"stat": "bladeDamage", "kind": "more", "value": -0.25}]}, {"id": "runedancer_trait_2_f60b", "name": {"ru": "Тяжёлая сталь", "en": "Heavy Steel"}, "text": {"ru": "Не больше 6 кинжалов, зато каждый ×3", "en": "No more than 6 daggers, but each deals ×3"}, "modifiers": [{"stat": "bladeMax", "kind": "flat", "value": -6}, {"stat": "bladeDamage", "kind": "more", "value": 2}]}]},
           {"level": 75, "options": [{"id": "runedancer_trait_2_f75a", "name": {"ru": "Стена клинков", "en": "Wall of Blades"}, "text": {"ru": "До 20 кинжалов, но кинжал появляется только на каждом 4-м ударе; кинжалы висят над всем отрядом: союзники получают полный бафф", "en": "Up to 20 daggers, but a dagger comes only on every 4th hit; the daggers hang over the whole party: allies get the full buff"}, "modifiers": [{"stat": "bladeMax", "kind": "flat", "value": 8}, {"stat": "bladeEvery", "kind": "flat", "value": 1}], "partyMode": "together"}, {"id": "runedancer_trait_2_f75b", "name": {"ru": "Сотня рук", "en": "Hundred Hands"}, "text": {"ru": "«Дождь клинков» обрушивается сам, как только кинжалов до предела, но вручную его уже не вызвать", "en": "Blade Rain falls by itself as soon as the daggers reach the limit, but it can no longer be cast by hand"}, "modifiers": [{"stat": "bladeAutoRain", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "runedancer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Зеркальные клинки", "en": "Mirror Blades"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "runedancer_trait_3",
@@ -80,9 +76,7 @@
           {"level": 60, "options": [{"id": "runedancer_trait_3_f60a", "name": {"ru": "Долгий вихрь", "en": "Long Whirl"}, "text": {"ru": "Вихрь крутится ещё 3 с дольше после остановки, но предел кинжалов на 2 меньше", "en": "The whirl keeps spinning 3 s longer after you stop, but holds 2 fewer daggers"}, "modifiers": [{"stat": "whirlLinger", "kind": "flat", "value": 3}, {"stat": "whirlMax", "kind": "flat", "value": -2}]}, {"id": "runedancer_trait_3_f60b", "name": {"ru": "Шквал", "en": "Squall"}, "text": {"ru": "Вихрь гаснет сразу, как стихают удары, зато кинжалы бьют вдвое чаще", "en": "The whirl dies out as soon as the hits stop, but its daggers strike twice as often"}, "modifiers": [{"stat": "whirlGale", "kind": "flat", "value": 1}]}]},
           {"level": 75, "options": [{"id": "runedancer_trait_3_f75a", "name": {"ru": "Око бури", "en": "Eye of the Storm"}, "text": {"ru": "На пределе кинжалы бьют вдвое сильнее, но в целом кинжалы ×0,85; вихрь кружит над всем отрядом: союзники получают полный бафф", "en": "At the cap the daggers hit twice as hard, but daggers are ×0.85 overall; the whirl spins over the whole party: allies get the full buff"}, "modifiers": [{"stat": "whirlEye", "kind": "flat", "value": 1}, {"stat": "whirlDamage", "kind": "more", "value": -0.15}], "partyMode": "together"}, {"id": "runedancer_trait_3_f75b", "name": {"ru": "Буря в ладони", "en": "Storm in the Palm"}, "text": {"ru": "Не больше 5 кинжалов, и сами они не бьют, зато каждый удар героини бьёт всеми кинжалами сразу", "en": "No more than 5 daggers and they do not strike on their own, but every hit of the heroine strikes with all of them"}, "modifiers": [{"stat": "whirlPalm", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "runedancer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Вихрь", "en": "Whirlwind"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "duelist_trait_1",
@@ -104,9 +98,7 @@
           {"level": 60, "options": [{"id": "duelist_trait_1_f60a", "name": {"ru": "Двойной выпад", "en": "Double Lunge"}, "text": {"ru": "Выпад бьёт дважды, каждый раз ×0,8, и Чести больше не даёт", "en": "A Lunge strikes twice at ×0.8 each and no longer gives Honor"}, "modifiers": [{"stat": "breachDouble", "kind": "flat", "value": 1}]}, {"id": "duelist_trait_1_f60b", "name": {"ru": "Обнажённая слабость", "en": "Exposed Weakness"}, "text": {"ru": "Выпады больше не усиливают удар, зато каждый вешает на врага +5% получаемого урона на 4 с, до +40%", "en": "Lunges no longer empower the hit, but each makes the enemy take 5% more damage for 4 s, up to 40%"}, "modifiers": [{"stat": "breachExpose", "kind": "flat", "value": 0.05}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.05, "after": {"signal": "lunge", "seconds": 4, "stacks": 8}}]}]},
           {"level": 75, "options": [{"id": "duelist_trait_1_f75a", "name": {"ru": "Чтение врага", "en": "Reading the Foe"}, "text": {"ru": "Брешь загорается на 1 с раньше и бонус Выпада ×1,5, но удары мимо бреши ×0,5", "en": "The breach opens 1 s sooner and the Lunge bonus is ×1.5, but hits outside the breach deal ×0.5"}, "modifiers": [{"stat": "breachEvery", "kind": "flat", "value": -1}, {"stat": "breachRead", "kind": "flat", "value": 1}, {"stat": "breachLunge", "kind": "more", "value": 0.5}]}, {"id": "duelist_trait_1_f75b", "name": {"ru": "Вечная брешь", "en": "Endless Opening"}, "text": {"ru": "Брешь открыта всегда, но бонус Выпада ×0,2 и Выпады не дают Чести; всё, что она даёт отряду, получают только союзники, зато в 1,5 раза больше", "en": "The breach is always open, but the Lunge bonus is ×0.2 and Lunges give no Honor; all she gives the party goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "breachAlways", "kind": "flat", "value": 1}, {"stat": "breachLunge", "kind": "more", "value": -0.8}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "duelist_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сияющая брешь", "en": "Shining Breach"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "duelist_trait_2",
@@ -128,9 +120,7 @@
           {"level": 60, "options": [{"id": "duelist_trait_2_f60a", "name": {"ru": "Глубокое туше", "en": "Deep Touché"}, "text": {"ru": "Порог добивания 15% (босс 7,5%), но Туше нужно 6 отметин", "en": "The kill threshold is 15% (7.5% for a boss), but a Touché needs 6 marks"}, "modifiers": [{"stat": "toucheExecute", "kind": "flat", "value": 0.03}, {"stat": "toucheMarks", "kind": "flat", "value": 1}]}, {"id": "duelist_trait_2_f60b", "name": {"ru": "Публичная дуэль", "en": "Public Duel"}, "text": {"ru": "Туше не бьёт и не добивает, зато отряд +30% урона 5 с", "en": "A Touché neither strikes nor executes, but the party deals 30% more damage for 5 s"}, "modifiers": [{"stat": "touchePublic", "kind": "flat", "value": 1}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.3, "after": {"signal": "touche", "seconds": 5, "stacks": 1}}]}]},
           {"level": 75, "options": [{"id": "duelist_trait_2_f75a", "name": {"ru": "Незаконченная дуэль", "en": "Unfinished Duel"}, "text": {"ru": "Отметины не сгорают при смене врага, но Туше ×0,7; дуэль идёт на глазах у всего отряда: союзники получают полный бафф", "en": "Marks survive a new enemy, but a Touché is ×0.7; the duel is fought before the whole party: allies get the full buff"}, "modifiers": [{"stat": "toucheKeep", "kind": "flat", "value": 1}, {"stat": "touchePower", "kind": "more", "value": -0.3}], "partyMode": "together"}, {"id": "duelist_trait_2_f75b", "name": {"ru": "Последнее слово", "en": "Final Word"}, "text": {"ru": "Порог добивания вдвое выше, но удары −25% урона", "en": "The kill threshold is doubled, but hits deal 25% less damage"}, "modifiers": [{"stat": "toucheExecute", "kind": "more", "value": 1}, {"stat": "toucheOffPenalty", "kind": "flat", "value": 0.25}]}]}
         ]
-      },
-      "nodes": [{"id": "duelist_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Правила дуэли", "en": "Rules of the Duel"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "duelist_trait_3",
@@ -152,9 +142,7 @@
           {"level": 60, "options": [{"id": "duelist_trait_3_f60a", "name": {"ru": "Равные силы", "en": "Equal Forces"}, "text": {"ru": "Фантом бьёт на 25% сильнее, но сама Дуэлянтка слабее уже на 40%", "en": "The phantom strikes 25% harder, but the Duelist herself is now 40% weaker"}, "modifiers": [{"stat": "phantomPower", "kind": "more", "value": 0.25}, {"stat": "phantomSelfPenalty", "kind": "flat", "value": 0.2}]}, {"id": "duelist_trait_3_f60b", "name": {"ru": "Отвлекающий манёвр", "en": "Feint"}, "text": {"ru": "Фантом не бьёт, зато пока она в бою, отряд +10% шанса крита", "en": "The phantom does not strike, but while she fights the party gets 10% critical chance"}, "modifiers": [{"stat": "phantomFeint", "kind": "flat", "value": 1}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.1, "while": "phantomFighting"}]}]},
           {"level": 75, "options": [{"id": "duelist_trait_3_f75a", "name": {"ru": "Две секундантки", "en": "Two Seconds"}, "text": {"ru": "Фантомов два, но вступают они только при 6 ударах в секунду; второй фантом встаёт рядом с отрядом: союзники получают полный бафф", "en": "There are two phantoms, but they join only at 6 hits a second; the second phantom stands by the party: allies get the full buff"}, "modifiers": [{"stat": "phantomTwin", "kind": "flat", "value": 1}, {"stat": "phantomThreshold", "kind": "flat", "value": 2}], "partyMode": "together"}, {"id": "duelist_trait_3_f75b", "name": {"ru": "Смена ролей", "en": "Role Swap"}, "text": {"ru": "Твои удары сами не ранят, зато фантом всегда в бою и бьёт ×2,5", "en": "Your hits deal no damage themselves, but the phantom is always in the fight and strikes ×2.5"}, "modifiers": [{"stat": "phantomSwap", "kind": "flat", "value": 1}, {"stat": "phantomPower", "kind": "more", "value": 1.5}]}]}
         ]
-      },
-      "nodes": [{"id": "duelist_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Фантомная секундантка", "en": "Phantom Second"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "windshot_trait_1",
@@ -176,9 +164,7 @@
           {"level": 60, "options": [{"id": "windshot_trait_1_f60a", "name": {"ru": "Сквозная стрела", "en": "Piercing Arrow"}, "text": {"ru": "Выстрел бьёт и следующего в очереди с той же силой, но тратит на 10 Натяжения больше", "en": "A shot also hits the next enemy in the queue just as hard, but spends 10 more Tension"}, "modifiers": [{"stat": "shotPierce", "kind": "flat", "value": 1}, {"stat": "shotSpend", "kind": "flat", "value": 10}]}, {"id": "windshot_trait_1_f60b", "name": {"ru": "Возврат ветра", "en": "Returning Wind"}, "text": {"ru": "Убийство выстрелом возвращает потраченное Натяжение, но сила выстрела ×0,8", "en": "A kill by a shot gives back the Tension it spent, but the shot's power is ×0.8"}, "modifiers": [{"stat": "shotRefund", "kind": "flat", "value": 1}, {"stat": "shotPower", "kind": "more", "value": -0.2}]}]},
           {"level": 75, "options": [{"id": "windshot_trait_1_f75a", "name": {"ru": "Стрела бури", "en": "Storm Arrow"}, "text": {"ru": "Выстрел на полном Натяжении ×2, но тратит всё Натяжение", "en": "A shot at full Tension deals ×2, but spends all the Tension"}, "modifiers": [{"stat": "shotStorm", "kind": "flat", "value": 1}]}, {"id": "windshot_trait_1_f75b", "name": {"ru": "Терпеливая лучница", "en": "Patient Archer"}, "text": {"ru": "Выстрелы больше не идут от ударов: лук стреляет сам раз в 3 с, ×1,5; лучница прикрывает весь отряд: союзники получают полный бафф", "en": "Shots no longer come from hits: the bow fires by itself every 3 s, ×1.5; the archer covers the whole party: allies get the full buff"}, "modifiers": [{"stat": "shotAuto", "kind": "flat", "value": 1}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "windshot_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Длинный выстрел", "en": "Long Shot"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "windshot_trait_2",
@@ -200,9 +186,7 @@
           {"level": 60, "options": [{"id": "windshot_trait_2_f60a", "name": {"ru": "Мёртвый штиль", "en": "Dead Calm"}, "text": {"ru": "Штраф крита в штиль вдвое меньше, но вне штиля удары ×0,8", "en": "The critical penalty during a calm is halved, but outside it hits deal ×0.8"}, "modifiers": [{"stat": "calmDead", "kind": "flat", "value": 1}]}, {"id": "windshot_trait_2_f60b", "name": {"ru": "Первая стрела", "en": "First Arrow"}, "text": {"ru": "Первый удар штиля ×4, но ждать штиль на 1 с дольше", "en": "The first hit of a calm deals ×4, but the calm takes 1 s longer to come"}, "modifiers": [{"stat": "calmFirst", "kind": "flat", "value": 1}, {"stat": "calmStill", "kind": "flat", "value": 1}]}]},
           {"level": 75, "options": [{"id": "windshot_trait_2_f75a", "name": {"ru": "Затишье перед бурей", "en": "Lull Before the Storm"}, "text": {"ru": "Когда штиль ломается, 5 следующих ударов ×3, но урон крита в штиль ещё −10%", "en": "When a calm breaks, the next 5 hits deal ×3, but critical damage in a calm is another 10% lower"}, "modifiers": [{"stat": "calmStorm", "kind": "flat", "value": 1}, {"stat": "calmPenalty", "kind": "flat", "value": 0.1}]}, {"id": "windshot_trait_2_f75b", "name": {"ru": "Вечный штиль", "en": "Endless Calm"}, "text": {"ru": "Штиль всегда, но урон крита в нём −50%; тишина накрывает весь отряд: всё, что она даёт отряду, получают только союзники, зато в 1,5 раза больше", "en": "The calm never ends, but crit damage in it is −50%; the stillness covers the party: all she gives goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "calmEternal", "kind": "flat", "value": 1}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "windshot_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Штиль", "en": "Calm"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "windshot_trait_3",
@@ -224,9 +208,7 @@
           {"level": 60, "options": [{"id": "windshot_trait_3_f60a", "name": {"ru": "Буря", "en": "Gale"}, "text": {"ru": "Порывы не тратятся по одному: на 5 порывах — буря, 8 с каждый удар пускает вторую стрелу", "en": "Gusts are not spent one by one: at 5 gusts a gale rises, and for 8 s every hit fires a second arrow"}, "modifiers": [{"stat": "gustStorm", "kind": "flat", "value": 1}]}, {"id": "windshot_trait_3_f60b", "name": {"ru": "Штормовое предупреждение", "en": "Storm Warning"}, "text": {"ru": "Бафф отряду от порыва вдвое, но свои стрелы порыва ×0,7", "en": "The party buff of a gust is doubled, but her own gust arrows are ×0.7"}, "modifiers": [{"stat": "gustPower", "kind": "more", "value": -0.3}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.1, "after": {"signal": "gust", "seconds": 5, "stacks": 1}}, {"to": "party", "stat": "resourceGain", "kind": "increased", "value": 0.05, "after": {"signal": "gust", "seconds": 5, "stacks": 1}}]}]},
           {"level": 75, "options": [{"id": "windshot_trait_3_f75a", "name": {"ru": "Ураган", "en": "Hurricane"}, "text": {"ru": "Стрелы порыва бьют и следующего в очереди, но порыв короче на 2 удара", "en": "Gust arrows also hit the next enemy in the queue, but a gust lasts 2 hits less"}, "modifiers": [{"stat": "gustQueue", "kind": "flat", "value": 1}, {"stat": "gustHits", "kind": "flat", "value": -2}]}, {"id": "windshot_trait_3_f75b", "name": {"ru": "Ветряная мельница", "en": "Windmill"}, "text": {"ru": "Порыв приходит и сам раз в 6 с, но от шага — вдвое реже; мельница крутится для всего отряда: союзники получают полный бафф", "en": "A gust also comes by itself every 6 s, but twice as rarely from steps; the mill turns for the whole party: allies get the full buff"}, "modifiers": [{"stat": "gustTimer", "kind": "flat", "value": 1}, {"stat": "gustPx", "kind": "flat", "value": 3000}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "windshot_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Попутный ветер", "en": "Tailwind"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "shardcaller_trait_1",
@@ -248,9 +230,7 @@
           {"level": 60, "options": [{"id": "shardcaller_trait_1_f60a", "name": {"ru": "Эхо резонанса", "en": "Resonant Echo"}, "text": {"ru": "После взрыва половина кристаллов остаётся, но взрыв ×0,7", "en": "Half of the crystals stay after a burst, but the burst deals ×0.7"}, "modifiers": [{"stat": "shardEcho", "kind": "flat", "value": 1}, {"stat": "shardPower", "kind": "more", "value": -0.3}]}, {"id": "shardcaller_trait_1_f60b", "name": {"ru": "Шрапнель", "en": "Shrapnel"}, "text": {"ru": "Взрыв бьёт и следующего в очереди с той же силой, но кристалл даёт отряду на 1% меньше", "en": "A burst also hits the next queued enemy just as hard, but a crystal gives the party 1% less"}, "modifiers": [{"stat": "shardQueue", "kind": "flat", "value": 1}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": -0.01, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}]},
           {"level": 75, "options": [{"id": "shardcaller_trait_1_f75a", "name": {"ru": "Друза", "en": "Druse"}, "text": {"ru": "Кристаллов до 14, но каждый делает врага уязвимее на 0,5% меньше; кристаллы видны всему отряду: союзники получают полный бафф", "en": "Up to 14 crystals, but each makes the enemy 0.5% less vulnerable; the crystals are seen by the whole party: allies get the full buff"}, "modifiers": [{"stat": "shardMax", "kind": "flat", "value": 4}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": -0.005, "per": {"signal": "crystals", "step": 1, "cap": 14}}], "partyMode": "together"}, {"id": "shardcaller_trait_1_f75b", "name": {"ru": "Обвал", "en": "Rockslide"}, "text": {"ru": "На полном числе кристаллы взрываются сами, но взрыв ×0,75", "en": "At full count the crystals burst by themselves, but the burst deals ×0.75"}, "modifiers": [{"stat": "shardAvalanche", "kind": "flat", "value": 1}, {"stat": "shardPower", "kind": "more", "value": -0.25}]}]}
         ]
-      },
-      "nodes": [{"id": "shardcaller_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Осколки", "en": "Shards"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "shardcaller_trait_2",
@@ -272,9 +252,7 @@
           {"level": 60, "options": [{"id": "shardcaller_trait_2_f60a", "name": {"ru": "Гигант", "en": "Giant"}, "text": {"ru": "Размер до 8, но кристаллов до 6", "en": "Size up to 8, but only up to 6 crystals"}, "modifiers": [{"stat": "gardenSize", "kind": "flat", "value": 3}, {"stat": "gardenMax", "kind": "flat", "value": -4}]}, {"id": "shardcaller_trait_2_f60b", "name": {"ru": "Звонкий сад", "en": "Ringing Garden"}, "text": {"ru": "Звон сада бьёт и следующего в очереди, но звон ×0,7", "en": "The garden's ring also hits the next queued enemy, but rings deal ×0.7"}, "modifiers": [{"stat": "gardenQueue", "kind": "flat", "value": 1}, {"stat": "gardenPower", "kind": "more", "value": -0.3}]}]},
           {"level": 75, "options": [{"id": "shardcaller_trait_2_f75a", "name": {"ru": "Пересадка", "en": "Transplant"}, "text": {"ru": "Сад переходит на нового врага, но растёт на 1 с медленнее; сад растёт для всего отряда: союзники получают полный бафф", "en": "The garden moves to the new enemy, but grows 1 s slower; the garden grows for the whole party: allies get the full buff"}, "modifiers": [{"stat": "gardenTransplant", "kind": "flat", "value": 1}, {"stat": "gardenGrow", "kind": "flat", "value": 1}], "partyMode": "together"}, {"id": "shardcaller_trait_2_f75b", "name": {"ru": "Цветение", "en": "Bloom"}, "text": {"ru": "На полном размере сад цветёт: звон ×5, и размер падает до 1", "en": "At full size the garden blooms: a ring ×5, and the size drops to 1"}, "modifiers": [{"stat": "gardenBloom", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "shardcaller_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Кристальный сад", "en": "Crystal Garden"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "shardcaller_trait_3",
@@ -296,9 +274,7 @@
           {"level": 60, "options": [{"id": "shardcaller_trait_3_f60a", "name": {"ru": "Долгая трещина", "en": "Long Crack"}, "text": {"ru": "Трещина держится 1,5 с, но приходит раз в 6 с", "en": "A crack lasts 1.5 s, but comes every 6 s"}, "modifiers": [{"stat": "shellCrack", "kind": "flat", "value": 0.5}, {"stat": "shellEvery", "kind": "flat", "value": 1}]}, {"id": "shardcaller_trait_3_f60b", "name": {"ru": "Чуткое стекло", "en": "Sensitive Glass"}, "text": {"ru": "Каждый крит приближает трещину на 0,5 с, но трещина ×0,85", "en": "Every critical hit brings the crack 0.5 s closer, but a crack deals ×0.85"}, "modifiers": [{"stat": "shellCritHaste", "kind": "flat", "value": 1}, {"stat": "shellPower", "kind": "more", "value": -0.15}]}]},
           {"level": 75, "options": [{"id": "shardcaller_trait_3_f75a", "name": {"ru": "Вдребезги", "en": "Shatter"}, "text": {"ru": "Каждая 5-я трещина ×2, но остальные слабее на 0,5", "en": "Every 5th crack is doubled, but the others are 0.5 weaker"}, "modifiers": [{"stat": "shellShatter", "kind": "flat", "value": 1}, {"stat": "shellPower", "kind": "flat", "value": -0.5}]}, {"id": "shardcaller_trait_3_f75b", "name": {"ru": "Стекло для всех", "en": "Glass for All"}, "text": {"ru": "Своя трещина ×0,75, зато всё, что она даёт отряду, получают только союзники, и в 1,5 раза больше", "en": "Her own crack is ×0.75, but all she gives the party goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "shellPower", "kind": "more", "value": -0.25}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "shardcaller_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Стеклянный панцирь", "en": "Glass Shell"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "alchemist_trait_1",
@@ -320,9 +296,7 @@
           {"level": 60, "options": [{"id": "alchemist_trait_1_f60a", "name": {"ru": "Цепная реакция", "en": "Chain Reaction"}, "text": {"ru": "Каждая смесь ещё и бьёт ×2, но реактив раз в 10 ударов", "en": "Every mix also hits ×2, but a reagent comes every 10 hits"}, "modifiers": [{"stat": "mixChain", "kind": "flat", "value": 1}, {"stat": "reagentHits", "kind": "flat", "value": 2}]}, {"id": "alchemist_trait_1_f60b", "name": {"ru": "Долгий раствор", "en": "Lasting Solution"}, "text": {"ru": "Действия смесей держатся вдвое дольше, но смеси на 20% слабее", "en": "Mix effects last twice as long, but mixes are 20% weaker"}, "modifiers": [{"stat": "mixLong", "kind": "flat", "value": 1}, {"stat": "mixPower", "kind": "more", "value": -0.2}]}]},
           {"level": 75, "options": [{"id": "alchemist_trait_1_f75a", "name": {"ru": "Удачный опыт", "en": "Lucky Experiment"}, "text": {"ru": "Каждая 5-я смесь срабатывает дважды, но смеси на 15% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Every 5th mix works twice, but mixes are 15% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "mixLucky", "kind": "flat", "value": 1}, {"stat": "mixPower", "kind": "more", "value": -0.15}], "partyMode": "support"}, {"id": "alchemist_trait_1_f75b", "name": {"ru": "Философский камень", "en": "Philosopher's Stone"}, "text": {"ru": "Смесь из трёх разных реактивов втрое сильнее, остальные на 30% слабее", "en": "A mix of three different reagents is three times stronger, the rest are 30% weaker"}, "modifiers": [{"stat": "mixStone", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "alchemist_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Смесь", "en": "Mixture"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "alchemist_trait_2",
@@ -344,9 +318,7 @@
           {"level": 60, "options": [{"id": "alchemist_trait_2_f60a", "name": {"ru": "До сердцевины", "en": "To the Core"}, "text": {"ru": "Когда сняты все 5 слоёв, враг получает ещё +25%, но слой за 36 ударов", "en": "When all 5 layers are off, the enemy takes another 25%, but a layer takes 36 hits"}, "modifiers": [{"stat": "solventCore", "kind": "flat", "value": 1}, {"stat": "layerHits", "kind": "flat", "value": 6}]}, {"id": "alchemist_trait_2_f60b", "name": {"ru": "Едкий пар", "en": "Caustic Steam"}, "text": {"ru": "Каждый её скилл растворяет как 5 ударов, но слои на 20% слабее", "en": "Each of her skills dissolves like 5 hits, but layers are 20% weaker"}, "modifiers": [{"stat": "solventSkills", "kind": "flat", "value": 1}, {"stat": "solventPower", "kind": "more", "value": -0.2}]}]},
           {"level": 75, "options": [{"id": "alchemist_trait_2_f75a", "name": {"ru": "Пары", "en": "Fumes"}, "text": {"ru": "Следующий враг выходит без одного слоя, но слои на 15% слабее", "en": "The next enemy comes without one layer, but layers are 15% weaker"}, "modifiers": [{"stat": "solventCarry", "kind": "flat", "value": 1}, {"stat": "solventPower", "kind": "more", "value": -0.15}]}, {"id": "alchemist_trait_2_f75b", "name": {"ru": "Кислотный дождь", "en": "Acid Rain"}, "text": {"ru": "Кислота достаётся всем союзникам сразу (в соло — на 50% дольше), но слой за 40 ударов; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Acid goes to every ally at once (solo — 50% longer), but a layer takes 40 hits; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "acidAll", "kind": "flat", "value": 1}, {"stat": "layerHits", "kind": "flat", "value": 10}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "alchemist_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Растворитель", "en": "Solvent"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "alchemist_trait_3",
@@ -368,9 +340,7 @@
           {"level": 60, "options": [{"id": "alchemist_trait_3_f60a", "name": {"ru": "Тройная доза", "en": "Triple Dose"}, "text": {"ru": "Каждый второй эликсир философский, но эликсиры на 25% слабее", "en": "Every second elixir is a philosopher's one, but elixirs are 25% weaker"}, "modifiers": [{"stat": "elixirDouble", "kind": "flat", "value": 1}, {"stat": "elixirPower", "kind": "more", "value": -0.25}]}, {"id": "alchemist_trait_3_f60b", "name": {"ru": "Твёрдая рука", "en": "Steady Hand"}, "text": {"ru": "Сама бьёт без штрафа, но эликсир раз в 70 ударов", "en": "She hits without the penalty, but an elixir comes every 70 hits"}, "modifiers": [{"stat": "elixirNoPenalty", "kind": "flat", "value": 1}, {"stat": "elixirHits", "kind": "flat", "value": 20}]}]},
           {"level": 75, "options": [{"id": "alchemist_trait_3_f75a", "name": {"ru": "Камень мудрецов", "en": "Sages' Stone"}, "text": {"ru": "Философский эликсир держится 8 с, но эликсир раз в 60 ударов; бафф отряду: себе и союзникам поровну", "en": "A philosopher's elixir lasts 8 s, but an elixir comes every 60 hits; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "elixirStone", "kind": "flat", "value": 1}, {"stat": "elixirHits", "kind": "flat", "value": 10}], "partyMode": "together"}, {"id": "alchemist_trait_3_f75b", "name": {"ru": "Угощение для всех", "en": "Treat for All"}, "text": {"ru": "Каждый эликсир достаётся всем союзникам, но на 40% слабее", "en": "Every elixir goes to every ally, but 40% weaker"}, "modifiers": [{"stat": "elixirAll", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "alchemist_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Эликсиры для друзей", "en": "Elixirs for Friends"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "minstrel_trait_1",
@@ -392,9 +362,7 @@
           {"level": 60, "options": [{"id": "minstrel_trait_1_f60a", "name": {"ru": "Бис", "en": "Encore"}, "text": {"ru": "Раз в бой припев повторяется сам, но припев ×1,7 вместо ×2", "en": "Once per fight the chorus repeats by itself, but the chorus is ×1.7 instead of ×2"}, "modifiers": [{"stat": "chorusEncore", "kind": "flat", "value": 1}, {"stat": "chorusBoost", "kind": "flat", "value": -0.3}]}, {"id": "minstrel_trait_1_f60b", "name": {"ru": "Громкий припев", "en": "Loud Chorus"}, "text": {"ru": "Припев ×2,5, но после припева все куплеты кончаются", "en": "The chorus is ×2.5, but after it every verse ends"}, "modifiers": [{"stat": "chorusBoost", "kind": "flat", "value": 0.5}, {"stat": "chorusSpend", "kind": "flat", "value": 1}]}]},
           {"level": 75, "options": [{"id": "minstrel_trait_1_f75a", "name": {"ru": "Хор", "en": "Choir"}, "text": {"ru": "Каждый союзник даёт +1 к пределу куплетов, но куплет звучит на 4 с меньше; она поёт хору: всё, что она даёт отряду, получают только союзники, зато в 1,5 раза больше", "en": "Each ally adds +1 to the verse limit, but a verse lasts 4 s less; she sings to the choir: all she gives goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "chorusChoir", "kind": "flat", "value": 1}, {"stat": "verseSeconds", "kind": "flat", "value": -4}], "partyMode": "support"}, {"id": "minstrel_trait_1_f75b", "name": {"ru": "Песня без конца", "en": "Endless Song"}, "text": {"ru": "Каждый куплет во время припева продлевает его на 4 с, но куплет на 30% слабее", "en": "Every verse during the chorus extends it by 4 s, but a verse is 30% weaker"}, "modifiers": [{"stat": "chorusEndless", "kind": "flat", "value": 1}, {"stat": "versePower", "kind": "more", "value": -0.3}]}]}
         ]
-      },
-      "nodes": [{"id": "minstrel_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Куплет и припев", "en": "Verse and Chorus"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "minstrel_trait_2",
@@ -416,9 +384,7 @@
           {"level": 60, "options": [{"id": "minstrel_trait_2_f60a", "name": {"ru": "Дуэт", "en": "Duet"}, "text": {"ru": "Звучат две мелодии сразу, но песня на 40% слабее", "en": "Two melodies play at once, but the song is 40% weaker"}, "modifiers": [{"stat": "songDuet", "kind": "flat", "value": 1}, {"stat": "songPower", "kind": "more", "value": -0.4}]}, {"id": "minstrel_trait_2_f60b", "name": {"ru": "Попурри", "en": "Medley"}, "text": {"ru": "Мелодия меняется каждые 25 ударов и при смене бьёт ×3, но песня на 30% слабее", "en": "The melody changes every 25 hits and strikes ×3 on a change, but the song is 30% weaker"}, "modifiers": [{"stat": "songHits", "kind": "flat", "value": -15}, {"stat": "songChangeHit", "kind": "flat", "value": 3}, {"stat": "songPower", "kind": "more", "value": -0.3}]}]},
           {"level": 75, "options": [{"id": "minstrel_trait_2_f75a", "name": {"ru": "Песня для всех", "en": "Song for Everyone"}, "text": {"ru": "Раз в 30 с на 5 с звучат все три мелодии вдвое громче, но мелодия меняется на 20 ударов позже", "en": "Every 30 s all three melodies play twice as loud for 5 s, but the melody changes 20 hits later"}, "modifiers": [{"stat": "songAll", "kind": "flat", "value": 1}, {"stat": "songHits", "kind": "flat", "value": 20}]}, {"id": "minstrel_trait_2_f75b", "name": {"ru": "Ангажемент", "en": "Engagement"}, "text": {"ru": "Мелодия меняется только скиллом, но песня на 60% сильнее; она поёт и себе: себе и отряду поровну", "en": "The melody changes only by a skill, but the song is 60% stronger; she sings for herself too: equally to her and the party"}, "modifiers": [{"stat": "songStill", "kind": "flat", "value": 1}, {"stat": "songPower", "kind": "more", "value": 0.6}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "minstrel_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Песня на заказ", "en": "Song on Request"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "minstrel_trait_3",
@@ -440,9 +406,7 @@
           {"level": 60, "options": [{"id": "minstrel_trait_3_f60a", "name": {"ru": "Кошмар", "en": "Nightmare"}, "text": {"ru": "Сон копит на 25% больше, но ноты пропадают со смертью врага", "en": "Sleep stores 25% more, but the notes vanish when the enemy dies"}, "modifiers": [{"stat": "sleepPower", "kind": "more", "value": 0.25}, {"stat": "sleepForget", "kind": "flat", "value": 1}]}, {"id": "minstrel_trait_3_f60b", "name": {"ru": "Беспокойный сон", "en": "Restless Sleep"}, "text": {"ru": "Враг засыпает от 4 нот, но спит 2 с", "en": "The enemy falls asleep at 4 notes, but sleeps 2 s"}, "modifiers": [{"stat": "sleepNotes", "kind": "flat", "value": -3}, {"stat": "sleepSeconds", "kind": "flat", "value": -2}]}]},
           {"level": 75, "options": [{"id": "minstrel_trait_3_f75a", "name": {"ru": "Сон наяву", "en": "Waking Dream"}, "text": {"ru": "Каждый бой с боссом начинается со сна на 8 с, но обычные враги от нот не засыпают; колыбельная звучит для отряда: всё, что она даёт отряду, получают только союзники, зато в 1,5 раза больше", "en": "Every boss fight starts with an 8 s sleep, but common enemies no longer fall asleep from notes; the lullaby plays for the party: all she gives goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "sleepOnBoss", "kind": "flat", "value": 1}], "partyMode": "support"}, {"id": "minstrel_trait_3_f75b", "name": {"ru": "Лёгкий сон", "en": "Light Sleep"}, "text": {"ru": "Урон по спящему не копится, а сразу проходит ×сон, но сон на 20% слабее", "en": "Damage to a sleeper is not stored but lands at once ×sleep, but sleep is 20% weaker"}, "modifiers": [{"stat": "sleepLight", "kind": "flat", "value": 1}, {"stat": "sleepPower", "kind": "more", "value": -0.2}]}]}
         ]
-      },
-      "nodes": [{"id": "minstrel_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Колыбельная", "en": "Lullaby"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "lanternbearer_trait_1",
@@ -464,9 +428,7 @@
           {"level": 60, "options": [{"id": "lanternbearer_trait_1_f60a", "name": {"ru": "Масло из света", "en": "Oil from Light"}, "text": {"ru": "Полностью освещённый враг даёт 10 Масла ей и союзникам, но тень гасит 35%", "en": "A fully lit enemy gives 10 Oil to her and the allies, but the shadow dims 35%"}, "modifiers": [{"stat": "lightOil", "kind": "flat", "value": 1}, {"stat": "lightShadow", "kind": "flat", "value": 0.1}]}, {"id": "lanternbearer_trait_1_f60b", "name": {"ru": "Свет переходит", "en": "Passing Light"}, "text": {"ru": "Половина света переходит на следующего врага, но бонус на 20% меньше", "en": "Half of the light passes to the next enemy, but the bonus is 20% lower"}, "modifiers": [{"stat": "lightCarry", "kind": "flat", "value": 0.5}, {"stat": "lightPower", "kind": "more", "value": -0.2}]}]},
           {"level": 75, "options": [{"id": "lanternbearer_trait_1_f75a", "name": {"ru": "Полдень", "en": "Noon"}, "text": {"ru": "Полностью освещённый враг больше не темнеет, но удар освещает на 0,5%", "en": "A fully lit enemy no longer darkens, but a hit lights 0.5%"}, "modifiers": [{"stat": "lightNoon", "kind": "flat", "value": 1}, {"stat": "lightPerHit", "kind": "flat", "value": -0.005}]}, {"id": "lanternbearer_trait_1_f75b", "name": {"ru": "Вспышка света", "en": "Burst of Light"}, "text": {"ru": "Полное освещение 5 с даёт бонус ×1,5, потом свет падает до половины; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Full light gives ×1.5 bonus for 5 s, then the light drops to half; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "lightFlare", "kind": "flat", "value": 1}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "lanternbearer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Тени и свет", "en": "Light and Shadow"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "lanternbearer_trait_2",
@@ -488,9 +450,7 @@
           {"level": 60, "options": [{"id": "lanternbearer_trait_2_f60a", "name": {"ru": "Большой рой", "en": "Big Swarm"}, "text": {"ru": "До 15 светлячков, но искра на 20% слабее", "en": "Up to 15 fireflies, but a spark is 20% weaker"}, "modifiers": [{"stat": "fireflyMax", "kind": "flat", "value": 5}, {"stat": "sparkPower", "kind": "more", "value": -0.2}]}, {"id": "lanternbearer_trait_2_f60b", "name": {"ru": "Яркая искра", "en": "Bright Spark"}, "text": {"ru": "Искра на 50% сильнее, но светлячков до 5", "en": "A spark is 50% stronger, but only 5 fireflies"}, "modifiers": [{"stat": "sparkPower", "kind": "more", "value": 0.5}, {"stat": "fireflyMax", "kind": "flat", "value": -5}]}]},
           {"level": 75, "options": [{"id": "lanternbearer_trait_2_f75a", "name": {"ru": "Искра от удара", "en": "Spark of a Blow"}, "text": {"ru": "Искру зажигает и каждый 10-й удар, но она на 40% слабее", "en": "Every 10th hit also lights a spark, but it is 40% weaker"}, "modifiers": [{"stat": "sparkEvery", "kind": "flat", "value": 1}, {"stat": "sparkPower", "kind": "more", "value": -0.4}]}, {"id": "lanternbearer_trait_2_f75b", "name": {"ru": "Масляные крылья", "en": "Oily Wings"}, "text": {"ru": "Искра даёт 3 Масла, но светлячков до 6; бафф отряду: себе и союзникам поровну", "en": "A spark gives 3 Oil, but only 6 fireflies; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "sparkOil", "kind": "flat", "value": 2}, {"stat": "fireflyMax", "kind": "flat", "value": -4}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "lanternbearer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Светлячки", "en": "Fireflies"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "lanternbearer_trait_3",
@@ -512,9 +472,7 @@
           {"level": 60, "options": [{"id": "lanternbearer_trait_3_f60a", "name": {"ru": "Два скилла", "en": "Two Skills"}, "text": {"ru": "Вспышка освобождает два скилла, но раз в 90 с", "en": "A flash frees two skills, but comes every 90 s"}, "modifiers": [{"stat": "beaconCharges", "kind": "flat", "value": 1}, {"stat": "beaconSeconds", "kind": "flat", "value": 30}]}, {"id": "lanternbearer_trait_3_f60b", "name": {"ru": "Сигнальный огонь", "en": "Signal Fire"}, "text": {"ru": "Вспышка ещё сокращает все откаты на 2 с, но скилл на 30% слабее", "en": "A flash also cuts every cooldown by 2 s, but the skill is 30% weaker"}, "modifiers": [{"stat": "beaconCut", "kind": "flat", "value": 2}, {"stat": "beaconPower", "kind": "more", "value": -0.3}]}]},
           {"level": 75, "options": [{"id": "lanternbearer_trait_3_f75a", "name": {"ru": "Немой фонарь", "en": "Silent Lantern"}, "text": {"ru": "Сама она скиллы не применяет, но вспышка раз в 30 с", "en": "She casts no skills herself, but a flash comes every 30 s"}, "modifiers": [{"stat": "beaconMute", "kind": "flat", "value": 1}, {"stat": "beaconSeconds", "kind": "flat", "value": -30}]}, {"id": "lanternbearer_trait_3_f75b", "name": {"ru": "Свет в тумане", "en": "Light in the Fog"}, "text": {"ru": "Вспышка ещё и на появлении босса, но раз в 90 с; бафф отряду: себе и союзникам поровну", "en": "A flash also comes when a boss appears, but every 90 s; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "beaconBoss", "kind": "flat", "value": 1}, {"stat": "beaconSeconds", "kind": "flat", "value": 30}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "lanternbearer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Маяк", "en": "Beacon"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "whisperer_trait_1",
@@ -536,9 +494,7 @@
           {"level": 60, "options": [{"id": "whisperer_trait_1_f60a", "name": {"ru": "Тройной узел", "en": "Triple Knot"}, "text": {"ru": "Седьмой узел утраивает, а не удваивает, но узел раз в 30 ударов", "en": "The seventh knot triples instead of doubling, but a knot comes every 30 hits"}, "modifiers": [{"stat": "knotTriple", "kind": "flat", "value": 1}, {"stat": "knotHits", "kind": "flat", "value": 5}]}, {"id": "whisperer_trait_1_f60b", "name": {"ru": "Двойная петля", "en": "Double Loop"}, "text": {"ru": "Узлы завязываются по два, но они на 40% слабее", "en": "Knots are tied two at a time, but they are 40% weaker"}, "modifiers": [{"stat": "knotDouble", "kind": "flat", "value": 1}, {"stat": "knotPower", "kind": "more", "value": -0.4}]}]},
           {"level": 75, "options": [{"id": "whisperer_trait_1_f75a", "name": {"ru": "Тугая нить", "en": "Tight Thread"}, "text": {"ru": "Каждый новый узел бьёт врага ×10, но узлы на 20% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Every new knot hits the enemy ×10, but the knots are 20% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "knotBlast", "kind": "flat", "value": 1}, {"stat": "knotPower", "kind": "more", "value": -0.2}], "partyMode": "support"}, {"id": "whisperer_trait_1_f75b", "name": {"ru": "Шепчущий узел", "en": "Whispering Knot"}, "text": {"ru": "Каждый узел даёт 10 Шёпота, но узел раз в 30 ударов", "en": "Every knot gives 10 Whisper, but a knot comes every 30 hits"}, "modifiers": [{"stat": "knotWhisper", "kind": "flat", "value": 1}, {"stat": "knotHits", "kind": "flat", "value": 5}]}]}
         ]
-      },
-      "nodes": [{"id": "whisperer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Семь узлов", "en": "Seven Knots"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "whisperer_trait_2",
@@ -560,9 +516,7 @@
           {"level": 60, "options": [{"id": "whisperer_trait_2_f60a", "name": {"ru": "Память имён", "en": "Memory of Names"}, "text": {"ru": "Узнанное имя запоминается на этот вид босса: в следующем бою с ним имя звучит сразу, но бонус на 25% меньше", "en": "A learned name is remembered for this kind of boss: in the next fight with it the name sounds at once, but the bonus is 25% lower"}, "modifiers": [{"stat": "nameMemory", "kind": "flat", "value": 1}, {"stat": "namePower", "kind": "more", "value": -0.25}]}, {"id": "whisperer_trait_2_f60b", "name": {"ru": "Имя по буквам", "en": "Name Letter by Letter"}, "text": {"ru": "Пока имя не узнано, бонус растёт с каждым ударом до половины, но имя за 200 ударов", "en": "Until the name is learned, the bonus grows with every hit up to half, but the name takes 200 hits"}, "modifiers": [{"stat": "nameProgress", "kind": "flat", "value": 1}, {"stat": "nameHits", "kind": "flat", "value": 50}]}]},
           {"level": 75, "options": [{"id": "whisperer_trait_2_f75a", "name": {"ru": "Имя отнимает время", "en": "The Name Takes Time"}, "text": {"ru": "Названный босс отдаёт отряду 5 с таймера, но бонус на 15% меньше; бафф отряду: себе и союзникам поровну", "en": "A named boss gives the party 5 s of timer, but the bonus is 15% lower; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "nameTime", "kind": "flat", "value": 1}, {"stat": "namePower", "kind": "more", "value": -0.15}], "partyMode": "together"}, {"id": "whisperer_trait_2_f75b", "name": {"ru": "Проклятое имя", "en": "Cursed Name"}, "text": {"ru": "Бонус имени на 30% больше, но имя за 175 ударов", "en": "The name bonus is 30% bigger, but the name takes 175 hits"}, "modifiers": [{"stat": "namePower", "kind": "more", "value": 0.3}, {"stat": "nameHits", "kind": "flat", "value": 25}]}]}
         ]
-      },
-      "nodes": [{"id": "whisperer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Имя Колосса", "en": "Name of the Colossus"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "whisperer_trait_3",
@@ -584,9 +538,7 @@
           {"level": 60, "options": [{"id": "whisperer_trait_3_f60a", "name": {"ru": "Нарушенный обет", "en": "Broken Vow"}, "text": {"ru": "Раз в 60 с обет рвётся на 10 с: её удары бьют в полную силу, а проклятия на это время вдвое слабее", "en": "Every 60 s the vow breaks for 10 s: her hits deal full damage, and the curses are half as strong meanwhile"}, "modifiers": [{"stat": "vowBreak", "kind": "flat", "value": 1}]}, {"id": "whisperer_trait_3_f60b", "name": {"ru": "Глубокий обет", "en": "Deep Vow"}, "text": {"ru": "Проклятия вчетверо сильнее, а не втрое, но шёпот раз в 9 ударов", "en": "The curses are four times stronger instead of three, but a whisper comes every 9 hits"}, "modifiers": [{"stat": "vowCurse", "kind": "flat", "value": 1}, {"stat": "hushHits", "kind": "flat", "value": 3}]}]},
           {"level": 75, "options": [{"id": "whisperer_trait_3_f75a", "name": {"ru": "Немая очередь", "en": "Silent Queue"}, "text": {"ru": "Каждое 100-е немое касание проклинает всю очередь: удар ×5 от силы обета по ней, но шёпот на 20% слабее", "en": "Every 100th silent touch curses the whole queue: a blow ×5 of the vow's power at it, but a whisper is 20% weaker"}, "modifiers": [{"stat": "vowQueue", "kind": "flat", "value": 1}, {"stat": "vowPower", "kind": "more", "value": -0.2}]}, {"id": "whisperer_trait_3_f75b", "name": {"ru": "Громкое молчание", "en": "Loud Silence"}, "text": {"ru": "Шёпот на 40% сильнее, но приходит раз в 8 ударов; бафф отряду: себе и союзникам поровну", "en": "A whisper is 40% stronger, but comes every 8 hits; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "vowPower", "kind": "more", "value": 0.4}, {"stat": "hushHits", "kind": "flat", "value": 2}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "whisperer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Обет молчания", "en": "Vow of Silence"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "cartomancer_trait_1",
@@ -608,9 +560,7 @@
           {"level": 60, "options": [{"id": "cartomancer_trait_1_f60a", "name": {"ru": "Терпеливый расклад", "en": "Patient Spread"}, "text": {"ru": "Аркан держится на 10 с дольше, но карта каждые 13 ударов", "en": "An arcanum lasts 10 s longer, but a card comes every 13 hits"}, "modifiers": [{"stat": "spreadSeconds", "kind": "flat", "value": 10}, {"stat": "spreadHits", "kind": "flat", "value": 3}]}, {"id": "cartomancer_trait_1_f60b", "name": {"ru": "Старшие Мечи", "en": "Major Swords"}, "text": {"ru": "Аркан Мечей вдвое сильнее, остальные вдвое слабее", "en": "The Swords arcanum is twice as strong, the others half as strong"}, "modifiers": [{"stat": "spreadSwords", "kind": "flat", "value": 1}]}]},
           {"level": 75, "options": [{"id": "cartomancer_trait_1_f75a", "name": {"ru": "Козырь", "en": "Trump"}, "text": {"ru": "Аркан на 40% сильнее, но карта каждые 13 ударов; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "An arcanum is 40% stronger, but a card comes every 13 hits; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "spreadPower", "kind": "more", "value": 0.4}, {"stat": "spreadHits", "kind": "flat", "value": 3}], "partyMode": "support"}, {"id": "cartomancer_trait_1_f75b", "name": {"ru": "Гадание по руке", "en": "Palm Reading"}, "text": {"ru": "Каждая карта в руке даёт +3% урона, но арканов больше нет", "en": "Every card in hand gives +3% damage, but there are no more arcana"}, "modifiers": [{"stat": "spreadHand", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "cartomancer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Расклад", "en": "Spread"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "cartomancer_trait_2",
@@ -632,9 +582,7 @@
           {"level": 60, "options": [{"id": "cartomancer_trait_2_f60a", "name": {"ru": "Точное попадание", "en": "Exact Hit"}, "text": {"ru": "Если до срока осталось 3 с, награда растёт ещё, но проигрыш стоит 30% урона", "en": "With 3 s left in the term the reward grows further, but a loss costs 30% damage"}, "modifiers": [{"stat": "forecastExact", "kind": "flat", "value": 1}]}, {"id": "cartomancer_trait_2_f60b", "name": {"ru": "Предсказанный удар", "en": "Foretold Blow"}, "text": {"ru": "В последние 5 с срока её удары на 30% сильнее, но награда на 25% меньше", "en": "In the last 5 s of the term her hits are 30% stronger, but the reward is 25% smaller"}, "modifiers": [{"stat": "forecastRush", "kind": "flat", "value": 1}, {"stat": "forecastPower", "kind": "more", "value": -0.25}]}]},
           {"level": 75, "options": [{"id": "cartomancer_trait_2_f75a", "name": {"ru": "Без проигрыша", "en": "No Loss"}, "text": {"ru": "Проигрыш больше не штрафует, но награда на 40% меньше; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "A loss no longer penalises, but the reward is 40% smaller; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "forecastSafe", "kind": "flat", "value": 1}, {"stat": "forecastPower", "kind": "more", "value": -0.4}], "partyMode": "support"}, {"id": "cartomancer_trait_2_f75b", "name": {"ru": "Двойная ставка", "en": "Double Stake"}, "text": {"ru": "Выигрыш вдвое больше, но и проигрыш вдвое тяжелее", "en": "A win is twice as large, but a loss is twice as heavy"}, "modifiers": [{"stat": "forecastDouble", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "cartomancer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Предсказание", "en": "Prophecy"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "cartomancer_trait_3",
@@ -656,9 +604,7 @@
           {"level": 60, "options": [{"id": "cartomancer_trait_3_f60a", "name": {"ru": "Двойная масть", "en": "Double Suit"}, "text": {"ru": "Каждая пятая карта ложится дважды, но карты на 10% слабее", "en": "Every fifth card is laid twice, but cards are 10% weaker"}, "modifiers": [{"stat": "reversedFifth", "kind": "flat", "value": 1}, {"stat": "reversedPower", "kind": "more", "value": -0.1}]}, {"id": "cartomancer_trait_3_f60b", "name": {"ru": "Вскрытие", "en": "Reveal"}, "text": {"ru": "Вскрытая карта действует втрое, но вскрывается на 10 ударов реже", "en": "A revealed card works three times as hard, but is revealed 10 hits later"}, "modifiers": [{"stat": "reversedStrong", "kind": "flat", "value": 1}, {"stat": "reversedRevealHits", "kind": "flat", "value": 10}]}]},
           {"level": 75, "options": [{"id": "cartomancer_trait_3_f75a", "name": {"ru": "Тёмный расклад", "en": "Dark Spread"}, "text": {"ru": "На враге до 10 карт, но каждая на 20% слабее", "en": "Up to 10 cards on the enemy, but each is 20% weaker"}, "modifiers": [{"stat": "reversedMax", "kind": "flat", "value": 3}, {"stat": "reversedPower", "kind": "more", "value": -0.2}]}, {"id": "cartomancer_trait_3_f75b", "name": {"ru": "Все карты на стол", "en": "All Cards on the Table"}, "text": {"ru": "Карты вдвое сильнее, но ложатся вдвое реже; бафф отряду: себе и союзникам поровну", "en": "Cards are twice as strong, but are laid half as often; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "reversedPower", "kind": "more", "value": 1}, {"stat": "reversedHits", "kind": "flat", "value": 10}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "cartomancer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Перевёрнутая карта", "en": "Reversed Card"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "herbwitch_trait_1",
@@ -680,9 +626,7 @@
           {"level": 60, "options": [{"id": "herbwitch_trait_1_f60a", "name": {"ru": "Пересадка", "en": "Replanting"}, "text": {"ru": "Цветок при смерти врага пересаживается на следующего, но лозы на 15% слабее", "en": "A flower moves to the next enemy when one dies, but vines are 15% weaker"}, "modifiers": [{"stat": "bloomReplant", "kind": "flat", "value": 1}, {"stat": "bloomPower", "kind": "more", "value": -0.15}]}, {"id": "herbwitch_trait_1_f60b", "name": {"ru": "Колючий куст", "en": "Thorny Bush"}, "text": {"ru": "Куст жалит втрое, но цветка больше нет", "en": "A bush stings three times as hard, but there is no flower"}, "modifiers": [{"stat": "bloomThorn", "kind": "flat", "value": 1}]}]},
           {"level": 75, "options": [{"id": "herbwitch_trait_1_f75a", "name": {"ru": "Дикий сад", "en": "Wild Garden"}, "text": {"ru": "Лозы жалят и врагов очереди вполсилы, но на 20% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Vines also sting the queued enemies at half strength, but 20% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "bloomQueue", "kind": "flat", "value": 1}, {"stat": "bloomPower", "kind": "more", "value": -0.2}], "partyMode": "support"}, {"id": "herbwitch_trait_1_f75b", "name": {"ru": "Один цветок", "en": "One Flower"}, "text": {"ru": "Только одна лоза, но вчетверо сильнее", "en": "Only one vine, but four times as strong"}, "modifiers": [{"stat": "bloomSingle", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "herbwitch_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Цветение", "en": "Blossoming"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "herbwitch_trait_2",
@@ -704,9 +648,7 @@
           {"level": 60, "options": [{"id": "herbwitch_trait_2_f60a", "name": {"ru": "Плотный яд", "en": "Dense Poison"}, "text": {"ru": "До 75 стаков, но стак на 20% слабее", "en": "Up to 75 stacks, but a stack is 20% weaker"}, "modifiers": [{"stat": "myceliumMax", "kind": "flat", "value": 25}, {"stat": "myceliumPower", "kind": "more", "value": -0.2}]}, {"id": "herbwitch_trait_2_f60b", "name": {"ru": "Едкий яд", "en": "Acrid Poison"}, "text": {"ru": "Стак на 40% сильнее, но стаков до 30", "en": "A stack is 40% stronger, but up to 30 stacks"}, "modifiers": [{"stat": "myceliumPower", "kind": "more", "value": 0.4}, {"stat": "myceliumMax", "kind": "flat", "value": -20}]}]},
           {"level": 75, "options": [{"id": "herbwitch_trait_2_f75a", "name": {"ru": "Сеть грибницы", "en": "Mycelium Web"}, "text": {"ru": "Яд жалит вдвое чаще, но стак на 45% слабее", "en": "The poison stings twice as often, but a stack is 45% weaker"}, "modifiers": [{"stat": "myceliumFast", "kind": "flat", "value": 1}, {"stat": "myceliumPower", "kind": "more", "value": -0.45}]}, {"id": "herbwitch_trait_2_f75b", "name": {"ru": "Споры для всех", "en": "Spores for All"}, "text": {"ru": "Стак яда на 15% слабее, зато за каждые 5 стаков отряд ещё сильнее жжёт ядом; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "A poison stack is 15% weaker, but every 5 stacks make the party's poison stronger still; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "myceliumPower", "kind": "more", "value": -0.15}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.01, "per": {"signal": "venom", "step": 5, "cap": 10}}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "herbwitch_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Грибница", "en": "Mycelium"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "herbwitch_trait_3",
@@ -728,9 +670,7 @@
           {"level": 60, "options": [{"id": "herbwitch_trait_3_f60a", "name": {"ru": "Глоток на потом", "en": "A Sip for Later"}, "text": {"ru": "Глоток оставляет 30% яда, и со сменой врага остаётся 30%, но глоток на 15% слабее", "en": "A drink leaves 30% of the poison, and 30% stays when the enemy changes, but a drink is 15% weaker"}, "modifiers": [{"stat": "sapLeave", "kind": "flat", "value": 1}, {"stat": "sapPower", "kind": "more", "value": -0.15}]}, {"id": "herbwitch_trait_3_f60b", "name": {"ru": "Жадный глоток", "en": "Greedy Gulp"}, "text": {"ru": "Глоток бьёт вдвое, но каждые 30 ударов", "en": "A drink strikes twice as hard, but every 30 hits"}, "modifiers": [{"stat": "sapGreedy", "kind": "flat", "value": 1}, {"stat": "sapHits", "kind": "flat", "value": 10}]}]},
           {"level": 75, "options": [{"id": "herbwitch_trait_3_f75a", "name": {"ru": "Ядовитое дыхание", "en": "Poison Breath"}, "text": {"ru": "После глотка 10 с яд жжёт врага сам, но глоток на 20% слабее", "en": "After a drink the poison burns the enemy on its own for 10 s, but a drink is 20% weaker"}, "modifiers": [{"stat": "sapPoison", "kind": "flat", "value": 1}, {"stat": "sapPower", "kind": "more", "value": -0.2}]}, {"id": "herbwitch_trait_3_f75b", "name": {"ru": "Общая чаша", "en": "Shared Cup"}, "text": {"ru": "Её глоток на 15% слабее, зато каждый глоток ещё сильнее ускоряет ресурс отряда; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Her gulp is 15% weaker, but every gulp speeds up the party's resource even more; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "sapPower", "kind": "more", "value": -0.15}, {"to": "party", "stat": "resourceGain", "kind": "increased", "value": 0.2, "after": {"signal": "drink", "seconds": 5, "stacks": 1}}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "herbwitch_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сок жизни", "en": "Lifesap"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "mothcaller_trait_1",
@@ -752,9 +692,7 @@
           {"level": 60, "options": [{"id": "mothcaller_trait_1_f60a", "name": {"ru": "Туча", "en": "Cloud"}, "text": {"ru": "До 80 мотыльков, но каждый на 25% слабее", "en": "Up to 80 moths, but each is 25% weaker"}, "modifiers": [{"stat": "swarmMax", "kind": "flat", "value": 30}, {"stat": "swarmPower", "kind": "more", "value": -0.25}]}, {"id": "mothcaller_trait_1_f60b", "name": {"ru": "Жадные мотыльки", "en": "Greedy Moths"}, "text": {"ru": "На боссе рой пьёт вдвое, но мотыльки на 20% слабее", "en": "On a boss the swarm drinks twice as hard, but moths are 20% weaker"}, "modifiers": [{"stat": "swarmBoss", "kind": "flat", "value": 1}, {"stat": "swarmPower", "kind": "more", "value": -0.2}]}]},
           {"level": 75, "options": [{"id": "mothcaller_trait_1_f75a", "name": {"ru": "Лунное облако", "en": "Moon Cloud"}, "text": {"ru": "Рой задевает и врагов очереди вполсилы, но на 20% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "The swarm also hits the queued enemies at half strength, but 20% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "swarmQueue", "kind": "flat", "value": 1}, {"stat": "swarmPower", "kind": "more", "value": -0.2}], "partyMode": "support"}, {"id": "mothcaller_trait_1_f75b", "name": {"ru": "Голодный рой", "en": "Hungry Swarm"}, "text": {"ru": "Мотыльки на 50% сильнее, но рой теряет мотылька каждую секунду", "en": "Moths are 50% stronger, but the swarm loses a moth every second"}, "modifiers": [{"stat": "swarmPower", "kind": "more", "value": 0.5}, {"stat": "swarmDecay", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "mothcaller_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Рой", "en": "Swarm"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "mothcaller_trait_2",
@@ -776,9 +714,7 @@
           {"level": 60, "options": [{"id": "mothcaller_trait_2_f60a", "name": {"ru": "Сухая пыльца", "en": "Dry Pollen"}, "text": {"ru": "Пыльца сгорает за 2 с, но на 15% слабее", "en": "Pollen burns out in 2 s, but is 15% weaker"}, "modifiers": [{"stat": "pollenFast", "kind": "flat", "value": 1}, {"stat": "pollenPower", "kind": "more", "value": -0.15}]}, {"id": "mothcaller_trait_2_f60b", "name": {"ru": "Лунная пыльца", "en": "Moon Pollen"}, "text": {"ru": "Стряхнувший пыльцу получает 5 ресурса, но пыльца на 10% слабее", "en": "Whoever shakes the pollen off gets 5 resource, but pollen is 10% weaker"}, "modifiers": [{"stat": "pollenLight", "kind": "flat", "value": 1}, {"stat": "pollenPower", "kind": "more", "value": -0.1}]}]},
           {"level": 75, "options": [{"id": "mothcaller_trait_2_f75a", "name": {"ru": "Облако на двоих", "en": "Cloud for Two"}, "text": {"ru": "В отряде пыльца оседает на двоих союзниках по очереди вдвое гуще, в соло — на 40% гуще; но мотыльков до 40", "en": "In a party pollen settles on two allies in turn twice as thick, solo 40% thicker; but there are up to 40 moths"}, "modifiers": [{"stat": "pollenTwo", "kind": "flat", "value": 1}, {"stat": "swarmMax", "kind": "flat", "value": -10}]}, {"id": "mothcaller_trait_2_f75b", "name": {"ru": "Ядовитое облако", "en": "Poison Cloud"}, "text": {"ru": "Пыльца на 40% сильнее, но мотыльков до 30; бафф отряду: себе и союзникам поровну", "en": "Pollen is 40% stronger, but there are up to 30 moths; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "pollenPower", "kind": "more", "value": 0.4}, {"stat": "swarmMax", "kind": "flat", "value": -20}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "mothcaller_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Пыльца", "en": "Pollen"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "mothcaller_trait_3",
@@ -800,9 +736,7 @@
           {"level": 60, "options": [{"id": "mothcaller_trait_3_f60a", "name": {"ru": "Крылья бури", "en": "Storm Wings"}, "text": {"ru": "Бабочка бьёт и врагов очереди вполсилы, но на 20% слабее", "en": "The moth also hits the queued enemies at half strength, but 20% weaker"}, "modifiers": [{"stat": "mothQueue", "kind": "flat", "value": 1}, {"stat": "mothPower", "kind": "more", "value": -0.2}]}, {"id": "mothcaller_trait_3_f60b", "name": {"ru": "Сон до босса", "en": "Sleep until the Boss"}, "text": {"ru": "Бабочка просыпается сразу при появлении босса, но по обычным врагам на 30% слабее", "en": "The moth wakes as soon as a boss appears, but is 30% weaker against ordinary enemies"}, "modifiers": [{"stat": "mothBoss", "kind": "flat", "value": 1}]}]},
           {"level": 75, "options": [{"id": "mothcaller_trait_3_f75a", "name": {"ru": "Пыльца крыльев", "en": "Wing Dust"}, "text": {"ru": "Пока бабочка летает, удары Мотылицы на 50% сильнее, но бабочка на 20% слабее", "en": "While the moth flies, the Mothcaller's hits are 50% stronger, but the moth is 20% weaker"}, "modifiers": [{"stat": "mothStrike", "kind": "flat", "value": 1}, {"stat": "mothPower", "kind": "more", "value": -0.2}]}, {"id": "mothcaller_trait_3_f75b", "name": {"ru": "Вечная ночь", "en": "Endless Night"}, "text": {"ru": "Бабочка не засыпает, пока отряд бьёт без пауз, но бьёт вдвое слабее; бафф отряду: себе и союзникам поровну", "en": "The moth does not fall asleep while the party hits without pauses, but strikes half as hard; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "mothNight", "kind": "flat", "value": 1}, {"stat": "mothPower", "kind": "more", "value": -0.5}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "mothcaller_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Ночная бабочка", "en": "Night Moth"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "soulbinder_trait_1",
@@ -824,9 +758,7 @@
           {"level": 60, "options": [{"id": "soulbinder_trait_1_f60a", "name": {"ru": "Душа Колосса", "en": "Colossus Soul"}, "text": {"ru": "Душа стража и босса занимает два места, но духи на 15% слабее", "en": "A guardian's or boss's soul takes two places, but spirits are 15% weaker"}, "modifiers": [{"stat": "soulMini", "kind": "flat", "value": 1}, {"stat": "soulPower", "kind": "more", "value": -0.15}]}, {"id": "soulbinder_trait_1_f60b", "name": {"ru": "Духи очереди", "en": "Spirits of the Queue"}, "text": {"ru": "Духи бьют и врагов очереди, но на 30% слабее", "en": "Spirits also strike the queued enemies, but 30% weaker"}, "modifiers": [{"stat": "soulQueue", "kind": "flat", "value": 1}, {"stat": "soulPower", "kind": "more", "value": -0.3}]}]},
           {"level": 75, "options": [{"id": "soulbinder_trait_1_f75a", "name": {"ru": "Парад на Колосса", "en": "Parade on the Colossus"}, "text": {"ru": "На боссе раз в 30 с все духи бьют разом ×3, но духи на 15% слабее; бафф отряду: себе и союзникам поровну", "en": "On a boss every 30 s all spirits strike at once ×3, but spirits are 15% weaker; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "soulRelease", "kind": "flat", "value": 1}, {"stat": "soulPower", "kind": "more", "value": -0.15}], "partyMode": "together"}, {"id": "soulbinder_trait_1_f75b", "name": {"ru": "Сильные души", "en": "Strong Souls"}, "text": {"ru": "Духи на 40% сильнее, но в сфере на 2 души меньше", "en": "Spirits are 40% stronger, but the orb holds 2 souls fewer"}, "modifiers": [{"stat": "soulPower", "kind": "more", "value": 0.4}, {"stat": "soulMax", "kind": "flat", "value": -2}]}]}
         ]
-      },
-      "nodes": [{"id": "soulbinder_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сфера душ", "en": "Orb of Souls"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "soulbinder_trait_2",
@@ -848,9 +780,7 @@
           {"level": 60, "options": [{"id": "soulbinder_trait_2_f60a", "name": {"ru": "Малая сфера", "en": "Small Orb"}, "text": {"ru": "Сфера на 3 души, вздохи чаще, но на 30% слабее", "en": "The orb holds 3 souls, breaths come more often, but 30% weaker"}, "modifiers": [{"stat": "breathSmall", "kind": "flat", "value": 1}, {"stat": "breathPower", "kind": "more", "value": -0.3}]}, {"id": "soulbinder_trait_2_f60b", "name": {"ru": "Ломкий лёд", "en": "Brittle Ice"}, "text": {"ru": "По замёрзшему врагу вздох приходит за 15 ударов, но вздох на 20% слабее", "en": "On a frozen enemy a breath comes in 15 hits, but breaths are 20% weaker"}, "modifiers": [{"stat": "breathColdHits", "kind": "flat", "value": -10}, {"stat": "breathPower", "kind": "more", "value": -0.2}]}]},
           {"level": 75, "options": [{"id": "soulbinder_trait_2_f75a", "name": {"ru": "Двойной вздох", "en": "Double Breath"}, "text": {"ru": "Вздох бьёт ещё раз на половину силы, но сфера на 8 душ; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "A breath strikes once more at half strength, but the orb holds 8 souls; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "breathTwice", "kind": "flat", "value": 1}], "partyMode": "support"}, {"id": "soulbinder_trait_2_f75b", "name": {"ru": "Тяжёлый вздох", "en": "Heavy Breath"}, "text": {"ru": "Вздох на 50% сильнее, но холода нет", "en": "A breath is 50% stronger, but there is no chill"}, "modifiers": [{"stat": "breathPower", "kind": "more", "value": 0.5}, {"stat": "breathNoCold", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "soulbinder_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Последний вздох", "en": "Last Breath"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "soulbinder_trait_3",
@@ -872,9 +802,7 @@
           {"level": 60, "options": [{"id": "soulbinder_trait_3_f60a", "name": {"ru": "Душа возвращается", "en": "The Soul Returns"}, "text": {"ru": "Вернувшаяся душа приближает следующее вселение на 10 ударов, но дух на 15% слабее", "en": "A returned soul brings the next possession 10 hits closer, but the spirit is 15% weaker"}, "modifiers": [{"stat": "lendBack", "kind": "flat", "value": 1}, {"stat": "lendPower", "kind": "more", "value": -0.15}]}, {"id": "soulbinder_trait_3_f60b", "name": {"ru": "Крепкий дух", "en": "Strong Spirit"}, "text": {"ru": "Дух на 40% сильнее, но вселяется раз в 70 ударов", "en": "The spirit is 40% stronger, but comes every 70 hits"}, "modifiers": [{"stat": "lendPower", "kind": "more", "value": 0.4}, {"stat": "lendHits", "kind": "flat", "value": 20}]}]},
           {"level": 75, "options": [{"id": "soulbinder_trait_3_f75a", "name": {"ru": "Духи для всех", "en": "Spirits for All"}, "text": {"ru": "Дух вселяется во всех союзников на 5 с, но на 40% слабее", "en": "A spirit enters every ally for 5 s, but 40% weaker"}, "modifiers": [{"stat": "lendAll", "kind": "flat", "value": 1}]}, {"id": "soulbinder_trait_3_f75b", "name": {"ru": "Голос предков", "en": "Voice of the Ancestors"}, "text": {"ru": "Дух на 25% сильнее и держится 12 с, но вселяется раз в 65 ударов; бафф отряду: себе и союзникам поровну", "en": "The spirit is 25% stronger and stays 12 s, but comes every 65 hits; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "lendPower", "kind": "more", "value": 0.25}, {"stat": "lendSeconds", "kind": "flat", "value": 2}, {"stat": "lendHits", "kind": "flat", "value": 15}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "soulbinder_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Одолжить душу", "en": "Lend a Soul"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "ghostcaptain_trait_1",
@@ -896,9 +824,7 @@
           {"level": 60, "options": [{"id": "ghostcaptain_trait_1_f60a", "name": {"ru": "Огонь по готовности", "en": "Fire at Will"}, "text": {"ru": "Половина заряженных пушек стреляет сразу, но удвоения за одного врага нет", "en": "Half the cannons fire as soon as they are loaded, but there is no doubling for one enemy"}, "modifiers": [{"stat": "broadsideHalf", "kind": "flat", "value": 1}]}, {"id": "ghostcaptain_trait_1_f60b", "name": {"ru": "Тяжёлые ядра", "en": "Heavy Shot"}, "text": {"ru": "Залп на 40% сильнее, но пушка заряжается на 3 удара дольше", "en": "A broadside is 40% stronger, but a cannon loads 3 hits longer"}, "modifiers": [{"stat": "broadsidePower", "kind": "more", "value": 0.4}, {"stat": "broadsideHits", "kind": "flat", "value": 3}]}]},
           {"level": 75, "options": [{"id": "ghostcaptain_trait_1_f75a", "name": {"ru": "Заряжено заранее", "en": "Loaded in Advance"}, "text": {"ru": "После залпа две пушки уже заряжены, но залп на 15% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "After a broadside two cannons are already loaded, but the broadside is 15% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "broadsideLoaded", "kind": "flat", "value": 1}, {"stat": "broadsidePower", "kind": "more", "value": -0.15}], "partyMode": "support"}, {"id": "ghostcaptain_trait_1_f75b", "name": {"ru": "Залп по строю", "en": "Volley down the Line"}, "text": {"ru": "Залп бьёт и врагов очереди вполсилы, но пробоины больше нет", "en": "A broadside also hits the queued enemies at half strength, but there is no breach"}, "modifiers": [{"stat": "broadsideQueue", "kind": "flat", "value": 1}, {"stat": "broadsideNoBreach", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "ghostcaptain_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Бортовой залп", "en": "Broadside"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "ghostcaptain_trait_2",
@@ -920,9 +846,7 @@
           {"level": 60, "options": [{"id": "ghostcaptain_trait_2_f60a", "name": {"ru": "Матросы Колосса", "en": "Colossus Hands"}, "text": {"ru": "Матросы из боссов не уходят на рассвете, но все матросы на 10% слабее", "en": "Sailors from bosses stay through dawn, but all sailors are 10% weaker"}, "modifiers": [{"stat": "crewKeepBoss", "kind": "flat", "value": 1}, {"stat": "crewPower", "kind": "more", "value": -0.1}]}, {"id": "ghostcaptain_trait_2_f60b", "name": {"ru": "Абордаж", "en": "Boarding Party"}, "text": {"ru": "Матросы бьют и врагов очереди вполсилы, но на 20% слабее", "en": "Sailors also hit the queued enemies at half strength, but 20% weaker"}, "modifiers": [{"stat": "crewQueue", "kind": "flat", "value": 1}, {"stat": "crewPower", "kind": "more", "value": -0.2}]}]},
           {"level": 75, "options": [{"id": "ghostcaptain_trait_2_f75a", "name": {"ru": "Старая гвардия", "en": "Old Guard"}, "text": {"ru": "После рассвета четверть команды остаётся, но рассвет через 100 с; бафф отряду: себе и союзникам поровну", "en": "After dawn a quarter of the crew stays, but dawn comes after 100 s; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "crewKeep", "kind": "flat", "value": 1}, {"stat": "crewDawn", "kind": "flat", "value": -20}], "partyMode": "together"}, {"id": "ghostcaptain_trait_2_f75b", "name": {"ru": "Последний рейс", "en": "Last Voyage"}, "text": {"ru": "Матросы на 50% сильнее, но прощального залпа нет и рассвет через 90 с", "en": "Sailors are 50% stronger, but there is no farewell salute and dawn comes after 90 s"}, "modifiers": [{"stat": "crewPower", "kind": "more", "value": 0.5}, {"stat": "crewNoFarewell", "kind": "flat", "value": 1}, {"stat": "crewDawn", "kind": "flat", "value": -30}]}]}
         ]
-      },
-      "nodes": [{"id": "ghostcaptain_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Призрачная команда", "en": "Ghost Crew"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "ghostcaptain_trait_3",
@@ -944,9 +868,7 @@
           {"level": 60, "options": [{"id": "ghostcaptain_trait_3_f60a", "name": {"ru": "Передразнивание", "en": "Mockery"}, "text": {"ru": "Повтор всегда критует, но на 20% слабее", "en": "A repeat always crits, but is 20% weaker"}, "modifiers": [{"stat": "parrotCrit", "kind": "flat", "value": 1}, {"stat": "parrotPower", "kind": "more", "value": -0.2}]}, {"id": "ghostcaptain_trait_3_f60b", "name": {"ru": "Попугай-вор", "en": "Thieving Parrot"}, "text": {"ru": "Повтор даёт 5 Пороха, но на 15% слабее", "en": "A repeat gives 5 Powder, but is 15% weaker"}, "modifiers": [{"stat": "parrotPowder", "kind": "flat", "value": 1}, {"stat": "parrotPower", "kind": "more", "value": -0.15}]}]},
           {"level": 75, "options": [{"id": "ghostcaptain_trait_3_f75a", "name": {"ru": "Два попугая", "en": "Two Parrots"}, "text": {"ru": "В отряде попугай сидит у двоих союзников; в соло повторяет дважды по 60% силы", "en": "In a party the parrot sits with two allies; solo it repeats twice at 60% strength"}, "modifiers": [{"stat": "parrotTwo", "kind": "flat", "value": 1}]}, {"id": "ghostcaptain_trait_3_f75b", "name": {"ru": "Попугай-капитан", "en": "Parrot Captain"}, "text": {"ru": "Повтор вдвое сильнее, но только у скиллов с перезарядкой от 10 с; бафф отряду: себе и союзникам поровну", "en": "A repeat is twice as strong, but only for skills with a cooldown of 10 s or more; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "parrotPower", "kind": "more", "value": 1}, {"stat": "parrotHeavy", "kind": "flat", "value": 1}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "ghostcaptain_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Попугай-призрак", "en": "Ghost Parrot"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "golemancer_trait_1",
@@ -968,9 +890,7 @@
           {"level": 60, "options": [{"id": "golemancer_trait_1_f60a", "name": {"ru": "Кристальный голем", "en": "Crystal Golem"}, "text": {"ru": "Голем всегда критует, но бьёт на 20% слабее", "en": "The golem always crits, but strikes 20% weaker"}, "modifiers": [{"stat": "sealCrystal", "kind": "flat", "value": 1}]}, {"id": "golemancer_trait_1_f60b", "name": {"ru": "Голем-страж", "en": "Guardian Golem"}, "text": {"ru": "Вставший голем держит таймер босса 2 с, но на 15% слабее", "en": "A rising golem holds the boss timer for 2 s, but is 15% weaker"}, "modifiers": [{"stat": "sealGuard", "kind": "flat", "value": 1}, {"stat": "sealPower", "kind": "more", "value": -0.15}]}]},
           {"level": 75, "options": [{"id": "golemancer_trait_1_f75a", "name": {"ru": "Двойная печать", "en": "Double Seal"}, "text": {"ru": "Из печати встают два голема, каждый на 40% слабее; бафф отряду: себе и союзникам поровну", "en": "Two golems rise from a seal, each 40% weaker; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "sealTwo", "kind": "flat", "value": 1}], "partyMode": "together"}, {"id": "golemancer_trait_1_f75b", "name": {"ru": "Титан", "en": "Titan"}, "text": {"ru": "Голем вдвое сильнее, но стоит 10 с", "en": "The golem is twice as strong, but stands 10 s"}, "modifiers": [{"stat": "sealTitan", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "golemancer_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Печать", "en": "Seal"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "golemancer_trait_2",
@@ -992,9 +912,7 @@
           {"level": 60, "options": [{"id": "golemancer_trait_2_f60a", "name": {"ru": "Тяжёлый кулак", "en": "Heavy Fist"}, "text": {"ru": "Голем бьёт раз в 2 с, но ×2,5", "en": "The golem strikes every 2 s, but ×2.5"}, "modifiers": [{"stat": "eternalHeavy", "kind": "flat", "value": 1}]}, {"id": "golemancer_trait_2_f60b", "name": {"ru": "Глубокое клеймо", "en": "Deep Brand"}, "text": {"ru": "Клеймо до 15 слоёв, но голем на 15% слабее", "en": "The brand has up to 15 layers, but the golem is 15% weaker"}, "modifiers": [{"stat": "eternalBrand", "kind": "flat", "value": 5}, {"stat": "eternalPower", "kind": "more", "value": -0.15}]}]},
           {"level": 75, "options": [{"id": "golemancer_trait_2_f75a", "name": {"ru": "Руна силы", "en": "Rune of Power"}, "text": {"ru": "Руна даёт +8%, но рун до 25", "en": "A rune gives +8%, but up to 25 runes"}, "modifiers": [{"stat": "eternalRuneBonus", "kind": "flat", "value": 0.03}, {"stat": "eternalRunes", "kind": "flat", "value": -15}]}, {"id": "golemancer_trait_2_f75b", "name": {"ru": "Каменный страж", "en": "Stone Guardian"}, "text": {"ru": "На боссе голем вдвое сильнее, на обычных врагах на 30% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "On a boss the golem is twice as strong, on ordinary enemies 30% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "eternalBoss", "kind": "flat", "value": 1}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "golemancer_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Вечная печать", "en": "Eternal Seal"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "golemancer_trait_3",
@@ -1016,9 +934,7 @@
           {"level": 60, "options": [{"id": "golemancer_trait_3_f60a", "name": {"ru": "Крепкая глина", "en": "Firm Clay"}, "text": {"ru": "Големчик живёт 25 с, но лепится каждые 30 ударов", "en": "A golemling lives 25 s, but is shaped every 30 hits"}, "modifiers": [{"stat": "minorSeconds", "kind": "flat", "value": 10}, {"stat": "minorHits", "kind": "flat", "value": 10}]}, {"id": "golemancer_trait_3_f60b", "name": {"ru": "Первый удар", "en": "First Blow"}, "text": {"ru": "Рождаясь, големчик бьёт ×3, но на 20% слабее", "en": "On birth a golemling strikes ×3, but is 20% weaker"}, "modifiers": [{"stat": "minorBirth", "kind": "flat", "value": 1}, {"stat": "minorPower", "kind": "more", "value": -0.2}]}]},
           {"level": 75, "options": [{"id": "golemancer_trait_3_f75a", "name": {"ru": "Мастерская", "en": "Workshop"}, "text": {"ru": "В соло големчики вдвое сильнее, в отряде на 30% слабее; бафф отряду: себе и союзникам поровну", "en": "Solo the golemlings are twice as strong, in a party 30% weaker; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "minorSolo", "kind": "flat", "value": 1}, {"stat": "minorParty", "kind": "flat", "value": -0.3}], "partyMode": "together"}, {"id": "golemancer_trait_3_f75b", "name": {"ru": "Рой големчиков", "en": "Golemling Swarm"}, "text": {"ru": "До 8 големчиков, но каждый на 40% слабее", "en": "Up to 8 golemlings, but each is 40% weaker"}, "modifiers": [{"stat": "minorMax", "kind": "flat", "value": 4}, {"stat": "minorPower", "kind": "more", "value": -0.4}]}]}
         ]
-      },
-      "nodes": [{"id": "golemancer_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Малые печати", "en": "Small Seals"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "clockwright_trait_1",
@@ -1040,9 +956,7 @@
           {"level": 60, "options": [{"id": "clockwright_trait_1_f60a", "name": {"ru": "Полный ход", "en": "Full Speed"}, "text": {"ru": "На полном Заводе таймер на 45% медленнее, но выше половины пружина на 15% слабее", "en": "At full Wind the timer is 45% slower, but above half the spring is 15% weaker"}, "modifiers": [{"stat": "springFull", "kind": "flat", "value": 1}, {"stat": "springPower", "kind": "more", "value": -0.15}]}, {"id": "clockwright_trait_1_f60b", "name": {"ru": "Общая пружина", "en": "Shared Spring"}, "text": {"ru": "Союзники заводят вдвое сильнее, но Завод кончается на 50% быстрее", "en": "Allies wind twice as hard, but the Wind runs down 50% faster"}, "modifiers": [{"stat": "springAllies", "kind": "flat", "value": 1}]}]},
           {"level": 75, "options": [{"id": "clockwright_trait_1_f75a", "name": {"ru": "Вечные часы", "en": "Eternal Clock"}, "text": {"ru": "Часы больше не встают на нуле, но пружина на 15% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "The clock no longer stops at zero, but the spring is 15% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "springForever", "kind": "flat", "value": 1}, {"stat": "springPower", "kind": "more", "value": -0.15}], "partyMode": "support"}, {"id": "clockwright_trait_1_f75b", "name": {"ru": "Пружина в удар", "en": "Spring into a Blow"}, "text": {"ru": "Раз в 30 с при Заводе выше половины половина Завода уходит в удар ×0,2 за каждую единицу", "en": "Every 30 s with the Wind above half, half of the Wind goes into a blow ×0.2 per point"}, "modifiers": [{"stat": "springBurst", "kind": "flat", "value": 1}]}]}
         ]
-      },
-      "nodes": [{"id": "clockwright_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Завод пружины", "en": "Wound Spring"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "clockwright_trait_2",
@@ -1064,9 +978,7 @@
           {"level": 60, "options": [{"id": "clockwright_trait_2_f60a", "name": {"ru": "Петля на Колосса", "en": "Loop on the Colossus"}, "text": {"ru": "На боссе петля вдвое чаще, но вне боссов её нет", "en": "On a boss the loop comes twice as often, but there is none outside bosses"}, "modifiers": [{"stat": "loopBoss", "kind": "flat", "value": 1}]}, {"id": "clockwright_trait_2_f60b", "name": {"ru": "Своя петля", "en": "Own Loop"}, "text": {"ru": "Петля на 15% слабее, зато после перемотки отряд 5 с бьёт ещё на 10% сильнее", "en": "The loop is 15% weaker, but for 5 s after a rewind the party hits another 10% harder"}, "modifiers": [{"stat": "loopPower", "kind": "more", "value": -0.15}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "after": {"signal": "loop", "seconds": 5, "stacks": 1}}]}]},
           {"level": 75, "options": [{"id": "clockwright_trait_2_f75a", "name": {"ru": "Петля-ловушка", "en": "Trap Loop"}, "text": {"ru": "Перемотка ещё и останавливает таймер босса на 3 с, но петля на 20% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "A rewind also stops the boss timer for 3 s, but the loop is 20% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "loopStop", "kind": "flat", "value": 1}, {"stat": "loopPower", "kind": "more", "value": -0.2}], "partyMode": "support"}, {"id": "clockwright_trait_2_f75b", "name": {"ru": "Глубокая перемотка", "en": "Deep Rewind"}, "text": {"ru": "Петля на 50% сильнее, но приходит раз в 60 с", "en": "The loop is 50% stronger, but comes every 60 s"}, "modifiers": [{"stat": "loopPower", "kind": "more", "value": 0.5}, {"stat": "loopSeconds", "kind": "flat", "value": 20}]}]}
         ]
-      },
-      "nodes": [{"id": "clockwright_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Петля", "en": "Loop"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "clockwright_trait_3",
@@ -1088,9 +1000,7 @@
           {"level": 60, "options": [{"id": "clockwright_trait_3_f60a", "name": {"ru": "Сброс", "en": "Reset"}, "text": {"ru": "Каждый 10-й тик сбрасывает самую долгую перезарядку целиком, но тик раз в 70 ударов", "en": "Every 10th tick resets the longest cooldown entirely, but a tick comes every 70 hits"}, "modifiers": [{"stat": "gearReset", "kind": "flat", "value": 1}, {"stat": "gearHits", "kind": "flat", "value": 10}]}, {"id": "clockwright_trait_3_f60b", "name": {"ru": "Крепкое сцепление", "en": "Firm Mesh"}, "text": {"ru": "Сцепление снимает вдвое больше, но тик от ударов раз в 90", "en": "A mesh cuts twice as much, but a tick from hits comes every 90"}, "modifiers": [{"stat": "gearMesh", "kind": "flat", "value": 1}, {"stat": "gearHits", "kind": "flat", "value": 30}]}]},
           {"level": 75, "options": [{"id": "clockwright_trait_3_f75a", "name": {"ru": "Без пауз", "en": "No Pauses"}, "text": {"ru": "В паузе часы тикают сами раз в 10 с, но тик снимает на 25% меньше", "en": "In a pause the clock ticks by itself every 10 s, but a tick cuts 25% less"}, "modifiers": [{"stat": "gearIdle", "kind": "flat", "value": 1}, {"stat": "gearPower", "kind": "more", "value": -0.25}]}, {"id": "clockwright_trait_3_f75b", "name": {"ru": "Большая шестерня", "en": "Big Gear"}, "text": {"ru": "Тик снимает вдвое больше, но приходит раз в 120 ударов; бафф отряду: себе и союзникам поровну", "en": "A tick cuts twice as much, but comes every 120 hits; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "gearPower", "kind": "more", "value": 1}, {"stat": "gearHits", "kind": "flat", "value": 60}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "clockwright_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Шестерни", "en": "Gears"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "sandwalker_trait_1",
@@ -1112,9 +1022,7 @@
           {"level": 60, "options": [{"id": "sandwalker_trait_1_f60a", "name": {"ru": "Мягкий низ", "en": "Soft Bottom"}, "text": {"ru": "На «низе» урон −25% вместо −50%, но «верх» на 20% слабее", "en": "On the bottom damage is −25% instead of −50%, but the top is 20% weaker"}, "modifiers": [{"stat": "flipPenalty", "kind": "flat", "value": -0.25}, {"stat": "flipPower", "kind": "flat", "value": -0.2}]}, {"id": "sandwalker_trait_1_f60b", "name": {"ru": "Тяжёлый верх", "en": "Heavy Top"}, "text": {"ru": "«Верх» на 30% сильнее, но на «низе» урон −70%", "en": "The top is 30% stronger, but on the bottom damage is −70%"}, "modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.3}, {"stat": "flipPenalty", "kind": "flat", "value": 0.2}]}]},
           {"level": 75, "options": [{"id": "sandwalker_trait_1_f75a", "name": {"ru": "Песок в глаза", "en": "Sand in the Eyes"}, "text": {"ru": "Каждый переворот ослепляет врага на 3 с: он получает от Sandwalker +30%, а отряд видит Ослепление. Но часы переворачиваются на 50 ударов позже", "en": "Every turn blinds the enemy for 3 s: he takes 30% more from the Sandwalker and the party sees the Blind. But the glass turns 50 hits later"}, "modifiers": [{"stat": "flipBlind", "kind": "flat", "value": 1}, {"stat": "flipEvery", "kind": "flat", "value": 50}]}, {"id": "sandwalker_trait_1_f75b", "name": {"ru": "Часы для Колоссов", "en": "Glass for Colossi"}, "text": {"ru": "Песок сыплется только в бою с боссом, с обычными врагами всегда «верх», но «верх» ×0,8; часы стоят ради отряда: всё, что она даёт отряду, получают только союзники, зато в 1,5 раза больше", "en": "Sand flows only against a boss, with common enemies it is always the top, but the top is ×0.8; the hourglass stands for the party: all she gives goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "flipBossOnly", "kind": "flat", "value": 1}, {"stat": "flipPower", "kind": "more", "value": -0.2}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "sandwalker_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Переворот", "en": "Turn of the Glass"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "sandwalker_trait_2",
@@ -1136,9 +1044,7 @@
           {"level": 60, "options": [{"id": "sandwalker_trait_2_f60a", "name": {"ru": "Оазис", "en": "Oasis"}, "text": {"ru": "Каждая 5-я стоянка — оазис: удар ×3 и Песка ×2,5, но откат сокращается на 0,5 с", "en": "Every 5th camp is an oasis: a strike ×3 and ×2.5 Sand, but the cooldown cut is 0.5 s"}, "modifiers": [{"stat": "caravanOasis", "kind": "flat", "value": 1}, {"stat": "campCut", "kind": "flat", "value": -0.5}]}, {"id": "sandwalker_trait_2_f60b", "name": {"ru": "Торговый путь", "en": "Trade Road"}, "text": {"ru": "Стоянка сокращает откат на 2 с, но даёт 5 Песка", "en": "A camp cuts a cooldown by 2 s, but gives 5 Sand"}, "modifiers": [{"stat": "campCut", "kind": "flat", "value": 1}, {"stat": "campSand", "kind": "flat", "value": -5}]}]},
           {"level": 75, "options": [{"id": "sandwalker_trait_2_f75a", "name": {"ru": "Золото каравана", "en": "Caravan Gold"}, "text": {"ru": "После стоянки отряд 10 с получает +25% золота, но удар стоянки ×0,7", "en": "After a camp the party gets 25% more gold for 10 s, but a camp strikes ×0.7"}, "modifiers": [{"stat": "caravanPower", "kind": "more", "value": -0.3}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.25, "after": {"signal": "camp", "seconds": 10, "stacks": 1}}]}, {"id": "sandwalker_trait_2_f75b", "name": {"ru": "Караван-сарай", "en": "Caravanserai"}, "text": {"ru": "Стоянка сокращает откаты всех скиллов, но она на 1000 px дальше; караван снова везёт и её саму: себе и отряду поровну", "en": "A camp cuts the cooldowns of all skills, but it is 1000 px farther; the caravan carries her too again: equally to her and the party"}, "modifiers": [{"stat": "caravanAll", "kind": "flat", "value": 1}, {"stat": "campPx", "kind": "flat", "value": 1000}], "partyMode": "together"}]}
         ]
-      },
-      "nodes": [{"id": "sandwalker_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Караван", "en": "Caravan"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "sandwalker_trait_3",
@@ -1160,9 +1066,7 @@
           {"level": 60, "options": [{"id": "sandwalker_trait_3_f60a", "name": {"ru": "Двойник", "en": "Double"}, "text": {"ru": "Миражи повторяют каждый его удар на 10% за мираж, но сами бьют ×0,5", "en": "Mirages repeat every hit of his at 10% per mirage, but strike ×0.5 themselves"}, "modifiers": [{"stat": "mirageEcho", "kind": "flat", "value": 0.1}, {"stat": "miragePower", "kind": "more", "value": -0.5}]}, {"id": "sandwalker_trait_3_f60b", "name": {"ru": "Жаркий мираж", "en": "Hot Mirage"}, "text": {"ru": "Мираж бьёт ×1,5, но живёт 10 с", "en": "A mirage strikes ×1.5, but lives 10 s"}, "modifiers": [{"stat": "miragePower", "kind": "more", "value": 0.5}, {"stat": "mirageSeconds", "kind": "flat", "value": -10}]}]},
           {"level": 75, "options": [{"id": "sandwalker_trait_3_f75a", "name": {"ru": "Слепящий мираж", "en": "Blinding Mirage"}, "text": {"ru": "Исчезая, мираж ослепляет врага на 1 с, но живёт 15 с; миражи — двойники союзников: всё, что она даёт отряду, получают только союзники, зато в 1,5 раза больше", "en": "A vanishing mirage blinds the enemy for 1 s, but lives 15 s; the mirages are doubles of the allies: all she gives goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "mirageBlind", "kind": "flat", "value": 1}, {"stat": "mirageSeconds", "kind": "flat", "value": -5}], "partyMode": "support"}, {"id": "sandwalker_trait_3_f75b", "name": {"ru": "Без тени", "en": "Shadowless"}, "text": {"ru": "Сам Sandwalker бьёт без штрафа, но миражей до 3", "en": "The Sandwalker strikes without the penalty, but there are only up to 3 mirages"}, "modifiers": [{"stat": "mirageSelfPenalty", "kind": "flat", "value": -0.4}, {"stat": "mirageMax", "kind": "flat", "value": -2}]}]}
         ]
-      },
-      "nodes": [{"id": "sandwalker_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Мираж", "en": "Mirage"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "dowser_trait_1",
@@ -1184,9 +1088,7 @@
           {"level": 60, "options": [{"id": "dowser_trait_1_f60a", "name": {"ru": "Удар в жилу", "en": "Strike the Vein"}, "text": {"ru": "После попадания в жилу её удары 10 с всегда критуют, но жила на 20% беднее", "en": "After striking the vein her hits always crit for 10 s, but the vein is 20% poorer"}, "modifiers": [{"stat": "veinCrit", "kind": "flat", "value": 1}, {"stat": "veinPower", "kind": "more", "value": -0.2}]}, {"id": "dowser_trait_1_f60b", "name": {"ru": "Две жилы", "en": "Two Veins"}, "text": {"ru": "В каждом враге две жилы, но каждая вдвое беднее", "en": "Every enemy has two veins, but each is half as rich"}, "modifiers": [{"stat": "veinTwice", "kind": "flat", "value": 1}]}]},
           {"level": 75, "options": [{"id": "dowser_trait_1_f75a", "name": {"ru": "Самоцветная жила", "en": "Gem Vein"}, "text": {"ru": "Каждая четвёртая жила самоцветная: вместо золота предмет", "en": "Every fourth vein is a gem vein: an item instead of gold"}, "modifiers": [{"stat": "veinGem", "kind": "flat", "value": 1}]}, {"id": "dowser_trait_1_f75b", "name": {"ru": "Жила для артели", "en": "Vein for the Crew"}, "text": {"ru": "Союзникам золото жилы на 50% больше, ей — вдвое меньше; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Allies get 50% more vein gold, she gets half; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "veinParty", "kind": "flat", "value": 1}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "dowser_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Жила", "en": "Vein"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "dowser_trait_2",
@@ -1208,9 +1110,7 @@
           {"level": 60, "options": [{"id": "dowser_trait_2_f60a", "name": {"ru": "Счастливая находка", "en": "Lucky Find"}, "text": {"ru": "Каждая пятая находка — уникальный предмет, но удача растёт на 25% медленнее", "en": "Every fifth find is a unique item, but luck grows 25% slower"}, "modifiers": [{"stat": "luckUnique", "kind": "flat", "value": 1}, {"stat": "luckPower", "kind": "more", "value": -0.25}]}, {"id": "dowser_trait_2_f60b", "name": {"ru": "Золото на удачу", "en": "Gold for Luck"}, "text": {"ru": "Каждый враг без находки даёт отряду +1% золота, до 30%, находка сбрасывает; удача растёт на 30% медленнее", "en": "Every enemy without a find gives the party +1% gold, up to 30%, a find resets it; luck grows 30% slower"}, "modifiers": [{"stat": "luckGold", "kind": "flat", "value": 1}, {"stat": "luckPower", "kind": "more", "value": -0.3}]}]},
           {"level": 75, "options": [{"id": "dowser_trait_2_f75a", "name": {"ru": "Час удачи", "en": "Lucky Hour"}, "text": {"ru": "Раз в час — уникальный предмет наверняка, но удача растёт на 30% медленнее", "en": "Once an hour a unique item for sure, but luck grows 30% slower"}, "modifiers": [{"stat": "luckHour", "kind": "flat", "value": 1}, {"stat": "luckPower", "kind": "more", "value": -0.3}]}, {"id": "dowser_trait_2_f75b", "name": {"ru": "Счастливая артель", "en": "Lucky Crew"}, "text": {"ru": "Убийства отряда растят удачу на 50% быстрее, но находка ей — на 30% реже; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Party kills grow luck 50% faster, but her finds come 30% less often; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "luckParty", "kind": "flat", "value": 0.5}, {"stat": "luckPower", "kind": "more", "value": -0.3}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "dowser_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Удача", "en": "Luck"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "dowser_trait_3",
@@ -1232,9 +1132,7 @@
           {"level": 60, "options": [{"id": "dowser_trait_3_f60a", "name": {"ru": "Самоцвет в сундуке", "en": "Gem in the Chest"}, "text": {"ru": "Её сундук ещё и даёт трофей (опыт гемов), но удары слабее на 50%", "en": "Her chest also gives a trophy (gem experience), but her hits are 50% weaker"}, "modifiers": [{"stat": "artelGem", "kind": "flat", "value": 1}, {"stat": "artelPenalty", "kind": "flat", "value": 0.1}]}, {"id": "dowser_trait_3_f60b", "name": {"ru": "Богатый сундук", "en": "Rich Chest"}, "text": {"ru": "Сундук на 60% богаче, но за 15 самородков", "en": "A chest is 60% richer, but takes 15 nuggets"}, "modifiers": [{"stat": "artelPower", "kind": "more", "value": 0.6}, {"stat": "artelNuggets", "kind": "flat", "value": 5}]}]},
           {"level": 75, "options": [{"id": "dowser_trait_3_f75a", "name": {"ru": "Сундук с находкой", "en": "Chest with a Find"}, "text": {"ru": "Шанс предмета в сундуке 25%, но золота в нём на 30% меньше; бафф отряду: себе и союзникам поровну", "en": "The item chance in a chest is 25%, but there is 30% less gold; the party buff goes equally to self and allies"}, "modifiers": [{"stat": "artelItem", "kind": "flat", "value": 1}], "partyMode": "together"}, {"id": "dowser_trait_3_f75b", "name": {"ru": "Осколки в сундуке", "en": "Shards in the Chest"}, "text": {"ru": "Её сундук ещё и даёт 10 Осколков, но удары слабее на 50%", "en": "Her chest also gives 10 Shards, but her hits are 50% weaker"}, "modifiers": [{"stat": "artelShards", "kind": "flat", "value": 1}, {"stat": "artelPenalty", "kind": "flat", "value": 0.1}]}]}
         ]
-      },
-      "nodes": [{"id": "dowser_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Артель", "en": "Prospectors' Crew"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "dreamcatcher_trait_1",
@@ -1256,9 +1154,7 @@
           {"level": 60, "options": [{"id": "dreamcatcher_trait_1_f60a", "name": {"ru": "Сеть с часами", "en": "Net with a Clock"}, "text": {"ru": "Пойманный босс стоит: его таймер не идёт, пока он в сети, но сетей до 2", "en": "A caught boss stands still: his timer stops while he is in the net, but there are only 2 nets"}, "modifiers": [{"stat": "netTimer", "kind": "flat", "value": 1}, {"stat": "netMax", "kind": "flat", "value": -1}]}, {"id": "dreamcatcher_trait_1_f60b", "name": {"ru": "Ловчая яма", "en": "Pitfall"}, "text": {"ru": "Шанс трофея +20%, но пойманный получает на 30% меньше", "en": "Trophy chance +20%, but a caught enemy takes 30% less"}, "modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.2}, {"stat": "netPower", "kind": "more", "value": -0.3}]}]},
           {"level": 75, "options": [{"id": "dreamcatcher_trait_1_f75a", "name": {"ru": "Пять сетей", "en": "Five Nets"}, "text": {"ru": "До 5 сетей, но пойманный получает на 20% меньше; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "Up to 5 nets, but a caught enemy takes 20% less; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "netMax", "kind": "flat", "value": 2}, {"stat": "netPower", "kind": "more", "value": -0.2}], "partyMode": "support"}, {"id": "dreamcatcher_trait_1_f75b", "name": {"ru": "Тугая сеть", "en": "Tight Net"}, "text": {"ru": "Враг, умерший в сети, возвращает сеть, но беспомощен на 1 с меньше", "en": "An enemy that dies in the net gives it back, but is helpless 1 s shorter"}, "modifiers": [{"stat": "netReturn", "kind": "flat", "value": 1}, {"stat": "netSeconds", "kind": "flat", "value": -1}]}]}
         ]
-      },
-      "nodes": [{"id": "dreamcatcher_trait_1_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Сети снов", "en": "Dream Nets"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "dreamcatcher_trait_2",
@@ -1280,9 +1176,7 @@
           {"level": 60, "options": [{"id": "dreamcatcher_trait_2_f60a", "name": {"ru": "Тонкая страница", "en": "Thin Page"}, "text": {"ru": "Страница полна при 5 экземплярах, но вещий сон +15% вместо +25%", "en": "A page is full at 5 specimens, but the prophetic dream gives +15% instead of +25%"}, "modifiers": [{"stat": "pageMin", "kind": "flat", "value": -5}, {"stat": "prophecyPower", "kind": "flat", "value": -0.1}]}, {"id": "dreamcatcher_trait_2_f60b", "name": {"ru": "Яркий сон", "en": "Vivid Dream"}, "text": {"ru": "Вещий сон +50%, но страница полна при 20 экземплярах", "en": "The prophetic dream gives +50%, but a page needs 20 specimens"}, "modifiers": [{"stat": "prophecyPower", "kind": "flat", "value": 0.25}, {"stat": "pageMin", "kind": "flat", "value": 10}]}]},
           {"level": 75, "options": [{"id": "dreamcatcher_trait_2_f75a", "name": {"ru": "Осознанный альбом", "en": "Lucid Album"}, "text": {"ru": "Бонус по любому врагу — не меньше половины лучшего, но экземпляр даёт на 20% меньше", "en": "The bonus against any enemy is at least half of the best one, but a specimen gives 20% less"}, "modifiers": [{"stat": "albumAll", "kind": "flat", "value": 1}, {"stat": "albumPower", "kind": "more", "value": -0.2}]}, {"id": "dreamcatcher_trait_2_f75b", "name": {"ru": "Чужие страницы", "en": "Others' Pages"}, "text": {"ru": "В отряде каждый враг ложится в альбом дважды, но в соло альбом не растёт; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "In a party every enemy goes into the album twice, but solo the album does not grow; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "albumAllies", "kind": "flat", "value": 1}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "dreamcatcher_trait_2_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Коллекция снов", "en": "Dream Collection"}, "modifiers": []}],
-      "links": []
+      }
     },
     {
       "id": "dreamcatcher_trait_3",
@@ -1304,9 +1198,7 @@
           {"level": 60, "options": [{"id": "dreamcatcher_trait_3_f60a", "name": {"ru": "Кошмарный дух", "en": "Nightmare Spirit"}, "text": {"ru": "Дух крепче втрое, но и добычи втрое", "en": "The spirit is three times tougher, but drops three times the loot"}, "modifiers": [{"stat": "spiritHp", "kind": "flat", "value": 6}, {"stat": "spiritLoot", "kind": "more", "value": 2}]}, {"id": "dreamcatcher_trait_3_f60b", "name": {"ru": "Сонный дух", "en": "Drowsy Spirit"}, "text": {"ru": "Дух крепче обычного врага лишь в 1,5 раза, но добычи на 40% меньше", "en": "The spirit is only 1.5 times tougher than a regular enemy, but drops 40% less loot"}, "modifiers": [{"stat": "spiritHp", "kind": "flat", "value": -1.5}, {"stat": "spiritLoot", "kind": "more", "value": -0.4}]}]},
           {"level": 75, "options": [{"id": "dreamcatcher_trait_3_f75a", "name": {"ru": "Охотничий рог", "en": "Hunting Horn"}, "text": {"ru": "Вышедший дух 15 с получает +30% урона от всех, но Приманки нужно 150", "en": "A spirit takes 30% more damage from everyone for 15 s, but it takes 150 Bait"}, "modifiers": [{"stat": "spiritHorn", "kind": "flat", "value": 1}, {"stat": "baitHits", "kind": "flat", "value": 50}]}, {"id": "dreamcatcher_trait_3_f75b", "name": {"ru": "Дух-проводник", "en": "Guide Spirit"}, "text": {"ru": "Убитый дух даёт 30 ресурса ей и союзникам, но Приманки нужно 120; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "A slain spirit gives 30 resource to her and the allies, but it takes 120 Bait; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "spiritGift", "kind": "flat", "value": 1}, {"stat": "baitHits", "kind": "flat", "value": 20}], "partyMode": "support"}]}
         ]
-      },
-      "nodes": [{"id": "dreamcatcher_trait_3_start", "type": "start", "x": 0, "y": 0, "name": {"ru": "Приманка-сон", "en": "Dream Bait"}, "modifiers": []}],
-      "links": []
+      }
     }
   ]
 }
