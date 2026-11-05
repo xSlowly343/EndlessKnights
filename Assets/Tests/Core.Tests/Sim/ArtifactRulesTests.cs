@@ -37,6 +37,13 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void EveryArtifactHasAnEffectOfItsOwnBesidesTheSharedDamage()
+        {
+            var bare = Catalog.All.Where(a => a.PerLevel.Count == 0 && a.PerArtifact.Count == 0 && a.Boost <= 0 && a.BoostAllDamage <= 0).Select(a => a.Id).ToList();
+            Assert.That(bare, Is.Empty);
+        }
+
+        [Test]
         public void EveryGroupFollowsTheSameTemplate()
         {
             for (var group = 1; group <= Catalog.Groups; group++)
