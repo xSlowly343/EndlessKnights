@@ -8,6 +8,7 @@ namespace Game.Core.Sim
         NeedsPrestige,
         RunNotFresh,
         InsideRift,
-        Locked
+        Locked,
+        NotThisWeek
     }
 }

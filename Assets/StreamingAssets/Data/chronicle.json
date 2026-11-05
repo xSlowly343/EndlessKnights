@@ -1,6 +1,7 @@
 {
   "version": 1,
   "minPrestiges": 1,
+  "weekly": {"count": 3, "boardSize": 50, "maxFriends": 100},
   "trials": [
     {"id": "only_mouse", "name": {"ru": "Только мышь", "en": "Mouse Only"}, "goalStage": 50, "rules": [{"stat": "damage", "kind": "more", "value": -1, "tags": ["Strike"]}], "reward": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Mouse"]}]},
     {"id": "only_keys", "name": {"ru": "Только клавиши", "en": "Keys Only"}, "goalStage": 50, "rules": [{"stat": "damage", "kind": "more", "value": -1, "tags": ["Mouse"]}], "reward": [{"stat": "damage", "kind": "increased", "value": 0.05, "tags": ["Strike"]}]},

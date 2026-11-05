@@ -11,6 +11,7 @@ namespace Game.Core.Sim
         private readonly LevelSystem _levels;
         private readonly ModifierLayer _layer;
         private readonly List<Modifier> _modifiers = new List<Modifier>();
+        private readonly List<TrialDef> _weekly = new List<TrialDef>();
         private ChronicleCatalog _catalog;
 
         public ChronicleSystem(ChronicleCatalog catalog, GameState state, StatSheet hero, EventQueue events, LevelSystem levels)
@@ -28,6 +29,51 @@ namespace Game.Core.Sim
         public int CompletedCount => _state.Chronicle.Completed.Count;
 
         public bool IsCompleted(string id) => _state.Chronicle.Completed.Contains(id);
+        public IReadOnlyList<TrialDef> WeeklyTrials => _weekly;
+        public bool WeeklyRunning => _state.Chronicle.Active != null && _state.Chronicle.Weekly;
+
+        public long WeeklyBest(string id) => _state.Chronicle.WeeklyBest.TryGetValue(id, out var best) ? best : 0;
+
+        public void SetDay(long day)
+        {
+            var chronicle = _state.Chronicle;
+            var week = ChronicleCatalog.WeekOf(day);
+            if (week != chronicle.Week)
+            {
+                if (chronicle.Weekly && chronicle.Active != null)
+                    Abandon();
+                chronicle.Week = week;
+                chronicle.WeeklyBest.Clear();
+                chronicle.WeeklyUnsent.Clear();
+            }
+            _catalog.WeeklyTrials(week, _weekly);
+        }
+
+        public TrialResult StartWeekly(string id)
+        {
+            if (!IsWeekly(id))
+                return TrialResult.NotThisWeek;
+            var result = Start(id);
+            if (result == TrialResult.Started)
+                _state.Chronicle.Weekly = true;
+            return result;
+        }
+
+        public void WeeklySent(string id, long stage)
+        {
+            if (WeeklyBest(id) <= stage)
+                _state.Chronicle.WeeklyUnsent.Remove(id);
+        }
+
+        private bool IsWeekly(string id)
+        {
+            foreach (var trial in _weekly)
+            {
+                if (trial.Id == id)
+                    return true;
+            }
+            return false;
+        }
 
         public void UseCatalog(ChronicleCatalog catalog)
         {
@@ -53,6 +99,7 @@ namespace Game.Core.Sim
             if (_state.HighestStage > 1)
                 return TrialResult.RunNotFresh;
             chronicle.Active = id;
+            chronicle.Weekly = false;
             chronicle.ActivePrestige = _state.Prestiges;
             Rebuild();
             return TrialResult.Started;
@@ -63,6 +110,7 @@ namespace Game.Core.Sim
             if (_state.Chronicle.Active == null)
                 return false;
             _state.Chronicle.Active = null;
+            _state.Chronicle.Weekly = false;
             Rebuild();
             return true;
         }
@@ -81,8 +129,27 @@ namespace Game.Core.Sim
                 Abandon();
                 return;
             }
-            if (_state.HighestStage >= trial.GoalStage)
+            if (_state.Chronicle.Weekly)
+                TrackWeekly(trial);
+            else if (_state.HighestStage >= trial.GoalStage)
                 Complete(trial);
+        }
+
+        private void TrackWeekly(TrialDef trial)
+        {
+            var chronicle = _state.Chronicle;
+            if (_state.HighestStage > WeeklyBest(trial.Id))
+            {
+                chronicle.WeeklyBest[trial.Id] = _state.HighestStage;
+                if (!chronicle.WeeklyUnsent.Contains(trial.Id))
+                    chronicle.WeeklyUnsent.Add(trial.Id);
+            }
+            if (_state.HighestStage < trial.GoalStage || chronicle.Completed.Contains(trial.Id))
+                return;
+            chronicle.Completed.Add(trial.Id);
+            Rebuild();
+            _levels.SyncTreePoints();
+            _events.Add(GameEvent.ForStage(GameEventKind.TrialCompleted, _state.Tick, trial.GoalStage));
         }
 
         private void Complete(TrialDef trial)
@@ -91,6 +158,7 @@ namespace Game.Core.Sim
             if (!chronicle.Completed.Contains(trial.Id))
                 chronicle.Completed.Add(trial.Id);
             chronicle.Active = null;
+            chronicle.Weekly = false;
             Rebuild();
             _levels.SyncTreePoints();
             _events.Add(GameEvent.ForStage(GameEventKind.TrialCompleted, _state.Tick, trial.GoalStage));

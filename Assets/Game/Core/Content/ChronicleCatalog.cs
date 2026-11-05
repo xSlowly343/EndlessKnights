@@ -33,10 +33,11 @@ namespace Game.Core.Content
 
         private readonly Dictionary<string, TrialDef> _byId;
 
-        private ChronicleCatalog(List<TrialDef> all, int minPrestiges)
+        private ChronicleCatalog(List<TrialDef> all, int minPrestiges, int weeklyCount)
         {
             All = all;
             MinPrestiges = minPrestiges;
+            WeeklyCount = weeklyCount;
             _byId = new Dictionary<string, TrialDef>(StringComparer.Ordinal);
             foreach (var trial in all)
                 _byId.Add(trial.Id, trial);
@@ -44,6 +45,19 @@ namespace Game.Core.Content
 
         public IReadOnlyList<TrialDef> All { get; }
         public int MinPrestiges { get; }
+        public int WeeklyCount { get; }
+
+        public static long WeekOf(long day) => (long)System.Math.Floor((day + 3) / 7.0);
+
+        public void WeeklyTrials(long week, List<TrialDef> into)
+        {
+            into.Clear();
+            if (All.Count == 0)
+                return;
+            var count = System.Math.Min(WeeklyCount, All.Count);
+            for (var i = 0; i < count; i++)
+                into.Add(All[(int)(((week * WeeklyCount + i) % All.Count + All.Count) % All.Count)]);
+        }
 
         public bool TryGet(string id, out TrialDef trial) => _byId.TryGetValue(id, out trial!);
 
@@ -75,7 +89,10 @@ namespace Game.Core.Content
                     noSkills,
                     ModifierReader.ReadList(node.Field("reward"))));
             }
-            return new ChronicleCatalog(all, root.Field("minPrestiges").AsInt(0, 1000));
+            var weekly = root.Field("weekly");
+            weekly.Field("boardSize").AsInt(1, 1000);
+            weekly.Field("maxFriends").AsInt(0, 1000);
+            return new ChronicleCatalog(all, root.Field("minPrestiges").AsInt(0, 1000), weekly.Field("count").AsInt(1, 14));
         }
     }
 }
