@@ -74,6 +74,7 @@ namespace Game.Core.Save
                 ("rift", WriteRift(state.Rift)),
                 ("weapons", WriteWeapons(state.Weapons)),
                 ("drops", WriteDrops(state.Drops)),
+                ("quests", WriteQuests(state.Quests)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -237,6 +238,8 @@ namespace Game.Core.Save
                 ReadWeapons(node.Field("weapons"), weapons, items, state.Weapons);
             if (node.HasField("drops"))
                 ReadDrops(node.Field("drops"), state.Drops, items);
+            if (node.HasField("quests"))
+                ReadQuests(node.Field("quests"), state.Quests);
             if (node.HasField("slates") && slates != null)
                 ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
@@ -415,6 +418,61 @@ namespace Game.Core.Save
                     lines.Add(line);
             }
             return new SlateItem(shape, theme, rarity, lines, node.Field("tempered").AsBool());
+        }
+
+        private static JsonValue WriteQuests(QuestState quests) => Object(
+            ("day", JsonValue.Of(quests.Day)),
+            ("week", JsonValue.Of(quests.Week)),
+            ("streak", JsonValue.Of(quests.Streak)),
+            ("swapsLeft", JsonValue.Of(quests.SwapsLeft)),
+            ("swaps", JsonValue.Of(quests.Swaps)),
+            ("daily", WriteQuestList(quests.Daily)),
+            ("weekly", WriteQuestList(quests.Weekly)));
+
+        private static JsonValue WriteQuestList(List<QuestEntry> list)
+        {
+            var items = new JsonValue[list.Count];
+            for (var i = 0; i < items.Length; i++)
+            {
+                var entry = list[i];
+                items[i] = Object(
+                    ("kind", JsonValue.Of(QuestRules.IdOf(entry.Kind))),
+                    ("day", JsonValue.Of(entry.Day)),
+                    ("target", JsonValue.Of(entry.Target)),
+                    ("progress", JsonValue.Of(entry.Progress)),
+                    ("claimed", JsonValue.Of(entry.Claimed)));
+            }
+            return JsonValue.Array(items);
+        }
+
+        private static void ReadQuests(ContentNode node, QuestState quests)
+        {
+            quests.Day = node.Field("day").AsLong();
+            quests.Week = node.Field("week").AsLong();
+            quests.Streak = node.Field("streak").AsInt(0);
+            quests.SwapsLeft = node.Field("swapsLeft").AsInt(0);
+            quests.Swaps = node.Field("swaps").AsInt(0);
+            ReadQuestList(node.Field("daily"), quests.Daily);
+            ReadQuestList(node.Field("weekly"), quests.Weekly);
+            quests.Primed = false;
+        }
+
+        private static void ReadQuestList(ContentNode node, List<QuestEntry> into)
+        {
+            into.Clear();
+            foreach (var item in node.Items())
+            {
+                if (!QuestRules.TryParse(item.Field("kind").AsString(), out var kind))
+                    continue;
+                into.Add(new QuestEntry
+                {
+                    Kind = kind,
+                    Day = item.Field("day").AsLong(),
+                    Target = item.Field("target").AsNumber(0, 1e12),
+                    Progress = item.Field("progress").AsNumber(0, 1e12),
+                    Claimed = item.Field("claimed").AsBool()
+                });
+            }
         }
 
         private static JsonValue WriteDrops(DropState drops)
