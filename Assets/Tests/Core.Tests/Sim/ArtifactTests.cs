@@ -23,12 +23,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ThereAreFourGroupsOfThirty()
+        public void ThereAreFourGroupsOfThirtyFour()
         {
-            Assert.That(Catalog.All.Count, Is.EqualTo(120));
+            Assert.That(Catalog.All.Count, Is.EqualTo(136));
             Assert.That(Catalog.Groups, Is.EqualTo(4));
             for (var group = 1; group <= 4; group++)
-                Assert.That(Catalog.All.Count(a => a.Group == group), Is.EqualTo(30), "group " + group);
+                Assert.That(Catalog.All.Count(a => a.Group == group), Is.EqualTo(34), "group " + group);
         }
 
         [Test]

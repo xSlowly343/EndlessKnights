@@ -26,13 +26,13 @@ namespace Game.Core.Tests.Sim
         private static GameLoop With(params (string Id, int Level)[] artifacts) => With(HeroClass.Runedancer, artifacts);
 
         [Test]
-        public void EveryGroupHasOneClassArtifactPerHero()
+        public void EveryGroupHasOneClassArtifactForEachOfTheEighteenHeroes()
         {
             for (var group = 1; group <= Catalog.Groups; group++)
             {
                 var classes = Catalog.All.Where(a => a.Group == group && a.Type == ArtifactType.Class).Select(a => a.Class).ToList();
-                Assert.That(classes.Count, Is.EqualTo(14), "group " + group);
-                Assert.That(classes.Distinct().Count(), Is.EqualTo(14), "group " + group);
+                Assert.That(classes.Count, Is.EqualTo(18), "group " + group);
+                Assert.That(classes.Distinct().Count(), Is.EqualTo(18), "group " + group);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(state: new GameState(5));
             loop.State.Echo = BigNumber.FromDouble(1e12);
 
-            for (var i = 0; i < 30; i++)
+            for (var i = 0; i < 34; i++)
             {
                 Assert.That(loop.Artifacts.OpenGroup, Is.EqualTo(1));
                 Assert.That(loop.Artifacts.TryUnlock()!.Group, Is.EqualTo(1));
