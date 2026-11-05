@@ -8,7 +8,7 @@ namespace Game.Core.Sim.Headless
 {
     public sealed class BranchTrial
     {
-        public const double DefaultSeconds = 90;
+        public const double DefaultSeconds = 300;
 
         private readonly GameData _data;
         private readonly BotProfile _profile;
