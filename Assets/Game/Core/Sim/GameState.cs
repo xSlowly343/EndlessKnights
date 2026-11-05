@@ -84,6 +84,7 @@ namespace Game.Core.Sim
         public QuestState Quests { get; } = new QuestState();
         public AchievementState Achievements { get; } = new AchievementState();
         public BestiaryState Bestiary { get; } = new BestiaryState();
+        public CosmeticState Cosmetics { get; } = new CosmeticState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();
         public List<string> Atlas { get; } = new List<string>();
