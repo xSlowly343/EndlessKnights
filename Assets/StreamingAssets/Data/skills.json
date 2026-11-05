@@ -2158,9 +2158,9 @@
       "effect": {"type": "strike", "multiplier": 3},
       "text": {"ru": "сильная стрела ×3", "en": "a strong arrow ×3"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_1_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "windshot_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_hit_1_b15b", "name": {"ru": "Натянутая", "en": "Drawn"}, "damage": 0.8, "effect": {"tension": 5}}]},
-        {"level": 25, "options": [{"id": "windshot_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_hit_1_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}, {"id": "windshot_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2177,9 +2177,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "tension": 8},
       "text": {"ru": "быстрая стрела ×2,5, натягивает лук: +8 Натяжения", "en": "a quick arrow ×2.5 that draws the bow: +8 Tension"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_2_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}]},
         {"level": 15, "options": [{"id": "windshot_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_hit_2_b15b", "name": {"ru": "Лёгкая рука", "en": "Light Hand"}, "damage": 0.8, "effect": {"tension": 12}}]},
-        {"level": 25, "options": [{"id": "windshot_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_hit_2_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "windshot_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2196,9 +2196,9 @@
       "effect": {"type": "strike", "multiplier": 5, "critChance": 0.5},
       "text": {"ru": "стрела ×5 с +50% шанса крита", "en": "an arrow ×5 with +50% critical chance"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_3_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "windshot_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_hit_3_b15b", "name": {"ru": "Тихий свист", "en": "Quiet Whistle"}, "damage": 0.8, "effect": {"calmSeconds": 1}}]},
-        {"level": 25, "options": [{"id": "windshot_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_hit_3_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "windshot_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2215,9 +2215,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
       "text": {"ru": "стрелы ×2 по 3 врагам очереди", "en": "arrows ×2 at 3 queued enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "windshot_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_queue_1_b15b", "name": {"ru": "Порывистый веер", "en": "Gusty Fan"}, "damage": 0.8, "effect": {"gusts": 1}}]},
-        {"level": 25, "options": [{"id": "windshot_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_queue_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "windshot_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2234,9 +2234,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
       "text": {"ru": "стрела ×2,5 насквозь через 3 врагов", "en": "an arrow ×2.5 through 3 enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_2_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "windshot_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_queue_2_b15b", "name": {"ru": "Навылет", "en": "Clean Through"}, "damage": 0.8, "effect": {"shot": true}}]},
-        {"level": 25, "options": [{"id": "windshot_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_queue_2_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.75}}, {"id": "windshot_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2253,9 +2253,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "gusts": 1},
       "text": {"ru": "град ×3 по всей очереди и порыв ветра", "en": "hail ×3 on the whole queue and a gust of wind"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_3_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}]},
         {"level": 15, "options": [{"id": "windshot_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_queue_3_b15b", "name": {"ru": "Тихий град", "en": "Silent Hail"}, "damage": 0.8, "effect": {"calmSeconds": 2}}]},
-        {"level": 25, "options": [{"id": "windshot_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_queue_3_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "windshot_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2271,9 +2271,9 @@
       "effect": {"type": "strike", "multiplier": 3, "critChance": 0.25},
       "text": {"ru": "раз в 4 с ищет слабое место: стрела ×3 с +25% шанса крита", "en": "every 4 s finds a weak spot: an arrow ×3 with +25% critical chance"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_1_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "windshot_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_auto_1_b15b", "name": {"ru": "Глаз и тетива", "en": "Eye and String"}, "damage": 0.8, "effect": {"tension": 5}}]},
-        {"level": 25, "options": [{"id": "windshot_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_auto_1_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "windshot_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2289,9 +2289,9 @@
       "effect": {"type": "strike", "multiplier": 3},
       "text": {"ru": "сокол бьёт сам раз в 3 с ×3", "en": "the falcon strikes by itself every 3 s ×3"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_2_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "windshot_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_auto_2_b15b", "name": {"ru": "Сокол в ветре", "en": "Falcon on the Wind"}, "damage": 0.8, "effect": {"gusts": 1}}]},
-        {"level": 25, "options": [{"id": "windshot_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_auto_2_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "windshot_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2307,9 +2307,9 @@
       "effect": {"type": "strike", "multiplier": 4, "gusts": 1},
       "text": {"ru": "раз в 8 с стрела ×4 и порыв ветра", "en": "every 8 s an arrow ×4 and a gust of wind"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_3_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "windshot_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_auto_3_b15b", "name": {"ru": "Мельница бурь", "en": "Storm Mill"}, "damage": 0.8, "effect": {"gusts": 2}}]},
-        {"level": 25, "options": [{"id": "windshot_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_auto_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 6.0}}, {"id": "windshot_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2326,9 +2326,9 @@
       "effect": {"type": "strike", "multiplier": 6, "shot": true},
       "text": {"ru": "залп ×6 и сразу Длинный выстрел", "en": "a volley ×6 and a Long Shot at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_1_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 12}}]},
         {"level": 15, "options": [{"id": "windshot_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_strong_1_b15b", "name": {"ru": "Залп на выдохе", "en": "Exhaled Volley"}, "damage": 0.8, "effect": {"tension": 15}}]},
-        {"level": 25, "options": [{"id": "windshot_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_strong_1_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "windshot_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2345,9 +2345,9 @@
       "effect": {"type": "strike", "multiplier": 5, "gusts": 2},
       "text": {"ru": "стрела ×5 и 2 порыва: удары пускают вторые стрелы", "en": "an arrow ×5 and 2 gusts: hits fire second arrows"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_2_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "windshot_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_strong_2_b15b", "name": {"ru": "Стая", "en": "Flock"}, "damage": 0.75, "effect": {"gusts": 3}}]},
-        {"level": 25, "options": [{"id": "windshot_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_strong_2_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "windshot_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2364,9 +2364,9 @@
       "effect": {"type": "strike", "multiplier": 12, "bossMultiplier": 2, "calmSeconds": 3},
       "text": {"ru": "стрела ×12, ×24 по боссу; 3 с прицеливания — штиль", "en": "an arrow ×12, ×24 against a boss; 3 s of aiming are a calm"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "windshot_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_3_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "windshot_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_strong_3_b15b", "name": {"ru": "Долгий прицел", "en": "Long Aim"}, "damage": 0.8, "effect": {"calmSeconds": 5}}]},
-        {"level": 25, "options": [{"id": "windshot_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "windshot_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "windshot_strong_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "windshot_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
