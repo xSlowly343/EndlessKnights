@@ -1,7 +1,7 @@
 {
   "version": 1,
   "waves": { "count": 4, "firstEnemies": 1, "enemiesPerWave": 1, "stagesPerExtraEnemy": 10, "maxEnemiesPerWave": 8 },
-  "enemyHp": { "curve": "exp", "base": 120, "rate": 1.08, "steps": [{ "from": 200, "rate": 1.03 }, { "from": 1000, "rate": 1.012 }, { "from": 5000, "rate": 1.0045 }, { "from": 50000, "rate": 1.01 }] },
+  "enemyHp": { "curve": "exp", "base": 120, "rate": 1.08, "steps": [{ "from": 200, "rate": 1.03 }, { "from": 1000, "rate": 1.012 }, { "from": 5000, "rate": 1.0052 }, { "from": 50000, "rate": 1.01 }] },
   "softWall": { "period": 100, "zoneLength": 10, "extra": 1.02 },
   "boss": { "hpMultiplier": 7, "timerSeconds": 30, "timerMaxSeconds": 90, "goldMultiplier": 5, "retryAfterKills": 10 },
   "bossHint": { "afterFails": 3, "roundPercent": 5, "maxPercent": 1000 },
