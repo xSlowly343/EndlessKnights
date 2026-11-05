@@ -8,6 +8,10 @@ namespace Game.Core.Sim
         StrikeUpgrade = 2,
         ChangeBuild = 4,
         CallFriend = 8,
-        FarmStage = 16
+        FarmStage = 16,
+        TreePoints = 32,
+        PathChoice = 64,
+        EmptyGearSlot = 128,
+        EmptySocket = 256
     }
 }

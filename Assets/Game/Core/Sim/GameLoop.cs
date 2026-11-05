@@ -193,7 +193,58 @@ namespace Game.Core.Sim
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
         public GameData Data => _data;
-        public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades);
+        public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades, UnusedLevers());
+
+        private BossHintOptions UnusedLevers()
+        {
+            var levers = BossHintOptions.None;
+            if (State.TreePointsLeft > 0 || HasCommonTreePoints())
+                levers |= BossHintOptions.TreePoints;
+            if (State.Ascendancy.ChoicesWaiting(_data.Ascendancy, State.HeroLevel) > 0)
+                levers |= BossHintOptions.PathChoice;
+            if (HasEmptyGearSlotWithItem())
+                levers |= BossHintOptions.EmptyGearSlot;
+            if (HasEmptySocketWithSupport())
+                levers |= BossHintOptions.EmptySocket;
+            return levers;
+        }
+
+        private bool HasCommonTreePoints()
+        {
+            for (var slot = 0; slot < CommonTreeSlots.Count; slot++)
+            {
+                if (CommonTreeSlotOpen(slot) && (CommonTreeAllocation(slot)?.PointsLeft ?? 1) > 0)
+                    return true;
+            }
+            return false;
+        }
+
+        private bool HasEmptyGearSlotWithItem()
+        {
+            foreach (var item in _gear.Bag)
+            {
+                if (item.Wearable && _gear.In(_gear.FreeSlotFor(item)) == null)
+                    return true;
+            }
+            return false;
+        }
+
+        private readonly System.Collections.Generic.List<Content.Gems.GemDef> _hintSupports = new System.Collections.Generic.List<Content.Gems.GemDef>();
+
+        private bool HasEmptySocketWithSupport()
+        {
+            var fitting = _hintSupports;
+            for (var index = 0; index < State.Skills.Count; index++)
+            {
+                _book.SupportsFor(index, _data.Gems.All, fitting);
+                for (var socket = 0; socket < _book.SocketsAt(index); socket++)
+                {
+                    if (State.Skills[index].Supports[socket] == null && fitting.Exists(support => !SkillBook.OnSkill(State.Skills[index], support)))
+                        return true;
+                }
+            }
+            return false;
+        }
 
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue();
