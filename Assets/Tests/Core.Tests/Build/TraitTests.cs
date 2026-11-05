@@ -36,7 +36,7 @@ namespace Game.Core.Tests.Build
 
         private static string Path(string id, string trait) =>
             @"{ ""id"": """ + id + @""", ""class"": ""runedancer"", ""name"": { ""ru"": ""П"", ""en"": ""P"" }, " + trait + @"
-              ""nodes"": [{ ""id"": """ + id + @"_start"", ""type"": ""start"", ""x"": 0, ""y"": 0, ""name"": { ""ru"": ""П"", ""en"": ""P"" } }], ""links"": [] }";
+              ""blurb"": { ""ru"": ""П"", ""en"": ""P"" } }";
 
         private static AscendancyCatalog Catalog(string trait = Trait) => AscendancyCatalog.Load(@"{
   ""version"": 1,
@@ -125,7 +125,7 @@ namespace Game.Core.Tests.Build
             state.PickFork(catalog, 45, "rhyme");
 
             var restored = new AscendancyState();
-            restored.Restore(state.Subclass, state.Allocated, state.CompletedActivities, state.ForkPicks);
+            restored.Restore(state.Subclass, state.CompletedActivities, state.ForkPicks);
 
             Assert.That(restored.Picked("rhyme"), Is.True);
             Assert.That(Sum(restored, catalog, CombatStats.CritChance), Is.EqualTo(0.2).Within(1e-9));

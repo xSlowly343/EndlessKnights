@@ -805,16 +805,12 @@ namespace Game.Core.Save
             Object(
                 ("subclass", ascendancy.Subclass == null ? JsonValue.Null() : JsonValue.Of(ascendancy.Subclass)),
                 ("lastFreeChangeUnixMs", JsonValue.Of(ascendancy.LastFreeChangeUnixMs)),
-                ("allocated", JsonValue.Array(SortedStrings(ascendancy.Allocated))),
                 ("activities", JsonValue.Array(SortedStrings(ascendancy.CompletedActivities))),
                 ("forks", JsonValue.Array(SortedStrings(ascendancy.ForkPicks))));
 
         private static AscendancyState ReadAscendancy(ContentNode node)
         {
             var subclass = node.Field("subclass");
-            var allocated = new List<string>();
-            foreach (var item in node.Field("allocated").Items())
-                allocated.Add(item.AsString());
             var activities = new List<string>();
             foreach (var item in node.Field("activities").Items())
                 activities.Add(item.AsString());
@@ -825,7 +821,7 @@ namespace Game.Core.Save
                     forks.Add(item.AsString());
             }
             var ascendancy = new AscendancyState { LastFreeChangeUnixMs = node.Field("lastFreeChangeUnixMs").AsLong() };
-            ascendancy.Restore(subclass.IsNull ? null : subclass.AsString(), allocated, activities, forks);
+            ascendancy.Restore(subclass.IsNull ? null : subclass.AsString(), activities, forks);
             return ascendancy;
         }
 

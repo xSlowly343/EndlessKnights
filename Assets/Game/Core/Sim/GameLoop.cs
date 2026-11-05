@@ -544,22 +544,6 @@ namespace Game.Core.Sim
         public SubclassResult ChangeSubclassPaid(string subclassId) =>
             AfterSubclassChange(State.Ascendancy.ChangePaid(_data.Ascendancy, State.ClassName, subclassId));
 
-        public AllocationResult AllocateSubclassNode(string nodeId)
-        {
-            var result = State.Ascendancy.Allocate(_data.Ascendancy, nodeId);
-            if (result == AllocationResult.Allocated)
-                RebuildTree();
-            return result;
-        }
-
-        public bool RefundSubclassNode(string nodeId)
-        {
-            var removed = State.Ascendancy.Remove(_data.Ascendancy, nodeId);
-            if (removed)
-                RebuildTree();
-            return removed;
-        }
-
         private SubclassResult AfterSubclassChange(SubclassResult result)
         {
             if (result == SubclassResult.Chosen)

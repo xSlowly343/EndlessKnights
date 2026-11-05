@@ -65,12 +65,8 @@ namespace Game.Editor
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-subclass-choose.png"));
             var path = data.Ascendancy.SubclassesOf(loop.State.ClassName)[0];
             loop.ChooseSubclass(path.Id);
-            foreach (var node in path.Start.Neighbours.Take(2))
-                loop.AllocateSubclassNode(node.Id);
             frame = ShowPanel(panels, navigator);
-            panels.Point(panels.Subclass.WorldPointOf(path.Start.Neighbours[0]), false);
             Save(camera, panels, frame.WidthPx, frame.AreaHeightPx + StripHeightPx, Path.Combine(folder, "panel-subclass.png"));
-            panels.PointAway();
             navigator.SelectSubTab(0);
 
             navigator.SelectTab(PanelSection.Hero);

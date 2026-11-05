@@ -96,14 +96,14 @@ namespace Game.Core.Sim.Headless
             return parts.Count == 0 ? "-" : string.Join("+", parts);
         }
 
-        private static DayRecord Record(int day, GameState state, BigNumber goldToday, long itemsToday)
+        private DayRecord Record(int day, GameState state, BigNumber goldToday, long itemsToday)
         {
             var levels = 0;
             foreach (var level in state.Artifacts.Values)
                 levels += level;
             var ascendancy = state.Ascendancy;
             return new DayRecord(day, state.Stage, state.HighestStage, state.RecordStage, state.HeroLevel, state.TreePointsSpent, CommonTrees(state),
-                ascendancy.Subclass ?? "-", ascendancy.Allocated.Count, state.Prestiges, state.Artifacts.Count, levels, state.EchoEarned, goldToday,
+                ascendancy.Subclass ?? "-", ascendancy.TraitLevel(_data.Ascendancy), state.Prestiges, state.Artifacts.Count, levels, state.EchoEarned, goldToday,
                 itemsToday, state.Drops.DailyItems, state.OwnedGems.Count, state.Drops.Shards, state.Drops.ShardsFound);
         }
     }

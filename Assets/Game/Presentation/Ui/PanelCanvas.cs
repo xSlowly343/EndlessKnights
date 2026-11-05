@@ -254,7 +254,6 @@ namespace Game.Presentation.Ui
         public void Hide()
         {
             CancelPress();
-            Subclass.HoverAway();
             _noticeLeft = 0f;
             ShowNoticeInsteadOfGold(false);
             gameObject.SetActive(false);
@@ -266,21 +265,11 @@ namespace Game.Presentation.Ui
                 _highlight.Point(worldPoint, held);
             else
                 _highlight.Clear();
-            if (IsOpen && _subclassShown && !held)
-                Subclass.Hover(worldPoint);
-            else
-                Subclass.HoverAway();
         }
 
         public void PointAway()
         {
             _highlight.Clear();
-            Subclass.HoverAway();
-        }
-
-        public void SetRoomBeside(float leftPx, float rightPx)
-        {
-            Subclass.SetRoomBeside(leftPx, rightPx);
         }
 
         public bool TryClick(Vector2 worldPoint)
@@ -634,7 +623,6 @@ namespace Game.Presentation.Ui
             _report = BuildReport();
             _consent = ConsentCard.Create(_canvasRect, _theme);
             _highlight = new ButtonHighlight(_canvasRect);
-            Subclass.UseTooltip(new TreeNodeCardView("SubclassTooltip", _canvasRect, _theme, TreeNodeCardMode.Tooltip), _frame);
         }
 
         private RectTransform BuildFrame()

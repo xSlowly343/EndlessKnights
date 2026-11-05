@@ -38,7 +38,7 @@ namespace Game.Core.Ui
                 Slot = 0,
                 Open = state.Ascendancy.Unlocked(catalog),
                 TreeId = state.Ascendancy.Subclass,
-                PointsLeft = state.Ascendancy.Unlocked(catalog) ? state.Ascendancy.PointsLeft(catalog) : 0
+                PointsLeft = state.Ascendancy.ChoicesWaiting(catalog, state.HeroLevel)
             });
         }
 

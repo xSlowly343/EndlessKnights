@@ -45,7 +45,7 @@ namespace Game.Core.Sim.Headless
             ChooseSkillBranches();
             _score.UseTrait(ChosenTrait());
             SpendTreePoints();
-            SpendSubclassPoints();
+            ChooseSubclassAndForks();
             PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
             PlaceSlates();
@@ -248,7 +248,7 @@ namespace Game.Core.Sim.Headless
             }
         }
 
-        private void SpendSubclassPoints()
+        private void ChooseSubclassAndForks()
         {
             var catalog = _data.Ascendancy;
             var ascendancy = _loop.State.Ascendancy;
@@ -261,44 +261,6 @@ namespace Game.Core.Sim.Headless
                     return;
             }
             PickTraitForks(catalog, ascendancy);
-            while (ascendancy.PointsLeft(catalog) > 0)
-            {
-                TreeNodeDef? best = null;
-                var bestValue = 0.0;
-                foreach (var node in ascendancy.Allocatable(catalog))
-                {
-                    var value = _score.Of(node.Modifiers) + BestLeadingTo(node, ascendancy);
-                    if (value > bestValue)
-                    {
-                        best = node;
-                        bestValue = value;
-                    }
-                }
-                if (best == null || _loop.AllocateSubclassNode(best.Id) != AllocationResult.Allocated)
-                    return;
-            }
-        }
-
-        private double BestLeadingTo(TreeNodeDef node, AscendancyState ascendancy)
-        {
-            var best = 0.0;
-            foreach (var next in node.Neighbours)
-            {
-                if (next.Locked || next.Type == TreeNodeType.Start || IsTaken(ascendancy, next.Id))
-                    continue;
-                best = System.Math.Max(best, _score.Of(next.Modifiers));
-            }
-            return best;
-        }
-
-        private static bool IsTaken(AscendancyState ascendancy, string id)
-        {
-            foreach (var taken in ascendancy.Allocated)
-            {
-                if (taken == id)
-                    return true;
-            }
-            return false;
         }
 
         private SubclassDef? ChosenSubclass(AscendancyCatalog catalog)
@@ -383,17 +345,7 @@ namespace Game.Core.Sim.Headless
             var bestScore = double.MinValue;
             foreach (var subclass in catalog.SubclassesOf(_loop.State.ClassName))
             {
-                var notables = new List<double>();
-                foreach (var node in subclass.Nodes)
-                {
-                    if (node.Type == TreeNodeType.Notable && !node.Locked)
-                        notables.Add(_score.Of(node.Modifiers));
-                }
-                notables.Sort();
-                notables.Reverse();
-                var score = _score.Of(subclass.Start.Modifiers);
-                for (var i = 0; i < notables.Count && i < catalog.MaxPoints / 2; i++)
-                    score += notables[i];
+                var score = TraitScore(subclass.Trait);
                 if (score > bestScore)
                 {
                     best = subclass;
@@ -401,6 +353,16 @@ namespace Game.Core.Sim.Headless
                 }
             }
             return best;
+        }
+
+        private double TraitScore(TraitDef? trait)
+        {
+            if (trait == null)
+                return 0;
+            var score = _score.Of(trait.Party);
+            foreach (var level in trait.Levels)
+                score += _score.Of(level);
+            return score;
         }
 
         private void PrestigeWhenStuck(double seconds)

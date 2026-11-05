@@ -55,20 +55,14 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void HoveringAPathNodeShowsItsTooltipAndPointingAwayHidesIt()
+        public void AChosenPathShowsItsTraitLevelAndBlurb()
         {
             var offered = _data.Ascendancy.SubclassesOf(_loop.State.ClassName)[0];
             _loop.ChooseSubclass(offered.Id);
             Open();
 
-            _panel.Point(_panel.Subclass.WorldPointOf(offered.Start), false);
-
-            Assert.That(_panel.Subclass.Hovered, Is.SameAs(offered.Start));
-            Assert.That(_panel.Subclass.IsTooltipShown, Is.True);
-
-            _panel.PointAway();
-
-            Assert.That(_panel.Subclass.IsTooltipShown, Is.False);
+            Assert.That(_panel.Subclass.IsChoosing, Is.False);
+            Assert.That(_panel.Subclass.HintText, Does.Contain(SubclassView.Blurb(offered)));
         }
 
         private void Open()

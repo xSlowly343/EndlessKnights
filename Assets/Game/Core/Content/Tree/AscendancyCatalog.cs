@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Game.Core.Stats;
 
 namespace Game.Core.Content.Tree
 {
@@ -20,50 +19,31 @@ namespace Game.Core.Content.Tree
 
     public sealed class SubclassDef
     {
-        private readonly Dictionary<string, TreeNodeDef> _byId;
-
-        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, TreeNodeDef start, IReadOnlyList<TreeNodeDef> nodes, string blurbRu = "", string blurbEn = "", TraitDef? trait = null)
+        public SubclassDef(string id, string heroClass, string nameRu, string nameEn, string blurbRu = "", string blurbEn = "", TraitDef? trait = null)
         {
             Id = id;
             HeroClass = heroClass;
             NameRu = nameRu;
             NameEn = nameEn;
-            Start = start;
-            Nodes = nodes;
             BlurbRu = blurbRu;
             BlurbEn = blurbEn;
             Trait = trait;
-            _byId = new Dictionary<string, TreeNodeDef>(StringComparer.Ordinal);
-            foreach (var node in nodes)
-                _byId.Add(node.Id, node);
         }
 
         public string Id { get; }
         public string HeroClass { get; }
         public string NameRu { get; }
         public string NameEn { get; }
-        public TreeNodeDef Start { get; }
-        public IReadOnlyList<TreeNodeDef> Nodes { get; }
         public string BlurbRu { get; }
         public string BlurbEn { get; }
         public TraitDef? Trait { get; }
         public Game.Core.Party.PartyGiveMode PartyMode { get; set; }
-
-        public bool TryGet(string id, out TreeNodeDef node) => _byId.TryGetValue(id, out node!);
     }
 
     public sealed class AscendancyCatalog
     {
         public const string FileName = "ascendancy.json";
         public const int SupportedVersion = 1;
-
-        private static readonly Dictionary<string, TreeNodeType> Types = new Dictionary<string, TreeNodeType>(StringComparer.Ordinal)
-        {
-            ["start"] = TreeNodeType.Start,
-            ["small"] = TreeNodeType.Small,
-            ["notable"] = TreeNodeType.Notable,
-            ["keystone"] = TreeNodeType.Keystone
-        };
 
         private readonly Dictionary<string, SubclassDef> _byId;
 
@@ -143,11 +123,10 @@ namespace Game.Core.Content.Tree
             var change = root.Field("change");
             var subclasses = new List<SubclassDef>();
             var subclassIds = new HashSet<string>(StringComparer.Ordinal);
-            var nodeIds = new HashSet<string>(StringComparer.Ordinal);
             var optionIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (var item in root.Field("subclasses").Items())
             {
-                var subclass = ReadSubclass(item, nodeIds, optionIds);
+                var subclass = ReadSubclass(item, optionIds);
                 if (!subclassIds.Add(subclass.Id))
                     throw item.Field("id").Error($"subclass id '{subclass.Id}' is used twice");
                 subclasses.Add(subclass);
@@ -175,98 +154,22 @@ namespace Game.Core.Content.Tree
             return activities;
         }
 
-        private static SubclassDef ReadSubclass(ContentNode item, HashSet<string> nodeIds, HashSet<string> optionIds)
+        private static SubclassDef ReadSubclass(ContentNode item, HashSet<string> optionIds)
         {
             var id = item.Field("id").AsString();
-            var nodes = new List<TreeNodeDef>();
-            var byId = new Dictionary<string, TreeNodeDef>(StringComparer.Ordinal);
-            TreeNodeDef? start = null;
-            foreach (var nodeItem in item.Field("nodes").Items())
+            foreach (var field in new[] { "nodes", "links" })
             {
-                var node = ReadNode(nodeItem);
-                if (!nodeIds.Add(node.Id))
-                    throw nodeItem.Field("id").Error($"node id '{node.Id}' is used twice");
-                if (node.Type == TreeNodeType.Start)
-                {
-                    if (start != null)
-                        throw nodeItem.Field("type").Error($"subclass '{id}' has two start nodes");
-                    start = node;
-                }
-                byId.Add(node.Id, node);
-                nodes.Add(node);
+                if (item.HasField(field))
+                    throw item.Field(field).Error($"subclass '{id}' has '{field}', a path has no node tree: its strength is the 'trait'");
             }
-            if (start == null)
-                throw item.Field("nodes").Error($"subclass '{id}' needs a start node");
-            if (nodes.FindAll(node => node.Type == TreeNodeType.Keystone).Count > 1)
-                throw item.Field("nodes").Error($"subclass '{id}' has more than one keystone");
-
-            foreach (var link in item.Field("links").Items())
-            {
-                var ends = link.Items();
-                if (ends.Count != 2)
-                    throw link.Error("a link joins exactly two nodes");
-                var a = Find(ends[0], byId);
-                var b = Find(ends[1], byId);
-                if (ReferenceEquals(a, b))
-                    throw link.Error($"node '{a.Id}' is linked to itself");
-                a.Connect(b);
-                b.Connect(a);
-            }
-            RequireReachable(item.Field("links"), start, nodes);
-
             var name = item.Field("name");
             var blurbRu = item.HasField("blurb") ? item.Field("blurb").Field("ru").AsString() : string.Empty;
             var blurbEn = item.HasField("blurb") ? item.Field("blurb").Field("en").AsString() : string.Empty;
             var trait = item.HasField("trait") ? TraitDef.Read(item.Field("trait"), optionIds) : null;
-            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), start, nodes, blurbRu, blurbEn, trait)
+            return new SubclassDef(id, item.Field("class").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), blurbRu, blurbEn, trait)
             {
                 PartyMode = item.HasField("partyMode") ? Game.Core.Party.CoopRules.ReadMode(item.Field("partyMode")) : Game.Core.Party.PartyGiveMode.Together
             };
-        }
-
-        private static TreeNodeDef ReadNode(ContentNode node)
-        {
-            var typeNode = node.Field("type");
-            if (!Types.TryGetValue(typeNode.AsString(), out var type))
-                throw typeNode.Error($"unknown subclass node type '{typeNode.AsString()}', expected start, small, notable or keystone");
-            var modifiers = node.HasField("modifiers") ? ModifierReader.ReadList(node.Field("modifiers")) : Array.Empty<Modifier>();
-            var locked = node.HasField("locked") && node.Field("locked").AsBool();
-            var name = node.Field("name");
-            return new TreeNodeDef(
-                node.Field("id").AsString(), type,
-                node.Field("x").AsNumber(-1000, 1000), node.Field("y").AsNumber(-1000, 1000),
-                name.Field("ru").AsString(), name.Field("en").AsString(),
-                modifiers, locked, descriptionRu: DescriptionText(node, "ru"), descriptionEn: DescriptionText(node, "en"));
-        }
-
-        private static string DescriptionText(ContentNode node, string language) =>
-            node.HasField("description") && node.Field("description").HasField(language) ? node.Field("description").Field(language).AsString() : string.Empty;
-
-        private static TreeNodeDef Find(ContentNode id, Dictionary<string, TreeNodeDef> byId)
-        {
-            if (!byId.TryGetValue(id.AsString(), out var node))
-                throw id.Error($"unknown node '{id.AsString()}'");
-            return node;
-        }
-
-        private static void RequireReachable(ContentNode links, TreeNodeDef start, List<TreeNodeDef> nodes)
-        {
-            var reached = new HashSet<TreeNodeDef> { start };
-            var queue = new Queue<TreeNodeDef>();
-            queue.Enqueue(start);
-            while (queue.Count > 0)
-            {
-                foreach (var next in queue.Dequeue().Neighbours)
-                {
-                    if (reached.Add(next))
-                        queue.Enqueue(next);
-                }
-            }
-            foreach (var node in nodes)
-            {
-                if (!reached.Contains(node))
-                    throw links.Error($"node '{node.Id}' cannot be reached from the start '{start.Id}'");
-            }
         }
     }
 }

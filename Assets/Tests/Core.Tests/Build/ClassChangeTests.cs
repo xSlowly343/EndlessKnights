@@ -133,7 +133,7 @@ namespace Game.Core.Tests.Build
             Assert.That(state.ClassTree.TreeId, Is.EqualTo("duelist"));
             Assert.That(state.OtherPreset.ClassTree.TreeId, Is.EqualTo("duelist"));
             Assert.That(state.Ascendancy.Subclass, Is.Null);
-            Assert.That(state.Ascendancy.PointsLeft(TestWorld.Data.Ascendancy), Is.EqualTo(pathPoints));
+            Assert.That(state.Ascendancy.PointsEarned(TestWorld.Data.Ascendancy), Is.EqualTo(pathPoints));
             Assert.That(state.OwnedGems.Any(gem => gem.Ascendancy != null), Is.False, "the skill of the old path goes away with it");
             Assert.That(loop.ChooseSubclass("duelist_trait_2"), Is.EqualTo(SubclassResult.Chosen), "a path of the new class can be chosen at once");
             Assert.That(loop.Resource.Rules, Is.SameAs(TestWorld.Data.Combat.Resources.For("duelist")));
