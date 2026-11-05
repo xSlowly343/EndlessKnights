@@ -946,10 +946,10 @@
       "trait": {
         "partyText": {"ru": "Пока Завод держит таймер, таймер босса медленнее для всего отряда", "en": "While the Spring holds the timer, the boss timer is slower for the whole party"},
         "levels": [
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.6}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.001, "when": "inParty", "per": {"signal": "springSlow", "step": 0.001, "cap": 1000}}]},
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.06}]},
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.06}]},
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.06}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.9}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.001, "when": "inParty", "per": {"signal": "springSlow", "step": 0.001, "cap": 1000}}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.09}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.09}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.09}]},
           {"modifiers": [{"stat": "springStrike", "kind": "flat", "value": 1}], "text": {"ru": "Ход часов: пока Завод больше половины, её удары на 20% сильнее", "en": "Running Clock: while the Wind is above half, her hits are 20% stronger"}}
         ],
         "forks": [
@@ -990,10 +990,10 @@
       "trait": {
         "partyText": {"ru": "Каждый тик шестерён на 3 с ускоряет откаты отряда, до 3 стаков", "en": "Each gear tick speeds up the party's cooldowns for 3 s, up to 3 stacks"},
         "levels": [
-          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 4}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.04, "after": {"signal": "gearTick", "seconds": 3, "stacks": 3}}]},
-          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.5}]},
-          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.5}]},
-          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 6}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.04, "after": {"signal": "gearTick", "seconds": 3, "stacks": 3}}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.75}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.75}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.75}]},
           {"modifiers": [{"stat": "gearResource", "kind": "flat", "value": 1}], "text": {"ru": "Смазка: каждый тик даёт ей и союзникам 5 ресурса", "en": "Oiling: every tick gives her and the allies 5 resource"}}
         ],
         "forks": [

@@ -763,7 +763,8 @@ namespace Game.Core.Party
                     OnEnemy = true,
                     Strength = effect.Strength,
                     Seconds = effect.Seconds,
-                    TimerSlow = effect.TimerSlow
+                    TimerSlow = effect.TimerSlow,
+                    RepeatSeconds = effect.RepeatSeconds
                 }));
             }
             effects.Clear();

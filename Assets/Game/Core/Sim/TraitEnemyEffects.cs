@@ -17,6 +17,13 @@ namespace Game.Core.Sim
             _items[Count++] = new TraitEnemyEffect { Id = id, Strength = strength, Seconds = seconds, TimerSlow = timerSlow };
         }
 
+        public void AddRepeat(int id, double share, double seconds)
+        {
+            if (Count >= Capacity)
+                return;
+            _items[Count++] = new TraitEnemyEffect { Id = id, Strength = share, Seconds = seconds, RepeatSeconds = seconds };
+        }
+
         public void Clear() => Count = 0;
     }
 }
