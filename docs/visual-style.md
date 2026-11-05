@@ -30,6 +30,17 @@
 **Разлом как мотив:** на каждом фоне справа у края кадра есть светящаяся трещина, откуда «приходят» враги; она вспыхивает при появлении врага (вместо анимации подхода).
 **Производительность:** фон — три спрайта с параллаксом в одном атласе, без шейдеров и без постоянных частиц; живая деталь ограничена 10–15 частицами.
 
+### Референсы по биомам (поиск 05.11.2026)
+Описания биомов — `lore.md` §2.2–2.6 (мобы, слабые места, мини-боссы, хозяева) и таблица выше. Готовых стилизованных артов именно под наши биомы в сети почти нет; ниже ближайшее по настроению. **Работы с ArtStation и Riot — только ориентир**, в игру не берём; в игру можно только купленные наборы Fab и OpenGameArt по их лицензиям. Свой фон всё равно рисуем под полоску 480×180 (три слоя параллакса, спокойная правая часть под врага).
+
+| Биом | Референсы |
+|---|---|
+| Песчаные руины | мультяшная пустыня: пирамида, дюны, оазис ([Fab 1](https://www.fab.com/listings/cc2e2b33-368e-4ea6-a4fd-6b89ddca89ab), [Fab 2](https://www.fab.com/listings/bf4261bf-6a3e-4095-bbb0-020e7c3e8622)); бесплатно: [пирамида с дюнами, CC-BY-SA 3.0](https://opengameart.org/content/pyramid-background), [пустыня 1920×1080, CC0](https://opengameart.org/content/desert-background-2d); концепт: [Ancient Civilization](https://vsquadstudio.artstation.com/projects/kNRyNz), [стилизованные руины](https://stevenkdowner.artstation.com/projects/Ez8wle) |
+| Ледяной пик | стилизованная Антарктида с северным сиянием и ледяной аркой ([Fab 1](https://www.fab.com/listings/b6fb996d-4cae-4153-b962-39b0cfb73f64), [Fab 2](https://www.fab.com/listings/45d39acb-7f78-4a46-bf51-0ba408a414e2)); концепт [The Winter](https://vsquadstudio.artstation.com/projects/BkDbOz); свет сияния (реалистичный) — [80.lv](https://80.lv/articles/recreating-arctic-aurora-with-ue-substance-designer) |
+| Вулканическая кузня | кузня Орна (Riot, только для изучения) — [ArtStation](https://marcogiorgianni.artstation.com/projects/AlnWXm); [Forge of the Gods](https://quentin-go.artstation.com/projects/OGQbR8); набор [Stylized Volcanic Nature](https://www.fab.com/listings/e287d1ea-2268-40ad-8619-c609fcad2da9) |
+| Небесные острова | [стилизованный остров с водопадом (разбор)](https://80.lv/articles/crafting-a-stylized-floating-island-with-waterfall-001agt), [остров-парк](https://jamiefmartin.artstation.com/projects/qJ2erL); палитра заката — коралл, персик, лаванда ([пример](https://www.summerengine.com/asset-store/floating-sky-islands-f7d69837.md)) |
+| Сердце Разлома | Voidstorm, WoW: Midnight ([1](https://awinkler.artstation.com/projects/gREEmx), [2](https://shawnwitt.artstation.com/projects/BkBwDD)); [Far Cry 6: Lost Between Worlds](https://magazine.artstation.com/2022/12/ubisoft-toronto-far-cry-6-lost-between-worlds-art-blast/); [Forgotten Rocks](https://vsquadstudio.artstation.com/projects/EzDR12) |
+
 ## 3. Герой и персонажи
 Герой один, левый угол, высота 96 px, смотрит вправо. У каждого из 14 персонажей свой силуэт и своё оружие, чтобы его узнавали издалека. Оружие и цвет сектора — из `skills.md`, образы описаны в `class-resources.md` §2. Силуэты и цвета одежды допишем, когда Сергей утвердит образы (class-resources.md §7, вопрос 4).
 
