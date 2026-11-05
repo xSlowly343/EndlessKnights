@@ -57,17 +57,17 @@ namespace Game.Core.Tests.Party
         [Test]
         public void NewMarksAreKnown()
         {
-            foreach (var mark in new[] { "blind", "cold", "bond", "blood" })
+            foreach (var mark in new[] { "bond", "blood" })
                 Assert.That(Mark(mark), Is.Not.Zero, mark);
         }
         [Test]
         public void AnAllySettingTheMarkGivesResourceOnceWhenItAppears()
         {
-            var loop = Hero(HeroClass.Sandwalker, new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 2, StatTags.None, ModifierPool.General, ModifierCondition.AllyFire));
+            var loop = Hero(HeroClass.Sandwalker, new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 2, StatTags.None, ModifierPool.General, ModifierCondition.AllyPoison));
             loop.Tick();
             loop.State.PendingResource = 0;
 
-            loop.Synergy.SetAlly(1, true, HeroClass.Dowser, Mark("fire"));
+            loop.Synergy.SetAlly(1, true, HeroClass.Alchemist, Mark("poison"));
             loop.Synergy.Tick();
             loop.Conditions.Tick();
             Assert.That(loop.State.PendingResource, Is.EqualTo(2).Within(1e-9));
@@ -80,10 +80,10 @@ namespace Game.Core.Tests.Party
         public void ResourceOnAMarkCountsOnlyTheMarkThatAppeared()
         {
             var sheet = new StatSheet();
-            sheet.Add(new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 2, StatTags.None, ModifierPool.General, ModifierCondition.AllyFire));
-            sheet.Add(new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 3, StatTags.None, ModifierPool.General, ModifierCondition.AllyStun));
+            sheet.Add(new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 2, StatTags.None, ModifierPool.General, ModifierCondition.AllyPoison));
+            sheet.Add(new Modifier(CombatStats.ResourceOnAllyMark, ModifierKind.Flat, 3, StatTags.None, ModifierPool.General, ModifierCondition.AllyBond));
 
-            Assert.That(sheet.FlatWhen(CombatStats.ResourceOnAllyMark, ModifierConditions.Bit(ModifierCondition.AllyStun)), Is.EqualTo(3));
+            Assert.That(sheet.FlatWhen(CombatStats.ResourceOnAllyMark, ModifierConditions.Bit(ModifierCondition.AllyBond)), Is.EqualTo(3));
         }
     }
 }

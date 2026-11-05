@@ -43,7 +43,6 @@ namespace Game.Core.Sim
         private readonly TutorialSystem _tutorial;
         private readonly PartyBuffs _partyBuffs;
         private readonly SynergySystem _synergy;
-        private readonly SynergyStrikes _synergyStrikes;
         private readonly GhostSystem _ghost;
         private readonly RaidTally _raid;
         private readonly ClanTreeBonus _clanTree;
@@ -138,7 +137,6 @@ namespace Game.Core.Sim
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
-            _synergyStrikes = new SynergyStrikes(state, hero, _synergy, _skills.Dots, _resource);
             _conditions = new ConditionSystem(state, hero, _combat, _synergy, _skills, _focus);
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates };
@@ -175,7 +173,6 @@ namespace Game.Core.Sim
         public TutorialSystem Tutorial => _tutorial;
         public PartyBuffs PartyBuffs => _partyBuffs;
         public SynergySystem Synergy => _synergy;
-        public SynergyStrikes SynergyStrikes => _synergyStrikes;
         public GhostSystem Ghost => _ghost;
         public RaidTally Raid => _raid;
         public ClanTreeBonus ClanTree => _clanTree;
@@ -837,7 +834,6 @@ namespace Game.Core.Sim
             _synergy.Tick();
             _conditions.NoteInput(input);
             _conditions.Tick();
-            _synergyStrikes.Tick();
             _rift.Tick();
             _stage.Tick();
             _dungeons.Tick();

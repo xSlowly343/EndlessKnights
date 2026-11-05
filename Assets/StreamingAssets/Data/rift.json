@@ -37,9 +37,9 @@
   },
   "modifiersPerWindow": 2,
   "modifiers": [
-    { "id": "stone_skin", "unlessMarks": ["curse", "time"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5 }] },
-    { "id": "regeneration", "unlessMarks": ["poison", "fire"], "modifiers": [{ "stat": "enemyRegen", "kind": "flat", "value": 0.01 }] },
-    { "id": "colossus_shield", "unlessMarks": ["lightning", "hunterMark"], "modifiers": [{ "stat": "bossShield", "kind": "flat", "value": 0.5 }] },
+    { "id": "stone_skin", "unlessMarks": ["aura", "bond"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5 }] },
+    { "id": "regeneration", "unlessMarks": ["poison"], "modifiers": [{ "stat": "enemyRegen", "kind": "flat", "value": 0.01 }] },
+    { "id": "colossus_shield", "unlessMarks": ["summon", "blood"], "modifiers": [{ "stat": "bossShield", "kind": "flat", "value": 0.5 }] },
     { "id": "horde", "modifiers": [{ "stat": "stageEnemies", "kind": "increased", "value": 0.5 }] },
     { "id": "silence", "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": -0.5, "tags": ["Aura"] }] },
     { "id": "eclipse", "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Strike"] }, { "stat": "mouseDistance", "kind": "more", "value": 1 }] }

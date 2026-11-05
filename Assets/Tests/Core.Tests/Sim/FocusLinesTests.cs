@@ -67,13 +67,13 @@ namespace Game.Core.Tests.Sim
         {
             var state = new GameState();
             var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.FocusInPauseSeconds, ModifierKind.Flat, 3, StatTags.None, ModifierPool.General, ModifierCondition.Fire));
+            hero.Add(new Modifier(CombatStats.FocusInPauseSeconds, ModifierKind.Flat, 3, StatTags.None, ModifierPool.General, ModifierCondition.Poison));
             var focus = new FocusSystem(Rules, state, hero);
 
             Assert.That(Grown(focus, state, Pause, 5), Is.EqualTo(0));
             state.Focus = 1;
             state.FocusPauseTicks = 0;
-            hero.SetConditions(ModifierConditions.Bit(ModifierCondition.Fire));
+            hero.SetConditions(ModifierConditions.Bit(ModifierCondition.Poison));
             Assert.That(Grown(focus, state, Pause, 5), Is.GreaterThan(0));
         }
 

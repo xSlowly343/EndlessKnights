@@ -60,8 +60,7 @@ test("client messages decode like the core", () => {
   assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(endCast.hex))), strip(endCast));
   assert.strictEqual(party.partyKindOf(bytes(vectors.decode.bossRequest.hex)), 16, "a boss request is the kind byte alone");
   assert.strictEqual(party.partyDecodeMarks(bytes(vectors.decode.marks.hex)), vectors.decode.marks.marks);
-  assert.strictEqual(party.partyDecodeMarks(bytes(vectors.decode.newMarks.hex)), vectors.decode.newMarks.marks, "cold, bond and blood marks of the v3 roster");
-  assert.ok(vectors.decode.newMarks.marks >= 1 << 11, "the new marks sit above the first eleven");
+  assert.strictEqual(party.partyDecodeMarks(bytes(vectors.decode.newMarks.hex)), vectors.decode.newMarks.marks, "bond and blood marks of the v3 roster");
   assert.deepStrictEqual(plain(party.partyDecodePresence(bytes(presence.hex))), strip(presence));
   assert.deepStrictEqual(plain(party.partyDecodeWorldRequest(bytes(worldRequest.hex))), strip(worldRequest));
 });

@@ -147,7 +147,7 @@ namespace Game.Core.Tests.Party
             Assert.That(loop.Synergy.OwnMarks, Is.Zero);
         }
 
-        [TestCase(@"""stun"": 2,", @"""frost"": 2,", "unknown mark 'frost'")]
+        [TestCase(@"""pollenOnHero"": ""bond""", @"""pollenOnHero"": ""frost""", "unknown mark 'frost'")]
         [TestCase(@"""minionsOut"": ""summon""", @"""cannonsOut"": ""summon""", "unknown state 'cannonsOut'")]
         public void BrokenMarkSourcesAreReported(string from, string to, string message)
         {
@@ -186,7 +186,7 @@ namespace Game.Core.Tests.Party
             Assert.That(System.GC.GetAllocatedBytesForCurrentThread() - before, Is.EqualTo(0));
         }
 
-        [TestCase(@"""curse"": 5 }", @"""moonlight"": 5 }", "unknown mark 'moonlight'")]
+        [TestCase(@"""brewOnEnemy"": ""blood""", @"""brewOnEnemy"": ""moonlight""", "unknown mark 'moonlight'")]
         [TestCase(@"""runedancer"": ""striker"", ", "", "class 'runedancer' has no role")]
         [TestCase(@"""roles"": [[""summoner""], [""summoner""]]", @"""roles"": [[""summoner""]]", "at least two members")]
         public void BrokenSynergyIsReported(string from, string to, string message)
@@ -201,7 +201,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void GemWithUnknownMarkIsReported()
         {
-            var gems = Game.Core.Content.Gems.GemCatalog.Load(TestData.ReadGameDataFile("skills.json").Replace(@"""marks"": [""curse""]", @"""marks"": [""frost""]"));
+            var gems = Game.Core.Content.Gems.GemCatalog.Load(TestData.ReadGameDataFile("skills.json").Replace(@"""id"": ""runedancer_hit_1"",", @"""id"": ""runedancer_hit_1"", ""marks"": [""frost""],"));
 
             var error = Assert.Throws<ContentException>(() => Rules.RequireGemMarks(gems))!;
 

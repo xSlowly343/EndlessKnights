@@ -13,7 +13,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AllyMarkLinesCountOnlyInAParty()
         {
-            var line = new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.05, StatTags.None, ModifierPool.General, ModifierCondition.AllyFire);
+            var line = new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.05, StatTags.None, ModifierPool.General, ModifierCondition.AllyPoison);
 
             Assert.That(Score(false, line), Is.EqualTo(0));
             Assert.That(Score(true, line), Is.GreaterThan(0));

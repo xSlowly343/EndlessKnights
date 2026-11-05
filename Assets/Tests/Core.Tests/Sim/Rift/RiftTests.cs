@@ -206,7 +206,7 @@ namespace Game.Core.Tests.Sim.Rift
             var damageInside = loop.Hero.Value(CombatStats.Damage, 1);
             Assert.That(loop.Rift.ModifierActive(index), Is.True);
 
-            loop.Synergy.SetAlly(0, true, HeroClass.Whisperer, TestWorld.Data.Synergy.MaskOf(new[] { "curse" }));
+            loop.Synergy.SetAlly(0, true, HeroClass.Mothcaller, TestWorld.Data.Synergy.MaskOf(new[] { "bond" }));
             loop.Tick();
 
             Assert.That(loop.Rift.ModifierActive(index), Is.False);
@@ -217,14 +217,14 @@ namespace Game.Core.Tests.Sim.Rift
         public void ABadgeTellsWhoseMarkLiftsTheModifier()
         {
             var (loop, index) = LoopInWindowWith("stone_skin");
-            var curse = TestWorld.Data.Synergy.MaskOf(new[] { "curse" });
+            var curse = TestWorld.Data.Synergy.MaskOf(new[] { "bond" });
             Assert.That(loop.Rift.LiftedBy(index), Is.EqualTo(RiftSystem.NotLifted));
             Assert.That(loop.Rift.LiftingMarks(index), Is.Zero);
 
-            loop.Synergy.SetAlly(2, true, HeroClass.Whisperer, curse);
+            loop.Synergy.SetAlly(2, true, HeroClass.Mothcaller, curse);
             loop.Tick();
 
-            Assert.That(loop.Rift.LiftedBy(index), Is.EqualTo(2), "the ally in slot 2 holds the curse");
+            Assert.That(loop.Rift.LiftedBy(index), Is.EqualTo(2), "the ally in slot 2 holds the bond");
             Assert.That(loop.Rift.LiftingMarks(index), Is.EqualTo(curse));
             loop.Synergy.ClearAllies();
             loop.Tick();

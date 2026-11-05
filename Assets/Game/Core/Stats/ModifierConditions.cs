@@ -4,9 +4,9 @@ namespace Game.Core.Stats
 {
     public static class ModifierConditions
     {
-        public const ModifierCondition FirstMark = ModifierCondition.Stun;
+        public const ModifierCondition FirstMark = ModifierCondition.Aura;
         public const ModifierCondition LastMark = ModifierCondition.Blood;
-        public const ModifierCondition FirstAllyMark = ModifierCondition.AllyStun;
+        public const ModifierCondition FirstAllyMark = ModifierCondition.AllyAura;
         public const ModifierCondition LastAllyMark = ModifierCondition.AllyBlood;
         public const int Marks = LastMark - FirstMark + 1;
         private const string AllyPrefix = "Ally";

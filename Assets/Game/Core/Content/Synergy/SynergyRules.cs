@@ -13,7 +13,6 @@ namespace Game.Core.Content.Synergy
         public const int MaxMarks = 30;
         public const int MaxConstellations = 32;
         public const string AuraMark = "aura";
-        public const string LightningMark = "lightning";
 
         private readonly Dictionary<string, int> _markIndex;
         private readonly int[] _roleMask;
@@ -21,9 +20,8 @@ namespace Game.Core.Content.Synergy
         private readonly int[] _markTicks;
 
         private SynergyRules(List<string> marks, Dictionary<string, int> markIndex, List<string> roles, int[] roleMask,
-            List<SynergyConstellation> constellations, int[] markTicks, SynergyStateMarks stateMarks, double allyPoisonStacks)
+            List<SynergyConstellation> constellations, int[] markTicks, SynergyStateMarks stateMarks)
         {
-            AllyPoisonStacks = allyPoisonStacks;
             _markTicks = markTicks;
             StateMarks = stateMarks;
             Marks = marks;
@@ -39,13 +37,10 @@ namespace Game.Core.Content.Synergy
 
         public SynergyStateMarks StateMarks { get; }
 
-        public double AllyPoisonStacks { get; }
-
         public int MarkTicks(int mark) => _markTicks[mark];
 
         public int AuraMarkMask => _markIndex.TryGetValue(AuraMark, out var aura) ? 1 << aura : 0;
 
-        public int LightningMarkMask => _markIndex.TryGetValue(LightningMark, out var lightning) ? 1 << lightning : 0;
 
         public int MarkMask(string mark) => _markIndex.TryGetValue(mark, out var index) ? 1 << index : 0;
 
@@ -163,8 +158,7 @@ namespace Game.Core.Content.Synergy
                 constellations.Add(ReadConstellation(node, roles));
             }
             return new SynergyRules(marks, markIndex, roles, roleMask, constellations,
-                ReadMarkTicks(root, markIndex, marks.Count), ReadStateMarks(root, markIndex),
-                root.HasField("allyPoisonStacks") ? root.Field("allyPoisonStacks").AsNumber(0, 100000) : 0);
+                ReadMarkTicks(root, markIndex, marks.Count), ReadStateMarks(root, markIndex));
         }
 
         private static int[] ReadMarkTicks(ContentNode root, Dictionary<string, int> markIndex, int count)
@@ -190,12 +184,10 @@ namespace Game.Core.Content.Synergy
             int Mask(string field) => node.HasField(field) ? 1 << MarkOf(node.Field(field), markIndex) : 0;
             foreach (var name in node.FieldNames())
             {
-                if (name != SynergyStateMarks.PoisonField && name != SynergyStateMarks.BurnField && name != SynergyStateMarks.MinionsField && name != SynergyStateMarks.StunField && name != SynergyStateMarks.HunterMarkField && name != SynergyStateMarks.BlindField
-                    && name != SynergyStateMarks.ColdField && name != SynergyStateMarks.BloodField && name != SynergyStateMarks.BondField)
-                    throw node.Field(name).Error($"unknown state '{name}', expected {SynergyStateMarks.PoisonField}, {SynergyStateMarks.BurnField}, {SynergyStateMarks.MinionsField}, {SynergyStateMarks.StunField}, {SynergyStateMarks.HunterMarkField}, {SynergyStateMarks.BlindField}, {SynergyStateMarks.ColdField}, {SynergyStateMarks.BloodField} or {SynergyStateMarks.BondField}");
+                if (name != SynergyStateMarks.PoisonField && name != SynergyStateMarks.MinionsField && name != SynergyStateMarks.BloodField && name != SynergyStateMarks.BondField)
+                    throw node.Field(name).Error($"unknown state '{name}', expected {SynergyStateMarks.PoisonField}, {SynergyStateMarks.MinionsField}, {SynergyStateMarks.BloodField} or {SynergyStateMarks.BondField}");
             }
-            return new SynergyStateMarks(Mask(SynergyStateMarks.PoisonField), Mask(SynergyStateMarks.BurnField), Mask(SynergyStateMarks.MinionsField), Mask(SynergyStateMarks.StunField), Mask(SynergyStateMarks.HunterMarkField), Mask(SynergyStateMarks.BlindField),
-                Mask(SynergyStateMarks.ColdField), Mask(SynergyStateMarks.BloodField), Mask(SynergyStateMarks.BondField));
+            return new SynergyStateMarks(Mask(SynergyStateMarks.PoisonField), Mask(SynergyStateMarks.MinionsField), Mask(SynergyStateMarks.BloodField), Mask(SynergyStateMarks.BondField));
         }
 
         private static SynergyConstellation ReadConstellation(ContentNode node, List<string> roles)

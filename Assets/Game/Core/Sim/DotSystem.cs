@@ -10,7 +10,6 @@ namespace Game.Core.Sim
         private readonly StatSheet _hero;
         private readonly CombatSystem _combat;
         private int _ticksToHit = GameLoop.TicksPerSecond;
-        private int _miasmaTicks;
 
         public DotSystem(GameState state, StatSheet hero, CombatSystem combat)
         {
@@ -21,7 +20,6 @@ namespace Game.Core.Sim
 
         private DotRules Rules => _combat.Dots;
 
-        public double PoisonHits(double stacks) => stacks * Rules.PoisonHitsPerStack * Rules.MiasmaStackSeconds;
 
         public void HitWith(double hits) => Hit(hits);
 
@@ -33,7 +31,6 @@ namespace Game.Core.Sim
         public void AddBurn(double stacks) => Add(DotKind.Burn, stacks);
 
         public long Bursts { get; private set; }
-        public long MiasmaBursts { get; private set; }
 
         private void Detonate(double seconds)
         {
@@ -49,7 +46,6 @@ namespace Game.Core.Sim
                 _state.StirTurns = System.Math.Min(Rules.StirMax, _state.StirTurns + input.MousePx / Rules.StirPxPerTurn);
             StacksFromKeys(input);
             BurstAtMax();
-            Miasma();
             _state.DotCarry += HitsPerSecond() * GameLoop.TickSeconds;
             if (--_ticksToHit > 0)
                 return;
@@ -86,21 +82,6 @@ namespace Game.Core.Sim
                 return;
             Bursts++;
             Detonate(seconds);
-        }
-
-        private void Miasma()
-        {
-            if (_miasmaTicks > 0)
-                _miasmaTicks--;
-            var share = _hero.Value(CombatStats.MiasmaBurstShare, 0, StatTags.DoT);
-            if (share <= 0 || _miasmaTicks > 0 || !_state.EnemyAlive || Rules.MiasmaEverySeconds <= 0)
-                return;
-            var hits = HitsPerSecond() * Rules.MiasmaStackSeconds * share;
-            if (hits <= 0)
-                return;
-            _miasmaTicks = (int)System.Math.Round(Rules.MiasmaEverySeconds * GameLoop.TicksPerSecond);
-            MiasmaBursts++;
-            Hit(hits);
         }
 
         private double HitsPerSecond() =>
