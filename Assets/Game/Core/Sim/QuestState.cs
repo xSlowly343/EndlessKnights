@@ -24,5 +24,6 @@ namespace Game.Core.Sim
         public int Swaps { get; set; }
         public double[] Last { get; } = new double[QuestRules.KindCount];
         public bool Primed { get; set; }
+        public int PartyClaimBosses { get; set; }
     }
 }

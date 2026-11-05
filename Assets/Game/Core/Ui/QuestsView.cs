@@ -47,6 +47,8 @@ namespace Game.Core.Ui
                 parts.Add(Texts.Format("quest.reward.dust", System.Math.Round(reward.Dust * times).ToString("0", CultureInfo.InvariantCulture)));
             if (reward.Ingots > 0)
                 parts.Add(Texts.Format("quest.reward.ingots", System.Math.Round(reward.Ingots * times).ToString("0", CultureInfo.InvariantCulture)));
+            if (reward.Friendship > 0)
+                parts.Add(Texts.Format("quest.reward.friendship", reward.Friendship.ToString(CultureInfo.InvariantCulture)));
             return string.Join(" · ", parts);
         }
 

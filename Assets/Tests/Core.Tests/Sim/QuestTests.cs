@@ -143,6 +143,48 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void APartyQuestAsksTheServerForFriendshipInsteadOfPayingLocally()
+        {
+            var loop = Loop();
+            var entry = new QuestEntry { Kind = QuestKind.PartyBosses, Day = 100, Target = 5, Progress = 5 };
+            loop.Quests.State.Daily.Add(entry);
+            var shards = loop.State.Drops.Shards;
+            var dust = loop.State.Drops.Dust;
+
+            Assert.That(loop.ClaimQuest(false, loop.Quests.State.Daily.Count - 1), Is.EqualTo(QuestResult.Done));
+
+            Assert.That(loop.Quests.RewardOf(false, QuestKind.PartyBosses).Friendship, Is.GreaterThan(0));
+            Assert.That(loop.Quests.State.PartyClaimBosses, Is.EqualTo(5));
+            Assert.That(loop.State.Drops.Shards, Is.EqualTo(shards));
+            Assert.That(loop.State.Drops.Dust, Is.EqualTo(dust));
+            var copy = GameStateJson.Read(new Game.Core.Content.ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Quests.PartyClaimBosses, Is.EqualTo(5), "an unsent claim survives a restart");
+            loop.Quests.PartyClaimSent();
+            Assert.That(loop.Quests.State.PartyClaimBosses, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ABeginnerGetsSmallerQuestsThatGrowWithTheRecord()
+        {
+            Assert.That(Rules.Target(QuestKind.Kills, true, 0), Is.EqualTo(System.Math.Ceiling(Rules.Rule(QuestKind.Kills).Daily * Rules.SizeStart)));
+            Assert.That(Rules.Target(QuestKind.Kills, true, Rules.SizeFullAtRecord / 2), Is.GreaterThan(Rules.Target(QuestKind.Kills, true, 0)));
+            Assert.That(Rules.Target(QuestKind.Kills, true, Rules.SizeFullAtRecord), Is.EqualTo(Rules.Rule(QuestKind.Kills).Daily));
+            Assert.That(Rules.Target(QuestKind.Keys, true, 0), Is.EqualTo(Rules.Rule(QuestKind.Keys).Daily), "input quests do not depend on progress");
+        }
+
+        [Test]
+        public void LockedKindsAreNotGivenBeforeTheirStage()
+        {
+            for (long day = 0; day < 60; day++)
+            {
+                var fresh = Loop(day);
+                Assert.That(fresh.State.RecordStage, Is.LessThan(30));
+                foreach (var entry in fresh.Quests.State.Daily.Concat(fresh.Quests.State.Weekly))
+                    Assert.That(Rules.Rule(entry.Kind).FromStage, Is.LessThanOrEqualTo(fresh.State.RecordStage), entry.Kind.ToString());
+            }
+        }
+
+        [Test]
         public void TickingQuestsDoesNotAllocate()
         {
             var loop = Loop();

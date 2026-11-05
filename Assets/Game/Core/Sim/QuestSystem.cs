@@ -101,12 +101,17 @@ namespace Game.Core.Sim
             if (!entry.Done)
                 return QuestResult.NotFinished;
             entry.Claimed = true;
-            Grant(RewardOf(weekly, entry.Kind), weekly ? 0 : StreakBonus);
+            var reward = RewardOf(weekly, entry.Kind);
+            Grant(reward, weekly ? 0 : StreakBonus);
+            if (reward.Friendship > 0)
+                State.PartyClaimBosses = System.Math.Max(State.PartyClaimBosses, (int)System.Math.Ceiling(entry.Target));
             return QuestResult.Done;
         }
 
         public QuestReward RewardOf(bool weekly, QuestKind kind) =>
             weekly ? _rules.WeeklyReward : _rules.Rule(kind).Party ? _rules.PartyReward : _rules.DailyReward;
+
+        public void PartyClaimSent() => State.PartyClaimBosses = 0;
 
         public QuestResult Swap(int index)
         {
@@ -130,7 +135,7 @@ namespace Game.Core.Sim
             quests.Swaps++;
             var kind = _pool[(int)(SplitMix.At(DailySalt ^ (ulong)entry.Day, 1000UL + (ulong)quests.Swaps) % (ulong)_pool.Count)];
             entry.Kind = kind;
-            entry.Target = _rules.Rule(kind).Daily;
+            entry.Target = _rules.Target(kind, true, _state.RecordStage);
             entry.Progress = 0;
             return QuestResult.Done;
         }
@@ -168,8 +173,7 @@ namespace Game.Core.Sim
                 var at = (int)(SplitMix.At(salt ^ period, (ulong)i) % (ulong)_pool.Count);
                 var kind = _pool[at];
                 _pool.RemoveAt(at);
-                var rule = _rules.Rule(kind);
-                into.Add(new QuestEntry { Kind = kind, Day = day, Target = daily ? rule.Daily : rule.Weekly });
+                into.Add(new QuestEntry { Kind = kind, Day = day, Target = _rules.Target(kind, daily, _state.RecordStage) });
             }
         }
 
@@ -178,7 +182,7 @@ namespace Game.Core.Sim
             _pool.Clear();
             foreach (var rule in _rules.Kinds)
             {
-                if ((daily ? rule.Daily : rule.Weekly) > 0)
+                if ((daily ? rule.Daily : rule.Weekly) > 0 && rule.FromStage <= _state.RecordStage)
                     _pool.Add(rule.Kind);
             }
         }

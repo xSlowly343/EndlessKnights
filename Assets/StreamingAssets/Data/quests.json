@@ -1,19 +1,20 @@
 {
   "version": 1,
-  "daily": { "perDay": 3, "keepDays": 3, "swapsPerDay": 1, "reward": { "shards": 40 }, "partyReward": { "dust": 60 } },
+  "daily": { "perDay": 3, "keepDays": 3, "swapsPerDay": 1, "reward": { "shards": 40 }, "partyReward": { "friendship": 3 } },
   "weekly": { "perWeek": 3, "reward": { "shards": 300, "ingots": 3 } },
   "streak": { "bonusPerDay": 0.1, "maxDays": 7, "missKeep": 0.5 },
+  "size": { "start": 0.3, "fullAtRecord": 300 },
   "kinds": [
-    { "id": "kills", "daily": 300, "weekly": 3000 },
-    { "id": "bosses", "daily": 10, "weekly": 50 },
-    { "id": "guardians", "daily": 3, "weekly": 20 },
+    { "id": "kills", "daily": 300, "weekly": 3000, "grows": true },
+    { "id": "bosses", "daily": 10, "weekly": 50, "grows": true },
+    { "id": "guardians", "daily": 3, "weekly": 20, "grows": true, "fromStage": 50 },
     { "id": "keys", "daily": 5000, "weekly": 40000 },
     { "id": "clicks", "daily": 1500, "weekly": 12000 },
     { "id": "mouseMeters", "daily": 200, "weekly": 1500 },
-    { "id": "skillCasts", "daily": 200, "weekly": 1500 },
+    { "id": "skillCasts", "daily": 200, "weekly": 1500, "grows": true },
     { "id": "recordStages", "daily": 0, "weekly": 50 },
-    { "id": "prestiges", "daily": 0, "weekly": 1 },
-    { "id": "salvage", "daily": 20, "weekly": 150 },
+    { "id": "prestiges", "daily": 0, "weekly": 1, "fromStage": 30 },
+    { "id": "salvage", "daily": 20, "weekly": 150, "grows": true, "fromStage": 50 },
     { "id": "activeMinutes", "daily": 0, "weekly": 120 },
     { "id": "partyBosses", "daily": 5, "weekly": 30, "party": true }
   ]

@@ -152,6 +152,23 @@ function walletGrantBosses(nk: nkruntime.Nakama, logger: nkruntime.Logger, bosse
     }
 }
 
+function walletClaimPartyQuest(nk: nkruntime.Nakama, userId: string, bosses: number, nowUnixMs: number): number {
+    if (!(bosses > 0) || bosses !== Math.floor(bosses))
+        throw new Error("bad request");
+    const together = walletRead(nk, userId).value;
+    walletRollDay(together, nowUnixMs);
+    if ((together.today["boss_together"] || 0) < Math.min(bosses, walletSource("boss_together").dailyCap))
+        throw new Error("not enough bosses together today");
+    return walletGrant(nk, userId, "party_quest", 1, nowUnixMs);
+}
+
+function questPartyClaimRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    const now = Date.now();
+    const request = JSON.parse(payload || "{}") as { bosses?: number };
+    const granted = walletClaimPartyQuest(nk, partyCaller(ctx), Number(request.bosses), now);
+    return JSON.stringify({ granted: granted, wallet: walletView(walletRead(nk, partyCaller(ctx)).value, now) });
+}
+
 function coopWalletRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const now = Date.now();
     return JSON.stringify(walletView(walletRead(nk, partyCaller(ctx)).value, now));
