@@ -82,6 +82,7 @@ namespace Game.Core.Sim
         public WeaponState Weapons { get; } = new WeaponState();
         public DropState Drops { get; }
         public QuestState Quests { get; } = new QuestState();
+        public AchievementState Achievements { get; } = new AchievementState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();
         public List<string> Atlas { get; } = new List<string>();
