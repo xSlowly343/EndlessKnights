@@ -1787,9 +1787,9 @@
       "effect": {"type": "strike", "multiplier": 3, "touches": 1},
       "text": {"ru": "быстрый укол ×3, ставит отметину", "en": "quick thrust ×3, leaves a mark"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_hit_1_b5b", "name": {"ru": "Укол по боссу", "en": "Boss Prick"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "duelist_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_hit_1_b15b", "name": {"ru": "Второе касание", "en": "Second Touch"}, "damage": 0.8, "effect": {"touches": 2}}]},
-        {"level": 25, "options": [{"id": "duelist_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_hit_1_b25a", "name": {"ru": "Укол на добивание", "en": "Finishing Prick"}, "effect": {"killRefundShare": 1}}, {"id": "duelist_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1806,9 +1806,9 @@
       "effect": {"type": "strike", "multiplier": 4, "breach": true},
       "text": {"ru": "выпад ×4 и сразу зажигает брешь", "en": "lunge ×4 and opens the breach at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_hit_2_b5b", "name": {"ru": "Выпад из паузы", "en": "Lunge from a Pause"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 8}}]},
         {"level": 15, "options": [{"id": "duelist_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_hit_2_b15b", "name": {"ru": "Глубокий выпад", "en": "Deep Lunge"}, "damage": 0.8, "effect": {"touches": 1}}]},
-        {"level": 25, "options": [{"id": "duelist_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_hit_2_b25a", "name": {"ru": "Выпад-казнь", "en": "Executing Lunge"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "duelist_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1825,9 +1825,9 @@
       "effect": {"type": "strike", "multiplier": 6, "critChance": 0.5},
       "text": {"ru": "удар ×6 с шансом крита +50%", "en": "strike ×6 with +50% critical chance"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_hit_3_b5b", "name": {"ru": "Финт по раненому", "en": "Feint at the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 12}}]},
         {"level": 15, "options": [{"id": "duelist_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_hit_3_b15b", "name": {"ru": "Финт с касанием", "en": "Touching Feint"}, "damage": 0.8, "effect": {"touches": 1}}]},
-        {"level": 25, "options": [{"id": "duelist_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_hit_3_b25a", "name": {"ru": "Финт у часов", "en": "Feint at the Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "duelist_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1844,9 +1844,9 @@
       "effect": {"type": "flurry", "hits": 5, "seconds": 1, "multiplier": 1.5},
       "text": {"ru": "5 уколов ×1,5 за секунду", "en": "5 thrusts ×1.5 within a second"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_queue_1_b5b", "name": {"ru": "Флеш по очереди", "en": "Flèche down the Queue"}, "damage": 0.8, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "duelist_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_queue_1_b15b", "name": {"ru": "Долгий флеш", "en": "Long Flèche"}, "damage": 0.75, "effect": {"hits": 8, "seconds": 1.5}}]},
-        {"level": 25, "options": [{"id": "duelist_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_queue_1_b25a", "name": {"ru": "Медленный флеш", "en": "Slow Flèche"}, "effect": {"hits": 5, "seconds": 5, "multiplier": 3}}, {"id": "duelist_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1863,9 +1863,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "touches": 1},
       "text": {"ru": "укол ×2,5 по 3 врагам очереди, ставит отметину", "en": "thrust ×2.5 at 3 queued enemies, leaves a mark"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_queue_2_b5b", "name": {"ru": "Вызов одному", "en": "Challenge to One"}, "effect": {"queueTargets": 0, "multiplier": 5}}]},
         {"level": 15, "options": [{"id": "duelist_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_queue_2_b15b", "name": {"ru": "Двойной вызов", "en": "Double Challenge"}, "damage": 0.8, "effect": {"touches": 2}}]},
-        {"level": 25, "options": [{"id": "duelist_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_queue_2_b25a", "name": {"ru": "Вызов-возврат", "en": "Returning Challenge"}, "effect": {"killRefundShare": 1}}, {"id": "duelist_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1882,9 +1882,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "breach": true},
       "text": {"ru": "вся очередь ×3, зажигает брешь", "en": "the whole queue ×3, opens the breach"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_queue_3_b5b", "name": {"ru": "Круг по боссу", "en": "Boss Circle"}, "effect": {"bossMultiplier": 1.6}}]},
         {"level": 15, "options": [{"id": "duelist_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_queue_3_b15b", "name": {"ru": "Круг с касанием", "en": "Touching Circle"}, "damage": 0.8, "effect": {"touches": 1}}]},
-        {"level": 25, "options": [{"id": "duelist_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_queue_3_b25a", "name": {"ru": "Круг из тишины", "en": "Circle from Silence"}, "effect": {"pauseSeconds": 3, "pauseMultiplier": 7}}, {"id": "duelist_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1900,9 +1900,9 @@
       "effect": {"type": "strike", "multiplier": 3, "critChance": 0.25},
       "text": {"ru": "раз в 4 с ответный удар ×3 с шансом крита +25%", "en": "every 4 s a riposte ×3 with +25% critical chance"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_1_b5b", "name": {"ru": "Парад по раненому", "en": "Parry the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 9}}]},
         {"level": 15, "options": [{"id": "duelist_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_auto_1_b15b", "name": {"ru": "Парад с касанием", "en": "Touching Parry"}, "damage": 0.8, "effect": {"touches": 1}}]},
-        {"level": 25, "options": [{"id": "duelist_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_auto_1_b25a", "name": {"ru": "Парад-казнь", "en": "Executing Parry"}, "damage": 0.75, "effect": {"executeBelow": 0.05}}, {"id": "duelist_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1918,9 +1918,9 @@
       "effect": {"type": "strike", "multiplier": 5, "touches": 1},
       "text": {"ru": "раз в 6 с ответный укол ×5, ставит отметину", "en": "every 6 s a counter-thrust ×5, leaves a mark"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_2_b5b", "name": {"ru": "Стойка у часов", "en": "Stance at the Clock"}, "effect": {"bossTimerStopSeconds": 1}}]},
         {"level": 15, "options": [{"id": "duelist_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_auto_2_b15b", "name": {"ru": "Двойная стойка", "en": "Double Stance"}, "damage": 0.8, "effect": {"touches": 2}}]},
-        {"level": 25, "options": [{"id": "duelist_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_auto_2_b25a", "name": {"ru": "Стойка с касаниями", "en": "Stance of Touches"}, "cooldown": 1.5, "effect": {"touches": 3}}, {"id": "duelist_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1936,9 +1936,9 @@
       "effect": {"type": "strike", "multiplier": 4, "phantomSeconds": 2},
       "text": {"ru": "раз в 10 с повторная атака ×4, фантом в бою 2 с", "en": "every 10 s a renewed attack ×4, the phantom fights for 2 s"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_3_b5b", "name": {"ru": "Ремиз по очереди", "en": "Remise down the Queue"}, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "duelist_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_auto_3_b15b", "name": {"ru": "Долгий ремиз", "en": "Long Remise"}, "damage": 0.8, "effect": {"phantomSeconds": 4}}]},
-        {"level": 25, "options": [{"id": "duelist_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_auto_3_b25a", "name": {"ru": "Долгий фантом", "en": "Long Phantom"}, "cooldown": 1.5, "effect": {"phantomSeconds": 6}}, {"id": "duelist_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1952,12 +1952,12 @@
       "tags": ["Strike", "Skill"],
       "cost": {"resource": 40},
       "cooldownSeconds": 20,
-      "effect": {"type": "strike", "multiplier": 6, "lowHpBelow": 0.15, "lowHpMultiplier": 3, "touches": 2},
+      "effect": {"type": "strike", "multiplier": 6, "lowHpBelow": 0.15, "lowHpMultiplier": 18, "touches": 2},
       "text": {"ru": "удар ×6, по врагу ниже 15% HP ×18, ставит 2 отметины", "en": "strike ×6, ×18 against an enemy below 15% HP, leaves 2 marks"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_1_b5b", "name": {"ru": "Туше-казнь", "en": "Executing Touché"}, "effect": {"executeBelow": 0.08}}]},
         {"level": 15, "options": [{"id": "duelist_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_strong_1_b15b", "name": {"ru": "Ниже порога", "en": "Lower Bar"}, "damage": 0.75, "effect": {"lowHpBelow": 0.3}}]},
-        {"level": 25, "options": [{"id": "duelist_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_strong_1_b25a", "name": {"ru": "Туше для босса", "en": "Touché for the Boss"}, "effect": {"bossMultiplier": 1.5}}, {"id": "duelist_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1974,9 +1974,9 @@
       "effect": {"type": "flurry", "hits": 20, "seconds": 4, "multiplier": 2},
       "text": {"ru": "4 с серия: 20 уколов ×2", "en": "4 s of thrusts: 20 thrusts ×2"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_2_b5b", "name": {"ru": "Рваная серия", "en": "Broken Series"}, "effect": {"hits": 10, "seconds": 1, "multiplier": 3.5}}]},
         {"level": 15, "options": [{"id": "duelist_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_strong_2_b15b", "name": {"ru": "Долгая серия", "en": "Long Series"}, "damage": 0.75, "effect": {"hits": 30, "seconds": 6}}]},
-        {"level": 25, "options": [{"id": "duelist_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_strong_2_b25a", "name": {"ru": "Серия по очереди", "en": "Series down the Queue"}, "damage": 0.7, "effect": {"queueTargets": 3}}, {"id": "duelist_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -1993,9 +1993,9 @@
       "effect": {"type": "strike", "multiplier": 8, "bossMultiplier": 2, "phantomSeconds": 10},
       "text": {"ru": "удар ×8, по боссу ×16, фантом в бою 10 с", "en": "strike ×8, ×16 against a boss, the phantom fights for 10 s"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "duelist_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_3_b5b", "name": {"ru": "До конца времени", "en": "To the End of Time"}, "effect": {"bossTimerStopSeconds": 3}}]},
         {"level": 15, "options": [{"id": "duelist_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_strong_3_b15b", "name": {"ru": "Без отступления", "en": "No Retreat"}, "damage": 0.8, "effect": {"touches": 2}}]},
-        {"level": 25, "options": [{"id": "duelist_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "duelist_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "duelist_strong_3_b25a", "name": {"ru": "Дуэль с раненым", "en": "Duel with the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 24}}, {"id": "duelist_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
