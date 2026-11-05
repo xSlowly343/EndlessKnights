@@ -307,6 +307,45 @@ namespace Game.Core.Build
             return BookResult.Done;
         }
 
+        public void ForgetLegacyGems()
+        {
+            var path = _state.Ascendancy.Subclass;
+            _state.OwnedGems.RemoveAll(gem => gem.Kind != GemKind.Skill || gem.Ascendancy == null || gem.Ascendancy != path);
+            for (var i = _state.Skills.Count - 1; i >= 0; i--)
+            {
+                if (!MayStay(_state.Skills[i].Skill))
+                    _skills.Unequip(i);
+            }
+            foreach (var slot in _state.Skills)
+                KeepFittingSupports(slot);
+        }
+
+        private bool MayStay(GemDef skill)
+        {
+            if (skill.Kind != GemKind.Skill || skill.Locked)
+                return false;
+            if (IsClassSkill(skill))
+                return SkillOpen(skill);
+            if (IsCommonSkill(skill))
+                return CommonSkillOpen(skill);
+            return skill.Ascendancy == _state.Ascendancy.Subclass && _state.OwnedGems.Contains(skill);
+        }
+
+        private void KeepFittingSupports(SkillSlot slot)
+        {
+            for (var socket = 0; socket < SkillSlot.BuiltInSocket; socket++)
+            {
+                var support = slot.Supports[socket];
+                if (support == null)
+                    continue;
+                slot.Supports[socket] = null;
+                var fits = support.Kind == GemKind.Support && support.Support != null && support.CanSupport(slot.Skill)
+                    && (support.Socket <= 0 || socket == support.Socket - 1) && !OnSkill(slot, support) && SupportOpen(support);
+                if (fits)
+                    slot.Supports[socket] = support;
+            }
+        }
+
         public bool GrantStartingGems()
         {
             if (_state.OwnedGems.Count > 0)

@@ -172,7 +172,7 @@ namespace Game.Core.Tests.Build
             Assert.That(loaded.ClassTree.Plan.Count, Is.EqualTo(20));
             Assert.That(again.State.TreePointsSpent, Is.EqualTo(20));
             Assert.That(again.State.TreePointsEarned, Is.EqualTo(loop.State.TreePointsEarned));
-            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(17));
+            Assert.That(SaveCodec.CurrentVersion, Is.EqualTo(18));
         }
 
         private static StatId TreeStat(string name) => new StatId(name);

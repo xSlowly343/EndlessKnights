@@ -6,7 +6,7 @@ namespace Game.Core.Save
 {
     public sealed class SaveMigrations
     {
-        public static readonly SaveMigrations Default = new SaveMigrations(17,
+        public static readonly SaveMigrations Default = new SaveMigrations(18,
             new SaveMigration(1, "skill slots and chain damage (phase 8)", payload => JsonEdit.Update(payload, "state", StateToVersion2)),
             new SaveMigration(2, "passive tree (phase 9)", payload => JsonEdit.Update(payload, "state", StateToVersion3)),
             new SaveMigration(3, "hero level, record stage, owned gems (phases 9-10)", payload => JsonEdit.Update(payload, "state", StateToVersion4)),
@@ -22,7 +22,8 @@ namespace Game.Core.Save
             new SaveMigration(13, "the old passive tree and its jewels are gone", payload => JsonEdit.Update(payload, "state", StateToVersion14)),
             new SaveMigration(14, "one class attribute instead of three", payload => JsonEdit.Update(payload, "state", WithClassAttributeAffixes)),
             new SaveMigration(15, "key hits are strike hits", payload => JsonEdit.Update(payload, "state", StateToVersion16)),
-            new SaveMigration(16, "four affix tiers instead of six", payload => JsonEdit.Update(payload, "state", WithFourAffixTiers)));
+            new SaveMigration(16, "four affix tiers instead of six", payload => JsonEdit.Update(payload, "state", WithFourAffixTiers)),
+            new SaveMigration(17, "skill gems are no longer items", payload => JsonEdit.Update(payload, "state", state => JsonEdit.Set(state, "legacyGems", JsonValue.Of(true)))));
 
         private const int OldAffixTiers = 6;
         private const int NewAffixTiers = 4;

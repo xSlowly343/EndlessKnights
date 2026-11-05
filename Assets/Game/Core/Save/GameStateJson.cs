@@ -102,6 +102,7 @@ namespace Game.Core.Save
                     ("startedUnixMs", JsonValue.Of(state.StartedUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))))),
                 ("skills", JsonValue.Array(WriteSkills(state))),
                 ("ownedGems", JsonValue.Array(WriteOwnedGems(state))),
+                ("legacyGems", JsonValue.Of(state.LegacyGems)),
                 ("gemProgress", WriteGemProgress(state)),
                 ("treePointsEarned", JsonValue.Of(state.TreePointsEarned)),
                 ("classTree", WriteClassTree(state.ClassTree)),
@@ -194,6 +195,7 @@ namespace Game.Core.Save
                 if (gems.TryGet(id.AsString(), out var gem))
                     state.OwnedGems.Add(gem);
             }
+            state.LegacyGems = node.HasField("legacyGems") && node.Field("legacyGems").AsBool();
             state.TreePointsEarned = node.Field("treePointsEarned").AsInt(0, 1_000_000);
             state.ClassTree = ReadClassTree(node.Field("classTree"));
             state.CommonTrees = ReadCommonTrees(node.Field("commonTrees"));
