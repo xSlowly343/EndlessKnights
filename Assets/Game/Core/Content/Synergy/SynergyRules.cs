@@ -58,6 +58,27 @@ namespace Game.Core.Content.Synergy
 
         public int RoleMaskOf(HeroClass heroClass) => _roleMask[(int)heroClass];
 
+        public string RoleOf(HeroClass heroClass)
+        {
+            var mask = RoleMaskOf(heroClass);
+            for (var index = 0; index < Roles.Count; index++)
+            {
+                if (mask == 1 << index)
+                    return Roles[index];
+            }
+            return "";
+        }
+
+        public void RequirePartyRoles(System.Func<HeroClass, string> partyRoleOf)
+        {
+            foreach (HeroClass heroClass in Enum.GetValues(typeof(HeroClass)))
+            {
+                var expected = partyRoleOf(heroClass);
+                if (RoleOf(heroClass) != expected)
+                    throw new ContentException(FileName, "roles." + HeroClassNames.Of(heroClass), $"role '{RoleOf(heroClass)}', party.json says '{expected}'");
+            }
+        }
+
         public int MaskOf(IReadOnlyList<string> marks)
         {
             var mask = 0;
