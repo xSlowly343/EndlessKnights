@@ -879,6 +879,7 @@ namespace Game.Core.Sim
             _raid.Tick(firstEvent);
             _quests.Tick(firstEvent);
             _seasonPass.Tick();
+            _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);
             _achievements.Tick();
             _dps.Tick(_combat.LastTickDamage);

@@ -6,6 +6,16 @@ using Game.Core.Stats;
 
 namespace Game.Core.Sim
 {
+    public enum EnchantResult
+    {
+        Done,
+        Closed,
+        Unknown,
+        AlreadyEnchanted,
+        NoSlot,
+        NotEnchanted
+    }
+
     public sealed class ArtifactSystem
     {
         private const double MinUnlockDiscount = 0.1;
@@ -60,6 +70,95 @@ namespace Game.Core.Sim
                 return group == int.MaxValue ? _catalog.Groups : group;
             }
         }
+
+        public ArtifactAwakening Awakening => _catalog.Awakening;
+        public AwakeningState AwakeningState => _state.Awakening;
+        public bool EnchantOpen => Awakening.Slots > 0 && !InRift && _state.Artifacts.Count >= _catalog.All.Count;
+
+        public EnchantResult Enchant(string id)
+        {
+            if (!EnchantOpen)
+                return EnchantResult.Closed;
+            if (!_catalog.TryGet(id, out _) || !_state.Artifacts.ContainsKey(id))
+                return EnchantResult.Unknown;
+            var awakening = _state.Awakening;
+            if (awakening.Enchanted.Contains(id))
+                return EnchantResult.AlreadyEnchanted;
+            if (awakening.Enchanted.Count >= Awakening.Slots)
+                return EnchantResult.NoSlot;
+            awakening.Enchanted.Add(id);
+            if (!awakening.Progress.ContainsKey(id))
+                awakening.Progress[id] = 0;
+            Rebuild();
+            return EnchantResult.Done;
+        }
+
+        public EnchantResult Disenchant(string id)
+        {
+            if (!_state.Awakening.Enchanted.Remove(id))
+                return EnchantResult.NotEnchanted;
+            Rebuild();
+            return EnchantResult.Done;
+        }
+
+        public bool IsEnchanted(string id) => _state.Awakening.Enchanted.Contains(id);
+
+        public double AwakeningProgress(string id) => _state.Awakening.Progress.TryGetValue(id, out var progress) ? progress : 0;
+
+        public int AwakeningLevel(string id) =>
+            _catalog.TryGet(id, out var artifact) ? Awakening.LevelAt(artifact.Awaken, AwakeningProgress(id)) : 0;
+
+        public void TickAwakening()
+        {
+            var awakening = _state.Awakening;
+            if (!awakening.Primed)
+            {
+                for (var i = 0; i < ArtifactAwakening.InputCount; i++)
+                    awakening.Last[i] = Counter((AwakeningInput)i);
+                awakening.Primed = true;
+                return;
+            }
+            var changed = false;
+            for (var i = 0; i < ArtifactAwakening.InputCount; i++)
+            {
+                var input = (AwakeningInput)i;
+                var now = Counter(input);
+                var delta = now - awakening.Last[i];
+                awakening.Last[i] = now;
+                if (delta > 0 && !InRift)
+                    changed |= Feed(input, delta);
+            }
+            if (changed)
+                Rebuild();
+        }
+
+        private bool Feed(AwakeningInput input, double amount)
+        {
+            var awakening = _state.Awakening;
+            var changed = false;
+            for (var i = 0; i < awakening.Enchanted.Count; i++)
+            {
+                var id = awakening.Enchanted[i];
+                if (!_catalog.TryGet(id, out var artifact) || artifact.Awaken != input)
+                    continue;
+                var before = awakening.Progress.TryGetValue(id, out var progress) ? progress : 0;
+                awakening.Progress[id] = before + amount;
+                changed |= Awakening.LevelAt(input, before + amount) != Awakening.LevelAt(input, before);
+            }
+            return changed;
+        }
+
+        private double Counter(AwakeningInput input) => input switch
+        {
+            AwakeningInput.Keys => _state.TotalInput.Keys,
+            AwakeningInput.Clicks => _state.TotalInput.Clicks,
+            AwakeningInput.MouseMeters => _state.TotalInput.MouseMeters,
+            AwakeningInput.Kills => _state.Kills,
+            AwakeningInput.Bosses => _state.BossKills,
+            _ => 0
+        };
+
+        private double AwakenedScale(string id) => InRift || !IsEnchanted(id) ? 1 : Awakening.Scale(AwakeningLevel(id));
 
         public BigNumber LevelCost(string id) =>
             OwnedLevels.TryGetValue(id, out var level) ? LevelCurve.At(level) : BigNumber.Zero;
@@ -124,7 +223,7 @@ namespace Game.Core.Sim
                 if (!owned.TryGetValue(artifact.Id, out var saved))
                     continue;
                 var level = artifact.EffectiveLevel(saved);
-                var scale = artifact.Type == ArtifactType.Meta ? 1 : 1 + boosts[(int)artifact.Type];
+                var scale = (artifact.Type == ArtifactType.Meta ? 1 : 1 + boosts[(int)artifact.Type]) * AwakenedScale(artifact.Id);
                 if (artifact.Class == null || _state.Is(artifact.Class.Value))
                 {
                     foreach (var modifier in artifact.PerLevel)
@@ -155,9 +254,10 @@ namespace Game.Core.Sim
                 if (!owned.TryGetValue(artifact.Id, out var saved))
                     continue;
                 var level = artifact.EffectiveLevel(saved);
-                allDamageBoost += artifact.BoostAllDamage * level;
+                var awakened = level * AwakenedScale(artifact.Id);
+                allDamageBoost += artifact.BoostAllDamage * awakened;
                 foreach (var type in artifact.BoostTypes)
-                    boosts[(int)type] += artifact.Boost * level;
+                    boosts[(int)type] += artifact.Boost * awakened;
             }
             return boosts;
         }

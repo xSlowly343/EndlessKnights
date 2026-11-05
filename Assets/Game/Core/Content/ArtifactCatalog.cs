@@ -40,6 +40,7 @@ namespace Game.Core.Content
         public IReadOnlyList<ArtifactType> BoostTypes { get; set; } = NoTypes;
         public double Boost { get; set; }
         public double BoostAllDamage { get; set; }
+        public AwakeningInput Awaken { get; set; }
 
         public bool Capped => MaxLevel > 0;
         public bool WorksFor(HeroClass heroClass) => Class == null || Class == heroClass;
@@ -83,6 +84,7 @@ namespace Game.Core.Content
         public int Groups { get; }
         public double JackpotMultiplier { get; private set; } = 1;
         public bool AllDamageCompounds { get; private set; }
+        public ArtifactAwakening Awakening { get; private set; } = ArtifactAwakening.None;
 
         public bool TryGet(string id, out ArtifactDef artifact) => _byId.TryGetValue(id, out artifact!);
 
@@ -112,14 +114,15 @@ namespace Game.Core.Content
                 root.Field("allDamagePerLevel").AsNumber(0, 10))
             {
                 JackpotMultiplier = root.Field("jackpotMultiplier").AsNumber(1, 1000),
-                AllDamageCompounds = root.HasField("allDamageCompounds") && root.Field("allDamageCompounds").AsBool()
+                AllDamageCompounds = root.HasField("allDamageCompounds") && root.Field("allDamageCompounds").AsBool(),
+                Awakening = root.HasField("awakening") ? ArtifactAwakening.Read(root.Field("awakening")) : ArtifactAwakening.None
             };
         }
 
         private static ArtifactDef Read(ContentNode node, string id)
         {
             var name = node.Field("name");
-            return new ArtifactDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), ModifierReader.ReadList(node.Field("perLevel")))
+            var artifact = new ArtifactDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), ModifierReader.ReadList(node.Field("perLevel")))
             {
                 Group = node.HasField("group") ? node.Field("group").AsInt(1, 100) : 1,
                 Type = node.HasField("type") ? TypeOf(node.Field("type")) : ArtifactType.Damage,
@@ -130,6 +133,16 @@ namespace Game.Core.Content
                 Boost = node.HasField("boost") ? node.Field("boost").Field("value").AsNumber(0, 10) : 0,
                 BoostAllDamage = node.HasField("boostAllDamage") ? node.Field("boostAllDamage").AsNumber(0, 10) : 0
             };
+            artifact.Awaken = node.HasField("awaken") ? AwakenOf(node.Field("awaken")) : ArtifactAwakening.Derive(artifact);
+            return artifact;
+        }
+
+        private static AwakeningInput AwakenOf(ContentNode node)
+        {
+            var text = node.AsString();
+            if (!ArtifactAwakening.TryParse(text, out var input))
+                throw node.Error($"unknown awakening input '{text}'");
+            return input;
         }
 
         private static void CheckGroups(List<ArtifactDef> all, ContentNode node)
