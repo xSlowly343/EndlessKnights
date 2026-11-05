@@ -12,6 +12,40 @@ class FakeNakama {
     this.onSignal = null;
     this.states = new Map();
     this.versions = 0;
+    this.boards = new Map();
+  }
+
+  leaderboardCreate(id, authoritative, sortOrder, operator, resetSchedule, metadata) {
+    if (!this.boards.has(id))
+      this.boards.set(id, { id: id, authoritative: authoritative, sortOrder: sortOrder, operator: operator, records: new Map() });
+  }
+
+  leaderboardRecordWrite(id, ownerId, username, score, subscore, metadata) {
+    const board = this.boards.get(id);
+    if (!board)
+      throw new Error("leaderboard not found");
+    const old = board.records.get(ownerId);
+    const keep = old && board.operator === "best" && old.score >= score;
+    const record = keep ? Object.assign({}, old, { username: username, numScore: old.numScore + 1 })
+      : { leaderboardId: id, ownerId: ownerId, username: username, score: score, subscore: subscore || 0, numScore: old ? old.numScore + 1 : 1, metadata: metadata || {}, createTime: 0, updateTime: 0, expiryTime: 0, rank: 0 };
+    board.records.set(ownerId, record);
+    return this.ranked(board).find((r) => r.ownerId === ownerId);
+  }
+
+  leaderboardRecordsList(id, ownerIds, limit, cursor, overrideExpiry) {
+    const board = this.boards.get(id);
+    if (!board)
+      throw new Error("leaderboard not found");
+    const ranked = this.ranked(board);
+    const owners = ownerIds || [];
+    return { records: limit > 0 ? ranked.slice(0, limit) : [], ownerRecords: ranked.filter((r) => owners.indexOf(r.ownerId) >= 0) };
+  }
+
+  ranked(board) {
+    const all = Array.from(board.records.values()).map((r) => Object.assign({}, r));
+    all.sort((a, b) => b.score - a.score);
+    all.forEach((r, i) => { r.rank = i + 1; });
+    return all;
   }
 
   addUser(userId, name, steamId, createTime) {

@@ -554,6 +554,7 @@ namespace Game.Core.Sim
         {
             _drops.SetDay(day);
             _quests.SetDay(day);
+            _chronicle.SetDay(day);
         }
 
         public QuestResult ClaimQuest(bool weekly, int index) => _quests.Claim(weekly, index);
@@ -575,6 +576,8 @@ namespace Game.Core.Sim
         public TrialResult StartTrial(string trialId) => _chronicle.Start(trialId);
 
         public bool AbandonTrial() => _chronicle.Abandon();
+
+        public TrialResult StartWeeklyTrial(string trialId) => _chronicle.StartWeekly(trialId);
 
         public AtlasResult AllocateAtlasNode(string nodeId) => _atlas.Allocate(nodeId);
 

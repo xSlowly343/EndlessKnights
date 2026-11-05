@@ -189,6 +189,23 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheWeeklyBoardIsReadWithTopFriendsAndMine()
+        {
+            Assert.That(WeeklyBoardView.SubmitPayload(2914, "only_mouse", 120, 2), Is.EqualTo("{\"week\":2914,\"trial\":\"only_mouse\",\"stage\":120,\"heroClass\":2}"));
+            Assert.That(WeeklyBoardView.BoardPayload("only_mouse", new[] { "bob" }), Is.EqualTo("{\"trial\":\"only_mouse\",\"friends\":[\"bob\"]}"));
+            var board = WeeklyBoardView.From(NakamaJson.Parse("{\"week\":2914,\"trials\":[\"only_mouse\",\"only_keys\",\"no_skills\"],\"trial\":\"only_mouse\","
+                + "\"top\":[{\"rank\":1,\"userId\":\"bob\",\"name\":\"Bob\",\"stage\":300,\"heroClass\":5}],"
+                + "\"mine\":{\"rank\":2,\"userId\":\"ann\",\"name\":\"Ann\",\"stage\":120,\"heroClass\":2},\"friends\":[]}"));
+
+            Assert.That(board.Week, Is.EqualTo(2914));
+            Assert.That(board.Trials, Is.EqualTo(new[] { "only_mouse", "only_keys", "no_skills" }));
+            Assert.That(board.Top[0].Stage, Is.EqualTo(300));
+            Assert.That(board.Mine!.Rank, Is.EqualTo(2));
+            Assert.That(board.Friends, Is.Empty);
+            Assert.That(WeeklyBoardView.From(NakamaJson.Parse("{\"week\":1,\"trials\":[],\"mine\":null}")).Mine, Is.Null);
+        }
+
+        [Test]
         public void AClanIsReadFromTheServerReplyWithRolesAndLastSeen()
         {
             var clan = ClanView.From(NakamaJson.Parse("{\"id\":\"c1\",\"code\":\"K7MQ2X\",\"access\":\"open\",\"adjective\":\"lilac\",\"noun\":\"lanterns\",\"language\":\"ru\","

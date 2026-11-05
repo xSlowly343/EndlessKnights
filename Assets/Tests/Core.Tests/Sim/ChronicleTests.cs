@@ -155,5 +155,59 @@ namespace Game.Core.Tests.Sim
             Assert.That(loaded.Chronicle.Completed, Is.EquivalentTo(new[] { "only_keys" }));
             Assert.That(again.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.Zero);
         }
+
+        [Test]
+        public void AWeekStartsOnMondayAndRotatesThreeTrialsForEveryone()
+        {
+            Assert.That(ChronicleCatalog.WeekOf(4), Is.EqualTo(1), "1970-01-05 is a Monday");
+            Assert.That(ChronicleCatalog.WeekOf(3), Is.EqualTo(0));
+            var week = new System.Collections.Generic.List<TrialDef>();
+            var next = new System.Collections.Generic.List<TrialDef>();
+            Catalog.WeeklyTrials(2914, week);
+            Catalog.WeeklyTrials(2915, next);
+
+            Assert.That(week.Select(t => t.Id), Is.EqualTo(new[] { 0, 1, 2 }.Select(i => Catalog.All[(int)((2914L * 3 + i) % Catalog.All.Count)].Id)));
+            Assert.That(next.Select(t => t.Id), Is.Not.EqualTo(week.Select(t => t.Id)));
+        }
+
+        [Test]
+        public void AWeeklyRunKeepsGoingPastTheGoalAndRemembersTheBestStage()
+        {
+            var loop = AfterPrestige();
+            loop.SetLocalDay(20400);
+            var weekly = loop.Chronicle.WeeklyTrials[0];
+            var other = Catalog.All.First(t => !loop.Chronicle.WeeklyTrials.Contains(t));
+
+            Assert.That(loop.StartWeeklyTrial(other.Id), Is.EqualTo(TrialResult.NotThisWeek));
+            Assert.That(loop.StartWeeklyTrial(weekly.Id), Is.EqualTo(TrialResult.Started));
+            Reach(loop, weekly.GoalStage + 30);
+
+            Assert.That(loop.Chronicle.WeeklyRunning, Is.True, "the weekly run does not stop at the goal");
+            Assert.That(loop.Chronicle.IsCompleted(weekly.Id), Is.True, "the goal still completes the trial");
+            Assert.That(loop.Chronicle.WeeklyBest(weekly.Id), Is.EqualTo(weekly.GoalStage + 30));
+            Assert.That(loop.State.Chronicle.WeeklyUnsent, Is.EqualTo(new[] { weekly.Id }));
+
+            loop.Chronicle.WeeklySent(weekly.Id, weekly.GoalStage + 30);
+            Assert.That(loop.State.Chronicle.WeeklyUnsent, Is.Empty);
+            var copy = GameStateJson.Read(new ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Chronicle.Weekly, Is.True);
+            Assert.That(copy.Chronicle.WeeklyBest[weekly.Id], Is.EqualTo(weekly.GoalStage + 30));
+        }
+
+        [Test]
+        public void ANewWeekEndsTheWeeklyRunAndClearsTheBest()
+        {
+            var loop = AfterPrestige();
+            loop.SetLocalDay(20400);
+            var weekly = loop.Chronicle.WeeklyTrials[0];
+            loop.StartWeeklyTrial(weekly.Id);
+            Reach(loop, 10);
+
+            loop.SetLocalDay(20407);
+
+            Assert.That(loop.Chronicle.WeeklyRunning, Is.False);
+            Assert.That(loop.Chronicle.Active, Is.Null);
+            Assert.That(loop.State.Chronicle.WeeklyBest, Is.Empty);
+        }
     }
 }

@@ -332,7 +332,27 @@ namespace Game.Core.Save
             return Object(
                 ("active", chronicle.Active == null ? JsonValue.Null() : JsonValue.Of(chronicle.Active)),
                 ("activePrestige", JsonValue.Of(chronicle.ActivePrestige)),
-                ("completed", JsonValue.Array(completed)));
+                ("completed", JsonValue.Array(completed)),
+                ("weekly", JsonValue.Of(chronicle.Weekly)),
+                ("week", JsonValue.Of(chronicle.Week)),
+                ("weeklyBest", WriteWeeklyBest(chronicle.WeeklyBest)),
+                ("weeklyUnsent", WriteIdList(chronicle.WeeklyUnsent)));
+        }
+
+        private static JsonValue WriteWeeklyBest(Dictionary<string, long> best)
+        {
+            var items = new List<JsonValue>(best.Count);
+            foreach (var pair in best)
+                items.Add(Object(("id", JsonValue.Of(pair.Key)), ("stage", JsonValue.Of(pair.Value))));
+            return JsonValue.Array(items.ToArray());
+        }
+
+        private static JsonValue WriteIdList(List<string> ids)
+        {
+            var items = new JsonValue[ids.Count];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = JsonValue.Of(ids[i]);
+            return JsonValue.Array(items);
         }
 
         private static void ReadChronicle(ContentNode node, ChronicleState chronicle)
@@ -345,6 +365,18 @@ namespace Game.Core.Save
                 var id = item.AsString();
                 if (!chronicle.Completed.Contains(id))
                     chronicle.Completed.Add(id);
+            }
+            if (!node.HasField("week"))
+                return;
+            chronicle.Weekly = node.Field("weekly").AsBool();
+            chronicle.Week = node.Field("week").AsLong();
+            foreach (var item in node.Field("weeklyBest").Items())
+                chronicle.WeeklyBest[item.Field("id").AsString()] = item.Field("stage").AsLong(0);
+            foreach (var item in node.Field("weeklyUnsent").Items())
+            {
+                var id = item.AsString();
+                if (!chronicle.WeeklyUnsent.Contains(id))
+                    chronicle.WeeklyUnsent.Add(id);
             }
         }
 

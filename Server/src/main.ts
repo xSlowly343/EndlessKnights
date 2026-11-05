@@ -67,6 +67,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("telemetry_summary", telemetrySummaryRpc);
     initializer.registerRpc("error_report_list", errorReportListRpc);
     initializer.registerRpc("party_moderation", partyModerationRpc);
+    initializer.registerRpc("weekly_submit", weeklySubmitRpc);
+    initializer.registerRpc("weekly_board", weeklyBoardRpc);
     initializer.registerBeforeCreateGroup(partyBeforeCreateGroup);
     initializer.registerBeforeUpdateGroup(partyBeforeGroupChange);
     initializer.registerBeforeDeleteGroup(partyBeforeGroupChange);

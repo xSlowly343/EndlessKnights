@@ -20,7 +20,12 @@ declare namespace nkruntime {
     interface User { userId: string; username: string; displayName: string; steamId: string; online: boolean; createTime?: number; }
     interface GroupUser { user: User; state?: number; }
     interface Match { matchId: string; size: number; label: string; }
+    interface LeaderboardRecord { leaderboardId: string; ownerId: string; username: string; score: number; subscore: number; numScore: number; metadata: { [key: string]: any }; createTime: number; updateTime: number; expiryTime: number; rank: number; }
+    interface LeaderboardRecordList { records?: LeaderboardRecord[]; ownerRecords?: LeaderboardRecord[]; nextCursor?: string; prevCursor?: string; }
     interface Nakama {
+        leaderboardCreate(id: string, authoritative: boolean, sortOrder?: string, operator?: string, resetSchedule?: string | null, metadata?: { [key: string]: any } | null): void;
+        leaderboardRecordWrite(id: string, ownerId: string, username?: string, score?: number, subscore?: number, metadata?: { [key: string]: any } | null): LeaderboardRecord;
+        leaderboardRecordsList(id: string, ownerIds?: string[], limit?: number, cursor?: string, overrideExpiry?: number): LeaderboardRecordList;
         matchCreate(module: string, params?: { [key: string]: any }): string;
         matchGet(id: string): Match | null;
         matchSignal(id: string, data: string): string;
