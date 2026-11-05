@@ -50,6 +50,7 @@ namespace Game.Core.Sim
         private readonly RiftSystem _rift;
         private readonly WeaponSystem _weapons;
         private readonly DropSystem _drops;
+        private readonly QuestSystem _quests;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -93,6 +94,7 @@ namespace Game.Core.Sim
             };
             _weapons.RefreshInnate();
             _drops = new DropSystem(data.Drops, data.Stages, data.Items, _weapons, _gear, state, hero, Events);
+            _quests = new QuestSystem(data.Quests, state, Events);
             _stage.Drops = _drops;
             _reroll = new RerollSystem(data.Drops, state, _gear, _weapons);
             _combat.Dreamcatcher.UseLoot(_drops, _loot);
@@ -186,6 +188,7 @@ namespace Game.Core.Sim
         public DungeonSystem Dungeons => _dungeons;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
+        public QuestSystem Quests => _quests;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -547,7 +550,15 @@ namespace Game.Core.Sim
                 _castRequests |= 1UL << slotIndex;
         }
 
-        public void SetLocalDay(long day) => _drops.SetDay(day);
+        public void SetLocalDay(long day)
+        {
+            _drops.SetDay(day);
+            _quests.SetDay(day);
+        }
+
+        public QuestResult ClaimQuest(bool weekly, int index) => _quests.Claim(weekly, index);
+
+        public QuestResult SwapQuest(int index) => _quests.Swap(index);
 
         public void ApplyOffline(OfflineResult result)
         {
@@ -743,6 +754,7 @@ namespace Game.Core.Sim
             _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
             _levels.CommonSlots = data.TreeTemplates.CommonSlots;
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
+            _quests.UseRules(data.Quests);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);
@@ -846,6 +858,7 @@ namespace Game.Core.Sim
             _spirits.Tick(input);
             _gemExperience.Tick();
             _raid.Tick(firstEvent);
+            _quests.Tick(firstEvent);
             _dps.Tick(_combat.LastTickDamage);
             State.DamageWindow.Record(State.TotalDamage);
             State.Tick++;
