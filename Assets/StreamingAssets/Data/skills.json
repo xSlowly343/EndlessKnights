@@ -4018,9 +4018,9 @@
       "effect": {"type": "strike", "multiplier": 3, "knots": 1},
       "text": {"ru": "тычок ×3 и узел на враге", "en": "a prick ×3 and a knot on the enemy"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_hit_1_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "whisperer_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_hit_1_b15b", "name": {"ru": "Острая игла", "en": "Sharp Needle"}, "damage": 0.8, "effect": {"multiplier": 4}}]},
-        {"level": 25, "options": [{"id": "whisperer_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_hit_1_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "whisperer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4037,9 +4037,9 @@
       "effect": {"type": "strike", "multiplier": 3, "curseHit": 6},
       "text": {"ru": "нить ×3: враг бьёт сам себя, ×6 от силы проклятий на нём", "en": "a thread ×3: the enemy hits itself, ×6 of the curses on it"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_hit_2_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "whisperer_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_hit_2_b15b", "name": {"ru": "Тугая нить", "en": "Taut Thread"}, "damage": 0.8, "effect": {"curseHit": 9}}]},
-        {"level": 25, "options": [{"id": "whisperer_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_hit_2_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}, {"id": "whisperer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4056,9 +4056,9 @@
       "effect": {"type": "strike", "multiplier": 4, "whisper": 15},
       "text": {"ru": "шёпот ×4 и +15 Шёпота", "en": "a whisper ×4 and +15 Whisper"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_hit_3_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 8}}]},
         {"level": 15, "options": [{"id": "whisperer_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_hit_3_b15b", "name": {"ru": "Долгий шёпот", "en": "Long Whisper"}, "damage": 0.8, "effect": {"whisper": 22}}]},
-        {"level": 25, "options": [{"id": "whisperer_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_hit_3_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "whisperer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4075,9 +4075,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3, "curse": 0.08},
       "text": {"ru": "нить ×2 по 3 врагам очереди, проклятие +8% урона на 8 с", "en": "a thread ×2 at 3 queued enemies, a curse +8% damage for 8 s"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_queue_1_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "whisperer_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_queue_1_b15b", "name": {"ru": "Длинная нить", "en": "Long Thread"}, "damage": 0.8, "effect": {"curse": 0.12}}]},
-        {"level": 25, "options": [{"id": "whisperer_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_queue_1_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "whisperer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4094,9 +4094,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "curse": 0.1, "curseSeconds": 6},
       "text": {"ru": "ряд ×2,5 по 3 врагам, слабость: +10% урона на 6 с", "en": "a row ×2.5 at 3 enemies, weakness: +10% damage for 6 s"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_queue_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "whisperer_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_queue_2_b15b", "name": {"ru": "Длинный ряд", "en": "Long Row"}, "damage": 0.8, "effect": {"curseSeconds": 10}}]},
-        {"level": 25, "options": [{"id": "whisperer_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_queue_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "whisperer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4113,9 +4113,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "curseHit": 4},
       "text": {"ru": "путаница ×3 по 3 врагам, ×4 от силы проклятий", "en": "a tangle ×3 at 3 enemies, ×4 of the curses"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_queue_3_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "whisperer_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_queue_3_b15b", "name": {"ru": "Клубок", "en": "Ball of Yarn"}, "damage": 0.8, "effect": {"curseHit": 6}}]},
-        {"level": 25, "options": [{"id": "whisperer_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_queue_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}, {"id": "whisperer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4131,9 +4131,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "curse": 0.06},
       "text": {"ru": "раз в 4 с кукла ×2,5 и проклятие +6%", "en": "every 4 s the doll ×2.5 and a curse +6%"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_auto_1_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}]},
         {"level": 15, "options": [{"id": "whisperer_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_auto_1_b15b", "name": {"ru": "Громкий шёпот", "en": "Loud Whisper"}, "damage": 0.8, "effect": {"curse": 0.09}}]},
-        {"level": 25, "options": [{"id": "whisperer_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_auto_1_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "whisperer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4149,9 +4149,9 @@
       "effect": {"type": "strike", "multiplier": 3, "curseHit": 5},
       "text": {"ru": "раз в 4 с игла ×3 и ×5 от силы проклятий", "en": "every 4 s a needle ×3 and ×5 of the curses"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_auto_2_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "whisperer_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_auto_2_b15b", "name": {"ru": "Две иглы", "en": "Two Needles"}, "damage": 0.8, "effect": {"curseHit": 8}}]},
-        {"level": 25, "options": [{"id": "whisperer_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_auto_2_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "whisperer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4167,9 +4167,9 @@
       "effect": {"type": "strike", "multiplier": 4, "extendCurse": 4},
       "text": {"ru": "раз в 8 с песенка ×4, проклятия держатся на 4 с дольше", "en": "every 8 s a song ×4, the curses hold 4 s longer"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_auto_3_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "whisperer_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_auto_3_b15b", "name": {"ru": "Долгая песенка", "en": "Long Song"}, "damage": 0.8, "effect": {"extendCurse": 6}}]},
-        {"level": 25, "options": [{"id": "whisperer_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_auto_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "whisperer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4186,9 +4186,9 @@
       "effect": {"type": "strike", "multiplier": 6, "bossTimerStopSeconds": 5},
       "text": {"ru": "кукольник ×6: босс 5 с не действует, таймер стоит", "en": "a puppeteer ×6: the boss is still for 5 s, the timer stops"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_strong_1_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "whisperer_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_strong_1_b15b", "name": {"ru": "Долгий спектакль", "en": "Long Show"}, "damage": 0.8, "effect": {"bossTimerStopSeconds": 7}}]},
-        {"level": 25, "options": [{"id": "whisperer_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_strong_1_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 9.0}}, {"id": "whisperer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4205,9 +4205,9 @@
       "effect": {"type": "strike", "multiplier": 5, "curseHit": 20},
       "text": {"ru": "изнанка ×5 и ×20 от силы всех проклятий на враге", "en": "the wrong side ×5 and ×20 of all the curses on the enemy"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_strong_2_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 10}}]},
         {"level": 15, "options": [{"id": "whisperer_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_strong_2_b15b", "name": {"ru": "Вся изнанка", "en": "All the Wrong Side"}, "damage": 0.8, "effect": {"curseHit": 28}}]},
-        {"level": 25, "options": [{"id": "whisperer_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_strong_2_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "whisperer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4224,9 +4224,9 @@
       "effect": {"type": "strike", "multiplier": 15, "seventh": true},
       "text": {"ru": "узел ×15: седьмой узел завязывается сразу", "en": "a knot ×15: the seventh knot is tied at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "whisperer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "whisperer_strong_3_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "whisperer_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "whisperer_strong_3_b15b", "name": {"ru": "Тугой чёрный узел", "en": "Tight Black Knot"}, "damage": 0.8, "effect": {"multiplier": 20}}]},
-        {"level": 25, "options": [{"id": "whisperer_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "whisperer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "whisperer_strong_3_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "whisperer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
