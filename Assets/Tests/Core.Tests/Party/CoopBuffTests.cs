@@ -191,6 +191,22 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void TheVowOfSilenceMakesTheEnemyTakeMoreDamageAfterEachSilentWhisper()
+        {
+            var (buffs, state, hero) = Giver(HeroClass.Whisperer, PartyGiveMode.Support);
+            Assert.That(TestWorld.Data.Ascendancy.TryGet("whisperer_trait_3", out var vow), Is.True);
+            foreach (var modifier in vow.Trait!.Levels[0])
+                hero.Add(modifier);
+            buffs.Tick();
+            Assert.That(buffs.Giver.EnemyDamageTaken, Is.Zero, "no whisper yet");
+
+            state.Whisperer.HushesSent += 7;
+            buffs.Tick();
+
+            Assert.That(buffs.Giver.EnemyDamageTaken, Is.EqualTo(0.03 * 5 * TestWorld.Data.Party.Buffs.Coop.ModePower(PartyGiveMode.Support)).Within(1e-9), "five stacks at most");
+        }
+
+        [Test]
         public void AShareLineGivesAPartOfTheOwnBonus()
         {
             var (buffs, _, hero) = Giver();
