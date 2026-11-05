@@ -63,9 +63,6 @@ namespace Game.Core.Tests.Sim
             return 0;
         }
 
-        private static bool MarkShown(GameLoop loop) =>
-            (loop.Synergy.OwnMarks & TestWorld.Data.Synergy.MaskOf(new[] { "hunterMark" })) != 0;
-
         [Test]
         public void AShotAtFullTensionMarksTheEnemyAndKeysHitItHarder()
         {
@@ -82,18 +79,17 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheMarkIsShownToAlliesAndWearsOff()
+        public void TheMarkWearsOff()
         {
             var (loop, input) = Hero(HeroClass.Windshot);
             MarkAt(loop, input, ShotEvery);
             loop.Tick();
-            Assert.That(MarkShown(loop), Is.True);
+            Assert.That(loop.State.HunterMarkTicks, Is.GreaterThan(0));
 
             for (var i = 0; i < Rules.Seconds * GameLoop.TicksPerSecond + 1; i++)
                 loop.Tick();
 
             Assert.That(loop.State.HunterMarkTicks, Is.Zero);
-            Assert.That(MarkShown(loop), Is.False);
         }
 
         [Test]

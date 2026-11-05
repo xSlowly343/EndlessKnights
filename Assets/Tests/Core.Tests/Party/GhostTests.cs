@@ -92,9 +92,9 @@ namespace Game.Core.Tests.Party
         public void MarksTravelAsNamesAndComeBackAsTheSameMask()
         {
             var synergy = TestWorld.Data.Synergy;
-            var mask = synergy.MaskOf(new[] { "curse", "lightning" });
+            var mask = synergy.MaskOf(new[] { "poison", "bond" });
 
-            Assert.That(synergy.IdsOf(mask), Is.EquivalentTo(new[] { "curse", "lightning" }));
+            Assert.That(synergy.IdsOf(mask), Is.EquivalentTo(new[] { "poison", "bond" }));
             Assert.That(synergy.MaskOf(synergy.IdsOf(mask)), Is.EqualTo(mask));
         }
 

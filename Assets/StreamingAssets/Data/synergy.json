@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "marks": ["stun", "series", "hunterMark", "lightning", "aura", "curse", "time", "poison", "fire", "summon", "blind", "cold", "bond", "blood"],
+  "marks": ["aura", "poison", "summon", "bond", "blood"],
   "roles": {
     "runedancer": "striker", "duelist": "striker", "windshot": "striker",
     "shardcaller": "breaker", "alchemist": "breaker",
@@ -12,9 +12,7 @@
     "dowser": "seeker", "dreamcatcher": "seeker"
   },
 
-  "markSeconds": { "stun": 2, "series": 5, "hunterMark": 8, "lightning": 3, "time": 5, "curse": 5 },
-  "stateMarks": { "poisonOnEnemy": "poison", "burnOnEnemy": "fire", "minionsOut": "summon", "stunnedEnemy": "stun", "markedEnemy": "hunterMark", "blindedEnemy": "blind", "chilledEnemy": "cold", "brewOnEnemy": "blood", "pollenOnHero": "bond" },
-  "allyPoisonStacks": 25,
+  "stateMarks": { "poisonOnEnemy": "poison", "minionsOut": "summon", "brewOnEnemy": "blood", "pollenOnHero": "bond" },
   "constellations": [
     { "id": "full_orchestra", "roles": [["striker", "breaker"], ["herald", "timekeeper"], ["hexer"], ["blighter", "summoner"]], "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.1 }, { "stat": "gold", "kind": "increased", "value": 0.15 }] },
     { "id": "blade_and_banner", "roles": [["striker"], ["herald"]], "modifiers": [{ "stat": "damage", "kind": "more", "value": 0.06 }, { "stat": "auraEffect", "kind": "increased", "value": 0.1 }] },

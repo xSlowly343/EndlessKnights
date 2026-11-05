@@ -71,7 +71,7 @@ namespace Game.Core.Tests.Content
         [Test]
         public void UnknownMarkIsRejected()
         {
-            var json = TestData.ReadGameDataFile(RiftRules.FileName).Replace("\"unlessMarks\": [\"curse\", \"time\"]", "\"unlessMarks\": [\"cursez\", \"time\"]");
+            var json = TestData.ReadGameDataFile(RiftRules.FileName).Replace("\"unlessMarks\": [\"aura\", \"bond\"]", "\"unlessMarks\": [\"cursez\", \"bond\"]");
             var rules = RiftRules.Load(json);
 
             var error = Assert.Throws<ContentException>(() => rules.RequireMarks(TestWorld.Data.Synergy))!;

@@ -11,8 +11,6 @@ namespace Game.Core.Tests.Sim
     {
         private static BlindRules Rules => TestWorld.Data.Combat.Classes.Sandwalker.Blind;
 
-        private static int Mark(string name) => TestWorld.Data.Synergy.MaskOf(new[] { name });
-
         private static (GameLoop Loop, FakeInputSource Input) Hero(HeroClass heroClass, params Modifier[] modifiers)
         {
             var input = new FakeInputSource();
@@ -41,7 +39,7 @@ namespace Game.Core.Tests.Sim
         private static void Dune(GameLoop loop) => loop.Combat.Sandwalker.OnSkillCast(TestWorld.Data.Gems["sandwalker_queue_2"]);
 
         [Test]
-        public void HitsNoLongerThrowSandButTheDuneBlindsTheEnemyForAllies()
+        public void HitsNoLongerThrowSandButTheDuneBlindsTheEnemy()
         {
             var (loop, input) = Hero(HeroClass.Sandwalker);
             Hits(loop, input, 30);
@@ -50,13 +48,11 @@ namespace Game.Core.Tests.Sim
             Dune(loop);
             loop.Tick();
             Assert.That(loop.State.BlindTicks, Is.GreaterThan(0));
-            Assert.That(loop.Synergy.OwnMarks & Mark("blind"), Is.Not.Zero);
 
             for (var i = 0; i < 6 * GameLoop.TicksPerSecond; i++)
                 loop.Tick();
 
             Assert.That(loop.State.BlindTicks, Is.Zero);
-            Assert.That(loop.Synergy.OwnMarks & Mark("blind"), Is.Zero);
         }
 
         [Test]

@@ -185,7 +185,6 @@
       "cost": {"resource": 25},
       "cooldownSeconds": 30,
       "durationSeconds": 15,
-      "marks": ["curse"],
       "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 0.2, "tags": ["Skill"]}]}
     },
     {
@@ -3553,12 +3552,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "when": "series"}, {"stat": "lineHits", "kind": "flat", "value": -0.5}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.5}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +10% урона в серии ударов; её строка чуть короче", "en": "party: +10% damage during a series of hits; her line is a bit shorter"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "series"}, {"stat": "lineHits", "kind": "flat", "value": -0.6}]}}, {"id": "minstrel_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "minstrel_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11, "when": "series"}, {"stat": "lineHits", "kind": "flat", "value": -0.55}]}}, {"id": "minstrel_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "minstrel_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13, "when": "series"}, {"stat": "lineHits", "kind": "flat", "value": -0.65}]}}, {"id": "minstrel_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "minstrel_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.6}]}}, {"id": "minstrel_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.55}]}}, {"id": "minstrel_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.65}]}}, {"id": "minstrel_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {

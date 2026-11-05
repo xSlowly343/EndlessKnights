@@ -144,18 +144,8 @@ namespace Game.Core.Party
             var marks = 0;
             if (_state.EnemyAlive && _state.PoisonStacks > 0)
                 marks |= sources.Poison;
-            if (_state.EnemyAlive && _state.BurnStacks > 0)
-                marks |= sources.Burn;
             if (sources.Minions != 0 && MinionsOut())
                 marks |= sources.Minions;
-            if (_state.EnemyAlive && _state.StunTicks > 0)
-                marks |= sources.Stun;
-            if (_state.EnemyAlive && _state.HunterMarkTicks > 0)
-                marks |= sources.HunterMark;
-            if (_state.EnemyAlive && _state.BlindTicks > 0)
-                marks |= sources.Blind;
-            if (_state.EnemyAlive && _state.Soulbinder.ColdTicks > 0)
-                marks |= sources.Cold;
             if (_state.EnemyAlive && _state.Herbwitch.Brew > 0)
                 marks |= sources.Blood;
             if (_state.Boons.PollenTicks > 0 && _state.Boons.Pollen > 0)

@@ -79,9 +79,6 @@ namespace Game.Core.Sim
         public static readonly StatId DotStacks = new StatId("dotStacks");
         public static readonly StatId PoisonStacks = new StatId("poisonStacks");
         public static readonly StatId SummonsIgnite = new StatId("summonsIgnite");
-        public static readonly StatId LightningPoisonBurst = new StatId("lightningPoisonBurst");
-        public static readonly StatId BurnStacksFromAllyLightning = new StatId("burnStacksFromAllyLightning");
-        public static readonly StatId OmenPerPartyCrit = new StatId("omenPerPartyCrit");
         public static readonly StatId DamagePerResource = new StatId("damagePerResource");
         public static readonly StatId ResourceDecay = new StatId("resourceDecay");
         public static readonly StatId ResourcePerKey = new StatId("resourcePerKey");

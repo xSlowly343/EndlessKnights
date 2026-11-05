@@ -20,7 +20,6 @@ namespace Game.Core.Sim
 
         private DotRules Rules => _combat.Dots;
 
-        public double PoisonHits(double stacks) => stacks * Rules.PoisonHitsPerStack * Rules.MiasmaStackSeconds;
 
         public void HitWith(double hits) => Hit(hits);
 
