@@ -23,9 +23,12 @@ namespace Game.Core.Ui
 
         public static string Yours(long seals) => Texts.Format("clanTree.yours", seals);
 
-        public static string Log(string kind, string name, long amount, string nodeName) => kind == "bought"
-            ? Texts.Format("clanTree.log.bought", name, nodeName, amount)
-            : Texts.Format("clanTree.log.donated", name, amount);
+        public static string Log(string kind, string name, long amount, string nodeName) => kind switch
+        {
+            "bought" => Texts.Format("clanTree.log.bought", name, nodeName, amount),
+            "war" => Texts.Format("clanTree.log.war", amount),
+            _ => Texts.Format("clanTree.log.donated", name, amount)
+        };
 
         public static string Failed(string reason) => Texts.Format("party.failed", reason switch
         {

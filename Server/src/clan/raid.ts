@@ -328,7 +328,17 @@ function raidPushRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrun
         return value;
     });
     const counts = challengeCap(reported, raid.tally[userId].lastSeconds);
-    const daily = challengeChange(nk, logger, group, now, (value) => challengeAdd(value, userId, counts, now));
+    let finished = 0;
+    const daily = challengeChange(nk, logger, group, now, (value) => {
+        const done = challengeAdd(value, userId, counts, now);
+        finished = done.length;
+        return done;
+    });
+    try {
+        clanWarNote(nk, logger, group, userId, counts, Math.min(push.shield || 0, RaidServerRules.maxSharesPerSecond * raid.tally[userId].lastSeconds), finished, now);
+    } catch (error) {
+        logger.warn("clan %s: war was not updated: %s", group.id, String(error));
+    }
     const view = raidView(nk, raid, userId, raidLast(nk, group.id), now);
     view.daily = challengeView(daily, userId);
     return JSON.stringify(view);

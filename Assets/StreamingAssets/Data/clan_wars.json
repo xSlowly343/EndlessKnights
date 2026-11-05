@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "minActive": 3,
+  "pairDay": 4,
+  "warDay": 5,
+  "fronts": [
+    { "id": "keys", "counter": "keys" },
+    { "id": "mouse", "counter": "mouseMeters" },
+    { "id": "clicks", "counter": "clicks" },
+    { "id": "bosses", "counter": "bosses" },
+    { "id": "skills", "layer": "shield" }
+  ],
+  "perMemberSeconds": 3600,
+  "morale": { "perChallenge": 0.01, "max": 0.1 },
+  "seals": { "perMember": 30, "win": 1, "draw": 0.75, "loss": 0.5 },
+  "rating": { "win": 3, "draw": 1, "loss": -2 },
+  "leagues": [
+    { "id": "bronze", "from": 0 },
+    { "id": "silver", "from": 10 },
+    { "id": "gold", "from": 25 }
+  ],
+  "seasonWeeks": 4
+}
