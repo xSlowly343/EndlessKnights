@@ -223,7 +223,7 @@ namespace Game.Core.Sim
         public void SetDay(long day)
         {
             var drops = _state.Drops;
-            if (drops.Day == day)
+            if (day <= drops.Day)
                 return;
             drops.Day = day;
             drops.DailyItems = 0;

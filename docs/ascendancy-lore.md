@@ -1,5 +1,28 @@
 # Лор Путей (ascendancy)
 
+> **Пометка 05.11.2026 (сверка после 14д).** Документ написан под состав v2. С 14д (01–03.11.2026) состав другой: 18 персонажей v3 со своими механиками, Пути — особенности без мини-дерева, гемы не падают. Механики и Пути ниже — история, а не план; действующий дизайн персонажей — `lore.md` §5, `ascendancy.json`, `coop.md` §20. Пары имён (пары подобраны по похожей механике при переименовании 14д.5, механики с тех пор переписаны):
+
+> | Имя в этом документе (v2 / код до 14д.5) | Персонаж v3 |
+> |---|---|
+> | Huscarl (Viking) | Runedancer |
+> | Wandering Blade (Ronin) | Duelist |
+> | Huntress (Amazon) | Windshot |
+> | Stormcaller (Stormweaver) | Shardcaller |
+> | Wayfarer (Nomad) | Sandwalker |
+> | Skald (Metalhead) | Minstrel |
+> | Seer (Oracle) | Dreamcatcher |
+> | Herald (Bannerbearer) | Lanternbearer |
+> | Whisperer (Voodoo) | Whisperer |
+> | Chronist (Clockmaker) | Clockwright |
+> | Venomist (Plague Doctor) | Alchemist |
+> | Firebrand (Moonshiner) | Dowser |
+> | Undertaker (Gravedigger) | Soulbinder |
+> | Sea Wolf (Captain) | Ghostcaptain |
+> | Spinner | Mothcaller |
+> | Rimecaller | Cartomancer |
+> | Thornmaiden | Herbwitch |
+> | Clayshaper | Golemancer |
+
 Черновик от 25.10.2026 по запросу Сергея. Продолжение `docs/lore.md` (PR #118): мир, Кромка, Зал Стражей и 14 персонажей взяты оттуда без изменений.
 
 **Статус:** предложение. Образ каждого Пути взят из class-resources.md §2 **[принято]**. Всё остальное (почему Страж выбирает этот Путь, откуда сила, место в Кромке, фраза) **[предложено]**. Механик здесь нет: строка «Для скиллов» перечисляет образы, на которые потом можно опереться, без чисел и правил. Места, где нужно решение Сергея, собраны в §16.

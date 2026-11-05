@@ -12,6 +12,7 @@ namespace Game.Bootstrap
 {
     public sealed class BattleDriver : MonoBehaviour
     {
+        private TrustedDay? _day;
         private GameLoop _loop = null!;
         private BattleView _view = null!;
         private SkillBarView _skillBar = null!;
@@ -26,6 +27,8 @@ namespace Game.Bootstrap
         public SkillBarView SkillBar => _skillBar;
         public StripHintView Hint => _hint;
         public BattleView View => _view;
+
+        public void UseTrustedDay(TrustedDay day) => _day = day;
 
         public static GameState NewRun() => new GameState((ulong)DateTime.UtcNow.Ticks) { Class = HeroClass.Runedancer, ClassChosen = false };
 
@@ -62,7 +65,7 @@ namespace Game.Bootstrap
 
         private void Update()
         {
-            _loop.SetLocalDay(LocalDay.Of(DateTimeOffset.Now));
+            _loop.SetLocalDay(_day != null ? _day.Today(Game.Platform.Windows.Power.SystemClock.Read()) : LocalDay.Of(DateTimeOffset.Now));
             _loop.Advance(Time.unscaledDeltaTime);
             ShowEvents();
             ShowState();

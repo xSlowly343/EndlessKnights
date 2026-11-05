@@ -63,8 +63,13 @@ namespace Game.Bootstrap
                 _tray.UseState(TrayStateOf(Settings));
                 _tray.StateChanged += OnTrayChanged;
             }
+            var firstRun = !Settings.InputConsentGiven;
+            var showWhatsNew = WhatsNew.ShowOnStart(Settings, _changeLog, firstRun);
+            Save();
             if (PrivacyPolicy.ShouldAskConsent(Settings))
                 _panelMode?.OpenConsent();
+            else if (showWhatsNew)
+                ShowWhatsNew();
             else
                 _panelMode?.Refresh();
         }

@@ -1,4 +1,5 @@
 using System;
+using Game.Core.Clock;
 using Game.Platform.Windows.Input;
 using Game.Platform.Windows.Power;
 using Game.Platform.Windows.Tray;
@@ -18,10 +19,11 @@ namespace Game.Bootstrap
         private RawInputService? _rawInput;
         private InputDebugOverlay _inputDebug = null!;
         private PanelModeDriver? _panelMode;
-        private readonly SleepTracker _sleep = new SleepTracker();
+        private ClockStamp? _suspended;
         private TrayMenuState _state = TrayMenuState.Default;
 
         public event Action<TrayMenuState>? StateChanged;
+        public event Action<double>? Woke;
 
         public TrayMenuState State => _state;
 
@@ -100,13 +102,16 @@ namespace Game.Bootstrap
             switch (systemEvent)
             {
                 case SystemEvent.Suspend:
-                    _sleep.Suspended(DateTime.UtcNow);
+                    _suspended = ClockStamp.First(SystemClock.Read());
                     Debug.Log("System is going to sleep");
                     break;
                 case SystemEvent.Resume:
-                    var asleep = _sleep.Resumed(DateTime.UtcNow);
-                    Debug.Log($"System resumed after {asleep.TotalSeconds:F0} s asleep");
+                    var asleep = _suspended.HasValue ? TrustedElapsed.Between(_suspended.Value, SystemClock.Read()).Seconds : 0;
+                    _suspended = null;
+                    Debug.Log($"System resumed after {asleep:F0} s asleep");
                     _dock.ForceRedock();
+                    if (asleep > 0)
+                        Woke?.Invoke(asleep);
                     break;
                 case SystemEvent.SessionLocked:
                     RenderPause.Set(RenderPauseReason.SessionLocked, true);
