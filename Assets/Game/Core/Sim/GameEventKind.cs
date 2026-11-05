@@ -23,6 +23,7 @@ namespace Game.Core.Sim
         DungeonKeyDropped,
         DungeonCompleted,
         DungeonFailed,
-        SlateDropped
+        SlateDropped,
+        AchievementUnlocked
     }
 }

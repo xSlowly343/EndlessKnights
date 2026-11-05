@@ -51,6 +51,7 @@ namespace Game.Core.Sim
         private readonly WeaponSystem _weapons;
         private readonly DropSystem _drops;
         private readonly QuestSystem _quests;
+        private readonly AchievementSystem _achievements;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -95,6 +96,7 @@ namespace Game.Core.Sim
             _weapons.RefreshInnate();
             _drops = new DropSystem(data.Drops, data.Stages, data.Items, _weapons, _gear, state, hero, Events);
             _quests = new QuestSystem(data.Quests, state, Events);
+            _achievements = new AchievementSystem(data.Achievements, state, Events);
             _stage.Drops = _drops;
             _reroll = new RerollSystem(data.Drops, state, _gear, _weapons);
             _combat.Dreamcatcher.UseLoot(_drops, _loot);
@@ -189,6 +191,7 @@ namespace Game.Core.Sim
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
+        public AchievementSystem Achievements => _achievements;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -758,6 +761,7 @@ namespace Game.Core.Sim
             _levels.CommonSlots = data.TreeTemplates.CommonSlots;
             _dps.UseRules(data.Combat.Offline, data.Combat.Focus);
             _quests.UseRules(data.Quests);
+            _achievements.UseCatalog(data.Achievements);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);
@@ -862,6 +866,7 @@ namespace Game.Core.Sim
             _gemExperience.Tick();
             _raid.Tick(firstEvent);
             _quests.Tick(firstEvent);
+            _achievements.Tick();
             _dps.Tick(_combat.LastTickDamage);
             State.DamageWindow.Record(State.TotalDamage);
             State.Tick++;

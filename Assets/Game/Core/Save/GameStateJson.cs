@@ -75,6 +75,7 @@ namespace Game.Core.Save
                 ("weapons", WriteWeapons(state.Weapons)),
                 ("drops", WriteDrops(state.Drops)),
                 ("quests", WriteQuests(state.Quests)),
+                ("achievements", WriteAchievements(state.Achievements)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -240,6 +241,8 @@ namespace Game.Core.Save
                 ReadDrops(node.Field("drops"), state.Drops, items);
             if (node.HasField("quests"))
                 ReadQuests(node.Field("quests"), state.Quests);
+            if (node.HasField("achievements"))
+                ReadAchievements(node.Field("achievements"), state.Achievements);
             if (node.HasField("slates") && slates != null)
                 ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
@@ -450,6 +453,39 @@ namespace Game.Core.Save
                     lines.Add(line);
             }
             return new SlateItem(shape, theme, rarity, lines, node.Field("tempered").AsBool());
+        }
+
+        private static JsonValue WriteAchievements(AchievementState achievements)
+        {
+            var unlocked = new List<string>(achievements.Unlocked);
+            unlocked.Sort(System.StringComparer.Ordinal);
+            var totals = new List<JsonValue>();
+            for (var i = 0; i < achievements.Totals.Length; i++)
+            {
+                if (achievements.Totals[i] > 0)
+                    totals.Add(Object(("counter", JsonValue.Of(AchievementCatalog.IdOf((AchievementCounter)i))), ("total", JsonValue.Of(achievements.Totals[i]))));
+            }
+            return Object(
+                ("unlocked", WriteIdList(unlocked)),
+                ("unsent", WriteIdList(achievements.Unsent)),
+                ("totals", JsonValue.Array(totals.ToArray())));
+        }
+
+        private static void ReadAchievements(ContentNode node, AchievementState achievements)
+        {
+            foreach (var item in node.Field("unlocked").Items())
+                achievements.Unlocked.Add(item.AsString());
+            foreach (var item in node.Field("unsent").Items())
+            {
+                var id = item.AsString();
+                if (!achievements.Unsent.Contains(id))
+                    achievements.Unsent.Add(id);
+            }
+            foreach (var item in node.Field("totals").Items())
+            {
+                if (AchievementCatalog.TryParse(item.Field("counter").AsString(), out var counter))
+                    achievements.Totals[(int)counter] = item.Field("total").AsNumber(0, 1e18);
+            }
         }
 
         private static JsonValue WriteQuests(QuestState quests) => Object(
