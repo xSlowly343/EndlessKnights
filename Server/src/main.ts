@@ -69,6 +69,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("party_moderation", partyModerationRpc);
     initializer.registerRpc("weekly_submit", weeklySubmitRpc);
     initializer.registerRpc("weekly_board", weeklyBoardRpc);
+    initializer.registerRpc("clan_war_view", clanWarViewRpc);
+    initializer.registerRpc("clan_war_join", clanWarJoinRpc);
     initializer.registerBeforeCreateGroup(partyBeforeCreateGroup);
     initializer.registerBeforeUpdateGroup(partyBeforeGroupChange);
     initializer.registerBeforeDeleteGroup(partyBeforeGroupChange);

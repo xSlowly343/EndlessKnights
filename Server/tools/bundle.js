@@ -236,6 +236,34 @@ const challengeRules = {
   challenges: challenges.challenges.map((challenge) => ({ id: challenge.id, counter: challenge.counter, perMember: challenge.perMember, seals: challenge.seals }))
 };
 
+const clanWars = JSON.parse(fs.readFileSync(path.join(data, "clan_wars.json"), "utf8"));
+if (clanWars.version !== 1)
+  throw new Error("clan_wars.json: version " + clanWars.version + " is not supported");
+for (const front of clanWars.fronts) {
+  if (front.layer && !raid.layers.some((layer) => layer.id === front.layer))
+    throw new Error("clan_wars.json: front " + front.id + " uses unknown raid layer " + front.layer);
+  if (!front.layer && !(front.counter in challenges.capsPerSecond))
+    throw new Error("clan_wars.json: front " + front.id + " uses unknown counter " + front.counter);
+}
+const clanWarRules = {
+  minActive: clanWars.minActive,
+  pairDay: clanWars.pairDay,
+  warDay: clanWars.warDay,
+  fronts: clanWars.fronts.map((front) => ({ id: front.id, counter: front.counter || "", layer: front.layer || "" })),
+  perMemberSeconds: clanWars.perMemberSeconds,
+  moralePerChallenge: clanWars.morale.perChallenge,
+  moraleMax: clanWars.morale.max,
+  sealsPerMember: clanWars.seals.perMember,
+  sealsWin: clanWars.seals.win,
+  sealsDraw: clanWars.seals.draw,
+  sealsLoss: clanWars.seals.loss,
+  ratingWin: clanWars.rating.win,
+  ratingDraw: clanWars.rating.draw,
+  ratingLoss: clanWars.rating.loss,
+  leagues: clanWars.leagues,
+  seasonWeeks: clanWars.seasonWeeks
+};
+
 if (clanTree.version !== 1)
   throw new Error("clan_tree.json: version " + clanTree.version + " is not supported");
 const clanTreeRules = {
@@ -286,4 +314,4 @@ const weeklyRules = {
 };
 
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\n" + code);

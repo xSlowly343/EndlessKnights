@@ -8,7 +8,7 @@ namespace Game.Core.Party
         public const string FileName = "clan_chronicle.json";
         public const int SupportedVersion = 1;
 
-        public static readonly IReadOnlyList<string> Kinds = new[] { "raidsKilled", "challengesDone", "treeNodes", "sealsDonated", "membersMax", "covenRaids" };
+        public static readonly IReadOnlyList<string> Kinds = new[] { "raidsKilled", "challengesDone", "treeNodes", "sealsDonated", "membersMax", "covenRaids", "warsWon" };
 
         private ClanChronicleRules(int maxRecords, IReadOnlyList<PartyFeat> feats)
         {

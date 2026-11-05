@@ -68,7 +68,7 @@ function clanTreeView(nk: nkruntime.Nakama, value: ClanTreeValue, userId: string
     return {
         treasury: value.treasury, taken: value.taken, yours: value.donated[userId] || 0,
         donors: donors.map((id) => ({ userId: id, name: names[id] || "", amount: value.donated[id] })),
-        log: value.log.map((entry) => ({ at: entry.at, name: names[entry.userId] || chronicleNameOf(nk, entry.userId), kind: entry.kind, amount: entry.amount, node: entry.node }))
+        log: value.log.map((entry) => ({ at: entry.at, name: entry.userId ? names[entry.userId] || chronicleNameOf(nk, entry.userId) : "", kind: entry.kind, amount: entry.amount, node: entry.node }))
     };
 }
 
