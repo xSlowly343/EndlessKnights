@@ -1415,9 +1415,9 @@
       "effect": {"type": "strike", "multiplier": 3, "runes": 1},
       "text": {"ru": "быстрый удар ×3, кладёт руну", "en": "quick strike ×3, lays a rune"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_1_b5b", "name": {"ru": "Точный надрез", "en": "Precise Nick"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "runedancer_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_hit_1_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_1_b25b", "name": {"ru": "Надрез на добивание", "en": "Finishing Nick"}, "effect": {"killRefundShare": 1}}]}
       ]
     },
     {
@@ -1434,9 +1434,9 @@
       "effect": {"type": "strike", "multiplier": 4, "runes": 2},
       "text": {"ru": "удар ×4, кладёт две руны", "en": "strike ×4, lays two runes"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_2_b5b", "name": {"ru": "Росчерк по боссу", "en": "Boss Flourish"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "runedancer_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 3}, "id": "runedancer_hit_2_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_2_b25b", "name": {"ru": "Третий знак", "en": "Third Sign"}, "cooldown": 1.25, "effect": {"runes": 3}}]}
       ]
     },
     {
@@ -1453,9 +1453,9 @@
       "effect": {"type": "strike", "multiplier": 6, "critChance": 0.25, "runes": 1},
       "text": {"ru": "удар ×6 с шансом крита +25%, кладёт руну", "en": "strike ×6 with +25% critical chance, lays a rune"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_3_b5b", "name": {"ru": "Буква из тишины", "en": "Letter from Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 9}}]},
         {"level": 15, "options": [{"id": "runedancer_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_hit_3_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_3_b25b", "name": {"ru": "Пламя добивает", "en": "Flame Finishes"}, "effect": {"lowHpBelow": 0.25, "lowHpMultiplier": 12}}]}
       ]
     },
     {
@@ -1472,9 +1472,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 1, "blades": 1},
       "text": {"ru": "кинжал ×2 в текущего и следующего врага, вешает кинжал", "en": "dagger ×2 into this and the next enemy, hangs a dagger"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_1_b5b", "name": {"ru": "Дальний бросок", "en": "Long Throw"}, "damage": 0.85, "effect": {"queueTargets": 3}}]},
         {"level": 15, "options": [{"id": "runedancer_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Второй клинок", "en": "Second Blade"}, "damage": 0.8, "effect": {"blades": 2}, "id": "runedancer_queue_1_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_queue_1_b25b", "name": {"ru": "Метка броска", "en": "Throw Mark"}, "damage": 0.8, "effect": {"executeBelow": 0.04}}]}
       ]
     },
     {
@@ -1491,9 +1491,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "runes": 1},
       "text": {"ru": "руна прыгает на 3 врагов очереди ×2,5, кладёт руну", "en": "a rune jumps to 3 queued enemies ×2.5, lays a rune"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_2_b5b", "name": {"ru": "Цепь-возврат", "en": "Returning Chain"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "runedancer_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_queue_2_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_queue_2_b25b", "name": {"ru": "Цепь в тишине", "en": "Chain in Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4}}]}
       ]
     },
     {
@@ -1510,9 +1510,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "blades": 2},
       "text": {"ru": "вся очередь ×3, вешает 2 кинжала", "en": "the whole queue ×3, hangs 2 daggers"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_3_b5b", "name": {"ru": "Веер в одного", "en": "Fan at One"}, "effect": {"queueTargets": 0, "multiplier": 5}}]},
         {"level": 15, "options": [{"id": "runedancer_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Второй клинок", "en": "Second Blade"}, "damage": 0.8, "effect": {"blades": 3}, "id": "runedancer_queue_3_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_queue_3_b25b", "name": {"ru": "Веер у часов", "en": "Fan at the Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]}
       ]
     },
     {
@@ -1528,9 +1528,9 @@
       "effect": {"type": "strike", "multiplier": 3, "runes": 1},
       "text": {"ru": "раз в 4 с удар из тени ×3, кладёт руну", "en": "every 4 s a strike from the shadows ×3, lays a rune"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_1_b5b", "name": {"ru": "Шаг из паузы", "en": "Step from a Pause"}, "effect": {"pauseSeconds": 3, "pauseMultiplier": 6}}]},
         {"level": 15, "options": [{"id": "runedancer_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_auto_1_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_auto_1_b25b", "name": {"ru": "Шаг по слабому", "en": "Step on the Weak"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 9}}]}
       ]
     },
     {
@@ -1546,9 +1546,9 @@
       "effect": {"type": "strike", "multiplier": 5, "blades": 2},
       "text": {"ru": "раз в 6 с клинок бьёт сам ×5 и вешает 2 кинжала", "en": "every 6 s a blade strikes by itself ×5 and hangs 2 daggers"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_2_b5b", "name": {"ru": "Клинок над боссом", "en": "Blade over the Boss"}, "effect": {"bossMultiplier": 1.6}}]},
         {"level": 15, "options": [{"id": "runedancer_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Второй клинок", "en": "Second Blade"}, "damage": 0.8, "effect": {"blades": 3}, "id": "runedancer_auto_2_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_auto_2_b25b", "name": {"ru": "Клинок-добивалка", "en": "Finishing Blade"}, "damage": 0.75, "effect": {"executeBelow": 0.05}}]}
       ]
     },
     {
@@ -1564,9 +1564,9 @@
       "effect": {"type": "strike", "multiplier": 4, "runes": 2},
       "text": {"ru": "раз в 10 с удар ×4, дописывает две руны", "en": "every 10 s a strike ×4, writes two runes"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_3_b5b", "name": {"ru": "Страж очереди", "en": "Queue Guard"}, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "runedancer_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 3}, "id": "runedancer_auto_3_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_auto_3_b25b", "name": {"ru": "Страж Слова", "en": "Guard of the Word"}, "cooldown": 1.5, "effect": {"word": true}}]}
       ]
     },
     {
@@ -1583,9 +1583,9 @@
       "effect": {"type": "strike", "multiplier": 6, "word": true},
       "text": {"ru": "удар ×6 и сразу дописывает Слово", "en": "strike ×6 and finishes a Word at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_1_b5b", "name": {"ru": "Алфавит для босса", "en": "Alphabet for the Boss"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "runedancer_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Эхо слова", "en": "Word Echo"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_strong_1_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_strong_1_b25b", "name": {"ru": "Время на письмо", "en": "Time to Write"}, "effect": {"bossTimerStopSeconds": 3}}]}
       ]
     },
     {
@@ -1602,9 +1602,9 @@
       "effect": {"type": "flurry", "hits": 15, "seconds": 3, "multiplier": 2},
       "text": {"ru": "3 с вихрь ударов: 15 ударов ×2", "en": "3 s of whirling strikes: 15 strikes ×2"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_2_b5b", "name": {"ru": "Рваный ритм", "en": "Broken Rhythm"}, "effect": {"hits": 8, "seconds": 1, "multiplier": 3.5}}]},
         {"level": 15, "options": [{"id": "runedancer_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Долгий танец", "en": "Long Dance"}, "damage": 0.75, "effect": {"hits": 25, "seconds": 5}, "id": "runedancer_strong_2_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_strong_2_b25b", "name": {"ru": "Танец по очереди", "en": "Dance down the Queue"}, "damage": 0.7, "effect": {"queueTargets": 3}}]}
       ]
     },
     {
@@ -1621,9 +1621,9 @@
       "effect": {"type": "strike", "multiplier": 8, "lowHpBelow": 0.3, "lowHpMultiplier": 2.5},
       "text": {"ru": "удар ×8, по врагу ниже 30% HP ×20", "en": "strike ×8, ×20 against an enemy below 30% HP"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "runedancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_3_b5b", "name": {"ru": "Буква-казнь", "en": "Execution Letter"}, "effect": {"executeBelow": 0.08}}]},
         {"level": 15, "options": [{"id": "runedancer_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Ниже порога", "en": "Lower Bar"}, "damage": 0.75, "effect": {"lowHpBelow": 0.5}, "id": "runedancer_strong_3_b15b"}]},
-        {"level": 25, "options": [{"id": "runedancer_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "runedancer_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_strong_3_b25b", "name": {"ru": "Буква для босса", "en": "Letter for the Boss"}, "effect": {"bossMultiplier": 1.5}}]}
       ]
     },
     {

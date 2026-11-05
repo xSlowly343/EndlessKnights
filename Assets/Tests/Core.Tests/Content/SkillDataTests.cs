@@ -192,6 +192,19 @@ namespace Game.Core.Tests.Content
             Assert.That(weapons, Has.Count.EqualTo(18));
         }
 
+        [TestCase("runedancer")]
+        public void ARewrittenCharacterHasANumberAndARuleInEveryTier(string character)
+        {
+            var gems = GemCatalog.Load(RealFile());
+
+            Assert.That(SkillRoster.NumbersOnlyTiers(gems).Where(tier => tier.StartsWith(character + "_", System.StringComparison.Ordinal)), Is.Empty);
+            foreach (var gem in gems.All.Where(gem => gem.Id.StartsWith(character + "_", System.StringComparison.Ordinal) && gem.Skill?.Effect is not AuraEffect && gem.Branches.Count > 0))
+            {
+                foreach (var tier in gem.Branches)
+                    Assert.That(tier.Options.Count(option => option.Effect == null), Is.EqualTo(1), gem.Id + " " + tier.Level);
+            }
+        }
+
         [Test]
         public void AClassSkillWithoutBranchesIsNamed()
         {
