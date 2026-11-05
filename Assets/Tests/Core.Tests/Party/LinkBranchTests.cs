@@ -1,4 +1,3 @@
-using System.Linq;
 using Game.Core.Content.Synergy;
 using Game.Core.Sim;
 using Game.Core.Stats;
@@ -53,25 +52,6 @@ namespace Game.Core.Tests.Party
 
             Assert.That(loop.Hero.Conditions & ModifierConditions.Bit(ModifierCondition.Poison), Is.Not.Zero);
             Assert.That(loop.Hero.Conditions & ModifierConditions.Bit(ModifierCondition.AllyPoison), Is.Not.Zero);
-        }
-
-        [Test]
-        public void ATreeReactionWorksOnlyForTheHeroWhoTookIt()
-        {
-            var index = Rules.Reactions.ToList().FindIndex(reaction => reaction.Id == "sand_in_the_hourglass");
-            Assert.That(Rules.Reactions[index].Unlock?.Name, Is.EqualTo("reactionSandInTheHourglass"));
-            var without = Hero(HeroClass.Sandwalker);
-            var with = Hero(HeroClass.Sandwalker, new Modifier(Rules.Reactions[index].Unlock!.Value, ModifierKind.Flat, 1));
-            foreach (var loop in new[] { without, with })
-            {
-                loop.State.BlindTicks = 50;
-                loop.Synergy.SetAlly(1, true, HeroClass.Clockwright, Mark("time"));
-                loop.Tick();
-            }
-
-            Assert.That(without.Synergy.ReactionActive(index), Is.False);
-            Assert.That(with.Synergy.ReactionActive(index), Is.True);
-            Assert.That(with.Hero.Value(new StatId("bossTimerSlow"), 1), Is.EqualTo(1.25).Within(1e-9));
         }
 
         [Test]

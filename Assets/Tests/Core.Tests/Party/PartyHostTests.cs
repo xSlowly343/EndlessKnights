@@ -33,7 +33,7 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void SynergiesFromDifferentMembersCountOnOneEnemy()
+        public void ConstellationsFromDifferentMembersCountOnOneEnemy()
         {
             var (host, bots, network) = Party(0, 0.02, 0.02);
             Run(host, bots, network, 30, true);
@@ -45,7 +45,7 @@ namespace Game.Core.Tests.Party
                 Run(host, bots, network, 1, true);
 
             Assert.That(host.Kills, Is.GreaterThan(killsBefore));
-            Assert.That(host.MostReactionsOnOneEnemy, Is.EqualTo(3));
+            Assert.That(host.MostConstellationsOnOneEnemy, Is.EqualTo(3));
         }
 
         [Test]

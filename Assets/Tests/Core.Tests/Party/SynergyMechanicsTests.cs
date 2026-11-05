@@ -29,57 +29,6 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void MiasmaReactionBurstsTheOwnStacksOnceAndThenWaitsForItsCooldown()
-        {
-            var loop = Poisoned(HeroClass.Duelist, 20);
-            loop.Synergy.SetAlly(0, true, HeroClass.Dowser, Mark("fire"));
-
-            loop.Tick();
-            Assert.That(loop.Skills.Dots.MiasmaBursts, Is.EqualTo(1));
-
-            for (var tick = 0; tick < 95; tick++)
-                loop.Tick();
-            Assert.That(loop.Skills.Dots.MiasmaBursts, Is.EqualTo(1), "the reaction burns one second and then cools down");
-            for (var tick = 0; tick < 10; tick++)
-                loop.Tick();
-            Assert.That(loop.Skills.Dots.MiasmaBursts, Is.EqualTo(2));
-            Assert.That(loop.State.PoisonStacks, Is.EqualTo(20).Within(1e-9), "the stacks stay");
-        }
-
-        [Test]
-        public void MiasmaBurstDealsTheShareOfTheStacksDamageOverItsSeconds()
-        {
-            var with = Poisoned(HeroClass.Duelist, 20);
-            var without = Poisoned(HeroClass.Duelist, 20);
-            with.Synergy.SetAlly(0, true, HeroClass.Dowser, Mark("fire"));
-            without.Synergy.SetAlly(0, true, HeroClass.Runedancer, Mark("stun"));
-
-            with.Tick();
-            without.Tick();
-
-            var dots = TestWorld.Data.Combat.Dots;
-            var share = Rules.Reactions[IndexOfReaction("miasma_burst")].Modifiers[0].Value;
-            var hits = 20 * dots.PoisonHitsPerStack * dots.MiasmaStackSeconds * share;
-            var oneHit = with.Combat.SkillDamage(with.Combat.BaseKeyDamage, 1, Game.Core.Stats.StatTags.Skill | Game.Core.Stats.StatTags.DoT);
-            var extra = (with.State.TotalDamage - without.State.TotalDamage).ToDouble();
-            Assert.That(extra, Is.GreaterThanOrEqualTo(hits * oneHit.ToDouble() * 0.99), "crits only add");
-            Assert.That(extra, Is.LessThan(hits * oneHit.ToDouble() * 10));
-        }
-
-        [Test]
-        public void AlchemistBurstsEveryFewSecondsWhileAnAllyBurns()
-        {
-            var loop = Poisoned(HeroClass.Alchemist, 20);
-            loop.Synergy.SetAlly(0, true, HeroClass.Ghostcaptain, Mark("fire"));
-            var every = TestWorld.Data.Combat.Dots.MiasmaEverySeconds;
-
-            for (var tick = 0; tick < 3 * every * GameLoop.TicksPerSecond; tick++)
-                loop.Tick();
-
-            Assert.That(loop.Skills.Dots.MiasmaBursts, Is.EqualTo(3), "the response holds and the reaction shares its rhythm");
-        }
-
-        [Test]
         public void NoStacksNoBurst()
         {
             var loop = Hero(HeroClass.Alchemist);
@@ -92,46 +41,10 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void FireLegionLetsOwnMinionsIgniteTheEnemy()
-        {
-            var with = Summoned(HeroClass.Soulbinder);
-            var without = Summoned(HeroClass.Soulbinder);
-            with.Synergy.SetAlly(0, true, HeroClass.Dowser, Mark("fire"));
-
-            for (var tick = 0; tick < 30; tick++)
-            {
-                with.Tick();
-                without.Tick();
-            }
-
-            Assert.That(with.Synergy.ReactionActive(IndexOfReaction("fire_legion")), Is.True);
-            Assert.That(with.Skills.Minions.SkeletonHits, Is.GreaterThan(0));
-            Assert.That(with.State.BurnStacks, Is.GreaterThan(0));
-            Assert.That(without.State.BurnStacks, Is.Zero);
-        }
-
-        [Test]
-        public void RotOfAgesCarriesThePoisonToTheNextEnemy()
-        {
-            var with = Poisoned(HeroClass.Duelist, 20);
-            var without = Poisoned(HeroClass.Duelist, 20);
-            with.Synergy.SetAlly(0, true, HeroClass.Clockwright, Mark("time"));
-            without.Synergy.SetAlly(0, true, HeroClass.Runedancer, Mark("stun"));
-            with.Tick();
-            without.Tick();
-            Assert.That(with.Synergy.ReactionActive(IndexOfReaction("rot_of_ages")), Is.True);
-
-            KillTheEnemy(with);
-            KillTheEnemy(without);
-
-            Assert.That(with.State.PoisonStacks, Is.EqualTo(20).Within(1e-9));
-            Assert.That(without.State.PoisonStacks, Is.Zero);
-        }
-
-        [Test]
         public void DowserSparkAddsBurnEverySecondOnlyToABurningEnemy()
         {
             var loop = Hero(HeroClass.Dowser);
+            loop.Hero.Add(new Game.Core.Stats.Modifier(CombatStats.BurnStacksFromAllyLightning, Game.Core.Stats.ModifierKind.Flat, 1));
             loop.Tick();
             loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e30);
             loop.Synergy.SetAlly(0, true, HeroClass.Shardcaller, Mark("lightning"));
@@ -151,6 +64,7 @@ namespace Game.Core.Tests.Party
         {
             var with = Hero(HeroClass.Dreamcatcher);
             var without = Hero(HeroClass.Dreamcatcher);
+            with.Hero.Add(new Game.Core.Stats.Modifier(CombatStats.OmenPerPartyCrit, Game.Core.Stats.ModifierKind.Flat, 1));
             with.Synergy.SetAlly(0, true, HeroClass.Windshot, Mark("hunterMark"));
             with.Tick();
             without.Tick();
@@ -189,34 +103,6 @@ namespace Game.Core.Tests.Party
                     return gem;
             }
             throw new System.InvalidOperationException("no lightning gem");
-        }
-
-        private static GameLoop Summoned(HeroClass heroClass)
-        {
-            var loop = Hero(heroClass);
-            loop.Tick();
-            loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e30);
-            loop.Skills.Minions.Place(loop.Combat.Paths.SkeletonOnKill, Game.Core.Stats.StatTags.Skill);
-            return loop;
-        }
-
-        private static void KillTheEnemy(GameLoop loop)
-        {
-            var kills = loop.State.Kills;
-            loop.State.EnemyHp = Game.Core.Math.BigNumber.FromDouble(1e-9);
-            for (var tick = 0; tick < 20 && loop.State.Kills == kills; tick++)
-                loop.Tick();
-            Assert.That(loop.State.Kills, Is.GreaterThan(kills));
-        }
-
-        private static int IndexOfReaction(string id)
-        {
-            for (var i = 0; i < Rules.Reactions.Count; i++)
-            {
-                if (Rules.Reactions[i].Id == id)
-                    return i;
-            }
-            return -1;
         }
     }
 }

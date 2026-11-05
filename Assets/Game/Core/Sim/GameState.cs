@@ -289,7 +289,6 @@ namespace Game.Core.Sim
         public int HunterMarkTicks { get; set; }
         public bool MarkedEnemyDied { get; set; }
         public int BlindTicks { get; set; }
-        public int CompanionMarks { get; set; }
 
         public double KeyCarry { get; set; }
         public double MouseCarryPx { get; set; }

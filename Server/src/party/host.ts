@@ -17,7 +17,7 @@ interface PartyServerConfig extends PartyEncounterRules {
     relayCooldownSeconds: number;
     allyResourceMax: number;
     allyResourceCooldownSeconds: number;
-    synergyReactions: number;
+    synergyConstellations: number;
 }
 
 const PartyCutTolerance = 1e-9;
@@ -58,9 +58,9 @@ class PartyHost {
     private readonly lastRepeatTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastRelayTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastResourceTick = [PartyNever, PartyNever, PartyNever, PartyNever];
-    private readonly reactions = [0, 0, 0, 0];
+    private readonly constellations = [0, 0, 0, 0];
     private readonly marks = [0, 0, 0, 0];
-    private enemyReactions = 0;
+    private enemyConstellations = 0;
     private readonly recentShares = [0, 0, 0, 0];
     private readonly recentHits = [0, 0, 0, 0];
     private stateSequence = 0;
@@ -190,10 +190,10 @@ class PartyHost {
                 this.bossRequests.push(slot);
                 break;
             case PartyMessageKind.Synergy: {
-                const synergy = partyDecodeSynergy(data, this.config.synergyReactions);
+                const synergy = partyDecodeSynergy(data, this.config.synergyConstellations);
                 if (synergy !== null) {
-                    this.reactions[slot] = synergy;
-                    this.enemyReactions = (this.enemyReactions | synergy) >>> 0;
+                    this.constellations[slot] = synergy;
+                    this.enemyConstellations = (this.enemyConstellations | synergy) >>> 0;
                 }
                 break;
             }
@@ -360,11 +360,11 @@ class PartyHost {
                 this.wanderers.push(userId);
     }
 
-    private activeReactions(): number {
+    private activeConstellations(): number {
         let active = 0;
         for (let slot = 0; slot < PartyMaxSlots; slot++)
             if (this.encounter.members[slot].joined)
-                active = (active | this.reactions[slot]) >>> 0;
+                active = (active | this.constellations[slot]) >>> 0;
         return active;
     }
 
@@ -464,7 +464,7 @@ class PartyHost {
         this.lastRepeatTick[slot] = PartyNever;
         this.lastRelayTick[slot] = PartyNever;
         this.lastResourceTick[slot] = PartyNever;
-        this.reactions[slot] = 0;
+        this.constellations[slot] = 0;
         this.marks[slot] = 0;
         this.ticksToState = 0;
     }
@@ -559,7 +559,7 @@ class PartyHost {
         for (const event of events) {
             if (event.kind === PartyEventKind.EnemyKilled) {
                 this.kills++;
-                this.chronicle.synergiesOnOneEnemy = Math.max(this.chronicle.synergiesOnOneEnemy || 0, partyBitCount(this.enemyReactions));
+                this.chronicle.synergiesOnOneEnemy = Math.max(this.chronicle.synergiesOnOneEnemy || 0, partyBitCount(this.enemyConstellations));
                 if (event.enemyKind === PartyEnemyKind.Boss)
                     this.noteBossKill(event);
                 this.broadcast(partyEncodeEnemyKilled(event), PartyNoSlot);
@@ -569,7 +569,7 @@ class PartyHost {
             } else if (event.kind === PartyEventKind.GuestLeft) {
                 this.releaseGuests(event.rewarded);
             } else if (event.kind === PartyEventKind.EnemySpawned) {
-                this.enemyReactions = this.activeReactions();
+                this.enemyConstellations = this.activeConstellations();
                 this.ticksToState = 0;
             } else if (event.kind === PartyEventKind.WorldPending
                 || event.kind === PartyEventKind.WorldCancelled || event.kind === PartyEventKind.WorldChanged) {

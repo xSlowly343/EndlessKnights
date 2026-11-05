@@ -32,14 +32,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ReactionUnlocksAndTheSecondResponseCountOnlyInAParty()
+        public void ConstellationStrengthCountsOnlyInAParty()
         {
-            var unlock = new Modifier(CombatStats.ReactionSteam, ModifierKind.Flat, 1);
-            var response = new Modifier(CombatStats.SecondResponse, ModifierKind.Flat, 1);
+            var line = new Modifier(CombatStats.ConstellationEffect, ModifierKind.Increased, 0.1);
 
-            Assert.That(Score(false, unlock), Is.EqualTo(0));
-            Assert.That(Score(true, unlock), Is.GreaterThan(0));
-            Assert.That(Score(true, response), Is.GreaterThan(0));
+            Assert.That(Score(false, line), Is.EqualTo(0));
+            Assert.That(Score(true, line), Is.GreaterThan(0));
         }
     }
 }

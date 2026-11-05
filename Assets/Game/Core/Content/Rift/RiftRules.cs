@@ -22,7 +22,7 @@ namespace Game.Core.Content.Rift
         };
 
         private RiftRules(RiftSchedule schedule, double hpMultiplier, int wallPeriod, int wallZoneLength, double wallRate, double bossTimerSeconds,
-            long bossShards, long guardianShards, ExponentialCurve unlockCost, ExponentialCurve levelCost, int modifiersPerWindow, double markBonus,
+            long bossShards, long guardianShards, ExponentialCurve unlockCost, ExponentialCurve levelCost, int modifiersPerWindow,
             IReadOnlyList<RiftModifier> modifiers, long partyJoinMs, long partyDurationMs, RiftBoardRules board, RiftMilestoneRules milestones)
         {
             Milestones = milestones;
@@ -40,7 +40,6 @@ namespace Game.Core.Content.Rift
             UnlockCost = unlockCost;
             LevelCost = levelCost;
             ModifiersPerWindow = modifiersPerWindow;
-            MarkBonus = markBonus;
             Modifiers = modifiers;
         }
 
@@ -59,7 +58,6 @@ namespace Game.Core.Content.Rift
         public ExponentialCurve UnlockCost { get; }
         public ExponentialCurve LevelCost { get; }
         public int ModifiersPerWindow { get; }
-        public double MarkBonus { get; }
         public IReadOnlyList<RiftModifier> Modifiers { get; }
 
         public IReadOnlyList<RiftModifier> ModifiersFor(long windowId)
@@ -89,7 +87,7 @@ namespace Game.Core.Content.Rift
         {
             foreach (var modifier in Modifiers)
             {
-                foreach (var mark in Concat(modifier.UnlessMarks, modifier.Favours))
+                foreach (var mark in modifier.UnlessMarks)
                 {
                     if (synergy.MaskOf(new[] { mark }) == 0)
                         throw new ContentException(FileName, "modifiers." + modifier.Id, $"unknown mark '{mark}', expected one of {string.Join(", ", synergy.Marks)} from {SynergyRules.FileName}");
@@ -127,7 +125,7 @@ namespace Game.Core.Content.Rift
             var artifacts = root.Field("artifacts");
             var modifiers = new List<RiftModifier>();
             foreach (var node in root.Field("modifiers").Items())
-                modifiers.Add(new RiftModifier(node.Field("id").AsString(), Strings(node, "unlessMarks"), Strings(node, "favours"), ModifierReader.ReadList(node.Field("modifiers"))));
+                modifiers.Add(new RiftModifier(node.Field("id").AsString(), Strings(node, "unlessMarks"), ModifierReader.ReadList(node.Field("modifiers"))));
             var perWindow = root.Field("modifiersPerWindow").AsInt(0, 10);
             if (perWindow > modifiers.Count)
                 throw root.Field("modifiersPerWindow").Error($"there are only {modifiers.Count} modifiers");
@@ -137,7 +135,7 @@ namespace Game.Core.Content.Rift
                 world.Field("bossTimerSeconds").AsNumber(1, 3600),
                 shards.Field("boss").AsLong(0, 1000), shards.Field("guardian").AsLong(0, 1000),
                 ExponentialCurve.Read(artifacts.Field("unlockCost")), ExponentialCurve.Read(artifacts.Field("levelCost")),
-                perWindow, root.Field("markBonus").AsNumber(0, 10), modifiers,
+                perWindow, modifiers,
                 (long)System.Math.Round(party.Field("joinMinutes").AsNumber(1, 1440) * 60_000), (long)System.Math.Round(party.Field("durationHours").AsNumber(1, 168) * 3_600_000), RiftBoardRules.Read(root.Field("board")), RiftMilestoneRules.Read(root.Field("milestones")));
         }
 
@@ -149,14 +147,6 @@ namespace Game.Core.Content.Rift
             foreach (var item in node.Field(field).Items())
                 values.Add(item.AsString());
             return values;
-        }
-
-        private static IEnumerable<string> Concat(IReadOnlyList<string> first, IReadOnlyList<string> second)
-        {
-            foreach (var value in first)
-                yield return value;
-            foreach (var value in second)
-                yield return value;
         }
     }
 }

@@ -23,7 +23,6 @@ namespace Game.Core.Sim.Rift
         private SynergyRules _synergyRules;
         private IReadOnlyList<RiftModifier> _windowModifiers = System.Array.Empty<RiftModifier>();
         private int[] _unlessMasks = System.Array.Empty<int>();
-        private int _favouredMask;
         private long _modifiersFor = -1;
         private int _marks = -1;
 
@@ -209,12 +208,8 @@ namespace Game.Core.Sim.Rift
             _modifiersFor = riftId;
             _windowModifiers = riftId == 0 ? System.Array.Empty<RiftModifier>() : _rules.ModifiersFor(WindowAt(riftId * 1000)?.Id ?? riftId);
             _unlessMasks = new int[_windowModifiers.Count];
-            _favouredMask = 0;
             for (var i = 0; i < _windowModifiers.Count; i++)
-            {
                 _unlessMasks[i] = _synergyRules.MaskOf(_windowModifiers[i].UnlessMarks);
-                _favouredMask |= _synergyRules.MaskOf(_windowModifiers[i].Favours);
-            }
         }
 
         private void Rebuild()
@@ -226,7 +221,6 @@ namespace Game.Core.Sim.Rift
                     _buffer.AddRange(_windowModifiers[i].Modifiers);
             }
             _layer.Set(_buffer);
-            _synergy.SetFavoured(Inside ? _favouredMask : 0, _rules.MarkBonus);
         }
     }
 }

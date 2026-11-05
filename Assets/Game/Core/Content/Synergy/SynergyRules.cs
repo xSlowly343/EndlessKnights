@@ -11,7 +11,7 @@ namespace Game.Core.Content.Synergy
         public const string FileName = "synergy.json";
         public const int SupportedVersion = 1;
         public const int MaxMarks = 30;
-        public const int MaxReactions = 32;
+        public const int MaxConstellations = 32;
         public const string AuraMark = "aura";
         public const string LightningMark = "lightning";
 
@@ -20,9 +20,8 @@ namespace Game.Core.Content.Synergy
 
         private readonly int[] _markTicks;
 
-        private SynergyRules(List<string> marks, Dictionary<string, int> markIndex, List<string> roles, int[] roleMask, StatId secondResponseStat,
-            List<SynergyResponse> responses, List<SynergyReaction> reactions, List<SynergyConstellation> constellations, int[] markTicks, SynergyStateMarks stateMarks,
-            double allyPoisonStacks)
+        private SynergyRules(List<string> marks, Dictionary<string, int> markIndex, List<string> roles, int[] roleMask,
+            List<SynergyConstellation> constellations, int[] markTicks, SynergyStateMarks stateMarks, double allyPoisonStacks)
         {
             AllyPoisonStacks = allyPoisonStacks;
             _markTicks = markTicks;
@@ -31,17 +30,11 @@ namespace Game.Core.Content.Synergy
             _markIndex = markIndex;
             Roles = roles;
             _roleMask = roleMask;
-            SecondResponseStat = secondResponseStat;
-            Responses = responses;
-            Reactions = reactions;
             Constellations = constellations;
         }
 
         public IReadOnlyList<string> Marks { get; }
         public IReadOnlyList<string> Roles { get; }
-        public StatId SecondResponseStat { get; }
-        public IReadOnlyList<SynergyResponse> Responses { get; }
-        public IReadOnlyList<SynergyReaction> Reactions { get; }
         public IReadOnlyList<SynergyConstellation> Constellations { get; }
 
         public SynergyStateMarks StateMarks { get; }
@@ -162,20 +155,14 @@ namespace Game.Core.Content.Synergy
                     throw rolesNode.Error($"class '{HeroClassNames.Of(heroClass)}' has no role");
             }
 
-            var responses = new List<SynergyResponse>();
-            foreach (var node in root.Field("responses").Items())
-                responses.Add(ReadResponse(node, markIndex));
-            var reactions = new List<SynergyReaction>();
-            foreach (var node in root.Field("reactions").Items())
-            {
-                if (reactions.Count == MaxReactions)
-                    throw node.Error($"no more than {MaxReactions} reactions fit in one party message");
-                reactions.Add(ReadReaction(node, markIndex));
-            }
             var constellations = new List<SynergyConstellation>();
             foreach (var node in root.Field("constellations").Items())
-                constellations.Add(ReadConstellation(node, markIndex, roles));
-            return new SynergyRules(marks, markIndex, roles, roleMask, new StatId(root.Field("secondResponseStat").AsString()), responses, reactions, constellations,
+            {
+                if (constellations.Count == MaxConstellations)
+                    throw node.Error($"no more than {MaxConstellations} constellations fit in one party message");
+                constellations.Add(ReadConstellation(node, roles));
+            }
+            return new SynergyRules(marks, markIndex, roles, roleMask, constellations,
                 ReadMarkTicks(root, markIndex, marks.Count), ReadStateMarks(root, markIndex),
                 root.HasField("allyPoisonStacks") ? root.Field("allyPoisonStacks").AsNumber(0, 100000) : 0);
         }
@@ -211,37 +198,7 @@ namespace Game.Core.Content.Synergy
                 Mask(SynergyStateMarks.ColdField), Mask(SynergyStateMarks.BloodField), Mask(SynergyStateMarks.BondField));
         }
 
-        private static SynergyResponse ReadResponse(ContentNode node, Dictionary<string, int> markIndex)
-        {
-            var markNode = node.Field("mark");
-            var mark = markNode.AsString() == "any" ? SynergyResponse.AnyMark : MarkOf(markNode, markIndex);
-            var perMark = node.HasField("perMark") && node.Field("perMark").AsBool();
-            return new SynergyResponse(
-                node.Field("id").AsString(),
-                ClassOf(node.Field("class"), node.Field("class").AsString()),
-                mark,
-                node.HasField("second") && node.Field("second").AsBool(),
-                perMark,
-                perMark ? node.Field("maxMarks").AsInt(1, MaxMarks) : 1,
-                ModifierReader.ReadList(node.Field("modifiers")));
-        }
-
-        private static SynergyReaction ReadReaction(ContentNode node, Dictionary<string, int> markIndex)
-        {
-            var pair = node.Field("marks").Items();
-            if (pair.Count != 2)
-                throw node.Field("marks").Error("a reaction needs exactly two marks");
-            var first = MarkOf(pair[0], markIndex);
-            var second = MarkOf(pair[1], markIndex);
-            if (first == second)
-                throw node.Field("marks").Error("a reaction needs two different marks");
-            return new SynergyReaction(node.Field("id").AsString(), first, second,
-                node.Field("seconds").AsNumber(0.1, 600), node.Field("cooldownSeconds").AsNumber(0, 3600),
-                ModifierReader.ReadList(node.Field("modifiers")),
-                node.HasField("unlock") ? new StatId(node.Field("unlock").AsString()) : (StatId?)null);
-        }
-
-        private static SynergyConstellation ReadConstellation(ContentNode node, Dictionary<string, int> markIndex, List<string> roles)
+        private static SynergyConstellation ReadConstellation(ContentNode node, List<string> roles)
         {
             var classes = new List<HeroClass>();
             if (node.HasField("classes"))
@@ -265,18 +222,11 @@ namespace Game.Core.Content.Synergy
                     groups.Add(mask);
                 }
             }
-            var marks = 0;
-            if (node.HasField("marks"))
-            {
-                foreach (var item in node.Field("marks").Items())
-                    marks |= 1 << MarkOf(item, markIndex);
-            }
-            var constellation = new SynergyConstellation(node.Field("id").AsString(), classes, groups, marks,
-                node.HasField("noReactionCooldown") && node.Field("noReactionCooldown").AsBool(), ModifierReader.ReadList(node.Field("modifiers")));
+            var constellation = new SynergyConstellation(node.Field("id").AsString(), classes, groups, ModifierReader.ReadList(node.Field("modifiers")));
             if (constellation.Members > 4)
                 throw node.Error("a constellation can ask for at most 4 members");
-            if (constellation.Members == 0 && marks == 0)
-                throw node.Error("a constellation needs classes, roles or marks");
+            if (constellation.Members < 2)
+                throw node.Error("a constellation needs at least two members");
             return constellation;
         }
 

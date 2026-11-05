@@ -52,7 +52,7 @@ namespace Game.Core.Party
         private readonly PartyLoadoutMessage[] _allyLoadouts = new PartyLoadoutMessage[PartyRules.MaxSlots];
         private long _refusedRift;
         private long _guestLinkTick;
-        private uint _sentReactions;
+        private uint _sentConstellations;
         private int _auraBoundGem;
         private int _sentMarks = -1;
         private int _traitTimerTicks;
@@ -277,7 +277,7 @@ namespace Game.Core.Party
                 ShareTraitTimer();
                 ShareTraitResource();
                 ShareTraitEffects();
-                ShareReactions();
+                ShareConstellations();
                 ShareMarks(Status == PartyLink.Linked);
             }
             PassDroppedFocus();
@@ -560,7 +560,7 @@ namespace Game.Core.Party
         private void Link()
         {
             Status = PartyLink.Linked;
-            _sentReactions = 0;
+            _sentConstellations = 0;
             _sentMarks = -1;
             _auraBoundGem = 0;
             _guestLinkTick = _tick;
@@ -801,13 +801,13 @@ namespace Game.Core.Party
             SendToHost(PartyCodec.Encode(_out, new MarksMessage { Marks = (uint)marks }));
         }
 
-        private void ShareReactions()
+        private void ShareConstellations()
         {
-            var reactions = _loop.Synergy.ReactionMask;
-            if (reactions == _sentReactions || Status != PartyLink.Linked)
+            var constellations = _loop.Synergy.ConstellationMask;
+            if (constellations == _sentConstellations || Status != PartyLink.Linked)
                 return;
-            _sentReactions = reactions;
-            SendToHost(PartyCodec.Encode(_out, new SynergyMessage { Reactions = reactions }));
+            _sentConstellations = constellations;
+            SendToHost(PartyCodec.Encode(_out, new SynergyMessage { Constellations = constellations }));
         }
 
         private void PassDroppedFocus()

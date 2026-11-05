@@ -94,13 +94,7 @@ namespace Game.Core.Sim
         public static readonly StatId QueueStrikeMultiplier = new StatId("queueStrikeMultiplier");
         public static readonly StatId CloneEvery = new StatId("cloneEvery");
         public static readonly StatId CloneMultiplier = new StatId("cloneMultiplier");
-        public static readonly StatId SecondResponse = new StatId("secondResponse");
         public static readonly StatId ResourceOnAllyMark = new StatId("resourceOnAllyMark");
-        public static readonly StatId ReactionSteam = new StatId("reactionSteam");
-        public static readonly StatId ReactionShatter = new StatId("reactionShatter");
-        public static readonly StatId ReactionScentOfBlood = new StatId("reactionScentOfBlood");
-        public static readonly StatId ReactionSharedChoir = new StatId("reactionSharedChoir");
-        public static readonly StatId ReactionSandInTheHourglass = new StatId("reactionSandInTheHourglass");
         public static readonly StatId DamagePerCombo = new StatId("damagePerCombo");
         public static readonly StatId DamagePerComboMax = new StatId("damagePerComboMax");
         public static readonly StatId SkillSuperEvery = new StatId("skillSuperEvery");
@@ -209,9 +203,6 @@ namespace Game.Core.Sim
         public static readonly StatId MarkOnGuardians = new StatId("markOnGuardians");
         public static readonly StatId BlindSeconds = new StatId("blindSeconds");
         public static readonly StatId DamageVsBlinded = new StatId("damageVsBlinded");
-        public static readonly StatId CompanionPerMark = new StatId("companionPerMark");
-        public static readonly StatId CompanionLimit = new StatId("companionLimit");
-        public static readonly StatId CompanionOwnMark = new StatId("companionOwnMark");
         public static readonly StatId OverloadAt = new StatId("overloadAt");
         public static readonly StatId OverloadBoss = new StatId("overloadBoss");
         public static readonly StatId OverloadCrit = new StatId("overloadCrit");
@@ -229,7 +220,6 @@ namespace Game.Core.Sim
         public static readonly StatId FocusFromMouse = new StatId("focusFromMouse");
         public static readonly StatId FocusIdleFloor = new StatId("focusIdleFloor");
         public static readonly StatId DustGain = new StatId("dustGain");
-        public static readonly StatId ReactionEffect = new StatId("reactionEffect");
-        public static readonly StatId ReactionResource = new StatId("reactionResource");
+        public static readonly StatId ConstellationEffect = new StatId("constellationEffect");
     }
 }

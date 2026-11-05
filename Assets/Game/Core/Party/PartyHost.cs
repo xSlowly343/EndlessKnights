@@ -28,8 +28,8 @@ namespace Game.Core.Party
         private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRelayTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastResourceTick = new long[PartyRules.MaxSlots];
-        private readonly uint[] _reactions = new uint[PartyRules.MaxSlots];
-        private uint _enemyReactions;
+        private readonly uint[] _constellations = new uint[PartyRules.MaxSlots];
+        private uint _enemyConstellations;
         private readonly ulong[] _invitedGuests = new ulong[PartyRules.MaxSlots];
         private readonly double[] _invitedSeconds = new double[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
@@ -67,7 +67,7 @@ namespace Game.Core.Party
         public double CutShares { get; private set; }
         public double RepeatedShares { get; private set; }
         public long Relays { get; private set; }
-        public int MostReactionsOnOneEnemy { get; private set; }
+        public int MostConstellationsOnOneEnemy { get; private set; }
 
         public int Flags(int slot) => _flags[slot];
 
@@ -167,8 +167,8 @@ namespace Game.Core.Party
                     React(slot, reaction);
                     break;
                 case PartyMessageKind.Synergy when PartyCodec.TryDecode(_in, length, out SynergyMessage synergy):
-                    _reactions[slot] = synergy.Reactions;
-                    _enemyReactions |= synergy.Reactions;
+                    _constellations[slot] = synergy.Constellations;
+                    _enemyConstellations |= synergy.Constellations;
                     break;
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     ShareResource(slot, resource.Amount);
@@ -208,7 +208,7 @@ namespace Game.Core.Party
             _lastRepeatTick[slot] = PartyEncounter.Never;
             _lastRelayTick[slot] = PartyEncounter.Never;
             _lastResourceTick[slot] = PartyEncounter.Never;
-            _reactions[slot] = 0;
+            _constellations[slot] = 0;
             _marks[slot] = 0;
             _rosterChanged = true;
             _ticksToState = 0;
@@ -434,14 +434,14 @@ namespace Game.Core.Party
                 {
                     case PartyEventKind.EnemyKilled:
                         Kills++;
-                        MostReactionsOnOneEnemy = System.Math.Max(MostReactionsOnOneEnemy, BitCount(_enemyReactions));
+                        MostConstellationsOnOneEnemy = System.Math.Max(MostConstellationsOnOneEnemy, BitCount(_enemyConstellations));
                         Broadcast(PartyCodec.Encode(_out, EnemyKilledMessage.Of(partyEvent)));
                         break;
                     case PartyEventKind.GuestLeft:
                         _rosterChanged = true;
                         break;
                     case PartyEventKind.EnemySpawned:
-                        _enemyReactions = ActiveReactions();
+                        _enemyConstellations = ActiveConstellations();
                         _ticksToState = 0;
                         break;
                     case PartyEventKind.WorldPending:
@@ -496,13 +496,13 @@ namespace Game.Core.Party
             }
         }
 
-        private uint ActiveReactions()
+        private uint ActiveConstellations()
         {
             var active = 0u;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 if (_encounter.Member(slot).Joined)
-                    active |= _reactions[slot];
+                    active |= _constellations[slot];
             }
             return active;
         }

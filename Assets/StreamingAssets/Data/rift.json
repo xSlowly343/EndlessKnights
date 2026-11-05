@@ -36,13 +36,12 @@
     "levelCost": { "curve": "exp", "base": 1, "rate": 1.25 }
   },
   "modifiersPerWindow": 2,
-  "markBonus": 0.5,
   "modifiers": [
-    { "id": "stone_skin", "unlessMarks": ["curse", "time"], "favours": ["curse", "time"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5 }] },
-    { "id": "regeneration", "unlessMarks": ["poison", "fire"], "favours": ["poison", "fire"], "modifiers": [{ "stat": "enemyRegen", "kind": "flat", "value": 0.01 }] },
-    { "id": "colossus_shield", "unlessMarks": ["lightning", "hunterMark"], "favours": ["lightning", "hunterMark"], "modifiers": [{ "stat": "bossShield", "kind": "flat", "value": 0.5 }] },
-    { "id": "horde", "favours": ["summon"], "modifiers": [{ "stat": "stageEnemies", "kind": "increased", "value": 0.5 }] },
-    { "id": "silence", "favours": ["stun"], "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": -0.5, "tags": ["Aura"] }] },
-    { "id": "eclipse", "favours": ["series"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Strike"] }, { "stat": "mouseDistance", "kind": "more", "value": 1 }] }
+    { "id": "stone_skin", "unlessMarks": ["curse", "time"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5 }] },
+    { "id": "regeneration", "unlessMarks": ["poison", "fire"], "modifiers": [{ "stat": "enemyRegen", "kind": "flat", "value": 0.01 }] },
+    { "id": "colossus_shield", "unlessMarks": ["lightning", "hunterMark"], "modifiers": [{ "stat": "bossShield", "kind": "flat", "value": 0.5 }] },
+    { "id": "horde", "modifiers": [{ "stat": "stageEnemies", "kind": "increased", "value": 0.5 }] },
+    { "id": "silence", "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": -0.5, "tags": ["Aura"] }] },
+    { "id": "eclipse", "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Strike"] }, { "stat": "mouseDistance", "kind": "more", "value": 1 }] }
   ]
 }
