@@ -104,6 +104,9 @@ namespace Game.Core.Tests.Ui
             Assert.That(after.Slots[0].Options[1].Picked, Is.True);
             Assert.That(after.Slots[0].Options.Any(option => option.CanPick), Is.False);
             Assert.That(after.Mode, Is.Not.Empty);
+            Assert.That(after.Slots[0].Scale, Is.EqualTo(1));
+            Assert.That(PathTraitView.Build(loop, path, 5).Slots[0].Scale, Is.EqualTo(Data.Ascendancy.ForkScaleAt(5)).And.GreaterThan(1));
+            Assert.That(PathTraitView.Build(loop, path, 5).Slots[0].ScaleText, Is.Not.Empty);
         }
     }
 }
