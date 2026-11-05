@@ -4390,9 +4390,9 @@
       "effect": {"type": "strike", "multiplier": 3, "cards": 1},
       "text": {"ru": "бросок ×3 и карта", "en": "a throw ×3 and a card"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_hit_1_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "cartomancer_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_hit_1_b15b", "name": {"ru": "Двойной бросок", "en": "Double Throw"}, "damage": 0.8, "effect": {"cards": 2}}]},
-        {"level": 25, "options": [{"id": "cartomancer_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_hit_1_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "cartomancer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4409,9 +4409,9 @@
       "effect": {"type": "strike", "multiplier": 2.5},
       "text": {"ru": "сдача ×2,5", "en": "a deal ×2.5"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_hit_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "cartomancer_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_hit_2_b15b", "name": {"ru": "Быстрая сдача", "en": "Quick Deal"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "cartomancer_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_hit_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "cartomancer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4428,9 +4428,9 @@
       "effect": {"type": "strike", "multiplier": 3, "handHit": 0.5},
       "text": {"ru": "туз ×3 и ещё ×0,5 за каждую карту в руке и на враге", "en": "an ace ×3 and ×0.5 more for every card in hand and on the enemy"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_hit_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}]},
         {"level": 15, "options": [{"id": "cartomancer_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_hit_3_b15b", "name": {"ru": "Два туза", "en": "Two Aces"}, "damage": 0.8, "effect": {"handHit": 0.8}}]},
-        {"level": 25, "options": [{"id": "cartomancer_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_hit_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}, {"id": "cartomancer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4447,9 +4447,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
       "text": {"ru": "веер ×2 по 3 врагам очереди", "en": "a fan ×2 at 3 queued enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_queue_1_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "cartomancer_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_queue_1_b15b", "name": {"ru": "Широкий веер", "en": "Wide Fan"}, "damage": 0.8, "effect": {"multiplier": 2.6}}]},
-        {"level": 25, "options": [{"id": "cartomancer_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_queue_1_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "cartomancer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4466,9 +4466,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
       "text": {"ru": "домик ×2,5 по 3 врагам", "en": "a house ×2.5 at 3 enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_queue_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "cartomancer_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_queue_2_b15b", "name": {"ru": "Высокий домик", "en": "Tall House"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "cartomancer_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_queue_2_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "cartomancer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4485,9 +4485,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "cards": 1},
       "text": {"ru": "три карты ×3 по 3 врагам и карта", "en": "three cards ×3 at 3 enemies and a card"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_queue_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "cartomancer_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_queue_3_b15b", "name": {"ru": "Четыре карты", "en": "Four Cards"}, "damage": 0.8, "effect": {"cards": 2}}]},
-        {"level": 25, "options": [{"id": "cartomancer_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_queue_3_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "cartomancer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4503,9 +4503,9 @@
       "effect": {"type": "strike", "multiplier": 4},
       "text": {"ru": "раз в 4 с валет ×4", "en": "every 4 s a jack ×4"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_auto_1_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 6.0}}]},
         {"level": 15, "options": [{"id": "cartomancer_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_auto_1_b15b", "name": {"ru": "Быстрый валет", "en": "Quick Jack"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
-        {"level": 25, "options": [{"id": "cartomancer_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_auto_1_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 8}}, {"id": "cartomancer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4521,9 +4521,9 @@
       "effect": {"type": "strike", "multiplier": 3, "cards": 1},
       "text": {"ru": "раз в 15 с карта ×3 и карта в руку", "en": "every 15 s a card ×3 and a card in hand"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_auto_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "cartomancer_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_auto_2_b15b", "name": {"ru": "Счастливый день", "en": "Lucky Day"}, "damage": 0.8, "effect": {"cards": 2}}]},
-        {"level": 25, "options": [{"id": "cartomancer_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_auto_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "cartomancer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4539,9 +4539,9 @@
       "effect": {"type": "strike", "multiplier": 4, "reveal": true},
       "text": {"ru": "раз в 10 с тасовка ×4 и вскрытая карта", "en": "every 10 s a shuffle ×4 and a revealed card"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_auto_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "cartomancer_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_auto_3_b15b", "name": {"ru": "Ловкая тасовка", "en": "Deft Shuffle"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
-        {"level": 25, "options": [{"id": "cartomancer_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_auto_3_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "cartomancer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4558,9 +4558,9 @@
       "effect": {"type": "strike", "multiplier": 6, "arcana": true},
       "text": {"ru": "колесо ×6 и случайный аркан", "en": "a wheel ×6 and a random arcanum"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_strong_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "cartomancer_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_strong_1_b15b", "name": {"ru": "Колесо фортуны", "en": "Wheel of Fortune"}, "damage": 0.8, "effect": {"multiplier": 8}}]},
-        {"level": 25, "options": [{"id": "cartomancer_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_strong_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "cartomancer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4577,9 +4577,9 @@
       "effect": {"type": "strike", "multiplier": 6, "handHit": 1.5},
       "text": {"ru": "ва-банк ×6 и ×1,5 за каждую карту", "en": "all in ×6 and ×1.5 for every card"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_strong_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 9.0}}]},
         {"level": 15, "options": [{"id": "cartomancer_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_strong_2_b15b", "name": {"ru": "Вся рука", "en": "The Whole Hand"}, "damage": 0.8, "effect": {"handHit": 2}}]},
-        {"level": 25, "options": [{"id": "cartomancer_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_strong_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 12}}, {"id": "cartomancer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4596,9 +4596,9 @@
       "effect": {"type": "strike", "multiplier": 12, "cards": 3},
       "text": {"ru": "флеш ×12 и три карты", "en": "a flush ×12 and three cards"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "cartomancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "cartomancer_strong_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "cartomancer_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "cartomancer_strong_3_b15b", "name": {"ru": "Чистый флеш", "en": "Clean Flush"}, "damage": 0.8, "effect": {"multiplier": 15}}]},
-        {"level": 25, "options": [{"id": "cartomancer_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "cartomancer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "cartomancer_strong_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "cartomancer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
