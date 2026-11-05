@@ -218,7 +218,7 @@ const raidRules = {
   minSeals: raid.rewards.minSeals,
   covenActiveMs: Math.round(raid.coven.activeMinutes * 60000),
   covenMaxBonus: raid.coven.maxBonus,
-  covenMaxShare: ascendancy.subclasses.reduce((sum, subclass) => sum + curseClanShare(subclass.nodes.flatMap((node) => node.modifiers || []).concat(traitModifiers(subclass.trait))), 0)
+  covenMaxShare: ascendancy.subclasses.reduce((sum, subclass) => sum + curseClanShare(traitModifiers(subclass.trait)), 0)
 };
 
 if (challenges.version !== 1)
