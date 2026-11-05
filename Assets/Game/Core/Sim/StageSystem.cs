@@ -15,7 +15,7 @@ namespace Game.Core.Sim
         private readonly EventQueue _events;
         private readonly LootSystem _loot;
         private readonly LevelSystem _levels;
-        private readonly Dictionary<string, EnemyDef?> _bosses = new Dictionary<string, EnemyDef?>();
+        private readonly Dictionary<string, EnemyDef?[]> _bosses = new Dictionary<string, EnemyDef?[]>();
         private readonly Dictionary<string, EnemyDef?> _guardians = new Dictionary<string, EnemyDef?>();
         private StageTable _stages = null!;
         private EnemyCatalog _enemies = null!;
@@ -42,7 +42,10 @@ namespace Game.Core.Sim
             _guardians.Clear();
             foreach (var biome in stages.Biomes)
             {
-                _bosses[biome] = enemies.Boss(biome);
+                var slots = new EnemyDef?[stages.BiomeLength / stages.BossSlotStages + 1];
+                for (var slot = 0; slot < slots.Length; slot++)
+                    slots[slot] = enemies.BossAt(biome, slot);
+                _bosses[biome] = slots;
                 _guardians[biome] = enemies.Guardian(biome);
             }
         }
@@ -189,7 +192,7 @@ namespace Game.Core.Sim
             if (boss)
             {
                 var guardian = _stages.IsBiomeGuardian(stage);
-                enemy = guardian ? _guardians[biome] ?? _bosses[biome] : _bosses[biome];
+                enemy = guardian ? _guardians[biome] ?? BossFor(biome, stage) : BossFor(biome, stage);
                 type = guardian ? EnemyType.Guardian : EnemyType.Boss;
                 hp = _stages.BossHp(stage) * Multiplier(enemy);
             }
@@ -326,6 +329,12 @@ namespace Game.Core.Sim
 
         public EncounterRules Encounters { get; set; } = null!;
 
+        public EnemyDef? BossFor(string biome, long stage)
+        {
+            var slots = _bosses[biome];
+            return slots[System.Math.Min(slots.Length - 1, _stages.BossSlot(stage))];
+        }
+
         private bool GoldenComes(long stage) =>
             RaisesRecord && Encounters.GoldenChance > 0 && stage >= Encounters.GoldenMinStage && _state.Rng.NextDouble() < Encounters.GoldenChance;
 
@@ -372,7 +381,7 @@ namespace Game.Core.Sim
             var biome = _stages.Biome(stage);
             var gate = _stages.GateAt(stage);
             var guardian = gate != null || _stages.IsBiomeGuardian(stage);
-            var enemy = guardian ? _guardians[biome] ?? _bosses[biome] : _bosses[biome];
+            var enemy = guardian ? _guardians[biome] ?? BossFor(biome, stage) : BossFor(biome, stage);
             var guardianShare = guardian && gate == null ? System.Math.Max(0.1, _hero.Value(CombatStats.GuardianHp, 1)) : 1;
             var gateShare = gate?.HpMultiplier ?? 1;
             var bossHp = _stages.BossHp(stage) * (Multiplier(enemy) * guardianShare * gateShare);

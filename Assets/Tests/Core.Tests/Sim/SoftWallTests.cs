@@ -32,7 +32,15 @@ namespace Game.Core.Tests.Sim
                 throw new AssertionException($"stage {stage} not cleared");
             }
 
-            var beforeWall = At(90).StageSeconds / At(89).StageSeconds;
+            double Seconds(long from, long to)
+            {
+                var total = 0.0;
+                for (var stage = from; stage <= to; stage++)
+                    total += At(stage).StageSeconds;
+                return total;
+            }
+
+            var beforeWall = System.Math.Pow(Seconds(86, 90) / Seconds(81, 85), 1.0 / 5);
             var insideWall = At(92).StageSeconds / At(91).StageSeconds;
             Assert.That(beforeWall, Is.LessThan(1.12));
             Assert.That(insideWall, Is.GreaterThan(1.05));

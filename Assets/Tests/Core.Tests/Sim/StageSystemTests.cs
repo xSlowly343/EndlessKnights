@@ -108,14 +108,14 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void BiomeWithoutEnemyDataStillSpawnsUnnamedEnemies()
+        public void TheSecondBiomeSpawnsItsOwnEnemies()
         {
             var stages = TestWorld.Data.Stages;
             var loop = TestWorld.Loop(state: new GameState { Stage = stages.BiomeLength + 1 });
 
-            Assert.That(TestWorld.Data.Enemies.Normals(stages.Biome(stages.BiomeLength + 1)), Is.Empty);
-            Assert.That(loop.State.Enemy, Is.Null);
-            Assert.That(loop.State.EnemyMaxHp.ToDouble(), Is.EqualTo(stages.EnemyHp(stages.BiomeLength + 1).ToDouble()).Within(1e-6));
+            Assert.That(loop.State.Enemy, Is.Not.Null);
+            Assert.That(loop.State.Enemy!.Biome, Is.EqualTo(stages.Biome(stages.BiomeLength + 1)));
+            Assert.That(loop.State.EnemyMaxHp.ToDouble(), Is.EqualTo(stages.EnemyHp(stages.BiomeLength + 1).ToDouble() * loop.State.Enemy.HpMultiplier).Within(1e-6));
         }
 
         [Test]

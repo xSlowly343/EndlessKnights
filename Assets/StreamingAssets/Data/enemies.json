@@ -18,6 +18,111 @@
       "modifiers": [
         { "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Strike"] }
       ]
+    },
+    { "id": "gryzlo", "biome": "green_hills", "type": "boss", "slot": 1, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_gryzlo" },
+    { "id": "boar_mother", "biome": "green_hills", "type": "boss", "slot": 2, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_boar_mother" },
+    { "id": "old_oak", "biome": "green_hills", "type": "boss", "slot": 3, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_old_oak" },
+    { "id": "scarecrow", "biome": "green_hills", "type": "boss", "slot": 4, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_scarecrow" },
+    { "id": "scorpion_colossus", "biome": "sand_ruins", "type": "normal", "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "enemy_scorpion_colossus" },
+    { "id": "living_statue", "biome": "sand_ruins", "type": "normal", "hpMultiplier": 1.3, "goldMultiplier": 1.2, "sprite": "enemy_living_statue" },
+    { "id": "walking_sarcophagus", "biome": "sand_ruins", "type": "normal", "hpMultiplier": 1.2, "goldMultiplier": 1.1, "sprite": "enemy_walking_sarcophagus" },
+    { "id": "dust_devil", "biome": "sand_ruins", "type": "normal", "hpMultiplier": 0.8, "goldMultiplier": 0.9, "sprite": "enemy_dust_devil" },
+    { "id": "jackal_treasurer", "biome": "sand_ruins", "type": "boss", "slot": 1, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_jackal_treasurer" },
+    { "id": "stone_scribe", "biome": "sand_ruins", "type": "boss", "slot": 2, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_stone_scribe" },
+    { "id": "pincer", "biome": "sand_ruins", "type": "boss", "slot": 3, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_pincer" },
+    { "id": "walking_house", "biome": "sand_ruins", "type": "boss", "slot": 4, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_walking_house" },
+    {
+      "id": "sphinx_warden",
+      "biome": "sand_ruins",
+      "type": "guardian",
+      "hpMultiplier": 1.5,
+      "goldMultiplier": 2.0,
+      "sprite": "guardian_sphinx_warden",
+      "modifiers": [
+        { "stat": "damage", "kind": "more", "value": -0.4, "tags": ["Strike"] },
+        { "stat": "damage", "kind": "more", "value": -0.4, "tags": ["Mouse"] }
+      ]
+    },
+    { "id": "yeti", "biome": "ice_peak", "type": "normal", "hpMultiplier": 1.1, "goldMultiplier": 1.0, "sprite": "enemy_yeti" },
+    { "id": "ice_golem", "biome": "ice_peak", "type": "normal", "hpMultiplier": 1.3, "goldMultiplier": 1.2, "sprite": "enemy_ice_golem" },
+    { "id": "walrus_colossus", "biome": "ice_peak", "type": "normal", "hpMultiplier": 1.2, "goldMultiplier": 1.1, "sprite": "enemy_walrus_colossus" },
+    { "id": "icicler", "biome": "ice_peak", "type": "normal", "hpMultiplier": 0.8, "goldMultiplier": 0.9, "sprite": "enemy_icicler" },
+    { "id": "snowball", "biome": "ice_peak", "type": "boss", "slot": 1, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_snowball" },
+    { "id": "walrus_matriarch", "biome": "ice_peak", "type": "boss", "slot": 2, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_walrus_matriarch" },
+    { "id": "icebreaker", "biome": "ice_peak", "type": "boss", "slot": 3, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_icebreaker" },
+    { "id": "blizzard_bird", "biome": "ice_peak", "type": "boss", "slot": 4, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_blizzard_bird" },
+    {
+      "id": "titan_mammoth",
+      "biome": "ice_peak",
+      "type": "guardian",
+      "hpMultiplier": 1.5,
+      "goldMultiplier": 2.0,
+      "sprite": "guardian_titan_mammoth",
+      "modifiers": [
+        { "stat": "damage", "kind": "more", "value": -0.5, "tags": ["DoT"] },
+        { "stat": "damage", "kind": "more", "value": -0.3, "tags": ["Skill"] }
+      ]
+    },
+    { "id": "fire_golem", "biome": "volcanic_forge", "type": "normal", "hpMultiplier": 1.3, "goldMultiplier": 1.2, "sprite": "enemy_fire_golem" },
+    { "id": "lava_worm", "biome": "volcanic_forge", "type": "normal", "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "enemy_lava_worm" },
+    { "id": "coalman", "biome": "volcanic_forge", "type": "normal", "hpMultiplier": 0.9, "goldMultiplier": 1.1, "sprite": "enemy_coalman" },
+    { "id": "anvil_hopper", "biome": "volcanic_forge", "type": "normal", "hpMultiplier": 1.2, "goldMultiplier": 1.0, "sprite": "enemy_anvil_hopper" },
+    { "id": "head_stoker", "biome": "volcanic_forge", "type": "boss", "slot": 1, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_head_stoker" },
+    { "id": "mainline", "biome": "volcanic_forge", "type": "boss", "slot": 2, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_mainline" },
+    { "id": "hammer_automaton", "biome": "volcanic_forge", "type": "boss", "slot": 3, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_hammer_automaton" },
+    { "id": "crucible", "biome": "volcanic_forge", "type": "boss", "slot": 4, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_crucible" },
+    {
+      "id": "flame_smith",
+      "biome": "volcanic_forge",
+      "type": "guardian",
+      "hpMultiplier": 1.5,
+      "goldMultiplier": 2.0,
+      "sprite": "guardian_flame_smith",
+      "modifiers": [
+        { "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Click"] },
+        { "stat": "damage", "kind": "more", "value": -0.3, "tags": ["Mouse"] }
+      ]
+    },
+    { "id": "griffin", "biome": "sky_islands", "type": "normal", "hpMultiplier": 1.1, "goldMultiplier": 1.1, "sprite": "enemy_griffin" },
+    { "id": "storm_elemental", "biome": "sky_islands", "type": "normal", "hpMultiplier": 1.2, "goldMultiplier": 1.0, "sprite": "enemy_storm_elemental" },
+    { "id": "cloud_ray", "biome": "sky_islands", "type": "normal", "hpMultiplier": 0.9, "goldMultiplier": 1.0, "sprite": "enemy_cloud_ray" },
+    { "id": "biting_isle", "biome": "sky_islands", "type": "normal", "hpMultiplier": 1.3, "goldMultiplier": 1.2, "sprite": "enemy_biting_isle" },
+    { "id": "postal_griffin", "biome": "sky_islands", "type": "boss", "slot": 1, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_postal_griffin" },
+    { "id": "cloud_mother", "biome": "sky_islands", "type": "boss", "slot": 2, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_cloud_mother" },
+    { "id": "thunderclap", "biome": "sky_islands", "type": "boss", "slot": 3, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_thunderclap" },
+    { "id": "lighthouse_keeper", "biome": "sky_islands", "type": "boss", "slot": 4, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_lighthouse_keeper" },
+    {
+      "id": "storm_dragon",
+      "biome": "sky_islands",
+      "type": "guardian",
+      "hpMultiplier": 1.5,
+      "goldMultiplier": 2.0,
+      "sprite": "guardian_storm_dragon",
+      "modifiers": [
+        { "stat": "damage", "kind": "more", "value": -0.3, "tags": ["Strike"] },
+        { "stat": "damage", "kind": "more", "value": -0.3, "tags": ["Click"] }
+      ]
+    },
+    { "id": "patchwork_giant", "biome": "rift_heart", "type": "normal", "hpMultiplier": 1.3, "goldMultiplier": 1.2, "sprite": "enemy_patchwork_giant" },
+    { "id": "upside_down", "biome": "rift_heart", "type": "normal", "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "enemy_upside_down" },
+    { "id": "flicker", "biome": "rift_heart", "type": "normal", "hpMultiplier": 0.8, "goldMultiplier": 1.0, "sprite": "enemy_flicker" },
+    { "id": "hollow_shell", "biome": "rift_heart", "type": "normal", "hpMultiplier": 1.1, "goldMultiplier": 1.1, "sprite": "enemy_hollow_shell" },
+    { "id": "crooked_boar", "biome": "rift_heart", "type": "boss", "slot": 1, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_crooked_boar" },
+    { "id": "upturned_sphinx", "biome": "rift_heart", "type": "boss", "slot": 2, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_upturned_sphinx" },
+    { "id": "shadow_mammoth", "biome": "rift_heart", "type": "boss", "slot": 3, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_shadow_mammoth" },
+    { "id": "cold_smith", "biome": "rift_heart", "type": "boss", "slot": 4, "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_cold_smith" },
+    {
+      "id": "quiet_storm_dragon",
+      "biome": "rift_heart",
+      "type": "guardian",
+      "hpMultiplier": 1.5,
+      "goldMultiplier": 2.0,
+      "sprite": "guardian_quiet_storm_dragon",
+      "modifiers": [
+        { "stat": "damage", "kind": "more", "value": -0.3, "tags": ["Strike"] },
+        { "stat": "damage", "kind": "more", "value": -0.3, "tags": ["Mouse"] },
+        { "stat": "damage", "kind": "more", "value": -0.3, "tags": ["Click"] }
+      ]
     }
   ]
 }

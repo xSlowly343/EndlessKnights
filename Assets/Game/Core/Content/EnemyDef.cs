@@ -5,7 +5,7 @@ namespace Game.Core.Content
 {
     public sealed class EnemyDef
     {
-        public EnemyDef(string id, string biome, EnemyType type, double hpMultiplier, double goldMultiplier, string sprite, IReadOnlyList<Modifier> modifiers)
+        public EnemyDef(string id, string biome, EnemyType type, double hpMultiplier, double goldMultiplier, string sprite, IReadOnlyList<Modifier> modifiers, int slot = 0)
         {
             Id = id;
             Biome = biome;
@@ -14,6 +14,7 @@ namespace Game.Core.Content
             GoldMultiplier = goldMultiplier;
             Sprite = sprite;
             Modifiers = modifiers;
+            Slot = slot;
         }
 
         public string Id { get; }
@@ -23,5 +24,6 @@ namespace Game.Core.Content
         public double GoldMultiplier { get; }
         public string Sprite { get; }
         public IReadOnlyList<Modifier> Modifiers { get; }
+        public int Slot { get; }
     }
 }
