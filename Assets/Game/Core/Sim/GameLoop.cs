@@ -125,6 +125,11 @@ namespace Game.Core.Sim
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades, hero);
             _book = new SkillBook(data.SkillBook, data.Weapons, state, _skills, hero);
+            if (state.LegacyGems)
+            {
+                _book.ForgetLegacyGems();
+                state.LegacyGems = false;
+            }
             _weapons.HeldChanged = _book.KeepOpen;
             _paths = new PathSystem(state, hero, _combat, _resource, _skills);
             _skills.Levels = data.Gems.Levels;

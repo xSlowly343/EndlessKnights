@@ -135,6 +135,7 @@ namespace Game.Core.Sim
             set => _otherPreset = value;
         }
         public List<GemDef> OwnedGems { get; } = new List<Content.Gems.GemDef>();
+        public bool LegacyGems { get; set; }
         public Dictionary<string, GemProgress> GemProgress { get; } = new Dictionary<string, GemProgress>(System.StringComparer.Ordinal);
 
         public GemProgress ProgressOf(GemDef gem)
