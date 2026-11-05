@@ -53,6 +53,7 @@ namespace Game.Core.Sim
         private readonly QuestSystem _quests;
         private readonly AchievementSystem _achievements;
         private readonly BestiarySystem _bestiary;
+        private readonly CosmeticSystem _cosmetics;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -99,6 +100,7 @@ namespace Game.Core.Sim
             _quests = new QuestSystem(data.Quests, state, Events);
             _achievements = new AchievementSystem(data.Achievements, state, Events);
             _bestiary = new BestiarySystem(data.Bestiary, state, Events);
+            _cosmetics = new CosmeticSystem(data.Cosmetics, state);
             _stage.Drops = _drops;
             _reroll = new RerollSystem(data.Drops, state, _gear, _weapons);
             _combat.Dreamcatcher.UseLoot(_drops, _loot);
@@ -195,6 +197,7 @@ namespace Game.Core.Sim
         public QuestSystem Quests => _quests;
         public AchievementSystem Achievements => _achievements;
         public BestiarySystem Bestiary => _bestiary;
+        public CosmeticSystem Cosmetics => _cosmetics;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -766,6 +769,7 @@ namespace Game.Core.Sim
             _quests.UseRules(data.Quests);
             _achievements.UseCatalog(data.Achievements);
             _bestiary.UseCatalog(data.Bestiary);
+            _cosmetics.UseCatalog(data.Cosmetics);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);

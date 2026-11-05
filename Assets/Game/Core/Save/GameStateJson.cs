@@ -77,6 +77,7 @@ namespace Game.Core.Save
                 ("quests", WriteQuests(state.Quests)),
                 ("achievements", WriteAchievements(state.Achievements)),
                 ("bestiary", WriteBestiary(state.Bestiary)),
+                ("cosmetics", WriteCosmetics(state.Cosmetics)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -246,6 +247,8 @@ namespace Game.Core.Save
                 ReadAchievements(node.Field("achievements"), state.Achievements);
             if (node.HasField("bestiary"))
                 ReadBestiary(node.Field("bestiary"), state.Bestiary);
+            if (node.HasField("cosmetics"))
+                ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
             if (node.HasField("slates") && slates != null)
                 ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
@@ -456,6 +459,26 @@ namespace Game.Core.Save
                     lines.Add(line);
             }
             return new SlateItem(shape, theme, rarity, lines, node.Field("tempered").AsBool());
+        }
+
+        private static JsonValue WriteCosmetics(CosmeticState cosmetics)
+        {
+            var owned = new List<string>(cosmetics.Owned);
+            owned.Sort(System.StringComparer.Ordinal);
+            var keys = new List<string>(cosmetics.Equipped.Keys);
+            keys.Sort(System.StringComparer.Ordinal);
+            var equipped = new JsonValue[keys.Count];
+            for (var i = 0; i < equipped.Length; i++)
+                equipped[i] = Object(("key", JsonValue.Of(keys[i])), ("id", JsonValue.Of(cosmetics.Equipped[keys[i]])));
+            return Object(("owned", WriteIdList(owned)), ("equipped", JsonValue.Array(equipped)));
+        }
+
+        private static void ReadCosmetics(ContentNode node, CosmeticState cosmetics)
+        {
+            foreach (var item in node.Field("owned").Items())
+                cosmetics.Owned.Add(item.AsString());
+            foreach (var item in node.Field("equipped").Items())
+                cosmetics.Equipped[item.Field("key").AsString()] = item.Field("id").AsString();
         }
 
         private static JsonValue WriteBestiary(BestiaryState bestiary)
