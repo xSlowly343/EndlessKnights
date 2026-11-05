@@ -52,6 +52,8 @@ namespace Game.Core.Content.Tree
         public IReadOnlyList<IReadOnlyList<Modifier>> Levels { get; }
         public IReadOnlyList<Modifier> Party { get; }
         public IReadOnlyList<TraitFork> Forks { get; }
+        public string RuleRu { get; private set; } = string.Empty;
+        public string RuleEn { get; private set; } = string.Empty;
         public string PartyTextRu { get; private set; } = string.Empty;
         public string PartyTextEn { get; private set; } = string.Empty;
 
@@ -77,14 +79,25 @@ namespace Game.Core.Content.Tree
         public static TraitDef Read(ContentNode node, HashSet<string> optionIds)
         {
             var levels = new List<IReadOnlyList<Modifier>>();
+            ContentNode? rule = null;
             foreach (var level in node.Field("levels").Items())
+            {
                 levels.Add(ModifierReader.ReadList(level.Field("modifiers")));
+                if (level.HasField("text"))
+                {
+                    if (levels.Count != MaxLevel)
+                        throw level.Field("text").Error($"only level {MaxLevel} has a rule text");
+                    rule = level.Field("text");
+                }
+            }
             if (levels.Count != MaxLevel)
                 throw node.Field("levels").Error($"a trait has exactly {MaxLevel} levels, got {levels.Count}");
             var party = node.HasField("party") ? ModifierReader.ReadList(node.Field("party")) : Array.Empty<Modifier>();
             var partyText = node.HasField("partyText") ? node.Field("partyText") : (ContentNode?)null;
             return new TraitDef(levels, party, ReadForks(node.Field("forks"), optionIds))
             {
+                RuleRu = rule?.Field("ru").AsString() ?? string.Empty,
+                RuleEn = rule?.Field("en").AsString() ?? string.Empty,
                 PartyTextRu = partyText?.Field("ru").AsString() ?? string.Empty,
                 PartyTextEn = partyText?.Field("en").AsString() ?? string.Empty
             };
