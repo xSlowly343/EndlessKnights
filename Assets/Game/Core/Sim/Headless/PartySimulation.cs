@@ -40,6 +40,7 @@ namespace Game.Core.Sim.Headless
         public double IdleAfterSeconds { get; set; }
         public double SampleSeconds { get; set; }
         public int HeroLevel { get; set; }
+        public string? Path { get; set; }
         public bool LossAfterJoin { get; set; }
 
         public PartySimulationResult Run(double seconds)
@@ -83,6 +84,8 @@ namespace Game.Core.Sim.Headless
                 {
                     bot.SpendTreePoints();
                     OpenPath(loops[i]);
+                    if (Path != null && _data.Ascendancy.TryGet(Path, out var forced) && forced.HeroClass == loops[i].State.ClassName)
+                        loops[i].ChooseSubclass(forced.Id);
                     bot.ChoosePathAndForks();
                 }
                 uptime[i] = new SynergyUptime(synergy);
@@ -118,6 +121,7 @@ namespace Game.Core.Sim.Headless
                 members.Add(new PartyMemberResult(_classes[i], state.Stage, state.HighestStage, kills[i], fails[i], state.RunGoldEarned, share, clients[i].MissedKills)
                 {
                     Damage = damage[i],
+                    Path = state.Ascendancy.Subclass,
                     SharesDealt = clients[i].SharesDealt,
                     Synergy = uptime[i]
                 });
