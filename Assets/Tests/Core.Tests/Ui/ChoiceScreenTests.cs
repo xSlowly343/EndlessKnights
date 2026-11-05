@@ -31,6 +31,42 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void EveryPathHasItsOwnStarProsAndCons()
+        {
+            foreach (var card in CharacterChoiceView.All(Data))
+            {
+                foreach (var path in card.Paths)
+                {
+                    Assert.That(path.Radar, Has.Count.EqualTo(CharacterCatalog.Axes), path.Id);
+                    Assert.That(path.Pros, Is.Not.Empty, path.Id);
+                    Assert.That(path.Cons, Is.Not.Empty, path.Id);
+                    Assert.That(path.About, Is.Not.Empty, path.Id);
+                }
+                Assert.That(card.Paths.Select(path => string.Join(",", path.Radar.Select(point => point.Value))).Distinct().Count(), Is.GreaterThan(1), card.Id + ": the star changes with the path");
+            }
+        }
+
+        [Test]
+        public void TheFilterKeepsCharactersStrongOnTheAxis()
+        {
+            var boss = CharacterChoiceView.StrongIn(Data, 1);
+
+            Assert.That(boss, Is.Not.Empty);
+            Assert.That(boss.Count, Is.LessThan(Data.Characters.All.Count));
+            Assert.That(boss.All(card => card.Radar[1].Value >= CharacterChoiceView.StrongValue || card.Paths.Any(path => path.Radar[1].Value >= CharacterChoiceView.StrongValue)), Is.True);
+        }
+
+        [Test]
+        public void APathOfAnotherCharacterIsReported()
+        {
+            var json = TestData.ReadGameDataFile(CharacterCatalog.FileName).Replace("\"runedancer_trait_1\":", "\"duelist_trait_1\":");
+
+            var error = Assert.Throws<ContentException>(() => CharacterCatalog.Load(json).RequirePaths(TestWorld.Real.Ascendancy))!;
+
+            Assert.That(error.Message, Does.Contain("runedancer_trait_1"));
+        }
+
+        [Test]
         public void TheRolesFollowTheRoster()
         {
             Assert.That(Data.Characters.TryGet("alchemist", out var alchemist), Is.True);
@@ -40,7 +76,7 @@ namespace Game.Core.Tests.Ui
 
         [TestCase("\"partners\": [\"minstrel\", \"whisperer\"]", "\"partners\": [\"runedancer\", \"whisperer\"]", "partner 'runedancer' must be another character")]
         [TestCase("\"role\": \"striker\", \"about\"", "\"role\": \"tank\", \"about\"", "role 'tank'")]
-        [TestCase("\"radar\": [5, 3, 4, 2, 2, 3]", "\"radar\": [5, 3, 4, 2, 2]", "the radar has 6 values")]
+        [TestCase("\"radar\": [5, 4, 2, 3], \"paths\"", "\"radar\": [5, 4, 2], \"paths\"", "the radar has 4 values")]
         public void BrokenCharactersAreReported(string original, string broken, string message)
         {
             var json = TestData.ReadGameDataFile(CharacterCatalog.FileName);

@@ -101,6 +101,7 @@ namespace Game.Core.Content
             var party = PartyRules.Load(readFile(PartyRules.FileName));
             var characters = CharacterCatalog.Load(readFile(CharacterCatalog.FileName));
             characters.RequireRoster(party.Search.Roles);
+            characters.RequirePaths(ascendancy);
             var tutorial = TutorialRules.Load(readFile(TutorialRules.FileName));
             var synergy = SynergyRules.Load(readFile(SynergyRules.FileName));
             synergy.RequireGemMarks(gems);
