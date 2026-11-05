@@ -6994,9 +6994,9 @@
       "effect": {"type": "strike", "multiplier": 3, "topHit": 1.5},
       "text": {"ru": "серп ×3 и ещё ×1,5, пока часы не на «низе»", "en": "a sickle ×3 and another ×1.5 while the glass is not on its bottom"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_1_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}]},
         {"level": 15, "options": [{"id": "sandwalker_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_hit_1_b15b", "name": {"ru": "Острый серп", "en": "Keen Sickle"}, "damage": 0.8, "effect": {"topHit": 2.5}}]},
-        {"level": 25, "options": [{"id": "sandwalker_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_hit_1_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "sandwalker_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7013,9 +7013,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "sand": 8, "pour": 5},
       "text": {"ru": "песчинка ×2,5, +8 Песка и 5 песчинок в часы", "en": "a grain ×2.5, +8 Sand and 5 grains into the glass"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_2_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "sandwalker_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_hit_2_b15b", "name": {"ru": "Горсть песка", "en": "Handful of Sand"}, "damage": 0.8, "effect": {"sand": 12}}]},
-        {"level": 25, "options": [{"id": "sandwalker_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_hit_2_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "sandwalker_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7032,9 +7032,9 @@
       "effect": {"type": "strike", "multiplier": 4, "afterStep": 4},
       "text": {"ru": "удар ×4 и ещё ×4 сразу после шага", "en": "a blow ×4 and another ×4 right after a step"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_3_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "sandwalker_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_hit_3_b15b", "name": {"ru": "Глубокий шаг", "en": "Deep Step"}, "damage": 0.8, "effect": {"afterStep": 6}}]},
-        {"level": 25, "options": [{"id": "sandwalker_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_hit_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7051,9 +7051,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3, "timerSeconds": 1},
       "text": {"ru": "самум ×2 по 3 врагам очереди; в бою с боссом +1 с к таймеру", "en": "a simoom ×2 at 3 queued enemies; +1 s to the boss timer in a boss fight"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_1_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "sandwalker_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_queue_1_b15b", "name": {"ru": "Долгий самум", "en": "Long Simoom"}, "damage": 0.8, "effect": {"timerSeconds": 2}}]},
-        {"level": 25, "options": [{"id": "sandwalker_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_queue_1_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.0}}, {"id": "sandwalker_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7070,9 +7070,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "blindSeconds": 2},
       "text": {"ru": "дюна ×2,5 по 3 врагам и Ослепление врага на 2 с", "en": "a dune ×2.5 at 3 enemies and a Blind on the enemy for 2 s"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_2_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}]},
         {"level": 15, "options": [{"id": "sandwalker_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_queue_2_b15b", "name": {"ru": "Высокая дюна", "en": "High Dune"}, "damage": 0.8, "effect": {"blindSeconds": 3}}]},
-        {"level": 25, "options": [{"id": "sandwalker_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_queue_2_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "sandwalker_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7089,9 +7089,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "afterStep": 3},
       "text": {"ru": "смерч ×3 по очереди и ещё ×3 сразу после шага", "en": "a twister ×3 along the queue and another ×3 right after a step"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_3_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "sandwalker_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_queue_3_b15b", "name": {"ru": "Смерч за шагом", "en": "Trailing Twister"}, "damage": 0.8, "effect": {"afterStep": 4.5}}]},
-        {"level": 25, "options": [{"id": "sandwalker_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_queue_3_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "sandwalker_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7107,9 +7107,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "sand": 5, "pour": 3},
       "text": {"ru": "раз в 3 с струйка ×2,5, +5 Песка и 3 песчинки", "en": "every 3 s a trickle ×2.5, +5 Sand and 3 grains"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_1_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "sandwalker_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_auto_1_b15b", "name": {"ru": "Ровная струйка", "en": "Steady Trickle"}, "damage": 0.8, "effect": {"pour": 6}}]},
-        {"level": 25, "options": [{"id": "sandwalker_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_auto_1_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7125,9 +7125,9 @@
       "effect": {"type": "strike", "multiplier": 2, "stepHit": 0.5},
       "text": {"ru": "раз в 6 с попутчик ×2 и ещё ×0,5 за каждые 1000 px шага с прошлого раза, до ×5", "en": "every 6 s a fellow traveller ×2 and another ×0.5 per 1000 px of steps since last time, up to ×5"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_2_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "sandwalker_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_auto_2_b15b", "name": {"ru": "Дальний путь", "en": "Long Way"}, "damage": 0.8, "effect": {"stepHit": 0.8}}]},
-        {"level": 25, "options": [{"id": "sandwalker_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_auto_2_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.0}}, {"id": "sandwalker_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7143,9 +7143,9 @@
       "effect": {"type": "strike", "multiplier": 6, "pour": 30},
       "text": {"ru": "раз в 15 с скарабей ×6 и пересыпает 30 песчинок", "en": "every 15 s a scarab ×6 that pours 30 grains"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_3_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 12}}]},
         {"level": 15, "options": [{"id": "sandwalker_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_auto_3_b15b", "name": {"ru": "Золотой скарабей", "en": "Golden Scarab"}, "damage": 0.8, "effect": {"pour": 50}}]},
-        {"level": 25, "options": [{"id": "sandwalker_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_auto_3_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "sandwalker_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7162,9 +7162,9 @@
       "effect": {"type": "strike", "multiplier": 6, "queueTargets": 3, "bossTimerStopSeconds": 5, "blindSeconds": 5},
       "text": {"ru": "буря ×6 по очереди: таймер босса стоит 5 с, враг слепнет на 5 с", "en": "a storm ×6 along the queue: the boss timer stands still for 5 s and the enemy is blinded for 5 s"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_1_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "sandwalker_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_strong_1_b15b", "name": {"ru": "Долгая буря", "en": "Long Storm"}, "damage": 0.8, "effect": {"bossTimerStopSeconds": 7}}]},
-        {"level": 25, "options": [{"id": "sandwalker_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_strong_1_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7181,9 +7181,9 @@
       "effect": {"type": "strike", "multiplier": 5, "lowHpBelow": 0.25, "lowHpMultiplier": 20},
       "text": {"ru": "жатва ×5, по врагу ниже 25% HP ×20", "en": "a harvest ×5, ×20 against an enemy below 25% HP"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_2_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "sandwalker_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_strong_2_b15b", "name": {"ru": "Ранняя жатва", "en": "Early Harvest"}, "damage": 0.8, "effect": {"lowHpBelow": 0.35}}]},
-        {"level": 25, "options": [{"id": "sandwalker_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_strong_2_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -7200,9 +7200,9 @@
       "effect": {"type": "strike", "multiplier": 10, "timerSeconds": 8},
       "text": {"ru": "удар ×10; в бою с боссом +8 с к таймеру", "en": "a blow ×10; +8 s to the boss timer in a boss fight"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "sandwalker_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_3_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "sandwalker_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_strong_3_b15b", "name": {"ru": "Долгий ход", "en": "Long Reverse"}, "damage": 0.8, "effect": {"timerSeconds": 12}}]},
-        {"level": 25, "options": [{"id": "sandwalker_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "sandwalker_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "sandwalker_strong_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 15.0}}, {"id": "sandwalker_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
