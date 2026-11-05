@@ -206,6 +206,30 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheClanWarIsReadWithOpponentFrontsAndLastResult()
+        {
+            Assert.That(ClanWarView.JoinPayload(false), Is.EqualTo("{\"join\":false}"));
+            var war = ClanWarView.From(NakamaJson.Parse("{\"week\":2914,\"phase\":\"war\",\"warStartsAt\":1,\"warEndsAt\":2,\"joined\":true,\"active\":5,\"minActive\":3,\"morale\":0.03,"
+                + "\"rating\":12,\"league\":\"silver\",\"wins\":4,\"opponent\":{\"clanId\":\"c2\",\"name\":\"lilac lanterns\",\"shadow\":false,\"bye\":false,\"active\":6,\"morale\":0.1},"
+                + "\"fronts\":{\"ours\":{\"keys\":2060,\"mouse\":10},\"theirs\":{\"keys\":100,\"mouse\":500},\"mine\":{\"keys\":1000},\"cap\":3600},"
+                + "\"last\":{\"week\":2913,\"outcome\":\"win\",\"points\":3,\"theirPoints\":2,\"seals\":150,\"rating\":12,\"league\":\"silver\"}}"));
+
+            Assert.That(war.Phase, Is.EqualTo("war"));
+            Assert.That(war.Opponent!.Name, Is.EqualTo("lilac lanterns"));
+            Assert.That(war.Fronts, Has.Count.EqualTo(5));
+            Assert.That(war.Fronts[0].Leading, Is.True);
+            Assert.That(war.Fronts[1].Leading, Is.False);
+            Assert.That(war.Fronts[0].Mine, Is.EqualTo(1000));
+            Assert.That(war.Cap, Is.EqualTo(3600));
+            Assert.That(war.Last!.Outcome, Is.EqualTo("win"));
+            Assert.That(war.Last.Seals, Is.EqualTo(150));
+            var gather = ClanWarView.From(NakamaJson.Parse("{\"week\":1,\"phase\":\"gather\",\"opponent\":null,\"fronts\":null,\"last\":null}"));
+            Assert.That(gather.Opponent, Is.Null);
+            Assert.That(gather.Fronts, Is.Empty);
+            Assert.That(gather.Last, Is.Null);
+        }
+
+        [Test]
         public void AClanIsReadFromTheServerReplyWithRolesAndLastSeen()
         {
             var clan = ClanView.From(NakamaJson.Parse("{\"id\":\"c1\",\"code\":\"K7MQ2X\",\"access\":\"open\",\"adjective\":\"lilac\",\"noun\":\"lanterns\",\"language\":\"ru\","
