@@ -50,7 +50,10 @@ namespace Game.Core.Sim.Headless
             SpendTreePoints();
             ChoosePathAndForks();
             _gear?.Act();
-            PrestigeWhenStuck(secondsSinceLastAct);
+            if (_gear != null)
+                EnterDungeon();
+            if (!_loop.Dungeons.Inside)
+                PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
             PlaceSlates();
             _loop.Upgrades.BuyMax();
@@ -367,6 +370,25 @@ namespace Game.Core.Sim.Headless
             foreach (var level in trait.Levels)
                 score += _score.Of(level);
             return score;
+        }
+
+        public void EnterDungeon()
+        {
+            var state = _loop.State;
+            if (_loop.Dungeons.Inside || state.Rift.Inside || state.FightingBoss)
+                return;
+            var rules = _loop.Dungeons.Rules;
+            DungeonKey? best = null;
+            foreach (var key in _loop.Dungeons.Keys)
+            {
+                var tier = rules.TierAt(key.Tier);
+                if (tier == null || tier.Stage + rules.Stages > state.Stage)
+                    continue;
+                if (best == null || key.Tier > best.Tier || (key.Tier == best.Tier && key.Modifiers.Count < best.Modifiers.Count))
+                    best = key;
+            }
+            if (best != null)
+                _loop.Dungeons.Enter(best);
         }
 
         private void PrestigeWhenStuck(double seconds)
