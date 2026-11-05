@@ -2530,9 +2530,9 @@
       "effect": {"type": "strike", "multiplier": 3},
       "text": {"ru": "кристальный шип ×3", "en": "a crystal spike ×3"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_1_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}]},
         {"level": 15, "options": [{"id": "shardcaller_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_hit_1_b15b", "name": {"ru": "Вонзённый", "en": "Embedded"}, "damage": 0.8, "effect": {"crystals": 1}}]},
-        {"level": 25, "options": [{"id": "shardcaller_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_hit_1_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}, {"id": "shardcaller_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2549,9 +2549,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "crystals": 1},
       "text": {"ru": "скол ×2,5 и кристалл во врага", "en": "a chip ×2.5 and a crystal in the enemy"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "shardcaller_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_hit_2_b15b", "name": {"ru": "Двойной скол", "en": "Double Chip"}, "damage": 0.8, "effect": {"crystals": 2}}]},
-        {"level": 25, "options": [{"id": "shardcaller_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_hit_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "shardcaller_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2568,9 +2568,9 @@
       "effect": {"type": "strike", "multiplier": 5, "bossMultiplier": 1.5},
       "text": {"ru": "удар ×5, по боссу ×7,5", "en": "a blow ×5, ×7.5 against a boss"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "shardcaller_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_hit_3_b15b", "name": {"ru": "Звон", "en": "Chime"}, "damage": 0.8, "effect": {"crack": true}}]},
-        {"level": 25, "options": [{"id": "shardcaller_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_hit_3_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "shardcaller_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2587,9 +2587,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
       "text": {"ru": "осколки ×2 по 3 врагам очереди", "en": "shards ×2 at 3 queued enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "shardcaller_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_queue_1_b15b", "name": {"ru": "Острый дождь", "en": "Sharp Rain"}, "damage": 0.8, "effect": {"crystals": 1}}]},
-        {"level": 25, "options": [{"id": "shardcaller_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_queue_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "shardcaller_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2606,9 +2606,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "crystals": 1},
       "text": {"ru": "тропа ×2,5 через 3 врагов и кристалл во врага", "en": "a path ×2.5 through 3 enemies and a crystal in the enemy"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.75}}]},
         {"level": 15, "options": [{"id": "shardcaller_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_queue_2_b15b", "name": {"ru": "Цветущая тропа", "en": "Blooming Path"}, "damage": 0.8, "effect": {"grow": 1}}]},
-        {"level": 25, "options": [{"id": "shardcaller_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_queue_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}, {"id": "shardcaller_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2625,9 +2625,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "crystals": 2},
       "text": {"ru": "разлом ×3 по всей очереди и 2 кристалла во врага", "en": "a rift ×3 on the whole queue and 2 crystals in the enemy"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "shardcaller_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_queue_3_b15b", "name": {"ru": "Раскол", "en": "Split"}, "damage": 0.8, "effect": {"shatter": 0.5}}]},
-        {"level": 25, "options": [{"id": "shardcaller_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_queue_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "shardcaller_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2643,9 +2643,9 @@
       "effect": {"type": "strike", "multiplier": 3, "resonance": 10},
       "text": {"ru": "раз в 4 с камень поёт: удар ×3 и +10 Резонанса", "en": "every 4 s the stone sings: a blow ×3 and +10 Resonance"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_1_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "shardcaller_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_auto_1_b15b", "name": {"ru": "Громкая песня", "en": "Loud Song"}, "damage": 0.8, "effect": {"resonance": 15}}]},
-        {"level": 25, "options": [{"id": "shardcaller_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_auto_1_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "shardcaller_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2661,9 +2661,9 @@
       "effect": {"type": "strike", "multiplier": 3, "crystals": 1},
       "text": {"ru": "раз в 6 с кварц бьёт ×3 и сам вонзает кристалл", "en": "every 6 s quartz strikes ×3 and plants a crystal by itself"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "shardcaller_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_auto_2_b15b", "name": {"ru": "Кварцевая роща", "en": "Quartz Grove"}, "damage": 0.8, "effect": {"grow": 1}}]},
-        {"level": 25, "options": [{"id": "shardcaller_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_auto_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "shardcaller_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2679,9 +2679,9 @@
       "effect": {"type": "strike", "multiplier": 4, "perCrystal": 0.5},
       "text": {"ru": "раз в 10 с хор ×4 и ещё ×0,5 за каждый кристалл во враге", "en": "every 10 s a choir ×4 and another ×0.5 per crystal in the enemy"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 6.0}}]},
         {"level": 15, "options": [{"id": "shardcaller_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_auto_3_b15b", "name": {"ru": "Большой хор", "en": "Great Choir"}, "damage": 0.8, "effect": {"perCrystal": 0.8}}]},
-        {"level": 25, "options": [{"id": "shardcaller_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_auto_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 8}}, {"id": "shardcaller_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2698,9 +2698,9 @@
       "effect": {"type": "strike", "multiplier": 6, "shatter": 2},
       "text": {"ru": "обвал ×6 и взрыв всех кристаллов ×2", "en": "a collapse ×6 and a burst of all crystals ×2"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_1_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "shardcaller_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_strong_1_b15b", "name": {"ru": "Каменная лавина", "en": "Stone Avalanche"}, "damage": 0.8, "effect": {"crystals": 3}}]},
-        {"level": 25, "options": [{"id": "shardcaller_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_strong_1_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "shardcaller_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2717,9 +2717,9 @@
       "effect": {"type": "strike", "multiplier": 5, "prisonSeconds": 4},
       "text": {"ru": "удар ×5; 4 с враг получает от него урон ×1,5", "en": "a blow ×5; for 4 s the enemy takes ×1.5 damage from him"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "shardcaller_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_strong_2_b15b", "name": {"ru": "Долгий срок", "en": "Long Sentence"}, "damage": 0.75, "effect": {"prisonSeconds": 6}}]},
-        {"level": 25, "options": [{"id": "shardcaller_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_strong_2_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "shardcaller_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -2736,9 +2736,9 @@
       "effect": {"type": "strike", "multiplier": 12, "bossMultiplier": 2, "heartSeconds": 6},
       "text": {"ru": "удар ×12, ×24 по боссу; 6 с отряд бьёт на 25% сильнее", "en": "a blow ×12, ×24 against a boss; for 6 s the party hits 25% harder"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "shardcaller_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "shardcaller_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_strong_3_b15b", "name": {"ru": "Каменное сердце", "en": "Stone Heart"}, "damage": 0.8, "effect": {"heartSeconds": 10}}]},
-        {"level": 25, "options": [{"id": "shardcaller_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "shardcaller_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "shardcaller_strong_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 18.0}}, {"id": "shardcaller_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
