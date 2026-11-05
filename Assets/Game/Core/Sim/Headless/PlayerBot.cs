@@ -20,11 +20,12 @@ namespace Game.Core.Sim.Headless
         private readonly HeroClass _heroClass;
         private readonly BranchTrial? _branchTrial;
         private readonly string? _path;
+        private readonly BotGear? _gear;
         private double _stuckSeconds;
         private double _stageSeconds;
         private long _stage;
 
-        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige, bool inParty = false, BranchTrial? branchTrial = null, string? path = null)
+        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige, bool inParty = false, BranchTrial? branchTrial = null, string? path = null, bool gear = true)
         {
             _branchTrial = branchTrial;
             _path = path;
@@ -35,6 +36,8 @@ namespace Game.Core.Sim.Headless
             var heroClass = loop.State.Class;
             _heroClass = heroClass;
             _score = new NodeScore(PlayedTags(heroClass), data.ClassTreeOf(HeroClassNames.Of(heroClass))?.Attribute ?? ClassAttributeDef.None, inParty);
+            if (gear)
+                _gear = new BotGear(loop, _score, branchTrial);
         }
 
         public void Act(double secondsSinceLastAct)
@@ -46,6 +49,7 @@ namespace Game.Core.Sim.Headless
             _score.UseTrait(ChosenTrait());
             SpendTreePoints();
             ChoosePathAndForks();
+            _gear?.Act();
             PrestigeWhenStuck(secondsSinceLastAct);
             SpendEcho();
             PlaceSlates();
