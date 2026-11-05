@@ -57,6 +57,7 @@ namespace Game.Core.Settings
                     ["consentGiven"] = JsonValue.Of(settings.InputConsentGiven)
                 }),
                 ["language"] = JsonValue.Of(settings.Language),
+                ["seenChangeLog"] = settings.SeenChangeLog.Length == 0 ? JsonValue.Null() : JsonValue.Of(settings.SeenChangeLog),
                 ["privacy"] = JsonValue.Object(new Dictionary<string, JsonValue>
                 {
                     ["telemetry"] = JsonValue.Of(settings.TelemetryConsentGiven),
@@ -94,6 +95,7 @@ namespace Game.Core.Settings
                 Read(root, "thousandsSeparator", node => Separator(node), settings.NumberFormat.ThousandsSeparator, problems),
                 Read(root, "decimalSeparator", node => Separator(node), settings.NumberFormat.DecimalSeparator, problems));
             settings.Language = Read(root, "language", node => Pick(node, node.AsString(), Languages), settings.Language, problems);
+            settings.SeenChangeLog = Read(root, "seenChangeLog", node => node.IsNull ? string.Empty : node.AsString(), settings.SeenChangeLog, problems);
 
             if (root.HasField("volume"))
             {

@@ -1,5 +1,30 @@
 # Мирный мир: убежище, город и активности
 
+> **Пометка 05.11.2026 (сверка после 14д).** Документ написан под состав v2. С 14д (01–03.11.2026) состав другой: 18 персонажей v3 со своими механиками, Пути — особенности без мини-дерева, гемы не падают. Механики и Пути ниже — история, а не план; действующий дизайн персонажей — `lore.md` §5, `ascendancy.json`, `coop.md` §20. Пары имён (пары подобраны по похожей механике при переименовании 14д.5, механики с тех пор переписаны):
+
+> | Имя в этом документе (v2 / код до 14д.5) | Персонаж v3 |
+> |---|---|
+> | Huscarl (Viking) | Runedancer |
+> | Wandering Blade (Ronin) | Duelist |
+> | Huntress (Amazon) | Windshot |
+> | Stormcaller (Stormweaver) | Shardcaller |
+> | Wayfarer (Nomad) | Sandwalker |
+> | Skald (Metalhead) | Minstrel |
+> | Seer (Oracle) | Dreamcatcher |
+> | Herald (Bannerbearer) | Lanternbearer |
+> | Whisperer (Voodoo) | Whisperer |
+> | Chronist (Clockmaker) | Clockwright |
+> | Venomist (Plague Doctor) | Alchemist |
+> | Firebrand (Moonshiner) | Dowser |
+> | Undertaker (Gravedigger) | Soulbinder |
+> | Sea Wolf (Captain) | Ghostcaptain |
+> | Spinner | Mothcaller |
+> | Rimecaller | Cartomancer |
+> | Thornmaiden | Herbwitch |
+> | Clayshaper | Golemancer |
+
+> Мирные таланты персонажей (раздел о талантах) написаны под механики v2 — переписать под персонажей v3 перед фазой 17 (`todo.md` 14д.24). Остальной мирный мир (убежище, Кромка, активности, гильдии) от состава не зависит.
+
 Черновик от 23.10.2026 по запросу Сергея. Единственный документ о мирном мире: короткий концепт peaceful-activities.md слит сюда 23.10.2026, его прежняя версия лежит в `archive/peaceful-activities.md`. Опирается на concept.md (§2.11 валюты, §2.14–2.15), class-resources.md (14 персонажей), coop.md (§9, §13–17), setting-options.md (биомы), roadmap.md (фаза 17).
 
 **Статус:** принято Сергеем 23.10.2026 с правками, решения в §9. Задачи — фаза 17 roadmap.

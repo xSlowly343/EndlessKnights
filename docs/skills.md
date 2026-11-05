@@ -1,5 +1,28 @@
 # Скиллы и гемы: новая схема под 14 персонажей
 
+> **Пометка 05.11.2026 (сверка после 14д).** Документ написан под состав v2. С 14д (01–03.11.2026) состав другой: 18 персонажей v3 со своими механиками, Пути — особенности без мини-дерева, гемы не падают. Имена персонажей и их скиллы ниже — история; действуют общие правила (разделы «Оружие и поддержки v4», поддержки, уровни, сокеты) — с поправками 14д.27–14д.34в из `roadmap.md`. Пары имён (пары подобраны по похожей механике при переименовании 14д.5, механики с тех пор переписаны):
+
+> | Имя в этом документе (v2 / код до 14д.5) | Персонаж v3 |
+> |---|---|
+> | Huscarl (Viking) | Runedancer |
+> | Wandering Blade (Ronin) | Duelist |
+> | Huntress (Amazon) | Windshot |
+> | Stormcaller (Stormweaver) | Shardcaller |
+> | Wayfarer (Nomad) | Sandwalker |
+> | Skald (Metalhead) | Minstrel |
+> | Seer (Oracle) | Dreamcatcher |
+> | Herald (Bannerbearer) | Lanternbearer |
+> | Whisperer (Voodoo) | Whisperer |
+> | Chronist (Clockmaker) | Clockwright |
+> | Venomist (Plague Doctor) | Alchemist |
+> | Firebrand (Moonshiner) | Dowser |
+> | Undertaker (Gravedigger) | Soulbinder |
+> | Sea Wolf (Captain) | Ghostcaptain |
+> | Spinner | Mothcaller |
+> | Rimecaller | Cartomancer |
+> | Thornmaiden | Herbwitch |
+> | Clayshaper | Golemancer |
+
 Принято Сергеем 23.10.2026. Источник: Claude Doc «Скиллы и гемы: новая схема под 14 персонажей».
 
 ## Схема v3 (31.10.2026, фаза 14г) — действует

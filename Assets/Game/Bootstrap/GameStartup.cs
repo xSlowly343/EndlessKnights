@@ -1,3 +1,4 @@
+using Game.Core.Clock;
 using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Sim;
@@ -84,6 +85,7 @@ namespace Game.Bootstrap
             var router = StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
             BattleView? battleView = null;
             GameLoop? loop = null;
+            BattleDriver? wokenBattle = null;
             NotificationDriver? notifications = null;
             var rawInput = RawInputService.Start(data?.Current.InputCaps.Detection);
             var observedInput = new ObservedInputSource(rawInput);
@@ -94,7 +96,9 @@ namespace Game.Bootstrap
             {
                 var save = SaveDriver.TryLoad(data.Current);
                 var battle = BattleDriver.Attach(host, data.Current, observedInput, save?.State);
+                wokenBattle = battle;
                 battle.Loop.MarkStarted(System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+                battle.UseTrustedDay(TrustedDay.Start(save?.Clock, Game.Platform.Windows.Power.SystemClock.Read(), (long)System.DateTimeOffset.Now.Offset.TotalMilliseconds));
                 panels.Bind(battle.Loop);
                 router.UseSkillBar(battle.SkillBar);
                 router.UseHint(battle.Hint);
@@ -114,6 +118,8 @@ namespace Game.Bootstrap
 
             var tray = TrayIcon.Create(Application.productName);
             var trayDriver = tray != null ? TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug, panelMode) : null;
+            if (trayDriver != null && wokenBattle != null)
+                trayDriver.Woke += seconds => ReportOffline(wokenBattle, panelMode, seconds);
             settings.Bind(panels, panelMode, dock, trayDriver, battleView, loop, notifications, data?.Current.ChangeLog);
         }
 

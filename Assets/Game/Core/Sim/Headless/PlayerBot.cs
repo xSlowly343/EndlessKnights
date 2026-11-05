@@ -25,7 +25,7 @@ namespace Game.Core.Sim.Headless
         private double _stageSeconds;
         private long _stage;
 
-        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige, bool inParty = false, BranchTrial? branchTrial = null, string? path = null, bool gear = true)
+        public PlayerBot(GameData data, GameLoop loop, double stuckMinutesBeforePrestige, bool inParty = false, BranchTrial? branchTrial = null, string? path = null, bool gear = false)
         {
             _branchTrial = branchTrial;
             _path = path;

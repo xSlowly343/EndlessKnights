@@ -34,7 +34,7 @@ namespace Game.Core.Sim.Headless
 
         public GameState? LastState { get; private set; }
 
-        public bool Gear { get; set; } = true;
+        public bool Gear { get; set; }
 
         public IReadOnlyList<DayRecord> Run(int days, double activeHoursPerDay)
         {

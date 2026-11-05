@@ -27,5 +27,6 @@ namespace Game.Core.Settings
         public bool TelemetryConsentGiven { get; set; }
         public bool ErrorReportConsentGiven { get; set; }
         public int AcceptedPolicyVersion { get; set; }
+        public string SeenChangeLog { get; set; } = string.Empty;
     }
 }

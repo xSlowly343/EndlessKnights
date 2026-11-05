@@ -1,5 +1,28 @@
 # Классы v2: механика класса, три Пути, история и синергии (черновик)
 
+> **Пометка 05.11.2026 (сверка после 14д).** Документ написан под состав v2. С 14д (01–03.11.2026) состав другой: 18 персонажей v3 со своими механиками, Пути — особенности без мини-дерева, гемы не падают. Механики и Пути ниже — история, а не план; действующий дизайн персонажей — `lore.md` §5, `ascendancy.json`, `coop.md` §20. Пары имён (пары подобраны по похожей механике при переименовании 14д.5, механики с тех пор переписаны):
+
+> | Имя в этом документе (v2 / код до 14д.5) | Персонаж v3 |
+> |---|---|
+> | Huscarl (Viking) | Runedancer |
+> | Wandering Blade (Ronin) | Duelist |
+> | Huntress (Amazon) | Windshot |
+> | Stormcaller (Stormweaver) | Shardcaller |
+> | Wayfarer (Nomad) | Sandwalker |
+> | Skald (Metalhead) | Minstrel |
+> | Seer (Oracle) | Dreamcatcher |
+> | Herald (Bannerbearer) | Lanternbearer |
+> | Whisperer (Voodoo) | Whisperer |
+> | Chronist (Clockmaker) | Clockwright |
+> | Venomist (Plague Doctor) | Alchemist |
+> | Firebrand (Moonshiner) | Dowser |
+> | Undertaker (Gravedigger) | Soulbinder |
+> | Sea Wolf (Captain) | Ghostcaptain |
+> | Spinner | Mothcaller |
+> | Rimecaller | Cartomancer |
+> | Thornmaiden | Herbwitch |
+> | Clayshaper | Golemancer |
+
 Решения Сергея 30.10.2026:
 - у каждого класса **одна своя механика** (ресурс, роль мыши, ЛКМ/ПКМ, метка);
 - совсем другой стиль игры даёт **Путь** (ascendancy, отдельное дерево подкласса): Путь может сменить источник ресурса, силу скиллов, добавить вторую метку и сделать из баффера бойца или из ДД призывателя;

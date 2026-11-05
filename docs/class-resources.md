@@ -1,5 +1,28 @@
 # Персонажи, их ресурсы и скиллы вместо маны
 
+> **Пометка 05.11.2026 (сверка после 14д).** Документ написан под состав v2. С 14д (01–03.11.2026) состав другой: 18 персонажей v3 со своими механиками, Пути — особенности без мини-дерева, гемы не падают. Имена персонажей, ресурсы и Пути ниже — история; схема ввода (§1), роль мыши и колёсико в мирных активностях, HP врагов для коопа — действуют. Пары имён (пары подобраны по похожей механике при переименовании 14д.5, механики с тех пор переписаны):
+
+> | Имя в этом документе (v2 / код до 14д.5) | Персонаж v3 |
+> |---|---|
+> | Huscarl (Viking) | Runedancer |
+> | Wandering Blade (Ronin) | Duelist |
+> | Huntress (Amazon) | Windshot |
+> | Stormcaller (Stormweaver) | Shardcaller |
+> | Wayfarer (Nomad) | Sandwalker |
+> | Skald (Metalhead) | Minstrel |
+> | Seer (Oracle) | Dreamcatcher |
+> | Herald (Bannerbearer) | Lanternbearer |
+> | Whisperer (Voodoo) | Whisperer |
+> | Chronist (Clockmaker) | Clockwright |
+> | Venomist (Plague Doctor) | Alchemist |
+> | Firebrand (Moonshiner) | Dowser |
+> | Undertaker (Gravedigger) | Soulbinder |
+> | Sea Wolf (Captain) | Ghostcaptain |
+> | Spinner | Mothcaller |
+> | Rimecaller | Cartomancer |
+> | Thornmaiden | Herbwitch |
+> | Clayshaper | Golemancer |
+
 Статус (22.10.2026): схема ввода (§1), роль мыши у каждого персонажа (§3), колёсико для мирных активностей (§4) и HP (§5, без золота) **приняты Сергеем**; 14 персонажей (§2) — набросок. Пока код не переделан, действует concept.md §2.3 и §3.4.
 
 Запрос Сергея: у каждого класса своя механика вместо общей Энергии; клавиши — обычный урон, кнопки мыши — скиллы; придумать роль для движения мыши. По итогам теста колёсико и кнопки мыши как урон слишком сильные, расстояние мыши — нет. Кроме того, враги и боссы умирают слишком быстро, а в коопе будут сметаться мгновенно.

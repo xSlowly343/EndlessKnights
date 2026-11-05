@@ -6,6 +6,7 @@
     <IsPackable>false</IsPackable>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <RootNamespace>Game.Core.Tests</RootNamespace>
+    <TieredPGO>false</TieredPGO>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../../../Assets/Tests/Core.Tests/**/*.cs" />
