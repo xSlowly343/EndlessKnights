@@ -3646,9 +3646,9 @@
       "effect": {"type": "strike", "multiplier": 3, "litHit": 3},
       "text": {"ru": "луч ×3 и ещё до ×3 по освещённому, чем ярче свет, тем сильнее", "en": "a beam ×3 and up to another ×3 against a lit enemy, the brighter the stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_hit_1_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "lanternbearer_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_hit_1_b15b", "name": {"ru": "Яркий луч", "en": "Bright Beam"}, "damage": 0.8, "effect": {"litHit": 4.5}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_hit_1_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "lanternbearer_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3665,9 +3665,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "oil": 8},
       "text": {"ru": "искра ×2,5 и +8 Масла", "en": "a spark ×2.5 and +8 Oil"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_hit_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "lanternbearer_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_hit_2_b15b", "name": {"ru": "Жаркая искра", "en": "Hot Spark"}, "damage": 0.8, "effect": {"oil": 12}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_hit_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "lanternbearer_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3684,9 +3684,9 @@
       "effect": {"type": "strike", "multiplier": 4, "light": 0.05},
       "text": {"ru": "блик ×4 и +5% освещения", "en": "a glint ×4 and +5% light"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_hit_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 6.0}}]},
         {"level": 15, "options": [{"id": "lanternbearer_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_hit_3_b15b", "name": {"ru": "Двойной блик", "en": "Double Glint"}, "damage": 0.8, "effect": {"light": 0.08}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_hit_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 8}}, {"id": "lanternbearer_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3703,9 +3703,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3, "light": 0.03},
       "text": {"ru": "огни ×2 по 3 врагам очереди и +3% освещения", "en": "lights ×2 at 3 queued enemies and +3% light"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_queue_1_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "lanternbearer_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_queue_1_b15b", "name": {"ru": "Длинная тропа", "en": "Long Trail"}, "damage": 0.8, "effect": {"light": 0.05}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_queue_1_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "lanternbearer_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3722,9 +3722,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "light": 0.05},
       "text": {"ru": "рассвет ×2,5 по 3 врагам и +5% освещения", "en": "a dawn ×2.5 at 3 enemies and +5% light"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_queue_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "lanternbearer_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_queue_2_b15b", "name": {"ru": "Ранний рассвет", "en": "Early Dawn"}, "damage": 0.8, "effect": {"light": 0.08}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_queue_2_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "lanternbearer_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3741,9 +3741,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "fireflies": 1},
       "text": {"ru": "огонёк ×3 по 3 врагам и светлячок", "en": "a wisp ×3 at 3 enemies and a firefly"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_queue_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "lanternbearer_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_queue_3_b15b", "name": {"ru": "Пара огоньков", "en": "Pair of Wisps"}, "damage": 0.8, "effect": {"fireflies": 2}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_queue_3_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "lanternbearer_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3759,9 +3759,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "light": 0.02},
       "text": {"ru": "раз в 3 с огонёк ×2,5 и +2% освещения", "en": "every 3 s a flame ×2.5 and +2% light"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_auto_1_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.75}}]},
         {"level": 15, "options": [{"id": "lanternbearer_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_auto_1_b15b", "name": {"ru": "Живой огонёк", "en": "Lively Flame"}, "damage": 0.8, "effect": {"light": 0.04}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_auto_1_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}, {"id": "lanternbearer_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3777,9 +3777,9 @@
       "effect": {"type": "strike", "multiplier": 3, "light": 0.06},
       "text": {"ru": "раз в 6 с лампадка ×3 и +6% освещения", "en": "every 6 s a lamp ×3 and +6% light"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_auto_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "lanternbearer_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_auto_2_b15b", "name": {"ru": "Ясная лампадка", "en": "Clear Lamp"}, "damage": 0.8, "effect": {"light": 0.09}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_auto_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "lanternbearer_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3795,9 +3795,9 @@
       "effect": {"type": "strike", "multiplier": 4, "fireflies": 1},
       "text": {"ru": "раз в 10 с рука ×4 и светлячок", "en": "every 10 s a hand ×4 and a firefly"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_auto_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "lanternbearer_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_auto_3_b15b", "name": {"ru": "Две руки", "en": "Two Hands"}, "damage": 0.8, "effect": {"fireflies": 2}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_auto_3_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "lanternbearer_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3814,9 +3814,9 @@
       "effect": {"type": "strike", "multiplier": 6, "light": 1},
       "text": {"ru": "полдень ×6: враг сразу освещён полностью", "en": "noon ×6: the enemy is fully lit at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_strong_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "lanternbearer_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_strong_1_b15b", "name": {"ru": "Долгий полдень", "en": "Long Noonday"}, "damage": 0.8, "effect": {"multiplier": 8}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_strong_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "lanternbearer_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3833,9 +3833,9 @@
       "effect": {"type": "strike", "multiplier": 5, "glowSeconds": 8, "glowPerOil": 0.005},
       "text": {"ru": "свет ×5: всё Масло сгорает, отряд 8 с бьёт на 0,5% сильнее за каждое", "en": "light ×5: all Oil burns and the party hits 0.5% harder per Oil for 8 s"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_strong_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 7.5}}]},
         {"level": 15, "options": [{"id": "lanternbearer_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_strong_2_b15b", "name": {"ru": "Долгий свет", "en": "Long Light"}, "damage": 0.8, "effect": {"glowSeconds": 12}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_strong_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 10}}, {"id": "lanternbearer_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -3852,9 +3852,9 @@
       "effect": {"type": "strike", "multiplier": 15},
       "text": {"ru": "пожар ×15", "en": "a blaze ×15"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "lanternbearer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "lanternbearer_strong_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "lanternbearer_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "lanternbearer_strong_3_b15b", "name": {"ru": "Великий пожар", "en": "Great Blaze"}, "damage": 0.8, "effect": {"multiplier": 20}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "lanternbearer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "lanternbearer_strong_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "lanternbearer_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
