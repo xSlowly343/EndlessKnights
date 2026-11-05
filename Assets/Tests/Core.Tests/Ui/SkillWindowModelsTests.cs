@@ -4,6 +4,7 @@ using Game.Core.Build;
 using Game.Core.Content.Gems;
 using Game.Core.Party.Wire;
 using Game.Core.Sim;
+using Game.Core.Tests.Content;
 using Game.Core.Tests.Sim;
 using Game.Core.Text;
 using Game.Core.Ui;
@@ -84,6 +85,47 @@ namespace Game.Core.Tests.Ui
             Assert.That(window.Tier(0).Chosen, Is.EqualTo(1));
             Assert.That(BranchTexts.Cost(window.Tier(0).ChangeCost, default), Is.EqualTo("бесплатно"));
             Assert.That(BranchTexts.Summary(new SkillBranch("x", "x", "x", 1.3, 0.75, 1, 1, null)), Is.EqualTo("урон ×1.3 · откат ×0.75"));
+        }
+
+        [Test]
+        public void EveryCommonStrikeRuleOfABranchIsSpelledOut()
+        {
+            var common = new HashSet<string> { "bossMultiplier", "pauseSeconds", "pauseMultiplier", "lowHpBelow", "lowHpMultiplier", "executeBelow", "killRefundShare",
+                "bossTimerStopSeconds", "queueTargets", "critChance", "multiplier", "runes", "blades", "touches", "word", "phantomSeconds", "hits", "seconds" };
+            var generic = Texts.Get("branch.effect");
+            var data = System.Text.Json.JsonDocument.Parse(TestData.ReadGameDataFile("skills.json")).RootElement.GetProperty("gems");
+            var rules = 0;
+            foreach (var item in data.EnumerateArray().Where(item => item.TryGetProperty("branches", out _)))
+            {
+                var gem = TestWorld.Real.Gems[item.GetProperty("id").GetString()!];
+                if (gem.Skill?.Effect is not (StrikeEffect or FlurryEffect))
+                    continue;
+                var tiers = item.GetProperty("branches").EnumerateArray().ToList();
+                for (var tier = 0; tier < tiers.Count; tier++)
+                {
+                    var options = tiers[tier].GetProperty("options").EnumerateArray().ToList();
+                    for (var option = 0; option < options.Count; option++)
+                    {
+                        if (!options[option].TryGetProperty("effect", out var effect) || !effect.EnumerateObject().All(field => common.Contains(field.Name)))
+                            continue;
+                        rules++;
+                        var branch = gem.Branches[tier].Options[option];
+                        Assert.That(BranchTexts.Summary(branch, gem.Skill.Effect), Does.Not.Contain(generic), branch.Id);
+                    }
+                }
+            }
+            Assert.That(rules, Is.GreaterThan(400));
+        }
+
+        [Test]
+        public void ARuleNamesWhatItChanges()
+        {
+            var gem = TestWorld.Real.Gems["runedancer_hit_1"];
+            var precise = gem.Branches[0].Options[1];
+            var finishing = gem.Branches[2].Options[1];
+
+            Assert.That(BranchTexts.Summary(precise, gem.Skill!.Effect), Is.EqualTo("+30% шанса крита"));
+            Assert.That(BranchTexts.Summary(finishing, gem.Skill.Effect), Is.EqualTo("убийство возвращает 100% ресурса"));
         }
 
         [Test]
