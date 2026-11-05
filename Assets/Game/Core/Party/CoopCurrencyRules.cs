@@ -27,6 +27,7 @@ namespace Game.Core.Party
         public const int SupportedVersion = 1;
         public const string Friendship = "friendship";
         public const string Seals = "seals";
+        public const string Crystals = "crystals";
 
         private CoopCurrencyRules(IReadOnlyList<string> currencies, int dayUtcOffsetMinutes, int ledgerSize, IReadOnlyList<CoopCurrencySource> sources)
         {
@@ -52,7 +53,7 @@ namespace Game.Core.Party
             foreach (var item in currencyNode.Items())
             {
                 var currency = item.AsString();
-                if (currency != Friendship && currency != Seals)
+                if (currency != Friendship && currency != Seals && currency != Crystals)
                     throw item.Error($"unknown currency \"{currency}\"");
                 if (currencies.Contains(currency))
                     throw item.Error($"\"{currency}\" is repeated");
