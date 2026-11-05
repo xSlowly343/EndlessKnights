@@ -230,6 +230,22 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void CosmeticsAndClanBannersAreReadFromTheServer()
+        {
+            Assert.That(CosmeticsMineView.BuyPayload("skin_duelist"), Is.EqualTo("{\"id\":\"skin_duelist\"}"));
+            Assert.That(ClanCosmeticsView.SetPayload("banner_wolf", null), Is.EqualTo("{\"banner\":\"banner_wolf\"}"));
+            var mine = CosmeticsMineView.From(NakamaJson.Parse("{\"owned\":[\"skin_duelist\",\"champion_top100\"],\"crystals\":480,\"fresh\":[\"champion_top100\"]}"));
+            Assert.That(mine.Owned, Is.EqualTo(new[] { "skin_duelist", "champion_top100" }));
+            Assert.That(mine.Crystals, Is.EqualTo(480));
+            Assert.That(mine.Fresh, Is.EqualTo(new[] { "champion_top100" }));
+            var clan = ClanCosmeticsView.From(NakamaJson.Parse("{\"owned\":[\"banner_wolf\"],\"banner\":\"banner_wolf\",\"emblem\":\"\",\"victor\":true,\"victorUntil\":5,\"victorBanner\":\"war_victors\"}"));
+            Assert.That(clan.ShownBanner, Is.EqualTo("war_victors"));
+            Assert.That(clan.Banner, Is.EqualTo("banner_wolf"));
+            var wallet = CoopWalletView.From(NakamaJson.Parse("{\"balances\":{\"friendship\":1,\"seals\":2,\"crystals\":300},\"today\":[],\"ledger\":[]}"));
+            Assert.That(wallet.Crystals, Is.EqualTo(300));
+        }
+
+        [Test]
         public void AClanIsReadFromTheServerReplyWithRolesAndLastSeen()
         {
             var clan = ClanView.From(NakamaJson.Parse("{\"id\":\"c1\",\"code\":\"K7MQ2X\",\"access\":\"open\",\"adjective\":\"lilac\",\"noun\":\"lanterns\",\"language\":\"ru\","

@@ -337,6 +337,11 @@ function clanWarSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, clanId: s
         return clanWarRead<ClanWarResult>(nk, ClanWarResultCollection, clanWarKey(week, clanId)).value;
     }
     nk.storageWrite([{ collection: ClanWarClanCollection, key: clanId, userId: PartySystemUser, value: { rating: rating, season: clan.season, lastWeek: week, wins: clan.wins + (result.outcome === "win" ? 1 : 0) } as any, permissionRead: 0, permissionWrite: 0 }]);
+    try {
+        clanCosmeticNoteWar(nk, clanId, result.outcome, result.league, (week + 1) % rules.seasonWeeks === 0, nowUnixMs);
+    } catch (error) {
+        logger.warn("clan %s: war banners were not saved: %s", clanId, String(error));
+    }
     if (seals > 0) {
         try {
             clanTreeChange(nk, clanId, (tree) => {

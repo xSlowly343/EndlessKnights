@@ -35,7 +35,7 @@ function killBoss(host, slots) {
 }
 
 test("rules come from coop_currency.json", () => {
-  assert.deepStrictEqual(plain(rules.currencies), ["friendship", "seals"]);
+  assert.deepStrictEqual(plain(rules.currencies), ["friendship", "seals", "crystals"]);
   assert.strictEqual(source("boss_together").currency, "friendship");
   assert.ok(source("ghost_helped").perFriendDailyCap > 0);
 });
