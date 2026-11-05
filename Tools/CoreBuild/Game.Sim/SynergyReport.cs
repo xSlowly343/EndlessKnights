@@ -39,21 +39,27 @@ namespace Game.Sim
             var random = new Random((int)options.Seed);
             for (var i = 0; i < RandomParties; i++)
                 parties.Add(("random_" + (i + 1), RandomParty(random)));
+            parties.AddRange(Roster());
 
+            var seen = new List<PartyMemberResult>();
             var comboUplift = new List<double>();
             var randomUplift = new List<double>();
             foreach (var (name, classes) in parties)
             {
                 var on = Party(data, profile, classes, options, kits, null).Run(seconds);
+                seen.AddRange(on.Members);
                 var without = Party(data, profile, classes, options, kits, off).Run(seconds);
                 var uplift = Ratio(Damage(on), Damage(without)) - 1;
-                (name.StartsWith("random_", StringComparison.Ordinal) ? randomUplift : comboUplift).Add(uplift);
+                (name.StartsWith("random_", StringComparison.Ordinal) || name.StartsWith("roster_", StringComparison.Ordinal) ? randomUplift : comboUplift).Add(uplift);
                 output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
                     name, Names(classes), Percent(uplift), StageRecord.Number(Damage(on)), StageRecord.Number(Damage(without)), Stage(on), Stage(without),
                     Reactions(on), Constellations(on), Responses(on)));
             }
             output.WriteLine(string.Format(CultureInfo.InvariantCulture, "summary,combos {0},random {1},difference {2}",
                 Percent(Average(comboUplift)), Percent(Average(randomUplift)), Percent(Average(comboUplift) - Average(randomUplift))));
+
+            WriteMarks(output, data.Synergy, seen);
+            WriteUnseen(output, data.Synergy, seen);
 
             if (options.SynergyDrops)
             {
@@ -114,6 +120,18 @@ namespace Game.Sim
                 kits[heroClass] = gems;
             }
             return kits;
+        }
+
+        private static IEnumerable<(string Name, HeroClass[] Classes)> Roster()
+        {
+            var all = new List<HeroClass>(HeroClassNames.ByName.Values);
+            for (var first = 0; first < all.Count; first += 4)
+            {
+                var classes = new HeroClass[4];
+                for (var i = 0; i < classes.Length; i++)
+                    classes[i] = all[(first + i) % all.Count];
+                yield return ("roster_" + (first / 4 + 1), classes);
+            }
         }
 
         private static HeroClass[] RandomParty(Random random)
@@ -195,6 +213,58 @@ namespace Game.Sim
                 }
             }
             return parts.Count == 0 ? "-" : string.Join(" ", parts);
+        }
+
+        private static void WriteMarks(TextWriter output, SynergyRules rules, List<PartyMemberResult> members)
+        {
+            output.WriteLine("marks,class,own_mark_uptime");
+            foreach (var heroClass in HeroClassNames.ByName.Values)
+            {
+                var parts = new List<string>();
+                var runs = 0;
+                var uptime = new double[rules.Marks.Count];
+                foreach (var member in members)
+                {
+                    if (member.HeroClass != heroClass)
+                        continue;
+                    runs++;
+                    for (var mark = 0; mark < uptime.Length; mark++)
+                        uptime[mark] += member.Synergy!.OwnMark(mark);
+                }
+                if (runs == 0)
+                    continue;
+                for (var mark = 0; mark < uptime.Length; mark++)
+                {
+                    if (uptime[mark] > 0)
+                        parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1:0.#%}", rules.Marks[mark], uptime[mark] / runs));
+                }
+                output.WriteLine("marks,{0},{1}", HeroClassNames.Of(heroClass), parts.Count == 0 ? "-" : string.Join(" ", parts));
+            }
+        }
+
+        private static void WriteUnseen(TextWriter output, SynergyRules rules, List<PartyMemberResult> members)
+        {
+            var marks = new List<string>();
+            for (var mark = 0; mark < rules.Marks.Count; mark++)
+            {
+                if (!members.Exists(member => member.Synergy!.OwnMark(mark) > 0))
+                    marks.Add(rules.Marks[mark]);
+            }
+            var responses = new List<string>();
+            for (var i = 0; i < rules.Responses.Count; i++)
+            {
+                if (!members.Exists(member => member.Synergy!.Response(i) > 0))
+                    responses.Add(rules.Responses[i].Id);
+            }
+            var reactions = new List<string>();
+            for (var i = 0; i < rules.Reactions.Count; i++)
+            {
+                if (!members.Exists(member => member.Synergy!.Reaction(i) > 0))
+                    reactions.Add(rules.Reactions[i].Id);
+            }
+            output.WriteLine("unseen,marks,{0}", marks.Count == 0 ? "-" : string.Join(" ", marks));
+            output.WriteLine("unseen,responses,{0}", responses.Count == 0 ? "-" : string.Join(" ", responses));
+            output.WriteLine("unseen,reactions,{0}", reactions.Count == 0 ? "-" : string.Join(" ", reactions));
         }
 
         private static string Percent(double share) => (share * 100).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + "%";
