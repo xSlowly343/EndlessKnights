@@ -4762,9 +4762,9 @@
       "effect": {"type": "strike", "multiplier": 3, "venom": 3},
       "text": {"ru": "шип ×3 и три стака яда", "en": "a thorn ×3 and three stacks of poison"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_hit_1_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "herbwitch_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_hit_1_b15b", "name": {"ru": "Длинный шип", "en": "Long Thorn"}, "damage": 0.8, "effect": {"venom": 5}}]},
-        {"level": 25, "options": [{"id": "herbwitch_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_hit_1_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "herbwitch_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4781,9 +4781,9 @@
       "effect": {"type": "strike", "multiplier": 2.5},
       "text": {"ru": "крапива ×2,5", "en": "a nettle ×2.5"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_hit_2_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "herbwitch_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_hit_2_b15b", "name": {"ru": "Жгучая крапива", "en": "Stinging Nettle"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "herbwitch_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_hit_2_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.75}}, {"id": "herbwitch_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4800,9 +4800,9 @@
       "effect": {"type": "strike", "multiplier": 3, "seeds": 1},
       "text": {"ru": "семечко ×3 и лоза сразу", "en": "a seed ×3 and a vine at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_hit_3_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}]},
         {"level": 15, "options": [{"id": "herbwitch_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_hit_3_b15b", "name": {"ru": "Два семечка", "en": "Two Seeds"}, "damage": 0.8, "effect": {"seeds": 2}}]},
-        {"level": 25, "options": [{"id": "herbwitch_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_hit_3_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "herbwitch_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4819,9 +4819,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
       "text": {"ru": "пыльца ×2 по 3 врагам очереди", "en": "pollen ×2 at 3 queued enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_queue_1_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "herbwitch_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_queue_1_b15b", "name": {"ru": "Густая пыльца", "en": "Thick Puff"}, "damage": 0.8, "effect": {"multiplier": 2.6}}]},
-        {"level": 25, "options": [{"id": "herbwitch_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_queue_1_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "herbwitch_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4838,9 +4838,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
       "text": {"ru": "разрастание ×2,5 по 3 врагам", "en": "overgrowth ×2.5 at 3 enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_queue_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "herbwitch_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_queue_2_b15b", "name": {"ru": "Буйный рост", "en": "Rampant Growth"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "herbwitch_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_queue_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "herbwitch_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4857,9 +4857,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "venom": 5},
       "text": {"ru": "одуванчик ×3 по 3 врагам и пять стаков яда", "en": "a dandelion ×3 at 3 enemies and five stacks of poison"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_queue_3_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "herbwitch_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_queue_3_b15b", "name": {"ru": "Пух по ветру", "en": "Fluff on the Wind"}, "damage": 0.8, "effect": {"venom": 8}}]},
-        {"level": 25, "options": [{"id": "herbwitch_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_queue_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}, {"id": "herbwitch_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4875,9 +4875,9 @@
       "effect": {"type": "strike", "multiplier": 4},
       "text": {"ru": "раз в 4 с вьюнок ×4", "en": "every 4 s bindweed ×4"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_auto_1_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 8}}]},
         {"level": 15, "options": [{"id": "herbwitch_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_auto_1_b15b", "name": {"ru": "Цепкий вьюнок", "en": "Clinging Bindweed"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
-        {"level": 25, "options": [{"id": "herbwitch_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_auto_1_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "herbwitch_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4893,9 +4893,9 @@
       "effect": {"type": "strike", "multiplier": 3, "drink": true},
       "text": {"ru": "раз в 10 с роса ×3 и глоток сока", "en": "every 10 s dew ×3 and a drink of sap"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_auto_2_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "herbwitch_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_auto_2_b15b", "name": {"ru": "Утренняя роса", "en": "Morning Dew"}, "damage": 0.8, "effect": {"multiplier": 4}}]},
-        {"level": 25, "options": [{"id": "herbwitch_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_auto_2_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "herbwitch_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4911,9 +4911,9 @@
       "effect": {"type": "strike", "multiplier": 4, "venomBurst": 0.5},
       "text": {"ru": "раз в 8 с мухоловка ×4 и половина яда разом", "en": "every 8 s a flytrap ×4 and half the poison at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_auto_3_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "herbwitch_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_auto_3_b15b", "name": {"ru": "Голодная мухоловка", "en": "Hungry Flytrap"}, "damage": 0.8, "effect": {"venomBurst": 0.8}}]},
-        {"level": 25, "options": [{"id": "herbwitch_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_auto_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "herbwitch_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4930,9 +4930,9 @@
       "effect": {"type": "strike", "multiplier": 6, "venom": 15},
       "text": {"ru": "корень ×6 и пятнадцать стаков яда", "en": "a root ×6 and fifteen stacks of poison"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_strong_1_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "herbwitch_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_strong_1_b15b", "name": {"ru": "Глубокий корень", "en": "Deep Root"}, "damage": 0.8, "effect": {"venom": 25}}]},
-        {"level": 25, "options": [{"id": "herbwitch_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_strong_1_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 9.0}}, {"id": "herbwitch_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4949,9 +4949,9 @@
       "effect": {"type": "strike", "multiplier": 6, "bloom": true},
       "text": {"ru": "сад ×6: все лозы сразу цветут", "en": "a garden ×6: every vine blooms at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_strong_2_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 12}}]},
         {"level": 15, "options": [{"id": "herbwitch_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_strong_2_b15b", "name": {"ru": "Буйный сад", "en": "Lush Garden"}, "damage": 0.8, "effect": {"multiplier": 8}}]},
-        {"level": 25, "options": [{"id": "herbwitch_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_strong_2_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "herbwitch_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -4968,9 +4968,9 @@
       "effect": {"type": "strike", "multiplier": 12, "venomBurst": 2},
       "text": {"ru": "чертополох ×12 и весь яд в урон ×2", "en": "a thistle ×12 and all the poison into damage ×2"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "herbwitch_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "herbwitch_strong_3_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "herbwitch_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "herbwitch_strong_3_b15b", "name": {"ru": "Колючий чертополох", "en": "Prickly Thistle"}, "damage": 0.8, "effect": {"multiplier": 15}}]},
-        {"level": 25, "options": [{"id": "herbwitch_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "herbwitch_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "herbwitch_strong_3_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "herbwitch_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
