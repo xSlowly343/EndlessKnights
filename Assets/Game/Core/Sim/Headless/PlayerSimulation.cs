@@ -34,12 +34,14 @@ namespace Game.Core.Sim.Headless
 
         public GameState? LastState { get; private set; }
 
+        public bool Gear { get; set; } = true;
+
         public IReadOnlyList<DayRecord> Run(int days, double activeHoursPerDay)
         {
             var state = new GameState(_seed) { Class = _heroClass };
             var hero = new StatSheet();
             var loop = new GameLoop(_data, new BotInput(_profile, _seed ^ 0x5EEDUL), state, hero);
-            var bot = new PlayerBot(_data, loop, _stuckMinutes, branchTrial: new BranchTrial(_data, _profile), path: _path);
+            var bot = new PlayerBot(_data, loop, _stuckMinutes, branchTrial: new BranchTrial(_data, _profile), path: _path, gear: Gear);
             var offline = new OfflineCalculator(_data, hero);
             var activeTicks = (long)System.Math.Round(activeHoursPerDay * 3600 * GameLoop.TicksPerSecond);
             var offlineSeconds = System.Math.Max(0, SecondsPerDay - activeHoursPerDay * 3600);

@@ -75,7 +75,7 @@ namespace Game.Sim
         private static int RunPlayer(GameData data, BotProfile profile, SimOptions options)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            var simulation = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes, options.Path);
+            var simulation = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes, options.Path) { Gear = options.Gear };
             var days = simulation.Run(options.Days, options.ActiveHours);
             watch.Stop();
 
@@ -96,7 +96,30 @@ namespace Game.Sim
                 last.RecordStage, last.HeroLevel, last.Prestiges, last.Artifacts, watch.Elapsed.TotalSeconds));
             Console.Error.WriteLine("skills: " + SkillLine(simulation.LastState!));
             Console.Error.WriteLine("path: " + PathLine(simulation.LastState!));
+            Console.Error.WriteLine("gear: " + GearLine(simulation.LastState!));
             return 0;
+        }
+
+        private static string GearLine(GameState state)
+        {
+            var worn = new List<string>();
+            foreach (var item in state.Gear.Worn)
+            {
+                if (item != null)
+                    worn.Add(item.Slot + " " + item.Rarity);
+            }
+            var supports = 0;
+            foreach (var slot in state.Skills)
+            {
+                for (var i = 0; i < SkillSlot.BuiltInSocket; i++)
+                {
+                    if (slot.Supports[i] != null)
+                        supports++;
+                }
+            }
+            var held = state.Weapons.Held == null ? "-" : state.Weapons.Held.Rarity.ToString();
+            return string.Format(CultureInfo.InvariantCulture, "weapon {0}; {1}; supports {2}; dust {3:0}; salvaged {4}",
+                held, worn.Count == 0 ? "no armor" : string.Join(", ", worn), supports, state.Drops.Dust, state.Drops.SalvagedItems);
         }
 
         private static string PathLine(GameState state)
