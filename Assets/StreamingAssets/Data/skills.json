@@ -1618,7 +1618,7 @@
       "tags": ["Strike", "Skill"],
       "cost": {"resource": 60},
       "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 8, "lowHpBelow": 0.3, "lowHpMultiplier": 2.5},
+      "effect": {"type": "strike", "multiplier": 8, "lowHpBelow": 0.3, "lowHpMultiplier": 20},
       "text": {"ru": "удар ×8, по врагу ниже 30% HP ×20", "en": "strike ×8, ×20 against an enemy below 30% HP"},
       "branches": [
         {"level": 5, "options": [{"id": "runedancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_3_b5b", "name": {"ru": "Буква-казнь", "en": "Execution Letter"}, "effect": {"executeBelow": 0.08}}]},
