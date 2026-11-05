@@ -11,6 +11,7 @@
     {"id": "expedition", "name": {"ru": "Первая экспедиция спутника", "en": "First companion expedition"}}
   ],
   "change": {"freeEveryHours": 24, "crystalCost": 100, "freeClassChanges": 1},
+  "forkScale": [1, 1.15, 1.3, 1.5, 1.67],
   "subclasses": [
     {
       "id": "runedancer_trait_1",

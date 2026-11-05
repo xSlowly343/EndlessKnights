@@ -1009,6 +1009,7 @@
     "subclass.mode.support": { "ru": "Опора отряда", "en": "Party support" },
     "subclass.mode.solo": { "ru": "Свой бой", "en": "Own fight" },
     "subclass.fork": { "ru": "С {0} уровня", "en": "From level {0}" },
+    "subclass.forkScale": { "ru": "Числа вариантов {0} на {1}-м уровне особенности", "en": "Option numbers {0} at trait level {1}" },
     "subclass.level": { "ru": "Особенность: уровень {0} из {1}", "en": "Trait: level {0} of {1}" },
     "consent.title": { "ru": "Что игра считает и что нет", "en": "What the game counts and what it doesn't" },
     "consent.accept": { "ru": "Понятно, начать", "en": "Got it, start" },

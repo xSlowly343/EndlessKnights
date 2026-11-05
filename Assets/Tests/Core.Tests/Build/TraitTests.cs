@@ -95,6 +95,47 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void ForkNumbersGrowWithTheTraitLevelButCostsDoNot()
+        {
+            var trait = Trait.Replace(@"{ ""stat"": ""critMultiplier"", ""kind"": ""flat"", ""value"": 1 }",
+                @"{ ""stat"": ""gold"", ""kind"": ""increased"", ""value"": 0.2 }, { ""stat"": ""critMultiplier"", ""kind"": ""more"", ""value"": -0.1 }");
+            var catalog = AscendancyCatalog.Load(@"{
+  ""version"": 1,
+  ""activities"": [" + Activities() + @"],
+  ""change"": { ""freeEveryHours"": 24, ""crystalCost"": 100, ""freeClassChanges"": 1 },
+  ""forkScale"": [1, 1.15, 1.3, 1.5, 1.67],
+  ""subclasses"": [" + Path("berserker", trait) + @"]
+}");
+            var low = Chosen(catalog, 1);
+            var high = Chosen(catalog, 8);
+            low.PickFork(catalog, 60, "quiet_rune");
+            high.PickFork(catalog, 60, "quiet_rune");
+
+            Assert.That(Sum(low, catalog, CombatStats.Gold), Is.EqualTo(0.2).Within(1e-9));
+            Assert.That(Sum(high, catalog, CombatStats.Gold), Is.EqualTo(0.2 * 1.67).Within(1e-9));
+            Assert.That(Sum(high, catalog, CombatStats.CritMultiplier), Is.EqualTo(-0.1).Within(1e-9), "a cost stays the same");
+            Assert.That(catalog.ForkScaleAt(3), Is.EqualTo(1.3));
+        }
+
+        [Test]
+        public void WithoutAForkScaleTheForksStayFlat()
+        {
+            Assert.That(Catalog().ForkScaleAt(5), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void AForkScaleNeedsFiveRisingValues()
+        {
+            Assert.Throws<ContentException>(() => AscendancyCatalog.Load(@"{
+  ""version"": 1,
+  ""activities"": [" + Activities() + @"],
+  ""change"": { ""freeEveryHours"": 24, ""crystalCost"": 100, ""freeClassChanges"": 1 },
+  ""forkScale"": [1, 1.5, 1.3, 1.5, 1.67],
+  ""subclasses"": [" + Path("berserker", Trait) + @"]
+}"));
+        }
+
+        [Test]
         public void ChangingTheTraitClearsTheForks()
         {
             var catalog = Catalog();

@@ -47,8 +47,10 @@ namespace Game.Core.Content.Tree
 
         private readonly Dictionary<string, SubclassDef> _byId;
 
-        private AscendancyCatalog(IReadOnlyList<AscendancyActivity> activities, IReadOnlyList<SubclassDef> subclasses, double freeChangeHours, int crystalChangeCost, int freeClassChanges)
+        private AscendancyCatalog(IReadOnlyList<AscendancyActivity> activities, IReadOnlyList<SubclassDef> subclasses, double freeChangeHours, int crystalChangeCost, int freeClassChanges,
+            IReadOnlyList<double> forkScale)
         {
+            ForkScale = forkScale;
             FreeClassChanges = freeClassChanges;
             Activities = activities;
             Subclasses = subclasses;
@@ -65,6 +67,10 @@ namespace Game.Core.Content.Tree
         public int CrystalChangeCost { get; }
         public int FreeClassChanges { get; }
         public int MaxPoints => Activities.Count;
+        public IReadOnlyList<double> ForkScale { get; }
+
+        public double ForkScaleAt(int traitLevel) =>
+            ForkScale.Count == 0 ? 1 : ForkScale[System.Math.Clamp(traitLevel, 1, ForkScale.Count) - 1];
 
         public bool TryGet(string id, out SubclassDef subclass) => _byId.TryGetValue(id, out subclass!);
 
@@ -142,7 +148,26 @@ namespace Game.Core.Content.Tree
             return new AscendancyCatalog(activities, subclasses,
                 change.Field("freeEveryHours").AsNumber(0, 24 * 365),
                 change.Field("crystalCost").AsInt(0, 1_000_000),
-                change.Field("freeClassChanges").AsInt(0, 100));
+                change.Field("freeClassChanges").AsInt(0, 100),
+                ReadForkScale(root));
+        }
+
+        private static IReadOnlyList<double> ReadForkScale(ContentNode root)
+        {
+            var scale = new List<double>();
+            if (!root.HasField("forkScale"))
+                return scale;
+            var node = root.Field("forkScale");
+            foreach (var item in node.Items())
+                scale.Add(item.AsNumber(1, 10));
+            if (scale.Count != TraitDef.MaxLevel)
+                throw node.Error($"forkScale needs {TraitDef.MaxLevel} values, one per trait level");
+            for (var i = 1; i < scale.Count; i++)
+            {
+                if (scale[i] < scale[i - 1])
+                    throw node.Error("forkScale must not fall with the trait level");
+            }
+            return scale;
         }
 
         private static List<AscendancyActivity> ReadActivities(ContentNode node)

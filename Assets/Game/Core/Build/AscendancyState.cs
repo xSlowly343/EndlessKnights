@@ -143,7 +143,7 @@ namespace Game.Core.Build
             if (Subclass == null || !catalog.TryGet(Subclass, out var subclass))
                 return modifiers;
             if (subclass.Trait is { } trait)
-                AddTrait(trait, TraitLevel(catalog), modifiers);
+                AddTrait(trait, TraitLevel(catalog), catalog.ForkScaleAt(TraitLevel(catalog)), modifiers);
             return modifiers;
         }
 
@@ -171,7 +171,7 @@ namespace Game.Core.Build
             return SubclassResult.Chosen;
         }
 
-        private void AddTrait(TraitDef trait, int level, List<Modifier> modifiers)
+        private void AddTrait(TraitDef trait, int level, double forkScale, List<Modifier> modifiers)
         {
             for (var i = 0; i < level; i++)
                 modifiers.AddRange(trait.Levels[i]);
@@ -181,9 +181,24 @@ namespace Game.Core.Build
                 foreach (var choice in fork.Choices)
                 {
                     if (_forkPicks.Contains(choice.Id))
-                        modifiers.AddRange(choice.Modifiers);
+                        AddScaled(choice.Modifiers, forkScale, modifiers);
                 }
             }
+        }
+
+        private static void AddScaled(IReadOnlyList<Modifier> source, double scale, List<Modifier> modifiers)
+        {
+            foreach (var modifier in source)
+                modifiers.Add(GrowsWithLevel(modifier) ? modifier.WithValue(modifier.Value * scale) : modifier);
+        }
+
+        public static bool GrowsWithLevel(Modifier modifier)
+        {
+            if (!(modifier.Value > 0))
+                return false;
+            if (Game.Core.Party.CoopLine.IsCoop(modifier.Stat))
+                return true;
+            return modifier.Kind == ModifierKind.Increased || modifier.Kind == ModifierKind.More;
         }
 
         private SubclassResult CheckSubclass(AscendancyCatalog catalog, string heroClass, string subclassId)

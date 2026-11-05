@@ -22,6 +22,8 @@ namespace Game.Core.Ui
         public int HeroLevel { get; internal set; }
         public bool Open { get; internal set; }
         public string Title { get; internal set; } = string.Empty;
+        public double Scale { get; internal set; } = 1;
+        public string ScaleText { get; internal set; } = string.Empty;
         public List<PathTraitOption> Options { get; } = new List<PathTraitOption>();
     }
 
@@ -69,7 +71,7 @@ namespace Game.Core.Ui
             card.RuleShown = card.ShownLevel == TraitDef.MaxLevel;
             card.Party = Texts.Pick(trait.PartyTextRu, trait.PartyTextEn);
             foreach (var fork in trait.Forks)
-                card.Slots.Add(Slot(fork, state, chosen, loop.State.HeroLevel));
+                card.Slots.Add(Slot(fork, state, chosen, loop.State.HeroLevel, catalog.ForkScaleAt(card.ShownLevel), card.ShownLevel));
             return card;
         }
 
@@ -97,9 +99,16 @@ namespace Game.Core.Ui
             _ => Texts.Get("subclass.mode.together")
         };
 
-        private static PathTraitSlot Slot(TraitFork fork, AscendancyState state, bool chosen, int heroLevel)
+        private static PathTraitSlot Slot(TraitFork fork, AscendancyState state, bool chosen, int heroLevel, double scale, int shownLevel)
         {
-            var slot = new PathTraitSlot { HeroLevel = fork.HeroLevel, Open = heroLevel >= fork.HeroLevel, Title = Texts.Format("subclass.fork", fork.HeroLevel) };
+            var slot = new PathTraitSlot
+            {
+                HeroLevel = fork.HeroLevel,
+                Open = heroLevel >= fork.HeroLevel,
+                Title = Texts.Format("subclass.fork", fork.HeroLevel),
+                Scale = scale,
+                ScaleText = Texts.Format("subclass.forkScale", ModifierText.Times(scale), shownLevel)
+            };
             var taken = false;
             foreach (var choice in fork.Choices)
                 taken |= state.Picked(choice.Id);
