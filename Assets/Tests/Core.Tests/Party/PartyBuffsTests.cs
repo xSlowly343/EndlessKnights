@@ -82,6 +82,21 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void TheLoopRepeatsTheAlliesDamageAtTheHost()
+        {
+            var rig = new Rig(2);
+            rig.Run(5);
+            var clock = rig.Members[0];
+            clock.Loop.State.Class = HeroClass.Clockwright;
+            clock.Loop.Hero.Add(new Modifier(ClockwrightStats.LoopPower, ModifierKind.Flat, 1));
+            var repeated = rig.Host.RepeatedShares;
+
+            rig.Run(TestWorld.Data.Combat.Classes.Clockwright.LoopEverySeconds + 2);
+
+            Assert.That(rig.Host.RepeatedShares, Is.GreaterThan(repeated), "the host repeated the party's recent damage");
+        }
+
+        [Test]
         public void AlliesSeeEachOthersSkillSlots()
         {
             var rig = new Rig(2);

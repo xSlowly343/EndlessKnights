@@ -6,5 +6,6 @@ namespace Game.Core.Sim
         public double Strength;
         public double Seconds;
         public double TimerSlow;
+        public double RepeatSeconds;
     }
 }

@@ -177,8 +177,10 @@ namespace Game.Core.Sim
             S.LoopTicks = 0;
             S.Loops++;
             var window = LoopWindow;
-            var recent = _state.DamageWindow.Last(_state.TotalDamage, Ticks(window));
-            _combat.DirectHit(recent * (LoopShare * _rules.LoopSolo));
+            if (_state.SharedEnemy)
+                _state.TraitEnemyEffects.AddRepeat(LoopEffect, LoopShare, window);
+            else
+                _combat.DirectHit(_state.DamageWindow.Last(_state.TotalDamage, Ticks(window)) * (LoopShare * _rules.LoopSolo));
             if (!Flag(ClockwrightStats.LoopStop) || !_state.FightingBoss)
                 return;
             if (_state.SharedEnemy)
