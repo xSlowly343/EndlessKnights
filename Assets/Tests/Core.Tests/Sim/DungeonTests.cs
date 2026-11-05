@@ -63,6 +63,27 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheBotEntersTheBestDungeonItCanClearAndSkipsTooHighKeys()
+        {
+            var (loop, _) = Hero(300);
+            var tooHigh = Key(4);
+            var weak = Key(1);
+            var best = Key(2, "thick_hide");
+            loop.State.Dungeons.Keys.Add(tooHigh);
+            loop.State.Dungeons.Keys.Add(weak);
+            loop.State.Dungeons.Keys.Add(best);
+            var bot = new Game.Core.Sim.Headless.PlayerBot(TestWorld.Data, loop, 30, gear: true);
+
+            bot.EnterDungeon();
+
+            Assert.That(loop.Dungeons.Inside, Is.True);
+            Assert.That(loop.State.Dungeons.Active, Is.SameAs(best));
+            Assert.That(loop.Dungeons.Keys, Is.EquivalentTo(new[] { tooHigh, weak }));
+            bot.EnterDungeon();
+            Assert.That(loop.State.Dungeons.Active, Is.SameAs(best), "no second dungeon from inside");
+        }
+
+        [Test]
         public void ACompletedDungeonGivesLootAndReturnsHome()
         {
             var (loop, input) = Hero();
