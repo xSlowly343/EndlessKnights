@@ -22,14 +22,49 @@ namespace Game.Core.Tests.Content
         private static EnemyCatalog Load(string json) => EnemyCatalog.Load(json, Biomes);
 
         [Test]
-        public void RealDataFileHasGreenHillsSetForMvp()
+        public void RealDataFileHasEveryBiomeWithEnemiesBossesAndAGuardian()
         {
             var stages = StageTable.Load(TestData.ReadGameDataFile(StageTable.FileName));
-            var catalog = EnemyCatalog.Load(TestData.ReadGameDataFile(EnemyCatalog.FileName), new[] { stages.Biome(1) });
+            var catalog = EnemyCatalog.Load(TestData.ReadGameDataFile(EnemyCatalog.FileName), stages.Biomes);
 
+            Assert.That(stages.Biomes.Count, Is.EqualTo(6));
             Assert.That(catalog.Normals("green_hills").Count, Is.EqualTo(6));
             Assert.That(catalog.Boss("green_hills")!.Id, Is.EqualTo("boar_king"));
             Assert.That(catalog.Guardian("green_hills")!.Id, Is.EqualTo("ancient_ent"));
+            foreach (var biome in stages.Biomes)
+            {
+                Assert.That(catalog.Normals(biome).Count, Is.GreaterThanOrEqualTo(4), biome);
+                Assert.That(catalog.Guardian(biome), Is.Not.Null, biome);
+                for (var slot = 1; slot <= 4; slot++)
+                    Assert.That(catalog.BossAt(biome, slot)!.Slot, Is.EqualTo(slot), biome + " slot " + slot);
+            }
+        }
+
+        [Test]
+        public void TheBossOfAStageComesFromItsSlotAndTheHeartStartsAtStageTwentyThousand()
+        {
+            var stages = StageTable.Load(TestData.ReadGameDataFile(StageTable.FileName));
+            var catalog = EnemyCatalog.Load(TestData.ReadGameDataFile(EnemyCatalog.FileName), stages.Biomes);
+
+            Assert.That(stages.BossSlot(1), Is.EqualTo(0));
+            Assert.That(stages.BossSlot(10), Is.EqualTo(1));
+            Assert.That(stages.BossSlot(49), Is.EqualTo(4));
+            Assert.That(stages.BossSlot(60), Is.EqualTo(1));
+            Assert.That(catalog.BossAt(stages.Biome(10), stages.BossSlot(10))!.Id, Is.EqualTo("gryzlo"));
+            Assert.That(catalog.BossAt(stages.Biome(5), stages.BossSlot(5))!.Id, Is.EqualTo("boar_king"));
+            Assert.That(catalog.BossAt(stages.Biome(55), stages.BossSlot(55))!.Id, Is.EqualTo("jackal_treasurer"), "no slot 0 falls back to the first boss");
+            Assert.That(catalog.BossAt(stages.Biome(80), stages.BossSlot(80))!.Id, Is.EqualTo("pincer"));
+            Assert.That(stages.Biome(19_999), Is.Not.EqualTo("rift_heart"));
+            Assert.That(stages.Biome(20_000), Is.EqualTo("rift_heart"));
+            Assert.That(stages.Biome(123_456), Is.EqualTo("rift_heart"));
+            Assert.That(catalog.Guardian("rift_heart")!.Id, Is.EqualTo("quiet_storm_dragon"));
+        }
+
+        [Test]
+        public void TwoBossesInOneSlotAreRejected()
+        {
+            var json = Valid.Replace(@"""type"": ""guardian""", @"""type"": ""boss""");
+            Assert.Throws<ContentException>(() => Load(json));
         }
 
         [Test]

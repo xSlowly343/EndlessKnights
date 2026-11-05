@@ -48,7 +48,11 @@ namespace Game.Core.Content
         public int BossRetryAfterKills { get; }
         public int BiomeLength { get; }
         public BossHintRules BossHint { get; }
-        public System.Collections.Generic.IReadOnlyList<string> Biomes => _biomes;
+        public System.Collections.Generic.IReadOnlyList<string> Biomes => _allBiomes;
+        public string Heart { get; private set; } = string.Empty;
+        public long HeartFromStage { get; private set; }
+        public int BossSlotStages { get; private set; } = 10;
+        private string[] _allBiomes = System.Array.Empty<string>();
         public StageGate[] Gates { get; private set; } = System.Array.Empty<StageGate>();
 
         public StageGate? GateAt(long stage)
@@ -101,6 +105,18 @@ namespace Game.Core.Content
                 biomes.Add(biome.AsString());
             if (biomes.Count == 0)
                 throw root.Field("biomes").Error("at least one biome is required");
+            var heart = string.Empty;
+            var heartFrom = 0L;
+            if (root.HasField("heart"))
+            {
+                heart = root.Field("heart").Field("biome").AsString();
+                heartFrom = root.Field("heart").Field("fromStage").AsLong(1);
+                if (biomes.Contains(heart))
+                    throw root.Field("heart").Field("biome").Error($"'{heart}' is already in the biome rotation");
+            }
+            var allBiomes = new List<string>(biomes);
+            if (heart.Length > 0)
+                allBiomes.Add(heart);
 
             var gates = new List<StageGate>();
             if (root.HasField("gates"))
@@ -130,7 +146,11 @@ namespace Game.Core.Content
                 Gates = gates.ToArray(),
                 _wallsOnTop = wallExtra > 0,
                 _hpSteps = hpSteps,
-                _goldSteps = goldSteps
+                _goldSteps = goldSteps,
+                Heart = heart,
+                HeartFromStage = heartFrom,
+                BossSlotStages = boss.HasField("slotStages") ? boss.Field("slotStages").AsInt(1, 1000) : 10,
+                _allBiomes = allBiomes.ToArray()
             };
         }
 
@@ -155,7 +175,11 @@ namespace Game.Core.Content
             {
                 Gates = Gates,
                 _hpSteps = _hpSteps,
-                _goldSteps = _goldSteps
+                _goldSteps = _goldSteps,
+                Heart = Heart,
+                HeartFromStage = HeartFromStage,
+                BossSlotStages = BossSlotStages,
+                _allBiomes = _allBiomes
             };
 
 
@@ -164,7 +188,11 @@ namespace Game.Core.Content
                 bossTimerSeconds, bossTimerSeconds, _bossGoldMultiplier, BossRetryAfterKills, BiomeLength, _biomes, BossHint)
             {
                 _hpSteps = _hpSteps,
-                _goldSteps = _goldSteps
+                _goldSteps = _goldSteps,
+                Heart = Heart,
+                HeartFromStage = HeartFromStage,
+                BossSlotStages = BossSlotStages,
+                _allBiomes = _allBiomes
             };
 
         public int WaveSize(long stage, int wave) => _waves.Size(stage, wave);
@@ -243,7 +271,9 @@ namespace Game.Core.Content
             return position == 0 || position > _wallPeriod - _wallZoneLength;
         }
 
-        public string Biome(long stage) => _biomes[(int)((stage - 1) / BiomeLength % _biomes.Length)];
+        public string Biome(long stage) => Heart.Length > 0 && stage >= HeartFromStage ? Heart : _biomes[(int)((stage - 1) / BiomeLength % _biomes.Length)];
+
+        public int BossSlot(long stage) => (int)(((stage - 1) % BiomeLength + 1) / BossSlotStages);
 
         public bool IsBiomeGuardian(long stage) => stage % BiomeLength == 0;
 

@@ -38,7 +38,24 @@ namespace Game.Core.Content
         public IReadOnlyList<EnemyDef> Normals(string biome) =>
             _normalsByBiome.TryGetValue(biome, out var normals) ? normals : (IReadOnlyList<EnemyDef>)Array.Empty<EnemyDef>();
 
-        public EnemyDef? Boss(string biome) => All.FirstOrDefault(enemy => enemy.Biome == biome && enemy.Type == EnemyType.Boss);
+        public EnemyDef? Boss(string biome) => BossAt(biome, 0);
+
+        public EnemyDef? BossAt(string biome, int slot)
+        {
+            EnemyDef? first = null;
+            EnemyDef? fallback = null;
+            foreach (var enemy in All)
+            {
+                if (enemy.Biome != biome || enemy.Type != EnemyType.Boss)
+                    continue;
+                if (enemy.Slot == slot)
+                    return enemy;
+                first ??= enemy;
+                if (enemy.Slot == 0)
+                    fallback = enemy;
+            }
+            return fallback ?? first;
+        }
 
         public EnemyDef? Guardian(string biome) => All.FirstOrDefault(enemy => enemy.Biome == biome && enemy.Type == EnemyType.Guardian);
 
@@ -64,8 +81,11 @@ namespace Game.Core.Content
             {
                 if (catalog.Normals(biome).Count == 0)
                     throw root.Field("enemies").Error($"biome '{biome}' has no normal enemies");
-                if (enemies.Count(enemy => enemy.Biome == biome && enemy.Type == EnemyType.Boss) > 1)
-                    throw root.Field("enemies").Error($"biome '{biome}' has more than one boss");
+                var bosses = enemies.Where(enemy => enemy.Biome == biome && enemy.Type == EnemyType.Boss).ToList();
+                if (bosses.Count == 0)
+                    throw root.Field("enemies").Error($"biome '{biome}' has no boss");
+                if (bosses.Select(enemy => enemy.Slot).Distinct().Count() != bosses.Count)
+                    throw root.Field("enemies").Error($"biome '{biome}' has two bosses in one slot");
                 if (enemies.Count(enemy => enemy.Biome == biome && enemy.Type == EnemyType.Guardian) > 1)
                     throw root.Field("enemies").Error($"biome '{biome}' has more than one guardian");
             }
@@ -98,7 +118,8 @@ namespace Game.Core.Content
                 node.Field("hpMultiplier").AsNumber(0.01, 1e6),
                 node.Field("goldMultiplier").AsNumber(0.0, 1e6),
                 node.Field("sprite").AsString(),
-                modifiers);
+                modifiers,
+                node.HasField("slot") ? node.Field("slot").AsInt(0, 100) : 0);
         }
     }
 }
