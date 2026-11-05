@@ -5878,9 +5878,9 @@
       "effect": {"type": "strike", "multiplier": 3, "cannons": 2},
       "text": {"ru": "выстрел ×3 и две пушки заряжены", "en": "a shot ×3 and two cannons loaded"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_hit_1_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_hit_1_b15b", "name": {"ru": "Меткий компас", "en": "True Compass"}, "damage": 0.8, "effect": {"cannons": 3}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_hit_1_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "ghostcaptain_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5897,9 +5897,9 @@
       "effect": {"type": "strike", "multiplier": 2.5},
       "text": {"ru": "удар рукоятью ×2,5", "en": "a butt strike ×2.5"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_hit_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_hit_2_b15b", "name": {"ru": "Тяжёлый приклад", "en": "Heavy Butt"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_hit_2_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "ghostcaptain_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5916,9 +5916,9 @@
       "effect": {"type": "strike", "multiplier": 5, "crewHit": 1},
       "text": {"ru": "ядро ×5, и команда бьёт вместе с ним", "en": "a shot ×5, and the crew strikes along"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_hit_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_hit_3_b15b", "name": {"ru": "Двойная цепь", "en": "Double Chain"}, "damage": 0.8, "effect": {"crewHit": 1.5}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_hit_3_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "ghostcaptain_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5935,9 +5935,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
       "text": {"ru": "картечь ×2 по 3 врагам очереди", "en": "grapeshot ×2 at 3 queued enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_queue_1_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.0}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_queue_1_b15b", "name": {"ru": "Крупная картечь", "en": "Heavy Grapeshot"}, "damage": 0.8, "effect": {"multiplier": 2.6}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_queue_1_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 4}}, {"id": "ghostcaptain_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5954,9 +5954,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
       "text": {"ru": "ядро ×2,5 отскакивает на 3 врагов", "en": "a shot ×2.5 bounces to 3 enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_queue_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_queue_2_b15b", "name": {"ru": "Долгий рикошет", "en": "Long Ricochet"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_queue_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "ghostcaptain_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5973,9 +5973,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "sailors": 1},
       "text": {"ru": "сеть ×3 по 3 врагам и матрос в команду", "en": "a net ×3 at 3 enemies and a sailor for the crew"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_queue_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_queue_3_b15b", "name": {"ru": "Большая сеть", "en": "Big Net"}, "damage": 0.8, "effect": {"sailors": 2}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_queue_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "ghostcaptain_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5991,9 +5991,9 @@
       "effect": {"type": "strike", "multiplier": 4},
       "text": {"ru": "раз в 5 с якорь ×4", "en": "every 5 s an anchor ×4"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_auto_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_auto_1_b15b", "name": {"ru": "Тяжёлый якорь", "en": "Heavy Anchor"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_auto_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "ghostcaptain_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6009,9 +6009,9 @@
       "effect": {"type": "strike", "multiplier": 3, "crewHit": 1},
       "text": {"ru": "раз в 8 с кок ×3, и команда бьёт", "en": "every 8 s the cook ×3, and the crew strikes"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_auto_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_auto_2_b15b", "name": {"ru": "Сытная похлёбка", "en": "Hearty Stew"}, "damage": 0.8, "effect": {"crewHit": 1.5}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_auto_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}, {"id": "ghostcaptain_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6027,9 +6027,9 @@
       "effect": {"type": "strike", "multiplier": 4, "cannons": 1},
       "text": {"ru": "раз в 8 с выстрел ×4 и пушка заряжена", "en": "every 8 s a shot ×4 and a cannon loaded"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_auto_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_auto_3_b15b", "name": {"ru": "Старый канонир", "en": "Old Gunner"}, "damage": 0.8, "effect": {"cannons": 2}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_auto_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "ghostcaptain_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6046,9 +6046,9 @@
       "effect": {"type": "strike", "multiplier": 8, "cannons": 2},
       "text": {"ru": "таран ×8 и две пушки заряжены", "en": "a ram ×8 and two cannons loaded"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_strong_1_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_strong_1_b15b", "name": {"ru": "Окованный нос", "en": "Iron Prow"}, "damage": 0.8, "effect": {"multiplier": 10}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_strong_1_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "ghostcaptain_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6065,9 +6065,9 @@
       "effect": {"type": "strike", "multiplier": 6, "queueTargets": 3, "crewHit": 2},
       "text": {"ru": "щупальца ×6 по врагу и 3 врагам очереди, команда бьёт ×2", "en": "tentacles ×6 at the enemy and 3 queued enemies, the crew strikes ×2"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_strong_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_strong_2_b15b", "name": {"ru": "Голодный кракен", "en": "Hungry Kraken"}, "damage": 0.8, "effect": {"crewHit": 3}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_strong_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "ghostcaptain_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -6084,9 +6084,9 @@
       "effect": {"type": "strike", "multiplier": 12, "sailors": 3},
       "text": {"ru": "клад ×12 и три матроса в команду", "en": "a treasure ×12 and three sailors for the crew"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "ghostcaptain_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "ghostcaptain_strong_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 18.0}}]},
         {"level": 15, "options": [{"id": "ghostcaptain_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "ghostcaptain_strong_3_b15b", "name": {"ru": "Сундук с золотом", "en": "Gold Chest"}, "damage": 0.8, "effect": {"multiplier": 15}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "ghostcaptain_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "ghostcaptain_strong_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 24}}, {"id": "ghostcaptain_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
