@@ -5506,9 +5506,9 @@
       "effect": {"type": "strike", "multiplier": 3, "spiritsHit": 0.4},
       "text": {"ru": "касание ×3, и каждая душа бьёт вместе с ним на 40%", "en": "a touch ×3, and every soul strikes along at 40%"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_hit_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_hit_1_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}]},
         {"level": 15, "options": [{"id": "soulbinder_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_hit_1_b15b", "name": {"ru": "Холодное касание", "en": "Cold Touch"}, "damage": 0.8, "effect": {"spiritsHit": 0.6}}]},
-        {"level": 25, "options": [{"id": "soulbinder_hit_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_hit_1_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "soulbinder_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5525,9 +5525,9 @@
       "effect": {"type": "strike", "multiplier": 2.5},
       "text": {"ru": "палец ×2,5", "en": "a finger ×2.5"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_hit_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_hit_2_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "soulbinder_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_hit_2_b15b", "name": {"ru": "Ледяной палец", "en": "Icy Finger"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "soulbinder_hit_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_hit_2_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "soulbinder_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5544,9 +5544,9 @@
       "effect": {"type": "strike", "multiplier": 3, "spiritsHit": 2},
       "text": {"ru": "зов ×3: духи бьют сразу, каждый ×2", "en": "a call ×3: the spirits strike at once, each ×2"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_hit_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_hit_3_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "soulbinder_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_hit_3_b15b", "name": {"ru": "Громкий зов", "en": "Loud Call"}, "damage": 0.8, "effect": {"spiritsHit": 3}}]},
-        {"level": 25, "options": [{"id": "soulbinder_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_hit_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "soulbinder_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5563,9 +5563,9 @@
       "effect": {"type": "strike", "multiplier": 2, "queueTargets": 3},
       "text": {"ru": "хоровод ×2 по 3 врагам очереди", "en": "a dance ×2 at 3 queued enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_queue_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_queue_1_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "soulbinder_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_queue_1_b15b", "name": {"ru": "Быстрый хоровод", "en": "Quick Dance"}, "damage": 0.8, "effect": {"multiplier": 2.6}}]},
-        {"level": 25, "options": [{"id": "soulbinder_queue_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_queue_1_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.0}}, {"id": "soulbinder_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5582,9 +5582,9 @@
       "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
       "text": {"ru": "вой ×2,5 по 3 врагам", "en": "a howl ×2.5 at 3 enemies"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_queue_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_queue_2_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}]},
         {"level": 15, "options": [{"id": "soulbinder_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_queue_2_b15b", "name": {"ru": "Долгий вой", "en": "Long Howl"}, "damage": 0.8, "effect": {"multiplier": 3.2}}]},
-        {"level": 25, "options": [{"id": "soulbinder_queue_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_queue_2_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "soulbinder_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5601,9 +5601,9 @@
       "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "souls": 1},
       "text": {"ru": "свеча ×3 по 3 врагам и душа в сферу", "en": "a candle ×3 at 3 enemies and a soul into the orb"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_queue_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_queue_3_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "soulbinder_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_queue_3_b15b", "name": {"ru": "Две свечи", "en": "Two Candles"}, "damage": 0.8, "effect": {"souls": 2}}]},
-        {"level": 25, "options": [{"id": "soulbinder_queue_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_queue_3_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "soulbinder_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5619,9 +5619,9 @@
       "effect": {"type": "strike", "multiplier": 4},
       "text": {"ru": "раз в 10 с дух бьёт ×4", "en": "every 10 s a spirit strikes ×4"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_auto_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_auto_1_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "soulbinder_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_auto_1_b15b", "name": {"ru": "Очень голодный дух", "en": "Very Hungry Spirit"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
-        {"level": 25, "options": [{"id": "soulbinder_auto_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_auto_1_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "soulbinder_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5637,9 +5637,9 @@
       "effect": {"type": "strike", "multiplier": 3, "spiritsHit": 1},
       "text": {"ru": "раз в 8 с сторож ×3 и удар всех душ", "en": "every 8 s a watchman ×3 and a strike of every soul"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_auto_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_auto_2_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "soulbinder_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_auto_2_b15b", "name": {"ru": "Бдительный сторож", "en": "Watchful Watchman"}, "damage": 0.8, "effect": {"spiritsHit": 1.5}}]},
-        {"level": 25, "options": [{"id": "soulbinder_auto_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_auto_2_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}, {"id": "soulbinder_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5655,9 +5655,9 @@
       "effect": {"type": "strike", "multiplier": 4, "souls": 1},
       "text": {"ru": "раз в 10 с огонёк ×4 и новая душа", "en": "every 10 s a light ×4 and a new soul"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_auto_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_auto_3_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 8}}]},
         {"level": 15, "options": [{"id": "soulbinder_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_auto_3_b15b", "name": {"ru": "Яркий огонёк", "en": "Bright Light"}, "damage": 0.8, "effect": {"multiplier": 5}}]},
-        {"level": 25, "options": [{"id": "soulbinder_auto_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_auto_3_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "soulbinder_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5674,9 +5674,9 @@
       "effect": {"type": "strike", "multiplier": 6, "spiritsHit": 1.5},
       "text": {"ru": "парад ×6: все духи бьют ×1,5", "en": "a parade ×6: every spirit strikes ×1.5"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_strong_1_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_strong_1_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "soulbinder_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_strong_1_b15b", "name": {"ru": "Большой парад", "en": "Grand Parade"}, "damage": 0.8, "effect": {"spiritsHit": 2}}]},
-        {"level": 25, "options": [{"id": "soulbinder_strong_1_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_strong_1_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "soulbinder_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5693,9 +5693,9 @@
       "effect": {"type": "strike", "multiplier": 8, "souls": 3},
       "text": {"ru": "сеанс ×8: три души сразу", "en": "a seance ×8: three souls at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_strong_2_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_strong_2_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "soulbinder_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_strong_2_b15b", "name": {"ru": "Долгий сеанс", "en": "Long Seance"}, "damage": 0.8, "effect": {"multiplier": 10}}]},
-        {"level": 25, "options": [{"id": "soulbinder_strong_2_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_strong_2_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "soulbinder_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
@@ -5712,9 +5712,9 @@
       "effect": {"type": "strike", "multiplier": 12, "releaseAll": true},
       "text": {"ru": "все души разом в удар ×12", "en": "every soul at once in a blow ×12"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_strong_3_b5b", "name": {"ru": "Быстрее", "en": "Faster"}, "cooldown": 0.75}]},
+        {"level": 5, "options": [{"id": "soulbinder_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "soulbinder_strong_3_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "soulbinder_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "soulbinder_strong_3_b15b", "name": {"ru": "Тихий уход", "en": "Quiet Parting"}, "damage": 0.8, "effect": {"multiplier": 15}}]},
-        {"level": 25, "options": [{"id": "soulbinder_strong_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "soulbinder_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+        {"level": 25, "options": [{"id": "soulbinder_strong_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 18.0}}, {"id": "soulbinder_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
       ]
     },
     {
