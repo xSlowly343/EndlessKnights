@@ -21,27 +21,31 @@ namespace Game.Core.Content
 
     public readonly struct QuestReward
     {
-        public QuestReward(long shards, double dust, long ingots)
+        public QuestReward(long shards, double dust, long ingots, long friendship = 0)
         {
             Shards = shards;
             Dust = dust;
             Ingots = ingots;
+            Friendship = friendship;
         }
 
         public long Shards { get; }
         public double Dust { get; }
         public long Ingots { get; }
+        public long Friendship { get; }
     }
 
     public sealed class QuestKindRule
     {
-        public QuestKindRule(QuestKind kind, string id, double daily, double weekly, bool party)
+        public QuestKindRule(QuestKind kind, string id, double daily, double weekly, bool party, bool grows = false, long fromStage = 0)
         {
             Kind = kind;
             Id = id;
             Daily = daily;
             Weekly = weekly;
             Party = party;
+            Grows = grows;
+            FromStage = fromStage;
         }
 
         public QuestKind Kind { get; }
@@ -49,6 +53,8 @@ namespace Game.Core.Content
         public double Daily { get; }
         public double Weekly { get; }
         public bool Party { get; }
+        public bool Grows { get; }
+        public long FromStage { get; }
     }
 
     public sealed class QuestRules
@@ -87,6 +93,8 @@ namespace Game.Core.Content
         public double StreakBonusPerDay { get; private set; }
         public int StreakMaxDays { get; private set; }
         public double StreakMissKeep { get; private set; }
+        public double SizeStart { get; private set; }
+        public long SizeFullAtRecord { get; private set; }
         public IReadOnlyList<QuestKindRule> Kinds { get; private set; } = Array.Empty<QuestKindRule>();
 
         public QuestKindRule Rule(QuestKind kind)
@@ -97,6 +105,17 @@ namespace Game.Core.Content
                     return rule;
             }
             throw new ArgumentException("no rule for " + kind);
+        }
+
+        public double SizeAt(long record) => SizeFullAtRecord <= 0 || record >= SizeFullAtRecord
+            ? 1
+            : SizeStart + (1 - SizeStart) * record / SizeFullAtRecord;
+
+        public double Target(QuestKind kind, bool daily, long record)
+        {
+            var rule = Rule(kind);
+            var full = daily ? rule.Daily : rule.Weekly;
+            return rule.Grows ? System.Math.Max(1, System.Math.Ceiling(full * SizeAt(record))) : full;
         }
 
         public static string IdOf(QuestKind kind)
@@ -120,6 +139,7 @@ namespace Game.Core.Content
             var daily = root.Field("daily");
             var weekly = root.Field("weekly");
             var streak = root.Field("streak");
+            var size = root.Field("size");
             var kinds = new List<QuestKindRule>();
             foreach (var item in root.Field("kinds").Items())
             {
@@ -132,7 +152,9 @@ namespace Game.Core.Content
                         throw item.Field("id").Error($"quest kind '{id}' is listed twice");
                 }
                 kinds.Add(new QuestKindRule(kind, id, item.Field("daily").AsNumber(0, 1e9), item.Field("weekly").AsNumber(0, 1e9),
-                    item.HasField("party") && item.Field("party").AsBool()));
+                    item.HasField("party") && item.Field("party").AsBool(),
+                    item.HasField("grows") && item.Field("grows").AsBool(),
+                    item.HasField("fromStage") ? item.Field("fromStage").AsLong(0) : 0));
             }
             var rules = new QuestRules
             {
@@ -146,21 +168,23 @@ namespace Game.Core.Content
                 StreakBonusPerDay = streak.Field("bonusPerDay").AsNumber(0, 1),
                 StreakMaxDays = streak.Field("maxDays").AsInt(0, 365),
                 StreakMissKeep = streak.Field("missKeep").AsNumber(0, 1),
+                SizeStart = size.Field("start").AsNumber(0.01, 1),
+                SizeFullAtRecord = size.Field("fullAtRecord").AsLong(0),
                 Kinds = kinds
             };
-            if (Count(kinds, true) < rules.PerDay + 1)
+            if (Count(kinds, true, 0) < rules.PerDay + 1)
                 throw root.Field("kinds").Error($"need at least {rules.PerDay + 1} daily kinds so that a swap has a choice");
-            if (Count(kinds, false) < rules.PerWeek)
+            if (Count(kinds, false, 0) < rules.PerWeek)
                 throw root.Field("kinds").Error($"need at least {rules.PerWeek} weekly kinds");
             return rules;
         }
 
-        private static int Count(List<QuestKindRule> kinds, bool daily)
+        private static int Count(List<QuestKindRule> kinds, bool daily, long record)
         {
             var count = 0;
             foreach (var kind in kinds)
             {
-                if ((daily ? kind.Daily : kind.Weekly) > 0)
+                if ((daily ? kind.Daily : kind.Weekly) > 0 && kind.FromStage <= record)
                     count++;
             }
             return count;
@@ -169,6 +193,7 @@ namespace Game.Core.Content
         private static QuestReward Reward(ContentNode node) => new QuestReward(
             node.HasField("shards") ? node.Field("shards").AsLong(0) : 0,
             node.HasField("dust") ? node.Field("dust").AsNumber(0, 1e9) : 0,
-            node.HasField("ingots") ? node.Field("ingots").AsLong(0) : 0);
+            node.HasField("ingots") ? node.Field("ingots").AsLong(0) : 0,
+            node.HasField("friendship") ? node.Field("friendship").AsLong(0) : 0);
     }
 }

@@ -179,6 +179,16 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void APartyQuestClaimSendsTheBossesAndReadsTheGrantAndWallet()
+        {
+            Assert.That(PartyQuestClaim.Payload(5), Is.EqualTo("{\"bosses\":5}"));
+            var result = PartyQuestClaimResult.From(NakamaJson.Parse("{\"granted\":3,\"wallet\":{\"balances\":{\"friendship\":49,\"seals\":0},\"today\":[],\"ledger\":[]}}"));
+
+            Assert.That(result.Granted, Is.EqualTo(3));
+            Assert.That(result.Wallet!.Friendship, Is.EqualTo(49));
+        }
+
+        [Test]
         public void AClanIsReadFromTheServerReplyWithRolesAndLastSeen()
         {
             var clan = ClanView.From(NakamaJson.Parse("{\"id\":\"c1\",\"code\":\"K7MQ2X\",\"access\":\"open\",\"adjective\":\"lilac\",\"noun\":\"lanterns\",\"language\":\"ru\","

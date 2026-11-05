@@ -426,6 +426,7 @@ namespace Game.Core.Save
             ("streak", JsonValue.Of(quests.Streak)),
             ("swapsLeft", JsonValue.Of(quests.SwapsLeft)),
             ("swaps", JsonValue.Of(quests.Swaps)),
+            ("partyClaimBosses", JsonValue.Of(quests.PartyClaimBosses)),
             ("daily", WriteQuestList(quests.Daily)),
             ("weekly", WriteQuestList(quests.Weekly)));
 
@@ -452,6 +453,7 @@ namespace Game.Core.Save
             quests.Streak = node.Field("streak").AsInt(0);
             quests.SwapsLeft = node.Field("swapsLeft").AsInt(0);
             quests.Swaps = node.Field("swaps").AsInt(0);
+            quests.PartyClaimBosses = node.HasField("partyClaimBosses") ? node.Field("partyClaimBosses").AsInt(0) : 0;
             ReadQuestList(node.Field("daily"), quests.Daily);
             ReadQuestList(node.Field("weekly"), quests.Weekly);
             quests.Primed = false;

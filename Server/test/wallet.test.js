@@ -124,3 +124,13 @@ test("a ghost's owner is thanked only by the player who picked that ghost, a few
   assert.strictEqual(wallet.today.find((s) => s.source === "ghost_helped").earned, perFriend + 1);
   assert.strictEqual(call("bob", "coopWalletRpc").balances.friendship, 0, "the helper earns nothing");
 });
+
+test("a party quest pays friendship once a day and only after enough bosses together", () => {
+  const { nk } = world("ann");
+  assert.throws(() => server.walletClaimPartyQuest(nk, "ann", 5, noon), (error) => error.message === "not enough bosses together today");
+  server.walletGrant(nk, "ann", "boss_together", 5, noon);
+  assert.strictEqual(server.walletClaimPartyQuest(nk, "ann", 5, noon + 1000), source("party_quest").amount);
+  assert.strictEqual(server.walletClaimPartyQuest(nk, "ann", 5, noon + 2000), 0, "the daily cap allows one claim");
+  assert.throws(() => server.walletClaimPartyQuest(nk, "ann", 5, noon + day), (error) => error.message === "not enough bosses together today", "yesterday's bosses do not count");
+  assert.throws(() => server.walletClaimPartyQuest(nk, "ann", 0, noon), (error) => error.message === "bad request");
+});
