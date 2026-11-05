@@ -78,9 +78,7 @@ namespace Game.Core.Sim
         public static readonly StatId DotDamage = new StatId("dotDamage");
         public static readonly StatId DotStacks = new StatId("dotStacks");
         public static readonly StatId PoisonStacks = new StatId("poisonStacks");
-        public static readonly StatId MiasmaBurstShare = new StatId("miasmaBurstShare");
         public static readonly StatId SummonsIgnite = new StatId("summonsIgnite");
-        public static readonly StatId PoisonNoDecay = new StatId("poisonNoDecay");
         public static readonly StatId LightningPoisonBurst = new StatId("lightningPoisonBurst");
         public static readonly StatId BurnStacksFromAllyLightning = new StatId("burnStacksFromAllyLightning");
         public static readonly StatId OmenPerPartyCrit = new StatId("omenPerPartyCrit");
@@ -117,7 +115,6 @@ namespace Game.Core.Sim
         public static readonly StatId EchoEverySeconds = new StatId("echoEverySeconds");
         public static readonly StatId EchoShare = new StatId("echoShare");
         public static readonly StatId DoomShare = new StatId("doomShare");
-        public static readonly StatId DoomSeconds = new StatId("doomSeconds");
         public static readonly StatId DoomMultiplier = new StatId("doomMultiplier");
         public static readonly StatId DoomedCritChance = new StatId("doomedCritChance");
         public static readonly StatId LoopShare = new StatId("loopShare");

@@ -432,7 +432,7 @@ namespace Game.Core.Sim
             var withheld = damage * share;
             _state.Doom += withheld;
             if (_state.DoomTicks <= 0)
-                _state.DoomTicks = System.Math.Max(1, (int)System.Math.Round((_rules.Paths.DoomSeconds + _hero.Value(CombatStats.DoomSeconds, 0)) * GameLoop.TicksPerSecond));
+                _state.DoomTicks = System.Math.Max(1, (int)System.Math.Round(_rules.Paths.DoomSeconds * GameLoop.TicksPerSecond));
             return damage - withheld;
         }
 

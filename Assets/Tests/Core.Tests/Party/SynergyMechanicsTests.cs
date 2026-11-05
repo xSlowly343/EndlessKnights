@@ -29,18 +29,6 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void NoStacksNoBurst()
-        {
-            var loop = Hero(HeroClass.Alchemist);
-            loop.Synergy.SetAlly(0, true, HeroClass.Dowser, Mark("fire"));
-
-            for (var tick = 0; tick < 20; tick++)
-                loop.Tick();
-
-            Assert.That(loop.Skills.Dots.MiasmaBursts, Is.Zero);
-        }
-
-        [Test]
         public void DowserSparkAddsBurnEverySecondOnlyToABurningEnemy()
         {
             var loop = Hero(HeroClass.Dowser);
