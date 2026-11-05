@@ -85,6 +85,15 @@
     {"id": "league_gold", "slot": "clanBanner", "name": {"ru": "Знамя Золотой лиги", "en": "Gold League Banner"}, "price": 0, "source": "reward", "clan": true},
     {"id": "frame_limit", "slot": "avatarFrame", "name": {"ru": "Рамка «Предел»", "en": "The Limit Frame"}, "price": 0, "source": "reward", "achievement": "record_50k"},
     {"id": "frame_wheel", "slot": "avatarFrame", "name": {"ru": "Рамка «Колесо»", "en": "The Wheel Frame"}, "price": 0, "source": "reward", "achievement": "prestige_100"},
-    {"id": "frame_typist", "slot": "stripFrame", "name": {"ru": "Рамка печатника", "en": "The Typist's Frame"}, "price": 0, "source": "reward", "achievement": "keys_10m"}
+    {"id": "frame_typist", "slot": "stripFrame", "name": {"ru": "Рамка печатника", "en": "The Typist's Frame"}, "price": 0, "source": "reward", "achievement": "keys_10m"},
+    {"id": "pass1_frame", "slot": "stripFrame", "name": {"ru": "Угольная кайма", "en": "Ember Trim"}, "price": 0, "source": "pass"},
+    {"id": "pass1_font", "slot": "damageFont", "name": {"ru": "Искры костра", "en": "Campfire Sparks"}, "price": 0, "source": "pass"},
+    {"id": "pass1_avatar", "slot": "avatarFrame", "name": {"ru": "Тлеющий круг", "en": "Smouldering Ring"}, "price": 0, "source": "pass"},
+    {"id": "pass1_theme", "slot": "stripTheme", "name": {"ru": "Холмы у костра", "en": "Hills by the Fire"}, "price": 0, "source": "pass"},
+    {"id": "pass1_effect", "slot": "skillEffect", "name": {"ru": "Первые угли", "en": "First Embers"}, "price": 0, "source": "pass"},
+    {"id": "pass1_avatar_gold", "slot": "avatarFrame", "name": {"ru": "Золотой жар", "en": "Golden Glow"}, "price": 0, "source": "pass"},
+    {"id": "pass1_companion", "slot": "companion", "name": {"ru": "Огненная саламандра", "en": "Fire Salamander"}, "price": 0, "source": "pass"},
+    {"id": "pass1_sound", "slot": "hitSound", "name": {"ru": "Треск поленьев", "en": "Crackling Logs"}, "price": 0, "source": "pass"},
+    {"id": "pass1_skin", "slot": "heroSkin", "name": {"ru": "Хранитель огня", "en": "Keeper of the Flame"}, "price": 0, "source": "pass", "hero": "runedancer"}
   ]
 }

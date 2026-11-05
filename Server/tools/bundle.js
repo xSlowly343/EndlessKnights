@@ -329,5 +329,29 @@ for (const id of [cosmeticRules.championTop10, cosmeticRules.championTop100, cos
   if (!cosmeticIds.has(id))
     throw new Error("cosmetics.json: reward " + id + " is missing");
 
+const seasonPass = JSON.parse(fs.readFileSync(path.join(data, "season_pass.json"), "utf8"));
+if (seasonPass.version !== 1)
+  throw new Error("season_pass.json: version " + seasonPass.version + " is not supported");
+if (seasonPass.seasonWeeks % clanWars.seasonWeeks !== 0 || seasonPass.firstWeek % seasonPass.seasonWeeks !== 0)
+  throw new Error("season_pass.json: seasons must start together with clan war seasons");
+const passReward = (reward) => {
+  if (reward.cosmetic) {
+    const item = cosmetics.items.find((entry) => entry.id === reward.cosmetic);
+    if (!item || item.source !== "pass")
+      throw new Error("season_pass.json: " + reward.cosmetic + " is not a season pass cosmetic");
+  }
+  return { level: reward.level, cosmetic: reward.cosmetic || "", crystals: reward.crystals || 0 };
+};
+const seasonPassRules = {
+  seasonWeeks: seasonPass.seasonWeeks,
+  firstWeek: seasonPass.firstWeek,
+  levels: seasonPass.levels,
+  pointsPerLevel: seasonPass.pointsPerLevel,
+  dailyCap: seasonPass.dailyCap,
+  premiumPrice: seasonPass.premiumPrice,
+  seasons: seasonPass.seasons.map((season) => ({ id: season.id, free: season.free.map(passReward), premium: season.premium.map(passReward) }))
+};
+const crystalChangeRules = { price: ascendancy.change.crystalCost, reasons: ["subclass_change", "class_change"] };
+
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\n" + code);

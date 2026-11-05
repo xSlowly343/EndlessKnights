@@ -78,6 +78,7 @@ namespace Game.Core.Save
                 ("achievements", WriteAchievements(state.Achievements)),
                 ("bestiary", WriteBestiary(state.Bestiary)),
                 ("cosmetics", WriteCosmetics(state.Cosmetics)),
+                ("seasonPass", WriteSeasonPass(state.SeasonPass)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -249,6 +250,8 @@ namespace Game.Core.Save
                 ReadBestiary(node.Field("bestiary"), state.Bestiary);
             if (node.HasField("cosmetics"))
                 ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
+            if (node.HasField("seasonPass"))
+                ReadSeasonPass(node.Field("seasonPass"), state.SeasonPass);
             if (node.HasField("slates") && slates != null)
                 ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
@@ -479,6 +482,22 @@ namespace Game.Core.Save
                 cosmetics.Owned.Add(item.AsString());
             foreach (var item in node.Field("equipped").Items())
                 cosmetics.Equipped[item.Field("key").AsString()] = item.Field("id").AsString();
+        }
+
+        private static JsonValue WriteSeasonPass(SeasonPassState pass) => Object(
+            ("unsent", JsonValue.Of(pass.UnsentPoints)),
+            ("countedMinutes", JsonValue.Of(pass.CountedMinutes)),
+            ("season", JsonValue.Of(pass.Season)),
+            ("points", JsonValue.Of(pass.Points)),
+            ("premium", JsonValue.Of(pass.Premium)));
+
+        private static void ReadSeasonPass(ContentNode node, SeasonPassState pass)
+        {
+            pass.UnsentPoints = node.Field("unsent").AsLong(0);
+            pass.CountedMinutes = node.Field("countedMinutes").AsLong(-1);
+            pass.Season = node.Field("season").AsInt(-1);
+            pass.Points = node.Field("points").AsLong(0);
+            pass.Premium = node.Field("premium").AsBool();
         }
 
         private static JsonValue WriteBestiary(BestiaryState bestiary)

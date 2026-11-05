@@ -236,6 +236,7 @@ namespace Game.Core.Sim
             _state.Drops.Shards += (long)System.Math.Round(reward.Shards * times);
             _state.Drops.Dust += reward.Dust * times;
             _state.Drops.Ingots += (long)System.Math.Round(reward.Ingots * times);
+            _state.SeasonPass.UnsentPoints += reward.PassPoints;
         }
     }
 }

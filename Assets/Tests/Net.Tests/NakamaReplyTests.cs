@@ -246,6 +246,28 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheSeasonPassAndCrystalChangesAreReadFromTheServer()
+        {
+            Assert.That(SeasonPassReply.AddPayload(450), Is.EqualTo("{\"points\":450}"));
+            Assert.That(CrystalChange.Payload(CrystalChangeReason.Class), Is.EqualTo("{\"reason\":\"class_change\"}"));
+            Assert.That(CrystalChange.Payload(CrystalChangeReason.Subclass), Is.EqualTo("{\"reason\":\"subclass_change\"}"));
+            var pass = SeasonPassReply.From(NakamaJson.Parse("{\"season\":0,\"id\":\"embers\",\"points\":4050,\"level\":10,\"premium\":true,\"today\":450,\"dailyCap\":450,\"endsAt\":1789,\"accepted\":300,\"fresh\":[\"pass1_avatar_gold\"],\"freshCrystals\":50,\"crystals\":60}"));
+            Assert.That(pass.Season, Is.EqualTo(0));
+            Assert.That(pass.Id, Is.EqualTo("embers"));
+            Assert.That(pass.Points, Is.EqualTo(4050));
+            Assert.That(pass.Level, Is.EqualTo(10));
+            Assert.That(pass.Premium, Is.True);
+            Assert.That(pass.Today, Is.EqualTo(450));
+            Assert.That(pass.DailyCap, Is.EqualTo(450));
+            Assert.That(pass.EndsAtUnixMs, Is.EqualTo(1789));
+            Assert.That(pass.Accepted, Is.EqualTo(300));
+            Assert.That(pass.Fresh, Is.EqualTo(new[] { "pass1_avatar_gold" }));
+            Assert.That(pass.FreshCrystals, Is.EqualTo(50));
+            Assert.That(pass.Crystals, Is.EqualTo(60));
+            Assert.That(SeasonPassReply.From(NakamaJson.Parse("{\"season\":-1,\"fresh\":[]}")).Season, Is.EqualTo(-1));
+        }
+
+        [Test]
         public void AClanIsReadFromTheServerReplyWithRolesAndLastSeen()
         {
             var clan = ClanView.From(NakamaJson.Parse("{\"id\":\"c1\",\"code\":\"K7MQ2X\",\"access\":\"open\",\"adjective\":\"lilac\",\"noun\":\"lanterns\",\"language\":\"ru\","

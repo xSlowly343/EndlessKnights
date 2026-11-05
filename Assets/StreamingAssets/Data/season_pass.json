@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "seasonWeeks": 8,
+  "firstWeek": 2968,
+  "levels": 40,
+  "pointsPerLevel": 400,
+  "pointsPerActiveMinute": 1,
+  "dailyCap": 450,
+  "premiumPrice": 1000,
+  "seasons": [
+    {
+      "id": "embers",
+      "name": { "ru": "Сезон первых углей", "en": "Season of First Embers" },
+      "free": [
+        { "level": 5, "cosmetic": "pass1_frame" },
+        { "level": 10, "crystals": 50 },
+        { "level": 15, "cosmetic": "pass1_font" },
+        { "level": 20, "crystals": 50 },
+        { "level": 25, "cosmetic": "pass1_avatar" },
+        { "level": 30, "crystals": 50 },
+        { "level": 35, "cosmetic": "pass1_theme" },
+        { "level": 40, "crystals": 50 }
+      ],
+      "premium": [
+        { "level": 1, "cosmetic": "pass1_effect" },
+        { "level": 10, "cosmetic": "pass1_avatar_gold" },
+        { "level": 15, "crystals": 100 },
+        { "level": 20, "cosmetic": "pass1_companion" },
+        { "level": 25, "crystals": 100 },
+        { "level": 30, "cosmetic": "pass1_sound" },
+        { "level": 35, "crystals": 100 },
+        { "level": 40, "cosmetic": "pass1_skin" }
+      ]
+    }
+  ]
+}
