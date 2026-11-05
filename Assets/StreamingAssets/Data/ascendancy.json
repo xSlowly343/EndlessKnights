@@ -484,10 +484,10 @@
       "trait": {
         "partyText": {"ru": "Узлы висят на враге и видны всем; за каждый узел отряд чаще критует", "en": "The knots hang on the enemy for everyone to see; each knot makes the party crit more often"},
         "levels": [
-          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.045}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.003, "per": {"signal": "knots", "step": 1, "cap": 7}}]},
-          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.012}]},
-          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.012}]},
-          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.012}]},
+          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.09}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.003, "per": {"signal": "knots", "step": 1, "cap": 7}}]},
+          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.024}]},
+          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.024}]},
+          {"modifiers": [{"stat": "knotPower", "kind": "flat", "value": 0.024}]},
           {"modifiers": [{"stat": "knotBoss", "kind": "flat", "value": 1}], "text": {"ru": "Узел на Колосса: на боссе и страже узлы завязываются вдвое чаще", "en": "Knot on the Colossus: on a boss or guardian the knots are tied twice as often"}}
         ],
         "forks": [
@@ -506,10 +506,10 @@
       "trait": {
         "partyText": {"ru": "Пока имя Колосса названо, отряд бьёт босса сильнее", "en": "While the Colossus's name is spoken, the party hits the boss harder"},
         "levels": [
-          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.7}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "damageVsBoss", "kind": "increased", "value": 0.15, "while": "named"}, {"stat": "curseClanShare", "kind": "flat", "value": 0.09}]},
-          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
-          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
-          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 1.4}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "damageVsBoss", "kind": "increased", "value": 0.15, "while": "named"}, {"stat": "curseClanShare", "kind": "flat", "value": 0.09}]},
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "namePower", "kind": "flat", "value": 0.2}]},
           {"modifiers": [{"stat": "nameBlast", "kind": "flat", "value": 1}], "text": {"ru": "Громкое имя: когда имя звучит, босс получает удар ×20", "en": "Loud Name: when the name sounds, the boss takes a blow ×20"}}
         ],
         "forks": [
@@ -528,10 +528,10 @@
       "trait": {
         "partyText": {"ru": "Каждый немой шёпот на 4 с усиливает урон отряда со временем и удары, а враг получает +3% урона, до 5 стаков", "en": "Each silent whisper empowers the party's damage over time and hits for 4 s, and the enemy takes 3% more damage, up to 5 stacks"},
         "levels": [
-          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 12}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.05, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.02, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.03, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}]},
-          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 1.5}]},
-          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 1.5}]},
-          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 1.5}]},
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 24}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.05, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.02, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.03, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}]},
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 3}]},
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 3}]},
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 3}]},
           {"modifiers": [{"stat": "hushAll", "kind": "flat", "value": 1}], "text": {"ru": "Немая волна: шёпот достаётся сразу всем союзникам (в соло — два шёпота)", "en": "Silent Wave: a whisper goes to every ally at once (solo — two whispers)"}}
         ],
         "forks": [
@@ -946,10 +946,10 @@
       "trait": {
         "partyText": {"ru": "Пока Завод держит таймер, таймер босса медленнее для всего отряда", "en": "While the Spring holds the timer, the boss timer is slower for the whole party"},
         "levels": [
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.3}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.001, "when": "inParty", "per": {"signal": "springSlow", "step": 0.001, "cap": 1000}}]},
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.03}]},
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.03}]},
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.03}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.6}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.001, "when": "inParty", "per": {"signal": "springSlow", "step": 0.001, "cap": 1000}}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.06}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.06}]},
+          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.06}]},
           {"modifiers": [{"stat": "springStrike", "kind": "flat", "value": 1}], "text": {"ru": "Ход часов: пока Завод больше половины, её удары на 20% сильнее", "en": "Running Clock: while the Wind is above half, her hits are 20% stronger"}}
         ],
         "forks": [
@@ -968,10 +968,10 @@
       "trait": {
         "partyText": {"ru": "После перемотки 5 с отряд бьёт сильнее", "en": "For 5 s after a rewind the party hits harder"},
         "levels": [
-          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "after": {"signal": "loop", "seconds": 5, "stacks": 1}}]},
-          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.05}]},
-          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.05}]},
-          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.05}]},
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 1}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "after": {"signal": "loop", "seconds": 5, "stacks": 1}}]},
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "loopTwice", "kind": "flat", "value": 1}], "text": {"ru": "Двойная перемотка: петля проигрывается ещё раз на половину силы", "en": "Double Rewind: the loop plays once more at half strength"}}
         ],
         "forks": [
@@ -990,10 +990,10 @@
       "trait": {
         "partyText": {"ru": "Каждый тик шестерён на 3 с ускоряет откаты отряда, до 3 стаков", "en": "Each gear tick speeds up the party's cooldowns for 3 s, up to 3 stacks"},
         "levels": [
-          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 2}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.04, "after": {"signal": "gearTick", "seconds": 3, "stacks": 3}}]},
-          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.25}]},
-          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.25}]},
-          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.25}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 4}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.04, "after": {"signal": "gearTick", "seconds": 3, "stacks": 3}}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.5}]},
+          {"modifiers": [{"stat": "gearPower", "kind": "flat", "value": 0.5}]},
           {"modifiers": [{"stat": "gearResource", "kind": "flat", "value": 1}], "text": {"ru": "Смазка: каждый тик даёт ей и союзникам 5 ресурса", "en": "Oiling: every tick gives her and the allies 5 resource"}}
         ],
         "forks": [
@@ -1012,15 +1012,15 @@
       "trait": {
         "partyText": {"ru": "Пока часы на «низе», таймер босса стоит для всего отряда; на 5 уровне каждый переворот ускоряет ресурс отряда", "en": "While the hourglass is on its bottom, the boss timer stops for the whole party; at level 5 every flip speeds up the party's resource"},
         "levels": [
-          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.5}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 1, "while": "sandBottom"}]},
-          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.1}]},
-          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.1}]},
-          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.1}]},
+          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 1}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 1, "while": "sandBottom"}]},
+          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.2}]},
           {"modifiers": [{"stat": "flipSand", "kind": "flat", "value": 15}, {"to": "party", "stat": "resourceGain", "kind": "increased", "value": 0.1, "after": {"signal": "flip", "seconds": 5, "stacks": 1}}], "text": {"ru": "Тяжёлый песок: каждый переворот даёт 15 Песка", "en": "Heavy Sand: every turn of the glass gives 15 Sand"}}
         ],
         "forks": [
           {"level": 45, "options": [{"id": "sandwalker_trait_1_f45a", "name": {"ru": "Рука на часах", "en": "Hand on the Glass"}, "text": {"ru": "Скиллы, что сыплют песок, сразу переворачивают часы, но сами часы переворачиваются через 250 ударов", "en": "Skills that pour sand turn the glass at once, but by itself it turns only after 250 hits"}, "modifiers": [{"stat": "flipBySkill", "kind": "flat", "value": 1}, {"stat": "flipEvery", "kind": "flat", "value": 50}]}, {"id": "sandwalker_trait_1_f45b", "name": {"ru": "Песок из-под ног", "en": "Sand Underfoot"}, "text": {"ru": "Шаг тоже сыплет песок: песчинка за каждые 200 px шага, но «верх» на 10% слабее", "en": "Steps pour sand too: a grain for every 200 px of steps, but the top is 10% weaker"}, "modifiers": [{"stat": "flipStep", "kind": "flat", "value": 1}, {"stat": "flipPower", "kind": "flat", "value": -0.1}]}]},
-          {"level": 60, "options": [{"id": "sandwalker_trait_1_f60a", "name": {"ru": "Мягкий низ", "en": "Soft Bottom"}, "text": {"ru": "На «низе» урон −25% вместо −50%, но «верх» на 20% слабее", "en": "On the bottom damage is −25% instead of −50%, but the top is 20% weaker"}, "modifiers": [{"stat": "flipPenalty", "kind": "flat", "value": -0.25}, {"stat": "flipPower", "kind": "flat", "value": -0.2}]}, {"id": "sandwalker_trait_1_f60b", "name": {"ru": "Тяжёлый верх", "en": "Heavy Top"}, "text": {"ru": "«Верх» на 30% сильнее, но на «низе» урон −70%", "en": "The top is 30% stronger, but on the bottom damage is −70%"}, "modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.3}, {"stat": "flipPenalty", "kind": "flat", "value": 0.2}]}]},
+          {"level": 60, "options": [{"id": "sandwalker_trait_1_f60a", "name": {"ru": "Мягкий низ", "en": "Soft Bottom"}, "text": {"ru": "На «низе» урон −25% вместо −50%, но «верх» на 20% слабее", "en": "On the bottom damage is −25% instead of −50%, but the top is 20% weaker"}, "modifiers": [{"stat": "flipPenalty", "kind": "flat", "value": -0.25}, {"stat": "flipPower", "kind": "flat", "value": -0.2}]}, {"id": "sandwalker_trait_1_f60b", "name": {"ru": "Тяжёлый верх", "en": "Heavy Top"}, "text": {"ru": "«Верх» на 30% сильнее, но на «низе» урон −70%", "en": "The top is 30% stronger, but on the bottom damage is −70%"}, "modifiers": [{"stat": "flipPower", "kind": "flat", "value": 0.6}, {"stat": "flipPenalty", "kind": "flat", "value": 0.2}]}]},
           {"level": 75, "options": [{"id": "sandwalker_trait_1_f75a", "name": {"ru": "Песок в глаза", "en": "Sand in the Eyes"}, "text": {"ru": "Каждый переворот ослепляет врага на 3 с: он получает от Sandwalker +30%, а отряд видит Ослепление. Но часы переворачиваются на 50 ударов позже", "en": "Every turn blinds the enemy for 3 s: he takes 30% more from the Sandwalker and the party sees the Blind. But the glass turns 50 hits later"}, "modifiers": [{"stat": "flipBlind", "kind": "flat", "value": 1}, {"stat": "flipEvery", "kind": "flat", "value": 50}]}, {"id": "sandwalker_trait_1_f75b", "name": {"ru": "Часы для Колоссов", "en": "Glass for Colossi"}, "text": {"ru": "Песок сыплется только в бою с боссом, с обычными врагами всегда «верх», но «верх» ×0,8; часы стоят ради отряда: всё, что она даёт отряду, получают только союзники, зато в 1,5 раза больше", "en": "Sand flows only against a boss, with common enemies it is always the top, but the top is ×0.8; the hourglass stands for the party: all she gives goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "flipBossOnly", "kind": "flat", "value": 1}, {"stat": "flipPower", "kind": "more", "value": -0.2}], "partyMode": "support"}]}
         ]
       }
@@ -1034,10 +1034,10 @@
       "trait": {
         "partyText": {"ru": "Каждая стоянка: союзникам 10 ресурса, а 5 с откаты отряда быстрее и ресурс копится быстрее; на 5 уровне стоянка ещё и даёт отряду золото", "en": "Every camp gives allies 10 resource, and for 5 s the party's cooldowns are faster and resource builds faster; at level 5 a camp also gives the party gold"},
         "levels": [
-          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 10}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.1, "after": {"signal": "camp", "seconds": 5, "stacks": 1}}, {"to": "party", "stat": "resourceGain", "kind": "increased", "value": 0.2, "after": {"signal": "camp", "seconds": 5, "stacks": 1}}]},
-          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 2}]},
-          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 2}]},
-          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 2}]},
+          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 20}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.1, "after": {"signal": "camp", "seconds": 5, "stacks": 1}}, {"to": "party", "stat": "resourceGain", "kind": "increased", "value": 0.2, "after": {"signal": "camp", "seconds": 5, "stacks": 1}}]},
+          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 4}]},
+          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 4}]},
+          {"modifiers": [{"stat": "caravanPower", "kind": "flat", "value": 4}]},
           {"modifiers": [{"stat": "caravanIdle", "kind": "flat", "value": 1}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.05, "after": {"signal": "camp", "seconds": 10, "stacks": 1}}], "text": {"ru": "Вьючные верблюды: без шага караван идёт сам, медленно", "en": "Pack Camels: without steps the caravan walks on by itself, slowly"}}
         ],
         "forks": [
@@ -1056,10 +1056,10 @@
       "trait": {
         "partyText": {"ru": "Босс бьёт по миражам: каждый мираж замедляет таймер босса для отряда и добавляет отряду урон; на 5 уровне миражи усиливают спутников отряда", "en": "The boss strikes the mirages: each mirage slows the boss timer for the party and adds party damage; at level 5 the mirages strengthen the party's companions"},
         "levels": [
-          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 1.6}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.06, "per": {"signal": "mirages", "step": 1, "cap": 7}}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "per": {"signal": "mirages", "step": 1, "cap": 7}}]},
-          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.2}]},
-          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.2}]},
-          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.2}]},
+          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 3.2}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.06, "per": {"signal": "mirages", "step": 1, "cap": 7}}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "per": {"signal": "mirages", "step": 1, "cap": 7}}]},
+          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.4}]},
+          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.4}]},
+          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "mirageOnBoss", "kind": "flat", "value": 1}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.02, "per": {"signal": "mirages", "step": 1, "cap": 7}}], "text": {"ru": "Марево: бой с боссом начинается с миража", "en": "Haze: a boss fight starts with a mirage"}}
         ],
         "forks": [
