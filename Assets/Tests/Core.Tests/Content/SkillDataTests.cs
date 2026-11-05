@@ -209,6 +209,7 @@ namespace Game.Core.Tests.Content
         [TestCase("mothcaller")]
         [TestCase("cartomancer")]
         [TestCase("herbwitch")]
+        [TestCase("golemancer")]
         public void ARewrittenCharacterHasANumberAndARuleInEveryTier(string character)
         {
             var gems = GemCatalog.Load(RealFile());
