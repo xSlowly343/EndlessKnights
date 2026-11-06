@@ -1399,7 +1399,7 @@ namespace Game.Core.Save
             var rarity = ItemRarityNames.ByName.TryGetValue(node.Field("rarity").AsString(), out var found) ? found : ItemRarity.Simple;
             var unique = node.HasField("unique") && !node.Field("unique").IsNull && catalog.TryGetUnique(node.Field("unique").AsString(), out var uniqueDef) && uniqueDef.Base == weaponBase ? uniqueDef : null;
             var set = items != null && node.HasField("set") && !node.Field("set").IsNull && items.TryGetSet(node.Field("set").AsString(), out var setDef) && setDef.Has(ItemSlot.Weapon) ? setDef : null;
-            var itemLevel = node.HasField("itemLevel") ? node.Field("itemLevel").AsInt(1, 1000) : 1;
+            var itemLevel = node.HasField("itemLevel") ? node.Field("itemLevel").AsInt(1) : 1;
             var affixes = items != null ? ReadAffixes(node, items) : null;
             return new WeaponItem(weaponBase, rarity, itemLevel, affixes, unique, set, ReadForge(node));
         }
