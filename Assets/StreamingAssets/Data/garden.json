@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "plants": [
+    { "id": "knockbloom", "name": { "ru": "Стукоцвет", "en": "Knockbloom" }, "input": "keys", "starter": true, "growMinutes": 120, "secondsPerUnit": 0.5, "herb": "herb_knockbloom", "yield": 3 },
+    { "id": "windwort", "name": { "ru": "Ветрянка", "en": "Windwort" }, "input": "mouse", "starter": true, "growMinutes": 120, "secondsPerUnit": 6, "herb": "herb_windwort", "yield": 3 },
+    { "id": "clickweed", "name": { "ru": "Щелкунец", "en": "Clickweed" }, "input": "clicks", "starter": true, "growMinutes": 120, "secondsPerUnit": 2, "herb": "herb_clickweed", "yield": 3 },
+    { "id": "hushbell", "name": { "ru": "Тихоцвет", "en": "Hushbell" }, "input": "idle", "starter": true, "growMinutes": 120, "secondsPerUnit": 2, "herb": "herb_hushbell", "yield": 3 },
+    { "id": "stormfern", "name": { "ru": "Грозовой папоротник", "en": "Stormfern" }, "input": "keys", "growMinutes": 240, "secondsPerUnit": 0.5, "herb": "herb_stormfern", "yield": 2 },
+    { "id": "moonmoss", "name": { "ru": "Лунный мох", "en": "Moonmoss" }, "input": "idle", "growMinutes": 240, "secondsPerUnit": 2, "herb": "herb_moonmoss", "yield": 2 }
+  ],
+  "mutations": [
+    { "parents": ["knockbloom", "clickweed"], "child": "stormfern", "chance": 0.15 },
+    { "parents": ["hushbell", "windwort"], "child": "moonmoss", "chance": 0.15 }
+  ],
+  "seedBackChance": 0.5
+}

@@ -95,6 +95,7 @@ namespace Game.Core.Save
                 ("events", WriteEvents(state.Events)),
                 ("peaceful", WritePeaceful(state.Peaceful)),
                 ("camp", WriteCamp(state.Camp)),
+                ("garden", WriteGarden(state.Garden)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -275,6 +276,8 @@ namespace Game.Core.Save
                 ReadBestiary(node.Field("bestiary"), state.Bestiary);
             if (node.HasField("cosmetics"))
                 ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
+            if (node.HasField("garden"))
+                ReadGarden(node.Field("garden"), state.Garden);
             if (node.HasField("camp"))
                 ReadCamp(node.Field("camp"), state.Camp);
             if (node.HasField("peaceful"))
@@ -517,6 +520,28 @@ namespace Game.Core.Save
                 cosmetics.Owned.Add(item.AsString());
             foreach (var item in node.Field("equipped").Items())
                 cosmetics.Equipped[item.Field("key").AsString()] = item.Field("id").AsString();
+        }
+
+        private static JsonValue WriteGarden(GardenState garden)
+        {
+            var beds = new JsonValue[garden.Beds.Count];
+            for (var i = 0; i < beds.Length; i++)
+            {
+                var bed = garden.Beds[i];
+                beds[i] = Object(("plant", OptionalText(bed.Plant)), ("grown", JsonValue.Of(bed.Grown)), ("ready", JsonValue.Of(bed.Ready)));
+            }
+            var album = new List<string>(garden.Album);
+            album.Sort(System.StringComparer.Ordinal);
+            return Object(("beds", JsonValue.Array(beds)), ("harvests", JsonValue.Of(garden.Harvests)), ("album", WriteIdList(album)));
+        }
+
+        private static void ReadGarden(ContentNode node, GardenState garden)
+        {
+            foreach (var item in node.Field("beds").Items())
+                garden.Beds.Add(new GardenBed { Plant = ReadOptionalText(item, "plant"), Grown = item.Field("grown").AsNumber(0, double.MaxValue), Ready = item.Field("ready").AsBool() });
+            garden.Harvests = node.Field("harvests").AsLong(0);
+            foreach (var item in node.Field("album").Items())
+                garden.Album.Add(item.AsString());
         }
 
         private static JsonValue WriteCamp(CampState camp)
