@@ -126,11 +126,15 @@ namespace Game.Core.Sim
         private void ApplyBonus()
         {
             _buffer.Clear();
+            System.Array.Clear(State.Perks, 0, State.Perks.Length);
             var collections = _rules.Collections;
             for (var i = 0; i < collections.Count; i++)
             {
-                if (State.Done.Contains(collections[i].Id))
-                    _buffer.AddRange(collections[i].Bonus);
+                if (!State.Done.Contains(collections[i].Id))
+                    continue;
+                _buffer.AddRange(collections[i].Bonus);
+                foreach (var perk in collections[i].Perks)
+                    State.Perks[(int)perk.Perk] += perk.Value;
             }
             _layer.Set(_buffer);
         }

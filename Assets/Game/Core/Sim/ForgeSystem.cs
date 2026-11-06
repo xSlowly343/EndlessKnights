@@ -81,9 +81,13 @@ namespace Game.Core.Sim
             return ForgeResult.Done;
         }
 
-        public ForgeResult TemperWeapon() => Start(ForgeTarget.Weapon, default);
+        public ForgeResult TemperWeapon() => Start(ForgeTarget.Weapon, default, ForgeWork.Temper);
 
-        public ForgeResult TemperGear(GearSlot slot) => Start(ForgeTarget.Gear, slot);
+        public ForgeResult TemperGear(GearSlot slot) => Start(ForgeTarget.Gear, slot, ForgeWork.Temper);
+
+        public ForgeResult HoneWeapon() => Start(ForgeTarget.Weapon, default, ForgeWork.Hone);
+
+        public ForgeResult HoneGear(GearSlot slot) => Start(ForgeTarget.Gear, slot, ForgeWork.Hone);
 
         public ForgeMark? TargetMark => State.Target switch
         {
@@ -159,7 +163,7 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForStage(GameEventKind.ItemSmelted, _state.Tick, SmeltYield(rarity)));
         }
 
-        private ForgeResult Start(ForgeTarget target, GearSlot slot)
+        private ForgeResult Start(ForgeTarget target, GearSlot slot, ForgeWork work)
         {
             if (!Open)
                 return ForgeResult.Closed;
@@ -169,11 +173,13 @@ namespace Game.Core.Sim
             var mark = target == ForgeTarget.Weapon ? _state.Weapons.Held?.Forge : _state.Gear.In(slot)?.Forge;
             if (itemLevel == null || mark == null || (target == ForgeTarget.Gear && !_state.Gear.In(slot)!.Wearable))
                 return ForgeResult.NoItem;
-            if (mark.Temper >= _rules.MaxTemper - 1e-12)
+            var hone = work == ForgeWork.Hone;
+            if (hone ? mark.Hone >= _rules.MaxHone - 1e-12 : mark.Temper >= _rules.MaxTemper - 1e-12)
                 return ForgeResult.Maxed;
             var ore = OreOf(itemLevel.Value);
-            if (!_camp.Take(ore, _rules.TemperOre))
+            if (!_camp.Take(ore, hone ? _rules.HoneOre : _rules.TemperOre))
                 return ForgeResult.NoOre;
+            State.Work = work;
             State.Target = target;
             State.Slot = slot;
             State.Hammers = 0;
@@ -184,7 +190,11 @@ namespace Game.Core.Sim
         private void Quench(ForgeMark mark)
         {
             var inZone = _rules.InZone(State.Heat);
-            mark.Temper = System.Math.Min(_rules.MaxTemper, mark.Temper + (inZone ? _rules.StepInZone : _rules.StepOutside));
+            var boost = 1 + _state.Museum.Perk(MuseumPerk.TemperStep);
+            if (State.Work == ForgeWork.Hone)
+                mark.Hone = System.Math.Min(_rules.MaxHone, mark.Hone + (inZone ? _rules.HoneStepInZone : _rules.HoneStepOutside) * boost);
+            else
+                mark.Temper = System.Math.Min(_rules.MaxTemper, mark.Temper + (inZone ? _rules.StepInZone : _rules.StepOutside) * boost);
             if (State.Target == ForgeTarget.Weapon)
                 _weapons.Refresh();
             else

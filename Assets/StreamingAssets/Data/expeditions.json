@@ -18,7 +18,7 @@
     { "biome": "green_hills", "items": [{ "item": "herb_knockbloom", "perHour": 2 }, { "item": "herb_windwort", "perHour": 2 }], "shardsPerHour": 2, "rareChancePerHour": 0.03, "rare": "find_boar_tusk" },
     { "biome": "sand_ruins", "items": [{ "item": "herb_clickweed", "perHour": 2 }, { "item": "ruin_shard", "perHour": 1 }], "shardsPerHour": 3, "rareChancePerHour": 0.03, "rare": "find_sphinx_tablet" },
     { "biome": "ice_peak", "items": [{ "item": "herb_hushbell", "perHour": 2 }, { "item": "ice_crystal", "perHour": 1 }], "shardsPerHour": 4, "rareChancePerHour": 0.03, "rare": "find_mammoth_hair" },
-    { "biome": "volcanic_forge", "items": [{ "item": "ore_ember", "perHour": 2 }], "shardsPerHour": 5, "rareChancePerHour": 0.03, "rare": "find_smith_rivet" },
+    { "biome": "volcanic_forge", "items": [{ "item": "ember_coal", "perHour": 2 }], "shardsPerHour": 5, "rareChancePerHour": 0.03, "rare": "find_smith_rivet" },
     { "biome": "sky_islands", "items": [{ "item": "sky_feather", "perHour": 2 }], "shardsPerHour": 6, "rareChancePerHour": 0.03, "rare": "find_dragon_scale" }
   ],
   "letters": [

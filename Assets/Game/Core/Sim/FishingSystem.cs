@@ -100,7 +100,7 @@ namespace Game.Core.Sim
         private void Cast()
         {
             State.Phase = FishingPhase.Waiting;
-            State.Timer = _rules.BiteMinSeconds + _state.Rng.NextDouble() * (_rules.BiteMaxSeconds - _rules.BiteMinSeconds);
+            State.Timer = (_rules.BiteMinSeconds + _state.Rng.NextDouble() * (_rules.BiteMaxSeconds - _rules.BiteMinSeconds)) * (1 - _state.Museum.Perk(MuseumPerk.BiteFaster));
             State.Hooked = string.Empty;
             State.Reeled = 0;
         }
@@ -108,9 +108,9 @@ namespace Game.Core.Sim
         private void Bite()
         {
             var spot = _rules.Spot(CurrentSpot)!;
-            if (_state.Rng.NextDouble() < _rules.BottleChance)
+            if (_state.Rng.NextDouble() < _rules.BottleChance + _state.Museum.Perk(MuseumPerk.BottleChance))
                 Hook(FishCatchKind.Bottle, string.Empty);
-            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < _rules.LegendChance)
+            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < _rules.LegendChance + _state.Museum.Perk(MuseumPerk.LegendChance))
                 Hook(FishCatchKind.Legend, spot.Legend.Id);
             else if (RiftWindow && _rules.RiftFish.Count > 0 && _state.Rng.NextDouble() < _rules.RiftChance)
                 Hook(FishCatchKind.Fish, Pick(_rules.RiftFish).Id);
@@ -144,7 +144,7 @@ namespace Game.Core.Sim
         private void Reel(double meters)
         {
             State.Reeled += System.Math.Max(0, meters);
-            if (State.Reeled >= Need(State.HookedKind, State.Hooked))
+            if (State.Reeled >= Need(State.HookedKind, State.Hooked) * (1 - _state.Museum.Perk(MuseumPerk.ReelEasier)))
             {
                 Land();
                 return;
@@ -185,6 +185,7 @@ namespace Game.Core.Sim
                 case FishCatchKind.Bottle:
                     State.Bottles++;
                     _state.Drops.Shards += _rules.BottleShards;
+                    _state.Drops.Dust += _rules.BottleDust;
                     State.LastCatch = string.Empty;
                     State.LastCm = 0;
                     break;

@@ -78,7 +78,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void QuenchingInTheHeatZoneTempersTheBaseFasterUpToFivePercent()
+        public void QuenchingInTheHeatZoneTempersTheBaseFasterUpToTheCap()
         {
             var (loop, input) = Smith();
             var coif = Coif();
@@ -100,9 +100,30 @@ namespace Game.Core.Tests.Sim
             Assert.That(coif.Forge.Temper, Is.EqualTo(Rules.StepInZone + Rules.StepOutside).Within(1e-12), "a cold quench gives less");
 
             for (var i = 0; i < 20 && loop.Forge.TemperGear(GearSlot.Helmet) == ForgeResult.Done; i++)
-                Work(loop, input, Rules.ZoneFrom);
+                Work(loop, input, (Rules.ZoneFrom + Rules.ZoneTo) / 2);
             Assert.That(coif.Forge.Temper, Is.EqualTo(Rules.MaxTemper).Within(1e-12));
             Assert.That(loop.Forge.TemperGear(GearSlot.Helmet), Is.EqualTo(ForgeResult.Maxed));
+        }
+
+        [Test]
+        public void HoningSharpensTheAffixesWithMoreOre()
+        {
+            var (loop, input) = Smith();
+            Assert.That(TestWorld.Data.Items.TryGetAffix("armor_damage", out var def), Is.True);
+            Assert.That(TestWorld.Data.Items.TryGetBase("mail_coif", out var gearBase), Is.True);
+            var coif = new GearItem(gearBase, ItemRarity.Rare, 1, new[] { new GearAffix(def, 4, def.ValueAt(4, TestWorld.Data.Items.Tiers)) });
+            loop.State.Drops.Gear.Add(coif);
+            loop.Gear.Equip(coif);
+            var damage = loop.Hero.Value(CombatStats.Damage, 1);
+            loop.Camp.Add("ore_hills", Rules.HoneOre - 1);
+            Assert.That(loop.Forge.HoneGear(GearSlot.Helmet), Is.EqualTo(ForgeResult.NoOre));
+            loop.Camp.Add("ore_hills", 1);
+            Assert.That(loop.Forge.HoneGear(GearSlot.Helmet), Is.EqualTo(ForgeResult.Done));
+            Work(loop, input, (Rules.ZoneFrom + Rules.ZoneTo) / 2);
+            Assert.That(coif.Forge.Hone, Is.EqualTo(Rules.HoneStepInZone).Within(1e-12));
+            Assert.That(coif.Forge.Temper, Is.Zero, "honing does not touch the base");
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.GreaterThan(damage));
+            Assert.That(Rules.MaxTemper, Is.EqualTo(0.1));
         }
 
         [Test]
@@ -207,7 +228,8 @@ namespace Game.Core.Tests.Sim
         }
 
         [TestCase(@"""building"": ""forge""", @"""building"": ""anvil""", "unknown building 'anvil'")]
-        [TestCase(@"""max"": 0.05", @"""max"": 0.1", "0.1")]
+        [TestCase(@"""max"": 0.1,", @"""max"": 0.2,", "0.2")]
+        [TestCase(@"""max"": 0.05", @"""max"": 0.08", "0.08")]
         public void BrokenForgeIsReported(string from, string to, string message)
         {
             var json = Content.TestData.ReadGameDataFile(ForgeRules.FileName).Replace(from, to);

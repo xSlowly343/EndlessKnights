@@ -118,7 +118,7 @@ namespace Game.Core.Content
             var best = 0.0;
             foreach (var recipe in alchemy.Recipes)
             {
-                var fine = alchemy.Fine(recipe.Herbs) ? alchemy.FineMultiplier : 1;
+                var fine = alchemy.FineMultiplier;
                 foreach (var modifier in recipe.Modifiers)
                 {
                     if (modifier.Stat.Equals(food.Stat) && modifier.Kind == food.Kind)

@@ -12,12 +12,18 @@
   "temper": {
     "ore": 5,
     "hammers": 40,
-    "max": 0.05,
+    "max": 0.1,
     "stepInZone": 0.01,
     "stepOutside": 0.004,
     "heatPerMeter": 0.5,
     "heatDecayPerSecond": 0.08,
     "zoneFrom": 0.55,
     "zoneTo": 0.8
+  },
+  "hone": {
+    "ore": 10,
+    "max": 0.05,
+    "stepInZone": 0.005,
+    "stepOutside": 0.002
   }
 }

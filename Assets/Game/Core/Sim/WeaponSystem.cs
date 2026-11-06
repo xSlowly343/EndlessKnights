@@ -182,8 +182,10 @@ namespace Game.Core.Sim
             {
                 AddScaled(modifiers, weapon.Type.Innate, _appliedScale);
                 AddScaled(modifiers, weapon.Innate, _appliedScale * weapon.Forge.Scale);
+                var start = modifiers.Count;
                 foreach (var affix in weapon.Affixes)
                     affix.AddModifiers(modifiers);
+                GearItem.Scale(modifiers, start, weapon.Forge.AffixScale);
                 if (weapon.Unique != null)
                     modifiers.AddRange(weapon.Unique.Lines);
                 if (weapon.Set != null)

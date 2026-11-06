@@ -127,7 +127,7 @@ namespace Game.Core.Sim
                 return AlchemyResult.NoHerbs;
             foreach (var herb in herbs)
                 _camp.Take(herb, 1);
-            State.Brewing = new Potion { Recipe = recipe.Id, Fine = _rules.Fine(herbs), Unknown = unknown };
+            State.Brewing = new Potion { Recipe = recipe.Id, Fine = _rules.Fine(herbs) || _state.Rng.NextDouble() < _state.Museum.Perk(MuseumPerk.FinePotion), Unknown = unknown };
             State.Stirs = 0;
             return AlchemyResult.Done;
         }

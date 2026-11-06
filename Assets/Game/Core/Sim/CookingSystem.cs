@@ -119,6 +119,8 @@ namespace Game.Core.Sim
             if (State.Chops < dish.Chops || State.Plates < dish.Plates)
                 return;
             State.Meals.Add(dish.Id);
+            if (State.Meals.Count < _rules.MealsKept && _state.Rng.NextDouble() < _state.Museum.Perk(MuseumPerk.DoubleMeal))
+                State.Meals.Add(dish.Id);
             State.Book.Add(dish.Id);
             State.Cooked++;
             State.Cooking = string.Empty;

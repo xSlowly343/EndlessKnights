@@ -106,7 +106,7 @@ namespace Game.Core.Content
                 if (herbs.Count == 0)
                     throw node.Field("herbs").Error("a recipe needs herbs");
                 var modifiers = ModifierReader.ReadList(node.Field("modifiers"));
-                var best = herbs.Exists(rare.Contains) ? fine : 1;
+                var best = fine;
                 foreach (var modifier in modifiers)
                 {
                     var limit = modifier.Kind == ModifierKind.Flat ? MaxBossTimerSeconds : maxShare;
