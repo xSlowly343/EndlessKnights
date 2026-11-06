@@ -33,7 +33,7 @@ namespace Game.Core.Sim
         public void Tick()
         {
             var conditions = Current();
-            NoteShares(conditions);
+            NoteShares(conditions & ~ModifierConditions.Bit(ModifierCondition.InRift));
             var auraStrength = _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
             _hero.SetConditions(conditions);
             if (_hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura) != auraStrength)
@@ -61,6 +61,8 @@ namespace Game.Core.Sim
                 conditions |= ModifierConditions.Bit(ModifierCondition.FocusFull);
             if (_state.PartyAllies > 0)
                 conditions |= ModifierConditions.Bit(ModifierCondition.InParty);
+            if (_state.Rift.Inside || _state.Dungeons.Inside)
+                conditions |= ModifierConditions.Bit(ModifierCondition.InRift);
             if (_state.AfterFastKillTicks > 0)
                 conditions |= ModifierConditions.Bit(ModifierCondition.AfterFastKill);
             if (_state.AfterCircleTicks > 0)

@@ -26,6 +26,7 @@ namespace Game.Core.Stats
         GuardianRhythm,
         SilenceKeys,
         SilenceMouse,
-        SilenceClicks
+        SilenceClicks,
+        InRift
     }
 }
