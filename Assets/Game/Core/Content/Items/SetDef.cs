@@ -58,6 +58,9 @@ namespace Game.Core.Content.Items
         public IReadOnlyList<string> WeaponTypes { get; }
         public double CraftMultiplier { get; }
         public IReadOnlyList<PerkValue> Perks { get; }
+        public string? Event { get; internal set; }
+        public IReadOnlyList<Modifier> Primary { get; internal set; } = System.Array.Empty<Modifier>();
+        public IReadOnlyList<Modifier> PerRaritySet { get; internal set; } = System.Array.Empty<Modifier>();
         public bool Peaceful => Perks.Count > 0;
         public bool HasSecondRing => _secondRing != null;
         public bool Jewelry => _pieces.ContainsKey(ItemSlot.Amulet) || _pieces.ContainsKey(ItemSlot.Ring);

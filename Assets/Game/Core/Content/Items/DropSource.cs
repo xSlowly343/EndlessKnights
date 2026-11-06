@@ -12,5 +12,6 @@ namespace Game.Core.Content.Items
         Limit,
         Dungeon,
         Find,
+        Event,
     }
 }

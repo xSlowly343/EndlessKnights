@@ -121,7 +121,8 @@ namespace Game.Core.Save
                     ("answeredUnixMs", JsonValue.Of(state.ClanBonus.AnsweredUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("seenUnixMs", JsonValue.Of(state.ClanBonus.SeenUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))))),
                 ("dungeons", WriteDungeons(state.Dungeons)),
-                ("setCollection", JsonValue.Array(WriteCollection(state))),
+                ("setCollection", JsonValue.Array(WriteCollection(state.SetCollection))),
+                ("uniquesFound", JsonValue.Array(WriteCollection(state.UniquesFound))),
                 ("inputStats", Object(
                     ("keys", JsonValue.Of(state.TotalInput.Keys.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("leftClicks", JsonValue.Of(state.TotalInput.LeftClicks.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -366,6 +367,11 @@ namespace Game.Core.Save
             {
                 foreach (var key in node.Field("setCollection").Items())
                     state.SetCollection.Add(key.AsString());
+            }
+            if (node.HasField("uniquesFound"))
+            {
+                foreach (var key in node.Field("uniquesFound").Items())
+                    state.UniquesFound.Add(key.AsString());
             }
             if (node.HasField("gemProgress"))
                 ReadGemProgress(node.Field("gemProgress"), gems, state);
@@ -1087,6 +1093,7 @@ namespace Game.Core.Save
                 ("shards", JsonValue.Of(drops.Shards)),
                 ("ingots", JsonValue.Of(drops.Ingots)),
                 ("essence", JsonValue.Of(drops.Essence)),
+                ("craftSpent", JsonValue.Of(drops.CraftSpent)),
                 ("shardCarry", JsonValue.Of(drops.ShardCarry)),
                 ("shardsFound", JsonValue.Of(drops.ShardsFound)),
                 ("dailyShards", JsonValue.Of(drops.DailyShards)),
@@ -1153,6 +1160,7 @@ namespace Game.Core.Save
                 drops.Shards = node.Field("shards").AsLong(0);
                 drops.Ingots = node.HasField("ingots") ? node.Field("ingots").AsLong(0) : 0;
                 drops.Essence = node.HasField("essence") ? node.Field("essence").AsLong(0) : 0;
+                drops.CraftSpent = node.HasField("craftSpent") ? node.Field("craftSpent").AsLong(0) : 0;
                 drops.ShardCarry = node.Field("shardCarry").AsNumber(0, 1);
                 drops.ShardsFound = node.Field("shardsFound").AsLong(0);
                 drops.DailyShards = node.Field("dailyShards").AsInt(0);
@@ -1244,9 +1252,9 @@ namespace Game.Core.Save
         private static SetDef? ReadSet(ContentNode node, ItemCatalog items, ItemSlot slot) =>
             node.HasField("set") && !node.Field("set").IsNull && items.TryGetSet(node.Field("set").AsString(), out var set) && set.Has(slot) ? set : null;
 
-        private static JsonValue[] WriteCollection(GameState state)
+        private static JsonValue[] WriteCollection(HashSet<string> collection)
         {
-            var keys = new List<string>(state.SetCollection);
+            var keys = new List<string>(collection);
             keys.Sort(System.StringComparer.Ordinal);
             var items = new JsonValue[keys.Count];
             for (var i = 0; i < items.Length; i++)

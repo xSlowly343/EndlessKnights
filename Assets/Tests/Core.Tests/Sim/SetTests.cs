@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ThirtySixArmourSetsSixThemesInEachOfSixRarities()
         {
-            var armour = Items.Sets.Where(s => !s.Jewelry && !s.Peaceful).ToList();
+            var armour = Items.Sets.Where(s => !s.Jewelry && !s.Peaceful && s.Event == null).ToList();
             Assert.That(armour.Count, Is.EqualTo(36));
             var rarities = new[] { ItemRarity.Rare, ItemRarity.Epic, ItemRarity.Legendary, ItemRarity.Mythic, ItemRarity.Ancient, ItemRarity.Rift };
             foreach (var rarity in rarities)
@@ -83,12 +83,13 @@ namespace Game.Core.Tests.Sim
                 slots.Add(loop.State.Drops.Gear.Count > gearBefore ? loop.State.Drops.Gear[loop.State.Drops.Gear.Count - 1].Slot : ItemSlot.Weapon);
             }
 
-            Assert.That(costs, Is.EqualTo(new[] { 10.0, 15, 20, 30, 40 }));
+            Assert.That(costs, Is.EqualTo(new[] { 15.0, 18, 21, 24, 27 }));
             Assert.That(slots.Count, Is.EqualTo(5));
             Assert.That(loop.State.Weapons.Bag.Last().Set, Is.SameAs(set));
-            Assert.That(loop.State.Drops.Ingots, Is.EqualTo(1000 - 115));
+            Assert.That(loop.State.Drops.Ingots, Is.EqualTo(1000 - 105));
+            Assert.That(loop.State.Drops.CraftSpent, Is.EqualTo(105));
             Assert.That(loop.Gear.Collected(set), Is.True);
-            Assert.That(loop.Drops.CraftCost(set), Is.EqualTo(10));
+            Assert.That(loop.Drops.CraftCost(set), Is.EqualTo(15));
         }
 
         [Test]
@@ -107,7 +108,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(piece.Slot, Is.EqualTo(ItemSlot.Gloves));
             Assert.That(piece.Set!.Id, Is.EqualTo("onslaught"));
             Assert.That(piece.Rarity, Is.EqualTo(ItemRarity.Rare));
-            Assert.That(loop.State.Drops.Ingots, Is.EqualTo(90));
+            Assert.That(loop.State.Drops.Ingots, Is.EqualTo(85));
         }
 
         [Test]
@@ -115,7 +116,6 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Runedancer();
             loop.State.Drops.Ingots = 5;
-
             Assert.That(loop.CraftSetPiece("no_such_set"), Is.EqualTo(CraftResult.UnknownSet));
             Assert.That(loop.CraftSetPiece("jarl_forge"), Is.EqualTo(CraftResult.NotEnoughIngots));
             Assert.That(loop.State.Drops.Ingots, Is.EqualTo(5));
@@ -124,7 +124,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FortyEightJewelrySetsOfAnAmuletAndTwoDifferentRings()
         {
-            var jewelry = Items.Sets.Where(s => s.Jewelry).ToList();
+            var jewelry = Items.Sets.Where(s => s.Jewelry && s.Event == null).ToList();
             Assert.That(jewelry.Count, Is.EqualTo(48));
             Assert.That(jewelry.GroupBy(s => s.Rarity).All(g => g.Count() == 8), Is.True, "eight lines in each of the six rarities");
             foreach (var set in jewelry)
@@ -143,12 +143,12 @@ namespace Game.Core.Tests.Sim
             var loop = Runedancer();
             loop.State.Drops.Essence = 0;
             Assert.That(loop.CraftSetPiece("gold_vein_rare"), Is.EqualTo(CraftResult.NotEnoughEssence));
-            loop.State.Drops.Essence = 20;
-            Assert.That(loop.CraftSetPiece("gold_vein_rare"), Is.EqualTo(CraftResult.Crafted));
-            Assert.That(loop.State.Drops.Essence, Is.Zero, "the first piece of a rare set costs 10 ingots, so 20 essence");
-            loop.State.Drops.Essence = 29;
-            Assert.That(loop.CraftSetPiece("blood_ruby_rare"), Is.EqualTo(CraftResult.NotEnoughEssence));
             loop.State.Drops.Essence = 30;
+            Assert.That(loop.CraftSetPiece("gold_vein_rare"), Is.EqualTo(CraftResult.Crafted));
+            Assert.That(loop.State.Drops.Essence, Is.Zero, "the first piece of a rare set costs 15 ingots, so 30 essence");
+            loop.State.Drops.Essence = 44;
+            Assert.That(loop.CraftSetPiece("blood_ruby_rare"), Is.EqualTo(CraftResult.NotEnoughEssence));
+            loop.State.Drops.Essence = 45;
             Assert.That(loop.CraftSetPiece("blood_ruby_rare"), Is.EqualTo(CraftResult.Crafted));
             Assert.That(loop.State.Drops.Gear.Last().Set!.Id, Is.EqualTo("blood_ruby_rare"));
         }
