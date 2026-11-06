@@ -31,6 +31,7 @@ namespace Game.Core.Sim
         EventBossFailed,
         PeacefulModeChanged,
         PeacefulActivityChanged,
-        TeaPauseSuggested
+        TeaPauseSuggested,
+        CampTierReached
     }
 }
