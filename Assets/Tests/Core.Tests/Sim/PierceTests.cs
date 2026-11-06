@@ -31,7 +31,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryClassPiercesWithTheBaseShare()
         {
-            Assert.That(TestWorld.Real.Combat.BasePierce, Is.EqualTo(1));
+            Assert.That(TestWorld.Real.Combat.BasePierce, Is.EqualTo(0.5));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Game.Core.Tests.Sim
             loop.Events.Clear();
             Assert.That(KillsFromOneHit(loop, input), Is.EqualTo(1));
             var taken = (loop.State.EnemyMaxHp - loop.State.EnemyHp) / hit;
-            Assert.That(taken.ToDouble(), Is.EqualTo(0.6).Within(0.05), "the next enemy takes what was left of the hit");
+            Assert.That(taken.ToDouble(), Is.EqualTo(0.6 * TestWorld.WithPierce.Combat.BasePierce).Within(0.05), "the next enemy takes the base share of what was left of the hit");
         }
     }
 }
