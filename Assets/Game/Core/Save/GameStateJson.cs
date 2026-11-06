@@ -102,7 +102,7 @@ namespace Game.Core.Save
                 ("fishing", WriteFishing(state.Fishing)),
                 ("cooking", WriteCooking(state.Cooking)),
                 ("forge", Object(("target", JsonValue.Of(state.Forge.Target.ToString())), ("slot", JsonValue.Of(state.Forge.Slot.ToString())), ("hammers", JsonValue.Of(state.Forge.Hammers)),
-                    ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)))),
+                    ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)), ("salvageOre", JsonValue.Of(state.Forge.SalvageOre)))),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -302,6 +302,7 @@ namespace Game.Core.Save
                 state.Forge.Heat = forge.Field("heat").AsNumber(0, 1);
                 state.Forge.Smelted = node.Field("forge").Field("smelted").AsLong(0);
                 state.Forge.Tempered = node.Field("forge").Field("tempered").AsLong(0);
+                state.Forge.SalvageOre = forge.HasField("salvageOre") ? forge.Field("salvageOre").AsLong(0) : 0;
             }
             if (node.HasField("garden"))
                 ReadGarden(node.Field("garden"), state.Garden);

@@ -143,6 +143,14 @@ namespace Game.Core.Sim
             }
         }
 
+        public void SalvageOre(ItemDrop drop)
+        {
+            var itemLevel = drop.Weapon?.ItemLevel ?? drop.Gear?.ItemLevel ?? 1;
+            var ore = SmeltYield(drop.Rarity);
+            _camp.Add(OreOf(itemLevel), ore);
+            State.SalvageOre += ore;
+        }
+
         private void Smelt(int itemLevel, ItemRarity rarity)
         {
             var ore = OreOf(itemLevel);

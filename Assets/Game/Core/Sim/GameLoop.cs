@@ -146,6 +146,7 @@ namespace Game.Core.Sim
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
             _cooking = new CookingSystem(data.Cooking, state, hero, _camp, _peaceful, Events);
             _forge = new ForgeSystem(data.Forge, state, data.Stages, _camp, _peaceful, _weapons, _gear, Events);
+            _drops.Salvaged = _forge.SalvageOre;
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
             _town = new TownSystem(data.Town, state, _camp, _alchemy, _expeditions, Events);
             _stage.ChestGold = data.Atlas.ChestGold;

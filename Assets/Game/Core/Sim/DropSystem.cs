@@ -265,6 +265,8 @@ namespace Game.Core.Sim
 
         public int Pending => _pendingCount;
 
+        public System.Action<ItemDrop>? Salvaged { get; set; }
+
         public void Flush()
         {
             for (var i = 0; i < _pendingCount; i++)
@@ -517,7 +519,10 @@ namespace Game.Core.Sim
                 _weapons.Give(weapon);
             else
                 drops.Gear.Add(gear!);
-            _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(drop.Source, drop.Stage, weapon, gear, salvaged, dust)));
+            var delivered = new ItemDrop(drop.Source, drop.Stage, weapon, gear, salvaged, dust);
+            if (salvaged)
+                Salvaged?.Invoke(delivered);
+            _events.Add(GameEvent.ForDrop(_state.Tick, delivered));
         }
 
         private GearItem RollGear(PendingDrop drop, ItemRarity rarity, Rng rng)
