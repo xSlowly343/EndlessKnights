@@ -89,7 +89,7 @@ namespace Game.Core.Sim.Rift
         {
             if (Inside)
                 return RiftEntry.AlreadyInside;
-            if (_state.Dungeons.Inside)
+            if (_state.Dungeons.Inside || _state.Events.FightInside)
                 return RiftEntry.InDungeon;
             if (_stage.Linked)
                 return RiftEntry.InParty;
@@ -104,7 +104,7 @@ namespace Game.Core.Sim.Rift
         {
             if (Inside && _state.Rift.WindowId == riftId)
                 return RiftEntry.AlreadyInside;
-            if (_state.Dungeons.Inside)
+            if (_state.Dungeons.Inside || _state.Events.FightInside)
                 return RiftEntry.InDungeon;
             if (WindowAt(riftId * 1000) == null)
                 return RiftEntry.Closed;

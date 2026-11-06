@@ -47,7 +47,7 @@ namespace Game.Core.Sim
                 * Expected(state, CombatStats.OfflineGold, 1, StatTags.Gold);
             _hero.SetConditions(conditions);
 
-            if (dps.Sign <= 0 || time <= 0 || state.Rift.Inside || state.Dungeons.Inside)
+            if (dps.Sign <= 0 || time <= 0 || state.Rift.Inside || state.Dungeons.Inside || state.Events.FightInside)
                 return new OfflineResult(0, 0, BigNumber.Zero, stage, stage, kills, farming, false, false, seconds);
 
             while (!farming)

@@ -39,7 +39,7 @@ namespace Game.Core.Content
         public const string FileName = "cosmetics.json";
         public const int SupportedVersion = 1;
         public const string ShopSource = "shop";
-        public static readonly IReadOnlyList<string> Sources = new[] { ShopSource, "pass", "drop", "reward" };
+        public static readonly IReadOnlyList<string> Sources = new[] { ShopSource, "pass", "drop", "reward", "event" };
 
         private readonly Dictionary<string, CosmeticDef> _byId;
 

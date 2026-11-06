@@ -157,6 +157,20 @@ function seasonPassAdd(nk: nkruntime.Nakama, userId: string, points: number, now
     return seasonPassView(nk, userId, result.value, nowUnixMs, result.accepted, gift);
 }
 
+function seasonPassBonus(nk: nkruntime.Nakama, userId: string, points: number, nowUnixMs: number): number {
+    const season = seasonPassSeasonOf(nowUnixMs);
+    if (season < 0 || !(points > 0))
+        return 0;
+    const rules = SeasonPassServerRules;
+    const result = seasonPassChange(nk, userId, season, (value) => {
+        const accepted = Math.max(0, Math.min(Math.floor(points), rules.levels * rules.pointsPerLevel - value.points));
+        value.points += accepted;
+        return { accepted: accepted, due: seasonPassDue(value) };
+    });
+    seasonPassGive(nk, userId, result.due, nowUnixMs);
+    return result.accepted;
+}
+
 function seasonPassPremium(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
     const season = seasonPassSeasonOf(nowUnixMs);
     if (season < 0)
