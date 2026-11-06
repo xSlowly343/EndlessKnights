@@ -286,7 +286,7 @@
       "trait": {
         "partyText": {"ru": "Смесь в колбе: отряд чаще критует и получает больше золота; после каждой смеси 6 с созвездия отряда сильнее", "en": "The mix in the flask: the party crits more often and gets more gold; for 6 s after each mix the party's constellations are stronger"},
         "levels": [
-          {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.8}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "constellationEffect", "kind": "increased", "value": 0.1, "after": {"signal": "mix", "seconds": 6, "stacks": 1}}]},
+          {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.8}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "roleBuffEffect", "kind": "increased", "value": 0.1, "after": {"signal": "mix", "seconds": 6, "stacks": 1}}]},
           {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
           {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
           {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},

@@ -24,7 +24,7 @@ namespace Game.Core.Sim.Rift
         private IReadOnlyList<RiftModifier> _windowModifiers = System.Array.Empty<RiftModifier>();
         private int[] _unlessMasks = System.Array.Empty<int>();
         private long _modifiersFor = -1;
-        private int _marks = -1;
+        private int _roles = -1;
 
         public SlateSystem? Slates { get; set; }
 
@@ -53,20 +53,20 @@ namespace Game.Core.Sim.Rift
         public const int NotLifted = -1;
         public const int LiftedBySelf = PartyRules.MaxSlots;
 
-        public bool ModifierActive(int index) => Inside && (_unlessMasks[index] & PartyMarks) == 0;
+        public bool ModifierActive(int index) => Inside && (_unlessMasks[index] & _synergy.PartyRoles) == 0;
 
-        public int LiftingMarks(int index) => Inside ? _unlessMasks[index] & PartyMarks : 0;
+        public int LiftingRoles(int index) => Inside ? _unlessMasks[index] & _synergy.PartyRoles : 0;
 
         public int LiftedBy(int index)
         {
-            var unless = LiftingMarks(index);
+            var unless = LiftingRoles(index);
             if (unless == 0)
                 return NotLifted;
-            if ((_synergy.OwnMarks & unless) != 0)
+            if ((_synergy.OwnRole & unless) != 0)
                 return LiftedBySelf;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
-                if ((_synergy.AllyMarksOf(slot) & unless) != 0)
+                if ((_synergy.AllyRoleOf(slot) & unless) != 0)
                     return slot;
             }
             return NotLifted;
@@ -167,14 +167,12 @@ namespace Game.Core.Sim.Rift
 
         public void Tick()
         {
-            var marks = Inside ? PartyMarks : 0;
-            if (marks == _marks)
+            var roles = Inside ? _synergy.PartyRoles : 0;
+            if (roles == _roles)
                 return;
-            _marks = marks;
+            _roles = roles;
             Rebuild();
         }
-
-        private int PartyMarks => _synergy.OwnMarks | _synergy.AllyMarks;
 
         private StageTable BuildWorld() =>
             _home.ForWorld(_rules.HpMultiplier, _rules.WallPeriod, _rules.WallZoneLength, _rules.WallRate, _rules.BossTimerSeconds);
@@ -196,7 +194,7 @@ namespace Game.Core.Sim.Rift
                 _stage.RaisesRecord = !inside;
             }
             LoadWindowModifiers();
-            _marks = -1;
+            _roles = -1;
             Tick();
         }
 
@@ -209,7 +207,7 @@ namespace Game.Core.Sim.Rift
             _windowModifiers = riftId == 0 ? System.Array.Empty<RiftModifier>() : _rules.ModifiersFor(WindowAt(riftId * 1000)?.Id ?? riftId);
             _unlessMasks = new int[_windowModifiers.Count];
             for (var i = 0; i < _windowModifiers.Count; i++)
-                _unlessMasks[i] = _synergyRules.MaskOf(_windowModifiers[i].UnlessMarks);
+                _unlessMasks[i] = _synergyRules.RoleMaskOf(_windowModifiers[i].UnlessRoles);
         }
 
         private void Rebuild()

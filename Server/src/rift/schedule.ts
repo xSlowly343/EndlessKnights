@@ -4,6 +4,7 @@ interface RiftWindowStart {
 }
 
 interface RiftRules {
+    roles: string[];
     windows: RiftWindowStart[];
     durationMs: number;
     announceMs: number;

@@ -17,7 +17,6 @@ interface PartyServerConfig extends PartyEncounterRules {
     relayCooldownSeconds: number;
     allyResourceMax: number;
     allyResourceCooldownSeconds: number;
-    synergyConstellations: number;
 }
 
 const PartyCutTolerance = 1e-9;
@@ -58,9 +57,6 @@ class PartyHost {
     private readonly lastRepeatTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastRelayTick = [PartyNever, PartyNever, PartyNever, PartyNever];
     private readonly lastResourceTick = [PartyNever, PartyNever, PartyNever, PartyNever];
-    private readonly constellations = [0, 0, 0, 0];
-    private readonly marks = [0, 0, 0, 0];
-    private enemyConstellations = 0;
     private readonly recentShares = [0, 0, 0, 0];
     private readonly recentHits = [0, 0, 0, 0];
     private stateSequence = 0;
@@ -180,23 +176,9 @@ class PartyHost {
                     this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel });
                 break;
             }
-            case PartyMessageKind.Marks: {
-                const marks = partyDecodeMarks(data);
-                if (marks !== null)
-                    this.marks[slot] = marks;
-                break;
-            }
             case PartyMessageKind.BossRequest:
                 this.bossRequests.push(slot);
                 break;
-            case PartyMessageKind.Synergy: {
-                const synergy = partyDecodeSynergy(data, this.config.synergyConstellations);
-                if (synergy !== null) {
-                    this.constellations[slot] = synergy;
-                    this.enemyConstellations = (this.enemyConstellations | synergy) >>> 0;
-                }
-                break;
-            }
             case PartyMessageKind.PartyResource: {
                 const relayed = partyRelayResource(data, slot, this.config.allyResourceMax);
                 if (relayed && this.encounter.tick - this.lastResourceTick[slot] >= Math.max(1, partyTicks(this.config.allyResourceCooldownSeconds))) {
@@ -360,12 +342,17 @@ class PartyHost {
                 this.wanderers.push(userId);
     }
 
-    private activeConstellations(): number {
-        let active = 0;
-        for (let slot = 0; slot < PartyMaxSlots; slot++)
-            if (this.encounter.members[slot].joined)
-                active = (active | this.constellations[slot]) >>> 0;
-        return active;
+    private joinedRoles(): number {
+        let roles = 0;
+        for (let slot = 0; slot < PartyMaxSlots; slot++) {
+            const member = this.encounter.members[slot];
+            if (!member.joined)
+                continue;
+            const index = RiftServerRules.roles.indexOf(chronicleRoleOf(member.heroClass));
+            if (index >= 0)
+                roles |= 1 << index;
+        }
+        return roles;
     }
 
     private noteHelp(event: PartyEvent): void {
@@ -394,16 +381,13 @@ class PartyHost {
         }
         const window = riftWindowAt(RiftServerRules, this.encounter.riftId * 1000);
         const picked = riftModifiersFor(RiftServerRules, window ? window.id : this.encounter.riftId);
-        let marks = 0;
-        for (let slot = 0; slot < PartyMaxSlots; slot++)
-            if (this.encounter.members[slot].joined)
-                marks |= this.marks[slot];
+        const roles = this.joinedRoles();
         let regen = 0;
         let shield = 0;
         let extra = 0;
         for (const id of picked) {
             const enemy = RiftServerRules.enemies[RiftServerRules.modifiers.indexOf(id)];
-            if (!enemy || (enemy.unless & marks) !== 0)
+            if (!enemy || (enemy.unless & roles) !== 0)
                 continue;
             regen += enemy.regen;
             shield += enemy.shield;
@@ -464,8 +448,6 @@ class PartyHost {
         this.lastRepeatTick[slot] = PartyNever;
         this.lastRelayTick[slot] = PartyNever;
         this.lastResourceTick[slot] = PartyNever;
-        this.constellations[slot] = 0;
-        this.marks[slot] = 0;
         this.ticksToState = 0;
     }
 
@@ -559,7 +541,7 @@ class PartyHost {
         for (const event of events) {
             if (event.kind === PartyEventKind.EnemyKilled) {
                 this.kills++;
-                this.chronicle.synergiesOnOneEnemy = Math.max(this.chronicle.synergiesOnOneEnemy || 0, partyBitCount(this.enemyConstellations));
+                this.chronicle.synergiesOnOneEnemy = Math.max(this.chronicle.synergiesOnOneEnemy || 0, partyBitCount(this.joinedRoles()));
                 if (event.enemyKind === PartyEnemyKind.Boss)
                     this.noteBossKill(event);
                 this.broadcast(partyEncodeEnemyKilled(event), PartyNoSlot);
@@ -569,7 +551,6 @@ class PartyHost {
             } else if (event.kind === PartyEventKind.GuestLeft) {
                 this.releaseGuests(event.rewarded);
             } else if (event.kind === PartyEventKind.EnemySpawned) {
-                this.enemyConstellations = this.activeConstellations();
                 this.ticksToState = 0;
             } else if (event.kind === PartyEventKind.WorldPending
                 || event.kind === PartyEventKind.WorldCancelled || event.kind === PartyEventKind.WorldChanged) {
@@ -586,7 +567,7 @@ class PartyHost {
         }
         if (--this.ticksToState <= 0 && this.encounter.started) {
             this.ticksToState = Math.max(1, partyTicks(this.config.stateBroadcastSeconds));
-            this.broadcast(partyEncodeEncounterState(this.encounter, ++this.stateSequence, this.recentShares, this.recentHits, this.marks), PartyNoSlot);
+            this.broadcast(partyEncodeEncounterState(this.encounter, ++this.stateSequence, this.recentShares, this.recentHits), PartyNoSlot);
             for (let slot = 0; slot < PartyMaxSlots; slot++) {
                 this.recentShares[slot] = 0;
                 this.recentHits[slot] = 0;

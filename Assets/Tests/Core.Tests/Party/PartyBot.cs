@@ -15,12 +15,15 @@ namespace Game.Core.Tests.Party
         private int _ticks;
         private double _total;
 
-        public PartyBot(IPartyTransport transport, ulong host, double sharePerTick)
+        public PartyBot(IPartyTransport transport, ulong host, double sharePerTick, byte heroClass = 0)
         {
             _transport = transport;
             _host = host;
             _sharePerTick = sharePerTick;
+            _heroClass = heroClass;
         }
+
+        private readonly byte _heroClass;
 
         public bool Joined { get; private set; }
         public EncounterStateMessage State { get; private set; }
@@ -34,7 +37,7 @@ namespace Game.Core.Tests.Party
                 Receive(length);
             _ticks++;
             if (!Joined && _ticks % 10 == 1)
-                Send(PartyCodec.Encode(_buffer, new HelloMessage { Stage = 1 }));
+                Send(PartyCodec.Encode(_buffer, new HelloMessage { Stage = 1, HeroClass = _heroClass }));
             if (_ticks % 50 == 0)
                 Send(PartyCodec.Encode(_buffer, new PresenceMessage { Presence = PartyPresence.Fighting, Stage = 1 }));
             if (!Joined || State.EnemyId == 0)
@@ -68,8 +71,6 @@ namespace Game.Core.Tests.Party
                     break;
             }
         }
-
-        public void SendSynergy(uint constellations) => Send(PartyCodec.Encode(_buffer, new SynergyMessage { Constellations = constellations }));
 
         private void Send(int length) => _transport.Send(_host, _buffer, length);
     }

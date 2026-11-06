@@ -52,9 +52,7 @@ namespace Game.Core.Party
         private readonly PartyLoadoutMessage[] _allyLoadouts = new PartyLoadoutMessage[PartyRules.MaxSlots];
         private long _refusedRift;
         private long _guestLinkTick;
-        private uint _sentConstellations;
         private int _auraBoundGem;
-        private int _sentMarks = -1;
         private int _traitTimerTicks;
         private double _traitTimerSent;
 
@@ -262,7 +260,7 @@ namespace Game.Core.Party
             {
                 FollowWorld();
                 SyncEnemy();
-                ShareMarks();
+                ShareAllies();
             }
         }
 
@@ -277,8 +275,6 @@ namespace Game.Core.Party
                 ShareTraitTimer();
                 ShareTraitResource();
                 ShareTraitEffects();
-                ShareConstellations();
-                ShareMarks(Status == PartyLink.Linked);
             }
             PassDroppedFocus();
             WatchSignal();
@@ -560,8 +556,6 @@ namespace Game.Core.Party
         private void Link()
         {
             Status = PartyLink.Linked;
-            _sentConstellations = 0;
-            _sentMarks = -1;
             _auraBoundGem = 0;
             _guestLinkTick = _tick;
             _loop.Stages.Link(IsGuest);
@@ -675,33 +669,19 @@ namespace Game.Core.Party
             }
         }
 
-        private void ShareMarks()
+        private void ShareAllies()
         {
             var synergy = _loop.Synergy;
-            var rules = synergy.Rules;
             var allies = 0;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 var present = slot != _ownSlot && Roster.Player(slot) != 0 && Roster.Presence(slot) != PartyPresence.Offline;
                 if (!present)
                 {
-                    synergy.SetAlly(slot, false, default, 0);
+                    synergy.SetAlly(slot, false, default);
                     continue;
                 }
-                var marks = _state.Marks(slot);
-                var ally = _loop.PartyBuffs.Ally(slot);
-                for (var i = 0; i < ally.Auras.Length; i++)
-                {
-                    if (ally.Auras[i].Active)
-                        marks |= rules.MaskOf(ally.Auras[i].Gem!);
-                }
-                for (var i = 0; i < ShownEffect.MaxShown; i++)
-                {
-                    var effect = EnemyEffect(i);
-                    if (effect.Active && effect.Owner == slot && _loop.Data.Gems.TryGetByNetId(effect.Id, out var gem))
-                        marks |= rules.MaskOf(gem);
-                }
-                synergy.SetAlly(slot, true, (HeroClass)Roster.HeroClass(slot), marks, Roster.Presence(slot) == PartyPresence.Fighting);
+                synergy.SetAlly(slot, true, (HeroClass)Roster.HeroClass(slot), Roster.Presence(slot) == PartyPresence.Fighting);
                 allies++;
             }
             _loop.State.PartyAllies = allies;
@@ -791,24 +771,6 @@ namespace Game.Core.Party
             }
             SendToHost(PartyCodec.Encode(_out, new CastEffectMessage { EffectId = _auraBoundGem, OnEnemy = true, End = true }));
             _auraBoundGem = 0;
-        }
-
-        private void ShareMarks(bool linked)
-        {
-            var marks = _loop.Synergy.OwnMarks;
-            if (!linked || marks == _sentMarks)
-                return;
-            _sentMarks = marks;
-            SendToHost(PartyCodec.Encode(_out, new MarksMessage { Marks = (uint)marks }));
-        }
-
-        private void ShareConstellations()
-        {
-            var constellations = _loop.Synergy.ConstellationMask;
-            if (constellations == _sentConstellations || Status != PartyLink.Linked)
-                return;
-            _sentConstellations = constellations;
-            SendToHost(PartyCodec.Encode(_out, new SynergyMessage { Constellations = constellations }));
         }
 
         private void PassDroppedFocus()

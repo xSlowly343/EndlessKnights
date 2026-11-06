@@ -54,7 +54,6 @@ const rules = {
   relayCooldownSeconds: party.relay.cooldownSeconds,
   allyResourceMax: party.buffs.allyResource.max,
   allyResourceCooldownSeconds: party.buffs.allyResource.cooldownSeconds,
-  synergyConstellations: synergy.constellations.length,
   barsPerSecond: party.caps.barsPerSecond,
   burstBars: party.caps.burstBars,
   hitBurstSeconds: party.caps.hitBurstSeconds,
@@ -75,16 +74,19 @@ function statSum(modifiers, stat, kind) {
   return modifiers.filter((modifier) => modifier.stat === stat && modifier.kind === kind).reduce((sum, modifier) => sum + modifier.value, 0);
 }
 
-function markMask(marks) {
-  return (marks || []).reduce((mask, mark) => {
-    const index = synergy.marks.indexOf(mark);
+const partyRoles = Object.values(synergy.roles).filter((role, index, all) => all.indexOf(role) === index);
+
+function roleMask(roles) {
+  return (roles || []).reduce((mask, role) => {
+    const index = partyRoles.indexOf(role);
     if (index < 0)
-      throw new Error("rift.json: unknown mark " + mark);
+      throw new Error("rift.json: unknown role " + role);
     return mask | (1 << index);
   }, 0);
 }
 
 const riftRules = {
+  roles: partyRoles,
   windows: rift.schedule.windows.map((window) => {
     const day = days.indexOf(window.day);
     if (day < 0)
@@ -95,7 +97,7 @@ const riftRules = {
   announceMs: Math.round(rift.schedule.announceMinutes * 60 * 1000),
   modifiers: rift.modifiers.map((modifier) => modifier.id),
   enemies: rift.modifiers.map((modifier) => ({
-    unless: markMask(modifier.unlessMarks),
+    unless: roleMask(modifier.unlessRoles),
     regen: statSum(modifier.modifiers, "enemyRegen", "flat"),
     shield: statSum(modifier.modifiers, "bossShield", "flat"),
     extraEnemies: statSum(modifier.modifiers, "stageEnemies", "increased")

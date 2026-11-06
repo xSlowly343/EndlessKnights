@@ -11,7 +11,6 @@ interface GhostRules {
 interface GhostRecord {
     heroClass: number;
     shareRate: number;
-    marks: string[];
     updatedAt: number;
     hourSeconds: number[];
     hourIndex: number;
@@ -25,7 +24,6 @@ const GhostPoolCollection = "ghost_pool";
 const GhostPoolKey = "recent";
 const GhostHours = 24;
 const GhostHourMs = 3600 * 1000;
-const GhostMaxMarks = 10;
 const GhostWriteAttempts = 3;
 const GhostPickedKey = "picked";
 const GhostMaxThanks = 100;
@@ -84,19 +82,6 @@ function ghostPoolChange(nk: nkruntime.Nakama, userId: string, keep: boolean): v
     }
 }
 
-function ghostMarks(value: any): string[] {
-    if (!Array.isArray(value) || value.length > GhostMaxMarks)
-        throw new Error("bad request");
-    const marks: string[] = [];
-    for (const mark of value) {
-        if (typeof mark !== "string" || !/^[A-Za-z]{1,32}$/.test(mark))
-            throw new Error("bad request");
-        if (marks.indexOf(mark) < 0)
-            marks.push(mark);
-    }
-    return marks;
-}
-
 function ghostUploadRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const userId = partyCaller(ctx);
     const request = partyRequest(payload);
@@ -115,16 +100,14 @@ function ghostUploadRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
         throw new Error("bad request");
     if (typeof activeSeconds !== "number" || !(activeSeconds >= 0))
         throw new Error("bad request");
-    const marks = ghostMarks(request.marks);
     const now = Date.now();
-    const record: GhostRecord = ghostRead(nk, userId) || { heroClass: heroClass, shareRate: 0, marks: [], updatedAt: now, hourSeconds: ghostEmptyHours(), hourIndex: Math.floor(now / GhostHourMs) };
+    const record: GhostRecord = ghostRead(nk, userId) || { heroClass: heroClass, shareRate: 0, updatedAt: now, hourSeconds: ghostEmptyHours(), hourIndex: Math.floor(now / GhostHourMs) };
     const sinceLast = Math.max(0, (now - record.updatedAt) / 1000);
     const allowed = Math.min(2 * rules.uploadMinutes * 60, sinceLast + 60);
     ghostRoll(record, now);
     record.hourSeconds[record.hourIndex % GhostHours] += Math.min(allowed, Math.floor(activeSeconds));
     record.heroClass = heroClass;
     record.shareRate = shareRate;
-    record.marks = marks;
     record.updatedAt = now;
     nk.storageWrite([{ collection: GhostCollection, key: GhostKey, userId: userId, value: record as any, permissionRead: 0, permissionWrite: 0 }]);
     ghostPoolChange(nk, userId, true);
@@ -134,7 +117,7 @@ function ghostUploadRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
 function ghostView(nk: nkruntime.Nakama, userId: string, record: GhostRecord, nowUnixMs: number): { [key: string]: any } {
     return {
         userId: userId, name: chronicleNameOf(nk, userId), heroClass: record.heroClass, shareRate: record.shareRate,
-        marks: record.marks, activity: ghostActivity(record, nowUnixMs)
+        activity: ghostActivity(record, nowUnixMs)
     };
 }
 

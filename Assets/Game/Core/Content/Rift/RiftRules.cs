@@ -83,14 +83,14 @@ namespace Game.Core.Content.Rift
             return false;
         }
 
-        public void RequireMarks(SynergyRules synergy)
+        public void RequireRoles(SynergyRules synergy)
         {
             foreach (var modifier in Modifiers)
             {
-                foreach (var mark in modifier.UnlessMarks)
+                foreach (var role in modifier.UnlessRoles)
                 {
-                    if (synergy.MaskOf(new[] { mark }) == 0)
-                        throw new ContentException(FileName, "modifiers." + modifier.Id, $"unknown mark '{mark}', expected one of {string.Join(", ", synergy.Marks)} from {SynergyRules.FileName}");
+                    if (synergy.RoleMask(role) == 0)
+                        throw new ContentException(FileName, "modifiers." + modifier.Id, $"unknown role '{role}', expected one of {string.Join(", ", synergy.Roles)} from {SynergyRules.FileName}");
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace Game.Core.Content.Rift
             var artifacts = root.Field("artifacts");
             var modifiers = new List<RiftModifier>();
             foreach (var node in root.Field("modifiers").Items())
-                modifiers.Add(new RiftModifier(node.Field("id").AsString(), Strings(node, "unlessMarks"), ModifierReader.ReadList(node.Field("modifiers"))));
+                modifiers.Add(new RiftModifier(node.Field("id").AsString(), Strings(node, "unlessRoles"), ModifierReader.ReadList(node.Field("modifiers"))));
             var perWindow = root.Field("modifiersPerWindow").AsInt(0, 10);
             if (perWindow > modifiers.Count)
                 throw root.Field("modifiersPerWindow").Error($"there are only {modifiers.Count} modifiers");

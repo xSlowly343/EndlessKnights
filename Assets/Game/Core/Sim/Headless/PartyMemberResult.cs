@@ -27,6 +27,5 @@ namespace Game.Core.Sim.Headless
         public string? Path { get; set; }
         public BigNumber Damage { get; set; }
         public double SharesDealt { get; set; }
-        public SynergyUptime? Synergy { get; set; }
     }
 }

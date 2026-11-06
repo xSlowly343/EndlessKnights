@@ -18,10 +18,10 @@ namespace Game.Sim
 
         private static readonly (string Name, HeroClass[] Classes)[] Combos =
         {
-            ("full_orchestra", new[] { HeroClass.Runedancer, HeroClass.Minstrel, HeroClass.Whisperer, HeroClass.Soulbinder }),
+            ("four_roles", new[] { HeroClass.Runedancer, HeroClass.Minstrel, HeroClass.Whisperer, HeroClass.Soulbinder }),
             ("breaker_hexer_blighter_time", new[] { HeroClass.Alchemist, HeroClass.Cartomancer, HeroClass.Herbwitch, HeroClass.Clockwright }),
-            ("seeker_and_army", new[] { HeroClass.Dowser, HeroClass.Golemancer, HeroClass.Ghostcaptain, HeroClass.Lanternbearer }),
-            ("strikers_and_banner", new[] { HeroClass.Duelist, HeroClass.Windshot, HeroClass.Minstrel, HeroClass.Sandwalker })
+            ("seeker_and_summoners", new[] { HeroClass.Dowser, HeroClass.Golemancer, HeroClass.Ghostcaptain, HeroClass.Lanternbearer }),
+            ("three_strikers", new[] { HeroClass.Duelist, HeroClass.Windshot, HeroClass.Runedancer, HeroClass.Sandwalker })
         };
 
         public static int Run(GameData data, string dataFolder, BotProfile profile, SimOptions options)
@@ -33,7 +33,7 @@ namespace Game.Sim
             var seconds = options.SynergyHours * 3600;
             using var file = options.OutFile == null ? null : new StreamWriter(options.OutFile);
             var output = file ?? Console.Out;
-            output.WriteLine("scenario,classes,uplift,damage_on,damage_off,stage_on,stage_off,constellations");
+            output.WriteLine("scenario,classes,uplift,damage_on,damage_off,stage_on,stage_off,roles");
 
             var parties = new List<(string Name, HeroClass[] Classes)>(Combos);
             var random = new Random((int)options.Seed);
@@ -41,33 +41,28 @@ namespace Game.Sim
                 parties.Add(("random_" + (i + 1), RandomParty(random)));
             parties.AddRange(Roster());
 
-            var seen = new List<PartyMemberResult>();
             var comboUplift = new List<double>();
             var randomUplift = new List<double>();
             foreach (var (name, classes) in parties)
             {
                 var on = Party(data, profile, classes, options, kits, null).Run(seconds);
-                seen.AddRange(on.Members);
                 var without = Party(data, profile, classes, options, kits, off).Run(seconds);
                 var uplift = Ratio(Damage(on), Damage(without)) - 1;
                 (name.StartsWith("random_", StringComparison.Ordinal) || name.StartsWith("roster_", StringComparison.Ordinal) ? randomUplift : comboUplift).Add(uplift);
                 output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6},{7}",
                     name, Names(classes), Percent(uplift), StageRecord.Number(Damage(on)), StageRecord.Number(Damage(without)), Stage(on), Stage(without),
-                    Constellations(on)));
+                    Roles(data.Synergy, classes)));
             }
             output.WriteLine(string.Format(CultureInfo.InvariantCulture, "summary,combos {0},random {1},difference {2}",
                 Percent(Average(comboUplift)), Percent(Average(randomUplift)), Percent(Average(comboUplift) - Average(randomUplift))));
 
-            WriteMarks(output, data.Synergy, seen);
-            WriteUnseen(output, data.Synergy, seen);
-
             if (options.SynergyDrops)
             {
-                output.WriteLine("drop,constellation,combo_uplift_without");
+                output.WriteLine("drop,role,combo_uplift_without");
                 var rules = data.Synergy;
-                foreach (var constellation in rules.Constellations)
+                foreach (var role in rules.Roles)
                 {
-                    var without = SynergyRules.Load(Strip(synergyJson, constellation.Id));
+                    var without = SynergyRules.Load(Strip(synergyJson, role));
                     var combo = new List<double>();
                     foreach (var (_, classes) in Combos)
                     {
@@ -75,7 +70,7 @@ namespace Game.Sim
                         var none = Party(data, profile, classes, options, kits, off).Run(seconds);
                         combo.Add(Ratio(Damage(on), Damage(none)) - 1);
                     }
-                    output.WriteLine(string.Format(CultureInfo.InvariantCulture, "drop,{0},{1}", constellation.Id, Percent(Average(combo))));
+                    output.WriteLine(string.Format(CultureInfo.InvariantCulture, "drop,{0},{1}", role, Percent(Average(combo))));
                 }
             }
             watch.Stop();
@@ -87,14 +82,14 @@ namespace Game.Sim
             IReadOnlyDictionary<HeroClass, IReadOnlyList<GemDef>> kits, SynergyRules? synergy) =>
             new PartySimulation(data, profile, classes, options.Seed, options.Loss, options.DamageMultiplier) { Kits = kits, Synergy = synergy, HeroLevel = options.HeroLevel };
 
-        private static string Strip(string json, string? constellation)
+        private static string Strip(string json, string? role)
         {
             var root = JsonNode.Parse(json)!.AsObject();
-            var constellations = root["constellations"]!.AsArray();
-            for (var i = constellations.Count - 1; i >= 0; i--)
+            var buffs = root["roleBuffs"]!.AsObject();
+            foreach (var (name, _) in new List<KeyValuePair<string, JsonNode?>>(buffs))
             {
-                if (constellation == null || (string?)constellations[i]!["id"] == constellation)
-                    constellations.RemoveAt(i);
+                if (role == null || name == role)
+                    buffs[name] = new JsonArray();
             }
             return root.ToJsonString();
         }
@@ -166,54 +161,16 @@ namespace Game.Sim
             return string.Join("+", names);
         }
 
-        private static string Constellations(PartySimulationResult result)
+        private static string Roles(SynergyRules rules, HeroClass[] classes)
         {
-            var uptime = result.Members[0].Synergy!;
-            var parts = new List<string>();
-            for (var i = 0; i < uptime.Rules.Constellations.Count; i++)
+            var roles = new List<string>();
+            foreach (var heroClass in classes)
             {
-                if (uptime.Constellation(i) > 0)
-                    parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1:0%}", uptime.Rules.Constellations[i].Id, uptime.Constellation(i)));
+                var role = rules.RoleOf(heroClass);
+                if (!roles.Contains(role))
+                    roles.Add(role);
             }
-            return parts.Count == 0 ? "-" : string.Join(" ", parts);
-        }
-
-        private static void WriteMarks(TextWriter output, SynergyRules rules, List<PartyMemberResult> members)
-        {
-            output.WriteLine("marks,class,own_mark_uptime");
-            foreach (var heroClass in HeroClassNames.ByName.Values)
-            {
-                var parts = new List<string>();
-                var runs = 0;
-                var uptime = new double[rules.Marks.Count];
-                foreach (var member in members)
-                {
-                    if (member.HeroClass != heroClass)
-                        continue;
-                    runs++;
-                    for (var mark = 0; mark < uptime.Length; mark++)
-                        uptime[mark] += member.Synergy!.OwnMark(mark);
-                }
-                if (runs == 0)
-                    continue;
-                for (var mark = 0; mark < uptime.Length; mark++)
-                {
-                    if (uptime[mark] > 0)
-                        parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1:0.#%}", rules.Marks[mark], uptime[mark] / runs));
-                }
-                output.WriteLine("marks,{0},{1}", HeroClassNames.Of(heroClass), parts.Count == 0 ? "-" : string.Join(" ", parts));
-            }
-        }
-
-        private static void WriteUnseen(TextWriter output, SynergyRules rules, List<PartyMemberResult> members)
-        {
-            var marks = new List<string>();
-            for (var mark = 0; mark < rules.Marks.Count; mark++)
-            {
-                if (!members.Exists(member => member.Synergy!.OwnMark(mark) > 0))
-                    marks.Add(rules.Marks[mark]);
-            }
-            output.WriteLine("unseen,marks,{0}", marks.Count == 0 ? "-" : string.Join(" ", marks));
+            return string.Join(" ", roles);
         }
 
         private static string Percent(double share) => (share * 100).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + "%";

@@ -307,26 +307,16 @@ namespace Game.Net.Tests
         }
 
         [Test]
-        public void AGhostIsReadFromTheServerReplyWithItsMarks()
+        public void AGhostIsReadFromTheServerReply()
         {
-            var synergy = Game.Core.Content.Synergy.SynergyRules.Load(System.IO.File.ReadAllText(DataFile("synergy.json")));
-            var json = NakamaJson.Parse("{\"userId\":\"u1\",\"name\":\"Ann\",\"heroClass\":8,\"shareRate\":0.4,\"marks\":[\"curse\",\"stun\"],\"activity\":0.75}");
+            var json = NakamaJson.Parse("{\"userId\":\"u1\",\"name\":\"Ann\",\"heroClass\":8,\"shareRate\":0.4,\"activity\":0.75}");
 
-            var ghost = GhostDirectory.Snapshot(json, synergy);
+            var ghost = GhostDirectory.Snapshot(json);
 
             Assert.That(ghost.Name, Is.EqualTo("Ann"));
             Assert.That(ghost.HeroClass, Is.EqualTo(Game.Core.Sim.HeroClass.Whisperer));
             Assert.That(ghost.ShareRate, Is.EqualTo(0.4));
             Assert.That(ghost.Activity, Is.EqualTo(0.75));
-            Assert.That(ghost.Marks, Is.EqualTo(synergy.MaskOf(new[] { "curse", "stun" })));
-        }
-
-        private static string DataFile(string name)
-        {
-            var directory = new System.IO.DirectoryInfo(System.IO.Directory.GetCurrentDirectory());
-            while (directory != null && !System.IO.Directory.Exists(System.IO.Path.Combine(directory.FullName, "Assets", "StreamingAssets", "Data")))
-                directory = directory.Parent;
-            return System.IO.Path.Combine(directory!.FullName, "Assets", "StreamingAssets", "Data", name);
         }
 
         [Test]

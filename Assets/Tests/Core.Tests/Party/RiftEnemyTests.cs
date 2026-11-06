@@ -109,13 +109,13 @@ namespace Game.Core.Tests.Party
             Assert.That(host.Encounter.ExtraStageEnemies, Is.EqualTo(0.5).Within(1e-12));
             Assert.That(host.Encounter.EnemiesOnStage, Is.EqualTo((int)System.Math.Floor(TestWorld.Data.Stages.EnemiesOnStage(1) * 1.5)));
 
-            var poison = synergy.MaskOf(new[] { "poison" });
-            member.Send(HostId, buffer, PartyCodec.Encode(buffer, new MarksMessage { Marks = (uint)poison }));
+            var blighter = network.Connect(11);
+            blighter.Send(HostId, buffer, PartyCodec.Encode(buffer, new HelloMessage { HeroClass = (byte)HeroClass.Herbwitch, Stage = 5 }));
             network.Advance(10);
             host.Tick();
 
-            Assert.That(host.Encounter.EnemyRegen, Is.Zero, "poison stops the regeneration");
-            Assert.That(host.Encounter.ExtraStageEnemies, Is.EqualTo(0.5).Within(1e-12), "a horde has no mark against it");
+            Assert.That(host.Encounter.EnemyRegen, Is.Zero, "a blighter in the party stops the regeneration");
+            Assert.That(host.Encounter.ExtraStageEnemies, Is.EqualTo(0.5).Within(1e-12), "nothing stops a horde");
 
             host.Encounter.SwitchWorld(PartyWorld.Home, 0);
             host.Tick();

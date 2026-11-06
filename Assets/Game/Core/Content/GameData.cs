@@ -110,10 +110,9 @@ namespace Game.Core.Content
             characters.RequirePaths(ascendancy);
             var tutorial = TutorialRules.Load(readFile(TutorialRules.FileName));
             var synergy = SynergyRules.Load(readFile(SynergyRules.FileName));
-            synergy.RequireGemMarks(gems);
             synergy.RequirePartyRoles(party.Search.RoleOf);
             var rift = RiftRules.Load(readFile(RiftRules.FileName));
-            rift.RequireMarks(synergy);
+            rift.RequireRoles(synergy);
             var weapons = WeaponCatalog.Load(readFile(WeaponCatalog.FileName));
             weapons.BindGems(gems);
             SkillRoster.Require(gems, weapons.Types);

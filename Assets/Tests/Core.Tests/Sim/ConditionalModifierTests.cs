@@ -32,10 +32,10 @@ namespace Game.Core.Tests.Sim
         public void AConditionalModifierCountsOnlyWhileItsConditionHolds()
         {
             var sheet = new StatSheet();
-            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.None, ModifierPool.General, ModifierCondition.Poison));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.None, ModifierPool.General, ModifierCondition.MouseMoving));
 
             Assert.That(sheet.Value(Damage, 1), Is.EqualTo(1));
-            sheet.SetConditions(ModifierConditions.Bit(ModifierCondition.Poison));
+            sheet.SetConditions(ModifierConditions.Bit(ModifierCondition.MouseMoving));
             Assert.That(sheet.Value(Damage, 1), Is.EqualTo(1.1).Within(1e-9));
             sheet.SetConditions(0);
             Assert.That(sheet.Value(Damage, 1), Is.EqualTo(1));
@@ -45,7 +45,7 @@ namespace Game.Core.Tests.Sim
         public void AConditionNoModifierUsesKeepsTheCache()
         {
             var sheet = new StatSheet();
-            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.None, ModifierPool.General, ModifierCondition.Poison));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.None, ModifierPool.General, ModifierCondition.MouseMoving));
             sheet.Value(Damage, 1);
             var recalculations = sheet.RecalculationCount;
 
@@ -58,10 +58,10 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ScalingAModifierKeepsItsCondition()
         {
-            var modifier = new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.Strike, ModifierPool.General, ModifierCondition.Bond);
+            var modifier = new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.Strike, ModifierPool.General, ModifierCondition.FocusFull);
 
-            Assert.That(modifier.WithValue(0.3).When, Is.EqualTo(ModifierCondition.Bond));
-            Assert.That(modifier.InPool(ModifierPool.Tree).When, Is.EqualTo(ModifierCondition.Bond));
+            Assert.That(modifier.WithValue(0.3).When, Is.EqualTo(ModifierCondition.FocusFull));
+            Assert.That(modifier.InPool(ModifierPool.Tree).When, Is.EqualTo(ModifierCondition.FocusFull));
             Assert.That(modifier.WithValue(0.1), Is.EqualTo(modifier));
             Assert.That(modifier, Is.Not.EqualTo(new Modifier(Damage, ModifierKind.Increased, 0.1, StatTags.Strike)));
         }
@@ -69,9 +69,9 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ContentReadsTheConditionAndRejectsUnknownOnes()
         {
-            var read = ModifierReader.Read(ContentNode.Root("{\"stat\":\"gold\",\"kind\":\"increased\",\"value\":0.1,\"when\":\"bond\"}", "test.json"));
+            var read = ModifierReader.Read(ContentNode.Root("{\"stat\":\"gold\",\"kind\":\"increased\",\"value\":0.1,\"when\":\"focusFull\"}", "test.json"));
 
-            Assert.That(read.When, Is.EqualTo(ModifierCondition.Bond));
+            Assert.That(read.When, Is.EqualTo(ModifierCondition.FocusFull));
             Assert.Throws<ContentException>(() => ModifierReader.Read(ContentNode.Root("{\"stat\":\"gold\",\"kind\":\"flat\",\"value\":1,\"when\":\"moonlight\"}", "test.json")));
             Assert.Throws<ContentException>(() => ModifierReader.Read(ContentNode.Root("{\"stat\":\"gold\",\"kind\":\"flat\",\"value\":1,\"when\":\"always\"}", "test.json")));
         }
@@ -105,24 +105,11 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void AMarkOnTheEnemyTurnsItsConditionOn()
-        {
-            var huntress = Hero(HeroClass.Alchemist, EnemyType.Normal, new Modifier(new StatId("gold"), ModifierKind.Increased, 0.1, StatTags.Gold, ModifierPool.General, ModifierCondition.Poison));
-            var plain = huntress.Hero.Value(new StatId("gold"), 1, StatTags.Gold);
-
-            huntress.State.PoisonStacks = 5;
-            huntress.Tick();
-
-            Assert.That(Holds(huntress, ModifierCondition.Poison), Is.True);
-            Assert.That(huntress.Hero.Value(new StatId("gold"), 1, StatTags.Gold) / plain, Is.EqualTo(1.1).Within(1e-9));
-        }
-
-        [Test]
         public void TheLineTextNamesItsCondition()
         {
-            var text = ModifierText.Describe(new Modifier(new StatId("gold"), ModifierKind.Increased, 0.1, StatTags.None, ModifierPool.General, ModifierCondition.Poison));
+            var text = ModifierText.Describe(new Modifier(new StatId("gold"), ModifierKind.Increased, 0.1, StatTags.None, ModifierPool.General, ModifierCondition.MouseMoving));
 
-            Assert.That(text, Does.EndWith("по отравленному врагу"));
+            Assert.That(text, Does.EndWith("пока мышь движется"));
         }
     }
 }

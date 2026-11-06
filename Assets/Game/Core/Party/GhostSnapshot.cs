@@ -4,13 +4,12 @@ namespace Game.Core.Party
 {
     public readonly struct GhostSnapshot
     {
-        public GhostSnapshot(string userId, string name, HeroClass heroClass, double shareRate, int marks, double activity)
+        public GhostSnapshot(string userId, string name, HeroClass heroClass, double shareRate, double activity)
         {
             UserId = userId;
             Name = name;
             HeroClass = heroClass;
             ShareRate = shareRate;
-            Marks = marks;
             Activity = activity;
         }
 
@@ -18,7 +17,6 @@ namespace Game.Core.Party
         public string Name { get; }
         public HeroClass HeroClass { get; }
         public double ShareRate { get; }
-        public int Marks { get; }
         public double Activity { get; }
     }
 }

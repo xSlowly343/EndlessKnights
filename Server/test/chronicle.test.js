@@ -189,37 +189,27 @@ test("a boss together counts as a guardian when a member who earned it stood on 
   assert.deepStrictEqual(plain(earned.map((got) => got.feat)), ["guardian_hunters"]);
 });
 
-test("three different synergies on one enemy make a chain reaction", () => {
+test("three different roles on one enemy make a chain reaction", () => {
   const host = new party.PartyHost(party.PartyServerRules, "5");
   host.join("user-a", "11");
   host.join("user-b", "12");
+  host.join("user-c", "13");
+  host.join("user-d", "14");
   host.tick();
-  const synergy = (mask) => {
-    const view = new DataView(new ArrayBuffer(5));
-    view.setUint8(0, 15);
-    view.setUint32(1, mask, true);
-    return view.buffer;
-  };
   const kill = () => {
     host.encounter.reportInput(0);
     host.encounter.applyDamage(0, host.encounter.enemyId, host.encounter.barLeft + 1);
     host.tick();
   };
-  host.receive("user-a", synergy(0b0001));
-  host.receive("user-b", synergy(0b0010));
+  host.encounter.setHeroClass(0, runedancer);
+  host.encounter.setHeroClass(1, runedancer);
+  host.encounter.setHeroClass(2, runedancer);
+  host.encounter.setHeroClass(3, minstrel);
   kill();
-  assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 2);
-  host.receive("user-a", synergy(0));
-  host.receive("user-b", synergy(0));
+  assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 2, "three strikers and a herald are two roles");
+  host.encounter.setHeroClass(1, whisperer);
   kill();
-  kill();
-  assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 2, "synergies still running when an enemy comes count for it, faded ones do not");
-  host.receive("user-b", synergy(0b1000));
-  host.receive("user-a", synergy(0b0101));
-  kill();
-  assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 3, "three different synergies while one enemy lived");
-  host.receive("user-a", synergy(0xffffffff));
-  assert.strictEqual(party.partyBitCount(party.partyDecodeSynergy(synergy(0xffffffff), party.PartyServerRules.synergyConstellations)), party.PartyServerRules.synergyConstellations, "unknown reactions are dropped");
+  assert.strictEqual(host.chronicle.synergiesOnOneEnemy, 3, "striker, hexer and herald on one enemy");
 
   const delta = host.takeChronicle();
   assert.strictEqual(delta.synergiesOnOneEnemy, 3);

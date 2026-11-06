@@ -143,6 +143,6 @@ namespace Game.Core.Sim.Headless
             stat.BaseName.EndsWith(TraitPowerSuffix, System.StringComparison.Ordinal) && _traitStats.Contains(stat.BaseName);
 
         private static bool IsPartyUnlock(StatId stat) =>
-            stat.Equals(CombatStats.ConstellationEffect);
+            stat.Equals(CombatStats.RoleBuffEffect);
     }
 }

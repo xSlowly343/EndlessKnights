@@ -86,34 +86,6 @@ namespace Game.Core.Party.Wire
 
         public static int EncodeBossRequest(byte[] buffer) => Start(buffer, PartyMessageKind.BossRequest).Length;
 
-        public static int Encode(byte[] buffer, MarksMessage message)
-        {
-            var writer = Start(buffer, PartyMessageKind.Marks);
-            message.Write(ref writer);
-            return writer.Length;
-        }
-
-        public static bool TryDecode(byte[] buffer, int length, out MarksMessage message)
-        {
-            var reader = Open(buffer, length, PartyMessageKind.Marks);
-            message = MarksMessage.Read(ref reader);
-            return reader.Complete;
-        }
-
-        public static int Encode(byte[] buffer, SynergyMessage message)
-        {
-            var writer = Start(buffer, PartyMessageKind.Synergy);
-            message.Write(ref writer);
-            return writer.Length;
-        }
-
-        public static bool TryDecode(byte[] buffer, int length, out SynergyMessage message)
-        {
-            var reader = Open(buffer, length, PartyMessageKind.Synergy);
-            message = SynergyMessage.Read(ref reader);
-            return reader.Complete;
-        }
-
         public static int Encode(byte[] buffer, PartyLoadoutMessage message)
         {
             var writer = Start(buffer, PartyMessageKind.PartyLoadout);

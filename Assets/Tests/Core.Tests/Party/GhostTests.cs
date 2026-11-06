@@ -18,8 +18,8 @@ namespace Game.Core.Tests.Party
             return (loop, input);
         }
 
-        private static GhostSnapshot Friend(double shareRate, double activity, int marks = 0) =>
-            new GhostSnapshot("friend", "Аня", HeroClass.Whisperer, shareRate, marks, activity);
+        private static GhostSnapshot Friend(double shareRate, double activity) =>
+            new GhostSnapshot("friend", "Аня", HeroClass.Whisperer, shareRate, activity);
 
         [Test]
         public void TheGhostHitsAShareOfYourOwnEnemyEverySecond()
@@ -73,29 +73,19 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void TheGhostBringsItsMarksAndGoesAwayWhenCleared()
+        public void TheGhostBringsItsRoleBuffAndGoesAwayWhenCleared()
         {
             var (loop, _) = Hero();
-            var curse = loop.Data.Synergy.MaskOf(new[] { "curse" });
-            loop.Ghost.Use(Friend(0.1, 1, curse));
+            var hexer = loop.Data.Synergy.RoleMask("hexer");
+            loop.Ghost.Use(Friend(0.1, 1));
 
             loop.Tick();
-            Assert.That(loop.Synergy.AllyMarks & curse, Is.EqualTo(curse), "in solo the ghost gives its marks");
+            Assert.That(loop.Synergy.AllyRoles & hexer, Is.EqualTo(hexer), "in solo the ghost gives its role buff");
 
             loop.Ghost.Clear();
             loop.Tick();
-            Assert.That(loop.Synergy.AllyMarks & curse, Is.Zero);
+            Assert.That(loop.Synergy.AllyRoles & hexer, Is.Zero);
             Assert.That(loop.Ghost.Present, Is.False);
-        }
-
-        [Test]
-        public void MarksTravelAsNamesAndComeBackAsTheSameMask()
-        {
-            var synergy = TestWorld.Data.Synergy;
-            var mask = synergy.MaskOf(new[] { "poison", "bond" });
-
-            Assert.That(synergy.IdsOf(mask), Is.EquivalentTo(new[] { "poison", "bond" }));
-            Assert.That(synergy.MaskOf(synergy.IdsOf(mask)), Is.EqualTo(mask));
         }
 
         [Test]

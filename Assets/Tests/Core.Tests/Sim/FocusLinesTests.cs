@@ -67,13 +67,13 @@ namespace Game.Core.Tests.Sim
         {
             var state = new GameState();
             var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.FocusInPauseSeconds, ModifierKind.Flat, 3, StatTags.None, ModifierPool.General, ModifierCondition.Poison));
+            hero.Add(new Modifier(CombatStats.FocusInPauseSeconds, ModifierKind.Flat, 3, StatTags.None, ModifierPool.General, ModifierCondition.BossLowHp));
             var focus = new FocusSystem(Rules, state, hero);
 
             Assert.That(Grown(focus, state, Pause, 5), Is.EqualTo(0));
             state.Focus = 1;
             state.FocusPauseTicks = 0;
-            hero.SetConditions(ModifierConditions.Bit(ModifierCondition.Poison));
+            hero.SetConditions(ModifierConditions.Bit(ModifierCondition.BossLowHp));
             Assert.That(Grown(focus, state, Pause, 5), Is.GreaterThan(0));
         }
 
@@ -98,14 +98,6 @@ namespace Game.Core.Tests.Sim
             var focus = Focus(state, new Modifier(CombatStats.FocusMaxPerPoisonStack, ModifierKind.Flat, 0.1));
 
             Assert.That(focus.Max, Is.EqualTo(3 + 10));
-        }
-
-        [Test]
-        public void ReadingAndResourceAreConditionsButNotAllyMarks()
-        {
-            Assert.That(ModifierConditions.IsAlly(ModifierCondition.Reading), Is.False);
-            Assert.That(ModifierConditions.IsAlly(ModifierCondition.HasResource), Is.False);
-            Assert.That(ModifierConditions.IsAlly(ModifierCondition.AllyBlood), Is.True);
         }
 
         [Test]

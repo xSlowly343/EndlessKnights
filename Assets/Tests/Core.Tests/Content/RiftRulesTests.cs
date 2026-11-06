@@ -69,14 +69,14 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void UnknownMarkIsRejected()
+        public void UnknownRoleIsRejected()
         {
-            var json = TestData.ReadGameDataFile(RiftRules.FileName).Replace("\"unlessMarks\": [\"aura\", \"bond\"]", "\"unlessMarks\": [\"cursez\", \"bond\"]");
+            var json = TestData.ReadGameDataFile(RiftRules.FileName).Replace("\"unlessRoles\": [\"herald\"]", "\"unlessRoles\": [\"bard\"]");
             var rules = RiftRules.Load(json);
 
-            var error = Assert.Throws<ContentException>(() => rules.RequireMarks(TestWorld.Data.Synergy))!;
+            var error = Assert.Throws<ContentException>(() => rules.RequireRoles(TestWorld.Data.Synergy))!;
 
-            Assert.That(error.Message, Does.Contain("cursez"));
+            Assert.That(error.Message, Does.Contain("bard"));
         }
 
         [Test]

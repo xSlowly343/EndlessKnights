@@ -175,22 +175,15 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void TheHostTellsEveryMemberTheMarksOfTheOthers()
+        public void EveryMemberGetsTheRoleBuffsOfTheOthers()
         {
             var rig = new Rig(2);
-            var summon = TestWorld.Data.Synergy.MaskOf(new[] { "summon" });
-            rig.Members[0].Loop.State.Minions[0] = new MinionState { Kind = MinionKind.Skeleton, TicksLeft = 100_000 };
 
             rig.Run(3);
 
-            Assert.That(rig.Members[0].Loop.Synergy.OwnMarks & summon, Is.EqualTo(summon));
-            Assert.That(rig.Members[1].Loop.Synergy.AllyMarks & summon, Is.EqualTo(summon), "a skeleton is no aura and no effect on the enemy, the host passes the mark on");
-            Assert.That(rig.Members[0].Loop.Synergy.AllyMarks & summon, Is.Zero, "nobody gets their own mark back");
-
-            rig.Members[0].Loop.State.Minions[0] = default;
-            rig.Run(3);
-
-            Assert.That(rig.Members[1].Loop.Synergy.AllyMarks & summon, Is.Zero);
+            var synergy = TestWorld.Data.Synergy;
+            Assert.That(rig.Members[0].Loop.Synergy.AllyRoles, Is.EqualTo(synergy.RoleMaskOf(rig.Members[1].Loop.State.Class)));
+            Assert.That(rig.Members[1].Loop.Synergy.AllyRoles, Is.EqualTo(synergy.RoleMaskOf(rig.Members[0].Loop.State.Class)));
         }
 
         [Test]
@@ -316,6 +309,7 @@ namespace Game.Core.Tests.Party
         public void TreePartyDamageReachesTheAlly()
         {
             var rig = new Rig(2);
+            rig.Members[0].Loop.State.Class = HeroClass.Minstrel;
             rig.Run(5);
             var friend = rig.Members[1];
             var before = friend.Damage;

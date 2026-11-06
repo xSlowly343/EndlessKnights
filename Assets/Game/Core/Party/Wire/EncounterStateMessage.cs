@@ -35,32 +35,8 @@ namespace Game.Core.Party.Wire
         public float WeakenedGold;
         public EnemyHistory History;
         public uint WaveStage;
-        public uint Marks0;
-        public uint Marks1;
-        public uint Marks2;
-        public uint Marks3;
         public uint EnemiesOnStage;
         public double ShieldFloor;
-
-        public int Marks(int slot) => (int)(slot switch
-        {
-            0 => Marks0,
-            1 => Marks1,
-            2 => Marks2,
-            3 => Marks3,
-            _ => 0u
-        });
-
-        public void SetMarks(int slot, uint marks)
-        {
-            switch (slot)
-            {
-                case 0: Marks0 = marks; break;
-                case 1: Marks1 = marks; break;
-                case 2: Marks2 = marks; break;
-                case 3: Marks3 = marks; break;
-            }
-        }
 
         public int Hits(int slot) => slot switch
         {
@@ -154,8 +130,6 @@ namespace Game.Core.Party.Wire
             writer.Float(WeakenedGold);
             History.Write(ref writer);
             writer.UInt(WaveStage);
-            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
-                writer.UInt((uint)Marks(slot));
             writer.UInt(EnemiesOnStage);
             writer.Double(ShieldFloor);
         }
@@ -178,8 +152,6 @@ namespace Game.Core.Party.Wire
             message.WeakenedGold = reader.Float();
             message.History = EnemyHistory.Read(ref reader);
             message.WaveStage = reader.UInt();
-            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
-                message.SetMarks(slot, reader.UInt());
             message.EnemiesOnStage = reader.UInt();
             message.ShieldFloor = reader.Double();
             return message;
