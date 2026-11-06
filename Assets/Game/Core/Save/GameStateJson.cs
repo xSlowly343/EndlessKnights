@@ -98,6 +98,7 @@ namespace Game.Core.Save
                 ("garden", WriteGarden(state.Garden)),
                 ("alchemy", WriteAlchemy(state.Alchemy)),
                 ("expeditions", WriteExpeditions(state.Expeditions)),
+                ("town", WriteTown(state.Town)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -282,6 +283,8 @@ namespace Game.Core.Save
                 ReadAlchemy(node.Field("alchemy"), state.Alchemy);
             if (node.HasField("expeditions"))
                 ReadExpeditions(node.Field("expeditions"), state.Expeditions);
+            if (node.HasField("town"))
+                ReadTown(node.Field("town"), state.Town);
             if (node.HasField("garden"))
                 ReadGarden(node.Field("garden"), state.Garden);
             if (node.HasField("camp"))
@@ -612,6 +615,29 @@ namespace Game.Core.Save
             expeditions.Returned = node.Field("returned").AsLong(0);
             foreach (var item in node.Field("finds").Items())
                 expeditions.Finds.Add(item.AsString());
+        }
+
+        private static JsonValue WriteTown(TownState town)
+        {
+            var orders = new JsonValue[town.Orders.Count];
+            for (var i = 0; i < orders.Length; i++)
+                orders[i] = Object(("request", JsonValue.Of(town.Orders[i].Request)), ("amount", JsonValue.Of(town.Orders[i].Amount)));
+            var guilds = new List<string>(town.Reputation.Keys);
+            guilds.Sort(System.StringComparer.Ordinal);
+            var reputation = new JsonValue[guilds.Count];
+            for (var i = 0; i < reputation.Length; i++)
+                reputation[i] = Object(("guild", JsonValue.Of(guilds[i])), ("value", JsonValue.Of(town.Reputation[guilds[i]])));
+            return Object(("day", JsonValue.Of(town.Day)), ("orders", JsonValue.Array(orders)), ("reputation", JsonValue.Array(reputation)), ("done", JsonValue.Of(town.Done)));
+        }
+
+        private static void ReadTown(ContentNode node, TownState town)
+        {
+            town.Day = node.Field("day").AsLong(-1);
+            foreach (var item in node.Field("orders").Items())
+                town.Orders.Add(new TownOrder { Request = item.Field("request").AsString(), Amount = item.Field("amount").AsInt(1) });
+            foreach (var item in node.Field("reputation").Items())
+                town.Reputation[item.Field("guild").AsString()] = item.Field("value").AsLong(0);
+            town.Done = node.Field("done").AsLong(0);
         }
 
         private static JsonValue WriteGarden(GardenState garden)

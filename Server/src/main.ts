@@ -84,6 +84,9 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("event_progress", eventProgressRpc);
     initializer.registerRpc("event_buy", eventBuyRpc);
     initializer.registerRpc("event_board", eventBoardRpc);
+    initializer.registerRpc("town_mine", townMineRpc);
+    initializer.registerRpc("town_gift_send", townGiftSendRpc);
+    initializer.registerRpc("town_gift_claim", townGiftClaimRpc);
     initializer.registerBeforeCreateGroup(partyBeforeCreateGroup);
     initializer.registerBeforeUpdateGroup(partyBeforeGroupChange);
     initializer.registerBeforeDeleteGroup(partyBeforeGroupChange);

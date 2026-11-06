@@ -145,6 +145,45 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public bool Teach()
+        {
+            for (var i = 0; i < _rules.Recipes.Count; i++)
+            {
+                if (Knows(_rules.Recipes[i].Id))
+                    continue;
+                var recipe = Unlearned();
+                State.Known.Add(recipe.Id);
+                _events.Add(GameEvent.ForStage(GameEventKind.RecipeLearned, _state.Tick, IndexOf(recipe.Id)));
+                return true;
+            }
+            return false;
+        }
+
+        public int PotionsOf(string recipe)
+        {
+            var count = 0;
+            for (var i = 0; i < State.Potions.Count; i++)
+            {
+                if (State.Potions[i].Recipe == recipe && !State.Potions[i].Unknown)
+                    count++;
+            }
+            return count;
+        }
+
+        public bool TakePotions(string recipe, int amount)
+        {
+            if (amount <= 0 || PotionsOf(recipe) < amount)
+                return false;
+            for (var i = State.Potions.Count - 1; i >= 0 && amount > 0; i--)
+            {
+                if (State.Potions[i].Recipe != recipe || State.Potions[i].Unknown)
+                    continue;
+                State.Potions.RemoveAt(i);
+                amount--;
+            }
+            return true;
+        }
+
         private PotionRecipe Unlearned()
         {
             var unknown = new List<PotionRecipe>();

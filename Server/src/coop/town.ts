@@ -1,0 +1,142 @@
+interface TownRules {
+    giftsPerDay: number;
+    giftMaxAmount: number;
+    giftInbox: number;
+    giftItems: string[];
+}
+
+interface TownGift {
+    id: string;
+    from: string;
+    fromName: string;
+    item: string;
+    amount: number;
+    at: number;
+}
+
+interface TownSent {
+    day: number;
+    sent: number;
+}
+
+declare const TownServerRules: TownRules;
+
+const TownCollection = "town";
+const TownGiftCollection = "town_gifts";
+const TownSentKey = "sent";
+const TownGuildsKey = "guilds";
+const TownWriteAttempts = 4;
+
+function townGuilds(nk: nkruntime.Nakama): string[] {
+    const objects = nk.storageRead([{ collection: TownCollection, key: TownGuildsKey, userId: PartySystemUser }]);
+    if (objects.length === 0)
+        return [];
+    const built = (objects[0].value as { built?: string[] }).built;
+    return Array.isArray(built) ? built.slice() : [];
+}
+
+function townSentToday(nk: nkruntime.Nakama, userId: string, day: number): { value: TownSent; version: string } {
+    const objects = nk.storageRead([{ collection: TownCollection, key: TownSentKey, userId: userId }]);
+    if (objects.length === 0)
+        return { value: { day: day, sent: 0 }, version: "*" };
+    const value = objects[0].value as TownSent;
+    return { value: value.day === day ? value : { day: day, sent: 0 }, version: objects[0].version };
+}
+
+function townInbox(nk: nkruntime.Nakama, userId: string): TownGift[] {
+    const gifts: TownGift[] = [];
+    let cursor: string | undefined = undefined;
+    do {
+        const page: { objects?: nkruntime.StorageObject[]; cursor?: string } = nk.storageList(userId, TownGiftCollection, 100, cursor);
+        for (const object of page.objects || [])
+            gifts.push(object.value as TownGift);
+        cursor = page.cursor || undefined;
+    } while (cursor);
+    gifts.sort((a, b) => a.at - b.at || (a.id < b.id ? -1 : 1));
+    return gifts;
+}
+
+function townView(nk: nkruntime.Nakama, userId: string, nowUnixMs: number, extra: { [key: string]: any }): { [key: string]: any } {
+    const rules = TownServerRules;
+    const sent = townSentToday(nk, userId, walletDayOf(nowUnixMs)).value.sent;
+    const view: { [key: string]: any } = {
+        guilds: townGuilds(nk),
+        sentToday: sent,
+        giftsPerDay: rules.giftsPerDay,
+        inbox: townInbox(nk, userId)
+    };
+    for (const key in extra)
+        view[key] = extra[key];
+    return view;
+}
+
+function townMine(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
+    return townView(nk, userId, nowUnixMs, {});
+}
+
+function townGiftSend(nk: nkruntime.Nakama, userId: string, request: any, nowUnixMs: number): { [key: string]: any } {
+    const rules = TownServerRules;
+    const to = request && request.to;
+    const item = request && request.item;
+    const amount = request && request.amount;
+    if (typeof to !== "string" || to.length === 0 || typeof item !== "string" || typeof amount !== "number" || amount !== Math.floor(amount))
+        throw new Error("bad request");
+    if (rules.giftItems.indexOf(item) < 0)
+        throw new Error("not giftable");
+    if (amount < 1 || amount > rules.giftMaxAmount)
+        throw new Error("bad amount");
+    if (to === userId)
+        throw new Error("not to yourself");
+    const users = nk.usersGetId([to, userId]);
+    const recipient = users.filter((user) => user.userId === to)[0];
+    if (!recipient)
+        throw new Error("no such player");
+    if (townInbox(nk, to).length >= rules.giftInbox)
+        throw new Error("inbox is full");
+    const day = walletDayOf(nowUnixMs);
+    let count = 0;
+    for (let attempt = 1; attempt <= TownWriteAttempts; attempt++) {
+        const stored = townSentToday(nk, userId, day);
+        if (stored.value.sent >= rules.giftsPerDay)
+            throw new Error("daily limit");
+        stored.value.sent += 1;
+        try {
+            nk.storageWrite([{ collection: TownCollection, key: TownSentKey, userId: userId, value: stored.value as any, version: stored.version, permissionRead: 1, permissionWrite: 0 }]);
+            count = stored.value.sent;
+            break;
+        } catch (error) {
+            if (attempt === TownWriteAttempts)
+                throw new Error("town is busy, try again");
+        }
+    }
+    const sender = users.filter((user) => user.userId === userId)[0];
+    const gift: TownGift = {
+        id: userId + "_" + nowUnixMs + "_" + count,
+        from: userId,
+        fromName: sender ? sender.displayName || sender.username : "",
+        item: item,
+        amount: amount,
+        at: nowUnixMs
+    };
+    nk.storageWrite([{ collection: TownGiftCollection, key: gift.id, userId: to, value: gift as any, version: "*", permissionRead: 1, permissionWrite: 0 }]);
+    return townView(nk, userId, nowUnixMs, { sent: gift });
+}
+
+function townGiftClaim(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
+    const gifts = townInbox(nk, userId);
+    if (gifts.length > 0)
+        nk.storageDelete(gifts.map((gift) => ({ collection: TownGiftCollection, key: gift.id, userId: userId })));
+    return townView(nk, userId, nowUnixMs, { claimed: gifts });
+}
+
+function townMineRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(townMine(nk, partyCaller(ctx), Date.now()));
+}
+
+function townGiftSendRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(townGiftSend(nk, partyCaller(ctx), partyRequest(payload), Date.now()));
+}
+
+function townGiftClaimRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(townGiftClaim(nk, partyCaller(ctx), Date.now()));
+}
