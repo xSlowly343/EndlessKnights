@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "maxShare": 0.1,
+  "rareHerbs": ["herb_stormfern", "herb_moonmoss"],
+  "fineMultiplier": 1.25,
+  "recipes": [
+    { "id": "might", "name": { "ru": "Зелье силы", "en": "Potion of Might" }, "known": true, "herbs": ["herb_knockbloom", "herb_knockbloom", "herb_clickweed"], "stirs": 60, "minutes": 30, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.06 }] },
+    { "id": "fortune", "name": { "ru": "Зелье удачи", "en": "Potion of Fortune" }, "known": true, "herbs": ["herb_windwort", "herb_windwort", "herb_hushbell"], "stirs": 60, "minutes": 30, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.06, "tags": ["Gold"] }] },
+    { "id": "patience", "name": { "ru": "Зелье терпения", "en": "Potion of Patience" }, "herbs": ["herb_hushbell", "herb_hushbell", "herb_knockbloom"], "stirs": 80, "minutes": 45, "modifiers": [{ "stat": "bossTimerSeconds", "kind": "flat", "value": 2 }] },
+    { "id": "vigor", "name": { "ru": "Зелье бодрости", "en": "Potion of Vigor" }, "herbs": ["herb_clickweed", "herb_clickweed", "herb_windwort"], "stirs": 80, "minutes": 45, "modifiers": [{ "stat": "resourceGain", "kind": "increased", "value": 0.06 }] },
+    { "id": "storm", "name": { "ru": "Грозовое зелье", "en": "Storm Draught" }, "herbs": ["herb_stormfern", "herb_knockbloom", "herb_knockbloom"], "stirs": 120, "minutes": 60, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.08 }] },
+    { "id": "moonlight", "name": { "ru": "Лунное зелье", "en": "Moonlight Draught" }, "herbs": ["herb_moonmoss", "herb_windwort", "herb_windwort"], "stirs": 120, "minutes": 60, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.08, "tags": ["Gold"] }] }
+  ]
+}

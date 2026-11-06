@@ -68,6 +68,7 @@ namespace Game.Core.Sim
         private readonly PeacefulSystem _peaceful;
         private readonly CampSystem _camp;
         private readonly GardenSystem _garden;
+        private readonly AlchemySystem _alchemy;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
         private GameData _data;
@@ -136,6 +137,7 @@ namespace Game.Core.Sim
             _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
             _camp = new CampSystem(data.Camp, state, Events);
             _garden = new GardenSystem(data.Garden, state, _camp, _peaceful, Events);
+            _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
@@ -206,6 +208,7 @@ namespace Game.Core.Sim
         public PeacefulSystem Peaceful => _peaceful;
         public CampSystem Camp => _camp;
         public GardenSystem Garden => _garden;
+        public AlchemySystem Alchemy => _alchemy;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
@@ -810,6 +813,7 @@ namespace Game.Core.Sim
             _peaceful.UseRules(data.Peaceful);
             _camp.UseRules(data.Camp);
             _garden.UseRules(data.Garden);
+            _alchemy.UseRules(data.Alchemy);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _book.UseWeapons(data.Weapons);
@@ -872,6 +876,7 @@ namespace Game.Core.Sim
             _peaceful.Tick(LastInput, MetersPerPixel);
             _camp.Tick();
             _garden.Tick();
+            _alchemy.Tick();
             if (_peaceful.InCamp)
             {
                 CampTick(firstEvent);
@@ -912,6 +917,7 @@ namespace Game.Core.Sim
             _quests.Tick(firstEvent);
             _seasonal.Tick(firstEvent);
             _seasonPass.Tick();
+            _alchemy.BattleTick();
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);
             _achievements.Tick();

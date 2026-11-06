@@ -34,6 +34,9 @@ namespace Game.Core.Sim
         TeaPauseSuggested,
         CampTierReached,
         PlantReady,
-        MutationFound
+        MutationFound,
+        PotionBrewed,
+        PotionEnded,
+        RecipeLearned
     }
 }

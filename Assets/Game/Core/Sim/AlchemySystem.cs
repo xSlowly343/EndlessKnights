@@ -1,0 +1,184 @@
+using System.Collections.Generic;
+using Game.Core.Content;
+using Game.Core.Stats;
+
+namespace Game.Core.Sim
+{
+    public enum AlchemyResult
+    {
+        Done,
+        UnknownRecipe,
+        NoHerbs,
+        Busy,
+        NoPotion
+    }
+
+    public sealed class AlchemySystem
+    {
+        public const string Activity = "alchemy";
+
+        private readonly GameState _state;
+        private readonly CampSystem _camp;
+        private readonly PeacefulSystem _peaceful;
+        private readonly EventQueue _events;
+        private readonly ModifierLayer _layer;
+        private readonly List<Modifier> _buffer = new List<Modifier>(4);
+        private AlchemyRules _rules;
+
+        public AlchemySystem(AlchemyRules rules, GameState state, StatSheet hero, CampSystem camp, PeacefulSystem peaceful, EventQueue events)
+        {
+            _rules = rules;
+            _state = state;
+            _camp = camp;
+            _peaceful = peaceful;
+            _events = events;
+            _layer = new ModifierLayer(hero);
+            ApplyActive();
+        }
+
+        public AlchemyRules Rules => _rules;
+        public AlchemyState State => _state.Alchemy;
+        public bool Brewing => State.Brewing != null;
+
+        public void UseRules(AlchemyRules rules)
+        {
+            _rules = rules;
+            ApplyActive();
+        }
+
+        public bool Knows(string recipe) => State.Known.Contains(recipe) || _rules.Recipe(recipe)?.Known == true;
+
+        public AlchemyResult Brew(string recipeId)
+        {
+            var recipe = _rules.Recipe(recipeId);
+            if (recipe == null || !Knows(recipeId))
+                return AlchemyResult.UnknownRecipe;
+            return Start(recipe.Herbs, recipe, false);
+        }
+
+        public AlchemyResult Experiment(IReadOnlyList<string> herbs)
+        {
+            if (herbs.Count == 0)
+                return AlchemyResult.NoHerbs;
+            var recipe = _rules.RecipeOf(herbs);
+            if (recipe != null)
+            {
+                var result = Start(herbs, recipe, false);
+                if (result == AlchemyResult.Done)
+                    State.Known.Add(recipe.Id);
+                return result;
+            }
+            return Start(herbs, Unlearned(), true);
+        }
+
+        public AlchemyResult Drink(int index)
+        {
+            if (index < 0 || index >= State.Potions.Count)
+                return AlchemyResult.NoPotion;
+            var potion = State.Potions[index];
+            State.Potions.RemoveAt(index);
+            var recipe = _rules.Recipe(potion.Recipe);
+            if (recipe == null)
+                return AlchemyResult.UnknownRecipe;
+            if (potion.Unknown && State.Known.Add(recipe.Id))
+                _events.Add(GameEvent.ForStage(GameEventKind.RecipeLearned, _state.Tick, IndexOf(recipe.Id)));
+            State.Active = new Potion { Recipe = recipe.Id, Fine = potion.Fine };
+            State.ActiveTicksLeft = (long)System.Math.Round(recipe.Seconds * GameLoop.TicksPerSecond);
+            ApplyActive();
+            return AlchemyResult.Done;
+        }
+
+        public void Tick()
+        {
+            if (State.Brewing == null || !_peaceful.InCamp || _peaceful.Activity != Activity)
+                return;
+            var work = _peaceful.Work(Activity);
+            State.Stirs += work.Keys;
+            work.Keys = 0;
+            work.Clicks = 0;
+            work.MouseMeters = 0;
+            work.IdleSeconds = 0;
+            var recipe = _rules.Recipe(State.Brewing.Recipe);
+            if (recipe == null || State.Stirs < recipe.Stirs)
+                return;
+            State.Potions.Add(State.Brewing);
+            State.Brewing = null;
+            State.Stirs = 0;
+            _events.Add(GameEvent.ForStage(GameEventKind.PotionBrewed, _state.Tick, IndexOf(recipe.Id)));
+        }
+
+        public void BattleTick()
+        {
+            if (State.Active == null)
+                return;
+            if (--State.ActiveTicksLeft > 0)
+                return;
+            State.Active = null;
+            State.ActiveTicksLeft = 0;
+            ApplyActive();
+            _events.Add(GameEvent.ForStage(GameEventKind.PotionEnded, _state.Tick, 0));
+        }
+
+        private AlchemyResult Start(IReadOnlyList<string> herbs, PotionRecipe recipe, bool unknown)
+        {
+            if (Brewing)
+                return AlchemyResult.Busy;
+            if (!HasHerbs(herbs))
+                return AlchemyResult.NoHerbs;
+            foreach (var herb in herbs)
+                _camp.Take(herb, 1);
+            State.Brewing = new Potion { Recipe = recipe.Id, Fine = _rules.Fine(herbs), Unknown = unknown };
+            State.Stirs = 0;
+            return AlchemyResult.Done;
+        }
+
+        private bool HasHerbs(IReadOnlyList<string> herbs)
+        {
+            var need = new Dictionary<string, long>(System.StringComparer.Ordinal);
+            foreach (var herb in herbs)
+                need[herb] = (need.TryGetValue(herb, out var count) ? count : 0) + 1;
+            foreach (var pair in need)
+            {
+                if (_camp.Count(pair.Key) < pair.Value)
+                    return false;
+            }
+            return true;
+        }
+
+        private PotionRecipe Unlearned()
+        {
+            var unknown = new List<PotionRecipe>();
+            foreach (var recipe in _rules.Recipes)
+            {
+                if (!Knows(recipe.Id))
+                    unknown.Add(recipe);
+            }
+            var pool = unknown.Count > 0 ? unknown : new List<PotionRecipe>(_rules.Recipes);
+            return pool[_state.Rng.NextInt(0, pool.Count)];
+        }
+
+        private int IndexOf(string recipe)
+        {
+            for (var i = 0; i < _rules.Recipes.Count; i++)
+            {
+                if (_rules.Recipes[i].Id == recipe)
+                    return i;
+            }
+            return -1;
+        }
+
+        private void ApplyActive()
+        {
+            _buffer.Clear();
+            var active = State.Active;
+            var recipe = active == null ? null : _rules.Recipe(active.Recipe);
+            if (recipe != null)
+            {
+                var times = active!.Fine ? _rules.FineMultiplier : 1;
+                foreach (var modifier in recipe.Modifiers)
+                    _buffer.Add(modifier.WithValue(modifier.Value * times));
+            }
+            _layer.Set(_buffer);
+        }
+    }
+}
