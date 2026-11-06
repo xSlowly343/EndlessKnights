@@ -399,6 +399,8 @@ namespace Game.Core.Party
         {
             if (InParty && _state.EnemyId != 0 && (state.World != _state.World || state.RiftId != _state.RiftId))
                 AbandonLocalEnemy();
+            if (state.EnemyKind == PartyEnemyKind.Boss)
+                _loop.Stages.LinkedGateBoss = state.GateBoss;
             if (InParty)
                 SettleHistory(state);
             var elapsed = System.Math.Max(1, _tick - _stateArrivalTick);
@@ -883,9 +885,12 @@ namespace Game.Core.Party
                     SplashShare = (float)Positive(CombatStats.SplashShare),
                     SplashTargets = (byte)System.Math.Min(byte.MaxValue, System.Math.Floor(Positive(CombatStats.SplashTargets) + 1e-9)),
                     BossPierce = (float)Positive(CombatStats.BossPierce),
-                    StageCarry = (float)Positive(CombatStats.StageCarry)
+                    StageCarry = (float)Positive(CombatStats.StageCarry),
+                    AtGate = AtUnclearedGate
                 }));
         }
+
+        private bool AtUnclearedGate => _loop.Data.Stages.GateAt(_loop.State.Stage) != null && !_loop.State.GatesCleared.Contains(_loop.State.Stage);
 
         private double Positive(Game.Core.Stats.StatId stat) => System.Math.Max(0, _loop.Hero.Value(stat, 0));
 

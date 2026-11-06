@@ -78,8 +78,8 @@ namespace Game.Core.Tests.Party
             builder.Append("    \"bossRequest\": { \"hex\": \"").Append(Hex(PartyCodec.EncodeBossRequest(_buffer))).Append("\" },\n");
             builder.Append("    \"worldRequest\": { \"world\": 1, \"cancel\": false, \"riftId\": 1761652800, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new WorldRequestMessage { World = PartyWorld.Rift, RiftId = 1761652800 }))).Append("\" },\n");
-            builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"contribution\": 0.125, \"pierceShare\": 0.25, \"enemySkip\": 2, \"splashShare\": 0.5, \"splashTargets\": 3, \"bossPierce\": 0.125, \"stageCarry\": 0.75, \"hex\": \"")
-                .Append(Hex(PartyCodec.Encode(_buffer, new PresenceMessage { Presence = PartyPresence.Peaceful, Stage = 77, Resource = 12.5f, Contribution = 0.125f, PierceShare = 0.25f, EnemySkip = 2, SplashShare = 0.5f, SplashTargets = 3, BossPierce = 0.125f, StageCarry = 0.75f }))).Append("\" },\n");
+            builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"contribution\": 0.125, \"pierceShare\": 0.25, \"enemySkip\": 2, \"splashShare\": 0.5, \"splashTargets\": 3, \"bossPierce\": 0.125, \"stageCarry\": 0.75, \"atGate\": true, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new PresenceMessage { Presence = PartyPresence.Peaceful, Stage = 77, Resource = 12.5f, Contribution = 0.125f, PierceShare = 0.25f, EnemySkip = 2, SplashShare = 0.5f, SplashTargets = 3, BossPierce = 0.125f, StageCarry = 0.75f, AtGate = true }))).Append("\" },\n");
             var offer = new PartyOfferMessage { Slot = 0 };
             offer.SetStat(0, 0.3);
             offer.SetAura(0, new OfferedAura { GemNetId = 5, Strength = 1.5f, TicksLeft = 200 });

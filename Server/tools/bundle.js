@@ -80,7 +80,8 @@ const rules = {
   waveMaxSteps: (stages.waves.maxSteps || []).map((step) => ({ from: step.from, max: step.max })),
   bossRetryAfterKills: stages.boss.retryAfterKills,
   bossTimerSeconds: stages.boss.timerSeconds,
-  bossHpMultiplier: stages.boss.hpMultiplier
+  bossHpMultiplier: stages.boss.hpMultiplier,
+  gates: (stages.gates || []).map((gate) => ({ stage: gate.stage, hpMultiplier: gate.hpMultiplier, timerSeconds: gate.timerSeconds }))
 };
 
 function statSum(modifiers, stat, kind) {

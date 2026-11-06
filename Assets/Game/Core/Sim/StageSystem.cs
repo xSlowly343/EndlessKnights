@@ -157,6 +157,7 @@ namespace Game.Core.Sim
         {
             Linked = true;
             LinkedAsGuest = asGuest;
+            LinkedGateBoss = false;
             if (!asGuest)
                 return;
             _ownKillsOnStage = _state.KillsOnStage;
@@ -196,7 +197,7 @@ namespace Game.Core.Sim
             BigNumber hp;
             if (boss)
             {
-                var guardian = _stages.IsBiomeGuardian(stage);
+                var guardian = _stages.IsBiomeGuardian(stage) || (LinkedGateBoss && _stages.GateAt(stage) != null);
                 enemy = guardian ? _guardians[biome] ?? BossFor(biome, stage) : BossFor(biome, stage);
                 type = guardian ? EnemyType.Guardian : EnemyType.Boss;
                 hp = _stages.BossHp(stage) * Multiplier(enemy);
@@ -239,6 +240,10 @@ namespace Game.Core.Sim
             _state.LastWeakenedKillSeconds = _state.EnemyLifeSeconds;
         }
 
+        public bool LinkedGateBoss { get; set; }
+
+        private bool HeldAtGate => !LinkedGateBoss && _stages.GateAt(_state.Stage) != null && !_state.GatesCleared.Contains(_state.Stage);
+
         public void ConfirmLinkedKill()
         {
             _state.Kills++;
@@ -246,7 +251,9 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             Reward();
             KillTimeListener?.OnKillTimed(_state.EnemyType, _state.EnemyLifeSeconds, true);
-            if (_state.FightingBoss)
+            if (_state.FightingBoss && HeldAtGate)
+                _events.Add(GameEvent.ForStage(GameEventKind.GateNeedsLimitFight, _state.Tick, _state.Stage));
+            else if (_state.FightingBoss)
                 AdvanceStage();
             _state.EnemyHp = BigNumber.Zero;
         }

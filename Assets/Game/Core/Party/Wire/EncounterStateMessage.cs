@@ -32,6 +32,7 @@ namespace Game.Core.Party.Wire
         public byte Hits2;
         public byte Hits3;
         public bool Weakened;
+        public bool GateBoss;
         public float WeakenedGold;
         public EnemyHistory History;
         public uint WaveStage;
@@ -132,6 +133,7 @@ namespace Game.Core.Party.Wire
             writer.UInt(WaveStage);
             writer.UInt(EnemiesOnStage);
             writer.Double(ShieldFloor);
+            writer.Bool(GateBoss);
         }
 
         public static EncounterStateMessage Read(ref PartyReader reader)
@@ -154,6 +156,7 @@ namespace Game.Core.Party.Wire
             message.WaveStage = reader.UInt();
             message.EnemiesOnStage = reader.UInt();
             message.ShieldFloor = reader.Double();
+            message.GateBoss = reader.Bool();
             return message;
         }
 
@@ -205,7 +208,8 @@ namespace Game.Core.Party.Wire
                 History = encounter.History,
                 WaveStage = (uint)System.Math.Min(uint.MaxValue, encounter.WaveStage),
                 EnemiesOnStage = (uint)System.Math.Max(0, encounter.EnemiesOnStage),
-                ShieldFloor = encounter.ShieldFloor
+                ShieldFloor = encounter.ShieldFloor,
+                GateBoss = encounter.GateBoss
             };
             var shown = 0;
             for (var i = 0; i < PartyEncounter.MaxEffects && shown < ShownEffect.MaxShown; i++)
