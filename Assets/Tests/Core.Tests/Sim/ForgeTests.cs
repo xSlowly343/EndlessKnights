@@ -143,6 +143,29 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void AutomaticSalvageAlsoGivesTheOreOfTheBiome()
+        {
+            var (loop, _) = Smith();
+            loop.State.Drops.SalvageUpTo = ItemRarity.Legendary;
+            var dust = loop.State.Drops.Dust;
+            loop.Forge.SalvageOre(new ItemDrop(DropSource.Record, 120, null, Coif(ItemRarity.Rare, 3), true, 10));
+            Assert.That(loop.Camp.Count("ore_ice"), Is.EqualTo(loop.Forge.SmeltYield(ItemRarity.Rare)), "the ore of the third biome");
+            Assert.That(loop.State.Forge.SalvageOre, Is.EqualTo(loop.Forge.SmeltYield(ItemRarity.Rare)));
+
+            loop.State.Forge.SalvageOre = 0;
+            loop.State.Drops.SalvageUpTo = ItemRarity.Primordial;
+            for (var i = 0; i < 50 && loop.State.Drops.SalvagedItems == 0; i++)
+            {
+                loop.Events.Clear();
+                loop.Drops.OnBossDefeated(7, Game.Core.Content.EnemyType.Boss, 7, raisesRecord: true);
+                loop.Drops.Flush();
+            }
+            Assert.That(loop.State.Drops.SalvagedItems, Is.GreaterThan(0));
+            Assert.That(loop.State.Forge.SalvageOre, Is.GreaterThan(0), "a salvaged boss drop gives ore");
+            Assert.That(loop.State.Drops.Dust, Is.GreaterThan(dust), "dust for rerolls stays");
+        }
+
+        [Test]
         public void TemperAndBrandSurviveTheSave()
         {
             var (loop, _) = Smith();
