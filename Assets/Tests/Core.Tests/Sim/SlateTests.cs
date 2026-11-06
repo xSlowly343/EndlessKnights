@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Sim
         {
             Assert.That(Rules.Shapes.Select(shape => shape.Size), Is.EqualTo(new[] { 1, 2, 3, 3, 4, 4, 4 }));
             Assert.That(Rules.Rarities.Count, Is.EqualTo(4));
-            Assert.That(Rules.Themes.Count, Is.EqualTo(12));
+            Assert.That(Rules.Themes.Count, Is.EqualTo(13));
             foreach (var heroClass in HeroClassNames.ByName.Values)
                 Assert.That(Rules.ClassLines(heroClass).Count, Is.EqualTo(2), heroClass.ToString());
         }

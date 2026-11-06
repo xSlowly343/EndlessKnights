@@ -52,7 +52,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(fresh.Artifacts.TryUnlock(), Is.Null);
 
             var loop = Real(500, prestiges: 1);
-            for (var i = 0; i < 68; i++)
+            for (var i = 0; i < 70; i++)
                 Assert.That(loop.Artifacts.TryUnlock(), Is.Not.Null);
             Assert.That(loop.Artifacts.TryUnlock(), Is.Null);
             Assert.That(loop.Artifacts.WaitsForGroup, Is.True);

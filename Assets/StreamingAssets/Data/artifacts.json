@@ -141,6 +141,10 @@
     {"id": "paper_lantern", "name": {"ru": "Бумажный фонарик", "en": "Paper Lantern"}, "group": 4, "type": "class", "class": "mothcaller", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.06}]},
     {"id": "fortune_cloth", "name": {"ru": "Скатерть гадалки", "en": "Fortune-teller's Cloth"}, "group": 4, "type": "class", "class": "cartomancer", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.06}]},
     {"id": "noon_wreath", "name": {"ru": "Венок полудня", "en": "Noon Wreath"}, "group": 4, "type": "class", "class": "herbwitch", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.06}]},
-    {"id": "kiln_heart", "name": {"ru": "Сердце печи", "en": "Kiln Heart"}, "group": 4, "type": "class", "class": "golemancer", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.06}]}
+    {"id": "kiln_heart", "name": {"ru": "Сердце печи", "en": "Kiln Heart"}, "group": 4, "type": "class", "class": "golemancer", "perLevel": [{"stat": "damage", "kind": "increased", "value": 0.06}]},
+    {"id": "through_arrow", "name": {"ru": "Сквозная стрела", "en": "Through Arrow"}, "group": 1, "type": "tempo", "maxLevel": 30, "perLevel": [{"stat": "pierceShare", "kind": "flat", "value": 0.005}]},
+    {"id": "ninth_wave", "name": {"ru": "Девятый вал", "en": "Ninth Wave"}, "group": 2, "type": "tempo", "maxLevel": 25, "perLevel": [{"stat": "splashShare", "kind": "flat", "value": 0.01}]},
+    {"id": "gatekeeper_cloak", "name": {"ru": "Плащ Привратника", "en": "Gatekeeper's Cloak"}, "group": 3, "type": "tempo", "maxLevel": 30, "perLevel": [{"stat": "stageSkipChance", "kind": "flat", "value": 0.001}]},
+    {"id": "siege_horn", "name": {"ru": "Рог осады", "en": "Siege Horn"}, "group": 4, "type": "tempo", "maxLevel": 20, "perLevel": [{"stat": "bossPierce", "kind": "flat", "value": 0.01}]}
   ]
 }

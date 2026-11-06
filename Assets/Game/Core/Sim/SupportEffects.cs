@@ -232,7 +232,11 @@ namespace Game.Core.Sim
                     continue;
                 var scale = slot.SupportScale[i];
                 if (support.QueueShare > 0)
-                    state.QueueDamage[support.QueueSlot] += damage * (support.QueueShare * scale);
+                {
+                    var last = System.Math.Min(state.QueueDamage.Length, support.QueueSlot + support.QueueTargets);
+                    for (var slotIndex = support.QueueSlot; slotIndex < last; slotIndex++)
+                        state.QueueDamage[slotIndex] += damage * (support.QueueShare * scale);
+                }
                 if (support.PoisonPerHit > 0 && slot.InkHits < support.PoisonHitsMax)
                 {
                     slot.InkHits++;

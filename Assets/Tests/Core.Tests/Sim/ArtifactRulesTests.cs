@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Sim
                 var inGroup = Catalog.All.Where(a => a.Group == group).ToList();
                 Assert.That(inGroup.Count(a => a.Type == ArtifactType.Damage), Is.EqualTo(4), "group " + group);
                 Assert.That(inGroup.Count(a => a.Type == ArtifactType.Economy), Is.EqualTo(3), "group " + group);
-                Assert.That(inGroup.Count(a => a.Type == ArtifactType.Tempo), Is.EqualTo(2), "group " + group);
+                Assert.That(inGroup.Count(a => a.Type == ArtifactType.Tempo), Is.EqualTo(3), "group " + group);
                 Assert.That(inGroup.Count(a => a.Type == ArtifactType.Meta), Is.EqualTo(2), "group " + group);
                 Assert.That(inGroup.Count(a => a.Type == ArtifactType.Late), Is.EqualTo(5), "group " + group);
             }
@@ -63,7 +63,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(state: new GameState(5));
             loop.State.Echo = BigNumber.FromDouble(1e12);
 
-            for (var i = 0; i < 34; i++)
+            for (var i = 0; i < 35; i++)
             {
                 Assert.That(loop.Artifacts.OpenGroup, Is.EqualTo(1));
                 Assert.That(loop.Artifacts.TryUnlock()!.Group, Is.EqualTo(1));
@@ -91,7 +91,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Artifacts.TryLevelUp("hourglass"), Is.False);
             Assert.That(loop.State.Artifacts["hourglass"], Is.EqualTo(30));
             Assert.That(loop.Artifacts.TryLevelUp("pathfinder_seal"), Is.True);
-            Assert.That(Catalog.All.Where(a => a.Capped).Select(a => a.Id), Is.EquivalentTo(new[] { "hourglass", "clockwork" }));
+            Assert.That(Catalog.All.Where(a => a.Capped).Select(a => a.Id), Is.EquivalentTo(new[] { "hourglass", "clockwork", "through_arrow", "ninth_wave", "gatekeeper_cloak", "siege_horn" }));
         }
 
         [Test]

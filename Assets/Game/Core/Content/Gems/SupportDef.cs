@@ -7,6 +7,7 @@ namespace Game.Core.Content.Gems
         Executioner,
         DeathMark,
         WideReach,
+        Piercing,
         DeferredPayment,
         DoubleCharge,
         Twins,
@@ -43,6 +44,7 @@ namespace Game.Core.Content.Gems
         public double KillCooldownSeconds { get; private set; }
         public double QueueShare { get; private set; }
         public int QueueSlot { get; private set; }
+        public int QueueTargets { get; private set; } = 1;
         public double LowHpBelow { get; private set; }
         public double LowHpMultiplier { get; private set; } = 1;
         public double Power { get; private set; } = 1;
@@ -166,6 +168,12 @@ namespace Game.Core.Content.Gems
                     {
                         QueueShare = effect.Field("share").AsNumber(0, 1),
                         QueueSlot = effect.Field("slot").AsInt(0, Sim.GameState.QueueDepth - 1)
+                    };
+                case "piercing":
+                    return new SupportDef(SupportKind.Piercing)
+                    {
+                        QueueShare = effect.Field("share").AsNumber(0, 1),
+                        QueueTargets = effect.Field("targets").AsInt(1, Sim.GameState.QueueDepth)
                     };
                 case "deferredPayment":
                     return new SupportDef(SupportKind.DeferredPayment)
