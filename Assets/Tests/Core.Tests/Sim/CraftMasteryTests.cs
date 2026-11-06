@@ -72,19 +72,20 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ARiftSetAddsItsLineForEveryCollectedRiftSet()
+        public void EveryCollectedTopRaritySetMultipliesDamage()
         {
             var forge = Set("underside_forge");
-            Assert.That(forge.PerRaritySet, Is.Not.Empty);
             var loop = Runedancer();
             Collect(loop, "underside_forge");
-            var one = StrikeDamage(loop);
-            Assert.That(one, Is.EqualTo(100 * (1 + forge.Bonus[0].Value + 0.05)).Within(1e-9));
+            Assert.That(StrikeDamage(loop), Is.EqualTo(100 * (1 + forge.Bonus[0].Value) * 1.08).Within(1e-9));
 
             Collect(loop, "underside_mainstay");
+            Collect(loop, Items.Sets.First(s => s.Rarity == ItemRarity.Mythic).Id);
+            Collect(loop, Items.Sets.First(s => s.Rarity == ItemRarity.Legendary).Id);
 
             Assert.That(loop.Gear.CollectedSetsOf(ItemRarity.Rift), Is.EqualTo(2));
-            Assert.That(StrikeDamage(loop) - one, Is.EqualTo(5).Within(1e-9));
+            Assert.That(loop.Gear.CollectionMore, Is.EqualTo(1.08 * 1.08 * 1.03).Within(1e-12), "legendary sets do not multiply");
+            Assert.That(Items.CollectionMore(ItemRarity.Ancient, 34), Is.EqualTo(System.Math.Pow(1.05, 34)).Within(1e-9));
         }
 
         [Test]
