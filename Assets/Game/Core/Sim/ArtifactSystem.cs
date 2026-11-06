@@ -12,8 +12,7 @@ namespace Game.Core.Sim
         Closed,
         Unknown,
         AlreadyEnchanted,
-        NoSlot,
-        NotEnchanted
+        NotEnoughEcho
     }
 
     public sealed class ArtifactSystem
@@ -73,7 +72,11 @@ namespace Game.Core.Sim
 
         public ArtifactAwakening Awakening => _catalog.Awakening;
         public AwakeningState AwakeningState => _state.Awakening;
-        public bool EnchantOpen => Awakening.Slots > 0 && !InRift && _state.Artifacts.Count >= _catalog.All.Count;
+        public bool EnchantOpen => Awakening.Open && !InRift && _state.Artifacts.Count >= _catalog.All.Count;
+
+        public BigNumber EnchantCost => _catalog.UnlockCost.At(_state.Artifacts.Count + _state.Awakening.Enchanted.Count + 1) * UnlockDiscount;
+
+        public bool AllEnchanted => _state.Awakening.Enchanted.Count >= _catalog.All.Count;
 
         public EnchantResult Enchant(string id)
         {
@@ -84,19 +87,13 @@ namespace Game.Core.Sim
             var awakening = _state.Awakening;
             if (awakening.Enchanted.Contains(id))
                 return EnchantResult.AlreadyEnchanted;
-            if (awakening.Enchanted.Count >= Awakening.Slots)
-                return EnchantResult.NoSlot;
+            var cost = EnchantCost;
+            if (_state.Echo < cost)
+                return EnchantResult.NotEnoughEcho;
+            _state.Echo -= cost;
             awakening.Enchanted.Add(id);
             if (!awakening.Progress.ContainsKey(id))
                 awakening.Progress[id] = 0;
-            Rebuild();
-            return EnchantResult.Done;
-        }
-
-        public EnchantResult Disenchant(string id)
-        {
-            if (!_state.Awakening.Enchanted.Remove(id))
-                return EnchantResult.NotEnchanted;
             Rebuild();
             return EnchantResult.Done;
         }
@@ -135,17 +132,46 @@ namespace Game.Core.Sim
         private bool Feed(AwakeningInput input, double amount)
         {
             var awakening = _state.Awakening;
+            var ids = EnchantedBy(input);
             var changed = false;
-            for (var i = 0; i < awakening.Enchanted.Count; i++)
+            for (var i = 0; i < ids.Count; i++)
             {
-                var id = awakening.Enchanted[i];
-                if (!_catalog.TryGet(id, out var artifact) || artifact.Awaken != input)
-                    continue;
+                var id = ids[i];
                 var before = awakening.Progress.TryGetValue(id, out var progress) ? progress : 0;
                 awakening.Progress[id] = before + amount;
                 changed |= Awakening.LevelAt(input, before + amount) != Awakening.LevelAt(input, before);
             }
             return changed;
+        }
+
+        private readonly List<string>[] _enchantedByInput = NewInputLists();
+        private int _indexedEnchants = -1;
+        private ArtifactCatalog? _indexedCatalog;
+
+        private static List<string>[] NewInputLists()
+        {
+            var lists = new List<string>[ArtifactAwakening.InputCount];
+            for (var i = 0; i < lists.Length; i++)
+                lists[i] = new List<string>();
+            return lists;
+        }
+
+        private List<string> EnchantedBy(AwakeningInput input)
+        {
+            var enchanted = _state.Awakening.Enchanted;
+            if (_indexedEnchants != enchanted.Count || _indexedCatalog != _catalog)
+            {
+                foreach (var list in _enchantedByInput)
+                    list.Clear();
+                foreach (var id in enchanted)
+                {
+                    if (_catalog.TryGet(id, out var artifact))
+                        _enchantedByInput[(int)artifact.Awaken].Add(id);
+                }
+                _indexedEnchants = enchanted.Count;
+                _indexedCatalog = _catalog;
+            }
+            return _enchantedByInput[(int)input];
         }
 
         private double Counter(AwakeningInput input) => input switch

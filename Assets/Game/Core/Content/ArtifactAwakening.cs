@@ -28,18 +28,20 @@ namespace Game.Core.Content
 
         private readonly double[] _first;
 
-        private ArtifactAwakening(int slots, double effectPerLevel, int maxLevel, double growth, double[] first)
+        private ArtifactAwakening(bool open, double enchantBonus, double effectPerLevel, int maxLevel, double growth, double[] first)
         {
-            Slots = slots;
+            Open = open;
+            EnchantBonus = enchantBonus;
             EffectPerLevel = effectPerLevel;
             MaxLevel = maxLevel;
             Growth = growth;
             _first = first;
         }
 
-        public static readonly ArtifactAwakening None = new ArtifactAwakening(0, 0, 0, 1, new double[InputCount]);
+        public static readonly ArtifactAwakening None = new ArtifactAwakening(false, 0, 0, 0, 1, new double[InputCount]);
 
-        public int Slots { get; }
+        public bool Open { get; }
+        public double EnchantBonus { get; }
         public double EffectPerLevel { get; }
         public int MaxLevel { get; }
         public double Growth { get; }
@@ -72,7 +74,7 @@ namespace Game.Core.Content
             return level;
         }
 
-        public double Scale(int level) => 1 + EffectPerLevel * level;
+        public double Scale(int level) => 1 + EnchantBonus + EffectPerLevel * level;
 
         public static bool TryParse(string name, out AwakeningInput input) => Names.TryGetValue(name, out input);
 
@@ -92,7 +94,7 @@ namespace Game.Core.Content
             var firstNode = node.Field("first");
             foreach (var pair in Names)
                 first[(int)pair.Value] = firstNode.Field(pair.Key).AsNumber(1, 1e12);
-            return new ArtifactAwakening(node.Field("slots").AsInt(1, 20), node.Field("effectPerLevel").AsNumber(0, 10),
+            return new ArtifactAwakening(true, node.Field("enchantBonus").AsNumber(0, 10), node.Field("effectPerLevel").AsNumber(0, 10),
                 node.Field("maxLevel").AsInt(1, 1000), node.Field("growth").AsNumber(1, 10), first);
         }
 
