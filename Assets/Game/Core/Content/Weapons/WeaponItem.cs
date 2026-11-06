@@ -7,8 +7,9 @@ namespace Game.Core.Content.Weapons
 {
     public sealed class WeaponItem
     {
-        public WeaponItem(WeaponBase weaponBase, ItemRarity rarity, int itemLevel = 1, IReadOnlyList<GearAffix>? affixes = null, UniqueWeaponDef? unique = null, SetDef? set = null)
+        public WeaponItem(WeaponBase weaponBase, ItemRarity rarity, int itemLevel = 1, IReadOnlyList<GearAffix>? affixes = null, UniqueWeaponDef? unique = null, SetDef? set = null, ForgeMark? forge = null)
         {
+            Forge = forge ?? new ForgeMark();
             Set = set;
             Base = weaponBase;
             Rarity = rarity;
@@ -23,6 +24,7 @@ namespace Game.Core.Content.Weapons
         public ItemRarity Rarity { get; }
         public int ItemLevel { get; }
         public IReadOnlyList<GearAffix> Affixes { get; }
+        public ForgeMark Forge { get; }
         public string Id => Base.Id;
         public WeaponType Type => Base.Type;
         public string NameRu => Base.NameRu;
@@ -30,11 +32,11 @@ namespace Game.Core.Content.Weapons
         public IReadOnlyList<Modifier> Innate => Base.Innate;
         public IReadOnlyList<string> OpensSkills => Unique?.OpensSkills ?? Array.Empty<string>();
 
-        public WeaponItem Rebased(WeaponBase weaponBase) => new WeaponItem(weaponBase, Rarity, ItemLevel, Affixes, Unique, Set);
+        public WeaponItem Rebased(WeaponBase weaponBase) => new WeaponItem(weaponBase, Rarity, ItemLevel, Affixes, Unique, Set, Forge);
 
-        public WeaponItem WithAffixes(IReadOnlyList<GearAffix> affixes) => new WeaponItem(Base, Rarity, ItemLevel, affixes, Unique, Set);
+        public WeaponItem WithAffixes(IReadOnlyList<GearAffix> affixes) => new WeaponItem(Base, Rarity, ItemLevel, affixes, Unique, Set, Forge);
 
-        public WeaponItem InSet(SetDef set) => new WeaponItem(Base, Rarity, ItemLevel, Affixes, Unique, set);
+        public WeaponItem InSet(SetDef set) => new WeaponItem(Base, Rarity, ItemLevel, Affixes, Unique, set, Forge);
 
         public bool Opens(string skillId)
         {

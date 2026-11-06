@@ -5,6 +5,7 @@
     { "id": "alchemy", "name": { "ru": "Алхимия", "en": "Alchemy" } },
     { "id": "fishing", "name": { "ru": "Рыбалка", "en": "Fishing" } },
     { "id": "cooking", "name": { "ru": "Кухня", "en": "Cooking" } },
+    { "id": "forge", "name": { "ru": "Кузница", "en": "Forge" } },
     { "id": "meditation", "name": { "ru": "Созерцание", "en": "Meditation" } }
   ],
   "offlineGoldShare": 0.3,

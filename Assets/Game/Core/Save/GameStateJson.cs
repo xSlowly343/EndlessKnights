@@ -101,6 +101,8 @@ namespace Game.Core.Save
                 ("town", WriteTown(state.Town)),
                 ("fishing", WriteFishing(state.Fishing)),
                 ("cooking", WriteCooking(state.Cooking)),
+                ("forge", Object(("target", JsonValue.Of(state.Forge.Target.ToString())), ("slot", JsonValue.Of(state.Forge.Slot.ToString())), ("hammers", JsonValue.Of(state.Forge.Hammers)),
+                    ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)))),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -291,6 +293,16 @@ namespace Game.Core.Save
                 ReadFishing(node.Field("fishing"), state.Fishing);
             if (node.HasField("cooking"))
                 ReadCooking(node.Field("cooking"), state.Cooking);
+            if (node.HasField("forge"))
+            {
+                var forge = node.Field("forge");
+                state.Forge.Target = System.Enum.TryParse<ForgeTarget>(forge.Field("target").AsString(), out var target) ? target : ForgeTarget.None;
+                state.Forge.Slot = System.Enum.TryParse<GearSlot>(forge.Field("slot").AsString(), out var slot) ? slot : GearSlot.Helmet;
+                state.Forge.Hammers = forge.Field("hammers").AsNumber(0, double.MaxValue);
+                state.Forge.Heat = forge.Field("heat").AsNumber(0, 1);
+                state.Forge.Smelted = node.Field("forge").Field("smelted").AsLong(0);
+                state.Forge.Tempered = node.Field("forge").Field("tempered").AsLong(0);
+            }
             if (node.HasField("garden"))
                 ReadGarden(node.Field("garden"), state.Garden);
             if (node.HasField("camp"))
@@ -1048,7 +1060,8 @@ namespace Game.Core.Save
                 ("set", item.Set == null ? JsonValue.Null() : JsonValue.Of(item.Set.Id)),
                 ("unique", item.Unique == null ? JsonValue.Null() : JsonValue.Of(item.Unique.Id)),
                 ("implicit", item.RolledImplicit == null ? JsonValue.Null() : JsonValue.Of(item.RolledImplicit.Id)),
-                ("affixes", JsonValue.Array(affixes)));
+                ("affixes", JsonValue.Array(affixes)),
+                ("forge", WriteForge(item.Forge)));
         }
 
         private static JsonValue WriteWorn(GearState gear)
@@ -1114,9 +1127,9 @@ namespace Game.Core.Save
             var color = node.Field("color");
             var itemLevel = node.Field("itemLevel").AsInt(1);
             if (items != null && node.HasField("unique") && !node.Field("unique").IsNull && items.TryGetUnique(node.Field("unique").AsString(), out var unique) && unique.Slot == slot)
-                return new GearItem(unique, itemLevel);
+                return new GearItem(unique, itemLevel, ReadForge(node));
             if (items != null && node.HasField("base") && !node.Field("base").IsNull && items.TryGetBase(node.Field("base").AsString(), out var gearBase) && gearBase.Slot == slot)
-                return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot), ReadImplicit(node, items, slot));
+                return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot), ReadImplicit(node, items, slot), ReadForge(node));
             return new GearItem(slot, rarity, itemLevel, color.IsNull ? null : color.AsString());
         }
 
@@ -1260,7 +1273,22 @@ namespace Game.Core.Save
                 ("itemLevel", JsonValue.Of(weapon.ItemLevel)),
                 ("affixes", JsonValue.Array(WriteAffixes(weapon.Affixes))),
                 ("unique", weapon.Unique == null ? JsonValue.Null() : JsonValue.Of(weapon.Unique.Id)),
-                ("set", weapon.Set == null ? JsonValue.Null() : JsonValue.Of(weapon.Set.Id)));
+                ("set", weapon.Set == null ? JsonValue.Null() : JsonValue.Of(weapon.Set.Id)),
+                ("forge", WriteForge(weapon.Forge)));
+        }
+
+        private static JsonValue WriteForge(ForgeMark forge) =>
+            forge.Empty ? JsonValue.Null() : Object(("temper", JsonValue.Of(forge.Temper)), ("brand", OptionalText(forge.Brand)), ("slain", WriteIdList(forge.Slain)));
+
+        private static ForgeMark? ReadForge(ContentNode node)
+        {
+            if (!node.HasField("forge") || node.Field("forge").IsNull)
+                return null;
+            var field = node.Field("forge");
+            var forge = new ForgeMark { Temper = field.Field("temper").AsNumber(0, 1), Brand = ReadOptionalText(field, "brand") };
+            foreach (var item in field.Field("slain").Items())
+                forge.Slain.Add(item.AsString());
+            return forge;
         }
 
         private static void ReadWeapons(ContentNode node, WeaponCatalog catalog, ItemCatalog? items, WeaponState weapons)
@@ -1288,7 +1316,7 @@ namespace Game.Core.Save
             var set = items != null && node.HasField("set") && !node.Field("set").IsNull && items.TryGetSet(node.Field("set").AsString(), out var setDef) && setDef.Has(ItemSlot.Weapon) ? setDef : null;
             var itemLevel = node.HasField("itemLevel") ? node.Field("itemLevel").AsInt(1, 1000) : 1;
             var affixes = items != null ? ReadAffixes(node, items) : null;
-            return new WeaponItem(weaponBase, rarity, itemLevel, affixes, unique, set);
+            return new WeaponItem(weaponBase, rarity, itemLevel, affixes, unique, set, ReadForge(node));
         }
 
         private static JsonValue WriteRift(RiftState rift) =>

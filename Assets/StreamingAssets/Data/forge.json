@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "building": "forge",
+  "ores": {
+    "green_hills": "ore_hills",
+    "sand_ruins": "ore_ruins",
+    "ice_peak": "ore_ice",
+    "volcanic_forge": "ore_ember",
+    "sky_islands": "ore_sky"
+  },
+  "smelt": { "base": 1, "perRarity": 1 },
+  "temper": {
+    "ore": 5,
+    "hammers": 40,
+    "max": 0.05,
+    "stepInZone": 0.01,
+    "stepOutside": 0.004,
+    "heatPerMeter": 0.5,
+    "heatDecayPerSecond": 0.08,
+    "zoneFrom": 0.55,
+    "zoneTo": 0.8
+  }
+}

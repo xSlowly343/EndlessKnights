@@ -46,6 +46,8 @@ namespace Game.Core.Sim
         FishEscaped,
         FishCaught,
         DishCooked,
-        MealEnded
+        MealEnded,
+        ItemSmelted,
+        ItemTempered
     }
 }

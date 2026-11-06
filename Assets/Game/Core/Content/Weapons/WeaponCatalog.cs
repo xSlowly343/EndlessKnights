@@ -121,7 +121,7 @@ namespace Game.Core.Content.Weapons
             var from = weapon.Type;
             if (weapon.Unique != null || from == to)
                 return weapon;
-            return new WeaponItem(BaseAtStep(to, StepOf(weapon.Base)), weapon.Rarity, weapon.ItemLevel, weapon.Affixes, null, weapon.Set);
+            return new WeaponItem(BaseAtStep(to, StepOf(weapon.Base)), weapon.Rarity, weapon.ItemLevel, weapon.Affixes, null, weapon.Set, weapon.Forge);
         }
 
         private int StepOf(WeaponBase weaponBase)

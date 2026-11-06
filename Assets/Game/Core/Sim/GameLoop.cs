@@ -73,6 +73,7 @@ namespace Game.Core.Sim
         private readonly TownSystem _town;
         private readonly FishingSystem _fishing;
         private readonly CookingSystem _cooking;
+        private readonly ForgeSystem _forge;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
         private GameData _data;
@@ -144,6 +145,7 @@ namespace Game.Core.Sim
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
             _cooking = new CookingSystem(data.Cooking, state, hero, _camp, _peaceful, Events);
+            _forge = new ForgeSystem(data.Forge, state, data.Stages, _camp, _peaceful, _weapons, _gear, Events);
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
             _town = new TownSystem(data.Town, state, _camp, _alchemy, _expeditions, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
@@ -221,6 +223,7 @@ namespace Game.Core.Sim
         public TownSystem Town => _town;
         public FishingSystem Fishing => _fishing;
         public CookingSystem Cooking => _cooking;
+        public ForgeSystem Forge => _forge;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
@@ -832,6 +835,7 @@ namespace Game.Core.Sim
             _town.UseRules(data.Town);
             _fishing.UseRules(data.Fishing);
             _cooking.UseRules(data.Cooking);
+            _forge.UseRules(data.Forge);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _book.UseWeapons(data.Weapons);
@@ -898,6 +902,7 @@ namespace Game.Core.Sim
             _expeditions.Tick();
             _fishing.Tick();
             _cooking.Tick();
+            _forge.Tick();
             if (_peaceful.InCamp)
             {
                 CampTick(firstEvent);
@@ -940,6 +945,7 @@ namespace Game.Core.Sim
             _seasonPass.Tick();
             _alchemy.BattleTick();
             _cooking.BattleTick();
+            _forge.NoteKills(firstEvent);
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);
             _achievements.Tick();

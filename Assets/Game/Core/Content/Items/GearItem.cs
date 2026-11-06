@@ -13,10 +13,12 @@ namespace Game.Core.Content.Items
             ItemLevel = itemLevel;
             Color = color;
             Affixes = Array.Empty<GearAffix>();
+            Forge = new ForgeMark();
         }
 
-        public GearItem(GearBase gearBase, ItemRarity rarity, int itemLevel, IReadOnlyList<GearAffix> affixes, SetDef? set = null, GearImplicit? rolledImplicit = null)
+        public GearItem(GearBase gearBase, ItemRarity rarity, int itemLevel, IReadOnlyList<GearAffix> affixes, SetDef? set = null, GearImplicit? rolledImplicit = null, ForgeMark? forge = null)
         {
+            Forge = forge ?? new ForgeMark();
             RolledImplicit = rolledImplicit;
             Set = set;
             Base = gearBase;
@@ -27,8 +29,9 @@ namespace Game.Core.Content.Items
             Affixes = affixes;
         }
 
-        public GearItem(UniqueDef unique, int itemLevel)
+        public GearItem(UniqueDef unique, int itemLevel, ForgeMark? forge = null)
         {
+            Forge = forge ?? new ForgeMark();
             Unique = unique;
             Base = unique.Base;
             Slot = unique.Slot;
@@ -47,24 +50,32 @@ namespace Game.Core.Content.Items
         public IReadOnlyList<GearAffix> Affixes { get; }
         public SetDef? Set { get; }
         public GearImplicit? RolledImplicit { get; }
+        public ForgeMark Forge { get; }
         public bool Wearable => Base != null;
 
         public GearItem WithAffixes(IReadOnlyList<GearAffix> affixes) =>
-            Base == null || Unique != null ? this : new GearItem(Base, Rarity, ItemLevel, affixes, Set, RolledImplicit);
+            Base == null || Unique != null ? this : new GearItem(Base, Rarity, ItemLevel, affixes, Set, RolledImplicit, Forge);
 
         public void AddModifiers(List<Modifier> modifiers)
         {
             if (Base == null)
                 return;
-            modifiers.AddRange(Base.Implicit);
+            AddScaled(modifiers, Base.Implicit);
             if (RolledImplicit != null)
-                modifiers.AddRange(RolledImplicit.Lines);
+                AddScaled(modifiers, RolledImplicit.Lines);
             foreach (var affix in Affixes)
                 affix.AddModifiers(modifiers);
             if (Set != null)
                 modifiers.AddRange(Set.PieceLines(Slot));
             if (Unique != null)
                 modifiers.AddRange(Unique.Lines);
+        }
+
+        private void AddScaled(List<Modifier> modifiers, IReadOnlyList<Modifier> lines)
+        {
+            var scale = Forge.Scale;
+            foreach (var line in lines)
+                modifiers.Add(scale == 1 ? line : line.WithValue(line.Value * scale));
         }
     }
 }

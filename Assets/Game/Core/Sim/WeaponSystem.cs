@@ -171,6 +171,8 @@ namespace Game.Core.Sim
 
         private double InnateScale => System.Math.Max(0, _hero.Value(CombatStats.WeaponInnateEffect, 1));
 
+        public void Refresh() => Rebuild();
+
         private void Rebuild()
         {
             var modifiers = new List<Modifier>();
@@ -179,7 +181,7 @@ namespace Game.Core.Sim
             if (weapon != null)
             {
                 AddScaled(modifiers, weapon.Type.Innate, _appliedScale);
-                AddScaled(modifiers, weapon.Innate, _appliedScale);
+                AddScaled(modifiers, weapon.Innate, _appliedScale * weapon.Forge.Scale);
                 foreach (var affix in weapon.Affixes)
                     affix.AddModifiers(modifiers);
                 if (weapon.Unique != null)
