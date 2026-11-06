@@ -857,7 +857,7 @@
 ### Наборы со связями (15.12, часть 4б)
 - Средняя закалка и «всё на потолке» считаются в `ConditionSystem.NoteTemper` каждый тик (до 10 вещей, без аллокаций) в `State.WornTemperPercent` / `AllWornTempered`; `CombatSystem` умножает урон на `1 + damagePerTemperPercent × процент`, так же `damagePerMuseumCollection × Museum.Done.Count`.
 - `GameLoop.RebuildOnMuseum` пересобирает `GearSystem`, когда меняется число закрытых коллекций музея (поле `perMuseumCollection`); первый тик после загрузки тоже пересобирает.
-- Портал (`StageSystem.TryPortal`) переиспользует прыжок Странника (`JumpTo`): опыт за пропущенных врагов, событие `PortalJumped`; до стража биома — `ceil(stage / biomeLength) × biomeLength`.
+- Портал (`StageSystem.TryPortal`) переиспользует прыжок Странника (`JumpTo`): опыт за пропущенных врагов, событие `PortalJumped`. Через стражей и рекорд прыгает (после прыжка `LevelSystem.OnStageReached` поднимает рекорд и очки дерева), стоп — только на непройденном Пределе (`NextUnclearedGateFrom`, `GatesCleared`).
 - Набег копится в `PrestigeSystem.NoteRush` до сброса забега; потолок — стат перчаток в момент престижа и старта.
 - Эхо набора: `ItemCatalog` раздаёт `SetDef.EchoBit` по порядку наборов с полем `echo` (не больше 32 — маска uint в протоколе). Порядок в `items.json` у всех клиентов один, поэтому биты совпадают; при переупорядочивании наборов маски старых клиентов собьются — выкладывать вместе.
 
