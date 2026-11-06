@@ -47,6 +47,7 @@ namespace Game.Core.Content
         public PathRules Paths { get; }
         public EncounterRules Encounters { get; }
         public double BasePierce { get; private set; }
+        public PierceRules Pierce { get; private set; } = new PierceRules();
 
         public static CombatRules Load(string json)
         {
@@ -79,7 +80,8 @@ namespace Game.Core.Content
                 EncounterRules.Read(root.Field("encounters")))
             {
                 OvercritRate = crit.HasField("overcritRate") ? crit.Field("overcritRate").AsNumber(0, 100) : 0,
-                BasePierce = root.HasField("pierce") ? root.Field("pierce").Field("baseShare").AsNumber(0, 1) : 0
+                BasePierce = root.HasField("pierce") ? root.Field("pierce").Field("baseShare").AsNumber(0, 1) : 0,
+                Pierce = root.HasField("pierce") ? PierceRules.Read(root.Field("pierce")) : new PierceRules()
             };
         }
     }

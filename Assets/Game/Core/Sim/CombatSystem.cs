@@ -398,6 +398,7 @@ namespace Game.Core.Sim
             NoteDamage(damage);
             LastTickDamage += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
+            Splash(damage, tags);
             if (source == DamageSource.Strike)
             {
                 PierceQueue(damage);
@@ -502,8 +503,28 @@ namespace Game.Core.Sim
 
         private void Pierce(BigNumber overkill)
         {
-            if (_rules.BasePierce > 0 && overkill.Sign > 0 && _state.EnemyType == EnemyType.Normal)
-                _state.PierceDamage += overkill * _rules.BasePierce;
+            if (overkill.Sign <= 0)
+                return;
+            var share = _state.EnemyType == EnemyType.Normal ? PierceShare : StageCarryShare;
+            if (share > 0)
+                _state.PierceDamage += overkill * share;
+        }
+
+        public double PierceShare => System.Math.Min(_rules.Pierce.MaxShare, _rules.BasePierce + System.Math.Max(0, _hero.Value(CombatStats.PierceShare, 0)));
+
+        public double StageCarryShare => System.Math.Min(_rules.Pierce.MaxStageCarry, System.Math.Max(0, _hero.Value(CombatStats.StageCarry, 0)));
+
+        private void Splash(BigNumber damage, StatTags tags)
+        {
+            if (_state.EnemyType != EnemyType.Normal)
+                return;
+            var share = System.Math.Min(_rules.Pierce.MaxSplashShare, _hero.Value(CombatStats.SplashShare, 0, tags));
+            if (!(share > 0))
+                return;
+            var targets = System.Math.Min(_rules.Pierce.MaxSplashTargets, (int)System.Math.Floor(_hero.Value(CombatStats.SplashTargets, 0) + 1e-9));
+            var queue = _state.QueueDamage;
+            for (var i = 0; i < targets && i < queue.Length; i++)
+                queue[i] += damage * share;
         }
 
         private void CarryOverkill(BigNumber overkill, StatTags tags)

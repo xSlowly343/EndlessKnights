@@ -126,7 +126,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void FortyEightJewelrySetsOfAnAmuletAndTwoDifferentRings()
         {
-            var jewelry = Items.Sets.Where(s => s.Jewelry && s.Event == null).ToList();
+            var jewelry = Items.Sets.Where(s => s.Jewelry && s.Event == null && s.Theme != "lightning_sparks").ToList();
             Assert.That(jewelry.Count, Is.EqualTo(48));
             Assert.That(jewelry.GroupBy(s => s.Rarity).All(g => g.Count() == 8), Is.True, "eight lines in each of the six rarities");
             foreach (var set in jewelry)

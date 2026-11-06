@@ -19,6 +19,8 @@ namespace Game.Core.Sim
         TrialCompleted,
         WandererJumped,
         PortalJumped,
+        StageSkipped,
+        EnemiesSkipped,
         GoldenColossusAppeared,
         GateCleared,
         DungeonKeyDropped,

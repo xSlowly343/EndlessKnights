@@ -41,7 +41,7 @@ namespace Game.Core.Tests.Sim
                     System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"share\": [0-9.]+,", "\"pierce\": { \"share\": 0,"),
                     "\"hpPerExtraPlayer\": [0-9.]+,", "\"hpPerExtraPlayer\": 1.0,");
             if (name == CombatRules.FileName)
-                return System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"baseShare\": [0-9.]+ \\}", "\"pierce\": { \"baseShare\": 0 }");
+                return System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"baseShare\": [0-9.]+,", "\"pierce\": { \"baseShare\": 0,");
             return json;
         }
 

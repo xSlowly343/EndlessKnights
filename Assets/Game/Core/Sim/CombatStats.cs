@@ -220,5 +220,13 @@ namespace Game.Core.Sim
         public static readonly StatId PortalStages = new StatId("portalStages");
         public static readonly StatId DamagePerTemperPercent = new StatId("damagePerTemperPercent");
         public static readonly StatId DamagePerMuseumCollection = new StatId("damagePerMuseumCollection");
+        public static readonly StatId PierceShare = new StatId("pierceShare");
+        public static readonly StatId EnemySkip = new StatId("enemySkip");
+        public static readonly StatId SplashShare = new StatId("splashShare");
+        public static readonly StatId SplashTargets = new StatId("splashTargets");
+        public static readonly StatId BossPierce = new StatId("bossPierce");
+        public static readonly StatId StageCarry = new StatId("stageCarry");
+        public static readonly StatId StageSkipChance = new StatId("stageSkipChance");
+        public static readonly StatId StageSkipStages = new StatId("stageSkipStages");
     }
 }

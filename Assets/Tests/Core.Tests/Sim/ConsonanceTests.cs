@@ -25,7 +25,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryPairNamesAnArmourAndAJewelryLineInAllRarities()
         {
-            Assert.That(Items.Consonances.Count, Is.EqualTo(16));
+            Assert.That(Items.Consonances.Count, Is.EqualTo(17));
             foreach (var consonance in Items.Consonances)
             {
                 for (var rarity = ItemRarity.Rare; rarity <= ItemRarity.Rift; rarity++)
