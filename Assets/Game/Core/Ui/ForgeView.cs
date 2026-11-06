@@ -30,7 +30,7 @@ namespace Game.Core.Ui
         {
             var rules = forge.Rules;
             var state = forge.State;
-            return new ForgeGauge(System.Math.Min(1, state.Hammers / rules.Hammers), state.Heat, rules.ZoneFrom, rules.ZoneTo, rules.InZone(state.Heat),
+            return new ForgeGauge(System.Math.Min(1, state.Hammers / forge.HammersNeeded), state.Heat, forge.ZoneFrom, forge.ZoneTo, forge.InZone(state.Heat),
                 forge.TargetMark?.Temper ?? 0, rules.MaxTemper);
         }
     }

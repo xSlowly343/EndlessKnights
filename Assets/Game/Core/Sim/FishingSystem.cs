@@ -100,7 +100,7 @@ namespace Game.Core.Sim
         private void Cast()
         {
             State.Phase = FishingPhase.Waiting;
-            State.Timer = (_rules.BiteMinSeconds + _state.Rng.NextDouble() * (_rules.BiteMaxSeconds - _rules.BiteMinSeconds)) * (1 - _state.Museum.Perk(MuseumPerk.BiteFaster));
+            State.Timer = (_rules.BiteMinSeconds + _state.Rng.NextDouble() * (_rules.BiteMaxSeconds - _rules.BiteMinSeconds)) * (1 - _state.Perk(MuseumPerk.BiteFaster));
             State.Hooked = string.Empty;
             State.Reeled = 0;
         }
@@ -108,16 +108,16 @@ namespace Game.Core.Sim
         private void Bite()
         {
             var spot = _rules.Spot(CurrentSpot)!;
-            if (_state.Rng.NextDouble() < _rules.BottleChance + _state.Museum.Perk(MuseumPerk.BottleChance))
+            if (_state.Rng.NextDouble() < _rules.BottleChance + _state.Perk(MuseumPerk.BottleChance))
                 Hook(FishCatchKind.Bottle, string.Empty);
-            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < _rules.LegendChance + _state.Museum.Perk(MuseumPerk.LegendChance))
+            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < _rules.LegendChance + _state.Perk(MuseumPerk.LegendChance))
                 Hook(FishCatchKind.Legend, spot.Legend.Id);
             else if (RiftWindow && _rules.RiftFish.Count > 0 && _state.Rng.NextDouble() < _rules.RiftChance)
                 Hook(FishCatchKind.Fish, Pick(_rules.RiftFish).Id);
             else
                 Hook(FishCatchKind.Fish, Pick(spot.Fish).Id);
             State.Phase = FishingPhase.Bite;
-            State.Timer = _rules.BiteWindowSeconds;
+            State.Timer = _rules.BiteWindowSeconds + _state.Perk(MuseumPerk.HookWindow);
             _events.Add(GameEvent.ForStage(GameEventKind.FishBite, _state.Tick, (long)State.HookedKind));
         }
 
@@ -144,7 +144,7 @@ namespace Game.Core.Sim
         private void Reel(double meters)
         {
             State.Reeled += System.Math.Max(0, meters);
-            if (State.Reeled >= Need(State.HookedKind, State.Hooked) * (1 - _state.Museum.Perk(MuseumPerk.ReelEasier)))
+            if (State.Reeled >= Need(State.HookedKind, State.Hooked) * (1 - _state.Perk(MuseumPerk.ReelEasier)))
             {
                 Land();
                 return;
@@ -175,7 +175,7 @@ namespace Game.Core.Sim
         private void Tire()
         {
             State.LegendTired.TryGetValue(State.Hooked, out var tired);
-            State.LegendTired[State.Hooked] = tired + State.Reeled;
+            State.LegendTired[State.Hooked] = tired + State.Reeled * (1 + _state.Perk(MuseumPerk.LegendTire));
         }
 
         private void Land()

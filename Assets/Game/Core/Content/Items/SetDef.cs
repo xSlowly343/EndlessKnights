@@ -23,8 +23,9 @@ namespace Game.Core.Content.Items
         private readonly IReadOnlyList<Modifier>? _secondRing;
 
         public SetDef(string id, string nameRu, string nameEn, ItemRarity rarity, string? color, Dictionary<ItemSlot, IReadOnlyList<Modifier>> pieces, IReadOnlyList<Modifier> bonus, string? theme = null,
-            IReadOnlyList<string>? weaponTypes = null, IReadOnlyList<Modifier>? secondRing = null, double craftMultiplier = 1)
+            IReadOnlyList<string>? weaponTypes = null, IReadOnlyList<Modifier>? secondRing = null, double craftMultiplier = 1, IReadOnlyList<PerkValue>? perks = null)
         {
+            Perks = perks ?? System.Array.Empty<PerkValue>();
             WeaponTypes = weaponTypes ?? System.Array.Empty<string>();
             Theme = theme;
             Id = id;
@@ -56,6 +57,8 @@ namespace Game.Core.Content.Items
         public IReadOnlyList<Modifier> Bonus { get; }
         public IReadOnlyList<string> WeaponTypes { get; }
         public double CraftMultiplier { get; }
+        public IReadOnlyList<PerkValue> Perks { get; }
+        public bool Peaceful => Perks.Count > 0;
         public bool HasSecondRing => _secondRing != null;
         public bool Jewelry => _pieces.ContainsKey(ItemSlot.Amulet) || _pieces.ContainsKey(ItemSlot.Ring);
 

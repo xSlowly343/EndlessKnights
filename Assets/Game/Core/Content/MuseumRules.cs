@@ -24,7 +24,25 @@ namespace Game.Core.Content
         MutationChance,
         DoubleMeal,
         FinePotion,
-        ExpeditionLoot
+        ExpeditionLoot,
+        LegendTire,
+        HookWindow,
+        GrowFaster,
+        SeedBack,
+        StirFaster,
+        FewerChops,
+        MealLonger,
+        IngredientBack,
+        SlowerCooling,
+        FewerHammers,
+        MoreOre,
+        WiderZone,
+        ShorterTrips,
+        LetterChoice,
+        ExpeditionShards,
+        Reputation,
+        OrderDust,
+        OrderRecipe
     }
 
     public readonly struct PerkValue
@@ -93,10 +111,33 @@ namespace Game.Core.Content
             ["mutationChance"] = MuseumPerk.MutationChance,
             ["doubleMeal"] = MuseumPerk.DoubleMeal,
             ["finePotion"] = MuseumPerk.FinePotion,
-            ["expeditionLoot"] = MuseumPerk.ExpeditionLoot
+            ["expeditionLoot"] = MuseumPerk.ExpeditionLoot,
+            ["legendTire"] = MuseumPerk.LegendTire,
+            ["hookWindow"] = MuseumPerk.HookWindow,
+            ["growFaster"] = MuseumPerk.GrowFaster,
+            ["seedBack"] = MuseumPerk.SeedBack,
+            ["stirFaster"] = MuseumPerk.StirFaster,
+            ["fewerChops"] = MuseumPerk.FewerChops,
+            ["mealLonger"] = MuseumPerk.MealLonger,
+            ["ingredientBack"] = MuseumPerk.IngredientBack,
+            ["slowerCooling"] = MuseumPerk.SlowerCooling,
+            ["fewerHammers"] = MuseumPerk.FewerHammers,
+            ["moreOre"] = MuseumPerk.MoreOre,
+            ["widerZone"] = MuseumPerk.WiderZone,
+            ["shorterTrips"] = MuseumPerk.ShorterTrips,
+            ["letterChoice"] = MuseumPerk.LetterChoice,
+            ["expeditionShards"] = MuseumPerk.ExpeditionShards,
+            ["reputation"] = MuseumPerk.Reputation,
+            ["orderDust"] = MuseumPerk.OrderDust,
+            ["orderRecipe"] = MuseumPerk.OrderRecipe
         };
 
         public const double MaxPerk = 0.5;
+        public const double MaxSecondsPerk = 10;
+
+        public static bool TryPerk(string name, out MuseumPerk perk) => PerkNames.TryGetValue(name, out perk);
+
+        public static double MaxOf(MuseumPerk perk) => perk == MuseumPerk.HookWindow ? MaxSecondsPerk : MaxPerk;
         public static int PerkCount => PerkNames.Count;
 
         public double MaxEach { get; private set; }
@@ -164,7 +205,7 @@ namespace Game.Core.Content
                         var perkName = perkNode.Field("perk").AsString();
                         if (!PerkNames.TryGetValue(perkName, out var perk))
                             throw perkNode.Field("perk").Error($"unknown museum perk '{perkName}'");
-                        perks.Add(new PerkValue(perk, perkNode.Field("value").AsNumber(0, MaxPerk)));
+                        perks.Add(new PerkValue(perk, perkNode.Field("value").AsNumber(0, MaxOf(perk))));
                     }
                 }
                 var name = node.Field("name");
