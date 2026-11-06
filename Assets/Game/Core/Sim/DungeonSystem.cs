@@ -61,7 +61,7 @@ namespace Game.Core.Sim
         {
             if (Unlocks?.IsOpen(Feature.Dungeons) == false)
                 return DungeonResult.Locked;
-            if (Inside)
+            if (Inside || _state.Events.FightInside)
                 return DungeonResult.AlreadyInside;
             if (_state.Rift.Inside)
                 return DungeonResult.InsideRift;

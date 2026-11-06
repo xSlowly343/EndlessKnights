@@ -64,6 +64,7 @@ namespace Game.Core.Sim
         private readonly GateSystem _gates;
         private readonly Unlocks _unlocks;
         private readonly DungeonSystem _dungeons;
+        private readonly EventSystem _seasonal;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
         private GameData _data;
@@ -128,6 +129,7 @@ namespace Game.Core.Sim
             _artifacts.Rebuilt = _slates.Rebuild;
             _drops.Dungeons = data.Dungeons;
             _dungeons = new DungeonSystem(data, state, hero, _stage, _drops, Events) { Unlocks = _unlocks };
+            _seasonal = new EventSystem(data, state, _stage, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
@@ -194,6 +196,7 @@ namespace Game.Core.Sim
         public GateSystem Gates => _gates;
         public Unlocks Unlocks => _unlocks;
         public DungeonSystem Dungeons => _dungeons;
+        public EventSystem SeasonalEvents => _seasonal;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
@@ -567,9 +570,16 @@ namespace Game.Core.Sim
             _drops.SetDay(day);
             _quests.SetDay(day);
             _chronicle.SetDay(day);
+            _seasonal.SetDay(day);
         }
 
-        public QuestResult ClaimQuest(bool weekly, int index) => _quests.Claim(weekly, index);
+        public QuestResult ClaimQuest(bool weekly, int index)
+        {
+            var result = _quests.Claim(weekly, index);
+            if (result == QuestResult.Done && !weekly)
+                _seasonal.NoteDailyQuest();
+            return result;
+        }
 
         public QuestResult SwapQuest(int index) => _quests.Swap(index);
 
@@ -786,6 +796,7 @@ namespace Game.Core.Sim
             _drops.Dungeons = data.Dungeons;
             _slates.Rules = data.Slates;
             _dungeons.UseData(data);
+            _seasonal.UseData(data);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _book.UseWeapons(data.Weapons);
@@ -878,6 +889,7 @@ namespace Game.Core.Sim
             _gemExperience.Tick();
             _raid.Tick(firstEvent);
             _quests.Tick(firstEvent);
+            _seasonal.Tick(firstEvent);
             _seasonPass.Tick();
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);

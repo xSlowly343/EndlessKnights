@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Text;
 using Game.Net.Nakama;
@@ -243,6 +244,24 @@ namespace Game.Net.Tests
             Assert.That(clan.Banner, Is.EqualTo("banner_wolf"));
             var wallet = CoopWalletView.From(NakamaJson.Parse("{\"balances\":{\"friendship\":1,\"seals\":2,\"crystals\":300},\"today\":[],\"ledger\":[]}"));
             Assert.That(wallet.Crystals, Is.EqualTo(300));
+        }
+
+        [Test]
+        public void TheSeasonalEventIsReadFromTheServer()
+        {
+            Assert.That(EventReply.ProgressPayload("pumpkin_night_2026", 40, 12, new[] { "guests" }, 3000),
+                Is.EqualTo("{\"window\":\"pumpkin_night_2026\",\"tokens\":40,\"guests\":12,\"goals\":[\"guests\"],\"score\":3000}"));
+            Assert.That(EventReply.BuyPayload("pumpkin_theme"), Is.EqualTo("{\"cosmetic\":\"pumpkin_theme\"}"));
+            var reply = EventReply.From(NakamaJson.Parse("{\"window\":\"pumpkin_night_2026\",\"shopWindow\":\"pumpkin_night_2026\",\"endsDay\":20763,\"shopEndsDay\":20766,\"tokens\":340,\"today\":40,\"dailyCap\":300,\"goals\":[\"guests\"],\"owned\":[\"pumpkin_theme\"],\"accepted\":40,\"freshGoals\":[\"guests\"],\"freshCrystals\":0}"));
+            Assert.That(reply.Window, Is.EqualTo("pumpkin_night_2026"));
+            Assert.That(reply.Tokens, Is.EqualTo(340));
+            Assert.That(reply.Accepted, Is.EqualTo(40));
+            Assert.That(reply.Goals, Is.EqualTo(new[] { "guests" }));
+            Assert.That(reply.Owned, Is.EqualTo(new[] { "pumpkin_theme" }));
+            Assert.That(reply.ShopEndsDay, Is.EqualTo(20766));
+            var board = EventBoardView.From(NakamaJson.Parse("{\"window\":\"pumpkin_night_2026\",\"top\":[{\"rank\":1,\"userId\":\"a\",\"name\":\"Ann\",\"score\":30000}],\"mine\":null}"));
+            Assert.That(board.Top.Single().Score, Is.EqualTo(30000));
+            Assert.That(board.Mine, Is.Null);
         }
 
         [Test]

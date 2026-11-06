@@ -353,5 +353,35 @@ const seasonPassRules = {
 };
 const crystalChangeRules = { price: ascendancy.change.crystalCost, reasons: ["subclass_change", "class_change"] };
 
+const seasonalEvents = JSON.parse(fs.readFileSync(path.join(data, "events.json"), "utf8"));
+if (seasonalEvents.version !== 1)
+  throw new Error("events.json: version " + seasonalEvents.version + " is not supported");
+for (const event of seasonalEvents.events) {
+  for (const item of event.shop) {
+    const cosmetic = cosmetics.items.find((entry) => entry.id === item.cosmetic);
+    if (!cosmetic || cosmetic.source !== "event")
+      throw new Error("events.json: " + item.cosmetic + " is not an event cosmetic");
+  }
+  if (!cosmeticIds.has(event.clanEmblem))
+    throw new Error("events.json: clan emblem " + event.clanEmblem + " is missing");
+}
+if (!cosmeticIds.has(seasonalEvents.boss.championFrame))
+  throw new Error("events.json: champion frame " + seasonalEvents.boss.championFrame + " is missing");
+const seasonalEventRules = {
+  windowDays: seasonalEvents.windowDays,
+  shopGraceDays: seasonalEvents.shopGraceDays,
+  dailyTokenCap: seasonalEvents.dailyTokenCap,
+  goals: seasonalEvents.goals.map((goal) => goal.id),
+  goalTokens: seasonalEvents.goalTokens,
+  goalPassPoints: seasonalEvents.goalPassPoints,
+  allGoalsCrystals: seasonalEvents.allGoalsCrystals,
+  clanGuestsPerMember: seasonalEvents.clanGoal.guestsPerMember,
+  clanTarget: seasonalEvents.clanGoal.target,
+  championTop: seasonalEvents.boss.championTop,
+  championFrame: seasonalEvents.boss.championFrame,
+  boardSize: 50,
+  events: seasonalEvents.events.map((event) => ({ id: event.id, month: event.month, day: event.day, shop: event.shop, clanEmblem: event.clanEmblem }))
+};
+
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\nvar SeasonalEventServerRules = " + JSON.stringify(seasonalEventRules) + ";\n" + code);

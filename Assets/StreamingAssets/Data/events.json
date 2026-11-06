@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "windowDays": 14,
+  "shopGraceDays": 3,
+  "guestEvery": 5,
+  "tokensPerGuest": 1,
+  "dailyTokenCap": 300,
+  "boss": {
+    "perDay": 1,
+    "timerSeconds": 60,
+    "hpMultiplier": 1.0,
+    "tokens": 50,
+    "championTop": 10,
+    "championFrame": "event_champion"
+  },
+  "goals": [
+    {
+      "id": "guests",
+      "kind": "guests",
+      "target": 300
+    },
+    {
+      "id": "boss_fights",
+      "kind": "bossFights",
+      "target": 5
+    },
+    {
+      "id": "boss_wins",
+      "kind": "bossWins",
+      "target": 3
+    },
+    {
+      "id": "tokens",
+      "kind": "tokens",
+      "target": 2000
+    },
+    {
+      "id": "quests",
+      "kind": "dailyQuests",
+      "target": 5
+    },
+    {
+      "id": "party",
+      "kind": "partyMinutes",
+      "target": 60
+    }
+  ],
+  "goalTokens": 100,
+  "goalPassPoints": 200,
+  "allGoalsCrystals": 100,
+  "clanGoal": {
+    "guestsPerMember": 300,
+    "target": 3000
+  },
+  "events": [
+    {
+      "id": "pumpkin_night",
+      "name": {
+        "ru": "Ночь Тыкв",
+        "en": "Pumpkin Night"
+      },
+      "month": 10,
+      "day": 31,
+      "token": {
+        "ru": "Свечка",
+        "en": "Candle"
+      },
+      "boss": {
+        "ru": "Король Тыкв",
+        "en": "Pumpkin King"
+      },
+      "guestBiome": "green_hills",
+      "shop": [
+        {
+          "cosmetic": "pumpkin_theme",
+          "price": 600
+        },
+        {
+          "cosmetic": "pumpkin_frame",
+          "price": 400
+        },
+        {
+          "cosmetic": "pumpkin_effect",
+          "price": 500
+        },
+        {
+          "cosmetic": "pumpkin_companion",
+          "price": 1000
+        },
+        {
+          "cosmetic": "pumpkin_avatar",
+          "price": 300
+        }
+      ],
+      "clanEmblem": "pumpkin_emblem"
+    },
+    {
+      "id": "long_night",
+      "name": {
+        "ru": "Долгая Ночь",
+        "en": "The Long Night"
+      },
+      "month": 12,
+      "day": 31,
+      "token": {
+        "ru": "Снежинка",
+        "en": "Snowflake"
+      },
+      "boss": {
+        "ru": "Снежный Ворон",
+        "en": "Snow Raven"
+      },
+      "guestBiome": "ice_peak",
+      "shop": [
+        {
+          "cosmetic": "longnight_theme",
+          "price": 600
+        },
+        {
+          "cosmetic": "longnight_frame",
+          "price": 400
+        },
+        {
+          "cosmetic": "longnight_effect",
+          "price": 500
+        },
+        {
+          "cosmetic": "longnight_companion",
+          "price": 1000
+        },
+        {
+          "cosmetic": "longnight_avatar",
+          "price": 300
+        }
+      ],
+      "clanEmblem": "longnight_emblem"
+    },
+    {
+      "id": "flood_tide",
+      "name": {
+        "ru": "Половодье",
+        "en": "Flood Tide"
+      },
+      "month": 4,
+      "day": 15,
+      "token": {
+        "ru": "Капля",
+        "en": "Drop"
+      },
+      "boss": {
+        "ru": "Хозяйка Половодья",
+        "en": "Lady of the Flood"
+      },
+      "guestBiome": "sky_islands",
+      "shop": [
+        {
+          "cosmetic": "flood_theme",
+          "price": 600
+        },
+        {
+          "cosmetic": "flood_frame",
+          "price": 400
+        },
+        {
+          "cosmetic": "flood_effect",
+          "price": 500
+        },
+        {
+          "cosmetic": "flood_companion",
+          "price": 1000
+        },
+        {
+          "cosmetic": "flood_avatar",
+          "price": 300
+        }
+      ],
+      "clanEmblem": "flood_emblem"
+    },
+    {
+      "id": "solstice",
+      "name": {
+        "ru": "Солнцестояние",
+        "en": "Solstice"
+      },
+      "month": 6,
+      "day": 21,
+      "token": {
+        "ru": "Искра",
+        "en": "Spark"
+      },
+      "boss": {
+        "ru": "Мастер Фестиваля",
+        "en": "Festival Master"
+      },
+      "guestBiome": "volcanic_forge",
+      "shop": [
+        {
+          "cosmetic": "solstice_theme",
+          "price": 600
+        },
+        {
+          "cosmetic": "solstice_frame",
+          "price": 400
+        },
+        {
+          "cosmetic": "solstice_effect",
+          "price": 500
+        },
+        {
+          "cosmetic": "solstice_companion",
+          "price": 1000
+        },
+        {
+          "cosmetic": "solstice_avatar",
+          "price": 300
+        }
+      ],
+      "clanEmblem": "solstice_emblem"
+    }
+  ]
+}

@@ -90,6 +90,7 @@ namespace Game.Core.Sim
         public CosmeticState Cosmetics { get; } = new CosmeticState();
         public SeasonPassState SeasonPass { get; } = new SeasonPassState();
         public double[] ConditionShares { get; } = new double[64];
+        public EventState Events { get; } = new EventState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();

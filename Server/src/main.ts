@@ -80,6 +80,10 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("season_pass_add", seasonPassAddRpc);
     initializer.registerRpc("season_pass_premium", seasonPassPremiumRpc);
     initializer.registerRpc("crystal_change", crystalChangeRpc);
+    initializer.registerRpc("event_mine", eventMineRpc);
+    initializer.registerRpc("event_progress", eventProgressRpc);
+    initializer.registerRpc("event_buy", eventBuyRpc);
+    initializer.registerRpc("event_board", eventBoardRpc);
     initializer.registerBeforeCreateGroup(partyBeforeCreateGroup);
     initializer.registerBeforeUpdateGroup(partyBeforeGroupChange);
     initializer.registerBeforeDeleteGroup(partyBeforeGroupChange);

@@ -92,6 +92,7 @@ namespace Game.Core.Save
                 ("seasonPass", WriteSeasonPass(state.SeasonPass)),
                 ("awakening", WriteAwakening(state.Awakening)),
                 ("conditionShares", WriteConditionShares(state.ConditionShares)),
+                ("events", WriteEvents(state.Events)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -272,6 +273,8 @@ namespace Game.Core.Save
                 ReadBestiary(node.Field("bestiary"), state.Bestiary);
             if (node.HasField("cosmetics"))
                 ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
+            if (node.HasField("events"))
+                ReadEvents(node.Field("events"), state.Events);
             if (node.HasField("conditionShares"))
                 ReadConditionShares(node.Field("conditionShares"), state.ConditionShares);
             if (node.HasField("awakening"))
@@ -508,6 +511,66 @@ namespace Game.Core.Save
                 cosmetics.Owned.Add(item.AsString());
             foreach (var item in node.Field("equipped").Items())
                 cosmetics.Equipped[item.Field("key").AsString()] = item.Field("id").AsString();
+        }
+
+        private static JsonValue WriteEvents(EventState events)
+        {
+            var done = new List<string>(events.GoalsDone);
+            done.Sort(System.StringComparer.Ordinal);
+            var sent = new List<string>(events.GoalsSent);
+            sent.Sort(System.StringComparer.Ordinal);
+            return Object(
+                ("window", OptionalText(events.WindowId)),
+                ("unsentTokens", JsonValue.Of(events.UnsentTokens)),
+                ("tokens", JsonValue.Of(events.Tokens)),
+                ("guests", JsonValue.Of(events.Guests)),
+                ("bossFights", JsonValue.Of(events.BossFights)),
+                ("bossWins", JsonValue.Of(events.BossWins)),
+                ("dailyQuests", JsonValue.Of(events.DailyQuests)),
+                ("partyTicks", JsonValue.Of(events.PartyTicks)),
+                ("spawns", JsonValue.Of(events.Spawns)),
+                ("guest", JsonValue.Of(events.Guest)),
+                ("bossDay", JsonValue.Of(events.BossDay == long.MinValue ? -1 : events.BossDay)),
+                ("bossFightsToday", JsonValue.Of(events.BossFightsToday)),
+                ("goalsDone", WriteIdList(done)),
+                ("goalsSent", WriteIdList(sent)),
+                ("fight", events.FightInside && events.FightHome != null ? Object(
+                    ("home", WriteProgress(events.FightHome)),
+                    ("stage", JsonValue.Of(events.FightStage)),
+                    ("ticksLeft", JsonValue.Of(events.FightTicksLeft))) : JsonValue.Null()),
+                ("unsentScore", JsonValue.Of(events.UnsentScore)),
+                ("bestScore", JsonValue.Of(events.BestScore)));
+        }
+
+        private static void ReadEvents(ContentNode node, EventState events)
+        {
+            events.WindowId = ReadOptionalText(node, "window");
+            events.UnsentTokens = node.Field("unsentTokens").AsLong(0);
+            events.Tokens = node.Field("tokens").AsLong(0);
+            events.Guests = node.Field("guests").AsLong(0);
+            events.BossFights = node.Field("bossFights").AsLong(0);
+            events.BossWins = node.Field("bossWins").AsLong(0);
+            events.DailyQuests = node.Field("dailyQuests").AsLong(0);
+            events.PartyTicks = node.Field("partyTicks").AsLong(0);
+            events.Spawns = node.Field("spawns").AsLong(0);
+            events.Guest = node.Field("guest").AsBool();
+            var bossDay = node.Field("bossDay").AsLong(-1);
+            events.BossDay = bossDay < 0 ? long.MinValue : bossDay;
+            events.BossFightsToday = node.Field("bossFightsToday").AsInt(0);
+            foreach (var item in node.Field("goalsDone").Items())
+                events.GoalsDone.Add(item.AsString());
+            foreach (var item in node.Field("goalsSent").Items())
+                events.GoalsSent.Add(item.AsString());
+            var fight = node.Field("fight");
+            if (!fight.IsNull)
+            {
+                events.FightInside = true;
+                events.FightHome = ReadProgress(fight.Field("home"));
+                events.FightStage = fight.Field("stage").AsLong(1);
+                events.FightTicksLeft = fight.Field("ticksLeft").AsInt(0);
+            }
+            events.UnsentScore = node.Field("unsentScore").AsLong(0);
+            events.BestScore = node.Field("bestScore").AsLong(0);
         }
 
         private static JsonValue WriteConditionShares(double[] shares)

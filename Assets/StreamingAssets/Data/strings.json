@@ -1753,6 +1753,7 @@
     "wallet.source.weekly_top100": { "ru": "топ-100 испытания недели", "en": "top 100 of a weekly trial" },
     "wallet.source.crystal_purchase": { "ru": "покупка Кристаллов", "en": "crystals bought" },
     "wallet.source.season_pass": { "ru": "сезонный пропуск", "en": "season pass" },
+    "wallet.source.event_goals": { "ru": "все цели ивента", "en": "all event goals" },
     "wallet.source.subclass_change": { "ru": "смена Пути", "en": "path change" },
     "wallet.source.class_change": { "ru": "смена класса", "en": "class change" },
     "wallet.source.cosmetic": { "ru": "покупка косметики", "en": "a cosmetic bought" },

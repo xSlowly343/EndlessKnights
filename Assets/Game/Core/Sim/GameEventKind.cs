@@ -26,6 +26,8 @@ namespace Game.Core.Sim
         SlateDropped,
         AchievementUnlocked,
         BestiaryEntryOpened,
-        BiomeChanged
+        BiomeChanged,
+        EventBossDefeated,
+        EventBossFailed
     }
 }
