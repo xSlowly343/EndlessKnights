@@ -131,6 +131,14 @@ namespace Game.Core.Sim
                 Quench(mark);
         }
 
+        public void GuestStrike(int hammers)
+        {
+            if (Busy)
+                State.Hammers = System.Math.Min(_rules.Hammers, State.Hammers + hammers);
+            else
+                State.GuestHammers = System.Math.Min(_rules.Hammers, State.GuestHammers + hammers);
+        }
+
         public void NoteKills(int firstEvent)
         {
             var weapon = _state.Weapons.Held;
@@ -182,7 +190,8 @@ namespace Game.Core.Sim
             State.Work = work;
             State.Target = target;
             State.Slot = slot;
-            State.Hammers = 0;
+            State.Hammers = State.GuestHammers;
+            State.GuestHammers = 0;
             State.Heat = 0;
             return ForgeResult.Done;
         }

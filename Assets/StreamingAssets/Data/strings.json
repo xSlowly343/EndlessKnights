@@ -1685,6 +1685,7 @@
     "wallet.source.boss_together": { "ru": "боссы вместе с отрядом", "en": "bosses with your party" },
     "wallet.source.ghost_helped": { "ru": "ваш призрак помог другу", "en": "your ghost helped a friend" },
     "wallet.source.clan_raid": { "ru": "рейд клана", "en": "clan raid" },
+    "wallet.source.camp_gift": { "ru": "подарок у костра", "en": "a gift by the fire" },
     "raid.boss.devourer": { "ru": "Пожиратель Миров", "en": "World Devourer" },
     "raid.layer.shield": { "ru": "Щит", "en": "Shield" },
     "raid.layer.armor": { "ru": "Броня", "en": "Armor" },

@@ -101,6 +101,7 @@ namespace Game.Core.Sim
         public CookingState Cooking { get; } = new CookingState();
         public ForgeState Forge { get; } = new ForgeState();
         public MuseumState Museum { get; } = new MuseumState();
+        public DecorState Decor { get; } = new DecorState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();
