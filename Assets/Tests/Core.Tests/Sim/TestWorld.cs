@@ -18,7 +18,11 @@ namespace Game.Core.Tests.Sim
         private static readonly Lazy<GameData> RealData = new Lazy<GameData>(() => GameData.Load(TestData.ReadGameDataFile));
         private static readonly Lazy<GameData> DataWithoutClassPassives = new Lazy<GameData>(() => GameData.Load(NeutralFile));
 
+        private static readonly Lazy<GameData> DataWithoutRotation = new Lazy<GameData>(() => GameData.Load(name =>
+            name == StageTable.FileName ? NeutralFile(name).Replace(",\n  \"rotation\": { \"minutes\": 5 }", string.Empty) : NeutralFile(name)));
+
         public static GameData Data => DataWithoutClassPassives.Value;
+        public static GameData BiomesByStage => DataWithoutRotation.Value;
         public static GameData Real => RealData.Value;
 
         private static string NeutralFile(string name)

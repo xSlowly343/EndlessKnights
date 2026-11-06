@@ -183,7 +183,7 @@ namespace Game.Core.Sim
         public BigNumber SpawnLinked(bool boss, ulong seed, double bar, int killsOnStage, bool farming, int bossTicksLeft, bool weakened = false, double weakenedGold = 0, long waveStage = 0)
         {
             var stage = _state.Stage;
-            var biome = _stages.Biome(stage);
+            var biome = BiomeRotation.Current(_stages, _state, stage);
             _state.KillsOnStage = killsOnStage;
             _state.Farming = farming;
             EnemyDef? enemy;
@@ -279,6 +279,8 @@ namespace Game.Core.Sim
                 _state.HighestStage = _state.Stage;
             if (wanderer)
                 Jump();
+            if (BiomeRotation.TryTurn(_stages, _state))
+                _events.Add(GameEvent.ForStage(GameEventKind.BiomeChanged, _state.Tick, _state.Stage));
             Drops?.OnBossDefeated(stageBefore, type, _state.RecordStage, RaisesRecord);
             if (Gates?.TryClear(stageBefore) is StageGate gate)
             {
@@ -313,7 +315,7 @@ namespace Game.Core.Sim
         private void SpawnNormal()
         {
             var stage = _state.Stage;
-            var normals = _enemies.Normals(_stages.Biome(stage));
+            var normals = _enemies.Normals(BiomeRotation.Current(_stages, _state, stage));
             var enemy = normals.Count == 0 ? null : normals[_state.Rng.NextInt(0, normals.Count)];
             var cut = System.Math.Min(MaxHpCut, System.Math.Max(0, _hero.Value(CombatStats.EnemyHpCut, 0)));
             if (GoldenComes(stage))
@@ -378,7 +380,7 @@ namespace Game.Core.Sim
         private void SpawnBoss()
         {
             var stage = _state.Stage;
-            var biome = _stages.Biome(stage);
+            var biome = BiomeRotation.Current(_stages, _state, stage);
             var gate = _stages.GateAt(stage);
             var guardian = gate != null || _stages.IsBiomeGuardian(stage);
             var enemy = guardian ? _guardians[biome] ?? BossFor(biome, stage) : BossFor(biome, stage);

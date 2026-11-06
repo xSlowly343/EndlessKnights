@@ -10,6 +10,7 @@ namespace Game.Core.Sim
         private readonly GameData _data;
         private readonly StatSheet _hero;
         private readonly Dictionary<string, (double Hp, double Gold)> _normalAverages = new Dictionary<string, (double, double)>();
+        private GameState? _state;
 
         public OfflineCalculator(GameData data, StatSheet hero)
         {
@@ -26,6 +27,7 @@ namespace Game.Core.Sim
         public OfflineResult Simulate(GameState state, double seconds, BigNumber dps, bool fightGuardians)
         {
             var stages = _data.Stages;
+            _state = state;
             var capSeconds = _data.Combat.Offline.CapSeconds + _hero.Value(CombatStats.OfflineCapHours, 0) * 3600;
             var time = System.Math.Max(0, System.Math.Min(seconds, capSeconds));
             var used = time;
@@ -133,18 +135,20 @@ namespace Game.Core.Sim
 
         private (double Seconds, BigNumber Gold) NormalEnemy(long stage, BigNumber dps, BigNumber goldMultiplier)
         {
-            var average = _normalAverages[_data.Stages.Biome(stage)];
+            var average = _normalAverages[BiomeAt(stage)];
             var hp = _data.Stages.EnemyHp(stage) * average.Hp;
             return (KillSeconds(hp, dps), _data.Stages.EnemyGold(stage) * average.Gold * goldMultiplier);
         }
 
         private (double Seconds, BigNumber Gold) BossEnemy(long stage, bool guardian, BigNumber dps, BigNumber goldMultiplier)
         {
-            var biome = _data.Stages.Biome(stage);
+            var biome = BiomeAt(stage);
             var enemy = guardian ? _data.Enemies.Guardian(biome) ?? _data.Enemies.Boss(biome) : _data.Enemies.Boss(biome);
             var hp = _data.Stages.BossHp(stage) * (enemy?.HpMultiplier ?? 1.0);
             return (KillSeconds(hp, dps), _data.Stages.BossGold(stage) * (enemy?.GoldMultiplier ?? 1.0) * goldMultiplier);
         }
+
+        private string BiomeAt(long stage) => _state == null ? _data.Stages.Biome(stage) : BiomeRotation.Current(_data.Stages, _state, stage);
 
         private static double KillSeconds(BigNumber hp, BigNumber dps) => System.Math.Max(GameLoop.TickSeconds, (hp / dps).ToDouble());
 

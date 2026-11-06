@@ -58,7 +58,7 @@ namespace Game.Core.Tests.Content
 
             Assert.That(store.TryReload(), Is.False);
             Assert.That(store.Current, Is.SameAs(before));
-            Assert.That(store.LastError, Does.Contain("enemies.json: enemies[6].type: unknown type 'elite'"));
+            Assert.That(store.LastError, Does.Contain("enemies.json: enemies[7].type: unknown type 'elite'"));
             Assert.That(store.Version, Is.EqualTo(1));
         }
 

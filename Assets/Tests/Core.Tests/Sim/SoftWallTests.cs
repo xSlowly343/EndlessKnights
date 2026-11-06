@@ -49,7 +49,8 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void GuardianWithKeyboardPenaltyStopsAWeakTypist()
         {
-            var result = new Simulation(TestWorld.Data, new BotProfile(3), damageMultiplier: 21).Run(4 * 3600, stopAfterBossFailsInARow: 3);
+            Assert.That(TestWorld.BiomesByStage.Stages.Rotates, Is.False);
+            var result = new Simulation(TestWorld.BiomesByStage, new BotProfile(3), damageMultiplier: 21).Run(4 * 3600, stopAfterBossFailsInARow: 3);
 
             Assert.That(result.Stuck, Is.True);
             Assert.That(TestWorld.Data.Stages.IsBiomeGuardian(result.FinalStage), Is.True, $"stuck at {result.FinalStage}");

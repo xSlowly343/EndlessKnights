@@ -52,6 +52,9 @@ namespace Game.Core.Content
         public string Heart { get; private set; } = string.Empty;
         public long HeartFromStage { get; private set; }
         public int BossSlotStages { get; private set; } = 10;
+        public double RotationMinutes { get; private set; }
+        public bool Rotates => RotationMinutes > 0 && _biomes.Length > 2;
+        public System.Collections.Generic.IReadOnlyList<string> Rotation => _biomes;
         private string[] _allBiomes = System.Array.Empty<string>();
         public StageGate[] Gates { get; private set; } = System.Array.Empty<StageGate>();
 
@@ -149,6 +152,7 @@ namespace Game.Core.Content
                 _goldSteps = goldSteps,
                 Heart = heart,
                 HeartFromStage = heartFrom,
+                RotationMinutes = root.HasField("rotation") ? root.Field("rotation").Field("minutes").AsNumber(0.1, 1440) : 0,
                 BossSlotStages = boss.HasField("slotStages") ? boss.Field("slotStages").AsInt(1, 1000) : 10,
                 _allBiomes = allBiomes.ToArray()
             };
@@ -178,6 +182,7 @@ namespace Game.Core.Content
                 _goldSteps = _goldSteps,
                 Heart = Heart,
                 HeartFromStage = HeartFromStage,
+                RotationMinutes = RotationMinutes,
                 BossSlotStages = BossSlotStages,
                 _allBiomes = _allBiomes
             };
@@ -191,6 +196,7 @@ namespace Game.Core.Content
                 _goldSteps = _goldSteps,
                 Heart = Heart,
                 HeartFromStage = HeartFromStage,
+                RotationMinutes = RotationMinutes,
                 BossSlotStages = BossSlotStages,
                 _allBiomes = _allBiomes
             };
@@ -272,6 +278,8 @@ namespace Game.Core.Content
         }
 
         public string Biome(long stage) => Heart.Length > 0 && stage >= HeartFromStage ? Heart : _biomes[(int)((stage - 1) / BiomeLength % _biomes.Length)];
+
+        public bool InHeart(long stage) => Heart.Length > 0 && stage >= HeartFromStage;
 
         public int BossSlot(long stage) => (int)(((stage - 1) % BiomeLength + 1) / BossSlotStages);
 

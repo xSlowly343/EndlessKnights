@@ -364,8 +364,15 @@ namespace Game.Core.Tests.Party
             var linkedTicks = 0;
             var guestHits = 0.0;
             var seenAsGuest = false;
+            var everLinked = false;
+            var ownKills = friend.Loop.State.KillsOnStage;
             for (var tick = 0; tick < (help.Seconds + 5) * GameLoop.TicksPerSecond && !friend.Client.GuestFinished; tick++)
             {
+                if (!everLinked)
+                {
+                    ownStage = friend.Loop.State.Stage;
+                    ownKills = friend.Loop.State.KillsOnStage;
+                }
                 rig.Network.Advance(100);
                 foreach (var player in rig.Players)
                     player.Tick(true);
@@ -374,6 +381,7 @@ namespace Game.Core.Tests.Party
                 var slot = rig.Host.Encounter.SlotOf(friend.Id);
                 if (friend.Client.Status == PartyLink.Linked)
                     linkedTicks++;
+                everLinked |= friend.Client.Status == PartyLink.Linked;
                 if (slot == PartyEncounter.NoSlot)
                     continue;
                 Assert.That(rig.Host.Encounter.Member(slot).Guest, Is.True);
@@ -390,7 +398,7 @@ namespace Game.Core.Tests.Party
             Assert.That(friend.Client.IsGuest, Is.False);
             Assert.That(friend.Client.PartyRewards, Is.Zero, "the friend is not paid for the party's kills");
             Assert.That(friend.Loop.State.Stage, Is.EqualTo(ownStage));
-            Assert.That(friend.Loop.State.KillsOnStage, Is.EqualTo(3), "the friend's own stage progress comes back");
+            Assert.That(friend.Loop.State.KillsOnStage, Is.EqualTo(ownKills), "the friend's own stage progress comes back");
             Assert.That(rig.Host.Encounter.SlotOf(friend.Id), Is.EqualTo(PartyEncounter.NoSlot));
         }
 

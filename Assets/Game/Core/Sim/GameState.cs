@@ -48,6 +48,9 @@ namespace Game.Core.Sim
         public AscendancyState Ascendancy { get; set; } = new AscendancyState();
 
         public long Stage { get; set; } = 1;
+        public string Biome { get; set; } = string.Empty;
+        public string PreviousBiome { get; set; } = string.Empty;
+        public long BiomeSinceTick { get; set; }
         public long HighestStage { get; set; } = 1;
         public long RecordStage { get; set; } = 1;
         public int HeroLevel { get; set; } = 1;

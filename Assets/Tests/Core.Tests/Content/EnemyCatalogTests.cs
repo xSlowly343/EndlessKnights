@@ -28,7 +28,7 @@ namespace Game.Core.Tests.Content
             var catalog = EnemyCatalog.Load(TestData.ReadGameDataFile(EnemyCatalog.FileName), stages.Biomes);
 
             Assert.That(stages.Biomes.Count, Is.EqualTo(6));
-            Assert.That(catalog.Normals("green_hills").Count, Is.EqualTo(6));
+            Assert.That(catalog.Normals("green_hills").Count, Is.EqualTo(7));
             Assert.That(catalog.Boss("green_hills")!.Id, Is.EqualTo("boar_king"));
             Assert.That(catalog.Guardian("green_hills")!.Id, Is.EqualTo("ancient_ent"));
             foreach (var biome in stages.Biomes)

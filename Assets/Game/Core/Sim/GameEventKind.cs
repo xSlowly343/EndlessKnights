@@ -25,6 +25,7 @@ namespace Game.Core.Sim
         DungeonFailed,
         SlateDropped,
         AchievementUnlocked,
-        BestiaryEntryOpened
+        BestiaryEntryOpened,
+        BiomeChanged
     }
 }

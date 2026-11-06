@@ -53,7 +53,10 @@ namespace Game.Core.Save
                     ("farming", JsonValue.Of(state.Farming)),
                     ("farmKills", JsonValue.Of(state.FarmKills)),
                     ("bossFailsInARow", JsonValue.Of(state.BossFailsInARow)),
-                    ("bossBestFraction", JsonValue.Of(state.BossBestFraction)))),
+                    ("bossBestFraction", JsonValue.Of(state.BossBestFraction)),
+                    ("biome", OptionalText(state.Biome)),
+                    ("previousBiome", OptionalText(state.PreviousBiome)),
+                    ("biomeSinceTick", JsonValue.Of(state.BiomeSinceTick)))),
                 ("enemy", Object(
                     ("id", state.Enemy == null ? JsonValue.Null() : JsonValue.Of(state.Enemy.Id)),
                     ("type", JsonValue.Of(SaveValues.NameOf(state.EnemyType, EnemyTypes))),
@@ -173,6 +176,9 @@ namespace Game.Core.Save
                 FarmKills = stage.Field("farmKills").AsInt(0),
                 BossFailsInARow = stage.Field("bossFailsInARow").AsInt(0),
                 BossBestFraction = stage.HasField("bossBestFraction") ? stage.Field("bossBestFraction").AsNumber(0, 1) : 0,
+                Biome = ReadOptionalText(stage, "biome"),
+                PreviousBiome = ReadOptionalText(stage, "previousBiome"),
+                BiomeSinceTick = stage.HasField("biomeSinceTick") ? stage.Field("biomeSinceTick").AsLong(long.MinValue) : 0,
                 Gold = SaveValues.ReadBigNumber(gold.Field("wallet")),
                 RunGoldEarned = SaveValues.ReadBigNumber(gold.Field("runEarned")),
                 RecentDps = SaveValues.ReadBigNumber(node.Field("recentDps")),
@@ -918,6 +924,11 @@ namespace Game.Core.Save
                 ("artifacts", JsonValue.Array(WriteArtifacts(rift.Artifacts))),
                 ("otherWorld", rift.OtherWorld == null ? JsonValue.Null() : WriteProgress(rift.OtherWorld)));
 
+        private static JsonValue OptionalText(string text) => text.Length == 0 ? JsonValue.Null() : JsonValue.Of(text);
+
+        private static string ReadOptionalText(ContentNode node, string name) =>
+            node.HasField(name) && !node.Field(name).IsNull ? node.Field(name).AsString() : string.Empty;
+
         private static JsonValue WriteProgress(StageProgress progress) =>
             Object(
                 ("current", JsonValue.Of(progress.Stage)),
@@ -926,7 +937,10 @@ namespace Game.Core.Save
                 ("farming", JsonValue.Of(progress.Farming)),
                 ("farmKills", JsonValue.Of(progress.FarmKills)),
                 ("bossFailsInARow", JsonValue.Of(progress.BossFailsInARow)),
-                ("bossBestFraction", JsonValue.Of(progress.BossBestFraction)));
+                ("bossBestFraction", JsonValue.Of(progress.BossBestFraction)),
+                ("biome", OptionalText(progress.Biome)),
+                ("previousBiome", OptionalText(progress.PreviousBiome)),
+                ("biomeSinceTick", JsonValue.Of(progress.BiomeSinceTick)));
 
         private static void ReadRift(ContentNode node, RiftState rift)
         {
@@ -952,7 +966,10 @@ namespace Game.Core.Save
                 Farming = node.Field("farming").AsBool(),
                 FarmKills = node.Field("farmKills").AsInt(0),
                 BossFailsInARow = node.Field("bossFailsInARow").AsInt(0),
-                BossBestFraction = node.Field("bossBestFraction").AsNumber(0, 1)
+                BossBestFraction = node.Field("bossBestFraction").AsNumber(0, 1),
+                Biome = ReadOptionalText(node, "biome"),
+                PreviousBiome = ReadOptionalText(node, "previousBiome"),
+                BiomeSinceTick = node.HasField("biomeSinceTick") ? node.Field("biomeSinceTick").AsLong(long.MinValue) : 0
             };
             if (progress.HighestStage < progress.Stage)
                 throw node.Field("highest").Error($"must not be lower than current ({progress.Stage})");
