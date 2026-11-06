@@ -1,7 +1,7 @@
 {
   "version": 1,
   "daily": { "perDay": 3, "keepDays": 3, "swapsPerDay": 1, "reward": { "shards": 40, "pass": 40 }, "partyReward": { "friendship": 3, "pass": 40 } },
-  "weekly": { "perWeek": 3, "reward": { "shards": 300, "ingots": 3, "pass": 200 } },
+  "weekly": { "perWeek": 3, "reward": { "shards": 300, "pass": 200 } },
   "streak": { "bonusPerDay": 0.1, "maxDays": 7, "missKeep": 0.5 },
   "size": { "start": 0.3, "fullAtRecord": 300 },
   "kinds": [

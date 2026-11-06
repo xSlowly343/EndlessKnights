@@ -1085,6 +1085,7 @@ namespace Game.Core.Save
                 ("dust", JsonValue.Of(drops.Dust)),
                 ("shards", JsonValue.Of(drops.Shards)),
                 ("ingots", JsonValue.Of(drops.Ingots)),
+                ("essence", JsonValue.Of(drops.Essence)),
                 ("shardCarry", JsonValue.Of(drops.ShardCarry)),
                 ("shardsFound", JsonValue.Of(drops.ShardsFound)),
                 ("dailyShards", JsonValue.Of(drops.DailyShards)),
@@ -1149,6 +1150,7 @@ namespace Game.Core.Save
             {
                 drops.Shards = node.Field("shards").AsLong(0);
                 drops.Ingots = node.HasField("ingots") ? node.Field("ingots").AsLong(0) : 0;
+                drops.Essence = node.HasField("essence") ? node.Field("essence").AsLong(0) : 0;
                 drops.ShardCarry = node.Field("shardCarry").AsNumber(0, 1);
                 drops.ShardsFound = node.Field("shardsFound").AsLong(0);
                 drops.DailyShards = node.Field("dailyShards").AsInt(0);

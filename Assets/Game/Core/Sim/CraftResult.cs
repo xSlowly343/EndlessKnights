@@ -9,6 +9,7 @@ namespace Game.Core.Sim
         NotEnoughIngots,
         BagFull,
         AboveCeiling,
-        Locked
+        Locked,
+        NotEnoughEssence
     }
 }
