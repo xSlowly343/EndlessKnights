@@ -101,6 +101,9 @@ namespace Game.Core.Sim
         public CookingState Cooking { get; } = new CookingState();
         public ForgeState Forge { get; } = new ForgeState();
         public MuseumState Museum { get; } = new MuseumState();
+        public double[] SetPerks { get; } = new double[MuseumRules.PerkCount];
+
+        public double Perk(MuseumPerk perk) => Museum.Perks[(int)perk] + SetPerks[(int)perk];
         public DecorState Decor { get; } = new DecorState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }

@@ -38,7 +38,7 @@ namespace Game.Core.Ui
         public static (double Chops, double Plates) Progress(CookingSystem cooking)
         {
             var dish = cooking.Rules.Dish(cooking.State.Cooking);
-            return dish == null ? (0, 0) : (System.Math.Min(1, cooking.State.Chops / dish.Chops), System.Math.Min(1, cooking.State.Plates / dish.Plates));
+            return dish == null ? (0, 0) : (System.Math.Min(1, cooking.State.Chops / cooking.ChopsOf(dish)), System.Math.Min(1, cooking.State.Plates / dish.Plates));
         }
     }
 }

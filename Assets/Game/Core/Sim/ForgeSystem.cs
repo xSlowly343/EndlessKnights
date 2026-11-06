@@ -53,7 +53,15 @@ namespace Game.Core.Sim
             return rotation.Count == 0 ? string.Empty : _rules.OreOf(rotation[(System.Math.Max(1, itemLevel) - 1) % rotation.Count]);
         }
 
-        public int SmeltYield(ItemRarity rarity) => _rules.SmeltBase + _rules.SmeltPerRarity * (int)rarity;
+        public int SmeltYield(ItemRarity rarity) => (int)System.Math.Round((_rules.SmeltBase + _rules.SmeltPerRarity * (int)rarity) * (1 + _state.Perk(MuseumPerk.MoreOre)));
+
+        public double HammersNeeded => System.Math.Ceiling(_rules.Hammers * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.FewerHammers)));
+
+        public double ZoneFrom => System.Math.Max(0, _rules.ZoneFrom - _state.Perk(MuseumPerk.WiderZone) / 2);
+
+        public double ZoneTo => System.Math.Min(1, _rules.ZoneTo + _state.Perk(MuseumPerk.WiderZone) / 2);
+
+        public bool InZone(double heat) => heat >= ZoneFrom && heat <= ZoneTo;
 
         public ForgeResult SmeltGear(int index)
         {
@@ -120,9 +128,9 @@ namespace Game.Core.Sim
                 return;
             }
             var work = _peaceful.Work(Activity);
-            State.Hammers = System.Math.Min(_rules.Hammers, State.Hammers + work.Keys);
-            State.Heat = System.Math.Max(0, System.Math.Min(1, State.Heat + work.MouseMeters * _rules.HeatPerMeter - _rules.HeatDecayPerSecond * GameLoop.TickSeconds));
-            var quench = State.Hammers >= _rules.Hammers && work.Clicks > 0;
+            State.Hammers = System.Math.Min(HammersNeeded, State.Hammers + work.Keys);
+            State.Heat = System.Math.Max(0, System.Math.Min(1, State.Heat + work.MouseMeters * _rules.HeatPerMeter - _rules.HeatDecayPerSecond * System.Math.Max(0, 1 - _state.Perk(MuseumPerk.SlowerCooling)) * GameLoop.TickSeconds));
+            var quench = State.Hammers >= HammersNeeded && work.Clicks > 0;
             work.Keys = 0;
             work.Clicks = 0;
             work.MouseMeters = 0;
@@ -198,8 +206,8 @@ namespace Game.Core.Sim
 
         private void Quench(ForgeMark mark)
         {
-            var inZone = _rules.InZone(State.Heat);
-            var boost = 1 + _state.Museum.Perk(MuseumPerk.TemperStep);
+            var inZone = InZone(State.Heat);
+            var boost = 1 + _state.Perk(MuseumPerk.TemperStep);
             if (State.Work == ForgeWork.Hone)
                 mark.Hone = System.Math.Min(_rules.MaxHone, mark.Hone + (inZone ? _rules.HoneStepInZone : _rules.HoneStepOutside) * boost);
             else

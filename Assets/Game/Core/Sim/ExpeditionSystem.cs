@@ -108,7 +108,8 @@ namespace Game.Core.Sim
                 Companion = companion,
                 Biome = biome,
                 Hours = hours,
-                Seconds = hours * SecondsPerHour,
+                Seconds = hours * SecondsPerHour * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.ShorterTrips)),
+                Planned = hours * SecondsPerHour * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.ShorterTrips)),
                 Items = new long[place.Items.Count]
             });
             return ExpeditionResult.Done;
@@ -123,7 +124,7 @@ namespace Game.Core.Sim
             if (wait)
             {
                 expedition.Waited = true;
-                expedition.Seconds += expedition.Hours * SecondsPerHour * _rules.WaitExtend;
+                expedition.Seconds += PlannedOf(expedition) * _rules.WaitExtend;
             }
             else
             {
@@ -142,7 +143,7 @@ namespace Game.Core.Sim
             {
                 var expedition = active[i];
                 expedition.Elapsed = System.Math.Min(expedition.Seconds, expedition.Elapsed + System.Math.Max(0, seconds));
-                if (!expedition.LetterSent && expedition.Elapsed * 2 >= expedition.Hours * SecondsPerHour)
+                if (!expedition.LetterSent && expedition.Elapsed * 2 >= PlannedOf(expedition))
                     SendLetter(expedition, i);
                 if (expedition.Elapsed >= expedition.Seconds)
                     Return(i);
@@ -152,7 +153,7 @@ namespace Game.Core.Sim
         private void SendLetter(Expedition expedition, int index)
         {
             expedition.Letter = _rules.Letters.Count == 0 ? 0 : (int)(_state.Rng.NextDouble() * _rules.Letters.Count) % _rules.Letters.Count;
-            expedition.Choice = _state.Rng.NextDouble() < _rules.ChoiceChance;
+            expedition.Choice = _state.Rng.NextDouble() < _rules.ChoiceChance + _state.Perk(MuseumPerk.LetterChoice);
             _events.Add(GameEvent.ForStage(GameEventKind.ExpeditionLetter, _state.Tick, index));
         }
 
@@ -180,13 +181,13 @@ namespace Game.Core.Sim
                 expedition.Items = new long[place.Items.Count];
             for (var i = 0; i < place.Items.Count; i++)
             {
-                var count = (long)System.Math.Floor(place.Items[i].PerHour * hours * trait.ItemMultiplier * (1 + _state.Museum.Perk(MuseumPerk.ExpeditionLoot)));
+                var count = (long)System.Math.Floor(place.Items[i].PerHour * hours * trait.ItemMultiplier * (1 + _state.Perk(MuseumPerk.ExpeditionLoot)));
                 expedition.Items[i] = count;
                 _camp.Add(place.Items[i].Item, count);
             }
-            expedition.Shards = (long)System.Math.Floor(place.ShardsPerHour * hours * trait.ShardsMultiplier);
+            expedition.Shards = (long)System.Math.Floor(place.ShardsPerHour * hours * trait.ShardsMultiplier * (1 + _state.Perk(MuseumPerk.ExpeditionShards)));
             _state.Drops.Shards += expedition.Shards;
-            var chance = place.RareChancePerHour * hours * trait.RareMultiplier * (1 + _state.Museum.Perk(MuseumPerk.RareFind)) * (expedition.Waited ? _rules.WaitRareMultiplier : 1);
+            var chance = place.RareChancePerHour * hours * trait.RareMultiplier * (1 + _state.Perk(MuseumPerk.RareFind)) * (expedition.Waited ? _rules.WaitRareMultiplier : 1);
             if (_state.Rng.NextDouble() < chance)
             {
                 expedition.Rare = place.Rare;
@@ -194,6 +195,8 @@ namespace Game.Core.Sim
                 State.Finds.Add(place.Rare);
             }
         }
+
+        private static double PlannedOf(Expedition expedition) => expedition.Planned > 0 ? expedition.Planned : expedition.Hours * SecondsPerHour;
 
         private bool IsOwnedCompanion(string id) =>
             _state.Cosmetics.Owned.Contains(id) && _cosmetics.TryGet(id, out var cosmetic) && cosmetic.Slot == CompanionSlot;

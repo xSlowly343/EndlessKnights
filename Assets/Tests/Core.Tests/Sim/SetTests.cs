@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ThirtySixArmourSetsSixThemesInEachOfSixRarities()
         {
-            var armour = Items.Sets.Where(s => !s.Jewelry).ToList();
+            var armour = Items.Sets.Where(s => !s.Jewelry && !s.Peaceful).ToList();
             Assert.That(armour.Count, Is.EqualTo(36));
             var rarities = new[] { ItemRarity.Rare, ItemRarity.Epic, ItemRarity.Legendary, ItemRarity.Mythic, ItemRarity.Ancient, ItemRarity.Rift };
             foreach (var rarity in rarities)
@@ -134,7 +134,7 @@ namespace Game.Core.Tests.Sim
                 Assert.That(set.WeaponTypes, Is.Empty, set.Id);
             }
             foreach (var type in new[] { "moon_fan", "tarot_deck", "blooming_staff", "seal_ring" })
-                Assert.That(Items.Sets.Count(s => s.AllowsType(type)), Is.EqualTo(12), type + " joins two old lines");
+                Assert.That(Items.Sets.Count(s => !s.Peaceful && s.AllowsType(type)), Is.EqualTo(12), type + " joins two old lines");
         }
 
         [Test]

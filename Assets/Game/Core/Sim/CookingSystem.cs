@@ -61,7 +61,9 @@ namespace Game.Core.Sim
 
         public bool Favorite(string dish) => _state.ClassChosen && _rules.FavoriteOf(_state.Class) == dish;
 
-        public double SecondsOf(DishDef dish) => dish.Seconds * (Favorite(dish.Id) ? _rules.FavoriteMultiplier : 1);
+        public double SecondsOf(DishDef dish) => dish.Seconds * (Favorite(dish.Id) ? _rules.FavoriteMultiplier : 1) * (1 + _state.Perk(MuseumPerk.MealLonger));
+
+        public double ChopsOf(DishDef dish) => System.Math.Ceiling(dish.Chops * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.FewerChops)));
 
         public CookingResult Cook(string dishId)
         {
@@ -77,7 +79,10 @@ namespace Game.Core.Sim
             if (!HasIngredients(dish))
                 return CookingResult.NoIngredients;
             foreach (var ingredient in dish.Ingredients)
-                _camp.Take(ingredient, 1);
+            {
+                if (_state.Rng.NextDouble() >= _state.Perk(MuseumPerk.IngredientBack))
+                    _camp.Take(ingredient, 1);
+            }
             State.Cooking = dish.Id;
             State.Chops = 0;
             State.Plates = 0;
@@ -109,8 +114,9 @@ namespace Game.Core.Sim
                 State.Cooking = string.Empty;
                 return;
             }
-            State.Chops = System.Math.Min(dish.Chops, State.Chops + work.Keys);
-            if (State.Chops >= dish.Chops)
+            var chops = ChopsOf(dish);
+            State.Chops = System.Math.Min(chops, State.Chops + work.Keys);
+            if (State.Chops >= chops)
                 State.Plates += work.Clicks;
             work.Keys = 0;
             work.Clicks = 0;
@@ -119,7 +125,7 @@ namespace Game.Core.Sim
             if (State.Chops < dish.Chops || State.Plates < dish.Plates)
                 return;
             State.Meals.Add(dish.Id);
-            if (State.Meals.Count < _rules.MealsKept && _state.Rng.NextDouble() < _state.Museum.Perk(MuseumPerk.DoubleMeal))
+            if (State.Meals.Count < _rules.MealsKept && _state.Rng.NextDouble() < _state.Perk(MuseumPerk.DoubleMeal))
                 State.Meals.Add(dish.Id);
             State.Book.Add(dish.Id);
             State.Cooked++;

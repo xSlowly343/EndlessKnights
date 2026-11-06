@@ -600,7 +600,7 @@ namespace Game.Core.Save
             for (var i = 0; i < items.Length; i++)
                 items[i] = JsonValue.Of(expedition.Items[i]);
             return Object(("companion", JsonValue.Of(expedition.Companion)), ("biome", JsonValue.Of(expedition.Biome)), ("hours", JsonValue.Of(expedition.Hours)),
-                ("seconds", JsonValue.Of(expedition.Seconds)), ("elapsed", JsonValue.Of(expedition.Elapsed)), ("letter", JsonValue.Of(expedition.Letter)),
+                ("seconds", JsonValue.Of(expedition.Seconds)), ("planned", JsonValue.Of(expedition.Planned)), ("elapsed", JsonValue.Of(expedition.Elapsed)), ("letter", JsonValue.Of(expedition.Letter)),
                 ("choice", JsonValue.Of(expedition.Choice)), ("waited", JsonValue.Of(expedition.Waited)), ("items", JsonValue.Array(items)),
                 ("shards", JsonValue.Of(expedition.Shards)), ("rare", OptionalText(expedition.Rare)), ("done", JsonValue.Of(expedition.Done)));
         }
@@ -616,6 +616,7 @@ namespace Game.Core.Save
                 Biome = node.Field("biome").AsString(),
                 Hours = node.Field("hours").AsInt(1, 48),
                 Seconds = node.Field("seconds").AsNumber(0, double.MaxValue),
+                Planned = node.HasField("planned") ? node.Field("planned").AsNumber(0, double.MaxValue) : 0,
                 Elapsed = node.Field("elapsed").AsNumber(0, double.MaxValue),
                 Letter = node.Field("letter").AsInt(-1, 1000),
                 Choice = node.Field("choice").AsBool(),

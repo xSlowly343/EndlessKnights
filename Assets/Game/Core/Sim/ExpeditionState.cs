@@ -8,6 +8,7 @@ namespace Game.Core.Sim
         public string Biome { get; set; } = string.Empty;
         public int Hours { get; set; }
         public double Seconds { get; set; }
+        public double Planned { get; set; }
         public double Elapsed { get; set; }
         public int Letter { get; set; } = -1;
         public bool Choice { get; set; }

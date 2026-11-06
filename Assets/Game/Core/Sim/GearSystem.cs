@@ -117,10 +117,14 @@ namespace Game.Core.Sim
             foreach (var item in _state.Gear.Worn)
                 item?.AddModifiers(modifiers);
             AddRingPair(modifiers);
+            System.Array.Clear(_state.SetPerks, 0, _state.SetPerks.Length);
             foreach (var set in _catalog.Sets)
             {
-                if (Collected(set))
-                    modifiers.AddRange(set.Bonus);
+                if (!Collected(set))
+                    continue;
+                modifiers.AddRange(set.Bonus);
+                foreach (var perk in set.Perks)
+                    _state.SetPerks[(int)perk.Perk] += perk.Value;
             }
             _layer.Set(modifiers);
             Rebuilt?.Invoke();

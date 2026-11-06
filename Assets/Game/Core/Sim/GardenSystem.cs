@@ -71,7 +71,7 @@ namespace Game.Core.Sim
             {
                 _camp.Add(plant.Herb, plant.Yield);
                 State.Album.Add(plant.Id);
-                if (!plant.Starter && _state.Rng.NextDouble() < _rules.SeedBackChance)
+                if (!plant.Starter && _state.Rng.NextDouble() < _rules.SeedBackChance + _state.Perk(MuseumPerk.SeedBack))
                     _camp.Add(plant.Seed, 1);
             }
             State.Harvests++;
@@ -180,7 +180,7 @@ namespace Game.Core.Sim
             var plant = _rules.Plant(bed.Plant);
             if (plant == null)
                 return;
-            bed.Grown += seconds;
+            bed.Grown += seconds * (1 + _state.Perk(MuseumPerk.GrowFaster));
             if (bed.Grown < plant.GrowSeconds)
                 return;
             bed.Ready = true;
@@ -198,7 +198,7 @@ namespace Game.Core.Sim
                     continue;
                 foreach (var mutation in _rules.Mutations)
                 {
-                    if (!mutation.Matches(plant, State.Beds[neighbor].Plant) || _state.Rng.NextDouble() >= mutation.Chance + _state.Museum.Perk(MuseumPerk.MutationChance))
+                    if (!mutation.Matches(plant, State.Beds[neighbor].Plant) || _state.Rng.NextDouble() >= mutation.Chance + _state.Perk(MuseumPerk.MutationChance))
                         continue;
                     var child = _rules.Plant(mutation.Child)!;
                     _camp.Add(child.Seed, 1);

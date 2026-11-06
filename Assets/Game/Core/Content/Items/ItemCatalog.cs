@@ -434,7 +434,22 @@ namespace Game.Core.Content.Items
             return new SetDef(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), rarity,
                 node.HasField("color") ? node.Field("color").AsString() : null, pieces, ModifierReader.ReadList(node.Field("bonus")),
                 node.HasField("theme") ? node.Field("theme").AsString() : null, weaponTypes, secondRing,
-                node.HasField("craftMultiplier") ? node.Field("craftMultiplier").AsNumber(1, 100) : 1);
+                node.HasField("craftMultiplier") ? node.Field("craftMultiplier").AsNumber(1, 100) : 1, ReadPerks(node));
+        }
+
+        private static IReadOnlyList<PerkValue>? ReadPerks(ContentNode node)
+        {
+            if (!node.HasField("perks"))
+                return null;
+            var perks = new List<PerkValue>();
+            foreach (var perkNode in node.Field("perks").Items())
+            {
+                var name = perkNode.Field("perk").AsString();
+                if (!MuseumRules.TryPerk(name, out var perk))
+                    throw perkNode.Field("perk").Error($"unknown peaceful perk '{name}'");
+                perks.Add(new PerkValue(perk, perkNode.Field("value").AsNumber(0, MuseumRules.MaxOf(perk))));
+            }
+            return perks;
         }
 
         private static AffixDef ReadAffix(ContentNode node)

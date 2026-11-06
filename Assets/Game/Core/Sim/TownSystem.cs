@@ -86,10 +86,10 @@ namespace Game.Core.Sim
             State.Orders.RemoveAt(index);
             State.Done++;
             var guild = request.Resident.Guild;
-            State.Reputation[guild] = ReputationOf(guild) + _rules.Reputation;
+            State.Reputation[guild] = ReputationOf(guild) + (long)System.Math.Round(_rules.Reputation * (1 + _state.Perk(MuseumPerk.Reputation)));
             _state.Drops.Shards += _rules.Shards;
-            _state.Drops.Dust += _rules.Dust;
-            if (_state.Rng.NextDouble() < _rules.RecipeChance)
+            _state.Drops.Dust += _rules.Dust * (1 + _state.Perk(MuseumPerk.OrderDust));
+            if (_state.Rng.NextDouble() < _rules.RecipeChance + _state.Perk(MuseumPerk.OrderRecipe))
                 _alchemy.Teach();
             _events.Add(GameEvent.ForStage(GameEventKind.OrderDone, _state.Tick, index));
             return TownResult.Done;

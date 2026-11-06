@@ -93,7 +93,7 @@ namespace Game.Core.Sim
             if (State.Brewing == null || !_peaceful.InCamp || _peaceful.Activity != Activity)
                 return;
             var work = _peaceful.Work(Activity);
-            State.Stirs += work.Keys;
+            State.Stirs += work.Keys * (1 + _state.Perk(MuseumPerk.StirFaster));
             work.Keys = 0;
             work.Clicks = 0;
             work.MouseMeters = 0;
@@ -127,7 +127,7 @@ namespace Game.Core.Sim
                 return AlchemyResult.NoHerbs;
             foreach (var herb in herbs)
                 _camp.Take(herb, 1);
-            State.Brewing = new Potion { Recipe = recipe.Id, Fine = _rules.Fine(herbs) || _state.Rng.NextDouble() < _state.Museum.Perk(MuseumPerk.FinePotion), Unknown = unknown };
+            State.Brewing = new Potion { Recipe = recipe.Id, Fine = _rules.Fine(herbs) || _state.Rng.NextDouble() < _state.Perk(MuseumPerk.FinePotion), Unknown = unknown };
             State.Stirs = 0;
             return AlchemyResult.Done;
         }
