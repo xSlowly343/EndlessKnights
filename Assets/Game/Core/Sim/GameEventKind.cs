@@ -32,6 +32,8 @@ namespace Game.Core.Sim
         PeacefulModeChanged,
         PeacefulActivityChanged,
         TeaPauseSuggested,
-        CampTierReached
+        CampTierReached,
+        PlantReady,
+        MutationFound
     }
 }

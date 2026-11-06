@@ -224,10 +224,11 @@ namespace Game.Core.Sim
         private void CheckGoals()
         {
             var events = State;
-            foreach (var goal in _rules.Goals)
+            var goals = _rules.Goals;
+            for (var i = 0; i < goals.Count; i++)
             {
-                if (!events.GoalsDone.Contains(goal.Id) && Progress(goal.Kind) >= goal.Target)
-                    events.GoalsDone.Add(goal.Id);
+                if (!events.GoalsDone.Contains(goals[i].Id) && Progress(goals[i].Kind) >= goals[i].Target)
+                    events.GoalsDone.Add(goals[i].Id);
             }
         }
 

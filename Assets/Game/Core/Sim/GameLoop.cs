@@ -67,6 +67,7 @@ namespace Game.Core.Sim
         private readonly EventSystem _seasonal;
         private readonly PeacefulSystem _peaceful;
         private readonly CampSystem _camp;
+        private readonly GardenSystem _garden;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
         private GameData _data;
@@ -134,6 +135,7 @@ namespace Game.Core.Sim
             _seasonal = new EventSystem(data, state, _stage, Events);
             _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
             _camp = new CampSystem(data.Camp, state, Events);
+            _garden = new GardenSystem(data.Garden, state, _camp, _peaceful, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
@@ -203,6 +205,7 @@ namespace Game.Core.Sim
         public EventSystem SeasonalEvents => _seasonal;
         public PeacefulSystem Peaceful => _peaceful;
         public CampSystem Camp => _camp;
+        public GardenSystem Garden => _garden;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
@@ -594,6 +597,7 @@ namespace Game.Core.Sim
             _drops.ApplyOffline(result);
             OfflineCalculator.Apply(State, result);
             AddIdleSeconds(result.AwaySeconds);
+            _garden.Advance(result.AwaySeconds);
             _stage.EnsureEnemy();
         }
 
@@ -805,6 +809,7 @@ namespace Game.Core.Sim
             _seasonal.UseData(data);
             _peaceful.UseRules(data.Peaceful);
             _camp.UseRules(data.Camp);
+            _garden.UseRules(data.Garden);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _book.UseWeapons(data.Weapons);
@@ -866,6 +871,7 @@ namespace Game.Core.Sim
             State.TotalInput.PlaySeconds += TickSeconds;
             _peaceful.Tick(LastInput, MetersPerPixel);
             _camp.Tick();
+            _garden.Tick();
             if (_peaceful.InCamp)
             {
                 CampTick(firstEvent);

@@ -20,6 +20,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(input);
             loop.Tick();
             Assert.That(loop.Peaceful.SetMode(PeacefulMode.Camp), Is.EqualTo(PeacefulResult.Done));
+            loop.Peaceful.SetActivity("meditation");
             var hp = loop.State.EnemyHp;
             var kills = loop.State.Kills;
             for (var i = 0; i < 300; i++)

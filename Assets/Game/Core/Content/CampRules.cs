@@ -60,10 +60,10 @@ namespace Game.Core.Content
 
         public CampBuilding? Building(string id)
         {
-            foreach (var building in Buildings)
+            for (var i = 0; i < Buildings.Count; i++)
             {
-                if (building.Id == id)
-                    return building;
+                if (Buildings[i].Id == id)
+                    return Buildings[i];
             }
             return null;
         }

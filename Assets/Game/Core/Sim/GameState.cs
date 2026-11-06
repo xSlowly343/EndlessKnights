@@ -93,6 +93,7 @@ namespace Game.Core.Sim
         public EventState Events { get; } = new EventState();
         public PeacefulState Peaceful { get; } = new PeacefulState();
         public CampState Camp { get; } = new CampState();
+        public GardenState Garden { get; } = new GardenState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();
