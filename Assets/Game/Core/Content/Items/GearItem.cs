@@ -16,8 +16,9 @@ namespace Game.Core.Content.Items
             Forge = new ForgeMark();
         }
 
-        public GearItem(GearBase gearBase, ItemRarity rarity, int itemLevel, IReadOnlyList<GearAffix> affixes, SetDef? set = null, GearImplicit? rolledImplicit = null, ForgeMark? forge = null)
+        public GearItem(GearBase gearBase, ItemRarity rarity, int itemLevel, IReadOnlyList<GearAffix> affixes, SetDef? set = null, GearImplicit? rolledImplicit = null, ForgeMark? forge = null, bool secondRing = false)
         {
+            SecondRing = secondRing && set != null && set.HasSecondRing && gearBase.Slot == ItemSlot.Ring;
             Forge = forge ?? new ForgeMark();
             RolledImplicit = rolledImplicit;
             Set = set;
@@ -51,10 +52,11 @@ namespace Game.Core.Content.Items
         public SetDef? Set { get; }
         public GearImplicit? RolledImplicit { get; }
         public ForgeMark Forge { get; }
+        public bool SecondRing { get; }
         public bool Wearable => Base != null;
 
         public GearItem WithAffixes(IReadOnlyList<GearAffix> affixes) =>
-            Base == null || Unique != null ? this : new GearItem(Base, Rarity, ItemLevel, affixes, Set, RolledImplicit, Forge);
+            Base == null || Unique != null ? this : new GearItem(Base, Rarity, ItemLevel, affixes, Set, RolledImplicit, Forge, SecondRing);
 
         public void AddModifiers(List<Modifier> modifiers)
         {
@@ -68,7 +70,7 @@ namespace Game.Core.Content.Items
                 affix.AddModifiers(modifiers);
             Scale(modifiers, start, Forge.AffixScale);
             if (Set != null)
-                modifiers.AddRange(Set.PieceLines(Slot));
+                modifiers.AddRange(Set.PieceLines(Slot, SecondRing));
             if (Unique != null)
                 modifiers.AddRange(Unique.Lines);
         }

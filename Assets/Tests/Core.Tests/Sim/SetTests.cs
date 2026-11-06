@@ -25,13 +25,14 @@ namespace Game.Core.Tests.Sim
             TestWorld.Loop(state: new GameState(7) { Class = HeroClass.Runedancer });
 
         [Test]
-        public void ThirtySixSetsSixThemesInEachOfSixRarities()
+        public void ThirtySixArmourSetsSixThemesInEachOfSixRarities()
         {
-            Assert.That(Items.Sets.Count, Is.EqualTo(36));
+            var armour = Items.Sets.Where(s => !s.Jewelry).ToList();
+            Assert.That(armour.Count, Is.EqualTo(36));
             var rarities = new[] { ItemRarity.Rare, ItemRarity.Epic, ItemRarity.Legendary, ItemRarity.Mythic, ItemRarity.Ancient, ItemRarity.Rift };
             foreach (var rarity in rarities)
-                Assert.That(Items.Sets.Where(s => s.Rarity == rarity).Select(s => s.Theme), Is.EquivalentTo(new[] { "red", "green", "blue", "onslaught", "mainstay", "decay" }), rarity.ToString());
-            foreach (var set in Items.Sets)
+                Assert.That(armour.Where(s => s.Rarity == rarity).Select(s => s.Theme), Is.EquivalentTo(new[] { "red", "green", "blue", "onslaught", "mainstay", "decay" }), rarity.ToString());
+            foreach (var set in armour)
             {
                 Assert.That(set.Slots, Is.EquivalentTo(new[] { ItemSlot.Weapon, ItemSlot.Helmet, ItemSlot.Chest, ItemSlot.Gloves, ItemSlot.Boots }), set.Id);
                 Assert.That(set.WeaponTypes, Is.Not.Empty, set.Id);
@@ -121,11 +122,77 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void OnlySetItemsAreCraftedAndJewelrySetPiecesWouldCostEssence()
+        public void FortyEightJewelrySetsOfAnAmuletAndTwoDifferentRings()
+        {
+            var jewelry = Items.Sets.Where(s => s.Jewelry).ToList();
+            Assert.That(jewelry.Count, Is.EqualTo(48));
+            Assert.That(jewelry.GroupBy(s => s.Rarity).All(g => g.Count() == 8), Is.True, "eight lines in each of the six rarities");
+            foreach (var set in jewelry)
+            {
+                Assert.That(set.Pieces.Select(p => (p.Slot, p.SecondRing)), Is.EquivalentTo(new[] { (ItemSlot.Amulet, false), (ItemSlot.Ring, false), (ItemSlot.Ring, true) }), set.Id);
+                Assert.That(set.PieceLines(ItemSlot.Ring), Is.Not.EqualTo(set.PieceLines(ItemSlot.Ring, true)), set.Id);
+                Assert.That(set.WeaponTypes, Is.Empty, set.Id);
+            }
+            foreach (var type in new[] { "moon_fan", "tarot_deck", "blooming_staff", "seal_ring" })
+                Assert.That(Items.Sets.Count(s => s.AllowsType(type)), Is.EqualTo(12), type + " joins two old lines");
+        }
+
+        [Test]
+        public void JewelrySetPiecesCostEssenceTwiceAndTheBloodRubyThrice()
+        {
+            var loop = Runedancer();
+            loop.State.Drops.Essence = 0;
+            Assert.That(loop.CraftSetPiece("gold_vein_rare"), Is.EqualTo(CraftResult.NotEnoughEssence));
+            loop.State.Drops.Essence = 20;
+            Assert.That(loop.CraftSetPiece("gold_vein_rare"), Is.EqualTo(CraftResult.Crafted));
+            Assert.That(loop.State.Drops.Essence, Is.Zero, "the first piece of a rare set costs 10 ingots, so 20 essence");
+            loop.State.Drops.Essence = 29;
+            Assert.That(loop.CraftSetPiece("blood_ruby_rare"), Is.EqualTo(CraftResult.NotEnoughEssence));
+            loop.State.Drops.Essence = 30;
+            Assert.That(loop.CraftSetPiece("blood_ruby_rare"), Is.EqualTo(CraftResult.Crafted));
+            Assert.That(loop.State.Drops.Gear.Last().Set!.Id, Is.EqualTo("blood_ruby_rare"));
+        }
+
+        [Test]
+        public void ACollectedJewelrySetGivesTheRingThePlayerChoosesAndAPairOfRingsIsStronger()
+        {
+            var loop = Runedancer();
+            var set = Set("blood_ruby_rare");
+            foreach (var piece in set.Pieces)
+                loop.State.SetCollection.Add(SetDef.PieceKey(set.Id, piece));
+            loop.State.Drops.Essence = 1000;
+            Assert.That(loop.CraftSetPiece(set.Id, ItemSlot.Ring), Is.EqualTo(CraftResult.Crafted));
+            var left = loop.State.Drops.Gear.Last();
+            Assert.That(loop.CraftSetPiece(set.Id, ItemSlot.Ring, secondRing: true), Is.EqualTo(CraftResult.Crafted));
+            var right = loop.State.Drops.Gear.Last();
+            Assert.That(left.SecondRing, Is.False);
+            Assert.That(right.SecondRing, Is.True);
+            Assert.That(loop.CraftSetPiece(set.Id, ItemSlot.Helmet), Is.EqualTo(CraftResult.WrongSlot));
+            loop.Gear.Equip(GearSlot.RingLeft, left);
+            var one = loop.Hero.Value(CombatStats.CritChance, 0);
+            loop.Gear.Equip(GearSlot.RingRight, right);
+            Assert.That(loop.Gear.RingPair, Is.True);
+            var both = loop.Hero.Value(CombatStats.CritChance, 0);
+            var rightLine = set.PieceLines(ItemSlot.Ring, true)[0].Value;
+            Assert.That(both - one, Is.EqualTo(rightLine * (1 + Items.JewelryPairBonus)).Within(1e-9), "the pair makes both ring lines a quarter stronger");
+        }
+
+        [Test]
+        public void TheRightRingOfASetSurvivesTheSave()
+        {
+            var loop = Runedancer();
+            var set = Set("three_fires_epic");
+            loop.State.Drops.Gear.Add(Items.RollSetPiece(set, ItemSlot.Ring, null, set.Rarity, 1, new Rng(3), true));
+            var copy = Game.Core.Save.GameStateJson.Read(new ContentNode(Game.Core.Save.GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Drops.Gear.Last().SecondRing, Is.True);
+            Assert.That(copy.Drops.Gear.Last().Set!.Id, Is.EqualTo(set.Id));
+        }
+
+        [Test]
+        public void OnlySetItemsAreCraftedAndArmourNeedsIngots()
         {
             Assert.That(ItemCatalog.IsJewelry(ItemSlot.Ring) && ItemCatalog.IsJewelry(ItemSlot.Amulet), Is.True);
             Assert.That(Items.JewelryCraftMultiplier, Is.EqualTo(2));
-            Assert.That(Items.Sets.Any(set => set.Slots.Any(ItemCatalog.IsJewelry)), Is.False, "today no set has jewelry");
             var loop = Runedancer();
             loop.State.Drops.Essence = 1000;
             Assert.That(loop.CraftSetPiece("jarl_forge"), Is.EqualTo(CraftResult.NotEnoughIngots), "armor and weapons need ingots, essence does not help");
