@@ -70,6 +70,7 @@ namespace Game.Core.Sim
         private readonly GardenSystem _garden;
         private readonly AlchemySystem _alchemy;
         private readonly ExpeditionSystem _expeditions;
+        private readonly TownSystem _town;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
         private GameData _data;
@@ -140,6 +141,7 @@ namespace Game.Core.Sim
             _garden = new GardenSystem(data.Garden, state, _camp, _peaceful, Events);
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
+            _town = new TownSystem(data.Town, state, _camp, _alchemy, _expeditions, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
@@ -212,6 +214,7 @@ namespace Game.Core.Sim
         public GardenSystem Garden => _garden;
         public AlchemySystem Alchemy => _alchemy;
         public ExpeditionSystem Expeditions => _expeditions;
+        public TownSystem Town => _town;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
@@ -586,6 +589,7 @@ namespace Game.Core.Sim
             _quests.SetDay(day);
             _chronicle.SetDay(day);
             _seasonal.SetDay(day);
+            _town.SetDay(day);
         }
 
         public QuestResult ClaimQuest(bool weekly, int index)
@@ -819,6 +823,7 @@ namespace Game.Core.Sim
             _garden.UseRules(data.Garden);
             _alchemy.UseRules(data.Alchemy);
             _expeditions.UseRules(data.Expeditions);
+            _town.UseRules(data.Town);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _book.UseWeapons(data.Weapons);

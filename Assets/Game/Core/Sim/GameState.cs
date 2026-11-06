@@ -96,6 +96,7 @@ namespace Game.Core.Sim
         public GardenState Garden { get; } = new GardenState();
         public AlchemyState Alchemy { get; } = new AlchemyState();
         public ExpeditionState Expeditions { get; } = new ExpeditionState();
+        public TownState Town { get; } = new TownState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();

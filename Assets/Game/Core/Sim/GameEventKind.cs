@@ -39,6 +39,7 @@ namespace Game.Core.Sim
         PotionEnded,
         RecipeLearned,
         ExpeditionLetter,
-        ExpeditionReturned
+        ExpeditionReturned,
+        OrderDone
     }
 }

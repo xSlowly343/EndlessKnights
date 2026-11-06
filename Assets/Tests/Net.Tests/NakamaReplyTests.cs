@@ -265,6 +265,19 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheTownGatesAreReadFromTheServer()
+        {
+            Assert.That(TownReply.GiftPayload("bob", "herb_windwort", 3), Is.EqualTo("{\"to\":\"bob\",\"item\":\"herb_windwort\",\"amount\":3}"));
+            var reply = TownReply.From(NakamaJson.Parse("{\"guilds\":[\"gardeners\"],\"sentToday\":2,\"giftsPerDay\":5,\"inbox\":[],\"claimed\":[{\"id\":\"g1\",\"from\":\"a\",\"fromName\":\"Ann\",\"item\":\"herb_hushbell\",\"amount\":2,\"at\":1789}]}"));
+            Assert.That(reply.Guilds, Is.EqualTo(new[] { "gardeners" }));
+            Assert.That(reply.SentToday, Is.EqualTo(2));
+            Assert.That(reply.GiftsPerDay, Is.EqualTo(5));
+            Assert.That(reply.Inbox, Is.Empty);
+            Assert.That(reply.Claimed.Single().FromName, Is.EqualTo("Ann"));
+            Assert.That(reply.Claimed.Single().Amount, Is.EqualTo(2));
+        }
+
+        [Test]
         public void TheSeasonPassAndCrystalChangesAreReadFromTheServer()
         {
             Assert.That(SeasonPassReply.AddPayload(450), Is.EqualTo("{\"points\":450}"));
