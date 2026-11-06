@@ -137,6 +137,7 @@ namespace Game.Core.Sim
                 foreach (var perk in set.Perks)
                     _state.SetPerks[(int)perk.Perk] += perk.Value;
             }
+            AddConsonances(modifiers, scale);
             AddCollectionMore(modifiers);
             _layer.Set(modifiers);
             Rebuilt?.Invoke();
@@ -149,6 +150,40 @@ namespace Game.Core.Sim
         public double MasteryScale => _catalog.MasteryScale(MasteryLevel);
 
         public int CollectedSetsOf(ItemRarity rarity) => _collectedByRarity[(int)rarity];
+
+        private readonly List<(ConsonanceDef Consonance, ItemRarity Rarity)> _consonant = new List<(ConsonanceDef, ItemRarity)>();
+
+        public IReadOnlyList<(ConsonanceDef Consonance, ItemRarity Rarity)> Consonant => _consonant;
+
+        private void AddConsonances(List<Modifier> modifiers, double mastery)
+        {
+            _consonant.Clear();
+            _state.NightOffline = false;
+            _state.FateOptions = 3;
+            foreach (var consonance in _catalog.Consonances)
+            {
+                for (var rarity = ItemRarity.Rare; rarity <= ItemRarity.Rift; rarity++)
+                {
+                    var armor = _catalog.SetOf(consonance.Armor, rarity);
+                    var jewelry = _catalog.SetOf(consonance.Jewelry, rarity);
+                    if (armor == null || jewelry == null || !Collected(armor) || !Collected(jewelry))
+                        continue;
+                    _consonant.Add((consonance, rarity));
+                    var step = System.Math.Pow(RarityStep, rarity - ItemRarity.Rare);
+                    AddScaled(modifiers, consonance.Lines, step * mastery);
+                    modifiers.AddRange(consonance.Fixed);
+                    AddScaled(modifiers, consonance.PerMuseumCollection, step * mastery * _state.Museum.Done.Count);
+                    foreach (var perk in consonance.Perks)
+                        _state.SetPerks[(int)perk.Perk] += perk.Value * step;
+                    foreach (var perk in armor.Perks)
+                        _state.SetPerks[(int)perk.Perk] += perk.Value * consonance.PerkBoost * step;
+                    _state.NightOffline |= consonance.NightOffline;
+                    _state.FateOptions = System.Math.Max(_state.FateOptions, consonance.FateOptions);
+                }
+            }
+        }
+
+        private const double RarityStep = 1.5;
 
         public uint EchoMask
         {
