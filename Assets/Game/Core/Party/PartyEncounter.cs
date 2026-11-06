@@ -612,7 +612,7 @@ namespace Game.Core.Party
         private bool IsMember(int slot) => slot >= 0 && slot < _members.Length && _members[slot].Joined;
 
         private bool IsLate(uint enemyId) =>
-            enemyId != 0 && enemyId == _previousEnemyId && Tick - _previousKilledTick <= Ticks(_rules.LateDamageSeconds);
+            enemyId != 0 && _previousEnemyId != 0 && enemyId <= _previousEnemyId && Tick - _previousKilledTick <= Ticks(_rules.LateDamageSeconds);
 
         private double KindRatio(PartyEnemyKind from, PartyEnemyKind to)
         {

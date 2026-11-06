@@ -31,16 +31,17 @@ test("two members kill the shared enemy through batches", () => {
   host.tick();
   assert.strictEqual(host.kills, 1);
   assert.ok(kinds(host).includes(6));
-  assert.strictEqual(host.encounter.barFull, 2);
+  const bar = 1 + party.PartyServerRules.hpPerExtraPlayer;
+  assert.ok(Math.abs(host.encounter.barFull - bar) < 1e-12);
   host.receive("user-a", batch(2, 2, 0.5, 3));
   host.receive("user-b", batch(1, 2, 1.0, 3));
   host.receive("user-b", batch(1, 2, 9.0, 3));
   host.tick();
   assert.strictEqual(host.kills, 1);
-  host.receive("user-a", batch(3, 2, 1.0, 3));
+  host.receive("user-a", batch(3, 2, 0.5 + (bar - 1.5), 3));
   host.tick();
   assert.strictEqual(host.kills, 2);
-  assert.ok(Math.abs(host.acceptedShares - 3) < 1e-12);
+  assert.ok(Math.abs(host.acceptedShares - (1 + bar)) < 1e-12);
 });
 
 test("a flooding member is cut at the message cap", () => {

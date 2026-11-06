@@ -9,12 +9,13 @@ namespace Game.Core.Tests.Sim
         private static readonly BotProfile Typist = new BotProfile(6, 0, 0);
 
         [Test]
-        public void FourDamageDealersKillAboutAsFastAsSolo()
+        public void FourDamageDealersKillFasterThanSolo()
         {
             var solo = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Runedancer }).Run(600);
             var party = new PartySimulation(TestWorld.Real, Typist, new[] { HeroClass.Runedancer, HeroClass.Duelist, HeroClass.Windshot, HeroClass.Shardcaller }).Run(600);
 
-            Assert.That(party.SecondsPerKill, Is.EqualTo(solo.SecondsPerKill).Within(solo.SecondsPerKill * 0.2));
+            Assert.That(party.SecondsPerKill, Is.LessThan(solo.SecondsPerKill * 0.9), "a party is stronger than one hero alone");
+            Assert.That(party.SecondsPerKill, Is.GreaterThan(solo.SecondsPerKill * 0.5), "but four heroes are not four times faster");
         }
 
         [Test]
