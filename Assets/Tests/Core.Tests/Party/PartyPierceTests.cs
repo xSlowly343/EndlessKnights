@@ -90,5 +90,41 @@ namespace Game.Core.Tests.Party
             Assert.That(caps.BarsPerSecondAt(200), Is.EqualTo(200 * caps.StageBarsShare).Within(1e-9));
             Assert.That(caps.BurstAt(200), Is.EqualTo(caps.BurstBars * 200 * caps.StageBarsShare / caps.BarsPerSecond).Within(1e-9));
         }
+
+        [Test]
+        public void SetStatsAreCutByTheHostCaps()
+        {
+            var encounter = Encounter(1);
+            encounter.SetPierce(0, new PartyPierceStats(5, 99, 9, 9, 9, 9));
+            var member = encounter.Member(0);
+            Assert.That(member.PierceShare, Is.EqualTo(Rules.PierceCaps.MaxShare));
+            Assert.That(member.EnemySkip, Is.EqualTo(Rules.PierceCaps.MaxEnemySkip));
+            Assert.That(member.SplashTargets, Is.EqualTo(Rules.PierceCaps.MaxSplashTargets));
+            Assert.That(member.BossPierce, Is.EqualTo(Rules.PierceCaps.MaxBossPierce));
+        }
+
+        [Test]
+        public void AKillSkipsTheNextEnemiesOfTheParty()
+        {
+            var encounter = Encounter(1);
+            encounter.Events.Clear();
+            encounter.SetPierce(0, new PartyPierceStats(0, 2, 0, 0, 0, 0));
+            encounter.ApplyDamage(0, encounter.EnemyId, encounter.BarLeft);
+            Assert.That(Kills(encounter), Is.EqualTo(3), "one kill and two skipped enemies");
+        }
+
+        [Test]
+        public void SplashWoundsTheNextEnemiesWhenTheyAppear()
+        {
+            var encounter = Encounter(1);
+            encounter.SetPierce(0, new PartyPierceStats(0, 0, 0.5, 2, 0, 0));
+            var half = encounter.BarLeft / 2;
+            encounter.ApplyDamage(0, encounter.EnemyId, half);
+            Assert.That(encounter.SplashQueued(0, 0), Is.EqualTo(half * 0.5).Within(1e-12));
+            Assert.That(encounter.SplashQueued(0, 1), Is.EqualTo(half * 0.5).Within(1e-12));
+            var full = encounter.BarFull;
+            encounter.ApplyDamage(0, encounter.EnemyId, encounter.BarLeft);
+            Assert.That(encounter.BarLeft, Is.LessThan(full), "the next enemy appears already wounded");
+        }
     }
 }

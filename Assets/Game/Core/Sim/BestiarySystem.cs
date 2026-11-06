@@ -30,10 +30,13 @@ namespace Game.Core.Sim
             for (var i = firstEvent; i < count; i++)
             {
                 var gameEvent = _events[i];
-                if (gameEvent.Kind != GameEventKind.EnemyKilled || gameEvent.Enemy == null)
+                var counted = gameEvent.Kind == GameEventKind.EnemyKilled ? 1
+                    : gameEvent.Kind == GameEventKind.EnemiesSkipped ? (long)gameEvent.Amount.ToDouble()
+                    : 0;
+                if (counted <= 0 || gameEvent.Enemy == null)
                     continue;
                 var enemy = gameEvent.Enemy;
-                var kills = KillsOf(enemy.Id) + 1;
+                var kills = KillsOf(enemy.Id) + counted;
                 State.Kills[enemy.Id] = kills;
                 if (kills < _catalog.KillsToOpen(enemy.Type) || State.Opened.Contains(enemy.Id) || !_catalog.TryGet(enemy.Id, out _))
                     continue;

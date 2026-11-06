@@ -140,5 +140,19 @@ namespace Game.Core.Tests.Sim
             Assert.That(capped.Events.CountOf(GameEventKind.StageSkipped), Is.EqualTo(1));
             Assert.That(capped.State.Stage, Is.EqualTo(capped.State.RecordStage), "the skip stops on the record");
         }
+
+        [Test]
+        public void SkippedEnemiesCountForQuestsAndTheBestiary()
+        {
+            var (loop, _) = Hero(Flat(CombatStats.EnemySkip, 2));
+            var enemy = loop.State.Enemy!;
+            var kills = loop.State.Kills;
+            var before = loop.Bestiary.KillsOf(enemy.Id);
+            loop.Events.Clear();
+            loop.Stages.OnEnemyKilled();
+            loop.Bestiary.Tick(0);
+            Assert.That(loop.State.Kills - kills, Is.EqualTo(3), "quests and achievements read this counter");
+            Assert.That(loop.Bestiary.KillsOf(enemy.Id) - before, Is.EqualTo(3));
+        }
     }
 }

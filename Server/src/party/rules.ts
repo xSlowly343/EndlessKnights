@@ -32,6 +32,26 @@ interface PartyEncounterRules {
     relayRecipientSeconds: number;
     pierceShare: number;
     pierceKillsPerTick: number;
+    pierceCaps: PartyPierceCaps;
+}
+
+interface PartyPierceCaps {
+    maxShare: number;
+    maxEnemySkip: number;
+    maxSplashShare: number;
+    maxSplashTargets: number;
+    maxBossPierce: number;
+    bossPierceHpShare: number;
+    maxStageCarry: number;
+}
+
+interface PartyPierceStats {
+    pierceShare: number;
+    enemySkip: number;
+    splashShare: number;
+    splashTargets: number;
+    bossPierce: number;
+    stageCarry: number;
 }
 
 const PartyTicksPerSecond = 10;

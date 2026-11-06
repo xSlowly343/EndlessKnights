@@ -59,6 +59,10 @@ namespace Game.Core.Tests.Party
         public void SwitchWorld(PartyWorld world, long riftId) =>
             Record($"\"op\": \"switchWorld\", \"world\": {(int)world}, \"riftId\": {riftId}", () => _encounter.SwitchWorld(world, riftId));
 
+        public void Pierce(int slot, double share, int skip, double splash, int targets, double boss, double carry) =>
+            Record($"\"op\": \"pierce\", \"slot\": {slot}, \"pierceShare\": {Number(share)}, \"enemySkip\": {skip}, \"splashShare\": {Number(splash)}, \"splashTargets\": {targets}, \"bossPierce\": {Number(boss)}, \"stageCarry\": {Number(carry)}",
+                () => _encounter.SetPierce(slot, new Game.Core.Party.PartyPierceStats(share, skip, splash, targets, boss, carry)));
+
         public void Credit(int slot, double rate) => Record($"\"op\": \"credit\", \"slot\": {slot}, \"rate\": {Number(rate)}", () => _encounter.SetCredit(slot, rate));
 
         public void Auras(int slot, int ticks) => Record($"\"op\": \"auras\", \"slot\": {slot}, \"ticks\": {ticks}", () => _encounter.NoteAuras(slot, ticks));

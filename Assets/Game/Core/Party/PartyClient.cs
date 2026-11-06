@@ -877,9 +877,17 @@ namespace Game.Core.Party
                     Presence = Peaceful || _loop.Peaceful.InCamp ? PartyPresence.Peaceful : PartyPresence.Fighting,
                     Stage = _loop.State.Stage,
                     Resource = (float)_loop.State.Resource,
-                    Contribution = (float)System.Math.Max(0, _loop.Hero.Value(CombatStats.PartyContribution, 0))
+                    Contribution = (float)System.Math.Max(0, _loop.Hero.Value(CombatStats.PartyContribution, 0)),
+                    PierceShare = (float)Positive(CombatStats.PierceShare),
+                    EnemySkip = (byte)System.Math.Min(byte.MaxValue, System.Math.Floor(Positive(CombatStats.EnemySkip) + 1e-9)),
+                    SplashShare = (float)Positive(CombatStats.SplashShare),
+                    SplashTargets = (byte)System.Math.Min(byte.MaxValue, System.Math.Floor(Positive(CombatStats.SplashTargets) + 1e-9)),
+                    BossPierce = (float)Positive(CombatStats.BossPierce),
+                    StageCarry = (float)Positive(CombatStats.StageCarry)
                 }));
         }
+
+        private double Positive(Game.Core.Stats.StatId stat) => System.Math.Max(0, _loop.Hero.Value(stat, 0));
 
         private void FlushBatch()
         {

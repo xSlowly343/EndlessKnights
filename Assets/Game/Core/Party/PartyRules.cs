@@ -10,6 +10,7 @@ namespace Game.Core.Party
 
         public double PierceShare { get; private set; }
         public int PierceKillsPerTick { get; private set; }
+        public PierceRules PierceCaps { get; private set; } = new PierceRules();
 
         private PartyRules(int maxMembers, double hpPerExtraPlayer, double restAfterSeconds, double disconnectGraceSeconds, double rejoinWindowSeconds,
             double lateDamageSeconds, double damageBatchSeconds, double stateBroadcastSeconds, double presenceSeconds, double silenceSeconds, double maxEnemyDamageTaken, PartyBuffRules buffs, int maxMessagesPerSecond,
@@ -119,7 +120,8 @@ namespace Game.Core.Party
                 root.Field("weaken").Field("maxGold").AsNumber(0, 10))
             {
                 PierceShare = root.HasField("pierce") ? root.Field("pierce").Field("share").AsNumber(0, 1) : 0,
-                PierceKillsPerTick = root.HasField("pierce") ? root.Field("pierce").Field("maxKillsPerTick").AsInt(0, EnemyHistory.Depth / 2) : 0
+                PierceKillsPerTick = root.HasField("pierce") ? root.Field("pierce").Field("maxKillsPerTick").AsInt(0, EnemyHistory.Depth / 2) : 0,
+                PierceCaps = root.HasField("pierce") ? PierceRules.Read(root.Field("pierce")) : new PierceRules()
             };
         }
     }

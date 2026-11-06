@@ -49,7 +49,8 @@ namespace Game.Core.Tests.Party
                 RiftEnemies(),
                 SharedTimer(),
                 ClockLoop(),
-                Pierce()
+                Pierce(),
+                PierceStats()
             };
             var rules = TestWorld.WithPierce.Party;
             var stages = TestWorld.WithPierce.Stages;
@@ -78,6 +79,7 @@ namespace Game.Core.Tests.Party
                    $"    \"relayRecipientSeconds\": {N(rules.Relay.RecipientSeconds)},\n" +
                    $"    \"pierceShare\": {N(rules.PierceShare)},\n" +
                    $"    \"pierceKillsPerTick\": {rules.PierceKillsPerTick},\n" +
+                   $"    \"pierceCaps\": {{ \"maxShare\": {N(rules.PierceCaps.MaxShare)}, \"maxEnemySkip\": {rules.PierceCaps.MaxEnemySkip}, \"maxSplashShare\": {N(rules.PierceCaps.MaxSplashShare)}, \"maxSplashTargets\": {rules.PierceCaps.MaxSplashTargets}, \"maxBossPierce\": {N(rules.PierceCaps.MaxBossPierce)}, \"bossPierceHpShare\": {N(rules.PierceCaps.BossPierceHpShare)}, \"maxStageCarry\": {N(rules.PierceCaps.MaxStageCarry)} }},\n" +
                    $"    \"waveCount\": {stages.Waves.Count},\n" +
                    $"    \"waveFirstEnemies\": {stages.Waves.FirstEnemies},\n" +
                    $"    \"waveEnemiesPerWave\": {stages.Waves.EnemiesPerWave},\n" +
@@ -100,6 +102,28 @@ namespace Game.Core.Tests.Party
             r.Hit(0, 100);
             r.Advance(1);
             r.Hit(1, 100);
+            return r.ToJson();
+        }
+
+        private static string PierceStats()
+        {
+            var r = Recorder("set pierce stats: skip, splash, boss pierce and stage carry, cut by the caps", 2525);
+            r.Join(1);
+            r.Join(2);
+            r.Pierce(0, 0.3, 9, 0.5, 2, 0.2, 0.5);
+            r.Pierce(1, 0, 1, 0, 0, 0, 0);
+            r.Hit(0, 0.6);
+            r.Advance(1);
+            r.Hit(0, 3);
+            r.Advance(1);
+            r.Hit(1, 2.5);
+            r.Advance(1);
+            r.Hit(0, 50);
+            r.Advance(1);
+            r.Hit(0, 4);
+            r.Advance(1);
+            r.Hit(1, 30);
+            r.Advance(1);
             return r.ToJson();
         }
 

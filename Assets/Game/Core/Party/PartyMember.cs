@@ -14,6 +14,12 @@ namespace Game.Core.Party
         public long RestBankTicks { get; internal set; }
         public byte HeroClass { get; internal set; }
         public uint EchoLines { get; internal set; }
+        public double PierceShare { get; internal set; }
+        public int EnemySkip { get; internal set; }
+        public double SplashShare { get; internal set; }
+        public int SplashTargets { get; internal set; }
+        public double BossPierce { get; internal set; }
+        public double StageCarry { get; internal set; }
         public int GuestTicksLeft { get; internal set; }
         public long Stage { get; internal set; }
         public double CreditRate { get; internal set; }
@@ -35,6 +41,12 @@ namespace Game.Core.Party
             RestBankTicks = 0;
             HeroClass = 0;
             EchoLines = 0;
+            PierceShare = 0;
+            EnemySkip = 0;
+            SplashShare = 0;
+            SplashTargets = 0;
+            BossPierce = 0;
+            StageCarry = 0;
             GuestTicksLeft = 0;
             Stage = 0;
             CreditRate = 0;

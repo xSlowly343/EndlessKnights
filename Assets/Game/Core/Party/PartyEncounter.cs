@@ -156,6 +156,7 @@ namespace Game.Core.Party
             var member = _members[slot];
             var hadWeight = member.Weight > 0;
             member.Reset();
+            ClearSplash(slot);
             if (hadWeight)
                 DropFighterMidFight();
         }
@@ -171,6 +172,27 @@ namespace Game.Core.Party
             if (IsMember(slot))
                 _members[slot].HeroClass = heroClass;
         }
+
+        public void SetPierce(int slot, in PartyPierceStats stats)
+        {
+            if (!IsMember(slot))
+                return;
+            var caps = _rules.PierceCaps;
+            var member = _members[slot];
+            member.PierceShare = Clamp(stats.PierceShare, caps.MaxShare);
+            member.EnemySkip = System.Math.Max(0, System.Math.Min(caps.MaxEnemySkip, stats.EnemySkip));
+            member.SplashShare = Clamp(stats.SplashShare, caps.MaxSplashShare);
+            member.SplashTargets = System.Math.Max(0, System.Math.Min(System.Math.Min(caps.MaxSplashTargets, SplashDepth), stats.SplashTargets));
+            member.BossPierce = Clamp(stats.BossPierce, caps.MaxBossPierce);
+            member.StageCarry = Clamp(stats.StageCarry, caps.MaxStageCarry);
+        }
+
+        private static double Clamp(double value, double max) => value > 0 ? System.Math.Min(max, value) : 0;
+
+        public const int SplashDepth = 3;
+        private readonly double[] _splash = new double[PartyRules.MaxSlots * SplashDepth];
+
+        public double SplashQueued(int slot, int position) => _splash[slot * SplashDepth + position];
 
         public void SetEchoLines(int slot, uint echoLines)
         {
@@ -407,10 +429,20 @@ namespace Game.Core.Party
                 return 0;
             var first = System.Math.Min(BarLeft, budget);
             var struck = EnemyId;
+            var struckKind = EnemyKind;
+            var typing = Typing(slot);
+            if (typing && struckKind == PartyEnemyKind.Normal)
+                QueueSplash(slot, first);
             var total = Hit(slot, first);
-            if (EnemyId == struck || !Typing(slot) || !(_rules.PierceShare > 0))
+            if (EnemyId == struck || !typing)
                 return total;
-            var overflow = (budget - first) * _rules.PierceShare;
+            var member = _members[slot];
+            var carry = struckKind == PartyEnemyKind.Normal
+                ? System.Math.Min(_rules.PierceCaps.MaxShare, _rules.PierceShare + member.PierceShare)
+                : member.StageCarry;
+            if (struckKind == PartyEnemyKind.Normal)
+                total += SkipEnemies(slot, member.EnemySkip);
+            var overflow = (budget - first) * carry;
             while (overflow > 0 && Started && !Switching && EnemyKind == PartyEnemyKind.Normal && _chainKills < _rules.PierceKillsPerTick)
             {
                 var target = EnemyId;
@@ -421,7 +453,54 @@ namespace Game.Core.Party
                     break;
                 _chainKills++;
             }
+            if (overflow > 0 && Started && !Switching && EnemyKind == PartyEnemyKind.Boss && member.BossPierce > 0)
+                total += Hit(slot, System.Math.Min(overflow * member.BossPierce, BarLeft * _rules.PierceCaps.BossPierceHpShare));
             return total;
+        }
+
+        private double SkipEnemies(int slot, int skip)
+        {
+            var total = 0.0;
+            for (var i = 0; i < skip && Started && !Switching && EnemyKind == PartyEnemyKind.Normal && _chainKills < _rules.PierceKillsPerTick; i++)
+            {
+                total += Hit(slot, BarLeft);
+                _chainKills++;
+            }
+            return total;
+        }
+
+        private void QueueSplash(int slot, double applied)
+        {
+            var member = _members[slot];
+            if (!(member.SplashShare > 0) || !(applied > 0))
+                return;
+            for (var i = 0; i < member.SplashTargets; i++)
+                _splash[slot * SplashDepth + i] += applied * member.SplashShare;
+        }
+
+        private void ApplySplash()
+        {
+            for (var slot = 0; slot < _members.Length; slot++)
+            {
+                var at = slot * SplashDepth;
+                var queued = _splash[at];
+                for (var i = 0; i < SplashDepth - 1; i++)
+                    _splash[at + i] = _splash[at + i + 1];
+                _splash[at + SplashDepth - 1] = 0;
+                if (!(queued > 0) || EnemyKind != PartyEnemyKind.Normal || !_members[slot].Joined)
+                    continue;
+                var applied = System.Math.Min(queued, BarLeft);
+                _members[slot].EnemyShare += applied;
+                BarLeft = System.Math.Max(SplashFloor, BarLeft - applied);
+            }
+        }
+
+        private const double SplashFloor = 1e-9;
+
+        private void ClearSplash(int slot)
+        {
+            for (var i = 0; i < SplashDepth; i++)
+                _splash[slot * SplashDepth + i] = 0;
         }
 
         private double Hit(int slot, double applied)
@@ -752,6 +831,7 @@ namespace Game.Core.Party
                 BarFull *= 1 + BossShield;
             }
             BarLeft = BarFull * (1 - TakeWeaken());
+            ApplySplash();
             Events.Add(new PartyEvent(PartyEventKind.EnemySpawned, Tick, EnemyId, kind));
             if (EnemyWeakened && WeakenVulnerability > 0)
                 ApplyEnemyEffect(_weakenVulnerabilityId, WeakenVulnerability, WeakenVulnerabilitySeconds, _weakenVulnerabilityOwner);
