@@ -321,7 +321,14 @@ namespace Game.Core.Tests.Party
 
             rig.Members[0].Client.Leave();
             rig.Run(7);
-            Assert.That(friend.Damage, Is.EqualTo(before).Within(1e-6));
+            var synergy = TestWorld.Data.Synergy;
+            var heraldBuff = 1.0;
+            foreach (var modifier in synergy.RoleBuffs[System.Linq.Enumerable.ToList(synergy.Roles).IndexOf("herald")])
+            {
+                if (modifier.Stat == CombatStats.Damage && modifier.Kind == ModifierKind.More)
+                    heraldBuff *= 1 + modifier.Value;
+            }
+            Assert.That(friend.Damage, Is.EqualTo(before / heraldBuff).Within(1e-6), "the party damage and the herald's role buff leave with the ally");
         }
 
         [Test]
