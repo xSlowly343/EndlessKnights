@@ -32,6 +32,12 @@ namespace Game.Core.Stats
         AfterFlick,
         MouseMoving,
         LongStreak,
-        ShortStreak
+        ShortStreak,
+        GuardianShield,
+        GuardianWet,
+        GuardianRhythm,
+        SilenceKeys,
+        SilenceMouse,
+        SilenceClicks
     }
 }

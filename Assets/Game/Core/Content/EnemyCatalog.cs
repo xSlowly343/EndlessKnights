@@ -119,7 +119,8 @@ namespace Game.Core.Content
                 node.Field("goldMultiplier").AsNumber(0.0, 1e6),
                 node.Field("sprite").AsString(),
                 modifiers,
-                node.HasField("slot") ? node.Field("slot").AsInt(0, 100) : 0);
+                node.HasField("slot") ? node.Field("slot").AsInt(0, 100) : 0,
+                node.HasField("mechanic") ? GuardianMechanic.Read(node.Field("mechanic")) : null);
         }
     }
 }
