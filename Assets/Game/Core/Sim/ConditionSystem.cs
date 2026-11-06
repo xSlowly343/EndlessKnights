@@ -18,6 +18,7 @@ namespace Game.Core.Sim
         private readonly int[] _markMasks = new int[ModifierConditions.Marks];
         private SynergyRules? _markRules;
         private ulong _allyConditions;
+        private readonly GuardianWatch _guardian;
 
         public ConditionSystem(GameState state, StatSheet hero, CombatSystem combat, SynergySystem synergy, SkillSystem skills, FocusSystem focus)
         {
@@ -27,7 +28,10 @@ namespace Game.Core.Sim
             _hero = hero;
             _combat = combat;
             _synergy = synergy;
+            _guardian = new GuardianWatch(state);
         }
+
+        public GuardianWatch Guardian => _guardian;
 
         public void NoteInput(in EffectiveInput input)
         {
@@ -62,7 +66,7 @@ namespace Game.Core.Sim
             return mask;
         }
 
-        public ulong Current() => BossConditions() | ResourceConditions() | MarkConditionsOn(_synergy.OwnMarks, _synergy.AllyMarks) | MomentConditions();
+        public ulong Current() => BossConditions() | ResourceConditions() | MarkConditionsOn(_synergy.OwnMarks, _synergy.AllyMarks) | MomentConditions() | _guardian.Conditions();
 
         private ulong MomentConditions()
         {
