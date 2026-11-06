@@ -30,6 +30,8 @@ interface PartyEncounterRules {
     allyCreditMax: number;
     relaySenderSeconds: number;
     relayRecipientSeconds: number;
+    pierceShare: number;
+    pierceKillsPerTick: number;
 }
 
 const PartyTicksPerSecond = 10;

@@ -120,6 +120,7 @@ class PartyEncounter {
     private previousEnemyId = 0;
     private previousKind = PartyEnemyKind.Normal;
     private previousKilledTick = -Number.MAX_SAFE_INTEGER;
+    private chainKills = 0;
 
     constructor(private rules: PartyEncounterRules, private readonly seed: string) {
         for (let i = 0; i < PartyMaxSlots; i++)
@@ -379,10 +380,29 @@ class PartyEncounter {
     }
 
     applyDamage(slot: number, enemyId: number, share: number, limit?: number): number {
-        const applicable = this.applicable(slot, enemyId, share);
-        const applied = limit === undefined ? applicable : Math.min(applicable, limit);
-        if (!(applied > 0))
+        const wanted = this.wanted(slot, enemyId, share);
+        const budget = limit === undefined ? wanted : Math.min(wanted, limit);
+        if (!(budget > 0))
             return 0;
+        const first = Math.min(this.barLeft, budget);
+        const struck = this.enemyId;
+        let total = this.hit(slot, first);
+        if (this.enemyId === struck || !this.typing(slot) || !(this.rules.pierceShare > 0))
+            return total;
+        let overflow = (budget - first) * this.rules.pierceShare;
+        while (overflow > 0 && this.started && !this.switching && this.enemyKind === PartyEnemyKind.Normal && this.chainKills < this.rules.pierceKillsPerTick) {
+            const target = this.enemyId;
+            const step = Math.min(this.barLeft, overflow);
+            total += this.hit(slot, step);
+            overflow -= step;
+            if (this.enemyId === target)
+                break;
+            this.chainKills++;
+        }
+        return total;
+    }
+
+    private hit(slot: number, applied: number): number {
         this.recent[this.tick % PartyRecentTicks] += applied * this.kindScale();
         this.recentBySlot[slot * PartyRecentTicks + this.tick % PartyRecentTicks] += applied * this.kindScale();
         return this.take(slot, applied);
@@ -407,6 +427,10 @@ class PartyEncounter {
     }
 
     applicable(slot: number, enemyId: number, share: number): number {
+        return Math.min(this.barLeft, this.wanted(slot, enemyId, share));
+    }
+
+    wanted(slot: number, enemyId: number, share: number): number {
         if (!this.isMember(slot) || !this.started || !(share > 0) || share === Infinity)
             return 0;
         if (enemyId !== this.enemyId) {
@@ -414,8 +438,8 @@ class PartyEncounter {
                 return 0;
             share *= this.kindRatio(this.previousKind, this.enemyKind);
         }
-        const applied = Math.min(this.barLeft, share * this.damageTakenMultiplier());
-        return this.typing(slot) ? applied : Math.min(applied, this.idleRoom(slot));
+        const wanted = share * this.damageTakenMultiplier();
+        return this.typing(slot) ? wanted : Math.min(Math.min(this.barLeft, wanted), this.idleRoom(slot));
     }
 
     weakenNext(enemies: number, share: number, gold: number = 0, vulnerability: number = 0, vulnerabilitySeconds: number = 0, effectId: number = 0, owner: number = PartyNoSlot): boolean {
@@ -496,6 +520,7 @@ class PartyEncounter {
 
     advance(): void {
         this.tick++;
+        this.chainKills = 0;
         this.recent[this.tick % PartyRecentTicks] = 0;
         for (let slot = 0; slot < PartyMaxSlots; slot++)
             this.recentBySlot[slot * PartyRecentTicks + this.tick % PartyRecentTicks] = 0;

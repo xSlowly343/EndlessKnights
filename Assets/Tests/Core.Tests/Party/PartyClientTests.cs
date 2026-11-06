@@ -14,13 +14,13 @@ namespace Game.Core.Tests.Party
 
         private sealed class Player
         {
-            public Player(LoopbackNetwork network, ulong id, long stage)
+            public Player(LoopbackNetwork network, ulong id, long stage, double hitsPerEnemy = 10)
             {
                 Id = id;
                 Input = new FakeInputSource();
                 var hero = new StatSheet();
                 var hp = TestWorld.Data.Stages.EnemyHp(stage).ToDouble();
-                hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, hp / (10 * TestWorld.Data.Combat.StrikeDamage) - 1));
+                hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, hp / (hitsPerEnemy * TestWorld.Data.Combat.StrikeDamage) - 1));
                 Loop = TestWorld.Loop(Input, new GameState { Stage = stage, HighestStage = stage, RecordStage = stage }, hero);
                 Client = new PartyClient(Loop, network.Connect(id), HostId, TestWorld.Data.Party);
             }
@@ -52,14 +52,18 @@ namespace Game.Core.Tests.Party
             {
             }
 
-            public Rig(double loss, params long[] stages)
+            public Rig(double loss, params long[] stages) : this(loss, 10, stages)
+            {
+            }
+
+            public Rig(double loss, double hitsPerEnemy, params long[] stages)
             {
                 Network = new LoopbackNetwork(5, 20, 120, loss, 4096);
                 Host = new PartyHost(new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 11), Network.Connect(HostId), TestWorld.Data.Party);
                 Players = new Player[stages.Length];
                 for (var i = 0; i < stages.Length; i++)
                 {
-                    Players[i] = new Player(Network, 10UL + (ulong)i, stages[i]);
+                    Players[i] = new Player(Network, 10UL + (ulong)i, stages[i], hitsPerEnemy);
                     Players[i].Client.Join();
                 }
             }
@@ -103,6 +107,23 @@ namespace Game.Core.Tests.Party
             }
             Assert.That(rig.Players[0].Loop.State.Stage, Is.GreaterThan(5));
             Assert.That(rig.Players[1].Loop.State.Stage - 40, Is.EqualTo(rig.Players[0].Loop.State.Stage - 5));
+        }
+
+        [Test]
+        public void APartyOfStrongHeroesKillsAlmostAsFastAsOneHeroAlone()
+        {
+            var rig = new Rig(loss: 0, hitsPerEnemy: 2, stages: new long[] { 5, 5 });
+            rig.Run(60);
+            var solo = new Player(rig.Network, 99, 5, 2);
+            var soloKills = 0;
+            for (var i = 0; i < 600; i++)
+            {
+                solo.Input.PressKeys(1);
+                solo.Loop.Tick();
+                soloKills += solo.Loop.Events.CountOf(GameEventKind.EnemyKilled);
+                solo.Loop.Events.Clear();
+            }
+            Assert.That(rig.Host.Kills, Is.GreaterThan(soloKills * 0.8), "the damage goes out as soon as the enemy falls and the allies' pace is predicted");
         }
 
         [Test]

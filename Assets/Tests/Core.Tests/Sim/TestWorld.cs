@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Sim
         public static GameData WithPierce => DataWithPierce.Value;
 
         private static readonly Lazy<GameData> DataWithPierce = new Lazy<GameData>(() => GameData.Load(name =>
-            name == CombatRules.FileName ? TestData.ReadGameDataFile(name) : NeutralFile(name)));
+            name == CombatRules.FileName || name == Game.Core.Party.PartyRules.FileName ? TestData.ReadGameDataFile(name) : NeutralFile(name)));
 
         private static string NeutralFile(string name)
         {
@@ -36,6 +36,8 @@ namespace Game.Core.Tests.Sim
                 return "{ \"version\": 1, \"features\": {}, \"artifactGroups\": [] }";
             if (name == WeaponCatalog.FileName)
                 return Regex.Replace(json, "\"innate\": \\[.*\\]", "\"innate\": []");
+            if (name == Game.Core.Party.PartyRules.FileName)
+                return System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"share\": [0-9.]+,", "\"pierce\": { \"share\": 0,");
             if (name == CombatRules.FileName)
                 return System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"baseShare\": [0-9.]+ \\}", "\"pierce\": { \"baseShare\": 0 }");
             return json;
