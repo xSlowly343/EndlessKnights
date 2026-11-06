@@ -35,6 +35,7 @@ namespace Game.Core.Tests.Party
             encounter.Join(76561198000000002UL);
             encounter.SetHeroClass(0, 9);
             encounter.SetHeroClass(1, 6);
+            encounter.SetEchoLines(1, 5);
             encounter.ApplyDamage(0, 1, 0.75);
             encounter.ApplyEnemyEffect(-123456, 0.15, 10, 1);
             encounter.ApplyEnemyEffect(42, 0.25, 4);
@@ -47,7 +48,7 @@ namespace Game.Core.Tests.Party
 
             var builder = new StringBuilder("{\n  \"version\": 1,\n");
             builder.Append("  \"seed\": \"777\",\n");
-            builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"damage 0 1 0.75\", \"effect -123456 0.15 10 1\", \"effect 42 0.25 4\", \"advance 32\", \"weaken 2 0.2 0.25\", \"damage 1 1 5\", \"peaceful 1 true\", \"guest 76561198000000003 30\"],\n");
+            builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"echo 1 5\", \"damage 0 1 0.75\", \"effect -123456 0.15 10 1\", \"effect 42 0.25 4\", \"advance 32\", \"weaken 2 0.2 0.25\", \"damage 1 1 5\", \"peaceful 1 true\", \"guest 76561198000000003 30\"],\n");
             builder.Append("  \"encode\": {\n");
             builder.Append("    \"encounterState\": { \"sequence\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, EncounterStateMessage.Of(encounter, 5)))).Append("\" },\n");
             var busy = EncounterStateMessage.Of(encounter, 6);
@@ -62,8 +63,8 @@ namespace Game.Core.Tests.Party
             builder.Append("    \"moment\": { \"kind\": 4, \"tick\": 300, \"enemyId\": 11, \"enemyKind\": 1, \"bossTicksLeft\": 0, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new EncounterMomentMessage { Kind = PartyEventKind.BossFailed, Tick = 300, EnemyId = 11, BossTicksLeft = 0 }))).Append("\" }\n");
             builder.Append("  },\n  \"decode\": {\n");
-            builder.Append("    \"hello\": { \"heroClass\": 9, \"stage\": 1234567890123, \"sharePerSecondCap\": 2.5, \"hex\": \"")
-                .Append(Hex(PartyCodec.Encode(_buffer, new HelloMessage { HeroClass = 9, Stage = 1234567890123, SharePerSecondCap = 2.5 }))).Append("\" },\n");
+            builder.Append("    \"hello\": { \"heroClass\": 9, \"stage\": 1234567890123, \"sharePerSecondCap\": 2.5, \"echoLines\": 3000000000, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new HelloMessage { HeroClass = 9, Stage = 1234567890123, SharePerSecondCap = 2.5, EchoLines = 3000000000 }))).Append("\" },\n");
             builder.Append("    \"damageBatch\": { \"sequence\": 17, \"enemyId\": 3, \"keys\": 0.5, \"mouse\": 0.25, \"skills\": 0.125, \"dot\": 0.0625, \"summons\": 0.03125, \"hits\": 9, \"crits\": 2, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new DamageBatchMessage { Sequence = 17, EnemyId = 3, Keys = 0.5, Mouse = 0.25, Skills = 0.125, Dot = 0.0625, Summons = 0.03125, Hits = 9, Crits = 2 }))).Append("\" },\n");
             builder.Append("    \"castEffect\": { \"effectId\": -99, \"onEnemy\": true, \"strength\": 0.15, \"seconds\": 10, \"timerSlow\": 0.3, \"repeatSeconds\": 0, \"weakenEnemies\": 0, \"weakenShare\": 0, \"weakenGold\": 0, \"end\": false, \"hex\": \"")

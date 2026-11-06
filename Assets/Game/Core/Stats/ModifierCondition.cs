@@ -42,6 +42,8 @@ namespace Game.Core.Stats
         LeastPause,
         FateDamage,
         FateGold,
-        FateGems
+        FateGems,
+        BelowRecord,
+        AllTempered
     }
 }

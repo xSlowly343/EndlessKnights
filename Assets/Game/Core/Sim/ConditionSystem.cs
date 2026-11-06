@@ -24,6 +24,7 @@ namespace Game.Core.Sim
 
         public GuardianWatch Guardian => _guardian;
         public StageTable? Stages { get; set; }
+        public ForgeRules? Forge { get; set; }
         private int _ticksSinceKeys = int.MaxValue / 2;
 
         public void NoteInput(in EffectiveInput input)
@@ -81,6 +82,11 @@ namespace Game.Core.Sim
             var rules = _combat.Conditions;
             if (_state.ServerHour >= 0)
                 conditions |= ModifierConditions.Bit(rules.IsDay(_state.ServerHour) ? ModifierCondition.Day : ModifierCondition.Night);
+            if (_state.Stage < _state.RecordStage * rules.BelowRecordShare)
+                conditions |= ModifierConditions.Bit(ModifierCondition.BelowRecord);
+            NoteTemper();
+            if (_state.AllWornTempered)
+                conditions |= ModifierConditions.Bit(ModifierCondition.AllTempered);
             if (_state.Fate >= 0)
                 conditions |= ModifierConditions.Bit((ModifierCondition)((int)ModifierCondition.FateDamage + _state.Fate));
             conditions |= LeastInput();
@@ -92,6 +98,27 @@ namespace Game.Core.Sim
             if (biome >= 0 && _state.BiomeFresh)
                 conditions |= ModifierConditions.Bit(ModifierCondition.FreshBiome);
             return conditions;
+        }
+
+        private void NoteTemper()
+        {
+            var worn = _state.Gear.Worn;
+            var held = _state.Weapons.Held;
+            var count = held != null ? 1 : 0;
+            var sum = held != null ? held.Forge.Temper : 0;
+            var max = Forge?.MaxTemper ?? 0;
+            var all = max > 0 && (held == null || held.Forge.Temper >= max - 1e-9);
+            for (var i = 0; i < worn.Length; i++)
+            {
+                var item = worn[i];
+                if (item == null)
+                    continue;
+                count++;
+                sum += item.Forge.Temper;
+                all &= max > 0 && item.Forge.Temper >= max - 1e-9;
+            }
+            _state.WornTemperPercent = count == 0 ? 0 : sum / count * 100;
+            _state.AllWornTempered = count > 0 && all;
         }
 
         private ulong LeastInput()

@@ -132,6 +132,8 @@ namespace Game.Core.Sim
                 AddScaled(modifiers, set.Bonus, scale);
                 modifiers.AddRange(set.Primary);
                 AddScaled(modifiers, set.PerRaritySet, scale * _collectedByRarity[(int)set.Rarity]);
+                AddScaled(modifiers, set.PerMuseumCollection, scale * _state.Museum.Done.Count);
+                AddScaled(modifiers, set.Echo, scale * AlliesEchoing(set));
                 foreach (var perk in set.Perks)
                     _state.SetPerks[(int)perk.Perk] += perk.Value;
             }
@@ -147,6 +149,41 @@ namespace Game.Core.Sim
         public double MasteryScale => _catalog.MasteryScale(MasteryLevel);
 
         public int CollectedSetsOf(ItemRarity rarity) => _collectedByRarity[(int)rarity];
+
+        public uint EchoMask
+        {
+            get
+            {
+                var mask = 0u;
+                foreach (var set in _catalog.Sets)
+                {
+                    if (set.EchoBit >= 0 && Collected(set))
+                        mask |= 1u << set.EchoBit;
+                }
+                return mask;
+            }
+        }
+
+        private int AlliesEchoing(SetDef set)
+        {
+            if (set.EchoBit < 0)
+                return 0;
+            var count = 0;
+            foreach (var mask in _state.AllyEchoMasks)
+            {
+                if ((mask & (1u << set.EchoBit)) != 0)
+                    count++;
+            }
+            return count;
+        }
+
+        public void SetAllyEcho(int slot, uint mask)
+        {
+            if (slot < 0 || slot >= _state.AllyEchoMasks.Length || _state.AllyEchoMasks[slot] == mask)
+                return;
+            _state.AllyEchoMasks[slot] = mask;
+            Rebuild();
+        }
 
         public double CollectionMore
         {

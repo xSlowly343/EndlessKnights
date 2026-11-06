@@ -136,6 +136,8 @@ namespace Game.Core.Sim
                 CountFarmKill();
             else if (_state.KillsOnStage < EnemiesOnStage(_state.Stage))
                 _state.KillsOnStage++;
+            if (!_state.FightingBoss && !_state.Farming)
+                TryPortal();
             SpawnNext();
         }
 
@@ -364,6 +366,27 @@ namespace Game.Core.Sim
         {
             var jump = _state.Rng.NextInt(Encounters.JumpMin, Encounters.JumpMax + 1);
             var target = System.Math.Min(System.Math.Min(_state.Stage + jump, _state.RecordStage), _stages.NextGateFrom(_state.Stage + 1));
+            JumpTo(target, GameEventKind.WandererJumped);
+        }
+
+        private void TryPortal()
+        {
+            if (!RaisesRecord)
+                return;
+            var chance = _hero.Value(CombatStats.PortalChance, 0);
+            if (!(chance > 0) || _state.Rng.NextDouble() >= chance)
+                return;
+            var stages = Encounters.PortalStages + (long)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.PortalStages, 0)) + 1e-9);
+            var guardian = (_state.Stage + _stages.BiomeLength - 1) / _stages.BiomeLength * _stages.BiomeLength;
+            var target = System.Math.Min(System.Math.Min(_state.Stage + stages, _state.RecordStage), System.Math.Min(_stages.NextGateFrom(_state.Stage + 1), guardian));
+            if (target <= _state.Stage)
+                return;
+            _state.KillsOnStage = 0;
+            JumpTo(target, GameEventKind.PortalJumped);
+        }
+
+        private void JumpTo(long target, GameEventKind kind)
+        {
             if (target <= _state.Stage)
                 return;
             var jumped = target - _state.Stage;
@@ -374,7 +397,7 @@ namespace Game.Core.Sim
             _state.Stage = target;
             if (_state.Stage > _state.HighestStage)
                 _state.HighestStage = _state.Stage;
-            _events.Add(GameEvent.WithAmount(GameEventKind.WandererJumped, _state.Tick, BigNumber.FromDouble(jumped), _state.Stage));
+            _events.Add(GameEvent.WithAmount(kind, _state.Tick, BigNumber.FromDouble(jumped), _state.Stage));
         }
 
         private void SpawnBoss()

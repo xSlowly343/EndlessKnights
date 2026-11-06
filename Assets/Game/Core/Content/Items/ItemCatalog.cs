@@ -87,6 +87,8 @@ namespace Game.Core.Content.Items
         public int UniqueCraftMastery { get; private set; } = int.MaxValue;
         public double UniqueCraftCost { get; private set; }
 
+        public const int MaxEchoSets = 32;
+
         public IReadOnlyList<double> CollectionMorePerSet { get; private set; } = Array.Empty<double>();
 
         public double CollectionMore(ItemRarity rarity, int collected) =>
@@ -315,12 +317,19 @@ namespace Game.Core.Content.Items
                 affixes.Add(affix);
             }
             var sets = new List<SetDef>();
+            var echoBits = 0;
             var setIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (var item in root.Field("sets").Items())
             {
                 var set = ReadSet(item);
                 if (!setIds.Add(set.Id))
                     throw item.Field("id").Error($"set id '{set.Id}' is used twice");
+                if (set.Echo.Count > 0)
+                {
+                    if (echoBits >= MaxEchoSets)
+                        throw item.Field("echo").Error($"at most {MaxEchoSets} sets can echo in a party");
+                    set.EchoBit = echoBits++;
+                }
                 sets.Add(set);
             }
             foreach (var affix in affixes)
@@ -483,7 +492,9 @@ namespace Game.Core.Content.Items
             {
                 Primary = node.HasField("primary") ? ModifierReader.ReadList(node.Field("primary")) : System.Array.Empty<Modifier>(),
                 PerRaritySet = node.HasField("perRaritySet") ? ModifierReader.ReadList(node.Field("perRaritySet")) : System.Array.Empty<Modifier>(),
-                Event = node.HasField("event") ? node.Field("event").AsString() : null
+                Event = node.HasField("event") ? node.Field("event").AsString() : null,
+                PerMuseumCollection = node.HasField("perMuseumCollection") ? ModifierReader.ReadList(node.Field("perMuseumCollection")) : System.Array.Empty<Modifier>(),
+                Echo = node.HasField("echo") ? ModifierReader.ReadList(node.Field("echo")) : System.Array.Empty<Modifier>()
             };
         }
 

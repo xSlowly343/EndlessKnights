@@ -36,6 +36,7 @@ namespace Game.Core.Content
         public int NightStartHour { get; private set; } = 18;
         public int ServerUtcOffsetHours { get; private set; }
         public double LeastInputSeconds { get; private set; } = 60;
+        public double BelowRecordShare { get; private set; } = 0.8;
 
         public bool IsDay(int hour) => DayStartHour <= NightStartHour
             ? hour >= DayStartHour && hour < NightStartHour
@@ -74,7 +75,8 @@ namespace Game.Core.Content
                 DayStartHour = node.HasField("dayNight") ? node.Field("dayNight").Field("dayStartHour").AsInt(0, 23) : 6,
                 NightStartHour = node.HasField("dayNight") ? node.Field("dayNight").Field("nightStartHour").AsInt(0, 23) : 18,
                 ServerUtcOffsetHours = node.HasField("dayNight") ? node.Field("dayNight").Field("serverUtcOffsetHours").AsInt(-12, 14) : 0,
-                LeastInputSeconds = node.HasField("leastInputSeconds") ? node.Field("leastInputSeconds").AsNumber(1, 3600) : 60
+                LeastInputSeconds = node.HasField("leastInputSeconds") ? node.Field("leastInputSeconds").AsNumber(1, 3600) : 60,
+                BelowRecordShare = node.HasField("belowRecordShare") ? node.Field("belowRecordShare").AsNumber(0, 1) : 0.8
             };
         }
     }

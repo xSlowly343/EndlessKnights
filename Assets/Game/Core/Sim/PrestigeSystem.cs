@@ -40,7 +40,26 @@ namespace Game.Core.Sim
             }
         }
 
-        public long StartStage => System.Math.Max(1, System.Math.Min(_state.RecordStage, 1 + (long)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.PrestigeStartStage, 0)) + 1e-9)));
+        public long StartStage
+        {
+            get
+            {
+                var flat = (long)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.PrestigeStartStage, 0)) + 1e-9);
+                var share = System.Math.Min(_rules.MaxStartShare, System.Math.Max(0, _hero.Value(CombatStats.PrestigeStartShare, 0)));
+                var ahead = (long)System.Math.Floor(share * _state.HighestStage + 1e-9);
+                return System.Math.Max(1, System.Math.Min(_state.RecordStage, 1 + flat + ahead + Rush));
+            }
+        }
+
+        public int RushCap => (int)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.StageRushCap, 0)) + 1e-9);
+
+        public int Rush => System.Math.Min(_state.StageRush, RushCap);
+
+        private void NoteRush()
+        {
+            if (RushCap > 0 && _state.HighestStage >= _state.RecordStage * _rules.RushRecordShare)
+                _state.StageRush = System.Math.Min(RushCap, _state.StageRush + 1);
+        }
 
         public bool Highlighted
         {
@@ -62,6 +81,7 @@ namespace Game.Core.Sim
             _state.Prestiges++;
             _state.Ascendancy.Complete(ActivityIds.FirstPrestige);
             _events.Add(GameEvent.WithAmount(GameEventKind.Prestige, _state.Tick, gain, _state.HighestStage));
+            NoteRush();
             ResetRun();
             return true;
         }

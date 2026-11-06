@@ -133,6 +133,11 @@ namespace Game.Core.Party
                     _encounter.SetHeroClass(slot, hello.HeroClass);
                     _rosterChanged = true;
                 }
+                if (slot != PartyEncounter.NoSlot && _encounter.Member(slot).EchoLines != hello.EchoLines)
+                {
+                    _encounter.SetEchoLines(slot, hello.EchoLines);
+                    _rosterChanged = true;
+                }
             }
             if (slot == PartyEncounter.NoSlot || ++_messagesThisSecond[slot] > _rules.MaxMessagesPerSecond)
                 return;

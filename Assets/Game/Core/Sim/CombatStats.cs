@@ -214,5 +214,11 @@ namespace Game.Core.Sim
         public static readonly StatId FocusIdleFloor = new StatId("focusIdleFloor");
         public static readonly StatId DustGain = new StatId("dustGain");
         public static readonly StatId RoleBuffEffect = new StatId("roleBuffEffect");
+        public static readonly StatId PrestigeStartShare = new StatId("prestigeStartShare");
+        public static readonly StatId StageRushCap = new StatId("stageRushCap");
+        public static readonly StatId PortalChance = new StatId("portalChance");
+        public static readonly StatId PortalStages = new StatId("portalStages");
+        public static readonly StatId DamagePerTemperPercent = new StatId("damagePerTemperPercent");
+        public static readonly StatId DamagePerMuseumCollection = new StatId("damagePerMuseumCollection");
     }
 }

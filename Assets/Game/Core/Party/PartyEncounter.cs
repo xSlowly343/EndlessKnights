@@ -172,6 +172,12 @@ namespace Game.Core.Party
                 _members[slot].HeroClass = heroClass;
         }
 
+        public void SetEchoLines(int slot, uint echoLines)
+        {
+            if (IsMember(slot))
+                _members[slot].EchoLines = echoLines;
+        }
+
         public void SetCredit(int slot, double rate)
         {
             if (IsMember(slot))
