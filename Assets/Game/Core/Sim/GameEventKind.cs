@@ -40,6 +40,10 @@ namespace Game.Core.Sim
         RecipeLearned,
         ExpeditionLetter,
         ExpeditionReturned,
-        OrderDone
+        OrderDone,
+        FishBite,
+        FishMissed,
+        FishEscaped,
+        FishCaught
     }
 }

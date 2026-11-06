@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "building": "pier",
+  "biteSeconds": { "min": 20, "max": 90 },
+  "biteWindowSeconds": 5,
+  "fightSeconds": 20,
+  "bottle": { "chance": 0.05, "reelMeters": 1, "shards": 5 },
+  "legendChance": 0.05,
+  "riftChance": 0.25,
+  "spots": [
+    {
+      "biome": "green_hills",
+      "fish": [
+        { "id": "fish_hills_roach", "name": { "ru": "Холмовая плотва", "en": "Hill Roach" }, "weight": 6, "minCm": 12, "maxCm": 25, "reelMeters": 1 },
+        { "id": "fish_hills_carp", "name": { "ru": "Луговой карп", "en": "Meadow Carp" }, "weight": 3, "minCm": 25, "maxCm": 60, "reelMeters": 2 },
+        { "id": "fish_hills_pike", "name": { "ru": "Щука-свистун", "en": "Whistling Pike" }, "weight": 1, "minCm": 40, "maxCm": 90, "reelMeters": 3 }
+      ],
+      "legend": { "id": "legend_hills_boar_catfish", "name": { "ru": "Сом-Вепрь", "en": "Boar Catfish" }, "cm": 210, "stamina": 30 }
+    },
+    {
+      "biome": "sand_ruins",
+      "fish": [
+        { "id": "fish_ruins_sandeel", "name": { "ru": "Песчаный угорь", "en": "Sand Eel" }, "weight": 6, "minCm": 20, "maxCm": 45, "reelMeters": 1.5 },
+        { "id": "fish_ruins_oasis_perch", "name": { "ru": "Окунь оазиса", "en": "Oasis Perch" }, "weight": 3, "minCm": 15, "maxCm": 40, "reelMeters": 1.5 },
+        { "id": "fish_ruins_sphinx_ray", "name": { "ru": "Скат-сфинкс", "en": "Sphinx Ray" }, "weight": 1, "minCm": 50, "maxCm": 120, "reelMeters": 3.5 }
+      ],
+      "legend": { "id": "legend_ruins_tomb_carp", "name": { "ru": "Гробничный карп", "en": "Tomb Carp" }, "cm": 180, "stamina": 35 }
+    },
+    {
+      "biome": "ice_peak",
+      "fish": [
+        { "id": "fish_ice_crucian", "name": { "ru": "Ледяной карась", "en": "Ice Crucian" }, "weight": 6, "minCm": 10, "maxCm": 25, "reelMeters": 1 },
+        { "id": "fish_ice_char", "name": { "ru": "Голец-снежник", "en": "Snow Char" }, "weight": 3, "minCm": 30, "maxCm": 70, "reelMeters": 2.5 },
+        { "id": "fish_ice_mammoth_trout", "name": { "ru": "Мамонтова форель", "en": "Mammoth Trout" }, "weight": 1, "minCm": 60, "maxCm": 130, "reelMeters": 4 }
+      ],
+      "legend": { "id": "legend_ice_frost_sturgeon", "name": { "ru": "Осётр Вечной Зимы", "en": "Everwinter Sturgeon" }, "cm": 260, "stamina": 40 }
+    },
+    {
+      "biome": "volcanic_forge",
+      "fish": [
+        { "id": "fish_forge_ember_minnow", "name": { "ru": "Угольный пескарь", "en": "Ember Minnow" }, "weight": 6, "minCm": 8, "maxCm": 18, "reelMeters": 1 },
+        { "id": "fish_forge_slag_cod", "name": { "ru": "Шлаковая треска", "en": "Slag Cod" }, "weight": 3, "minCm": 35, "maxCm": 80, "reelMeters": 2.5 },
+        { "id": "fish_forge_magma_eel", "name": { "ru": "Магмовый угорь", "en": "Magma Eel" }, "weight": 1, "minCm": 70, "maxCm": 150, "reelMeters": 4.5 }
+      ],
+      "legend": { "id": "legend_forge_anvil_grouper", "name": { "ru": "Окунь-Наковальня", "en": "Anvil Grouper" }, "cm": 240, "stamina": 45 }
+    },
+    {
+      "biome": "sky_islands",
+      "fish": [
+        { "id": "fish_sky_cloud_dace", "name": { "ru": "Облачный елец", "en": "Cloud Dace" }, "weight": 6, "minCm": 12, "maxCm": 30, "reelMeters": 1.5 },
+        { "id": "fish_sky_wind_salmon", "name": { "ru": "Ветровой лосось", "en": "Wind Salmon" }, "weight": 3, "minCm": 40, "maxCm": 90, "reelMeters": 3 },
+        { "id": "fish_sky_storm_marlin", "name": { "ru": "Грозовой марлин", "en": "Storm Marlin" }, "weight": 1, "minCm": 90, "maxCm": 200, "reelMeters": 5 }
+      ],
+      "legend": { "id": "legend_sky_dragon_koi", "name": { "ru": "Карп-Дракон", "en": "Dragon Koi" }, "cm": 300, "stamina": 50 }
+    }
+  ],
+  "riftFish": [
+    { "id": "fish_rift_glass_perch", "name": { "ru": "Стеклянный окунь", "en": "Glass Perch" }, "weight": 3, "minCm": 20, "maxCm": 50, "reelMeters": 2.5 },
+    { "id": "fish_rift_twin_pike", "name": { "ru": "Щука-двойник", "en": "Twin Pike" }, "weight": 2, "minCm": 40, "maxCm": 100, "reelMeters": 3.5 },
+    { "id": "fish_rift_void_eel", "name": { "ru": "Угорь Изнанки", "en": "Void Eel" }, "weight": 1, "minCm": 80, "maxCm": 180, "reelMeters": 5 }
+  ]
+}

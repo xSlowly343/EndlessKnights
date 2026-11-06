@@ -99,6 +99,7 @@ namespace Game.Core.Save
                 ("alchemy", WriteAlchemy(state.Alchemy)),
                 ("expeditions", WriteExpeditions(state.Expeditions)),
                 ("town", WriteTown(state.Town)),
+                ("fishing", WriteFishing(state.Fishing)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -285,6 +286,8 @@ namespace Game.Core.Save
                 ReadExpeditions(node.Field("expeditions"), state.Expeditions);
             if (node.HasField("town"))
                 ReadTown(node.Field("town"), state.Town);
+            if (node.HasField("fishing"))
+                ReadFishing(node.Field("fishing"), state.Fishing);
             if (node.HasField("garden"))
                 ReadGarden(node.Field("garden"), state.Garden);
             if (node.HasField("camp"))
@@ -638,6 +641,35 @@ namespace Game.Core.Save
             foreach (var item in node.Field("reputation").Items())
                 town.Reputation[item.Field("guild").AsString()] = item.Field("value").AsLong(0);
             town.Done = node.Field("done").AsLong(0);
+        }
+
+        private static JsonValue WriteFishing(FishingState fishing)
+        {
+            var ids = new List<string>(fishing.Album.Keys);
+            ids.Sort(System.StringComparer.Ordinal);
+            var album = new JsonValue[ids.Count];
+            for (var i = 0; i < album.Length; i++)
+                album[i] = Object(("id", JsonValue.Of(ids[i])), ("count", JsonValue.Of(fishing.Album[ids[i]].Count)), ("bestCm", JsonValue.Of(fishing.Album[ids[i]].BestCm)));
+            var legends = new List<string>(fishing.LegendTired.Keys);
+            legends.Sort(System.StringComparer.Ordinal);
+            var tired = new JsonValue[legends.Count];
+            for (var i = 0; i < tired.Length; i++)
+                tired[i] = Object(("id", JsonValue.Of(legends[i])), ("tired", JsonValue.Of(fishing.LegendTired[legends[i]])));
+            return Object(("spot", OptionalText(fishing.Spot)), ("album", JsonValue.Array(album)), ("legendTired", JsonValue.Array(tired)),
+                ("caught", JsonValue.Of(fishing.Caught)), ("missed", JsonValue.Of(fishing.Missed)), ("escaped", JsonValue.Of(fishing.Escaped)), ("bottles", JsonValue.Of(fishing.Bottles)));
+        }
+
+        private static void ReadFishing(ContentNode node, FishingState fishing)
+        {
+            fishing.Spot = ReadOptionalText(node, "spot");
+            foreach (var item in node.Field("album").Items())
+                fishing.Album[item.Field("id").AsString()] = new FishRecord { Count = item.Field("count").AsLong(0), BestCm = item.Field("bestCm").AsNumber(0, double.MaxValue) };
+            foreach (var item in node.Field("legendTired").Items())
+                fishing.LegendTired[item.Field("id").AsString()] = item.Field("tired").AsNumber(0, double.MaxValue);
+            fishing.Caught = node.Field("caught").AsLong(0);
+            fishing.Missed = node.Field("missed").AsLong(0);
+            fishing.Escaped = node.Field("escaped").AsLong(0);
+            fishing.Bottles = node.Field("bottles").AsLong(0);
         }
 
         private static JsonValue WriteGarden(GardenState garden)
