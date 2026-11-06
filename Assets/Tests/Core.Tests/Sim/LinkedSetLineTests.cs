@@ -92,24 +92,46 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Stage, Is.EqualTo(26));
         }
 
-        [Test]
-        public void ThePortalSkipsStagesButStopsAtTheGuardianAndTheRecord()
+        private static GameLoop PortalHero(long stage, long record)
         {
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.PortalChance, ModifierKind.Flat, 1));
             var loop = Runedancer(hero);
-            loop.State.RecordStage = 1000;
-            loop.State.Stage = 3;
-            loop.State.HighestStage = 3;
+            loop.State.RecordStage = record;
+            loop.State.Stage = stage;
+            loop.State.HighestStage = stage;
             loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.One);
+            return loop;
+        }
+
+        [Test]
+        public void ThePortalJumpsFiftyStagesPastGuardiansAndTheRecordLikeInTapTitans()
+        {
+            var length = TestWorld.Data.Stages.BiomeLength;
+            var start = 2 * length - 10;
+            Assert.That(TestWorld.Data.Stages.Gates.All(g => g.Stage <= start || g.Stage > start + 50), Is.True, "no wall on the way");
+            var loop = PortalHero(start, start + 1);
 
             loop.Stages.OnEnemyKilled();
 
-            var guardian = TestWorld.Data.Stages.BiomeLength;
-            Assert.That(loop.State.Stage, Is.EqualTo(System.Math.Min(3 + 50, guardian)));
+            Assert.That(loop.State.Stage, Is.EqualTo(start + 50), "the guardian and the record are jumped over");
+            Assert.That(loop.State.RecordStage, Is.EqualTo(start + 50));
+            Assert.That(loop.State.HighestStage, Is.EqualTo(start + 50));
             Assert.That(loop.State.KillsOnStage, Is.Zero);
+        }
+
+        [Test]
+        public void ThePortalStopsOnAWallNotYetCleared()
+        {
+            var gate = TestWorld.Data.Stages.Gates.OrderBy(g => g.Stage).First().Stage;
+            var loop = PortalHero(gate - 10, gate - 10);
             loop.Stages.OnEnemyKilled();
-            Assert.That(loop.State.Stage, Is.EqualTo(System.Math.Min(3 + 50, guardian)), "the guardian stage is never skipped");
+            Assert.That(loop.State.Stage, Is.EqualTo(gate));
+
+            var cleared = PortalHero(gate - 10, gate - 10);
+            cleared.State.GatesCleared.Add(gate);
+            cleared.Stages.OnEnemyKilled();
+            Assert.That(cleared.State.Stage, Is.EqualTo(gate + 40));
         }
 
         [Test]
