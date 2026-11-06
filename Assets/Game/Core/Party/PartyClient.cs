@@ -25,6 +25,7 @@ namespace Game.Core.Party
         private long _joinStartTick;
         private bool _inRoster;
         private uint _localEnemyId;
+        private bool _killFlushed;
         private long _localStage;
         private BigNumber _unit;
         private double _total;
@@ -401,9 +402,7 @@ namespace Game.Core.Party
             if (InParty)
                 SettleHistory(state);
             var elapsed = System.Math.Max(1, _tick - _stateArrivalTick);
-            _allyRatePerTick = state.EnemyId == _state.EnemyId
-                ? System.Math.Max(0, (_state.BarLeft - state.BarLeft - _sharesSinceState) / elapsed)
-                : 0;
+            _allyRatePerTick = AllyRecent(state) / elapsed;
             if (InParty && state.EnemyId > _localEnemyId && _localEnemyId != 0)
                 EndLocalEnemy(_loop.State.FightingBoss && state.Farming);
             _state = state;
@@ -414,6 +413,17 @@ namespace Game.Core.Party
                 if (slot != _ownSlot && InParty)
                     _allyShares[slot] = System.Math.Min(_allyShares[slot] + state.Recent(slot), MaxAllyShares);
             }
+        }
+
+        private double AllyRecent(in EncounterStateMessage state)
+        {
+            var sum = 0.0;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+            {
+                if (slot != _ownSlot)
+                    sum += System.Math.Max(0, state.Recent(slot));
+            }
+            return sum;
         }
 
         private void SettleHistory(in EncounterStateMessage state)
@@ -625,6 +635,7 @@ namespace Game.Core.Party
                 FlushBatch();
                 _total = 0;
                 _sentTotal = 0;
+                _killFlushed = false;
             }
             _localEnemyId = enemyId;
             _localStage = _loop.State.Stage;
@@ -666,6 +677,11 @@ namespace Game.Core.Party
             {
                 _hitsInBatch++;
                 _lastOwnInputTick = _tick;
+            }
+            if (!_killFlushed && InParty && share > 0 && Predicted() <= 0)
+            {
+                _killFlushed = true;
+                FlushBatch();
             }
         }
 

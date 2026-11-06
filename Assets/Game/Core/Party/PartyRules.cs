@@ -8,6 +8,9 @@ namespace Game.Core.Party
         public const int SupportedVersion = 1;
         public const int MaxSlots = 4;
 
+        public double PierceShare { get; private set; }
+        public int PierceKillsPerTick { get; private set; }
+
         private PartyRules(int maxMembers, double hpPerExtraPlayer, double restAfterSeconds, double disconnectGraceSeconds, double rejoinWindowSeconds,
             double lateDamageSeconds, double damageBatchSeconds, double stateBroadcastSeconds, double presenceSeconds, double silenceSeconds, double maxEnemyDamageTaken, PartyBuffRules buffs, int maxMessagesPerSecond,
             PartyContributionRules contribution, PartyCapRules caps, PartySearchRules search, PartyReactionRules reactions, PartyTimerRules timer, double worldSwitchSeconds, PartyGhostRules ghost, PartyRelayRules relay, PartyHelpRules help, int maxWeakenedSpawns, double maxWeakenShare, double maxWeakenGold)
@@ -113,7 +116,11 @@ namespace Game.Core.Party
                 PartyHelpRules.Read(root.Field("help")),
                 root.Field("weaken").Field("maxEnemies").AsInt(1, 100),
                 root.Field("weaken").Field("maxShare").AsNumber(0, 0.99),
-                root.Field("weaken").Field("maxGold").AsNumber(0, 10));
+                root.Field("weaken").Field("maxGold").AsNumber(0, 10))
+            {
+                PierceShare = root.HasField("pierce") ? root.Field("pierce").Field("share").AsNumber(0, 1) : 0,
+                PierceKillsPerTick = root.HasField("pierce") ? root.Field("pierce").Field("maxKillsPerTick").AsInt(0, EnemyHistory.Depth / 2) : 0
+            };
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Game.Core.Tests.Party
 
         private string Build()
         {
-            var encounter = new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 777);
+            var encounter = new PartyEncounter(TestWorld.WithPierce.Party, TestWorld.WithPierce.Stages, 777);
             encounter.Join(76561198000000001UL);
             encounter.Join(76561198000000002UL);
             encounter.SetHeroClass(0, 9);

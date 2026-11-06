@@ -24,6 +24,7 @@ namespace Game.Core.Party
         private uint _previousEnemyId;
         private PartyEnemyKind _previousKind;
         private long _previousKilledTick = long.MinValue;
+        private int _chainKills;
         private double _bossTimerCarry;
         private int _weakenVulnerabilityId;
         private EnemyHistory _history;
@@ -395,9 +396,30 @@ namespace Game.Core.Party
 
         public double ApplyDamage(int slot, uint enemyId, double share, double limit = double.PositiveInfinity)
         {
-            var applied = System.Math.Min(Applicable(slot, enemyId, share), limit);
-            if (!(applied > 0))
+            var budget = System.Math.Min(Wanted(slot, enemyId, share), limit);
+            if (!(budget > 0))
                 return 0;
+            var first = System.Math.Min(BarLeft, budget);
+            var struck = EnemyId;
+            var total = Hit(slot, first);
+            if (EnemyId == struck || !Typing(slot) || !(_rules.PierceShare > 0))
+                return total;
+            var overflow = (budget - first) * _rules.PierceShare;
+            while (overflow > 0 && Started && !Switching && EnemyKind == PartyEnemyKind.Normal && _chainKills < _rules.PierceKillsPerTick)
+            {
+                var target = EnemyId;
+                var step = System.Math.Min(BarLeft, overflow);
+                total += Hit(slot, step);
+                overflow -= step;
+                if (EnemyId == target)
+                    break;
+                _chainKills++;
+            }
+            return total;
+        }
+
+        private double Hit(int slot, double applied)
+        {
             _recent[Tick % RecentTicks] += applied * KindScale;
             _recentBySlot[slot * RecentTicks + Tick % RecentTicks] += applied * KindScale;
             return Take(slot, applied);
@@ -446,7 +468,9 @@ namespace Game.Core.Party
 
         private double KindScale => FightingBoss ? _stages.BossHpMultiplier : 1;
 
-        public double Applicable(int slot, uint enemyId, double share)
+        public double Applicable(int slot, uint enemyId, double share) => System.Math.Min(BarLeft, Wanted(slot, enemyId, share));
+
+        public double Wanted(int slot, uint enemyId, double share)
         {
             if (!IsMember(slot) || !Started || !(share > 0) || double.IsInfinity(share))
                 return 0;
@@ -456,8 +480,8 @@ namespace Game.Core.Party
                     return 0;
                 share *= KindRatio(_previousKind, EnemyKind);
             }
-            var applied = System.Math.Min(BarLeft, share * DamageTakenMultiplier);
-            return Typing(slot) ? applied : System.Math.Min(applied, IdleRoom(slot));
+            var wanted = share * DamageTakenMultiplier;
+            return Typing(slot) ? wanted : System.Math.Min(System.Math.Min(BarLeft, wanted), IdleRoom(slot));
         }
 
         public bool WeakenNext(int enemies, double share, double gold = 0, double vulnerability = 0, double vulnerabilitySeconds = 0, int effectId = 0, int owner = NoSlot)
@@ -551,6 +575,7 @@ namespace Game.Core.Party
         public void Advance()
         {
             Tick++;
+            _chainKills = 0;
             _recent[Tick % RecentTicks] = 0;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 _recentBySlot[slot * RecentTicks + Tick % RecentTicks] = 0;

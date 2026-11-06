@@ -6,6 +6,7 @@ interface PartyServerConfig extends PartyEncounterRules {
     maxMessagesPerSecond: number;
     barsPerSecond: number;
     burstBars: number;
+    stageBarsShare: number;
     hitBurstSeconds: number;
     flagsBeforeReport: number;
     reactionCount: number;
@@ -485,13 +486,13 @@ class PartyHost {
 
     private cappedDamage(slot: number, enemyId: number, delta: number): number {
         const barFull = this.encounter.barFull;
-        const wanted = this.encounter.applicable(slot, enemyId, delta);
-        const allowed = Math.min(wanted, this.allowance[slot] * barFull);
-        if (wanted - allowed > PartyCutTolerance * barFull) {
-            this.cutShares += wanted - allowed;
+        const direct = this.encounter.applicable(slot, enemyId, delta);
+        const room = this.allowance[slot] * barFull;
+        if (direct - room > PartyCutTolerance * barFull) {
+            this.cutShares += direct - room;
             this.flag(slot);
         }
-        const applied = this.encounter.applyDamage(slot, enemyId, delta, allowed);
+        const applied = this.encounter.applyDamage(slot, enemyId, delta, room);
         this.allowance[slot] = Math.max(0, this.allowance[slot] - applied / barFull);
         return applied;
     }
@@ -503,10 +504,13 @@ class PartyHost {
     }
 
     private refill(): void {
-        const step = this.config.barsPerSecond / PartyTicksPerSecond;
+        const enemies = this.encounter.enemiesOnStage();
+        const perSecond = Math.max(this.config.barsPerSecond, enemies * (this.config.stageBarsShare || 0));
+        const step = perSecond / PartyTicksPerSecond;
+        const burst = this.config.burstBars * perSecond / this.config.barsPerSecond;
         const hitBurst = this.hitBurst();
         for (let slot = 0; slot < PartyMaxSlots; slot++) {
-            this.allowance[slot] = Math.min(this.config.burstBars, this.allowance[slot] + step);
+            this.allowance[slot] = Math.min(burst, this.allowance[slot] + step);
             this.hitAllowance[slot] = Math.min(hitBurst, this.hitAllowance[slot] + 1);
         }
     }

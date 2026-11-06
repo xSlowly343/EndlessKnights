@@ -37,7 +37,7 @@ test("two members kill the shared enemy through batches", () => {
   host.receive("user-b", batch(1, 2, 9.0, 3));
   host.tick();
   assert.strictEqual(host.kills, 1);
-  host.receive("user-a", batch(3, 2, 1.1, 3));
+  host.receive("user-a", batch(3, 2, 1.0, 3));
   host.tick();
   assert.strictEqual(host.kills, 2);
   assert.ok(Math.abs(host.acceptedShares - 3) < 1e-12);
@@ -279,7 +279,7 @@ test("a weaken cast makes the next enemies of the party come weaker", () => {
   view.setFloat64(47, 0.2, true);
   host.receive("user-a", view.buffer);
   assert.strictEqual(host.encounter.weakenedSpawns, 3);
-  host.receive("user-a", batch(1, host.encounter.enemyId, 1.5, 1));
+  host.receive("user-a", batch(1, host.encounter.enemyId, 1.0, 1));
   host.outbox.length = 0;
   host.tick();
   assert.strictEqual(host.encounter.weakenedSpawns, 2);
@@ -347,4 +347,23 @@ test("rift enemies regenerate and come in hordes until a party role lifts them",
   host.encounter.switchWorld(0, 0);
   host.tick(riftId * 1000);
   assert.strictEqual(host.encounter.extraStageEnemies, 0);
+});
+
+test("the damage cap grows with the enemies on the stage and a strong hit pierces", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.tick();
+  for (let i = 0; i < 20; i++) host.tick();
+  assert.strictEqual(host.allowance[0], party.PartyServerRules.burstBars, "early stages keep the old burst");
+  host.encounter.setStage(0, 50000);
+  host.encounter.reportInput(0);
+  for (let i = 0; i < 40; i++) host.tick();
+  const enemies = host.encounter.enemiesOnStage();
+  const perSecond = enemies * party.PartyServerRules.stageBarsShare;
+  assert.ok(Math.abs(host.allowance[0] - party.PartyServerRules.burstBars * perSecond / party.PartyServerRules.barsPerSecond) < 1e-9);
+  const before = host.kills;
+  host.encounter.reportInput(0);
+  host.receive("user-a", batch(1, host.encounter.enemyId, 5, 1));
+  host.tick();
+  assert.ok(host.kills - before >= 3, "one batch takes several enemies at once");
 });

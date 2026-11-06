@@ -356,14 +356,14 @@ namespace Game.Core.Party
         private double CappedDamage(int slot, uint enemyId, double delta)
         {
             var barFull = _encounter.BarFull;
-            var wanted = _encounter.Applicable(slot, enemyId, delta);
-            var allowed = System.Math.Min(wanted, _allowance[slot] * barFull);
-            if (wanted - allowed > CutTolerance * barFull)
+            var direct = _encounter.Applicable(slot, enemyId, delta);
+            var room = _allowance[slot] * barFull;
+            if (direct - room > CutTolerance * barFull)
             {
-                CutShares += wanted - allowed;
+                CutShares += direct - room;
                 Flag(slot);
             }
-            var applied = _encounter.ApplyDamage(slot, enemyId, delta, allowed);
+            var applied = _encounter.ApplyDamage(slot, enemyId, delta, room);
             _allowance[slot] = System.Math.Max(0, _allowance[slot] - applied / barFull);
             return applied;
         }
@@ -372,10 +372,12 @@ namespace Game.Core.Party
 
         private void Refill()
         {
-            var step = _rules.Caps.BarsPerSecond / GameLoop.TicksPerSecond;
+            var enemies = _encounter.EnemiesOnStage;
+            var step = _rules.Caps.BarsPerSecondAt(enemies) / GameLoop.TicksPerSecond;
+            var burst = _rules.Caps.BurstAt(enemies);
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
-                _allowance[slot] = System.Math.Min(_rules.Caps.BurstBars, _allowance[slot] + step);
+                _allowance[slot] = System.Math.Min(burst, _allowance[slot] + step);
                 _hitAllowance[slot] = System.Math.Min(HitBurst, _hitAllowance[slot] + 1);
             }
         }

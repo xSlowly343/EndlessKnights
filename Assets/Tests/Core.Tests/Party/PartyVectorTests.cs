@@ -48,10 +48,11 @@ namespace Game.Core.Tests.Party
                 AllyCredit(),
                 RiftEnemies(),
                 SharedTimer(),
-                ClockLoop()
+                ClockLoop(),
+                Pierce()
             };
-            var rules = TestWorld.Data.Party;
-            var stages = TestWorld.Data.Stages;
+            var rules = TestWorld.WithPierce.Party;
+            var stages = TestWorld.WithPierce.Stages;
             return "{\n  \"version\": 1,\n  \"rules\": {\n" +
                    $"    \"maxMembers\": {rules.MaxMembers},\n" +
                    $"    \"hpPerExtraPlayer\": {N(rules.HpPerExtraPlayer)},\n" +
@@ -75,6 +76,8 @@ namespace Game.Core.Tests.Party
                    $"    \"allyCreditMax\": {N(rules.Contribution.AllyCreditMax)},\n" +
                    $"    \"relaySenderSeconds\": {N(rules.Relay.SenderSeconds)},\n" +
                    $"    \"relayRecipientSeconds\": {N(rules.Relay.RecipientSeconds)},\n" +
+                   $"    \"pierceShare\": {N(rules.PierceShare)},\n" +
+                   $"    \"pierceKillsPerTick\": {rules.PierceKillsPerTick},\n" +
                    $"    \"waveCount\": {stages.Waves.Count},\n" +
                    $"    \"waveFirstEnemies\": {stages.Waves.FirstEnemies},\n" +
                    $"    \"waveEnemiesPerWave\": {stages.Waves.EnemiesPerWave},\n" +
@@ -84,6 +87,20 @@ namespace Game.Core.Tests.Party
                    $"    \"bossTimerSeconds\": {N(stages.BossTimerSeconds)},\n" +
                    $"    \"bossHpMultiplier\": {N(stages.BossHpMultiplier)}\n" +
                    "  },\n  \"scenarios\": [\n" + string.Join(",\n", scenarios) + "\n  ]\n}\n";
+        }
+
+        private static string Pierce()
+        {
+            var r = Recorder("a strong hit pierces through the next enemies and stops at the boss", 2424);
+            r.Join(1);
+            r.Join(2);
+            r.Hit(0, 0.4);
+            r.Hit(1, 4.5);
+            r.Advance(1);
+            r.Hit(0, 100);
+            r.Advance(1);
+            r.Hit(1, 100);
+            return r.ToJson();
         }
 
         private static string ClockLoop()
@@ -322,7 +339,7 @@ namespace Game.Core.Tests.Party
         }
 
         private static PartyVectorRecorder Recorder(string name, ulong seed) =>
-            new PartyVectorRecorder(name, TestWorld.Data.Party, TestWorld.Data.Stages, seed);
+            new PartyVectorRecorder(name, TestWorld.WithPierce.Party, TestWorld.WithPierce.Stages, seed);
 
         private static string SoloStage()
         {
