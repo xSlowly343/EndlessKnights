@@ -23,6 +23,7 @@ namespace Game.Core.Sim
         }
 
         public GuardianWatch Guardian => _guardian;
+        public const int FateBoth = 3;
         public StageTable? Stages { get; set; }
         public ForgeRules? Forge { get; set; }
         private int _ticksSinceKeys = int.MaxValue / 2;
@@ -38,8 +39,8 @@ namespace Game.Core.Sim
         {
             var conditions = Current();
             NoteShares(conditions & ~ModifierConditions.Bit(ModifierCondition.InRift));
-            _state.ConditionShares[(int)ModifierCondition.Day] = 0.5;
-            _state.ConditionShares[(int)ModifierCondition.Night] = 0.5;
+            _state.ConditionShares[(int)ModifierCondition.Day] = _state.NightOffline ? 0 : 0.5;
+            _state.ConditionShares[(int)ModifierCondition.Night] = _state.NightOffline ? 1 : 0.5;
             var auraStrength = _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
             _hero.SetConditions(conditions);
             if (_hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura) != auraStrength)
@@ -87,7 +88,9 @@ namespace Game.Core.Sim
             NoteTemper();
             if (_state.AllWornTempered)
                 conditions |= ModifierConditions.Bit(ModifierCondition.AllTempered);
-            if (_state.Fate >= 0)
+            if (_state.Fate == FateBoth)
+                conditions |= ModifierConditions.Bit(ModifierCondition.FateDamage) | ModifierConditions.Bit(ModifierCondition.FateGold);
+            else if (_state.Fate >= 0)
                 conditions |= ModifierConditions.Bit((ModifierCondition)((int)ModifierCondition.FateDamage + _state.Fate));
             conditions |= LeastInput();
             if (Stages == null)

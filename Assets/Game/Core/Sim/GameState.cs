@@ -60,6 +60,8 @@ namespace Game.Core.Sim
         public bool AllWornTempered { get; set; }
         public int StageRush { get; set; }
         public uint[] AllyEchoMasks { get; } = new uint[4];
+        public bool NightOffline { get; set; }
+        public int FateOptions { get; set; } = 3;
         public long HighestStage { get; set; } = 1;
         public long RecordStage { get; set; } = 1;
         public int HeroLevel { get; set; } = 1;

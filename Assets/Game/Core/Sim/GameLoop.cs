@@ -615,16 +615,18 @@ namespace Game.Core.Sim
 
         public void SetServerTime(long utcUnixMs) => State.ServerHour = _data.Combat.Conditions.ServerHour(utcUnixMs);
 
-        public static int FateOf(long startedUnixMs, long day)
+        public static int FateOf(long startedUnixMs, long day) => FateOf(startedUnixMs, day, 3);
+
+        public static int FateOf(long startedUnixMs, long day, int options)
         {
             var mixed = (ulong)startedUnixMs * 0x9E3779B97F4A7C15UL ^ (ulong)day * 0xBF58476D1CE4E5B9UL;
             mixed ^= mixed >> 31;
             mixed *= 0x94D049BB133111EBUL;
             mixed ^= mixed >> 29;
-            return (int)(mixed % 3);
+            return (int)(mixed % (ulong)System.Math.Max(1, options));
         }
 
-        public int FateOn(long day) => FateOf(State.StartedUnixMs, day);
+        public int FateOn(long day) => FateOf(State.StartedUnixMs, day, State.FateOptions);
 
         public void SetLocalDay(long day)
         {

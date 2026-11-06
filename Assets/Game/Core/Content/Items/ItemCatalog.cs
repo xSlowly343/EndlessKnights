@@ -89,6 +89,42 @@ namespace Game.Core.Content.Items
 
         public const int MaxEchoSets = 32;
 
+        public IReadOnlyList<ConsonanceDef> Consonances { get; private set; } = Array.Empty<ConsonanceDef>();
+
+        public SetDef? SetOf(string theme, ItemRarity rarity)
+        {
+            foreach (var set in Sets)
+            {
+                if (set.Rarity == rarity && set.Event == null && string.Equals(set.Theme, theme, StringComparison.Ordinal))
+                    return set;
+            }
+            return null;
+        }
+
+        private static List<ConsonanceDef> ReadConsonances(ContentNode node, List<SetDef> sets)
+        {
+            var consonances = new List<ConsonanceDef>();
+            foreach (var item in node.Items())
+            {
+                var armor = item.Field("armor").AsString();
+                var jewelry = item.Field("jewelry").AsString();
+                if (!sets.Exists(s => s.Theme == armor && !s.Jewelry))
+                    throw item.Field("armor").Error($"no armour line '{armor}'");
+                if (!sets.Exists(s => s.Theme == jewelry && s.Jewelry))
+                    throw item.Field("jewelry").Error($"no jewelry line '{jewelry}'");
+                consonances.Add(new ConsonanceDef(armor, jewelry, item.HasField("lines") ? ModifierReader.ReadList(item.Field("lines")) : Array.Empty<Modifier>())
+                {
+                    Fixed = item.HasField("fixed") ? ModifierReader.ReadList(item.Field("fixed")) : Array.Empty<Modifier>(),
+                    PerMuseumCollection = item.HasField("perMuseumCollection") ? ModifierReader.ReadList(item.Field("perMuseumCollection")) : Array.Empty<Modifier>(),
+                    Perks = ReadPerks(item) ?? (IReadOnlyList<PerkValue>)Array.Empty<PerkValue>(),
+                    PerkBoost = item.HasField("perkBoost") ? item.Field("perkBoost").AsNumber(0, 1) : 0,
+                    NightOffline = item.HasField("nightOffline") && item.Field("nightOffline").AsBool(),
+                    FateOptions = item.HasField("fateOptions") ? item.Field("fateOptions").AsInt(3, 4) : 0
+                });
+            }
+            return consonances;
+        }
+
         public IReadOnlyList<double> CollectionMorePerSet { get; private set; } = Array.Empty<double>();
 
         public double CollectionMore(ItemRarity rarity, int collected) =>
@@ -346,6 +382,7 @@ namespace Game.Core.Content.Items
             if (root.HasField("implicitPools"))
                 ReadImplicits(root.Field("implicitPools"), catalog);
             catalog.Uniques = ReadUniques(root.Field("uniques"), catalog);
+            catalog.Consonances = root.HasField("consonances") ? ReadConsonances(root.Field("consonances"), sets) : System.Array.Empty<ConsonanceDef>();
             return catalog;
         }
 
