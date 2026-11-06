@@ -3,6 +3,7 @@
   "activities": [
     { "id": "garden", "name": { "ru": "Сад", "en": "Garden" } },
     { "id": "alchemy", "name": { "ru": "Алхимия", "en": "Alchemy" } },
+    { "id": "fishing", "name": { "ru": "Рыбалка", "en": "Fishing" } },
     { "id": "meditation", "name": { "ru": "Созерцание", "en": "Meditation" } }
   ],
   "offlineGoldShare": 0.3,
