@@ -9,6 +9,9 @@ namespace Game.Core.Sim.Rift
         public int FarmKills { get; set; }
         public int BossFailsInARow { get; set; }
         public double BossBestFraction { get; set; }
+        public string Biome { get; set; } = string.Empty;
+        public string PreviousBiome { get; set; } = string.Empty;
+        public long BiomeSinceTick { get; set; }
 
         public static StageProgress Capture(GameState state) => new StageProgress
         {
@@ -18,7 +21,10 @@ namespace Game.Core.Sim.Rift
             Farming = state.Farming,
             FarmKills = state.FarmKills,
             BossFailsInARow = state.BossFailsInARow,
-            BossBestFraction = state.BossBestFraction
+            BossBestFraction = state.BossBestFraction,
+            Biome = state.Biome,
+            PreviousBiome = state.PreviousBiome,
+            BiomeSinceTick = state.BiomeSinceTick
         };
 
         public void Restore(GameState state)
@@ -30,6 +36,9 @@ namespace Game.Core.Sim.Rift
             state.FarmKills = FarmKills;
             state.BossFailsInARow = BossFailsInARow;
             state.BossBestFraction = BossBestFraction;
+            state.Biome = Biome;
+            state.PreviousBiome = PreviousBiome;
+            state.BiomeSinceTick = BiomeSinceTick;
             state.BossTicksLeft = 0;
             state.ClearQueue();
         }

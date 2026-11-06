@@ -7,6 +7,7 @@
     { "id": "mushroom_golem", "biome": "green_hills", "type": "normal", "hpMultiplier": 0.9, "goldMultiplier": 0.9, "sprite": "enemy_mushroom_golem" },
     { "id": "overgrown_wolf", "biome": "green_hills", "type": "normal", "hpMultiplier": 0.8, "goldMultiplier": 0.9, "sprite": "enemy_overgrown_wolf" },
     { "id": "giant_slime", "biome": "green_hills", "type": "normal", "hpMultiplier": 1.1, "goldMultiplier": 1.0, "sprite": "enemy_giant_slime" },
+    { "id": "pumpkinhead", "biome": "green_hills", "type": "normal", "hpMultiplier": 1.0, "goldMultiplier": 1.1, "sprite": "enemy_pumpkinhead" },
     { "id": "boar_king", "biome": "green_hills", "type": "boss", "hpMultiplier": 1.0, "goldMultiplier": 1.0, "sprite": "boss_boar_king" },
     {
       "id": "ancient_ent",

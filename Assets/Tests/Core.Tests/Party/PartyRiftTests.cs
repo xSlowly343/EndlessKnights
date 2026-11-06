@@ -183,10 +183,9 @@ namespace Game.Core.Tests.Party
             var rig = new Rig(40, 40);
             rig.Run(5);
             rig.Members[0].Client.ProposeWorld(PartyWorld.Rift, Inside);
-            rig.Run(9);
-            var homeStages = new[] { rig.Members[0].Loop.State.Stage, rig.Members[1].Loop.State.Stage };
-            rig.Run(3);
+            rig.Run(12);
             Assert.That(rig.Members[1].Loop.Rift.Inside, Is.True);
+            var homeStages = new[] { rig.Members[0].Loop.State.Rift.OtherWorld!.Stage, rig.Members[1].Loop.State.Rift.OtherWorld!.Stage };
             var rewards = rig.Members[1].Client.PartyRewards;
             var kills = rig.Host.Kills;
             var riftEnd = rig.RiftEnd;

@@ -10,5 +10,6 @@
       "firstKill": { "unique": true, "modifiers": [{ "stat": "damage", "kind": "more", "value": 1 }, { "stat": "gold", "kind": "increased", "value": 0.5, "tags": ["Gold"] }, { "stat": "echoGain", "kind": "increased", "value": 0.1 }] } }],
   "biomeLength": 50,
   "biomes": ["green_hills", "sand_ruins", "ice_peak", "volcanic_forge", "sky_islands"],
-  "heart": { "biome": "rift_heart", "fromStage": 20000 }
+  "heart": { "biome": "rift_heart", "fromStage": 20000 },
+  "rotation": { "minutes": 5 }
 }
