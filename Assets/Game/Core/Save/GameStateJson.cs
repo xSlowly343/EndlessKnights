@@ -63,7 +63,9 @@ namespace Game.Core.Save
                     ("bossBestFraction", JsonValue.Of(state.BossBestFraction)),
                     ("biome", OptionalText(state.Biome)),
                     ("previousBiome", OptionalText(state.PreviousBiome)),
-                    ("biomeSinceTick", JsonValue.Of(state.BiomeSinceTick)))),
+                    ("biomeSinceTick", JsonValue.Of(state.BiomeSinceTick)),
+                    ("biomeLeft", JsonValue.Array(LongItems(state.BiomeLeftTicks))),
+                    ("biomeFresh", JsonValue.Of(state.BiomeFresh)))),
                 ("enemy", Object(
                     ("id", state.Enemy == null ? JsonValue.Null() : JsonValue.Of(state.Enemy.Id)),
                     ("type", JsonValue.Of(SaveValues.NameOf(state.EnemyType, EnemyTypes))),
@@ -368,6 +370,7 @@ namespace Game.Core.Save
                 foreach (var key in node.Field("setCollection").Items())
                     state.SetCollection.Add(key.AsString());
             }
+            ReadBiomeLeft(node.Field("stage"), state);
             if (node.HasField("uniquesFound"))
             {
                 foreach (var key in node.Field("uniquesFound").Items())
@@ -1251,6 +1254,28 @@ namespace Game.Core.Save
 
         private static SetDef? ReadSet(ContentNode node, ItemCatalog items, ItemSlot slot) =>
             node.HasField("set") && !node.Field("set").IsNull && items.TryGetSet(node.Field("set").AsString(), out var set) && set.Has(slot) ? set : null;
+
+        private static JsonValue[] LongItems(long[] values)
+        {
+            var items = new JsonValue[values.Length];
+            for (var i = 0; i < values.Length; i++)
+                items[i] = JsonValue.Of(values[i]);
+            return items;
+        }
+
+        private static void ReadBiomeLeft(ContentNode stage, GameState state)
+        {
+            state.BiomeFresh = stage.HasField("biomeFresh") && stage.Field("biomeFresh").AsBool();
+            if (!stage.HasField("biomeLeft"))
+                return;
+            var i = 0;
+            foreach (var item in stage.Field("biomeLeft").Items())
+            {
+                if (i < state.BiomeLeftTicks.Length)
+                    state.BiomeLeftTicks[i] = item.AsLong(long.MinValue);
+                i++;
+            }
+        }
 
         private static JsonValue[] WriteCollection(HashSet<string> collection)
         {

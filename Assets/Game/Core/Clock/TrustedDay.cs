@@ -4,28 +4,34 @@ namespace Game.Core.Clock
     {
         private readonly long _anchorLocalMs;
         private readonly ClockReading _anchor;
+        private readonly long _utcOffsetMs;
 
-        private TrustedDay(long anchorLocalMs, ClockReading anchor)
+        private TrustedDay(long anchorLocalMs, ClockReading anchor, long utcOffsetMs)
         {
             _anchorLocalMs = anchorLocalMs;
             _anchor = anchor;
+            _utcOffsetMs = utcOffsetMs;
         }
 
         public static TrustedDay Start(ClockStamp? saved, in ClockReading now, long utcOffsetMs)
         {
             if (saved == null)
-                return new TrustedDay(now.WallUnixMs + utcOffsetMs, now);
+                return new TrustedDay(now.WallUnixMs + utcOffsetMs, now, utcOffsetMs);
             var stamp = saved.Value;
             var elapsed = TrustedElapsed.Between(stamp, now);
             var trustedWall = stamp.Reading.WallUnixMs + (long)System.Math.Round(elapsed.Seconds * 1000);
-            return new TrustedDay(trustedWall + utcOffsetMs, now);
+            return new TrustedDay(trustedWall + utcOffsetMs, now, utcOffsetMs);
         }
 
-        public long Today(in ClockReading now)
+        public long Today(in ClockReading now) => LocalDay.FromLocalUnixMs(LocalMs(now));
+
+        public long UtcMs(in ClockReading now) => LocalMs(now) - _utcOffsetMs;
+
+        private long LocalMs(in ClockReading now)
         {
             var sameBoot = now.BootId == _anchor.BootId && now.MonotonicMs >= _anchor.MonotonicMs;
             var since = sameBoot ? now.MonotonicMs - _anchor.MonotonicMs : System.Math.Max(0, now.WallUnixMs - _anchor.WallUnixMs);
-            return LocalDay.FromLocalUnixMs(_anchorLocalMs + since);
+            return _anchorLocalMs + since;
         }
     }
 }

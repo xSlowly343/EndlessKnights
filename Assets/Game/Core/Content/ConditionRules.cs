@@ -32,6 +32,20 @@ namespace Game.Core.Content
         public double AfterGestureSeconds { get; private set; } = 3;
         public double MouseMovingSeconds { get; private set; } = 0.5;
         public double ShareWindowSeconds { get; private set; } = 3600;
+        public int DayStartHour { get; private set; } = 6;
+        public int NightStartHour { get; private set; } = 18;
+        public int ServerUtcOffsetHours { get; private set; }
+        public double LeastInputSeconds { get; private set; } = 60;
+
+        public bool IsDay(int hour) => DayStartHour <= NightStartHour
+            ? hour >= DayStartHour && hour < NightStartHour
+            : hour >= DayStartHour || hour < NightStartHour;
+
+        public int ServerHour(long utcUnixMs)
+        {
+            var hours = System.Math.Floor(utcUnixMs / 3_600_000.0) + ServerUtcOffsetHours;
+            return (int)(((hours % 24) + 24) % 24);
+        }
 
         public static ConditionRules Read(ContentNode node)
         {
@@ -56,7 +70,11 @@ namespace Game.Core.Content
                 AfterFastKillSeconds = node.HasField("afterFastKillSeconds") ? node.Field("afterFastKillSeconds").AsNumber(0, 600) : 3,
                 AfterGestureSeconds = node.HasField("afterGestureSeconds") ? node.Field("afterGestureSeconds").AsNumber(0, 600) : 3,
                 MouseMovingSeconds = node.HasField("mouseMovingSeconds") ? node.Field("mouseMovingSeconds").AsNumber(0.1, 60) : 0.5,
-                ShareWindowSeconds = node.HasField("shareWindowMinutes") ? node.Field("shareWindowMinutes").AsNumber(1, 1440) * 60 : 3600
+                ShareWindowSeconds = node.HasField("shareWindowMinutes") ? node.Field("shareWindowMinutes").AsNumber(1, 1440) * 60 : 3600,
+                DayStartHour = node.HasField("dayNight") ? node.Field("dayNight").Field("dayStartHour").AsInt(0, 23) : 6,
+                NightStartHour = node.HasField("dayNight") ? node.Field("dayNight").Field("nightStartHour").AsInt(0, 23) : 18,
+                ServerUtcOffsetHours = node.HasField("dayNight") ? node.Field("dayNight").Field("serverUtcOffsetHours").AsInt(-12, 14) : 0,
+                LeastInputSeconds = node.HasField("leastInputSeconds") ? node.Field("leastInputSeconds").AsNumber(1, 3600) : 60
             };
         }
     }

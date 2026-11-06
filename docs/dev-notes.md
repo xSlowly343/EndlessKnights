@@ -847,6 +847,13 @@
 ### Условие `inRift` (15.12, часть 3)
 - `ModifierCondition.InRift` включается, когда `Rift.Inside` или `Dungeons.Inside`. `ConditionSystem.Tick` маскирует его перед `NoteShares`: доля времени в Разломе не попадает в офлайн-расчёт, иначе бонусы «Глубин Разлома» протекали бы в офлайн-доход после выхода из Разлома.
 
+### Условия мира для сетов (15.12, часть 4а)
+- Час сервера: `BattleDriver` каждый кадр зовёт `GameLoop.SetServerTime(TrustedDay.UtcMs(...))`; `State.ServerHour` не сохраняется, до первого вызова −1 и ни день, ни ночь не включены. Когда сервер начнёт присылать своё время при входе, подставить его в тот же вызов.
+- `ConditionShares` для `Day` и `Night` принудительно 0,5 (офлайн длится часами, доля ночи — половина суток), `InRift` маскируется.
+- Наименее используемый ввод: `State.InputActivity[4]` — сглаживание с окном 60 с; не сохраняется (после загрузки минуту копится заново). Клики входят в `Hits` (`InputRules.MouseButtonHits`), поэтому «клавиши» = `Hits > ButtonPresses`, счётчик в `ConditionSystem._ticksSinceKeys`.
+- Ставка дня: `GameLoop.FateOf(startedUnixMs, day)` — перемешивание SplitMix, `State.Fate` выставляет `SetLocalDay`.
+- `BiomeRotation.TryTurn` пишет `BiomeLeftTicks[i]` ушедшего биома и `BiomeFresh` для нового.
+
 ## Presentation
 - 14д.35 (05.11.2026), текст ветки: `BranchTexts.Summary(branch, skillEffect)` сравнивает эффект ветки с эффектом скилла (`StrikeEffect`, `FlurryEffect`, резерв `AuraEffect`) и пишет только изменившиеся поля, ключи `branch.rule.*` в `strings.json`; без второго аргумента или для полей механик классов — прежнее «меняет эффект». Новое общее поле удара — добавить строку в `StrikeRules` и ключ, тест `EveryCommonStrikeRuleOfABranchIsSpelledOut` держит список общих полей.
 - 14е.3 (05.11.2026), модель счётчиков особенностей `Game.Core.Ui.TraitHud`: таблица «особенность → 1–3 строки» (54 особенности), у строки ключ, вид (`Count` — число из максимума, `Bar` — шкала, `Timer` — секунды, `Flag` — вкл/выкл) и два чтения `(GameState, CombatSystem, ClassRules) → double`: значение и максимум. Пороги и потолки берутся у механик (`CombatSystem.<Персонаж>`: `HushHits`, `CrystalMax`, `RunesMax`…), то есть уже со статами дерева, вещей и развилок; где у механики свойства нет — из правил класса (`ClassRules`). `TraitHud.Fill(loop, TraitHudValue[])` пишет в готовый массив и не аллоцирует (тест на 1000 вызовов), подписи — `strings.json` → `trait.hud.<ключ>`. У `Count` значение может быть выше максимума, если максимум — порог (Duelist: ударов в секунду против порога фантома); `TraitHudValue.Fill` всегда 0…1. Срок Cartomancer («Предсказание») — таймер без максимума. Виджет на полоске — 14е.4 на ПК.
