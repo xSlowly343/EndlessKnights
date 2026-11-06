@@ -37,7 +37,9 @@ namespace Game.Core.Tests.Sim
             if (name == WeaponCatalog.FileName)
                 return Regex.Replace(json, "\"innate\": \\[.*\\]", "\"innate\": []");
             if (name == Game.Core.Party.PartyRules.FileName)
-                return System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"share\": [0-9.]+,", "\"pierce\": { \"share\": 0,");
+                return System.Text.RegularExpressions.Regex.Replace(
+                    System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"share\": [0-9.]+,", "\"pierce\": { \"share\": 0,"),
+                    "\"hpPerExtraPlayer\": [0-9.]+,", "\"hpPerExtraPlayer\": 1.0,");
             if (name == CombatRules.FileName)
                 return System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"baseShare\": [0-9.]+ \\}", "\"pierce\": { \"baseShare\": 0 }");
             return json;

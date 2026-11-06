@@ -1,7 +1,7 @@
 {
   "version": 1,
   "maxMembers": 4,
-  "hpPerExtraPlayer": 1.0,
+  "hpPerExtraPlayer": 0.8,
   "presence": { "restAfterSeconds": 180, "disconnectGraceSeconds": 30, "rejoinWindowSeconds": 300, "silenceSeconds": 6 },
   "packets": { "damageBatchSeconds": 0.5, "stateBroadcastSeconds": 0.5, "presenceSeconds": 5, "maxMessagesPerSecond": 40 },
   "lateDamageSeconds": 1.0,
@@ -10,7 +10,7 @@
   "worldSwitchSeconds": 10,
   "ghost": { "power": 0.25, "fullHours": 4, "minActivity": 0.25, "uploadMinutes": 10, "freshHours": 48, "pool": 200 },
   "contribution": { "minShare": 0.1, "activeInputSeconds": 30, "restBankMinutes": 60, "idlePortionShare": 1.5, "typingReserveShare": 0.5, "allyCreditMax": 0.25 },
-  "caps": { "barsPerSecond": 3, "burstBars": 1, "stageBarsShare": 0.1, "hitBurstSeconds": 2, "flagsBeforeReport": 20 },
+  "caps": { "barsPerSecond": 6, "burstBars": 2, "stageBarsShare": 0.1, "hitBurstSeconds": 2, "flagsBeforeReport": 20 },
   "pierce": { "share": 0.5, "maxKillsPerTick": 16 },
   "timer": { "minBossRate": 0.25, "repeatMaxSeconds": 7, "repeatCooldownSeconds": 20, "sharedRate": 0.5, "sharedFighters": 2, "loopShareMax": 2 },
   "help": { "seconds": 30, "answerSeconds": 60, "callCooldownSeconds": 120, "defaultAccept": "friends" },

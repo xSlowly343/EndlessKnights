@@ -14,7 +14,7 @@ namespace Game.Core.Tests.Party
 
         private sealed class Player
         {
-            public Player(LoopbackNetwork network, ulong id, long stage, double hitsPerEnemy = 10)
+            public Player(LoopbackNetwork network, ulong id, long stage, double hitsPerEnemy = 10, PartyRules? rules = null)
             {
                 Id = id;
                 Input = new FakeInputSource();
@@ -22,7 +22,7 @@ namespace Game.Core.Tests.Party
                 var hp = TestWorld.Data.Stages.EnemyHp(stage).ToDouble();
                 hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, hp / (hitsPerEnemy * TestWorld.Data.Combat.StrikeDamage) - 1));
                 Loop = TestWorld.Loop(Input, new GameState { Stage = stage, HighestStage = stage, RecordStage = stage }, hero);
-                Client = new PartyClient(Loop, network.Connect(id), HostId, TestWorld.Data.Party);
+                Client = new PartyClient(Loop, network.Connect(id), HostId, rules ?? TestWorld.Data.Party);
             }
 
             public ulong Id { get; }
@@ -56,14 +56,18 @@ namespace Game.Core.Tests.Party
             {
             }
 
-            public Rig(double loss, double hitsPerEnemy, params long[] stages)
+            public Rig(double loss, double hitsPerEnemy, params long[] stages) : this(loss, hitsPerEnemy, stages, TestWorld.Data.Party)
+            {
+            }
+
+            public Rig(double loss, double hitsPerEnemy, long[] stages, PartyRules rules)
             {
                 Network = new LoopbackNetwork(5, 20, 120, loss, 4096);
-                Host = new PartyHost(new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 11), Network.Connect(HostId), TestWorld.Data.Party);
+                Host = new PartyHost(new PartyEncounter(rules, TestWorld.Data.Stages, 11), Network.Connect(HostId), rules);
                 Players = new Player[stages.Length];
                 for (var i = 0; i < stages.Length; i++)
                 {
-                    Players[i] = new Player(Network, 10UL + (ulong)i, stages[i], hitsPerEnemy);
+                    Players[i] = new Player(Network, 10UL + (ulong)i, stages[i], hitsPerEnemy, rules);
                     Players[i].Client.Join();
                 }
             }
@@ -110,9 +114,9 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void APartyOfStrongHeroesKillsAlmostAsFastAsOneHeroAlone()
+        public void APartyOfStrongHeroesKillsFasterThanOneHeroAlone()
         {
-            var rig = new Rig(loss: 0, hitsPerEnemy: 2, stages: new long[] { 5, 5 });
+            var rig = new Rig(loss: 0, hitsPerEnemy: 2, stages: new long[] { 5, 5 }, rules: TestWorld.WithPierce.Party);
             rig.Run(60);
             var solo = new Player(rig.Network, 99, 5, 2);
             var soloKills = 0;
@@ -123,7 +127,7 @@ namespace Game.Core.Tests.Party
                 soloKills += solo.Loop.Events.CountOf(GameEventKind.EnemyKilled);
                 solo.Loop.Events.Clear();
             }
-            Assert.That(rig.Host.Kills, Is.GreaterThan(soloKills * 0.8), "the damage goes out as soon as the enemy falls and the allies' pace is predicted");
+            Assert.That(rig.Host.Kills, Is.GreaterThan(soloKills), "with the real party rules two strong heroes beat one: damage goes out as the enemy falls and late damage is never lost");
         }
 
         [Test]

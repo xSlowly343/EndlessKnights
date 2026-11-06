@@ -591,7 +591,7 @@ class PartyEncounter {
     }
 
     private isLate(enemyId: number): boolean {
-        return enemyId !== 0 && enemyId === this.previousEnemyId && this.tick - this.previousKilledTick <= partyTicks(this.rules.lateDamageSeconds);
+        return enemyId !== 0 && this.previousEnemyId !== 0 && enemyId <= this.previousEnemyId && this.tick - this.previousKilledTick <= partyTicks(this.rules.lateDamageSeconds);
     }
 
     private kindRatio(from: PartyEnemyKind, to: PartyEnemyKind): number {
