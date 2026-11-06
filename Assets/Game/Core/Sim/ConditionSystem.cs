@@ -42,11 +42,23 @@ namespace Game.Core.Sim
         public void Tick()
         {
             var conditions = Current();
+            NoteShares(conditions);
             var auraStrength = _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
             _hero.SetConditions(conditions);
             if (_hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura) != auraStrength)
                 _skills.RefreshAuraStrength();
             GrantOnRisingAllyMarks(conditions);
+        }
+
+        private void NoteShares(ulong conditions)
+        {
+            var shares = _state.ConditionShares;
+            var step = 1.0 / System.Math.Max(1, _combat.Conditions.ShareWindowSeconds * GameLoop.TicksPerSecond);
+            for (var i = 0; i < shares.Length; i++)
+            {
+                var on = (conditions >> i & 1UL) != 0 ? 1.0 : 0.0;
+                shares[i] += (on - shares[i]) * step;
+            }
         }
 
         private void GrantOnRisingAllyMarks(ulong conditions)
