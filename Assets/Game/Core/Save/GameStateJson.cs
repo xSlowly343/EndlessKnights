@@ -96,6 +96,7 @@ namespace Game.Core.Save
                 ("peaceful", WritePeaceful(state.Peaceful)),
                 ("camp", WriteCamp(state.Camp)),
                 ("garden", WriteGarden(state.Garden)),
+                ("alchemy", WriteAlchemy(state.Alchemy)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -276,6 +277,8 @@ namespace Game.Core.Save
                 ReadBestiary(node.Field("bestiary"), state.Bestiary);
             if (node.HasField("cosmetics"))
                 ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
+            if (node.HasField("alchemy"))
+                ReadAlchemy(node.Field("alchemy"), state.Alchemy);
             if (node.HasField("garden"))
                 ReadGarden(node.Field("garden"), state.Garden);
             if (node.HasField("camp"))
@@ -520,6 +523,35 @@ namespace Game.Core.Save
                 cosmetics.Owned.Add(item.AsString());
             foreach (var item in node.Field("equipped").Items())
                 cosmetics.Equipped[item.Field("key").AsString()] = item.Field("id").AsString();
+        }
+
+        private static JsonValue WritePotion(Potion? potion) =>
+            potion == null ? JsonValue.Null() : Object(("recipe", JsonValue.Of(potion.Recipe)), ("fine", JsonValue.Of(potion.Fine)), ("unknown", JsonValue.Of(potion.Unknown)));
+
+        private static Potion? ReadPotion(ContentNode node) =>
+            node.IsNull ? null : new Potion { Recipe = node.Field("recipe").AsString(), Fine = node.Field("fine").AsBool(), Unknown = node.Field("unknown").AsBool() };
+
+        private static JsonValue WriteAlchemy(AlchemyState alchemy)
+        {
+            var known = new List<string>(alchemy.Known);
+            known.Sort(System.StringComparer.Ordinal);
+            var potions = new JsonValue[alchemy.Potions.Count];
+            for (var i = 0; i < potions.Length; i++)
+                potions[i] = WritePotion(alchemy.Potions[i]);
+            return Object(("known", WriteIdList(known)), ("brewing", WritePotion(alchemy.Brewing)), ("stirs", JsonValue.Of(alchemy.Stirs)),
+                ("potions", JsonValue.Array(potions)), ("active", WritePotion(alchemy.Active)), ("activeTicksLeft", JsonValue.Of(alchemy.ActiveTicksLeft)));
+        }
+
+        private static void ReadAlchemy(ContentNode node, AlchemyState alchemy)
+        {
+            foreach (var item in node.Field("known").Items())
+                alchemy.Known.Add(item.AsString());
+            alchemy.Brewing = ReadPotion(node.Field("brewing"));
+            alchemy.Stirs = node.Field("stirs").AsNumber(0, double.MaxValue);
+            foreach (var item in node.Field("potions").Items())
+                alchemy.Potions.Add(ReadPotion(item)!);
+            alchemy.Active = ReadPotion(node.Field("active"));
+            alchemy.ActiveTicksLeft = node.Field("activeTicksLeft").AsLong(0);
         }
 
         private static JsonValue WriteGarden(GardenState garden)
