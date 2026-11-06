@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "maxEach": 0.02,
+  "maxTotal": 0.05,
+  "shelf": 5,
+  "collections": [
+    { "id": "fish_hills", "name": { "ru": "Рыбы Зелёных холмов", "en": "Fish of the Green Hills" }, "kind": "fish", "items": ["fish_hills_roach", "fish_hills_carp", "fish_hills_pike"], "trophy": "trophy_hills_pike", "bonus": [{ "stat": "gold", "kind": "increased", "value": 0.005, "tags": ["Gold"] }] },
+    { "id": "fish_ruins", "name": { "ru": "Рыбы Песчаных руин", "en": "Fish of the Sand Ruins" }, "kind": "fish", "items": ["fish_ruins_sandeel", "fish_ruins_oasis_perch", "fish_ruins_sphinx_ray"], "trophy": "trophy_sphinx_ray", "bonus": [{ "stat": "gemExperience", "kind": "increased", "value": 0.005 }] },
+    { "id": "fish_ice", "name": { "ru": "Рыбы Ледяного пика", "en": "Fish of the Ice Peak" }, "kind": "fish", "items": ["fish_ice_crucian", "fish_ice_char", "fish_ice_mammoth_trout"], "trophy": "trophy_mammoth_trout", "bonus": [{ "stat": "focusGain", "kind": "increased", "value": 0.005 }] },
+    { "id": "fish_forge", "name": { "ru": "Рыбы Вулканической кузни", "en": "Fish of the Volcanic Forge" }, "kind": "fish", "items": ["fish_forge_ember_minnow", "fish_forge_slag_cod", "fish_forge_magma_eel"], "trophy": "trophy_magma_eel", "bonus": [{ "stat": "damage", "kind": "increased", "value": 0.005 }] },
+    { "id": "fish_sky", "name": { "ru": "Рыбы Небесных островов", "en": "Fish of the Sky Islands" }, "kind": "fish", "items": ["fish_sky_cloud_dace", "fish_sky_wind_salmon", "fish_sky_storm_marlin"], "trophy": "trophy_storm_marlin", "bonus": [{ "stat": "resourceGain", "kind": "increased", "value": 0.005 }] },
+    { "id": "legends", "name": { "ru": "Легенды водоёмов", "en": "Legends of the Waters" }, "kind": "fish", "items": ["legend_hills_boar_catfish", "legend_ruins_tomb_carp", "legend_ice_frost_sturgeon", "legend_forge_anvil_grouper", "legend_sky_dragon_koi"], "trophy": "trophy_dragon_koi", "title": { "ru": "Легенда водоёмов", "en": "Legend of the Waters" }, "bonus": [{ "stat": "damage", "kind": "increased", "value": 0.005 }] },
+    { "id": "herbarium", "name": { "ru": "Гербарий", "en": "Herbarium" }, "kind": "plants", "items": ["knockbloom", "windwort", "clickweed", "hushbell", "stormfern", "moonmoss"], "trophy": "trophy_herbarium", "title": { "ru": "Садовник", "en": "Gardener" }, "bonus": [{ "stat": "gold", "kind": "increased", "value": 0.005, "tags": ["Gold"] }] },
+    { "id": "cookbook", "name": { "ru": "Книга блюд", "en": "Cookbook" }, "kind": "dishes", "items": ["fish_soup", "carp_pie", "herb_balls", "eel_skewers", "frost_crucian", "char_feast", "ember_stew", "cloud_salad"], "trophy": "trophy_golden_ladle", "title": { "ru": "Повар Кромки", "en": "Cook of the Edge" }, "bonus": [{ "stat": "focusGain", "kind": "increased", "value": 0.005 }] },
+    { "id": "alchemy_book", "name": { "ru": "Книга зелий", "en": "Book of Potions" }, "kind": "recipes", "items": ["might", "fortune", "patience", "vigor", "storm", "moonlight"], "trophy": "trophy_crystal_flask", "title": { "ru": "Алхимик", "en": "Alchemist" }, "bonus": [{ "stat": "resourceGain", "kind": "increased", "value": 0.005 }] },
+    { "id": "travel_finds", "name": { "ru": "Находки странствий", "en": "Travel Finds" }, "kind": "finds", "items": ["find_boar_tusk", "find_sphinx_tablet", "find_mammoth_hair", "find_smith_rivet", "find_dragon_scale"], "trophy": "trophy_travel_chest", "title": { "ru": "Странник", "en": "Wanderer" }, "bonus": [{ "stat": "gemExperience", "kind": "increased", "value": 0.005 }] }
+  ]
+}

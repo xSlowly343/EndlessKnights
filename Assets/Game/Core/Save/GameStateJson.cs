@@ -101,6 +101,7 @@ namespace Game.Core.Save
                 ("town", WriteTown(state.Town)),
                 ("fishing", WriteFishing(state.Fishing)),
                 ("cooking", WriteCooking(state.Cooking)),
+                ("museum", WriteMuseum(state.Museum)),
                 ("forge", Object(("target", JsonValue.Of(state.Forge.Target.ToString())), ("slot", JsonValue.Of(state.Forge.Slot.ToString())), ("hammers", JsonValue.Of(state.Forge.Hammers)),
                     ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)), ("salvageOre", JsonValue.Of(state.Forge.SalvageOre)))),
                 ("slates", WriteSlates(state.Slates)),
@@ -293,6 +294,15 @@ namespace Game.Core.Save
                 ReadFishing(node.Field("fishing"), state.Fishing);
             if (node.HasField("cooking"))
                 ReadCooking(node.Field("cooking"), state.Cooking);
+            if (node.HasField("museum"))
+            {
+                var museum = node.Field("museum");
+                foreach (var item in museum.Field("done").Items())
+                    state.Museum.Done.Add(item.AsString());
+                foreach (var item in museum.Field("shelf").Items())
+                    state.Museum.Shelf.Add(item.AsString());
+                state.Museum.Title = ReadOptionalText(museum, "title");
+            }
             if (node.HasField("forge"))
             {
                 var forge = node.Field("forge");
@@ -657,6 +667,13 @@ namespace Game.Core.Save
             foreach (var item in node.Field("reputation").Items())
                 town.Reputation[item.Field("guild").AsString()] = item.Field("value").AsLong(0);
             town.Done = node.Field("done").AsLong(0);
+        }
+
+        private static JsonValue WriteMuseum(MuseumState museum)
+        {
+            var done = new List<string>(museum.Done);
+            done.Sort(System.StringComparer.Ordinal);
+            return Object(("done", WriteIdList(done)), ("shelf", WriteIdList(museum.Shelf)), ("title", OptionalText(museum.Title)));
         }
 
         private static JsonValue WriteCooking(CookingState cooking)

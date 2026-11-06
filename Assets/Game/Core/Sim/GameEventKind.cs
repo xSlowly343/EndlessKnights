@@ -48,6 +48,7 @@ namespace Game.Core.Sim
         DishCooked,
         MealEnded,
         ItemSmelted,
-        ItemTempered
+        ItemTempered,
+        CollectionCompleted
     }
 }
