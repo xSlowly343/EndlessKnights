@@ -56,6 +56,10 @@ namespace Game.Core.Sim
         public int ServerHour { get; set; } = -1;
         public double[] InputActivity { get; } = new double[4];
         public int Fate { get; set; } = -1;
+        public double WornTemperPercent { get; set; }
+        public bool AllWornTempered { get; set; }
+        public int StageRush { get; set; }
+        public uint[] AllyEchoMasks { get; } = new uint[4];
         public long HighestStage { get; set; } = 1;
         public long RecordStage { get; set; } = 1;
         public int HeroLevel { get; set; } = 1;

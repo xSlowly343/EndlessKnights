@@ -22,6 +22,19 @@ namespace Game.Core.Party.Wire
         public uint RestBank2;
         public uint RestBank3;
         public byte Guests;
+        public uint Echo0;
+        public uint Echo1;
+        public uint Echo2;
+        public uint Echo3;
+
+        public uint EchoLines(int slot) => slot switch
+        {
+            0 => Echo0,
+            1 => Echo1,
+            2 => Echo2,
+            3 => Echo3,
+            _ => 0
+        };
 
         public bool Guest(int slot) => slot >= 0 && slot < PartyRules.MaxSlots && (Guests & (1 << slot)) != 0;
 
@@ -91,6 +104,10 @@ namespace Game.Core.Party.Wire
             writer.UInt(RestBank2);
             writer.UInt(RestBank3);
             writer.Byte(Guests);
+            writer.UInt(Echo0);
+            writer.UInt(Echo1);
+            writer.UInt(Echo2);
+            writer.UInt(Echo3);
         }
 
         public static RosterMessage Read(ref PartyReader reader) => new RosterMessage
@@ -112,7 +129,11 @@ namespace Game.Core.Party.Wire
             RestBank1 = reader.UInt(),
             RestBank2 = reader.UInt(),
             RestBank3 = reader.UInt(),
-            Guests = reader.Byte()
+            Guests = reader.Byte(),
+            Echo0 = reader.UInt(),
+            Echo1 = reader.UInt(),
+            Echo2 = reader.UInt(),
+            Echo3 = reader.UInt()
         };
 
         public static RosterMessage Of(PartyEncounter encounter, uint version)
@@ -126,6 +147,7 @@ namespace Game.Core.Party.Wire
                 if (encounter.Member(slot).Joined && encounter.Member(slot).Guest)
                     guests |= 1 << slot;
             }
+            uint Echo(int slot) => encounter.Member(slot).Joined ? encounter.Member(slot).EchoLines : 0;
             uint Bank(int slot) => encounter.Member(slot).Joined ? (uint)(encounter.Member(slot).RestBankTicks / GameLoop.TicksPerSecond) : 0;
             return new RosterMessage
             {
@@ -146,7 +168,11 @@ namespace Game.Core.Party.Wire
                 RestBank1 = Bank(1),
                 RestBank2 = Bank(2),
                 RestBank3 = Bank(3),
-                Guests = (byte)guests
+                Guests = (byte)guests,
+                Echo0 = Echo(0),
+                Echo1 = Echo(1),
+                Echo2 = Echo(2),
+                Echo3 = Echo(3)
             };
         }
     }

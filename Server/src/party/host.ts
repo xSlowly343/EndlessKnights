@@ -133,6 +133,10 @@ class PartyHost {
                     this.encounter.setHeroClass(slot, hello.heroClass);
                     this.rosterChanged = true;
                 }
+                if (hello && this.encounter.members[slot].echoLines !== hello.echoLines) {
+                    this.encounter.setEchoLines(slot, hello.echoLines);
+                    this.rosterChanged = true;
+                }
                 break;
             }
             case PartyMessageKind.DamageBatch: {

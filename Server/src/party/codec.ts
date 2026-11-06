@@ -104,7 +104,7 @@ class PartyReader {
     }
 }
 
-interface HelloMessage { heroClass: number; stage: number; sharePerSecondCap: number; }
+interface HelloMessage { heroClass: number; stage: number; sharePerSecondCap: number; echoLines: number; }
 interface DamageBatchMessage { sequence: number; enemyId: number; keys: number; mouse: number; skills: number; dot: number; summons: number; hits: number; crits: number; }
 interface CastEffectMessage { effectId: number; onEnemy: boolean; strength: number; seconds: number; timerSlow: number; repeatSeconds: number; weakenEnemies: number; weakenShare: number; weakenGold: number; end: boolean; }
 interface PresenceMessage { presence: PartyPresence; stage: number; resource: number; contribution: number; }
@@ -127,7 +127,7 @@ function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
 
 function partyDecodeHello(data: ArrayBuffer): HelloMessage | null {
     const r = partyOpen(data, PartyMessageKind.Hello);
-    const message = { heroClass: r.byte(), stage: r.long(), sharePerSecondCap: r.double() };
+    const message = { heroClass: r.byte(), stage: r.long(), sharePerSecondCap: r.double(), echoLines: r.uint() };
     return r.complete ? message : null;
 }
 
@@ -333,5 +333,7 @@ function partyEncodeRoster(encounter: PartyEncounter, version: number, playerNum
         if (encounter.members[slot].joined && encounter.members[slot].guest)
             guests |= 1 << slot;
     w.byte(guests);
+    for (let slot = 0; slot < PartyMaxSlots; slot++)
+        w.uint(encounter.members[slot].joined ? encounter.members[slot].echoLines : 0);
     return w.bytes();
 }

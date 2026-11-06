@@ -173,7 +173,7 @@ namespace Game.Core.Sim
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
-            _conditions = new ConditionSystem(state, hero, _combat, _skills, _focus) { Stages = data.Stages };
+            _conditions = new ConditionSystem(state, hero, _combat, _skills, _focus) { Stages = data.Stages, Forge = data.Forge };
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates };
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);
@@ -602,6 +602,17 @@ namespace Game.Core.Sim
                 _castRequests |= 1UL << slotIndex;
         }
 
+        private int _museumDone = -1;
+
+        private void RebuildOnMuseum()
+        {
+            var done = State.Museum.Done.Count;
+            if (done == _museumDone)
+                return;
+            _museumDone = done;
+            _gear.Rebuild();
+        }
+
         public void SetServerTime(long utcUnixMs) => State.ServerHour = _data.Combat.Conditions.ServerHour(utcUnixMs);
 
         public static int FateOf(long startedUnixMs, long day)
@@ -830,6 +841,7 @@ namespace Game.Core.Sim
             _combat.UseRules(data.Combat);
             _stage.UseData(data.Stages, data.Enemies);
             _conditions.Stages = data.Stages;
+            _conditions.Forge = data.Forge;
             _combat.Dreamcatcher.UseEnemies(data.Enemies);
             _loot.UseData(data.Stages);
             _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
@@ -932,6 +944,7 @@ namespace Game.Core.Sim
             _cooking.Tick();
             _forge.Tick();
             _museum.Tick();
+            RebuildOnMuseum();
             if (_peaceful.InCamp)
             {
                 CampTick(firstEvent);

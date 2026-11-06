@@ -82,7 +82,8 @@ namespace Game.Core.Save
                 ("prestige", Object(
                     ("echo", SaveValues.Of(state.Echo)),
                     ("echoEarned", SaveValues.Of(state.EchoEarned)),
-                    ("count", JsonValue.Of(state.Prestiges)))),
+                    ("count", JsonValue.Of(state.Prestiges)),
+                    ("stageRush", JsonValue.Of(state.StageRush)))),
                 ("artifacts", JsonValue.Array(WriteArtifacts(state.Artifacts))),
                 ("rift", WriteRift(state.Rift)),
                 ("weapons", WriteWeapons(state.Weapons)),
@@ -215,6 +216,7 @@ namespace Game.Core.Save
                 Echo = SaveValues.ReadBigNumber(node.Field("prestige").Field("echo")),
                 EchoEarned = SaveValues.ReadBigNumber(node.Field("prestige").Field("echoEarned")),
                 Prestiges = node.Field("prestige").Field("count").AsInt(0),
+                StageRush = node.Field("prestige").HasField("stageRush") ? node.Field("prestige").Field("stageRush").AsInt(0) : 0,
                 ChainDamage = SaveValues.ReadBigNumber(node.Field("chainDamage")),
                 KeyCarry = carry.Field("keys").AsNumber(0, 1e6),
                 MouseCarryPx = carry.Field("mousePx").AsNumber(0, 1e9)

@@ -13,6 +13,7 @@ namespace Game.Core.Party
         public long LastContributionTick { get; internal set; } = PartyEncounter.Never;
         public long RestBankTicks { get; internal set; }
         public byte HeroClass { get; internal set; }
+        public uint EchoLines { get; internal set; }
         public int GuestTicksLeft { get; internal set; }
         public long Stage { get; internal set; }
         public double CreditRate { get; internal set; }
@@ -33,6 +34,7 @@ namespace Game.Core.Party
             LastContributionTick = PartyEncounter.Never;
             RestBankTicks = 0;
             HeroClass = 0;
+            EchoLines = 0;
             GuestTicksLeft = 0;
             Stage = 0;
             CreditRate = 0;

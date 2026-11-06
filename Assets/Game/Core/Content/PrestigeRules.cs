@@ -21,6 +21,8 @@ namespace Game.Core.Content
         public double GoldBase { get; }
         public double Power { get; }
         public double HighlightGain { get; }
+        public double MaxStartShare { get; private set; } = 0.9;
+        public double RushRecordShare { get; private set; } = 0.99;
 
         public BigNumber EchoFor(BigNumber runGold)
         {
@@ -42,7 +44,11 @@ namespace Game.Core.Content
                 echo.Field("k").AsNumber(1e-9, 1e12),
                 echo.Field("goldBase").AsNumber(1e-9, 1e300),
                 echo.Field("power").AsNumber(0.01, 1),
-                root.Field("highlightGain").AsNumber(0, 100));
+                root.Field("highlightGain").AsNumber(0, 100))
+            {
+                MaxStartShare = root.HasField("maxStartShare") ? root.Field("maxStartShare").AsNumber(0, 1) : 0.9,
+                RushRecordShare = root.HasField("rushRecordShare") ? root.Field("rushRecordShare").AsNumber(0, 1) : 0.99
+            };
         }
     }
 }

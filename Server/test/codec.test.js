@@ -23,6 +23,7 @@ function scriptedEncounter() {
     const [op, a, b, c, d] = line.split(" ");
     if (op === "join") numbers[encounter.join(a)] = a;
     else if (op === "class") encounter.setHeroClass(Number(a), Number(b));
+    else if (op === "echo") encounter.setEchoLines(Number(a), Number(b));
     else if (op === "damage") encounter.applyDamage(Number(a), Number(b), Number(c));
     else if (op === "effect") encounter.applyEnemyEffect(Number(a), Number(b), Number(c), d === undefined ? -1 : Number(d));
     else if (op === "advance") for (let i = 0; i < Number(a); i++) encounter.advance();

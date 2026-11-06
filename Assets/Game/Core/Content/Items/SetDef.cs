@@ -59,9 +59,12 @@ namespace Game.Core.Content.Items
         public double CraftMultiplier { get; }
         public IReadOnlyList<PerkValue> Perks { get; }
         public string? Event { get; internal set; }
+        public IReadOnlyList<Modifier> PerMuseumCollection { get; internal set; } = System.Array.Empty<Modifier>();
+        public IReadOnlyList<Modifier> Echo { get; internal set; } = System.Array.Empty<Modifier>();
+        public int EchoBit { get; internal set; } = -1;
         public IReadOnlyList<Modifier> Primary { get; internal set; } = System.Array.Empty<Modifier>();
         public IReadOnlyList<Modifier> PerRaritySet { get; internal set; } = System.Array.Empty<Modifier>();
-        public bool Peaceful => Perks.Count > 0;
+        public bool Peaceful => Perks.Count > 0 && Bonus.Count == 0;
         public bool HasSecondRing => _secondRing != null;
         public bool Jewelry => _pieces.ContainsKey(ItemSlot.Amulet) || _pieces.ContainsKey(ItemSlot.Ring);
 

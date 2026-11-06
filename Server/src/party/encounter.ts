@@ -21,6 +21,7 @@ class PartyMember {
     lastContributionTick = PartyNever;
     restBankTicks = 0;
     heroClass = 0;
+    echoLines = 0;
     guestTicksLeft = 0;
     stage = 0;
     creditRate = 0;
@@ -41,6 +42,7 @@ class PartyMember {
         this.lastContributionTick = PartyNever;
         this.restBankTicks = 0;
         this.heroClass = 0;
+        this.echoLines = 0;
         this.guestTicksLeft = 0;
         this.stage = 0;
         this.creditRate = 0;
@@ -278,6 +280,11 @@ class PartyEncounter {
     setHeroClass(slot: number, heroClass: number): void {
         if (this.isMember(slot))
             this.members[slot].heroClass = heroClass;
+    }
+
+    setEchoLines(slot: number, echoLines: number): void {
+        if (this.isMember(slot))
+            this.members[slot].echoLines = echoLines;
     }
 
     setConnected(slot: number, connected: boolean): void {

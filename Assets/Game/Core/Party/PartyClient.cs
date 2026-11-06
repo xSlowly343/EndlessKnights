@@ -590,6 +590,8 @@ namespace Game.Core.Party
         {
             System.Array.Clear(_allyLoadouts, 0, _allyLoadouts.Length);
             _loop.State.PartyAllies = 0;
+            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
+                _loop.Gear.SetAllyEcho(slot, 0);
             _loop.Stages.Unlink();
             _loop.Skills.ShareEnemy(false);
             _loop.PartyBuffs.ClearAllies();
@@ -692,6 +694,7 @@ namespace Game.Core.Party
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
                 var present = slot != _ownSlot && Roster.Player(slot) != 0 && Roster.Presence(slot) != PartyPresence.Offline;
+                _loop.Gear.SetAllyEcho(slot, present ? Roster.EchoLines(slot) : 0);
                 if (!present)
                 {
                     synergy.SetAlly(slot, false, default);
@@ -861,7 +864,7 @@ namespace Game.Core.Party
         private void Send()
         {
             if (Status == PartyLink.Joining && Every(HelloSeconds))
-                SendToHost(PartyCodec.Encode(_out, new HelloMessage { HeroClass = (byte)_loop.State.Class, Stage = _loop.State.Stage }));
+                SendToHost(PartyCodec.Encode(_out, new HelloMessage { HeroClass = (byte)_loop.State.Class, Stage = _loop.State.Stage, EchoLines = _loop.Gear.EchoMask }));
             if (InParty && Every(_rules.DamageBatchSeconds))
                 FlushBatch();
             if (InParty && (_offerNow || Every(_rules.Buffs.OfferSeconds)))

@@ -18,6 +18,7 @@ namespace Game.Core.Sim
         ShardsGained,
         TrialCompleted,
         WandererJumped,
+        PortalJumped,
         GoldenColossusAppeared,
         GateCleared,
         DungeonKeyDropped,

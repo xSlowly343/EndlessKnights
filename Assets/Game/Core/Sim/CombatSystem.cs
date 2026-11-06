@@ -178,6 +178,12 @@ namespace Game.Core.Sim
             var perTenPoison = _hero.Value(CombatStats.DamagePerTenPoison, 0, tags);
             if (perTenPoison > 0)
                 multiplier *= 1 + perTenPoison * System.Math.Floor(_state.PoisonStacks / 10 + 1e-9);
+            var perTemper = _hero.Value(CombatStats.DamagePerTemperPercent, 0, tags);
+            if (perTemper > 0)
+                multiplier *= 1 + perTemper * _state.WornTemperPercent;
+            var perCollection = _hero.Value(CombatStats.DamagePerMuseumCollection, 0, tags);
+            if (perCollection > 0)
+                multiplier *= 1 + perCollection * _state.Museum.Done.Count;
             var perKind = _hero.Value(CombatStats.DamagePerInputKind, 0, tags);
             if (perKind > 0)
                 multiplier *= 1 + perKind * RecentInputKinds();
