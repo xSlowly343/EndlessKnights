@@ -320,13 +320,13 @@ namespace Game.Core.Sim
             var cut = System.Math.Min(MaxHpCut, System.Math.Max(0, _hero.Value(CombatStats.EnemyHpCut, 0)));
             if (GoldenComes(stage))
             {
-                Spawn(enemy, EnemyType.Normal, _stages.EnemyHp(stage) * (Multiplier(enemy) * Encounters.GoldenHpMultiplier));
+                Spawn(enemy, EnemyType.Normal, _stages.NormalHp(stage) * (Multiplier(enemy) * Encounters.GoldenHpMultiplier));
                 _state.GoldenTicks = (int)System.Math.Round(Encounters.GoldenSeconds * GameLoop.TicksPerSecond);
-                _state.GoldenNormalHp = _stages.EnemyHp(stage) * Multiplier(enemy);
+                _state.GoldenNormalHp = _stages.NormalHp(stage) * Multiplier(enemy);
                 _events.Add(GameEvent.ForStage(GameEventKind.GoldenColossusAppeared, _state.Tick, stage));
                 return;
             }
-            Spawn(enemy, EnemyType.Normal, _stages.EnemyHp(stage) * (Multiplier(enemy) * (1 - cut)));
+            Spawn(enemy, EnemyType.Normal, _stages.NormalHp(stage) * (Multiplier(enemy) * (1 - cut)));
         }
 
         public EncounterRules Encounters { get; set; } = null!;

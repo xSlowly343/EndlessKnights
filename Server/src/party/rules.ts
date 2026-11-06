@@ -18,6 +18,7 @@ interface PartyEncounterRules {
     waveEnemiesPerWave: number;
     waveStagesPerExtraEnemy: number;
     waveMaxEnemies: number;
+    waveMaxSteps: { from: number; max: number }[];
     bossRetryAfterKills: number;
     bossTimerSeconds: number;
     bossHpMultiplier: number;
@@ -50,10 +51,14 @@ function partyHpMultiplier(rules: PartyEncounterRules, fighters: number): number
 }
 
 function partyEnemiesOnStage(rules: PartyEncounterRules, stage: number): number {
-    const extra = Math.min(rules.waveMaxEnemies, Math.floor((Math.max(1, stage) - 1) / rules.waveStagesPerExtraEnemy));
+    let max = rules.waveMaxEnemies;
+    for (const step of rules.waveMaxSteps || [])
+        if (stage >= step.from)
+            max = step.max;
+    const extra = Math.min(max, Math.floor((Math.max(1, stage) - 1) / rules.waveStagesPerExtraEnemy));
     let total = 0;
     for (let wave = 0; wave < rules.waveCount; wave++)
-        total += Math.min(rules.waveMaxEnemies, rules.waveFirstEnemies + wave * rules.waveEnemiesPerWave + extra);
+        total += Math.min(max, rules.waveFirstEnemies + wave * rules.waveEnemiesPerWave + extra);
     return total;
 }
 

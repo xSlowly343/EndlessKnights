@@ -211,6 +211,19 @@ namespace Game.Core.Content
             return total;
         }
 
+        public double NormalShare(long stage)
+        {
+            var steps = EnemiesOnStage(stage);
+            var plain = 0;
+            for (var wave = 0; wave < _waves.Count; wave++)
+                plain += _waves.BaseSize(stage, wave);
+            return steps <= plain ? 1 : plain / (double)steps;
+        }
+
+        public BigNumber NormalHp(long stage) => EnemyHp(stage) * NormalShare(stage);
+
+        public BigNumber NormalGold(long stage) => EnemyGold(stage) * NormalShare(stage);
+
         public int WaveAfterKills(long stage, int kills)
         {
             var wave = 0;
