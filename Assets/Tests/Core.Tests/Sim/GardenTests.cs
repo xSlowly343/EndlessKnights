@@ -112,7 +112,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(System.GC.GetAllocatedBytesForCurrentThread() - before, Is.EqualTo(0), "camp");
 
             loop.Peaceful.SetMode(PeacefulMode.Battle);
-            for (var i = 0; i < 50; i++)
+            for (var i = 0; i < 300; i++)
             {
                 input.PressKeys(1);
                 loop.Tick();

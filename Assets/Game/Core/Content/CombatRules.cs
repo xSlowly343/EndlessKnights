@@ -46,6 +46,7 @@ namespace Game.Core.Content
         public MinionRules Beasts { get; }
         public PathRules Paths { get; }
         public EncounterRules Encounters { get; }
+        public double BasePierce { get; private set; }
 
         public static CombatRules Load(string json)
         {
@@ -77,7 +78,8 @@ namespace Game.Core.Content
                 PathRules.Read(root.Field("paths")),
                 EncounterRules.Read(root.Field("encounters")))
             {
-                OvercritRate = crit.HasField("overcritRate") ? crit.Field("overcritRate").AsNumber(0, 100) : 0
+                OvercritRate = crit.HasField("overcritRate") ? crit.Field("overcritRate").AsNumber(0, 100) : 0,
+                BasePierce = root.HasField("pierce") ? root.Field("pierce").Field("baseShare").AsNumber(0, 1) : 0
             };
         }
     }

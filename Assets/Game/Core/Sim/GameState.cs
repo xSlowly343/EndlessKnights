@@ -172,6 +172,7 @@ namespace Game.Core.Sim
 
         public int LevelOf(GemDef gem) => GemProgress.TryGetValue(gem.Id, out var progress) ? progress.Level : 1;
         public BigNumber[] QueueDamage { get; } = new BigNumber[QueueDepth];
+        public BigNumber PierceDamage { get; set; }
 
         public BigNumber ChainDamage
         {

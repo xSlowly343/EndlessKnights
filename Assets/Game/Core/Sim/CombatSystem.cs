@@ -407,6 +407,7 @@ namespace Game.Core.Sim
                 return;
 
             CarryOverkill(damage - hpBefore, tags);
+            Pierce(damage - hpBefore);
             _state.EnemyHp = BigNumber.Zero;
             if (supporting != null)
                 SupportEffects.OnKill(supporting, _state);
@@ -491,6 +492,12 @@ namespace Game.Core.Sim
             _state.TicksSinceKill++;
             if (_state.TicksSinceKill > _rules.Conditions.KillStreakResetSeconds * GameLoop.TicksPerSecond)
                 _state.KillStreak = 0;
+        }
+
+        private void Pierce(BigNumber overkill)
+        {
+            if (_rules.BasePierce > 0 && overkill.Sign > 0 && _state.EnemyType == EnemyType.Normal)
+                _state.PierceDamage += overkill * _rules.BasePierce;
         }
 
         private void CarryOverkill(BigNumber overkill, StatTags tags)
