@@ -97,6 +97,7 @@ namespace Game.Core.Save
                 ("camp", WriteCamp(state.Camp)),
                 ("garden", WriteGarden(state.Garden)),
                 ("alchemy", WriteAlchemy(state.Alchemy)),
+                ("expeditions", WriteExpeditions(state.Expeditions)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -279,6 +280,8 @@ namespace Game.Core.Save
                 ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
             if (node.HasField("alchemy"))
                 ReadAlchemy(node.Field("alchemy"), state.Alchemy);
+            if (node.HasField("expeditions"))
+                ReadExpeditions(node.Field("expeditions"), state.Expeditions);
             if (node.HasField("garden"))
                 ReadGarden(node.Field("garden"), state.Garden);
             if (node.HasField("camp"))
@@ -552,6 +555,63 @@ namespace Game.Core.Save
                 alchemy.Potions.Add(ReadPotion(item)!);
             alchemy.Active = ReadPotion(node.Field("active"));
             alchemy.ActiveTicksLeft = node.Field("activeTicksLeft").AsLong(0);
+        }
+
+        private static JsonValue WriteExpedition(Expedition expedition)
+        {
+            var items = new JsonValue[expedition.Items.Length];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = JsonValue.Of(expedition.Items[i]);
+            return Object(("companion", JsonValue.Of(expedition.Companion)), ("biome", JsonValue.Of(expedition.Biome)), ("hours", JsonValue.Of(expedition.Hours)),
+                ("seconds", JsonValue.Of(expedition.Seconds)), ("elapsed", JsonValue.Of(expedition.Elapsed)), ("letter", JsonValue.Of(expedition.Letter)),
+                ("choice", JsonValue.Of(expedition.Choice)), ("waited", JsonValue.Of(expedition.Waited)), ("items", JsonValue.Array(items)),
+                ("shards", JsonValue.Of(expedition.Shards)), ("rare", OptionalText(expedition.Rare)), ("done", JsonValue.Of(expedition.Done)));
+        }
+
+        private static Expedition ReadExpedition(ContentNode node)
+        {
+            var items = new List<long>();
+            foreach (var item in node.Field("items").Items())
+                items.Add(item.AsLong(0));
+            return new Expedition
+            {
+                Companion = node.Field("companion").AsString(),
+                Biome = node.Field("biome").AsString(),
+                Hours = node.Field("hours").AsInt(1, 48),
+                Seconds = node.Field("seconds").AsNumber(0, double.MaxValue),
+                Elapsed = node.Field("elapsed").AsNumber(0, double.MaxValue),
+                Letter = node.Field("letter").AsInt(-1, 1000),
+                Choice = node.Field("choice").AsBool(),
+                Waited = node.Field("waited").AsBool(),
+                Items = items.ToArray(),
+                Shards = node.Field("shards").AsLong(0),
+                Rare = ReadOptionalText(node, "rare"),
+                Done = node.Field("done").AsBool()
+            };
+        }
+
+        private static JsonValue WriteExpeditions(ExpeditionState expeditions)
+        {
+            var active = new JsonValue[expeditions.Active.Count];
+            for (var i = 0; i < active.Length; i++)
+                active[i] = WriteExpedition(expeditions.Active[i]);
+            var reports = new JsonValue[expeditions.Reports.Count];
+            for (var i = 0; i < reports.Length; i++)
+                reports[i] = WriteExpedition(expeditions.Reports[i]);
+            var finds = new List<string>(expeditions.Finds);
+            finds.Sort(System.StringComparer.Ordinal);
+            return Object(("active", JsonValue.Array(active)), ("reports", JsonValue.Array(reports)), ("returned", JsonValue.Of(expeditions.Returned)), ("finds", WriteIdList(finds)));
+        }
+
+        private static void ReadExpeditions(ContentNode node, ExpeditionState expeditions)
+        {
+            foreach (var item in node.Field("active").Items())
+                expeditions.Active.Add(ReadExpedition(item));
+            foreach (var item in node.Field("reports").Items())
+                expeditions.Reports.Add(ReadExpedition(item));
+            expeditions.Returned = node.Field("returned").AsLong(0);
+            foreach (var item in node.Field("finds").Items())
+                expeditions.Finds.Add(item.AsString());
         }
 
         private static JsonValue WriteGarden(GardenState garden)

@@ -69,6 +69,7 @@ namespace Game.Core.Sim
         private readonly CampSystem _camp;
         private readonly GardenSystem _garden;
         private readonly AlchemySystem _alchemy;
+        private readonly ExpeditionSystem _expeditions;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
         private GameData _data;
@@ -138,6 +139,7 @@ namespace Game.Core.Sim
             _camp = new CampSystem(data.Camp, state, Events);
             _garden = new GardenSystem(data.Garden, state, _camp, _peaceful, Events);
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
+            _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
@@ -209,6 +211,7 @@ namespace Game.Core.Sim
         public CampSystem Camp => _camp;
         public GardenSystem Garden => _garden;
         public AlchemySystem Alchemy => _alchemy;
+        public ExpeditionSystem Expeditions => _expeditions;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
@@ -601,6 +604,7 @@ namespace Game.Core.Sim
             OfflineCalculator.Apply(State, result);
             AddIdleSeconds(result.AwaySeconds);
             _garden.Advance(result.AwaySeconds);
+            _expeditions.Advance(result.AwaySeconds);
             _stage.EnsureEnemy();
         }
 
@@ -814,6 +818,7 @@ namespace Game.Core.Sim
             _camp.UseRules(data.Camp);
             _garden.UseRules(data.Garden);
             _alchemy.UseRules(data.Alchemy);
+            _expeditions.UseRules(data.Expeditions);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _book.UseWeapons(data.Weapons);
@@ -877,6 +882,7 @@ namespace Game.Core.Sim
             _camp.Tick();
             _garden.Tick();
             _alchemy.Tick();
+            _expeditions.Tick();
             if (_peaceful.InCamp)
             {
                 CampTick(firstEvent);
