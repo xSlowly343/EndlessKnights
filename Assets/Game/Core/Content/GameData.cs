@@ -15,7 +15,7 @@ namespace Game.Core.Content
 {
     public sealed class GameData
     {
-        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName, ChronicleCatalog.FileName, AtlasCatalog.FileName, ResonanceCatalog.FileName, SpiritCatalog.FileName, UnlockRules.FileName, DungeonRules.FileName, RaidRules.FileName, ClanTreeCatalog.FileName, MentorRules.FileName, TreeTemplates.FileName, SlateRules.FileName, CharacterCatalog.FileName, QuestRules.FileName, AchievementCatalog.FileName, BestiaryCatalog.FileName, CosmeticCatalog.FileName, SeasonPassRules.FileName, EventRules.FileName, PeacefulRules.FileName, CampRules.FileName, GardenRules.FileName, AlchemyRules.FileName, ExpeditionRules.FileName, TownRules.FileName, FishingRules.FileName, CookingRules.FileName };
+        public static readonly string[] FileNames = { StageTable.FileName, EnemyCatalog.FileName, InputCaps.FileName, CombatRules.FileName, GemCatalog.FileName, SkillBookRules.FileName, TreePointRules.FileName, AscendancyCatalog.FileName, PrestigeRules.FileName, ArtifactCatalog.FileName, PartyRules.FileName, TutorialRules.FileName, StringTable.FileName, SynergyRules.FileName, RiftRules.FileName, WeaponCatalog.FileName, ItemCatalog.FileName, DropRules.FileName, PanelUnlocks.FileName, ChangeLog.FileName, ChronicleCatalog.FileName, AtlasCatalog.FileName, ResonanceCatalog.FileName, SpiritCatalog.FileName, UnlockRules.FileName, DungeonRules.FileName, RaidRules.FileName, ClanTreeCatalog.FileName, MentorRules.FileName, TreeTemplates.FileName, SlateRules.FileName, CharacterCatalog.FileName, QuestRules.FileName, AchievementCatalog.FileName, BestiaryCatalog.FileName, CosmeticCatalog.FileName, SeasonPassRules.FileName, EventRules.FileName, PeacefulRules.FileName, CampRules.FileName, GardenRules.FileName, AlchemyRules.FileName, ExpeditionRules.FileName, TownRules.FileName, FishingRules.FileName, CookingRules.FileName, ForgeRules.FileName };
 
         private GameData(StageTable stages, EnemyCatalog enemies, InputCaps inputCaps, CombatRules combat, GemCatalog gems, SkillBookRules skillBook, TreePointRules treePoints, AscendancyCatalog ascendancy, PrestigeRules prestige, ArtifactCatalog artifacts, PartyRules party, TutorialRules tutorial, StringTable strings, SynergyRules synergy, RiftRules rift, WeaponCatalog weapons, ItemCatalog items, DropRules drops, PanelUnlocks panel, ChangeLog changeLog, ChronicleCatalog chronicle, AtlasCatalog atlas, ResonanceCatalog resonance, SpiritCatalog spirits)
         {
@@ -91,6 +91,7 @@ namespace Game.Core.Content
         public TownRules Town { get; private set; } = null!;
         public FishingRules Fishing { get; private set; } = null!;
         public CookingRules Cooking { get; private set; } = null!;
+        public ForgeRules Forge { get; private set; } = null!;
         public IReadOnlyDictionary<string, ClassTree> ClassTrees { get; private set; } = new Dictionary<string, ClassTree>();
 
         public IReadOnlyDictionary<string, ClassTree> CommonTrees { get; private set; } = new Dictionary<string, ClassTree>();
@@ -153,6 +154,7 @@ namespace Game.Core.Content
             var expeditions = ExpeditionRules.Load(readFile(ExpeditionRules.FileName), stages.Biomes);
             var fishing = FishingRules.Load(readFile(FishingRules.FileName), camp, stages.Biomes);
             var cooking = CookingRules.Load(readFile(CookingRules.FileName), camp, alchemy);
+            var forge = ForgeRules.Load(readFile(ForgeRules.FileName), camp, stages.Biomes);
             var town = TownRules.Load(readFile(TownRules.FileName), alchemy, garden, stages.Biomes);
             var strings = StringTable.Load(readFile(StringTable.FileName));
             Texts.Use(strings);
@@ -166,7 +168,7 @@ namespace Game.Core.Content
             var commonTrees = new Dictionary<string, ClassTree>(StringComparer.Ordinal);
             foreach (var treeId in treeTemplates.CommonTrees)
                 commonTrees[treeId] = ClassTreeLoader.LoadCommon(treeTemplates, treeId, readFile(ClassTreeLoader.CommonFileNameOf(treeId)));
-            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Characters = characters, Unlocks = unlocks, Slates = slates, Quests = quests, Achievements = achievements, Bestiary = bestiary, Cosmetics = cosmetics, SeasonPass = seasonPass, Events = seasonalEvents, Peaceful = peaceful, Camp = camp, Garden = garden, Alchemy = alchemy, Expeditions = expeditions, Town = town, Fishing = fishing, Cooking = cooking, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor, TreeTemplates = treeTemplates, ClassTrees = classTrees, CommonTrees = commonTrees };
+            return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Characters = characters, Unlocks = unlocks, Slates = slates, Quests = quests, Achievements = achievements, Bestiary = bestiary, Cosmetics = cosmetics, SeasonPass = seasonPass, Events = seasonalEvents, Peaceful = peaceful, Camp = camp, Garden = garden, Alchemy = alchemy, Expeditions = expeditions, Town = town, Fishing = fishing, Cooking = cooking, Forge = forge, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor, TreeTemplates = treeTemplates, ClassTrees = classTrees, CommonTrees = commonTrees };
         }
     }
 }
