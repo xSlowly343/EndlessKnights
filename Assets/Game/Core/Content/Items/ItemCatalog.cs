@@ -87,6 +87,11 @@ namespace Game.Core.Content.Items
         public int UniqueCraftMastery { get; private set; } = int.MaxValue;
         public double UniqueCraftCost { get; private set; }
 
+        public IReadOnlyList<double> CollectionMorePerSet { get; private set; } = Array.Empty<double>();
+
+        public double CollectionMore(ItemRarity rarity, int collected) =>
+            (int)rarity < CollectionMorePerSet.Count ? System.Math.Pow(1 + CollectionMorePerSet[(int)rarity], collected) : 1;
+
         public int MasteryLevel(double spent) => 1 + (int)System.Math.Floor(System.Math.Max(0, spent) / MasterySpentPerLevel);
 
         public double MasteryScale(int level)
@@ -385,6 +390,18 @@ namespace Game.Core.Content.Items
                 catalog.MasterySlowAfter = mastery.Field("slowAfter").AsInt(0, 10000);
                 catalog.MasterySlowRate = mastery.Field("slowRate").AsNumber(0, 1);
             }
+            var perSet = new double[catalog.CraftBaseCost.Length];
+            if (node.HasField("collectionMore"))
+            {
+                var more = node.Field("collectionMore");
+                foreach (var name in more.FieldNames())
+                {
+                    if (!ItemRarityNames.ByName.TryGetValue(name, out var rarity))
+                        throw more.Field(name).Error($"unknown rarity '{name}'");
+                    perSet[(int)rarity] = more.Field(name).AsNumber(0, 1);
+                }
+            }
+            catalog.CollectionMorePerSet = perSet;
             if (node.HasField("unique"))
             {
                 catalog.UniqueCraftMastery = node.Field("unique").Field("mastery").AsInt(1, 10000);

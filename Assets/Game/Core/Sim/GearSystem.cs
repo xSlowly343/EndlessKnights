@@ -135,6 +135,7 @@ namespace Game.Core.Sim
                 foreach (var perk in set.Perks)
                     _state.SetPerks[(int)perk.Perk] += perk.Value;
             }
+            AddCollectionMore(modifiers);
             _layer.Set(modifiers);
             Rebuilt?.Invoke();
         }
@@ -146,6 +147,24 @@ namespace Game.Core.Sim
         public double MasteryScale => _catalog.MasteryScale(MasteryLevel);
 
         public int CollectedSetsOf(ItemRarity rarity) => _collectedByRarity[(int)rarity];
+
+        public double CollectionMore
+        {
+            get
+            {
+                var total = 1.0;
+                for (var i = 0; i < _collectedByRarity.Length; i++)
+                    total *= _catalog.CollectionMore((ItemRarity)i, _collectedByRarity[i]);
+                return total;
+            }
+        }
+
+        private void AddCollectionMore(List<Modifier> modifiers)
+        {
+            var total = CollectionMore;
+            if (total > 1)
+                modifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.More, total - 1));
+        }
 
         public bool RingPair
         {
