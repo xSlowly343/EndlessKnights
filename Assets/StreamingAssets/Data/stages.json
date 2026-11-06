@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "waves": { "count": 4, "firstEnemies": 1, "enemiesPerWave": 1, "stagesPerExtraEnemy": 10, "maxEnemiesPerWave": 8, "maxSteps": [{ "from": 1000, "max": 12 }, { "from": 3000, "max": 16 }, { "from": 10000, "max": 24 }, { "from": 25000, "max": 32 }, { "from": 50000, "max": 40 }, { "from": 100000, "max": 50 }] },
+  "waves": { "count": 4, "firstEnemies": 1, "enemiesPerWave": 1, "stagesPerExtraEnemy": 10, "maxEnemiesPerWave": 8, "maxSteps": [{ "from": 300, "max": 12 }, { "from": 1000, "max": 16 }, { "from": 3000, "max": 24 }, { "from": 8000, "max": 32 }, { "from": 20000, "max": 40 }, { "from": 50000, "max": 50 }, { "from": 100000, "max": 64 }] },
   "enemyHp": { "curve": "exp", "base": 120, "rate": 1.08, "steps": [{ "from": 200, "rate": 1.03 }, { "from": 1000, "rate": 1.012 }, { "from": 5000, "rate": 1.0052 }, { "from": 50000, "rate": 1.01 }] },
   "softWall": { "period": 100, "zoneLength": 10, "extra": 1.02 },
   "boss": { "hpMultiplier": 7, "timerSeconds": 30, "timerMaxSeconds": 90, "goldMultiplier": 5, "retryAfterKills": 10, "slotStages": 10 },

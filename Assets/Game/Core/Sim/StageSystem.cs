@@ -135,7 +135,10 @@ namespace Game.Core.Sim
             else if (_state.Farming)
                 CountFarmKill();
             else if (_state.KillsOnStage < EnemiesOnStage(_state.Stage))
+            {
                 _state.KillsOnStage++;
+                SkipEnemies();
+            }
             if (!_state.FightingBoss && !_state.Farming)
                 TryPortal();
             SpawnNext();
@@ -281,6 +284,8 @@ namespace Game.Core.Sim
                 _state.HighestStage = _state.Stage;
             if (wanderer)
                 Jump();
+            else
+                TrySkipStages();
             if (BiomeRotation.TryTurn(_stages, _state))
                 _events.Add(GameEvent.ForStage(GameEventKind.BiomeChanged, _state.Tick, _state.Stage));
             Drops?.OnBossDefeated(stageBefore, type, _state.RecordStage, RaisesRecord);
@@ -332,6 +337,7 @@ namespace Game.Core.Sim
         }
 
         public EncounterRules Encounters { get; set; } = null!;
+        public PierceRules Pierce { get; set; } = new PierceRules();
 
         public EnemyDef? BossFor(string biome, long stage)
         {
@@ -463,8 +469,13 @@ namespace Game.Core.Sim
         {
             var damage = _state.PierceDamage;
             _state.PierceDamage = BigNumber.Zero;
-            if (damage.Sign <= 0 || type != EnemyType.Normal || Linked || !_state.EnemyAlive)
+            if (damage.Sign <= 0 || Linked || !_state.EnemyAlive)
                 return;
+            if (type != EnemyType.Normal)
+            {
+                PierceBoss(damage);
+                return;
+            }
             var hpBefore = _state.EnemyHp;
             _state.EnemyHp -= damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, DamageSource.Strike, HitFlags.None));
@@ -473,6 +484,48 @@ namespace Game.Core.Sim
             _state.PierceDamage = damage - hpBefore;
             _state.EnemyHp = BigNumber.Zero;
             OnEnemyKilled();
+        }
+
+        private void PierceBoss(BigNumber damage)
+        {
+            var rules = Pierce;
+            var share = System.Math.Min(rules.MaxBossPierce, System.Math.Max(0, _hero.Value(CombatStats.BossPierce, 0)));
+            if (!(share > 0) || _stages.GateAt(_state.Stage) != null)
+                return;
+            var hit = BigNumber.Min(damage * share, _state.EnemyHp * rules.BossPierceHpShare);
+            _state.EnemyHp -= hit;
+            _events.Add(GameEvent.Damage(_state.Tick, hit, DamageSource.Strike, HitFlags.None));
+        }
+
+        private void SkipEnemies()
+        {
+            if (Linked)
+                return;
+            var skip = System.Math.Min(Pierce.MaxEnemySkip, (int)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.EnemySkip, 0)) + 1e-9));
+            skip = System.Math.Min(skip, EnemiesOnStage(_state.Stage) - _state.KillsOnStage);
+            if (skip <= 0)
+                return;
+            for (var i = 0; i < skip; i++)
+            {
+                _state.Kills++;
+                _state.KillsOnStage++;
+                _loot.OnKill(_state.Stage, EnemyType.Normal, _state.Enemy, 1 + _state.EnemyGoldBonus);
+                _levels.OnKill(EnemyType.Normal, 1);
+            }
+            _events.Add(GameEvent.WithAmount(GameEventKind.EnemiesSkipped, _state.Tick, BigNumber.FromDouble(skip), _state.Stage));
+        }
+
+        private void TrySkipStages()
+        {
+            if (!RaisesRecord)
+                return;
+            var rules = Pierce;
+            var chance = System.Math.Min(rules.MaxStageSkipChance, System.Math.Max(0, _hero.Value(CombatStats.StageSkipChance, 0)));
+            if (!(chance > 0) || _state.Rng.NextDouble() >= chance)
+                return;
+            var stages = rules.StageSkipStages + (long)System.Math.Floor(System.Math.Max(0, _hero.Value(CombatStats.StageSkipStages, 0)) + 1e-9);
+            var target = System.Math.Min(System.Math.Min(_state.Stage + stages, _state.RecordStage), NextUnclearedGateFrom(_state.Stage + 1));
+            JumpTo(target, GameEventKind.StageSkipped);
         }
 
         public int EnemiesOnThisStage => Linked && _state.PartyEnemiesOnStage > 0 ? _state.PartyEnemiesOnStage : EnemiesOnStage(_state.Stage);

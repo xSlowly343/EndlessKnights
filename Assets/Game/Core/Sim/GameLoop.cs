@@ -157,6 +157,7 @@ namespace Game.Core.Sim
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
+            _stage.Pierce = data.Combat.Pierce;
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades, hero);
             _book = new SkillBook(data.SkillBook, data.Weapons, state, _skills, hero);
@@ -891,6 +892,7 @@ namespace Game.Core.Sim
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
+            _stage.Pierce = data.Combat.Pierce;
             _tutorial.UseRules(data.Tutorial);
             _partyBuffs.UseRules(data.Party.Buffs);
             _synergy.UseRules(data.Synergy);
