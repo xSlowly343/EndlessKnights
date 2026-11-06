@@ -41,6 +41,18 @@ namespace Game.Core.Tests.Save
         private static SaveFile RoundTrip(GameState state) => SaveCodec.Decode(SaveCodec.Encode(state, Clock), TestWorld.Data);
 
         [Test]
+        public void WeaponsFarPastTheLimitSurviveSaving()
+        {
+            var state = new GameState();
+            var weapons = TestWorld.Data.Weapons;
+            state.Weapons.Held = weapons.Roll(weapons.Bases[0], Game.Core.Content.Items.ItemRarity.Rare, 1440);
+
+            var loaded = RoundTrip(state).State;
+
+            Assert.That(loaded.Weapons.Held!.ItemLevel, Is.EqualTo(1440));
+        }
+
+        [Test]
         public void MentorPerksSurviveSaving()
         {
             var state = new GameState { MentorCoopPoints = 3, EarlyBookSlot = true, ServerCoopHelpPoints = 4 };
