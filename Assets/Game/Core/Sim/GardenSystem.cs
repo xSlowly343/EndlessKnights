@@ -100,6 +100,26 @@ namespace Game.Core.Sim
             }
         }
 
+        public bool Water(int bed, double seconds)
+        {
+            if (!Open)
+                return false;
+            EnsureBeds();
+            if (bed < 0 || bed >= OpenBeds)
+            {
+                bed = -1;
+                for (var i = 0; i < OpenBeds && bed < 0; i++)
+                {
+                    if (!State.Beds[i].Empty && !State.Beds[i].Ready)
+                        bed = i;
+                }
+            }
+            if (bed < 0 || State.Beds[bed].Empty || State.Beds[bed].Ready)
+                return false;
+            GrowBed(bed, seconds);
+            return true;
+        }
+
         public int OpenBeds => System.Math.Min(State.Beds.Count, _camp.Slots(BedBuilding));
 
         private const string BedBuilding = "garden_bed";

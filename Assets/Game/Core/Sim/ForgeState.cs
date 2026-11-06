@@ -23,5 +23,6 @@ namespace Game.Core.Sim
         public long Smelted { get; set; }
         public long Tempered { get; set; }
         public long SalvageOre { get; set; }
+        public int GuestHammers { get; set; }
     }
 }

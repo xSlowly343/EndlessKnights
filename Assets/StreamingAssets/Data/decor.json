@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "spots": { "camp_site": 4, "camp": 8, "outpost": 12, "stronghold": 16 },
+  "guests": { "waterMinutes": 30, "hammers": 10 },
+  "monuments": [
+    { "id": "milestone", "name": { "ru": "Верстовой столб", "en": "Milestone" }, "input": "mouseKm", "steps": [1, 10, 42, 100, 500] },
+    { "id": "anvil", "name": { "ru": "Наковальня тысячи ударов", "en": "Anvil of a Thousand Strikes" }, "input": "keys", "steps": [10000, 100000, 1000000, 10000000] },
+    { "id": "target", "name": { "ru": "Мишень", "en": "Target" }, "input": "clicks", "steps": [10000, 100000, 1000000, 5000000] }
+  ],
+  "items": [
+    { "id": "decor_lantern", "name": { "ru": "Фонарь на шесте", "en": "Pole Lantern" }, "start": true },
+    { "id": "decor_bench", "name": { "ru": "Скамья у костра", "en": "Fireside Bench" }, "start": true },
+    { "id": "decor_flower_pot", "name": { "ru": "Горшок с Тихоцветом", "en": "Hushbell Pot" }, "cost": { "herb_hushbell": 5 } },
+    { "id": "decor_fish_rack", "name": { "ru": "Вешала для рыбы", "en": "Fish Rack" }, "cost": { "fish_hills_roach": 3, "herb_windwort": 2 } },
+    { "id": "decor_ruin_arch", "name": { "ru": "Арка из руин", "en": "Ruin Arch" }, "cost": { "ruin_shard": 8 } },
+    { "id": "decor_ice_statue", "name": { "ru": "Ледяная статуя", "en": "Ice Statue" }, "cost": { "ice_crystal": 8 } },
+    { "id": "decor_brazier", "name": { "ru": "Жаровня", "en": "Brazier" }, "cost": { "ember_coal": 8 } },
+    { "id": "decor_wind_chime", "name": { "ru": "Ветряные колокольчики", "en": "Wind Chimes" }, "cost": { "sky_feather": 6 } },
+    { "id": "decor_herb_arch", "name": { "ru": "Травяная арка", "en": "Herb Arch" }, "cost": { "herb_stormfern": 2, "herb_moonmoss": 2 } }
+  ]
+}

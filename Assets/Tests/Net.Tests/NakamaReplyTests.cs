@@ -265,6 +265,20 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void CampVisitsAreReadFromTheServer()
+        {
+            Assert.That(CampReply.GuestPayload("ann", "water", 2), Is.EqualTo("{\"host\":\"ann\",\"act\":\"water\",\"bed\":2}"));
+            var visit = CampVisitView.From(NakamaJson.Parse("{\"host\":\"ann\",\"camp\":{\"theme\":\"ice_peak\",\"decor\":[\"decor_lantern\",\"\"],\"monuments\":{\"milestone\":2},\"title\":\"legends\",\"trophies\":[\"trophy_dragon_koi\"],\"brand\":\"\"},\"left\":[\"water\",\"hammer\"]}"));
+            Assert.That(visit.Theme, Is.EqualTo("ice_peak"));
+            Assert.That(visit.Monuments["milestone"], Is.EqualTo(2));
+            Assert.That(visit.Decor, Is.EqualTo(new[] { "decor_lantern", "" }));
+            Assert.That(visit.Left, Is.EqualTo(new[] { "water", "hammer" }));
+            var guests = CampReply.Guests(NakamaJson.Parse("{\"guests\":[{\"from\":\"b\",\"fromName\":\"Bob\",\"act\":\"water\",\"bed\":1,\"at\":5}]}"));
+            Assert.That(guests.Single().Act, Is.EqualTo("water"));
+            Assert.That(guests.Single().Bed, Is.EqualTo(1));
+        }
+
+        [Test]
         public void TheTownGatesAreReadFromTheServer()
         {
             Assert.That(TownReply.GiftPayload("bob", "herb_windwort", 3), Is.EqualTo("{\"to\":\"bob\",\"item\":\"herb_windwort\",\"amount\":3}"));

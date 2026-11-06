@@ -75,6 +75,7 @@ namespace Game.Core.Sim
         private readonly CookingSystem _cooking;
         private readonly ForgeSystem _forge;
         private readonly MuseumSystem _museum;
+        private readonly DecorSystem _decor;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
         private GameData _data;
@@ -149,6 +150,7 @@ namespace Game.Core.Sim
             _forge = new ForgeSystem(data.Forge, state, data.Stages, _camp, _peaceful, _weapons, _gear, Events);
             _drops.Salvaged = _forge.SalvageOre;
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
+            _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
             _town = new TownSystem(data.Town, state, _camp, _alchemy, _expeditions, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
@@ -228,6 +230,7 @@ namespace Game.Core.Sim
         public CookingSystem Cooking => _cooking;
         public ForgeSystem Forge => _forge;
         public MuseumSystem Museum => _museum;
+        public DecorSystem Decor => _decor;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
@@ -841,6 +844,7 @@ namespace Game.Core.Sim
             _cooking.UseRules(data.Cooking);
             _forge.UseRules(data.Forge);
             _museum.UseRules(data.Museum);
+            _decor.UseRules(data.Decor);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _book.UseWeapons(data.Weapons);

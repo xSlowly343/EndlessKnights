@@ -102,8 +102,9 @@ namespace Game.Core.Save
                 ("fishing", WriteFishing(state.Fishing)),
                 ("cooking", WriteCooking(state.Cooking)),
                 ("museum", WriteMuseum(state.Museum)),
+                ("decor", WriteDecor(state.Decor)),
                 ("forge", Object(("work", JsonValue.Of(state.Forge.Work.ToString())), ("target", JsonValue.Of(state.Forge.Target.ToString())), ("slot", JsonValue.Of(state.Forge.Slot.ToString())), ("hammers", JsonValue.Of(state.Forge.Hammers)),
-                    ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)), ("salvageOre", JsonValue.Of(state.Forge.SalvageOre)))),
+                    ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)), ("salvageOre", JsonValue.Of(state.Forge.SalvageOre)), ("guestHammers", JsonValue.Of(state.Forge.GuestHammers)))),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -294,6 +295,8 @@ namespace Game.Core.Save
                 ReadFishing(node.Field("fishing"), state.Fishing);
             if (node.HasField("cooking"))
                 ReadCooking(node.Field("cooking"), state.Cooking);
+            if (node.HasField("decor"))
+                ReadDecor(node.Field("decor"), state.Decor);
             if (node.HasField("museum"))
             {
                 var museum = node.Field("museum");
@@ -314,6 +317,7 @@ namespace Game.Core.Save
                 state.Forge.Smelted = node.Field("forge").Field("smelted").AsLong(0);
                 state.Forge.Tempered = node.Field("forge").Field("tempered").AsLong(0);
                 state.Forge.SalvageOre = forge.HasField("salvageOre") ? forge.Field("salvageOre").AsLong(0) : 0;
+                state.Forge.GuestHammers = forge.HasField("guestHammers") ? forge.Field("guestHammers").AsInt(0) : 0;
             }
             if (node.HasField("garden"))
                 ReadGarden(node.Field("garden"), state.Garden);
@@ -668,6 +672,29 @@ namespace Game.Core.Save
             foreach (var item in node.Field("reputation").Items())
                 town.Reputation[item.Field("guild").AsString()] = item.Field("value").AsLong(0);
             town.Done = node.Field("done").AsLong(0);
+        }
+
+        private static JsonValue WriteDecor(DecorState decor)
+        {
+            var owned = new List<string>(decor.Owned);
+            owned.Sort(System.StringComparer.Ordinal);
+            var placed = new JsonValue[decor.Placed.Count];
+            for (var i = 0; i < placed.Length; i++)
+                placed[i] = OptionalText(decor.Placed[i]);
+            return Object(("owned", WriteIdList(owned)), ("placed", JsonValue.Array(placed)), ("theme", OptionalText(decor.Theme)),
+                ("guestsWatered", JsonValue.Of(decor.GuestsWatered)), ("guestHammers", JsonValue.Of(decor.GuestHammers)), ("gifts", JsonValue.Of(decor.Gifts)));
+        }
+
+        private static void ReadDecor(ContentNode node, DecorState decor)
+        {
+            foreach (var item in node.Field("owned").Items())
+                decor.Owned.Add(item.AsString());
+            foreach (var item in node.Field("placed").Items())
+                decor.Placed.Add(item.IsNull ? string.Empty : item.AsString());
+            decor.Theme = ReadOptionalText(node, "theme");
+            decor.GuestsWatered = node.Field("guestsWatered").AsLong(0);
+            decor.GuestHammers = node.Field("guestHammers").AsLong(0);
+            decor.Gifts = node.Field("gifts").AsLong(0);
         }
 
         private static JsonValue WriteMuseum(MuseumState museum)
