@@ -149,8 +149,8 @@ namespace Game.Core.Sim
         private (double Seconds, BigNumber Gold) NormalEnemy(long stage, BigNumber dps, BigNumber goldMultiplier)
         {
             var average = _normalAverages[BiomeAt(stage)];
-            var hp = _data.Stages.EnemyHp(stage) * average.Hp;
-            return (KillSeconds(hp, dps), _data.Stages.EnemyGold(stage) * average.Gold * goldMultiplier);
+            var hp = _data.Stages.NormalHp(stage) * average.Hp;
+            return (KillSeconds(hp, dps), _data.Stages.NormalGold(stage) * average.Gold * goldMultiplier);
         }
 
         private (double Seconds, BigNumber Gold) BossEnemy(long stage, bool guardian, BigNumber dps, BigNumber goldMultiplier)

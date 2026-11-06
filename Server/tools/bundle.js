@@ -65,6 +65,7 @@ const rules = {
   waveEnemiesPerWave: stages.waves.enemiesPerWave,
   waveStagesPerExtraEnemy: stages.waves.stagesPerExtraEnemy,
   waveMaxEnemies: stages.waves.maxEnemiesPerWave,
+  waveMaxSteps: (stages.waves.maxSteps || []).map((step) => ({ from: step.from, max: step.max })),
   bossRetryAfterKills: stages.boss.retryAfterKills,
   bossTimerSeconds: stages.boss.timerSeconds,
   bossHpMultiplier: stages.boss.hpMultiplier

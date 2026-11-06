@@ -160,5 +160,38 @@ namespace Game.Core.Tests.Content
 
             Assert.That(error.Message, Does.Contain("stages.json: " + message));
         }
+
+        [TestCase(1, 10)]
+        [TestCase(71, 32)]
+        [TestCase(999, 32)]
+        [TestCase(1000, 48)]
+        [TestCase(3000, 64)]
+        [TestCase(10000, 96)]
+        [TestCase(25000, 128)]
+        [TestCase(50000, 160)]
+        [TestCase(100000, 200)]
+        public void EnemiesKeepGrowingInStepsWithTheGameData(long stage, int enemies)
+        {
+            Assert.That(Game.Core.Tests.Sim.TestWorld.Data.Stages.EnemiesOnStage(stage), Is.EqualTo(enemies));
+        }
+
+        [Test]
+        public void MoreEnemiesShareTheSameStageHpAndGold()
+        {
+            var stages = Game.Core.Tests.Sim.TestWorld.Data.Stages;
+            Assert.That(stages.NormalShare(500), Is.EqualTo(1));
+            Assert.That(stages.NormalShare(1000), Is.EqualTo(32.0 / 48).Within(1e-12));
+            Assert.That((stages.NormalHp(50000) * stages.EnemiesOnStage(50000)).ToDouble(), Is.EqualTo((stages.EnemyHp(50000) * 32).ToDouble()).Within(1e-6).Percent);
+            Assert.That((stages.NormalGold(100000) * stages.EnemiesOnStage(100000)).ToDouble(), Is.EqualTo((stages.EnemyGold(100000) * 32).ToDouble()).Within(1e-6).Percent);
+            Assert.That(stages.BossHp(50000), Is.EqualTo(stages.EnemyHp(50000) * stages.BossHpMultiplier), "bosses do not change");
+        }
+
+        [Test]
+        public void WaveStepsMustGoUp()
+        {
+            var json = Valid.Replace(@"""maxEnemiesPerWave"": 8 }", @"""maxEnemiesPerWave"": 8, ""maxSteps"": [{ ""from"": 100, ""max"": 6 }] }");
+            Assert.That(json, Is.Not.EqualTo(Valid));
+            Assert.Throws<ContentException>(() => StageTable.Load(json));
+        }
     }
 }
