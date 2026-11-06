@@ -66,6 +66,7 @@ namespace Game.Core.Sim
         private readonly DungeonSystem _dungeons;
         private readonly EventSystem _seasonal;
         private readonly PeacefulSystem _peaceful;
+        private readonly CampSystem _camp;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
         private GameData _data;
@@ -132,6 +133,7 @@ namespace Game.Core.Sim
             _dungeons = new DungeonSystem(data, state, hero, _stage, _drops, Events) { Unlocks = _unlocks };
             _seasonal = new EventSystem(data, state, _stage, Events);
             _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
+            _camp = new CampSystem(data.Camp, state, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
@@ -200,6 +202,7 @@ namespace Game.Core.Sim
         public DungeonSystem Dungeons => _dungeons;
         public EventSystem SeasonalEvents => _seasonal;
         public PeacefulSystem Peaceful => _peaceful;
+        public CampSystem Camp => _camp;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
@@ -801,6 +804,7 @@ namespace Game.Core.Sim
             _dungeons.UseData(data);
             _seasonal.UseData(data);
             _peaceful.UseRules(data.Peaceful);
+            _camp.UseRules(data.Camp);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _book.UseWeapons(data.Weapons);
@@ -861,6 +865,7 @@ namespace Game.Core.Sim
             SessionInput.PlaySeconds += TickSeconds;
             State.TotalInput.PlaySeconds += TickSeconds;
             _peaceful.Tick(LastInput, MetersPerPixel);
+            _camp.Tick();
             if (_peaceful.InCamp)
             {
                 CampTick(firstEvent);

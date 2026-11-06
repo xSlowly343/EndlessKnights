@@ -94,6 +94,7 @@ namespace Game.Core.Save
                 ("conditionShares", WriteConditionShares(state.ConditionShares)),
                 ("events", WriteEvents(state.Events)),
                 ("peaceful", WritePeaceful(state.Peaceful)),
+                ("camp", WriteCamp(state.Camp)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -274,6 +275,8 @@ namespace Game.Core.Save
                 ReadBestiary(node.Field("bestiary"), state.Bestiary);
             if (node.HasField("cosmetics"))
                 ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
+            if (node.HasField("camp"))
+                ReadCamp(node.Field("camp"), state.Camp);
             if (node.HasField("peaceful"))
                 ReadPeaceful(node.Field("peaceful"), state.Peaceful);
             if (node.HasField("events"))
@@ -514,6 +517,27 @@ namespace Game.Core.Save
                 cosmetics.Owned.Add(item.AsString());
             foreach (var item in node.Field("equipped").Items())
                 cosmetics.Equipped[item.Field("key").AsString()] = item.Field("id").AsString();
+        }
+
+        private static JsonValue WriteCamp(CampState camp)
+        {
+            var guilds = new List<string>(camp.Guilds);
+            guilds.Sort(System.StringComparer.Ordinal);
+            var items = new List<string>(camp.Bag.Keys);
+            items.Sort(System.StringComparer.Ordinal);
+            var bag = new JsonValue[items.Count];
+            for (var i = 0; i < bag.Length; i++)
+                bag[i] = Object(("item", JsonValue.Of(items[i])), ("count", JsonValue.Of(camp.Bag[items[i]])));
+            return Object(("tier", JsonValue.Of(camp.Tier)), ("guilds", WriteIdList(guilds)), ("bag", JsonValue.Array(bag)));
+        }
+
+        private static void ReadCamp(ContentNode node, CampState camp)
+        {
+            camp.Tier = node.Field("tier").AsInt(0, 100);
+            foreach (var item in node.Field("guilds").Items())
+                camp.Guilds.Add(item.AsString());
+            foreach (var item in node.Field("bag").Items())
+                camp.Bag[item.Field("item").AsString()] = item.Field("count").AsLong(0);
         }
 
         private static JsonValue WritePeaceful(PeacefulState peaceful)

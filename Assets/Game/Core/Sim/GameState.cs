@@ -92,6 +92,7 @@ namespace Game.Core.Sim
         public double[] ConditionShares { get; } = new double[64];
         public EventState Events { get; } = new EventState();
         public PeacefulState Peaceful { get; } = new PeacefulState();
+        public CampState Camp { get; } = new CampState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();
