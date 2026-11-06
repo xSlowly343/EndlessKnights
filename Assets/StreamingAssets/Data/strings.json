@@ -784,6 +784,7 @@
     "when.silenceKeys": { "ru": "пока молчат клавиши", "en": "while keys are silenced" },
     "when.silenceMouse": { "ru": "пока молчит мышь", "en": "while the mouse is silenced" },
     "when.silenceClicks": { "ru": "пока молчат клики", "en": "while clicks are silenced" },
+    "when.inRift": { "ru": "в Разломе и подземельях", "en": "in the Rift and dungeons" },
     "stat.firstHitCrit": { "ru": "первый удар по новому врагу — крит", "en": "the first hit on a new enemy crits" },
     "stat.pauseCrit": { "ru": "первый удар после Затишья — крит", "en": "the first hit after a Lull crits" },
     "stat.critBurstEvery": { "ru": "каждый N-й крит сильнее", "en": "every Nth crit is stronger" },

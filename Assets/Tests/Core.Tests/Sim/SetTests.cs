@@ -21,13 +21,15 @@ namespace Game.Core.Tests.Sim
             return set;
         }
 
+        private static readonly string[] OldThemes = { "red", "green", "blue", "onslaught", "mainstay", "decay" };
+
         private static GameLoop Runedancer() =>
             TestWorld.Loop(state: new GameState(7) { Class = HeroClass.Runedancer });
 
         [Test]
         public void ThirtySixArmourSetsSixThemesInEachOfSixRarities()
         {
-            var armour = Items.Sets.Where(s => !s.Jewelry && !s.Peaceful && s.Event == null).ToList();
+            var armour = Items.Sets.Where(s => OldThemes.Contains(s.Theme)).ToList();
             Assert.That(armour.Count, Is.EqualTo(36));
             var rarities = new[] { ItemRarity.Rare, ItemRarity.Epic, ItemRarity.Legendary, ItemRarity.Mythic, ItemRarity.Ancient, ItemRarity.Rift };
             foreach (var rarity in rarities)
@@ -134,7 +136,7 @@ namespace Game.Core.Tests.Sim
                 Assert.That(set.WeaponTypes, Is.Empty, set.Id);
             }
             foreach (var type in new[] { "moon_fan", "tarot_deck", "blooming_staff", "seal_ring" })
-                Assert.That(Items.Sets.Count(s => !s.Peaceful && s.AllowsType(type)), Is.EqualTo(12), type + " joins two old lines");
+                Assert.That(Items.Sets.Count(s => OldThemes.Contains(s.Theme) && s.AllowsType(type)), Is.EqualTo(12), type + " joins two old lines");
         }
 
         [Test]
