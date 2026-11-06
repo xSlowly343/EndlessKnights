@@ -29,9 +29,9 @@ namespace Game.Core.Sim
 
         public bool Collected(SetDef set)
         {
-            foreach (var slot in set.Slots)
+            foreach (var piece in set.Pieces)
             {
-                if (!_state.SetCollection.Contains(SetDef.PieceKey(set.Id, slot)))
+                if (!_state.SetCollection.Contains(SetDef.PieceKey(set.Id, piece)))
                     return false;
             }
             return true;
@@ -40,19 +40,19 @@ namespace Game.Core.Sim
         public int CollectedPieces(SetDef set)
         {
             var count = 0;
-            foreach (var slot in set.Slots)
+            foreach (var piece in set.Pieces)
             {
-                if (_state.SetCollection.Contains(SetDef.PieceKey(set.Id, slot)))
+                if (_state.SetCollection.Contains(SetDef.PieceKey(set.Id, piece)))
                     count++;
             }
             return count;
         }
 
-        public bool NoteFound(GearItem item) => item.Set != null && NoteFound(item.Set, item.Slot);
+        public bool NoteFound(GearItem item) => item.Set != null && NoteFound(item.Set, item.Slot, item.SecondRing);
 
-        public bool NoteFound(SetDef set, ItemSlot slot)
+        public bool NoteFound(SetDef set, ItemSlot slot, bool secondRing = false)
         {
-            if (!_state.SetCollection.Add(SetDef.PieceKey(set.Id, slot)))
+            if (!_state.SetCollection.Add(SetDef.PieceKey(set.Id, slot, secondRing)))
                 return false;
             if (Collected(set))
                 Rebuild();
@@ -116,6 +116,7 @@ namespace Game.Core.Sim
             var modifiers = new List<Modifier>();
             foreach (var item in _state.Gear.Worn)
                 item?.AddModifiers(modifiers);
+            AddRingPair(modifiers);
             foreach (var set in _catalog.Sets)
             {
                 if (Collected(set))
@@ -123,6 +124,32 @@ namespace Game.Core.Sim
             }
             _layer.Set(modifiers);
             Rebuilt?.Invoke();
+        }
+
+        public bool RingPair
+        {
+            get
+            {
+                var left = _state.Gear.In(GearSlot.RingLeft);
+                var right = _state.Gear.In(GearSlot.RingRight);
+                return left?.Set != null && right?.Set != null && ReferenceEquals(left.Set, right.Set) && left.Set.HasSecondRing && left.SecondRing != right.SecondRing;
+            }
+        }
+
+        private void AddRingPair(List<Modifier> modifiers)
+        {
+            var bonus = _catalog.JewelryPairBonus;
+            if (!(bonus > 0) || !RingPair)
+                return;
+            var set = _state.Gear.In(GearSlot.RingLeft)!.Set!;
+            AddScaled(modifiers, set.PieceLines(ItemSlot.Ring, false), bonus);
+            AddScaled(modifiers, set.PieceLines(ItemSlot.Ring, true), bonus);
+        }
+
+        private static void AddScaled(List<Modifier> modifiers, IReadOnlyList<Modifier> lines, double scale)
+        {
+            foreach (var line in lines)
+                modifiers.Add(line.WithValue(line.Value * scale));
         }
     }
 }

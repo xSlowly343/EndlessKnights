@@ -56,7 +56,7 @@ namespace Game.Core.Sim
 
         public double CraftCost(SetDef set) => _items.CraftCost(set, _gear.CollectedPieces(set), _gear.Collected(set));
 
-        public CraftResult CraftSetPiece(string setId, ItemSlot? chosen = null, string? weaponType = null)
+        public CraftResult CraftSetPiece(string setId, ItemSlot? chosen = null, string? weaponType = null, bool secondRing = false)
         {
             if (!_items.TryGetSet(setId, out var set))
                 return CraftResult.UnknownSet;
@@ -67,27 +67,28 @@ namespace Game.Core.Sim
             if (BagFull)
                 return CraftResult.BagFull;
             var complete = _gear.Collected(set);
-            ItemSlot slot;
+            SetPiece piece;
             if (complete)
             {
                 if (chosen == null)
                     return CraftResult.NeedsSlot;
-                if (!set.Has(chosen.Value))
+                if (!set.Has(chosen.Value) || (secondRing && !(chosen.Value == ItemSlot.Ring && set.HasSecondRing)))
                     return CraftResult.WrongSlot;
-                slot = chosen.Value;
+                piece = new SetPiece(chosen.Value, secondRing);
             }
             else
             {
-                var missing = new List<ItemSlot>();
-                foreach (var piece in set.Slots)
+                var missing = new List<SetPiece>();
+                foreach (var part in set.Pieces)
                 {
-                    if (!_state.SetCollection.Contains(SetDef.PieceKey(set.Id, piece)))
-                        missing.Add(piece);
+                    if (!_state.SetCollection.Contains(SetDef.PieceKey(set.Id, part)))
+                        missing.Add(part);
                 }
-                slot = missing[_state.Drops.Rng.NextInt(0, missing.Count)];
+                piece = missing[_state.Drops.Rng.NextInt(0, missing.Count)];
             }
+            var slot = piece.Slot;
             var jewelry = ItemCatalog.IsJewelry(slot);
-            var cost = (long)System.Math.Ceiling(CraftCost(set) * (jewelry ? _items.JewelryCraftMultiplier : 1));
+            var cost = (long)System.Math.Ceiling(CraftCost(set) * (jewelry ? _items.JewelryCraftMultiplier * set.CraftMultiplier : 1));
             if (jewelry ? _state.Drops.Essence < cost : _state.Drops.Ingots < cost)
                 return jewelry ? CraftResult.NotEnoughEssence : CraftResult.NotEnoughIngots;
             if (slot == ItemSlot.Weapon)
@@ -106,7 +107,7 @@ namespace Game.Core.Sim
                 _state.Drops.Essence -= cost;
             else
                 _state.Drops.Ingots -= cost;
-            var item = _items.RollSetPiece(set, slot, null, set.Rarity, BiomeNumber(System.Math.Max(1, _state.RecordStage)), _state.Drops.Rng);
+            var item = _items.RollSetPiece(set, slot, null, set.Rarity, BiomeNumber(System.Math.Max(1, _state.RecordStage)), _state.Drops.Rng, piece.SecondRing);
             _gear.NoteFound(item);
             _state.Drops.Gear.Add(item);
             _state.Drops.ItemsFound++;

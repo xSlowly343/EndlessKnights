@@ -79,6 +79,7 @@ namespace Game.Core.Content.Items
         public double[] CraftBaseCost { get; private set; } = new double[Enum.GetValues(typeof(ItemRarity)).Length];
         public IReadOnlyList<double> CraftSteps { get; private set; } = new[] { 1.0 };
         public double JewelryCraftMultiplier { get; private set; } = 1;
+        public double JewelryPairBonus { get; private set; }
 
         public static bool IsJewelry(ItemSlot slot) => slot == ItemSlot.Ring || slot == ItemSlot.Amulet;
 
@@ -105,11 +106,12 @@ namespace Game.Core.Content.Items
             return candidates.Count == 0 ? null : candidates[rng.NextInt(0, candidates.Count)];
         }
 
-        public GearItem RollSetPiece(SetDef set, ItemSlot slot, string? color, ItemRarity rarity, int itemLevel, Rng rng)
+        public GearItem RollSetPiece(SetDef set, ItemSlot slot, string? color, ItemRarity rarity, int itemLevel, Rng rng, bool? secondRing = null)
         {
             var gearBase = PickBase(slot, set.Color ?? color, itemLevel, rng);
             var affixes = RollAffixes(slot, rarity, itemLevel, rng);
-            return new GearItem(gearBase, rarity, itemLevel, affixes, set, PickImplicit(slot, rng));
+            var second = slot == ItemSlot.Ring && set.HasSecondRing && (secondRing ?? rng.NextDouble() < 0.5);
+            return new GearItem(gearBase, rarity, itemLevel, affixes, set, PickImplicit(slot, rng), null, second);
         }
         public int Tiers { get; }
         public double TopWeight { get; }
@@ -359,6 +361,7 @@ namespace Game.Core.Content.Items
             catalog.CraftBaseCost = costs;
             catalog.CraftSteps = steps;
             catalog.JewelryCraftMultiplier = node.HasField("jewelryMultiplier") ? node.Field("jewelryMultiplier").AsNumber(1, 100) : 1;
+            catalog.JewelryPairBonus = node.HasField("jewelryPairBonus") ? node.Field("jewelryPairBonus").AsNumber(0, 10) : 0;
         }
 
         private static RarityRule[] ReadRarities(ContentNode node, int tiers)
@@ -392,15 +395,33 @@ namespace Game.Core.Content.Items
             if (!ItemRarityNames.ByName.TryGetValue(rarityNode.AsString(), out var rarity) || rarity < ItemRarity.Rare)
                 throw rarityNode.Error("a set needs a rarity from rare up");
             var pieces = new Dictionary<ItemSlot, IReadOnlyList<Modifier>>();
+            IReadOnlyList<Modifier>? secondRing = null;
             var piecesNode = node.Field("pieces");
+            var jewelry = 0;
             foreach (var slotName in piecesNode.FieldNames())
             {
-                if (!ItemSlotNames.ByName.TryGetValue(slotName, out var slot) || slot == ItemSlot.Ring || slot == ItemSlot.Amulet)
-                    throw piecesNode.Field(slotName).Error($"a set piece goes to a weapon hand or armour slots, not '{slotName}'");
+                if (slotName == "ring_left" || slotName == SetDef.SecondRingKey)
+                {
+                    var lines = ModifierReader.ReadList(piecesNode.Field(slotName));
+                    if (slotName == "ring_left")
+                        pieces[ItemSlot.Ring] = lines;
+                    else
+                        secondRing = lines;
+                    jewelry++;
+                    continue;
+                }
+                if (!ItemSlotNames.ByName.TryGetValue(slotName, out var slot) || slot == ItemSlot.Ring)
+                    throw piecesNode.Field(slotName).Error($"a set piece goes to a weapon hand, armour, the amulet or ring_left / ring_right, not '{slotName}'");
+                if (slot == ItemSlot.Amulet)
+                    jewelry++;
                 pieces[slot] = ModifierReader.ReadList(piecesNode.Field(slotName));
             }
-            if (pieces.Count == 0)
+            if (pieces.Count == 0 && secondRing == null)
                 throw piecesNode.Error("a set needs pieces");
+            if (jewelry > 0 && jewelry != pieces.Count + (secondRing != null ? 1 : 0))
+                throw piecesNode.Error("a jewelry set holds only the amulet and rings");
+            if (secondRing != null && !pieces.ContainsKey(ItemSlot.Ring))
+                throw piecesNode.Error("ring_right needs ring_left");
             var weaponTypes = new List<string>();
             if (pieces.ContainsKey(ItemSlot.Weapon))
             {
@@ -412,7 +433,8 @@ namespace Game.Core.Content.Items
             var name = node.Field("name");
             return new SetDef(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), rarity,
                 node.HasField("color") ? node.Field("color").AsString() : null, pieces, ModifierReader.ReadList(node.Field("bonus")),
-                node.HasField("theme") ? node.Field("theme").AsString() : null, weaponTypes);
+                node.HasField("theme") ? node.Field("theme").AsString() : null, weaponTypes, secondRing,
+                node.HasField("craftMultiplier") ? node.Field("craftMultiplier").AsNumber(1, 100) : 1);
         }
 
         private static AffixDef ReadAffix(ContentNode node)

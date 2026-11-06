@@ -1108,7 +1108,8 @@ namespace Game.Core.Save
                 ("unique", item.Unique == null ? JsonValue.Null() : JsonValue.Of(item.Unique.Id)),
                 ("implicit", item.RolledImplicit == null ? JsonValue.Null() : JsonValue.Of(item.RolledImplicit.Id)),
                 ("affixes", JsonValue.Array(affixes)),
-                ("forge", WriteForge(item.Forge)));
+                ("forge", WriteForge(item.Forge)),
+                ("secondRing", JsonValue.Of(item.SecondRing)));
         }
 
         private static JsonValue WriteWorn(GearState gear)
@@ -1177,7 +1178,7 @@ namespace Game.Core.Save
             if (items != null && node.HasField("unique") && !node.Field("unique").IsNull && items.TryGetUnique(node.Field("unique").AsString(), out var unique) && unique.Slot == slot)
                 return new GearItem(unique, itemLevel, ReadForge(node));
             if (items != null && node.HasField("base") && !node.Field("base").IsNull && items.TryGetBase(node.Field("base").AsString(), out var gearBase) && gearBase.Slot == slot)
-                return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot), ReadImplicit(node, items, slot), ReadForge(node));
+                return new GearItem(gearBase, rarity, itemLevel, ReadAffixes(node, items), ReadSet(node, items, slot), ReadImplicit(node, items, slot), ReadForge(node), node.HasField("secondRing") && node.Field("secondRing").AsBool());
             return new GearItem(slot, rarity, itemLevel, color.IsNull ? null : color.AsString());
         }
 

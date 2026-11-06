@@ -632,7 +632,7 @@ namespace Game.Core.Sim
 
         public bool RebirthGem(GemDef gem) => _book.Rebirth(gem, _data.Gems.Levels.Max);
 
-        public CraftResult CraftSetPiece(string setId, Content.Items.ItemSlot? slot = null, string? weaponType = null) => _drops.CraftSetPiece(setId, slot, weaponType);
+        public CraftResult CraftSetPiece(string setId, Content.Items.ItemSlot? slot = null, string? weaponType = null, bool secondRing = false) => _drops.CraftSetPiece(setId, slot, weaponType, secondRing);
 
         public TrialResult StartTrial(string trialId) => _chronicle.Start(trialId);
 
