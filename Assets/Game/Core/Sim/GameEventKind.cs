@@ -37,6 +37,8 @@ namespace Game.Core.Sim
         MutationFound,
         PotionBrewed,
         PotionEnded,
-        RecipeLearned
+        RecipeLearned,
+        ExpeditionLetter,
+        ExpeditionReturned
     }
 }

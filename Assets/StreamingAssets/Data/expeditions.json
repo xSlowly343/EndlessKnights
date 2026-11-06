@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hours": [1, 2, 4, 8],
+  "companions": [
+    { "id": "camp_dog", "name": { "ru": "Пёс у костра", "en": "Campfire Dog" }, "trait": "herbalist" },
+    { "id": "camp_crow", "name": { "ru": "Ворона-находчица", "en": "Finder Crow" }, "trait": "digger" }
+  ],
+  "cosmeticTrait": "wanderer",
+  "traits": [
+    { "id": "herbalist", "name": { "ru": "Травник", "en": "Herbalist" }, "itemMultiplier": 1.5, "shardsMultiplier": 1, "rareMultiplier": 1 },
+    { "id": "digger", "name": { "ru": "Копатель", "en": "Digger" }, "itemMultiplier": 1, "shardsMultiplier": 2, "rareMultiplier": 1 },
+    { "id": "wanderer", "name": { "ru": "Странник", "en": "Wanderer" }, "itemMultiplier": 1, "shardsMultiplier": 1, "rareMultiplier": 2 }
+  ],
+  "waitExtend": 0.5,
+  "waitRareMultiplier": 2,
+  "choiceChance": 0.3,
+  "biomes": [
+    { "biome": "green_hills", "items": [{ "item": "herb_knockbloom", "perHour": 2 }, { "item": "herb_windwort", "perHour": 2 }], "shardsPerHour": 2, "rareChancePerHour": 0.03, "rare": "find_boar_tusk" },
+    { "biome": "sand_ruins", "items": [{ "item": "herb_clickweed", "perHour": 2 }, { "item": "ruin_shard", "perHour": 1 }], "shardsPerHour": 3, "rareChancePerHour": 0.03, "rare": "find_sphinx_tablet" },
+    { "biome": "ice_peak", "items": [{ "item": "herb_hushbell", "perHour": 2 }, { "item": "ice_crystal", "perHour": 1 }], "shardsPerHour": 4, "rareChancePerHour": 0.03, "rare": "find_mammoth_hair" },
+    { "biome": "volcanic_forge", "items": [{ "item": "ore_ember", "perHour": 2 }], "shardsPerHour": 5, "rareChancePerHour": 0.03, "rare": "find_smith_rivet" },
+    { "biome": "sky_islands", "items": [{ "item": "sky_feather", "perHour": 2 }], "shardsPerHour": 6, "rareChancePerHour": 0.03, "rare": "find_dragon_scale" }
+  ],
+  "letters": [
+    { "ru": "Нашёл гнездо грифона, задерживаюсь.", "en": "Found a griffin's nest, running late." },
+    { "ru": "Тут тихо. Слышно, как растёт трава.", "en": "It is quiet here. You can hear the grass grow." },
+    { "ru": "Колосс прошёл мимо и меня не заметил. Повезло.", "en": "A Colossus walked past without seeing me. Lucky." },
+    { "ru": "Вижу что-то блестящее под камнем. Подождать?", "en": "Something shiny under a rock. Should I wait?" }
+  ]
+}
