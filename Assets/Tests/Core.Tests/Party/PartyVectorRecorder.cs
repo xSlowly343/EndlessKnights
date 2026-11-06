@@ -63,6 +63,8 @@ namespace Game.Core.Tests.Party
             Record($"\"op\": \"pierce\", \"slot\": {slot}, \"pierceShare\": {Number(share)}, \"enemySkip\": {skip}, \"splashShare\": {Number(splash)}, \"splashTargets\": {targets}, \"bossPierce\": {Number(boss)}, \"stageCarry\": {Number(carry)}",
                 () => _encounter.SetPierce(slot, new Game.Core.Party.PartyPierceStats(share, skip, splash, targets, boss, carry)));
 
+        public void AtGate(int slot, bool atGate) => Record($"\"op\": \"atGate\", \"slot\": {slot}, \"value\": {Bool(atGate)}", () => _encounter.SetAtGate(slot, atGate));
+
         public void Credit(int slot, double rate) => Record($"\"op\": \"credit\", \"slot\": {slot}, \"rate\": {Number(rate)}", () => _encounter.SetCredit(slot, rate));
 
         public void Auras(int slot, int ticks) => Record($"\"op\": \"auras\", \"slot\": {slot}, \"ticks\": {ticks}", () => _encounter.NoteAuras(slot, ticks));
@@ -144,6 +146,7 @@ namespace Game.Core.Tests.Party
                 .Append(", \"enemiesOnStage\": ").Append(e.EnemiesOnStage)
                 .Append(", \"riftStagesCleared\": ").Append(e.RiftStagesCleared)
                 .Append(", \"shieldFloor\": ").Append(Number(e.ShieldFloor))
+                .Append(", \"gateBoss\": ").Append(Bool(e.GateBoss))
                 .Append(", \"history\": [").Append(e.History.Killed).Append(", ").Append(e.History.Bosses).Append(", ").Append(e.History.Rewards0).Append(", ")
                 .Append(e.History.Rewards1).Append(", ").Append(e.History.Rewards2).Append(", ").Append(e.History.Rewards3).Append("]")
                 .Append(", \"members\": [");

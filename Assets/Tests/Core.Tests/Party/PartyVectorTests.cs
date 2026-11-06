@@ -50,7 +50,8 @@ namespace Game.Core.Tests.Party
                 SharedTimer(),
                 ClockLoop(),
                 Pierce(),
-                PierceStats()
+                PierceStats(),
+                LimitFight()
             };
             var rules = TestWorld.WithPierce.Party;
             var stages = TestWorld.WithPierce.Stages;
@@ -85,9 +86,11 @@ namespace Game.Core.Tests.Party
                    $"    \"waveEnemiesPerWave\": {stages.Waves.EnemiesPerWave},\n" +
                    $"    \"waveStagesPerExtraEnemy\": {stages.Waves.StagesPerExtraEnemy},\n" +
                    $"    \"waveMaxEnemies\": {stages.Waves.MaxEnemies},\n" +
+                   $"    \"waveMaxSteps\": [{string.Join(", ", System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, stages.Waves.StepFrom.Count), i => $"{{ \"from\": {stages.Waves.StepFrom[i]}, \"max\": {stages.Waves.StepMax[i]} }}"))}],\n" +
                    $"    \"bossRetryAfterKills\": {stages.BossRetryAfterKills},\n" +
                    $"    \"bossTimerSeconds\": {N(stages.BossTimerSeconds)},\n" +
-                   $"    \"bossHpMultiplier\": {N(stages.BossHpMultiplier)}\n" +
+                   $"    \"bossHpMultiplier\": {N(stages.BossHpMultiplier)},\n" +
+                   $"    \"gates\": [{string.Join(", ", System.Linq.Enumerable.Select(stages.Gates, g => $"{{ \"stage\": {g.Stage}, \"hpMultiplier\": {N(g.HpMultiplier)}, \"timerSeconds\": {N(g.TimerSeconds)} }}"))}]\n" +
                    "  },\n  \"scenarios\": [\n" + string.Join(",\n", scenarios) + "\n  ]\n}\n";
         }
 
@@ -102,6 +105,28 @@ namespace Game.Core.Tests.Party
             r.Hit(0, 100);
             r.Advance(1);
             r.Hit(1, 100);
+            return r.ToJson();
+        }
+
+        private static string LimitFight()
+        {
+            var r = Recorder("a member at the Limit turns the party boss into the Limit: a bigger bar, its own timer, no boss pierce", 2626);
+            r.Join(1);
+            r.Join(2);
+            r.Stage(0, 50000);
+            r.Stage(1, 49000);
+            r.AtGate(0, true);
+            r.Pierce(1, 0, 0, 0, 0, 0.5, 0);
+            for (var i = 0; i < 30; i++)
+            {
+                r.Hit(1, 400);
+                r.Advance(1);
+            }
+            r.Hit(0, 3);
+            r.Advance(5);
+            r.AtGate(0, false);
+            r.Hit(1, 400);
+            r.Advance(1);
             return r.ToJson();
         }
 

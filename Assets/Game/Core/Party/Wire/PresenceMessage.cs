@@ -12,6 +12,7 @@ namespace Game.Core.Party.Wire
         public byte SplashTargets;
         public float BossPierce;
         public float StageCarry;
+        public bool AtGate;
 
         public PartyPierceStats Pierce => new PartyPierceStats(PierceShare, EnemySkip, SplashShare, SplashTargets, BossPierce, StageCarry);
 
@@ -27,6 +28,7 @@ namespace Game.Core.Party.Wire
             writer.Byte(SplashTargets);
             writer.Float(BossPierce);
             writer.Float(StageCarry);
+            writer.Bool(AtGate);
         }
 
         public static PresenceMessage Read(ref PartyReader reader) => new PresenceMessage
@@ -40,7 +42,8 @@ namespace Game.Core.Party.Wire
             SplashShare = reader.Float(),
             SplashTargets = reader.Byte(),
             BossPierce = reader.Float(),
-            StageCarry = reader.Float()
+            StageCarry = reader.Float(),
+            AtGate = reader.Bool()
         };
     }
 }

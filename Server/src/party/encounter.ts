@@ -35,6 +35,7 @@ class PartyMember {
     splashTargets = 0;
     bossPierce = 0;
     stageCarry = 0;
+    atGate = false;
     guestTicksLeft = 0;
     stage = 0;
     creditRate = 0;
@@ -62,6 +63,7 @@ class PartyMember {
         this.splashTargets = 0;
         this.bossPierce = 0;
         this.stageCarry = 0;
+        this.atGate = false;
         this.guestTicksLeft = 0;
         this.stage = 0;
         this.creditRate = 0;
@@ -303,6 +305,25 @@ class PartyEncounter {
             this.members[slot].heroClass = heroClass;
     }
 
+    gateBoss = false;
+
+    setAtGate(slot: number, atGate: boolean): void {
+        if (this.isMember(slot))
+            this.members[slot].atGate = atGate;
+    }
+
+    private gateOfParty(): PartyGate | null {
+        for (let slot = 0; slot < this.members.length; slot++) {
+            const member = this.members[slot];
+            if (!member.joined || member.guest || !member.atGate)
+                continue;
+            for (const gate of this.rules.gates)
+                if (gate.stage === member.stage)
+                    return gate;
+        }
+        return null;
+    }
+
     setPierce(slot: number, stats: PartyPierceStats): void {
         if (!this.isMember(slot))
             return;
@@ -454,7 +475,7 @@ class PartyEncounter {
                 break;
             this.chainKills++;
         }
-        if (overflow > 0 && this.started && !this.switching && this.enemyKind === PartyEnemyKind.Boss && member.bossPierce > 0)
+        if (overflow > 0 && this.started && !this.switching && this.enemyKind === PartyEnemyKind.Boss && !this.gateBoss && member.bossPierce > 0)
             total += this.hit(slot, Math.min(overflow * member.bossPierce, this.barLeft * this.rules.pierceCaps.bossPierceHpShare));
         return total;
     }
@@ -797,6 +818,10 @@ class PartyEncounter {
             this.fighters += member.weight;
         }
         this.barFull = partyHpMultiplier(this.rules, this.fighters);
+        const gate = kind === PartyEnemyKind.Boss ? this.gateOfParty() : null;
+        this.gateBoss = gate !== null;
+        if (gate)
+            this.barFull *= gate.hpMultiplier;
         this.shieldFloor = 0;
         if (kind === PartyEnemyKind.Boss && this.bossShield > 0) {
             this.shieldFloor = this.barFull;
@@ -811,7 +836,7 @@ class PartyEncounter {
             this.clearWeaken();
         if (kind !== PartyEnemyKind.Boss)
             return;
-        this.bossTicksLeft = partyTicks(this.rules.bossTimerSeconds);
+        this.bossTicksLeft = partyTicks(gate ? gate.timerSeconds : this.rules.bossTimerSeconds);
         this.addEvent(PartyEventKind.BossStarted);
     }
 

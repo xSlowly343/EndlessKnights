@@ -33,6 +33,13 @@ interface PartyEncounterRules {
     pierceShare: number;
     pierceKillsPerTick: number;
     pierceCaps: PartyPierceCaps;
+    gates: PartyGate[];
+}
+
+interface PartyGate {
+    stage: number;
+    hpMultiplier: number;
+    timerSeconds: number;
 }
 
 interface PartyPierceCaps {

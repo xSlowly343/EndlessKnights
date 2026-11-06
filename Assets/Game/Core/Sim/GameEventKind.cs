@@ -21,6 +21,7 @@ namespace Game.Core.Sim
         PortalJumped,
         StageSkipped,
         EnemiesSkipped,
+        GateNeedsLimitFight,
         GoldenColossusAppeared,
         GateCleared,
         DungeonKeyDropped,

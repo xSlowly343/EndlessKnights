@@ -173,6 +173,28 @@ namespace Game.Core.Party
                 _members[slot].HeroClass = heroClass;
         }
 
+        public bool GateBoss { get; private set; }
+
+        public void SetAtGate(int slot, bool atGate)
+        {
+            if (IsMember(slot))
+                _members[slot].AtGate = atGate;
+        }
+
+        private StageGate? GateOfParty()
+        {
+            for (var slot = 0; slot < _members.Length; slot++)
+            {
+                var member = _members[slot];
+                if (!member.Joined || member.Guest || !member.AtGate)
+                    continue;
+                var gate = _stages.GateAt(member.Stage);
+                if (gate != null)
+                    return gate;
+            }
+            return null;
+        }
+
         public void SetPierce(int slot, in PartyPierceStats stats)
         {
             if (!IsMember(slot))
@@ -453,7 +475,7 @@ namespace Game.Core.Party
                     break;
                 _chainKills++;
             }
-            if (overflow > 0 && Started && !Switching && EnemyKind == PartyEnemyKind.Boss && member.BossPierce > 0)
+            if (overflow > 0 && Started && !Switching && EnemyKind == PartyEnemyKind.Boss && !GateBoss && member.BossPierce > 0)
                 total += Hit(slot, System.Math.Min(overflow * member.BossPierce, BarLeft * _rules.PierceCaps.BossPierceHpShare));
             return total;
         }
@@ -824,6 +846,10 @@ namespace Game.Core.Party
                 Fighters += member.Weight;
             }
             BarFull = _rules.HpMultiplier(Fighters);
+            var gate = kind == PartyEnemyKind.Boss ? GateOfParty() : null;
+            GateBoss = gate != null;
+            if (gate != null)
+                BarFull *= gate.HpMultiplier;
             ShieldFloor = 0;
             if (kind == PartyEnemyKind.Boss && BossShield > 0)
             {
@@ -839,7 +865,7 @@ namespace Game.Core.Party
                 ClearWeaken();
             if (kind != PartyEnemyKind.Boss)
                 return;
-            BossTicksLeft = Ticks(_stages.BossTimerSeconds);
+            BossTicksLeft = Ticks(gate?.TimerSeconds ?? _stages.BossTimerSeconds);
             Events.Add(new PartyEvent(PartyEventKind.BossStarted, Tick, EnemyId, kind));
         }
 

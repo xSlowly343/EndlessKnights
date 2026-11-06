@@ -27,6 +27,8 @@ namespace Game.Core.Content
         public int EnemiesPerWave => _enemiesPerWave;
         public int StagesPerExtraEnemy => _stagesPerExtraEnemy;
         public int MaxEnemies => _maxEnemies;
+        public System.Collections.Generic.IReadOnlyList<long> StepFrom => _stepFrom;
+        public System.Collections.Generic.IReadOnlyList<int> StepMax => _stepMax;
 
         public int MaxEnemiesAt(long stage)
         {

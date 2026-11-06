@@ -152,6 +152,7 @@ namespace Game.Core.Party
                     _encounter.SetStage(slot, presence.Stage);
                     _encounter.SetCredit(slot, presence.Contribution);
                     _encounter.SetPierce(slot, presence.Pierce);
+                    _encounter.SetAtGate(slot, presence.AtGate);
                     break;
                 case PartyMessageKind.CastEffect when PartyCodec.TryDecode(_in, length, out CastEffectMessage effect):
                     if (effect.OnEnemy)

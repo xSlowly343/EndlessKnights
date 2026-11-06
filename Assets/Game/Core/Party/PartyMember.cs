@@ -20,6 +20,7 @@ namespace Game.Core.Party
         public int SplashTargets { get; internal set; }
         public double BossPierce { get; internal set; }
         public double StageCarry { get; internal set; }
+        public bool AtGate { get; internal set; }
         public int GuestTicksLeft { get; internal set; }
         public long Stage { get; internal set; }
         public double CreditRate { get; internal set; }
@@ -47,6 +48,7 @@ namespace Game.Core.Party
             SplashTargets = 0;
             BossPierce = 0;
             StageCarry = 0;
+            AtGate = false;
             GuestTicksLeft = 0;
             Stage = 0;
             CreditRate = 0;
